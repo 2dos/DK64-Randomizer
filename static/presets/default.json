@@ -90,6 +90,7 @@
     "shorten_boss": true,
     "shuffle_items": false,
     "shuffle_shops": true,
+    "smaller_shops": false,
     "starting_keys_list_selected": [],
     "starting_kongs_count": 3,
     "starting_random": false,

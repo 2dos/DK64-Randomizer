@@ -26,6 +26,7 @@ model_two_indexes = {
     Types.Kong: [0x257, 0x258, 0x259, 0x25A, 0x25B],
     Types.Bean: 0x198,
     Types.Pearl: 0x1B4,
+    Types.Fairy: 0x25C,
 }
 
 model_two_scales = {
@@ -42,6 +43,7 @@ model_two_scales = {
     Types.Kong: 0.25,
     Types.Bean: 0.25,
     Types.Pearl: 0.25,
+    Types.Fairy: 0.25,
 }
 
 actor_indexes = {
@@ -58,7 +60,19 @@ actor_indexes = {
     Types.Kong: [141, 142, 143, 144, 155],
     Types.Bean: 172,
     Types.Pearl: 174,
+    Types.Fairy: 88,
 }
+model_indexes = {
+    Types.Banana: 0x69,
+    Types.Key: 0xF5,
+    Types.Crown: 0xF4,
+    Types.Fairy: 0x3D,
+    Types.Shop: [0xF6, 0xF7, 0xF8, 0xF9, 0xFA, 0xFB],
+    Types.Shockwave: 0xFB,
+    Types.TrainingBarrel: 0xFB,
+    Types.Kong: [4, 1, 6, 9, 0xC],
+}
+
 kong_flags = (385, 6, 70, 66, 117)
 
 
@@ -444,6 +458,7 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Kong,  # Kong
                             Types.Bean,  # Bean
                             Types.Pearl,  # Pearl
+                            Types.Fairy,  # Fairy
                             None,  # No Item
                         ]
                         offset = item.old_flag - 549
@@ -479,6 +494,25 @@ def place_randomized_items(spoiler: Spoiler):
                         ROM().writeMultipleBytes(item.old_flag, 2)
                         ROM().writeMultipleBytes(actor_index, 1)
                         bonus_table_offset += 1
+                    elif item.old_item == Types.Fairy:
+                        # Fairy Item
+                        if item.new_item in model_indexes:
+                            model = model_indexes[item.new_item]
+                            if item.new_item == Types.Shop:
+                                if (item.new_flag & 0x8000) == 0:
+                                    slot = 5
+                                else:
+                                    slot = (item.new_flag >> 12) & 7
+                                    if item.shared or slot > 5:
+                                        slot = 5
+                                model = model_indexes[Types.Shop][slot]
+                            elif item.new_item == Types.Kong:
+                                slot = 0
+                                if item.new_flag in kong_flags:
+                                    slot = kong_flags.index(item.new_flag)
+                                model = model_indexes[Types.Kong][slot]
+                            ROM().seek(0x1FF1040 + (2 * (item.old_flag - 589)))
+                            ROM().writeMultipleBytes(model, 2)
             if not item.is_shop and item.can_have_item and item.old_item != Types.Kong:
                 # Write flag lookup table
                 data = [item.old_flag]

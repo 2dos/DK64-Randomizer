@@ -75,3 +75,6 @@
 .definelabel updateCollisionDimensions, 0x806F4D70
 .definelabel getPauseWheelRotationProgress, 0x806CC10C
 .definelabel getKong, 0x806C8DE0
+.definelabel setActorModel, 0x80613194
+.definelabel spawn3DActor, 0x8067B2DC
+.definelabel getChunk, 0x806531B8

@@ -58,8 +58,8 @@ typedef struct collision_info {
     /* 0x012 */ short hitbox_scale;
 } collision_info;
 
-#define COLLISION_LIMIT 57
-#define DEFS_LIMIT 145
+#define COLLISION_LIMIT 58
+#define DEFS_LIMIT 146
 static collision_info object_collisions[COLLISION_LIMIT] = {};
 static actor_behaviour_def actor_defs[DEFS_LIMIT] = {};
 
@@ -161,6 +161,7 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x028F, COLLECTABLE_NONE, KONG_NONE, 152, 8, 4); // Rareware Coin
     index = addCollisionInfo(index, 0x0198, COLLECTABLE_NONE, KONG_NONE, 172, 8, 4); // Bean
     index = addCollisionInfo(index, 0x01B4, COLLECTABLE_NONE, KONG_NONE, 174, 8, 4); // Pearl
+    index = addCollisionInfo(index, 0x025C, COLLECTABLE_NONE, KONG_NONE, 88, 8, 4); // Fairy
     
     // Write new table to ROM
     int hi = getHi(&object_collisions[0].type);
@@ -205,8 +206,6 @@ void initActorDefs(void) {
     index = addActorDef(index, 160, 0xF1, 0x80689F80, 0x80689FEC); // Tiny Potion
     index = addActorDef(index, 161, 0xF2, 0x80689F80, 0x80689FEC); // Chunky Potion
     index = addActorDef(index, 162, 0xF3, 0x80689F80, 0x80689FEC); // Any Potion
-    index = addActorDef(index, 153, 0, 0x80689F80, 0x8068A10C); // Nothing
-    index = addActorDef(index, 154, 0, 0x80689F80, 0x8068A10C); // Medal
     // Kongs
     index = addActorDef(index, 141, 0x4, 0x80689F80, 0x80689FEC); // DK
     index = addActorDef(index, 142, 0x1, 0x80689F80, 0x80689FEC); // Diddy
@@ -216,6 +215,9 @@ void initActorDefs(void) {
     // Misc
     index = addActorDef(index, 172, 0, 0x80689F80, 0x8068A10C); // Bean
     index = addActorDef(index, 174, 0, 0x80689F80, 0x8068A10C); // Pearl
+    index = addActorDef(index, 88, 0xFC, 0x80689F80, 0x80689FEC); // Fairy
+    index = addActorDef(index, 153, 0, 0x80689F80, 0x8068A10C); // Nothing
+    index = addActorDef(index, 154, 0, 0x80689F80, 0x8068A10C); // Medal
     *(unsigned short*)(0x8068926A) = getHi(&actor_defs[0].actor_type);
     *(unsigned short*)(0x8068927A) = getLo(&actor_defs[0].actor_type);
     *(unsigned short*)(0x806892D2) = getHi(&actor_defs[0].actor_type);
@@ -375,6 +377,9 @@ int clampFlag(int flag) {
     }
     if ((flag >= 0x261) && (flag <= 0x26A)) {
         return 1; // Crown
+    }
+    if ((flag >= 589) && (flag <= 608)) {
+        return 1; // Fairy
     }
     if (flag == 0x17B) {
         return 1; // RW Coin
@@ -654,6 +659,8 @@ int getKongFromBonusFlag(int flag) {
     return 0;
 }
 
+#define BANANA_MEDAL_ITEM_COUNT 15 // Discount nothing item
+
 void banana_medal_acquisition(int flag) {
     /* 
         0 - GB,
@@ -670,12 +677,13 @@ void banana_medal_acquisition(int flag) {
         11 - Kong,
         12 - Bean,
         13 - Pearl,
-        14 - Nothing,
+        14 - Fairy,
+        15 - Nothing,
     */
     int item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
     if (!checkFlag(flag, 0)) {
         // Display and play effects if you don't have item
-        if (item_type < 15) {
+        if (item_type < (BANANA_MEDAL_ITEM_COUNT + 1)) {
             int kong = -1;
             short flut_flag = flag;
             updateFlag(0, (short*)&flut_flag, (void*)0, -1);
@@ -707,20 +715,36 @@ void banana_medal_acquisition(int flag) {
                         }
                     }
                 }
-            } else if (item_type < 14) {
+            } else if (item_type < BANANA_MEDAL_ITEM_COUNT) {
                 setFlag(flag, 1, 0);
             }
             if (item_type == 0) {
                 giveGB(getKong(0), getWorld(CurrentMap, 1));
             }
-            if (item_type < 14) {
+            if (item_type < BANANA_MEDAL_ITEM_COUNT) {
                 playSFX(0xF2);
                 int used_song = 0x97;
                 int kong_songs[] = {11, 10, 12, 13, 9};
-                int songs[] = {18,69,18,0x97,22,115,115,115,115,115,0x97, 0, 147, 128};
+                int songs[] = {
+                    18, // GB (GB/Key Get)
+                    69, // BP (BP Get)
+                    18, // Key (GB/Key Get)
+                    0x97, // Crown (Banana Medal Get)
+                    22, // Company Coin
+                    0x97, // Medal (Banana Medal Get)
+                    115, // Cranky (Gun Get)
+                    115, // Funky (Gun Get)
+                    115, // Candy (Gun Get)
+                    115, // Training (Gun Get)
+                    115, // Shockwave (Gun Get)
+                    0, // Kong - Use kong array
+                    147, // Bean (Bean Get)
+                    128, // Pearl (Pearl Get)
+                    46, // Fairy (Fairy Tick)
+                };
                 if (item_type == 11) {
                     used_song = kong_songs[kong];
-                } else if (item_type < 14) {
+                } else if (item_type < BANANA_MEDAL_ITEM_COUNT) {
                     used_song = songs[item_type];
                 }
                 playSong(used_song, 0x3F800000);
@@ -729,7 +753,23 @@ void banana_medal_acquisition(int flag) {
             unkSpriteRenderFunc_0();
             loadSpriteFunction(0x8071EFDC);
             int bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
-            int sprite_indexes[] = {0x3B, 0, 0x8A, 0x8B, 0, 0x3C, 0x94, 0x96, 0x93, 0x94, 0x3A, 0x8E, 0, 0x92, 0x92};
+            int sprite_indexes[] = {
+                0x3B, // GB
+                0, // BP - Use bp sprite array
+                0x8A,  // Key
+                0x8B,  // Crown
+                0, // Company Coin - Use separate check
+                0x3C, // Medal
+                0x94, // Cranky
+                0x96, // Funky
+                0x93, // Candy
+                0x94, // Training Barrel
+                0x3A, // Shockwave
+                0, // Kong - Use separate check
+                0x92, // Bean
+                0x92, // Pearl
+                0x89, // Fairy
+            };
             int used_sprite = 0x3B;
             if (item_type == 1) {
                 int character_val = Character;
@@ -748,6 +788,8 @@ void banana_medal_acquisition(int flag) {
             } else if (item_type == 11) {
                 used_sprite = 0xA9 + kong;
                 refreshItemVisibility();
+            } else if (item_type == BANANA_MEDAL_ITEM_COUNT) {
+                used_sprite = 0x8E;
             } else {
                 used_sprite = sprite_indexes[item_type];
             }
@@ -859,9 +901,9 @@ void initKeyText(int ki) {
 
 void spriteCode(int sprite_index, float scale) {
     void* paad = CurrentActorPointer_0->paad;
-    spriteActorGenericCode(scale);
+    spriteActorGenericCode(4.5f);
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        assignGIFToActor(paad, sprite_table[sprite_index], 0x3F800000);
+        assignGIFToActor(paad, sprite_table[sprite_index], *(int*)(&scale));
         if (CurrentActorPointer_0->control_state == 99) {
             CurrentActorPointer_0->control_state = 1;
             CurrentActorPointer_0->sub_state = 2;
@@ -870,15 +912,15 @@ void spriteCode(int sprite_index, float scale) {
 }
 
 void ninCoinCode(void) {
-    spriteCode(0x8D, 4.5f);
+    spriteCode(0x8D, 1.0f);
 }
 
 void rwCoinCode(void) {
-    spriteCode(0x8C, 4.5f);
+    spriteCode(0x8C, 1.0f);
 }
 
 void medalCode(void) {
-    spriteCode(0x3C, 12.0f);
+    spriteCode(0x3C, 2.0f);
 }
 
 void beanCode(void) {
@@ -954,6 +996,122 @@ void PotionCode(void) {
     }
 }
 
+void fairyDuplicateCode(void) {
+    /* Duplicate fairy actor purely used for item drops */
+    GoldenBananaCode();
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF; // Make color blends work
+    }
+    playActorAnimation(CurrentActorPointer_0, 0x2B5);
+}
+
+static unsigned char master_copy[345] = {};
+
+typedef struct packet_extra_data {
+    /* 0x000 */ char unk_00[0xA];
+    /* 0x00A */ short index;
+} packet_extra_data;
+
+int getBarrelModel(int index) {
+    if (index < 95) {
+        int actor = bonus_data[index].spawn_actor;
+        switch (actor) {
+            case 78:
+            case 75:
+            case 77:
+            case 79:
+            case 76:
+                return 0x102; // Blueprint
+            case 151:
+                return 0x103; // Nintendo Coin
+            case 152:
+                return 0x104; // Rareware Coin
+            case 72:
+                return 0x105; // Key
+            case 86:
+                return 0x106; // Crown
+            case 154:
+                return 0x107; // Medal
+            case 157:
+            case 158:
+            case 159:
+            case 160:
+            case 161:
+            case 162:
+                return 0x108; // Potion
+            case 141:
+            case 142:
+            case 143:
+            case 144:
+                return 0xFD + (actor - 141); // DK-Tiny
+            case 155:
+                return 0x101; // Chunky
+            case 172:
+                return 0x109; // Bean
+            case 174:
+                return 0x10A; // Pearl
+            case 88:
+                return 0x10B; // Fairy
+        }
+    }
+    return 0x76;
+}
+
+typedef struct spawnerExtraInfo {
+    /* 0x000 */ char unk_0[8];
+    /* 0x008 */ int index;
+} spawnerExtraInfo;
+
+int SpawnPreSpawnedBarrel(
+        float x, float y, int z, int unk0,
+        int sp10, int sp14, int sp18, int sp1c,
+        int sp20, int sp24, int sp28, actorSpawnerData* spawner,
+        int sp30, int sp34, int sp38, int sp3c,
+        int sp40, int sp44, spawnerExtraInfo* extra_data
+    ) {
+    if (Rando.item_rando) {
+        if (spawner) {
+            if ((spawner->actor_type + 0x10) == 0x1C) {
+                int index = extra_data->index;
+                if (index < 95) {
+                    int model = getBarrelModel(index);
+                    if (model != 0) {
+                        spawner->model = model;
+                    }
+                }
+            }
+        }
+    }
+    return getChunk(x, y, z, unk0);
+}
+
+void SpawnBarrel(spawnerPacket* packet) {
+    if ((Rando.item_rando)) {
+        packet_extra_data* data = (packet_extra_data*)packet->extra_data;
+        if (data) {
+            int index = data->index;
+            if (index < 95) {
+                int model = getBarrelModel(index);
+                if (model != 0) {
+                    packet->model = model;
+                }
+            }
+        }
+    }
+    spawn3DActor(packet);
+}
+
+void initBarrelChange(void) {
+    for (int i = 0; i < 345; i++) {
+        master_copy[i] = ActorMasterType[i];
+    }
+    master_copy[0x1C] = 5;
+    *(short*)(0x80677EF6) = getHi(&master_copy[0]);
+    *(short*)(0x80677F02) = getLo(&master_copy[0]);
+    *(int*)(0x8074DA44) = (int)&SpawnBarrel;
+    *(int*)(0x80689368) = 0x0C000000 | (((int)&SpawnPreSpawnedBarrel & 0xFFFFFF) >> 2); // Change model if barrel is being reloaded
+}
+
 void KLumsyText(void) {
     /*
         NOTE: Re-add this once we get some text for this
@@ -970,6 +1128,48 @@ void KLumsyText(void) {
         }
     */
     renderActor(CurrentActorPointer_0, 0);
+}
+
+void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
+    // Change Character Spawner Information account for fairy rando
+    /*
+        INFORMATION:
+            +----------------+----------------------------+--------+---------------+
+            |   Model Name   |         Base Model         | Tested |   New Model   |
+            +----------------+----------------------------+--------+---------------+
+            | Golden Banana  | 0x69                       | True   | See Left      |
+            | Boss Key       | 0xA5                       | True   | 0xF5          |
+            | Crown          | 0xAF                       | True   | 0xF4          |
+            | Potions        | 0xEE-0xF3                  | True   | 0xF6-0xFB     |
+            | Kong Items     | 4, 1, 6, 9, 0xC, 0xE, 0xDB | True   | See Left      |
+            +----------------+----------------------------+--------+---------------+
+            Some items are excluded because when they're actors, they are sprites which can't easily be rendered with the fairy stuff. I might have a way around this,
+            but we'll have to wait and see for probably a secondary update after the first push.
+    */
+    if (actor == 248) {
+        // Fairy
+        int model = 0x3D;
+        for (int i = 0; i < 31; i++) {
+            if ((charspawnerflags[i].map == CurrentMap) && (charspawnerflags[i].spawner_id == spawner->spawn_trigger)) {
+                model = getFairyModel(charspawnerflags[i].tied_flag);
+            }
+        }
+        spawnActor(actor, model);
+    } else {
+        spawnActor(actor, CharSpawnerActorData[spawner->alt_enemy_value].model);
+    }
+}
+
+void giveFairyItem(int flag, int state, int type) {
+    int model = getFairyModel(flag);
+    if (model == 0x69) {
+        // GB
+        int world = getWorld(CurrentMap, 1);
+        if (world < 8) {
+            giveGB(Character, world);
+        }
+    }
+    setFlag(flag, state, type);
 }
 
 static const unsigned char dance_skip_ban_maps[] = {
@@ -1197,6 +1397,9 @@ void getItem(int object_type) {
                 setAction(0x42, 0, 0);
             }
             refreshItemVisibility();
+            break;
+        case 0x25C:
+            playSong(46, 0x3F800000);
             break;
     }
 }

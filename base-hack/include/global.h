@@ -132,6 +132,7 @@ extern void medalCode(void);
 extern void beanCode(void);
 extern void pearlCode(void);
 extern void NothingCode(void);
+extern void fairyDuplicateCode(void);
 extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern void handleSpiderTrapCode(void);
@@ -226,6 +227,7 @@ extern int getBPItem(int index);
 extern int getMedalItem(int index);
 extern int getCrownItem(int map);
 extern int getKeyItem(int old_flag);
+extern int getFairyModel(int flag);
 extern void initKeyText(int ki);
 extern int* controlKeyText(int* dl);
 extern void keyGrabHook(int song, int vol);
@@ -261,6 +263,10 @@ extern int CoinDoorCheck(void);
 
 extern int fairyQueenCutsceneInit(int start, int count, int type);
 extern void fairyQueenCutsceneCheck(void);
+extern void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner);
+extern void giveFairyItem(int flag, int state, int type);
+extern void SpawnBarrel(spawnerPacket* packet);
+extern void initBarrelChange(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];

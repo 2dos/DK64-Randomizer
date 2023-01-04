@@ -220,6 +220,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
 def ShuffleTinyPhaseToes():
     """Generate random assortment of toes for Tiny Phase."""
     toe_sequence = []
+    previous_toe = 1  # Use 1 as the index as it's within distance of all toes, so all toes for the first in the sequence will be valid
     for toe in range(10):
         mode = random.randint(0, 10)
         if (toe % 5) == 0:
@@ -228,17 +229,30 @@ def ShuffleTinyPhaseToes():
         if mode == 0:
             # Use player position
             toe_sequence.append(0xFF)
+            previous_toe = 1
         else:
             # Determine random assortment
             toe_list = list(range(4))
             if (toe % 5) == 0:
                 # First toe
                 toe_list = [0, 2, 3]
-            toe_count = random.randint(1, 3)
-            activated_toes = random.sample(toe_list, toe_count)
-            toe_bitfield = 0
-            for toe in activated_toes:
-                toe_bitfield |= 1 << toe
+            toe_list = [x for x in toe_list if abs(x - previous_toe) < 3]  # Prevent toes being selected that
+            toe_count = random.randint(1, min(3, len(toe_list) - 1))
+            if len(toe_list) <= 1:
+                toe_bitfield = 0
+            else:
+                activated_toes = random.sample(toe_list, toe_count)
+                unactivated_toes = [x for x in list(range(4)) if x not in activated_toes]
+                picked_toe = False
+                for t in (1, 2):
+                    if t in unactivated_toes:
+                        previous_toe = t
+                        picked_toe = True
+                if not picked_toe:
+                    previous_toe = random.choice(unactivated_toes)
+                toe_bitfield = 0
+                for toe in activated_toes:
+                    toe_bitfield |= 1 << toe
             toe_sequence.append(toe_bitfield)
     return toe_sequence.copy()
 

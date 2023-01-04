@@ -140,6 +140,15 @@ def modify(file_name, map_index):
                 for x in range(0x30 - 0x2A):
                     repl_byte += byte_stream[x + 0x2A].to_bytes(1, "big")
                 byte_stream = repl_byte
+            elif map_index == 7 and _id == 0x52:
+                # Mountain GB
+                repl_byte = b""
+                coords = [1648.095, 990, 2431.953]
+                for c in coords:
+                    repl_byte += int(float_to_hex(c), 16).to_bytes(4, "big")
+                for x in range(0x30 - 0xC):
+                    repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
+                byte_stream = repl_byte
             elif (map_index == 0x1A and _id == 0x13E) or (map_index == 5 and _id == 2):
                 # Nintendo/Rareware Coin
                 repl_byte = b""

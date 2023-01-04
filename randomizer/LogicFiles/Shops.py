@@ -87,7 +87,7 @@ LogicRegions = {
     Regions.FunkyCastle: Region("Funky Castle", "Castle Shops", Levels.Shops, False, None, [
         LocationLogic(Locations.SniperSight, lambda l: l.CanBuy(Locations.SniperSight)),
         LocationLogic(Locations.DonkeyCastleGun, lambda l: l.isdonkey and l.CanBuy(Locations.DonkeyCastleGun)),
-        LocationLogic(Locations.DiddyCastleGun, lambda l: l.isdiddy and l.CanBuy(Locations.DiddyCavesGun)),
+        LocationLogic(Locations.DiddyCastleGun, lambda l: l.isdiddy and l.CanBuy(Locations.DiddyCastleGun)),
         LocationLogic(Locations.LankyCastleGun, lambda l: l.islanky and l.CanBuy(Locations.LankyCastleGun)),
         LocationLogic(Locations.TinyCastleGun, lambda l: l.istiny and l.CanBuy(Locations.TinyCastleGun)),
         LocationLogic(Locations.ChunkyCastleGun, lambda l: l.ischunky and l.CanBuy(Locations.ChunkyCastleGun)),

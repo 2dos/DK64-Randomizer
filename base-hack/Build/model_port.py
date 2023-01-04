@@ -2,6 +2,7 @@
 
 import zlib
 import os
+import struct
 
 rom_file = "rom/dk64.z64"
 temp_file = "temp.bin"
@@ -19,6 +20,14 @@ ac_table = 5
 # G_DL:
 # - Actor: 0x5
 # - M2: ?
+
+
+def intf_to_float(intf):
+    """Convert float as int format to float."""
+    if intf == 0:
+        return 0
+    else:
+        return struct.unpack("!f", bytes.fromhex("{:08X}".format(intf)))[0]
 
 
 class BoneVertex:
@@ -166,124 +175,175 @@ def portalModel_Actor(vtx_file, dl_file, model_name, base):
         os.remove(temp_file)
 
 
-def portKongDL(base_file, new_file, base_vtx, new_vtx, dyn_textures, vtx_adjustments):
-    """Port Kong DL to Model Two."""
-    bone_slot = 0
-    bone_vtx_lst = []
-    bone_vtx = []
-    vtx_load_count = 0
-    current_vtx_start = 0
-    loaded_vtx = [0] * 32
-    with open(new_file, "w+b") as new:
-        data = [
-            0x01008010,
-            0x08000710,
-            0x03000000,
-            0x0000000E,
-        ]
-        # for d in data:
-        #     new.write(d.to_bytes(4, "big"))
-        with open(base_file, "rb") as old:
-            new.write(old.read())
-        dl_count = int(new.tell() / 0x8)
-        for func in range(dl_count):
-            new.seek(func * 8)
-            command_head = int.from_bytes(new.read(1), "big")
-            new.seek(func * 8)
-            if command_head == 0xDA:
-                new.write((0).to_bytes(8, "big"))
-            elif command_head == 0xFD:
-                new.seek((func * 8) + 4)
-                dyn_texture_head = int.from_bytes(new.read(1), "big")
-                new.seek((func * 8) + 4)
-                if dyn_texture_head in dyn_textures:
-                    tex_idx = dyn_textures[dyn_texture_head]
-                    new.write(tex_idx.to_bytes(4, "big"))
-            elif command_head == 0x01:
-                new.seek((func * 8) + 4)
-                new.write((8).to_bytes(1, "big"))
-                new.seek((func * 8) + 1)
-                vtx_chunk_size = (int.from_bytes(new.read(2), "big") >> 4) & 0xFF
-                vtx_buffer_load = int.from_bytes(new.read(1), "big") >> 1
-                new.seek((func * 8) + 4)
-                vtx_chunk_start = int.from_bytes(new.read(4), "big") & 0xFFFFFF
-                print(f"{hex(int(vtx_chunk_start / 0x10))}: {hex(vtx_chunk_size)} | {hex(vtx_buffer_load)}")
-                current_vtx_start = int(vtx_chunk_start / 0x10)
-                vtx_write_start = vtx_buffer_load - vtx_chunk_size
-                for i in range(vtx_chunk_size):
-                    loaded_vtx[vtx_write_start + i] = int(vtx_chunk_start / 0x10) + i
-            elif command_head in (5, 6, 7):
-                # Draw Tri/2 Tris
-                vtx_list = []
-                sub_idx = []
-                for i in range(7):
-                    if i != 3:
-                        if (command_head in (6, 7) and i > 3) or i < 3:
-                            new.seek((func * 8) + 1 + i)
-                            val = int.from_bytes(new.read(1), "big")
-                            vtx_list.append(loaded_vtx[int(val / 2)])
-                            sub_idx.append(int(val / 2))
-                            vtx_load_count += 1
-                print(sub_idx)
-                bone_vtx.extend(vtx_list)
-            elif command_head == 0xDE:
-                new.write((0).to_bytes(8, "big"))
-                bone_slot += 1
-                bone_vtx_lst.append(bone_vtx)
-                bone_vtx = []
-                print("NEW BUCKET")
-        bone_slot += 1
-        bone_set = set(bone_vtx)
-        unique_bones = list(bone_set)
-        bone_vtx_lst.append(unique_bones)
-    # print(len(bone_vtx_lst))
-    # print(hex(vtx_load_count))
-    print(bone_vtx_lst)
-    with open(new_vtx, "w+b") as new:
-        with open(base_vtx, "rb") as old:
-            new.write(old.read())
-        adjusted = []
-        base_adj = []
-        for adj_idx, adj_mtx in enumerate(vtx_adjustments):
-            if adj_idx < len(bone_vtx_lst) and len(adj_mtx) == 3:
-                if adj_idx == 0:
-                    base_adj = list(adj_mtx)
-                else:
-                    bone_lst = bone_vtx_lst[adj_idx]
-                    for vtx_index in bone_lst:
-                        vtx_addr = vtx_index * 0x10
-                        if vtx_index not in adjusted:
-                            adjusted.append(vtx_index)
-                            for c in range(3):
-                                new.seek(vtx_addr + (c * 2))
-                                val = int.from_bytes(new.read(2), "big")
-                                if val > 0x7FFF:
-                                    val -= 65536
-                                val += list(adj_mtx)[c] + base_adj[c]
-                                if val < 0:
-                                    val += 65536
-                                new.seek(vtx_addr + (c * 2))
-                                new.write(val.to_bytes(2, "big"))
-        for x in range(max(adjusted)):
-            if x not in adjusted:
-                vtx_group = -1
-                for y_i, y in enumerate(bone_vtx_lst):
-                    if x in y:
-                        vtx_group = y_i
-                print(f"{hex(x)}: {vtx_group}")
+def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, base_file_index: int, vtx_bottom_is_zero: bool, scale: float):
+    """Port Actor to Model Two."""
+    if input_file == "":
+        # Use Actor Index
+        with open(rom_file, "rb") as rom:
+            rom.seek(ptr_offset + (ac_table * 4))
+            table = ptr_offset + int.from_bytes(rom.read(4), "big")
+            rom.seek(table + (actor_index * 4))
+            start = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+            finish = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+            size = finish - start
+            rom.seek(start)
+            data = rom.read(size)
+            rom.seek(start)
+            indic = int.from_bytes(rom.read(2), "big")
+            if indic == 0x1F8B:
+                data = zlib.decompress(data, (15 + 32))
+            with open(temp_file, "wb") as fh:
+                fh.write(data)
+    else:
+        # Use provided input file
+        with open(input_file, "rb") as fh:
+            with open(temp_file, "wb") as fg:
+                fg.write(fh.read())
+    vert_data = b""
+    dl_data = b""
+    with open(temp_file, "r+b") as fh:
+        offset = int.from_bytes(fh.read(4), "big")
+        dl_end = (int.from_bytes(fh.read(4), "big") + 0x28) - offset
+        bone_start = (int.from_bytes(fh.read(4), "big") + 0x28) - offset
+        fh.seek(0x10)
+        texturing_start = (int.from_bytes(fh.read(4), "big") + 0x28) - offset
+        fh.seek(0x20)
+        bone_count = int.from_bytes(fh.read(1), "big")
+        fh.seek(dl_end)
+        vert_end = (int.from_bytes(fh.read(4), "big") + 0x28) - offset
+        vert_count = int((vert_end - 0x28) / 0x10)
+        dl_count = int((dl_end - vert_end) / 8)
+        vert_bones = []
+        bone_offsets = []
+        bone_master = [0] * bone_count
+        bone_bases = []
+        for b in range(bone_count):
+            vert_bones.append([])  # Can't do [[]] * bone_count because of referencing errors
+            bone_offsets.append([0, 0, 0])  # Same ^
+            bone_bases.append([0, 0, 0])  # Same ^
+        bone_index = 0
+        used_verts = []
+        # Grab Verts which are assigned to each bone
+        for d in range(dl_count):
+            ins_start = vert_end + (d * 8)
+            fh.seek(ins_start)
+            instruction = int.from_bytes(fh.read(1), "big")
+            if instruction == 0xDA:
+                fh.seek(ins_start + 6)
+                bone_index = int(int.from_bytes(fh.read(2), "big") / 0x40)
+            elif instruction == 1:
+                fh.seek(ins_start + 1)
+                loaded_vert_count = int.from_bytes(fh.read(2), "big") >> 4
+                fh.seek(ins_start + 6)
+                loaded_vert_start = int(int.from_bytes(fh.read(2), "big") / 0x10)
+                for v in range(loaded_vert_count):
+                    focused_vert = loaded_vert_start + v
+                    if focused_vert in used_verts:
+                        print(f"{focused_vert} already used")
+                    else:
+                        used_verts.append(focused_vert)
+                    vert_bones[bone_index].append(focused_vert)
+        # Grab Bones
+        for b in range(bone_count):
+            fh.seek(bone_start + (b * 0x10))
+            base_bone = int.from_bytes(fh.read(1), "big")
+            local_bone = int.from_bytes(fh.read(1), "big")
+            master_bone = int.from_bytes(fh.read(1), "big")
+            coords = [0, 0, 0]
+            if base_bone != 0xFF:
+                coords = bone_offsets[base_bone].copy()
+            fh.seek(bone_start + (b * 0x10) + 4)
+            for c in range(3):
+                coords[c] += intf_to_float(int.from_bytes(fh.read(4), "big"))
+            bone_offsets[local_bone] = coords.copy()
+            bone_bases[master_bone] = coords.copy()
+            bone_master[local_bone] = master_bone
+        # Get bottom of model (vtx)
+        bottom = 99999
+        for v in range(vert_count):
+            fh.seek(0x28 + (0x10 * v) + 2)
+            val = int.from_bytes(fh.read(2), "big")
+            if val > 32767:
+                val -= 65536
+            if bottom > val:
+                bottom = val
+        # Change verts to account for bones
+        for bone_local_index, bone in enumerate(vert_bones):
+            for vert in bone:
+                fh.seek(0x28 + (vert * 0x10))
+                coords = []
+                for c in range(3):
+                    val = int.from_bytes(fh.read(2), "big")
+                    if val > 32767:
+                        val -= 65536
+                    val += bone_offsets[bone_local_index][c]
+                    if vtx_bottom_is_zero and c == 1:
+                        val -= bottom
+                    val *= scale
+                    if val < 0:
+                        val += 65536
+                    coords.append(int(val))
+                fh.seek(0x28 + (vert * 0x10))
+                for c in coords:
+                    fh.write(c.to_bytes(2, "big"))
+        # Get Dynamic Textures
+        fh.seek(texturing_start)
+        dyn_tex = {}
+        dyn_tex_count = int.from_bytes(fh.read(2), "big")
+        for d in range(dyn_tex_count):
+            tex_count = int.from_bytes(fh.read(2), "big")
+            header = int.from_bytes(fh.read(2), "big")
+            layers = int.from_bytes(fh.read(2), "big")
+            dyn_tex[header] = []
+            for l in range(layers):
+                for t in range(tex_count):
+                    dyn_tex[header].append(int.from_bytes(fh.read(2), "big"))
+        # Prune DL of bad instructions and segmented addresses
+        for d in range(dl_count):
+            fh.seek(vert_end + (d * 8))
+            instruction = int.from_bytes(fh.read(1), "big")
+            if instruction in (0xDA, 0xDE):
+                # Wipe mtx transforms and end_dl stuff
+                fh.seek(vert_end + (d * 8))
+                fh.write((0).to_bytes(8, "big"))
+            elif instruction == 1:
+                # Change seg address header from 3 to 8
+                fh.seek(vert_end + (d * 8) + 4)
+                fh.write((8).to_bytes(1, "big"))
+            elif instruction == 0xFD:
+                # Handle Dynamic Texturing
+                fh.seek(vert_end + (d * 8) + 4)
+                seg = int.from_bytes(fh.read(1), "big")
+                if seg in dyn_tex:
+                    fh.seek(vert_end + (d * 8) + 4)
+                    fh.write(dyn_tex[seg][0].to_bytes(4, "big"))
+        # Get vert data and dl data for porting
+        fh.seek(0x28)
+        vert_data = fh.read(vert_end - 0x28)
+        dl_data = fh.read(dl_end - vert_end)
+    with open("temp.vtx", "wb") as fh:
+        fh.write(vert_data)
+    with open("temp.dl", "wb") as fh:
+        fh.write(dl_data)
+    portalModel_M2("temp.vtx", "temp.dl", 0, output_file, base_file_index)
+    for f in ("temp.vtx", "temp.dl", "temp.bin"):
+        if os.path.exists(f):
+            os.remove(f)
 
 
 model_dir = "assets/Non-Code/models/"
 # Coins
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}nin_coin.dl", f"{model_dir}coin_overlay.dl", "nintendo_coin", 0x90)
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}rw_coin.dl", f"{model_dir}coin_overlay.dl", "rareware_coin", 0x90)
-# Potions - Model 2
+# # Potions - Model 2
 portalModel_M2(f"{model_dir}potion_dk.vtx", f"{model_dir}potion.dl", 0, "potion_dk", 0x90)
 portalModel_M2(f"{model_dir}potion_diddy.vtx", f"{model_dir}potion.dl", 0, "potion_diddy", 0x90)
 portalModel_M2(f"{model_dir}potion_lanky.vtx", f"{model_dir}potion.dl", 0, "potion_lanky", 0x90)
 portalModel_M2(f"{model_dir}potion_tiny.vtx", f"{model_dir}potion.dl", 0, "potion_tiny", 0x90)
 portalModel_M2(f"{model_dir}potion_chunky.vtx", f"{model_dir}potion.dl", 0, "potion_chunky", 0x90)
 portalModel_M2(f"{model_dir}potion_any.vtx", f"{model_dir}potion.dl", 0, "potion_any", 0x90)
+# Fairy
+portActorToModelTwo(0x3C, "", "fairy", 0x90, True, 0.5)
 # Potions - Actors (Ignore Chunky Model)
 portalModel_Actor(f"{model_dir}potion_dk.vtx", None, "potion_dk", 0xB8)
 portalModel_Actor(f"{model_dir}potion_diddy.vtx", None, "potion_diddy", 0xB8)
@@ -292,60 +352,9 @@ portalModel_Actor(f"{model_dir}potion_tiny.vtx", None, "potion_tiny", 0xB8)
 portalModel_Actor(f"{model_dir}potion_chunky.vtx", None, "potion_chunky", 0xB8)
 portalModel_Actor(f"{model_dir}potion_any.vtx", None, "potion_any", 0xB8)
 # Kongs
-
-base = (0, 0, 10)
-
-dk_jaw = (0, -16, 22)  # 03
-dk_head = (0, 53, 54)  # 02
-dk_tie = (0, 4, 55)  # 05
-dk_arm_left0 = (42, 38, 26)  # 08
-dk_arm_left1 = (5, -40, -1)  # 09
-dk_arm_left2 = (0, -39, 10)  # 0A
-dk_arm_right0 = (-42, 38, 26)  # 0D
-dk_arm_right1 = (-5, -40, -1)  # 0E
-dk_arm_right2 = (0, -39, 10)  # 0F
-dk_leg_left0 = (15, -4, -1)  # 13
-dk_leg_left1 = (6, -18, 4)  # 14
-dk_leg_left2 = (1, -24, -1)  # 15
-dk_leg_right0 = (-15, -4, -1)  # 16
-dk_leg_right1 = (-6, -18, 4)  # 17
-dk_leg_right2 = (-1, -24, -1)  # 18
-
-
-# portKongDL(f"{model_dir}dk_copy.dl", f"{model_dir}dk.dl", f"{model_dir}dk_copy.vtx", f"{model_dir}dk.vtx", {
-#     0xC: 0xE8E,
-#     0xD: 0xE8C,
-#     0xE: 0x177D
-# }, [
-#     (0, 0, -54),
-#     tuple(map(lambda i, j: i + j, dk_head, dk_jaw)), # Jaw
-#     dk_head, # Face Skin
-#     dk_head, # Face Fur
-#     base, # Tie Knot
-#     base, # Torso
-#     tuple(map(lambda i, j, k: i + j + k, dk_arm_left0, dk_arm_left1, dk_arm_left2)), # Left Hand
-#     tuple(map(lambda i, j: i + j, dk_arm_left0, dk_arm_left1)), # Left Arm
-#     tuple(map(lambda i, j, k: i + j + k, dk_arm_right0, dk_arm_right1, dk_arm_right2)), # Right Hand
-#     tuple(map(lambda i, j: i + j, dk_arm_right0, dk_arm_right1)),
-#     dk_arm_left0,
-#     (330, -200, 0), # Right Arm
-#     # tuple(map(lambda i, j: i + j, dk_arm_left0, dk_arm_left1)), # ?
-#     # tuple(map(lambda i, j, k: i + j + k, dk_arm_left0, dk_arm_left1, dk_arm_left2)), # ?
-#     # dk_arm_right0, # Right Leg
-#     # tuple(map(lambda i, j: i + j, dk_arm_right0, dk_arm_right1)), # ?
-#     # tuple(map(lambda i, j, k: i + j + k, dk_arm_right0, dk_arm_right1, dk_arm_right2)), # ?
-
-#     # (78, 27, 80 ),
-#     # (78, 27, 65 ),
-#     # (125, 25, 55),
-#     # (-1, 36, 62 ),
-#     # (-1, 36, 55 ),
-#     # (78, 27, 125),
-#     # (-17, 1, 30 ),
-#     # (-20, 1, 30 ),
-#     # (78, 27, 125),
-#     # (0, 200, 0  ),
-#     # (78, 27, 0  ),
-# ])
-portalModel_M2(f"{model_dir}dk_head.vtx", f"{model_dir}dk_head.dl", 0, "kong_dk", 0x90)
-# portalModel_Actor(f"{model_dir}coin.vtx", f"{model_dir}nin_coin.dl", "nintendo_coin", 0x66)
+portActorToModelTwo(3, "dk_base.bin", "kong_dk", 0x90, True, 0.5)
+portActorToModelTwo(0, "diddy_base.bin", "kong_diddy", 0x90, True, 0.5)
+portActorToModelTwo(5, "lanky_base.bin", "kong_lanky", 0x90, True, 0.5)
+portActorToModelTwo(8, "tiny_base.bin", "kong_tiny", 0x90, True, 0.5)
+portActorToModelTwo(0xB, "", "kong_chunky", 0x90, True, 0.5)
+# portalModel_M2(f"{model_dir}dk_head.vtx", f"{model_dir}dk_head.dl", 0, "kong_dk", 0x90)
