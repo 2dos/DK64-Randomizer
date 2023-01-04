@@ -119,7 +119,7 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
         # Determine whether only GetOut is the only selected enemy that can appear in crown battles
         # If True, guarantees that there is 1 GetOut in every crown battle
         oops_all_get_out = False
-        if crown_enemy_found is False and convertEnemyName(EnemyMetaData[Enemies.GetOut].name) in spoiler.settings.enemies_selected:
+        if crown_enemy_found is False and convertEnemyName(EnemyMetaData[Enemies.GetOut].name) in spoiler.settings.enemies_selected and damage_ohko_setting is False:
             oops_all_get_out = True
         # fill in the lists with the possibilities that belong in them.
         for enemy in EnemyMetaData:
