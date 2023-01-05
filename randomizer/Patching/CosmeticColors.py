@@ -320,7 +320,7 @@ def hueShift(im, amount):
     return im
 
 
-def maskImageMonochrome(im_f, base_index, min_y):
+def maskImageMonochrome(im_f, base_index, min_y, banana_bunch=False):
     """Apply RGB mask to image in Black and White."""
     w, h = im_f.size
     converter = ImageEnhance.Color(im_f)
@@ -330,13 +330,17 @@ def maskImageMonochrome(im_f, base_index, min_y):
     im_dupe = brightener.enhance(2)
     im_f.paste(im_dupe, (0, min_y), im_dupe)
     pix = im_f.load()
-    mask = getRGBFromHash("#FFFFFF")
+    mask = getRGBFromHash(color_bases[base_index])
     mask2 = mask.copy()
     previous_pixel_opaque = False
-    invert = False
-    if color_bases[base_index] == "#000000":
-        invert = True
+    contrast = False
+    if base_index == 4: 
+        contrast = True
     for channel in range(3):
+        mask[channel] = max(39, mask[channel])  # Too black is bad for these items
+        if banana_bunch is True:
+            #fixes edge case for Tiny where her bunches are too bright
+            mask[channel] = min(mask[channel], 200)
         mask2[channel] = int(255 - mask2[channel])
     w, h = im_f.size
     for x in range(w):
@@ -350,9 +354,11 @@ def maskImageMonochrome(im_f, base_index, min_y):
                 else:
                     for channel in range(3):
                         base[channel] = int(mask[channel] * (base[channel] / 255))
-                if invert:
-                    for channel in range(3):
-                        base[channel] = int(255 - base[channel])
+                        if contrast is True:
+                            if base[channel] > 30:
+                                base[channel] = int(base[channel]/2)
+                            else:
+                                base[channel] = int(base[channel]/4)
                 pix[x, y] = (base[0], base[1], base[2], base[3])
                 previous_pixel_opaque = True
             else:
@@ -465,6 +471,7 @@ def overwrite_object_colors(spoiler: Spoiler):
         dk_single = dk_single.resize((21, 21))
         for kong_index in range(5):
             if kong_index == 3 or kong_index == 4:
+                # Tiny or Chunky
                 if color_bases[kong_index] == "#FFFFFF":
                     writeWhiteKasplatColorToROM(color_bases[kong_index], "#000000", 25, [4124, 4122, 4123, 4120, 4121][kong_index])
                 else:
@@ -484,7 +491,7 @@ def overwrite_object_colors(spoiler: Spoiler):
                 for file in range(274, 286):
                     # Bunch
                     bunch_im = getFile(7, file, False, 44, 44, "rgba5551")
-                    bunch_im = maskImageMonochrome(bunch_im, kong_index, 0)
+                    bunch_im = maskImageMonochrome(bunch_im, kong_index, 0, True)
                     bunch_start = [274, 854, 818, 842, 830]
                     writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False)
                 for file in range(5819, 5827):
