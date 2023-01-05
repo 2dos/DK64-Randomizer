@@ -7,6 +7,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
 from randomizer.LogicClasses import Collectible
+from randomizer.Enums.Levels import Levels
 
 LogicRegions = {
     Regions.FungiForestStart: [
@@ -131,8 +132,8 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),
     ],
     Regions.GrinderRoom: [
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.Slam or l.phasewalk, None, 1),  # In slam box
-        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: (l.superSlam or l.generalclips or l.phasewalk) and l.coconut, None, 1),  # Behind gate
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) or l.phasewalk, None, 1),  # In slam box
+        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.phasewalk) and l.coconut, None, 1),  # Behind gate
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),
@@ -158,7 +159,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.strongKong, None, 3),  # On thorn vines
     ],
     Regions.ThornvineBarn: [
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.Slam or l.phasewalk, None, 1),  # In slam box
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) or l.phasewalk, None, 1),  # In slam box
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # In trough
     ],
     Regions.WormArea: [

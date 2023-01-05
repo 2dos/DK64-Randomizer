@@ -6,6 +6,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.LogicClasses import Collectible
+from randomizer.Enums.Levels import Levels
 
 LogicRegions = {
     Regions.CreepyCastleMain: [
@@ -41,7 +42,7 @@ LogicRegions = {
     ],
     Regions.Library: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # In switch room
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.superDuperSlam or l.phasewalk, None, 2),  # In haunted books corridor
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk, None, 2),  # In haunted books corridor
 
     ],
     Regions.Ballroom: [
@@ -116,16 +117,16 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # By Candy's
     ],
     Regions.Dungeon: [
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.superDuperSlam or l.phasewalk, None, 1),  # On face puzzle
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk, None, 1),  # On face puzzle
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.punch or l.phasewalk, None, 2),  # In cells by DK's door
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.punch or l.phasewalk, None, 2),  # In cells by Lanky's door
-        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.superDuperSlam or l.phasewalk) and l.peanut, None, 1),  # In Diddy's room
-        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and (l.superDuperSlam or l.phasewalk), None, 1),  # Lanky's room (close)
-        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and (l.superDuperSlam or l.phasewalk) and l.trombone and l.balloon, None, 1),  # Lanky's room (far)
+        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) and l.peanut, None, 1),  # In Diddy's room
+        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk), None, 1),  # Lanky's room (close)
+        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) and l.trombone and l.balloon, None, 1),  # Lanky's room (far)
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: (l.punch or l.phasewalk or l.generalclips) and l.pineapple, None, 2),  # In cells by Diddy's door
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # Around DK switch
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.superDuperSlam or l.phasewalk) and l.trombone and l.balloon, None, 3),  # In Lanky's room
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) and l.trombone and l.balloon, None, 3),  # In Lanky's room
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.punch or l.phasewalk, None, 3),  # In a cell by Diddy's room
     ],
 }

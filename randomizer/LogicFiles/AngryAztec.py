@@ -63,15 +63,15 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
         TransitionFront(Regions.AngryAztecOasis, lambda l: True),
-        TransitionFront(Regions.TempleUnderwater, lambda l: l.swim),  # Ice pre-melted, without it would be "l.Slam and l.guitar and l.diddyAccess"
+        TransitionFront(Regions.TempleUnderwater, lambda l: l.swim),  # Ice pre-melted, without it would be "l.CanSlamSwitch(Levels.AngryAztec, 1) and l.guitar and l.diddyAccess"
     ]),
 
     Regions.TempleUnderwater: Region("Temple Underwater", "Tiny Temple", Levels.AngryAztec, False, -1, [
         LocationLogic(Locations.AztecTinyKlaptrapRoom, lambda l: ((l.mini and l.istiny) or l.phasewalk or l.generalclips or l.CanPhaseswim())),
         LocationLogic(Locations.TinyKong, lambda l: l.CanFreeTiny()),
         LocationLogic(Locations.AztecDiddyFreeTiny, lambda l: l.CanFreeTiny() or l.phasewalk or l.ledgeclip or l.CanPhaseswim()),
-        LocationLogic(Locations.AztecLankyVulture, lambda l: l.Slam and l.grape and l.islanky),
-        LocationLogic(Locations.AztecBattleArena, lambda l: not l.settings.crown_placement_rando and l.Slam and l.grape and l.lanky),
+        LocationLogic(Locations.AztecLankyVulture, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.grape and l.islanky),
+        LocationLogic(Locations.AztecBattleArena, lambda l: not l.settings.crown_placement_rando and l.CanSlamSwitch(Levels.AngryAztec, 1) and l.grape and l.lanky),
     ], [], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
         TransitionFront(Regions.TempleStart, lambda l: True),
@@ -91,7 +91,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecDiddyRamGongs, lambda l: l.charge and l.jetpack and l.diddy),
         LocationLogic(Locations.AztecDiddyVultureRace, lambda l: l.jetpack and l.diddy),
     ], [
-        Event(Events.FedTotem, lambda l: l.settings.high_req or ((l.jetpack or (l.CanMoonkick() and l.advanced_platforming)) and l.Slam and l.peanut and l.diddy)),
+        Event(Events.FedTotem, lambda l: l.settings.high_req or ((l.jetpack or (l.CanMoonkick() and l.advanced_platforming)) and l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut and l.diddy)),
     ], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
         TransitionFront(Regions.AngryAztecConnectorTunnel, lambda l: True),
@@ -173,10 +173,10 @@ LogicRegions = {
         LocationLogic(Locations.LankyKong, lambda l: l.CanFreeLanky()),
         LocationLogic(Locations.AztecDonkeyFreeLanky, lambda l: l.CanFreeLanky()),
         LocationLogic(Locations.AztecLankyLlamaTempleBarrel, lambda l: l.trombone and ((l.handstand and l.islanky) or (l.settings.free_trade_items and ((l.twirl and l.istiny and l.advanced_platforming) or l.CanMoonkick()))), MinigameType.BonusBarrel),
-        LocationLogic(Locations.AztecLankyMatchingGame, lambda l: l.grape and l.Slam and l.lanky),
+        LocationLogic(Locations.AztecLankyMatchingGame, lambda l: l.grape and l.CanSlamSwitch(Levels.AngryAztec, 1) and l.lanky),
         LocationLogic(Locations.AztecBananaFairyLlamaTemple, lambda l: l.camera),
     ], [
-        Event(Events.AztecDonkeySwitch, lambda l: l.Slam and l.donkey),
+        Event(Events.AztecDonkeySwitch, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.donkey),
         Event(Events.AztecLlamaSpit, lambda l: l.CanLlamaSpit()),
     ], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
@@ -185,7 +185,7 @@ LogicRegions = {
     ]),
 
     Regions.LlamaTempleBack: Region("Llama Temple Back", "Llama Temple", Levels.AngryAztec, False, -1, [
-        LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: (l.Slam or (l.twirl and l.advanced_platforming)) and l.istiny),
+        LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: (l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.advanced_platforming)) and l.istiny),
         LocationLogic(Locations.AztecKasplatLlamaTemple, lambda l: not l.settings.kasplat_rando),
     ], [], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),

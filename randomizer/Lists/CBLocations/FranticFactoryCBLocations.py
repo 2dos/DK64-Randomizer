@@ -5,6 +5,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Lists.CBLocations.AngryAztecCBLocations import ColoredBananaGroupList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 
 
 class ColoredBananaGroup:
@@ -516,7 +517,7 @@ ColoredBananaGroupList = [
         name="On vines to Beaver Bother barrel",
         konglist=[Kongs.diddy],
         region=Regions.ChunkyRoomPlatform,
-        logic=lambda l: l.Slam and l.vines,
+        logic=lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.vines,
         locations=[[5, 1.0, 1327, 160, 839], [5, 1.0, 1237, 178, 840]],
     ),
     ColoredBananaGroup(group=45, map_id=Maps.FactoryPowerHut, name="On box-shaped vents", konglist=[Kongs.donkey], region=Regions.PowerHut, locations=[[5, 1.0, 185, 42, 93], [5, 1.0, 185, 42, 116]]),

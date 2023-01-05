@@ -5,6 +5,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Lists.CBLocations.AngryAztecCBLocations import BalloonList, ColoredBananaGroupList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 
 
 class ColoredBananaGroup:
@@ -1033,7 +1034,7 @@ ColoredBananaGroupList = [
         name="In DK's room behind puzzle",
         konglist=[Kongs.donkey],
         region=Regions.Dungeon,
-        logic=lambda l: l.superDuperSlam,
+        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3),
         locations=[[1, 1.0, 1494, 170, 1897], [1, 1.0, 1494, 170, 1973], [1, 1.0, 1494, 170, 2049], [1, 1.0, 1494, 170, 2125], [1, 1.0, 1494, 170, 2100]],
     ),
     ColoredBananaGroup(
@@ -1042,7 +1043,7 @@ ColoredBananaGroupList = [
         name="In Diddy's room between chains",
         konglist=[Kongs.diddy],
         region=Regions.Dungeon,
-        logic=lambda l: l.superDuperSlam,
+        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3),
         locations=[[5, 1.2, 539, 155, 3092], [5, 1.2, 533, 132, 3357]],
     ),
     ColoredBananaGroup(
@@ -1051,7 +1052,7 @@ ColoredBananaGroupList = [
         name="On BB pads",
         konglist=[Kongs.lanky],
         region=Regions.Dungeon,
-        logic=lambda l: l.superDuperSlam and l.trombone and l.balloon,
+        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.trombone and l.balloon,
         locations=[[5, 1.0, 542, 120, 1010], [5, 1.0, 462, 120, 769], [5, 1.0, 608, 120, 504]],
     ),
     ColoredBananaGroup(
@@ -1254,7 +1255,7 @@ ColoredBananaGroupList = [
     #     name="On Goo hands",
     #     konglist=[Kongs.tiny],
     #     region=Regions.Mausoleum,
-    #     logic=lambda l: l.superDuperSlam and l.twirl,
+    #     logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.twirl,
     #     locations=[[5, 1.0, 1178, 190, 2048], [5, 1.0, 1348, 190, 2310], [5, 1.0, 987, 190, 2297]],
     # ),
     ColoredBananaGroup(
@@ -1584,7 +1585,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.Library,
         vanilla=True,
-        logic=lambda l: l.superDuperSlam and l.strongKong,
+        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.strongKong,
         locations=[[5, 1.0, 2278.738037109375, 250.0, 370.8821716308594], [5, 1.0, 2556.36669921875, 250.0, 372.7164611816406]],
     ),
     ColoredBananaGroup(
@@ -1654,7 +1655,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.Dungeon,
         vanilla=True,
-        logic=lambda l: l.superDuperSlam,
+        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3),
         locations=[[5, 1.0, 1330.8004150390625, 191.0, 1996.9613037109375]],
     ),
     ColoredBananaGroup(
@@ -1955,7 +1956,7 @@ BalloonList = [
         speed=10,
         konglist=[Kongs.donkey],
         region=Regions.Dungeon,
-        logic=lambda l: l.superDuperSlam,
+        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3),
         points=[[1500, 260, 1922], [1538, 275, 2092], [1382, 270, 2033]],
     ),
     Balloon(
@@ -2044,7 +2045,7 @@ BalloonList = [
         speed=8,
         konglist=[Kongs.donkey],
         region=Regions.Library,
-        logic=lambda l: l.superDuperSlam and l.strongKong,
+        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.strongKong,
         points=[[2707, 270, 255], [2850, 270, 280], [2857, 280, 492], [2682, 290, 476]],
     ),
     Balloon(id=34, map_id=Maps.CastleMuseum, name="In hallway to main room", speed=7, konglist=[Kongs.chunky], region=Regions.Museum, points=[[787, 260, 1850], [778, 280, 1540]]),
@@ -2148,7 +2149,7 @@ BalloonList = [
         konglist=[Kongs.diddy],
         region=Regions.Dungeon,
         vanilla=True,
-        logic=lambda l: l.superDuperSlam,
+        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3),
         points=[[603, 126, 3473], [476, 146, 3415], [594, 186, 3334]],
     ),
     Balloon(
@@ -2159,7 +2160,7 @@ BalloonList = [
         konglist=[Kongs.lanky],
         region=Regions.Dungeon,
         vanilla=True,
-        logic=lambda l: l.superDuperSlam and l.trombone and l.balloon,
+        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.trombone and l.balloon,
         points=[[617, 144, 261], [480, 144, 253]],
     ),
     Balloon(
@@ -2181,7 +2182,7 @@ BalloonList = [
         konglist=[Kongs.lanky],
         region=Regions.Dungeon,
         vanilla=True,
-        logic=lambda l: l.superDuperSlam,
+        logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3),
         points=[[453, 156, 820], [661, 154, 805]],
     ),
     Balloon(
