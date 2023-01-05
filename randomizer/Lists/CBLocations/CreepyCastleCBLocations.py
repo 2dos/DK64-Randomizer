@@ -7,6 +7,7 @@ from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 
+
 class ColoredBananaGroup:
     """Stores data for each group of colored bananas."""
 

@@ -629,7 +629,7 @@ class Settings:
         if self.level_randomization == "vanilla":
             self.alter_switch_allocation = False
         if self.alter_switch_allocation:
-            allocation = [1, 1, 1, 1, 2, 2, 3] # 4 levels with lvl 1, 2 with lvl 2, 1 with lvl 3
+            allocation = [1, 1, 1, 1, 2, 2, 3]  # 4 levels with lvl 1, 2 with lvl 2, 1 with lvl 3
             random.shuffle(allocation)
             self.switch_allocation = allocation.copy()
 

@@ -5,6 +5,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 
+
 class CrownLocation:
     """Class to store information pertaining to a crown location."""
 
@@ -86,10 +87,28 @@ CrownLocations = {
         CrownLocation(
             map=Maps.JapesMountain, name="Jungle Japes - Mountain: Near HiLo Machine", x=326, y=133, z=1510, scale=0.2, region=Regions.Mine, logic=lambda l: (l.charge or l.phasewalk) and l.diddy
         ),
-        CrownLocation(map=Maps.JapesMountain, name="Jungle Japes - Mountain: Under Conveyor", x=42, y=220, z=1056, scale=0.3, region=Regions.Mine, logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.diddy),
+        CrownLocation(
+            map=Maps.JapesMountain,
+            name="Jungle Japes - Mountain: Under Conveyor",
+            x=42,
+            y=220,
+            z=1056,
+            scale=0.3,
+            region=Regions.Mine,
+            logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.diddy,
+        ),
         CrownLocation(map=Maps.JapesTinyHive, name="Jungle Japes - Shell: Main Room", x=1385, y=212, z=1381, scale=0.7, region=Regions.TinyHive),
         CrownLocation(map=Maps.JapesTinyHive, name="Jungle Japes - Shell: 1st Room", x=610, y=130, z=1279, scale=0.6, region=Regions.TinyHive),
-        CrownLocation(map=Maps.JapesTinyHive, name="Jungle Japes - Shell: 3rd Room", x=2547, y=254, z=1354, scale=0.6, region=Regions.TinyHive, logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.tiny),
+        CrownLocation(
+            map=Maps.JapesTinyHive,
+            name="Jungle Japes - Shell: 3rd Room",
+            x=2547,
+            y=254,
+            z=1354,
+            scale=0.6,
+            region=Regions.TinyHive,
+            logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.tiny,
+        ),
     ],
     Levels.AngryAztec: [
         CrownLocation(
@@ -105,7 +124,14 @@ CrownLocations = {
         ),
         CrownLocation(map=Maps.AztecTinyTemple, name="Angry Aztec - Tiny Temple: Starting Room (Low)", x=1802, y=283, z=611, scale=0.5, region=Regions.TempleStart),
         CrownLocation(
-            map=Maps.AztecTinyTemple, name="Angry Aztec - Tiny Temple: Starting Room (High)", x=1370, y=490, z=1126, scale=0.3, region=Regions.TempleStart, logic=lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.diddy
+            map=Maps.AztecTinyTemple,
+            name="Angry Aztec - Tiny Temple: Starting Room (High)",
+            x=1370,
+            y=490,
+            z=1126,
+            scale=0.3,
+            region=Regions.TempleStart,
+            logic=lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.diddy,
         ),
         CrownLocation(map=Maps.AztecTinyTemple, name="Angry Aztec - Tiny Temple: Kong Free Room", x=524, y=344, z=1468, scale=0.5, region=Regions.TempleUnderwater),
         CrownLocation(

@@ -392,7 +392,7 @@ def patching_response(responded_data):
     randomize_crown_pads(spoiler)
     filterEntranceType()
     replaceIngameText(spoiler)
-    updateRandomSwitches(spoiler) # Has to be after all setup changes that may alter the item type of slam switches
+    updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
 
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)

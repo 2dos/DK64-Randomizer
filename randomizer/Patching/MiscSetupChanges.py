@@ -11,6 +11,7 @@ from randomizer.Patching.Lib import float_to_hex
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Kongs import Kongs
 
+
 def pickRandomPositionCircle(center_x, center_z, min_radius, max_radius):
     """Pick a random position within a torus where the center and radius boundaries are specified."""
     radius = min_radius + (math.sqrt(random.random()) * (max_radius - min_radius))
@@ -396,6 +397,7 @@ def randomize_setup(spoiler: Spoiler):
                         ROM().writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
                     vase_puzzle_rando_progress += 1
 
+
 def updateRandomSwitches(spoiler: Spoiler):
     """Update setup to account for random switch placement."""
     if spoiler.settings.alter_switch_allocation:
@@ -414,7 +416,10 @@ def updateRandomSwitches(spoiler: Spoiler):
                 switch_level = spoiler.settings.switch_allocation[level]
                 if switch_level > 0:
                     switch_level -= 1
-                for map in LevelMapTable[level]:
+                acceptable_maps = LevelMapTable[level].copy()
+                if level == Levels.GloomyGalleon:
+                    acceptable_maps.append(Maps.GloomyGalleonLobby)  # Galleon lobby internally in the game is galleon, but isn't in rando files. Quick fix for this
+                for map in acceptable_maps:
                     file_start = js.pointer_addresses[9]["entries"][map]["pointing_to"]
                     ROM().seek(file_start)
                     model2_count = int.from_bytes(ROM().readBytes(4), "big")
