@@ -329,7 +329,7 @@ HandleSlamCheck:
 
     ; All checks have passed, slam level will be dictated by level
     lui $t6, hi(SwitchLevel)
-    addiu $t6, $t6, $t2
+    addu $t6, $t6, $t2
     lbu $t4, lo(SwitchLevel) ($t6)
 
     HandleSlamCheck_Finish:

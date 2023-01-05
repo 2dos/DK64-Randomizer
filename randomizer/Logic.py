@@ -333,11 +333,14 @@ class LogicVarHolder:
 
         Keyword arguments:
         level -- level which the switch takes place
-        default_requirement_level -- Default requirement for the switch without randomization. 0 - Base slam, 1 - Super, 2 - Super Duper.
+        default_requirement_level -- Default requirement for the switch without randomization. 1 - Base slam, 2 - Super, 3 - Super Duper.
         """
-        if default_requirement_level == 1:
+        slam_req = default_requirement_level
+        if self.settings.alter_switch_allocation:
+            slam_req = self.settings.switch_allocation[level]
+        if slam_req == 2:
             return self.superSlam
-        elif default_requirement_level == 2:
+        elif slam_req == 3:
             return self.superDuperSlam
         return self.Slam
 
@@ -552,7 +555,7 @@ class LogicVarHolder:
 
     def CanFreeChunky(self):
         """Check if kong at Chunky location can be freed."""
-        return (LocationList[Locations.ChunkyKong].item == Items.NoItem or self.Slam) and self.IsKong(self.settings.chunky_freeing_kong)
+        return (LocationList[Locations.ChunkyKong].item == Items.NoItem or self.CanSlamSwitch(Levels.FranticFactory, 1)) and self.IsKong(self.settings.chunky_freeing_kong)
 
     def UpdateCurrentRegionAccess(self, region):
         """Set access of current region."""
