@@ -469,6 +469,7 @@ num2_base = Image.new(mode="RGBA", size=(44, 44))
 num2_base.paste(num2_im, (int(22 - (new_width / 2)), 0), num2_im)
 num2_base.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}num_2.png")
 
+Image.open(f"{hash_dir}fairy.png").save(f"{disp_dir}fairy.png")
 
 rmve = [
     "01234.png",
