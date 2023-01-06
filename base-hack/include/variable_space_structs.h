@@ -17,7 +17,8 @@ typedef struct varspace {
 	/* 0x036 */ char rareware_gb_fairies; // Fairy requirement to access Rareware GB
 	/* 0x037 */ char k_rool_toes[10];
 	/* 0x041 */ char randomize_toes;
-	/* 0x042 */ char unk42[0x45-0x42];
+	/* 0x042 */ char random_drops; // Random enemy item drops
+	/* 0x043 */ char unk43[0x45-0x43];
 	/* 0x045 */ unsigned char slam_prices[2]; // Array of simian slam upgrade prices: [1,2]. First item is super simian slam (blue), 2nd is super duper simian slam (red)
 	/* 0x047 */ char call_parent_filter; // Calls filter to remove "unnecessary" links from the parent chain
 	/* 0x048 */ char arcade_order[4]; // 01 = 25m, 04 = 50m, 03 = 75m, 02 = 100m
