@@ -83,7 +83,15 @@ file_dict = [
         "is_diff_patch": True,
     },
     {"name": "End Sequence Credits", "pointer_table_index": 19, "file_index": 7, "source_file": "assets/Non-Code/credits/credits.bin", "do_not_delete_source": True},
-    {"name": "DK Wrinkly Door", "pointer_table_index": 4, "file_index": 0xF0, "source_file": "assets/Non-Code/Gong/hint_door.bin", "do_not_delete_source": True},
+    {
+        "name": "DK Wrinkly Door", 
+        "pointer_table_index": 4, 
+        "file_index": 0xF0, 
+        "source_file": "assets/Non-Code/Gong/hint_door.bin", 
+        "do_not_delete_source": True,
+        "target_compressed_size": 0x1420,
+        "target_uncompressed_size": 0x1420,
+    },
     {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/Non-Code/displays/wxys.png", "texture_format": "rgba5551"},
     {
         "name": "DK Tie Palette",
@@ -257,6 +265,8 @@ for x in range(5):
             "file_index": 0xDD + x,
             "source_file": f"blueprint{x}.bin",
             "do_not_delete_source": True,
+            "target_compressed_size": 0x6C4,
+            "target_uncompressed_size": 0x6C4,
         }
     )
 for x in range(0x5A, 0x5E):
@@ -277,6 +287,20 @@ for ci, coin in enumerate(["nin_coin", "rw_coin"]):
 file_dict.append(
     {"name": "Special Coin Side", "pointer_table_index": 25, "file_index": 6019, "source_file": f"assets/Non-Code/hash/modified_coin_side.png", "do_not_extract": True, "texture_format": "rgba5551"}
 )
+
+starts = (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)
+for si, s in enumerate(starts):
+    for x in range(8):
+        file_dict.append(
+            {
+                "name": f"Blueprint Image (Kong {si + 1}, Frame {x})",
+                "pointer_table_index": 25,
+                "file_index": s + x,
+                "source_file": f"bp{si}_{x}.bin",
+                "target_compressed_size": 48*42*2,
+                "target_uncompressed_size": 48*42*2,
+            }
+        )
 
 kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
 ammo_names = ["standard_crate", "homing_crate"]
@@ -317,6 +341,7 @@ shop_face_array = [
     "rw_coin",
     "bean32",
     "pearl32",
+    "fairy",
 ]
 for x, shop in enumerate(shop_face_array):
     data = {"name": f"Shop Indicator ({shop})", "pointer_table_index": 14, "file_index": 195 + x, "source_file": f"assets/Non-Code/displays/{shop}.png", "texture_format": "rgba32"}
@@ -421,6 +446,38 @@ for song in song_replacements:
         item["do_not_extract"] = True
     file_dict.append(item)
     changed_song_indexes.append(song["index"])
+
+for door in (0xF2, 0xEF, 0x67, 0xF1):
+    file_dict.append(
+        {
+            "name": f"Wrinkly Door {hex(door)}", 
+            "pointer_table_index": 4, 
+            "file_index": door, 
+            "source_file": f"door{door}.bin", 
+            "target_compressed_size": 0x1420,
+            "target_uncompressed_size": 0x1420,
+        },
+    )
+
+switches = [
+    [0x94, 0x16C, 0x167],
+    [0x93, 0x16B, 0x166],
+    [0x95, 0x16D, 0x168],
+    [0x96, 0x16E, 0x169],
+    [0xB8, 0x16A, 0x165],
+]
+for ki, kong in enumerate(switches):
+    for li, lvl in enumerate(kong):
+        file_dict.append(
+            {
+                "name": f"Slam Switch (Kong {ki}, Lvl {li})", 
+                "pointer_table_index": 4, 
+                "file_index": lvl, 
+                "source_file": f"switch{lvl}.bin", 
+                "target_compressed_size": 0xC70,
+                "target_uncompressed_size": 0xC70,
+            },
+        )
 
 # Instance Scripts
 with open("./instance_scripts_data.json", "r") as json_f:
@@ -1226,6 +1283,7 @@ with open(newROMName, "r+b") as fh:
         "num_2",
         "num_4",
         "bonus_skin",
+        "fairy",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])

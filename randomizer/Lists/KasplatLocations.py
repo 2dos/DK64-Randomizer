@@ -116,7 +116,7 @@ KasplatLocationList = {
             zmin=1910,
             zmax=1960,
             region=Regions.JapesBeyondCoconutGate2,
-            additional_logic=lambda l: (Events.Rambi in l.Events and l.Slam and l.tiny) or l.phasewalk or l.CanPhaseswim(),
+            additional_logic=lambda l: (Events.Rambi in l.Events and l.CanSlamSwitch(Levels.JungleJapes, 1) and l.tiny) or l.phasewalk or l.CanPhaseswim(),
         ),
         KasplatLocation(
             name="Japes Kasplat: Starting Area",

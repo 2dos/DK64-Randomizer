@@ -1,5 +1,6 @@
 {
     "activate_all_bananaports": "isles",
+    "alter_switch_allocation": false,
     "auto_keys": true,
     "bananaport_rando": "in_level",
     "blocker_0": 1,

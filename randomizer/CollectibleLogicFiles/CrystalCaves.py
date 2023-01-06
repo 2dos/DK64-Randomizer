@@ -6,6 +6,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.LogicClasses import Collectible
+from randomizer.Enums.Levels import Levels
 
 LogicRegions = {
     Regions.CrystalCavesMain: [
@@ -19,7 +20,7 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # Near Warp 4 pillar
 
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),  # Level Start
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (l.balloon or l.advanced_platforming) and l.superSlam, None, 1),  # Beetle Race entry
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (l.balloon or l.advanced_platforming) and l.CanSlamSwitch(Levels.CrystalCaves, 2), None, 1),  # Beetle Race entry
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.balloon, None, 3),  # Near Cranky
 
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 10),  # River To Igloo

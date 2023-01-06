@@ -26,8 +26,8 @@ LogicRegions = {
         LocationLogic(Locations.GalleonBananaFairybyCranky, lambda l: l.camera and l.punch and l.chunky),
     ], [
         Event(Events.GalleonEntered, lambda l: True),
-        Event(Events.GalleonLankySwitch, lambda l: l.Slam and l.lanky),
-        Event(Events.GalleonTinySwitch, lambda l: l.Slam and l.tiny),
+        Event(Events.GalleonLankySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.lanky),
+        Event(Events.GalleonTinySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.tiny),
         Event(Events.LighthouseGateOpened, lambda l: l.coconut and l.donkey),
         # Gate to shipyard always open in rando
         Event(Events.ShipyardGateOpened, lambda l: True),
@@ -80,7 +80,7 @@ LogicRegions = {
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.LighthouseSurface, lambda l: True),
         # Rare case of needing to open gate before being able to go through backwards
-        TransitionFront(Regions.Lighthouse, lambda l: (l.Slam and l.isdonkey) or l.generalclips, Transitions.GalleonLighthouseAreaToLighthouse),
+        TransitionFront(Regions.Lighthouse, lambda l: (l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.isdonkey) or l.generalclips, Transitions.GalleonLighthouseAreaToLighthouse),
         TransitionFront(Regions.SickBay, lambda l: Events.ActivatedLighthouse in l.Events and l.Slam and l.ischunky, Transitions.GalleonLighthouseAreaToSickBay),
         TransitionFront(Regions.GalleonBaboonBlast, lambda l: l.blast and l.isdonkey)  # , Transitions.GalleonMainToBBlast)
     ]),
@@ -113,7 +113,7 @@ LogicRegions = {
     Regions.Lighthouse: Region("Lighthouse", "Lighthouse Area", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonDonkeyLighthouse, lambda l: Events.ActivatedLighthouse in l.Events and (l.isdonkey or l.settings.free_trade_items))
     ], [
-        Event(Events.ActivatedLighthouse, lambda l: l.settings.high_req or (l.Slam and l.grab and l.isdonkey)),
+        Event(Events.ActivatedLighthouse, lambda l: l.settings.high_req or (l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.grab and l.isdonkey)),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.LighthousePlatform, lambda l: True, Transitions.GalleonLighthouseToLighthouseArea),

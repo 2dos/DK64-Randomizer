@@ -245,6 +245,9 @@ PauseControlHook:
 PauseSpriteHook:
 	J 	PauseControl_Sprite
 	NOP
+HandleSlamCheckHook:
+	J 	HandleSlamCheck
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -276,6 +279,12 @@ loadExtraHooks:
 	LUI t4, 0x806A
 	SW t3, 0x8420 (t4) // Store Hook
 	SW r0, 0x8424 (t4) // Store NOP
+	
+	LUI t3, hi(HandleSlamCheckHook)
+	LW t3, lo(HandleSlamCheckHook) (t3)
+	LUI t4, 0x8064
+	SW t3, 0xED7C (t4) // Store Hook
+	SW r0, 0xED80 (t4) // Store NOP
 	
 	LUI t3, hi(ModifyCameraColorHook)
 	LW t3, lo(ModifyCameraColorHook) (t3)

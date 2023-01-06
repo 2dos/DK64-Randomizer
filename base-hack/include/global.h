@@ -54,7 +54,6 @@ extern void pre_turn_keys(void);
 extern void auto_turn_keys(void);
 extern void handle_WTI(void);
 extern void warpToIsles(void);
-extern void no_enemy_drops(void);
 extern void adjust_galleon_water(void);
 
 extern int canItemPersist(void);

@@ -200,6 +200,10 @@ def ShuffleExits(settings: Settings):
             ShuffleLevelOrderWithRestrictions(settings)
         else:
             ShuffleLevelExits(settings)
+        if settings.alter_switch_allocation:
+            allocation = [1, 1, 1, 1, 2, 2, 3]
+            for x in range(7):
+                settings.switch_allocation[settings.level_order[x + 1]] = allocation[x]
     elif settings.shuffle_loading_zones == "all":
         frontpool = []
         backpool = []

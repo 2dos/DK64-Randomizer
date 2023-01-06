@@ -19,7 +19,7 @@ from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranc
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.MiscSetupChanges import randomize_setup
+from randomizer.Patching.MiscSetupChanges import randomize_setup, updateRandomSwitches
 from randomizer.Patching.MoveLocationRando import randomize_moves
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.ItemRando import place_randomized_items
@@ -364,6 +364,12 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x10C)
         ROM().write(spoiler.settings.starting_region["map"])
         ROM().write(spoiler.settings.starting_region["exit"])
+    if spoiler.settings.alter_switch_allocation:
+        ROM().seek(sav + 0x103)
+        ROM().write(1)
+        for x in range(7):
+            ROM().seek(sav + 0x104 + x)
+            ROM().write(spoiler.settings.switch_allocation[x])
 
     # randomize_dktv()
     randomize_entrances(spoiler)
@@ -386,6 +392,7 @@ def patching_response(responded_data):
     randomize_crown_pads(spoiler)
     filterEntranceType()
     replaceIngameText(spoiler)
+    updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
 
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)

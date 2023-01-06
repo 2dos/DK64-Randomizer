@@ -403,6 +403,8 @@ class Settings:
         self.holiday_mode = False
         self.remove_wrinkly_puzzles = False
         self.smaller_shops = False
+        self.alter_switch_allocation = False
+        self.switch_allocation = [1, 1, 1, 1, 2, 2, 3]
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -622,6 +624,14 @@ class Settings:
             self.starting_region = random.choice(valid_starting_regions)
             for x in range(2):
                 randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
+
+        # Initial Switch Level Placement - Will be corrected if level order rando is on during the fill process. Disable it for vanilla
+        if self.level_randomization == "vanilla":
+            self.alter_switch_allocation = False
+        if self.alter_switch_allocation:
+            allocation = [1, 1, 1, 1, 2, 2, 3]  # 4 levels with lvl 1, 2 with lvl 2, 1 with lvl 3
+            random.shuffle(allocation)
+            self.switch_allocation = allocation.copy()
 
         # Set keys required for KRool
         KeyEvents = [

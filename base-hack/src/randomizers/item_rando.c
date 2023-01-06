@@ -715,6 +715,7 @@ void banana_medal_acquisition(int flag) {
                         }
                     }
                 }
+                auto_turn_keys();
             } else if (item_type < BANANA_MEDAL_ITEM_COUNT) {
                 setFlag(flag, 1, 0);
             }
@@ -832,20 +833,24 @@ int getFlagIndex_Corrected(int start, int level) {
 
 static const short boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7};
 
+void collectKey(void) {
+    for (int i = 0; i < 8; i++) {
+        if (checkFlagDuplicate(getKeyFlag(i), 0)) {
+            if ((old_keys & (1 << i)) == 0) {
+                spawnActor(324,0);
+                TextOverlayData.type = 5;
+                TextOverlayData.flag = getKeyFlag(i);
+                TextOverlayData.kong = 0;
+            }
+        }
+    }
+    auto_turn_keys();
+}
+
 int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
     if (Rando.item_rando) {
         if (obj_type == 0x13C) {
-            for (int i = 0; i < 8; i++) {
-                if (checkFlagDuplicate(getKeyFlag(i), 0)) {
-                    if ((old_keys & (1 << i)) == 0) {
-                        spawnActor(324,0);
-                        TextOverlayData.type = 5;
-                        TextOverlayData.flag = getKeyFlag(i);
-                        TextOverlayData.kong = 0;
-                    }
-                }
-            }
-            auto_turn_keys();
+            collectKey();
         } else {
             for (int i = 0; i < 7; i++) {
                 if (CurrentMap == boss_maps[i]) {
@@ -1162,14 +1167,38 @@ void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
 
 void giveFairyItem(int flag, int state, int type) {
     int model = getFairyModel(flag);
+    int key_bitfield = 0;
     if (model == 0x69) {
         // GB
         int world = getWorld(CurrentMap, 1);
         if (world < 8) {
             giveGB(Character, world);
         }
+    } else if (model == 0xF5) {
+        // Key
+        for (int i = 0; i < 8; i++) {
+            if (checkFlagDuplicate(getKeyFlag(i), 0)) {
+                key_bitfield |= (1 << i);
+            }
+        }
     }
     setFlag(flag, state, type);
+    if (model == 0xF5) {
+        // Key - Post flag set
+        int spawned = 0;
+        for (int i = 0; i < 8; i++) {
+            if ((checkFlagDuplicate(getKeyFlag(i), 0)) && ((key_bitfield & (1 << i)) == 0)) {
+                if (!spawned) {
+                    spawnActor(324, 0);
+                    TextOverlayData.type = 5;
+                    TextOverlayData.flag = getKeyFlag(i);
+                    TextOverlayData.kong = 0;
+                    spawned = 1;
+                }
+            }
+        }
+        auto_turn_keys();
+    }
 }
 
 static const unsigned char dance_skip_ban_maps[] = {

@@ -59,11 +59,11 @@ LogicRegions = {
     ]),
 
     Regions.MushroomLower: Region("Mushroom Lower", "Giant Mushroom Interior", Levels.FungiForest, True, None, [
-        LocationLogic(Locations.ForestTinyMushroomBarrel, lambda l: l.superSlam and l.istiny, MinigameType.BonusBarrel),
+        LocationLogic(Locations.ForestTinyMushroomBarrel, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.istiny, MinigameType.BonusBarrel),
     ], [
         Event(Events.MushroomCannonsSpawned, lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple
               and l.donkey and l.diddy and l.lanky and l.tiny and l.chunky),
-        Event(Events.DonkeyMushroomSwitch, lambda l: l.superSlam and l.donkey)
+        Event(Events.DonkeyMushroomSwitch, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.donkey)
     ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True, Transitions.ForestLowerMushroomToMain),
@@ -121,14 +121,14 @@ LogicRegions = {
         TransitionFront(Regions.MushroomUpper, lambda l: True, Transitions.ForestUpperExteriorToUpperMushroom),
         TransitionFront(Regions.MushroomNightExterior, lambda l: True),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
-        TransitionFront(Regions.MushroomChunkyRoom, lambda l: (l.superSlam and l.ischunky) or l.phasewalk or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToChunky),
-        TransitionFront(Regions.MushroomLankyZingersRoom, lambda l: (l.handstand and l.superSlam and l.islanky) or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToZingers),
-        TransitionFront(Regions.MushroomLankyMushroomsRoom, lambda l: (l.handstand and l.superSlam and l.islanky) or l.phasewalk or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToMushrooms),
+        TransitionFront(Regions.MushroomChunkyRoom, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.ischunky) or l.phasewalk or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToChunky),
+        TransitionFront(Regions.MushroomLankyZingersRoom, lambda l: (l.handstand and l.CanSlamSwitch(Levels.FungiForest, 2) and l.islanky) or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToZingers),
+        TransitionFront(Regions.MushroomLankyMushroomsRoom, lambda l: (l.handstand and l.CanSlamSwitch(Levels.FungiForest, 2) and l.islanky) or l.phasewalk or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToMushrooms),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.MushroomChunkyRoom: Region("Mushroom Chunky Room", "Giant Mushroom Interior", Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestChunkyFacePuzzle, lambda l: l.pineapple and l.superSlam and l.ischunky),
+        LocationLogic(Locations.ForestChunkyFacePuzzle, lambda l: l.pineapple and l.CanSlamSwitch(Levels.FungiForest, 2) and l.ischunky),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: True, Transitions.ForestChunkyToExterior),
@@ -177,7 +177,7 @@ LogicRegions = {
         TransitionFront(Regions.MillChunkyTinyArea, lambda l: (Events.MillBoxBroken in l.Events and l.mini and l.istiny) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip, Transitions.ForestMainToTinyMill),
         TransitionFront(Regions.GrinderRoom, lambda l: True, Transitions.ForestMainToGrinder, time=Time.Day),
         TransitionFront(Regions.MillRafters, lambda l: l.spring and l.isdiddy, Transitions.ForestMainToRafters, time=Time.Night),
-        TransitionFront(Regions.WinchRoom, lambda l: (l.superSlam and l.isdiddy) or (l.CanMoonkick()), Transitions.ForestMainToWinch, time=Time.Night),
+        TransitionFront(Regions.WinchRoom, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.isdiddy) or (l.CanMoonkick()), Transitions.ForestMainToWinch, time=Time.Night),
         TransitionFront(Regions.MillAttic, lambda l: True, Transitions.ForestMainToAttic, time=Time.Night),
         TransitionFront(Regions.ThornvineArea, lambda l: True, time=Time.Night),
         TransitionFront(Regions.Snide, lambda l: True, time=Time.Day),
@@ -207,7 +207,7 @@ LogicRegions = {
     Regions.GrinderRoom: Region("Grinder Room", "Forest Mills", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestChunkyKegs, lambda l: Events.GrinderActivated in l.Events and Events.ConveyorActivated in l.Events and l.chunky and l.barrels),
     ], [
-        Event(Events.ConveyorActivated, lambda l: (l.superSlam or l.phasewalk or l.generalclips) and l.grab and l.donkey),
+        Event(Events.ConveyorActivated, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) or l.phasewalk or l.generalclips) and l.grab and l.donkey),
     ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MillArea, lambda l: True, Transitions.ForestGrinderToMain, time=Time.Day),
@@ -229,8 +229,8 @@ LogicRegions = {
         TransitionFront(Regions.MillArea, lambda l: True, Transitions.ForestWinchToMain),
     ]),
 
-    Regions.MillAttic: Region("Mill Attic", "Forest Mills", Levels.FungiForest, False, TransitionFront(Regions.FungiForestStart, lambda l: l.superSlam and l.islanky), [
-        LocationLogic(Locations.ForestLankyAttic, lambda l: l.superSlam and (l.homing or l.settings.hard_shooting) and l.grape and l.islanky),
+    Regions.MillAttic: Region("Mill Attic", "Forest Mills", Levels.FungiForest, False, TransitionFront(Regions.FungiForestStart, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.islanky), [
+        LocationLogic(Locations.ForestLankyAttic, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and (l.homing or l.settings.hard_shooting) and l.grape and l.islanky),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MillArea, lambda l: True, Transitions.ForestAtticToMain),
@@ -241,12 +241,12 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MillArea, lambda l: True, time=Time.Night),
-        TransitionFront(Regions.ThornvineBarn, lambda l: (l.superSlam and l.isdonkey and l.strongKong) or l.phasewalk, Transitions.ForestMainToBarn),
+        TransitionFront(Regions.ThornvineBarn, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.isdonkey and l.strongKong) or l.phasewalk, Transitions.ForestMainToBarn),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.ThornvineBarn: Region("Thornvine Barn", "Forest Mills", Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.Slam and l.isdonkey and (l.vines or l.advanced_platforming), MinigameType.BonusBarrel),
+        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.isdonkey and (l.vines or l.advanced_platforming), MinigameType.BonusBarrel),
         LocationLogic(Locations.ForestBananaFairyThornvines, lambda l: l.Slam and l.camera),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),

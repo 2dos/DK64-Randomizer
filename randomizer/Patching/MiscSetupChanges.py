@@ -3,11 +3,13 @@ import math
 import random
 
 import js
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Lists.MapsAndExits import Maps, LevelMapTable
 from randomizer.Lists.Patches import DirtPatchLocations
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Patching.Lib import float_to_hex
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Kongs import Kongs
 
 
 def pickRandomPositionCircle(center_x, center_z, min_radius, max_radius):
@@ -394,3 +396,39 @@ def randomize_setup(spoiler: Spoiler):
                     for coord in range(3):
                         ROM().writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
                     vase_puzzle_rando_progress += 1
+
+
+def updateRandomSwitches(spoiler: Spoiler):
+    """Update setup to account for random switch placement."""
+    if spoiler.settings.alter_switch_allocation:
+        switches = {
+            Kongs.donkey: [0x94, 0x16C, 0x167],
+            Kongs.diddy: [0x93, 0x16B, 0x166],
+            Kongs.lanky: [0x95, 0x16D, 0x168],
+            Kongs.tiny: [0x96, 0x16E, 0x169],
+            Kongs.chunky: [0xB8, 0x16A, 0x165],
+        }
+        all_switches = []
+        for kong in switches:
+            all_switches.extend(switches[kong])
+        for level in LevelMapTable:
+            if level not in (Levels.DKIsles, Levels.HideoutHelm):
+                switch_level = spoiler.settings.switch_allocation[level]
+                if switch_level > 0:
+                    switch_level -= 1
+                acceptable_maps = LevelMapTable[level].copy()
+                if level == Levels.GloomyGalleon:
+                    acceptable_maps.append(Maps.GloomyGalleonLobby)  # Galleon lobby internally in the game is galleon, but isn't in rando files. Quick fix for this
+                for map in acceptable_maps:
+                    file_start = js.pointer_addresses[9]["entries"][map]["pointing_to"]
+                    ROM().seek(file_start)
+                    model2_count = int.from_bytes(ROM().readBytes(4), "big")
+                    for model2_item in range(model2_count):
+                        item_start = file_start + 4 + (model2_item * 0x30)
+                        ROM().seek(item_start + 0x28)
+                        item_type = int.from_bytes(ROM().readBytes(2), "big")
+                        if item_type in all_switches:
+                            for kong in switches:
+                                if item_type in switches[kong]:
+                                    ROM().seek(item_start + 0x28)
+                                    ROM().writeMultipleBytes(switches[kong][switch_level], 2)

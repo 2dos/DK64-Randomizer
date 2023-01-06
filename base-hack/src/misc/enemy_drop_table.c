@@ -10,10 +10,26 @@ typedef struct drop_item {
 #define DROP_COUNT 29
 static drop_item drops[DROP_COUNT] = {};
 
+static unsigned char replenlishable_drops[] = {
+    0x2F, // Watermelon
+    0x34, // Orange
+    0x33, // Ammo Crate
+    0x79, // Crystal
+};
+
+int isReplenishableDrop(int drop_object) {
+    for (int i = 0; i < sizeof(replenlishable_drops); i++) {
+        if (drop_object == replenlishable_drops[i]) {
+            return 1;
+        }   
+    }
+    return 0;
+}
+
 int addItemDrop(int source_object, int drop_object, int drop_music, int drop_count, int drop_total) {
     if (Rando.disable_drops) {
         if (source_object != 0) {
-            if ((drop_object == 0x2F) || (drop_object == 0x34) || (drop_object == 0x33)) {
+            if (isReplenishableDrop(drop_object)) {
                 source_object = 3;
             }
         }
@@ -94,8 +110,15 @@ void spawnEnemyDrops(actorData* actor) {
                         }
                         // Not drop that despawns
                         KasplatSpawnBitfield |= (1 << (actor_index - 241));
-                        // if (((drop_type < 75) || (drop_type > 79)) && (drop_type != 151) && (drop_type != 152)) {
-                        // }
+                    }
+                } else if ((isReplenishableDrop(drop_type)) && (Rando.random_drops)) {
+                    int index = getRNGLower31() & 3;
+                    drop_type = replenlishable_drops[index];
+                    int drop_rate = getRNGLower31() & 0xF;
+                    if (drop_rate == 0) {
+                        drop_count = 2;
+                    } else {
+                        drop_count = 1;
                     }
                 }
                 for (int i = 0; i < drop_count; i++) {

@@ -3,6 +3,7 @@ from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Events import Events
+from randomizer.Enums.Levels import Levels
 
 
 class CrownLocation:
@@ -86,10 +87,28 @@ CrownLocations = {
         CrownLocation(
             map=Maps.JapesMountain, name="Jungle Japes - Mountain: Near HiLo Machine", x=326, y=133, z=1510, scale=0.2, region=Regions.Mine, logic=lambda l: (l.charge or l.phasewalk) and l.diddy
         ),
-        CrownLocation(map=Maps.JapesMountain, name="Jungle Japes - Mountain: Under Conveyor", x=42, y=220, z=1056, scale=0.3, region=Regions.Mine, logic=lambda l: (l.Slam or l.phasewalk) and l.diddy),
+        CrownLocation(
+            map=Maps.JapesMountain,
+            name="Jungle Japes - Mountain: Under Conveyor",
+            x=42,
+            y=220,
+            z=1056,
+            scale=0.3,
+            region=Regions.Mine,
+            logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.diddy,
+        ),
         CrownLocation(map=Maps.JapesTinyHive, name="Jungle Japes - Shell: Main Room", x=1385, y=212, z=1381, scale=0.7, region=Regions.TinyHive),
         CrownLocation(map=Maps.JapesTinyHive, name="Jungle Japes - Shell: 1st Room", x=610, y=130, z=1279, scale=0.6, region=Regions.TinyHive),
-        CrownLocation(map=Maps.JapesTinyHive, name="Jungle Japes - Shell: 3rd Room", x=2547, y=254, z=1354, scale=0.6, region=Regions.TinyHive, logic=lambda l: (l.Slam or l.phasewalk) and l.tiny),
+        CrownLocation(
+            map=Maps.JapesTinyHive,
+            name="Jungle Japes - Shell: 3rd Room",
+            x=2547,
+            y=254,
+            z=1354,
+            scale=0.6,
+            region=Regions.TinyHive,
+            logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.tiny,
+        ),
     ],
     Levels.AngryAztec: [
         CrownLocation(
@@ -101,11 +120,18 @@ CrownLocations = {
             scale=0.41,
             region=Regions.TempleUnderwater,
             is_vanilla=True,
-            logic=lambda l: l.Slam and l.grape and l.islanky,
+            logic=lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.grape and l.islanky,
         ),
         CrownLocation(map=Maps.AztecTinyTemple, name="Angry Aztec - Tiny Temple: Starting Room (Low)", x=1802, y=283, z=611, scale=0.5, region=Regions.TempleStart),
         CrownLocation(
-            map=Maps.AztecTinyTemple, name="Angry Aztec - Tiny Temple: Starting Room (High)", x=1370, y=490, z=1126, scale=0.3, region=Regions.TempleStart, logic=lambda l: l.Slam and l.diddy
+            map=Maps.AztecTinyTemple,
+            name="Angry Aztec - Tiny Temple: Starting Room (High)",
+            x=1370,
+            y=490,
+            z=1126,
+            scale=0.3,
+            region=Regions.TempleStart,
+            logic=lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.diddy,
         ),
         CrownLocation(map=Maps.AztecTinyTemple, name="Angry Aztec - Tiny Temple: Kong Free Room", x=524, y=344, z=1468, scale=0.5, region=Regions.TempleUnderwater),
         CrownLocation(
@@ -552,7 +578,7 @@ CrownLocations = {
             z=2000,
             scale=0.5,
             region=Regions.Dungeon,
-            logic=lambda l: (l.superDuperSlam and l.donkey) or l.phasewalk,
+            logic=lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.donkey) or l.phasewalk,
         ),
         CrownLocation(map=Maps.CastleShed, name="Creepy Castle - Shed: Near Entrance", x=179, y=0, z=219, scale=0.4, region=Regions.Shed),
         CrownLocation(map=Maps.CastleLowerCave, name="Creepy Castle - Crypt Hub: Lower Portion", x=559, y=90, z=1153, scale=0.4, region=Regions.LowerCave),
@@ -576,7 +602,7 @@ CrownLocations = {
             z=500,
             scale=0.4,
             region=Regions.Library,
-            logic=lambda l: (l.superDuperSlam and l.isdonkey and (l.strongKong or l.settings.damage_amount == "default")) or l.phasewalk,
+            logic=lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey and (l.strongKong or l.settings.damage_amount == "default")) or l.phasewalk,
         ),
         CrownLocation(map=Maps.CastleMuseum, name="Creepy Castle - Museum: Near Race", x=312, y=200, z=1784, scale=0.4, region=Regions.MuseumBehindGlass),
         CrownLocation(

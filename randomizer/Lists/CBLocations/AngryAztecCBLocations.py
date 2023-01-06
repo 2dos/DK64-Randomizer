@@ -4,6 +4,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Regions import Regions
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 
 
 class ColoredBananaGroup:
@@ -1200,7 +1201,7 @@ ColoredBananaGroupList = [
         name="Monkey tongues (2 custom, 3 Diddy)",
         konglist=[Kongs.diddy],
         region=Regions.TempleStart,
-        logic=lambda l: l.Slam,
+        logic=lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1),
         locations=[
             [1, 1.0, 1350, 490, 1110],
             [1, 1.0, 1390, 490, 1110],
@@ -1286,7 +1287,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.TempleStart,
         vanilla=True,
-        logic=lambda l: l.Slam and l.peanut,
+        logic=lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut,
         locations=[[5, 1.0, 1346.4971923828125, 482.0, 895.43505859375], [5, 1.0, 1351.4986572265625, 487.0, 705.5042114257812], [5, 1.0, 1349.2825927734375, 483.1666564941406, 807.2919921875]],
     ),
     ColoredBananaGroup(
@@ -1370,7 +1371,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.LlamaTempleBack,
         vanilla=True,
-        logic=lambda l: l.Slam,
+        logic=lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1),
         locations=[[5, 1.0, 870.1953125, 475.3333435058594, 3735.6279296875], [5, 1.0, 1458.1766357421875, 475.3333435058594, 4069.542236328125]],
     ),
     ColoredBananaGroup(

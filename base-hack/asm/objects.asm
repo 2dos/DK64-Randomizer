@@ -24,7 +24,6 @@
 .importobj "obj/src_misc_item_db.o"
 .importobj "obj/src_misc_krusha.o"
 .importobj "obj/src_misc_move_hints.o"
-.importobj "obj/src_misc_no_enemy_drops.o"
 .importobj "obj/src_misc_object_instance_script_changes.o"
 .importobj "obj/src_misc_pause_menu.o"
 .importobj "obj/src_misc_perma_kong_loss.o"

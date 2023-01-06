@@ -6,6 +6,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.LogicClasses import Collectible
+from randomizer.Enums.Levels import Levels
 
 LogicRegions = {
     Regions.JungleJapesMain: [
@@ -97,14 +98,14 @@ LogicRegions = {
     Regions.Mine: [
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),  # In stream
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # On mound by peanut switch
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.Slam or l.phasewalk) or l.advanced_platforming, None, 1),  # On box by conveyors
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.Slam or l.phasewalk) and (l.charge or l.advanced_platforming), None, 1),  # In minecart
-        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.Slam or l.phasewalk) and l.peanut, None, 1),  # In conveyor room
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) or l.advanced_platforming, None, 1),  # On box by conveyors
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and (l.charge or l.advanced_platforming), None, 1),  # In minecart
+        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.peanut, None, 1),  # In conveyor room
 
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 1),  # On bridge to switch
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 1),  # On coal pile
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.charge or l.phasewalk, None, 1),  # Next to conveyor control
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.Slam or l.phasewalk, None, 1),  # Under conveyors
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk, None, 1),  # Under conveyors
     ],
     Regions.JapesTopOfMountain: [
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # Above mountain

@@ -303,3 +303,35 @@ SpriteFix:
     SpriteFix_Finish:
         j 0x806A6710
         sb $t9, 0x1 ($t0)
+
+HandleSlamCheck:
+    ; handles slam check, and passes it through a system which compares it to the slam level dicated by switch adjustments if necessary
+    lh $t4, 0x2 ($s0)
+    lui $t6, hi(RandomSwitches)
+    lbu $t6, lo(RandomSwitches) ($t6)
+    beqz $t6, HandleSlamCheck_Finish ; No Random Switches, exert vanilla behaviour
+    or $t1, $zero, $zero
+
+    ; check level - level index will be stored in reg t2
+    lui $t6, hi(CurrentMap)
+    lw $t6, lo(CurrentMap) ($t6)
+    lui $t2, hi(levelIndexMapping)
+    addu $t2, $t6, $t2
+    lbu $t2, lo(levelIndexMapping) ($t2)
+    sltiu $at, $t2, 8
+    beqz $at, HandleSlamCheck_Finish ; Isnt part of levels japes->castle
+    nop
+
+    ; check if map is a bad map, where we prohibit this effect being exerted
+    addiu $at, $zero, 0x9A ; Mad Jack
+    beq $t6, $at, HandleSlamCheck_Finish
+    nop
+
+    ; All checks have passed, slam level will be dictated by level
+    lui $t6, hi(SwitchLevel)
+    addu $t6, $t6, $t2
+    lbu $t4, lo(SwitchLevel) ($t6)
+
+    HandleSlamCheck_Finish:
+        j 0x8063ed84
+        nop

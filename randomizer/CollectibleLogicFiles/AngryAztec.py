@@ -6,6 +6,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.LogicClasses import Collectible
+from randomizer.Enums.Levels import Levels
 
 LogicRegions = {
     Regions.AngryAztecStart: [
@@ -30,8 +31,8 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 4),  # Outside Tiny Temple
     ],
     Regions.TempleStart: [
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.Slam and l.peanut, None, 3),
-        Collectible(Collectibles.banana, Kongs.diddy, lambda l: l.Slam, None, 3),
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut, None, 3),
+        Collectible(Collectibles.banana, Kongs.diddy, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1), None, 3),
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 5),
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 4),
 
@@ -140,6 +141,6 @@ LogicRegions = {
     ],
     Regions.LlamaTempleBack: [
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 2),
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.Slam or l.twirl, None, 2),  # Behind Mini tunnel
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) or l.twirl, None, 2),  # Behind Mini tunnel
     ],
 }
