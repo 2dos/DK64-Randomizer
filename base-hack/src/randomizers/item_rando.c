@@ -298,6 +298,14 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
 }
 
 void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
+    /*
+        TODO:
+        Add to item dictionaries
+        Add to logic
+        Update writer to place rainbow coins
+        Add to shop indicator
+        Ensure keys/moves works with it, displaying the text and turning in the keys
+    */
     int new_obj = getRainbowCoinItem(flag);
     if (new_obj != 0) {
         object = new_obj;

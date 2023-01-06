@@ -83,6 +83,7 @@ LogicRegions = {
 
     Regions.ChunkyRoomPlatform: Region("Chunky Room Platform", "Storage Area", Levels.FranticFactory, False, -1, [
         LocationLogic(Locations.FactoryDiddyChunkyRoomBarrel, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.isdiddy and (l.vines or l.settings.bonus_barrels == "skip"), MinigameType.BonusBarrel),
+        LocationLogic(Locations.RainbowCoin_Location02, lambda l: l.shockwave),
     ], [], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.PowerHut, lambda l: (l.coconut and l.isdonkey) or l.phasewalk or l.CanMoonkick(), Transitions.FactoryChunkyRoomToPower),

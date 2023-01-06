@@ -170,6 +170,7 @@ LogicRegions = {
     Regions.MillArea: Region("Mill Area", "Forest Mills", Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestDonkeyMill, lambda l: (l.TimeAccess(Regions.MillArea, Time.Night) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip) and Events.ConveyorActivated in l.Events and l.donkey),
         LocationLogic(Locations.ForestDiddyCagedBanana, lambda l: (l.TimeAccess(Regions.MillArea, Time.Night) and Events.WinchRaised in l.Events and l.guitar and l.diddy) or ((l.CanPhaseswim() or l.ledgeclip) and (l.isdiddy or l.settings.free_trade_items))),
+        LocationLogic(Locations.RainbowCoin_Location07, lambda l: l.shockwave),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.FungiForestStart, lambda l: True),
@@ -256,6 +257,7 @@ LogicRegions = {
     Regions.WormArea: Region("Worm Area", "Forest Center and Beanstalk", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestTinyBeanstalk, lambda l: l.saxophone and l.mini and l.istiny and l.Beans >= 1),
         LocationLogic(Locations.ForestChunkyApple, lambda l: Events.WormGatesOpened in l.Events and l.hunkyChunky and l.ischunky and l.barrels),
+        LocationLogic(Locations.RainbowCoin_Location08, lambda l: l.shockwave),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.FungiForestStart, lambda l: Events.WormGatesOpened in l.Events),

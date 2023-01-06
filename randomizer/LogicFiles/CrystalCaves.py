@@ -125,7 +125,9 @@ LogicRegions = {
         TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
-    Regions.GiantKosha: Region("Giant Kosha", "Igloo Area", Levels.CrystalCaves, False, -1, [], [
+    Regions.GiantKosha: Region("Giant Kosha", "Igloo Area", Levels.CrystalCaves, False, -1, [
+        LocationLogic(Locations.RainbowCoin_Location10, lambda l: l.shockwave),
+    ], [
         Event(Events.GiantKoshaDefeated, lambda l: l.shockwave or l.HasInstrument(Kongs.any)),
     ], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),

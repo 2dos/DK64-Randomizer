@@ -40,7 +40,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 5),  # By Snide's
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # By DK Portal
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.swim, None, 3),  # In river
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny) or l.CanMoonkick() or ((l.generalclips or l.phasewalk) and (l.istiny or l.isdiddy))), None, 1),  # Rainbow coin
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny) or l.CanMoonkick() or ((l.generalclips or l.phasewalk) and (l.istiny or l.isdiddy))), None, 1),  # Rainbow coin
     ],
     Regions.JapesBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 2),
