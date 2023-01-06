@@ -454,6 +454,51 @@ def writeWhiteKasplatColorToROM(color1, color2, table_index, file_index):
     ROM().seek(file_start)
     ROM().writeBytes(data)
 
+def getBlueprintFrameColors():
+    """Split the blueprint image into a frame image and a blueprint image"""
+    frame_colors = []
+    wood_image = getFile(25, 5519, True, 48, 42, "rgba5551")
+    w, h = wood_image.size
+    converter = ImageEnhance.Color(wood_image)
+    wood_image = converter.enhance(0)
+    im_dupe = wood_image.crop((0, 0, w, h))
+    brightener = ImageEnhance.Brightness(im_dupe)
+    im_dupe = brightener.enhance(2)
+    wood_image.paste(im_dupe, (0, 0), im_dupe)
+    pix = wood_image.load()
+    w, h = wood_image.size
+    for x in range(w):
+        for y in range(h):
+            base = list(pix[x, y])
+            if base[3] > 0:
+                frame_colors.append(base)
+    return frame_colors
+
+def maskBlueprintImage(im_f, base_index, monochrome=False):
+    """Apply RGB mask to blueprint image."""
+    w, h = im_f.size
+    converter = ImageEnhance.Color(im_f)
+    im_f = converter.enhance(0)
+    im_dupe = im_f.crop((0, 0, w, h))
+    brightener = ImageEnhance.Brightness(im_dupe)
+    im_dupe = brightener.enhance(2)
+    im_f.paste(im_dupe, (0, 0), im_dupe)
+    pix = im_f.load()
+    mask = getRGBFromHash(color_bases[base_index])
+    # if monochrome is True:
+    #     for channel in range(3):
+    #         mask[channel] = max(39, mask[channel])  # Too black is bad for these items
+    frame = []
+    frame = getBlueprintFrameColors()
+    w, h = im_f.size
+    for x in range(w):
+        for y in range(h):
+            base = list(pix[x, y])
+            if base[3] > 0 and base not in frame:
+                for channel in range(3):
+                    base[channel] = int(mask[channel] * (base[channel] / 255))
+                pix[x, y] = (base[0], base[1], base[2], base[3])
+    return im_f
 
 def overwrite_object_colors(spoiler: Spoiler):
     """Overwrite object colors."""
@@ -478,6 +523,10 @@ def overwrite_object_colors(spoiler: Spoiler):
                     writeColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
                 for file in range(152, 160):
                     # Single
+                    # For Chunky, use DK's image file
+                    corrected_file = file
+                    if kong_index == 4:
+                        corrected_file += 16
                     single_im = getFile(7, file, False, 44, 44, "rgba5551")
                     single_im = maskImageMonochrome(single_im, kong_index, 0)
                     single_start = [168, 152, 232, 208, 240]
@@ -501,6 +550,12 @@ def overwrite_object_colors(spoiler: Spoiler):
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
                     balloon_start = [5835, 5827, 5843, 5851, 5819]
                     writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64, False)
+                for file in range(5519, 5527):
+                    # Blueprint sprite
+                    blueprint_im = getFile(25, file, True, 48, 42, "rgba5551")
+                    blueprint_im = maskBlueprintImage(blueprint_im, kong_index, True)
+                    blueprint_start = [5624, 5608, 5519, 5632, 5616]
+                    writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False)
             else:
                 # file = 4120
                 # # Kasplat Hair
@@ -533,6 +588,12 @@ def overwrite_object_colors(spoiler: Spoiler):
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
                     balloon_start = [5835, 5827, 5843, 5851, 5819]
                     writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64, False)
+                for file in range(5519, 5527):
+                    # Blueprint sprite
+                    blueprint_im = getFile(25, file, True, 48, 42, "rgba5551")
+                    blueprint_im = maskBlueprintImage(blueprint_im, kong_index)
+                    blueprint_start = [5624, 5608, 5519, 5632, 5616]
+                    writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False)
 
 
 def applyKrushaKong(spoiler: Spoiler):
