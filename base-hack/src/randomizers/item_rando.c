@@ -297,6 +297,21 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
     }
 }
 
+void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
+    int new_obj = getRainbowCoinItem(flag);
+    if (new_obj != 0) {
+        object = new_obj;
+    }
+    if (object != 153) {
+        for (int i = 0; i < sizeof(bounce_objects); i++) {
+            if (object == bounce_objects[i]) {
+                cutscene = 2;
+            }
+        }
+        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+    }
+}
+
 int checkFlagDuplicate(short flag, int type) {
     // Duplicate of the check flag function, for the purpose of checking a flag without referencing the lookup table
     if (flag == -1) {

@@ -1197,6 +1197,10 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FF1040)
     for x in range(20):
         fh.write((0x3D).to_bytes(2, "big"))
+    # Rainbow Coins
+    fh.seek(0x1FF10F0)
+    for x in range(16):
+        fh.write((0x8C).to_bytes(1, "big"))
     # Shop Hints
     fh.seek(0x1FED020 + 0x14B)
     fh.write((1).to_bytes(1, "big"))
