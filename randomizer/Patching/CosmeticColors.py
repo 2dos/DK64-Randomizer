@@ -422,15 +422,15 @@ def writeColorToROM(color, table_index, file_index):
     ROM().writeBytes(data)
 
 
-def writeWhiteKasplatColorToROM(color1, color2, table_index, file_index):
+def writeWhiteKasplatColorToROM(color, table_index, file_index):
     """Write color to ROM for white kasplats."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
-    mask = getRGBFromHash(color1)
+    mask = getRGBFromHash("#FFFFFF")
     val_r = int((mask[0] >> 3) << 11)
     val_g = int((mask[1] >> 3) << 6)
     val_b = int((mask[2] >> 3) << 1)
     rgba_val = val_r | val_g | val_b | 1
-    mask2 = getRGBFromHash(color2)
+    mask2 = getRGBFromHash(color)
     val_r2 = int((mask2[0] >> 3) << 11)
     val_g2 = int((mask2[1] >> 3) << 6)
     val_b2 = int((mask2[2] >> 3) << 1)
@@ -454,20 +454,7 @@ def writeWhiteKasplatColorToROM(color1, color2, table_index, file_index):
     ROM().seek(file_start)
     ROM().writeBytes(data)
 
-def getBlueprintFrameColors():
-    """Split the blueprint image into a frame image and a blueprint image"""
-    frame_colors = []
-    wood_image = getFile(25, 5519, True, 48, 42, "rgba5551")
-    pix = wood_image.load()
-    w, h = wood_image.size
-    for x in range(w):
-        for y in range(h):
-            base = list(pix[x, y])
-            if base[3] > 0 and base not in frame_colors:
-                frame_colors.append(base)
-    return frame_colors
-
-def maskBlueprintImage(im_f, base_index, blueprint_frame_info, monochrome=False):
+def maskBlueprintImage(im_f, base_index, monochrome=False):
     """Apply RGB mask to blueprint image."""
     w, h = im_f.size
     im_f_original = im_f
@@ -483,8 +470,6 @@ def maskBlueprintImage(im_f, base_index, blueprint_frame_info, monochrome=False)
     if monochrome is True:
         for channel in range(3):
             mask[channel] = max(39, mask[channel])  # Too black is bad for these items
-    frame = []
-    # frame = blueprint_frame_info
     w, h = im_f.size
     for x in range(w):
         for y in range(h):
@@ -516,11 +501,10 @@ def overwrite_object_colors(spoiler: Spoiler):
         file = 175
         dk_single = getFile(7, file, False, 44, 44, "rgba5551")
         dk_single = dk_single.resize((21, 21))
-        blueprint_frame_info = getBlueprintFrameColors()
         for kong_index in range(5):
             if kong_index == 3 or kong_index == 4:  # Tiny or Chunky
                 if color_bases[kong_index] == "#FFFFFF":
-                    writeWhiteKasplatColorToROM(color_bases[kong_index], "#000000", 25, [4124, 4122, 4123, 4120, 4121][kong_index])
+                    writeWhiteKasplatColorToROM("#000000", 25, [4124, 4122, 4123, 4120, 4121][kong_index])
                 else:
                     writeColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
                 for file in range(152, 160):
@@ -555,7 +539,7 @@ def overwrite_object_colors(spoiler: Spoiler):
                 for file in range(5519, 5527):
                     # Blueprint sprite
                     blueprint_im = getFile(25, file, True, 48, 42, "rgba5551")
-                    blueprint_im = maskBlueprintImage(blueprint_im, kong_index, blueprint_frame_info, True)
+                    blueprint_im = maskBlueprintImage(blueprint_im, kong_index, True)
                     blueprint_start = [5624, 5608, 5519, 5632, 5616]
                     writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False)
             else:
@@ -593,7 +577,7 @@ def overwrite_object_colors(spoiler: Spoiler):
                 for file in range(5519, 5527):
                     # Blueprint sprite
                     blueprint_im = getFile(25, file, True, 48, 42, "rgba5551")
-                    blueprint_im = maskBlueprintImage(blueprint_im, kong_index, blueprint_frame_info)
+                    blueprint_im = maskBlueprintImage(blueprint_im, kong_index)
                     blueprint_start = [5624, 5608, 5519, 5632, 5616]
                     writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False)
 
