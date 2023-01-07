@@ -1380,7 +1380,7 @@ typedef struct sprite_data_struct {
 	/* 0x00E */ short width;
 	/* 0x010 */ short height;
 	/* 0x012 */ short image_count;
-	/* 0x014 */ short images;
+	/* 0x014 */ short images[];
 } sprite_data_struct;
 
 typedef struct item_conversion_info {

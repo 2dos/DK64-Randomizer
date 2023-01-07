@@ -12,14 +12,13 @@ import randomizer.LogicFiles.JungleJapes
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Lists.Patches import DirtPatchLocations
+from randomizer.Lists.Patches import DirtPatchLocations, DirtPatchData
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Location import LocationList
 from randomizer.LogicClasses import LocationLogic
 from randomizer.Spoiler import Spoiler
 
-
-def addPatch(patch, global_index, name):
+def addPatch(patch: DirtPatchData, enum_val: int, name: str):
     """Add patch to relevant Logic Region."""
     level_to_enum = {
         Levels.DKIsles: randomizer.LogicFiles.DKIsles.LogicRegions,
@@ -31,15 +30,26 @@ def addPatch(patch, global_index, name):
         Levels.CrystalCaves: randomizer.LogicFiles.CrystalCaves.LogicRegions,
         Levels.CreepyCastle: randomizer.LogicFiles.CreepyCastle.LogicRegions,
     }
+    level_to_name = {
+        Levels.DKIsles: "Isles",
+        Levels.JungleJapes: "Japes",
+        Levels.AngryAztec: "Aztec",
+        Levels.FranticFactory: "Factory",
+        Levels.GloomyGalleon: "Galleon",
+        Levels.FungiForest: "Fungi",
+        Levels.CrystalCaves: "Caves",
+        Levels.CreepyCastle: "Castle",
+    }
     level_data = level_to_enum[patch.level_name]
     level_data[patch.logicregion].locations.append(
         LocationLogic(
-            Locations.RainbowCoin_Location00 + global_index,
+            enum_val,
             patch.logic
         )
     )
-    LocationList[Locations.RainbowCoin_Location00 + global_index].name = name
-
+    LocationList[enum_val].name = f"{level_to_name[patch.level_name]} Dirt Patch ({name})"
+    LocationList[enum_val].default_mapid_data[0].map = patch.map_id
+    LocationList[enum_val].level = patch.level_name
 
 def removePatches():
     """Remove all patches from Logic regions."""
@@ -77,34 +87,44 @@ def ShufflePatches(spoiler: Spoiler, human_spoiler):
     for SingleDirtPatchLocation in DirtPatchLocations:
         SingleDirtPatchLocation.setPatch(False)
         total_dirt_patch_list[SingleDirtPatchLocation.level_name].append(SingleDirtPatchLocation)
-    global_index = select_random_dirt_from_area(total_dirt_patch_list[Levels.DKIsles], 4, spoiler, human_spoiler, 0)
+    select_random_dirt_from_area(total_dirt_patch_list[Levels.DKIsles], 4, spoiler, human_spoiler)
     del total_dirt_patch_list[Levels.DKIsles]
 
     for SingleDirtPatchLocation in range(5):
         area_key = random.choice(list(total_dirt_patch_list.keys()))
         area_dirt = total_dirt_patch_list[area_key]
-        global_index = select_random_dirt_from_area(area_dirt, 2, spoiler, human_spoiler, global_index)
+        select_random_dirt_from_area(area_dirt, 2, spoiler, human_spoiler)
         del total_dirt_patch_list[area_key]
 
     for area_key in total_dirt_patch_list.keys():
         area_dirt = total_dirt_patch_list[area_key]
-        global_index = select_random_dirt_from_area(area_dirt, 1, spoiler, human_spoiler, global_index)
+        select_random_dirt_from_area(area_dirt, 1, spoiler, human_spoiler)
+    
+    sorted_patches = spoiler.dirt_patch_placement.copy()
+    sorted_patches = sorted(sorted_patches, key=lambda d: d["score"])
+    for patch_index, patch in enumerate(sorted_patches):
+        patch["enum"] = Locations.RainbowCoin_Location00 + patch_index
+        addPatch(patch["patch"], patch["enum"], patch["name"])
+        patch["patch"] = None
     return human_spoiler.copy()
 
 
-def select_random_dirt_from_area(area_dirt, amount, spoiler: Spoiler, human_spoiler, starting_global_index: int) -> int:
+def select_random_dirt_from_area(area_dirt, amount, spoiler: Spoiler, human_spoiler):
     """Select <amount> random dirt patches from <area_dirt>, which is a list of dirt patches. Makes sure max 1 dirt patch per group is selected."""
     for iterations in range(amount):
         selected_patch = random.choice(area_dirt)  # selects a random patch from the list
         for patch in DirtPatchLocations:  # enables the selected patch
             if patch.name == selected_patch.name:
                 patch.setPatch(True)
-                addPatch(patch, starting_global_index, patch.name)
-                starting_global_index += 1
                 human_spoiler.append(patch.name)
-                spoiler.dirt_patch_placement.append(patch.name)
+                local_map_index = len([x for x in spoiler.dirt_patch_placement if x["map"] == patch.map_id])
+                spoiler.dirt_patch_placement.append({
+                    "name": patch.name,
+                    "map": patch.map_id,
+                    "patch": patch,
+                    "score": (patch.map_id * 100) + local_map_index
+                })
                 area_dirt.remove(selected_patch)
                 break
         if amount > 1:  # if multiple patches are picked, remove patches from the same group, prevent them from being picked
             area_dirt = [dirt for dirt in area_dirt if dirt.group != selected_patch.group]
-    return starting_global_index

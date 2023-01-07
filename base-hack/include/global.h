@@ -277,3 +277,4 @@ extern const check_struct item_db[292];
 
 extern sprite_data_struct bean_sprite;
 extern sprite_data_struct pearl_sprite;
+extern sprite_data_struct krool_sprite;

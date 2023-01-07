@@ -101,7 +101,7 @@ LogicRegions = {
 
     Regions.BeyondHatch: Region("Beyond Hatch", "Storage Area", Levels.FranticFactory, True, None, [
         LocationLogic(Locations.ChunkyKong, lambda l: l.CanFreeChunky()),
-        LocationLogic(Locations.NintendoCoin, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey and (l.Coins[Kongs.donkey] >= 2)),
+        LocationLogic(Locations.NintendoCoin, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey and (l.GetCoins(Kongs.donkey) >= 2)),
         LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: (not l.settings.fast_gbs and (Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey)) or (l.CanOStandTBSNoclip() and l.spawn_snags)),
         LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.HasKong(l.settings.chunky_freeing_kong)),
         LocationLogic(Locations.FactoryTinybyArcade, lambda l: (l.mini and l.tiny) or l.phasewalk),

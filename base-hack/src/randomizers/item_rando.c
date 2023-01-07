@@ -437,6 +437,9 @@ int clampFlag(int flag) {
     if ((flag >= 0x18E) && (flag <= 0x1AF)) {
         return 1; // Isles GBs
     }
+    if ((flag >= FLAG_RAINBOWCOIN_0) && (flag < (FLAG_RAINBOWCOIN_0 + 16))) {
+        return 1; // Rainbow Coins
+    }
     if (flag == 0x300) {
         return 1; // Fungi Bean
     }
@@ -682,7 +685,7 @@ int getKongFromBonusFlag(int flag) {
     return 0;
 }
 
-#define BANANA_MEDAL_ITEM_COUNT 15 // Discount nothing item
+#define BANANA_MEDAL_ITEM_COUNT 17 // Discount nothing item
 
 void banana_medal_acquisition(int flag) {
     /* 
@@ -701,7 +704,9 @@ void banana_medal_acquisition(int flag) {
         12 - Bean,
         13 - Pearl,
         14 - Fairy,
-        15 - Nothing,
+        15 - Rainbow Coin
+        16 - Fake Item
+        17 - Nothing,
     */
     int item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
     if (!checkFlag(flag, 0)) {
@@ -765,13 +770,19 @@ void banana_medal_acquisition(int flag) {
                     147, // Bean (Bean Get)
                     128, // Pearl (Pearl Get)
                     46, // Fairy (Fairy Tick)
+                    145, // Rainbow Coin Get
+                    0, // K Rool Laugh (Use SFX)
                 };
                 if (item_type == 11) {
                     used_song = kong_songs[kong];
+                } else if (item_type == 16) {
+                    playSFX(0x2D4); // K Rool Laugh
                 } else if (item_type < BANANA_MEDAL_ITEM_COUNT) {
                     used_song = songs[item_type];
                 }
-                playSong(used_song, 0x3F800000);
+                if (item_type != 16) {
+                    playSong(used_song, 0x3F800000);
+                }
             }
             unkSpriteRenderFunc(200);
             unkSpriteRenderFunc_0();
@@ -793,6 +804,8 @@ void banana_medal_acquisition(int flag) {
                 0x92, // Bean
                 0x92, // Pearl
                 0x89, // Fairy
+                0xA0, // Rainbow Coin
+                0x92, // Fake Item - Use separate check
             };
             int used_sprite = 0x3B;
             if (item_type == 1) {
@@ -822,6 +835,8 @@ void banana_medal_acquisition(int flag) {
                 sprite_addr = &bean_sprite;
             } else if (item_type == 13) {
                 sprite_addr = &pearl_sprite;
+            } else if (item_type == 16) {
+                sprite_addr = &krool_sprite;
             }
             displaySpriteAtXYZ(sprite_addr, 0x3F800000, 160.0f, 120.0f, -10.0f);
         }
