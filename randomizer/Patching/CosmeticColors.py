@@ -298,6 +298,35 @@ def maskImage(im_f, base_index, min_y):
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
+def maskImageLankyPickups(im_f, base_index, min_y):
+    """Apply RGB mask to image."""
+    w, h = im_f.size
+    im_f_original = im_f
+    converter = ImageEnhance.Color(im_f)
+    im_f = converter.enhance(0)
+    im_dupe = im_f.crop((0, min_y, w, h))
+    brightener = ImageEnhance.Brightness(im_dupe)
+    im_dupe = brightener.enhance(2)
+    im_f.paste(im_dupe, (0, min_y), im_dupe)
+    pix = im_f.load()
+    pix2 = im_f_original.load()
+    mask = getRGBFromHash(color_bases[base_index])
+    mask2 = getRGBFromHash(color_bases[0])
+    w, h = im_f.size
+    for x in range(w):
+        for y in range(min_y, h):
+            base = list(pix[x, y])
+            base2 = list(pix2[x, y])
+            if base[3] > 0:
+                if base2[1] < 100:
+                    for channel in range(3):
+                        base[channel] = int(mask[channel] * (base[channel] / 255))
+                else:
+                    for channel in range(3):
+                        base[channel] = int(mask2[channel] * (base[channel] / 255))
+                pix[x, y] = (base[0], base[1], base[2], base[3])
+    return im_f
+
 
 def hueShift(im, amount):
     """Apply a hue shift on an image."""
@@ -540,6 +569,39 @@ def overwrite_object_colors(spoiler: Spoiler):
                     # Blueprint sprite
                     blueprint_im = getFile(25, file, True, 48, 42, "rgba5551")
                     blueprint_im = maskBlueprintImage(blueprint_im, kong_index, True)
+                    blueprint_start = [5624, 5608, 5519, 5632, 5616]
+                    writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False)
+            elif kong_index == 2:
+                writeColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
+                for file in range(152, 160):
+                    # Single
+                    single_im = getFile(7, file, False, 44, 44, "rgba5551")
+                    single_im = maskImageLankyPickups(single_im, kong_index, 0)
+                    single_start = [168, 152, 232, 208, 240]
+                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False)
+                for file in range(216, 224):
+                    # Coin
+                    coin_im = getFile(7, file, False, 48, 42, "rgba5551")
+                    coin_im = maskImageLankyPickups(coin_im, kong_index, 0)
+                    coin_start = [224, 256, 248, 216, 264]
+                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False)
+                for file in range(274, 286):
+                    # Bunch
+                    bunch_im = getFile(7, file, False, 44, 44, "rgba5551")
+                    bunch_im = maskImageLankyPickups(bunch_im, kong_index, 0)
+                    bunch_start = [274, 854, 818, 842, 830]
+                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False)
+                for file in range(5819, 5827):
+                    # Balloon
+                    balloon_im = getFile(25, file, True, 32, 64, "rgba5551")
+                    balloon_im = maskImage(balloon_im, kong_index, 33)
+                    balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
+                    balloon_start = [5835, 5827, 5843, 5851, 5819]
+                    writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64, False)
+                for file in range(5519, 5527):
+                    # Blueprint sprite
+                    blueprint_im = getFile(25, file, True, 48, 42, "rgba5551")
+                    blueprint_im = maskBlueprintImage(blueprint_im, kong_index)
                     blueprint_start = [5624, 5608, 5519, 5632, 5616]
                     writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False)
             else:
