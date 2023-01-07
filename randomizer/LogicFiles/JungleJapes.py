@@ -33,7 +33,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesBattleArena, lambda l: not l.settings.crown_placement_rando),
     ], [
         Event(Events.JapesEntered, lambda l: True),
-        Event(Events.JapesSpawnW5, lambda l: Events.JapesMountainTopGB in l.Events or l.settings.activate_all_bananaports),
+        Event(Events.JapesSpawnW5, lambda l: Events.JapesMountainTopGB in l.Events or l.settings.activate_all_bananaports == "all"),
         Event(Events.JapesFreeKongOpenGates, lambda l: l.CanOpenJapesGates()),
     ], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
