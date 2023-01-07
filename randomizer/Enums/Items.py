@@ -97,6 +97,7 @@ class Items(IntEnum):
     Bean = auto()
     Pearl = auto()
     RainbowCoin = auto()
+    FakeItem = auto()
 
     BananaHoard = auto()
 

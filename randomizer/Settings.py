@@ -929,6 +929,26 @@ class Settings:
                 self.valid_locations[Types.Fairy] = shuffledLocations
             if Types.RainbowCoin in self.shuffled_location_types:
                 self.valid_locations[Types.RainbowCoin] = fairyBannedLocations
+            if Types.FakeItem in self.shuffled_location_types:
+                bad_fake_locations = (
+                    # Races
+                    Locations.JapesDiddyMinecarts,
+                    Locations.CastleDonkeyMinecarts,
+                    Locations.ForestChunkyMinecarts,
+                    Locations.AztecTinyBeetleRace,
+                    Locations.CavesLankyBeetleRace,
+                    Locations.FactoryTinyCarRace,
+                    Locations.CastleTinyCarRace,
+                    Locations.GalleonDonkeySealRace,
+                    # Stuff that may be required to access other stuff
+                    Locations.JapesDonkeyFreeDiddy,
+                    Locations.JapesDonkeyFrontofCage,
+                    Locations.IslesDonkeyJapesRock,
+                    # Helm Fairy Couplet
+                    Locations.HelmBananaFairy1,
+                    Locations.HelmBananaFairy2,
+                )
+                self.valid_locations[Types.FakeItem] = [x for x in shuffledLocations if LocationList[x].type not in (Types.Shop, Types.Shockwave, Types.TrainingBarrel) and x not in bad_fake_locations]
             if Types.Kong in self.shuffled_location_types:
                 # Banned because it defeats the purpose of starting with X Kongs
                 banned_kong_locations = (

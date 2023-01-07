@@ -98,7 +98,7 @@ class Spoiler:
             Types.Bean: "Miscellaneous Items",
             Types.Pearl: "Miscellaneous Items",
             Types.RainbowCoin: "Rainbow Coins",
-            Types.FakeItem: "Fake Items",
+            Types.FakeItem: "Ice Traps",
         }
         if item_type in type_dict:
             return type_dict[item_type]
@@ -281,7 +281,7 @@ class Spoiler:
             "Medals": {},
             "Miscellaneous Items": {},
             "Rainbow Coins": {},
-            "Fake Items": {},
+            "Ice Traps": {},
             "Empty": {},
             "Unknown": {},
         }

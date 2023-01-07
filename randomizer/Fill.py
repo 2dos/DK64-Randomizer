@@ -1071,6 +1071,12 @@ def Fill(spoiler):
         gbsUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.GoldenBananaItems(), [])
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced GBs.")
+    # Fill in fake items
+    if Types.FakeItem in spoiler.settings.shuffled_location_types:
+        Reset()
+        fakeUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.FakeItems(), [])
+        # Don't raise exception if unplaced fake items
+        
     # Some locations require special care to make logic work correctly
     # This is the only location that cares about None vs NoItem - it needs to be None so it fills correctly but NoItem for logic to generate progression correctly
     if LocationList[Locations.JapesDonkeyFreeDiddy].item is None:

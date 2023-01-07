@@ -225,6 +225,22 @@ file_dict = [
         "do_not_delete_source": True,
         "target_compressed_size": 44 * 44 * 2,
     },
+    {
+        "name": "Fake GB Shine",
+        "pointer_table_index": 25,
+        "file_index": 6060,
+        "source_file": "assets/Non-Code/displays/gb_shine.png",
+        "texture_format": "rgba5551",
+        "do_not_delete_source": True,
+    },
+    {
+        "name": "Fake Item Model",
+        "pointer_table_index": 4,
+        "file_index": 0x25D,
+        "source_file": "fake_item.bin",
+        "do_not_delete_source": True,
+        "do_not_extract": True,
+    },
 ]
 
 for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 0xF8, 0x136):
@@ -342,6 +358,8 @@ shop_face_array = [
     "bean32",
     "pearl32",
     "fairy",
+    "rainbow_coin",
+    "fake_gb",
 ]
 for x, shop in enumerate(shop_face_array):
     data = {"name": f"Shop Indicator ({shop})", "pointer_table_index": 14, "file_index": 195 + x, "source_file": f"assets/Non-Code/displays/{shop}.png", "texture_format": "rgba32"}
@@ -682,7 +700,12 @@ for change in colorblind_changes:
                 "target_compressed_size": 2 * change[2] * change[3],
             }
         )
-barrel_skins = ("dk", "diddy", "lanky", "tiny", "chunky", "bp", "nin_coin", "rw_coin", "key", "crown", "medal", "potion", "bean", "pearl", "fairy")
+barrel_skins = (
+    "dk", "diddy", "lanky", "tiny", "chunky",
+    "bp", "nin_coin", "rw_coin", "key", "crown",
+    "medal", "potion", "bean", "pearl", "fairy",
+    "rainbow", "fakegb",
+)
 for bi, b in enumerate(barrel_skins):
     for x in range(2):
         file_dict.append(
@@ -730,6 +753,7 @@ model_changes = [
     {"model_index": 0xF9, "model_file": "shrink_potion_chunky.bin"},
     {"model_index": 0xFA, "model_file": "shrink_potion_any.bin"},
     {"model_index": 0xFB, "model_file": "shrink_fairy.bin"},
+    {"model_index": 0x10D, "model_file": "fake_item_actor.bin"},
     {"model_index": 0xA3, "model_file": "counter.bin"},
 ]
 for bi, b in enumerate(barrel_skins):
@@ -931,7 +955,7 @@ for x in file_dict:
 
 with open(newROMName, "r+b") as fh:
     print("[4 / 7] - Writing patched files to ROM")
-    clampCompressedTextures(fh, 6060)
+    clampCompressedTextures(fh, 6070)
     for x in file_dict:
         if "is_diff_patch" in x and x["is_diff_patch"]:
             with open(x["source_file"], "rb") as fg:
@@ -1288,6 +1312,9 @@ with open(newROMName, "r+b") as fh:
         "num_4",
         "bonus_skin",
         "fairy",
+        "fake_gb",
+        "rainbow_coin",
+        "gb_shine",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])

@@ -58,8 +58,8 @@ typedef struct collision_info {
     /* 0x012 */ short hitbox_scale;
 } collision_info;
 
-#define COLLISION_LIMIT 58
-#define DEFS_LIMIT 146
+#define COLLISION_LIMIT 59
+#define DEFS_LIMIT 147
 static collision_info object_collisions[COLLISION_LIMIT] = {};
 static actor_behaviour_def actor_defs[DEFS_LIMIT] = {};
 
@@ -162,6 +162,7 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x0198, COLLECTABLE_NONE, KONG_NONE, 172, 8, 4); // Bean
     index = addCollisionInfo(index, 0x01B4, COLLECTABLE_NONE, KONG_NONE, 174, 8, 4); // Pearl
     index = addCollisionInfo(index, 0x025C, COLLECTABLE_NONE, KONG_NONE, 88, 8, 4); // Fairy
+    index = addCollisionInfo(index, 0x025D, COLLECTABLE_NONE, KONG_NONE, 217, 8, 4); // Fake Item
     
     // Write new table to ROM
     int hi = getHi(&object_collisions[0].type);
@@ -218,6 +219,7 @@ void initActorDefs(void) {
     index = addActorDef(index, 88, 0xFC, 0x80689F80, 0x80689FEC); // Fairy
     index = addActorDef(index, 153, 0, 0x80689F80, 0x8068A10C); // Nothing
     index = addActorDef(index, 154, 0, 0x80689F80, 0x8068A10C); // Medal
+    index = addActorDef(index, 217, 0x10E, 0x80689F80, 0x80689FEC); // Fake Item
     *(unsigned short*)(0x8068926A) = getHi(&actor_defs[0].actor_type);
     *(unsigned short*)(0x8068927A) = getLo(&actor_defs[0].actor_type);
     *(unsigned short*)(0x806892D2) = getHi(&actor_defs[0].actor_type);
@@ -318,6 +320,10 @@ void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int c
         }
         spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
     }
+}
+
+void initIceTrap(void) {
+    setAction(39, 0, 0);
 }
 
 int checkFlagDuplicate(short flag, int type) {
@@ -777,6 +783,7 @@ void banana_medal_acquisition(int flag) {
                     used_song = kong_songs[kong];
                 } else if (item_type == 16) {
                     playSFX(0x2D4); // K Rool Laugh
+                    initIceTrap();
                 } else if (item_type < BANANA_MEDAL_ITEM_COUNT) {
                     used_song = songs[item_type];
                 }
@@ -1095,6 +1102,10 @@ int getBarrelModel(int index) {
                 return 0x10A; // Pearl
             case 88:
                 return 0x10B; // Fairy
+            case 140:
+                return 0x10C; // Rainbow Coin
+            case 217:
+                return 0x10D; // Fake Item
         }
     }
     return 0x76;
@@ -1183,6 +1194,7 @@ void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
             | Golden Banana  | 0x69                       | True   | See Left      |
             | Boss Key       | 0xA5                       | True   | 0xF5          |
             | Crown          | 0xAF                       | True   | 0xF4          |
+            | Fake Item      | ----                       | ----   | 0x10E         |
             | Potions        | 0xEE-0xF3                  | True   | 0xF6-0xFB     |
             | Kong Items     | 4, 1, 6, 9, 0xC, 0xE, 0xDB | True   | See Left      |
             +----------------+----------------------------+--------+---------------+
@@ -1219,6 +1231,9 @@ void giveFairyItem(int flag, int state, int type) {
                 key_bitfield |= (1 << i);
             }
         }
+    } else if (model == 0x10E) {
+        // Fake Item
+        initIceTrap();
     }
     setFlag(flag, state, type);
     if (model == 0xF5) {
@@ -1467,6 +1482,10 @@ void getItem(int object_type) {
             break;
         case 0x25C:
             playSong(46, 0x3F800000);
+            break;
+        case 0x25D:
+            // Fake Item
+            initIceTrap();
             break;
     }
 }

@@ -757,6 +757,7 @@ void initHack(int source) {
 			initActor(172, &beanCode, ACTORMASTER_SPRITE, 0x11);
 			initActor(174, &pearlCode, ACTORMASTER_SPRITE, 0x11);
 			initActor(88, &fairyDuplicateCode, ACTORMASTER_3D, 0x11);
+			initActor(217, &GoldenBananaCode, ACTORMASTER_3D, 0x11);
 			// Any Kong Items
 			if (Rando.any_kong_items & 1) {
 				// All excl. Blueprints
