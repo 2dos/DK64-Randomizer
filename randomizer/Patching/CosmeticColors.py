@@ -277,14 +277,15 @@ def getRGBFromHash(hash: str):
     return [red, green, blue]
 
 
-def maskImage(im_f, base_index, min_y):
+def maskImage(im_f, base_index, min_y, keep_dark=False):
     """Apply RGB mask to image."""
     w, h = im_f.size
     converter = ImageEnhance.Color(im_f)
     im_f = converter.enhance(0)
     im_dupe = im_f.crop((0, min_y, w, h))
-    brightener = ImageEnhance.Brightness(im_dupe)
-    im_dupe = brightener.enhance(2)
+    if keep_dark is False:
+        brightener = ImageEnhance.Brightness(im_dupe)
+        im_dupe = brightener.enhance(2)
     im_f.paste(im_dupe, (0, min_y), im_dupe)
     pix = im_f.load()
     mask = getRGBFromHash(color_bases[base_index])
@@ -298,32 +299,39 @@ def maskImage(im_f, base_index, min_y):
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
-def maskImageLankyPickups(im_f, base_index, min_y):
+def maskImageLankyPickups(im_f, base_index, min_y, type=""):
     """Apply RGB mask to image."""
     w, h = im_f.size
     im_f_original = im_f
     converter = ImageEnhance.Color(im_f)
     im_f = converter.enhance(0)
     im_dupe = im_f.crop((0, min_y, w, h))
-    brightener = ImageEnhance.Brightness(im_dupe)
-    im_dupe = brightener.enhance(2)
+    if type != "bunch":
+        brightener = ImageEnhance.Brightness(im_dupe)
+        im_dupe = brightener.enhance(2)
     im_f.paste(im_dupe, (0, min_y), im_dupe)
     pix = im_f.load()
     pix2 = im_f_original.load()
     mask = getRGBFromHash(color_bases[base_index])
     mask2 = getRGBFromHash(color_bases[0])
+    # if type != "coin":
+    #     for channel in range(3):
+    #         mask2[channel] = int(255 - mask2[channel])
     w, h = im_f.size
     for x in range(w):
         for y in range(min_y, h):
             base = list(pix[x, y])
             base2 = list(pix2[x, y])
             if base[3] > 0:
-                if base2[1] < 100:
-                    for channel in range(3):
-                        base[channel] = int(mask[channel] * (base[channel] / 255))
-                else:
+                if (type == "coin" and base2[1] >= 100):
                     for channel in range(3):
                         base[channel] = int(mask2[channel] * (base[channel] / 255))
+                elif type == "bunch" or type == "single":
+                    for channel in range(3):
+                        base[channel] = int(mask2[channel] * (base[channel] / 255))
+                else:
+                    for channel in range(3):
+                        base[channel] = int(mask[channel] * (base[channel] / 255))
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
@@ -349,14 +357,15 @@ def hueShift(im, amount):
     return im
 
 
-def maskImageMonochrome(im_f, base_index, min_y, banana_bunch=False):
+def maskImageMonochrome(im_f, base_index, min_y, type=""):
     """Apply RGB mask to image in Black and White."""
     w, h = im_f.size
     converter = ImageEnhance.Color(im_f)
     im_f = converter.enhance(0)
     im_dupe = im_f.crop((0, min_y, w, h))
-    brightener = ImageEnhance.Brightness(im_dupe)
-    im_dupe = brightener.enhance(2)
+    if type != "bunch" or base_index == 4:
+        brightener = ImageEnhance.Brightness(im_dupe)
+        im_dupe = brightener.enhance(2)
     im_f.paste(im_dupe, (0, min_y), im_dupe)
     pix = im_f.load()
     mask = getRGBFromHash(color_bases[base_index])
@@ -367,10 +376,9 @@ def maskImageMonochrome(im_f, base_index, min_y, banana_bunch=False):
         contrast = True
     for channel in range(3):
         mask[channel] = max(39, mask[channel])  # Too black is bad for these items
-        if banana_bunch is True:
-            #fixes edge case for Tiny where her bunches are too bright
-            mask[channel] = min(mask[channel], 200)
-        mask2[channel] = int(255 - mask2[channel])
+        if base_index == 4 and type == "single": #Chunky's single
+            mask[channel] += 20
+        mask2[channel] = int(255 - mask[channel])
     w, h = im_f.size
     for x in range(w):
         for y in range(min_y, h):
@@ -426,7 +434,7 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
     ROM().writeBytes(data)
 
 
-def writeColorToROM(color, table_index, file_index):
+def writeKasplatHairColorToROM(color, table_index, file_index):
     """Write color to ROM for kasplats."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     mask = getRGBFromHash(color)
@@ -451,7 +459,7 @@ def writeColorToROM(color, table_index, file_index):
     ROM().writeBytes(data)
 
 
-def writeWhiteKasplatColorToROM(color, table_index, file_index):
+def writeWhiteKasplatHairColorToROM(color, table_index, file_index):
     """Write color to ROM for white kasplats."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     mask = getRGBFromHash("#FFFFFF")
@@ -533,17 +541,13 @@ def overwrite_object_colors(spoiler: Spoiler):
         for kong_index in range(5):
             if kong_index == 3 or kong_index == 4:  # Tiny or Chunky
                 if color_bases[kong_index] == "#FFFFFF":
-                    writeWhiteKasplatColorToROM("#000000", 25, [4124, 4122, 4123, 4120, 4121][kong_index])
+                    writeWhiteKasplatHairColorToROM("#000000", 25, [4124, 4122, 4123, 4120, 4121][kong_index])
                 else:
-                    writeColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
+                    writeKasplatHairColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
                 for file in range(152, 160):
                     # Single
-                    # For Chunky, use DK's image file
-                    corrected_file = file
-                    if kong_index == 4:
-                        corrected_file += 16
                     single_im = getFile(7, file, False, 44, 44, "rgba5551")
-                    single_im = maskImageMonochrome(single_im, kong_index, 0)
+                    single_im = maskImageMonochrome(single_im, kong_index, 0, "single")
                     single_start = [168, 152, 232, 208, 240]
                     writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False)
                 for file in range(216, 224):
@@ -555,7 +559,7 @@ def overwrite_object_colors(spoiler: Spoiler):
                 for file in range(274, 286):
                     # Bunch
                     bunch_im = getFile(7, file, False, 44, 44, "rgba5551")
-                    bunch_im = maskImageMonochrome(bunch_im, kong_index, 0, True)
+                    bunch_im = maskImageMonochrome(bunch_im, kong_index, 0, "bunch")
                     bunch_start = [274, 854, 818, 842, 830]
                     writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False)
                 for file in range(5819, 5827):
@@ -572,23 +576,23 @@ def overwrite_object_colors(spoiler: Spoiler):
                     blueprint_start = [5624, 5608, 5519, 5632, 5616]
                     writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False)
             elif kong_index == 2:
-                writeColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
+                writeKasplatHairColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
                 for file in range(152, 160):
                     # Single
                     single_im = getFile(7, file, False, 44, 44, "rgba5551")
-                    single_im = maskImageLankyPickups(single_im, kong_index, 0)
+                    single_im = maskImageLankyPickups(single_im, kong_index, 0, "single")
                     single_start = [168, 152, 232, 208, 240]
                     writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False)
                 for file in range(216, 224):
                     # Coin
                     coin_im = getFile(7, file, False, 48, 42, "rgba5551")
-                    coin_im = maskImageLankyPickups(coin_im, kong_index, 0)
+                    coin_im = maskImageLankyPickups(coin_im, kong_index, 0, "coin")
                     coin_start = [224, 256, 248, 216, 264]
                     writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False)
                 for file in range(274, 286):
                     # Bunch
                     bunch_im = getFile(7, file, False, 44, 44, "rgba5551")
-                    bunch_im = maskImageLankyPickups(bunch_im, kong_index, 0)
+                    bunch_im = maskImageLankyPickups(bunch_im, kong_index, 0, "bunch")
                     bunch_start = [274, 854, 818, 842, 830]
                     writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False)
                 for file in range(5819, 5827):
@@ -609,7 +613,7 @@ def overwrite_object_colors(spoiler: Spoiler):
                 # # Kasplat Hair
                 # hair_im = getFile(25, file, True, 32, 44, "rgba5551")
                 # hair_im = maskImage(hair_im, kong_index, 0)
-                writeColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
+                writeKasplatHairColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
                 # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44, False)
                 for file in range(152, 160):
                     # Single
@@ -626,7 +630,7 @@ def overwrite_object_colors(spoiler: Spoiler):
                 for file in range(274, 286):
                     # Bunch
                     bunch_im = getFile(7, file, False, 44, 44, "rgba5551")
-                    bunch_im = maskImage(bunch_im, kong_index, 0)
+                    bunch_im = maskImage(bunch_im, kong_index, 0, True)
                     bunch_start = [274, 854, 818, 842, 830]
                     writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False)
                 for file in range(5819, 5827):
