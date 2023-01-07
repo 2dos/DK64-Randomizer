@@ -458,25 +458,19 @@ def getBlueprintFrameColors():
     """Split the blueprint image into a frame image and a blueprint image"""
     frame_colors = []
     wood_image = getFile(25, 5519, True, 48, 42, "rgba5551")
-    w, h = wood_image.size
-    converter = ImageEnhance.Color(wood_image)
-    wood_image = converter.enhance(0)
-    im_dupe = wood_image.crop((0, 0, w, h))
-    brightener = ImageEnhance.Brightness(im_dupe)
-    im_dupe = brightener.enhance(2)
-    wood_image.paste(im_dupe, (0, 0), im_dupe)
     pix = wood_image.load()
     w, h = wood_image.size
     for x in range(w):
         for y in range(h):
             base = list(pix[x, y])
-            if base[3] > 0:
+            if base[3] > 0 and base not in frame_colors:
                 frame_colors.append(base)
     return frame_colors
 
-def maskBlueprintImage(im_f, base_index, monochrome=False):
+def maskBlueprintImage(im_f, base_index, blueprint_frame_info, monochrome=False):
     """Apply RGB mask to blueprint image."""
     w, h = im_f.size
+    im_f_original = im_f
     converter = ImageEnhance.Color(im_f)
     im_f = converter.enhance(0)
     im_dupe = im_f.crop((0, 0, w, h))
@@ -484,20 +478,28 @@ def maskBlueprintImage(im_f, base_index, monochrome=False):
     im_dupe = brightener.enhance(2)
     im_f.paste(im_dupe, (0, 0), im_dupe)
     pix = im_f.load()
+    pix2 = im_f_original.load()
     mask = getRGBFromHash(color_bases[base_index])
-    # if monochrome is True:
-    #     for channel in range(3):
-    #         mask[channel] = max(39, mask[channel])  # Too black is bad for these items
+    if monochrome is True:
+        for channel in range(3):
+            mask[channel] = max(39, mask[channel])  # Too black is bad for these items
     frame = []
-    frame = getBlueprintFrameColors()
+    # frame = blueprint_frame_info
     w, h = im_f.size
     for x in range(w):
         for y in range(h):
             base = list(pix[x, y])
-            if base[3] > 0 and base not in frame:
-                for channel in range(3):
-                    base[channel] = int(mask[channel] * (base[channel] / 255))
-                pix[x, y] = (base[0], base[1], base[2], base[3])
+            base2 = list(pix2[x, y])
+            if base[3] > 0:
+                # Filter out the wooden frame
+                # brown is orange, is red and (red+green), is very little blue
+                # but, if the color is light, we can't rely on the blue value alone. 
+                if base2[2] > 20 and (base2[2] > base2[1] or base2[1]-base2[2] < 20):  
+                    for channel in range(3):
+                        base[channel] = int(mask[channel] * (base[channel] / 255))
+                    pix[x, y] = (base[0], base[1], base[2], base[3])
+                else:
+                    pix[x, y] = (base2[0], base2[1], base2[2], base2[3])
     return im_f
 
 def overwrite_object_colors(spoiler: Spoiler):
@@ -514,9 +516,9 @@ def overwrite_object_colors(spoiler: Spoiler):
         file = 175
         dk_single = getFile(7, file, False, 44, 44, "rgba5551")
         dk_single = dk_single.resize((21, 21))
+        blueprint_frame_info = getBlueprintFrameColors()
         for kong_index in range(5):
-            if kong_index == 3 or kong_index == 4:
-                # Tiny or Chunky
+            if kong_index == 3 or kong_index == 4:  # Tiny or Chunky
                 if color_bases[kong_index] == "#FFFFFF":
                     writeWhiteKasplatColorToROM(color_bases[kong_index], "#000000", 25, [4124, 4122, 4123, 4120, 4121][kong_index])
                 else:
@@ -553,7 +555,7 @@ def overwrite_object_colors(spoiler: Spoiler):
                 for file in range(5519, 5527):
                     # Blueprint sprite
                     blueprint_im = getFile(25, file, True, 48, 42, "rgba5551")
-                    blueprint_im = maskBlueprintImage(blueprint_im, kong_index, True)
+                    blueprint_im = maskBlueprintImage(blueprint_im, kong_index, blueprint_frame_info, True)
                     blueprint_start = [5624, 5608, 5519, 5632, 5616]
                     writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False)
             else:
@@ -591,7 +593,7 @@ def overwrite_object_colors(spoiler: Spoiler):
                 for file in range(5519, 5527):
                     # Blueprint sprite
                     blueprint_im = getFile(25, file, True, 48, 42, "rgba5551")
-                    blueprint_im = maskBlueprintImage(blueprint_im, kong_index)
+                    blueprint_im = maskBlueprintImage(blueprint_im, kong_index, blueprint_frame_info)
                     blueprint_start = [5624, 5608, 5519, 5632, 5616]
                     writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False)
 
