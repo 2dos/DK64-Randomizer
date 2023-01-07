@@ -497,10 +497,11 @@ def CalculateWothPaths(spoiler, WothLocations):
     # - The need for vines to progress in Aztec
     # - The need for swim to get into level 4
     # - The need for keys to open lobbies (this is done with open_lobbies)
-    LogicVariables.pathMode = True
-    old_open_lobbies_temp = spoiler.settings.open_lobbies
-    spoiler.settings.open_lobbies = True
-    falseWothLocations = []
+    if spoiler.settings.shuffle_loading_zones != "all":
+        # These assumptions are only good in level order for the following reasons
+        LogicVariables.pathMode = True  # If the lobby 4 entrance matters, swim should be on those paths
+        old_open_lobbies_temp = spoiler.settings.open_lobbies  # It's far less likely for a key to be a prerequisite
+        spoiler.settings.open_lobbies = True
     # Prep the dictionary that will contain the path for the key item
     for locationId in WothLocations:
         spoiler.woth_paths[locationId] = [locationId]  # The endpoint is on its own path
@@ -522,7 +523,6 @@ def CalculateWothPaths(spoiler, WothLocations):
         # Also assume max GBs so no B. Lockers can get in your way, leading to items that are only needed for GBs to be on paths
         LogicVariables.GoldenBananas = 201
         accessible = GetAccessibleLocations(spoiler.settings, assumedItems, SearchMode.GetReachable)
-        isOnAnotherPath = False
         # Then check every other WotH location for accessibility
         for other_location in WothLocations:
             # If it is no longer accessible, then this location is on the path of that other location
@@ -550,6 +550,10 @@ def CalculateWothPaths(spoiler, WothLocations):
                     break
             # If it's not on any other path, it's not WotH
             if not inAnotherPath:
+                # Never pare out these moves - pathMode might overlook their need to enter levels with
+                # This is a bit of a compromise, as you *might* see these moves WotH purely for coins/GBs but they won't be on paths
+                if location.item in (Items.Swim, Items.Vines, Items.PonyTailTwirl):
+                    continue
                 WothLocations.remove(locationId)
                 del spoiler.woth_paths[locationId]
                 # If we remove anything, we have to check the whole list again
@@ -956,16 +960,12 @@ def FillShuffledKeys(spoiler):
     # - Loading Zone randomizer (key unlocks are typically of lesser importance)
     # - Complex level progression (key order is non-linear)
     if spoiler.settings.logic_type == "nologic" or spoiler.settings.shuffle_loading_zones == "all" or spoiler.settings.hard_level_progression:
-        # Place keys in a random order except...
-        shuffle(keysToPlace)
-        # Keys 3 and 8 should be placed last to give them higher location potential
-        if Items.FranticFactoryKey in keysToPlace:
-            keysToPlace.remove(Items.FranticFactoryKey)
-            keysToPlace.append(Items.FranticFactoryKey)
-        if Items.HideoutHelmKey in keysToPlace:
-            keysToPlace.remove(Items.HideoutHelmKey)
-            keysToPlace.append(Items.HideoutHelmKey)
-        keysUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, keysToPlace, ItemPool.KeyAssumedItems(), inOrder=True)
+        # Assumed fills tend to place multiple keys at once better
+        keyAlgorithm = "assumed"
+        if spoiler.settings.logic_type == "nologic":  # Obviously no logic gets random fills
+            keyAlgorithm = "random"
+        # Place all the keys
+        keysUnplaced = PlaceItems(spoiler.settings, keyAlgorithm, keysToPlace, ItemPool.KeyAssumedItems())
         if keysUnplaced > 0:
             raise Ex.ItemPlacementException(str(keysUnplaced) + " unplaced keys.")
     # Simple linear level order progression leads to straightforward key placement
@@ -1744,6 +1744,10 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
                 if settings.randomize_blocker_required_amounts:
                     highroll = min(highroll, settings.blocker_max)  # When there are more GBs available than the max B. Locker value
                 lowroll = max(minimumBLockerGBs, round(runningGBTotal * BLOCKER_MIN))
+                # Often as soon as a seed opens up, the GB count skyrockets. This can lead to the last few B. Lockers being very expensive
+                # This check corrects for it assuming we want random non-hard B. Lockers.
+                if settings.randomize_blocker_required_amounts and not settings.hard_blockers and runningGBTotal > settings.blocker_max:
+                    lowroll = minimumBLockerGBs
                 if lowroll > highroll:
                     print("this shouldn't happen but here we are")
                     lowroll = highroll
