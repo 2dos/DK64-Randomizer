@@ -22,6 +22,9 @@ def ShuffleCrowns(crown_selection, human_crowns):
         Locations.IslesBattleArena1,
         Locations.HelmBattleArena,
     )
+    # Remove crowns from their original logic region
+    for id, region in Logic.Regions.items():
+        region.locations = [loclogic for loclogic in region.locations if loclogic.id not in crown_locations]
     global_crown_idx = 0
     for level in CrownLocations:
         level_lst = CrownLocations[level]
@@ -59,5 +62,6 @@ def ShuffleCrowns(crown_selection, human_crowns):
             human_crowns[crown_name] = level_lst[crown].name
             crown_obj = level_lst[crown]
             crownRegion = Logic.Regions[crown_obj.region]
+            # Add crowns to their updated logic region
             crownRegion.locations.append(LocationLogic(crown_locations[global_crown_idx], crown_obj.logic))
             global_crown_idx += 1
