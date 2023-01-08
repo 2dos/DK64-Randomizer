@@ -324,3 +324,9 @@ void giveGB(int kong, int level) {
 	// 	}
 	// }
 }
+
+void giveRainbowCoin(void) {
+	for (int i = 0; i < 5; i++) {
+		MovesBase[i].coins += 5;
+	}
+}

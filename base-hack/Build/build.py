@@ -178,6 +178,7 @@ file_dict = [
     {"name": "DPad Image", "pointer_table_index": 14, "file_index": 187, "source_file": "assets/Non-Code/displays/dpad.png", "texture_format": "rgba5551"},
     {"name": "Tracker Image", "pointer_table_index": 14, "file_index": 0xA1, "source_file": "assets/Non-Code/file_screen/tracker.png", "texture_format": "rgba5551"},
     {"name": "Nintendo Coin Model", "pointer_table_index": 4, "file_index": 0x48, "source_file": "nintendo_coin_om2.bin", "do_not_delete_source": True},
+    {"name": "Nintendo Coin Model", "pointer_table_index": 4, "file_index": 0xB7, "source_file": "rainbow_coin_om2.bin", "do_not_delete_source": True},
     {"name": "Rareware Coin Model", "pointer_table_index": 4, "file_index": 0x28F, "source_file": "rareware_coin_om2.bin", "do_not_delete_source": True},
     {"name": "Potion (DK) Model", "pointer_table_index": 4, "file_index": 0x5B, "source_file": "potion_dk_om2.bin", "do_not_delete_source": True},
     {"name": "Potion (Diddy) Model", "pointer_table_index": 4, "file_index": 0x1F2, "source_file": "potion_diddy_om2.bin", "do_not_delete_source": True},
@@ -287,6 +288,18 @@ for x in range(5):
     )
 for x in range(0x5A, 0x5E):
     file_dict.append({"name": f"Melon Slice ({hex(x)})", "pointer_table_index": 14, "file_index": x, "source_file": f"melon{x}.bin", "target_compressed_size": 48 * 42 * 2})
+
+for item in range(3):
+    file_dict.append(
+        {
+            "name": f"Rainbow Coin ({item})",
+            "pointer_table_index": 25,
+            "file_index": 6061 + item,
+            "source_file": f"assets/Non-Code/hash/rainbow_{item}.png",
+            "do_not_extract": True,
+            "texture_format": "rgba5551",
+        }
+    )
 
 for ci, coin in enumerate(["nin_coin", "rw_coin"]):
     for item in range(2):
@@ -763,6 +776,7 @@ for bi, b in enumerate(barrel_skins):
             "model_file": f"barrel_skin_{b}.bin",
         }
     )
+model_changes = sorted(model_changes, key=lambda d: d["model_index"])
 
 for x in model_changes:
     data = {"name": f"Model {x['model_index']}", "pointer_table_index": 5, "file_index": x["model_index"], "source_file": x["model_file"], "do_not_delete_source": True}
@@ -1046,7 +1060,7 @@ with open(newROMName, "r+b") as fh:
                 compress[6] = 0
                 compress[7] = 0
 
-            print(" - Writing " + x["output_file"] + " (" + hex(len(compress)) + ") to ROM")
+            print(" - Writing " + x["output_file"] + " (" + hex(len(compress)) + f") to ROM")
             if "pointer_table_index" in x and "file_index" in x:
                 # More complicated write, update the pointer tables to point to the new data
                 replaceROMFile(fh, x["pointer_table_index"], x["file_index"], compress, uncompressed_size)
@@ -1355,6 +1369,9 @@ with open(newROMName, "r+b") as fh:
         "nin_coin_1",
         "rw_coin_0",
         "rw_coin_1",
+        "rainbow_0",
+        "rainbow_1",
+        "rainbow_2",
         "special_coin_side",
         "fairy_0",
         "bonus_Skin",

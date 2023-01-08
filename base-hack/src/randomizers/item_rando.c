@@ -186,11 +186,16 @@ void initCollectableCollision(void) {
     *(unsigned short*)(0x806F799A) = getLo(&object_collisions[index].type);
 }
 
-int addActorDef(int index, int actor, int model, unsigned int func_0, unsigned int func_1) {
+int addActorDef(int index, int actor, int model, unsigned int func_0, unsigned int func_1, int rescale) {
     actor_defs[index].actor_type = actor;
     actor_defs[index].model = model;
-    actor_defs[index].unk4[4] = 0x02;
-    actor_defs[index].unk4[5] = 0x26;
+    if (rescale == 0) {
+        actor_defs[index].unk4[4] = 0x02;
+        actor_defs[index].unk4[5] = 0x26;
+    } else {
+        actor_defs[index].unk4[4] = (rescale >> 8) & 0xFF;
+        actor_defs[index].unk4[5] = rescale & 0xFF;
+    }
     actor_defs[index].code = (void*)func_0;
     actor_defs[index].unk10 = (void*)func_1;
     return index + 1;
@@ -198,28 +203,28 @@ int addActorDef(int index, int actor, int model, unsigned int func_0, unsigned i
 
 void initActorDefs(void) {
     dk_memcpy(&actor_defs[0], &ActorBehaviourTable[0], 128*sizeof(actor_behaviour_def));
-    int index = addActorDef(128, 151, 0, 0x80689F80, 0x8068A10C); // Nintendo Coin
-    index = addActorDef(index, 152, 0, 0x80689F80, 0x8068A10C); // Rareware Coin
+    int index = addActorDef(128, 151, 0, 0x80689F80, 0x8068A10C, 0); // Nintendo Coin
+    index = addActorDef(index, 152, 0, 0x80689F80, 0x8068A10C, 0); // Rareware Coin
     // Potions
-    index = addActorDef(index, 157, 0xEE, 0x80689F80, 0x80689FEC); // DK Potion
-    index = addActorDef(index, 158, 0xEF, 0x80689F80, 0x80689FEC); // Diddy Potion
-    index = addActorDef(index, 159, 0xF0, 0x80689F80, 0x80689FEC); // Lanky Potion
-    index = addActorDef(index, 160, 0xF1, 0x80689F80, 0x80689FEC); // Tiny Potion
-    index = addActorDef(index, 161, 0xF2, 0x80689F80, 0x80689FEC); // Chunky Potion
-    index = addActorDef(index, 162, 0xF3, 0x80689F80, 0x80689FEC); // Any Potion
+    index = addActorDef(index, 157, 0xEE, 0x80689F80, 0x80689FEC, 0); // DK Potion
+    index = addActorDef(index, 158, 0xEF, 0x80689F80, 0x80689FEC, 0); // Diddy Potion
+    index = addActorDef(index, 159, 0xF0, 0x80689F80, 0x80689FEC, 0); // Lanky Potion
+    index = addActorDef(index, 160, 0xF1, 0x80689F80, 0x80689FEC, 0); // Tiny Potion
+    index = addActorDef(index, 161, 0xF2, 0x80689F80, 0x80689FEC, 0); // Chunky Potion
+    index = addActorDef(index, 162, 0xF3, 0x80689F80, 0x80689FEC, 0); // Any Potion
     // Kongs
-    index = addActorDef(index, 141, 0x4, 0x80689F80, 0x80689FEC); // DK
-    index = addActorDef(index, 142, 0x1, 0x80689F80, 0x80689FEC); // Diddy
-    index = addActorDef(index, 143, 0x6, 0x80689F80, 0x80689FEC); // Lanky
-    index = addActorDef(index, 144, 0x9, 0x80689F80, 0x80689FEC); // Tiny
-    index = addActorDef(index, 155, 0xC, 0x80689F80, 0x80689FEC); // Chunky
+    index = addActorDef(index, 141, 0x4, 0x80689F80, 0x80689FEC, 0); // DK
+    index = addActorDef(index, 142, 0x1, 0x80689F80, 0x80689FEC, 0); // Diddy
+    index = addActorDef(index, 143, 0x6, 0x80689F80, 0x80689FEC, 0); // Lanky
+    index = addActorDef(index, 144, 0x9, 0x80689F80, 0x80689FEC, 0); // Tiny
+    index = addActorDef(index, 155, 0xC, 0x80689F80, 0x80689FEC, 0); // Chunky
     // Misc
-    index = addActorDef(index, 172, 0, 0x80689F80, 0x8068A10C); // Bean
-    index = addActorDef(index, 174, 0, 0x80689F80, 0x8068A10C); // Pearl
-    index = addActorDef(index, 88, 0xFC, 0x80689F80, 0x80689FEC); // Fairy
-    index = addActorDef(index, 153, 0, 0x80689F80, 0x8068A10C); // Nothing
-    index = addActorDef(index, 154, 0, 0x80689F80, 0x8068A10C); // Medal
-    index = addActorDef(index, 217, 0x10E, 0x80689F80, 0x80689FEC); // Fake Item
+    index = addActorDef(index, 172, 0, 0x80689F80, 0x8068A10C, 0); // Bean
+    index = addActorDef(index, 174, 0, 0x80689F80, 0x8068A10C, 0); // Pearl
+    index = addActorDef(index, 88, 0xFC, 0x80689F80, 0x80689FEC, 0); // Fairy
+    index = addActorDef(index, 153, 0, 0x80689F80, 0x8068A10C, 0); // Nothing
+    index = addActorDef(index, 154, 0, 0x80689F80, 0x8068A10C, 0); // Medal
+    index = addActorDef(index, 217, 0x10E, 0x80689F80, 0x80689FEC, 0); // Fake Item
     *(unsigned short*)(0x8068926A) = getHi(&actor_defs[0].actor_type);
     *(unsigned short*)(0x8068927A) = getLo(&actor_defs[0].actor_type);
     *(unsigned short*)(0x806892D2) = getHi(&actor_defs[0].actor_type);
@@ -247,7 +252,9 @@ void spawnRewardAtActor(int object, int flag) {
         object = bonus_data[index].spawn_actor;
     }
     if (object != 153) {
-        spawnObjectAtActor(object, flag);
+        if (!checkFlag(flag, 0)) {
+            spawnObjectAtActor(object, flag);
+        }
     }
 }
 
@@ -307,6 +314,7 @@ void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int c
         Update writer to place rainbow coins
         Add to shop indicator
         Ensure keys/moves works with it, displaying the text and turning in the keys
+        Add Rainbow Coins to check screen
     */
     int new_obj = getRainbowCoinItem(flag);
     if (new_obj != 0) {
@@ -323,7 +331,14 @@ void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int c
 }
 
 void initIceTrap(void) {
-    setAction(39, 0, 0);
+    /*
+        TODO:
+            - Rainbow Coin Shop Hint Text
+            - Rainbow Coin Shop purchase text
+    */
+    trapPlayer();
+    Player->trap_bubble_timer = 200;
+    playSFX(0x2D4); // K Rool Laugh
 }
 
 int checkFlagDuplicate(short flag, int type) {
@@ -558,10 +573,15 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
             }
             // Jetpac/Arcade GB Give
             int give_gb = 0;
+            int give_rainbow = 0;
             if ((vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) && (Rando.arcade_reward == 5)) {
                 give_gb = 1;
             } else if ((vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) && (Rando.jetpac_reward == 5)) {
                 give_gb = 1;
+            } else if ((vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) && (Rando.arcade_reward == 20)) {
+                give_rainbow = 1;
+            } else if ((vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) && (Rando.jetpac_reward == 11)) {
+                give_rainbow = 1;
             }
             if (give_gb) {
                 if (!checkFlag(vanilla_flag, 0)) {
@@ -569,6 +589,10 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                     if (world < 8) {
                         giveGB(Character, world);
                     }
+                }
+            } else if (give_rainbow) {
+                if (!checkFlag(vanilla_flag, 0)) {
+                    giveRainbowCoin();
                 }
             }
             if (spawn_overlay) {
@@ -755,6 +779,8 @@ void banana_medal_acquisition(int flag) {
             }
             if (item_type == 0) {
                 giveGB(getKong(0), getWorld(CurrentMap, 1));
+            } else if (item_type == 15) {
+                giveRainbowCoin();
             }
             if (item_type < BANANA_MEDAL_ITEM_COUNT) {
                 playSFX(0xF2);
@@ -782,7 +808,6 @@ void banana_medal_acquisition(int flag) {
                 if (item_type == 11) {
                     used_song = kong_songs[kong];
                 } else if (item_type == 16) {
-                    playSFX(0x2D4); // K Rool Laugh
                     initIceTrap();
                 } else if (item_type < BANANA_MEDAL_ITEM_COUNT) {
                     used_song = songs[item_type];
@@ -1055,6 +1080,14 @@ void fairyDuplicateCode(void) {
     playActorAnimation(CurrentActorPointer_0, 0x2B5);
 }
 
+void FakeGBCode(void) {
+    GoldenBananaCode();
+    scaleBounceDrop(0.10f);
+    if (CurrentActorPointer_0->yVelocity > 500.0f) {
+        CurrentActorPointer_0->yVelocity = 500.0f;
+    }
+}
+
 static unsigned char master_copy[345] = {};
 
 typedef struct packet_extra_data {
@@ -1234,6 +1267,8 @@ void giveFairyItem(int flag, int state, int type) {
     } else if (model == 0x10E) {
         // Fake Item
         initIceTrap();
+    } else if (model == 0x10D) {
+        giveRainbowCoin();
     }
     setFlag(flag, state, type);
     if (model == 0xF5) {

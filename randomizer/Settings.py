@@ -928,7 +928,7 @@ class Settings:
             if Types.Fairy in self.shuffled_location_types:
                 self.valid_locations[Types.Fairy] = shuffledLocations
             if Types.RainbowCoin in self.shuffled_location_types:
-                self.valid_locations[Types.RainbowCoin] = fairyBannedLocations
+                self.valid_locations[Types.RainbowCoin] = [x for x in fairyBannedLocations if LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave)]
             if Types.FakeItem in self.shuffled_location_types:
                 bad_fake_locations = (
                     # Races
@@ -944,6 +944,9 @@ class Settings:
                     Locations.JapesDonkeyFreeDiddy,
                     Locations.JapesDonkeyFrontofCage,
                     Locations.IslesDonkeyJapesRock,
+                    Locations.FactoryDonkeyDKArcade,
+                    Locations.NintendoCoin,
+                    Locations.RarewareCoin,
                     # Helm Fairy Couplet
                     Locations.HelmBananaFairy1,
                     Locations.HelmBananaFairy2,

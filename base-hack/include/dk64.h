@@ -288,6 +288,7 @@ extern void getModel2AndActorInfo(void* setup, int** model2_write, int** actor_w
 extern int isSingleOrBunch(int object_type);
 extern void enableComplexFree(void);
 extern void complexFreeWrapper(void* addr);
+extern void trapPlayer(void);
 
 //vanilla data
 extern float TransitionSpeed;

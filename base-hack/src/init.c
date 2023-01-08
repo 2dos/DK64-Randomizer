@@ -97,7 +97,8 @@ void expandSaveFile(int static_expansion, int actor_count) {
 
 typedef struct patch_db_item {
 	/* 0x000 */ short id;
-	/* 0x002 */ short map;
+	/* 0x002 */ unsigned char map;
+	/* 0x003 */ unsigned char world;
 } patch_db_item;
 
 static unsigned char bp_item_table[40] = {};
@@ -145,11 +146,11 @@ int getFairyModel(int flag) {
 }
 
 int getRainbowCoinItem(int old_flag) {
+	// return TestVariable;
 	return rcoin_item_table[old_flag - FLAG_RAINBOWCOIN_0];
 }
 
 int getPatchFlag(int id) {
-	TestVariable = (int)&patch_flags[0].id;
 	for (int i = 0; i < 16; i++) {
 		if (CurrentMap == patch_flags[i].map) {
 			if (id == patch_flags[i].id) {
@@ -158,6 +159,10 @@ int getPatchFlag(int id) {
 		}
 	}
 	return 0;
+}
+
+int getPatchWorld(int index) {
+	return patch_flags[index].world;
 }
 
 static char boot_speedup_done = 0;
@@ -189,6 +194,11 @@ void bootSpeedup(void) {
 						if ((Rando.item_rando) && (actor == 139)) {
 							patch_flags[patch_index].map = i;
 							patch_flags[patch_index].id = *(short*)((int)focused_actor + 0x34);
+							if (isLobby(i)) {
+								patch_flags[patch_index].world = 7;
+							} else {
+								patch_flags[patch_index].world = levelIndexMapping[i];
+							}
 							patch_index += 1;
 						}
 						focused_actor += 0x38;
@@ -757,7 +767,7 @@ void initHack(int source) {
 			initActor(172, &beanCode, ACTORMASTER_SPRITE, 0x11);
 			initActor(174, &pearlCode, ACTORMASTER_SPRITE, 0x11);
 			initActor(88, &fairyDuplicateCode, ACTORMASTER_3D, 0x11);
-			initActor(217, &GoldenBananaCode, ACTORMASTER_3D, 0x11);
+			initActor(217, &FakeGBCode, ACTORMASTER_3D, 0x11);
 			// Any Kong Items
 			if (Rando.any_kong_items & 1) {
 				// All excl. Blueprints

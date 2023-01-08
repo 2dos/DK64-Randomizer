@@ -132,6 +132,7 @@ extern void beanCode(void);
 extern void pearlCode(void);
 extern void NothingCode(void);
 extern void fairyDuplicateCode(void);
+extern void FakeGBCode(void);
 extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern void handleSpiderTrapCode(void);
@@ -258,6 +259,7 @@ extern void handleDynamicItemText(char* location, char* format, int character);
 extern void mermaidCheck(void);
 extern void initItemDictionary(void);
 extern void giveGB(int kong, int level);
+extern void giveRainbowCoin(void);
 
 extern int CrownDoorCheck(void);
 extern int CoinDoorCheck(void);
@@ -268,6 +270,9 @@ extern void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner);
 extern void giveFairyItem(int flag, int state, int type);
 extern void SpawnBarrel(spawnerPacket* packet);
 extern void initBarrelChange(void);
+
+extern void initIceTrap(void);
+extern int getPatchWorld(int index);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];

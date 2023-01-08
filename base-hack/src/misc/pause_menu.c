@@ -58,9 +58,10 @@ static char* items[] = {
     "BANANA FAIRIES",
     "DK ARCADE",
     "KASPLATS",
-    "KONGS",
-    "BEAN",
-    "PEARLS",
+    "KONG CAGES",
+    "ANTHILL SECOND REWARD",
+    "TREASURE CHEST CLAMS",
+    "DIRT PATCHES",
 };
 static char* raw_items[] = {
     "GOLDEN BANANAS",
@@ -74,6 +75,7 @@ static char* raw_items[] = {
     "KONGS",
     "BEAN",
     "PEARLS",
+    "RAINBOW COINS",
 };
 
 static char check_level = 0;
@@ -90,9 +92,10 @@ static char level_check_text[0x18] = "";
 #define CHECK_KONG 8
 #define CHECK_BEAN 9
 #define CHECK_PEARLS 10
+#define CHECK_RAINBOW 11
 
-#define PAUSE_ITEM_COUNT 11
-#define ROTATION_SPLIT 372 // 0x1000 / PAUSE_ITEM_COUNT
+#define PAUSE_ITEM_COUNT 12
+#define ROTATION_SPLIT 341 // 0x1000 / PAUSE_ITEM_COUNT
 
 static unsigned char check_data[2][9][PAUSE_ITEM_COUNT] = {}; // 8 items, 9 levels, numerator + denominator
 
@@ -110,6 +113,14 @@ void checkItemDB(void) {
             if (item_db[k].type == i) {
                 int search_flag = item_db[k].flag;
                 int lvl = item_db[k].associated_level;
+                check_data[0][lvl][i] += checkFlag(search_flag, 0);
+            }
+        }
+        // Check Rainbow Flags
+        if (i == CHECK_RAINBOW) {
+            for (int k = 0; k < 16; k++) {
+                int search_flag = FLAG_RAINBOWCOIN_0 + k;
+                int lvl = getPatchWorld(k);
                 check_data[1][lvl][i] += 1;
                 check_data[0][lvl][i] += checkFlag(search_flag, 0);
             }
@@ -172,6 +183,22 @@ void checkItemDB(void) {
                         check_data[1][j][CHECK_PEARLS] = 5;
                     }
                     break;
+                case CHECK_RAINBOW:
+                    if (!Rando.item_rando) {
+                        if (j == 7) {
+                            check_data[1][j][CHECK_RAINBOW] = 7;
+                        } else if ((j == 1) || (j == 4)) {
+                            check_data[1][j][CHECK_RAINBOW] = 2;
+                        } else {
+                            check_data[1][j][CHECK_RAINBOW] = 1;
+                        }
+                    } else {
+                        for (int k = 0; k < 16; k++) {
+                            if ((getPatchWorld(k) == j) && (j < 8)) {
+                                check_data[1][j][CHECK_RAINBOW] += 1;
+                            }
+                        }
+                    }
                 break;
             }
         }
@@ -352,7 +379,7 @@ int changeSelectedLevel(int unk0, int unk1) {
 static short file_items[16] = {
     0, 0, 0, 0, // GBs, Crowns, Keys, Medals
     0, 0, 0, 0, // RW, Fairy, Nintendo, BP
-    0, 0, 0, 0, // Kongs, Beans, Pearls
+    0, 0, 0, 0, // Kongs, Beans, Pearls, Rainbow
     0, 0, 0, 0,
 };
 
@@ -368,14 +395,14 @@ static int file_sprites[17] = {
     0x807214A0, // Kong
     (int)&bean_sprite, // Bean
     (int)&pearl_sprite, // Pearls
-    0,
+    0x80721378, // Rainbow Coins
     0, 0, 0, 0,
     0, // Null Item, Leave Empty
 };
 static short file_item_caps[16] = {
     201, 10, 8, 40,
     1, 20, 1, 40,
-    5, 1, 5, 0,
+    5, 1, 5, 16,
     0, 0, 0, 0,
 };
 
@@ -384,12 +411,16 @@ void updateFileVariables(void) {
     for (int i = 0; i < 8; i++) {
         file_items[i] = FileVariables[i];
     }
-    file_items[8] = 0;
-    file_items[9] = checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, 0);
-    file_items[10] = 0;
+    file_items[CHECK_KONG] = 0;
+    file_items[CHECK_BEAN] = checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, 0);
+    file_items[CHECK_PEARLS] = 0;
+    file_items[CHECK_RAINBOW] = 0;
     for (int i = 0; i < 5; i++) {
-        file_items[8] += checkFlagDuplicate(kong_flags[i], 0);
-        file_items[10] += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 0);
+        file_items[CHECK_KONG] += checkFlagDuplicate(kong_flags[i], 0);
+        file_items[CHECK_PEARLS] += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 0);
+    }
+    for (int i = 0; i < 16; i++) {
+        file_items[CHECK_RAINBOW] += checkFlagDuplicate(FLAG_RAINBOWCOIN_0 + i, 0);
     }
 }
 

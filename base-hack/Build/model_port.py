@@ -335,6 +335,7 @@ model_dir = "assets/Non-Code/models/"
 # Coins
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}nin_coin.dl", f"{model_dir}coin_overlay.dl", "nintendo_coin", 0x90)
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}rw_coin.dl", f"{model_dir}coin_overlay.dl", "rareware_coin", 0x90)
+portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}rainbow_coin.dl", f"{model_dir}coin_overlay.dl", "rainbow_coin", 0x90)
 # # Potions - Model 2
 portalModel_M2(f"{model_dir}potion_dk.vtx", f"{model_dir}potion.dl", 0, "potion_dk", 0x90)
 portalModel_M2(f"{model_dir}potion_diddy.vtx", f"{model_dir}potion.dl", 0, "potion_diddy", 0x90)

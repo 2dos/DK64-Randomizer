@@ -97,19 +97,23 @@ void spawnEnemyDrops(actorData* actor) {
                 if ((actor_index >= 241) && (actor_index <= 245)) {
                     int world = getWorld(CurrentMap, 1);
                     flag = 469 + (5 * world) + (actor_index - 241);
-                    if (Rando.item_rando) {
-                        drop_type = getBPItem(flag - 469);
-                        drop_count = 1;
-                        for (int i = 0; i < sizeof(bounce_objects); i++) {
-                            if (drop_type == bounce_objects[i]) {
-                                drop_arg = 2;
+                    if (checkFlag(flag, 0)) {
+                        return;
+                    } else {
+                        if (Rando.item_rando) {
+                            drop_type = getBPItem(flag - 469);
+                            drop_count = 1;
+                            for (int i = 0; i < sizeof(bounce_objects); i++) {
+                                if (drop_type == bounce_objects[i]) {
+                                    drop_arg = 2;
+                                }
                             }
+                            if (KasplatSpawnBitfield & (1 << (actor_index - 241))) {
+                                drop_count = 0;
+                            }
+                            // Not drop that despawns
+                            KasplatSpawnBitfield |= (1 << (actor_index - 241));
                         }
-                        if (KasplatSpawnBitfield & (1 << (actor_index - 241))) {
-                            drop_count = 0;
-                        }
-                        // Not drop that despawns
-                        KasplatSpawnBitfield |= (1 << (actor_index - 241));
                     }
                 } else if ((isReplenishableDrop(drop_type)) && (Rando.random_drops)) {
                     int index = getRNGLower31() & 3;

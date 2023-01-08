@@ -46,6 +46,8 @@ ObjectRotate:
     beq $v0, $at, ObjectRotate_ApplyRotate
     addiu $at, $zero, 0x25C
     beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0xB7
+    beq $v0, $at, ObjectRotate_ApplyRotate
     addiu $at, $zero, 0x25D
     beq $v0, $at, ObjectRotate_ApplyReverseRotate
     nop

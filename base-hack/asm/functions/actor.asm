@@ -78,3 +78,4 @@
 .definelabel setActorModel, 0x80613194
 .definelabel spawn3DActor, 0x8067B2DC
 .definelabel getChunk, 0x806531B8
+.definelabel trapPlayer, 0x806F027c
