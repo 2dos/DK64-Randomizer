@@ -37,7 +37,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: True),
         LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: True),
         LocationLogic(Locations.RainbowCoin_Location13, lambda l: l.shockwave),
-        LocationLogic(Locations.RainbowCoin_Location14, lambda l: l.shockwave and (l.vines or l.CanMoonkick())), # Banana Hoard patch
+        LocationLogic(Locations.RainbowCoin_Location14, lambda l: l.shockwave and (l.vines or l.CanMoonkick())),  # Banana Hoard patch
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesStartToMain),
         TransitionFront(Regions.Treehouse, lambda l: True, Transitions.IslesStartToTreehouse),
