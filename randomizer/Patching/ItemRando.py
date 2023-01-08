@@ -357,7 +357,7 @@ def place_randomized_items(spoiler: Spoiler):
                                 arcade_reward_index = 21
                         elif item.new_item == Types.Kong:
                             if item.new_flag in kong_flags:
-                                arcade_reward_index = kong_flags.index(item.new_flag)
+                                arcade_reward_index = kong_flags.index(item.new_flag) + 15
                         elif item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave):
                             if (item.new_flag & 0x8000) == 0:
                                 slot = 5
