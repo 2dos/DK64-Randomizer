@@ -44,7 +44,7 @@ LogicRegions = {
 
     Regions.GiantMushroomArea: Region("Giant Mushroom Area", "Giant Mushroom Exterior", Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestDiddyTopofMushroom, lambda l: l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
-        LocationLogic(Locations.ForestLankyRabbitRace, lambda l: (l.CanOStandTBSNoclip() and l.spawn_snags)),
+        LocationLogic(Locations.ForestLankyRabbitRace, lambda l: (l.CanOStandTBSNoclip() and l.spawn_snags), isAuxiliary=True),
     ], [
         Event(Events.HollowTreeGateOpened, lambda l: l.grape and l.lanky),
     ], [

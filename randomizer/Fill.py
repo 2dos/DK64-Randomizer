@@ -559,8 +559,9 @@ def CalculateWothPaths(spoiler, WothLocations):
                 # If we remove anything, we have to check the whole list again
                 anything_removed = True
                 break
-    LogicVariables.pathMode = False  # Don't carry this pathMode flag beyond this method ever
-    spoiler.settings.open_lobbies = old_open_lobbies_temp  # Undo the open lobbies setting change too
+    if spoiler.settings.shuffle_loading_zones != "all":
+        LogicVariables.pathMode = False  # Don't carry this pathMode flag beyond this method ever
+        spoiler.settings.open_lobbies = old_open_lobbies_temp  # Undo the open lobbies setting change too
 
 
 def CalculateFoolish(spoiler, WothLocations):
