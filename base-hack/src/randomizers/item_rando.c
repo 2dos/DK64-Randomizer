@@ -867,8 +867,6 @@ void banana_medal_acquisition(int flag) {
                 sprite_addr = &bean_sprite;
             } else if (item_type == 13) {
                 sprite_addr = &pearl_sprite;
-            } else if (item_type == 16) {
-                sprite_addr = &krool_sprite;
             }
             displaySpriteAtXYZ(sprite_addr, 0x3F800000, 160.0f, 120.0f, -10.0f);
         }

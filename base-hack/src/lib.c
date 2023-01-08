@@ -301,7 +301,7 @@ sprite_data_struct pearl_sprite = {
 };
 
 sprite_data_struct krool_sprite = {
-	.unk0 = 0xC4,
+	.unk0 = 0xC6,
 	.images_per_frame_horizontal = 2,
 	.images_per_frame_vertical = 1,
 	.codec = 2,

@@ -422,7 +422,7 @@ rain_im_1 = rain_im.crop((32, 0, 64, 64))
 rain_im_0.save(f"{hash_dir}rainbow_0.png")  # Rainbow Coin
 rain_im_1.save(f"{hash_dir}rainbow_1.png")  # Rainbow Coin
 rain_im_2 = Image.open(f"{hash_dir}modified_coin_side.png")
-rain_im_2 = maskImage(rain_im_2, 0, [0, 0, 255])
+rain_im_2 = maskImage(rain_im_2, 0, [42, 79, 112])
 rain_im_2.save(f"{hash_dir}rainbow_2.png") # Rainbow Side
 
 # Barrel Skins
