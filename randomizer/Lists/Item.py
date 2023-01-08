@@ -18,6 +18,7 @@ class Item:
         self.playthrough = playthrough
         self.type = type
         self.kong = kong
+        self.movetype = None
         self.rando_flag = None  # The flag the ROM reads to know if you have this item - set to -1 for progressive moves as those are special
         if type == Types.Shop:
             self.movetype = data[0]

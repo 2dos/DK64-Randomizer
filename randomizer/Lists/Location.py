@@ -148,7 +148,7 @@ LocationList = {
     Locations.IslesLankyPrisonOrangsprint: Location(Levels.DKIsles, "Isles Lanky Sprint Cage", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(Maps.KLumsy, 0x3, 429, Kongs.lanky)]),
     Locations.CameraAndShockwave: Location(Levels.DKIsles, "The Banana Fairy's Gift", Items.CameraAndShockwave, Types.Shockwave, Kongs.tiny, [124]),
     Locations.RarewareBanana: Location(Levels.DKIsles, "Returning the Banana Fairies", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.BananaFairyRoom, 0x1E, 301, Kongs.tiny)]),
-    Locations.IslesLankyInstrumentPad: Location(Levels.DKIsles, "Isles Lanky Trombone Pad", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 398, Kongs.lanky)]),
+    Locations.IslesLankyInstrumentPad: Location(Levels.DKIsles, "Isles Lanky Japes Instrument", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 398, Kongs.lanky)]),
     Locations.IslesTinyAztecLobby: Location(Levels.DKIsles, "Isles Tiny Aztec Lobby Barrel", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(0, -1, 402, Kongs.tiny)]),
     Locations.IslesDonkeyCagedBanana: Location(Levels.DKIsles, "Isles Donkey Coconut Cage", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.Isles, 0x4D, 419, Kongs.donkey)]),
     Locations.IslesDiddySnidesLobby: Location(Levels.DKIsles, "Isles Diddy Snides Spring Barrel", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(0, -1, 416, Kongs.diddy)]),

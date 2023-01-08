@@ -295,8 +295,8 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
             header = int.from_bytes(fh.read(2), "big")
             layers = int.from_bytes(fh.read(2), "big")
             dyn_tex[header] = []
-            for l in range(layers):
-                for t in range(tex_count):
+            for layer in range(layers):
+                for tex in range(tex_count):
                     dyn_tex[header].append(int.from_bytes(fh.read(2), "big"))
         # Prune DL of bad instructions and segmented addresses
         for d in range(dl_count):

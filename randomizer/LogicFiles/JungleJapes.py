@@ -34,7 +34,7 @@ LogicRegions = {
         LocationLogic(Locations.RainbowCoin_Location00, lambda l: l.shockwave and ((l.islanky and l.handstand) or (l.istiny and l.twirl)))
     ], [
         Event(Events.JapesEntered, lambda l: True),
-        Event(Events.JapesSpawnW5, lambda l: Events.JapesMountainTopGB in l.Events or l.settings.activate_all_bananaports),
+        Event(Events.JapesSpawnW5, lambda l: Events.JapesMountainTopGB in l.Events or l.settings.activate_all_bananaports == "all"),
         Event(Events.JapesFreeKongOpenGates, lambda l: l.CanOpenJapesGates()),
     ], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),

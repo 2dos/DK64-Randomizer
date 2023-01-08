@@ -414,6 +414,12 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
+        # Move Location Rando
+        if self.move_rando == "start_with":
+            self.unlock_all_moves = True
+            self.training_barrels = "normal"
+            self.shockwave_status = "start_with"
+
         # Helm Doors
         helmdoor_items = {
             "req_gb": {"max": 201, "random_min": 20, "random_max": 100},
@@ -776,10 +782,6 @@ class Settings:
         # Kongs needed for level progression
         if self.starting_kongs_count < 5 and (self.shuffle_loading_zones == "levels" or self.shuffle_loading_zones == "none") and self.logic_type != "nologic":
             self.kongs_for_progression = True
-
-        # Move Location Rando
-        if self.move_rando == "start_with":
-            self.unlock_all_moves = True
 
         # Kasplat Rando
         self.kasplat_rando = False
