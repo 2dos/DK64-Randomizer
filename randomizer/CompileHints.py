@@ -292,8 +292,8 @@ def compileHints(spoiler: Spoiler):
                 hint_distribution[HintType.FoolishMove] = len(spoiler.foolish_moves)
                 maxed_hint_types.append(HintType.FoolishMove)
             valid_types.append(HintType.WothLocation)
-            # K. Rool seeds could use some help finding the last pesky moves
-            if spoiler.settings.win_condition == "beat_krool":
+            # K. Rool seeds could use some help finding the last pesky moves (assuming you don't start with them)
+            if spoiler.settings.win_condition == "beat_krool" and not spoiler.settings.unlock_all_moves:
                 valid_types.append(HintType.RequiredWinConditionHint)
                 if Kongs.diddy in spoiler.settings.krool_order:
                     hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Rocketbarrel hint
@@ -369,8 +369,8 @@ def compileHints(spoiler: Spoiler):
                 key_location_ids[location.item] = location_id
 
         for key_id in woth_key_ids:
-            # Keys you are expected to find early only get one direct hint
-            if key_id in (Items.JungleJapesKey, Items.AngryAztecKey) and level_order_matters and not spoiler.settings.hard_level_progression:
+            # Keys you are expected to find early only get one direct hint OR if you start with all moves, treat all keys as early keys because there are no paths
+            if (key_id in (Items.JungleJapesKey, Items.AngryAztecKey) and level_order_matters and not spoiler.settings.hard_level_progression) or spoiler.settings.unlock_all_moves:
                 key_hint_dict[key_id] = 1
             # Late or complex keys get a number of hints based on the length of the path to them
             else:
@@ -616,13 +616,13 @@ def compileHints(spoiler: Spoiler):
         for key_id in key_hint_dict:
             if key_hint_dict[key_id] == 0:
                 continue
-            # For early Keys 1-2, place one hint with their required Kong and the level they're in
-            if key_id in (Items.JungleJapesKey, Items.AngryAztecKey) and level_order_matters and not spoiler.settings.hard_level_progression:
+            # For early Keys 1-2 (or when starting with all moves), place one hint with their required Kong and the level they're in
+            if (key_id in (Items.JungleJapesKey, Items.AngryAztecKey) and level_order_matters and not spoiler.settings.hard_level_progression) or spoiler.settings.unlock_all_moves:
                 location = LocationList[key_location_ids[key_id]]
                 key_item = ItemList[key_id]
                 kong_index = location.kong
                 # Boss locations actually have a specific kong, go look it up
-                if location.kong == Kongs.any and location.type == Types.Key:
+                if location.kong == Kongs.any and location.type == Types.Key and location.level != Levels.HideoutHelm:
                     kong_index = spoiler.settings.boss_kongs[location.level]
                 if spoiler.settings.wrinkly_hints == "cryptic":
                     if location.level == Levels.Shops:
