@@ -357,7 +357,7 @@ def compileHints(spoiler: Spoiler):
         Items.CreepyCastleKey: 0,
         Items.HideoutHelmKey: 0,
     }
-
+    # Calculate the number of key hints that need to be placed
     if spoiler.settings.shuffle_items and Types.Key in spoiler.settings.shuffled_location_types:
         valid_types.append(HintType.RequiredKeyHint)
         # Only hint keys that are in the Way of the Hoard
@@ -1761,11 +1761,11 @@ def GetRegionOfLocation(location_id):
     # Shop locations are tied to the level, not the shop regions
     if location.type == Types.Shop:
         for region in [reg for id, reg in RegionList.items() if reg.level == Levels.Shops]:
-            if location_id in [location_logic.id for location_logic in region.locations]:
+            if location_id in [location_logic.id for location_logic in region.locations if not location_logic.isAuxiliaryLocation]:
                 return region
     for region_id in Regions:
         region = RegionList[region_id]
         if region.level == location.level:
-            if location_id in [location_logic.id for location_logic in region.locations]:
+            if location_id in [location_logic.id for location_logic in region.locations if not location_logic.isAuxiliaryLocation]:
                 return region
     raise Exception("Unable to find Region for Location")  # This should never trigger!

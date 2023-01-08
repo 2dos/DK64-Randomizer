@@ -8,11 +8,12 @@ from randomizer.Enums.Time import Time
 class LocationLogic:
     """Logic for a location."""
 
-    def __init__(self, id, logic, bonusBarrel=None):
+    def __init__(self, id, logic, bonusBarrel=None, isAuxiliary=False):
         """Initialize with given parameters."""
         self.id = id
         self.logic = logic  # Lambda function for accessibility
         self.bonusBarrel = bonusBarrel  # Uses MinigameType enum
+        self.isAuxiliaryLocation = isAuxiliary  # For when the Location needs to be in a region but not count as in the region (only used for rabbit race glitched as of now)
 
 
 class Event:
