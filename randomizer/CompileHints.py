@@ -1242,6 +1242,7 @@ def compileMicrohints(spoiler: Spoiler):
             hint_text = f"You would be better off looking in {level_list_everything[location.level]} with {kong_list[location.kong]} for this.".upper()
             spoiler.microhints[item.name] = hint_text
 
+
 def AddLoadingZoneHints(spoiler: Spoiler):
     """Add hints for loading zone transitions and their destinations."""
     # One hint for each of the critical areas: Japes, Aztec, Factory

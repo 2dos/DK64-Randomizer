@@ -18,6 +18,7 @@ def getDir(directory):
     """Convert directory into the right format based on where the script is run."""
     return f"{pre}{directory}"
 
+
 def hueShift(im, amount):
     """Apply a hue shift on an image."""
     hsv_im = im.convert("HSV")
@@ -38,7 +39,8 @@ def hueShift(im, amount):
             im_px[x, y] = (new[0], new[1], new[2], new[3])
     return im
 
-def maskImage(im_f, min_y, rgb:list):
+
+def maskImage(im_f, min_y, rgb: list):
     """Apply RGB mask to image."""
     w, h = im_f.size
     converter = ImageEnhance.Color(im_f)
@@ -58,6 +60,7 @@ def maskImage(im_f, min_y, rgb:list):
                     base[channel] = int(mask[channel] * (base[channel] / 255))
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
+
 
 print("Composing complex images")
 number_crop = [
@@ -423,7 +426,7 @@ rain_im_0.save(f"{hash_dir}rainbow_0.png")  # Rainbow Coin
 rain_im_1.save(f"{hash_dir}rainbow_1.png")  # Rainbow Coin
 rain_im_2 = Image.open(f"{hash_dir}modified_coin_side.png")
 rain_im_2 = maskImage(rain_im_2, 0, [42, 79, 112])
-rain_im_2.save(f"{hash_dir}rainbow_2.png") # Rainbow Side
+rain_im_2.save(f"{hash_dir}rainbow_2.png")  # Rainbow Side
 
 # Barrel Skins
 barrel_skin = Image.open(f"{hash_dir}bonus_skin.png")

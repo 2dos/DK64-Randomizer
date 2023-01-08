@@ -18,6 +18,7 @@ from randomizer.Lists.Location import LocationList
 from randomizer.LogicClasses import LocationLogic
 from randomizer.Spoiler import Spoiler
 
+
 def addPatch(patch: DirtPatchData, enum_val: int, name: str):
     """Add patch to relevant Logic Region."""
     level_to_enum = {
@@ -41,15 +42,11 @@ def addPatch(patch: DirtPatchData, enum_val: int, name: str):
         Levels.CreepyCastle: "Castle",
     }
     level_data = level_to_enum[patch.level_name]
-    level_data[patch.logicregion].locations.append(
-        LocationLogic(
-            enum_val,
-            patch.logic
-        )
-    )
+    level_data[patch.logicregion].locations.append(LocationLogic(enum_val, patch.logic))
     LocationList[enum_val].name = f"{level_to_name[patch.level_name]} Dirt Patch ({name})"
     LocationList[enum_val].default_mapid_data[0].map = patch.map_id
     LocationList[enum_val].level = patch.level_name
+
 
 def removePatches():
     """Remove all patches from Logic regions."""
@@ -99,7 +96,7 @@ def ShufflePatches(spoiler: Spoiler, human_spoiler):
     for area_key in total_dirt_patch_list.keys():
         area_dirt = total_dirt_patch_list[area_key]
         select_random_dirt_from_area(area_dirt, 1, spoiler, human_spoiler)
-    
+
     sorted_patches = spoiler.dirt_patch_placement.copy()
     sorted_patches = sorted(sorted_patches, key=lambda d: d["score"])
     for patch_index, patch in enumerate(sorted_patches):
@@ -118,12 +115,7 @@ def select_random_dirt_from_area(area_dirt, amount, spoiler: Spoiler, human_spoi
                 patch.setPatch(True)
                 human_spoiler.append(patch.name)
                 local_map_index = len([x for x in spoiler.dirt_patch_placement if x["map"] == patch.map_id])
-                spoiler.dirt_patch_placement.append({
-                    "name": patch.name,
-                    "map": patch.map_id,
-                    "patch": patch,
-                    "score": (patch.map_id * 100) + local_map_index
-                })
+                spoiler.dirt_patch_placement.append({"name": patch.name, "map": patch.map_id, "patch": patch, "score": (patch.map_id * 100) + local_map_index})
                 area_dirt.remove(selected_patch)
                 break
         if amount > 1:  # if multiple patches are picked, remove patches from the same group, prevent them from being picked

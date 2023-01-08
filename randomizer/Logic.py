@@ -195,7 +195,7 @@ class LogicVarHolder:
         self.ColoredBananas = []
         for i in range(7):
             self.ColoredBananas.append([0] * 5)
-            
+
         self.Coins = [0] * 5
         self.RegularCoins = [0] * 5
         self.RainbowCoins = 0
@@ -606,8 +606,8 @@ class LogicVarHolder:
             added = False
             if collectible.type == Collectibles.coin:
                 # Normal coins, add amount for the kong
-                    self.Coins[collectible.kong] += collectible.amount
-                    self.RegularCoins[collectible.kong] += collectible.amount
+                self.Coins[collectible.kong] += collectible.amount
+                self.RegularCoins[collectible.kong] += collectible.amount
             # Add bananas for correct level for this kong
             elif collectible.type == Collectibles.banana:
                 self.ColoredBananas[level][collectible.kong] += collectible.amount

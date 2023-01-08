@@ -397,11 +397,13 @@ def MiscItemRandoItems():
     itemPool.extend(itertools.repeat(Items.Pearl, 5))
     return itemPool
 
+
 def RainbowCoinItems():
     """Return a list of Rainbow Coins to be placed."""
     itemPool = []
     itemPool.extend(itertools.repeat(Items.RainbowCoin, 16))
     return itemPool
+
 
 def FairyItems():
     """Return a list of Fairies to be placed."""
@@ -409,10 +411,11 @@ def FairyItems():
     itemPool.extend(itertools.repeat(Items.BananaFairy, 20))
     return itemPool
 
+
 def FakeItems():
     """Return a list of Fake Items to be placed."""
     itemPool = []
-    itemPool.extend(itertools.repeat(Items.FakeItem, 10)) # Up to 10 fake items
+    itemPool.extend(itertools.repeat(Items.FakeItem, 10))  # Up to 10 fake items
     return itemPool
 
 

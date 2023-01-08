@@ -84,10 +84,10 @@ file_dict = [
     },
     {"name": "End Sequence Credits", "pointer_table_index": 19, "file_index": 7, "source_file": "assets/Non-Code/credits/credits.bin", "do_not_delete_source": True},
     {
-        "name": "DK Wrinkly Door", 
-        "pointer_table_index": 4, 
-        "file_index": 0xF0, 
-        "source_file": "assets/Non-Code/Gong/hint_door.bin", 
+        "name": "DK Wrinkly Door",
+        "pointer_table_index": 4,
+        "file_index": 0xF0,
+        "source_file": "assets/Non-Code/Gong/hint_door.bin",
         "do_not_delete_source": True,
         "target_compressed_size": 0x1420,
         "target_uncompressed_size": 0x1420,
@@ -326,8 +326,8 @@ for si, s in enumerate(starts):
                 "pointer_table_index": 25,
                 "file_index": s + x,
                 "source_file": f"bp{si}_{x}.bin",
-                "target_compressed_size": 48*42*2,
-                "target_uncompressed_size": 48*42*2,
+                "target_compressed_size": 48 * 42 * 2,
+                "target_uncompressed_size": 48 * 42 * 2,
             }
         )
 
@@ -481,10 +481,10 @@ for song in song_replacements:
 for door in (0xF2, 0xEF, 0x67, 0xF1):
     file_dict.append(
         {
-            "name": f"Wrinkly Door {hex(door)}", 
-            "pointer_table_index": 4, 
-            "file_index": door, 
-            "source_file": f"door{door}.bin", 
+            "name": f"Wrinkly Door {hex(door)}",
+            "pointer_table_index": 4,
+            "file_index": door,
+            "source_file": f"door{door}.bin",
             "target_compressed_size": 0x1420,
             "target_uncompressed_size": 0x1420,
         },
@@ -501,10 +501,10 @@ for ki, kong in enumerate(switches):
     for li, lvl in enumerate(kong):
         file_dict.append(
             {
-                "name": f"Slam Switch (Kong {ki}, Lvl {li})", 
-                "pointer_table_index": 4, 
-                "file_index": lvl, 
-                "source_file": f"switch{lvl}.bin", 
+                "name": f"Slam Switch (Kong {ki}, Lvl {li})",
+                "pointer_table_index": 4,
+                "file_index": lvl,
+                "source_file": f"switch{lvl}.bin",
                 "target_compressed_size": 0xC70,
                 "target_uncompressed_size": 0xC70,
             },
@@ -714,10 +714,23 @@ for change in colorblind_changes:
             }
         )
 barrel_skins = (
-    "dk", "diddy", "lanky", "tiny", "chunky",
-    "bp", "nin_coin", "rw_coin", "key", "crown",
-    "medal", "potion", "bean", "pearl", "fairy",
-    "rainbow", "fakegb",
+    "dk",
+    "diddy",
+    "lanky",
+    "tiny",
+    "chunky",
+    "bp",
+    "nin_coin",
+    "rw_coin",
+    "key",
+    "crown",
+    "medal",
+    "potion",
+    "bean",
+    "pearl",
+    "fairy",
+    "rainbow",
+    "fakegb",
 )
 for bi, b in enumerate(barrel_skins):
     for x in range(2):

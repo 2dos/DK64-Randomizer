@@ -202,10 +202,23 @@ with open(rom_file, "rb") as rom:
                 fh.seek(vtx_addr)
                 fh.write(bp_y.to_bytes(2, "big"))
     barrel_skins = (
-        "dk", "diddy", "lanky", "tiny", "chunky",
-        "bp", "nin_coin", "rw_coin", "key", "crown",
-        "medal", "potion", "bean", "pearl", "fairy",
-        "rainbow", "fakegb",
+        "dk",
+        "diddy",
+        "lanky",
+        "tiny",
+        "chunky",
+        "bp",
+        "nin_coin",
+        "rw_coin",
+        "key",
+        "crown",
+        "medal",
+        "potion",
+        "bean",
+        "pearl",
+        "fairy",
+        "rainbow",
+        "fakegb",
     )
     rom.seek(actor_table + (0x75 << 2))
     model_start = pointer_offset + int.from_bytes(rom.read(4), "big")
@@ -232,7 +245,7 @@ with open(rom_file, "rb") as rom:
     rom.seek(model_start)
     data = rom.read(model_size)
     if indic == 0x1F8B:
-        data = zlib.decompress(data, (15+32))
+        data = zlib.decompress(data, (15 + 32))
     with open("temp.bin", "wb") as fh:
         fh.write(data)
     with open("temp.bin", "r+b") as fh:
@@ -254,7 +267,7 @@ with open(rom_file, "rb") as rom:
     rom.seek(model_start)
     data = rom.read(model_size)
     if indic == 0x1F8B:
-        data = zlib.decompress(data, (15+32))
+        data = zlib.decompress(data, (15 + 32))
     with open("temp.bin", "wb") as fh:
         fh.write(data)
     with open("temp.bin", "r+b") as fh:

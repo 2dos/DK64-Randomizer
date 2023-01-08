@@ -478,8 +478,8 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Bean,  # Bean
                             Types.Pearl,  # Pearl
                             Types.Fairy,  # Fairy
-                            Types.RainbowCoin, # Rainbow Cion
-                            Types.FakeItem, # Fake Item
+                            Types.RainbowCoin,  # Rainbow Cion
+                            Types.FakeItem,  # Fake Item
                             None,  # No Item
                         ]
                         offset = item.old_flag - 549
