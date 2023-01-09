@@ -283,6 +283,13 @@ extern int getKong(int player_index);
 extern int spawnModelTwo(int type, int x_f, int y_f, int z_f, float scale, int id);
 extern void refreshItemVisibility(void);
 
+extern int isBalloonOrPatch(int actor_type);
+extern void getModel2AndActorInfo(void* setup, int** model2_write, int** actor_write);
+extern int isSingleOrBunch(int object_type);
+extern void enableComplexFree(void);
+extern void complexFreeWrapper(void* addr);
+extern void trapPlayer(void);
+
 //vanilla data
 extern float TransitionSpeed;
 extern char CutsceneWillPlay;
@@ -523,6 +530,9 @@ extern unsigned char ArcadeEnableReward;
 
 extern unsigned char CharSpawnerActorSubtypes[113];
 extern charSpawnerActorInfo CharSpawnerActorData[113];
+
+extern unsigned short balloonPatchCounts[221];
+extern unsigned short coloredBananaCounts[8];
 
 //hack data
 extern int TestVariable;

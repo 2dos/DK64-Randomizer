@@ -195,7 +195,11 @@ class LogicVarHolder:
         self.ColoredBananas = []
         for i in range(7):
             self.ColoredBananas.append([0] * 5)
+
         self.Coins = [0] * 5
+        self.RegularCoins = [0] * 5
+        self.RainbowCoins = 0
+        self.SpentCoins = [0] * 5
 
         # These access variables based on current region
         # Shouldn't be checked unless updated directly beforehand
@@ -223,6 +227,11 @@ class LogicVarHolder:
                 prior_kong = room_seq[helm_order[sequence_slot - 1]]
                 return kong_evt[prior_kong] in self.Events
         return Events.HelmDoorsOpened in self.Events
+
+    def UpdateCoins(self):
+        """Update coin total."""
+        for x in range(5):
+            self.Coins[x] = (self.RegularCoins[x] + (5 * self.RainbowCoins)) - self.SpentCoins[x]
 
     def Update(self, ownedItems):
         """Update logic variables based on owned items."""
@@ -311,6 +320,7 @@ class LogicVarHolder:
         self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
         self.BananaMedals = sum(1 for x in ownedItems if x == Items.BananaMedal)
         self.BattleCrowns = sum(1 for x in ownedItems if x == Items.BattleCrown)
+        self.RainbowCoins = sum(1 for x in ownedItems if x == Items.RainbowCoin)
 
         self.camera = self.camera or Items.CameraAndShockwave in ownedItems or Items.Camera in ownedItems
         self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems or Items.Shockwave in ownedItems
@@ -326,7 +336,14 @@ class LogicVarHolder:
         self.Beans = sum(1 for x in ownedItems if x == Items.Bean)
         self.Pearls = sum(1 for x in ownedItems if x == Items.Pearl)
 
+        self.UpdateCoins()
+
         self.bananaHoard = self.bananaHoard or Items.BananaHoard in ownedItems
+
+    def GetCoins(self, kong):
+        """Get Coin Total for a kong."""
+        self.UpdateCoins()
+        return self.Coins[kong]
 
     def CanSlamSwitch(self, level: Levels, default_requirement_level: int):
         """Determine whether the player can operate the necessary slam operation.
@@ -588,13 +605,9 @@ class LogicVarHolder:
         if collectible.enabled:
             added = False
             if collectible.type == Collectibles.coin:
-                # Rainbow coin, add 5 coins for each kong
-                if collectible.kong == Kongs.any:
-                    for i in range(5):
-                        self.Coins[i] += collectible.amount * 5
                 # Normal coins, add amount for the kong
-                else:
-                    self.Coins[collectible.kong] += collectible.amount
+                self.Coins[collectible.kong] += collectible.amount
+                self.RegularCoins[collectible.kong] += collectible.amount
             # Add bananas for correct level for this kong
             elif collectible.type == Collectibles.banana:
                 self.ColoredBananas[level][collectible.kong] += collectible.amount
@@ -623,14 +636,17 @@ class LogicVarHolder:
             if location.kong == Kongs.any:
                 for kong in range(0, 5):
                     self.Coins[kong] -= price
+                    self.SpentCoins[kong] += price
             # If kong specific move, just that kong paid for it
             else:
                 self.Coins[location.kong] -= price
+                self.SpentCoins[location.kong] += price
 
     def GainInfiniteCoins(self):
         """Add an arbitrarily large amount of coins to the current game state so as to effectively ignore any coin requirements."""
         for i in range(len(self.Coins)):
             self.Coins[i] += 10000
+            self.RegularCoins[i] += 10000
 
     @staticmethod
     def HasAccess(region, kong):

@@ -3,7 +3,7 @@
 import os
 
 import PIL
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageEnhance
 
 pre = "../"
 cwd = os.getcwd()
@@ -17,6 +17,49 @@ if last_part.upper() == "BUILD":
 def getDir(directory):
     """Convert directory into the right format based on where the script is run."""
     return f"{pre}{directory}"
+
+
+def hueShift(im, amount):
+    """Apply a hue shift on an image."""
+    hsv_im = im.convert("HSV")
+    im_px = im.load()
+    w, h = hsv_im.size
+    hsv_px = hsv_im.load()
+    for y in range(h):
+        for x in range(w):
+            old = list(hsv_px[x, y]).copy()
+            old[0] = (old[0] + amount) % 360
+            hsv_px[x, y] = (old[0], old[1], old[2])
+    rgb_im = hsv_im.convert("RGB")
+    rgb_px = rgb_im.load()
+    for y in range(h):
+        for x in range(w):
+            new = list(rgb_px[x, y])
+            new.append(list(im_px[x, y])[3])
+            im_px[x, y] = (new[0], new[1], new[2], new[3])
+    return im
+
+
+def maskImage(im_f, min_y, rgb: list):
+    """Apply RGB mask to image."""
+    w, h = im_f.size
+    converter = ImageEnhance.Color(im_f)
+    im_f = converter.enhance(0)
+    im_dupe = im_f.crop((0, min_y, w, h))
+    brightener = ImageEnhance.Brightness(im_dupe)
+    im_dupe = brightener.enhance(2)
+    im_f.paste(im_dupe, (0, min_y), im_dupe)
+    pix = im_f.load()
+    mask = rgb.copy()
+    w, h = im_f.size
+    for x in range(w):
+        for y in range(min_y, h):
+            base = list(pix[x, y])
+            if base[3] > 0:
+                for channel in range(3):
+                    base[channel] = int(mask[channel] * (base[channel] / 255))
+                pix[x, y] = (base[0], base[1], base[2], base[3])
+    return im_f
 
 
 print("Composing complex images")
@@ -369,6 +412,22 @@ Image.open(f"{hash_dir}medal.png").resize(dim).save(f"{arcade_dir}medal.png")  #
 Image.open(f"{hash_dir}rainbow_coin.png").resize(dim).save(f"{arcade_dir}rainbow.png")  # Rainbow Coin
 Image.open(f"{hash_dir}rw_coin.png").resize(dim).save(f"{arcade_dir}rwcoin.png")  # Rareware Coin
 
+# Fake GB Sprite
+gb_im = Image.open(f"{hash_dir}gb.png")
+gb_im = hueShift(gb_im, 10)
+gb_im.save(f"{disp_dir}fake_gb.png")
+
+Image.open(f"{hash_dir}rainbow_coin.png").resize((32, 32)).save(f"{disp_dir}rainbow_coin.png")  # Rainbow Coin
+rain_im = Image.open(f"{hash_dir}rainbow_coin_noflip.png")
+rain_im = rain_im.crop((6, 3, 42, 40)).resize((64, 64))
+rain_im_0 = rain_im.crop((0, 0, 32, 64))
+rain_im_1 = rain_im.crop((32, 0, 64, 64))
+rain_im_0.save(f"{hash_dir}rainbow_0.png")  # Rainbow Coin
+rain_im_1.save(f"{hash_dir}rainbow_1.png")  # Rainbow Coin
+rain_im_2 = Image.open(f"{hash_dir}modified_coin_side.png")
+rain_im_2 = maskImage(rain_im_2, 0, [42, 79, 112])
+rain_im_2.save(f"{hash_dir}rainbow_2.png")  # Rainbow Side
+
 # Barrel Skins
 barrel_skin = Image.open(f"{hash_dir}bonus_skin.png")
 barrel_top = barrel_skin.crop((14, 0, 15, 32))
@@ -395,6 +454,8 @@ skins = {
     "bean": ("bean32", None, "displays"),
     "pearl": ("pearl32", None, "displays"),
     "fairy": ("fairy", None, "hash"),
+    "rainbow": ("rainbow_coin", None, "hash"),
+    "fakegb": ("fake_gb", None, "displays"),
 }
 for skin_type in skins:
     skin_data = list(skins[skin_type])
@@ -471,6 +532,10 @@ num2_base.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}num_2.png"
 
 Image.open(f"{hash_dir}fairy.png").save(f"{disp_dir}fairy.png")
 
+gb_shine = Image.open(f"{hash_dir}gb_shine.png")
+gb_shine = hueShift(gb_shine, 10)
+gb_shine.save(f"{disp_dir}gb_shine.png")
+
 rmve = [
     "01234.png",
     "56789.png",
@@ -495,6 +560,8 @@ rmve = [
     "nin_coin_noresize.png",
     "PQRS.png",
     "rw_coin_noresize.png",
+    "gb_shine.png",
+    "rainbow_coin_noflip.png",
 ]
 for kong in kongs:
     for x in range(2):

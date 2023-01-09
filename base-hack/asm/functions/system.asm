@@ -56,3 +56,8 @@
 .definelabel getParentIndex, 0x80600080
 .definelabel parseCheats, 0x806F833C
 .definelabel updateFilePercentage, 0x806ABE3C
+.definelabel isBalloonOrPatch, 0x80688C84
+.definelabel getModel2AndActorInfo, 0x80631F58
+.definelabel isSingleOrBunch, 0x80631EB8
+.definelabel enableComplexFree, 0x8066B424
+.definelabel complexFreeWrapper, 0x8066B434

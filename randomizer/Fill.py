@@ -190,7 +190,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                             # In search mode GetReachableWithControlledPurchases, only allowed to purchase at locations from what is passed in as "purchaseList"
                             LogicVariables.PurchaseShopItem(location.id)
                         elif location.id == Locations.NintendoCoin:
-                            LogicVariables.Coins[Kongs.donkey] -= 2  # Subtract 2 coins for arcade lever
+                            LogicVariables.SpentCoins[Kongs.donkey] += 2  # Spend Two Coins for arcade lever
                         newLocations.add(location.id)
                 # Check accessibility for each exit in this region
                 exits = region.exits.copy()
@@ -309,6 +309,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
         itemsToPurchase = [LocationList[x].item for x in locationsToPurchase]
         coinsSpent = GetMaxCoinsSpent(settings, locationsToPurchase)
         coinsNeeded = [maxCoins[kong] - coinsSpent[kong] for kong in range(0, 5)]
+        LogicVariables.UpdateCoins()
         coinsBefore = LogicVariables.Coins.copy()
         # print("Coins owned during search: " + str(coinsBefore))
         # print("Coins needed during search: " + str(coinsNeeded))
@@ -350,6 +351,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
             tempLocationsToPurchase.append(shopLocation)
             Reset()
             reachableAfter: list = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithControlledPurchases, tempLocationsToPurchase)
+            LogicVariables.UpdateCoins()
             coinsAfter = LogicVariables.Coins.copy()
             # Calculate the coin differential
             coinDifferential = [0, 0, 0, 0, 0]
@@ -559,8 +561,9 @@ def CalculateWothPaths(spoiler, WothLocations):
                 # If we remove anything, we have to check the whole list again
                 anything_removed = True
                 break
-    LogicVariables.pathMode = False  # Don't carry this pathMode flag beyond this method ever
-    spoiler.settings.open_lobbies = old_open_lobbies_temp  # Undo the open lobbies setting change too
+    if spoiler.settings.shuffle_loading_zones != "all":
+        LogicVariables.pathMode = False  # Don't carry this pathMode flag beyond this method ever
+        spoiler.settings.open_lobbies = old_open_lobbies_temp  # Undo the open lobbies setting change too
 
 
 def CalculateFoolish(spoiler, WothLocations):
@@ -573,11 +576,12 @@ def CalculateFoolish(spoiler, WothLocations):
     if spoiler.settings.training_barrels != "normal":
         # I don't trust oranges quite yet - you can put an item in Diddy's upper cabin and it might think oranges is foolish still
         majorItems.extend([Items.Vines, Items.Swim, Items.Barrels])
-    if spoiler.settings.shockwave_status == "shuffled":
+    if spoiler.settings.shockwave_status != "shuffled_decoupled":
         majorItems.append(Items.CameraAndShockwave)
     if spoiler.settings.shockwave_status == "shuffled_decoupled":
         majorItems.append(Items.Camera)
-        # majorItems.append(Items.Shockwave)  # Shockwave foolish is virtually useless until we get rainbow coins in the pool
+        if spoiler.settings.shuffle_items and Types.RainbowCoin in spoiler.settings.shuffled_location_types:
+            majorItems.append(Items.Shockwave)  # Shockwave foolish is virtually useless to hint as foolish unless rainbow coins are in the pool
     for item in majorItems:
         # If this item is in the WotH, it can't possibly be foolish so we can skip it
         if item in wothItems:
@@ -599,6 +603,8 @@ def CalculateFoolish(spoiler, WothLocations):
     majorItems.extend(ItemPool.Keys())
     majorItems.extend(ItemPool.Kongs(spoiler.settings))
     majorItems.append(Items.Oranges)  # Again, not comfortable foolishing oranges yet
+    if spoiler.settings.shockwave_status == "shuffled_decoupled" and (not spoiler.settings.shuffle_items or Types.RainbowCoin not in spoiler.settings.shuffled_location_types):
+        majorItems.append(Items.Shockwave)  # Make sure shockwave counts as a major item when calculating foolish regions
     requires_rareware = spoiler.settings.coin_door_item == "vanilla"
     requires_nintendo = spoiler.settings.coin_door_item == "vanilla"
     requires_crowns = spoiler.settings.crown_door_item in ("vanilla", "req_crown") or spoiler.settings.coin_door_item == "req_crown"
@@ -1052,7 +1058,12 @@ def Fill(spoiler):
         Reset()
         fairyUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.FairyItems(), [])
         if fairyUnplaced > 0:
-            raise Ex.ItemPlacementException(str(fairyUnplaced) + "unplaced Fairies.")
+            raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced Fairies.")
+    if Types.RainbowCoin in spoiler.settings.shuffled_location_types:
+        Reset()
+        rcoinUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.RainbowCoinItems(), [])
+        if rcoinUnplaced > 0:
+            raise Ex.ItemPlacementException(str(rcoinUnplaced) + " unplaced Rainbow Coins.")
     if Types.Bean in spoiler.settings.shuffled_location_types:
         Reset()
         miscUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.MiscItemRandoItems(), [])
@@ -1064,6 +1075,12 @@ def Fill(spoiler):
         gbsUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.GoldenBananaItems(), [])
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced GBs.")
+    # Fill in fake items
+    if Types.FakeItem in spoiler.settings.shuffled_location_types:
+        Reset()
+        fakeUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.FakeItems(), [])
+        # Don't raise exception if unplaced fake items
+
     # Some locations require special care to make logic work correctly
     # This is the only location that cares about None vs NoItem - it needs to be None so it fills correctly but NoItem for logic to generate progression correctly
     if LocationList[Locations.JapesDonkeyFreeDiddy].item is None:

@@ -284,7 +284,7 @@ sprite_data_struct bean_sprite = {
 	.width = 64,
 	.height = 32,
 	.image_count = 1,
-	.images = 6020,
+	.images = {6020},
 };
 
 sprite_data_struct pearl_sprite = {
@@ -297,7 +297,20 @@ sprite_data_struct pearl_sprite = {
 	.width = 32,
 	.height = 32,
 	.image_count = 1,
-	.images = 6021,
+	.images = {6021},
+};
+
+sprite_data_struct krool_sprite = {
+	.unk0 = 0xC6,
+	.images_per_frame_horizontal = 2,
+	.images_per_frame_vertical = 1,
+	.codec = 2,
+	.unk8 = -1,
+	.table = 1,
+	.width = 32,
+	.height = 64,
+	.image_count = 2,
+	.images = {0x383, 0x384},
 };
 
 void giveGB(int kong, int level) {
@@ -310,4 +323,10 @@ void giveGB(int kong, int level) {
 	// 		*counter = *counter + 1;
 	// 	}
 	// }
+}
+
+void giveRainbowCoin(void) {
+	for (int i = 0; i < 5; i++) {
+		MovesBase[i].coins += 5;
+	}
 }

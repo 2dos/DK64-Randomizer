@@ -226,3 +226,6 @@
 
 .definelabel CharSpawnerActorSubtypes, 0x80755698
 .definelabel CharSpawnerActorData, 0x8075EB80
+
+.definelabel balloonPatchCounts, 0x807FC408
+.definelabel coloredBananaCounts, 0x807F6150

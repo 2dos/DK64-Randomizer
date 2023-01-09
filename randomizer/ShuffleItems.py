@@ -108,7 +108,12 @@ move_list = {
 
 def ShuffleItems(spoiler: Spoiler):
     """Shuffle items into assortment."""
-    progressive_move_flag_dict = {Items.ProgressiveSlam: [0x290, 0x291], Items.ProgressiveAmmoBelt: [0x292, 0x293], Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296]}
+    progressive_move_flag_dict = {
+        Items.ProgressiveSlam: [0x290, 0x291],
+        Items.ProgressiveAmmoBelt: [0x292, 0x293],
+        Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
+        Items.FakeItem: list(range(0x2AE, 0x2BE)),
+    }
     flag_dict = {}
     locations_not_needing_flags = []
     locations_needing_flags = []
@@ -164,8 +169,8 @@ def ShuffleItems(spoiler: Spoiler):
                 location_selection.new_item = new_item.type
                 location_selection.new_kong = new_item.kong
                 # If this item has a dedicated specific flag, then set it now (Keys and Coins right now)
-                if new_item.rando_flag is not None:
-                    if new_item.rando_flag == -1:  # This means it's a progressive move and they need special flags
+                if new_item.rando_flag is not None or new_item.type == Types.FakeItem:
+                    if new_item.rando_flag == -1 or new_item.type == Types.FakeItem:  # This means it's a progressive move or fake item and they need special flags
                         location_selection.new_flag = progressive_move_flag_dict[item_location.item].pop()
                     else:
                         location_selection.new_flag = new_item.rando_flag

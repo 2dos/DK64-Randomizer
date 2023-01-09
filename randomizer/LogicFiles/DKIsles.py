@@ -36,6 +36,8 @@ LogicRegions = {
         LocationLogic(Locations.IslesSwimTrainingBarrel, lambda l: True),
         LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: True),
         LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: True),
+        LocationLogic(Locations.RainbowCoin_Location13, lambda l: l.shockwave),
+        LocationLogic(Locations.RainbowCoin_Location14, lambda l: l.shockwave and (l.vines or l.CanMoonkick())),  # Banana Hoard patch
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesStartToMain),
         TransitionFront(Regions.Treehouse, lambda l: True, Transitions.IslesStartToTreehouse),
@@ -53,6 +55,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesChunkyPoundtheX, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.hunkyChunky and l.Slam and l.chunky),
         LocationLogic(Locations.IslesBananaFairyIsland, lambda l: l.camera),
         LocationLogic(Locations.IslesBananaFairyCrocodisleIsle, lambda l: l.camera and ((l.monkeyport and l.tiny) or l.tbs)),
+        LocationLogic(Locations.RainbowCoin_Location04, lambda l: l.shockwave),
     ], [
         Event(Events.IslesChunkyBarrelSpawn, lambda l: (l.monkeyport or l.tbs) and l.saxophone and l.tiny),
     ], [
@@ -82,6 +85,7 @@ LogicRegions = {
 
     Regions.Prison: Region("Prison", "Krem Isle", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesLankyPrisonOrangsprint, lambda l: (l.sprint and l.islanky) or (l.phasewalk and (l.islanky or l.settings.free_trade_items))),
+        LocationLogic(Locations.RainbowCoin_Location12, lambda l: l.shockwave),
     ], [
         Event(Events.KLumsyTalkedTo, lambda l: True),
         Event(Events.JapesKeyTurnedIn, lambda l: l.JapesKey),
@@ -180,6 +184,8 @@ LogicRegions = {
     Regions.CabinIsle: Region("Cabin Isle", "DK Isle", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesDiddyCagedBanana, lambda l: ((Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack) or (l.advanced_platforming and (l.isdiddy or l.isdonkey or (l.istiny and l.twirl) or l.ischunky))) and (l.peanut or l.phasewalk) and l.isdiddy),
         LocationLogic(Locations.IslesDiddySummit, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
+        LocationLogic(Locations.RainbowCoin_Location03, lambda l: l.shockwave),
+        LocationLogic(Locations.RainbowCoin_Location05, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.jetpack and l.isdiddy and l.shockwave),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.IslesMainToForestLobby),
@@ -221,6 +227,7 @@ LogicRegions = {
         LocationLogic(Locations.CastleLankyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.CastleTinyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.CastleChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
+        LocationLogic(Locations.RainbowCoin_Location15, lambda l: l.shockwave and ((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl))),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesCastleLobbyToMain),
         TransitionFront(Regions.CreepyCastleMain, lambda l: l.IsLevelEnterable(Levels.CreepyCastle), Transitions.IslesToCastle),

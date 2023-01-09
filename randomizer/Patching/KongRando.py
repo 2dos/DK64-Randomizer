@@ -30,7 +30,7 @@ def apply_kongrando_cosmetic(spoiler: Spoiler):
 
     if spoiler.settings.kong_rando:
         gunswitches = [0x129, 0x126, 0x128, 0x127, 0x125]
-        greenslamswitches = [0x94, 0x93, 0x95, 0x96, 0x92]
+        greenslamswitches = [0x94, 0x93, 0x95, 0x96, 0xB8]
         instrumentpads = [0xA8, 0xA9, 0xAC, 0xAA, 0xAB]
         forceSwitches = [0xE3, 0xE3, 0xE3, 0xE3, 0x70]
         actors = [Enemies.CutsceneDK, Enemies.CutsceneDiddy, Enemies.CutsceneLanky, Enemies.CutsceneTiny, Enemies.CutsceneChunky]

@@ -162,6 +162,8 @@ typedef enum counter_items {
 	/* 0x010 */ COUNTER_BEAN,
 	/* 0x011 */ COUNTER_PEARL,
 	/* 0x012 */ COUNTER_FAIRY,
+	/* 0x013 */ COUNTER_RAINBOWCOIN,
+	/* 0x014 */ COUNTER_FAKEITEM,
 } counter_items;
 
 int getCounterItem(int shop_index, int kong, int level) {
@@ -201,6 +203,10 @@ int getCounterItem(int shop_index, int kong, int level) {
 						return COUNTER_PEARL;
 					} else if ((flag >= FLAG_FAIRY_1) && (flag < (FLAG_FAIRY_1 + 20))) {
 						return COUNTER_FAIRY;
+					} else if ((flag >= FLAG_RAINBOWCOIN_0) && (flag < (FLAG_RAINBOWCOIN_0 + 16))) {
+						return COUNTER_RAINBOWCOIN;
+					} else if ((flag >= FLAG_FAKEITEM) && (flag < (FLAG_FAKEITEM + 16))) {
+						return COUNTER_FAKEITEM;
 					} else {
 						if ((flag == FLAG_TBARREL_BARREL) || (flag == FLAG_TBARREL_DIVE) || (flag == FLAG_TBARREL_ORANGE) || (flag == FLAG_TBARREL_VINE)) {
 							return COUNTER_POTION;
@@ -306,10 +312,10 @@ void updateCounterDisplay(void) {
 	if (paad->cap > 0) {
 		int kong_image = paad->kong_images[index];
 		int item_image = paad->item_images[index];
-		if ((kong_image < 0) || (kong_image > 0x12)) {
+		if ((kong_image < 0) || (kong_image > 0x14)) {
 			kong_image = 0;
 		}
-		if ((item_image < 0) || (item_image > 0x12)) {
+		if ((item_image < 0) || (item_image > 0x14)) {
 			item_image = 0;
 		}
 		if (paad->use_item_display) {

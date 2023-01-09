@@ -121,6 +121,10 @@ def AllItems(settings):
         allItems.extend(MiscItemRandoItems())
     if Types.Fairy in settings.shuffled_location_types:
         allItems.extend(FairyItems())
+    if Types.RainbowCoin in settings.shuffled_location_types:
+        allItems.extend(RainbowCoinItems())
+    if Types.FakeItem in settings.shuffled_location_types:
+        allItems.extend(FakeItems())
     if settings.move_rando != "off":
         allItems.extend(DonkeyMoves)
         allItems.extend(DiddyMoves)
@@ -394,10 +398,24 @@ def MiscItemRandoItems():
     return itemPool
 
 
+def RainbowCoinItems():
+    """Return a list of Rainbow Coins to be placed."""
+    itemPool = []
+    itemPool.extend(itertools.repeat(Items.RainbowCoin, 16))
+    return itemPool
+
+
 def FairyItems():
     """Return a list of Fairies to be placed."""
     itemPool = []
     itemPool.extend(itertools.repeat(Items.BananaFairy, 20))
+    return itemPool
+
+
+def FakeItems():
+    """Return a list of Fake Items to be placed."""
+    itemPool = []
+    itemPool.extend(itertools.repeat(Items.FakeItem, 10))  # Up to 10 fake items
     return itemPool
 
 

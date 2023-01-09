@@ -22,6 +22,7 @@ class Types(IntEnum):
     Bean = auto()
     Pearl = auto()
     RainbowCoin = auto()
+    FakeItem = auto()
     Hint = auto()
 
 
@@ -35,7 +36,9 @@ ItemRandoSelector = [
     {"name": "Nintendo/Rareware Coins", "value": "coin", "tooltip": ""},
     {"name": "Kongs", "value": "kong", "tooltip": ""},
     {"name": "Fairies", "value": "fairy", "tooltip": ""},
+    {"name": "Rainbow Coins", "value": "rainbowcoin", "tooltip": ""},
     {"name": "Miscellaneous Items", "value": "beanpearl", "tooltip": ""},
+    {"name": "Ice Traps", "value": "fakeitem", "tooltip": ""},
 ]
 
 KeySelector = [

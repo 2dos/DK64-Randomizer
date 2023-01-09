@@ -111,7 +111,8 @@ LogicRegions = {
     ]),
 
     Regions.Lighthouse: Region("Lighthouse", "Lighthouse Area", Levels.GloomyGalleon, False, -1, [
-        LocationLogic(Locations.GalleonDonkeyLighthouse, lambda l: Events.ActivatedLighthouse in l.Events and (l.isdonkey or l.settings.free_trade_items))
+        LocationLogic(Locations.GalleonDonkeyLighthouse, lambda l: Events.ActivatedLighthouse in l.Events and (l.isdonkey or l.settings.free_trade_items)),
+        LocationLogic(Locations.RainbowCoin_Location09, lambda l: l. shockwave),
     ], [
         Event(Events.ActivatedLighthouse, lambda l: l.settings.high_req or (l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.grab and l.isdonkey)),
     ], [

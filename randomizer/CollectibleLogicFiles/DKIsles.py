@@ -10,16 +10,16 @@ from randomizer.LogicClasses import Collectible
 LogicRegions = {
     Regions.TrainingGrounds: [
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # Cave
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # Cave
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.vines and l.shockwave, None, ),  # Banana hoard
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # Cave
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.vines and l.shockwave, None, ),  # Banana hoard
 
     ],
     Regions.IslesMain: [
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # Below Caves lobby
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and l.jetpack, None, ),  # On Aztec lobby
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # Below Caves lobby
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and l.jetpack, None, ),  # On Aztec lobby
     ],
     Regions.Prison: [
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # K. Lumsy
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # K. Lumsy
 
     ],
     Regions.BananaFairyRoom: [
@@ -44,7 +44,7 @@ LogicRegions = {
 
     ],
     Regions.CabinIsle: [
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # In front of fungi lobby
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # In front of fungi lobby
 
     ],
     Regions.FungiForestLobby: [
@@ -54,7 +54,7 @@ LogicRegions = {
 
     ],
     Regions.CreepyCastleLobby: [
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.balloon and l.islanky) or l.CanMoonkick()), None, ),  # In Castle lobby
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.balloon and l.islanky) or l.CanMoonkick()), None, ),  # In Castle lobby
 
     ],
     Regions.HideoutHelmLobby: [

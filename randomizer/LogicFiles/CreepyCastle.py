@@ -24,6 +24,7 @@ LogicRegions = {
         LocationLogic(Locations.CastleDiddyAboveCastle, lambda l: l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.CastleKasplatHalfway, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.CastleKasplatLowerLedge, lambda l: not l.settings.kasplat_rando),
+        LocationLogic(Locations.RainbowCoin_Location11, lambda l: l.shockwave),
     ], [
         Event(Events.CastleEntered, lambda l: True),
     ], [

@@ -101,7 +101,7 @@ LogicRegions = {
     Regions.GiantKosha: [
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 4),
 
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),
     ],
     Regions.DonkeyIgloo: [

@@ -582,6 +582,8 @@ move_names = [
     {"name": "Tiny Kong", "move_type": "item"},  # 84
     {"name": "Chunky Kong", "move_type": "item"},  # 85
     {"name": "Banana Fairy", "move_type": "item"},  # 86
+    {"name": "Rainbow Coin", "move_type": "item"},  # 87
+    {"name": "Fake Item", "move_type": "item"},  # 88
 ]
 
 move_names_arr = []
