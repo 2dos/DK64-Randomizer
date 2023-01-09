@@ -51,10 +51,14 @@ def ShuffleCrowns(crown_selection, human_crowns):
                         crown_data[crown_index] = 1
                         isles_placed[1] = True
                     else:
-                        crown.placement_index = 0
+                        crown.placement_subindex = 0
                         crown_data[crown_index] = 0
                         isles_placed[0] = True
         crown_selection[level] = crown_data
+        # In the event that the second crown on the list is IslesBattleArena2, reverse the list
+        # because after this, the first crown on the list will get the logic for IslesBattleArena2
+        if len(crowns) == 2 and CrownLocations[level][crowns[1]].placement_subindex == 0:
+            crowns.reverse()
         for crown_index, crown in enumerate(crowns):
             crown_name = level.name
             if level == Levels.DKIsles:
