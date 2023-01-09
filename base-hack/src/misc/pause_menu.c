@@ -453,6 +453,31 @@ void initPauseMenu(void) {
         // *(int*)(0x806AA860) = 0x31EF0007; // ANDI $t7, $t7, 7 - Show GB (Kong Specific)
         // *(int*)(0x806AADC4) = 0x33390007; // ANDI $t9, $t9, 7 - Show GB (All Kongs)
         // *(int*)(0x806AADC8) = 0xAFB90058; // SW $t9, 0x58 ($sp) - Show GB (All Kongs)
-
     }
+    // Prevent GBs being required to view extra screens
+    *(int*)(0x806A8624) = 0; // GBs doesn't lock other pause screens
+    *(int*)(0x806AB468) = 0; // Show R/Z Icon
+    *(int*)(0x806AB318) = 0x24060001; // ADDIU $a2, $r0, 1
+    *(int*)(0x806AB31C) = 0xA466C83C; // SH $a2, 0xC83C ($v1) | Overwrite trap func, Replace with overwrite of wheel segments
+    *(short*)(0x8075056C) = 201; // Change GB Item cap to 201
+    // In-Level IGT
+    *(int*)(0x8060DF28) = 0x0C000000 | (((int)&updateLevelIGT & 0xFFFFFF) >> 2); // Modify Function Call
+    *(int*)(0x806ABB0C) = 0x0C000000 | (((int)&printLevelIGT & 0xFFFFFF) >> 2); // Modify Function Call
+    *(short*)(0x806ABB32) = 106; // Adjust kong name height
+    // Pause Totals/Checks Revamp
+    *(int*)(0x806AB3C4) = 0x0C000000 | (((int)&updatePauseScreenWheel & 0xFFFFFF) >> 2); // Change Wheel to scroller
+    *(int*)(0x806AB3B4) = 0xAFB00018; // SW $s0, 0x18 ($sp). Change last param to index
+    *(int*)(0x806AB3A0) = 0xAFA90014; // SW $t1, 0x14 ($sp). Change 2nd-to-last param to local index
+    *(int*)(0x806AB444) = 0; // Prevent joystick sprite rendering
+    *(int*)(0x806AB528) = 0x0C000000 | (((int)&handleSpriteCode & 0xFFFFFF) >> 2); // Change sprite control function
+    *(int*)(0x806AB52C) = 0x8FA40060; // LW $a0, 0x60 ($sp). Change param
+    *(short*)(0x806A8DB2) = 0x0029; // Swap left/right direction
+    *(short*)(0x806A8DBA) = 0xFFD8; // Swap left/right direction
+    *(short*)(0x806A8DB4) = 0x5420; // BEQL -> BNEL
+    *(short*)(0x806A8DF0) = 0x1020; // BNE -> BEQ
+    *(int*)(0x806A9F74) = 0x0C000000 | (((int)&pauseScreen3And4ItemName & 0xFFFFFF) >> 2); // Item Name
+    // Disable Item Checks
+    *(int*)(0x806AB2E8) = 0;
+    *(int*)(0x806AB360) = 0;
+    *(short*)(0x806ABFCE) = FLAG_BP_JAPES_DK_HAS; // Change BP trigger to being collecting BP rather than turning it in
 }

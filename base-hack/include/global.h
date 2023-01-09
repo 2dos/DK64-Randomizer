@@ -274,6 +274,12 @@ extern void initBarrelChange(void);
 extern void initIceTrap(void);
 extern int getPatchWorld(int index);
 
+extern void initItemRando(void);
+extern void initFiles(void);
+extern void initQoL(void);
+extern void initCosmetic(void);
+extern void populatePatchItem(int id, int map, int index, int world);
+
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
 extern const short kong_flags[5];
