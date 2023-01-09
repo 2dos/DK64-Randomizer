@@ -60,7 +60,7 @@ LogicRegions = {
     Regions.ChunkyRoomPlatform: [
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 3),
 
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
     ],
     Regions.PowerHut: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 3),

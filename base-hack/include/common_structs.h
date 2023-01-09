@@ -231,7 +231,9 @@ typedef struct playerData {
 	/* 0x370 */ int strong_kong_ostand_bitfield;
 	/* 0x374 */ char unk_374[0x37D-0x374];
 	/* 0x37D */ unsigned char rambi_enabled;
-	/* 0x37E */ char unk_37E[0x3BC - 0x37E];
+	/* 0x37E */ char unk_37E[0x380 - 0x37E];
+	/* 0x380 */ short trap_bubble_timer;
+	/* 0x382 */ char unk_382[0x3BC - 0x382];
 	/* 0x3BC */ unsigned short try_again_timer;
 	/* 0x3BE */ unsigned char detransform_timer;
 } playerData; //size 0x630
@@ -1380,7 +1382,7 @@ typedef struct sprite_data_struct {
 	/* 0x00E */ short width;
 	/* 0x010 */ short height;
 	/* 0x012 */ short image_count;
-	/* 0x014 */ short images;
+	/* 0x014 */ short images[];
 } sprite_data_struct;
 
 typedef struct item_conversion_info {

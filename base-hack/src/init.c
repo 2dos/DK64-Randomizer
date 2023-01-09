@@ -95,11 +95,19 @@ void expandSaveFile(int static_expansion, int actor_count) {
 	*(short*)(0x80688BCE) = 0x320 + static_expansion; // Reallocated to just before model 2 block
 }
 
+typedef struct patch_db_item {
+	/* 0x000 */ short id;
+	/* 0x002 */ unsigned char map;
+	/* 0x003 */ unsigned char world;
+} patch_db_item;
+
 static unsigned char bp_item_table[40] = {};
 static unsigned char medal_item_table[40] = {};
 static unsigned char crown_item_table[10] = {};
 static unsigned char key_item_table[8] = {};
 static short fairy_item_table[20] = {};
+static unsigned char rcoin_item_table[16] = {};
+static patch_db_item patch_flags[16] = {};
 bonus_barrel_info bonus_data[95] = {};
 
 int getBPItem(int index) {
@@ -137,10 +145,86 @@ int getFairyModel(int flag) {
 	return 0x3D;
 }
 
+int getRainbowCoinItem(int old_flag) {
+	// return TestVariable;
+	return rcoin_item_table[old_flag - FLAG_RAINBOWCOIN_0];
+}
+
+int getPatchFlag(int id) {
+	for (int i = 0; i < 16; i++) {
+		if (CurrentMap == patch_flags[i].map) {
+			if (id == patch_flags[i].id) {
+				return FLAG_RAINBOWCOIN_0 + i;
+			}
+		}
+	}
+	return 0;
+}
+
+int getPatchWorld(int index) {
+	return patch_flags[index].world;
+}
+
+static char boot_speedup_done = 0;
+
+void bootSpeedup(void) {
+	if (!boot_speedup_done) {
+		boot_speedup_done = 1;
+		int balloon_patch_count = 0;
+		for (int j = 0; j < 8; j++) {
+			coloredBananaCounts[j] = 0;
+		}
+		int patch_index = 0;
+		for (int i = 0; i < 221; i++) {
+			balloonPatchCounts[i] = balloon_patch_count;
+			int* setup = getMapData(9,i,1,1);
+			char* modeltwo_setup = 0;
+			char* actor_setup = 0;
+			if (setup) {
+				int world = getWorld(i,1);
+				getModel2AndActorInfo(setup,(int**)&modeltwo_setup,(int**)&actor_setup);
+				int model2_count = *(int*)(modeltwo_setup);
+				int actor_count = *(int*)(actor_setup);
+				char* focused_actor = (char*)(actor_setup + 4);
+				char* focused_model2 = (char*)(modeltwo_setup + 4);
+				if (actor_count > 0) {
+					for (int j = 0; j < actor_count; j++) {
+						int actor = *(short*)((int)focused_actor + 0x32) + 0x10;
+						balloon_patch_count += isBalloonOrPatch(actor);
+						if ((Rando.item_rando) && (actor == 139)) {
+							patch_flags[patch_index].map = i;
+							patch_flags[patch_index].id = *(short*)((int)focused_actor + 0x34);
+							if (isLobby(i)) {
+								patch_flags[patch_index].world = 7;
+							} else {
+								patch_flags[patch_index].world = levelIndexMapping[i];
+							}
+							patch_index += 1;
+						}
+						focused_actor += 0x38;
+					}
+				}
+				if (model2_count > 0) {
+					for (int j = 0; j < model2_count; j++) {
+						coloredBananaCounts[world] += isSingleOrBunch(*(unsigned short*)(focused_model2 + 0x28));
+						focused_model2 += 0x30;
+					}
+				}
+				enableComplexFree();
+				complexFreeWrapper(setup);
+			}
+		}
+	}
+}
+
 void initHack(int source) {
 	if (LoadedHooks == 0) {
 		if ((source == 1) || (CurrentMap == 0x28)) {
 			DebugInfoOn = 1;
+			// Faster Boot
+			*(int*)(0x805FEB00) = 0x0C000000 | (((int)&bootSpeedup & 0xFFFFFF) >> 2); // Modify Function Call
+			*(int*)(0x805FEB08) = 0; // Cancel 2nd check
+			// Starting map rando
 			int starting_map_rando_on = 1;
 			if (Rando.starting_map == 0) {
 				// Default
@@ -268,7 +352,6 @@ void initHack(int source) {
 			replace_zones(1);
 			randomize_bosses();
 			loadExtraHooks();
-			no_enemy_drops();
 			// Moves & Prices
 			fixTBarrelsAndBFI(1);
 			// Place Move Data
@@ -684,6 +767,7 @@ void initHack(int source) {
 			initActor(172, &beanCode, ACTORMASTER_SPRITE, 0x11);
 			initActor(174, &pearlCode, ACTORMASTER_SPRITE, 0x11);
 			initActor(88, &fairyDuplicateCode, ACTORMASTER_3D, 0x11);
+			initActor(217, &FakeGBCode, ACTORMASTER_3D, 0x11);
 			// Any Kong Items
 			if (Rando.any_kong_items & 1) {
 				// All excl. Blueprints
@@ -746,73 +830,14 @@ void initHack(int source) {
 				*(int*)(0x80727C10) = 0x0C000000 | (((int)&spawnCharSpawnerActor & 0xFFFFFF) >> 2); // Spawn 4
 				*(int*)(0x80727C14) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
 				*(int*)(0x806C5F04) = 0x0C000000 | (((int)&giveFairyItem & 0xFFFFFF) >> 2); // Fairy Flag Set
+				// Rainbow Coins
+				*(int*)(0x806A2268) = 0x0C000000 | (((int)&spawnDirtPatchReward & 0xFFFFFF) >> 2); // Spawn Reward
+				*(int*)(0x806A222C) = 0x0C000000 | (((int)&getPatchFlag & 0xFFFFFF) >> 2); // Get Patch Flags
+				*(int*)(0x806A2058) = 0x0C000000 | (((int)&getPatchFlag & 0xFFFFFF) >> 2); // Get Patch Flags
+				*(short*)(0x80688C8E) = 0x30; // Reduce scope of detecting if balloon or patch, so patches don't have dynamic flags
 				// Barrel Aesthetic
 				initBarrelChange();
-				// BP Table
-				int bp_size = 0x28;
-				unsigned char* bp_write = dk_malloc(bp_size);
-				int* bp_file_size;
-				*(int*)(&bp_file_size) = bp_size;
-				copyFromROM(0x1FF1000,bp_write,&bp_file_size,0,0,0,0);
-				for (int i = 0; i < bp_size; i++) {
-					bp_item_table[i] = bp_write[i];
-				}
-				// Medal Table
-				int medal_size = 0x28;
-				unsigned char* medal_write = dk_malloc(medal_size);
-				int* medal_file_size;
-				*(int*)(&medal_file_size) = medal_size;
-				copyFromROM(0x1FF1080,medal_write,&medal_file_size,0,0,0,0);
-				for (int i = 0; i < medal_size; i++) {
-					medal_item_table[i] = medal_write[i];
-				}
-				// Crown Table
-				int crown_size = 0xA;
-				unsigned char* crown_write = dk_malloc(crown_size);
-				int* crown_file_size;
-				*(int*)(&crown_file_size) = crown_size;
-				copyFromROM(0x1FF10C0,crown_write,&crown_file_size,0,0,0,0);
-				for (int i = 0; i < crown_size; i++) {
-					crown_item_table[i] = crown_write[i];
-				}
-				// Key Table
-				int key_size = 0x8;
-				unsigned char* key_write = dk_malloc(key_size);
-				int* key_file_size;
-				*(int*)(&key_file_size) = key_size;
-				copyFromROM(0x1FF10D0,key_write,&key_file_size,0,0,0,0);
-				for (int i = 0; i < key_size; i++) {
-					key_item_table[i] = key_write[i];
-				}
-				// Fairy Table
-				int fairy_size = 40;
-				unsigned short* fairy_write = dk_malloc(fairy_size);
-				int* fairy_file_size;
-				*(int*)(&fairy_file_size) = fairy_size;
-				copyFromROM(0x1FF1040,fairy_write,&fairy_file_size,0,0,0,0);
-				for (int i = 0; i < (fairy_size>>1); i++) {
-					fairy_item_table[i] = fairy_write[i];
-				}
-				// Reward Table
-				for (int i = 0; i < 40; i++) {
-					bonus_data[54 + i].flag = 469 + i;
-					bonus_data[54 + i].kong_actor = (i % 5) + 2;
-					bonus_data[54 + i].spawn_actor = bp_item_table[i];
-				}
-				int reward_size = 0x100;
-				reward_rom_struct* reward_write = dk_malloc(medal_size);
-				int* reward_file_size;
-				*(int*)(&reward_file_size) = reward_size;
-				copyFromROM(0x1FF1200,reward_write,&reward_file_size,0,0,0,0);
-				for (int i = 0; i < 0x40; i++) {
-					if (reward_write[i].flag > -1) {
-						for (int j = 0; j < 95; j++) {
-							if (bonus_data[j].flag == reward_write[i].flag) {
-								bonus_data[j].spawn_actor = reward_write[i].actor;
-							}
-						}
-					}
-				}
+				
 				if (Rando.quality_of_life.remove_cutscenes) {
 					int cs_unskip[] = {
 						0x1A, 2,
@@ -851,6 +876,82 @@ void initHack(int source) {
 				*(int*)(0x806A8D20) = 0x0C000000 | (((int)&changeSelectedLevel & 0xFFFFFF) >> 2); // Change selected level on checks screen
 				*(int*)(0x806A84F8) = 0x0C000000 | (((int)&checkItemDB & 0xFFFFFF) >> 2); // Populate Item Databases
 			}
+			// BP Table
+			int bp_size = 0x28;
+			unsigned char* bp_write = dk_malloc(bp_size);
+			int* bp_file_size;
+			*(int*)(&bp_file_size) = bp_size;
+			copyFromROM(0x1FF1000,bp_write,&bp_file_size,0,0,0,0);
+			for (int i = 0; i < bp_size; i++) {
+				bp_item_table[i] = bp_write[i];
+			}
+			// Medal Table
+			int medal_size = 0x28;
+			unsigned char* medal_write = dk_malloc(medal_size);
+			int* medal_file_size;
+			*(int*)(&medal_file_size) = medal_size;
+			copyFromROM(0x1FF1080,medal_write,&medal_file_size,0,0,0,0);
+			for (int i = 0; i < medal_size; i++) {
+				medal_item_table[i] = medal_write[i];
+			}
+			// Crown Table
+			int crown_size = 0xA;
+			unsigned char* crown_write = dk_malloc(crown_size);
+			int* crown_file_size;
+			*(int*)(&crown_file_size) = crown_size;
+			copyFromROM(0x1FF10C0,crown_write,&crown_file_size,0,0,0,0);
+			for (int i = 0; i < crown_size; i++) {
+				crown_item_table[i] = crown_write[i];
+			}
+			// Key Table
+			int key_size = 0x8;
+			unsigned char* key_write = dk_malloc(key_size);
+			int* key_file_size;
+			*(int*)(&key_file_size) = key_size;
+			copyFromROM(0x1FF10D0,key_write,&key_file_size,0,0,0,0);
+			for (int i = 0; i < key_size; i++) {
+				key_item_table[i] = key_write[i];
+			}
+			// Fairy Table
+			int fairy_size = 40;
+			unsigned short* fairy_write = dk_malloc(fairy_size);
+			int* fairy_file_size;
+			*(int*)(&fairy_file_size) = fairy_size;
+			copyFromROM(0x1FF1040,fairy_write,&fairy_file_size,0,0,0,0);
+			for (int i = 0; i < (fairy_size>>1); i++) {
+				fairy_item_table[i] = fairy_write[i];
+			}
+			// Rainbow Cion Table
+			int rainbow_size = 0x10;
+			unsigned char* rainbow_write = dk_malloc(rainbow_size);
+			int* rainbow_file_size;
+			*(int*)(&rainbow_file_size) = rainbow_size;
+			copyFromROM(0x1FF10F0,rainbow_write,&rainbow_file_size,0,0,0,0);
+			for (int i = 0; i < rainbow_size; i++) {
+				rcoin_item_table[i] = rainbow_write[i];
+			}
+			// Reward Table
+			for (int i = 0; i < 40; i++) {
+				bonus_data[54 + i].flag = 469 + i;
+				bonus_data[54 + i].kong_actor = (i % 5) + 2;
+				bonus_data[54 + i].spawn_actor = bp_item_table[i];
+			}
+			int reward_size = 0x100;
+			reward_rom_struct* reward_write = dk_malloc(medal_size);
+			int* reward_file_size;
+			*(int*)(&reward_file_size) = reward_size;
+			copyFromROM(0x1FF1200,reward_write,&reward_file_size,0,0,0,0);
+			for (int i = 0; i < 0x40; i++) {
+				if (reward_write[i].flag > -1) {
+					for (int j = 0; j < 95; j++) {
+						if (bonus_data[j].flag == reward_write[i].flag) {
+							bonus_data[j].spawn_actor = reward_write[i].actor;
+						}
+					}
+				}
+			}
+
+
 			*(int*)(0x80681910) = 0x0C000000 | (((int)&spawnBonusReward & 0xFFFFFF) >> 2); // Spawn Bonus Reward
 			*(int*)(0x806C63BC) = 0x0C000000 | (((int)&spawnRewardAtActor & 0xFFFFFF) >> 2); // Spawn Squawks Reward
 			*(int*)(0x806C4654) = 0x0C000000 | (((int)&spawnMinecartReward & 0xFFFFFF) >> 2); // Spawn Squawks Reward - Minecart
@@ -1086,6 +1187,11 @@ void initHack(int source) {
 					SkyboxBlends[i].bottom.red = rgb[0];
 					SkyboxBlends[i].bottom.green = rgb[1];
 					SkyboxBlends[i].bottom.blue = rgb[2];
+					for (int j = 0; j < 2; j++) {
+						SkyboxBlends[i].unk[j].red = rgb[0];
+						SkyboxBlends[i].unk[j].green = rgb[1];
+						SkyboxBlends[i].unk[j].blue = rgb[2];
+					}
 				}
 			}
 			LoadedHooks = 1;

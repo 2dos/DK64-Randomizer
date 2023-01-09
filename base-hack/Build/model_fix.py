@@ -3,6 +3,7 @@
 import zlib
 import os
 import struct
+import gzip
 
 
 def intf_to_float(intf):
@@ -200,7 +201,25 @@ with open(rom_file, "rb") as rom:
                     bp_y += 65536
                 fh.seek(vtx_addr)
                 fh.write(bp_y.to_bytes(2, "big"))
-    barrel_skins = ("dk", "diddy", "lanky", "tiny", "chunky", "bp", "nin_coin", "rw_coin", "key", "crown", "medal", "potion", "bean", "pearl", "fairy")
+    barrel_skins = (
+        "dk",
+        "diddy",
+        "lanky",
+        "tiny",
+        "chunky",
+        "bp",
+        "nin_coin",
+        "rw_coin",
+        "key",
+        "crown",
+        "medal",
+        "potion",
+        "bean",
+        "pearl",
+        "fairy",
+        "rainbow",
+        "fakegb",
+    )
     rom.seek(actor_table + (0x75 << 2))
     model_start = pointer_offset + int.from_bytes(rom.read(4), "big")
     model_end = pointer_offset + int.from_bytes(rom.read(4), "big")
@@ -216,3 +235,47 @@ with open(rom_file, "rb") as rom:
             fh.write((6026 + (2 * bi) + 1).to_bytes(4, "big"))
             fh.seek(0x63C)
             fh.write((6026 + (2 * bi)).to_bytes(4, "big"))
+    # Fake Item - Model Two
+    rom.seek(modeltwo_table + (0x74 << 2))
+    model_start = pointer_offset + int.from_bytes(rom.read(4), "big")
+    model_end = pointer_offset + int.from_bytes(rom.read(4), "big")
+    model_size = model_end - model_start
+    rom.seek(model_start)
+    indic = int.from_bytes(rom.read(2), "big")
+    rom.seek(model_start)
+    data = rom.read(model_size)
+    if indic == 0x1F8B:
+        data = zlib.decompress(data, (15 + 32))
+    with open("temp.bin", "wb") as fh:
+        fh.write(data)
+    with open("temp.bin", "r+b") as fh:
+        fh.seek(0xF4)
+        fh.write((6060).to_bytes(4, "big"))
+        fh.seek(0)
+        data = fh.read()
+    if os.path.exists("temp.bin"):
+        os.remove("temp.bin")
+    with open("fake_item.bin", "wb") as fh:
+        fh.write(data)
+    # Fake Item - Actor
+    rom.seek(actor_table + (0x68 << 2))
+    model_start = pointer_offset + int.from_bytes(rom.read(4), "big")
+    model_end = pointer_offset + int.from_bytes(rom.read(4), "big")
+    model_size = model_end - model_start
+    rom.seek(model_start)
+    indic = int.from_bytes(rom.read(2), "big")
+    rom.seek(model_start)
+    data = rom.read(model_size)
+    if indic == 0x1F8B:
+        data = zlib.decompress(data, (15 + 32))
+    with open("temp.bin", "wb") as fh:
+        fh.write(data)
+    with open("temp.bin", "r+b") as fh:
+        fh.seek(0xACC)
+        fh.write((6060).to_bytes(4, "big"))
+        fh.seek(0)
+        data = fh.read()
+    if os.path.exists("temp.bin"):
+        os.remove("temp.bin")
+    with open("fake_item_actor.bin", "wb") as fh:
+        fh.write(data)

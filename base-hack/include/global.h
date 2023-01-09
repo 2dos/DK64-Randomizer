@@ -54,7 +54,6 @@ extern void pre_turn_keys(void);
 extern void auto_turn_keys(void);
 extern void handle_WTI(void);
 extern void warpToIsles(void);
-extern void no_enemy_drops(void);
 extern void adjust_galleon_water(void);
 
 extern int canItemPersist(void);
@@ -133,6 +132,7 @@ extern void beanCode(void);
 extern void pearlCode(void);
 extern void NothingCode(void);
 extern void fairyDuplicateCode(void);
+extern void FakeGBCode(void);
 extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern void handleSpiderTrapCode(void);
@@ -210,6 +210,7 @@ extern void KasplatIndicator(int has_bp);
 extern void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
 extern void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
 extern void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
+extern void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
 extern void spawnRewardAtActor(int object, int flag);
 extern void spawnMinecartReward(int object, int flag);
 extern int checkFlagDuplicate(short flag, int type);
@@ -228,6 +229,7 @@ extern int getMedalItem(int index);
 extern int getCrownItem(int map);
 extern int getKeyItem(int old_flag);
 extern int getFairyModel(int flag);
+extern int getRainbowCoinItem(int old_flag);
 extern void initKeyText(int ki);
 extern int* controlKeyText(int* dl);
 extern void keyGrabHook(int song, int vol);
@@ -257,6 +259,7 @@ extern void handleDynamicItemText(char* location, char* format, int character);
 extern void mermaidCheck(void);
 extern void initItemDictionary(void);
 extern void giveGB(int kong, int level);
+extern void giveRainbowCoin(void);
 
 extern int CrownDoorCheck(void);
 extern int CoinDoorCheck(void);
@@ -268,6 +271,9 @@ extern void giveFairyItem(int flag, int state, int type);
 extern void SpawnBarrel(spawnerPacket* packet);
 extern void initBarrelChange(void);
 
+extern void initIceTrap(void);
+extern int getPatchWorld(int index);
+
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
 extern const short kong_flags[5];
@@ -276,3 +282,4 @@ extern const check_struct item_db[292];
 
 extern sprite_data_struct bean_sprite;
 extern sprite_data_struct pearl_sprite;
+extern sprite_data_struct krool_sprite;

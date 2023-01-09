@@ -163,6 +163,8 @@ ItemList = {
     Items.BattleCrown: Item("Battle Crown", False, Types.Crown, Kongs.any),
     Items.Bean: Item("Bean", False, Types.Bean, Kongs.any),
     Items.Pearl: Item("Pearl", False, Types.Pearl, Kongs.any),
+    Items.RainbowCoin: Item("Rainbow Coin", False, Types.RainbowCoin, Kongs.any),
+    Items.FakeItem: Item("Ice Trap", False, Types.FakeItem, Kongs.any),
     Items.DKIslesDonkeyBlueprint: Item("DK Isles Donkey Blueprint", False, Types.Blueprint, Kongs.donkey),
     Items.DKIslesDiddyBlueprint: Item("DK Isles Diddy Blueprint", False, Types.Blueprint, Kongs.diddy),
     Items.DKIslesLankyBlueprint: Item("DK Isles Lanky Blueprint", False, Types.Blueprint, Kongs.lanky),

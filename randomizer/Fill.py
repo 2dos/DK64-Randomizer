@@ -190,7 +190,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                             # In search mode GetReachableWithControlledPurchases, only allowed to purchase at locations from what is passed in as "purchaseList"
                             LogicVariables.PurchaseShopItem(location.id)
                         elif location.id == Locations.NintendoCoin:
-                            LogicVariables.Coins[Kongs.donkey] -= 2  # Subtract 2 coins for arcade lever
+                            LogicVariables.SpentCoins[Kongs.donkey] += 2  # Spend Two Coins for arcade lever
                         newLocations.add(location.id)
                 # Check accessibility for each exit in this region
                 exits = region.exits.copy()
@@ -309,6 +309,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
         itemsToPurchase = [LocationList[x].item for x in locationsToPurchase]
         coinsSpent = GetMaxCoinsSpent(settings, locationsToPurchase)
         coinsNeeded = [maxCoins[kong] - coinsSpent[kong] for kong in range(0, 5)]
+        LogicVariables.UpdateCoins()
         coinsBefore = LogicVariables.Coins.copy()
         # print("Coins owned during search: " + str(coinsBefore))
         # print("Coins needed during search: " + str(coinsNeeded))
@@ -350,6 +351,7 @@ def VerifyWorldWithWorstCoinUsage(settings):
             tempLocationsToPurchase.append(shopLocation)
             Reset()
             reachableAfter: list = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithControlledPurchases, tempLocationsToPurchase)
+            LogicVariables.UpdateCoins()
             coinsAfter = LogicVariables.Coins.copy()
             # Calculate the coin differential
             coinDifferential = [0, 0, 0, 0, 0]
@@ -1053,7 +1055,12 @@ def Fill(spoiler):
         Reset()
         fairyUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.FairyItems(), [])
         if fairyUnplaced > 0:
-            raise Ex.ItemPlacementException(str(fairyUnplaced) + "unplaced Fairies.")
+            raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced Fairies.")
+    if Types.RainbowCoin in spoiler.settings.shuffled_location_types:
+        Reset()
+        rcoinUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.RainbowCoinItems(), [])
+        if rcoinUnplaced > 0:
+            raise Ex.ItemPlacementException(str(rcoinUnplaced) + " unplaced Rainbow Coins.")
     if Types.Bean in spoiler.settings.shuffled_location_types:
         Reset()
         miscUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.MiscItemRandoItems(), [])
@@ -1065,6 +1072,12 @@ def Fill(spoiler):
         gbsUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.GoldenBananaItems(), [])
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced GBs.")
+    # Fill in fake items
+    if Types.FakeItem in spoiler.settings.shuffled_location_types:
+        Reset()
+        fakeUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.FakeItems(), [])
+        # Don't raise exception if unplaced fake items
+
     # Some locations require special care to make logic work correctly
     # This is the only location that cares about None vs NoItem - it needs to be None so it fills correctly but NoItem for logic to generate progression correctly
     if LocationList[Locations.JapesDonkeyFreeDiddy].item is None:

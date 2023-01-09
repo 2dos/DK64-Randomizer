@@ -352,7 +352,7 @@ def randomize_setup(spoiler: Spoiler):
                 new_actor_id = 0x20
                 for dirt_item in spoiler.dirt_patch_placement:
                     for patch in DirtPatchLocations:
-                        if patch.map_id == cont_map_id and patch.name == dirt_item:
+                        if patch.map_id == cont_map_id and patch.name == dirt_item["name"]:
                             if new_actor_id in used_actor_ids:
                                 while new_actor_id in used_actor_ids:
                                     new_actor_id += 1

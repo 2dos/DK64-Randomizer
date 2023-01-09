@@ -46,6 +46,10 @@ ObjectRotate:
     beq $v0, $at, ObjectRotate_ApplyRotate
     addiu $at, $zero, 0x25C
     beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0xB7
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x25D
+    beq $v0, $at, ObjectRotate_ApplyReverseRotate
     nop
     j 0x80637150
     nop
@@ -53,3 +57,12 @@ ObjectRotate:
     ObjectRotate_ApplyRotate:
         j 0x80637160
         nop
+
+    ObjectRotate_ApplyReverseRotate:
+        lwc1 $f6, 0x14 ($s0)
+        lui $at, 0x4024
+        mtc1 $at, $f11
+        mtc1 $zero, $f10
+        cvt.d.s $f8, $f6
+        j 0x80637178
+        sub.d $f16, $f8, $f10

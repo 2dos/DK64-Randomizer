@@ -462,11 +462,25 @@ class Settings:
         self.shuffled_location_types = []
         if self.shuffle_items:
             if not self.item_rando_list_selected:
-                self.shuffled_location_types = [Types.Shop, Types.Banana, Types.Crown, Types.Blueprint, Types.Key, Types.Medal, Types.Coin, Types.Kong, Types.Bean, Types.Pearl, Types.Fairy]
+                self.shuffled_location_types = [
+                    Types.Shop,
+                    Types.Banana,
+                    Types.Crown,
+                    Types.Blueprint,
+                    Types.Key,
+                    Types.Medal,
+                    Types.Coin,
+                    Types.Kong,
+                    Types.Bean,
+                    Types.Pearl,
+                    Types.Fairy,
+                    Types.RainbowCoin,
+                    Types.FakeItem,
+                ]
             else:
                 for item in self.item_rando_list_selected:
                     for type in Types:
-                        if type.name == item.capitalize():
+                        if type.name.lower() == item.lower():
                             self.shuffled_location_types.append(type)
                         if type in (Types.Bean, Types.Pearl) and item == "beanpearl":
                             self.shuffled_location_types.extend([Types.Bean, Types.Pearl])
@@ -887,8 +901,8 @@ class Settings:
                 self.valid_locations[Types.Shop][Kongs.tiny] = locations_excluding_shared_shops
                 self.valid_locations[Types.Shop][Kongs.chunky] = locations_excluding_shared_shops
             if Types.Blueprint in self.shuffled_location_types:
-                # Blueprints are banned from Key, Crown and Fairy locations
-                blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in (Types.Crown, Types.Key, Types.Fairy)]
+                # Blueprints are banned from Key, Crown, Fairy and Rainbow Coin Locations
+                blueprintValidTypes = [typ for typ in self.shuffled_location_types if typ not in (Types.Crown, Types.Key, Types.Fairy, Types.RainbowCoin)]
                 # These locations do not have a set Kong assigned to them and can't have blueprints
                 badBPLocations = (
                     Locations.IslesDonkeyJapesRock,
@@ -929,6 +943,31 @@ class Settings:
                 self.valid_locations[Types.Bean] = fairyBannedLocations
             if Types.Fairy in self.shuffled_location_types:
                 self.valid_locations[Types.Fairy] = shuffledLocations
+            if Types.RainbowCoin in self.shuffled_location_types:
+                self.valid_locations[Types.RainbowCoin] = [x for x in fairyBannedLocations if LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave)]
+            if Types.FakeItem in self.shuffled_location_types:
+                bad_fake_locations = (
+                    # Races
+                    Locations.JapesDiddyMinecarts,
+                    Locations.CastleDonkeyMinecarts,
+                    Locations.ForestChunkyMinecarts,
+                    Locations.AztecTinyBeetleRace,
+                    Locations.CavesLankyBeetleRace,
+                    Locations.FactoryTinyCarRace,
+                    Locations.CastleTinyCarRace,
+                    Locations.GalleonDonkeySealRace,
+                    # Stuff that may be required to access other stuff
+                    Locations.JapesDonkeyFreeDiddy,
+                    Locations.JapesDonkeyFrontofCage,
+                    Locations.IslesDonkeyJapesRock,
+                    Locations.FactoryDonkeyDKArcade,
+                    Locations.NintendoCoin,
+                    Locations.RarewareCoin,
+                    # Helm Fairy Couplet
+                    Locations.HelmBananaFairy1,
+                    Locations.HelmBananaFairy2,
+                )
+                self.valid_locations[Types.FakeItem] = [x for x in shuffledLocations if LocationList[x].type not in (Types.Shop, Types.Shockwave, Types.TrainingBarrel) and x not in bad_fake_locations]
             if Types.Kong in self.shuffled_location_types:
                 # Banned because it defeats the purpose of starting with X Kongs
                 banned_kong_locations = (

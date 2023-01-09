@@ -27,6 +27,8 @@ model_two_indexes = {
     Types.Bean: 0x198,
     Types.Pearl: 0x1B4,
     Types.Fairy: 0x25C,
+    Types.RainbowCoin: 0xB7,
+    Types.FakeItem: 0x25D,
 }
 
 model_two_scales = {
@@ -44,6 +46,8 @@ model_two_scales = {
     Types.Bean: 0.25,
     Types.Pearl: 0.25,
     Types.Fairy: 0.25,
+    Types.RainbowCoin: 0.25,
+    Types.FakeItem: 0.25,
 }
 
 actor_indexes = {
@@ -61,6 +65,8 @@ actor_indexes = {
     Types.Bean: 172,
     Types.Pearl: 174,
     Types.Fairy: 88,
+    Types.RainbowCoin: 0x8C,
+    Types.FakeItem: 217,
 }
 model_indexes = {
     Types.Banana: 0x69,
@@ -71,6 +77,7 @@ model_indexes = {
     Types.Shockwave: 0xFB,
     Types.TrainingBarrel: 0xFB,
     Types.Kong: [4, 1, 6, 9, 0xC],
+    Types.FakeItem: 0x10E,
 }
 
 kong_flags = (385, 6, 70, 66, 117)
@@ -142,6 +149,7 @@ text_rewards = {
     Types.Bean: ("BEAN", "QUESTIONABLE VEGETABLE"),
     Types.Pearl: ("PEARL", "BLACK PEARL"),
     Types.RainbowCoin: ("RAINBOW COIN", "COLORFUL COIN HIDDEN FOR 17 YEARS"),
+    Types.FakeItem: ("GLODEN BANANE", "BANANA OF FOOLS GOLD"),
     Types.NoItem: ("NOTHING", "DIDDLY SQUAT"),
 }
 
@@ -204,6 +212,7 @@ def getTextRewardIndex(item) -> int:
             Types.Bean,
             Types.Pearl,
             Types.RainbowCoin,
+            Types.FakeItem,
             Types.NoItem,
         )
         if item.new_item in item_text_indexes:
@@ -348,7 +357,7 @@ def place_randomized_items(spoiler: Spoiler):
                                 arcade_reward_index = 21
                         elif item.new_item == Types.Kong:
                             if item.new_flag in kong_flags:
-                                arcade_reward_index = kong_flags.index(item.new_flag)
+                                arcade_reward_index = kong_flags.index(item.new_flag) + 15
                         elif item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave):
                             if (item.new_flag & 0x8000) == 0:
                                 slot = 5
@@ -425,6 +434,13 @@ def place_randomized_items(spoiler: Spoiler):
                         key_flags = [26, 74, 138, 168, 236, 292, 317, 380]
                         ROM().seek(0x1FF10D0 + key_flags.index(item.old_flag))
                         ROM().write(actor_index)
+                    elif item.old_item == Types.RainbowCoin:
+                        index = item.location - Locations.RainbowCoin_Location00
+                        if index < 16:
+                            ROM().seek(0x1FF10F0 + index)
+                            ROM().write(actor_index)
+                        else:
+                            print("Dirt Patch Item Placement Error")
                     elif item.old_item == Types.Medal:
                         # Write to Medal Table
                         # Just need offset of subtype:
@@ -442,7 +458,10 @@ def place_randomized_items(spoiler: Spoiler):
                         # 11 = Kong
                         # 12 = Bean
                         # 13 = Pearl
-                        # 14 = Nothing
+                        # 14 = Fairy
+                        # 15 = Rainbow Coin
+                        # 16 = Fake Item
+                        # 17 = Nothing
                         slots = [
                             Types.Banana,  # GB
                             Types.Blueprint,  # BP
@@ -459,6 +478,8 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Bean,  # Bean
                             Types.Pearl,  # Pearl
                             Types.Fairy,  # Fairy
+                            Types.RainbowCoin,  # Rainbow Cion
+                            Types.FakeItem,  # Fake Item
                             None,  # No Item
                         ]
                         offset = item.old_flag - 549

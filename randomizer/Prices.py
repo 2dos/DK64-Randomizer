@@ -274,7 +274,7 @@ def KongCanBuy(location_id, logic, kong):
         # print("KongCanBuy checking item: " + str(LocationList[location].item))
         # print("for kong: " + kong.name + " with " + str(coins[kong]) + " coins")
         # print("has price: " + str(price))
-        return logic.Coins[kong] >= price
+        return logic.GetCoins(kong) >= price
     else:
         return False
 
