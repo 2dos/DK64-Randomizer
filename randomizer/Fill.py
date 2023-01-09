@@ -576,11 +576,12 @@ def CalculateFoolish(spoiler, WothLocations):
     if spoiler.settings.training_barrels != "normal":
         # I don't trust oranges quite yet - you can put an item in Diddy's upper cabin and it might think oranges is foolish still
         majorItems.extend([Items.Vines, Items.Swim, Items.Barrels])
-    if spoiler.settings.shockwave_status == "shuffled":
+    if spoiler.settings.shockwave_status != "shuffled_decoupled":
         majorItems.append(Items.CameraAndShockwave)
     if spoiler.settings.shockwave_status == "shuffled_decoupled":
         majorItems.append(Items.Camera)
-        # majorItems.append(Items.Shockwave)  # Shockwave foolish is virtually useless until we get rainbow coins in the pool
+        if spoiler.settings.shuffle_items and Types.RainbowCoin in spoiler.settings.shuffled_location_types:
+            majorItems.append(Items.Shockwave)  # Shockwave foolish is virtually useless to hint as foolish unless rainbow coins are in the pool
     for item in majorItems:
         # If this item is in the WotH, it can't possibly be foolish so we can skip it
         if item in wothItems:
@@ -602,6 +603,8 @@ def CalculateFoolish(spoiler, WothLocations):
     majorItems.extend(ItemPool.Keys())
     majorItems.extend(ItemPool.Kongs(spoiler.settings))
     majorItems.append(Items.Oranges)  # Again, not comfortable foolishing oranges yet
+    if spoiler.settings.shockwave_status == "shuffled_decoupled" and (not spoiler.settings.shuffle_items or Types.RainbowCoin not in spoiler.settings.shuffled_location_types):
+        majorItems.append(Items.Shockwave)  # Make sure shockwave counts as a major item when calculating foolish regions
     requires_rareware = spoiler.settings.coin_door_item == "vanilla"
     requires_nintendo = spoiler.settings.coin_door_item == "vanilla"
     requires_crowns = spoiler.settings.crown_door_item in ("vanilla", "req_crown") or spoiler.settings.coin_door_item == "req_crown"
