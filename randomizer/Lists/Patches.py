@@ -133,7 +133,7 @@ DirtPatchLocations = [
         rotation=3959,
         group=3,
         logicregion=Regions.IslesMainUpper,
-        logic=lambda l: l.vines and l.shockwave,
+        logic=lambda l: l.shockwave,
     ),
     DirtPatchData(name="DK Isles: Behind BFI", level=Levels.DKIsles, map_id=Maps.Isles, x=754.0, y=500.0, z=2386.0, rotation=807, group=4, logicregion=Regions.IslesMain, logic=lambda l: l.shockwave),
     DirtPatchData(
@@ -197,7 +197,7 @@ DirtPatchLocations = [
         rotation=2742,
         group=3,
         logicregion=Regions.IslesMainUpper,
-        logic=lambda l: l.vines and l.shockwave,
+        logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles - Banana Fairy Room: Behind Fairy Chair",
