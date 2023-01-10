@@ -185,7 +185,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesDiddyCagedBanana, lambda l: ((Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack) or (l.advanced_platforming and (l.isdiddy or l.isdonkey or (l.istiny and l.twirl) or l.ischunky))) and (l.peanut or l.phasewalk) and l.isdiddy),
         LocationLogic(Locations.IslesDiddySummit, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.RainbowCoin_Location03, lambda l: l.shockwave),
-        LocationLogic(Locations.RainbowCoin_Location05, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.jetpack and l.isdiddy and l.shockwave),
+        LocationLogic(Locations.RainbowCoin_Location05, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy and l.shockwave),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.IslesMainToForestLobby),
