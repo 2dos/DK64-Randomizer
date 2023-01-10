@@ -121,7 +121,6 @@ void checkItemDB(void) {
             for (int k = 0; k < 16; k++) {
                 int search_flag = FLAG_RAINBOWCOIN_0 + k;
                 int lvl = getPatchWorld(k);
-                check_data[1][lvl][i] += 1;
                 check_data[0][lvl][i] += checkFlag(search_flag, 0);
             }
         }
