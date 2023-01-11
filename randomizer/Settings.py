@@ -966,6 +966,8 @@ class Settings:
                     # Helm Fairy Couplet
                     Locations.HelmBananaFairy1,
                     Locations.HelmBananaFairy2,
+                    # Seasick GB - Seasick effect + ice trap breaks the game
+                    Locations.GalleonChunkySeasick,
                 )
                 self.valid_locations[Types.FakeItem] = [x for x in shuffledLocations if LocationList[x].type not in (Types.Shop, Types.Shockwave, Types.TrainingBarrel) and x not in bad_fake_locations]
             if Types.Kong in self.shuffled_location_types:
