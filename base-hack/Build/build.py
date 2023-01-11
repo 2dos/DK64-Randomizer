@@ -27,6 +27,7 @@ from generate_yellow_wrinkly import generateYellowWrinkly
 from image_converter import convertToRGBA32
 from helm_doors import getHelmDoorModel
 from model_shrink import shrinkModel
+from cutscene_builder import buildScripts
 
 # Infrastructure for recomputing DK64 global pointer tables
 from map_names import maps
@@ -243,6 +244,8 @@ file_dict = [
         "do_not_extract": True,
     },
 ]
+
+file_dict = file_dict + buildScripts()
 
 for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 0xF8, 0x136):
     file_dict.append(

@@ -698,6 +698,7 @@ void initIceTrap(void) {
     trapPlayer();
     Player->trap_bubble_timer = 200;
     playSFX(0x2D4); // K Rool Laugh
+    applyDamage(0, -1);
 }
 
 int getObjectCollectability(int id, int unk1, int model2_type) {

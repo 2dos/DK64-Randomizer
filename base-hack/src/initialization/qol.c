@@ -29,6 +29,7 @@ void initQoL_Cutscenes(void) {
                 0x1A, 4,
                 0x1A, 5,
                 0x26, 14,
+                0x40, 0,
                 0x40, 1,
                 0xA8, 0,
             };
@@ -384,5 +385,6 @@ void initQoL(void) {
     initSpawn();
     initQoL_HomingBalloons();
     initQoL_HUD();
+    initQoL_FastWarp();
     initNonControllableFixes();
 }

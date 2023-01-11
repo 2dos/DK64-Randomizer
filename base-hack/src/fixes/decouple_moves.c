@@ -343,8 +343,8 @@ void parseCutsceneData(void) {
 	}
 	if (CurrentMap == 0xBD) {
 		// BFI - Rareware Reward Show
-		modifyCutscenePanPoint(0, 14, 0, 915, 40, 1323, 0xD800, 0, 0, 45, 0);
-		modifyCutscenePanPoint(0, 14, 1, 417, 169, 1290, 0x2000, 0xF000, 0xF000, 45, 0);
+		// modifyCutscenePanPoint(0, 14, 0, 915, 40, 1323, 0xD800, 0, 0, 45, 0);
+		// modifyCutscenePanPoint(0, 14, 1, 417, 169, 1290, 0x2000, 0xF000, 0xF000, 45, 0);
 	} else if (CurrentMap == 0xAA) {
 		// Helm Lobby - Hint Cutscene
 		modifyCutsceneItem(0, 3, 0x1C, 0, 0);

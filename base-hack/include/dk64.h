@@ -289,6 +289,7 @@ extern int isSingleOrBunch(int object_type);
 extern void enableComplexFree(void);
 extern void complexFreeWrapper(void* addr);
 extern void trapPlayer(void);
+extern int applyDamage(int player, int damage);
 
 //vanilla data
 extern float TransitionSpeed;
