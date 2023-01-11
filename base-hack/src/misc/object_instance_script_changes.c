@@ -910,7 +910,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							max_gbs = BLockerDefaultArray[level];
 						}
 					}
-					return gb_count >= max_gbs; 
+					return (gb_count >= max_gbs) && (Rando.microhints > 0); 
 				} else {
 					// TestVariable = (int)behaviour_pointer;
 					// *(int*)(0x807FF700) = id;
@@ -1025,7 +1025,11 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case HELM_LOBBY:
 				if (param2 == HELMLOBBY_GGONE) {
-					return isBonus(PreviousMap);
+					if (index == 0) {
+						return isBonus(PreviousMap);
+					} else if (index == 1) {
+						return Rando.microhints > 0;
+					}
 				}
 				break;
 			case JUNGLE_JAPES:
@@ -1430,6 +1434,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					int next_slot = -1;
 					int previous_slot = -1;
 					int current_slot = -1;
+					int helm_pad_kong = -1;
 					switch(param2) {
 						case HELM_COIN_DOOR:
 							if (index == 0) {
@@ -1440,52 +1445,69 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							break;
 						case HELM_PAD_BONGO:
 							slot = 0;
+							helm_pad_kong = 0;
 						case HELM_PAD_TRIANGLE:
 							if (slot == -1) {
 								slot = 1;
+								helm_pad_kong = 4;
 							}
 						case HELM_PAD_SAX:
 							if (slot == -1) {
 								slot = 2;
+								helm_pad_kong = 3;
 							}
 						case HELM_PAD_TROMBONE:
 							if (slot == -1) {
 								slot = 3;
+								helm_pad_kong = 2;
 							}
 						case HELM_PAD_GUITAR:
 							if (slot == -1) {
 								slot = 4;
+								helm_pad_kong = 1;
 							}
 							if (slot > -1) {
-								for (int i = 0; i < 5; i++) {
-									if (Rando.helm_order[i] == slot) {
-										current_slot = i;
-										if (i > 0) {
-											previous_slot = Rando.helm_order[i - 1];
-										}
-										if (i < 4) {
-											next_slot = Rando.helm_order[i + 1];
+								if (index < 2) {
+									for (int i = 0; i < 5; i++) {
+										if (Rando.helm_order[i] == slot) {
+											current_slot = i;
+											if (i > 0) {
+												previous_slot = Rando.helm_order[i - 1];
+											}
+											if (i < 4) {
+												next_slot = Rando.helm_order[i + 1];
+											}
 										}
 									}
-								}
-								if (index == 0) {
-									// Barrels complete
-									if ((next_slot == -1) && (current_slot > -1)) {
-										// Helm Complete
-										PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
-										setFlag(FLAG_MODIFIER_HELMBOM, 1, 0);
-										setFlag(0x50,1,2);
-										*(int*)(0x807FF704) = param2;
-									} else if (next_slot > -1) {
-										// Move to next
-										PlayCutsceneFromModelTwoScript(behaviour_pointer, current_slot + 4, 1, 0);
+									if (index == 0) {
+										// Barrels complete
+										if ((next_slot == -1) && (current_slot > -1)) {
+											// Helm Complete
+											PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
+											setFlag(FLAG_MODIFIER_HELMBOM, 1, 0);
+											setFlag(0x50,1,2);
+											*(int*)(0x807FF704) = param2;
+										} else if (next_slot > -1) {
+											// Move to next
+											PlayCutsceneFromModelTwoScript(behaviour_pointer, current_slot + 4, 1, 0);
+										}
+									} else if (index == 1) {
+										if (previous_slot == -1) {
+											// First or not in sequence
+											return 1;
+										} else {
+											return checkFlag(previous_slot + 0x4B, 2);
+										}
 									}
-								} else if (index == 1) {
-									if (previous_slot == -1) {
-										// First or not in sequence
-										return 1;
-									} else {
-										return checkFlag(previous_slot + 0x4B, 2);
+								} else  if (index == 2) {
+									if ((Rando.microhints > 1) && ((MovesBase[helm_pad_kong].instrument_bitfield & 1) == 0)) {
+										behaviour_pointer->next_state = 20;
+										behaviour_pointer->current_state = 20;
+									}
+								} else if (index == 3) {
+									if (MovesBase[helm_pad_kong].instrument_bitfield & 1) {
+										behaviour_pointer->next_state = 0;
+										behaviour_pointer->current_state = 0;
 									}
 								}
 							}

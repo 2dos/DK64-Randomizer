@@ -155,8 +155,10 @@ void initItemRando(void) {
         *(int*)(0x806A222C) = 0x0C000000 | (((int)&getPatchFlag & 0xFFFFFF) >> 2); // Get Patch Flags
         *(int*)(0x806A2058) = 0x0C000000 | (((int)&getPatchFlag & 0xFFFFFF) >> 2); // Get Patch Flags
         *(short*)(0x80688C8E) = 0x30; // Reduce scope of detecting if balloon or patch, so patches don't have dynamic flags
-        // Barrel Aesthetic
-        initBarrelChange();
+        if (Rando.barrel_aesthetic) {
+            // Barrel Aesthetic
+            initBarrelChange();
+        }
         // Checks Screen
         int screen_count = 5;
         *(short*)(0x806A8672) = screen_count; // Screen decrease cap
