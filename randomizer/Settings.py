@@ -968,8 +968,13 @@ class Settings:
                     Locations.HelmBananaFairy2,
                     # Seasick GB - Seasick effect + ice trap breaks the game
                     Locations.GalleonChunkySeasick,
+                    Locations.GalleonChunkyMedal,
+                    # Enguarde + Ice Trap breaks the game
+                    Locations.GalleonLanky2DoorShip,
+                    Locations.GalleonLankyEnguardeChest,
+                    Locations.GalleonLankyMedal,
                 )
-                self.valid_locations[Types.FakeItem] = [x for x in shuffledLocations if LocationList[x].type not in (Types.Shop, Types.Shockwave, Types.TrainingBarrel) and x not in bad_fake_locations]
+                self.valid_locations[Types.FakeItem] = [x for x in shuffledLocations if LocationList[x].type not in (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Crown) and x not in bad_fake_locations]
             if Types.Kong in self.shuffled_location_types:
                 # Banned because it defeats the purpose of starting with X Kongs
                 banned_kong_locations = (
