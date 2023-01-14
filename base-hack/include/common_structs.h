@@ -1399,3 +1399,21 @@ typedef struct charSpawnerActorInfo {
 	/* 0x008 */ int unk_8;
 	/* 0x00C */ char unk_C[0x18-0xC];
 } charSpawnerActorInfo;
+
+typedef enum helm_hurry_items {
+	/* 0x000 */ HHITEM_NOTHING,
+	/* 0x001 */ HHITEM_GB,
+	/* 0x002 */ HHITEM_BLUEPRINT,
+	/* 0x003 */ HHITEM_COMPANYCOIN,
+	/* 0x004 */ HHITEM_MOVE,
+	/* 0x005 */ HHITEM_MEDAL,
+	/* 0x006 */ HHITEM_RAINBOWCOIN,
+	/* 0x007 */ HHITEM_KEY,
+	/* 0x008 */ HHITEM_CROWN,
+	/* 0x009 */ HHITEM_BEAN,
+	/* 0x00A */ HHITEM_PEARL,
+	/* 0x00B */ HHITEM_KONG,
+	/* 0x00C */ HHITEM_FAIRY,
+	/* 0x00D */ HHITEM_CB,
+	/* 0x00E */ HHITEM_FAKEITEM,
+} helm_hurry_items;

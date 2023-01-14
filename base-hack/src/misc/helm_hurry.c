@@ -3,16 +3,6 @@
 static unsigned short gb_total = 0;
 static unsigned char kong_bitfield = 0;
 
-void blueprintCollect(int flag_index) {
-    if (Rando.helm_hurry_mode) {
-        if (Gamemode == 6) { // Only enable BP Checks in Adv Mode
-            if ((flag_index >= 469) && (flag_index < 509)) {
-                HelmStartTime += 120; // Add 120 seconds
-            }
-        }
-    }
-}
-
 int canSaveHelmHurry(void) {
     if (player_count != 1) {
         return 0;
@@ -38,11 +28,28 @@ void checkTotalCache(void) {
     }
     int gb_diff = current_gb_total - gb_total;
     if (gb_diff > 0) {
-        HelmStartTime += (30 * gb_diff);
+        HelmStartTime += (Rando.helm_hurry_bonuses[(int)(HHITEM_GB) - 1] * gb_diff);
     }
     if (kong_bitfield != current_kong_bitfield) {
-        HelmStartTime += 300;
+        HelmStartTime += Rando.helm_hurry_bonuses[(int)(HHITEM_KONG) - 1];
     }
     gb_total = current_gb_total;
     kong_bitfield = current_kong_bitfield;
+}
+
+void addHelmTime(helm_hurry_items item, int multiplier) {
+    if (Rando.helm_hurry_mode) {
+        if (item != HHITEM_NOTHING) {
+            HelmStartTime += (Rando.helm_hurry_bonuses[(int)(item) - 1] * multiplier);
+        }
+    }
+}
+
+int initHelmHurry(void) {
+    if (Rando.helm_hurry_start == 0) {
+        HelmStartTime = 15*60;
+        return 0;
+    }
+    HelmStartTime = Rando.helm_hurry_start;
+    return 0;
 }

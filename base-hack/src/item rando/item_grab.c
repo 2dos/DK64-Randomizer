@@ -31,6 +31,7 @@ void banana_medal_acquisition(int flag) {
         void* sprite = 0;
         int sprite_index = -1;
         short flut_flag = flag;
+        helm_hurry_items hh_item = HHITEM_NOTHING;
         updateFlag(0, (short*)&flut_flag, (void*)0, -1);
         switch (item_type) {
             case MEDALITEM_GB:
@@ -74,11 +75,13 @@ void banana_medal_acquisition(int flag) {
                     auto_turn_keys();
                     song = 18; // GB/Key Get
                     sprite_index = 0x8A;
+                    hh_item = HHITEM_KEY;
                 }
                 break;
             case MEDALITEM_CROWN:
                 song = 0x97; // Banana Medal Get
                 sprite_index = 0x8B;
+                hh_item = HHITEM_CROWN;
                 break;
             case MEDALITEM_SPECIALCOIN:
                 song = 22; // Company Coin Get
@@ -89,30 +92,37 @@ void banana_medal_acquisition(int flag) {
                     // Rareware Coin
                     sprite_index = 0x8D;
                 }
+                hh_item = HHITEM_COMPANYCOIN;
                 break;
             case MEDALITEM_MEDAL:
                 song = 0x97; // Banana Medal Get
                 sprite_index = 0x3C;
+                hh_item = HHITEM_MEDAL;
                 break;
             case MEDALITEM_CRANKY:
                 song = 115; // Gun Get
                 sprite_index = 0x94;
+                hh_item = HHITEM_MOVE;
                 break;
             case MEDALITEM_FUNKY:
                 song = 115; // Gun Get
                 sprite_index = 0x96;
+                hh_item = HHITEM_MOVE;
                 break;
             case MEDALITEM_CANDY:
                 song = 115; // Gun Get
                 sprite_index = 0x93;
+                hh_item = HHITEM_MOVE;
                 break;
             case MEDALITEM_TRAINING:
                 song = 115; // Gun Get
                 sprite_index = 0x94;
+                hh_item = HHITEM_MOVE;
                 break;
             case MEDALITEM_BFI:
                 song = 115; // Gun Get
                 sprite_index = 0x3A;
+                hh_item = HHITEM_MOVE;
                 break;
             case MEDALITEM_KONG:
                 {
@@ -133,23 +143,28 @@ void banana_medal_acquisition(int flag) {
             case MEDALITEM_BEAN:
                 song = 147; // Bean Get
                 sprite = &bean_sprite;
+                hh_item = HHITEM_BEAN;
                 break;
             case MEDALITEM_PEARL:
                 song = 128; // Pearl Get
                 sprite = &pearl_sprite;
+                hh_item = HHITEM_PEARL;
                 break;
             case MEDALITEM_FAIRY:
                 song = 46; // Fairy Tick
                 sprite_index = 0x89;
+                hh_item = HHITEM_FAIRY;
                 break;
             case MEDALITEM_RAINBOW:
                 giveRainbowCoin();
                 song = 145; // Rainbow Coin Get
                 sprite_index = 0xA0;
+                hh_item = HHITEM_RAINBOWCOIN;
                 break;
             case MEDALITEM_FAKEITEM:
                 initIceTrap();
                 sprite_index = 0x92;
+                hh_item = HHITEM_FAKEITEM;
                 break;
             case MEDALITEM_NOTHING:
                 sprite_index = 0x8E;
@@ -170,6 +185,9 @@ void banana_medal_acquisition(int flag) {
             unkSpriteRenderFunc_0();
             loadSpriteFunction(0x8071EFDC);
             displaySpriteAtXYZ(sprite, 0x3F800000, 160.0f, 120.0f, -10.0f);
+        }
+        if (hh_item != HHITEM_NOTHING) {
+            addHelmTime(hh_item, 1);
         }
     } else {
         // No item or pre-given item
@@ -513,6 +531,8 @@ int canDanceSkip(void) {
 void getItem(int object_type) {
     float pickup_volume = 1-(0.3f * *(char*)(0x80745838));
     int song = -1;
+    helm_hurry_items hh_item = HHITEM_NOTHING;
+    int multiplier = 1;
     switch(object_type) {
         case 0x0A:
         case 0x0D:
@@ -523,6 +543,15 @@ void getItem(int object_type) {
         case 0x1D0:
             // CB Single
             playSound(0x2A0, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            hh_item = HHITEM_CB;
+            break;
+        case 0x2B:
+        case 0x205:
+        case 0x206:
+        case 0x207:
+        case 0x208:
+            hh_item = HHITEM_CB;
+            multiplier = 5;
             break;
         case 0x11:
         case 0x8F:
@@ -543,6 +572,7 @@ void getItem(int object_type) {
             if (Rando.item_rando) {
                 playSong(22, *(int*)(&pickup_volume));
             }
+            hh_item = HHITEM_COMPANYCOIN;
             break;
         case 0x56:
             // Orange
@@ -563,6 +593,7 @@ void getItem(int object_type) {
             if (!canDanceSkip()) {
                 setAction(0x29, 0, 0);
             }
+            hh_item = HHITEM_MOVE;
             break;
         case 0x74:
         case 0x288:
@@ -571,6 +602,7 @@ void getItem(int object_type) {
             if (!canDanceSkip()) {
                 setAction(0x29, 0, 0);
             }
+            // hh_item = HHITEM_GB; // Ignored as it's handled in a separate case
             break;
         case 0x8E:
             // Crystal
@@ -583,6 +615,7 @@ void getItem(int object_type) {
             if (!canDanceSkip()) {
                 setAction(0x29, 0, 0);
             }
+            hh_item = HHITEM_MEDAL;
             break;
         case 0x98:
             // Film
@@ -591,6 +624,7 @@ void getItem(int object_type) {
         case 0xB7:
             // Rainbow Coin
             playSong(0x91, *(int*)(&pickup_volume));
+            hh_item = HHITEM_RAINBOWCOIN;
             break;
         case 0xDD:
         case 0xDE:
@@ -599,6 +633,7 @@ void getItem(int object_type) {
         case 0xE1:
             // Blueprint
             playSong(69, *(int*)(&pickup_volume));
+            // hh_item = HHITEM_BLUEPRINT; // Ignored as it's handled in a separate case
             break;
         case 0xEC:
         case 0x1D2:
@@ -621,6 +656,7 @@ void getItem(int object_type) {
                 }
                 setAction(action, 0, 0);
             }
+            hh_item = HHITEM_KEY;
             auto_turn_keys();
             break;
         case 0x18D:
@@ -630,10 +666,12 @@ void getItem(int object_type) {
                 setAction(0x42, 0, 0);
             }
             CrownGet();
+            hh_item = HHITEM_CROWN;
             break;
         case 0x198:
             // Bean
             playSong(147, 0x3F800000);
+            hh_item = HHITEM_PEARL;
             break;
         case 0x1B4:
             // Pearl
@@ -652,6 +690,7 @@ void getItem(int object_type) {
                 //         playCutscene((void*)0, 1, 0);
                 //     }
                 // }
+                hh_item = HHITEM_PEARL;
             }
             break;
         case 0x1D1:
@@ -683,14 +722,20 @@ void getItem(int object_type) {
                 setAction(0x42, 0, 0);
             }
             refreshItemVisibility();
+            // hh_item = HHITEM_KONG; // Ignored as it's handled in a separate case
             break;
         case 0x25C:
             playSong(46, 0x3F800000);
+            hh_item = HHITEM_FAIRY;
             break;
         case 0x25D:
             // Fake Item
             initIceTrap();
+            hh_item = HHITEM_FAKEITEM;
             break;
+    }
+    if (hh_item != HHITEM_NOTHING) {
+        addHelmTime(hh_item, multiplier);
     }
 }
 

@@ -1,4 +1,4 @@
-{% from 'macros.html.jinja2' import list_selector %}
+{% from 'macros.html.jinja2' import list_selector, properties_selector %}
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col border panel">
@@ -122,7 +122,7 @@
                                    value="True"/>
                             Helm Hurry Mode
                         </label>
-                    </div>
+                    {{ properties_selector(helm_hurry_items, "helmhurry_list", "HELM HURRY SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.") }}
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                title="Randomizes the location you spawn in when starting a new file and when selecting the 'Exit to Spawn' option.">

@@ -221,7 +221,7 @@ void initItemRando(void) {
     for (int i = 0; i < (fairy_size>>1); i++) {
         fairy_item_table[i] = fairy_write[i];
     }
-    // Rainbow Cion Table
+    // Rainbow Coin Table
     int rainbow_size = 0x10;
     unsigned char* rainbow_write = dk_malloc(rainbow_size);
     int* rainbow_file_size;

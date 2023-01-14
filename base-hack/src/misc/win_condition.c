@@ -121,7 +121,6 @@ void checkSeedVictory(void) {
 void checkVictory_flaghook(int flag) {
     checkGlobalProgress(flag);
     checkSeedVictory();
-    blueprintCollect(flag);
 }
 
 int isSnapEnemyInRange(void) {

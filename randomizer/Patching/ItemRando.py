@@ -170,21 +170,28 @@ kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "L
 
 def pushItemMicrohints(spoiler: Spoiler, item):
     """Push hint for the micro-hints system."""
-    move = Items.NoItem  # Using no item for the purpose of a default
-    hinted_items = {
-        # Key = Item, Value = Textbox index in text file 19
-        Items.Monkeyport: 26,
-        Items.GorillaGone: 25,
-    }
-    for item_hint in hinted_items:
-        if item.new_flag == ItemList[item_hint].rando_flag:
-            move = item_hint
-    if move != Items.NoItem:
-        data = {"textbox_index": hinted_items[move], "mode": "replace_whole", "target": spoiler.microhints[ItemList[move].name]}
-        if 19 in spoiler.text_changes:
-            spoiler.text_changes[19].append(data)
-        else:
-            spoiler.text_changes[19] = [data]
+    if spoiler.settings.microhints_enabled != "off":
+        move = Items.NoItem  # Using no item for the purpose of a default
+        hinted_items = {
+            # Key = Item, Value = (Textbox index in text file 19, (all_accepted_settings))
+            Items.Monkeyport: (26, ("base", "all")),
+            Items.GorillaGone: (25, ("base", "all")),
+            Items.Bongos: (27, ("all")),
+            Items.Triangle: (28, ("all")),
+            Items.Saxophone: (29, ("all")),
+            Items.Trombone: (30, ("all")),
+            Items.Guitar: (31, ("all")),
+        }
+        for item_hint in hinted_items:
+            if item.new_flag == ItemList[item_hint].rando_flag:
+                move = item_hint
+        if move != Items.NoItem:
+            if spoiler.settings.microhints_enabled in list(hinted_items[move][1]):
+                data = {"textbox_index": hinted_items[move][0], "mode": "replace_whole", "target": spoiler.microhints[ItemList[move].name]}
+                if 19 in spoiler.text_changes:
+                    spoiler.text_changes[19].append(data)
+                else:
+                    spoiler.text_changes[19] = [data]
 
 
 def getTextRewardIndex(item) -> int:
