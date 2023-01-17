@@ -245,7 +245,7 @@ ItemList = {
 
 HHItemSelector = []
 HHItems = [
-    ("Starting Time", 20*60),
+    ("Starting Time", 20 * 60),
     ("Golden Banana", 20),
     ("Blueprint", 45),
     ("Company Coins", 300),
@@ -259,7 +259,7 @@ HHItems = [
     ("Kongs", 240),
     ("Fairies", 50),
     ("Colored Bananas", 3),
-    ("Ice Traps", -40)
+    ("Ice Traps", -40),
 ]
 for item in HHItems:
     HHItemSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_"), "tooltip": "", "default": item[1]})

@@ -319,21 +319,21 @@ def patching_response(responded_data):
 
     # Helm Hurry
     helm_hurry_bonuses = [
-        spoiler.settings.helmhurry_list_starting_time
-        spoiler.settings.helmhurry_list_golden_banana
-        spoiler.settings.helmhurry_list_blueprint
-        spoiler.settings.helmhurry_list_company_coins
-        spoiler.settings.helmhurry_list_move
-        spoiler.settings.helmhurry_list_banana_medal
-        spoiler.settings.helmhurry_list_rainbow_coin
-        spoiler.settings.helmhurry_list_boss_key
-        spoiler.settings.helmhurry_list_battle_crown
-        spoiler.settings.helmhurry_list_bean
-        spoiler.settings.helmhurry_list_pearl
-        spoiler.settings.helmhurry_list_kongs
-        spoiler.settings.helmhurry_list_fairies
-        spoiler.settings.helmhurry_list_colored_bananas
-        spoiler.settings.helmhurry_list_ice_traps
+        spoiler.settings.helmhurry_list_starting_time,
+        spoiler.settings.helmhurry_list_golden_banana,
+        spoiler.settings.helmhurry_list_blueprint,
+        spoiler.settings.helmhurry_list_company_coins,
+        spoiler.settings.helmhurry_list_move,
+        spoiler.settings.helmhurry_list_banana_medal,
+        spoiler.settings.helmhurry_list_rainbow_coin,
+        spoiler.settings.helmhurry_list_boss_key,
+        spoiler.settings.helmhurry_list_battle_crown,
+        spoiler.settings.helmhurry_list_bean,
+        spoiler.settings.helmhurry_list_pearl,
+        spoiler.settings.helmhurry_list_kongs,
+        spoiler.settings.helmhurry_list_fairies,
+        spoiler.settings.helmhurry_list_colored_bananas,
+        spoiler.settings.helmhurry_list_ice_traps,
     ]
     ROM().seek(sav + 0xE4)
     for bonus in helm_hurry_bonuses:

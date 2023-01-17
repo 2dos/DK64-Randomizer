@@ -100,7 +100,6 @@
     });
 </script>
 {% endmacro %}
-
 {% macro properties_selector(list, name, title, tooltip) %}
     <!-- Icon triggers modal -->
     <input class="btn btn-primary customize"
@@ -134,17 +133,15 @@
                         {% for item in list %}
                             <div class="item-select" style="margin:0;flex:0;min-width:150px;">
                                 <p class="select-title">{{ item.name }}</p>
-                                <input
-                                    min="-32768"
-                                    max="32767"
-                                    name="{{ name }}_{{ item.value }}_selector"
-                                    id="{{ name }}_{{ item.value }}"
-                                    style="width:15%"
-                                    class="form-control center-div"
-                                    type="number"
-                                    value="{{ item.default }}"
-                                    default_val="{{ item.default }}"
-                                    >
+                                <input min="-32768"
+                                       max="32767"
+                                       name="{{ name }}_{{ item.value }}_selector"
+                                       id="{{ name }}_{{ item.value }}"
+                                       style="width:15%"
+                                       class="form-control center-div"
+                                       type="number"
+                                       value="{{ item.default }}"
+                                       default_val="{{ item.default }}">
                             </div>
                         {% endfor %}
                     </div>
@@ -159,10 +156,15 @@
 </div>
 <script>
     $('#{{ name }}_reset').click(function() {
-        {% for item in list %}
-            $('#{{ name }}_{{ item.value }}').prop('value', $('#{{ name }}_{{ item.value }}').attr('default_val'));
-            $('#{{ name }}_{{ item.value }}').trigger('change');
-        {% endfor %}
+        {
+            %
+            for item in list %
+        }
+        $('#{{ name }}_{{ item.value }}').prop('value', $('#{{ name }}_{{ item.value }}').attr('default_val'));
+        $('#{{ name }}_{{ item.value }}').trigger('change'); {
+            %
+            endfor %
+        }
     });
 </script>
 {% endmacro %}
