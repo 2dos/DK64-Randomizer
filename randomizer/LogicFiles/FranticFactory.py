@@ -83,7 +83,6 @@ LogicRegions = {
 
     Regions.ChunkyRoomPlatform: Region("Chunky Room Platform", "Storage Area", Levels.FranticFactory, False, -1, [
         LocationLogic(Locations.FactoryDiddyChunkyRoomBarrel, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.isdiddy and (l.vines or l.settings.bonus_barrels == "skip"), MinigameType.BonusBarrel),
-        LocationLogic(Locations.RainbowCoin_Location02, lambda l: l.shockwave),
     ], [], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.PowerHut, lambda l: (l.coconut and l.isdonkey) or l.phasewalk or l.CanMoonkick(), Transitions.FactoryChunkyRoomToPower),
@@ -106,6 +105,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.HasKong(l.settings.chunky_freeing_kong)),
         LocationLogic(Locations.FactoryTinybyArcade, lambda l: (l.mini and l.tiny) or l.phasewalk),
         LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: ((l.punch and l.CanSlamSwitch(Levels.FranticFactory, 1)) or l.generalclips) and l.ischunky),
+        LocationLogic(Locations.RainbowCoin_Location02, lambda l: l.punch and l.shockwave),
         LocationLogic(Locations.FactoryChunkybyArcade, lambda l: ((l.punch or l.phasewalk) and l.ischunky) or (l.phasewalk and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryKasplatStorage, lambda l: not l.settings.kasplat_rando),
     ], [
