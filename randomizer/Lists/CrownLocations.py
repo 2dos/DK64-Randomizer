@@ -149,7 +149,7 @@ CrownLocations = {
         CrownLocation(
             map=Maps.AngryAztec, name="Angry Aztec: On Tiny Temple", x=3192, y=352, z=500, scale=0.3, region=Regions.AngryAztecOasis, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick()
         ),
-        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Oasis Shop", x=2430, y=120, z=509, scale=0.35, region=Regions.CandyAztec),
+        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Oasis Shop", x=2430, y=120, z=509, scale=0.35, region=Regions.AngryAztecOasis),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Hunky Chunky Barrel", x=3216, y=120, z=1490, scale=0.35, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Next to Chunky Cage (1)", x=4276.6, y=120, z=2266, scale=0.4, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Next to Chunky Cage (2)", x=4283, y=120, z=2543.6, scale=0.4, region=Regions.AngryAztecMain),
