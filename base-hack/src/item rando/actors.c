@@ -1,6 +1,23 @@
+/**
+ * @file actors.c
+ * @author Ballaam
+ * @brief Item Rando changes pertaining to actors
+ * @version 0.1
+ * @date 2023-01-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include "../../include/common.h"
 
 void spriteCode(int sprite_index, float scale) {
+    /**
+     * @brief Generic sprite code for actors
+     * 
+     * @param sprite_index Sprite Index inside the Sprite Table
+     * @param scale Scale of the item which will be spawned
+     */
     void* paad = CurrentActorPointer_0->paad;
     spriteActorGenericCode(4.5f);
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
@@ -13,18 +30,30 @@ void spriteCode(int sprite_index, float scale) {
 }
 
 void ninCoinCode(void) {
+    /**
+     * @brief Nintendo Coin Actor Code
+     */
     spriteCode(0x8D, 1.0f);
 }
 
 void rwCoinCode(void) {
+    /**
+     * @brief Rareware Coin Actor Code
+     */
     spriteCode(0x8C, 1.0f);
 }
 
 void medalCode(void) {
+    /**
+     * @brief Medal Actor Code
+     */
     spriteCode(0x3C, 2.0f);
 }
 
 void beanCode(void) {
+    /**
+     * @brief Bean Actor Code
+     */
     void* paad = CurrentActorPointer_0->paad;
     spriteActorGenericCode(12.0f);
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
@@ -37,6 +66,9 @@ void beanCode(void) {
 }
 
 void pearlCode(void) {
+    /**
+     * @brief Pearl Actor Code
+     */
     void* paad = CurrentActorPointer_0->paad;
     spriteActorGenericCode(12.0f);
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
@@ -49,10 +81,18 @@ void pearlCode(void) {
 }
 
 void NothingCode(void) {
+    /**
+     * @brief Null Item Actor Code
+     */
     deleteActorContainer(CurrentActorPointer_0);
 }
 
 void scaleBounceDrop(float scale) {
+    /**
+     * @brief Change the visual scale of a bounce drop
+     * 
+     * @param scale New Scale of the object
+     */
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         renderingParamsData* render = CurrentActorPointer_0->render;
         if (render) {
@@ -64,6 +104,9 @@ void scaleBounceDrop(float scale) {
 }
 
 void KongDropCode(void) {
+    /**
+     * @brief Kong Actors actor code
+     */
     GoldenBananaCode();
     scaleBounceDrop(0.15f);
     if (CurrentActorPointer_0->yVelocity > 500.0f) {
@@ -91,6 +134,9 @@ void KongDropCode(void) {
 }
 
 void PotionCode(void) {
+    /**
+     * @brief Actor code for the potion actors
+     */
     GoldenBananaCode();
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF; // Make color blends work
@@ -98,7 +144,9 @@ void PotionCode(void) {
 }
 
 void fairyDuplicateCode(void) {
-    /* Duplicate fairy actor purely used for item drops */
+    /**
+     * @brief Actor code for the fairy pickup duplicate
+     */
     GoldenBananaCode();
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
         CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFEFFF; // Make color blends work
@@ -107,6 +155,9 @@ void fairyDuplicateCode(void) {
 }
 
 void FakeGBCode(void) {
+    /**
+     * @brief Actor code for the fake item (commonly known as "Ice Traps") actor
+     */
     GoldenBananaCode();
     scaleBounceDrop(0.10f);
     if (CurrentActorPointer_0->yVelocity > 500.0f) {
@@ -114,28 +165,13 @@ void FakeGBCode(void) {
     }
 }
 
-void KLumsyText(void) {
-    /*
-        NOTE: Re-add this once we get some text for this
-        float dist_to_klumsy = *(float*)(0x807FC8D4);
-        if (dist_to_klumsy < 160000.0f) {
-            if ((checkFlag(FLAG_KEYIN_JAPES, 0)) && (checkFlag(FLAG_KEYHAVE_KEY8, 0)) && (Rando.item_rando)) {
-                if ((!checkFlagDuplicate(FLAG_KEYHAVE_KEY8, 0)) || (1 == 1)) {
-                    if (!checkFlag(0x78, 2)) {
-                        getTextPointer_0(CurrentActorPointer_0, 41, 0);
-                        setFlag(0x78, 1, 2);
-                    }
-                }
-            }
-        }
-    */
-    renderActor(CurrentActorPointer_0, 0);
-}
-
 void mermaidCheck(void) {
+    /**
+     * @brief Set the mermaid control state based on the amount of pearls you have
+     */
     int requirement = 5;
     if (Rando.fast_gbs) {
-        requirement = 1;
+        requirement = 1; // Fast GBs pearl requirement
     }
     int count = 0;
     for (int i = 0; i < 5; i++) {
@@ -152,6 +188,9 @@ void mermaidCheck(void) {
 }
 
 int fairyQueenCutsceneInit(int start, int count, int type) {
+    /**
+     * @brief Set BFI Queen control state based on the amount of fairies you have
+     */
     int fairies_in_possession = countFlagsDuplicate(start, count, type); 
     int fairy_limit = 20;
     if (Rando.rareware_gb_fairies > 0) {
@@ -165,6 +204,9 @@ int fairyQueenCutsceneInit(int start, int count, int type) {
 }
 
 void fairyQueenCutsceneCheck(void) {
+    /**
+     * @brief Check for playing the cutscene inside BFI for the rewards behind Rareware Door
+     */
     if (CurrentActorPointer_0->control_state == 10) {
         float dx = CurrentActorPointer_0->xPos - Player->xPos;
         float dz = CurrentActorPointer_0->zPos - Player->zPos;
@@ -185,6 +227,10 @@ static int stored_maps[STORED_COUNT] = {};
 static unsigned char stored_kasplat[STORED_COUNT] = {};
 
 int setupHook(int map) {
+    /**
+     * @brief Setup hook which checks the setup for whether kasplat rewards are spawned.
+     * This function will alter the kasplat spawned bitfield to prevent duplication glitches with kasplat rewards
+     */
     int index = getParentIndex(map);
     // Wipe array of items not in parent chain
     for (int i = 0; i < STORED_COUNT; i++) {
@@ -233,6 +279,9 @@ int setupHook(int map) {
 }
 
 void CheckKasplatSpawnBitfield(void) {
+    /**
+     * @brief Alter kasplat spawn bitfield based on the present actor spawners
+     */
     if (ActorSpawnerPointer) {
         actorSpawnerData* referenced_spawner = ActorSpawnerPointer;
         while (1 == 1) {

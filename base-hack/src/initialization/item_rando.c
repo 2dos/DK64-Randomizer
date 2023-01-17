@@ -210,7 +210,6 @@ void initItemRando(void) {
         *(int*)(0x806F938C) = 0x0C000000 | (((int)&banana_medal_acquisition & 0xFFFFFF) >> 2); // Medal Give
         *(int*)(0x806F9394) = 0;
         *(int*)(0x806F5564) = 0x0C000000 | (((int)&itemGrabHook & 0xFFFFFF) >> 2); // Item Get Hook - Post Flag
-        *(int*)(0x806BD798) = 0x0C000000 | (((int)&KLumsyText & 0xFFFFFF) >> 2); // K. Lumsy code hook
         *(int*)(0x806A6CA8) = 0x0C000000 | (((int)&canItemPersist & 0xFFFFFF) >> 2); // Item Despawn Check
         *(int*)(0x806A741C) = 0; // Prevent Key Twinkly Sound
         *(int*)(0x80688714) = 0x0C000000 | (((int)&setupHook & 0xFFFFFF) >> 2); // Setup Load Hook

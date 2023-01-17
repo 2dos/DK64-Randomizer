@@ -1,6 +1,28 @@
+/**
+ * @file spawning.c
+ * @author Ballaam
+ * @brief Item Rando elements pertaining to the spawning process of items
+ * @version 0.1
+ * @date 2023-01-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "../../include/common.h"
 
 void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
+    /**
+     * @brief Spawn bonus reward
+     * 
+     * @param object Actor Index
+     * @param x_f X Position (Float in int form)
+     * @param y_f Y Position (Float in int form)
+     * @param z_f Z Position (Float in int form)
+     * @param unk0 Unknown
+     * @param cutscene Spawning Condition
+     * @param flag Tied flag
+     * @param unk1 Unknown
+     */
     bonus_paad* paad = CurrentActorPointer_0->paad;
     int index = paad->barrel_index;
     if ((index > 0) && (index < 95)) {
@@ -12,6 +34,12 @@ void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
 }
 
 void spawnRewardAtActor(int object, int flag) {
+    /**
+     * @brief Spawns a reward at the position as an actor, based on the bonus reward table
+     * 
+     * @param object Actor Index
+     * @param flag Flag Index
+     */
     int index = CurrentActorPointer_0->reward_index;
     if ((index > 0) && (index < 95)) {
         object = bonus_data[index].spawn_actor;
@@ -24,6 +52,12 @@ void spawnRewardAtActor(int object, int flag) {
 }
 
 void spawnMinecartReward(int object, int flag) {
+    /**
+     * @brief Spawns a minecart reward at an actor
+     * 
+     * @param object Actor Index
+     * @param flag Flag Index
+     */
     for (int i = 0; i < 95; i++) {
         if (bonus_data[i].flag == flag) {
             if (bonus_data[i].spawn_actor != 153) {
@@ -35,6 +69,18 @@ void spawnMinecartReward(int object, int flag) {
 }
 
 void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
+    /**
+     * @brief Spawn Crown Reward
+     * 
+     * @param object Actor Index
+     * @param x_f X Position (Float in int form)
+     * @param y_f Y Position (Float in int form)
+     * @param z_f Z Position (Float in int form)
+     * @param unk0 Unknown
+     * @param cutscene Spawning Condition
+     * @param flag Tied flag
+     * @param unk1 Unknown
+     */
     int new_obj = getCrownItem(CurrentMap);
     if (new_obj != 0) {
         object = new_obj;
@@ -45,6 +91,18 @@ void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
 }
 
 void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
+    /**
+     * @brief Spawn boss reward
+     * 
+     * @param object Actor Index
+     * @param x_f X Position (Float in int form)
+     * @param y_f Y Position (Float in int form)
+     * @param z_f Z Position (Float in int form)
+     * @param unk0 Unknown
+     * @param cutscene Spawning Condition
+     * @param flag Tied flag
+     * @param unk1 Unknown
+     */
     int new_obj = getKeyItem(flag);
     if (new_obj != 0) {
         object = new_obj;
@@ -72,15 +130,18 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
 }
 
 void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
-    /*
-        TODO:
-        Add to item dictionaries
-        Add to logic
-        Update writer to place rainbow coins
-        Add to shop indicator
-        Ensure keys/moves works with it, displaying the text and turning in the keys
-        Add Rainbow Coins to check screen
-    */
+    /**
+     * @brief Spawn dirt patch reward
+     * 
+     * @param object Actor Index
+     * @param x_f X Position (Float in int form)
+     * @param y_f Y Position (Float in int form)
+     * @param z_f Z Position (Float in int form)
+     * @param unk0 Unknown
+     * @param cutscene Spawning Condition
+     * @param flag Tied flag
+     * @param unk1 Unknown
+     */
     int new_obj = getRainbowCoinItem(flag);
     if (new_obj != 0) {
         object = new_obj;
@@ -96,7 +157,12 @@ void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int c
 }
 
 void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
-    // Change Character Spawner Information account for fairy rando
+    /**
+     * @brief Change Character Spawner Information to account for Fairy Rando
+     * 
+     * @param actor Actor index of the spawned item
+     * @param spawner Spawner Object for the spawned item
+     */
     /*
         INFORMATION:
             +----------------+----------------------------+--------+---------------+
@@ -134,6 +200,13 @@ typedef struct packet_extra_data {
 } packet_extra_data;
 
 int getBarrelModel(int index) {
+    /**
+     * @brief Get barrel model based on the contents inside the bonus barrel
+     * 
+     * @param index Bonus Barrel's tied reward index
+     * 
+     * @return Model Index
+     */
     if (index < 95) {
         int actor = bonus_data[index].spawn_actor;
         switch (actor) {
@@ -194,6 +267,10 @@ int SpawnPreSpawnedBarrel(
         int sp30, int sp34, int sp38, int sp3c,
         int sp40, int sp44, spawnerExtraInfo* extra_data
     ) {
+        /**
+         * @brief Spawn a barrel and alter the referenced model.
+         * Only for barrels that have been spawned before and need it's model reassigning correctly.
+         */
     if (Rando.item_rando) {
         if (spawner) {
             if ((spawner->actor_type + 0x10) == 0x1C) {
@@ -211,6 +288,10 @@ int SpawnPreSpawnedBarrel(
 }
 
 void SpawnBarrel(spawnerPacket* packet) {
+    /**
+     * @brief Spawn a barrel and alter the referenced model.
+     * Only for barrels that have NOT been spawned before.
+     */
     if ((Rando.item_rando)) {
         packet_extra_data* data = (packet_extra_data*)packet->extra_data;
         if (data) {
@@ -227,6 +308,9 @@ void SpawnBarrel(spawnerPacket* packet) {
 }
 
 void initBarrelChange(void) {
+    /**
+     * @brief Initialize the changes necessary for bonus barrels to match contents
+     */
     for (int i = 0; i < 345; i++) {
         master_copy[i] = ActorMasterType[i];
     }

@@ -1,3 +1,13 @@
+/**
+ * @file item_grab.c
+ * @author Ballaam
+ * @brief Item Rando elements which pertain to grabbing items
+ * @version 0.1
+ * @date 2023-01-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "../../include/common.h"
 
 #define BANANA_MEDAL_ITEM_COUNT 17 // Discount nothing item
@@ -22,6 +32,11 @@
 #define MEDALITEM_NOTHING 17
 
 void banana_medal_acquisition(int flag) {
+    /**
+     * @brief Acquire a banana medal, and handle the item acquired from it
+     * 
+     * @param flag Flag index of the banana medal
+     */
     int item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
     if (!checkFlag(flag, 0)) {
         if (item_type != MEDALITEM_KEY) {
@@ -198,156 +213,16 @@ void banana_medal_acquisition(int flag) {
     }
 }
 
-/*
-    void banana_medal_acquisition(int flag) {
-    int item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
-    if (!checkFlag(flag, 0)) {
-        // Display and play effects if you don't have item
-        if (item_type < (BANANA_MEDAL_ITEM_COUNT + 1)) {
-            int kong = -1;
-            short flut_flag = flag;
-            updateFlag(0, (short*)&flut_flag, (void*)0, -1);
-            if (item_type == 11) {
-                for (int i = 0; i < 5; i++) {
-                    if (flut_flag == kong_flags[i]) {
-                        kong = i;
-                    }
-                }
-            }
-            if (item_type == 2) {
-                // Display key text
-                int key_bitfield = 0;
-                for (int i = 0; i < 8; i++) {
-                    if (checkFlagDuplicate(getKeyFlag(i), 0)) {
-                        key_bitfield |= (1 << i);
-                    }
-                }
-                setFlag(flag, 1, 0);
-                int spawned = 0;
-                for (int i = 0; i < 8; i++) {
-                    if ((checkFlagDuplicate(getKeyFlag(i), 0)) && ((key_bitfield & (1 << i)) == 0)) {
-                        if (!spawned) {
-                            spawnActor(324, 0);
-                            TextOverlayData.type = 5;
-                            TextOverlayData.flag = getKeyFlag(i);
-                            TextOverlayData.kong = 0;
-                            spawned = 1;
-                        }
-                    }
-                }
-                auto_turn_keys();
-            } else if (item_type < BANANA_MEDAL_ITEM_COUNT) {
-                setFlag(flag, 1, 0);
-            }
-            if (item_type == 0) {
-                giveGB(getKong(0), getWorld(CurrentMap, 1));
-            } else if (item_type == 15) {
-                giveRainbowCoin();
-            }
-            if (item_type < BANANA_MEDAL_ITEM_COUNT) {
-                playSFX(0xF2);
-                int used_song = 0x97;
-                int kong_songs[] = {11, 10, 12, 13, 9};
-                int songs[] = {
-                    18, // GB (GB/Key Get)
-                    69, // BP (BP Get)
-                    18, // Key (GB/Key Get)
-                    0x97, // Crown (Banana Medal Get)
-                    22, // Company Coin
-                    0x97, // Medal (Banana Medal Get)
-                    115, // Cranky (Gun Get)
-                    115, // Funky (Gun Get)
-                    115, // Candy (Gun Get)
-                    115, // Training (Gun Get)
-                    115, // Shockwave (Gun Get)
-                    0, // Kong - Use kong array
-                    147, // Bean (Bean Get)
-                    128, // Pearl (Pearl Get)
-                    46, // Fairy (Fairy Tick)
-                    145, // Rainbow Coin Get
-                    0, // K Rool Laugh (Use SFX)
-                };
-                if (item_type == 11) {
-                    used_song = kong_songs[kong];
-                } else if (item_type == 16) {
-                    initIceTrap();
-                } else if (item_type < BANANA_MEDAL_ITEM_COUNT) {
-                    used_song = songs[item_type];
-                }
-                if (item_type != 16) {
-                    playSong(used_song, 0x3F800000);
-                }
-            }
-            unkSpriteRenderFunc(200);
-            unkSpriteRenderFunc_0();
-            loadSpriteFunction(0x8071EFDC);
-            int bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
-            int sprite_indexes[] = {
-                0x3B, // GB
-                0, // BP - Use bp sprite array
-                0x8A,  // Key
-                0x8B,  // Crown
-                0, // Company Coin - Use separate check
-                0x3C, // Medal
-                0x94, // Cranky
-                0x96, // Funky
-                0x93, // Candy
-                0x94, // Training Barrel
-                0x3A, // Shockwave
-                0, // Kong - Use separate check
-                0x92, // Bean
-                0x92, // Pearl
-                0x89, // Fairy
-                0xA0, // Rainbow Coin
-                0x92, // Fake Item - Use separate check
-            };
-            int used_sprite = 0x3B;
-            if (item_type == 1) {
-                int character_val = Character;
-                if (character_val > 4) {
-                    character_val = 0;
-                }
-                used_sprite = bp_sprites[character_val];
-            } else if (item_type == 4) {
-                if (flut_flag == 132) {
-                    // Nintendo Coin
-                    used_sprite = 0x8C;
-                } else {
-                    // Rareware Coin
-                    used_sprite = 0x8D;
-                }
-            } else if (item_type == 11) {
-                used_sprite = 0xA9 + kong;
-                refreshItemVisibility();
-            } else if (item_type == BANANA_MEDAL_ITEM_COUNT) {
-                used_sprite = 0x8E;
-            } else {
-                used_sprite = sprite_indexes[item_type];
-            }
-            void* sprite_addr = sprite_table[used_sprite];
-            if (item_type == 12) {
-                sprite_addr = &bean_sprite;
-            } else if (item_type == 13) {
-                sprite_addr = &pearl_sprite;
-            }
-            displaySpriteAtXYZ(sprite_addr, 0x3F800000, 160.0f, 120.0f, -10.0f);
-        }
-    } else {
-        // No item or pre-given item
-        unkSpriteRenderFunc(200);
-        unkSpriteRenderFunc_0();
-        loadSpriteFunction(0x8071EFDC);
-        displaySpriteAtXYZ(sprite_table[0x8E], 0x3F800000, 160.0f, 120.0f, -10.0f);
-    }
-}
-*/
-
 static unsigned char key_timer = 0;
 static unsigned char key_index = 0;
 static char key_text[] = "KEY 0";
 static unsigned char old_keys = 0;
 
 void keyGrabHook(int song, int vol) {
+    /**
+     * @brief Hook for grabbing a key
+     */
+
     playSong(song, vol);
     int val = 0;
     for (int i = 0; i < 8; i++) {
@@ -359,12 +234,23 @@ void keyGrabHook(int song, int vol) {
 }
 
 int getFlagIndex_Corrected(int start, int level) {
+    /**
+     * @brief Get a corrected flag index, which will convert Rambi/Enguarde into the kong who entered the transformation crate
+     * 
+     * @param start Start flag index
+     * @param level Level Index
+     * 
+     * @return New flag index
+     */
     return start + (5 * level) + getKong(0);
 }
 
 static const short boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7};
 
 void collectKey(void) {
+    /**
+     * @brief Collect a key, display the text and turn in keys
+     */
     for (int i = 0; i < 8; i++) {
         if (checkFlagDuplicate(getKeyFlag(i), 0)) {
             if ((old_keys & (1 << i)) == 0) {
@@ -379,6 +265,16 @@ void collectKey(void) {
 }
 
 int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
+    /**
+     * @brief Hook into the item grab function which is called at the point the flag is set. This is a little later
+     * than the generic item grab function
+     * 
+     * @param collectable type of collectable
+     * @param obj_type Object Model 2 Index
+     * @param is_homing Is homing ammo crate
+     * 
+     * @return Collectable Offset
+     */
     if (Rando.item_rando) {
         if (obj_type == 0x13C) {
             collectKey();
@@ -411,6 +307,13 @@ int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
 }
 
 int* controlKeyText(int* dl) {
+    /**
+     * @brief Handle the key text to be displayed upon picking up a boss key
+     * 
+     * @param dl Display List address
+     * 
+     * @return New display list address
+     */
     if (key_timer > 0) {
         int key_opacity = 255;
         if (key_timer < 10) {
@@ -430,12 +333,14 @@ int* controlKeyText(int* dl) {
     return dl;
 }
 
-void initKeyText(int ki) {
-    key_index = ki;
-    key_timer = 100;
-}
-
 void giveFairyItem(int flag, int state, int type) {
+    /**
+     * @brief Handle acquisition of the item tied to a fairy
+     * 
+     * @param flag Flag index of the fairy
+     * @param state Target state of the flag. AKA whether to set (1) or clear (0) the flag
+     * @param type Flag Type
+     */
     int model = getFairyModel(flag);
     int key_bitfield = 0;
     if (model == 0x69) {
@@ -502,6 +407,11 @@ static const unsigned char dance_skip_ban_maps[] = {
 };
 
 int canDanceSkip(void) {
+    /**
+     * @brief Determine whether the player can dance skip an item
+     * 
+     * @return Dance Skip enabled
+     */
     if (CurrentMap == 0x6F) {
         return 0;
     }
@@ -529,6 +439,11 @@ int canDanceSkip(void) {
 }
 
 void getItem(int object_type) {
+    /**
+     * @brief Item Grab hook, at the point of touching the item, before the flag is set.
+     * 
+     * @param object_type Object Model 2 Type
+     */
     float pickup_volume = 1-(0.3f * *(char*)(0x80745838));
     int song = -1;
     helm_hurry_items hh_item = HHITEM_NOTHING;
@@ -740,6 +655,9 @@ void getItem(int object_type) {
 }
 
 void initIceTrap(void) {
+    /**
+     * @brief Initialize an ice trap
+     */
     trapPlayer();
     Player->trap_bubble_timer = 200;
     playSFX(0x2D4); // K Rool Laugh
@@ -747,6 +665,15 @@ void initIceTrap(void) {
 }
 
 int getObjectCollectability(int id, int unk1, int model2_type) {
+    /**
+     * @brief Determine whether the object is collectable or not
+     * 
+     * @param id Object ID
+     * @param unk1 Unknown
+     * @param model2_type Object Model 2 Type
+     * 
+     * @return Whether item is collectable or not
+     */
     int index = indexOfNextObj(id);
     int* m2location = (int*)ObjectModel2Pointer;
     ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,index);

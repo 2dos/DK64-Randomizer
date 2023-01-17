@@ -1,7 +1,32 @@
+/**
+ * @file flags.c
+ * @author Ballaam
+ * @brief Item Rando elements associated with flag handling
+ * @version 0.1
+ * @date 2023-01-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "../../include/common.h"
 
+/*
+    Common terminology:
+    - FLUT (Flag LookUp Table): A table in ROM which converts flags from their vanilla flag to a new flag.
+        - Eg. If you have the input flag of Rareware GB, and the output flag of DK Japes Medal, picking up rareware GB will set
+        the DK Japes Medal flag instead of the normal flag. Check functions also go through this table.
+        It's the crux of how item rando works without having to alter a large majority of the game code.
+*/
+
 int checkFlagDuplicate(short flag, int type) {
-    // Duplicate of the check flag function, for the purpose of checking a flag without referencing the lookup table
+    /**
+     * @brief Duplicate of the check flag function, but instead of going through the FLUT, it checks the vanilla flag
+     * 
+     * @param flag Flag Index
+     * @param type Flag Type (0 = Permanent, 1 = Global, 2 = Temporary)
+     * 
+     * @return is the flag set (true/false)
+     */
     if (flag == -1) {
         return 0;
     }
@@ -17,6 +42,13 @@ int checkFlagDuplicate(short flag, int type) {
 }
 
 void setFlagDuplicate(short flag, int set, int type) {
+    /**
+     * @brief Duplicate of the set flag function, but instead of going through the FLUT, it sets the vanilla flag
+     * 
+     * @param flag Flag Index
+     * @param set Determines whether to set the flag (1) or clear the flag (0)
+     * @param type Flag Type (0 = Permanent, 1 = Global, 2 = Temporary)
+     */
     if (flag != -1) {
         unsigned char* fba = 0;
         if ((type == 0) || (type == 2)) {
@@ -36,6 +68,17 @@ void setFlagDuplicate(short flag, int set, int type) {
 }
 
 int countFlagsForKongFLUT(int startFlag, int start, int cap, int kong) {
+    /**
+     * @brief Counts a flag array for the amount of flags set within that array.
+     * The array is special in that there's items for each kong. This goes via the FLUT though
+     * 
+     * @param startFlag Starting flag in the array
+     * @param start Starting position in the array
+     * @param cap Finishing position in the array
+     * @param kong Kong which this is being checked for
+     * 
+     * @return set count
+     */
     int count = 0;
     if (kong < 5) {
         for (int i = start; i <= cap; i++) {
@@ -49,6 +92,15 @@ int countFlagsForKongFLUT(int startFlag, int start, int cap, int kong) {
 }
 
 int countFlagsDuplicate(int start, int count, int type) {
+    /**
+     * @brief Counts a flag array for the amount of flags set within that array. Doesn't go via the FLUT
+     * 
+     * @param start Starting flag in the array
+     * @param count Amount of flags to check
+     * @param type Flag type (0 = Permanent, 1 = Global, 2 = Temporary)
+     * 
+     * @return set count
+     */
     int end = start + count;
     int amt = 0;
     for (int i = start; i < end; i++) {
@@ -62,6 +114,12 @@ static unsigned char cache_spot = 0;
 static int flut_size = -1;
 
 void cacheFlag(int input, int output) {
+    /**
+     * @brief Enter flag into the cache table, to reduce the amount of times the game searches the whole FLUT
+     * 
+     * @param input vanilla flag
+     * @param output output flag
+     */
     int slot = cache_spot;
     flut_cache[(2 * slot)] = input;
     flut_cache[(2 * slot) + 1] = output;
@@ -69,9 +127,13 @@ void cacheFlag(int input, int output) {
 }
 
 int clampFlag(int flag) {
-    /*
-        Clamp flag for GBs, Medals, Crowns, BPs, Nin/RW Coin, Boss Key
-    */
+    /**
+     * @brief Clamp flag to filter for flags only present in the FLUT.
+     * 
+     * @param flag Flag to check
+     * 
+     * @return is flag in FLUT
+     */
     if ((flag >= 0x1D5) && (flag <= 0x1FC)) {
         return 1; // Blueprints
     }
@@ -127,6 +189,16 @@ int clampFlag(int flag) {
 }
 
 void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
+    /**
+     * @brief Check whether a flag is a move, alter the flag block address, and perform any additional functions required.
+     * 
+     * @param flag Address which contains the flag index
+     * @param fba Flag Block Address
+     * @param source Whether this function is being called from a set flag call (1) or check flag call (0)
+     * @param vanilla_flag The original vanilla flag
+     * 
+     * @return New flag block address
+     */
     if (*flag & 0x8000) {
         // Is Move
         int item_kong = (*flag >> 12) & 7;
@@ -266,6 +338,9 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
 }
 
 void getFLUTSize(void) {
+    /**
+     * @brief Determine amount of flags in the FLUT
+     */
     for (int i = 0; i < 400; i++) {
         if (ItemRando_FLUT[2 * i] == -1) {
             flut_size = i;
@@ -275,6 +350,15 @@ void getFLUTSize(void) {
 }
 
 int binarySearch(int search_item, int low, int high) {
+    /**
+     * @brief Perform the binary search algorithm on the FLUT
+     * 
+     * @param search_item The flag being searched for
+     * @param low Lower bound of the search
+     * @param high Higher bound of the search
+     * 
+     * @return Index in the FLUT of the flag
+     */
     int lim = high - low;
     int old_dist = (high - low) + 1;
     while (low != high) {
@@ -301,6 +385,16 @@ int binarySearch(int search_item, int low, int high) {
 }
 
 void* searchFlag(int old_flag, short* flag_write, int source, void* fba) {
+    /**
+     * @brief Search for flag in the FLUT, determining whether to use the FLUT or a binary search algorithm
+     * 
+     * @param old_flag Flag being searched for
+     * @param flag_write Address which contains where the flag is being written to
+     * @param source Whether this function is being called from a set flag call (1) or check flag call (0)
+     * @param fba Flag Block Address
+     * 
+     * @return New Flag Block Address
+     */
     if (flut_size < 10) {
         // Plain search
         for (int i = 0; i < (flut_size * 2); i++) {
@@ -331,6 +425,14 @@ void* searchFlag(int old_flag, short* flag_write, int source, void* fba) {
 }
 
 void* updateFlag(int type, short* flag, void* fba, int source) {
+    /**
+     * @brief Container function for updating the flag from a set/check flag call to reference the FLUT
+     * 
+     * @param type Flag Type (0 = Permanent, 1 = Global, 2 = Temporary)
+     * @param flag Address which contains the flag index
+     * @param fba Flag Block Address
+     * @param source Whether this function is being called from a set flag call (1) or check flag call (0)
+     */
     if ((Rando.item_rando) && (type == 0) && (*flag != 0)) {
         if (flut_size == -1) {
             getFLUTSize();
@@ -364,6 +466,13 @@ void* updateFlag(int type, short* flag, void* fba, int source) {
 }
 
 int getKongFromBonusFlag(int flag) {
+    /**
+     * @brief Get kong index from a bonus table entry
+     * 
+     * @param flag Flag index associated with the bonus table entry
+     * 
+     * @return kong index
+     */
     if ((Rando.any_kong_items & 1) == 0) {
         for (int i = 0; i < 95; i++) {
             if (bonus_data[i].flag == flag) {

@@ -1,3 +1,13 @@
+/**
+ * @file defs.c
+ * @author Ballaam
+ * @brief Definitions for item rando
+ * @version 0.1
+ * @date 2023-01-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "../../include/common.h"
 
 typedef struct collision_info {
@@ -33,6 +43,20 @@ static actor_behaviour_def actor_defs[DEFS_LIMIT] = {};
 #define KONG_NONE -2
 
 int addCollisionInfo(int index, int type, int collectable, int kong, int actor_equivalent, int hitbox_y, int hitbox_scale) {
+    /**
+     * @brief Add an item to the collision table. This will mean that picking it up will set the flag determined by the 
+     * flag mapping table in the vanilla game, as well as enabling you to pick up actors and for them to register properly.
+     * 
+     * @param index Index of item in the table
+     * @param type Object Model 2 type
+     * @param collectable Collectable Index
+     * @param kong Intended kong for this item. Set to 0 if no kong
+     * @param actor_equivalent Actor equivalent of the Object Model 2 type
+     * @param hitbox_y Hitbox Y Offset from the actor/OM2 position, in units
+     * @param hitbox_scale Hitbox Radius, in units
+     * 
+     * @return following index
+     */
     object_collisions[index].type = type;
     object_collisions[index].collectable_type = collectable;
     object_collisions[index].unk4 = 0.08f;
@@ -49,6 +73,9 @@ int addCollisionInfo(int index, int type, int collectable, int kong, int actor_e
 }
 
 void initCollectableCollision(void) {
+    /**
+     * @brief Initialize all collectable collisions
+     */
     // Single
     int index = addCollisionInfo(0, 0x000D, COLLECTABLE_CB, KONG_DK, 0, 0, 0);
     index = addCollisionInfo(index, 0x000A, COLLECTABLE_CB, KONG_DIDDY, 0, 0, 0);
@@ -141,6 +168,18 @@ void initCollectableCollision(void) {
 }
 
 int addActorDef(int index, int actor, int model, unsigned int func_0, unsigned int func_1, int rescale) {
+    /**
+     * @brief Add actor to the actor definition table
+     * 
+     * @param index Index inside the definition table
+     * @param actor Actor Index
+     * @param model Model that the actor will have upon being spawned
+     * @param func_0 Unknown function
+     * @param func_1 Unknown function
+     * @param rescale Rescale actor (Set to 0 to have default)
+     * 
+     * @return following index
+     */
     actor_defs[index].actor_type = actor;
     actor_defs[index].model = model;
     if (rescale == 0) {
@@ -156,6 +195,9 @@ int addActorDef(int index, int actor, int model, unsigned int func_0, unsigned i
 }
 
 void initActorDefs(void) {
+    /**
+     * @brief Initialize actor definitions table
+     */
     dk_memcpy(&actor_defs[0], &ActorBehaviourTable[0], 128*sizeof(actor_behaviour_def));
     int index = addActorDef(128, 151, 0, 0x80689F80, 0x8068A10C, 0); // Nintendo Coin
     index = addActorDef(index, 152, 0, 0x80689F80, 0x8068A10C, 0); // Rareware Coin
@@ -193,6 +235,17 @@ void initActorDefs(void) {
 static GBDictItem NewGBDictionary[GB_DICTIONARY_COUNT] = {};
 
 int addDictionaryItem(int index, int map, int id, int flag, int kong) {
+    /**
+     * @brief Add flag mapping item
+     * 
+     * @param index Index inside the dictionary table
+     * @param map Map index which houses the item
+     * @param id ID of the item
+     * @param flag Tied flag
+     * @param kong Kong intended for the actor (set to 0 if item can be picked up by any kong)
+     * 
+     * @return following index
+     */
     NewGBDictionary[index].map = map;
     NewGBDictionary[index].model2_id = id;
     NewGBDictionary[index].flag_index = flag;
@@ -201,6 +254,9 @@ int addDictionaryItem(int index, int map, int id, int flag, int kong) {
 }
 
 void initItemDictionary(void) {
+    /**
+     * @brief Initialize item dictionary
+     */
     // Copy old dictionary
     for (int i = 0; i < 113; i++) {
         NewGBDictionary[i].map = GBDictionary[i].map;
@@ -242,7 +298,7 @@ void initItemDictionary(void) {
     }
     size = addDictionaryItem(size, 0x34, 5, FLAG_COLLECTABLE_BEAN, -2);
     if (Rando.quality_of_life.vanilla_fixes) {
-        size = addDictionaryItem(size, 0x11, 0x5A, FLAG_KEYHAVE_KEY8, -2);
+        size = addDictionaryItem(size, 0x11, 0x5A, FLAG_KEYHAVE_KEY8, -2); // Fake Key backup fix
     }
     // Initialize addresses
     *(short*)(0x8073150A) = getHi(&NewGBDictionary[0].map);

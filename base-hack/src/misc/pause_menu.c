@@ -1,8 +1,21 @@
+/**
+ * @file pause_menu.c
+ * @author Ballaam
+ * @brief Pause Menu functions
+ * @version 0.1
+ * @date 2022-10-03
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "../../include/common.h"
 
 static char igt_text[20] = "IGT: 0000:00:00";
 
 int* printLevelIGT(int* dl, int x, int y, float scale, char* str) {
+    /**
+     * @brief Print Level In-Game time to screen
+     */
     dl = printText(dl, x, y, scale, str);
     int level_index = -1;
     for (int i = 0; i < 12; i++) {
@@ -100,6 +113,9 @@ static char level_check_text[0x18] = "";
 static unsigned char check_data[2][9][PAUSE_ITEM_COUNT] = {}; // 8 items, 9 levels, numerator + denominator
 
 void checkItemDB(void) {
+    /**
+     * @brief Check item database for variables, and change check screen totals to accommodate
+     */
     renderScreenTransition(7);
     initTracker();
     for (int i = 0; i < PAUSE_ITEM_COUNT; i++) {
@@ -205,6 +221,13 @@ void checkItemDB(void) {
 }
 
 int* pauseScreen3And4Header(int* dl) {
+    /**
+     * @brief Alter pause screen totals header to display the checks screen
+     * 
+     * @param dl Display List Address
+     * 
+     * @return New display list address
+     */
     pause_paad* paad = CurrentActorPointer_0->paad;
     if (paad->screen == 3) {
         return printText(dl, 0x280, 0x3C, 0.65f, "TOTALS");
@@ -220,6 +243,9 @@ int* pauseScreen3And4Header(int* dl) {
 }
 
 int* pauseScreen3And4ItemName(int* dl, int x, int y, float scale, char* text) {
+    /**
+     * @brief Changes the item name depending on the screen you're on
+     */
     pause_paad* paad = CurrentActorPointer_0->paad;
     int item_index = MenuActivatedItems[ViewedPauseItem];
     if (paad->screen == 3) {
@@ -231,6 +257,9 @@ int* pauseScreen3And4ItemName(int* dl, int x, int y, float scale, char* text) {
 }
 
 int* pauseScreen3And4Counter(int x, int y, int top, int bottom, int* dl, int unk0, int scale) {
+    /**
+     * @brief Changes the counter on-screen depending on what screen you're on
+     */
     pause_paad* paad = CurrentActorPointer_0->paad;
     if (paad->screen == 3) {
         return printOutOfCounter(x, y, top, bottom, dl, unk0, scale);
@@ -259,6 +288,9 @@ int* pauseScreen3And4Counter(int x, int y, int top, int bottom, int* dl, int unk
 }
 
 void changePauseScreen(void) {
+    /**
+     * @brief Hook into the change pause screen function
+     */
     pause_paad* paad = CurrentActorPointer_0->paad;
     if ((paad->screen != 5) && (paad->next_screen == 5)) {
         resetTracker();
@@ -267,10 +299,16 @@ void changePauseScreen(void) {
 }
 
 void updatePauseScreenWheel(void* write_location, void* sprite, int x, int y, float scale, int local_index, int index) {
+    /**
+     * @brief Update the pause screen wheel to be a carousel instead.
+     */
     displaySprite(write_location, sprite, local_index, 0x78, 1.0f, 2, 16);
 }
 
 void newPauseSpriteCode(sprite_struct* sprite, char* render) {
+    /**
+     * @brief Sprite code for the carousel pause screen effect
+     */
     spriteControlCode(sprite, render);
     pause_paad* pause_control = (pause_paad*)sprite->control;
     // float opacity_scale = 1.0f;
@@ -349,6 +387,11 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render) {
 }
 
 void handleSpriteCode(int control_type) {
+    /**
+     * @brief Changes sprite code to be the carousel effect if the index is greater than 16
+     * 
+     * @param control_type Type of sprite that's being displayed and the controls you have access to
+     */
     if (control_type < 16) {
         loadSpriteFunction(0x806AC07C);
     } else {
@@ -357,6 +400,9 @@ void handleSpriteCode(int control_type) {
 }
 
 int changeSelectedLevel(int unk0, int unk1) {
+    /**
+     * @brief Change selected level in the checks screen
+     */
     pause_paad* paad = CurrentActorPointer_0->paad;
     if (paad->screen == 4) {
         // Checks Screen
@@ -406,6 +452,9 @@ static short file_item_caps[16] = {
 };
 
 void updateFileVariables(void) {
+    /**
+     * @brief Update file variables on pause menu initialization
+     */
     updateFilePercentage();
     for (int i = 0; i < 8; i++) {
         file_items[i] = FileVariables[i];
@@ -424,6 +473,9 @@ void updateFileVariables(void) {
 }
 
 int* handleOutOfCounters(int x, int y, int top, int bottom, int* dl, int unk0, int scale) {
+    /**
+     * @brief Handle the "out of" counters to be corrected
+     */
     if (Rando.item_rando) {
         char text[4] = "";
         dk_strFormat((char*)&text, "%d", top);
@@ -433,6 +485,9 @@ int* handleOutOfCounters(int x, int y, int top, int bottom, int* dl, int unk0, i
 }
 
 void initPauseMenu(void) {
+    /**
+     * @brief Initialize the pause menu changes for Rando
+     */
     *(short*)(0x806AB35A) = getHi(&file_sprites[0]);
     *(short*)(0x806AB35E) = getLo(&file_sprites[0]);
     *(int*)(0x806A84C8) = 0x0C000000 | (((int)&updateFileVariables & 0xFFFFFF) >> 2); // Update file variables to transfer old locations to current

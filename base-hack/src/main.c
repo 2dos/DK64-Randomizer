@@ -61,7 +61,6 @@ void cFuncLoop(void) {
 		colorMenuSky();
 	}
 	callParentMapFilter();
-	recolorKongControl();
 	spawnCannonWrapper();
 	setCrusher();
 	if (Rando.win_condition == GOAL_POKESNAP) {
