@@ -1,6 +1,20 @@
+/**
+ * @file file.c
+ * @author Ballaam
+ * @brief Initialize save file changes
+ * @version 0.1
+ * @date 2023-01-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "../../include/common.h"
 
 void expandSaveFile(int static_expansion, int actor_count) {
+	/**
+	 * @brief Expand save file to account for expanded data, including flags and larger GB capacity
+	 * 
+	 */
 	/*
 		File cannot be bigger than 0x200 bytes
 
@@ -57,6 +71,10 @@ void expandSaveFile(int static_expansion, int actor_count) {
 }
 
 void initFiles(void) {
+	/**
+	 * @brief Initialize file changes, including reducing the file count from 4 to 1
+	 * 
+	 */
     // Save File Expansion
     int balloon_patch_count = 300; // Normally 121
     expandSaveFile(0x100,balloon_patch_count);

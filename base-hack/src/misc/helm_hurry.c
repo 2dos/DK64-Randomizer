@@ -15,6 +15,14 @@ int canSaveHelmHurry(void) {
     return 1;
 }
 
+void addHelmTime(helm_hurry_items item, int multiplier) {
+    if (Rando.helm_hurry_mode) {
+        if (item != HHITEM_NOTHING) {
+            HelmStartTime += (Rando.helm_hurry_bonuses[(int)(item) - 1] * multiplier);
+        }
+    }
+}
+
 void checkTotalCache(void) {
     int current_gb_total = 0;
     int current_kong_bitfield = 0;
@@ -28,26 +36,18 @@ void checkTotalCache(void) {
     }
     int gb_diff = current_gb_total - gb_total;
     if (gb_diff > 0) {
-        HelmStartTime += (Rando.helm_hurry_bonuses[(int)(HHITEM_GB) - 1] * gb_diff);
+        addHelmTime(HHITEM_GB, gb_diff);
     }
     if (kong_bitfield != current_kong_bitfield) {
-        HelmStartTime += Rando.helm_hurry_bonuses[(int)(HHITEM_KONG) - 1];
+        addHelmTime(HHITEM_KONG, 1);
     }
     gb_total = current_gb_total;
     kong_bitfield = current_kong_bitfield;
 }
 
-void addHelmTime(helm_hurry_items item, int multiplier) {
-    if (Rando.helm_hurry_mode) {
-        if (item != HHITEM_NOTHING) {
-            HelmStartTime += (Rando.helm_hurry_bonuses[(int)(item) - 1] * multiplier);
-        }
-    }
-}
-
 int initHelmHurry(void) {
     if (Rando.helm_hurry_start == 0) {
-        HelmStartTime = 15*60;
+        HelmStartTime = 60;
         return 0;
     }
     HelmStartTime = Rando.helm_hurry_start;

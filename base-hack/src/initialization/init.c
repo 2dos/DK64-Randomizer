@@ -1,3 +1,15 @@
+/**
+ * @file init.c
+ * @author Ballaam
+ * @author KillKlli
+ * @author OnlySpaghettiCode
+ * @brief Initialize ROM
+ * @version 0.1
+ * @date 2021-12-06
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include "../../include/common.h"
 
 typedef struct musicInfo {
@@ -5,6 +17,10 @@ typedef struct musicInfo {
 } musicInfo;
 
 void fixMusicRando(void) {
+	/**
+	 * @brief Initialize Music Rando so that the data for each song is correct.
+	 * Without this, the game will crash from incorrect properties to what the song is expecting.
+	 */
 	// Music
 	if (Rando.music_rando_on) {
 		int size = 0x160;
@@ -24,6 +40,9 @@ void fixMusicRando(void) {
 }
 
 void writeEndSequence(void) {
+	/**
+	 * @brief Write our custom end sequence
+	 */
 	int size = 0x84;
 	int* file_size;
 	*(int*)(&file_size) = size;
@@ -31,6 +50,12 @@ void writeEndSequence(void) {
 }
 
 void initHack(int source) {
+	/**
+	 * @brief Initialize Hack
+	 * 
+	 * @param source 0 = CFuncLoop, 1 = ROM Boot
+	 * 
+	 */
 	if (LoadedHooks == 0) {
 		if ((source == 1) || (CurrentMap == 0x28)) {
 			DebugInfoOn = 1;
@@ -304,6 +329,9 @@ void initHack(int source) {
 }
 
 void quickInit(void) {
+	/**
+	 * @brief Quick Initialization Process. Initializes Hack and, if fast boot is on, transitions to Win95 Screen
+	 */
 	initHack(1);
 	if (Rando.quality_of_life.fast_boot) {
 		initiateTransitionFade(0x51, 0, 5);

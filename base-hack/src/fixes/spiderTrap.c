@@ -1,6 +1,18 @@
+/**
+ * @file spiderTrap.c
+ * @author Ballaam
+ * @brief All functions pertaining to the spider enemy being changed by the hard enemies setting.
+ * @version 0.1
+ * @date 2022-08-01
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "../../include/common.h"
 
 static const unsigned char bad_movement_states[] = {
+	// Movement States in which prevent the spider firing a projectile if the player is in this state
+
 	//0x02, // First Person Camera
 	//0x03, // First Person Camera (Water)
 	0x04, // Fairy Camera
@@ -61,6 +73,8 @@ static const unsigned char bad_movement_states[] = {
 };
 
 static const unsigned char banned_trap_maps[] = {
+	// Maps where the spider cannot fire a projectile
+
 	0x3C, // Spider Fight
 	0x35, // Japes: Crown
     0x49, // Aztec: Crown
@@ -75,6 +89,9 @@ static const unsigned char banned_trap_maps[] = {
 };
 
 void handleSpiderTrapCode(void) {
+	/**
+	 * @brief Projectile Spawning Code
+	 */
 	int is_banned = 0;
 	for (int i = 0; i < sizeof(banned_trap_maps); i++) {
 		if (CurrentMap == banned_trap_maps[i]) {
@@ -85,7 +102,7 @@ void handleSpiderTrapCode(void) {
         int rng = 0;
         if (CurrentActorPointer_0->control_state == 0x23) {
             rng = getRNGLower31();
-            if (949 < ((rng >> 0xF) % 1000)) { // Chance they are gonna goop you (1%)
+            if (949 < ((rng >> 0xF) % 1000)) { // Chance they are gonna goop you (5%)
                 if (CurrentActorPointer_0->grounded & 1) {
                     CurrentActorPointer_0->control_state = 0x28;
                     CurrentActorPointer_0->control_state_progress = 0;

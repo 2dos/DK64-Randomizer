@@ -1,3 +1,13 @@
+/**
+ * @file item_rando.c
+ * @author Ballaam
+ * @brief Initializes all item rando elements
+ * @version 0.1
+ * @date 2023-01-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "../../include/common.h"
 
 typedef struct reward_rom_struct {
@@ -12,24 +22,45 @@ typedef struct patch_db_item {
 	/* 0x003 */ unsigned char world;
 } patch_db_item;
 
-static unsigned char bp_item_table[40] = {};
-static unsigned char medal_item_table[40] = {};
-static unsigned char crown_item_table[10] = {};
-static unsigned char key_item_table[8] = {};
-static short fairy_item_table[20] = {};
-static unsigned char rcoin_item_table[16] = {};
-static patch_db_item patch_flags[16] = {};
-bonus_barrel_info bonus_data[95] = {};
+static unsigned char bp_item_table[40] = {}; // Kasplat Rewards
+static unsigned char medal_item_table[40] = {}; // Medal Rewards
+static unsigned char crown_item_table[10] = {}; // Crown Rewards
+static unsigned char key_item_table[8] = {}; // Boss Rewards
+static short fairy_item_table[20] = {}; // Fairy Rewards
+static unsigned char rcoin_item_table[16] = {}; // Dirt Patch Rewards
+static patch_db_item patch_flags[16] = {}; // Flag table for dirt patches to differentiate it from balloons
+bonus_barrel_info bonus_data[95] = {}; // Bonus Barrel Rewards
 
 int getBPItem(int index) {
+    /**
+     * @brief Get Blueprint item from kasplat index
+     * 
+     * @param index Kasplat Index: (5 * level) + kong
+     * 
+     * @return Actor Index of the reward
+     */
 	return bp_item_table[index];
 }
 
 int getMedalItem(int index) {
+    /**
+     * @brief Get Medal item from medal index
+     * 
+     * @param index Medal Index: (5 * level) + kong
+     * 
+     * @return Medal Item Index of the reward
+     */
 	return medal_item_table[index];
 }
 
 int getCrownItem(int map) {
+    /**
+     * @brief Get Crown item from map index
+     * 
+     * @param map Map Index
+     * 
+     * @return Actor Index of the reward
+     */
 	int map_list[] = {0x35,0x49,0x9B,0x9C,0x9F,0xA0,0xA1,0x9D,0xA2,0x9E};
 	for (int i = 0; i < 10; i++) {
 		if (map == map_list[i]) {
@@ -40,6 +71,13 @@ int getCrownItem(int map) {
 }
 
 int getKeyItem(int old_flag) {
+    /**
+     * @brief Get Boss Reward from the original flag
+     * 
+     * @param old_flag Original Flag of the reward
+     * 
+     * @return Actor Index of the reward
+     */
 	int flag_list[] = {26,74,138,168,236,292,317,380};
 	for (int i = 0; i < 8; i++) {
 		if (old_flag == flag_list[i]) {
@@ -50,6 +88,13 @@ int getKeyItem(int old_flag) {
 }
 
 int getFairyModel(int flag) {
+    /**
+     * @brief Get Fairy Reward from the flag
+     * 
+     * @param flag Flag Index of the fairy
+     * 
+     * @return Model Index of the reward
+     */
 	if ((flag >= 589) && (flag <= 608)) {
 		return fairy_item_table[flag - 589];
 	}
@@ -57,11 +102,24 @@ int getFairyModel(int flag) {
 }
 
 int getRainbowCoinItem(int old_flag) {
-	// return TestVariable;
+	/**
+	 * @brief Get Dirt Patch reward from the old flag
+     * 
+     * @param old_flag Original flag of the dirt patch
+	 * 
+     * @return Actor Index of the reward
+	 */
 	return rcoin_item_table[old_flag - FLAG_RAINBOWCOIN_0];
 }
 
 int getPatchFlag(int id) {
+    /**
+     * @brief Get Patch flag from the ID of the patch
+     * 
+     * @param id Patch ID inside the map
+     * 
+     * @return flag index of the patch
+     */
 	for (int i = 0; i < 16; i++) {
 		if (CurrentMap == patch_flags[i].map) {
 			if (id == patch_flags[i].id) {
@@ -73,16 +131,34 @@ int getPatchFlag(int id) {
 }
 
 int getPatchWorld(int index) {
+    /**
+     * @brief Gets the world which the patch is in
+     * 
+     * @param index Patch Index inside the flag table
+     * 
+     * @return World index of the patch
+     */
 	return patch_flags[index].world;
 }
 
 void populatePatchItem(int id, int map, int index, int world) {
+    /**
+     * @brief Populate the patch table with a dirt patch
+     * 
+     * @param id Patch ID
+     * @param map Patch Map
+     * @param index Index inside the patch table
+     * @param world World where the patch is
+     */
     patch_flags[index].id = id;
     patch_flags[index].map = map;
     patch_flags[index].world = world;
 }
 
 void initItemRando(void) {
+    /**
+     * @brief Initialize Item Rando functionality
+     */
     // Item Get
     *(int*)(0x806F64C8) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
     *(int*)(0x806F6BA8) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call

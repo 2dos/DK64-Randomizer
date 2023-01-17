@@ -1,6 +1,20 @@
+/**
+ * @file cosmetic.c
+ * @author Ballaam
+ * @brief Initialization of Cosmetic Changes
+ * @version 0.1
+ * @date 2023-01-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "../../include/common.h"
 
 void initDiscoChunky(void) {
+    /**
+     * @brief Initialize Disco Chunky cosmetic feature
+     * 
+     */
     if (Rando.disco_chunky) {
         // Disco
         *(char*)(0x8075C45B) = 0xE; // General Model
@@ -18,6 +32,10 @@ void initDiscoChunky(void) {
 }
 
 void initKrusha(void) {
+    /**
+     * @brief Initialize the Krusha Cosmetic/Gameplay feature
+     * 
+     */
     if (Rando.krusha_slot != -1) {
         // Krusha
         int slot = Rando.krusha_slot;
@@ -35,13 +53,6 @@ void initKrusha(void) {
         switch (slot) {
             case 0:
                 // DK
-                // *(int*)(0x806F1154) = 0x02002025; // Instrument - Param1
-                // *(int*)(0x806F1158) = 0x0C184C65; // Instrument - Func Call
-                // *(short*)(0x806F115E) = 0xDB; // Instrument - Param2
-                // *(int*)(0x806F1194) = 0; // Instrument - NOP Other stuff
-                // *(int*)(0x806F11B0) = 0; // Instrument - NOP Other stuff
-                // *(int*)(0x806F11BC) = 0; // Instrument - NOP Other stuff
-                // *(int*)(0x806F11D0) = 0; // Instrument - NOP Other stuff
                 *(short*)(0x8075ED4A) = 0xDB; // Cutscene DK Model
                 *(short*)(0x8075573E) = 0xDB; // Generic Cutscene Model
                 *(int*)(0x8074C0A8) = 0x806C9F44; // Replace DK Code w/ Krusha Code
@@ -130,6 +141,10 @@ void initKrusha(void) {
 }
 
 void initSkyboxRando(void) {
+    /**
+     * @brief Initialize the skybox cosmetic randomization
+     * 
+     */
     if (Rando.misc_cosmetic_on) {
         for (int i = 0; i < 8; i++) {
             SkyboxBlends[i].top.red = Rando.skybox_colors[i].red;
@@ -164,10 +179,16 @@ void initSkyboxRando(void) {
                 SkyboxBlends[i].unk[j].blue = rgb[2];
             }
         }
+        // Change pufftoss skybox entry
+        *(int*)(0x8075E1EC) = 0x80708234; // Pufftoss changed to null skybox, should prevent seizure-inducing effects
     }
 }
 
 void initKlaptraps(void) {
+    /**
+     * @brief Fix Klaptraps in Beaver Bother, so if no model is selected, it will default to a green klaptrap.
+     * 
+     */
     // Change Beaver Bother Klaptrap Model
     if (Rando.klaptrap_color_bbother == 0) {
         Rando.klaptrap_color_bbother = 0x21; // Set to default model if no model assigned
@@ -175,11 +196,15 @@ void initKlaptraps(void) {
 }
 
 void initCosmetic(void) {
+    /**
+     * @brief Initialize all cosmetic functionality
+     * 
+     */
     if (Rando.krusha_slot == 4) {
-            Rando.disco_chunky = 0;
-        } else if (Rando.krusha_slot > 4) {
-            Rando.krusha_slot = -1;
-        }
+        Rando.disco_chunky = 0;
+    } else if (Rando.krusha_slot > 4) {
+        Rando.krusha_slot = -1;
+    }
     initDiscoChunky();
     initKrusha();
     initSkyboxRando();

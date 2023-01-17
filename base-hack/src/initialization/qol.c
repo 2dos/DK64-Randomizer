@@ -1,6 +1,22 @@
+/**
+ * @file qol.c
+ * @author Ballaam
+ * @brief Initialize Quality of Life features
+ * @version 0.1
+ * @date 2023-01-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "../../include/common.h"
 
 void initQoL_Lag(void) {
+    /**
+     * @brief Initialize any quality of life features which aim to reduce lag native to DK64
+     * Current Elements covered here:
+     * - Turning off the Aztec Sandstorm
+     * - Disabling Rain in DK Isles
+     */
     if (Rando.quality_of_life.reduce_lag) {
         *(int*)(0x80748010) = 0x8064F2F0; // Cancel Sandstorm
         // No Rain
@@ -9,6 +25,13 @@ void initQoL_Lag(void) {
 }
 
 void initQoL_Cutscenes(void) {
+    /**
+     * @brief Initialize any quality of life features which aim to reduce the amount of cutscenes inside DK64
+     * Current Elements covered here:
+     * - Compressing all key turn in cutscenes in K. Lumsy
+     * - Removing the 30s cutscene for freeing the Vulture in Angry Aztec
+     * - Adding cutscenes for Item Rando back in if deemed important enough
+     */
     if (Rando.quality_of_life.remove_cutscenes) {
         // K. Lumsy
         *(short*)(0x80750680) = 0x22;
@@ -19,9 +42,7 @@ void initQoL_Cutscenes(void) {
         // Fast Vulture
         *(int*)(0x806C50BC) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
         // General
-        *(int*)(0x80628508) = 0x0C000000 | (((int)&renderScreenTransitionCheck & 0xFFFFFF) >> 2); // Modify Function Call
-        // *(int*)(0x8061D920) = 0xA4205CEC; // Set cutscene state change to 0
-        // *(int*)(0x8061D91C) = 0x0C000000 | (((int)&checkSkippableCutscene & 0xFFFFFF) >> 2); // Modify Function Call
+        *(int*)(0x80628508) = 0x0C000000 | (((int)&renderScreenTransitionCheck & 0xFFFFFF) >> 2); // Remove transition effects if skipped cutscene
         if (Rando.item_rando) {
             int cs_unskip[] = {
                 0x1A, 2,
@@ -46,6 +67,7 @@ void initQoL_Cutscenes(void) {
             }
         }
     } else {
+        // Clear the cutscene skip database
         for (int i = 0; i < 432; i++) {
             cs_skip_db[i] = 0;
         }
@@ -53,6 +75,15 @@ void initQoL_Cutscenes(void) {
 }
 
 void initQoL_Fixes(void) {
+    /**
+     * @brief Initialize any quality of life features which aim to fix unwanted DK64 vanilla bugs
+     * Current Elements covered here:
+     * - Rabbit Race will give infinite crystals during race 2
+     * - Fix the dillo TNT pads to not move when using Tiny
+     * Definition of an "unwanted DK64 vanilla bug":
+     * - Removing the bug doesn't negatively impact speedrunners/game glitches OR
+     * - Leaving the bug in produces a crash or leaves a prominent effect in the game which is undesirable (see Dillo TNT Pads)
+     */
     if (Rando.quality_of_life.vanilla_fixes) {
         *(int*)(0x806BE8D8) = 0x0C000000 | (((int)&RabbitRaceInfiniteCode & 0xFFFFFF) >> 2); // Modify Function Call
         *(int*)(0x8067C168) = 0x0C000000 | (((int)&fixDilloTNTPads & 0xFFFFFF) >> 2); // Modify Function Call
@@ -60,6 +91,12 @@ void initQoL_Fixes(void) {
 }
 
 void initQoL_Misc(void) {
+    /**
+     * @brief Initialize any quality of life features which have a miscellaneous purpose
+     * Current Elements covered here:
+     * - Fairy pictures are sped up (This also fixes some INSANE lag on BizHawk)
+     * - Lower the Aztec Lobby Bonus barrel to be easier to reach for less skilled players using less laggy platforms
+     */
     if (Rando.quality_of_life.fast_picture) {
         // Fast Camera Photo
         *(short*)(0x80699454) = 0x5000; // Fast tick/no mega-slowdown on Biz
@@ -75,6 +112,9 @@ void initQoL_Misc(void) {
 
 static char boot_speedup_done = 0;
 void bootSpeedup(void) {
+    /**
+     * @brief Speed up the boot process by reducing the amount of setups the game is loading
+     */
     if (!boot_speedup_done) {
 		boot_speedup_done = 1;
 		int balloon_patch_count = 0;
@@ -123,6 +163,12 @@ void bootSpeedup(void) {
 }
 
 void initQoL_Boot(void) {
+    /**
+     * @brief Initialize any quality of life features which speed up the boot procedure
+     * Current Elements covered here:
+     * - Removing DKTV when quitting the game or going via end sequence
+     * - Speeding up the bootup setup checks
+     */
     if (Rando.quality_of_life.fast_boot) {
         // Remove DKTV - Game Over
         *(short*)(0x8071319E) = 0x50;
@@ -137,6 +183,9 @@ void initQoL_Boot(void) {
 }
 
 void initQoL_Transform(void) {
+    /**
+     * @brief Initialize any quality of life features which reduce the transformation animation
+     */
     if (Rando.quality_of_life.fast_transform) {
         // Fast Barrel Animation
         *(short*)(0x8067EAB2) = 1; // OSprint
@@ -147,6 +196,11 @@ void initQoL_Transform(void) {
 }
 
 void initQoL_AnimalBuddies(void) {
+    /**
+     * @brief Initialize any quality of life features which change the behaviour of the animal buddies
+     * Current Elements covered here:
+     * - Making items collectable regardless of whether you're an animal buddy or not
+     */
     if (Rando.quality_of_life.rambi_enguarde_pickup) {
         // Transformations can pick up other's collectables
         *(int*)(0x806F6330) = 0x96AC036E; // Collection
@@ -182,6 +236,9 @@ void initQoL_AnimalBuddies(void) {
 }
 
 void initQoL_FastWarp(void) {
+    /**
+     * @brief Initialize any quality of life features which speed up bananaporting
+     */
     if (Rando.fast_warp) {
         // Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
         *(short*)(0x806EE692) = 0x54;
@@ -194,6 +251,9 @@ static const char exittoisles[] = "EXIT TO ISLES";
 static const char exittospawn[] = "EXIT TO SPAWN";
 
 void initSpawn(void) {
+    /**
+     * @brief Initialize the world spawning procedure
+     */
     // Starting map rando
     int starting_map_rando_on = 1;
     if (Rando.starting_map == 0) {
@@ -224,6 +284,9 @@ void initSpawn(void) {
 }
 
 void initQoL_HomingBalloons(void) {
+    /**
+     * @brief Initialize any quality of life features which make homing ammo home in on balloons
+     */
     if (Rando.quality_of_life.homing_balloons) {
         // Make homing ammo target balloons
         *(short*)(0x80694F6A) = 10; // Coconut
@@ -235,6 +298,10 @@ void initQoL_HomingBalloons(void) {
 }
 
 void initQoL_HUD(void) {
+    /**
+     * @brief Initialize the HUD
+     * 
+     */
     // Realign HUD
     /*
         Item: CB | Coords: 0x1E, 0x26 | X: 0x806F84EE | Y: 0x806F84FE
@@ -279,6 +346,9 @@ void initQoL_HUD(void) {
 }
 
 void initNonControllableFixes(void) {
+    /**
+     * @brief Initialize any changes which we do not want to give the user any control over whether it's removed
+     */
     // Move Decoupling
     // Strong Kong
     *(int*)(0x8067ECFC) = 0x30810002; // ANDI $at $a0 2
@@ -303,6 +373,8 @@ void initNonControllableFixes(void) {
     *(int*)(0x806E48F8) = 0x50200074; // BEQL $at $r0 0xF
 
     // Disable Sniper Scope Overlay
+    // - This isn't covered in the lag section because re-enabling the scope can make Mech Fish harder to beat
+    //  - This is a common problem experienced with the vanilla game
     int asm_code = 0x00801025; // OR $v0, $a0, $r0
     *(int*)(0x806FF80C) = asm_code;
     *(int*)(0x806FF85C) = asm_code;
@@ -375,6 +447,9 @@ void initNonControllableFixes(void) {
 }
 
 void initQoL(void) {
+    /**
+     * @brief Initialize all quality of life functionality
+     */
     initQoL_Lag();
     initQoL_Cutscenes();
     initQoL_Fixes();

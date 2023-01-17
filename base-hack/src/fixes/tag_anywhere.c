@@ -1,8 +1,22 @@
+/**
+ * @file tag_anywhere.c
+ * @author Ballaam
+ * @author Isotarge
+ * @brief All changes related to the tag anywhere modification
+ * @version 0.1
+ * @date 2021-12-06
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #include "../../include/common.h"
 
-#define TAG_ANYWHERE_KONG_LIMIT 5
+#define TAG_ANYWHERE_KONG_LIMIT 5 // Amount of kongs in the TA Loop
 
 static const map_bitfield banned_map_btf = {
+    // Bitfield on whether a tag is enabled in a map. Each property is a boolean
+
     .test_map = 0,
     .funkys_store = 1, // Reason: Shop
     .dk_arcade = 1, // Reason: Locked Movement
@@ -222,6 +236,8 @@ static const map_bitfield banned_map_btf = {
 };
 
 static const movement_bitfield banned_movement_btf = {
+    // Bitfield on whether a tag is enabled during a certain control state. Each property is a boolean
+
     .null_state = 0,
     .idle_enemy = 0,
     .first_person_camera = 0,
@@ -361,10 +377,15 @@ static const movement_bitfield banned_movement_btf = {
     .exiting_portal = 1, // Reason: Locked Movement
 };
 
-static unsigned char tag_countdown = 0;
-static char can_tag_anywhere = 0;
+static unsigned char tag_countdown = 0; // Global variable preventing tags within a few frames of a recent tag in some situations
+static char can_tag_anywhere = 0; // Global variable documenting whether TA can be performed, reducing the amount of checks
 
 int inTransform(void) {
+    /**
+     * @brief Is player in a transformation
+     * 
+     * @return In Transform
+     */
     if (Player) {
         if (Player->strong_kong_ostand_bitfield & 0x30) {
             // 0x10 - Strong Kong
@@ -384,6 +405,11 @@ int inTransform(void) {
 }
 
 int canTagAnywhere(void) {
+    /**
+     * @brief Checks for if the player can perform Tag Anywhere
+     * 
+     * @return Can player perform Tag Anywhere
+     */
     if (Player->strong_kong_ostand_bitfield & 0x100) {
         // Seasick
         return 0;
@@ -457,10 +483,26 @@ int canTagAnywhere(void) {
 }
 
 int getTAState(void) {
+    /**
+     * @brief Quick check for if the player can perform Tag Anywhere.
+     * This should only EVER be used after the canTagAnywhere function is run in the process of a frame.
+     * This is to reduce the amount of checks the game has to do. If canTagAnywhere has been run, we don't
+     * need to rerun that function every time during a frame because we assume nothing has changed between that function
+     * call and this function call which would alter whether Tag Anywhere can be performed
+     * 
+     * @return Can Player perform Tag Anywhere
+     */
     return can_tag_anywhere;
 }
 
 int getTagAnywhereKong(int direction) {
+    /**
+     * @brief Get the next TA Kong in a certain direction
+     * 
+     * @param direction Direction of change (+1 for next, -1 for previous)
+     * 
+     * @return kong index
+     */
     int next_character = Character + direction;
     if (next_character < 0) {
         next_character = TAG_ANYWHERE_KONG_LIMIT - 1;
@@ -509,6 +551,9 @@ static const unsigned char important_huds[] = {0,1};
 static unsigned char important_huds_changed[] = {0,0};
 
 void tagAnywhere(void) {
+    /**
+     * @brief Perform Tag Anywhere
+     */
 	if (Rando.tag_anywhere) {
 		if (Player) {
             if (tag_countdown > 0) {
@@ -614,6 +659,9 @@ void tagAnywhere(void) {
 }
 
 void tagAnywhereInit(int is_homing, int model2_id, int obj) {
+    /**
+     * @brief Initialize certain aspects of Tag Anywhere
+     */
     assessFlagMapping(CurrentMap, model2_id);
     coinCBCollectHandle(0, obj, is_homing);
 }
@@ -633,6 +681,17 @@ typedef struct sfx_cache_item {
 static sfx_cache_item sfx_cache_array[SFX_CACHE_SIZE];
 
 void populateSFXCache(int sfx, int noise_buffer, int sfx_count, int sfx_delay, int id, int init_delay) {
+    /**
+     * @brief Populate SFX Cache with a sound effect
+     * 
+     * @param sfx Sound Effect Index
+     * @param noise_buffer Noise Buffer Value
+     * @param sfx_count Amount of times the SFX is played
+     * @param sfx_delay Amount of frames inbetween each SFX play
+     * @param id ID of the object in which the SFX plays at
+     * @param init_delay Initial delay of the SFX Play
+     * 
+     */
     int has_pushed = 0;
     for (int i = 0; i < SFX_CACHE_SIZE; i++) {
         if (!has_pushed) {
@@ -654,6 +713,9 @@ void populateSFXCache(int sfx, int noise_buffer, int sfx_count, int sfx_delay, i
 }
 
 void handleSFXCache(void) {
+    /**
+     * @brief Handle SFX Cache to play the sound effects as dictated by the SFX Cache array
+     */
     for (int i = 0; i < SFX_CACHE_SIZE; i++) {
         if (sfx_cache_array[i].sfx_count == 0) {
             sfx_cache_array[i].used = 0;
@@ -670,6 +732,13 @@ void handleSFXCache(void) {
 }
 
 void tagAnywhereAmmo(int player, int obj, int is_homing) {
+    /**
+     * @brief Change collection behaviour of ammo in Tag Anywhere
+     * In order to enable a 1f TA cooldown, we need to change the behaviour of the collection of ammo
+     * Since Ammo Crates spawn 5 ammo, the game normally spreads out this delay
+     * This function handles these changes
+     * 
+     */
     coinCBCollectHandle(player, obj, is_homing);
     int id = 0;
     if (LatestCollectedObject) {
@@ -682,6 +751,13 @@ void tagAnywhereAmmo(int player, int obj, int is_homing) {
 }
 
 void tagAnywhereBunch(int player, int obj, int player_index) {
+    /**
+     * @brief Change collection behaviour of bunches in Tag Anywhere
+     * In order to enable a 1f TA cooldown, we need to change the behaviour of the collection of bunches
+     * Since Bunches spawn 5 singles, the game normally spreads out this delay
+     * This function handles these changes
+     * 
+     */
     coinCBCollectHandle(player, obj, player_index);
     int id = 0;
     if (LatestCollectedObject) {

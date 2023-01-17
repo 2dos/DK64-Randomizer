@@ -84,7 +84,7 @@ EarlyFrameCode:
     nop
 
 DynamicCodeFixes:
-    jal decouple_moves_fixes
+    jal overlay_changes
     nop
     lui $a1, 0x8074
     j 0x80610950
