@@ -1245,7 +1245,7 @@ ColoredBananaGroupList = [
     ),
     ColoredBananaGroup(
         group=78,
-        map_id=Maps.AztecTiny5DTemple,
+        map_id=Maps.AztecTinyTemple,
         name="Right side Mini Monkey room (scale 0.6)",
         konglist=[Kongs.tiny],
         region=Regions.TempleUnderwater,
@@ -1692,7 +1692,7 @@ BalloonList = [
         name="Mini Monkey alcove",
         speed=5,
         konglist=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.TinyTemple,
+        region=Regions.TempleStart,
         points=[[1822, 460, 1056], [1756, 465, 1119]],
     ),
     Balloon(id=21, map_id=Maps.AztecLlamaTemple, name="Matching game room right side", speed=4, konglist=[Kongs.lanky], region=Regions.LlamaTemple, points=[[1144, 760, 2142], [795, 810, 2142]]),

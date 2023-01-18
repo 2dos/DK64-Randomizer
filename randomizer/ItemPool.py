@@ -60,7 +60,7 @@ def PlaceConstants(settings):
         LocationList[Locations.LankyKong].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.TinyKong].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.ChunkyKong].PlaceConstantItem(Items.NoItem)
-    if settings.unlock_all_moves:
+    if settings.unlock_all_moves and not (settings.shuffle_items and Types.Shop in settings.shuffled_location_types):
         LocationList[Locations.SimianSlam].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.SuperSimianSlam].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.SuperDuperSimianSlam].PlaceConstantItem(Items.NoItem)
@@ -96,7 +96,7 @@ def PlaceConstants(settings):
         LocationList[Locations.MusicUpgrade1].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.ThirdMelon].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.MusicUpgrade2].PlaceConstantItem(Items.NoItem)
-        # Shockwave also granted when unlocking all moves
+    if settings.shockwave_status == "start_with":
         LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
 
 

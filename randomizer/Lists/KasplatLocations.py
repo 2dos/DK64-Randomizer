@@ -1468,7 +1468,7 @@ KasplatLocationList = {
             xmax=2440,
             zmin=3855,
             zmax=3910,
-            region=Regions.CrocodileIsleBeyondLift,
+            region=Regions.KremIsleBeyondLift,
         ),
         KasplatLocation(
             name="Isles Kasplat: On the Big X Platform",
@@ -1565,8 +1565,7 @@ KasplatLocationList = {
             xmax=2474,
             zmin=3847,
             zmax=3926,
-            region=Regions.IslesMain,
-            additional_logic=lambda l: (l.monkeyport and l.tiny) or l.tbs,
+            region=Regions.KremIsleTopLevel,
         ),
         KasplatLocation(
             name="Isles Kasplat: Near Snide's",
