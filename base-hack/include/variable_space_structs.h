@@ -59,7 +59,12 @@ typedef struct varspace {
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char always_show_coin_cbs; // 0 = No (Vanilla), 1 = Yes
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 2
-	/* 0x0B2 */ char unk_B0[0x103 - 0xB2];
+	/* 0x0B2 */ char unk_B0[0xE4 - 0xB2];
+	/* 0x0E4 */ short helm_hurry_start;
+	/* 0x0E6 */ short helm_hurry_bonuses[0xD];
+	/* 0x100 */ char unk_100;
+	/* 0x101 */ char barrel_aesthetic; // 0 = Off, 1 = Barrel contents will match aesthetics
+	/* 0x102 */ char microhints; // 0 = Off, 1 = GGone/Monkeyport, 2 = GGone/MPort, Instruments in Helm
 	/* 0x103 */ char random_switches;
 	/* 0x104 */ char slam_level[7]; // Level of slam required to slam a switch in a level (if random_switches is on)
 	/* 0x10B */ unsigned char remove_rock_bunch; // Remove rock bunch in Jungle Japes

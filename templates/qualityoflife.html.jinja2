@@ -117,6 +117,28 @@
                         </select>
                     </div>
                 </div>
+                <div class="flex-container">
+                    <div class="item-select">
+                        <p class="select-title">Extra Hints</p>
+                        <select name="microhints_enabled"
+                                id="microhints_enabled"
+                                class="form-select"
+                                aria-label="Randomization type"
+                                data-toggle="tooltip"
+                                title="Extra hints are placed in late-game to provide extra information if you are stuck on where an item is.&#10;- Monkeyport will be hinted upon touching the lower Monkeyport pad in Isles with enough GBs to enter all of the first 7 levels.&#10;- Gorilla Gone will be hinted upon touching the pad inside Helm Lobby.">
+                            <option value="all" title="Includes hints in Hideout Helm for the 5 instruments">
+                                All
+                            </option>
+                            <option selected value="base">
+                                Some
+                            </option>
+                            <option value="off">
+                                Off
+                            </option>
+                        </select>
+                    </div>
+                    <div class="spacer"></div>
+                </div>
             </div>
             <div class="col border panel">
                 <div class="flex-container">
@@ -181,6 +203,17 @@
                             Auto Key Turn ins
                         </label>
                     </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="Bonus Barrel Skin will match the reward you get for beating the bonus barrel.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="bonus_matches_contents"
+                                   value="True"/>
+                            Bonus Barrel Skin Matches Contents
+                        </label>
+                    </div>
+                    <div class="spacer"></div>
                 </div>
             </div>
         </div>

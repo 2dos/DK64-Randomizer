@@ -1,3 +1,13 @@
+/**
+ * @file file_screen.c
+ * @author Ballaam
+ * @brief Changes to the file screen
+ * @version 0.1
+ * @date 2022-01-23
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "../../include/common.h"
 
 static char balanced_igt[20] = "";
@@ -78,6 +88,7 @@ typedef struct tracker_struct {
 #define TRACKER_ENABLED_DEFAULT 1
 
 static tracker_struct tracker_info[] = {
+	// Position of items on the tracker image
 	{.min_x = 0, .max_x = 20, .min_y = 0, .max_y = 22, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_COCONUT}, // Coconut
 	{.min_x = 0, .max_x = 20, .min_y = 22, .max_y = 42, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_BONGOS}, // Bongos
 	{.min_x = 0, .max_x = 20, .min_y = 44, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_GRAB}, // Grab
@@ -133,7 +144,9 @@ static tracker_struct tracker_info[] = {
 };
 
 void wipeTrackerCache(void) {
-	// Wipe image cache for image
+	/**
+	 * @brief Wipe image cache for all images that are being cached
+	 */
 	for (int i = 0; i < 32; i++) {
 		if ((ImageCache[i].image_index == IMAGE_TRACKER) && (ImageCache[i].image_state != 0)) {
 			ImageCache[i].image_state = 0;
@@ -156,6 +169,13 @@ static unsigned char belt_screen_level = 0;
 static unsigned char ins_screen_level = 0;
 
 int getInitFileMove(int index) {
+	/**
+	 * @brief Get the tracker move initial state (Empty File)
+	 * 
+	 * @param index Tracker item index
+	 * 
+	 * @return State
+	 */
 	int found = 0;
 	for (int i = 0; i < 4; i++) {
 		int move_type = TrainingMoves_New[i].purchase_type;
@@ -254,26 +274,13 @@ int getInitFileMove(int index) {
 }
 
 int getEnabledState(int index) {
-	/*
-		0-24:
-			0: Gun
-			1: Instrument
-			2: Move
-			3: Barrel
-			4: Pad
-			Repeat for all 5 kongs
-		25: Slam
-		26: Homing
-		27: Sniper
-		28: Ammo Belt
-		29: Instrument Upg
-		30: Dive
-		31: Orange
-		32: Barrel
-		33: Vine
-		34: Camera
-		35: Shockwave
-	*/
+	/**
+	 * @brief Get the enabled state of a tracker item
+	 * 
+	 * @param index Tracker item index
+	 * 
+	 * @return State
+	 */
 	int is_pre_given = getInitFileMove(index);
 	if (index == TRACKER_TYPE_SLAM) {
 		if ((is_pre_given >= 2) && (MovesBase[0].simian_slam < 2)) {
@@ -442,6 +449,9 @@ int getEnabledState(int index) {
 }
 
 void updateEnabledStates(void) {
+	/**
+	 * @brief Update all tracker item enabled states
+	 */
 	slam_screen_level = 0;
 	belt_screen_level = 0;
 	ins_screen_level = 0;
@@ -467,15 +477,26 @@ void updateEnabledStates(void) {
 #define TRACKER_HEIGHT 128
 
 void initTracker(void) {
+	/**
+	 * @brief Initialize tracker
+	 */
 	updated_tracker = 0;
 }
 
 void resetTracker(void) {
+	/**
+	 * @brief Reset tracker
+	 */
 	updated_tracker = 0;
 	WipeImageCache();
 }
 
 void modifyTrackerImage(int dl_offset) {
+	/**
+	 * @brief Modify the tracker image based on the items in your inventory
+	 * 
+	 * @param dl_offset y_offset
+	 */
 	// Check if tracker needs updating
 	if (updated_tracker == (TRACKER_INIT + 3)) {
 		return;
@@ -561,12 +582,27 @@ void modifyTrackerImage(int dl_offset) {
 }
 
 int* display_file_images(int* dl, int y_offset) {
+	/**
+	 * @brief Display images on the file screen
+	 * 
+	 * @param dl Display List Address
+	 * @param y_offfset Y Offset of the tracker image
+	 * 
+	 * @return New Display List Address
+	 */
 	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, 160, y_offset + 150,1.0f, 1.0f,0xFF);
 	modifyTrackerImage(y_offset);
 	return dl;
 }
 
 int* display_text(int* dl) {
+	/**
+	 * @brief Display Text on the file screen
+	 * 
+	 * @param dl Display List Address
+	 * 
+	 * @return New Display List Address
+	 */
 	int y = FileScreenDLOffset - 320;
 	// Balanced IGT
 	// y += LINE_GAP;
@@ -587,6 +623,14 @@ int* display_text(int* dl) {
 
 static unsigned char hash_textures[] = {48,49,50,51,55,62,63,64,65,76};
 int* displayHash(int* dl, int y_offset) {
+	/**
+	 * @brief Display seed hash on the file screen
+	 * 
+	 * @param dl Display List Address
+	 * @param y_offset Y Offset for the hash images
+	 * 
+	 * @return New Display List Address
+	 */
 	for (int i = 0; i < 5; i++) {
 		int hash_index = Rando.hash[i] % 10;
 		dl = drawImage(dl, hash_textures[hash_index], RGBA16, 32, 32, 440 + (100 * i), 920 - y_offset, 3.0f, 3.0f, 0xFF);
@@ -595,6 +639,9 @@ int* displayHash(int* dl, int y_offset) {
 }
 
 void correctKongFaces(void) {
+	/**
+	 * @brief Alter the kong faces on the file screen to handle pre-given kongs
+	 */
 	if (Rando.unlock_kongs) {
 		for (int i = 0; i < 5; i++) {
 			int flag = checkFlag(kong_flags[i],0);
@@ -622,16 +669,30 @@ void correctKongFaces(void) {
 }
 
 void wipeFileMod(int file, int will_save) {
+	/**
+	 * @brief Modification of the wipe file function
+	 * 
+	 * @param file File Index
+	 * @param will_save Wiping will save to file
+	 */
 	resetTracker();
 	WipeFile(file, will_save);
 }
 
 void enterFileProgress(int sfx) {
+	/**
+	 * @brief Modification of the enter "File Progress" screen function
+	 * 
+	 * @param sfx Sound effect played upon entering the file progress screen
+	 */
 	resetTracker();
 	playSFX(sfx);
 }
 
 void giveCollectables(void) {
+	/**
+	 * @brief Give collectables based on file progress
+	 */
 	int max = 10; //giving instrument power even if no instrument is unlocked
 	for (int i = 1; i < 4; i++) {
 		if (MovesBase[0].instrument_bitfield & (1 << i)) {
@@ -654,6 +715,12 @@ void giveCollectables(void) {
 }
 
 void file_progress_screen_code(actorData* actor, int buttons) {
+	/**
+	 * @brief Handle inputs on the file progress screen
+	 * 
+	 * @param actor Menu Controller Actor Address
+	 * @param buttons Buttons Bitfield
+	 */
 	/*
 		Buttons:
 			0001 0000 0000 - Z Button
@@ -736,10 +803,25 @@ static char* inverted_controls_str[] = {
 };
 
 int* displayInverted(int* dl, int style, int x, int y, char* str, int unk0) {
+	/**
+	 * @brief Display the inverted controls text on the options screen
+	 * 
+	 * @param dl Display List Address
+	 * @param style Text style
+	 * @param x Text X Position
+	 * @param y Text Y Position
+	 * @param str Text String
+	 * @param unk0 Unknown
+	 * 
+	 * @return New Display List Address
+	 */
 	return displayText(dl, style, x, y, inverted_controls_str[(int)InvertedControls], unk0);
 }
 
 void initOptionScreen(void) {
+	/**
+	 * @brief Initialize Options Screen
+	 */
 	*(char*)(0x800338FC) = 5; // 5 Options
 	*(short*)(0x8002DA86) = 1; // Cap to 1
 	*(short*)(0x8002DA46) = getHi(&InvertedControls); // Up/Down Edit
@@ -755,10 +837,18 @@ void initOptionScreen(void) {
 static unsigned char previous_map_save = 0x22;
 
 void setPrevSaveMap(void) {
+	/**
+	 * @brief Set Previous map where a save occurred for the in-level IGT functionality
+	 */
 	previous_map_save = Rando.starting_map;
 }
 
 int updateLevelIGT(void) {
+	/**
+	 * @brief Update level in-game time values
+	 * 
+	 * @return New in-game time
+	 */
 	int new_igt = getNewSaveTime();
 	int sum = 0;
 	for (int i = 0; i < 9; i++) {
@@ -775,6 +865,13 @@ int updateLevelIGT(void) {
 }
 
 void changeFileSelectAction(menu_controller_paad* paad, int cap, int buttons) {
+	/**
+	 * @brief Alter file select action to account for the reduced file count
+	 * 
+	 * @param paad Menu Controller Paad
+	 * @param cap Amount of selectable options on the file select screen
+	 * @param buttons Button Bitfield
+	 */
 	if ((buttons & 4) == 0) {
 		if (buttons & 8) {
 			playSFX(0x2C9);
@@ -797,6 +894,12 @@ void changeFileSelectAction(menu_controller_paad* paad, int cap, int buttons) {
 }
 
 void changeFileSelectAction_0(menu_controller_paad* paad, int cap) {
+	/**
+	 * @brief Second portion of altering the actions you can perform on the file select screen to account for reduced file count
+	 * 
+	 * @param paad Menu Controller Paad
+	 * @param cap Amount of selectable options on the file select screen
+	 */
 	*(char*)(0x80033F48) = 0;
 	if (*(float*)(0x80033F44) > 0) {
 		paad->unk_4 += *(float*)(0x80033F44);

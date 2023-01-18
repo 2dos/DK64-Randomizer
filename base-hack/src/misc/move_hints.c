@@ -1,6 +1,23 @@
+/**
+ * @file move_hints.c
+ * @author Ballaam
+ * @brief Handle in-shop move hints
+ * @version 0.1
+ * @date 2022-05-13
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "../../include/common.h"
 
 int isTBarrelFlag(int flag) {
+	/**
+	 * @brief Is a flag a training move flag
+	 * 
+	 * @param flag Flag being queried
+	 * 
+	 * @return is training flag (bool)
+	 */
 	if (flag == FLAG_TBARREL_BARREL) {
 		return 1;
 	} else if (flag == FLAG_TBARREL_DIVE) {
@@ -12,6 +29,13 @@ int isTBarrelFlag(int flag) {
 }
 
 int isFairyFlag(int flag) {
+	/**
+	 * @brief Is a flag a fairy move flag
+	 * 
+	 * @param flag Flag being queried
+	 * 
+	 * @return is a fairy move flag (bool)
+	 */
 	if (flag == FLAG_ABILITY_CAMERA) {
 		return 1;
 	} else if (flag == FLAG_ABILITY_SHOCKWAVE) {
@@ -21,6 +45,14 @@ int isFairyFlag(int flag) {
 }
 
 int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
+	/**
+	 * @brief Get the text index in the text file for a certain hint
+	 * 
+	 * @param shop_owner Index of the shop owner (0 = Cranky, 1 = Funky, 2 = Candy)
+	 * @param shop_data Shop data paad
+	 * 
+	 * @return text index
+	 */
 	int purchase_type = shop_data->purchase_type;
 	int purchase_value = shop_data->purchase_value;
 	int base = 0;
@@ -131,6 +163,14 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 }
 
 int isGoodTextbox(int text_file, int text_index) {
+	/**
+	 * @brief Checks if a textbox is a hint textbox that should be replaced
+	 * 
+	 * @param text_file Original text file
+	 * @param text_index Original Text index
+	 * 
+	 * @return Is textbox that can be replaced
+	 */
 	if (text_file == 7) { // Funky
 		return ((text_index >= 3) && (text_index <= 8)) || ((text_index >= 11 && (text_index <= 14)));
 	} else if (text_file == 8) { // Cranky
@@ -142,6 +182,13 @@ int isGoodTextbox(int text_file, int text_index) {
 }
 
 void getMoveHint(actorData* actor, int text_file, int text_index) {
+	/**
+	 * @brief Handler for getting the move hint
+	 * 
+	 * @param actor Vendor actor
+	 * @param text_file Text file that is being used
+	 * @param text_index Text index that's being used
+	 */
 	int shop = actor->actorType - 189; // 0 = Cranky, 1 = Funky, 2 = Candy
 	if ((shop >= 0) && (shop <= 2)) {
 		shop_paad* shop_data = (shop_paad*)actor->paad2;

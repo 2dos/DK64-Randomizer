@@ -1,19 +1,35 @@
+/**
+ * @file quality_fixes.c
+ * @author Ballaam
+ * @brief Quality of life fixes to the game
+ * @version 0.1
+ * @date 2021-12-07
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include "../../include/common.h"
 
 #define JAPES_MAIN 7
 #define MODE_DKTV 3
 
 void qualityOfLife_fixes(void) {
+	/**
+	 * @brief Quality of life fixes to the game
+	 */
 	if (Rando.quality_of_life.remove_cutscenes) {
+		// Upon ROM Boot, set "Story Skip" to on
 		if (Gamemode == 0) {
 			StorySkip = 1;
 		}
 	}
 	if (Rando.quality_of_life.vanilla_fixes) {
+		// Set some flags in-game
 		setPermFlag(FLAG_FTT_CRANKY); // Cranky FTT
 		setPermFlag(FLAG_TBARREL_SPAWNED); // Training Barrels Spawned
 		setPermFlag(FLAG_MODIFIER_KOSHADEAD); // Giant Kosha Dead
 		fixkey8();
+		// Prevent a bug where detransforming from Rambi shortly before getting hit will keep you locked as Rambi
 		if (CurrentMap == JAPES_MAIN) {
 			if (Player) {
 				if (Character == 6) { // Rambi
@@ -27,11 +43,14 @@ void qualityOfLife_fixes(void) {
 }
 
 void checkNinWarp(void) {
+	/**
+	 * @brief Change the warp destination upon booting the game
+	 */
 	if (Rando.quality_of_life.fast_boot) {
 		WarpToDKTV();
 		TransitionType = 0;
 	} else {
-		initiateTransitionFade(0x4C,0,2);
+		initiateTransitionFade(0x4C,0,2); // DK Rap
 	}
 }
 
@@ -39,6 +58,7 @@ static unsigned short previous_total_cbs = 0xFFFF;
 static unsigned char previous_world = 0xFF;
 
 static const short tnsportal_flags[] = {
+	// Troff n Scoff portal clear flags
 	FLAG_PORTAL_JAPES,
 	FLAG_PORTAL_AZTEC,
 	FLAG_PORTAL_FACTORY,
@@ -65,66 +85,17 @@ typedef struct sprite_info {
 #define SPRITE_ALPHA_OUT 44
 #define SPRITE_ALPHA_END 52
 
-int setAlpha(sprite_info* sprite) {
-	if (sprite->timer < SPRITE_ALPHA_IN) {
-		float alpha_new = 255 / SPRITE_ALPHA_IN;
-		alpha_new *= sprite->timer;
-		if (alpha_new > 255) {
-			alpha_new = 255;
-		}
-		sprite->alpha = alpha_new;
-	} else if (sprite->timer > SPRITE_ALPHA_OUT) {
-		int diff = SPRITE_ALPHA_END - sprite->timer;
-		float alpha_new = 255 / (SPRITE_ALPHA_END - SPRITE_ALPHA_OUT);
-		alpha_new *= diff;
-		if (alpha_new > 255) {
-			alpha_new = 255;
-		}
-		sprite->alpha = alpha_new;
-		if (sprite->alpha < 6) {
-			return 1;
-		}
-	} else {
-		sprite->alpha = 255;
-	}
-	return 0;
-
-}
-
-void handleTroffFace(sprite_info* sprite, char* unk0) {
-	int hide = setAlpha(sprite);
-	sprite->scale_x = 2.0f;
-	sprite->scale_z = 2.0f;
-	if (hide) {
-		*unk0 = 1;
-	}
-}
-
-void handleTick(sprite_info* sprite, char* unk0) {
-	int hide = setAlpha(sprite);
-	sprite->scale_x = 1.5f;
-	sprite->scale_z = 1.5f;
-	sprite->green = 0xFF;
-	sprite->red = 0;
-	sprite->blue = 0;
-	if (hide) {
-		*unk0 = 1;
-	}
-}
-
 void playCBDing(void) {
+	/**
+	 * @brief Play Bell Ding sound effect
+	 */
 	playSFX(Bell);
-	// unkSpriteRenderFunc(200);
-	// unkSpriteRenderFunc_0();
-	// loadSpriteFunction((int)&handleTroffFace);
-	// displaySpriteAtXYZ(sprite_table[0xA7], 0x3F800000, 0x41F00000, 0x42700000);
-	// unkSpriteRenderFunc(200);
-	// unkSpriteRenderFunc_0();
-	// loadSpriteFunction((int)&handleTick);
-	// displaySpriteAtXYZ(sprite_table[0xAE], 0x3F800000, 0x42700000, 0x425C0000);
 }
 
 void CBDing(void) {
+	/**
+	 * @brief Check if T&S Threshold has been met
+	 */
 	if (Rando.quality_of_life.cb_indicator) {
 		int world = getWorld(CurrentMap, 1);
 		int total_cbs = 0;
@@ -146,6 +117,10 @@ void CBDing(void) {
 }
 
 void fixRBSlowTurn(void) {
+	/**
+	 * @brief Fix the Rocketbarrel Slow Turn glitch
+	 * This occurs if you standing ground attack before jumping into a Rocketbarrel Barrel
+	 */
 	controlStateControl(0x1B);
 	if (Player) {
 		Player->turn_speed = 0x190;
@@ -153,23 +128,37 @@ void fixRBSlowTurn(void) {
 }
 
 void postKRoolSaveCheck(void) {
+	/**
+	 * @brief Prevent the game saving on the transition from Chunky Phase to the K. Rool launch cutscene
+	 */
 	if ((CurrentMap != 0x22) || (!CutsceneFadeActive) || (CutsceneFadeIndex != 29)) {
 		save();
 	}
 }
 
 void tagBarrelBackgroundKong(int kong_actor) {
+	/**
+	 * @brief Alter the tag function to also change the background kong.
+	 * This prevents a bug with tagging from a tag barrel where it doesn't update the background kong.
+	 * This can result in a weird tag when getting caught by a guard or other situations
+	 */
 	tagKong(kong_actor);
 	Player->new_kong = kong_actor;
 }
 
 void preventMedalHUD(int item, int unk0, int unk1) {
+	/**
+	 * @brief Prevent Medal HUD from showing
+	 */
 	if (item != 0xA) {
 		displayItemOnHUD(item, unk0, unk1);
 	}
 }
 
 void initHUDDirection(placementData* hud_data, int item) {
+	/**
+	 * @brief Modified initialization of HUD Direction function to account for new medal changes.
+	 */
 	int x_direction = 0;
 	int y_direction = 0;
 	hud_data->unk_0C = 0;
@@ -192,6 +181,10 @@ void initHUDDirection(placementData* hud_data, int item) {
 }
 
 void* getHUDSprite_HUD(int item) {
+	/**
+	 * @brief Override HUD Sprite for Medals to be a MultiBunch
+	 * @return Sprite Address
+	 */
 	if (item == 0xA) {
 		return sprite_table[0xA8];
 	} else {
@@ -200,6 +193,10 @@ void* getHUDSprite_HUD(int item) {
 }
 
 void updateMultibunchCount(void) {
+	/**
+	 * @brief Get the total amount of colored bananas for a level.
+	 * Used in the multibunch display
+	 */
 	int world = getWorld(CurrentMap,1);
 	int count = 0;
 	if (world < 7) {
@@ -215,6 +212,10 @@ void updateMultibunchCount(void) {
 }
 
 void RabbitRaceInfiniteCode(void) {
+	/**
+	 * @brief Change Rabbit Race so that upon starting the race, you get infinite Crystal Coconuts
+	 * This only applies to Round 2, and will end the infinite coconuts upon the race finishing
+	 */
 	initCharSpawnerActor();
 	if (checkFlag(FLAG_RABBIT_ROUND1,0)) {
 		int control_state = CurrentActorPointer_0->control_state;
@@ -233,6 +234,16 @@ void RabbitRaceInfiniteCode(void) {
 }
 
 int fixDilloTNTPads(void* actor) {
+	/**
+	 * @brief Fix a bug where grabbing a TNT Barrel with Tiny, then throwing it can cause the TNT Barrel to go under the pad.
+	 * This exposes behaviour where the TNT spawn pad can move if it's riding another object.
+	 * To fix this, we change the behaviour of the TNT Spawn pad so that it won't obey gravity and will be locked in place.
+	 * The unfortunate side effect is that if the ground ripples in Army Dillo, the pad won't move with the ripple.
+	 * 
+	 * @param actor TNT Spawn Pad actor address
+	 * 
+	 * @return Does actor obey gravity
+	 */
 	if ((CurrentMap == 8) || (CurrentMap == 0xC4)) {
 		return 0;
 	}
@@ -240,6 +251,12 @@ int fixDilloTNTPads(void* actor) {
 }
 
 int canPlayJetpac(void) {
+	/**
+	 * @brief Determine whether the player can play Jetpac.
+	 * We will only enable the player to attempt Jetpac upon not having the Jetpac Reward
+	 * 
+	 * @return Amount of medals the player has. Set to 0 if you have the Jetpac Reward
+	 */
 	if (checkFlag(FLAG_COLLECTABLE_RAREWARECOIN, 0)) {
 		return 0;
 	} else {

@@ -238,10 +238,10 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
                 loaded_vert_start = int(int.from_bytes(fh.read(2), "big") / 0x10)
                 for v in range(loaded_vert_count):
                     focused_vert = loaded_vert_start + v
-                    if focused_vert in used_verts:
-                        print(f"{focused_vert} already used")
-                    else:
+                    if focused_vert not in used_verts:
                         used_verts.append(focused_vert)
+                    # else:
+                    #     print(f"{focused_vert} already used (Actor {actor_index})")
                     vert_bones[bone_index].append(focused_vert)
         # Grab Bones
         for b in range(bone_count):

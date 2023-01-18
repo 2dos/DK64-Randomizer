@@ -56,23 +56,30 @@ kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "L
 
 def pushItemMicrohints(spoiler: Spoiler, move_dict: dict, level: int, kong: int, slot: int):
     """Push hint for the micro-hints system."""
-    if kong != Kongs.any or slot == 0:
-        move = None  # Using no item for the purpose of a default
-        hinted_items = {
-            # Key = Item, Value = Textbox index in text file 19
-            "Monkeyport": [("special", 2, Kongs.tiny), 26],
-            "Gorilla Gone": [("special", 2, Kongs.chunky), 25],
-        }
-        for item_hint in hinted_items:
-            move_data = hinted_items[item_hint][0]
-            if move_dict["move_type"] == move_data[0] and move_dict["move_lvl"] == move_data[1] and move_dict["move_kong"] == move_data[2]:
-                move = item_hint
-        if move is not None:
-            data = {"textbox_index": hinted_items[move][1], "mode": "replace_whole", "target": spoiler.microhints[move]}
-            if 19 in spoiler.text_changes:
-                spoiler.text_changes[19].append(data)
-            else:
-                spoiler.text_changes[19] = [data]
+    if spoiler.settings.microhints_enabled != "off":
+        if kong != Kongs.any or slot == 0:
+            move = None  # Using no item for the purpose of a default
+            hinted_items = {
+                # Key = Item, Value = Textbox index in text file 19
+                "Monkeyport": [("special", 2, Kongs.tiny), 26, ("base", "all")],
+                "Gorilla Gone": [("special", 2, Kongs.chunky), 25, ("base", "all")],
+                "Bongo Blast": [("instrument", 0, Kongs.donkey), 27, ("all")],
+                "Triangle Trample": [("instrument", 0, Kongs.chunky), 28, ("all")],
+                "Saxophone Slam": [("instrument", 0, Kongs.tiny), 29, ("all")],
+                "Trombone Tremor": [("instrument", 0, Kongs.lanky), 30, ("all")],
+                "Guitar Gazump": [("instrument", 0, Kongs.diddy), 31, ("all")],
+            }
+            for item_hint in hinted_items:
+                move_data = hinted_items[item_hint][0]
+                if move_dict["move_type"] == move_data[0] and move_dict["move_lvl"] == move_data[1] and move_dict["move_kong"] == move_data[2]:
+                    if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][2]):
+                        move = item_hint
+            if move is not None:
+                data = {"textbox_index": hinted_items[move][1], "mode": "replace_whole", "target": spoiler.microhints[move]}
+                if 19 in spoiler.text_changes:
+                    spoiler.text_changes[19].append(data)
+                else:
+                    spoiler.text_changes[19] = [data]
 
 
 def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler: Spoiler, kong_slot: int, kongs: list, level_override=None):

@@ -1,3 +1,13 @@
+/**
+ * @file dpad_menu.c
+ * @author Ballaam
+ * @brief Operation of the DPad Menu
+ * @version 0.1
+ * @date 2022-07-17
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "../../include/common.h"
 
 #define ICON_SCALE 2.0f
@@ -8,6 +18,12 @@
 #define HUD_CHECK_COUNT 4
 
 int canUseDPad(void) {
+    /**
+     * @brief Determines whether the player will be able to use the DPad Menu.
+     * This operates outside of Tag Anywhere as Tag Anywhere has different rules
+     * 
+     * @return DPad is useable
+     */
     if (Gamemode != 6) {
         return 0; // Not in Adv Mode
     }
@@ -45,6 +61,13 @@ int canUseDPad(void) {
 }
 
 int* drawDPad(int* dl) {
+    /**
+     * @brief Draws the DPad menu
+     * 
+     * @param dl Display List Address
+     * 
+     * @return New Display List Address
+     */
     if (!canUseDPad()) {
         return dl;
     }
@@ -93,6 +116,9 @@ int* drawDPad(int* dl) {
 }
 
 void handleDPadFunctionality(void) {
+    /**
+     * @brief Handle inputs on the DPad and their corresponding functionality
+     */
     if (canUseDPad()) {
         if (Rando.quality_of_life.hud_bp_multibunch) {
             updateMultibunchCount();

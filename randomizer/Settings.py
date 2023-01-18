@@ -405,6 +405,24 @@ class Settings:
         self.smaller_shops = False
         self.alter_switch_allocation = False
         self.switch_allocation = [1, 1, 1, 1, 2, 2, 3]
+        self.bonus_matches_contents = False
+        self.microhints_enabled = "off"
+        # Helm Hurry
+        self.helmhurry_list_starting_time = 1200
+        self.helmhurry_list_golden_banana = 20
+        self.helmhurry_list_blueprint = 45
+        self.helmhurry_list_company_coins = 300
+        self.helmhurry_list_move = 30
+        self.helmhurry_list_banana_medal = 60
+        self.helmhurry_list_rainbow_coin = 15
+        self.helmhurry_list_boss_key = 150
+        self.helmhurry_list_battle_crown = 90
+        self.helmhurry_list_bean = 120
+        self.helmhurry_list_pearl = 50
+        self.helmhurry_list_kongs = 240
+        self.helmhurry_list_fairies = 50
+        self.helmhurry_list_colored_bananas = 3
+        self.helmhurry_list_ice_traps = -40
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -966,8 +984,17 @@ class Settings:
                     # Helm Fairy Couplet
                     Locations.HelmBananaFairy1,
                     Locations.HelmBananaFairy2,
+                    # Seasick GB - Seasick effect + ice trap breaks the game
+                    Locations.GalleonChunkySeasick,
+                    Locations.GalleonChunkyMedal,
+                    # Enguarde + Ice Trap breaks the game
+                    Locations.GalleonLanky2DoorShip,
+                    Locations.GalleonLankyEnguardeChest,
+                    Locations.GalleonLankyMedal,
                 )
-                self.valid_locations[Types.FakeItem] = [x for x in shuffledLocations if LocationList[x].type not in (Types.Shop, Types.Shockwave, Types.TrainingBarrel) and x not in bad_fake_locations]
+                self.valid_locations[Types.FakeItem] = [
+                    x for x in shuffledLocations if LocationList[x].type not in (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Crown) and x not in bad_fake_locations
+                ]
             if Types.Kong in self.shuffled_location_types:
                 # Banned because it defeats the purpose of starting with X Kongs
                 banned_kong_locations = (

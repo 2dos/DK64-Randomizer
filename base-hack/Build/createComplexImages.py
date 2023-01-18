@@ -460,8 +460,6 @@ skins = {
 for skin_type in skins:
     skin_data = list(skins[skin_type])
     skin_dir = getDir(f"assets/Non-Code/{skin_data[2]}/")
-    print(skin_data)
-    print(skin_dir)
     if skin_data[1] is None:
         whole = Image.open(f"{skin_dir}{skin_data[0]}.png").resize((32, 32))
         left = whole.crop((0, 0, 16, 32))

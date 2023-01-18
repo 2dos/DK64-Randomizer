@@ -35,7 +35,7 @@ const item_conversion_info item_conversions[] = {
 	{.actor=172, .model_two=408, .scale=0.25f},
 	{.actor=174, .model_two=436, .scale=0.25f},
 	{.actor=88, .model_two=604, .scale=0.25f},
-	{.actor=140, .model_two=183, .scale=2.00f},
+	{.actor=140, .model_two=183, .scale=0.25f},
 	{.actor=217, .model_two=605, .scale=0.25f}
 };
 const unsigned char bounce_objects[] = {45,72,86,157,158,159,160,161,162,141,142,143,144,155,88,217};
