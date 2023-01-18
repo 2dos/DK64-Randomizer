@@ -41,7 +41,7 @@ def generate_lo_rando_race_settings():
     data["shockwave_status"] = "shuffled_decoupled"  # usually "vanilla", could be "shuffled" or "shuffled_decoupled" or "start_with"
     # If true, the above is always decoupled or vanilla
     data["shuffle_items"] = True  # Must be true to trigger the list selector below
-    # data["item_rando_list_selected"] = ["shop", "banana", "crown", "blueprint", "key", "medal"]  # no coins because i hate rareware coin logic
+    # data["item_rando_list_selected"] = ["shop", "banana", "crown", "blueprint", "key", "medal", "coin", "kong", "fairy", "rainbowcoin", "beanpearl", "fakeitem"]  # all options
 
     data["random_prices"] = "low"  # usually "medium, might need free, rarely vanilla"
     data["randomize_blocker_required_amounts"] = True  # usually True, if false set values below
@@ -129,8 +129,8 @@ def generate_lo_rando_race_settings():
     # glitch options:
     # "advanced_platforming", "b_locker_skips", "general_clips", "ledge_clips", "moonkicks", "phase_swimming", "phase_walking", "skew", "spawn_snags", "swim_through_shores", "tag_barrel_storage", "troff_n_scoff_skips"
     data["glitches_selected"] = [""]
-
-    data["smaller_shops"] = False  # could be true or false, unclear
+    data["microhints_enabled"] = "base"  # off/base/all
+    data["smaller_shops"] = True  # likely to be True in item rando, many settings force it to be false
 
     return data
 

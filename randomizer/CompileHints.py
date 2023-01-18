@@ -252,7 +252,7 @@ hint_distribution = {
     HintType.RequiredKeyHint: -1,  # Fixed number based on the number of keys to be obtained over the seed
     HintType.RequiredWinConditionHint: 0,  # Fixed number based on what K. Rool phases you must defeat
     HintType.RequiredHelmDoorHint: 0,  # Fixed number based on how many Helm doors have random requirements
-    HintType.WothLocation: 8,
+    HintType.WothLocation: 9,
     HintType.FullShopWithItems: 8,
     HintType.FoolishMove: 2,
     HintType.FoolishRegion: 6,
@@ -272,6 +272,9 @@ def compileHints(spoiler: Spoiler):
     valid_types = [HintType.Joke]
     if spoiler.settings.krool_phase_count < 5 and spoiler.settings.win_condition == "beat_krool":
         valid_types.append(HintType.KRoolOrder)
+        # If the seed doesn't funnel you into helm, guarantee one K. Rool order hint
+        if Events.HelmKeyTurnedIn not in spoiler.settings.krool_keys_required or not spoiler.settings.key_8_helm:
+            minned_hint_types.append(HintType.KRoolOrder)
     if spoiler.settings.helm_setting != "skip_all" and spoiler.settings.helm_phase_count < 5:
         valid_types.append(HintType.HelmOrder)
         minned_hint_types.append(HintType.HelmOrder)
@@ -327,9 +330,14 @@ def compileHints(spoiler: Spoiler):
             hint_distribution[HintType.RequiredHelmDoorHint] += 1
     # if spoiler.settings.random_patches:
     #     valid_types.append(HintType.DirtPatch)
-    if spoiler.settings.randomize_blocker_required_amounts:
+    if spoiler.settings.randomize_blocker_required_amounts and spoiler.settings.blocker_max > 1:
         valid_types.append(HintType.BLocker)
-    if spoiler.settings.randomize_cb_required_amounts and len(spoiler.settings.krool_keys_required) > 0 and spoiler.settings.krool_keys_required != [Events.HelmKeyTurnedIn]:
+    if (
+        spoiler.settings.randomize_cb_required_amounts
+        and len(spoiler.settings.krool_keys_required) > 0
+        and spoiler.settings.krool_keys_required != [Events.HelmKeyTurnedIn]
+        and spoiler.settings.troff_max > 0
+    ):
         valid_types.append(HintType.TroffNScoff)
     if spoiler.settings.kong_rando:
         if spoiler.settings.shuffle_items and Types.Kong in spoiler.settings.shuffled_location_types:
@@ -505,7 +513,11 @@ def compileHints(spoiler: Spoiler):
                 else:
                     level_name = level_list_helm_isles[kong_location.level]
             freed_kong = kong_list[GetKongForItem(kong_location.item)]
-            message = f"{freeing_kong_name} finds {freed_kong} in {level_name}."
+            message = ""
+            if kong_location.type == Types.Blueprint:
+                message = f"{freed_kong} is held by a kasplat in {level_name}."
+            else:
+                message = f"{freeing_kong_name} finds {freed_kong} in {level_name}."
             hint_location.hint_type = HintType.KongLocation
             UpdateHint(hint_location, message)
     # In non-item rando, Kongs should be hinted before they're available and should only be hinted to free Kongs, making them very restrictive
@@ -710,7 +722,7 @@ def compileHints(spoiler: Spoiler):
             # Place a hint for each of the K. Rool required moves
             for item_name, path_location_id in item_path_hint_dict.items():
                 region = GetRegionOfLocation(path_location_id)
-                if "Training Grounds" in region.hint_name:
+                if path_location_id in TrainingBarrelLocations:
                     # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[LocationList[path_location_id].item].name
                     message = f"Your training with {hinted_item_name} is on the path to aiding your fight against K. Rool."

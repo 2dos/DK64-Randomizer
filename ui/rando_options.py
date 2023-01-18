@@ -477,6 +477,8 @@ def disable_enemy_modal(evt):
         pass
 
 
+@bind("click", "item_rando_list_select_all")
+@bind("click", "item_rando_list_reset")
 @bind("click", "shuffle_items")
 def toggle_item_rando(evt):
     """Enable and disable settings based on Item Rando being on/off."""

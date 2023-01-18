@@ -145,7 +145,7 @@ DirtPatchLocations = [
         z=4146.0,
         rotation=1615,
         group=6,
-        logicregion=Regions.IslesMain,
+        logicregion=Regions.KremIsle,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -157,7 +157,7 @@ DirtPatchLocations = [
         z=3887.0,
         rotation=1956,
         group=6,
-        logicregion=Regions.CrocodileIsleBeyondLift,
+        logicregion=Regions.KremIsleBeyondLift,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -169,8 +169,8 @@ DirtPatchLocations = [
         z=3214.0,
         rotation=3891,
         group=6,
-        logicregion=Regions.IslesMain,
-        logic=lambda l: ((l.monkeyport and l.istiny) or l.tbs) and l.shockwave,
+        logicregion=Regions.KremIsleTopLevel,
+        logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles: In Fungi Boulder",
