@@ -77,9 +77,15 @@ class Settings:
         # Short: 35 GB
         # Medium: 50 GB
         # Long: 65 GB
-        # Longer: 80 GB\
-        self.blocker_max = int(self.blocker_text) if self.blocker_text else 50
-        self.troff_max = int(self.troff_text) if self.troff_text else 270
+        # Longer: 80 GB
+        if self.blocker_text is not None and self.blocker_text != "":
+            self.blocker_max = int(self.blocker_text)
+        else:
+            self.blocker_max = 50
+        if self.troff_text is not None and self.troff_text != "":
+            self.troff_max = int(self.troff_text)
+        else:
+            self.troff_max = 270
         self.troff_min = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55]  # Weights for the minimum value of troff
         if self.hard_troff_n_scoff:
             self.troff_min = [0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75]  # Add 20% to the minimum for hard T&S
@@ -155,14 +161,17 @@ class Settings:
             self.troff_5 = round(min(cbs[5] * self.troff_weight_5, 500))
             self.troff_6 = round(min(cbs[6] * self.troff_weight_6, 500))
         if self.randomize_blocker_required_amounts:
-            randomlist = random.sample(range(1, self.blocker_max), 7)
-            b_lockers = randomlist
-            if self.shuffle_loading_zones == "all" or self.hard_level_progression:
-                b_lockers.append(random.randint(1, self.blocker_max))
-                random.shuffle(b_lockers)
+            if self.blocker_max > 0:
+                randomlist = random.sample(range(1, self.blocker_max), 7)
+                b_lockers = randomlist
+                if self.shuffle_loading_zones == "all" or self.hard_level_progression:
+                    b_lockers.append(random.randint(1, self.blocker_max))
+                    random.shuffle(b_lockers)
+                else:
+                    b_lockers.append(1)
+                    b_lockers.sort()
             else:
-                b_lockers.append(1)
-                b_lockers.sort()
+                b_lockers = [0, 0, 0, 0, 0, 0, 0, 0]
             self.blocker_0 = b_lockers[0]
             self.blocker_1 = b_lockers[1]
             self.blocker_2 = b_lockers[2]
@@ -227,8 +236,8 @@ class Settings:
         self.troff_6 = None
         self.troff_min = None
         self.troff_max = None
-        self.blocker_text = None
-        self.troff_text = None
+        self.blocker_text = ""
+        self.troff_text = ""
 
     def generate_misc(self):
         """Set default items on misc page."""
@@ -845,6 +854,10 @@ class Settings:
 
         if "remove_wrinkly_puzzles" in self.misc_changes_selected or len(self.misc_changes_selected) == 0:
             self.remove_wrinkly_puzzles = True
+
+        if self.fast_gbs:
+            # On Fast GBs, this location refers to the blast course, not the arcade
+            LocationList[Locations.FactoryDonkeyDKArcade].name = "Factory Donkey Blast Course"
 
     def update_valid_locations(self):
         """Calculate (or recalculate) valid locations for items by type."""
