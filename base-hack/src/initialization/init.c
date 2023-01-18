@@ -103,7 +103,7 @@ void initHack(int source) {
 			// Kong Rando
 			initKongRando();
 			initFiles();
-            initCosmetic();
+            
 			if (Rando.no_health_refill) {
 				*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
 				// *(int*)(0x8060DD10) = 0; // Load File
@@ -144,6 +144,8 @@ void initHack(int source) {
 			}
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
+			initCosmetic();
+
 			replace_zones(1);
 			randomize_bosses();
 			loadExtraHooks();
