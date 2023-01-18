@@ -168,26 +168,22 @@ level_names = {
 kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky", Kongs.any: "Any Kong"}
 
 
-def pushItemMicrohints(spoiler: Spoiler, item):
+def pushItemMicrohints(spoiler: Spoiler):
     """Push hint for the micro-hints system."""
     if spoiler.settings.microhints_enabled != "off":
-        move = Items.NoItem  # Using no item for the purpose of a default
         hinted_items = {
             # Key = Item, Value = (Textbox index in text file 19, (all_accepted_settings))
-            Items.Monkeyport: (26, ("base", "all")),
-            Items.GorillaGone: (25, ("base", "all")),
-            Items.Bongos: (27, ("all")),
-            Items.Triangle: (28, ("all")),
-            Items.Saxophone: (29, ("all")),
-            Items.Trombone: (30, ("all")),
-            Items.Guitar: (31, ("all")),
+            Items.Monkeyport: (26, ["base", "all"]),
+            Items.GorillaGone: (25, ["base", "all"]),
+            Items.Bongos: (27, ["all"]),
+            Items.Triangle: (28, ["all"]),
+            Items.Saxophone: (29, ["all"]),
+            Items.Trombone: (30, ["all"]),
+            Items.Guitar: (31, ["all"]),
         }
         for item_hint in hinted_items:
-            if item.new_flag == ItemList[item_hint].rando_flag:
-                move = item_hint
-        if move != Items.NoItem:
-            if spoiler.settings.microhints_enabled in list(hinted_items[move][1]):
-                data = {"textbox_index": hinted_items[move][0], "mode": "replace_whole", "target": spoiler.microhints[ItemList[move].name]}
+            if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][1]):
+                data = {"textbox_index": hinted_items[item_hint][0], "mode": "replace_whole", "target": spoiler.microhints[ItemList[item_hint].name]}
                 if 19 in spoiler.text_changes:
                     spoiler.text_changes[19].append(data)
                 else:
@@ -279,11 +275,9 @@ def place_randomized_items(spoiler: Spoiler):
         map_items = {}
         bonus_table_offset = 0
         flut_items = []
+        pushItemMicrohints(spoiler)
         for item in item_data:
             if item.can_have_item:
-                # Handle Item Hints in specific spots
-                if item.new_item == Types.Shop:
-                    pushItemMicrohints(spoiler, item)
                 if item.is_shop:
                     # Write in placement index
                     ROM().seek(sav + 0xA7)
