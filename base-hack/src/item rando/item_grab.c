@@ -102,10 +102,10 @@ void banana_medal_acquisition(int flag) {
                 song = 22; // Company Coin Get
                 if (flut_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
                     // Nintendo Coin
-                    sprite_index = 0x8C;
+                    sprite_index = 0x8D;
                 } else {
                     // Rareware Coin
-                    sprite_index = 0x8D;
+                    sprite_index = 0x8C;
                 }
                 hh_item = HHITEM_COMPANYCOIN;
                 break;
