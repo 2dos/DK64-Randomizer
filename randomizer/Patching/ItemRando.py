@@ -183,11 +183,12 @@ def pushItemMicrohints(spoiler: Spoiler):
         }
         for item_hint in hinted_items:
             if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][1]):
-                data = {"textbox_index": hinted_items[item_hint][0], "mode": "replace_whole", "target": spoiler.microhints[ItemList[item_hint].name]}
-                if 19 in spoiler.text_changes:
-                    spoiler.text_changes[19].append(data)
-                else:
-                    spoiler.text_changes[19] = [data]
+                if ItemList[item_hint].name in spoiler.microhints:
+                    data = {"textbox_index": hinted_items[item_hint][0], "mode": "replace_whole", "target": spoiler.microhints[ItemList[item_hint].name]}
+                    if 19 in spoiler.text_changes:
+                        spoiler.text_changes[19].append(data)
+                    else:
+                        spoiler.text_changes[19] = [data]
 
 
 def getTextRewardIndex(item) -> int:
