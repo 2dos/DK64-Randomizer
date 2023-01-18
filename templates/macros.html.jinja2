@@ -156,10 +156,15 @@
 </div>
 <script>
     $('#{{ name }}_reset').click(function() {
-        {% for item in list %}
-            $('#{{ name }}_{{ item.value }}').prop('value', $('#{{ name }}_{{ item.value }}').attr('default_val'))
-            $('#{{ name }}_{{ item.value }}').trigger('change')
-        {% endfor %}
+        {
+            %
+            for item in list %
+        }
+        $('#{{ name }}_{{ item.value }}').prop('value', $('#{{ name }}_{{ item.value }}').attr('default_val'))
+        $('#{{ name }}_{{ item.value }}').trigger('change') {
+            %
+            endfor %
+        }
     })
 </script>
 {% endmacro %}
