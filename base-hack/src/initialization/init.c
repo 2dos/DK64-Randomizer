@@ -83,10 +83,27 @@ void initHack(int source) {
 			for (int i = 0; i < 7; i++) {
 				SwitchLevel[i] = Rando.slam_level[i];
 			}
+			// New Actors
+			initActor(151, &ninCoinCode, ACTORMASTER_SPRITE, 0x11);
+			initActor(152, &rwCoinCode, ACTORMASTER_SPRITE, 0x11);
+			initActor(153, &NothingCode, ACTORMASTER_SPRITE, 0);
+			initActor(154, &medalCode, ACTORMASTER_SPRITE, 0x11);
+			for (int i = 0; i < 6; i++) {
+				initActor(157 + i, &PotionCode, ACTORMASTER_3D, 0x11);
+			}
+			initActor(141, &KongDropCode, ACTORMASTER_3D, 0x11);
+			initActor(142, &KongDropCode, ACTORMASTER_3D, 0x11);
+			initActor(143, &KongDropCode, ACTORMASTER_3D, 0x11);
+			initActor(144, &KongDropCode, ACTORMASTER_3D, 0x11);
+			initActor(155, &KongDropCode, ACTORMASTER_3D, 0x11);
+			initActor(172, &beanCode, ACTORMASTER_SPRITE, 0x11);
+			initActor(174, &pearlCode, ACTORMASTER_SPRITE, 0x11);
+			initActor(88, &fairyDuplicateCode, ACTORMASTER_3D, 0x11);
+			initActor(217, &FakeGBCode, ACTORMASTER_3D, 0x11);
 			// Kong Rando
 			initKongRando();
 			initFiles();
-            initCosmetic();
+            
 			if (Rando.no_health_refill) {
 				*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
 				// *(int*)(0x8060DD10) = 0; // Load File
@@ -127,6 +144,8 @@ void initHack(int source) {
 			}
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
+			initCosmetic();
+
 			replace_zones(1);
 			randomize_bosses();
 			loadExtraHooks();
@@ -214,23 +233,6 @@ void initHack(int source) {
 			// Move Text Code
 			*(int*)(0x8074C5B0) = (int)&getNextMoveText;
 			*(int*)(0x8074C5A0) = (int)&getNextMoveText;
-			// New Actors
-			initActor(151, &ninCoinCode, ACTORMASTER_SPRITE, 0x11);
-			initActor(152, &rwCoinCode, ACTORMASTER_SPRITE, 0x11);
-			initActor(153, &NothingCode, ACTORMASTER_SPRITE, 0);
-			initActor(154, &medalCode, ACTORMASTER_SPRITE, 0x11);
-			for (int i = 0; i < 6; i++) {
-				initActor(157 + i, &PotionCode, ACTORMASTER_3D, 0x11);
-			}
-			initActor(141, &KongDropCode, ACTORMASTER_3D, 0x11);
-			initActor(142, &KongDropCode, ACTORMASTER_3D, 0x11);
-			initActor(143, &KongDropCode, ACTORMASTER_3D, 0x11);
-			initActor(144, &KongDropCode, ACTORMASTER_3D, 0x11);
-			initActor(155, &KongDropCode, ACTORMASTER_3D, 0x11);
-			initActor(172, &beanCode, ACTORMASTER_SPRITE, 0x11);
-			initActor(174, &pearlCode, ACTORMASTER_SPRITE, 0x11);
-			initActor(88, &fairyDuplicateCode, ACTORMASTER_3D, 0x11);
-			initActor(217, &FakeGBCode, ACTORMASTER_3D, 0x11);
 			// Any Kong Items
 			if (Rando.any_kong_items & 1) {
 				// All excl. Blueprints

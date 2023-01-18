@@ -269,7 +269,7 @@ move_hints = [
     {
         "move": "Golden Banana",
         "kong": "~",
-        "cranky": "ANOTHER GOLDEN BANANA. WHY DO YOU NEED TO MANY OF THESE STUPID THINGS?",
+        "cranky": "ANOTHER GOLDEN BANANA. WHY DO YOU NEED MANY OF THESE STUPID THINGS?",
         "funky": "FOUND ANOTHER GOLDEN BANANA FOR YOU, MY DUDE!",
         "candy": "A SHINY GOLDEN BANANA. I KNOW THEY'RE YOUR FAVOURITE!",
     },
