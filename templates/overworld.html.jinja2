@@ -1,4 +1,4 @@
-{% from 'macros.html.jinja2' import list_selector %}
+{% from 'macros.html.jinja2' import list_selector, properties_selector %}
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col border panel">
@@ -122,180 +122,84 @@
                                    value="True"/>
                             Helm Hurry Mode
                         </label>
+                        {{ properties_selector(helm_hurry_items, "helmhurry_list", "HELM HURRY SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.") }}
+                        <div class="form-check form-switch item-switch">
+                            <label data-toggle="tooltip"
+                                   title="Randomizes the location you spawn in when starting a new file and when selecting the 'Exit to Spawn' option.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="random_starting_region"
+                                       value="True"/>
+                                Random Starting Location
+                            </label>
+                        </div>
+                        <div class="spacer"></div>
                     </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="Randomizes the location you spawn in when starting a new file and when selecting the 'Exit to Spawn' option.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="random_starting_region"
-                                   value="True"/>
-                            Random Starting Location
-                        </label>
-                    </div>
-                    <div class="spacer"></div>
-                </div>
-                <div class="flex-container">
-                    <div class="item-select">
-                        <p class="select-title">Win Condition</p>
-                        <select name="win_condition"
-                                id="win_condition"
-                                class="form-select center-div"
-                                aria-label="Win Condition"
-                                data-toggle="tooltip"
-                                title="Alter the condition required to show the credits.">
-                            <option selected id="beat_krool" value="beat_krool" title="">
-                                Beat K. Rool
-                            </option>
-                            <option id="get_key8" value="get_key8">
-                                Acquire Key 8
-                            </option>
-                            <option id="all_keys" value="all_keys">
-                                All Keys
-                            </option>
-                            <option id="all_fairies" value="all_fairies">
-                                All Fairies
-                            </option>
-                            <option id="all_blueprints" value="all_blueprints">
-                                All Blueprints
-                            </option>
-                            <option id="all_medals" value="all_medals">
-                                All Medals
-                            </option>
-                            <option id="poke_snap" value="poke_snap">
-                                Kremling Kapture
-                            </option>
-                        </select>
-                    </div>
-                    <div class="item-select">
-                        <p class="select-title">Free Trade Agreement</p>
-                        <select name="free_trade_setting"
-                                id="free_trade_setting"
-                                class="form-select"
-                                aria-label="Randomization type"
-                                data-toggle="tooltip"
-                                title="Allow Kongs to pick up items assigned to other kongs.&#10;-None: Kongs must pick up items assigned to them.&#10;-Major Collectibles except Blueprints: Keys, Crowns, and GBs can be picked up by any Kong.&#10;-Major Collectibles: Same as above plus Blueprints.">
-                            <option id="none" selected value="none">
-                                None
-                            </option>
-                            <option id="not_blueprints" value="not_blueprints">
-                                Major Collectibles except Blueprints
-                            </option>
-                            <option id="major_collectibles" value="major_collectibles">
-                                Major Collectibles
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col border panel">
-                <h2 class="title">GAME LENGTH SETTINGS</h2>
-                <h5 class="select-title">K-Rool Phase Length</h5>
-                <div class="flex-container">
-                    <div class="form-check form-switch item-switch center-flex">
-                        <label data-toggle="tooltip"
-                               title="Selects a random value from Slider to determine the number of K Rool Phases.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="krool_random"
-                                   onchange="toggle_clicks()"
-                                   id="krool_random"
-                                   value="True"/>
-                            Random Selection
-                        </label>
+                    <div class="flex-container">
+                        <div class="item-select">
+                            <p class="select-title">Win Condition</p>
+                            <select name="win_condition"
+                                    id="win_condition"
+                                    class="form-select center-div"
+                                    aria-label="Win Condition"
+                                    data-toggle="tooltip"
+                                    title="Alter the condition required to show the credits.">
+                                <option selected id="beat_krool" value="beat_krool" title="">
+                                    Beat K. Rool
+                                </option>
+                                <option id="get_key8" value="get_key8">
+                                    Acquire Key 8
+                                </option>
+                                <option id="all_keys" value="all_keys">
+                                    All Keys
+                                </option>
+                                <option id="all_fairies" value="all_fairies">
+                                    All Fairies
+                                </option>
+                                <option id="all_blueprints" value="all_blueprints">
+                                    All Blueprints
+                                </option>
+                                <option id="all_medals" value="all_medals">
+                                    All Medals
+                                </option>
+                                <option id="poke_snap" value="poke_snap">
+                                    Kremling Kapture
+                                </option>
+                            </select>
+                        </div>
+                        <div class="item-select">
+                            <p class="select-title">Free Trade Agreement</p>
+                            <select name="free_trade_setting"
+                                    id="free_trade_setting"
+                                    class="form-select"
+                                    aria-label="Randomization type"
+                                    data-toggle="tooltip"
+                                    title="Allow Kongs to pick up items assigned to other kongs.&#10;-None: Kongs must pick up items assigned to them.&#10;-Major Collectibles except Blueprints: Keys, Crowns, and GBs can be picked up by any Kong.&#10;-Major Collectibles: Same as above plus Blueprints.">
+                                <option id="none" selected value="none">
+                                    None
+                                </option>
+                                <option id="not_blueprints" value="not_blueprints">
+                                    Major Collectibles except Blueprints
+                                </option>
+                                <option id="major_collectibles" value="major_collectibles">
+                                    Major Collectibles
+                                </option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <input type="text"
-                           name="krool_phase_count"
-                           id="krool_phase_count"
-                           data-provide="slider"
-                           data-slider-ticks="[1, 2, 3, 4, 5]"
-                           data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
-                           data-slider-min="1"
-                           data-slider-max="5"
-                           data-slider-step="1"
-                           data-slider-value="5"
-                           style="width: 80%">
-                </div>
-                <hr>
-                <h5 class="select-title">Helm Length</h5>
-                <div class="flex-container">
-                    <div class="form-check form-switch item-switch center-flex">
-                        <label data-toggle="tooltip"
-                               title="Selects a random value from Slider to determine the number of rooms that need to be completed in Hideout Helm.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="helm_random"
-                                   onchange="toggle_clicks()"
-                                   id="helm_random"
-                                   value="True"/>
-                            Random Selection
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <input type="text"
-                           name="helm_phase_count"
-                           id="helm_phase_count"
-                           data-provide="slider"
-                           data-slider-ticks="[1, 2, 3, 4, 5]"
-                           data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
-                           data-slider-min="1"
-                           data-slider-max="5"
-                           data-slider-step="1"
-                           data-slider-value="5"
-                           style="width: 80%">
-                </div>
-                <hr>
-                <div data-toggle="tooltip"
-                     title="Determines how many Keys are left to be collected to access K. Rool.&#10;i.e. Selecting '5' means 3 keys will be pre-turned in and you need 5 more.">
-                    <h5 class="select-title">Keys required to beat K. Rool</h5>
-                </div>
-                <div class="flex-container">
-                    <div class="form-check form-switch item-switch center-flex">
-                        <label data-toggle="tooltip" title="Select the exact keys you start with.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="select_keys"
-                                   id="select_keys"
-                                   onchange="toggle_clicks()"
-                                   value="True"/>
-                            Select Starting Keys
-                        </label>
-                        {{ list_selector(keys, "starting_keys_list", "STARTING KEYS SELECTOR", "This will open a popup that will let you customize what Keys you start with.&#10;This defaults to starting with no keys if none are selected.", 8) }}
-                    </div>
+                <div class="col border panel">
+                    <h2 class="title">GAME LENGTH SETTINGS</h2>
+                    <h5 class="select-title">K-Rool Phase Length</h5>
                     <div class="flex-container">
                         <div class="form-check form-switch item-switch center-flex">
                             <label data-toggle="tooltip"
-                                   title="If Key 8 were to be shuffled, force Key 8 to be in its vanilla location in Helm.">
+                                   title="Selects a random value from Slider to determine the number of K Rool Phases.">
                                 <input class="form-check-input"
                                        type="checkbox"
-                                       name="key_8_helm"
-                                       id="key_8_helm"
-                                       value="True"/>
-                                Lock Key 8 in Helm
-                            </label>
-                        </div>
-                        <div class="form-check form-switch item-switch center-flex">
-                            <label data-toggle="tooltip"
-                                   title="Required to get Key 8 from Helm to access K Rool or leave it up to chance.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="krool_access"
-                                       id="krool_access"
-                                       value="True"/>
-                                Key 8 Required
-                            </label>
-                        </div>
-                        <div class="form-check form-switch item-switch center-flex">
-                            <label data-toggle="tooltip"
-                                   title="Selects a random value from Slider to determine how many Keys are pre-turned in.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="keys_random"
-                                       id="keys_random"
+                                       name="krool_random"
                                        onchange="toggle_clicks()"
+                                       id="krool_random"
                                        value="True"/>
                                 Random Selection
                             </label>
@@ -303,272 +207,368 @@
                     </div>
                     <div>
                         <input type="text"
-                               name="krool_key_count"
-                               id="krool_key_count"
+                               name="krool_phase_count"
+                               id="krool_phase_count"
                                data-provide="slider"
-                               data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8]"
-                               data-slider-ticks-labels='["0", "1", "2", "3", "4", "5", "6", "7", "8"]'
-                               data-slider-min="0"
-                               data-slider-max="8"
+                               data-slider-ticks="[1, 2, 3, 4, 5]"
+                               data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
+                               data-slider-min="1"
+                               data-slider-max="5"
                                data-slider-step="1"
-                               data-slider-value="8"
+                               data-slider-value="5"
                                style="width: 80%">
                     </div>
                     <hr>
-                    <h5 class="select-title">Number of Starting Kongs</h5>
-                    <div class = "flex-container">
+                    <h5 class="select-title">Helm Length</h5>
+                    <div class="flex-container">
                         <div class="form-check form-switch item-switch center-flex">
                             <label data-toggle="tooltip"
-                                   title="Selects a random value from Slider to determine how many kongs you start with.">
+                                   title="Selects a random value from Slider to determine the number of rooms that need to be completed in Hideout Helm.">
                                 <input class="form-check-input"
                                        type="checkbox"
-                                       name="starting_random"
-                                       id="starting_random"
+                                       name="helm_random"
                                        onchange="toggle_clicks()"
+                                       id="helm_random"
                                        value="True"/>
                                 Random Selection
                             </label>
                         </div>
                     </div>
-                    <input type="text"
-                           name="starting_kongs_count"
-                           id="starting_kongs_count"
-                           data-provide="slider"
-                           data-slider-ticks="[1, 2, 3, 4, 5]"
-                           data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
-                           data-slider-min="1"
-                           data-slider-max="5"
-                           data-slider-step="1"
-                           data-slider-value="5"
-                           style="width: 80%">
+                    <div>
+                        <input type="text"
+                               name="helm_phase_count"
+                               id="helm_phase_count"
+                               data-provide="slider"
+                               data-slider-ticks="[1, 2, 3, 4, 5]"
+                               data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
+                               data-slider-min="1"
+                               data-slider-max="5"
+                               data-slider-step="1"
+                               data-slider-value="5"
+                               style="width: 80%">
+                    </div>
                     <hr>
-                    <div class="flex-container">
-                        <div class="form-check form-switch item-switch">
-                            <label data-toggle="tooltip"
-                                   title="Randomizes the amount of banana medals needed for Jetpac.&#10;Range is roughly 4 to 15 with an average of 10.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="random_medal_requirement"
-                                       id="random_medal_requirement"
-                                       value="True"/>
-                                Random Medal Requirement
-                            </label>
-                        </div>
-                        <div class="item-select">
-                            <p class="select-title">Medals for Rareware Coin</p>
-                            <input min="0"
-                                   max="40"
-                                   name="medal_requirement"
-                                   id="medal_requirement"
-                                   style="width: 15%"
-                                   class="form-control center-div"
-                                   type="number"
-                                   data-toggle="tooltip"
-                                   title="Amount of Banana Medals Required for Jetpac/Rareware Coin."
-                                   default="15"
-                                   placeholder="15"/>
-                        </div>
+                    <div data-toggle="tooltip"
+                         title="Determines how many Keys are left to be collected to access K. Rool.&#10;i.e. Selecting '5' means 3 keys will be pre-turned in and you need 5 more.">
+                        <h5 class="select-title">Keys required to beat K. Rool</h5>
                     </div>
                     <div class="flex-container">
+                        <div class="form-check form-switch item-switch center-flex">
+                            <label data-toggle="tooltip" title="Select the exact keys you start with.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="select_keys"
+                                       id="select_keys"
+                                       onchange="toggle_clicks()"
+                                       value="True"/>
+                                Select Starting Keys
+                            </label>
+                            {{ list_selector(keys, "starting_keys_list", "STARTING KEYS SELECTOR", "This will open a popup that will let you customize what Keys you start with.&#10;This defaults to starting with no keys if none are selected.", 8) }}
+                        </div>
                         <div class="flex-container">
+                            <div class="form-check form-switch item-switch center-flex">
+                                <label data-toggle="tooltip"
+                                       title="If Key 8 were to be shuffled, force Key 8 to be in its vanilla location in Helm.">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="key_8_helm"
+                                           id="key_8_helm"
+                                           value="True"/>
+                                    Lock Key 8 in Helm
+                                </label>
+                            </div>
+                            <div class="form-check form-switch item-switch center-flex">
+                                <label data-toggle="tooltip"
+                                       title="Required to get Key 8 from Helm to access K Rool or leave it up to chance.">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="krool_access"
+                                           id="krool_access"
+                                           value="True"/>
+                                    Key 8 Required
+                                </label>
+                            </div>
+                            <div class="form-check form-switch item-switch center-flex">
+                                <label data-toggle="tooltip"
+                                       title="Selects a random value from Slider to determine how many Keys are pre-turned in.">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="keys_random"
+                                           id="keys_random"
+                                           onchange="toggle_clicks()"
+                                           value="True"/>
+                                    Random Selection
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <input type="text"
+                                   name="krool_key_count"
+                                   id="krool_key_count"
+                                   data-provide="slider"
+                                   data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8]"
+                                   data-slider-ticks-labels='["0", "1", "2", "3", "4", "5", "6", "7", "8"]'
+                                   data-slider-min="0"
+                                   data-slider-max="8"
+                                   data-slider-step="1"
+                                   data-slider-value="8"
+                                   style="width: 80%">
+                        </div>
+                        <hr>
+                        <h5 class="select-title">Number of Starting Kongs</h5>
+                        <div class = "flex-container">
+                            <div class="form-check form-switch item-switch center-flex">
+                                <label data-toggle="tooltip"
+                                       title="Selects a random value from Slider to determine how many kongs you start with.">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="starting_random"
+                                           id="starting_random"
+                                           onchange="toggle_clicks()"
+                                           value="True"/>
+                                    Random Selection
+                                </label>
+                            </div>
+                        </div>
+                        <input type="text"
+                               name="starting_kongs_count"
+                               id="starting_kongs_count"
+                               data-provide="slider"
+                               data-slider-ticks="[1, 2, 3, 4, 5]"
+                               data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
+                               data-slider-min="1"
+                               data-slider-max="5"
+                               data-slider-step="1"
+                               data-slider-value="5"
+                               style="width: 80%">
+                        <hr>
+                        <div class="flex-container">
+                            <div class="form-check form-switch item-switch">
+                                <label data-toggle="tooltip"
+                                       title="Randomizes the amount of banana medals needed for Jetpac.&#10;Range is roughly 4 to 15 with an average of 10.">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="random_medal_requirement"
+                                           id="random_medal_requirement"
+                                           value="True"/>
+                                    Random Medal Requirement
+                                </label>
+                            </div>
                             <div class="item-select">
-                                <p class="select-title">Medal Color Banana Requirement</p>
-                                <input min="1"
-                                       max="100"
-                                       name="medal_cb_req"
-                                       id="medal_cb_req"
+                                <p class="select-title">Medals for Rareware Coin</p>
+                                <input min="0"
+                                       max="40"
+                                       name="medal_requirement"
+                                       id="medal_requirement"
                                        style="width: 15%"
                                        class="form-control center-div"
                                        type="number"
                                        data-toggle="tooltip"
-                                       title="Amount of Colored Bananas required for Banana Medals."
-                                       default="75"
-                                       placeholder="75"/>
+                                       title="Amount of Banana Medals Required for Jetpac/Rareware Coin."
+                                       default="15"
+                                       placeholder="15"/>
                             </div>
                         </div>
-                        <div class="item-select">
-                            <p class="select-title">Fairies for Rareware GB</p>
-                            <input min="0"
-                                   max="20"
-                                   name="rareware_gb_fairies"
-                                   id="rareware_gb_fairies"
-                                   style="width: 15%"
-                                   class="form-control center-div"
-                                   type="number"
-                                   data-toggle="tooltip"
-                                   title="Amount of fairies required to open the Rareware Door in Fairy Island."
-                                   default="20"
-                                   placeholder="20"/>
+                        <div class="flex-container">
+                            <div class="flex-container">
+                                <div class="item-select">
+                                    <p class="select-title">Medal Color Banana Requirement</p>
+                                    <input min="1"
+                                           max="100"
+                                           name="medal_cb_req"
+                                           id="medal_cb_req"
+                                           style="width: 15%"
+                                           class="form-control center-div"
+                                           type="number"
+                                           data-toggle="tooltip"
+                                           title="Amount of Colored Bananas required for Banana Medals."
+                                           default="75"
+                                           placeholder="75"/>
+                                </div>
+                            </div>
+                            <div class="item-select">
+                                <p class="select-title">Fairies for Rareware GB</p>
+                                <input min="0"
+                                       max="20"
+                                       name="rareware_gb_fairies"
+                                       id="rareware_gb_fairies"
+                                       style="width: 15%"
+                                       class="form-control center-div"
+                                       type="number"
+                                       data-toggle="tooltip"
+                                       title="Amount of fairies required to open the Rareware Door in Fairy Island."
+                                       default="20"
+                                       placeholder="20"/>
+                            </div>
                         </div>
-                    </div>
-                    <hr>
-                    <div class="flex-container">
-                        <div class="item-select">
-                            <p class="select-title">Door 1 Requirements</p>
-                            <select name="crown_door_item"
-                                    id="crown_door_item"
-                                    class="form-select center-div"
-                                    aria-label="Door 1 Requirements"
-                                    data-toggle="tooltip"
-                                    title="Changes the requirement to open the first door in Helm">
-                                <option selected id="vanilla" value="vanilla" title="">
-                                    Vanilla
-                                </option>
-                                <option id="opened" value="opened">
-                                    Opened
-                                </option>
-                                <option id="random" value="random">
-                                    Random
-                                </option>
-                                <option id="req_gb" value="req_gb">
-                                    Golden Bananas
-                                </option>
-                                <option id="req_bp" value="req_bp">
-                                    Blueprints
-                                </option>
-                                <option id="req_companycoins" value="req_companycoins">
-                                    Company Coins
-                                </option>
-                                <option id="req_key" value="req_key">
-                                    Keys
-                                </option>
-                                <option id="req_medal" value="req_medal">
-                                    Medals
-                                </option>
-                                <option id="req_crown" value="req_crown">
-                                    Crowns
-                                </option>
-                                <option id="req_fairy" value="req_fairy">
-                                    Fairies
-                                </option>
-                                {#<option id="req_rainbowcoin" value="req_rainbowcoin">
+                        <hr>
+                        <div class="flex-container">
+                            <div class="item-select">
+                                <p class="select-title">Door 1 Requirements</p>
+                                <select name="crown_door_item"
+                                        id="crown_door_item"
+                                        class="form-select center-div"
+                                        aria-label="Door 1 Requirements"
+                                        data-toggle="tooltip"
+                                        title="Changes the requirement to open the first door in Helm">
+                                    <option selected id="vanilla" value="vanilla" title="">
+                                        Vanilla
+                                    </option>
+                                    <option id="opened" value="opened">
+                                        Opened
+                                    </option>
+                                    <option id="random" value="random">
+                                        Random
+                                    </option>
+                                    <option id="req_gb" value="req_gb">
+                                        Golden Bananas
+                                    </option>
+                                    <option id="req_bp" value="req_bp">
+                                        Blueprints
+                                    </option>
+                                    <option id="req_companycoins" value="req_companycoins">
+                                        Company Coins
+                                    </option>
+                                    <option id="req_key" value="req_key">
+                                        Keys
+                                    </option>
+                                    <option id="req_medal" value="req_medal">
+                                        Medals
+                                    </option>
+                                    <option id="req_crown" value="req_crown">
+                                        Crowns
+                                    </option>
+                                    <option id="req_fairy" value="req_fairy">
+                                        Fairies
+                                    </option>
+                                    {#<option id="req_rainbowcoin" value="req_rainbowcoin">
                                     Rainbow Coins
                                 </option>#}
-                                <option id="req_bean" value="req_bean">
-                                    Bean
-                                </option>
-                                <option id="req_pearl" value="req_pearl">
-                                    Pearls
-                                </option>
-                            </select>
+                                    <option id="req_bean" value="req_bean">
+                                        Bean
+                                    </option>
+                                    <option id="req_pearl" value="req_pearl">
+                                        Pearls
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="item-select">
+                                <p class="select-title">Door 1 Item Count</p>
+                                <input min="0"
+                                       max="201"
+                                       name="crown_door_item_count"
+                                       id="crown_door_item_count"
+                                       style="width: 15%"
+                                       class="form-control center-div"
+                                       type="number"
+                                       data-toggle="tooltip"
+                                       title="Amount of the item specified to open the door."
+                                       default="4"
+                                       placeholder="4"/>
+                            </div>
                         </div>
-                        <div class="item-select">
-                            <p class="select-title">Door 1 Item Count</p>
-                            <input min="0"
-                                   max="201"
-                                   name="crown_door_item_count"
-                                   id="crown_door_item_count"
-                                   style="width: 15%"
-                                   class="form-control center-div"
-                                   type="number"
-                                   data-toggle="tooltip"
-                                   title="Amount of the item specified to open the door."
-                                   default="4"
-                                   placeholder="4"/>
-                        </div>
-                    </div>
-                    <div class="flex-container">
-                        <div class="item-select">
-                            <p class="select-title">Door 2 Requirements</p>
-                            <select name="coin_door_item"
-                                    id="coin_door_item"
-                                    class="form-select center-div"
-                                    aria-label="Door 2 Requirements"
-                                    data-toggle="tooltip"
-                                    title="Changes the requirement to open the second door in Helm">
-                                <option selected id="vanilla" value="vanilla" title="">
-                                    Vanilla
-                                </option>
-                                <option id="opened" value="opened">
-                                    Opened
-                                </option>
-                                <option id="random" value="random">
-                                    Random
-                                </option>
-                                <option id="req_gb" value="req_gb">
-                                    Golden Bananas
-                                </option>
-                                <option id="req_bp" value="req_bp">
-                                    Blueprints
-                                </option>
-                                <option id="req_companycoins" value="req_companycoins">
-                                    Company Coins
-                                </option>
-                                <option id="req_key" value="req_key">
-                                    Keys
-                                </option>
-                                <option id="req_medal" value="req_medal">
-                                    Medals
-                                </option>
-                                <option id="req_crown" value="req_crown">
-                                    Crowns
-                                </option>
-                                <option id="req_fairy" value="req_fairy">
-                                    Fairies
-                                </option>
-                                {#<option id="req_rainbowcoin" value="req_rainbowcoin">
+                        <div class="flex-container">
+                            <div class="item-select">
+                                <p class="select-title">Door 2 Requirements</p>
+                                <select name="coin_door_item"
+                                        id="coin_door_item"
+                                        class="form-select center-div"
+                                        aria-label="Door 2 Requirements"
+                                        data-toggle="tooltip"
+                                        title="Changes the requirement to open the second door in Helm">
+                                    <option selected id="vanilla" value="vanilla" title="">
+                                        Vanilla
+                                    </option>
+                                    <option id="opened" value="opened">
+                                        Opened
+                                    </option>
+                                    <option id="random" value="random">
+                                        Random
+                                    </option>
+                                    <option id="req_gb" value="req_gb">
+                                        Golden Bananas
+                                    </option>
+                                    <option id="req_bp" value="req_bp">
+                                        Blueprints
+                                    </option>
+                                    <option id="req_companycoins" value="req_companycoins">
+                                        Company Coins
+                                    </option>
+                                    <option id="req_key" value="req_key">
+                                        Keys
+                                    </option>
+                                    <option id="req_medal" value="req_medal">
+                                        Medals
+                                    </option>
+                                    <option id="req_crown" value="req_crown">
+                                        Crowns
+                                    </option>
+                                    <option id="req_fairy" value="req_fairy">
+                                        Fairies
+                                    </option>
+                                    {#<option id="req_rainbowcoin" value="req_rainbowcoin">
                                     Rainbow Coins
                                 </option>#}
-                                <option id="req_bean" value="req_bean">
-                                    Bean
-                                </option>
-                                <option id="req_pearl" value="req_pearl">
-                                    Pearls
-                                </option>
-                            </select>
-                        </div>
-                        <div class="item-select">
-                            <p class="select-title">Door 2 Item Count</p>
-                            <input min="0"
-                                   max="201"
-                                   name="coin_door_item_count"
-                                   id="coin_door_item_count"
-                                   style="width: 15%"
-                                   class="form-control center-div"
-                                   type="number"
-                                   data-toggle="tooltip"
-                                   title="Amount of the item specified to open the door."
-                                   default="2"
-                                   placeholder="2"/>
+                                    <option id="req_bean" value="req_bean">
+                                        Bean
+                                    </option>
+                                    <option id="req_pearl" value="req_pearl">
+                                        Pearls
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="item-select">
+                                <p class="select-title">Door 2 Item Count</p>
+                                <input min="0"
+                                       max="201"
+                                       name="coin_door_item_count"
+                                       id="coin_door_item_count"
+                                       style="width: 15%"
+                                       class="form-control center-div"
+                                       type="number"
+                                       data-toggle="tooltip"
+                                       title="Amount of the item specified to open the door."
+                                       default="2"
+                                       placeholder="2"/>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <script>
-            $('.nav-tabs').click(function() {
-                setTimeout(() => {
-                    $('#krool_phase_count').slider("relayout");
-                    $('#krool_key_count').slider("relayout");
-                    $('#starting_kongs_count').slider("relayout");
-                    $('#helm_phase_count').slider("relayout");
-                    toggle_clicks()
-                }, 200);
-            })
-            
-            function toggle_clicks() {
-                if (document.getElementById("krool_random").checked === true) {
-                    $("#krool_phase_count").slider("disable")
-                } else {
-                    $("#krool_phase_count").slider("enable")
+            <script>
+                $('.nav-tabs').click(function() {
+                    setTimeout(() => {
+                        $('#krool_phase_count').slider("relayout");
+                        $('#krool_key_count').slider("relayout");
+                        $('#starting_kongs_count').slider("relayout");
+                        $('#helm_phase_count').slider("relayout");
+                        toggle_clicks()
+                    }, 200);
+                })
+                
+                function toggle_clicks() {
+                    if (document.getElementById("krool_random").checked === true) {
+                        $("#krool_phase_count").slider("disable")
+                    } else {
+                        $("#krool_phase_count").slider("enable")
+                    }
+                    if (document.getElementById("helm_random").checked === true) {
+                        $("#helm_phase_count").slider("disable")
+                    } else {
+                        $("#helm_phase_count").slider("enable")
+                    }
+                    if ((document.getElementById("keys_random").checked === true) || (document.getElementById("select_keys").checked === true)) {
+                        $("#krool_key_count").slider("disable")
+                    } else {
+                        $("#krool_key_count").slider("enable")
+                    }
+                    if (document.getElementById("starting_random").checked === true) {
+                        $("#starting_kongs_count").slider("disable")
+                    } else {
+                        $("#starting_kongs_count").slider("enable")
+                    }
                 }
-                if (document.getElementById("helm_random").checked === true) {
-                    $("#helm_phase_count").slider("disable")
-                } else {
-                    $("#helm_phase_count").slider("enable")
-                }
-                if ((document.getElementById("keys_random").checked === true) || (document.getElementById("select_keys").checked === true)) {
-                    $("#krool_key_count").slider("disable")
-                } else {
-                    $("#krool_key_count").slider("enable")
-                }
-                if (document.getElementById("starting_random").checked === true) {
-                    $("#starting_kongs_count").slider("disable")
-                } else {
-                    $("#starting_kongs_count").slider("enable")
-                }
-            }
-            $(function() {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
-        </script>
+                $(function() {
+                    $('[data-toggle="tooltip"]').tooltip()
+                })
+            </script>

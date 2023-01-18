@@ -59,7 +59,7 @@ db = [
     InGameItem(name="Bean", actor=172, model_two=0x198, scale=0.25, will_dance=False),
     InGameItem(name="Pearl", actor=174, model_two=0x1B4, scale=0.25, will_dance=False),
     InGameItem(name="Fairy", actor=88, model_two=0x25C, bounce=True, scale=0.25),
-    InGameItem(name="Rainbow Coin", actor=140, model_two=0xB7, scale=2),
+    InGameItem(name="Rainbow Coin", actor=140, model_two=0xB7, scale=0.25),
     InGameItem(name="Fake Item", actor=217, model_two=0x25D, bounce=True, scale=0.25),
 ]
 

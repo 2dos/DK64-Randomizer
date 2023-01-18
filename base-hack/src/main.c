@@ -20,11 +20,10 @@ void cFuncLoop(void) {
 	unlockKongs();
 	tagAnywhere();
 	initHack(0);
-	//fixCastleAutowalk();
 	level_order_rando_funcs();
 	qualityOfLife_fixes();
 	qualityOfLife_shorteners();
-	decouple_moves_fixes();
+	overlay_changes();
 	replace_zones(0);
 	alter_boss_key_flags();
 	if (ObjectModel2Timer <= 2) {
@@ -61,9 +60,7 @@ void cFuncLoop(void) {
 	if (CurrentMap == 0x50) {
 		colorMenuSky();
 	}
-	fixDKFreeSoftlock();
 	callParentMapFilter();
-	recolorKongControl();
 	spawnCannonWrapper();
 	setCrusher();
 	if (Rando.win_condition == GOAL_POKESNAP) {
@@ -257,7 +254,7 @@ void earlyFrame(void) {
 		}
 	}
 	handle_WTI();
-	adjust_galleon_water();
+	adjust_level_modifiers();
 	finalizeBeatGame();
 	for (int kong = 0; kong < 5; kong++) {
 		for (int level = 0; level < 7; level++) {

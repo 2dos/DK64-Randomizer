@@ -242,3 +242,24 @@ ItemList = {
     Items.CastleChunkyHint: Item("Castle Chunky Hint", False, Types.Hint, Kongs.chunky, [Levels.CreepyCastle]),
     Items.BananaHoard: Item("Banana Hoard", True, Types.Constant, Kongs.any),
 }
+
+HHItemSelector = []
+HHItems = [
+    ("Starting Time", 20 * 60),
+    ("Golden Banana", 20),
+    ("Blueprint", 45),
+    ("Company Coins", 300),
+    ("Move", 30),
+    ("Banana Medal", 60),
+    ("Rainbow Coin", 15),
+    ("Boss Key", 150),
+    ("Battle Crown", 90),
+    ("Bean", 120),
+    ("Pearl", 50),
+    ("Kongs", 240),
+    ("Fairies", 50),
+    ("Colored Bananas", 3),
+    ("Ice Traps", -40),
+]
+for item in HHItems:
+    HHItemSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_"), "tooltip": "", "default": item[1]})

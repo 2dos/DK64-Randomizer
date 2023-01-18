@@ -24,12 +24,11 @@ extern void unlockKongs(void);
 extern void unlockMoves(void);
 extern void tagAnywhere(void);
 extern void applyFastStart(void);
-extern void fixCastleAutowalk(void);
 extern void openCrownDoor(void);
 extern void openCoinDoor(void);
 extern void qualityOfLife_fixes(void);
 extern void qualityOfLife_shorteners(void);
-extern void decouple_moves_fixes(void);
+extern void overlay_changes(void);
 extern void determine_krool_order(void);
 extern void replace_zones(int init_flag);
 extern void randomize_bosses(void);
@@ -54,7 +53,7 @@ extern void pre_turn_keys(void);
 extern void auto_turn_keys(void);
 extern void handle_WTI(void);
 extern void warpToIsles(void);
-extern void adjust_galleon_water(void);
+extern void adjust_level_modifiers(void);
 
 extern int canItemPersist(void);
 extern void initKongRando(void);
@@ -67,7 +66,6 @@ extern int spawnCannonWrapper(void);
 extern void disableDiddyRDDoors(void);
 extern void fixkey8(void);
 extern void alterGBKong(int map, int id, int new_kong);
-extern void fixDKFreeSoftlock(void);
 
 extern void preventBossCheese(void);
 extern void determineStartKong_PermaLossMode(void);
@@ -80,7 +78,8 @@ extern void writeJetpacMedalReq(void);
 extern void resetMapContainer(void);
 extern void correctDKPortal(void);
 extern int canSaveHelmHurry(void);
-extern void blueprintCollect(int flag_index);
+extern int initHelmHurry(void);
+extern void addHelmTime(helm_hurry_items item, int multiplier);
 
 extern int* drawTri(int* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha);
 extern int* drawImage(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity);
@@ -98,7 +97,6 @@ extern int getLo(void* addr);
 extern int getHi(void* addr);
 
 extern void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype);
-extern void recolorKongControl(void);
 extern void newCounterCode(void);
 extern void wipeCounterImageCache(void);
 extern void writeCoinRequirements(int source);
@@ -230,13 +228,11 @@ extern int getCrownItem(int map);
 extern int getKeyItem(int old_flag);
 extern int getFairyModel(int flag);
 extern int getRainbowCoinItem(int old_flag);
-extern void initKeyText(int ki);
 extern int* controlKeyText(int* dl);
 extern void keyGrabHook(int song, int vol);
 extern int itemGrabHook(int collectable_type, int obj_type, int is_homing);
 extern int getKeyFlag(int index);
 extern int getKongFlag(int kong_index);
-extern void KLumsyText(void);
 extern void PotionCode(void);
 extern void KongDropCode(void);
 extern int getMoveProgressiveFlagType(int flag);
@@ -273,6 +269,12 @@ extern void initBarrelChange(void);
 
 extern void initIceTrap(void);
 extern int getPatchWorld(int index);
+
+extern void initItemRando(void);
+extern void initFiles(void);
+extern void initQoL(void);
+extern void initCosmetic(void);
+extern void populatePatchItem(int id, int map, int index, int world);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];

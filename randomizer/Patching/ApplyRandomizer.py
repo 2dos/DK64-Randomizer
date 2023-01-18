@@ -223,6 +223,7 @@ def patching_response(responded_data):
         BooleanProperties(spoiler.settings.open_lobbies, 0x14C, 0xFF),  # Open Lobbies
         BooleanProperties(spoiler.settings.disable_shop_hints, 0x14B, 0),  # Disable Shop Hints
         BooleanProperties(spoiler.settings.coin_door_item == "opened", 0x33),  # Coin Door Open
+        BooleanProperties(spoiler.settings.bonus_matches_contents, 0x101),  # Bonus Matches Contents
     ]
 
     for prop in boolean_props:
@@ -306,6 +307,39 @@ def patching_response(responded_data):
     }
     ROM().seek(sav + 0x0A5)
     ROM().write(damage_multipliers[spoiler.settings.damage_amount])
+
+    # Microhints
+    microhint_settings = {
+        "off": 0,
+        "base": 1,
+        "all": 2,
+    }
+    ROM().seek(sav + 0x102)
+    ROM().write(microhint_settings[spoiler.settings.microhints_enabled])
+
+    # Helm Hurry
+    helm_hurry_bonuses = [
+        spoiler.settings.helmhurry_list_starting_time,
+        spoiler.settings.helmhurry_list_golden_banana,
+        spoiler.settings.helmhurry_list_blueprint,
+        spoiler.settings.helmhurry_list_company_coins,
+        spoiler.settings.helmhurry_list_move,
+        spoiler.settings.helmhurry_list_banana_medal,
+        spoiler.settings.helmhurry_list_rainbow_coin,
+        spoiler.settings.helmhurry_list_boss_key,
+        spoiler.settings.helmhurry_list_battle_crown,
+        spoiler.settings.helmhurry_list_bean,
+        spoiler.settings.helmhurry_list_pearl,
+        spoiler.settings.helmhurry_list_kongs,
+        spoiler.settings.helmhurry_list_fairies,
+        spoiler.settings.helmhurry_list_colored_bananas,
+        spoiler.settings.helmhurry_list_ice_traps,
+    ]
+    ROM().seek(sav + 0xE4)
+    for bonus in helm_hurry_bonuses:
+        if bonus < 0:
+            bonus += 65536
+        ROM().writeMultipleBytes(bonus, 2)
 
     # Activate Bananaports
     ROM().seek(sav + 0x138)

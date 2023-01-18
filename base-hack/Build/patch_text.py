@@ -269,7 +269,7 @@ move_hints = [
     {
         "move": "Golden Banana",
         "kong": "~",
-        "cranky": "ANOTHER GOLDEN BANANA. WHY DO YOU NEED TO MANY OF THESE STUPID THINGS?",
+        "cranky": "ANOTHER GOLDEN BANANA. WHY DO YOU NEED MANY OF THESE STUPID THINGS?",
         "funky": "FOUND ANOTHER GOLDEN BANANA FOR YOU, MY DUDE!",
         "candy": "A SHINY GOLDEN BANANA. I KNOW THEY'RE YOUR FAVOURITE!",
     },
@@ -748,4 +748,9 @@ writeText("fairy_rw_text.bin", fairy_text)
 squawks_text = grabText(19)
 squawks_text.append([{"text": ["YOU CAN FIND GORILLA GONE IN CAVES CRANKY."]}])
 squawks_text.append([{"text": ["YOU CAN FIND MONKEYPORT IN CAVES CRANKY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND BONGO BLAST IN AZTEC CANDY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND TRIANGLE TRAMPLE IN AZTEC CANDY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND SAXOPHONE SLAM IN AZTEC CANDY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND TROMBONE TREMOR IN AZTEC CANDY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND GUITAR GAZUMP IN AZTEC CANDY."]}])
 writeText("misc_squawks_text.bin", squawks_text)

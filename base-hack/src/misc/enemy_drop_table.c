@@ -1,3 +1,13 @@
+/**
+ * @file enemy_drop_table.c
+ * @author Ballaam
+ * @brief Handles the enemy drop tables and what enemies spawn what items
+ * @version 0.1
+ * @date 2022-07-24
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "../../include/common.h"
 
 typedef struct drop_item {
@@ -18,6 +28,15 @@ static unsigned char replenlishable_drops[] = {
 };
 
 int isReplenishableDrop(int drop_object) {
+    /**
+     * @brief Is item that is dropped a replenishable item.
+     * In other words, once a player has picked up the item, will it cause problems
+     * if they pick it up again from the same instance of an enemy?
+     * 
+     * @param drop_object Actor index of dropped item
+     * 
+     * @return Is replenishable
+     */
     for (int i = 0; i < sizeof(replenlishable_drops); i++) {
         if (drop_object == replenlishable_drops[i]) {
             return 1;
@@ -27,6 +46,17 @@ int isReplenishableDrop(int drop_object) {
 }
 
 int addItemDrop(int source_object, int drop_object, int drop_music, int drop_count, int drop_total) {
+    /**
+     * @brief Adds item drop to drop table
+     * 
+     * @param source_object Actor index of enemy who drops the item
+     * @param drop_object Actor index of the dropped item
+     * @param drop_music Song index which is played upon the item spawning
+     * @param drop_coutn Amount of the dropped item which is spawned
+     * @param drop_total Index of where the data is placed into the table
+     * 
+     * @return Next drop total index
+     */
     if (Rando.disable_drops) {
         if (source_object != 0) {
             if (isReplenishableDrop(drop_object)) {
@@ -42,6 +72,9 @@ int addItemDrop(int source_object, int drop_object, int drop_music, int drop_cou
 }
 
 void buildItemDrops(void) {
+    /**
+     * @brief Build the item drops table to handle randomizer information
+     */
     int drop_total = 0;
     drop_total = addItemDrop(0xB2,0x2F,0x2F,1,drop_total); // Beaver (Blue)
     drop_total = addItemDrop(0xD4,0x2F,0x2F,2,drop_total); // Beaver (Gold)
@@ -71,10 +104,14 @@ void buildItemDrops(void) {
     drop_total = addItemDrop(0xB6,0x2F,0x2F,1,drop_total); // Klobber
     drop_total = addItemDrop(0xAF,0x2F,0x2F,1,drop_total); // Kaboom
     drop_total = addItemDrop(0x103,0x79,0x0,1,drop_total); // Guard
-    drop_total = addItemDrop(0,0,0,0,drop_total);
+    drop_total = addItemDrop(0,0,0,0,drop_total); // Terminator - DO NOT REMOVE
 }
 
 void spawnEnemyDrops(actorData* actor) {
+    /**
+     * @brief Handle the spawning of enemy drops. Based on a vanilla function with the same name.
+     * There's a few minor modifications to handle kasplat item duplication prevention amongst a couple other things.
+     */
     int level_data = *(int*)(0x807FBB64);
     if ((player_count < 2) && ((level_data & 0x4000) == 0)) {
         int entry_index = -1;
@@ -137,6 +174,9 @@ void spawnEnemyDrops(actorData* actor) {
 }
 
 void initItemDropTable(void) {
+    /**
+     * @brief Initialize the item drop data at ROM Boot
+     */
     buildItemDrops();
     *(short*)(0x806A5CA6) = getHi(&drops[0].source_object);
     *(short*)(0x806A5CB6) = getLo(&drops[0].source_object);

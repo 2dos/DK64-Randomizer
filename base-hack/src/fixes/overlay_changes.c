@@ -1,3 +1,14 @@
+/**
+ * @file overlay_changes.c
+ * @author Ballaam
+ * @brief Changes which need to be applied on overlay initialization
+ * @version 0.1
+ * @date 2022-01-12
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #include "../../include/common.h"
 
 #define FUNKY 1
@@ -6,9 +17,12 @@
 #define MAIN_MENU 0x50
 #define SNIDE 0xF
 
-static const char moves_values[] = {1,1,3,1,7,1,1,7};
+static const char moves_values[] = {1,1,3,1,7,1,1,7}; // Move values for the main menu changes
 
 void crossKongInit(void) {
+	/**
+	 * @brief Cross-Kong Purchases. Change code to add a variable inside the shop_paad
+	 */
 	// Change target kong (Progressive)
 	*(int*)(0x80025EA0) = 0x90850004; // LBU 	a1, 0x4 (a0)
 	// Change target kong (Bitfield)
@@ -28,15 +42,18 @@ void crossKongInit(void) {
 	*(int*)(0x80026C00) = 0x916D0004; // LBU 	t5, 0x4 (t3)
 }
 
-static const unsigned char boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7,0xCB,0xCC,0xCD,0xCE,0xCF,0xD6};
+static const unsigned char boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7,0xCB,0xCC,0xCD,0xCE,0xCF,0xD6}; // Boss Maps
 
 void arcadeExit(void) {
+	/**
+	 * @brief Arcade exit procedure to fix a bug with Arcade if you have R2 Reward before R1 Reward
+	 */
 	if (!ArcadeExited) {
 		if ((ArcadeEnableReward) && (ArcadeStoryMode)) {
 			if (!checkFlag(FLAG_ARCADE_ROUND1, 0)) {
-				setFlag(0x10, 1, 2);
+				setFlag(0x10, 1, 2); // Spawn R1 Reward
 			} else if (!checkFlag(FLAG_COLLECTABLE_NINTENDOCOIN, 0)) {
-				setFlag(0x11, 1, 2);
+				setFlag(0x11, 1, 2); // Spawn R2 Reward
 			}
 		}
 		if (!ArcadeStoryMode) {
@@ -91,6 +108,9 @@ void arcadeExit(void) {
 #define ARCADE_IMAGE_COUNT 21
 
 void* getFile(int size, int rom) {
+	/**
+	 * @brief Get file from ROM
+	 */
 	int* file_size;
 	*(int*)(&file_size) = size;
 	void* loc = dk_malloc(size);
@@ -99,6 +119,9 @@ void* getFile(int size, int rom) {
 }
 
 void* getPointerFile(int table, int file) {
+	/**
+	 * @brief Get a pointer table file without using getMapData for instances where getMapData will crash the game.
+	 */
 	int ptr_offset = 0x101C50;
 	int* ptr_table = getFile(32*4, ptr_offset);
 	int table_addr = ptr_table[table] + ptr_offset;
@@ -110,6 +133,9 @@ void* getPointerFile(int table, int file) {
 }
 
 void initArcade(void) {
+	/**
+	 * @brief Initialize DK Arcade Changes
+	 */
 	// Address of Nintendo Coin Image write: 0x8002E8B4/0x8002E8C0
 	*(int*)(0x80024F10) = 0x240E0005; // ADDIU $t6, $r0, 0x5
 	*(short*)(0x80024F2A) = 0xC71B;
@@ -123,9 +149,11 @@ void initArcade(void) {
 	*(short*)(0x80024F4A) = 4; // Swap levels
 	*(short*)(0x80024F6E) = 8; // Swap levels
 	for (int i = 0; i < 4; i++) {
+		// Arcade Level Order Rando
 		ArcadeBackgrounds[i] = Rando.arcade_order[i];
 	}
 	if ((*(unsigned short*)(0x8002E8B6) == 0x8004) && (*(unsigned short*)(0x8002E8BA) == 0xAE58) && (Rando.arcade_reward > 0)) {
+		// Change Arcade Reward Sprite
 		// Ensure code is only run once
 		void* addr = getPointerFile(6, Rando.arcade_reward - 1);
 		*(unsigned short*)(0x8002E8B6) = getHi(addr);
@@ -134,24 +162,33 @@ void initArcade(void) {
 }
 
 void initJetpac(void) {
+	/**
+	 * @brief Initialize Jetpac Changes.
+	 */
 	if ((*(int*)(0x8002D9F8) == 0x8002D868) && (Rando.jetpac_reward > 0)) {
+		// Change Jetpac Reward Sprite
 		// Ensure code is only run once
 		*(int*)(0x8002D9F8) = (int)getPointerFile(6, Rando.jetpac_reward - 1 + ARCADE_IMAGE_COUNT);
 	}
 }
 
 
-void decouple_moves_fixes(void) {
+void overlay_changes(void) {
+	/**
+	 * @brief All changes upon loading an overlay
+	 */
 	if ((CurrentMap == CRANKY) || (CurrentMap == CANDY) || (CurrentMap == FUNKY)) {
-		PatchCrankyCode();
+		PatchCrankyCode(); // Change cranky code to handle an extra variable
 		*(int*)(0x80025E9C) = 0x0C009751; // Change writing of move to "write bitfield move" function call
 		writeJetpacMedalReq(); // Adjust medal requirement for Jetpac
+		// Apply shop hints
 		int func_call = 0;
 		if (Rando.shop_hints) {
 			func_call = 0x0C000000 | (((int)&getMoveHint & 0xFFFFFF) >> 2);
 			*(int*)(0x8002661C) = func_call;
 			*(int*)(0x800265F0) = func_call;
 		}
+		// Change move purchase
 		func_call = 0x0C000000 | (((int)&getNextMovePurchase & 0xFFFFFF) >> 2);
 		*(int*)(0x80026720) = func_call;
 		*(int*)(0x8002683C) = func_call;
@@ -166,28 +203,17 @@ void decouple_moves_fixes(void) {
 		*(short*)(0x8002E266) = 7; // Enguarde Arena Movement Write
 		*(short*)(0x8002F01E) = 7; // Rambi Arena Movement Write
 		for (int i = 0; i < 8; i++) {
+			// Main Menu moves given upon entering a boss/minigame
 			MainMenuMoves[i].moves = moves_values[i];
 		}
-		// int func_call = 0x0C000000 | (((int)&displayHeadTexture & 0xFFFFFF) >> 2);
-		// *(int*)(0x800292B8) = func_call;
-		// *(int*)(0x800292D4) = func_call;
-		// Menu Stuff
-		// *(short*)(0x800281AA) = 3; // Set "adventure" destination to the file progress screen
-		
+		// Main Menu visual changes
 		*(int*)(0x80030604) = 0x0C000000 | (((int)&file_progress_screen_code & 0xFFFFFF) >> 2); // New file progress code
 		*(int*)(0x80029FE0) = 0x0C000000 | (((int)&wipeFileMod & 0xFFFFFF) >> 2); // Wipe File Hook
 		*(int*)(0x80028C88) = 0x0C000000 | (((int)&enterFileProgress & 0xFFFFFF) >> 2); // Enter File Progress Screen Hook
-		// *(int*)(0x80029760) = 0x0C000000 | (((int)&displayTopText & 0xFFFFFF) >> 2); // New file progress top text code
-		// // *(int*)(0x80030614) = 0x0C000000 | (((int)&FileProgressInit & 0xFFFFFF) >> 2); // New file progress init code
-		// *(int*)(0x80029894) = 0x0C000000 | (((int)&FileProgressInitSub & 0xFFFFFF) >> 2); // New file progress init code
-		// *(int*)(0x8002999C) = 0;
 		*(int*)(0x80029874) = 0; // Hide GB
 		*(int*)(0x80029818) = 0; // Hide A
 		*(int*)(0x80029840) = 0; // Hide B
 		// File Select
-		// *(short*)(0x80028D16) = 2; // Cap to 2 options
-		// *(short*)(0x80028D0A) = 2; // Cap to 2 options
-		// *(short*)(0x80028C96) = 1; // Target Delete Index
 		*(int*)(0x80028CB0) = 0xA0600000; // SB $r0, 0x0 (v0) - Always view file index 0
 		*(int*)(0x80028CC4) = 0; // Prevent file index overwrite
 		*(int*)(0x80028F88) = 0; // File 2 render
@@ -198,26 +224,28 @@ void decouple_moves_fixes(void) {
 		*(int*)(0x80028D10) = 0x0C000000 | (((int)&changeFileSelectAction_0 & 0xFFFFFF) >> 2); // File select change action
 		*(int*)(0x80028DB8) = 0x1040000A; // BEQ $v0, $r0, 0xA - Change text signal
 		*(short*)(0x80028CA6) = 5; // Change selecting orange to delete confirm screen
-
 		// Options
 		initOptionScreen();
 	} else if (CurrentMap == SNIDE) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
 		if (Rando.item_rando) {		
-			*(int*)(0x80024CF0) = 0x0C000000 | (((int)&countFlagsDuplicate & 0xFFFFFF) >> 2); // File select change action
-			*(int*)(0x80024854) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File select change action
-			*(int*)(0x80024880) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File select change action
-			*(int*)(0x800248B0) = 0x0C000000 | (((int)&setFlagDuplicate & 0xFFFFFF) >> 2); // File select change action
+			*(int*)(0x80024CF0) = 0x0C000000 | (((int)&countFlagsDuplicate & 0xFFFFFF) >> 2); // Flag change to FLUT
+			*(int*)(0x80024854) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Flag change to FLUT
+			*(int*)(0x80024880) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Flag change to FLUT
+			*(int*)(0x800248B0) = 0x0C000000 | (((int)&setFlagDuplicate & 0xFFFFFF) >> 2); // Flag change to FLUT
 		}
 	} else if (CurrentMap == 0x11) {
+		// Initialize Helm
 		HelmInit(0);
 	}
 	if ((CurrentMap == 0x35) || (CurrentMap == 0x49) || ((CurrentMap >= 0x9B) && (CurrentMap <= 0xA2))) {
+		// Change crown spawn
 		if (Rando.item_rando) {
 			*(int*)(0x8002501C) = 0x0C000000 | (((int)&spawnCrownReward & 0xFFFFFF) >> 2); // Crown Spawn
 		}
 	}
+	// Change Dillo Health based on map
 	if (Rando.short_bosses) {
 		if ((CurrentMap == 8) || (DestMap == 8)) {
 			*(short*)(0x8074D3A8) = 4; // Dillo Health - AD1
@@ -226,11 +254,12 @@ void decouple_moves_fixes(void) {
 		}
 	}
 	if (ObjectModel2Timer < 2) {
+		// Wipe warp data pointer to prevent pointing to free memory
 		WarpData = 0;
 	}
-	if (CurrentMap == 2) {
+	if (CurrentMap == 2) { // Arcade
 		initArcade();
-	} else if (CurrentMap == 9) {
+	} else if (CurrentMap == 9) { // Jetpac
 		initJetpac();
 	}
 	writeCoinRequirements(1);
@@ -239,10 +268,10 @@ void decouple_moves_fixes(void) {
 		// Menu Overlay - Candy's Shop Glitch
 		*(short*)(0x80027678) = 0x1000;
 		*(short*)(0x8002769C) = 0x1000;
-	} else if (*(int*)(0x807FBB64) & 0x104000) {
+	} else if (*(int*)(0x807FBB64) & 0x104000) { // Minigames
 		*(short*)(0x80024266) = 1; // Set Minigame oranges as infinite
 	}
-	if (CurrentMap == 0xBD) {
+	if (CurrentMap == 0xBD) { // BFI
 		*(int*)(0x80028080) = 0x0C000000 | (((int)&displayBFIMoveText & 0xFFFFFF) >> 2); // BFI Text Display
 		if (Rando.rareware_gb_fairies > 0) {
 			*(int*)(0x80027E70) = 0x2C410000 | Rando.rareware_gb_fairies; // SLTIU $at, $v0, count
@@ -274,20 +303,21 @@ void decouple_moves_fixes(void) {
 		}
 		PatchKRoolCode();
 		if (Rando.quality_of_life.vanilla_fixes) {
-			*(short*)(0x800359A6) = 3;
+			*(short*)(0x800359A6) = 3; // Fix cutscene bug
 		}
 	}
 	if (Rando.misc_cosmetic_on) {
 		if ((CurrentMap >= 0x90) && (CurrentMap <= 0x93)) {
 			// PPPanic
-			*(short*)(0x8002A55E) = 0x21 + Rando.pppanic_klaptrap_color;
+			*(short*)(0x8002A55E) = 0x21 + Rando.pppanic_klaptrap_color; // PPPanic Klaptrap Color
 		}
 		if ((CurrentMap == 0x67) || ((CurrentMap >= 0x8A) && (CurrentMap <= 0x8C))) {
 			// SSeek
-			*(short*)(0x8002C22E) = 0x21 + Rando.sseek_klaptrap_color;
+			*(short*)(0x8002C22E) = 0x21 + Rando.sseek_klaptrap_color; // SSeek Klaptrap Color
 		}
 	}
 	if ((CurrentMap == 0x65) || ((CurrentMap >= 0x8D) && (CurrentMap <= 0x8F))) {
+		// Krazy Kong Klamour - Adjsut flicker speeds
 		PatchBonusCode();
 		// Adjust Krazy KK Flicker Speeds
 		// Defaults: 48/30. Start: 60. Flicker Thresh: -30. Scaling: 2.7
@@ -305,7 +335,7 @@ void decouple_moves_fixes(void) {
 			KrazyKKModels[(int)Rando.krusha_slot] = 0xDB; // Change to krusha model
 		}
 	}
-	if (CurrentMap == 0x9A) {
+	if (CurrentMap == 0x9A) { // Mad Jack
 		// Change phase reset differential to 40.0f units
 		*(short*)(0x80033B26) = 0x4220; // Jumping Around
 		*(short*)(0x800331AA) = 0x4220; // Random Square
@@ -319,20 +349,21 @@ void decouple_moves_fixes(void) {
 
 	if (Rando.fast_gbs) {
 		if (CurrentMap == 0x1B) { // Factory Car Race
-			*(short*)(0x8002D03A) = 0x0001; //1 Lap
+			*(short*)(0x8002D03A) = 0x0001; // 1 Lap
 		}
-
 		if(CurrentMap == 0xB9) { //Castle Car Race
-			*(short*)(0x8002D096) = 0x0001; //1 Lap
+			*(short*)(0x8002D096) = 0x0001; // 1 Lap
 		}
-
 		if(CurrentMap == 0x27) { //Seal Race
-			*(short*)(0x8002D0E2) = 0x0001; //1 Lap
+			*(short*)(0x8002D0E2) = 0x0001; // 1 Lap
 		}
 	}
 }
 
 void parseCutsceneData(void) {
+	/**
+	 * @brief Handle Cutscene Data
+	 */
 	wipeCounterImageCache();
 	if ((CurrentMap >= 0xCB) && (CurrentMap <= 0xCF)) {
 		int phase = CurrentMap - 0xCB;
@@ -340,42 +371,6 @@ void parseCutsceneData(void) {
 	}
 	if (Rando.quality_of_life.remove_cutscenes) {
 		updateSkippableCutscenes();
-	}
-	if (CurrentMap == 0xBD) {
-		// BFI - Rareware Reward Show
-		modifyCutscenePanPoint(0, 14, 0, 915, 40, 1323, 0xD800, 0, 0, 45, 0);
-		modifyCutscenePanPoint(0, 14, 1, 417, 169, 1290, 0x2000, 0xF000, 0xF000, 45, 0);
-	} else if (CurrentMap == 0xAA) {
-		// Helm Lobby - Hint Cutscene
-		modifyCutsceneItem(0, 3, 0x1C, 0, 0);
-		modifyCutsceneItem(0, 0, 0x1E, 19, 25);
-		modifyCutscenePoint(0, 2, 1, 0);
-		modifyCutscenePoint(0, 2, 3, 5);
-		modifyCutscenePointTime(0, 2, 1, 0);
-		modifyCutscenePointTime(0, 2, 2, 99);
-		modifyCutscenePointTime(0, 2, 3, 100);
-		modifyCutscenePointCount(0, 2, 4);
-		// Helm Lobby - Remove song from CS 0
-		modifyCutscenePoint(0, 0, 0, 1);
-		if (!Rando.quality_of_life.remove_cutscenes) {
-			modifyCutscenePointTime(0, 0, 0, 100);
-		}
-		modifyCutscenePointCount(0, 0, 1);
-	} else if (CurrentMap == 0x22) {
-		// DK Isles - Hint Cutscene
-		createCutscene(0, 24, 4);
-		// Points
-		modifyCutsceneItem(0, 243, 0x1C, 0, 0);
-		modifyCutsceneItem(0, 244, 0x1E, 19, 26);
-		modifyCutscenePoint(0, 24, 0, 243);
-		modifyCutscenePoint(0, 24, 1, 244);
-		modifyCutscenePoint(0, 24, 2, 3);
-		modifyCutscenePoint(0, 24, 3, 0);
-		// Lengths
-		modifyCutscenePointTime(0, 24, 0, 0);
-		modifyCutscenePointTime(0, 24, 1, 0);
-		modifyCutscenePointTime(0, 24, 2, 99);
-		modifyCutscenePointTime(0, 24, 3, 100);
 	}
 	loadDKTVData(); // Has to be last
 }

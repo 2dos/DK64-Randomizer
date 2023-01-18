@@ -1233,14 +1233,19 @@ def resetHintList():
 
 def compileMicrohints(spoiler: Spoiler):
     """Create guaranteed level + kong hints for various items."""
-    items_needing_microhints = [Items.Monkeyport, Items.GorillaGone, Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle]
-    spoiler.microhints = {}
-    # Loop through locations looking for the items that need a microhint
-    for id, location in LocationList.items():
-        if location.item in items_needing_microhints:
-            item = ItemList[location.item]
-            hint_text = f"You would be better off looking in {level_list_everything[location.level]} with {kong_list[location.kong]} for this.".upper()
-            spoiler.microhints[item.name] = hint_text
+    if spoiler.settings.microhints_enabled != "off":
+        microhint_categories = {
+            "base": [Items.Monkeyport, Items.GorillaGone],
+            "all": [Items.Monkeyport, Items.GorillaGone, Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle],
+        }
+        items_needing_microhints = microhint_categories[spoiler.settings.microhints_enabled].copy()
+        spoiler.microhints = {}
+        # Loop through locations looking for the items that need a microhint
+        for id, location in LocationList.items():
+            if location.item in items_needing_microhints:
+                item = ItemList[location.item]
+                hint_text = f"You would be better off looking in {level_list_everything[location.level]} with {kong_list[location.kong]} for this.".upper()
+                spoiler.microhints[item.name] = hint_text
 
 
 def AddLoadingZoneHints(spoiler: Spoiler):

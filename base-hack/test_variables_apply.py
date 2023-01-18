@@ -90,6 +90,8 @@ set_variables = {
     # "starting_exit": 4,
     "rareware_gb_fairies": 1,
     "call_parent_filter": 1,
+    "barrel_aesthetic": 1,
+    "microhints": 2,
 }
 
 

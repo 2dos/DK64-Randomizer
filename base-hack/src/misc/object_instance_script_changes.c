@@ -1,3 +1,14 @@
+/**
+ * @file object_instance_script_changes.c
+ * @author Ballaam
+ * @author OnlySpaghettiCode
+ * @brief Contains various hooks from the object instance script assets into C code
+ * @version 0.1
+ * @date 2022-01-21
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "../../include/common.h"
 
 #define GLOOMY_GALLEON 0x1E
@@ -202,6 +213,11 @@
 #define FACTORY_BLOCKELEVATOR_6 0x28
 
 void hideObject(behaviour_data* behaviour_pointer) {
+	/**
+	 * @brief Hide object model 2 item and make it intangible
+	 * 
+	 * @param behaviour_pointer Behaviour Pointer of Object
+	 */
 	behaviour_pointer->unk_60 = 1;
 	behaviour_pointer->unk_62 = 0;
 	behaviour_pointer->unk_66 = 255;
@@ -225,6 +241,13 @@ typedef struct warp_extra_info {
 } warp_extra_info;
 
 void getModelTwoItemFromActor(int actor, short* item, float* scale) {
+	/**
+	 * @brief Converts actor into it's model two equivalent
+	 * 
+	 * @param actor Actor Index
+	 * @param item Address to store item model two index
+	 * @param scale Address to store item scale
+	 */
 	for (int i = 0; i < (sizeof(item_conversions) / sizeof(item_conversion_info)); i++) {
 		if (actor == item_conversions[i].actor) {
 			*item = item_conversions[i].model_two;
@@ -235,6 +258,13 @@ void getModelTwoItemFromActor(int actor, short* item, float* scale) {
 }
 
 void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
+	/**
+	 * @brief Generic code for a bananaport
+	 * 
+	 * @param behaviour Behaviour Pointer for Object
+	 * @param index Index of item in Model Two Array
+	 * @param id Object ID of Warp
+	 */
 	int current_index = 0;
 	int tied_index = 0;
 	int* warploc = WarpData;
@@ -419,6 +449,13 @@ static const short tnsportal_flags[] = {
 };
 
 void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
+	/**
+	 * @brief Generic code for a T&S Portal
+	 * 
+	 * @param behaviour Behaviour Pointer for Object
+	 * @param index Index of Object in Model Two Array
+	 * @param id T&S Portal ID
+	 */
 	int world = getWorld(CurrentMap, 0);
 	if (behaviour->current_state == 0) {
 		unkObjFunction0(index, 1, 0);
@@ -504,6 +541,13 @@ void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
 }
 
 void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id) {
+	/**
+	 * @brief Generic code for a T&S Portal Indicator
+	 * 
+	 * @param behaviour Behaviour Pointer for Object
+	 * @param index Index of Object in Model Two Array
+	 * @param id T&S Portal ID
+	 */
 	if (behaviour->current_state == 0) {
 		for (int i = 0; i < 3; i++) {
 			unkObjFunction7(index, 1, 0);
@@ -562,6 +606,13 @@ static const int crown_maps[] = {
 };
 
 void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown_level_index) {
+	/**
+	 * @brief Generic code for a Crown Pad
+	 * 
+	 * @param behaviour Behaviour Pointer for Object
+	 * @param index Index of Object in Model Two Array
+	 * @param id Crown Pad ID
+	 */
 	if (behaviour->current_state == 0) {
 		setScriptRunState(behaviour, 3, 900);
 		behaviour->next_state = 1;
@@ -608,6 +659,13 @@ void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown
 }
 
 int isBonus(int map) {
+	/**
+	 * @brief Is map queried a bonus map
+	 * 
+	 * @param map Map index being queried
+	 * 
+	 * @return Is bonus map (bool)
+	 */
 	if (map == 0x50) {
 		return 0;
 	}
@@ -620,6 +678,15 @@ static const unsigned char kong_pellets[] = {48,36,42,43,38};
 #define MILL_CRUSHER_PROGRESS 1
 
 int getPressedSwitch(behaviour_data* behaviour_pointer, int bullet_type, int ID) {
+	/**
+	 * @brief Detect if switch is being hit by a bullet of a certain type
+	 * 
+	 * @param behaviour_pointer Behaviour Pointer of Object
+	 * @param bullet_type Actor Type of bullet that is expected to be made contact with
+	 * @param ID Switch Object ID
+	 * 
+	 * @return Switch is being pressed
+	 */
 	if (behaviour_pointer->switch_pressed == 1) {
 		if (behaviour_pointer->contact_actor_type == bullet_type) {
 			if (canHitSwitch()) {
@@ -635,6 +702,9 @@ int getPressedSwitch(behaviour_data* behaviour_pointer, int bullet_type, int ID)
 }
 
 void setCrusher(void) {
+	/**
+	 * @brief Set the Crusher in the Fungi Mill to be the correct object state
+	 */
 	if (CurrentMap == MILL_FRONT) {
 		if ((ObjectModel2Timer < 10) && (ObjectModel2Timer > 5)) {
 			int crusher_index = convertIDToIndex(8);
@@ -655,6 +725,13 @@ void setCrusher(void) {
 }
 
 int checkControlState(int target_control_state) {
+	/**
+	 * @brief Check control state of the player to see if player is making the correct contact with the item
+	 * 
+	 * @param target_control_state Control state which the player is required to be in
+	 * 
+	 * @return Is the correct control state and control state progress
+	 */
 	if (Player) {
 		if (Player->control_state == target_control_state) {
 			if (target_control_state == 0x24) {
@@ -672,6 +749,13 @@ int checkControlState(int target_control_state) {
 }
 
 int checkSlamLocation(int kong, int key, int id) {
+	/**
+	 * @brief Check slam location
+	 * 
+	 * @param kong Required kong
+	 * @param key Index in Object Model Two Array
+	 * @param id Object ID of target
+	 */
 	if (Character == kong) {
 		if (Player) {
 			if ((Player->obj_props_bitfield & 0x2000) == 0) {
@@ -689,6 +773,13 @@ int checkSlamLocation(int kong, int key, int id) {
 }
 
 void playSFXContainer(int id, int vanilla_sfx, int new_sfx) {
+	/**
+	 * @brief Container function for playing a SFX from an object
+	 * 
+	 * @param id Object ID
+	 * @param vanilla_sfx Original SFX
+	 * @param new_sfx New SFX to be played. If 0, defaults to vanilla_sfx
+	 */
 	int index = convertIDToIndex(id);
 	if (index == -1) {
 		index = 0;
@@ -701,6 +792,12 @@ void playSFXContainer(int id, int vanilla_sfx, int new_sfx) {
 }
 
 int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2) {
+	/**
+	 * @brief Perform object script instructions. Can be called either through
+	 * COND 6 | 7 index param2
+	 * or
+	 * EXEC 7 | 125 index param2
+	 */
 	if (index >= 0) {
 		switch(CurrentMap) {
 			case GLOOMY_GALLEON:
@@ -910,7 +1007,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							max_gbs = BLockerDefaultArray[level];
 						}
 					}
-					return gb_count >= max_gbs; 
+					return (gb_count >= max_gbs) && (Rando.microhints > 0); 
 				} else {
 					// TestVariable = (int)behaviour_pointer;
 					// *(int*)(0x807FF700) = id;
@@ -1025,7 +1122,11 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case HELM_LOBBY:
 				if (param2 == HELMLOBBY_GGONE) {
-					return isBonus(PreviousMap);
+					if (index == 0) {
+						return isBonus(PreviousMap);
+					} else if (index == 1) {
+						return Rando.microhints > 0;
+					}
 				}
 				break;
 			case JUNGLE_JAPES:
@@ -1430,6 +1531,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					int next_slot = -1;
 					int previous_slot = -1;
 					int current_slot = -1;
+					int helm_pad_kong = -1;
 					switch(param2) {
 						case HELM_COIN_DOOR:
 							if (index == 0) {
@@ -1440,52 +1542,69 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							break;
 						case HELM_PAD_BONGO:
 							slot = 0;
+							helm_pad_kong = 0;
 						case HELM_PAD_TRIANGLE:
 							if (slot == -1) {
 								slot = 1;
+								helm_pad_kong = 4;
 							}
 						case HELM_PAD_SAX:
 							if (slot == -1) {
 								slot = 2;
+								helm_pad_kong = 3;
 							}
 						case HELM_PAD_TROMBONE:
 							if (slot == -1) {
 								slot = 3;
+								helm_pad_kong = 2;
 							}
 						case HELM_PAD_GUITAR:
 							if (slot == -1) {
 								slot = 4;
+								helm_pad_kong = 1;
 							}
 							if (slot > -1) {
-								for (int i = 0; i < 5; i++) {
-									if (Rando.helm_order[i] == slot) {
-										current_slot = i;
-										if (i > 0) {
-											previous_slot = Rando.helm_order[i - 1];
-										}
-										if (i < 4) {
-											next_slot = Rando.helm_order[i + 1];
+								if (index < 2) {
+									for (int i = 0; i < 5; i++) {
+										if (Rando.helm_order[i] == slot) {
+											current_slot = i;
+											if (i > 0) {
+												previous_slot = Rando.helm_order[i - 1];
+											}
+											if (i < 4) {
+												next_slot = Rando.helm_order[i + 1];
+											}
 										}
 									}
-								}
-								if (index == 0) {
-									// Barrels complete
-									if ((next_slot == -1) && (current_slot > -1)) {
-										// Helm Complete
-										PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
-										setFlag(FLAG_MODIFIER_HELMBOM, 1, 0);
-										setFlag(0x50,1,2);
-										*(int*)(0x807FF704) = param2;
-									} else if (next_slot > -1) {
-										// Move to next
-										PlayCutsceneFromModelTwoScript(behaviour_pointer, current_slot + 4, 1, 0);
+									if (index == 0) {
+										// Barrels complete
+										if ((next_slot == -1) && (current_slot > -1)) {
+											// Helm Complete
+											PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
+											setFlag(FLAG_MODIFIER_HELMBOM, 1, 0);
+											setFlag(0x50,1,2);
+											*(int*)(0x807FF704) = param2;
+										} else if (next_slot > -1) {
+											// Move to next
+											PlayCutsceneFromModelTwoScript(behaviour_pointer, current_slot + 4, 1, 0);
+										}
+									} else if (index == 1) {
+										if (previous_slot == -1) {
+											// First or not in sequence
+											return 1;
+										} else {
+											return checkFlag(previous_slot + 0x4B, 2);
+										}
 									}
-								} else if (index == 1) {
-									if (previous_slot == -1) {
-										// First or not in sequence
-										return 1;
-									} else {
-										return checkFlag(previous_slot + 0x4B, 2);
+								} else  if (index == 2) {
+									if ((Rando.microhints > 1) && ((MovesBase[helm_pad_kong].instrument_bitfield & 1) == 0)) {
+										behaviour_pointer->next_state = 20;
+										behaviour_pointer->current_state = 20;
+									}
+								} else if (index == 3) {
+									if (MovesBase[helm_pad_kong].instrument_bitfield & 1) {
+										behaviour_pointer->next_state = 0;
+										behaviour_pointer->current_state = 0;
 									}
 								}
 							}
@@ -1585,6 +1704,11 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 }
 
 void spawnCannon(actorData* cannon) {
+	/**
+	 * @brief Set correct cannon data
+	 * 
+	 * @param cannon Actor Pointer for referenced cannon
+	 */
 	cannon->shadow_intensity = 0xFF;
 	cannon->obj_props_bitfield |= 0x8000;
 	cannon->control_state = 0;
@@ -1592,6 +1716,11 @@ void spawnCannon(actorData* cannon) {
 }
 
 int spawnCannonWrapper(void) {
+	/**
+	 * @brief Container function for spawning a cannon
+	 * 
+	 * @return Cannon is being spawned
+	 */
 	if (CurrentMap == DK_ISLES) {
 		int spawner_id = getActorSpawnerIDFromTiedActor(CurrentActorPointer);
 		if (spawner_id == 8) { // Castle Cannon
@@ -1608,6 +1737,10 @@ int spawnCannonWrapper(void) {
 }
 
 void disableDiddyRDDoors(void) {
+	/**
+	 * @brief Check whether to disable the Diddy R&D Doors
+	 * 
+	 */
 	for(int i = 63; i < 66; ++i) {
 		int index = convertIDToIndex(i);
 		int* m2location = (int*)ObjectModel2Pointer;
