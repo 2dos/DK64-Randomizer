@@ -23,7 +23,7 @@ void adjustAnimationTables(void) {
                 *(short*)(0x8075D7CE) = 0x36B4; // Prevent arm stretching (DK64 is a giant meme)
             }
         }
-        for (int i = 0; i < 0x8C; i++) {
+        for (int i = 0; i < 0x8D; i++) {
             if (i < 0x31) {
                 AnimationTable3[(7 * i) + slot] = AnimationTable3[(7 * i) + 5];
             }
@@ -57,11 +57,27 @@ void adjustAnimationTables(void) {
                 }
             */
             int excl_base = 0;
+            int dances[] = {0x43A, 0x434};
             if (i == 0x5A) {
                 // Instrument
                 excl_base = 1;
             } else if ((i >= 0x3F) && (i <= 0x41) && (CurrentMap == 0xCD) && (slot == 2)) {
                 // Punch - During Lanky Phase
+                excl_base = 1;
+            } else if ((i >= 0x5C) && (i <= 0x5D)) {
+                // Dances
+                /*
+                    Animation 0x5B is also a good dance (Animation 0x43A), but replacing it will mean that you aren't transitioned out in crowns
+                */
+                AnimationTable1[(7 * i) + slot] = dances[i - 0x5C];
+                excl_base = 1;
+            } else if ((i >= 0x8A) && (i <= 0x8C)) {
+                // Tag Animation
+                int dance = dances[1];
+                if (i == 0x8B) {
+                    dance = dances[0];
+                }
+                AnimationTable1[(7 * i) + slot] = dance;
                 excl_base = 1;
             }
             if (!excl_base) {
