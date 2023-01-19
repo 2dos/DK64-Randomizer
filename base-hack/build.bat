@@ -17,6 +17,11 @@ IF NOT DEFINED python_ver (set python_ver="python3")
 IF DEFINED test_on (echo "Building patch file" >> rom/build.log)  ELSE (set test_on="")
 @REM %python_ver% build\build_offset_file.py
 echo.
+if %test_on% == --test (
+	call :runscript "Fixing Krusha's size", "build\write_krusha_variables.py"
+) else (
+	echo -1 > krusha_setting.txt
+)
 call :runscript "Define Heap", "build\heap.py"
 call :runscript "Installing Packages", "build\install_packages.py"
 call :runscript "Pulling Images from ROM", "build\pull_images_from_rom.py"
@@ -79,6 +84,7 @@ del rom\dk64-randomizer-base-dev.sym
 del rom\patch.bps
 
 :finish
+del krusha_setting.txt
 
 echo.
 echo Completed: %date% %time% >> rom/build.log

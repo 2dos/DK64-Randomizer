@@ -1004,9 +1004,7 @@ class Settings:
                 is_bad = lambda l: l.type in bad_fake_types
                 if self.damage_amount in ("quad", "ohko") or self.perma_death:
                     is_bad = lambda l: l.type in bad_fake_types or (l.type == Types.Medal and l.level != Levels.HideoutHelm)
-                self.valid_locations[Types.FakeItem] = [
-                    x for x in shuffledLocations if not is_bad(LocationList[x]) and x not in bad_fake_locations
-                ]
+                self.valid_locations[Types.FakeItem] = [x for x in shuffledLocations if not is_bad(LocationList[x]) and x not in bad_fake_locations]
             if Types.Kong in self.shuffled_location_types:
                 # Banned because it defeats the purpose of starting with X Kongs
                 banned_kong_locations = (
