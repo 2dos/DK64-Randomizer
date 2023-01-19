@@ -979,6 +979,14 @@ class Settings:
                     Locations.JapesDonkeyFrontofCage,
                     Locations.IslesDonkeyJapesRock,
                     Locations.FactoryDonkeyDKArcade,
+                    Locations.FactoryTinyDartboard,
+                    Locations.JapesLankyFairyCave,
+                    Locations.ForestDiddyRafters,
+                    Locations.CavesTiny5DoorIgloo,
+                    Locations.CavesDiddy5DoorCabinUpper,
+                    Locations.CastleDonkeyTree,
+                    Locations.CastleLankyGreenhouse,
+                    # Miscellaneous issues
                     Locations.NintendoCoin,
                     Locations.RarewareCoin,
                     # Helm Fairy Couplet
@@ -992,8 +1000,12 @@ class Settings:
                     Locations.GalleonLankyEnguardeChest,
                     Locations.GalleonLankyMedal,
                 )
+                bad_fake_types = (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Crown)
+                is_bad = lambda l: l.type in bad_fake_types
+                if self.damage_amount in ("quad", "ohko") or self.perma_death:
+                    is_bad = lambda l: l.type in bad_fake_types or (l.type == Types.Medal and l.level == Levels.HideoutHelm)
                 self.valid_locations[Types.FakeItem] = [
-                    x for x in shuffledLocations if LocationList[x].type not in (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Crown) and x not in bad_fake_locations
+                    x for x in shuffledLocations if not is_bad(LocationList[x]) and x not in bad_fake_locations
                 ]
             if Types.Kong in self.shuffled_location_types:
                 # Banned because it defeats the purpose of starting with X Kongs
