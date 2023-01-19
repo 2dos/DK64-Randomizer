@@ -1003,7 +1003,7 @@ class Settings:
                 bad_fake_types = (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Crown)
                 is_bad = lambda l: l.type in bad_fake_types
                 if self.damage_amount in ("quad", "ohko") or self.perma_death:
-                    is_bad = lambda l: l.type in bad_fake_types or (l.type == Types.Medal and l.level == Levels.HideoutHelm)
+                    is_bad = lambda l: l.type in bad_fake_types or (l.type == Types.Medal and l.level != Levels.HideoutHelm)
                 self.valid_locations[Types.FakeItem] = [
                     x for x in shuffledLocations if not is_bad(LocationList[x]) and x not in bad_fake_locations
                 ]
