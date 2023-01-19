@@ -27,7 +27,6 @@ void qualityOfLife_fixes(void) {
 		// Set some flags in-game
 		setPermFlag(FLAG_FTT_CRANKY); // Cranky FTT
 		setPermFlag(FLAG_TBARREL_SPAWNED); // Training Barrels Spawned
-		setPermFlag(FLAG_MODIFIER_KOSHADEAD); // Giant Kosha Dead
 		fixkey8();
 		// Prevent a bug where detransforming from Rambi shortly before getting hit will keep you locked as Rambi
 		if (CurrentMap == JAPES_MAIN) {
