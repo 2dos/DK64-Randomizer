@@ -145,27 +145,15 @@ GENERIC_SCALE = 0.49
 krusha_scaling = [
     # [x, y, z, xz, y]
     # DK
-    [
-        lambda x: x * DK_SCALE, lambda x: x * DK_SCALE, lambda x: x * GENERIC_SCALE, 
-        lambda x: x * DK_SCALE, lambda x: x * DK_SCALE
-    ],
+    [lambda x: x * DK_SCALE, lambda x: x * DK_SCALE, lambda x: x * GENERIC_SCALE, lambda x: x * DK_SCALE, lambda x: x * DK_SCALE],
     # Diddy
-    [
-        lambda x: (x * 1.043) - 41.146, lambda x: (x * 9.893) - 8.0, lambda x: x * GENERIC_SCALE, 
-        lambda x: (x * 1.103) - 14.759, lambda x: (x * 0.823) + 35.220
-    ],
+    [lambda x: (x * 1.043) - 41.146, lambda x: (x * 9.893) - 8.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 1.103) - 14.759, lambda x: (x * 0.823) + 35.220],
     # Lanky
-    [
-        lambda x: (x * 0.841) - 17.231, lambda x: (x * 6.925) - 2.0, lambda x: x * GENERIC_SCALE, 
-        lambda x: (x * 0.680) - 18.412, lambda x: (x * 0.789) + 42.138
-    ],
+    [lambda x: (x * 0.841) - 17.231, lambda x: (x * 6.925) - 2.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 0.680) - 18.412, lambda x: (x * 0.789) + 42.138],
     # Tiny
-    [
-        lambda x: (x * 0.632) + 7.590, lambda x: (x * 6.925) + 0.0, lambda x: x * GENERIC_SCALE, 
-        lambda x: (x * 1.567) - 21.676, lambda x: (x * 0.792) + 41.509
-    ],
+    [lambda x: (x * 0.632) + 7.590, lambda x: (x * 6.925) + 0.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 1.567) - 21.676, lambda x: (x * 0.792) + 41.509],
     # Chunky
-    [lambda x: x, lambda x: x, lambda x: x, lambda x: x, lambda x: x]
+    [lambda x: x, lambda x: x, lambda x: x, lambda x: x, lambda x: x],
 ]
 krusha_file = "krusha_setting.txt"
 if os.path.exists(krusha_file):
@@ -200,7 +188,7 @@ with open(rom_file, "rb") as rom:
                     changes_0 = [
                         krusha_scaling[krusha_kong][3],
                         krusha_scaling[krusha_kong][4],
-                        krusha_scaling[krusha_kong][5],
+                        krusha_scaling[krusha_kong][3],
                     ]
                     for i in range(count_0):
                         i_start = base + 4 + (i * 0x14)
