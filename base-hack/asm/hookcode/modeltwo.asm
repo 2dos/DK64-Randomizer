@@ -66,3 +66,32 @@ ObjectRotate:
         cvt.d.s $f8, $f6
         j 0x80637178
         sub.d $f16, $f8, $f10
+
+ScaleObjectCollision_0:
+    lh $t2, 0x10 ($t1)
+    mtc1 $t2, $f18
+    ; Operation to perform | old + ((scale - 1) * (20 + old))
+    ; scale - 1
+    lwc1 $f16, 0x1C ($s0)
+    lui $t2, 0x3F80
+    mtc1 $t2, $f10
+    sub.s $f16, $f16, $f10
+    ; 20 + old
+    lui $t2, 0x41A0
+    mtc1 $t2, $f10
+    add.s $f10, $f10, $f18
+    ; old + ((scale - 1) * (20 + old))
+    mul.s $f10, $f10, $f16
+    add.s $f16, $f10, $f18
+    cvt.w.s $f16, $f16
+    mfc1 $t2, $f16
+    j 0x806F62BC
+    sw $t6, 0x10 ($sp)
+
+ScaleObjectCollision_1:
+    lh $t3, 0x12 ($t2)
+    mtc1 $t3, $f8
+    lwc1 $f10, 0x1C ($s0)
+    mul.s $f8, $f10, $f8
+    j 0x806F630C
+    nop

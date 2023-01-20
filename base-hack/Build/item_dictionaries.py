@@ -57,7 +57,7 @@ db = [
     InGameItem(name="Tiny Item", actor=144, model_two=0x25A, base=base_kong, bounce=True),
     InGameItem(name="Chunky Item", actor=155, model_two=0x25B, base=base_kong, bounce=True),
     InGameItem(name="Bean", actor=172, model_two=0x198, scale=0.25, will_dance=False),
-    InGameItem(name="Pearl", actor=174, model_two=0x1B4, scale=0.25, will_dance=False),
+    InGameItem(name="Pearl", actor=174, model_two=0x1B4, scale=0.3, will_dance=False),
     InGameItem(name="Fairy", actor=88, model_two=0x25C, bounce=True, scale=0.25),
     InGameItem(name="Rainbow Coin", actor=140, model_two=0xB7, scale=0.25),
     InGameItem(name="Fake Item", actor=217, model_two=0x25D, bounce=True, scale=0.25),
@@ -83,6 +83,7 @@ with open("include/item_data.h", "w") as fh:
     fh.write(f"extern const unsigned char bounce_objects[{len(bounce_items)}];\n")
     fh.write(f"extern const unsigned char actor_drops[{len(actor_drops)}];\n")
     fh.write(f"extern const unsigned char danceless_items[{len(danceless_items)}];\n")
+    fh.write(f"extern const item_scale_info item_scales[{len(db)}];\n")
 
 with open("src/lib_items.c", "w") as fh:
     fh.write('#include "../include/common.h"\n\n')
@@ -92,3 +93,4 @@ with open("src/lib_items.c", "w") as fh:
     fh.write("\nconst unsigned char bounce_objects[] = {" + ",".join([str(x.actor) for x in bounce_items]) + "};")
     fh.write("\nconst unsigned char actor_drops[] = {" + ",".join([str(x.actor) for x in actor_drops]) + "};")
     fh.write("\nconst unsigned char danceless_items[] = {" + ",".join([str(x.actor) for x in danceless_items]) + "};")
+    fh.write("\nconst item_scale_info item_scales[] = {\n\t" + ",\n\t".join([f"{{.type={x.model_two}, .scale={x.scale:.2f}f}}" for x in db]) + "\n};")

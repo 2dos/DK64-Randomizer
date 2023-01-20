@@ -44,7 +44,7 @@ model_two_scales = {
     Types.NoItem: 0.25,  # No Item
     Types.Kong: 0.25,
     Types.Bean: 0.25,
-    Types.Pearl: 0.25,
+    Types.Pearl: 0.3,
     Types.Fairy: 0.25,
     Types.RainbowCoin: 0.25,
     Types.FakeItem: 0.25,

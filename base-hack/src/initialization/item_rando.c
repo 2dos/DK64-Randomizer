@@ -328,6 +328,13 @@ void initItemRando(void) {
     *(int*)(0x80681910) = 0x0C000000 | (((int)&spawnBonusReward & 0xFFFFFF) >> 2); // Spawn Bonus Reward
     *(int*)(0x806C63BC) = 0x0C000000 | (((int)&spawnRewardAtActor & 0xFFFFFF) >> 2); // Spawn Squawks Reward
     *(int*)(0x806C4654) = 0x0C000000 | (((int)&spawnMinecartReward & 0xFFFFFF) >> 2); // Spawn Squawks Reward - Minecart
+    // Initialize fixed item scales
+    *(int*)(0x806F4918) = 0x0C000000 | (((int)&writeItemScale & 0xFFFFFF) >> 2); // Write scale to collision info
+    *(int*)(0x806F491C) = 0x02C02025; // OR $a0, $s6, $zero
+    *(short*)(0x806F4C6E) = 0x20; // Change size
+    *(short*)(0x806F4C82) = 0x20; // Change size
+    *(int*)(0x806F515C) = 0x0C000000 | (((int)&writeItemActorScale & 0xFFFFFF) >> 2); // Write actor scale to collision info
+    // Other init
     initItemDropTable();
     initCollectableCollision();
     initActorDefs();

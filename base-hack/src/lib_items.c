@@ -33,7 +33,7 @@ const item_conversion_info item_conversions[] = {
 	{.actor=144, .model_two=602, .scale=0.25f},
 	{.actor=155, .model_two=603, .scale=0.25f},
 	{.actor=172, .model_two=408, .scale=0.25f},
-	{.actor=174, .model_two=436, .scale=0.25f},
+	{.actor=174, .model_two=436, .scale=0.30f},
 	{.actor=88, .model_two=604, .scale=0.25f},
 	{.actor=140, .model_two=183, .scale=0.25f},
 	{.actor=217, .model_two=605, .scale=0.25f}
@@ -41,3 +41,33 @@ const item_conversion_info item_conversions[] = {
 const unsigned char bounce_objects[] = {45,72,86,157,158,159,160,161,162,141,142,143,144,155,88,217};
 const unsigned char actor_drops[] = {45,78,75,77,79,76,151,152,72,86,154,157,158,159,160,161,162,153,141,142,143,144,155,172,174,88,140,217};
 const unsigned char danceless_items[] = {172,174};
+const item_scale_info item_scales[] = {
+	{.type=116, .scale=0.25f},
+	{.type=222, .scale=2.00f},
+	{.type=224, .scale=2.00f},
+	{.type=225, .scale=2.00f},
+	{.type=221, .scale=2.00f},
+	{.type=223, .scale=2.00f},
+	{.type=72, .scale=0.40f},
+	{.type=655, .scale=0.40f},
+	{.type=316, .scale=0.17f},
+	{.type=397, .scale=0.25f},
+	{.type=144, .scale=0.22f},
+	{.type=91, .scale=0.25f},
+	{.type=498, .scale=0.25f},
+	{.type=89, .scale=0.25f},
+	{.type=499, .scale=0.25f},
+	{.type=501, .scale=0.25f},
+	{.type=502, .scale=0.25f},
+	{.type=0, .scale=0.25f},
+	{.type=599, .scale=0.25f},
+	{.type=600, .scale=0.25f},
+	{.type=601, .scale=0.25f},
+	{.type=602, .scale=0.25f},
+	{.type=603, .scale=0.25f},
+	{.type=408, .scale=0.25f},
+	{.type=436, .scale=0.30f},
+	{.type=604, .scale=0.25f},
+	{.type=183, .scale=0.25f},
+	{.type=605, .scale=0.25f}
+};
