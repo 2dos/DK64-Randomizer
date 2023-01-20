@@ -13,7 +13,6 @@ from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
 from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong, writeMiscCosmeticChanges, applyHolidayMode, applyHelmDoorCosmetics
-from randomizer.Patching.DKTV import randomize_dktv
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranceType
 from randomizer.Patching.Hash import get_hash_images
@@ -318,6 +317,7 @@ def patching_response(responded_data):
     ROM().write(microhint_settings[spoiler.settings.microhints_enabled])
 
     # Helm Hurry
+    
     helm_hurry_bonuses = [
         spoiler.settings.helmhurry_list_starting_time,
         spoiler.settings.helmhurry_list_golden_banana,
@@ -335,7 +335,7 @@ def patching_response(responded_data):
         spoiler.settings.helmhurry_list_colored_bananas,
         spoiler.settings.helmhurry_list_ice_traps,
     ]
-    ROM().seek(sav + 0xE4)
+    ROM().seek(sav + 0xE2)
     for bonus in helm_hurry_bonuses:
         if bonus < 0:
             bonus += 65536
@@ -405,7 +405,6 @@ def patching_response(responded_data):
             ROM().seek(sav + 0x104 + x)
             ROM().write(spoiler.settings.switch_allocation[x])
 
-    # randomize_dktv()
     randomize_entrances(spoiler)
     randomize_moves(spoiler)
     randomize_prices(spoiler)

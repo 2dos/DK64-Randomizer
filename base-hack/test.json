@@ -94,7 +94,7 @@
     "shop_indicator_on":2,
     "warp_to_isles_enabled":1,
     "lobbies_open_bitfield":255,
-    "perma_lose_kongs":1,
+    "perma_lose_kongs":0,
     "jetpac_medal_requirement":1,
     "free_target_llama":255,
     "free_source_llama":0,
