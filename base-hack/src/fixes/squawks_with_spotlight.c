@@ -58,10 +58,11 @@ void shine_light_at_kong(unsigned short height_variance, unsigned short min_foll
     *(short*)(0x807FF70C) = half_speed * 2;
     setActorSpeed(CurrentActorPointer_0,(half_speed + half_speed));
                         /* 0 if spotlight fish, height_variance = 10 if squawks */
-    actor_height_variance = height_variance * height_variance_multiplier;
-    unkLightFunc_1(0x23, height_variance, (PlayerPointer_0->xPos), (PlayerPointer_0->yPos + actor_height_variance), (PlayerPointer_0->zPos), 0x1e, *(float*)(0x8075c398), param_3 | 0x2000); //8072a920
+    actor_height_variance = height_variance;
+    actor_height_variance *= height_variance_multiplier;
+    unkLightFunc_1(0x23, height_variance, (PlayerPointer_0->xPos), (PlayerPointer_0->yPos + actor_height_variance + 28), (PlayerPointer_0->zPos), 0x1e, *(float*)(0x8075c398), 100.0f, param_3 | 0x2000); //8072a920
     float movement_cycle_height = determineXRatioMovement((ObjectModel2Timer * 0x280000) >> 0x10);
-    CurrentActorPointer_0->yPos = CurrentActorPointer_0->yPos + (actor_height_variance * movement_cycle_height);  // goal is ~38 to 49 currently is ~7 to 17
+    CurrentActorPointer_0->yPos = CurrentActorPointer_0->yPos + (actor_height_variance * movement_cycle_height);  // goal is ~38 to 49 currently is ~7.5 to 17
     unkLightFunc_2(); //806c6530
     renderActor(CurrentActorPointer_0, 0);
 
