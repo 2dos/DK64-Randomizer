@@ -94,7 +94,7 @@
     "shop_indicator_on":2,
     "warp_to_isles_enabled":1,
     "lobbies_open_bitfield":255,
-    "perma_lose_kongs":0,
+    "perma_lose_kongs":1,
     "jetpac_medal_requirement":1,
     "free_target_llama":255,
     "free_source_llama":0,
@@ -123,11 +123,11 @@
     "remove_high_requirements":1,
     "open_level_sections":1,
     "auto_keys":0,
-    "starting_map":30,
-    "starting_exit":1,
+    "starting_map":170,
+    "starting_exit":0,
     "disco_chunky":1,
     "krusha_slot":0,
-    "starting_kong":0,
+    "starting_kong":4,
     "test_zone":[
        174,
        1

@@ -72,7 +72,8 @@ extern void determineStartKong_PermaLossMode(void);
 extern void kong_has_died(void);
 extern int curseRemoved(void);
 extern void forceBossKong(void);
-extern int hasPermaLossGrace(void);
+extern int hasPermaLossGrace(int map);
+extern void fixGraceCheese(void);
 
 extern void writeJetpacMedalReq(void);
 extern void resetMapContainer(void);

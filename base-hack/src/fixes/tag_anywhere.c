@@ -517,7 +517,7 @@ int getTagAnywhereKong(int direction) {
             pass = 1;
             if (Rando.perma_lose_kongs) {
                 if (checkFlag(KONG_LOCKED_START + next_character,0)) {
-                    if ((!curseRemoved()) && (!hasPermaLossGrace())) {
+                    if ((!curseRemoved()) && (!hasPermaLossGrace(CurrentMap))) {
                         pass = 0;
                     }
                 }

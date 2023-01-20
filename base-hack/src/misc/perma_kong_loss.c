@@ -4,8 +4,8 @@ int curseRemoved(void) {
 	return checkFlag(FLAG_MODIFIER_HELMBOM,0); // BoM turned off
 }
 
-int hasPermaLossGrace(void) {
-	return (CurrentMap == 0x11) || (CurrentMap == 0xAA);
+int hasPermaLossGrace(int map) {
+	return (map == 0x11) || (map == 0xAA);
 }
 
 int determineKongUnlock(int actorType, int kong_index) {
@@ -14,7 +14,7 @@ int determineKongUnlock(int actorType, int kong_index) {
 	if (!Rando.perma_lose_kongs) {
 		return kong_freed;
 	}
-	if (hasPermaLossGrace()) {
+	if (hasPermaLossGrace(CurrentMap)) {
 		return kong_freed;
 	}
 	if (curseRemoved()) {
@@ -131,6 +131,29 @@ void transitionKong(void) {
 					pass = 0;
 					Character = new_kong;
 					return;
+				}
+			}
+		}
+	}
+}
+
+void fixGraceCheese(void) {
+	if (Rando.perma_lose_kongs) {
+		if (TransitionSpeed > 0.0f) {
+			if (LZFadeoutProgress == 30.0f) {
+				if (!hasPermaLossGrace(DestMap)) {
+					if (CurrentMap == 0x2A) {
+						int transitioning_to_boss = 0;
+						for (int i = 0; i < 7; i++) {
+							if (BossMapArray[i] == DestMap) {
+								transitioning_to_boss = 1;
+							}
+						}
+						if (transitioning_to_boss) {
+							return;
+						}
+					}
+					transitionKong();
 				}
 			}
 		}

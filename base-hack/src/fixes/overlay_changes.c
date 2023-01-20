@@ -238,6 +238,9 @@ void overlay_changes(void) {
 	} else if (CurrentMap == 0x11) {
 		// Initialize Helm
 		HelmInit(0);
+	} else if ((CurrentMap == 0xAA) && (Rando.perma_lose_kongs)) {
+		// Prevent Helm Lobby B. Locker requiring Chunky
+		*(short*)(0x80027970) = 0x1000;
 	}
 	if ((CurrentMap == 0x35) || (CurrentMap == 0x49) || ((CurrentMap >= 0x9B) && (CurrentMap <= 0xA2))) {
 		// Change crown spawn

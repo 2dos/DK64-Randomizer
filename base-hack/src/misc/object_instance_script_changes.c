@@ -995,19 +995,32 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if ((param2 == ISLES_SWITCH_COCONUT) || (param2 == ISLES_SWITCH_PEANUT) || (param2 == ISLES_SWITCH_GRAPE) || (param2 == ISLES_SWITCH_FEATHER) || (param2 == ISLES_SWITCH_PINEAPPLE)) {
 					return !Rando.tag_anywhere;
 				} else if (param2 == ISLES_LOWMONKEYPORT) {
-					int gb_count = 0;
-					for (int kong = 0; kong < 5; kong++) {
-						for (int level = 0; level < 8; level++) {
-							gb_count += MovesBase[kong].gb_count[level];
+					if (index == 0) {
+						int gb_count = 0;
+						for (int kong = 0; kong < 5; kong++) {
+							for (int level = 0; level < 8; level++) {
+								gb_count += MovesBase[kong].gb_count[level];
+							}
 						}
-					}
-					int max_gbs = 0;
-					for (int level = 0; level < 7; level++) {
-						if (BLockerDefaultArray[level] > max_gbs) {
-							max_gbs = BLockerDefaultArray[level];
+						int max_gbs = 0;
+						for (int level = 0; level < 7; level++) {
+							if (BLockerDefaultArray[level] > max_gbs) {
+								max_gbs = BLockerDefaultArray[level];
+							}
 						}
+						return (gb_count >= max_gbs) && (Rando.microhints > 0); 
+					} else if (index == 1) {
+						if (Player) {
+							if ((Player->obj_props_bitfield & 0x2000) == 0) {
+								if (Player->touching_object == 1) {
+									if (Player->standing_on_index == id) {
+										return (Player->characterID == 5) || (Rando.perma_lose_kongs);
+									}
+								}
+							}
+						}
+						return 0;
 					}
-					return (gb_count >= max_gbs) && (Rando.microhints > 0); 
 				} else {
 					// TestVariable = (int)behaviour_pointer;
 					// *(int*)(0x807FF700) = id;

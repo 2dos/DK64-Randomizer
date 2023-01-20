@@ -83,6 +83,7 @@ void cFuncLoop(void) {
 	if (Rando.perma_lose_kongs) {
 		preventBossCheese();
 		kong_has_died();
+		fixGraceCheese();
 		forceBossKong();
 	} else {
 		if (CurrentMap == 0xC7) {
