@@ -1238,7 +1238,8 @@ def PlacePriorityItems(spoiler, itemsToPlace, beforePlacedItems, levelBlock=None
     # We also don't assume we have any placed items. If these unlock locations we should find them as we go.
     # This should prevent circular logic (e.g. the diddy-unlocking-gun being locked behind guitar which is already priority placed in Japes Cranky)
     for item in placedItems:
-        allOtherItems.remove(item)
+        if item in allOtherItems:
+            allOtherItems.remove(item)
     # At last, place all the items
     failedToPlace = PlaceItems(spoiler.settings, "assumed", priorityItemsToPlace.copy(), ownedItems=allOtherItems)
     if failedToPlace > 0:
@@ -1424,11 +1425,11 @@ def FillKongs(spoiler):
 def FillKongsAndMoves(spoiler):
     """Fill kongs, then progression moves, then shared moves, then rest of moves."""
     itemsToPlace = []
-    preplacedPriorityMoves = []
 
     # Handle kong rando first so we know what moves are most important to place
     if spoiler.settings.kong_rando:
         FillKongs(spoiler)
+    preplacedPriorityMoves = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]  # Kongs are now placed, either in the above method or by default
 
     levelBlockInPlace = False
     # Once Kongs are placed, the top priority is placing training barrel moves first. These (mostly) need to be very early because they block access to whole levels.
