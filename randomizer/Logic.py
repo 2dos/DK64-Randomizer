@@ -313,6 +313,8 @@ class LogicVarHolder:
         self.HelmChunky2 = self.HelmChunky2 or Items.HelmChunky2 in ownedItems
 
         self.Slam = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam) + STARTING_SLAM
+        if Items.ProgressiveSlam in self.banned_items:  # If slam is banned, prevent logic from owning a better slam
+            self.Slam = STARTING_SLAM
         self.AmmoBelts = 2 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
         self.InstUpgrades = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
 
@@ -680,7 +682,7 @@ class LogicVarHolder:
         # The only weird exception: vanilla Fungi Lobby hint doors only check for Chunky, not the current Kong, and all besides Chunky's needs grab
         if not self.settings.wrinkly_location_rando and not self.settings.remove_wrinkly_puzzles and region_id == RegionEnum.FungiForestLobby:
             return self.chunky and (location.kong == Kongs.chunky or (self.donkey and self.grab))
-        return self.settings.wrinkly_available or self.HasKong(location.kong)
+        return self.HasKong(location.kong)
 
     def CanBuy(self, location):
         """Check if there are enough coins to purchase this location."""
@@ -799,6 +801,80 @@ class LogicVarHolder:
     def BanItems(self, items):
         """Prevent an item from being picked up by the logic."""
         self.banned_items = items
+        # Also remove logical ownership of each item - this covers cases where you start with the move flag (not the training barrels, just raw start with like the camera/shockwave setting)
+        for item in items:
+            if item == Items.Vines:
+                self.vines = False
+            elif item == Items.Swim:
+                self.swim = False
+            elif item == Items.Barrels:
+                self.barrels = False
+            elif item == Items.Oranges:
+                self.oranges = False
+            elif item == Items.BaboonBlast:
+                self.blast = False
+            elif item == Items.StrongKong:
+                self.strongKong = False
+            elif item == Items.GorillaGrab:
+                self.grab = False
+            elif item == Items.ChimpyCharge:
+                self.charge = False
+            elif item == Items.RocketbarrelBoost:
+                self.jetpack = False
+            elif item == Items.SimianSpring:
+                self.spring = False
+            elif item == Items.Orangstand:
+                self.handstand = False
+            elif item == Items.BaboonBalloon:
+                self.balloon = False
+            elif item == Items.OrangstandSprint:
+                self.sprint = False
+            elif item == Items.MiniMonkey:
+                self.mini = False
+            elif item == Items.PonyTailTwirl:
+                self.twirl = False
+            elif item == Items.Monkeyport:
+                self.monkeyport = False
+            elif item == Items.HunkyChunky:
+                self.hunkyChunky = False
+            elif item == Items.PrimatePunch:
+                self.punch = False
+            elif item == Items.GorillaGone:
+                self.gorillaGone = False
+            elif item == Items.Coconut:
+                self.coconut = False
+            elif item == Items.Peanut:
+                self.peanut = False
+            elif item == Items.Grape:
+                self.grape = False
+            elif item == Items.Feather:
+                self.feather = False
+            elif item == Items.Pineapple:
+                self.pineapple = False
+            elif item == Items.HomingAmmo:
+                self.homing = False
+            elif item == Items.SniperSight:
+                self.scope = False
+            elif item == Items.Bongos:
+                self.bongos = False
+            elif item == Items.Guitar:
+                self.guitar = False
+            elif item == Items.Trombone:
+                self.trombone = False
+            elif item == Items.Saxophone:
+                self.saxophone = False
+            elif item == Items.Triangle:
+                self.triangle = False
+            elif item == Items.CameraAndShockwave:
+                self.camera = False
+                self.shockwave = False
+            elif item == Items.Camera:
+                self.camera = False
+            elif item == Items.Shockwave:
+                self.shockwave = False
+            elif item == Items.ProgressiveSlam:
+                self.Slam = STARTING_SLAM
+                # Banned slams are also handled with care in Update() specially
 
     def HasAllItems(self):
         """Return if you have all progression items."""

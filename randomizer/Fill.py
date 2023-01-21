@@ -876,9 +876,7 @@ def GetMaxCoinsSpent(settings, purchasedShops):
 def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=[]):
     """Given the target item and the current world state, find a valid, minimal, unplaced set of items required to reach the location it is in."""
     # Settings-required moves are always owned in order to complete this method based on the settings
-    settingsRequiredMoves = []
-    if Types.Key in spoiler.settings.shuffled_location_types:  # If keys are to be shuffled, they won't be shuffled yet
-        settingsRequiredMoves = ItemPool.BlueprintAssumedItems().copy()  # We want Keys/Company Coins/Crowns here and this is a convenient collection
+    settingsRequiredMoves = ItemPool.AllItemsForMovePlacement(spoiler.settings)
     # The most likely case - if no moves are needed, get out of here quickly
     Reset()
     if GetAccessibleLocations(spoiler.settings, settingsRequiredMoves.copy(), SearchMode.CheckSpecificItemReachable, targetItemId=targetItemId):
@@ -894,15 +892,17 @@ def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=
     #     In this example (with no other shuffles), there are two possible return values depending on the shuffle order.
     #     Either [Items.Guitar, Items.Coconut] OR [Items.Guitar, Items.Feather]
     moveList = [move for move in ItemPool.AllMovesForOwnedKongs(ownedKongs)]
-    # Sometimes a move requires shockwave as a prerequisite
+    # Sometimes a move requires camera or shockwave as a prerequisite
     if spoiler.settings.shockwave_status != "vanilla":
         if spoiler.settings.shockwave_status == "shuffled_decoupled":
+            moveList.append(Items.Camera)
             moveList.append(Items.Shockwave)
         else:
             moveList.append(Items.CameraAndShockwave)
     # Often moves require training barrels as prerequisites
     if spoiler.settings.training_barrels != "normal":
         moveList.extend(ItemPool.TrainingBarrelAbilities())
+    # We only want *unplaced* prerequisites, cull all placed moves from the move list
     for move in placedMoves:
         if move in moveList:
             moveList.remove(move)
@@ -1227,17 +1227,12 @@ def PlacePriorityItems(spoiler, itemsToPlace, beforePlacedItems, levelBlock=None
     bannedKeys = []
     if levelBlock is not None:
         bannedKeys = [key for key in ItemPool.Keys() if ItemList[key].index >= levelBlock]
-    allOtherItems = ItemPool.AllKongMoves().copy()
-    if Types.Key in spoiler.settings.shuffled_location_types:  # If keys are to be shuffled, they won't be shuffled yet
-        allOtherItems.extend(ItemPool.BlueprintAssumedItems().copy())  # We want Keys/Company Coins/Crowns here and this is a convenient collection
+    allOtherItems = ItemPool.AllItems(spoiler.settings)
+    if Types.Key in spoiler.settings.shuffled_location_types:
         # However we don't want all keys - don't assume keys for or beyond the latest logically allowed level's key
         for key in bannedKeys:
             allOtherItems.remove(key)
-    if spoiler.settings.training_barrels != "normal":
-        allOtherItems.extend(ItemPool.TrainingBarrelAbilities())
-    if spoiler.settings.shockwave_status != "vanilla":
-        allOtherItems.append(Items.Shockwave)  # Shockwave is rarely needed
-    # Two exceptions: we don't assume we have the items to be placed, as then they could lock themselves
+    # Other exceptions: we don't assume we have the items to be placed, as then they could lock themselves
     for item in priorityItemsToPlace:
         allOtherItems.remove(item)
     # We also don't assume we have any placed items. If these unlock locations we should find them as we go.
@@ -1483,10 +1478,7 @@ def FillKongsAndMoves(spoiler):
     # Handle remaining moves/items
     Reset()
     itemsToPlace = [item for item in itemsToPlace if item not in preplacedPriorityMoves]
-    settingsRequiredMoves = []
-    if Types.Key in spoiler.settings.shuffled_location_types:  # If keys are to be shuffled, they won't be shuffled yet
-        settingsRequiredMoves = ItemPool.BlueprintAssumedItems().copy()  # We want Keys/Company Coins/Crowns here and this is a convenient collection
-    unplaced = PlaceItems(spoiler.settings, "assumed", itemsToPlace, settingsRequiredMoves)
+    unplaced = PlaceItems(spoiler.settings, "assumed", itemsToPlace, ItemPool.AllItemsForMovePlacement(spoiler.settings))
     if unplaced > 0:
         # debug code - outputs all preplaced and shared items in an attempt to find where things are going wrong
         locationsAndMoves = {}

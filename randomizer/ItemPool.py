@@ -144,6 +144,34 @@ def AllItems(settings):
     return allItems
 
 
+def AllItemsForMovePlacement(settings):
+    """Return all shuffled items we need to assume for move placement."""
+    allItems = []
+    if Types.Blueprint in settings.shuffled_location_types:
+        allItems.extend(Blueprints(settings))
+    if Types.Banana in settings.shuffled_location_types:
+        allItems.extend(GoldenBananaItems())
+    if Types.Coin in settings.shuffled_location_types:
+        allItems.extend(CompanyCoinItems())
+    if Types.Crown in settings.shuffled_location_types:
+        allItems.extend(BattleCrownItems())
+    if Types.Key in settings.shuffled_location_types:
+        allItems.extend(Keys())
+    if Types.Medal in settings.shuffled_location_types:
+        allItems.extend(BananaMedalItems())
+    if Types.Kong in settings.shuffled_location_types:
+        allItems.extend(KongItems())
+    if Types.Bean in settings.shuffled_location_types:  # Could check for pearls as well
+        allItems.extend(MiscItemRandoItems())
+    if Types.Fairy in settings.shuffled_location_types:
+        allItems.extend(FairyItems())
+    if Types.RainbowCoin in settings.shuffled_location_types:
+        allItems.extend(RainbowCoinItems())
+    if Types.FakeItem in settings.shuffled_location_types:
+        allItems.extend(FakeItems())
+    return allItems
+
+
 def AllKongMoves():
     """Return all moves."""
     allMoves = []
