@@ -139,6 +139,7 @@ class Spoiler:
         settings["Open Levels"] = self.settings.open_levels
         settings["Auto Complete Bonus Barrels"] = self.settings.bonus_barrel_auto_complete
         settings["Complex Level Order"] = self.settings.hard_level_progression
+        settings["Progressive Switch Strength"] = self.settings.alter_switch_allocation
         settings["Hard Bosses"] = self.settings.hard_bosses
         settings["Hard Shooting"] = self.settings.hard_shooting
         settings["Free Trade Agreement"] = self.settings.free_trade_setting

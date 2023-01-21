@@ -582,6 +582,11 @@ def CalculateFoolish(spoiler, WothLocations):
         majorItems.append(Items.Camera)
         if spoiler.settings.shuffle_items and Types.RainbowCoin in spoiler.settings.shuffled_location_types:
             majorItems.append(Items.Shockwave)  # Shockwave foolish is virtually useless to hint as foolish unless rainbow coins are in the pool
+    # We want to know if the bean and pearls are foolish so we can use them in the regional foolish checks later
+    if Types.Bean in spoiler.settings.shuffled_location_types:
+        majorItems.append(Items.Bean)
+    if Types.Pearl in spoiler.settings.shuffled_location_types:
+        majorItems.append(Items.Pearl)
     for item in majorItems:
         # If this item is in the WotH, it can't possibly be foolish so we can skip it
         if item in wothItems:
@@ -596,7 +601,7 @@ def CalculateFoolish(spoiler, WothLocations):
         GetAccessibleLocations(spoiler.settings, [], SearchMode.GetReachable)  # Check what's reachable
         if LogicVariables.HasAllItems():  # If you still have all the items, this one blocks no progression and is foolish
             foolishItems.append(item)
-    spoiler.foolish_moves = foolishItems
+    spoiler.foolish_moves = [item for item in foolishItems if item not in (Items.Bean, Items.Pearl)]  # Don't hint Bean and Pearl as foolish
 
     # Use the settings to determine non-progression Major Items
     majorItems = [item for item in majorItems if item not in foolishItems]
@@ -871,9 +876,7 @@ def GetMaxCoinsSpent(settings, purchasedShops):
 def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=[]):
     """Given the target item and the current world state, find a valid, minimal, unplaced set of items required to reach the location it is in."""
     # Settings-required moves are always owned in order to complete this method based on the settings
-    settingsRequiredMoves = []
-    if Types.Key in spoiler.settings.shuffled_location_types:  # If keys are to be shuffled, they won't be shuffled yet
-        settingsRequiredMoves = ItemPool.BlueprintAssumedItems().copy()  # We want Keys/Company Coins/Crowns here and this is a convenient collection
+    settingsRequiredMoves = ItemPool.AllItemsForMovePlacement(spoiler.settings)
     # The most likely case - if no moves are needed, get out of here quickly
     Reset()
     if GetAccessibleLocations(spoiler.settings, settingsRequiredMoves.copy(), SearchMode.CheckSpecificItemReachable, targetItemId=targetItemId):
@@ -889,15 +892,17 @@ def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=
     #     In this example (with no other shuffles), there are two possible return values depending on the shuffle order.
     #     Either [Items.Guitar, Items.Coconut] OR [Items.Guitar, Items.Feather]
     moveList = [move for move in ItemPool.AllMovesForOwnedKongs(ownedKongs)]
-    # Sometimes a move requires shockwave as a prerequisite
+    # Sometimes a move requires camera or shockwave as a prerequisite
     if spoiler.settings.shockwave_status != "vanilla":
         if spoiler.settings.shockwave_status == "shuffled_decoupled":
+            moveList.append(Items.Camera)
             moveList.append(Items.Shockwave)
         else:
             moveList.append(Items.CameraAndShockwave)
     # Often moves require training barrels as prerequisites
     if spoiler.settings.training_barrels != "normal":
         moveList.extend(ItemPool.TrainingBarrelAbilities())
+    # We only want *unplaced* prerequisites, cull all placed moves from the move list
     for move in placedMoves:
         if move in moveList:
             moveList.remove(move)
@@ -1222,23 +1227,19 @@ def PlacePriorityItems(spoiler, itemsToPlace, beforePlacedItems, levelBlock=None
     bannedKeys = []
     if levelBlock is not None:
         bannedKeys = [key for key in ItemPool.Keys() if ItemList[key].index >= levelBlock]
-    allOtherItems = ItemPool.AllKongMoves().copy()
-    if Types.Key in spoiler.settings.shuffled_location_types:  # If keys are to be shuffled, they won't be shuffled yet
-        allOtherItems.extend(ItemPool.BlueprintAssumedItems().copy())  # We want Keys/Company Coins/Crowns here and this is a convenient collection
+    allOtherItems = ItemPool.AllItems(spoiler.settings)
+    if Types.Key in spoiler.settings.shuffled_location_types:
         # However we don't want all keys - don't assume keys for or beyond the latest logically allowed level's key
         for key in bannedKeys:
             allOtherItems.remove(key)
-    if spoiler.settings.training_barrels != "normal":
-        allOtherItems.extend(ItemPool.TrainingBarrelAbilities())
-    if spoiler.settings.shockwave_status != "vanilla":
-        allOtherItems.append(Items.Shockwave)  # Shockwave is rarely needed
-    # Two exceptions: we don't assume we have the items to be placed, as then they could lock themselves
+    # Other exceptions: we don't assume we have the items to be placed, as then they could lock themselves
     for item in priorityItemsToPlace:
         allOtherItems.remove(item)
     # We also don't assume we have any placed items. If these unlock locations we should find them as we go.
     # This should prevent circular logic (e.g. the diddy-unlocking-gun being locked behind guitar which is already priority placed in Japes Cranky)
     for item in placedItems:
-        allOtherItems.remove(item)
+        if item in allOtherItems:
+            allOtherItems.remove(item)
     # At last, place all the items
     failedToPlace = PlaceItems(spoiler.settings, "assumed", priorityItemsToPlace.copy(), ownedItems=allOtherItems)
     if failedToPlace > 0:
@@ -1424,11 +1425,11 @@ def FillKongs(spoiler):
 def FillKongsAndMoves(spoiler):
     """Fill kongs, then progression moves, then shared moves, then rest of moves."""
     itemsToPlace = []
-    preplacedPriorityMoves = []
 
     # Handle kong rando first so we know what moves are most important to place
     if spoiler.settings.kong_rando:
         FillKongs(spoiler)
+    preplacedPriorityMoves = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]  # Kongs are now placed, either in the above method or by default
 
     levelBlockInPlace = False
     # Once Kongs are placed, the top priority is placing training barrel moves first. These (mostly) need to be very early because they block access to whole levels.
@@ -1478,10 +1479,7 @@ def FillKongsAndMoves(spoiler):
     # Handle remaining moves/items
     Reset()
     itemsToPlace = [item for item in itemsToPlace if item not in preplacedPriorityMoves]
-    settingsRequiredMoves = []
-    if Types.Key in spoiler.settings.shuffled_location_types:  # If keys are to be shuffled, they won't be shuffled yet
-        settingsRequiredMoves = ItemPool.BlueprintAssumedItems().copy()  # We want Keys/Company Coins/Crowns here and this is a convenient collection
-    unplaced = PlaceItems(spoiler.settings, "assumed", itemsToPlace, settingsRequiredMoves)
+    unplaced = PlaceItems(spoiler.settings, "assumed", itemsToPlace, ItemPool.AllItemsForMovePlacement(spoiler.settings))
     if unplaced > 0:
         # debug code - outputs all preplaced and shared items in an attempt to find where things are going wrong
         locationsAndMoves = {}
@@ -1676,15 +1674,18 @@ def SetNewProgressionRequirements(settings: Settings):
                 temp = settings.EntryGBs[i]
                 settings.EntryGBs[i] = settings.EntryGBs[i + 1]
                 settings.EntryGBs[i + 1] = temp
-    settings.BossBananas = [
-        min(settings.troff_0, sum(coloredBananaCounts[0]), round(settings.troff_0 / (settings.troff_max * settings.troff_weight_0) * sum(coloredBananaCounts[0]))),
-        min(settings.troff_1, sum(coloredBananaCounts[1]), round(settings.troff_1 / (settings.troff_max * settings.troff_weight_1) * sum(coloredBananaCounts[1]))),
-        min(settings.troff_2, sum(coloredBananaCounts[2]), round(settings.troff_2 / (settings.troff_max * settings.troff_weight_2) * sum(coloredBananaCounts[2]))),
-        min(settings.troff_3, sum(coloredBananaCounts[3]), round(settings.troff_3 / (settings.troff_max * settings.troff_weight_3) * sum(coloredBananaCounts[3]))),
-        min(settings.troff_4, sum(coloredBananaCounts[4]), round(settings.troff_4 / (settings.troff_max * settings.troff_weight_4) * sum(coloredBananaCounts[4]))),
-        min(settings.troff_5, sum(coloredBananaCounts[5]), round(settings.troff_5 / (settings.troff_max * settings.troff_weight_5) * sum(coloredBananaCounts[5]))),
-        min(settings.troff_6, sum(coloredBananaCounts[6]), round(settings.troff_6 / (settings.troff_max * settings.troff_weight_6) * sum(coloredBananaCounts[6]))),
-    ]
+    if settings.troff_max > 0:
+        settings.BossBananas = [
+            min(settings.troff_0, sum(coloredBananaCounts[0]), round(settings.troff_0 / (settings.troff_max * settings.troff_weight_0) * sum(coloredBananaCounts[0]))),
+            min(settings.troff_1, sum(coloredBananaCounts[1]), round(settings.troff_1 / (settings.troff_max * settings.troff_weight_1) * sum(coloredBananaCounts[1]))),
+            min(settings.troff_2, sum(coloredBananaCounts[2]), round(settings.troff_2 / (settings.troff_max * settings.troff_weight_2) * sum(coloredBananaCounts[2]))),
+            min(settings.troff_3, sum(coloredBananaCounts[3]), round(settings.troff_3 / (settings.troff_max * settings.troff_weight_3) * sum(coloredBananaCounts[3]))),
+            min(settings.troff_4, sum(coloredBananaCounts[4]), round(settings.troff_4 / (settings.troff_max * settings.troff_weight_4) * sum(coloredBananaCounts[4]))),
+            min(settings.troff_5, sum(coloredBananaCounts[5]), round(settings.troff_5 / (settings.troff_max * settings.troff_weight_5) * sum(coloredBananaCounts[5]))),
+            min(settings.troff_6, sum(coloredBananaCounts[6]), round(settings.troff_6 / (settings.troff_max * settings.troff_weight_6) * sum(coloredBananaCounts[6]))),
+        ]
+    else:
+        settings.BossBananas = [0, 0, 0, 0, 0, 0, 0]
     # Update values based on actual level progression
     ShuffleExits.UpdateLevelProgression(settings)
     ShuffleBossesBasedOnOwnedItems(settings, ownedKongs, ownedMoves)
@@ -1766,7 +1767,6 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
                 if settings.randomize_blocker_required_amounts and not settings.hard_blockers and runningGBTotal > settings.blocker_max:
                     lowroll = minimumBLockerGBs
                 if lowroll > highroll:
-                    print("this shouldn't happen but here we are")
                     lowroll = highroll
                 settings.EntryGBs[nextLevelToBeat] = randint(lowroll, highroll)
             accessibleIncompleteLevels = [nextLevelToBeat]

@@ -224,7 +224,7 @@ ColoredBananaGroupList = [
         name="Up the slope to painting room",
         konglist=[Kongs.lanky, Kongs.tiny],
         region=Regions.JungleJapesMain,
-        logic=lambda l: (l.handstand and l.lanky) or (l.twirl and l.tiny),
+        logic=lambda l: (l.handstand and l.islanky) or (l.twirl and l.istiny),
         locations=[[5, 1.0, 545, 375, 1943], [5, 1.0, 553, 375, 1806]],
     ),
     ColoredBananaGroup(

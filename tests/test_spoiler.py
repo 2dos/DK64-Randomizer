@@ -41,7 +41,7 @@ def generate_lo_rando_race_settings():
     data["shockwave_status"] = "shuffled_decoupled"  # usually "vanilla", could be "shuffled" or "shuffled_decoupled" or "start_with"
     # If true, the above is always decoupled or vanilla
     data["shuffle_items"] = True  # Must be true to trigger the list selector below
-    # data["item_rando_list_selected"] = ["shop", "banana", "crown", "blueprint", "key", "medal"]  # no coins because i hate rareware coin logic
+    # data["item_rando_list_selected"] = ["shop", "banana", "crown", "blueprint", "key", "medal", "coin", "kong", "fairy", "rainbowcoin", "beanpearl", "fakeitem"]  # all options
 
     data["random_prices"] = "low"  # usually "medium, might need free, rarely vanilla"
     data["randomize_blocker_required_amounts"] = True  # usually True, if false set values below
@@ -120,7 +120,7 @@ def generate_lo_rando_race_settings():
     data["win_condition"] = "beat_krool"  # lots of options: all_keys | get_key_8 | beat_krool | all_medals | all_fairies | all_blueprints | poke_snap
     data["wrinkly_location_rando"] = False  # likely to be False
     data["tns_location_rando"] = False  # likely to be False
-    data["key_8_helm"] = True  # likely to be True? unclear as of yet
+    data["key_8_helm"] = True  # likely to be True in most settings
     data["misc_changes_selected"] = []  # a whole suite of things it includes
 
     data["hard_level_progression"] = False  # likely to be False
@@ -129,8 +129,9 @@ def generate_lo_rando_race_settings():
     # glitch options:
     # "advanced_platforming", "b_locker_skips", "general_clips", "ledge_clips", "moonkicks", "phase_swimming", "phase_walking", "skew", "spawn_snags", "swim_through_shores", "tag_barrel_storage", "troff_n_scoff_skips"
     data["glitches_selected"] = [""]
-
-    data["smaller_shops"] = False  # could be true or false, unclear
+    data["microhints_enabled"] = "base"  # off/base/all
+    data["smaller_shops"] = True  # likely to be True in item rando, many settings force it to be false
+    data["alter_switch_allocation"] = False  # likely to be True, easier to test things when false
 
     return data
 

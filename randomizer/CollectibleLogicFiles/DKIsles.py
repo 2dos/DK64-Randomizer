@@ -31,7 +31,13 @@ LogicRegions = {
     Regions.AngryAztecLobby: [
 
     ],
-    Regions.CrocodileIsleBeyondLift: [
+    Regions.KremIsle: [
+
+    ],
+    Regions.KremIsleBeyondLift: [
+
+    ],
+    Regions.KremIsleTopLevel: [
 
     ],
     Regions.IslesSnideRoom: [
