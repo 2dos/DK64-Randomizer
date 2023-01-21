@@ -279,7 +279,7 @@ extern void populatePatchItem(int id, int map, int index, int world);
 
 extern void insertROMMessages(void);
 
-extern item_collision* writeItemScale(int type);
+extern item_collision* writeItemScale(int id);
 extern item_collision* writeItemActorScale(void);
 
 extern unsigned int cs_skip_db[432];
