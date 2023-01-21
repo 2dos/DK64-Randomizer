@@ -840,11 +840,12 @@ def applyHolidayMode(spoiler: Spoiler):
             ROM().seek(start)
             ROM().writeBytes(byte_data)
 
+
 boot_phrases = (
-	"Removing Lanky Kong",
-	"Telling 2dos to play DK64",
-	"Locking K. Lumsy in a cage",
-	"Stealing the Banana Hoard",
+    "Removing Lanky Kong",
+    "Telling 2dos to play DK64",
+    "Locking K. Lumsy in a cage",
+    "Stealing the Banana Hoard",
     "Finishing the game in a cave",
     "Becoming the peak of randomizers",
     "Giving kops better eyesight",
@@ -853,7 +854,7 @@ boot_phrases = (
     "Finding Rareware GB in Galleon",
     "Resurrecting Chunky Kong",
     "Shouting out Grant Kirkhope",
-    "Crediting L. Godfrey"
+    "Crediting L. Godfrey",
     "Removing Stop n Swop",
     "Assembling the scraps",
     "Blowing in the cartridge",
@@ -870,8 +871,26 @@ boot_phrases = (
     "Giving Wrinkly the spoiler log",
     "Questioning sub 2:30 in LUA Rando",
     "Chasing Lanky in Fungi Forest",
-    "Banning Potions from Candys Shop"
+    "Banning Potions from Candys Shop",
+    "Finding someone who can help you",
+    "Messing up your seed",
+    "Crashing Krem Isle",
+    "Increasing Robot Punch Resistance",
+    "Caffeinating banana fairies",
+    "Bothering Beavers",
+    "Inflating Banana Balloons",
+    "Counting to 16",
+    "Removing Walls",
+    "Taking it to the fridge",
+    "Brewing potions",
+    "Reticulating Splines",  # SimCity 2000
+    "Ironing Donks",
+    "Replacing mentions of Hero with Hoard",
+    "Suggesting you also try BK Randomizer",
+    "Scattering 3500 Bananas",
+    "Stealing ideas from other randomizers",
 )
+
 
 def writeBootMessages(spoiler: Spoiler):
     """Write boot messages into ROM."""
