@@ -839,3 +839,44 @@ def applyHolidayMode(spoiler: Spoiler):
             start = js.pointer_addresses[25]["entries"][img]["pointing_to"]
             ROM().seek(start)
             ROM().writeBytes(byte_data)
+
+boot_phrases = (
+	"Removing Lanky Kong",
+	"Telling 2dos to play DK64",
+	"Locking K. Lumsy in a cage",
+	"Stealing the Banana Hoard",
+    "Finishing the game in a cave",
+    "Becoming the peak of randomizers",
+    "Giving kops better eyesight",
+    "Patching in the glitches",
+    "Enhancing Cfox Luck",
+    "Finding Rareware GB in Galleon",
+    "Resurrecting Chunky Kong",
+    "Shouting out Grant Kirkhope",
+    "Crediting L. Godfrey"
+    "Removing Stop n Swop",
+    "Assembling the scraps",
+    "Blowing in the cartridge",
+    "Backflipping in Chunky Phase",
+    "Hiding 20 fairies",
+    "Randomizing collision normals",
+    "Removing hit detection",
+    "Compressing K Rools Voice Lines",
+    "Checking divide by 0 doesnt work",
+    "Adding every move to Isles",
+    "Segueing in dk64randomizer.com",
+    "Removing lag. Or am I?",
+    "Hiding a dirt patch under grass",
+    "Giving Wrinkly the spoiler log",
+    "Questioning sub 2:30 in LUA Rando",
+    "Chasing Lanky in Fungi Forest",
+    "Banning Potions from Candys Shop"
+)
+
+def writeBootMessages(spoiler: Spoiler):
+    """Write boot messages into ROM."""
+    placed_messages = random.sample(boot_phrases, 4)
+    print(placed_messages)
+    for message_index, message in enumerate(placed_messages):
+        ROM().seek(0x1FFD000 + (0x40 * message_index))
+        ROM().writeBytes(message.upper().encode("ascii"))

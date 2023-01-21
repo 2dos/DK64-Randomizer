@@ -1259,6 +1259,10 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FED020 + 0x14B)
     fh.write((1).to_bytes(1, "big"))
 
+    fh.seek(0x1FFD000)
+    for x in range(64):
+        fh.write((0).to_bytes(4, "big"))
+
     piano_vanilla = [2, 1, 2, 3, 4, 2, 0]
     for piano_index, piano_key in enumerate(piano_vanilla):
         fh.seek(0x1FED020 + 0x16C + piano_index)
