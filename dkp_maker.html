@@ -224,7 +224,17 @@
                 var newPatchFile=new MarcFile(event.data.patchFileU8Array);
                 patch_data_bytes = intToByteArray(base_patch_size);
                 const dkp_data = [...patch_data_bytes, ...base_patch, ...newPatchFile._u8array];
-                downloadBlob(new Uint8Array(dkp_data),"output.dkp","application/octet-stream")
+                let original_name = document.getElementById("rando_rom").value;
+                const extensions = [".z64",".v64",".n64"];
+                const directory_delimiters = ["/","\\"]
+                extensions.forEach(ext => {
+                    original_name = original_name.split(ext)[0];
+                })
+                directory_delimiters.forEach(delim => {
+                    const delim_array = original_name.split(delim)
+                    original_name = delim_array[delim_array.length - 1];
+                })
+                downloadBlob(new Uint8Array(dkp_data),`${original_name}.dkp`,"application/octet-stream")
             };
         }
     </script>

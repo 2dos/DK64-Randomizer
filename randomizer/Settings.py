@@ -859,6 +859,14 @@ class Settings:
             # On Fast GBs, this location refers to the blast course, not the arcade
             LocationList[Locations.FactoryDonkeyDKArcade].name = "Factory Donkey Blast Course"
 
+    def isBadIceTrapLocation(self, location: Locations):
+        """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
+        bad_fake_types = (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Crown)
+        is_bad = location.type in bad_fake_types
+        if self.damage_amount in ("quad", "ohko") or self.perma_death:
+            is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm)
+        return is_bad
+
     def update_valid_locations(self):
         """Calculate (or recalculate) valid locations for items by type."""
         self.valid_locations = {}
@@ -1013,11 +1021,7 @@ class Settings:
                     Locations.GalleonLankyEnguardeChest,
                     Locations.GalleonLankyMedal,
                 )
-                bad_fake_types = (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Crown)
-                is_bad = lambda l: l.type in bad_fake_types
-                if self.damage_amount in ("quad", "ohko") or self.perma_death:
-                    is_bad = lambda l: l.type in bad_fake_types or (l.type == Types.Medal and l.level != Levels.HideoutHelm)
-                self.valid_locations[Types.FakeItem] = [x for x in shuffledLocations if not is_bad(LocationList[x]) and x not in bad_fake_locations]
+                self.valid_locations[Types.FakeItem] = [x for x in shuffledLocations if not self.isBadIceTrapLocation(LocationList[x]) and x not in bad_fake_locations]
             if Types.Kong in self.shuffled_location_types:
                 # Banned because it defeats the purpose of starting with X Kongs
                 banned_kong_locations = (

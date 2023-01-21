@@ -45,7 +45,7 @@
         "Format Repo",
         "Validate Styles",
         "Validate Docstrings",
-        "Validate Jinja2",
+        //"Validate Jinja2",
         "Validate C"
       ],
       "problemMatcher": []

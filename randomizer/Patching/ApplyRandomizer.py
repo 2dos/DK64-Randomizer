@@ -317,7 +317,7 @@ def patching_response(responded_data):
     ROM().write(microhint_settings[spoiler.settings.microhints_enabled])
 
     # Helm Hurry
-    
+
     helm_hurry_bonuses = [
         spoiler.settings.helmhurry_list_starting_time,
         spoiler.settings.helmhurry_list_golden_banana,
