@@ -122,7 +122,7 @@ class Location:
                 if location_id in RemovedShopLocations:
                     continue
                 if LocationList[location_id].kong == Kongs.any and LocationList[location_id].item == Items.NoItem:
-                    itemsInThisShop = len([location for location in ShopLocationReference[self.level][self.vendor] if LocationList[location].item not in (None, Items.NoItem)])
+                    itemsInThisShop = len([location for location in ShopLocationReference[self.level][self.vendor] if location not in RemovedShopLocations and LocationList[location].item not in (None, Items.NoItem)])
                     if itemsInThisShop == 0:
                         location_id.item = None
                 # Items.NoItem are only placed when locking out locations. If any exist, they're because this location caused them to be placed here

@@ -120,7 +120,7 @@ def generate_lo_rando_race_settings():
     data["win_condition"] = "beat_krool"  # lots of options: all_keys | get_key_8 | beat_krool | all_medals | all_fairies | all_blueprints | poke_snap
     data["wrinkly_location_rando"] = False  # likely to be False
     data["tns_location_rando"] = False  # likely to be False
-    data["key_8_helm"] = True  # likely to be True? unclear as of yet
+    data["key_8_helm"] = True  # likely to be True in most settings
     data["misc_changes_selected"] = []  # a whole suite of things it includes
 
     data["hard_level_progression"] = False  # likely to be False
@@ -131,6 +131,7 @@ def generate_lo_rando_race_settings():
     data["glitches_selected"] = [""]
     data["microhints_enabled"] = "base"  # off/base/all
     data["smaller_shops"] = True  # likely to be True in item rando, many settings force it to be false
+    data["alter_switch_allocation"] = False  # likely to be True, easier to test things when false
 
     return data
 
