@@ -545,30 +545,31 @@ def place_randomized_items(spoiler: Spoiler):
                     data.append(item.new_flag)
                 flut_items.append(data)
             # Text stuff
-            for textbox in textboxes:
-                if textbox.location == item.location:
-                    replacement = textbox.replacement_text
-                    if not textbox.force_pipe:
-                        reward_text = "|"
-                        reference = None
-                        if item.new_item in text_rewards.keys():
-                            reference = text_rewards[item.new_item]
-                        elif item.new_item == Types.Coin:
-                            reference = nintendo_coin_reward
-                            if item.new_flag == 379:
-                                reference = rareware_coin_reward
-                        if reference is not None:
-                            # Found reference
-                            reward_text = reference[0]
-                            if item.location == Locations.GalleonDonkeySealRace:
-                                # Use pirate text
-                                reward_text = reference[1]
-                        replacement = replacement.replace("|", reward_text)
-                    data = {"textbox_index": textbox.textbox_index, "mode": "replace", "search": textbox.text_replace, "target": replacement}
-                    if textbox.file_index in spoiler.text_changes:
-                        spoiler.text_changes[textbox.file_index].append(data)
-                    else:
-                        spoiler.text_changes[textbox.file_index] = [data]
+            if spoiler.settings.item_reward_previews:
+                for textbox in textboxes:
+                    if textbox.location == item.location:
+                        replacement = textbox.replacement_text
+                        if not textbox.force_pipe:
+                            reward_text = "|"
+                            reference = None
+                            if item.new_item in text_rewards.keys():
+                                reference = text_rewards[item.new_item]
+                            elif item.new_item == Types.Coin:
+                                reference = nintendo_coin_reward
+                                if item.new_flag == 379:
+                                    reference = rareware_coin_reward
+                            if reference is not None:
+                                # Found reference
+                                reward_text = reference[0]
+                                if item.location == Locations.GalleonDonkeySealRace:
+                                    # Use pirate text
+                                    reward_text = reference[1]
+                            replacement = replacement.replace("|", reward_text)
+                        data = {"textbox_index": textbox.textbox_index, "mode": "replace", "search": textbox.text_replace, "target": replacement}
+                        if textbox.file_index in spoiler.text_changes:
+                            spoiler.text_changes[textbox.file_index].append(data)
+                        else:
+                            spoiler.text_changes[textbox.file_index] = [data]
 
         # Terminate FLUT
         flut_items.append([0xFFFF, 0xFFFF])

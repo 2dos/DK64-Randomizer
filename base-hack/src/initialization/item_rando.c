@@ -230,7 +230,7 @@ void initItemRando(void) {
         *(int*)(0x806A222C) = 0x0C000000 | (((int)&getPatchFlag & 0xFFFFFF) >> 2); // Get Patch Flags
         *(int*)(0x806A2058) = 0x0C000000 | (((int)&getPatchFlag & 0xFFFFFF) >> 2); // Get Patch Flags
         *(short*)(0x80688C8E) = 0x30; // Reduce scope of detecting if balloon or patch, so patches don't have dynamic flags
-        if (Rando.barrel_aesthetic) {
+        if (Rando.location_visuals & 1) {
             // Barrel Aesthetic
             initBarrelChange();
         }

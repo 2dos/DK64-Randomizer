@@ -222,7 +222,7 @@ def patching_response(responded_data):
         BooleanProperties(spoiler.settings.open_lobbies, 0x14C, 0xFF),  # Open Lobbies
         BooleanProperties(spoiler.settings.disable_shop_hints, 0x14B, 0),  # Disable Shop Hints
         BooleanProperties(spoiler.settings.coin_door_item == "opened", 0x33),  # Coin Door Open
-        BooleanProperties(spoiler.settings.bonus_matches_contents, 0x101),  # Bonus Matches Contents
+        BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 7),  # Bonus Matches Contents
     ]
 
     for prop in boolean_props:

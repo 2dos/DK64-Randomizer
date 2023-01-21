@@ -405,7 +405,7 @@ class Settings:
         self.smaller_shops = False
         self.alter_switch_allocation = False
         self.switch_allocation = [1, 1, 1, 1, 2, 2, 3]
-        self.bonus_matches_contents = False
+        self.item_reward_previews = False
         self.microhints_enabled = "off"
         # Helm Hurry
         self.helmhurry_list_starting_time = 1200
