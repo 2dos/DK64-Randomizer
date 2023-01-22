@@ -65,7 +65,7 @@ LogicRegions = {
         TransitionFront(Regions.CabinIsle, lambda l: l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events or l.CanMoonkick()),
         TransitionFront(Regions.CreepyCastleLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCastleLobby),
         TransitionFront(Regions.KremIsleTopLevel, lambda l: l.tbs),
-        TransitionFront(Regions.KRool, lambda l: l.CanAccessKRool()),
+        TransitionFront(Regions.KRool, lambda l: l.CanAccessKRool() or l.pathMode),
     ]),
 
     Regions.IslesMainUpper: Region("Isles Main Upper", "DK Isle", Levels.DKIsles, False, None, [
@@ -73,6 +73,7 @@ LogicRegions = {
     ], [
         Event(Events.IslesDiddyBarrelSpawn, lambda l: l.chunky and l.trombone and l.lanky and l.barrels),
     ], [
+        TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.AngryAztecLobby, lambda l: l.settings.open_lobbies or Events.JapesKeyTurnedIn in l.Events or l.phasewalk, Transitions.IslesMainToAztecLobby),
         TransitionFront(Regions.CrystalCavesLobby, lambda l: (l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events) and (l.isdonkey or l.ischunky or (l.istiny and l.twirl) or ((l.isdiddy or l.islanky) and l.advanced_platforming) or l.CanMoonkick()), Transitions.IslesMainToCavesLobby),
     ]),

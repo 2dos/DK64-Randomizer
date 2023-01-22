@@ -156,6 +156,7 @@ LogicRegions = {
         Event(Events.ShipyardEnguarde, lambda l: l.lanky),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
+        TransitionFront(Regions.Shipyard, lambda l: True),
         TransitionFront(Regions.TreasureRoom, lambda l: Events.ShipyardTreasureRoomOpened in l.Events or l.CanPhaseswim()),
         TransitionFront(Regions.Submarine, lambda l: ((l.mini or l.CanSTS()) and l.istiny) or l.CanPhaseswim(), Transitions.GalleonShipyardToSubmarine),
         TransitionFront(Regions.Mechafish, lambda l: Events.MechafishSummoned in l.Events and l.isdiddy),

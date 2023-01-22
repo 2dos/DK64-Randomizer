@@ -28,7 +28,7 @@ def generate_lo_rando_race_settings():
     data["random_medal_requirement"] = False
     data["medal_requirement"] = 15  # vanilla is 15
     data["medal_cb_req"] = 75  # vanilla is 75
-    data["kasplat_rando_setting"] = "vanilla_locations"  # usually vanilla_locations but i like location_shuffle
+    data["kasplat_rando_setting"] = "vanilla_locations"  # usually vanilla_locations but i like location_shuffle, RARELY set to off
     data["kong_rando"] = True  # usually True - FORCED True if level_order shuffle
 
     data["bananaport_rando"] = "off"  # usually "off", could be "in_level" "crossmap_coupled" "crossmap_decoupled"
@@ -66,7 +66,7 @@ def generate_lo_rando_race_settings():
     data["troff_6"] = 500
     data["troff_text"] = 400  # usually 400?
 
-    data["level_randomization"] = "level_order"  # usually "level_order" may need to test with "loadingzone" or "loadingzonesdecoupled"
+    data["level_randomization"] = "loadingzone"  # usually "level_order" may need to test with "loadingzone" or "loadingzonesdecoupled"
 
     data["damage_amount"] = "default"
     data["no_healing"] = False
@@ -132,6 +132,7 @@ def generate_lo_rando_race_settings():
     data["microhints_enabled"] = "base"  # off/base/all
     data["smaller_shops"] = True  # likely to be True in item rando, many settings force it to be false
     data["alter_switch_allocation"] = False  # likely to be True, easier to test things when false
+    data["random_starting_region"] = True  # likely to be False
 
     return data
 
