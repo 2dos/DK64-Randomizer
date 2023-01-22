@@ -45,7 +45,6 @@ class DoorData:
             self.logic = lambda l: True
         else:
             self.logic = logic
-        self.logic = logic
         self.placed = placed
         self.default_kong = default_kong
         self.default_placed = placed  # info about what door_type a door location is in vanilla

@@ -553,7 +553,7 @@ class LogicVarHolder:
     def CanFreeTiny(self):
         """Check if kong at Tiny location can be freed, requires either chimpy charge or primate punch."""
         if LocationList[Locations.TinyKong].item == Items.NoItem:
-            return self.IsKong(self.settings.tiny_freeing_kong)
+            return self.IsKong(self.settings.tiny_freeing_kong) or self.settings.free_trade_items
         elif self.settings.tiny_freeing_kong == Kongs.diddy:
             return self.charge and self.isdiddy
         elif self.settings.tiny_freeing_kong == Kongs.chunky:
@@ -574,7 +574,12 @@ class LogicVarHolder:
 
     def CanFreeChunky(self):
         """Check if kong at Chunky location can be freed."""
-        return (LocationList[Locations.ChunkyKong].item == Items.NoItem or self.CanSlamSwitch(Levels.FranticFactory, 1)) and self.IsKong(self.settings.chunky_freeing_kong)
+        # If the cage is empty, the item is just lying on the ground
+        if LocationList[Locations.ChunkyKong].item == Items.NoItem:
+            return self.IsKong(self.settings.chunky_freeing_kong) or self.settings.free_trade_items
+        # Otherwise you need the right slam level (usually 1)
+        else:
+            return self.CanSlamSwitch(Levels.FranticFactory, 1) and self.IsKong(self.settings.chunky_freeing_kong)
 
     def UpdateCurrentRegionAccess(self, region):
         """Set access of current region."""

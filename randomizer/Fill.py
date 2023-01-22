@@ -248,6 +248,17 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                         newRegion = Logic.Regions[destination]
                         newRegion.id = destination
                         regionPool.add(newRegion)
+                        # If this region has day access, the deathwarp will occur on the same time of day
+                        # Note that no deathwarps are dependent on time of day
+                        if region.dayAccess:
+                            Logic.Regions[destination].dayAccess = True
+                            # Count as event added so search doesn't get stuck if region is searched,
+                            # then later a new time of day access is found so it should be re-visited
+                            eventAdded = True
+                        # And vice versa
+                        if region.nightAccess:
+                            Logic.Regions[destination].nightAccess = True
+                            eventAdded = True
 
     if searchType in (SearchMode.GetReachable, SearchMode.GetReachableWithControlledPurchases):
         return accessible
@@ -568,43 +579,57 @@ def CalculateWothPaths(spoiler, WothLocations):
 
 def CalculateFoolish(spoiler, WothLocations):
     """Calculate the items and regions that are foolish (blocking no major items)."""
-    wothItems = [LocationList[loc].item for loc in WothLocations]
-    # First we need to determine what Major Items are foolish
-    foolishItems = []
-    # Determine which of our major items we need to check
+    # FOOLISH MOVES - unable to verify the accuracy of foolish moves, so these have to go :(
+    # The problem that needs to be solved: How do you guarantee neither part of a required either/or is foolish?
+    # The cases you have to handle in order to solve this:
+    # - Both are WotH: this should be straightforward, neither is foolish
+    # - Neither is WotH: you have to check that items are individually foolish (the code below) and all individually foolish items are collectively foolish
+    # - ONE is WotH: this is hard, as you don't know what of your WotH items could be part of the either/or with an individually foolish move
+    # The current state of affairs could guarantee that you couldn't get both parts of an either/or as foolish, but I don't think either should be
+    # Until this problem is solved, foolish moves will remain dormant
+
+    # wothItems = [LocationList[loc].item for loc in WothLocations]
+    # # First we need to determine what Major Items are foolish
+    # foolishItems = []
+    # # Determine which of our major items we need to check
+    # majorItems = ItemPool.AllKongMoves()
+    # if spoiler.settings.training_barrels != "normal":
+    #     # I don't trust oranges quite yet - you can put an item in Diddy's upper cabin and it might think oranges is foolish still
+    #     majorItems.extend([Items.Vines, Items.Swim, Items.Barrels, Items.Oranges])
+    # if spoiler.settings.shockwave_status != "shuffled_decoupled":
+    #     majorItems.append(Items.CameraAndShockwave)
+    # if spoiler.settings.shockwave_status == "shuffled_decoupled":
+    #     majorItems.append(Items.Camera)
+    #     if spoiler.settings.shuffle_items and Types.RainbowCoin in spoiler.settings.shuffled_location_types:
+    #         majorItems.append(Items.Shockwave)  # Shockwave foolish is virtually useless to hint as foolish unless rainbow coins are in the pool
+    # # We want to know if the bean and pearls are foolish so we can use them in the regional foolish checks later
+    # if Types.Bean in spoiler.settings.shuffled_location_types:
+    #     majorItems.append(Items.Bean)
+    # if Types.Pearl in spoiler.settings.shuffled_location_types:
+    #     majorItems.append(Items.Pearl)
+    # for item in majorItems:
+    #     # If this item is in the WotH, it can't possibly be foolish so we can skip it
+    #     if item in wothItems:
+    #         continue
+    #     # Check the item to see if it locks *any* progression (even non-critical)
+    #     Reset()
+    #     # Because of how much overlap there is between these two, either they're both foolish or neither is
+    #     # if item in (Items.HomingAmmo, Items.SniperSight):
+    #     #     LogicVariables.BanItems([Items.HomingAmmo, Items.SniperSight])
+    #     # else:
+    #     LogicVariables.BanItems([item])  # Ban this item from being picked up
+    #     GetAccessibleLocations(spoiler.settings, [], SearchMode.GetReachable)  # Check what's reachable
+    #     if LogicVariables.HasAllItems():  # If you still have all the items, this one blocks no progression and is foolish
+    #         foolishItems.append(item)
+    # spoiler.foolish_moves = [item for item in foolishItems if item not in (Items.Bean, Items.Pearl)]  # Don't hint Bean and Pearl as foolish
+
+    # Use the settings to determine non-progression Major Items
+    # majorItems = [item for item in majorItems if item not in foolishItems]
     majorItems = ItemPool.AllKongMoves()
-    if spoiler.settings.training_barrels != "normal":
-        # I don't trust oranges quite yet - you can put an item in Diddy's upper cabin and it might think oranges is foolish still
-        majorItems.extend([Items.Vines, Items.Swim, Items.Barrels])
-    if spoiler.settings.shockwave_status != "shuffled_decoupled":
-        majorItems.append(Items.CameraAndShockwave)
-    if spoiler.settings.shockwave_status == "shuffled_decoupled":
-        majorItems.append(Items.Camera)
-        if spoiler.settings.shuffle_items and Types.RainbowCoin in spoiler.settings.shuffled_location_types:
-            majorItems.append(Items.Shockwave)  # Shockwave foolish is virtually useless to hint as foolish unless rainbow coins are in the pool
-    # We want to know if the bean and pearls are foolish so we can use them in the regional foolish checks later
     if Types.Bean in spoiler.settings.shuffled_location_types:
         majorItems.append(Items.Bean)
     if Types.Pearl in spoiler.settings.shuffled_location_types:
         majorItems.append(Items.Pearl)
-    for item in majorItems:
-        # If this item is in the WotH, it can't possibly be foolish so we can skip it
-        if item in wothItems:
-            continue
-        # Check the item to see if it locks *any* progression (even non-critical)
-        Reset()
-        # Because of how much overlap there is between these two, either they're both foolish or neither is
-        if item in (Items.HomingAmmo, Items.SniperSight):
-            LogicVariables.BanItems([Items.HomingAmmo, Items.SniperSight])
-        else:
-            LogicVariables.BanItems([item])  # Ban this item from being picked up
-        GetAccessibleLocations(spoiler.settings, [], SearchMode.GetReachable)  # Check what's reachable
-        if LogicVariables.HasAllItems():  # If you still have all the items, this one blocks no progression and is foolish
-            foolishItems.append(item)
-    spoiler.foolish_moves = [item for item in foolishItems if item not in (Items.Bean, Items.Pearl)]  # Don't hint Bean and Pearl as foolish
-
-    # Use the settings to determine non-progression Major Items
-    majorItems = [item for item in majorItems if item not in foolishItems]
     majorItems.extend(ItemPool.Keys())
     majorItems.extend(ItemPool.Kongs(spoiler.settings))
     majorItems.append(Items.Oranges)  # Again, not comfortable foolishing oranges yet
@@ -2061,9 +2086,28 @@ def Generate_Spoiler(spoiler):
     if spoiler.settings.kongs_for_progression:
         # Handle Level Order if randomized
         if spoiler.settings.shuffle_loading_zones == "levels":
-            ShuffleExits.ShuffleExits(spoiler.settings)
+            # Some settings will fail a VerifyWorld() check without the setup done in ShuffleMisc, however we want the levels shuffled first
+            temp_kasplat_rando = spoiler.settings.kasplat_rando
+            spoiler.settings.kasplat_rando = False
+            temp_crown_placement_rando = spoiler.settings.crown_placement_rando
+            spoiler.settings.crown_placement_rando = False
+            temp_wrinkly_location_rando = spoiler.settings.wrinkly_location_rando
+            spoiler.settings.wrinkly_location_rando = False
+            temp_tns_location_rando = spoiler.settings.tns_location_rando
+            spoiler.settings.tns_location_rando = False
+            temp_remove_wrinkly_puzzles = spoiler.settings.remove_wrinkly_puzzles
+            spoiler.settings.remove_wrinkly_puzzles = False
+
+            ShuffleExits.ExitShuffle(spoiler.settings)  # This will VerifyWorld() at the end
             spoiler.UpdateExits()
-        # Assume we can progress through the levels, since these will be adjusted within FillKongsAndMovesForLevelRando
+
+            # Undo temp settings
+            spoiler.settings.kasplat_rando = temp_kasplat_rando
+            spoiler.settings.crown_placement_rando = temp_crown_placement_rando
+            spoiler.settings.wrinkly_location_rando = temp_wrinkly_location_rando
+            spoiler.settings.tns_location_rando = temp_tns_location_rando
+            spoiler.settings.remove_wrinkly_puzzles = temp_remove_wrinkly_puzzles
+        # Assume we can progress through the levels, since these will be adjusted within FillKongsAndMovesForLevelOrder
         WipeProgressionRequirements(spoiler.settings)
         # Handle misc randomizations
         ShuffleMisc(spoiler)
