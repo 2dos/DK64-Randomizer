@@ -83,6 +83,7 @@ void cFuncLoop(void) {
 	if (Rando.perma_lose_kongs) {
 		preventBossCheese();
 		kong_has_died();
+		fixGraceCheese();
 		forceBossKong();
 	} else {
 		if (CurrentMap == 0xC7) {
@@ -289,14 +290,49 @@ static char hud_timer = 0;
 static char wait_progress_master = 0;
 static char wait_progress_timer = 0;
 
+#define WAIT_SIZE 64
+static char wait_text_0[WAIT_SIZE] = "REMOVING LANKY KONG";
+static char wait_text_1[WAIT_SIZE] = "TELLING 2DOS TO PLAY DK64";
+static char wait_text_2[WAIT_SIZE] = "LOCKING K. LUMSY IN A CAGE";
+static char wait_text_3[WAIT_SIZE] = "STEALING THE BANANA HOARD";
+static unsigned char wait_text_lengths[] = {19, 25, 26, 25};
+
+void insertROMMessages(void) {
+	for (int i = 0; i < 4; i++) {
+		unsigned char* message_write = dk_malloc(WAIT_SIZE);
+		int message_size = WAIT_SIZE;
+		int* message_file_size;
+		*(int*)(&message_file_size) = message_size;
+		void* ptr = 0;
+		if (i == 0) {
+			ptr = &wait_text_0;
+		} else if (i == 1) {
+			ptr = &wait_text_1;
+		} else if (i == 2) {
+			ptr = &wait_text_2;
+		} else if (i == 3) {
+			ptr = &wait_text_3;
+		}
+		copyFromROM(0x1FFD000 + (WAIT_SIZE * i),message_write,&message_file_size,0,0,0,0);
+		if (message_write[0] != 0) {
+			dk_memcpy(ptr, message_write, WAIT_SIZE);
+			wait_text_lengths[i] = 0;
+			for (int j = 0; j < WAIT_SIZE; j++) {
+				if ((message_write[j] == 0) && (wait_text_lengths[i] == 0)) {
+					wait_text_lengths[i] = j;
+				}
+			}
+		}
+	}
+}
+
 static const char* wait_texts[] = {
 	"BOOTING UP THE RANDOMIZER",
-	"REMOVING LANKY KONG",
-	"TELLING 2DOS TO PLAY DK64",
-	"LOCKING K. LUMSY IN A CAGE",
-	"STEALING THE BANANA HOARD"
+	wait_text_0,
+	wait_text_1,
+	wait_text_2,
+	wait_text_3,
 };
-static const char wait_x_offsets[] = {55, 85, 55, 53, 55};
 static unsigned char ammo_hud_timer = 0;
 
 #define HERTZ 60
@@ -337,7 +373,11 @@ int* displayListModifiers(int* dl) {
 				right = LOADBAR_START;
 			}
 			dl = drawScreenRect(dl, left, 475, right, 485, *(unsigned char*)(address + 0), *(unsigned char*)(address + 1), *(unsigned char*)(address + 2), *(unsigned char*)(address + 3));
-			dl = drawPixelTextContainer(dl, wait_x_offsets[(int)wait_progress_master], 130, (char*)wait_texts[(int)wait_progress_master], 0xFF, 0xFF, 0xFF, 0xFF, 1);
+			int wait_x_offset = 55;
+			if (wait_progress_master > 0) {
+				wait_x_offset = 160 - (wait_text_lengths[wait_progress_master - 1] << 2);
+			}
+			dl = drawPixelTextContainer(dl, wait_x_offset, 130, (char*)wait_texts[(int)wait_progress_master], 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			dl = drawPixelTextContainer(dl, 110, 150, "PLEASE WAIT", 0xFF, 0xFF, 0xFF, 0xFF, 1);
 		} else if (CurrentMap == MAIN_MENU) {
 			if (!good_eeprom) {

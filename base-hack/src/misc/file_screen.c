@@ -751,6 +751,9 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					if(Rando.fast_gbs) {
 						setPermFlag(FLAG_RABBIT_ROUND1); //Start race at round 2
 					}
+					if (Rando.quality_of_life.caves_kosha_dead) {
+						setPermFlag(FLAG_MODIFIER_KOSHADEAD); // Giant Kosha Dead
+					}
 					pre_turn_keys();
 					if (Rando.helm_hurry_mode) {
 						QueueHelmTimer = 1;

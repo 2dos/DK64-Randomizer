@@ -14,7 +14,7 @@
     "blocker_text": 40,
     "bonus_barrel_auto_complete": false,
     "bonus_barrel_rando": true,
-    "bonus_matches_contents": true,
+    "item_reward_previews": true,
     "boss_kong_rando": true,
     "boss_location_rando": true,
     "cb_rando":false,

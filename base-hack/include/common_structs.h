@@ -327,7 +327,8 @@ typedef struct ModelTwoData {
 	/* 0x000 */ float xPos;
 	/* 0x004 */ float yPos;
 	/* 0x008 */ float zPos;
-	/* 0x00C */ char unk_0C[0x20-0xC];
+	/* 0x00C */ float scale;
+	/* 0x010 */ char unk_10[0x20-0x10];
 	/* 0x020 */ void* model_pointer;
 	/* 0x024 */ void* dl_pointer;
 	/* 0x028 */ char unk_28[0x7C-0x28];
@@ -1391,6 +1392,11 @@ typedef struct item_conversion_info {
 	/* 0x004 */ float scale;
 } item_conversion_info;
 
+typedef struct item_scale_info {
+	/* 0x000 */ int type;
+	/* 0x004 */ float scale;
+} item_scale_info;
+
 typedef struct charSpawnerActorInfo {
 	/* 0x000 */ short actor;
 	/* 0x002 */ short model;
@@ -1417,3 +1423,16 @@ typedef enum helm_hurry_items {
 	/* 0x00D */ HHITEM_CB,
 	/* 0x00E */ HHITEM_FAKEITEM,
 } helm_hurry_items;
+
+typedef struct item_collision {
+	/* 0x000 */ short id;
+	/* 0x002 */ short obj_type;
+	/* 0x004 */ short kong;
+	/* 0x006 */ short flag;
+	/* 0x008 */ short x;
+	/* 0x00A */ short y;
+	/* 0x00C */ short z;
+	/* 0x00E */ char unkE[0x18-0xE];
+	/* 0x018 */ void* next;
+	/* 0x01C */ float scale;
+} item_collision;

@@ -72,7 +72,8 @@ extern void determineStartKong_PermaLossMode(void);
 extern void kong_has_died(void);
 extern int curseRemoved(void);
 extern void forceBossKong(void);
-extern int hasPermaLossGrace(void);
+extern int hasPermaLossGrace(int map);
+extern void fixGraceCheese(void);
 
 extern void writeJetpacMedalReq(void);
 extern void resetMapContainer(void);
@@ -275,6 +276,11 @@ extern void initFiles(void);
 extern void initQoL(void);
 extern void initCosmetic(void);
 extern void populatePatchItem(int id, int map, int index, int world);
+
+extern void insertROMMessages(void);
+
+extern item_collision* writeItemScale(int id);
+extern item_collision* writeItemActorScale(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];

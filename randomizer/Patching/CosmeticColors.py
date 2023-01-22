@@ -543,11 +543,35 @@ def applyKrushaKong(spoiler: Spoiler):
         krusha_index = kong_names.index(spoiler.settings.krusha_slot)
         ROM().write(krusha_index)
         placeKrushaHead(krusha_index)
-        if spoiler.settings.krusha_slot != "lanky":
-            changeKrushaModel()
+        changeKrushaModel(krusha_index)
 
 
-def changeKrushaModel():
+DK_SCALE = 0.75
+GENERIC_SCALE = 0.49
+krusha_scaling = [
+    # [x, y, z, xz, y]
+    # DK
+    [lambda x: x * DK_SCALE, lambda x: x * DK_SCALE, lambda x: x * GENERIC_SCALE, lambda x: x * DK_SCALE, lambda x: x * DK_SCALE],
+    # Diddy
+    [lambda x: (x * 1.043) - 41.146, lambda x: (x * 9.893) - 8.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 1.103) - 14.759, lambda x: (x * 0.823) + 35.220],
+    # Lanky
+    [lambda x: (x * 0.841) - 17.231, lambda x: (x * 6.925) - 2.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 0.680) - 18.412, lambda x: (x * 0.789) + 42.138],
+    # Tiny
+    [lambda x: (x * 0.632) + 7.590, lambda x: (x * 6.925) + 0.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 1.567) - 21.676, lambda x: (x * 0.792) + 41.509],
+    # Chunky
+    [lambda x: x, lambda x: x, lambda x: x, lambda x: x, lambda x: x],
+]
+
+
+def readListAsInt(arr: list, start: int, size: int) -> int:
+    """Read list and convert to int."""
+    val = 0
+    for i in range(size):
+        val = (val * 256) + arr[start + i]
+    return val
+
+
+def changeKrushaModel(krusha_kong: int):
     """Modify Krusha Model to be smaller to enable him to fit through smaller gaps."""
     krusha_model_start = js.pointer_addresses[5]["entries"][0xDA]["pointing_to"]
     krusha_model_finish = js.pointer_addresses[5]["entries"][0xDB]["pointing_to"]
@@ -561,17 +585,32 @@ def changeKrushaModel():
     num_data = []  # data, but represented as nums rather than b strings
     for d in data:
         num_data.append(d)
-    for i in range(int(0x220 / 4)):
-        val = 0
-        for j in range(4):
-            val = (val * 256) + num_data[0x4504 + (i * 4) + j]
-        if val != 0xFFFFFFFF and val > 0x10000000:
-            # My messed up way to ensure value is float
-            val_f = intf_to_float(val)
-            val_f *= 0.55  # Scale down coordinates
+    base = 0x450C
+    count_0 = readListAsInt(num_data, base, 4)
+    changes = krusha_scaling[krusha_kong][:3]
+    changes_0 = [
+        krusha_scaling[krusha_kong][3],
+        krusha_scaling[krusha_kong][4],
+        krusha_scaling[krusha_kong][3],
+    ]
+    for i in range(count_0):
+        i_start = base + 4 + (i * 0x14)
+        for coord_index, change in enumerate(changes):
+            val_i = readListAsInt(num_data, i_start + (4 * coord_index) + 4, 4)
+            val_f = change(intf_to_float(val_i))
             val_i = int(float_to_hex(val_f), 16)
             for di, d in enumerate(int_to_list(val_i, 4)):
-                num_data[0x4504 + (i * 4) + di] = d
+                num_data[i_start + (4 * coord_index) + 4 + di] = d
+    section_2_start = base + 4 + (count_0 * 0x14)
+    count_1 = readListAsInt(num_data, section_2_start, 4)
+    for i in range(count_1):
+        i_start = section_2_start + 4 + (i * 0x10)
+        for coord_index, change in enumerate(changes_0):
+            val_i = readListAsInt(num_data, i_start + (4 * coord_index), 4)
+            val_f = change(intf_to_float(val_i))
+            val_i = int(float_to_hex(val_f), 16)
+            for di, d in enumerate(int_to_list(val_i, 4)):
+                num_data[i_start + (4 * coord_index) + di] = d
     data = bytearray(num_data)  # convert num_data back to binary string
     if indicator == 0x1F8B:
         data = gzip.compress(data, compresslevel=9)
@@ -800,3 +839,63 @@ def applyHolidayMode(spoiler: Spoiler):
             start = js.pointer_addresses[25]["entries"][img]["pointing_to"]
             ROM().seek(start)
             ROM().writeBytes(byte_data)
+
+
+boot_phrases = (
+    "Removing Lanky Kong",
+    "Telling 2dos to play DK64",
+    "Locking K. Lumsy in a cage",
+    "Stealing the Banana Hoard",
+    "Finishing the game in a cave",
+    "Becoming the peak of randomizers",
+    "Giving kops better eyesight",
+    "Patching in the glitches",
+    "Enhancing Cfox Luck",
+    "Finding Rareware GB in Galleon",
+    "Resurrecting Chunky Kong",
+    "Shouting out Grant Kirkhope",
+    "Crediting L. Godfrey",
+    "Removing Stop n Swop",
+    "Assembling the scraps",
+    "Blowing in the cartridge",
+    "Backflipping in Chunky Phase",
+    "Hiding 20 fairies",
+    "Randomizing collision normals",
+    "Removing hit detection",
+    "Compressing K Rools Voice Lines",
+    "Checking divide by 0 doesnt work",
+    "Adding every move to Isles",
+    "Segueing in dk64randomizer.com",
+    "Removing lag. Or am I?",
+    "Hiding a dirt patch under grass",
+    "Giving Wrinkly the spoiler log",
+    "Questioning sub 2:30 in LUA Rando",
+    "Chasing Lanky in Fungi Forest",
+    "Banning Potions from Candys Shop",
+    "Finding someone who can help you",
+    "Messing up your seed",
+    "Crashing Krem Isle",
+    "Increasing Robot Punch Resistance",
+    "Caffeinating banana fairies",
+    "Bothering Beavers",
+    "Inflating Banana Balloons",
+    "Counting to 16",
+    "Removing Walls",
+    "Taking it to the fridge",
+    "Brewing potions",
+    "Reticulating Splines",  # SimCity 2000
+    "Ironing Donks",
+    "Replacing mentions of Hero with Hoard",
+    "Suggesting you also try BK Randomizer",
+    "Scattering 3500 Bananas",
+    "Stealing ideas from other randomizers",
+)
+
+
+def writeBootMessages(spoiler: Spoiler):
+    """Write boot messages into ROM."""
+    placed_messages = random.sample(boot_phrases, 4)
+    print(placed_messages)
+    for message_index, message in enumerate(placed_messages):
+        ROM().seek(0x1FFD000 + (0x40 * message_index))
+        ROM().writeBytes(message.upper().encode("ascii"))

@@ -6,6 +6,8 @@ import struct
 from getMoveSignLocations import getMoveSignData
 from place_vines import generateVineSeries
 
+BUTTON_DIST_NORMAL = 20
+
 
 def convertSetup(file_name):
     """Convert file type setup.
@@ -215,8 +217,8 @@ def modify(file_name, map_index):
                 # Standardize lanky phase buttons
                 buttons = (0xE, 0xF, 0x10, 0x11)
                 platforms = (0xD, 0x13, 0x14, 0x12)
-                button_loc = ((780, 419.629), (1135.232, 780), (780, 1116.334), (438.904, 780))
-                platform_loc = ((778.365, 396.901), (1158.427, 778.632), (780.283, 1138.851), (416.092, 778.456))
+                button_loc = ((780, 419.629 + BUTTON_DIST_NORMAL), (1135.232 - BUTTON_DIST_NORMAL, 780), (780, 1116.334 - BUTTON_DIST_NORMAL), (438.904 + BUTTON_DIST_NORMAL, 780))
+                platform_loc = ((778.365, 396.901 + BUTTON_DIST_NORMAL), (1158.427 - BUTTON_DIST_NORMAL, 778.632), (780.283, 1138.851 - BUTTON_DIST_NORMAL), (416.092 + BUTTON_DIST_NORMAL, 778.456))
                 if _id >= 0xD and _id <= 0x14:
                     x = 0
                     z = 0

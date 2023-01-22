@@ -44,7 +44,7 @@ model_two_scales = {
     Types.NoItem: 0.25,  # No Item
     Types.Kong: 0.25,
     Types.Bean: 0.25,
-    Types.Pearl: 0.25,
+    Types.Pearl: 0.3,
     Types.Fairy: 0.25,
     Types.RainbowCoin: 0.25,
     Types.FakeItem: 0.25,
@@ -183,11 +183,12 @@ def pushItemMicrohints(spoiler: Spoiler):
         }
         for item_hint in hinted_items:
             if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][1]):
-                data = {"textbox_index": hinted_items[item_hint][0], "mode": "replace_whole", "target": spoiler.microhints[ItemList[item_hint].name]}
-                if 19 in spoiler.text_changes:
-                    spoiler.text_changes[19].append(data)
-                else:
-                    spoiler.text_changes[19] = [data]
+                if ItemList[item_hint].name in spoiler.microhints:
+                    data = {"textbox_index": hinted_items[item_hint][0], "mode": "replace_whole", "target": spoiler.microhints[ItemList[item_hint].name]}
+                    if 19 in spoiler.text_changes:
+                        spoiler.text_changes[19].append(data)
+                    else:
+                        spoiler.text_changes[19] = [data]
 
 
 def getTextRewardIndex(item) -> int:
@@ -544,30 +545,31 @@ def place_randomized_items(spoiler: Spoiler):
                     data.append(item.new_flag)
                 flut_items.append(data)
             # Text stuff
-            for textbox in textboxes:
-                if textbox.location == item.location:
-                    replacement = textbox.replacement_text
-                    if not textbox.force_pipe:
-                        reward_text = "|"
-                        reference = None
-                        if item.new_item in text_rewards.keys():
-                            reference = text_rewards[item.new_item]
-                        elif item.new_item == Types.Coin:
-                            reference = nintendo_coin_reward
-                            if item.new_flag == 379:
-                                reference = rareware_coin_reward
-                        if reference is not None:
-                            # Found reference
-                            reward_text = reference[0]
-                            if item.location == Locations.GalleonDonkeySealRace:
-                                # Use pirate text
-                                reward_text = reference[1]
-                        replacement = replacement.replace("|", reward_text)
-                    data = {"textbox_index": textbox.textbox_index, "mode": "replace", "search": textbox.text_replace, "target": replacement}
-                    if textbox.file_index in spoiler.text_changes:
-                        spoiler.text_changes[textbox.file_index].append(data)
-                    else:
-                        spoiler.text_changes[textbox.file_index] = [data]
+            if spoiler.settings.item_reward_previews:
+                for textbox in textboxes:
+                    if textbox.location == item.location:
+                        replacement = textbox.replacement_text
+                        if not textbox.force_pipe:
+                            reward_text = "|"
+                            reference = None
+                            if item.new_item in text_rewards.keys():
+                                reference = text_rewards[item.new_item]
+                            elif item.new_item == Types.Coin:
+                                reference = nintendo_coin_reward
+                                if item.new_flag == 379:
+                                    reference = rareware_coin_reward
+                            if reference is not None:
+                                # Found reference
+                                reward_text = reference[0]
+                                if item.location == Locations.GalleonDonkeySealRace:
+                                    # Use pirate text
+                                    reward_text = reference[1]
+                            replacement = replacement.replace("|", reward_text)
+                        data = {"textbox_index": textbox.textbox_index, "mode": "replace", "search": textbox.text_replace, "target": replacement}
+                        if textbox.file_index in spoiler.text_changes:
+                            spoiler.text_changes[textbox.file_index].append(data)
+                        else:
+                            spoiler.text_changes[textbox.file_index] = [data]
 
         # Terminate FLUT
         flut_items.append([0xFFFF, 0xFFFF])

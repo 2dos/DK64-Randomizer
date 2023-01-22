@@ -210,7 +210,13 @@
         }
 
         function buildROM() {
-            downloadBlob(apply_dkp_javascript()._u8array,"output.z64","application/octet-stream")
+            let original_name = document.getElementById("dkp_patch").value.split(".dkp")[0];
+            const directory_delimiters = ["/","\\"]
+            directory_delimiters.forEach(delim => {
+                const delim_array = original_name.split(delim)
+                original_name = delim_array[delim_array.length - 1];
+            })
+            downloadBlob(apply_dkp_javascript()._u8array,`${original_name}.z64`,"application/octet-stream")
         }
     </script>
 </html>

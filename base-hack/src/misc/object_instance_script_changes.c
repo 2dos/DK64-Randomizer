@@ -42,6 +42,17 @@
 #define FUNGI_ANTHILL 0x34
 #define TROFF_N_SCOFF 0x2A
 
+#define CROWN_0 0x35
+#define CROWN_1 0x49
+#define CROWN_2 0x9B
+#define CROWN_3 0x9C
+#define CROWN_4 0x9F
+#define CROWN_5 0xA0
+#define CROWN_6 0xA1
+#define CROWN_7 0x9D
+#define CROWN_8 0xA2
+#define CROWN_9 0x9E
+
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
 #define AZTEC_BEETLE_GRATE 0x1E
@@ -203,6 +214,9 @@
 
 #define TNS_NUMBER 0x15
 #define TNS_ITEMINDICATOR 0xF
+
+#define CROWN_CONTROLLER 0x0
+#define CROWN_INDICATOR 0x4
 
 #define FACTORY_BLOCKELEVATOR_0 0x18
 #define FACTORY_BLOCKELEVATOR_1 0x19
@@ -995,19 +1009,32 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if ((param2 == ISLES_SWITCH_COCONUT) || (param2 == ISLES_SWITCH_PEANUT) || (param2 == ISLES_SWITCH_GRAPE) || (param2 == ISLES_SWITCH_FEATHER) || (param2 == ISLES_SWITCH_PINEAPPLE)) {
 					return !Rando.tag_anywhere;
 				} else if (param2 == ISLES_LOWMONKEYPORT) {
-					int gb_count = 0;
-					for (int kong = 0; kong < 5; kong++) {
-						for (int level = 0; level < 8; level++) {
-							gb_count += MovesBase[kong].gb_count[level];
+					if (index == 0) {
+						int gb_count = 0;
+						for (int kong = 0; kong < 5; kong++) {
+							for (int level = 0; level < 8; level++) {
+								gb_count += MovesBase[kong].gb_count[level];
+							}
 						}
-					}
-					int max_gbs = 0;
-					for (int level = 0; level < 7; level++) {
-						if (BLockerDefaultArray[level] > max_gbs) {
-							max_gbs = BLockerDefaultArray[level];
+						int max_gbs = 0;
+						for (int level = 0; level < 7; level++) {
+							if (BLockerDefaultArray[level] > max_gbs) {
+								max_gbs = BLockerDefaultArray[level];
+							}
 						}
+						return (gb_count >= max_gbs) && (Rando.microhints > 0); 
+					} else if (index == 1) {
+						if (Player) {
+							if ((Player->obj_props_bitfield & 0x2000) == 0) {
+								if (Player->touching_object == 1) {
+									if (Player->standing_on_index == id) {
+										return (Player->characterID == 5) || (Rando.perma_lose_kongs);
+									}
+								}
+							}
+						}
+						return 0;
 					}
-					return (gb_count >= max_gbs) && (Rando.microhints > 0); 
 				} else {
 					// TestVariable = (int)behaviour_pointer;
 					// *(int*)(0x807FF700) = id;
@@ -1084,40 +1111,87 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case TROFF_N_SCOFF:
-				if (param2 == TNS_NUMBER) {
-					float x = 600.0f;
-					float y = 300.0f;
-					float z = 400.0f;
-					short item = -1;
-					float scale = 0.0f;
-					int world = getWorld(CurrentMap, 0);
-					if (world < 7) {
-						int flag = normal_key_flags[world];
-						getModelTwoItemFromActor(getKeyItem(flag), &item, &scale);
-						if (item >= 0) {
-							spawnModelTwo(item, *(int*)&x, *(int*)&y, *(int*)&z, scale, 0x16);
-							int i = 0;
-							while (i < ObjectModel2Count) {
-								ModelTwoData* object = (ModelTwoData*)&ObjectModel2Pointer[i];
-								if (object) {
-									if (object->object_id == 0xF) {
-										model_struct* _model = object->model_pointer;
-										if (_model) {
-											_model->scale = 2 * scale;
+			case CROWN_0:
+			case CROWN_1:
+			case CROWN_2:
+			case CROWN_3:
+			case CROWN_4:
+			case CROWN_5:
+			case CROWN_6:
+			case CROWN_7:
+			case CROWN_8:
+			case CROWN_9:
+				if (Rando.location_visuals & 4) {
+					if (param2 == CROWN_CONTROLLER) {
+						float x = 730.0f;
+						float y = 267.0f;
+						float z = 728.0f;
+						short actor = getCrownItem(CurrentMap);
+						short item = -1;
+						float scale = 0.0f;
+						if (actor != 0) {
+							getModelTwoItemFromActor(actor, &item, &scale);
+							if (item >= 0) {
+								spawnModelTwo(item, *(int*)&x, *(int*)&y, *(int*)&z, scale, 0x4);
+								int i = 0;
+								while (i < ObjectModel2Count) {
+									ModelTwoData* object = (ModelTwoData*)&ObjectModel2Pointer[i];
+									if (object) {
+										if (object->object_id == 0x4) {
+											model_struct* _model = object->model_pointer;
+											if (_model) {
+												_model->scale = scale;
+											}
+											break;
 										}
-										break;
 									}
+									i++;
 								}
-								i++;
 							}
-
 						}
+					} else if (param2 == CROWN_INDICATOR) {
+						behaviour_pointer->unk_70 = 0;
+						behaviour_pointer->unk_60 = 1;
+						behaviour_pointer->unk_62 = 100;
 					}
-				} else if (param2 == TNS_ITEMINDICATOR) {
-					behaviour_pointer->unk_70 = 0;
-					behaviour_pointer->unk_60 = 1;
-					behaviour_pointer->unk_62 = 100;
+				}
+				break;
+			case TROFF_N_SCOFF:
+				if (Rando.location_visuals & 2) {
+					if (param2 == TNS_NUMBER) {
+						float x = 600.0f;
+						float y = 300.0f;
+						float z = 400.0f;
+						short item = -1;
+						float scale = 0.0f;
+						int world = getWorld(CurrentMap, 0);
+						if (world < 7) {
+							int flag = normal_key_flags[world];
+							getModelTwoItemFromActor(getKeyItem(flag), &item, &scale);
+							if (item >= 0) {
+								spawnModelTwo(item, *(int*)&x, *(int*)&y, *(int*)&z, scale, 0x16);
+								int i = 0;
+								while (i < ObjectModel2Count) {
+									ModelTwoData* object = (ModelTwoData*)&ObjectModel2Pointer[i];
+									if (object) {
+										if (object->object_id == 0xF) {
+											model_struct* _model = object->model_pointer;
+											if (_model) {
+												_model->scale = 2 * scale;
+											}
+											break;
+										}
+									}
+									i++;
+								}
+
+							}
+						}
+					} else if (param2 == TNS_ITEMINDICATOR) {
+						behaviour_pointer->unk_70 = 0;
+						behaviour_pointer->unk_60 = 1;
+						behaviour_pointer->unk_62 = 100;
+					}
 				}
 				break;
 			case HELM_LOBBY:

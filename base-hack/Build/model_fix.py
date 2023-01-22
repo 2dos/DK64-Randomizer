@@ -139,6 +139,27 @@ modifications = [
     },
 ]
 
+krusha_kong = -1
+DK_SCALE = 0.75
+GENERIC_SCALE = 0.49
+krusha_scaling = [
+    # [x, y, z, xz, y]
+    # DK
+    [lambda x: x * DK_SCALE, lambda x: x * DK_SCALE, lambda x: x * GENERIC_SCALE, lambda x: x * DK_SCALE, lambda x: x * DK_SCALE],
+    # Diddy
+    [lambda x: (x * 1.043) - 41.146, lambda x: (x * 9.893) - 8.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 1.103) - 14.759, lambda x: (x * 0.823) + 35.220],
+    # Lanky
+    [lambda x: (x * 0.841) - 17.231, lambda x: (x * 6.925) - 2.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 0.680) - 18.412, lambda x: (x * 0.789) + 42.138],
+    # Tiny
+    [lambda x: (x * 0.632) + 7.590, lambda x: (x * 6.925) + 0.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 1.567) - 21.676, lambda x: (x * 0.792) + 41.509],
+    # Chunky
+    [lambda x: x, lambda x: x, lambda x: x, lambda x: x, lambda x: x],
+]
+krusha_file = "krusha_setting.txt"
+if os.path.exists(krusha_file):
+    with open(krusha_file, "r") as fh:
+        krusha_kong = int(fh.read())
+
 with open(rom_file, "rb") as rom:
     rom.seek(pointer_offset + (5 * 4))
     actor_table = pointer_offset + int.from_bytes(rom.read(4), "big")
@@ -156,6 +177,40 @@ with open(rom_file, "rb") as rom:
             decompress = zlib.decompress(compress, (15 + 32))
             fh.write(decompress)
         with open(model["model_file"], "r+b") as fh:
+            if idx == 0xDA:
+                if krusha_kong != -1:
+                    print(f"Scaling Krusha Down for kong {krusha_kong}")
+                    # Write Krusha
+                    base = 0x450C
+                    fh.seek(base)
+                    count_0 = int.from_bytes(fh.read(4), "big")
+                    changes = krusha_scaling[krusha_kong][:3]
+                    changes_0 = [
+                        krusha_scaling[krusha_kong][3],
+                        krusha_scaling[krusha_kong][4],
+                        krusha_scaling[krusha_kong][3],
+                    ]
+                    for i in range(count_0):
+                        i_start = base + 4 + (i * 0x14)
+                        for coord_index, change in enumerate(changes):
+                            fh.seek(i_start + (4 * coord_index) + 4)
+                            val_i = int.from_bytes(fh.read(4), "big")
+                            val_f = change(intf_to_float(val_i))
+                            fh.seek(i_start + (4 * coord_index) + 4)
+                            fh.write(int(float_to_hex(val_f), 16).to_bytes(4, "big"))
+                    section_2_start = base + 4 + (count_0 * 0x14)
+                    fh.seek(section_2_start)
+                    count_1 = int.from_bytes(fh.read(4), "big")
+                    for i in range(count_1):
+                        i_start = section_2_start + 4 + (i * 0x10)
+                        for coord_index, change in enumerate(changes_0):
+                            fh.seek(i_start + (4 * coord_index))
+                            val_i = int.from_bytes(fh.read(4), "big")
+                            val_f = change(intf_to_float(val_i))
+                            fh.seek(i_start + (4 * coord_index))
+                            fh.write(int(float_to_hex(val_f), 16).to_bytes(4, "big"))
+                else:
+                    print("Ignoring Krusha Scale Down")
             fh.seek(0)
             sub_idx = 0
             for wipe in model["wipe"]:
