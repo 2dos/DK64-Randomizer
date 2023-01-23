@@ -16,8 +16,8 @@
 .include "asm/variables/static.asm"
 
 .definelabel unkLightFunc_0, 0x80604cbc
-.definelabel unkLightFunc_1, 0x8072a920
-.definelabel unkLightFunc_2, 0x806c6530
+.definelabel kongFollowingLightFunc, 0x8072a920
+.definelabel lightShiningLightFunc, 0x806c6530
 
 //vanilla data
 .definelabel TransitionSpeed, 0x807FD88C
