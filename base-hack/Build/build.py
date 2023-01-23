@@ -338,9 +338,7 @@ kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
 ammo_names = ["standard_crate", "homing_crate"]
 
 for ammo_index, ammo in enumerate(ammo_names):
-    file_dict.append(
-        {"name": f"{ammo.replace('_',' ')} Image", "pointer_table_index": 14, "file_index": 188 + ammo_index, "source_file": f"assets/displays/{ammo}.png", "texture_format": "rgba5551"}
-    )
+    file_dict.append({"name": f"{ammo.replace('_',' ')} Image", "pointer_table_index": 14, "file_index": 188 + ammo_index, "source_file": f"assets/displays/{ammo}.png", "texture_format": "rgba5551"})
 
 for kong_index, kong in enumerate(kong_names):
     file_dict.append(
@@ -654,9 +652,7 @@ for x in range(43):
             }
         )
 for x in range(10):
-    file_dict.append(
-        {"name": f"Tag Barrel Bottom Texture ({x+1})", "pointer_table_index": 25, "file_index": 4749 + x, "source_file": "assets/tagbarrel/bottom.png", "texture_format": "rgba5551"}
-    )
+    file_dict.append({"name": f"Tag Barrel Bottom Texture ({x+1})", "pointer_table_index": 25, "file_index": 4749 + x, "source_file": "assets/tagbarrel/bottom.png", "texture_format": "rgba5551"})
 for x in range(4761, 4768):
     sz = "44"
     if x == 4761:
