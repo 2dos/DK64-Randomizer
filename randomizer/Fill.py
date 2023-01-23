@@ -630,11 +630,15 @@ def CalculateFoolish(spoiler, WothLocations):
         majorItems.append(Items.Bean)
     if Types.Pearl in spoiler.settings.shuffled_location_types:
         majorItems.append(Items.Pearl)
+    if spoiler.settings.training_barrels != "normal":
+        majorItems.extend(ItemPool.TrainingBarrelAbilities())
+    if spoiler.settings.shockwave_status != "shuffled_decoupled":
+        majorItems.append(Items.CameraAndShockwave)
+    if spoiler.settings.shockwave_status == "shuffled_decoupled":
+        majorItems.append(Items.Shockwave)
+        majorItems.append(Items.Camera)
     majorItems.extend(ItemPool.Keys())
     majorItems.extend(ItemPool.Kongs(spoiler.settings))
-    majorItems.append(Items.Oranges)  # Again, not comfortable foolishing oranges yet
-    if spoiler.settings.shockwave_status == "shuffled_decoupled" and (not spoiler.settings.shuffle_items or Types.RainbowCoin not in spoiler.settings.shuffled_location_types):
-        majorItems.append(Items.Shockwave)  # Make sure shockwave counts as a major item when calculating foolish regions
     requires_rareware = spoiler.settings.coin_door_item == "vanilla"
     requires_nintendo = spoiler.settings.coin_door_item == "vanilla"
     requires_crowns = spoiler.settings.crown_door_item in ("vanilla", "req_crown") or spoiler.settings.coin_door_item == "req_crown"
