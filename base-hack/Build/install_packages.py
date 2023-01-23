@@ -26,4 +26,4 @@ for req_pkg in required_build_packages:
     print(f"\t{req_pkg.capitalize()}: {installed_name}")
     if not installed:
         print(f"\t\tInstalling {req_pkg.capitalize()}")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", req_pkg], stdout=subprocess.DEVNULL)
+        subprocess.check_call([sys.executable, "-m", "pip", "install", req_pkg, "--no-warn-script-location"], stdout=subprocess.DEVNULL)

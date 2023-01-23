@@ -162,7 +162,9 @@ typedef struct playerData {
 	/* 0x084 */ float zPos;
 	/* 0x088 */ char unk_88[0xA4-0x88];
 	/* 0x0A4 */ float floor;
-	/* 0x0A8 */ char unk_A8[0xB8-0xA8];
+	/* 0x0A8 */ char unk_A8[0xAC-0xA8];
+	/* 0x0AC */ float water_floor;
+	/* 0x0B0 */ char unk_B0[0xB8-0xB0];
 	/* 0x0B8 */ float hSpeed;
 	/* 0x0BC */ char unk_BC[0x4];
 	/* 0x0C0 */ float yVelocity;
@@ -221,14 +223,18 @@ typedef struct playerData {
 	/* 0x324 */ char unk_324[0x328 - 0x324];
 	/* 0x328 */ actorData* krool_timer_pointer;
 	/* 0x32C */ actorData* held_actor;
-	/* 0x330 */ char unk_330[0x36C - 0x330];
+	/* 0x330 */ char unk_330[0x340 - 0x330];
+	/* 0x340 */ float scale[6];
+	/* 0x358 */ char unk_358[0x36C - 0x358];
 	/* 0x36C */ char fairy_state;
 	/* 0x36D */ char unk_36D[0x36F - 0x36D];
 	/* 0x36F */ char new_kong;
 	/* 0x370 */ int strong_kong_ostand_bitfield;
 	/* 0x374 */ char unk_374[0x37D-0x374];
 	/* 0x37D */ unsigned char rambi_enabled;
-	/* 0x37E */ char unk_37E[0x3BC - 0x37E];
+	/* 0x37E */ char unk_37E[0x380 - 0x37E];
+	/* 0x380 */ short trap_bubble_timer;
+	/* 0x382 */ char unk_382[0x3BC - 0x382];
 	/* 0x3BC */ unsigned short try_again_timer;
 	/* 0x3BE */ unsigned char detransform_timer;
 } playerData; //size 0x630
@@ -312,7 +318,9 @@ typedef struct SwapObjectData {
 	/* 0x290 */ short chunk;
 	/* 0x292 */ char unk_292[0x29C-0x292];
 	/* 0x29C */ short action_type;
-	/* 0x29E */ char unk_29E[0x2E2 - 0x29E];
+	/* 0x29E */ char unk_29E[0x2C0 - 0x29E];
+	/* 0x2C0 */ char size;
+	/* 0x2C1 */ char unk_2C1[0x2E2 - 0x2C1];
 	/* 0x2E2 */ unsigned short unk_2e2;
 } SwapObjectData;
 
@@ -320,7 +328,8 @@ typedef struct ModelTwoData {
 	/* 0x000 */ float xPos;
 	/* 0x004 */ float yPos;
 	/* 0x008 */ float zPos;
-	/* 0x00C */ char unk_0C[0x20-0xC];
+	/* 0x00C */ float scale;
+	/* 0x010 */ char unk_10[0x20-0x10];
 	/* 0x020 */ void* model_pointer;
 	/* 0x024 */ void* dl_pointer;
 	/* 0x028 */ char unk_28[0x7C-0x28];
@@ -383,7 +392,9 @@ typedef struct cutscene_item_data {
 } cutscene_item_data;
 
 typedef struct cutsceneType {
-	/* 0x000 */ char unk_00[0xD0];
+	/* 0x000 */ char unk_00[0xCC];
+	/* 0x0CC */ short cutscene_count;
+	/* 0x0CE */ char unk_CE[0xD0-0xCE];
 	/* 0x0D0 */ cutscene_item_data* cutscene_databank;
 	/* 0x0D4 */ char unk_D4[0xD8-0xD4];
 	/* 0x0D8 */ cutscene_item* cutscene_funcbank;
@@ -463,15 +474,25 @@ typedef struct actorSpawnerData {
 	/* 0x000 */ unsigned short actor_type; // Offset by 0x10
 	/* 0x002 */ char unk_02[2];
 	/* 0x004 */ floatPos positions;
-	/* 0x010 */ char unk_10[0x40-0x10];
+	/* 0x010 */ char unk_10[0x2C-0x10];
+	/* 0x02C */ float flag; // What?????
+	/* 0x030 */ char unk_30[0x40-0x30];
 	/* 0x040 */ float barrel_resolved;
 	/* 0x044 */ void* tied_actor;
-	/* 0x048 */ char unk_48[0x5A-0x48];
+	/* 0x048 */ char unk_48[0x54-0x48];
+	/* 0x054 */ float spawn_range;
+	/* 0x058 */ short model;
 	/* 0x05A */ short id;
 	/* 0x05C */ char unk_5C[0x64-0x5C];
 	/* 0x064 */ void* previous_spawner;
 	/* 0x068 */ void* next_spawner;
 } actorSpawnerData;
+
+typedef struct spawnerPacket {
+	/* 0x000 */ int model;
+	/* 0x004 */ char unk_4[0x18-4];
+	/* 0x018 */ void* extra_data;
+} spawnerPacket;
 
 typedef struct heap {
 	/* 0x000 */ void* unk;
@@ -831,7 +852,7 @@ typedef struct model2_collision_info {
 
 typedef struct move_rom_item {
 	/* 0x000 */ unsigned char move_master_data; // tttl lkkk. t = Type (0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 5 = Flag, 6 = GB, 7 = Vacant), l = move level (reduced by 1), k = kong
-	/* 0x001 */ unsigned char text_item;
+	/* 0x001 */ unsigned char price;
 	/* 0x002 */ short flag; // -1 = No Flag, -2 = Both Camera & Shockwave (Reserved)
 } move_rom_item;
 typedef struct move_block {
@@ -1234,6 +1255,7 @@ typedef struct quality_options {
 	unsigned char caves_kosha_dead : 1;
 	unsigned char rambi_enguarde_pickup : 1;
 	unsigned char hud_bp_multibunch : 1;
+	unsigned char homing_balloons : 1;
 } quality_options;
 
 typedef struct image_cache_struct {
@@ -1320,3 +1342,103 @@ typedef struct spotlight_hold_paad {
 	/* 0x000 */ short unk0;
 	/* 0x002 */ char unk2;
 } spotlight_hold_paad;
+
+typedef struct pause_paad {
+	/* 0x000 */ float unk0;
+	/* 0x004 */ char unk4[0xC-0x4];
+	/* 0x00C */ short unkC[2];
+	/* 0x010 */ unsigned short control;
+	/* 0x012 */ char screen;
+	/* 0x013 */ char next_screen;
+	/* 0x014 */ char unk14;
+	/* 0x015 */ char unk15;
+} pause_paad;
+
+typedef struct sprite_struct {
+	/* 0x000 */ char unk0[0x340];
+	/* 0x340 */ float x;
+	/* 0x344 */ float y;
+	/* 0x348 */ float z;
+	/* 0x34C */ char unk34C[0x35C-0x34C];
+	/* 0x35C */ void* control;
+	/* 0x360 */ float scale_x;
+	/* 0x364 */ float scale_z;
+	/* 0x368 */ char unk360[0x36A-0x368];
+	/* 0x36A */ unsigned char red;
+	/* 0x36B */ unsigned char green;
+	/* 0x36C */ unsigned char blue;
+	/* 0x36D */ unsigned char alpha;
+	/* 0x36E */ char unk36E[0x384-0x36E];
+	/* 0x384 */ float* unk384;
+} sprite_struct;
+
+typedef struct check_struct {
+    /* 0x000 */ short flag;
+    /* 0x002 */ unsigned char type;
+    /* 0x003 */ char associated_level;
+} check_struct;
+
+typedef struct sprite_data_struct {
+	/* 0x000 */ int unk0;
+	/* 0x004 */ char images_per_frame_horizontal;
+	/* 0x005 */ char images_per_frame_vertical;
+	/* 0x006 */ short codec;
+	/* 0x008 */ int unk8;
+	/* 0x00C */ char unkC;
+	/* 0x00D */ char table;
+	/* 0x00E */ short width;
+	/* 0x010 */ short height;
+	/* 0x012 */ short image_count;
+	/* 0x014 */ short images[];
+} sprite_data_struct;
+
+typedef struct item_conversion_info {
+	/* 0x000 */ short actor;
+	/* 0x002 */ short model_two;
+	/* 0x004 */ float scale;
+} item_conversion_info;
+
+typedef struct item_scale_info {
+	/* 0x000 */ int type;
+	/* 0x004 */ float scale;
+} item_scale_info;
+
+typedef struct charSpawnerActorInfo {
+	/* 0x000 */ short actor;
+	/* 0x002 */ short model;
+	/* 0x004 */ short animation;
+	/* 0x006 */ short unk_6;
+	/* 0x008 */ int unk_8;
+	/* 0x00C */ char unk_C[0x18-0xC];
+} charSpawnerActorInfo;
+
+typedef enum helm_hurry_items {
+	/* 0x000 */ HHITEM_NOTHING,
+	/* 0x001 */ HHITEM_GB,
+	/* 0x002 */ HHITEM_BLUEPRINT,
+	/* 0x003 */ HHITEM_COMPANYCOIN,
+	/* 0x004 */ HHITEM_MOVE,
+	/* 0x005 */ HHITEM_MEDAL,
+	/* 0x006 */ HHITEM_RAINBOWCOIN,
+	/* 0x007 */ HHITEM_KEY,
+	/* 0x008 */ HHITEM_CROWN,
+	/* 0x009 */ HHITEM_BEAN,
+	/* 0x00A */ HHITEM_PEARL,
+	/* 0x00B */ HHITEM_KONG,
+	/* 0x00C */ HHITEM_FAIRY,
+	/* 0x00D */ HHITEM_CB,
+	/* 0x00E */ HHITEM_FAKEITEM,
+} helm_hurry_items;
+
+typedef struct item_collision {
+	/* 0x000 */ short id;
+	/* 0x002 */ short obj_type;
+	/* 0x004 */ short kong;
+	/* 0x006 */ short flag;
+	/* 0x008 */ short x;
+	/* 0x00A */ short y;
+	/* 0x00C */ short z;
+	/* 0x00E */ char unkE[0x18-0xE];
+	/* 0x018 */ void* next;
+	/* 0x01C */ float scale;
+} item_collision;

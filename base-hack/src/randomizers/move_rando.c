@@ -4,176 +4,51 @@
 #define CRANKY 5
 #define CANDY 0x19
 
+static unsigned short slam_flag = FLAG_SHOPMOVE_SLAM_0;
+static unsigned short belt_flag = FLAG_SHOPMOVE_BELT_0;
+static unsigned short ins_flag = FLAG_SHOPMOVE_INS_0;
+
 int getMoveType(int value) {
 	int ret = (value >> 5) & 7;
 	if (ret == 7) {
 		return -1;
 	} else {
+		if (ret == PURCHASE_INSTRUMENT) {
+			int index = ((value >> 3) & 3) + 1;
+			if (index > 1) {
+				return PURCHASE_FLAG;
+			}
+		} else if ((ret == PURCHASE_SLAM) || (ret == PURCHASE_AMMOBELT)) {
+			return PURCHASE_FLAG;
+		}
 		return ret;
 	}
 }
 
 int getMoveIndex(move_rom_item* item) {
 	int item_type = getMoveType(item->move_master_data);
+	int index = ((item->move_master_data >> 3) & 3) + 1;
+	int original_item_type = ((item->move_master_data) >> 5) & 7;
+	if (original_item_type == PURCHASE_SLAM) {
+		slam_flag += 1;
+		return slam_flag - 1;
+	} else if (original_item_type == PURCHASE_AMMOBELT) {
+		belt_flag += 1;
+		return belt_flag - 1;
+	} else if (original_item_type == PURCHASE_INSTRUMENT) {
+		if (index > 1) {
+			ins_flag += 1;
+			return ins_flag - 1;
+		}
+	}
 	if ((item_type == PURCHASE_FLAG) || (item_type == PURCHASE_GB)) {
 		return item->flag;
 	}
-	return ((item->move_master_data >> 3) & 3) + 1;
+	return index;
 }
 
 int getMoveKong(int value) {
 	return value & 7; 
-}
-
-static char stored_slam_level = 0;
-static char stored_belt_level = 0;
-static char stored_instrument_level = 0;
-static char stored_melons = 0;
-
-void checkProgressive(
-		char* previous_storage,
-		char* current_storage,
-		unsigned char* eep_storage,
-		int lower_threshold,
-		int upper_threshold,
-		int level,
-		int purchase_type,
-		int purchase_level,
-		int is_bitfield,
-		int progressive_floor) {
-	int pass = 0;
-	if (is_bitfield) {
-		if ((!(*previous_storage & (1 << lower_threshold))) && (*current_storage & (1 << lower_threshold))) {
-			pass = 1;
-		}
-	} else {
-		if ((*previous_storage <= lower_threshold) && (*current_storage >= upper_threshold)) {
-			pass = 1;
-		}
-	}
-	if (pass && ((CurrentMap != 0x22) && (CurrentMap != 0x50))) {
-		// Just purchased Move
-		int purchased = 0;
-		if (level >= 0 && level < LEVEL_COUNT) {
-			purchased = 1;
-		}
-		int shop = 0;
-		if (CurrentMap == FUNKY) {
-			shop = 1;
-		} else if (CurrentMap == CANDY) {
-			shop = 2;
-		}
-		*eep_storage = (level << 4) | (purchased << 2) | shop;
-		SaveToGlobal();
-	}
-	pass = 0;
-	if (is_bitfield) {
-		if (*current_storage & (1 << lower_threshold)) {
-			pass = 1;
-		}
-	} else {
-		if (*current_storage > lower_threshold) {
-			pass = 1;
-		}
-	}
-	if (pass) {
-		int encoded_sss_location = *eep_storage;
-		int shop = encoded_sss_location & 3;
-		int purchased = (encoded_sss_location >> 2) & 1;
-		int level = (encoded_sss_location >> 4) & 7;
-		for (int i = 0; i < LEVEL_COUNT; i++) {
-			for (int j = 0; j < 5; j++) {
-				if (CrankyMoves_New[j][i].purchase_type == purchase_type) {
-					if ((purchase_type != PURCHASE_INSTRUMENT) || (CrankyMoves_New[j][i].purchase_value != 1)) {
-						if ((purchased) && (shop == 0) && (level == i)) {
-							CrankyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
-						} else {
-							if (CrankyMoves_New[j][i].purchase_value > progressive_floor) {
-								CrankyMoves_New[j][i].purchase_value = purchase_level;
-							}
-						}
-					}
-				}
-				if (CandyMoves_New[j][i].purchase_type == purchase_type) {
-					if ((purchase_type != PURCHASE_INSTRUMENT) || (CandyMoves_New[j][i].purchase_value != 1)) {
-						if ((purchased) && (shop == 2) && (level == i)) {
-							CandyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
-						} else {
-							if (CandyMoves_New[j][i].purchase_value > progressive_floor) {
-								CandyMoves_New[j][i].purchase_value = purchase_level;
-							}
-						}
-					}
-				}
-				if (FunkyMoves_New[j][i].purchase_type == purchase_type) {
-					if ((purchase_type != PURCHASE_INSTRUMENT) || (FunkyMoves_New[j][i].purchase_value != 1)) {
-						if ((purchased) && (shop == 1) && (level == i)) {
-							FunkyMoves_New[j][i].purchase_type = PURCHASE_NOTHING;
-						} else {
-							if (FunkyMoves_New[j][i].purchase_value > progressive_floor) {
-								FunkyMoves_New[j][i].purchase_value = purchase_level;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	*previous_storage = *current_storage;
-}
-
-void updateProgressive(void) {
-	if (Rando.move_rando_on) {
-		int level = getWorld(CurrentMap,0);
-		checkProgressive(
-			&stored_slam_level,
-			&MovesBase[0].simian_slam,
-			&StoredSettings.file_extra.location_sss_purchased,
-			1,
-			2,
-			level,
-			PURCHASE_SLAM,
-			3,
-			0,
-			0
-		);
-		checkProgressive(
-			&stored_belt_level,
-			&MovesBase[0].ammo_belt,
-			&StoredSettings.file_extra.location_ab1_purchased,
-			0,
-			1,
-			level,
-			PURCHASE_AMMOBELT,
-			2,
-			0,
-			0
-		);
-		checkProgressive(
-			&stored_instrument_level,
-			&MovesBase[0].instrument_bitfield,
-			&StoredSettings.file_extra.location_ug1_purchased,
-			1,
-			1,
-			level,
-			PURCHASE_INSTRUMENT,
-			3,
-			1,
-			1
-		);
-		checkProgressive(
-			&stored_melons,
-			&CollectableBase.Melons,
-			&StoredSettings.file_extra.location_mln_purchased,
-			2,
-			3,
-			level,
-			PURCHASE_INSTRUMENT,
-			4,
-			0,
-			1
-		);
-	}
 }
 
 move_block* getMoveBlock(void) {
@@ -186,21 +61,78 @@ move_block* getMoveBlock(void) {
 }
 
 void moveTransplant(void) {
+	slam_flag = FLAG_SHOPMOVE_SLAM_0;
+	belt_flag = FLAG_SHOPMOVE_BELT_0;
+	ins_flag = FLAG_SHOPMOVE_INS_0;
 	move_block* move_data = getMoveBlock();
 	if (move_data) {
 		for (int i = 0; i < LEVEL_COUNT; i++) {
+			int stored_slam = slam_flag;
+			int stored_belt = belt_flag;
+			int stored_ins = ins_flag;
+			int cranky_type = (move_data->cranky_moves[0][i].move_master_data >> 5) & 7;
+			int funky_type = (move_data->funky_moves[0][i].move_master_data >> 5) & 7;
+			int candy_type = (move_data->candy_moves[0][i].move_master_data >> 5) & 7;
+			int cranky_shared = 1;
+			int funky_shared = 1;
+			int candy_shared = 1;
+			if ((cranky_type > 2) && (cranky_type < 5)) {
+				cranky_shared = cranky_type - 1;
+			} else if (cranky_type != 1) {
+				cranky_shared = 0;
+			}
+			if ((funky_type > 2) && (funky_type < 5)) {
+				funky_shared = funky_type - 1;
+			} else if (funky_type != 1) {
+				funky_shared = 0;
+			}
+			if ((candy_type > 2) && (candy_type < 5)) {
+				candy_shared = candy_type - 1;
+			} else if (candy_type != 1) {
+				candy_shared = 0;
+			}
+			int cranky_targ_data = move_data->cranky_moves[0][i].move_master_data & 0xF8;
+			int cranky_targ_flag = move_data->cranky_moves[0][i].flag;
+			int funky_targ_data = move_data->funky_moves[0][i].move_master_data & 0xF8;
+			int funky_targ_flag = move_data->funky_moves[0][i].flag;
+			int candy_targ_data = move_data->candy_moves[0][i].move_master_data & 0xF8;
+			int candy_targ_flag = move_data->candy_moves[0][i].flag;
+			for (int j = 1; j < 5; j++) {
+				if (((move_data->cranky_moves[j][i].move_master_data & 0xF8) != cranky_targ_data) || (move_data->cranky_moves[j][i].flag != cranky_targ_flag)) {
+					cranky_shared = 0;
+				}
+				if (((move_data->funky_moves[j][i].move_master_data & 0xF8) != funky_targ_data) || (move_data->funky_moves[j][i].flag != funky_targ_flag)) {
+					funky_shared = 0;
+				}
+				if (((move_data->candy_moves[j][i].move_master_data & 0xF8) != candy_targ_data) || (move_data->candy_moves[j][i].flag != candy_targ_flag)) {
+					candy_shared = 0;
+				}
+			}
 			for (int j = 0; j < 5; j++) {
+				if ((cranky_shared == 1) || (funky_shared == 1) || (candy_shared == 1)) {
+					slam_flag = stored_slam;
+				}
+				if ((cranky_shared == 2) || (funky_shared == 2) || (candy_shared == 2)) {
+					belt_flag = stored_belt;
+				}
+				if ((cranky_shared == 3) || (funky_shared == 3) || (candy_shared == 3)) {
+					ins_flag = stored_ins;
+				}
 				CrankyMoves_New[j][i].purchase_type = getMoveType(move_data->cranky_moves[j][i].move_master_data);
 				CrankyMoves_New[j][i].move_kong = getMoveKong(move_data->cranky_moves[j][i].move_master_data);
 				CrankyMoves_New[j][i].purchase_value = getMoveIndex((move_rom_item *)&move_data->cranky_moves[j][i]);
+				CrankyMoves_New[j][i].price = move_data->cranky_moves[j][i].price;
+				CrankyMoves_New[j][i].price = move_data->cranky_moves[j][i].price;
 
 				CandyMoves_New[j][i].purchase_type = getMoveType(move_data->candy_moves[j][i].move_master_data);
 				CandyMoves_New[j][i].move_kong = getMoveKong(move_data->candy_moves[j][i].move_master_data);
 				CandyMoves_New[j][i].purchase_value = getMoveIndex((move_rom_item *)&move_data->candy_moves[j][i]);
+				CandyMoves_New[j][i].price = move_data->candy_moves[j][i].price;
 
 				FunkyMoves_New[j][i].purchase_type = getMoveType(move_data->funky_moves[j][i].move_master_data);
 				FunkyMoves_New[j][i].move_kong = getMoveKong(move_data->funky_moves[j][i].move_master_data);
 				FunkyMoves_New[j][i].purchase_value = getMoveIndex((move_rom_item *)&move_data->funky_moves[j][i]);
+				FunkyMoves_New[j][i].price = move_data->funky_moves[j][i].price;
 			}
 		}
 		for (int i = 0; i < 4; i++) {
@@ -215,35 +147,103 @@ void moveTransplant(void) {
 	complex_free(move_data);
 }
 
-void replace_moves(void) {
-	if (Rando.move_rando_on) {
-		moveTransplant();
-		updateProgressive();
+void progressiveChange(int flag) {
+	if (!checkFlagDuplicate(flag, 0)) {
+		int subtype = getMoveProgressiveFlagType(flag);
+		if (subtype == 0) {
+			// Slam
+			int slam_level = MovesBase[0].simian_slam + 1;
+			if (slam_level == 1) {
+				// Fix if initial slam is slam 0
+				slam_level = 2;
+			}
+			for (int i = 0; i < 5; i++) {
+				MovesBase[i].simian_slam = slam_level;
+			}
+		} else if (subtype == 1) {
+			// Belt
+			int belt_level = MovesBase[0].ammo_belt + 1;
+			for (int i = 0; i < 5; i++) {
+				MovesBase[i].ammo_belt = belt_level;
+			}
+		} else if (subtype == 2) {
+			// Instrument upgrade
+			int ins_level = 0;
+			for (int i = 1; i < 4; i++) {
+				if (MovesBase[0].instrument_bitfield & (1 << i)) {
+					ins_level = i;
+				}
+			}
+			if (ins_level > 0) {
+				if (CollectableBase.Melons < 3) {
+					CollectableBase.Melons = 3;
+					CollectableBase.Health = CollectableBase.Melons << 2;
+				}
+			} else {
+				if (CollectableBase.Melons < 2) {
+					CollectableBase.Melons = 2;
+					CollectableBase.Health = CollectableBase.Melons << 2;
+				}
+			}
+			for (int i = 0; i < 5; i++) {
+				MovesBase[i].instrument_bitfield |= (1 << (ins_level + 1));
+			}
+		}
 	}
 }
 
-void cancelMoveSoftlock(void) {
-	if (Rando.move_rando_on) {
-		if (CurrentMap == CRANKY) {
-			if ((TBVoidByte & 0x30) != 0) {
-				if ((CutsceneActive) && (CutsceneIndex == 2) && (CutsceneTimer == 80)) {
-					//cancelPausedCutscene();
-				}
-			}
-		} else if ((CurrentMap == FUNKY) || (CurrentMap == CANDY)) {
-			// int* potion = findActorWithType(320);
-			// if (potion) {
-			// 	if ((TBVoidByte & 0x30) == 0) {
-			// 		if ((CutsceneActive) && (CutsceneIndex == 2) && (CutsceneTimer == 80)) {
-			// 			pauseCutscene();
-			// 		}
-			// 	} else {
-			// 		cancelPausedCutscene();
-			// 		TBVoidByte |= 0x30;
-			// 	}
-			// }
+int getMoveProgressiveFlagType(int flag) {
+	int slams[] = {FLAG_SHOPMOVE_SLAM_0, FLAG_SHOPMOVE_SLAM_1, FLAG_ITEM_SLAM_0, FLAG_ITEM_SLAM_1};
+	int belts[] = {FLAG_SHOPMOVE_BELT_0, FLAG_SHOPMOVE_BELT_1, FLAG_ITEM_BELT_0, FLAG_ITEM_BELT_1};
+	int instruments[] = {
+		FLAG_SHOPMOVE_INS_0,
+		FLAG_SHOPMOVE_INS_1,
+		FLAG_SHOPMOVE_INS_2,
+		FLAG_ITEM_INS_0,
+		FLAG_ITEM_INS_1,
+		FLAG_ITEM_INS_2,
+	};
+	for (int i = 0; i < 4; i++) {
+		if (flag == slams[i]) {
+			return 0;
 		}
 	}
+	for (int i = 0; i < 4; i++) {
+		if (flag == belts[i]) {
+			return 1;
+		}
+	}
+	for (int i = 0; i < 6; i++) {
+		if (flag == instruments[i]) {
+			return 2;
+		}
+	}
+	return -1;
+}
+
+int writeProgressiveText(int flag, int* top_text, int* bottom_text) {
+	int subtype = getMoveProgressiveFlagType(flag);
+	if (subtype == 0) {
+		// Slam
+		*top_text = SimianSlamNames[(int)MovesBase[0].simian_slam].name;
+		*bottom_text = SimianSlamNames[(int)MovesBase[0].simian_slam].latin;
+		return 1;
+	} else if (subtype == 1) {
+		// Belt
+		*top_text = AmmoBeltNames[(int)MovesBase[0].ammo_belt];
+		return 1;
+	} else if (subtype == 2) {
+		// Instrument upgrade
+		int level = 2;
+		if (MovesBase[0].instrument_bitfield & 8) {
+			level = 4;
+		} else if (MovesBase[0].instrument_bitfield & 4) {
+			level = 3;
+		}
+		*top_text = InstrumentUpgNames[level];
+		return 1;
+	}
+	return 0;
 }
 
 void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
@@ -274,6 +274,9 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 			int p_type = selected->purchase_type;
 			int p_kong = selected->move_kong;
 			int p_value = selected->purchase_value;
+			if (p_kong > 4) {
+				p_kong = 0;
+			}
 			if (p_type > PURCHASE_NOTHING) {
 				switch (p_type) {
 					case PURCHASE_MOVES:
@@ -358,9 +361,15 @@ void purchaseMove(shop_paad* paad) {
 			}
 			break;
 		case PURCHASE_GB:
-			MovesBase[(int)paad->kong].gb_count[getWorld(CurrentMap,1)] += 1;
+			giveGB(Character, getWorld(CurrentMap, 1));
 		case PURCHASE_FLAG:
-			setFlagDuplicate(paad->flag, 1, 0);
+			progressiveChange(paad->flag);
+			if (paad->flag == -2) {
+				setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, 0);
+				setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, 0);
+			} else {
+				setFlagDuplicate(paad->flag, 1, 0);
+			}
 		break;
 	}
 	if (p_type == PURCHASE_INSTRUMENT) {
@@ -430,8 +439,10 @@ void setLocation(purchase_struct* purchase_data) {
 					}
 					if (CollectableBase.Melons < 2) {
 						CollectableBase.Melons = 2;
+						CollectableBase.Health = CollectableBase.Melons << 2;
 					} else if ((CollectableBase.Melons < 3) && (bitfield_index > 1)) {
 						CollectableBase.Melons = 3;
+						CollectableBase.Health = CollectableBase.Melons << 2;
 					}
 				break;
 			}
@@ -441,6 +452,7 @@ void setLocation(purchase_struct* purchase_data) {
 			setFlagDuplicate(FLAG_ABILITY_CAMERA,1,0);
 		} else if (p_type == PURCHASE_FLAG) {
 			// IsFlag
+			progressiveChange(purchase_data->purchase_value);
 			setFlagDuplicate(purchase_data->purchase_value,1,0);
 		} else if (p_type == PURCHASE_GB) {
 			// IsFlag + GB Update
@@ -450,7 +462,7 @@ void setLocation(purchase_struct* purchase_data) {
 				if (world > 7) {
 					world = 7;
 				}
-				MovesBase[p_kong].gb_count[world] += 1;
+				giveGB(p_kong, world);
 			}
 		}
 	}
@@ -460,6 +472,9 @@ int getLocation(purchase_struct* purchase_data) {
 	int p_type = purchase_data->purchase_type;
 	int bitfield_index = purchase_data->purchase_value - 1;
 	int p_kong = purchase_data->move_kong;
+	if (p_kong > 4) {
+		p_kong = 0;
+	}
 	if (p_type != PURCHASE_NOTHING) {
 		if (p_type < PURCHASE_FLAG) {
 			switch(p_type) {
@@ -487,7 +502,7 @@ int getLocation(purchase_struct* purchase_data) {
 			return checkFlagDuplicate(purchase_data->purchase_value,0);
 		}
 	}
-	return 0;
+	return 1;
 }
 
 void setLocationStatus(location_list location_index) {
@@ -618,6 +633,12 @@ void getNextMoveText(void) {
 		p_type = shop_data->purchase_type;
 		p_kong = shop_data->kong;
 		p_flag = shop_data->flag;
+	} else if (TextOverlayData.flag != 0) {
+		has_data = 1;
+		p_type = TextOverlayData.type;
+		p_value = TextOverlayData.flag;
+		p_kong = TextOverlayData.kong;
+		p_flag = p_value;
 	} else if (CurrentMap == 0xBD) {
 		has_data = 1;
 		p_type = BFIMove_New.purchase_type;
@@ -635,22 +656,31 @@ void getNextMoveText(void) {
 				p_flag = p_value;
 			}
 		}
-		if (!has_data) {
-			has_data = 1;
-			p_type = TextOverlayData.type;
-			p_value = TextOverlayData.flag;
-			p_kong = TextOverlayData.kong;
-			p_flag = p_value;
-		}
 	}
-	if (has_data) {
+	if ((has_data) || (paad->upper_text) || (paad->lower_text)) {
 		if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+			TextOverlayData.kong = 0;
+			TextOverlayData.flag = 0;
+			TextOverlayData.type = 0;
+			int overlay_count = 0;
+			for (int i = 0; i < LoadedActorCount; i++) {
+				actorData* actor = (actorData*)LoadedActorArray[i].actor;
+				if (actor) {
+					if ((actor->actorType == 0x140) || (actor->actorType == 0x144)) {
+						if (actor != CurrentActorPointer_0) {
+							overlay_count += 1;
+						}
+					}
+				}
+			}
 			int top_item = -1;
 			int bottom_item = -1;
 			mtx_item mtx0;
 			mtx_item mtx1;
 			_guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
-			_guTranslateF(&mtx1, 0x44200000, 0x44480000, 0x0);
+			float position = 800.0f - (overlay_count * 100.0f); // Gap of 100.0f
+			int pos_f = *(int*)&position;
+			_guTranslateF(&mtx1, 0x44200000, pos_f, 0x0);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->unk_10);
 			_guTranslateF(&mtx1, 0, 0x42400000, 0);
@@ -695,37 +725,54 @@ void getNextMoveText(void) {
 						if (p_flag == -2) {
 							top_item = 59;
 						} else {
-							int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
-							for (int i = 0; i < sizeof(tied_flags) / 4; i++) {
-								if (tied_flags[i] == p_flag) {
-									top_item = 53 + i;
+							if (!writeProgressiveText(p_flag, &top_item, &bottom_item)) {
+								int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
+								for (int i = 0; i < sizeof(tied_flags) / 4; i++) {
+									if (tied_flags[i] == p_flag) {
+										top_item = 53 + i;
+									}
 								}
 							}
 						}
 						if (top_item == -1) {
 							if ((p_flag >= FLAG_BP_JAPES_DK_HAS) && (p_flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
 								// Blueprint
-								top_item = 62; // TODO: Make it so it differentiates between blueprints
+								int kong = (p_flag - FLAG_BP_JAPES_DK_HAS) % 5;
+								top_item = 62 + kong;
 							} else if ((p_flag >= FLAG_MEDAL_JAPES_DK) && (p_flag < (FLAG_MEDAL_JAPES_DK + 40))) {
 								// Medal
 								top_item = 61;
 							} else if (p_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
 								// Nintendo Coin
-								top_item = 63;
+								top_item = 67;
 							} else if (p_flag == FLAG_COLLECTABLE_RAREWARECOIN) {
 								// Rareware Coin
-								top_item = 64;
+								top_item = 68;
 							} else if ((p_flag >= FLAG_CROWN_JAPES) && (p_flag < (FLAG_CROWN_JAPES + 10))) {
 								// Crown
-								top_item = 66;
+								top_item = 70;
 							} else if (p_flag == FLAG_COLLECTABLE_BEAN) {
 								// Fungi Bean
-								top_item = 67;
+								top_item = 71;
+							} else if ((p_flag >= FLAG_PEARL_0_COLLECTED) && (p_flag < (FLAG_PEARL_0_COLLECTED + 5))) {
+								// Galleon Pearls
+								top_item = 80;
+							} else if ((p_flag >= FLAG_FAIRY_1) && (p_flag < (FLAG_FAIRY_1 + 20))) {
+								// Banana Fairy
+								top_item = 86;
 							} else {
 								// Key Number
 								for (int i = 0; i < 8; i++) {
 									if (p_flag == getKeyFlag(i)) {
-										top_item = 68 + i;
+										top_item = 72 + i;
+									}
+								}
+								// Kongs
+								if (top_item == -1) {
+									for (int i = 0; i < 5; i++) {
+										if (p_flag == kong_flags[i]) {
+											top_item = 81 + i;
+										}
 									}
 								}
 								if (top_item == -1) {
@@ -747,6 +794,7 @@ void getNextMoveText(void) {
 			} else {
 				paad->lower_text = getTextPointer(0x27,bottom_item,0);
 			}
+			priceTransplant();
 		}
 		int timer = paad->timer;
 		paad->timer = timer - 1;
@@ -864,6 +912,29 @@ void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag) {
 							if (move_flags[i] == paad->flag) {
 								text_item_1 = 0x24 + i;
 							}
+						}
+						int subtype = getMoveProgressiveFlagType(paad->flag);
+						if (subtype == 0) {
+							// Slam
+							text_item_1 = Explanation_Slam[(int)MovesBase[0].simian_slam];
+							text_file = 8;
+						} else if (subtype == 1) {
+							// Belt
+							textParameter = getRefillCount(2,0);
+							text_item_1 = 0x15;
+							text_file = 7;
+						} else if (subtype == 2) {
+							// Shop upgrade
+							text_item_1 = 0x13;
+							text_file = 9;
+							if ((paad->melons + 1) == CollectableBase.Melons) {
+								text_item_1 = 0x14;
+							} else {
+								text_file = 9;
+							}
+						} else {
+							text_item_1 = 0x2B;
+							text_file = 8;
 						}
 					}
 				break;

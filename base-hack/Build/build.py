@@ -25,12 +25,24 @@ from convertSetup import convertSetup
 from end_seq_writer import createSquishFile, createTextFile
 from generate_yellow_wrinkly import generateYellowWrinkly
 from image_converter import convertToRGBA32
+from helm_doors import getHelmDoorModel
+from model_shrink import shrinkModel
+from cutscene_builder import buildScripts
 
 # Infrastructure for recomputing DK64 global pointer tables
 from map_names import maps
 from populateSongData import writeVanillaSongData
 from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM
-from recompute_pointer_table import dumpPointerTableDetails, getFileInfo, make_safe_filename, parsePointerTables, pointer_tables, replaceROMFile, writeModifiedPointerTablesToROM
+from recompute_pointer_table import (
+    dumpPointerTableDetails,
+    getFileInfo,
+    make_safe_filename,
+    parsePointerTables,
+    pointer_tables,
+    replaceROMFile,
+    writeModifiedPointerTablesToROM,
+    clampCompressedTextures,
+)
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
 
@@ -42,204 +54,211 @@ if os.path.exists(newROMName):
 shutil.copyfile(ROMName, newROMName)
 
 portal_images = []
-portal_images.append(convertPortalImage("assets/Non-Code/portals/DK_rando_portal_1.png"))
-portal_images.append(convertPortalImage("assets/Non-Code/portals/DK_rando_portal_2.png"))
+portal_images.append(convertPortalImage("assets/portals/DK_rando_portal_1.png"))
+portal_images.append(convertPortalImage("assets/portals/DK_rando_portal_2.png"))
 
-createTextFile("assets/Non-Code/credits")
-createSquishFile("assets/Non-Code/credits")
+createTextFile("assets/credits")
+createSquishFile("assets/credits")
 generateYellowWrinkly()
 
+getHelmDoorModel(6022, 6023, "crown_door.bin")
+getHelmDoorModel(6024, 6025, "coin_door.bin")
+
+BLOCK_COLOR_SIZE = 64  # Bytes allocated to a block 32x32 image. Brute forcer says we can go as low as 0x25 bytes, but leaving some room for me to have left out something
+
 file_dict = [
-    {
-        "name": "Static ASM Code",
-        "start": 0x113F0,
-        "compressed_size": 0xB15E4,
-        "source_file": "StaticCode.bin",
-        "use_external_gzip": True,
-        "patcher": patchStaticCode,
-    },
-    {
-        "name": "Dolby Logo",
-        "pointer_table_index": 14,
-        "file_index": 176,
-        "source_file": "assets/Non-Code/Dolby/DolbyThin.png",
-        "texture_format": "ia4",
-    },
-    {
-        "name": "Thumb Image",
-        "pointer_table_index": 14,
-        "file_index": 94,
-        "source_file": "assets/Non-Code/Nintendo Logo/Nintendo4.png",
-        "texture_format": "rgba5551",
-    },
-    {
-        "name": "DKTV Image",
-        "pointer_table_index": 14,
-        "file_index": 44,
-        "source_file": "assets/Non-Code/DKTV/logo3.png",
-        "texture_format": "rgba5551",
-    },
-    {
-        "name": "Spin Transition Image",
-        "pointer_table_index": 14,
-        "file_index": 95,
-        "source_file": "assets/Non-Code/transition/transition-body.png",
-        "texture_format": "ia4",
-    },
-    {
-        "name": "Moves Image",
-        "pointer_table_index": 14,
-        "file_index": 115,
-        "source_file": "assets/Non-Code/file_screen/moves.png",
-        "texture_format": "rgba5551",
-    },
-    {
-        "name": "Blueprint Image",
-        "pointer_table_index": 14,
-        "file_index": 116,
-        "source_file": "assets/Non-Code/file_screen/blueprint.png",
-        "texture_format": "rgba5551",
-    },
-    {
-        "name": "Tag Barrel Shell Texture",
-        "pointer_table_index": 25,
-        "file_index": 4938,
-        "source_file": "assets/Non-Code/tagbarrel/shell.png",
-        "texture_format": "rgba5551",
-    },
+    {"name": "Static ASM Code", "start": 0x113F0, "compressed_size": 0xB15E4, "source_file": "StaticCode.bin", "use_external_gzip": True, "patcher": patchStaticCode},
+    {"name": "Dolby Logo", "pointer_table_index": 14, "file_index": 176, "source_file": "assets/Dolby/DolbyThin.png", "texture_format": "ia4"},
+    {"name": "Thumb Image", "pointer_table_index": 14, "file_index": 94, "source_file": "assets/Nintendo Logo/Nintendo4.png", "texture_format": "rgba5551"},
+    {"name": "DKTV Image", "pointer_table_index": 14, "file_index": 44, "source_file": "assets/DKTV/logo3.png", "texture_format": "rgba5551"},
+    {"name": "Spin Transition Image", "pointer_table_index": 14, "file_index": 95, "source_file": "assets/transition/transition-body.png", "texture_format": "ia4"},
+    {"name": "Moves Image", "pointer_table_index": 14, "file_index": 115, "source_file": "assets/file_screen/moves.png", "texture_format": "rgba5551"},
+    {"name": "Medal Image", "pointer_table_index": 14, "file_index": 116, "source_file": "assets/displays/medal.png", "texture_format": "rgba5551"},
+    {"name": "Tag Barrel Shell Texture", "pointer_table_index": 25, "file_index": 4938, "source_file": "assets/tagbarrel/shell.png", "texture_format": "rgba5551"},
     {
         "name": "Gong Geometry",
         "pointer_table_index": 4,
         "file_index": 195,
-        "source_file": "assets/Non-Code/Gong/gong_geometry.bin",
-        "bps_file": "assets/Non-Code/Gong/gong_geometry.bps",
+        "source_file": "assets/Gong/gong_geometry.bin",
+        "bps_file": "assets/Gong/gong_geometry.bps",
         "is_diff_patch": True,
     },
-    {
-        "name": "No Face",
-        "pointer_table_index": 14,
-        "file_index": 0x21,
-        "source_file": "assets/Non-Code/displays/none.png",
-        "texture_format": "rgba32",
-    },
-    {
-        "name": "Shared Face",
-        "pointer_table_index": 14,
-        "file_index": 0x27,
-        "source_file": "assets/Non-Code/displays/shared.png",
-        "texture_format": "rgba32",
-    },
-    {
-        "name": "Sold Out Face",
-        "pointer_table_index": 14,
-        "file_index": 0x28,
-        "source_file": "assets/Non-Code/displays/soldout32.png",
-        "texture_format": "rgba32",
-    },
-    {
-        "name": "End Sequence Credits",
-        "pointer_table_index": 19,
-        "file_index": 7,
-        "source_file": "assets/Non-Code/credits/credits.bin",
-        "do_not_delete_source": True,
-    },
+    {"name": "End Sequence Credits", "pointer_table_index": 19, "file_index": 7, "source_file": "assets/credits/credits.bin", "do_not_delete_source": True},
     {
         "name": "DK Wrinkly Door",
         "pointer_table_index": 4,
         "file_index": 0xF0,
-        "source_file": "assets/Non-Code/Gong/hint_door.bin",
+        "source_file": "assets/Gong/hint_door.bin",
         "do_not_delete_source": True,
+        "target_compressed_size": 0x1420,
+        "target_uncompressed_size": 0x1420,
     },
-    {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/Non-Code/displays/wxys.png", "texture_format": "rgba5551"},
+    {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/displays/wxys.png", "texture_format": "rgba5551"},
     {
         "name": "DK Tie Palette",
         "pointer_table_index": 25,
         "file_index": 6013,
-        "source_file": "assets/Non-Code/hash/dk_tie_palette.png",
+        "source_file": "assets/hash/dk_tie_palette.png",
         "do_not_extract": True,
         "texture_format": "rgba5551",
-        "target_compressed_size": 32 * 32 * 2,
+        "target_compressed_size": BLOCK_COLOR_SIZE,
     },
     {
         "name": "Tiny Overalls Palette",
         "pointer_table_index": 25,
         "file_index": 6014,
-        "source_file": "assets/Non-Code/hash/tiny_palette.png",
+        "source_file": "assets/hash/tiny_palette.png",
         "do_not_extract": True,
         "texture_format": "rgba5551",
-        "target_compressed_size": 32 * 32 * 2,
+        "target_compressed_size": BLOCK_COLOR_SIZE,
     },
     {
-        "name": "DPad Image",
-        "pointer_table_index": 14,
-        "file_index": 187,
-        "source_file": "assets/Non-Code/displays/dpad.png",
+        "name": "Bean Sprite",
+        "pointer_table_index": 25,
+        "file_index": 6020,
+        "source_file": "assets/displays/bean.png",
+        "do_not_extract": True,
         "texture_format": "rgba5551",
     },
     {
-        "name": "Tracker Image",
-        "pointer_table_index": 14,
-        "file_index": 0xA1,
-        "source_file": "assets/Non-Code/file_screen/tracker.png",
+        "name": "Pearl Sprite",
+        "pointer_table_index": 25,
+        "file_index": 6021,
+        "source_file": "assets/displays/pearl.png",
+        "do_not_extract": True,
         "texture_format": "rgba5551",
     },
     {
-        "name": "Nintendo Coin Model",
+        "name": "Kong (DK) Model",
         "pointer_table_index": 4,
-        "file_index": 0x48,
-        "source_file": "nintendo_coin_om2.bin",
+        "file_index": 0x257,
+        "source_file": "kong_dk_om2.bin",
+        "do_not_extract": True,
         "do_not_delete_source": True,
     },
     {
-        "name": "Rareware Coin Model",
+        "name": "Kong (Diddy) Model",
         "pointer_table_index": 4,
-        "file_index": 0x28F,
-        "source_file": "rareware_coin_om2.bin",
+        "file_index": 0x258,
+        "source_file": "kong_diddy_om2.bin",
+        "do_not_extract": True,
         "do_not_delete_source": True,
     },
     {
-        "name": "Potion (DK) Model",
+        "name": "Kong (Lanky) Model",
         "pointer_table_index": 4,
-        "file_index": 0x5B,
-        "source_file": "potion_dk_om2.bin",
+        "file_index": 0x259,
+        "source_file": "kong_lanky_om2.bin",
+        "do_not_extract": True,
         "do_not_delete_source": True,
     },
     {
-        "name": "Potion (Diddy) Model",
+        "name": "Kong (Tiny) Model",
         "pointer_table_index": 4,
-        "file_index": 0x1F2,
-        "source_file": "potion_diddy_om2.bin",
+        "file_index": 0x25A,
+        "source_file": "kong_tiny_om2.bin",
+        "do_not_extract": True,
         "do_not_delete_source": True,
     },
     {
-        "name": "Potion (Lanky) Model",
+        "name": "Kong (Chunky) Model",
         "pointer_table_index": 4,
-        "file_index": 0x59,
-        "source_file": "potion_lanky_om2.bin",
+        "file_index": 0x25B,
+        "source_file": "kong_chunky_om2.bin",
+        "do_not_extract": True,
         "do_not_delete_source": True,
     },
     {
-        "name": "Potion (Tiny) Model",
+        "name": "Fairy Model",
         "pointer_table_index": 4,
-        "file_index": 0x1F3,
-        "source_file": "potion_tiny_om2.bin",
+        "file_index": 0x25C,
+        "source_file": "fairy_om2.bin",
+        "do_not_extract": True,
+        "do_not_delete_source": True,
+    },
+    {"name": "DPad Image", "pointer_table_index": 14, "file_index": 187, "source_file": "assets/displays/dpad.png", "texture_format": "rgba5551"},
+    {"name": "Tracker Image", "pointer_table_index": 14, "file_index": 0xA1, "source_file": "assets/file_screen/tracker.png", "texture_format": "rgba5551"},
+    {"name": "Nintendo Coin Model", "pointer_table_index": 4, "file_index": 0x48, "source_file": "nintendo_coin_om2.bin", "do_not_delete_source": True},
+    {"name": "Nintendo Coin Model", "pointer_table_index": 4, "file_index": 0xB7, "source_file": "rainbow_coin_om2.bin", "do_not_delete_source": True},
+    {"name": "Rareware Coin Model", "pointer_table_index": 4, "file_index": 0x28F, "source_file": "rareware_coin_om2.bin", "do_not_delete_source": True},
+    {"name": "Potion (DK) Model", "pointer_table_index": 4, "file_index": 0x5B, "source_file": "potion_dk_om2.bin", "do_not_delete_source": True},
+    {"name": "Potion (Diddy) Model", "pointer_table_index": 4, "file_index": 0x1F2, "source_file": "potion_diddy_om2.bin", "do_not_delete_source": True},
+    {"name": "Potion (Lanky) Model", "pointer_table_index": 4, "file_index": 0x59, "source_file": "potion_lanky_om2.bin", "do_not_delete_source": True},
+    {"name": "Potion (Tiny) Model", "pointer_table_index": 4, "file_index": 0x1F3, "source_file": "potion_tiny_om2.bin", "do_not_delete_source": True},
+    {"name": "Potion (Chunky) Model", "pointer_table_index": 4, "file_index": 0x1F5, "source_file": "potion_chunky_om2.bin", "do_not_delete_source": True},
+    {"name": "Potion (Any) Model", "pointer_table_index": 4, "file_index": 0x1F6, "source_file": "potion_any_om2.bin", "do_not_delete_source": True},
+    {"name": "Krusha Head", "start": 0x1FF6000, "source_file": "assets/displays/krusha_head64.png", "do_not_delete_source": True, "texture_format": "rgba5551", "do_not_compress": True},
+    {"name": "Snow Texture", "start": 0x1FF8000, "source_file": "assets/displays/snow32.png", "do_not_delete_source": True, "texture_format": "rgba5551", "do_not_compress": True},
+    {"name": "Crown Door Model", "pointer_table_index": 4, "file_index": 0x1A6, "source_file": "crown_door.bin", "do_not_delete_source": True},
+    {"name": "Coin Door Model", "pointer_table_index": 4, "file_index": 0x1A7, "source_file": "coin_door.bin", "do_not_delete_source": True},
+    {
+        "name": "Crown Door Image 1",
+        "pointer_table_index": 25,
+        "file_index": 6022,
+        "source_file": "assets/displays/door_crown.png",
+        "texture_format": "rgba5551",
+        "do_not_delete_source": True,
+        "target_compressed_size": 44 * 44 * 2,
+    },
+    {
+        "name": "Crown Door Image 2",
+        "pointer_table_index": 25,
+        "file_index": 6023,
+        "source_file": "assets/displays/num_4.png",
+        "texture_format": "rgba5551",
+        "do_not_delete_source": True,
+        "target_compressed_size": 44 * 44 * 2,
+    },
+    {
+        "name": "Coin Door Image 1",
+        "pointer_table_index": 25,
+        "file_index": 6024,
+        "source_file": "assets/displays/door_combocoin.png",
+        "texture_format": "rgba5551",
+        "do_not_delete_source": True,
+        "target_compressed_size": 44 * 44 * 2,
+    },
+    {
+        "name": "Coin Door Image 2",
+        "pointer_table_index": 25,
+        "file_index": 6025,
+        "source_file": "assets/displays/num_2.png",
+        "texture_format": "rgba5551",
+        "do_not_delete_source": True,
+        "target_compressed_size": 44 * 44 * 2,
+    },
+    {
+        "name": "Fake GB Shine",
+        "pointer_table_index": 25,
+        "file_index": 6060,
+        "source_file": "assets/displays/gb_shine.png",
+        "texture_format": "rgba5551",
         "do_not_delete_source": True,
     },
     {
-        "name": "Potion (Chunky) Model",
+        "name": "Fake Item Model",
         "pointer_table_index": 4,
-        "file_index": 0x1F5,
-        "source_file": "potion_chunky_om2.bin",
+        "file_index": 0x25D,
+        "source_file": "fake_item.bin",
         "do_not_delete_source": True,
-    },
-    {
-        "name": "Potion (Any) Model",
-        "pointer_table_index": 4,
-        "file_index": 0x1F6,
-        "source_file": "potion_any_om2.bin",
-        "do_not_delete_source": True,
+        "do_not_extract": True,
     },
 ]
+
+file_dict = file_dict + buildScripts()
+
+for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 0xF8, 0x136):
+    file_dict.append(
+        {
+            "name": f"Snow Texture {hex(img)}",
+            "pointer_table_index": 25,
+            "file_index": img,
+            "source_file": f"grass{img}.bin",
+            # "source_file": "assets/displays/snow.bin",
+            # "do_not_delete_source": True,
+            "target_compressed_size": 0xAA0,
+        }
+    )
 
 number_game_changes = [
     {"number": 6, "state": "unlit", "texture": 520},
@@ -253,9 +272,35 @@ for num in number_game_changes:
             "name": f"Number Game ({num['number']}, {num['state']})",
             "pointer_table_index": 7,
             "file_index": num["texture"],
-            "source_file": f"assets/Non-Code/displays/num_{num['number']}_{num['state']}.png",
+            "source_file": f"assets/displays/num_{num['number']}_{num['state']}.png",
             "texture_format": "rgba5551",
             "do_not_compress": True,
+        }
+    )
+for x in range(5):
+    file_dict.append(
+        {
+            "name": f"Blueprint Model ({x})",
+            "pointer_table_index": 4,
+            "file_index": 0xDD + x,
+            "source_file": f"blueprint{x}.bin",
+            "do_not_delete_source": True,
+            "target_compressed_size": 0x6C4,
+            "target_uncompressed_size": 0x6C4,
+        }
+    )
+for x in range(0x5A, 0x5E):
+    file_dict.append({"name": f"Melon Slice ({hex(x)})", "pointer_table_index": 14, "file_index": x, "source_file": f"melon{x}.bin", "target_compressed_size": 48 * 42 * 2})
+
+for item in range(3):
+    file_dict.append(
+        {
+            "name": f"Rainbow Coin ({item})",
+            "pointer_table_index": 25,
+            "file_index": 6061 + item,
+            "source_file": f"assets/hash/rainbow_{item}.png",
+            "do_not_extract": True,
+            "texture_format": "rgba5551",
         }
     )
 
@@ -266,47 +311,148 @@ for ci, coin in enumerate(["nin_coin", "rw_coin"]):
                 "name": f"{coin.replace('_',' ').capitalize()} ({item})",
                 "pointer_table_index": 25,
                 "file_index": 6015 + item + (2 * ci),
-                "source_file": f"assets/Non-Code/hash/{coin}_{item}.png",
+                "source_file": f"assets/hash/{coin}_{item}.png",
                 "do_not_extract": True,
                 "texture_format": "rgba5551",
             }
         )
 file_dict.append(
-    {
-        "name": "Special Coin Side",
-        "pointer_table_index": 25,
-        "file_index": 6019,
-        "source_file": f"assets/Non-Code/hash/modified_coin_side.png",
-        "do_not_extract": True,
-        "texture_format": "rgba5551",
-    }
+    {"name": "Special Coin Side", "pointer_table_index": 25, "file_index": 6019, "source_file": f"assets/hash/modified_coin_side.png", "do_not_extract": True, "texture_format": "rgba5551"}
 )
+
+starts = (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)
+for si, s in enumerate(starts):
+    for x in range(8):
+        file_dict.append(
+            {
+                "name": f"Blueprint Image (Kong {si + 1}, Frame {x})",
+                "pointer_table_index": 25,
+                "file_index": s + x,
+                "source_file": f"bp{si}_{x}.bin",
+                "target_compressed_size": 48 * 42 * 2,
+                "target_uncompressed_size": 48 * 42 * 2,
+            }
+        )
 
 kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
 ammo_names = ["standard_crate", "homing_crate"]
 
 for ammo_index, ammo in enumerate(ammo_names):
-    file_dict.append(
-        {"name": f"{ammo.replace('_',' ')} Image", "pointer_table_index": 14, "file_index": 188 + ammo_index, "source_file": f"assets/Non-Code/displays/{ammo}.png", "texture_format": "rgba5551"}
-    )
+    file_dict.append({"name": f"{ammo.replace('_',' ')} Image", "pointer_table_index": 14, "file_index": 188 + ammo_index, "source_file": f"assets/displays/{ammo}.png", "texture_format": "rgba5551"})
 
 for kong_index, kong in enumerate(kong_names):
-    for x_i, x in enumerate(["rgba32", "rgba5551"]):
-        file_dict.append(
-            {
-                "name": f"{kong} Face ({x})",
-                "pointer_table_index": 14,
-                "file_index": [0x22 + kong_index, 190 + kong_index][x_i],
-                "source_file": f"assets/Non-Code/displays/{kong.lower()}_face.png",
-                "texture_format": x,
-            }
-        )
+    file_dict.append(
+        {
+            "name": f"DPad - {kong} Face",
+            "pointer_table_index": 14,
+            "file_index": 190 + kong_index,
+            "source_file": f"assets/displays/{kong.lower()}_face.png",
+            "texture_format": "rgba5551",
+            "target_compressed_size": 32 * 32 * 2,
+        }
+    )
 
-base_coin_sfx = "assets/Non-Code/music/Win95_startup.dk64song"
-new_coin_sfx = "assets/Non-Code/music/coin_sfx.bin"
+shop_face_array = [
+    "none",  # No Face
+    "dk_face",
+    "diddy_face",
+    "lanky_face",
+    "tiny_face",
+    "chunky_face",
+    "shared",  # Shared Move
+    "soldout32",  # Sold Out
+    "gb",
+    "lanky_bp",
+    "crown_shop",
+    "key",
+    "medal",
+    "potion32",
+    "nin_coin",
+    "rw_coin",
+    "bean32",
+    "pearl32",
+    "fairy",
+    "rainbow_coin",
+    "fake_gb",
+]
+for x, shop in enumerate(shop_face_array):
+    data = {"name": f"Shop Indicator ({shop})", "pointer_table_index": 14, "file_index": 195 + x, "source_file": f"assets/displays/{shop}.png", "texture_format": "rgba32"}
+    if "_face" in shop:
+        data["target_compressed_size"] = 32 * 32 * 4
+    file_dict.append(data)
+
+base_coin_sfx = "assets/music/Win95_startup.dk64song"
+new_coin_sfx = "assets/music/coin_sfx.bin"
 if os.path.exists(new_coin_sfx):
     os.remove(new_coin_sfx)
 shutil.copyfile(base_coin_sfx, new_coin_sfx)
+
+arcade_rewards = [
+    # 0 - Nintendo Coin / No Item
+    "bean",  # 1 - Bean
+    "blueprint",  # 2 - Blueprint
+    "crown",  # 3 - Crown
+    "fairy",  # 4 - Fairy
+    "gb",  # 5 - GB
+    "key",  # 6 - Key
+    "medal",  # 7 - Medal
+    "pearl",  # 8 - Pearl
+    "potion_dk",  # 9 - Potion (DK)
+    "potion_diddy",  # 10 - Potion (Diddy)
+    "potion_lanky",  # 11 - Potion (Lanky)
+    "potion_tiny",  # 12 - Potion (Tiny)
+    "potion_chunky",  # 13 - Potion (Chunky)
+    "potion_any",  # 14 - Potion (Any)
+    "dk",  # 15 - DK
+    "diddy",  # 16 - Diddy
+    "lanky",  # 17 - Lanky
+    "tiny",  # 18 - Tiny
+    "chunky",  # 19 - Chunky
+    "rainbow",  # 20 - Rainbow Coin
+    "rwcoin",  # 21 - RW Coin
+]
+
+jetpac_rewards = [
+    # 0 - Rareware Coin / No Item
+    "bean",  # 1 - Bean
+    "blueprint",  # 2 - Blueprint
+    "crown",  # 3 - Crown
+    "fairy",  # 4 - Fairy
+    "gb",  # 5 - GB
+    "key",  # 6 - Key
+    "medal",  # 7 - Medal
+    "pearl",  # 8 - Pearl
+    "potion",  # 9 - Potion
+    "kong",  # 10 - Kong
+    "rainbow",  # 11 - Rainbow Coin
+    "nintendo",  # 12 - Nintendo Coin
+]
+
+for rwd_index, rwd in enumerate(arcade_rewards):
+    file_dict.append(
+        {
+            "name": f"Arcade Reward - {rwd.capitalize()}",
+            "pointer_table_index": 6,
+            "file_index": rwd_index,
+            "source_file": f"assets/arcade_jetpac/arcade/{rwd}.png",
+            "do_not_compress": True,
+            "texture_format": "rgba5551",
+            "do_not_delete_source": True,
+        }
+    )
+for rwd_index, rwd in enumerate(jetpac_rewards):
+    file_dict.append(
+        {
+            "name": f"Jetpac Reward - {rwd.capitalize()}",
+            "pointer_table_index": 6,
+            "file_index": rwd_index + len(arcade_rewards),
+            "source_file": f"assets/arcade_jetpac/jetpac/{rwd}.png",
+            "do_not_compress": True,
+            "texture_format": "i8",
+            "do_not_delete_source": True,
+        }
+    )
+
 
 map_replacements = []
 song_replacements = [
@@ -323,21 +469,47 @@ song_replacements = [
 changed_song_indexes = []
 
 for song in song_replacements:
-    item = {
-        "name": song["name"].replace("_", " "),
-        "pointer_table_index": 0,
-        "file_index": song["index"],
-        "source_file": f"assets/Non-Code/music/{song['name']}.bin",
-        "target_compressed_size": 0x2DDE,
-    }
+    item = {"name": song["name"].replace("_", " "), "pointer_table_index": 0, "file_index": song["index"], "source_file": f"assets/music/{song['name']}.bin", "target_compressed_size": 0x2DDE}
     if song["bps"]:
         item["is_diff_patch"] = True
-        item["bps_file"] = f"assets/Non-Code/music/{song['name']}.bps"
+        item["bps_file"] = f"assets/music/{song['name']}.bps"
     else:
         item["do_not_delete_source"] = True
         item["do_not_extract"] = True
     file_dict.append(item)
     changed_song_indexes.append(song["index"])
+
+for door in (0xF2, 0xEF, 0x67, 0xF1):
+    file_dict.append(
+        {
+            "name": f"Wrinkly Door {hex(door)}",
+            "pointer_table_index": 4,
+            "file_index": door,
+            "source_file": f"door{door}.bin",
+            "target_compressed_size": 0x1420,
+            "target_uncompressed_size": 0x1420,
+        },
+    )
+
+switches = [
+    [0x94, 0x16C, 0x167],
+    [0x93, 0x16B, 0x166],
+    [0x95, 0x16D, 0x168],
+    [0x96, 0x16E, 0x169],
+    [0xB8, 0x16A, 0x165],
+]
+for ki, kong in enumerate(switches):
+    for li, lvl in enumerate(kong):
+        file_dict.append(
+            {
+                "name": f"Slam Switch (Kong {ki}, Lvl {li})",
+                "pointer_table_index": 4,
+                "file_index": lvl,
+                "source_file": f"switch{lvl}.bin",
+                "target_compressed_size": 0xC70,
+                "target_uncompressed_size": 0xC70,
+            },
+        )
 
 # Instance Scripts
 with open("./instance_scripts_data.json", "r") as json_f:
@@ -394,48 +566,43 @@ for x in maps_to_expand:
 for x in range(175):
     if x > 0:
         if x not in changed_song_indexes:
-            file_dict.append(
-                {
-                    "name": "Song " + str(x),
-                    "pointer_table_index": 0,
-                    "file_index": x,
-                    "source_file": "song" + str(x) + ".bin",
-                    "target_compressed_size": 0x2DDE,
-                }
-            )
+            file_dict.append({"name": "Song " + str(x), "pointer_table_index": 0, "file_index": x, "source_file": "song" + str(x) + ".bin", "target_compressed_size": 0x2DDE})
 for x in range(6):
-    file_dict.append(
-        {
-            "name": "DKTV Inputs " + str(x),
-            "pointer_table_index": 17,
-            "file_index": x,
-            "source_file": "dktv" + str(x) + ".bin",
-            "target_compressed_size": 0x718,
-        }
-    )
+    file_dict.append({"name": "DKTV Inputs " + str(x), "pointer_table_index": 17, "file_index": x, "source_file": "dktv" + str(x) + ".bin", "target_compressed_size": 0x718})
 for x in range(221):
-    file_dict.append(
-        {
-            "name": "Zones for map " + str(x),
-            "pointer_table_index": 18,
-            "file_index": x,
-            "source_file": "lz" + str(x) + ".bin",
-            "target_compressed_size": 0x850,
-            "do_not_recompress": True,
-        }
-    )
+    file_dict.append({"name": "Zones for map " + str(x), "pointer_table_index": 18, "file_index": x, "source_file": "lz" + str(x) + ".bin", "target_compressed_size": 0x850, "do_not_recompress": True})
+# Setup
+setup_expansion_size = 0x12C0
 for x in range(221):
-    file_dict.append(
-        {
-            "name": "Setup for map " + str(x),
-            "pointer_table_index": 9,
-            "file_index": x,
-            "source_file": "setup" + str(x) + ".bin",
-            "target_compressed_size": 0x8000,
-            "target_uncompressed_size": 0x8000,
-            "do_not_recompress": True,
-        }
-    )
+    local_expansion = setup_expansion_size
+    if x in (0, 1, 2, 5, 9, 15, 0x19):
+        local_expansion = 0
+    with open(ROMName, "rb") as fh:
+        setup_tbl_index = 9
+        fh.seek(0x101C50 + (setup_tbl_index * 4))
+        script_table = 0x101C50 + int.from_bytes(fh.read(4), "big")
+        fh.seek(script_table + (x * 4))
+        item_start = 0x101C50 + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+        item_end = 0x101C50 + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+        fh.seek(item_start)
+        is_compressed = int.from_bytes(fh.read(2), "big") == 0x1F8B
+        item_size = item_end - item_start
+        if is_compressed:
+            fh.seek(item_start)
+            data = fh.read(item_size)
+            data = zlib.decompress(data, (15 + 32))
+            item_size = len(data)
+        file_dict.append(
+            {
+                "name": "Setup for map " + str(x),
+                "pointer_table_index": 9,
+                "file_index": x,
+                "source_file": "setup" + str(x) + ".bin",
+                "target_compressed_size": item_size + local_expansion,
+                "target_uncompressed_size": item_size + local_expansion,
+                "do_not_recompress": True,
+            }
+        )
 for x in range(221):
     if x != 2:  # DK Arcade path file is massive
         file_dict.append(
@@ -467,12 +634,12 @@ for x in range(8):
             "name": "Key " + str(x + 1) + " file screen",
             "pointer_table_index": 14,
             "file_index": 107 + x,
-            "source_file": "assets/Non-Code/file_screen/key" + str(x + 1) + ".png",
+            "source_file": "assets/file_screen/key" + str(x + 1) + ".png",
             "texture_format": "rgba5551",
         }
     )
 for x in range(43):
-    if x not in (13, 32, 0x18, 0x27, 8, 37, 2):
+    if x not in (13, 32, 0x18, 0x27, 8, 37, 2, 40, 19):
         file_dict.append(
             {
                 "name": "Text " + str(x),
@@ -485,28 +652,16 @@ for x in range(43):
             }
         )
 for x in range(10):
-    file_dict.append(
-        {
-            "name": f"Tag Barrel Bottom Texture ({x+1})",
-            "pointer_table_index": 25,
-            "file_index": 4749 + x,
-            "source_file": "assets/Non-Code/tagbarrel/bottom.png",
-            "texture_format": "rgba5551",
-        }
-    )
+    file_dict.append({"name": f"Tag Barrel Bottom Texture ({x+1})", "pointer_table_index": 25, "file_index": 4749 + x, "source_file": "assets/tagbarrel/bottom.png", "texture_format": "rgba5551"})
 for x in range(4761, 4768):
     sz = "44"
     if x == 4761:
         sz = "3264"
-    file_dict.append(
-        {
-            "name": f"Portal Ripple Texture ({x})",
-            "pointer_table_index": 25,
-            "file_index": x,
-            "source_file": f"assets/Non-Code/displays/empty{sz}.png",
-            "texture_format": "rgba5551",
-        }
-    )
+    file_dict.append({"name": f"Portal Ripple Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/displays/empty{sz}.png", "texture_format": "rgba5551"})
+for x in range(0xB50, 0xB56):
+    file_dict.append({"name": f"Unused Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/displays/empty11.png", "texture_format": "rgba5551"})
+for x in range(0xDD1, 0xDD6):
+    file_dict.append({"name": f"Unused Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/displays/empty11.png", "texture_format": "rgba5551"})
 barrel_faces = ["Dk", "Diddy", "Lanky", "Tiny", "Chunky"]
 barrel_offsets = [4817, 4815, 4819, 4769, 4747]
 for x in range(5):
@@ -516,22 +671,36 @@ for x in range(5):
                 "name": f"{barrel_faces[x]} Transform Barrel Shell ({y+1})",
                 "pointer_table_index": 25,
                 "file_index": barrel_offsets[x] + y,
-                "source_file": f"assets/Non-Code/tagbarrel/{barrel_faces[x]} barrel {y}a.png",
+                "source_file": f"assets/tagbarrel/{barrel_faces[x]} barrel {y}a.png",
                 "texture_format": "rgba5551",
             }
         )
 
-kong_palettes = [0xE8C, 0xE66, 0xE69, 0xEB9, 0xE67, 3826, 3847, 3734, 3777, 3778, 4971, 4966]
+
+kong_palettes = {
+    0xE8C: [(32, 32), "block"],  # DK Base
+    0xE66: [(32, 32), "block"],  # Diddy Cap/Shirt
+    0xE69: [(32, 32), "block"],  # Lanky Overalls
+    0xEB9: [(43, 32), "checkered"],  # Chunky Checkered Shirt
+    0xE67: [(32, 32), "block"],  # Chunky Shirt Front
+    3826: [(32, 32), "block"],  # Rambi
+    3847: [(32, 32), "block"],  # Enguarde
+    3734: [(43, 32), "checkered"],  # Lanky Patch
+    3777: [(32, 32), "sparkle"],  # Disco Shirt
+    3778: [(32, 32), "sparkle"],  # Disco Gloves
+    4971: [(32, 32), "block"],  # Krusha Skin
+    4966: [(32, 32), "block"],  # Krusha Belt
+}
 for x in kong_palettes:
-    x_s = 32 * 32 * 2
-    if x in (0xEB9, 3734):  # Chunky Shirt Back, Lanky Patch
-        x_s = 43 * 32 * 2
+    x_s = kong_palettes[x][0][0] * kong_palettes[x][0][1] * 2
+    if kong_palettes[x][0][0] == 32 and kong_palettes[x][0][1] == 32 and kong_palettes[x][1] == "block":
+        x_s = BLOCK_COLOR_SIZE
     file_dict.append({"name": f"Palette Expansion ({hex(x)})", "pointer_table_index": 25, "file_index": x, "source_file": f"palette_{x}.bin", "target_compressed_size": x_s})
 
-colorblind_changes = [
-    [4120, 4124, 32, 44],
-    [5819, 5858, 32, 64],
-]
+for tex in range(0x273, 0x27D):
+    file_dict.append({"name": f"Head Expansion ({hex(tex)})", "pointer_table_index": 25, "file_index": tex, "source_file": f"head_{tex}.bin", "target_compressed_size": 32 * 64 * 2})
+
+colorblind_changes = [[4120, 4124, 32, 44], [5819, 5858, 32, 64]]
 for change in colorblind_changes:
     for file_index in range(change[0], change[1] + 1):
         file_dict.append(
@@ -543,7 +712,46 @@ for change in colorblind_changes:
                 "target_compressed_size": 2 * change[2] * change[3],
             }
         )
+barrel_skins = (
+    "dk",
+    "diddy",
+    "lanky",
+    "tiny",
+    "chunky",
+    "bp",
+    "nin_coin",
+    "rw_coin",
+    "key",
+    "crown",
+    "medal",
+    "potion",
+    "bean",
+    "pearl",
+    "fairy",
+    "rainbow",
+    "fakegb",
+)
+for bi, b in enumerate(barrel_skins):
+    for x in range(2):
+        file_dict.append(
+            {
+                "name": f"Barrel Skin ({b.capitalize()} - {x + 1})",
+                "pointer_table_index": 25,
+                "file_index": 6026 + (2 * bi) + x,
+                "source_file": f"assets/displays/barrel_{b}_{x}.png",
+                "texture_format": "rgba5551",
+            }
+        )
 
+shrinkModel(False, "", 0xAE, 0.15, "shrink_crown.bin", False)  # Battle Crown
+shrinkModel(False, "", 0xA4, 0.1, "shrink_key.bin", False)  # Boss Key
+shrinkModel(True, "potion_dk_om1.bin", 0, 0.2, "shrink_potion_dk.bin", False)  # Potion (DK)
+shrinkModel(True, "potion_diddy_om1.bin", 0, 0.2, "shrink_potion_diddy.bin", False)  # Potion (Diddy)
+shrinkModel(True, "potion_lanky_om1.bin", 0, 0.2, "shrink_potion_lanky.bin", False)  # Potion (Lanky)
+shrinkModel(True, "potion_tiny_om1.bin", 0, 0.2, "shrink_potion_tiny.bin", False)  # Potion (Tiny)
+shrinkModel(True, "potion_chunky_om1.bin", 0, 0.2, "shrink_potion_chunky.bin", False)  # Potion (Chunky)
+shrinkModel(True, "potion_any_om1.bin", 0, 0.2, "shrink_potion_any.bin", False)  # Potion (Any)
+shrinkModel(False, "", 0x3C, 5, "shrink_fairy.bin", True)  # Fairy
 
 model_changes = [
     {"model_index": 0, "model_file": "diddy_base.bin"},
@@ -561,23 +769,37 @@ model_changes = [
     {"model_index": 0xF0, "model_file": "potion_tiny_om1.bin"},
     {"model_index": 0xF1, "model_file": "potion_chunky_om1.bin"},
     {"model_index": 0xF2, "model_file": "potion_any_om1.bin"},
+    {"model_index": 0xF3, "model_file": "shrink_crown.bin"},
+    {"model_index": 0xF4, "model_file": "shrink_key.bin"},
+    {"model_index": 0xF5, "model_file": "shrink_potion_dk.bin"},
+    {"model_index": 0xF6, "model_file": "shrink_potion_diddy.bin"},
+    {"model_index": 0xF7, "model_file": "shrink_potion_lanky.bin"},
+    {"model_index": 0xF8, "model_file": "shrink_potion_tiny.bin"},
+    {"model_index": 0xF9, "model_file": "shrink_potion_chunky.bin"},
+    {"model_index": 0xFA, "model_file": "shrink_potion_any.bin"},
+    {"model_index": 0xFB, "model_file": "shrink_fairy.bin"},
+    {"model_index": 0x10D, "model_file": "fake_item_actor.bin"},
+    {"model_index": 0xA3, "model_file": "counter.bin"},
 ]
+for bi, b in enumerate(barrel_skins):
+    model_changes.append(
+        {
+            "model_index": 0xFC + bi,
+            "model_file": f"barrel_skin_{b}.bin",
+        }
+    )
+model_changes = sorted(model_changes, key=lambda d: d["model_index"])
+
 for x in model_changes:
-    data = {
-        "name": f"Model {x['model_index']}",
-        "pointer_table_index": 5,
-        "file_index": x["model_index"],
-        "source_file": x["model_file"],
-        "do_not_delete_source": True,
-    }
+    data = {"name": f"Model {x['model_index']}", "pointer_table_index": 5, "file_index": x["model_index"], "source_file": x["model_file"], "do_not_delete_source": True}
     if x["model_index"] > 0xEB:
         data["do_not_extract"] = True
+    if x["model_index"] == 0xDA:
+        data["target_compressed_size"] = 0x4740
+        data["target_UNcompressed_size"] = 0x4740
     file_dict.append(data)
 
-portal_image_order = [
-    ["SE", "NE", "SW", "NW"],
-    ["NW", "SW", "NE", "SE"],
-]
+portal_image_order = [["SE", "NE", "SW", "NW"], ["NW", "SW", "NE", "SE"]]
 for x in range(2):
     order = portal_image_order[x]
     image_series = portal_images[x]
@@ -603,75 +825,26 @@ hash_icons = ["bongos.png", "crown.png", "dkcoin.png", "fairy.png", "guitar.png"
 hash_indexes = [48, 49, 50, 51, 55, 62, 63, 64, 65, 76]
 for x in range(len(hash_indexes)):
     idx = hash_indexes[x]
-    file_dict.append({"name": f"Hash Icon {x+1}", "pointer_table_index": 14, "file_index": idx, "source_file": f"assets/Non-Code/hash/{hash_icons[x]}", "texture_format": "rgba5551"})
+    file_dict.append({"name": f"Hash Icon {x+1}", "pointer_table_index": 14, "file_index": idx, "source_file": f"assets/hash/{hash_icons[x]}", "texture_format": "rgba5551"})
+file_dict.append({"name": "Dolby Text", "pointer_table_index": 12, "file_index": 13, "source_file": "dolby_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "Custom Text", "pointer_table_index": 12, "file_index": 32, "source_file": "custom_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "DK Text", "pointer_table_index": 12, "file_index": 0x18, "source_file": "dk_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "Move Names Text", "pointer_table_index": 12, "file_index": 0x27, "source_file": "move_names.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "Cranky Text", "pointer_table_index": 12, "file_index": 8, "source_file": "cranky_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "Menu Text", "pointer_table_index": 12, "file_index": 37, "source_file": "menu_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "Kong Name Text", "pointer_table_index": 12, "file_index": 2, "source_file": "kongname_text.bin", "do_not_compress": True, "do_not_delete_source": True})
+file_dict.append({"name": "BFI Rareware Door Text", "pointer_table_index": 12, "file_index": 40, "source_file": "fairy_rw_text.bin", "do_not_compress": True, "do_not_delete_source": True})
 file_dict.append(
     {
-        "name": "Dolby Text",
+        "name": "Misc Squawks Text",
         "pointer_table_index": 12,
-        "file_index": 13,
-        "source_file": "dolby_text.bin",
+        "file_index": 19,
+        "source_file": "misc_squawks_text.bin",
         "do_not_compress": True,
+        "do_not_recompress": True,
         "do_not_delete_source": True,
-    },
-)
-file_dict.append(
-    {
-        "name": "Custom Text",
-        "pointer_table_index": 12,
-        "file_index": 32,
-        "source_file": "custom_text.bin",
-        "do_not_compress": True,
-        "do_not_delete_source": True,
-    },
-)
-file_dict.append(
-    {
-        "name": "DK Text",
-        "pointer_table_index": 12,
-        "file_index": 0x18,
-        "source_file": "dk_text.bin",
-        "do_not_compress": True,
-        "do_not_delete_source": True,
-    }
-)
-file_dict.append(
-    {
-        "name": "Move Names Text",
-        "pointer_table_index": 12,
-        "file_index": 0x27,
-        "source_file": "move_names.bin",
-        "do_not_compress": True,
-        "do_not_delete_source": True,
-    }
-)
-file_dict.append(
-    {
-        "name": "Cranky Text",
-        "pointer_table_index": 12,
-        "file_index": 8,
-        "source_file": "cranky_text.bin",
-        "do_not_compress": True,
-        "do_not_delete_source": True,
-    }
-)
-file_dict.append(
-    {
-        "name": "Menu Text",
-        "pointer_table_index": 12,
-        "file_index": 37,
-        "source_file": "menu_text.bin",
-        "do_not_compress": True,
-        "do_not_delete_source": True,
-    }
-)
-file_dict.append(
-    {
-        "name": "Kong Name Text",
-        "pointer_table_index": 12,
-        "file_index": 2,
-        "source_file": "kongname_text.bin",
-        "do_not_compress": True,
-        "do_not_delete_source": True,
+        "target_uncompressed_size": 0x1200,
+        "target_compressed_size": 0x1200,
     }
 )
 
@@ -680,16 +853,7 @@ with open(ROMName, "rb") as fh:
 
 for x in range(216):
     if os.path.exists(f"exit{x}.bin"):
-        file_dict.append(
-            {
-                "name": f"Map {x} Exits",
-                "pointer_table_index": 23,
-                "file_index": x,
-                "source_file": f"exit{x}.bin",
-                "do_not_compress": True,
-                "do_not_delete_source": True,
-            }
-        )
+        file_dict.append({"name": f"Map {x} Exits", "pointer_table_index": 23, "file_index": x, "source_file": f"exit{x}.bin", "do_not_compress": True, "do_not_delete_source": True})
 
 print("\nDK64 Extractor\nBuilt by Isotarge")
 
@@ -817,6 +981,7 @@ for x in file_dict:
 
 with open(newROMName, "r+b") as fh:
     print("[4 / 7] - Writing patched files to ROM")
+    clampCompressedTextures(fh, 6070)
     for x in file_dict:
         if "is_diff_patch" in x and x["is_diff_patch"]:
             with open(x["source_file"], "rb") as fg:
@@ -907,7 +1072,7 @@ with open(newROMName, "r+b") as fh:
                 compress[6] = 0
                 compress[7] = 0
 
-            print(" - Writing " + x["output_file"] + " (" + hex(len(compress)) + ") to ROM")
+            print(" - Writing " + x["output_file"] + " (" + hex(len(compress)) + f") to ROM")
             if "pointer_table_index" in x and "file_index" in x:
                 # More complicated write, update the pointer tables to point to the new data
                 replaceROMFile(fh, x["pointer_table_index"], x["file_index"], compress, uncompressed_size)
@@ -1078,9 +1243,21 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FED020 + 0x114)
     for x in range(2):
         fh.write((45).to_bytes(1, "big"))
+    # Fairies
+    fh.seek(0x1FF1040)
+    for x in range(20):
+        fh.write((0x3D).to_bytes(2, "big"))
+    # Rainbow Coins
+    fh.seek(0x1FF10F0)
+    for x in range(16):
+        fh.write((0x8C).to_bytes(1, "big"))
     # Shop Hints
     fh.seek(0x1FED020 + 0x14B)
     fh.write((1).to_bytes(1, "big"))
+
+    fh.seek(0x1FFD000)
+    for x in range(64):
+        fh.write((0).to_bytes(4, "big"))
 
     piano_vanilla = [2, 1, 2, 3, 4, 2, 0]
     for piano_index, piano_key in enumerate(piano_vanilla):
@@ -1095,7 +1272,7 @@ with open(newROMName, "r+b") as fh:
         fh.seek(0x1FED020 + 0x187 + face_index)
         fh.write(chunky_face_puzzle_vanilla[face_index].to_bytes(1, "big"))
 
-    with open("assets/Non-Code/credits/squish.bin", "rb") as squish:
+    with open("assets/credits/squish.bin", "rb") as squish:
         fh.seek(0x1FFF800)
         fh.write(squish.read())
 
@@ -1112,12 +1289,15 @@ with open(newROMName, "r+b") as fh:
     for coinreq in vanilla_coin_reqs:
         fh.seek(0x1FED020 + coinreq["offset"])
         fh.write(coinreq["coins"].to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0x48)
+    for lvl in (1, 4, 3, 2):  # Arcade Order
+        fh.write(lvl.to_bytes(1, "big"))
     for x in range(5):
         # Write default Helm Order
         fh.seek(0x1FED020 + x)
         fh.write(x.to_bytes(1, "big"))
     for x in hash_icons:
-        pth = f"assets/Non-Code/hash/{x}"
+        pth = f"assets/hash/{x}"
         if os.path.exists(pth):
             os.remove(pth)
     other_remove = []
@@ -1141,15 +1321,41 @@ with open(newROMName, "r+b") as fh:
         "num_9_lit",
         "num_9_unlit",
         "standard_crate",
+        "crown",
+        "crown_shop",
+        "dk_bp",
+        "gb",
+        "key",
+        "krusha_head64",
+        "lanky_bp",
+        "medal",
+        "nin_coin",
+        "potion32",
+        "rw_coin",
+        "bean",
+        "pearl",
+        "bean32",
+        "pearl32",
+        "door_combocoin",
+        "door_crown",
+        "num_2",
+        "num_4",
+        "bonus_skin",
+        "fairy",
+        "fake_gb",
+        "rainbow_coin",
+        "gb_shine",
     ]
+    for b in barrel_skins:
+        displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])
     for disp in displays:
-        for ext in [".png", ".rgba32"]:
+        for ext in [".png", ".rgba32", ".rgba5551"]:
             other_remove.append(f"displays/{disp}{ext}")
     for x in range(8):
         other_remove.append(f"file_screen/key{x+1}.png")
     other_remove.append("file_screen/tracker.png")
     for x in other_remove:
-        pth = f"assets/Non-Code/{x}"
+        pth = f"assets/{x}"
         if os.path.exists(pth):
             os.remove(pth)
     hash_items = [
@@ -1179,9 +1385,14 @@ with open(newROMName, "r+b") as fh:
         "nin_coin_1",
         "rw_coin_0",
         "rw_coin_1",
+        "rainbow_0",
+        "rainbow_1",
+        "rainbow_2",
         "special_coin_side",
+        "fairy_0",
+        "bonus_Skin",
     ]
-    script_files = [x[0] for x in os.walk("assets/Non-Code/instance_scripts/")]
+    script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
     shop_files = ["snide.script", "cranky.script", "funky.script", "candy.script"]
     for folder in script_files:
         for file in os.listdir(folder):
@@ -1192,19 +1403,33 @@ with open(newROMName, "r+b") as fh:
                         os.remove(file)
     for hash_item in hash_items:
         for f_t in ["rgba5551", "png"]:
-            pth = f"assets/Non-Code/hash/{hash_item}.{f_t}"
+            pth = f"assets/hash/{hash_item}.{f_t}"
             if os.path.exists(pth):
                 os.remove(pth)
     credits_bins = ["credits", "squish"]
     for x in credits_bins:
-        pth = f"assets/Non-Code/credits/{x}.bin"
+        pth = f"assets/credits/{x}.bin"
         if os.path.exists(pth):
             os.remove(pth)
-    if os.path.exists("assets/Non-Code/Gong/hint_door.bin"):
-        os.remove("assets/Non-Code/Gong/hint_door.bin")
-    for x in model_changes:
-        if os.path.exists(x["model_file"]):
-            os.remove(x["model_file"])
+    arcade_images = [
+        "blueprint",
+        "crown",
+        "fairy",
+        "gb",
+        "key",
+        "medal",
+        "rainbow",
+        "rwcoin",
+    ]
+    for img in arcade_images:
+        pth = f"assets/arcade_jetpac/arcade/{img}.png"
+        if os.path.exists(pth):
+            os.remove(pth)
+    if os.path.exists("assets/Gong/hint_door.bin"):
+        os.remove("assets/Gong/hint_door.bin")
+    # for x in model_changes:
+    #     if os.path.exists(x["model_file"]):
+    #         os.remove(x["model_file"])
     if os.path.exists(new_coin_sfx):
         os.remove(new_coin_sfx)
     if os.path.exists("helm.bin"):
@@ -1212,9 +1437,18 @@ with open(newROMName, "r+b") as fh:
     for x in range(216):
         if os.path.exists(f"exit{x}.bin"):
             os.remove(f"exit{x}.bin")
-    # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
+    # pth = "assets/displays/soldout_bismuth.rgba32"
     # if os.path.exists(pth):
     #     os.remove(pth)
+
+# Get BPS Data
+with open(newROMName, "r+b") as fh:
+    size = len(fh.read())
+    add = 0x10 - (size % 0x10)
+    if add != 0x10:
+        size += add
+    fh.seek(0x1FF4000)
+    fh.write(size.to_bytes(4, "big"))
 
 print("[7 / 7] - Generating BizHawk RAM watch")
 

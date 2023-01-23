@@ -26,82 +26,34 @@ def numToBase(n, b, d):
 
 random_ruleset = {
     "starting": [0, 1, 2, 3, 4],
-    "japes": {
-        "lock": [0, 1, 2, 3, 4],
-        "puzz": [0, 1, 2, 3, 4],
-    },
-    "llama": {
-        "lock": [0, 1, 2, 3, 4],
-        "puzz": [0, 2, 3],
-    },
-    "icetemple": {
-        "lock": [0, 2, 3, 4],
-        "puzz": [1],
-    },
-    "factory": {
-        "lock": [0, 1, 2, 3, 4],
-        "puzz": [2, 3],
-    },
+    "japes": {"lock": [0, 1, 2, 3, 4], "puzz": [0, 1, 2, 3, 4]},
+    "llama": {"lock": [0, 1, 2, 3, 4], "puzz": [0, 2, 3]},
+    "icetemple": {"lock": [0, 2, 3, 4], "puzz": [1]},
+    "factory": {"lock": [0, 1, 2, 3, 4], "puzz": [2, 3]},
 }
 
 random_ruleset_free_llama_temple = {
     "starting": [0, 1, 2, 3, 4],
-    "japes": {
-        "lock": [0, 1, 2, 3, 4],
-        "puzz": [0, 1, 2, 3, 4],
-    },
-    "llama": {
-        "lock": [0, 1, 2, 3, 4],
-        "puzz": [0, 1, 2, 3, 4],
-    },
-    "icetemple": {
-        "lock": [0, 2, 3, 4],
-        "puzz": [1],
-    },
-    "factory": {
-        "lock": [0, 1, 2, 3, 4],
-        "puzz": [2, 3],
-    },
+    "japes": {"lock": [0, 1, 2, 3, 4], "puzz": [0, 1, 2, 3, 4]},
+    "llama": {"lock": [0, 1, 2, 3, 4], "puzz": [0, 1, 2, 3, 4]},
+    "icetemple": {"lock": [0, 2, 3, 4], "puzz": [1]},
+    "factory": {"lock": [0, 1, 2, 3, 4], "puzz": [2, 3]},
 }
 
 vanilla_ruleset = {
     "starting": [0, 1, 2, 3, 4],
-    "japes": {
-        "lock": [0, 1, 2, 3, 4],
-        "puzz": [0, 1, 2, 3, 4],
-    },
-    "llama": {
-        "lock": [1, 2, 3, 4],
-        "puzz": [0],
-    },
-    "icetemple": {
-        "lock": [0, 2, 3, 4],
-        "puzz": [1],
-    },
-    "factory": {
-        "lock": [0, 1, 3, 4],
-        "puzz": [2],
-    },
+    "japes": {"lock": [0, 1, 2, 3, 4], "puzz": [0, 1, 2, 3, 4]},
+    "llama": {"lock": [1, 2, 3, 4], "puzz": [0]},
+    "icetemple": {"lock": [0, 2, 3, 4], "puzz": [1]},
+    "factory": {"lock": [0, 1, 3, 4], "puzz": [2]},
 }
 
 expanded_random = {
     "starting": [0, 1, 2, 3, 4],
-    "japes": {
-        "lock": [0, 1, 2, 3, 4],
-        "puzz": [0, 1, 2, 3, 4],
-    },
-    "llama": {
-        "lock": [0, 1, 2, 3, 4],
-        "puzz": [0, 1, 2, 3, 4],
-    },
-    "icetemple": {
-        "lock": [0, 1, 2, 3, 4],
-        "puzz": [1, 4],
-    },
-    "factory": {
-        "lock": [0, 1, 2, 3, 4],
-        "puzz": [0, 1, 2, 3, 4],
-    },
+    "japes": {"lock": [0, 1, 2, 3, 4], "puzz": [0, 1, 2, 3, 4]},
+    "llama": {"lock": [0, 1, 2, 3, 4], "puzz": [0, 1, 2, 3, 4]},
+    "icetemple": {"lock": [0, 1, 2, 3, 4], "puzz": [1, 4]},
+    "factory": {"lock": [0, 1, 2, 3, 4], "puzz": [0, 1, 2, 3, 4]},
 }
 
 ruleset = expanded_random
@@ -115,22 +67,10 @@ total_verif = 0
 unreach_kongs_total = [0, 0, 0, 0, 0, 0]
 balance = {
     "starting": [0, 0, 0, 0, 0],
-    "japes": {
-        "lock": [0, 0, 0, 0, 0],
-        "puzz": [0, 0, 0, 0, 0],
-    },
-    "llama": {
-        "lock": [0, 0, 0, 0, 0],
-        "puzz": [0, 0, 0, 0, 0],
-    },
-    "icetemple": {
-        "lock": [0, 0, 0, 0, 0],
-        "puzz": [0, 0, 0, 0, 0],
-    },
-    "factory": {
-        "lock": [0, 0, 0, 0, 0],
-        "puzz": [0, 0, 0, 0, 0],
-    },
+    "japes": {"lock": [0, 0, 0, 0, 0], "puzz": [0, 0, 0, 0, 0]},
+    "llama": {"lock": [0, 0, 0, 0, 0], "puzz": [0, 0, 0, 0, 0]},
+    "icetemple": {"lock": [0, 0, 0, 0, 0], "puzz": [0, 0, 0, 0, 0]},
+    "factory": {"lock": [0, 0, 0, 0, 0], "puzz": [0, 0, 0, 0, 0]},
 }
 
 
@@ -205,9 +145,7 @@ for permutation in range(int(math.pow(5, 5))):
             for x in range(4):
                 base5[1 + (2 * x)] = kong_unlocks[x + 1]
                 base5[2 + (2 * x)] = kong_puzzle[x]
-            info = {
-                "starting": base5[0],
-            }
+            info = {"starting": base5[0]}
             index = 1
             for trap in traps:
                 info[trap] = {"lock": base5[index], "puzz": base5[index + 1]}

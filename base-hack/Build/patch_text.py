@@ -56,7 +56,13 @@ move_hints = [
         "funky": "THIS'LL BE THE PERFECT UPPER BODY WORKOUT!",
         "candy": "THIS DRINK WILL LET YOU MAKE USE OF THESE BIG LONG ARMS OF YOURS.",
     },
-    {"move": "Baboon Balloon", "kong": "Lanky", "cranky": "THE BUBBLES IN THIS POTION ARE HELIUM.", "funky": "THIS MAGIC POTION WILL BLOW YOU AWAY!", "candy": "THIS WILL GET YOU FEELING FLOATY!"},
+    {
+        "move": "Baboon Balloon",
+        "kong": "Lanky",
+        "cranky": "THE BUBBLES IN THIS POTION ARE HELIUM.",
+        "funky": "THIS MAGIC POTION WILL BLOW YOU AWAY!",
+        "candy": "THIS WILL GET YOU FEELING FLOATY!",
+    },
     {
         "move": "Orangstand Sprint",
         "kong": "Lanky",
@@ -81,14 +87,14 @@ move_hints = [
     {
         "move": "Monkeyport",
         "kong": "Tiny",
-        "cranky": "IN MY DAY, YOU'D HAVE TO WALK UPHILL BOTH WAYS, BUT THIS WILL WARP YOU IN AN INSTANT.",
+        "cranky": "IN MY DAY, YOU WOULD HAVE TO WALK UPHILL BOTH WAYS, BUT THIS WILL WARP YOU IN AN INSTANT.",
         "funky": "THIS COOL MOVE WILL SEND YOU PLACES!",
         "candy": "IT'S YOUR VERY OWN PERSONAL WARP PAD!",
     },
     {
         "move": "Hunky Chunky",
         "kong": "Chunky",
-        "cranky": "ALTHOUGH I'M NOT SURE WHY YOU'D NEED IT, YOU'RE ALREADY BIG ENOUGH AS IT IS.",
+        "cranky": "ALTHOUGH I'M NOT SURE WHY YOU WOULD NEED IT, YOU'RE ALREADY BIG ENOUGH AS IT IS.",
         "funky": "DRINK THIS AND YOU'LL BULK UP BIG TIME!",
         "candy": "ONE SIP OF THIS MAGICAL DRINK CAN MAKE A BIG STRONG FELLA LIKE YOU EVEN BIGGER.",
     },
@@ -144,7 +150,7 @@ move_hints = [
     {
         "move": "Pineapple Launcher",
         "kong": "Chunky",
-        "cranky": "NOW, TAKE IT AND DON'T POINT IT AT ME! YOU'D RIP MY FEEBLE HEAD OFF WITH THESE PINEAPPLES!",
+        "cranky": "NOW, TAKE IT AND DON'T POINT IT AT ME! YOU WOULD RIP MY FEEBLE HEAD OFF WITH THESE PINEAPPLES!",
         "funky": "THIS IS A REAL COOL LAUNCHER THAT'LL BLOW HOLES IN K.ROOL'S ARMY.",
         "candy": "USE IT TO FIRE MASSIVE PINEAPPLES TO CLEAR EVERYTHING ON YOUR PATH.",
     },
@@ -214,51 +220,128 @@ move_hints = [
     {
         "move": "Dive Barrel",
         "kong": "~",
-        "cranky": "DIVE BARREL CRANKY",
-        "funky": "DIVE BARREL FUNKY",
-        "candy": "DIVE BARREL CANDY",
+        "cranky": "YOU'LL BE SUBMERGING YOURSELF LIKE THEM SUBMARINES IN GALLEON.",
+        "funky": "YOU'LL BE GLIDING UNDERWATER GROOVIER THAN BEFORE.",
+        "candy": "I'LL SHOW YOU HOW TO LAST LONGER UNDERWATER.",
     },
     {
         "move": "Orange Barrel",
         "kong": "~",
-        "cranky": "ORANGE BARREL CRANKY",
-        "funky": "ORANGE BARREL FUNKY",
-        "candy": "ORANGE BARREL CANDY",
+        "cranky": "SET THE TIMER TO 5 AND THROW THIS FRUIT LIKE IT'S A WORMS GAME.",
+        "funky": "YOU BETTER CALL THE BOMB SQUAD, CAUSE THESE FRUIT ARE LIKE DYNAMITE.",
+        "candy": "I MAY HAVE MELONS, BUT I HAVE MORE EXPLOSIVE FRUIT LIKE THESE BAD BOYS.",
     },
     {
         "move": "Barrel Barrel",
         "kong": "~",
-        "cranky": "BARREL BARREL CRANKY",
-        "funky": "BARREL BARREL FUNKY",
-        "candy": "BARREL BARREL CANDY",
+        "cranky": "YOU WON'T EVEN BE BREAKING A SWEAT LIFTING UP BARRELS.",
+        "funky": "YOU'LL BE ABLE TO JAM OUT WITH DOGADON BY THROWING BARRELS IN HIS FACE.",
+        "candy": "I'M SURE YOU'LL BE ABLE TO PICK UP THOSE LARGE BARRELS FOR ME.",
     },
     {
         "move": "Vine Barrel",
         "kong": "~",
-        "cranky": "VINE BARREL CRANKY",
-        "funky": "VINE BARREL FUNKY",
-        "candy": "VINE BARREL CANDY",
+        "cranky": "I DON'T REMEMBER THIS GAME BEING CALLED JUNGLE SWING, BUT THIS WILL CERTAINLY LET YOU SWING.",
+        "funky": "SOME WOULD CALL THIS THE TWENTIES, CAUSE YOU GONNA BE SWINGING.",
+        "candy": "THIS MOVE WILL ALLOW YOU TO GRAB ROPES.",
     },
     {
         "move": "Camera Solo",
         "kong": "~",
-        "cranky": "CAMERA SOLO CRANKY",
-        "funky": "CAMERA SOLO FUNKY",
-        "candy": "CAMERA SOLO CANDY",
+        "cranky": "WITH THAT DEVICE, YOU MIGHT AS WELL CALL ME PROFESSOR OAK! WONDERFUL.",
+        "funky": "THIS DEVICE WILL ALLOW YOU TO TAKE THEM HIGH RESOLUTION POLAROIDS.",
+        "candy": "YOU'LL BE ABLE TO TAKE PLENTY OF PICTURES OF ME!",
     },
     {
         "move": "Shockwave Solo",
         "kong": "~",
-        "cranky": "SHOCKWAVE SOLO CRANKY",
-        "funky": "SHOCKWAVE SOLO FUNKY",
-        "candy": "SHOCKWAVE SOLO CANDY",
+        "cranky": "THIS MOVE WILL LET YOU UNEARTH THOSE DASTARDLY MOUNDS WITH SOME LETTERS ON THEM.",
+        "funky": "WITH THIS MOVE, YOU'LL BE SHOCKING THE REST OF THE COMPETITION IN THOSE CROWNS.",
+        "candy": "I DIDN'T KNOW YOU HAD SO MUCH ENERGY IN YOU TO RELEASE SUCH A POWERFUL ENERGY CHARGE.",
     },
     {
         "move": "Shockwave Camera Combo",
         "kong": "~",
-        "cranky": "SHOCKWAVE CAMERA COMBO CRANKY",
-        "funky": "SHOCKWAVE CAMERA COMBO FUNKY",
-        "candy": "SHOCKWAVE CAMERA COMBO CANDY",
+        "cranky": "TWO MOVES IN ONE. BACK IN MY DAY YOU HAD TO PAY DOUBLE THE CREDITS FOR THAT.",
+        "funky": "I GOT A BONZA DEAL FOR YOU. TWO MOVES FOR THE PRICE OF... TWO. WHAT DO YOU SAY?",
+        "candy": "TWO MOVES? WELL I GUESS SINCE YOU'VE BEEN WORKING HARD, WHAT DO YOU SAY?",
+    },
+    {
+        "move": "Golden Banana",
+        "kong": "~",
+        "cranky": "ANOTHER GOLDEN BANANA. WHY DO YOU NEED SO MANY OF THESE STUPID THINGS?",
+        "funky": "FOUND ANOTHER GOLDEN BANANA FOR YOU, MY DUDE!",
+        "candy": "A SHINY GOLDEN BANANA. I KNOW THEY'RE YOUR FAVOURITE!",
+    },
+    {
+        "move": "Battle Crown",
+        "kong": "~",
+        "cranky": "BACK IN MY DAY, YOU WOULD HAVE TO FIGHT IN THE RING FOR A PRIZE LIKE THAT!",
+        "funky": "I FOUND THIS SICK LOOKIN' CROWN FOR YOU!",
+        "candy": "HERE'S A PRETTY CROWN SO YOU CAN LOOK LIKE THE PRINCESS YOU ARE!",
+    },
+    {
+        "move": "Banana Medal",
+        "kong": "~",
+        "cranky": "ONE MORE MEDAL. MAYBE ONE DAY YOU'LL FINALLY BE WORTHY ENOUGH TO PLAY MY SPECIAL GAME!",
+        "funky": "HERE'S A SHINY BANANA MEDAL! THOSE GO FOR A PRETTY PENNY!",
+        "candy": "A BEAUTIFUL BANANA MEDAL TO PUT AROUND YOUR NECK.",
+    },
+    {
+        "move": "Boss Key",
+        "kong": "~",
+        "cranky": "THIS COULD HELP YOU OPEN UP SOME MORE LEVELS SO YOU CAN FINALLY STOP RUNNING IN CIRCLES.",
+        "funky": "K. ROOL DOESN'T WANT ME TO GIVE YOU THIS! I HEAR IT CAN OPEN WHOLE NEW LEVELS!",
+        "candy": "I HAVE THIS PRECIOUS KEY FOR YOU. MAYBE IT'S THE KEY TO MY HEART?",
+    },
+    {
+        "move": "Blueprint",
+        "kong": "~",
+        "cranky": "THE OLD SNIDE WILL KNOW WHAT TO DO WITH THIS.",
+        "funky": "HIT MY OLD PAL SNIDE'S PLACE AND HE'LL HOOK YOU UP WITH SOMETHING GOOD!",
+        "candy": "GO PAY MY GOOD FRIEND SNIDE A VISIT, WILL YA?",
+    },
+    {
+        "move": "Nintendo Coin",
+        "kong": "~",
+        "cranky": "WHAT! NOT THE NINTENDO COIN! YOU SHOULD WORK HARD TO HAVE THAT! THIS GAME IS PAY TO WIN!",
+        "funky": "YOU GIVE ME COINS WITH BANANAS ON THEM, I GIVE YOU A COIN WITH A NINTENDO LOGO ON IT!",
+        "candy": "YOU WANT TO TRADE COINS FOR ANOTHER COIN? SURE, WHY NOT. THIS ONE HAS A BIG N ON IT.",
+    },
+    {
+        "move": "Rareware Coin",
+        "kong": "~",
+        "cranky": "WHAT! NOT THE RAREWARE COIN! YOU NEED TO PLAY MY BONUS GAME TO HAVE THAT! THIS GAME IS PAY TO WIN!",
+        "funky": "YOU GIVE ME COINS WITH BANANAS ON THEM, I GIVE YOU A COIN WITH A RAREWARE LOGO ON IT!",
+        "candy": "YOU WANT TO TRADE COINS FOR ANOTHER COIN? SURE, WHY NOT. THIS ONE HAS A BIG R ON IT.",
+    },
+    {
+        "move": "Bean",
+        "kong": "~",
+        "cranky": "CHUCK THIS INTO FERTILE GROUND AND WATER IT WELL.",
+        "funky": "IT'S A BIG OL' BEAN, DUDE!",
+        "candy": "CAN YOU PLANT THIS SEED SOMEWHERE NICE FOR ME?",
+    },
+    {
+        "move": "Pearl",
+        "kong": "~",
+        "cranky": "I'VE GOT THIS SHINY BALL. I WAS TOLD SOME MERMAID LOST IT.",
+        "funky": "WHAT'S THAT I GOT? A SHINY LITTLE PEARL FOUND DEEP UNDERWATER!",
+        "candy": "I HAVE A PRECIOUS GEM FOR YOU, BUT IT'S NOT GONNA BE CHEAP!",
+    },
+    {
+        "move": "Kong",
+        "kong": "~",
+        "cranky": "I FOUND YOUR FLEA-BITTEN FRIEND MOPING AROUND AIMLESSLY. I'M NOT YOUR BABYSITTER!",
+        "funky": "GUESS WHAT! WE CAN RECRUIT A NEW MEMBER TO THE CREW!",
+        "candy": "I'VE BEEN SPENDING MY TIME WITH A FRIEND OF YOURS. YOU CAN HAVE THEM BACK IF YOU WANT!",
+    },
+    {
+        "move": "Fairy",
+        "kong": "~",
+        "cranky": "IT'S A LOST FAIRY FOR THE GREAT BANANA FAIRY.",
+        "funky": "I HEARD YOU BEEN LOOKIN' FOR THE LOST BANANA FAIRIES. WELL, I FOUND ONE!",
+        "candy": "THIS POOR LITTLE FAIRY NEEDS TO GET BACK HOME. WILL YOU HELP HER?",
     },
     {
         "move": "Not enough coins - Special Move",
@@ -308,6 +391,41 @@ move_hints = [
         "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS FAIRY MOVE.",
         "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. FAIRY MOVES DON'T GROW ON TREES!",
         "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS FAIRY MOVE.",
+    },
+    {
+        "move": "Not enough coins - Item",
+        "kong": "~",
+        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS MAJOR ITEM.",
+        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. MAJOR ITEMS DON'T GROW ON TREES!",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS MAJOR ITEM.",
+    },
+    {
+        "move": "Not enough coins - GB",
+        "kong": "~",
+        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS GOLDEN BANANA.",
+        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. GOLDEN BANANAS DON'T GROW ON TREES!",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS GOLDEN BANANA.",
+    },
+    {
+        "move": "Not enough coins - BP",
+        "kong": "~",
+        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS BLUEPRINT.",
+        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. BLUEPRINTS DON'T GROW ON TREES!",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS BLUEPRINT.",
+    },
+    {
+        "move": "Not enough coins - Medal",
+        "kong": "~",
+        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS BANANA MEDAL.",
+        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. BANANA MEDALS DON'T GROW ON TREES!",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS BANANA MEDAL.",
+    },
+    {
+        "move": "Not enough coins - Kong",
+        "kong": "~",
+        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD TO SAVE YOUR FRIEND.",
+        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. FRIENDS DON'T GROW ON TREES!",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO FREE YOUR FRIEND.",
     },
 ]
 
@@ -364,11 +482,7 @@ moves = [
     "Not enough coins - Fairy Moves",
 ]
 
-shop_owners = [
-    "cranky",
-    "funky",
-    "candy",
-]
+shop_owners = ["cranky", "funky", "candy"]
 
 hint_text = []
 
@@ -380,11 +494,7 @@ for move in move_hints:
 
 writeText(
     "dolby_text.bin",
-    [
-        [{"text": ["DONKEY KONG 64 RANDOMIZER"]}],
-        [{"text": ["DEVELOPERS - 2DOS, BALLAAM, BISMUTH, CFOX, KILLKLLI, LRAUQ, SHADOWSHINE, ZNERNICUS"]}],
-        [{"text": ["DK64RANDOMIZER.COM"]}],
-    ],
+    [[{"text": ["DONKEY KONG 64 RANDOMIZER"]}], [{"text": ["DEVELOPERS - 2DOS, BALLAAM, BISMUTH, CFOX, KILLKLLI, LRAUQ, SHADOWSHINE, ZNERNICUS"]}], [{"text": ["DK64RANDOMIZER.COM"]}]],
 )
 
 writeText("custom_text.bin", hint_text)
@@ -431,13 +541,13 @@ move_names = [
     {"name": "Trombone Tremor", "move_type": "instrument"},
     {"name": "Saxophone Slam", "move_type": "instrument"},
     {"name": "Triangle Trample", "move_type": "instrument"},
-    {"name": "All Kongs - Homing Ammo", "move_type": "gun_upg"},
-    {"name": "All Kongs - Sniper", "move_type": "gun_upg"},
-    {"name": "All Kongs - Ammo Belt 1", "move_type": "ammo_belt"},
-    {"name": "All Kongs - Ammo Belt 2", "move_type": "ammo_belt"},
+    {"name": "Homing Ammo", "move_type": "gun_upg"},
+    {"name": "Sniper Scope", "move_type": "gun_upg"},
+    {"name": "Ammo Belt 1", "move_type": "ammo_belt"},
+    {"name": "Ammo Belt 2", "move_type": "ammo_belt"},
     {"name": "3rd Melon", "move_type": "ins_upg"},
-    {"name": "All Kongs - Upgrade 1", "move_type": "ins_upg"},
-    {"name": "All Kongs - Upgrade 2", "move_type": "ins_upg"},
+    {"name": "Instrument Upgrade 1", "move_type": "ins_upg"},
+    {"name": "Instrument Upgrade 2", "move_type": "ins_upg"},
     {"name": "Diving", "move_type": "tbarrel_bfi"},
     {"name": "Orange Throwing", "move_type": "tbarrel_bfi"},
     {"name": "Barrel Throwing", "move_type": "tbarrel_bfi"},
@@ -447,20 +557,33 @@ move_names = [
     {"name": "Fairy Camera and Shockwave", "move_type": "tbarrel_bfi"},
     {"name": "Golden Banana", "move_type": "item"},  # 60
     {"name": "Banana Medal", "move_type": "item"},  # 61
-    {"name": "Blueprint", "move_type": "item"},  # 62
-    {"name": "Nintendo Coin", "move_type": "item"},  # 63
-    {"name": "Rareware Coin", "move_type": "item"},  # 64
-    {"name": "Boss Key", "move_type": "item"},  # 65
-    {"name": "Battle Crown", "move_type": "item"},  # 66
-    {"name": "Bean", "move_type": "item"},  # 67
-    {"name": "Key 1", "move_type": "item"},  # 68
-    {"name": "Key 2", "move_type": "item"},  # 69
-    {"name": "Key 3", "move_type": "item"},  # 70
-    {"name": "Key 4", "move_type": "item"},  # 71
-    {"name": "Key 5", "move_type": "item"},  # 72
-    {"name": "Key 6", "move_type": "item"},  # 73
-    {"name": "Key 7", "move_type": "item"},  # 74
-    {"name": "Key 8", "move_type": "item"},  # 75
+    {"name": "Donkey Blueprint", "move_type": "item"},  # 62
+    {"name": "Diddy Blueprint", "move_type": "item"},  # 63
+    {"name": "Lanky Blueprint", "move_type": "item"},  # 64
+    {"name": "Tiny Blueprint", "move_type": "item"},  # 65
+    {"name": "Chunky Blueprint", "move_type": "item"},  # 66
+    {"name": "Nintendo Coin", "move_type": "item"},  # 67
+    {"name": "Rareware Coin", "move_type": "item"},  # 68
+    {"name": "Boss Key", "move_type": "item"},  # 69
+    {"name": "Battle Crown", "move_type": "item"},  # 70
+    {"name": "Bean", "move_type": "item"},  # 71
+    {"name": "Key 1", "move_type": "item"},  # 72
+    {"name": "Key 2", "move_type": "item"},  # 73
+    {"name": "Key 3", "move_type": "item"},  # 74
+    {"name": "Key 4", "move_type": "item"},  # 75
+    {"name": "Key 5", "move_type": "item"},  # 76
+    {"name": "Key 6", "move_type": "item"},  # 77
+    {"name": "Key 7", "move_type": "item"},  # 78
+    {"name": "Key 8", "move_type": "item"},  # 79
+    {"name": "Pearl", "move_type": "item"},  # 80
+    {"name": "Donkey Kong", "move_type": "item"},  # 81
+    {"name": "Diddy Kong", "move_type": "item"},  # 82
+    {"name": "Lanky Kong", "move_type": "item"},  # 83
+    {"name": "Tiny Kong", "move_type": "item"},  # 84
+    {"name": "Chunky Kong", "move_type": "item"},  # 85
+    {"name": "Banana Fairy", "move_type": "item"},  # 86
+    {"name": "Rainbow Coin", "move_type": "item"},  # 87
+    {"name": "Fake Item", "move_type": "item"},  # 88
 ]
 
 move_names_arr = []
@@ -473,41 +596,13 @@ for move in move_names:
         if move["print"]:
             print(f"{move['name']}: {init_len}")
 index_data = {
-    "slam": {
-        "indexes": [],
-        "arr_name": "SimianSlamNames",
-        "has_latin": True,
-    },
-    "special": {
-        "indexes": [],
-        "arr_name": "SpecialMovesNames",
-        "has_latin": True,
-    },
-    "gun": {
-        "indexes": [],
-        "arr_name": "GunNames",
-        "has_latin": False,
-    },
-    "gun_upg": {
-        "indexes": [],
-        "arr_name": "GunUpgNames",
-        "has_latin": False,
-    },
-    "ammo_belt": {
-        "indexes": [],
-        "arr_name": "AmmoBeltNames",
-        "has_latin": False,
-    },
-    "instrument": {
-        "indexes": [],
-        "arr_name": "InstrumentNames",
-        "has_latin": False,
-    },
-    "ins_upg": {
-        "indexes": [],
-        "arr_name": "InstrumentUpgNames",
-        "has_latin": False,
-    },
+    "slam": {"indexes": [], "arr_name": "SimianSlamNames", "has_latin": True},
+    "special": {"indexes": [], "arr_name": "SpecialMovesNames", "has_latin": True},
+    "gun": {"indexes": [], "arr_name": "GunNames", "has_latin": False},
+    "gun_upg": {"indexes": [], "arr_name": "GunUpgNames", "has_latin": False},
+    "ammo_belt": {"indexes": [], "arr_name": "AmmoBeltNames", "has_latin": False},
+    "instrument": {"indexes": [], "arr_name": "InstrumentNames", "has_latin": False},
+    "ins_upg": {"indexes": [], "arr_name": "InstrumentUpgNames", "has_latin": False},
 }
 for kong_index in range(5):
     # Special Moves
@@ -546,12 +641,7 @@ with open("src/randomizers/move_text.c", "w") as fh:
     with open("include/text_items.h", "w") as fg:
         fh.write('#include "../../include/common.h"\n\n')
         fg.write('#include "common.h"\n\n')
-        disclaimer = [
-            "/*\n",
-            "\tFile is automatically generated from build/patch_text.py\n",
-            "\tIf you wish to modify this file, please modify the code there\n",
-            "*/\n\n",
-        ]
+        disclaimer = ["/*\n", "\tFile is automatically generated from build/patch_text.py\n", "\tIf you wish to modify this file, please modify the code there\n", "*/\n\n"]
         for line in disclaimer:
             fh.write(line)
             fg.write(line)
@@ -635,6 +725,7 @@ move_explanations = [
             {"text": ["TO PULL OUT THE CAMERA."]},
         ],
     },
+    {"move": "generic_item", "explanation": [{"text": ["PAY ATTENTION, ~. THERE'S PLENTY MORE ITEMS TO GATHER IN THIS GAME. GET MOVING SO WE CAN DISPENSE OF K. ROOL"]}]},  # 0x2B
 ]
 
 cranky_text = grabText(8)
@@ -649,3 +740,17 @@ writeText("menu_text.bin", menu_text)
 kongname_text = grabText(2)
 kongname_text.append([{"text": ["KRUSHA"]}])
 writeText("kongname_text.bin", kongname_text)
+
+fairy_text = grabText(40)
+fairy_text[4] = [{"text": ["~ REMEMBER, MUST GET FAIRIES TO OBTAIN SPECIAL REWARD."]}]
+writeText("fairy_rw_text.bin", fairy_text)
+
+squawks_text = grabText(19)
+squawks_text.append([{"text": ["YOU CAN FIND GORILLA GONE IN CAVES CRANKY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND MONKEYPORT IN CAVES CRANKY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND BONGO BLAST IN AZTEC CANDY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND TRIANGLE TRAMPLE IN AZTEC CANDY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND SAXOPHONE SLAM IN AZTEC CANDY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND TROMBONE TREMOR IN AZTEC CANDY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND GUITAR GAZUMP IN AZTEC CANDY."]}])
+writeText("misc_squawks_text.bin", squawks_text)

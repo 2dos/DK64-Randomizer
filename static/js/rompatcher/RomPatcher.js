@@ -125,11 +125,45 @@ function apply_bps_javascript() {
     bps = parseBPSFile(patchFile_internal);
     try {
       patchedRom = bps.apply(romFile_internal, false);
+      // Push BPS Patch to ROM
+      if (window.location.pathname.indexOf("dkp_maker") == -1) { // Prevent process if in DKP Maker
+          bps_write_start = 0
+          for (var i = 0; i < 4; i++) {
+            bps_write_start <<= 8;
+            old_rom = patchedRom._u8array.slice(0x1FF4000,0x1FF4004)
+            bps_write_start += old_rom[i];
+          }
+          patch = patchFile._u8array
+          patch_len = patch.length
+          raw_patch_len = patch_len
+          add = 0x10 - (patch_len % 0x10)
+          bump = 0
+          if (add != 0x10) {
+            patch_len += add
+            bump = add
+          }
+          patchedRom._u8array = concatTypedArrays(
+            patchedRom._u8array,
+            patchFile._u8array,
+          );
+          patchedRom._u8array = concatTypedArrays(
+            patchedRom._u8array,
+            new Uint8Array(bump),
+          );
+          for (var i = 0; i < 4; i++) {
+            patchedRom._u8array[0x1FF4007 - i] = raw_patch_len & 0xFF
+            raw_patch_len >>= 8
+          }
+      }
     } catch (evt) {
       errorMessage = evt.message;
       console.log(evt);
     }
   }
+}
+
+function getBPSPatch() {
+  return patchFile._u8array;
 }
 
 function expand_rom_size(size) {
@@ -144,4 +178,7 @@ function concatTypedArrays(a, b) {
   c.set(a, 0);
   c.set(b, a.length);
   return c;
+}
+function getDate() {
+  return new Date().toUTCString();
 }

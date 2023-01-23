@@ -4,7 +4,9 @@ import codecs
 import json
 import pickle
 import random
+import os
 import sys
+import traceback
 
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
@@ -30,34 +32,55 @@ def main():
     parser.add_argument("--output", help="File to name patch file", required=True)
     parser.add_argument("--seed", help="Seed ID to use", required=False)
     args = parser.parse_args()
-    if args.settings_string is not None:
-        decrypt_setting_string(args.settings_string)
-        try:
-            setting_data = decrypt_setting_string(args.settings_string)
-        except Exception:
-            print("Invalid settings String")
-            sys.exit(2)
-    elif args.preset is not None:
-        presets = json.load(open("static/presets/preset_files.json"))
-        default = json.load(open("static/presets/default.json"))
-        found = False
-        for file in presets.get("progression"):
-            with open("static/presets/" + file, "r") as preset_file:
-                data = json.load(preset_file)
-                if args.preset == data.get("name"):
-                    setting_data = default
-                    for key in data:
-                        setting_data[key] = data[key]
-                    setting_data.pop("name")
-                    setting_data.pop("description")
-                    found = True
-        if found is False:
-            sys.exit(2)
-    if args.seed is not None:
-        setting_data["seed"] = args.seed
+    if not os.environ.get("POST_BODY"):
+        if args.settings_string is not None:
+            decrypt_setting_string(args.settings_string)
+            try:
+                setting_data = decrypt_setting_string(args.settings_string)
+            except Exception:
+                print("Invalid settings String")
+                sys.exit(2)
+        elif args.preset is not None:
+            presets = json.load(open("static/presets/preset_files.json"))
+            default = json.load(open("static/presets/default.json"))
+            found = False
+            for file in presets.get("progression"):
+                with open("static/presets/" + file, "r") as preset_file:
+                    data = json.load(preset_file)
+                    if args.preset == data.get("name"):
+                        setting_data = default
+                        for key in data:
+                            setting_data[key] = data[key]
+                        setting_data.pop("name")
+                        setting_data.pop("description")
+                        found = True
+            if found is False:
+                sys.exit(2)
+        if args.seed is not None:
+            setting_data["seed"] = args.seed
+        else:
+            setting_data["seed"] = random.randint(0, 100000000)
     else:
-        setting_data["seed"] = random.randint(0, 100000000)
-    generate(setting_data, args.output)
+        setting_data = json.loads(os.environ.get("POST_BODY"))
+        if not setting_data.get("seed"):
+            setting_data["seed"] = random.randint(0, 100000000)
+    try:
+        generate(setting_data, args.output)
+    except Exception as e:
+        with open("error.log", "w") as file_object:
+            file_object.write(repr(e))
+        with open("traceback.log", "w") as file_object:
+            file_object.write(str(traceback.format_exc()))
+        print(traceback.format_exc())
+        if os.environ.get("DISCORD_WEBHOOK"):
+            from discord_webhook import DiscordWebhook, DiscordEmbed
+
+            webhook = DiscordWebhook(url=os.environ.get("DISCORD_WEBHOOK"))
+            embed = DiscordEmbed(title="Error Generating Seed", description=str(traceback.format_exc()), color="800020")
+            embed.set_timestamp()
+            webhook.add_embed(embed)
+            webhook.execute()
+        sys.exit(1)
 
 
 if __name__ == "__main__":

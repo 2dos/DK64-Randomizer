@@ -1,283 +1,283 @@
 Jump_AlwaysCandyInstrument:
-    J 		AlwaysCandyInstrument
-    NOP
+    j AlwaysCandyInstrument
+    nop
 Jump_CrankyDecouple:
-    J 		CrankyDecouple
-    NOP
+    j CrankyDecouple
+    nop
 Jump_ForceToBuyMoveInOneLevel:
-    J 		ForceToBuyMoveInOneLevel
-    NOP
+    j ForceToBuyMoveInOneLevel
+    nop
 Jump_MoveShow0:
-    J 		FixInvisibleText_0
-    NOP
+    j FixInvisibleText_0
+    nop
 Jump_MoveShow1:
-    J 		FixInvisibleText_1
-    NOP
+    j FixInvisibleText_1
+    nop
 Jump_PriceKongStore:
-    J 		PriceKongStore
-    NOP
+    j PriceKongStore
+    nop
 Jump_CharacterCollectableBaseModify:
-    J 		CharacterCollectableBaseModify
-    NOP
+    j CharacterCollectableBaseModify
+    nop
 Jump_SetMoveBaseBitfield:
-    J 		SetMoveBaseBitfield
-    NOP
+    j SetMoveBaseBitfield
+    nop
 Jump_SetMoveBaseProgressive:
-    J 		SetMoveBaseProgressive
-    NOP
+    j SetMoveBaseProgressive
+    nop
     
 PatchCrankyCode:
-    LUI t3, hi(Jump_CrankyDecouple)
-    LW t3, lo(Jump_CrankyDecouple) (t3)
-    LUI t4, 0x8002
-    SW t3, 0x60E0 (t4) // Store Hook
-    SW r0, 0x60E4 (t4) // Store NOP
+    lui $t3, hi(Jump_CrankyDecouple)
+    lw $t3, lo(Jump_CrankyDecouple) ($t3)
+    lui $t4, 0x8002
+    sw $t3, 0x60E0 ($t4) ; Store Hook
+    sw $zero, 0x60E4 ($t4) ; Store NOP
 
-    LUI t3, hi(Jump_ForceToBuyMoveInOneLevel)
-    LW t3, lo(Jump_ForceToBuyMoveInOneLevel) (t3)
-    LUI t4, 0x8002
-    SW 	t3, 0x60A8 (t4) // Store Hook
-    SW 	r0, 0x60AC (t4) // Store NOP
-    SW 	r0, 0x6160 (t4) // Store NOP to prevent loop
+    lui $t3, hi(Jump_ForceToBuyMoveInOneLevel)
+    lw $t3, lo(Jump_ForceToBuyMoveInOneLevel) ($t3)
+    lui $t4, 0x8002
+    sw $t3, 0x60A8 ($t4) ; Store Hook
+    sw $zero, 0x60AC ($t4) ; Store NOP
+    sw $zero, 0x6160 ($t4) ; Store NOP to prevent loop
 
-    LUI t3, hi(Jump_PriceKongStore)
-    LW t3, lo(Jump_PriceKongStore) (t3)
-    LUI t4, 0x8002
-    SW t3, 0x6140(t4) // Store Hook
-    SW r0, 0x6144 (t4) // Store NOP
+    lui $t3, hi(Jump_PriceKongStore)
+    lw $t3, lo(Jump_PriceKongStore) ($t3)
+    lui $t4, 0x8002
+    sw $t3, 0x6140(t4) ; Store Hook
+    sw $zero, 0x6144 ($t4) ; Store NOP
 
-    LUI t3, hi(Jump_CharacterCollectableBaseModify)
-    LW t3, lo(Jump_CharacterCollectableBaseModify) (t3)
-    LUI t4, 0x8002
-    SW t3, 0x5FC0(t4) // Store Hook
-    SW r0, 0x5FC4 (t4) // Store NOP
+    lui $t3, hi(Jump_CharacterCollectableBaseModify)
+    lw $t3, lo(Jump_CharacterCollectableBaseModify) ($t3)
+    lui $t4, 0x8002
+    sw $t3, 0x5FC0(t4) ; Store Hook
+    sw $zero, 0x5FC4 ($t4) ; Store NOP
 
-    LUI t3, hi(Jump_SetMoveBaseBitfield)
-    LW t3, lo(Jump_SetMoveBaseBitfield) (t3)
-    LUI t4, 0x8002
-    SW t3, 0x60F0(t4) // Store Hook
-    SW r0, 0x60F4 (t4) // Store NOP
+    lui $t3, hi(Jump_SetMoveBaseBitfield)
+    lw $t3, lo(Jump_SetMoveBaseBitfield) ($t3)
+    lui $t4, 0x8002
+    sw $t3, 0x60F0(t4) ; Store Hook
+    sw $zero, 0x60F4 ($t4) ; Store NOP
 
-    LUI t3, hi(Jump_SetMoveBaseProgressive)
-    LW t3, lo(Jump_SetMoveBaseProgressive) (t3)
-    LUI t4, 0x8002
-    SW t3, 0x611C(t4) // Store Hook
-    SW r0, 0x6120 (t4) // Store NOP
+    lui $t3, hi(Jump_SetMoveBaseProgressive)
+    lw $t3, lo(Jump_SetMoveBaseProgressive) ($t3)
+    lui $t4, 0x8002
+    sw $t3, 0x611C(t4) ; Store Hook
+    sw $zero, 0x6120 ($t4) ; Store NOP
 
-    LUI t3, hi(CurrentMap)
-    LW 	t3, lo(CurrentMap) (t3)
-    ADDIU t4, r0, 0x5
-    BEQ t3, t4, PatchCrankyCode_Cranky
-    NOP
+    lui $t3, hi(CurrentMap)
+    lw $t3, lo(CurrentMap) ($t3)
+    addiu $t4, $zero, 0x5
+    beq $t3, $t4, PatchCrankyCode_Cranky
+    nop
 
-    LUI t3, hi(Jump_MoveShow0)
-    LW t3, lo(Jump_MoveShow0) (t3)
-    LUI t4, 0x8002
-    SW 	t3, 0x7AE8 (t4) // Store Hook
-    SW 	r0, 0x7AEC (t4) // Store NOP
+    lui $t3, hi(Jump_MoveShow0)
+    lw $t3, lo(Jump_MoveShow0) ($t3)
+    lui $t4, 0x8002
+    sw $t3, 0x7AE8 ($t4) ; Store Hook
+    sw $zero, 0x7AEC ($t4) ; Store NOP
 
-    LUI t3, hi(Jump_MoveShow1)
-    LW t3, lo(Jump_MoveShow1) (t3)
-    LUI t4, 0x8002
-    SW 	t3, 0x7B30 (t4) // Store Hook
-    SW 	r0, 0x7B34 (t4) // Store NOP
+    lui $t3, hi(Jump_MoveShow1)
+    lw $t3, lo(Jump_MoveShow1) ($t3)
+    lui $t4, 0x8002
+    sw $t3, 0x7B30 ($t4) ; Store Hook
+    sw $zero, 0x7B34 ($t4) ; Store NOP
 
-    B 	PatchCrankyCode_More
-    NOP
+    b PatchCrankyCode_More
+    nop
 
     PatchCrankyCode_Cranky:
-        LUI 	t3, 0x8002
-        ADDIU 	t4, r0, 300
-        SH 		t4, 0x7B72 (t3)
-        SH 		t4, 0x7BCA (t3)
-        SH 		t4, 0x7BFA (t3)
+        lui $t3, 0x8002
+        addiu $t4, $zero, 300
+        sh $t4, 0x7B72 ($t3)
+        sh $t4, 0x7BCA ($t3)
+        sh $t4, 0x7BFA ($t3)
 
     PatchCrankyCode_More:
-        LUI 	t4, hi(Jump_AlwaysCandyInstrument)
-        LW 		t4, lo(Jump_AlwaysCandyInstrument) (t4)
-        LUI 	t3, 0x8002
-        SW 		t4, 0x6924 (t3)
-        SW 		r0, 0x6928 (t3)
+        lui $t4, hi(Jump_AlwaysCandyInstrument)
+        lw $t4, lo(Jump_AlwaysCandyInstrument) ($t4)
+        lui $t3, 0x8002
+        sw $t4, 0x6924 ($t3)
+        sw $zero, 0x6928 ($t3)
 
-        LUI t3, 0x8002
-        ADDIU t4, r0, hi(CrankyMoves_New)
-        SH t4, 0x6072 (t3)
-        ADDIU t4, r0, lo(CrankyMoves_New)
-        SH t4, 0x607A (t3)
-        ADDIU t4, r0, hi(CandyMoves_New)
-        SH t4, 0x607E (t3)
-        ADDIU t4, r0, lo(CandyMoves_New)
-        SH t4, 0x6086 (t3)
-        ADDIU t4, r0, hi(FunkyMoves_New)
-        SH t4, 0x608A (t3)
-        ADDIU t4, r0, lo(FunkyMoves_New)
-        SH t4, 0x608E (t3)
+        lui $t3, 0x8002
+        addiu $t4, $zero, hi(CrankyMoves_New)
+        sh $t4, 0x6072 ($t3)
+        addiu $t4, $zero, lo(CrankyMoves_New)
+        sh $t4, 0x607A ($t3)
+        addiu $t4, $zero, hi(CandyMoves_New)
+        sh $t4, 0x607E ($t3)
+        addiu $t4, $zero, lo(CandyMoves_New)
+        sh $t4, 0x6086 ($t3)
+        addiu $t4, $zero, hi(FunkyMoves_New)
+        sh $t4, 0x608A ($t3)
+        addiu $t4, $zero, lo(FunkyMoves_New)
+        sh $t4, 0x608E ($t3)
 
-    JR 		ra
-    NOP
+    jr ra
+    nop
 
 CrankyDecouple:
-    BEQ		a0, t0, CrankyDecouple_Bitfield
-    OR 		v1, a0, r0
-    BEQZ 	a0, CrankyDecouple_Bitfield
-    NOP
+    beq $a0, $t0, CrankyDecouple_Bitfield
+    or v1, $a0, $zero
+    beqz $a0, CrankyDecouple_Bitfield
+    nop
 
     CrankyDecouple_Progessive:
-        J 		0x800260E8
-        NOP
+        j 0x800260E8
+        nop
 
     CrankyDecouple_Bitfield:
-        J 		0x800260F0
-        NOP
+        j 0x800260F0
+        nop
 
 ForceToBuyMoveInOneLevel:
-    ADDU 	t3, t3, t9
-    SLL 	t3, t3, 1
-    LBU 	t2, 0xC (s2) // Current Level
-    SLTIU 	t1, t2, 7
-    BEQZ 	t1, ForceToBuyMoveInOneLevel_Skip // If level < 7 (In one of the main 7 levels, progress. Otherwise skip)
-    NOP
-    SLL 	t1, t2, 2
-    SUBU 	t1, t1, t2
-    SLL 	t1, t1, 1 // Current Level * 6
-    J 		0x800260B4
-    ADDU 	v1, v1, t1
+    addu $t3, $t3, $t9
+    sll $t3, $t3, 1
+    lbu $t2, 0xC ($s2) ; Current Level
+    sltiu $t1, $t2, 7
+    beqz $t1, ForceToBuyMoveInOneLevel_Skip ; If level < 7 (In one of the main 7 levels, progress. Otherwise skip)
+    nop
+    sll $t1, $t2, 2
+    subu $t1, $t1, $t2
+    sll $t1, $t1, 1 ; Current Level * 6
+    j 0x800260B4
+    addu v1, v1, $t1
 
     ForceToBuyMoveInOneLevel_Skip:
-        LUI 	s1, 0x8002
-        SW 		r0, 0x6194 (s1)
-        J 		0x80026168
-        ADDIU 	s1, r0, 0
+        lui $s1, 0x8002
+        sw $zero, 0x6194 ($s1)
+        j 0x80026168
+        addiu $s1, $zero, 0
 
 AlwaysCandyInstrument:
-    // Candy
-    LUI 	at, 0x8080
-    LW 		at, 0xBB40 (at)
-    LW 		t9, 0x58 (at)
-    ADDIU 	at, r0, 191
-    BEQ 	t9, at, AlwaysCandyInstrument_IsCandy
-    ADDIU 	t9, r0, 4
-    // Funky
-    LUI 	at, 0x8080
-    LW 		at, 0xBB40 (at)
-    LW 		t9, 0x58 (at)
-    ADDIU 	at, r0, 190
-    BEQ 	t9, at, AlwaysCandyInstrument_IsCandy
-    ADDIU 	t9, r0, 2
-    // Cranky
-    LUI 	at, 0x8080
-    LW 		at, 0xBB40 (at)
-    LW 		t9, 0x58 (at)
-    ADDIU 	at, r0, 189
-    BEQ 	t9, at, AlwaysCandyInstrument_IsCandy
-    ADDIU 	t9, r0, 0
-    // Default
-    LBU 	t9, 0xB (s0)
+    ; Candy
+    lui $at, 0x8080
+    lw $at, 0xBB40 ($at)
+    lw $t9, 0x58 ($at)
+    addiu $at, $zero, 191
+    beq $t9, $at, AlwaysCandyInstrument_IsCandy
+    addiu $t9, $zero, 4
+    ; Funky
+    lui $at, 0x8080
+    lw $at, 0xBB40 ($at)
+    lw $t9, 0x58 ($at)
+    addiu $at, $zero, 190
+    beq $t9, $at, AlwaysCandyInstrument_IsCandy
+    addiu $t9, $zero, 2
+    ; Cranky
+    lui $at, 0x8080
+    lw $at, 0xBB40 ($at)
+    lw $t9, 0x58 ($at)
+    addiu $at, $zero, 189
+    beq $t9, $at, AlwaysCandyInstrument_IsCandy
+    addiu $t9, $zero, 0
+    ; Default
+    lbu $t9, 0xB ($s0)
     
     AlwaysCandyInstrument_IsCandy:
-        J 		0x8002692C
-        SLTIU 	at, t9, 0x5
+        j 0x8002692C
+        sltiu $at, $t9, 0x5
 
 FixInvisibleText_0:
-    LW 		a0, 0xC4 (sp)
-    ADDIU 	t8, r0, 0x82
-    SW 		t8, 0x90 (a0)
-    ADDIU 	a0, sp, 0x3C
-    J 		0x80027AF0
-    SLL 	t8, t7, 5
+    lw $a0, 0xC4 ($sp)
+    addiu $t8, $zero, 0x82
+    sw $t8, 0x90 ($a0)
+    addiu $a0, $sp, 0x3C
+    j 0x80027AF0
+    sll $t8, $t7, 5
 
 FixInvisibleText_1:
-    LW  	v0, 0xC4 (sp)
-    ADDIU 	a1, r0, 0x82
-    SW 		a1, 0x90 (v0)
-    OR 		v0, r0, r0
-    J 		0x80027B38
-    ADDIU 	a1, sp, 0x3C
+    lw v0, 0xC4 ($sp)
+    addiu $a1, $zero, 0x82
+    sw $a1, 0x90 (v0)
+    or v0, $zero, $zero
+    j 0x80027B38
+    addiu $a1, $sp, 0x3C
 
 PriceKongStore:
-    // Stores price & kong correctly
-    // 0x80026140
-    LH 		v0, 0x4 (a1)
-    SH 		v0, 0x4 (s2)
-    ANDI 	t8, v0, 0xFF
-    J 		0x8002614C
-    SH 		t8, 0x0 (t2)
+    ; Stores price & kong correctly
+    ; 0x80026140
+    lh v0, 0x4 ($a1)
+    sh v0, 0x4 ($s2)
+    andi $t8, v0, 0xFF
+    j 0x8002614C
+    sh $t8, 0x0 ($t2)
 
 CharacterCollectableBaseModify:
-    // Replaces param2 with the start of the character collectable base
-    // 0x80025FC0
-    OR 		s2, a0, r0
-    LUI 	a1, hi(MovesBase)
-    ADDIU	a1, a1, lo(MovesBase)
-    J 		0x80025FC8
-    OR 		s3, a1, r0
+    ; Replaces param2 with the start of the character collectable base
+    ; 0x80025FC0
+    or $s2, $a0, $zero
+    lui $a1, hi(MovesBase)
+    addiu $a1, $a1, lo(MovesBase)
+    j 0x80025FC8
+    or $s3, $a1, $zero
 
 SetMoveBaseBitfield:
-    // Sets the move base to the correct kong (Bitfield)
-    // 0x800260F0
-    LH 		t4, 0x2 (a1)
-    ADDU 	t8, s3, a0
-    LBU 	t9, 0x4 (a1)
-    ADDIU 	t6, r0, 0x5E
-    MULT 	t9, t6
-    MFLO 	t9
-    J 		0x800260F8
-    ADDU 	t8, t8, t9
+    ; Sets the move base to the correct kong (Bitfield)
+    ; 0x800260F0
+    lh $t4, 0x2 ($a1)
+    addu $t8, $s3, $a0
+    lbu $t9, 0x4 ($a1)
+    addiu $t6, $zero, 0x5E
+    mult $t9, $t6
+    mflo $t9
+    j 0x800260F8
+    addu $t8, $t8, $t9
 
 SetMoveBaseProgressive:
-    // Sets the move base to the correct kong (Progressive)
-    // 0x8002611C
-    LBU 	t6, 0x4 (a1)
-    ADDIU 	t5, r0, 0x5E
-    MULT 	t6, t5
-    MFLO	t6
-    ADDU 	t4, t4, t6
-    LBU 	t6, 0x0 (t4)
-    J 		0x80026124
-    LH 		t5, 0x2 (a1)
+    ; Sets the move base to the correct kong (Progressive)
+    ; 0x8002611C
+    lbu $t6, 0x4 ($a1)
+    addiu $t5, $zero, 0x5E
+    mult $t6, $t5
+    mflo $t6
+    addu $t4, $t4, $t6
+    lbu $t6, 0x0 ($t4)
+    j 0x80026124
+    lh $t5, 0x2 ($a1)
 
 ShopImageHandler:
-    JAL 	0x807149B8
-    ADDIU 	a0, r0, 1
-    LH 		v0, 0x4A (sp)
-    LW 		t2, 0x44 (sp)
-    ADDIU 	at, r0, 0x90
-    MULTU 	t2, at
-    MFLO 	at
-    LUI 	t2, hi(ObjectModel2Pointer)
-    LW 		t2, lo(ObjectModel2Pointer) (t2)
-    ADDU 	t2, t2, at
-    LHU		t2, 0x84 (t2) // Object Type
-    ADDIU 	at, r0, 0x73
-    BEQ 	t2, at, ShopImageHandler_IsCranky
-    NOP
-    ADDIU 	at, r0, 0x7A
-    BEQ 	t2, at, ShopImageHandler_IsFunky
-    NOP
-    ADDIU 	at, r0, 0x124
-    BEQ 	t2, at, ShopImageHandler_IsCandy
-    NOP
-    ADDIU 	at, r0, 0x79
-    BEQ 	t2, at, ShopImageHandler_IsSnide
-    NOP
-    B 		ShopImageHandler_Finish
-    NOP
+    jal 0x807149B8
+    addiu $a0, $zero, 1
+    lh v0, 0x4A ($sp)
+    lw $t2, 0x44 ($sp)
+    addiu $at, $zero, 0x90
+    multu $t2, $at
+    mflo $at
+    lui $t2, hi(ObjectModel2Pointer)
+    lw $t2, lo(ObjectModel2Pointer) ($t2)
+    addu $t2, $t2, $at
+    lhu $t2, 0x84 ($t2) ; Object Type
+    addiu $at, $zero, 0x73
+    beq $t2, $at, ShopImageHandler_IsCranky
+    nop
+    addiu $at, $zero, 0x7A
+    beq $t2, $at, ShopImageHandler_IsFunky
+    nop
+    addiu $at, $zero, 0x124
+    beq $t2, $at, ShopImageHandler_IsCandy
+    nop
+    addiu $at, $zero, 0x79
+    beq $t2, $at, ShopImageHandler_IsSnide
+    nop
+    b ShopImageHandler_Finish
+    nop
 
     ShopImageHandler_IsCranky:
-        B 		ShopImageHandler_Finish
-        ADDIU 	v0, r0, 1
+        b ShopImageHandler_Finish
+        addiu v0, $zero, 1
         
     ShopImageHandler_IsFunky:
-        B 		ShopImageHandler_Finish
-        ADDIU 	v0, r0, 2
+        b ShopImageHandler_Finish
+        addiu v0, $zero, 2
 
     ShopImageHandler_IsCandy:
-        B 		ShopImageHandler_Finish
-        ADDIU 	v0, r0, 0
+        b ShopImageHandler_Finish
+        addiu v0, $zero, 0
 
     ShopImageHandler_IsSnide:
-        ADDIU 	v0, r0, 3
+        addiu v0, $zero, 3
 
     ShopImageHandler_Finish:
-        J 		0x80648370
-        NOP
+        j 0x80648370
+        nop

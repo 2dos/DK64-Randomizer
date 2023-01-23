@@ -24,6 +24,7 @@ class LocationSelection:
         location=None,
         name="",
         is_shop=False,
+        price=0,
         placement_index=0,
         can_have_item=True,
         can_place_item=True,
@@ -41,6 +42,7 @@ class LocationSelection:
         self.reward_spot = is_reward_point
         self.location = location
         self.is_shop = is_shop
+        self.price = price
         self.placement_index = placement_index
         self.can_have_item = can_have_item
         self.can_place_item = can_place_item
@@ -103,15 +105,15 @@ move_list = {
     Items.SniperSight: MoveData(2, Kongs.any, 3, True, 1),
 }
 
-progressive_move_flag_dict = {
-    Items.ProgressiveSlam: [0x290, 0x291],
-    Items.ProgressiveAmmoBelt: [0x292, 0x293],
-    Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
-}
-
 
 def ShuffleItems(spoiler: Spoiler):
     """Shuffle items into assortment."""
+    progressive_move_flag_dict = {
+        Items.ProgressiveSlam: [0x290, 0x291],
+        Items.ProgressiveAmmoBelt: [0x292, 0x293],
+        Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
+        Items.FakeItem: list(range(0x2AE, 0x2BE)),
+    }
     flag_dict = {}
     locations_not_needing_flags = []
     locations_needing_flags = []
@@ -136,12 +138,22 @@ def ShuffleItems(spoiler: Spoiler):
                 old_flag = -1  # Irrelevant for shop locations
                 old_kong = item_location.kong
                 placement_index = item_location.placement_index
+            price = 0
+            if item_location.type == Types.Shop:
+                # Vanilla prices are based on item, not location
+                if spoiler.settings.random_prices == "vanilla":
+                    # If it's not in the prices dictionary, the item is free
+                    if item_location.item in spoiler.settings.prices.keys():
+                        price = spoiler.settings.prices[item_location.item]
+                else:
+                    price = spoiler.settings.prices[location_enum]
             location_selection = LocationSelection(
                 vanilla_item=item_location.type,
                 flag=old_flag,
                 placement_data=placement_info,
                 is_reward_point=item_location.is_reward,
                 is_shop=item_location.type in (Types.Shop, Types.TrainingBarrel, Types.Shockwave),
+                price=price,
                 placement_index=placement_index,
                 kong=old_kong,
                 location=location_enum,
@@ -157,8 +169,8 @@ def ShuffleItems(spoiler: Spoiler):
                 location_selection.new_item = new_item.type
                 location_selection.new_kong = new_item.kong
                 # If this item has a dedicated specific flag, then set it now (Keys and Coins right now)
-                if new_item.rando_flag is not None:
-                    if new_item.rando_flag == -1:  # This means it's a progressive move and they need special flags
+                if new_item.rando_flag is not None or new_item.type == Types.FakeItem:
+                    if new_item.rando_flag == -1 or new_item.type == Types.FakeItem:  # This means it's a progressive move or fake item and they need special flags
                         location_selection.new_flag = progressive_move_flag_dict[item_location.item].pop()
                     else:
                         location_selection.new_flag = new_item.rando_flag

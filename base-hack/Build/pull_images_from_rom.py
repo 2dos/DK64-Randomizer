@@ -4,425 +4,124 @@ import zlib
 
 from PIL import Image
 
+
+class ImageData:
+    """Class to store information regarding images."""
+
+    def __init__(self, name: str, format: str, table: int, index: int, width: int, height: int, resize: bool, flip: bool):
+        """Initialize with given data."""
+        self.name = name
+        self.format = format
+        self.table = table
+        self.index = index
+        self.width = width
+        self.height = height
+        self.resize = resize
+        self.flip = flip
+
+
 crate_frame_l = 7
 crate_frame_r = 9
 images = [
-    {
-        "name": "bongos",
-        "format": "rgba16",
-        "table": 25,
-        "index": 5548,
-        "w": 40,
-        "h": 40,
-        "resize": True,
-        "flip": True,
-    },
-    {"name": "crown", "format": "rgba16", "table": 25, "index": 5893, "w": 44, "h": 44, "resize": True, "flip": True},
-    {"name": "dkcoin", "format": "rgba16", "table": 7, "index": 500, "w": 48, "h": 44, "resize": True, "flip": True},
-    {"name": "fairy", "format": "rgba32", "table": 25, "index": 5869, "w": 32, "h": 32, "resize": True, "flip": True},
-    {
-        "name": "guitar",
-        "format": "rgba16",
-        "table": 25,
-        "index": 5547,
-        "w": 40,
-        "h": 40,
-        "resize": True,
-        "flip": True,
-    },
-    {
-        "name": "triangle",
-        "format": "rgba16",
-        "table": 25,
-        "index": 5550,
-        "w": 40,
-        "h": 40,
-        "resize": True,
-        "flip": True,
-    },
-    {
-        "name": "trombone",
-        "format": "rgba16",
-        "table": 25,
-        "index": 5551,
-        "w": 40,
-        "h": 40,
-        "resize": True,
-        "flip": True,
-    },
-    {
-        "name": "peanut",
-        "format": "rgba16",
-        "table": 7,
-        "index": 424,
-        "w": 32,
-        "h": 32,
-        "resize": True,
-        "flip": True,
-    },
-    {
-        "name": "feather",
-        "format": "rgba16",
-        "table": 7,
-        "index": 642,
-        "w": 32,
-        "h": 32,
-        "resize": True,
-        "flip": True,
-    },
-    {
-        "name": "grape",
-        "format": "rgba16",
-        "table": 7,
-        "index": 650,
-        "w": 32,
-        "h": 32,
-        "resize": True,
-        "flip": True,
-    },
-    {
-        "name": "pineapple",
-        "format": "rgba16",
-        "table": 7,
-        "index": 666,
-        "w": 32,
-        "h": 48,
-        "resize": True,
-        "flip": True,
-    },
-    {
-        "name": "coconut",
-        "format": "rgba16",
-        "table": 7,
-        "index": 675,
-        "w": 40,
-        "h": 51,
-        "resize": True,
-        "flip": True,
-    },
-    {"name": "nin_coin", "format": "rgba16", "table": 25, "index": 5912, "w": 44, "h": 44, "resize": True, "flip": True},
-    {
-        "name": "orange",
-        "format": "rgba16",
-        "table": 7,
-        "index": 309,
-        "w": 32,
-        "h": 32,
-        "resize": True,
-        "flip": True,
-    },
-    {"name": "rainbow_coin", "format": "rgba16", "table": 25, "index": 5963, "w": 48, "h": 44, "resize": True, "flip": True},
-    {"name": "rw_coin", "format": "rgba16", "table": 25, "index": 5905, "w": 44, "h": 44, "resize": True, "flip": True},
-    {
-        "name": "sax",
-        "format": "rgba16",
-        "table": 25,
-        "index": 5549,
-        "w": 40,
-        "h": 40,
-        "resize": True,
-        "flip": True,
-    },
-    {
-        "name": "boss_key",
-        "format": "rgba16",
-        "table": 25,
-        "index": 5877,
-        "w": 44,
-        "h": 44,
-        "resize": False,
-        "flip": True,
-    },
-    {
-        "name": "01234",
-        "format": "rgba16",
-        "table": 14,
-        "index": 15,
-        "w": 76,
-        "h": 24,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "56789",
-        "format": "rgba16",
-        "table": 14,
-        "index": 16,
-        "w": 76,
-        "h": 24,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "WXYL",
-        "format": "rgba16",
-        "table": 14,
-        "index": 12,
-        "w": 76,
-        "h": 24,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "specialchars",
-        "format": "rgba16",
-        "table": 14,
-        "index": 0x1E,
-        "w": 64,
-        "h": 32,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "red_qmark_0",
-        "format": "rgba16",
-        "table": 7,
-        "index": 508,
-        "w": 32,
-        "h": 64,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "red_qmark_1",
-        "format": "rgba16",
-        "table": 7,
-        "index": 509,
-        "w": 32,
-        "h": 64,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "dk_tie_palette",
-        "format": "rgba16",
-        "table": 25,
-        "index": 0xE66,
-        "w": 32,
-        "h": 32,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "tiny_palette",
-        "format": "rgba16",
-        "table": 25,
-        "index": 0xE69,
-        "w": 32,
-        "h": 32,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "homing_crate_0",
-        "format": "rgba16",
-        "table": 7,
-        "index": 176 + crate_frame_r,
-        "w": 32,
-        "h": 64,
-        "resize": False,
-        "flip": True,
-    },
-    {
-        "name": "homing_crate_1",
-        "format": "rgba16",
-        "table": 7,
-        "index": 193 + crate_frame_l,
-        "w": 32,
-        "h": 64,
-        "resize": False,
-        "flip": True,
-    },
-    {
-        "name": "standard_crate_0",
-        "format": "rgba16",
-        "table": 7,
-        "index": 383 + crate_frame_r,
-        "w": 32,
-        "h": 64,
-        "resize": False,
-        "flip": True,
-    },
-    {
-        "name": "standard_crate_1",
-        "format": "rgba16",
-        "table": 7,
-        "index": 400 + crate_frame_l,
-        "w": 32,
-        "h": 64,
-        "resize": False,
-        "flip": True,
-    },
-    {
-        "name": "num_1_unlit",
-        "format": "rgba16",
-        "table": 7,
-        "index": 510,
-        "w": 32,
-        "h": 32,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "num_1_lit",
-        "format": "rgba16",
-        "table": 7,
-        "index": 511,
-        "w": 32,
-        "h": 32,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "num_6_unlit",
-        "format": "rgba16",
-        "table": 7,
-        "index": 520,
-        "w": 32,
-        "h": 32,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "num_6_lit",
-        "format": "rgba16",
-        "table": 7,
-        "index": 521,
-        "w": 32,
-        "h": 32,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "num_7_unlit",
-        "format": "rgba16",
-        "table": 7,
-        "index": 522,
-        "w": 32,
-        "h": 32,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "num_7_lit",
-        "format": "rgba16",
-        "table": 7,
-        "index": 523,
-        "w": 32,
-        "h": 32,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "num_9_unlit",
-        "format": "rgba16",
-        "table": 7,
-        "index": 526,
-        "w": 32,
-        "h": 32,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "num_9_lit",
-        "format": "rgba16",
-        "table": 7,
-        "index": 527,
-        "w": 32,
-        "h": 32,
-        "resize": False,
-        "flip": False,
-    },
-    {
-        "name": "film",
-        "format": "rgba16",
-        "table": 7,
-        "index": 439,
-        "w": 48,
-        "h": 42,
-        "resize": False,
-        "flip": True,
-    },
-    {
-        "name": "melon",
-        "format": "rgba16",
-        "table": 7,
-        "index": 544,
-        "w": 48,
-        "h": 42,
-        "resize": False,
-        "flip": True,
-    },
-    {
-        "name": "headphones",
-        "format": "rgba16",
-        "table": 7,
-        "index": 979,
-        "w": 40,
-        "h": 40,
-        "resize": False,
-        "flip": True,
-    },
-    {
-        "name": "special_coin_side",
-        "format": "rgba16",
-        "table": 25,
-        "index": 0x170D,
-        "w": 44,
-        "h": 44,
-        "resize": False,
-        "flip": True,
-    },
+    ImageData("bongos", "rgba16", 25, 5548, 40, 40, True, True),
+    ImageData("crown", "rgba16", 25, 5893, 44, 44, True, True),
+    ImageData("dkcoin", "rgba16", 7, 500, 48, 44, True, True),
+    ImageData("fairy", "rgba32", 25, 5869, 32, 32, True, True),
+    ImageData("fairy_0", "rgba32", 25, 0x16ED, 32, 32, True, True),
+    ImageData("guitar", "rgba16", 25, 5547, 40, 40, True, True),
+    ImageData("triangle", "rgba16", 25, 5550, 40, 40, True, True),
+    ImageData("trombone", "rgba16", 25, 5551, 40, 40, True, True),
+    ImageData("peanut", "rgba16", 7, 424, 32, 32, True, True),
+    ImageData("peanut", "rgba16", 7, 424, 32, 32, True, True),
+    ImageData("feather", "rgba16", 7, 642, 32, 32, True, True),
+    ImageData("grape", "rgba16", 7, 650, 32, 32, True, True),
+    ImageData("pineapple", "rgba16", 7, 666, 32, 48, True, True),
+    ImageData("coconut", "rgba16", 7, 675, 40, 51, True, True),
+    ImageData("nin_coin", "rgba16", 25, 5912, 44, 44, True, True),
+    ImageData("orange", "rgba16", 7, 309, 32, 32, True, True),
+    ImageData("rainbow_coin", "rgba16", 25, 5963, 48, 44, True, True),
+    ImageData("rw_coin", "rgba16", 25, 5905, 44, 44, True, True),
+    ImageData("sax", "rgba16", 25, 5549, 40, 40, True, True),
+    ImageData("boss_key", "rgba16", 25, 5877, 44, 44, False, True),
+    ImageData("01234", "rgba16", 14, 15, 76, 24, False, False),
+    ImageData("56789", "rgba16", 14, 16, 76, 24, False, False),
+    ImageData("MNO", "rgba16", 14, 9, 76, 24, False, False),
+    ImageData("PQRS", "rgba16", 14, 10, 76, 24, False, False),
+    ImageData("WXYL", "rgba16", 14, 12, 76, 24, False, False),
+    ImageData("specialchars", "rgba16", 14, 30, 64, 32, False, False),
+    ImageData("red_qmark_0", "rgba16", 7, 508, 32, 64, False, False),
+    ImageData("red_qmark_1", "rgba16", 7, 509, 32, 64, False, False),
+    ImageData("dk_tie_palette", "rgba16", 25, 3686, 32, 32, False, False),
+    ImageData("tiny_palette", "rgba16", 25, 3689, 32, 32, False, False),
+    ImageData("homing_crate_0", "rgba16", 7, 185, 32, 64, False, True),
+    ImageData("homing_crate_1", "rgba16", 7, 200, 32, 64, False, True),
+    ImageData("standard_crate_0", "rgba16", 7, 392, 32, 64, False, True),
+    ImageData("standard_crate_1", "rgba16", 7, 407, 32, 64, False, True),
+    ImageData("num_1_unlit", "rgba16", 7, 510, 32, 32, False, False),
+    ImageData("num_1_lit", "rgba16", 7, 511, 32, 32, False, False),
+    ImageData("num_6_unlit", "rgba16", 7, 520, 32, 32, False, False),
+    ImageData("num_6_lit", "rgba16", 7, 521, 32, 32, False, False),
+    ImageData("num_7_unlit", "rgba16", 7, 522, 32, 32, False, False),
+    ImageData("num_7_lit", "rgba16", 7, 523, 32, 32, False, False),
+    ImageData("num_9_unlit", "rgba16", 7, 526, 32, 32, False, False),
+    ImageData("num_9_lit", "rgba16", 7, 527, 32, 32, False, False),
+    ImageData("film", "rgba16", 7, 439, 48, 42, False, True),
+    ImageData("melon", "rgba16", 7, 544, 48, 42, False, True),
+    ImageData("headphones", "rgba16", 7, 979, 40, 40, False, True),
+    ImageData("special_coin_side", "rgba16", 25, 5901, 44, 44, False, True),
+    ImageData("gb", "rgba16", 25, 5468, 44, 44, False, True),
+    ImageData("medal", "rgba16", 25, 0x156C, 44, 44, False, True),
+    ImageData("dk_bp", "rgba16", 25, 0x15FC, 48, 42, False, True),
+    ImageData("lanky_bp", "rgba16", 25, 0x1593, 48, 42, False, True),
+    ImageData("key", "rgba16", 25, 0x16F5, 44, 44, False, True),
+    ImageData("crown_shop", "rgba16", 25, 0x1705, 44, 44, False, True),
+    ImageData("pearl", "rgba16", 25, 0xD5F, 32, 32, False, True),
+    ImageData("bean", "rgba16", 25, 0xD3C, 64, 32, False, True),
+    ImageData("rw_coin_noresize", "rgba16", 25, 5905, 44, 44, False, True),
+    ImageData("nin_coin_noresize", "rgba16", 25, 5912, 44, 44, False, True),
+    ImageData("crown_noresize", "rgba16", 25, 5893, 44, 44, False, True),
+    ImageData("bonus_skin", "rgba16", 25, 0x128A, 16, 64, False, False),
+    ImageData("gb_shine", "rgba16", 25, 0xB7B, 32, 32, False, False),
+    ImageData("rainbow_coin_noflip", "rgba16", 25, 5963, 48, 44, False, False),
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]
 tex_idx = 0x273
 for kong in kong_tex:
     for x in range(2):
-        images.append(
-            {
-                "name": f"{kong}_face_{x}",
-                "format": "rgba16",
-                "table": 25,
-                "index": tex_idx + x,
-                "w": 32,
-                "h": 64,
-                "resize": False,
-                "flip": True,
-            }
-        )
+        images.append(ImageData(f"{kong}_face_{x}", "rgba16", 25, tex_idx + x, 32, 64, False, True))
     tex_idx += 2
 
 ptr_offset = 0x101C50
 
-if not os.path.exists("assets/Non-Code/hash"):
-    os.mkdir("assets/Non-Code/hash")
+if not os.path.exists("assets/hash"):
+    os.mkdir("assets/hash")
 
 print("Extracting Images from ROM")
 with open("rom/dk64.z64", "rb") as fh:
     for x in images:
-        fh.seek(ptr_offset + (x["table"] * 4))
+        fh.seek(ptr_offset + (x.table * 4))
         ptr_table = ptr_offset + int.from_bytes(fh.read(4), "big")
-        fh.seek(ptr_table + (x["index"] * 4))
+        fh.seek(ptr_table + (x.index * 4))
         img_start = ptr_offset + int.from_bytes(fh.read(4), "big")
-        fh.seek(ptr_table + ((x["index"] + 1) * 4))
+        fh.seek(ptr_table + ((x.index + 1) * 4))
         img_end = ptr_offset + int.from_bytes(fh.read(4), "big")
         img_size = img_end - img_start
         fh.seek(img_start)
-        if x["table"] == 7:
+        if x.table == 7:
             dec = fh.read(img_size)
         else:
             dec = zlib.decompress(fh.read(img_size), 15 + 32)
-        img_name = f"assets/Non-Code/hash/{x['name']}.png"
+        img_name = f"assets/hash/{x.name}.png"
         if os.path.exists(img_name):
             os.remove(img_name)
         with open(img_name, "wb") as fg:
             fg.seek(0)
-        im = Image.new(mode="RGBA", size=(x["w"], x["h"]))
+        im = Image.new(mode="RGBA", size=(x.width, x.height))
         pix = im.load()
-        pix_count = x["w"] * x["h"]
+        pix_count = x.width * x.height
         for pixel in range(pix_count):
-            if x["format"] == "rgba16":
+            if x.format == "rgba16":
                 start = pixel * 2
                 end = start + 2
                 pixel_data = int.from_bytes(dec[start:end], "big")
@@ -434,7 +133,7 @@ with open("rom/dk64.z64", "rb") as fh:
                 green = int((green / 0x1F) * 0xFF)
                 blue = int((blue / 0x1F) * 0xFF)
                 alpha = alpha * 255
-            elif x["format"] == "rgba32":
+            elif x.format == "rgba32":
                 start = pixel * 4
                 end = start + 4
                 pixel_data = int.from_bytes(dec[start:end], "big")
@@ -442,11 +141,11 @@ with open("rom/dk64.z64", "rb") as fh:
                 green = (pixel_data >> 16) & 0xFF
                 blue = (pixel_data >> 8) & 0xFF
                 alpha = pixel_data & 0xFF
-            pix_x = pixel % x["w"]
-            pix_y = int(pixel / x["w"])
+            pix_x = pixel % x.width
+            pix_y = int(pixel / x.width)
             pix[pix_x, pix_y] = (red, green, blue, alpha)
-        if x["flip"]:
+        if x.flip:
             im = im.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
-        if x["resize"]:
+        if x.resize:
             im = im.resize((32, 32))
         im.save(img_name)

@@ -1,5 +1,6 @@
 """Stores the requirements for each minigame."""
 
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Lists.MapsAndExits import Maps
@@ -73,9 +74,14 @@ MinigameRequirements = {
     Minigames.MadMazeMaulEasy: Minigame(name="Mad Maze Maul (60 seconds, 5 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulEasy, logic=lambda l: True),
     Minigames.MadMazeMaulNormal: Minigame(name="Mad Maze Maul (60 seconds, 7 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulNormal, difficulty_lvl=1, logic=lambda l: True),
     Minigames.MadMazeMaulHard: Minigame(
-        name="Mad Maze Maul (120 seconds, 11 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulHard, helm_enabled=False, difficulty_lvl=2, logic=lambda l: l.shockwave
+        name="Mad Maze Maul (120 seconds, 11 enemies)",
+        group="Mad Maze Maul",
+        map_id=Maps.MadMazeMaulHard,
+        helm_enabled=False,
+        difficulty_lvl=2,
+        logic=lambda l: (l.shockwave or l.oranges) and l.HasGun(Kongs.any),
     ),
-    Minigames.MadMazeMaulInsane: Minigame(name="Mad Maze Maul (125 seconds, 10 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulInsane, difficulty_lvl=3, logic=lambda l: True),
+    Minigames.MadMazeMaulInsane: Minigame(name="Mad Maze Maul (125 seconds, 10 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulInsane, difficulty_lvl=3, logic=lambda l: l.HasGun(Kongs.any)),
     # Minecart Mayhem - Higher two difficulties are too hard for those who don't have a guide to do in Helm
     Minigames.MinecartMayhemEasy: Minigame(name="Minecart Mayhem (30 seconds, 1 TNT)", group="Minecart Mayhem", map_id=Maps.MinecartMayhemEasy, logic=lambda l: True),
     Minigames.MinecartMayhemNormal: Minigame(
@@ -122,7 +128,11 @@ MinigameRequirements = {
     # Speedy Swing Sortie
     Minigames.SpeedySwingSortieEasy: Minigame(name="Speedy Swing Sortie (40 seconds, 9 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieEasy, logic=lambda l: l.vines),
     Minigames.SpeedySwingSortieNormal: Minigame(
-        name="Speedy Swing Sortie (45 seconds, 14 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieNormal, difficulty_lvl=1, logic=lambda l: l.vines and l.twirl and l.istiny
+        name="Speedy Swing Sortie (45 seconds, 14 coins)",
+        group="Speedy Swing Sortie",
+        map_id=Maps.SpeedySwingSortieNormal,
+        difficulty_lvl=1,
+        logic=lambda l: l.vines and (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey),
     ),
     Minigames.SpeedySwingSortieHard: Minigame(
         name="Speedy Swing Sortie (60 seconds, 6 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieHard, helm_enabled=False, difficulty_lvl=2, logic=lambda l: l.vines
@@ -158,7 +168,11 @@ MinigameRequirements = {
     Minigames.DonkeyTarget: Minigame(name="Hideout Helm: DK Targets", group="Helm Minigames", map_id=Maps.HelmBarrelDKTarget, can_repeat=True, logic=lambda l: l.isdonkey),
     Minigames.DiddyKremling: Minigame(name="Hideout Helm: Diddy Kremlings", group="Helm Minigames", map_id=Maps.HelmBarrelDiddyKremling, can_repeat=True, logic=lambda l: l.Slam),
     Minigames.DiddyRocketbarrel: Minigame(
-        name="Hideout Helm: Diddy Rocketbarrel", group="Helm Minigames", map_id=Maps.HelmBarrelDiddyRocketbarrel, can_repeat=True, logic=lambda l: l.Slam and l.jetpack and l.peanut and l.isdiddy
+        name="Hideout Helm: Diddy Rocketbarrel",
+        group="Helm Minigames",
+        map_id=Maps.HelmBarrelDiddyRocketbarrel,
+        can_repeat=True,
+        logic=lambda l: l.Slam and (l.jetpack and l.peanut and l.isdiddy) or l.phasewalk,
     ),
     # Supposed to use sprint but can make it without), even with Chunky
     Minigames.LankyMaze: Minigame(name="Hideout Helm: Lanky Maze", group="Helm Minigames", map_id=Maps.HelmBarrelLankyMaze, can_repeat=True, logic=lambda l: True),

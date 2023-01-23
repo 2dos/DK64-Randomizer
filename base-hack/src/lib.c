@@ -1,5 +1,17 @@
 #include "../include/common.h"
 
+const short kong_flags[] = {FLAG_KONG_DK,FLAG_KONG_DIDDY,FLAG_KONG_LANKY,FLAG_KONG_TINY,FLAG_KONG_CHUNKY};
+const short normal_key_flags[] = {
+	FLAG_KEYHAVE_KEY1,
+	FLAG_KEYHAVE_KEY2,
+	FLAG_KEYHAVE_KEY3,
+	FLAG_KEYHAVE_KEY4,
+	FLAG_KEYHAVE_KEY5,
+	FLAG_KEYHAVE_KEY6,
+	FLAG_KEYHAVE_KEY7,
+	FLAG_KEYHAVE_KEY8
+};
+
 void playSFX(short sfxIndex) {
 	playSound(sfxIndex,0x7FFF,0x427C0000,0x3F800000,0,0);
 }
@@ -11,7 +23,7 @@ void setPermFlag(short flagIndex) {
 int convertIDToIndex(short obj_index) {
 	int _count = ObjectModel2Count;
 	int index = -1;
-	int* m2location = ObjectModel2Pointer;
+	int* m2location = (int*)ObjectModel2Pointer;
 	for (int i = 0; i < _count; i++) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 		if (_object->object_id == obj_index) {
@@ -25,7 +37,7 @@ int convertIDToIndex(short obj_index) {
 int convertSubIDToIndex(short obj_index) {
 	int _count = ObjectModel2Count;
 	int index = -1;
-	int* m2location = ObjectModel2Pointer;
+	int* m2location = (int*)ObjectModel2Pointer;
 	for (int i = 0; i < _count; i++) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 		if (_object->sub_id == obj_index) {
@@ -106,8 +118,11 @@ void correctDKPortal(void) {
 		if (portal_exit == exit) {
 			portal_state = 0;
 		}
+		if ((CurrentMap == 7) && (exit == 15)) {
+			portal_state = 0;
+		}
 		int _count = ObjectModel2Count;
-		int* m2location = ObjectModel2Pointer;
+		int* m2location = (int*)ObjectModel2Pointer;
 		for (int i = 0; i < _count; i++) {
 			ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 			if (_object->object_type == 0x2AD) {
@@ -178,6 +193,7 @@ void modifyCutsceneItem(int bank, int item, int new_param1, int new_param2, int 
 	if (CutsceneBanks[bank].cutscene_funcbank) {
 		void* funcbank = CutsceneBanks[bank].cutscene_funcbank;
 		cutscene_item* data = (cutscene_item*)getObjectArrayAddr(funcbank,0x14,item);
+		data->command = 0xD;
 		data->params[0] = new_param1;
 		data->params[1] = new_param2;
 		data->params[2] = new_param3;
@@ -200,20 +216,42 @@ void modifyCutscenePanPoint(int bank, int item, int point_index, int x, int y, i
 	}
 }
 
+void modifyCutscenePointTime(int bank, int cutscene, int point, int new_time) {
+	cutscene_item_data* databank = CutsceneBanks[bank].cutscene_databank;
+	cutscene_item_data* data = (cutscene_item_data*)&databank[cutscene];
+	if (data) {
+		short* write_spot = (short*)&data->length_array[point];
+		if (write_spot) {
+			*(short*)write_spot = new_time;
+		}
+	}
+}
+
+void modifyCutscenePointCount(int bank, int cutscene, int point_count) {
+	cutscene_item_data* databank = CutsceneBanks[bank].cutscene_databank;
+	cutscene_item_data* data = (cutscene_item_data*)&databank[cutscene];
+	if (data) {
+		data->num_points = point_count;
+	}
+}
+
+void createCutscene(int bank, int cutscene, int point_count) {
+	if (cutscene < CutsceneBanks[bank].cutscene_count) {
+		cutscene_item_data* databank = CutsceneBanks[bank].cutscene_databank;
+		cutscene_item_data* data = (cutscene_item_data*)&databank[cutscene];
+		if (data) {
+			data->num_points = point_count;
+			data->length_array = dk_malloc(point_count * 2);
+			data->point_array = dk_malloc(point_count * 2);
+			data->unk_02 = 0;
+		}
+	}
+	// Else - Can't create cutscene
+}
+
 int getWrinklyLevelIndex(void) {
 	return getWorld(CurrentMap, 0);
 }
-
-static const short normal_key_flags[] = {
-	FLAG_KEYHAVE_KEY1,
-	FLAG_KEYHAVE_KEY2,
-	FLAG_KEYHAVE_KEY3,
-	FLAG_KEYHAVE_KEY4,
-	FLAG_KEYHAVE_KEY5,
-	FLAG_KEYHAVE_KEY6,
-	FLAG_KEYHAVE_KEY7,
-	FLAG_KEYHAVE_KEY8
-};
 
 int getKeyFlag(int index) {
     if ((Rando.level_order_rando_on) && (index < 7)) {
@@ -221,4 +259,74 @@ int getKeyFlag(int index) {
     } else {
         return normal_key_flags[index];
     }
+}
+
+int getKongFlag(int kong_index) {
+	if (kong_index < 0) {
+		return 0;
+	}
+	return kong_flags[kong_index];
+}
+
+void initActor(int actor_index, void* func, int master_type, int paad_type) {
+	ActorFunctions[actor_index] = func;
+	ActorMasterType[actor_index] = master_type;
+	*(ActorPaadDefs[actor_index]) = paad_type;
+}
+
+sprite_data_struct bean_sprite = {
+	.unk0 = 0xC4,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = 2,
+	.unk8 = -1,
+	.table = 1,
+	.width = 64,
+	.height = 32,
+	.image_count = 1,
+	.images = {6020},
+};
+
+sprite_data_struct pearl_sprite = {
+	.unk0 = 0xC5,
+	.images_per_frame_horizontal = 1,
+	.images_per_frame_vertical = 1,
+	.codec = 2,
+	.unk8 = -1,
+	.table = 1,
+	.width = 32,
+	.height = 32,
+	.image_count = 1,
+	.images = {6021},
+};
+
+sprite_data_struct krool_sprite = {
+	.unk0 = 0xC6,
+	.images_per_frame_horizontal = 2,
+	.images_per_frame_vertical = 1,
+	.codec = 2,
+	.unk8 = -1,
+	.table = 1,
+	.width = 32,
+	.height = 64,
+	.image_count = 2,
+	.images = {0x383, 0x384},
+};
+
+void giveGB(int kong, int level) {
+	changeCollectableCount(8, 0, 1);
+	displayItemOnHUD(8, 0, 0);
+	// MovesBase[kong].gb_count[level] += 1;
+	// if (HUD) {
+	// 	short* counter = (short*)&HUD->item[8].item_count_pointer;
+	// 	if (counter) {
+	// 		*counter = *counter + 1;
+	// 	}
+	// }
+}
+
+void giveRainbowCoin(void) {
+	for (int i = 0; i < 5; i++) {
+		MovesBase[i].coins += 5;
+	}
 }

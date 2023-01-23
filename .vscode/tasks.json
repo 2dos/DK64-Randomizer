@@ -41,14 +41,20 @@
     },
     {
       "label": "Lint Repo",
-      "dependsOn": ["Format Repo", "Validate Styles", "Validate Docstrings", "Validate Jinja2", "Validate C"],
-      "problemMatcher": [],
+      "dependsOn": [
+        "Format Repo",
+        "Validate Styles",
+        "Validate Docstrings",
+        //"Validate Jinja2",
+        "Validate C"
+      ],
+      "problemMatcher": []
     },
     {
       "label": "Run Tests",
       "type": "shell",
       "command": "${command:python.interpreterPath} -m pytest -v --cov=${workspaceFolder}/ --cov-report html ${workspaceFolder}/tests",
-      "problemMatcher": [],
+      "problemMatcher": []
     },
     {
       "label": "Build BPS",
@@ -60,5 +66,11 @@
         "isDefault": true
       }
     },
+    {
+      "label": "Run Server",
+      "type": "shell",
+      "command": "${command:python.interpreterPath} ./NoCacheHTTPServer.py",
+      "problemMatcher": []
+    }
   ]
 }

@@ -7,14 +7,8 @@ enemy_replacements = [
                 "vanilla_location": 0,  # Kong index which is tied to the kasplat. Eg. This would take the DK Kasplat location (DK is kong 0)
                 "replace_with": 1,  # Which Kasplat will go in that position (0 = DK, 1 = Diddy etc)
             },
-            {
-                "vanilla_location": 1,
-                "replace_with": 3,
-            },
-            {
-                "vanilla_location": 2,
-                "replace_with": 0,
-            },
+            {"vanilla_location": 1, "replace_with": 3},
+            {"vanilla_location": 2, "replace_with": 0},
             {"vanilla_location": 3, "replace_with": 2},
         ],
         "enemy_swaps": {
@@ -45,23 +39,9 @@ enemy_classes = {
         0x5F,  # Spiderling
         0x65,  # Kritter-in-a-sheet
     ],
-    "air": [
-        0x05,  # Zinger (Charger)
-        0x1C,  # Zinger (Bomber)
-        0x53,  # Robo-Zinger
-        0x63,  # Bat
-    ],
-    "ground_beefyboys": [
-        0x09,  # Klump
-        0x38,  # Robo-Kremling
-        0x64,  # Evil Tomato
-        0x67,  # Kosha
-    ],
-    "water": [
-        0x55,  # Shuri
-        0x56,  # Gimpfish
-        0x66,  # Pufftup
-    ],
+    "air": [0x05, 0x1C, 0x53, 0x63],  # Zinger (Charger)  # Zinger (Bomber)  # Robo-Zinger  # Bat
+    "ground_beefyboys": [0x09, 0x38, 0x64, 0x67],  # Klump  # Robo-Kremling  # Evil Tomato  # Kosha
+    "water": [0x55, 0x56, 0x66],  # Shuri  # Gimpfish  # Pufftup
 }
 
 with open("dk64-randomizer-base-dev.z64", "r+b") as fh:

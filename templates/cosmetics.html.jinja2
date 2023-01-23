@@ -8,7 +8,8 @@
                    type="checkbox"
                    name="override_cosmetics"
                    id="override_cosmetics"
-                   value="False"/>
+                   value="True"
+                   checked/>
             Override Patch File Cosmetics
         </label>
     </div>
@@ -135,7 +136,7 @@
                                     class="form-select multi-select"
                                     aria-label="Krusha"
                                     multiple
-                                    size="5">
+                                    size="7">
                                 <option selected value="no_slot">
                                     No Slot
                                 </option>
@@ -154,29 +155,17 @@
                                 <option value="chunky">
                                     Chunky
                                 </option>
+                                <option value="random"
+                                        data-toggle="tooltip"
+                                        title="Selects a random kong (If Disco Chunky is on, Chunky will not be selected).">
+                                    Random
+                                </option>
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="flex-container">
-                    <div class="item-select">
-                        <p class="select-title">Colorblind Mode</p>
-                        <select name="colorblind_mode"
-                                id="colorblind_mode"
-                                class="form-select"
-                                aria-label="Colorblind Mode">
-                            <option selected value="off">
-                                Off
-                            </option>
-                            <option value="prot-deut">
-                                Red-Green
-                            </option>
-                            <option value="trit">
-                                Blue-Yellow
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-check form-switch item-switch center-flex">
+                    <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                title="Randomizes miscellaneous cosmetic elements, including:&#10;- Peril Path Panic/Searchlight Seek Klaptraps&#10;- Skybox colors">
                             <input class="form-check-input"
@@ -185,6 +174,17 @@
                                    id="misc_cosmetics"
                                    value="True"/>
                             Random Miscellaneous Cosmetics
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch" hidden>
+                        <label data-toggle="tooltip"
+                               title="Happy Holidays from the DK64 Randomizer Dev Team. Limited time option.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="holiday_mode"
+                                   id="holiday_mode"
+                                   value="True"/>
+                            Holiday Mode
                         </label>
                     </div>
                 </div>
@@ -202,6 +202,17 @@
                                id="random_colors"
                                value="True"/>
                         Randomize All Colors
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch center-flex">
+                    <label data-toggle="tooltip"
+                           title="Chunky will be replaced with his 'disco' variant that appears at the start of the DK Rap.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="disco_chunky"
+                               id="disco_chunky"
+                               value="True"/>
+                        Disco Chunky
                     </label>
                 </div>
             </div>
@@ -354,18 +365,6 @@
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
-                        <div class="form-check form-switch item-switch center-flex"
-                             style="min-width:0px;transform:scale(1.0)">
-                            <label data-toggle="tooltip"
-                                   title="Chunky will be replaced with his 'disco' variant that appears at the start of the DK Rap.">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="disco_chunky"
-                                       id="disco_chunky"
-                                       value="True"/>
-                                Disco Chunky
-                            </label>
-                        </div>
                     </div>
                 </div>
                 <div class="item-color-select">
@@ -426,6 +425,49 @@
                                 <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <hr />
+                <h2 class="title">ACCESSIBILITY</h2>
+                <div class="flex-container">
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="Remove water oscillation effects and the seasick ship rocking effect. For those who feel motion sick from these effects.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="remove_water_oscillation"
+                                   id="remove_water_oscillation"
+                                   value="True"/>
+                            Remove Water Oscillation
+                        </label>
+                    </div>
+                    <div class="spacer">
+                    </div>
+                </div>
+                <div class="flex-container">
+                    <div class="item-select">
+                        <p class="select-title">
+                            Colorblind Mode
+                        </p>
+                        <select name="colorblind_mode"
+                                id="colorblind_mode"
+                                class="form-select"
+                                aria-label="Colorblind Mode">
+                            <option selected value="off">
+                                Off
+                            </option>
+                            <option value="prot">
+                                Red-Green (Protan)
+                            </option>
+                            <option value="deut">
+                                Red-Green (Deutan)
+                            </option>
+                            <option value="trit">
+                                Blue-Yellow (Tritan)
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>

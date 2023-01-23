@@ -39,7 +39,7 @@ available_shops = {
         ShopLocation(Regions.FunkyGeneric, Maps.JungleJapes, Regions.JungleJapesMain, Regions.FunkyJapes),
     ],
     Levels.AngryAztec: [
-        ShopLocation(Regions.CrankyGeneric, Maps.AngryAztec, Regions.AngryAztecMain, Regions.CrankyAztec),
+        ShopLocation(Regions.CrankyGeneric, Maps.AngryAztec, Regions.AngryAztecConnectorTunnel, Regions.CrankyAztec),
         ShopLocation(Regions.CandyGeneric, Maps.AngryAztec, Regions.AngryAztecOasis, Regions.CandyAztec),
         ShopLocation(Regions.FunkyGeneric, Maps.AngryAztec, Regions.AngryAztecMain, Regions.FunkyAztec),
         ShopLocation(Regions.Snide, Maps.AngryAztec, Regions.AngryAztecMain, Regions.Snide),

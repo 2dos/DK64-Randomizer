@@ -2,6 +2,7 @@
 
 import zlib
 import os
+import struct
 
 rom_file = "rom/dk64.z64"
 temp_file = "temp.bin"
@@ -16,6 +17,26 @@ ac_table = 5
 # G_MTX:
 # - Actor: 0x4
 # - M2: 0x9
+# G_DL:
+# - Actor: 0x5
+# - M2: ?
+
+
+def intf_to_float(intf):
+    """Convert float as int format to float."""
+    if intf == 0:
+        return 0
+    else:
+        return struct.unpack("!f", bytes.fromhex("{:08X}".format(intf)))[0]
+
+
+class BoneVertex:
+    """Store information relating to bone vertices in actors."""
+
+    def __init__(self, start, count):
+        """Initialize with given data."""
+        self.start = start
+        self.count = count
 
 
 def portalModel_M2(vtx_file, dl_file, overlay_dl_file, model_name, base):
@@ -154,17 +175,176 @@ def portalModel_Actor(vtx_file, dl_file, model_name, base):
         os.remove(temp_file)
 
 
-model_dir = "assets/Non-Code/models/"
+def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, base_file_index: int, vtx_bottom_is_zero: bool, scale: float):
+    """Port Actor to Model Two."""
+    if input_file == "":
+        # Use Actor Index
+        with open(rom_file, "rb") as rom:
+            rom.seek(ptr_offset + (ac_table * 4))
+            table = ptr_offset + int.from_bytes(rom.read(4), "big")
+            rom.seek(table + (actor_index * 4))
+            start = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+            finish = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+            size = finish - start
+            rom.seek(start)
+            data = rom.read(size)
+            rom.seek(start)
+            indic = int.from_bytes(rom.read(2), "big")
+            if indic == 0x1F8B:
+                data = zlib.decompress(data, (15 + 32))
+            with open(temp_file, "wb") as fh:
+                fh.write(data)
+    else:
+        # Use provided input file
+        with open(input_file, "rb") as fh:
+            with open(temp_file, "wb") as fg:
+                fg.write(fh.read())
+    vert_data = b""
+    dl_data = b""
+    with open(temp_file, "r+b") as fh:
+        offset = int.from_bytes(fh.read(4), "big")
+        dl_end = (int.from_bytes(fh.read(4), "big") + 0x28) - offset
+        bone_start = (int.from_bytes(fh.read(4), "big") + 0x28) - offset
+        fh.seek(0x10)
+        texturing_start = (int.from_bytes(fh.read(4), "big") + 0x28) - offset
+        fh.seek(0x20)
+        bone_count = int.from_bytes(fh.read(1), "big")
+        fh.seek(dl_end)
+        vert_end = (int.from_bytes(fh.read(4), "big") + 0x28) - offset
+        vert_count = int((vert_end - 0x28) / 0x10)
+        dl_count = int((dl_end - vert_end) / 8)
+        vert_bones = []
+        bone_offsets = []
+        bone_master = [0] * bone_count
+        bone_bases = []
+        for b in range(bone_count):
+            vert_bones.append([])  # Can't do [[]] * bone_count because of referencing errors
+            bone_offsets.append([0, 0, 0])  # Same ^
+            bone_bases.append([0, 0, 0])  # Same ^
+        bone_index = 0
+        used_verts = []
+        # Grab Verts which are assigned to each bone
+        for d in range(dl_count):
+            ins_start = vert_end + (d * 8)
+            fh.seek(ins_start)
+            instruction = int.from_bytes(fh.read(1), "big")
+            if instruction == 0xDA:
+                fh.seek(ins_start + 6)
+                bone_index = int(int.from_bytes(fh.read(2), "big") / 0x40)
+            elif instruction == 1:
+                fh.seek(ins_start + 1)
+                loaded_vert_count = int.from_bytes(fh.read(2), "big") >> 4
+                fh.seek(ins_start + 6)
+                loaded_vert_start = int(int.from_bytes(fh.read(2), "big") / 0x10)
+                for v in range(loaded_vert_count):
+                    focused_vert = loaded_vert_start + v
+                    if focused_vert not in used_verts:
+                        used_verts.append(focused_vert)
+                    # else:
+                    #     print(f"{focused_vert} already used (Actor {actor_index})")
+                    vert_bones[bone_index].append(focused_vert)
+        # Grab Bones
+        for b in range(bone_count):
+            fh.seek(bone_start + (b * 0x10))
+            base_bone = int.from_bytes(fh.read(1), "big")
+            local_bone = int.from_bytes(fh.read(1), "big")
+            master_bone = int.from_bytes(fh.read(1), "big")
+            coords = [0, 0, 0]
+            if base_bone != 0xFF:
+                coords = bone_offsets[base_bone].copy()
+            fh.seek(bone_start + (b * 0x10) + 4)
+            for c in range(3):
+                coords[c] += intf_to_float(int.from_bytes(fh.read(4), "big"))
+            bone_offsets[local_bone] = coords.copy()
+            bone_bases[master_bone] = coords.copy()
+            bone_master[local_bone] = master_bone
+        # Get bottom of model (vtx)
+        bottom = 99999
+        for v in range(vert_count):
+            fh.seek(0x28 + (0x10 * v) + 2)
+            val = int.from_bytes(fh.read(2), "big")
+            if val > 32767:
+                val -= 65536
+            if bottom > val:
+                bottom = val
+        # Change verts to account for bones
+        for bone_local_index, bone in enumerate(vert_bones):
+            for vert in bone:
+                fh.seek(0x28 + (vert * 0x10))
+                coords = []
+                for c in range(3):
+                    val = int.from_bytes(fh.read(2), "big")
+                    if val > 32767:
+                        val -= 65536
+                    val += bone_offsets[bone_local_index][c]
+                    if vtx_bottom_is_zero and c == 1:
+                        val -= bottom
+                    val *= scale
+                    if val < 0:
+                        val += 65536
+                    coords.append(int(val))
+                fh.seek(0x28 + (vert * 0x10))
+                for c in coords:
+                    fh.write(c.to_bytes(2, "big"))
+        # Get Dynamic Textures
+        fh.seek(texturing_start)
+        dyn_tex = {}
+        dyn_tex_count = int.from_bytes(fh.read(2), "big")
+        for d in range(dyn_tex_count):
+            tex_count = int.from_bytes(fh.read(2), "big")
+            header = int.from_bytes(fh.read(2), "big")
+            layers = int.from_bytes(fh.read(2), "big")
+            dyn_tex[header] = []
+            for layer in range(layers):
+                for tex in range(tex_count):
+                    dyn_tex[header].append(int.from_bytes(fh.read(2), "big"))
+        # Prune DL of bad instructions and segmented addresses
+        for d in range(dl_count):
+            fh.seek(vert_end + (d * 8))
+            instruction = int.from_bytes(fh.read(1), "big")
+            if instruction in (0xDA, 0xDE):
+                # Wipe mtx transforms and end_dl stuff
+                fh.seek(vert_end + (d * 8))
+                fh.write((0).to_bytes(8, "big"))
+            elif instruction == 1:
+                # Change seg address header from 3 to 8
+                fh.seek(vert_end + (d * 8) + 4)
+                fh.write((8).to_bytes(1, "big"))
+            elif instruction == 0xFD:
+                # Handle Dynamic Texturing
+                fh.seek(vert_end + (d * 8) + 4)
+                seg = int.from_bytes(fh.read(1), "big")
+                if seg in dyn_tex:
+                    fh.seek(vert_end + (d * 8) + 4)
+                    fh.write(dyn_tex[seg][0].to_bytes(4, "big"))
+        # Get vert data and dl data for porting
+        fh.seek(0x28)
+        vert_data = fh.read(vert_end - 0x28)
+        dl_data = fh.read(dl_end - vert_end)
+    with open("temp.vtx", "wb") as fh:
+        fh.write(vert_data)
+    with open("temp.dl", "wb") as fh:
+        fh.write(dl_data)
+    portalModel_M2("temp.vtx", "temp.dl", 0, output_file, base_file_index)
+    for f in ("temp.vtx", "temp.dl", "temp.bin"):
+        if os.path.exists(f):
+            os.remove(f)
+
+
+model_dir = "assets/models/"
 # Coins
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}nin_coin.dl", f"{model_dir}coin_overlay.dl", "nintendo_coin", 0x90)
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}rw_coin.dl", f"{model_dir}coin_overlay.dl", "rareware_coin", 0x90)
-# Potions - Model 2
+portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}rainbow_coin.dl", f"{model_dir}coin_overlay.dl", "rainbow_coin", 0x90)
+# # Potions - Model 2
 portalModel_M2(f"{model_dir}potion_dk.vtx", f"{model_dir}potion.dl", 0, "potion_dk", 0x90)
 portalModel_M2(f"{model_dir}potion_diddy.vtx", f"{model_dir}potion.dl", 0, "potion_diddy", 0x90)
 portalModel_M2(f"{model_dir}potion_lanky.vtx", f"{model_dir}potion.dl", 0, "potion_lanky", 0x90)
 portalModel_M2(f"{model_dir}potion_tiny.vtx", f"{model_dir}potion.dl", 0, "potion_tiny", 0x90)
 portalModel_M2(f"{model_dir}potion_chunky.vtx", f"{model_dir}potion.dl", 0, "potion_chunky", 0x90)
 portalModel_M2(f"{model_dir}potion_any.vtx", f"{model_dir}potion.dl", 0, "potion_any", 0x90)
+# Fairy
+portActorToModelTwo(0x3C, "", "fairy", 0x90, True, 0.5)
 # Potions - Actors (Ignore Chunky Model)
 portalModel_Actor(f"{model_dir}potion_dk.vtx", None, "potion_dk", 0xB8)
 portalModel_Actor(f"{model_dir}potion_diddy.vtx", None, "potion_diddy", 0xB8)
@@ -172,4 +352,10 @@ portalModel_Actor(f"{model_dir}potion_lanky.vtx", None, "potion_lanky", 0xB8)
 portalModel_Actor(f"{model_dir}potion_tiny.vtx", None, "potion_tiny", 0xB8)
 portalModel_Actor(f"{model_dir}potion_chunky.vtx", None, "potion_chunky", 0xB8)
 portalModel_Actor(f"{model_dir}potion_any.vtx", None, "potion_any", 0xB8)
-# portalModel_Actor(f"{model_dir}coin.vtx", f"{model_dir}nin_coin.dl", "nintendo_coin", 0x66)
+# Kongs
+portActorToModelTwo(3, "dk_base.bin", "kong_dk", 0x90, True, 0.5)
+portActorToModelTwo(0, "diddy_base.bin", "kong_diddy", 0x90, True, 0.5)
+portActorToModelTwo(5, "lanky_base.bin", "kong_lanky", 0x90, True, 0.5)
+portActorToModelTwo(8, "tiny_base.bin", "kong_tiny", 0x90, True, 0.5)
+portActorToModelTwo(0xB, "", "kong_chunky", 0x90, True, 0.5)
+# portalModel_M2(f"{model_dir}dk_head.vtx", f"{model_dir}dk_head.dl", 0, "kong_dk", 0x90)

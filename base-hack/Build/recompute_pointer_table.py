@@ -7,16 +7,8 @@ import encoders
 from map_names import maps
 
 pointer_tables = [
-    {
-        "index": 0,
-        "name": "Music MIDI",
-    },
-    {
-        "index": 1,
-        "name": "Map Geometry",
-        "encoded_filename": "geometry.bin",
-        "decoded_filename": "geometry.todo",
-    },
+    {"index": 0, "name": "Music MIDI"},
+    {"index": 1, "name": "Map Geometry", "encoded_filename": "geometry.bin", "decoded_filename": "geometry.todo"},
     {
         "index": 2,
         "name": "Map Walls",
@@ -33,61 +25,17 @@ pointer_tables = [
         "dont_overwrite_uncompressed_sizes": True,
         # "use_external_gzip": True,
     },
-    {
-        "index": 4,
-        "name": "Object Model 2 Geometry",
-    },
-    {
-        "index": 5,
-        "name": "Actor Geometry",
-    },
-    {
-        "index": 6,
-        "name": "Unknown 6",
-        "dont_overwrite_uncompressed_sizes": True,
-    },
-    {
-        "index": 7,
-        "name": "Textures (Uncompressed)",
-        "dont_overwrite_uncompressed_sizes": True,
-    },
-    {
-        "index": 8,
-        "name": "Map Cutscenes",
-        "encoded_filename": "cutscenes.bin",
-        "decoded_filename": "cutscenes.todo",
-    },
-    {
-        "index": 9,
-        "name": "Map Object Setups",
-        "encoded_filename": "setup.bin",
-        "decoded_filename": "setup.json",
-        "encoder": encoders.encodeSetup,
-        "decoder": encoders.decodeSetup,
-    },
-    {
-        "index": 10,
-        "name": "Map Object Model 2 Behaviour Scripts",
-        "encoded_filename": "object_behaviour_scripts.bin",
-        "decoded_filename": "object_behaviour_scripts.todo",
-    },
-    {
-        "index": 11,
-        "name": "Animations",
-        "dont_overwrite_uncompressed_sizes": True,
-    },
-    {
-        "index": 12,
-        "name": "Text",
-    },
-    {
-        "index": 13,
-        "name": "Unknown 13",
-    },
-    {
-        "index": 14,
-        "name": "Textures",
-    },
+    {"index": 4, "name": "Object Model 2 Geometry"},
+    {"index": 5, "name": "Actor Geometry"},
+    {"index": 6, "name": "Unknown 6", "dont_overwrite_uncompressed_sizes": True},
+    {"index": 7, "name": "Textures (Uncompressed)", "dont_overwrite_uncompressed_sizes": True},
+    {"index": 8, "name": "Map Cutscenes", "encoded_filename": "cutscenes.bin", "decoded_filename": "cutscenes.todo"},
+    {"index": 9, "name": "Map Object Setups", "encoded_filename": "setup.bin", "decoded_filename": "setup.json", "encoder": encoders.encodeSetup, "decoder": encoders.decodeSetup},
+    {"index": 10, "name": "Map Object Model 2 Behaviour Scripts", "encoded_filename": "object_behaviour_scripts.bin", "decoded_filename": "object_behaviour_scripts.todo"},
+    {"index": 11, "name": "Animations", "dont_overwrite_uncompressed_sizes": True},
+    {"index": 12, "name": "Text"},
+    {"index": 13, "name": "Unknown 13"},
+    {"index": 14, "name": "Textures"},
     {
         "index": 15,
         "name": "Map Paths",
@@ -106,10 +54,7 @@ pointer_tables = [
         "encoder": encoders.encodeCharacterSpawners,
         "decoder": encoders.decodeCharacterSpawners,
     },
-    {
-        "index": 17,
-        "name": "DKTV Inputs",
-    },
+    {"index": 17, "name": "DKTV Inputs"},
     {
         "index": 18,
         "name": "Map Loading Zones",
@@ -118,15 +63,8 @@ pointer_tables = [
         "encoder": encoders.encodeLoadingZones,
         "decoder": encoders.decodeLoadingZones,
     },
-    {
-        "index": 19,
-        "name": "Unknown 19",
-    },
-    {
-        "index": 20,
-        "name": "Unknown 20",
-        "dont_overwrite_uncompressed_sizes": True,
-    },
+    {"index": 19, "name": "Unknown 19"},
+    {"index": 20, "name": "Unknown 20", "dont_overwrite_uncompressed_sizes": True},
     {
         "index": 21,
         "name": "Map Autowalk Data",
@@ -137,10 +75,7 @@ pointer_tables = [
         "do_not_compress": True,
         "dont_overwrite_uncompressed_sizes": True,
     },
-    {
-        "index": 22,
-        "name": "Unknown 22",
-    },
+    {"index": 22, "name": "Unknown 22"},
     {
         "index": 23,
         "name": "Map Exits",
@@ -159,35 +94,13 @@ pointer_tables = [
         "encoder": encoders.encodeCheckpoints,
         "decoder": encoders.decodeCheckpoints,
     },
-    {
-        "index": 25,
-        "name": "Textures",
-    },
-    {
-        "index": 26,
-        "name": "Uncompressed File Sizes",
-        "dont_overwrite_uncompressed_sizes": True,
-    },
-    {
-        "index": 27,
-        "name": "Unknown 27",
-    },
-    {
-        "index": 28,
-        "name": "Unknown 28",
-    },
-    {
-        "index": 29,
-        "name": "Unknown 29",
-    },
-    {
-        "index": 30,
-        "name": "Unknown 30",
-    },
-    {
-        "index": 31,
-        "name": "Unknown 31",
-    },
+    {"index": 25, "name": "Textures"},
+    {"index": 26, "name": "Uncompressed File Sizes", "dont_overwrite_uncompressed_sizes": True},
+    {"index": 27, "name": "Unknown 27"},
+    {"index": 28, "name": "Unknown 28"},
+    {"index": 29, "name": "Unknown 29"},
+    {"index": 30, "name": "Unknown 30"},
+    {"index": 31, "name": "Unknown 31"},
 ]
 
 num_tables = len(pointer_tables)
@@ -332,13 +245,7 @@ def parsePointerTables(fh: BinaryIO):
                 if not y["bit_set"]:
                     absolute_size = y["next_absolute_address"] - y["absolute_address"]
                     if absolute_size > 0:
-                        file_info = addFileToDatabase(
-                            fh,
-                            y["absolute_address"],
-                            absolute_size,
-                            x["index"],
-                            y["index"],
-                        )
+                        file_info = addFileToDatabase(fh, y["absolute_address"], absolute_size, x["index"], y["index"])
                         x["original_compressed_size"] += absolute_size
 
     # Go back over and look up SHA1s for the bit_set entries
@@ -356,13 +263,7 @@ def parsePointerTables(fh: BinaryIO):
                         # y["bit_set"] = False # We'll turn this back on later when recomputing pointer tables
 
 
-def addFileToDatabase(
-    fh: BinaryIO,
-    absolute_address: int,
-    absolute_size: int,
-    pointer_table_index: int,
-    file_index: int,
-):
+def addFileToDatabase(fh: BinaryIO, absolute_address: int, absolute_size: int, pointer_table_index: int, file_index: int):
     """Add the files to the database."""
     # TODO: Get rid of this check
     for x in pointer_tables:
@@ -401,14 +302,7 @@ def getFileInfo(pointer_table_index: int, file_index: int):
     return pointer_table_files[pointer_table_index][pointer_tables[pointer_table_index]["entries"][file_index]["new_sha1"]]
 
 
-def replaceROMFile(
-    rom: BinaryIO,
-    pointer_table_index: int,
-    file_index: int,
-    data: bytes,
-    uncompressed_size: int,
-    filename: str = "",
-):
+def replaceROMFile(rom: BinaryIO, pointer_table_index: int, file_index: int, data: bytes, uncompressed_size: int, filename: str = ""):
     """Replace the ROM file."""
     # TODO: Get this working
     if pointer_table_index == 8 and file_index == 0:
@@ -423,24 +317,14 @@ def replaceROMFile(
 
     # Insert the new data into the database
     dataSHA1Hash = hashlib.sha1(data).hexdigest()
-    pointer_table_files[pointer_table_index][dataSHA1Hash] = {
-        "data": data,
-        "sha1": dataSHA1Hash,
-        "uncompressed_size": uncompressed_size,
-    }
+    pointer_table_files[pointer_table_index][dataSHA1Hash] = {"data": data, "sha1": dataSHA1Hash, "uncompressed_size": uncompressed_size}
 
     # Update the entry in the pointer table to point to the new data
     if file_index >= len(pointer_tables[pointer_table_index]["entries"]):
         diff = file_index - len(pointer_tables[pointer_table_index]["entries"]) + 1
         print(f" - Appending {diff} extra entries to {pointer_tables[pointer_table_index]['name']} ({(file_index+1)-diff}->{file_index+1})")
         for d in range(diff):
-            pointer_tables[pointer_table_index]["entries"].append(
-                {
-                    "index": file_index,
-                    "bit_set": False,
-                    "original_sha1": "",
-                }
-            )
+            pointer_tables[pointer_table_index]["entries"].append({"index": file_index, "bit_set": False, "original_sha1": ""})
         rom.seek(main_pointer_table_offset + (4 * len(pointer_tables)) + (4 * pointer_table_index))
         rom.write((file_index + 1).to_bytes(4, "big"))
         pointer_tables[pointer_table_index]["num_entries"] = file_index + 1
@@ -466,12 +350,37 @@ def replaceROMFile(
         pointer_tables[pointer_table_index]["entries"][file_index]["filename"] = filename
 
 
+def clampCompressedTextures(rom: BinaryIO, cap: int):
+    """Clamps the size of pointer table 25 to reduce it's size to save space."""
+    original_length = len(pointer_tables[25]["entries"])
+    if original_length > cap:
+        print(f"- Compressing pointer table 25 to {cap} entries")
+        pointer_tables[25]["entries"] = pointer_tables[25]["entries"][:cap]
+        rom.seek(main_pointer_table_offset + (4 * len(pointer_tables)) + (4 * 25))
+        rom.write((cap).to_bytes(4, "big"))
+        pointer_tables[25]["num_entries"] = cap
+
+        # Update uncompressed pointer table entry
+        rom.seek(main_pointer_table_offset + (4 * 26))
+        uncompressed_table_location = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        rom.seek(uncompressed_table_location + (4 * 25))
+        uncompressed_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        uncompressed_finish = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        uncompressed_table_size = uncompressed_finish - uncompressed_start
+        if uncompressed_table_size > 0:
+            new_size = 4 * cap
+            print(f" - Compressing pointer table 25 from {uncompressed_table_size} bytes to {new_size} bytes")
+            rom.seek(uncompressed_start)
+            new_uncompressed_data = bytearray(rom.read(new_size))
+            replaceROMFile(rom, 26, 25, bytes(new_uncompressed_data), new_size)
+
+
 def shouldWritePointerTable(index: int):
     """Write to the pointer table."""
     # Table 6 is nonsense.
     # This fixes heap corruption caused by a buffer overrun when decompressing a replaced file into a malloc'd buffer
-    if index == 6:
-        return False
+    # if index == 6:
+    #     return False
 
     # No need to recompute pointer tables with no entries in them
     if pointer_tables[index]["num_entries"] == 0:

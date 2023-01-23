@@ -7,16 +7,7 @@ from randomizer.Spoiler import Spoiler
 
 def chooseSFX():
     """Choose random SFX from bank of acceptable SFX."""
-    banks = [
-        [98, 138],
-        [166, 252],
-        [398, 411],
-        [471, 476],
-        [519, 535],
-        [547, 575],
-        [614, 631],
-        [644, 650],
-    ]
+    banks = [[98, 138], [166, 252], [398, 411], [471, 476], [519, 535], [547, 575], [614, 631], [644, 650]]
     bank = random.choice(banks)
     return random.randint(bank[0], bank[1])
 
@@ -67,3 +58,15 @@ def randomize_puzzles(spoiler: Spoiler):
                 ROM().writeMultipleBytes(random.choice([0, 1, 3]), 1)  # Lanky for this square glitches out the puzzle. Nice going Loser kong again
             else:
                 ROM().writeMultipleBytes(random.randint(0, 3), 1)
+        # Arcade Level Order Rando
+        arcade_levels = ["25m", "50m", "75m", "100m"]
+        arcade_level_data = {
+            "25m": 1,
+            "50m": 4,
+            "75m": 3,
+            "100m": 2,
+        }
+        random.shuffle(arcade_levels)
+        for lvl_index, lvl in enumerate(arcade_levels):
+            ROM().seek(sav + 0x48 + lvl_index)
+            ROM().writeMultipleBytes(arcade_level_data[lvl], 1)

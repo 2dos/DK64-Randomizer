@@ -8,11 +8,12 @@ from randomizer.Enums.Time import Time
 class LocationLogic:
     """Logic for a location."""
 
-    def __init__(self, id, logic, bonusBarrel=None):
+    def __init__(self, id, logic, bonusBarrel=None, isAuxiliary=False):
         """Initialize with given parameters."""
         self.id = id
         self.logic = logic  # Lambda function for accessibility
         self.bonusBarrel = bonusBarrel  # Uses MinigameType enum
+        self.isAuxiliaryLocation = isAuxiliary  # For when the Location needs to be in a region but not count as in the region (only used for rabbit race glitched as of now)
 
 
 class Event:
@@ -47,9 +48,10 @@ class Collectible:
 class Region:
     """Region contains shufflable locations, events, and transitions to other regions."""
 
-    def __init__(self, name, level, tagbarrel, deathwarp, locations, events, transitionFronts, restart=None):
+    def __init__(self, name, hint_name, level, tagbarrel, deathwarp, locations, events, transitionFronts, restart=None):
         """Initialize with given parameters."""
         self.name = name
+        self.hint_name = hint_name
         self.level = level
         self.tagbarrel = tagbarrel
         self.deathwarp = None
@@ -172,14 +174,7 @@ class TransitionBack:
 class TransitionFront:
     """The entered side of a transition between regions."""
 
-    def __init__(
-        self,
-        dest,
-        logic,
-        exitShuffleId=None,
-        assumed=False,
-        time=Time.Both,
-    ):
+    def __init__(self, dest, logic, exitShuffleId=None, assumed=False, time=Time.Both):
         """Initialize with given parameters."""
         self.dest = dest  # Planning to remove this
         self.logic = logic  # Lambda function for accessibility

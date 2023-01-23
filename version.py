@@ -26,3 +26,4 @@ try:
     js.document.getElementById("live-version").text = current_version + " | "
 except Exception:
     pass
+whl_hash = "no_file_using_filler_hash"

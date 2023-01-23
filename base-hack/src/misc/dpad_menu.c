@@ -1,3 +1,13 @@
+/**
+ * @file dpad_menu.c
+ * @author Ballaam
+ * @brief Operation of the DPad Menu
+ * @version 0.1
+ * @date 2022-07-17
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "../../include/common.h"
 
 #define ICON_SCALE 2.0f
@@ -8,6 +18,12 @@
 #define HUD_CHECK_COUNT 4
 
 int canUseDPad(void) {
+    /**
+     * @brief Determines whether the player will be able to use the DPad Menu.
+     * This operates outside of Tag Anywhere as Tag Anywhere has different rules
+     * 
+     * @return DPad is useable
+     */
     if (Gamemode != 6) {
         return 0; // Not in Adv Mode
     }
@@ -45,6 +61,13 @@ int canUseDPad(void) {
 }
 
 int* drawDPad(int* dl) {
+    /**
+     * @brief Draws the DPad menu
+     * 
+     * @param dl Display List Address
+     * 
+     * @return New Display List Address
+     */
     if (!canUseDPad()) {
         return dl;
     }
@@ -75,18 +98,33 @@ int* drawDPad(int* dl) {
     }
     if (Rando.quality_of_life.hud_bp_multibunch) {
         // Blueprint Show
-        dl = drawImage(dl, 116, RGBA16, 32, 32, DPAD_X + 75, DPAD_Y, ICON_SCALE, ICON_SCALE, 0xFF);
+        int applied_requirement = 75;
+        if (Rando.medal_cb_req > 0) {
+            applied_requirement = Rando.medal_cb_req;
+        }
+        int mdl_opacity = 0x80;
+        int world = getWorld(CurrentMap, 0);
+        if (world < 7) {
+            int kong_sum = MovesBase[(int)Character].tns_cb_count[world] + MovesBase[(int)Character].cb_count[world];
+            if (kong_sum >= applied_requirement) {
+                mdl_opacity = 0xFF;
+            }
+        }
+        dl = drawImage(dl, 116, RGBA16, 32, 32, DPAD_X + 75, DPAD_Y, ICON_SCALE, ICON_SCALE, mdl_opacity);
     }
     return dl;
 }
 
 void handleDPadFunctionality(void) {
+    /**
+     * @brief Handle inputs on the DPad and their corresponding functionality
+     */
     if (canUseDPad()) {
         if (Rando.quality_of_life.hud_bp_multibunch) {
             updateMultibunchCount();
             if (NewlyPressedControllerInput.Buttons & D_Up) {
                 displayItemOnHUD(0xC,0,0);
-                int world = getWorld(CurrentMap,1);
+                int world = getWorld(CurrentMap,0);
                 if ((world < 7) && (CurrentMap != 0x2A)) {
                     displayItemOnHUD(0xA,0,0);
                 }

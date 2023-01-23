@@ -26,15 +26,7 @@ def __CountBananasForLevel(bananaTotals, collectibles, level):
 
 bananaTotals = []
 for i in range(7):
-    bananaTotals.append(
-        {
-            Kongs.donkey: 0,
-            Kongs.diddy: 0,
-            Kongs.lanky: 0,
-            Kongs.tiny: 0,
-            Kongs.chunky: 0,
-        }
-    )
+    bananaTotals.append({Kongs.donkey: 0, Kongs.diddy: 0, Kongs.lanky: 0, Kongs.tiny: 0, Kongs.chunky: 0})
 
 for region, collectibles in JungleJapes.LogicRegions.items():
     __CountBananasForLevel(bananaTotals, collectibles, Levels.JungleJapes)

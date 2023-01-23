@@ -65,3 +65,10 @@ hints = [
     HintLocation("Castle Tiny", Kongs.tiny, WrinklyLocation.castle, "", Levels.CreepyCastle),
     HintLocation("Castle Chunky", Kongs.chunky, WrinklyLocation.castle, "", Levels.CreepyCastle),
 ]
+
+
+def ClearHintMessages():
+    """Reset the hint message for all hints."""
+    for hint in hints:
+        if hint.name != "First Time Talk":
+            hint.hint = ""

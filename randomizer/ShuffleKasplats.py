@@ -125,7 +125,7 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
                     item_id = GetBlueprintItemForKongAndLevel(level, kong)
                     location_id = GetBlueprintLocationForKongAndLevel(level, kong)
                     # Assemble the Location object
-                    location = Location(kasplat.name, item_id, Types.Blueprint, kong, [kasplat.map])
+                    location = Location(level, kasplat.name, item_id, Types.Blueprint, kong, [kasplat.map])
                     Logic.LocationList[location_id] = location
                     # Insert the Location into the Region
                     kasplatRegion = Logic.Regions[kasplat.region_id]
@@ -134,6 +134,36 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
                     LogicVariables.kasplat_map[location_id] = kong
                     spoiler.shuffled_kasplat_map[kasplat.name] = int(kong)
                     break
+
+
+def ShuffleKasplatsInVanillaLocations(spoiler, LogicVariables):
+    """Shuffles the kong assigned to each kasplat, restricted to their vanilla locations."""
+    spoiler.shuffled_kasplat_map = {}
+    LogicVariables.kasplat_map = {}
+    for location in shufflable:
+        Logic.LocationList.pop(location, None)
+    for location in constants:
+        Logic.LocationList.pop(location, None)
+    # Place by level
+    for level in KasplatLocationList:
+        availableKongs = GetKongs().copy()
+        five_vanilla_kasplats = [kasplat for kasplat in KasplatLocationList[level] if kasplat.vanilla]
+        five_vanilla_kasplats.sort(key=lambda l: len(l.kong_lst))  # Make sure kasplats with fewer possible kongs get placed first
+        # We go by location in this method because it will guarantee a fill
+        for kasplat in five_vanilla_kasplats:
+            chosenKong = random.choice([kong for kong in kasplat.kong_lst if kong in availableKongs])
+            # Figure out what blueprint should be placed where
+            item_id = GetBlueprintItemForKongAndLevel(level, chosenKong)
+            rando_location_id = GetBlueprintLocationForKongAndLevel(level, chosenKong)
+            # Assemble the Location object
+            location = Location(level, kasplat.name, item_id, Types.Blueprint, chosenKong, [kasplat.map])
+            Logic.LocationList[rando_location_id] = location
+            # Insert the rando Location into the Region
+            kasplatRegion = Logic.Regions[kasplat.region_id]
+            kasplatRegion.locations.append(LocationLogic(rando_location_id, kasplat.additional_logic))
+            LogicVariables.kasplat_map[rando_location_id] = chosenKong
+            spoiler.shuffled_kasplat_map[kasplat.name] = int(chosenKong)
+            availableKongs.remove(chosenKong)
 
 
 def ResetShuffledKasplatLocations():
@@ -199,7 +229,7 @@ def KasplatShuffle(spoiler, LogicVariables):
                 if spoiler.settings.kasplat_location_rando:
                     ShuffleKasplatsAndLocations(spoiler, LogicVariables)
                 else:
-                    ShuffleKasplats(LogicVariables)
+                    ShuffleKasplatsInVanillaLocations(spoiler, LogicVariables)
                 # Verify world by assuring all locations are still reachable
                 if not Fill.VerifyWorld(spoiler.settings):
                     raise Ex.KasplatPlacementException

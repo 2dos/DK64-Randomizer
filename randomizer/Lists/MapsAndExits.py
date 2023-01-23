@@ -231,7 +231,9 @@ RegionMapList = {
     Regions.TrainingGrounds: Maps.TrainingGrounds,
     Regions.IslesMain: Maps.Isles,
     Regions.IslesMainUpper: Maps.Isles,
-    Regions.CrocodileIsleBeyondLift: Maps.Isles,
+    Regions.KremIsle: Maps.Isles,
+    Regions.KremIsleBeyondLift: Maps.Isles,
+    Regions.KremIsleTopLevel: Maps.Isles,
     Regions.IslesSnideRoom: Maps.IslesSnideRoom,
     Regions.CabinIsle: Maps.Isles,
     Regions.BananaFairyRoom: Maps.BananaFairyRoom,
@@ -239,6 +241,7 @@ RegionMapList = {
     Regions.AngryAztecLobby: Maps.AngryAztecLobby,
     Regions.FranticFactoryLobby: Maps.FranticFactoryLobby,
     Regions.GloomyGalleonLobby: Maps.GloomyGalleonLobby,
+    Regions.GloomyGalleonLobbyEntrance: Maps.GloomyGalleonLobby,
     Regions.FungiForestLobby: Maps.FungiForestLobby,
     Regions.CrystalCavesLobby: Maps.CrystalCavesLobby,
     Regions.CreepyCastleLobby: Maps.CreepyCastleLobby,
@@ -325,8 +328,7 @@ RegionMapList = {
     Regions.HollowTreeArea: Maps.FungiForest,
     Regions.Anthill: Maps.ForestAnthill,
     Regions.MillArea: Maps.FungiForest,
-    Regions.MillChunkyArea: Maps.ForestMillBack,
-    Regions.MillTinyArea: Maps.ForestMillBack,
+    Regions.MillChunkyTinyArea: Maps.ForestMillBack,
     Regions.SpiderRoom: Maps.ForestSpider,
     Regions.GrinderRoom: Maps.ForestMillFront,
     Regions.MillRafters: Maps.ForestRafters,
@@ -380,15 +382,7 @@ RegionMapList = {
 }
 
 LevelMapTable = {
-    Levels.JungleJapes: [
-        Maps.JungleJapes,
-        Maps.JapesTinyHive,
-        Maps.JapesLankyCave,
-        Maps.JapesMountain,
-        Maps.JapesMinecarts,
-        Maps.JapesUnderGround,
-        Maps.JapesBaboonBlast,
-    ],
+    Levels.JungleJapes: [Maps.JungleJapes, Maps.JapesTinyHive, Maps.JapesLankyCave, Maps.JapesMountain, Maps.JapesMinecarts, Maps.JapesUnderGround, Maps.JapesBaboonBlast],
     Levels.AngryAztec: [
         Maps.AngryAztec,
         Maps.AztecTinyTemple,
@@ -401,13 +395,7 @@ LevelMapTable = {
         Maps.AztecLlamaTemple,
         Maps.AztecBaboonBlast,
     ],
-    Levels.FranticFactory: [
-        Maps.FranticFactory,
-        Maps.FactoryTinyRace,
-        Maps.FactoryPowerHut,
-        Maps.FactoryCrusher,
-        Maps.FactoryBaboonBlast,
-    ],
+    Levels.FranticFactory: [Maps.FranticFactory, Maps.FactoryTinyRace, Maps.FactoryPowerHut, Maps.FactoryCrusher, Maps.FactoryBaboonBlast],
     Levels.GloomyGalleon: [
         Maps.GloomyGalleon,
         Maps.GalleonLighthouse,
@@ -492,9 +480,7 @@ LevelMapTable = {
         Maps.Treehouse,
         Maps.KLumsy,
     ],
-    Levels.HideoutHelm: [
-        Maps.HideoutHelm,
-    ],
+    Levels.HideoutHelm: [Maps.HideoutHelm],
 }
 
 
@@ -615,22 +601,9 @@ MapExitTable = {
         "From Funky's",
         "From Galleon Lobby",
     ],
-    Maps.Galleon5DShipDiddyLankyChunky: [
-        "From Galleon (Diddy Entrance)",
-        "From Galleon (Chunky Entrance)",
-        "From Galleon (Lanky Entrance)",
-        "From Galleon (Diddy Entrance)",
-    ],
-    Maps.Galleon5DShipDKTiny: [
-        "From Galleon (DK Entrance)",
-        "From Galleon (Tiny Entrance)",
-        "From Galleon (DK Entrance)",
-    ],
-    Maps.Galleon2DShip: [
-        "From Galleon (Tiny Entrance)",
-        "From Galleon (Lanky Entrance)",
-        "From Galleon (Tiny Entrance)",
-    ],
+    Maps.Galleon5DShipDiddyLankyChunky: ["From Galleon (Diddy Entrance)", "From Galleon (Chunky Entrance)", "From Galleon (Lanky Entrance)", "From Galleon (Diddy Entrance)"],
+    Maps.Galleon5DShipDKTiny: ["From Galleon (DK Entrance)", "From Galleon (Tiny Entrance)", "From Galleon (DK Entrance)"],
+    Maps.Galleon2DShip: ["From Galleon (Tiny Entrance)", "From Galleon (Lanky Entrance)", "From Galleon (Tiny Entrance)"],
     Maps.FungiForest: [
         "From Fungi Lobby",
         "From Mill Attic",
@@ -663,21 +636,8 @@ MapExitTable = {
         "From Fungi Lobby",
     ],
     Maps.ForestMillFront: ["From Fungi (Front)", "From Mill (Rear)", "From Fungi (Front)"],
-    Maps.ForestMillBack: [
-        "From Fungi (PPunch Door)",
-        "From Spider Boss",
-        "From Mill (Front)",
-        "From Fungi (Tiny Hole)",
-        "From Fungi (PPunch Door)",
-    ],
-    Maps.ForestGiantMushroom: [
-        "From Fungi (Low)",
-        "From Fungi (Middle)",
-        "From Fungi (Low Middle)",
-        "From Fungi (High Middle)",
-        "From Fungi (High)",
-        "From Fungi (Low)",
-    ],
+    Maps.ForestMillBack: ["From Fungi (PPunch Door)", "From Spider Boss", "From Mill (Front)", "From Fungi (Tiny Hole)", "From Fungi (PPunch Door)"],
+    Maps.ForestGiantMushroom: ["From Fungi (Low)", "From Fungi (Middle)", "From Fungi (Low Middle)", "From Fungi (High Middle)", "From Fungi (High)", "From Fungi (Low)"],
     Maps.CrystalCaves: [
         "From Caves Lobby",
         "From Diddy 5DIgloo",
@@ -741,26 +701,9 @@ MapExitTable = {
     Maps.CastleBallroom: ["From Castle Main", "From Museum (Monkeyport)", "From Castle Main"],
     Maps.CastleCrypt: ["From Lower Cave", "From Minecart", "From Lower Cave"],
     Maps.CastleMuseum: ["From Castle Main", "From Car Race", "From Ballroom (Monkeyport)", "From Castle Main"],
-    Maps.CastleLibrary: [
-        "From Castle Main (Start)",
-        "From Castle Main (End)",
-    ],
-    Maps.CastleUpperCave: [
-        "From Castle (Front)",
-        "From Candy's",
-        "From Castle (Rear)",
-        "From T&S",
-        "From Dungeon",
-        "From Castle (Front)",
-    ],
-    Maps.CastleLowerCave: [
-        "From Castle Main",
-        "From Funky's",
-        "From T&S",
-        "From Crypt (DK/Diddy/Chunky)",
-        "From Mausoleum (Lanky/Tiny)",
-        "From Castle Main",
-    ],
+    Maps.CastleLibrary: ["From Castle Main (Start)", "From Castle Main (End)"],
+    Maps.CastleUpperCave: ["From Castle (Front)", "From Candy's", "From Castle (Rear)", "From T&S", "From Dungeon", "From Castle (Front)"],
+    Maps.CastleLowerCave: ["From Castle Main", "From Funky's", "From T&S", "From Crypt (DK/Diddy/Chunky)", "From Mausoleum (Lanky/Tiny)", "From Castle Main"],
     Maps.JungleJapesLobby: ["From DK Isles", "From Japes", "From DK Isles"],
     Maps.AngryAztecLobby: ["From DK Isles", "From Aztec", "From DK Isles"],
     Maps.GloomyGalleonLobby: ["From DK Isles", "From Galleon", "From DK Isles"],

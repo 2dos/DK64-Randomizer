@@ -1,0 +1,222 @@
+<html>
+    <head>
+        <title>DK64 Randomizer - DKP Patcher</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./static/styles/gui.css">
+        <link rel="stylesheet" href="./static/styles/styles.css">
+        <style>
+            .center_block {
+                text-align: center;
+                width: 480px;
+                margin-left: auto;
+                margin-right: auto;
+                color: white;
+                background-color: rgba(0,0,0,0.8);
+                padding: 20px;
+                position:absolute;
+                top:50%;
+                left:50%;
+                transform: translate(-50%,-50%);
+            }
+            .hide {
+                display: none;
+            }
+            .upload_box {
+                padding: 20px;
+            }
+            .error {
+                background-color: rgba(255, 97, 97, 0.8);
+                border: 2px solid rgba(255, 49, 49, 0.8);
+                border-radius: 5px;
+                padding: 10px;
+                text-align: left;
+            }
+            @media screen and (width <= 768px) {
+                .center_block {
+                    width:90%;
+                }
+            }
+            @media screen and (width >= 2560px) {
+                .center_block {
+                    width:960px;
+                    font-size: xx-large;
+                }
+                .center_block h1 {
+                    font-size: 1.5em;
+                }
+                input[type=file] {
+                    font-size: 0.75em;
+                }
+            }
+        </style>
+        <script type="text/javascript" src="./static/js/webworker_main.js" defer></script>
+        <script type="text/javascript" src="./static/js/rompatcher/crc.js" defer></script>
+        <script type="text/javascript" src="./static/js/rompatcher/formats/bps.js" defer></script>
+        <script type="text/javascript" src="./static/js/rompatcher/MarcFile.js" defer></script>
+        <script src="./static/js/rompatcher/RomPatcher.js"></script>
+        <script>
+            window.onerror = function (error) {
+                console.log(error);
+                let targ = document.getElementById("error_box");
+                targ.classList.remove("hide");
+                targ.innerText = error.toString();    
+            };
+        </script>
+    </head>
+    <body>
+        <div class="center_block">
+            <h1>DK64 Randomizer DKP Patcher</h1>
+            <p>This tool applies a DKP Patch to a DK64 ROM.</p>
+            <div class="upload_box vanilla_upload">
+                <label for="input-file-rom_1" class="select-title">Vanilla ROM</label>
+                <input type="file" id="input-file-rom" class="form-control" accept=".z64,.n64,.v64"/>
+            </div>
+    
+            <div class="upload_box rando_upload hide">
+                <label for="dkp_patch" class="select-title">DKP File</label>
+                <input type="file" id="dkp_patch" class="form-control" accept=".dkp"/>
+            </div>
+    
+            <div class="upload_box bps_download hide">
+                <button class="btn btn-primary" id="save_bps">
+                    Save ROM
+                </button>
+            </div>
+
+            <div class="error hide" id="error_box">
+                ERROR TEXT
+            </div>
+        </div>
+    </body>
+    <script>
+        var applied_dkp;
+        document.getElementById("dkp_patch").addEventListener("change", function() {
+			var fr = new FileReader();
+			fr.onload = function() {
+				var data = fr.result;
+				setup_data = fr.result;
+			    applied_dkp = new MarcFile(new Uint8Array(data));
+                document.getElementsByClassName("bps_download")[0].classList.remove("hide");
+			};
+			fr.readAsArrayBuffer(document.getElementById("dkp_patch").files[0]);
+        })
+
+        function clearProgress() {
+            document.getElementsByClassName("rando_upload")[0].classList.add("hide");
+            document.getElementsByClassName("bps_download")[0].classList.add("hide");
+        }
+
+        document.getElementById("input-file-rom").addEventListener("change", function() {
+            clearProgress();
+        })
+        document.getElementById("save_bps").addEventListener("click", ()=>{buildROM()})
+
+        // Await is-valid
+        const targetNode = document.getElementById("input-file-rom");
+        const config = {
+            attributes: true
+        }
+        const callback = mutations => {  
+            mutations.forEach(mutation => {
+                if (mutation.type === "attributes") {
+                    if (targetNode.classList.contains("is-valid")) {
+                        document.getElementsByClassName("rando_upload")[0].classList.remove("hide");
+                        if (applied_dkp) {
+                            document.getElementsByClassName("bps_download")[0].classList.remove("hide");
+                        }
+                    } else {
+                        clearProgress();
+                    }
+                }
+            });
+        }
+          
+        const observer = new MutationObserver(callback);
+          
+        observer.observe(targetNode, config);
+
+        // Download file
+        var downloadBlob, downloadURL;
+        downloadBlob = function(data, fileName, mimeType) {
+            var blob, url;
+            blob = new Blob([data], {
+                type: mimeType
+            });
+            url = window.URL.createObjectURL(blob);
+            downloadURL(url, fileName);
+            setTimeout(function() {
+                return window.URL.revokeObjectURL(url);
+            }, 1000);
+        };
+
+        downloadURL = function(data, fileName) {
+            var a;
+            a = document.createElement('a');
+            a.href = data;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.style = 'display: none';
+            a.click();
+            a.remove();
+        };
+
+        intToByteArray = function(val) {
+            let byteArray = [0, 0, 0, 0];
+            for (let index = 0; index < byteArray.length; index ++) {
+                let byte = val & 0xff;
+                byteArray[index] = byte;
+                val = (val - byte) / 256;
+            }
+            return new Uint8Array(byteArray.reverse());
+        };
+
+        function apply_dkp_javascript() {
+            console.log("Parsing DKP");
+            dkp = applied_dkp._u8array;
+            offset = 0
+            dkp.slice(0, 4).forEach(item => {
+                offset <<= 8
+                offset += item
+            })
+            base_bps = dkp.slice(4, 4+offset)
+            unique_bps = dkp.slice(4+offset)
+            console.log("Applying base BPS");
+            let newROM;
+            let pass = false;
+            if (patch && romFile) {
+                let romFile_internal = new MarcFile(romFile._u8array);
+                let patchFile_internal = new MarcFile(base_bps);
+                bps = parseBPSFile(patchFile_internal);
+                try {
+                    newROM = bps.apply(romFile_internal, false);
+                    pass = true;
+                } catch (evt) {
+                    errorMessage = evt.message;
+                    console.log(evt);
+                }
+            }
+            if (patch && romFile && pass) {
+                let romFile_internal = new MarcFile(newROM._u8array);
+                let patchFile_internal = new MarcFile(unique_bps);
+                bps = parseBPSFile(patchFile_internal);
+                try {
+                    newROM = bps.apply(romFile_internal, false);
+                } catch (evt) {
+                    errorMessage = evt.message;
+                    console.log(evt);
+                }
+            }
+            return newROM;
+        }
+
+        function buildROM() {
+            let original_name = document.getElementById("dkp_patch").value.split(".dkp")[0];
+            const directory_delimiters = ["/","\\"]
+            directory_delimiters.forEach(delim => {
+                const delim_array = original_name.split(delim)
+                original_name = delim_array[delim_array.length - 1];
+            })
+            downloadBlob(apply_dkp_javascript()._u8array,`${original_name}.z64`,"application/octet-stream")
+        }
+    </script>
+</html>

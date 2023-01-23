@@ -6,7 +6,6 @@
 
 static const unsigned char lobbies[] = {0xA9,0xAD,0xAF,0xAE,0xB2,0xC2,0xC1};
 static const unsigned char lobbyexits[] = {2,3,4,5,6,10,11};
-static const short normal_key_flags[] = {0x1A,0x4A,0x8A,0xA8,0xEC,0x124,0x13D};
 
 void randomizeLevelOrder(void) {
 	if (ObjectModel2Timer == 2) {

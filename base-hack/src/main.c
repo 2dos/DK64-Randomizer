@@ -11,7 +11,6 @@
 static short past_lag[LAG_CAP] = {};
 static char lag_counter = 0;
 static float current_avg_lag = 0;
-static short past_crystals = 0;
 static char has_loaded = 0;
 static char good_eeprom = 0;
 static char new_picture = 0;
@@ -19,25 +18,35 @@ static char new_picture = 0;
 void cFuncLoop(void) {
 	DataIsCompressed[18] = 0;
 	unlockKongs();
-	int crystal_count = CollectableBase.Crystals;
-	tagAnywhere(past_crystals);
-	past_crystals = crystal_count;
-	islesSpawn();
+	tagAnywhere();
 	initHack(0);
-	//fixCastleAutowalk();
 	level_order_rando_funcs();
 	qualityOfLife_fixes();
 	qualityOfLife_shorteners();
-	decouple_moves_fixes();
+	overlay_changes();
 	replace_zones(0);
 	alter_boss_key_flags();
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, 2); // Clear K. Lumsy temp flag
-		KasplatSpawnBitfield = 0;
-		shiftBrokenJapesPortal();
+		setFlag(0x79, 0, 2); // Clear BFI Reward Cutscene temp flag
+		if (!Rando.tns_portal_rando_on) {
+			shiftBrokenJapesPortal();
+		}
 		openCoinDoor();
+		priceTransplant();
 		if (CurrentMap == 0x50) {
 			good_eeprom = EEPROMType == 2;
+		} else if (CurrentMap == 0xE) {
+			TextItemName = Rando.aztec_beetle_reward;
+		} else if (CurrentMap == 0x52) {
+			TextItemName = Rando.caves_beetle_reward;
+		}
+	}
+	if (Rando.item_rando) {
+		if (TransitionSpeed > 0) {
+			if (LZFadeoutProgress == 30.0f) {
+				CheckKasplatSpawnBitfield();
+			}
 		}
 	}
 	// displayNumberOnTns();
@@ -51,10 +60,7 @@ void cFuncLoop(void) {
 	if (CurrentMap == 0x50) {
 		colorMenuSky();
 	}
-	cancelMoveSoftlock();
-	fixDKFreeSoftlock();
 	callParentMapFilter();
-	recolorKongControl();
 	spawnCannonWrapper();
 	setCrusher();
 	if (Rando.win_condition == GOAL_POKESNAP) {
@@ -77,6 +83,7 @@ void cFuncLoop(void) {
 	if (Rando.perma_lose_kongs) {
 		preventBossCheese();
 		kong_has_died();
+		fixGraceCheese();
 		forceBossKong();
 	} else {
 		if (CurrentMap == 0xC7) {
@@ -139,8 +146,6 @@ void cFuncLoop(void) {
 
 void earlyFrame(void) {
 	if (ObjectModel2Timer == 2) {
-		updateProgressive();
-		price_rando();
 		setFlag(FLAG_KROOL_INTRO_DK,1,2); // DK Phase Intro
 		setFlag(FLAG_KROOL_INTRO_TINY,1,2); // Tiny Phase Intro
 		if (CurrentMap == 0x22) {
@@ -180,11 +185,6 @@ void earlyFrame(void) {
 				initHelmTimer();
 			}
 			QueueHelmTimer = 0;
-		}
-	}
-	if ((CurrentMap == 5) || (CurrentMap == 1) || (CurrentMap == 0x19)) {
-		if ((CutsceneActive) && (CutsceneIndex == 2)) {
-			updateProgressive();
 		}
 	}
 	if (CurrentMap == 0x6F) { // Pufftoss
@@ -229,13 +229,40 @@ void earlyFrame(void) {
 	remove_blockers();
 	determine_krool_order();
 	disable_krool_health_refills();
-	pre_turn_keys();
 	CBDing();
-	if (Rando.auto_keys) {
+	if (ObjectModel2Timer < 5) {
 		auto_turn_keys();
 	}
+	if (Rando.item_rando) {
+		int has_sniper = 0;
+		int has_homing = 0;
+		for (int i = 0; i < 5; i++) {
+			int weap_val = MovesBase[i].weapon_bitfield;
+			if (weap_val & 2) {
+				has_homing = 1;
+			}
+			if (weap_val & 4) {
+				has_sniper = 1;
+			}
+		}
+		for (int i = 0; i < 5; i++) {
+			if (has_homing) {
+				MovesBase[i].weapon_bitfield |= 2;
+			}
+			if (has_sniper) {
+				MovesBase[i].weapon_bitfield |= 4;
+			}
+		}
+	}
 	handle_WTI();
-	adjust_galleon_water();
+	adjust_level_modifiers();
+	finalizeBeatGame();
+	for (int kong = 0; kong < 5; kong++) {
+		for (int level = 0; level < 7; level++) {
+			MovesBase[kong].cb_count[level] &= 0xFF;
+			MovesBase[kong].tns_cb_count[level] &= 0xFF;
+		}
+	}
 	if ((CurrentMap == MAIN_MENU) && (ObjectModel2Timer < 5)) {
 		FileScreenDLCode_Write();
 		initTracker();
@@ -263,14 +290,49 @@ static char hud_timer = 0;
 static char wait_progress_master = 0;
 static char wait_progress_timer = 0;
 
+#define WAIT_SIZE 64
+static char wait_text_0[WAIT_SIZE] = "REMOVING LANKY KONG";
+static char wait_text_1[WAIT_SIZE] = "TELLING 2DOS TO PLAY DK64";
+static char wait_text_2[WAIT_SIZE] = "LOCKING K. LUMSY IN A CAGE";
+static char wait_text_3[WAIT_SIZE] = "STEALING THE BANANA HOARD";
+static unsigned char wait_text_lengths[] = {19, 25, 26, 25};
+
+void insertROMMessages(void) {
+	for (int i = 0; i < 4; i++) {
+		unsigned char* message_write = dk_malloc(WAIT_SIZE);
+		int message_size = WAIT_SIZE;
+		int* message_file_size;
+		*(int*)(&message_file_size) = message_size;
+		void* ptr = 0;
+		if (i == 0) {
+			ptr = &wait_text_0;
+		} else if (i == 1) {
+			ptr = &wait_text_1;
+		} else if (i == 2) {
+			ptr = &wait_text_2;
+		} else if (i == 3) {
+			ptr = &wait_text_3;
+		}
+		copyFromROM(0x1FFD000 + (WAIT_SIZE * i),message_write,&message_file_size,0,0,0,0);
+		if (message_write[0] != 0) {
+			dk_memcpy(ptr, message_write, WAIT_SIZE);
+			wait_text_lengths[i] = 0;
+			for (int j = 0; j < WAIT_SIZE; j++) {
+				if ((message_write[j] == 0) && (wait_text_lengths[i] == 0)) {
+					wait_text_lengths[i] = j;
+				}
+			}
+		}
+	}
+}
+
 static const char* wait_texts[] = {
 	"BOOTING UP THE RANDOMIZER",
-	"REMOVING LANKY KONG",
-	"TELLING 2DOS TO PLAY DK64",
-	"LOCKING K. LUMSY IN A CAGE",
-	"STEALING THE BANANA HOARD"
+	wait_text_0,
+	wait_text_1,
+	wait_text_2,
+	wait_text_3,
 };
-static const char wait_x_offsets[] = {55, 85, 55, 53, 55};
 static unsigned char ammo_hud_timer = 0;
 
 #define HERTZ 60
@@ -311,7 +373,11 @@ int* displayListModifiers(int* dl) {
 				right = LOADBAR_START;
 			}
 			dl = drawScreenRect(dl, left, 475, right, 485, *(unsigned char*)(address + 0), *(unsigned char*)(address + 1), *(unsigned char*)(address + 2), *(unsigned char*)(address + 3));
-			dl = drawPixelTextContainer(dl, wait_x_offsets[(int)wait_progress_master], 130, (char*)wait_texts[(int)wait_progress_master], 0xFF, 0xFF, 0xFF, 0xFF, 1);
+			int wait_x_offset = 55;
+			if (wait_progress_master > 0) {
+				wait_x_offset = 160 - (wait_text_lengths[wait_progress_master - 1] << 2);
+			}
+			dl = drawPixelTextContainer(dl, wait_x_offset, 130, (char*)wait_texts[(int)wait_progress_master], 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			dl = drawPixelTextContainer(dl, 110, 150, "PLEASE WAIT", 0xFF, 0xFF, 0xFF, 0xFF, 1);
 		} else if (CurrentMap == MAIN_MENU) {
 			if (!good_eeprom) {

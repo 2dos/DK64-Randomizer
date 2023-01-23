@@ -5,8 +5,7 @@
 .org 0x80002554 ; RDRAM
 NOP ; CRC Patch
 .include "asm/bootPatch.asm" //patch boot routine to DMA our code from ROM
-.headersize 0x7E5DAE00
-.org 0x805DAE00
+.include "asm/header.asm"
 .include "asm/boot.asm" //include modified boot code
 .include "asm/hookcode.asm" // Hook code
 .include "asm/objects.asm"

@@ -145,15 +145,6 @@ AutowalkFixHook:
 LoadCodeReplacements:
 	J 	DynamicCodeFixes
 	NOP
-DanceSkipHook0:
-	J 	danceSkip0
-	NOP
-DanceSkipHook1:
-	J 	danceSkip1
-	NOP
-DanceSkipHook2:
-	J 	danceSkip2
-	NOP
 TagPermaLossCheckHook:
 	J 	permaLossTagCheck
 	NOP
@@ -242,14 +233,26 @@ ItemRandoFlagSetHook:
 ObjectRotateHook:
 	J 	ObjectRotate
 	NOP
-NintendoCoinEffectHook:
-	J 	NintendoCoinEffect
+SpriteFixHook:
+	J 	SpriteFix
 	NOP
-RarewareCoinEffectHook:
-	J 	RarewareCoinEffect
+PauseCounterCapHook:
+	J 	PauseCounterCap
 	NOP
-PotionEffectHook:
-	J 	PotionEffect
+PauseControlHook:
+	J 	PauseControl_Control
+	NOP
+PauseSpriteHook:
+	J 	PauseControl_Sprite
+	NOP
+HandleSlamCheckHook:
+	J 	HandleSlamCheck
+	NOP
+ScaleObjectCollision_0Hook:
+	J 	ScaleObjectCollision_0
+	NOP
+ScaleObjectCollision_1Hook:
+	J 	ScaleObjectCollision_1
 	NOP
 
 loadExtraHooks:
@@ -282,6 +285,24 @@ loadExtraHooks:
 	LUI t4, 0x806A
 	SW t3, 0x8420 (t4) // Store Hook
 	SW r0, 0x8424 (t4) // Store NOP
+	
+	LUI t3, hi(ScaleObjectCollision_0Hook)
+	LW t3, lo(ScaleObjectCollision_0Hook) (t3)
+	LUI t4, 0x806F
+	SW t3, 0x62B4 (t4) // Store Hook
+	SW r0, 0x62B8 (t4) // Store NOP
+	
+	LUI t3, hi(ScaleObjectCollision_1Hook)
+	LW t3, lo(ScaleObjectCollision_1Hook) (t3)
+	LUI t4, 0x806F
+	SW t3, 0x6300 (t4) // Store Hook
+	SW r0, 0x6304 (t4) // Store NOP
+	
+	LUI t3, hi(HandleSlamCheckHook)
+	LW t3, lo(HandleSlamCheckHook) (t3)
+	LUI t4, 0x8064
+	SW t3, 0xED7C (t4) // Store Hook
+	SW r0, 0xED80 (t4) // Store NOP
 	
 	LUI t3, hi(ModifyCameraColorHook)
 	LW t3, lo(ModifyCameraColorHook) (t3)
@@ -443,6 +464,12 @@ loadExtraHooks:
 	LUI t4, 0x806B
 	SW t3, 0x8804 (t4) // Store Hook
 	SW r0, 0x8808 (t4) // Store NOP
+	
+	LUI t3, hi(PauseCounterCapHook)
+	LW t3, lo(PauseCounterCapHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0x9898 (t4) // Store Hook
+	SW r0, 0x989C (t4) // Store NOP
 
 	loadExtraHooks_0:
 	LUI t3, hi(AutowalkFixHook)
@@ -456,24 +483,6 @@ loadExtraHooks:
 	LUI t4, 0x8061
 	SW t3, 0x0948 (t4) // Store Hook
 	SW r0, 0x094C (t4) // Store NOP
-
-	LUI t3, hi(DanceSkipHook0)
-	LW t3, lo(DanceSkipHook0) (t3)
-	LUI t4, 0x806F
-	SW t3, 0xFB88 (t4) // Store Hook
-	SW r0, 0xFB8C (t4) // Store NOP
-
-	LUI t3, hi(DanceSkipHook1)
-	LW t3, lo(DanceSkipHook1) (t3)
-	LUI t4, 0x806F
-	SW t3, 0xFC08 (t4) // Store Hook
-	SW r0, 0xFC0C (t4) // Store NOP
-
-	LUI t3, hi(DanceSkipHook2)
-	LW t3, lo(DanceSkipHook2) (t3)
-	LUI t4, 0x806F
-	SW t3, 0xFC1C (t4) // Store Hook
-	SW r0, 0xFC20 (t4) // Store NOP
 
 	LUI t3, hi(permaLossMode)
 	LBU t3, lo(permaLossMode) (t3)
@@ -594,26 +603,25 @@ loadExtraHooks:
 	SW t3, 0x7148 (t4) // Store Hook
 	SW r0, 0x714C (t4) // Store NOP
 	
-	LUI t3, hi(NintendoCoinEffectHook)
-	LW t3, lo(NintendoCoinEffectHook) (t3)
-	LUI t4, 0x806F
-	SW t3, 0x7B30 (t4) // Store Hook
-	SW r0, 0x7B34 (t4) // Store NOP
+	LUI t3, hi(SpriteFixHook)
+	LW t3, lo(SpriteFixHook) (t3)
+	LUI t4, 0x806A
+	SW t3, 0x6708 (t4) // Store Hook
+	SW r0, 0x670C (t4) // Store NOP
 	
-	LUI t3, hi(RarewareCoinEffectHook)
-	LW t3, lo(RarewareCoinEffectHook) (t3)
-	LUI t4, 0x806F
-	SW t3, 0x7A24 (t4) // Store Hook
-	SW r0, 0x7A28 (t4) // Store NOP
+	LUI t3, hi(PauseControlHook)
+	LW t3, lo(PauseControlHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0x86FC (t4) // Store Hook
+	SW r0, 0x8700 (t4) // Store NOP
 	
-	LUI t3, hi(PotionEffectHook)
-	LW t3, lo(PotionEffectHook) (t3)
-	LUI t4, 0x806F
-	SW t3, 0x7AF4 (t4) // Store Hook
-	SW r0, 0x7AF8 (t4) // Store NOP
+	LUI t3, hi(PauseSpriteHook)
+	LW t3, lo(PauseSpriteHook) (t3)
+	LUI t4, 0x806B
+	SW t3, 0xA414 (t4) // Store Hook
+	SW r0, 0xA418 (t4) // Store NOP
 
 	loadExtraHooks_4:
-
 	JR ra
 	NOP
 

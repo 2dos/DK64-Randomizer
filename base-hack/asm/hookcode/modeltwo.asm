@@ -1,114 +1,99 @@
 ObjectRotate:
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x288
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x90
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x18D
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x13C
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0xDE
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0xE0
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0xE1
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0xDD
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0xDF
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x48
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x28F
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x5B
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x1F2
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x1F3
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x1F5
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x1F6
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    ADDIU   at, r0, 0x59
-    BEQ     v0, at, ObjectRotate_ApplyRotate
-    NOP
-    J       0x80637150
-    NOP
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x288
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x90
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x18D
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x13C
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0xDE
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0xE0
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0xE1
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0xDD
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0xDF
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x48
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x28F
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x5B
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x1F2
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x1F3
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x1F5
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x1F6
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x59
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x257
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x258
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x259
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x25A
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x25B
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x25C
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0xB7
+    beq $v0, $at, ObjectRotate_ApplyRotate
+    addiu $at, $zero, 0x25D
+    beq $v0, $at, ObjectRotate_ApplyReverseRotate
+    nop
+    j 0x80637150
+    nop
 
     ObjectRotate_ApplyRotate:
-        J       0x80637160
-        NOP
-        
-NintendoCoinEffect:
-    BEQ     a0, at, NintendoCoinEffect_Orange
-    ADDIU   a1, r0, 0x7FFF
-    ADDIU   at, r0, 0x48
-    BEQ     a0, at, NintendoCoinEffect_Coin
-    NOP
-    J       0x806F7B38
-    NOP
+        j 0x80637160
+        nop
 
-    NintendoCoinEffect_Coin:
-        LUI     t1, 0x8074
-        LBU     t1, 0x5838 (t1)
-        J       0x806F7BC8
-        ADDIU   a0, r0, 22
+    ObjectRotate_ApplyReverseRotate:
+        lwc1 $f6, 0x14 ($s0)
+        lui $at, 0x4024
+        mtc1 $at, $f11
+        mtc1 $zero, $f10
+        cvt.d.s $f8, $f6
+        j 0x80637178
+        sub.d $f16, $f8, $f10
 
-    NintendoCoinEffect_Orange:
-        J       0x806F7C20
-        NOP
+ScaleObjectCollision_0:
+    lh $t2, 0x10 ($t1)
+    mtc1 $t2, $f18
+    cvt.s.w $f18, $f18
+    ; Operation to perform | old + ((scale - 1) * (20 + old))
+    ; scale - 1
+    lwc1 $f16, 0x1C ($s0)
+    lui $t2, 0x3F80
+    mtc1 $t2, $f10
+    sub.s $f16, $f16, $f10
+    ; 20 + old
+    lui $t2, 0x41A0
+    mtc1 $t2, $f10
+    add.s $f10, $f10, $f18
+    ; old + ((scale - 1) * (20 + old))
+    mul.s $f10, $f10, $f16
+    add.s $f16, $f10, $f18
+    cvt.w.s $f16, $f16
+    mfc1 $t2, $f16
+    j 0x806F62BC
+    sw $t6, 0x10 ($sp)
 
-RarewareCoinEffect:
-    BEQ     t7, at, RarewareCoinEffect_RaceCoin
-    ADDIU   at, r0, 0x28F
-    BEQ     t7, at, RarewareCoinEffect_Coin
-    ADDIU   at, r0, 0x1F2
-    BEQ     t7, at, RarewareCoinEffect_Potion
-    ADDIU   at, r0, 0x1F3
-    BEQ     t7, at, RarewareCoinEffect_Potion
-    ADDIU   at, r0, 0x1F5
-    BEQ     t7, at, RarewareCoinEffect_Potion
-    ADDIU   at, r0, 0x1F6
-    BEQ     t7, at, RarewareCoinEffect_Potion
-    ADDIU   at, r0, 0x288
-    J       0x806F7A2C
-    NOP
-
-    RarewareCoinEffect_Coin:
-        LUI     t6, 0x8074
-        LBU     t6, 0x5838 (t6)
-        J       0x806F7ED0
-        ADDIU   a0, r0, 22
-    
-    RarewareCoinEffect_Potion:
-        LUI     t6, 0x8074
-        LBU     t6, 0x5838 (t6)
-        J       0x806F7ED0
-        ADDIU   a0, r0, 115
-
-    RarewareCoinEffect_RaceCoin:
-        J       0x806F7EC4
-        NOP
-
-PotionEffect:
-    BEQ     a0, at, PotionEffect_Melon
-    LUI     t0, 0x8074
-    ADDIU   at, r0, 0x5B
-    BEQ     a0, at, PotionEffect_Potion
-    ADDIU   at, r0, 0x59
-    BEQ     a0, at, PotionEffect_Potion
-    NOP
-    J       0x806F7AFC
-    NOP
-
-    PotionEffect_Potion:
-        LBU     t0, 0x5838 (t0)
-        J       0x806F7B68
-        ADDIU   a0, r0, 115
-
-    PotionEffect_Melon:
-        J       0x806F7B60
-        NOP
+ScaleObjectCollision_1:
+    lh $t3, 0x12 ($t2)
+    mtc1 $t3, $f8
+    cvt.s.w $f8, $f8
+    lwc1 $f10, 0x1C ($s0)
+    mul.s $f10, $f10, $f8
+    j 0x806F6310
+    nop

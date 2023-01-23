@@ -17,6 +17,8 @@ from randomizer.Lists.ShufflableExit import ShufflableExits
 def PlaceConstants(settings):
     """Place items which are to be put in a hard-coded location."""
     # Handle key placements
+    if settings.key_8_helm:
+        LocationList[Locations.HelmKey].PlaceItem(Items.HideoutHelmKey)
     if settings.shuffle_loading_zones == "levels" and Types.Key not in settings.shuffled_location_types:
         # Place keys in the lobbies they normally belong in
         # Ex. Whatever level is in the Japes lobby entrance will always have the Japes key
@@ -58,7 +60,7 @@ def PlaceConstants(settings):
         LocationList[Locations.LankyKong].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.TinyKong].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.ChunkyKong].PlaceConstantItem(Items.NoItem)
-    if settings.unlock_all_moves:
+    if settings.unlock_all_moves and not (settings.shuffle_items and Types.Shop in settings.shuffled_location_types):
         LocationList[Locations.SimianSlam].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.SuperSimianSlam].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.SuperDuperSimianSlam].PlaceConstantItem(Items.NoItem)
@@ -94,7 +96,7 @@ def PlaceConstants(settings):
         LocationList[Locations.MusicUpgrade1].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.ThirdMelon].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.MusicUpgrade2].PlaceConstantItem(Items.NoItem)
-        # Shockwave also granted when unlocking all moves
+    if settings.shockwave_status == "start_with":
         LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
 
 
@@ -113,7 +115,15 @@ def AllItems(settings):
         allItems.extend(Keys())
     if Types.Medal in settings.shuffled_location_types:
         allItems.extend(BananaMedalItems())
-    if settings.move_rando != "off" or Types.Shop in settings.shuffled_location_types:
+    if Types.Bean in settings.shuffled_location_types:  # Could check for pearls as well
+        allItems.extend(MiscItemRandoItems())
+    if Types.Fairy in settings.shuffled_location_types:
+        allItems.extend(FairyItems())
+    if Types.RainbowCoin in settings.shuffled_location_types:
+        allItems.extend(RainbowCoinItems())
+    if Types.FakeItem in settings.shuffled_location_types:
+        allItems.extend(FakeItems())
+    if settings.move_rando != "off":
         allItems.extend(DonkeyMoves)
         allItems.extend(DiddyMoves)
         allItems.extend(LankyMoves)
@@ -127,8 +137,34 @@ def AllItems(settings):
             allItems.append(Items.Shockwave)
         else:
             allItems.append(Items.CameraAndShockwave)
-    if settings.kong_rando:
+    if settings.kong_rando or Types.Kong in settings.shuffled_location_types:
         allItems.extend(Kongs(settings))
+    return allItems
+
+
+def AllItemsForMovePlacement(settings):
+    """Return all shuffled items we need to assume for move placement."""
+    allItems = []
+    if Types.Blueprint in settings.shuffled_location_types:
+        allItems.extend(Blueprints(settings))
+    if Types.Banana in settings.shuffled_location_types:
+        allItems.extend(GoldenBananaItems())
+    if Types.Coin in settings.shuffled_location_types:
+        allItems.extend(CompanyCoinItems())
+    if Types.Crown in settings.shuffled_location_types:
+        allItems.extend(BattleCrownItems())
+    if Types.Key in settings.shuffled_location_types:
+        allItems.extend(Keys())
+    if Types.Medal in settings.shuffled_location_types:
+        allItems.extend(BananaMedalItems())
+    if Types.Bean in settings.shuffled_location_types:  # Could check for pearls as well
+        allItems.extend(MiscItemRandoItems())
+    if Types.Fairy in settings.shuffled_location_types:
+        allItems.extend(FairyItems())
+    if Types.RainbowCoin in settings.shuffled_location_types:
+        allItems.extend(RainbowCoinItems())
+    if Types.FakeItem in settings.shuffled_location_types:
+        allItems.extend(FakeItems())
     return allItems
 
 
@@ -158,7 +194,6 @@ def AllMovesForOwnedKongs(kongs):
     if KongObject.Kongs.chunky in kongs:
         kongMoves.extend(ChunkyMoves)
     kongMoves.extend(ImportantSharedMoves)
-    kongMoves.extend(JunkSharedMoves)
     return kongMoves
 
 
@@ -369,6 +404,35 @@ def BattleCrownItems():
     """Return a list of Crowns to be placed."""
     itemPool = []
     itemPool.extend(itertools.repeat(Items.BattleCrown, 10))
+    return itemPool
+
+
+def MiscItemRandoItems():
+    """Return a list of Items that are classed as miscellaneous."""
+    itemPool = []
+    itemPool.append(Items.Bean)
+    itemPool.extend(itertools.repeat(Items.Pearl, 5))
+    return itemPool
+
+
+def RainbowCoinItems():
+    """Return a list of Rainbow Coins to be placed."""
+    itemPool = []
+    itemPool.extend(itertools.repeat(Items.RainbowCoin, 16))
+    return itemPool
+
+
+def FairyItems():
+    """Return a list of Fairies to be placed."""
+    itemPool = []
+    itemPool.extend(itertools.repeat(Items.BananaFairy, 20))
+    return itemPool
+
+
+def FakeItems():
+    """Return a list of Fake Items to be placed."""
+    itemPool = []
+    itemPool.extend(itertools.repeat(Items.FakeItem, 10))  # Up to 10 fake items
     return itemPool
 
 

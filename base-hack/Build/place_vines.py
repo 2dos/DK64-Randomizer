@@ -29,13 +29,7 @@ def generateVineSeries(map_id: int) -> dict:
                 delta[coord] = series["points"][1][coord] - series["points"][0][coord]
                 delta_total += delta[coord] * delta[coord]
             chain_delta = math.sqrt(delta_total)
-            vine_points = [
-                {
-                    "x": series["points"][0]["x"],
-                    "y": series["points"][0]["y"],
-                    "z": series["points"][0]["z"],
-                }
-            ]
+            vine_points = [{"x": series["points"][0]["x"], "y": series["points"][0]["y"], "z": series["points"][0]["z"]}]
             point_count = max(math.ceil(chain_delta / max_dist), len(series["ids"]) - 1)
             for point_index in range(point_count):
                 point = {}
