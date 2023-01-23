@@ -809,7 +809,8 @@ def applyHelmDoorCosmetics(spoiler: Spoiler):
 
 def applyHolidayMode(spoiler: Spoiler):
     """Change grass texture to snow."""
-    if spoiler.settings.holiday_mode:
+    enable_holiday_override = False
+    if spoiler.settings.holiday_mode and enable_holiday_override:
         ROM().seek(0x1FF8000)
         snow_im = Image.new(mode="RGBA", size=((32, 32)))
         snow_px = snow_im.load()
@@ -889,6 +890,14 @@ boot_phrases = (
     "Suggesting you also try BK Randomizer",
     "Scattering 3500 Bananas",
     "Stealing ideas from other randomizers",
+    "Fixing Krushas Collision",
+    "Falling on 75m",
+    "Summoning Salt",
+    "Combing Chunky's Afro",
+    "Asking what you gonna do",
+    "Thinking with portals",
+    "Reminding you to hydrate",
+    "Injecting lag",
 )
 
 
