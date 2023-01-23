@@ -567,6 +567,9 @@ def CalculateWothPaths(spoiler, WothLocations):
                 # This is a bit of a compromise, as you *might* see these moves WotH purely for coins/GBs but they won't be on paths
                 if location.item in (Items.Swim, Items.Vines, Items.PonyTailTwirl):
                     continue
+                # Keys that make it here are also always WotH
+                if location.item in ItemPool.Keys():
+                    continue
                 WothLocations.remove(locationId)
                 del spoiler.woth_paths[locationId]
                 # If we remove anything, we have to check the whole list again
