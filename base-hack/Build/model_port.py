@@ -331,7 +331,7 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
             os.remove(f)
 
 
-model_dir = "assets/Non-Code/models/"
+model_dir = "assets/models/"
 # Coins
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}nin_coin.dl", f"{model_dir}coin_overlay.dl", "nintendo_coin", 0x90)
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}rw_coin.dl", f"{model_dir}coin_overlay.dl", "rareware_coin", 0x90)

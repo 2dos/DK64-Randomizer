@@ -1,7 +1,7 @@
 """Builds Cutscene Database from CSV."""
 import os
 
-csv_file = "assets/Non-Code/cutscenes/cutscenes_skipped.csv"
+csv_file = "assets/cutscenes/cutscenes_skipped.csv"
 write_file = "src/misc/cutscene_database.c"
 
 # https://docs.google.com/spreadsheets/d/1X7lYw9l7xpfEcQjvD0WzucBwi3uUHW4FfsjrOqDwj_o/edit#gid=308050567
