@@ -276,7 +276,7 @@ move_hints = [
     {
         "move": "Battle Crown",
         "kong": "~",
-        "cranky": "BACK IN MY DAY, YOU'D HAVE TO FIGHT IN THE RING FOR A PRIZE LIKE THAT!",
+        "cranky": "BACK IN MY DAY, YOU WOULD HAVE TO FIGHT IN THE RING FOR A PRIZE LIKE THAT!",
         "funky": "I FOUND THIS SICK LOOKIN' CROWN FOR YOU!",
         "candy": "HERE'S A PRETTY CROWN SO YOU CAN LOOK LIKE THE PRINCESS YOU ARE!",
     },
