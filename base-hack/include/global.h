@@ -276,6 +276,7 @@ extern void initFiles(void);
 extern void initQoL(void);
 extern void initCosmetic(void);
 extern void populatePatchItem(int id, int map, int index, int world);
+extern int isObjectTangible_detailed(int id);
 
 extern void insertROMMessages(void);
 

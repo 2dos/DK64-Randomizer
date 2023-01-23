@@ -32,3 +32,4 @@
 .definelabel updateModelScales, 0x807248B0
 .definelabel spawnModelTwo, 0x80632630
 .definelabel refreshItemVisibility, 0x8062D1A8
+.definelabel isObjectTangible, 0x8063C2A8

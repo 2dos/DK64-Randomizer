@@ -52,3 +52,17 @@ item_collision* writeItemActorScale(void) {
     data->scale = 1.0f;
     return data;
 }
+
+int isObjectTangible_detailed(int id) {
+    /**
+     * @brief Override function for object tangibility
+     * 
+     * @param id Object id
+     * 
+     * @return Object tangibility, boolean
+     */
+    if ((CurrentMap == 61) && (id == 0xA)) {
+        return 0;
+    }
+    return isObjectTangible(id);
+}
