@@ -1,0 +1,5 @@
+.data
+id = 0x56
+.code
+EXEC 7 | 125 65535 86
+ENDBLOCK

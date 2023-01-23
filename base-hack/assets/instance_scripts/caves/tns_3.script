@@ -1,0 +1,5 @@
+.data
+id = 547
+.code
+EXEC 7 | 125 65532 547
+ENDBLOCK

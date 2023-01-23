@@ -3,7 +3,7 @@ import os
 import shutil
 import zlib
 
-new_file = "assets/Non-Code/Gong/hint_door.bin"
+new_file = "assets/Gong/hint_door.bin"
 
 
 def generateYellowWrinkly():

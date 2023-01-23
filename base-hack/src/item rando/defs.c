@@ -231,7 +231,7 @@ void initActorDefs(void) {
     *(unsigned short*)(0x80689452) = DEFS_LIMIT;
 }
 
-#define GB_DICTIONARY_COUNT 121
+#define GB_DICTIONARY_COUNT 120
 static GBDictItem NewGBDictionary[GB_DICTIONARY_COUNT] = {};
 
 int addDictionaryItem(int index, int map, int id, int flag, int kong) {
@@ -300,7 +300,11 @@ void initItemDictionary(void) {
     if (Rando.quality_of_life.vanilla_fixes) {
         size = addDictionaryItem(size, 0x11, 0x5A, FLAG_KEYHAVE_KEY8, -2); // Fake Key backup fix
     }
-    size = addDictionaryItem(size, 0x3D, 0xA, FLAG_COLLECTABLE_FUNGI_DK_MILLGB, -2); // Mill GB fix
+    /*
+        Had to disable this. Caused crashes when you would collect one version, then load the setup which contains the other version (No parent filter)
+        Will look into at a future date
+        size = addDictionaryItem(size, 0x3D, 0xA, FLAG_COLLECTABLE_FUNGI_DK_MILLGB, -2); // Mill GB fix
+    */
     // Initialize addresses
     *(short*)(0x8073150A) = getHi(&NewGBDictionary[0].map);
     *(short*)(0x8073151E) = getLo(&NewGBDictionary[0].map);

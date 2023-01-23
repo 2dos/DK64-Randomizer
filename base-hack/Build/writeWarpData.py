@@ -78,7 +78,7 @@ for pad_pair in warp_info_data:
     for sub_index in range(2):
         pad_id = pad_pair.ids[sub_index]
         script_lines = [f"EXEC 7 | 125 65535 {pad_id}", "ENDBLOCK"]
-        with open(f"./assets/Non-Code/instance_scripts/{script_folder_list[pad_pair.map]}/warp{hex(pad_id)[2:]}.script", "w") as script_f:
+        with open(f"./assets/instance_scripts/{script_folder_list[pad_pair.map]}/warp{hex(pad_id)[2:]}.script", "w") as script_f:
             script_f.write(f".data\nid = {f'0x{hex(pad_id)[2:].upper()}'}\n.code\n")
             script_f.write("\n".join(script_lines))
 

@@ -70,6 +70,7 @@ ObjectRotate:
 ScaleObjectCollision_0:
     lh $t2, 0x10 ($t1)
     mtc1 $t2, $f18
+    cvt.s.w $f18, $f18
     ; Operation to perform | old + ((scale - 1) * (20 + old))
     ; scale - 1
     lwc1 $f16, 0x1C ($s0)
@@ -91,7 +92,8 @@ ScaleObjectCollision_0:
 ScaleObjectCollision_1:
     lh $t3, 0x12 ($t2)
     mtc1 $t3, $f8
+    cvt.s.w $f8, $f8
     lwc1 $f10, 0x1C ($s0)
-    mul.s $f8, $f10, $f8
-    j 0x806F630C
+    mul.s $f10, $f10, $f8
+    j 0x806F6310
     nop

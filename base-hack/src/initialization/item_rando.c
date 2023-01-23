@@ -234,6 +234,8 @@ void initItemRando(void) {
             // Barrel Aesthetic
             initBarrelChange();
         }
+        // Mill GB
+        *(int*)(0x806F633C) = 0x0C000000 | (((int)&isObjectTangible_detailed & 0xFFFFFF) >> 2); // Change object tangibility check function
         // Checks Screen
         int screen_count = 5;
         *(short*)(0x806A8672) = screen_count; // Screen decrease cap

@@ -94,8 +94,8 @@ for kong in kong_tex:
 
 ptr_offset = 0x101C50
 
-if not os.path.exists("assets/Non-Code/hash"):
-    os.mkdir("assets/Non-Code/hash")
+if not os.path.exists("assets/hash"):
+    os.mkdir("assets/hash")
 
 print("Extracting Images from ROM")
 with open("rom/dk64.z64", "rb") as fh:
@@ -112,7 +112,7 @@ with open("rom/dk64.z64", "rb") as fh:
             dec = fh.read(img_size)
         else:
             dec = zlib.decompress(fh.read(img_size), 15 + 32)
-        img_name = f"assets/Non-Code/hash/{x.name}.png"
+        img_name = f"assets/hash/{x.name}.png"
         if os.path.exists(img_name):
             os.remove(img_name)
         with open(img_name, "wb") as fg:

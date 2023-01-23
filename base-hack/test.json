@@ -123,8 +123,8 @@
     "remove_high_requirements":1,
     "open_level_sections":1,
     "auto_keys":0,
-    "starting_map":170,
-    "starting_exit":0,
+    "starting_map":7,
+    "starting_exit":4,
     "disco_chunky":1,
     "krusha_slot":0,
     "starting_kong":4,
@@ -163,7 +163,7 @@
     "hard_enemies":1,
     "remove_oscillation_effects":1,
     "rareware_gb_fairies":1,
-    "call_parent_filter":1,
+    "call_parent_filter":0,
     "location_visuals":7,
     "microhints":2
  }

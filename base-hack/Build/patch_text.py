@@ -87,14 +87,14 @@ move_hints = [
     {
         "move": "Monkeyport",
         "kong": "Tiny",
-        "cranky": "IN MY DAY, YOU'D HAVE TO WALK UPHILL BOTH WAYS, BUT THIS WILL WARP YOU IN AN INSTANT.",
+        "cranky": "IN MY DAY, YOU WOULD HAVE TO WALK UPHILL BOTH WAYS, BUT THIS WILL WARP YOU IN AN INSTANT.",
         "funky": "THIS COOL MOVE WILL SEND YOU PLACES!",
         "candy": "IT'S YOUR VERY OWN PERSONAL WARP PAD!",
     },
     {
         "move": "Hunky Chunky",
         "kong": "Chunky",
-        "cranky": "ALTHOUGH I'M NOT SURE WHY YOU'D NEED IT, YOU'RE ALREADY BIG ENOUGH AS IT IS.",
+        "cranky": "ALTHOUGH I'M NOT SURE WHY YOU WOULD NEED IT, YOU'RE ALREADY BIG ENOUGH AS IT IS.",
         "funky": "DRINK THIS AND YOU'LL BULK UP BIG TIME!",
         "candy": "ONE SIP OF THIS MAGICAL DRINK CAN MAKE A BIG STRONG FELLA LIKE YOU EVEN BIGGER.",
     },
@@ -150,7 +150,7 @@ move_hints = [
     {
         "move": "Pineapple Launcher",
         "kong": "Chunky",
-        "cranky": "NOW, TAKE IT AND DON'T POINT IT AT ME! YOU'D RIP MY FEEBLE HEAD OFF WITH THESE PINEAPPLES!",
+        "cranky": "NOW, TAKE IT AND DON'T POINT IT AT ME! YOU WOULD RIP MY FEEBLE HEAD OFF WITH THESE PINEAPPLES!",
         "funky": "THIS IS A REAL COOL LAUNCHER THAT'LL BLOW HOLES IN K.ROOL'S ARMY.",
         "candy": "USE IT TO FIRE MASSIVE PINEAPPLES TO CLEAR EVERYTHING ON YOUR PATH.",
     },
@@ -276,7 +276,7 @@ move_hints = [
     {
         "move": "Battle Crown",
         "kong": "~",
-        "cranky": "BACK IN MY DAY, YOU'D HAVE TO FIGHT IN THE RING FOR A PRIZE LIKE THAT!",
+        "cranky": "BACK IN MY DAY, YOU WOULD HAVE TO FIGHT IN THE RING FOR A PRIZE LIKE THAT!",
         "funky": "I FOUND THIS SICK LOOKIN' CROWN FOR YOU!",
         "candy": "HERE'S A PRETTY CROWN SO YOU CAN LOOK LIKE THE PRINCESS YOU ARE!",
     },

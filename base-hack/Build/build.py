@@ -54,11 +54,11 @@ if os.path.exists(newROMName):
 shutil.copyfile(ROMName, newROMName)
 
 portal_images = []
-portal_images.append(convertPortalImage("assets/Non-Code/portals/DK_rando_portal_1.png"))
-portal_images.append(convertPortalImage("assets/Non-Code/portals/DK_rando_portal_2.png"))
+portal_images.append(convertPortalImage("assets/portals/DK_rando_portal_1.png"))
+portal_images.append(convertPortalImage("assets/portals/DK_rando_portal_2.png"))
 
-createTextFile("assets/Non-Code/credits")
-createSquishFile("assets/Non-Code/credits")
+createTextFile("assets/credits")
+createSquishFile("assets/credits")
 generateYellowWrinkly()
 
 getHelmDoorModel(6022, 6023, "crown_door.bin")
@@ -68,37 +68,37 @@ BLOCK_COLOR_SIZE = 64  # Bytes allocated to a block 32x32 image. Brute forcer sa
 
 file_dict = [
     {"name": "Static ASM Code", "start": 0x113F0, "compressed_size": 0xB15E4, "source_file": "StaticCode.bin", "use_external_gzip": True, "patcher": patchStaticCode},
-    {"name": "Dolby Logo", "pointer_table_index": 14, "file_index": 176, "source_file": "assets/Non-Code/Dolby/DolbyThin.png", "texture_format": "ia4"},
-    {"name": "Thumb Image", "pointer_table_index": 14, "file_index": 94, "source_file": "assets/Non-Code/Nintendo Logo/Nintendo4.png", "texture_format": "rgba5551"},
-    {"name": "DKTV Image", "pointer_table_index": 14, "file_index": 44, "source_file": "assets/Non-Code/DKTV/logo3.png", "texture_format": "rgba5551"},
-    {"name": "Spin Transition Image", "pointer_table_index": 14, "file_index": 95, "source_file": "assets/Non-Code/transition/transition-body.png", "texture_format": "ia4"},
-    {"name": "Moves Image", "pointer_table_index": 14, "file_index": 115, "source_file": "assets/Non-Code/file_screen/moves.png", "texture_format": "rgba5551"},
-    {"name": "Medal Image", "pointer_table_index": 14, "file_index": 116, "source_file": "assets/Non-Code/displays/medal.png", "texture_format": "rgba5551"},
-    {"name": "Tag Barrel Shell Texture", "pointer_table_index": 25, "file_index": 4938, "source_file": "assets/Non-Code/tagbarrel/shell.png", "texture_format": "rgba5551"},
+    {"name": "Dolby Logo", "pointer_table_index": 14, "file_index": 176, "source_file": "assets/Dolby/DolbyThin.png", "texture_format": "ia4"},
+    {"name": "Thumb Image", "pointer_table_index": 14, "file_index": 94, "source_file": "assets/Nintendo Logo/Nintendo4.png", "texture_format": "rgba5551"},
+    {"name": "DKTV Image", "pointer_table_index": 14, "file_index": 44, "source_file": "assets/DKTV/logo3.png", "texture_format": "rgba5551"},
+    {"name": "Spin Transition Image", "pointer_table_index": 14, "file_index": 95, "source_file": "assets/transition/transition-body.png", "texture_format": "ia4"},
+    {"name": "Moves Image", "pointer_table_index": 14, "file_index": 115, "source_file": "assets/file_screen/moves.png", "texture_format": "rgba5551"},
+    {"name": "Medal Image", "pointer_table_index": 14, "file_index": 116, "source_file": "assets/displays/medal.png", "texture_format": "rgba5551"},
+    {"name": "Tag Barrel Shell Texture", "pointer_table_index": 25, "file_index": 4938, "source_file": "assets/tagbarrel/shell.png", "texture_format": "rgba5551"},
     {
         "name": "Gong Geometry",
         "pointer_table_index": 4,
         "file_index": 195,
-        "source_file": "assets/Non-Code/Gong/gong_geometry.bin",
-        "bps_file": "assets/Non-Code/Gong/gong_geometry.bps",
+        "source_file": "assets/Gong/gong_geometry.bin",
+        "bps_file": "assets/Gong/gong_geometry.bps",
         "is_diff_patch": True,
     },
-    {"name": "End Sequence Credits", "pointer_table_index": 19, "file_index": 7, "source_file": "assets/Non-Code/credits/credits.bin", "do_not_delete_source": True},
+    {"name": "End Sequence Credits", "pointer_table_index": 19, "file_index": 7, "source_file": "assets/credits/credits.bin", "do_not_delete_source": True},
     {
         "name": "DK Wrinkly Door",
         "pointer_table_index": 4,
         "file_index": 0xF0,
-        "source_file": "assets/Non-Code/Gong/hint_door.bin",
+        "source_file": "assets/Gong/hint_door.bin",
         "do_not_delete_source": True,
         "target_compressed_size": 0x1420,
         "target_uncompressed_size": 0x1420,
     },
-    {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/Non-Code/displays/wxys.png", "texture_format": "rgba5551"},
+    {"name": "WXY_Slash", "pointer_table_index": 14, "file_index": 12, "source_file": "assets/displays/wxys.png", "texture_format": "rgba5551"},
     {
         "name": "DK Tie Palette",
         "pointer_table_index": 25,
         "file_index": 6013,
-        "source_file": "assets/Non-Code/hash/dk_tie_palette.png",
+        "source_file": "assets/hash/dk_tie_palette.png",
         "do_not_extract": True,
         "texture_format": "rgba5551",
         "target_compressed_size": BLOCK_COLOR_SIZE,
@@ -107,7 +107,7 @@ file_dict = [
         "name": "Tiny Overalls Palette",
         "pointer_table_index": 25,
         "file_index": 6014,
-        "source_file": "assets/Non-Code/hash/tiny_palette.png",
+        "source_file": "assets/hash/tiny_palette.png",
         "do_not_extract": True,
         "texture_format": "rgba5551",
         "target_compressed_size": BLOCK_COLOR_SIZE,
@@ -116,7 +116,7 @@ file_dict = [
         "name": "Bean Sprite",
         "pointer_table_index": 25,
         "file_index": 6020,
-        "source_file": "assets/Non-Code/displays/bean.png",
+        "source_file": "assets/displays/bean.png",
         "do_not_extract": True,
         "texture_format": "rgba5551",
     },
@@ -124,7 +124,7 @@ file_dict = [
         "name": "Pearl Sprite",
         "pointer_table_index": 25,
         "file_index": 6021,
-        "source_file": "assets/Non-Code/displays/pearl.png",
+        "source_file": "assets/displays/pearl.png",
         "do_not_extract": True,
         "texture_format": "rgba5551",
     },
@@ -176,8 +176,8 @@ file_dict = [
         "do_not_extract": True,
         "do_not_delete_source": True,
     },
-    {"name": "DPad Image", "pointer_table_index": 14, "file_index": 187, "source_file": "assets/Non-Code/displays/dpad.png", "texture_format": "rgba5551"},
-    {"name": "Tracker Image", "pointer_table_index": 14, "file_index": 0xA1, "source_file": "assets/Non-Code/file_screen/tracker.png", "texture_format": "rgba5551"},
+    {"name": "DPad Image", "pointer_table_index": 14, "file_index": 187, "source_file": "assets/displays/dpad.png", "texture_format": "rgba5551"},
+    {"name": "Tracker Image", "pointer_table_index": 14, "file_index": 0xA1, "source_file": "assets/file_screen/tracker.png", "texture_format": "rgba5551"},
     {"name": "Nintendo Coin Model", "pointer_table_index": 4, "file_index": 0x48, "source_file": "nintendo_coin_om2.bin", "do_not_delete_source": True},
     {"name": "Nintendo Coin Model", "pointer_table_index": 4, "file_index": 0xB7, "source_file": "rainbow_coin_om2.bin", "do_not_delete_source": True},
     {"name": "Rareware Coin Model", "pointer_table_index": 4, "file_index": 0x28F, "source_file": "rareware_coin_om2.bin", "do_not_delete_source": True},
@@ -187,15 +187,15 @@ file_dict = [
     {"name": "Potion (Tiny) Model", "pointer_table_index": 4, "file_index": 0x1F3, "source_file": "potion_tiny_om2.bin", "do_not_delete_source": True},
     {"name": "Potion (Chunky) Model", "pointer_table_index": 4, "file_index": 0x1F5, "source_file": "potion_chunky_om2.bin", "do_not_delete_source": True},
     {"name": "Potion (Any) Model", "pointer_table_index": 4, "file_index": 0x1F6, "source_file": "potion_any_om2.bin", "do_not_delete_source": True},
-    {"name": "Krusha Head", "start": 0x1FF6000, "source_file": "assets/Non-Code/displays/krusha_head64.png", "do_not_delete_source": True, "texture_format": "rgba5551", "do_not_compress": True},
-    {"name": "Snow Texture", "start": 0x1FF8000, "source_file": "assets/Non-Code/displays/snow32.png", "do_not_delete_source": True, "texture_format": "rgba5551", "do_not_compress": True},
+    {"name": "Krusha Head", "start": 0x1FF6000, "source_file": "assets/displays/krusha_head64.png", "do_not_delete_source": True, "texture_format": "rgba5551", "do_not_compress": True},
+    {"name": "Snow Texture", "start": 0x1FF8000, "source_file": "assets/displays/snow32.png", "do_not_delete_source": True, "texture_format": "rgba5551", "do_not_compress": True},
     {"name": "Crown Door Model", "pointer_table_index": 4, "file_index": 0x1A6, "source_file": "crown_door.bin", "do_not_delete_source": True},
     {"name": "Coin Door Model", "pointer_table_index": 4, "file_index": 0x1A7, "source_file": "coin_door.bin", "do_not_delete_source": True},
     {
         "name": "Crown Door Image 1",
         "pointer_table_index": 25,
         "file_index": 6022,
-        "source_file": "assets/Non-Code/displays/door_crown.png",
+        "source_file": "assets/displays/door_crown.png",
         "texture_format": "rgba5551",
         "do_not_delete_source": True,
         "target_compressed_size": 44 * 44 * 2,
@@ -204,7 +204,7 @@ file_dict = [
         "name": "Crown Door Image 2",
         "pointer_table_index": 25,
         "file_index": 6023,
-        "source_file": "assets/Non-Code/displays/num_4.png",
+        "source_file": "assets/displays/num_4.png",
         "texture_format": "rgba5551",
         "do_not_delete_source": True,
         "target_compressed_size": 44 * 44 * 2,
@@ -213,7 +213,7 @@ file_dict = [
         "name": "Coin Door Image 1",
         "pointer_table_index": 25,
         "file_index": 6024,
-        "source_file": "assets/Non-Code/displays/door_combocoin.png",
+        "source_file": "assets/displays/door_combocoin.png",
         "texture_format": "rgba5551",
         "do_not_delete_source": True,
         "target_compressed_size": 44 * 44 * 2,
@@ -222,7 +222,7 @@ file_dict = [
         "name": "Coin Door Image 2",
         "pointer_table_index": 25,
         "file_index": 6025,
-        "source_file": "assets/Non-Code/displays/num_2.png",
+        "source_file": "assets/displays/num_2.png",
         "texture_format": "rgba5551",
         "do_not_delete_source": True,
         "target_compressed_size": 44 * 44 * 2,
@@ -231,7 +231,7 @@ file_dict = [
         "name": "Fake GB Shine",
         "pointer_table_index": 25,
         "file_index": 6060,
-        "source_file": "assets/Non-Code/displays/gb_shine.png",
+        "source_file": "assets/displays/gb_shine.png",
         "texture_format": "rgba5551",
         "do_not_delete_source": True,
     },
@@ -254,7 +254,7 @@ for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 
             "pointer_table_index": 25,
             "file_index": img,
             "source_file": f"grass{img}.bin",
-            # "source_file": "assets/Non-Code/displays/snow.bin",
+            # "source_file": "assets/displays/snow.bin",
             # "do_not_delete_source": True,
             "target_compressed_size": 0xAA0,
         }
@@ -272,7 +272,7 @@ for num in number_game_changes:
             "name": f"Number Game ({num['number']}, {num['state']})",
             "pointer_table_index": 7,
             "file_index": num["texture"],
-            "source_file": f"assets/Non-Code/displays/num_{num['number']}_{num['state']}.png",
+            "source_file": f"assets/displays/num_{num['number']}_{num['state']}.png",
             "texture_format": "rgba5551",
             "do_not_compress": True,
         }
@@ -298,7 +298,7 @@ for item in range(3):
             "name": f"Rainbow Coin ({item})",
             "pointer_table_index": 25,
             "file_index": 6061 + item,
-            "source_file": f"assets/Non-Code/hash/rainbow_{item}.png",
+            "source_file": f"assets/hash/rainbow_{item}.png",
             "do_not_extract": True,
             "texture_format": "rgba5551",
         }
@@ -311,13 +311,13 @@ for ci, coin in enumerate(["nin_coin", "rw_coin"]):
                 "name": f"{coin.replace('_',' ').capitalize()} ({item})",
                 "pointer_table_index": 25,
                 "file_index": 6015 + item + (2 * ci),
-                "source_file": f"assets/Non-Code/hash/{coin}_{item}.png",
+                "source_file": f"assets/hash/{coin}_{item}.png",
                 "do_not_extract": True,
                 "texture_format": "rgba5551",
             }
         )
 file_dict.append(
-    {"name": "Special Coin Side", "pointer_table_index": 25, "file_index": 6019, "source_file": f"assets/Non-Code/hash/modified_coin_side.png", "do_not_extract": True, "texture_format": "rgba5551"}
+    {"name": "Special Coin Side", "pointer_table_index": 25, "file_index": 6019, "source_file": f"assets/hash/modified_coin_side.png", "do_not_extract": True, "texture_format": "rgba5551"}
 )
 
 starts = (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)
@@ -338,9 +338,7 @@ kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
 ammo_names = ["standard_crate", "homing_crate"]
 
 for ammo_index, ammo in enumerate(ammo_names):
-    file_dict.append(
-        {"name": f"{ammo.replace('_',' ')} Image", "pointer_table_index": 14, "file_index": 188 + ammo_index, "source_file": f"assets/Non-Code/displays/{ammo}.png", "texture_format": "rgba5551"}
-    )
+    file_dict.append({"name": f"{ammo.replace('_',' ')} Image", "pointer_table_index": 14, "file_index": 188 + ammo_index, "source_file": f"assets/displays/{ammo}.png", "texture_format": "rgba5551"})
 
 for kong_index, kong in enumerate(kong_names):
     file_dict.append(
@@ -348,7 +346,7 @@ for kong_index, kong in enumerate(kong_names):
             "name": f"DPad - {kong} Face",
             "pointer_table_index": 14,
             "file_index": 190 + kong_index,
-            "source_file": f"assets/Non-Code/displays/{kong.lower()}_face.png",
+            "source_file": f"assets/displays/{kong.lower()}_face.png",
             "texture_format": "rgba5551",
             "target_compressed_size": 32 * 32 * 2,
         }
@@ -378,13 +376,13 @@ shop_face_array = [
     "fake_gb",
 ]
 for x, shop in enumerate(shop_face_array):
-    data = {"name": f"Shop Indicator ({shop})", "pointer_table_index": 14, "file_index": 195 + x, "source_file": f"assets/Non-Code/displays/{shop}.png", "texture_format": "rgba32"}
+    data = {"name": f"Shop Indicator ({shop})", "pointer_table_index": 14, "file_index": 195 + x, "source_file": f"assets/displays/{shop}.png", "texture_format": "rgba32"}
     if "_face" in shop:
         data["target_compressed_size"] = 32 * 32 * 4
     file_dict.append(data)
 
-base_coin_sfx = "assets/Non-Code/music/Win95_startup.dk64song"
-new_coin_sfx = "assets/Non-Code/music/coin_sfx.bin"
+base_coin_sfx = "assets/music/Win95_startup.dk64song"
+new_coin_sfx = "assets/music/coin_sfx.bin"
 if os.path.exists(new_coin_sfx):
     os.remove(new_coin_sfx)
 shutil.copyfile(base_coin_sfx, new_coin_sfx)
@@ -436,7 +434,7 @@ for rwd_index, rwd in enumerate(arcade_rewards):
             "name": f"Arcade Reward - {rwd.capitalize()}",
             "pointer_table_index": 6,
             "file_index": rwd_index,
-            "source_file": f"assets/Non-Code/arcade_jetpac/arcade/{rwd}.png",
+            "source_file": f"assets/arcade_jetpac/arcade/{rwd}.png",
             "do_not_compress": True,
             "texture_format": "rgba5551",
             "do_not_delete_source": True,
@@ -448,7 +446,7 @@ for rwd_index, rwd in enumerate(jetpac_rewards):
             "name": f"Jetpac Reward - {rwd.capitalize()}",
             "pointer_table_index": 6,
             "file_index": rwd_index + len(arcade_rewards),
-            "source_file": f"assets/Non-Code/arcade_jetpac/jetpac/{rwd}.png",
+            "source_file": f"assets/arcade_jetpac/jetpac/{rwd}.png",
             "do_not_compress": True,
             "texture_format": "i8",
             "do_not_delete_source": True,
@@ -471,10 +469,10 @@ song_replacements = [
 changed_song_indexes = []
 
 for song in song_replacements:
-    item = {"name": song["name"].replace("_", " "), "pointer_table_index": 0, "file_index": song["index"], "source_file": f"assets/Non-Code/music/{song['name']}.bin", "target_compressed_size": 0x2DDE}
+    item = {"name": song["name"].replace("_", " "), "pointer_table_index": 0, "file_index": song["index"], "source_file": f"assets/music/{song['name']}.bin", "target_compressed_size": 0x2DDE}
     if song["bps"]:
         item["is_diff_patch"] = True
-        item["bps_file"] = f"assets/Non-Code/music/{song['name']}.bps"
+        item["bps_file"] = f"assets/music/{song['name']}.bps"
     else:
         item["do_not_delete_source"] = True
         item["do_not_extract"] = True
@@ -636,7 +634,7 @@ for x in range(8):
             "name": "Key " + str(x + 1) + " file screen",
             "pointer_table_index": 14,
             "file_index": 107 + x,
-            "source_file": "assets/Non-Code/file_screen/key" + str(x + 1) + ".png",
+            "source_file": "assets/file_screen/key" + str(x + 1) + ".png",
             "texture_format": "rgba5551",
         }
     )
@@ -654,18 +652,16 @@ for x in range(43):
             }
         )
 for x in range(10):
-    file_dict.append(
-        {"name": f"Tag Barrel Bottom Texture ({x+1})", "pointer_table_index": 25, "file_index": 4749 + x, "source_file": "assets/Non-Code/tagbarrel/bottom.png", "texture_format": "rgba5551"}
-    )
+    file_dict.append({"name": f"Tag Barrel Bottom Texture ({x+1})", "pointer_table_index": 25, "file_index": 4749 + x, "source_file": "assets/tagbarrel/bottom.png", "texture_format": "rgba5551"})
 for x in range(4761, 4768):
     sz = "44"
     if x == 4761:
         sz = "3264"
-    file_dict.append({"name": f"Portal Ripple Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/Non-Code/displays/empty{sz}.png", "texture_format": "rgba5551"})
+    file_dict.append({"name": f"Portal Ripple Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/displays/empty{sz}.png", "texture_format": "rgba5551"})
 for x in range(0xB50, 0xB56):
-    file_dict.append({"name": f"Unused Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/Non-Code/displays/empty11.png", "texture_format": "rgba5551"})
+    file_dict.append({"name": f"Unused Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/displays/empty11.png", "texture_format": "rgba5551"})
 for x in range(0xDD1, 0xDD6):
-    file_dict.append({"name": f"Unused Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/Non-Code/displays/empty11.png", "texture_format": "rgba5551"})
+    file_dict.append({"name": f"Unused Texture ({x})", "pointer_table_index": 25, "file_index": x, "source_file": f"assets/displays/empty11.png", "texture_format": "rgba5551"})
 barrel_faces = ["Dk", "Diddy", "Lanky", "Tiny", "Chunky"]
 barrel_offsets = [4817, 4815, 4819, 4769, 4747]
 for x in range(5):
@@ -675,7 +671,7 @@ for x in range(5):
                 "name": f"{barrel_faces[x]} Transform Barrel Shell ({y+1})",
                 "pointer_table_index": 25,
                 "file_index": barrel_offsets[x] + y,
-                "source_file": f"assets/Non-Code/tagbarrel/{barrel_faces[x]} barrel {y}a.png",
+                "source_file": f"assets/tagbarrel/{barrel_faces[x]} barrel {y}a.png",
                 "texture_format": "rgba5551",
             }
         )
@@ -742,7 +738,7 @@ for bi, b in enumerate(barrel_skins):
                 "name": f"Barrel Skin ({b.capitalize()} - {x + 1})",
                 "pointer_table_index": 25,
                 "file_index": 6026 + (2 * bi) + x,
-                "source_file": f"assets/Non-Code/displays/barrel_{b}_{x}.png",
+                "source_file": f"assets/displays/barrel_{b}_{x}.png",
                 "texture_format": "rgba5551",
             }
         )
@@ -829,7 +825,7 @@ hash_icons = ["bongos.png", "crown.png", "dkcoin.png", "fairy.png", "guitar.png"
 hash_indexes = [48, 49, 50, 51, 55, 62, 63, 64, 65, 76]
 for x in range(len(hash_indexes)):
     idx = hash_indexes[x]
-    file_dict.append({"name": f"Hash Icon {x+1}", "pointer_table_index": 14, "file_index": idx, "source_file": f"assets/Non-Code/hash/{hash_icons[x]}", "texture_format": "rgba5551"})
+    file_dict.append({"name": f"Hash Icon {x+1}", "pointer_table_index": 14, "file_index": idx, "source_file": f"assets/hash/{hash_icons[x]}", "texture_format": "rgba5551"})
 file_dict.append({"name": "Dolby Text", "pointer_table_index": 12, "file_index": 13, "source_file": "dolby_text.bin", "do_not_compress": True, "do_not_delete_source": True})
 file_dict.append({"name": "Custom Text", "pointer_table_index": 12, "file_index": 32, "source_file": "custom_text.bin", "do_not_compress": True, "do_not_delete_source": True})
 file_dict.append({"name": "DK Text", "pointer_table_index": 12, "file_index": 0x18, "source_file": "dk_text.bin", "do_not_compress": True, "do_not_delete_source": True})
@@ -1276,7 +1272,7 @@ with open(newROMName, "r+b") as fh:
         fh.seek(0x1FED020 + 0x187 + face_index)
         fh.write(chunky_face_puzzle_vanilla[face_index].to_bytes(1, "big"))
 
-    with open("assets/Non-Code/credits/squish.bin", "rb") as squish:
+    with open("assets/credits/squish.bin", "rb") as squish:
         fh.seek(0x1FFF800)
         fh.write(squish.read())
 
@@ -1301,7 +1297,7 @@ with open(newROMName, "r+b") as fh:
         fh.seek(0x1FED020 + x)
         fh.write(x.to_bytes(1, "big"))
     for x in hash_icons:
-        pth = f"assets/Non-Code/hash/{x}"
+        pth = f"assets/hash/{x}"
         if os.path.exists(pth):
             os.remove(pth)
     other_remove = []
@@ -1359,7 +1355,7 @@ with open(newROMName, "r+b") as fh:
         other_remove.append(f"file_screen/key{x+1}.png")
     other_remove.append("file_screen/tracker.png")
     for x in other_remove:
-        pth = f"assets/Non-Code/{x}"
+        pth = f"assets/{x}"
         if os.path.exists(pth):
             os.remove(pth)
     hash_items = [
@@ -1396,7 +1392,7 @@ with open(newROMName, "r+b") as fh:
         "fairy_0",
         "bonus_Skin",
     ]
-    script_files = [x[0] for x in os.walk("assets/Non-Code/instance_scripts/")]
+    script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
     shop_files = ["snide.script", "cranky.script", "funky.script", "candy.script"]
     for folder in script_files:
         for file in os.listdir(folder):
@@ -1407,12 +1403,12 @@ with open(newROMName, "r+b") as fh:
                         os.remove(file)
     for hash_item in hash_items:
         for f_t in ["rgba5551", "png"]:
-            pth = f"assets/Non-Code/hash/{hash_item}.{f_t}"
+            pth = f"assets/hash/{hash_item}.{f_t}"
             if os.path.exists(pth):
                 os.remove(pth)
     credits_bins = ["credits", "squish"]
     for x in credits_bins:
-        pth = f"assets/Non-Code/credits/{x}.bin"
+        pth = f"assets/credits/{x}.bin"
         if os.path.exists(pth):
             os.remove(pth)
     arcade_images = [
@@ -1426,11 +1422,11 @@ with open(newROMName, "r+b") as fh:
         "rwcoin",
     ]
     for img in arcade_images:
-        pth = f"assets/Non-Code/arcade_jetpac/arcade/{img}.png"
+        pth = f"assets/arcade_jetpac/arcade/{img}.png"
         if os.path.exists(pth):
             os.remove(pth)
-    if os.path.exists("assets/Non-Code/Gong/hint_door.bin"):
-        os.remove("assets/Non-Code/Gong/hint_door.bin")
+    if os.path.exists("assets/Gong/hint_door.bin"):
+        os.remove("assets/Gong/hint_door.bin")
     # for x in model_changes:
     #     if os.path.exists(x["model_file"]):
     #         os.remove(x["model_file"])
@@ -1441,7 +1437,7 @@ with open(newROMName, "r+b") as fh:
     for x in range(216):
         if os.path.exists(f"exit{x}.bin"):
             os.remove(f"exit{x}.bin")
-    # pth = "assets/Non-Code/displays/soldout_bismuth.rgba32"
+    # pth = "assets/displays/soldout_bismuth.rgba32"
     # if os.path.exists(pth):
     #     os.remove(pth)
 

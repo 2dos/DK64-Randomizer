@@ -5,7 +5,7 @@ import json
 from typing import BinaryIO
 
 base_rom = "./rom/dk64.z64"
-instance_dir = "./assets/Non-Code/cutscene_scripts"
+instance_dir = "./assets/cutscene_scripts"
 pointer_table_offset = 0x101C50
 script_table = 0x0
 temp_file = "temp.bin"

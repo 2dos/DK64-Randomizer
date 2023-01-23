@@ -1,5 +1,0 @@
-.data
-id = 0x55
-.code
-EXEC 7 | 125 65535 85
-ENDBLOCK

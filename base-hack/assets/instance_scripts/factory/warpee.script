@@ -1,0 +1,5 @@
+.data
+id = 0xEE
+.code
+EXEC 7 | 125 65535 238
+ENDBLOCK
