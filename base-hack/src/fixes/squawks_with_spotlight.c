@@ -15,15 +15,13 @@ void shine_light_at_kong(unsigned short height_variance, unsigned short min_foll
     float distance_z = 0;
     int distance = 0;
     float actor_height_variance = 0;
-    float height_variance_multiplier = 0.06; //TODO: figure out good value, closer to 0.06 than 0.03
+    float height_variance_multiplier = 0.06; //TODO(AlmostSeagull): figure out good value, closer to 0.06 than 0.03
     
     initCharSpawnerActor();
     distance_x = (CurrentActorPointer_0->xPos) - (PlayerPointer_0->xPos);
     distance_z = (CurrentActorPointer_0->zPos) - (PlayerPointer_0->zPos);
     distance_x = dk_sqrt(distance_x * distance_x + distance_z * distance_z);
     distance = distance_x;
-    
-    //TODO: remove this line
 
     if (distance < 0) {
         distance = -1;
