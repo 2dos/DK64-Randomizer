@@ -1,94 +1,10 @@
 """Set debugging vars to the build."""
-set_variables = {
-    "level_order_rando_on": 0,
-    "level_order": [1, 5, 4, 0, 6, 2, 3],
-    "troff_scoff_count": [25, 200, 300, 400, 410, 420, 8],
-    "blocker_normal_count": [2, 3, 4, 5, 6, 7, 8, 9],
-    "key_flags": [0x4A, 0x8A, 0xA8, 0xEC, 0x124, 0x13D, 0x1A],
-    "unlock_kongs": 0x1F,
-    "unlock_moves": 1,
-    "fast_start_beginning": 1,
-    "camera_unlocked": 1,
-    "tag_anywhere": 1,
-    "fast_start_helm": 1,
-    "crown_door_open": 0,
-    "coin_door_open": 0,
-    "quality_of_life": {
-        "reduce_lag": True,
-        "remove_cutscenes": True,
-        "fast_picture": True,
-        "aztec_lobby_bonus": True,
-        "dance_skip": True,
-        "fast_boot": True,
-        "fast_transform": True,
-        "ammo_swap": True,
-        "cb_indicator": True,
-        "galleon_star": True,
-        "vanilla_fixes": True,
-        "textbox_hold": True,
-        "caves_kosha_dead": True,
-        "rambi_enguarde_pickup": True,
-        "hud_bp_multibunch": True,
-    },
-    "price_rando_on": 1,
-    "k_rool_order": [1, -1, -1, -1, -1],
-    "damage_multiplier": 0,
-    "fps_on": 1,
-    "no_health_refill": 0,
-    "slam_prices": [4, 5],
-    "gun_prices": [1, 2, 3, 4, 5],
-    "instrument_prices": [1, 2, 3, 4, 5],
-    "gun_upgrade_prices": [1, 2],
-    "ammo_belt_prices": [1, 2],
-    "instrument_upgrade_prices": [1, 2, 3],
-    "move_rando_on": 1,
-    "kut_out_kong_order": [0, 0, 0, 0, 0],
-    "remove_blockers": 0x7F,
-    "resolve_bonus": 0,
-    "disable_drops": 0,
-    "shop_indicator_on": 1,
-    "warp_to_isles_enabled": 1,
-    "lobbies_open_bitfield": 0xFF,
-    "perma_lose_kongs": 0,
-    "jetpac_medal_requirement": 1,
-    "starting_kong": 0,
-    "free_target_llama": 0,
-    "free_source_llama": 3,
-    "keys_preturned": 0x00,
-    "short_bosses": 1,
-    "fast_warp": 1,
-    "activate_all_bananaports": 1,
-    "piano_game_order": [5, 0, 1, 3, 5, 5, 3],
-    "dartboard_order": [0, 1, 2, 3, 4, 5],
-    "fast_gbs": 1,
-    "remove_high_requirements": 1,
-    "open_level_sections": 1,
-    "auto_keys": 0,
-    "test_zone": [0x38, 0],
-    "klaptrap_color_bbother": 0x96,
-    "kut_out_phases": [3, 2, 0],
-    "dpad_visual_enabled": 1,
-    "special_move_prices": [
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9],
-        [1, 2, 3],
-        [4, 5, 6],
-    ],
-    "tbarrel_prices": [1, 2, 3, 4],
-    "fairy_prices": [3, 6],
-    "helm_order": [2, 0, 0xFF, 0xFF, 0xFF],
-    "disco_chunky": 1,
-    "krusha_slot": 0xFF,
-    "helm_hurry_mode": 0,
-    "win_condition": 5,
-    "version": 2,
-    "colorblind_mode": 1,
-    "item_rando": 1,
-    "vulture_item": 72,
-    "japes_rock_item": 76,
-    "medal_cb_req": 5,
-}
+import os
+import json
+
+set_variables = {}
+with open("test.json", "r") as fh:
+    set_variables = json.loads(fh.read())
 
 
 def valtolst(val, size):
@@ -161,16 +77,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
     # print(struct_data2)
     test_keys = set_variables.keys()
     for x in test_keys:
-        if x == "special_move_prices":
-            for y in struct_data2:
-                if x == y[2]:
-                    size = y[1]
-                    offset = y[0]
-                    for kong in set_variables["special_move_prices"]:
-                        for lvl in kong:
-                            writeToROM(offset, lvl, size, x)
-                            offset += size
-        elif x == "test_zone":
+        if x == "test_zone":
             ptr_table_offset = 0x101C50
             lz_table = ptr_table_offset + readFromROM(ptr_table_offset + (18 * 4), 4)
             isles_list = ptr_table_offset + readFromROM(lz_table + (0x22 * 4), 4)
@@ -201,6 +108,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
                 "caves_kosha_dead",
                 "rambi_enguarde_pickup",
                 "hud_bp_multibunch",
+                "homing_balloons",
             ]
             for y in set_variables["quality_of_life"]:
                 if set_variables["quality_of_life"][y]:
@@ -228,10 +136,12 @@ with open("include/variable_space_structs.h", "r") as varspace:
 
 # Editor: https://docs.google.com/spreadsheets/d/1UokoarKY6C56otoHMRUDCCMveaGUm8bGTOnaxjxDPR0/edit#gid=0
 move_csv = "move_placement.csv"
-with open(move_csv, "r") as csv:
-    csv_lines = csv.readlines()
-    with open("rom/dk64-randomizer-base-dev.z64", "r+b") as rom:
-        rom.seek(0x1FEF000)
-        for x in csv_lines:
-            val = int(x.replace("\n", ""))
-            rom.write(val.to_bytes(4, "big"))
+permit = False  # Whether move csv overwrites data
+if os.path.exists(move_csv) and permit:
+    with open(move_csv, "r") as csv:
+        csv_lines = csv.readlines()
+        with open("rom/dk64-randomizer-base-dev.z64", "r+b") as rom:
+            rom.seek(0x1FEF000)
+            for x in csv_lines:
+                val = int(x.replace("\n", ""))
+                rom.write(val.to_bytes(4, "big"))
