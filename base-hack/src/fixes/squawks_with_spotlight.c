@@ -1,6 +1,20 @@
+/**
+ * @file squawks_with_spotlight.c
+ * @author AlmostSeagull
+ * @brief Make Squawks-with-spotlight follow the Kong more closely in Fungi Forest's dark attic (rewrite of vanilla functions)
+ * @version 1.0
+ * @date 2023-01-24
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "../../include/common.h"
 
 void squawks_with_spotlight_actor_code() {
+    /**
+     * @brief Initializes a rewritten version of Squawk's main function
+     * 
+     */
     //float local4; //sw ra, local4(sp)
 
     shine_light_at_kong(10, 0x0, 0x240);
@@ -8,6 +22,14 @@ void squawks_with_spotlight_actor_code() {
 }
 
 void shine_light_at_kong(unsigned short height_variance, unsigned short min_follow_distance, unsigned short param_3) {
+    /**
+     * @brief Rewrite of Squawk's vanilla function 
+     * Makes Squawks follow the Kong around with a spotlight to light the way. 
+     * @param height_variance: variation in height between his highest and lowest points at a given point
+     * @param min_follow_distance: how close to its target Squawks will go. If closer than this distance, Squawks will not move (on the x-z plane)
+     * @param param_3: unknown, as of yet
+     * 
+     */
     spotlight_hold_paad* pointerLightBrightness = 0;
     short half_speed = 0;
     int param_2_variable = 0;
