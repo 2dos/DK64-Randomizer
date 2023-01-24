@@ -1419,7 +1419,7 @@ def FillKongs(spoiler):
             assumedItems.append(Items.Shockwave)
         Reset()
         PlaceItems(spoiler.settings, spoiler.settings.algorithm, kongItems, assumedItems)
-        # If a Kong got placed inside the cage but not in the Kong location, they also can't free 
+        # If a Kong got placed inside the cage but not in the Kong location, they also can't free
         banned_diddy_freeing_kong = None
         if LocationList[Locations.JapesDonkeyFreeDiddy].item in ItemPool.Kongs(spoiler.settings):
             banned_diddy_freeing_kong = KongFromItem(LocationList[Locations.JapesDonkeyFreeDiddy].item)
