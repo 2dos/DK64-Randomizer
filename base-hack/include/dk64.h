@@ -179,7 +179,7 @@ extern int guardShouldMove(void);
 extern void guardUnkFunction(int unk0);
 extern void generalActorHandle(int control_state, int x, int z, int unk0, float unk1);
 extern void handleGuardDefaultAnimation(void);
-extern void setActorSpeed(void* actor, int speed);
+extern void setActorSpeed(void* actor, short speed);
 extern void playActorAnimation(void* actor, int animation);
 extern void actorUnkFunction(void);
 extern int getRNGLower31(void);
@@ -291,6 +291,10 @@ extern void complexFreeWrapper(void* addr);
 extern void trapPlayer(void);
 extern int applyDamage(int player, int damage);
 extern int isObjectTangible(int id);
+
+extern void unkLightFunc_0(actorData* actor, int unk0, char unk1, char unk2, unsigned char); //80604cbc
+extern void kongFollowingLightFunc(unsigned int unk0, unsigned short height_variance, float payerX, float PlayerY, float PlayerZ, unsigned short unk2, float unk3, float movement_speed, unsigned int unk4); //8072a920
+extern void lightShiningLightFunc(void); //806c6530
 
 //vanilla data
 extern float TransitionSpeed;

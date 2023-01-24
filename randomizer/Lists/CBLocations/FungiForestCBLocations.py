@@ -1634,8 +1634,9 @@ ColoredBananaGroupList = [
         map_id=Maps.ForestGiantMushroom,
         name="Between cannons (Donkey)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.MushroomUpper,
+        region=Regions.MushroomLower,
         vanilla=True,
+        logic=lambda l: Events.MushroomCannonsSpawned in l.Events,
         locations=[
             [5, 1.0, 538.9384155273438, 509.23016357421875, 595.8275756835938],
             [5, 1.0999999046325684, 485.36456298828125, 1147.794921875, 518.7532958984375],

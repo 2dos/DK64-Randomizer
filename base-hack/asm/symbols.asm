@@ -229,3 +229,7 @@
 
 .definelabel balloonPatchCounts, 0x807FC408
 .definelabel coloredBananaCounts, 0x807F6150
+
+.definelabel unkLightFunc_0, 0x80604cbc
+.definelabel kongFollowingLightFunc, 0x8072a920
+.definelabel lightShiningLightFunc, 0x806c6530
