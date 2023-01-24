@@ -1419,11 +1419,25 @@ def FillKongs(spoiler):
             assumedItems.append(Items.Shockwave)
         Reset()
         PlaceItems(spoiler.settings, spoiler.settings.algorithm, kongItems, assumedItems)
+        # If a Kong got placed inside the cage but not in the Kong location, they also can't free
+        banned_diddy_freeing_kong = None
+        if LocationList[Locations.JapesDonkeyFreeDiddy].item in ItemPool.Kongs(spoiler.settings):
+            banned_diddy_freeing_kong = KongFromItem(LocationList[Locations.JapesDonkeyFreeDiddy].item)
+        banned_lanky_freeing_kong = None
+        if LocationList[Locations.AztecDonkeyFreeLanky].item in ItemPool.Kongs(spoiler.settings):
+            banned_lanky_freeing_kong = KongFromItem(LocationList[Locations.AztecDonkeyFreeLanky].item)
+        banned_tiny_freeing_kong = None
+        if LocationList[Locations.AztecDiddyFreeTiny].item in ItemPool.Kongs(spoiler.settings):
+            banned_tiny_freeing_kong = KongFromItem(LocationList[Locations.AztecDiddyFreeTiny].item)
+        banned_chunky_freeing_kong = None
+        if LocationList[Locations.FactoryLankyFreeChunky].item in ItemPool.Kongs(spoiler.settings):
+            banned_chunky_freeing_kong = KongFromItem(LocationList[Locations.FactoryLankyFreeChunky].item)
         # We don't care who gets the GBs for these locations anymore, just random it up
-        spoiler.settings.diddy_freeing_kong = choice(GetKongs())
-        spoiler.settings.lanky_freeing_kong = choice(GetKongs())
-        spoiler.settings.tiny_freeing_kong = choice([Kongs.diddy, Kongs.chunky])
-        spoiler.settings.chunky_freeing_kong = choice(GetKongs())
+        # This is probably causing problems if there actually is a kong here, look into this later
+        spoiler.settings.diddy_freeing_kong = choice([kong for kong in GetKongs() if kong != banned_diddy_freeing_kong])
+        spoiler.settings.lanky_freeing_kong = choice([kong for kong in GetKongs() if kong != banned_lanky_freeing_kong])
+        spoiler.settings.tiny_freeing_kong = choice([kong for kong in [Kongs.diddy, Kongs.chunky] if kong != banned_tiny_freeing_kong])
+        spoiler.settings.chunky_freeing_kong = choice([kong for kong in GetKongs() if kong != banned_chunky_freeing_kong])
         # Update the locations' assigned kong with the set freeing kong list
         LocationList[Locations.JapesDonkeyFrontofCage].kong = spoiler.settings.diddy_freeing_kong
         LocationList[Locations.JapesDonkeyFreeDiddy].kong = spoiler.settings.diddy_freeing_kong
