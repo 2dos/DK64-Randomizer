@@ -1436,3 +1436,9 @@ typedef struct item_collision {
 	/* 0x018 */ void* next;
 	/* 0x01C */ float scale;
 } item_collision;
+
+typedef struct fairy_location_item {
+	/* 0x000 */ short flag;
+	/* 0x002 */ unsigned char map;
+	/* 0x003 */ unsigned char id;
+} fairy_location_item;

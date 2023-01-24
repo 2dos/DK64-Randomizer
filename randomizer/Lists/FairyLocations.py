@@ -268,6 +268,13 @@ fairy_locations = {
             logic=lambda l: l.camera and Events.DartsPlayed in l.Events,
             natural_index=0,
         ),
+        FairyData(
+            name="Frantic Factory: Entrance",
+            map=Maps.FranticFactory,
+            region=Regions.FranticFactoryStart,
+            fence=Fence(1055, 2387, 1477, 2664),
+            spawn_y=864,
+        ),
     ],
     Levels.GloomyGalleon: [
         FairyData(

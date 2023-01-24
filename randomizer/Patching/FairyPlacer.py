@@ -118,7 +118,7 @@ def PlaceFairies(spoiler: Spoiler):
             for level in spoiler.fairy_locations:
                 # Check for new fairies
                 fairies = [fairy_locations[level][x] for x in spoiler.fairy_locations[level]]
-                for fairy in fairies:
+                for sub_index, fairy in enumerate(fairies):
                     if map == fairy.map and not fairy.is_vanilla:
                         # Fairy is not vanilla
                         if spawn_index in used_enemy_indexes:
@@ -153,6 +153,10 @@ def PlaceFairies(spoiler: Spoiler):
                         data_bytes.append(0)  # Init Respawn Timer
                         data_bytes.append(0)
                         spawner_bytes.append(data_bytes)
+                        # Set ID for array
+                        for item in spoiler.fairy_data_table:
+                            if item["level"] == level and spoiler.fairy_locations[level][sub_index] == item["fairy_index"]:
+                                item["id"] = spawn_index
                         # Fence
                         new_fence_bytes = []
                         a_0 = [fairy.fence.min_x, 0, fairy.fence.min_z]
@@ -200,4 +204,4 @@ def PlaceFairies(spoiler: Spoiler):
             item_level = item["level"]
             item_map = fairy_locations[item_level][item["fairy_index"]].map
             ROM().writeMultipleBytes(item_map, 1)
-            ROM().writeMultipleBytes(0, 1) # Get Spawner ID
+            ROM().writeMultipleBytes(item["id"], 1) # Get Spawner ID

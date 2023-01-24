@@ -83,6 +83,22 @@ void initHack(int source) {
 			for (int i = 0; i < 7; i++) {
 				SwitchLevel[i] = Rando.slam_level[i];
 			}
+			if (Rando.fairy_rando_on) {
+				// Fairy Location Table
+				int fairy_size = 20<<2;
+				fairy_location_item* fairy_write = dk_malloc(fairy_size);
+				int* fairy_file_size;
+				*(int*)(&fairy_file_size) = fairy_size;
+				copyFromROM(0x1FFC000,fairy_write,&fairy_file_size,0,0,0,0);
+				for (int i = 0; i < (fairy_size >> 2); i++) {
+					for (int j = 0; j < 0x1F; j++) {
+						if (charspawnerflags[j].tied_flag == fairy_write[i].flag) {
+							charspawnerflags[j].map = fairy_write[i].map;
+							charspawnerflags[j].spawner_id = fairy_write[i].id;
+						}
+					}
+				}
+			}
 			// New Actors
 			initActor(151, &ninCoinCode, ACTORMASTER_SPRITE, 0x11);
 			initActor(152, &rwCoinCode, ACTORMASTER_SPRITE, 0x11);
