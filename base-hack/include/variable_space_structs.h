@@ -62,7 +62,7 @@ typedef struct varspace {
 	/* 0x0B2 */ char unk_B0[0xE2 - 0xB2];
 	/* 0x0E2 */ short helm_hurry_start;
 	/* 0x0E4 */ short helm_hurry_bonuses[0xE];
-	/* 0x100 */ char unk_100;
+	/* 0x100 */ char fairy_rando_on;
 	/* 0x101 */ char location_visuals; // Bitfield for visual hints of what is inside a location. 0000 0abc. a = Crowns , b = Boss Doors , c = Bonus Barrels
 	/* 0x102 */ char microhints; // 0 = Off, 1 = GGone/Monkeyport, 2 = GGone/MPort, Instruments in Helm
 	/* 0x103 */ char random_switches;

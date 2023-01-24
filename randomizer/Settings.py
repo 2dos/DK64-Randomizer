@@ -196,6 +196,7 @@ class Settings:
         self.loading_zone_coupled = None
         self.move_rando = "off"
         self.random_patches = None
+        self.random_fairies = None
         self.random_prices = None
         self.boss_location_rando = None
         self.boss_kong_rando = None

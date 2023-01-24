@@ -31,6 +31,7 @@ from randomizer.Patching.MiscSetupChanges import randomize_setup
 from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
+from randomizer.Patching.FairyPlacer import PlaceFairies
 from ui.GenTracker import generateTracker
 from ui.GenSpoiler import GenerateSpoiler
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
@@ -423,6 +424,7 @@ def patching_response(responded_data):
     place_randomized_items(spoiler)  # Has to be after kong rando cosmetic and moves
     place_door_locations(spoiler)
     randomize_crown_pads(spoiler)
+    PlaceFairies(spoiler)
     filterEntranceType()
     replaceIngameText(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches

@@ -488,6 +488,8 @@ class Spoiler:
             humanspoiler["Cosmetics"]["Event Themes"] = self.music_event_data
         if self.settings.kasplat_rando:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
+        if self.settings.random_fairies:
+            humanspoiler["Shuffled Banana Fairies"] = self.fairy_locations_human
         if self.settings.random_patches:
             humanspoiler["Shuffled Dirt Patches"] = self.human_patches
         if self.settings.bananaport_rando != "off":
