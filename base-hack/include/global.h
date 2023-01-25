@@ -13,6 +13,7 @@ extern void initHack(int source);
 extern void callParentMapFilter(void);
 extern void shiftBrokenJapesPortal(void);
 extern void quickInit(void);
+extern int getCenter(int style, char* str);
 
 extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);
