@@ -34,7 +34,7 @@ def patchStaticCode(filename):
         fh.write(patch_lag_hook)
         # Nintendo Logo
         # Width
-        dimensions = [256, 105]
+        dimensions = [256, 132]
         offset = 640 - (2 * dimensions[0])
         fh.seek(0x5BA)  # RDRAM 5FB8BA
         fh.write(dimensions[0].to_bytes(2, "big"))

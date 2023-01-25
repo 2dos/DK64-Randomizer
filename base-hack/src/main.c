@@ -336,8 +336,6 @@ static const char* wait_texts[] = {
 static unsigned char ammo_hud_timer = 0;
 
 #define HERTZ 60
-#define ACTOR_MAINMENUCONTROLLER 0x146
-
 
 #define LOADBAR_START 350
 #define LOADBAR_FINISH 900
