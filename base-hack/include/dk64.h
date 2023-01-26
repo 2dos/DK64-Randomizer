@@ -290,6 +290,7 @@ extern void enableComplexFree(void);
 extern void complexFreeWrapper(void* addr);
 extern void trapPlayer(void);
 extern int applyDamage(int player, int damage);
+extern void damage(void);
 extern int isObjectTangible(int id);
 extern int getCenterOffset(int style, char* str);
 

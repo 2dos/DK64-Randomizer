@@ -40,6 +40,9 @@ void adjustAnimationTables(void) {
                 excl_extra = 1;
             } else if ((i >= 0x48) && (i <= 0x4E)) {
                 // excl_extra = 1;
+            } else if ((i == 0x26) && (slot == 0) && (CurrentMap == 0xBC)) {
+                // BBlast
+                // excl_extra = 1;
             }
             if (i < 0x6E) {
                 if (!excl_extra) {
