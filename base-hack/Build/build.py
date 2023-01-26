@@ -1144,8 +1144,6 @@ with open(newROMName, "r+b") as fh:
     adjustExits(fh)
     generateDefaultPadPairing(fh)
     writeVanillaSongData(fh)
-    fh.seek(0x1FED020 + 0x11E)
-    fh.write((1).to_bytes(1, "big"))
     fh.seek(0x1FED020 + 0x11C)
     fh.write((0xFF).to_bytes(1, "big"))
     for x in portal_images:

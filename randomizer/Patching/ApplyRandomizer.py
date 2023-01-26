@@ -35,7 +35,7 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from ui.GenTracker import generateTracker
 from ui.GenSpoiler import GenerateSpoiler
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
-from randomizer.Patching.DoorPlacer import place_door_locations
+from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
 from randomizer.Lists.QoL import QoLSelector
 from randomizer.Lists.EnemyTypes import EnemySelector
 
@@ -224,6 +224,7 @@ def patching_response(responded_data):
         BooleanProperties(spoiler.settings.disable_shop_hints, 0x14B, 0),  # Disable Shop Hints
         BooleanProperties(spoiler.settings.coin_door_item == "opened", 0x33),  # Coin Door Open
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 7),  # Bonus Matches Contents
+        BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers
     ]
 
     for prop in boolean_props:
@@ -422,6 +423,7 @@ def patching_response(responded_data):
     randomize_cbs(spoiler)
     ApplyShopRandomizer(spoiler)
     place_randomized_items(spoiler)  # Has to be after kong rando cosmetic and moves
+    remove_existing_indicators(spoiler)
     place_door_locations(spoiler)
     randomize_crown_pads(spoiler)
     PlaceFairies(spoiler)

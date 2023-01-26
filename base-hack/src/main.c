@@ -29,7 +29,7 @@ void cFuncLoop(void) {
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, 2); // Clear K. Lumsy temp flag
 		setFlag(0x79, 0, 2); // Clear BFI Reward Cutscene temp flag
-		if (!Rando.tns_portal_rando_on) {
+		if ((!Rando.tns_portal_rando_on) && (Rando.tns_indicator)) {
 			shiftBrokenJapesPortal();
 		}
 		openCoinDoor();
