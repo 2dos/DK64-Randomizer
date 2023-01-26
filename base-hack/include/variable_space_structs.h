@@ -59,7 +59,8 @@ typedef struct varspace {
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char always_show_coin_cbs; // 0 = No (Vanilla), 1 = Yes
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 2
-	/* 0x0B2 */ char unk_B0[0xE2 - 0xB2];
+	/* 0x0B2 */ char unk_B0[0xE0 - 0xB2];
+	/* 0x0E0 */ fairy_activations fairy_triggers_disabled;
 	/* 0x0E2 */ short helm_hurry_start;
 	/* 0x0E4 */ short helm_hurry_bonuses[0xE];
 	/* 0x100 */ char fairy_rando_on;

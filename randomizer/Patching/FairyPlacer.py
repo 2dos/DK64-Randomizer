@@ -11,6 +11,9 @@ from randomizer.Lists.EnemyTypes import Enemies
 
 def PlaceFairies(spoiler: Spoiler):
     """Write Fairies to ROM."""
+    sav = spoiler.settings.rom_data
+    ROM().seek(sav + 0xE0)
+    ROM().writeMultipleBytes(0, 2)
     if spoiler.settings.random_fairies:
         action_maps = [
             Maps.JungleJapes,
@@ -89,7 +92,6 @@ def PlaceFairies(spoiler: Spoiler):
                 offset += 0x16 + (extra_count * 2)
                 end_offset = offset
                 is_vanilla = False
-                new_id = 0
                 # Check if fairy is a vanilla fairy
                 for level in spoiler.fairy_locations:
                     fairies = [fairy_locations[level][x] for x in spoiler.fairy_locations[level]]
@@ -107,11 +109,7 @@ def PlaceFairies(spoiler: Spoiler):
                     spawner_size = end_offset - init_offset
                     ROM().seek(file_start + init_offset)
                     for x in range(spawner_size):
-                        if x == 0 and is_vanilla:
-                            data_bytes.append(new_id)
-                            ROM().seek(file_start + init_offset + 1)
-                        else:
-                            data_bytes.append(int.from_bytes(ROM().readBytes(1), "big"))
+                        data_bytes.append(int.from_bytes(ROM().readBytes(1), "big"))
                     spawner_bytes.append(data_bytes)
             spawn_index = 1
             fence_index = 1
@@ -195,9 +193,10 @@ def PlaceFairies(spoiler: Spoiler):
                     ROM().writeMultipleBytes(y, 1)
         # Non-Spawner files
         # Setting Enable
-        ROM().seek(spoiler.settings.rom_data + 0x100)
+        ROM().seek(sav + 0x100)
         ROM().write(1)
         # Array construction
+        write_data = [255, 255]
         for index, item in enumerate(spoiler.fairy_data_table):
             ROM().seek(0x1FFC000 + (4 * index))
             ROM().writeMultipleBytes(item["flag"], 2)
@@ -205,3 +204,10 @@ def PlaceFairies(spoiler: Spoiler):
             item_map = fairy_locations[item_level][item["fairy_index"]].map
             ROM().writeMultipleBytes(item_map, 1)
             ROM().writeMultipleBytes(item["id"], 1) # Get Spawner ID
+            if item["shift"] >= 0:
+                offset = int(item["shift"] >> 3)
+                check = int(item["shift"] % 8)
+                write_data[offset] &= (0xFF - (0x80 >> check))
+        ROM().seek(sav + 0xE0)
+        for byte_data in write_data:
+            ROM().writeMultipleBytes(byte_data, 1)
