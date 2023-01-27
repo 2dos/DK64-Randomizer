@@ -19,10 +19,11 @@ import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.HideoutHelm
 import randomizer.LogicFiles.JungleJapes
 
+
 class FairyPlacementInfo:
     """Stores information regarding the internal memory table of fairies."""
 
-    def __init__(self, location: Locations, level: Levels, internal_level_index: int, id: int, shift: int=-1):
+    def __init__(self, location: Locations, level: Levels, internal_level_index: int, id: int, shift: int = -1):
         """Initialize with given data."""
         self.location = location
         self.level = level
@@ -30,10 +31,12 @@ class FairyPlacementInfo:
         self.id = id
         self.shift = shift
 
+
 def ShuffleFairyLocations(spoiler: Spoiler):
+    """Pick 20 locations from various levels and place them into the correct logic areas and dictionaries."""
     spoiler.fairy_locations = {}
     spoiler.fairy_locations_human = {}
-    spoiler.fairy_data_table = [None]*20
+    spoiler.fairy_data_table = [None] * 20
     level_to_enum = {
         Levels.DKIsles: randomizer.LogicFiles.DKIsles.LogicRegions,
         Levels.JungleJapes: randomizer.LogicFiles.JungleJapes.LogicRegions,
@@ -44,6 +47,17 @@ def ShuffleFairyLocations(spoiler: Spoiler):
         Levels.CrystalCaves: randomizer.LogicFiles.CrystalCaves.LogicRegions,
         Levels.CreepyCastle: randomizer.LogicFiles.CreepyCastle.LogicRegions,
         Levels.HideoutHelm: randomizer.LogicFiles.HideoutHelm.LogicRegions,
+    }
+    level_to_name = {
+        Levels.DKIsles: "Isles",
+        Levels.JungleJapes: "Japes",
+        Levels.AngryAztec: "Aztec",
+        Levels.FranticFactory: "Factory",
+        Levels.GloomyGalleon: "Galleon",
+        Levels.FungiForest: "Fungi",
+        Levels.CrystalCaves: "Caves",
+        Levels.CreepyCastle: "Castle",
+        Levels.HideoutHelm: "Helm",
     }
     if spoiler.settings.random_fairies:
         fairy_data_table = [
@@ -97,7 +111,7 @@ def ShuffleFairyLocations(spoiler: Spoiler):
                             "level": level,
                             "flag": LocationList[data.location].default_mapid_data[0].flag,
                             "id": -1 if not is_vanilla else data.id,
-                            "shift": -1 if not is_vanilla else data.shift
+                            "shift": -1 if not is_vanilla else data.shift,
                         }
                         # Logic
                         # Remove old from logic
@@ -106,4 +120,4 @@ def ShuffleFairyLocations(spoiler: Spoiler):
                         # Re-insert into logic
                         new_region = fairy_locations[level][x].region
                         level_to_enum[level][new_region].locations.append(LocationLogic(data.location, fairy_locations[level][x].logic))
-                                
+                        LocationList[data.location].name = f"{level_to_name[level]} Fairy ({fairy_locations[level][x].name})"

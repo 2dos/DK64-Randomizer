@@ -251,6 +251,7 @@ void initItemRando(void) {
         // *(int*)(0x806AA414) = 0x102003AA; // BEQZ $at, 0x3AA (Changes sprite check for <3 rather than == 3)
         *(int*)(0x806A8D20) = 0x0C000000 | (((int)&changeSelectedLevel & 0xFFFFFF) >> 2); // Change selected level on checks screen
         *(int*)(0x806A84F8) = 0x0C000000 | (((int)&checkItemDB & 0xFFFFFF) >> 2); // Populate Item Databases
+        *(int*)(0x806C5C7C) = 0; // Cancel out fairy draw distance reduction
     }
 
     // BP Table

@@ -547,6 +547,7 @@ def applyKrushaKong(spoiler: Spoiler):
         if krusha_index == 0:
             fixFungiBBlast()
 
+
 DK_SCALE = 0.75
 GENERIC_SCALE = 0.49
 krusha_scaling = [
@@ -618,6 +619,7 @@ def changeKrushaModel(krusha_kong: int):
     ROM().seek(krusha_model_start)
     ROM().writeBytes(data)
 
+
 def fixFungiBBlast():
     """Fix two barrels which are broken with Krusha + Fungi BBlast."""
     setup_start = js.pointer_addresses[9]["entries"][0xBC]["pointing_to"]
@@ -637,6 +639,7 @@ def fixFungiBBlast():
             ROM().writeMultipleBytes(0xFFFFFFEC, 4)
             ROM().seek(item_start + 0x1B)
             ROM().writeMultipleBytes(0, 1)
+
 
 def placeKrushaHead(slot):
     """Replace a kong's face with the Krusha face."""
@@ -913,7 +916,7 @@ boot_phrases = (
     "Fixing Krushas Collision",
     "Falling on 75m",
     "Summoning Salt",
-    "Combing Chunky's Afro",
+    "Combing Chunkys Afro",
     "Asking what you gonna do",
     "Thinking with portals",
     "Reminding you to hydrate",

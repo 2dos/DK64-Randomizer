@@ -9,8 +9,9 @@ from randomizer.Spoiler import Spoiler
 from randomizer.Patching.Lib import float_to_hex, getNextFreeID, addNewScript
 from randomizer.Enums.ScriptTypes import ScriptTypes
 
+
 def remove_existing_indicators(spoiler: Spoiler):
-    """Removes all existing indicators."""
+    """Remove all existing indicators."""
     if not spoiler.settings.portal_numbers:
         for cont_map_id in range(216):
             setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
@@ -39,7 +40,7 @@ def remove_existing_indicators(spoiler: Spoiler):
             ROM().seek(mys_start)
             for x in range(int((act_end - mys_start) / 4)):
                 other_retained_data.append(int.from_bytes(ROM().readBytes(4), "big"))
-             # Reconstruct setup file
+            # Reconstruct setup file
             ROM().seek(setup_table)
             ROM().writeMultipleBytes(len(retained_model2), 4)
             for item in retained_model2:
@@ -47,6 +48,7 @@ def remove_existing_indicators(spoiler: Spoiler):
                     ROM().writeMultipleBytes(data, 4)
             for data in other_retained_data:
                 ROM().writeMultipleBytes(data, 4)
+
 
 def place_door_locations(spoiler: Spoiler):
     """Place Wrinkly Doors, and eventually T&S Doors."""

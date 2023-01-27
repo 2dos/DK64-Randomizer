@@ -9,6 +9,7 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.EnemyTypes import Enemies
 
+
 def PlaceFairies(spoiler: Spoiler):
     """Write Fairies to ROM."""
     sav = spoiler.settings.rom_data
@@ -32,7 +33,7 @@ def PlaceFairies(spoiler: Spoiler):
             Maps.Isles,
             Maps.FranticFactoryLobby,
             Maps.FungiForestLobby,
-            Maps.HideoutHelm
+            Maps.HideoutHelm,
         ]
         # Append new maps to action map list
         for level in spoiler.fairy_locations:
@@ -203,11 +204,11 @@ def PlaceFairies(spoiler: Spoiler):
             item_level = item["level"]
             item_map = fairy_locations[item_level][item["fairy_index"]].map
             ROM().writeMultipleBytes(item_map, 1)
-            ROM().writeMultipleBytes(item["id"], 1) # Get Spawner ID
+            ROM().writeMultipleBytes(item["id"], 1)  # Get Spawner ID
             if item["shift"] >= 0:
                 offset = int(item["shift"] >> 3)
                 check = int(item["shift"] % 8)
-                write_data[offset] &= (0xFF - (0x80 >> check))
+                write_data[offset] &= 0xFF - (0x80 >> check)
         ROM().seek(sav + 0xE0)
         for byte_data in write_data:
             ROM().writeMultipleBytes(byte_data, 1)
