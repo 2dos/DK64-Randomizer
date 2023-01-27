@@ -785,7 +785,7 @@ CrownLocations = {
             y=-136,
             z=2545,
             scale=0.5,
-            region=Regions.HideoutHelmStart,
+            region=Regions.HideoutHelmAfterBoM,
             logic=lambda l: l.lanky
             and l.handstand
             and ((l.chunky and l.pineapple and l.vines) or l.phasewalk)
@@ -807,7 +807,7 @@ CrownLocations = {
             y=-132,
             z=2243,
             scale=0.5,
-            region=Regions.HideoutHelmStart,
+            region=Regions.HideoutHelmAfterBoM,
             logic=lambda l: l.lanky
             and l.handstand
             and ((l.chunky and l.pineapple and l.vines) or l.phasewalk)
@@ -829,7 +829,7 @@ CrownLocations = {
             y=-164,
             z=1261,
             scale=0.5,
-            region=Regions.HideoutHelmStart,
+            region=Regions.HideoutHelmAfterBoM,
             logic=lambda l: l.lanky
             and l.handstand
             and l.settings.helm_setting == "skip_all"
@@ -842,7 +842,7 @@ CrownLocations = {
             y=-461,
             z=480,
             scale=0.5,
-            region=Regions.HideoutHelmStart,
+            region=Regions.HideoutHelmAfterBoM,
             logic=lambda l: (
                 l.settings.helm_setting == "skip_all"
                 or (
