@@ -302,7 +302,6 @@ def maskImage(im_f, base_index, min_y, keep_dark=False):
 def maskImageLankyPickups(im_f, base_index, min_y, type=""):
     """Apply RGB mask to image."""
     w, h = im_f.size
-    im_f_original = im_f
     converter = ImageEnhance.Color(im_f)
     im_f = converter.enhance(0)
     im_dupe = im_f.crop((0, min_y, w, h))
@@ -311,28 +310,37 @@ def maskImageLankyPickups(im_f, base_index, min_y, type=""):
         im_dupe = brightener.enhance(2)
     im_f.paste(im_dupe, (0, min_y), im_dupe)
     pix = im_f.load()
-    pix2 = im_f_original.load()
+    old_pixels = []
     mask = getRGBFromHash(color_bases[base_index])
-    mask2 = getRGBFromHash(color_bases[0])
-    # if type != "coin":
-    #     for channel in range(3):
-    #         mask2[channel] = int(255 - mask2[channel])
-    w, h = im_f.size
     for x in range(w):
+        old_pixels.append([])
         for y in range(min_y, h):
             base = list(pix[x, y])
-            base2 = list(pix2[x, y])
+            old_pixels[x].append([])
+            old_pixels[x][y] = list(pix[x, y])
             if base[3] > 0:
-                if (type == "coin" and base2[1] >= 100):
-                    for channel in range(3):
-                        base[channel] = int(mask2[channel] * (base[channel] / 255))
-                elif type == "bunch" or type == "single":
-                    for channel in range(3):
-                        base[channel] = int(mask2[channel] * (base[channel] / 255))
-                else:
-                    for channel in range(3):
-                        base[channel] = int(mask[channel] * (base[channel] / 255))
+                for channel in range(3):
+                    # if type == "single" or type == "bunch":
+                    #     # attempt to invert shadow
+                    #     base[channel] = int(255 - base[channel])
+                    base[channel] = int(mask[channel] * (base[channel] / 255))
                 pix[x, y] = (base[0], base[1], base[2], base[3])
+                old_pixels[x][y] = list(pix[x, y])
+    if type == "coin":
+        for x in range(w):
+            for y in range(min_y, h):
+                # image is 48 wide and 42 high, so disregard the edges
+                if x < 41:
+                    new_pixel = old_pixels[47 - y][41 - x]
+                    pix[x, y] = (new_pixel[0], new_pixel[1], new_pixel[2], new_pixel[3])
+                else:
+                    base = list(pix[x, y])
+                    pix[x, y] = (base[0], base[1], base[2], 0)
+    elif type == "single" or type == "bunch":
+        for x in range(w):
+            for y in range(min_y, h):
+                new_pixel = old_pixels[x][43 - y]
+                pix[x, y] = (new_pixel[0], new_pixel[1], new_pixel[2], new_pixel[3])
     return im_f
 
 
@@ -575,7 +583,7 @@ def overwrite_object_colors(spoiler: Spoiler):
                     blueprint_im = maskBlueprintImage(blueprint_im, kong_index, True)
                     blueprint_start = [5624, 5608, 5519, 5632, 5616]
                     writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False)
-            elif kong_index == 2:
+            elif kong_index == 2:  # Lanky
                 writeKasplatHairColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
                 for file in range(152, 160):
                     # Single
