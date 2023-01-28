@@ -1442,3 +1442,21 @@ typedef struct item_collision {
 	/* 0x018 */ void* next;
 	/* 0x01C */ float scale;
 } item_collision;
+
+typedef struct fairy_location_item {
+	/* 0x000 */ short flag;
+	/* 0x002 */ unsigned char map;
+	/* 0x003 */ unsigned char id;
+} fairy_location_item;
+
+typedef struct fairy_activations {
+	unsigned char japes_painting : 1; // 0
+	unsigned char factory_funky : 1; // 1
+	unsigned char galleon_chest : 1; // 2
+	unsigned char fungi_dark_attic : 1; // 3
+	unsigned char fungi_thornvine_barn : 1; // 4
+	unsigned char caves_igloo : 1; // 5
+	unsigned char caves_cabin : 1; // 6
+	unsigned char isles_factory_lobby : 1; // 7
+	unsigned char isles_fungi_lobby : 1; // 8
+} fairy_activations;

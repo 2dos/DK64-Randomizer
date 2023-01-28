@@ -211,6 +211,18 @@
                             </label>
                             {{ list_selector(itemRando, "item_rando_list", "ITEM RANDO SELECTOR", "This will open a popup that will let you customize what items are shuffled in the pool.&#10;This defaults to All options.", 12) }}
                             {# Remove end </div> as it's included in the macro for formatting #}
+                        <div class="form-check form-switch item-switch">
+                            <label data-toggle="tooltip"
+                                   title="Fairy checks are in random locations.">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="random_fairies"
+                                       id="random_fairies"
+                                       value="True"/>
+                                Shuffle Fairy Locations
+                            </label>
+                        </div>
+                        <div class="spacer"></div>
                         </div>
                         <div class="flex-container">
                             <div class="item-select">

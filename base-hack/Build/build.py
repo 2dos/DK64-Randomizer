@@ -69,7 +69,7 @@ BLOCK_COLOR_SIZE = 64  # Bytes allocated to a block 32x32 image. Brute forcer sa
 file_dict = [
     {"name": "Static ASM Code", "start": 0x113F0, "compressed_size": 0xB15E4, "source_file": "StaticCode.bin", "use_external_gzip": True, "patcher": patchStaticCode},
     {"name": "Dolby Logo", "pointer_table_index": 14, "file_index": 176, "source_file": "assets/Dolby/DolbyThin.png", "texture_format": "ia4"},
-    {"name": "Thumb Image", "pointer_table_index": 14, "file_index": 94, "source_file": "assets/Nintendo Logo/Nintendo4.png", "texture_format": "rgba5551"},
+    {"name": "Thumb Image", "pointer_table_index": 14, "file_index": 94, "source_file": "assets/Nintendo Logo/Nintendo5.png", "texture_format": "rgba5551"},
     {"name": "DKTV Image", "pointer_table_index": 14, "file_index": 44, "source_file": "assets/DKTV/logo3.png", "texture_format": "rgba5551"},
     {"name": "Spin Transition Image", "pointer_table_index": 14, "file_index": 95, "source_file": "assets/transition/transition-body.png", "texture_format": "ia4"},
     {"name": "Moves Image", "pointer_table_index": 14, "file_index": 115, "source_file": "assets/file_screen/moves.png", "texture_format": "rgba5551"},
@@ -1144,8 +1144,6 @@ with open(newROMName, "r+b") as fh:
     adjustExits(fh)
     generateDefaultPadPairing(fh)
     writeVanillaSongData(fh)
-    fh.seek(0x1FED020 + 0x11E)
-    fh.write((1).to_bytes(1, "big"))
     fh.seek(0x1FED020 + 0x11C)
     fh.write((0xFF).to_bytes(1, "big"))
     for x in portal_images:

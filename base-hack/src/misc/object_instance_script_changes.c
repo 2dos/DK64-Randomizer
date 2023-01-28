@@ -1771,6 +1771,31 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		CrownPadGenericCode(behaviour_pointer, id, param2, 1);
 	} else if (index == -7) {
 		return checkFlag(kong_flags[param2], 0) || Rando.disable_wrinkly_kong_requirement;
+	} else if (index == -8) {
+		// Fairy check
+		if (Rando.fairy_rando_on) {
+			switch (param2) {
+				case 0:
+					return !Rando.fairy_triggers_disabled.japes_painting; // Japes Painting: ID 5
+				case 1:
+					return !Rando.fairy_triggers_disabled.factory_funky; // Factory Funky: ID 0x109
+				case 2:
+					return !Rando.fairy_triggers_disabled.galleon_chest; // Galleon Chest: ID 0x45
+				case 3:
+					return !Rando.fairy_triggers_disabled.fungi_dark_attic; // Fungi Dark Attic: ID 0x0
+				case 4:
+					return !Rando.fairy_triggers_disabled.fungi_thornvine_barn; // Fungi Thornvine: ID 0x24
+				case 5:
+					return !Rando.fairy_triggers_disabled.caves_igloo; // Caves Igloo: ID 0x0
+				case 6:
+					return !Rando.fairy_triggers_disabled.caves_cabin; // Caves Cabin: ID 0x5
+				case 7:
+					return !Rando.fairy_triggers_disabled.isles_factory_lobby; // Isles Factory Lobby: ID 0xE
+				case 8:
+					return !Rando.fairy_triggers_disabled.isles_fungi_lobby; // Isles Fungi Lobby: ID 0x5
+			}
+		}
+		return 1;
 	}
 	InstanceScriptParams[1] = id;
 	InstanceScriptParams[2] = index;

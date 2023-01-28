@@ -15,6 +15,10 @@ START:
 		LUI a2, 0x807F
 		JAL dmaFileTransfer
 		ORI a2, a2, 0xF800 //RAM location to copy to
+		// Boot image
+		// LUI a0, 0x8060
+		// JAL 0x805FB7E4 // Render Nintendo Logo
+		// SW r0, 0xBBCC (a0)
 		// Load item data
 		LUI a0, hi(itemROM)
 		LUI a1, hi(itemROM + itemdatasize)

@@ -29,7 +29,7 @@ void cFuncLoop(void) {
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, 2); // Clear K. Lumsy temp flag
 		setFlag(0x79, 0, 2); // Clear BFI Reward Cutscene temp flag
-		if (!Rando.tns_portal_rando_on) {
+		if ((!Rando.tns_portal_rando_on) && (Rando.tns_indicator)) {
 			shiftBrokenJapesPortal();
 		}
 		openCoinDoor();
@@ -336,13 +336,25 @@ static const char* wait_texts[] = {
 static unsigned char ammo_hud_timer = 0;
 
 #define HERTZ 60
-#define ACTOR_MAINMENUCONTROLLER 0x146
-
 
 #define LOADBAR_START 350
 #define LOADBAR_FINISH 900
 #define LOADBAR_MAXWIDTH 200
 #define LOADBAR_DIVISOR 35
+
+#define INFO_STYLE 6
+int* drawInfoText(int* dl, int x_offset, int y, char* str, int error) {
+	int x = 93 + x_offset;
+	if (x_offset == -1) {
+		x = getCenter(INFO_STYLE,str);
+	}
+	int non_red = 0xFF;
+	if (error) {
+		non_red = 0;
+	}
+	return drawTextContainer(dl, INFO_STYLE, x, y, str, 0xFF, non_red, non_red, 255, 0);
+}
+
 int* displayListModifiers(int* dl) {
 	if (CurrentMap != NINTENDO_LOGO) {
 		if (CurrentMap == NFR_SCREEN) {
@@ -381,10 +393,44 @@ int* displayListModifiers(int* dl) {
 			dl = drawPixelTextContainer(dl, 110, 150, "PLEASE WAIT", 0xFF, 0xFF, 0xFF, 0xFF, 1);
 		} else if (CurrentMap == MAIN_MENU) {
 			if (!good_eeprom) {
-				dl = drawPixelTextContainer(dl, 0x52, 0x66, "BAD EEPROM SETTINGS.", 0xFF, 0xFF, 0xFF, 0xFF, 1);
-				dl = drawPixelTextContainer(dl, 0x3E, 0x6F, "YOUR GAME WILL NOT SAVE.", 0xFF, 0, 0, 0xFF, 1);
-				dl = drawPixelTextContainer(dl, 0x3E, 0x87, "CHECK THE SETUP GUIDE IN", 0xFF, 0xFF, 0xFF, 0xFF, 1);
-				dl = drawPixelTextContainer(dl, 0x34, 0x92, "THE WIKI TO FIX THIS ERROR.", 0xFF, 0xFF, 0xFF, 0xFF, 1);
+				int i = 0;
+				while (i < LoadedActorCount) {
+					if (LoadedActorArray[i].actor) {
+						if (LoadedActorArray[i].actor->actorType == 0x146) {
+							int screen = *(char*)((int)(LoadedActorArray[i].actor) + 0x18A);
+							if (screen < 2) {
+								// EEPROM Warning
+								dl = drawScreenRect(dl, 250, 200, 1000, 700, 3, 3, 3, 1);
+								dl = drawPixelTextContainer(dl, 128, 60, "WARNING", 0xFF, 0, 0, 0xFF, 1);
+								int y_info = 150;
+								int spacing = 14;
+								dl = drawInfoText(dl, -88, y_info, "DUE TO YOUR EMULATOR SETUP", 0);
+								y_info += spacing;
+								dl = drawInfoText(dl, -80, y_info, "YOUR GAME MAY EXPERIENCE", 0);
+								y_info += spacing;
+								dl = drawInfoText(dl, -96, y_info, "ABNORMALITIES LIKE NOT SAVING", 0);
+								y_info += spacing;
+								dl = drawInfoText(dl, -86, y_info, "AND SPORADIC CRASHES THAT", 0);
+								y_info += spacing;
+								dl = drawInfoText(dl, -56, y_info, "WE             SUPPORT.", 0);
+								dl = drawInfoText(dl, -31, y_info, "CANNOT", 1);
+								y_info += spacing;
+								dl = drawInfoText(dl, -72, y_info, "PLEASE CONSULT THE WIKI", 0);
+								y_info += spacing;
+								dl = drawInfoText(dl, -40, y_info, "OR THE DISCORD", 0);
+								y_info += spacing;
+								dl = drawInfoText(dl, -88, y_info, "DISCORD.DK64RANDOMIZER.COM", 0);
+								y_info += spacing;
+								dl = drawInfoText(dl, -8, y_info, "FOR HELP", 0);
+								y_info += spacing;
+							}
+							break;
+						}
+					}
+					i++;
+				}
+				
+
 			}
 		} else {
 			if (Rando.item_rando) {

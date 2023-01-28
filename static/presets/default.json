@@ -92,6 +92,7 @@
     "portal_numbers": true,
     "puzzle_rando": true,
     "quality_of_life": true,
+    "random_fairies": false,
     "random_medal_requirement": false,
     "random_patches": true,
     "random_prices": "low",

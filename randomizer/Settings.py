@@ -196,6 +196,7 @@ class Settings:
         self.loading_zone_coupled = None
         self.move_rando = "off"
         self.random_patches = None
+        self.random_fairies = None
         self.random_prices = None
         self.boss_location_rando = None
         self.boss_kong_rando = None
@@ -416,6 +417,7 @@ class Settings:
         self.switch_allocation = [1, 1, 1, 1, 2, 2, 3]
         self.item_reward_previews = False
         self.microhints_enabled = "off"
+        self.portal_numbers = False
         # Helm Hurry
         self.helmhurry_list_starting_time = 1200
         self.helmhurry_list_golden_banana = 20

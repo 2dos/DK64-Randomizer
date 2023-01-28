@@ -102,7 +102,7 @@
                                                             <td>{{ item2 }}</td>
                                                         {% endif %}
                                                         {% if spoiler[item][sub_group][item2] is iterable and (spoiler[item][sub_group][item2] is not string and spoiler[item][sub_group][item2] is not mapping) %}
-                                                            <td>{{ spoiler[item][sub_group][item2]|join(", ") }}</td>
+                                                            <td>{{ spoiler[item][sub_group][item2]|join("<br>") }}</td>
                                                         {% else %}
                                                             <td>
                                                                 {{ spoiler[item][sub_group][item2] }}
@@ -133,7 +133,7 @@
                                                 {% endif %}
                                             {% endif %}
                                             {% if spoiler[item][item2] is iterable and (spoiler[item][item2] is not string and spoiler[item][item2] is not mapping) %}
-                                                <td>{{ spoiler[item][item2]|join(", ") }}</td>
+                                                <td>{{ spoiler[item][item2]|join("<br>") }}</td>
                                             {% else %}
                                                 <td>{{ spoiler[item][item2] }}</td>
                                             {% endif %}
