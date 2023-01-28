@@ -4,30 +4,6 @@
         <div class="col border panel">
             <h2 class="title">GLOBAL RANDOMIZERS</h2>
             <div class="flex-container">
-                <div class="item-select">
-                    <p class="select-title">Logic</p>
-                    <div>
-                        <select name="logic_type"
-                                id="logic_type"
-                                class="form-select"
-                                aria-label="Logic"
-                                data-toggle="tooltip"
-                                title="If this is checked, then locations and entrances will be shuffled without logic.&#10;WARNING: This can lead to unbeatable seeds, or seeds that require a high level of glitch knowledge to complete.">
-                            <option id="glitchless" selected value="glitchless">
-                                Glitchless Logic
-                            </option>
-                            <option id="glitch" value="glitch">
-                                Glitch Logic
-                            </option>
-                            <option id="nologic" value="nologic">
-                                No Logic
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-switch" style="padding-left:0">
-                        {{ list_selector(glitches, "glitches", "GLITCHES", "This will open a popup that will let you customize what tricks are considered by logic with glitch logic.&#10;This defaults to All options.", 16) }}
-                        {# Remove end </div> as it's included in the macro for formatting #}
-                    </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                title="All normal enemies that spawn in the world are randomized.">
@@ -66,7 +42,7 @@
                         </div>
                         <div class="form-check form-switch item-switch">
                             <label data-toggle="tooltip"
-                                   title="The order of KRools boxing match will randomly order the sequence (Currently always ends on chunky).">
+                                   title="The order of KRools boxing match will randomly order the sequence.">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="krool_phase_order_rando"
@@ -98,6 +74,30 @@
                         <div class="spacer"></div>
                     </div>
                     <div class="flex-container">
+                        <div class="item-select">
+                            <p class="select-title">Logic</p>
+                            <div class="customize-select">
+                            <select name="logic_type"
+                                    id="logic_type"
+                                    class="form-select"
+                                    aria-label="Logic"
+                                    data-toggle="tooltip"
+                                    title="If this is checked, then locations and entrances will be shuffled without logic.&#10;WARNING: This can lead to unbeatable seeds, or seeds that require a high level of glitch knowledge to complete.">
+                                <option id="glitchless" selected value="glitchless">
+                                    Glitchless Logic
+                                </option>
+                                <option id="glitch" value="glitch">
+                                    Glitch Logic
+                                </option>
+                                <option id="nologic" value="nologic">
+                                    No Logic
+                                </option>
+                            </select>
+                            <div style="padding: 5px;">
+                                {{ list_selector(glitches, "glitches", "GLITCHES", "This will open a popup that will let you customize what tricks are considered by logic with glitch logic.&#10;This defaults to All options.", 16) }}
+                                {# Remove end </div> as it's included in the macro for formatting #}
+                            </div>
+                        </div>
                         <div class="item-select">
                             <p class="select-title">Activate Bananaports</p>
                             <select name="activate_all_bananaports"

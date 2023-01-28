@@ -525,6 +525,9 @@ def item_rando_list_changed(evt):
     item_rando_pool = document.getElementById("item_rando_list_selected").options
     shockwave = document.getElementById("shockwave_status_shuffled")
     smaller_shops = document.getElementById("smaller_shops")
+    move_vanilla = document.getElementById("move_off")
+    move_rando = document.getElementById("move_on")
+    move_start = document.getElementById("move_start_with")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -540,11 +543,23 @@ def item_rando_list_changed(evt):
         # Prevent camera/shockwave from being coupled and enable smaller shops if shops are in the pool
         if shockwave.selected is True:
             document.getElementById("shockwave_status_shuffled_decoupled").selected = True
+        if move_vanilla.selected is True or move_rando.selected is True or move_start.selected is True:
+            document.getElementById("move_on_cross_purchase").selected = True
         shockwave.setAttribute("disabled", "disabled")
+        move_vanilla.setAttribute("disabled", "disabled")
+        move_rando.setAttribute("disabled", "disabled")
+        move_start.setAttribute("disabled", "disabled")
         smaller_shops.removeAttribute("disabled")
+        # Prevent UI breaking if Vanilla/Unlock All moves was selected before selection Shops in Item Rando
+        js.document.getElementById("training_barrels").removeAttribute("disabled")
+        js.document.getElementById("shockwave_status").removeAttribute("disabled")
+        js.document.getElementById("random_prices").removeAttribute("disabled")
     else:
         # Enable coupled camera/shockwave and disable smaller shops if shops are not in the pool
         shockwave.removeAttribute("disabled")
+        move_vanilla.removeAttribute("disabled")
+        move_rando.removeAttribute("disabled")
+        move_start.removeAttribute("disabled")
         smaller_shops.setAttribute("disabled", "disabled")
         smaller_shops.checked = False
 
@@ -688,3 +703,18 @@ def toggle_key_settings(event):
         krool_access.removeAttribute("disabled")
         keys_random.removeAttribute("disabled")
         selector.setAttribute("disabled", "disabled")
+
+@bind("click", "helm_hurry")
+def disable_helm_hurry(evt):
+    """Disable Helm Hurry Selector when Helm Hurry is off."""
+    disabled = True
+    selector = js.document.getElementById("helmhurry_list_modal")
+    if js.document.getElementById("helm_hurry").checked:
+        disabled = False
+    try:
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
+        else:
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass
