@@ -154,10 +154,6 @@ body {
   padding-bottom: 5px;
 }
 
-.center #seed {
-  margin-right: 20px;
-}
-
 table {
   table-layout: fixed;
   max-width: 600px;
@@ -437,6 +433,7 @@ i {
 .select-title {
   font-weight: bold;
   margin-bottom: 10px;
+  min-width: 100px;
 }
 
 .panel {
