@@ -90,7 +90,7 @@ def ShuffleFairyLocations(spoiler: Spoiler):
             selection = random.sample(list(range(len(fairy_locations[level]))), pick_size)
             human_selection = [fairy_locations[level][x].name for x in selection]
             spoiler.fairy_locations[level] = selection.copy()
-            spoiler.fairy_locations_human[level.name] = "<br>".join(human_selection)
+            spoiler.fairy_locations_human[level.name] = human_selection
             # Placement into the table format, placement into logic
             vacant_slots = list(range(pick_size))
             for x in selection:
