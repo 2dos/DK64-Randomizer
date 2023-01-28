@@ -381,10 +381,10 @@ i {
 }
 
 .item-group {
-  text-align: left;
+  text-align: center;
   margin: 10px 90px 10px 10px;
   flex: 1 0 30%;
-  max-width: 100px;
+  max-width: 150px;
   min-width: 150px;
 }
 
@@ -398,7 +398,7 @@ i {
 
 .item-color-select {
   text-align: center;
-  margin: 10px 20px;
+  margin: 0px 20px;
   flex: 1 0 30%;
   min-width: 125px;
   max-width: 130px;
@@ -422,6 +422,11 @@ i {
   max-width: 352px;
 }
 
+.group-spacer {
+  flex-grow: 1;
+  min-width: 100px;
+}
+
 .title {
   font-family: 'Jumpman';
   margin-top: 10px;
@@ -436,6 +441,7 @@ i {
 
 .panel {
   min-height: 450px;
+  padding-bottom: 25px;
 }
 
 .settings-table:not(.ignore-width) {
