@@ -336,14 +336,6 @@ def modify(file_name, map_index):
                     }
                 )
                 added_5di_strongkong = True
-            elif map_index == 0xBC and obj_id in (2, 5):
-                # Problem BBlast barrel in Fungi
-                temp = []
-                for y in range(0x38):
-                    temp.append(byte_stream[y])
-                byte_stream = temp.copy()
-                writedatatoarr(byte_stream, 0xFFFFFFEC, 4, 0x14)
-                writedatatoarr(byte_stream, 0, 1, 0x1B)
             # Vine Memes
             if len(vine_data["add"]) > 0:
                 for vine_add in vine_data["add"]:

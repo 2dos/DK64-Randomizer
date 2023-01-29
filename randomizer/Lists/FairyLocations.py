@@ -1071,7 +1071,7 @@ fairy_locations = {
             map=Maps.CreepyCastleLobby,
             region=Regions.CreepyCastleLobby,
             fence=Fence(567, 137, 575, 154),
-            spawn_y=-45,
+            spawn_y=-15,
         ),
         FairyData(
             name="Crystal Caves Lobby",
