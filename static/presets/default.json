@@ -24,7 +24,7 @@
     "crown_enemy_rando": "easy",
     "crown_placement_rando": false,
     "damage_amount": "default",
-    "disable_shop_hints": false,
+    "enable_shop_hints": true,
     "disable_tag_barrels": false,
     "dpad_display": true,
     "enable_tag_anywhere": true,

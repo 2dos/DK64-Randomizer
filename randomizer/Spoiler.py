@@ -162,7 +162,8 @@ class Spoiler:
         settings["Key 8 Required"] = self.settings.krool_access
         settings["Key 8 in Helm"] = self.settings.key_8_helm
         settings["Select Starting Keys"] = self.settings.select_keys
-        settings["Number of Keys Required"] = self.settings.krool_key_count
+        if not self.settings.keys_random:
+            settings["Number of Keys Required"] = self.settings.krool_key_count
         settings["Fast Start"] = self.settings.fast_start_beginning_of_game
         settings["Helm Setting"] = self.settings.helm_setting
         settings["Quality of Life"] = self.settings.quality_of_life
