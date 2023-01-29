@@ -697,7 +697,7 @@ class Settings:
         required_key_count = 0
         if self.keys_random:
             required_key_count = randint(0, 8)
-        if self.select_keys:
+        elif self.select_keys:
             self.krool_keys_required = KeyEvents.copy()
             for key in self.starting_keys_list_selected:
                 if key == "key1":
