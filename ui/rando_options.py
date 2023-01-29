@@ -121,7 +121,6 @@ def updateDoorOneNumAccess(event):
         door_one_req.value = 1
     elif door_one_selection.value == "req_pearl" and int(door_one_req.value) > 5:
         door_one_req.value = 5
-    
 
 
 @bind("click", "coin_door_item")
@@ -777,6 +776,7 @@ def toggle_key_settings(event):
         krool_access.removeAttribute("disabled")
         keys_random.removeAttribute("disabled")
         selector.setAttribute("disabled", "disabled")
+
 
 @bind("click", "helm_hurry")
 def disable_helm_hurry(evt):
