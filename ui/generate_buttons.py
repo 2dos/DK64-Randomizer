@@ -2,7 +2,6 @@
 import asyncio
 import json
 import random
-import time
 
 from pyodide import create_proxy
 
@@ -210,7 +209,6 @@ def generate_seed(event):
     Args:
         event (event): Javascript click event.
     """
-    time.sleep(10000)
     # Check if the rom filebox has a file loaded in it.
     if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
         js.document.getElementById("rom").select()
