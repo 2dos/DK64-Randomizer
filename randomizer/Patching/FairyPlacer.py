@@ -123,11 +123,11 @@ def PlaceFairies(spoiler: Spoiler):
                         if spawn_index in used_enemy_indexes:
                             while spawn_index in used_enemy_indexes:
                                 spawn_index += 1
-                            used_enemy_indexes.append(spawn_index)
+                        used_enemy_indexes.append(spawn_index)
                         if fence_index in used_fence_ids:
                             while fence_index in used_fence_ids:
                                 fence_index += 1
-                            used_fence_ids.append(fence_index)
+                        used_fence_ids.append(fence_index)
                         # Spawner
                         data_bytes = []
                         data_bytes.append(Enemies.Fairy)
