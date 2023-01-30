@@ -12,7 +12,6 @@ static short past_lag[LAG_CAP] = {};
 static char lag_counter = 0;
 static float current_avg_lag = 0;
 static char has_loaded = 0;
-static char good_eeprom = 0;
 static char new_picture = 0;
 
 void cFuncLoop(void) {
@@ -34,9 +33,7 @@ void cFuncLoop(void) {
 		}
 		openCoinDoor();
 		priceTransplant();
-		if (CurrentMap == 0x50) {
-			good_eeprom = EEPROMType == 2;
-		} else if (CurrentMap == 0xE) {
+		if (CurrentMap == 0xE) {
 			TextItemName = Rando.aztec_beetle_reward;
 		} else if (CurrentMap == 0x52) {
 			TextItemName = Rando.caves_beetle_reward;
@@ -392,7 +389,7 @@ int* displayListModifiers(int* dl) {
 			dl = drawPixelTextContainer(dl, wait_x_offset, 130, (char*)wait_texts[(int)wait_progress_master], 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			dl = drawPixelTextContainer(dl, 110, 150, "PLEASE WAIT", 0xFF, 0xFF, 0xFF, 0xFF, 1);
 		} else if (CurrentMap == MAIN_MENU) {
-			if (!good_eeprom) {
+			if (EEPROMType != 2) {
 				int i = 0;
 				while (i < LoadedActorCount) {
 					if (LoadedActorArray[i].actor) {
