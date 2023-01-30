@@ -1462,10 +1462,11 @@ typedef struct fairy_activations {
 } fairy_activations;
 
 typedef enum pad_refresh_signals {
-    /* 0x000 */ PADREFRESH_BLAST,
-    /* 0x001 */ PADREFRESH_SPRING,
-    /* 0x002 */ PADREFRESH_BALLOON,
-    /* 0x003 */ PADREFRESH_MONKEYPORT,
-    /* 0x004 */ PADREFRESH_GONE,
+    /* 0x000 */ ITEMREFRESH_BLAST,
+    /* 0x001 */ ITEMREFRESH_SPRING,
+    /* 0x002 */ ITEMREFRESH_BALLOON,
+    /* 0x003 */ ITEMREFRESH_MONKEYPORT,
+    /* 0x004 */ ITEMREFRESH_GONE,
+	/* 0x005 */ ITEMREFRESH_VINE,
 } pad_refresh_signals;
 
