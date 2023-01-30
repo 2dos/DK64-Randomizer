@@ -1,8 +1,7 @@
 {% macro list_selector(list, name, title, tooltip, size) %}
     <!-- Icon triggers modal -->
-    <input class="btn btn-primary customize"
+    <input class="customize"
            type="button"
-           value="Customize"
            href="#"
            id="{{ name }}_modal"
            data-bs-toggle="modal"
@@ -102,9 +101,8 @@
 {% endmacro %}
 {% macro properties_selector(list, name, title, tooltip) %}
     <!-- Icon triggers modal -->
-    <input class="btn btn-primary customize"
+    <input class="customize"
            type="button"
-           value="Customize"
            href="#"
            id="{{ name }}_modal"
            data-bs-toggle="modal"

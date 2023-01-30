@@ -5,8 +5,28 @@
             <table id="leveltable">
                 <tr>
                     <th>Progression</th>
-                    <th>B Locker</th>
-                    <th>Troff N Scoff</th>
+                    <th>B Locker
+                        <label data-toggle="tooltip"
+                                title="Randomize Required B-Locker totals">
+                            <input class="dice_checkbox"
+                                    type="checkbox"
+                                    name="randomize_blocker_required_amounts"
+                                    id="randomize_blocker_required_amounts"
+                                    value="True"/>
+                            <label for="randomize_blocker_required_amounts"></label>
+                        </label>
+                    </th>
+                    <th>Troff N Scoff
+                        <label data-toggle="tooltip"
+                                title="Randomize Required CB totals">
+                            <input class="dice_checkbox"
+                                    type="checkbox"
+                                    name="randomize_cb_required_amounts"
+                                    id="randomize_cb_required_amounts"
+                                    value="True"/>
+                            <label for="randomize_cb_required_amounts"></label>
+                        </label>
+                    </th>
                 </tr>
                 {% for i in range(0, 8) %}
                     <tr>
@@ -41,20 +61,9 @@
                 {% endfor %}
             </table>
             <div class="flex-container">
-                <div class="form-check form-switch item-switch" style="margin-top: 50px;">
-                    <label data-toggle="tooltip" title="Randomize Required B-Locker totals">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="randomize_blocker_required_amounts"
-                               id="randomize_blocker_required_amounts"
-                               value="True"/>
-                        Random B-Lockers
-                    </label>
-                </div>
+                <div class="group-spacer"></div>
                 <div class="item-group">
-                    <p class="select-title">
-                        Max Value:<i>*Tick box to ensure.</i>
-                    </p>
+                    <p class="select-title">B Locker Max:</p>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend"
                              data-toggle="tooltip"
@@ -78,20 +87,9 @@
                                placeholder="50"/>
                     </div>
                 </div>
-            </div>
-            <div class="flex-container">
-                <div class="form-check form-switch item-switch" style="margin-top: 50px;">
-                    <label data-toggle="tooltip" title="Randomize Required CB totals">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="randomize_cb_required_amounts"
-                               id="randomize_cb_required_amounts"
-                               value="True"/>
-                        Random Troff N' Scoff
-                    </label>
-                </div>
+                <div class="group-spacer"></div>
                 <div class="item-group">
-                    <p class="select-title">Max Value:</p>
+                    <p class="select-title">Troff N' Scoff Max:</p>
                     <input class="form-control"
                            min="0"
                            max="500"
