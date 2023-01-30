@@ -20,6 +20,7 @@ import model_port
 # Patcher functions for the extracted files
 import patch_text
 from adjust_exits import adjustExits
+from adjust_zones import modifyTriggers
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from end_seq_writer import createSquishFile, createTextFile
@@ -1005,6 +1006,8 @@ with open(newROMName, "r+b") as fh:
             x["do_not_compress"] = True
             if x["source_file"][:5] == "setup":
                 convertSetup(x["source_file"])
+            if x["source_file"][:2] == "lz":
+                modifyTriggers(x["source_file"])
             with open(x["source_file"], "rb") as fg:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)

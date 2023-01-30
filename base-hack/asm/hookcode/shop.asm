@@ -25,6 +25,9 @@ Jump_SetMoveBaseBitfield:
 Jump_SetMoveBaseProgressive:
     j SetMoveBaseProgressive
     nop
+Jump_CrankyCoconutDonation:
+    j CrankyCoconutDonation
+    nop
     
 PatchCrankyCode:
     lui $t3, hi(Jump_CrankyDecouple)
@@ -91,6 +94,12 @@ PatchCrankyCode:
         sh $t4, 0x7B72 ($t3)
         sh $t4, 0x7BCA ($t3)
         sh $t4, 0x7BFA ($t3)
+
+        lui $t4, hi(Jump_CrankyCoconutDonation)
+        lw $t4, lo(Jump_CrankyCoconutDonation) ($t4)
+        lui $t3, 0x8002
+        sw $t4, 0x6EFC ($t3)
+        sw $zero, 0x6F00 ($t3)
 
     PatchCrankyCode_More:
         lui $t4, hi(Jump_AlwaysCandyInstrument)
@@ -281,3 +290,27 @@ ShopImageHandler:
     ShopImageHandler_Finish:
         j 0x80648370
         nop
+
+CrankyCoconutDonation:
+    beq $at, $v1, CrankyCoconutDonation_Funky
+    addiu $t5, $zero, 0x2
+    addiu $at, $zero, 0xBD ; Cranky Actor index
+    bne $at, $v1, CrankyCoconutDonation_Candy ; Not Cranky Actor
+    nop
+    lw  $t6, 0x24 ($sp)
+    addiu $t7, $zero, 5 ; Crystal Coconuts
+    sw $t7, 0x24 ($sp)
+    addiu $t7, $zero, 8 ; Text File
+    addiu $t8, $zero, 0x24 ; Text Index 
+    sw $t7, 0x2c ($sp)
+    sw $t8, 0x28 ($sp) 
+    j 0x80026F4C
+    addiu $v0, $zero, 0 ; Move Type 0
+
+    CrankyCoconutDonation_Candy:
+        j 0x80026F08
+        addiu $at, $zero, 0xBF
+
+    CrankyCoconutDonation_Funky:
+        j 0x80026F18
+        addiu $t5, $zero, 0x2

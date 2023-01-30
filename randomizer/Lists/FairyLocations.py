@@ -33,7 +33,8 @@ class FairyData:
         logic=None,
         is_vanilla: bool = False,
         spawn_xyz: list = None,
-        natural_index: int = -1
+        natural_index: int = -1,
+        is_5ds_fairy: bool = False,
     ):
         """Initialize with given data."""
         self.name = name
@@ -42,6 +43,7 @@ class FairyData:
         self.fence = fence
         self.spawn_y = spawn_y
         self.logic = lambda l: l.camera
+        self.is_5ds_fairy = is_5ds_fairy
         if logic is not None:
             self.logic = logic
         self.is_vanilla = is_vanilla
@@ -49,8 +51,35 @@ class FairyData:
             self.spawn_xyz = [0, 0, 0]
             if spawn_xyz is not None:
                 self.spawn_xyz = spawn_xyz.copy()
+            else:
+                self.spawn_xyz = [
+                    self.fence.center_x,
+                    self.spawn_y,
+                    self.fence.center_z,
+                ]
         self.natural_index = natural_index
 
+
+relocated_5ds_fairy = FairyData(
+    name="Inside Tiny 5-Door Ship",
+    map=Maps.Galleon5DShipDKTiny,
+    region=Regions.SaxophoneShip,
+    is_vanilla=True,
+    fence=Fence(916, 1703, 1217, 1854),
+    natural_index=1,
+    spawn_y=62,
+    is_5ds_fairy=True,
+)
+
+original_5ds_fairy = FairyData(
+    name="In Tiny's 5-Door Ship",
+    map=Maps.Galleon5DShipDKTiny,
+    region=Regions.SaxophoneShip,
+    is_vanilla=True,
+    spawn_xyz=[1089, 62, 2022],
+    natural_index=1,
+    is_5ds_fairy=True,
+)
 
 fairy_locations = {
     Levels.JungleJapes: [
@@ -424,14 +453,7 @@ fairy_locations = {
             logic=lambda l: l.camera and l.punch and l.chunky,
             natural_index=0,
         ),
-        FairyData(
-            name="In Tiny's 5-Door Ship",
-            map=Maps.Galleon5DShipDKTiny,
-            region=Regions.SaxophoneShip,
-            is_vanilla=True,
-            spawn_xyz=[1089, 62, 2022],
-            natural_index=1,
-        ),
+        relocated_5ds_fairy,
         FairyData(
             name="Tiny Slam Button",
             map=Maps.GloomyGalleon,

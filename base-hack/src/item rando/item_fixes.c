@@ -22,285 +22,290 @@ static pad_refresh_struct pads[] = {
     // BBlast Pads
     {
         .map = 7,
-        .requirement = PADREFRESH_BLAST,
+        .requirement = ITEMREFRESH_BLAST,
         .object_id = 0xD9,
         .target_state = -1,
     },
     {
         .map = 0x26,
-        .requirement = PADREFRESH_BLAST,
+        .requirement = ITEMREFRESH_BLAST,
         .object_id = 0x2E,
         .target_state = -1,
     },
     {
         .map = 0x1A,
-        .requirement = PADREFRESH_BLAST,
+        .requirement = ITEMREFRESH_BLAST,
         .object_id = 0x4D,
         .target_state = -1,
     },
     {
         .map = 0x1E,
-        .requirement = PADREFRESH_BLAST,
+        .requirement = ITEMREFRESH_BLAST,
         .object_id = 0x34,
         .target_state = -1,
     },
     {
         .map = 0x30,
-        .requirement = PADREFRESH_BLAST,
+        .requirement = ITEMREFRESH_BLAST,
         .object_id = 0x4C,
         .target_state = -1,
     },
     {
         .map = 0x48,
-        .requirement = PADREFRESH_BLAST,
+        .requirement = ITEMREFRESH_BLAST,
         .object_id = 0x20,
         .target_state = -1,
     },
     {
         .map = 0x57,
-        .requirement = PADREFRESH_BLAST,
+        .requirement = ITEMREFRESH_BLAST,
         .object_id = 0x1F,
         .target_state = -1,
     },
     // Spring
     {
         .map = 0xC8,
-        .requirement = PADREFRESH_SPRING,
+        .requirement = ITEMREFRESH_SPRING,
         .object_id = 0x3,
         .target_state = -1,
     },
     {
         .map = 0xC3,
-        .requirement = PADREFRESH_SPRING,
+        .requirement = ITEMREFRESH_SPRING,
         .object_id = 0x0,
         .target_state = -1,
     },
     {
         .map = 0xC3,
-        .requirement = PADREFRESH_SPRING,
+        .requirement = ITEMREFRESH_SPRING,
         .object_id = 0x0,
         .target_state = -1,
     },
     {
         .map = 0x1A,
-        .requirement = PADREFRESH_SPRING,
+        .requirement = ITEMREFRESH_SPRING,
         .object_id = 0x26,
         .target_state = -1,
     },
     {
         .map = 0x1A,
-        .requirement = PADREFRESH_SPRING,
+        .requirement = ITEMREFRESH_SPRING,
         .object_id = 0x4F,
         .target_state = -1,
     },
     {
         .map = 0x1A,
-        .requirement = PADREFRESH_SPRING,
+        .requirement = ITEMREFRESH_SPRING,
         .object_id = 0x118,
         .target_state = -1,
     },
     {
         .map = 0x1A,
-        .requirement = PADREFRESH_SPRING,
+        .requirement = ITEMREFRESH_SPRING,
         .object_id = 0x117,
         .target_state = -1,
     },
     {
         .map = 0x30,
-        .requirement = PADREFRESH_SPRING,
+        .requirement = ITEMREFRESH_SPRING,
         .object_id = 0x13,
         .target_state = -1,
     },
     {
         .map = 0x30,
-        .requirement = PADREFRESH_SPRING,
+        .requirement = ITEMREFRESH_SPRING,
         .object_id = 0xF,
         .target_state = -1,
     },
     {
         .map = 0x30,
-        .requirement = PADREFRESH_SPRING,
+        .requirement = ITEMREFRESH_SPRING,
         .object_id = 0x3D,
         .target_state = -1,
     },
     // Balloon (Ignore Dungeon Pads, Castle Tower)
     {
         .map = 0xC1,
-        .requirement = PADREFRESH_BALLOON,
+        .requirement = ITEMREFRESH_BALLOON,
         .object_id = 0x1,
         .target_state = -1,
     },
     {
         .map = 0x48,
-        .requirement = PADREFRESH_BALLOON,
+        .requirement = ITEMREFRESH_BALLOON,
         .object_id = 0xB,
         .target_state = -1,
     },
     {
         .map = 0x48,
-        .requirement = PADREFRESH_BALLOON,
+        .requirement = ITEMREFRESH_BALLOON,
         .object_id = 0xC,
         .target_state = -1,
     },
     {
         .map = 0x48,
-        .requirement = PADREFRESH_BALLOON,
+        .requirement = ITEMREFRESH_BALLOON,
         .object_id = 0x1C,
         .target_state = -1,
     },
     {
         .map = 0x48,
-        .requirement = PADREFRESH_BALLOON,
+        .requirement = ITEMREFRESH_BALLOON,
         .object_id = 0xAF,
         .target_state = -1,
     },
     {
         .map = 0x55,
-        .requirement = PADREFRESH_BALLOON,
+        .requirement = ITEMREFRESH_BALLOON,
         .object_id = 0x0,
         .target_state = -1,
     },
     {
         .map = 0x55,
-        .requirement = PADREFRESH_BALLOON,
+        .requirement = ITEMREFRESH_BALLOON,
         .object_id = 0x1,
         .target_state = -1,
     },
     {
         .map = 0x5E,
-        .requirement = PADREFRESH_BALLOON,
+        .requirement = ITEMREFRESH_BALLOON,
         .object_id = 0x3,
         .target_state = -1,
     },
     {
         .map = 0x1A,
-        .requirement = PADREFRESH_BALLOON,
+        .requirement = ITEMREFRESH_BALLOON,
         .object_id = 0x7B,
         .target_state = -1,
     },
     {
         .map = 0x30,
-        .requirement = PADREFRESH_BALLOON,
+        .requirement = ITEMREFRESH_BALLOON,
         .object_id = 0x14,
         .target_state = -1,
     },
     {
         .map = 0x1E,
-        .requirement = PADREFRESH_BALLOON,
+        .requirement = ITEMREFRESH_BALLOON,
         .object_id = 0x10,
         .target_state = -1,
     },
     {
         .map = 0x1E,
-        .requirement = PADREFRESH_BALLOON,
+        .requirement = ITEMREFRESH_BALLOON,
         .object_id = 0x3B,
         .target_state = -1,
     },
     {
         .map = 0x1E,
-        .requirement = PADREFRESH_BALLOON,
+        .requirement = ITEMREFRESH_BALLOON,
         .object_id = 0x3C,
         .target_state = -1,
     },
     // Monkeyport
     {
         .map = 0x58,
-        .requirement = PADREFRESH_MONKEYPORT,
+        .requirement = ITEMREFRESH_MONKEYPORT,
         .object_id = 0x5,
         .target_state = -1,
     },
     {
         .map = 0x71,
-        .requirement = PADREFRESH_MONKEYPORT,
+        .requirement = ITEMREFRESH_MONKEYPORT,
         .object_id = 0x8,
         .target_state = -1,
     },
     {
         .map = 0x71,
-        .requirement = PADREFRESH_MONKEYPORT,
+        .requirement = ITEMREFRESH_MONKEYPORT,
         .object_id = 0x9,
         .target_state = -1,
     },
     {
         .map = 0x71,
-        .requirement = PADREFRESH_MONKEYPORT,
+        .requirement = ITEMREFRESH_MONKEYPORT,
         .object_id = 0xA,
         .target_state = -1,
     },
     {
         .map = 0x48,
-        .requirement = PADREFRESH_MONKEYPORT,
+        .requirement = ITEMREFRESH_MONKEYPORT,
         .object_id = 0x2C,
         .target_state = -1,
     },
     {
         .map = 0x48,
-        .requirement = PADREFRESH_MONKEYPORT,
+        .requirement = ITEMREFRESH_MONKEYPORT,
         .object_id = 0x2A,
         .target_state = -1,
     },
     {
         .map = 0x48,
-        .requirement = PADREFRESH_MONKEYPORT,
+        .requirement = ITEMREFRESH_MONKEYPORT,
         .object_id = 0xDE,
         .target_state = -1,
     },
     {
         .map = 0x48,
-        .requirement = PADREFRESH_MONKEYPORT,
+        .requirement = ITEMREFRESH_MONKEYPORT,
         .object_id = 0x33,
         .target_state = -1,
     },
     {
         .map = 0x48,
-        .requirement = PADREFRESH_MONKEYPORT,
+        .requirement = ITEMREFRESH_MONKEYPORT,
         .object_id = 0x2C,
         .target_state = -1,
     },
     {
         .map = 0x22,
-        .requirement = PADREFRESH_MONKEYPORT,
+        .requirement = ITEMREFRESH_MONKEYPORT,
         .object_id = 0x37,
         .target_state = -1,
     },
     {
         .map = 0x22,
-        .requirement = PADREFRESH_MONKEYPORT,
+        .requirement = ITEMREFRESH_MONKEYPORT,
         .object_id = 0x38,
         .target_state = 0,
     },
     // Gone
     {
         .map = 0xA6,
-        .requirement = PADREFRESH_GONE,
+        .requirement = ITEMREFRESH_GONE,
         .object_id = 0x4,
         .target_state = -1,
     },
     {
         .map = 0x48,
-        .requirement = PADREFRESH_GONE,
+        .requirement = ITEMREFRESH_GONE,
         .object_id = 0x3D,
         .target_state = -1,
     },
     {
         .map = 0x5A,
-        .requirement = PADREFRESH_GONE,
+        .requirement = ITEMREFRESH_GONE,
         .object_id = 0x6,
         .target_state = -1,
     },
     {
         .map = 0xB2,
-        .requirement = PADREFRESH_GONE,
+        .requirement = ITEMREFRESH_GONE,
         .object_id = 0x8,
         .target_state = -1,
     },
     {
         .map = 0xAA,
-        .requirement = PADREFRESH_GONE,
+        .requirement = ITEMREFRESH_GONE,
         .object_id = 0x3,
         .target_state = 0,
     },
 };
+
+typedef struct swingable_paad {
+    /* 0x000 */ char unk_00[0x28];
+    /* 0x028 */ char vine_complete;
+} swingable_paad;
 
 void refreshPads(pad_refresh_signals signal) {
     /**
@@ -308,19 +313,44 @@ void refreshPads(pad_refresh_signals signal) {
      * 
      * @param signal Pad Refresh Signal
      */
-    int _count = ObjectModel2Count;
-    int *m2location = (int *)ObjectModel2Pointer;
-    for (int i = 0; i < (int)(sizeof(pads) / sizeof(pad_refresh_struct)); i++) {
-        if ((CurrentMap == pads[i].map) && (signal == pads[i].requirement)) {
-            for (int i = 0; i < _count; i++) {
-                ModelTwoData*_object = getObjectArrayAddr(m2location, 0x90, i);
-                if (_object->object_id == pads[i].object_id) {
-                    if (pads[i].target_state >= 0) {
-                
-                    }
+    if (signal == ITEMREFRESH_VINE) {
+        int vine_complete = 1;
+        for (int i = 0; i < ActorCount; i++) {
+            actorData* actor = (actorData*)ActorArray[i];
+            int actor_type = actor->actorType;
+            if ((actor_type == 33) || (actor_type == 69) || (actor_type == 116)) {
+                swingable_paad* paad = actor->paad;
+                paad->vine_complete = vine_complete;
+                if (vine_complete) {
+                    actor->obj_props_bitfield |= 0x04008004;
+                    actor->obj_props_bitfield &= 0xFF7FFFFF;
                 }
             }
-            
+        }
+    } else {
+        int _count = ObjectModel2Count;
+        int *m2location = (int *)ObjectModel2Pointer;
+        for (int i = 0; i < (int)(sizeof(pads) / sizeof(pad_refresh_struct)); i++) {
+            if ((CurrentMap == pads[i].map) && (signal == pads[i].requirement)) {
+                int found_item = 0;
+                int j = 0;
+                while ((!found_item) && (j < _count)) {
+                    ModelTwoData*_object = getObjectArrayAddr(m2location, 0x90, j);
+                    if (_object->object_id == pads[i].object_id) {
+                        behaviour_data* behavior = _object->behaviour_pointer;
+                        if (behavior) {
+                            if (pads[i].target_state >= 0) {
+                                behavior->next_state = pads[i].target_state;   
+                            }
+                            behavior->unk_60 = 0; // Remove opacity filter
+                            behavior->pause_state = 1; // Set script to run
+                        }
+                        found_item = 1;
+                        break;
+                    }
+                    j += 1;
+                }            
+            }
         }
     }
 }

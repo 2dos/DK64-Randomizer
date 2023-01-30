@@ -244,6 +244,7 @@ extern void getItem(int object_type);
 extern int setupHook(int map);
 extern void CheckKasplatSpawnBitfield(void);
 extern void initActor(int actor_index, void* func, int master_type, int paad_type);
+extern void refreshPads(pad_refresh_signals signal);
 
 extern int* pauseScreen3And4Header(int* dl);
 extern int* pauseScreen3And4Counter(int x, int y, int top, int bottom, int* dl, int unk0, int scale);

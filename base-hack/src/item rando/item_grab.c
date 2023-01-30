@@ -660,7 +660,7 @@ void initIceTrap(void) {
      */
     trapPlayer();
     Player->trap_bubble_timer = 200;
-    playSFX(0x2D4); // K Rool Laugh
+    //playSFX(0x2D4); // K Rool Laugh
     damage();
 }
 
