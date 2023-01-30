@@ -9,6 +9,7 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.EnemyTypes import Enemies
 
+
 def ReplaceShipFairy(spoiler: Spoiler):
     """Replace the fairy inside 5DS with an easier to get fairy."""
     file_start = js.pointer_addresses[16]["entries"][Maps.Galleon5DShipDKTiny]["pointing_to"]
@@ -129,6 +130,7 @@ def ReplaceShipFairy(spoiler: Spoiler):
     for x in spawner_bytes:
         for y in x:
             ROM().writeMultipleBytes(y, 1)
+
 
 def PlaceFairies(spoiler: Spoiler):
     """Write Fairies to ROM."""

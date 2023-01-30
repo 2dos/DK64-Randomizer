@@ -58,6 +58,7 @@ class Balloon:
         spawnZ /= len(points)
         return [int(spawnX), int(spawnY), int(spawnZ)]
 
+
 WATER_HEIGHT = 30
 
 ColoredBananaGroupList = [

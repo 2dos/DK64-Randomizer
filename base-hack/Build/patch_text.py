@@ -729,9 +729,11 @@ move_explanations = [
 ]
 
 cranky_text = grabText(8)
-cranky_text.append([
-    {"text": ["DID DIDDY DROP SOME OF YOUR COCONUTS AGAIN? LET US TRADE. DIDDY FOR THE COCONUTS, THE COCONUTS FOR DIDDY."]},
-]) # Item 0x24
+cranky_text.append(
+    [
+        {"text": ["DID DIDDY DROP SOME OF YOUR COCONUTS AGAIN? LET US TRADE. DIDDY FOR THE COCONUTS, THE COCONUTS FOR DIDDY."]},
+    ]
+)  # Item 0x24
 for move in move_explanations:
     cranky_text.append(move["explanation"])
 writeText("cranky_text.bin", cranky_text)

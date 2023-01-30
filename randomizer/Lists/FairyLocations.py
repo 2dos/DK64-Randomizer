@@ -59,6 +59,7 @@ class FairyData:
                 ]
         self.natural_index = natural_index
 
+
 relocated_5ds_fairy = FairyData(
     name="Inside Tiny 5-Door Ship",
     map=Maps.Galleon5DShipDKTiny,

@@ -1,18 +1,22 @@
 """Adjust zones to lack of precision issues with DK64."""
 
+
 class TriggerChange:
     """Class to store information regarding a trigger change."""
 
     def __init__(self, map: int, init_xyz: list, trigger_type: int, new_xyz: list, new_radius: int):
+        """Initialize with given parameters."""
         self.map = map
         self.init_xyz = init_xyz.copy()
         self.trigger_type = trigger_type
         self.new_xyz = new_xyz.copy()
         self.new_radius = new_radius
 
+
 changes = [
     TriggerChange(0x1A, [1292, 120, 156], 15, [1294, 120, 158], 80),
 ]
+
 
 def modifyTriggers(file_name):
     """Change triggers to correct them when seen fit."""
@@ -22,7 +26,7 @@ def modifyTriggers(file_name):
         lz_count = int.from_bytes(fh.read(2), "big")
         for lz_index in range(lz_count):
             lz_start = 2 + (lz_index * 0x38)
-            coords = [0]*3
+            coords = [0] * 3
             for coord_index in range(3):
                 fh.seek(lz_start + (2 * coord_index))
                 coord_val = int.from_bytes(fh.read(2), "big")
@@ -45,4 +49,3 @@ def modifyTriggers(file_name):
                         fh.write(val.to_bytes(2, "big"))
                     fh.seek(lz_start + 0x6)
                     fh.write(change.new_radius.to_bytes(2, "big"))
-                        
