@@ -25,6 +25,7 @@ from ui.rando_options import (
     update_boss_required,
     item_rando_list_changed,
     toggle_key_settings,
+    disable_helm_hurry,
 )
 
 # Call the generate_buttons function just to force loading of the file
@@ -55,3 +56,4 @@ updateDoorOneNumAccess(None)
 updateDoorTwoNumAccess(None)
 item_rando_list_changed(None)
 toggle_key_settings(None)
+disable_helm_hurry(None)

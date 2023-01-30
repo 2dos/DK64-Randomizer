@@ -196,14 +196,12 @@
                                     <div class="row" style="margin-top: 10px">
                                         <!--Randomize Seed-->
                                         <div class="flex-container" style="justify-content: center;">
-                                            <div class="form-group row item-select">
+                                            <div class="form-group item-select">
                                                 <label for="seed" class="select-title">
-                                                    Seed
+                                                    Seed ID
                                                 </label>
                                                 <input name="seed" id="seed" placeholder="Auto fills when empty"/>
                                             </div>
-                                        </div>
-                                        <div class="flex-container" style="justify-content: center;">
                                             <div class="form-group item-select" style="min-width:300px;">
                                                 <label for="settings_string" class="select-title">
                                                     Settings String
@@ -433,6 +431,15 @@
         $(function() {
             $('[data-toggle="tooltip"]').tooltip({
                 trigger: 'hover'
+            })
+        })
+
+        $(document).ready(function () {
+            $("#generate_seed").on('click', function (event) {
+                event.preventDefault();
+                var el = $(this);
+                el.prop('disabled', true);
+                setTimeout(function(){el.prop('disabled', false);}, 2000);
             })
         })
     </script>

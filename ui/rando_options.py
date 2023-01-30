@@ -96,47 +96,120 @@ def max_randomized_fairies(event):
 @bind("click", "crown_door_item")
 def updateDoorOneNumAccess(event):
     """Toggle the textboxes for the first helm door."""
-    disabled = js.document.getElementById("crown_door_item").value == "random"
-    doorone_num = js.document.getElementById("crown_door_item_count")
+    door_one_selection = js.document.getElementById("crown_door_item")
+    disabled = (door_one_selection.value == "random") or (door_one_selection.value == "opened")
+    door_one_req = js.document.getElementById("crown_door_item_count")
     if disabled:
-        doorone_num.setAttribute("disabled", "disabled")
+        door_one_req.setAttribute("disabled", "disabled")
     else:
-        doorone_num.removeAttribute("disabled")
+        door_one_req.removeAttribute("disabled")
+    if door_one_selection.value == "vanilla" and int(door_one_req.value) > 10:
+        door_one_req.value = 10
+    elif door_one_selection.value == "req_gb" and int(door_one_req.value) > 201:
+        door_one_req.value = 201
+    elif door_one_selection.value == "req_bp" and int(door_one_req.value) > 40:
+        door_one_req.value = 40
+    elif door_one_selection.value == "req_medal" and int(door_one_req.value) > 40:
+        door_one_req.value = 40
+    elif door_one_selection.value == "req_companycoins" and int(door_one_req.value) > 2:
+        door_one_req.value = 2
+    elif door_one_selection.value == "req_key" and int(door_one_req.value) > 8:
+        door_one_req.value = 8
+    elif door_one_selection.value == "req_fairy" and int(door_one_req.value) > 18:
+        door_one_req.value = 18
+    elif door_one_selection.value == "req_bean" and int(door_one_req.value) > 1:
+        door_one_req.value = 1
+    elif door_one_selection.value == "req_pearl" and int(door_one_req.value) > 5:
+        door_one_req.value = 5
 
 
 @bind("click", "coin_door_item")
 def updateDoorTwoNumAccess(event):
     """Toggle the textboxes for the second helm door."""
-    disabled = js.document.getElementById("coin_door_item").value == "random"
-    doortwo_num = js.document.getElementById("coin_door_item_count")
+    door_two_selection = js.document.getElementById("coin_door_item")
+    disabled = (door_two_selection.value == "random") or (door_two_selection.value == "opened")
+    door_two_req = js.document.getElementById("coin_door_item_count")
     if disabled:
-        doortwo_num.setAttribute("disabled", "disabled")
+        door_two_req.setAttribute("disabled", "disabled")
     else:
-        doortwo_num.removeAttribute("disabled")
+        door_two_req.removeAttribute("disabled")
+    if door_two_selection.value == "vanilla" and int(door_two_req.value) > 2:
+        door_two_req.value = 2
+    elif door_two_selection.value == "req_gb" and int(door_two_req.value) > 201:
+        door_two_req.value = 201
+    elif door_two_selection.value == "req_bp" and int(door_two_req.value) > 40:
+        door_two_req.value = 40
+    elif door_two_selection.value == "req_key" and int(door_two_req.value) > 8:
+        door_two_req.value = 8
+    elif door_two_selection.value == "req_medal" and int(door_two_req.value) > 40:
+        door_two_req.value = 40
+    elif door_two_selection.value == "req_crown" and int(door_two_req.value) > 10:
+        door_two_req.value = 10
+    elif door_two_selection.value == "req_fairy" and int(door_two_req.value) > 18:
+        door_two_req.value = 18
+    elif door_two_selection.value == "req_bean" and int(door_two_req.value) > 1:
+        door_two_req.value = 1
+    elif door_two_selection.value == "req_pearl" and int(door_two_req.value) > 5:
+        door_two_req.value = 5
 
 
 @bind("focusout", "crown_door_item_count")
 def max_doorone_requirement(event):
     """Validate Door 1 input on loss of focus."""
     door_one_req = js.document.getElementById("crown_door_item_count")
+    door_one_selection = js.document.getElementById("crown_door_item")
+    # Never go below 1 for any option
     if not door_one_req.value:
-        door_one_req.value = 4
+        door_one_req.value = 1
     elif 1 > int(door_one_req.value):
         door_one_req.value = 1
-    elif int(door_one_req.value) > 201:
+    if door_one_selection.value == "vanilla" and int(door_one_req.value) > 10:
+        door_one_req.value = 10
+    elif door_one_selection.value == "req_gb" and int(door_one_req.value) > 201:
         door_one_req.value = 201
+    elif door_one_selection.value == "req_bp" and int(door_one_req.value) > 40:
+        door_one_req.value = 40
+    elif door_one_selection.value == "req_companycoins" and int(door_one_req.value) > 2:
+        door_one_req.value = 2
+    elif door_one_selection.value == "req_key" and int(door_one_req.value) > 8:
+        door_one_req.value = 8
+    elif door_one_selection.value == "req_medal" and int(door_one_req.value) > 40:
+        door_one_req.value = 40
+    elif door_one_selection.value == "req_fairy" and int(door_one_req.value) > 18:
+        door_one_req.value = 18
+    elif door_one_selection.value == "req_bean" and int(door_one_req.value) > 1:
+        door_one_req.value = 1
+    elif door_one_selection.value == "req_pearl" and int(door_one_req.value) > 5:
+        door_one_req.value = 5
 
 
 @bind("focusout", "coin_door_item_count")
 def max_doortwo_requirement(event):
     """Validate Door 2 input on loss of focus."""
     door_two_req = js.document.getElementById("coin_door_item_count")
+    door_two_selection = js.document.getElementById("coin_door_item")
     if not door_two_req.value:
-        door_two_req.value = 2
+        door_two_req.value = 1
     elif 1 > int(door_two_req.value):
         door_two_req.value = 1
-    elif int(door_two_req.value) > 201:
+    if door_two_selection.value == "vanilla" and int(door_two_req.value) > 2:
+        door_two_req.value = 2
+    elif door_two_selection.value == "req_gb" and int(door_two_req.value) > 201:
         door_two_req.value = 201
+    elif door_two_selection.value == "req_bp" and int(door_two_req.value) > 40:
+        door_two_req.value = 40
+    elif door_two_selection.value == "req_key" and int(door_two_req.value) > 8:
+        door_two_req.value = 8
+    elif door_two_selection.value == "req_medal" and int(door_two_req.value) > 40:
+        door_two_req.value = 40
+    elif door_two_selection.value == "req_crown" and int(door_two_req.value) > 10:
+        door_two_req.value = 10
+    elif door_two_selection.value == "req_fairy" and int(door_two_req.value) > 18:
+        door_two_req.value = 18
+    elif door_two_selection.value == "req_bean" and int(door_two_req.value) > 1:
+        door_two_req.value = 1
+    elif door_two_selection.value == "req_pearl" and int(door_two_req.value) > 5:
+        door_two_req.value = 5
 
 
 def min_max(event, min, max):
@@ -525,6 +598,9 @@ def item_rando_list_changed(evt):
     item_rando_pool = document.getElementById("item_rando_list_selected").options
     shockwave = document.getElementById("shockwave_status_shuffled")
     smaller_shops = document.getElementById("smaller_shops")
+    move_vanilla = document.getElementById("move_off")
+    move_rando = document.getElementById("move_on")
+    move_start = document.getElementById("move_start_with")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -540,11 +616,23 @@ def item_rando_list_changed(evt):
         # Prevent camera/shockwave from being coupled and enable smaller shops if shops are in the pool
         if shockwave.selected is True:
             document.getElementById("shockwave_status_shuffled_decoupled").selected = True
+        if move_vanilla.selected is True or move_rando.selected is True or move_start.selected is True:
+            document.getElementById("move_on_cross_purchase").selected = True
         shockwave.setAttribute("disabled", "disabled")
+        move_vanilla.setAttribute("disabled", "disabled")
+        move_rando.setAttribute("disabled", "disabled")
+        move_start.setAttribute("disabled", "disabled")
         smaller_shops.removeAttribute("disabled")
+        # Prevent UI breaking if Vanilla/Unlock All moves was selected before selection Shops in Item Rando
+        js.document.getElementById("training_barrels").removeAttribute("disabled")
+        js.document.getElementById("shockwave_status").removeAttribute("disabled")
+        js.document.getElementById("random_prices").removeAttribute("disabled")
     else:
         # Enable coupled camera/shockwave and disable smaller shops if shops are not in the pool
         shockwave.removeAttribute("disabled")
+        move_vanilla.removeAttribute("disabled")
+        move_rando.removeAttribute("disabled")
+        move_start.removeAttribute("disabled")
         smaller_shops.setAttribute("disabled", "disabled")
         smaller_shops.checked = False
 
@@ -688,3 +776,19 @@ def toggle_key_settings(event):
         krool_access.removeAttribute("disabled")
         keys_random.removeAttribute("disabled")
         selector.setAttribute("disabled", "disabled")
+
+
+@bind("click", "helm_hurry")
+def disable_helm_hurry(evt):
+    """Disable Helm Hurry Selector when Helm Hurry is off."""
+    disabled = True
+    selector = js.document.getElementById("helmhurry_list_modal")
+    if js.document.getElementById("helm_hurry").checked:
+        disabled = False
+    try:
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
+        else:
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass

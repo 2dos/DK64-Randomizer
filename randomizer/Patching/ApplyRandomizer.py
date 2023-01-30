@@ -221,7 +221,7 @@ def patching_response(responded_data):
         BooleanProperties(spoiler.settings.bananaport_rando in ("crossmap_coupled", "crossmap_decoupled"), 0x47),  # Parent Map Filter
         BooleanProperties(spoiler.settings.shop_indicator, 0x134, 2),  # Shop Indicator
         BooleanProperties(spoiler.settings.open_lobbies, 0x14C, 0xFF),  # Open Lobbies
-        BooleanProperties(spoiler.settings.disable_shop_hints, 0x14B, 0),  # Disable Shop Hints
+        BooleanProperties(not spoiler.settings.enable_shop_hints, 0x14B, 0),  # Disable Shop Hints
         BooleanProperties(spoiler.settings.coin_door_item == "opened", 0x33),  # Coin Door Open
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 7),  # Bonus Matches Contents
         BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers

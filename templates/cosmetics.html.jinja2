@@ -15,19 +15,17 @@
     </div>
     <div class="row">
         <div class="col border panel">
-            <h2 class="title">MUSIC RANDO</h2>
-            <div class="flex-container">
-                <div class="form-check form-switch item-switch center-flex">
-                    <label data-toggle="tooltip" title="Randomizes all Music Selections.">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="random_music"
-                               id="random_music"
-                               value="True"/>
-                        Randomize All Music
-                    </label>
-                </div>
-            </div>
+            <h2 class="title">MUSIC RANDO
+                <label data-toggle="tooltip" 
+                        title="Randomizes all Music Selections.">
+                    <input class="dice_checkbox"
+                            type="checkbox"
+                            name="random_music"
+                            id="random_music"
+                            value="True"/>
+                    <label for="random_music"></label>
+                </label>
+            </h2>
             <div class="flex-container">
                 <div class="item-select">
                     <p class="select-title">Background Music</p>
@@ -93,8 +91,8 @@
                    type="file"
                    id="music_file"
                    name="music_file"/>
+            <hr />
             <div class="row">
-                <hr />
                 <h2 class="title">MISCELLANEOUS</h2>
                 <div class="flex-container">
                     <div class="item-multiselect">
@@ -128,41 +126,6 @@
                             </select>
                         </div>
                     </div>
-                    <div class="item-multiselect">
-                        <div class="color-selector">
-                            <p class="select-title">Krusha Slot</p>
-                            <select name="krusha_slot"
-                                    id="krusha_slot"
-                                    class="form-select multi-select"
-                                    aria-label="Krusha"
-                                    multiple
-                                    size="7">
-                                <option selected value="no_slot">
-                                    No Slot
-                                </option>
-                                <option value="dk">
-                                    DK
-                                </option>
-                                <option value="diddy">
-                                    Diddy
-                                </option>
-                                <option value="lanky">
-                                    Lanky
-                                </option>
-                                <option value="tiny">
-                                    Tiny
-                                </option>
-                                <option value="chunky">
-                                    Chunky
-                                </option>
-                                <option value="random"
-                                        data-toggle="tooltip"
-                                        title="Selects a random kong (If Disco Chunky is on, Chunky will not be selected).">
-                                    Random
-                                </option>
-                            </select>
-                        </div>
-                    </div>
                 </div>
                 <div class="flex-container">
                     <div class="form-check form-switch item-switch">
@@ -176,46 +139,44 @@
                             Random Miscellaneous Cosmetics
                         </label>
                     </div>
-                    <div class="form-check form-switch item-switch" hidden>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                                title="Chunky will be replaced with his 'disco' variant that appears at the start of the DK Rap.">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="disco_chunky"
+                                id="disco_chunky"
+                                value="True"/>
+                            Disco Chunky
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch holiday" hidden>
                         <label data-toggle="tooltip"
                                title="Happy Holidays from the DK64 Randomizer Dev Team. Limited time option.">
                             <input class="form-check-input"
                                    type="checkbox"
                                    name="holiday_mode"
                                    id="holiday_mode"
-                                   value="True"/>
+                                   value="False"/>
                             Holiday Mode
                         </label>
                     </div>
+                    <div class="spacer holiday" hidden></div>
                 </div>
             </div>
         </div>
         <div class="col border panel">
-            <h2 class="title">COLORS</h2>
-            <div class="flex-container">
-                <div class="form-check form-switch item-switch center-flex">
-                    <label data-toggle="tooltip"
-                           title="Randomizes all Kong and Transformation Colors.">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="random_colors"
-                               id="random_colors"
-                               value="True"/>
-                        Randomize All Colors
-                    </label>
-                </div>
-                <div class="form-check form-switch item-switch center-flex">
-                    <label data-toggle="tooltip"
-                           title="Chunky will be replaced with his 'disco' variant that appears at the start of the DK Rap.">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="disco_chunky"
-                               id="disco_chunky"
-                               value="True"/>
-                        Disco Chunky
-                    </label>
-                </div>
-            </div>
+            <h2 class="title">COLORS
+                <label data-toggle="tooltip"
+                        title="Randomizes all Kong and Transformation Colors.">
+                    <input class="dice_checkbox"
+                            type="checkbox"
+                            name="random_colors"
+                            id="random_colors"
+                            value="True"/>
+                    <label for="random_colors"></label>
+                </label>
+            </h2>
             <div class="flex-container">
                 <div class="item-color-select">
                     <div class="color-selector">
@@ -428,8 +389,8 @@
                     </div>
                 </div>
             </div>
+            <hr />
             <div class="row">
-                <hr />
                 <h2 class="title">ACCESSIBILITY</h2>
                 <div class="flex-container">
                     <div class="form-check form-switch item-switch">
@@ -546,5 +507,26 @@
                 $('.enguardeColorPicker').attr('style', 'background-color:' + object.enguarde_custom_color + ';')
             }
         }
+    })
+    $(function() {
+        var pattern = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+        var current = 0;
+
+        var keyHandler = function (event) {
+            // If the key isn't in the pattern, or isn't the current key in the pattern, reset
+            if (pattern.indexOf(event.key) < 0 || event.key !== pattern[current]) {
+                current = 0;
+                return;
+            }
+            // Update how much of the pattern is complete
+            current++;
+            // If complete, remove hidden and reset
+            if (pattern.length === current) {
+                current = 0;
+                $('.holiday').removeAttr('hidden');
+            }
+        };
+        // Listen for keydown events
+        document.addEventListener('keydown', keyHandler, false);
     })
 </script>
