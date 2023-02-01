@@ -863,7 +863,7 @@ class Settings:
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
-        bad_fake_types = (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Crown)
+        bad_fake_types = (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Crown, Types.Blueprint, Types.RainbowCoin)
         is_bad = location.type in bad_fake_types
         if self.damage_amount in ("quad", "ohko") or self.perma_death:
             is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm)
