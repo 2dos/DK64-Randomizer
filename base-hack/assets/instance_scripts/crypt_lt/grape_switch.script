@@ -1,5 +1,6 @@
 .data
 id = 0x0
+behav_9C = 0
 .code
 COND 1 | 0 0 0
 EXEC 38 | 1 0 0
@@ -16,9 +17,7 @@ EXEC 1 | 2 0 0
 ENDBLOCK
 COND 1 | 2 0 0
 COND 4 | 0 0 0
-EXEC 37 | 0 1 0
-EXEC 3 | 0 110 0
-EXEC 1 | 3 0 0
+EXEC 7 | 125 1 0
 ENDBLOCK
 COND 1 | 3 0 0
 COND 4 | 0 0 0
