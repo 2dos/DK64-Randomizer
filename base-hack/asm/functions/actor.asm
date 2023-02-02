@@ -81,3 +81,4 @@
 .definelabel trapPlayer, 0x806F027c
 .definelabel applyDamage, 0x806C9974
 .definelabel damage, 0x806EE10C
+.definelabel checkDeathAction, 0x806EB400
