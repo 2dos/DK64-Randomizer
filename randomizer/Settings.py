@@ -1002,12 +1002,11 @@ class Settings:
                     Locations.CavesDiddy5DoorCabinUpper,
                     Locations.CastleDonkeyTree,
                     Locations.CastleLankyGreenhouse,
+                    Locations.HelmBananaFairy1,
+                    Locations.HelmBananaFairy2,
                     # Miscellaneous issues
                     Locations.NintendoCoin,
                     Locations.RarewareCoin,
-                    # Helm Fairy Couplet
-                    Locations.HelmBananaFairy1,
-                    Locations.HelmBananaFairy2,
                 )
                 self.valid_locations[Types.FakeItem] = [x for x in shuffledLocations if not self.isBadIceTrapLocation(LocationList[x]) and x not in bad_fake_locations]
             if Types.Kong in self.shuffled_location_types:
