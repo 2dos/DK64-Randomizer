@@ -42,7 +42,6 @@ def randomize_music(spoiler: Spoiler):
     if spoiler.settings.music_bgm != "default":
         # If the user selected standard rando
         if spoiler.settings.music_bgm == "randomized":
-
             # These lines exist for testing only
             # file = open('static/patches/pointer_addresses.json')
             # pointer_addresses = json.load(file)

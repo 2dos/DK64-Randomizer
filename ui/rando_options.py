@@ -103,7 +103,9 @@ def updateDoorOneNumAccess(event):
         door_one_req.setAttribute("disabled", "disabled")
     else:
         door_one_req.removeAttribute("disabled")
-    if door_one_selection.value == "vanilla" and int(door_one_req.value) > 10:
+    if not door_one_req.value:
+        door_one_req.value = 1
+    elif door_one_selection.value == "vanilla" and int(door_one_req.value) > 10:
         door_one_req.value = 10
     elif door_one_selection.value == "req_gb" and int(door_one_req.value) > 201:
         door_one_req.value = 201
@@ -133,7 +135,9 @@ def updateDoorTwoNumAccess(event):
         door_two_req.setAttribute("disabled", "disabled")
     else:
         door_two_req.removeAttribute("disabled")
-    if door_two_selection.value == "vanilla" and int(door_two_req.value) > 2:
+    if not door_two_req.value:
+        door_two_req.value = 1
+    elif door_two_selection.value == "vanilla" and int(door_two_req.value) > 2:
         door_two_req.value = 2
     elif door_two_selection.value == "req_gb" and int(door_two_req.value) > 201:
         door_two_req.value = 201

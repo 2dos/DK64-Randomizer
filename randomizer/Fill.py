@@ -688,7 +688,7 @@ def RandomFill(settings, itemsToPlace, inOrder=False):
         shuffle(itemsToPlace)
     # Get all remaining empty locations
     empty = []
-    for (id, location) in LocationList.items():
+    for id, location in LocationList.items():
         if location.item is None:
             empty.append(id)
     # Place item in random locations
