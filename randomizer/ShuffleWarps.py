@@ -7,18 +7,18 @@ from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Warps import BananaportVanilla
 
 
-def getShuffleMaps():
+def getShuffleMaps(selected_warps):
     """Produce list of maps which contain a bananaport swap."""
     lst = []
     for x in BananaportVanilla.values():
-        if x.map_id not in lst:
+        if x.map_id not in lst and x.map_id.name in selected_warps:
             lst.append(x.map_id)
     return lst
 
 
-def ShuffleWarps(bananaport_replacements, human_ports):
+def ShuffleWarps(bananaport_replacements, human_ports, selected_warps):
     """Shuffles warps between themselves."""
-    map_list = getShuffleMaps()
+    map_list = getShuffleMaps(selected_warps)
     for warp_map in map_list:
         shufflable_warps = []
         # Generate list of shufflable warp types (Warp 1, Warp 2 etc.)
@@ -53,13 +53,15 @@ def getWarpFromSwapIndex(index):
             return warp
 
 
-def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled):
+def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled, selected_warps):
     """Shuffles warps with the cross-map setting."""
     for warp in BananaportVanilla.values():
         warp.cross_map_placed = False
         bananaport_replacements.append(0)
     selected_warp_list = []
     for idx, warp in enumerate(BananaportVanilla.values()):
+        print(warp.map_id.name)
+        print(selected_warps)
         if not warp.cross_map_placed or not is_coupled:
             available_warps = []
             full_warps = []

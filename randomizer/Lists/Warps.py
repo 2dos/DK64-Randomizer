@@ -5,6 +5,8 @@ from randomizer.Enums.Warps import Warps
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Kongs import Kongs
 
+from re import sub
+
 
 class BananaportData:
     """Information about the bananaport."""
@@ -179,3 +181,10 @@ BananaportVanilla = {
     Warps.IslesRing5: BananaportData(name="DK Isles: Ring (5)", map_id=Maps.Isles, region_id=Regions.IslesMain, obj_id_vanilla=0x15, vanilla_warp=4, swap_index=8),
     Warps.IslesFairyIsland: BananaportData(name="DK Isles: Fairy Island", map_id=Maps.Isles, region_id=Regions.IslesMain, obj_id_vanilla=0x19, vanilla_warp=4, swap_index=9),
 }
+
+VanillaBananaportSelector = []
+result = []
+for warp in BananaportVanilla.values():
+    if warp.map_id not in result:
+        VanillaBananaportSelector.append({"name": " ".join(sub('([A-Z][a-z]+)', r' \1', sub('([A-Z]+)', r' \1', (str(warp.map_id).split(".")[-1]).split(".")[-1])).split()), "value": warp.map_id.name, "tooltip": ""})
+        result.append(warp.map_id)
