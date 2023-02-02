@@ -908,9 +908,10 @@ void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag) {
 						int move_flags[] = {FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE, -2};
 						text_item_1 = 0x0;
 						text_file = 8;
+						int explanation_start = 0x25;
 						for (int i = 0; i < sizeof(move_flags)/4; i++) {
 							if (move_flags[i] == paad->flag) {
-								text_item_1 = 0x24 + i;
+								text_item_1 = explanation_start + i;
 							}
 						}
 						int subtype = getMoveProgressiveFlagType(paad->flag);
@@ -933,7 +934,7 @@ void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag) {
 								text_file = 9;
 							}
 						} else {
-							text_item_1 = 0x2B;
+							text_item_1 = explanation_start + 7;
 							text_file = 8;
 						}
 					}

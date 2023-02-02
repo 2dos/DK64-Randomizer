@@ -199,6 +199,13 @@ void overlay_changes(void) {
 		*(int*)(0x8002691C) = func_call;
 		*(int*)(0x800270B8) = 0x0C000000 | (((int)&showPostMoveText & 0xFFFFFF) >> 2);
 		*(int*)(0x80026508) = 0x0C000000 | (((int)&canPlayJetpac & 0xFFFFFF) >> 2);
+		*(int*)(0x80026F64) = 0; //  Disable check for whether you have a move before giving donation at shop
+		*(int*)(0x80026F68) = 0; //  Disable check for whether you have a move before giving donation at shop
+		if (CurrentMap == CRANKY) {
+			*(short*)(0x80026FBA) = 3; // Coconut giving cutscene
+			*(short*)(0x80026E6A) = 0xBD; // Cranky
+			*(short*)(0x80026E8E) = 5; // Coconuts
+		}
 	} else if (CurrentMap == MAIN_MENU) {
 		*(short*)(0x8002E266) = 7; // Enguarde Arena Movement Write
 		*(short*)(0x8002F01E) = 7; // Rambi Arena Movement Write

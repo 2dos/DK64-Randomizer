@@ -290,7 +290,9 @@ extern void enableComplexFree(void);
 extern void complexFreeWrapper(void* addr);
 extern void trapPlayer(void);
 extern int applyDamage(int player, int damage);
+extern void damage(void);
 extern int isObjectTangible(int id);
+extern int getCenterOffset(int style, char* str);
 
 extern void unkLightFunc_0(actorData* actor, int unk0, char unk1, char unk2, unsigned char); //80604cbc
 extern void kongFollowingLightFunc(unsigned int unk0, unsigned short height_variance, float payerX, float PlayerY, float PlayerZ, unsigned short unk2, float unk3, float movement_speed, unsigned int unk4); //8072a920

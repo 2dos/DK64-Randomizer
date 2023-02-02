@@ -80,3 +80,4 @@
 .definelabel getChunk, 0x806531B8
 .definelabel trapPlayer, 0x806F027c
 .definelabel applyDamage, 0x806C9974
+.definelabel damage, 0x806EE10C

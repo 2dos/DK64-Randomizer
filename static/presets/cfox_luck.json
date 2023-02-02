@@ -67,7 +67,7 @@
     "shorten_boss":true,
     "enable_tag_anywhere":true,
     "wrinkly_hints":"standard",
-    "disable_shop_hints":false,
+    "enable_shop_hints":true,
     "fps_display":false,
     "warp_to_isles":true,
     "helm_setting":"skip_start",

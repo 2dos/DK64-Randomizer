@@ -162,7 +162,8 @@ class Spoiler:
         settings["Key 8 Required"] = self.settings.krool_access
         settings["Key 8 in Helm"] = self.settings.key_8_helm
         settings["Select Starting Keys"] = self.settings.select_keys
-        settings["Number of Keys Required"] = self.settings.krool_key_count
+        if not self.settings.keys_random:
+            settings["Number of Keys Required"] = self.settings.krool_key_count
         settings["Fast Start"] = self.settings.fast_start_beginning_of_game
         settings["Helm Setting"] = self.settings.helm_setting
         settings["Quality of Life"] = self.settings.quality_of_life
@@ -488,6 +489,8 @@ class Spoiler:
             humanspoiler["Cosmetics"]["Event Themes"] = self.music_event_data
         if self.settings.kasplat_rando:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
+        if self.settings.random_fairies:
+            humanspoiler["Shuffled Banana Fairies"] = self.fairy_locations_human
         if self.settings.random_patches:
             humanspoiler["Shuffled Dirt Patches"] = self.human_patches
         if self.settings.bananaport_rando != "off":
@@ -545,7 +548,7 @@ class Spoiler:
             cb_kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
             for lvl in cb_levels:
                 for kng in cb_kongs:
-                    humanspoiler["Colored Banana Locations"][f"{lvl} {kng}"] = {"Balloons": "", "Bananas": ""}
+                    humanspoiler["Colored Banana Locations"][f"{lvl} {kng}"] = {"Balloons": [], "Bananas": []}
             for group in self.cb_placements:
                 lvl_name = level_dict[group["level"]]
                 idx = 1
@@ -556,9 +559,9 @@ class Spoiler:
                 for combo in join_combos:
                     if combo in map_name:
                         map_name = map_name.replace(combo, combo.replace(" ", ""))
-                humanspoiler["Colored Banana Locations"][f"{lvl_name.split(' ')[idx]} {NameFromKong(group['kong'])}"][
-                    human_cb_type_map[group["type"]].strip()
-                ] += f"{map_name.strip()}: {group['name']}<br>"
+                humanspoiler["Colored Banana Locations"][f"{lvl_name.split(' ')[idx]} {NameFromKong(group['kong'])}"][human_cb_type_map[group["type"]].strip()].append(
+                    f"{map_name.strip()}: {group['name']}"
+                )
 
         self.json = json.dumps(humanspoiler, indent=4)
 

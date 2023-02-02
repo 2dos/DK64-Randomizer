@@ -146,6 +146,10 @@ void alterGBKong(int map, int id, int new_kong) {
 	}
 }
 
+int getCenter(int style, char* str) {
+	return (screenCenterX + 100 - (getCenterOffset(style,str))) * 0.5f;
+}
+
 int getLo(void* addr) {
     return ((int)addr) & 0xFFFF;
 }

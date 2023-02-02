@@ -544,6 +544,8 @@ def applyKrushaKong(spoiler: Spoiler):
         ROM().write(krusha_index)
         placeKrushaHead(krusha_index)
         changeKrushaModel(krusha_index)
+        if krusha_index == 0:
+            fixFungiBBlast()
 
 
 DK_SCALE = 0.75
@@ -616,6 +618,27 @@ def changeKrushaModel(krusha_kong: int):
         data = gzip.compress(data, compresslevel=9)
     ROM().seek(krusha_model_start)
     ROM().writeBytes(data)
+
+
+def fixFungiBBlast():
+    """Fix two barrels which are broken with Krusha + Fungi BBlast."""
+    setup_start = js.pointer_addresses[9]["entries"][0xBC]["pointing_to"]
+    ROM().seek(setup_start)
+    model_2_count = int.from_bytes(ROM().readBytes(4), "big")
+    mystery_start = setup_start + 4 + (0x30 * model_2_count)
+    ROM().seek(mystery_start)
+    mystery_count = int.from_bytes(ROM().readBytes(4), "big")
+    actor_start = mystery_start + 4 + (0x24 * mystery_count)
+    ROM().seek(actor_start)
+    actor_count = int.from_bytes(ROM().readBytes(4), "big")
+    for item in range(actor_count):
+        item_start = actor_start + 4 + (item * 0x38)
+        ROM().seek(item_start + 0x34)
+        if int.from_bytes(ROM().readBytes(2), "big") in (2, 5):
+            ROM().seek(item_start + 0x14)
+            ROM().writeMultipleBytes(0xFFFFFFEC, 4)
+            ROM().seek(item_start + 0x1B)
+            ROM().writeMultipleBytes(0, 1)
 
 
 def placeKrushaHead(slot):
@@ -893,7 +916,7 @@ boot_phrases = (
     "Fixing Krushas Collision",
     "Falling on 75m",
     "Summoning Salt",
-    "Combing Chunky's Afro",
+    "Combing Chunkys Afro",
     "Asking what you gonna do",
     "Thinking with portals",
     "Reminding you to hydrate",

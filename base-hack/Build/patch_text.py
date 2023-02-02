@@ -672,11 +672,11 @@ writeText("move_names.bin", move_names_arr)
 
 move_explanations = [
     {
-        "move": "dive_barrel",  # 0x24
+        "move": "dive_barrel",  # 0x25
         "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW DIVE UNDERWATER. PRESS"]}, {"text": ["z_button"]}, {"text": ["TO SUBMERGE YOURSELF."]}],
     },
     {
-        "move": "orange_barrel",  # 0x25
+        "move": "orange_barrel",  # 0x26
         "explanation": [
             {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW THROW ORANGE GRENADES. PRESS"]},
             {"text": ["z_button"]},
@@ -686,11 +686,11 @@ move_explanations = [
         ],
     },
     {
-        "move": "barrel_barrel",  # 0x26
+        "move": "barrel_barrel",  # 0x27
         "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW PICK UP OBJECTS. PRESS"]}, {"text": ["b_button"]}, {"text": ["TO GRAB AN OBJECT WITH RELATIVE EASE."]}],
     },
     {
-        "move": "vine_barrel",  # 0x27
+        "move": "vine_barrel",  # 0x28
         "explanation": [
             {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW SWING ON VINES. JUMP TO GRAB ONTO THE VINE AND PRESS "]},
             {"text": ["a_button"]},
@@ -698,7 +698,7 @@ move_explanations = [
         ],
     },
     {
-        "move": "camera_solo",  # 0x28
+        "move": "camera_solo",  # 0x29
         "explanation": [
             {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW USE A CAMERA TO SNAP BANANA FAIRIES. PRESS"]},
             {"text": ["z_button"]},
@@ -710,11 +710,11 @@ move_explanations = [
         ],
     },
     {
-        "move": "shockwave_solo",  # 0x29
+        "move": "shockwave_solo",  # 0x2A
         "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE. PRESS AND HOLD"]}, {"text": ["b_button"]}, {"text": ["TO CHARGE THE SHOCKWAVE."]}],
     },
     {
-        "move": "camera_shockwave_combo",  # 0x2A
+        "move": "camera_shockwave_combo",  # 0x2B
         "explanation": [
             {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE AND USE A CAMERA TO SNAP BANANA FAIRIES. PRESS AND HOLD"]},
             {"text": ["b_button"]},
@@ -725,10 +725,15 @@ move_explanations = [
             {"text": ["TO PULL OUT THE CAMERA."]},
         ],
     },
-    {"move": "generic_item", "explanation": [{"text": ["PAY ATTENTION, ~. THERE'S PLENTY MORE ITEMS TO GATHER IN THIS GAME. GET MOVING SO WE CAN DISPENSE OF K. ROOL"]}]},  # 0x2B
+    {"move": "generic_item", "explanation": [{"text": ["PAY ATTENTION, ~. THERE'S PLENTY MORE ITEMS TO GATHER IN THIS GAME. GET MOVING SO WE CAN DISPENSE OF K. ROOL"]}]},  # 0x2C
 ]
 
 cranky_text = grabText(8)
+cranky_text.append(
+    [
+        {"text": ["DID DIDDY DROP SOME OF YOUR COCONUTS AGAIN? LET US TRADE. DIDDY FOR THE COCONUTS, THE COCONUTS FOR DIDDY."]},
+    ]
+)  # Item 0x24
 for move in move_explanations:
     cranky_text.append(move["explanation"])
 writeText("cranky_text.bin", cranky_text)

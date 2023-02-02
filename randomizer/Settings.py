@@ -196,6 +196,7 @@ class Settings:
         self.loading_zone_coupled = None
         self.move_rando = "off"
         self.random_patches = None
+        self.random_fairies = None
         self.random_prices = None
         self.boss_location_rando = None
         self.boss_kong_rando = None
@@ -417,6 +418,7 @@ class Settings:
         self.switch_allocation = [1, 1, 1, 1, 2, 2, 3]
         self.item_reward_previews = False
         self.microhints_enabled = "off"
+        self.portal_numbers = False
         # Helm Hurry
         self.helmhurry_list_starting_time = 1200
         self.helmhurry_list_golden_banana = 20
@@ -696,7 +698,7 @@ class Settings:
         required_key_count = 0
         if self.keys_random:
             required_key_count = randint(0, 8)
-        if self.select_keys:
+        elif self.select_keys:
             self.krool_keys_required = KeyEvents.copy()
             for key in self.starting_keys_list_selected:
                 if key == "key1":
@@ -862,7 +864,7 @@ class Settings:
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
-        bad_fake_types = (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Crown)
+        bad_fake_types = (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Crown, Types.Blueprint, Types.RainbowCoin)
         is_bad = location.type in bad_fake_types
         if self.damage_amount in ("quad", "ohko") or self.perma_death:
             is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm)

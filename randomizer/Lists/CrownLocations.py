@@ -63,7 +63,7 @@ CrownLocations = {
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Behind Storm Area Shop", x=1705, y=280, z=4233, scale=0.45, region=Regions.JapesBeyondCoconutGate2),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Minecart Alcove", x=1106, y=288, z=1967, scale=0.3, region=Regions.JungleJapesMain),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Near High Shop", x=2045, y=680, z=2522, scale=0.35, region=Regions.JungleJapesMain),
-        CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: On Mountain", x=1616, y=989, z=2439, scale=0.5, region=Regions.JapesTopOfMountain),
+        # CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: On Mountain", x=1616, y=989, z=2439, scale=0.5, region=Regions.JapesTopOfMountain),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Near Kong Cage", x=949, y=852, z=2384, scale=0.35, region=Regions.JungleJapesMain),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Near Cannon Platform", x=1282, y=520, z=2262, scale=0.35, region=Regions.JungleJapesMain),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: In T&S Alcove", x=770, y=538, z=2332, scale=0.35, region=Regions.JungleJapesMain),
@@ -785,7 +785,7 @@ CrownLocations = {
             y=-136,
             z=2545,
             scale=0.5,
-            region=Regions.HideoutHelmStart,
+            region=Regions.HideoutHelmAfterBoM,
             logic=lambda l: l.lanky
             and l.handstand
             and ((l.chunky and l.pineapple and l.vines) or l.phasewalk)
@@ -807,7 +807,7 @@ CrownLocations = {
             y=-132,
             z=2243,
             scale=0.5,
-            region=Regions.HideoutHelmStart,
+            region=Regions.HideoutHelmAfterBoM,
             logic=lambda l: l.lanky
             and l.handstand
             and ((l.chunky and l.pineapple and l.vines) or l.phasewalk)
@@ -829,7 +829,7 @@ CrownLocations = {
             y=-164,
             z=1261,
             scale=0.5,
-            region=Regions.HideoutHelmStart,
+            region=Regions.HideoutHelmAfterBoM,
             logic=lambda l: l.lanky
             and l.handstand
             and l.settings.helm_setting == "skip_all"
@@ -842,7 +842,7 @@ CrownLocations = {
             y=-461,
             z=480,
             scale=0.5,
-            region=Regions.HideoutHelmStart,
+            region=Regions.HideoutHelmAfterBoM,
             logic=lambda l: (
                 l.settings.helm_setting == "skip_all"
                 or (

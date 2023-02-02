@@ -89,7 +89,6 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
     enemy_swaps_library = {}
 
     if crown_setting != "off":
-
         # library of every crown map. will have a list of all enemies to put in those maps.
         enemy_swaps_library = {
             Maps.JapesCrown: [],
