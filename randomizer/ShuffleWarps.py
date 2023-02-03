@@ -16,6 +16,16 @@ def getShuffleMaps(selected_warps):
     return lst
 
 
+def getFilteredWarps(selected_warps):
+    """Produce list of warps, filtered to only include the levels selected by the user"""
+    lst = []
+    for x in BananaportVanilla.values():
+        if x.map_id.name in selected_warps:
+            lst.append(x)
+    return lst
+
+
+
 def ShuffleWarps(bananaport_replacements, human_ports, selected_warps):
     """Shuffles warps between themselves."""
     map_list = getShuffleMaps(selected_warps)
@@ -60,9 +70,13 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled, selec
         bananaport_replacements.append(0)
     selected_warp_list = []
     for idx, warp in enumerate(BananaportVanilla.values()):
-        print(warp.map_id.name)
-        print(selected_warps)
-        if not warp.cross_map_placed or not is_coupled:
+        if (warp.map_id.name not in selected_warps):
+            # if the warp is in an excluded level, create an entry into bananaport_replacements to point to its vanilla data instead of trying to leave it blank
+            for warp_check in BananaportVanilla.values():
+                if warp_check.map_id == warp.map_id and warp_check.vanilla_warp == warp.vanilla_warp and warp_check.name != warp.name:
+                    bananaport_replacements[warp.swap_index] = [warp_check.swap_index, warp.vanilla_warp]
+                    warp.destination_region_id = warp_check.region_id
+        elif not warp.cross_map_placed or not is_coupled:
             available_warps = []
             full_warps = []
             for warp_check in BananaportVanilla.values():
@@ -74,6 +88,8 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled, selec
                 else:
                     full_warps.append(warp_check.swap_index)
                 if warp.restricted and warp_check.restricted:
+                    is_enabled = False
+                if warp_check.map_id.name not in selected_warps:
                     is_enabled = False
                 if is_enabled:
                     available_warps.append(warp_check.swap_index)
