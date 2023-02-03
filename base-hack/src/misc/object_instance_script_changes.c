@@ -1586,28 +1586,32 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (index == 0){
 						return !Rando.tag_anywhere;
 					} else if (index == 1){
+						//Obtain gate variables
 						ModelTwoData gateModelTwoPointer = *(ModelTwoData*)(0x807F6244);
 						behaviour_data gateBehaviour = *(behaviour_data*)(&gateModelTwoPointer.behaviour_pointer);
 						behaviour_data* gateBehaviourPointer = (behaviour_data*)(&gateModelTwoPointer.behaviour_pointer);
 						int id_needed = 1;
 						int gateIndex = indexOfNextObj(id_needed);
+						
+						//initialize the gate
 						if(gateIndex != -1 && gateBehaviour.pause_state == 0){
 							setScriptRunState(gateBehaviourPointer, 1, 0);
 							setObjectScriptState(1, 1, 0);
+							//vanilla initiation code
+							unkObjFunction0(id_needed,1,1);
+							unkObjFunction1(id_needed,1,3);
+							setScriptRunState(gateBehaviourPointer, 2, 0);
 						}
 						//play grape switch cutscene if skip cutscenes isn't on
 						if (!Rando.quality_of_life.remove_cutscenes){
 							PlayCutsceneFromModelTwoScript(behaviour_pointer, 0, 1, 0);
+							behaviour_pointer->timer = 110;
 						}
-						behaviour_pointer->timer = 110;
 						//move on to state 3
 						behaviour_pointer->next_state = 3;
 					}
 				} else if (param2 == CRYPT_LT_GATE){
-					//initialize the gate
-					unkObjFunction0(id,1,1);
-					unkObjFunction1(id,1,3);
-					setScriptRunState(behaviour_pointer, 2, 0);
+					
 				}
 				break;
 			case CRYPT_DDC:
