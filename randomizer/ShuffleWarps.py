@@ -15,17 +15,6 @@ def getShuffleMaps(selected_warps):
             lst.append(x.map_id)
     return lst
 
-
-def getFilteredWarps(selected_warps):
-    """Produce list of warps, filtered to only include the levels selected by the user"""
-    lst = []
-    for x in BananaportVanilla.values():
-        if x.map_id.name in selected_warps:
-            lst.append(x)
-    return lst
-
-
-
 def ShuffleWarps(bananaport_replacements, human_ports, selected_warps):
     """Shuffles warps between themselves."""
     map_list = getShuffleMaps(selected_warps)
