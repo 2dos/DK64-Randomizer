@@ -5,57 +5,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-
-
-class ColoredBananaGroup:
-    """Stores data for each group of colored bananas."""
-
-    def __init__(self, *, group=0, name="No Location", map_id=0, konglist=[], region=None, logic=None, vanilla=False, locations=[]):
-        """Initialize with given parameters."""
-        self.group = group
-        self.name = name
-        self.map = map_id
-        self.kongs = konglist
-        self.locations = locations  # 5 numbers: {int amount, float scale, int x, y, z}
-        self.region = region
-        if logic is None:
-            self.logic = lambda l: True
-        else:
-            self.logic = logic
-
-
-class Balloon:
-    """Stores data for each balloon."""
-
-    def __init__(self, *, id=0, name="No Location", map_id=0, speed=0, konglist=[], region=None, logic=None, vanilla=False, points=[]):
-        """Initialize with given parameters."""
-        self.id = id
-        self.name = name
-        self.map = map_id
-        self.speed = speed
-        self.kongs = konglist
-        self.points = points  # 4 numbers: {int point id, x, y, z}
-        self.region = region
-        if logic is None:
-            self.logic = lambda l: True
-        else:
-            self.logic = logic
-        self.spawnPoint = self.setSpawnPoint(points)
-
-    def setSpawnPoint(self, points=[]):
-        """Set the spawn point of a balloon based on its path."""
-        spawnX = 0
-        spawnY = 0
-        spawnZ = 0
-        for p in points:
-            spawnX += p[0]
-            spawnY += p[1]
-            spawnZ += p[2]
-        spawnX /= len(points)
-        spawnY /= len(points)
-        spawnY -= 100  # Most balloons are at least 100 units off the ground
-        spawnZ /= len(points)
-        return [int(spawnX), int(spawnY), int(spawnZ)]
+from randomizer.LogicClasses import Balloon, ColoredBananaGroup
 
 
 ColoredBananaGroupList = [
@@ -953,7 +903,7 @@ ColoredBananaGroupList = [
     #     map_id=Maps.JungleJapes,
     #     name="Tiny's caged GB",
     #     konglist=[Kongs.tiny],
-    #     region=Regions.JungleJapesMain,
+    #     lregion=Regions.JungleJapesMain,
     #     logic=lambda l: Events.JapesTinySwitch in l.Events and l.CanSlamSwitch(Levels.JungleJapes, 1),
     #     locations=[[5, 1.0, 1335, 285, 1974], [5, 1.0, 1300, 285, 1946]],
     # ),  # Temporarily disabled
@@ -962,7 +912,7 @@ ColoredBananaGroupList = [
     #     map_id=Maps.JungleJapes,
     #     name="Lanky's caged GB",
     #     konglist=[Kongs.lanky],
-    #     region=Regions.JungleJapesMain,
+    #     lregion=Regions.JungleJapesMain,
     #     logic=lambda l: Events.JapesLankySwitch in l.Events and l.CanSlamSwitch(Levels.JungleJapes, 1),
     #     locations=[[5, 1.0, 1140, 525, 2346], [5, 1.0, 1186, 525, 2326]],
     # ),  # Temporarily disabled
@@ -979,7 +929,7 @@ ColoredBananaGroupList = [
     #     map_id=Maps.JungleJapes,
     #     name="Diddy's Caged GB",
     #     konglist=[Kongs.diddy],
-    #     region=Regions.JungleJapesMain,
+    #     lregion=Regions.JungleJapesMain,
     #     logic=lambda l: Events.JapesDiddySwitch1 in l.Events and l.CanSlamSwitch(Levels.JungleJapes, 1),
     #     locations=[[5, 1.0, 2305, 525, 2101], [5, 1.0, 2310, 525, 2142]],
     # ),  # Temporarily disabled
@@ -988,7 +938,7 @@ ColoredBananaGroupList = [
     #     map_id=Maps.JungleJapes,
     #     name="Chunky's Caged GB",
     #     konglist=[Kongs.chunky],
-    #     region=Regions.JungleJapesMain,
+    #     lregion=Regions.JungleJapesMain,
     #     logic=lambda l: Events.JapesChunkySwitch in l.Events and l.CanSlamSwitch(Levels.JungleJapes, 1),
     #     locations=[[5, 1.0, 2335, 685, 2207], [5, 1.0, 2362, 685, 2253]],
     # ),  # Temporarily disabled

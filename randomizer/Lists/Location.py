@@ -231,7 +231,7 @@ LocationList = {
     Locations.AztecDiddy5DoorTemple: Location(Levels.AngryAztec, "Aztec Diddy 5 Door Temple", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(Maps.AztecDiddy5DTemple, 0x6, 56, Kongs.diddy)]),
     Locations.AztecLanky5DoorTemple: Location(Levels.AngryAztec, "Aztec Lanky 5 Door Temple", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 60, Kongs.lanky)]),
     Locations.AztecTiny5DoorTemple: Location(Levels.AngryAztec, "Aztec Tiny 5 Door Temple", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.AztecTiny5DTemple, 0x6, 58, Kongs.tiny)]),
-    Locations.AztecBananaFairyTinyTemple: Location(Levels.AngryAztec, "Aztec Tiny Temple Banana Fairy", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.AztecTiny5DTemple, -1, 601)]),
+    Locations.AztecBananaFairyTinyTemple: Location(Levels.AngryAztec, "Aztec Tiny 5 Door Temple Banana Fairy", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.AztecTiny5DTemple, -1, 601)]),
     Locations.AztecChunky5DoorTemple: Location(Levels.AngryAztec, "Aztec Chunky 5 Door Temple", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(0, -1, 59, Kongs.chunky)]),
     Locations.AztecKasplatChunky5DT: Location(Levels.AngryAztec, "Aztec Kasplat Inside Chunky's 5-Door Temple", Items.AngryAztecChunkyBlueprint, Types.Blueprint, Kongs.chunky, [Maps.AztecChunky5DTemple]),
     Locations.AztecTinyBeetleRace: Location(Levels.AngryAztec, "Aztec Tiny Beetle Race", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.AztecTinyRace, 0x48, 75, Kongs.tiny)]),
