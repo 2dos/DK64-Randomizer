@@ -205,6 +205,7 @@ void overlay_changes(void) {
 			*(short*)(0x80026FBA) = 3; // Coconut giving cutscene
 			*(short*)(0x80026E6A) = 0xBD; // Cranky
 			*(short*)(0x80026E8E) = 5; // Coconuts
+			*(short*)(0x80026FB2) = 9999; // Change coconut gift from 6.6 coconuts to 66.6 coconuts
 		}
 	} else if (CurrentMap == MAIN_MENU) {
 		*(short*)(0x8002E266) = 7; // Enguarde Arena Movement Write

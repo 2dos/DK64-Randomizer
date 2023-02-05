@@ -344,6 +344,13 @@ move_hints = [
         "candy": "THIS POOR LITTLE FAIRY NEEDS TO GET BACK HOME. WILL YOU HELP HER?",
     },
     {
+        "move": "Ice Trap",
+        "kong": "~",
+        "cranky": "THIS ITEM WAS DONATED BY A BARON K. ROOLENSTEIN. LOOKS FISHY BUT YOU CAN HAVE IT.",
+        "funky": "THIS ONE LOOKS A BIT STRANGE MY DUDE. YOU CAN HAVE IT THOUGH!",
+        "candy": "I AM NOT TOO SURE ABOUT THIS ITEM. ARE YOU SURE YOU WANT IT?",
+    },
+    {
         "move": "Not enough coins - Special Move",
         "kong": "~",
         "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD MY SPECIAL MOVE.",
@@ -583,7 +590,7 @@ move_names = [
     {"name": "Chunky Kong", "move_type": "item"},  # 85
     {"name": "Banana Fairy", "move_type": "item"},  # 86
     {"name": "Rainbow Coin", "move_type": "item"},  # 87
-    {"name": "Fake Item", "move_type": "item"},  # 88
+    {"name": "Ice Trap", "move_type": "item"},  # 88
 ]
 
 move_names_arr = []

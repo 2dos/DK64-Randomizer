@@ -21,6 +21,7 @@
 .importobj "obj/src_item rando_collision.o"
 .importobj "obj/src_item rando_defs.o"
 .importobj "obj/src_item rando_flags.o"
+.importobj "obj/src_item rando_ice_trap.o"
 .importobj "obj/src_item rando_item_fixes.o"
 .importobj "obj/src_item rando_item_grab.o"
 .importobj "obj/src_item rando_spawning.o"
