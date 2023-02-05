@@ -93,7 +93,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.LighthouseSurface, lambda l: True),
-        TransitionFront(Regions.MermaidRoom, lambda l: (l.mini and l.istiny) or l.CanPhaseswim(), Transitions.GalleonLighthousAreaToMermaid),
+        TransitionFront(Regions.MermaidRoom, lambda l: (l.mini and l.istiny) or l.CanPhaseswim(), Transitions.GalleonLighthouseAreaToMermaid),
         TransitionFront(Regions.GalleonBossLobby, lambda l: not l.settings.tns_location_rando),  # T&S past Enguarde is redundant with meme hole
     ]),
 

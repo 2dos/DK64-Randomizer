@@ -247,7 +247,7 @@ LogicRegions = {
     ]),
 
     Regions.ThornvineBarn: Region("Thornvine Barn", "Forest Mills", Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.isdonkey and (l.vines or l.advanced_platforming), MinigameType.BonusBarrel),
+        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FungiForest, 1) and l.isdonkey and (l.vines or l.advanced_platforming), MinigameType.BonusBarrel),
         LocationLogic(Locations.ForestBananaFairyThornvines, lambda l: l.Slam and l.camera),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
