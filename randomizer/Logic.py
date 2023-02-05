@@ -765,7 +765,7 @@ class LogicVarHolder:
         can_diddy_skip = self.isdiddy and self.lanky_blocker_skip and level == Levels.HideoutHelm and self.generalclips
         can_lanky_skip = self.islanky and self.lanky_blocker_skip and level != Levels.HideoutHelm
         can_tiny_skip = self.istiny and self.lanky_blocker_skip and level == Levels.HideoutHelm and self.generalclips
-        can_chunky_skip = self.ischunky and self.lanky_blocker_skip and self.punch and level != Levels.HideoutHelm
+        can_chunky_skip = self.ischunky and self.lanky_blocker_skip and self.punch and level not in (Levels.FranticFactory, Levels.HideoutHelm)
         return self.HasEnoughKongs(level, forPreviousLevel=True) and (
             (self.GoldenBananas >= self.settings.EntryGBs[level]) or can_dk_skip or can_diddy_skip or can_lanky_skip or can_tiny_skip or can_chunky_skip
         )

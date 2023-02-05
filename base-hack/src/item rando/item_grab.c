@@ -177,7 +177,7 @@ void banana_medal_acquisition(int flag) {
                 hh_item = HHITEM_RAINBOWCOIN;
                 break;
             case MEDALITEM_FAKEITEM:
-                initIceTrap();
+                queueIceTrap();
                 sprite_index = 0x92;
                 hh_item = HHITEM_FAKEITEM;
                 break;
@@ -358,7 +358,7 @@ void giveFairyItem(int flag, int state, int type) {
         }
     } else if (model == 0x10E) {
         // Fake Item
-        initIceTrap();
+        queueIceTrap();
     } else if (model == 0x10D) {
         giveRainbowCoin();
     }
@@ -645,23 +645,13 @@ void getItem(int object_type) {
             break;
         case 0x25D:
             // Fake Item
-            initIceTrap();
+            queueIceTrap();
             hh_item = HHITEM_FAKEITEM;
             break;
     }
     if (hh_item != HHITEM_NOTHING) {
         addHelmTime(hh_item, multiplier);
     }
-}
-
-void initIceTrap(void) {
-    /**
-     * @brief Initialize an ice trap
-     */
-    trapPlayer();
-    Player->trap_bubble_timer = 200;
-    //playSFX(0x2D4); // K Rool Laugh
-    damage();
 }
 
 int getObjectCollectability(int id, int unk1, int model2_type) {

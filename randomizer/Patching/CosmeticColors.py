@@ -921,6 +921,10 @@ boot_phrases = (
     "Thinking with portals",
     "Reminding you to hydrate",
     "Injecting lag",
+    "Turning Sentient",
+    "Performing for you",
+    "Charging 2 coins per save",
+    "Loading in Beavers",
 )
 
 
