@@ -139,6 +139,8 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 						base = MRT_CANBUY_PEARL;
 					} else if ((flag >= FLAG_FAIRY_1) && (flag < (FLAG_FAIRY_1 + 20))) {
 						base = MRT_CANBUY_FAIRY;
+					} else if ((flag >= FLAG_FAKEITEM) && (flag < (FLAG_FAKEITEM + 0x10))) {
+						base = MRT_CANBUY_FAKEITEM;
 					} else {
 						// Kongs
 						for (int i = 0; i < 5; i++) {

@@ -367,6 +367,9 @@ void purchaseMove(shop_paad* paad) {
 			if (paad->flag == -2) {
 				setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, 0);
 				setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, 0);
+			} else if ((paad->flag >= FLAG_FAKEITEM) && (paad->flag < (FLAG_FAKEITEM + 0x10))) {
+				setFlagDuplicate(paad->flag, 1, 0);
+				queueIceTrap();
 			} else {
 				setFlagDuplicate(paad->flag, 1, 0);
 			}
@@ -450,6 +453,9 @@ void setLocation(purchase_struct* purchase_data) {
 			// BFI Coupled Moves
 			setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,1,0);
 			setFlagDuplicate(FLAG_ABILITY_CAMERA,1,0);
+		} else if ((p_type == PURCHASE_FLAG) && (purchase_data->purchase_value >= FLAG_FAKEITEM) && (purchase_data->purchase_value < (FLAG_FAKEITEM + 0x10))) {
+			setFlagDuplicate(purchase_data->purchase_value,1,0);
+			queueIceTrap();
 		} else if (p_type == PURCHASE_FLAG) {
 			// IsFlag
 			progressiveChange(purchase_data->purchase_value);
@@ -723,7 +729,7 @@ void getNextMoveText(void) {
 				case PURCHASE_FLAG:
 					{
 						if (p_flag == -2) {
-							top_item = 59;
+							top_item = ITEMTEXT_CAMERACOMBO;
 						} else {
 							if (!writeProgressiveText(p_flag, &top_item, &bottom_item)) {
 								int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
@@ -760,6 +766,9 @@ void getNextMoveText(void) {
 							} else if ((p_flag >= FLAG_FAIRY_1) && (p_flag < (FLAG_FAIRY_1 + 20))) {
 								// Banana Fairy
 								top_item = ITEMTEXT_FAIRY;
+							} else if ((p_flag >= FLAG_FAKEITEM) && (p_flag < (FLAG_FAKEITEM + 0x10))) {
+								// Fake Item
+								top_item = ITEMTEXT_FAKEITEM;
 							} else {
 								// Key Number
 								for (int i = 0; i < 8; i++) {

@@ -421,6 +421,9 @@ void callIceTrap(void) {
                 // Seasick
                 return;
             }
+            if (IsAutowalking) {
+                return;
+            }
             // Check Map
             int offset = CurrentMap >> 3;
             int check = CurrentMap % 8;
