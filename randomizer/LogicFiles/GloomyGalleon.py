@@ -173,7 +173,6 @@ LogicRegions = {
     Regions.SealRace: Region("Seal Race", "Shipyard Area", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonDonkeySealRace, lambda l: l.isdonkey or l.settings.free_trade_items),
     ], [], [
-        TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.Shipyard, lambda l: True, Transitions.GalleonSealToShipyard),
     ], Transitions.GalleonShipyardToSeal
     ),

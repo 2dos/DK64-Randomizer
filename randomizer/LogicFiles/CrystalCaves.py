@@ -97,7 +97,6 @@ LogicRegions = {
     Regions.CavesLankyRace: Region("Caves Lanky Race", "Main Caves Area", Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesLankyBeetleRace, lambda l: l.sprint and l.islanky),
     ], [], [
-        TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
         TransitionFront(Regions.CrystalCavesMain, lambda l: True, Transitions.CavesRaceToMain),
     ], Transitions.CavesMainToRace
     ),
