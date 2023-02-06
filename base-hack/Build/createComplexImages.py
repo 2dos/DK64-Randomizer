@@ -416,6 +416,9 @@ Image.open(f"{hash_dir}rw_coin.png").resize(dim).save(f"{arcade_dir}rwcoin.png")
 gb_im = Image.open(f"{hash_dir}gb.png")
 gb_im = hueShift(gb_im, 10)
 gb_im.save(f"{disp_dir}fake_gb.png")
+gb_im = Image.open(f"{disp_dir}gb.png")
+gb_im = hueShift(gb_im, 10)
+gb_im.transpose(Image.Transpose.FLIP_LEFT_RIGHT).save(f"{disp_dir}fake_gb_shop.png")
 
 Image.open(f"{hash_dir}rainbow_coin.png").resize((32, 32)).save(f"{disp_dir}rainbow_coin.png")  # Rainbow Coin
 rain_im = Image.open(f"{hash_dir}rainbow_coin_noflip.png")

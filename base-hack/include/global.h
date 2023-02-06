@@ -273,6 +273,8 @@ extern void SpawnBarrel(spawnerPacket* packet);
 extern void initBarrelChange(void);
 
 extern void initIceTrap(void);
+extern void queueIceTrap(void);
+extern void callIceTrap(void);
 extern int getPatchWorld(int index);
 
 extern void initItemRando(void);

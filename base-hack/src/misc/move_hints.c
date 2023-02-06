@@ -59,104 +59,106 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 	int kong = shop_data->kong;
 	if (shop_data->price > MovesBase[(int)Character].coins) {
 		if (purchase_type < 5) {
-			base = 48 + purchase_type;
+			base = MRT_NOBUY_SPECIALMOVE + purchase_type;
 		} else {
 			int subtype = getMoveProgressiveFlagType(shop_data->flag);
 			if (isTBarrelFlag(shop_data->flag)) {
-				base = 53;
+				base = MRT_NOBUY_TRAINING;
 			} else if (isFairyFlag(shop_data->flag)) {
-				base = 54;
+				base = MRT_NOBUY_FAIRYMOVE;
 			} else if (purchase_type == PURCHASE_GB) {
-				base = 56;
+				base = MRT_NOBUY_BANANA;
 			} else if ((shop_data->flag >= FLAG_BP_JAPES_DK_HAS) && (shop_data->flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
-				base = 57;
+				base = MRT_NOBUY_BLUEPRINT;
 			} else if ((shop_data->flag >= FLAG_MEDAL_JAPES_DK) && (shop_data->flag < (FLAG_MEDAL_JAPES_DK + 40))) {
-				base = 58;
+				base = MRT_NOBUY_MEDAL;
 			} else if (subtype == 0) {
-				base = 49;
+				base = MRT_NOBUY_SLAM;
 			} else if (subtype == 1) {
-				base = 51;
+				base = MRT_NOBUY_AMMOBELT;
 			} else if (subtype == 2) {
-				base = 52;
+				base = MRT_NOBUY_INSTRUMENT;
 			} else {
 				for (int i = 0; i < 5; i++) {
 					if (shop_data->flag == kong_flags[i]) {
-						base = 59;
+						base = MRT_NOBUY_KONG;
 					}
 				}
 				if (base == 0) {
 					// Generic Item Hint
-					base = 55;
+					base = MRT_NOBUY_ITEM;
 				}
 			}
 		}
 	} else {
 		if (purchase_type == 0) { // Special Potion Moves
-			base = (kong * 3) + (purchase_value - 1);
+			base = MRT_CANBUY_BBLAST + (kong * 3) + (purchase_value - 1);
 		} else if (purchase_type == 1) { // Slams
-			base = 15;
+			base = MRT_CANBUY_SLAM;
 		} else if ((purchase_type == 2) && (purchase_value == 1)) { // Base Guns
-			base = 16 + kong;
+			base = MRT_CANBUY_COCONUT + kong;
 		} else if ((purchase_type == 2) && (purchase_value != 1)) { // Homing/Sniper
-			base = 21 + (purchase_value - 2);
+			base = MRT_CANBUY_HOMING + (purchase_value - 2);
 		} else if (purchase_type == 3) { // Ammo Belt
-			base = 23;
+			base = MRT_CANBUY_AMMOBELT;
 		} else if ((purchase_type == 4) && (purchase_value == 1)) { // Base Instruments
-			base = 24 + kong;
+			base = MRT_CANBUY_BONGOS + kong;
 		} else if ((purchase_type == 4) && (purchase_value != 1)) { // Instrument Upgrades
-			base = 29;
+			base = MRT_CANBUY_INSTRUMENTUPGRADE;
 		} else if (purchase_type == 5) {
 			int move_flags[] = {FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE, -2};
 			base = 0;
 			int subtype = getMoveProgressiveFlagType(shop_data->flag);
 			if (subtype == 0) {
-				base = 15;
+				base = MRT_CANBUY_SLAM;
 			} else if (subtype == 1) {
-				base = 23;
+				base = MRT_CANBUY_AMMOBELT;
 			} else if (subtype == 2) {
-				base = 29;
+				base = MRT_CANBUY_INSTRUMENTUPGRADE;
 			} else {
 				for (int i = 0; i < sizeof(move_flags)/4; i++) {
 					if (shop_data->flag == move_flags[i]) {
-						base = 30 + i;
+						base = MRT_CANBUY_DIVE + i;
 					}
 				}
 				if (base == 0) {
 					int flag = shop_data->flag;
 					if ((flag >= FLAG_BP_JAPES_DK_HAS) && (flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
-						base = 41;
+						base = MRT_CANBUY_BLUEPRINT;
 					} else if ((flag >= FLAG_MEDAL_JAPES_DK) && (flag < (FLAG_MEDAL_JAPES_DK + 40))) {
-						base = 39;
+						base = MRT_CANBUY_MEDAL;
 					} else if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
-						base = 42;
+						base = MRT_CANBUY_NINTENDO;
 					} else if (flag == FLAG_COLLECTABLE_RAREWARECOIN) {
-						base = 43;
+						base = MRT_CANBUY_RAREWARE;
 					} else if ((flag >= FLAG_CROWN_JAPES) && (flag < (FLAG_CROWN_JAPES + 10))) {
-						base = 38;
+						base = MRT_CANBUY_CROWN;
 					} else if (flag == FLAG_COLLECTABLE_BEAN) {
-						base = 44;
+						base = MRT_CANBUY_BEAN;
 					} else if ((flag >= FLAG_PEARL_0_COLLECTED) && (flag < (FLAG_PEARL_0_COLLECTED + 5))) {
-						base = 45;
+						base = MRT_CANBUY_PEARL;
 					} else if ((flag >= FLAG_FAIRY_1) && (flag < (FLAG_FAIRY_1 + 20))) {
-						base = 47;
+						base = MRT_CANBUY_FAIRY;
+					} else if ((flag >= FLAG_FAKEITEM) && (flag < (FLAG_FAKEITEM + 0x10))) {
+						base = MRT_CANBUY_FAKEITEM;
 					} else {
 						// Kongs
 						for (int i = 0; i < 5; i++) {
 							if (flag == kong_flags[i]) {
-								base = 46;
+								base = MRT_CANBUY_KONG;
 							}
 						}
 						// Key
 						for (int i = 0; i < 8; i++) {
 							if (flag == getKeyFlag(i)) {
-								base = 40;
+								base = MRT_CANBUY_KEY;
 							}
 						}
 					}
 				}
 			}
 		} else if (purchase_type == 6) {
-			base = 37;
+			base = MRT_CANBUY_BANANA;
 		}
 	}
 	return (base * 3) + shop_owner;

@@ -85,6 +85,7 @@ del rom\patch.bps
 
 :finish
 del krusha_setting.txt
+call :runscript "Removing unneccessary files", "build\cleanup.py"
 
 echo.
 echo Completed: %date% %time% >> rom/build.log
