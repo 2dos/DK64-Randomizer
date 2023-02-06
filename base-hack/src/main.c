@@ -45,6 +45,7 @@ void cFuncLoop(void) {
 				CheckKasplatSpawnBitfield();
 			}
 		}
+		callIceTrap();
 	}
 	// displayNumberOnTns();
 	if (Rando.music_rando_on) {

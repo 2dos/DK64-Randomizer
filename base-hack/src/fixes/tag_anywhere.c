@@ -550,6 +550,9 @@ int getTagAnywhereKong(int direction) {
 static const unsigned char important_huds[] = {0,1};
 static unsigned char important_huds_changed[] = {0,0};
 
+static char can_tag_left = 0;
+static char can_tag_right = 0;
+
 void tagAnywhere(void) {
     /**
      * @brief Perform Tag Anywhere
@@ -593,19 +596,40 @@ void tagAnywhere(void) {
             }
             int can_ta = canTagAnywhere();
             can_tag_anywhere = can_ta;
-            if (!can_ta) {
-                return;
-            }
-			if (Character < TAG_ANYWHERE_KONG_LIMIT) {
-				int change = 0;
-				if (NewlyPressedControllerInput.Buttons & D_Left) {
-					change = -1;
-				} else if (NewlyPressedControllerInput.Buttons & D_Right) {
-					change = 1;
-				} else {
-					return;
-				}
+            //Implementation of input buffering. May need optimization.
+            if (Character < TAG_ANYWHERE_KONG_LIMIT) {
+				int change = 0;     
+
+                if (ControllerInput.Buttons & D_Left) {    
+                    if (can_tag_left){
+                        change -= 1;      
+                    }                  
+                }
+                else
+                {
+                    can_tag_left = 1;
+                }                
+
+                if (ControllerInput.Buttons & D_Right) {    
+                    if (can_tag_right){                    
+                        change += 1;                        
+                    }
+                }
+                else
+                {
+                    can_tag_right = 1;
+                }                
+
+                //Tag check was moved down here to allow buttons to release while you can't tag.
+                if (!can_ta) {                
+                    return;
+                }
+
 				if (change != 0) {
+                    //Both tags are disabled until a release is found individually. This is done at the same time since it's probably faster to just set both than check. 
+                    can_tag_left = 0;
+                    can_tag_right = 0;
+
                     int next_character = getTagAnywhereKong(change);
 					if (next_character != Character) {
 						if (((MovesBase[next_character].weapon_bitfield & 1) == 0) || (Player->was_gun_out == 0)) {

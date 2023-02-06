@@ -374,7 +374,7 @@ shop_face_array = [
     "pearl32",
     "fairy",
     "rainbow_coin",
-    "fake_gb",
+    "fake_gb_shop",
 ]
 for x, shop in enumerate(shop_face_array):
     data = {"name": f"Shop Indicator ({shop})", "pointer_table_index": 14, "file_index": 195 + x, "source_file": f"assets/displays/{shop}.png", "texture_format": "rgba32"}
@@ -1344,6 +1344,7 @@ with open(newROMName, "r+b") as fh:
         "bonus_skin",
         "fairy",
         "fake_gb",
+        "fake_gb_shop",
         "rainbow_coin",
         "gb_shine",
     ]

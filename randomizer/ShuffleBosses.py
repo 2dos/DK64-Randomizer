@@ -146,7 +146,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
             forestBossOptions.remove(factoryBossIndex)
         # Then place Dogadon 2 (if Mad Jack was placed first)
         if forestBossKong is None:
-            bossTryingToBePlaced = "Dogadon 2"
+            bossTryingToBePlaced = "Dogadon 2 (second)"
             forestBossIndex = random.choice(forestBossOptions)
             forestBossKong = Kongs.chunky
 
