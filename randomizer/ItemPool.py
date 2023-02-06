@@ -452,8 +452,11 @@ def FakeItems():
 def JunkItems():
     """Return a list of Junk Items to be placed."""
     itemPool = []
-    for item_type in (Items.JunkAmmo, Items.JunkCrystal, Items.JunkFilm, Items.JunkMelon, Items.JunkOrange):
-        itemPool.extend(itertools.repeat(item_type, 20))
+    # items_to_place = (Items.JunkAmmo, Items.JunkCrystal, Items.JunkFilm, Items.JunkMelon, Items.JunkOrange)
+    # items_to_place = (Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkOrange)
+    items_to_place = [Items.JunkMelon]
+    for item_type in items_to_place:
+        itemPool.extend(itertools.repeat(item_type, 100))
     return itemPool
 
 

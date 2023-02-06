@@ -334,3 +334,20 @@ void giveRainbowCoin(void) {
 		MovesBase[i].coins += 5;
 	}
 }
+
+void giveAmmo(void) {
+	changeCollectableCount(2, 0, 5);
+}
+
+void giveOrange(void) {
+	playSound(0x147, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+	changeCollectableCount(4, 0, 1);
+}
+
+void giveMelon(void) {
+	applyDamage(0, 1);
+}
+
+void giveCrystal(void) {
+	changeCollectableCount(5, 0, 150);
+}

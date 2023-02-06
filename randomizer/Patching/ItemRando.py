@@ -89,7 +89,7 @@ model_indexes = {
 
 kong_flags = (385, 6, 70, 66, 117)
 
-
+subitems = (Items.JunkOrange, Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkFilm)
 class TextboxChange:
     """Class to store information which pertains to a change of textbox information."""
 
@@ -243,7 +243,6 @@ def getActorIndex(item):
     elif item.new_item == Types.Blueprint:
         return actor_indexes[Types.Blueprint][item.new_kong]
     elif item.new_item == Types.JunkItem:
-        subitems = (Items.JunkOrange, Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkFilm)
         return actor_indexes[Types.JunkItem][subitems.index(item.new_subitem)]
     elif item.new_item == Types.Coin:
         if item.new_flag == 379:  # Is RW Coin
@@ -484,7 +483,11 @@ def place_randomized_items(spoiler: Spoiler):
                         # 14 = Fairy
                         # 15 = Rainbow Coin
                         # 16 = Fake Item
-                        # 17 = Nothing
+                        # 17 = Junk Orange
+                        # 18 = Junk Ammo
+                        # 19 = Junk Crystal
+                        # 20 = Junk Melon
+                        # 21 = Nothing
                         slots = [
                             Types.Banana,  # GB
                             Types.Blueprint,  # BP
@@ -503,6 +506,9 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Fairy,  # Fairy
                             Types.RainbowCoin,  # Rainbow Cion
                             Types.FakeItem,  # Fake Item
+                            Types.JunkItem, # Junk Item
+                            Types.JunkItem, # Junk Item
+                            Types.JunkItem, # Junk Item
                             Types.JunkItem, # Junk Item
                             None,  # No Item
                         ]
@@ -525,6 +531,8 @@ def place_randomized_items(spoiler: Spoiler):
                             ROM().write(medal_index)
                         elif item.new_item == Types.ToughBanana:
                             ROM().write(0)
+                        elif item.new_item == Types.JunkItem:
+                            ROM().write(17 + subitems.index(item.new_subitem))
                         else:
                             ROM().write(slots.index(item.new_item))
                     elif item.location == Locations.JapesChunkyBoulder:
@@ -620,7 +628,6 @@ def place_randomized_items(spoiler: Spoiler):
                             if item_slot["obj"] == Types.Blueprint:
                                 item_obj_index = model_two_indexes[Types.Blueprint][item_slot["kong"]]
                             elif item_slot["obj"] == Types.JunkItem:
-                                subitems = (Items.JunkOrange, Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkFilm)
                                 item_obj_index = model_two_indexes[Types.JunkItem][subitems.index(item_slot["subitem"])]
                             elif item_slot["obj"] == Types.Coin:
                                 item_obj_index = model_two_indexes[Types.Coin][0]

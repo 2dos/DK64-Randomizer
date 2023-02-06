@@ -29,7 +29,11 @@
 #define MEDALITEM_FAIRY 14
 #define MEDALITEM_RAINBOW 15
 #define MEDALITEM_FAKEITEM 16
-#define MEDALITEM_NOTHING 17
+#define MEDALITEM_JUNKORANGE 17
+#define MEDALITEM_JUNKAMMO 18
+#define MEDALITEM_JUNKCRYSTAL 19
+#define MEDALITEM_JUNKMELON 20
+#define MEDALITEM_NOTHING 21
 
 void banana_medal_acquisition(int flag) {
     /**
@@ -180,6 +184,24 @@ void banana_medal_acquisition(int flag) {
                 queueIceTrap();
                 sprite_index = 0x92;
                 hh_item = HHITEM_FAKEITEM;
+                break;
+            case MEDALITEM_JUNKAMMO:
+                giveAmmo();
+                sprite_index = 0x48;
+                break;
+            case MEDALITEM_JUNKCRYSTAL:
+                giveCrystal();
+                song = 35;
+                sprite_index = 0x3A;
+                break;
+            case MEDALITEM_JUNKMELON:
+                giveMelon();
+                sprite_index = 0x46;
+                song = 33;
+                break;
+            case MEDALITEM_JUNKORANGE:
+                giveOrange();
+                sprite_index = 0x2C;
                 break;
             case MEDALITEM_NOTHING:
                 sprite_index = 0x8E;
