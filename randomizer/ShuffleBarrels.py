@@ -40,7 +40,7 @@ def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
             if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm and helm is True:
                 continue
             # If world is still valid, keep minigame associated there
-            if settings.bonus_barrels != "selected":
+            if settings.bonus_barrels != "selected" and (settings.helm_barrels == "skipped" or not settings.minigames_list_selected):
                 if Fill.VerifyWorld(settings):
                     minigamePool.remove(minigame)
                     if MinigameRequirements[minigame].repeat:
@@ -74,7 +74,7 @@ def BarrelShuffle(settings: Settings):
     """Facilitate shuffling of barrels."""
     # First make master copies of locations and minigames
     barrelLocations = list(BarrelMetaData.keys())
-    if settings.bonus_barrels == "selected":
+    if settings.bonus_barrels == "selected" or (settings.helm_barrels == "random" and settings.minigames_list_selected):
         minigame_dict = {
             "batty_barrel_bandit": [Minigames.BattyBarrelBanditVEasy, Minigames.BattyBarrelBanditEasy, Minigames.BattyBarrelBanditNormal, Minigames.BattyBarrelBanditHard],
             "big_bug_bash": [Minigames.BigBugBashVEasy, Minigames.BigBugBashEasy, Minigames.BigBugBashNormal, Minigames.BigBugBashHard],
@@ -107,7 +107,7 @@ def BarrelShuffle(settings: Settings):
         minigamePool = []
     else:
         minigamePool = [x for x in MinigameRequirements.keys() if x != Minigames.NoGame]
-    if settings.bonus_barrels == "selected":
+    if settings.bonus_barrels == "selected" or (settings.helm_barrels == "random" and settings.minigames_list_selected):
         for name, value in minigame_dict.items():
             if name in settings.minigames_list_selected:
                 minigamePool.extend([x for x in MinigameRequirements.keys() if x in value])
