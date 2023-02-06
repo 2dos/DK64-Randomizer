@@ -107,6 +107,8 @@ def AllItems(settings):
         allItems.extend(Blueprints(settings))
     if Types.Banana in settings.shuffled_location_types:
         allItems.extend(GoldenBananaItems())
+    if Types.ToughBanana in settings.shuffled_location_types:
+        allItems.extend(ToughGoldenBananaItems())
     if Types.Coin in settings.shuffled_location_types:
         allItems.extend(CompanyCoinItems())
     if Types.Crown in settings.shuffled_location_types:
@@ -149,6 +151,8 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(Blueprints(settings))
     if Types.Banana in settings.shuffled_location_types:
         allItems.extend(GoldenBananaItems())
+    if Types.ToughBanana in settings.shuffled_location_types:
+        allItems.extend(ToughGoldenBananaItems())
     if Types.Coin in settings.shuffled_location_types:
         allItems.extend(CompanyCoinItems())
     if Types.Crown in settings.shuffled_location_types:
@@ -385,11 +389,17 @@ def CompanyCoinItems():
     itemPool.append(Items.RarewareCoin)
     return itemPool
 
-
+TOUGH_BANANA_COUNT = 13
 def GoldenBananaItems():
     """Return a list of GBs to be placed."""
     itemPool = []
-    itemPool.extend(itertools.repeat(Items.GoldenBanana, 161))  # 40 Blueprint GBs are always already placed (see Types.BlueprintBanana)
+    itemPool.extend(itertools.repeat(Items.GoldenBanana, 161 - TOUGH_BANANA_COUNT))  # 40 Blueprint GBs are always already placed (see Types.BlueprintBanana)
+    return itemPool
+
+def ToughGoldenBananaItems():
+    """Return a list of GBs to be placed."""
+    itemPool = []
+    itemPool.extend(itertools.repeat(Items.ToughBanana, TOUGH_BANANA_COUNT))
     return itemPool
 
 
