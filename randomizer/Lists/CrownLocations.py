@@ -530,7 +530,7 @@ CrownLocations = {
         CrownLocation(map=Maps.CastleGreenhouse, name="Creepy Castle - Greenhouse: Center", x=503.276, y=0, z=581.451, scale=0.33, region=Regions.Greenhouse, is_vanilla=True),
         CrownLocation(map=Maps.CastleGreenhouse, name="Creepy Castle - Greenhouse: Dead End (1)", x=224, y=0, z=494, scale=0.2, region=Regions.Greenhouse),
         CrownLocation(map=Maps.CastleGreenhouse, name="Creepy Castle - Greenhouse: Dead End (2)", x=874, y=0, z=522, scale=0.2, region=Regions.Greenhouse),
-        CrownLocation(map=Maps.CastleGreenhouse, name="Creepy Castle - Greenhouse: GB Box", x=349, y=0, z=302, scale=0.35, region=Regions.Greenhouse),
+        CrownLocation(map=Maps.CastleGreenhouse, name="Creepy Castle - Greenhouse: GB Box", x=170, y=0, z=227, scale=0.35, region=Regions.Greenhouse),
         CrownLocation(map=Maps.CastleGreenhouse, name="Creepy Castle - Greenhouse: Dead End (3)", x=779, y=0, z=125, scale=0.2, region=Regions.Greenhouse),
         CrownLocation(map=Maps.CreepyCastle, name="Creepy Castle: Near Tree", x=1201, y=471.5, z=105, scale=0.5, region=Regions.CreepyCastleMain),
         CrownLocation(map=Maps.CreepyCastle, name="Creepy Castle: Near Crypt Entrance (1)", x=1361, y=366, z=2108, scale=0.4, region=Regions.CreepyCastleMain),

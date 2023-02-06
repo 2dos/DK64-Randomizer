@@ -2564,6 +2564,7 @@ door_locations = {
             scale=0.95,
             group=2,
             logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Creepy Castle: On Stairs to Tag Barrel at the Warp Pad Hub",

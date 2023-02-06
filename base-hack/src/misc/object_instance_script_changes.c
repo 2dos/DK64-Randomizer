@@ -1581,8 +1581,47 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case CRYPT_LT:
-				if (param2 == CRYPT_LT_GRAPE) {
-					return !Rando.tag_anywhere;
+				if (param2 == CRYPT_LT_GRAPE){
+					if (index == 0){
+						return !Rando.tag_anywhere;
+					} else if (index == 1){
+						//obtain gate variables
+						ModelTwoData gateModelTwoPointer = *(ModelTwoData*)(0x807F6244);
+						behaviour_data gateBehaviour = *(behaviour_data*)(&gateModelTwoPointer.behaviour_pointer);
+						behaviour_data* gateBehaviourPointer = (behaviour_data*)(&gateModelTwoPointer.behaviour_pointer);
+						int id_needed = 1;
+						int gateIndex = indexOfNextObj(id_needed);
+						
+						//initialize the gate
+						if(gateIndex != -1 && gateBehaviour.pause_state == 0){
+							//vanilla initiation code
+							unkObjFunction0(id_needed,1,1);
+							unkObjFunction1(id_needed,1,3);
+							setScriptRunState(gateBehaviourPointer, 2, 0);
+						}
+
+						//obtain other grape switch's variables
+						ModelTwoData grapeSwitchModelTwoPointer = *(ModelTwoData*)(0x807F6284);
+						behaviour_data grapeSwitchBehaviour = *(behaviour_data*)(&grapeSwitchModelTwoPointer.behaviour_pointer);
+						behaviour_data* grapeSwitchBehaviourPointer = (behaviour_data*)(&grapeSwitchModelTwoPointer.behaviour_pointer);
+						int grape_switch_id_needed = 17;
+						int grapeIndex = indexOfNextObj(grape_switch_id_needed);
+
+						//initialize the other grape switch
+						if(grapeIndex != -1 && grapeSwitchBehaviour.pause_state == 0){
+							setObjectScriptState(17, 4, 0);
+							//vanilla initiation code
+							setScriptRunState(grapeSwitchBehaviourPointer, 2, 0);
+							unkObjFunction0(grape_switch_id_needed,1,1);
+							unkObjFunction1(grape_switch_id_needed,1,10);
+						}
+						//play grape switch cutscene
+						PlayCutsceneFromModelTwoScript(behaviour_pointer, 0, 1, 0);
+						behaviour_pointer->timer = 110;
+						
+						//move on to state 3
+						behaviour_pointer->next_state = 3;
+					}
 				}
 				break;
 			case CRYPT_DDC:
