@@ -40,7 +40,7 @@ def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
             if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm and helm is True:
                 continue
             # If world is still valid, keep minigame associated there
-            if settings.bonus_barrels != "selected":
+            if settings.bonus_barrels != "selected" and (settings.helm_barrels == "skipped" or not settings.minigames_list_selected):
                 if Fill.VerifyWorld(settings):
                     minigamePool.remove(minigame)
                     if MinigameRequirements[minigame].repeat:
