@@ -505,6 +505,7 @@ class Settings:
                     Types.Fairy,
                     Types.RainbowCoin,
                     Types.FakeItem,
+                    Types.JunkItem,
                 ]
             else:
                 for item in self.item_rando_list_selected:
@@ -1010,6 +1011,8 @@ class Settings:
                     Locations.RarewareCoin,
                 )
                 self.valid_locations[Types.FakeItem] = [x for x in shuffledLocations if not self.isBadIceTrapLocation(LocationList[x]) and x not in bad_fake_locations]
+            if Types.JunkItem in self.shuffled_location_types:
+                self.valid_locations[Types.JunkItem] = [x for x in fairyBannedLocations if LocationList[x].type != Types.Shop]
             if Types.Kong in self.shuffled_location_types:
                 # Banned because it defeats the purpose of starting with X Kongs
                 banned_kong_locations = (

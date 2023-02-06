@@ -125,6 +125,8 @@ def AllItems(settings):
         allItems.extend(RainbowCoinItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems())
+    if Types.JunkItem in settings.shuffled_location_types:
+        allItems.extend(JunkItems())
     if settings.move_rando != "off":
         allItems.extend(DonkeyMoves)
         allItems.extend(DiddyMoves)
@@ -169,6 +171,8 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(RainbowCoinItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems())
+    if Types.JunkItem in settings.shuffled_location_types:
+        allItems.extend(JunkItems())
     return allItems
 
 
@@ -443,6 +447,13 @@ def FakeItems():
     """Return a list of Fake Items to be placed."""
     itemPool = []
     itemPool.extend(itertools.repeat(Items.FakeItem, 10))  # Up to 10 fake items
+    return itemPool
+
+def JunkItems():
+    """Return a list of Junk Items to be placed."""
+    itemPool = []
+    for item_type in (Items.JunkAmmo, Items.JunkCrystal, Items.JunkFilm, Items.JunkMelon, Items.JunkOrange):
+        itemPool.extend(itertools.repeat(item_type, 20))
     return itemPool
 
 

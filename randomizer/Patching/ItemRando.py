@@ -30,6 +30,7 @@ model_two_indexes = {
     Types.Fairy: 0x25C,
     Types.RainbowCoin: 0xB7,
     Types.FakeItem: 0x25D,
+    Types.JunkItem: [0x56, 0x8F, 0x8E, 0x57, 0x98], # Orange, Ammo, Crystal, Watermelon, Film
 }
 
 model_two_scales = {
@@ -50,6 +51,7 @@ model_two_scales = {
     Types.Fairy: 0.25,
     Types.RainbowCoin: 0.25,
     Types.FakeItem: 0.25,
+    Types.JunkItem: 1,
 }
 
 actor_indexes = {
@@ -70,6 +72,7 @@ actor_indexes = {
     Types.Fairy: 88,
     Types.RainbowCoin: 0x8C,
     Types.FakeItem: 217,
+    Types.JunkItem: [0x34, 0x33, 0x79, 0x2F, 0], # Orange, Ammo, Crystal, Watermelon, Film
 }
 model_indexes = {
     Types.Banana: 0x69,
@@ -155,6 +158,7 @@ text_rewards = {
     Types.Pearl: ("PEARL", "BLACK PEARL"),
     Types.RainbowCoin: ("RAINBOW COIN", "COLORFUL COIN HIDDEN FOR 17 YEARS"),
     Types.FakeItem: ("GLODEN BANANE", "BANANA OF FOOLS GOLD"),
+    Types.JunkItem: ("JUNK ITEM", "SOME HEAP OF JUNK"),
     Types.NoItem: ("NOTHING", "DIDDLY SQUAT"),
 }
 
@@ -223,6 +227,7 @@ def getTextRewardIndex(item) -> int:
             Types.RainbowCoin,
             Types.FakeItem,
             Types.NoItem,
+            Types.JunkItem,
         )
         if item.new_item in item_text_indexes:
             return item_text_indexes.index(item.new_item)
@@ -237,6 +242,9 @@ def getActorIndex(item):
         return actor_indexes[Types.NoItem]
     elif item.new_item == Types.Blueprint:
         return actor_indexes[Types.Blueprint][item.new_kong]
+    elif item.new_item == Types.JunkItem:
+        subitems = (Items.JunkOrange, Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkFilm)
+        return actor_indexes[Types.JunkItem][subitems.index(item.new_subitem)]
     elif item.new_item == Types.Coin:
         if item.new_flag == 379:  # Is RW Coin
             return actor_indexes[Types.Coin][1]
@@ -329,12 +337,12 @@ def place_randomized_items(spoiler: Spoiler):
                         if map_id not in map_items:
                             map_items[map_id] = []
                         if item.new_item is None:
-                            map_items[map_id].append({"id": item.placement_data[map_id], "obj": Types.NoItem, "kong": 0, "flag": 0, "upscale": 1, "shared": False})
+                            map_items[map_id].append({"id": item.placement_data[map_id], "obj": Types.NoItem, "kong": 0, "flag": 0, "upscale": 1, "shared": False, "subitem": 0})
                         else:
                             numerator = model_two_scales[item.new_item]
                             denominator = model_two_scales[item.old_item]
                             upscale = numerator / denominator
-                            map_items[map_id].append({"id": item.placement_data[map_id], "obj": item.new_item, "kong": item.new_kong, "flag": item.new_flag, "upscale": upscale, "shared": item.shared})
+                            map_items[map_id].append({"id": item.placement_data[map_id], "obj": item.new_item, "kong": item.new_kong, "flag": item.new_flag, "upscale": upscale, "shared": item.shared, "subitem": item.new_subitem})
                     if item.location == Locations.NintendoCoin:
                         arcade_rewards = (
                             Types.NoItem,  # Or Nintendo Coin
@@ -359,6 +367,7 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Kong,  # Handled in special case
                             Types.RainbowCoin,
                             Types.Coin,  # Flag check handled separately
+                            Types.JunkItem,
                         )
                         arcade_reward_index = 0
                         if item.new_item == Types.Coin:
@@ -396,6 +405,7 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Kong,
                             Types.RainbowCoin,
                             Types.Coin,  # Flag check handled separately
+                            Types.JunkItem,
                         )
                         jetpac_reward_index = 0
                         if item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave):
@@ -493,6 +503,7 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Fairy,  # Fairy
                             Types.RainbowCoin,  # Rainbow Cion
                             Types.FakeItem,  # Fake Item
+                            Types.JunkItem, # Junk Item
                             None,  # No Item
                         ]
                         offset = item.old_flag - 549
@@ -608,6 +619,9 @@ def place_randomized_items(spoiler: Spoiler):
                             item_obj_index = 0
                             if item_slot["obj"] == Types.Blueprint:
                                 item_obj_index = model_two_indexes[Types.Blueprint][item_slot["kong"]]
+                            elif item_slot["obj"] == Types.JunkItem:
+                                subitems = (Items.JunkOrange, Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkFilm)
+                                item_obj_index = model_two_indexes[Types.JunkItem][subitems.index(item_slot["subitem"])]
                             elif item_slot["obj"] == Types.Coin:
                                 item_obj_index = model_two_indexes[Types.Coin][0]
                                 if item_slot["flag"] == 379:

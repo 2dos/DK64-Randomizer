@@ -100,6 +100,12 @@ class Items(IntEnum):
     RainbowCoin = auto()
     FakeItem = auto()
 
+    JunkCrystal = auto()
+    JunkMelon = auto()
+    JunkAmmo = auto()
+    JunkFilm = auto()
+    JunkOrange = auto()
+
     BananaHoard = auto()
 
     JapesDonkeyHint = auto()

@@ -1137,6 +1137,11 @@ def Fill(spoiler):
         Reset()
         fakeUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.FakeItems(), [])
         # Don't raise exception if unplaced fake items
+    # Fill in junk items
+    if Types.JunkItem in spoiler.settings.shuffled_location_types:
+        Reset()
+        junkUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.JunkItems(), [])
+        # Don't raise exception if unplaced junk items
 
     # Some locations require special care to make logic work correctly
     # This is the only location that cares about None vs NoItem - it needs to be None so it fills correctly but NoItem for logic to generate progression correctly
