@@ -707,11 +707,7 @@ def writeMiscCosmeticChanges(spoiler: Spoiler):
     """Write miscellaneous changes to the cosmetic colors."""
     if spoiler.settings.misc_cosmetics:
         # Melon HUD
-        data = {
-            7: [0x13C, 0x147],
-            14: [0x5A, 0x5D],
-            25: [0x17B2, 0x17B2]
-        }
+        data = {7: [0x13C, 0x147], 14: [0x5A, 0x5D], 25: [0x17B2, 0x17B2]}
         shift = random.randint(0, 359)
         for table in data:
             table_data = data[table]

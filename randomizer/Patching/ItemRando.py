@@ -30,7 +30,7 @@ model_two_indexes = {
     Types.Fairy: 0x25C,
     Types.RainbowCoin: 0xB7,
     Types.FakeItem: 0x25D,
-    Types.JunkItem: [0x56, 0x8F, 0x8E, 0x57, 0x98], # Orange, Ammo, Crystal, Watermelon, Film
+    Types.JunkItem: [0x56, 0x8F, 0x8E, 0x57, 0x98],  # Orange, Ammo, Crystal, Watermelon, Film
 }
 
 model_two_scales = {
@@ -72,7 +72,7 @@ actor_indexes = {
     Types.Fairy: 88,
     Types.RainbowCoin: 0x8C,
     Types.FakeItem: 217,
-    Types.JunkItem: [0x34, 0x33, 0x79, 0x2F, 0], # Orange, Ammo, Crystal, Watermelon, Film
+    Types.JunkItem: [0x34, 0x33, 0x79, 0x2F, 0],  # Orange, Ammo, Crystal, Watermelon, Film
 }
 model_indexes = {
     Types.Banana: 0x69,
@@ -90,6 +90,8 @@ model_indexes = {
 kong_flags = (385, 6, 70, 66, 117)
 
 subitems = (Items.JunkOrange, Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkFilm)
+
+
 class TextboxChange:
     """Class to store information which pertains to a change of textbox information."""
 
@@ -212,22 +214,22 @@ def getTextRewardIndex(item) -> int:
         return 14
     else:
         item_text_indexes = (
-            Types.Banana, # 0
-            Types.Blueprint, # 1
-            Types.Key, # 2
-            Types.Crown, # 3
-            Types.Fairy, # 4
-            Types.Coin, # 5
-            Types.Coin, # 6
-            Types.Medal, # 7
-            Types.Shop, # 8
-            Types.Kong, # 9
-            Types.Bean, # 10
-            Types.Pearl, # 11
-            Types.RainbowCoin, # 12
-            Types.FakeItem, # 13
-            Types.NoItem, # 14
-            Types.JunkItem, # 15
+            Types.Banana,  # 0
+            Types.Blueprint,  # 1
+            Types.Key,  # 2
+            Types.Crown,  # 3
+            Types.Fairy,  # 4
+            Types.Coin,  # 5
+            Types.Coin,  # 6
+            Types.Medal,  # 7
+            Types.Shop,  # 8
+            Types.Kong,  # 9
+            Types.Bean,  # 10
+            Types.Pearl,  # 11
+            Types.RainbowCoin,  # 12
+            Types.FakeItem,  # 13
+            Types.NoItem,  # 14
+            Types.JunkItem,  # 15
         )
         if item.new_item in item_text_indexes:
             return item_text_indexes.index(item.new_item)
@@ -341,7 +343,17 @@ def place_randomized_items(spoiler: Spoiler):
                             numerator = model_two_scales[item.new_item]
                             denominator = model_two_scales[item.old_item]
                             upscale = numerator / denominator
-                            map_items[map_id].append({"id": item.placement_data[map_id], "obj": item.new_item, "kong": item.new_kong, "flag": item.new_flag, "upscale": upscale, "shared": item.shared, "subitem": item.new_subitem})
+                            map_items[map_id].append(
+                                {
+                                    "id": item.placement_data[map_id],
+                                    "obj": item.new_item,
+                                    "kong": item.new_kong,
+                                    "flag": item.new_flag,
+                                    "upscale": upscale,
+                                    "shared": item.shared,
+                                    "subitem": item.new_subitem,
+                                }
+                            )
                     if item.location == Locations.NintendoCoin:
                         arcade_rewards = (
                             Types.NoItem,  # Or Nintendo Coin
@@ -506,10 +518,10 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Fairy,  # Fairy
                             Types.RainbowCoin,  # Rainbow Cion
                             Types.FakeItem,  # Fake Item
-                            Types.JunkItem, # Junk Item
-                            Types.JunkItem, # Junk Item
-                            Types.JunkItem, # Junk Item
-                            Types.JunkItem, # Junk Item
+                            Types.JunkItem,  # Junk Item
+                            Types.JunkItem,  # Junk Item
+                            Types.JunkItem,  # Junk Item
+                            Types.JunkItem,  # Junk Item
                             None,  # No Item
                         ]
                         offset = item.old_flag - 549

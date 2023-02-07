@@ -393,12 +393,16 @@ def CompanyCoinItems():
     itemPool.append(Items.RarewareCoin)
     return itemPool
 
+
 TOUGH_BANANA_COUNT = 13
+
+
 def GoldenBananaItems():
     """Return a list of GBs to be placed."""
     itemPool = []
     itemPool.extend(itertools.repeat(Items.GoldenBanana, 161 - TOUGH_BANANA_COUNT))  # 40 Blueprint GBs are always already placed (see Types.BlueprintBanana)
     return itemPool
+
 
 def ToughGoldenBananaItems():
     """Return a list of GBs to be placed."""
@@ -448,6 +452,7 @@ def FakeItems():
     itemPool = []
     itemPool.extend(itertools.repeat(Items.FakeItem, 10))  # Up to 10 fake items
     return itemPool
+
 
 def JunkItems():
     """Return a list of Junk Items to be placed."""

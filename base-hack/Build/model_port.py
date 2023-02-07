@@ -330,7 +330,9 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
         if os.path.exists(f):
             os.remove(f)
 
+
 def createSpriteModelTwo(new_image: int, scaling: float, output_file: str):
+    """Create a model two object based on a singular image."""
     with open(rom_file, "rb") as rom:
         rom.seek(ptr_offset + (m2_table * 4))
         table = ptr_offset + int.from_bytes(rom.read(4), "big")
@@ -349,7 +351,7 @@ def createSpriteModelTwo(new_image: int, scaling: float, output_file: str):
         with open(f"{output_file}_om2.bin", "r+b") as fh:
             fh.seek(0xEC)
             fh.write(new_image.to_bytes(4, "big"))
-            for v in range(0x3E,0x92):
+            for v in range(0x3E, 0x92):
                 for c in range(3):
                     fh.seek((v * 0x10) + (c * 2))
                     val = int.from_bytes(fh.read(2), "big")
@@ -360,6 +362,7 @@ def createSpriteModelTwo(new_image: int, scaling: float, output_file: str):
                         val += 65536
                     fh.seek((v * 0x10) + (c * 2))
                     fh.write(val.to_bytes(2, "big"))
+
 
 model_dir = "assets/models/"
 # Coins
@@ -372,9 +375,9 @@ portActorToModelTwo(0x3C, "", "fairy", 0x90, True, 0.5)
 # portalModel_M2(f"{model_dir}melon.vtx", f"{model_dir}melon.dl", 0, "melon", 0x90)
 createSpriteModelTwo(0x17B2, 0.6, "melon")
 # Potions
-for kong in ("dk","diddy","lanky","tiny","chunky","any"):
-    portalModel_M2(f"{model_dir}potion_{kong}.vtx", f"{model_dir}potion.dl", 0, f"potion_{kong}", 0x90) # Potions - Model 2
-    portalModel_Actor(f"{model_dir}potion_{kong}.vtx", None, f"potion_{kong}", 0xB8) # Actors
+for kong in ("dk", "diddy", "lanky", "tiny", "chunky", "any"):
+    portalModel_M2(f"{model_dir}potion_{kong}.vtx", f"{model_dir}potion.dl", 0, f"potion_{kong}", 0x90)  # Potions - Model 2
+    portalModel_Actor(f"{model_dir}potion_{kong}.vtx", None, f"potion_{kong}", 0xB8)  # Actors
 # Kongs
 portActorToModelTwo(3, "dk_base.bin", "kong_dk", 0x90, True, 0.5)
 portActorToModelTwo(0, "diddy_base.bin", "kong_diddy", 0x90, True, 0.5)

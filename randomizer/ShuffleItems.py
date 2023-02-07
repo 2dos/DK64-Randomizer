@@ -115,7 +115,7 @@ def ShuffleItems(spoiler: Spoiler):
         Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
         Items.FakeItem: list(range(0x2AE, 0x2BE)),
     }
-    junk_flag_dict = list(range(0x320,0x320+100))
+    junk_flag_dict = list(range(0x320, 0x320 + 100))
     flag_dict = {}
     locations_not_needing_flags = []
     locations_needing_flags = []

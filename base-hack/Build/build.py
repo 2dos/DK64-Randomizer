@@ -428,7 +428,7 @@ arcade_rewards = [
     "chunky",  # 19 - Chunky
     "rainbow",  # 20 - Rainbow Coin
     "rwcoin",  # 21 - RW Coin
-    "melon", # 22 - Melon Slice
+    "melon",  # 22 - Melon Slice
 ]
 
 jetpac_rewards = [
@@ -445,7 +445,7 @@ jetpac_rewards = [
     "kong",  # 10 - Kong
     "rainbow",  # 11 - Rainbow Coin
     "nintendo",  # 12 - Nintendo Coin
-    "melon", # 13 - Melon
+    "melon",  # 13 - Melon
 ]
 
 for rwd_index, rwd in enumerate(arcade_rewards):
