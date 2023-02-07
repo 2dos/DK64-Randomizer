@@ -745,6 +745,7 @@ def toggle_logic_type(event):
     else:
         glitch_customization.setAttribute("disabled", "disabled")
 
+
 @bind("change", "bananaport_rando")
 def toggle_bananaport_selector(event):
     """Toggle bananaport settings if shuffling is enabled"""
@@ -753,6 +754,7 @@ def toggle_bananaport_selector(event):
         bananaport_customization.removeAttribute("disabled")
     else:
         bananaport_customization.setAttribute("disabled", "disabled")
+
 
 @bind("click", "nav-patch-tab")
 def toggle_patch_ui(event):

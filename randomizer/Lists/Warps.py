@@ -187,5 +187,7 @@ result = []
 for warp in BananaportVanilla.values():
     if warp.map_id not in result:
         # this regex is used to turn 'CamelCaseNames' into 'Camel Case Names' for the purpose of being displayed on the site's selector
-        VanillaBananaportSelector.append({"name": " ".join(sub('([A-Z][a-z]+)', r' \1', sub('([A-Z]+)', r' \1', (str(warp.map_id).split(".")[-1]).split(".")[-1])).split()), "value": warp.map_id.name, "tooltip": ""})
+        VanillaBananaportSelector.append(
+            {"name": " ".join(sub("([A-Z][a-z]+)", r" \1", sub("([A-Z]+)", r" \1", (str(warp.map_id).split(".")[-1]).split(".")[-1])).split()), "value": warp.map_id.name, "tooltip": ""}
+        )
         result.append(warp.map_id)

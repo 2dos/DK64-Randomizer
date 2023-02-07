@@ -15,6 +15,7 @@ def getShuffleMaps():
             lst.append(x.map_id)
     return lst
 
+
 def ShuffleWarps(bananaport_replacements, human_ports, selected_warps):
     """Shuffles warps between themselves."""
     map_list = getShuffleMaps()
@@ -71,7 +72,7 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled, selec
         bananaport_replacements.append(0)
     selected_warp_list = []
     for idx, warp in enumerate(BananaportVanilla.values()):
-        if (warp.map_id.name not in selected_warps):
+        if warp.map_id.name not in selected_warps:
             # if the warp is in an excluded level, create an entry into bananaport_replacements to point to its vanilla data instead of trying to leave it blank
             for warp_check in BananaportVanilla.values():
                 if warp_check.map_id == warp.map_id and warp_check.vanilla_warp == warp.vanilla_warp and warp_check.name != warp.name:
