@@ -7,42 +7,54 @@ from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Warps import BananaportVanilla
 
 
-def getShuffleMaps(selected_warps):
+def getShuffleMaps():
     """Produce list of maps which contain a bananaport swap."""
     lst = []
     for x in BananaportVanilla.values():
-        if x.map_id not in lst and x.map_id.name in selected_warps:
+        if x.map_id not in lst:
             lst.append(x.map_id)
     return lst
 
 def ShuffleWarps(bananaport_replacements, human_ports, selected_warps):
     """Shuffles warps between themselves."""
-    map_list = getShuffleMaps(selected_warps)
+    map_list = getShuffleMaps()
     for warp_map in map_list:
-        shufflable_warps = []
-        # Generate list of shufflable warp types (Warp 1, Warp 2 etc.)
-        for warp in BananaportVanilla.values():
-            if warp.map_id == warp_map and not warp.locked:
-                shufflable_warps.append(warp.vanilla_warp)
-        random.shuffle(shufflable_warps)
-        shuffle_index = 0
-        # Apply shuffle
-        for warp in BananaportVanilla.keys():
-            if BananaportVanilla[warp].map_id == warp_map and not BananaportVanilla[warp].locked:
-                BananaportVanilla[warp].setNewWarp(shufflable_warps[shuffle_index])
-                shuffle_index += 1
-        # Write to spoiler and create array of replacements
-        pad_list = []
-        pad_temp_list = [[], [], [], [], []]
-        for warp in BananaportVanilla.values():
-            if warp.map_id == warp_map:
-                human_ports[warp.name] = "Warp " + str(warp.new_warp + 1)
-                if not warp.locked:
-                    pad_temp_list[warp.new_warp].append(warp.obj_id_vanilla)
-        for warp_index in range(len(pad_temp_list)):
-            if len(pad_temp_list[warp_index]) > 0:
-                pad_list.append({"warp_index": warp_index, "warp_ids": pad_temp_list[warp_index].copy()})
-        bananaport_replacements.append({"containing_map": warp_map, "pads": pad_list.copy()})
+        if warp_map.name not in selected_warps:
+            # if the warp is in an excluded level, create an entry into bananaport_replacements to point to its vanilla data instead of trying to leave it blank
+            # this function could probably work correctly without this safeguard, but i'd rather be safe than sorry
+            pad_list = []
+            pad_temp_list = [[], [], [], [], []]
+            for warp in BananaportVanilla.values():
+                if warp.map_id == warp_map:
+                    pad_temp_list[warp.vanilla_warp].append(warp.obj_id_vanilla)
+                    if len(pad_temp_list[warp.vanilla_warp]) > 1:
+                        pad_list.append({"warp_index": warp.vanilla_warp, "warp_ids": pad_temp_list[warp.vanilla_warp].copy()})
+            bananaport_replacements.append({"containing_map": warp_map, "pads": pad_list.copy()})
+        else:
+            shufflable_warps = []
+            # Generate list of shufflable warp types (Warp 1, Warp 2 etc.)
+            for warp in BananaportVanilla.values():
+                if warp.map_id == warp_map and not warp.locked:
+                    shufflable_warps.append(warp.vanilla_warp)
+            random.shuffle(shufflable_warps)
+            shuffle_index = 0
+            # Apply shuffle
+            for warp in BananaportVanilla.keys():
+                if BananaportVanilla[warp].map_id == warp_map and not BananaportVanilla[warp].locked:
+                    BananaportVanilla[warp].setNewWarp(shufflable_warps[shuffle_index])
+                    shuffle_index += 1
+            # Write to spoiler and create array of replacements
+            pad_list = []
+            pad_temp_list = [[], [], [], [], []]
+            for warp in BananaportVanilla.values():
+                if warp.map_id == warp_map:
+                    human_ports[warp.name] = "Warp " + str(warp.new_warp + 1)
+                    if not warp.locked:
+                        pad_temp_list[warp.new_warp].append(warp.obj_id_vanilla)
+            for warp_index in range(len(pad_temp_list)):
+                if len(pad_temp_list[warp_index]) > 0:
+                    pad_list.append({"warp_index": warp_index, "warp_ids": pad_temp_list[warp_index].copy()})
+            bananaport_replacements.append({"containing_map": warp_map, "pads": pad_list.copy()})
 
 
 def getWarpFromSwapIndex(index):
