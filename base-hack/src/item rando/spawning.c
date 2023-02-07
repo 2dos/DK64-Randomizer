@@ -250,6 +250,8 @@ int getBarrelModel(int index) {
                 return 0x10C; // Rainbow Coin
             case 217:
                 return 0x10D; // Fake Item
+            case 0x2F:
+                return 0x10E; // Junk Item
         }
     }
     return 0x76;

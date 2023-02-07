@@ -232,6 +232,7 @@ def applyMelonMask(shift: int):
         data = {
             7: (0x13C, 0x147),
             14: (0x5A, 0x5D),
+            25: (0x17B2, 0x17B2),
         }
         for table in data:
             fh.seek(ptr_offset + (table * 0x4))
@@ -244,16 +245,20 @@ def applyMelonMask(shift: int):
                 file_size = file_end - file_start
                 fh.seek(file_start)
                 file_data = fh.read(file_size)
-                if table == 14:
+                if table != 7:
                     file_data = zlib.decompress(file_data, (15 + 32))
                 temp_name = "temp.bin"
                 with open(temp_name, "wb") as fg:
                     fg.write(file_data)
-                melon_im = Image.new(mode="RGBA", size=(48, 42))
+                if table == 25 and img == 0x17B2:
+                    dims = (32, 32)
+                else:
+                    dims = (48, 42)
+                melon_im = Image.new(mode="RGBA", size=dims)
                 px = melon_im.load()
                 with open(temp_name, "rb") as fg:
-                    for y in range(42):
-                        for x in range(48):
+                    for y in range(dims[1]):
+                        for x in range(dims[0]):
                             px_info = int.from_bytes(fg.read(2), "big")
                             px_red = int(((px_info >> 11) << 3) & 0xFF)
                             px_green = int(((px_info >> 6) << 3) & 0xFF)
@@ -262,8 +267,8 @@ def applyMelonMask(shift: int):
                             px[x, y] = (px_red, px_green, px_blue, px_alpha)
                     melon_im = hueShift(melon_im, shift)
                 with open(temp_name, "wb") as fg:
-                    for y in range(42):
-                        for x in range(48):
+                    for y in range(dims[1]):
+                        for x in range(dims[0]):
                             px_info = list(px[x, y])
                             px_red = (px_info[0] >> 3) << 11
                             px_green = (px_info[1] >> 3) << 6
@@ -273,7 +278,7 @@ def applyMelonMask(shift: int):
                             fg.write(px_word.to_bytes(2, "big"))
                 with open(temp_name, "rb") as fg:
                     new_data = fg.read()
-                    if table == 14:
+                    if table != 7:
                         new_data = gzip.compress(new_data, compresslevel=9)
                     fh.seek(file_start)
                     fh.write(new_data)

@@ -411,6 +411,7 @@ Image.open(f"{hash_dir}boss_key.png").resize(dim).save(f"{arcade_dir}key.png")  
 Image.open(f"{hash_dir}medal.png").resize(dim).save(f"{arcade_dir}medal.png")  # Medal
 Image.open(f"{hash_dir}rainbow_coin.png").resize(dim).save(f"{arcade_dir}rainbow.png")  # Rainbow Coin
 Image.open(f"{hash_dir}rw_coin.png").resize(dim).save(f"{arcade_dir}rwcoin.png")  # Rareware Coin
+Image.open(f"{hash_dir}melon_slice.png").resize(dim).save(f"{arcade_dir}melon.png")  # Watermelon Slice
 
 # Fake GB Sprite
 gb_im = Image.open(f"{hash_dir}gb.png")
@@ -419,6 +420,12 @@ gb_im.save(f"{disp_dir}fake_gb.png")
 gb_im = Image.open(f"{disp_dir}gb.png")
 gb_im = hueShift(gb_im, 10)
 gb_im.transpose(Image.Transpose.FLIP_LEFT_RIGHT).save(f"{disp_dir}fake_gb_shop.png")
+
+# Melon
+melon_im = Image.open(f"{hash_dir}melon_resized.png")
+melon_im = melon_im.crop((4, 0, 46, 42))
+melon_im = melon_im.resize((32, 32))
+melon_im.save(f"{hash_dir}melon_resized.png")
 
 Image.open(f"{hash_dir}rainbow_coin.png").resize((32, 32)).save(f"{disp_dir}rainbow_coin.png")  # Rainbow Coin
 rain_im = Image.open(f"{hash_dir}rainbow_coin_noflip.png")
@@ -459,6 +466,7 @@ skins = {
     "fairy": ("fairy", None, "hash"),
     "rainbow": ("rainbow_coin", None, "hash"),
     "fakegb": ("fake_gb", None, "displays"),
+    "melon": ("melon_slice", None, "hash"),
 }
 for skin_type in skins:
     skin_data = list(skins[skin_type])

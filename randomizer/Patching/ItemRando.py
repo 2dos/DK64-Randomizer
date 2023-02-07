@@ -209,31 +209,31 @@ def getTextRewardIndex(item) -> int:
     elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
         return 8
     elif item.new_item is None:
-        return 13
+        return 14
     else:
         item_text_indexes = (
-            Types.Banana,
-            Types.Blueprint,
-            Types.Key,
-            Types.Crown,
-            Types.Fairy,
-            Types.Coin,
-            Types.Coin,
-            Types.Medal,
-            Types.Shop,
-            Types.Kong,
-            Types.Bean,
-            Types.Pearl,
-            Types.RainbowCoin,
-            Types.FakeItem,
-            Types.NoItem,
-            Types.JunkItem,
+            Types.Banana, # 0
+            Types.Blueprint, # 1
+            Types.Key, # 2
+            Types.Crown, # 3
+            Types.Fairy, # 4
+            Types.Coin, # 5
+            Types.Coin, # 6
+            Types.Medal, # 7
+            Types.Shop, # 8
+            Types.Kong, # 9
+            Types.Bean, # 10
+            Types.Pearl, # 11
+            Types.RainbowCoin, # 12
+            Types.FakeItem, # 13
+            Types.NoItem, # 14
+            Types.JunkItem, # 15
         )
         if item.new_item in item_text_indexes:
             return item_text_indexes.index(item.new_item)
         if item.new_item == Types.ToughBanana:
             return 0
-        return 13
+        return 14
 
 
 def getActorIndex(item):

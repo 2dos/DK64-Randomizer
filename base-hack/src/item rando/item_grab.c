@@ -378,11 +378,9 @@ void giveFairyItem(int flag, int state, int type) {
                 key_bitfield |= (1 << i);
             }
         }
-    } else if (model == 0x10E) {
+    } else if (model == 0x10F) {
         // Fake Item
         queueIceTrap();
-    } else if (model == 0x10D) {
-        giveRainbowCoin();
     }
     setFlag(flag, state, type);
     if (model == 0xF5) {
@@ -428,6 +426,14 @@ static const unsigned char dance_skip_ban_maps[] = {
     0x9E, // Isles: Snide Crown
 };
 
+static const unsigned char dance_force_maps[] = {
+    0x0E, // Aztec Beetle
+    0x1B, // Factory Car Race
+    0x27, // Galleon Seal Race
+    0x52, // Caves Beetle
+    0xB9, // Castle Car Race
+};
+
 int canDanceSkip(void) {
     /**
      * @brief Determine whether the player can dance skip an item
@@ -458,6 +464,15 @@ int canDanceSkip(void) {
         }
     }
     return 0;
+}
+
+void forceDance(void) {
+    for (int i = 0; i < sizeof(dance_force_maps); i++) {
+        if (dance_force_maps[i] == CurrentMap) {
+            setAction(0x29, 0, 0);
+            return;
+        }
+    }    
 }
 
 void getItem(int object_type) {
@@ -510,6 +525,7 @@ void getItem(int object_type) {
                 playSong(22, *(int*)(&pickup_volume));
             }
             hh_item = HHITEM_COMPANYCOIN;
+            forceDance();
             break;
         case 0x56:
             // Orange
@@ -518,6 +534,7 @@ void getItem(int object_type) {
         case 0x57:
             // Melon Slice
             playSong(0x2F, *(int*)(&pickup_volume));
+            forceDance();
             break;
         case 0x59:
         case 0x5B:
@@ -562,6 +579,7 @@ void getItem(int object_type) {
             // Rainbow Coin
             playSong(0x91, *(int*)(&pickup_volume));
             hh_item = HHITEM_RAINBOWCOIN;
+            forceDance();
             break;
         case 0xDD:
         case 0xDE:
@@ -570,6 +588,7 @@ void getItem(int object_type) {
         case 0xE1:
             // Blueprint
             playSong(69, *(int*)(&pickup_volume));
+            forceDance();
             // hh_item = HHITEM_BLUEPRINT; // Ignored as it's handled in a separate case
             break;
         case 0xEC:
@@ -609,6 +628,7 @@ void getItem(int object_type) {
             // Bean
             playSong(147, 0x3F800000);
             hh_item = HHITEM_PEARL;
+            forceDance();
             break;
         case 0x1B4:
             // Pearl
@@ -628,6 +648,7 @@ void getItem(int object_type) {
                 //     }
                 // }
                 hh_item = HHITEM_PEARL;
+                forceDance();
             }
             break;
         case 0x1D1:
@@ -664,9 +685,11 @@ void getItem(int object_type) {
         case 0x25C:
             playSong(46, 0x3F800000);
             hh_item = HHITEM_FAIRY;
+            forceDance();
             break;
         case 0x25D:
             // Fake Item
+            forceDance();
             queueIceTrap();
             hh_item = HHITEM_FAKEITEM;
             break;

@@ -455,8 +455,9 @@ def JunkItems():
     # items_to_place = (Items.JunkAmmo, Items.JunkCrystal, Items.JunkFilm, Items.JunkMelon, Items.JunkOrange)
     # items_to_place = (Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkOrange)
     items_to_place = [Items.JunkMelon]
+    lim = int(100 / len(items_to_place))
     for item_type in items_to_place:
-        itemPool.extend(itertools.repeat(item_type, 100))
+        itemPool.extend(itertools.repeat(item_type, lim))
     return itemPool
 
 

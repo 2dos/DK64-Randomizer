@@ -345,6 +345,8 @@ portalModel_M2(f"{model_dir}potion_chunky.vtx", f"{model_dir}potion.dl", 0, "pot
 portalModel_M2(f"{model_dir}potion_any.vtx", f"{model_dir}potion.dl", 0, "potion_any", 0x90)
 # Fairy
 portActorToModelTwo(0x3C, "", "fairy", 0x90, True, 0.5)
+# Melon
+# portalModel_M2(f"{model_dir}melon.vtx", f"{model_dir}melon.dl", 0, "melon", 0x90)
 # Potions - Actors (Ignore Chunky Model)
 portalModel_Actor(f"{model_dir}potion_dk.vtx", None, "potion_dk", 0xB8)
 portalModel_Actor(f"{model_dir}potion_diddy.vtx", None, "potion_diddy", 0xB8)
@@ -359,3 +361,33 @@ portActorToModelTwo(5, "lanky_base.bin", "kong_lanky", 0x90, True, 0.5)
 portActorToModelTwo(8, "tiny_base.bin", "kong_tiny", 0x90, True, 0.5)
 portActorToModelTwo(0xB, "", "kong_chunky", 0x90, True, 0.5)
 # portalModel_M2(f"{model_dir}dk_head.vtx", f"{model_dir}dk_head.dl", 0, "kong_dk", 0x90)
+# Melon
+with open(rom_file, "rb") as rom:
+    rom.seek(ptr_offset + (m2_table * 4))
+    table = ptr_offset + int.from_bytes(rom.read(4), "big")
+    rom.seek(table + (436 * 4))
+    start = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+    finish = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+    size = finish - start
+    rom.seek(start)
+    data = rom.read(size)
+    rom.seek(start)
+    indic = int.from_bytes(rom.read(2), "big")
+    if indic == 0x1F8B:
+        data = zlib.decompress(data, (15 + 32))
+    with open("melon_om2.bin", "wb") as fh:
+        fh.write(data)
+    with open("melon_om2.bin", "r+b") as fh:
+        fh.seek(0xEC)
+        fh.write((0x17B2).to_bytes(4, "big"))
+        for v in range(0x3E,0x92):
+            for c in range(3):
+                fh.seek((v * 0x10) + (c * 2))
+                val = int.from_bytes(fh.read(2), "big")
+                if val > 32767:
+                    val -= 65536
+                val = int(val * 0.6)
+                if val < 0:
+                    val += 65536
+                fh.seek((v * 0x10) + (c * 2))
+                fh.write(val.to_bytes(2, "big"))

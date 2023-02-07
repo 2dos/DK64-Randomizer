@@ -83,6 +83,8 @@ images = [
     ImageData("bonus_skin", "rgba16", 25, 0x128A, 16, 64, False, False),
     ImageData("gb_shine", "rgba16", 25, 0xB7B, 32, 32, False, False),
     ImageData("rainbow_coin_noflip", "rgba16", 25, 5963, 48, 44, False, False),
+    ImageData("melon_resized", "rgba16", 7, 544, 48, 42, False, False),
+    ImageData("melon_slice", "rgba16", 7, 0x142, 48, 42, False, True),
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]
