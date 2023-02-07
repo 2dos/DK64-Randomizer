@@ -220,7 +220,7 @@ void initActorDefs(void) {
     index = addActorDef(index, 88, 0xFC, 0x80689F80, 0x80689FEC, 0); // Fairy
     index = addActorDef(index, 153, 0, 0x80689F80, 0x8068A10C, 0); // Nothing
     index = addActorDef(index, 154, 0, 0x80689F80, 0x8068A10C, 0); // Medal
-    index = addActorDef(index, 217, 0x10E, 0x80689F80, 0x80689FEC, 0); // Fake Item
+    index = addActorDef(index, 217, 0x10F, 0x80689F80, 0x80689FEC, 0); // Fake Item
     *(unsigned short*)(0x8068926A) = getHi(&actor_defs[0].actor_type);
     *(unsigned short*)(0x8068927A) = getLo(&actor_defs[0].actor_type);
     *(unsigned short*)(0x806892D2) = getHi(&actor_defs[0].actor_type);

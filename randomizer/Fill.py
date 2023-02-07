@@ -114,7 +114,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                 newItems.append(location.item)
                 # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
                 if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
-                    if location.item == Items.GoldenBanana:
+                    if location.item in (Items.GoldenBanana, Items.ToughBanana):
                         sphere.availableGBs += 1
                         sphere.locations.append(locationId)
                         continue
@@ -432,11 +432,11 @@ def ParePlaythrough(settings, PlaythroughLocations):
         sphere = PlaythroughLocations[i]
         # We want to track specific GBs in each sphere of the spoiler log up to and including the sphere where the last B. Locker becomes openable
         if i > 0 and PlaythroughLocations[i - 1].availableGBs > mostExpensiveBLocker:
-            sphere.locations = [locationId for locationId in sphere.locations if LocationList[locationId].item != Items.GoldenBanana]
+            sphere.locations = [locationId for locationId in sphere.locations if LocationList[locationId].item not in (Items.GoldenBanana, Items.ToughBanana)]
         for locationId in sphere.locations.copy():
             location = LocationList[locationId]
             # All GBs that make it here are logically required
-            if location.item == Items.GoldenBanana:
+            if location.item in (Items.GoldenBanana, Items.ToughBanana):
                 continue
             # Items that are part of the win condition are always part of the Playthrough but are never part of it otherwise
             if location.item == Items.BananaFairy:
@@ -490,7 +490,7 @@ def PareWoth(spoiler, PlaythroughLocations):
             loc
             for loc in sphere.locations  # If the Helm Key is in Helm, we may still want path hints for it even though it's a constant item.
             if (not LocationList[loc].constant or loc == Locations.HelmKey)
-            and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)
+            and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.ToughBanana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)
         ]:
             WothLocations.append(loc)
     WothLocations.append(Locations.BananaHoard)  # The Banana Hoard is the endpoint of the Way of the Hoard
@@ -793,7 +793,7 @@ def AssumedFill(settings, itemsToPlace, ownedItems=None, inOrder=False):
             for i, kong in enumerate(startKongList):
                 currentKongsFreed.insert(i, kong)
             currentMovesOwned = [ItemList[x].name for x in owned if ItemList[x].type == Types.Shop]
-            currentGbCount = len([x for x in owned if ItemList[x].type == Types.Banana])
+            currentGbCount = len([x for x in owned if ItemList[x].type in (Types.Banana, Types.ToughBanana)])
             js.postMessage("Current Moves owned at failure: " + str(currentMovesOwned) + " with GB count: " + str(currentGbCount) + " and kongs freed: " + str(currentKongsFreed))
             return len(itemsToPlace) + 1
         shuffle(validReachable)
@@ -1127,11 +1127,21 @@ def Fill(spoiler):
         gbsUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.GoldenBananaItems(), [])
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced GBs.")
+    if Types.ToughBanana in spoiler.settings.shuffled_location_types:
+        Reset()
+        gbsUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.ToughGoldenBananaItems(), [])
+        if gbsUnplaced > 0:
+            raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced tough GBs.")
     # Fill in fake items
     if Types.FakeItem in spoiler.settings.shuffled_location_types:
         Reset()
         fakeUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.FakeItems(), [])
         # Don't raise exception if unplaced fake items
+    # Fill in junk items
+    if Types.JunkItem in spoiler.settings.shuffled_location_types:
+        Reset()
+        junkUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.JunkItems(), [])
+        # Don't raise exception if unplaced junk items
 
     # Some locations require special care to make logic work correctly
     # This is the only location that cares about None vs NoItem - it needs to be None so it fills correctly but NoItem for logic to generate progression correctly

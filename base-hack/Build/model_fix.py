@@ -274,6 +274,7 @@ with open(rom_file, "rb") as rom:
         "fairy",
         "rainbow",
         "fakegb",
+        "melon",
     )
     rom.seek(actor_table + (0x75 << 2))
     model_start = pointer_offset + int.from_bytes(rom.read(4), "big")
@@ -305,7 +306,7 @@ with open(rom_file, "rb") as rom:
         fh.write(data)
     with open("temp.bin", "r+b") as fh:
         fh.seek(0xF4)
-        fh.write((6060).to_bytes(4, "big"))
+        fh.write((6062).to_bytes(4, "big"))
         fh.seek(0)
         data = fh.read()
     if os.path.exists("temp.bin"):
@@ -327,7 +328,7 @@ with open(rom_file, "rb") as rom:
         fh.write(data)
     with open("temp.bin", "r+b") as fh:
         fh.seek(0xACC)
-        fh.write((6060).to_bytes(4, "big"))
+        fh.write((6062).to_bytes(4, "big"))
         fh.seek(0)
         data = fh.read()
     if os.path.exists("temp.bin"):

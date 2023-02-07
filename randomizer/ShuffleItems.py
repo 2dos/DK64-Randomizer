@@ -53,6 +53,7 @@ class LocationSelection:
         self.new_item = None
         self.new_flag = None
         self.new_kong = None
+        self.new_subitem = None
 
     def PlaceFlag(self, flag, kong):
         """Place item for assortment."""
@@ -114,6 +115,7 @@ def ShuffleItems(spoiler: Spoiler):
         Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
         Items.FakeItem: list(range(0x2AE, 0x2BE)),
     }
+    junk_flag_dict = list(range(0x320, 0x320 + 100))
     flag_dict = {}
     locations_not_needing_flags = []
     locations_needing_flags = []
@@ -168,12 +170,16 @@ def ShuffleItems(spoiler: Spoiler):
             if new_item is not None:
                 location_selection.new_item = new_item.type
                 location_selection.new_kong = new_item.kong
+                location_selection.new_subitem = item_location.item
                 # If this item has a dedicated specific flag, then set it now (Keys and Coins right now)
                 if new_item.rando_flag is not None or new_item.type == Types.FakeItem:
                     if new_item.rando_flag == -1 or new_item.type == Types.FakeItem:  # This means it's a progressive move or fake item and they need special flags
                         location_selection.new_flag = progressive_move_flag_dict[item_location.item].pop()
                     else:
                         location_selection.new_flag = new_item.rando_flag
+                    locations_not_needing_flags.append(location_selection)
+                elif new_item.type == Types.JunkItem:
+                    location_selection.new_flag = junk_flag_dict.pop()
                     locations_not_needing_flags.append(location_selection)
                 # Otherwise we need to put it in the list of locations needing flags
                 else:

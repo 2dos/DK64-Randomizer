@@ -261,6 +261,10 @@ extern void mermaidCheck(void);
 extern void initItemDictionary(void);
 extern void giveGB(int kong, int level);
 extern void giveRainbowCoin(void);
+extern void giveAmmo(void);
+extern void giveOrange(void);
+extern void giveMelon(void);
+extern void giveCrystal(void);
 
 extern int CrownDoorCheck(void);
 extern int CoinDoorCheck(void);

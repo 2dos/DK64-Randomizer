@@ -61,6 +61,10 @@ db = [
     InGameItem(name="Fairy", actor=88, model_two=0x25C, bounce=True, scale=0.25),
     InGameItem(name="Rainbow Coin", actor=140, model_two=0xB7, scale=0.25),
     InGameItem(name="Fake Item", actor=217, model_two=0x25D, bounce=True, scale=0.25),
+    InGameItem(name="Junk Item (Orange)", actor=0x34, model_two=0x56, will_dance=False, scale=1),
+    InGameItem(name="Junk Item (Melon)", actor=0x2F, model_two=0x57, will_dance=False, scale=1),
+    InGameItem(name="Junk Item (Crystal)", actor=0x79, model_two=0x8E, will_dance=False, scale=1),
+    InGameItem(name="Junk Item (Ammo)", actor=0x33, model_two=0x8F, will_dance=False, scale=1),
 ]
 
 dance_acceptable_items = [x for x in db if x.force_dance]

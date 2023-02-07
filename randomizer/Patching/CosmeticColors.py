@@ -707,20 +707,21 @@ def writeMiscCosmeticChanges(spoiler: Spoiler):
     """Write miscellaneous changes to the cosmetic colors."""
     if spoiler.settings.misc_cosmetics:
         # Melon HUD
-        data = {
-            7: [0x13C, 0x147],
-            14: [0x5A, 0x5D],
-        }
+        data = {7: [0x13C, 0x147], 14: [0x5A, 0x5D], 25: [0x17B2, 0x17B2]}
         shift = random.randint(0, 359)
         for table in data:
             table_data = data[table]
             for img in range(table_data[0], table_data[1] + 1):
-                melon_im = getFile(table, img, table != 7, 48, 42, "rgba5551")
+                if table == 25 and img == 0x17B2:
+                    dims = (32, 32)
+                else:
+                    dims = (48, 42)
+                melon_im = getFile(table, img, table != 7, dims[0], dims[1], "rgba5551")
                 melon_im = hueShift(melon_im, shift)
                 melon_px = melon_im.load()
                 bytes_array = []
-                for y in range(42):
-                    for x in range(48):
+                for y in range(dims[1]):
+                    for x in range(dims[0]):
                         pix_data = list(melon_px[x, y])
                         red = int((pix_data[0] >> 3) << 11)
                         green = int((pix_data[1] >> 3) << 6)

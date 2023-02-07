@@ -1070,7 +1070,7 @@ fairy_locations = {
             name="In Front of Krem Isles",
             map=Maps.Isles,
             region=Regions.KremIsleBeyondLift,
-            fence=Fence(2608, 2954, 2895, 3273),
+            fence=Fence(2608, 3054, 2895, 3373),
             spawn_y=1309,
         ),
         FairyData(
@@ -1121,7 +1121,7 @@ fairy_locations = {
             name="Training Grounds Hidden Mountain",
             map=Maps.TrainingGrounds,
             region=Regions.TrainingGrounds,
-            fence=Fence(656, 1111, 757, 1339),
+            fence=Fence(756, 1111, 857, 1339),
             spawn_y=453,
         ),
         FairyData(

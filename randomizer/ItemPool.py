@@ -107,6 +107,8 @@ def AllItems(settings):
         allItems.extend(Blueprints(settings))
     if Types.Banana in settings.shuffled_location_types:
         allItems.extend(GoldenBananaItems())
+    if Types.ToughBanana in settings.shuffled_location_types:
+        allItems.extend(ToughGoldenBananaItems())
     if Types.Coin in settings.shuffled_location_types:
         allItems.extend(CompanyCoinItems())
     if Types.Crown in settings.shuffled_location_types:
@@ -123,6 +125,8 @@ def AllItems(settings):
         allItems.extend(RainbowCoinItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems())
+    if Types.JunkItem in settings.shuffled_location_types:
+        allItems.extend(JunkItems())
     if settings.move_rando != "off":
         allItems.extend(DonkeyMoves)
         allItems.extend(DiddyMoves)
@@ -149,6 +153,8 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(Blueprints(settings))
     if Types.Banana in settings.shuffled_location_types:
         allItems.extend(GoldenBananaItems())
+    if Types.ToughBanana in settings.shuffled_location_types:
+        allItems.extend(ToughGoldenBananaItems())
     if Types.Coin in settings.shuffled_location_types:
         allItems.extend(CompanyCoinItems())
     if Types.Crown in settings.shuffled_location_types:
@@ -165,6 +171,8 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(RainbowCoinItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems())
+    if Types.JunkItem in settings.shuffled_location_types:
+        allItems.extend(JunkItems())
     return allItems
 
 
@@ -386,10 +394,20 @@ def CompanyCoinItems():
     return itemPool
 
 
+TOUGH_BANANA_COUNT = 13
+
+
 def GoldenBananaItems():
     """Return a list of GBs to be placed."""
     itemPool = []
-    itemPool.extend(itertools.repeat(Items.GoldenBanana, 161))  # 40 Blueprint GBs are always already placed (see Types.BlueprintBanana)
+    itemPool.extend(itertools.repeat(Items.GoldenBanana, 161 - TOUGH_BANANA_COUNT))  # 40 Blueprint GBs are always already placed (see Types.BlueprintBanana)
+    return itemPool
+
+
+def ToughGoldenBananaItems():
+    """Return a list of GBs to be placed."""
+    itemPool = []
+    itemPool.extend(itertools.repeat(Items.ToughBanana, TOUGH_BANANA_COUNT))
     return itemPool
 
 
@@ -433,6 +451,18 @@ def FakeItems():
     """Return a list of Fake Items to be placed."""
     itemPool = []
     itemPool.extend(itertools.repeat(Items.FakeItem, 10))  # Up to 10 fake items
+    return itemPool
+
+
+def JunkItems():
+    """Return a list of Junk Items to be placed."""
+    itemPool = []
+    # items_to_place = (Items.JunkAmmo, Items.JunkCrystal, Items.JunkFilm, Items.JunkMelon, Items.JunkOrange)
+    # items_to_place = (Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkOrange)
+    items_to_place = [Items.JunkMelon]
+    lim = int(100 / len(items_to_place))
+    for item_type in items_to_place:
+        itemPool.extend(itertools.repeat(item_type, lim))
     return itemPool
 
 

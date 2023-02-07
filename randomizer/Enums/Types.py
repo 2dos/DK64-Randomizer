@@ -23,12 +23,19 @@ class Types(IntEnum):
     Pearl = auto()
     RainbowCoin = auto()
     FakeItem = auto()
+    ToughBanana = auto()
+    JunkItem = auto()
     Hint = auto()
 
 
 ItemRandoSelector = [
     {"name": "Shops", "value": "shop", "tooltip": "Cranky, Funky, and Candy Moves are in the Pool and become possible locations for items.&#10;By selecting this, Cross-Kong purchases is forced on."},
     {"name": "Golden Bananas", "value": "banana", "tooltip": ""},
+    {
+        "name": "Tough Golden Bananas",
+        "value": "toughbanana",
+        "tooltip": "Tougher Golden Banana checks will be in the pool:&#10;- All 3 Minecart Rides&#10;- Both Beetle Races&#10;- Fungi and Caves Baboon Blasts&#10;- Rabbit, Owl, Vulture and Seal Races&#10;- Arcade Round 1&#10;- Rareware Golden Banana",
+    },
     {"name": "Battle Crowns", "value": "crown", "tooltip": "Crowns are in the Pool and Battle Arenas become possible locations for items."},
     {"name": "Blueprints", "value": "blueprint", "tooltip": "Blueprints are in the Pool and Kasplats become possible locations for items."},
     {"name": "Keys", "value": "key", "tooltip": "Keys are in the Pool and Bosses become possible locations for items."},
@@ -39,6 +46,7 @@ ItemRandoSelector = [
     {"name": "Rainbow Coins", "value": "rainbowcoin", "tooltip": "Rainbow Coins are in the Pool and Dirt Patches become possible locations for items."},
     {"name": "Miscellaneous Items", "value": "beanpearl", "tooltip": "The 5 Pearls and the Bean are in the Pool&#10;Tiny's Anthill and Treasure Chest become possible locations for items."},
     {"name": "Ice Traps", "value": "fakeitem", "tooltip": "If you pick up a fake item it'll hurt and freeze you."},
+    {"name": "Junk Items", "value": "junkitem", "tooltip": "Pointless items will fill no-item slots."},
 ]
 
 KeySelector = [

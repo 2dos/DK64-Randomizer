@@ -177,6 +177,14 @@ file_dict = [
         "do_not_extract": True,
         "do_not_delete_source": True,
     },
+    {
+        "name": "Melon Model",
+        "pointer_table_index": 4,
+        "file_index": 0x57,
+        "source_file": "melon_om2.bin",
+        "do_not_extract": True,
+        "do_not_delete_source": True,
+    },
     {"name": "DPad Image", "pointer_table_index": 14, "file_index": 187, "source_file": "assets/displays/dpad.png", "texture_format": "rgba5551"},
     {"name": "Tracker Image", "pointer_table_index": 14, "file_index": 0xA1, "source_file": "assets/file_screen/tracker.png", "texture_format": "rgba5551"},
     {"name": "Nintendo Coin Model", "pointer_table_index": 4, "file_index": 0x48, "source_file": "nintendo_coin_om2.bin", "do_not_delete_source": True},
@@ -231,10 +239,19 @@ file_dict = [
     {
         "name": "Fake GB Shine",
         "pointer_table_index": 25,
-        "file_index": 6060,
+        "file_index": 6062,
         "source_file": "assets/displays/gb_shine.png",
         "texture_format": "rgba5551",
         "do_not_delete_source": True,
+    },
+    {
+        "name": "Melon Surface",
+        "pointer_table_index": 25,
+        "file_index": 6066,
+        "source_file": "assets/hash/melon_resized.png",
+        "texture_format": "rgba5551",
+        "do_not_delete_source": True,
+        "target_compressed_size": 32 * 32 * 2,
     },
     {
         "name": "Fake Item Model",
@@ -298,7 +315,7 @@ for item in range(3):
         {
             "name": f"Rainbow Coin ({item})",
             "pointer_table_index": 25,
-            "file_index": 6061 + item,
+            "file_index": 6063 + item,
             "source_file": f"assets/hash/rainbow_{item}.png",
             "do_not_extract": True,
             "texture_format": "rgba5551",
@@ -411,6 +428,7 @@ arcade_rewards = [
     "chunky",  # 19 - Chunky
     "rainbow",  # 20 - Rainbow Coin
     "rwcoin",  # 21 - RW Coin
+    "melon",  # 22 - Melon Slice
 ]
 
 jetpac_rewards = [
@@ -427,6 +445,7 @@ jetpac_rewards = [
     "kong",  # 10 - Kong
     "rainbow",  # 11 - Rainbow Coin
     "nintendo",  # 12 - Nintendo Coin
+    "melon",  # 13 - Melon
 ]
 
 for rwd_index, rwd in enumerate(arcade_rewards):
@@ -731,6 +750,7 @@ barrel_skins = (
     "fairy",
     "rainbow",
     "fakegb",
+    "melon",
 )
 for bi, b in enumerate(barrel_skins):
     for x in range(2):
@@ -746,12 +766,12 @@ for bi, b in enumerate(barrel_skins):
 
 shrinkModel(False, "", 0xAE, 0.15, "shrink_crown.bin", False)  # Battle Crown
 shrinkModel(False, "", 0xA4, 0.1, "shrink_key.bin", False)  # Boss Key
-shrinkModel(True, "potion_dk_om1.bin", 0, 0.2, "shrink_potion_dk.bin", False)  # Potion (DK)
-shrinkModel(True, "potion_diddy_om1.bin", 0, 0.2, "shrink_potion_diddy.bin", False)  # Potion (Diddy)
-shrinkModel(True, "potion_lanky_om1.bin", 0, 0.2, "shrink_potion_lanky.bin", False)  # Potion (Lanky)
-shrinkModel(True, "potion_tiny_om1.bin", 0, 0.2, "shrink_potion_tiny.bin", False)  # Potion (Tiny)
-shrinkModel(True, "potion_chunky_om1.bin", 0, 0.2, "shrink_potion_chunky.bin", False)  # Potion (Chunky)
-shrinkModel(True, "potion_any_om1.bin", 0, 0.2, "shrink_potion_any.bin", False)  # Potion (Any)
+shrinkModel(True, "potion_dk_om1.bin", 0, 0.08, "shrink_potion_dk.bin", False)  # Potion (DK)
+shrinkModel(True, "potion_diddy_om1.bin", 0, 0.08, "shrink_potion_diddy.bin", False)  # Potion (Diddy)
+shrinkModel(True, "potion_lanky_om1.bin", 0, 0.08, "shrink_potion_lanky.bin", False)  # Potion (Lanky)
+shrinkModel(True, "potion_tiny_om1.bin", 0, 0.08, "shrink_potion_tiny.bin", False)  # Potion (Tiny)
+shrinkModel(True, "potion_chunky_om1.bin", 0, 0.08, "shrink_potion_chunky.bin", False)  # Potion (Chunky)
+shrinkModel(True, "potion_any_om1.bin", 0, 0.08, "shrink_potion_any.bin", False)  # Potion (Any)
 shrinkModel(False, "", 0x3C, 5, "shrink_fairy.bin", True)  # Fairy
 
 model_changes = [
@@ -779,7 +799,7 @@ model_changes = [
     {"model_index": 0xF9, "model_file": "shrink_potion_chunky.bin"},
     {"model_index": 0xFA, "model_file": "shrink_potion_any.bin"},
     {"model_index": 0xFB, "model_file": "shrink_fairy.bin"},
-    {"model_index": 0x10D, "model_file": "fake_item_actor.bin"},
+    {"model_index": 0x10E, "model_file": "fake_item_actor.bin"},
     {"model_index": 0xA3, "model_file": "counter.bin"},
 ]
 for bi, b in enumerate(barrel_skins):
@@ -1347,6 +1367,8 @@ with open(newROMName, "r+b") as fh:
         "fake_gb_shop",
         "rainbow_coin",
         "gb_shine",
+        "melon_surface",
+        "melon_resized",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])
@@ -1393,6 +1415,8 @@ with open(newROMName, "r+b") as fh:
         "special_coin_side",
         "fairy_0",
         "bonus_Skin",
+        "melon_resized",
+        "melon_slice",
     ]
     script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
     shop_files = ["snide.script", "cranky.script", "funky.script", "candy.script"]
@@ -1422,6 +1446,7 @@ with open(newROMName, "r+b") as fh:
         "medal",
         "rainbow",
         "rwcoin",
+        "melon",
     ]
     for img in arcade_images:
         pth = f"assets/arcade_jetpac/arcade/{img}.png"
