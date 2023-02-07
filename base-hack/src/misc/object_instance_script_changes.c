@@ -1581,8 +1581,47 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				}
 				break;
 			case CRYPT_LT:
-				if (param2 == CRYPT_LT_GRAPE) {
-					return !Rando.tag_anywhere;
+				if (param2 == CRYPT_LT_GRAPE){
+					if (index == 0){
+						return !Rando.tag_anywhere;
+					} else if (index == 1){
+						//obtain gate variables
+						ModelTwoData gateModelTwoPointer = *(ModelTwoData*)(0x807F6244);
+						behaviour_data gateBehaviour = *(behaviour_data*)(&gateModelTwoPointer.behaviour_pointer);
+						behaviour_data* gateBehaviourPointer = (behaviour_data*)(&gateModelTwoPointer.behaviour_pointer);
+						int id_needed = 1;
+						int gateIndex = indexOfNextObj(id_needed);
+						
+						//initialize the gate
+						if(gateIndex != -1 && gateBehaviour.pause_state == 0){
+							//vanilla initiation code
+							unkObjFunction0(id_needed,1,1);
+							unkObjFunction1(id_needed,1,3);
+							setScriptRunState(gateBehaviourPointer, 2, 0);
+						}
+
+						//obtain other grape switch's variables
+						ModelTwoData grapeSwitchModelTwoPointer = *(ModelTwoData*)(0x807F6284);
+						behaviour_data grapeSwitchBehaviour = *(behaviour_data*)(&grapeSwitchModelTwoPointer.behaviour_pointer);
+						behaviour_data* grapeSwitchBehaviourPointer = (behaviour_data*)(&grapeSwitchModelTwoPointer.behaviour_pointer);
+						int grape_switch_id_needed = 17;
+						int grapeIndex = indexOfNextObj(grape_switch_id_needed);
+
+						//initialize the other grape switch
+						if(grapeIndex != -1 && grapeSwitchBehaviour.pause_state == 0){
+							setObjectScriptState(17, 4, 0);
+							//vanilla initiation code
+							setScriptRunState(grapeSwitchBehaviourPointer, 2, 0);
+							unkObjFunction0(grape_switch_id_needed,1,1);
+							unkObjFunction1(grape_switch_id_needed,1,10);
+						}
+						//play grape switch cutscene
+						PlayCutsceneFromModelTwoScript(behaviour_pointer, 0, 1, 0);
+						behaviour_pointer->timer = 110;
+						
+						//move on to state 3
+						behaviour_pointer->next_state = 3;
+					}
 				}
 				break;
 			case CRYPT_DDC:
@@ -1771,6 +1810,31 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		CrownPadGenericCode(behaviour_pointer, id, param2, 1);
 	} else if (index == -7) {
 		return checkFlag(kong_flags[param2], 0) || Rando.disable_wrinkly_kong_requirement;
+	} else if (index == -8) {
+		// Fairy check
+		if (Rando.fairy_rando_on) {
+			switch (param2) {
+				case 0:
+					return !Rando.fairy_triggers_disabled.japes_painting; // Japes Painting: ID 5
+				case 1:
+					return !Rando.fairy_triggers_disabled.factory_funky; // Factory Funky: ID 0x109
+				case 2:
+					return !Rando.fairy_triggers_disabled.galleon_chest; // Galleon Chest: ID 0x45
+				case 3:
+					return !Rando.fairy_triggers_disabled.fungi_dark_attic; // Fungi Dark Attic: ID 0x0
+				case 4:
+					return !Rando.fairy_triggers_disabled.fungi_thornvine_barn; // Fungi Thornvine: ID 0x24
+				case 5:
+					return !Rando.fairy_triggers_disabled.caves_igloo; // Caves Igloo: ID 0x0
+				case 6:
+					return !Rando.fairy_triggers_disabled.caves_cabin; // Caves Cabin: ID 0x5
+				case 7:
+					return !Rando.fairy_triggers_disabled.isles_factory_lobby; // Isles Factory Lobby: ID 0xE
+				case 8:
+					return !Rando.fairy_triggers_disabled.isles_fungi_lobby; // Isles Fungi Lobby: ID 0x5
+			}
+		}
+		return 1;
 	}
 	InstanceScriptParams[1] = id;
 	InstanceScriptParams[2] = index;

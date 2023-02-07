@@ -13,6 +13,7 @@ extern void initHack(int source);
 extern void callParentMapFilter(void);
 extern void shiftBrokenJapesPortal(void);
 extern void quickInit(void);
+extern int getCenter(int style, char* str);
 
 extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);
@@ -36,6 +37,8 @@ extern void alter_boss_key_flags(void);
 extern void displayNumberOnTns(void);
 extern void moveTransplant(void);
 extern void priceTransplant(void);
+extern void squawks_with_spotlight_actor_code(void);
+extern void shine_light_at_kong(unsigned short height_variance, unsigned short min_follow_distance, unsigned short param_3);
 
 extern void changeCharSpawnerFlag(int map, int spawner_id, int new_flag);
 extern void changeHelmLZ(void);
@@ -241,6 +244,7 @@ extern void getItem(int object_type);
 extern int setupHook(int map);
 extern void CheckKasplatSpawnBitfield(void);
 extern void initActor(int actor_index, void* func, int master_type, int paad_type);
+extern void refreshPads(pad_refresh_signals signal);
 
 extern int* pauseScreen3And4Header(int* dl);
 extern int* pauseScreen3And4Counter(int x, int y, int top, int bottom, int* dl, int unk0, int scale);
@@ -269,6 +273,8 @@ extern void SpawnBarrel(spawnerPacket* packet);
 extern void initBarrelChange(void);
 
 extern void initIceTrap(void);
+extern void queueIceTrap(void);
+extern void callIceTrap(void);
 extern int getPatchWorld(int index);
 
 extern void initItemRando(void);

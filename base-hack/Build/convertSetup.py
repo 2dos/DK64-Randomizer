@@ -247,6 +247,29 @@ def modify(file_name, map_index):
                 for x in range(0x30 - 0x8):
                     repl_byte += byte_stream[x + 0x8].to_bytes(1, "big")
                 byte_stream = repl_byte
+            elif map_index == 0x48:
+                # Underwater Items, Caves
+                ranges = (
+                    list(range(0xA5, 0xAF)),  # Lanky underwater CBs
+                    list(range(0xC0, 0xCA)),  # Tiny underwater CBs
+                    list(range(0x73, 0x76)),  # Chunky underwater coins
+                    list(range(0xD8, 0xDB)),  # Tiny underwater coins
+                    list(range(0xB7, 0xBA)),  # Lanky underwater coins (1)
+                    list(range(0xBD, 0xC0)),  # Lanky underwater coins (2)
+                )
+                in_range = False
+                for selection in ranges:
+                    if _id in selection:
+                        in_range = True
+                if in_range:
+                    repl_byte = b""
+                    new_y = int(float_to_hex(30), 16)
+                    for x in range(0x4):
+                        repl_byte += byte_stream[x].to_bytes(1, "big")
+                    repl_byte += new_y.to_bytes(4, "big")
+                    for x in range(0x30 - 0x8):
+                        repl_byte += byte_stream[x + 0x8].to_bytes(1, "big")
+                    byte_stream = repl_byte
             data = {"stream": byte_stream, "type": _type}
             model2.append(data)
             read_location += 0x30

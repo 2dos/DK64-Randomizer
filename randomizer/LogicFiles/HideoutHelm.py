@@ -21,7 +21,7 @@ LogicRegions = {
     ]),
 
     Regions.HideoutHelmMain: Region("Hideout Helm Main", "Hideout Helm", Levels.HideoutHelm, True, -1, [
-        LocationLogic(Locations.HelmBattleArena, lambda l: not l.settings.crown_placement_rando and l.jetpack and l.diddy),
+        LocationLogic(Locations.HelmBattleArena, lambda l: not l.settings.crown_placement_rando and l.jetpack and l.isdiddy and (l.settings.helm_setting == "skip_all" or (Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events))),
         LocationLogic(Locations.HelmDonkey1, lambda l: l.settings.helm_setting == "skip_all", MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmDonkey2, lambda l: l.settings.helm_setting == "skip_all", MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmChunky1, lambda l: l.settings.helm_setting == "skip_all", MinigameType.HelmBarrel),

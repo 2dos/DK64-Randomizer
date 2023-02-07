@@ -91,7 +91,7 @@ class Transitions(IntEnum):
     # Gloomy Galleon Exits
     GalleonLighthouseAreaToLighthouse = auto()
     GalleonLighthouseToLighthouseArea = auto()
-    GalleonLighthousAreaToMermaid = auto()
+    GalleonLighthouseAreaToMermaid = auto()
     GalleonMermaidToLighthouseArea = auto()
     GalleonLighthouseAreaToSickBay = auto()
     GalleonSickBayToLighthouseArea = auto()

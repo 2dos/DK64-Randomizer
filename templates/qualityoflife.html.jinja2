@@ -19,10 +19,6 @@
                                checked/>
                         Misc Changes
                     </label>
-                    <a href="https://github.com/2dos/DK64-Randomizer/wiki/Feature-Explanations#misc-changes-1"
-                       target="_blank">
-                        <img class="icon" src="./static/img/external_link.png">
-                    </a>
                     {{ list_selector(misc_changes, "misc_changes", "MISC CHANGES", "This will open a popup that will let you customize what Quality of Life Options are active.&#10;This defaults to All options.", 17) }}
                     {# Remove end </div> as it's included in the macro for formatting #}
                     <div class="form-check form-switch item-switch">
@@ -48,12 +44,12 @@
                     </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                               title="This option will remove all hints as to what move you are purchasing in shops.">
+                               title="This option will add hints as to what move you are purchasing in shops.">
                             <input class="form-check-input"
                                    type="checkbox"
-                                   name="disable_shop_hints"
+                                   name="enable_shop_hints"
                                    value="True"/>
-                            Disable Shop Hints
+                            Enable Shop Hints
                         </label>
                     </div>
                     <div class="form-check form-switch item-switch">

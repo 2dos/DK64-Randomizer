@@ -80,6 +80,7 @@ void initQoL_Fixes(void) {
      * Current Elements covered here:
      * - Rabbit Race will give infinite crystals during race 2
      * - Fix the dillo TNT pads to not move when using Tiny
+     * - Fix Squawks-with-spotlight's AI to make him follow the Kong more closely in Fungi Forest's Dark Attic
      * Definition of an "unwanted DK64 vanilla bug":
      * - Removing the bug doesn't negatively impact speedrunners/game glitches OR
      * - Leaving the bug in produces a crash or leaves a prominent effect in the game which is undesirable (see Dillo TNT Pads)
@@ -87,6 +88,7 @@ void initQoL_Fixes(void) {
     if (Rando.quality_of_life.vanilla_fixes) {
         *(int*)(0x806BE8D8) = 0x0C000000 | (((int)&RabbitRaceInfiniteCode & 0xFFFFFF) >> 2); // Modify Function Call
         *(int*)(0x8067C168) = 0x0C000000 | (((int)&fixDilloTNTPads & 0xFFFFFF) >> 2); // Modify Function Call
+        *(int*)(0x8074C484) = (int)&squawks_with_spotlight_actor_code;
     }
 }
 

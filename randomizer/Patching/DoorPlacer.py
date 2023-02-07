@@ -10,6 +10,46 @@ from randomizer.Patching.Lib import float_to_hex, getNextFreeID, addNewScript
 from randomizer.Enums.ScriptTypes import ScriptTypes
 
 
+def remove_existing_indicators(spoiler: Spoiler):
+    """Remove all existing indicators."""
+    if not spoiler.settings.portal_numbers:
+        for cont_map_id in range(216):
+            setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
+            # Filter Setup
+            ROM().seek(setup_table)
+            model2_count = int.from_bytes(ROM().readBytes(4), "big")
+            retained_model2 = []
+            for item in range(model2_count):
+                item_start = setup_table + 4 + (item * 0x30)
+                ROM().seek(item_start + 0x28)
+                item_type = int.from_bytes(ROM().readBytes(2), "big")
+                if cont_map_id == 0x2A or item_type != 0x2AB:
+                    ROM().seek(item_start)
+                    item_data = []
+                    for x in range(int(0x30 / 4)):
+                        item_data.append(int.from_bytes(ROM().readBytes(4), "big"))
+                    retained_model2.append(item_data)
+            mys_start = setup_table + 4 + (model2_count * 0x30)
+            ROM().seek(mys_start)
+            mys_count = int.from_bytes(ROM().readBytes(4), "big")
+            act_start = mys_start + 4 + (mys_count * 0x24)
+            ROM().seek(act_start)
+            act_count = int.from_bytes(ROM().readBytes(4), "big")
+            act_end = act_start + 4 + (act_count * 0x38)
+            other_retained_data = []
+            ROM().seek(mys_start)
+            for x in range(int((act_end - mys_start) / 4)):
+                other_retained_data.append(int.from_bytes(ROM().readBytes(4), "big"))
+            # Reconstruct setup file
+            ROM().seek(setup_table)
+            ROM().writeMultipleBytes(len(retained_model2), 4)
+            for item in retained_model2:
+                for data in item:
+                    ROM().writeMultipleBytes(data, 4)
+            for data in other_retained_data:
+                ROM().writeMultipleBytes(data, 4)
+
+
 def place_door_locations(spoiler: Spoiler):
     """Place Wrinkly Doors, and eventually T&S Doors."""
     if spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando or spoiler.settings.remove_wrinkly_puzzles:
@@ -95,7 +135,10 @@ def place_door_locations(spoiler: Spoiler):
                             item_data.append(1 << 16)
                             retained_model2.append(item_data)
                         elif door_type == "tns" and spoiler.settings.tns_location_rando:
-                            for k in range(2):
+                            lim = 2
+                            if not spoiler.settings.portal_numbers:
+                                lim = 1
+                            for k in range(lim):
                                 item_data = []
                                 for coord_index in range(3):
                                     if k == 1 and coord_index == 1:

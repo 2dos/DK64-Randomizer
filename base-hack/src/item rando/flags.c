@@ -188,6 +188,34 @@ int clampFlag(int flag) {
     return 0;
 }
 
+void moveGiveHook(int kong, int type, int index) {
+    /**
+     * @brief Hook into the move give function, only for non-progressive moves purchased from Cranky, Candy and Funky
+     * 
+     * @param kong Kong index
+     * @param type Move Type
+     * @param index Move Index
+     */
+    if (type == 0) {
+        int pad_moves[] = {1, 3, 2, 3, 3};
+        if (kong < 5) {
+            if (pad_moves[kong] == index) {
+                refreshPads((pad_refresh_signals)kong);
+            }
+        }
+    }
+    spawnActor(324,0);
+    TextOverlayData.type = type;
+    TextOverlayData.flag = index;
+    TextOverlayData.kong = kong;
+    if (type == 4) {
+        if (CollectableBase.Melons < 2) {
+            CollectableBase.Melons = 2;
+            CollectableBase.Health = CollectableBase.Melons << 2;
+        }
+    }
+}
+
 void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
     /**
      * @brief Check whether a flag is a move, alter the flag block address, and perform any additional functions required.
@@ -220,16 +248,8 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
             int init_val = *(char*)(temp_fba + item_type);
             if (((init_val & (1 << *flag)) == 0) && (source == 1)) {
                 // Move given
-                spawnActor(324,0);
-                TextOverlayData.type = item_type;
-                TextOverlayData.flag = item_index;
-                TextOverlayData.kong = item_kong;
-                if (item_type == 4) {
-                    if (CollectableBase.Melons < 2) {
-                        CollectableBase.Melons = 2;
-                        CollectableBase.Health = CollectableBase.Melons << 2;
-                    }
-                }
+                moveGiveHook(item_kong, item_type, item_index);
+                
             }
             return temp_fba + item_type;
         }
@@ -289,6 +309,9 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                 spawn_overlay = 1;
                 item_type = 5;
                 item_index = flag_index;
+                if (flag_index == FLAG_TBARREL_VINE) {
+                    refreshPads(ITEMREFRESH_VINE);
+                }
             } else if ((flag_index == FLAG_ABILITY_CAMERA) || (flag_index == FLAG_ABILITY_SHOCKWAVE)) {
                 spawn_overlay = 1;
                 item_type = 5;

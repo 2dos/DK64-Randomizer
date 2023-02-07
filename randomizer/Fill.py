@@ -37,6 +37,7 @@ from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleBosses import CorrectBossKongLocations, ShuffleBossesBasedOnOwnedItems
 from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
 from randomizer.ShufflePatches import ShufflePatches
+from randomizer.ShuffleFairies import ShuffleFairyLocations
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
 from randomizer.ShuffleWarps import ShuffleWarps, ShuffleWarpsCrossMap
 from randomizer.ShuffleCBs import ShuffleCBs
@@ -47,6 +48,19 @@ from randomizer.ShuffleItems import ShuffleItems
 def GetExitLevelExit(region):
     """Get the exit that using the "Exit Level" button will take you to."""
     level = region.level
+
+    medal_logic_regions = [
+        Regions.JungleJapesMedals,
+        Regions.AngryAztecMedals,
+        Regions.FranticFactoryMedals,
+        Regions.GloomyGalleonMedals,
+        Regions.FungiForestMedals,
+        Regions.CrystalCavesMedals,
+        Regions.CreepyCastleMedals,
+    ]
+    regions_with_medals = [(key, value) for (key, value) in Logic.Regions.items() if value not in medal_logic_regions]
+    if region in regions_with_medals:
+        return None
     # If you have option to restart, means there is no Exit Level option
     if region.restart is not None:
         return None
@@ -474,8 +488,9 @@ def PareWoth(spoiler, PlaythroughLocations):
         # Don't want constant locations in woth and we can filter out some types of items as not being essential to the woth
         for loc in [
             loc
-            for loc in sphere.locations
-            if not LocationList[loc].constant and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)
+            for loc in sphere.locations  # If the Helm Key is in Helm, we may still want path hints for it even though it's a constant item.
+            if (not LocationList[loc].constant or loc == Locations.HelmKey)
+            and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)
         ]:
             WothLocations.append(loc)
     WothLocations.append(Locations.BananaHoard)  # The Banana Hoard is the endpoint of the Way of the Hoard
@@ -687,7 +702,7 @@ def RandomFill(settings, itemsToPlace, inOrder=False):
         shuffle(itemsToPlace)
     # Get all remaining empty locations
     empty = []
-    for (id, location) in LocationList.items():
+    for id, location in LocationList.items():
         if location.item is None:
             empty.append(id)
     # Place item in random locations
@@ -2201,6 +2216,8 @@ def ShuffleMisc(spoiler):
     if spoiler.settings.random_patches:
         human_patches = []
         spoiler.human_patches = ShufflePatches(spoiler, human_patches).copy()
+    if spoiler.settings.random_fairies:
+        ShuffleFairyLocations(spoiler)
     if spoiler.settings.shuffle_shops:
         ShuffleShopLocations(spoiler)
     # Item Rando

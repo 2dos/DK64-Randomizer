@@ -17,3 +17,4 @@
 .definelabel blink, 0x8068842C
 .definelabel applyImageToActor, 0x80688370
 .definelabel writeImageSlotToActor, 0x80688320
+.definelabel getCenterOffset, 0x806FBD5C

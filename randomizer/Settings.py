@@ -196,6 +196,7 @@ class Settings:
         self.loading_zone_coupled = None
         self.move_rando = "off"
         self.random_patches = None
+        self.random_fairies = None
         self.random_prices = None
         self.boss_location_rando = None
         self.boss_kong_rando = None
@@ -416,6 +417,7 @@ class Settings:
         self.switch_allocation = [1, 1, 1, 1, 2, 2, 3]
         self.item_reward_previews = False
         self.microhints_enabled = "off"
+        self.portal_numbers = False
         # Helm Hurry
         self.helmhurry_list_starting_time = 1200
         self.helmhurry_list_golden_banana = 20
@@ -695,7 +697,7 @@ class Settings:
         required_key_count = 0
         if self.keys_random:
             required_key_count = randint(0, 8)
-        if self.select_keys:
+        elif self.select_keys:
             self.krool_keys_required = KeyEvents.copy()
             for key in self.starting_keys_list_selected:
                 if key == "key1":
@@ -861,10 +863,10 @@ class Settings:
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
-        bad_fake_types = (Types.Shop, Types.Shockwave, Types.TrainingBarrel, Types.Crown)
+        bad_fake_types = [Types.TrainingBarrel]
         is_bad = location.type in bad_fake_types
         if self.damage_amount in ("quad", "ohko") or self.perma_death:
-            is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm)
+            is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm) or location.type == Types.Shockwave
         return is_bad
 
     def update_valid_locations(self):
@@ -986,16 +988,9 @@ class Settings:
                 self.valid_locations[Types.RainbowCoin] = [x for x in fairyBannedLocations if LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave)]
             if Types.FakeItem in self.shuffled_location_types:
                 bad_fake_locations = (
-                    # Races
-                    Locations.JapesDiddyMinecarts,
-                    Locations.CastleDonkeyMinecarts,
-                    Locations.ForestChunkyMinecarts,
-                    Locations.AztecTinyBeetleRace,
+                    # Caves Beetle Race causes issues with a blueprint potentially being there
                     Locations.CavesLankyBeetleRace,
-                    Locations.FactoryTinyCarRace,
-                    Locations.CastleTinyCarRace,
-                    Locations.GalleonDonkeySealRace,
-                    # Stuff that may be required to access other stuff
+                    # Stuff that may be required to access other stuff - Not really fair
                     Locations.JapesDonkeyFreeDiddy,
                     Locations.JapesDonkeyFrontofCage,
                     Locations.IslesDonkeyJapesRock,
@@ -1007,19 +1002,11 @@ class Settings:
                     Locations.CavesDiddy5DoorCabinUpper,
                     Locations.CastleDonkeyTree,
                     Locations.CastleLankyGreenhouse,
+                    Locations.HelmBananaFairy1,
+                    Locations.HelmBananaFairy2,
                     # Miscellaneous issues
                     Locations.NintendoCoin,
                     Locations.RarewareCoin,
-                    # Helm Fairy Couplet
-                    Locations.HelmBananaFairy1,
-                    Locations.HelmBananaFairy2,
-                    # Seasick GB - Seasick effect + ice trap breaks the game
-                    Locations.GalleonChunkySeasick,
-                    Locations.GalleonChunkyMedal,
-                    # Enguarde + Ice Trap breaks the game
-                    Locations.GalleonLanky2DoorShip,
-                    Locations.GalleonLankyEnguardeChest,
-                    Locations.GalleonLankyMedal,
                 )
                 self.valid_locations[Types.FakeItem] = [x for x in shuffledLocations if not self.isBadIceTrapLocation(LocationList[x]) and x not in bad_fake_locations]
             if Types.Kong in self.shuffled_location_types:

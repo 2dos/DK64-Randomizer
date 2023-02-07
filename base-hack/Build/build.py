@@ -20,6 +20,7 @@ import model_port
 # Patcher functions for the extracted files
 import patch_text
 from adjust_exits import adjustExits
+from adjust_zones import modifyTriggers
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from end_seq_writer import createSquishFile, createTextFile
@@ -69,7 +70,7 @@ BLOCK_COLOR_SIZE = 64  # Bytes allocated to a block 32x32 image. Brute forcer sa
 file_dict = [
     {"name": "Static ASM Code", "start": 0x113F0, "compressed_size": 0xB15E4, "source_file": "StaticCode.bin", "use_external_gzip": True, "patcher": patchStaticCode},
     {"name": "Dolby Logo", "pointer_table_index": 14, "file_index": 176, "source_file": "assets/Dolby/DolbyThin.png", "texture_format": "ia4"},
-    {"name": "Thumb Image", "pointer_table_index": 14, "file_index": 94, "source_file": "assets/Nintendo Logo/Nintendo4.png", "texture_format": "rgba5551"},
+    {"name": "Thumb Image", "pointer_table_index": 14, "file_index": 94, "source_file": "assets/Nintendo Logo/Nintendo5.png", "texture_format": "rgba5551"},
     {"name": "DKTV Image", "pointer_table_index": 14, "file_index": 44, "source_file": "assets/DKTV/logo3.png", "texture_format": "rgba5551"},
     {"name": "Spin Transition Image", "pointer_table_index": 14, "file_index": 95, "source_file": "assets/transition/transition-body.png", "texture_format": "ia4"},
     {"name": "Moves Image", "pointer_table_index": 14, "file_index": 115, "source_file": "assets/file_screen/moves.png", "texture_format": "rgba5551"},
@@ -373,7 +374,7 @@ shop_face_array = [
     "pearl32",
     "fairy",
     "rainbow_coin",
-    "fake_gb",
+    "fake_gb_shop",
 ]
 for x, shop in enumerate(shop_face_array):
     data = {"name": f"Shop Indicator ({shop})", "pointer_table_index": 14, "file_index": 195 + x, "source_file": f"assets/displays/{shop}.png", "texture_format": "rgba32"}
@@ -1005,6 +1006,8 @@ with open(newROMName, "r+b") as fh:
             x["do_not_compress"] = True
             if x["source_file"][:5] == "setup":
                 convertSetup(x["source_file"])
+            if x["source_file"][:2] == "lz":
+                modifyTriggers(x["source_file"])
             with open(x["source_file"], "rb") as fg:
                 byte_read = fg.read()
                 uncompressed_size = len(byte_read)
@@ -1144,8 +1147,6 @@ with open(newROMName, "r+b") as fh:
     adjustExits(fh)
     generateDefaultPadPairing(fh)
     writeVanillaSongData(fh)
-    fh.seek(0x1FED020 + 0x11E)
-    fh.write((1).to_bytes(1, "big"))
     fh.seek(0x1FED020 + 0x11C)
     fh.write((0xFF).to_bytes(1, "big"))
     for x in portal_images:
@@ -1343,6 +1344,7 @@ with open(newROMName, "r+b") as fh:
         "bonus_skin",
         "fairy",
         "fake_gb",
+        "fake_gb_shop",
         "rainbow_coin",
         "gb_shine",
     ]

@@ -387,11 +387,11 @@ def compileHints(spoiler: Spoiler):
         Items.CreepyCastleKey: 0,
         Items.HideoutHelmKey: 0,
     }
-    # Calculate the number of key hints that need to be placed
-    if spoiler.settings.shuffle_items and Types.Key in spoiler.settings.shuffled_location_types:
+    # Calculate the number of key hints that need to be placed. Any WotH keys should have paths that we should hint.
+    woth_key_ids = [LocationList[woth_loc].item for woth_loc in spoiler.woth_locations if ItemList[LocationList[woth_loc].item].type == Types.Key]
+    if len(woth_key_ids) > 0:  # spoiler.settings.shuffle_items and Types.Key in spoiler.settings.shuffled_location_types:
         valid_types.append(HintType.RequiredKeyHint)
         # Only hint keys that are in the Way of the Hoard
-        woth_key_ids = [LocationList[woth_loc].item for woth_loc in spoiler.woth_locations if ItemList[LocationList[woth_loc].item].type == Types.Key]
         key_location_ids = {}
         # Find the locations of the Keys
         for location_id, location in LocationList.items():
@@ -677,7 +677,10 @@ def compileHints(spoiler: Spoiler):
                 # If there are no doors available (pretty unlikely) then just get a random one. Tough luck.
                 else:
                     hint_location = getRandomHintLocation()
-                message = f"{key_item.name} can be acquired with {kong_name} in {level_name}."
+                if location.type == Types.Blueprint:
+                    message = f"{key_item.name} is held by a kasplat in {level_name}."
+                else:
+                    message = f"{key_item.name} can be acquired with {kong_name} in {level_name}."
                 hint_location.hint_type = HintType.RequiredKeyHint
                 UpdateHint(hint_location, message)
             # For later or complex Keys, place hints that hint the "path" to the key
