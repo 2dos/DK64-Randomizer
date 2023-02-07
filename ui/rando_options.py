@@ -748,7 +748,7 @@ def toggle_logic_type(event):
 
 @bind("change", "bananaport_rando")
 def toggle_bananaport_selector(event):
-    """Toggle bananaport settings if shuffling is enabled"""
+    """Toggle bananaport settings if shuffling is enabled."""
     bananaport_customization = document.getElementById("warp_level_list_modal")
     if document.getElementById("bananaport_rando").value != "off":
         bananaport_customization.removeAttribute("disabled")
