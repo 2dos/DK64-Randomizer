@@ -644,6 +644,100 @@ for move_index in range(3):
         index_data["ammo_belt"]["indexes"].append((move_index - 1) + 0x30)
 # Instrument Upgrades
 index_data["ins_upg"]["indexes"] = [0x0, 0x0, 0x33, 0x32, 0x34]
+
+text_enum = [
+    "ITEMTEXT_SLAM1",  # 0x000
+    "ITEMTEXT_SLAM1_LATIN",  # 0x001
+    "ITEMTEXT_SLAM2",  # 0x002
+    "ITEMTEXT_SLAM2_LATIN",  # 0x003
+    "ITEMTEXT_SLAM3",  # 0x004
+    "ITEMTEXT_SLAM3_LATIN",  # 0x005
+    "ITEMTEXT_BBLAST",  # 0x006
+    "ITEMTEXT_BBLAST_LATIN",  # 0x007
+    "ITEMTEXT_SKONG",  # 0x008
+    "ITEMTEXT_SKONG_LATIN",  # 0x009
+    "ITEMTEXT_GGRAB",  # 0x00A
+    "ITEMTEXT_GGRAB_LATIN",  # 0x00B
+    "ITEMTEXT_CCHARGE",  # 0x00C
+    "ITEMTEXT_CCHARGE_LATIN",  # 0x00D
+    "ITEMTEXT_RBARREL",  # 0x00E
+    "ITEMTEXT_RBARREL_LATIN",  # 0x00F
+    "ITEMTEXT_SSPRING",  # 0x010
+    "ITEMTEXT_SSPRING_LATIN",  # 0x011
+    "ITEMTEXT_OSTAND",  # 0x012
+    "ITEMTEXT_OSTAND_LATIN",  # 0x013
+    "ITEMTEXT_BBALLOON",  # 0x014
+    "ITEMTEXT_BBALLOON_LATIN",  # 0x015
+    "ITEMTEXT_OSPRINT",  # 0x016
+    "ITEMTEXT_OSPRINT_LATIN",  # 0x017
+    "ITEMTEXT_MMONKEY",  # 0x018
+    "ITEMTEXT_MMONKEY_LATIN",  # 0x019
+    "ITEMTEXT_PTT",  # 0x01A
+    "ITEMTEXT_PTT_LATIN",  # 0x01B
+    "ITEMTEXT_MPORT",  # 0x01C
+    "ITEMTEXT_MPORT_LATIN",  # 0x01D
+    "ITEMTEXT_HCHUNKY",  # 0x01E
+    "ITEMTEXT_HCHUNKY_LATIN",  # 0x01F
+    "ITEMTEXT_PPUNCH",  # 0x020
+    "ITEMTEXT_PPUNCH_LATIN",  # 0x021
+    "ITEMTEXT_GGONE",  # 0x022
+    "ITEMTEXT_GGONE_LATIN",  # 0x023
+    "ITEMTEXT_COCONUT",  # 0x024
+    "ITEMTEXT_PEANUT",  # 0x025
+    "ITEMTEXT_GRAPE",  # 0x026
+    "ITEMTEXT_FEATHER",  # 0x027
+    "ITEMTEXT_PINEAPPLE",  # 0x028
+    "ITEMTEXT_BONGOS",  # 0x029
+    "ITEMTEXT_GUITAR",  # 0x02A
+    "ITEMTEXT_TROMBONE",  # 0x02B
+    "ITEMTEXT_SAX",  # 0x02C
+    "ITEMTEXT_TRIANGLE",  # 0x02D
+    "ITEMTEXT_HOMING",  # 0x02E
+    "ITEMTEXT_SNIPER",  # 0x02F
+    "ITEMTEXT_BELT1",  # 0x030
+    "ITEMTEXT_BELT2",  # 0x031
+    "ITEMTEXT_THIRDMELON",  # 0x032
+    "ITEMTEXT_INSUPGRADE1",  # 0x033
+    "ITEMTEXT_INSUPGRADE2",  # 0x034
+    "ITEMTEXT_DIVE",  # 0x035
+    "ITEMTEXT_ORANGE",  # 0x036
+    "ITEMTEXT_BARREL",  # 0x037
+    "ITEMTEXT_VINE",  # 0x038
+    "ITEMTEXT_CAMERA",  # 0x039
+    "ITEMTEXT_SHOCKWAVE",  # 0x03A
+    "ITEMTEXT_CAMERACOMBO",  # 0x03B
+    "ITEMTEXT_BANANA",  # 0x03C
+    "ITEMTEXT_MEDAL",  # 0x03D
+    "ITEMTEXT_BLUEPRINT_DK",  # 0x03E
+    "ITEMTEXT_BLUEPRINT_DIDDY",  # 0x03F
+    "ITEMTEXT_BLUEPRINT_LANKY",  # 0x040
+    "ITEMTEXT_BLUEPRINT_TINY",  # 0x041
+    "ITEMTEXT_BLUEPRINT_CHUNKY",  # 0x042
+    "ITEMTEXT_NINTENDO",  # 0x043
+    "ITEMTEXT_RAREWARE",  # 0x044
+    "ITEMTEXT_KEYGENERIC",  # 0x045
+    "ITEMTEXT_CROWN",  # 0x046
+    "ITEMTEXT_BEAN",  # 0x047
+    "ITEMTEXT_KEY1",  # 0x048
+    "ITEMTEXT_KEY2",  # 0x049
+    "ITEMTEXT_KEY3",  # 0x04A
+    "ITEMTEXT_KEY4",  # 0x04B
+    "ITEMTEXT_KEY5",  # 0x04C
+    "ITEMTEXT_KEY6",  # 0x04D
+    "ITEMTEXT_KEY7",  # 0x04E
+    "ITEMTEXT_KEY8",  # 0x04F
+    "ITEMTEXT_PEARL",  # 0x050
+    "ITEMTEXT_KONG_DK",  # 0x051
+    "ITEMTEXT_KONG_DIDDY",  # 0x052
+    "ITEMTEXT_KONG_LANKY",  # 0x053
+    "ITEMTEXT_KONG_TINY",  # 0x054
+    "ITEMTEXT_KONG_CHUNKY",  # 0x055
+    "ITEMTEXT_FAIRY",  # 0x056
+    "ITEMTEXT_RAINBOWCOIN",  # 0x057
+    "ITEMTEXT_FAKEITEM",  # 0x058
+]
+
+
 with open("src/randomizers/move_text.c", "w") as fh:
     with open("include/text_items.h", "w") as fg:
         fh.write('#include "../../include/common.h"\n\n')
@@ -668,11 +762,11 @@ with open("src/randomizers/move_text.c", "w") as fh:
             for item_index in range(int(len(index_data[move_type]["indexes"]) / divisor)):
                 if index_data[move_type]["has_latin"]:
                     fh.write("\t{\n")
-                    fh.write(f"\t\t.name = {index_data[move_type]['indexes'][divisor * item_index]},\n")
-                    fh.write(f"\t\t.latin = {index_data[move_type]['indexes'][(divisor * item_index) + 1]},\n")
+                    fh.write(f"\t\t.name = {text_enum[index_data[move_type]['indexes'][divisor * item_index]]},\n")
+                    fh.write(f"\t\t.latin = {text_enum[index_data[move_type]['indexes'][(divisor * item_index) + 1]]},\n")
                     fh.write("\t},\n")
                 else:
-                    fh.write(f"\t{index_data[move_type]['indexes'][divisor * item_index]},\n")
+                    fh.write(f"\t{text_enum[index_data[move_type]['indexes'][divisor * item_index]]},\n")
             fh.write("};\n\n")
 
 writeText("move_names.bin", move_names_arr)

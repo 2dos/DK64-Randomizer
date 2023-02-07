@@ -14,6 +14,7 @@ from randomizer.Patching.Lib import intf_to_float, float_to_hex
 
 model_two_indexes = {
     Types.Banana: 0x74,
+    Types.ToughBanana: 0x74,
     Types.Blueprint: [0xDE, 0xE0, 0xE1, 0xDD, 0xDF],
     Types.Coin: [0x48, 0x28F],  # Nintendo, Rareware
     Types.Key: 0x13C,
@@ -29,10 +30,12 @@ model_two_indexes = {
     Types.Fairy: 0x25C,
     Types.RainbowCoin: 0xB7,
     Types.FakeItem: 0x25D,
+    Types.JunkItem: [0x56, 0x8F, 0x8E, 0x57, 0x98],  # Orange, Ammo, Crystal, Watermelon, Film
 }
 
 model_two_scales = {
     Types.Banana: 0.25,
+    Types.ToughBanana: 0.25,
     Types.Blueprint: 2,
     Types.Coin: 0.4,
     Types.Key: 0.17,
@@ -48,10 +51,12 @@ model_two_scales = {
     Types.Fairy: 0.25,
     Types.RainbowCoin: 0.25,
     Types.FakeItem: 0.25,
+    Types.JunkItem: 1,
 }
 
 actor_indexes = {
     Types.Banana: 45,
+    Types.ToughBanana: 45,
     Types.Blueprint: [78, 75, 77, 79, 76],
     Types.Key: 72,
     Types.Crown: 86,
@@ -67,9 +72,11 @@ actor_indexes = {
     Types.Fairy: 88,
     Types.RainbowCoin: 0x8C,
     Types.FakeItem: 217,
+    Types.JunkItem: [0x34, 0x33, 0x79, 0x2F, 0],  # Orange, Ammo, Crystal, Watermelon, Film
 }
 model_indexes = {
     Types.Banana: 0x69,
+    Types.ToughBanana: 0x69,
     Types.Key: 0xF5,
     Types.Crown: 0xF4,
     Types.Fairy: 0x3D,
@@ -77,10 +84,12 @@ model_indexes = {
     Types.Shockwave: 0xFB,
     Types.TrainingBarrel: 0xFB,
     Types.Kong: [4, 1, 6, 9, 0xC],
-    Types.FakeItem: 0x10E,
+    Types.FakeItem: 0x10F,
 }
 
 kong_flags = (385, 6, 70, 66, 117)
+
+subitems = (Items.JunkOrange, Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkFilm)
 
 
 class TextboxChange:
@@ -114,7 +123,7 @@ textboxes = [
     TextboxChange(Locations.FactoryTinyCarRace, 17, 4, "GOLDEN BANANA"),
     TextboxChange(Locations.GalleonTinyPearls, 23, 0, "PLEASE TRY AND GET THEM BACK", "IF YOU HELP ME FIND THEM, I WILL REWARD YOU WITH A |"),
     TextboxChange(Locations.GalleonTinyPearls, 23, 1, "GOLDEN BANANA"),
-    TextboxChange(Locations.AztecDiddyVultureRace, 15, 0, "TEST OF YOUR FLYING SKILL"),
+    TextboxChange(Locations.AztecDiddyVultureRace, 15, 1, "PRIZE"),
     TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 1, "ALL THIS SAND", "THIS |"),
     TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 2, "BANANA"),
     TextboxChange(Locations.RarewareCoin, 8, 2, "RAREWARE COIN"),
@@ -137,6 +146,7 @@ nintendo_coin_reward = ("NINTENDO COIN", "ANCIENT DOUBLOON")
 
 text_rewards = {
     Types.Banana: ("GOLDEN BANANA", "BANANA OF PURE GOLD"),
+    Types.ToughBanana: ("GOLDEN BANANA", "BANANA OF PURE GOLD"),
     Types.Blueprint: ("BLUEPRINT", "MAP O' DEATH MACHINE"),
     Types.Key: ("BOSS KEY", "KEY TO DAVY JONES LOCKER"),
     Types.Crown: ("BATTLE CROWN", "CROWN TO PLACE ATOP YER HEAD"),
@@ -150,6 +160,7 @@ text_rewards = {
     Types.Pearl: ("PEARL", "BLACK PEARL"),
     Types.RainbowCoin: ("RAINBOW COIN", "COLORFUL COIN HIDDEN FOR 17 YEARS"),
     Types.FakeItem: ("GLODEN BANANE", "BANANA OF FOOLS GOLD"),
+    Types.JunkItem: ("JUNK ITEM", "SOME HEAP OF JUNK"),
     Types.NoItem: ("NOTHING", "DIDDLY SQUAT"),
 }
 
@@ -200,28 +211,31 @@ def getTextRewardIndex(item) -> int:
     elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
         return 8
     elif item.new_item is None:
-        return 13
+        return 14
     else:
         item_text_indexes = (
-            Types.Banana,
-            Types.Blueprint,
-            Types.Key,
-            Types.Crown,
-            Types.Fairy,
-            Types.Coin,
-            Types.Coin,
-            Types.Medal,
-            Types.Shop,
-            Types.Kong,
-            Types.Bean,
-            Types.Pearl,
-            Types.RainbowCoin,
-            Types.FakeItem,
-            Types.NoItem,
+            Types.Banana,  # 0
+            Types.Blueprint,  # 1
+            Types.Key,  # 2
+            Types.Crown,  # 3
+            Types.Fairy,  # 4
+            Types.Coin,  # 5
+            Types.Coin,  # 6
+            Types.Medal,  # 7
+            Types.Shop,  # 8
+            Types.Kong,  # 9
+            Types.Bean,  # 10
+            Types.Pearl,  # 11
+            Types.RainbowCoin,  # 12
+            Types.FakeItem,  # 13
+            Types.NoItem,  # 14
+            Types.JunkItem,  # 15
         )
         if item.new_item in item_text_indexes:
             return item_text_indexes.index(item.new_item)
-        return 13
+        if item.new_item == Types.ToughBanana:
+            return 0
+        return 14
 
 
 def getActorIndex(item):
@@ -230,6 +244,8 @@ def getActorIndex(item):
         return actor_indexes[Types.NoItem]
     elif item.new_item == Types.Blueprint:
         return actor_indexes[Types.Blueprint][item.new_kong]
+    elif item.new_item == Types.JunkItem:
+        return actor_indexes[Types.JunkItem][subitems.index(item.new_subitem)]
     elif item.new_item == Types.Coin:
         if item.new_flag == 379:  # Is RW Coin
             return actor_indexes[Types.Coin][1]
@@ -311,7 +327,7 @@ def place_randomized_items(spoiler: Spoiler):
                         else:
                             # Is Flagged Item
                             subtype = 5
-                            if item.new_item == Types.Banana:
+                            if item.new_item in (Types.Banana, Types.ToughBanana):
                                 subtype = 6
                             ROM().seek(write_space)
                             ROM().writeMultipleBytes(subtype << 5, 1)
@@ -322,12 +338,22 @@ def place_randomized_items(spoiler: Spoiler):
                         if map_id not in map_items:
                             map_items[map_id] = []
                         if item.new_item is None:
-                            map_items[map_id].append({"id": item.placement_data[map_id], "obj": Types.NoItem, "kong": 0, "flag": 0, "upscale": 1, "shared": False})
+                            map_items[map_id].append({"id": item.placement_data[map_id], "obj": Types.NoItem, "kong": 0, "flag": 0, "upscale": 1, "shared": False, "subitem": 0})
                         else:
                             numerator = model_two_scales[item.new_item]
                             denominator = model_two_scales[item.old_item]
                             upscale = numerator / denominator
-                            map_items[map_id].append({"id": item.placement_data[map_id], "obj": item.new_item, "kong": item.new_kong, "flag": item.new_flag, "upscale": upscale, "shared": item.shared})
+                            map_items[map_id].append(
+                                {
+                                    "id": item.placement_data[map_id],
+                                    "obj": item.new_item,
+                                    "kong": item.new_kong,
+                                    "flag": item.new_flag,
+                                    "upscale": upscale,
+                                    "shared": item.shared,
+                                    "subitem": item.new_subitem,
+                                }
+                            )
                     if item.location == Locations.NintendoCoin:
                         arcade_rewards = (
                             Types.NoItem,  # Or Nintendo Coin
@@ -352,11 +378,14 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Kong,  # Handled in special case
                             Types.RainbowCoin,
                             Types.Coin,  # Flag check handled separately
+                            Types.JunkItem,
                         )
                         arcade_reward_index = 0
                         if item.new_item == Types.Coin:
                             if item.new_flag == 379:  # RW Coin
                                 arcade_reward_index = 21
+                        elif item.new_item == Types.ToughBanana:
+                            arcade_reward_index = 5
                         elif item.new_item == Types.Kong:
                             if item.new_flag in kong_flags:
                                 arcade_reward_index = kong_flags.index(item.new_flag) + 15
@@ -387,10 +416,13 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Kong,
                             Types.RainbowCoin,
                             Types.Coin,  # Flag check handled separately
+                            Types.JunkItem,
                         )
                         jetpac_reward_index = 0
                         if item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave):
                             jetpac_reward_index = 9
+                        elif item.new_item == Types.ToughBanana:
+                            jetpac_reward_index = 5
                         elif item.new_item == Types.Coin:
                             if item.new_flag == 132:  # Nintendo Coin
                                 jetpac_reward_index = 12
@@ -463,7 +495,11 @@ def place_randomized_items(spoiler: Spoiler):
                         # 14 = Fairy
                         # 15 = Rainbow Coin
                         # 16 = Fake Item
-                        # 17 = Nothing
+                        # 17 = Junk Orange
+                        # 18 = Junk Ammo
+                        # 19 = Junk Crystal
+                        # 20 = Junk Melon
+                        # 21 = Nothing
                         slots = [
                             Types.Banana,  # GB
                             Types.Blueprint,  # BP
@@ -482,6 +518,10 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Fairy,  # Fairy
                             Types.RainbowCoin,  # Rainbow Cion
                             Types.FakeItem,  # Fake Item
+                            Types.JunkItem,  # Junk Item
+                            Types.JunkItem,  # Junk Item
+                            Types.JunkItem,  # Junk Item
+                            Types.JunkItem,  # Junk Item
                             None,  # No Item
                         ]
                         offset = item.old_flag - 549
@@ -501,6 +541,10 @@ def place_randomized_items(spoiler: Spoiler):
                                 elif (subtype == 2) or (subtype == 3):
                                     medal_index = 7
                             ROM().write(medal_index)
+                        elif item.new_item == Types.ToughBanana:
+                            ROM().write(0)
+                        elif item.new_item == Types.JunkItem:
+                            ROM().write(17 + subitems.index(item.new_subitem))
                         else:
                             ROM().write(slots.index(item.new_item))
                     elif item.location == Locations.JapesChunkyBoulder:
@@ -511,7 +555,7 @@ def place_randomized_items(spoiler: Spoiler):
                         # Write to Vulture Spawn Location
                         ROM().seek(sav + 0x115)
                         ROM().write(actor_index)
-                    elif item.old_item == Types.Banana:
+                    elif item.old_item in (Types.Banana, Types.ToughBanana):
                         # Bonus GB Table
                         ROM().seek(0x1FF1200 + (4 * bonus_table_offset))
                         ROM().writeMultipleBytes(item.old_flag, 2)
@@ -595,6 +639,8 @@ def place_randomized_items(spoiler: Spoiler):
                             item_obj_index = 0
                             if item_slot["obj"] == Types.Blueprint:
                                 item_obj_index = model_two_indexes[Types.Blueprint][item_slot["kong"]]
+                            elif item_slot["obj"] == Types.JunkItem:
+                                item_obj_index = model_two_indexes[Types.JunkItem][subitems.index(item_slot["subitem"])]
                             elif item_slot["obj"] == Types.Coin:
                                 item_obj_index = model_two_indexes[Types.Coin][0]
                                 if item_slot["flag"] == 379:

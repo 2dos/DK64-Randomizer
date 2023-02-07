@@ -108,6 +108,7 @@
 #define FLAG_SHOPMOVE_INS_2 0x29D
 #define FLAG_RAINBOWCOIN_0 0x29E // 0x29E -> 0x2AD (inc.) (16 flags)
 #define FLAG_FAKEITEM 0x2AE // 0x2AE -> 0x2BD (inc.) (16 flags)
+#define FLAG_JUNKITEM 0x320 // 0x320 -> 0x384 (inc.) (100 flags)
 
 #define IMAGE_DPAD 187
 #define IMAGE_AMMO_START 188

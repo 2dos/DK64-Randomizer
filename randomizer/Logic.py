@@ -318,7 +318,7 @@ class LogicVarHolder:
         self.AmmoBelts = 2 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
         self.InstUpgrades = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
 
-        self.GoldenBananas = sum(1 for x in ownedItems if x == Items.GoldenBanana)
+        self.GoldenBananas = sum(1 for x in ownedItems if x in (Items.GoldenBanana, Items.ToughBanana))
         self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
         self.BananaMedals = sum(1 for x in ownedItems if x == Items.BananaMedal)
         self.BattleCrowns = sum(1 for x in ownedItems if x == Items.BattleCrown)

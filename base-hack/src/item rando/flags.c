@@ -328,25 +328,34 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
             // Jetpac/Arcade GB Give
             int give_gb = 0;
             int give_rainbow = 0;
-            if ((vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) && (Rando.arcade_reward == 5)) {
-                give_gb = 1;
-            } else if ((vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) && (Rando.jetpac_reward == 5)) {
-                give_gb = 1;
-            } else if ((vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) && (Rando.arcade_reward == 20)) {
-                give_rainbow = 1;
-            } else if ((vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) && (Rando.jetpac_reward == 11)) {
-                give_rainbow = 1;
+            int give_health = 0;
+            if (vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
+                if (Rando.arcade_reward == 5) {
+                    give_gb = 1;
+                } else if (Rando.arcade_reward == 20) {
+                    give_rainbow = 1;
+                } else if (Rando.arcade_reward == 22) {
+                    give_health = 1;
+                }
+            } else if (vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) {
+                if (Rando.jetpac_reward == 5) {
+                    give_gb = 1;
+                } else if (Rando.jetpac_reward == 11) {
+                    give_rainbow = 1;
+                } else if (Rando.jetpac_reward == 13) {
+                    give_health = 1;
+                }
             }
-            if (give_gb) {
-                if (!checkFlag(vanilla_flag, 0)) {
+            if (!checkFlag(vanilla_flag, 0)) {
+                if (give_gb) {
                     int world = getWorld(CurrentMap, 1);
                     if (world < 8) {
                         giveGB(Character, world);
                     }
-                }
-            } else if (give_rainbow) {
-                if (!checkFlag(vanilla_flag, 0)) {
+                } else if (give_rainbow) {
                     giveRainbowCoin();
+                } else if (give_health) {
+                    giveMelon();
                 }
             }
             if (spawn_overlay) {
