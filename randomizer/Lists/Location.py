@@ -1009,3 +1009,106 @@ ShopLocationReference[Levels.DKIsles] = {}
 ShopLocationReference[Levels.DKIsles][VendorType.Cranky] = [Locations.DonkeyIslesPotion, Locations.DiddyIslesPotion, Locations.LankyIslesPotion, Locations.TinyIslesPotion, Locations.ChunkyIslesPotion, Locations.SimianSlam]
 
 RemovedShopLocations = []
+
+# The below code is used to support the plandomizer.
+def createPlannableLocationObj():
+    return {
+        "All Kongs": [],
+        "Donkey": [],
+        "Diddy": [],
+        "Lanky": [],
+        "Tiny": [],
+        "Chunky": []
+    }
+
+def getKongString(kongEnum):
+    if kongEnum == Kongs.donkey:
+        return "Donkey"
+    elif kongEnum == Kongs.diddy:
+        return "Diddy"
+    elif kongEnum == Kongs.lanky:
+        return "Lanky"
+    elif kongEnum == Kongs.tiny:
+        return "Tiny"
+    elif kongEnum == Kongs.chunky:
+        return "Chunky"
+    else:
+        return "All Kongs"
+
+PlannableLocations = {
+    "DKIsles": {
+        "display_name": "D.K. Isles",
+        "locations": createPlannableLocationObj()
+    },
+    "JungleJapes": {
+        "display_name": "Jungle Japes",
+        "locations": createPlannableLocationObj()
+    },
+    "AngryAztec": {
+        "display_name": "Angry Aztec",
+        "locations": createPlannableLocationObj()
+    },
+    "FranticFactory": {
+        "display_name": "Frantic Factory",
+        "locations": createPlannableLocationObj()
+    },
+    "GloomyGalleon": {
+        "display_name": "Gloomy Galleon",
+        "locations": createPlannableLocationObj()
+    },
+    "FungiForest": {
+        "display_name": "Fungi Forest",
+        "locations": createPlannableLocationObj()
+    },
+    "CrystalCaves": {
+        "display_name": "Crystal Caves",
+        "locations": createPlannableLocationObj()
+    },
+    "CreepyCastle": {
+        "display_name": "Creepy Castle",
+        "locations": createPlannableLocationObj()
+    },
+    "HideoutHelm": {
+        "display_name": "Hideout Helm",
+        "locations": createPlannableLocationObj()
+    },
+    "Shops": {
+        "display_name": "Shops",
+        "locations": createPlannableLocationObj()
+    },
+    "Blueprints": {
+        "display_name": "Blueprints",
+        "locations": createPlannableLocationObj()
+    },
+    # There are no "All Kongs" hints.
+    "Hints": {
+        "display_name": "Hints",
+        "locations": {
+            "Donkey": [],
+            "Diddy": [],
+            "Lanky": [],
+            "Tiny": [],
+            "Chunky": []
+        }
+    }
+}
+for locationEnum, locationObj in LocationList.items():
+    # Do not randomize constant rewards.
+    if locationObj.type == Types.Constant:
+        continue
+    locationJson = {
+        "display_name": locationObj.name,
+        "enum_name": locationEnum.name
+    }
+    kongString = getKongString(locationObj.kong)
+    if locationObj.type == Types.BlueprintBanana:
+        PlannableLocations["Blueprints"]["locations"][kongString].append(locationJson)
+    elif locationObj.type == Types.Hint:
+        PlannableLocations["Hints"]["locations"][kongString].append(locationJson)
+    elif locationObj.type == Types.Shop:
+        # This covers everything but the Rareware coin, but that will end up
+        # being placed into Shops as well.
+        PlannableLocations["Shops"]["locations"][kongString].append(locationJson)
+    else:
+        levelName = locationObj.level.name
+        PlannableLocations[levelName]["locations"][kongString].append(locationJson)

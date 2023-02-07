@@ -47,3 +47,42 @@ def bind(event, id, iterations=0):
         return wrapper
 
     return real_decorator
+
+def bindList(event, idList, suffix=""):
+    """Bind a function to an event for a list of buttons.
+    
+    Args:
+        event (str): Event to bind to eg: click
+        idList (str[]): A list of IDs of the elements to bind to.
+        suffix (str, optional): A string suffix to add to the end of each ID.
+    """
+
+    def real_decorator(function):
+        """Return the main decorator back this is the main response.
+
+        Args:
+            function (func): The original function.
+
+        Returns:
+            func: The original function to return.
+        """
+        function = create_proxy(function)
+        for id in idList:
+            try:
+                document.getElementById(id + suffix).addEventListener(event, function)
+            except Exception:
+                pass
+
+        @wraps(function)
+        def wrapper(*args, **kwargs):
+            """Wrap our existing function with our passed function.
+
+            Returns:
+                func: The function to wrap.
+            """
+            retval = function(*args, **kwargs)
+            return retval
+
+        return wrapper
+
+    return real_decorator

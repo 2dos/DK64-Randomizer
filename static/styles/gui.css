@@ -226,6 +226,17 @@ footer {
   flex: 1 0 10%;
 }
 
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  background-color: #048243;
+  border: 1px solid #ced4da;
+  color: #e3e3e3;
+}
+
+.nav-pills > .nav-item:not(.active):hover {
+  color: #048243;
+}
+
 div {
   color: #e3e3e3;
 }
@@ -549,4 +560,8 @@ td.directional_divider {
 }
 .spoiler-head-caret, .playthrough-head-caret {
   text-align: right;
+}
+
+.no-transition {
+  transition-duration: 0s;
 }

@@ -1,9 +1,12 @@
 """Stores the item class and a list of each item with its attributes."""
 
+import re
+
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.MoveTypes import MoveTypes
+from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Types import Types
 
 
@@ -263,3 +266,90 @@ HHItems = [
 ]
 for item in HHItems:
     HHItemSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_"), "tooltip": "", "default": item[1]})
+
+# The below code is used to support the plandomizer.
+PlannableItems = []
+for itemEnum, itemObj in ItemList.items():
+    # Only include items that have a matching item in the plando map.
+    if itemEnum not in ItemToPlandoItemMap:
+        continue
+    # Do not add blueprints. Those will be replaced with a single generic item.
+    if re.search(".*Blueprint$", itemObj.name) != None:
+        continue
+    plandoItemEnum = ItemToPlandoItemMap[itemEnum]
+    itemJson = {
+        "display_name": itemObj.name,
+        "enum_name": plandoItemEnum.name
+    }
+    PlannableItems.append(itemJson)
+PlannableItems.append({
+    "display_name": "Blueprint",
+    "enum_name": "Blueprint"
+})
+
+# The maximum amount of each item that the user is allowed to place.
+# If a plando item is not here, that item has no limit.
+PlannableItemLimits = {
+    PlandoItems.Donkey: 1,
+    PlandoItems.Diddy: 1,
+    PlandoItems.Lanky: 1,
+    PlandoItems.Tiny: 1,
+    PlandoItems.Chunky: 1,
+    PlandoItems.Vines: 1,
+    PlandoItems.Swim: 1,
+    PlandoItems.Oranges: 1,
+    PlandoItems.Barrels: 1,
+    # The player will always start with one of the three slams.
+    PlandoItems.ProgressiveSlam: 2,
+    PlandoItems.BaboonBlast: 1,
+    PlandoItems.StrongKong: 1,
+    PlandoItems.GorillaGrab: 1,
+    PlandoItems.ChimpyCharge: 1,
+    PlandoItems.RocketbarrelBoost: 1,
+    PlandoItems.SimianSpring: 1,
+    PlandoItems.Orangstand: 1,
+    PlandoItems.BaboonBalloon: 1,
+    PlandoItems.OrangstandSprint: 1,
+    PlandoItems.MiniMonkey: 1,
+    PlandoItems.PonyTailTwirl: 1,
+    PlandoItems.Monkeyport: 1,
+    PlandoItems.HunkyChunky: 1,
+    PlandoItems.PrimatePunch: 1,
+    PlandoItems.GorillaGone: 1,
+    PlandoItems.Coconut: 1,
+    PlandoItems.Peanut: 1,
+    PlandoItems.Grape: 1,
+    PlandoItems.Feather: 1,
+    PlandoItems.Pineapple: 1,
+    PlandoItems.HomingAmmo: 1,
+    PlandoItems.SniperSight: 1,
+    PlandoItems.ProgressiveAmmoBelt: 2,
+    PlandoItems.Bongos: 1,
+    PlandoItems.Guitar: 1,
+    PlandoItems.Trombone: 1,
+    PlandoItems.Saxophone: 1,
+    PlandoItems.Triangle: 1,
+    PlandoItems.ProgressiveInstrumentUpgrade: 3,
+    PlandoItems.Camera: 1,
+    PlandoItems.Shockwave: 1,
+    PlandoItems.NintendoCoin: 1,
+    PlandoItems.RarewareCoin: 1,
+    PlandoItems.JungleJapesKey: 1,
+    PlandoItems.AngryAztecKey: 1,
+    PlandoItems.FranticFactoryKey: 1,
+    PlandoItems.GloomyGalleonKey: 1,
+    PlandoItems.FungiForestKey: 1,
+    PlandoItems.CrystalCavesKey: 1,
+    PlandoItems.CreepyCastleKey: 1,
+    PlandoItems.HideoutHelmKey: 1,
+    # Forty of these bananas are currentl allocated to blueprint rewards.
+    PlandoItems.GoldenBanana: 201,
+    PlandoItems.BananaFairy: 20,
+    PlandoItems.BananaMedal: 40,
+    PlandoItems.BattleCrown: 10,
+    PlandoItems.Bean: 1,
+    PlandoItems.Pearl: 5,
+    PlandoItems.FakeItem: 16,
+    PlandoItems.RainbowCoin: 16,
+    PlandoItems.Blueprint: 40
+}
