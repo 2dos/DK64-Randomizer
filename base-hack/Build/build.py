@@ -766,12 +766,12 @@ for bi, b in enumerate(barrel_skins):
 
 shrinkModel(False, "", 0xAE, 0.15, "shrink_crown.bin", False)  # Battle Crown
 shrinkModel(False, "", 0xA4, 0.1, "shrink_key.bin", False)  # Boss Key
-shrinkModel(True, "potion_dk_om1.bin", 0, 0.2, "shrink_potion_dk.bin", False)  # Potion (DK)
-shrinkModel(True, "potion_diddy_om1.bin", 0, 0.2, "shrink_potion_diddy.bin", False)  # Potion (Diddy)
-shrinkModel(True, "potion_lanky_om1.bin", 0, 0.2, "shrink_potion_lanky.bin", False)  # Potion (Lanky)
-shrinkModel(True, "potion_tiny_om1.bin", 0, 0.2, "shrink_potion_tiny.bin", False)  # Potion (Tiny)
-shrinkModel(True, "potion_chunky_om1.bin", 0, 0.2, "shrink_potion_chunky.bin", False)  # Potion (Chunky)
-shrinkModel(True, "potion_any_om1.bin", 0, 0.2, "shrink_potion_any.bin", False)  # Potion (Any)
+shrinkModel(True, "potion_dk_om1.bin", 0, 0.08, "shrink_potion_dk.bin", False)  # Potion (DK)
+shrinkModel(True, "potion_diddy_om1.bin", 0, 0.08, "shrink_potion_diddy.bin", False)  # Potion (Diddy)
+shrinkModel(True, "potion_lanky_om1.bin", 0, 0.08, "shrink_potion_lanky.bin", False)  # Potion (Lanky)
+shrinkModel(True, "potion_tiny_om1.bin", 0, 0.08, "shrink_potion_tiny.bin", False)  # Potion (Tiny)
+shrinkModel(True, "potion_chunky_om1.bin", 0, 0.08, "shrink_potion_chunky.bin", False)  # Potion (Chunky)
+shrinkModel(True, "potion_any_om1.bin", 0, 0.08, "shrink_potion_any.bin", False)  # Potion (Any)
 shrinkModel(False, "", 0x3C, 5, "shrink_fairy.bin", True)  # Fairy
 
 model_changes = [

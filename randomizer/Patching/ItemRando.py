@@ -84,7 +84,7 @@ model_indexes = {
     Types.Shockwave: 0xFB,
     Types.TrainingBarrel: 0xFB,
     Types.Kong: [4, 1, 6, 9, 0xC],
-    Types.FakeItem: 0x10E,
+    Types.FakeItem: 0x10F,
 }
 
 kong_flags = (385, 6, 70, 66, 117)
@@ -121,7 +121,7 @@ textboxes = [
     TextboxChange(Locations.FactoryTinyCarRace, 17, 4, "GOLDEN BANANA"),
     TextboxChange(Locations.GalleonTinyPearls, 23, 0, "PLEASE TRY AND GET THEM BACK", "IF YOU HELP ME FIND THEM, I WILL REWARD YOU WITH A |"),
     TextboxChange(Locations.GalleonTinyPearls, 23, 1, "GOLDEN BANANA"),
-    TextboxChange(Locations.AztecDiddyVultureRace, 15, 0, "TEST OF YOUR FLYING SKILL"),
+    TextboxChange(Locations.AztecDiddyVultureRace, 15, 1, "PRIZE"),
     TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 1, "ALL THIS SAND", "THIS |"),
     TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 2, "BANANA"),
     TextboxChange(Locations.RarewareCoin, 8, 2, "RAREWARE COIN"),
