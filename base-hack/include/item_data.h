@@ -5,7 +5,7 @@
 Thanks,
 		Ballaam
 */
-extern const short acceptable_items[31];
+extern const short acceptable_items[27];
 extern const item_conversion_info item_conversions[31];
 extern const unsigned char bounce_objects[16];
 extern const unsigned char actor_drops[32];
