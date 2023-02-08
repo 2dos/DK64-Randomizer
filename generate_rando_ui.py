@@ -44,9 +44,10 @@ async def initialize():
     from randomizer.Enums.Types import ItemRandoSelector, KeySelector
 
     # Module of lists and utils used for plandomizer
-    from randomizer.PlandoUtils import PlandoItemFilter, PlandoPanelFilter, PlandoShopSortFilter
+    from randomizer.PlandoUtils import PlandoItemFilter, PlandoMinigameFilter, PlandoPanelFilter, PlandoShopSortFilter
     from randomizer.Lists.Item import PlannableItems
     from randomizer.Lists.Location import PlannableLocations
+    from randomizer.Lists.Minigame import PlannableMinigames
 
     js.listeners = []
     js.progression_presets = []
@@ -70,6 +71,7 @@ async def initialize():
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     # Add custom Jinja2 filter functions.
     templateEnv.filters["plando_item_restrict"] = PlandoItemFilter
+    templateEnv.filters["plando_minigame_restrict"] = PlandoMinigameFilter
     templateEnv.filters["plando_panel_restrict"] = PlandoPanelFilter
     templateEnv.filters["plando_shop_sort"] = PlandoShopSortFilter
     template = templateEnv.get_template("base.html.jinja2")
@@ -82,7 +84,8 @@ async def initialize():
         glitches=GlitchSelector,
         helm_hurry_items=HHItemSelector,
         plando_items=PlannableItems,
-        plando_locations=PlannableLocations
+        plando_locations=PlannableLocations,
+        plando_minigames=PlannableMinigames
     )
     js.document.documentElement.innerHTML = ""
     js.document.open()

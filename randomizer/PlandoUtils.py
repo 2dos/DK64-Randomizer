@@ -2,6 +2,7 @@
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Lists.Location import LocationList
 
@@ -90,6 +91,52 @@ def PlandoItemFilter(itemList, location):
     # If we've gotten to this point, we have no filters to perform.
     # We can return the full list.
     return itemList
+
+# A dictionary indicating which mini-games are unavailable to certain Kongs.
+kongMinigameRestrictions = {
+    "Donkey": {
+        Minigames.DiddyRocketbarrel.name,
+        Minigames.TinyPonyTailTwirl.name,
+        Minigames.ChunkyHiddenKremling.name
+    },
+    "Diddy": {
+        Minigames.SpeedySwingSortieNormal.name,
+        Minigames.DonkeyTarget.name,
+        Minigames.TinyPonyTailTwirl.name,
+        Minigames.ChunkyHiddenKremling.name
+    },
+    "Lanky": {
+        Minigames.BusyBarrelBarrageEasy.name,
+        Minigames.BusyBarrelBarrageNormal.name,
+        Minigames.BusyBarrelBarrageHard.name,
+        Minigames.SpeedySwingSortieNormal.name,
+        Minigames.DonkeyTarget.name,
+        Minigames.TinyPonyTailTwirl.name,
+        Minigames.ChunkyHiddenKremling.name
+    },
+    "Tiny": {
+        Minigames.DonkeyTarget.name,
+        Minigames.ChunkyHiddenKremling.name
+    },
+    "Chunky": {
+        Minigames.SpeedySwingSortieNormal.name,
+        Minigames.DonkeyTarget.name,
+        Minigames.TinyPonyTailTwirl.name
+    }
+}
+
+def PlandoMinigameFilter(minigameList, kong):
+    """A Jinja filter that returns a filtered list of minigames that can be
+       played by each Kong. This will prevent the user from placing impossible
+       minigames in locations that only certain Kongs can access.
+       
+       Args:
+           minigameList (str[]): The list of possible minigames.
+           kong (str): The Kong who will be playing the minigame.
+    """
+    if kong == "All Kongs":
+        return minigameList
+    return [game for game in minigameList if game["enum_name"] not in kongMinigameRestrictions[kong]]
 
 invalidTabPanels = {
     "Blueprints"
@@ -248,9 +295,14 @@ shopLocationOrderingDict = {
     Locations.RarewareCoin.name: 121  # Jetpac
 }
 
-# A filter function that takes in a list of shop locations and sorts it.
-# The sorting is by level, then by vendor, then by Kong.
 def PlandoShopSortFilter(shopLocationList):
+    """A Jinja filter that returns a sorted list of shop locations. These are
+       sorted by level, then by vendor, then by Kong. This makes the full list
+       easier to browse.
+       
+       Args:
+           shopLocationList (str[]): The list of all shop locations.
+    """
     def shopKey(shopLocation):
         return shopLocationOrderingDict[shopLocation["enum_name"]]
     

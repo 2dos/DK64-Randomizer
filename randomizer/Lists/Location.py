@@ -8,6 +8,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Types import Types
 from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Lists.Minigame import BarrelMetaData
 from randomizer.Enums.VendorType import VendorType
 
 
@@ -1035,6 +1036,9 @@ def getKongString(kongEnum):
     else:
         return "All Kongs"
 
+def isMinigameLocation(locationEnum):
+    return locationEnum in BarrelMetaData
+
 PlannableLocations = {
     "DKIsles": {
         "display_name": "D.K. Isles",
@@ -1080,6 +1084,48 @@ PlannableLocations = {
         "display_name": "Blueprints",
         "locations": createPlannableLocationObj()
     },
+    # Minigames are grouped by level, not by Kong.
+    "Minigames": {
+        "display_name": "Minigames",
+        "levels": {
+            "DKIsles": {
+                "display_name": "D.K. Isles",
+                "locations": []
+            },
+            "JungleJapes": {
+                "display_name": "Jungle Japes",
+                "locations": []
+            },
+            "AngryAztec": {
+                "display_name": "Angry Aztec",
+                "locations": []
+            },
+            "FranticFactory": {
+                "display_name": "Frantic Factory",
+                "locations": []
+            },
+            "GloomyGalleon": {
+                "display_name": "Gloomy Galleon",
+                "locations": []
+            },
+            "FungiForest": {
+                "display_name": "Fungi Forest",
+                "locations": []
+            },
+            "CrystalCaves": {
+                "display_name": "Crystal Caves",
+                "locations": []
+            },
+            "CreepyCastle": {
+                "display_name": "Creepy Castle",
+                "locations": []
+            },
+            "HideoutHelm": {
+                "display_name": "Hideout Helm",
+                "locations": []
+            }
+        }
+    },
     # There are no "All Kongs" hints.
     "Hints": {
         "display_name": "Hints",
@@ -1112,3 +1158,66 @@ for locationEnum, locationObj in LocationList.items():
     else:
         levelName = locationObj.level.name
         PlannableLocations[levelName]["locations"][kongString].append(locationJson)
+
+        # If this is a minigame location, add it to the Minigames list.
+        if isMinigameLocation(locationEnum):
+            PlannableLocations["Minigames"]["levels"][levelName]["locations"].append({
+                "display_name": locationObj.name,
+                "enum_name": locationEnum.name,
+                "kong": kongString
+            })
+
+# Hideout Helm locations get manually added here, as they're not locations
+# where rewards can be placed, so they don't get naturally added.
+PlannableLocations["Minigames"]["levels"]["HideoutHelm"]["locations"] = [
+    {
+        "display_name": "Helm Donkey 1",
+        "enum_name": "HelmDonkey1",
+        "kong": "Donkey"
+    },
+    {
+        "display_name": "Helm Donkey 2",
+        "enum_name": "HelmDonkey2",
+        "kong": "Donkey"
+    },
+    {
+        "display_name": "Helm Diddy 1",
+        "enum_name": "HelmDiddy1",
+        "kong": "Diddy"
+    },
+    {
+        "display_name": "Helm Diddy 2",
+        "enum_name": "HelmDiddy2",
+        "kong": "Diddy"
+    },
+    {
+        "display_name": "Helm Lanky 1",
+        "enum_name": "HelmLanky1",
+        "kong": "Lanky"
+    },
+    {
+        "display_name": "Helm Lanky 2",
+        "enum_name": "HelmLanky2",
+        "kong": "Lanky"
+    },
+    {
+        "display_name": "Helm Tiny 1",
+        "enum_name": "HelmTiny1",
+        "kong": "Tiny"
+    },
+    {
+        "display_name": "Helm Tiny 2",
+        "enum_name": "HelmTiny2",
+        "kong": "Tiny"
+    },
+    {
+        "display_name": "Helm Chunky 1",
+        "enum_name": "HelmChunky1",
+        "kong": "Chunky"
+    },
+    {
+        "display_name": "Helm Chunky 2",
+        "enum_name": "HelmChunky2",
+        "kong": "Chunky"
+    }
+]

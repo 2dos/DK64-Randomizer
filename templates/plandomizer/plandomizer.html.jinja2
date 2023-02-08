@@ -1,0 +1,113 @@
+<style>
+    .plando-container {
+        padding: 24px 0;
+    }
+
+    .plando-pills {
+        align-items: center;
+        justify-content: center;
+    }
+
+    .plando-pill {
+        flex: 0 0 14%;
+    }
+
+    .kong-section,
+    .minigame-level-section {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .location-picker {
+        margin: 0 16px 32px;
+        width: 30%;
+    }
+
+    .location-label {
+        margin-bottom: 4px;
+    }
+
+    .minigame-picker-label {
+        margin: 4px 0;
+    }
+
+    .shop-cost-picker {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 4px;
+    }
+
+    .shop-cost-input {
+        margin: 0 4px;
+        width: 20px;
+    }
+</style>
+<!-- Remove "tough bananas" from the plando item pool. -->
+<!-- Add generic junk items to the plando item pool. -->
+<!-- Kongs, fairies and shops should not allow junk items. -->
+<!-- Fix h2 to h5 on the Getting Staretd page. -->
+<!-- Allow the user to specify which Kong frees which Kong. -->
+<!-- Valid hint text contains letters, spaces, and ,.!?- -->
+<!-- Enforce word length limit on hint text (exact length TBD). -->
+<!-- Find a better name for the first panel. -->
+<!-- Add starting items. -->
+<!-- Add starting Kongs. -->
+<!-- Specify level order. -->
+<!-- Blueprint rewards cannot be shuffled. Force them to be Golden Bananas. -->
+<!-- Add an option to ensure 101% or just beatability. -->
+<div class="container border plando-container" style="margin-top: 20px;">
+    <div id="plando-content">
+        <!-- The navigation panel. -->
+        <div class="nav nav-pills flex-container plando-pills" id="plando-nav-tab" role="tablist">
+            <button class="nav-link active nav-item plando-pill"
+                    id="nav-plando-general-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#nav-plando-general"
+                    type="button"
+                    role="tab"
+                    aria-controls="nav-plando-general"
+                    aria-selected="true">
+                <p class="select-title">General</p>
+            </button>
+            {% for panelName, panel in (plando_locations|plando_panel_restrict).items() %}
+                <button class="nav-link nav-item plando-pill"
+                        id="nav-plando-{{panelName}}-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-plando-{{panelName}}"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-plando-{{panelName}}"
+                        aria-selected="false">
+                    <p class="select-title">{{panel["display_name"]}}</p>
+                </button>
+            {% endfor %}
+        </div>
+        {# The individual level tabs are populated here. Only one will show at a time. #}
+        <div class="tab-content" id="nav-tabContent">
+            {% include 'plandomizer/plandomizer_general.html.jinja2' %}
+            {% for panelName, panel in (plando_locations|plando_panel_restrict).items() %}
+                {% if panelName == "Shops" %}
+                    {% include 'plandomizer/plandomizer_shops.html.jinja2' %}
+                {% elif panelName == "Minigames" %}
+                    {% include 'plandomizer/plandomizer_minigames.html.jinja2' %}
+                {% elif panelName == "Hints" %}
+                    {% include 'plandomizer/plandomizer_hints.html.jinja2' %}
+                {% else %}
+                    {% include 'plandomizer/plandomizer_levels.html.jinja2' %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover'
+        })
+    })
+</script>

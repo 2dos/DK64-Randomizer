@@ -279,3 +279,15 @@ BarrelMetaData = {
     Locations.HelmChunky1: MinigameLocationData(Maps.HideoutHelm, 14, Minigames.ChunkyHiddenKremling),
     Locations.HelmChunky2: MinigameLocationData(Maps.HideoutHelm, 7, Minigames.ChunkyShooting),
 }
+
+# The below code is used to support the plandomizer.
+PlannableMinigames = []
+for minigameEnum, minigameObj in MinigameRequirements.items():
+    # NoGame is an invalid selection.
+    if minigameEnum == Minigames.NoGame:
+        continue
+    minigameJson = {
+        "display_name": minigameObj.name,
+        "enum_name": minigameEnum.name
+    }
+    PlannableMinigames.append(minigameJson)

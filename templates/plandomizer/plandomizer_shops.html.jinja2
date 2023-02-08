@@ -1,0 +1,38 @@
+{# Variables and classes not defined here are in plandomizer.html.jinja2 #}
+<div class="tab-pane fade"
+     id="nav-plando-{{panelName}}"
+     role="tabpanel"
+     aria-labelledby="nav-plando-{{panelName}}-tab">
+    <h2 class="title">{{panel["display_name"]}}</h2>
+    {% for kong, locations in panel["locations"].items() %}
+        <h3 class="title">{{kong}}</h3>
+        <div class="kong-section">
+            {% for location in locations|plando_shop_sort %}
+                <div class="location-picker">
+                    <label for="{{location["enum_name"]}}_plando" class="location-label">
+                        {{location["display_name"]}}
+                    </label>
+                    <select id="{{location["enum_name"]}}_plando"
+                            name="{{location["enum_name"]}}_plando"
+                            class="form-select">
+                        <option value="">-- Randomize --</option>
+                        {% for item in plando_items|plando_item_restrict(location) %}
+                            <option value="{{item["enum_name"]}}">{{item["display_name"]}}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="shop-cost-picker">
+                        Item Cost:
+                        <input type="number"
+                                min="1"
+                                max="100"
+                                step="1"
+                                id="{{location["enum_name"]}}_plando_shop_cost"
+                                name="{{location["enum_name"]}}_plando_shop_cost"
+                                class="form-control shop-cost-input">
+                        Coins
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
