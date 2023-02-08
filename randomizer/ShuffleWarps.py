@@ -17,10 +17,9 @@ def getShuffleMaps():
 
 
 def verifySelectedWarps(selected_warps):
-    """Checks if the selected_warps variable is empty, and fills it with all options if it is."""
-    if (len(selected_warps) == 0):
+    """Verify if the selected_warps variable is empty, and fills it with all options if it is."""
+    if len(selected_warps) == 0:
         for warp in VanillaBananaportSelector:
-            print(warp)
             selected_warps.append(warp["value"])
     return selected_warps
 
