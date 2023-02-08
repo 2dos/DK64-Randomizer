@@ -36,11 +36,15 @@ const item_conversion_info item_conversions[] = {
 	{.actor=174, .model_two=436, .scale=0.30f},
 	{.actor=88, .model_two=604, .scale=0.25f},
 	{.actor=140, .model_two=183, .scale=0.25f},
-	{.actor=217, .model_two=605, .scale=0.25f}
+	{.actor=217, .model_two=605, .scale=0.25f},
+	{.actor=52, .model_two=86, .scale=1.00f},
+	{.actor=47, .model_two=87, .scale=1.00f},
+	{.actor=121, .model_two=142, .scale=1.00f},
+	{.actor=51, .model_two=143, .scale=1.00f}
 };
 const unsigned char bounce_objects[] = {45,72,86,157,158,159,160,161,162,141,142,143,144,155,88,217};
-const unsigned char actor_drops[] = {45,78,75,77,79,76,151,152,72,86,154,157,158,159,160,161,162,153,141,142,143,144,155,172,174,88,140,217};
-const unsigned char danceless_items[] = {172,174};
+const unsigned char actor_drops[] = {45,78,75,77,79,76,151,152,72,86,154,157,158,159,160,161,162,153,141,142,143,144,155,172,174,88,140,217,52,47,121,51};
+const unsigned char danceless_items[] = {172,174,52,47,121,51};
 const item_scale_info item_scales[] = {
 	{.type=116, .scale=0.25f},
 	{.type=222, .scale=2.00f},
@@ -69,5 +73,9 @@ const item_scale_info item_scales[] = {
 	{.type=436, .scale=0.30f},
 	{.type=604, .scale=0.25f},
 	{.type=183, .scale=0.25f},
-	{.type=605, .scale=0.25f}
+	{.type=605, .scale=0.25f},
+	{.type=86, .scale=1.00f},
+	{.type=87, .scale=1.00f},
+	{.type=142, .scale=1.00f},
+	{.type=143, .scale=1.00f}
 };

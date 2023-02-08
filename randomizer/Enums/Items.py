@@ -90,6 +90,7 @@ class Items(IntEnum):
     HelmChunky2 = auto()
 
     GoldenBanana = auto()
+    ToughBanana = auto()
     BananaFairy = auto()
     BananaMedal = auto()
     BattleCrown = auto()
@@ -98,6 +99,12 @@ class Items(IntEnum):
     Pearl = auto()
     RainbowCoin = auto()
     FakeItem = auto()
+
+    JunkCrystal = auto()
+    JunkMelon = auto()
+    JunkAmmo = auto()
+    JunkFilm = auto()
+    JunkOrange = auto()
 
     BananaHoard = auto()
 

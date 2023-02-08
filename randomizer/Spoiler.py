@@ -89,6 +89,7 @@ class Spoiler:
             Types.Shockwave: "Moves",
             Types.TrainingBarrel: "Moves",
             Types.Banana: "Golden Bananas",
+            Types.ToughBanana: "Golden Bananas",
             Types.Blueprint: "Blueprints",
             Types.Fairy: "Fairies",
             Types.Key: "Keys",
@@ -99,6 +100,7 @@ class Spoiler:
             Types.Pearl: "Miscellaneous Items",
             Types.RainbowCoin: "Rainbow Coins",
             Types.FakeItem: "Ice Traps",
+            Types.JunkItem: "Junk Items",
         }
         if item_type in type_dict:
             return type_dict[item_type]
@@ -284,6 +286,7 @@ class Spoiler:
             "Miscellaneous Items": {},
             "Rainbow Coins": {},
             "Ice Traps": {},
+            "Junk Items": {},
             "Empty": {},
             "Unknown": {},
         }
@@ -789,7 +792,7 @@ class Spoiler:
         if location == Locations.BananaHoard:
             return 250
         # GBs go last, there's a lot of them but they arent important
-        if location.type == Types.Banana:
+        if location.type in (Types.Banana, Types.ToughBanana):
             return 100
         # Win condition items are more important than GBs but less than moves
         elif self.settings.win_condition == "all_fairies" and location.type == Types.Fairy:

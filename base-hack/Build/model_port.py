@@ -331,27 +331,53 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
             os.remove(f)
 
 
+def createSpriteModelTwo(new_image: int, scaling: float, output_file: str):
+    """Create a model two object based on a singular image."""
+    with open(rom_file, "rb") as rom:
+        rom.seek(ptr_offset + (m2_table * 4))
+        table = ptr_offset + int.from_bytes(rom.read(4), "big")
+        rom.seek(table + (436 * 4))
+        start = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        finish = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        size = finish - start
+        rom.seek(start)
+        data = rom.read(size)
+        rom.seek(start)
+        indic = int.from_bytes(rom.read(2), "big")
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        with open(f"{output_file}_om2.bin", "wb") as fh:
+            fh.write(data)
+        with open(f"{output_file}_om2.bin", "r+b") as fh:
+            fh.seek(0xEC)
+            fh.write(new_image.to_bytes(4, "big"))
+            for v in range(0x3E, 0x92):
+                for c in range(3):
+                    fh.seek((v * 0x10) + (c * 2))
+                    val = int.from_bytes(fh.read(2), "big")
+                    if val > 32767:
+                        val -= 65536
+                    val = int(val * scaling)
+                    if val < 0:
+                        val += 65536
+                    fh.seek((v * 0x10) + (c * 2))
+                    fh.write(val.to_bytes(2, "big"))
+
+
 model_dir = "assets/models/"
 # Coins
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}nin_coin.dl", f"{model_dir}coin_overlay.dl", "nintendo_coin", 0x90)
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}rw_coin.dl", f"{model_dir}coin_overlay.dl", "rareware_coin", 0x90)
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}rainbow_coin.dl", f"{model_dir}coin_overlay.dl", "rainbow_coin", 0x90)
-# # Potions - Model 2
-portalModel_M2(f"{model_dir}potion_dk.vtx", f"{model_dir}potion.dl", 0, "potion_dk", 0x90)
-portalModel_M2(f"{model_dir}potion_diddy.vtx", f"{model_dir}potion.dl", 0, "potion_diddy", 0x90)
-portalModel_M2(f"{model_dir}potion_lanky.vtx", f"{model_dir}potion.dl", 0, "potion_lanky", 0x90)
-portalModel_M2(f"{model_dir}potion_tiny.vtx", f"{model_dir}potion.dl", 0, "potion_tiny", 0x90)
-portalModel_M2(f"{model_dir}potion_chunky.vtx", f"{model_dir}potion.dl", 0, "potion_chunky", 0x90)
-portalModel_M2(f"{model_dir}potion_any.vtx", f"{model_dir}potion.dl", 0, "potion_any", 0x90)
 # Fairy
 portActorToModelTwo(0x3C, "", "fairy", 0x90, True, 0.5)
-# Potions - Actors (Ignore Chunky Model)
-portalModel_Actor(f"{model_dir}potion_dk.vtx", None, "potion_dk", 0xB8)
-portalModel_Actor(f"{model_dir}potion_diddy.vtx", None, "potion_diddy", 0xB8)
-portalModel_Actor(f"{model_dir}potion_lanky.vtx", None, "potion_lanky", 0xB8)
-portalModel_Actor(f"{model_dir}potion_tiny.vtx", None, "potion_tiny", 0xB8)
-portalModel_Actor(f"{model_dir}potion_chunky.vtx", None, "potion_chunky", 0xB8)
-portalModel_Actor(f"{model_dir}potion_any.vtx", None, "potion_any", 0xB8)
+# Melon
+# portalModel_M2(f"{model_dir}melon.vtx", f"{model_dir}melon.dl", 0, "melon", 0x90)
+createSpriteModelTwo(0x17B2, 0.6, "melon")
+# Potions
+for kong in ("dk", "diddy", "lanky", "tiny", "chunky", "any"):
+    portalModel_M2(f"{model_dir}potion_{kong}.vtx", f"{model_dir}potion.dl", 0, f"potion_{kong}", 0x90)  # Potions - Model 2
+    portalModel_Actor(f"{model_dir}potion_{kong}.vtx", None, f"potion_{kong}", 0xB8)  # Actors
 # Kongs
 portActorToModelTwo(3, "dk_base.bin", "kong_dk", 0x90, True, 0.5)
 portActorToModelTwo(0, "diddy_base.bin", "kong_diddy", 0x90, True, 0.5)

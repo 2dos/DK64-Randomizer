@@ -89,6 +89,7 @@ void arcadeExit(void) {
 	19 - Chunky
 	20 - Rainbow Coin
 	21 - RW Coin
+	22 - Melon
 
 	Jetpac Reward Indexes:
 	0 - Rareware Coin / No Item
@@ -104,8 +105,9 @@ void arcadeExit(void) {
 	10 - Kong
 	11 - Rainbow Coin
 	12 - Nintendo Coin
+	13 - Melon
 */
-#define ARCADE_IMAGE_COUNT 21
+#define ARCADE_IMAGE_COUNT 22
 
 void* getFile(int size, int rom) {
 	/**
