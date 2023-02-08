@@ -1167,8 +1167,8 @@ for locationEnum, locationObj in LocationList.items():
                 "kong": kongString
             })
 
-# Hideout Helm locations get manually added here, as they're not locations
-# where rewards can be placed, so they don't get naturally added.
+# Hideout Helm minigame locations get manually added here, as they're not
+# locations where rewards can be placed, so they don't get naturally added.
 PlannableLocations["Minigames"]["levels"]["HideoutHelm"]["locations"] = [
     {
         "display_name": "Helm Donkey 1",

@@ -76,6 +76,8 @@ class PlandoItems(IntEnum):
     HideoutHelmKey = auto()
 
     GoldenBanana = auto()
+    # ToughBanana is only used for shuffling logic and is not actually a
+    # different item, so it is excluded.
     BananaFairy = auto()
     BananaMedal = auto()
     BattleCrown = auto()
@@ -84,6 +86,9 @@ class PlandoItems(IntEnum):
     Pearl = auto()
     RainbowCoin = auto()
     FakeItem = auto()
+
+    # A generic junk item to represent all specific junk items.
+    JunkItem = auto()
 
     # BananaHoard is not used.
 
@@ -153,6 +158,12 @@ ItemToPlandoItemMap = {
     Items.Pearl: PlandoItems.Pearl,
     Items.RainbowCoin: PlandoItems.RainbowCoin,
     Items.FakeItem: PlandoItems.FakeItem,
+    # All of the individual junk items map to the same plando item.
+    Items.JunkCrystal: PlandoItems.JunkItem,
+    Items.JunkMelon: PlandoItems.JunkItem,
+    Items.JunkAmmo: PlandoItems.JunkItem,
+    Items.JunkFilm: PlandoItems.JunkItem,
+    Items.JunkOrange: PlandoItems.JunkItem,
     # All of the individual blueprints map to the same plando item.
     Items.JungleJapesDonkeyBlueprint: PlandoItems.Blueprint,
     Items.JungleJapesDiddyBlueprint: PlandoItems.Blueprint,
@@ -258,3 +269,62 @@ PlandoItemToItemMap = {
     PlandoItems.RainbowCoin: Items.RainbowCoin,
     PlandoItems.FakeItem: Items.FakeItem
 }
+
+PlandoItemToItemListMap = {
+    PlandoItems.JunkItem: [
+        Items.JunkCrystal,
+        Items.JunkMelon,
+        Items.JunkAmmo,
+        Items.JunkFilm,
+        Items.JunkOrange
+    ],
+    PlandoItems.Blueprint: [
+        Items.JungleJapesDonkeyBlueprint,
+        Items.JungleJapesDiddyBlueprint,
+        Items.JungleJapesLankyBlueprint,
+        Items.JungleJapesTinyBlueprint,
+        Items.JungleJapesChunkyBlueprint,
+        Items.AngryAztecDonkeyBlueprint,
+        Items.AngryAztecDiddyBlueprint,
+        Items.AngryAztecLankyBlueprint,
+        Items.AngryAztecTinyBlueprint,
+        Items.AngryAztecChunkyBlueprint,
+        Items.FranticFactoryDonkeyBlueprint,
+        Items.FranticFactoryDiddyBlueprint,
+        Items.FranticFactoryLankyBlueprint,
+        Items.FranticFactoryTinyBlueprint,
+        Items.FranticFactoryChunkyBlueprint,
+        Items.GloomyGalleonDonkeyBlueprint,
+        Items.GloomyGalleonDiddyBlueprint,
+        Items.GloomyGalleonLankyBlueprint,
+        Items.GloomyGalleonTinyBlueprint,
+        Items.GloomyGalleonChunkyBlueprint,
+        Items.FungiForestDonkeyBlueprint,
+        Items.FungiForestDiddyBlueprint,
+        Items.FungiForestLankyBlueprint,
+        Items.FungiForestTinyBlueprint,
+        Items.FungiForestChunkyBlueprint,
+        Items.CrystalCavesDonkeyBlueprint,
+        Items.CrystalCavesDiddyBlueprint,
+        Items.CrystalCavesLankyBlueprint,
+        Items.CrystalCavesTinyBlueprint,
+        Items.CrystalCavesChunkyBlueprint,
+        Items.CreepyCastleDonkeyBlueprint,
+        Items.CreepyCastleDiddyBlueprint,
+        Items.CreepyCastleLankyBlueprint,
+        Items.CreepyCastleTinyBlueprint,
+        Items.CreepyCastleChunkyBlueprint,
+        Items.DKIslesDonkeyBlueprint,
+        Items.DKIslesDiddyBlueprint,
+        Items.DKIslesLankyBlueprint,
+        Items.DKIslesTinyBlueprint,
+        Items.DKIslesChunkyBlueprint
+    ]
+}
+
+def GetItemFromPlandoItem(plandoItemEnum):
+    if plandoItemEnum in PlandoItemToItemMap:
+        return [PlandoItemToItemMap[plandoItemEnum]]
+    if plandoItemEnum in PlandoItemToItemListMap:
+        return PlandoItemToItemListMap[plandoItemEnum]
+    return None

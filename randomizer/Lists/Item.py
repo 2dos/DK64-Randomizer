@@ -282,6 +282,9 @@ for itemEnum, itemObj in ItemList.items():
     # Do not add blueprints. Those will be replaced with a single generic item.
     if re.search(".*Blueprint$", itemObj.name) != None:
         continue
+    # Do not add junk items, for the same reason.
+    if re.search("^Junk.*", itemObj.name) != None:
+        continue
     plandoItemEnum = ItemToPlandoItemMap[itemEnum]
     itemJson = {
         "display_name": itemObj.name,
@@ -291,6 +294,10 @@ for itemEnum, itemObj in ItemList.items():
 PlannableItems.append({
     "display_name": "Blueprint",
     "enum_name": "Blueprint"
+})
+PlannableItems.append({
+    "display_name": "Junk Item",
+    "enum_name": "JunkItem"
 })
 
 # The maximum amount of each item that the user is allowed to place.

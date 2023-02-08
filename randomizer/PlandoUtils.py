@@ -1,9 +1,11 @@
 """Includes utility functions for plandomizer support."""
 
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems
+from randomizer.Enums.Types import Types
 from randomizer.Lists.Location import LocationList
 
 bananaFairyPermittedItems = {
@@ -51,7 +53,7 @@ bananaFairyPermittedItems = {
 # add the string name of that location enum to this set.
 bananaFairyLocationSet = {locEnum.name for (locEnum, locObj) in LocationList.items() if locObj.default == Items.BananaFairy}
 
-kongItemSet = {
+kongPermittedItemSet = {
     PlandoItems.NoItem.name,
     PlandoItems.Donkey.name,
     PlandoItems.Diddy.name,
@@ -67,6 +69,17 @@ kongLocationSet = {
     Locations.ChunkyKong.name
 }
 
+shopRestrictedItemSet = {
+    PlandoItems.JunkItem.name
+}
+
+shopLocationSet = set()
+for (locEnum, locObj) in LocationList.items():
+    if locObj.type == Types.Shop:
+        shopLocationSet.add(locEnum.name)
+    elif locObj.level == Levels.Shops:
+        shopLocationSet.add(locEnum.name)
+
 def PlandoItemFilter(itemList, location):
     """A Jinja filter that returns a filtered list of plando items that are
        permitted at the given location.
@@ -80,13 +93,21 @@ def PlandoItemFilter(itemList, location):
 
     # Kong locations (not Kong rewards) are heavily limited.
     if location["enum_name"] in kongLocationSet:
-        return [item for item in itemList if item["enum_name"] in kongItemSet]
+        # For every item in the item list, if it's in our set of permitted items for
+        # Kong locations, add it to a new list. Return that new list.
+        return [item for item in itemList if item["enum_name"] in kongPermittedItemSet]
 
     # Banana fairy locations have some limitations.
     if location["enum_name"] in bananaFairyLocationSet:
         # For every item in the item list, if it's in our set of permitted items for
         # Banana Fairy locations, add it to a new list. Return that new list.
         return [item for item in itemList if item["enum_name"] in bananaFairyPermittedItems]
+    
+    # Shops have very few limitations.
+    if location["enum_name"] in shopLocationSet:
+        # For every item in the item list, if it's not in our set of restricted
+        # items for shop locations, add it to a new list. Return that new list.
+        return [item for item in itemList if item["enum_name"] not in shopRestrictedItemSet]
 
     # If we've gotten to this point, we have no filters to perform.
     # We can return the full list.
