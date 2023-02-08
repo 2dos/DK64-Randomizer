@@ -4,7 +4,7 @@ import random
 import js
 from randomizer.Enums.Warps import Warps
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Lists.Warps import BananaportVanilla
+from randomizer.Lists.Warps import BananaportVanilla, VanillaBananaportSelector
 
 
 def getShuffleMaps():
@@ -16,8 +16,18 @@ def getShuffleMaps():
     return lst
 
 
+def verifySelectedWarps(selected_warps):
+    """Checks if the selected_warps variable is empty, and fills it with all options if it is."""
+    if (len(selected_warps) == 0):
+        for warp in VanillaBananaportSelector:
+            print(warp)
+            selected_warps.append(warp["value"])
+    return selected_warps
+
+
 def ShuffleWarps(bananaport_replacements, human_ports, selected_warps):
     """Shuffles warps between themselves."""
+    selected_warps = verifySelectedWarps(selected_warps)
     map_list = getShuffleMaps()
     for warp_map in map_list:
         if warp_map.name not in selected_warps:
@@ -67,6 +77,7 @@ def getWarpFromSwapIndex(index):
 
 def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled, selected_warps):
     """Shuffles warps with the cross-map setting."""
+    selected_warps = verifySelectedWarps(selected_warps)
     for warp in BananaportVanilla.values():
         warp.cross_map_placed = False
         bananaport_replacements.append(0)

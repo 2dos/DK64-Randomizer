@@ -497,6 +497,7 @@ class Spoiler:
         if self.settings.random_patches:
             humanspoiler["Shuffled Dirt Patches"] = self.human_patches
         if self.settings.bananaport_rando != "off":
+            humanspoiler["Shuffled Bananaport Levels"] = self.settings.warp_level_list_selected
             humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
         if len(self.microhints) > 0:
             humanspoiler["Direct Item Hints"] = self.microhints
