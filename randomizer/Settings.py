@@ -403,6 +403,7 @@ class Settings:
         self.enemies_selected = []
         self.glitches_selected = []
         self.starting_keys_list_selected = []
+        self.warp_level_list_selected = []
         self.select_keys = False
         self.helm_hurry = False
         self.colorblind_mode = "off"

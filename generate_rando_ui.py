@@ -42,6 +42,7 @@ async def initialize():
     from randomizer.Lists.EnemyTypes import EnemySelector
     from randomizer.Lists.Logic import GlitchSelector
     from randomizer.Enums.Types import ItemRandoSelector, KeySelector
+    from randomizer.Lists.Warps import VanillaBananaportSelector
 
     # Module of lists and utils used for plandomizer
     from randomizer.PlandoUtils import PlandoItemFilter, PlandoMinigameFilter, PlandoPanelFilter, PlandoShopSortFilter
@@ -85,7 +86,8 @@ async def initialize():
         helm_hurry_items=HHItemSelector,
         plando_items=PlannableItems,
         plando_locations=PlannableLocations,
-        plando_minigames=PlannableMinigames
+        plando_minigames=PlannableMinigames,
+        vanilla_warps=VanillaBananaportSelector
     )
     js.document.documentElement.innerHTML = ""
     js.document.open()

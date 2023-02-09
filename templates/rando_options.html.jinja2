@@ -337,6 +337,7 @@
                             </div>
                             <div class="item-select">
                                 <p class="select-title">Shuffle Bananaports</p>
+                                <div class="customize-select">
                                 <select name="bananaport_rando"
                                         id="bananaport_rando"
                                         class="form-select"
@@ -356,6 +357,10 @@
                                         Cross-Map (Decoupled)
                                     </option>
                                 </select>
+                                <div style="padding: 5px;">
+                                {{ list_selector(vanilla_warps, "warp_level_list", "LEVEL SELECTOR", "This will open a popup that will let you customize what levels' warps are in the pool. Any level not selected will have its vanilla warp locations.&#10;This defaults to All levels.", 10) }}
+                                {# Remove end </div> as it's included in the macro for formatting #}
+                            </div>
                             </div>
                             <div class="spacer"></div>
                         </div>
