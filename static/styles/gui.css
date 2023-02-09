@@ -367,6 +367,11 @@ i {
   flex-flow: row wrap;
 }
 
+.flex-center {
+  align-items: center;
+  justify-content: center;
+}
+
 .item-switch {
   text-align: left;
   margin: 10px 25px 10px 80px;
@@ -607,8 +612,4 @@ td.directional_divider {
 .dice_checkbox:disabled + label {
   opacity: 25%;
   cursor: default;
-}
-
-.no-transition {
-  transition-duration: 0s;
 }

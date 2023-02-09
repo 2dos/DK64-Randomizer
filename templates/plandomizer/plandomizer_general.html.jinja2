@@ -1,6 +1,103 @@
+<style>
+    .kong-order {
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 8px;
+    }
+
+    .kong-order-label {
+        width: 70px;
+    }
+
+    .kong-order-select {
+        width: auto;
+    }
+</style>
 <div class="tab-pane fade show active"
      id="nav-plando-general"
      role="tabpanel"
      aria-labelled-by="nav-plando-general-tab">
-    Currently an empty tab!
+    <div class="row">
+        <div class="col panel"
+             style="border-right: 1px solid #e3e3e3">
+            <h2 class="title">Kongs</h2>
+            <div class="flex-container">
+                <div class="item-multiselect">
+                    <div class="color-selector">
+                        <p class="select-title">Starting Kongs</p>
+                        <select name="plando_starting_kongs"
+                                id="plando_starting_kongs"
+                                class="form-select multi-select"
+                                aria-label="Starting Kongs"
+                                multiple
+                                size="6">
+                            <option selected value="random">
+                                Random Kong
+                            </option>
+                            <option value="donkey">
+                                Donkey
+                            </option>
+                            <option value="diddy">
+                                Diddy
+                            </option>
+                            <option value="lanky">
+                                Lanky
+                            </option>
+                            <option value="tiny">
+                                Tiny
+                            </option>
+                            <option value="chunky">
+                                Chunky
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col panel"
+             style="border-left: 1px solid #e3e3e3">
+            <h2 class="title">World</h2>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Ensure the seed can be completed 101%. If unchecked, the seed may be beatable only.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="plando_101"
+                                value="True"/>
+                        101% Completable
+                    </label>
+                </div>
+            </div>
+            <p class="select-title">Helm Order</p>
+            {% for i in range(1, 6) %}
+                <label id="plando_helm_order_div_{{i}}"
+                       class="flex-container kong-order">
+                    <span class="kong-order-label">Kong {{i}}:</span>
+                    <select id="plando_helm_order_{{i}}"
+                            name="plando_helm_order_{{i}}"
+                            class="form-select kong-order-select">
+                        <option value="" selected">
+                            -- Randomize --
+                        </option>
+                        <option value="donkey">
+                            Donkey
+                        </option>
+                        <option value="diddy">
+                            Diddy
+                        </option>
+                        <option value="lanky">
+                            Lanky
+                        </option>
+                        <option value="tiny">
+                            Tiny
+                        </option>
+                        <option value="chunky">
+                            Chunky
+                        </option>
+                    </select>
+                </label>
+            {% endfor %}
+        </div>
+    </div>
 </div>

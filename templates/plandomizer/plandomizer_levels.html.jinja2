@@ -1,19 +1,19 @@
 {# Variables and classes not defined here are in plandomizer.html.jinja2 #}
-<div class="tab-pane fade"
+<div class="tab-pane plando-pane fade"
      id="nav-plando-{{panelName}}"
      role="tabpanel"
      aria-labelledby="nav-plando-{{panelName}}-tab">
     <h2 class="title">{{panel["display_name"]}}</h2>
     {% for kong, locations in panel["locations"].items() %}
         <h3 class="title">{{kong}}</h3>
-        <div class="kong-section">
+        <div class="flex-container flex-center">
             {% for location in locations %}
                 <div class="location-picker">
-                    <label for="{{location["enum_name"]}}_plando" class="location-label">
+                    <label for="plando_{{location["enum_name"]}}" class="location-label">
                         {{location["display_name"]}}
                     </label>
-                    <select id="{{location["enum_name"]}}_plando"
-                            name="{{location["enum_name"]}}_plando"
+                    <select id="plando_{{location["enum_name"]}}"
+                            name="plando_{{location["enum_name"]}}"
                             class="form-select">
                         <option value="">-- Randomize --</option>
                         {% for item in plando_items|plando_item_restrict(location) %}

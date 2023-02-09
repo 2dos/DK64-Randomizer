@@ -274,23 +274,67 @@ for item in HHItems:
     HHItemSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_"), "tooltip": "", "default": item[1]})
 
 # The below code is used to support the plandomizer.
-PlannableItems = []
+# These items are not available as starting items.
+invalidStartingItems = {
+    PlandoItems.NoItem,
+    PlandoItems.Donkey,
+    PlandoItems.Diddy,
+    PlandoItems.Lanky,
+    PlandoItems.Tiny,
+    PlandoItems.Chunky,
+    PlandoItems.GoldenBanana,
+    PlandoItems.BananaFairy,
+    PlandoItems.BananaMedal,
+    PlandoItems.BattleCrown,
+    PlandoItems.RainbowCoin,
+    PlandoItems.FakeItem,
+    PlandoItems.JunkItem,
+    PlandoItems.Blueprint
+}
+
+# The below items may be added multiple times as starting items.
+multipleStartingItems = {
+    PlandoItems.ProgressiveSlam: 2,
+    PlandoItems.ProgressiveAmmoBelt: 2,
+    PlandoItems.ProgressiveInstrumentUpgrade: 3,
+    PlandoItems.Pearl: 5
+}
+
+PlannableItems = []  # Used to select rewards for locations.
+# Starting items are not currently supported, but the code is still here for
+# when support for this arrives.
+PlannableStartingItems = []  # Used to select starting items.
+
 for itemEnum, itemObj in ItemList.items():
     # Only include items that have a matching item in the plando map.
     if itemEnum not in ItemToPlandoItemMap:
         continue
-    # Do not add blueprints. Those will be replaced with a single generic item.
-    if re.search(".*Blueprint$", itemObj.name) != None:
-        continue
-    # Do not add junk items, for the same reason.
-    if re.search("^Junk.*", itemObj.name) != None:
-        continue
+
     plandoItemEnum = ItemToPlandoItemMap[itemEnum]
+    # Do not add blueprints or junk items. These will be replaced with a single
+    # generic item each.
+    if plandoItemEnum == PlandoItems.Blueprint or plandoItemEnum == PlandoItems.JunkItem:
+        continue
     itemJson = {
         "display_name": itemObj.name,
         "enum_name": plandoItemEnum.name
     }
     PlannableItems.append(itemJson)
+
+    # Add this item to the list of possible starting items, if valid.
+    if plandoItemEnum in invalidStartingItems:
+        continue
+    if plandoItemEnum in multipleStartingItems:
+        itemCount = multipleStartingItems[plandoItemEnum]
+        for i in range(1, itemCount+1):
+            multipleItemJson = {
+                "display_name": itemObj.name,
+                "enum_name": f"{plandoItemEnum.name}_{i}"
+            }
+            PlannableStartingItems.append(multipleItemJson)
+    else:
+        PlannableStartingItems.append(itemJson)
+
 PlannableItems.append({
     "display_name": "Blueprint",
     "enum_name": "Blueprint"

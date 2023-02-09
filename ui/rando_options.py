@@ -494,6 +494,21 @@ def disable_helm_phases(evt):
         pass
 
 
+@bind("change", "helm_phase_count")
+def hide_helm_plando_options(evt):
+    """Hide the plando options to select Kongs for certain Helm phases if those
+       phases are disabled."""
+    helm_phase_count = js.document.getElementById("helm_phase_count").value
+    for i in range(0, 5):
+        helm_phase_plando = js.document.getElementById(f"plando_helm_order_div_{i}")
+        if i < helm_phase_count:
+            helm_phase_plando.removeAttribute("disabled")
+            helm_phase_plando.style = ""
+        else:
+            helm_phase_plando.setAttribute("disabled", "disabled")
+            helm_phase_plando.style.display = "none"
+
+
 @bind("change", "move_rando")
 def disable_move_shuffles(evt):
     """Disable some settings based on the move rando setting."""
@@ -682,6 +697,22 @@ def preset_select_changed(event):
     max_randomized_blocker(None)
     max_randomized_troff(None)
     disable_barrel_modal(None)
+
+
+@bind("click", "enable_plandomizer")
+def enable_plandomizer(evt):
+    """Enable and disable the Plandomizer tab."""
+    disabled = True
+    plando_tab = js.document.getElementById("nav-plando-tab")
+    if js.document.getElementById("enable_plandomizer").checked:
+        disabled = False
+    try:
+        if disabled:
+            plando_tab.style.display = "none"
+        else:
+            plando_tab.style = ""
+    except AttributeError:
+        pass
 
 
 @bind("change", "dk_colors")

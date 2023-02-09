@@ -1,20 +1,29 @@
 {# Variables and classes not defined here are in plandomizer.html.jinja2 #}
-<div class="tab-pane fade"
+<style>
+    .hint-info {
+        margin: 16px 16px;
+    }
+</style>
+<div class="tab-pane plando-pane fade"
      id="nav-plando-{{panelName}}"
      role="tabpanel"
      aria-labelledby="nav-plando-{{panelName}}-tab">
     <h2 class="title">{{panel["display_name"]}}</h2>
+    <div class="hint-info">
+        Hints can be a maximum of 900 characters. The only permitted characters
+        are letters, numbers, spaces, and the characters ,.-?!
+    </div>
     {% for kong, locations in panel["locations"].items() %}
         <h3 class="title">{{kong}}</h3>
-        <div class="kong-section">
+        <div class="flex-container flex-center">
             {% for location in locations %}
                 <div class="location-picker">
-                    <label for="{{location["enum_name"]}}_plando" class="location-label">
+                    <label for="plando_{{location["enum_name"]}}" class="location-label">
                         {{location["display_name"]}}
                     </label>
                     <div>
-                        <input id="{{location["enum_name"]}}_plando"
-                               name="{{location["enum_name"]}}_plando"
+                        <input id="plando_{{location["enum_name"]}}"
+                               name="plando_{{location["enum_name"]}}"
                                placeholder="Enter hint text."
                                maxlength="900"
                             class="form-control">
