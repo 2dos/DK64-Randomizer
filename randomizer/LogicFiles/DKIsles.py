@@ -61,11 +61,11 @@ LogicRegions = {
         TransitionFront(Regions.BananaFairyRoom, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSTS(), Transitions.IslesMainToFairy),
         TransitionFront(Regions.JungleJapesLobby, lambda l: l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events or l.phasewalk or l.CanSTS(), Transitions.IslesMainToJapesLobby),
         TransitionFront(Regions.KremIsle, lambda l: True),
-        TransitionFront(Regions.IslesMainUpper, lambda l: l.vines or l.CanMoonkick() or l.pathMode),
+        TransitionFront(Regions.IslesMainUpper, lambda l: l.vines or l.CanMoonkick() or l.assumeUpperIslesAccess),
         TransitionFront(Regions.CabinIsle, lambda l: l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events or l.CanMoonkick()),
         TransitionFront(Regions.CreepyCastleLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCastleLobby),
         TransitionFront(Regions.KremIsleTopLevel, lambda l: l.tbs),
-        TransitionFront(Regions.KRool, lambda l: l.CanAccessKRool() or l.pathMode),
+        TransitionFront(Regions.KRool, lambda l: l.CanAccessKRool() or l.assumeKRoolAccess),
     ]),
 
     Regions.IslesMainUpper: Region("Isles Main Upper", "DK Isle", Levels.DKIsles, False, None, [
@@ -138,7 +138,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesDonkeyCagedBanana, lambda l: (l.coconut and l.isdonkey) or ((l.CanSkew(True) and l.CanSTS()) and (l.isdonkey or l.settings.free_trade_items))),
     ], [], [
         TransitionFront(Regions.KremIsle, lambda l: True),
-        TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanPhaseswim()) and (l.swim or l.pathMode), Transitions.IslesMainToGalleonLobby),
+        TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanPhaseswim()) and (l.swim or l.assumeLevel4Entry), Transitions.IslesMainToGalleonLobby),
         TransitionFront(Regions.IslesSnideRoom, lambda l: True, Transitions.IslesMainToSnideRoom),
         TransitionFront(Regions.FranticFactoryLobby, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or (l.CanSkew(True) and l.CanSTS()), Transitions.IslesMainToFactoryLobby),
     ]),

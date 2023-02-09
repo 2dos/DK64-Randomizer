@@ -55,7 +55,9 @@ LogicRegions = {
 
     Regions.CavesBlueprintCave: Region("Caves Blueprint Cave", "Main Caves Area", Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesKasplatNearFunky, lambda l: not l.settings.kasplat_rando),
-    ], [], [
+    ], [
+        Event(Events.CavesMonkeyportAccess, lambda l: l.istiny and l.monkeyport)
+    ], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
         TransitionFront(Regions.CrystalCavesMain, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSkew(True))
     ]),
@@ -109,7 +111,7 @@ LogicRegions = {
     ]),
 
     Regions.IglooArea: Region("Igloo Area", "Igloo Area", Levels.CrystalCaves, True, None, [
-        LocationLogic(Locations.CavesTinyMonkeyportIgloo, lambda l: (((l.monkeyport and l.mini and l.twirl) or l.CanPhaseswim()) and l.istiny) or (l.CanPhaseswim() and l.settings.free_trade_items)),  # GB is in this region but the rest is not
+        LocationLogic(Locations.CavesTinyMonkeyportIgloo, lambda l: ((Events.CavesMonkeyportAccess in l.Events or l.CanPhaseswim()) and l.istiny) or (l.CanPhaseswim() and l.settings.free_trade_items)),  # GB is in this region but the rest is not
         LocationLogic(Locations.CavesChunkyTransparentIgloo, lambda l: ((Events.CavesLargeBoulderButton in l.Events or l.generalclips or l.CanPhaseswim()) and l.chunky) or ((l.generalclips or l.CanPhaseswim()) and l.settings.free_trade_items)),
         LocationLogic(Locations.CavesKasplatOn5DI, lambda l: not l.settings.kasplat_rando),
     ], [], [

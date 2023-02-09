@@ -49,7 +49,15 @@ class LogicVarHolder:
         if settings is None:
             return
         self.settings = settings
-        self.pathMode = False  # See CalculateWothPaths method for details
+
+        # Some restrictions are added to the item placement fill for the sake of reducing indirect errors. We can overlook these restrictions once we know the fill is valid.
+        self.assumeFillSuccess = False
+        # See CalculateWothPaths method for details on these assumptions
+        self.assumeAztecEntry = False
+        self.assumeLevel4Entry = False
+        self.assumeUpperIslesAccess = False
+        self.assumeKRoolAccess = False
+
         self.startkong = self.settings.starting_kong
         # Glitch Logic
         enable_glitch_logic = self.settings.logic_type == "glitch"
@@ -733,12 +741,12 @@ class LogicVarHolder:
     def IsLevelEnterable(self, level):
         """Check if level entry requirement is met."""
         # "pathMode" is so WotH paths can always enter levels regardless of owned items
-        if not self.pathMode:
+        if not self.assumeFillSuccess:
             level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in ("none", "levels")
             # If level order matters...
             if level_order_matters:
                 # Levels have some special requirements depending on where they fall in the level order
-                order_of_level = 0
+                order_of_level = 8  # If order_of_level remains unchanged in the coming loop, then the level is Helm which is always 8th
                 order_of_aztec = 0
                 for level_order in self.settings.level_order:
                     if self.settings.level_order[level_order] == level:

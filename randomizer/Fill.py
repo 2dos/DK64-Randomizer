@@ -524,12 +524,20 @@ def CalculateWothPaths(spoiler, WothLocations):
     # Removes the following:
     # - The need for vines to progress in Aztec
     # - The need for swim to get into level 4
+    # - The need for vines to get to upper Isles
+    # - The need for all keys to access K. Rool
     # - The need for keys to open lobbies (this is done with open_lobbies)
+    old_open_lobbies_temp = spoiler.settings.open_lobbies  # It's far less likely for a key to be a prerequisite
     if spoiler.settings.shuffle_loading_zones != "all":
-        # These assumptions are only good in level order for the following reasons
-        LogicVariables.pathMode = True  # If the lobby 4 entrance matters, swim should be on those paths
-        old_open_lobbies_temp = spoiler.settings.open_lobbies  # It's far less likely for a key to be a prerequisite
+        # These assumptions are only good in level order because entrances can matter more in LZR
+        LogicVariables.assumeAztecEntry = True
+        LogicVariables.assumeLevel4Entry = True
+        LogicVariables.assumeUpperIslesAccess = True
+        LogicVariables.assumeKRoolAccess = True
         spoiler.settings.open_lobbies = True
+    else:
+        # This makes the K. Rool path better if we need it
+        LogicVariables.assumeKRoolAccess = True
     # Prep the dictionary that will contain the path for the key item
     for locationId in WothLocations:
         spoiler.woth_paths[locationId] = [locationId]  # The endpoint is on its own path
@@ -578,7 +586,7 @@ def CalculateWothPaths(spoiler, WothLocations):
                     break
             # If it's not on any other path, it's not WotH
             if not inAnotherPath:
-                # Never pare out these moves - pathMode might overlook their need to enter levels with
+                # Never pare out these moves - the assumptions might overlook their need to enter levels with
                 # This is a bit of a compromise, as you *might* see these moves WotH purely for coins/GBs but they won't be on paths
                 if location.item in (Items.Swim, Items.Vines, Items.PonyTailTwirl):
                     continue
@@ -590,9 +598,12 @@ def CalculateWothPaths(spoiler, WothLocations):
                 # If we remove anything, we have to check the whole list again
                 anything_removed = True
                 break
-    if spoiler.settings.shuffle_loading_zones != "all":
-        LogicVariables.pathMode = False  # Don't carry this pathMode flag beyond this method ever
-        spoiler.settings.open_lobbies = old_open_lobbies_temp  # Undo the open lobbies setting change too
+    # None of these assumptions should ever make it out of this method
+    LogicVariables.assumeAztecEntry = False
+    LogicVariables.assumeLevel4Entry = False
+    LogicVariables.assumeUpperIslesAccess = False
+    LogicVariables.assumeKRoolAccess = False
+    spoiler.settings.open_lobbies = old_open_lobbies_temp  # Undo the open lobbies setting change as needed
 
 
 def CalculateFoolish(spoiler, WothLocations):
@@ -1238,6 +1249,7 @@ def FillKongsAndMovesGeneric(spoiler):
 def GeneratePlaythrough(spoiler):
     """Generate playthrough and way of the hoard and update spoiler."""
     js.postMessage("Seed generated! Finalizing spoiler...")
+    LogicVariables.assumeFillSuccess = True  # Now that we know the seed is valid, we can assume fill success for the sake of generating the playthrough and WotH
     # Generate and display the playthrough
     Reset()
     PlaythroughLocations = GetAccessibleLocations(spoiler.settings, [], SearchMode.GeneratePlaythrough)  # identify in the spheres where the win condition is met
