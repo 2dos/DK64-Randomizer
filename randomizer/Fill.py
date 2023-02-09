@@ -2213,13 +2213,13 @@ def ShuffleMisc(spoiler):
     if spoiler.settings.bananaport_rando == "in_level":
         replacements = []
         human_replacements = {}
-        ShuffleWarps(replacements, human_replacements)
+        ShuffleWarps(replacements, human_replacements, spoiler.settings.warp_level_list_selected)
         spoiler.bananaport_replacements = replacements.copy()
         spoiler.human_warp_locations = human_replacements
     elif spoiler.settings.bananaport_rando in ("crossmap_coupled", "crossmap_decoupled"):
         replacements = []
         human_replacements = {}
-        ShuffleWarpsCrossMap(replacements, human_replacements, spoiler.settings.bananaport_rando == "crossmap_coupled")
+        ShuffleWarpsCrossMap(replacements, human_replacements, spoiler.settings.bananaport_rando == "crossmap_coupled", spoiler.settings.warp_level_list_selected)
         spoiler.bananaport_replacements = replacements.copy()
         spoiler.human_warp_locations = human_replacements
     # Random Patches
