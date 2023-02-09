@@ -25,7 +25,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
         TransitionFront(Regions.AngryAztecLobby, lambda l: True, Transitions.AztecToIsles),
-        TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.pathMode or l.vines or (l.istiny and l.twirl) or l.phasewalk),
+        TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.assumeAztecEntry or l.vines or (l.istiny and l.twirl) or l.phasewalk),
     ]),
 
     Regions.BetweenVinesByPortal: Region("Angry Aztec Between Vines By Portal", "Various Aztec Tunnels", Levels.AngryAztec, False, None, [
@@ -33,7 +33,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
         TransitionFront(Regions.AngryAztecStart, lambda l: l.vines or (l.istiny and l.twirl) or l.phasewalk),
-        TransitionFront(Regions.AngryAztecOasis, lambda l: l.pathMode or l.vines or (l.istiny and l.twirl) or l.phasewalk),
+        TransitionFront(Regions.AngryAztecOasis, lambda l: l.assumeAztecEntry or l.vines or (l.istiny and l.twirl) or l.phasewalk),
     ]),
 
     Regions.AztecTunnelBeforeOasis: Region("Angry Aztec Tunnel Before Oasis", "Various Aztec Tunnels", Levels.AngryAztec, False, None, [

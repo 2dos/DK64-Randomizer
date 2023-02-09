@@ -84,6 +84,7 @@ class Events(IntEnum):
     CavesSmallBoulderButton = auto()
     CavesLargeBoulderButton = auto()
     GiantKoshaDefeated = auto()
+    CavesMonkeyportAccess = auto()
 
     # Creepy Castle Events
     CastleTreeOpened = auto()
