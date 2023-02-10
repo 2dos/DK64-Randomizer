@@ -46,9 +46,7 @@ async def initialize():
 
     # Module of lists and utils used for plandomizer
     from randomizer.PlandoUtils import PlandoItemFilter, PlandoMinigameFilter, PlandoPanelFilter, PlandoShopSortFilter
-    from randomizer.Lists.Item import PlannableItems
-    from randomizer.Lists.Location import PlannableLocations
-    from randomizer.Lists.Minigame import PlannableMinigames
+    from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableItems, PlannableMinigames, PlannableSpawns
 
     js.listeners = []
     js.progression_presets = []
@@ -84,10 +82,11 @@ async def initialize():
         keys=KeySelector,
         glitches=GlitchSelector,
         helm_hurry_items=HHItemSelector,
+        vanilla_warps=VanillaBananaportSelector,
         plando_items=PlannableItems,
-        plando_locations=PlannableLocations,
         plando_minigames=PlannableMinigames,
-        vanilla_warps=VanillaBananaportSelector
+        plando_panels=PlandomizerPanels,
+        plando_spawns=PlannableSpawns
     )
     js.document.documentElement.innerHTML = ""
     js.document.open()

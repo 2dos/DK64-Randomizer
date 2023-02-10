@@ -1,15 +1,10 @@
 <style>
-    .plando-container {
-        padding: 24px 0 0;
-    }
-
     .plando-pane {
         padding-bottom: 24px;
     }
 
     .plando-pills {
-        border-bottom: 1px solid #e3e3e3;
-        padding-bottom: 24px;
+        padding: 24px 0;
     }
 
     .plando-pill {
@@ -25,8 +20,8 @@
         margin-bottom: 4px;
     }
 </style>
+<!-- No duplicate selections for level/Helm/K. Rool order. -->
 <!-- Fix h2 to h5 on the Getting Started page. -->
-<!-- Allow the user to specify which Kong frees which Kong. -->
 <!-- Valid hint text contains letters, spaces, and ,.!?- -->
 <!-- The user must start with at least one Kong. -->
 <!-- Enforce quantity limits. -->
@@ -34,12 +29,9 @@
 <!-- Enforce word length limit on hint text (exact length TBD). -->
 <!-- Cannot place Key 8 if it's locked in Helm. -->
 <!-- Ensure number of chosen Kongs matches the number of starting Kongs. -->
-<!-- Specify level order. -->
-<!-- Specify Helm order. -->
-<!-- Specify K. Rool order. -->
 <!-- Blueprint rewards cannot be shuffled. Force them to be Golden Bananas. -->
 <!-- Import and export plando settings. -->
-<div class="container border plando-container" style="margin-top: 20px;">
+<div class="container border" style="margin-top: 20px;">
     <!-- The navigation panel. -->
     <div class="nav nav-pills flex-container flex-center plando-pills" id="plando-nav-tab" role="tablist">
         <button class="nav-link active nav-item plando-pill"
@@ -52,7 +44,7 @@
                 aria-selected="true">
             <p class="select-title">General</p>
         </button>
-        {% for panelName, panel in (plando_locations|plando_panel_restrict).items() %}
+        {% for panelName, panel in (plando_panels|plando_panel_restrict).items() %}
             <button class="nav-link nav-item plando-pill"
                     id="nav-plando-{{panelName}}-tab"
                     data-bs-toggle="tab"
@@ -65,10 +57,12 @@
             </button>
         {% endfor %}
     </div>
+</div>
+<div class="container border">
     {# The individual level tabs are populated here. Only one will show at a time. #}
     <div class="tab-content" id="nav-tabContent">
         {% include 'plandomizer/plandomizer_general.html.jinja2' %}
-        {% for panelName, panel in (plando_locations|plando_panel_restrict).items() %}
+        {% for panelName, panel in (plando_panels|plando_panel_restrict).items() %}
             {% if panelName == "Shops" %}
                 {% include 'plandomizer/plandomizer_shops.html.jinja2' %}
             {% elif panelName == "Minigames" %}

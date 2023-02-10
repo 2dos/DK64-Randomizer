@@ -480,7 +480,7 @@ def disable_krool_phases(evt):
 
 @bind("click", "helm_random")
 def disable_helm_phases(evt):
-    """Disable K Rool options when Randomize All is selected."""
+    """Disable Helm options when Randomize All is selected."""
     disabled = False
     helm = js.document.getElementById("helm_phase_count")
     if js.document.getElementById("helm_random").checked:
@@ -494,14 +494,67 @@ def disable_helm_phases(evt):
         pass
 
 
+@bind("click", "krool_random")
+@bind("change", "krool_phase_count")
+def hide_krool_plando_options(evt):
+    """Hide the plando options to select Kongs for certain K. Rool phases if
+       those phases are disabled."""
+    krool_phase_count = int(js.document.getElementById("krool_phase_count").value)
+    krool_random = js.document.getElementById("krool_random").checked
+    for i in range(0, 5):
+        # Add 1, because the actual HTML elements are one-indexd.
+        krool_phase_plando = js.document.getElementById(f"plando_krool_order_div_{i+1}")
+        if i < krool_phase_count or krool_random:
+            krool_phase_plando.removeAttribute("disabled")
+            krool_phase_plando.style = ""
+        else:
+            krool_phase_plando.setAttribute("disabled", "disabled")
+            krool_phase_plando.style.display = "none"
+
+
+@bind("click", "helm_random")
 @bind("change", "helm_phase_count")
 def hide_helm_plando_options(evt):
     """Hide the plando options to select Kongs for certain Helm phases if those
        phases are disabled."""
-    helm_phase_count = js.document.getElementById("helm_phase_count").value
+    helm_phase_count = int(js.document.getElementById("helm_phase_count").value)
+    helm_random = js.document.getElementById("helm_random").checked
     for i in range(0, 5):
-        helm_phase_plando = js.document.getElementById(f"plando_helm_order_div_{i}")
-        if i < helm_phase_count:
+        # Add 1, because the actual HTML elements are one-indexd.
+        helm_phase_plando = js.document.getElementById(f"plando_helm_order_div_{i+1}")
+        if i < helm_phase_count or helm_random:
+            helm_phase_plando.removeAttribute("disabled")
+            helm_phase_plando.style = ""
+        else:
+            helm_phase_plando.setAttribute("disabled", "disabled")
+            helm_phase_plando.style.display = "none"
+
+
+@bind("click", "nav-plando-tab")
+def propagate_plando_options(evt):
+    """Make changes to the plando tab based on other settings. This is a
+       workaround for issues with the Bootstrap slider."""
+
+    # Limit the number of "K. Rool order" dropdowns displayed.
+    krool_phase_count = int(js.document.getElementById("krool_phase_count").value)
+    krool_random = js.document.getElementById("krool_random").checked
+    for i in range(0, 5):
+        # Add 1, because the actual HTML elements are one-indexd.
+        krool_phase_plando = js.document.getElementById(f"plando_krool_order_div_{i+1}")
+        if i < krool_phase_count or krool_random:
+            krool_phase_plando.removeAttribute("disabled")
+            krool_phase_plando.style = ""
+        else:
+            krool_phase_plando.setAttribute("disabled", "disabled")
+            krool_phase_plando.style.display = "none"
+    
+    # Limit the number of "Helm order" dropdowns displayed.
+    helm_phase_count = int(js.document.getElementById("helm_phase_count").value)
+    helm_random = js.document.getElementById("helm_random").checked
+    for i in range(0, 5):
+        # Add 1, because the actual HTML elements are one-indexd.
+        helm_phase_plando = js.document.getElementById(f"plando_helm_order_div_{i+1}")
+        if i < helm_phase_count or helm_random:
             helm_phase_plando.removeAttribute("disabled")
             helm_phase_plando.style = ""
         else:
@@ -713,6 +766,23 @@ def enable_plandomizer(evt):
             plando_tab.style = ""
     except AttributeError:
         pass
+
+
+@bind("change", "plando_starting_kongs")
+def disable_kong_rescues(evt):
+    """Disable Kong rescue options for starting Kongs."""
+    starting_kongs = js.document.getElementById("plando_starting_kongs")
+    selected_kongs = {x.value for x in starting_kongs.selectedOptions}
+    for kong in ["donkey", "diddy", "lanky", "tiny", "chunky"]:
+        kong_rescuer_div = js.document.getElementById(f"plando_kong_rescue_div_{kong}")
+        kong_rescuer = js.document.getElementById(f"plando_kong_rescue_{kong}")
+        if kong in selected_kongs:
+            kong_rescuer_div.classList.add("disabled-select")
+            kong_rescuer.value = ""
+            kong_rescuer.setAttribute("disabled", "disabled")
+        else:
+            kong_rescuer_div.classList.remove("disabled-select")
+            kong_rescuer.removeAttribute("disabled")
 
 
 @bind("change", "dk_colors")

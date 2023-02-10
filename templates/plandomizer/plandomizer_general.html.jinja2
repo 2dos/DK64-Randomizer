@@ -1,16 +1,28 @@
 <style>
-    .kong-order {
+    .item-select.wide-select {
+        max-width: 350px;
+    }
+
+    .disabled-select {
+        opacity: 0.3;
+    }
+
+    .select-order {
         align-items: center;
         justify-content: flex-start;
         margin-bottom: 8px;
     }
 
-    .kong-order-label {
+    .order-label {
         width: 70px;
     }
 
-    .kong-order-select {
+    .order-select {
         width: auto;
+    }
+
+    .rescue-label {
+        width: 150px;
     }
 </style>
 <div class="tab-pane fade show active"
@@ -19,43 +31,7 @@
      aria-labelled-by="nav-plando-general-tab">
     <div class="row">
         <div class="col panel"
-             style="border-right: 1px solid #e3e3e3">
-            <h2 class="title">Kongs</h2>
-            <div class="flex-container">
-                <div class="item-multiselect">
-                    <div class="color-selector">
-                        <p class="select-title">Starting Kongs</p>
-                        <select name="plando_starting_kongs"
-                                id="plando_starting_kongs"
-                                class="form-select multi-select"
-                                aria-label="Starting Kongs"
-                                multiple
-                                size="6">
-                            <option selected value="random">
-                                Random Kong
-                            </option>
-                            <option value="donkey">
-                                Donkey
-                            </option>
-                            <option value="diddy">
-                                Diddy
-                            </option>
-                            <option value="lanky">
-                                Lanky
-                            </option>
-                            <option value="tiny">
-                                Tiny
-                            </option>
-                            <option value="chunky">
-                                Chunky
-                            </option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col panel"
-             style="border-left: 1px solid #e3e3e3">
+             style="border-right: 1px solid #e3e3e3;">
             <h2 class="title">World</h2>
             <div class="flex-container">
                 <div class="form-check form-switch item-switch">
@@ -69,16 +45,17 @@
                     </label>
                 </div>
             </div>
-            <p class="select-title">Helm Order</p>
-            {% for i in range(1, 6) %}
-                <label id="plando_helm_order_div_{{i}}"
-                       class="flex-container kong-order">
-                    <span class="kong-order-label">Kong {{i}}:</span>
-                    <select id="plando_helm_order_{{i}}"
-                            name="plando_helm_order_{{i}}"
-                            class="form-select kong-order-select">
-                        <option value="" selected">
-                            -- Randomize --
+            <div class="flex-container">
+                <div class="item-multiselect">
+                    <p class="select-title">Starting Kongs</p>
+                    <select name="plando_starting_kongs"
+                            id="plando_starting_kongs"
+                            class="form-select multi-select"
+                            aria-label="Starting Kongs"
+                            multiple
+                            size="6">
+                        <option selected value="random">
+                            Random Kong
                         </option>
                         <option value="donkey">
                             Donkey
@@ -96,8 +73,170 @@
                             Chunky
                         </option>
                     </select>
-                </label>
-            {% endfor %}
+                </div>
+            </div>
+            <div class="item-select wide-select">
+                <p class="select-title">Kong Rescuers</p>
+                {% for kong in ["donkey", "diddy", "lanky", "tiny", "chunky"] %}
+                    <label id="plando_kong_rescue_div_{{kong}}"
+                        class="flex-container select-order">
+                        <span class="rescue-label">{{kong.capitalize()}} rescued by </span>
+                        <select id="plando_kong_rescue_{{kong}}"
+                                name="plando_kong_rescue_{{kong}}"
+                                class="form-select order-select">
+                            <option value="" selected">
+                                -- Randomize --
+                            </option>
+                            {% if kong != "donkey" %}
+                                <option value="donkey">
+                                    Donkey
+                                </option>
+                            {% endif %}
+                            {% if kong != "diddy" %}
+                                <option value="diddy">
+                                    Diddy
+                                </option>
+                            {% endif %}
+                            {% if kong != "lanky" %}
+                                <option value="lanky">
+                                    Lanky
+                                </option>
+                            {% endif %}
+                            {% if kong != "tiny" %}
+                                <option value="tiny">
+                                    Tiny
+                                </option>
+                            {% endif %}
+                            {% if kong != "chunky" %}
+                                <option value="chunky">
+                                    Chunky
+                                </option>
+                            {% endif %}
+                        </select>
+                    </label>
+                {% endfor %}
+            </div>
+            <div class="item-select wide-select">
+                <p class="select-title">Spawn Location</p>
+                <select name="plando_spawn_location"
+                        id="plando_spawn_location"
+                        class="form-select center-div"
+                        aria-label="Spawn Location"
+                        data-toggle="tooltip"
+                        title="Choose the spawn location when starting the game.">
+                    <option selected value="">
+                        -- Randomize --
+                    </option>
+                    {% for spawn in plando_spawns %}
+                        <option value="{{spawn["enum_name"]}}">
+                            {{spawn["display_name"]}}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col panel"
+             style="border-left: 1px solid #e3e3e3;">
+            <h2 class="title">Ordering</h2>
+            <div class="item-select wide-select">
+                <p class="select-title">Level Order</p>
+                {% for i in range(1, 8) %}
+                    <label id="plando_level_order_div_{{i}}"
+                        class="flex-container select-order">
+                        <span class="order-label">Level {{i}}:</span>
+                        <select id="plando_level_order_{{i}}"
+                                name="plando_level_order_{{i}}"
+                                class="form-select order-select">
+                            <option value="" selected">
+                                -- Randomize --
+                            </option>
+                            <option value="JungleJapes">
+                                Jungle Japes
+                            </option>
+                            <option value="AngryAztec">
+                                Angry Aztec
+                            </option>
+                            <option value="FranticFactory">
+                                Frantic Factory
+                            </option>
+                            <option value="GloomyGalleon">
+                                Gloomy Galleon
+                            </option>
+                            <option value="FungiForest">
+                                Fungi Forest
+                            </option>
+                            <option value="CrystalCaves">
+                                Crystal Caves
+                            </option>
+                            <option value="CreepyCastle">
+                                Creepy Castle
+                            </option>
+                        </select>
+                    </label>
+                {% endfor %}
+            </div>
+            <div class="item-select wide-select">
+                <p class="select-title">K. Rool Order</p>
+                {% for i in range(1, 6) %}
+                    <label id="plando_krool_order_div_{{i}}"
+                        class="flex-container select-order">
+                        <span class="order-label">Kong {{i}}:</span>
+                        <select id="plando_krool_order_{{i}}"
+                                name="plando_krool_order_{{i}}"
+                                class="form-select order-select">
+                            <option value="" selected">
+                                -- Randomize --
+                            </option>
+                            <option value="donkey">
+                                Donkey
+                            </option>
+                            <option value="diddy">
+                                Diddy
+                            </option>
+                            <option value="lanky">
+                                Lanky
+                            </option>
+                            <option value="tiny">
+                                Tiny
+                            </option>
+                            <option value="chunky">
+                                Chunky
+                            </option>
+                        </select>
+                    </label>
+                {% endfor %}
+            </div>
+            <div class="item-select wide-select">
+                <p class="select-title">Helm Order</p>
+                {% for i in range(1, 6) %}
+                    <label id="plando_helm_order_div_{{i}}"
+                        class="flex-container select-order">
+                        <span class="order-label">Kong {{i}}:</span>
+                        <select id="plando_helm_order_{{i}}"
+                                name="plando_helm_order_{{i}}"
+                                class="form-select order-select">
+                            <option value="" selected">
+                                -- Randomize --
+                            </option>
+                            <option value="donkey">
+                                Donkey
+                            </option>
+                            <option value="diddy">
+                                Diddy
+                            </option>
+                            <option value="lanky">
+                                Lanky
+                            </option>
+                            <option value="tiny">
+                                Tiny
+                            </option>
+                            <option value="chunky">
+                                Chunky
+                            </option>
+                        </select>
+                    </label>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>

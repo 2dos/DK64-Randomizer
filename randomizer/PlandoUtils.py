@@ -51,7 +51,7 @@ bananaFairyPermittedItems = {
 
 # For every location in LocationList, if the default reward is a Banana Fairy,
 # add the string name of that location enum to this set.
-bananaFairyLocationSet = {locEnum.name for (locEnum, locObj) in LocationList.items() if locObj.default == Items.BananaFairy}
+bananaFairyLocationSet = {locEnum.name for locEnum, locObj in LocationList.items() if locObj.default == Items.BananaFairy}
 
 kongPermittedItemSet = {
     PlandoItems.NoItem.name,
@@ -74,7 +74,7 @@ shopRestrictedItemSet = {
 }
 
 shopLocationSet = set()
-for (locEnum, locObj) in LocationList.items():
+for locEnum, locObj in LocationList.items():
     if locObj.type == Types.Shop:
         shopLocationSet.add(locEnum.name)
     elif locObj.level == Levels.Shops:
@@ -176,7 +176,7 @@ def PlandoPanelFilter(locationDict):
            locationDict (dict[]): The dict of possible locations/tabs/panels.
            We are only interested in the keys.
     """
-    return {locName:locObj for (locName, locObj) in locationDict.items() if locName not in invalidTabPanels}
+    return {locName:locObj for locName, locObj in locationDict.items() if locName not in invalidTabPanels}
 
 # This dictionary allows us to efficiently sort the shop locations. Shops are
 # sorted first by level, then by vendor, then by Kong. This sorting is easier
