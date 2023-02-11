@@ -1,6 +1,7 @@
 """Includes utility functions for plandomizer support."""
 
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
@@ -8,13 +9,89 @@ from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Location import LocationList
 
-bananaFairyPermittedItems = {
-    PlandoItems.NoItem.name,
-    PlandoItems.Donkey.name,
-    PlandoItems.Diddy.name,
-    PlandoItems.Lanky.name,
-    PlandoItems.Tiny.name,
-    PlandoItems.Chunky.name,
+# A master dictionary of all possible item locations, mapped to a set of which
+# items may not appear in that location.
+ItemRestrictionsPerLocation = {location.name:set() for location in LocationList.keys()}
+
+# Each blueprint item should only appear in locations specific to the Kong who
+# can pick up that blueprint. Any "All Kongs" locations may not have any
+# blueprints assigned to them.
+blueprintItemSet = {
+    PlandoItems.DonkeyBlueprint.name,
+    PlandoItems.DiddyBlueprint.name,
+    PlandoItems.LankyBlueprint.name,
+    PlandoItems.TinyBlueprint.name,
+    PlandoItems.ChunkyBlueprint.name
+}
+for locEnum, locObj in LocationList.items():
+    if locObj.kong == Kongs.donkey:
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DiddyBlueprint.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.LankyBlueprint.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.TinyBlueprint.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.ChunkyBlueprint.name)
+    elif locObj.kong == Kongs.diddy:
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DonkeyBlueprint.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.LankyBlueprint.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.TinyBlueprint.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.ChunkyBlueprint.name)
+    elif locObj.kong == Kongs.lanky:
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DonkeyBlueprint.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DiddyBlueprint.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.TinyBlueprint.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.ChunkyBlueprint.name)
+    elif locObj.kong == Kongs.tiny:
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DonkeyBlueprint.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DiddyBlueprint.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.LankyBlueprint.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.ChunkyBlueprint.name)
+    elif locObj.kong == Kongs.chunky:
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DonkeyBlueprint.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DiddyBlueprint.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.LankyBlueprint.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.TinyBlueprint.name)
+    else:
+        ItemRestrictionsPerLocation[locEnum.name].update(blueprintItemSet)
+
+# Banana fairy locations have a handful of limitations.
+bananaFairyRestrictedItems = {
+    PlandoItems.Coconut.name,
+    PlandoItems.Peanut.name,
+    PlandoItems.Grape.name,
+    PlandoItems.Feather.name,
+    PlandoItems.Pineapple.name,
+    PlandoItems.HomingAmmo.name,
+    PlandoItems.SniperSight.name,
+    PlandoItems.ProgressiveAmmoBelt.name,
+    PlandoItems.Bongos.name,
+    PlandoItems.Guitar.name,
+    PlandoItems.Trombone.name,
+    PlandoItems.Saxophone.name,
+    PlandoItems.Triangle.name,
+    PlandoItems.ProgressiveInstrumentUpgrade.name,
+    PlandoItems.Camera.name,
+    PlandoItems.Shockwave.name,
+    PlandoItems.NintendoCoin.name,
+    PlandoItems.RarewareCoin.name,
+    PlandoItems.BananaMedal.name,
+    PlandoItems.Bean.name,
+    PlandoItems.Pearl.name,
+    PlandoItems.RainbowCoin.name,
+    PlandoItems.JunkItem.name,
+    PlandoItems.DonkeyBlueprint.name,
+    PlandoItems.DiddyBlueprint.name,
+    PlandoItems.LankyBlueprint.name,
+    PlandoItems.TinyBlueprint.name,
+    PlandoItems.ChunkyBlueprint.name
+}
+
+# For every location in LocationList, if the default reward is a Banana Fairy,
+# add all of the restricted items to the restricted set.
+for locEnum, locObj in LocationList.items():
+    if locObj.default == Items.BananaFairy:
+        ItemRestrictionsPerLocation[locEnum.name].update(bananaFairyRestrictedItems)
+
+# Very few items are permitted in Kong locations.
+kongRestrictedItemSet = {
     PlandoItems.Vines.name,
     PlandoItems.Swim.name,
     PlandoItems.Oranges.name,
@@ -35,6 +112,24 @@ bananaFairyPermittedItems = {
     PlandoItems.HunkyChunky.name,
     PlandoItems.PrimatePunch.name,
     PlandoItems.GorillaGone.name,
+    PlandoItems.Coconut.name,
+    PlandoItems.Peanut.name,
+    PlandoItems.Grape.name,
+    PlandoItems.Feather.name,
+    PlandoItems.Pineapple.name,
+    PlandoItems.HomingAmmo.name,
+    PlandoItems.SniperSight.name,
+    PlandoItems.ProgressiveAmmoBelt.name,
+    PlandoItems.Bongos.name,
+    PlandoItems.Guitar.name,
+    PlandoItems.Trombone.name,
+    PlandoItems.Saxophone.name,
+    PlandoItems.Triangle.name,
+    PlandoItems.ProgressiveInstrumentUpgrade.name,
+    PlandoItems.Camera.name,
+    PlandoItems.Shockwave.name,
+    PlandoItems.NintendoCoin.name,
+    PlandoItems.RarewareCoin.name,
     PlandoItems.JungleJapesKey.name,
     PlandoItems.AngryAztecKey.name,
     PlandoItems.FranticFactoryKey.name,
@@ -45,40 +140,155 @@ bananaFairyPermittedItems = {
     PlandoItems.HideoutHelmKey.name,
     PlandoItems.GoldenBanana.name,
     PlandoItems.BananaFairy.name,
+    PlandoItems.BananaMedal.name,
     PlandoItems.BattleCrown.name,
-    PlandoItems.FakeItem.name
+    PlandoItems.Bean.name,
+    PlandoItems.Pearl.name,
+    PlandoItems.RainbowCoin.name,
+    PlandoItems.FakeItem.name,
+    PlandoItems.JunkItem.name,
+    PlandoItems.DonkeyBlueprint.name,
+    PlandoItems.DiddyBlueprint.name,
+    PlandoItems.LankyBlueprint.name,
+    PlandoItems.TinyBlueprint.name,
+    PlandoItems.ChunkyBlueprint.name
 }
 
-# For every location in LocationList, if the default reward is a Banana Fairy,
-# add the string name of that location enum to this set.
-bananaFairyLocationSet = {locEnum.name for locEnum, locObj in LocationList.items() if locObj.default == Items.BananaFairy}
+kongLocationList = [
+    Locations.DiddyKong.name,
+    Locations.TinyKong.name,
+    Locations.LankyKong.name,
+    Locations.ChunkyKong.name
+]
 
-kongPermittedItemSet = {
-    PlandoItems.NoItem.name,
+for locationName in kongLocationList:
+    ItemRestrictionsPerLocation[locationName].update(kongRestrictedItemSet)
+
+# Shops have few restrictions.
+shopRestrictedItemSet = {
+    PlandoItems.RainbowCoin.name,
+    PlandoItems.JunkItem.name
+}
+
+# Add the restricted items for each shop location. (This will also cover the
+# blueprint redemptions, which is fine.)
+for locEnum, locObj in LocationList.items():
+    if locObj.type == Types.Shop or locObj.level == Levels.Shops:
+        ItemRestrictionsPerLocation[locEnum.name].update(shopRestrictedItemSet)
+
+# Crowns are not allowed on Helm Medal locations.
+helmMedalLocationList = [
+    Locations.HelmDonkeyMedal.name,
+    Locations.HelmDiddyMedal.name,
+    Locations.HelmLankyMedal.name,
+    Locations.HelmTinyMedal.name,
+    Locations.HelmChunkyMedal.name
+]
+for locationName in helmMedalLocationList:
+    ItemRestrictionsPerLocation[locationName].add(PlandoItems.BattleCrown.name)
+
+# Boss fights cannot have junk item or blueprint rewards.
+bossFightLocationList = [
+    Locations.JapesKey.name,
+    Locations.AztecKey.name,
+    Locations.FactoryKey.name,
+    Locations.GalleonKey.name,
+    Locations.ForestKey.name,
+    Locations.CavesKey.name,
+    Locations.CastleKey.name,
+]
+for locationName in bossFightLocationList:
+    ItemRestrictionsPerLocation[locationName].add(PlandoItems.JunkItem.name)
+    ItemRestrictionsPerLocation[locationName].update(blueprintItemSet)
+
+# Battle arenas cannot have junk item or blueprint rewards.
+for locEnum, locObj in LocationList.items():
+    if locObj.type == Types.Crown:
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
+        ItemRestrictionsPerLocation[locEnum.name].update(blueprintItemSet)
+
+# Training barrels cannot have Kongs as a reward.
+trainingBarrelLocationList = [
+    Locations.IslesVinesTrainingBarrel.name,
+    Locations.IslesSwimTrainingBarrel.name,
+    Locations.IslesOrangesTrainingBarrel.name,
+    Locations.IslesBarrelsTrainingBarrel.name
+]
+kongSet = {
     PlandoItems.Donkey.name,
     PlandoItems.Diddy.name,
     PlandoItems.Lanky.name,
     PlandoItems.Tiny.name,
     PlandoItems.Chunky.name
 }
+for locationName in trainingBarrelLocationList:
+    ItemRestrictionsPerLocation[locationName].update(kongSet)
 
-kongLocationSet = {
-    Locations.DiddyKong.name,
-    Locations.TinyKong.name,
-    Locations.LankyKong.name,
-    Locations.ChunkyKong.name
-}
+# This one rock also can't have Kongs as a reward.
+ItemRestrictionsPerLocation[Locations.IslesDonkeyJapesRock.name].update(kongSet)
 
-shopRestrictedItemSet = {
-    PlandoItems.JunkItem.name
-}
+# These specific locations cannot have fake items on them.
+badFakeItemLocationList = [
+    # Caves Beetle Race causes issues with a blueprint potentially being there
+    Locations.CavesLankyBeetleRace.name,
+    # Stuff that may be required to access other stuff - Not really fair
+    Locations.JapesDonkeyFreeDiddy.name,
+    Locations.JapesDonkeyFrontofCage.name,
+    Locations.IslesDonkeyJapesRock.name,
+    Locations.FactoryDonkeyDKArcade.name,
+    Locations.FactoryTinyDartboard.name,
+    Locations.JapesLankyFairyCave.name,
+    Locations.ForestDiddyRafters.name,
+    Locations.CavesTiny5DoorIgloo.name,
+    Locations.CavesDiddy5DoorCabinUpper.name,
+    Locations.CastleDonkeyTree.name,
+    Locations.CastleLankyGreenhouse.name,
+    Locations.HelmBananaFairy1.name,
+    Locations.HelmBananaFairy2.name,
+    # Miscellaneous issues
+    Locations.NintendoCoin.name,
+    Locations.RarewareCoin.name
+]
+for locationName in badFakeItemLocationList:
+    ItemRestrictionsPerLocation[locationName].add(PlandoItems.FakeItem.name)
 
-shopLocationSet = set()
-for locEnum, locObj in LocationList.items():
-    if locObj.type == Types.Shop:
-        shopLocationSet.add(locEnum.name)
-    elif locObj.level == Levels.Shops:
-        shopLocationSet.add(locEnum.name)
+# Training barrels also cannot have fake items.
+for locationName in trainingBarrelLocationList:
+    ItemRestrictionsPerLocation[locationName].add(PlandoItems.FakeItem.name)
+
+# Dirt patches cannot have blueprints placed on them.
+dirtPatchLocationList = [
+    Locations.RainbowCoin_Location00.name,
+    Locations.RainbowCoin_Location01.name,
+    Locations.RainbowCoin_Location02.name,
+    Locations.RainbowCoin_Location03.name,
+    Locations.RainbowCoin_Location04.name,
+    Locations.RainbowCoin_Location05.name,
+    Locations.RainbowCoin_Location06.name,
+    Locations.RainbowCoin_Location07.name,
+    Locations.RainbowCoin_Location08.name,
+    Locations.RainbowCoin_Location09.name,
+    Locations.RainbowCoin_Location10.name,
+    Locations.RainbowCoin_Location11.name,
+    Locations.RainbowCoin_Location12.name,
+    Locations.RainbowCoin_Location13.name,
+    Locations.RainbowCoin_Location14.name,
+    Locations.RainbowCoin_Location15.name
+]
+for locationName in dirtPatchLocationList:
+    ItemRestrictionsPerLocation[locationName].update(blueprintItemSet)
+
+# These specific locations cannot have blueprints placed on them.
+badBlueprintLocationList = [
+    Locations.IslesDonkeyJapesRock.name,
+    Locations.JapesDonkeyFrontofCage.name,
+    Locations.JapesDonkeyFreeDiddy.name,
+    Locations.AztecDiddyFreeTiny.name,
+    Locations.AztecDonkeyFreeLanky.name,
+    Locations.FactoryLankyFreeChunky.name
+]
+for locationName in badBlueprintLocationList:
+    ItemRestrictionsPerLocation[locationName].update(blueprintItemSet)
 
 def PlandoItemFilter(itemList, location):
     """A Jinja filter that returns a filtered list of plando items that are
@@ -91,27 +301,8 @@ def PlandoItemFilter(itemList, location):
                Equal to the string name of the Location enum.
     """
 
-    # Kong locations (not Kong rewards) are heavily limited.
-    if location["enum_name"] in kongLocationSet:
-        # For every item in the item list, if it's in our set of permitted items for
-        # Kong locations, add it to a new list. Return that new list.
-        return [item for item in itemList if item["enum_name"] in kongPermittedItemSet]
-
-    # Banana fairy locations have some limitations.
-    if location["enum_name"] in bananaFairyLocationSet:
-        # For every item in the item list, if it's in our set of permitted items for
-        # Banana Fairy locations, add it to a new list. Return that new list.
-        return [item for item in itemList if item["enum_name"] in bananaFairyPermittedItems]
-    
-    # Shops have very few limitations.
-    if location["enum_name"] in shopLocationSet:
-        # For every item in the item list, if it's not in our set of restricted
-        # items for shop locations, add it to a new list. Return that new list.
-        return [item for item in itemList if item["enum_name"] not in shopRestrictedItemSet]
-
-    # If we've gotten to this point, we have no filters to perform.
-    # We can return the full list.
-    return itemList
+    # Filter out every item that appears in the restricted set for this location.
+    return [item for item in itemList if item["enum_name"] not in ItemRestrictionsPerLocation[location["enum_name"]]]
 
 # A dictionary indicating which mini-games are unavailable to certain Kongs.
 kongMinigameRestrictions = {

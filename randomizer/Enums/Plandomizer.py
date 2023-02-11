@@ -94,8 +94,12 @@ class PlandoItems(IntEnum):
 
     # Hints are not used as plando items.
 
-    # A generic blueprint item to represent all specific blueprints.
-    Blueprint = auto()
+    # Five generic blueprint items to represent all specific blueprints.
+    DonkeyBlueprint = auto()
+    DiddyBlueprint = auto()
+    LankyBlueprint = auto()
+    TinyBlueprint = auto()
+    ChunkyBlueprint = auto()
 
 ItemToPlandoItemMap = {
     Items.NoItem: PlandoItems.NoItem,
@@ -164,47 +168,47 @@ ItemToPlandoItemMap = {
     Items.JunkAmmo: PlandoItems.JunkItem,
     Items.JunkFilm: PlandoItems.JunkItem,
     Items.JunkOrange: PlandoItems.JunkItem,
-    # All of the individual blueprints map to the same plando item.
-    Items.JungleJapesDonkeyBlueprint: PlandoItems.Blueprint,
-    Items.JungleJapesDiddyBlueprint: PlandoItems.Blueprint,
-    Items.JungleJapesLankyBlueprint: PlandoItems.Blueprint,
-    Items.JungleJapesTinyBlueprint: PlandoItems.Blueprint,
-    Items.JungleJapesChunkyBlueprint: PlandoItems.Blueprint,
-    Items.AngryAztecDonkeyBlueprint: PlandoItems.Blueprint,
-    Items.AngryAztecDiddyBlueprint: PlandoItems.Blueprint,
-    Items.AngryAztecLankyBlueprint: PlandoItems.Blueprint,
-    Items.AngryAztecTinyBlueprint: PlandoItems.Blueprint,
-    Items.AngryAztecChunkyBlueprint: PlandoItems.Blueprint,
-    Items.FranticFactoryDonkeyBlueprint: PlandoItems.Blueprint,
-    Items.FranticFactoryDiddyBlueprint: PlandoItems.Blueprint,
-    Items.FranticFactoryLankyBlueprint: PlandoItems.Blueprint,
-    Items.FranticFactoryTinyBlueprint: PlandoItems.Blueprint,
-    Items.FranticFactoryChunkyBlueprint: PlandoItems.Blueprint,
-    Items.GloomyGalleonDonkeyBlueprint: PlandoItems.Blueprint,
-    Items.GloomyGalleonDiddyBlueprint: PlandoItems.Blueprint,
-    Items.GloomyGalleonLankyBlueprint: PlandoItems.Blueprint,
-    Items.GloomyGalleonTinyBlueprint: PlandoItems.Blueprint,
-    Items.GloomyGalleonChunkyBlueprint: PlandoItems.Blueprint,
-    Items.FungiForestDonkeyBlueprint: PlandoItems.Blueprint,
-    Items.FungiForestDiddyBlueprint: PlandoItems.Blueprint,
-    Items.FungiForestLankyBlueprint: PlandoItems.Blueprint,
-    Items.FungiForestTinyBlueprint: PlandoItems.Blueprint,
-    Items.FungiForestChunkyBlueprint: PlandoItems.Blueprint,
-    Items.CrystalCavesDonkeyBlueprint: PlandoItems.Blueprint,
-    Items.CrystalCavesDiddyBlueprint: PlandoItems.Blueprint,
-    Items.CrystalCavesLankyBlueprint: PlandoItems.Blueprint,
-    Items.CrystalCavesTinyBlueprint: PlandoItems.Blueprint,
-    Items.CrystalCavesChunkyBlueprint: PlandoItems.Blueprint,
-    Items.CreepyCastleDonkeyBlueprint: PlandoItems.Blueprint,
-    Items.CreepyCastleDiddyBlueprint: PlandoItems.Blueprint,
-    Items.CreepyCastleLankyBlueprint: PlandoItems.Blueprint,
-    Items.CreepyCastleTinyBlueprint: PlandoItems.Blueprint,
-    Items.CreepyCastleChunkyBlueprint: PlandoItems.Blueprint,
-    Items.DKIslesDonkeyBlueprint: PlandoItems.Blueprint,
-    Items.DKIslesDiddyBlueprint: PlandoItems.Blueprint,
-    Items.DKIslesLankyBlueprint: PlandoItems.Blueprint,
-    Items.DKIslesTinyBlueprint: PlandoItems.Blueprint,
-    Items.DKIslesChunkyBlueprint: PlandoItems.Blueprint
+    # All of the individual blueprints map to the same five plando items.
+    Items.JungleJapesDonkeyBlueprint: PlandoItems.DonkeyBlueprint,
+    Items.JungleJapesDiddyBlueprint: PlandoItems.DiddyBlueprint,
+    Items.JungleJapesLankyBlueprint: PlandoItems.LankyBlueprint,
+    Items.JungleJapesTinyBlueprint: PlandoItems.TinyBlueprint,
+    Items.JungleJapesChunkyBlueprint: PlandoItems.ChunkyBlueprint,
+    Items.AngryAztecDonkeyBlueprint: PlandoItems.DonkeyBlueprint,
+    Items.AngryAztecDiddyBlueprint: PlandoItems.DiddyBlueprint,
+    Items.AngryAztecLankyBlueprint: PlandoItems.LankyBlueprint,
+    Items.AngryAztecTinyBlueprint: PlandoItems.TinyBlueprint,
+    Items.AngryAztecChunkyBlueprint: PlandoItems.ChunkyBlueprint,
+    Items.FranticFactoryDonkeyBlueprint: PlandoItems.DonkeyBlueprint,
+    Items.FranticFactoryDiddyBlueprint: PlandoItems.DiddyBlueprint,
+    Items.FranticFactoryLankyBlueprint: PlandoItems.LankyBlueprint,
+    Items.FranticFactoryTinyBlueprint: PlandoItems.TinyBlueprint,
+    Items.FranticFactoryChunkyBlueprint: PlandoItems.ChunkyBlueprint,
+    Items.GloomyGalleonDonkeyBlueprint: PlandoItems.DonkeyBlueprint,
+    Items.GloomyGalleonDiddyBlueprint: PlandoItems.DiddyBlueprint,
+    Items.GloomyGalleonLankyBlueprint: PlandoItems.LankyBlueprint,
+    Items.GloomyGalleonTinyBlueprint: PlandoItems.TinyBlueprint,
+    Items.GloomyGalleonChunkyBlueprint: PlandoItems.ChunkyBlueprint,
+    Items.FungiForestDonkeyBlueprint: PlandoItems.DonkeyBlueprint,
+    Items.FungiForestDiddyBlueprint: PlandoItems.DiddyBlueprint,
+    Items.FungiForestLankyBlueprint: PlandoItems.LankyBlueprint,
+    Items.FungiForestTinyBlueprint: PlandoItems.TinyBlueprint,
+    Items.FungiForestChunkyBlueprint: PlandoItems.ChunkyBlueprint,
+    Items.CrystalCavesDonkeyBlueprint: PlandoItems.DonkeyBlueprint,
+    Items.CrystalCavesDiddyBlueprint: PlandoItems.DiddyBlueprint,
+    Items.CrystalCavesLankyBlueprint: PlandoItems.LankyBlueprint,
+    Items.CrystalCavesTinyBlueprint: PlandoItems.TinyBlueprint,
+    Items.CrystalCavesChunkyBlueprint: PlandoItems.ChunkyBlueprint,
+    Items.CreepyCastleDonkeyBlueprint: PlandoItems.DonkeyBlueprint,
+    Items.CreepyCastleDiddyBlueprint: PlandoItems.DiddyBlueprint,
+    Items.CreepyCastleLankyBlueprint: PlandoItems.LankyBlueprint,
+    Items.CreepyCastleTinyBlueprint: PlandoItems.TinyBlueprint,
+    Items.CreepyCastleChunkyBlueprint: PlandoItems.ChunkyBlueprint,
+    Items.DKIslesDonkeyBlueprint: PlandoItems.DonkeyBlueprint,
+    Items.DKIslesDiddyBlueprint: PlandoItems.DiddyBlueprint,
+    Items.DKIslesLankyBlueprint: PlandoItems.LankyBlueprint,
+    Items.DKIslesTinyBlueprint: PlandoItems.TinyBlueprint,
+    Items.DKIslesChunkyBlueprint: PlandoItems.ChunkyBlueprint
 }
 
 PlandoItemToItemMap = {
@@ -278,46 +282,54 @@ PlandoItemToItemListMap = {
         Items.JunkFilm,
         Items.JunkOrange
     ],
-    PlandoItems.Blueprint: [
+    PlandoItems.DonkeyBlueprint: [
         Items.JungleJapesDonkeyBlueprint,
-        Items.JungleJapesDiddyBlueprint,
-        Items.JungleJapesLankyBlueprint,
-        Items.JungleJapesTinyBlueprint,
-        Items.JungleJapesChunkyBlueprint,
         Items.AngryAztecDonkeyBlueprint,
-        Items.AngryAztecDiddyBlueprint,
-        Items.AngryAztecLankyBlueprint,
-        Items.AngryAztecTinyBlueprint,
-        Items.AngryAztecChunkyBlueprint,
         Items.FranticFactoryDonkeyBlueprint,
-        Items.FranticFactoryDiddyBlueprint,
-        Items.FranticFactoryLankyBlueprint,
-        Items.FranticFactoryTinyBlueprint,
-        Items.FranticFactoryChunkyBlueprint,
         Items.GloomyGalleonDonkeyBlueprint,
-        Items.GloomyGalleonDiddyBlueprint,
-        Items.GloomyGalleonLankyBlueprint,
-        Items.GloomyGalleonTinyBlueprint,
-        Items.GloomyGalleonChunkyBlueprint,
         Items.FungiForestDonkeyBlueprint,
-        Items.FungiForestDiddyBlueprint,
-        Items.FungiForestLankyBlueprint,
-        Items.FungiForestTinyBlueprint,
-        Items.FungiForestChunkyBlueprint,
         Items.CrystalCavesDonkeyBlueprint,
-        Items.CrystalCavesDiddyBlueprint,
-        Items.CrystalCavesLankyBlueprint,
-        Items.CrystalCavesTinyBlueprint,
-        Items.CrystalCavesChunkyBlueprint,
         Items.CreepyCastleDonkeyBlueprint,
+        Items.DKIslesDonkeyBlueprint
+    ],
+    PlandoItems.DiddyBlueprint: [
+        Items.JungleJapesDiddyBlueprint,
+        Items.AngryAztecDiddyBlueprint,
+        Items.FranticFactoryDiddyBlueprint,
+        Items.GloomyGalleonDiddyBlueprint,
+        Items.FungiForestDiddyBlueprint,
+        Items.CrystalCavesDiddyBlueprint,
         Items.CreepyCastleDiddyBlueprint,
+        Items.DKIslesDiddyBlueprint
+    ],
+    PlandoItems.LankyBlueprint: [
+        Items.JungleJapesLankyBlueprint,
+        Items.AngryAztecLankyBlueprint,
+        Items.FranticFactoryLankyBlueprint,
+        Items.GloomyGalleonLankyBlueprint,
+        Items.FungiForestLankyBlueprint,
+        Items.CrystalCavesLankyBlueprint,
         Items.CreepyCastleLankyBlueprint,
+        Items.DKIslesLankyBlueprint
+    ],
+    PlandoItems.TinyBlueprint: [
+        Items.JungleJapesTinyBlueprint,
+        Items.AngryAztecTinyBlueprint,
+        Items.FranticFactoryTinyBlueprint,
+        Items.GloomyGalleonTinyBlueprint,
+        Items.FungiForestTinyBlueprint,
+        Items.CrystalCavesTinyBlueprint,
         Items.CreepyCastleTinyBlueprint,
+        Items.DKIslesTinyBlueprint
+    ],
+    PlandoItems.ChunkyBlueprint: [
+        Items.JungleJapesChunkyBlueprint,
+        Items.AngryAztecChunkyBlueprint,
+        Items.FranticFactoryChunkyBlueprint,
+        Items.GloomyGalleonChunkyBlueprint,
+        Items.FungiForestChunkyBlueprint,
+        Items.CrystalCavesChunkyBlueprint,
         Items.CreepyCastleChunkyBlueprint,
-        Items.DKIslesDonkeyBlueprint,
-        Items.DKIslesDiddyBlueprint,
-        Items.DKIslesLankyBlueprint,
-        Items.DKIslesTinyBlueprint,
         Items.DKIslesChunkyBlueprint
     ]
 }

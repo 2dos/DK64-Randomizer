@@ -4,7 +4,6 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
-from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationList
@@ -276,7 +275,11 @@ invalidStartingItems = {
     PlandoItems.RainbowCoin,
     PlandoItems.FakeItem,
     PlandoItems.JunkItem,
-    PlandoItems.Blueprint
+    PlandoItems.DonkeyBlueprint,
+    PlandoItems.DiddyBlueprint,
+    PlandoItems.LankyBlueprint,
+    PlandoItems.TinyBlueprint,
+    PlandoItems.ChunkyBlueprint
 }
 
 # The below items may be added multiple times as starting items.
@@ -285,6 +288,18 @@ multipleStartingItems = {
     PlandoItems.ProgressiveAmmoBelt: 2,
     PlandoItems.ProgressiveInstrumentUpgrade: 3,
     PlandoItems.Pearl: 5
+}
+
+# These PlandoItems enums have multiple Items enums that map to each of them,
+# and so they should not be automatically added to the list of PlannableItems.
+# Handle these manually.
+doNotAutoAddItemSet = {
+    PlandoItems.DonkeyBlueprint,
+    PlandoItems.DiddyBlueprint,
+    PlandoItems.LankyBlueprint,
+    PlandoItems.TinyBlueprint,
+    PlandoItems.ChunkyBlueprint,
+    PlandoItems.JunkItem
 }
 
 PlannableItems = []  # Used to select rewards for locations.
@@ -298,9 +313,9 @@ for itemEnum, itemObj in ItemList.items():
         continue
 
     plandoItemEnum = ItemToPlandoItemMap[itemEnum]
-    # Do not add blueprints or junk items. These will be replaced with a single
-    # generic item each.
-    if plandoItemEnum == PlandoItems.Blueprint or plandoItemEnum == PlandoItems.JunkItem:
+    # Do not add blueprints or junk items. These will be replaced with generic
+    # items.
+    if plandoItemEnum in doNotAutoAddItemSet:
         continue
     itemJson = {
         "display_name": itemObj.name,
@@ -323,8 +338,24 @@ for itemEnum, itemObj in ItemList.items():
         PlannableStartingItems.append(itemJson)
 
 PlannableItems.append({
-    "display_name": "Blueprint",
-    "enum_name": "Blueprint"
+    "display_name": "Blueprint (Donkey)",
+    "enum_name": "DonkeyBlueprint"
+})
+PlannableItems.append({
+    "display_name": "Blueprint (Diddy)",
+    "enum_name": "DiddyBlueprint"
+})
+PlannableItems.append({
+    "display_name": "Blueprint (Lanky)",
+    "enum_name": "LankyBlueprint"
+})
+PlannableItems.append({
+    "display_name": "Blueprint (Tiny)",
+    "enum_name": "TinyBlueprint"
+})
+PlannableItems.append({
+    "display_name": "Blueprint (Chunky)",
+    "enum_name": "ChunkyBlueprint"
 })
 PlannableItems.append({
     "display_name": "Junk Item",
@@ -395,7 +426,11 @@ PlannableItemLimits = {
     PlandoItems.Pearl: 5,
     PlandoItems.FakeItem: 16,
     PlandoItems.RainbowCoin: 16,
-    PlandoItems.Blueprint: 40
+    PlandoItems.DonkeyBlueprint: 8,
+    PlandoItems.DiddyBlueprint: 8,
+    PlandoItems.LankyBlueprint: 8,
+    PlandoItems.TinyBlueprint: 8,
+    PlandoItems.ChunkyBlueprint: 8
 }
 
 #############
