@@ -683,10 +683,10 @@ def CalculateFoolish(spoiler, WothLocations):
         majorItems.extend(ItemPool.Blueprints(spoiler.settings))
     if Types.Medal in spoiler.settings.shuffled_location_types and spoiler.settings.win_condition == "all_medals":
         majorItems.append(Items.BananaMedal)
+    if Types.Fairy in spoiler.settings.shuffled_location_types and spoiler.settings.win_condition == "all_fairies":
+        majorItems.append(Items.BananaFairy)
     if Types.Crown in spoiler.settings.shuffled_location_types and requires_crowns:
         majorItems.append(Items.BattleCrown)
-    # ***if fairy locations are shuffled*** and there's a major item on Rareware GB or fairies are the win con
-    # then we'd majorItems.append(Items.BananaFairy)
 
     nonHintableNames = {"K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits"}  # These regions never have anything useful so shouldn't be hinted
     if Types.Coin not in spoiler.settings.shuffled_location_types:
