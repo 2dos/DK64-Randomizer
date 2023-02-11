@@ -388,8 +388,8 @@ def compileHints(spoiler: Spoiler):
         Items.HideoutHelmKey: 0,
     }
     # Calculate the number of key hints that need to be placed. Any WotH keys should have paths that we should hint.
-    woth_key_ids = [LocationList[woth_loc].item for woth_loc in spoiler.woth_locations if ItemList[LocationList[woth_loc].item].type == Types.Key]
-    if len(woth_key_ids) > 0:  # spoiler.settings.shuffle_items and Types.Key in spoiler.settings.shuffled_location_types:
+    woth_key_ids = [LocationList[woth_loc].item for woth_loc in spoiler.woth_locations if ItemList[LocationList[woth_loc].item].type == Types.Key and woth_loc in spoiler.woth_paths.keys()]
+    if len(woth_key_ids) > 0:
         valid_types.append(HintType.RequiredKeyHint)
         # Only hint keys that are in the Way of the Hoard
         key_location_ids = {}
