@@ -150,7 +150,7 @@ def ShuffleItems(spoiler: Spoiler):
                 else:
                     price = spoiler.settings.prices[location_enum]
             location_selection = LocationSelection(
-                vanilla_item=item_location.type,
+                vanilla_item=ItemList[item_location.default].type,
                 flag=old_flag,
                 placement_data=placement_info,
                 is_reward_point=item_location.is_reward,
@@ -202,11 +202,14 @@ def ShuffleItems(spoiler: Spoiler):
                     flag_dict[item_location.type][Kongs.chunky] = []
                 else:
                     flag_dict[item_location.type] = []
-            # Add this location's flag as a valid flag for this type of item/kong pairing
-            if item_location.type == Types.Blueprint:
-                flag_dict[item_location.type][old_kong].append(old_flag)
-            else:
+            # Add this location's vanilla flag as a valid flag for this type of item/kong pairing
+            vanilla_item_type = ItemList[item_location.default].type
+            if item_location.type == Types.Shop:  # Except for shop locations - many of these are non-vanilla locations and won't have a valid vanilla item
                 flag_dict[item_location.type].append(old_flag)
+            elif vanilla_item_type == Types.Blueprint:  # Blueprints need to be saved with the kong as well
+                flag_dict[vanilla_item_type][old_kong].append(old_flag)
+            else:
+                flag_dict[vanilla_item_type].append(old_flag)
     # Shuffle the list of locations needing flags so the flags are assigned randomly across seeds
     random.shuffle(locations_needing_flags)
     for location in locations_needing_flags:
