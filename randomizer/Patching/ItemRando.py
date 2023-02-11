@@ -14,7 +14,6 @@ from randomizer.Patching.Lib import intf_to_float, float_to_hex
 
 model_two_indexes = {
     Types.Banana: 0x74,
-    Types.ToughBanana: 0x74,
     Types.Blueprint: [0xDE, 0xE0, 0xE1, 0xDD, 0xDF],
     Types.Coin: [0x48, 0x28F],  # Nintendo, Rareware
     Types.Key: 0x13C,
@@ -35,7 +34,6 @@ model_two_indexes = {
 
 model_two_scales = {
     Types.Banana: 0.25,
-    Types.ToughBanana: 0.25,
     Types.Blueprint: 2,
     Types.Coin: 0.4,
     Types.Key: 0.17,
@@ -56,7 +54,6 @@ model_two_scales = {
 
 actor_indexes = {
     Types.Banana: 45,
-    Types.ToughBanana: 45,
     Types.Blueprint: [78, 75, 77, 79, 76],
     Types.Key: 72,
     Types.Crown: 86,
@@ -76,7 +73,6 @@ actor_indexes = {
 }
 model_indexes = {
     Types.Banana: 0x69,
-    Types.ToughBanana: 0x69,
     Types.Key: 0xF5,
     Types.Crown: 0xF4,
     Types.Fairy: 0x3D,
@@ -146,7 +142,6 @@ nintendo_coin_reward = ("NINTENDO COIN", "ANCIENT DOUBLOON")
 
 text_rewards = {
     Types.Banana: ("GOLDEN BANANA", "BANANA OF PURE GOLD"),
-    Types.ToughBanana: ("GOLDEN BANANA", "BANANA OF PURE GOLD"),
     Types.Blueprint: ("BLUEPRINT", "MAP O' DEATH MACHINE"),
     Types.Key: ("BOSS KEY", "KEY TO DAVY JONES LOCKER"),
     Types.Crown: ("BATTLE CROWN", "CROWN TO PLACE ATOP YER HEAD"),
@@ -233,8 +228,6 @@ def getTextRewardIndex(item) -> int:
         )
         if item.new_item in item_text_indexes:
             return item_text_indexes.index(item.new_item)
-        if item.new_item == Types.ToughBanana:
-            return 0
         return 14
 
 
@@ -327,7 +320,7 @@ def place_randomized_items(spoiler: Spoiler):
                         else:
                             # Is Flagged Item
                             subtype = 5
-                            if item.new_item in (Types.Banana, Types.ToughBanana):
+                            if item.new_item == Types.Banana:
                                 subtype = 6
                             ROM().seek(write_space)
                             ROM().writeMultipleBytes(subtype << 5, 1)
@@ -384,8 +377,6 @@ def place_randomized_items(spoiler: Spoiler):
                         if item.new_item == Types.Coin:
                             if item.new_flag == 379:  # RW Coin
                                 arcade_reward_index = 21
-                        elif item.new_item == Types.ToughBanana:
-                            arcade_reward_index = 5
                         elif item.new_item == Types.Kong:
                             if item.new_flag in kong_flags:
                                 arcade_reward_index = kong_flags.index(item.new_flag) + 15
@@ -421,8 +412,6 @@ def place_randomized_items(spoiler: Spoiler):
                         jetpac_reward_index = 0
                         if item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave):
                             jetpac_reward_index = 9
-                        elif item.new_item == Types.ToughBanana:
-                            jetpac_reward_index = 5
                         elif item.new_item == Types.Coin:
                             if item.new_flag == 132:  # Nintendo Coin
                                 jetpac_reward_index = 12
@@ -541,8 +530,6 @@ def place_randomized_items(spoiler: Spoiler):
                                 elif (subtype == 2) or (subtype == 3):
                                     medal_index = 7
                             ROM().write(medal_index)
-                        elif item.new_item == Types.ToughBanana:
-                            ROM().write(0)
                         elif item.new_item == Types.JunkItem:
                             ROM().write(17 + subitems.index(item.new_subitem))
                         else:
@@ -555,7 +542,7 @@ def place_randomized_items(spoiler: Spoiler):
                         # Write to Vulture Spawn Location
                         ROM().seek(sav + 0x115)
                         ROM().write(actor_index)
-                    elif item.old_item in (Types.Banana, Types.ToughBanana):
+                    elif item.old_item == Types.Banana:
                         # Bonus GB Table
                         ROM().seek(0x1FF1200 + (4 * bonus_table_offset))
                         ROM().writeMultipleBytes(item.old_flag, 2)

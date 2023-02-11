@@ -114,7 +114,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                 newItems.append(location.item)
                 # If we want to generate the playthrough and the item is a playthrough item, add it to the sphere
                 if searchType == SearchMode.GeneratePlaythrough and ItemList[location.item].playthrough:
-                    if location.item in (Items.GoldenBanana, Items.ToughBanana):
+                    if location.item == Items.GoldenBanana:
                         sphere.availableGBs += 1
                         sphere.locations.append(locationId)
                         continue
@@ -432,11 +432,11 @@ def ParePlaythrough(settings, PlaythroughLocations):
         sphere = PlaythroughLocations[i]
         # We want to track specific GBs in each sphere of the spoiler log up to and including the sphere where the last B. Locker becomes openable
         if i > 0 and PlaythroughLocations[i - 1].availableGBs > mostExpensiveBLocker:
-            sphere.locations = [locationId for locationId in sphere.locations if LocationList[locationId].item not in (Items.GoldenBanana, Items.ToughBanana)]
+            sphere.locations = [locationId for locationId in sphere.locations if LocationList[locationId].item != Items.GoldenBanana]
         for locationId in sphere.locations.copy():
             location = LocationList[locationId]
             # All GBs that make it here are logically required
-            if location.item in (Items.GoldenBanana, Items.ToughBanana):
+            if location.item == Items.GoldenBanana:
                 continue
             # Items that are part of the win condition are always part of the Playthrough but are never part of it otherwise
             if location.item == Items.BananaFairy:
@@ -490,7 +490,7 @@ def PareWoth(spoiler, PlaythroughLocations):
             loc
             for loc in sphere.locations  # If the Helm Key is in Helm, we may still want path hints for it even though it's a constant item.
             if (not LocationList[loc].constant or loc == Locations.HelmKey)
-            and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.ToughBanana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)
+            and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)
         ]:
             WothLocations.append(loc)
     WothLocations.append(Locations.BananaHoard)  # The Banana Hoard is the endpoint of the Way of the Hoard
@@ -804,7 +804,7 @@ def AssumedFill(settings, itemsToPlace, ownedItems=None, inOrder=False):
             for i, kong in enumerate(startKongList):
                 currentKongsFreed.insert(i, kong)
             currentMovesOwned = [ItemList[x].name for x in owned if ItemList[x].type == Types.Shop]
-            currentGbCount = len([x for x in owned if ItemList[x].type in (Types.Banana, Types.ToughBanana)])
+            currentGbCount = len([x for x in owned if ItemList[x].type == Types.Banana])
             js.postMessage("Current Moves owned at failure: " + str(currentMovesOwned) + " with GB count: " + str(currentGbCount) + " and kongs freed: " + str(currentKongsFreed))
             return len(itemsToPlace) + 1
         shuffle(validReachable)
@@ -1449,6 +1449,17 @@ def FillKongs(spoiler):
     kongItems = [item for item in ItemPool.Kongs(spoiler.settings) if item not in startingKongItems]
     # If Kongs can be placed anywhere, we don't need anything special
     if spoiler.settings.shuffle_items and Types.Kong in spoiler.settings.shuffled_location_types:
+        # First, randomly pick who opens what cage - this prevents cases where a Kong locks themselves
+        spoiler.settings.diddy_freeing_kong = choice(GetKongs())
+        spoiler.settings.lanky_freeing_kong = choice(GetKongs())
+        spoiler.settings.tiny_freeing_kong = choice([Kongs.diddy, Kongs.chunky])
+        spoiler.settings.chunky_freeing_kong = choice(GetKongs())
+        # Update the locations' assigned kong with the set freeing kong list
+        LocationList[Locations.JapesDonkeyFrontofCage].kong = spoiler.settings.diddy_freeing_kong
+        LocationList[Locations.JapesDonkeyFreeDiddy].kong = spoiler.settings.diddy_freeing_kong
+        LocationList[Locations.AztecDonkeyFreeLanky].kong = spoiler.settings.lanky_freeing_kong
+        LocationList[Locations.AztecDiddyFreeTiny].kong = spoiler.settings.tiny_freeing_kong
+        LocationList[Locations.FactoryLankyFreeChunky].kong = spoiler.settings.chunky_freeing_kong
         assumedItems = ItemPool.AllKongMoves().copy()
         if spoiler.settings.training_barrels != "normal":
             assumedItems.extend(ItemPool.TrainingBarrelAbilities())
@@ -1456,31 +1467,6 @@ def FillKongs(spoiler):
             assumedItems.append(Items.Shockwave)
         Reset()
         PlaceItems(spoiler.settings, spoiler.settings.algorithm, kongItems, assumedItems)
-        # If a Kong got placed inside the cage but not in the Kong location, they also can't free
-        banned_diddy_freeing_kong = None
-        if LocationList[Locations.JapesDonkeyFreeDiddy].item in ItemPool.Kongs(spoiler.settings):
-            banned_diddy_freeing_kong = KongFromItem(LocationList[Locations.JapesDonkeyFreeDiddy].item)
-        banned_lanky_freeing_kong = None
-        if LocationList[Locations.AztecDonkeyFreeLanky].item in ItemPool.Kongs(spoiler.settings):
-            banned_lanky_freeing_kong = KongFromItem(LocationList[Locations.AztecDonkeyFreeLanky].item)
-        banned_tiny_freeing_kong = None
-        if LocationList[Locations.AztecDiddyFreeTiny].item in ItemPool.Kongs(spoiler.settings):
-            banned_tiny_freeing_kong = KongFromItem(LocationList[Locations.AztecDiddyFreeTiny].item)
-        banned_chunky_freeing_kong = None
-        if LocationList[Locations.FactoryLankyFreeChunky].item in ItemPool.Kongs(spoiler.settings):
-            banned_chunky_freeing_kong = KongFromItem(LocationList[Locations.FactoryLankyFreeChunky].item)
-        # We don't care who gets the GBs for these locations anymore, just random it up
-        # This is probably causing problems if there actually is a kong here, look into this later
-        spoiler.settings.diddy_freeing_kong = choice([kong for kong in GetKongs() if kong != banned_diddy_freeing_kong])
-        spoiler.settings.lanky_freeing_kong = choice([kong for kong in GetKongs() if kong != banned_lanky_freeing_kong])
-        spoiler.settings.tiny_freeing_kong = choice([kong for kong in [Kongs.diddy, Kongs.chunky] if kong != banned_tiny_freeing_kong])
-        spoiler.settings.chunky_freeing_kong = choice([kong for kong in GetKongs() if kong != banned_chunky_freeing_kong])
-        # Update the locations' assigned kong with the set freeing kong list
-        LocationList[Locations.JapesDonkeyFrontofCage].kong = spoiler.settings.diddy_freeing_kong
-        LocationList[Locations.JapesDonkeyFreeDiddy].kong = spoiler.settings.diddy_freeing_kong
-        LocationList[Locations.AztecDonkeyFreeLanky].kong = spoiler.settings.lanky_freeing_kong
-        LocationList[Locations.AztecDiddyFreeTiny].kong = spoiler.settings.tiny_freeing_kong
-        LocationList[Locations.FactoryLankyFreeChunky].kong = spoiler.settings.chunky_freeing_kong
         # If we didn't put an item in a kong location, then it gets a NoItem
         # This matters specifically so the logic around Diddy's cage behaves properly
         if LocationList[Locations.DiddyKong].item is None:
