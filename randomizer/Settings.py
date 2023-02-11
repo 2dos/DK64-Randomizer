@@ -962,9 +962,8 @@ class Settings:
                 self.valid_locations[Types.Blueprint][Kongs.lanky] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.lanky]
                 self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.tiny]
                 self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.chunky]
-            for item_type in (Types.Banana, Types.ToughBanana):
-                if item_type in self.shuffled_location_types:
-                    self.valid_locations[item_type] = [location for location in shuffledLocations if LocationList[location].level != Levels.HideoutHelm]
+            if Types.Banana in self.shuffled_location_types:
+                self.valid_locations[Types.Banana] = [location for location in shuffledLocations if LocationList[location].level != Levels.HideoutHelm]
             if Types.Crown in self.shuffled_location_types:
                 # Banned for technical reasons
                 banned_crown_locations = (

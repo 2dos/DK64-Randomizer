@@ -158,7 +158,6 @@ ItemList = {
     Items.HelmChunky1: Item("Helm Chunky Barrel 1", False, Types.Constant, Kongs.chunky),
     Items.HelmChunky2: Item("Helm Chunky Barrel 2", False, Types.Constant, Kongs.chunky),
     Items.GoldenBanana: Item("Golden Banana", True, Types.Banana, Kongs.any),
-    Items.ToughBanana: Item("Golden Banana", True, Types.ToughBanana, Kongs.any),
     Items.BananaFairy: Item("Banana Fairy", False, Types.Fairy, Kongs.any),
     Items.BananaMedal: Item("Banana Medal", False, Types.Medal, Kongs.any),
     Items.BattleCrown: Item("Battle Crown", False, Types.Crown, Kongs.any),
