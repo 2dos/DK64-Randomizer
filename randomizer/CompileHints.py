@@ -182,6 +182,14 @@ shop_cryptic = [
 
 crankys_cryptic = ["a location out of this world", "a location 5000 points deep", "a mad scientist's laboratory"]
 
+item_type_names = {Types.Blueprint: "a kasplat", Types.Fairy: "a fairy", Types.Crown: "a battle crown", Types.RainbowCoin: "a dirt patch"}
+item_type_names_cryptic = {
+    Types.Blueprint: ["a minion of K. Rool", "a shockwaving foe", "a colorfully haired henchman"],
+    Types.Fairy: ["an aerial ace", "a bit of flying magic", "a Queenly representative"],
+    Types.Crown: ["a contest of endurance", "a crowning achievement", "the visage of K. Rool"],
+    Types.RainbowCoin: ["the initials of DK", "a muddy mess", "buried treasure"],
+}
+
 moves_data = [
     # Commented out logic sections are saved if we need to revert to the old hint system
     # Donkey
@@ -536,8 +544,11 @@ def compileHints(spoiler: Spoiler):
                     level_name = level_list_helm_isles[kong_location.level]
             freed_kong = kong_list[GetKongForItem(kong_location.item)]
             message = ""
-            if kong_location.type == Types.Blueprint:
-                message = f"{freed_kong} is held by a kasplat in {level_name}."
+            if kong_location.type in item_type_names.keys():
+                location_name = item_type_names[kong_location.type]
+                if spoiler.settings.wrinkly_hints == "cryptic":
+                    location_name = random.choice(item_type_names_cryptic[kong_location.type])
+                message = f"{freed_kong} is held by {location_name} in {level_name}."
             else:
                 message = f"{freeing_kong_name} can find {freed_kong} in {level_name}."
             hint_location.hint_type = HintType.KongLocation
@@ -677,8 +688,11 @@ def compileHints(spoiler: Spoiler):
                 # If there are no doors available (pretty unlikely) then just get a random one. Tough luck.
                 else:
                     hint_location = getRandomHintLocation()
-                if location.type == Types.Blueprint:
-                    message = f"{key_item.name} is held by a kasplat in {level_name}."
+                if location.type in item_type_names.keys():
+                    location_name = item_type_names[location.type]
+                    if spoiler.settings.wrinkly_hints == "cryptic":
+                        location_name = random.choice(item_type_names_cryptic[location.type])
+                    message = f"{key_item.name} is held by {location_name} in {level_name}."
                 else:
                     message = f"{key_item.name} can be acquired with {kong_name} in {level_name}."
                 hint_location.hint_type = HintType.RequiredKeyHint
@@ -1300,8 +1314,8 @@ def compileMicrohints(spoiler: Spoiler):
         for id, location in LocationList.items():
             if location.item in items_needing_microhints:
                 item = ItemList[location.item]
-                if location.type == Types.Blueprint:
-                    hint_text = f"You would be better off looking for kasplats in {level_list_everything[location.level]}.".upper()
+                if location.type in item_type_names.keys():
+                    hint_text = f"You would be better off looking for {item_type_names[location.type]} in {level_list_everything[location.level]} for this.".upper()
                 else:
                     hint_text = f"You would be better off looking in {level_list_everything[location.level]} with {kong_list[location.kong]} for this.".upper()
                 spoiler.microhints[item.name] = hint_text

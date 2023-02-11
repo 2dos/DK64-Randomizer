@@ -90,7 +90,6 @@ class Items(IntEnum):
     HelmChunky2 = auto()
 
     GoldenBanana = auto()
-    ToughBanana = auto()
     BananaFairy = auto()
     BananaMedal = auto()
     BattleCrown = auto()

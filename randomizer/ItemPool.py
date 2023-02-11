@@ -407,7 +407,7 @@ def GoldenBananaItems():
 def ToughGoldenBananaItems():
     """Return a list of GBs to be placed."""
     itemPool = []
-    itemPool.extend(itertools.repeat(Items.ToughBanana, TOUGH_BANANA_COUNT))
+    itemPool.extend(itertools.repeat(Items.GoldenBanana, TOUGH_BANANA_COUNT))
     return itemPool
 
 

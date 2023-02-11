@@ -129,7 +129,7 @@ def generate_lo_rando_race_settings():
     # glitch options:
     # "advanced_platforming", "b_locker_skips", "general_clips", "ledge_clips", "moonkicks", "phase_swimming", "phase_walking", "skew", "spawn_snags", "swim_through_shores", "tag_barrel_storage", "troff_n_scoff_skips"
     data["glitches_selected"] = [""]
-    data["microhints_enabled"] = "base"  # off/base/all
+    data["microhints_enabled"] = "all"  # off/base/all
     data["smaller_shops"] = True  # likely to be True in item rando, many settings force it to be false
     data["alter_switch_allocation"] = False  # likely to be True, easier to test things when false
     data["random_starting_region"] = False  # likely to be False

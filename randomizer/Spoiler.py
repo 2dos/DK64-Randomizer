@@ -89,7 +89,6 @@ class Spoiler:
             Types.Shockwave: "Moves",
             Types.TrainingBarrel: "Moves",
             Types.Banana: "Golden Bananas",
-            Types.ToughBanana: "Golden Bananas",
             Types.Blueprint: "Blueprints",
             Types.Fairy: "Fairies",
             Types.Key: "Keys",
@@ -793,23 +792,27 @@ class Spoiler:
         if location == Locations.BananaHoard:
             return 250
         # GBs go last, there's a lot of them but they arent important
-        if location.type in (Types.Banana, Types.ToughBanana):
+        if ItemList[location.item].type == Types.Banana:
             return 100
         # Win condition items are more important than GBs but less than moves
-        elif self.settings.win_condition == "all_fairies" and location.type == Types.Fairy:
+        elif self.settings.win_condition == "all_fairies" and ItemList[location.item].type == Types.Fairy:
             return 10
-        elif self.settings.win_condition == "all_blueprints" and location.type == Types.Blueprint:
+        elif self.settings.win_condition == "all_blueprints" and ItemList[location.item].type == Types.Blueprint:
             return 10
-        elif self.settings.win_condition == "all_medals" and location.type == Types.Medal:
+        elif self.settings.win_condition == "all_medals" and ItemList[location.item].type == Types.Medal:
             return 10
         # Kongs are most the single most important thing and should be at the top of spheres
-        elif location.type == Types.Kong:
+        elif ItemList[location.item].type == Types.Kong:
             return 0
-        # Constants at this point should only be Keys and are best put after moves
-        elif location.type == Types.Constant:
+        # Keys are best put first
+        elif ItemList[location.item].type == Types.Key:
+            return 1
+        # Moves are pretty important
+        elif ItemList[location.item].type == Types.Shop:
             return 2
-        # Everything else is a Move (or move-adjacent) and is pretty important
-        return 1
+        # Everything else here is probably something unusual so it's likely important
+        else:
+            return 3
 
     @staticmethod
     def GetKroolKeysRequired(keyEvents):
