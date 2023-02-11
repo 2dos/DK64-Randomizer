@@ -495,6 +495,7 @@ class Settings:
                 self.shuffled_location_types = [
                     Types.Shop,
                     Types.Banana,
+                    Types.ToughBanana,
                     Types.Crown,
                     Types.Blueprint,
                     Types.Key,
