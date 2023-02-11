@@ -76,8 +76,6 @@ class PlandoItems(IntEnum):
     HideoutHelmKey = auto()
 
     GoldenBanana = auto()
-    # ToughBanana is only used for shuffling logic and is not actually a
-    # different item, so it is excluded.
     BananaFairy = auto()
     BananaMedal = auto()
     BattleCrown = auto()
@@ -334,7 +332,7 @@ PlandoItemToItemListMap = {
     ]
 }
 
-def GetItemFromPlandoItem(plandoItemEnum):
+def GetItemsFromPlandoItem(plandoItemEnum):
     if plandoItemEnum in PlandoItemToItemMap:
         return [PlandoItemToItemMap[plandoItemEnum]]
     if plandoItemEnum in PlandoItemToItemListMap:

@@ -164,7 +164,61 @@ kongLocationList = [
 for locationName in kongLocationList:
     ItemRestrictionsPerLocation[locationName].update(kongRestrictedItemSet)
 
-# Shops have few restrictions.
+# We need to separate the shops into Kong-specific and shared.
+sharedShopsSet = set()
+kongSpecificShopSet = set()
+for locEnum, locObj in LocationList.items():
+    if locObj.type == Types.Shop or (locObj.level == Levels.Shops and locObj.type == Types.Coin):
+        if locObj.kong == Kongs.any:
+            sharedShopsSet.add(locEnum.name)
+        else:
+            kongSpecificShopSet.add(locEnum.name)
+
+# Shared shops should not have Kong-specific moves.
+kongSpecificMoveItemSet = {
+    PlandoItems.BaboonBlast.name,
+    PlandoItems.StrongKong.name,
+    PlandoItems.GorillaGrab.name,
+    PlandoItems.ChimpyCharge.name,
+    PlandoItems.RocketbarrelBoost.name,
+    PlandoItems.SimianSpring.name,
+    PlandoItems.Orangstand.name,
+    PlandoItems.BaboonBalloon.name,
+    PlandoItems.OrangstandSprint.name,
+    PlandoItems.MiniMonkey.name,
+    PlandoItems.PonyTailTwirl.name,
+    PlandoItems.Monkeyport.name,
+    PlandoItems.HunkyChunky.name,
+    PlandoItems.PrimatePunch.name,
+    PlandoItems.GorillaGone.name,
+    PlandoItems.Coconut.name,
+    PlandoItems.Peanut.name,
+    PlandoItems.Grape.name,
+    PlandoItems.Feather.name,
+    PlandoItems.Pineapple.name,
+    PlandoItems.Bongos.name,
+    PlandoItems.Guitar.name,
+    PlandoItems.Trombone.name,
+    PlandoItems.Saxophone.name,
+    PlandoItems.Triangle.name
+}
+
+for shop in sharedShopsSet:
+    ItemRestrictionsPerLocation[shop].update(kongSpecificMoveItemSet)
+
+# Kong-specific shops have a handful of banned items.
+kongSpecificShopRestrictedItemSet = {
+    PlandoItems.Vines.name,
+    PlandoItems.Swim.name,
+    PlandoItems.Oranges.name,
+    PlandoItems.Barrels.name,
+    PlandoItems.Shockwave.name
+}
+
+for shop in kongSpecificShopSet:
+    ItemRestrictionsPerLocation[shop].update(kongSpecificShopRestrictedItemSet)
+
+# General shops have few restrictions.
 shopRestrictedItemSet = {
     PlandoItems.RainbowCoin.name,
     PlandoItems.JunkItem.name
@@ -172,9 +226,10 @@ shopRestrictedItemSet = {
 
 # Add the restricted items for each shop location. (This will also cover the
 # blueprint redemptions, which is fine.)
-for locEnum, locObj in LocationList.items():
-    if locObj.type == Types.Shop or locObj.level == Levels.Shops:
-        ItemRestrictionsPerLocation[locEnum.name].update(shopRestrictedItemSet)
+for shop in sharedShopsSet:
+    ItemRestrictionsPerLocation[shop].update(shopRestrictedItemSet)
+for shop in kongSpecificShopSet:
+    ItemRestrictionsPerLocation[shop].update(shopRestrictedItemSet)
 
 # Crowns are not allowed on Helm Medal locations.
 helmMedalLocationList = [
@@ -187,7 +242,7 @@ helmMedalLocationList = [
 for locationName in helmMedalLocationList:
     ItemRestrictionsPerLocation[locationName].add(PlandoItems.BattleCrown.name)
 
-# Boss fights cannot have junk item or blueprint rewards.
+# Boss fights cannot have junk items or blueprint rewards.
 bossFightLocationList = [
     Locations.JapesKey.name,
     Locations.AztecKey.name,
@@ -206,6 +261,11 @@ for locEnum, locObj in LocationList.items():
     if locObj.type == Types.Crown:
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
         ItemRestrictionsPerLocation[locEnum.name].update(blueprintItemSet)
+
+# Junk items cannot be placed anywhere in Hideout Helm.
+for locEnum, locObj in LocationList.items():
+    if locObj.level == Levels.HideoutHelm:
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
 
 # Training barrels cannot have Kongs as a reward.
 trainingBarrelLocationList = [
@@ -255,6 +315,11 @@ for locationName in badFakeItemLocationList:
 # Training barrels also cannot have fake items.
 for locationName in trainingBarrelLocationList:
     ItemRestrictionsPerLocation[locationName].add(PlandoItems.FakeItem.name)
+
+# Rainbow coins cannot be placed on training barrels or on the banana fairy's gift.
+for locationName in trainingBarrelLocationList:
+    ItemRestrictionsPerLocation[locationName].add(PlandoItems.RainbowCoin.name)
+ItemRestrictionsPerLocation[Locations.CameraAndShockwave.name].add(PlandoItems.RainbowCoin.name)
 
 # Dirt patches cannot have blueprints placed on them.
 dirtPatchLocationList = [
