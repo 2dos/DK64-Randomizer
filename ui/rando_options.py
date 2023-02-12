@@ -893,6 +893,34 @@ def toggle_key_settings(event):
         selector.setAttribute("disabled", "disabled")
 
 
+@bind("click", "key_8_helm")
+def disable_key_8_plando(evt):
+    """Don't allow the user to place Key 8 if the option to lock it in Helm is
+       selected."""
+    key_8_options = js.document.getElementsByClassName("key-8-option")
+    end_of_helm_dropdown = js.document.getElementById("plando_HelmKey")
+    key_8_locked_in_helm = js.document.getElementById("key_8_helm").checked
+    if (key_8_locked_in_helm):
+        # Remove Key 8 as a dropdown option.
+        for option in key_8_options:
+            option.style.display = "none"
+        # De-select Key 8 everywhere it is selected.
+        item_dropdowns = js.document.getElementsByClassName("plando-item-select")
+        for dropdown in item_dropdowns:
+            if dropdown.value == "HideoutHelmKey":
+                dropdown.value = ""
+        # Forcibly select Key 8 for the End of Helm dropdown and disable it.
+        end_of_helm_dropdown.value = "HideoutHelmKey"
+        end_of_helm_dropdown.setAttribute("disabled", "disabled")
+    else:
+        # Re-enable Key 8 as a dropdown option.
+        for option in key_8_options:
+            option.style = ""
+        # Forcibly de-select Key 8 for the End of Helm dropdown and enable it.
+        end_of_helm_dropdown.value = ""
+        end_of_helm_dropdown.removeAttribute("disabled")
+
+
 @bind("click", "helm_hurry")
 def disable_helm_hurry(evt):
     """Disable Helm Hurry Selector when Helm Hurry is off."""

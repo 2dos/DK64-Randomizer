@@ -24,10 +24,13 @@
                     </label>
                     <select id="plando_{{location["enum_name"]}}"
                             name="plando_{{location["enum_name"]}}"
-                            class="form-select">
+                            class="form-select plando-item-select">
                         <option value="">-- Randomize --</option>
                         {% for item in plando_items|plando_item_restrict(location) %}
-                            <option value="{{item["enum_name"]}}">{{item["display_name"]}}</option>
+                            <option value="{{item["enum_name"]}}"
+                                    {% if item["enum_name"] == "HideoutHelmKey" %}class="key-8-option"{% endif %}>
+                                {{item["display_name"]}}
+                            </option>
                         {% endfor %}
                     </select>
                     <label class="shop-cost-picker flex-container flex-center">
