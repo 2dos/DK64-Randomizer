@@ -814,64 +814,10 @@ def AssumedFill(settings, itemsToPlace, ownedItems=None, inOrder=False):
             js.postMessage("Current Moves owned at failure: " + str(currentMovesOwned) + " with GB count: " + str(currentGbCount) + " and kongs freed: " + str(currentKongsFreed))
             return len(itemsToPlace) + 1
         shuffle(validReachable)
-        if ItemList[item].type == Types.Kong:
-            ownedKongs = [KongFromItem(x) for x in owned if ItemList[x].type == Types.Kong]
-            for i, kong in enumerate(settings.starting_kong_list):
-                ownedKongs.insert(i, kong)
-            kongBeingPlaced = KongFromItem(item)
-            if kongBeingPlaced in ownedKongs:
-                ownedKongs.remove(kongBeingPlaced)  # Cannot free with the kong being placed
-            # If kongs are needed for level progression
-            if settings.kongs_for_progression:
-                # To lower failure rate, place kongs from later to earlier levels
-                japesIndex = GetShuffledLevelIndex(Levels.JungleJapes)
-                aztecIndex = GetShuffledLevelIndex(Levels.AngryAztec)
-                factoryIndex = GetShuffledLevelIndex(Levels.FranticFactory)
-                kongPriority = {}
-                for i in range(0, 7):
-                    if i == japesIndex:
-                        if Locations.DiddyKong in settings.kong_locations:
-                            kongPriority[Locations.DiddyKong] = i
-                        else:
-                            kongPriority[Locations.DiddyKong] = -1
-                    elif i == aztecIndex:
-                        if Locations.LankyKong in settings.kong_locations:
-                            kongPriority[Locations.LankyKong] = i
-                        else:
-                            kongPriority[Locations.LankyKong] = -1
-                        if Locations.TinyKong in settings.kong_locations:
-                            kongPriority[Locations.TinyKong] = i
-                        else:
-                            kongPriority[Locations.TinyKong] = -1
-                    elif i == factoryIndex:
-                        if Locations.ChunkyKong in settings.kong_locations:
-                            kongPriority[Locations.ChunkyKong] = i
-                        else:
-                            kongPriority[Locations.ChunkyKong] = -1
-                validReachable.sort(key=lambda x: kongPriority[x], reverse=True)
         # Get a random, empty, reachable location
         for locationId in validReachable:
             # Atempt to place the item here
             LocationList[locationId].PlaceItem(item)
-            # When placing a kong, also decide who among the owned kongs can free them
-            if ItemList[item].type == Types.Kong:
-                # If this is meant to be an empty cage, place no item here
-                if locationId not in settings.kong_locations:
-                    LocationList[locationId].PlaceItem(Items.NoItem)
-                # Choose the puzzle solver, even if it's an empty cage
-                if locationId == Locations.DiddyKong:
-                    settings.diddy_freeing_kong = choice(ownedKongs)
-                elif locationId == Locations.LankyKong:
-                    settings.lanky_freeing_kong = choice(ownedKongs)
-                elif locationId == Locations.TinyKong:
-                    eligibleFreers = list(set(ownedKongs).intersection([Kongs.diddy, Kongs.chunky]))
-                    if len(eligibleFreers) == 0:
-                        js.postMessage("Failed placing item " + ItemList[item].name + " in location " + LocationList[locationId].name + ", due to no kongs being able to free them")
-                        valid = False
-                        break
-                    settings.tiny_freeing_kong = choice(eligibleFreers)
-                elif locationId == Locations.ChunkyKong:
-                    settings.chunky_freeing_kong = choice(ownedKongs)
             # Check valid reachable after placing to see if it is broken
             # Need to re-assign owned items since the search adds a bunch of extras
             owned = itemsToPlace.copy()
@@ -1495,13 +1441,9 @@ def FillKongs(spoiler):
         LocationList[Locations.AztecDonkeyFreeLanky].kong = spoiler.settings.lanky_freeing_kong
         LocationList[Locations.AztecDiddyFreeTiny].kong = spoiler.settings.tiny_freeing_kong
         LocationList[Locations.FactoryLankyFreeChunky].kong = spoiler.settings.chunky_freeing_kong
-        assumedItems = ItemPool.AllKongMoves().copy()
-        if spoiler.settings.training_barrels != "normal":
-            assumedItems.extend(ItemPool.TrainingBarrelAbilities())
-        if spoiler.settings.shockwave_status != "vanilla":
-            assumedItems.append(Items.Shockwave)
+        assumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, [Types.Kong])  # 1-type list here only works if Kongs are placed first (usually the case)
         Reset()
-        PlaceItems(spoiler.settings, spoiler.settings.algorithm, kongItems, assumedItems)
+        PlaceItems(spoiler.settings, "assumed", kongItems, assumedItems)
         # If we didn't put an item in a kong location, then it gets a NoItem
         # This matters specifically so the logic around Diddy's cage behaves properly
         if LocationList[Locations.DiddyKong].item is None:

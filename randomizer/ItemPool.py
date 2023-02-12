@@ -472,7 +472,7 @@ def GetItemsNeedingToBeAssumed(settings, placed_types):
     if Types.TrainingBarrel in unplacedTypes:
         itemPool.extend(TrainingBarrelAbilities())
     if Types.Kong in unplacedTypes:
-        itemPool.extend(Kongs())
+        itemPool.extend(Kongs(settings))
     if Types.Medal in unplacedTypes:
         itemPool.extend(BananaMedalItems())
     if Types.Shockwave in unplacedTypes:
