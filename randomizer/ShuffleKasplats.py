@@ -231,12 +231,15 @@ def KasplatShuffle(spoiler, LogicVariables):
                 else:
                     ShuffleKasplatsInVanillaLocations(spoiler, LogicVariables)
                 # Verify world by assuring all locations are still reachable
+                Fill.Reset()
                 if not Fill.VerifyWorld(spoiler.settings):
                     raise Ex.KasplatPlacementException
                 return
             except Ex.KasplatPlacementException:
-                if retries == 5:
-                    js.postMessage("Kasplat placement failed, out of retries.")
+                if retries == 10:
+                    # This is the first VerifyWorld check, and serves as the canary in the coal mine
+                    # If we get to this point in the code, the world itself is likely unstable from some combination of settings or bugs
+                    js.postMessage("Settings combination is likely unstable.")
                     raise Ex.KasplatAttemptCountExceeded
                 retries += 1
                 js.postMessage("Kasplat placement failed. Retrying. Tries: " + str(retries))
