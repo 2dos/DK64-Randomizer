@@ -140,4 +140,4 @@ def LinkWarps():
         destination_warp_data = getWarpFromSwapIndex(warp_data.tied_index)
         if warp_data.region_id != destination_warp_data.region_id:
             source_region = Logic.Regions[warp_data.region_id]
-            source_region.exits.append(TransitionFront(destination_warp_data.region_id, lambda l: destination_warp_data.event in l.Events))
+            source_region.exits.append(TransitionFront(destination_warp_data.region_id, destination_warp_data.event_logic))
