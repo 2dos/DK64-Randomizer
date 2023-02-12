@@ -39,7 +39,7 @@ from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
 from randomizer.ShufflePatches import ShufflePatches
 from randomizer.ShuffleFairies import ShuffleFairyLocations
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
-from randomizer.ShuffleWarps import ShuffleWarps, ShuffleWarpsCrossMap
+from randomizer.ShuffleWarps import LinkWarps, ShuffleWarps, ShuffleWarpsCrossMap
 from randomizer.ShuffleCBs import ShuffleCBs
 from randomizer.ShuffleCrowns import ShuffleCrowns
 from randomizer.ShuffleItems import ShuffleItems
@@ -105,6 +105,8 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
         for locationId in newLocations:
             accessible.add(locationId)
             location = LocationList[locationId]
+            if location.logically_relevant:
+                LogicVariables.SpecialLocationsReached.append(locationId)
             # If this location has an item placed, add it to owned items
             if location.item is not None:
                 # In search mode GetReachableWithControlledPurchases, only allowed to purchase items as prescribed by purchaseOrder
@@ -309,9 +311,18 @@ def VerifyWorld(settings):
         return True  # Don't verify world in no logic
     ItemPool.PlaceConstants(settings)
     unreachables = GetAccessibleLocations(settings, ItemPool.AllItems(settings), SearchMode.GetUnreachable)
-    isValid = len(unreachables) == 0
+    allLocationsReached = len(unreachables) == 0
+    allCBsFound = True
+    for level_index in range(7):
+        if sum(LogicVariables.ColoredBananas[level_index]) != 500:
+            missingCBs = []
+            for region_collectible_list in Logic.CollectibleRegions.values:
+                for collectible in region_collectible_list:
+                    if collectible.enabled and not collectible.added:
+                        missingCBs.append(collectible)
+            allCBsFound = False
     Reset()
-    return isValid
+    return allLocationsReached and allCBsFound
 
 
 def VerifyWorldWithWorstCoinUsage(settings):
@@ -2126,40 +2137,19 @@ def Generate_Spoiler(spoiler):
     LogicVariables = LogicVarHolder(spoiler.settings)
     # Initiate kasplat map with default
     InitKasplatMap(LogicVariables)
+    # Handle misc randomizations
+    ShuffleMisc(spoiler)
     # Handle Kong Rando + Level Rando combination separately since it is more restricted
     if spoiler.settings.kongs_for_progression:
         # Handle Level Order if randomized
         if spoiler.settings.shuffle_loading_zones == "levels":
-            # Some settings will fail a VerifyWorld() check without the setup done in ShuffleMisc, however we want the levels shuffled first
-            temp_kasplat_rando = spoiler.settings.kasplat_rando
-            spoiler.settings.kasplat_rando = False
-            temp_crown_placement_rando = spoiler.settings.crown_placement_rando
-            spoiler.settings.crown_placement_rando = False
-            temp_wrinkly_location_rando = spoiler.settings.wrinkly_location_rando
-            spoiler.settings.wrinkly_location_rando = False
-            temp_tns_location_rando = spoiler.settings.tns_location_rando
-            spoiler.settings.tns_location_rando = False
-            temp_remove_wrinkly_puzzles = spoiler.settings.remove_wrinkly_puzzles
-            spoiler.settings.remove_wrinkly_puzzles = False
-
-            ShuffleExits.ExitShuffle(spoiler.settings)  # This will VerifyWorld() at the end
+            ShuffleExits.ExitShuffle(spoiler.settings)
             spoiler.UpdateExits()
-
-            # Undo temp settings
-            spoiler.settings.kasplat_rando = temp_kasplat_rando
-            spoiler.settings.crown_placement_rando = temp_crown_placement_rando
-            spoiler.settings.wrinkly_location_rando = temp_wrinkly_location_rando
-            spoiler.settings.tns_location_rando = temp_tns_location_rando
-            spoiler.settings.remove_wrinkly_puzzles = temp_remove_wrinkly_puzzles
         # Assume we can progress through the levels, since these will be adjusted within FillKongsAndMovesForLevelOrder
         WipeProgressionRequirements(spoiler.settings)
-        # Handle misc randomizations
-        ShuffleMisc(spoiler)
         # Handle Item Fill
         FillKongsAndMovesForLevelOrder(spoiler)
     else:
-        # Handle misc randomizations
-        ShuffleMisc(spoiler)
         # Handle Loading Zones
         if spoiler.settings.shuffle_loading_zones != "none":
             ShuffleExits.ExitShuffle(spoiler.settings)
@@ -2196,17 +2186,6 @@ def ShuffleMisc(spoiler):
         ShuffleCrowns(crown_replacements, crown_human_replacements)
         spoiler.crown_locations = crown_replacements
         spoiler.human_crowns = dict(sorted(crown_human_replacements.items()))
-    # Handle kasplats - this is the first VerifyWorld check, all shuffles affecting Locations must be before this one
-    KasplatShuffle(spoiler, LogicVariables)
-    spoiler.human_kasplats = {}
-    spoiler.UpdateKasplats(LogicVariables.kasplat_map)
-    # Handle bonus barrels
-    if spoiler.settings.bonus_barrels in ("random", "selected") or spoiler.settings.helm_barrels == "random":
-        BarrelShuffle(spoiler.settings)
-        spoiler.UpdateBarrels()
-    # CB Shuffle
-    if spoiler.settings.cb_rando:
-        ShuffleCBs(spoiler)
     # Handle Bananaports
     if spoiler.settings.bananaport_rando == "in_level":
         replacements = []
@@ -2220,6 +2199,18 @@ def ShuffleMisc(spoiler):
         ShuffleWarpsCrossMap(replacements, human_replacements, spoiler.settings.bananaport_rando == "crossmap_coupled", spoiler.settings.warp_level_list_selected)
         spoiler.bananaport_replacements = replacements.copy()
         spoiler.human_warp_locations = human_replacements
+    LinkWarps()
+    # Handle kasplats - this is the first VerifyWorld check, all shuffles affecting Locations must be before this one
+    KasplatShuffle(spoiler, LogicVariables)
+    spoiler.human_kasplats = {}
+    spoiler.UpdateKasplats(LogicVariables.kasplat_map)
+    # Handle bonus barrels
+    if spoiler.settings.bonus_barrels in ("random", "selected") or spoiler.settings.helm_barrels == "random":
+        BarrelShuffle(spoiler.settings)
+        spoiler.UpdateBarrels()
+    # CB Shuffle
+    if spoiler.settings.cb_rando:
+        ShuffleCBs(spoiler)
     # Random Patches
     if spoiler.settings.random_patches:
         human_patches = []
@@ -2230,28 +2221,4 @@ def ShuffleMisc(spoiler):
         ShuffleShopLocations(spoiler)
     # Item Rando
     spoiler.human_item_assignment = {}
-    if spoiler.settings.activate_all_bananaports in ["all", "isles"]:
-        # In simpler bananaport shuffling, we can rely on the map id and warp number to find pairs
-        if spoiler.settings.bananaport_rando in ("in_level", "off"):
-            warpMapIds = set([BananaportVanilla[warp].map_id for warp in Warps])
-            for map_id in warpMapIds:
-                mapWarps = [BananaportVanilla[warp] for warp in Warps if BananaportVanilla[warp].map_id == map_id]
-                for warpData in mapWarps:
-                    pairedWarpData = [
-                        BananaportVanilla[pair]
-                        for pair in Warps
-                        if BananaportVanilla[pair].map_id == map_id and BananaportVanilla[pair].new_warp == warpData.new_warp and BananaportVanilla[pair].name != warpData.name
-                    ][0]
-                    # Add an exit to each warp's region to the paired warp's region unless it's the same region
-                    if warpData.region_id != pairedWarpData.region_id and (spoiler.settings.activate_all_bananaports == "all" or (warpData.map_id == Maps.Isles)):
-                        warpRegion = Logic.Regions[warpData.region_id]
-                        bananaportExit = TransitionFront(pairedWarpData.region_id, lambda l: True)
-                        warpRegion.exits.append(bananaportExit)
-        # In complex cross-map shuffling, we have to rely on saved destination regions to generate transitions
-        else:
-            for warp in BananaportVanilla.values():
-                warpRegion = Logic.Regions[warp.region_id]
-                if spoiler.settings.activate_all_bananaports != "isles" or (warp.region_id in IslesLogic.LogicRegions.keys() and warp.destination_region_id in IslesLogic.LogicRegions.keys()):
-                    bananaportExit = TransitionFront(warp.destination_region_id, lambda l: True)
-                    warpRegion.exits.append(bananaportExit)
     spoiler.settings.update_valid_locations()

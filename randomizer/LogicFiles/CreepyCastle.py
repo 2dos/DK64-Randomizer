@@ -27,6 +27,16 @@ LogicRegions = {
         LocationLogic(Locations.RainbowCoin_Location11, lambda l: l.shockwave),
     ], [
         Event(Events.CastleEntered, lambda l: True),
+        Event(Events.CastleW1aTagged, lambda l: True),
+        Event(Events.CastleW1bTagged, lambda l: True),
+        Event(Events.CastleW2aTagged, lambda l: True),
+        Event(Events.CastleW2bTagged, lambda l: True),
+        Event(Events.CastleW3aTagged, lambda l: True),
+        Event(Events.CastleW3bTagged, lambda l: True),
+        Event(Events.CastleW4aTagged, lambda l: True),
+        Event(Events.CastleW4bTagged, lambda l: True),
+        Event(Events.CastleW5aTagged, lambda l: True),
+        Event(Events.CastleW5bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.CreepyCastleLobby, lambda l: True, Transitions.CastleToIsles),
@@ -159,7 +169,14 @@ LogicRegions = {
     Regions.Crypt: Region("Crypt", "Castle Underground", Levels.CreepyCastle, False, -1, [
         LocationLogic(Locations.CastleDiddyCrypt, lambda l: (l.peanut or l.phasewalk) and l.charge and l.isdiddy),
         LocationLogic(Locations.CastleChunkyCrypt, lambda l: (((l.pineapple and l.punch) or l.phasewalk) and l.ischunky) or (l.phasewalk and l.settings.free_trade_items), MinigameType.BonusBarrel),
-    ], [], [
+    ], [
+        Event(Events.CryptW1aTagged, lambda l: True),
+        Event(Events.CryptW1bTagged, lambda l: True),
+        Event(Events.CryptW2aTagged, lambda l: True),
+        Event(Events.CryptW2bTagged, lambda l: True),
+        Event(Events.CryptW3aTagged, lambda l: True),
+        Event(Events.CryptW3bTagged, lambda l: True),
+    ], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.LowerCave, lambda l: True, Transitions.CastleCryptToLower),
         TransitionFront(Regions.CastleMinecarts, lambda l: ((l.coconut and l.grab and l.isdonkey) or l.generalclips or l.phasewalk), Transitions.CastleCryptToCarts),

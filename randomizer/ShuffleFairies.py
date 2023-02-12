@@ -54,7 +54,7 @@ def ShuffleFairyLocations(spoiler: Spoiler):
         Levels.AngryAztec: "Aztec",
         Levels.FranticFactory: "Factory",
         Levels.GloomyGalleon: "Galleon",
-        Levels.FungiForest: "Fungi",
+        Levels.FungiForest: "Forest",
         Levels.CrystalCaves: "Caves",
         Levels.CreepyCastle: "Castle",
         Levels.HideoutHelm: "Helm",

@@ -121,7 +121,7 @@ DirtPatchLocations = [
         vanilla=True,
         group=14,
         logicregion=Regions.CreepyCastleLobby,
-        logic=lambda l: ((l.chunky and l.balloon and l.islanky) or l.CanMoonkick()) and l.shockwave,
+        logic=lambda l: ((l.chunky and l.barrels and l.balloon and l.islanky) or l.CanMoonkick()) and l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles: Isles Boulders",

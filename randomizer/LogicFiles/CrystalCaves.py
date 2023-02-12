@@ -28,6 +28,8 @@ LogicRegions = {
     ], [
         Event(Events.CavesEntered, lambda l: True),
         Event(Events.CavesSmallBoulderButton, lambda l: l.ischunky and l.barrels),
+        Event(Events.CavesW1aTagged, lambda l: True),
+        Event(Events.CavesW2aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
         TransitionFront(Regions.CrystalCavesLobby, lambda l: True, Transitions.CavesToIsles),
@@ -56,7 +58,8 @@ LogicRegions = {
     Regions.CavesBlueprintCave: Region("Caves Blueprint Cave", "Main Caves Area", Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesKasplatNearFunky, lambda l: not l.settings.kasplat_rando),
     ], [
-        Event(Events.CavesMonkeyportAccess, lambda l: l.istiny and l.monkeyport)
+        Event(Events.CavesMonkeyportAccess, lambda l: l.istiny and l.monkeyport),
+        Event(Events.CavesW4bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
         TransitionFront(Regions.CrystalCavesMain, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSkew(True))
@@ -64,19 +67,25 @@ LogicRegions = {
 
     Regions.CavesBonusCave: Region("Caves Bonus Cave", "Main Caves Area", Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesTinyCaveBarrel, lambda l: l.istiny or l.settings.free_trade_items, MinigameType.BonusBarrel),
-    ], [], [
+    ], [
+        Event(Events.CavesW3bTagged, lambda l: Locations.CavesTinyCaveBarrel in l.SpecialLocationsReached),
+    ], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
         TransitionFront(Regions.CrystalCavesMain, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSkew(True))
     ]),
 
     Regions.CavesBlueprintPillar: Region("Caves Blueprint Pillar", "Main Caves Area", Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesKasplatPillar, lambda l: not l.settings.kasplat_rando),
-    ], [], [
+    ], [
+        Event(Events.CavesW5aTagged, lambda l: True),
+    ], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
-        TransitionFront(Regions.CrystalCavesMain, lambda l: True)
+        TransitionFront(Regions.CrystalCavesMain, lambda l: True),
     ]),
 
-    Regions.CavesBananaportSpire: Region("Caves Bananaport Spire", "Main Caves Area", Levels.CrystalCaves, False, None, [], [], [
+    Regions.CavesBananaportSpire: Region("Caves Bananaport Spire", "Main Caves Area", Levels.CrystalCaves, False, None, [], [
+        Event(Events.CavesW4aTagged, lambda l: True),
+    ], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
         TransitionFront(Regions.CrystalCavesMain, lambda l: True)
     ]),
@@ -114,7 +123,10 @@ LogicRegions = {
         LocationLogic(Locations.CavesTinyMonkeyportIgloo, lambda l: ((Events.CavesMonkeyportAccess in l.Events or l.CanPhaseswim()) and l.istiny) or (l.CanPhaseswim() and l.settings.free_trade_items)),  # GB is in this region but the rest is not
         LocationLogic(Locations.CavesChunkyTransparentIgloo, lambda l: ((Events.CavesLargeBoulderButton in l.Events or l.generalclips or l.CanPhaseswim()) and l.chunky) or ((l.generalclips or l.CanPhaseswim()) and l.settings.free_trade_items)),
         LocationLogic(Locations.CavesKasplatOn5DI, lambda l: not l.settings.kasplat_rando),
-    ], [], [
+    ], [
+        Event(Events.CavesW1bTagged, lambda l: True),
+        Event(Events.CavesW3aTagged, lambda l: True),
+    ], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
         TransitionFront(Regions.CrystalCavesMain, lambda l: True),
         TransitionFront(Regions.GiantKosha, lambda l: Events.CavesLargeBoulderButton in l.Events and l.monkeyport and l.istiny),
@@ -171,7 +183,10 @@ LogicRegions = {
         TransitionFront(Regions.IglooArea, lambda l: True, Transitions.CavesChunkyToIgloo),
     ]),
 
-    Regions.CabinArea: Region("Cabin Area", "Caves Cabins", Levels.CrystalCaves, True, None, [], [], [
+    Regions.CabinArea: Region("Cabin Area", "Caves Cabins", Levels.CrystalCaves, True, None, [], [
+        Event(Events.CavesW2bTagged, lambda l: True),
+        Event(Events.CavesW5bTagged, lambda l: True),
+    ], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
         TransitionFront(Regions.CrystalCavesMain, lambda l: True),
         TransitionFront(Regions.RotatingCabin, lambda l: (l.bongos and l.isdonkey) or l.phasewalk or l.CanSkew(True), Transitions.CavesCabinToRotating),

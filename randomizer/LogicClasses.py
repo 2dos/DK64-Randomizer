@@ -33,7 +33,7 @@ class Event:
 class Collectible:
     """Class used for colored bananas and banana coins."""
 
-    def __init__(self, type, kong, logic, coords, amount=1, enabled=True, vanilla=True):
+    def __init__(self, type, kong, logic, coords, amount=1, enabled=True, vanilla=True, name="vanilla"):
         """Initialize with given parameters."""
         self.type = type
         self.kong = kong
@@ -43,6 +43,7 @@ class Collectible:
         self.added = False
         self.enabled = enabled
         self.vanilla = vanilla
+        self.name = name
 
 
 class Region:

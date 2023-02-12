@@ -1,4 +1,5 @@
 """Select CB Location selection."""
+import randomizer.Fill as Fill
 from randomizer.LogicClasses import Collectible
 from .Enums.Collectibles import Collectibles
 import randomizer.Lists.CBLocations.JungleJapesCBLocations
@@ -114,7 +115,7 @@ def ShuffleCBs(spoiler: Spoiler):
                             kong_specific_left[selected_kong] -= 10  # Remove CBs for Balloon
                             level_placement.append({"id": balloon.id, "name": balloon.name, "kong": selected_kong, "level": level, "type": "balloons", "map": balloon.map})
                             placed_balloons += 1
-                            level_data[level]["logic"][balloon.region].append(Collectible(Collectibles.balloon, selected_kong, balloon.logic, None, 1))
+                            level_data[level]["logic"][balloon.region].append(Collectible(Collectibles.balloon, selected_kong, balloon.logic, None, 1, name=balloon.name))
                 # Model Two CBs
                 bunches_left = max_bunches - total_bunches
                 singles_left = max_singles - total_singles
@@ -163,9 +164,9 @@ def ShuffleCBs(spoiler: Spoiler):
                                 bunches_in_lesser_group += int(loc[0] == 5)
                                 singles_in_lesser_group += int(loc[0] == 1)
                             if bunches_in_lesser_group > 0:
-                                level_data[level]["logic"][group.region].append(Collectible(Collectibles.bunch, selected_kong, group.logic, None, bunches_in_lesser_group))
+                                level_data[level]["logic"][group.region].append(Collectible(Collectibles.bunch, selected_kong, group.logic, None, bunches_in_lesser_group, name=group.name))
                             if singles_in_lesser_group > 0:
-                                level_data[level]["logic"][group.region].append(Collectible(Collectibles.banana, selected_kong, group.logic, None, singles_in_lesser_group))
+                                level_data[level]["logic"][group.region].append(Collectible(Collectibles.banana, selected_kong, group.logic, None, singles_in_lesser_group, name=group.name))
                             level_placement.append({"group": group.group, "name": group.name, "kong": selected_kong, "level": level, "type": "cb", "map": group.map, "locations": group.locations})
                         placed_bunches += bunches_in_group
                         placed_singles += singles_in_group
@@ -187,6 +188,9 @@ def ShuffleCBs(spoiler: Spoiler):
                         raise Ex.CBFillFailureException
             if total_bunches + total_singles > 1127:
                 print(f"WARNING: {total_bunches + total_singles} banana objects placed, exceeding cap of 1127")
+                raise Ex.CBFillFailureException
+            Fill.Reset()
+            if not Fill.VerifyWorld(spoiler.settings):
                 raise Ex.CBFillFailureException
             spoiler.cb_placements = cb_data
             return
