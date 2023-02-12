@@ -23,12 +23,11 @@ def verifySelectedWarps(selected_warps):
     if len(selected_warps) == 0:
         for warp in VanillaBananaportSelector:
             selected_warps.append(warp["value"])
-    return selected_warps
 
 
 def ShuffleWarps(bananaport_replacements, human_ports, selected_warps):
     """Shuffles warps between themselves."""
-    selected_warps = verifySelectedWarps(selected_warps)
+    verifySelectedWarps(selected_warps)
     map_list = getShuffleMaps()
     for warp_map in map_list:
         if warp_map.name not in selected_warps:
@@ -78,7 +77,7 @@ def getWarpFromSwapIndex(index):
 
 def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled, selected_warps):
     """Shuffles warps with the cross-map setting."""
-    selected_warps = verifySelectedWarps(selected_warps)
+    verifySelectedWarps(selected_warps)
     for warp in BananaportVanilla.values():
         warp.cross_map_placed = False
         bananaport_replacements.append(0)
