@@ -284,6 +284,7 @@ def set_preset_options():
     toggle_counts_boxes(None)
     toggle_b_locker_boxes(None)
     toggle_logic_type(None)
+    toggle_bananaport_selector(None)
     updateDoorOneNumAccess(None)
     updateDoorTwoNumAccess(None)
 
