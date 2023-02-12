@@ -2,9 +2,11 @@
 import random
 
 import js
+import randomizer.Logic as Logic
 from randomizer.Enums.Warps import Warps
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Warps import BananaportVanilla, VanillaBananaportSelector
+from randomizer.LogicClasses import TransitionFront
 
 
 def getShuffleMaps():
@@ -131,3 +133,12 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled, selec
                         bananaport_replacements[warp_check.swap_index] = [warp.swap_index, warp_type_index]
                         warp_check.destination_region_id = destination_warp.region_id
                         selected_warp_list.append(warp.swap_index)
+
+
+def LinkWarps():
+    """Given the current state of warps, create the transitions between them."""
+    for warp_data in BananaportVanilla.values():
+        destination_warp_data = getWarpFromSwapIndex(warp_data.tied_index)
+        if warp_data.region_id != destination_warp_data.region_id:
+            source_region = Logic.Regions[warp_data.region_id]
+            source_region.exits.append(TransitionFront(destination_warp_data.region_id, lambda l: destination_warp_data.event in l.Events))

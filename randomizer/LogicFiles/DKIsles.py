@@ -55,6 +55,14 @@ LogicRegions = {
         LocationLogic(Locations.IslesBananaFairyIsland, lambda l: l.camera),
         LocationLogic(Locations.RainbowCoin_Location04, lambda l: l.shockwave),
     ], [
+        Event(Events.IslesW1aTagged, lambda l: True),
+        Event(Events.IslesW1bTagged, lambda l: True),
+        Event(Events.IslesW2aTagged, lambda l: True),
+        Event(Events.IslesW3aTagged, lambda l: True),
+        Event(Events.IslesW3bTagged, lambda l: True),
+        Event(Events.IslesW4aTagged, lambda l: True),
+        Event(Events.IslesW5aTagged, lambda l: True),
+        Event(Events.IslesW5bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.TrainingGrounds, lambda l: True, Transitions.IslesMainToStart),
         TransitionFront(Regions.Prison, lambda l: True),
@@ -72,6 +80,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesChunkyInstrumentPad, lambda l: l.triangle and l.chunky and l.barrels),
     ], [
         Event(Events.IslesDiddyBarrelSpawn, lambda l: l.chunky and l.trombone and l.lanky and l.barrels),
+        Event(Events.IslesW2bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.AngryAztecLobby, lambda l: l.settings.open_lobbies or Events.JapesKeyTurnedIn in l.Events or l.phasewalk, Transitions.IslesMainToAztecLobby),
@@ -136,7 +145,9 @@ LogicRegions = {
 
     Regions.KremIsleBeyondLift: Region("Krem Isle Beyond Lift", "Krem Isle", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesDonkeyCagedBanana, lambda l: (l.coconut and l.isdonkey) or ((l.CanSkew(True) and l.CanSTS()) and (l.isdonkey or l.settings.free_trade_items))),
-    ], [], [
+    ], [
+        Event(Events.IslesW4bTagged, lambda l: True),
+    ], [
         TransitionFront(Regions.KremIsle, lambda l: True),
         TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanPhaseswim()) and (l.swim or l.assumeLevel4Entry), Transitions.IslesMainToGalleonLobby),
         TransitionFront(Regions.IslesSnideRoom, lambda l: True, Transitions.IslesMainToSnideRoom),

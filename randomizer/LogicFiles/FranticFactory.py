@@ -25,6 +25,9 @@ LogicRegions = {
     Regions.FranticFactoryStart: Region("Frantic Factory Start", "Frantic Factory Start", Levels.FranticFactory, False, None, [], [
         Event(Events.FactoryEntered, lambda l: True),
         Event(Events.HatchOpened, lambda l: l.Slam),
+        Event(Events.FactoryW1aTagged, lambda l: True),
+        Event(Events.FactoryW2aTagged, lambda l: True),
+        Event(Events.FactoryW3aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Transitions.FactoryToIsles),
@@ -43,6 +46,8 @@ LogicRegions = {
         LocationLogic(Locations.FactoryBananaFairybyFunky, lambda l: l.camera and Events.DartsPlayed in l.Events),
     ], [
         Event(Events.DartsPlayed, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and (l.mini or l.phasewalk) and l.feather and l.istiny),
+        Event(Events.FactoryW3bTagged, lambda l: True),
+        Event(Events.FactoryW5bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.FranticFactoryStart, lambda l: Events.TestingGateOpened in l.Events or l.phasewalk),
@@ -58,7 +63,9 @@ LogicRegions = {
         LocationLogic(Locations.FactoryChunkyRandD, lambda l: (l.triangle or l.CanAccessRNDRoom()) and l.punch and l.hunkyChunky and l.ischunky),
         LocationLogic(Locations.FactoryKasplatRandD, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.FactoryBattleArena, lambda l: not l.settings.crown_placement_rando and ((l.grab and l.donkey) or l.CanAccessRNDRoom())),
-    ], [], [
+    ], [
+        Event(Events.FactoryW2bTagged, lambda l: True),
+    ], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.Testing, lambda l: True),
         TransitionFront(Regions.FactoryTinyRaceLobby, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanOStandTBSNoclip()),
@@ -109,6 +116,9 @@ LogicRegions = {
         LocationLogic(Locations.FactoryKasplatStorage, lambda l: not l.settings.kasplat_rando),
     ], [
         Event(Events.TestingGateOpened, lambda l: l.Slam),
+        Event(Events.FactoryW1bTagged, lambda l: True),
+        Event(Events.FactoryW4aTagged, lambda l: True),
+        Event(Events.FactoryW5aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.FranticFactoryStart, lambda l: l.settings.shuffle_loading_zones == "all" or Events.HatchOpened in l.Events),
@@ -152,7 +162,9 @@ LogicRegions = {
 
     Regions.MiddleCore: Region("Middle Core", "Production Room", Levels.FranticFactory, True, -1, [
         LocationLogic(Locations.FactoryChunkyProductionRoom, lambda l: Events.ChunkyCoreSwitch in l.Events and Events.MainCoreActivated in l.Events and l.chunky),
-    ], [], [
+    ], [
+        Event(Events.FactoryW4bTagged, lambda l: True),
+    ], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.LowerCore, lambda l: True),
         TransitionFront(Regions.UpperCore, lambda l: Events.MainCoreActivated in l.Events),

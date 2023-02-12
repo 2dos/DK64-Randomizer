@@ -116,7 +116,7 @@ def generate_lo_rando_race_settings():
     data["crown_placement_rando"] = False  # usually false
     data["hard_blockers"] = False  # likely to be False
     data["hard_troff_n_scoff"] = False  # likely to be False
-    data["cb_rando"] = False  # likely to be False?
+    data["cb_rando"] = True  # likely to be False?
     data["win_condition"] = "beat_krool"  # lots of options: all_keys | get_key8 | beat_krool | all_medals | all_fairies | all_blueprints | poke_snap
     data["wrinkly_location_rando"] = False  # likely to be False
     data["tns_location_rando"] = False  # likely to be False

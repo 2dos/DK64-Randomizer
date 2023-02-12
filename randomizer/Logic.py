@@ -12,6 +12,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions as RegionEnum
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
+from randomizer.Lists.Warps import BananaportVanilla
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -183,6 +184,8 @@ class LogicVarHolder:
 
         self.Hints = []
 
+        self.SpecialLocationsReached = []
+
         # Set key events for keys which are given to the player at start of game
         keyEvents = [
             Events.JapesKeyTurnedIn,
@@ -197,6 +200,27 @@ class LogicVarHolder:
         for keyEvent in keyEvents:
             if keyEvent not in self.settings.krool_keys_required:
                 self.Events.append(keyEvent)
+
+        activated_warp_maps = []
+        if self.settings.activate_all_bananaports == "all":
+            activated_warp_maps = [
+                Maps.JungleJapes,
+                Maps.AngryAztec,
+                Maps.AztecLlamaTemple,
+                Maps.FranticFactory,
+                Maps.GloomyGalleon,
+                Maps.FungiForest,
+                Maps.CrystalCaves,
+                Maps.CreepyCastle,
+                Maps.CastleCrypt,
+                Maps.Isles,
+            ]
+        elif self.settings.activate_all_bananaports == "isles":
+            activated_warp_maps = [Maps.Isles]
+        if any(activated_warp_maps):
+            for warp_data in BananaportVanilla.values():
+                if warp_data.map_id in activated_warp_maps:
+                    self.Events.append(warp_data.event)
 
         # Colored banana and coin arrays
         # Colored bananas as 7 arrays of 5 (7 levels for 5 kongs)
