@@ -104,7 +104,7 @@ def AllItems(settings):
     """Return all shuffled items."""
     allItems = []
     if Types.Blueprint in settings.shuffled_location_types:
-        allItems.extend(Blueprints(settings))
+        allItems.extend(Blueprints())
     if Types.Banana in settings.shuffled_location_types:
         allItems.extend(GoldenBananaItems())
     if Types.ToughBanana in settings.shuffled_location_types:
@@ -150,7 +150,7 @@ def AllItemsForMovePlacement(settings):
     """Return all shuffled items we need to assume for move placement."""
     allItems = []
     if Types.Blueprint in settings.shuffled_location_types:
-        allItems.extend(Blueprints(settings))
+        allItems.extend(Blueprints())
     if Types.Banana in settings.shuffled_location_types:
         allItems.extend(GoldenBananaItems())
     if Types.ToughBanana in settings.shuffled_location_types:
@@ -205,7 +205,15 @@ def AllMovesForOwnedKongs(kongs):
     return kongMoves
 
 
-def Blueprints(settings):
+def ShockwaveTypeItems(settings):
+    """Return the Shockwave-type items for the given settings."""
+    if settings.shockwave_status == "shuffled_decoupled":
+        return [Items.Camera, Items.Shockwave]
+    else:
+        return [Items.CameraAndShockwave]
+
+
+def Blueprints():
     """Return all blueprint items."""
     blueprints = [
         Items.DKIslesDonkeyBlueprint,
@@ -250,31 +258,6 @@ def Blueprints(settings):
         Items.CreepyCastleChunkyBlueprint,
     ]
     return blueprints
-
-
-def BlueprintAssumedItems():
-    """Items which are assumed to be owned while placing blueprints."""
-    return Keys() + KeyAssumedItems()
-
-
-def KeyAssumedItems():
-    """Items which are assumed to be owned while placing keys."""
-    return CompanyCoinItems() + CoinAssumedItems()
-
-
-def CoinAssumedItems():
-    """Items which are assumed to be owned while placing keys."""
-    return BattleCrownItems() + CrownAssumedItems()
-
-
-def CrownAssumedItems():
-    """Items which are assumed to be owned while placing keys."""
-    return BananaMedalItems() + MedalAssumedItems()
-
-
-def MedalAssumedItems():
-    """Items which are assumed to be owned while placing keys."""
-    return GoldenBananaItems()
 
 
 def Keys():
@@ -463,6 +446,50 @@ def JunkItems():
     lim = int(100 / len(items_to_place))
     for item_type in items_to_place:
         itemPool.extend(itertools.repeat(item_type, lim))
+    return itemPool
+
+
+def GetItemsNeedingToBeAssumed(settings, placed_types):
+    """Return a list of all items that will be assumed for immediate item placement."""
+    itemPool = []
+    unplacedTypes = [typ for typ in settings.shuffled_location_types if typ not in placed_types]
+    if Types.Banana in unplacedTypes:
+        itemPool.extend(GoldenBananaItems())
+    if Types.ToughBanana in unplacedTypes:
+        itemPool.extend(ToughGoldenBananaItems())
+    if Types.Shop in unplacedTypes:
+        itemPool.extend(AllKongMoves())
+    if Types.Blueprint in unplacedTypes:
+        itemPool.extend(Blueprints())
+    if Types.Fairy in unplacedTypes:
+        itemPool.extend(FairyItems())
+    if Types.Key in unplacedTypes:
+        itemPool.extend(Keys())
+    if Types.Crown in unplacedTypes:
+        itemPool.extend(BattleCrownItems())
+    if Types.Coin in unplacedTypes:
+        itemPool.extend(CompanyCoinItems())
+    if Types.TrainingBarrel in unplacedTypes:
+        itemPool.extend(TrainingBarrelAbilities())
+    if Types.Kong in unplacedTypes:
+        itemPool.extend(Kongs())
+    if Types.Medal in unplacedTypes:
+        itemPool.extend(BananaMedalItems())
+    if Types.Shockwave in unplacedTypes:
+        itemPool.extend(ShockwaveTypeItems(settings))
+    if Types.Bean in unplacedTypes:
+        itemPool.extend(MiscItemRandoItems())  # Covers Bean and Pearls
+    if Types.RainbowCoin in unplacedTypes:
+        itemPool.extend(RainbowCoinItems())
+    if Types.ToughBanana in unplacedTypes:
+        itemPool.extend(ToughGoldenBananaItems())
+    # Never logic-affecting items
+    # if Types.FakeItem in unplacedTypes:
+    #     itemPool.extend(FakeItems())
+    # if Types.JunkItem in unplacedTypes:
+    #     itemPool.extend(JunkItems())
+    # if Types.Hint in unplacedTypes: someday???
+    #     itemPool.extend(HintItems()) hints in the pool???
     return itemPool
 
 
