@@ -177,14 +177,6 @@ file_dict = [
         "do_not_extract": True,
         "do_not_delete_source": True,
     },
-    {
-        "name": "Melon Model",
-        "pointer_table_index": 4,
-        "file_index": 0x57,
-        "source_file": "melon_om2.bin",
-        "do_not_extract": True,
-        "do_not_delete_source": True,
-    },
     {"name": "DPad Image", "pointer_table_index": 14, "file_index": 187, "source_file": "assets/displays/dpad.png", "texture_format": "rgba5551"},
     {"name": "Tracker Image", "pointer_table_index": 14, "file_index": 0xA1, "source_file": "assets/file_screen/tracker.png", "texture_format": "rgba5551"},
     {"name": "Nintendo Coin Model", "pointer_table_index": 4, "file_index": 0x48, "source_file": "nintendo_coin_om2.bin", "do_not_delete_source": True},
@@ -260,6 +252,14 @@ file_dict = [
         "source_file": "fake_item.bin",
         "do_not_delete_source": True,
         "do_not_extract": True,
+    },
+    {
+        "name": "Melon Model",
+        "pointer_table_index": 4,
+        "file_index": 0x25E,
+        "source_file": "melon_om2.bin",
+        "do_not_extract": True,
+        "do_not_delete_source": True,
     },
 ]
 

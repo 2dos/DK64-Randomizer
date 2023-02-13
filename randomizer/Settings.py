@@ -453,9 +453,7 @@ class Settings:
         
         # Krusha Kong
         if self.krusha_ui == "random":
-            slots = list(range(4))
-            if not self.disco_chunky:
-                slots.append(Kongs.chunky)  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
+            slots = [x for x in range(5) if x != Kongs.chunky or not self.disco_chunky]  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
             self.krusha_kong = random.choice(slots)
         else:
             self.krusha_kong = None

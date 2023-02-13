@@ -216,6 +216,17 @@ void moveGiveHook(int kong, int type, int index) {
     }
 }
 
+void displayKeyText(int flag) {
+    for (int i = 0; i < 8; i++) {
+        if (getKeyFlag(i) == flag) {
+            spawnActor(324, 0);
+            TextOverlayData.type = 5;
+            TextOverlayData.flag = getKeyFlag(i);
+            TextOverlayData.kong = 0;
+        }
+    }
+}
+
 void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
     /**
      * @brief Check whether a flag is a move, alter the flag block address, and perform any additional functions required.
@@ -330,20 +341,36 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
             int give_rainbow = 0;
             int give_health = 0;
             if (vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
-                if (Rando.arcade_reward == 5) {
-                    give_gb = 1;
-                } else if (Rando.arcade_reward == 20) {
-                    give_rainbow = 1;
-                } else if (Rando.arcade_reward == 22) {
-                    give_health = 1;
+                switch (Rando.arcade_reward) {
+                    case 5:
+                        give_gb = 1;
+                        break;
+                    case 6:
+                        auto_turn_keys();
+                        displayKeyText(flag_index);
+                        return fba;
+                    case 20:
+                        give_rainbow = 1;
+                        break;
+                    case 22:
+                        give_health = 1;
+                        break;
                 }
             } else if (vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) {
-                if (Rando.jetpac_reward == 5) {
-                    give_gb = 1;
-                } else if (Rando.jetpac_reward == 11) {
-                    give_rainbow = 1;
-                } else if (Rando.jetpac_reward == 13) {
-                    give_health = 1;
+                switch (Rando.jetpac_reward) {
+                    case 5:
+                        give_gb = 1;
+                        break;
+                    case 6:
+                        auto_turn_keys();
+                        displayKeyText(flag_index);
+                        return fba;
+                    case 11:
+                        give_rainbow = 1;
+                        break;
+                    case 13:
+                        give_health = 1;
+                        break;
                 }
             }
             if (!checkFlag(vanilla_flag, 0)) {

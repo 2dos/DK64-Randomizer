@@ -38,7 +38,7 @@ const item_conversion_info item_conversions[] = {
 	{.actor=140, .model_two=183, .scale=0.25f},
 	{.actor=364, .model_two=605, .scale=0.25f},
 	{.actor=52, .model_two=86, .scale=1.00f},
-	{.actor=47, .model_two=87, .scale=1.00f},
+	{.actor=47, .model_two=606, .scale=1.00f},
 	{.actor=121, .model_two=142, .scale=1.00f},
 	{.actor=51, .model_two=143, .scale=1.00f}
 };
@@ -75,7 +75,7 @@ const item_scale_info item_scales[] = {
 	{.type=183, .scale=0.25f},
 	{.type=605, .scale=0.25f},
 	{.type=86, .scale=1.00f},
-	{.type=87, .scale=1.00f},
+	{.type=606, .scale=1.00f},
 	{.type=142, .scale=1.00f},
 	{.type=143, .scale=1.00f}
 };

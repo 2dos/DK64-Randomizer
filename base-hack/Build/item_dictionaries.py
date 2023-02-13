@@ -89,7 +89,7 @@ db = [
     InGameItem(name="Rainbow Coin", actor=140, model_two=0xB7, scale=0.25),
     InGameItem(name="Fake Item", actor=CustomActors.FakeItem, is_custom=True, model_two=0x25D, bounce=True, scale=0.25),
     InGameItem(name="Junk Item (Orange)", actor=0x34, model_two=0x56, will_dance=False, force_dance=False, scale=1),
-    InGameItem(name="Junk Item (Melon)", actor=0x2F, model_two=0x57, will_dance=False, force_dance=False, scale=1),
+    InGameItem(name="Junk Item (Melon)", actor=0x2F, model_two=0x25E, will_dance=False, force_dance=False, scale=1),
     InGameItem(name="Junk Item (Crystal)", actor=0x79, model_two=0x8E, will_dance=False, force_dance=False, scale=1),
     InGameItem(name="Junk Item (Ammo)", actor=0x33, model_two=0x8F, will_dance=False, force_dance=False, scale=1),
 ]

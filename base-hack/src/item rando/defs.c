@@ -139,7 +139,8 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x008F, COLLECTABLE_AMMOBOX, KONG_NONE, 0x33, 0, 0, 0); // Ammo Crate
     index = addCollisionInfo(index, 0x0011, COLLECTABLE_AMMOBOX, KONG_NONE, 0, 0, 0, 0); // Homing Ammo Crate
     index = addCollisionInfo(index, 0x008E, COLLECTABLE_CRYSTAL, KONG_NONE, 0x79, 0, 0, 0); // Crystal
-    index = addCollisionInfo(index, 0x0057, COLLECTABLE_NONE, KONG_NONE, 0x2F, 8, 4, 0); // Watermelon
+    index = addCollisionInfo(index, 0x0057, COLLECTABLE_NONE, KONG_NONE, 0x2F, 0, 0, 0); // Watermelon
+    index = addCollisionInfo(index, 0x025E, COLLECTABLE_NONE, KONG_NONE, 0, 8, 4, 0); // Watermelon - Duplicate
     index = addCollisionInfo(index, 0x0098, COLLECTABLE_FILM, KONG_NONE, 0, 0, 0, 0); // Film
     index = addCollisionInfo(index, 0x0090, COLLECTABLE_MEDAL, KONG_NONE, NEWACTOR_MEDAL, 8, 4, 1); // Medal
     index = addCollisionInfo(index, 0x00EC, COLLECTABLE_RACECOIN, KONG_NONE, 0x36, 0, 0, 0); // Race Coin

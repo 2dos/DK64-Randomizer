@@ -54,7 +54,7 @@ model_two_indexes = {
     Types.Fairy: 0x25C,
     Types.RainbowCoin: 0xB7,
     Types.FakeItem: 0x25D,
-    Types.JunkItem: [0x56, 0x8F, 0x8E, 0x57, 0x98],  # Orange, Ammo, Crystal, Watermelon, Film
+    Types.JunkItem: [0x56, 0x8F, 0x8E, 0x25E, 0x98],  # Orange, Ammo, Crystal, Watermelon, Film
 }
 
 model_two_scales = {

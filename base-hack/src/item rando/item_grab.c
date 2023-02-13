@@ -532,6 +532,7 @@ void getItem(int object_type) {
             playSound(0x147, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
             break;
         case 0x57:
+        case 0x25E:
             // Melon Slice
             playSong(0x2F, *(int*)(&pickup_volume));
             forceDance();
