@@ -1483,7 +1483,7 @@ with open(newROMName, "r+b") as fh:
     CARTRIDGE_ID = "ED"
     fh.write(CARTRIDGE_ID.encode("ascii"))
     fh.seek(0x3F)
-    SAVE_TYPE = 2 # 16K EEPROM
+    SAVE_TYPE = 2  # 16K EEPROM
     fh.write((SAVE_TYPE << 4).to_bytes(1, "big"))
 
 

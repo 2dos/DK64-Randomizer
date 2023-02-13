@@ -612,6 +612,7 @@ def changeKrushaModel(krusha_kong: int):
     ROM().seek(krusha_model_start)
     ROM().writeBytes(data)
 
+
 def fixBaboonBlasts():
     """Fix various baboon blasts to work for Krusha."""
     # Fungi Baboon Blast

@@ -450,7 +450,7 @@ class Settings:
             self.unlock_all_moves = True
             self.training_barrels = "normal"
             self.shockwave_status = "start_with"
-        
+
         # Krusha Kong
         if self.krusha_ui == "random":
             slots = [x for x in range(5) if x != Kongs.chunky or not self.disco_chunky]  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
@@ -467,7 +467,6 @@ class Settings:
             }
             if self.krusha_ui in krusha_conversion:
                 self.krusha_kong = krusha_conversion[self.krusha_ui]
-
 
         # Helm Doors
         helmdoor_items = {

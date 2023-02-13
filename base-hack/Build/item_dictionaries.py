@@ -2,6 +2,7 @@
 
 from enum import IntEnum, auto
 
+
 class InGameItem:
     """Class to define an in-game item."""
 
@@ -29,8 +30,10 @@ class InGameItem:
         self.will_dance = will_dance  # Produces dance animation upon grabbing it (if auto-dance skip off)
         self.is_null = is_null
 
+
 class CustomActors(IntEnum):
     """Custom Actors Enum."""
+
     NintendoCoin = 0
     RarewareCoin = auto()
     Null = auto()
@@ -130,4 +133,3 @@ with open("src/lib_items.c", "w") as fh:
     fh.write("\nconst unsigned short actor_drops[] = {" + ",".join([str(x.actor) for x in actor_drops]) + "};")
     fh.write("\nconst unsigned short danceless_items[] = {" + ",".join([str(x.actor) for x in danceless_items]) + "};")
     fh.write("\nconst item_scale_info item_scales[] = {\n\t" + ",\n\t".join([f"{{.type={x.model_two}, .scale={x.scale:.2f}f}}" for x in db]) + "\n};")
-

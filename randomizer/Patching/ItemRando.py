@@ -13,9 +13,11 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Patching.Lib import intf_to_float, float_to_hex
 from enum import IntEnum, auto
 
+
 class CustomActors(IntEnum):
     """Custom Actors Enum."""
-    NintendoCoin = 0x8000 # Starts at 0x8000
+
+    NintendoCoin = 0x8000  # Starts at 0x8000
     RarewareCoin = auto()
     Null = auto()
     PotionDK = auto()
@@ -36,6 +38,7 @@ class CustomActors(IntEnum):
     Fairy = auto()
     FakeItem = auto()
     Medal = auto()
+
 
 model_two_indexes = {
     Types.Banana: 0x74,

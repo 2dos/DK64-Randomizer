@@ -439,6 +439,7 @@ def writeText(file_index: int, text: list):
                 for string in block["text"]:
                     ROM().writeBytes(string.encode("ascii"))
 
+
 def getObjectAddress(map: int, id: int, object_type: str) -> int:
     """Get address of object in setup."""
     setup_start = js.pointer_addresses[9]["entries"][map]["pointing_to"]
