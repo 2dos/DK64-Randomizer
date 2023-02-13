@@ -1,6 +1,5 @@
 #include "vars.h"
 #include "text_items.h"
-#include "item_data.h"
 
 extern void playSFX(short sfxIndex);
 extern void setPermFlag(short flagIndex);
@@ -14,6 +13,8 @@ extern void callParentMapFilter(void);
 extern void shiftBrokenJapesPortal(void);
 extern void quickInit(void);
 extern int getCenter(int style, char* str);
+extern int getActorIndex(int actor_input);
+extern int getCustomActorIndex(new_custom_actors offset);
 
 extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);
@@ -243,7 +244,7 @@ extern int getMoveProgressiveFlagType(int flag);
 extern void getItem(int object_type);
 extern int setupHook(int map);
 extern void CheckKasplatSpawnBitfield(void);
-extern void initActor(int actor_index, void* func, int master_type, int paad_type);
+extern void initActor(int actor_index, int is_custom, void* func, int master_type, int health, int damage_given, int initial_interactions, int base);
 extern void refreshPads(pad_refresh_signals signal);
 
 extern int* pauseScreen3And4Header(int* dl);
@@ -259,6 +260,7 @@ extern void changePauseScreen(void);
 extern void handleDynamicItemText(char* location, char* format, int character);
 extern void mermaidCheck(void);
 extern void initItemDictionary(void);
+extern void initActorExpansion(void);
 extern void giveGB(int kong, int level);
 extern void giveRainbowCoin(void);
 extern void giveAmmo(void);
@@ -302,3 +304,10 @@ extern const check_struct item_db[292];
 extern sprite_data_struct bean_sprite;
 extern sprite_data_struct pearl_sprite;
 extern sprite_data_struct krool_sprite;
+
+extern void* actor_functions[ACTOR_LIMIT];
+extern health_damage_struct actor_health_damage[ACTOR_LIMIT];
+extern short actor_interactions[ACTOR_LIMIT];
+extern unsigned char actor_master_types[ACTOR_LIMIT];
+extern short* actor_extra_data_sizes[ACTOR_LIMIT];
+extern collision_data_struct actor_collisions[ACTOR_LIMIT];

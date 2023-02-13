@@ -113,19 +113,8 @@ void KongDropCode(void) {
         CurrentActorPointer_0->yVelocity = 500.0f;
     }
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        int current_type = CurrentActorPointer_0->actorType;
-        int kong = -1;
-        if (current_type == 141) {
-            kong = 0;
-        } else if (current_type == 142) {
-            kong = 1;
-        } else if (current_type == 143) {
-            kong = 2;
-        } else if (current_type == 144) {
-            kong = 3;
-        } else if (current_type == 155) {
-            kong = 4;
-        }
+        int current_type = CurrentActorPointer_0->actorType - CUSTOM_ACTORS_START;
+        int kong = current_type - NEWACTOR_KONGDK;
         if (kong >= 0) {
             handleCutsceneKong(CurrentActorPointer_0, kong + 2);
             playActorAnimation(CurrentActorPointer_0, AnimationTable1[(0x8B * 7) + kong]);
@@ -289,7 +278,7 @@ void CheckKasplatSpawnBitfield(void) {
                 int actor_type = referenced_spawner->actor_type + 0x10;
                 int is_drop = 0;
                 int i = 0;
-                while (i < sizeof(actor_drops)) {
+                while (i < (int)(sizeof(actor_drops)/2)) {
                     if (actor_type == actor_drops[i]) {
                         is_drop = 1;
                         break;

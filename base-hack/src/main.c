@@ -217,9 +217,9 @@ void earlyFrame(void) {
 	}
 	// Cutscene DK Code
 	if ((CurrentMap == 0x28) || (CurrentMap == 0x4C)) {
-		*(int*)(0x8074C3B0) = 0x806C1640;
+		actor_functions[196] = (void*)0x806C1640;
 	} else {
-		*(int*)(0x8074C3B0) = (int)&cutsceneDKCode;
+		actor_functions[196] = &cutsceneDKCode;
 	}
 	fastWarpShockwaveFix();
 	catchWarpHandle();

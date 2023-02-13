@@ -11,6 +11,31 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Patching.Lib import intf_to_float, float_to_hex
+from enum import IntEnum, auto
+
+class CustomActors(IntEnum):
+    """Custom Actors Enum."""
+    NintendoCoin = 0x8000 # Starts at 0x8000
+    RarewareCoin = auto()
+    Null = auto()
+    PotionDK = auto()
+    PotionDiddy = auto()
+    PotionLanky = auto()
+    PotionTiny = auto()
+    PotionChunky = auto()
+    PotionAny = auto()
+    KongDK = auto()
+    KongDiddy = auto()
+    KongLanky = auto()
+    KongTiny = auto()
+    KongChunky = auto()
+    KongDisco = auto()
+    KongKrusha = auto()
+    Bean = auto()
+    Pearl = auto()
+    Fairy = auto()
+    FakeItem = auto()
+    Medal = auto()
 
 model_two_indexes = {
     Types.Banana: 0x74,
@@ -57,18 +82,18 @@ actor_indexes = {
     Types.Blueprint: [78, 75, 77, 79, 76],
     Types.Key: 72,
     Types.Crown: 86,
-    Types.Coin: [151, 152],
-    Types.Shop: [157, 158, 159, 160, 161, 162],
-    Types.TrainingBarrel: 162,
-    Types.Shockwave: 162,
-    Types.NoItem: 153,
-    Types.Medal: 154,
-    Types.Kong: [141, 142, 143, 144, 155],
-    Types.Bean: 172,
-    Types.Pearl: 174,
-    Types.Fairy: 88,
+    Types.Coin: [CustomActors.NintendoCoin, CustomActors.RarewareCoin],
+    Types.Shop: [CustomActors.PotionDK, CustomActors.PotionDiddy, CustomActors.PotionLanky, CustomActors.PotionTiny, CustomActors.PotionChunky, CustomActors.PotionAny],
+    Types.TrainingBarrel: CustomActors.PotionAny,
+    Types.Shockwave: CustomActors.PotionAny,
+    Types.NoItem: CustomActors.Null,
+    Types.Medal: CustomActors.Medal,
+    Types.Kong: [CustomActors.KongDK, CustomActors.KongDiddy, CustomActors.KongLanky, CustomActors.KongTiny, CustomActors.KongChunky],
+    Types.Bean: CustomActors.Bean,
+    Types.Pearl: CustomActors.Pearl,
+    Types.Fairy: CustomActors.Fairy,
     Types.RainbowCoin: 0x8C,
-    Types.FakeItem: 217,
+    Types.FakeItem: CustomActors.FakeItem,
     Types.JunkItem: [0x34, 0x33, 0x79, 0x2F, 0],  # Orange, Ammo, Crystal, Watermelon, Film
 }
 model_indexes = {
@@ -424,7 +449,7 @@ def place_randomized_items(spoiler: Spoiler):
                         actor_index = getActorIndex(item)
                         ROM().seek(0x1FF1200 + (4 * bonus_table_offset))
                         ROM().writeMultipleBytes(item.old_flag, 2)
-                        ROM().writeMultipleBytes(actor_index, 1)
+                        ROM().writeMultipleBytes(actor_index, 2)
                         bonus_table_offset += 1
                     elif item.location in (Locations.AztecTinyBeetleRace, Locations.CavesLankyBeetleRace):
                         text_index = getTextRewardIndex(item)
@@ -445,23 +470,23 @@ def place_randomized_items(spoiler: Spoiler):
                     if item.old_item == Types.Blueprint:
                         # Write to BP Table
                         # Just needs to store an array of actors spawned
-                        offset = item.old_flag - 469
-                        ROM().seek(0x1FF1000 + offset)
-                        ROM().write(actor_index)
+                        offset = (item.old_flag - 469) * 2
+                        ROM().seek(0x1FF0E00 + offset)
+                        ROM().writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.Crown:
                         # Write to Crown Table
                         crown_flags = [0x261, 0x262, 0x263, 0x264, 0x265, 0x268, 0x269, 0x266, 0x26A, 0x267]
-                        ROM().seek(0x1FF10C0 + crown_flags.index(item.old_flag))
-                        ROM().write(actor_index)
+                        ROM().seek(0x1FF10C0 + (crown_flags.index(item.old_flag) * 2))
+                        ROM().writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.Key:
                         key_flags = [26, 74, 138, 168, 236, 292, 317, 380]
-                        ROM().seek(0x1FF10D0 + key_flags.index(item.old_flag))
-                        ROM().write(actor_index)
+                        ROM().seek(0x1FF1000 + (key_flags.index(item.old_flag) * 2))
+                        ROM().writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.RainbowCoin:
                         index = item.location - Locations.RainbowCoin_Location00
                         if index < 16:
-                            ROM().seek(0x1FF10F0 + index)
-                            ROM().write(actor_index)
+                            ROM().seek(0x1FF10E0 + (index * 2))
+                            ROM().writeMultipleBytes(actor_index, 2)
                         else:
                             print("Dirt Patch Item Placement Error")
                     elif item.old_item == Types.Medal:
@@ -546,7 +571,7 @@ def place_randomized_items(spoiler: Spoiler):
                         # Bonus GB Table
                         ROM().seek(0x1FF1200 + (4 * bonus_table_offset))
                         ROM().writeMultipleBytes(item.old_flag, 2)
-                        ROM().writeMultipleBytes(actor_index, 1)
+                        ROM().writeMultipleBytes(actor_index, 2)
                         bonus_table_offset += 1
                     elif item.old_item == Types.Fairy:
                         # Fairy Item

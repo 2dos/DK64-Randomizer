@@ -80,6 +80,7 @@ void initHack(int source) {
 			ItemRandoOn = Rando.item_rando;
 			KrushaSlot = Rando.krusha_slot;
 			RandomSwitches = Rando.random_switches;
+			initActorExpansion();
 			for (int i = 0; i < 7; i++) {
 				SwitchLevel[i] = Rando.slam_level[i];
 			}
@@ -100,22 +101,22 @@ void initHack(int source) {
 				}
 			}
 			// New Actors
-			initActor(151, &ninCoinCode, ACTORMASTER_SPRITE, 0x11);
-			initActor(152, &rwCoinCode, ACTORMASTER_SPRITE, 0x11);
-			initActor(153, &NothingCode, ACTORMASTER_SPRITE, 0);
-			initActor(154, &medalCode, ACTORMASTER_SPRITE, 0x11);
+			// 0x11 = 45
+			// 0x0 =
+			initActor(NEWACTOR_NINTENDOCOIN, 1, &ninCoinCode, ACTORMASTER_SPRITE, 0, 1, 8, 45);
+			initActor(NEWACTOR_RAREWARECOIN, 1, &rwCoinCode, ACTORMASTER_SPRITE, 0, 1, 8, 45);
+			initActor(NEWACTOR_NULL, 1, &NothingCode, ACTORMASTER_SPRITE, 0, 1, 8, 0);
+			initActor(NEWACTOR_MEDAL, 1, &medalCode, ACTORMASTER_SPRITE, 0, 1, 8, 45);
 			for (int i = 0; i < 6; i++) {
-				initActor(157 + i, &PotionCode, ACTORMASTER_3D, 0x11);
+				initActor(NEWACTOR_POTIONDK + i, 1, &PotionCode, ACTORMASTER_3D, 0, 1, 8, 45);
+				if (i < 5) {
+					initActor(NEWACTOR_KONGDK + i, 1, &KongDropCode, ACTORMASTER_3D, 0, 1, 8, 45);
+				}
 			}
-			initActor(141, &KongDropCode, ACTORMASTER_3D, 0x11);
-			initActor(142, &KongDropCode, ACTORMASTER_3D, 0x11);
-			initActor(143, &KongDropCode, ACTORMASTER_3D, 0x11);
-			initActor(144, &KongDropCode, ACTORMASTER_3D, 0x11);
-			initActor(155, &KongDropCode, ACTORMASTER_3D, 0x11);
-			initActor(172, &beanCode, ACTORMASTER_SPRITE, 0x11);
-			initActor(174, &pearlCode, ACTORMASTER_SPRITE, 0x11);
-			initActor(88, &fairyDuplicateCode, ACTORMASTER_3D, 0x11);
-			initActor(217, &FakeGBCode, ACTORMASTER_3D, 0x11);
+			initActor(NEWACTOR_BEAN, 1, &beanCode, ACTORMASTER_SPRITE, 0, 1, 8, 45);
+			initActor(NEWACTOR_PEARL, 1, &pearlCode, ACTORMASTER_SPRITE, 0, 1, 8, 45);
+			initActor(NEWACTOR_FAIRY, 1, &fairyDuplicateCode, ACTORMASTER_3D, 0, 1, 8, 45);
+			initActor(NEWACTOR_FAKEITEM, 1, &FakeGBCode, ACTORMASTER_3D, 0, 1, 8, 45);
 			// Kong Rando
 			initKongRando();
 			initFiles();
@@ -135,8 +136,8 @@ void initHack(int source) {
 				*(int*)(0x806A6EA8) = 0x0C1C2519; // Set Bonus Barrel to refill health
 			}
 			if (Rando.short_bosses) {
-				*(short*)(0x8074D474) = 44; // Dogadon Health: 3 + (62 * (2 / 3))
-				*(short*)(0x8074D3A8) = 3; // Dillo Health
+				actor_health_damage[236].init_health = 44; // Dogadon Health: 3 + (62 * (2 / 3))
+				actor_health_damage[185].init_health = 3; // Dillo Health
 			}
 			if (Rando.resolve_bonus & 1) {
 				*(short*)(0x806818DE) = 0x4248; // Make Aztec Lobby GB spawn above the trapdoor)
@@ -173,7 +174,7 @@ void initHack(int source) {
 			if (Rando.disable_boss_kong_check) {
 				*(int*)(0x8064EC00) = 0x24020001;
 			}
-			*(int*)(0x8074C1B8) = (int)&newCounterCode;
+			actor_functions[70] = &newCounterCode;
 			*(short*)(0x8074DC84) = 0x53; // Increase PAAD size
 			fixMusicRando();			
 			// Style 6 Mtx
@@ -244,11 +245,11 @@ void initHack(int source) {
 			// New Guard Code
 			*(short*)(0x806AF75C) = 0x1000;
 			// Gold Beaver Code
-      		*(int*)(0x8074C3F0) = 0x806AD54C; // Set as Blue Beaver Code
+      		actor_functions[212] = (void*)0x806AD54C; // Set as Blue Beaver Code
 			*(int*)(0x806AD750) = 0x0C000000 | (((int)&beaverExtraHitHandle & 0xFFFFFF) >> 2); // Remove buff until we think of something better
 			// Move Text Code
-			*(int*)(0x8074C5B0) = (int)&getNextMoveText;
-			*(int*)(0x8074C5A0) = (int)&getNextMoveText;
+			actor_functions[324] = &getNextMoveText;
+			actor_functions[320] = &getNextMoveText;
 			// Any Kong Items
 			if (Rando.any_kong_items & 1) {
 				// All excl. Blueprints
@@ -266,7 +267,7 @@ void initHack(int source) {
 				*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2);
 				*(short*)(0x806B12DA) = 0x3A9; // Kasplat Shockwave Chance
 				*(short*)(0x806B12FE) = 0x3B3; // Kasplat Shockwave Chance
-				*(short*)(0x8074D4D0) = 9; // Increase Guard Health
+				actor_health_damage[259].init_health = 9; // Increase Guard Health
 			}
 			// Oscillation Effects
 			if (Rando.remove_oscillation_effects) {
