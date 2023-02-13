@@ -169,6 +169,7 @@ door_locations = {
             logicregion=Regions.JungleJapesMain,
             location=[703.0, 538.0, 2293.0, 54.0],
             group=3,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Jungle Japes: Alcove Above Diddy Tunnel - left",
@@ -176,6 +177,7 @@ door_locations = {
             logicregion=Regions.JungleJapesMain,
             location=[817.0, 538.0, 2372.0, 232.0],
             group=3,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Jungle Japes: Next to Minecart Exit -right", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[1029.0, 287.0, 2032.0, 251.5], rx=-10, group=3, logic=lambda l: True

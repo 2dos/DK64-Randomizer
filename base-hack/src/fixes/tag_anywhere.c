@@ -430,6 +430,10 @@ int canTagAnywhere(void) {
     if (ModelTwoTouchCount > 0) {
         return 0;
     }
+    if (Player->strong_kong_ostand_bitfield & 0x40) {
+        // Gorilla Gone
+        return 0;
+    }
     if (CurrentMap == 0x2A) {
         if (MapState & 0x10) {
             return 0;
