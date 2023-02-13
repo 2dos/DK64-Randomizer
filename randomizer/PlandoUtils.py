@@ -584,3 +584,16 @@ def PlandoShopSortFilter(shopLocationList):
         return shopLocationOrderingDict[shopLocation["enum_name"]]
     
     return sorted(shopLocationList, key=shopKey)
+
+def PlandoOptionClassAnnotation(panel, kong, location, option):
+    """A Jinja function that will apply certain CSS classes to dropdown menu
+       options, in order to enable various option interactions."""
+    classList = []
+    # Key 8 gets its own class.
+    if option == PlandoItems.HideoutHelmKey.name:
+        classList.append("key-8-option")
+    # If there are classes to append, add them in a list and return.
+    if len(classList) > 0:
+        return f"class=\"{' '.join(classList)}\""
+    else:
+        return ""

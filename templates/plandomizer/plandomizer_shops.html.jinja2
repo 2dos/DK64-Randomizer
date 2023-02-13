@@ -28,7 +28,7 @@
                         <option value="">-- Randomize --</option>
                         {% for item in plando_items|plando_item_restrict(location) %}
                             <option value="{{item["enum_name"]}}"
-                                    {% if item["enum_name"] == "HideoutHelmKey" %}class="key-8-option"{% endif %}>
+                                {{plando_option_class_annotation(panel["display_name"], kong, location["enum_name"], item["enum_name"])}}>
                                 {{item["display_name"]}}
                             </option>
                         {% endfor %}
