@@ -203,8 +203,8 @@ void initItemRando(void) {
     *(int*)(0x806C63A8) = 0x0C000000 | (((int)&getBonusFlag & 0xFFFFFF) >> 2); // Get Bonus Flag Check
     *(int*)(0x806F78B8) = 0x0C000000 | (((int)&getKongFromBonusFlag & 0xFFFFFF) >> 2); // Reward Table Kong Check
     if (Rando.item_rando) {
-        *(short*)(0x806B4E1A) = Rando.vulture_item;
-        *(short*)(0x8069C266) = Rando.japes_rock_item;
+        *(short*)(0x806B4E1A) = getActorIndex(Rando.vulture_item);
+        *(short*)(0x8069C266) = getActorIndex(Rando.japes_rock_item);
         *(int*)(0x806A78A8) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Balloon: Kong Check
         *(int*)(0x806AAB3C) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: BP Get
         *(int*)(0x806AAB9C) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: BP In

@@ -564,12 +564,12 @@ def place_randomized_items(spoiler: Spoiler):
                             ROM().write(slots.index(item.new_item))
                     elif item.location == Locations.JapesChunkyBoulder:
                         # Write to Boulder Spawn Location
-                        ROM().seek(sav + 0x114)
-                        ROM().write(actor_index)
+                        ROM().seek(sav + 0xDC)
+                        ROM().writeMultipleBytes(actor_index, 2)
                     elif item.location == Locations.AztecLankyVulture:
                         # Write to Vulture Spawn Location
-                        ROM().seek(sav + 0x115)
-                        ROM().write(actor_index)
+                        ROM().seek(sav + 0xDE)
+                        ROM().writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.Banana:
                         # Bonus GB Table
                         ROM().seek(0x1FF1200 + (4 * bonus_table_offset))

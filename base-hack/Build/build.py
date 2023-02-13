@@ -1261,9 +1261,9 @@ with open(newROMName, "r+b") as fh:
     for crown_item in range(8):
         fh.write((72).to_bytes(2, "big"))
     # Misc Drops
-    fh.seek(0x1FED020 + 0x114)
+    fh.seek(0x1FED020 + 0xDC)
     for x in range(2):
-        fh.write((45).to_bytes(1, "big"))
+        fh.write((45).to_bytes(2, "big"))
     # Fairies
     fh.seek(0x1FF1040)
     for x in range(20):
