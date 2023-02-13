@@ -642,7 +642,7 @@ class LogicVarHolder:
     def AddCollectible(self, collectible, level):
         """Add a collectible."""
         if collectible.enabled:
-            added = False
+            missingGun = False
             if collectible.type == Collectibles.coin:
                 # Normal coins, add amount for the kong
                 self.Coins[collectible.kong] += collectible.amount
@@ -658,8 +658,8 @@ class LogicVarHolder:
                 if self.HasGun(collectible.kong):
                     self.ColoredBananas[level][collectible.kong] += collectible.amount * 10
                     collectible.added = True
-                added = True
-            if not added:
+                missingGun = True
+            if not missingGun:
                 collectible.added = True
 
     def PurchaseShopItem(self, location_id):
