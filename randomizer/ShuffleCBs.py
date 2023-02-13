@@ -21,6 +21,7 @@ import randomizer.CollectibleLogicFiles.CreepyCastle
 from randomizer.Enums.Levels import Levels
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Logic import CollectibleRegions
 import random
 import js
 
@@ -33,37 +34,30 @@ level_data = {
     Levels.JungleJapes: {
         "cb": randomizer.Lists.CBLocations.JungleJapesCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.JungleJapesCBLocations.BalloonList,
-        "logic": randomizer.CollectibleLogicFiles.JungleJapes.LogicRegions,
     },
     Levels.AngryAztec: {
         "cb": randomizer.Lists.CBLocations.AngryAztecCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.AngryAztecCBLocations.BalloonList,
-        "logic": randomizer.CollectibleLogicFiles.AngryAztec.LogicRegions,
     },
     Levels.FranticFactory: {
         "cb": randomizer.Lists.CBLocations.FranticFactoryCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.FranticFactoryCBLocations.BalloonList,
-        "logic": randomizer.CollectibleLogicFiles.FranticFactory.LogicRegions,
     },
     Levels.GloomyGalleon: {
         "cb": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.BalloonList,
-        "logic": randomizer.CollectibleLogicFiles.GloomyGalleon.LogicRegions,
     },
     Levels.FungiForest: {
         "cb": randomizer.Lists.CBLocations.FungiForestCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.FungiForestCBLocations.BalloonList,
-        "logic": randomizer.CollectibleLogicFiles.FungiForest.LogicRegions,
     },
     Levels.CrystalCaves: {
         "cb": randomizer.Lists.CBLocations.CrystalCavesCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.CrystalCavesCBLocations.BalloonList,
-        "logic": randomizer.CollectibleLogicFiles.CrystalCaves.LogicRegions,
     },
     Levels.CreepyCastle: {
         "cb": randomizer.Lists.CBLocations.CreepyCastleCBLocations.ColoredBananaGroupList,
         "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList,
-        "logic": randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions,
     },
 }
 
@@ -77,13 +71,12 @@ def ShuffleCBs(spoiler: Spoiler):
             total_singles = 0
             total_bunches = 0
             cb_data = []
+            # First, remove all placed colored bananas
+            for region_id in CollectibleRegions.keys():
+                CollectibleRegions[region_id] = [
+                    collectible for collectible in CollectibleRegions[region_id] if collectible.type not in [Collectibles.balloon, Collectibles.bunch, Collectibles.banana]
+                ]
             for level_index, level in enumerate(level_data):
-                # First, remove all placed colored bananas
-                for region in level_data[level]["logic"]:
-                    for region in level_data[level]["logic"]:
-                        level_data[level]["logic"][region] = [
-                            collectible for collectible in level_data[level]["logic"][region] if collectible.type not in [Collectibles.balloon, Collectibles.bunch, Collectibles.banana]
-                        ]
                 level_placement = []
                 global_divisor = 6 - level_index
                 kong_specific_left = {Kongs.donkey: 100, Kongs.diddy: 100, Kongs.lanky: 100, Kongs.tiny: 100, Kongs.chunky: 100}
@@ -115,7 +108,7 @@ def ShuffleCBs(spoiler: Spoiler):
                             kong_specific_left[selected_kong] -= 10  # Remove CBs for Balloon
                             level_placement.append({"id": balloon.id, "name": balloon.name, "kong": selected_kong, "level": level, "type": "balloons", "map": balloon.map})
                             placed_balloons += 1
-                            level_data[level]["logic"][balloon.region].append(Collectible(Collectibles.balloon, selected_kong, balloon.logic, None, 1, name=balloon.name))
+                            CollectibleRegions[balloon.region].append(Collectible(Collectibles.balloon, selected_kong, balloon.logic, None, 1, name=balloon.name))
                 # Model Two CBs
                 bunches_left = max_bunches - total_bunches
                 singles_left = max_singles - total_singles
@@ -164,9 +157,9 @@ def ShuffleCBs(spoiler: Spoiler):
                                 bunches_in_lesser_group += int(loc[0] == 5)
                                 singles_in_lesser_group += int(loc[0] == 1)
                             if bunches_in_lesser_group > 0:
-                                level_data[level]["logic"][group.region].append(Collectible(Collectibles.bunch, selected_kong, group.logic, None, bunches_in_lesser_group, name=group.name))
+                                CollectibleRegions[group.region].append(Collectible(Collectibles.bunch, selected_kong, group.logic, None, bunches_in_lesser_group, name=group.name))
                             if singles_in_lesser_group > 0:
-                                level_data[level]["logic"][group.region].append(Collectible(Collectibles.banana, selected_kong, group.logic, None, singles_in_lesser_group, name=group.name))
+                                CollectibleRegions[group.region].append(Collectible(Collectibles.banana, selected_kong, group.logic, None, singles_in_lesser_group, name=group.name))
                             level_placement.append({"group": group.group, "name": group.name, "kong": selected_kong, "level": level, "type": "cb", "map": group.map, "locations": group.locations})
                         placed_bunches += bunches_in_group
                         placed_singles += singles_in_group
