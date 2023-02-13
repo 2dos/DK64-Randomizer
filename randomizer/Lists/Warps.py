@@ -25,6 +25,7 @@ class BananaportData:
         self.swap_index = swap_index
         self.restricted = restricted  # Defined by whether all kongs can access the bananaport without tag anywhere or bananaports
         self.event = event
+        self.event_logic = lambda l: event in l.Events
         self.cross_map_placed = False
         vanilla_pair_index = swap_index % 2
         if vanilla_pair_index == 0:
