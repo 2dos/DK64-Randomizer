@@ -29,7 +29,6 @@ def encrypt_settings_string(dict_data: dict):
         "enguarde_colors",
         "enguarde_custom_color",
         "klaptrap_model",
-        "krusha_slot",
         "misc_cosmetics",
         "disco_chunky",
         "lanky_colors",

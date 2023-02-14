@@ -261,9 +261,9 @@ void overlay_changes(void) {
 	// Change Dillo Health based on map
 	if (Rando.short_bosses) {
 		if ((CurrentMap == 8) || (DestMap == 8)) {
-			*(short*)(0x8074D3A8) = 4; // Dillo Health - AD1
+			actor_health_damage[185].init_health = 4; // Dillo Health - AD1
 		} else if ((CurrentMap == 0xC4) || (CurrentMap == 0xC4)) {
-			*(short*)(0x8074D3A8) = 3; // Dillo Health - AD2
+			actor_health_damage[185].init_health = 3; // Dillo Health - AD2
 		}
 	}
 	if (ObjectModel2Timer < 2) {

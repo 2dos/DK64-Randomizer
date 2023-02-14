@@ -230,9 +230,13 @@ def randomize_setup(spoiler: Spoiler):
                         positions.append([x, y, z, ry])
                 elif item_type == 0x235 and ((cont_map_id == Maps.GalleonBoss and spoiler.settings.hard_bosses) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando)):
                     if cont_map_id == Maps.HideoutHelm:
+                        y_position = random.uniform(-131, 500)
                         star_donut_center = [1055.704, 3446.966]
-                        star_donut_boundaries = [123.128, 235.971]
-                        star_height_boundaries = [-131, 500]
+                        if y_position < 0:
+                            star_donut_boundaries = [230, 335.971]
+                        else:
+                            star_donut_boundaries = [123.128, 235.971]
+                        star_height_boundaries = [y_position, y_position]
                     elif cont_map_id == Maps.GalleonBoss:
                         star_donut_center = [1216, 1478]
                         star_donut_boundaries = [200, 460]

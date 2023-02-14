@@ -272,10 +272,18 @@ int getKongFlag(int kong_index) {
 	return kong_flags[kong_index];
 }
 
-void initActor(int actor_index, void* func, int master_type, int paad_type) {
-	ActorFunctions[actor_index] = func;
-	ActorMasterType[actor_index] = master_type;
-	*(ActorPaadDefs[actor_index]) = paad_type;
+void initActor(int actor_index, int is_custom, void* func, int master_type, int health, int damage_given, int initial_interactions, int base) {
+	if (is_custom) {
+		actor_index = CUSTOM_ACTORS_START + actor_index;
+	}
+	actor_functions[actor_index] = func;
+	actor_master_types[actor_index] = master_type;
+	actor_health_damage[actor_index].init_health = health;
+	actor_health_damage[actor_index].damage_applied = damage_given;
+	actor_interactions[actor_index] = initial_interactions;
+	actor_extra_data_sizes[actor_index] = actor_extra_data_sizes[base];
+	actor_collisions[actor_index].collision_info = actor_collisions[base].collision_info;
+	actor_collisions[actor_index].unk_4 = actor_collisions[base].unk_4;
 }
 
 sprite_data_struct bean_sprite = {
@@ -350,4 +358,29 @@ void giveMelon(void) {
 
 void giveCrystal(void) {
 	changeCollectableCount(5, 0, 150);
+}
+
+int getActorIndex(int actor_input) {
+	/**
+	 * @brief Changes actor index based on whether the generic bit is set
+	 * 
+	 * @param actor_input Raw input type
+	 * 
+	 * @return Final actor index
+	 */
+	if (actor_input & 0x8000) {
+		return CUSTOM_ACTORS_START + (actor_input & 0x7FFF);
+	}
+	return actor_input;
+}
+
+int getCustomActorIndex(new_custom_actors offset) {
+	/**
+	 * @brief Gets the actor index of a new custom actor based on the offset
+	 * 
+	 * @param offset Offset index
+	 * 
+	 * @return Actor index
+	 */
+	return CUSTOM_ACTORS_START + offset;
 }

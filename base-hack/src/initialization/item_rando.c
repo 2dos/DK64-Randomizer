@@ -12,8 +12,7 @@
 
 typedef struct reward_rom_struct {
 	/* 0x000 */ short flag;
-	/* 0x002 */ unsigned char actor;
-	/* 0x003 */ unsigned char unused;
+	/* 0x002 */ unsigned short actor;
 } reward_rom_struct;
 
 typedef struct patch_db_item {
@@ -22,12 +21,12 @@ typedef struct patch_db_item {
 	/* 0x003 */ unsigned char world;
 } patch_db_item;
 
-static unsigned char bp_item_table[40] = {}; // Kasplat Rewards
+static unsigned short bp_item_table[40] = {}; // Kasplat Rewards
 static unsigned char medal_item_table[40] = {}; // Medal Rewards
-static unsigned char crown_item_table[10] = {}; // Crown Rewards
-static unsigned char key_item_table[8] = {}; // Boss Rewards
+static unsigned short crown_item_table[10] = {}; // Crown Rewards
+static unsigned short key_item_table[8] = {}; // Boss Rewards
 static short fairy_item_table[20] = {}; // Fairy Rewards
-static unsigned char rcoin_item_table[16] = {}; // Dirt Patch Rewards
+static unsigned short rcoin_item_table[16] = {}; // Dirt Patch Rewards
 static patch_db_item patch_flags[16] = {}; // Flag table for dirt patches to differentiate it from balloons
 bonus_barrel_info bonus_data[95] = {}; // Bonus Barrel Rewards
 
@@ -39,7 +38,7 @@ int getBPItem(int index) {
      * 
      * @return Actor Index of the reward
      */
-	return bp_item_table[index];
+	return getActorIndex(bp_item_table[index]);
 }
 
 int getMedalItem(int index) {
@@ -64,7 +63,7 @@ int getCrownItem(int map) {
 	int map_list[] = {0x35,0x49,0x9B,0x9C,0x9F,0xA0,0xA1,0x9D,0xA2,0x9E};
 	for (int i = 0; i < 10; i++) {
 		if (map == map_list[i]) {
-			return crown_item_table[i];
+			return getActorIndex(crown_item_table[i]);
 		}
 	}
 	return 0;
@@ -81,7 +80,7 @@ int getKeyItem(int old_flag) {
 	int flag_list[] = {26,74,138,168,236,292,317,380};
 	for (int i = 0; i < 8; i++) {
 		if (old_flag == flag_list[i]) {
-			return key_item_table[i];
+			return getActorIndex(key_item_table[i]);
 		}
 	}
 	return 0;
@@ -109,7 +108,7 @@ int getRainbowCoinItem(int old_flag) {
 	 * 
      * @return Actor Index of the reward
 	 */
-	return rcoin_item_table[old_flag - FLAG_RAINBOWCOIN_0];
+	return getActorIndex(rcoin_item_table[old_flag - FLAG_RAINBOWCOIN_0]);
 }
 
 int getPatchFlag(int id) {
@@ -155,6 +154,20 @@ void populatePatchItem(int id, int map, int index, int world) {
     patch_flags[index].world = world;
 }
 
+int getBonusFlag(int index) {
+    /**
+     * @brief Get bonus barrel flag from barrel index
+     * 
+     * @param index Barrel Index
+     * 
+     * @return Flag index
+     */
+    if (index == 0) {
+        return -1;
+    }
+    return bonus_data[index].flag;
+}
+
 void initItemRando(void) {
     /**
      * @brief Initialize Item Rando functionality
@@ -179,16 +192,19 @@ void initItemRando(void) {
         BonusBarrelData[i].spawn_actor = 45; // Spawn GB - Have as default
         bonus_data[i].flag = BonusBarrelData[i].flag;
         bonus_data[i].spawn_actor = BonusBarrelData[i].spawn_actor;
-        // bonus_data[i].spawn_actor = 88;
         bonus_data[i].kong_actor = BonusBarrelData[i].kong_actor;
     }
     // Add Chunky Minecart GB
     bonus_data[94].flag = 215;
     bonus_data[94].spawn_actor = 45;
     bonus_data[94].kong_actor = 6;
+    *(int*)(0x80680AE8) = 0x0C000000 | (((int)&getBonusFlag & 0xFFFFFF) >> 2); // Get Bonus Flag Check
+    *(int*)(0x80681854) = 0x0C000000 | (((int)&getBonusFlag & 0xFFFFFF) >> 2); // Get Bonus Flag Check
+    *(int*)(0x806C63A8) = 0x0C000000 | (((int)&getBonusFlag & 0xFFFFFF) >> 2); // Get Bonus Flag Check
+    *(int*)(0x806F78B8) = 0x0C000000 | (((int)&getKongFromBonusFlag & 0xFFFFFF) >> 2); // Reward Table Kong Check
     if (Rando.item_rando) {
-        *(short*)(0x806B4E1A) = Rando.vulture_item;
-        *(short*)(0x8069C266) = Rando.japes_rock_item;
+        *(short*)(0x806B4E1A) = getActorIndex(Rando.vulture_item);
+        *(short*)(0x8069C266) = getActorIndex(Rando.japes_rock_item);
         *(int*)(0x806A78A8) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Balloon: Kong Check
         *(int*)(0x806AAB3C) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: BP Get
         *(int*)(0x806AAB9C) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: BP In
@@ -206,7 +222,6 @@ void initItemRando(void) {
         *(int*)(0x80731AE8) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Count flag array
         *(int*)(0x806B1E48) = 0x0C000000 | (((int)&countFlagsForKongFLUT & 0xFFFFFF) >> 2); // Kasplat Check Flag
         *(int*)(0x806F56F8) = 0; // Disable Flag Set for blueprints
-        *(int*)(0x806F78B8) = 0x0C000000 | (((int)&getKongFromBonusFlag & 0xFFFFFF) >> 2); // Reward Table Kong Check
         *(int*)(0x806F938C) = 0x0C000000 | (((int)&banana_medal_acquisition & 0xFFFFFF) >> 2); // Medal Give
         *(int*)(0x806F9394) = 0;
         *(int*)(0x806F5564) = 0x0C000000 | (((int)&itemGrabHook & 0xFFFFFF) >> 2); // Item Get Hook - Post Flag
@@ -256,10 +271,10 @@ void initItemRando(void) {
 
     // BP Table
     int bp_size = 0x28;
-    unsigned char* bp_write = dk_malloc(bp_size);
+    unsigned short* bp_write = dk_malloc(bp_size << 1);
     int* bp_file_size;
-    *(int*)(&bp_file_size) = bp_size;
-    copyFromROM(0x1FF1000,bp_write,&bp_file_size,0,0,0,0);
+    *(int*)(&bp_file_size) = bp_size << 1;
+    copyFromROM(0x1FF0E00,bp_write,&bp_file_size,0,0,0,0);
     for (int i = 0; i < bp_size; i++) {
         bp_item_table[i] = bp_write[i];
     }
@@ -274,19 +289,19 @@ void initItemRando(void) {
     }
     // Crown Table
     int crown_size = 0xA;
-    unsigned char* crown_write = dk_malloc(crown_size);
+    unsigned short* crown_write = dk_malloc(crown_size << 1);
     int* crown_file_size;
-    *(int*)(&crown_file_size) = crown_size;
+    *(int*)(&crown_file_size) = crown_size << 1;
     copyFromROM(0x1FF10C0,crown_write,&crown_file_size,0,0,0,0);
     for (int i = 0; i < crown_size; i++) {
         crown_item_table[i] = crown_write[i];
     }
     // Key Table
     int key_size = 0x8;
-    unsigned char* key_write = dk_malloc(key_size);
+    unsigned short* key_write = dk_malloc(key_size << 1);
     int* key_file_size;
-    *(int*)(&key_file_size) = key_size;
-    copyFromROM(0x1FF10D0,key_write,&key_file_size,0,0,0,0);
+    *(int*)(&key_file_size) = key_size << 1;
+    copyFromROM(0x1FF1000,key_write,&key_file_size,0,0,0,0);
     for (int i = 0; i < key_size; i++) {
         key_item_table[i] = key_write[i];
     }
@@ -301,10 +316,10 @@ void initItemRando(void) {
     }
     // Rainbow Coin Table
     int rainbow_size = 0x10;
-    unsigned char* rainbow_write = dk_malloc(rainbow_size);
+    unsigned short* rainbow_write = dk_malloc(rainbow_size << 1);
     int* rainbow_file_size;
-    *(int*)(&rainbow_file_size) = rainbow_size;
-    copyFromROM(0x1FF10F0,rainbow_write,&rainbow_file_size,0,0,0,0);
+    *(int*)(&rainbow_file_size) = rainbow_size << 1;
+    copyFromROM(0x1FF10E0,rainbow_write,&rainbow_file_size,0,0,0,0);
     for (int i = 0; i < rainbow_size; i++) {
         rcoin_item_table[i] = rainbow_write[i];
     }
@@ -312,7 +327,7 @@ void initItemRando(void) {
     for (int i = 0; i < 40; i++) {
         bonus_data[54 + i].flag = 469 + i;
         bonus_data[54 + i].kong_actor = (i % 5) + 2;
-        bonus_data[54 + i].spawn_actor = bp_item_table[i];
+        bonus_data[54 + i].spawn_actor = getBPItem(i);
     }
     int reward_size = 0x100;
     reward_rom_struct* reward_write = dk_malloc(medal_size);
@@ -323,7 +338,7 @@ void initItemRando(void) {
         if (reward_write[i].flag > -1) {
             for (int j = 0; j < 95; j++) {
                 if (bonus_data[j].flag == reward_write[i].flag) {
-                    bonus_data[j].spawn_actor = reward_write[i].actor;
+                    bonus_data[j].spawn_actor = getActorIndex(reward_write[i].actor);
                 }
             }
         }

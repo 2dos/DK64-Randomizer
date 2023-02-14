@@ -426,7 +426,7 @@ extern short MapVoid_MinZ;
 extern short MapVoid_MaxX;
 extern short MapVoid_MaxZ;
 
-extern bonus_barrel_info BonusBarrelData[54];
+extern bonus_vanilla_info BonusBarrelData[54];
 
 extern short screenCenterX;
 extern short screenCenterY;
@@ -438,6 +438,9 @@ extern char CutsceneBarState;
 extern void* ActorFunctions[345];
 extern unsigned char ActorMasterType[345];
 extern short* ActorPaadDefs[345];
+extern collision_data_struct ActorCollisionArray[345];
+extern health_damage_struct ActorHealthArray[345];
+extern short ActorInteractionArray[345];
 
 extern int* TriggerArray;
 extern short TriggerSize;

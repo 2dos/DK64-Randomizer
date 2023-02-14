@@ -5,8 +5,9 @@ from random import randint
 import js
 from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import intf_to_float, float_to_hex, int_to_list
+from randomizer.Patching.Lib import intf_to_float, float_to_hex, int_to_list, getObjectAddress
 from randomizer.Spoiler import Spoiler
+from randomizer.Enums.Kongs import Kongs
 from PIL import Image, ImageEnhance, ImageDraw
 import zlib
 import gzip
@@ -177,16 +178,15 @@ def apply_cosmetic_colors(spoiler: Spoiler):
         process = True
         if kong["kong_index"] == 4:  # Chunky
             is_disco = spoiler.settings.disco_chunky
-            if spoiler.settings.krusha_slot == "chunky":
+            if spoiler.settings.krusha_kong == Kongs.chunky:
                 is_disco = False
             if is_disco and kong["kong"] == "chunky":
                 process = False
             elif not is_disco and kong["kong"] == "disco_chunky":
                 process = False
-        kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
         is_krusha = False
-        if spoiler.settings.krusha_slot in kong_names:
-            if kong_names.index(spoiler.settings.krusha_slot) == kong["kong_index"]:
+        if spoiler.settings.krusha_kong is not None:
+            if spoiler.settings.krusha_kong == kong["kong_index"]:
                 is_krusha = True
                 kong["palettes"] = [{"name": "krusha_skin", "image": 4971, "fill_type": "block"}, {"name": "krusha_indicator", "image": 4966, "fill_type": "kong"}]
                 process = True
@@ -530,22 +530,15 @@ def overwrite_object_colors(spoiler: Spoiler):
 
 def applyKrushaKong(spoiler: Spoiler):
     """Apply Krusha Kong setting."""
-    kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
-    if spoiler.settings.krusha_slot == "random":
-        slots = ["dk", "diddy", "lanky", "tiny"]
-        if not spoiler.settings.disco_chunky:
-            slots.append("chunky")  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
-        spoiler.settings.krusha_slot = random.choice(slots)
     ROM().seek(spoiler.settings.rom_data + 0x11C)
-    if spoiler.settings.krusha_slot == "no_slot":
+    if spoiler.settings.krusha_kong is None:
         ROM().write(255)
-    elif spoiler.settings.krusha_slot in kong_names:
-        krusha_index = kong_names.index(spoiler.settings.krusha_slot)
-        ROM().write(krusha_index)
-        placeKrushaHead(krusha_index)
-        changeKrushaModel(krusha_index)
-        if krusha_index == 0:
-            fixFungiBBlast()
+    elif spoiler.settings.krusha_kong < 5:
+        ROM().write(spoiler.settings.krusha_kong)
+        placeKrushaHead(spoiler.settings.krusha_kong)
+        changeKrushaModel(spoiler.settings.krusha_kong)
+        if spoiler.settings.krusha_kong == Kongs.donkey:
+            fixBaboonBlasts()
 
 
 DK_SCALE = 0.75
@@ -620,25 +613,32 @@ def changeKrushaModel(krusha_kong: int):
     ROM().writeBytes(data)
 
 
-def fixFungiBBlast():
-    """Fix two barrels which are broken with Krusha + Fungi BBlast."""
-    setup_start = js.pointer_addresses[9]["entries"][0xBC]["pointing_to"]
-    ROM().seek(setup_start)
-    model_2_count = int.from_bytes(ROM().readBytes(4), "big")
-    mystery_start = setup_start + 4 + (0x30 * model_2_count)
-    ROM().seek(mystery_start)
-    mystery_count = int.from_bytes(ROM().readBytes(4), "big")
-    actor_start = mystery_start + 4 + (0x24 * mystery_count)
-    ROM().seek(actor_start)
-    actor_count = int.from_bytes(ROM().readBytes(4), "big")
-    for item in range(actor_count):
-        item_start = actor_start + 4 + (item * 0x38)
-        ROM().seek(item_start + 0x34)
-        if int.from_bytes(ROM().readBytes(2), "big") in (2, 5):
+def fixBaboonBlasts():
+    """Fix various baboon blasts to work for Krusha."""
+    # Fungi Baboon Blast
+    for id in (2, 5):
+        item_start = getObjectAddress(0xBC, id, "actor")
+        if item_start is not None:
             ROM().seek(item_start + 0x14)
             ROM().writeMultipleBytes(0xFFFFFFEC, 4)
             ROM().seek(item_start + 0x1B)
             ROM().writeMultipleBytes(0, 1)
+    # Caves Baboon Blast
+    item_start = getObjectAddress(0xBA, 4, "actor")
+    if item_start is not None:
+        ROM().seek(item_start + 0x4)
+        ROM().writeMultipleBytes(int(float_to_hex(510), 16), 4)
+    item_start = getObjectAddress(0xBA, 12, "actor")
+    if item_start is not None:
+        ROM().seek(item_start + 0x4)
+        ROM().writeMultipleBytes(int(float_to_hex(333), 16), 4)
+    # Castle Baboon Blast
+    item_start = getObjectAddress(0xBB, 4, "actor")
+    if item_start is not None:
+        ROM().seek(item_start + 0x0)
+        ROM().writeMultipleBytes(int(float_to_hex(2472), 16), 4)
+        ROM().seek(item_start + 0x8)
+        ROM().writeMultipleBytes(int(float_to_hex(1980), 16), 4)
 
 
 def placeKrushaHead(slot):

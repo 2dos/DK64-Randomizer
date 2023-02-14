@@ -140,7 +140,7 @@ void spawnEnemyDrops(actorData* actor) {
                         if (Rando.item_rando) {
                             drop_type = getBPItem(flag - 469);
                             drop_count = 1;
-                            for (int i = 0; i < sizeof(bounce_objects); i++) {
+                            for (int i = 0; i < (int)(sizeof(bounce_objects)/2); i++) {
                                 if (drop_type == bounce_objects[i]) {
                                     drop_arg = 2;
                                 }
