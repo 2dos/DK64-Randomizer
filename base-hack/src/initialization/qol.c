@@ -88,7 +88,7 @@ void initQoL_Fixes(void) {
     if (Rando.quality_of_life.vanilla_fixes) {
         *(int*)(0x806BE8D8) = 0x0C000000 | (((int)&RabbitRaceInfiniteCode & 0xFFFFFF) >> 2); // Modify Function Call
         *(int*)(0x8067C168) = 0x0C000000 | (((int)&fixDilloTNTPads & 0xFFFFFF) >> 2); // Modify Function Call
-        *(int*)(0x8074C484) = (int)&squawks_with_spotlight_actor_code;
+        actor_functions[249] = &squawks_with_spotlight_actor_code;
     }
 }
 
@@ -441,7 +441,7 @@ void initNonControllableFixes(void) {
     *(short*)(0x80631FE6) = allowance; // Fungi
     *(short*)(0x80632036) = allowance; // Others
     // New Helm Barrel Code
-    *(int*)(0x8074C24C) = (int)&HelmBarrelCode;
+    actor_functions[107] = &HelmBarrelCode;
     // GetOut Timer
     *(unsigned short*)(0x806B7ECA) = 125; // 0x8078 for center-bottom ms timer
     // Fix Tag Barrel Background Kong memes

@@ -96,7 +96,7 @@ fairy_locations = {
             map=Maps.JapesLankyCave,
             region=Regions.JapesLankyCave,
             is_vanilla=True,
-            spawn_xyz=[218, 174, 391],
+            spawn_xyz=[210, 174, 391],
             logic=lambda l: (((l.grape or l.trombone) and l.Slam) or l.generalclips) and l.islanky and l.camera,
             natural_index=1,
         ),

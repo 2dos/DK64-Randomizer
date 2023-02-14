@@ -50,12 +50,12 @@ void initKrusha(void) {
         LedgeHangY_0[slot] = LedgeHangY_0[5];
         *(short*)(0x8074AB5A) = 0x0040; // Enables Krusha's spin attack to knock kasplats down
         PotionAnimations[slot] = PotionAnimations[4];
+        actor_functions[2 + slot] = (void*)0x806C9F44; // Replace Kong Code w/ Krusha Code
         switch (slot) {
             case 0:
                 // DK
                 *(short*)(0x8075ED4A) = 0xDB; // Cutscene DK Model
                 *(short*)(0x8075573E) = 0xDB; // Generic Cutscene Model
-                *(int*)(0x8074C0A8) = 0x806C9F44; // Replace DK Code w/ Krusha Code
                 *(short*)(0x806F0AFE) = 0; // Remove gun from hands in Tag Barrel
                 *(int*)(0x806F0AF0) = 0x24050001; // Fix Hand State
                 *(int*)(0x806D5EC4) = 0; // Prevent Moving Ground Attack pop up
@@ -66,7 +66,6 @@ void initKrusha(void) {
                 *(short*)(0x806F11E6) = 0xDB; // Instrument
                 *(short*)(0x8075ED62) = 0xDB; // Cutscene Diddy Model
                 *(short*)(0x80755736) = 0xDB; // Generic Cutscene Model
-                *(int*)(0x8074C0AC) = 0x806C9F44; // Replace Diddy Code w/ Krusha Code
                 *(int*)(0x806F0A6C) = 0x0C1A29D9; // Replace hand state call
                 *(int*)(0x806F0A78) = 0; // Replace hand state call
                 *(int*)(0x806E4938) = 0; // Always run adapt code
@@ -98,7 +97,6 @@ void initKrusha(void) {
                 *(short*)(0x806F1202) = 0xDB; // Instrument
                 *(short*)(0x8075ED7A) = 0xDB; // Cutscene Lanky Model
                 *(short*)(0x8075573A) = 0xDB; // Generic Cutscene Model
-                *(int*)(0x8074C0B0) = 0x806C9F44; // Replace Lanky Code w/ Krusha Code
                 *(short*)(0x806F0ABE) = 0; // Remove gun from hands in Tag Barrel
                 *(int*)(0x806E48BC) = 0x0C000000 | (((int)&adaptKrushaZBAnimation_PunchOStand & 0xFFFFFF) >> 2); // Allow Krusha to use slide move if fast enough (OStand)
                 *(int*)(0x806E48B4) = 0; // Always run `adaptKrushaZBAnimation`
@@ -113,7 +111,6 @@ void initKrusha(void) {
                 *(short*)(0x806F121E) = 0xDB; // Instrument
                 *(short*)(0x8075ED92) = 0xDB; // Cutscene Tiny Model
                 *(short*)(0x8075573C) = 0xDB; // Generic Cutscene Model
-                *(int*)(0x8074C0B4) = 0x806C9F44; // Replace Tiny Code w/ Krusha Code
                 *(short*)(0x806F0ADE) = 0; // Remove gun from hands in Tag Barrel
                 *(int*)(0x806E47F8) = 0; // Prevent slide bounce
                 *(short*)(0x806CF784) = 0x5000; // Prevent blink special cases
@@ -130,7 +127,6 @@ void initKrusha(void) {
                 *(short*)(0x80755738) = 0xDB; // Generic Cutscene Model
                 *(int*)(0x806F1274) = 0; // Prevent model change for GGone
                 *(int*)(0x806CBB84) = 0; // Enable opacity filter GGone
-                *(int*)(0x8074C0B8) = 0x806C9F44; // Replace Chunky Code w/ Krusha Code
                 *(int*)(0x806E4900) = 0x0C000000 | (((int)&adaptKrushaZBAnimation_PunchOStand & 0xFFFFFF) >> 2); // Allow Krusha to use slide move if fast enough (PPunch)
                 *(int*)(0x806E48F8) = 0; // Always run `adaptKrushaZBAnimation`
                 *(short*)(0x806F0A9E) = 0; // Remove gun from hands in Tag Barrel

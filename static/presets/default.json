@@ -72,6 +72,7 @@
     "krool_phase_count": 3,
     "krool_phase_order_rando": true,
     "krool_random": false,
+    "krusha_ui": "no_slot",
     "helm_phase_order_rando": true,
     "helm_random": false,
     "helm_phase_count": 3,

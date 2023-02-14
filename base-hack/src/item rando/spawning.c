@@ -28,7 +28,7 @@ void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
     if ((index > 0) && (index < 95)) {
         object = bonus_data[index].spawn_actor;
     }
-    if (object != 153) {
+    if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
         spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
     }
 }
@@ -44,7 +44,7 @@ void spawnRewardAtActor(int object, int flag) {
     if ((index > 0) && (index < 95)) {
         object = bonus_data[index].spawn_actor;
     }
-    if (object != 153) {
+    if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
         if (!checkFlag(flag, 0)) {
             spawnObjectAtActor(object, flag);
         }
@@ -60,7 +60,7 @@ void spawnMinecartReward(int object, int flag) {
      */
     for (int i = 0; i < 95; i++) {
         if (bonus_data[i].flag == flag) {
-            if (bonus_data[i].spawn_actor != 153) {
+            if (bonus_data[i].spawn_actor != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
                 spawnObjectAtActor(bonus_data[i].spawn_actor, flag);
             }
             return;
@@ -85,7 +85,7 @@ void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
     if (new_obj != 0) {
         object = new_obj;
     }
-    if (object != 153) {
+    if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
         spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
     }
 }
@@ -107,7 +107,7 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
     if (new_obj != 0) {
         object = new_obj;
     }
-    if (object != 153) {
+    if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
         // Protect against null objects
         if ((ActorMasterType[object] == ACTORMASTER_SPRITE) && ((CurrentMap == 0x53) || (CurrentMap == 0xC5))) {
             // Sprite & Dogadon Fight
@@ -146,8 +146,8 @@ void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int c
     if (new_obj != 0) {
         object = new_obj;
     }
-    if (object != 153) {
-        for (int i = 0; i < sizeof(bounce_objects); i++) {
+    if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
+        for (int i = 0; i < (int)(sizeof(bounce_objects)/2); i++) {
             if (object == bounce_objects[i]) {
                 cutscene = 2;
             }
@@ -192,8 +192,6 @@ void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
     }
 }
 
-static unsigned char master_copy[345] = {};
-
 typedef struct packet_extra_data {
     /* 0x000 */ char unk_00[0xA];
     /* 0x00A */ short index;
@@ -216,39 +214,38 @@ int getBarrelModel(int index) {
             case 79:
             case 76:
                 return 0x102; // Blueprint
-            case 151:
+            case CUSTOM_ACTORS_START + NEWACTOR_NINTENDOCOIN:
                 return 0x103; // Nintendo Coin
-            case 152:
+            case CUSTOM_ACTORS_START + NEWACTOR_RAREWARECOIN:
                 return 0x104; // Rareware Coin
             case 72:
                 return 0x105; // Key
             case 86:
                 return 0x106; // Crown
-            case 154:
+            case CUSTOM_ACTORS_START + NEWACTOR_MEDAL:
                 return 0x107; // Medal
-            case 157:
-            case 158:
-            case 159:
-            case 160:
-            case 161:
-            case 162:
+            case CUSTOM_ACTORS_START + NEWACTOR_POTIONDK:
+            case CUSTOM_ACTORS_START + NEWACTOR_POTIONDIDDY:
+            case CUSTOM_ACTORS_START + NEWACTOR_POTIONLANKY:
+            case CUSTOM_ACTORS_START + NEWACTOR_POTIONTINY:
+            case CUSTOM_ACTORS_START + NEWACTOR_POTIONCHUNKY:
+            case CUSTOM_ACTORS_START + NEWACTOR_POTIONANY:
                 return 0x108; // Potion
-            case 141:
-            case 142:
-            case 143:
-            case 144:
-                return 0xFD + (actor - 141); // DK-Tiny
-            case 155:
-                return 0x101; // Chunky
-            case 172:
+            case CUSTOM_ACTORS_START + NEWACTOR_KONGDK:
+            case CUSTOM_ACTORS_START + NEWACTOR_KONGDIDDY:
+            case CUSTOM_ACTORS_START + NEWACTOR_KONGLANKY:
+            case CUSTOM_ACTORS_START + NEWACTOR_KONGTINY:
+            case CUSTOM_ACTORS_START + NEWACTOR_KONGCHUNKY:
+                return 0xFD + (actor - (CUSTOM_ACTORS_START + NEWACTOR_KONGDK)); // Kong Pickup Actors
+            case CUSTOM_ACTORS_START + NEWACTOR_BEAN:
                 return 0x109; // Bean
-            case 174:
+            case CUSTOM_ACTORS_START + NEWACTOR_PEARL:
                 return 0x10A; // Pearl
-            case 88:
+            case CUSTOM_ACTORS_START + NEWACTOR_FAIRY:
                 return 0x10B; // Fairy
             case 140:
                 return 0x10C; // Rainbow Coin
-            case 217:
+            case CUSTOM_ACTORS_START + NEWACTOR_FAKEITEM:
                 return 0x10D; // Fake Item
             case 0x2F:
                 return 0x10E; // Junk Item
@@ -313,12 +310,7 @@ void initBarrelChange(void) {
     /**
      * @brief Initialize the changes necessary for bonus barrels to match contents
      */
-    for (int i = 0; i < 345; i++) {
-        master_copy[i] = ActorMasterType[i];
-    }
-    master_copy[0x1C] = 5;
-    *(short*)(0x80677EF6) = getHi(&master_copy[0]);
-    *(short*)(0x80677F02) = getLo(&master_copy[0]);
+    actor_master_types[0x1C] = 5;
     *(int*)(0x8074DA44) = (int)&SpawnBarrel;
     *(int*)(0x80689368) = 0x0C000000 | (((int)&SpawnPreSpawnedBarrel & 0xFFFFFF) >> 2); // Change model if barrel is being reloaded
 }

@@ -405,7 +405,7 @@ class LogicVarHolder:
 
     def CanMoonkick(self):
         """Determine whether the player can perform a moonkick."""
-        return self.moonkick and self.isdonkey
+        return self.moonkick and self.isdonkey and self.settings.krusha_kong != Kongs.donkey
 
     def CanOStandTBSNoclip(self):
         """Determine whether the player can perform Orangstand TBS Noclip."""

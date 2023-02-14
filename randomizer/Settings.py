@@ -343,7 +343,8 @@ class Settings:
         self.enguarde_colors = "vanilla"
         self.enguarde_custom_color = "#000000"
         self.disco_chunky = False
-        self.krusha_slot = "no_slot"
+        self.krusha_ui = "no_slot"
+        self.krusha_kong = None
         self.misc_cosmetics = False
         self.remove_water_oscillation = False
 
@@ -449,6 +450,23 @@ class Settings:
             self.unlock_all_moves = True
             self.training_barrels = "normal"
             self.shockwave_status = "start_with"
+
+        # Krusha Kong
+        if self.krusha_ui == "random":
+            slots = [x for x in range(5) if x != Kongs.chunky or not self.disco_chunky]  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
+            self.krusha_kong = random.choice(slots)
+        else:
+            self.krusha_kong = None
+            krusha_conversion = {
+                "no_slot": None,
+                "dk": Kongs.donkey,
+                "diddy": Kongs.diddy,
+                "lanky": Kongs.lanky,
+                "tiny": Kongs.tiny,
+                "chunky": Kongs.chunky,
+            }
+            if self.krusha_ui in krusha_conversion:
+                self.krusha_kong = krusha_conversion[self.krusha_ui]
 
         # Helm Doors
         helmdoor_items = {

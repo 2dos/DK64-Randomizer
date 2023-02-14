@@ -177,14 +177,6 @@ file_dict = [
         "do_not_extract": True,
         "do_not_delete_source": True,
     },
-    {
-        "name": "Melon Model",
-        "pointer_table_index": 4,
-        "file_index": 0x57,
-        "source_file": "melon_om2.bin",
-        "do_not_extract": True,
-        "do_not_delete_source": True,
-    },
     {"name": "DPad Image", "pointer_table_index": 14, "file_index": 187, "source_file": "assets/displays/dpad.png", "texture_format": "rgba5551"},
     {"name": "Tracker Image", "pointer_table_index": 14, "file_index": 0xA1, "source_file": "assets/file_screen/tracker.png", "texture_format": "rgba5551"},
     {"name": "Nintendo Coin Model", "pointer_table_index": 4, "file_index": 0x48, "source_file": "nintendo_coin_om2.bin", "do_not_delete_source": True},
@@ -260,6 +252,14 @@ file_dict = [
         "source_file": "fake_item.bin",
         "do_not_delete_source": True,
         "do_not_extract": True,
+    },
+    {
+        "name": "Melon Model",
+        "pointer_table_index": 4,
+        "file_index": 0x25E,
+        "source_file": "melon_om2.bin",
+        "do_not_extract": True,
+        "do_not_delete_source": True,
     },
 ]
 
@@ -1244,10 +1244,10 @@ with open(newROMName, "r+b") as fh:
 
     # Item Rando defaults
     # Blueprints
-    fh.seek(0x1FF1000)
+    fh.seek(0x1FF0E00)
     for level_index in range(8):
         for bp_item in (78, 75, 77, 79, 76):
-            fh.write(bp_item.to_bytes(1, "big"))
+            fh.write(bp_item.to_bytes(2, "big"))
     # Medals
     fh.seek(0x1FF1080)
     for medal_item in range(40):
@@ -1255,23 +1255,23 @@ with open(newROMName, "r+b") as fh:
     # Crown
     fh.seek(0x1FF10C0)
     for crown_item in range(10):
-        fh.write((86).to_bytes(1, "big"))
+        fh.write((86).to_bytes(2, "big"))
     # Key
-    fh.seek(0x1FF10D0)
+    fh.seek(0x1FF1000)
     for crown_item in range(8):
-        fh.write((72).to_bytes(1, "big"))
+        fh.write((72).to_bytes(2, "big"))
     # Misc Drops
-    fh.seek(0x1FED020 + 0x114)
+    fh.seek(0x1FED020 + 0xDC)
     for x in range(2):
-        fh.write((45).to_bytes(1, "big"))
+        fh.write((45).to_bytes(2, "big"))
     # Fairies
     fh.seek(0x1FF1040)
     for x in range(20):
         fh.write((0x3D).to_bytes(2, "big"))
     # Rainbow Coins
-    fh.seek(0x1FF10F0)
+    fh.seek(0x1FF10E0)
     for x in range(16):
-        fh.write((0x8C).to_bytes(1, "big"))
+        fh.write((0x8C).to_bytes(2, "big"))
     # Shop Hints
     fh.seek(0x1FED020 + 0x14B)
     fh.write((1).to_bytes(1, "big"))
@@ -1476,6 +1476,16 @@ with open(newROMName, "r+b") as fh:
         size += add
     fh.seek(0x1FF4000)
     fh.write(size.to_bytes(4, "big"))
+
+# Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM
+with open(newROMName, "r+b") as fh:
+    fh.seek(0x3C)
+    CARTRIDGE_ID = "ED"
+    fh.write(CARTRIDGE_ID.encode("ascii"))
+    fh.seek(0x3F)
+    SAVE_TYPE = 2  # 16K EEPROM
+    fh.write((SAVE_TYPE << 4).to_bytes(1, "big"))
+
 
 print("[7 / 7] - Generating BizHawk RAM watch")
 

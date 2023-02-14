@@ -438,3 +438,29 @@ def writeText(file_index: int, text: list):
             if not is_icon:
                 for string in block["text"]:
                     ROM().writeBytes(string.encode("ascii"))
+
+
+def getObjectAddress(map: int, id: int, object_type: str) -> int:
+    """Get address of object in setup."""
+    setup_start = js.pointer_addresses[9]["entries"][map]["pointing_to"]
+    ROM().seek(setup_start)
+    model_2_count = int.from_bytes(ROM().readBytes(4), "big")
+    if object_type == "modeltwo":
+        for item in range(model_2_count):
+            item_start = setup_start + 4 + (item * 0x30)
+            ROM().seek(item_start + 0x2A)
+            if int.from_bytes(ROM().readBytes(2), "big") == id:
+                return item_start
+    mystery_start = setup_start + 4 + (0x30 * model_2_count)
+    ROM().seek(mystery_start)
+    mystery_count = int.from_bytes(ROM().readBytes(4), "big")
+    actor_start = mystery_start + 4 + (0x24 * mystery_count)
+    ROM().seek(actor_start)
+    actor_count = int.from_bytes(ROM().readBytes(4), "big")
+    if object_type == "actor":
+        for item in range(actor_count):
+            item_start = actor_start + 4 + (item * 0x38)
+            ROM().seek(item_start + 0x34)
+            if int.from_bytes(ROM().readBytes(2), "big") == id:
+                return item_start
+    return None
