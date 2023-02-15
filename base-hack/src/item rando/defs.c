@@ -99,50 +99,50 @@ void initCollectableCollision(void) {
     index = addCollisionInfo(index, 0x015F, COLLECTABLE_AMMOPELLET, KONG_NONE, 0, 0, 0, 0, 0); // Pineapple
     index = addCollisionInfo(index, 0x0160, COLLECTABLE_AMMOPELLET, KONG_NONE, 0, 0, 0, 0, 0); // Coconut
     // Blueprint
-    index = addCollisionInfo(index, 0x00DE, COLLECTABLE_BP, KONG_DK, 0x4E, 8, 4, 12, 0);
-    index = addCollisionInfo(index, 0x00E0, COLLECTABLE_BP, KONG_DIDDY, 0x4B, 8, 4, 12, 0);
-    index = addCollisionInfo(index, 0x00E1, COLLECTABLE_BP, KONG_LANKY, 0x4D, 8, 4, 12, 0);
-    index = addCollisionInfo(index, 0x00DD, COLLECTABLE_BP, KONG_TINY, 0x4F, 8, 4, 12, 0);
-    index = addCollisionInfo(index, 0x00DF, COLLECTABLE_BP, KONG_CHUNKY, 0x4C, 8, 4, 12, 0);
+    index = addCollisionInfo(index, 0x00DE, COLLECTABLE_BP, KONG_DK, 0x4E, 8, 4, 13, 0);
+    index = addCollisionInfo(index, 0x00E0, COLLECTABLE_BP, KONG_DIDDY, 0x4B, 8, 4, 13, 0);
+    index = addCollisionInfo(index, 0x00E1, COLLECTABLE_BP, KONG_LANKY, 0x4D, 8, 4, 13, 0);
+    index = addCollisionInfo(index, 0x00DD, COLLECTABLE_BP, KONG_TINY, 0x4F, 8, 4, 13, 0);
+    index = addCollisionInfo(index, 0x00DF, COLLECTABLE_BP, KONG_CHUNKY, 0x4C, 8, 4, 13, 0);
     // Multiplayer
-    index = addCollisionInfo(index, 0x00B7, COLLECTABLE_COIN, KONG_NONE, 0x8C, 8, 4, 12, 0); // Rainbow Coin
+    index = addCollisionInfo(index, 0x00B7, COLLECTABLE_COIN, KONG_NONE, 0x8C, 8, 4, 13, 0); // Rainbow Coin
     index = addCollisionInfo(index, 0x01CF, COLLECTABLE_NONE, KONG_NONE, 0x78, 0, 0, 0, 0); // Yellow CB Powerup
     index = addCollisionInfo(index, 0x01D0, COLLECTABLE_NONE, KONG_NONE, 0x77, 0, 0, 0, 0); // Blue CB Powerup
     index = addCollisionInfo(index, 0x01D1, COLLECTABLE_NONE, KONG_NONE, 0x76, 0, 0, 0, 0); // Coin Powerup
     index = addCollisionInfo(index, 0x01D2, COLLECTABLE_COIN, KONG_NONE, 0x7A, 0, 0, 0, 0); // Coin Multiplayer
     // Potions
-    index = addCollisionInfo(index, 0x005B, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_POTIONDK, 8, 4, 12, 1); // Potion DK
-    index = addCollisionInfo(index, 0x01F2, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_POTIONDIDDY, 8, 4, 12, 1); // Potion Diddy
-    index = addCollisionInfo(index, 0x0059, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_POTIONLANKY, 8, 4, 12, 1); // Potion Lanky
-    index = addCollisionInfo(index, 0x01F3, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_POTIONTINY, 8, 4, 12, 1); // Potion Tiny
-    index = addCollisionInfo(index, 0x01F5, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_POTIONCHUNKY, 8, 4, 12, 1); // Potion Chunky
-    index = addCollisionInfo(index, 0x01F6, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_POTIONANY, 8, 4, 12, 1); // Potion Any
+    index = addCollisionInfo(index, 0x005B, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_POTIONDK, 8, 4, 13, 1); // Potion DK
+    index = addCollisionInfo(index, 0x01F2, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_POTIONDIDDY, 8, 4, 13, 1); // Potion Diddy
+    index = addCollisionInfo(index, 0x0059, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_POTIONLANKY, 8, 4, 13, 1); // Potion Lanky
+    index = addCollisionInfo(index, 0x01F3, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_POTIONTINY, 8, 4, 13, 1); // Potion Tiny
+    index = addCollisionInfo(index, 0x01F5, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_POTIONCHUNKY, 8, 4, 13, 1); // Potion Chunky
+    index = addCollisionInfo(index, 0x01F6, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_POTIONANY, 8, 4, 13, 1); // Potion Any
     // Kongs
-    index = addCollisionInfo(index, 0x0257, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_KONGDK, 8, 4, 12, 1); // DK
-    index = addCollisionInfo(index, 0x0258, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_KONGDIDDY, 8, 4, 12, 1); // Diddy
-    index = addCollisionInfo(index, 0x0259, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_KONGLANKY, 8, 4, 12, 1); // Lanky
-    index = addCollisionInfo(index, 0x025A, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_KONGTINY, 8, 4, 12, 1); // Tiny
-    index = addCollisionInfo(index, 0x025B, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_KONGCHUNKY, 8, 4, 12, 1); // Chunky
+    index = addCollisionInfo(index, 0x0257, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_KONGDK, 8, 4, 13, 1); // DK
+    index = addCollisionInfo(index, 0x0258, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_KONGDIDDY, 8, 4, 13, 1); // Diddy
+    index = addCollisionInfo(index, 0x0259, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_KONGLANKY, 8, 4, 13, 1); // Lanky
+    index = addCollisionInfo(index, 0x025A, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_KONGTINY, 8, 4, 13, 1); // Tiny
+    index = addCollisionInfo(index, 0x025B, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_KONGCHUNKY, 8, 4, 13, 1); // Chunky
     // Others
-    index = addCollisionInfo(index, 0x0074, COLLECTABLE_GB, KONG_NONE, 0x2D, 8, 4, 12, 0); // Golden Banana
+    index = addCollisionInfo(index, 0x0074, COLLECTABLE_GB, KONG_NONE, 0x2D, 8, 4, 13, 0); // Golden Banana
     index = addCollisionInfo(index, 0x0056, COLLECTABLE_ORANGE, KONG_NONE, 0x34, 0, 0, 0, 0); // Orange
     index = addCollisionInfo(index, 0x008F, COLLECTABLE_AMMOBOX, KONG_NONE, 0x33, 0, 0, 0, 0); // Ammo Crate
     index = addCollisionInfo(index, 0x0011, COLLECTABLE_AMMOBOX, KONG_NONE, 0, 0, 0, 0, 0); // Homing Ammo Crate
     index = addCollisionInfo(index, 0x008E, COLLECTABLE_CRYSTAL, KONG_NONE, 0x79, 0, 0, 0, 0); // Crystal
     index = addCollisionInfo(index, 0x0057, COLLECTABLE_NONE, KONG_NONE, 0x2F, 0, 0, 0, 0); // Watermelon
-    index = addCollisionInfo(index, 0x025E, COLLECTABLE_NONE, KONG_NONE, 0, 8, 4, 12, 0); // Watermelon - Duplicate
+    index = addCollisionInfo(index, 0x025E, COLLECTABLE_NONE, KONG_NONE, 0, 8, 4, 13, 0); // Watermelon - Duplicate
     index = addCollisionInfo(index, 0x0098, COLLECTABLE_FILM, KONG_NONE, 0, 0, 0, 0, 0); // Film
-    index = addCollisionInfo(index, 0x0090, COLLECTABLE_MEDAL, KONG_NONE, NEWACTOR_MEDAL, 8, 4, 12, 1); // Medal
+    index = addCollisionInfo(index, 0x0090, COLLECTABLE_MEDAL, KONG_NONE, NEWACTOR_MEDAL, 8, 4, 13, 1); // Medal
     index = addCollisionInfo(index, 0x00EC, COLLECTABLE_RACECOIN, KONG_NONE, 0x36, 0, 0, 0, 0); // Race Coin
-    index = addCollisionInfo(index, 0x013C, COLLECTABLE_NONE, KONG_NONE, 0x48, 8, 4, 12, 0); // Boss Key
-    index = addCollisionInfo(index, 0x018D, COLLECTABLE_NONE, KONG_NONE, 0x56, 8, 4, 12, 0); // Battle Crown
-    index = addCollisionInfo(index, 0x0288, COLLECTABLE_GB, KONG_NONE, 0x2D, 8, 4, 12, 0); // Rareware GB
-    index = addCollisionInfo(index, 0x0048, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_NINTENDOCOIN, 8, 4, 12, 1); // Nintendo Coin
-    index = addCollisionInfo(index, 0x028F, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_RAREWARECOIN, 8, 4, 12, 1); // Rareware Coin
-    index = addCollisionInfo(index, 0x0198, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_BEAN, 8, 4, 12, 1); // Bean
-    index = addCollisionInfo(index, 0x01B4, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_PEARL, 8, 4, 12, 1); // Pearl
-    index = addCollisionInfo(index, 0x025C, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_FAIRY, 8, 4, 12, 1); // Fairy
-    index = addCollisionInfo(index, 0x025D, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_FAKEITEM, 8, 4, 12, 1); // Fake Item
+    index = addCollisionInfo(index, 0x013C, COLLECTABLE_NONE, KONG_NONE, 0x48, 8, 4, 13, 0); // Boss Key
+    index = addCollisionInfo(index, 0x018D, COLLECTABLE_NONE, KONG_NONE, 0x56, 8, 4, 13, 0); // Battle Crown
+    index = addCollisionInfo(index, 0x0288, COLLECTABLE_GB, KONG_NONE, 0x2D, 8, 4, 13, 0); // Rareware GB
+    index = addCollisionInfo(index, 0x0048, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_NINTENDOCOIN, 8, 4, 13, 1); // Nintendo Coin
+    index = addCollisionInfo(index, 0x028F, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_RAREWARECOIN, 8, 4, 13, 1); // Rareware Coin
+    index = addCollisionInfo(index, 0x0198, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_BEAN, 8, 4, 13, 1); // Bean
+    index = addCollisionInfo(index, 0x01B4, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_PEARL, 8, 4, 13, 1); // Pearl
+    index = addCollisionInfo(index, 0x025C, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_FAIRY, 8, 4, 13, 1); // Fairy
+    index = addCollisionInfo(index, 0x025D, COLLECTABLE_NONE, KONG_NONE, NEWACTOR_FAKEITEM, 8, 4, 13, 1); // Fake Item
     
     // Write new table to ROM
     int hi = getHi(&object_collisions[0].type);
