@@ -252,12 +252,6 @@ PauseSpriteHook:
 HandleSlamCheckHook:
 	J 	HandleSlamCheck
 	NOP
-ScaleObjectCollision_0Hook:
-	J 	ScaleObjectCollision_0
-	NOP
-ScaleObjectCollision_1Hook:
-	J 	ScaleObjectCollision_1
-	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -289,18 +283,6 @@ loadExtraHooks:
 	LUI t4, 0x806A
 	SW t3, 0x8420 (t4) // Store Hook
 	SW r0, 0x8424 (t4) // Store NOP
-	
-	LUI t3, hi(ScaleObjectCollision_0Hook)
-	LW t3, lo(ScaleObjectCollision_0Hook) (t3)
-	LUI t4, 0x806F
-	SW t3, 0x62B4 (t4) // Store Hook
-	SW r0, 0x62B8 (t4) // Store NOP
-	
-	LUI t3, hi(ScaleObjectCollision_1Hook)
-	LW t3, lo(ScaleObjectCollision_1Hook) (t3)
-	LUI t4, 0x806F
-	SW t3, 0x6300 (t4) // Store Hook
-	SW r0, 0x6304 (t4) // Store NOP
 	
 	LUI t3, hi(HandleSlamCheckHook)
 	LW t3, lo(HandleSlamCheckHook) (t3)
