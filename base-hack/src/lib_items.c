@@ -33,12 +33,12 @@ const item_conversion_info item_conversions[] = {
 	{.actor=357, .model_two=602, .scale=0.25f},
 	{.actor=358, .model_two=603, .scale=0.25f},
 	{.actor=361, .model_two=408, .scale=0.25f},
-	{.actor=362, .model_two=436, .scale=0.30f},
+	{.actor=362, .model_two=436, .scale=0.25f},
 	{.actor=363, .model_two=604, .scale=0.25f},
 	{.actor=140, .model_two=183, .scale=0.25f},
 	{.actor=364, .model_two=605, .scale=0.25f},
 	{.actor=52, .model_two=86, .scale=1.00f},
-	{.actor=47, .model_two=606, .scale=1.00f},
+	{.actor=47, .model_two=606, .scale=0.50f},
 	{.actor=121, .model_two=142, .scale=1.00f},
 	{.actor=51, .model_two=143, .scale=1.00f}
 };
@@ -70,12 +70,12 @@ const item_scale_info item_scales[] = {
 	{.type=602, .scale=0.25f},
 	{.type=603, .scale=0.25f},
 	{.type=408, .scale=0.25f},
-	{.type=436, .scale=0.30f},
+	{.type=436, .scale=0.25f},
 	{.type=604, .scale=0.25f},
 	{.type=183, .scale=0.25f},
 	{.type=605, .scale=0.25f},
 	{.type=86, .scale=1.00f},
-	{.type=606, .scale=1.00f},
+	{.type=606, .scale=0.50f},
 	{.type=142, .scale=1.00f},
 	{.type=143, .scale=1.00f}
 };

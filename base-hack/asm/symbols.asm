@@ -205,7 +205,6 @@
 .definelabel menuHeadX, 0x80033F68
 .definelabel menuHeadY, 0x80033F80
 .definelabel menuHeadScale, 0x80033F98
-.definelabel LatestCollectedObject, 0x807FD734
 .definelabel ImageCache, 0x807FC690
 .definelabel ViewedPauseItem, 0x807FC80C
 .definelabel NextViewedPauseItem, 0x807FC80D

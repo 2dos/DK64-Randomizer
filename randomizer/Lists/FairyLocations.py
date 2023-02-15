@@ -391,7 +391,7 @@ fairy_locations = {
             spawn_y=1050,
         ),
         FairyData(
-            name="R&D Pole",
+            name="Research and Development Pole",
             map=Maps.FranticFactory,
             region=Regions.Testing,
             fence=Fence(3129, 1052, 3207, 1110),
@@ -413,7 +413,7 @@ fairy_locations = {
             logic=lambda l: l.camera and ((l.triangle and l.punch and l.ischunky) or l.CanAccessRNDRoom()),
         ),
         FairyData(
-            name="Diddy R&D Room",
+            name="Diddy Research and Development Room",
             map=Maps.FranticFactory,
             region=Regions.RandD,
             fence=Fence(4322, 387, 4672, 597),

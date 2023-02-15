@@ -446,6 +446,10 @@ void initNonControllableFixes(void) {
     *(unsigned short*)(0x806B7ECA) = 125; // 0x8078 for center-bottom ms timer
     // Fix Tag Barrel Background Kong memes
     *(int*)(0x806839F0) = 0x0C000000 | (((int)&tagBarrelBackgroundKong & 0xFFFFFF) >> 2);
+    // Better Collision
+    *(int*)(0x806F6618) = 0x0C000000 | (((int)&checkModelTwoItemCollision & 0xFFFFFF) >> 2);
+    *(int*)(0x806F662C) = 0x0C000000 | (((int)&checkModelTwoItemCollision & 0xFFFFFF) >> 2);
+    
 }
 
 void initQoL(void) {

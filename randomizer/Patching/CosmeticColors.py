@@ -84,12 +84,18 @@ def apply_cosmetic_colors(spoiler: Spoiler):
     if spoiler.settings.misc_cosmetics:
         ROM().seek(sav + 0x196)
         ROM().write(1)
+        # Skybox RGBA
         ROM().seek(sav + 0x197)
         for channel in range(24):
             ROM().writeMultipleBytes(random.randint(0, 255), 1)
+        # Klaptrap Colors
         ROM().seek(sav + 0x1AF)
         for klaptrap in range(2):
             ROM().writeMultipleBytes(random.randint(0, 2), 1)
+        # Wrinkly Color
+        ROM().seek(sav + 0x1B1)
+        for channel in range(3):
+            ROM().writeMultipleBytes(random.randint(0, 255), 1)
     ROM().seek(sav + 0x136)
     ROM().writeMultipleBytes(model_index, 1)
     color_palettes = []

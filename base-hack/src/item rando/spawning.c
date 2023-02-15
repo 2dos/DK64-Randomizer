@@ -109,7 +109,7 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
     }
     if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
         // Protect against null objects
-        if ((ActorMasterType[object] == ACTORMASTER_SPRITE) && ((CurrentMap == 0x53) || (CurrentMap == 0xC5))) {
+        if ((actor_master_types[object] == ACTORMASTER_SPRITE) && ((CurrentMap == 0x53) || (CurrentMap == 0xC5))) {
             // Sprite & Dogadon Fight
             cutscene = 1;
             x_f = 0x43ED8000;
