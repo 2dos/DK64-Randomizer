@@ -895,28 +895,62 @@ def toggle_key_settings(event):
 
 
 @bind("click", "key_8_helm")
-def disable_key_8_plando(evt):
-    """Don't allow the user to place Key 8 if the option to lock it in Helm is
-       selected."""
-    key_8_options = js.document.getElementsByClassName("key-8-option")
-    end_of_helm_dropdown = js.document.getElementById("plando_HelmKey")
+@bind("click", "select_keys")
+@bind("click", "starting_keys_list_selected")
+def disable_keys_plando(evt):
+    """Disable keys from being selected for locations in the plandomizer,
+       depending on the current settings."""
+    # Determine which keys are enabled and which are disabled.
+    disabled_keys = set()
+    if js.document.getElementById("select_keys").checked:
+        starting_keys_list_selected = js.document.getElementById("starting_keys_list_selected")
+        # All keys the user starts with are disabled.
+        disabled_keys.update({x.value for x in starting_keys_list_selected.selectedOptions})
+    # If Key 8 is locked in Helm, it gets disabled.
+    if js.document.getElementById("key_8_helm").checked:
+        disabled_keys.add("key8")
+    item_dropdowns = js.document.getElementsByClassName("plando-item-select")
+    # This dict will map our key strings to enum values.
+    keyEnumDict = {
+        "key1": "JungleJapesKey",
+        "key2": "AngryAztecKey",
+        "key3": "FranticFactoryKey",
+        "key4": "GloomyGalleonKey",
+        "key5": "FungiForestKey",
+        "key6": "CrystalCavesKey",
+        "key7": "CreepyCastleKey",
+        "key8": "HideoutHelmKey"
+    }
+    # Look at every key and react if it's enabled or disabled.
+    for i in range(1, 9):
+        key_string = f"key{i}"
+        if key_string in disabled_keys:
+            key_options = js.document.getElementsByClassName(f"{key_string}-option")
+            # Remove this key as a dropdown option.
+            for option in key_options:
+                option.style.display = "none"
+            # De-select this key everywhere it is selected.
+            for dropdown in item_dropdowns:
+                if dropdown.value == keyEnumDict[key_string]:
+                    dropdown.value = ""
+        else:
+            key_options = js.document.getElementsByClassName(f"{key_string}-option")
+            # Re-add this key as a dropdown option.
+            for option in key_options:
+                option.style = ""
+
+
+@bind("click", "key_8_helm")
+def lock_key_8_in_helm_plando(evt):
+    """If key 8 is locked in Helm, force that location to hold key 8 in the
+       plandomizer."""
     key_8_locked_in_helm = js.document.getElementById("key_8_helm").checked
+    end_of_helm_dropdown = js.document.getElementById("plando_HelmKey")
     if (key_8_locked_in_helm):
-        # Remove Key 8 as a dropdown option.
-        for option in key_8_options:
-            option.style.display = "none"
-        # De-select Key 8 everywhere it is selected.
-        item_dropdowns = js.document.getElementsByClassName("plando-item-select")
-        for dropdown in item_dropdowns:
-            if dropdown.value == "HideoutHelmKey":
-                dropdown.value = ""
         # Forcibly select Key 8 for the End of Helm dropdown and disable it.
         end_of_helm_dropdown.value = "HideoutHelmKey"
         end_of_helm_dropdown.setAttribute("disabled", "disabled")
     else:
-        # Re-enable Key 8 as a dropdown option.
-        for option in key_8_options:
-            option.style = ""
         # Forcibly de-select Key 8 for the End of Helm dropdown and enable it.
         end_of_helm_dropdown.value = ""
         end_of_helm_dropdown.removeAttribute("disabled")

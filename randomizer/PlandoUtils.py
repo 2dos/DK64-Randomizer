@@ -267,13 +267,49 @@ for locEnum, locObj in LocationList.items():
     if locObj.level == Levels.HideoutHelm:
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
 
-# Training barrels cannot have Kongs as a reward.
+# Training barrels should not have anything but moves as a reward.
 trainingBarrelLocationList = [
     Locations.IslesVinesTrainingBarrel.name,
     Locations.IslesSwimTrainingBarrel.name,
     Locations.IslesOrangesTrainingBarrel.name,
     Locations.IslesBarrelsTrainingBarrel.name
 ]
+trainingBarrelRestrictedItemSet = {
+    PlandoItems.NoItem.name,
+    PlandoItems.Donkey.name,
+    PlandoItems.Diddy.name,
+    PlandoItems.Lanky.name,
+    PlandoItems.Tiny.name,
+    PlandoItems.Chunky.name,
+    PlandoItems.NintendoCoin.name,
+    PlandoItems.RarewareCoin.name,
+    PlandoItems.JungleJapesKey.name,
+    PlandoItems.AngryAztecKey.name,
+    PlandoItems.FranticFactoryKey.name,
+    PlandoItems.GloomyGalleonKey.name,
+    PlandoItems.FungiForestKey.name,
+    PlandoItems.CrystalCavesKey.name,
+    PlandoItems.CreepyCastleKey.name,
+    PlandoItems.HideoutHelmKey.name,
+    PlandoItems.GoldenBanana.name,
+    PlandoItems.BananaFairy.name,
+    PlandoItems.BananaMedal.name,
+    PlandoItems.BattleCrown.name,
+    PlandoItems.Bean.name,
+    PlandoItems.Pearl.name,
+    PlandoItems.RainbowCoin.name,
+    PlandoItems.FakeItem.name,
+    PlandoItems.JunkItem.name,
+    PlandoItems.DonkeyBlueprint.name,
+    PlandoItems.DiddyBlueprint.name,
+    PlandoItems.LankyBlueprint.name,
+    PlandoItems.TinyBlueprint.name,
+    PlandoItems.ChunkyBlueprint.name,
+}
+for locationName in trainingBarrelLocationList:
+    ItemRestrictionsPerLocation[locationName].update(trainingBarrelRestrictedItemSet)
+
+# This one rock can't have Kongs as a reward.
 kongSet = {
     PlandoItems.Donkey.name,
     PlandoItems.Diddy.name,
@@ -281,10 +317,6 @@ kongSet = {
     PlandoItems.Tiny.name,
     PlandoItems.Chunky.name
 }
-for locationName in trainingBarrelLocationList:
-    ItemRestrictionsPerLocation[locationName].update(kongSet)
-
-# This one rock also can't have Kongs as a reward.
 ItemRestrictionsPerLocation[Locations.IslesDonkeyJapesRock.name].update(kongSet)
 
 # These specific locations cannot have fake items on them.
@@ -589,9 +621,23 @@ def PlandoOptionClassAnnotation(panel, kong, location, option):
     """A Jinja function that will apply certain CSS classes to dropdown menu
        options, in order to enable various option interactions."""
     classList = []
-    # Key 8 gets its own class.
-    if option == PlandoItems.HideoutHelmKey.name:
-        classList.append("key-8-option")
+    # Each key gets its own class.
+    if option == PlandoItems.JungleJapesKey.name:
+        classList.append("key1-option")
+    elif option == PlandoItems.AngryAztecKey.name:
+        classList.append("key2-option")
+    elif option == PlandoItems.FranticFactoryKey.name:
+        classList.append("key3-option")
+    elif option == PlandoItems.GloomyGalleonKey.name:
+        classList.append("key4-option")
+    elif option == PlandoItems.FungiForestKey.name:
+        classList.append("key5-option")
+    elif option == PlandoItems.CrystalCavesKey.name:
+        classList.append("key6-option")
+    elif option == PlandoItems.CreepyCastleKey.name:
+        classList.append("key7-option")
+    elif option == PlandoItems.HideoutHelmKey.name:
+        classList.append("key8-option")
     # If there are classes to append, add them in a list and return.
     if len(classList) > 0:
         return f"class=\"{' '.join(classList)}\""
