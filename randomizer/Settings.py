@@ -347,6 +347,7 @@ class Settings:
         self.krusha_kong = None
         self.misc_cosmetics = False
         self.remove_water_oscillation = False
+        self.homebrew_header = False
 
         #  Misc
         self.generate_spoilerlog = None

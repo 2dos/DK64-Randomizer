@@ -407,6 +407,15 @@ def patching_response(responded_data):
             ROM().seek(sav + 0x104 + x)
             ROM().write(spoiler.settings.switch_allocation[x])
 
+    if spoiler.settings.homebrew_header:
+        # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM
+        ROM().seek(0x3C)
+        CARTRIDGE_ID = "ED"
+        ROM().writeBytes(CARTRIDGE_ID.encode("ascii"))
+        ROM().seek(0x3F)
+        SAVE_TYPE = 2  # 16K EEPROM
+        ROM().writeMultipleBytes(SAVE_TYPE << 4, 1)
+
     randomize_entrances(spoiler)
     randomize_moves(spoiler)
     randomize_prices(spoiler)
