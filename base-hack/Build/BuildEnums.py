@@ -1,6 +1,7 @@
 """Enums for the build process."""
 from enum import IntEnum, auto
 
+
 class ChangeType(IntEnum):
     """Change Type Enum."""
 

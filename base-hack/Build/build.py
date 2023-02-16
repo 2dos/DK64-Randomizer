@@ -18,7 +18,7 @@ import generate_disco_models
 import model_port
 from BuildEnums import ChangeType, TextureFormat, TableNames
 from BuildClasses import File, pointer_tables
-from BuildLib import main_pointer_table_offset, BLOCK_COLOR_SIZE
+from BuildLib import main_pointer_table_offset, BLOCK_COLOR_SIZE, getFileData
 
 # Patcher functions for the extracted files
 import patch_text
@@ -1007,8 +1007,8 @@ with open(ROMName, "rb") as fh:
             if x.subtype == ChangeType.PointerTable:
                 file_info = getFileInfo(x.pointer_table_index, x.file_index)
                 if file_info:
-                    x.start = file_info["new_absolute_address"]
-                    x.compressed_size = len(file_info["data"])
+                    x.start = file_info.new_absolute_address
+                    x.compressed_size = len(file_info.data)
             if x.start is None:
                 print(vars(x))
             fh.seek(x.start)
@@ -1152,27 +1152,17 @@ with open(newROMName, "r+b") as fh:
     dumpPointerTableDetails("rom/build.log", fh)
 
     # Change Helm Geometry (Can't use main CL Build System because of forced duplication)
-    main_pointer_table_offset = main_pointer_table_offset
-    fh.seek(main_pointer_table_offset + 4)
-    geo_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-    fh.seek(geo_table + (0x11 * 4))
-    helm_geo = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-    helm_geo_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-    helm_geo_size = helm_geo_end - helm_geo
-    fh.seek(helm_geo)
-    for by_i in range(helm_geo_size):
+    file_start, file_size, file_compressed = getFileData(fh, TableNames.MapGeometry, 0x11)
+    fh.seek(file_start)
+    for by_i in range(file_size):
         fh.write((0).to_bytes(1, "big"))
-    fh.seek(helm_geo)
+    fh.seek(file_start)
     with open("helm.bin", "rb") as helm_geo:
         fh.write(gzip.compress(helm_geo.read(), compresslevel=9))
 
     # Replace Helm Text
-    main_pointer_table_offset = main_pointer_table_offset
-    fh.seek(main_pointer_table_offset + (12 * 4))
-    text_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-    fh.seek(text_table + (19 * 4))
-    misc_text = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-    fh.seek(misc_text + 0x750)
+    file_start, file_size, file_compressed = getFileData(fh, TableNames.Text, 19)
+    fh.seek(file_start + 0x7B9)
     fh.write(("?").encode("ascii"))
     for i in range(0x15):
         fh.write(("\0").encode("ascii"))

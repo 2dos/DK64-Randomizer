@@ -3,6 +3,7 @@ import zlib
 import os
 from BuildLib import main_pointer_table_offset
 
+
 class Vert:
     """Vertex Information."""
 

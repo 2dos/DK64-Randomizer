@@ -5,6 +5,7 @@ import zlib
 from PIL import Image
 from BuildLib import main_pointer_table_offset
 
+
 class ImageData:
     """Class to store information regarding images."""
 

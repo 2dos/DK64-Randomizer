@@ -152,6 +152,7 @@ void FakeGBCode(void) {
     if (CurrentActorPointer_0->yVelocity > 500.0f) {
         CurrentActorPointer_0->yVelocity = 500.0f;
     }
+    CurrentActorPointer_0->rot_y -= 0xE4; // Spin in reverse
 }
 
 void mermaidCheck(void) {

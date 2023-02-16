@@ -7,6 +7,7 @@ from BuildEnums import ChangeType, TableNames, TextureFormat
 from BuildLib import main_pointer_table_offset
 import encoders
 
+
 class File:
     """Class to store information regarding file changes."""
 
@@ -85,6 +86,7 @@ class File:
             else:
                 print(" - ERROR: Unsupported texture format " + self.getTextureFormatName())
 
+
 class TableEntry:
     """Class to store information regarding a Table Entry."""
 
@@ -99,7 +101,7 @@ class TableEntry:
         self.original_sha1 = ""
         self.new_sha1 = None
         self.filename = None
-    
+
     def initVanillaFile(self, index: int, base_address: int, raw_address: int, next_address: int):
         """Initialize with given parameters."""
         self.index = index
@@ -111,10 +113,15 @@ class TableEntry:
         self.original_sha1 = ""
         self.new_sha1 = ""
 
-    def initVanillaSHA(self, target_sha:str):
+    def initVanillaSHA(self, target_sha: str):
         """Initialize SHA attributes for a vanilla file."""
         self.original_sha1 = target_sha
         self.new_sha1 = target_sha
+
+    def hasChanged(self):
+        """Check if the file has changed at all."""
+        return self.original_sha1 != self.new_sha1
+
 
 class TableInfo:
     """Class to store information regarding a pointer table."""
@@ -130,6 +137,8 @@ class TableInfo:
         encoder=None,
         decoder=None,
         do_not_compress=None,
+        force_rewrite=False,
+        force_relocate=False,
     ):
         """Initialize with given parameters."""
         if name == "":
@@ -143,6 +152,8 @@ class TableInfo:
         self.encoder = encoder
         self.decoder = decoder
         self.do_not_compress = do_not_compress
+        self.force_rewrite = force_rewrite
+        self.force_relocate = force_relocate
         # Static
         self.entries: list[TableEntry] = []
         self.num_entries = 0
@@ -170,6 +181,7 @@ class TableInfo:
             new_entry.initVanillaFile(i, self.absolute_address, raw_int, next_absolute_address)
             self.entries.append(new_entry)
 
+
 pointer_tables = [
     TableInfo(
         name="Music MIDI",
@@ -180,6 +192,7 @@ pointer_tables = [
         index=TableNames.MapGeometry,
         encoded_filename="geometry.bin",
         decoded_filename="geometry.todo",
+        force_relocate=True,
     ),
     TableInfo(
         name="Map Walls",
@@ -187,6 +200,7 @@ pointer_tables = [
         encoded_filename="walls.bin",
         decoded_filename="walls.obj",
         dont_overwrite_uncompressed_sizes=True,
+        force_relocate=True,
     ),
     TableInfo(
         name="Map Floors",
@@ -194,6 +208,7 @@ pointer_tables = [
         encoded_filename="floors.bin",
         decoded_filename="floors.obj",
         dont_overwrite_uncompressed_sizes=True,
+        force_relocate=True,
     ),
     TableInfo(
         name="Object Model 2 Geometry",
@@ -231,6 +246,7 @@ pointer_tables = [
         index=TableNames.InstanceScripts,
         encoded_filename="object_behaviour_scripts.bin",
         decoded_filename="object_behaviour_scripts.todo",
+        force_relocate=True,
     ),
     TableInfo(
         name="Animations",
@@ -326,3 +342,14 @@ pointer_tables = [
     TableInfo(index=TableNames.Unknown31),
 ]
 num_tables = len(pointer_tables)
+
+
+class PointerFile:
+    """Class to store information regarding a pointer table file."""
+
+    def __init__(self, address: int, data: bytes, sha1: str, uncompressed_size: int):
+        """Initialize with given parameters."""
+        self.new_absolute_address = address
+        self.data = data
+        self.sha1 = sha1
+        self.uncompressed_size = uncompressed_size

@@ -6,7 +6,7 @@ from typing import BinaryIO
 from BuildNames import maps
 from BuildLib import main_pointer_table_offset
 from BuildEnums import TableNames
-from BuildClasses import TableEntry, pointer_tables
+from BuildClasses import TableEntry, pointer_tables, PointerFile
 
 # The address of the next available byte of free space in ROM
 # used when appending files to the end of the ROM
@@ -18,29 +18,6 @@ next_available_free_space = 0x2030000  # TODO: Get this calculating automaticall
 pointer_table_files = []
 for x in pointer_tables:
     pointer_table_files.append({})
-
-force_table_rewrite = [
-    # 0, # Music MIDI
-    # 1, # Map Geometry
-    # 2, # Map Walls
-    # 3, # Map Floors
-    # 4, # Object Model 2 Geometry
-    # 5, # Actor Geometry
-    # 7, # Textures (Uncompressed)
-    # 8, # Map Cutscenes
-    # 9, # Map Object Setups
-    # 10, # Map Object Model 2 Behaviour Scripts
-    # 11, # Animations
-    # 12, # Text
-    # 14, # Textures
-    # 15, # Map Paths
-    # 16, # Map Character Spawners
-    # 18, # Map Loading Zones
-    # 21, # Map Autowalk Data
-    # 23, # Map Exits
-    # 24, # Map Race Checkpoints
-    # 25, # Textures
-]
 
 
 def make_safe_filename(s: str):
@@ -97,7 +74,7 @@ def getPointerTableCompressedSize(pointer_table_index: int):
         for entry in pointer_table.entries:
             file_info = getFileInfo(pointer_table_index, entry.index)
             if file_info:
-                total_compressed_size += len(file_info["data"])
+                total_compressed_size += len(file_info.data)
     return total_compressed_size
 
 
@@ -137,11 +114,11 @@ def parsePointerTables(fh: BinaryIO):
                     lookup_index = int.from_bytes(fh.read(2), "big")
                     file_info = getFileInfo(x.index, lookup_index)
                     if file_info:
-                        y.initVanillaSHA(file_info["sha1"])
+                        y.initVanillaSHA(file_info.sha1)
                         # y.bit_set = False # We'll turn this back on later when recomputing pointer tables
 
 
-def addFileToDatabase(fh: BinaryIO, absolute_address: int, absolute_size: int, pointer_table_index: int, file_index: int):
+def addFileToDatabase(fh: BinaryIO, absolute_address: int, absolute_size: int, pointer_table_index: int, file_index: int) -> PointerFile:
     """Add the files to the database."""
     # TODO: Get rid of this check
     for x in pointer_tables:
@@ -156,16 +133,12 @@ def addFileToDatabase(fh: BinaryIO, absolute_address: int, absolute_size: int, p
 
     pointer_tables[pointer_table_index].entries[file_index].initVanillaSHA(dataSHA1Hash)
 
-    pointer_table_files[pointer_table_index][dataSHA1Hash] = {
-        "new_absolute_address": absolute_address,
-        "data": data,
-        "sha1": dataSHA1Hash,
-        "uncompressed_size": getOriginalUncompressedSize(fh, pointer_table_index, file_index),
-    }
+    pointer_table_files[pointer_table_index][dataSHA1Hash] = PointerFile(absolute_address, data, dataSHA1Hash, getOriginalUncompressedSize(fh, pointer_table_index, file_index))
+
     return pointer_table_files[pointer_table_index][dataSHA1Hash]
 
 
-def getFileInfo(pointer_table_index: int, file_index: int):
+def getFileInfo(pointer_table_index: int, file_index: int) -> PointerFile:
     """Get the files info."""
     if pointer_table_index not in range(len(pointer_tables)):
         return
@@ -194,7 +167,7 @@ def replaceROMFile(rom: BinaryIO, pointer_table_index: int, file_index: int, dat
 
     # Insert the new data into the database
     dataSHA1Hash = hashlib.sha1(data).hexdigest()
-    pointer_table_files[pointer_table_index][dataSHA1Hash] = {"data": data, "sha1": dataSHA1Hash, "uncompressed_size": uncompressed_size}
+    pointer_table_files[pointer_table_index][dataSHA1Hash] = PointerFile(None, data, dataSHA1Hash, uncompressed_size)
 
     # Update the entry in the pointer table to point to the new data
     if file_index >= len(pointer_tables[pointer_table_index].entries):
@@ -238,9 +211,9 @@ def clampCompressedTextures(rom: BinaryIO, cap: int):
         pointer_tables[TableNames.TexturesGeometry].num_entries = cap
 
         # Update uncompressed pointer table entry
-        rom.seek(main_pointer_table_offset + (4 * 26))
+        rom.seek(main_pointer_table_offset + (4 * TableNames.UncompressedFileSizes))
         uncompressed_table_location = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-        rom.seek(uncompressed_table_location + (4 * 25))
+        rom.seek(uncompressed_table_location + (4 * TableNames.TexturesGeometry))
         uncompressed_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         uncompressed_finish = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         uncompressed_table_size = uncompressed_finish - uncompressed_start
@@ -263,13 +236,13 @@ def shouldWritePointerTable(index: int):
     if pointer_tables[index].num_entries == 0:
         return False
 
-    if index in force_table_rewrite:
+    if pointer_tables[index].force_rewrite:
         return True
 
     # TODO: Better logic for this
     if pointer_tables[index]:
         for y in pointer_tables[index].entries:
-            if y.original_sha1 != y.new_sha1:
+            if y.hasChanged():
                 return True
 
     return False
@@ -278,9 +251,8 @@ def shouldWritePointerTable(index: int):
 def shouldRelocatePointerTable(index: int):
     """Relocate the pointer table."""
     # TODO: Remove this once deduplication is implemented
-    # Note: Always relocate map walls, floors, geometry, and model 2 behaviour scripts
-    # These tables contain bit_set entries so cannot be rewritten in place until deduplication works properly
-    if index in [TableNames.MapGeometry, TableNames.MapWalls, TableNames.MapFloors, TableNames.InstanceScripts]:
+    # Note: Always relocate tables which contain bit_set entries, so cannot be rewritten in place until deduplication works properly
+    if pointer_tables[index].force_relocate:
         return True
 
     return getPointerTableCompressedSize(index) > pointer_tables[index].original_compressed_size
@@ -309,10 +281,10 @@ def writeModifiedPointerTablesToROM(fh: BinaryIO):
             file_info = getFileInfo(x.index, y.index)
             y.new_absolute_address = write_pointer
             if file_info:
-                if len(file_info["data"]) > 0:
-                    write_pointer += len(file_info["data"])
+                if len(file_info.data) > 0:
+                    write_pointer += len(file_info.data)
                     fh.seek(y.new_absolute_address)
-                    fh.write(file_info["data"])
+                    fh.write(file_info.data)
 
         # If the files have been appended to ROM, we need to move the free space pointer along by the number of bytes written
         if should_relocate:
@@ -333,11 +305,11 @@ def writeModifiedPointerTablesToROM(fh: BinaryIO):
             if file_info:
                 # Pointers to regular files calculated as normal
                 adjusted_pointer = y.new_absolute_address - main_pointer_table_offset
-                next_pointer = y.new_absolute_address + len(file_info["data"]) - main_pointer_table_offset
+                next_pointer = y.new_absolute_address + len(file_info.data) - main_pointer_table_offset
 
                 # Update the uncompressed filesize
-                if y.original_sha1 != y.new_sha1:
-                    writeUncompressedSize(fh, x.index, y.index, file_info["uncompressed_size"])
+                if y.hasChanged():
+                    writeUncompressedSize(fh, x.index, y.index, file_info.uncompressed_size)
             else:
                 adjusted_pointer = next_pointer
 
@@ -375,7 +347,7 @@ def dumpPointerTableDetails(filename: str, fr: BinaryIO):
                 "index": int(len(entries)),
                 "new_address": int(x.new_absolute_address + y.index * 4),
                 "pointing_to": int(pointing_to),
-                "compressed_size": int(len(file_info["data"])) if file_info else None,
+                "compressed_size": int(len(file_info.data)) if file_info else None,
                 "uncompressed_size": int(uncompressed_size) if uncompressed_size > 0 else None,
                 "bit_set": y.bit_set,
                 "map_index": maps[y.index] if x.num_entries == 221 else None,
@@ -425,7 +397,7 @@ def dumpPointerTableDetailsLegacy(filename: str, fr: BinaryIO):
 
                 file_info = getFileInfo(x.index, y.index)
                 if file_info:
-                    fh.write(" (" + hex(len(file_info["data"])) + ")")
+                    fh.write(" (" + hex(len(file_info.data)) + ")")
                 else:
                     fh.write(" WARNING: File info not found")
 
