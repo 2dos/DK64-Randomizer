@@ -7,6 +7,7 @@ from pyodide import create_proxy
 
 import js
 from randomizer.BackgroundRandomizer import generate_playthrough
+from randomizer.Enums.Settings import Settings, SettingsMap
 from randomizer.Patching.ApplyRandomizer import patching_response
 from randomizer.SettingStrings import decrypt_setting_string, encrypt_settings_string
 from randomizer.Worker import background
@@ -25,7 +26,6 @@ from ui.rando_options import (
     toggle_counts_boxes,
     update_boss_required,
 )
-from ui.settings_enums import Settings, SettingsMap
 
 
 @bind("click", "export_settings")

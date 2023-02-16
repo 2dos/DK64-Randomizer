@@ -13,6 +13,7 @@ from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import Settings as SettingsEnum, SettingsMap
 from randomizer.Enums.Types import Types
 import randomizer.ItemPool as ItemPool
 from randomizer.Lists.Item import ItemList
@@ -60,10 +61,8 @@ class Settings:
         self.generate_misc()
         self.rom_data = 0x1FED020
         self.move_location_data = 0x1FEF000
-        print(form_data)
 
-        for k, v in form_data.items():
-            setattr(self, k, v)
+        self.apply_form_data(form_data)
         self.seed_id = str(self.seed)
         if self.generate_spoilerlog is None:
             self.generate_spoilerlog = False
@@ -128,6 +127,30 @@ class Settings:
 
         self.resolve_settings()
         self.update_valid_locations()
+
+
+    def apply_form_data(self, form_data):
+        for k, v in form_data.items():
+            try:
+                settingKey = SettingsEnum(int(k))
+                # If this settingKey is associated with an enum, convert the
+                # value(s) to that enum.
+                if settingKey in SettingsMap:
+                    if type(v) is list:
+                        settingValue = []
+                        for val in v:
+                            settingValue.append(SettingsMap[settingKey](val))
+                        setattr(self, settingKey.name, settingValue)
+                    else:
+                        settingValue = SettingsMap[settingKey](v)
+                        setattr(self, settingKey.name, settingValue)
+                else:
+                    # The value is a basic type, so assign it directly.
+                    setattr(self, settingKey.name, v)
+            except ValueError:
+                # This currently happens with "seed", trying to figure out why.
+                setattr(self, k, v)
+
 
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
