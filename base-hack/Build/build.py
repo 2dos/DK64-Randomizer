@@ -1477,16 +1477,6 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FF4000)
     fh.write(size.to_bytes(4, "big"))
 
-# Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM
-with open(newROMName, "r+b") as fh:
-    fh.seek(0x3C)
-    CARTRIDGE_ID = "ED"
-    fh.write(CARTRIDGE_ID.encode("ascii"))
-    fh.seek(0x3F)
-    SAVE_TYPE = 2  # 16K EEPROM
-    fh.write((SAVE_TYPE << 4).to_bytes(1, "big"))
-
-
 print("[7 / 7] - Generating BizHawk RAM watch")
 
 sys.exit()

@@ -33,6 +33,17 @@ a:hover {
   margin: 0px 0px 9px 3px;
 }
 
+.warning-icon {
+  width: 11px;
+  cursor: pointer;
+  transition: 0.5s ease-in-out;
+}
+
+.warning-icon:hover {
+  fill: #035e30;
+  stroke: #035e30;
+}
+
 .form-switch {
   transform: scale(1.3);
 }
