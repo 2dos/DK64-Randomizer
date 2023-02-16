@@ -60,6 +60,7 @@ class Settings:
         self.generate_misc()
         self.rom_data = 0x1FED020
         self.move_location_data = 0x1FEF000
+        print(form_data)
 
         for k, v in form_data.items():
             setattr(self, k, v)

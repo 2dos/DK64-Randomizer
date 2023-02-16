@@ -198,8 +198,7 @@ def convertEnemyName(name):
 
 
 EnemySelector = []
-for enemy in EnemyMetaData:
-    item = EnemyMetaData[enemy]
-    if item.selector_enabled:
-        EnemySelector.append({"name": item.name, "value": convertEnemyName(item.name), "tooltip": ""})
+for enemyEnum, enemy in EnemyMetaData.items():
+    if enemy.selector_enabled:
+        EnemySelector.append({"name": enemy.name, "value": enemyEnum.name, "tooltip": ""})
 EnemySelector = sorted(EnemySelector.copy(), key=lambda d: d["name"])

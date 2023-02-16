@@ -25,6 +25,7 @@ from ui.rando_options import (
     toggle_counts_boxes,
     update_boss_required,
 )
+from ui.settings_enums import Settings, SettingsMap
 
 
 @bind("click", "export_settings")
@@ -147,7 +148,7 @@ def generate_seed_from_patch(event):
 
 
 def serialize_settings():
-    """Serialize form settings into a JSON string.
+    """Serialize form settings into an enum-focused JSON string.
 
     Returns:
         dict: Dictionary of form settings.
@@ -173,32 +174,65 @@ def serialize_settings():
             return True
         except ValueError:
             pass
+    
+    def get_setting_enum(s):
+        """Obtain the setting enum value that corresponds to this string. If it
+           can't be found, throw an error and retur None."""
+        if s == "":
+            return None
+        try:
+            return Settings[s]
+        except KeyError:
+            # The only setting that should intentionally bring us here is
+            # 'search', which is the search bar from the modals. Anything else
+            # indicates a setting that has not been added correctly.
+            if s != "search":
+                print(f"ERROR: setting name '{s}' not recognized.")
+            return None
+        
+    def get_enum_or_string_value(valueString, settingEnum):
+        """Obtain the enum value that corresponds to the provided setting, if
+           it exists. Otherwise, return the string."""
+        if settingEnum in SettingsMap:
+            return SettingsMap[settingEnum][valueString]
+        else:
+            return valueString
 
     for obj in form:
+        settingEnum = get_setting_enum(obj.name)
+        if settingEnum == None:
+            continue
         # Verify each object if its value is a string convert it to a bool
         if obj.value.lower() in ["true", "false"]:
-            form_data[obj.name] = bool(obj.value)
+            form_data[settingEnum] = bool(obj.value)
         else:
             if is_number(obj.value):
-                form_data[obj.name] = int(obj.value)
+                form_data[settingEnum] = int(obj.value)
             else:
-                form_data[obj.name] = obj.value
+                form_data[settingEnum] = get_enum_or_string_value(obj.value, settingEnum)
     # find all input boxes and verify their checked status
     for element in js.document.getElementsByTagName("input"):
+        settingEnum = get_setting_enum(element.name)
+        if settingEnum == None:
+            continue
         if element.type == "checkbox" and not element.checked:
-            if not form_data.get(element.name):
-                form_data[element.name] = False
+            if not form_data.get(settingEnum):
+                form_data[settingEnum] = False
     # Re disable all previously disabled options
     for element in disabled_options:
         element.setAttribute("disabled", "disabled")
+    # Create value lists for multi-select options
     for element in js.document.getElementsByTagName("select"):
         if "selected" in element.className:
+            settingEnum = get_setting_enum(element.getAttribute("name"))
+            if settingEnum == None:
+                continue
             length = element.options.length
             values = []
             for i in range(0, length):
                 if element.options.item(i).selected:
-                    values.append(element.options.item(i).value)
-            form_data[element.getAttribute("name")] = values
+                    values.append(get_enum_or_string_value(element.options.item(i).value, settingEnum))
+            form_data[settingEnum] = values
     return form_data
 
 
@@ -219,8 +253,8 @@ def generate_seed(event):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ProgressBar().update_progress(0, "Initalizing"))
         form_data = serialize_settings()
-        if not form_data.get("seed"):
-            form_data["seed"] = str(random.randint(100000, 999999))
+        if not form_data.get(Settings.seed):
+            form_data[Settings.seed] = str(random.randint(100000, 999999))
         js.apply_bps_javascript()
         loop.run_until_complete(ProgressBar().update_progress(2, "Randomizing, this may take some time depending on settings."))
         # background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
