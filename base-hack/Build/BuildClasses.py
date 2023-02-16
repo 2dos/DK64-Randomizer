@@ -27,6 +27,42 @@ class TextureFormat(IntEnum):
     IA8 = auto()
     IA4 = auto()
 
+class TableNames(IntEnum):
+    """Pointer Table Enum."""
+
+    MusicMIDI = 0
+    MapGeometry = auto()
+    MapWalls = auto()
+    MapFloors = auto()
+    ModelTwoGeometry = auto()
+    ActorGeometry = auto()
+    Unknown6 = auto()
+    TexturesUncompressed = auto()
+    Cutscenes = auto()
+    Setups = auto()
+    InstanceScripts = auto()
+    Animations = auto()
+    Text = auto()
+    Unknown13 = auto()
+    TexturesHUD = auto()
+    Paths = auto()
+    Spawners = auto()
+    DKTVInputs = auto()
+    Triggers = auto()
+    Unknown19 = auto()
+    Unknown20 = auto()
+    Autowalks = auto()
+    Unknown22 = auto()
+    Exits = auto()
+    RaceCheckpoints = auto()
+    TexturesGeometry = auto()
+    UncompressedFileSizes = auto()
+    Unknown27 = auto()
+    Unknown28 = auto()
+    Unknown29 = auto()
+    Unknown30 = auto()
+    Unknown31 = auto()
+
 class File:
     """Class to store information regarding file changes."""
 
@@ -40,7 +76,7 @@ class File:
                  use_external_gzip=False,
                  use_zlib=False,
                  patcher=None,
-                 pointer_table_index=0,
+                 pointer_table_index:TableNames=TableNames.MusicMIDI,
                  file_index=0,
                  texture_format:TextureFormat=TextureFormat.Null,
                  bps_file=None,
@@ -101,7 +137,7 @@ class File:
                     self.start = file_info["new_absolute_address"]
                     self.compressed_size = len(file_info["data"])
             if self.start is None:
-                print(self)
+                print(vars(self))
             fh.seek(self.start)
             byte_read = fh.read(self.compressed_size)
 

@@ -16,7 +16,7 @@ import instance_script_maker
 import model_fix
 import generate_disco_models
 import model_port
-from BuildClasses import ChangeType, TextureFormat, File, BLOCK_COLOR_SIZE
+from BuildClasses import ChangeType, TextureFormat, File, TableNames, BLOCK_COLOR_SIZE
 
 # Patcher functions for the extracted files
 import patch_text
@@ -66,50 +66,50 @@ getHelmDoorModel(6024, 6025, "coin_door.bin")
 
 file_dict = [
     File(name="Static ASM Code", subtype=ChangeType.FixedLocation, start=0x113F0, compressed_size=0xB15E4, source_file="StaticCode.bin", use_external_gzip=True, patcher=patchStaticCode),
-    File(name="Dolby Logo", pointer_table_index=14, file_index=176, source_file="assets/Dolby/DolbyThin.png", texture_format=TextureFormat.IA4),
-    File(name="Thumb Image", pointer_table_index=14, file_index=94, source_file="assets/Nintendo Logo/Nintendo5.png", texture_format=TextureFormat.RGBA5551),
-    File(name="DKTV Image", pointer_table_index=14, file_index=44, source_file="assets/DKTV/logo3.png", texture_format=TextureFormat.RGBA5551),
-    File(name="Spin Transition Image", pointer_table_index=14, file_index=95, source_file="assets/transition/transition-body.png", texture_format=TextureFormat.IA4),
-    File(name="Moves Image", pointer_table_index=14, file_index=115, source_file="assets/file_screen/moves.png", texture_format=TextureFormat.RGBA5551),
-    File(name="Medal Image", pointer_table_index=14, file_index=116, source_file="assets/displays/medal.png", texture_format=TextureFormat.RGBA5551),
-    File(name="Tag Barrel Shell Texture", pointer_table_index=25, file_index=4938, source_file="assets/tagbarrel/shell.png", texture_format=TextureFormat.RGBA5551),
-    File(name="Gong Geometry", pointer_table_index=4, file_index=195, source_file="assets/Gong/gong_geometry.bin", bps_file="assets/Gong/gong_geometry.bps"),
-    File(name="End Sequence Credits", pointer_table_index=19, file_index=7, source_file="assets/credits/credits.bin", do_not_delete_source=True),
-    File(name="DK Wrinkly Door", pointer_table_index=4, file_index=240, source_file="assets/Gong/hint_door.bin", do_not_delete_source=True, target_compressed_size=0x1420, target_uncompressed_size=0x1420),
-    File(name="WXY_Slash", pointer_table_index=14, file_index=12, source_file="assets/displays/wxys.png", texture_format=TextureFormat.RGBA5551),
-    File(name="DK Tie Palette", pointer_table_index=25, file_index=6013, source_file="assets/hash/dk_tie_palette.png", do_not_extract=True, texture_format=TextureFormat.RGBA5551, target_compressed_size=BLOCK_COLOR_SIZE),
-    File(name="Tiny Overalls Palette", pointer_table_index=25, file_index=6014, source_file="assets/hash/tiny_palette.png", do_not_extract=True, texture_format=TextureFormat.RGBA5551, target_compressed_size=BLOCK_COLOR_SIZE),
-    File(name="Bean Sprite", pointer_table_index=25, file_index=6020, source_file="assets/displays/bean.png", do_not_extract=True, texture_format=TextureFormat.RGBA5551),     
-    File(name="Pearl Sprite", pointer_table_index=25, file_index=6021, source_file="assets/displays/pearl.png", do_not_extract=True, texture_format=TextureFormat.RGBA5551),   
-    File(name="Kong (DK) Model", pointer_table_index=4, file_index=599, source_file="kong_dk_om2.bin", do_not_extract=True, do_not_delete_source=True),
-    File(name="Kong (Diddy) Model", pointer_table_index=4, file_index=600, source_file="kong_diddy_om2.bin", do_not_extract=True, do_not_delete_source=True),
-    File(name="Kong (Lanky) Model", pointer_table_index=4, file_index=601, source_file="kong_lanky_om2.bin", do_not_extract=True, do_not_delete_source=True),
-    File(name="Kong (Tiny) Model", pointer_table_index=4, file_index=602, source_file="kong_tiny_om2.bin", do_not_extract=True, do_not_delete_source=True),
-    File(name="Kong (Chunky) Model", pointer_table_index=4, file_index=603, source_file="kong_chunky_om2.bin", do_not_extract=True, do_not_delete_source=True),
-    File(name="Fairy Model", pointer_table_index=4, file_index=604, source_file="fairy_om2.bin", do_not_extract=True, do_not_delete_source=True),
-    File(name="DPad Image", pointer_table_index=14, file_index=187, source_file="assets/displays/dpad.png", texture_format=TextureFormat.RGBA5551),
-    File(name="Tracker Image", pointer_table_index=14, file_index=161, source_file="assets/file_screen/tracker.png", texture_format=TextureFormat.RGBA5551),
-    File(name="Nintendo Coin Model", pointer_table_index=4, file_index=72, source_file="nintendo_coin_om2.bin", do_not_delete_source=True),
-    File(name="Nintendo Coin Model", pointer_table_index=4, file_index=183, source_file="rainbow_coin_om2.bin", do_not_delete_source=True),
-    File(name="Rareware Coin Model", pointer_table_index=4, file_index=655, source_file="rareware_coin_om2.bin", do_not_delete_source=True),
-    File(name="Potion (DK) Model", pointer_table_index=4, file_index=91, source_file="potion_dk_om2.bin", do_not_delete_source=True),
-    File(name="Potion (Diddy) Model", pointer_table_index=4, file_index=498, source_file="potion_diddy_om2.bin", do_not_delete_source=True),
-    File(name="Potion (Lanky) Model", pointer_table_index=4, file_index=89, source_file="potion_lanky_om2.bin", do_not_delete_source=True),
-    File(name="Potion (Tiny) Model", pointer_table_index=4, file_index=499, source_file="potion_tiny_om2.bin", do_not_delete_source=True),
-    File(name="Potion (Chunky) Model", pointer_table_index=4, file_index=501, source_file="potion_chunky_om2.bin", do_not_delete_source=True),
-    File(name="Potion (Any) Model", pointer_table_index=4, file_index=502, source_file="potion_any_om2.bin", do_not_delete_source=True),
+    File(name="Dolby Logo", pointer_table_index=TableNames.TexturesHUD, file_index=176, source_file="assets/Dolby/DolbyThin.png", texture_format=TextureFormat.IA4),
+    File(name="Thumb Image", pointer_table_index=TableNames.TexturesHUD, file_index=94, source_file="assets/Nintendo Logo/Nintendo5.png", texture_format=TextureFormat.RGBA5551),
+    File(name="DKTV Image", pointer_table_index=TableNames.TexturesHUD, file_index=44, source_file="assets/DKTV/logo3.png", texture_format=TextureFormat.RGBA5551),
+    File(name="Spin Transition Image", pointer_table_index=TableNames.TexturesHUD, file_index=95, source_file="assets/transition/transition-body.png", texture_format=TextureFormat.IA4),
+    File(name="Moves Image", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/file_screen/moves.png", texture_format=TextureFormat.RGBA5551),
+    File(name="Medal Image", pointer_table_index=TableNames.TexturesHUD, file_index=116, source_file="assets/displays/medal.png", texture_format=TextureFormat.RGBA5551),
+    File(name="Tag Barrel Shell Texture", pointer_table_index=TableNames.TexturesGeometry, file_index=4938, source_file="assets/tagbarrel/shell.png", texture_format=TextureFormat.RGBA5551),
+    File(name="Gong Geometry", pointer_table_index=TableNames.ModelTwoGeometry, file_index=195, source_file="assets/Gong/gong_geometry.bin", bps_file="assets/Gong/gong_geometry.bps"),
+    File(name="End Sequence Credits", pointer_table_index=TableNames.Unknown19, file_index=7, source_file="assets/credits/credits.bin", do_not_delete_source=True),
+    File(name="DK Wrinkly Door", pointer_table_index=TableNames.ModelTwoGeometry, file_index=240, source_file="assets/Gong/hint_door.bin", do_not_delete_source=True, target_compressed_size=0x1420, target_uncompressed_size=0x1420),
+    File(name="WXY_Slash", pointer_table_index=TableNames.TexturesHUD, file_index=12, source_file="assets/displays/wxys.png", texture_format=TextureFormat.RGBA5551),
+    File(name="DK Tie Palette", pointer_table_index=TableNames.TexturesGeometry, file_index=6013, source_file="assets/hash/dk_tie_palette.png", do_not_extract=True, texture_format=TextureFormat.RGBA5551, target_compressed_size=BLOCK_COLOR_SIZE),
+    File(name="Tiny Overalls Palette", pointer_table_index=TableNames.TexturesGeometry, file_index=6014, source_file="assets/hash/tiny_palette.png", do_not_extract=True, texture_format=TextureFormat.RGBA5551, target_compressed_size=BLOCK_COLOR_SIZE),
+    File(name="Bean Sprite", pointer_table_index=TableNames.TexturesGeometry, file_index=6020, source_file="assets/displays/bean.png", do_not_extract=True, texture_format=TextureFormat.RGBA5551),     
+    File(name="Pearl Sprite", pointer_table_index=TableNames.TexturesGeometry, file_index=6021, source_file="assets/displays/pearl.png", do_not_extract=True, texture_format=TextureFormat.RGBA5551),   
+    File(name="Kong (DK) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=599, source_file="kong_dk_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Kong (Diddy) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=600, source_file="kong_diddy_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Kong (Lanky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=601, source_file="kong_lanky_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Kong (Tiny) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=602, source_file="kong_tiny_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Kong (Chunky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=603, source_file="kong_chunky_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Fairy Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=604, source_file="fairy_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="DPad Image", pointer_table_index=TableNames.TexturesHUD, file_index=187, source_file="assets/displays/dpad.png", texture_format=TextureFormat.RGBA5551),
+    File(name="Tracker Image", pointer_table_index=TableNames.TexturesHUD, file_index=161, source_file="assets/file_screen/tracker.png", texture_format=TextureFormat.RGBA5551),
+    File(name="Nintendo Coin Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=72, source_file="nintendo_coin_om2.bin", do_not_delete_source=True),
+    File(name="Nintendo Coin Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=183, source_file="rainbow_coin_om2.bin", do_not_delete_source=True),
+    File(name="Rareware Coin Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=655, source_file="rareware_coin_om2.bin", do_not_delete_source=True),
+    File(name="Potion (DK) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=91, source_file="potion_dk_om2.bin", do_not_delete_source=True),
+    File(name="Potion (Diddy) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=498, source_file="potion_diddy_om2.bin", do_not_delete_source=True),
+    File(name="Potion (Lanky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=89, source_file="potion_lanky_om2.bin", do_not_delete_source=True),
+    File(name="Potion (Tiny) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=499, source_file="potion_tiny_om2.bin", do_not_delete_source=True),
+    File(name="Potion (Chunky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=501, source_file="potion_chunky_om2.bin", do_not_delete_source=True),
+    File(name="Potion (Any) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=502, source_file="potion_any_om2.bin", do_not_delete_source=True),
     File(name="Krusha Head", subtype=ChangeType.FixedLocation, start=0x1ff6000, source_file="assets/displays/krusha_head64.png", do_not_delete_source=True, texture_format=TextureFormat.RGBA5551, do_not_compress=True),
     File(name="Snow Texture", subtype=ChangeType.FixedLocation, start=0x1ff8000, source_file="assets/displays/snow32.png", do_not_delete_source=True, texture_format=TextureFormat.RGBA5551, do_not_compress=True),
-    File(name="Crown Door Model", pointer_table_index=4, file_index=422, source_file="crown_door.bin", do_not_delete_source=True),
-    File(name="Coin Door Model", pointer_table_index=4, file_index=423, source_file="coin_door.bin", do_not_delete_source=True),
-    File(name="Crown Door Image 1", pointer_table_index=25, file_index=6022, source_file="assets/displays/door_crown.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True, target_compressed_size=0xf20),
-    File(name="Crown Door Image 2", pointer_table_index=25, file_index=6023, source_file="assets/displays/num_4.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True, target_compressed_size=0xf20),
-    File(name="Coin Door Image 1", pointer_table_index=25, file_index=6024, source_file="assets/displays/door_combocoin.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True, target_compressed_size=0xf20),
-    File(name="Coin Door Image 2", pointer_table_index=25, file_index=6025, source_file="assets/displays/num_2.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True, target_compressed_size=0xf20),
-    File(name="Fake GB Shine", pointer_table_index=25, file_index=6062, source_file="assets/displays/gb_shine.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True),
-    File(name="Melon Surface", pointer_table_index=25, file_index=6066, source_file="assets/hash/melon_resized.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True, target_compressed_size=0x800),
-    File(name="Fake Item Model", pointer_table_index=4, file_index=605, source_file="fake_item.bin", do_not_delete_source=True, do_not_extract=True),
-    File(name="Melon Model", pointer_table_index=4, file_index=606, source_file="melon_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="Crown Door Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=422, source_file="crown_door.bin", do_not_delete_source=True),
+    File(name="Coin Door Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=423, source_file="coin_door.bin", do_not_delete_source=True),
+    File(name="Crown Door Image 1", pointer_table_index=TableNames.TexturesGeometry, file_index=6022, source_file="assets/displays/door_crown.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True, target_compressed_size=0xf20),
+    File(name="Crown Door Image 2", pointer_table_index=TableNames.TexturesGeometry, file_index=6023, source_file="assets/displays/num_4.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True, target_compressed_size=0xf20),
+    File(name="Coin Door Image 1", pointer_table_index=TableNames.TexturesGeometry, file_index=6024, source_file="assets/displays/door_combocoin.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True, target_compressed_size=0xf20),
+    File(name="Coin Door Image 2", pointer_table_index=TableNames.TexturesGeometry, file_index=6025, source_file="assets/displays/num_2.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True, target_compressed_size=0xf20),
+    File(name="Fake GB Shine", pointer_table_index=TableNames.TexturesGeometry, file_index=6062, source_file="assets/displays/gb_shine.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True),
+    File(name="Melon Surface", pointer_table_index=TableNames.TexturesGeometry, file_index=6066, source_file="assets/hash/melon_resized.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True, target_compressed_size=0x800),
+    File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=605, source_file="fake_item.bin", do_not_delete_source=True, do_not_extract=True),
+    File(name="Melon Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=606, source_file="melon_om2.bin", do_not_extract=True, do_not_delete_source=True),
 ]
 
 file_dict = file_dict + buildScripts()
@@ -118,7 +118,7 @@ for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 
     file_dict.append(
         File(
             name=f"Snow Texture {hex(img)}",
-            pointer_table_index=25,
+            pointer_table_index=TableNames.TexturesGeometry,
             file_index=img,
             source_file=f"grass{img}.bin",
             target_compressed_size=0xAA0,
@@ -135,7 +135,7 @@ for num in number_game_changes:
     file_dict.append(
         File(
             name=f"Number Game ({num['number']}, {num['state']})",
-            pointer_table_index=7,
+            pointer_table_index=TableNames.TexturesUncompressed,
             file_index=num["texture"],
             source_file=f"assets/displays/num_{num['number']}_{num['state']}.png",
             texture_format=TextureFormat.RGBA5551,
@@ -146,7 +146,7 @@ for x in range(5):
     file_dict.append(
         File(
             name=f"Blueprint Model ({x})",
-            pointer_table_index=4,
+            pointer_table_index=TableNames.ModelTwoGeometry,
             file_index=0xDD + x,
             source_file=f"blueprint{x}.bin",
             do_not_delete_source=True,
@@ -158,7 +158,7 @@ for x in range(0x5A, 0x5E):
     file_dict.append(
         File(
             name=f"Melon Slice ({hex(x)})", 
-            pointer_table_index=14, 
+            pointer_table_index=TableNames.TexturesHUD, 
             file_index=x, 
             source_file=f"melon{x}.bin", 
             target_compressed_size=48 * 42 * 2
@@ -169,7 +169,7 @@ for item in range(3):
     file_dict.append(
         File(
             name=f"Rainbow Coin ({item})",
-            pointer_table_index=25,
+            pointer_table_index=TableNames.TexturesGeometry,
             file_index=6063 + item,
             source_file=f"assets/hash/rainbow_{item}.png",
             do_not_extract=True,
@@ -182,7 +182,7 @@ for ci, coin in enumerate(["nin_coin", "rw_coin"]):
         file_dict.append(
             File(
                 name=f"{coin.replace('_',' ').capitalize()} ({item})",
-                pointer_table_index=25,
+                pointer_table_index=TableNames.TexturesGeometry,
                 file_index=6015 + item + (2 * ci),
                 source_file=f"assets/hash/{coin}_{item}.png",
                 do_not_extract=True,
@@ -192,7 +192,7 @@ for ci, coin in enumerate(["nin_coin", "rw_coin"]):
 file_dict.append(
     File(
         name="Special Coin Side",
-        pointer_table_index=25,
+        pointer_table_index=TableNames.TexturesGeometry,
         file_index=6019, 
         source_file=f"assets/hash/modified_coin_side.png", 
         do_not_extract=True, 
@@ -206,7 +206,7 @@ for si, s in enumerate(starts):
         file_dict.append(
             File(
                 name=f"Blueprint Image (Kong {si + 1}, Frame {x})",
-                pointer_table_index=25,
+                pointer_table_index=TableNames.TexturesGeometry,
                 file_index=s + x,
                 source_file=f"bp{si}_{x}.bin",
                 target_compressed_size=48 * 42 * 2,
@@ -221,7 +221,7 @@ for ammo_index, ammo in enumerate(ammo_names):
     file_dict.append(
         File(
             name=f"{ammo.replace('_',' ')} Image", 
-            pointer_table_index=14, 
+            pointer_table_index=TableNames.TexturesHUD, 
             file_index=188 + ammo_index, 
             source_file=f"assets/displays/{ammo}.png", 
             texture_format=TextureFormat.RGBA5551,
@@ -232,7 +232,7 @@ for kong_index, kong in enumerate(kong_names):
     file_dict.append(
         File(
             name=f"DPad - {kong} Face",
-            pointer_table_index=14,
+            pointer_table_index=TableNames.TexturesHUD,
             file_index=190 + kong_index,
             source_file=f"assets/displays/{kong.lower()}_face.png",
             texture_format=TextureFormat.RGBA5551,
@@ -266,7 +266,7 @@ shop_face_array = [
 for x, shop in enumerate(shop_face_array):
     data = File(
         name=f"Shop Indicator ({shop})",
-        pointer_table_index=14,
+        pointer_table_index=TableNames.TexturesHUD,
         file_index=195+x,
         source_file=f"assets/displays/{shop}.png",
         texture_format=TextureFormat.RGBA32,
@@ -328,7 +328,7 @@ for rwd_index, rwd in enumerate(arcade_rewards):
     file_dict.append(
         File(
             name=f"Arcade Reward - {rwd.capitalize()}",
-            pointer_table_index=6,
+            pointer_table_index=TableNames.Unknown6,
             file_index=rwd_index,
             source_file=f"assets/arcade_jetpac/arcade/{rwd}.png",
             do_not_compress=True,
@@ -340,7 +340,7 @@ for rwd_index, rwd in enumerate(jetpac_rewards):
     file_dict.append(
         File(
             name=f"Jetpac Reward - {rwd.capitalize()}",
-            pointer_table_index=6,
+            pointer_table_index=TableNames.Unknown6,
             file_index=rwd_index + len(arcade_rewards),
             source_file=f"assets/arcade_jetpac/jetpac/{rwd}.png",
             do_not_compress=True,
@@ -367,7 +367,7 @@ changed_song_indexes = []
 for song in song_replacements:
     item = File(
         name=song["name"].replace("_", " "), 
-        pointer_table_index=0,
+        pointer_table_index=TableNames.MusicMIDI,
         file_index=song["index"],
         source_file=f"assets/music/{song['name']}.bin",
         target_compressed_size=0x2DDE,
@@ -384,7 +384,7 @@ for door in (0xF2, 0xEF, 0x67, 0xF1):
     file_dict.append(
         File(
             name=f"Wrinkly Door {hex(door)}",
-            pointer_table_index=4,
+            pointer_table_index=TableNames.ModelTwoGeometry,
             file_index=door,
             source_file=f"door{door}.bin",
             target_compressed_size=0x1420,
@@ -404,7 +404,7 @@ for ki, kong in enumerate(switches):
         file_dict.append(
             File(
                 name=f"Slam Switch (Kong {ki}, Lvl {li})",
-                pointer_table_index=4,
+                pointer_table_index=TableNames.ModelTwoGeometry,
                 file_index=lvl,
                 source_file=f"switch{lvl}.bin",
                 target_compressed_size=0xC70,
@@ -428,7 +428,7 @@ for x in instance_script_maps:
     file_dict.append(
         File(
             name=f"{x['name'].replace('_',' ')} Instance Scripts",
-            pointer_table_index=10,
+            pointer_table_index=TableNames.InstanceScripts,
             file_index=x["map"],
             source_file=script_file_name,
             target_compressed_size=expand_size,
@@ -455,7 +455,7 @@ for x in maps_to_expand:
         file_dict.append(
             File(
                 name=f"Script {x}",
-                pointer_table_index=10,
+                pointer_table_index=TableNames.InstanceScripts,
                 file_index=x,
                 source_file=f"script{x}.bin",
                 target_compressed_size=item_size + script_expansion_size,
@@ -470,7 +470,7 @@ for x in range(175):
             file_dict.append(
                 File(
                     name=f"Song {x}", 
-                    pointer_table_index=0, 
+                    pointer_table_index=TableNames.MusicMIDI, 
                     file_index=x, 
                     source_file=f"song{x}.bin",
                     target_compressed_size=0x2DDE,
@@ -480,7 +480,7 @@ for x in range(6):
     file_dict.append(
         File(
             name=f"DKTV Inputs {x}", 
-            pointer_table_index=17,
+            pointer_table_index=TableNames.DKTVInputs,
             file_index=x, 
             source_file=f"dktv{x}.bin", 
             target_compressed_size=0x718,
@@ -490,7 +490,7 @@ for x in range(221):
     file_dict.append(
         File(
             name=f"Zones for map {x}", 
-            pointer_table_index=18,
+            pointer_table_index=TableNames.Triggers,
             file_index=x, 
             source_file=f"lz{x}.bin", 
             target_compressed_size=0x850, 
@@ -521,7 +521,7 @@ for x in range(221):
         file_dict.append(
             File(
                 name=f"Setup for map {x}",
-                pointer_table_index=9,
+                pointer_table_index=TableNames.Setups,
                 file_index=x,
                 source_file=f"setup{x}.bin",
                 target_compressed_size=item_size + local_expansion,
@@ -534,7 +534,7 @@ for x in range(221):
         file_dict.append(
             File(
                 name=f"Paths for map {x}",
-                pointer_table_index=15,
+                pointer_table_index=TableNames.Paths,
                 file_index=x,
                 source_file=f"paths{x}.bin",
                 target_uncompressed_size=0x600,
@@ -546,7 +546,7 @@ for x in range(221):
     file_dict.append(
         File(
             name=f"Character Spawners for map {x}",
-            pointer_table_index=16,
+            pointer_table_index=TableNames.Spawners,
             file_index=x,
             source_file=f"charspawners{x}.bin",
             target_compressed_size=0x1400,
@@ -558,7 +558,7 @@ for x in range(8):
     file_dict.append(
         File(
             name=f"Key {x+1} file screen",
-            pointer_table_index=14,
+            pointer_table_index=TableNames.TexturesHUD,
             file_index=107 + x,
             source_file=f"assets/file_screen/key{x+1}.png",
             texture_format=TextureFormat.RGBA5551,
@@ -569,7 +569,7 @@ for x in range(43):
         file_dict.append(
             File(
                 name=f"Text {x}",
-                pointer_table_index=12,
+                pointer_table_index=TableNames.Text,
                 file_index=x,
                 source_file=f"text{x}.bin",
                 target_compressed_size=0x2000,
@@ -581,7 +581,7 @@ for x in range(10):
     file_dict.append(
         File(
             name=f"Tag Barrel Bottom Texture ({x+1})", 
-            pointer_table_index=25, 
+            pointer_table_index=TableNames.TexturesGeometry, 
             file_index=4749 + x, 
             source_file="assets/tagbarrel/bottom.png", 
             texture_format=TextureFormat.RGBA5551,
@@ -594,7 +594,7 @@ for x in range(4761, 4768):
     file_dict.append(
         File(
             name=f"Portal Ripple Texture ({x})", 
-            pointer_table_index=25, 
+            pointer_table_index=TableNames.TexturesGeometry, 
             file_index=x, 
             source_file=f"assets/displays/empty{sz}.png", 
             texture_format=TextureFormat.RGBA5551,
@@ -604,7 +604,7 @@ for x in range(0xB50, 0xB56):
     file_dict.append(
         File(
             name=f"Unused Texture ({x})", 
-            pointer_table_index=25,
+            pointer_table_index=TableNames.TexturesGeometry,
             file_index=x, 
             source_file=f"assets/displays/empty11.png",
             texture_format=TextureFormat.RGBA5551,
@@ -614,7 +614,7 @@ for x in range(0xDD1, 0xDD6):
     file_dict.append(
         File(
             name=f"Unused Texture ({x})", 
-            pointer_table_index=25, 
+            pointer_table_index=TableNames.TexturesGeometry, 
             file_index=x, 
             source_file=f"assets/displays/empty11.png", 
             texture_format=TextureFormat.RGBA5551,
@@ -627,7 +627,7 @@ for x in range(5):
         file_dict.append(
             File(
                 name=f"{barrel_faces[x]} Transform Barrel Shell ({y+1})",
-                pointer_table_index=25,
+                pointer_table_index=TableNames.TexturesGeometry,
                 file_index=barrel_offsets[x] + y,
                 source_file=f"assets/tagbarrel/{barrel_faces[x]} barrel {y}a.png",
                 texture_format=TextureFormat.RGBA5551,
@@ -656,7 +656,7 @@ for x in kong_palettes:
     file_dict.append(
         File(
             name=f"Palette Expansion ({hex(x)})", 
-            pointer_table_index=25, 
+            pointer_table_index=TableNames.TexturesGeometry, 
             file_index=x, 
             source_file=f"palette_{x}.bin", 
             target_compressed_size=x_s
@@ -667,7 +667,7 @@ for tex in range(0x273, 0x27D):
     file_dict.append(
         File(
             name=f"Head Expansion ({hex(tex)})", 
-            pointer_table_index=25, 
+            pointer_table_index=TableNames.TexturesGeometry, 
             file_index=tex, 
             source_file=f"head_{tex}.bin", 
             target_compressed_size=32 * 64 * 2
@@ -680,7 +680,7 @@ for change in colorblind_changes:
         file_dict.append(
             File(
                 name=f"Colorblind Expansion {file_index}",
-                pointer_table_index=25,
+                pointer_table_index=TableNames.TexturesGeometry,
                 file_index=file_index,
                 source_file=f"colorblind_exp_{file_index}.bin",
                 target_compressed_size=2 * change[2] * change[3],
@@ -711,7 +711,7 @@ for bi, b in enumerate(barrel_skins):
         file_dict.append(
             File(
                 name=f"Barrel Skin ({b.capitalize()} - {x + 1})",
-                pointer_table_index=25,
+                pointer_table_index=TableNames.TexturesGeometry,
                 file_index=6026 + (2 * bi) + x,
                 source_file=f"assets/displays/barrel_{b}_{x}.png",
                 texture_format=TextureFormat.RGBA5551,
@@ -768,7 +768,7 @@ model_changes = sorted(model_changes, key=lambda d: d["model_index"])
 for x in model_changes:
     data = File(
         name=f"Model {x['model_index']}",
-        pointer_table_index=5,
+        pointer_table_index=TableNames.ActorGeometry,
         file_index=x["model_index"],
         source_file=x["model_file"],
         do_not_delete_source=True,
@@ -794,7 +794,7 @@ for x in range(2):
             file_dict.append(
                 File(
                     name=f"Portal Image {x+1} - {segment}",
-                    pointer_table_index=7,
+                    pointer_table_index=TableNames.TexturesUncompressed,
                     file_index=931 + (4 * x) + y,
                     source_file=found_image,
                     texture_format=TextureFormat.RGBA5551,
@@ -809,7 +809,7 @@ for x in range(len(hash_indexes)):
     file_dict.append(
         File(
             name=f"Hash Icon {x+1}", 
-            pointer_table_index=14,
+            pointer_table_index=TableNames.TexturesHUD,
             file_index=idx,
             source_file=f"assets/hash/{hash_icons[x]}", 
             texture_format=TextureFormat.RGBA5551,
@@ -829,7 +829,7 @@ for file in text_files:
     file_dict.append(
         File(
             name=file["name"],
-            pointer_table_index=12,
+            pointer_table_index=TableNames.Text,
             file_index=file["index"],
             source_file=file["file"],
             do_not_compress=True,
@@ -839,7 +839,7 @@ for file in text_files:
 file_dict.append(
     File(
         name="Misc Squawks Text",
-        pointer_table_index=12,
+        pointer_table_index=TableNames.Text,
         file_index=19,
         source_file="misc_squawks_text.bin",
         do_not_compress=True,
@@ -858,7 +858,7 @@ for x in range(216):
         file_dict.append(
             File(
                 name=f"Map {x} Exits", 
-                pointer_table_index=23, 
+                pointer_table_index=TableNames.Exits, 
                 file_index=x, 
                 source_file=f"exit{x}.bin", 
                 do_not_compress=True, 

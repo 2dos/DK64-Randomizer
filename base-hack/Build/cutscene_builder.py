@@ -3,7 +3,7 @@ import zlib
 import os
 import json
 from typing import BinaryIO
-from BuildClasses import ChangeType, TextureFormat, File
+from BuildClasses import File, TableNames
 
 base_rom = "./rom/dk64.z64"
 instance_dir = "./assets/cutscene_scripts"
@@ -310,7 +310,7 @@ def buildFile(data: bytes, modifications: list, map_index: int, map_name: str) -
             else:
                 fg.write(bytearray(item.read))
     return (
-        File(name=f"Cutscenes ({map_name})", pointer_table_index=8, file_index=map_index, source_file=map_file_name, do_not_delete_source=True)
+        File(name=f"Cutscenes ({map_name})", pointer_table_index=TableNames.Cutscenes, file_index=map_index, source_file=map_file_name, do_not_delete_source=True)
     )
 
 
