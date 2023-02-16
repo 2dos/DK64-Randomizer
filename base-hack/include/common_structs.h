@@ -312,7 +312,9 @@ typedef struct ISGFadeoutData {
 } ISGFadeoutData;
 
 typedef struct SwapObjectData {
-	/* 0x000 */ char unk_00[0x210];
+	/* 0x000 */ char unk_00[0x4];
+	/* 0x004 */ playerData* player;
+	/* 0x008 */ char unk_08[0x210-0x8];
 	/* 0x210 */ floatPos cameraPositions[4];
 	/* 0x240 */ char unk_21C[0x284-0x240];
 	/* 0x284 */ float near;
@@ -1346,7 +1348,12 @@ typedef struct charSpawnerActorInfo {
 	/* 0x00C */ char unk_C[0x18-0xC];
 } charSpawnerActorInfo;
 
-
+typedef struct player_collision_info {
+    /* 0x000 */ float x;
+    /* 0x004 */ float y;
+    /* 0x008 */ float z;
+    /* 0x00C */ float scale;
+} player_collision_info;
 
 typedef struct item_collision {
 	/* 0x000 */ short id;
@@ -1356,7 +1363,11 @@ typedef struct item_collision {
 	/* 0x008 */ short x;
 	/* 0x00A */ short y;
 	/* 0x00C */ short z;
-	/* 0x00E */ char unkE[0x18-0xE];
+	/* 0x00E */ char colliding;
+	/* 0x00F */ char unkF[0x13-0xF];
+	/* 0x013 */ char unk13;
+	/* 0x014 */ char collision_index;
+	/* 0x015 */ char unk15[0x18-0x15];
 	/* 0x018 */ void* next;
 	/* 0x01C */ float scale;
 } item_collision;
@@ -1389,3 +1400,16 @@ typedef struct health_damage_struct {
     /* 0x000 */ short init_health;
     /* 0x002 */ short damage_applied;
 } health_damage_struct;
+
+typedef struct collision_info {
+    /* 0x000 */ unsigned short type;
+    /* 0x002 */ char collectable_type;
+    /* 0x003 */ char unk3;
+    /* 0x004 */ float unk4;
+    /* 0x008 */ float unk8;
+    /* 0x00C */ short intended_actor;
+    /* 0x00E */ short actor_equivalent;
+    /* 0x010 */ short hitbox_y_center;
+    /* 0x012 */ short hitbox_radius;
+    /* 0x014 */ short hitbox_height;
+} collision_info;

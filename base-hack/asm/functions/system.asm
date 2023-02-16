@@ -61,3 +61,4 @@
 .definelabel isSingleOrBunch, 0x80631EB8
 .definelabel enableComplexFree, 0x8066B424
 .definelabel complexFreeWrapper, 0x8066B434
+.definelabel writeDynamicFlagItemToFile, 0x8060E430

@@ -234,6 +234,8 @@ extern int* printOutOfCounter(int x, int y, int top, int bottom, int* dl, int un
 
 extern void assessFlagMapping(int map, int id);
 extern void coinCBCollectHandle(int player, int obj, int is_homing);
+extern void standardCrateHandle(int player_index, int id, void* player, int obj_type);
+extern void bunchHandle(int player_index, int id, void* player);
 extern void displayItemOnHUD(int item, int unk0, int unk1);
 extern int getCollectableOffset(int item, int obj, int homing);
 extern void GoldenBananaCode(void);
@@ -298,6 +300,13 @@ extern int getCenterOffset(int style, char* str);
 extern void unkLightFunc_0(actorData* actor, int unk0, char unk1, char unk2, unsigned char); //80604cbc
 extern void kongFollowingLightFunc(unsigned int unk0, unsigned short height_variance, float payerX, float PlayerY, float PlayerZ, unsigned short unk2, float unk3, float movement_speed, unsigned int unk4); //8072a920
 extern void lightShiningLightFunc(void); //806c6530
+
+extern void unkCollisionFunc_0(int id, int unk0);
+extern collected_item_struct* addNewCollectedObject(item_collision* item);
+extern void writeDynamicFlagItemToFile(int flag, int data, int world);
+
+extern void* deleteModelTwo(int index, int id_of_next);
+extern void spawnModelTwoWithDelay(int type, int x, int y, int z, int delay);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -502,7 +511,6 @@ extern unsigned int LevelStateBitfield;
 extern float menuHeadX[5];
 extern float menuHeadY[5];
 extern float menuHeadScale[5];
-extern collected_item_struct* LatestCollectedObject;
 extern image_cache_struct ImageCache[32];
 
 extern short* AnimationTable1;
@@ -545,6 +553,9 @@ extern charSpawnerActorInfo CharSpawnerActorData[113];
 
 extern unsigned short balloonPatchCounts[221];
 extern unsigned short coloredBananaCounts[8];
+
+extern collected_item_struct* CollectedObjects;
+extern collected_item_struct* LatestCollectedObject;
 
 //hack data
 extern int TestVariable;

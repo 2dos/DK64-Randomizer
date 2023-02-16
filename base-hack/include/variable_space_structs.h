@@ -147,4 +147,5 @@ typedef struct varspace {
 	/* 0x197 */ rgb skybox_colors[8];
 	/* 0x1AF */ char pppanic_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
 	/* 0x1B0 */ char sseek_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
+	/* 0x1B1 */ unsigned char wrinkly_rgb[3];
 } varspace;
