@@ -42,6 +42,8 @@ class LevelRandomization(IntEnum):
     vanilla = auto()
 
 # These values are tied to the ItemRandoSelector in randomizer.Enums.Types.
+# The presence of "beanpearl" requires a different enum from Types.
+# TODO: merge this with the Types enum.
 class ItemRandoListSelected(IntEnum):
     shop = auto()
     banana = auto()
@@ -228,9 +230,23 @@ class ColorblindMode(IntEnum):
     deut = auto()
     trit = auto()
 
-# An enum that lists all settings options. The names of each enum value must
-# exactly match the HTML name of the associated select/checkbox/etc.
-class Settings(IntEnum):
+# Additional enums not currently shown on the web site.
+
+class ShuffleLoadingZones(IntEnum):
+    none = auto()
+    levels = auto()
+    all = auto()
+
+class MinigameBarrels(IntEnum):
+    skip = auto()
+    normal = auto()
+    random = auto()
+    selected = auto()
+
+# An enum that lists all settings options provided in the HTML form. The names
+# of each enum value must exactly match the HTML name of the associated
+# select/checkbox/etc.
+class FormSettings(IntEnum):
     # Randomizers
 
     # Global Randomizers

@@ -7,7 +7,7 @@ from pyodide import create_proxy
 
 import js
 from randomizer.BackgroundRandomizer import generate_playthrough
-from randomizer.Enums.Settings import Settings, SettingsMap
+from randomizer.Enums.Settings import FormSettings, SettingsMap
 from randomizer.Patching.ApplyRandomizer import patching_response
 from randomizer.SettingStrings import decrypt_setting_string, encrypt_settings_string
 from randomizer.Worker import background
@@ -181,7 +181,7 @@ def serialize_settings():
         if s == "":
             return None
         try:
-            return Settings[s]
+            return FormSettings[s]
         except KeyError:
             # The only setting that should intentionally bring us here is
             # 'search', which is the search bar from the modals. Anything else
@@ -253,8 +253,8 @@ def generate_seed(event):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ProgressBar().update_progress(0, "Initalizing"))
         form_data = serialize_settings()
-        if not form_data.get(Settings.seed):
-            form_data[Settings.seed] = str(random.randint(100000, 999999))
+        if not form_data.get(FormSettings.seed):
+            form_data[FormSettings.seed] = str(random.randint(100000, 999999))
         js.apply_bps_javascript()
         loop.run_until_complete(ProgressBar().update_progress(2, "Randomizing, this may take some time depending on settings."))
         # background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
