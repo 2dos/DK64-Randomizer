@@ -1,6 +1,6 @@
 """Shrink Models and create a duplicate."""
 import zlib
-from BuildLib import intf_to_float, float_to_hex
+from BuildLib import intf_to_float, float_to_hex, main_pointer_table_offset
 
 
 def shrinkModel(is_file: bool, file_name: str, file_index: int, scale: float, output_file: str, realign_bones: bool):
@@ -11,13 +11,12 @@ def shrinkModel(is_file: bool, file_name: str, file_index: int, scale: float, ou
         with open(file_name, "rb") as fh:
             data = fh.read()
     else:
-        pointer_offset = 0x101C50
         with open("rom/dk64.z64", "rb") as fh:
-            fh.seek(pointer_offset + (5 << 2))
-            actor_table = pointer_offset + int.from_bytes(fh.read(4), "big")
+            fh.seek(main_pointer_table_offset + (5 << 2))
+            actor_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
             fh.seek(actor_table + (file_index << 2))
-            file_start = pointer_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-            file_finish = pointer_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+            file_start = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+            file_finish = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
             file_size = file_finish - file_start
             fh.seek(file_start)
             indicator = int.from_bytes(fh.read(2), "big")

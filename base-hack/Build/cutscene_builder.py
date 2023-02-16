@@ -3,7 +3,8 @@ import zlib
 import os
 import json
 from typing import BinaryIO
-from BuildClasses import File, TableNames
+from BuildEnums import TableNames
+from BuildClasses import File
 
 base_rom = "./rom/dk64.z64"
 instance_dir = "./assets/cutscene_scripts"

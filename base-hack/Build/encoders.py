@@ -4,7 +4,7 @@ import math
 import struct
 from typing import BinaryIO
 
-from BuildLib import actor_names, character_spawner_names, cutscene_model_names, maps, model2_names
+from BuildNames import actor_names, character_spawner_names, cutscene_model_names, maps, model2_names
 
 # Useful for detecting booleans, enums, indexes etc
 valueSamples = {}

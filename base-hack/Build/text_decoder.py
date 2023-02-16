@@ -1,21 +1,20 @@
 """Decode text file into arrays of text items."""
 import zlib
 import os
-from BuildLib import icon_db
+from BuildLib import icon_db, main_pointer_table_offset
 
 temp_file = "decodedtext.bin"
-pointer_table_offset = 0x101C50
 text_table_index = 12
 
 
 def grabText(file_index: int) -> list:
     """Pull text from ROM with a particular file index."""
     with open("rom/dk64.z64", "rb") as fh:
-        fh.seek(pointer_table_offset + (text_table_index * 4))
-        text_table = pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+        fh.seek(main_pointer_table_offset + (text_table_index * 4))
+        text_table = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
         fh.seek(text_table + (file_index * 4))
-        text_start = pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        text_end = pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+        text_start = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+        text_end = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
         text_size = text_end
         fh.seek(text_start)
         indic = int.from_bytes(fh.read(2), "big")

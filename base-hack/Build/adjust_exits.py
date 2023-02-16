@@ -2,11 +2,8 @@
 from typing import BinaryIO
 import zlib
 import os
-from BuildLib import intf_to_float
-
-pointer_table_address = 0x101C50
-setup_index = 9
-pointer_table_index = 23
+from BuildLib import intf_to_float, main_pointer_table_offset
+from BuildEnums import TableNames
 
 new_caves_portal_coords = [120.997, 50, 1182.974]
 
@@ -156,14 +153,14 @@ def adjustExits(fh):
     """Write new exits."""
     print("Adjusting Exits")
     # Get Setups
-    fh.seek(pointer_table_address + (4 * setup_index))
-    setup_table = pointer_table_address + int.from_bytes(fh.read(4), "big")
+    fh.seek(main_pointer_table_offset + (4 * TableNames.Setups))
+    setup_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
     for map_index in range(216):
         exit_coords = []
         if map_index not in (0x61, 0xAA, 0x11):  # Prevent K. Lumsy exit being generated with fake warp
             fh.seek(setup_table + (4 * map_index))
-            setup_start = pointer_table_address + int.from_bytes(fh.read(4), "big")
-            setup_end = pointer_table_address + int.from_bytes(fh.read(4), "big")
+            setup_start = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+            setup_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
             setup_size = setup_end - setup_start
             fh.seek(setup_start)
             indicator = int.from_bytes(fh.read(2), "big")
@@ -198,12 +195,12 @@ def adjustExits(fh):
                 os.remove(temp_file)
         exit_additions.append(exit_coords.copy())
     # Exits
-    fh.seek(pointer_table_address + (4 * pointer_table_index))
-    ptr_table = pointer_table_address + int.from_bytes(fh.read(4), "big")
+    fh.seek(main_pointer_table_offset + (4 * TableNames.Exits))
+    ptr_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
     for map_index in range(216):
         fh.seek(ptr_table + (4 * map_index))
-        exit_start = pointer_table_address + int.from_bytes(fh.read(4), "big")
-        exit_end = pointer_table_address + int.from_bytes(fh.read(4), "big")
+        exit_start = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+        exit_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
         exit_size = exit_end - exit_start
         fh.seek(exit_start)
         data = fh.read(exit_size)

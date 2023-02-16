@@ -16,7 +16,9 @@ import instance_script_maker
 import model_fix
 import generate_disco_models
 import model_port
-from BuildClasses import ChangeType, TextureFormat, File, TableNames, BLOCK_COLOR_SIZE
+from BuildEnums import ChangeType, TextureFormat, TableNames
+from BuildClasses import File, pointer_tables
+from BuildLib import main_pointer_table_offset, BLOCK_COLOR_SIZE
 
 # Patcher functions for the extracted files
 import patch_text
@@ -31,14 +33,14 @@ from model_shrink import shrinkModel
 from cutscene_builder import buildScripts
 
 # Infrastructure for recomputing DK64 global pointer tables
-# from BuildLib import maps
+# from BuildNames import maps
 from populateSongData import writeVanillaSongData
 from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM
 from recompute_pointer_table import (
     dumpPointerTableDetails,
+    getFileInfo,
     make_safe_filename,
     parsePointerTables,
-    pointer_tables,
     replaceROMFile,
     writeModifiedPointerTablesToROM,
     clampCompressedTextures,
@@ -518,11 +520,11 @@ for x in instance_script_maps:
     )
 for x in maps_to_expand:
     with open(ROMName, "rb") as fh:
-        fh.seek(0x101C50 + (10 * 4))
-        script_table = 0x101C50 + int.from_bytes(fh.read(4), "big")
+        fh.seek(main_pointer_table_offset + (10 * 4))
+        script_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
         fh.seek(script_table + (x * 4))
-        item_start = 0x101C50 + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        item_end = 0x101C50 + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+        item_start = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+        item_end = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
         fh.seek(item_start)
         is_compressed = int.from_bytes(fh.read(2), "big") == 0x1F8B
         item_size = item_end - item_start
@@ -575,11 +577,11 @@ for x in range(221):
         local_expansion = 0
     with open(ROMName, "rb") as fh:
         setup_tbl_index = 9
-        fh.seek(0x101C50 + (setup_tbl_index * 4))
-        script_table = 0x101C50 + int.from_bytes(fh.read(4), "big")
+        fh.seek(main_pointer_table_offset + (setup_tbl_index * 4))
+        script_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
         fh.seek(script_table + (x * 4))
-        item_start = 0x101C50 + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        item_end = 0x101C50 + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+        item_start = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+        item_end = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
         fh.seek(item_start)
         is_compressed = int.from_bytes(fh.read(2), "big") == 0x1F8B
         item_size = item_end - item_start
@@ -1000,7 +1002,30 @@ with open(ROMName, "rb") as fh:
             x.do_not_delete_source = True
 
         # Extract the compressed file from ROM
-        x.extract(fh)
+        if not x.do_not_extract:
+            byte_read = bytes()
+            if x.subtype == ChangeType.PointerTable:
+                file_info = getFileInfo(x.pointer_table_index, x.file_index)
+                if file_info:
+                    x.start = file_info["new_absolute_address"]
+                    x.compressed_size = len(file_info["data"])
+            if x.start is None:
+                print(vars(x))
+            fh.seek(x.start)
+            byte_read = fh.read(x.compressed_size)
+
+            print(f"{x.name} - {hex(x.start)}")
+            if not x.do_not_delete_source:
+                if os.path.exists(x.source_file):
+                    os.remove(x.source_file)
+
+                with open(x.source_file, "wb") as fg:
+                    fh.seek(x.start)
+                    if int.from_bytes(fh.read(2), "big") == 0x1F8B:
+                        dec = zlib.decompress(byte_read, 15 + 32)
+                    else:
+                        dec = byte_read
+                    fg.write(dec)
 
 print("[3 / 7] - Patching Extracted Files")
 for x in file_dict:
@@ -1127,7 +1152,7 @@ with open(newROMName, "r+b") as fh:
     dumpPointerTableDetails("rom/build.log", fh)
 
     # Change Helm Geometry (Can't use main CL Build System because of forced duplication)
-    main_pointer_table_offset = 0x101C50
+    main_pointer_table_offset = main_pointer_table_offset
     fh.seek(main_pointer_table_offset + 4)
     geo_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
     fh.seek(geo_table + (0x11 * 4))
@@ -1142,7 +1167,7 @@ with open(newROMName, "r+b") as fh:
         fh.write(gzip.compress(helm_geo.read(), compresslevel=9))
 
     # Replace Helm Text
-    main_pointer_table_offset = 0x101C50
+    main_pointer_table_offset = main_pointer_table_offset
     fh.seek(main_pointer_table_offset + (12 * 4))
     text_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
     fh.seek(text_table + (19 * 4))

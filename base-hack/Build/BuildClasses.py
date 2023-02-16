@@ -1,71 +1,11 @@
 """Global classes for the build process."""
-from enum import IntEnum, auto
-from recompute_pointer_table import getFileInfo
+
 from image_converter import convertToRGBA32
 from typing import BinaryIO
-import os
-import zlib
 import subprocess
-
-BLOCK_COLOR_SIZE = 64  # Bytes allocated to a block 32x32 image. Brute forcer says we can go as low as 0x25 bytes, but leaving some room for me to have left out something
-
-
-class ChangeType(IntEnum):
-    """Change Type Enum."""
-
-    Undefined = auto()
-    PointerTable = auto()
-    FixedLocation = auto()
-
-
-class TextureFormat(IntEnum):
-    """Texture Format Enum."""
-
-    Null = auto()
-    RGBA5551 = auto()
-    RGBA32 = auto()
-    I8 = auto()
-    I4 = auto()
-    IA8 = auto()
-    IA4 = auto()
-
-
-class TableNames(IntEnum):
-    """Pointer Table Enum."""
-
-    MusicMIDI = 0
-    MapGeometry = auto()
-    MapWalls = auto()
-    MapFloors = auto()
-    ModelTwoGeometry = auto()
-    ActorGeometry = auto()
-    Unknown6 = auto()
-    TexturesUncompressed = auto()
-    Cutscenes = auto()
-    Setups = auto()
-    InstanceScripts = auto()
-    Animations = auto()
-    Text = auto()
-    Unknown13 = auto()
-    TexturesHUD = auto()
-    Paths = auto()
-    Spawners = auto()
-    DKTVInputs = auto()
-    Triggers = auto()
-    Unknown19 = auto()
-    Unknown20 = auto()
-    Autowalks = auto()
-    Unknown22 = auto()
-    Exits = auto()
-    RaceCheckpoints = auto()
-    TexturesGeometry = auto()
-    UncompressedFileSizes = auto()
-    Unknown27 = auto()
-    Unknown28 = auto()
-    Unknown29 = auto()
-    Unknown30 = auto()
-    Unknown31 = auto()
-
+from BuildEnums import ChangeType, TableNames, TextureFormat
+from BuildLib import main_pointer_table_offset
+import encoders
 
 class File:
     """Class to store information regarding file changes."""
@@ -132,33 +72,6 @@ class File:
         if self.output_file is None:
             self.output_file = self.source_file
 
-    def extract(self, fh: BinaryIO):
-        """Extract file."""
-        if not self.do_not_extract:
-            byte_read = bytes()
-            if self.subtype == ChangeType.PointerTable:
-                file_info = getFileInfo(self.pointer_table_index, self.file_index)
-                if file_info:
-                    self.start = file_info["new_absolute_address"]
-                    self.compressed_size = len(file_info["data"])
-            if self.start is None:
-                print(vars(self))
-            fh.seek(self.start)
-            byte_read = fh.read(self.compressed_size)
-
-            print(f"{self.name} - {hex(self.start)}")
-            if not self.do_not_delete_source:
-                if os.path.exists(self.source_file):
-                    os.remove(self.source_file)
-
-                with open(self.source_file, "wb") as fg:
-                    fh.seek(self.start)
-                    if int.from_bytes(fh.read(2), "big") == 0x1F8B:
-                        dec = zlib.decompress(byte_read, 15 + 32)
-                    else:
-                        dec = byte_read
-                    fg.write(dec)
-
     def generateTextureFile(self):
         """Generate Texture File."""
         if self.texture_format != TextureFormat.Null:
@@ -171,3 +84,245 @@ class File:
                 self.source_file = self.source_file.replace(".png", ".rgba32")
             else:
                 print(" - ERROR: Unsupported texture format " + self.getTextureFormatName())
+
+class TableEntry:
+    """Class to store information regarding a Table Entry."""
+
+    def __init__(self, index: int):
+        """Initialize with given parameters."""
+        self.index = index
+        self.pointer_address = None
+        self.absolute_address = None
+        self.new_absolute_address = None
+        self.next_absolute_address = None
+        self.bit_set = False
+        self.original_sha1 = ""
+        self.new_sha1 = None
+        self.filename = None
+    
+    def initVanillaFile(self, index: int, base_address: int, raw_address: int, next_address: int):
+        """Initialize with given parameters."""
+        self.index = index
+        self.pointer_address = base_address + (index * 4)
+        self.absolute_address = (raw_address & 0x7FFFFFFF) + main_pointer_table_offset
+        self.new_absolute_address = (raw_address & 0x7FFFFFFF) + main_pointer_table_offset
+        self.next_absolute_address = next_address
+        self.bit_set = (raw_address & 0x80000000) > 0
+        self.original_sha1 = ""
+        self.new_sha1 = ""
+
+    def initVanillaSHA(self, target_sha:str):
+        """Initialize SHA attributes for a vanilla file."""
+        self.original_sha1 = target_sha
+        self.new_sha1 = target_sha
+
+class TableInfo:
+    """Class to store information regarding a pointer table."""
+
+    def __init__(
+        self,
+        *,
+        name="",
+        index: TableNames,
+        encoded_filename=None,
+        decoded_filename=None,
+        dont_overwrite_uncompressed_sizes=None,
+        encoder=None,
+        decoder=None,
+        do_not_compress=None,
+    ):
+        """Initialize with given parameters."""
+        if name == "":
+            self.name = f"Unknown {index.value}"
+        else:
+            self.name = name
+        self.index = index
+        self.encoded_filename = encoded_filename
+        self.decoded_filename = decoded_filename
+        self.dont_overwrite_uncompressed_sizes = dont_overwrite_uncompressed_sizes
+        self.encoder = encoder
+        self.decoder = decoder
+        self.do_not_compress = do_not_compress
+        # Static
+        self.entries: list[TableEntry] = []
+        self.num_entries = 0
+        self.absolute_address = None
+        self.new_absolute_address = None
+        self.original_compressed_size = 0
+
+    def initAddress(self, address: int):
+        """Set absolute address attributes to the address parameter."""
+        self.absolute_address = address
+        self.new_absolute_address = address
+
+    def initEntries(self, fh: BinaryIO):
+        """Initialize entry data."""
+        fh.seek(main_pointer_table_offset + ((num_tables + self.index) * 4))
+        self.num_entries = int.from_bytes(fh.read(4), "big")
+        self.original_compressed_size = 0
+        self.entries = []
+        for i in range(self.num_entries):
+            # Compute address and size information about the pointer
+            fh.seek(self.absolute_address + (i * 4))
+            raw_int = int.from_bytes(fh.read(4), "big")
+            next_absolute_address = (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF) + main_pointer_table_offset
+            new_entry = TableEntry(i)
+            new_entry.initVanillaFile(i, self.absolute_address, raw_int, next_absolute_address)
+            self.entries.append(new_entry)
+
+pointer_tables = [
+    TableInfo(
+        name="Music MIDI",
+        index=TableNames.MusicMIDI,
+    ),
+    TableInfo(
+        name="Map Geometry",
+        index=TableNames.MapGeometry,
+        encoded_filename="geometry.bin",
+        decoded_filename="geometry.todo",
+    ),
+    TableInfo(
+        name="Map Walls",
+        index=TableNames.MapWalls,
+        encoded_filename="walls.bin",
+        decoded_filename="walls.obj",
+        dont_overwrite_uncompressed_sizes=True,
+    ),
+    TableInfo(
+        name="Map Floors",
+        index=TableNames.MapFloors,
+        encoded_filename="floors.bin",
+        decoded_filename="floors.obj",
+        dont_overwrite_uncompressed_sizes=True,
+    ),
+    TableInfo(
+        name="Object Model 2 Geometry",
+        index=TableNames.ModelTwoGeometry,
+    ),
+    TableInfo(
+        name="Actor Geometry",
+        index=TableNames.ActorGeometry,
+    ),
+    TableInfo(
+        index=TableNames.Unknown6,
+        dont_overwrite_uncompressed_sizes=True,
+    ),
+    TableInfo(
+        name="Textures (Uncompressed)",
+        index=TableNames.TexturesUncompressed,
+        dont_overwrite_uncompressed_sizes=True,
+    ),
+    TableInfo(
+        name="Map Cutscenes",
+        index=TableNames.Cutscenes,
+        encoded_filename="cutscenes.bin",
+        decoded_filename="cutscenes.todo",
+    ),
+    TableInfo(
+        name="Map Object Setups",
+        index=TableNames.Setups,
+        encoded_filename="setup.bin",
+        decoded_filename="setup.json",
+        encoder=encoders.encodeSetup,
+        decoder=encoders.decodeSetup,
+    ),
+    TableInfo(
+        name="Map Object Model 2 Behaviour Scripts",
+        index=TableNames.InstanceScripts,
+        encoded_filename="object_behaviour_scripts.bin",
+        decoded_filename="object_behaviour_scripts.todo",
+    ),
+    TableInfo(
+        name="Animations",
+        index=TableNames.Animations,
+        dont_overwrite_uncompressed_sizes=True,
+    ),
+    TableInfo(
+        name="Text",
+        index=TableNames.Text,
+    ),
+    TableInfo(index=TableNames.Unknown13),
+    TableInfo(
+        name="Textures",
+        index=TableNames.TexturesHUD,
+    ),
+    TableInfo(
+        name="Map Paths",
+        index=TableNames.Paths,
+        encoded_filename="paths.bin",
+        decoded_filename="paths.json",
+        encoder=encoders.encodePaths,
+        decoder=encoders.decodePaths,
+        dont_overwrite_uncompressed_sizes=True,
+        do_not_compress=True,
+    ),
+    TableInfo(
+        name="Map Character Spawners",
+        index=TableNames.Spawners,
+        encoded_filename="character_spawners.bin",
+        decoded_filename="character_spawners.json",
+        encoder=encoders.encodeCharacterSpawners,
+        decoder=encoders.decodeCharacterSpawners,
+    ),
+    TableInfo(
+        name="DKTV Inputs",
+        index=TableNames.DKTVInputs,
+    ),
+    TableInfo(
+        name="Map Loading Zones",
+        index=TableNames.Triggers,
+        encoded_filename="loading_zones.bin",
+        decoded_filename="loading_zones.json",
+        encoder=encoders.encodeLoadingZones,
+        decoder=encoders.decodeLoadingZones,
+    ),
+    TableInfo(index=TableNames.Unknown19),
+    TableInfo(
+        index=TableNames.Unknown20,
+        dont_overwrite_uncompressed_sizes=True,
+    ),
+    TableInfo(
+        name="Map Autowalk Data",
+        index=TableNames.Autowalks,
+        encoded_filename="autowalk.bin",
+        decoded_filename="autowalk.json",
+        encoder=encoders.encodeAutowalk,
+        decoder=encoders.decodeAutowalk,
+        do_not_compress=True,
+        dont_overwrite_uncompressed_sizes=True,
+    ),
+    TableInfo(index=TableNames.Unknown22),
+    TableInfo(
+        name="Map Exits",
+        index=TableNames.Exits,
+        encoded_filename="exits.bin",
+        decoded_filename="exits.json",
+        encoder=encoders.encodeExits,
+        decoder=encoders.decodeExits,
+        do_not_compress=True,
+        dont_overwrite_uncompressed_sizes=True,
+    ),
+    TableInfo(
+        name="Map Race Checkpoints",
+        index=TableNames.RaceCheckpoints,
+        encoded_filename="race_checkpoints.bin",
+        decoded_filename="race_checkpoints.json",
+        encoder=encoders.encodeCheckpoints,
+        decoder=encoders.decodeCheckpoints,
+    ),
+    TableInfo(
+        name="Textures",
+        index=TableNames.TexturesGeometry,
+    ),
+    TableInfo(
+        name="Uncompressed File Sizes",
+        index=TableNames.UncompressedFileSizes,
+        dont_overwrite_uncompressed_sizes=True,
+    ),
+    TableInfo(index=TableNames.Unknown27),
+    TableInfo(index=TableNames.Unknown28),
+    TableInfo(index=TableNames.Unknown29),
+    TableInfo(index=TableNames.Unknown30),
+    TableInfo(index=TableNames.Unknown31),
+]
+num_tables = len(pointer_tables)
