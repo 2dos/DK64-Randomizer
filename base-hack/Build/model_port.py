@@ -2,7 +2,7 @@
 
 import zlib
 import os
-import struct
+from BuildLib import intf_to_float
 
 rom_file = "rom/dk64.z64"
 temp_file = "temp.bin"
@@ -20,14 +20,6 @@ ac_table = 5
 # G_DL:
 # - Actor: 0x5
 # - M2: ?
-
-
-def intf_to_float(intf):
-    """Convert float as int format to float."""
-    if intf == 0:
-        return 0
-    else:
-        return struct.unpack("!f", bytes.fromhex("{:08X}".format(intf)))[0]
 
 
 class BoneVertex:

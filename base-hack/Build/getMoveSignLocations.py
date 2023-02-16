@@ -1,5 +1,5 @@
 """Get move sign data."""
-import struct
+from BuildLib import float_to_hex
 
 sign_data = [
     {
@@ -60,16 +60,6 @@ sign_data = [
     {"map_index": 0xB0, "signs": [{"sign_type": "cranky", "data": [602.935, 75, 1870.478, 309]}]},
     {"map_index": 0xC3, "signs": [{"sign_type": "snide", "data": [449.519, 0, 468.524, 268]}]},
 ]
-
-
-def int_to_float(val):
-    """Convert a hex int to a float."""
-    return struct.unpack("!f", bytes.fromhex(hex(val).split("0x")[1]))[0]
-
-
-def float_to_hex(f):
-    """Convert float to hex."""
-    return hex(struct.unpack("<I", struct.pack("<f", f))[0])
 
 
 def convertCoord(f):

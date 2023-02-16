@@ -4,7 +4,7 @@ import json
 from typing import BinaryIO
 
 import encoders
-from map_names import maps
+from BuildLib import maps
 
 pointer_tables = [
     {"index": 0, "name": "Music MIDI"},

@@ -1,21 +1,14 @@
 """Adjust exits to prevent logical problems with LZR."""
 from typing import BinaryIO
 import zlib
-import struct
 import os
+from BuildLib import intf_to_float
 
 pointer_table_address = 0x101C50
 setup_index = 9
 pointer_table_index = 23
 
 new_caves_portal_coords = [120.997, 50, 1182.974]
-
-
-def int_to_float(val):
-    """Convert a hex int to a float."""
-    if val == 0:
-        return 0
-    return struct.unpack("!f", bytes.fromhex(hex(val).split("0x")[1]))[0]
 
 
 exit_adjustments = [
@@ -193,12 +186,12 @@ def adjustExits(fh):
                     if item_type >= 0x210 and item_type <= 0x214:
                         if item_id == 0x57 and map_index == 0x48:
                             fg.seek(item_start + 4)
-                            coords = [int(176.505), int(int_to_float(int.from_bytes(fg.read(4), "big"))) + 5, int(1089.408)]
+                            coords = [int(176.505), int(intf_to_float(int.from_bytes(fg.read(4), "big"))) + 5, int(1089.408)]
                         else:
                             fg.seek(item_start)
                             coords = []
                             for coord_index in range(3):
-                                coords.append(int(int_to_float(int.from_bytes(fg.read(4), "big"))))
+                                coords.append(int(intf_to_float(int.from_bytes(fg.read(4), "big"))))
                             coords[1] += 5
                         exit_coords.append(coords.copy())
             if os.path.exists(temp_file):

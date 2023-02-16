@@ -309,9 +309,7 @@ def buildFile(data: bytes, modifications: list, map_index: int, map_name: str) -
                 fg.write(item.song.to_bytes(2, "big"))
             else:
                 fg.write(bytearray(item.read))
-    return (
-        File(name=f"Cutscenes ({map_name})", pointer_table_index=TableNames.Cutscenes, file_index=map_index, source_file=map_file_name, do_not_delete_source=True)
-    )
+    return File(name=f"Cutscenes ({map_name})", pointer_table_index=TableNames.Cutscenes, file_index=map_index, source_file=map_file_name, do_not_delete_source=True)
 
 
 def buildScripts() -> list:

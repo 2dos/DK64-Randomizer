@@ -9,12 +9,14 @@ import subprocess
 
 BLOCK_COLOR_SIZE = 64  # Bytes allocated to a block 32x32 image. Brute forcer says we can go as low as 0x25 bytes, but leaving some room for me to have left out something
 
+
 class ChangeType(IntEnum):
     """Change Type Enum."""
 
     Undefined = auto()
     PointerTable = auto()
     FixedLocation = auto()
+
 
 class TextureFormat(IntEnum):
     """Texture Format Enum."""
@@ -26,6 +28,7 @@ class TextureFormat(IntEnum):
     I4 = auto()
     IA8 = auto()
     IA4 = auto()
+
 
 class TableNames(IntEnum):
     """Pointer Table Enum."""
@@ -63,32 +66,34 @@ class TableNames(IntEnum):
     Unknown30 = auto()
     Unknown31 = auto()
 
+
 class File:
     """Class to store information regarding file changes."""
 
-    def __init__(self,
-                 *, 
-                 name="", 
-                 subtype:ChangeType=ChangeType.PointerTable, 
-                 start=None, 
-                 compressed_size=0, 
-                 source_file="", 
-                 use_external_gzip=False,
-                 use_zlib=False,
-                 patcher=None,
-                 pointer_table_index:TableNames=TableNames.MusicMIDI,
-                 file_index=0,
-                 texture_format:TextureFormat=TextureFormat.Null,
-                 bps_file=None,
-                 do_not_delete_source=False,
-                 do_not_delete_output=False,
-                 do_not_delete = False,
-                 target_compressed_size=None,
-                 target_uncompressed_size=None,
-                 do_not_extract=False,
-                 do_not_compress=False,
-                 do_not_recompress=False,
-                 ):
+    def __init__(
+        self,
+        *,
+        name="",
+        subtype: ChangeType = ChangeType.PointerTable,
+        start=None,
+        compressed_size=0,
+        source_file="",
+        use_external_gzip=False,
+        use_zlib=False,
+        patcher=None,
+        pointer_table_index: TableNames = TableNames.MusicMIDI,
+        file_index=0,
+        texture_format: TextureFormat = TextureFormat.Null,
+        bps_file=None,
+        do_not_delete_source=False,
+        do_not_delete_output=False,
+        do_not_delete=False,
+        target_compressed_size=None,
+        target_uncompressed_size=None,
+        do_not_extract=False,
+        do_not_compress=False,
+        do_not_recompress=False,
+    ):
         """Initialize with given parameters."""
         self.name = name
         self.subtype = subtype
