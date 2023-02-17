@@ -9,13 +9,6 @@ from randomizer.Lists.MapsAndExits import Maps
 # values should exactly match the input values in the HTML (not the IDs).
 
 # Settings to double-check:
-# ActivateAllBananaports
-# EnemySelector
-# HelmSetting
-# MicrohintsEnabled
-# WinCondition
-# Search for IsGlitchEnabled
-# Search for DoorItemCheck
 # static/presets/default.json needs to be reworked
 
 # Randomizers
