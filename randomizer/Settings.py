@@ -14,7 +14,6 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import (
-    FormSettings,
     SettingsMap,
     ActivateAllBananaports,
     BananaportRando,
@@ -160,24 +159,19 @@ class Settings:
 
     def apply_form_data(self, form_data):
         for k, v in form_data.items():
-            try:
-                settingKey = FormSettings(int(k))
-                # If this settingKey is associated with an enum, convert the
-                # value(s) to that enum.
-                if settingKey in SettingsMap:
-                    if type(v) is list:
-                        settingValue = []
-                        for val in v:
-                            settingValue.append(SettingsMap[settingKey](val))
-                        setattr(self, settingKey.name, settingValue)
-                    else:
-                        settingValue = SettingsMap[settingKey](v)
-                        setattr(self, settingKey.name, settingValue)
+            # If this setting key is associated with an enum, convert the
+            # value(s) to that enum.
+            if k in SettingsMap:
+                if type(v) is list:
+                    settingValue = []
+                    for val in v:
+                        settingValue.append(SettingsMap[k](val))
+                    setattr(self, k, settingValue)
                 else:
-                    # The value is a basic type, so assign it directly.
-                    setattr(self, settingKey.name, v)
-            except ValueError:
-                # This currently happens with "seed", trying to figure out why.
+                    settingValue = SettingsMap[k](v)
+                    setattr(self, k, settingValue)
+            else:
+                # The value is a basic type, so assign it directly.
                 setattr(self, k, v)
 
 

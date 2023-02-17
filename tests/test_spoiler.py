@@ -5,7 +5,6 @@ import random
 import pytest
 
 from randomizer.Enums.Settings import (
-    FormSettings,
     ActivateAllBananaports,
     BananaportRando,
     DamageAmount,
@@ -37,123 +36,123 @@ def generate_lo_rando_race_settings():
     # You may have to add new options as you add them or as they get added
 
     data = {}
-    data[FormSettings.seed] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
+    data["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
 
-    data[FormSettings.fast_start_beginning_of_game] = True
-    data[FormSettings.enemy_rando] = True
-    data[FormSettings.crown_enemy_rando] = True
-    data[FormSettings.enemy_speed_rando] = True
-    data[FormSettings.boss_kong_rando] = True  # usually True
-    data[FormSettings.boss_location_rando] = True  # usually True
-    data[FormSettings.random_medal_requirement] = False
-    data[FormSettings.medal_requirement] = 15  # vanilla is 15
-    data[FormSettings.medal_cb_req] = 75  # vanilla is 75
-    data[FormSettings.kasplat_rando_setting] = KasplatRandoSetting.vanilla_locations  # usually vanilla_locations but i like location_shuffle, RARELY set to off
-    data[FormSettings.kong_rando] = True  # usually True - FORCED True if level_order shuffle
+    data["fast_start_beginning_of_game"] = True
+    data["enemy_rando"] = True
+    data["crown_enemy_rando"] = True
+    data["enemy_speed_rando"] = True
+    data["boss_kong_rando"] = True  # usually True
+    data["boss_location_rando"] = True  # usually True
+    data["random_medal_requirement"] = False
+    data["medal_requirement"] = 15  # vanilla is 15
+    data["medal_cb_req"] = 75  # vanilla is 75
+    data["kasplat_rando_setting"] = KasplatRandoSetting.vanilla_locations  # usually vanilla_locations but i like location_shuffle, RARELY set to off
+    data["kong_rando"] = True  # usually True - FORCED True if level_order shuffle
 
-    data[FormSettings.bananaport_rando] = BananaportRando.off  # usually "off", could be "in_level" "crossmap_coupled" "crossmap_decoupled"
-    data[FormSettings.activate_all_bananaports] = ActivateAllBananaports.isles  # usually isles, could be all or off
+    data["bananaport_rando"] = BananaportRando.off  # usually "off", could be "in_level" "crossmap_coupled" "crossmap_decoupled"
+    data["activate_all_bananaports"] = ActivateAllBananaports.isles  # usually isles, could be all or off
 
     # item shuffler options here
-    data[FormSettings.move_rando] = MoveRando.on  # usually "on" but i like "cross_purchase", rarely need to test with "start_with"
+    data["move_rando"] = MoveRando.on  # usually "on" but i like "cross_purchase", rarely need to test with "start_with"
     # if start_with, next two are FORCED to be normal and vanilla
-    data[FormSettings.training_barrels] = TrainingBarrels.shuffled  # usually "normal", could be "shuffled"
-    data[FormSettings.shockwave_status] = ShockwaveStatus.shuffled_decoupled  # usually "vanilla", could be "shuffled" or "shuffled_decoupled" or "start_with"
+    data["training_barrels"] = TrainingBarrels.shuffled  # usually "normal", could be "shuffled"
+    data["shockwave_status"] = ShockwaveStatus.shuffled_decoupled  # usually "vanilla", could be "shuffled" or "shuffled_decoupled" or "start_with"
     # If true, the above is always decoupled or vanilla
-    data[FormSettings.shuffle_items] = True  # Must be true to trigger the list selector below
-    # data[FormSettings.item_rando_list_selected] = ["shop", "banana", "toughbanana", "crown", "blueprint", "key", "medal", "coin", "kong", "fairy", "rainbowcoin", "beanpearl", "fakeitem", "junkitem"]  # all options
+    data["shuffle_items"] = True  # Must be true to trigger the list selector below
+    # data["item_rando_list_selected"] = ["shop", "banana", "toughbanana", "crown", "blueprint", "key", "medal", "coin", "kong", "fairy", "rainbowcoin", "beanpearl", "fakeitem", "junkitem"]  # all options
 
-    data[FormSettings.random_prices] = RandomPrices.low  # usually "medium, might need free, rarely vanilla"
-    data[FormSettings.randomize_blocker_required_amounts] = True  # usually True, if false set values below
-    data[FormSettings.blocker_0] = 0
-    data[FormSettings.blocker_1] = 0
-    data[FormSettings.blocker_2] = 0
-    data[FormSettings.blocker_3] = 0
-    data[FormSettings.blocker_4] = 0
-    data[FormSettings.blocker_5] = 0
-    data[FormSettings.blocker_6] = 0
-    data[FormSettings.blocker_7] = 50
-    data[FormSettings.blocker_text] = 69  # usually 69
-    data[FormSettings.maximize_helm_blocker] = True  # usually True
+    data["random_prices"] = RandomPrices.low  # usually "medium, might need free, rarely vanilla"
+    data["randomize_blocker_required_amounts"] = True  # usually True, if false set values below
+    data["blocker_0"] = 0
+    data["blocker_1"] = 0
+    data["blocker_2"] = 0
+    data["blocker_3"] = 0
+    data["blocker_4"] = 0
+    data["blocker_5"] = 0
+    data["blocker_6"] = 0
+    data["blocker_7"] = 50
+    data["blocker_text"] = 69  # usually 69
+    data["maximize_helm_blocker"] = True  # usually True
 
-    data[FormSettings.randomize_cb_required_amounts] = True  # usually True, if false set values below
-    data[FormSettings.troff_0] = 500
-    data[FormSettings.troff_1] = 500
-    data[FormSettings.troff_2] = 500
-    data[FormSettings.troff_3] = 500
-    data[FormSettings.troff_4] = 500
-    data[FormSettings.troff_5] = 500
-    data[FormSettings.troff_6] = 500
-    data[FormSettings.troff_text] = 400  # usually 400?
+    data["randomize_cb_required_amounts"] = True  # usually True, if false set values below
+    data["troff_0"] = 500
+    data["troff_1"] = 500
+    data["troff_2"] = 500
+    data["troff_3"] = 500
+    data["troff_4"] = 500
+    data["troff_5"] = 500
+    data["troff_6"] = 500
+    data["troff_text"] = 400  # usually 400?
 
-    data[FormSettings.level_randomization] = LevelRandomization.level_order  # usually "level_order" may need to test with "loadingzone" or "loadingzonesdecoupled"
+    data["level_randomization"] = LevelRandomization.level_order  # usually "level_order" may need to test with "loadingzone" or "loadingzonesdecoupled"
 
-    data[FormSettings.damage_amount] = DamageAmount.default
-    data[FormSettings.no_healing] = False
-    data[FormSettings.no_melons] = False
-    data[FormSettings.hard_shooting] = False
+    data["damage_amount"] = DamageAmount.default
+    data["no_healing"] = False
+    data["no_melons"] = False
+    data["hard_shooting"] = False
     #data["hard_mad_jack"] = False
-    data[FormSettings.perma_death] = False
-    data[FormSettings.crown_door_item] = HelmDoorItem.random  # opened | random | specify the item: req_xxx
-    data[FormSettings.crown_door_item_count] = 1  # no need to specify when random
-    data[FormSettings.coin_door_item] = HelmDoorItem.random  # opened | random | specify the item: req_xxx
-    data[FormSettings.coin_door_item_count] = 1  # no need to specify when random
-    data[FormSettings.bonus_barrel_rando] = True
+    data["perma_death"] = False
+    data["crown_door_item"] = HelmDoorItem.random  # opened | random | specify the item: req_xxx
+    data["crown_door_item_count"] = 1  # no need to specify when random
+    data["coin_door_item"] = HelmDoorItem.random  # opened | random | specify the item: req_xxx
+    data["coin_door_item_count"] = 1  # no need to specify when random
+    data["bonus_barrel_rando"] = True
     #data["gnawty_barrels"] = False
-    data[FormSettings.bonus_barrel_auto_complete] = False  # usually False
-    data[FormSettings.open_lobbies] = False
-    data[FormSettings.open_levels] = False  # usually False
-    data[FormSettings.randomize_pickups] = True
+    data["bonus_barrel_auto_complete"] = False  # usually False
+    data["open_lobbies"] = False
+    data["open_levels"] = False  # usually False
+    data["randomize_pickups"] = True
 
-    data[FormSettings.krool_phase_order_rando] = True  # usually True
-    data[FormSettings.krool_random] = False  # "phase count is random" setting
-    data[FormSettings.krool_phase_count] = 3  # usually 3
-    data[FormSettings.helm_random] = False  # "room count is random" setting
-    data[FormSettings.helm_phase_count] = 3  # usually 3
-    data[FormSettings.krool_access] = True  # usually True - this is the weirdly named key 8 required setting
-    data[FormSettings.keys_random] = False  # "key count is random" setting
-    data[FormSettings.krool_key_count] = 5  # usually 5
-    data[FormSettings.select_keys] = False  # usually False, if True use below
-    # data[FormSettings.starting_keys_list_selected] = [Items.JungleJapesKey]  # JungleJapesKey, AngryAztecKey, etc.
-    data[FormSettings.starting_random] = False  # "starting kong count is random" setting
-    data[FormSettings.starting_kongs_count] = 2  # usually 2
+    data["krool_phase_order_rando"] = True  # usually True
+    data["krool_random"] = False  # "phase count is random" setting
+    data["krool_phase_count"] = 3  # usually 3
+    data["helm_random"] = False  # "room count is random" setting
+    data["helm_phase_count"] = 3  # usually 3
+    data["krool_access"] = True  # usually True - this is the weirdly named key 8 required setting
+    data["keys_random"] = False  # "key count is random" setting
+    data["krool_key_count"] = 5  # usually 5
+    data["select_keys"] = False  # usually False, if True use below
+    # data["starting_keys_list_selected"] = [Items.JungleJapesKey]  # JungleJapesKey, AngryAztecKey, etc.
+    data["starting_random"] = False  # "starting kong count is random" setting
+    data["starting_kongs_count"] = 2  # usually 2
 
-    data[FormSettings.quality_of_life] = True
-    data[FormSettings.enable_tag_anywhere] = True
-    data[FormSettings.wrinkly_hints] = WrinklyHints.standard
+    data["quality_of_life"] = True
+    data["enable_tag_anywhere"] = True
+    data["wrinkly_hints"] = WrinklyHints.standard
     #data["disable_shop_hints"] = False
-    data[FormSettings.warp_to_isles] = True
-    data[FormSettings.helm_setting] = HelmSetting.skip_start
-    data[FormSettings.portal_numbers] = True
-    data[FormSettings.shop_indicator] = True
-    data[FormSettings.puzzle_rando] = True
-    data[FormSettings.fast_gbs] = True  # usually True
-    data[FormSettings.high_req] = True  # usually True
-    data[FormSettings.random_patches] = False  # usually False
-    data[FormSettings.shuffle_shops] = False  # usually False
+    data["warp_to_isles"] = True
+    data["helm_setting"] = HelmSetting.skip_start
+    data["portal_numbers"] = True
+    data["shop_indicator"] = True
+    data["puzzle_rando"] = True
+    data["fast_gbs"] = True  # usually True
+    data["high_req"] = True  # usually True
+    data["random_patches"] = False  # usually False
+    data["shuffle_shops"] = False  # usually False
 
-    data[FormSettings.free_trade_setting] = FreeTradeSetting.not_blueprints  # none | not_blueprints | major_collectibles
-    data[FormSettings.crown_placement_rando] = False  # usually false
-    data[FormSettings.hard_blockers] = False  # likely to be False
-    data[FormSettings.hard_troff_n_scoff] = False  # likely to be False
-    data[FormSettings.cb_rando] = True  # likely to be False?
-    data[FormSettings.win_condition] = WinCondition.beat_krool  # lots of options: all_keys | get_key8 | beat_krool | all_medals | all_fairies | all_blueprints | poke_snap
-    data[FormSettings.wrinkly_location_rando] = False  # likely to be False
-    data[FormSettings.tns_location_rando] = False  # likely to be False
-    data[FormSettings.key_8_helm] = True  # likely to be True in most settings
-    data[FormSettings.misc_changes_selected] = []  # a whole suite of things it includes
+    data["free_trade_setting"] = FreeTradeSetting.not_blueprints  # none | not_blueprints | major_collectibles
+    data["crown_placement_rando"] = False  # usually false
+    data["hard_blockers"] = False  # likely to be False
+    data["hard_troff_n_scoff"] = False  # likely to be False
+    data["cb_rando"] = True  # likely to be False?
+    data["win_condition"] = WinCondition.beat_krool  # lots of options: all_keys | get_key8 | beat_krool | all_medals | all_fairies | all_blueprints | poke_snap
+    data["wrinkly_location_rando"] = False  # likely to be False
+    data["tns_location_rando"] = False  # likely to be False
+    data["key_8_helm"] = True  # likely to be True in most settings
+    data["misc_changes_selected"] = []  # a whole suite of things it includes
 
-    data[FormSettings.hard_level_progression] = False  # likely to be False
+    data["hard_level_progression"] = False  # likely to be False
 
-    data[FormSettings.logic_type] = LogicType.glitchless  # "glitchless", "glitch", "nologic"
+    data["logic_type"] = LogicType.glitchless  # "glitchless", "glitch", "nologic"
     # glitch options:
     # "advanced_platforming", "b_locker_skips", "general_clips", "ledge_clips", "moonkicks", "phase_swimming", "phase_walking", "skew", "spawn_snags", "swim_through_shores", "tag_barrel_storage", "troff_n_scoff_skips"
-    data[FormSettings.glitches_selected] = []
-    data[FormSettings.microhints_enabled] = MicrohintsEnabled.all  # off/base/all
-    data[FormSettings.smaller_shops] = True  # likely to be True in item rando, many settings force it to be false
-    data[FormSettings.alter_switch_allocation] = False  # likely to be True, easier to test things when false
-    data[FormSettings.random_starting_region] = False  # likely to be False
-    data[FormSettings.random_fairies] = False  # likely to be False
+    data["glitches_selected"] = []
+    data["microhints_enabled"] = MicrohintsEnabled.all  # off/base/all
+    data["smaller_shops"] = True  # likely to be True in item rando, many settings force it to be false
+    data["alter_switch_allocation"] = False  # likely to be True, easier to test things when false
+    data["random_starting_region"] = False  # likely to be False
+    data["random_fairies"] = False  # likely to be False
 
     return data
 
@@ -163,7 +162,7 @@ def generate_settings():
     """Asdf."""
     # Setting test settings
     data = json.load(open("static/presets/default.json"))
-    data[FormSettings.seed] = random.randint(0, 100000000)
+    data["seed"] = random.randint(0, 100000000)
     return data
 
 
