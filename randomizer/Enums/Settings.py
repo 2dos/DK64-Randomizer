@@ -8,6 +8,17 @@ from randomizer.Lists.MapsAndExits import Maps
 # Each select-based setting should have its own associated enum class. The enum
 # values should exactly match the input values in the HTML (not the IDs).
 
+# Settings to double-check:
+# ActivateAllBananaports
+# EnemySelector
+# HelmSetting
+# MicrohintsEnabled
+# WinCondition
+# Search for IsGlitchEnabled
+# Search for DoorItemCheck
+# Find where "seed" is being changed back to a string
+# static/presets/default.json needs to be reworked
+
 # Randomizers
 
 class LogicType(IntEnum):
@@ -30,10 +41,11 @@ class GlitchesSelected(IntEnum):
     tag_barrel_storage = auto()
     troff_n_scoff_skips = auto()
 
+# This enum is explicitly indexed for use in ApplyRandomizer.py.
 class ActivateAllBananaports(IntEnum):
-    off = auto()
-    isles = auto()
-    all = auto()
+    off = 0
+    all = 1
+    isles = 2
 
 class LevelRandomization(IntEnum):
     level_order = auto()
@@ -116,14 +128,15 @@ class MinigamesListSelected(IntEnum):
     peril_path_panic = auto()
     helm_minigames = auto()
 
+# This enum is explicitly indexed for use in ApplyRandomizer.py.
 class WinCondition(IntEnum):
-    beat_krool = auto()
-    get_key8 = auto()
-    all_keys = auto()
-    all_fairies = auto()
-    all_blueprints = auto()
-    all_medals = auto()
-    poke_snap = auto()
+    beat_krool = 0
+    get_key8 = 1
+    all_fairies = 2
+    all_blueprints = 3
+    all_medals = 4
+    poke_snap = 5
+    all_keys = 6
 
 class FreeTradeSetting(IntEnum):
     none = auto()
@@ -150,6 +163,7 @@ class HelmDoorItem(IntEnum):
     req_medal = auto()
     req_crown = auto()
     req_fairy = auto()
+    req_rainbowcoin = auto()
     req_bean = auto()
     req_pearl = auto()
 
@@ -194,15 +208,17 @@ class WrinklyHints(IntEnum):
     cryptic = auto()
     off = auto()
 
+# This enum is explicitly indexed for use in ApplyRandomizer.py.
 class HelmSetting(IntEnum):
-    default = auto()
-    skip_start = auto()
-    skip_all = auto()
+    default = 0
+    skip_start = 1
+    skip_all = 2
 
+# This enum is explicitly indexed for use in ApplyRandomizer.py.
 class MicrohintsEnabled(IntEnum):
-    all = auto()
-    base = auto()
-    off = auto()
+    off = 0
+    base = 1
+    all = 2
 
 # Cosmetics
 
@@ -232,11 +248,13 @@ class ColorblindMode(IntEnum):
 
 # Additional enums not currently shown on the web site.
 
+# Used for settings.shuffle_loading_zones
 class ShuffleLoadingZones(IntEnum):
     none = auto()
     levels = auto()
     all = auto()
 
+# Used for settings.bonus_barrels and settings.helm_barrels
 class MinigameBarrels(IntEnum):
     skip = auto()
     normal = auto()
@@ -377,6 +395,7 @@ class FormSettings(IntEnum):
 
     # Quality of Life
 
+    fast_start_beginning_of_game = auto()
     quality_of_life = auto()
     misc_changes_selected = auto()
     shorten_boss = auto()

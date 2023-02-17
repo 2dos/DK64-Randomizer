@@ -4,6 +4,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Settings import DamageAmount, HelmSetting
 
 
 class CrownLocation:
@@ -142,7 +143,7 @@ CrownLocations = {
             z=740,
             scale=0.25,
             region=Regions.AngryAztecOasis,
-            logic=lambda l: (l.coconut or l.phasewalk) and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default"),
+            logic=lambda l: (l.coconut or l.phasewalk) and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == DamageAmount.default),
         ),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Oasis", x=2151, y=120, z=983, scale=0.35, region=Regions.AngryAztecOasis),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Behind Tiny Temple", x=3345, y=153, z=507, scale=0.3, region=Regions.AngryAztecOasis),
@@ -602,7 +603,7 @@ CrownLocations = {
             z=500,
             scale=0.4,
             region=Regions.Library,
-            logic=lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey and (l.strongKong or l.settings.damage_amount == "default")) or l.phasewalk,
+            logic=lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey and (l.strongKong or l.settings.damage_amount == DamageAmount.default)) or l.phasewalk,
         ),
         CrownLocation(map=Maps.CastleMuseum, name="Creepy Castle - Museum: Near Race", x=312, y=200, z=1784, scale=0.4, region=Regions.MuseumBehindGlass),
         CrownLocation(
@@ -790,7 +791,7 @@ CrownLocations = {
             and l.handstand
             and ((l.chunky and l.pineapple and l.vines) or l.phasewalk)
             and (
-                l.settings.helm_setting == "skip_all"
+                l.settings.helm_setting == HelmSetting.skip_all
                 or (
                     Events.HelmDonkeyDone in l.Events
                     and Events.HelmChunkyDone in l.Events
@@ -812,7 +813,7 @@ CrownLocations = {
             and l.handstand
             and ((l.chunky and l.pineapple and l.vines) or l.phasewalk)
             and (
-                l.settings.helm_setting == "skip_all"
+                l.settings.helm_setting == HelmSetting.skip_all
                 or (
                     Events.HelmDonkeyDone in l.Events
                     and Events.HelmChunkyDone in l.Events
@@ -832,7 +833,7 @@ CrownLocations = {
             region=Regions.HideoutHelmAfterBoM,
             logic=lambda l: l.lanky
             and l.handstand
-            and l.settings.helm_setting == "skip_all"
+            and l.settings.helm_setting == HelmSetting.skip_all
             or (Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events),
         ),
         CrownLocation(
@@ -844,7 +845,7 @@ CrownLocations = {
             scale=0.5,
             region=Regions.HideoutHelmAfterBoM,
             logic=lambda l: (
-                l.settings.helm_setting == "skip_all"
+                l.settings.helm_setting == HelmSetting.skip_all
                 or (
                     Events.HelmDonkeyDone in l.Events
                     and Events.HelmChunkyDone in l.Events
@@ -866,7 +867,7 @@ CrownLocations = {
             logic=lambda l: l.jetpack
             and l.isdiddy
             and (
-                l.settings.helm_setting == "skip_all"
+                l.settings.helm_setting == HelmSetting.skip_all
                 or (
                     Events.HelmDonkeyDone in l.Events
                     and Events.HelmChunkyDone in l.Events
@@ -935,7 +936,7 @@ CrownLocations = {
             scale=0.4,
             region=Regions.HideoutHelmMain,
             logic=lambda l: (
-                l.settings.helm_setting == "skip_all"
+                l.settings.helm_setting == HelmSetting.skip_all
                 or (
                     Events.HelmDonkeyDone in l.Events
                     and Events.HelmChunkyDone in l.Events
@@ -954,7 +955,7 @@ CrownLocations = {
             scale=0.4,
             region=Regions.HideoutHelmMain,
             logic=lambda l: (
-                l.settings.helm_setting == "skip_all"
+                l.settings.helm_setting == HelmSetting.skip_all
                 or (
                     Events.HelmDonkeyDone in l.Events
                     and Events.HelmChunkyDone in l.Events
@@ -973,7 +974,7 @@ CrownLocations = {
             scale=0.4,
             region=Regions.HideoutHelmMain,
             logic=lambda l: (
-                l.settings.helm_setting == "skip_all"
+                l.settings.helm_setting == HelmSetting.skip_all
                 or (
                     Events.HelmDonkeyDone in l.Events
                     and Events.HelmChunkyDone in l.Events

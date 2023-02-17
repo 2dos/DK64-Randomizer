@@ -192,11 +192,6 @@ EnemyMetaData = {
 }
 
 
-def convertEnemyName(name):
-    """Convert enemy name into a single-word name."""
-    return name.lower().replace(" ", "_").replace("(", "").replace(")", "")
-
-
 EnemySelector = []
 for enemyEnum, enemy in EnemyMetaData.items():
     if enemy.selector_enabled:
