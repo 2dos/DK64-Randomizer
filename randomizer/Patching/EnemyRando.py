@@ -4,10 +4,7 @@ import random
 import js
 from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData
 from randomizer.Enums.EnemySubtypes import EnemySubtype
-from randomizer.Enums.Settings import (
-    CrownEnemyRando,
-    DamageAmount
-)
+from randomizer.Enums.Settings import CrownEnemyRando, DamageAmount
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler

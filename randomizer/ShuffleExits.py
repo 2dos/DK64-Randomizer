@@ -2,11 +2,7 @@
 import random
 
 import js
-from randomizer.Enums.Settings import (
-    ActivateAllBananaports,
-    RandomPrices,
-    ShuffleLoadingZones
-)
+from randomizer.Enums.Settings import ActivateAllBananaports, RandomPrices, ShuffleLoadingZones
 from randomizer.Enums.Types import Types
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
