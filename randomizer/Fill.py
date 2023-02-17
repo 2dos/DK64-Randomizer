@@ -49,18 +49,6 @@ def GetExitLevelExit(region):
     """Get the exit that using the "Exit Level" button will take you to."""
     level = region.level
 
-    medal_logic_regions = [
-        Regions.JungleJapesMedals,
-        Regions.AngryAztecMedals,
-        Regions.FranticFactoryMedals,
-        Regions.GloomyGalleonMedals,
-        Regions.FungiForestMedals,
-        Regions.CrystalCavesMedals,
-        Regions.CreepyCastleMedals,
-    ]
-    regions_with_medals = [(key, value) for (key, value) in Logic.Regions.items() if value not in medal_logic_regions]
-    if region in regions_with_medals:
-        return None
     # If you have option to restart, means there is no Exit Level option
     if region.restart is not None:
         return None
