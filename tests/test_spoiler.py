@@ -5,6 +5,7 @@ import random
 import pytest
 
 from randomizer.Enums.Settings import (
+    SettingsMap,
     ActivateAllBananaports,
     BananaportRando,
     DamageAmount,
@@ -163,6 +164,16 @@ def generate_settings():
     # Setting test settings
     data = json.load(open("static/presets/default.json"))
     data["seed"] = random.randint(0, 100000000)
+    # Convert to enums
+    for k, v in data.items():
+        if k in SettingsMap:
+            if type(v) is list:
+                values = []
+                for val in v:
+                    values.append(SettingsMap[k][val])
+                data[k] = values
+            else:
+                data[k] = SettingsMap[k][v]
     return data
 
 
