@@ -2,7 +2,7 @@
 import random
 
 import js
-from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData, convertEnemyName
+from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData
 from randomizer.Enums.EnemySubtypes import EnemySubtype
 from randomizer.Enums.Settings import (
     CrownEnemyRando,

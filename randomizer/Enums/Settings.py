@@ -8,9 +8,6 @@ from randomizer.Lists.MapsAndExits import Maps
 # Each select-based setting should have its own associated enum class. The enum
 # values should exactly match the input values in the HTML (not the IDs).
 
-# Settings to double-check:
-# static/presets/default.json needs to be reworked
-
 # Randomizers
 
 class LogicType(IntEnum):
