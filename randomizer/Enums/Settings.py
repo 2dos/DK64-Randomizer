@@ -161,9 +161,9 @@ class HelmDoorItem(IntEnum):
 
 class DamageAmount(IntEnum):
     default = auto()
-    ohko = auto()
     double = auto()
     quad = auto()
+    ohko = auto()
 
 class CrownEnemyRando(IntEnum):
     off = auto()
@@ -244,8 +244,8 @@ class ShuffleLoadingZones(IntEnum):
     all = auto()
 
 class MinigameBarrels(IntEnum):
-    skip = auto()
     normal = auto()
+    skip = auto()
     random = auto()
     selected = auto()
 
