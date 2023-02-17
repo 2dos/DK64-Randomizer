@@ -423,7 +423,7 @@ class Settings:
         self.maximize_helm_blocker = False
         self.perma_death = False
         self.disable_tag_barrels = False
-        self.level_randomization = LevelRandomization.none
+        self.level_randomization = LevelRandomization.vanilla
         self.kong_rando = False
         self.kongs_for_progression = False
         self.wrinkly_hints = WrinklyHints.off

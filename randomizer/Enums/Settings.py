@@ -37,10 +37,10 @@ class ActivateAllBananaports(IntEnum):
     isles = 2
 
 class LevelRandomization(IntEnum):
+    vanilla = auto()
     level_order = auto()
     loadingzone = auto()
     loadingzonesdecoupled = auto()
-    vanilla = auto()
 
 # These values are tied to the ItemRandoSelector in randomizer.Enums.Types.
 # The presence of "beanpearl" requires a different enum from Types.
