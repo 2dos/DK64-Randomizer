@@ -204,6 +204,7 @@
 #define ISLES_SWITCH_COCONUT 0x32
 #define AZTEC_CHUNKY_CAGE 0x24
 #define CRYPT_LT_GRAPE 0x0
+#define CRYPT_LT_SIMIAN_SWITCH 0x4
 #define CRYPT_DDC_D 0xD
 #define CRYPT_DDC_E 0xE
 #define CRYPT_DDC_F 0xF
@@ -1622,6 +1623,34 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						//move on to state 3
 						behaviour_pointer->next_state = 3;
 					}
+				} else if (param2 == CRYPT_LT_SIMIAN_SWITCH) {
+					//activates the Goo Hands in Tiny's part of the Lanky/Tiny Crypt if all 6 of them are initialized
+					//return value: 1 if the Goo Hands have been activated, 0 otherwise
+					unsigned char hands[] = {6, 7, 9, 10, 11, 12};
+					for(int hand = 0; hand < sizeof(hands); hand++){
+						//obtain hand pause state
+						ModelTwoData handModelTwoPointer = *(ModelTwoData*)(0x807F6240 + (hands[hand] * 4));
+						behaviour_data handBehaviour = *(behaviour_data*)(&handModelTwoPointer.behaviour_pointer);
+						//if uninitialized hand is found:
+						if (handBehaviour.pause_state != 2){
+							return 0;
+						}
+					}
+
+					//activates the hands
+					for(int hand = 0; hand < sizeof(hands); hand++){
+						//obtain hand variables
+						ModelTwoData handModelTwoPointer = *(ModelTwoData*)(0x807F6240 + (hands[hand] * 4));
+						behaviour_data* handBehaviourPointer = (behaviour_data*)(&handModelTwoPointer.behaviour_pointer);
+						int handIndex = indexOfNextObj(hands[hand]);
+
+						setObjectScriptState(hands[hand], 10, 0);
+						if(handIndex != -1){
+							setScriptRunState(handBehaviourPointer, 0, 0);
+						}
+
+					}
+					return 1;
 				}
 				break;
 			case CRYPT_DDC:
