@@ -23,7 +23,7 @@ from randomizer.Enums.Settings import (
     WinCondition,
     WrinklyHints
 )
-#from randomizer.Enums.Items import Items
+# from randomizer.Enums.Items import Items
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
@@ -92,14 +92,14 @@ def generate_lo_rando_race_settings():
     data["no_healing"] = False
     data["no_melons"] = False
     data["hard_shooting"] = False
-    #data["hard_mad_jack"] = False
+    # data["hard_mad_jack"] = False
     data["perma_death"] = False
     data["crown_door_item"] = HelmDoorItem.random  # opened | random | specify the item: req_xxx
     data["crown_door_item_count"] = 1  # no need to specify when random
     data["coin_door_item"] = HelmDoorItem.random  # opened | random | specify the item: req_xxx
     data["coin_door_item_count"] = 1  # no need to specify when random
     data["bonus_barrel_rando"] = True
-    #data["gnawty_barrels"] = False
+    # data["gnawty_barrels"] = False
     data["bonus_barrel_auto_complete"] = False  # usually False
     data["open_lobbies"] = False
     data["open_levels"] = False  # usually False
@@ -121,7 +121,7 @@ def generate_lo_rando_race_settings():
     data["quality_of_life"] = True
     data["enable_tag_anywhere"] = True
     data["wrinkly_hints"] = WrinklyHints.standard
-    #data["disable_shop_hints"] = False
+    # data["disable_shop_hints"] = False
     data["warp_to_isles"] = True
     data["helm_setting"] = HelmSetting.skip_start
     data["portal_numbers"] = True
