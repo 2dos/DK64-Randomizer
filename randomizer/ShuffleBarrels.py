@@ -83,7 +83,12 @@ def BarrelShuffle(settings: Settings):
             MinigamesListSelected.mad_maze_maul: [Minigames.MadMazeMaulEasy, Minigames.MadMazeMaulNormal, Minigames.MadMazeMaulHard, Minigames.MadMazeMaulInsane],
             MinigamesListSelected.minecart_mayhem: [Minigames.MinecartMayhemEasy, Minigames.MinecartMayhemNormal, Minigames.MinecartMayhemHard],
             MinigamesListSelected.beaver_bother: [Minigames.BeaverBotherEasy, Minigames.BeaverBotherNormal, Minigames.BeaverBotherHard],
-            MinigamesListSelected.teetering_turtle_trouble: [Minigames.TeeteringTurtleTroubleVEasy, Minigames.TeeteringTurtleTroubleEasy, Minigames.TeeteringTurtleTroubleNormal, Minigames.TeeteringTurtleTroubleHard],
+            MinigamesListSelected.teetering_turtle_trouble: [
+                Minigames.TeeteringTurtleTroubleVEasy,
+                Minigames.TeeteringTurtleTroubleEasy,
+                Minigames.TeeteringTurtleTroubleNormal,
+                Minigames.TeeteringTurtleTroubleHard,
+            ],
             MinigamesListSelected.stealthy_snoop: [Minigames.StealthySnoopVEasy, Minigames.StealthySnoopEasy, Minigames.StealthySnoopNormal, Minigames.StealthySnoopHard],
             MinigamesListSelected.stash_snatch: [Minigames.StashSnatchEasy, Minigames.StashSnatchNormal, Minigames.StashSnatchHard, Minigames.StashSnatchInsane],
             MinigamesListSelected.splish_splash_salvage: [Minigames.SplishSplashSalvageEasy, Minigames.SplishSplashSalvageNormal, Minigames.SplishSplashSalvageHard],

@@ -23,7 +23,7 @@ from randomizer.Enums.Settings import (
     ShockwaveStatus,
     ShuffleLoadingZones,
     TrainingBarrels,
-    WinCondition
+    WinCondition,
 )
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
@@ -135,7 +135,9 @@ class Spoiler:
         else:
             settings["Logic Type"] = self.settings.logic_type
         if self.settings.logic_type == LogicType.glitch:
-            settings["Glitches Enabled"] = ", ".join([x.name for x in GlitchLogicItems if GlitchesSelected[x.shorthand] in self.settings.glitches_selected or len(self.settings.glitches_selected) == 0])
+            settings["Glitches Enabled"] = ", ".join(
+                [x.name for x in GlitchLogicItems if GlitchesSelected[x.shorthand] in self.settings.glitches_selected or len(self.settings.glitches_selected) == 0]
+            )
         settings["Shuffle Enemies"] = self.settings.enemy_rando
         settings["Move Randomization type"] = self.settings.move_rando.name
         settings["Loading Zones Shuffled"] = self.settings.shuffle_loading_zones.name

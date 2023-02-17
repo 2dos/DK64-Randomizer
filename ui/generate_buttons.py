@@ -174,10 +174,14 @@ def serialize_settings():
             return True
         except ValueError:
             pass
-        
+
     def get_enum_or_string_value(valueString, settingName):
-        """Obtain the enum value that corresponds to the provided setting, if
-           it exists. Otherwise, return the string."""
+        """Obtain the enum or string value for the provided setting.
+
+        Args:
+            valueString (str) - The value from the HTML input.
+            settingName (str) - The name of the HTML input.
+        """
         if settingName in SettingsMap:
             return SettingsMap[settingName][valueString]
         else:

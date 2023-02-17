@@ -30,7 +30,7 @@ from randomizer.Enums.Settings import (
     ShuffleLoadingZones,
     TrainingBarrels,
     WinCondition,
-    WrinklyHints
+    WrinklyHints,
 )
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions

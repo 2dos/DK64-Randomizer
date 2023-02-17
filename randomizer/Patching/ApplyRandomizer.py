@@ -7,16 +7,7 @@ import pickle
 import random
 
 import js
-from randomizer.Enums.Settings import (
-    BananaportRando,
-    CrownEnemyRando,
-    DamageAmount,
-    HelmDoorItem,
-    MiscChangesSelected,
-    ShockwaveStatus,
-    ShuffleLoadingZones,
-    WrinklyHints
-)
+from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, HelmDoorItem, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.EnemyTypes import Enemies

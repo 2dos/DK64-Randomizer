@@ -40,7 +40,7 @@ from randomizer.Enums.Settings import (
     ShuffleLoadingZones,
     TrainingBarrels,
     WinCondition,
-    WrinklyHints
+    WrinklyHints,
 )
 from randomizer.Enums.Types import Types
 import randomizer.ItemPool as ItemPool
@@ -156,8 +156,8 @@ class Settings:
         self.resolve_settings()
         self.update_valid_locations()
 
-
     def apply_form_data(self, form_data):
+        """Convert and apply the provided form data to this class."""
         for k, v in form_data.items():
             # If this setting key is associated with an enum, convert the
             # value(s) to that enum.
@@ -173,7 +173,6 @@ class Settings:
             else:
                 # The value is a basic type, so assign it directly.
                 setattr(self, k, v)
-
 
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
@@ -537,7 +536,7 @@ class Settings:
             HelmDoorItem.req_crown,
             HelmDoorItem.req_fairy,
             HelmDoorItem.req_bean,
-            HelmDoorItem.req_pearl
+            HelmDoorItem.req_pearl,
         ]
         if self.crown_door_item == HelmDoorItem.random and self.coin_door_item == HelmDoorItem.random:
             self.crown_door_random = True

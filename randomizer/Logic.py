@@ -10,16 +10,7 @@ import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions as RegionEnum
-from randomizer.Enums.Settings import (
-    ActivateAllBananaports,
-    GlitchesSelected,
-    HelmDoorItem,
-    LogicType,
-    ShockwaveStatus,
-    ShuffleLoadingZones,
-    TrainingBarrels,
-    WinCondition
-)
+from randomizer.Enums.Settings import ActivateAllBananaports, GlitchesSelected, HelmDoorItem, LogicType, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Warps import BananaportVanilla
@@ -814,7 +805,9 @@ class LogicVarHolder:
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
-        if self.settings.win_condition == WinCondition.beat_krool or self.settings.win_condition == WinCondition.poke_snap:  # Photo taking doesn't have a clear wincon so this'll do until something better is concocted
+        if (
+            self.settings.win_condition == WinCondition.beat_krool or self.settings.win_condition == WinCondition.poke_snap
+        ):  # Photo taking doesn't have a clear wincon so this'll do until something better is concocted
             return Events.KRoolDefeated in self.Events
         elif self.settings.win_condition == WinCondition.get_key8:
             return self.HelmKey

@@ -8,12 +8,7 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Lib import intf_to_float, float_to_hex, int_to_list, getObjectAddress
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import (
-    CharacterColors,
-    ColorblindMode,
-    HelmDoorItem,
-    KlaptrapModel
-)
+from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorItem, KlaptrapModel
 from PIL import Image, ImageEnhance, ImageDraw
 import zlib
 import gzip
