@@ -1625,32 +1625,26 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == CRYPT_LT_SIMIAN_SWITCH) {
 					//activates the Goo Hands in Tiny's part of the Lanky/Tiny Crypt if all 6 of them are initialized
-					//return value: 1 if the Goo Hands have been activated, 0 otherwise
 					unsigned char hands[] = {6, 7, 9, 10, 11, 12};
-					for(int hand = 0; hand < sizeof(hands); hand++){
-						//obtain hand pause state
-						ModelTwoData handModelTwoPointer = *(ModelTwoData*)(0x807F6240 + (hands[hand] * 4));
-						behaviour_data handBehaviour = *(behaviour_data*)(&handModelTwoPointer.behaviour_pointer);
-						//if uninitialized hand is found:
-						if (handBehaviour.pause_state != 2){
-							return 0;
-						}
-					}
-
 					//activates the hands
 					for(int hand = 0; hand < sizeof(hands); hand++){
 						//obtain hand variables
-						ModelTwoData handModelTwoPointer = *(ModelTwoData*)(0x807F6240 + (hands[hand] * 4));
-						behaviour_data* handBehaviourPointer = (behaviour_data*)(&handModelTwoPointer.behaviour_pointer);
-						int handIndex = indexOfNextObj(hands[hand]);
-
-						setObjectScriptState(hands[hand], 10, 0);
-						if(handIndex != -1){
-							setScriptRunState(handBehaviourPointer, 0, 0);
+						// Get model two pointer of the Goo Hand in question
+						int* m2location = (int*)ObjectModel2Pointer;
+						int slot = convertIDToIndex(hands[hand]);
+						ModelTwoData* handModelTwoPointer = getObjectArrayAddr(m2location,0x90,slot);
+						if (handModelTwoPointer) {
+							// If pointer exists with that id, check behaviour
+							behaviour_data* behaviour = handModelTwoPointer->behaviour_pointer;
+							if (behaviour) {
+								// If behaviour exists (always should do, but always good to check), activate the Goo Hand
+								setObjectScriptState(slot, 10, 0);
+								if(slot != -1){
+									setScriptRunState(behaviour, 0, 0);
+								}
+							}
 						}
-
 					}
-					return 1;
 				}
 				break;
 			case CRYPT_DDC:
