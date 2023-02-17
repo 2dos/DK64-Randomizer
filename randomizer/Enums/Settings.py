@@ -71,6 +71,7 @@ class MoveRando(IntEnum):
     on = auto()
     cross_purchase = auto()
     start_with = auto()
+    item_shuffle = auto()
 
 class TrainingBarrels(IntEnum):
     normal = auto()
