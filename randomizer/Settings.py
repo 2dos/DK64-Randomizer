@@ -13,35 +13,7 @@ from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import (
-    SettingsMap,
-    ActivateAllBananaports,
-    BananaportRando,
-    CharacterColors,
-    ColorblindMode,
-    CrownEnemyRando,
-    DamageAmount,
-    FreeTradeSetting,
-    HelmDoorItem,
-    HelmSetting,
-    ItemRandoListSelected,
-    KasplatRandoSetting,
-    KlaptrapModel,
-    KrushaUi,
-    LevelRandomization,
-    LogicType,
-    MicrohintsEnabled,
-    MinigameBarrels,
-    MiscChangesSelected,
-    MoveRando,
-    MusicCosmetics,
-    RandomPrices,
-    ShockwaveStatus,
-    ShuffleLoadingZones,
-    TrainingBarrels,
-    WinCondition,
-    WrinklyHints,
-)
+from randomizer.Enums.Settings import *
 from randomizer.Enums.Types import Types
 import randomizer.ItemPool as ItemPool
 from randomizer.Lists.Item import ItemList
