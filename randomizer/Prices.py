@@ -85,15 +85,15 @@ def GetPriceWeights(weight):
     avg = 4.5
     stddev = 2
     upperLimit = 9
-    if weight == "high":
+    if weight == RandomPrices.high:
         avg = 6.5
         stddev = 3
         upperLimit = 12
-    elif weight == "low":
+    elif weight == RandomPrices.low:
         avg = 2.5
         stddev = 1
         upperLimit = 6
-    elif weight == "extreme":
+    elif weight == RandomPrices.extreme:
         avg = 11
         stddev = 2
         upperLimit = 15
@@ -118,7 +118,7 @@ def RandomizePrices(weight):
 def GenerateRandomPrice(weight, avg, stddev, upperLimit):
     """Generate a random price to assign."""
     lowerLimit = 1
-    if weight == "free":
+    if weight == RandomPrices.free:
         newPrice = 0
     else:
         newPrice = round(random.normalvariate(avg, stddev))

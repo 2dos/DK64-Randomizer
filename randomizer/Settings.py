@@ -128,8 +128,21 @@ class Settings:
         self.resolve_settings()
         self.update_valid_locations()
 
+
     def apply_form_data(self, form_data):
         """Convert and apply the provided form data to this class."""
+        def get_enum_value(keyString, valueString):
+            """Take in a key and value, and return an enum."""
+            try:
+                return SettingsMap[keyString](valueString)
+            except ValueError:
+                # We may have been given a string representing an enum name.
+                # Failsafe in case enum conversion didn't happen elsewhere.
+                try:
+                    return SettingsMap[keyString][valueString]
+                except ValueError:
+                    raise ValueError(f"Value '{valueString}' is invalid for setting '{keyString}'.")
+
         for k, v in form_data.items():
             # If this setting key is associated with an enum, convert the
             # value(s) to that enum.
@@ -137,10 +150,10 @@ class Settings:
                 if type(v) is list:
                     settingValue = []
                     for val in v:
-                        settingValue.append(SettingsMap[k](val))
+                        settingValue.append(get_enum_value(k, val))
                     setattr(self, k, settingValue)
                 else:
-                    settingValue = SettingsMap[k](v)
+                    settingValue = get_enum_value(k, v)
                     setattr(self, k, settingValue)
             else:
                 # The value is a basic type, so assign it directly.

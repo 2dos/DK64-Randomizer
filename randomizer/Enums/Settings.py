@@ -33,6 +33,7 @@ class GlitchesSelected(IntEnum):
 
     advanced_platforming = auto()
     b_locker_skips = auto()
+    boulder_clips = auto()
     general_clips = auto()
     ledge_clips = auto()
     moonkicks = auto()

@@ -65,7 +65,7 @@ class LogicVarHolder:
         enable_glitch_logic = self.settings.logic_type == LogicType.glitch
         self.phasewalk = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.phase_walking)
         self.phaseswim = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.phase_swimming)
-        self.moonkick = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.moonkick)
+        self.moonkicks = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.moonkicks)
         self.ledgeclip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.ledge_clips)
         self.generalclips = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.general_clips)  # General clips which have no real category
         self.lanky_blocker_skip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.b_locker_skips)  # Also includes ppunch skip
@@ -406,7 +406,7 @@ class LogicVarHolder:
 
     def CanMoonkick(self):
         """Determine whether the player can perform a moonkick."""
-        return self.moonkick and self.isdonkey and self.settings.krusha_kong != Kongs.donkey
+        return self.moonkicks and self.isdonkey and self.settings.krusha_kong != Kongs.donkey
 
     def CanOStandTBSNoclip(self):
         """Determine whether the player can perform Orangstand TBS Noclip."""

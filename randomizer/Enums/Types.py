@@ -31,7 +31,7 @@ class Types(IntEnum):
 
 
 # If you make change to this selector, make sure to change the corresponding
-# ItemRandoListSelected enum in ui/settings_enums.py.
+# ItemRandoListSelected enum in randomizer.Enums.Settings.
 ItemRandoSelector = [
     {"name": "Shops", "value": "shop", "tooltip": "Cranky, Funky, and Candy Moves are in the Pool and become possible locations for items.&#10;By selecting this, Cross-Kong purchases is forced on."},
     {"name": "Golden Bananas", "value": "banana", "tooltip": ""},

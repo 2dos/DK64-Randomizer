@@ -1359,7 +1359,7 @@ def PlaceKongsInKongLocations(spoiler, kongItems, kongLocations):
             # If there aren't any accessible Kong locations, then the level order shuffler has a bug (this shouldn't happen)
             if not any(logicallyAccessibleKongLocations):
                 raise Ex.EntrancePlacementException(
-                    "Levels shuffled in a way that makes Kong unlocks impossible. SEND THIS TO THE DEVS! " + dumps(spoiler.settings.__dict__) + " SEND THIS TO THE DEVS!"
+                    "Levels shuffled in a way that makes Kong unlocks impossible. SEND THIS TO THE DEVS!"
                 )
             # Begin by finding the currently accessible Kong locations
             # Randomly pick an accessible location
@@ -1398,7 +1398,7 @@ def PlaceKongsInKongLocations(spoiler, kongItems, kongLocations):
                         if any(newlyAccessibleKongLocations):
                             progressionKongItems.append(kongItem)
                     if len(progressionKongItems) == 0:
-                        raise Ex.FillException("Kongs placed in a way that is impossible to unlock everyone. SEND THIS TO THE DEVS! " + dumps(spoiler.settings.__dict__) + " SEND THIS TO THE DEVS!")
+                        raise Ex.FillException("Kongs placed in a way that is impossible to unlock everyone. SEND THIS TO THE DEVS!")
                     # Pick a random Kong from the Kongs that guarantee progression
                     kongToBeFreed = choice(progressionKongItems)
             # Now that we have a combination guaranteed to not break the seed or logic, lock it in

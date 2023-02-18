@@ -206,7 +206,7 @@ MinigameRequirements = {
 }
 
 # If you make changes to this list, make sure to change the corresponding
-# MinigamesListSelected enum in ui/settings_enums.py.
+# MinigamesListSelected enum in randomizer.Enums.Settings.
 MinigameSelector = []
 result = []
 for minigame in MinigameRequirements.values():
