@@ -3,7 +3,7 @@
 This guide serves as a knowledge base document for editing object scripts.
 ## Getting the Scripts
 ### Vanilla
-To acquire the vanilla script files, including the `.raw` files that will be used by the object script editor introduced later in this guide, you will need to run `objectScriptGrabber.py` in the `instance_scripts` directory (You may want to copy this file to elsewhere on your PC and then run it in that separate location). Upon providing a DK64 US ROM, it will generate all of the object scripts.
+To acquire the vanilla script files, including the `.raw` files that will be used by the object script editor introduced later in this guide, you will need to run `run_all.bat` from the [DK64 Hacking Scripts Repo](https://github.com/theballaam96/dk64-hacking-scripts). Upon providing a DK64 US ROM, it will generate all of the object scripts.
 ### Scripts modified by Randomizer
 Upon building the DK64 Randomizer base hack, it will generate all the `.raw` files that are supplied to the ROM in the `instance_scripts` directory. These are ignored by git, so you will not need to worry about deleting these.
 

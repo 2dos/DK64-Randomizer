@@ -3,6 +3,8 @@ import zlib
 import os
 import json
 from typing import BinaryIO
+from BuildEnums import TableNames
+from BuildClasses import File
 
 base_rom = "./rom/dk64.z64"
 instance_dir = "./assets/cutscene_scripts"
@@ -308,15 +310,7 @@ def buildFile(data: bytes, modifications: list, map_index: int, map_name: str) -
                 fg.write(item.song.to_bytes(2, "big"))
             else:
                 fg.write(bytearray(item.read))
-    return (
-        {
-            "name": f"Cutscenes ({map_name})",
-            "pointer_table_index": 8,
-            "file_index": map_index,
-            "source_file": map_file_name,
-            "do_not_delete_source": True,
-        },
-    )
+    return File(name=f"Cutscenes ({map_name})", pointer_table_index=TableNames.Cutscenes, file_index=map_index, source_file=map_file_name, do_not_delete_source=True)
 
 
 def buildScripts() -> list:
@@ -360,5 +354,5 @@ def buildScripts() -> list:
                         for x in mod_files:
                             with open(f"{f}/{x}", "r") as fk:
                                 mods.append(json.loads(fk.read()))
-                        appended_items.append(buildFile(data, mods.copy(), map_index, f.split("\\")[-1].split("/")[-1])[0])
+                        appended_items.append(buildFile(data, mods.copy(), map_index, f.split("\\")[-1].split("/")[-1]))
     return appended_items

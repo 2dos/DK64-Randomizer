@@ -1,7 +1,7 @@
 """Convert file setup."""
 import os
 import shutil
-import struct
+from BuildLib import float_to_hex, intf_to_float
 
 from getMoveSignLocations import getMoveSignData
 from place_vines import generateVineSeries
@@ -34,18 +34,6 @@ def writedatatoarr(stream, value, size, location):
     for x in range(size):
         stream[location + x] = bytearray(value.to_bytes(size, "big"))[x]
     return stream
-
-
-def int_to_float(val):
-    """Convert a hex int to a float."""
-    return struct.unpack("!f", bytes.fromhex(hex(val).split("0x")[1]))[0]
-
-
-def float_to_hex(f):
-    """Convert float to hex."""
-    if f == 0:
-        return "0x00000000"
-    return hex(struct.unpack("<I", struct.pack("<f", f))[0])
 
 
 base_stream = 0
@@ -103,7 +91,7 @@ def modify(file_name, map_index):
                 base_stream = byte_stream
                 _x = int.from_bytes(byte_read[read_location + 0 : read_location + 4], "big")
                 _y = int.from_bytes(byte_read[read_location + 4 : read_location + 8], "big")
-                _yf = int_to_float(_y) - 30
+                _yf = intf_to_float(_y) - 30
                 _y = int(float_to_hex(_yf), 16)
                 _z = int.from_bytes(byte_read[read_location + 8 : read_location + 12], "big")
                 _ax = int.from_bytes(byte_read[read_location + 0x18 : read_location + 0x1C], "big")
