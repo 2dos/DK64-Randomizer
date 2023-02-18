@@ -55,7 +55,7 @@ class Settings:
         """
         self.__hash = self.__get_hash()
         self.public_hash = self.__get_hash()
-        self.algorithm = "forward"
+        self.algorithm = FillAlgorithm.forward
         self.generate_main()
         self.generate_progression()
         self.generate_misc()

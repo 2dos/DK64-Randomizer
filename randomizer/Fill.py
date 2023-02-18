@@ -21,6 +21,7 @@ from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     BananaportRando,
+    FillAlgorithm,
     HelmDoorItem,
     LogicType,
     MinigameBarrels,
@@ -964,12 +965,12 @@ def PlaceItems(settings, algorithm, itemsToPlace, ownedItems=None, inOrder=False
         ownedItems = []
     # Always use random fill with no logic
     if settings.logic_type == LogicType.nologic:
-        algorithm = "random"
-    if algorithm == "assumed":
+        algorithm = FillAlgorithm.random
+    if algorithm == FillAlgorithm.assumed:
         return AssumedFill(settings, itemsToPlace, ownedItems, inOrder)
-    elif algorithm == "forward":
+    elif algorithm == FillAlgorithm.forward:
         return ForwardFill(settings, itemsToPlace, ownedItems, inOrder)
-    elif algorithm == "random":
+    elif algorithm == FillAlgorithm.random:
         return RandomFill(settings, itemsToPlace, inOrder)
 
 
@@ -984,9 +985,9 @@ def FillShuffledKeys(spoiler, placed_types):
     # - Complex level progression (key order is non-linear)
     if spoiler.settings.logic_type == LogicType.nologic or spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all or spoiler.settings.hard_level_progression:
         # Assumed fills tend to place multiple keys at once better
-        keyAlgorithm = "assumed"
+        keyAlgorithm = FillAlgorithm.assumed
         if spoiler.settings.logic_type == LogicType.nologic:  # Obviously no logic gets random fills
-            keyAlgorithm = "random"
+            keyAlgorithm = FillAlgorithm.random
         # Place all the keys
         keysUnplaced = PlaceItems(spoiler.settings, keyAlgorithm, keysToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types))
         if keysUnplaced > 0:
@@ -1052,7 +1053,7 @@ def Fill(spoiler):
         placed_types.append(Types.Blueprint)
         Reset()
         # Blueprints can be placed randomly - there's no location that can cause blueprints to lock themselves
-        blueprintsUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.Blueprints().copy(), ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types))
+        blueprintsUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, ItemPool.Blueprints().copy(), ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types))
         if blueprintsUnplaced > 0:
             raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
     # Then place keys
@@ -1071,7 +1072,7 @@ def Fill(spoiler):
         placed_types.append(Types.Crown)
         Reset()
         # Crowns can be placed randomly, but only if the helm doors don't need any
-        algo = "random"
+        algo = FillAlgorithm.random
         if spoiler.settings.coin_door_item == HelmDoorItem.req_crown or spoiler.settings.crown_door_item in (HelmDoorItem.vanilla, HelmDoorItem.req_crown):
             algo = spoiler.settings.algorithm
         crownsUnplaced = PlaceItems(spoiler.settings, algo, ItemPool.BattleCrownItems(), ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types))
@@ -1087,7 +1088,7 @@ def Fill(spoiler):
         jetpacRequiredMedals = medalsToBePlaced[: spoiler.settings.medal_requirement]
         medalsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, jetpacRequiredMedals, medalAssumedItems)
         # The remaining medals can be placed randomly
-        medalsUnplaced += PlaceItems(spoiler.settings, "random", medalsToBePlaced[spoiler.settings.medal_requirement :], medalAssumedItems)
+        medalsUnplaced += PlaceItems(spoiler.settings, FillAlgorithm.random, medalsToBePlaced[spoiler.settings.medal_requirement :], medalAssumedItems)
         if medalsUnplaced > 0:
             raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced medals.")
     # Then place Fairies
@@ -1100,7 +1101,7 @@ def Fill(spoiler):
         rarewareRequiredFairies = fairiesToBePlaced[: spoiler.settings.rareware_gb_fairies]
         fairyUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, rarewareRequiredFairies, fairyAssumedItems)
         # The remaining fairies can be placed randomly
-        fairyUnplaced = PlaceItems(spoiler.settings, "random", fairiesToBePlaced[spoiler.settings.rareware_gb_fairies :], fairyAssumedItems)
+        fairyUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, fairiesToBePlaced[spoiler.settings.rareware_gb_fairies :], fairyAssumedItems)
         if fairyUnplaced > 0:
             raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced Fairies.")
     # Then place misc progression items
@@ -1115,26 +1116,26 @@ def Fill(spoiler):
     if Types.Banana in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Banana)
         Reset()
-        gbsUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.GoldenBananaItems(), [])
+        gbsUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, ItemPool.GoldenBananaItems(), [])
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced GBs.")
     if Types.ToughBanana in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.ToughBanana)
         Reset()
-        gbsUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.ToughGoldenBananaItems(), [])
+        gbsUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, ItemPool.ToughGoldenBananaItems(), [])
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced tough GBs.")
     # Fill in fake items
     if Types.FakeItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.FakeItem)
         Reset()
-        fakeUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.FakeItems(), [])
+        fakeUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, ItemPool.FakeItems(), [])
         # Don't raise exception if unplaced fake items
     # Fill in junk items
     if Types.JunkItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.JunkItem)
         Reset()
-        junkUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.JunkItems(), [])
+        junkUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, ItemPool.JunkItems(), [])
         # Don't raise exception if unplaced junk items
 
     # Some locations require special care to make logic work correctly
@@ -1171,7 +1172,7 @@ def ShuffleSharedMoves(spoiler, placedMoves):
     # To avoid conflicts, first determine which level shops will have shared moves then remove these shops from each kong's valid locations list
     if spoiler.settings.training_barrels != TrainingBarrels.normal and Items.Oranges not in placedMoves:
         # First place training moves that are not placed. By this point, only Oranges need to be placed here as the others are important to place even earlier than this
-        trainingMovesUnplaced = PlaceItems(spoiler.settings, "assumed", [Items.Oranges], [x for x in ItemPool.AllItems(spoiler.settings) if x != Items.Oranges and x not in placedMoves])
+        trainingMovesUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.assumed, [Items.Oranges], [x for x in ItemPool.AllItems(spoiler.settings) if x != Items.Oranges and x not in placedMoves])
         if trainingMovesUnplaced > 0:
             raise Ex.ItemPlacementException("Failed to place Orange training barrel move.")
         placedMoves.append(Items.Oranges)
@@ -1186,7 +1187,7 @@ def ShuffleSharedMoves(spoiler, placedMoves):
         if item in importantSharedToPlace:
             importantSharedToPlace.remove(item)
     importantSharedUnplaced = PlaceItems(
-        spoiler.settings, "assumed", importantSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in importantSharedToPlace and x not in placedMoves]
+        spoiler.settings, FillAlgorithm.assumed, importantSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in importantSharedToPlace and x not in placedMoves]
     )
     if importantSharedUnplaced > 0:
         raise Ex.ItemPlacementException(str(importantSharedUnplaced) + " unplaced shared important items.")
@@ -1194,7 +1195,7 @@ def ShuffleSharedMoves(spoiler, placedMoves):
     for item in placedMoves:
         if item in junkSharedToPlace:
             junkSharedToPlace.remove(item)
-    junkSharedUnplaced = PlaceItems(spoiler.settings, "random", junkSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in junkSharedToPlace])
+    junkSharedUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, junkSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in junkSharedToPlace])
     if junkSharedUnplaced > 0:
         raise Ex.ItemPlacementException(str(junkSharedUnplaced) + " unplaced shared junk items.")
 
@@ -1293,7 +1294,7 @@ def PlacePriorityItems(spoiler, itemsToPlace, beforePlacedItems, levelBlock=None
         if item in allOtherItems:
             allOtherItems.remove(item)
     # At last, place all the items
-    failedToPlace = PlaceItems(spoiler.settings, "assumed", priorityItemsToPlace.copy(), ownedItems=allOtherItems)
+    failedToPlace = PlaceItems(spoiler.settings, FillAlgorithm.assumed, priorityItemsToPlace.copy(), ownedItems=allOtherItems)
     if failedToPlace > 0:
         item_names = ", ".join([ItemList[item].name for item in priorityItemsToPlace])
         raise Ex.ItemPlacementException(f"Failed to priority place {item_names}")
@@ -1445,7 +1446,7 @@ def FillKongs(spoiler):
         LocationList[Locations.FactoryLankyFreeChunky].kong = spoiler.settings.chunky_freeing_kong
         assumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, [Types.Kong])  # 1-type list here only works if Kongs are placed first (usually the case)
         Reset()
-        PlaceItems(spoiler.settings, "assumed", kongItems, assumedItems)
+        PlaceItems(spoiler.settings, FillAlgorithm.assumed, kongItems, assumedItems)
         # If we didn't put an item in a kong location, then it gets a NoItem
         # This matters specifically so the logic around Diddy's cage behaves properly
         if LocationList[Locations.DiddyKong].item is None:
@@ -1527,7 +1528,7 @@ def FillKongsAndMoves(spoiler):
     # Handle remaining moves/items
     Reset()
     itemsToPlace = [item for item in itemsToPlace if item not in preplacedPriorityMoves]
-    unplaced = PlaceItems(spoiler.settings, "assumed", itemsToPlace, ItemPool.AllItemsForMovePlacement(spoiler.settings))
+    unplaced = PlaceItems(spoiler.settings, FillAlgorithm.assumed, itemsToPlace, ItemPool.AllItemsForMovePlacement(spoiler.settings))
     if unplaced > 0:
         # debug code - outputs all preplaced and shared items in an attempt to find where things are going wrong
         locationsAndMoves = {}

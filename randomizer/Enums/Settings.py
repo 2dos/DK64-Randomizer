@@ -480,6 +480,22 @@ class ColorblindMode(IntEnum):
 # Additional enums not currently shown on the web site.
 
 
+class FillAlgorithm(IntEnum):
+    """The algorithm used for placing items.
+    
+    forward: Places items in locations that are available with what's already
+        been placed. Faster than assumed.
+    assumed: Attempts to place items in locations under the assumption that
+        those locations will be valid. More likely to place items deeper into
+        a seed.
+    random: Places items with no regard for logic.
+    """
+
+    forward = auto()
+    assumed = auto()
+    random = auto()
+
+
 class ShuffleLoadingZones(IntEnum):
     """Determines how loading zones are shuffled.
 
