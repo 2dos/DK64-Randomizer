@@ -1,8 +1,6 @@
 """Location/item type enum."""
 from enum import IntEnum, auto
 
-from randomizer.Enums.Items import Items
-
 
 class Types(IntEnum):
     """Location/item type enum."""
@@ -30,8 +28,6 @@ class Types(IntEnum):
     Hint = auto()
 
 
-# If you make change to this selector, make sure to change the corresponding
-# ItemRandoListSelected enum in ui/settings_enums.py.
 ItemRandoSelector = [
     {"name": "Shops", "value": "shop", "tooltip": "Cranky, Funky, and Candy Moves are in the Pool and become possible locations for items.&#10;By selecting this, Cross-Kong purchases is forced on."},
     {"name": "Golden Bananas", "value": "banana", "tooltip": ""},
@@ -54,12 +50,12 @@ ItemRandoSelector = [
 ]
 
 KeySelector = [
-    {"name": "Key 1", "value": Items.JungleJapesKey.name, "tooltip": ""},
-    {"name": "Key 2", "value": Items.AngryAztecKey.name, "tooltip": ""},
-    {"name": "Key 3", "value": Items.FranticFactoryKey.name, "tooltip": ""},
-    {"name": "Key 4", "value": Items.GloomyGalleonKey.name, "tooltip": ""},
-    {"name": "Key 5", "value": Items.FungiForestKey.name, "tooltip": ""},
-    {"name": "Key 6", "value": Items.CrystalCavesKey.name, "tooltip": ""},
-    {"name": "Key 7", "value": Items.CreepyCastleKey.name, "tooltip": ""},
-    {"name": "Key 8", "value": Items.HideoutHelmKey.name, "tooltip": ""},
+    {"name": "Key 1", "value": "key1", "tooltip": ""},
+    {"name": "Key 2", "value": "key2", "tooltip": ""},
+    {"name": "Key 3", "value": "key3", "tooltip": ""},
+    {"name": "Key 4", "value": "key4", "tooltip": ""},
+    {"name": "Key 5", "value": "key5", "tooltip": ""},
+    {"name": "Key 6", "value": "key6", "tooltip": ""},
+    {"name": "Key 7", "value": "key7", "tooltip": ""},
+    {"name": "Key 8", "value": "key8", "tooltip": ""},
 ]

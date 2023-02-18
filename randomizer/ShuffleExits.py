@@ -2,7 +2,6 @@
 import random
 
 import js
-from randomizer.Enums.Settings import ActivateAllBananaports, RandomPrices, ShuffleLoadingZones
 from randomizer.Enums.Types import Types
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
@@ -195,7 +194,7 @@ def ShuffleExits(settings: Settings):
     """Shuffle exit pools depending on settings."""
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
-    if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+    if settings.shuffle_loading_zones == "levels":
         # If we are restricted on kong locations, we need to carefully place levels in order to meet the kongs-by-level requirement
         if settings.kongs_for_progression and not (settings.shuffle_items and Types.Kong in settings.shuffled_location_types):
             ShuffleLevelOrderWithRestrictions(settings)
@@ -205,14 +204,14 @@ def ShuffleExits(settings: Settings):
             allocation = [1, 1, 1, 1, 2, 2, 3]
             for x in range(7):
                 settings.switch_allocation[settings.level_order[x + 1]] = allocation[x]
-    elif settings.shuffle_loading_zones == ShuffleLoadingZones.all:
+    elif settings.shuffle_loading_zones == "all":
         frontpool = []
         backpool = []
         AssumeExits(settings, frontpool, backpool, list(ShufflableExits.keys()))
         # Shuffle each entrance pool
         ShuffleExitsInPool(settings, frontpool, backpool)
     # If levels rando is on, need to update Blocker and T&S requirements to match
-    if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+    if settings.shuffle_loading_zones == "levels":
         UpdateLevelProgression(settings)
 
 
@@ -251,7 +250,7 @@ def UpdateLevelProgression(settings: Settings):
     ]
     for levelIndex in range(len(lobbies)):
         newIndex = levelIndex
-        if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+        if settings.shuffle_loading_zones == "levels":
             shuffledEntrance = ShufflableExits[LobbyEntrancePool[levelIndex]].shuffledId
             newDestRegion = ShufflableExits[shuffledEntrance].back.regionId
             # print(LobbyEntrancePool[levelIndex].name + " goes to " + newDestRegion.name)
@@ -345,13 +344,13 @@ def ShuffleLevelOrderForOneStartingKong(settings):
     # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
     if aztecIndex == 4:
         # Tiny has no coins and no T&S access in Japes so it can't be first for her unless prices are free
-        if settings.starting_kong == Kongs.tiny and settings.random_prices != RandomPrices.free:
+        if settings.starting_kong == Kongs.tiny and settings.random_prices != "free":
             japesOptions = list(levelIndexChoices.intersection({2, 3}))
         else:
             japesOptions = list(levelIndexChoices.intersection({1, 3}))
     else:
         # Tiny has no coins and no T&S access in Japes so it can't be first for her unless prices are free
-        if settings.starting_kong == Kongs.tiny and settings.random_prices != RandomPrices.free:
+        if settings.starting_kong == Kongs.tiny and settings.random_prices != "free":
             japesOptions = list(levelIndexChoices.intersection({2, 3, 4, 5}))
         else:
             japesOptions = list(levelIndexChoices.intersection({1, 2, 3, 4, 5}))
@@ -453,9 +452,7 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
                     # If a kong is in Llama temple, need to be able to get past the guitar door and one of Donkey, Lanky, or Tiny to open the Llama temple
                     if lankyAccessible:
                         guitarDoorAccess = (
-                            Kongs.diddy in settings.starting_kong_list
-                            or settings.open_levels
-                            or (Kongs.donkey in settings.starting_kong_list and settings.activate_all_bananaports == ActivateAllBananaports.all)
+                            Kongs.diddy in settings.starting_kong_list or settings.open_levels or (Kongs.donkey in settings.starting_kong_list and settings.activate_all_bananaports == "all")
                         )
                         if not guitarDoorAccess or (
                             Kongs.donkey not in settings.starting_kong_list and Kongs.lanky not in settings.starting_kong_list and Kongs.tiny not in settings.starting_kong_list
