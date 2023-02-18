@@ -786,6 +786,29 @@ def disable_kong_rescues(evt):
             kong_rescuer.removeAttribute("disabled")
 
 
+@bind("change", "plando_starting_kongs")
+def disable_kong_items(evt):
+    """Do not allow starting Kongs to be placed as items."""
+    starting_kongs = js.document.getElementById("plando_starting_kongs")
+    selected_kongs = {x.value for x in starting_kongs.selectedOptions}
+    item_dropdowns = js.document.getElementsByClassName("plando-item-select")
+    for kong in ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]:
+        if kong.lower() in selected_kongs:
+            kong_options = js.document.getElementsByClassName(f"plando-{kong}-option")
+            # Remove this Kong as a dropdown option.
+            for option in kong_options:
+                option.style.display = "none"
+            # De-select this Kong everywhere they are selected.
+            for dropdown in item_dropdowns:
+                if dropdown.value == kong:
+                    dropdown.value = ""
+        else:
+            kong_options = js.document.getElementsByClassName(f"plando-{kong}-option")
+            # Re-add this Kong as a dropdown option.
+            for option in kong_options:
+                option.style = ""
+
+
 @bind("change", "dk_colors")
 @bind("change", "diddy_colors")
 @bind("change", "lanky_colors")
@@ -900,16 +923,6 @@ def toggle_key_settings(event):
 def disable_keys_plando(evt):
     """Disable keys from being selected for locations in the plandomizer,
        depending on the current settings."""
-    # Determine which keys are enabled and which are disabled.
-    disabled_keys = set()
-    if js.document.getElementById("select_keys").checked:
-        starting_keys_list_selected = js.document.getElementById("starting_keys_list_selected")
-        # All keys the user starts with are disabled.
-        disabled_keys.update({x.value for x in starting_keys_list_selected.selectedOptions})
-    # If Key 8 is locked in Helm, it gets disabled.
-    if js.document.getElementById("key_8_helm").checked:
-        disabled_keys.add("key8")
-    item_dropdowns = js.document.getElementsByClassName("plando-item-select")
     # This dict will map our key strings to enum values.
     keyEnumDict = {
         "key1": "JungleJapesKey",
@@ -921,20 +934,30 @@ def disable_keys_plando(evt):
         "key7": "CreepyCastleKey",
         "key8": "HideoutHelmKey"
     }
+    # Determine which keys are enabled and which are disabled.
+    disabled_keys = set()
+    if js.document.getElementById("select_keys").checked:
+        starting_keys_list_selected = js.document.getElementById("starting_keys_list_selected")
+        # All keys the user starts with are disabled.
+        disabled_keys.update({keyEnumDict[x.value] for x in starting_keys_list_selected.selectedOptions})
+    # If Key 8 is locked in Helm, it gets disabled.
+    if js.document.getElementById("key_8_helm").checked:
+        disabled_keys.add("HideoutHelmKey")
+    item_dropdowns = js.document.getElementsByClassName("plando-item-select")
     # Look at every key and react if it's enabled or disabled.
     for i in range(1, 9):
-        key_string = f"key{i}"
+        key_string = keyEnumDict[f"key{i}"]
         if key_string in disabled_keys:
-            key_options = js.document.getElementsByClassName(f"{key_string}-option")
+            key_options = js.document.getElementsByClassName(f"plando-{key_string}-option")
             # Remove this key as a dropdown option.
             for option in key_options:
                 option.style.display = "none"
             # De-select this key everywhere it is selected.
             for dropdown in item_dropdowns:
-                if dropdown.value == keyEnumDict[key_string]:
+                if dropdown.value == key_string:
                     dropdown.value = ""
         else:
-            key_options = js.document.getElementsByClassName(f"{key_string}-option")
+            key_options = js.document.getElementsByClassName(f"plando-{key_string}-option")
             # Re-add this key as a dropdown option.
             for option in key_options:
                 option.style = ""

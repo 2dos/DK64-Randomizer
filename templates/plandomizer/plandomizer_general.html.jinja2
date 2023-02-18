@@ -45,6 +45,24 @@
                     </label>
                 </div>
             </div>
+            <div class="item-select wide-select">
+                <p class="select-title">Spawn Location</p>
+                <select name="plando_spawn_location"
+                        id="plando_spawn_location"
+                        class="form-select center-div"
+                        aria-label="Spawn Location"
+                        data-toggle="tooltip"
+                        title="Choose the spawn location when starting the game.">
+                    <option selected value="">
+                        -- Randomize --
+                    </option>
+                    {% for spawn in plando_spawns %}
+                        <option value="{{spawn["enum_name"]}}">
+                            {{spawn["display_name"]}}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
             <div class="flex-container">
                 <div class="item-multiselect">
                     <p class="select-title">Starting Kongs</p>
@@ -115,24 +133,6 @@
                         </select>
                     </label>
                 {% endfor %}
-            </div>
-            <div class="item-select wide-select">
-                <p class="select-title">Spawn Location</p>
-                <select name="plando_spawn_location"
-                        id="plando_spawn_location"
-                        class="form-select center-div"
-                        aria-label="Spawn Location"
-                        data-toggle="tooltip"
-                        title="Choose the spawn location when starting the game.">
-                    <option selected value="">
-                        -- Randomize --
-                    </option>
-                    {% for spawn in plando_spawns %}
-                        <option value="{{spawn["enum_name"]}}">
-                            {{spawn["display_name"]}}
-                        </option>
-                    {% endfor %}
-                </select>
             </div>
         </div>
         <div class="col panel"

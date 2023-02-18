@@ -617,29 +617,37 @@ def PlandoShopSortFilter(shopLocationList):
     
     return sorted(shopLocationList, key=shopKey)
 
-def PlandoOptionClassAnnotation(panel, kong, location, option):
+def PlandoOptionClassAnnotation(panel, kong, location, item):
     """A Jinja function that will apply certain CSS classes to dropdown menu
        options, in order to enable various option interactions."""
-    classList = []
+    classSet = set()
     # Each key gets its own class.
-    if option == PlandoItems.JungleJapesKey.name:
-        classList.append("key1-option")
-    elif option == PlandoItems.AngryAztecKey.name:
-        classList.append("key2-option")
-    elif option == PlandoItems.FranticFactoryKey.name:
-        classList.append("key3-option")
-    elif option == PlandoItems.GloomyGalleonKey.name:
-        classList.append("key4-option")
-    elif option == PlandoItems.FungiForestKey.name:
-        classList.append("key5-option")
-    elif option == PlandoItems.CrystalCavesKey.name:
-        classList.append("key6-option")
-    elif option == PlandoItems.CreepyCastleKey.name:
-        classList.append("key7-option")
-    elif option == PlandoItems.HideoutHelmKey.name:
-        classList.append("key8-option")
+    keySet = {
+        PlandoItems.JungleJapesKey.name,
+        PlandoItems.AngryAztecKey.name,
+        PlandoItems.FranticFactoryKey.name,
+        PlandoItems.GloomyGalleonKey.name,
+        PlandoItems.FungiForestKey.name,
+        PlandoItems.CrystalCavesKey.name,
+        PlandoItems.CreepyCastleKey.name,
+        PlandoItems.HideoutHelmKey.name,
+    }
+    if item in keySet:
+        classSet.add(f"plando-{item}-option")
+
+    # Each Kong gets their own class.
+    kongSet = {
+        PlandoItems.Donkey.name,
+        PlandoItems.Diddy.name,
+        PlandoItems.Lanky.name,
+        PlandoItems.Tiny.name,
+        PlandoItems.Chunky.name,
+    }
+    if item in kongSet:
+        classSet.add(f"plando-{item}-option")
+
     # If there are classes to append, add them in a list and return.
-    if len(classList) > 0:
-        return f"class=\"{' '.join(classList)}\""
+    if len(classSet) > 0:
+        return f"class=\"{' '.join(list(classSet))}\""
     else:
         return ""
