@@ -3,6 +3,7 @@ import os
 import zlib
 
 from PIL import Image
+from BuildLib import main_pointer_table_offset
 
 
 class ImageData:
@@ -94,7 +95,6 @@ for kong in kong_tex:
         images.append(ImageData(f"{kong}_face_{x}", "rgba16", 25, tex_idx + x, 32, 64, False, True))
     tex_idx += 2
 
-ptr_offset = 0x101C50
 
 if not os.path.exists("assets/hash"):
     os.mkdir("assets/hash")
@@ -102,12 +102,12 @@ if not os.path.exists("assets/hash"):
 print("Extracting Images from ROM")
 with open("rom/dk64.z64", "rb") as fh:
     for x in images:
-        fh.seek(ptr_offset + (x.table * 4))
-        ptr_table = ptr_offset + int.from_bytes(fh.read(4), "big")
+        fh.seek(main_pointer_table_offset + (x.table * 4))
+        ptr_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
         fh.seek(ptr_table + (x.index * 4))
-        img_start = ptr_offset + int.from_bytes(fh.read(4), "big")
+        img_start = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
         fh.seek(ptr_table + ((x.index + 1) * 4))
-        img_end = ptr_offset + int.from_bytes(fh.read(4), "big")
+        img_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
         img_size = img_end - img_start
         fh.seek(img_start)
         if x.table == 7:

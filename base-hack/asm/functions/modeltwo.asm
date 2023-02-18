@@ -33,3 +33,7 @@
 .definelabel spawnModelTwo, 0x80632630
 .definelabel refreshItemVisibility, 0x8062D1A8
 .definelabel isObjectTangible, 0x8063C2A8
+.definelabel unkCollisionFunc_0, 0x806362C4
+.definelabel addNewCollectedObject, 0x806F53EC
+.definelabel deleteModelTwo, 0x806355DC
+.definelabel spawnModelTwoWithDelay, 0x806F5FE8

@@ -1348,7 +1348,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.IglooArea,
         vanilla=True,
-        logic=lambda l: l.monkeyport,
+        logic=lambda l: Events.CavesMonkeyportAccess in l.Events or l.CanPhaseswim(),
         locations=[[5, 1.0, 261.5770263671875, 48.5, 1772.1956787109375]],
     ),
     ColoredBananaGroup(

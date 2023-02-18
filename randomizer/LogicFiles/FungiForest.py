@@ -19,12 +19,12 @@ LogicRegions = {
         LocationLogic(Locations.ForestLankyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.lanky] >= l.settings.medal_cb_req),
         LocationLogic(Locations.ForestTinyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.tiny] >= l.settings.medal_cb_req),
         LocationLogic(Locations.ForestChunkyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.chunky] >= l.settings.medal_cb_req),
-    ], [], []),
+    ], [], [], restart=-1),
 
     Regions.FungiForestStart: Region("Fungi Forest Start", "Forest Center and Beanstalk", Levels.FungiForest, True, None, [], [
         Event(Events.ForestEntered, lambda l: True),
         Event(Events.Night, lambda l: l.HasGun(Kongs.any)),
-        Event(Events.WormGatesOpened, lambda l: (l.feather and l.tiny) and (l.pineapple and l.chunky)),
+        Event(Events.WormGatesOpened, lambda l: l.settings.open_levels or (l.feather and l.tiny and l.pineapple and l.chunky)),
         Event(Events.ForestW1aTagged, lambda l: True),
         Event(Events.ForestW2aTagged, lambda l: True),
         Event(Events.ForestW3aTagged, lambda l: True),
@@ -35,7 +35,7 @@ LogicRegions = {
         TransitionFront(Regions.ForestMinecarts, lambda l: l.Slam and l.ischunky),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
         TransitionFront(Regions.MillArea, lambda l: True),
-        TransitionFront(Regions.WormArea, lambda l: l.settings.open_levels or Events.WormGatesOpened in l.Events or l.phasewalk or l.CanPhaseswim()),
+        TransitionFront(Regions.WormArea, lambda l: Events.WormGatesOpened in l.Events or l.phasewalk or l.CanPhaseswim()),
     ]),
 
     Regions.ForestMinecarts: Region("Forest Minecarts", "Forest Center and Beanstalk", Levels.FungiForest, False, None, [
@@ -271,6 +271,7 @@ LogicRegions = {
         LocationLogic(Locations.RainbowCoin_Location08, lambda l: l.shockwave),
     ], [
         Event(Events.ForestW2aTagged, lambda l: True),
+        Event(Events.WormGatesOpened, lambda l: l.settings.open_levels),
     ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.FungiForestStart, lambda l: Events.WormGatesOpened in l.Events),

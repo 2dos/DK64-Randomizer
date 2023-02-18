@@ -10,6 +10,7 @@ from randomizer.Lists.Location import LocationList
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Settings import MicrohintsEnabled
 from randomizer.Patching.Lib import intf_to_float, float_to_hex
 from enum import IntEnum, auto
 
@@ -73,11 +74,11 @@ model_two_scales = {
     Types.NoItem: 0.25,  # No Item
     Types.Kong: 0.25,
     Types.Bean: 0.25,
-    Types.Pearl: 0.3,
+    Types.Pearl: 0.25,
     Types.Fairy: 0.25,
     Types.RainbowCoin: 0.25,
     Types.FakeItem: 0.25,
-    Types.JunkItem: 1,
+    Types.JunkItem: 0.5,
 }
 
 actor_indexes = {
@@ -204,16 +205,16 @@ kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "L
 
 def pushItemMicrohints(spoiler: Spoiler):
     """Push hint for the micro-hints system."""
-    if spoiler.settings.microhints_enabled != "off":
+    if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
         hinted_items = {
             # Key = Item, Value = (Textbox index in text file 19, (all_accepted_settings))
-            Items.Monkeyport: (26, ["base", "all"]),
-            Items.GorillaGone: (25, ["base", "all"]),
-            Items.Bongos: (27, ["all"]),
-            Items.Triangle: (28, ["all"]),
-            Items.Saxophone: (29, ["all"]),
-            Items.Trombone: (30, ["all"]),
-            Items.Guitar: (31, ["all"]),
+            Items.Monkeyport: (26, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+            Items.GorillaGone: (25, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+            Items.Bongos: (27, [MicrohintsEnabled.all]),
+            Items.Triangle: (28, [MicrohintsEnabled.all]),
+            Items.Saxophone: (29, [MicrohintsEnabled.all]),
+            Items.Trombone: (30, [MicrohintsEnabled.all]),
+            Items.Guitar: (31, [MicrohintsEnabled.all]),
         }
         for item_hint in hinted_items:
             if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][1]):

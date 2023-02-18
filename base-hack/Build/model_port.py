@@ -2,11 +2,10 @@
 
 import zlib
 import os
-import struct
+from BuildLib import intf_to_float, main_pointer_table_offset
 
 rom_file = "rom/dk64.z64"
 temp_file = "temp.bin"
-ptr_offset = 0x101C50
 m2_table = 4
 ac_table = 5
 
@@ -22,14 +21,6 @@ ac_table = 5
 # - M2: ?
 
 
-def intf_to_float(intf):
-    """Convert float as int format to float."""
-    if intf == 0:
-        return 0
-    else:
-        return struct.unpack("!f", bytes.fromhex("{:08X}".format(intf)))[0]
-
-
 class BoneVertex:
     """Store information relating to bone vertices in actors."""
 
@@ -42,11 +33,11 @@ class BoneVertex:
 def portalModel_M2(vtx_file, dl_file, overlay_dl_file, model_name, base):
     """Convert model two model file from various source files."""
     with open(rom_file, "rb") as rom:
-        rom.seek(ptr_offset + (m2_table * 4))
-        table = ptr_offset + int.from_bytes(rom.read(4), "big")
+        rom.seek(main_pointer_table_offset + (m2_table * 4))
+        table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         rom.seek(table + (base * 4))
-        start = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-        finish = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        finish = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
         size = finish - start
         rom.seek(start)
         data = rom.read(size)
@@ -108,11 +99,11 @@ def portalModel_M2(vtx_file, dl_file, overlay_dl_file, model_name, base):
 def portalModel_Actor(vtx_file, dl_file, model_name, base):
     """Create actor file from various source files."""
     with open(rom_file, "rb") as rom:
-        rom.seek(ptr_offset + (ac_table * 4))
-        table = ptr_offset + int.from_bytes(rom.read(4), "big")
+        rom.seek(main_pointer_table_offset + (ac_table * 4))
+        table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         rom.seek(table + (base * 4))
-        start = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-        finish = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        finish = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
         size = finish - start
         rom.seek(start)
         data = rom.read(size)
@@ -180,11 +171,11 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
     if input_file == "":
         # Use Actor Index
         with open(rom_file, "rb") as rom:
-            rom.seek(ptr_offset + (ac_table * 4))
-            table = ptr_offset + int.from_bytes(rom.read(4), "big")
+            rom.seek(main_pointer_table_offset + (ac_table * 4))
+            table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
             rom.seek(table + (actor_index * 4))
-            start = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-            finish = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+            start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+            finish = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
             size = finish - start
             rom.seek(start)
             data = rom.read(size)
@@ -334,11 +325,11 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
 def createSpriteModelTwo(new_image: int, scaling: float, output_file: str):
     """Create a model two object based on a singular image."""
     with open(rom_file, "rb") as rom:
-        rom.seek(ptr_offset + (m2_table * 4))
-        table = ptr_offset + int.from_bytes(rom.read(4), "big")
+        rom.seek(main_pointer_table_offset + (m2_table * 4))
+        table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         rom.seek(table + (436 * 4))
-        start = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-        finish = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        finish = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
         size = finish - start
         rom.seek(start)
         data = rom.read(size)

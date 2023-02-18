@@ -191,6 +191,26 @@ void initKlaptraps(void) {
     }
 }
 
+void initWrinklyColoring(void) {
+    /**
+     * @brief Alter Wrinkly's color. Do not change color if misc cosmetics off or all fields are 0.
+     * 
+     */
+    if (Rando.misc_cosmetic_on) {
+        int pass = 0;
+        for (int i = 0; i < 3; i++) {
+            if (Rando.wrinkly_rgb[i] > 0) {
+                pass = 1;
+            }
+        }
+        if (pass) {
+            *(short*)(0x8064F052) = Rando.wrinkly_rgb[0];
+            *(short*)(0x8064F04A) = Rando.wrinkly_rgb[1];
+            *(short*)(0x8064F046) = Rando.wrinkly_rgb[2];
+        }
+    }
+}
+
 void initCosmetic(void) {
     /**
      * @brief Initialize all cosmetic functionality
@@ -205,4 +225,5 @@ void initCosmetic(void) {
     initKrusha();
     initSkyboxRando();
     initKlaptraps();
+    initWrinklyColoring();
 }
