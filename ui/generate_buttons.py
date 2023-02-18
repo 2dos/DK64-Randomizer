@@ -7,7 +7,6 @@ from pyodide import create_proxy
 
 import js
 from randomizer.BackgroundRandomizer import generate_playthrough
-from randomizer.Enums.Settings import SettingsMap
 from randomizer.Patching.ApplyRandomizer import patching_response
 from randomizer.SettingStrings import decrypt_setting_string, encrypt_settings_string
 from randomizer.Worker import background
@@ -148,7 +147,7 @@ def generate_seed_from_patch(event):
 
 
 def serialize_settings():
-    """Serialize form settings into an enum-focused JSON string.
+    """Serialize form settings into a JSON string.
 
     Returns:
         dict: Dictionary of form settings.
@@ -175,18 +174,6 @@ def serialize_settings():
         except ValueError:
             pass
 
-    def get_enum_or_string_value(valueString, settingName):
-        """Obtain the enum or string value for the provided setting.
-
-        Args:
-            valueString (str) - The value from the HTML input.
-            settingName (str) - The name of the HTML input.
-        """
-        if settingName in SettingsMap:
-            return SettingsMap[settingName][valueString]
-        else:
-            return valueString
-
     for obj in form:
         # Verify each object if its value is a string convert it to a bool
         if obj.value.lower() in ["true", "false"]:
@@ -195,7 +182,7 @@ def serialize_settings():
             if is_number(obj.value):
                 form_data[obj.name] = int(obj.value)
             else:
-                form_data[obj.name] = get_enum_or_string_value(obj.value, obj.name)
+                form_data[obj.name] = obj.value
     # find all input boxes and verify their checked status
     for element in js.document.getElementsByTagName("input"):
         if element.type == "checkbox" and not element.checked:
@@ -204,14 +191,13 @@ def serialize_settings():
     # Re disable all previously disabled options
     for element in disabled_options:
         element.setAttribute("disabled", "disabled")
-    # Create value lists for multi-select options
     for element in js.document.getElementsByTagName("select"):
         if "selected" in element.className:
             length = element.options.length
             values = []
             for i in range(0, length):
                 if element.options.item(i).selected:
-                    values.append(get_enum_or_string_value(element.options.item(i).value, element.getAttribute("name")))
+                    values.append(element.options.item(i).value)
             form_data[element.getAttribute("name")] = values
     return form_data
 

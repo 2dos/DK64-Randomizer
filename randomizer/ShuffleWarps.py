@@ -22,7 +22,7 @@ def verifySelectedWarps(selected_warps):
     """Verify if the selected_warps variable is empty, and fills it with all options if it is."""
     if len(selected_warps) == 0:
         for warp in VanillaBananaportSelector:
-            selected_warps.append(Maps[warp["value"]])
+            selected_warps.append(warp["value"])
 
 
 def ShuffleWarps(bananaport_replacements, human_ports, selected_warps):
@@ -30,7 +30,7 @@ def ShuffleWarps(bananaport_replacements, human_ports, selected_warps):
     verifySelectedWarps(selected_warps)
     map_list = getShuffleMaps()
     for warp_map in map_list:
-        if warp_map not in selected_warps:
+        if warp_map.name not in selected_warps:
             # if the warp is in an excluded level, create an entry into bananaport_replacements to point to its vanilla data instead of trying to leave it blank
             # this function could probably work correctly without this safeguard, but i'd rather be safe than sorry
             pad_list = []
@@ -83,7 +83,7 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled, selec
         bananaport_replacements.append(0)
     selected_warp_list = []
     for idx, warp in enumerate(BananaportVanilla.values()):
-        if warp.map_id not in selected_warps:
+        if warp.map_id.name not in selected_warps:
             # if the warp is in an excluded level, create an entry into bananaport_replacements to point to its vanilla data instead of trying to leave it blank
             for warp_check in BananaportVanilla.values():
                 if warp_check.map_id == warp.map_id and warp_check.vanilla_warp == warp.vanilla_warp and warp_check.name != warp.name:
@@ -102,7 +102,7 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled, selec
                     full_warps.append(warp_check.swap_index)
                 if warp.restricted and warp_check.restricted:
                     is_enabled = False
-                if warp_check.map_id not in selected_warps:
+                if warp_check.map_id.name not in selected_warps:
                     is_enabled = False
                 if is_enabled:
                     available_warps.append(warp_check.swap_index)

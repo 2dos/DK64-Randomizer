@@ -7,7 +7,6 @@ import randomizer.Enums.Kongs as KongObject
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong
 from randomizer.Lists.LevelInfo import LevelInfoList
@@ -20,7 +19,7 @@ def PlaceConstants(settings):
     # Handle key placements
     if settings.key_8_helm:
         LocationList[Locations.HelmKey].PlaceItem(Items.HideoutHelmKey)
-    if settings.shuffle_loading_zones == ShuffleLoadingZones.levels and Types.Key not in settings.shuffled_location_types:
+    if settings.shuffle_loading_zones == "levels" and Types.Key not in settings.shuffled_location_types:
         # Place keys in the lobbies they normally belong in
         # Ex. Whatever level is in the Japes lobby entrance will always have the Japes key
         for level in LevelInfoList.values():
@@ -39,13 +38,13 @@ def PlaceConstants(settings):
     typesOfItemsShuffled = []
     if settings.kong_rando:
         typesOfItemsShuffled.append(Types.Kong)
-    if not settings.unlock_all_moves and settings.move_rando != MoveRando.off:
+    if not settings.unlock_all_moves and settings.move_rando != "off":
         typesOfItemsShuffled.append(Types.Shop)
-        if settings.training_barrels == TrainingBarrels.shuffled:
+        if settings.training_barrels == "shuffled":
             typesOfItemsShuffled.append(Types.TrainingBarrel)
-        if settings.shockwave_status != ShockwaveStatus.vanilla:
+        if settings.shockwave_status != "vanilla":
             typesOfItemsShuffled.append(Types.Shockwave)
-    if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+    if settings.shuffle_loading_zones == "levels":
         typesOfItemsShuffled.append(Types.Key)
     typesOfItemsShuffled.extend(settings.shuffled_location_types)
     # Invert this list because I think it'll be faster
@@ -97,7 +96,7 @@ def PlaceConstants(settings):
         LocationList[Locations.MusicUpgrade1].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.ThirdMelon].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.MusicUpgrade2].PlaceConstantItem(Items.NoItem)
-    if settings.shockwave_status == ShockwaveStatus.start_with:
+    if settings.shockwave_status == "start_with":
         LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
 
 
@@ -128,16 +127,16 @@ def AllItems(settings):
         allItems.extend(FakeItems())
     if Types.JunkItem in settings.shuffled_location_types:
         allItems.extend(JunkItems())
-    if settings.move_rando != MoveRando.off:
+    if settings.move_rando != "off":
         allItems.extend(DonkeyMoves)
         allItems.extend(DiddyMoves)
         allItems.extend(LankyMoves)
         allItems.extend(TinyMoves)
         allItems.extend(ChunkyMoves)
         allItems.extend(ImportantSharedMoves)
-        if settings.training_barrels == TrainingBarrels.shuffled:
+        if settings.training_barrels == "shuffled":
             allItems.extend(TrainingBarrelAbilities().copy())
-        if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
+        if settings.shockwave_status == "shuffled_decoupled":
             allItems.append(Items.Camera)
             allItems.append(Items.Shockwave)
         else:
@@ -208,7 +207,7 @@ def AllMovesForOwnedKongs(kongs):
 
 def ShockwaveTypeItems(settings):
     """Return the Shockwave-type items for the given settings."""
-    if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
+    if settings.shockwave_status == "shuffled_decoupled":
         return [Items.Camera, Items.Shockwave]
     else:
         return [Items.CameraAndShockwave]
@@ -315,7 +314,7 @@ def Upgrades(settings):
     """Return all upgrade items."""
     upgrades = []
     # Add training barrel items to item pool if shuffled
-    if settings.training_barrels == TrainingBarrels.shuffled:
+    if settings.training_barrels == "shuffled":
         upgrades.extend(TrainingBarrelAbilities())
     # Add either progressive upgrade items or individual ones depending on settings
     if not settings.unlock_all_moves:
@@ -350,8 +349,8 @@ def Upgrades(settings):
         upgrades.append(Items.SniperSight)
         upgrades.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
         upgrades.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 3))
-    if settings.shockwave_status != ShockwaveStatus.start_with:
-        if settings.shockwave_status == ShockwaveStatus.vanilla or settings.shockwave_status == ShockwaveStatus.shuffled:
+    if settings.shockwave_status != "start_with":
+        if settings.shockwave_status == "vanilla" or settings.shockwave_status == "shuffled":
             upgrades.append(Items.CameraAndShockwave)
         else:
             upgrades.append(Items.Camera)

@@ -12,8 +12,6 @@ class QoLItem:
 
 
 QoLSelector = []
-# If you make changes to this list, make sure to change the corresponding
-# MiscChangesSelected enum in ui/settings_enums.py.
 QoLItems = [
     QoLItem("Auto Dance Skip", 4, "Dances upon picking up some collectables, notably Golden Bananas, are removed (with some exceptions)."),
     QoLItem("Fast Boot", 5, "The boot sequence is dramatically sped up."),
