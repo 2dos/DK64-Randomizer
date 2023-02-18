@@ -20,7 +20,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryLankyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.lanky] >= l.settings.medal_cb_req),
         LocationLogic(Locations.FactoryTinyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.tiny] >= l.settings.medal_cb_req),
         LocationLogic(Locations.FactoryChunkyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.chunky] >= l.settings.medal_cb_req),
-    ], [], []),
+    ], [], [], restart=-1),
 
     Regions.FranticFactoryStart: Region("Frantic Factory Start", "Frantic Factory Start", Levels.FranticFactory, False, None, [], [
         Event(Events.FactoryEntered, lambda l: True),
