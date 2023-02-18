@@ -1307,6 +1307,7 @@ def compileMicrohints(spoiler: Spoiler):
     if spoiler.settings.microhints_enabled != "off":
         microhint_categories = {
             "base": [Items.Monkeyport, Items.GorillaGone],
+            "on": [Items.Monkeyport, Items.GorillaGone],
             "all": [Items.Monkeyport, Items.GorillaGone, Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle],
         }
         items_needing_microhints = microhint_categories[spoiler.settings.microhints_enabled].copy()

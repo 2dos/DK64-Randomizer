@@ -14,13 +14,16 @@ from randomizer.SettingStrings import decrypt_setting_string
 from randomizer.Spoiler import Spoiler
 
 
-def generate(generate_settings, file_name):
+def generate(generate_settings, file_name, gen_spoiler):
     """Gen a seed and write the file to an output file."""
     settings = Settings(generate_settings)
     spoiler = Spoiler(settings)
     Generate_Spoiler(spoiler)
+    if gen_spoiler:
+        with open(file_name + "-spoiler.json", "w") as outfile:
+            outfile.write(spoiler.json)
     encoded = codecs.encode(pickle.dumps(spoiler), "base64").decode()
-    with open(file_name, "w") as outfile:
+    with open(file_name + ".lanky", "w") as outfile:
         outfile.write(encoded)
 
 
@@ -31,6 +34,7 @@ def main():
     parser.add_argument("--preset", help="Preset to use", required=False)
     parser.add_argument("--output", help="File to name patch file", required=True)
     parser.add_argument("--seed", help="Seed ID to use", required=False)
+    parser.add_argument("--generate_spoiler", help="Dumps the Spoiler log to a file along with the patch file.", required=False, action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
     if not os.environ.get("POST_BODY"):
         if args.settings_string is not None:
@@ -65,7 +69,7 @@ def main():
         if not setting_data.get("seed"):
             setting_data["seed"] = random.randint(0, 100000000)
     try:
-        generate(setting_data, args.output)
+        generate(setting_data, args.output, args.generate_spoiler)
     except Exception as e:
         with open("error.log", "w") as file_object:
             file_object.write(repr(e))
