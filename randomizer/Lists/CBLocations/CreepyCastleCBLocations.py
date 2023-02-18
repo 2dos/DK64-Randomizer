@@ -1203,7 +1203,7 @@ ColoredBananaGroupList = [
         map_id=Maps.CastleMausoleum,
         name="On Goo hands",
         konglist=[Kongs.tiny],
-        lregion=Regions.Mausoleum,
+        region=Regions.Mausoleum,
         logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.twirl,
         locations=[[5, 1.0, 1178, 190, 2048], [5, 1.0, 1348, 190, 2310], [5, 1.0, 987, 190, 2297]],
     ),
