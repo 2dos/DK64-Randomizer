@@ -482,7 +482,7 @@ class ColorblindMode(IntEnum):
 
 class FillAlgorithm(IntEnum):
     """The algorithm used for placing items.
-    
+
     forward: Places items in locations that are available with what's already
         been placed. Faster than assumed.
     assumed: Attempts to place items in locations under the assumption that

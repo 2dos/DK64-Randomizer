@@ -128,9 +128,9 @@ class Settings:
         self.resolve_settings()
         self.update_valid_locations()
 
-
     def apply_form_data(self, form_data):
         """Convert and apply the provided form data to this class."""
+
         def get_enum_value(keyString, valueString):
             """Take in a key and value, and return an enum."""
             try:

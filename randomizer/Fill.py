@@ -1359,9 +1359,7 @@ def PlaceKongsInKongLocations(spoiler, kongItems, kongLocations):
         while len(ownedKongs) != 5:
             # If there aren't any accessible Kong locations, then the level order shuffler has a bug (this shouldn't happen)
             if not any(logicallyAccessibleKongLocations):
-                raise Ex.EntrancePlacementException(
-                    "Levels shuffled in a way that makes Kong unlocks impossible. SEND THIS TO THE DEVS!"
-                )
+                raise Ex.EntrancePlacementException("Levels shuffled in a way that makes Kong unlocks impossible. SEND THIS TO THE DEVS!")
             # Begin by finding the currently accessible Kong locations
             # Randomly pick an accessible location
             progressionLocation = choice(logicallyAccessibleKongLocations)
