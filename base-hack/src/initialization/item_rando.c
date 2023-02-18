@@ -269,6 +269,7 @@ void initItemRando(void) {
         *(int*)(0x806C5C7C) = 0; // Cancel out fairy draw distance reduction
         *(short*)(0x806C46AA) = 0x4100; // Bring squawks closer to the player for minecarts (X)
         *(short*)(0x806C46E2) = 0x4100; // Bring squawks closer to the player for minecarts (Z)
+        *(short*)(0x806C45C2) = 0x0013; // Y Offset squawks reward
     }
 
     // BP Table
