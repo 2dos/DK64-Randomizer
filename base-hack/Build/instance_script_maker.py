@@ -2,10 +2,10 @@
 import json
 import os
 import zlib
+from BuildLib import main_pointer_table_offset
 
 base_rom = "./rom/dk64.z64"
 instance_dir = "./assets/instance_scripts"
-pointer_table_offset = 0x101C50
 script_table = 0x0
 temp_file = "temp.bin"
 
@@ -53,8 +53,8 @@ def resetCond(reset_block):
 
 print("\nCOMPILING SCRIPTS")
 with open(base_rom, "rb") as fh:
-    fh.seek(pointer_table_offset + (10 * 4))
-    script_table = pointer_table_offset + int.from_bytes(fh.read(4), "big")
+    fh.seek(main_pointer_table_offset + (10 * 4))
+    script_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
     map_data = []
 
     if script_table != 0:
@@ -76,8 +76,8 @@ with open(base_rom, "rb") as fh:
                     # .Map index found
                     map_data.append({"name": f, "map": map_index})
                     fh.seek(script_table + (map_index * 4))
-                    vanilla_start = pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-                    vanilla_end = pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+                    vanilla_start = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
+                    vanilla_end = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
                     vanilla_size = vanilla_end - vanilla_start
                     fh.seek(vanilla_start)
                     compress = fh.read(vanilla_size)

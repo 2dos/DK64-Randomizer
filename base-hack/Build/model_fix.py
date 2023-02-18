@@ -2,27 +2,10 @@
 
 import zlib
 import os
-import struct
-import gzip
-
-
-def intf_to_float(intf):
-    """Convert float as int format to float."""
-    if intf == 0:
-        return 0
-    else:
-        return struct.unpack("!f", bytes.fromhex("{:08X}".format(intf)))[0]
-
-
-def float_to_hex(f):
-    """Convert float to hex."""
-    if f == 0:
-        return "0x00000000"
-    return hex(struct.unpack("<I", struct.pack("<f", f))[0])
+from BuildLib import intf_to_float, float_to_hex, main_pointer_table_offset
 
 
 rom_file = "rom/dk64.z64"
-pointer_offset = 0x101C50
 
 diddy_fix = """
     E7 00 00 00 00 00 00 00
@@ -161,15 +144,15 @@ if os.path.exists(krusha_file):
         krusha_kong = int(fh.read())
 
 with open(rom_file, "rb") as rom:
-    rom.seek(pointer_offset + (5 * 4))
-    actor_table = pointer_offset + int.from_bytes(rom.read(4), "big")
-    rom.seek(pointer_offset + (4 * 4))
-    modeltwo_table = pointer_offset + int.from_bytes(rom.read(4), "big")
+    rom.seek(main_pointer_table_offset + (5 * 4))
+    actor_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    rom.seek(main_pointer_table_offset + (4 * 4))
+    modeltwo_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     for model in modifications:
         idx = model["model_index"]
         rom.seek(actor_table + (idx * 4))
-        model_start = pointer_offset + int.from_bytes(rom.read(4), "big")
-        model_end = pointer_offset + int.from_bytes(rom.read(4), "big")
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         model_size = model_end - model_start
         rom.seek(model_start)
         with open(model["model_file"], "wb") as fh:
@@ -232,8 +215,8 @@ with open(rom_file, "rb") as rom:
     for bp_index in range(5):
         file_index = bp_index + 0xDD
         rom.seek(modeltwo_table + (file_index * 4))
-        model_start = pointer_offset + int.from_bytes(rom.read(4), "big")
-        model_end = pointer_offset + int.from_bytes(rom.read(4), "big")
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         model_size = model_end - model_start
         rom.seek(model_start)
         with open(f"blueprint{bp_index}.bin", "wb") as fh:
@@ -277,8 +260,8 @@ with open(rom_file, "rb") as rom:
         "melon",
     )
     rom.seek(actor_table + (0x75 << 2))
-    model_start = pointer_offset + int.from_bytes(rom.read(4), "big")
-    model_end = pointer_offset + int.from_bytes(rom.read(4), "big")
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     model_size = model_end - model_start
     for bi, b in enumerate(barrel_skins):
         rom.seek(model_start)
@@ -293,8 +276,8 @@ with open(rom_file, "rb") as rom:
             fh.write((6026 + (2 * bi)).to_bytes(4, "big"))
     # Fake Item - Model Two
     rom.seek(modeltwo_table + (0x74 << 2))
-    model_start = pointer_offset + int.from_bytes(rom.read(4), "big")
-    model_end = pointer_offset + int.from_bytes(rom.read(4), "big")
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     model_size = model_end - model_start
     rom.seek(model_start)
     indic = int.from_bytes(rom.read(2), "big")
@@ -315,8 +298,8 @@ with open(rom_file, "rb") as rom:
         fh.write(data)
     # Fake Item - Actor
     rom.seek(actor_table + (0x68 << 2))
-    model_start = pointer_offset + int.from_bytes(rom.read(4), "big")
-    model_end = pointer_offset + int.from_bytes(rom.read(4), "big")
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     model_size = model_end - model_start
     rom.seek(model_start)
     indic = int.from_bytes(rom.read(2), "big")

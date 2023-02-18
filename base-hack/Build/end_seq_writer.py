@@ -49,8 +49,8 @@ main_devs = [
 
 assistant_devs = [
     CreditItem("top", "header", ["Assistant Developers"]),
-    CreditItem("right", "normal", ["Aljex", "GloriousLiar", "Mittenz", "Naramgamjan"]),
-    CreditItem("left", "normal", ["OnlySpaghettiCode", "Plessy", "Rain"]),
+    CreditItem("right", "normal", ["Aljex", "GloriousLiar", "JXJacob", "Mittenz"]),
+    CreditItem("left", "normal", ["Naramgamjan", "OnlySpaghettiCode", "Plessy", "Rain"]),
 ]
 
 beta_testers = [

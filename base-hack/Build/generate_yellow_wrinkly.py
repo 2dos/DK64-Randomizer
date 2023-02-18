@@ -2,20 +2,20 @@
 import os
 import shutil
 import zlib
+from BuildLib import main_pointer_table_offset
 
 new_file = "assets/Gong/hint_door.bin"
 
 
 def generateYellowWrinkly():
     """Pull geo file from ROM and modify."""
-    pointer_table_offset = 0x101C50
     with open("rom/dk64.z64", "rb") as fh:
-        fh.seek(pointer_table_offset + (4 * 4))
-        om2_geo_table = pointer_table_offset + int.from_bytes(fh.read(4), "big")
+        fh.seek(main_pointer_table_offset + (4 * 4))
+        om2_geo_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
         fh.seek(om2_geo_table + (4 * 0xF1))
-        chunky_wrinkly_start = pointer_table_offset + int.from_bytes(fh.read(4), "big")
+        chunky_wrinkly_start = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
         fh.seek(om2_geo_table + (4 * 0xF1) + 4)
-        chunky_wrinkly_end = pointer_table_offset + int.from_bytes(fh.read(4), "big")
+        chunky_wrinkly_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
         geo_size = chunky_wrinkly_end - chunky_wrinkly_start
         fh.seek(chunky_wrinkly_start)
         dec = zlib.decompress(fh.read(geo_size), 15 + 32)

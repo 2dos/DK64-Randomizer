@@ -1,17 +1,17 @@
 """Build Helm Geometry file."""
 
 import zlib
+from BuildLib import main_pointer_table_offset
 
 rom_file = "./rom/dk64.z64"
-pointer_table_offset = 0x101C50
 geo_file = "helm.bin"
 
 with open(rom_file, "rb") as rom:
-    rom.seek(pointer_table_offset + (4 * 1))
-    geo_table = pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    rom.seek(main_pointer_table_offset + (4 * 1))
+    geo_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     rom.seek(geo_table + (0x11 * 4))
-    helm_start = pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-    helm_end = pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+    helm_start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+    helm_end = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
     helm_size = helm_end - helm_start
     rom.seek(helm_start)
     compress = rom.read(helm_size)

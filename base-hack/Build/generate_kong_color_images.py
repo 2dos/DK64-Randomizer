@@ -4,6 +4,7 @@ import zlib
 import math
 import os
 from PIL import Image
+from BuildLib import main_pointer_table_offset
 
 color_palettes = [
     {"kong": "dk", "zones": [{"zone": "base", "image": 3724, "colors": ["#2da1ad"], "fill_type": "block"}]},  # 2da1ad
@@ -194,11 +195,10 @@ def convertColors():
                 fh.write(bytearray(bytes_array))
 
             with open("rom/dk64-randomizer-base-dev.z64", "r+b") as fh:
-                ptr_offset = 0x101C50
-                fh.seek(ptr_offset + (25 * 0x4))
-                texture_table = ptr_offset + int.from_bytes(fh.read(4), "big")
+                fh.seek(main_pointer_table_offset + (25 * 0x4))
+                texture_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
                 fh.seek(texture_table + (zone["image"] * 4))
-                write_point = ptr_offset + int.from_bytes(fh.read(4), "big")
+                write_point = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
                 fh.seek(write_point)
                 comp = gzip.compress(bytearray(bytes_array), compresslevel=9)
                 fh.write(comp)
@@ -228,20 +228,19 @@ def hueShift(im, amount):
 def applyMelonMask(shift: int):
     """Apply a mask to the melon sprites."""
     with open("rom/dk64-randomizer-base-dev.z64", "r+b") as fh:
-        ptr_offset = 0x101C50
         data = {
             7: (0x13C, 0x147),
             14: (0x5A, 0x5D),
             25: (0x17B2, 0x17B2),
         }
         for table in data:
-            fh.seek(ptr_offset + (table * 0x4))
-            texture_table = ptr_offset + int.from_bytes(fh.read(4), "big")
+            fh.seek(main_pointer_table_offset + (table * 0x4))
+            texture_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
             table_data = list(data[table])
             for img in range(table_data[0], table_data[1] + 1):
                 fh.seek(texture_table + (img * 4))
-                file_start = ptr_offset + int.from_bytes(fh.read(4), "big")
-                file_end = ptr_offset + int.from_bytes(fh.read(4), "big")
+                file_start = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+                file_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
                 file_size = file_end - file_start
                 fh.seek(file_start)
                 file_data = fh.read(file_size)
