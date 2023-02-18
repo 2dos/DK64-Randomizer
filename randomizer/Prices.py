@@ -6,7 +6,6 @@ import random
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.ItemPool import TrainingBarrelAbilities
 from randomizer.Lists.Item import ItemList
@@ -151,7 +150,7 @@ def GetMaxForKong(settings, kong):
                 total_price += settings.prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
             # Vanilla prices are by item, not by location
-            elif settings.random_prices == RandomPrices.vanilla:
+            elif settings.random_prices == "vanilla":
                 total_price += settings.prices[item_id]
             else:
                 total_price += settings.prices[location]
@@ -183,7 +182,7 @@ def GetMaxForKong(settings, kong):
                 total_price += settings.prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
             # Vanilla prices are by item, not by location
-            elif settings.random_prices == RandomPrices.vanilla:
+            elif settings.random_prices == "vanilla":
                 total_price += settings.prices[item_id]
             else:
                 total_price += settings.prices[location]
@@ -256,7 +255,7 @@ def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, in
             # If already have max instrument upgrade, there's move to buy
             return 0
     # Vanilla prices are by item, not by location
-    elif settings.random_prices == RandomPrices.vanilla:
+    elif settings.random_prices == "vanilla":
         return settings.prices[item]
     else:
         return settings.prices[location_id]
