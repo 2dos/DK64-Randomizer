@@ -411,11 +411,13 @@ class MicrohintsEnabled(IntEnum):
         the user is otherwise able to access the Hideout Helm lobby.
     all: Same as base, but the instrument pads in Hideout Helm will provide
         hints as to their locations.
+    on: Filler for base back support.
     """
 
     off = 0
     base = 1
     all = 2
+    on = 3
 
 
 # Cosmetics
