@@ -18,7 +18,7 @@ LogicRegions = {
         LocationLogic(Locations.CavesLankyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.lanky] >= l.settings.medal_cb_req),
         LocationLogic(Locations.CavesTinyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.tiny] >= l.settings.medal_cb_req),
         LocationLogic(Locations.CavesChunkyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.chunky] >= l.settings.medal_cb_req),
-    ], [], []),
+    ], [], [], restart=-1),
 
     Regions.CrystalCavesMain: Region("Crystal Caves Main", "Main Caves Area", Levels.CrystalCaves, True, None, [
         LocationLogic(Locations.CavesDiddyJetpackBarrel, lambda l: ((l.jetpack and l.isdiddy) or ((not l.settings.shuffle_shops) and l.advanced_platforming and (l.isdonkey or (l.istiny and l.twirl)) and l.settings.free_trade_items)), MinigameType.BonusBarrel),
