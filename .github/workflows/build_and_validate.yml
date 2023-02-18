@@ -5,6 +5,7 @@ on:
     branches: [ main, master, dev, v*.* ]
   pull_request:
     branches: [ main, master, dev, v*.* ]
+  merge_group:
 
 jobs:
   lint:
