@@ -675,6 +675,23 @@ def CalculateFoolish(spoiler, WothLocations):
         majorItems.append(Items.BananaFairy)
     if Types.Crown in spoiler.settings.shuffled_location_types and requires_crowns:
         majorItems.append(Items.BattleCrown)
+    # The contents of some locations can make entire classes of items not foolish
+    # Loop through these locations until no new items are added to the list of major items
+    newFoolishItems = True
+    while newFoolishItems:
+        newFoolishItems = False
+        if Types.Medal in spoiler.settings.shuffled_location_types and LocationList[Locations.RarewareCoin].item in majorItems and Items.BananaMedal not in majorItems:
+            majorItems.append(Items.BananaMedal)
+            newFoolishItems = True
+        if Types.Fairy in spoiler.settings.shuffled_location_types and LocationList[Locations.RarewareBanana].item in majorItems and Items.BananaFairy not in majorItems:
+            majorItems.append(Items.BananaFairy)
+            newFoolishItems = True
+        if Types.Pearl in spoiler.settings.shuffled_location_types and LocationList[Locations.GalleonTinyPearls].item in majorItems and Items.Pearl not in majorItems:
+            majorItems.append(Items.Pearl)
+            newFoolishItems = True
+        if Types.Bean in spoiler.settings.shuffled_location_types and LocationList[Locations.ForestTinyBeanstalk].item in majorItems and Items.Bean not in majorItems:
+            majorItems.append(Items.Bean)
+            newFoolishItems = True
 
     nonHintableNames = {"K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits"}  # These regions never have anything useful so shouldn't be hinted
     if Types.Coin not in spoiler.settings.shuffled_location_types:
@@ -1430,16 +1447,23 @@ def FillKongs(spoiler):
         Reset()
         PlaceItems(spoiler.settings, "assumed", kongItems, assumedItems)
         # If we didn't put an item in a kong location, then it gets a NoItem
-        # This matters specifically so the logic around Diddy's cage behaves properly
+        # This matters specifically so the logic around items inside Kong cages (VERY important for Diddy's cage) behaves properly
         if LocationList[Locations.DiddyKong].item is None:
             LocationList[Locations.DiddyKong].PlaceItem(Items.NoItem)
-        # And this matters specifically for the logic around the freeing the other kongs rewards
+        else:
+            LocationList[Locations.DiddyKong].kong = spoiler.settings.diddy_freeing_kong  # If any Kong cage DOES have a kong, update the location's assigned Kong
         if LocationList[Locations.TinyKong].item is None:
             LocationList[Locations.TinyKong].PlaceItem(Items.NoItem)
+        else:
+            LocationList[Locations.TinyKong].kong = spoiler.settings.tiny_freeing_kong
         if LocationList[Locations.LankyKong].item is None:
             LocationList[Locations.LankyKong].PlaceItem(Items.NoItem)
+        else:
+            LocationList[Locations.LankyKong].kong = spoiler.settings.lanky_freeing_kong
         if LocationList[Locations.ChunkyKong].item is None:
             LocationList[Locations.ChunkyKong].PlaceItem(Items.NoItem)
+        else:
+            LocationList[Locations.ChunkyKong].kong = spoiler.settings.chunky_freeing_kong
         spoiler.settings.update_valid_locations()
     # If kongs must be in Kong cages, we need to be more careful
     else:
