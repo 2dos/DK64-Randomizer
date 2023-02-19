@@ -11,6 +11,7 @@ from randomizer.Patching.ApplyRandomizer import patching_response
 from randomizer.SettingStrings import decrypt_setting_string, encrypt_settings_string
 from randomizer.Worker import background
 from ui.bindings import bind
+from ui.plando_validation import populate_plando_options
 from ui.progress_bar import ProgressBar
 from ui.rando_options import (
     disable_barrel_modal,
@@ -166,6 +167,11 @@ def serialize_settings():
     form = js.jquery("#form").serializeArray()
     form_data = {}
 
+    # Plandomizer data is processed separately.
+    plando_form_data = populate_plando_options(form)
+    if plando_form_data is not None:
+        form_data["plandomizer"] = plando_form_data
+
     def is_number(s):
         """Check if a string is a number or not."""
         try:
@@ -175,6 +181,8 @@ def serialize_settings():
             pass
 
     for obj in form:
+        if obj.name.startswith("plando_"):
+            continue
         # Verify each object if its value is a string convert it to a bool
         if obj.value.lower() in ["true", "false"]:
             form_data[obj.name] = bool(obj.value)
@@ -185,6 +193,8 @@ def serialize_settings():
                 form_data[obj.name] = obj.value
     # find all input boxes and verify their checked status
     for element in js.document.getElementsByTagName("input"):
+        if element.name.startswith("plando_"):
+            continue
         if element.type == "checkbox" and not element.checked:
             if not form_data.get(element.name):
                 form_data[element.name] = False
@@ -193,6 +203,8 @@ def serialize_settings():
         element.setAttribute("disabled", "disabled")
     for element in js.document.getElementsByTagName("select"):
         if "selected" in element.className:
+            if element.getAttribute("name").startswith("plando_"):
+                continue
             length = element.options.length
             values = []
             for i in range(0, length):
@@ -219,6 +231,7 @@ def generate_seed(event):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ProgressBar().update_progress(0, "Initalizing"))
         form_data = serialize_settings()
+        print(form_data)
         if not form_data.get("seed"):
             form_data["seed"] = str(random.randint(100000, 999999))
         js.apply_bps_javascript()

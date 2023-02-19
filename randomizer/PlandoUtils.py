@@ -8,6 +8,7 @@ from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Location import LocationList
+from randomizer.LogicClasses import Regions
 
 # Some common item sets that may be used in multiple places.
 KongSet = {
@@ -683,9 +684,42 @@ def PlandoOptionClassAnnotation(panel, kong, location, item):
     # Each move gets the same class.
     if item in MoveSet:
         classSet.add("plando-move-option")
+    
+    # Camera and Shockwave get their own class.
+    if item in {PlandoItems.Camera.name, PlandoItems.Shockwave.name}:
+        classSet.add("plando-camera-shockwave-option")
 
     # If there are classes to append, add them in a list and return.
     if len(classSet) > 0:
         return f"class=\"{' '.join(list(classSet))}\""
     else:
         return ""
+
+# A dictionary that maps plando options to enum classes. The key for each enum
+# must exactly match that of the associated HTML input.
+PlandoEnumMap = {
+    "plando_spawn_location": Regions,
+    "plando_starting_kongs_selected": "",
+    "plando_kong_rescue_donkey": "",
+    "plando_kong_rescue_diddy": "",
+    "plando_kong_rescue_lanky": "",
+    "plando_kong_rescue_tiny": "",
+    "plando_kong_rescue_chunky": "",
+    "plando_level_order_1": "",
+    "plando_level_order_2": "",
+    "plando_level_order_3": "",
+    "plando_level_order_4": "",
+    "plando_level_order_5": "",
+    "plando_level_order_6": "",
+    "plando_level_order_7": "",
+    "plando_krool_order_1": "",
+    "plando_krool_order_2": "",
+    "plando_krool_order_3": "",
+    "plando_krool_order_4": "",
+    "plando_krool_order_5": "",
+    "plando_helm_order_1": "",
+    "plando_helm_order_2": "",
+    "plando_helm_order_3": "",
+    "plando_helm_order_4": "",
+    "plando_helm_order_5": "",
+}

@@ -538,38 +538,14 @@ def plando_hide_helm_options(evt):
 
 @bind("click", "nav-plando-tab")
 def plando_propagate_options(evt):
-    """Make changes to the plando tab based on other settings. This is a
-       workaround for issues with the Bootstrap slider."""
+    """Make changes to the plando tab based on other settings.
 
-    # Limit the number of "K. Rool order" dropdowns displayed.
-    krool_phase_count = int(js.document.getElementById("krool_phase_count").value)
-    krool_random = js.document.getElementById("krool_random").checked
-    for i in range(0, 5):
-        # Add 1, because the actual HTML elements are one-indexd.
-        krool_phase_plando_div = js.document.getElementById(f"plando_krool_order_div_{i+1}")
-        krool_phase_plando = js.document.getElementById(f"plando_krool_order_{i+1}")
-        if i < krool_phase_count or krool_random:
-            krool_phase_plando_div.classList.remove("disabled-select")
-            krool_phase_plando.removeAttribute("disabled")
-        else:
-            krool_phase_plando_div.classList.add("disabled-select")
-            krool_phase_plando.setAttribute("disabled", "disabled")
-            krool_phase_plando.value = ""
-    
-    # Limit the number of "Helm order" dropdowns displayed.
-    helm_phase_count = int(js.document.getElementById("helm_phase_count").value)
-    helm_random = js.document.getElementById("helm_random").checked
-    for i in range(0, 5):
-        # Add 1, because the actual HTML elements are one-indexd.
-        helm_phase_plando_div = js.document.getElementById(f"plando_helm_order_div_{i+1}")
-        helm_phase_plando = js.document.getElementById(f"plando_helm_order_{i+1}")
-        if i < helm_phase_count or helm_random:
-            helm_phase_plando_div.classList.remove("disabled-select")
-            helm_phase_plando.removeAttribute("disabled")
-        else:
-            helm_phase_plando_div.classList.add("disabled-select")
-            helm_phase_plando.setAttribute("disabled", "disabled")
-            helm_phase_plando.value = ""
+    This is partly a workaround for issues with the Bootstrap slider.
+    """
+
+    plando_hide_krool_options(evt)
+    plando_hide_helm_options(evt)
+    plando_disable_camera_shockwave(evt)
 
 
 @bind("change", "move_rando")
@@ -798,10 +774,10 @@ def enable_plandomizer(evt):
         pass
 
 
-@bind("change", "plando_starting_kongs")
+@bind("change", "plando_starting_kongs_selected")
 def plando_disable_kong_rescues(evt):
     """Disable Kong rescue options for starting Kongs."""
-    starting_kongs = js.document.getElementById("plando_starting_kongs")
+    starting_kongs = js.document.getElementById("plando_starting_kongs_selected")
     selected_kongs = {x.value for x in starting_kongs.selectedOptions}
     for kong in ["donkey", "diddy", "lanky", "tiny", "chunky"]:
         kong_rescuer_div = js.document.getElementById(f"plando_kong_rescue_div_{kong}")
@@ -815,10 +791,10 @@ def plando_disable_kong_rescues(evt):
             kong_rescuer.removeAttribute("disabled")
 
 
-@bind("change", "plando_starting_kongs")
+@bind("change", "plando_starting_kongs_selected")
 def plando_disable_kong_items(evt):
     """Do not allow starting Kongs to be placed as items."""
-    starting_kongs = js.document.getElementById("plando_starting_kongs")
+    starting_kongs = js.document.getElementById("plando_starting_kongs_selected")
     selected_kongs = {x.value for x in starting_kongs.selectedOptions}
     item_dropdowns = js.document.getElementsByClassName("plando-item-select")
     for kong in ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]:
@@ -887,6 +863,27 @@ def toggle_extreme_prices_option(event):
         price_option = document.getElementById("random_prices")
         if price_option.value == "extreme":
             price_option.value = "high"
+
+
+@bind("change", "shockwave_status")
+def plando_disable_camera_shockwave(evt):
+    """Disable placement of camera/shockwave if they are not shuffled."""
+    shockwave_status = document.getElementById("shockwave_status").value
+    item_dropdowns = js.document.getElementsByClassName("plando-item-select")
+    move_options = js.document.getElementsByClassName(f"plando-camera-shockwave-option")
+    disabled = shockwave_status == "start_with" or shockwave_status == "vanilla"
+    if disabled:
+        # Disable Camera and Shockwave dropdown options.
+        for option in move_options:
+            option.setAttribute("disabled", "disabled")
+        # Remove these items anywhere they've been selected.
+        for dropdown in item_dropdowns:
+            if dropdown.value == "Camera" or dropdown.value == "Shockwave":
+                dropdown.value = ""
+    else:
+        # Re-enable Camera and Shockwave dropdown options.
+        for option in move_options:
+            option.removeAttribute("disabled")
 
 
 @bind("change", "logic_type")

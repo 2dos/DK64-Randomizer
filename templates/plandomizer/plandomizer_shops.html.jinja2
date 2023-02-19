@@ -19,11 +19,11 @@
         <div class="flex-container flex-center">
             {% for location in locations|plando_shop_sort %}
                 <div class="location-picker">
-                    <label for="plando_{{location["enum_name"]}}" class="location-label">
+                    <label for="plando_{{location["enum_name"]}}_shop_item" class="location-label">
                         {{location["display_name"]}}
                     </label>
-                    <select id="plando_{{location["enum_name"]}}"
-                            name="plando_{{location["enum_name"]}}"
+                    <select id="plando_{{location["enum_name"]}}_shop_item"
+                            name="plando_{{location["enum_name"]}}_shop_item"
                             class="form-select plando-item-select">
                         <option value="">-- Randomize --</option>
                         {% for item in plando_items|plando_item_restrict(location) %}

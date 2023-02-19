@@ -417,7 +417,7 @@ PlannableItemLimits = {
     PlandoItems.CrystalCavesKey: 1,
     PlandoItems.CreepyCastleKey: 1,
     PlandoItems.HideoutHelmKey: 1,
-    # Forty of these bananas are currentl allocated to blueprint rewards.
+    # Forty of these bananas are currently allocated to blueprint rewards.
     PlandoItems.GoldenBanana: 201,
     PlandoItems.BananaFairy: 20,
     PlandoItems.BananaMedal: 40,

@@ -18,12 +18,12 @@
         <div class="flex-container flex-center">
             {% for location in locations %}
                 <div class="location-picker">
-                    <label for="plando_{{location["enum_name"]}}" class="location-label">
+                    <label for="plando_{{location["enum_name"]}}_hint" class="location-label">
                         {{location["display_name"]}}
                     </label>
                     <div>
-                        <input id="plando_{{location["enum_name"]}}"
-                               name="plando_{{location["enum_name"]}}"
+                        <input id="plando_{{location["enum_name"]}}_hint"
+                               name="plando_{{location["enum_name"]}}_hint"
                                placeholder="Enter hint text."
                                maxlength="900"
                             class="form-control">
