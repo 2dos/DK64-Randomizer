@@ -9,6 +9,63 @@ from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Location import LocationList
 
+# Some common item sets that may be used in multiple places.
+KongSet = {
+    PlandoItems.Donkey.name,
+    PlandoItems.Diddy.name,
+    PlandoItems.Lanky.name,
+    PlandoItems.Tiny.name,
+    PlandoItems.Chunky.name,
+}
+KeySet = {
+    PlandoItems.JungleJapesKey.name,
+    PlandoItems.AngryAztecKey.name,
+    PlandoItems.FranticFactoryKey.name,
+    PlandoItems.GloomyGalleonKey.name,
+    PlandoItems.FungiForestKey.name,
+    PlandoItems.CrystalCavesKey.name,
+    PlandoItems.CreepyCastleKey.name,
+    PlandoItems.HideoutHelmKey.name,
+}
+MoveSet = {
+    PlandoItems.Vines.name,
+    PlandoItems.Swim.name,
+    PlandoItems.Oranges.name,
+    PlandoItems.Barrels.name,
+    PlandoItems.ProgressiveSlam.name,
+    PlandoItems.BaboonBlast.name,
+    PlandoItems.StrongKong.name,
+    PlandoItems.GorillaGrab.name,
+    PlandoItems.ChimpyCharge.name,
+    PlandoItems.RocketbarrelBoost.name,
+    PlandoItems.SimianSpring.name,
+    PlandoItems.Orangstand.name,
+    PlandoItems.BaboonBalloon.name,
+    PlandoItems.OrangstandSprint.name,
+    PlandoItems.MiniMonkey.name,
+    PlandoItems.PonyTailTwirl.name,
+    PlandoItems.Monkeyport.name,
+    PlandoItems.HunkyChunky.name,
+    PlandoItems.PrimatePunch.name,
+    PlandoItems.GorillaGone.name,
+    PlandoItems.Coconut.name,
+    PlandoItems.Peanut.name,
+    PlandoItems.Grape.name,
+    PlandoItems.Feather.name,
+    PlandoItems.Pineapple.name,
+    PlandoItems.HomingAmmo.name,
+    PlandoItems.SniperSight.name,
+    PlandoItems.ProgressiveAmmoBelt.name,
+    PlandoItems.Bongos.name,
+    PlandoItems.Guitar.name,
+    PlandoItems.Trombone.name,
+    PlandoItems.Saxophone.name,
+    PlandoItems.Triangle.name,
+    PlandoItems.ProgressiveInstrumentUpgrade.name,
+    PlandoItems.Camera.name,
+    PlandoItems.Shockwave.name,
+}
+
 # A master dictionary of all possible item locations, mapped to a set of which
 # items may not appear in that location.
 ItemRestrictionsPerLocation = {location.name:set() for location in LocationList.keys()}
@@ -310,14 +367,7 @@ for locationName in trainingBarrelLocationList:
     ItemRestrictionsPerLocation[locationName].update(trainingBarrelRestrictedItemSet)
 
 # This one rock can't have Kongs as a reward.
-kongSet = {
-    PlandoItems.Donkey.name,
-    PlandoItems.Diddy.name,
-    PlandoItems.Lanky.name,
-    PlandoItems.Tiny.name,
-    PlandoItems.Chunky.name
-}
-ItemRestrictionsPerLocation[Locations.IslesDonkeyJapesRock.name].update(kongSet)
+ItemRestrictionsPerLocation[Locations.IslesDonkeyJapesRock.name].update(KongSet)
 
 # These specific locations cannot have fake items on them.
 badFakeItemLocationList = [
@@ -621,30 +671,18 @@ def PlandoOptionClassAnnotation(panel, kong, location, item):
     """A Jinja function that will apply certain CSS classes to dropdown menu
        options, in order to enable various option interactions."""
     classSet = set()
+
     # Each key gets its own class.
-    keySet = {
-        PlandoItems.JungleJapesKey.name,
-        PlandoItems.AngryAztecKey.name,
-        PlandoItems.FranticFactoryKey.name,
-        PlandoItems.GloomyGalleonKey.name,
-        PlandoItems.FungiForestKey.name,
-        PlandoItems.CrystalCavesKey.name,
-        PlandoItems.CreepyCastleKey.name,
-        PlandoItems.HideoutHelmKey.name,
-    }
-    if item in keySet:
+    if item in KeySet:
         classSet.add(f"plando-{item}-option")
 
     # Each Kong gets their own class.
-    kongSet = {
-        PlandoItems.Donkey.name,
-        PlandoItems.Diddy.name,
-        PlandoItems.Lanky.name,
-        PlandoItems.Tiny.name,
-        PlandoItems.Chunky.name,
-    }
-    if item in kongSet:
+    if item in KongSet:
         classSet.add(f"plando-{item}-option")
+
+    # Each move gets the same class.
+    if item in MoveSet:
+        classSet.add("plando-move-option")
 
     # If there are classes to append, add them in a list and return.
     if len(classSet) > 0:
