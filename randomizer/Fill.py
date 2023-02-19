@@ -513,22 +513,23 @@ def CalculateWothPaths(spoiler, WothLocations):
     """Calculate the Paths (dependencies) for each Way of the Hoard item."""
     # Helps get more accurate paths by removing important obstacles to level entry
     # Removes the following:
+    # - The need for GBs and coins to reach locations
     # - The need for vines to progress in Aztec
     # - The need for swim to get into level 4
     # - The need for vines to get to upper Isles
     # - The need for all keys to access K. Rool
     # - The need for keys to open lobbies (this is done with open_lobbies)
     old_open_lobbies_temp = spoiler.settings.open_lobbies  # It's far less likely for a key to be a prerequisite
+    LogicVariables.assumeInfiniteGBs = True  # This means we don't have to worry about moves required to get GBs to enter B. Lockers - we already know we can clear all B. Lockers
+    LogicVariables.assumeInfiniteCoins = True  # This means we don't have to worry about moves required to get coins - we already know there is no breaking purchase order
+    LogicVariables.assumeKRoolAccess = True  # This makes the K. Rool path better if we need it
     if spoiler.settings.shuffle_loading_zones != "all":
         # These assumptions are only good in level order because entrances can matter more in LZR
         LogicVariables.assumeAztecEntry = True
         LogicVariables.assumeLevel4Entry = True
         LogicVariables.assumeUpperIslesAccess = True
-        LogicVariables.assumeKRoolAccess = True
         spoiler.settings.open_lobbies = True
-    else:
-        # This makes the K. Rool path better if we need it
-        LogicVariables.assumeKRoolAccess = True
+
     # Prep the dictionary that will contain the path for the key item
     for locationId in WothLocations:
         spoiler.woth_paths[locationId] = [locationId]  # The endpoint is on its own path
@@ -543,12 +544,6 @@ def CalculateWothPaths(spoiler, WothLocations):
         assumedItems = ItemPool.Kongs(spoiler.settings)
         # Find all accessible locations without this item placed
         Reset()
-        # At this point we know there is no breaking purchase order
-        # Therefore moves required to get coins for shop purchases are not dependencies
-        # So give the logic infinite coins so it can purchase anything it needs
-        LogicVariables.GainInfiniteCoins()
-        # Also assume max GBs so no B. Lockers can get in your way, leading to items that are only needed for GBs to be on paths
-        LogicVariables.GoldenBananas = 201
         accessible = GetAccessibleLocations(spoiler.settings, assumedItems, SearchMode.GetReachable)
         # Then check every other WotH location for accessibility
         for other_location in WothLocations:
@@ -590,6 +585,8 @@ def CalculateWothPaths(spoiler, WothLocations):
                 anything_removed = True
                 break
     # None of these assumptions should ever make it out of this method
+    LogicVariables.assumeInfiniteGBs = False
+    LogicVariables.assumeInfiniteCoins = False
     LogicVariables.assumeAztecEntry = False
     LogicVariables.assumeLevel4Entry = False
     LogicVariables.assumeUpperIslesAccess = False
@@ -678,6 +675,23 @@ def CalculateFoolish(spoiler, WothLocations):
         majorItems.append(Items.BananaFairy)
     if Types.Crown in spoiler.settings.shuffled_location_types and requires_crowns:
         majorItems.append(Items.BattleCrown)
+    # The contents of some locations can make entire classes of items not foolish
+    # Loop through these locations until no new items are added to the list of major items
+    newFoolishItems = True
+    while newFoolishItems:
+        newFoolishItems = False
+        if Types.Medal in spoiler.settings.shuffled_location_types and LocationList[Locations.RarewareCoin].item in majorItems and Items.BananaMedal not in majorItems:
+            majorItems.append(Items.BananaMedal)
+            newFoolishItems = True
+        if Types.Fairy in spoiler.settings.shuffled_location_types and LocationList[Locations.RarewareBanana].item in majorItems and Items.BananaFairy not in majorItems:
+            majorItems.append(Items.BananaFairy)
+            newFoolishItems = True
+        if Types.Pearl in spoiler.settings.shuffled_location_types and LocationList[Locations.GalleonTinyPearls].item in majorItems and Items.Pearl not in majorItems:
+            majorItems.append(Items.Pearl)
+            newFoolishItems = True
+        if Types.Bean in spoiler.settings.shuffled_location_types and LocationList[Locations.ForestTinyBeanstalk].item in majorItems and Items.Bean not in majorItems:
+            majorItems.append(Items.Bean)
+            newFoolishItems = True
 
     nonHintableNames = {"K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits"}  # These regions never have anything useful so shouldn't be hinted
     if Types.Coin not in spoiler.settings.shuffled_location_types:
@@ -1433,16 +1447,23 @@ def FillKongs(spoiler):
         Reset()
         PlaceItems(spoiler.settings, "assumed", kongItems, assumedItems)
         # If we didn't put an item in a kong location, then it gets a NoItem
-        # This matters specifically so the logic around Diddy's cage behaves properly
+        # This matters specifically so the logic around items inside Kong cages (VERY important for Diddy's cage) behaves properly
         if LocationList[Locations.DiddyKong].item is None:
             LocationList[Locations.DiddyKong].PlaceItem(Items.NoItem)
-        # And this matters specifically for the logic around the freeing the other kongs rewards
+        else:
+            LocationList[Locations.DiddyKong].kong = spoiler.settings.diddy_freeing_kong  # If any Kong cage DOES have a kong, update the location's assigned Kong
         if LocationList[Locations.TinyKong].item is None:
             LocationList[Locations.TinyKong].PlaceItem(Items.NoItem)
+        else:
+            LocationList[Locations.TinyKong].kong = spoiler.settings.tiny_freeing_kong
         if LocationList[Locations.LankyKong].item is None:
             LocationList[Locations.LankyKong].PlaceItem(Items.NoItem)
+        else:
+            LocationList[Locations.LankyKong].kong = spoiler.settings.lanky_freeing_kong
         if LocationList[Locations.ChunkyKong].item is None:
             LocationList[Locations.ChunkyKong].PlaceItem(Items.NoItem)
+        else:
+            LocationList[Locations.ChunkyKong].kong = spoiler.settings.chunky_freeing_kong
         spoiler.settings.update_valid_locations()
     # If kongs must be in Kong cages, we need to be more careful
     else:

@@ -265,10 +265,10 @@ KasplatLocationList = {
         KasplatLocation(
             name="Aztec Kasplat: Behind the DK Stone Door",
             map_id=Maps.AngryAztec,
-            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            kong_lst=[Kongs.donkey, Kongs.tiny],
             coords=[1363, 162, 738],
             region=Regions.AztecTunnelBeforeOasis,
-            additional_logic=lambda l: (l.coconut or l.phasewalk) and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default"),
+            additional_logic=lambda l: l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
             vanilla=True,
         ),
         KasplatLocation(

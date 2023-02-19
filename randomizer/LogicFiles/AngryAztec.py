@@ -39,8 +39,7 @@ LogicRegions = {
     ]),
 
     Regions.AztecTunnelBeforeOasis: Region("Angry Aztec Tunnel Before Oasis", "Various Aztec Tunnels", Levels.AngryAztec, False, None, [
-        # Damage checks in logic are cringe but we need this to make vanilla kasplat rando interesting in Aztec
-        LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: not l.settings.kasplat_rando and (l.coconut or l.phasewalk) and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default")),
+        LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: not l.settings.kasplat_rando and (l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))))),
     ], [], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
         TransitionFront(Regions.BetweenVinesByPortal, lambda l: l.vines or (l.istiny and l.twirl) or l.phasewalk),

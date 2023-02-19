@@ -142,7 +142,7 @@ CrownLocations = {
             z=740,
             scale=0.25,
             region=Regions.AngryAztecOasis,
-            logic=lambda l: (l.coconut or l.phasewalk) and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default"),
+            logic=lambda l: l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
         ),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Oasis", x=2151, y=120, z=983, scale=0.35, region=Regions.AngryAztecOasis),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Behind Tiny Temple", x=3345, y=153, z=507, scale=0.3, region=Regions.AngryAztecOasis),

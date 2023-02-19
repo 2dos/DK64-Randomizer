@@ -54,6 +54,8 @@ class LogicVarHolder:
         # Some restrictions are added to the item placement fill for the sake of reducing indirect errors. We can overlook these restrictions once we know the fill is valid.
         self.assumeFillSuccess = False
         # See CalculateWothPaths method for details on these assumptions
+        self.assumeInfiniteGBs = False
+        self.assumeInfiniteCoins = False
         self.assumeAztecEntry = False
         self.assumeLevel4Entry = False
         self.assumeUpperIslesAccess = False
@@ -681,12 +683,6 @@ class LogicVarHolder:
                 self.Coins[location.kong] -= price
                 self.SpentCoins[location.kong] += price
 
-    def GainInfiniteCoins(self):
-        """Add an arbitrarily large amount of coins to the current game state so as to effectively ignore any coin requirements."""
-        for i in range(len(self.Coins)):
-            self.Coins[i] += 10000
-            self.RegularCoins[i] += 10000
-
     @staticmethod
     def HasAccess(region, kong):
         """Check if a certain kong has access to a certain region.
@@ -799,7 +795,7 @@ class LogicVarHolder:
         can_tiny_skip = self.istiny and self.lanky_blocker_skip and level == Levels.HideoutHelm and self.generalclips
         can_chunky_skip = self.ischunky and self.lanky_blocker_skip and self.punch and level not in (Levels.FranticFactory, Levels.HideoutHelm)
         return self.HasEnoughKongs(level, forPreviousLevel=True) and (
-            (self.GoldenBananas >= self.settings.EntryGBs[level]) or can_dk_skip or can_diddy_skip or can_lanky_skip or can_tiny_skip or can_chunky_skip
+            (self.assumeInfiniteGBs or self.GoldenBananas >= self.settings.EntryGBs[level]) or can_dk_skip or can_diddy_skip or can_lanky_skip or can_tiny_skip or can_chunky_skip
         )
 
     def WinConditionMet(self):

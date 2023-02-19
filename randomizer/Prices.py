@@ -291,6 +291,9 @@ def EveryKongCanBuy(location, logic):
 
 def CanBuy(location, logic):
     """Check if an appropriate kong can logically purchase this location."""
+    # If we're assuming infinite coins, we can always acquire the item
+    if logic.assumeInfiniteCoins:
+        return True
     # If it's in a location that doesn't care about prices, it's free!
     if location in TrainingBarrelLocations or location == Locations.CameraAndShockwave:
         return True
