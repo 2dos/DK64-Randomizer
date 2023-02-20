@@ -5,7 +5,11 @@ from randomizer.Enums.Items import Items
 
 
 class PlandoItems(IntEnum):
-    """Plando item enum."""
+    """Enum of items that are selectable in the plandomizer."""
+
+    # Indicates that the given slot should be randomized.
+    # Used when the user has not chosen anything.
+    Randomize = -1
 
     NoItem = auto()
 
