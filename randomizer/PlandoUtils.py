@@ -5,8 +5,9 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
-from randomizer.Enums.Plandomizer import PlandoItems
+from randomizer.Enums.Plandomizer import PlandoItems, PlandoItemToItemMap
 from randomizer.Enums.Types import Types
+from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationList
 from randomizer.LogicClasses import Regions
 
@@ -66,6 +67,22 @@ MoveSet = {
     PlandoItems.Camera.name,
     PlandoItems.Shockwave.name,
 }
+
+# This dict only contains names for plando items that don't map 1:1 to Item.
+plandoItemNameDict = {
+    PlandoItems.DonkeyBlueprint: "Blueprint (Donkey)",
+    PlandoItems.DiddyBlueprint: "Blueprint (Diddy)",
+    PlandoItems.LankyBlueprint: "Blueprint (Lanky)",
+    PlandoItems.TinyBlueprint: "Blueprint (Tiny)",
+    PlandoItems.ChunkyBlueprint: "Blueprint (Chunky)",
+    PlandoItems.JunkItem: "Junk Item",
+}
+def GetNameFromPlandoItem(plandoItem):
+    """Obtain a display name for a given PlandoItem enum."""
+    if plandoItem in plandoItemNameDict:
+        return plandoItemNameDict[plandoItem]
+    mappedItem = PlandoItemToItemMap[plandoItem]
+    return ItemList[mappedItem].name
 
 # A master dictionary of all possible item locations, mapped to a set of which
 # items may not appear in that location.

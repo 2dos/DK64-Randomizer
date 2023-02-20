@@ -6,8 +6,9 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Enums.Regions import Regions
+from randomizer.Lists.Plandomizer import PlannableItemLimits
 from randomizer.LogicFiles.Shops import LogicRegions
-from randomizer.PlandoUtils import PlandoEnumMap
+from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 
 
 def populate_plando_options(form):
@@ -182,6 +183,33 @@ def validate_plando_options(plando_dict):
     Args:
         plando_dict (str) - The dictionary containing the plando data.
     """
-    # First check: count all of the items
+    errList = []
+    # First check: count all of the items.
+    count_dict = {}
+    for item in plando_dict["locations"].values():
+        if item == PlandoItems.Randomize:
+            continue
+        if item in count_dict:
+            count_dict[item] += 1
+        else:
+            count_dict[item] = 1
+    for shop in plando_dict["shops"].values():
+        if shop["item"] == PlandoItems.Randomize:
+            continue
+        if shop["item"] in count_dict:
+            count_dict[shop["item"]] += 1
+        else:
+            count_dict[shop["item"]] = 1
+    # If any items have exceeded their maximum amounts, add an error.
+    for item, itemCount in count_dict.items():
+        if item not in PlannableItemLimits:
+            continue
+        itemMax = PlannableItemLimits[item]
+        if itemCount > itemMax:
+            maybePluralTimes = "time" if itemMax == 1 else "times"
+            errString = f"Item \"{GetNameFromPlandoItem(item)}\" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times."
+            if item == PlandoItems.GoldenBanana:
+                errString += " (40 Golden Bananas are always allocated to blueprint rewards.)"
+            errList.append(errString)
 
-    return (plando_dict, [])
+    return (plando_dict, errList)
