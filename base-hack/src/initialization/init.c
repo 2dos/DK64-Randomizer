@@ -162,6 +162,7 @@ void initHack(int source) {
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
 			initCosmetic();
+			initStackTrace();
 
 			replace_zones(1);
 			randomize_bosses();

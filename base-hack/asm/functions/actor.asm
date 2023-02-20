@@ -82,3 +82,6 @@
 .definelabel applyDamage, 0x806C9974
 .definelabel damage, 0x806EE10C
 .definelabel checkDeathAction, 0x806EB400
+.definelabel unkLightFunc_0, 0x80604cbc
+.definelabel kongFollowingLightFunc, 0x8072a920
+.definelabel lightShiningLightFunc, 0x806c6530
