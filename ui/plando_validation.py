@@ -1,7 +1,12 @@
 """Code to collect and validate the selected plando options."""
 import js
+import re
 
+from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems
+from randomizer.Enums.Regions import Regions
+from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import PlandoEnumMap
 
 
@@ -9,7 +14,12 @@ def populate_plando_options(form):
     """Collect all of the plandomizer options into one object.
 
     Args:
-        form (dict): The serialized form data containing all HTML inputs.
+        form (dict) - The serialized form data containing all HTML inputs.
+    Returns:
+        plando_form_data (dict) - The collected plando data. May be None if
+            plandomizer is disabled, or the selections are invalid.
+        err (str[]) - A list of error strings to be displayed to the user.
+            Will be an empty list if there are no errors.
     """
     # If the plandomizer is disabled, return nothing.
     enable_plandomizer = js.document.getElementById("enable_plandomizer")
@@ -30,7 +40,7 @@ def populate_plando_options(form):
             return True
         except ValueError:
             return False
-    
+
     def get_enum_or_string_value(valueString, settingName):
         """Obtain the enum or string value for the provided setting.
 
@@ -101,5 +111,77 @@ def populate_plando_options(form):
                     val = get_enum_or_string_value(element.options.item(i).value, element.getAttribute("name"))
                     values.append(val)
             plando_form_data[element.getAttribute("name")] = values
+    
+    locations_map = {}
+    # Process all of the inputs we previously sorted into lists.
+    for item in item_objects:
+        # Extract the location name.
+        location_name = re.search("^plando_(.+)_item$", item.name)[1]
+        location = Locations[location_name]
+        item_value = PlandoItems.Randomize
+        if item.value != "":
+            item_value = PlandoItems[item.value]
+        locations_map[location] = item_value
+    # Place Golden Bananas on all of the blueprint rewards.
+    for blueprint in LogicRegions[Regions.Snide].locations:
+        locations_map[blueprint.id] = PlandoItems.GoldenBanana
+    plando_form_data["locations"] = locations_map
+    
+    shops_map = {}
+    for shop_item in shop_item_objects:
+        # Extract the location name.
+        location_name = re.search("^plando_(.+)_shop_item$", shop_item.name)[1]
+        location = Locations[location_name]
+        item_value = PlandoItems.Randomize
+        if shop_item.value != "":
+            item_value = PlandoItems[shop_item.value]
+        # Create an object with both the item and the cost. The cost defaults
+        # to PlandoItems.Randomize (-1), but may be overwritten later.
+        shops_map[location] = {
+            "item": item_value,
+            "cost": PlandoItems.Randomize
+        }
+    for shop_cost in shop_cost_objects:
+        # Extract the location name.
+        location_name = re.search("^plando_(.+)_shop_cost$", shop_cost.name)[1]
+        location = Locations[location_name]
+        item_cost = PlandoItems.Randomize
+        if shop_cost.value != "":
+            item_cost = int(shop_cost.value)
+            # Update this shop item with the cost.
+            shops_map[location]["cost"] = item_cost
+    plando_form_data["shops"] = shops_map
+    
+    minigames_map = {}
+    for minigame in minigame_objects:
+        # Extract the barrel location name.
+        location_name = re.search("^plando_(.+)_minigame$", minigame.name)[1]
+        location = Locations[location_name]
+        minigame_value = PlandoItems.Randomize
+        if minigame.value != "":
+            minigame_value = Minigames[minigame.value]
+        minigames_map[location] = minigame_value
+    plando_form_data["minigames"] = minigames_map
+    
+    hints_map = {}
+    for hint in hint_objects:
+        # Extract the hint location.
+        location_name = re.search("^plando_(.+)_hint$", hint.name)[1]
+        location = Locations[location_name]
+        hint_value = PlandoItems.Randomize
+        if hint.value != "":
+            hint_value = hint.value
+        hints_map[location] = hint_value
+    plando_form_data["hints"] = hints_map
 
-    return plando_form_data
+    return validate_plando_options(plando_form_data)
+
+def validate_plando_options(plando_dict):
+    """Validate the plando options against a set of rules.
+    
+    Args:
+        plando_dict (str) - The dictionary containing the plando data.
+    """
+    # First check: count all of the items
+
+    return (plando_dict, [])

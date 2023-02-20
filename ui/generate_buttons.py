@@ -168,7 +168,12 @@ def serialize_settings():
     form_data = {}
 
     # Plandomizer data is processed separately.
-    plando_form_data = populate_plando_options(form)
+    plando_form_data, plando_err = populate_plando_options(form)
+    # If errors are returned, the plandomizer options are invalid.
+    # Do not attempt to generate a seed.
+    if len(plando_err) > 0:
+        return plando_form_data, plando_err
+
     if plando_form_data is not None:
         form_data["plandomizer"] = plando_form_data
 
@@ -179,9 +184,13 @@ def serialize_settings():
             return True
         except ValueError:
             pass
+    
+    def is_plando_input(inputName):
+        """Determine if an input is a plando input."""
+        return inputName is not None and inputName.startswith("plando_")
 
     for obj in form:
-        if obj.name.startswith("plando_"):
+        if is_plando_input(obj.name):
             continue
         # Verify each object if its value is a string convert it to a bool
         if obj.value.lower() in ["true", "false"]:
@@ -193,7 +202,7 @@ def serialize_settings():
                 form_data[obj.name] = obj.value
     # find all input boxes and verify their checked status
     for element in js.document.getElementsByTagName("input"):
-        if element.name.startswith("plando_"):
+        if is_plando_input(element.name):
             continue
         if element.type == "checkbox" and not element.checked:
             if not form_data.get(element.name):
@@ -203,7 +212,7 @@ def serialize_settings():
         element.setAttribute("disabled", "disabled")
     for element in js.document.getElementsByTagName("select"):
         if "selected" in element.className:
-            if element.getAttribute("name").startswith("plando_"):
+            if is_plando_input(element.getAttribute("name")):
                 continue
             length = element.options.length
             values = []
@@ -211,7 +220,7 @@ def serialize_settings():
                 if element.options.item(i).selected:
                     values.append(element.options.item(i).value)
             form_data[element.getAttribute("name")] = values
-    return form_data
+    return form_data, []
 
 
 @bind("click", "generate_seed")
@@ -227,11 +236,19 @@ def generate_seed(event):
         if "is-invalid" not in list(js.document.getElementById("rom").classList):
             js.document.getElementById("rom").classList.add("is-invalid")
     else:
+        # The data is serialized outside of the loop, because validation occurs
+        # here and we might stop before attempting to generate a seed.
+        form_data, form_err = serialize_settings()
+        if len(form_err) > 0:
+            for err in form_err:
+                print(err)
+            return
+
         # Start the progressbar
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ProgressBar().update_progress(0, "Initalizing"))
-        form_data = serialize_settings()
         print(form_data)
+        print(json.dumps(form_data))
         if not form_data.get("seed"):
             form_data["seed"] = str(random.randint(100000, 999999))
         js.apply_bps_javascript()
