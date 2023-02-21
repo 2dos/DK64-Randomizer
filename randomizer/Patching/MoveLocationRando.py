@@ -1,6 +1,7 @@
 """Randomize Move Locations."""
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
+from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -56,18 +57,18 @@ kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "L
 
 def pushItemMicrohints(spoiler: Spoiler, move_dict: dict, level: int, kong: int, slot: int):
     """Push hint for the micro-hints system."""
-    if spoiler.settings.microhints_enabled != "off":
+    if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
         if kong != Kongs.any or slot == 0:
             move = None  # Using no item for the purpose of a default
             hinted_items = {
                 # Key = Item, Value = Textbox index in text file 19
-                "Monkeyport": [("special", 2, Kongs.tiny), 26, ("base", "all")],
-                "Gorilla Gone": [("special", 2, Kongs.chunky), 25, ("base", "all")],
-                "Bongo Blast": [("instrument", 0, Kongs.donkey), 27, ("all")],
-                "Triangle Trample": [("instrument", 0, Kongs.chunky), 28, ("all")],
-                "Saxophone Slam": [("instrument", 0, Kongs.tiny), 29, ("all")],
-                "Trombone Tremor": [("instrument", 0, Kongs.lanky), 30, ("all")],
-                "Guitar Gazump": [("instrument", 0, Kongs.diddy), 31, ("all")],
+                "Monkeyport": [("special", 2, Kongs.tiny), 26, (MicrohintsEnabled.base, MicrohintsEnabled.all)],
+                "Gorilla Gone": [("special", 2, Kongs.chunky), 25, (MicrohintsEnabled.base, MicrohintsEnabled.all)],
+                "Bongo Blast": [("instrument", 0, Kongs.donkey), 27, (MicrohintsEnabled.all)],
+                "Triangle Trample": [("instrument", 0, Kongs.chunky), 28, (MicrohintsEnabled.all)],
+                "Saxophone Slam": [("instrument", 0, Kongs.tiny), 29, (MicrohintsEnabled.all)],
+                "Trombone Tremor": [("instrument", 0, Kongs.lanky), 30, (MicrohintsEnabled.all)],
+                "Guitar Gazump": [("instrument", 0, Kongs.diddy), 31, (MicrohintsEnabled.all)],
             }
             for item_hint in hinted_items:
                 move_data = hinted_items[item_hint][0]
@@ -128,7 +129,7 @@ def randomize_moves(spoiler: Spoiler):
     hint_enabled = True
     if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.valid_locations:
         hint_enabled = False
-    if spoiler.settings.move_rando not in ("off", "starts_with") and spoiler.move_data is not None:
+    if spoiler.settings.move_rando not in (MoveRando.off, MoveRando.start_with) and spoiler.move_data is not None:
         # Take a copy of move_data before modifying
         move_arrays = spoiler.move_data.copy()
 
