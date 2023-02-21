@@ -62,13 +62,13 @@ def pushItemMicrohints(spoiler: Spoiler, move_dict: dict, level: int, kong: int,
             move = None  # Using no item for the purpose of a default
             hinted_items = {
                 # Key = Item, Value = Textbox index in text file 19
-                "Monkeyport": [("special", 2, Kongs.tiny), 26, (MicrohintsEnabled.base, MicrohintsEnabled.all)],
-                "Gorilla Gone": [("special", 2, Kongs.chunky), 25, (MicrohintsEnabled.base, MicrohintsEnabled.all)],
-                "Bongo Blast": [("instrument", 0, Kongs.donkey), 27, (MicrohintsEnabled.all)],
-                "Triangle Trample": [("instrument", 0, Kongs.chunky), 28, (MicrohintsEnabled.all)],
-                "Saxophone Slam": [("instrument", 0, Kongs.tiny), 29, (MicrohintsEnabled.all)],
-                "Trombone Tremor": [("instrument", 0, Kongs.lanky), 30, (MicrohintsEnabled.all)],
-                "Guitar Gazump": [("instrument", 0, Kongs.diddy), 31, (MicrohintsEnabled.all)],
+                "Monkeyport": [("special", 2, Kongs.tiny), 26, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
+                "Gorilla Gone": [("special", 2, Kongs.chunky), 25, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
+                "Bongo Blast": [("instrument", 0, Kongs.donkey), 27, [MicrohintsEnabled.all]],
+                "Triangle Trample": [("instrument", 0, Kongs.chunky), 28, [MicrohintsEnabled.all]],
+                "Saxophone Slam": [("instrument", 0, Kongs.tiny), 29, [MicrohintsEnabled.all]],
+                "Trombone Tremor": [("instrument", 0, Kongs.lanky), 30, [MicrohintsEnabled.all]],
+                "Guitar Gazump": [("instrument", 0, Kongs.diddy), 31, [MicrohintsEnabled.all]],
             }
             for item_hint in hinted_items:
                 move_data = hinted_items[item_hint][0]
