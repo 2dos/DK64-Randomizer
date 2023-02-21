@@ -66,6 +66,14 @@ def ShuffleWarps(bananaport_replacements, human_ports, selected_warps):
                 if len(pad_temp_list[warp_index]) > 0:
                     pad_list.append({"warp_index": warp_index, "warp_ids": pad_temp_list[warp_index].copy()})
             bananaport_replacements.append({"containing_map": warp_map, "pads": pad_list.copy()})
+    # After shuffling the warps, make sure the swap indexes are right for warp linking immediately after this method
+    # This probably is the least efficient way to do it but it works
+    for warp_id, warp in BananaportVanilla.items():
+        for paired_warp_id, paired_warp in BananaportVanilla.items():
+            # Find the paired warp - we know they're always in the same map here which saves some headache
+            if warp_id != paired_warp_id and warp.map_id == paired_warp.map_id and warp.new_warp == paired_warp.new_warp:
+                warp.tied_index = paired_warp.swap_index
+                break
 
 
 def getWarpFromSwapIndex(index):
@@ -140,4 +148,5 @@ def LinkWarps():
         destination_warp_data = getWarpFromSwapIndex(warp_data.tied_index)
         if warp_data.region_id != destination_warp_data.region_id:
             source_region = Logic.Regions[warp_data.region_id]
+            # The source region gets a transition to the destination region conditionally based on the destination warp being tagged
             source_region.exits.append(TransitionFront(destination_warp_data.region_id, destination_warp_data.event_logic))
