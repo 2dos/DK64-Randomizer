@@ -11,7 +11,7 @@ from randomizer.Patching.ApplyRandomizer import patching_response
 from randomizer.SettingStrings import decrypt_setting_string, encrypt_settings_string
 from randomizer.Worker import background
 from ui.bindings import bind
-from ui.plando_validation import populate_plando_options
+from ui.plando_validation import populate_plando_options, validate_plando_options
 from ui.progress_bar import ProgressBar
 from ui.rando_options import (
     disable_barrel_modal,
@@ -168,12 +168,7 @@ def serialize_settings():
     form_data = {}
 
     # Plandomizer data is processed separately.
-    plando_form_data, plando_err = populate_plando_options(form)
-    # If errors are returned, the plandomizer options are invalid.
-    # Do not attempt to generate a seed.
-    if len(plando_err) > 0:
-        return plando_form_data, plando_err
-
+    plando_form_data = populate_plando_options(form)
     if plando_form_data is not None:
         form_data["plandomizer"] = plando_form_data
 
@@ -220,7 +215,7 @@ def serialize_settings():
                 if element.options.item(i).selected:
                     values.append(element.options.item(i).value)
             form_data[element.getAttribute("name")] = values
-    return form_data, []
+    return form_data
 
 
 @bind("click", "generate_seed")
@@ -238,9 +233,12 @@ def generate_seed(event):
     else:
         # The data is serialized outside of the loop, because validation occurs
         # here and we might stop before attempting to generate a seed.
-        form_data, form_err = serialize_settings()
-        if len(form_err) > 0:
-            for err in form_err:
+        form_data = serialize_settings()
+        plando_errors = validate_plando_options(form_data)
+        # If errors are returned, the plandomizer options are invalid.
+        # Do not attempt to generate a seed.
+        if len(plando_errors) > 0:
+            for err in plando_errors:
                 print(err)
             return
 

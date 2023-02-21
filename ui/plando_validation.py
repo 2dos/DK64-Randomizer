@@ -176,14 +176,18 @@ def populate_plando_options(form):
         hints_map[location] = hint_value
     plando_form_data["hints"] = hints_map
 
-    return validate_plando_options(plando_form_data)
+    return plando_form_data
 
-def validate_plando_options(plando_dict):
+def validate_plando_options(settings_dict):
     """Validate the plando options against a set of rules.
     
     Args:
-        plando_dict (str) - The dictionary containing the plando data.
+        settings_dict (str) - The dictionary containing the full settings.
     """
+    if "plandomizer" not in settings_dict:
+        return []
+    
+    plando_dict = settings_dict["plandomizer"]
     errList = []
     # Count all of the items to ensure none have been over-placed.
     count_dict = {}
@@ -223,9 +227,55 @@ def validate_plando_options(plando_dict):
             errString = f"Shop costs must be between 0 and 255 coins, but shop \"{shopName}\" has a cost of {shopCost} coins."
             errList.append(errString)
     
-    # Ensure that the user starts with at least one Kong.
-    if len(plando_dict["plando_starting_kongs_selected"]) < 1:
-        errString = "At least one starting Kong, or Random Kong(s), must be selected."
+    # Ensure that the number of chosen Kongs matches the "number of starting
+    # Kongs" setting, or that "Random Kong(s)" has been chosen. If too many
+    # Kongs have been selected, that is always an error.
+    chosenKongs = plando_dict["plando_starting_kongs_selected"]
+    numStartingKongs = int(settings_dict["starting_kongs_count"])
+    if len(chosenKongs) > numStartingKongs:
+        errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(chosenKongs)} Kongs were selected as starting Kongs."
         errList.append(errString)
+    elif len(chosenKongs) < numStartingKongs and PlandoItems.Randomize not in plando_dict["plando_starting_kongs_selected"]:
+        errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(chosenKongs)} Kongs were selected as starting Kongs, and \"Random Kong(s)\" was not chosen."
+        errList.append(errString)
+    
+    # Ensure that no level was selected more than once in the level order.
+    levelOrderSet = set()
+    for i in range(1, 8):
+        level = plando_dict[f"plando_level_order_{i}"]
+        if level == PlandoItems.Randomize:
+            continue
+        if level in levelOrderSet:
+            errString = "The same level cannot be used twice in the level order."
+            errList.append(errString)
+            break
+        else:
+            levelOrderSet.add(level)
+    
+    # Ensure that no Kong was selected more than once in the K. Rool order.
+    kroolOrderSet = set()
+    for i in range(1, 6):
+        kong = plando_dict[f"plando_krool_order_{i}"]
+        if kong == PlandoItems.Randomize:
+            continue
+        if kong in kroolOrderSet:
+            errString = "The same Kong cannot be used twice in the K. Rool order."
+            errList.append(errString)
+            break
+        else:
+            kroolOrderSet.add(kong)
+    
+    # Ensure that no Kong was selected more than once in the Helm order.
+    helmOrderSet = set()
+    for i in range(1, 6):
+        kong = plando_dict[f"plando_helm_order_{i}"]
+        if kong == PlandoItems.Randomize:
+            continue
+        if kong in helmOrderSet:
+            errString = "The same Kong cannot be used twice in the Helm order."
+            errList.append(errString)
+            break
+        else:
+            helmOrderSet.add(kong)
 
-    return (plando_dict, errList)
+    return errList
