@@ -85,7 +85,8 @@ def GetNameFromPlandoItem(plandoItem):
     return ItemList[mappedItem].name
 
 # A master dictionary of all possible item locations, mapped to a set of which
-# items may not appear in that location.
+# items may not appear in that location. This will be used to filter all the
+# dropdowns used in the plandomizer.
 ItemRestrictionsPerLocation = {location.name:set() for location in LocationList.keys()}
 
 # Each blueprint item should only appear in locations specific to the Kong who

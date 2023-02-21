@@ -113,7 +113,7 @@ def populate_plando_options(form):
                     val = get_enum_or_string_value(element.options.item(i).value, element.getAttribute("name"))
                     values.append(val)
             plando_form_data[element.getAttribute("name")] = values
-    
+
     locations_map = {}
     # Process all of the inputs we previously sorted into lists.
     for item in item_objects:
@@ -128,7 +128,7 @@ def populate_plando_options(form):
     for blueprint in LogicRegions[Regions.Snide].locations:
         locations_map[blueprint.id] = PlandoItems.GoldenBanana
     plando_form_data["locations"] = locations_map
-    
+
     shops_map = {}
     for shop_item in shop_item_objects:
         # Extract the location name.
@@ -153,7 +153,7 @@ def populate_plando_options(form):
             # Update this shop item with the cost.
             shops_map[location]["cost"] = item_cost
     plando_form_data["shops"] = shops_map
-    
+
     minigames_map = {}
     for minigame in minigame_objects:
         # Extract the barrel location name.
@@ -164,7 +164,7 @@ def populate_plando_options(form):
             minigame_value = Minigames[minigame.value]
         minigames_map[location] = minigame_value
     plando_form_data["minigames"] = minigames_map
-    
+
     hints_map = {}
     for hint in hint_objects:
         # Extract the hint location.
@@ -180,13 +180,13 @@ def populate_plando_options(form):
 
 def validate_plando_options(settings_dict):
     """Validate the plando options against a set of rules.
-    
+
     Args:
         settings_dict (str) - The dictionary containing the full settings.
     """
     if "plandomizer" not in settings_dict:
         return []
-    
+
     plando_dict = settings_dict["plandomizer"]
     errList = []
     # Count all of the items to ensure none have been over-placed.
@@ -216,7 +216,7 @@ def validate_plando_options(settings_dict):
             if item == PlandoItems.GoldenBanana:
                 errString += " (40 Golden Bananas are always allocated to blueprint rewards.)"
             errList.append(errString)
-    
+
     # Ensure that shop costs are within allowed limits.
     for shopLocation, shop in plando_dict["shops"].items():
         shopCost = shop["cost"]
@@ -226,7 +226,7 @@ def validate_plando_options(settings_dict):
             shopName = LocationList[shopLocation].name
             errString = f"Shop costs must be between 0 and 255 coins, but shop \"{shopName}\" has a cost of {shopCost} coins."
             errList.append(errString)
-    
+
     # Ensure that the number of chosen Kongs matches the "number of starting
     # Kongs" setting, or that "Random Kong(s)" has been chosen. If too many
     # Kongs have been selected, that is always an error.
@@ -238,7 +238,7 @@ def validate_plando_options(settings_dict):
     elif len(chosenKongs) < numStartingKongs and PlandoItems.Randomize not in plando_dict["plando_starting_kongs_selected"]:
         errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(chosenKongs)} Kongs were selected as starting Kongs, and \"Random Kong(s)\" was not chosen."
         errList.append(errString)
-    
+
     # Ensure that no level was selected more than once in the level order.
     levelOrderSet = set()
     for i in range(1, 8):
@@ -251,7 +251,7 @@ def validate_plando_options(settings_dict):
             break
         else:
             levelOrderSet.add(level)
-    
+
     # Ensure that no Kong was selected more than once in the K. Rool order.
     kroolOrderSet = set()
     for i in range(1, 6):
@@ -264,7 +264,7 @@ def validate_plando_options(settings_dict):
             break
         else:
             kroolOrderSet.add(kong)
-    
+
     # Ensure that no Kong was selected more than once in the Helm order.
     helmOrderSet = set()
     for i in range(1, 6):
@@ -277,5 +277,19 @@ def validate_plando_options(settings_dict):
             break
         else:
             helmOrderSet.add(kong)
+
+    # Ensure that hints are below the length limit.
+    for hintLocation, hint in plando_dict["hints"].items():
+        if hint == PlandoItems.Randomize:
+            continue
+        hintLocationName = LocationList[hintLocation].name
+        if len(hint) > 900:
+            errString = f"The hint for location \"{hintLocationName}\" is longer than the limit of 900 characters."
+            errList.append(errString)
+        if re.search("[^A-Za-z0-9 ,.-?!]", hint) is not None:
+            errString = f"The hint for location \"{hintLocationName}\" contains invalid characters. Only letters, numbers, spaces, and the characters ,.-?! are valid."
+            if "'" in hint:
+                errString += " (Apostrophes are not allowed.)"
+            errList.append(errString)
 
     return errList
