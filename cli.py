@@ -71,8 +71,13 @@ def main():
             if type(v) is list:
                 values = []
                 for val in v:
-                    values.append(SettingsMap[k][val])
+                    if type(v) is int:
+                        values.append(SettingsMap[k](val))
+                    else:
+                        values.append(SettingsMap[k][val])
                 setting_data[k] = values
+            elif type(v) is int:
+                setting_data[k] = SettingsMap[k](v)
             else:
                 setting_data[k] = SettingsMap[k][v]
     try:
