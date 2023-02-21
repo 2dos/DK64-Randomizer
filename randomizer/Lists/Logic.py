@@ -12,6 +12,8 @@ class GlitchLogicItem:
 
 
 GlitchSelector = []
+# If you make changes to this list, make sure to change the corresponding
+# GlitchesSelected enum in randomizer.Enums.Settings.
 GlitchLogicItems = [
     GlitchLogicItem("Advanced Platforming", "Platforming techniques that don't require any glitches but might be too tough for some players."),
     GlitchLogicItem("B Locker Skips", "Any skip that allows you to bypass the B. Locker's requirements."),

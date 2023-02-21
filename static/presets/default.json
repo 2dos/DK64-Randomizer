@@ -81,7 +81,7 @@
     "maximize_helm_blocker": true,
     "medal_cb_req": 75,
     "medal_requirement": 15,
-    "microhints_enabled": "on",
+    "microhints_enabled": "all",
     "minigames_list_selected": [],
     "misc_changes_selected": [],
     "move_rando": "on",
