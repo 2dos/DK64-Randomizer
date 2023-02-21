@@ -4,7 +4,6 @@ import random
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Items import Items
 from randomizer.Lists.Location import LocationList
-from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Kongs import Kongs
@@ -144,7 +143,7 @@ def ShuffleItems(spoiler: Spoiler):
             price = 0
             if item_location.type == Types.Shop:
                 # Vanilla prices are based on item, not location
-                if spoiler.settings.random_prices == RandomPrices.vanilla:
+                if spoiler.settings.random_prices == "vanilla":
                     # If it's not in the prices dictionary, the item is free
                     if item_location.item in spoiler.settings.prices.keys():
                         price = spoiler.settings.prices[item_location.item]

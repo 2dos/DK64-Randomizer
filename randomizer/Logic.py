@@ -10,7 +10,6 @@ import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions as RegionEnum
-from randomizer.Enums.Settings import ActivateAllBananaports, GlitchesSelected, HelmDoorItem, LogicType, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Warps import BananaportVanilla
@@ -38,9 +37,9 @@ from randomizer.Prices import CanBuy, GetPriceAtLocation
 STARTING_SLAM = 1  # Currently we're assuming you always start with 1 slam
 
 
-def IsGlitchEnabled(settings, glitch_enum):
+def IsGlitchEnabled(settings, encoded_name):
     """Check if glitch is enabled in the settings."""
-    return len(settings.glitches_selected) == 0 or glitch_enum in settings.glitches_selected
+    return len(settings.glitches_selected) == 0 or encoded_name in settings.glitches_selected
 
 
 class LogicVarHolder:
@@ -64,21 +63,21 @@ class LogicVarHolder:
 
         self.startkong = self.settings.starting_kong
         # Glitch Logic
-        enable_glitch_logic = self.settings.logic_type == LogicType.glitch
-        self.phasewalk = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.phase_walking)
-        self.phaseswim = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.phase_swimming)
-        self.moonkicks = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.moonkicks)
-        self.ledgeclip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.ledge_clips)
-        self.generalclips = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.general_clips)  # General clips which have no real category
-        self.lanky_blocker_skip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.b_locker_skips)  # Also includes ppunch skip
-        self.dk_blocker_skip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.b_locker_skips)
-        self.troff_skip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.troff_n_scoff_skips)
-        self.spawn_snags = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.spawn_snags)
-        self.advanced_platforming = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.advanced_platforming)
-        self.tbs = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.tag_barrel_storage) and not self.settings.disable_tag_barrels
-        self.swim_through_shores = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.swim_through_shores)
-        self.boulder_clip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.boulder_clips) and False  # Temporarily disabled
-        self.skew = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.skew)
+        enable_glitch_logic = self.settings.logic_type == "glitch"
+        self.phasewalk = enable_glitch_logic and IsGlitchEnabled(settings, "phase_walking")
+        self.phaseswim = enable_glitch_logic and IsGlitchEnabled(settings, "phase_swimming")
+        self.moonkick = enable_glitch_logic and IsGlitchEnabled(settings, "moonkick")
+        self.ledgeclip = enable_glitch_logic and IsGlitchEnabled(settings, "ledge_clips")
+        self.generalclips = enable_glitch_logic and IsGlitchEnabled(settings, "general_clips")  # General clips which have no real category
+        self.lanky_blocker_skip = enable_glitch_logic and IsGlitchEnabled(settings, "b_locker_skips")  # Also includes ppunch skip
+        self.dk_blocker_skip = enable_glitch_logic and IsGlitchEnabled(settings, "b_locker_skips")
+        self.troff_skip = enable_glitch_logic and IsGlitchEnabled(settings, "troff_n_scoff_skips")
+        self.spawn_snags = enable_glitch_logic and IsGlitchEnabled(settings, "spawn_snags")
+        self.advanced_platforming = enable_glitch_logic and IsGlitchEnabled(settings, "advanced_platforming")
+        self.tbs = enable_glitch_logic and IsGlitchEnabled(settings, "tag_barrel_storage") and not self.settings.disable_tag_barrels
+        self.swim_through_shores = enable_glitch_logic and IsGlitchEnabled(settings, "swim_through_shores")
+        self.boulder_clip = enable_glitch_logic and IsGlitchEnabled(settings, "boulder_clips") and False  # Temporarily disabled
+        self.skew = enable_glitch_logic and IsGlitchEnabled(settings, "skew")
         # Reset
         self.Reset()
 
@@ -98,10 +97,10 @@ class LogicVarHolder:
         self.chunky = Kongs.chunky in self.settings.starting_kong_list
 
         # Right now assuming start with training barrels
-        self.vines = self.settings.training_barrels == TrainingBarrels.normal
-        self.swim = self.settings.training_barrels == TrainingBarrels.normal
-        self.oranges = self.settings.training_barrels == TrainingBarrels.normal
-        self.barrels = self.settings.training_barrels == TrainingBarrels.normal
+        self.vines = self.settings.training_barrels == "normal"
+        self.swim = self.settings.training_barrels == "normal"
+        self.oranges = self.settings.training_barrels == "normal"
+        self.barrels = self.settings.training_barrels == "normal"
 
         self.progDonkey = 3 if self.settings.unlock_all_moves else 0
         self.blast = self.settings.unlock_all_moves
@@ -143,8 +142,8 @@ class LogicVarHolder:
         self.nintendoCoin = False
         self.rarewareCoin = False
 
-        self.camera = self.settings.shockwave_status == ShockwaveStatus.start_with
-        self.shockwave = self.settings.shockwave_status == ShockwaveStatus.start_with
+        self.camera = self.settings.shockwave_status == "start_with"
+        self.shockwave = self.settings.shockwave_status == "start_with"
 
         self.scope = self.settings.unlock_all_moves
         self.homing = self.settings.unlock_all_moves
@@ -205,7 +204,7 @@ class LogicVarHolder:
                 self.Events.append(keyEvent)
 
         activated_warp_maps = []
-        if self.settings.activate_all_bananaports == ActivateAllBananaports.all:
+        if self.settings.activate_all_bananaports == "all":
             activated_warp_maps = [
                 Maps.JungleJapes,
                 Maps.AngryAztec,
@@ -218,7 +217,7 @@ class LogicVarHolder:
                 Maps.CastleCrypt,
                 Maps.Isles,
             ]
-        elif self.settings.activate_all_bananaports == ActivateAllBananaports.isles:
+        elif self.settings.activate_all_bananaports == "isles":
             activated_warp_maps = [Maps.Isles]
         if any(activated_warp_maps):
             for warp_data in BananaportVanilla.values():
@@ -408,7 +407,7 @@ class LogicVarHolder:
 
     def CanMoonkick(self):
         """Determine whether the player can perform a moonkick."""
-        return self.moonkicks and self.isdonkey and self.settings.krusha_kong != Kongs.donkey
+        return self.moonkick and self.isdonkey and self.settings.krusha_kong != Kongs.donkey
 
     def CanOStandTBSNoclip(self):
         """Determine whether the player can perform Orangstand TBS Noclip."""
@@ -524,16 +523,16 @@ class LogicVarHolder:
     def DoorItemCheck(self, item, count):
         """Check if item requirement has been fulfilled with regards to a Helm door item."""
         helmdoor_vars = {
-            HelmDoorItem.req_gb: self.GoldenBananas,
-            HelmDoorItem.req_bp: len(self.Blueprints),
-            HelmDoorItem.req_companycoins: sum([self.nintendoCoin, self.rarewareCoin]),
-            HelmDoorItem.req_key: sum([self.JapesKey, self.AztecKey, self.FactoryKey, self.GalleonKey, self.ForestKey, self.CavesKey, self.CastleKey, self.HelmKey]),
-            HelmDoorItem.req_medal: self.BananaMedals,
-            HelmDoorItem.req_crown: self.BattleCrowns,
-            HelmDoorItem.req_fairy: self.BananaFairies,
-            # HelmDoorItem.req_rainbowcoin: self.BattleCrowns,
-            HelmDoorItem.req_bean: self.Beans,
-            HelmDoorItem.req_pearl: self.Pearls,
+            "req_gb": self.GoldenBananas,
+            "req_bp": len(self.Blueprints),
+            "req_companycoins": sum([self.nintendoCoin, self.rarewareCoin]),
+            "req_key": sum([self.JapesKey, self.AztecKey, self.FactoryKey, self.GalleonKey, self.ForestKey, self.CavesKey, self.CastleKey, self.HelmKey]),
+            "req_medal": self.BananaMedals,
+            "req_crown": self.BattleCrowns,
+            "req_fairy": self.BananaFairies,
+            # "req_rainbowcoin": self.BattleCrowns,
+            "req_bean": self.Beans,
+            "req_pearl": self.Pearls,
         }
         if item in helmdoor_vars.keys():
             return helmdoor_vars[item] >= count
@@ -541,17 +540,17 @@ class LogicVarHolder:
 
     def CrownDoorOpened(self):
         """Check if Crown Door is opened."""
-        if self.settings.crown_door_item == HelmDoorItem.opened:
+        if self.settings.crown_door_item == "opened":
             return True
-        elif self.settings.crown_door_item == HelmDoorItem.vanilla:
+        elif self.settings.crown_door_item == "vanilla":
             return self.BattleCrowns >= 4
         return self.DoorItemCheck(self.settings.crown_door_item, self.settings.crown_door_item_count)
 
     def CoinDoorOpened(self):
         """Check if Coin Door is opened."""
-        if self.settings.coin_door_item == HelmDoorItem.opened:
+        if self.settings.coin_door_item == "opened":
             return True
-        elif self.settings.coin_door_item == HelmDoorItem.vanilla:
+        elif self.settings.coin_door_item == "vanilla":
             return self.nintendoCoin and self.rarewareCoin
         return self.DoorItemCheck(self.settings.coin_door_item, self.settings.coin_door_item_count)
 
@@ -763,7 +762,7 @@ class LogicVarHolder:
         """Check if level entry requirement is met."""
         # "pathMode" is so WotH paths can always enter levels regardless of owned items
         if not self.assumeFillSuccess:
-            level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (ShuffleLoadingZones.none, ShuffleLoadingZones.levels)
+            level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in ("none", "levels")
             # If level order matters...
             if level_order_matters:
                 # Levels have some special requirements depending on where they fall in the level order
@@ -801,19 +800,17 @@ class LogicVarHolder:
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
-        if (
-            self.settings.win_condition == WinCondition.beat_krool or self.settings.win_condition == WinCondition.poke_snap
-        ):  # Photo taking doesn't have a clear wincon so this'll do until something better is concocted
+        if self.settings.win_condition == "beat_krool" or self.settings.win_condition == "poke_snap":  # Photo taking doesn't have a clear wincon so this'll do until something better is concocted
             return Events.KRoolDefeated in self.Events
-        elif self.settings.win_condition == WinCondition.get_key8:
+        elif self.settings.win_condition == "get_key8":
             return self.HelmKey
-        elif self.settings.win_condition == WinCondition.all_fairies:
+        elif self.settings.win_condition == "all_fairies":
             return self.BananaFairies >= 20
-        elif self.settings.win_condition == WinCondition.all_blueprints:
+        elif self.settings.win_condition == "all_blueprints":
             return len(self.Blueprints) >= 40
-        elif self.settings.win_condition == WinCondition.all_medals:
+        elif self.settings.win_condition == "all_medals":
             return self.BananaMedals >= 40
-        elif self.settings.win_condition == WinCondition.all_keys:
+        elif self.settings.win_condition == "all_keys":
             return (
                 Events.JapesKeyTurnedIn in self.Events
                 and Events.AztecKeyTurnedIn in self.Events
