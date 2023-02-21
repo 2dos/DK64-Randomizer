@@ -90,7 +90,8 @@ ItemRestrictionsPerLocation = {location.name:set() for location in LocationList.
 
 # Each blueprint item should only appear in locations specific to the Kong who
 # can pick up that blueprint. Any "All Kongs" locations may not have any
-# blueprints assigned to them.
+# blueprints assigned to them. Additionally, any location only accessible by
+# one Kong may not have that Kong placed in that location.
 blueprintItemSet = {
     PlandoItems.DonkeyBlueprint.name,
     PlandoItems.DiddyBlueprint.name,
@@ -100,26 +101,31 @@ blueprintItemSet = {
 }
 for locEnum, locObj in LocationList.items():
     if locObj.kong == Kongs.donkey:
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.Donkey.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DiddyBlueprint.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.LankyBlueprint.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.TinyBlueprint.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.ChunkyBlueprint.name)
     elif locObj.kong == Kongs.diddy:
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.Diddy.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DonkeyBlueprint.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.LankyBlueprint.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.TinyBlueprint.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.ChunkyBlueprint.name)
     elif locObj.kong == Kongs.lanky:
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.Lanky.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DonkeyBlueprint.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DiddyBlueprint.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.TinyBlueprint.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.ChunkyBlueprint.name)
     elif locObj.kong == Kongs.tiny:
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.Tiny.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DonkeyBlueprint.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DiddyBlueprint.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.LankyBlueprint.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.ChunkyBlueprint.name)
     elif locObj.kong == Kongs.chunky:
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.Chunky.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DonkeyBlueprint.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DiddyBlueprint.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.LankyBlueprint.name)
@@ -416,7 +422,7 @@ for locationName in badFakeItemLocationList:
 for locationName in trainingBarrelLocationList:
     ItemRestrictionsPerLocation[locationName].add(PlandoItems.FakeItem.name)
 
-# Rainbow coins cannot be placed on training barrels or on the banana fairy's gift.
+# Rainbow coins cannot be placed on training barrels or on the Banana Fairy's gift.
 for locationName in trainingBarrelLocationList:
     ItemRestrictionsPerLocation[locationName].add(PlandoItems.RainbowCoin.name)
 ItemRestrictionsPerLocation[Locations.CameraAndShockwave.name].add(PlandoItems.RainbowCoin.name)
