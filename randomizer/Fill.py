@@ -18,21 +18,6 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.SearchMode import SearchMode
-from randomizer.Enums.Settings import (
-    ActivateAllBananaports,
-    BananaportRando,
-    FillAlgorithm,
-    HelmDoorItem,
-    LogicType,
-    MinigameBarrels,
-    MoveRando,
-    RandomPrices,
-    ShockwaveStatus,
-    ShuffleLoadingZones,
-    TrainingBarrels,
-    WinCondition,
-    WrinklyHints,
-)
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
@@ -68,7 +53,7 @@ def GetExitLevelExit(region):
     if region.restart is not None:
         return None
     # For now, restarts will not be randomized
-    # if settings.shuffle_loading_zones == ShuffleLoadingZones.all and region.restart is not None:
+    # if settings.shuffle_loading_zones == "all" and region.restart is not None:
     #     return ShuffleExits.ShufflableExits[region.restart].shuffledId
     if level == Levels.JungleJapes:
         return ShuffleExits.ShufflableExits[Transitions.JapesToIsles].shuffledId
@@ -89,7 +74,7 @@ def GetExitLevelExit(region):
 def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.GetReachable, purchaseList=None, targetItemId=None):
     """Search to find all reachable locations given owned items."""
     # No logic? Calls to this method that are checking things just return True
-    if settings.logic_type == LogicType.nologic and searchType in [SearchMode.CheckAllReachable, SearchMode.CheckBeatable, SearchMode.CheckSpecificItemReachable]:
+    if settings.logic_type == "nologic" and searchType in [SearchMode.CheckAllReachable, SearchMode.CheckBeatable, SearchMode.CheckSpecificItemReachable]:
         return True
     if purchaseList is None:
         purchaseList = []
@@ -189,8 +174,8 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                         location_obj = LocationList[location.id]
                         # If this location is a bonus barrel, must make sure its logic is met as well
                         if (
-                            (location.bonusBarrel is MinigameType.BonusBarrel and settings.bonus_barrels != MinigameBarrels.skip)
-                            or (location.bonusBarrel is MinigameType.HelmBarrel and settings.helm_barrels != MinigameBarrels.skip)
+                            (location.bonusBarrel is MinigameType.BonusBarrel and settings.bonus_barrels != "skip")
+                            or (location.bonusBarrel is MinigameType.HelmBarrel and settings.helm_barrels != "skip")
                         ) and (not MinigameRequirements[BarrelMetaData[location.id].minigame].logic(LogicVariables)):
                             continue
                         # If this location is a hint door, then make sure we're the right Kong
@@ -302,7 +287,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
 
 def VerifyWorld(settings):
     """Make sure all item locations are reachable on current world graph with constant items placed and all other items owned."""
-    if settings.logic_type == LogicType.nologic:
+    if settings.logic_type == "nologic":
         return True  # Don't verify world in no logic
     ItemPool.PlaceConstants(settings)
     unreachables = GetAccessibleLocations(settings, ItemPool.AllItems(settings), SearchMode.GetUnreachable)
@@ -322,7 +307,7 @@ def VerifyWorld(settings):
 
 def VerifyWorldWithWorstCoinUsage(settings):
     """Make sure the game is beatable without it being possible to run out of coins for required moves."""
-    if settings.logic_type == LogicType.nologic:
+    if settings.logic_type == "nologic":
         return True  # Don't verify world in no logic
     locationsToPurchase = []
     reachable = []
@@ -446,15 +431,15 @@ def ParePlaythrough(settings, PlaythroughLocations):
                 continue
             # Items that are part of the win condition are always part of the Playthrough but are never part of it otherwise
             if location.item == Items.BananaFairy:
-                if settings.win_condition != WinCondition.all_fairies:
+                if settings.win_condition != "all_fairies":
                     sphere.locations.remove(locationId)
                 continue
             if location.item == Items.BananaMedal:
-                if settings.win_condition != WinCondition.all_medals:
+                if settings.win_condition != "all_medals":
                     sphere.locations.remove(locationId)
                 continue
             if location.item is not None and ItemList[location.item].type == Types.Blueprint:
-                if settings.win_condition != WinCondition.all_blueprints:
+                if settings.win_condition != "all_blueprints":
                     sphere.locations.remove(locationId)
                 continue
             # Copy out item from location
@@ -538,7 +523,7 @@ def CalculateWothPaths(spoiler, WothLocations):
     LogicVariables.assumeInfiniteGBs = True  # This means we don't have to worry about moves required to get GBs to enter B. Lockers - we already know we can clear all B. Lockers
     LogicVariables.assumeInfiniteCoins = True  # This means we don't have to worry about moves required to get coins - we already know there is no breaking purchase order
     LogicVariables.assumeKRoolAccess = True  # This makes the K. Rool path better if we need it
-    if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:
+    if spoiler.settings.shuffle_loading_zones != "all":
         # These assumptions are only good in level order because entrances can matter more in LZR
         LogicVariables.assumeAztecEntry = True
         LogicVariables.assumeLevel4Entry = True
@@ -625,12 +610,12 @@ def CalculateFoolish(spoiler, WothLocations):
     # foolishItems = []
     # # Determine which of our major items we need to check
     # majorItems = ItemPool.AllKongMoves()
-    # if spoiler.settings.training_barrels != TrainingBarrels.normal:
+    # if spoiler.settings.training_barrels != "normal":
     #     # I don't trust oranges quite yet - you can put an item in Diddy's upper cabin and it might think oranges is foolish still
     #     majorItems.extend([Items.Vines, Items.Swim, Items.Barrels, Items.Oranges])
-    # if spoiler.settings.shockwave_status != ShockwaveStatus.shuffled_decoupled:
+    # if spoiler.settings.shockwave_status != "shuffled_decoupled":
     #     majorItems.append(Items.CameraAndShockwave)
-    # if spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
+    # if spoiler.settings.shockwave_status == "shuffled_decoupled":
     #     majorItems.append(Items.Camera)
     #     if spoiler.settings.shuffle_items and Types.RainbowCoin in spoiler.settings.shuffled_location_types:
     #         majorItems.append(Items.Shockwave)  # Shockwave foolish is virtually useless to hint as foolish unless rainbow coins are in the pool
@@ -662,31 +647,31 @@ def CalculateFoolish(spoiler, WothLocations):
         majorItems.append(Items.Bean)
     if Types.Pearl in spoiler.settings.shuffled_location_types:
         majorItems.append(Items.Pearl)
-    if spoiler.settings.training_barrels != TrainingBarrels.normal:
+    if spoiler.settings.training_barrels != "normal":
         majorItems.extend(ItemPool.TrainingBarrelAbilities())
-    if spoiler.settings.shockwave_status != ShockwaveStatus.shuffled_decoupled:
+    if spoiler.settings.shockwave_status != "shuffled_decoupled":
         majorItems.append(Items.CameraAndShockwave)
-    if spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
+    if spoiler.settings.shockwave_status == "shuffled_decoupled":
         majorItems.append(Items.Shockwave)
         majorItems.append(Items.Camera)
     majorItems.extend(ItemPool.Keys())
     majorItems.extend(ItemPool.Kongs(spoiler.settings))
-    requires_rareware = spoiler.settings.coin_door_item == HelmDoorItem.vanilla
-    requires_nintendo = spoiler.settings.coin_door_item == HelmDoorItem.vanilla
-    requires_crowns = spoiler.settings.crown_door_item in (HelmDoorItem.vanilla, HelmDoorItem.req_crown) or spoiler.settings.coin_door_item == HelmDoorItem.req_crown
+    requires_rareware = spoiler.settings.coin_door_item == "vanilla"
+    requires_nintendo = spoiler.settings.coin_door_item == "vanilla"
+    requires_crowns = spoiler.settings.crown_door_item in ("vanilla", "req_crown") or spoiler.settings.coin_door_item == "req_crown"
     for x in (spoiler.settings.crown_door_item, spoiler.settings.coin_door_item):
-        if x == HelmDoorItem.req_companycoins:
+        if x == "req_companycoins":
             requires_rareware = True
             requires_nintendo = True
     if Types.Coin in spoiler.settings.shuffled_location_types and requires_rareware:
         majorItems.append(Items.RarewareCoin)
     if Types.Coin in spoiler.settings.shuffled_location_types and requires_nintendo:
         majorItems.append(Items.NintendoCoin)
-    if Types.Blueprint in spoiler.settings.shuffled_location_types and spoiler.settings.win_condition == WinCondition.all_blueprints:
+    if Types.Blueprint in spoiler.settings.shuffled_location_types and spoiler.settings.win_condition == "all_blueprints":
         majorItems.extend(ItemPool.Blueprints())
-    if Types.Medal in spoiler.settings.shuffled_location_types and spoiler.settings.win_condition == WinCondition.all_medals:
+    if Types.Medal in spoiler.settings.shuffled_location_types and spoiler.settings.win_condition == "all_medals":
         majorItems.append(Items.BananaMedal)
-    if Types.Fairy in spoiler.settings.shuffled_location_types and spoiler.settings.win_condition == WinCondition.all_fairies:
+    if Types.Fairy in spoiler.settings.shuffled_location_types and spoiler.settings.win_condition == "all_fairies":
         majorItems.append(Items.BananaFairy)
     if Types.Crown in spoiler.settings.shuffled_location_types and requires_crowns:
         majorItems.append(Items.BattleCrown)
@@ -886,7 +871,7 @@ def GetMaxCoinsSpent(settings, purchasedShops):
         elif location.item == Items.ProgressiveInstrumentUpgrade:
             movePrice = settings.prices[location.item][instUpgrades]
             instUpgrades += 1
-        elif settings.random_prices == RandomPrices.vanilla:
+        elif settings.random_prices == "vanilla":
             movePrice = settings.prices[location.item]
         else:
             movePrice = settings.prices[location_id]
@@ -920,14 +905,14 @@ def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=
     #     Either [Items.Guitar, Items.Coconut] OR [Items.Guitar, Items.Feather]
     moveList = [move for move in ItemPool.AllMovesForOwnedKongs(ownedKongs)]
     # Sometimes a move requires camera or shockwave as a prerequisite
-    if spoiler.settings.shockwave_status != ShockwaveStatus.vanilla:
-        if spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
+    if spoiler.settings.shockwave_status != "vanilla":
+        if spoiler.settings.shockwave_status == "shuffled_decoupled":
             moveList.append(Items.Camera)
             moveList.append(Items.Shockwave)
         else:
             moveList.append(Items.CameraAndShockwave)
     # Often moves require training barrels as prerequisites
-    if spoiler.settings.training_barrels != TrainingBarrels.normal:
+    if spoiler.settings.training_barrels != "normal":
         moveList.extend(ItemPool.TrainingBarrelAbilities())
     # We only want *unplaced* prerequisites, cull all placed moves from the move list
     for move in placedMoves:
@@ -978,13 +963,13 @@ def PlaceItems(settings, algorithm, itemsToPlace, ownedItems=None, inOrder=False
     if ownedItems is None:
         ownedItems = []
     # Always use random fill with no logic
-    if settings.logic_type == LogicType.nologic:
-        algorithm = FillAlgorithm.random
-    if algorithm == FillAlgorithm.assumed:
+    if settings.logic_type == "nologic":
+        algorithm = "random"
+    if algorithm == "assumed":
         return AssumedFill(settings, itemsToPlace, ownedItems, inOrder)
-    elif algorithm == FillAlgorithm.forward:
+    elif algorithm == "forward":
         return ForwardFill(settings, itemsToPlace, ownedItems, inOrder)
-    elif algorithm == FillAlgorithm.random:
+    elif algorithm == "random":
         return RandomFill(settings, itemsToPlace, inOrder)
 
 
@@ -997,11 +982,11 @@ def FillShuffledKeys(spoiler, placed_types):
     # - No logic (totally random)
     # - Loading Zone randomizer (key unlocks are typically of lesser importance)
     # - Complex level progression (key order is non-linear)
-    if spoiler.settings.logic_type == LogicType.nologic or spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all or spoiler.settings.hard_level_progression:
+    if spoiler.settings.logic_type == "nologic" or spoiler.settings.shuffle_loading_zones == "all" or spoiler.settings.hard_level_progression:
         # Assumed fills tend to place multiple keys at once better
-        keyAlgorithm = FillAlgorithm.assumed
-        if spoiler.settings.logic_type == LogicType.nologic:  # Obviously no logic gets random fills
-            keyAlgorithm = FillAlgorithm.random
+        keyAlgorithm = "assumed"
+        if spoiler.settings.logic_type == "nologic":  # Obviously no logic gets random fills
+            keyAlgorithm = "random"
         # Place all the keys
         keysUnplaced = PlaceItems(spoiler.settings, keyAlgorithm, keysToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types))
         if keysUnplaced > 0:
@@ -1067,7 +1052,7 @@ def Fill(spoiler):
         placed_types.append(Types.Blueprint)
         Reset()
         # Blueprints can be placed randomly - there's no location that can cause blueprints to lock themselves
-        blueprintsUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, ItemPool.Blueprints().copy(), ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types))
+        blueprintsUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.Blueprints().copy(), ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types))
         if blueprintsUnplaced > 0:
             raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
     # Then place keys
@@ -1086,8 +1071,8 @@ def Fill(spoiler):
         placed_types.append(Types.Crown)
         Reset()
         # Crowns can be placed randomly, but only if the helm doors don't need any
-        algo = FillAlgorithm.random
-        if spoiler.settings.coin_door_item == HelmDoorItem.req_crown or spoiler.settings.crown_door_item in (HelmDoorItem.vanilla, HelmDoorItem.req_crown):
+        algo = "random"
+        if spoiler.settings.coin_door_item == "req_crown" or spoiler.settings.crown_door_item in ("vanilla", "req_crown"):
             algo = spoiler.settings.algorithm
         crownsUnplaced = PlaceItems(spoiler.settings, algo, ItemPool.BattleCrownItems(), ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types))
         if crownsUnplaced > 0:
@@ -1102,7 +1087,7 @@ def Fill(spoiler):
         jetpacRequiredMedals = medalsToBePlaced[: spoiler.settings.medal_requirement]
         medalsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, jetpacRequiredMedals, medalAssumedItems)
         # The remaining medals can be placed randomly
-        medalsUnplaced += PlaceItems(spoiler.settings, FillAlgorithm.random, medalsToBePlaced[spoiler.settings.medal_requirement :], medalAssumedItems)
+        medalsUnplaced += PlaceItems(spoiler.settings, "random", medalsToBePlaced[spoiler.settings.medal_requirement :], medalAssumedItems)
         if medalsUnplaced > 0:
             raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced medals.")
     # Then place Fairies
@@ -1115,7 +1100,7 @@ def Fill(spoiler):
         rarewareRequiredFairies = fairiesToBePlaced[: spoiler.settings.rareware_gb_fairies]
         fairyUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, rarewareRequiredFairies, fairyAssumedItems)
         # The remaining fairies can be placed randomly
-        fairyUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, fairiesToBePlaced[spoiler.settings.rareware_gb_fairies :], fairyAssumedItems)
+        fairyUnplaced = PlaceItems(spoiler.settings, "random", fairiesToBePlaced[spoiler.settings.rareware_gb_fairies :], fairyAssumedItems)
         if fairyUnplaced > 0:
             raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced Fairies.")
     # Then place misc progression items
@@ -1130,26 +1115,26 @@ def Fill(spoiler):
     if Types.Banana in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Banana)
         Reset()
-        gbsUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, ItemPool.GoldenBananaItems(), [])
+        gbsUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.GoldenBananaItems(), [])
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced GBs.")
     if Types.ToughBanana in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.ToughBanana)
         Reset()
-        gbsUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, ItemPool.ToughGoldenBananaItems(), [])
+        gbsUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.ToughGoldenBananaItems(), [])
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced tough GBs.")
     # Fill in fake items
     if Types.FakeItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.FakeItem)
         Reset()
-        fakeUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, ItemPool.FakeItems(), [])
+        fakeUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.FakeItems(), [])
         # Don't raise exception if unplaced fake items
     # Fill in junk items
     if Types.JunkItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.JunkItem)
         Reset()
-        junkUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, ItemPool.JunkItems(), [])
+        junkUnplaced = PlaceItems(spoiler.settings, "random", ItemPool.JunkItems(), [])
         # Don't raise exception if unplaced junk items
 
     # Some locations require special care to make logic work correctly
@@ -1184,24 +1169,24 @@ def ShuffleSharedMoves(spoiler, placedMoves):
 
     # When a shared move is assigned to a shop in any particular level, that shop cannot also hold any kong-specific moves.
     # To avoid conflicts, first determine which level shops will have shared moves then remove these shops from each kong's valid locations list
-    if spoiler.settings.training_barrels != TrainingBarrels.normal and Items.Oranges not in placedMoves:
+    if spoiler.settings.training_barrels != "normal" and Items.Oranges not in placedMoves:
         # First place training moves that are not placed. By this point, only Oranges need to be placed here as the others are important to place even earlier than this
-        trainingMovesUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.assumed, [Items.Oranges], [x for x in ItemPool.AllItems(spoiler.settings) if x != Items.Oranges and x not in placedMoves])
+        trainingMovesUnplaced = PlaceItems(spoiler.settings, "assumed", [Items.Oranges], [x for x in ItemPool.AllItems(spoiler.settings) if x != Items.Oranges and x not in placedMoves])
         if trainingMovesUnplaced > 0:
             raise Ex.ItemPlacementException("Failed to place Orange training barrel move.")
         placedMoves.append(Items.Oranges)
     importantSharedToPlace = ItemPool.ImportantSharedMoves.copy()
     # Next place any fairy moves that need placing, settings dependent
-    if spoiler.settings.shockwave_status == ShockwaveStatus.shuffled and Items.CameraAndShockwave not in placedMoves:
+    if spoiler.settings.shockwave_status == "shuffled" and Items.CameraAndShockwave not in placedMoves:
         importantSharedToPlace.append(Items.CameraAndShockwave)
-    elif spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled and (Items.Camera not in placedMoves or Items.Shockwave not in placedMoves):
+    elif spoiler.settings.shockwave_status == "shuffled_decoupled" and (Items.Camera not in placedMoves or Items.Shockwave not in placedMoves):
         importantSharedToPlace.append(Items.Camera)
         importantSharedToPlace.append(Items.Shockwave)
     for item in placedMoves:
         if item in importantSharedToPlace:
             importantSharedToPlace.remove(item)
     importantSharedUnplaced = PlaceItems(
-        spoiler.settings, FillAlgorithm.assumed, importantSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in importantSharedToPlace and x not in placedMoves]
+        spoiler.settings, "assumed", importantSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in importantSharedToPlace and x not in placedMoves]
     )
     if importantSharedUnplaced > 0:
         raise Ex.ItemPlacementException(str(importantSharedUnplaced) + " unplaced shared important items.")
@@ -1209,7 +1194,7 @@ def ShuffleSharedMoves(spoiler, placedMoves):
     for item in placedMoves:
         if item in junkSharedToPlace:
             junkSharedToPlace.remove(item)
-    junkSharedUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, junkSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in junkSharedToPlace])
+    junkSharedUnplaced = PlaceItems(spoiler.settings, "random", junkSharedToPlace, [x for x in ItemPool.AllItems(spoiler.settings) if x not in junkSharedToPlace])
     if junkSharedUnplaced > 0:
         raise Ex.ItemPlacementException(str(junkSharedUnplaced) + " unplaced shared junk items.")
 
@@ -1233,7 +1218,7 @@ def FillKongsAndMovesGeneric(spoiler):
             if retries % 5 == 0:
                 js.postMessage("Retrying fill really hard. Tries: " + str(retries))
                 # Handle Loading Zones - does not work right now but is something I want here eventually
-                # if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
+                # if spoiler.settings.shuffle_loading_zones != "none":
                 #     ShuffleExits.Reset()
                 #     ShuffleExits.ExitShuffle(spoiler.settings)
                 #     spoiler.UpdateExits()
@@ -1276,7 +1261,7 @@ def GetLogicallyAccessibleKongLocations(spoiler, kongLocations, ownedKongs, late
             spoiler.settings.level_order[level] == Levels.AngryAztec
             and Locations.LankyKong in kongLocations
             # Must be able to bypass Guitar door - the active bananaports condition is in case your only Llama Temple access is through the quicksand cave
-            and (Kongs.diddy in ownedKongs or spoiler.settings.open_levels or (Kongs.donkey in ownedKongs and spoiler.settings.activate_all_bananaports == ActivateAllBananaports.all))
+            and (Kongs.diddy in ownedKongs or spoiler.settings.open_levels or (Kongs.donkey in ownedKongs and spoiler.settings.activate_all_bananaports == "all"))
             and (Kongs.donkey in ownedKongs or Kongs.lanky in ownedKongs or Kongs.tiny in ownedKongs)
         ):  # Must be able to open Llama Temple
             logicallyAccessibleKongLocations.append(Locations.LankyKong)
@@ -1308,7 +1293,7 @@ def PlacePriorityItems(spoiler, itemsToPlace, beforePlacedItems, levelBlock=None
         if item in allOtherItems:
             allOtherItems.remove(item)
     # At last, place all the items
-    failedToPlace = PlaceItems(spoiler.settings, FillAlgorithm.assumed, priorityItemsToPlace.copy(), ownedItems=allOtherItems)
+    failedToPlace = PlaceItems(spoiler.settings, "assumed", priorityItemsToPlace.copy(), ownedItems=allOtherItems)
     if failedToPlace > 0:
         item_names = ", ".join([ItemList[item].name for item in priorityItemsToPlace])
         raise Ex.ItemPlacementException(f"Failed to priority place {item_names}")
@@ -1337,7 +1322,7 @@ def PlaceKongsInKongLocations(spoiler, kongItems, kongLocations):
     # In entrance randomizer, it's too complicated to quickly determine kong accessibility.
     # Instead, we place Kongs in a specific order to guarantee we'll at least have an eligible freer.
     # To be at least somewhat nice to no logic users, we also use this section here so kongs don't lock each other.
-    if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all or spoiler.settings.logic_type == LogicType.nologic:
+    if spoiler.settings.shuffle_loading_zones == "all" or spoiler.settings.logic_type == "nologic":
         shuffle(kongItems)
         if Locations.ChunkyKong in kongLocations:
             kongItemToBeFreed = kongItems.pop()
@@ -1364,7 +1349,7 @@ def PlaceKongsInKongLocations(spoiler, kongItems, kongLocations):
             ownedKongs.append(ItemPool.GetKongForItem(kongItemToBeFreed))
     # In level order shuffling, we need to be very particular about who we unlock and in what order so as to guarantee completion
     # Vanilla levels can be treated as if the level shuffler randomly placed all the levels in the same order
-    elif spoiler.settings.shuffle_loading_zones in (ShuffleLoadingZones.levels, ShuffleLoadingZones.none):
+    elif spoiler.settings.shuffle_loading_zones in ("levels", "none"):
         latestLogicallyAllowedLevel = len(ownedKongs) + 1
         # Logically we can always enter any level on hard level progression
         if spoiler.settings.hard_level_progression:
@@ -1373,7 +1358,9 @@ def PlaceKongsInKongLocations(spoiler, kongItems, kongLocations):
         while len(ownedKongs) != 5:
             # If there aren't any accessible Kong locations, then the level order shuffler has a bug (this shouldn't happen)
             if not any(logicallyAccessibleKongLocations):
-                raise Ex.EntrancePlacementException("Levels shuffled in a way that makes Kong unlocks impossible. SEND THIS TO THE DEVS!")
+                raise Ex.EntrancePlacementException(
+                    "Levels shuffled in a way that makes Kong unlocks impossible. SEND THIS TO THE DEVS! " + dumps(spoiler.settings.__dict__) + " SEND THIS TO THE DEVS!"
+                )
             # Begin by finding the currently accessible Kong locations
             # Randomly pick an accessible location
             progressionLocation = choice(logicallyAccessibleKongLocations)
@@ -1411,7 +1398,7 @@ def PlaceKongsInKongLocations(spoiler, kongItems, kongLocations):
                         if any(newlyAccessibleKongLocations):
                             progressionKongItems.append(kongItem)
                     if len(progressionKongItems) == 0:
-                        raise Ex.FillException("Kongs placed in a way that is impossible to unlock everyone. SEND THIS TO THE DEVS!")
+                        raise Ex.FillException("Kongs placed in a way that is impossible to unlock everyone. SEND THIS TO THE DEVS! " + dumps(spoiler.settings.__dict__) + " SEND THIS TO THE DEVS!")
                     # Pick a random Kong from the Kongs that guarantee progression
                     kongToBeFreed = choice(progressionKongItems)
             # Now that we have a combination guaranteed to not break the seed or logic, lock it in
@@ -1458,7 +1445,7 @@ def FillKongs(spoiler):
         LocationList[Locations.FactoryLankyFreeChunky].kong = spoiler.settings.chunky_freeing_kong
         assumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, [Types.Kong])  # 1-type list here only works if Kongs are placed first (usually the case)
         Reset()
-        PlaceItems(spoiler.settings, FillAlgorithm.assumed, kongItems, assumedItems)
+        PlaceItems(spoiler.settings, "assumed", kongItems, assumedItems)
         # If we didn't put an item in a kong location, then it gets a NoItem
         # This matters specifically so the logic around items inside Kong cages (VERY important for Diddy's cage) behaves properly
         if LocationList[Locations.DiddyKong].item is None:
@@ -1501,7 +1488,7 @@ def FillKongsAndMoves(spoiler):
 
     levelBlockInPlace = False
     # Once Kongs are placed, the top priority is placing training barrel moves first. These (mostly) need to be very early because they block access to whole levels.
-    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != MoveRando.off and spoiler.settings.training_barrels == TrainingBarrels.shuffled:
+    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off" and spoiler.settings.training_barrels == "shuffled":
         # First place barrels - needed for most bosses
         itemsPlacedForBarrels = PlacePriorityItems(spoiler, [Items.Barrels], preplacedPriorityMoves)  # , levelBlock=needBarrelsByThisLevel)
         preplacedPriorityMoves.extend(itemsPlacedForBarrels)
@@ -1520,7 +1507,7 @@ def FillKongsAndMoves(spoiler):
     if spoiler.settings.kong_rando:
         # If kongs are our progression, then place moves that unlock those kongs before anything else
         # This logic only matters if the level order is critical to progression (i.e. not loading zone shuffled)
-        if spoiler.settings.kongs_for_progression and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all and spoiler.settings.move_rando != MoveRando.start_with:
+        if spoiler.settings.kongs_for_progression and spoiler.settings.shuffle_loading_zones != "all" and spoiler.settings.move_rando != "start_with":
             lockedKongs = [kong for kong in GetKongs() if kong not in spoiler.settings.starting_kong_list]
             for kong in lockedKongs:
                 # We need the item representation of the kong
@@ -1534,7 +1521,7 @@ def FillKongsAndMoves(spoiler):
                 preplacedPriorityMoves.extend(newlyPlacedItems)
 
     # Handle shared moves before other moves in move rando
-    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != MoveRando.off:
+    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off":
         # Shuffle the shared move locations since they must be done first
         ShuffleSharedMoves(spoiler, preplacedPriorityMoves.copy())
         # Set up remaining kong moves to be shuffled
@@ -1547,7 +1534,7 @@ def FillKongsAndMoves(spoiler):
     # Handle remaining moves/items
     Reset()
     itemsToPlace = [item for item in itemsToPlace if item not in preplacedPriorityMoves]
-    unplaced = PlaceItems(spoiler.settings, FillAlgorithm.assumed, itemsToPlace, ItemPool.AllItemsForMovePlacement(spoiler.settings))
+    unplaced = PlaceItems(spoiler.settings, "assumed", itemsToPlace, ItemPool.AllItemsForMovePlacement(spoiler.settings))
     if unplaced > 0:
         # debug code - outputs all preplaced and shared items in an attempt to find where things are going wrong
         locationsAndMoves = {}
@@ -1564,9 +1551,9 @@ def FillKongsAndMoves(spoiler):
         raise Ex.ItemPlacementException(str(unplaced) + " unplaced items.")
 
     # Final touches to item placement, some locations need special treatment
-    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != MoveRando.off:
+    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != "off":
         # If we're shuffling training moves, always put a move in each training barrel
-        if spoiler.settings.training_barrels == TrainingBarrels.shuffled:
+        if spoiler.settings.training_barrels == "shuffled":
             emptyTrainingBarrels = [loc for loc in TrainingBarrelLocations if LocationList[loc].item is None]
             if len(emptyTrainingBarrels) > 0:
                 # Find the list of locations that have a kong move in them
@@ -1639,7 +1626,7 @@ def FillKongsAndMovesForLevelOrder(spoiler):
             if retries % 5 == 0:
                 js.postMessage("Retrying fill really hard. Tries: " + str(retries))
                 spoiler.settings.shuffle_prices()
-                if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+                if spoiler.settings.shuffle_loading_zones == "levels":
                     ShuffleExits.ShuffleExits(spoiler.settings)
                     spoiler.UpdateExits()
             else:
@@ -2072,9 +2059,9 @@ def GetAccessibleOpenLevels(settings, accessible):
     if 6 in openLobbyIndexes and not LogicVariables.donkey and not LogicVariables.chunky and not (LogicVariables.tiny and LogicVariables.twirl):
         openLobbyIndexes.remove(6)
     # We may need training moves for access to some lobbies
-    if settings.training_barrels != TrainingBarrels.normal:
+    if settings.training_barrels != "normal":
         # Vines only matter if we don't have Isles warps activated
-        if settings.activate_all_bananaports == ActivateAllBananaports.off and not LogicVariables.vines:
+        if settings.activate_all_bananaports == "off" and not LogicVariables.vines:
             # Aztec lobby requires vines to get to
             if 2 in openLobbyIndexes:
                 openLobbyIndexes.remove(2)
@@ -2130,7 +2117,7 @@ def Generate_Spoiler(spoiler):
     # Handle Kong Rando + Level Rando combination separately since it is more restricted
     if spoiler.settings.kongs_for_progression:
         # Handle Level Order if randomized
-        if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+        if spoiler.settings.shuffle_loading_zones == "levels":
             ShuffleExits.ExitShuffle(spoiler.settings)
             spoiler.UpdateExits()
         # Assume we can progress through the levels, since these will be adjusted within FillKongsAndMovesForLevelOrder
@@ -2139,11 +2126,11 @@ def Generate_Spoiler(spoiler):
         FillKongsAndMovesForLevelOrder(spoiler)
     else:
         # Handle Loading Zones
-        if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
+        if spoiler.settings.shuffle_loading_zones != "none":
             ShuffleExits.ExitShuffle(spoiler.settings)
             spoiler.UpdateExits()
         # Handle Item Fill
-        if (spoiler.settings.move_rando != MoveRando.off and not spoiler.settings.unlock_all_moves) or spoiler.settings.kong_rando or any(spoiler.settings.shuffled_location_types):
+        if (spoiler.settings.move_rando != "off" and not spoiler.settings.unlock_all_moves) or spoiler.settings.kong_rando or any(spoiler.settings.shuffled_location_types):
             FillKongsAndMovesGeneric(spoiler)
         else:
             # Just check if normal item locations are beatable with given settings
@@ -2152,7 +2139,7 @@ def Generate_Spoiler(spoiler):
                 raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
     CorrectBossKongLocations(spoiler)
     GeneratePlaythrough(spoiler)
-    if spoiler.settings.wrinkly_hints in [WrinklyHints.standard, WrinklyHints.cryptic]:
+    if spoiler.settings.wrinkly_hints in ["standard", "cryptic"]:
         compileHints(spoiler)
     compileMicrohints(spoiler)
     Reset()
@@ -2175,16 +2162,16 @@ def ShuffleMisc(spoiler):
         spoiler.crown_locations = crown_replacements
         spoiler.human_crowns = dict(sorted(crown_human_replacements.items()))
     # Handle Bananaports
-    if spoiler.settings.bananaport_rando == BananaportRando.in_level:
+    if spoiler.settings.bananaport_rando == "in_level":
         replacements = []
         human_replacements = {}
         ShuffleWarps(replacements, human_replacements, spoiler.settings.warp_level_list_selected)
         spoiler.bananaport_replacements = replacements.copy()
         spoiler.human_warp_locations = human_replacements
-    elif spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled):
+    elif spoiler.settings.bananaport_rando in ("crossmap_coupled", "crossmap_decoupled"):
         replacements = []
         human_replacements = {}
-        ShuffleWarpsCrossMap(replacements, human_replacements, spoiler.settings.bananaport_rando == BananaportRando.crossmap_coupled, spoiler.settings.warp_level_list_selected)
+        ShuffleWarpsCrossMap(replacements, human_replacements, spoiler.settings.bananaport_rando == "crossmap_coupled", spoiler.settings.warp_level_list_selected)
         spoiler.bananaport_replacements = replacements.copy()
         spoiler.human_warp_locations = human_replacements
     LinkWarps()
@@ -2193,7 +2180,7 @@ def ShuffleMisc(spoiler):
     spoiler.human_kasplats = {}
     spoiler.UpdateKasplats(LogicVariables.kasplat_map)
     # Handle bonus barrels
-    if spoiler.settings.bonus_barrels in (MinigameBarrels.random, MinigameBarrels.selected) or spoiler.settings.helm_barrels == MinigameBarrels.random:
+    if spoiler.settings.bonus_barrels in ("random", "selected") or spoiler.settings.helm_barrels == "random":
         BarrelShuffle(spoiler.settings)
         spoiler.UpdateBarrels()
     # CB Shuffle

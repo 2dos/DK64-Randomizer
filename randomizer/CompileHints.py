@@ -8,7 +8,6 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmDoorItem, HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, WinCondition, WrinklyHints
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.ItemPool import GetKongForItem
@@ -276,23 +275,23 @@ def compileHints(spoiler: Spoiler):
     maxed_hint_types = []  # Some hint types cannot have additional hints placed
     minned_hint_types = []  # Some hint types cannot have all their hints removed
     # In level order (or vanilla) progression, there are hints that we want to be in the player's path
-    level_order_matters = spoiler.settings.logic_type != LogicType.nologic and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all
+    level_order_matters = spoiler.settings.logic_type != "nologic" and spoiler.settings.shuffle_loading_zones != "all"
     # Determine what hint types are valid for these settings
     valid_types = [HintType.Joke]
-    if spoiler.settings.krool_phase_count < 5 and spoiler.settings.win_condition == WinCondition.beat_krool:
+    if spoiler.settings.krool_phase_count < 5 and spoiler.settings.win_condition == "beat_krool":
         valid_types.append(HintType.KRoolOrder)
         # If the seed doesn't funnel you into helm, guarantee one K. Rool order hint
         if Events.HelmKeyTurnedIn not in spoiler.settings.krool_keys_required or not spoiler.settings.key_8_helm:
             minned_hint_types.append(HintType.KRoolOrder)
-    if spoiler.settings.helm_setting != HelmSetting.skip_all and spoiler.settings.helm_phase_count < 5:
+    if spoiler.settings.helm_setting != "skip_all" and spoiler.settings.helm_phase_count < 5:
         valid_types.append(HintType.HelmOrder)
         minned_hint_types.append(HintType.HelmOrder)
-    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando not in (MoveRando.off, MoveRando.item_shuffle):
+    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando not in ("off", "item_shuffle"):
         valid_types.append(HintType.FullShopWithItems)
         valid_types.append(HintType.MoveLocation)
     if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.shuffled_location_types:
         # With no logic WOTH isn't built correctly so we can't make any hints with it
-        if spoiler.settings.logic_type != LogicType.nologic:
+        if spoiler.settings.logic_type != "nologic":
             valid_types.append(HintType.FoolishRegion)
             # If there are more foolish region hints than regions, lower this number and prevent more from being added
             if len(spoiler.foolish_region_names) < hint_distribution[HintType.FoolishRegion]:
@@ -305,7 +304,7 @@ def compileHints(spoiler: Spoiler):
             #     maxed_hint_types.append(HintType.FoolishMove)
             valid_types.append(HintType.WothLocation)
             # K. Rool seeds could use some help finding the last pesky moves (assuming you don't start with them)
-            if spoiler.settings.win_condition == WinCondition.beat_krool and not spoiler.settings.unlock_all_moves:
+            if spoiler.settings.win_condition == "beat_krool" and not spoiler.settings.unlock_all_moves:
                 valid_types.append(HintType.RequiredWinConditionHint)
                 if Kongs.diddy in spoiler.settings.krool_order:
                     hint_distribution[HintType.RequiredWinConditionHint] += 1
@@ -336,7 +335,7 @@ def compileHints(spoiler: Spoiler):
                 # if Kongs.chunky in spoiler.settings.krool_order:
                 #     hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Hunky Chunky hint
             # All fairies seeds need help finding the camera (if you don't start with it) - variable amount of unique hints for it
-            if spoiler.settings.win_condition == WinCondition.all_fairies and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+            if spoiler.settings.win_condition == "all_fairies" and spoiler.settings.shockwave_status != "start_with":
                 valid_types.append(HintType.RequiredWinConditionHint)
                 camera_location_id = None
                 for id, loc in LocationList.items():
@@ -378,7 +377,7 @@ def compileHints(spoiler: Spoiler):
             valid_types.append(HintType.KongLocation)
     # if spoiler.settings.coin_door_open == "need_both" or spoiler.settings.coin_door_open == "need_rw":
     #     valid_types.append(HintType.MedalsRequired)
-    if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all:
+    if spoiler.settings.shuffle_loading_zones == "all":
         # In entrance rando, we care more about T&S than B. Locker
         temp = hint_distribution[HintType.BLocker]
         hint_distribution[HintType.BLocker] = max(1, hint_distribution[HintType.TroffNScoff])  # Always want a helm hint in there
@@ -533,7 +532,7 @@ def compileHints(spoiler: Spoiler):
             else:
                 hint_location = getRandomHintLocation()
             freeing_kong_name = kong_list[kong_location.kong]
-            if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
+            if spoiler.settings.wrinkly_hints == "cryptic":
                 if kong_location.level == Levels.Shops:  # Exactly Jetpac
                     level_name = random.choice(crankys_cryptic)
                 else:
@@ -547,7 +546,7 @@ def compileHints(spoiler: Spoiler):
             message = ""
             if kong_location.type in item_type_names.keys():
                 location_name = item_type_names[kong_location.type]
-                if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
+                if spoiler.settings.wrinkly_hints == "cryptic":
                     location_name = random.choice(item_type_names_cryptic[kong_location.type])
                 message = f"{freed_kong} is held by {location_name} in {level_name}."
             else:
@@ -586,7 +585,7 @@ def compileHints(spoiler: Spoiler):
 
         if hint_location is not None:
             freeing_kong_name = kong_list[free_kong]
-            if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
+            if spoiler.settings.wrinkly_hints == "cryptic":
                 if not kong_index == Kongs.any:
                     kong_name = random.choice(kong_cryptic[kong_index])
                 level_name = random.choice(level_cryptic[level_index])
@@ -631,7 +630,7 @@ def compileHints(spoiler: Spoiler):
         hinted_level = random.choice(hintable_levels)
         hinted_blocker_combos.append((hint_location.level, hinted_level))
         level_name = level_list[hinted_level]
-        if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
+        if spoiler.settings.wrinkly_hints == "cryptic":
             level_name = random.choice(level_cryptic[hinted_level])
         message = f"The barrier to {level_name} can be cleared by obtaining {spoiler.settings.EntryGBs[hinted_level]} Golden Bananas."
         hint_location.hint_type = HintType.BLocker
@@ -670,7 +669,7 @@ def compileHints(spoiler: Spoiler):
                 # Boss locations actually have a specific kong, go look it up
                 if location.kong == Kongs.any and location.type == Types.Key and location.level != Levels.HideoutHelm:
                     kong_index = spoiler.settings.boss_kongs[location.level]
-                if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
+                if spoiler.settings.wrinkly_hints == "cryptic":
                     if location.level == Levels.Shops:
                         level_name = "Cranky's Lab"
                     else:
@@ -691,7 +690,7 @@ def compileHints(spoiler: Spoiler):
                     hint_location = getRandomHintLocation()
                 if location.type in item_type_names.keys():
                     location_name = item_type_names[location.type]
-                    if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
+                    if spoiler.settings.wrinkly_hints == "cryptic":
                         location_name = random.choice(item_type_names_cryptic[location.type])
                     message = f"{key_item.name} is held by {location_name} in {level_name}."
                 else:
@@ -732,7 +731,7 @@ def compileHints(spoiler: Spoiler):
     # Some win conditions need very specific items that we really should hint
     if hint_distribution[HintType.RequiredWinConditionHint] > 0:
         # To aid K. Rool goals, always hint Rocketbarrel, Mini Monkey, and Hunky Chunky if they are needed to beat K. Rool
-        if spoiler.settings.win_condition == WinCondition.beat_krool:
+        if spoiler.settings.win_condition == "beat_krool":
             path = spoiler.woth_paths[Locations.BananaHoard]
             already_chosen_krool_path_locations = []
             for i in range(hint_distribution[HintType.RequiredWinConditionHint]):
@@ -797,7 +796,7 @@ def compileHints(spoiler: Spoiler):
             #     hint_location.hint_type = HintType.RequiredWinConditionHint
             #     UpdateHint(hint_location, message)
         # All fairies seeds get 2 path hints for the camera
-        if spoiler.settings.win_condition == WinCondition.all_fairies:
+        if spoiler.settings.win_condition == "all_fairies":
             for location_id in spoiler.woth_paths.keys():
                 if LocationList[location_id].item == Items.Camera:
                     camera_location_id = location_id
@@ -908,7 +907,7 @@ def compileHints(spoiler: Spoiler):
             continue
 
         shop_level = level_list_helm_isles[index_of_level_with_location]
-        if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
+        if spoiler.settings.wrinkly_hints == "cryptic":
             shop_level = random.choice(level_cryptic_helm_isles[index_of_level_with_location])
         shop_name = shop_owners[LocationList[woth_item_location].vendor]
         message = f"On the Way of the Hoard, {ItemList[woth_item].name} is bought from {shop_name} in {shop_level}."
@@ -959,7 +958,7 @@ def compileHints(spoiler: Spoiler):
                 break
             hinted_level = random.choice(future_tns_levels)
             level_name = level_list[hinted_level]
-            if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
+            if spoiler.settings.wrinkly_hints == "cryptic":
                 level_name = random.choice(level_cryptic[hinted_level])
             count = spoiler.settings.BossBananas[hinted_level]
             cb_name = "Small Bananas"
@@ -1134,21 +1133,21 @@ def compileHints(spoiler: Spoiler):
     # If any Helm doors are random, place a hint for each random door somewhere
     if hint_distribution[HintType.RequiredHelmDoorHint] > 0:
         helmdoor_vars = {
-            HelmDoorItem.req_gb: "Golden Banana",
-            HelmDoorItem.req_bp: "Blueprint",
-            HelmDoorItem.req_companycoins: "Special Coin",
-            HelmDoorItem.req_key: "Key",
-            HelmDoorItem.req_medal: "Medal",
-            HelmDoorItem.req_crown: "Crown",
-            HelmDoorItem.req_fairy: "Fairy",
-            HelmDoorItem.req_rainbowcoin: "Rainbow Coin",
-            HelmDoorItem.req_bean: "Bean",
-            HelmDoorItem.req_pearl: "Pearl",
+            "req_gb": "Golden Banana",
+            "req_bp": "Blueprint",
+            "req_companycoins": "Special Coin",
+            "req_key": "Key",
+            "req_medal": "Medal",
+            "req_crown": "Crown",
+            "req_fairy": "Fairy",
+            "req_rainbowcoin": "Rainbow Coin",
+            "req_bean": "Bean",
+            "req_pearl": "Pearl",
         }
         if spoiler.settings.crown_door_random:
             item_name = helmdoor_vars[spoiler.settings.crown_door_item]
             if spoiler.settings.crown_door_item_count > 1:
-                if spoiler.settings.crown_door_item == HelmDoorItem.req_fairy:
+                if spoiler.settings.crown_door_item == "req_fairy":
                     item_name = "Fairies"  # English is so rude sometimes
                 else:
                     item_name = item_name + "s"
@@ -1159,7 +1158,7 @@ def compileHints(spoiler: Spoiler):
         if spoiler.settings.coin_door_random:
             item_name = helmdoor_vars[spoiler.settings.coin_door_item]
             if spoiler.settings.coin_door_item_count > 1:
-                if spoiler.settings.coin_door_item == HelmDoorItem.req_fairy:
+                if spoiler.settings.coin_door_item == "req_fairy":
                     item_name = "Fairies"  # Plurals? Consistency? A pipe dream
                 else:
                     item_name = item_name + "s"
@@ -1187,7 +1186,7 @@ def compileHints(spoiler: Spoiler):
         if shop_info.item is not None and shop_info.item != Items.NoItem:
             shop_vendor = shop_owners[shop_info.vendor]
             level_name = level_list_helm_isles[shop_info.level]
-            if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
+            if spoiler.settings.wrinkly_hints == "cryptic":
                 level_name = random.choice(level_cryptic_helm_isles[shop_info.level])
             move_series = ItemList[shop_info.item].name
         # Else this is a series of Kong-specific purchases
@@ -1202,7 +1201,7 @@ def compileHints(spoiler: Spoiler):
                     move_series = f"{', '.join(item_names[:-1])}, and {item_names[-1]}"
         shop_vendor = shop_owners[shop_info.vendor]
         level_name = level_list_helm_isles[shop_info.level]
-        if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
+        if spoiler.settings.wrinkly_hints == "cryptic":
             level_name = random.choice(level_cryptic_helm_isles[shop_info.level])
         hint_location = getRandomHintLocation()
         message = f"{shop_vendor}'s in {level_name} contains {move_series}."
@@ -1305,10 +1304,10 @@ def resetHintList():
 def compileMicrohints(spoiler: Spoiler):
     """Create guaranteed level + kong hints for various items."""
     spoiler.microhints = {}
-    if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
+    if spoiler.settings.microhints_enabled != "off":
         microhint_categories = {
-            MicrohintsEnabled.base: [Items.Monkeyport, Items.GorillaGone],
-            MicrohintsEnabled.all: [Items.Monkeyport, Items.GorillaGone, Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle],
+            "base": [Items.Monkeyport, Items.GorillaGone],
+            "all": [Items.Monkeyport, Items.GorillaGone, Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle],
         }
         items_needing_microhints = microhint_categories[spoiler.settings.microhints_enabled].copy()
         # Loop through locations looking for the items that need a microhint

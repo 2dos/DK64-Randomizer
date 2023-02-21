@@ -4,7 +4,6 @@ import random
 import randomizer.Logic as Logic
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Spoiler import Spoiler
@@ -88,7 +87,7 @@ def ShuffleShopLocations(spoiler: Spoiler):
     assortment = {}
     for level in available_shops:
         # Don't shuffle Isles shops in entrance rando. This prevents having the one-entrance-locked Isles Snide room from being progression.
-        if level == Levels.DKIsles and spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all:
+        if level == Levels.DKIsles and spoiler.settings.shuffle_loading_zones == "all":
             continue
         shop_array = available_shops[level]
         # Get list of shops in level
