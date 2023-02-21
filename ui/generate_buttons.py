@@ -225,6 +225,9 @@ def generate_seed(event):
     Args:
         event (event): Javascript click event.
     """
+    # Hide the div for settings errors.
+    settings_errors_element = js.document.getElementById("settings_errors")
+    settings_errors_element.style.display = "none"
     # Check if the rom filebox has a file loaded in it.
     if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
         js.document.getElementById("rom").select()
@@ -238,8 +241,11 @@ def generate_seed(event):
         # If errors are returned, the plandomizer options are invalid.
         # Do not attempt to generate a seed.
         if len(plando_errors) > 0:
-            for err in plando_errors:
-                print(err)
+            joined_errors = "<br>".join(plando_errors)
+            error_html = f"ERROR:<br>{joined_errors}"
+            # Show and populate the div for settings errors.
+            settings_errors_element.innerHTML = error_html
+            settings_errors_element.style = ""
             return
 
         # Start the progressbar

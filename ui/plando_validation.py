@@ -232,11 +232,10 @@ def validate_plando_options(settings_dict):
     # Kongs have been selected, that is always an error.
     chosenKongs = plando_dict["plando_starting_kongs_selected"]
     numStartingKongs = int(settings_dict["starting_kongs_count"])
-    if len(chosenKongs) > numStartingKongs:
-        errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(chosenKongs)} Kongs were selected as starting Kongs."
-        errList.append(errString)
-    elif len(chosenKongs) < numStartingKongs and PlandoItems.Randomize not in plando_dict["plando_starting_kongs_selected"]:
-        errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(chosenKongs)} Kongs were selected as starting Kongs, and \"Random Kong(s)\" was not chosen."
+    if len(chosenKongs) > numStartingKongs or (len(chosenKongs) < numStartingKongs and PlandoItems.Randomize not in chosenKongs):
+        maybePluralKongText = "Kong was selected as a starting Kong" if len(chosenKongs) == 1 else "Kongs were selected as starting Kongs"
+        errSuffix = "." if len(chosenKongs) > numStartingKongs else ", and \"Random Kong(s)\" was not chosen."
+        errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(chosenKongs)} {maybePluralKongText}{errSuffix}"
         errList.append(errString)
 
     # Ensure that no level was selected more than once in the level order.
@@ -278,7 +277,7 @@ def validate_plando_options(settings_dict):
         else:
             helmOrderSet.add(kong)
 
-    # Ensure that hints are below the length limit.
+    # Ensure that hints are below the length limit and have valid characters.
     for hintLocation, hint in plando_dict["hints"].items():
         if hint == PlandoItems.Randomize:
             continue

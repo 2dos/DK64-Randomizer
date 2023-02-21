@@ -624,3 +624,7 @@ td.directional_divider {
   opacity: 25%;
   cursor: default;
 }
+
+.settings-errors {
+  margin: 0 1rem 1rem;
+}
