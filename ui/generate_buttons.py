@@ -7,6 +7,7 @@ from pyodide import create_proxy
 
 import js
 from randomizer.BackgroundRandomizer import generate_playthrough
+from randomizer.Enums.Settings import SettingsMap
 from randomizer.Patching.ApplyRandomizer import patching_response
 from randomizer.SettingStrings import decrypt_setting_string, encrypt_settings_string
 from randomizer.Worker import background
@@ -148,7 +149,7 @@ def generate_seed_from_patch(event):
 
 
 def serialize_settings():
-    """Serialize form settings into a JSON string.
+    """Serialize form settings into an enum-focused JSON string.
 
     Returns:
         dict: Dictionary of form settings.
@@ -184,6 +185,18 @@ def serialize_settings():
         """Determine if an input is a plando input."""
         return inputName is not None and inputName.startswith("plando_")
 
+    def get_enum_or_string_value(valueString, settingName):
+        """Obtain the enum or string value for the provided setting.
+
+        Args:
+            valueString (str) - The value from the HTML input.
+            settingName (str) - The name of the HTML input.
+        """
+        if settingName in SettingsMap:
+            return SettingsMap[settingName][valueString]
+        else:
+            return valueString
+
     for obj in form:
         if is_plando_input(obj.name):
             continue
@@ -194,7 +207,7 @@ def serialize_settings():
             if is_number(obj.value):
                 form_data[obj.name] = int(obj.value)
             else:
-                form_data[obj.name] = obj.value
+                form_data[obj.name] = get_enum_or_string_value(obj.value, obj.name)
     # find all input boxes and verify their checked status
     for element in js.document.getElementsByTagName("input"):
         if is_plando_input(element.name):
@@ -205,6 +218,7 @@ def serialize_settings():
     # Re disable all previously disabled options
     for element in disabled_options:
         element.setAttribute("disabled", "disabled")
+    # Create value lists for multi-select options
     for element in js.document.getElementsByTagName("select"):
         if "selected" in element.className:
             if is_plando_input(element.getAttribute("name")):
@@ -213,7 +227,7 @@ def serialize_settings():
             values = []
             for i in range(0, length):
                 if element.options.item(i).selected:
-                    values.append(element.options.item(i).value)
+                    values.append(get_enum_or_string_value(element.options.item(i).value, element.getAttribute("name")))
             form_data[element.getAttribute("name")] = values
     return form_data
 

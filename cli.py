@@ -8,6 +8,7 @@ import os
 import sys
 import traceback
 
+from randomizer.Enums.Settings import SettingsMap
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
 from randomizer.SettingStrings import decrypt_setting_string
@@ -64,6 +65,16 @@ def main():
         setting_data = json.loads(os.environ.get("POST_BODY"))
         if not setting_data.get("seed"):
             setting_data["seed"] = random.randint(0, 100000000)
+    # Convert string data to enums where possible.
+    for k, v in setting_data.items():
+        if k in SettingsMap:
+            if type(v) is list:
+                values = []
+                for val in v:
+                    values.append(SettingsMap[k][val])
+                setting_data[k] = values
+            else:
+                setting_data[k] = SettingsMap[k][v]
     try:
         generate(setting_data, args.output)
     except Exception as e:

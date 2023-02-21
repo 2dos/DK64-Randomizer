@@ -9,6 +9,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import MinigameBarrels, ShuffleLoadingZones
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
@@ -33,7 +34,7 @@ LogicRegions = {
         TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Transitions.FactoryToIsles),
         TransitionFront(Regions.Testing, lambda l: l.settings.open_levels or Events.TestingGateOpened in l.Events or l.phasewalk or l.generalclips),
         # Hatch opened already in rando if loading zones randomized
-        TransitionFront(Regions.BeyondHatch, lambda l: l.settings.shuffle_loading_zones == "all" or Events.HatchOpened in l.Events or l.phasewalk),
+        TransitionFront(Regions.BeyondHatch, lambda l: l.settings.shuffle_loading_zones == ShuffleLoadingZones.all or Events.HatchOpened in l.Events or l.phasewalk),
     ]),
 
     Regions.Testing: Region("Testing", "Testing Area", Levels.FranticFactory, True, None, [
@@ -88,7 +89,7 @@ LogicRegions = {
     ),
 
     Regions.ChunkyRoomPlatform: Region("Chunky Room Platform", "Storage Area", Levels.FranticFactory, False, -1, [
-        LocationLogic(Locations.FactoryDiddyChunkyRoomBarrel, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.isdiddy and (l.vines or l.settings.bonus_barrels == "skip"), MinigameType.BonusBarrel),
+        LocationLogic(Locations.FactoryDiddyChunkyRoomBarrel, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.isdiddy and (l.vines or l.settings.bonus_barrels == MinigameBarrels.skip), MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.PowerHut, lambda l: (l.coconut and l.isdonkey) or l.phasewalk or l.CanMoonkick(), Transitions.FactoryChunkyRoomToPower),
@@ -121,7 +122,7 @@ LogicRegions = {
         Event(Events.FactoryW5aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
-        TransitionFront(Regions.FranticFactoryStart, lambda l: l.settings.shuffle_loading_zones == "all" or Events.HatchOpened in l.Events),
+        TransitionFront(Regions.FranticFactoryStart, lambda l: l.settings.shuffle_loading_zones == ShuffleLoadingZones.all or Events.HatchOpened in l.Events),
         TransitionFront(Regions.LowerCore, lambda l: True),
         TransitionFront(Regions.CrankyFactory, lambda l: True),
         TransitionFront(Regions.CandyFactory, lambda l: True),
