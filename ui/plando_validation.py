@@ -6,6 +6,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Enums.Regions import Regions
+from randomizer.Lists.Location import LocationList
 from randomizer.Lists.Plandomizer import PlannableItemLimits
 from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
@@ -184,7 +185,7 @@ def validate_plando_options(plando_dict):
         plando_dict (str) - The dictionary containing the plando data.
     """
     errList = []
-    # First check: count all of the items.
+    # Count all of the items to ensure none have been over-placed.
     count_dict = {}
     for item in plando_dict["locations"].values():
         if item == PlandoItems.Randomize:
@@ -211,5 +212,20 @@ def validate_plando_options(plando_dict):
             if item == PlandoItems.GoldenBanana:
                 errString += " (40 Golden Bananas are always allocated to blueprint rewards.)"
             errList.append(errString)
+    
+    # Ensure that shop costs are within allowed limits.
+    for shopLocation, shop in plando_dict["shops"].items():
+        shopCost = shop["cost"]
+        if shopCost == PlandoItems.Randomize:
+            continue
+        if shopCost < 0 or shopCost > 255:
+            shopName = LocationList[shopLocation].name
+            errString = f"Shop costs must be between 0 and 255 coins, but shop \"{shopName}\" has a cost of {shopCost} coins."
+            errList.append(errString)
+    
+    # Ensure that the user starts with at least one Kong.
+    if len(plando_dict["plando_starting_kongs_selected"]) < 1:
+        errString = "At least one starting Kong, or Random Kong(s), must be selected."
+        errList.append(errString)
 
     return (plando_dict, errList)
