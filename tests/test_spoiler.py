@@ -4,6 +4,26 @@ import random
 
 import pytest
 
+from randomizer.Enums.Settings import (
+    SettingsMap,
+    ActivateAllBananaports,
+    BananaportRando,
+    DamageAmount,
+    FreeTradeSetting,
+    HelmDoorItem,
+    HelmSetting,
+    KasplatRandoSetting,
+    LevelRandomization,
+    LogicType,
+    MicrohintsEnabled,
+    MoveRando,
+    RandomPrices,
+    ShockwaveStatus,
+    TrainingBarrels,
+    WinCondition,
+    WrinklyHints
+)
+# from randomizer.Enums.Items import Items
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
@@ -28,22 +48,22 @@ def generate_lo_rando_race_settings():
     data["random_medal_requirement"] = False
     data["medal_requirement"] = 15  # vanilla is 15
     data["medal_cb_req"] = 75  # vanilla is 75
-    data["kasplat_rando_setting"] = "vanilla_locations"  # usually vanilla_locations but i like location_shuffle, RARELY set to off
+    data["kasplat_rando_setting"] = KasplatRandoSetting.vanilla_locations  # usually vanilla_locations but i like location_shuffle, RARELY set to off
     data["kong_rando"] = True  # usually True - FORCED True if level_order shuffle
 
-    data["bananaport_rando"] = "off"  # usually "off", could be "in_level" "crossmap_coupled" "crossmap_decoupled"
-    data["activate_all_bananaports"] = "isles"  # usually isles, could be all or off
+    data["bananaport_rando"] = BananaportRando.off  # usually "off", could be "in_level" "crossmap_coupled" "crossmap_decoupled"
+    data["activate_all_bananaports"] = ActivateAllBananaports.isles  # usually isles, could be all or off
 
     # item shuffler options here
-    data["move_rando"] = "on"  # usually "on" but i like "cross_purchase", rarely need to test with "start_with"
+    data["move_rando"] = MoveRando.on  # usually "on" but i like "cross_purchase", rarely need to test with "start_with"
     # if start_with, next two are FORCED to be normal and vanilla
-    data["training_barrels"] = "shuffled"  # usually "normal", could be "shuffled"
-    data["shockwave_status"] = "shuffled_decoupled"  # usually "vanilla", could be "shuffled" or "shuffled_decoupled" or "start_with"
+    data["training_barrels"] = TrainingBarrels.shuffled  # usually "normal", could be "shuffled"
+    data["shockwave_status"] = ShockwaveStatus.shuffled_decoupled  # usually "vanilla", could be "shuffled" or "shuffled_decoupled" or "start_with"
     # If true, the above is always decoupled or vanilla
     data["shuffle_items"] = True  # Must be true to trigger the list selector below
     # data["item_rando_list_selected"] = ["shop", "banana", "toughbanana", "crown", "blueprint", "key", "medal", "coin", "kong", "fairy", "rainbowcoin", "beanpearl", "fakeitem", "junkitem"]  # all options
 
-    data["random_prices"] = "low"  # usually "medium, might need free, rarely vanilla"
+    data["random_prices"] = RandomPrices.low  # usually "medium, might need free, rarely vanilla"
     data["randomize_blocker_required_amounts"] = True  # usually True, if false set values below
     data["blocker_0"] = 0
     data["blocker_1"] = 0
@@ -66,20 +86,20 @@ def generate_lo_rando_race_settings():
     data["troff_6"] = 500
     data["troff_text"] = 400  # usually 400?
 
-    data["level_randomization"] = "level_order"  # usually "level_order" may need to test with "loadingzone" or "loadingzonesdecoupled"
+    data["level_randomization"] = LevelRandomization.level_order  # usually "level_order" may need to test with "loadingzone" or "loadingzonesdecoupled"
 
-    data["damage_amount"] = "default"
+    data["damage_amount"] = DamageAmount.default
     data["no_healing"] = False
     data["no_melons"] = False
     data["hard_shooting"] = False
-    data["hard_mad_jack"] = False
+    # data["hard_mad_jack"] = False
     data["perma_death"] = False
-    data["crown_door_item"] = "random"  # opened | random | specify the item: req_xxx
+    data["crown_door_item"] = HelmDoorItem.random  # opened | random | specify the item: req_xxx
     data["crown_door_item_count"] = 1  # no need to specify when random
-    data["coin_door_item"] = "random"  # opened | random | specify the item: req_xxx
+    data["coin_door_item"] = HelmDoorItem.random  # opened | random | specify the item: req_xxx
     data["coin_door_item_count"] = 1  # no need to specify when random
     data["bonus_barrel_rando"] = True
-    data["gnawty_barrels"] = False
+    # data["gnawty_barrels"] = False
     data["bonus_barrel_auto_complete"] = False  # usually False
     data["open_lobbies"] = False
     data["open_levels"] = False  # usually False
@@ -94,16 +114,16 @@ def generate_lo_rando_race_settings():
     data["keys_random"] = False  # "key count is random" setting
     data["krool_key_count"] = 5  # usually 5
     data["select_keys"] = False  # usually False, if True use below
-    # data["starting_keys_list_selected"] = ["key1"]  # key1, key2, etc.
+    # data["starting_keys_list_selected"] = [Items.JungleJapesKey]  # JungleJapesKey, AngryAztecKey, etc.
     data["starting_random"] = False  # "starting kong count is random" setting
     data["starting_kongs_count"] = 2  # usually 2
 
     data["quality_of_life"] = True
     data["enable_tag_anywhere"] = True
-    data["wrinkly_hints"] = "standard"
-    data["disable_shop_hints"] = False
+    data["wrinkly_hints"] = WrinklyHints.standard
+    # data["disable_shop_hints"] = False
     data["warp_to_isles"] = True
-    data["helm_setting"] = "skip_start"
+    data["helm_setting"] = HelmSetting.skip_start
     data["portal_numbers"] = True
     data["shop_indicator"] = True
     data["puzzle_rando"] = True
@@ -112,12 +132,12 @@ def generate_lo_rando_race_settings():
     data["random_patches"] = False  # usually False
     data["shuffle_shops"] = False  # usually False
 
-    data["free_trade_setting"] = "not_blueprints"  # none | not_blueprints | major_collectibles
+    data["free_trade_setting"] = FreeTradeSetting.not_blueprints  # none | not_blueprints | major_collectibles
     data["crown_placement_rando"] = False  # usually false
     data["hard_blockers"] = False  # likely to be False
     data["hard_troff_n_scoff"] = False  # likely to be False
     data["cb_rando"] = True  # likely to be False?
-    data["win_condition"] = "beat_krool"  # lots of options: all_keys | get_key8 | beat_krool | all_medals | all_fairies | all_blueprints | poke_snap
+    data["win_condition"] = WinCondition.beat_krool  # lots of options: all_keys | get_key8 | beat_krool | all_medals | all_fairies | all_blueprints | poke_snap
     data["wrinkly_location_rando"] = False  # likely to be False
     data["tns_location_rando"] = False  # likely to be False
     data["key_8_helm"] = True  # likely to be True in most settings
@@ -125,11 +145,11 @@ def generate_lo_rando_race_settings():
 
     data["hard_level_progression"] = False  # likely to be False
 
-    data["logic_type"] = "glitchless"  # "glitchless", "glitch", "nologic"
+    data["logic_type"] = LogicType.glitchless  # "glitchless", "glitch", "nologic"
     # glitch options:
     # "advanced_platforming", "b_locker_skips", "general_clips", "ledge_clips", "moonkicks", "phase_swimming", "phase_walking", "skew", "spawn_snags", "swim_through_shores", "tag_barrel_storage", "troff_n_scoff_skips"
-    data["glitches_selected"] = [""]
-    data["microhints_enabled"] = "all"  # off/base/all
+    data["glitches_selected"] = []
+    data["microhints_enabled"] = MicrohintsEnabled.all  # off/base/all
     data["smaller_shops"] = True  # likely to be True in item rando, many settings force it to be false
     data["alter_switch_allocation"] = False  # likely to be True, easier to test things when false
     data["random_starting_region"] = False  # likely to be False
@@ -144,6 +164,16 @@ def generate_settings():
     # Setting test settings
     data = json.load(open("static/presets/default.json"))
     data["seed"] = random.randint(0, 100000000)
+    # Convert to enums
+    for k, v in data.items():
+        if k in SettingsMap:
+            if type(v) is list:
+                values = []
+                for val in v:
+                    values.append(SettingsMap[k][val])
+                data[k] = values
+            else:
+                data[k] = SettingsMap[k][v]
     return data
 
 

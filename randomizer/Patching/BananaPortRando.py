@@ -2,6 +2,7 @@
 from imp import source_from_cache
 
 import js
+from randomizer.Enums.Settings import BananaportRando
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
@@ -11,7 +12,7 @@ def randomize_bananaport(spoiler: Spoiler):
     """Rando write bananaport locations."""
     pad_types = [0x214, 0x213, 0x211, 0x212, 0x210]
 
-    if spoiler.settings.bananaport_rando == "in_level":
+    if spoiler.settings.bananaport_rando == BananaportRando.in_level:
         for cont_map in spoiler.bananaport_replacements:
             pad_vanilla = {}
             cont_map_id = int(cont_map["containing_map"])
@@ -80,7 +81,7 @@ def randomize_bananaport(spoiler: Spoiler):
                             print("ERROR: ID not found in pad location dump")
                     else:
                         print("ERROR: Vanilla ID not found")
-    elif spoiler.settings.bananaport_rando in ("crossmap_coupled", "crossmap_decoupled"):
+    elif spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled):
         data_start = 0x1FF0000
         visual_warp_changes = []
         maps_used = []
