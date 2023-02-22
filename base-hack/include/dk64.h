@@ -78,6 +78,7 @@ extern int __osGetThreadId(void* thread);
 extern int __osDisableInt();
 extern void __osRestoreInt(int mask);
 extern int __osEepromProbe(void* unk0);
+extern void __osViSwapContext(void);
 extern void copyFunc(int rom_offset, int size, void* write_location);
 extern void* getMapData(data_indexes data_idx, int _index, char compressbyte0, char compressbyte1);
 extern void loadSetup(void* setup_file, int unk0, int unk1);
@@ -313,6 +314,7 @@ extern void spawnModelTwoWithDelay(int type, int x, int y, int z, int delay);
 
 extern int printDebugText(char* string, int v1, int v2, int v3, int v4);
 extern void dumpReturns(void* info);
+extern void updateBones(bonedata* bone, int force_update);
 
 //vanilla data
 extern float TransitionSpeed;
