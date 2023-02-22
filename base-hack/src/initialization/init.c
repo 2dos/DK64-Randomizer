@@ -162,6 +162,7 @@ void initHack(int source) {
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
 			initCosmetic();
+			initStackTrace();
 
 			replace_zones(1);
 			randomize_bosses();
@@ -318,6 +319,8 @@ void initHack(int source) {
 				*(int*)(0x806F6CB0) = 0x86060002; // LH $a2, 0x2 ($s0)
 				*(int*)(0x806F6CB4) = 0x0C000000 | (((int)&tagAnywhereInit & 0xFFFFFF) >> 2);
 				*(int*)(0x806F53AC) = 0; // Prevent LZ case
+
+				// initTagAnywhere();
 			}
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0

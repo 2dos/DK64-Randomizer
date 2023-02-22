@@ -10,6 +10,12 @@
  */
 #include "../../include/common.h"
 
+void disableAntiAliasing(void) {
+    __osViSwapContext();
+    *(int*)(0x8001013C) = 0x3216;
+    *(int*)(0x8001016C) = 0x3216;
+}
+
 void initQoL_Lag(void) {
     /**
      * @brief Initialize any quality of life features which aim to reduce lag native to DK64
@@ -21,6 +27,8 @@ void initQoL_Lag(void) {
         *(int*)(0x80748010) = 0x8064F2F0; // Cancel Sandstorm
         // No Rain
         *(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0
+        *(int*)(0x80004EB4) = 0x0C000000 | (((int)&disableAntiAliasing & 0xFFFFFF) >> 2); // Disable Anti-Aliasing
+        *(int*)(0x8068AF90) = 0; // Disable weather
     }
 }
 
@@ -43,6 +51,8 @@ void initQoL_Cutscenes(void) {
         *(int*)(0x806C50BC) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
         // General
         *(int*)(0x80628508) = 0x0C000000 | (((int)&renderScreenTransitionCheck & 0xFFFFFF) >> 2); // Remove transition effects if skipped cutscene
+        // Speedy T&S Turn-Ins
+        *(int*)(0x806BE3E0) = 0; // NOP
         if (Rando.item_rando) {
             int cs_unskip[] = {
                 0x1A, 2,
@@ -404,8 +414,6 @@ void initNonControllableFixes(void) {
     *(int*)(0x806D2988) = 0x93190002; // LBU $t9, 0x2 ($t8)
     *(int*)(0x806D2990) = 0x33210004; // ANDI $at, $t9, 0x4
     *(short*)(0x806D299C) = 0x1020; // BEQ $at, $r0
-    // Speedy T&S Turn-Ins
-    *(int*)(0x806BE3E0) = 0; // NOP
     // EEPROM Patch
     *(int*)(0x8060D588) = 0; // NOP
     // Cancel Tamper

@@ -11,3 +11,6 @@
 .definelabel ActorFunctions, 0x8074C0A0
 .definelabel ActorMasterType, 0x8074D8D4
 .definelabel ActorPaadDefs, 0x8074E218
+.definelabel ReasonExceptions, 0x80756360
+.definelabel ReasonCode, 0x807FF01C
+.definelabel ReasonValues, 0x807FF020

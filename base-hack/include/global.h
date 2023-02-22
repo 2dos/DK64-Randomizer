@@ -123,6 +123,8 @@ extern void activateBananaports(void);
 extern int getTagAnywhereKong(int direction);
 extern int getTAState(void);
 extern void toggleStandardAmmo(void);
+extern void initTagAnywhere(void);
+extern void initStackTrace(void);
 extern void initItemDropTable(void);
 extern void initCollectableCollision(void);
 extern void initActorDefs(void);
