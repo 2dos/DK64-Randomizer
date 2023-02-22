@@ -8,6 +8,7 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Lib import intf_to_float, float_to_hex, int_to_list, getObjectAddress
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorItem, KlaptrapModel
 from PIL import Image, ImageEnhance, ImageDraw
 import zlib
 import gzip
@@ -16,7 +17,7 @@ import gzip
 class HelmDoorSetting:
     """Class to store information regarding helm doors."""
 
-    def __init__(self, item_setting: str, count: int, item_image: int, number_image: int):
+    def __init__(self, item_setting: HelmDoorItem, count: int, item_image: int, number_image: int):
         """Initialize with given parameters."""
         self.item_setting = item_setting
         self.count = count
@@ -27,7 +28,7 @@ class HelmDoorSetting:
 class HelmDoorImages:
     """Class to store information regarding helm door item images."""
 
-    def __init__(self, setting: str, image_indexes: list, flip=False, table=25, dimensions=(44, 44), format="rgba5551"):
+    def __init__(self, setting: HelmDoorItem, image_indexes: list, flip=False, table=25, dimensions=(44, 44), format="rgba5551"):
         """Initialize with given parameters."""
         self.setting = setting
         self.image_indexes = image_indexes
@@ -42,18 +43,18 @@ def apply_cosmetic_colors(spoiler: Spoiler):
     model_index = 0
     sav = spoiler.settings.rom_data
     if js.document.getElementById("override_cosmetics").checked:
-        model_setting = js.document.getElementById("klaptrap_model").value
+        model_setting = KlaptrapModel[js.document.getElementById("klaptrap_model").value]
     else:
         model_setting = spoiler.settings.klaptrap_model
-    if model_setting == "green":
+    if model_setting == KlaptrapModel.green:
         model_index = 0x21
-    elif model_setting == "purple":
+    elif model_setting == KlaptrapModel.purple:
         model_index = 0x22
-    elif model_setting == "red":
+    elif model_setting == KlaptrapModel.red:
         model_index = 0x23
-    elif model_setting == "random_klap":
+    elif model_setting == KlaptrapModel.random_klap:
         model_index = random.randint(0x21, 0x23)
-    elif model_setting == "random_model":
+    elif model_setting == KlaptrapModel.random_model:
         permitted_models = [
             0x19,  # Beaver
             0x1E,  # Klobber
@@ -132,37 +133,37 @@ def apply_cosmetic_colors(spoiler: Spoiler):
 
     if js.document.getElementById("override_cosmetics").checked:
         if js.document.getElementById("random_colors").checked:
-            spoiler.settings.dk_colors = "randomized"
-            spoiler.settings.diddy_colors = "randomized"
-            spoiler.settings.lanky_colors = "randomized"
-            spoiler.settings.tiny_colors = "randomized"
-            spoiler.settings.chunky_colors = "randomized"
-            spoiler.settings.rambi_colors = "randomized"
-            spoiler.settings.enguarde_colors = "randomized"
+            spoiler.settings.dk_colors = CharacterColors.randomized
+            spoiler.settings.diddy_colors = CharacterColors.randomized
+            spoiler.settings.lanky_colors = CharacterColors.randomized
+            spoiler.settings.tiny_colors = CharacterColors.randomized
+            spoiler.settings.chunky_colors = CharacterColors.randomized
+            spoiler.settings.rambi_colors = CharacterColors.randomized
+            spoiler.settings.enguarde_colors = CharacterColors.randomized
         else:
-            spoiler.settings.dk_colors = js.document.getElementById("dk_colors").value
+            spoiler.settings.dk_colors = CharacterColors[js.document.getElementById("dk_colors").value]
             spoiler.settings.dk_custom_color = js.document.getElementById("dk_custom_color").value
-            spoiler.settings.diddy_colors = js.document.getElementById("diddy_colors").value
+            spoiler.settings.diddy_colors = CharacterColors[js.document.getElementById("diddy_colors").value]
             spoiler.settings.diddy_custom_color = js.document.getElementById("diddy_custom_color").value
-            spoiler.settings.lanky_colors = js.document.getElementById("lanky_colors").value
+            spoiler.settings.lanky_colors = CharacterColors[js.document.getElementById("lanky_colors").value]
             spoiler.settings.lanky_custom_color = js.document.getElementById("lanky_custom_color").value
-            spoiler.settings.tiny_colors = js.document.getElementById("tiny_colors").value
+            spoiler.settings.tiny_colors = CharacterColors[js.document.getElementById("tiny_colors").value]
             spoiler.settings.tiny_custom_color = js.document.getElementById("tiny_custom_color").value
-            spoiler.settings.chunky_colors = js.document.getElementById("chunky_colors").value
+            spoiler.settings.chunky_colors = CharacterColors[js.document.getElementById("chunky_colors").value]
             spoiler.settings.chunky_custom_color = js.document.getElementById("chunky_custom_color").value
-            spoiler.settings.rambi_colors = js.document.getElementById("rambi_colors").value
+            spoiler.settings.rambi_colors = CharacterColors[js.document.getElementById("rambi_colors").value]
             spoiler.settings.rambi_custom_color = js.document.getElementById("rambi_custom_color").value
-            spoiler.settings.enguarde_colors = js.document.getElementById("enguarde_colors").value
+            spoiler.settings.enguarde_colors = CharacterColors[js.document.getElementById("enguarde_colors").value]
             spoiler.settings.enguarde_custom_color = js.document.getElementById("enguarde_custom_color").value
     else:
         if spoiler.settings.random_colors:
-            spoiler.settings.dk_colors = "randomized"
-            spoiler.settings.diddy_colors = "randomized"
-            spoiler.settings.lanky_colors = "randomized"
-            spoiler.settings.tiny_colors = "randomized"
-            spoiler.settings.chunky_colors = "randomized"
-            spoiler.settings.rambi_colors = "randomized"
-            spoiler.settings.enguarde_colors = "randomized"
+            spoiler.settings.dk_colors = CharacterColors.randomized
+            spoiler.settings.diddy_colors = CharacterColors.randomized
+            spoiler.settings.lanky_colors = CharacterColors.randomized
+            spoiler.settings.tiny_colors = CharacterColors.randomized
+            spoiler.settings.chunky_colors = CharacterColors.randomized
+            spoiler.settings.rambi_colors = CharacterColors.randomized
+            spoiler.settings.enguarde_colors = CharacterColors.randomized
 
     colors_dict = {
         "dk_colors": spoiler.settings.dk_colors,
@@ -205,17 +206,17 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                 elif palette["fill_type"] == "kong":
                     kong_colors = ["#ffd700", "#ff0000", "#1699ff", "#B045ff", "#41ff25"]
                     mode = spoiler.settings.colorblind_mode
-                    if mode != "off":
-                        if mode == "prot":
+                    if mode != ColorblindMode.off:
+                        if mode == ColorblindMode.prot:
                             kong_colors = ["#FDE400", "#0072FF", "#766D5A", "#FFFFFF", "#000000"]
-                        elif mode == "deut":
+                        elif mode == ColorblindMode.deut:
                             kong_colors = ["#E3A900", "#318DFF", "#7F6D59", "#FFFFFF", "#000000"]
-                        elif mode == "trit":
+                        elif mode == ColorblindMode.trit:
                             kong_colors = ["#FFA4A4", "#C72020", "#13C4D8", "#FFFFFF", "#000000"]
                     arr = [kong_colors[kong["kong_index"]]]
                 base_obj["zones"].append({"zone": palette["name"], "image": palette["image"], "fill_type": palette["fill_type"], "colors": arr})
-            if colors_dict[kong["base_setting"]] != "vanilla":
-                if colors_dict[kong["base_setting"]] == "randomized":
+            if colors_dict[kong["base_setting"]] != CharacterColors.vanilla:
+                if colors_dict[kong["base_setting"]] == CharacterColors.randomized:
                     color = f"#{format(randint(0, 0xFFFFFF), '06x')}"
                 else:
                     color = colors_dict[kong["custom_setting"]]
@@ -459,12 +460,12 @@ def overwrite_object_colors(spoiler: Spoiler):
     """Overwrite object colors."""
     global color_bases
     mode = spoiler.settings.colorblind_mode
-    if mode != "off":
-        if mode == "prot":
+    if mode != ColorblindMode.off:
+        if mode == ColorblindMode.prot:
             color_bases = ["#FDE400", "#0072FF", "#766D5A", "#FFFFFF", "#000000"]
-        elif mode == "deut":
+        elif mode == ColorblindMode.deut:
             color_bases = ["#E3A900", "#318DFF", "#7F6D59", "#FFFFFF", "#000000"]
-        elif mode == "trit":
+        elif mode == ColorblindMode.trit:
             color_bases = ["#FFA4A4", "#C72020", "#13C4D8", "#FFFFFF", "#000000"]
         file = 175
         dk_single = getFile(7, file, False, 44, 44, "rgba5551")
@@ -786,16 +787,16 @@ def applyHelmDoorCosmetics(spoiler: Spoiler):
         HelmDoorSetting(spoiler.settings.coin_door_item, spoiler.settings.coin_door_item_count, 6024, 6025),
     ]
     Images = [
-        HelmDoorImages("req_gb", [0x155C]),
-        HelmDoorImages("req_bp", [x + 4 for x in (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)], False, 25, (48, 42)),
-        HelmDoorImages("req_bean", [0], True, 6, (20, 20)),
-        HelmDoorImages("req_pearl", [0xD5F], False, 25, (32, 32)),
-        HelmDoorImages("req_fairy", [0x16ED], False, 25, (32, 32), "rgba32"),
-        HelmDoorImages("req_key", [5877]),
-        HelmDoorImages("req_medal", [0x156C]),
-        HelmDoorImages("req_rainbowcoin", [5963], False, 25, (48, 42)),
-        HelmDoorImages("req_crown", [5893]),
-        HelmDoorImages("req_companycoins", [5905, 5912]),
+        HelmDoorImages(HelmDoorItem.req_gb, [0x155C]),
+        HelmDoorImages(HelmDoorItem.req_bp, [x + 4 for x in (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)], False, 25, (48, 42)),
+        HelmDoorImages(HelmDoorItem.req_bean, [0], True, 6, (20, 20)),
+        HelmDoorImages(HelmDoorItem.req_pearl, [0xD5F], False, 25, (32, 32)),
+        HelmDoorImages(HelmDoorItem.req_fairy, [0x16ED], False, 25, (32, 32), "rgba32"),
+        HelmDoorImages(HelmDoorItem.req_key, [5877]),
+        HelmDoorImages(HelmDoorItem.req_medal, [0x156C]),
+        HelmDoorImages(HelmDoorItem.req_rainbowcoin, [5963], False, 25, (48, 42)),
+        HelmDoorImages(HelmDoorItem.req_crown, [5893]),
+        HelmDoorImages(HelmDoorItem.req_companycoins, [5905, 5912]),
     ]
     for door in Doors:
         for image_data in Images:
@@ -823,7 +824,7 @@ def applyHelmDoorCosmetics(spoiler: Spoiler):
                     new_width = image_data.dimensions[0] * (44 / image_data.dimensions[1])
                     base_overlay = base_overlay.resize((int(new_width), 44))
                     base.paste(base_overlay, (int(22 - (new_width / 2)), 0), base_overlay)
-                if door.item_setting == "req_pearl":
+                if door.item_setting == HelmDoorItem.req_pearl:
                     pearl_mask_im = Image.new("RGBA", (44, 44), (0, 0, 0, 255))
                     draw = ImageDraw.Draw(pearl_mask_im)
                     draw.ellipse((0, 0, 43, 43), fill=(0, 0, 0, 0), outline=(0, 0, 0, 0))

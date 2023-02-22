@@ -22,7 +22,7 @@ def verifySelectedWarps(selected_warps):
     """Verify if the selected_warps variable is empty, and fills it with all options if it is."""
     if len(selected_warps) == 0:
         for warp in VanillaBananaportSelector:
-            selected_warps.append(warp["value"])
+            selected_warps.append(Maps[warp["value"]])
 
 
 def ShuffleWarps(bananaport_replacements, human_ports, selected_warps):
@@ -30,7 +30,7 @@ def ShuffleWarps(bananaport_replacements, human_ports, selected_warps):
     verifySelectedWarps(selected_warps)
     map_list = getShuffleMaps()
     for warp_map in map_list:
-        if warp_map.name not in selected_warps:
+        if warp_map not in selected_warps:
             # if the warp is in an excluded level, create an entry into bananaport_replacements to point to its vanilla data instead of trying to leave it blank
             # this function could probably work correctly without this safeguard, but i'd rather be safe than sorry
             pad_list = []
@@ -66,6 +66,14 @@ def ShuffleWarps(bananaport_replacements, human_ports, selected_warps):
                 if len(pad_temp_list[warp_index]) > 0:
                     pad_list.append({"warp_index": warp_index, "warp_ids": pad_temp_list[warp_index].copy()})
             bananaport_replacements.append({"containing_map": warp_map, "pads": pad_list.copy()})
+    # After shuffling the warps, make sure the swap indexes are right for warp linking immediately after this method
+    # This probably is the least efficient way to do it but it works
+    for warp_id, warp in BananaportVanilla.items():
+        for paired_warp_id, paired_warp in BananaportVanilla.items():
+            # Find the paired warp - we know they're always in the same map here which saves some headache
+            if warp_id != paired_warp_id and warp.map_id == paired_warp.map_id and warp.new_warp == paired_warp.new_warp:
+                warp.tied_index = paired_warp.swap_index
+                break
 
 
 def getWarpFromSwapIndex(index):
@@ -83,7 +91,7 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled, selec
         bananaport_replacements.append(0)
     selected_warp_list = []
     for idx, warp in enumerate(BananaportVanilla.values()):
-        if warp.map_id.name not in selected_warps:
+        if warp.map_id not in selected_warps:
             # if the warp is in an excluded level, create an entry into bananaport_replacements to point to its vanilla data instead of trying to leave it blank
             for warp_check in BananaportVanilla.values():
                 if warp_check.map_id == warp.map_id and warp_check.vanilla_warp == warp.vanilla_warp and warp_check.name != warp.name:
@@ -102,7 +110,7 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled, selec
                     full_warps.append(warp_check.swap_index)
                 if warp.restricted and warp_check.restricted:
                     is_enabled = False
-                if warp_check.map_id.name not in selected_warps:
+                if warp_check.map_id not in selected_warps:
                     is_enabled = False
                 if is_enabled:
                     available_warps.append(warp_check.swap_index)
@@ -140,4 +148,5 @@ def LinkWarps():
         destination_warp_data = getWarpFromSwapIndex(warp_data.tied_index)
         if warp_data.region_id != destination_warp_data.region_id:
             source_region = Logic.Regions[warp_data.region_id]
+            # The source region gets a transition to the destination region conditionally based on the destination warp being tagged
             source_region.exits.append(TransitionFront(destination_warp_data.region_id, destination_warp_data.event_logic))
