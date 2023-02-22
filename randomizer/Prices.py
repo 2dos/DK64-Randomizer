@@ -6,6 +6,7 @@ import random
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.ItemPool import TrainingBarrelAbilities
 from randomizer.Lists.Item import ItemList
@@ -84,15 +85,15 @@ def GetPriceWeights(weight):
     avg = 4.5
     stddev = 2
     upperLimit = 9
-    if weight == "high":
+    if weight == RandomPrices.high:
         avg = 6.5
         stddev = 3
         upperLimit = 12
-    elif weight == "low":
+    elif weight == RandomPrices.low:
         avg = 2.5
         stddev = 1
         upperLimit = 6
-    elif weight == "extreme":
+    elif weight == RandomPrices.extreme:
         avg = 11
         stddev = 2
         upperLimit = 15
@@ -117,7 +118,7 @@ def RandomizePrices(weight):
 def GenerateRandomPrice(weight, avg, stddev, upperLimit):
     """Generate a random price to assign."""
     lowerLimit = 1
-    if weight == "free":
+    if weight == RandomPrices.free:
         newPrice = 0
     else:
         newPrice = round(random.normalvariate(avg, stddev))
@@ -150,7 +151,7 @@ def GetMaxForKong(settings, kong):
                 total_price += settings.prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
             # Vanilla prices are by item, not by location
-            elif settings.random_prices == "vanilla":
+            elif settings.random_prices == RandomPrices.vanilla:
                 total_price += settings.prices[item_id]
             else:
                 total_price += settings.prices[location]
@@ -182,7 +183,7 @@ def GetMaxForKong(settings, kong):
                 total_price += settings.prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
             # Vanilla prices are by item, not by location
-            elif settings.random_prices == "vanilla":
+            elif settings.random_prices == RandomPrices.vanilla:
                 total_price += settings.prices[item_id]
             else:
                 total_price += settings.prices[location]
@@ -255,7 +256,7 @@ def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, in
             # If already have max instrument upgrade, there's move to buy
             return 0
     # Vanilla prices are by item, not by location
-    elif settings.random_prices == "vanilla":
+    elif settings.random_prices == RandomPrices.vanilla:
         return settings.prices[item]
     else:
         return settings.prices[location_id]
