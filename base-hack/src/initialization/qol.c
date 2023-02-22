@@ -28,7 +28,7 @@ void initQoL_Lag(void) {
         // No Rain
         *(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0
         *(int*)(0x80004EB4) = 0x0C000000 | (((int)&disableAntiAliasing & 0xFFFFFF) >> 2); // Disable Anti-Aliasing
-        *(short*)(0x8068Af90) = 0; // Disable weather
+        *(int*)(0x8068AF90) = 0; // Disable weather
     }
 }
 

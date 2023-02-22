@@ -1,6 +1,6 @@
+# fmt: off
 """Dump information from various custom location files into a json format in tools/dump."""
 import sys
-import inspect
 import json
 import os
 from typing import Callable
