@@ -49,6 +49,9 @@ LogicRegions = {
     Regions.GloomyGalleonLobby: [
 
     ],
+    Regions.GloomyGalleonLobbyEntrance: [
+    
+    ],
     Regions.CabinIsle: [
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # In front of fungi lobby
 
@@ -65,5 +68,11 @@ LogicRegions = {
     ],
     Regions.HideoutHelmLobby: [
 
+    ],
+    Regions.Treehouse: [
+    
+    ],
+    Regions.IslesMainUpper: [
+    
     ],
 }

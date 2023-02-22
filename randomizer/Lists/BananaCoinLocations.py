@@ -208,7 +208,7 @@ BananaCoinGroupList = {
             name="On top of Aztec lobby",
             konglist=[Kongs.diddy, Kongs.tiny],
             region=Regions.CabinIsle,
-            logic=lambda l: (l.twirl and l.isTiny) or (Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isDiddy),
+            logic=lambda l: (l.twirl and l.istiny) or (Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy),
             locations=[
                 [1.0, 3515, 1170, 1800],
                 [1.0, 3457, 1170, 1773],
@@ -222,7 +222,7 @@ BananaCoinGroupList = {
             name="On top of K. Lumsy's prison",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.IslesMain,
-            logic=lambda l: (l.monkeyport and l.isTiny)
+            logic=lambda l: (l.monkeyport and l.istiny)
             or ((l.monkeyport and l.tiny and (l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events) or (l.generalclips and l.twirl))) or l.tbs),
             locations=[
                 [1.0, 3343, 712, 3376],
@@ -338,7 +338,7 @@ BananaCoinGroupList = {
             map_id=Maps.Isles,
             name="Behind pillar on path to Factory lobby",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.CrocodileIsleBeyondLift,
+            region=Regions.KremIsleBeyondLift,
             locations=[
                 [1.0, 2103, 845, 3756],
                 [1.0, 2142, 828, 3821],
@@ -350,7 +350,7 @@ BananaCoinGroupList = {
             map_id=Maps.Isles,
             name="Around pillar behind Factory lobby",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.CrocodileIsleBeyondLift,
+            region=Regions.KremIsleBeyondLift,
             locations=[
                 [1.0, 2492, 1200, 3858],
                 [1.0, 2458, 1200, 3851],
@@ -364,7 +364,7 @@ BananaCoinGroupList = {
             map_id=Maps.Isles,
             name="To the right of the staircase to Factory lobby",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.CrocodileIsleBeyondLift,
+            region=Regions.KremIsleBeyondLift,
             locations=[
                 [1.0, 2419, 1200, 3410],
                 [1.0, 2420, 1200, 3371],
@@ -377,7 +377,7 @@ BananaCoinGroupList = {
             name="Around Saxophone pad",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.IslesMain,
-            logic=lambda l: (l.monkeyport and l.isTiny)
+            logic=lambda l: (l.monkeyport and l.istiny)
             or ((l.monkeyport and l.tiny and (l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events) or (l.generalclips and l.twirl))) or l.tbs),
             locations=[
                 [1.0, 2389, 1720, 3866],
@@ -605,7 +605,7 @@ BananaCoinGroupList = {
             name="Around golden banana",
             konglist=[Kongs.tiny],
             region=Regions.GloomyGalleonLobby,
-            logic=lambda l: l.swim and l.mini and l.superslam and l.chunky,
+            logic=lambda l: l.swim and l.mini and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.chunky,
             locations=[
                 [1.0, 832, 99, 202],
                 [1.0, 815, 99, 253],
@@ -1324,7 +1324,7 @@ BananaCoinGroupList = {
             name="On top of right slippery slope",
             konglist=[Kongs.lanky],
             region=Regions.JapesBeyondCoconutGate2,
-            logic=lambda l: l.orangstand,
+            logic=lambda l: l.handstand,
             locations=[
                 [1.0, 2214, 338, 3280],
                 [1.0, 2247, 338, 3268],
@@ -1593,7 +1593,7 @@ BananaCoinGroupList = {
             name="Around final room",
             konglist=[Kongs.tiny],
             region=Regions.TinyHive,
-            logic=lambda l: l.Slam,
+            logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
             locations=[
                 [1.8, 2080, 254, 1704],
                 [1.8, 2592, 254, 1530],
@@ -1971,6 +1971,12 @@ BananaCoinGroupList = {
                 [1.0, 2774, 120, 4782],
             ],
         ),
+    ],
+    Levels.FranticFactory: [
+    
+    ],
+    Levels.GloomyGalleon: [
+    
     ],
     Levels.FungiForest: [
         BananaCoinGroup(

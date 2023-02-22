@@ -101,3 +101,8 @@ class CBFillFailureException(FillException):
     """Exception triggered when CB rando fails to correctly generate a valid set of groups."""
 
     pass
+
+class CoinFillFailureException(FillException):
+    """Exception triggered when coin rando fails to correctly generate a valid set of groups."""
+
+    pass

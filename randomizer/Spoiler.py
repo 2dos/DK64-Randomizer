@@ -162,6 +162,7 @@ class Spoiler:
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
         settings["Randomize CB Locations"] = self.settings.cb_rando
+        settings["Randomize Coin Locations"] = self.settings.coin_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
         settings["Crown Door Open"] = self.settings.crown_door_item == HelmDoorItem.opened
         settings["Coin Door Open"] = self.settings.coin_door_item == HelmDoorItem.opened

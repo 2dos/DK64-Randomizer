@@ -17,6 +17,7 @@
     "boss_kong_rando": true,
     "boss_location_rando": true,
     "cb_rando":false,
+    "coin_rando":false,
     "coin_door_item": "opened",
     "coin_door_item_count": "1",
     "crown_door_item": "opened",
