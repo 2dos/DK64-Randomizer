@@ -21,12 +21,13 @@ from randomizer.Lists.CrownLocations import CrownLocations
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Lists.FairyLocations import fairy_locations
 from randomizer.Lists.KasplatLocations import KasplatLocationList
+from randomizer.Lists.Patches import DirtPatchLocations
 
 # USAGE OF FILE
 # - python ./dumper.py {format} {desired-files}
 # Eg: python ./dumper.py json cb crown fairy
 # Valid formats: "csv", "json", "md"
-# Valid files: "all", "cb", "crown", "door", "fairy", "kasplat"
+# Valid files: "all", "cb", "crown", "door", "fairy", "kasplat", "patch"
 
 class Dumpers(IntEnum):
     """Enum for dumper types."""
@@ -35,6 +36,7 @@ class Dumpers(IntEnum):
     Doors = auto()
     Fairies = auto()
     Kasplats = auto()
+    Patches = auto()
 
 def dump_to_dict(class_instance, deleted=[], enum_value=[], enum_name=[], logic_var=None, x_func=None, y_func=None, z_func=None) -> dict:
     """Dump class instance to dictionary and modify accordingly."""
@@ -158,7 +160,7 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                     if dumper in headers:
                         dumper_header = headers[dumper]
                     fh.write(f"<details>\n<summary>{dumper_header}</summary>\n\n")
-                    if dumper in (Dumpers.Crowns, Dumpers.Fairies, Dumpers.Kasplats):
+                    if dumper in (Dumpers.Crowns, Dumpers.Fairies, Dumpers.Kasplats, Dumpers.Patches):
                         fh.write("| Map | Name |\n")
                         fh.write("| --- | ---- |\n")
                     elif dumper == Dumpers.Doors:
@@ -179,6 +181,8 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                             fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | \n")
                         elif dumper == Dumpers.Doors:
                             fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y['door_type'].title()} | \n")
+                        elif dumper == Dumpers.Patches:
+                            fh.write(f"| {getMapNameFromIndex(y['map_id'])} | {y['name']} | \n")
                     for group in groupings:
                         if dumper == Dumpers.ColoredBananas:
                             fh.write("<details>\n")
@@ -245,7 +249,7 @@ def dump_cb(format: str):
 
 
 def dump_crown(format: str):
-    """Dump colored banana locations."""
+    """Dump crown pad locations."""
     dumps = {}
     for level in CrownLocations:
         crown_data = []
@@ -263,7 +267,7 @@ def dump_crown(format: str):
 
 
 def dump_door(format: str):
-    """Dump colored banana locations."""
+    """Dump wrinkly and T&S locations."""
     dumps = {}
     for level in door_locations:
         door_data = []
@@ -282,7 +286,7 @@ def dump_door(format: str):
 
 
 def dump_fairy(format: str):
-    """Dump colored banana locations."""
+    """Dump fairy locations."""
     dumps = {}
     for level in fairy_locations:
         fairy_data = []
@@ -312,7 +316,7 @@ def dump_fairy(format: str):
 
 
 def dump_kasplat(format: str):
-    """Dump colored banana locations."""
+    """Dump kasplat locations."""
     dumps = {}
     for level in KasplatLocationList:
         kasplat_data = []
@@ -328,7 +332,23 @@ def dump_kasplat(format: str):
     if format == "md":
         dump_to_file("kasplats", dumps, format, Dumpers.Kasplats)
 
-all_args = ["cb", "crown", "door", "fairy", "kasplat"]
+def dump_patch(format: str):
+    """Dump dirt patch locations."""
+    dumps = {}
+    for patch in DirtPatchLocations:
+        level = patch.level_name
+        as_dict = dump_to_dict(patch, ["vanilla", "selected", "group", "level_name"], ["map_id"], ["logicregion"], "logic")
+        if level not in dumps:
+            dumps[level] = []
+        dumps[level].append(as_dict)
+    if format == "md":
+        dump_to_file("patches", dumps, format, Dumpers.Patches)
+    else:
+        for level in dumps:
+            dump_to_file(f"patches_{level.name}", dumps[level], format, Dumpers.Patches)
+    
+
+all_args = ["cb", "crown", "door", "fairy", "kasplat", "patch"]
 valid_args = all_args + ["all"]
 args = sys.argv[2:]
 if "all" in args:
