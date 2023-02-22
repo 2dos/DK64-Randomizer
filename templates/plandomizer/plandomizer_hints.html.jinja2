@@ -22,8 +22,11 @@
                         {{location["display_name"]}}
                     </label>
                     <div>
-                        <input id="plando_{{location["enum_name"]}}_hint"
+                        <input type="text"
+                               id="plando_{{location["enum_name"]}}_hint"
                                name="plando_{{location["enum_name"]}}_hint"
+                               data-toggle="tooltip"
+                               title
                                placeholder="Enter hint text."
                                maxlength="900"
                             class="form-control">

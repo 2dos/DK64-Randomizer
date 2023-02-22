@@ -56,6 +56,18 @@ def getLevelString(levelEnum):
     else:
         return None
 
+
+# Some useful lists of locations. These will mostly be used for on-the-fly
+# input validation. They will be populated as we build out other data
+# structures.
+
+# A list of all locations where items can be placed.
+ItemLocationList = []
+# A list of all shop locations.
+ShopLocationList = []
+# A list of all hint locations.
+HintLocationList = []
+
 ##########
 # PANELS #
 ##########
@@ -185,13 +197,16 @@ for locationEnum, locationObj in LocationList.items():
         PlandomizerPanels["Blueprints"]["locations"][kongString].append(locationJson)
     elif locationObj.type == Types.Hint:
         PlandomizerPanels["Hints"]["locations"][kongString].append(locationJson)
+        HintLocationList.append(locationEnum.name)
     elif locationObj.type == Types.Shop:
         # This covers everything but the Rareware coin, but that will end up
         # being placed into Shops as well.
         PlandomizerPanels["Shops"]["locations"][kongString].append(locationJson)
+        ShopLocationList.append(locationEnum.name)
     else:
         levelName = locationObj.level.name
         PlandomizerPanels[levelName]["locations"][kongString].append(locationJson)
+        ItemLocationList.append(locationEnum.name)
 
         # If this is a minigame location, add it to the Minigames list.
         if isMinigameLocation(locationEnum):

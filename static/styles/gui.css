@@ -133,6 +133,12 @@ body {
   min-width: 100px !important;
 }
 
+select.invalid,
+input[type="text"].invalid,
+input[type="number"].invalid {
+  border-color: #dc3545;
+}
+
 .form-title-select {
   line-height: 48px;
   margin-right: 5px;

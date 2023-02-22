@@ -7,9 +7,58 @@ from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Enums.Regions import Regions
 from randomizer.Lists.Location import LocationList
-from randomizer.Lists.Plandomizer import PlannableItemLimits
+from randomizer.Lists.Plandomizer import HintLocationList, ItemLocationList, PlannableItemLimits, ShopLocationList
 from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
+from ui.bindings import bind, bindList
+
+def invalidate_option(element, tooltip):
+    """Add a Bootstrap tooltip to the given element, and mark it as invalid."""
+    element.setAttribute("data-bs-original-title", tooltip)
+    element.classList.add("invalid")
+
+def validate_option(element):
+    """Remove a Bootstrap tooltip from the given element, and mark it as valid."""
+    element.setAttribute("data-bs-original-title", "")
+    element.classList.remove("invalid")
+
+############
+# BINDINGS #
+############
+
+@bindList("change", ItemLocationList, prefix="plando_", suffix="_item")
+@bindList("change", ShopLocationList, prefix="plando_", suffix="_shop_item")
+def validate_item_limits(evt):
+    """Raise an error if any item has been placed too many times."""
+    print(evt.target.name)
+
+
+@bindList("change", HintLocationList, prefix="plando_", suffix="_hint")
+@bindList("keyup", HintLocationList, prefix="plando_", suffix="_hint")
+def validate_hint_text(evt):
+    """Raise an error if any hint contains invalid characters."""
+    hintString = evt.target.value
+    if re.search("[^A-Za-z0-9 ,.-?!]", hintString) is not None:
+        invalidate_option(evt.target, "Only letters, numbers, spaces, and the characters ,.-?! are allowed in hints.")
+    else:
+        validate_option(evt.target)
+
+
+@bindList("change", ShopLocationList, prefix="plando_", suffix="_shop_cost")
+@bindList("keyup", ShopLocationList, prefix="plando_", suffix="_shop_cost")
+def validate_shop_costs(evt):
+    """Raise an error if any shops have an invalid cost."""
+    shopCost = evt.target.value
+    if shopCost == "":
+        return
+    if shopCost.isdigit() and int(shopCost) >= 0 and int(shopCost) <= 255:
+        validate_option(evt.target)
+    else:
+        invalidate_option(evt.target, "Shop costs must be a whole number between 0 and 255.")
+
+######################
+# SETTINGS FUNCTIONS #
+######################
 
 
 def populate_plando_options(form):
