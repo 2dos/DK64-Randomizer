@@ -29,14 +29,17 @@ from randomizer.Lists.Patches import DirtPatchLocations
 # Valid formats: "csv", "json", "md"
 # Valid files: "all", "cb", "crown", "door", "fairy", "kasplat", "patch"
 
+
 class Dumpers(IntEnum):
     """Enum for dumper types."""
+
     ColoredBananas = auto()
     Crowns = auto()
     Doors = auto()
     Fairies = auto()
     Kasplats = auto()
     Patches = auto()
+
 
 def dump_to_dict(class_instance, deleted=[], enum_value=[], enum_name=[], logic_var=None, x_func=None, y_func=None, z_func=None) -> dict:
     """Dump class instance to dictionary and modify accordingly."""
@@ -77,9 +80,11 @@ def dump_to_dict(class_instance, deleted=[], enum_value=[], enum_name=[], logic_
             as_dict[coord] = func_dict[coord](as_dict)
     return as_dict
 
+
 def filterCSVCell(cell_value: str):
     """Filter CSV Cell to not contain commas or invalid characters."""
-    return str(cell_value).replace(",","")
+    return str(cell_value).replace(",", "")
+
 
 def getLevelName(level_name: Levels):
     """Get level name from level enum."""
@@ -98,16 +103,18 @@ def getLevelName(level_name: Levels):
         return level_dict[level_name]
     return level_name.name
 
+
 def camelCaseSplit(string: str):
-    """Splits a camel case joined word into separate words split by capitals."""
+    """Split a camel case joined word into separate words split by capitals."""
     words = [[string[0]]]
     for c in string[1:]:
         if words[-1][-1].islower() and c.isupper():
             words.append(list(c))
         else:
             words[-1].append(c)
- 
-    return " ".join([''.join(word) for word in words])
+
+    return " ".join(["".join(word) for word in words])
+
 
 def getMapNameFromIndex(index: int):
     """Get map name from index value."""
@@ -115,6 +122,7 @@ def getMapNameFromIndex(index: int):
         if e.value == index:
             return camelCaseSplit(e.name)
     return "Unknown"
+
 
 def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.ColoredBananas):
     """Dump data to a JSON file."""
@@ -155,6 +163,10 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                     headers = {
                         Dumpers.ColoredBananas: "Colored Banana Locations",
                         Dumpers.Crowns: "Crown Pad Locations",
+                        Dumpers.Doors: "Door Locations",
+                        Dumpers.Fairies: "Fairy Locations",
+                        Dumpers.Patches: "Dirt Patch Locations",
+                        Dumpers.Kasplats: "Kasplat Locations",
                     }
                     dumper_header = "Click me"
                     if dumper in headers:
@@ -257,7 +269,7 @@ def dump_crown(format: str):
             x_f = lambda x: x["coords"][0]
             y_f = lambda x: x["coords"][1]
             z_f = lambda x: x["coords"][2]
-            crown_data.append(dump_to_dict(crown, ["is_vanilla", "is_rotating_room", "default_index", "placement_subindex"], ["map"],["region"], "logic", x_f, y_f, z_f))
+            crown_data.append(dump_to_dict(crown, ["is_vanilla", "is_rotating_room", "default_index", "placement_subindex"], ["map"], ["region"], "logic", x_f, y_f, z_f))
         if format == "md":
             dumps[level] = crown_data
         else:
@@ -282,7 +294,6 @@ def dump_door(format: str):
             dump_to_file(f"doors_{level.name}", door_data, format, Dumpers.Doors)
     if format == "md":
         dump_to_file("doors", dumps, format, Dumpers.Doors)
-        
 
 
 def dump_fairy(format: str):
@@ -332,6 +343,7 @@ def dump_kasplat(format: str):
     if format == "md":
         dump_to_file("kasplats", dumps, format, Dumpers.Kasplats)
 
+
 def dump_patch(format: str):
     """Dump dirt patch locations."""
     dumps = {}
@@ -346,7 +358,7 @@ def dump_patch(format: str):
     else:
         for level in dumps:
             dump_to_file(f"patches_{level.name}", dumps[level], format, Dumpers.Patches)
-    
+
 
 all_args = ["cb", "crown", "door", "fairy", "kasplat", "patch"]
 valid_args = all_args + ["all"]
@@ -361,5 +373,7 @@ if sys.argv[1] not in valid_formats:
     print(f"ERROR: Invalid format \"{sys.argv[1]}\". Select from {', '.join(valid_formats)}")
     sys.exit()
 for arg in args:
+    print(f"Dumping {arg.title()}...")
     arg_f = globals()[f"dump_{arg}"]
     arg_f(sys.argv[1])
+    print("Dumping complete")

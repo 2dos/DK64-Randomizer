@@ -2,7 +2,7 @@
 
 ## Jungle Japes
 <details>
-<summary>Click me</summary>
+<summary>Door Locations</summary>
 
 | Map | Name | Door types acceptable in location |
 | --- | ---- | --------------------------------- |
@@ -55,7 +55,7 @@
 
 ## Angry Aztec
 <details>
-<summary>Click me</summary>
+<summary>Door Locations</summary>
 
 | Map | Name | Door types acceptable in location |
 | --- | ---- | --------------------------------- |
@@ -112,7 +112,7 @@
 
 ## Frantic Factory
 <details>
-<summary>Click me</summary>
+<summary>Door Locations</summary>
 
 | Map | Name | Door types acceptable in location |
 | --- | ---- | --------------------------------- |
@@ -165,7 +165,7 @@
 
 ## Gloomy Galleon
 <details>
-<summary>Click me</summary>
+<summary>Door Locations</summary>
 
 | Map | Name | Door types acceptable in location |
 | --- | ---- | --------------------------------- |
@@ -218,7 +218,7 @@
 
 ## Fungi Forest
 <details>
-<summary>Click me</summary>
+<summary>Door Locations</summary>
 
 | Map | Name | Door types acceptable in location |
 | --- | ---- | --------------------------------- |
@@ -270,7 +270,7 @@
 
 ## Crystal Caves
 <details>
-<summary>Click me</summary>
+<summary>Door Locations</summary>
 
 | Map | Name | Door types acceptable in location |
 | --- | ---- | --------------------------------- |
@@ -333,7 +333,7 @@
 
 ## Creepy Castle
 <details>
-<summary>Click me</summary>
+<summary>Door Locations</summary>
 
 | Map | Name | Door types acceptable in location |
 | --- | ---- | --------------------------------- |

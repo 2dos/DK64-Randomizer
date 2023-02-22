@@ -2,7 +2,7 @@
 
 ## DK Isles
 <details>
-<summary>Click me</summary>
+<summary>Dirt Patch Locations</summary>
 
 | Map | Name |
 | --- | ---- |
@@ -41,7 +41,7 @@
 
 ## Jungle Japes
 <details>
-<summary>Click me</summary>
+<summary>Dirt Patch Locations</summary>
 
 | Map | Name |
 | --- | ---- |
@@ -62,7 +62,7 @@
 
 ## Angry Aztec
 <details>
-<summary>Click me</summary>
+<summary>Dirt Patch Locations</summary>
 
 | Map | Name |
 | --- | ---- |
@@ -85,7 +85,7 @@
 
 ## Frantic Factory
 <details>
-<summary>Click me</summary>
+<summary>Dirt Patch Locations</summary>
 
 | Map | Name |
 | --- | ---- |
@@ -108,7 +108,7 @@
 
 ## Gloomy Galleon
 <details>
-<summary>Click me</summary>
+<summary>Dirt Patch Locations</summary>
 
 | Map | Name |
 | --- | ---- |
@@ -131,7 +131,7 @@
 
 ## Fungi Forest
 <details>
-<summary>Click me</summary>
+<summary>Dirt Patch Locations</summary>
 
 | Map | Name |
 | --- | ---- |
@@ -154,7 +154,7 @@
 
 ## Crystal Caves
 <details>
-<summary>Click me</summary>
+<summary>Dirt Patch Locations</summary>
 
 | Map | Name |
 | --- | ---- |
@@ -177,7 +177,7 @@
 
 ## Creepy Castle
 <details>
-<summary>Click me</summary>
+<summary>Dirt Patch Locations</summary>
 
 | Map | Name |
 | --- | ---- |
