@@ -950,29 +950,29 @@ def plando_disable_keys(evt):
     """Disable keys from being selected for locations in the plandomizer,
        depending on the current settings."""
     # This dict will map our key strings to enum values.
-    keyEnumDict = {
-        "key1": "JungleJapesKey",
-        "key2": "AngryAztecKey",
-        "key3": "FranticFactoryKey",
-        "key4": "GloomyGalleonKey",
-        "key5": "FungiForestKey",
-        "key6": "CrystalCavesKey",
-        "key7": "CreepyCastleKey",
-        "key8": "HideoutHelmKey"
+    keyDict = {
+        1: "JungleJapesKey",
+        2: "AngryAztecKey",
+        3: "FranticFactoryKey",
+        4: "GloomyGalleonKey",
+        5: "FungiForestKey",
+        6: "CrystalCavesKey",
+        7: "CreepyCastleKey",
+        8: "HideoutHelmKey"
     }
     # Determine which keys are enabled and which are disabled.
     disabled_keys = set()
     if js.document.getElementById("select_keys").checked:
         starting_keys_list_selected = js.document.getElementById("starting_keys_list_selected")
         # All keys the user starts with are disabled.
-        disabled_keys.update({keyEnumDict[x.value] for x in starting_keys_list_selected.selectedOptions})
+        disabled_keys.update({x.value for x in starting_keys_list_selected.selectedOptions})
     # If Key 8 is locked in Helm, it gets disabled.
     if js.document.getElementById("key_8_helm").checked:
         disabled_keys.add("HideoutHelmKey")
     item_dropdowns = js.document.getElementsByClassName("plando-item-select")
     # Look at every key and react if it's enabled or disabled.
     for i in range(1, 9):
-        key_string = keyEnumDict[f"key{i}"]
+        key_string = keyDict[1]
         if key_string in disabled_keys:
             key_options = js.document.getElementsByClassName(f"plando-{key_string}-option")
             # Disable this key as a dropdown option.
