@@ -85,3 +85,4 @@
 .definelabel unkLightFunc_0, 0x80604cbc
 .definelabel kongFollowingLightFunc, 0x8072a920
 .definelabel lightShiningLightFunc, 0x806c6530
+.definelabel updateBones, 0x80671A6C

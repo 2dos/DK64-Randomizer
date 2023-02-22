@@ -933,6 +933,7 @@ boot_phrases = (
     "Charging 2 coins per save",
     "Loading in Beavers",
     "Lifting Boulders with Relative Ease",
+    "Doing Monkey Science Probably",
 )
 
 
