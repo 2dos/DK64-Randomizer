@@ -48,12 +48,14 @@ def bind(event, id, iterations=0):
 
     return real_decorator
 
-def bindList(event, idList, suffix=""):
+
+def bindList(event, idList, *, prefix="", suffix=""):
     """Bind a function to an event for a list of buttons.
-    
+
     Args:
         event (str): Event to bind to eg: click
         idList (str[]): A list of IDs of the elements to bind to.
+        prefix (str, optional): A string prefix to add to the start of each ID.
         suffix (str, optional): A string suffix to add to the end of each ID.
     """
 
@@ -69,7 +71,8 @@ def bindList(event, idList, suffix=""):
         function = create_proxy(function)
         for id in idList:
             try:
-                document.getElementById(id + suffix).addEventListener(event, function)
+                elementName = prefix + id + suffix
+                document.getElementById(elementName).addEventListener(event, function)
             except Exception:
                 pass
 
