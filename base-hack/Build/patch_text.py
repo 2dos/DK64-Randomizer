@@ -87,14 +87,14 @@ move_hints = [
     {
         "move": "Monkeyport",
         "kong": "Tiny",
-        "cranky": "IN MY DAY, YOU'D HAVE TO WALK UPHILL BOTH WAYS, BUT THIS WILL WARP YOU IN AN INSTANT.",
+        "cranky": "IN MY DAY, YOU WOULD HAVE TO WALK UPHILL BOTH WAYS, BUT THIS WILL WARP YOU IN AN INSTANT.",
         "funky": "THIS COOL MOVE WILL SEND YOU PLACES!",
         "candy": "IT'S YOUR VERY OWN PERSONAL WARP PAD!",
     },
     {
         "move": "Hunky Chunky",
         "kong": "Chunky",
-        "cranky": "ALTHOUGH I'M NOT SURE WHY YOU'D NEED IT, YOU'RE ALREADY BIG ENOUGH AS IT IS.",
+        "cranky": "ALTHOUGH I'M NOT SURE WHY YOU WOULD NEED IT, YOU'RE ALREADY BIG ENOUGH AS IT IS.",
         "funky": "DRINK THIS AND YOU'LL BULK UP BIG TIME!",
         "candy": "ONE SIP OF THIS MAGICAL DRINK CAN MAKE A BIG STRONG FELLA LIKE YOU EVEN BIGGER.",
     },
@@ -150,7 +150,7 @@ move_hints = [
     {
         "move": "Pineapple Launcher",
         "kong": "Chunky",
-        "cranky": "NOW, TAKE IT AND DON'T POINT IT AT ME! YOU'D RIP MY FEEBLE HEAD OFF WITH THESE PINEAPPLES!",
+        "cranky": "NOW, TAKE IT AND DON'T POINT IT AT ME! YOU WOULD RIP MY FEEBLE HEAD OFF WITH THESE PINEAPPLES!",
         "funky": "THIS IS A REAL COOL LAUNCHER THAT'LL BLOW HOLES IN K.ROOL'S ARMY.",
         "candy": "USE IT TO FIRE MASSIVE PINEAPPLES TO CLEAR EVERYTHING ON YOUR PATH.",
     },
@@ -269,14 +269,14 @@ move_hints = [
     {
         "move": "Golden Banana",
         "kong": "~",
-        "cranky": "ANOTHER GOLDEN BANANA. WHY DO YOU NEED TO MANY OF THESE STUPID THINGS?",
+        "cranky": "ANOTHER GOLDEN BANANA. WHY DO YOU NEED SO MANY OF THESE STUPID THINGS?",
         "funky": "FOUND ANOTHER GOLDEN BANANA FOR YOU, MY DUDE!",
         "candy": "A SHINY GOLDEN BANANA. I KNOW THEY'RE YOUR FAVOURITE!",
     },
     {
         "move": "Battle Crown",
         "kong": "~",
-        "cranky": "BACK IN MY DAY, YOU'D HAVE TO FIGHT IN THE RING FOR A PRIZE LIKE THAT!",
+        "cranky": "BACK IN MY DAY, YOU WOULD HAVE TO FIGHT IN THE RING FOR A PRIZE LIKE THAT!",
         "funky": "I FOUND THIS SICK LOOKIN' CROWN FOR YOU!",
         "candy": "HERE'S A PRETTY CROWN SO YOU CAN LOOK LIKE THE PRINCESS YOU ARE!",
     },
@@ -342,6 +342,13 @@ move_hints = [
         "cranky": "IT'S A LOST FAIRY FOR THE GREAT BANANA FAIRY.",
         "funky": "I HEARD YOU BEEN LOOKIN' FOR THE LOST BANANA FAIRIES. WELL, I FOUND ONE!",
         "candy": "THIS POOR LITTLE FAIRY NEEDS TO GET BACK HOME. WILL YOU HELP HER?",
+    },
+    {
+        "move": "Ice Trap",
+        "kong": "~",
+        "cranky": "THIS ITEM WAS DONATED BY A BARON K. ROOLENSTEIN. LOOKS FISHY BUT YOU CAN HAVE IT.",
+        "funky": "THIS ONE LOOKS A BIT STRANGE MY DUDE. YOU CAN HAVE IT THOUGH!",
+        "candy": "I AM NOT TOO SURE ABOUT THIS ITEM. ARE YOU SURE YOU WANT IT?",
     },
     {
         "move": "Not enough coins - Special Move",
@@ -582,6 +589,8 @@ move_names = [
     {"name": "Tiny Kong", "move_type": "item"},  # 84
     {"name": "Chunky Kong", "move_type": "item"},  # 85
     {"name": "Banana Fairy", "move_type": "item"},  # 86
+    {"name": "Rainbow Coin", "move_type": "item"},  # 87
+    {"name": "Ice Trap", "move_type": "item"},  # 88
 ]
 
 move_names_arr = []
@@ -635,6 +644,100 @@ for move_index in range(3):
         index_data["ammo_belt"]["indexes"].append((move_index - 1) + 0x30)
 # Instrument Upgrades
 index_data["ins_upg"]["indexes"] = [0x0, 0x0, 0x33, 0x32, 0x34]
+
+text_enum = [
+    "ITEMTEXT_SLAM1",  # 0x000
+    "ITEMTEXT_SLAM1_LATIN",  # 0x001
+    "ITEMTEXT_SLAM2",  # 0x002
+    "ITEMTEXT_SLAM2_LATIN",  # 0x003
+    "ITEMTEXT_SLAM3",  # 0x004
+    "ITEMTEXT_SLAM3_LATIN",  # 0x005
+    "ITEMTEXT_BBLAST",  # 0x006
+    "ITEMTEXT_BBLAST_LATIN",  # 0x007
+    "ITEMTEXT_SKONG",  # 0x008
+    "ITEMTEXT_SKONG_LATIN",  # 0x009
+    "ITEMTEXT_GGRAB",  # 0x00A
+    "ITEMTEXT_GGRAB_LATIN",  # 0x00B
+    "ITEMTEXT_CCHARGE",  # 0x00C
+    "ITEMTEXT_CCHARGE_LATIN",  # 0x00D
+    "ITEMTEXT_RBARREL",  # 0x00E
+    "ITEMTEXT_RBARREL_LATIN",  # 0x00F
+    "ITEMTEXT_SSPRING",  # 0x010
+    "ITEMTEXT_SSPRING_LATIN",  # 0x011
+    "ITEMTEXT_OSTAND",  # 0x012
+    "ITEMTEXT_OSTAND_LATIN",  # 0x013
+    "ITEMTEXT_BBALLOON",  # 0x014
+    "ITEMTEXT_BBALLOON_LATIN",  # 0x015
+    "ITEMTEXT_OSPRINT",  # 0x016
+    "ITEMTEXT_OSPRINT_LATIN",  # 0x017
+    "ITEMTEXT_MMONKEY",  # 0x018
+    "ITEMTEXT_MMONKEY_LATIN",  # 0x019
+    "ITEMTEXT_PTT",  # 0x01A
+    "ITEMTEXT_PTT_LATIN",  # 0x01B
+    "ITEMTEXT_MPORT",  # 0x01C
+    "ITEMTEXT_MPORT_LATIN",  # 0x01D
+    "ITEMTEXT_HCHUNKY",  # 0x01E
+    "ITEMTEXT_HCHUNKY_LATIN",  # 0x01F
+    "ITEMTEXT_PPUNCH",  # 0x020
+    "ITEMTEXT_PPUNCH_LATIN",  # 0x021
+    "ITEMTEXT_GGONE",  # 0x022
+    "ITEMTEXT_GGONE_LATIN",  # 0x023
+    "ITEMTEXT_COCONUT",  # 0x024
+    "ITEMTEXT_PEANUT",  # 0x025
+    "ITEMTEXT_GRAPE",  # 0x026
+    "ITEMTEXT_FEATHER",  # 0x027
+    "ITEMTEXT_PINEAPPLE",  # 0x028
+    "ITEMTEXT_BONGOS",  # 0x029
+    "ITEMTEXT_GUITAR",  # 0x02A
+    "ITEMTEXT_TROMBONE",  # 0x02B
+    "ITEMTEXT_SAX",  # 0x02C
+    "ITEMTEXT_TRIANGLE",  # 0x02D
+    "ITEMTEXT_HOMING",  # 0x02E
+    "ITEMTEXT_SNIPER",  # 0x02F
+    "ITEMTEXT_BELT1",  # 0x030
+    "ITEMTEXT_BELT2",  # 0x031
+    "ITEMTEXT_THIRDMELON",  # 0x032
+    "ITEMTEXT_INSUPGRADE1",  # 0x033
+    "ITEMTEXT_INSUPGRADE2",  # 0x034
+    "ITEMTEXT_DIVE",  # 0x035
+    "ITEMTEXT_ORANGE",  # 0x036
+    "ITEMTEXT_BARREL",  # 0x037
+    "ITEMTEXT_VINE",  # 0x038
+    "ITEMTEXT_CAMERA",  # 0x039
+    "ITEMTEXT_SHOCKWAVE",  # 0x03A
+    "ITEMTEXT_CAMERACOMBO",  # 0x03B
+    "ITEMTEXT_BANANA",  # 0x03C
+    "ITEMTEXT_MEDAL",  # 0x03D
+    "ITEMTEXT_BLUEPRINT_DK",  # 0x03E
+    "ITEMTEXT_BLUEPRINT_DIDDY",  # 0x03F
+    "ITEMTEXT_BLUEPRINT_LANKY",  # 0x040
+    "ITEMTEXT_BLUEPRINT_TINY",  # 0x041
+    "ITEMTEXT_BLUEPRINT_CHUNKY",  # 0x042
+    "ITEMTEXT_NINTENDO",  # 0x043
+    "ITEMTEXT_RAREWARE",  # 0x044
+    "ITEMTEXT_KEYGENERIC",  # 0x045
+    "ITEMTEXT_CROWN",  # 0x046
+    "ITEMTEXT_BEAN",  # 0x047
+    "ITEMTEXT_KEY1",  # 0x048
+    "ITEMTEXT_KEY2",  # 0x049
+    "ITEMTEXT_KEY3",  # 0x04A
+    "ITEMTEXT_KEY4",  # 0x04B
+    "ITEMTEXT_KEY5",  # 0x04C
+    "ITEMTEXT_KEY6",  # 0x04D
+    "ITEMTEXT_KEY7",  # 0x04E
+    "ITEMTEXT_KEY8",  # 0x04F
+    "ITEMTEXT_PEARL",  # 0x050
+    "ITEMTEXT_KONG_DK",  # 0x051
+    "ITEMTEXT_KONG_DIDDY",  # 0x052
+    "ITEMTEXT_KONG_LANKY",  # 0x053
+    "ITEMTEXT_KONG_TINY",  # 0x054
+    "ITEMTEXT_KONG_CHUNKY",  # 0x055
+    "ITEMTEXT_FAIRY",  # 0x056
+    "ITEMTEXT_RAINBOWCOIN",  # 0x057
+    "ITEMTEXT_FAKEITEM",  # 0x058
+]
+
+
 with open("src/randomizers/move_text.c", "w") as fh:
     with open("include/text_items.h", "w") as fg:
         fh.write('#include "../../include/common.h"\n\n')
@@ -659,22 +762,22 @@ with open("src/randomizers/move_text.c", "w") as fh:
             for item_index in range(int(len(index_data[move_type]["indexes"]) / divisor)):
                 if index_data[move_type]["has_latin"]:
                     fh.write("\t{\n")
-                    fh.write(f"\t\t.name = {index_data[move_type]['indexes'][divisor * item_index]},\n")
-                    fh.write(f"\t\t.latin = {index_data[move_type]['indexes'][(divisor * item_index) + 1]},\n")
+                    fh.write(f"\t\t.name = {text_enum[index_data[move_type]['indexes'][divisor * item_index]]},\n")
+                    fh.write(f"\t\t.latin = {text_enum[index_data[move_type]['indexes'][(divisor * item_index) + 1]]},\n")
                     fh.write("\t},\n")
                 else:
-                    fh.write(f"\t{index_data[move_type]['indexes'][divisor * item_index]},\n")
+                    fh.write(f"\t{text_enum[index_data[move_type]['indexes'][divisor * item_index]]},\n")
             fh.write("};\n\n")
 
 writeText("move_names.bin", move_names_arr)
 
 move_explanations = [
     {
-        "move": "dive_barrel",  # 0x24
+        "move": "dive_barrel",  # 0x25
         "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW DIVE UNDERWATER. PRESS"]}, {"text": ["z_button"]}, {"text": ["TO SUBMERGE YOURSELF."]}],
     },
     {
-        "move": "orange_barrel",  # 0x25
+        "move": "orange_barrel",  # 0x26
         "explanation": [
             {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW THROW ORANGE GRENADES. PRESS"]},
             {"text": ["z_button"]},
@@ -684,11 +787,11 @@ move_explanations = [
         ],
     },
     {
-        "move": "barrel_barrel",  # 0x26
+        "move": "barrel_barrel",  # 0x27
         "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW PICK UP OBJECTS. PRESS"]}, {"text": ["b_button"]}, {"text": ["TO GRAB AN OBJECT WITH RELATIVE EASE."]}],
     },
     {
-        "move": "vine_barrel",  # 0x27
+        "move": "vine_barrel",  # 0x28
         "explanation": [
             {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW SWING ON VINES. JUMP TO GRAB ONTO THE VINE AND PRESS "]},
             {"text": ["a_button"]},
@@ -696,7 +799,7 @@ move_explanations = [
         ],
     },
     {
-        "move": "camera_solo",  # 0x28
+        "move": "camera_solo",  # 0x29
         "explanation": [
             {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW USE A CAMERA TO SNAP BANANA FAIRIES. PRESS"]},
             {"text": ["z_button"]},
@@ -708,11 +811,11 @@ move_explanations = [
         ],
     },
     {
-        "move": "shockwave_solo",  # 0x29
+        "move": "shockwave_solo",  # 0x2A
         "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE. PRESS AND HOLD"]}, {"text": ["b_button"]}, {"text": ["TO CHARGE THE SHOCKWAVE."]}],
     },
     {
-        "move": "camera_shockwave_combo",  # 0x2A
+        "move": "camera_shockwave_combo",  # 0x2B
         "explanation": [
             {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE AND USE A CAMERA TO SNAP BANANA FAIRIES. PRESS AND HOLD"]},
             {"text": ["b_button"]},
@@ -723,10 +826,15 @@ move_explanations = [
             {"text": ["TO PULL OUT THE CAMERA."]},
         ],
     },
-    {"move": "generic_item", "explanation": [{"text": ["PAY ATTENTION, ~. THERE'S PLENTY MORE ITEMS TO GATHER IN THIS GAME. GET MOVING SO WE CAN DISPENSE OF K. ROOL"]}]},  # 0x2B
+    {"move": "generic_item", "explanation": [{"text": ["PAY ATTENTION, ~. THERE'S PLENTY MORE ITEMS TO GATHER IN THIS GAME. GET MOVING SO WE CAN DISPENSE OF K. ROOL"]}]},  # 0x2C
 ]
 
 cranky_text = grabText(8)
+cranky_text.append(
+    [
+        {"text": ["DID DIDDY DROP SOME OF YOUR COCONUTS AGAIN? LET US TRADE. DIDDY FOR THE COCONUTS, THE COCONUTS FOR DIDDY."]},
+    ]
+)  # Item 0x24
 for move in move_explanations:
     cranky_text.append(move["explanation"])
 writeText("cranky_text.bin", cranky_text)
@@ -746,4 +854,9 @@ writeText("fairy_rw_text.bin", fairy_text)
 squawks_text = grabText(19)
 squawks_text.append([{"text": ["YOU CAN FIND GORILLA GONE IN CAVES CRANKY."]}])
 squawks_text.append([{"text": ["YOU CAN FIND MONKEYPORT IN CAVES CRANKY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND BONGO BLAST IN AZTEC CANDY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND TRIANGLE TRAMPLE IN AZTEC CANDY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND SAXOPHONE SLAM IN AZTEC CANDY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND TROMBONE TREMOR IN AZTEC CANDY."]}])
+squawks_text.append([{"text": ["YOU CAN FIND GUITAR GAZUMP IN AZTEC CANDY."]}])
 writeText("misc_squawks_text.bin", squawks_text)

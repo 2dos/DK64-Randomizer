@@ -4,57 +4,8 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Regions import Regions
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Kongs import Kongs
-
-
-class ColoredBananaGroup:
-    """Stores data for each group of colored bananas."""
-
-    def __init__(self, *, group=0, name="No Location", map_id=0, konglist=[], region=None, logic=None, vanilla=False, locations=[]):
-        """Initialize with given parameters."""
-        self.group = group
-        self.name = name
-        self.map = map_id
-        self.kongs = konglist
-        self.locations = locations  # 5 numbers: {int amount, float scale, int x, y, z}
-        self.region = region
-        if logic is None:
-            self.logic = lambda l: True
-        else:
-            self.logic = logic
-
-
-class Balloon:
-    """Stores data for each balloon."""
-
-    def __init__(self, *, id=0, name="No Location", map_id=0, speed=0, konglist=[], region=None, logic=None, vanilla=False, points=[]):
-        """Initialize with given parameters."""
-        self.id = id
-        self.name = name
-        self.map = map_id
-        self.speed = speed
-        self.kongs = konglist
-        self.points = points  # 4 numbers: {int point id, x, y, z}
-        self.region = region
-        if logic is None:
-            self.logic = lambda l: True
-        else:
-            self.logic = logic
-        self.spawnPoint = self.setSpawnPoint(points)
-
-    def setSpawnPoint(self, points=[]):
-        """Set the spawn point of a balloon based on its path."""
-        spawnX = 0
-        spawnY = 0
-        spawnZ = 0
-        for p in points:
-            spawnX += p[0]
-            spawnY += p[1]
-            spawnZ += p[2]
-        spawnX /= len(points)
-        spawnY /= len(points)
-        spawnY -= 100  # Most balloons are at least 100 units off the ground
-        spawnZ /= len(points)
-        return [int(spawnX), int(spawnY), int(spawnZ)]
+from randomizer.Enums.Levels import Levels
+from randomizer.LogicClasses import Balloon, ColoredBananaGroup
 
 
 ColoredBananaGroupList = [
@@ -223,7 +174,7 @@ ColoredBananaGroupList = [
         name="Up the slope to painting room",
         konglist=[Kongs.lanky, Kongs.tiny],
         region=Regions.JungleJapesMain,
-        logic=lambda l: (l.handstand and l.lanky) or (l.twirl and l.tiny),
+        logic=lambda l: (l.handstand and l.islanky) or (l.twirl and l.istiny),
         locations=[[5, 1.0, 545, 375, 1943], [5, 1.0, 553, 375, 1806]],
     ),
     ColoredBananaGroup(
@@ -641,7 +592,7 @@ ColoredBananaGroupList = [
         name="Bunches on staircase-shaped boxes",
         konglist=[Kongs.diddy],
         region=Regions.Mine,
-        logic=lambda l: l.Slam,
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
         locations=[[5, 1.0, 93, 145, 962], [5, 1.0, 40, 225, 1057]],
     ),
     ColoredBananaGroup(
@@ -650,7 +601,7 @@ ColoredBananaGroupList = [
         name="Conveyors",
         konglist=[Kongs.diddy],
         region=Regions.Mine,
-        logic=lambda l: l.Slam,
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
         locations=[
             [1, 1.0, 157, 208, 840],
             [1, 1.0, 125, 246, 898],
@@ -716,7 +667,7 @@ ColoredBananaGroupList = [
         group=51,
         map_id=Maps.JapesUnderGround,
         name="On blueprint platform",
-        konglist=[Kongs.donkey, Kongs.tiny, Kongs.chunky],
+        konglist=[Kongs.tiny, Kongs.chunky],
         region=Regions.JapesCatacomb,
         logic=lambda l: ((l.pineapple and l.vines and l.ischunky) or (l.twirl and l.istiny)),
         locations=[[5, 1.0, 203, 5, 686]],
@@ -727,7 +678,7 @@ ColoredBananaGroupList = [
         name="Paths to 1st & 2nd Switch",
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
-        logic=lambda l: l.Slam,
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
         locations=[
             [1, 2.0, 1203, 213, 1424],
             [1, 2.0, 1118, 178, 1423],
@@ -766,7 +717,7 @@ ColoredBananaGroupList = [
         name="Behind 2nd hallway arch",
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
-        logic=lambda l: l.Slam,
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
         locations=[[5, 2.0, 1331, 228, 1143], [5, 1.0, 1425, 228, 1143]],
     ),
     ColoredBananaGroup(
@@ -775,7 +726,7 @@ ColoredBananaGroupList = [
         name="Rings on steps (12 custom, 8 Tiny)",
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
-        logic=lambda l: l.Slam,
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
         locations=[
             [1, 2.0, 2138, 295, 1349],
             [1, 2.0, 2180, 295, 1285],
@@ -805,7 +756,7 @@ ColoredBananaGroupList = [
         name="Around 2nd switch room",
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
-        logic=lambda l: l.Slam,
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
         locations=[
             [1, 2.0, 1263, 212, 677],
             [1, 2.0, 1185, 206, 579],
@@ -952,8 +903,8 @@ ColoredBananaGroupList = [
     #     map_id=Maps.JungleJapes,
     #     name="Tiny's caged GB",
     #     konglist=[Kongs.tiny],
-    #     region=Regions.JungleJapesMain,
-    #     logic=lambda l: Events.JapesTinySwitch in l.Events and l.Slam,
+    #     lregion=Regions.JungleJapesMain,
+    #     logic=lambda l: Events.JapesTinySwitch in l.Events and l.CanSlamSwitch(Levels.JungleJapes, 1),
     #     locations=[[5, 1.0, 1335, 285, 1974], [5, 1.0, 1300, 285, 1946]],
     # ),  # Temporarily disabled
     # ColoredBananaGroup(
@@ -961,8 +912,8 @@ ColoredBananaGroupList = [
     #     map_id=Maps.JungleJapes,
     #     name="Lanky's caged GB",
     #     konglist=[Kongs.lanky],
-    #     region=Regions.JungleJapesMain,
-    #     logic=lambda l: Events.JapesLankySwitch in l.Events and l.Slam,
+    #     lregion=Regions.JungleJapesMain,
+    #     logic=lambda l: Events.JapesLankySwitch in l.Events and l.CanSlamSwitch(Levels.JungleJapes, 1),
     #     locations=[[5, 1.0, 1140, 525, 2346], [5, 1.0, 1186, 525, 2326]],
     # ),  # Temporarily disabled
     ColoredBananaGroup(
@@ -978,8 +929,8 @@ ColoredBananaGroupList = [
     #     map_id=Maps.JungleJapes,
     #     name="Diddy's Caged GB",
     #     konglist=[Kongs.diddy],
-    #     region=Regions.JungleJapesMain,
-    #     logic=lambda l: Events.JapesDiddySwitch1 in l.Events and l.Slam,
+    #     lregion=Regions.JungleJapesMain,
+    #     logic=lambda l: Events.JapesDiddySwitch1 in l.Events and l.CanSlamSwitch(Levels.JungleJapes, 1),
     #     locations=[[5, 1.0, 2305, 525, 2101], [5, 1.0, 2310, 525, 2142]],
     # ),  # Temporarily disabled
     # ColoredBananaGroup(
@@ -987,8 +938,8 @@ ColoredBananaGroupList = [
     #     map_id=Maps.JungleJapes,
     #     name="Chunky's Caged GB",
     #     konglist=[Kongs.chunky],
-    #     region=Regions.JungleJapesMain,
-    #     logic=lambda l: Events.JapesChunkySwitch in l.Events and l.Slam,
+    #     lregion=Regions.JungleJapesMain,
+    #     logic=lambda l: Events.JapesChunkySwitch in l.Events and l.CanSlamSwitch(Levels.JungleJapes, 1),
     #     locations=[[5, 1.0, 2335, 685, 2207], [5, 1.0, 2362, 685, 2253]],
     # ),  # Temporarily disabled
     ColoredBananaGroup(
@@ -1040,7 +991,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.Mine,
         vanilla=True,
-        logic=lambda l: l.Slam,
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
         locations=[[5, 1.0, 508.2171936035156, 223.6666717529297, 1352.9554443359375]],
     ),
     ColoredBananaGroup(
@@ -1065,7 +1016,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.Mine,
         vanilla=True,
-        logic=lambda l: l.Slam,
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
         locations=[[5, 1.0, 190.0592041015625, 177.6666717529297, 794.992431640625]],
     ),
     ColoredBananaGroup(
@@ -1688,7 +1639,7 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
-        logic=lambda l: l.Slam,
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
         points=[[2037, 450, 1415], [2205, 455, 1200], [2394, 460, 1200], [2515, 460, 1378], [2402, 455, 1571], [2191, 450, 1583]],
     ),
     Balloon(id=31, map_id=Maps.JapesMountain, name="First room above river", speed=3, konglist=[Kongs.diddy], region=Regions.Mine, points=[[688, 140, 331], [776, 150, 565], [884, 155, 782]]),
@@ -1718,7 +1669,7 @@ BalloonList = [
         konglist=[Kongs.diddy],
         region=Regions.Mine,
         vanilla=True,
-        logic=lambda l: l.Slam,
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
         points=[[174, 226, 1124], [193, 224, 991], [298, 228, 875]],
     ),
     Balloon(

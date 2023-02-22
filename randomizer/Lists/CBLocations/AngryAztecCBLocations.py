@@ -4,57 +4,8 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Regions import Regions
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Kongs import Kongs
-
-
-class ColoredBananaGroup:
-    """Stores data for each group of colored bananas."""
-
-    def __init__(self, *, group=0, name="No Location", map_id=0, konglist=[], region=None, logic=None, vanilla=False, locations=[]):
-        """Initialize with given parameters."""
-        self.group = group
-        self.name = name
-        self.map = map_id
-        self.kongs = konglist
-        self.locations = locations  # 5 numbers: {int amount, float scale, int x, y, z}
-        self.region = region
-        if logic is None:
-            self.logic = lambda l: True
-        else:
-            self.logic = logic
-
-
-class Balloon:
-    """Stores data for each balloon."""
-
-    def __init__(self, *, id=0, name="No Location", map_id=0, speed=0, konglist=[], region=None, logic=None, vanilla=False, points=[]):
-        """Initialize with given parameters."""
-        self.id = id
-        self.name = name
-        self.map = map_id
-        self.speed = speed
-        self.kongs = konglist
-        self.points = points  # 4 numbers: {int point id, x, y, z}
-        self.region = region
-        if logic is None:
-            self.logic = lambda l: True
-        else:
-            self.logic = logic
-        self.spawnPoint = self.setSpawnPoint(points)
-
-    def setSpawnPoint(self, points=[]):
-        """Set the spawn point of a balloon based on its path."""
-        spawnX = 0
-        spawnY = 0
-        spawnZ = 0
-        for p in points:
-            spawnX += p[0]
-            spawnY += p[1]
-            spawnZ += p[2]
-        spawnX /= len(points)
-        spawnY /= len(points)
-        spawnY -= 100  # Most balloons are at least 100 units off the ground
-        spawnZ /= len(points)
-        return [int(spawnX), int(spawnY), int(spawnZ)]
+from randomizer.Enums.Levels import Levels
+from randomizer.LogicClasses import Balloon, ColoredBananaGroup
 
 
 ColoredBananaGroupList = [
@@ -95,7 +46,7 @@ ColoredBananaGroupList = [
         logic=lambda l: l.coconut and l.strongKong,
         locations=[
             [1, 1.0, 1527, 120, 738],
-            [1, 1.0, 1487, 726, 740],
+            [1, 1.0, 1487, 126, 740],
             [1, 1.0, 1458, 141, 737],
             [1, 1.0, 1421, 157, 735],
             [1, 1.0, 1384, 163, 738],
@@ -1200,7 +1151,7 @@ ColoredBananaGroupList = [
         name="Monkey tongues (2 custom, 3 Diddy)",
         konglist=[Kongs.diddy],
         region=Regions.TempleStart,
-        logic=lambda l: l.Slam,
+        logic=lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1),
         locations=[
             [1, 1.0, 1350, 490, 1110],
             [1, 1.0, 1390, 490, 1110],
@@ -1244,7 +1195,7 @@ ColoredBananaGroupList = [
     ),
     ColoredBananaGroup(
         group=78,
-        map_id=Maps.AztecTiny5DTemple,
+        map_id=Maps.AztecTinyTemple,
         name="Right side Mini Monkey room (scale 0.6)",
         konglist=[Kongs.tiny],
         region=Regions.TempleUnderwater,
@@ -1286,7 +1237,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.TempleStart,
         vanilla=True,
-        logic=lambda l: l.Slam and l.peanut,
+        logic=lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut,
         locations=[[5, 1.0, 1346.4971923828125, 482.0, 895.43505859375], [5, 1.0, 1351.4986572265625, 487.0, 705.5042114257812], [5, 1.0, 1349.2825927734375, 483.1666564941406, 807.2919921875]],
     ),
     ColoredBananaGroup(
@@ -1370,7 +1321,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.LlamaTempleBack,
         vanilla=True,
-        logic=lambda l: l.Slam,
+        logic=lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1),
         locations=[[5, 1.0, 870.1953125, 475.3333435058594, 3735.6279296875], [5, 1.0, 1458.1766357421875, 475.3333435058594, 4069.542236328125]],
     ),
     ColoredBananaGroup(
@@ -1691,7 +1642,7 @@ BalloonList = [
         name="Mini Monkey alcove",
         speed=5,
         konglist=[Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.TinyTemple,
+        region=Regions.TempleStart,
         points=[[1822, 460, 1056], [1756, 465, 1119]],
     ),
     Balloon(id=21, map_id=Maps.AztecLlamaTemple, name="Matching game room right side", speed=4, konglist=[Kongs.lanky], region=Regions.LlamaTemple, points=[[1144, 760, 2142], [795, 810, 2142]]),

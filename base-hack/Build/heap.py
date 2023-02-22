@@ -1,6 +1,6 @@
 """Handle heap size."""
 
-heap_size = 0x24000
+heap_size = 0x2C000
 flut_size = 0x640
 code_end = 0x805FAE00
 
@@ -25,7 +25,7 @@ def getLabel(label: str, value: int):
 def handleHeap(size: int, rando_flut_size: int):
     """Write data regarding heap size."""
     with open("asm/variables/heap.asm", "w") as fh:
-        fh.write("; Don't modify this file. Instead, modify build/heap.py")
+        fh.write("; Don't modify this file. Instead, modify build/heap.py\n")
         fh.write(getLabel("heap_start", variables["start"]))
         fh.write(getLabel("heap_start_upper", variables["upper"]))
         fh.write(getLabel("heap_start_lower", variables["lower"]))
@@ -36,4 +36,4 @@ def handleHeap(size: int, rando_flut_size: int):
         fh.write(f".org {hex(variables['start'])}")
 
 
-handleHeap(0x24000, 0x640)
+handleHeap(heap_size, flut_size)

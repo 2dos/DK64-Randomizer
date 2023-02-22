@@ -1,9 +1,20 @@
+/**
+ * @file parent.c
+ * @author Ballaam
+ * @brief Parent map filtration code
+ * @version 0.1
+ * @date 2022-03-25
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "../../include/common.h"
 
-#define PARENT_FILTER_THRESHOLD 14
-#define LOCK_STACK_THRESHOLD 28
+#define PARENT_FILTER_THRESHOLD 14 // Parent chain length limit regarding filtration
+#define LOCK_STACK_THRESHOLD 28 // Lock Stack length limit regarding filtration
 
 static const unsigned char banned_filter_maps[] = {
+	// Maps where the filtration process is banned
 	1, // Funky's
 	2, // Arcade
 	5, // Cranky's
@@ -34,6 +45,7 @@ typedef struct cutscene_wipe {
 } cutscene_wipe;
 
 static const cutscene_wipe wipe_prevent_list[] = {
+	// Cutscenes where the filtration process is prevented, regardless of map permissions
 	{
 		// Mountain GB Spawn Cutscene
 		.map = 7,
@@ -91,6 +103,9 @@ static const cutscene_wipe wipe_prevent_list[] = {
 };
 
 int isPreventCutscenePlaying(void) {
+	/**
+	 * @brief Check if a cutscene which prevents the filtration process is playing
+	 */
 	if (CutsceneActive) {
 		for (int i = 0; i < (sizeof(wipe_prevent_list)/4); i++) {
 			if (CutsceneIndex == wipe_prevent_list[i].cutscene) {
@@ -109,11 +124,15 @@ int isPreventCutscenePlaying(void) {
 }
 
 void callParentMapFilter(void) {
+	/**
+	 * @brief Call the parent map filtration process
+	 */
 	if (Rando.call_parent_filter) {
 		if (ObjectModel2Timer == 2) {
 			int curr = CurrentMap;
 			int level = levelIndexMapping[curr];
 			if (level < 7) {
+				// Set permanent flag to clear the story cutscene of the level you're in
 				setPermFlag(FLAG_STORY_JAPES + level);
 			}
 			int banned = 0;
@@ -129,9 +148,11 @@ void callParentMapFilter(void) {
 				banned = 1;
 			}
 			if (!banned) {
+				// Reset Parent Chain
 				resetMapContainer();
 			}
 		} else if (ObjectModel2Timer < 2) {
+			// Fix DK Portal to be in state 2
 			correctDKPortal();
 		}
 	}

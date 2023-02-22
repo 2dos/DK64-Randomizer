@@ -3,6 +3,7 @@ import os
 import zlib
 
 from PIL import Image
+from BuildLib import main_pointer_table_offset
 
 
 class ImageData:
@@ -81,6 +82,10 @@ images = [
     ImageData("nin_coin_noresize", "rgba16", 25, 5912, 44, 44, False, True),
     ImageData("crown_noresize", "rgba16", 25, 5893, 44, 44, False, True),
     ImageData("bonus_skin", "rgba16", 25, 0x128A, 16, 64, False, False),
+    ImageData("gb_shine", "rgba16", 25, 0xB7B, 32, 32, False, False),
+    ImageData("rainbow_coin_noflip", "rgba16", 25, 5963, 48, 44, False, False),
+    ImageData("melon_resized", "rgba16", 7, 544, 48, 42, False, False),
+    ImageData("melon_slice", "rgba16", 7, 0x142, 48, 42, False, True),
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]
@@ -90,27 +95,26 @@ for kong in kong_tex:
         images.append(ImageData(f"{kong}_face_{x}", "rgba16", 25, tex_idx + x, 32, 64, False, True))
     tex_idx += 2
 
-ptr_offset = 0x101C50
 
-if not os.path.exists("assets/Non-Code/hash"):
-    os.mkdir("assets/Non-Code/hash")
+if not os.path.exists("assets/hash"):
+    os.mkdir("assets/hash")
 
 print("Extracting Images from ROM")
 with open("rom/dk64.z64", "rb") as fh:
     for x in images:
-        fh.seek(ptr_offset + (x.table * 4))
-        ptr_table = ptr_offset + int.from_bytes(fh.read(4), "big")
+        fh.seek(main_pointer_table_offset + (x.table * 4))
+        ptr_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
         fh.seek(ptr_table + (x.index * 4))
-        img_start = ptr_offset + int.from_bytes(fh.read(4), "big")
+        img_start = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
         fh.seek(ptr_table + ((x.index + 1) * 4))
-        img_end = ptr_offset + int.from_bytes(fh.read(4), "big")
+        img_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
         img_size = img_end - img_start
         fh.seek(img_start)
         if x.table == 7:
             dec = fh.read(img_size)
         else:
             dec = zlib.decompress(fh.read(img_size), 15 + 32)
-        img_name = f"assets/Non-Code/hash/{x.name}.png"
+        img_name = f"assets/hash/{x.name}.png"
         if os.path.exists(img_name):
             os.remove(img_name)
         with open(img_name, "wb") as fg:

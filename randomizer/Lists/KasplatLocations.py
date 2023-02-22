@@ -4,6 +4,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import DamageAmount
 from randomizer.Lists.MapsAndExits import Maps
 
 
@@ -116,7 +117,7 @@ KasplatLocationList = {
             zmin=1910,
             zmax=1960,
             region=Regions.JapesBeyondCoconutGate2,
-            additional_logic=lambda l: (Events.Rambi in l.Events and l.Slam and l.tiny) or l.phasewalk or l.CanPhaseswim(),
+            additional_logic=lambda l: (Events.Rambi in l.Events and l.CanSlamSwitch(Levels.JungleJapes, 1) and l.tiny) or l.phasewalk or l.CanPhaseswim(),
         ),
         KasplatLocation(
             name="Japes Kasplat: Starting Area",
@@ -265,10 +266,10 @@ KasplatLocationList = {
         KasplatLocation(
             name="Aztec Kasplat: Behind the DK Stone Door",
             map_id=Maps.AngryAztec,
-            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            kong_lst=[Kongs.donkey, Kongs.tiny],
             coords=[1363, 162, 738],
             region=Regions.AztecTunnelBeforeOasis,
-            additional_logic=lambda l: (l.coconut or l.phasewalk) and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default"),
+            additional_logic=lambda l: l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
             vanilla=True,
         ),
         KasplatLocation(
@@ -424,11 +425,11 @@ KasplatLocationList = {
             name="Aztec Kasplat: In Donkey 5-Door Temple",
             map_id=Maps.AztecDonkey5DTemple,
             kong_lst=[Kongs.donkey],
-            coords=[99, 21, 390],
-            xmin=68,
-            xmax=130,
-            zmin=321,
-            zmax=450,
+            coords=[726, 58, 677],
+            xmin=696,
+            xmax=757,
+            zmin=555,
+            zmax=800,
             region=Regions.DonkeyTemple,
             additional_logic=lambda l: (l.coconut or l.phasewalk) and l.isdonkey,
         ),
@@ -1468,7 +1469,7 @@ KasplatLocationList = {
             xmax=2440,
             zmin=3855,
             zmax=3910,
-            region=Regions.CrocodileIsleBeyondLift,
+            region=Regions.KremIsleBeyondLift,
         ),
         KasplatLocation(
             name="Isles Kasplat: On the Big X Platform",
@@ -1565,8 +1566,7 @@ KasplatLocationList = {
             xmax=2474,
             zmin=3847,
             zmax=3926,
-            region=Regions.IslesMain,
-            additional_logic=lambda l: (l.monkeyport and l.tiny) or l.tbs,
+            region=Regions.KremIsleTopLevel,
         ),
         KasplatLocation(
             name="Isles Kasplat: Near Snide's",

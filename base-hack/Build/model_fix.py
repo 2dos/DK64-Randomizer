@@ -2,26 +2,10 @@
 
 import zlib
 import os
-import struct
-
-
-def intf_to_float(intf):
-    """Convert float as int format to float."""
-    if intf == 0:
-        return 0
-    else:
-        return struct.unpack("!f", bytes.fromhex("{:08X}".format(intf)))[0]
-
-
-def float_to_hex(f):
-    """Convert float to hex."""
-    if f == 0:
-        return "0x00000000"
-    return hex(struct.unpack("<I", struct.pack("<f", f))[0])
+from BuildLib import intf_to_float, float_to_hex, main_pointer_table_offset
 
 
 rom_file = "rom/dk64.z64"
-pointer_offset = 0x101C50
 
 diddy_fix = """
     E7 00 00 00 00 00 00 00
@@ -138,16 +122,37 @@ modifications = [
     },
 ]
 
+krusha_kong = -1
+DK_SCALE = 0.75
+GENERIC_SCALE = 0.49
+krusha_scaling = [
+    # [x, y, z, xz, y]
+    # DK
+    [lambda x: x * DK_SCALE, lambda x: x * DK_SCALE, lambda x: x * GENERIC_SCALE, lambda x: x * DK_SCALE, lambda x: x * DK_SCALE],
+    # Diddy
+    [lambda x: (x * 1.043) - 41.146, lambda x: (x * 9.893) - 8.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 1.103) - 14.759, lambda x: (x * 0.823) + 35.220],
+    # Lanky
+    [lambda x: (x * 0.841) - 17.231, lambda x: (x * 6.925) - 2.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 0.680) - 18.412, lambda x: (x * 0.789) + 42.138],
+    # Tiny
+    [lambda x: (x * 0.632) + 7.590, lambda x: (x * 6.925) + 0.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 1.567) - 21.676, lambda x: (x * 0.792) + 41.509],
+    # Chunky
+    [lambda x: x, lambda x: x, lambda x: x, lambda x: x, lambda x: x],
+]
+krusha_file = "krusha_setting.txt"
+if os.path.exists(krusha_file):
+    with open(krusha_file, "r") as fh:
+        krusha_kong = int(fh.read())
+
 with open(rom_file, "rb") as rom:
-    rom.seek(pointer_offset + (5 * 4))
-    actor_table = pointer_offset + int.from_bytes(rom.read(4), "big")
-    rom.seek(pointer_offset + (4 * 4))
-    modeltwo_table = pointer_offset + int.from_bytes(rom.read(4), "big")
+    rom.seek(main_pointer_table_offset + (5 * 4))
+    actor_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    rom.seek(main_pointer_table_offset + (4 * 4))
+    modeltwo_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     for model in modifications:
         idx = model["model_index"]
         rom.seek(actor_table + (idx * 4))
-        model_start = pointer_offset + int.from_bytes(rom.read(4), "big")
-        model_end = pointer_offset + int.from_bytes(rom.read(4), "big")
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         model_size = model_end - model_start
         rom.seek(model_start)
         with open(model["model_file"], "wb") as fh:
@@ -155,6 +160,40 @@ with open(rom_file, "rb") as rom:
             decompress = zlib.decompress(compress, (15 + 32))
             fh.write(decompress)
         with open(model["model_file"], "r+b") as fh:
+            if idx == 0xDA:
+                if krusha_kong != -1:
+                    print(f"Scaling Krusha Down for kong {krusha_kong}")
+                    # Write Krusha
+                    base = 0x450C
+                    fh.seek(base)
+                    count_0 = int.from_bytes(fh.read(4), "big")
+                    changes = krusha_scaling[krusha_kong][:3]
+                    changes_0 = [
+                        krusha_scaling[krusha_kong][3],
+                        krusha_scaling[krusha_kong][4],
+                        krusha_scaling[krusha_kong][3],
+                    ]
+                    for i in range(count_0):
+                        i_start = base + 4 + (i * 0x14)
+                        for coord_index, change in enumerate(changes):
+                            fh.seek(i_start + (4 * coord_index) + 4)
+                            val_i = int.from_bytes(fh.read(4), "big")
+                            val_f = change(intf_to_float(val_i))
+                            fh.seek(i_start + (4 * coord_index) + 4)
+                            fh.write(int(float_to_hex(val_f), 16).to_bytes(4, "big"))
+                    section_2_start = base + 4 + (count_0 * 0x14)
+                    fh.seek(section_2_start)
+                    count_1 = int.from_bytes(fh.read(4), "big")
+                    for i in range(count_1):
+                        i_start = section_2_start + 4 + (i * 0x10)
+                        for coord_index, change in enumerate(changes_0):
+                            fh.seek(i_start + (4 * coord_index))
+                            val_i = int.from_bytes(fh.read(4), "big")
+                            val_f = change(intf_to_float(val_i))
+                            fh.seek(i_start + (4 * coord_index))
+                            fh.write(int(float_to_hex(val_f), 16).to_bytes(4, "big"))
+                else:
+                    print("Ignoring Krusha Scale Down")
             fh.seek(0)
             sub_idx = 0
             for wipe in model["wipe"]:
@@ -176,8 +215,8 @@ with open(rom_file, "rb") as rom:
     for bp_index in range(5):
         file_index = bp_index + 0xDD
         rom.seek(modeltwo_table + (file_index * 4))
-        model_start = pointer_offset + int.from_bytes(rom.read(4), "big")
-        model_end = pointer_offset + int.from_bytes(rom.read(4), "big")
+        model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         model_size = model_end - model_start
         rom.seek(model_start)
         with open(f"blueprint{bp_index}.bin", "wb") as fh:
@@ -200,10 +239,29 @@ with open(rom_file, "rb") as rom:
                     bp_y += 65536
                 fh.seek(vtx_addr)
                 fh.write(bp_y.to_bytes(2, "big"))
-    barrel_skins = ("dk", "diddy", "lanky", "tiny", "chunky", "bp", "nin_coin", "rw_coin", "key", "crown", "medal", "potion", "bean", "pearl", "fairy")
+    barrel_skins = (
+        "dk",
+        "diddy",
+        "lanky",
+        "tiny",
+        "chunky",
+        "bp",
+        "nin_coin",
+        "rw_coin",
+        "key",
+        "crown",
+        "medal",
+        "potion",
+        "bean",
+        "pearl",
+        "fairy",
+        "rainbow",
+        "fakegb",
+        "melon",
+    )
     rom.seek(actor_table + (0x75 << 2))
-    model_start = pointer_offset + int.from_bytes(rom.read(4), "big")
-    model_end = pointer_offset + int.from_bytes(rom.read(4), "big")
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     model_size = model_end - model_start
     for bi, b in enumerate(barrel_skins):
         rom.seek(model_start)
@@ -216,3 +274,47 @@ with open(rom_file, "rb") as rom:
             fh.write((6026 + (2 * bi) + 1).to_bytes(4, "big"))
             fh.seek(0x63C)
             fh.write((6026 + (2 * bi)).to_bytes(4, "big"))
+    # Fake Item - Model Two
+    rom.seek(modeltwo_table + (0x74 << 2))
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_size = model_end - model_start
+    rom.seek(model_start)
+    indic = int.from_bytes(rom.read(2), "big")
+    rom.seek(model_start)
+    data = rom.read(model_size)
+    if indic == 0x1F8B:
+        data = zlib.decompress(data, (15 + 32))
+    with open("temp.bin", "wb") as fh:
+        fh.write(data)
+    with open("temp.bin", "r+b") as fh:
+        fh.seek(0xF4)
+        fh.write((6062).to_bytes(4, "big"))
+        fh.seek(0)
+        data = fh.read()
+    if os.path.exists("temp.bin"):
+        os.remove("temp.bin")
+    with open("fake_item.bin", "wb") as fh:
+        fh.write(data)
+    # Fake Item - Actor
+    rom.seek(actor_table + (0x68 << 2))
+    model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+    model_size = model_end - model_start
+    rom.seek(model_start)
+    indic = int.from_bytes(rom.read(2), "big")
+    rom.seek(model_start)
+    data = rom.read(model_size)
+    if indic == 0x1F8B:
+        data = zlib.decompress(data, (15 + 32))
+    with open("temp.bin", "wb") as fh:
+        fh.write(data)
+    with open("temp.bin", "r+b") as fh:
+        fh.seek(0xACC)
+        fh.write((6062).to_bytes(4, "big"))
+        fh.seek(0)
+        data = fh.read()
+    if os.path.exists("temp.bin"):
+        os.remove("temp.bin")
+    with open("fake_item_actor.bin", "wb") as fh:
+        fh.write(data)

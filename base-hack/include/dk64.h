@@ -74,9 +74,11 @@ extern void __osCreateMesgQueue(void* queue, void* message, int unk);
 extern void __osRecvMesg(void* queue, void* message, int os_state);
 extern void __osEPiStartDMA(void* unk, void* iomessage, int os_state);
 extern void __osPiRawReadIo(int a0, void* a1);
+extern int __osGetThreadId(void* thread);
 extern int __osDisableInt();
 extern void __osRestoreInt(int mask);
 extern int __osEepromProbe(void* unk0);
+extern void __osViSwapContext(void);
 extern void copyFunc(int rom_offset, int size, void* write_location);
 extern void* getMapData(data_indexes data_idx, int _index, char compressbyte0, char compressbyte1);
 extern void loadSetup(void* setup_file, int unk0, int unk1);
@@ -179,7 +181,7 @@ extern int guardShouldMove(void);
 extern void guardUnkFunction(int unk0);
 extern void generalActorHandle(int control_state, int x, int z, int unk0, float unk1);
 extern void handleGuardDefaultAnimation(void);
-extern void setActorSpeed(void* actor, int speed);
+extern void setActorSpeed(void* actor, short speed);
 extern void playActorAnimation(void* actor, int animation);
 extern void actorUnkFunction(void);
 extern int getRNGLower31(void);
@@ -221,6 +223,8 @@ extern void _guScaleF(void* mtx, int x, int y, int z);
 extern void _guTranslateF(void* mtx, int x, int y, int z);
 extern void _guMtxCatF(void* mtx, void* unk0, void* unk1);
 extern void _guMtxF2L(void* mtx, void* unk0);
+extern void _guMtxXFML(void* unk0, int unk1, int unk2, int unk3, float* x, float* y, float* z);
+extern void _guMtxXFMF(void* unk0, int unk1, int unk2, int unk3, float* x, float* y, float* z);
 extern void* getTextPointer(int file, int text_index, int unk0);
 extern void addDLToOverlay(int code, void* actor, int delay);
 extern int groundContactCheck(void);
@@ -234,6 +238,8 @@ extern int* printOutOfCounter(int x, int y, int top, int bottom, int* dl, int un
 
 extern void assessFlagMapping(int map, int id);
 extern void coinCBCollectHandle(int player, int obj, int is_homing);
+extern void standardCrateHandle(int player_index, int id, void* player, int obj_type);
+extern void bunchHandle(int player_index, int id, void* player);
 extern void displayItemOnHUD(int item, int unk0, int unk1);
 extern int getCollectableOffset(int item, int obj, int homing);
 extern void GoldenBananaCode(void);
@@ -282,6 +288,33 @@ extern void updateFilePercentage(void);
 extern int getKong(int player_index);
 extern int spawnModelTwo(int type, int x_f, int y_f, int z_f, float scale, int id);
 extern void refreshItemVisibility(void);
+
+extern int isBalloonOrPatch(int actor_type);
+extern void getModel2AndActorInfo(void* setup, int** model2_write, int** actor_write);
+extern int isSingleOrBunch(int object_type);
+extern void enableComplexFree(void);
+extern void complexFreeWrapper(void* addr);
+extern void trapPlayer(void);
+extern int applyDamage(int player, int damage);
+extern void damage(void);
+extern int checkDeathAction(void* player);
+extern int isObjectTangible(int id);
+extern int getCenterOffset(int style, char* str);
+
+extern void unkLightFunc_0(actorData* actor, int unk0, char unk1, char unk2, unsigned char); //80604cbc
+extern void kongFollowingLightFunc(unsigned int unk0, unsigned short height_variance, float payerX, float PlayerY, float PlayerZ, unsigned short unk2, float unk3, float movement_speed, unsigned int unk4); //8072a920
+extern void lightShiningLightFunc(void); //806c6530
+
+extern void unkCollisionFunc_0(int id, int unk0);
+extern collected_item_struct* addNewCollectedObject(item_collision* item);
+extern void writeDynamicFlagItemToFile(int flag, int data, int world);
+
+extern void* deleteModelTwo(int index, int id_of_next);
+extern void spawnModelTwoWithDelay(int type, int x, int y, int z, int delay);
+
+extern int printDebugText(char* string, int v1, int v2, int v3, int v4);
+extern void dumpReturns(void* info);
+extern void updateBones(bonedata* bone, int force_update);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -410,7 +443,7 @@ extern short MapVoid_MinZ;
 extern short MapVoid_MaxX;
 extern short MapVoid_MaxZ;
 
-extern bonus_barrel_info BonusBarrelData[54];
+extern bonus_vanilla_info BonusBarrelData[54];
 
 extern short screenCenterX;
 extern short screenCenterY;
@@ -422,6 +455,9 @@ extern char CutsceneBarState;
 extern void* ActorFunctions[345];
 extern unsigned char ActorMasterType[345];
 extern short* ActorPaadDefs[345];
+extern collision_data_struct ActorCollisionArray[345];
+extern health_damage_struct ActorHealthArray[345];
+extern short ActorInteractionArray[345];
 
 extern int* TriggerArray;
 extern short TriggerSize;
@@ -483,7 +519,6 @@ extern unsigned int LevelStateBitfield;
 extern float menuHeadX[5];
 extern float menuHeadY[5];
 extern float menuHeadScale[5];
-extern collected_item_struct* LatestCollectedObject;
 extern image_cache_struct ImageCache[32];
 
 extern short* AnimationTable1;
@@ -523,6 +558,25 @@ extern unsigned char ArcadeEnableReward;
 
 extern unsigned char CharSpawnerActorSubtypes[113];
 extern charSpawnerActorInfo CharSpawnerActorData[113];
+
+extern unsigned short balloonPatchCounts[221];
+extern unsigned short coloredBananaCounts[8];
+
+extern collected_item_struct* CollectedObjects;
+extern collected_item_struct* LatestCollectedObject;
+
+extern char SelectedDLIndex;
+
+extern stack_trace_address_struct StackTraceAddresses[19];
+
+extern char* ReasonExceptions[20];
+extern unsigned char ReasonCode;
+extern int ReasonValues[3];
+
+extern int StackTraceX;
+extern int StackTraceY;
+extern int StackTraceSize;
+extern int StackTraceStartX;
 
 //hack data
 extern int TestVariable;
@@ -571,3 +625,5 @@ extern arbitrary_overlay TextOverlayData;
 extern unsigned char KasplatSpawnBitfield;
 extern char KrushaSlot;
 extern unsigned char TextItemName;
+extern unsigned char RandomSwitches;
+extern unsigned char SwitchLevel[7];

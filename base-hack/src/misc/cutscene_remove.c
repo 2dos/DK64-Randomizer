@@ -1,6 +1,21 @@
+/**
+ * @file cutscene_remove.c
+ * @author Ballaam
+ * @brief 
+ * @version 0.1
+ * @date 2022-10-03
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #include "../../include/common.h"
 
 void updateSkippableCutscenes(void) {
+	/**
+	 * @brief Parse the skip cutscenes database and set all cutscenes that will be skipped to
+	 * have their segments set to 0 length
+	 */
 	if (CurrentMap < 216) {
 		if (CutsceneBanks[0].cutscene_databank) {
 			for (int i = 0; i < 64; i++) {
@@ -28,6 +43,11 @@ void updateSkippableCutscenes(void) {
 }
 
 void renderScreenTransitionCheck(int applied_transition) {
+	/**
+	 * @brief Alter the screen transition effect so that if it's a skipped cutscene, the transition won't play
+	 * 
+	 * @param applied_transition Transition index
+	 */
     if ((CurrentMap < 216) && ((CutsceneStateBitfield & 4) == 0)) {
         int offset = 1;
         int shift = CutsceneIndex - 32;

@@ -2,11 +2,10 @@
 
 import zlib
 import os
-import struct
+from BuildLib import intf_to_float, main_pointer_table_offset
 
 rom_file = "rom/dk64.z64"
 temp_file = "temp.bin"
-ptr_offset = 0x101C50
 m2_table = 4
 ac_table = 5
 
@@ -22,14 +21,6 @@ ac_table = 5
 # - M2: ?
 
 
-def intf_to_float(intf):
-    """Convert float as int format to float."""
-    if intf == 0:
-        return 0
-    else:
-        return struct.unpack("!f", bytes.fromhex("{:08X}".format(intf)))[0]
-
-
 class BoneVertex:
     """Store information relating to bone vertices in actors."""
 
@@ -42,11 +33,11 @@ class BoneVertex:
 def portalModel_M2(vtx_file, dl_file, overlay_dl_file, model_name, base):
     """Convert model two model file from various source files."""
     with open(rom_file, "rb") as rom:
-        rom.seek(ptr_offset + (m2_table * 4))
-        table = ptr_offset + int.from_bytes(rom.read(4), "big")
+        rom.seek(main_pointer_table_offset + (m2_table * 4))
+        table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         rom.seek(table + (base * 4))
-        start = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-        finish = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        finish = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
         size = finish - start
         rom.seek(start)
         data = rom.read(size)
@@ -108,11 +99,11 @@ def portalModel_M2(vtx_file, dl_file, overlay_dl_file, model_name, base):
 def portalModel_Actor(vtx_file, dl_file, model_name, base):
     """Create actor file from various source files."""
     with open(rom_file, "rb") as rom:
-        rom.seek(ptr_offset + (ac_table * 4))
-        table = ptr_offset + int.from_bytes(rom.read(4), "big")
+        rom.seek(main_pointer_table_offset + (ac_table * 4))
+        table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         rom.seek(table + (base * 4))
-        start = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-        finish = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        finish = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
         size = finish - start
         rom.seek(start)
         data = rom.read(size)
@@ -180,11 +171,11 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
     if input_file == "":
         # Use Actor Index
         with open(rom_file, "rb") as rom:
-            rom.seek(ptr_offset + (ac_table * 4))
-            table = ptr_offset + int.from_bytes(rom.read(4), "big")
+            rom.seek(main_pointer_table_offset + (ac_table * 4))
+            table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
             rom.seek(table + (actor_index * 4))
-            start = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-            finish = ptr_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+            start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+            finish = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
             size = finish - start
             rom.seek(start)
             data = rom.read(size)
@@ -238,10 +229,10 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
                 loaded_vert_start = int(int.from_bytes(fh.read(2), "big") / 0x10)
                 for v in range(loaded_vert_count):
                     focused_vert = loaded_vert_start + v
-                    if focused_vert in used_verts:
-                        print(f"{focused_vert} already used")
-                    else:
+                    if focused_vert not in used_verts:
                         used_verts.append(focused_vert)
+                    # else:
+                    #     print(f"{focused_vert} already used (Actor {actor_index})")
                     vert_bones[bone_index].append(focused_vert)
         # Grab Bones
         for b in range(bone_count):
@@ -295,8 +286,8 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
             header = int.from_bytes(fh.read(2), "big")
             layers = int.from_bytes(fh.read(2), "big")
             dyn_tex[header] = []
-            for l in range(layers):
-                for t in range(tex_count):
+            for layer in range(layers):
+                for tex in range(tex_count):
                     dyn_tex[header].append(int.from_bytes(fh.read(2), "big"))
         # Prune DL of bad instructions and segmented addresses
         for d in range(dl_count):
@@ -331,26 +322,53 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
             os.remove(f)
 
 
-model_dir = "assets/Non-Code/models/"
+def createSpriteModelTwo(new_image: int, scaling: float, output_file: str):
+    """Create a model two object based on a singular image."""
+    with open(rom_file, "rb") as rom:
+        rom.seek(main_pointer_table_offset + (m2_table * 4))
+        table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        rom.seek(table + (436 * 4))
+        start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        finish = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        size = finish - start
+        rom.seek(start)
+        data = rom.read(size)
+        rom.seek(start)
+        indic = int.from_bytes(rom.read(2), "big")
+        if indic == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        with open(f"{output_file}_om2.bin", "wb") as fh:
+            fh.write(data)
+        with open(f"{output_file}_om2.bin", "r+b") as fh:
+            fh.seek(0xEC)
+            fh.write(new_image.to_bytes(4, "big"))
+            for v in range(0x3E, 0x92):
+                for c in range(3):
+                    fh.seek((v * 0x10) + (c * 2))
+                    val = int.from_bytes(fh.read(2), "big")
+                    if val > 32767:
+                        val -= 65536
+                    val = int(val * scaling)
+                    if val < 0:
+                        val += 65536
+                    fh.seek((v * 0x10) + (c * 2))
+                    fh.write(val.to_bytes(2, "big"))
+
+
+model_dir = "assets/models/"
 # Coins
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}nin_coin.dl", f"{model_dir}coin_overlay.dl", "nintendo_coin", 0x90)
 portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}rw_coin.dl", f"{model_dir}coin_overlay.dl", "rareware_coin", 0x90)
-# # Potions - Model 2
-portalModel_M2(f"{model_dir}potion_dk.vtx", f"{model_dir}potion.dl", 0, "potion_dk", 0x90)
-portalModel_M2(f"{model_dir}potion_diddy.vtx", f"{model_dir}potion.dl", 0, "potion_diddy", 0x90)
-portalModel_M2(f"{model_dir}potion_lanky.vtx", f"{model_dir}potion.dl", 0, "potion_lanky", 0x90)
-portalModel_M2(f"{model_dir}potion_tiny.vtx", f"{model_dir}potion.dl", 0, "potion_tiny", 0x90)
-portalModel_M2(f"{model_dir}potion_chunky.vtx", f"{model_dir}potion.dl", 0, "potion_chunky", 0x90)
-portalModel_M2(f"{model_dir}potion_any.vtx", f"{model_dir}potion.dl", 0, "potion_any", 0x90)
+portalModel_M2(f"{model_dir}coin.vtx", f"{model_dir}rainbow_coin.dl", f"{model_dir}coin_overlay.dl", "rainbow_coin", 0x90)
 # Fairy
 portActorToModelTwo(0x3C, "", "fairy", 0x90, True, 0.5)
-# Potions - Actors (Ignore Chunky Model)
-portalModel_Actor(f"{model_dir}potion_dk.vtx", None, "potion_dk", 0xB8)
-portalModel_Actor(f"{model_dir}potion_diddy.vtx", None, "potion_diddy", 0xB8)
-portalModel_Actor(f"{model_dir}potion_lanky.vtx", None, "potion_lanky", 0xB8)
-portalModel_Actor(f"{model_dir}potion_tiny.vtx", None, "potion_tiny", 0xB8)
-portalModel_Actor(f"{model_dir}potion_chunky.vtx", None, "potion_chunky", 0xB8)
-portalModel_Actor(f"{model_dir}potion_any.vtx", None, "potion_any", 0xB8)
+# Melon
+# portalModel_M2(f"{model_dir}melon.vtx", f"{model_dir}melon.dl", 0, "melon", 0x90)
+createSpriteModelTwo(0x17B2, 0.6, "melon")
+# Potions
+for kong in ("dk", "diddy", "lanky", "tiny", "chunky", "any"):
+    portalModel_M2(f"{model_dir}potion_{kong}.vtx", f"{model_dir}potion.dl", 0, f"potion_{kong}", 0x90)  # Potions - Model 2
+    portalModel_Actor(f"{model_dir}potion_{kong}.vtx", None, f"potion_{kong}", 0xB8)  # Actors
 # Kongs
 portActorToModelTwo(3, "dk_base.bin", "kong_dk", 0x90, True, 0.5)
 portActorToModelTwo(0, "diddy_base.bin", "kong_diddy", 0x90, True, 0.5)

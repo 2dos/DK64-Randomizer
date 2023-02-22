@@ -4,6 +4,7 @@ from array import array
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
 from randomizer.Lists.Location import LocationList
@@ -97,6 +98,17 @@ def ShuffleKKOPhaseOrder(settings):
 
 def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict):
     """Perform Boss Location & Boss Kong rando, ensuring each first boss can be beaten with an unlocked kong and owned moves."""
+    if settings.unlock_all_moves:
+        # Unlock all moves does funny things to the ownedMoves dict, so we need to manually build it such that there are no move restrictions on boss placement
+        ownedMoves = {
+            Levels.JungleJapes: [Items.HunkyChunky, Items.PonyTailTwirl, Items.Barrels],
+            Levels.AngryAztec: [Items.HunkyChunky, Items.PonyTailTwirl, Items.Barrels],
+            Levels.FranticFactory: [Items.HunkyChunky, Items.PonyTailTwirl, Items.Barrels],
+            Levels.GloomyGalleon: [Items.HunkyChunky, Items.PonyTailTwirl, Items.Barrels],
+            Levels.FungiForest: [Items.HunkyChunky, Items.PonyTailTwirl, Items.Barrels],
+            Levels.CrystalCaves: [Items.HunkyChunky, Items.PonyTailTwirl, Items.Barrels],
+            Levels.CreepyCastle: [Items.HunkyChunky, Items.PonyTailTwirl, Items.Barrels],
+        }
     try:
         bossLevelOptions = {0, 1, 2, 3, 4, 5, 6}
         # Find levels we can place Dogadon 2 (most restrictive)
@@ -134,7 +146,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
             forestBossOptions.remove(factoryBossIndex)
         # Then place Dogadon 2 (if Mad Jack was placed first)
         if forestBossKong is None:
-            bossTryingToBePlaced = "Dogadon 2"
+            bossTryingToBePlaced = "Dogadon 2 (second)"
             forestBossIndex = random.choice(forestBossOptions)
             forestBossKong = Kongs.chunky
 

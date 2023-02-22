@@ -17,7 +17,8 @@ typedef struct varspace {
 	/* 0x036 */ char rareware_gb_fairies; // Fairy requirement to access Rareware GB
 	/* 0x037 */ char k_rool_toes[10];
 	/* 0x041 */ char randomize_toes;
-	/* 0x042 */ char unk42[0x45-0x42];
+	/* 0x042 */ char random_drops; // Random enemy item drops
+	/* 0x043 */ char unk43[0x45-0x43];
 	/* 0x045 */ unsigned char slam_prices[2]; // Array of simian slam upgrade prices: [1,2]. First item is super simian slam (blue), 2nd is super duper simian slam (red)
 	/* 0x047 */ char call_parent_filter; // Calls filter to remove "unnecessary" links from the parent chain
 	/* 0x048 */ char arcade_order[4]; // 01 = 25m, 04 = 50m, 03 = 75m, 02 = 100m
@@ -58,7 +59,17 @@ typedef struct varspace {
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char always_show_coin_cbs; // 0 = No (Vanilla), 1 = Yes
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 2
-	/* 0x0B2 */ char unk_B0[0x10B - 0xB2];
+	/* 0x0B2 */ char unk_B0[0xDC - 0xB2];
+	/* 0x0DC */ unsigned short japes_rock_item; // Actor ID of item that spawns from destroying the rock covering Japes Underground
+	/* 0x0DE */ unsigned short vulture_item; // Actor ID of item that the vulture in Tiny Temple has
+	/* 0x0E0 */ fairy_activations fairy_triggers_disabled;
+	/* 0x0E2 */ short helm_hurry_start;
+	/* 0x0E4 */ short helm_hurry_bonuses[0xE];
+	/* 0x100 */ char fairy_rando_on;
+	/* 0x101 */ char location_visuals; // Bitfield for visual hints of what is inside a location. 0000 0abc. a = Crowns , b = Boss Doors , c = Bonus Barrels
+	/* 0x102 */ char microhints; // 0 = Off, 1 = GGone/Monkeyport, 2 = GGone/MPort, Instruments in Helm
+	/* 0x103 */ char random_switches;
+	/* 0x104 */ char slam_level[7]; // Level of slam required to slam a switch in a level (if random_switches is on)
 	/* 0x10B */ unsigned char remove_rock_bunch; // Remove rock bunch in Jungle Japes
 	/* 0x10C */ unsigned char starting_map; // 0 = Isles - from escape
 	/* 0x10D */ unsigned char starting_exit;
@@ -68,8 +79,8 @@ typedef struct varspace {
 	/* 0x111 */ unsigned char jetpac_reward; // Reward Index for Jetpac 5000 Pts
 	/* 0x112 */ unsigned char medal_cb_req; // 0 = default (75). int (1-100)
 	/* 0x113 */ unsigned char any_kong_items; // Bitfield 0000 00ba. a = All items except blueprints disabling kong check. b = Blueprints disable kong check.
-	/* 0x114 */ unsigned char japes_rock_item; // Actor ID of item that spawns from destroying the rock covering Japes Underground
-	/* 0x115 */ unsigned char vulture_item; // Actor ID of item that the vulture in Tiny Temple has
+	/* 0x114 */ unsigned char unk114;
+	/* 0x115 */ unsigned char unk115;
 	/* 0x116 */ char hard_enemies; // 0 = Off, 1 = On
 	/* 0x117 */ unsigned char enabled_pkmnsnap_enemies[5]; // Bitfield
 	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
@@ -136,4 +147,5 @@ typedef struct varspace {
 	/* 0x197 */ rgb skybox_colors[8];
 	/* 0x1AF */ char pppanic_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
 	/* 0x1B0 */ char sseek_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
+	/* 0x1B1 */ unsigned char wrinkly_rgb[3];
 } varspace;

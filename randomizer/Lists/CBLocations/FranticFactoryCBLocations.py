@@ -2,60 +2,9 @@
 
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Regions import Regions
-from randomizer.Lists.CBLocations.AngryAztecCBLocations import ColoredBananaGroupList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Kongs import Kongs
-
-
-class ColoredBananaGroup:
-    """Stores data for each group of colored bananas."""
-
-    def __init__(self, *, group=0, name="No Location", map_id=0, konglist=[], region=None, logic=None, vanilla=False, locations=[]):
-        """Initialize with given parameters."""
-        self.group = group
-        self.name = name
-        self.map = map_id
-        self.kongs = konglist
-        self.locations = locations  # 5 numbers: {int amount, float scale, int x, y, z}
-        self.region = region
-        if logic is None:
-            self.logic = lambda l: True
-        else:
-            self.logic = logic
-
-
-class Balloon:
-    """Stores data for each balloon."""
-
-    def __init__(self, *, id=0, name="No Location", map_id=0, speed=0, konglist=[], region=None, logic=None, vanilla=False, points=[]):
-        """Initialize with given parameters."""
-        self.id = id
-        self.name = name
-        self.map = map_id
-        self.speed = speed
-        self.kongs = konglist
-        self.points = points  # 4 numbers: {int point id, x, y, z}
-        self.region = region
-        if logic is None:
-            self.logic = lambda l: True
-        else:
-            self.logic = logic
-        self.spawnPoint = self.setSpawnPoint(points)
-
-    def setSpawnPoint(self, points=[]):
-        """Set the spawn point of a balloon based on its path."""
-        spawnX = 0
-        spawnY = 0
-        spawnZ = 0
-        for p in points:
-            spawnX += p[0]
-            spawnY += p[1]
-            spawnZ += p[2]
-        spawnX /= len(points)
-        spawnY /= len(points)
-        spawnY -= 100  # Most balloons are at least 100 units off the ground
-        spawnZ /= len(points)
-        return [int(spawnX), int(spawnY), int(spawnZ)]
+from randomizer.LogicClasses import Balloon, ColoredBananaGroup
 
 
 ColoredBananaGroupList = [
@@ -510,15 +459,15 @@ ColoredBananaGroupList = [
         region=Regions.ChunkyRoomPlatform,
         locations=[[5, 1.0, 1448, 164, 892]],
     ),
-    ColoredBananaGroup(
-        group=44,
-        map_id=Maps.FranticFactory,
-        name="On vines to Beaver Bother barrel",
-        konglist=[Kongs.diddy],
-        region=Regions.ChunkyRoomPlatform,
-        logic=lambda l: l.Slam and l.vines,
-        locations=[[5, 1.0, 1327, 160, 839], [5, 1.0, 1237, 178, 840]],
-    ),
+    # ColoredBananaGroup(
+    #     group=44,
+    #     map_id=Maps.FranticFactory,
+    #     name="On vines to Beaver Bother barrel",
+    #     konglist=[Kongs.diddy],
+    #     lregion=Regions.ChunkyRoomPlatform,
+    #     logic=lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.vines,
+    #     locations=[[5, 1.0, 1327, 160, 839], [5, 1.0, 1237, 178, 840]],
+    # ),
     ColoredBananaGroup(group=45, map_id=Maps.FactoryPowerHut, name="On box-shaped vents", konglist=[Kongs.donkey], region=Regions.PowerHut, locations=[[5, 1.0, 185, 42, 93], [5, 1.0, 185, 42, 116]]),
     ColoredBananaGroup(
         group=46,
@@ -1602,7 +1551,7 @@ BalloonList = [
         map_id=Maps.FranticFactory,
         name="Chunky R&D room",
         speed=4,
-        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        konglist=[Kongs.chunky],
         region=Regions.RandD,
         points=[[5086, 1580, 1562], [4830, 1560, 1948]],
     ),
@@ -1690,7 +1639,7 @@ BalloonList = [
     ),
     Balloon(
         id=33,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="Around hatch (Chunky)",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1700,7 +1649,7 @@ BalloonList = [
     ),
     Balloon(
         id=34,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="Top of pole by Snide (Chunky)",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1710,7 +1659,7 @@ BalloonList = [
     ),
     Balloon(
         id=35,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In piano game room (Lanky)",
         speed=6,
         konglist=[Kongs.lanky],
@@ -1721,7 +1670,7 @@ BalloonList = [
     ),
     Balloon(
         id=36,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In front of Snide (Tiny)",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1731,7 +1680,7 @@ BalloonList = [
     ),
     Balloon(
         id=37,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In Diddy's R&D room (back) (Diddy)",
         speed=3,
         konglist=[Kongs.diddy],
@@ -1742,7 +1691,7 @@ BalloonList = [
     ),
     Balloon(
         id=38,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In Diddy's R&D room (front) (Diddy)",
         speed=5,
         konglist=[Kongs.diddy],
@@ -1753,7 +1702,7 @@ BalloonList = [
     ),
     Balloon(
         id=39,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In R&D above hatch to Chunky's room (Donkey)",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1763,7 +1712,7 @@ BalloonList = [
     ),
     Balloon(
         id=40,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In front of Candy & Cranky (Donkey)",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1773,7 +1722,7 @@ BalloonList = [
     ),
     Balloon(
         id=41,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="Around numbers game (Donkey)",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1783,7 +1732,7 @@ BalloonList = [
     ),
     Balloon(
         id=42,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In Diddy's R&D room (left) (Diddy)",
         speed=6,
         konglist=[Kongs.diddy],
@@ -1794,7 +1743,7 @@ BalloonList = [
     ),
     Balloon(
         id=43,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="Prod room, by center (Tiny)",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1804,7 +1753,7 @@ BalloonList = [
     ),
     Balloon(
         id=44,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In front of Funky (Tiny)",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1814,7 +1763,7 @@ BalloonList = [
     ),
     Balloon(
         id=45,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="Prod room, by highest tag barrel (Lanky)",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1824,7 +1773,7 @@ BalloonList = [
     ),
     Balloon(
         id=46,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="Chunky R&D room (Chunky)",
         speed=6,
         konglist=[Kongs.chunky],
@@ -1835,7 +1784,7 @@ BalloonList = [
     ),
     Balloon(
         id=47,
-        map_id=36,
+        map_id=Maps.FactoryCrusher,
         name="In crusher room (Lanky)",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],

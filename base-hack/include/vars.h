@@ -70,6 +70,12 @@
 #define flagMenuScreenCount 11
 #define pointer_table_offset 0x101C50
 
+#define ACTOR_VANILLA_LIMIT 345
+#define COLLISION_LIMIT 60
+#define DEFS_LIMIT 147
+#define ACTOR_LIMIT 345 + NEWACTOR_TERMINATOR
+#define CUSTOM_ACTORS_START 345
+
 #define KONG_LOCKED_START 0x2E8
 #define SNOOPDOOR_OPEN 0x2ED
 #define DKJAPESCAGEGB_OPEN 0x2EF
@@ -106,6 +112,9 @@
 #define FLAG_SHOPMOVE_INS_0 0x29B
 #define FLAG_SHOPMOVE_INS_1 0x29C
 #define FLAG_SHOPMOVE_INS_2 0x29D
+#define FLAG_RAINBOWCOIN_0 0x29E // 0x29E -> 0x2AD (inc.) (16 flags)
+#define FLAG_FAKEITEM 0x2AE // 0x2AE -> 0x2BD (inc.) (16 flags)
+#define FLAG_JUNKITEM 0x320 // 0x320 -> 0x384 (inc.) (100 flags)
 
 #define IMAGE_DPAD 187
 #define IMAGE_AMMO_START 188

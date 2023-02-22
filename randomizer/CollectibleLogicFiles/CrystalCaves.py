@@ -6,6 +6,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.LogicClasses import Collectible
+from randomizer.Enums.Levels import Levels
 
 LogicRegions = {
     Regions.CrystalCavesMain: [
@@ -19,7 +20,7 @@ LogicRegions = {
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # Near Warp 4 pillar
 
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),  # Level Start
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (l.balloon or l.advanced_platforming) and l.superSlam, None, 1),  # Beetle Race entry
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (l.balloon or l.advanced_platforming) and l.CanSlamSwitch(Levels.CrystalCaves, 2), None, 1),  # Beetle Race entry
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.balloon, None, 3),  # Near Cranky
 
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 10),  # River To Igloo
@@ -29,7 +30,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch or l.phasewalk or l.CanPhaseswim(), None, 3),  # Gorilla Gone room
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # On small boulder switch
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Underneath small boulder
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.barrels, None, 1),  # Underneath small boulder
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # On bridge to small boulder switch
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: (l.punch or l.phasewalk or l.CanPhaseswim()) and l.chunky, None, 3),  # Gorilla Gone room
@@ -100,7 +101,7 @@ LogicRegions = {
     Regions.GiantKosha: [
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 4),
 
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),
     ],
     Regions.DonkeyIgloo: [

@@ -6,6 +6,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.LogicClasses import Collectible
+from randomizer.Enums.Levels import Levels
 
 LogicRegions = {
     Regions.JungleJapesMain: [
@@ -39,7 +40,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 5),  # By Snide's
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # By DK Portal
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.swim, None, 3),  # In river
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny) or l.CanMoonkick() or ((l.generalclips or l.phasewalk) and (l.istiny or l.isdiddy))), None, 1),  # Rainbow coin
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny) or l.CanMoonkick() or ((l.generalclips or l.phasewalk) and (l.istiny or l.isdiddy))), None, 1),  # Rainbow coin
     ],
     Regions.JapesBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 2),
@@ -97,14 +98,14 @@ LogicRegions = {
     Regions.Mine: [
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),  # In stream
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # On mound by peanut switch
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.Slam or l.phasewalk) or l.advanced_platforming, None, 1),  # On box by conveyors
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.Slam or l.phasewalk) and (l.charge or l.advanced_platforming), None, 1),  # In minecart
-        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.Slam or l.phasewalk) and l.peanut, None, 1),  # In conveyor room
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) or l.advanced_platforming, None, 1),  # On box by conveyors
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and (l.charge or l.advanced_platforming), None, 1),  # In minecart
+        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.peanut, None, 1),  # In conveyor room
 
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 1),  # On bridge to switch
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 1),  # On coal pile
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.charge or l.phasewalk, None, 1),  # Next to conveyor control
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.Slam or l.phasewalk, None, 1),  # Under conveyors
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk, None, 1),  # Under conveyors
     ],
     Regions.JapesTopOfMountain: [
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # Above mountain
@@ -127,10 +128,10 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.swim, None, 5),  # In water by fairy
     ],
     Regions.TinyHive: [
-        Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 8),
+        Collectible(Collectibles.banana, Kongs.tiny, lambda l: ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.phasewalk or l.generalclips), None, 8),
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
 
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 2),
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.phasewalk or l.generalclips), None, 2),
     ],
     Regions.JapesCatacomb: [
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 5),

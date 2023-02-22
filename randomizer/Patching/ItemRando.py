@@ -10,7 +10,36 @@ from randomizer.Lists.Location import LocationList
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Settings import MicrohintsEnabled
 from randomizer.Patching.Lib import intf_to_float, float_to_hex
+from enum import IntEnum, auto
+
+
+class CustomActors(IntEnum):
+    """Custom Actors Enum."""
+
+    NintendoCoin = 0x8000  # Starts at 0x8000
+    RarewareCoin = auto()
+    Null = auto()
+    PotionDK = auto()
+    PotionDiddy = auto()
+    PotionLanky = auto()
+    PotionTiny = auto()
+    PotionChunky = auto()
+    PotionAny = auto()
+    KongDK = auto()
+    KongDiddy = auto()
+    KongLanky = auto()
+    KongTiny = auto()
+    KongChunky = auto()
+    KongDisco = auto()
+    KongKrusha = auto()
+    Bean = auto()
+    Pearl = auto()
+    Fairy = auto()
+    FakeItem = auto()
+    Medal = auto()
+
 
 model_two_indexes = {
     Types.Banana: 0x74,
@@ -27,6 +56,9 @@ model_two_indexes = {
     Types.Bean: 0x198,
     Types.Pearl: 0x1B4,
     Types.Fairy: 0x25C,
+    Types.RainbowCoin: 0xB7,
+    Types.FakeItem: 0x25D,
+    Types.JunkItem: [0x56, 0x8F, 0x8E, 0x25E, 0x98],  # Orange, Ammo, Crystal, Watermelon, Film
 }
 
 model_two_scales = {
@@ -44,6 +76,9 @@ model_two_scales = {
     Types.Bean: 0.25,
     Types.Pearl: 0.25,
     Types.Fairy: 0.25,
+    Types.RainbowCoin: 0.25,
+    Types.FakeItem: 0.25,
+    Types.JunkItem: 0.5,
 }
 
 actor_indexes = {
@@ -51,16 +86,19 @@ actor_indexes = {
     Types.Blueprint: [78, 75, 77, 79, 76],
     Types.Key: 72,
     Types.Crown: 86,
-    Types.Coin: [151, 152],
-    Types.Shop: [157, 158, 159, 160, 161, 162],
-    Types.TrainingBarrel: 162,
-    Types.Shockwave: 162,
-    Types.NoItem: 153,
-    Types.Medal: 154,
-    Types.Kong: [141, 142, 143, 144, 155],
-    Types.Bean: 172,
-    Types.Pearl: 174,
-    Types.Fairy: 88,
+    Types.Coin: [CustomActors.NintendoCoin, CustomActors.RarewareCoin],
+    Types.Shop: [CustomActors.PotionDK, CustomActors.PotionDiddy, CustomActors.PotionLanky, CustomActors.PotionTiny, CustomActors.PotionChunky, CustomActors.PotionAny],
+    Types.TrainingBarrel: CustomActors.PotionAny,
+    Types.Shockwave: CustomActors.PotionAny,
+    Types.NoItem: CustomActors.Null,
+    Types.Medal: CustomActors.Medal,
+    Types.Kong: [CustomActors.KongDK, CustomActors.KongDiddy, CustomActors.KongLanky, CustomActors.KongTiny, CustomActors.KongChunky],
+    Types.Bean: CustomActors.Bean,
+    Types.Pearl: CustomActors.Pearl,
+    Types.Fairy: CustomActors.Fairy,
+    Types.RainbowCoin: 0x8C,
+    Types.FakeItem: CustomActors.FakeItem,
+    Types.JunkItem: [0x34, 0x33, 0x79, 0x2F, 0],  # Orange, Ammo, Crystal, Watermelon, Film
 }
 model_indexes = {
     Types.Banana: 0x69,
@@ -71,9 +109,12 @@ model_indexes = {
     Types.Shockwave: 0xFB,
     Types.TrainingBarrel: 0xFB,
     Types.Kong: [4, 1, 6, 9, 0xC],
+    Types.FakeItem: 0x10F,
 }
 
 kong_flags = (385, 6, 70, 66, 117)
+
+subitems = (Items.JunkOrange, Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon, Items.JunkFilm)
 
 
 class TextboxChange:
@@ -107,7 +148,7 @@ textboxes = [
     TextboxChange(Locations.FactoryTinyCarRace, 17, 4, "GOLDEN BANANA"),
     TextboxChange(Locations.GalleonTinyPearls, 23, 0, "PLEASE TRY AND GET THEM BACK", "IF YOU HELP ME FIND THEM, I WILL REWARD YOU WITH A |"),
     TextboxChange(Locations.GalleonTinyPearls, 23, 1, "GOLDEN BANANA"),
-    TextboxChange(Locations.AztecDiddyVultureRace, 15, 0, "TEST OF YOUR FLYING SKILL"),
+    TextboxChange(Locations.AztecDiddyVultureRace, 15, 1, "PRIZE"),
     TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 1, "ALL THIS SAND", "THIS |"),
     TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 2, "BANANA"),
     TextboxChange(Locations.RarewareCoin, 8, 2, "RAREWARE COIN"),
@@ -142,6 +183,8 @@ text_rewards = {
     Types.Bean: ("BEAN", "QUESTIONABLE VEGETABLE"),
     Types.Pearl: ("PEARL", "BLACK PEARL"),
     Types.RainbowCoin: ("RAINBOW COIN", "COLORFUL COIN HIDDEN FOR 17 YEARS"),
+    Types.FakeItem: ("GLODEN BANANE", "BANANA OF FOOLS GOLD"),
+    Types.JunkItem: ("JUNK ITEM", "SOME HEAP OF JUNK"),
     Types.NoItem: ("NOTHING", "DIDDLY SQUAT"),
 }
 
@@ -160,23 +203,27 @@ level_names = {
 kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky", Kongs.any: "Any Kong"}
 
 
-def pushItemMicrohints(spoiler: Spoiler, item):
+def pushItemMicrohints(spoiler: Spoiler):
     """Push hint for the micro-hints system."""
-    move = Items.NoItem  # Using no item for the purpose of a default
-    hinted_items = {
-        # Key = Item, Value = Textbox index in text file 19
-        Items.Monkeyport: 26,
-        Items.GorillaGone: 25,
-    }
-    for item_hint in hinted_items:
-        if item.new_flag == ItemList[item_hint].rando_flag:
-            move = item_hint
-    if move != Items.NoItem:
-        data = {"textbox_index": hinted_items[move], "mode": "replace_whole", "target": spoiler.microhints[ItemList[move].name]}
-        if 19 in spoiler.text_changes:
-            spoiler.text_changes[19].append(data)
-        else:
-            spoiler.text_changes[19] = [data]
+    if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
+        hinted_items = {
+            # Key = Item, Value = (Textbox index in text file 19, (all_accepted_settings))
+            Items.Monkeyport: (26, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+            Items.GorillaGone: (25, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
+            Items.Bongos: (27, [MicrohintsEnabled.all]),
+            Items.Triangle: (28, [MicrohintsEnabled.all]),
+            Items.Saxophone: (29, [MicrohintsEnabled.all]),
+            Items.Trombone: (30, [MicrohintsEnabled.all]),
+            Items.Guitar: (31, [MicrohintsEnabled.all]),
+        }
+        for item_hint in hinted_items:
+            if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][1]):
+                if ItemList[item_hint].name in spoiler.microhints:
+                    data = {"textbox_index": hinted_items[item_hint][0], "mode": "replace_whole", "target": spoiler.microhints[ItemList[item_hint].name]}
+                    if 19 in spoiler.text_changes:
+                        spoiler.text_changes[19].append(data)
+                    else:
+                        spoiler.text_changes[19] = [data]
 
 
 def getTextRewardIndex(item) -> int:
@@ -188,27 +235,29 @@ def getTextRewardIndex(item) -> int:
     elif item.new_item in (Types.Shop, Types.Shockwave, Types.TrainingBarrel):
         return 8
     elif item.new_item is None:
-        return 13
+        return 14
     else:
         item_text_indexes = (
-            Types.Banana,
-            Types.Blueprint,
-            Types.Key,
-            Types.Crown,
-            Types.Fairy,
-            Types.Coin,
-            Types.Coin,
-            Types.Medal,
-            Types.Shop,
-            Types.Kong,
-            Types.Bean,
-            Types.Pearl,
-            Types.RainbowCoin,
-            Types.NoItem,
+            Types.Banana,  # 0
+            Types.Blueprint,  # 1
+            Types.Key,  # 2
+            Types.Crown,  # 3
+            Types.Fairy,  # 4
+            Types.Coin,  # 5
+            Types.Coin,  # 6
+            Types.Medal,  # 7
+            Types.Shop,  # 8
+            Types.Kong,  # 9
+            Types.Bean,  # 10
+            Types.Pearl,  # 11
+            Types.RainbowCoin,  # 12
+            Types.FakeItem,  # 13
+            Types.NoItem,  # 14
+            Types.JunkItem,  # 15
         )
         if item.new_item in item_text_indexes:
             return item_text_indexes.index(item.new_item)
-        return 13
+        return 14
 
 
 def getActorIndex(item):
@@ -217,6 +266,8 @@ def getActorIndex(item):
         return actor_indexes[Types.NoItem]
     elif item.new_item == Types.Blueprint:
         return actor_indexes[Types.Blueprint][item.new_kong]
+    elif item.new_item == Types.JunkItem:
+        return actor_indexes[Types.JunkItem][subitems.index(item.new_subitem)]
     elif item.new_item == Types.Coin:
         if item.new_flag == 379:  # Is RW Coin
             return actor_indexes[Types.Coin][1]
@@ -263,11 +314,9 @@ def place_randomized_items(spoiler: Spoiler):
         map_items = {}
         bonus_table_offset = 0
         flut_items = []
+        pushItemMicrohints(spoiler)
         for item in item_data:
             if item.can_have_item:
-                # Handle Item Hints in specific spots
-                if item.new_item == Types.Shop:
-                    pushItemMicrohints(spoiler, item)
                 if item.is_shop:
                     # Write in placement index
                     ROM().seek(sav + 0xA7)
@@ -311,12 +360,22 @@ def place_randomized_items(spoiler: Spoiler):
                         if map_id not in map_items:
                             map_items[map_id] = []
                         if item.new_item is None:
-                            map_items[map_id].append({"id": item.placement_data[map_id], "obj": Types.NoItem, "kong": 0, "flag": 0, "upscale": 1, "shared": False})
+                            map_items[map_id].append({"id": item.placement_data[map_id], "obj": Types.NoItem, "kong": 0, "flag": 0, "upscale": 1, "shared": False, "subitem": 0})
                         else:
                             numerator = model_two_scales[item.new_item]
                             denominator = model_two_scales[item.old_item]
                             upscale = numerator / denominator
-                            map_items[map_id].append({"id": item.placement_data[map_id], "obj": item.new_item, "kong": item.new_kong, "flag": item.new_flag, "upscale": upscale, "shared": item.shared})
+                            map_items[map_id].append(
+                                {
+                                    "id": item.placement_data[map_id],
+                                    "obj": item.new_item,
+                                    "kong": item.new_kong,
+                                    "flag": item.new_flag,
+                                    "upscale": upscale,
+                                    "shared": item.shared,
+                                    "subitem": item.new_subitem,
+                                }
+                            )
                     if item.location == Locations.NintendoCoin:
                         arcade_rewards = (
                             Types.NoItem,  # Or Nintendo Coin
@@ -341,6 +400,7 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Kong,  # Handled in special case
                             Types.RainbowCoin,
                             Types.Coin,  # Flag check handled separately
+                            Types.JunkItem,
                         )
                         arcade_reward_index = 0
                         if item.new_item == Types.Coin:
@@ -348,7 +408,7 @@ def place_randomized_items(spoiler: Spoiler):
                                 arcade_reward_index = 21
                         elif item.new_item == Types.Kong:
                             if item.new_flag in kong_flags:
-                                arcade_reward_index = kong_flags.index(item.new_flag)
+                                arcade_reward_index = kong_flags.index(item.new_flag) + 15
                         elif item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave):
                             if (item.new_flag & 0x8000) == 0:
                                 slot = 5
@@ -376,6 +436,7 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Kong,
                             Types.RainbowCoin,
                             Types.Coin,  # Flag check handled separately
+                            Types.JunkItem,
                         )
                         jetpac_reward_index = 0
                         if item.new_item in (Types.Shop, Types.TrainingBarrel, Types.Shockwave):
@@ -392,7 +453,7 @@ def place_randomized_items(spoiler: Spoiler):
                         actor_index = getActorIndex(item)
                         ROM().seek(0x1FF1200 + (4 * bonus_table_offset))
                         ROM().writeMultipleBytes(item.old_flag, 2)
-                        ROM().writeMultipleBytes(actor_index, 1)
+                        ROM().writeMultipleBytes(actor_index, 2)
                         bonus_table_offset += 1
                     elif item.location in (Locations.AztecTinyBeetleRace, Locations.CavesLankyBeetleRace):
                         text_index = getTextRewardIndex(item)
@@ -413,18 +474,25 @@ def place_randomized_items(spoiler: Spoiler):
                     if item.old_item == Types.Blueprint:
                         # Write to BP Table
                         # Just needs to store an array of actors spawned
-                        offset = item.old_flag - 469
-                        ROM().seek(0x1FF1000 + offset)
-                        ROM().write(actor_index)
+                        offset = (item.old_flag - 469) * 2
+                        ROM().seek(0x1FF0E00 + offset)
+                        ROM().writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.Crown:
                         # Write to Crown Table
                         crown_flags = [0x261, 0x262, 0x263, 0x264, 0x265, 0x268, 0x269, 0x266, 0x26A, 0x267]
-                        ROM().seek(0x1FF10C0 + crown_flags.index(item.old_flag))
-                        ROM().write(actor_index)
+                        ROM().seek(0x1FF10C0 + (crown_flags.index(item.old_flag) * 2))
+                        ROM().writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.Key:
                         key_flags = [26, 74, 138, 168, 236, 292, 317, 380]
-                        ROM().seek(0x1FF10D0 + key_flags.index(item.old_flag))
-                        ROM().write(actor_index)
+                        ROM().seek(0x1FF1000 + (key_flags.index(item.old_flag) * 2))
+                        ROM().writeMultipleBytes(actor_index, 2)
+                    elif item.old_item == Types.RainbowCoin:
+                        index = item.location - Locations.RainbowCoin_Location00
+                        if index < 16:
+                            ROM().seek(0x1FF10E0 + (index * 2))
+                            ROM().writeMultipleBytes(actor_index, 2)
+                        else:
+                            print("Dirt Patch Item Placement Error")
                     elif item.old_item == Types.Medal:
                         # Write to Medal Table
                         # Just need offset of subtype:
@@ -442,7 +510,14 @@ def place_randomized_items(spoiler: Spoiler):
                         # 11 = Kong
                         # 12 = Bean
                         # 13 = Pearl
-                        # 14 = Nothing
+                        # 14 = Fairy
+                        # 15 = Rainbow Coin
+                        # 16 = Fake Item
+                        # 17 = Junk Orange
+                        # 18 = Junk Ammo
+                        # 19 = Junk Crystal
+                        # 20 = Junk Melon
+                        # 21 = Nothing
                         slots = [
                             Types.Banana,  # GB
                             Types.Blueprint,  # BP
@@ -459,6 +534,12 @@ def place_randomized_items(spoiler: Spoiler):
                             Types.Bean,  # Bean
                             Types.Pearl,  # Pearl
                             Types.Fairy,  # Fairy
+                            Types.RainbowCoin,  # Rainbow Cion
+                            Types.FakeItem,  # Fake Item
+                            Types.JunkItem,  # Junk Item
+                            Types.JunkItem,  # Junk Item
+                            Types.JunkItem,  # Junk Item
+                            Types.JunkItem,  # Junk Item
                             None,  # No Item
                         ]
                         offset = item.old_flag - 549
@@ -478,21 +559,23 @@ def place_randomized_items(spoiler: Spoiler):
                                 elif (subtype == 2) or (subtype == 3):
                                     medal_index = 7
                             ROM().write(medal_index)
+                        elif item.new_item == Types.JunkItem:
+                            ROM().write(17 + subitems.index(item.new_subitem))
                         else:
                             ROM().write(slots.index(item.new_item))
                     elif item.location == Locations.JapesChunkyBoulder:
                         # Write to Boulder Spawn Location
-                        ROM().seek(sav + 0x114)
-                        ROM().write(actor_index)
+                        ROM().seek(sav + 0xDC)
+                        ROM().writeMultipleBytes(actor_index, 2)
                     elif item.location == Locations.AztecLankyVulture:
                         # Write to Vulture Spawn Location
-                        ROM().seek(sav + 0x115)
-                        ROM().write(actor_index)
+                        ROM().seek(sav + 0xDE)
+                        ROM().writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.Banana:
                         # Bonus GB Table
                         ROM().seek(0x1FF1200 + (4 * bonus_table_offset))
                         ROM().writeMultipleBytes(item.old_flag, 2)
-                        ROM().writeMultipleBytes(actor_index, 1)
+                        ROM().writeMultipleBytes(actor_index, 2)
                         bonus_table_offset += 1
                     elif item.old_item == Types.Fairy:
                         # Fairy Item
@@ -522,30 +605,31 @@ def place_randomized_items(spoiler: Spoiler):
                     data.append(item.new_flag)
                 flut_items.append(data)
             # Text stuff
-            for textbox in textboxes:
-                if textbox.location == item.location:
-                    replacement = textbox.replacement_text
-                    if not textbox.force_pipe:
-                        reward_text = "|"
-                        reference = None
-                        if item.new_item in text_rewards.keys():
-                            reference = text_rewards[item.new_item]
-                        elif item.new_item == Types.Coin:
-                            reference = nintendo_coin_reward
-                            if item.new_flag == 379:
-                                reference = rareware_coin_reward
-                        if reference is not None:
-                            # Found reference
-                            reward_text = reference[0]
-                            if item.location == Locations.GalleonDonkeySealRace:
-                                # Use pirate text
-                                reward_text = reference[1]
-                        replacement = replacement.replace("|", reward_text)
-                    data = {"textbox_index": textbox.textbox_index, "mode": "replace", "search": textbox.text_replace, "target": replacement}
-                    if textbox.file_index in spoiler.text_changes:
-                        spoiler.text_changes[textbox.file_index].append(data)
-                    else:
-                        spoiler.text_changes[textbox.file_index] = [data]
+            if spoiler.settings.item_reward_previews:
+                for textbox in textboxes:
+                    if textbox.location == item.location:
+                        replacement = textbox.replacement_text
+                        if not textbox.force_pipe:
+                            reward_text = "|"
+                            reference = None
+                            if item.new_item in text_rewards.keys():
+                                reference = text_rewards[item.new_item]
+                            elif item.new_item == Types.Coin:
+                                reference = nintendo_coin_reward
+                                if item.new_flag == 379:
+                                    reference = rareware_coin_reward
+                            if reference is not None:
+                                # Found reference
+                                reward_text = reference[0]
+                                if item.location == Locations.GalleonDonkeySealRace:
+                                    # Use pirate text
+                                    reward_text = reference[1]
+                            replacement = replacement.replace("|", reward_text)
+                        data = {"textbox_index": textbox.textbox_index, "mode": "replace", "search": textbox.text_replace, "target": replacement}
+                        if textbox.file_index in spoiler.text_changes:
+                            spoiler.text_changes[textbox.file_index].append(data)
+                        else:
+                            spoiler.text_changes[textbox.file_index] = [data]
 
         # Terminate FLUT
         flut_items.append([0xFFFF, 0xFFFF])
@@ -571,6 +655,8 @@ def place_randomized_items(spoiler: Spoiler):
                             item_obj_index = 0
                             if item_slot["obj"] == Types.Blueprint:
                                 item_obj_index = model_two_indexes[Types.Blueprint][item_slot["kong"]]
+                            elif item_slot["obj"] == Types.JunkItem:
+                                item_obj_index = model_two_indexes[Types.JunkItem][subitems.index(item_slot["subitem"])]
                             elif item_slot["obj"] == Types.Coin:
                                 item_obj_index = model_two_indexes[Types.Coin][0]
                                 if item_slot["flag"] == 379:

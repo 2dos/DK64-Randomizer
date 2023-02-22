@@ -205,7 +205,6 @@
 .definelabel menuHeadX, 0x80033F68
 .definelabel menuHeadY, 0x80033F80
 .definelabel menuHeadScale, 0x80033F98
-.definelabel LatestCollectedObject, 0x807FD734
 .definelabel ImageCache, 0x807FC690
 .definelabel ViewedPauseItem, 0x807FC80C
 .definelabel NextViewedPauseItem, 0x807FC80D
@@ -226,3 +225,14 @@
 
 .definelabel CharSpawnerActorSubtypes, 0x80755698
 .definelabel CharSpawnerActorData, 0x8075EB80
+
+.definelabel SelectedDLIndex, 0x807444FC
+
+.definelabel balloonPatchCounts, 0x807FC408
+.definelabel coloredBananaCounts, 0x807F6150
+
+.definelabel StackTraceAddresses, 0x807FEF80
+.definelabel StackTraceX, 0x807FEF70
+.definelabel StackTraceY, 0x807FEF74
+.definelabel StackTraceSize, 0x807FEF78
+.definelabel StackTraceStartX, 0x807FEF7C

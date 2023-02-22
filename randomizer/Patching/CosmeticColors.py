@@ -5,8 +5,10 @@ from random import randint
 import js
 from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import intf_to_float, float_to_hex, int_to_list
+from randomizer.Patching.Lib import intf_to_float, float_to_hex, int_to_list, getObjectAddress
 from randomizer.Spoiler import Spoiler
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorItem, KlaptrapModel
 from PIL import Image, ImageEnhance, ImageDraw
 import zlib
 import gzip
@@ -15,7 +17,7 @@ import gzip
 class HelmDoorSetting:
     """Class to store information regarding helm doors."""
 
-    def __init__(self, item_setting: str, count: int, item_image: int, number_image: int):
+    def __init__(self, item_setting: HelmDoorItem, count: int, item_image: int, number_image: int):
         """Initialize with given parameters."""
         self.item_setting = item_setting
         self.count = count
@@ -26,7 +28,7 @@ class HelmDoorSetting:
 class HelmDoorImages:
     """Class to store information regarding helm door item images."""
 
-    def __init__(self, setting: str, image_indexes: list, flip=False, table=25, dimensions=(44, 44), format="rgba5551"):
+    def __init__(self, setting: HelmDoorItem, image_indexes: list, flip=False, table=25, dimensions=(44, 44), format="rgba5551"):
         """Initialize with given parameters."""
         self.setting = setting
         self.image_indexes = image_indexes
@@ -41,18 +43,18 @@ def apply_cosmetic_colors(spoiler: Spoiler):
     model_index = 0
     sav = spoiler.settings.rom_data
     if js.document.getElementById("override_cosmetics").checked:
-        model_setting = js.document.getElementById("klaptrap_model").value
+        model_setting = KlaptrapModel[js.document.getElementById("klaptrap_model").value]
     else:
         model_setting = spoiler.settings.klaptrap_model
-    if model_setting == "green":
+    if model_setting == KlaptrapModel.green:
         model_index = 0x21
-    elif model_setting == "purple":
+    elif model_setting == KlaptrapModel.purple:
         model_index = 0x22
-    elif model_setting == "red":
+    elif model_setting == KlaptrapModel.red:
         model_index = 0x23
-    elif model_setting == "random_klap":
+    elif model_setting == KlaptrapModel.random_klap:
         model_index = random.randint(0x21, 0x23)
-    elif model_setting == "random_model":
+    elif model_setting == KlaptrapModel.random_model:
         permitted_models = [
             0x19,  # Beaver
             0x1E,  # Klobber
@@ -83,12 +85,18 @@ def apply_cosmetic_colors(spoiler: Spoiler):
     if spoiler.settings.misc_cosmetics:
         ROM().seek(sav + 0x196)
         ROM().write(1)
+        # Skybox RGBA
         ROM().seek(sav + 0x197)
         for channel in range(24):
             ROM().writeMultipleBytes(random.randint(0, 255), 1)
+        # Klaptrap Colors
         ROM().seek(sav + 0x1AF)
         for klaptrap in range(2):
             ROM().writeMultipleBytes(random.randint(0, 2), 1)
+        # Wrinkly Color
+        ROM().seek(sav + 0x1B1)
+        for channel in range(3):
+            ROM().writeMultipleBytes(random.randint(0, 255), 1)
     ROM().seek(sav + 0x136)
     ROM().writeMultipleBytes(model_index, 1)
     color_palettes = []
@@ -125,37 +133,37 @@ def apply_cosmetic_colors(spoiler: Spoiler):
 
     if js.document.getElementById("override_cosmetics").checked:
         if js.document.getElementById("random_colors").checked:
-            spoiler.settings.dk_colors = "randomized"
-            spoiler.settings.diddy_colors = "randomized"
-            spoiler.settings.lanky_colors = "randomized"
-            spoiler.settings.tiny_colors = "randomized"
-            spoiler.settings.chunky_colors = "randomized"
-            spoiler.settings.rambi_colors = "randomized"
-            spoiler.settings.enguarde_colors = "randomized"
+            spoiler.settings.dk_colors = CharacterColors.randomized
+            spoiler.settings.diddy_colors = CharacterColors.randomized
+            spoiler.settings.lanky_colors = CharacterColors.randomized
+            spoiler.settings.tiny_colors = CharacterColors.randomized
+            spoiler.settings.chunky_colors = CharacterColors.randomized
+            spoiler.settings.rambi_colors = CharacterColors.randomized
+            spoiler.settings.enguarde_colors = CharacterColors.randomized
         else:
-            spoiler.settings.dk_colors = js.document.getElementById("dk_colors").value
+            spoiler.settings.dk_colors = CharacterColors[js.document.getElementById("dk_colors").value]
             spoiler.settings.dk_custom_color = js.document.getElementById("dk_custom_color").value
-            spoiler.settings.diddy_colors = js.document.getElementById("diddy_colors").value
+            spoiler.settings.diddy_colors = CharacterColors[js.document.getElementById("diddy_colors").value]
             spoiler.settings.diddy_custom_color = js.document.getElementById("diddy_custom_color").value
-            spoiler.settings.lanky_colors = js.document.getElementById("lanky_colors").value
+            spoiler.settings.lanky_colors = CharacterColors[js.document.getElementById("lanky_colors").value]
             spoiler.settings.lanky_custom_color = js.document.getElementById("lanky_custom_color").value
-            spoiler.settings.tiny_colors = js.document.getElementById("tiny_colors").value
+            spoiler.settings.tiny_colors = CharacterColors[js.document.getElementById("tiny_colors").value]
             spoiler.settings.tiny_custom_color = js.document.getElementById("tiny_custom_color").value
-            spoiler.settings.chunky_colors = js.document.getElementById("chunky_colors").value
+            spoiler.settings.chunky_colors = CharacterColors[js.document.getElementById("chunky_colors").value]
             spoiler.settings.chunky_custom_color = js.document.getElementById("chunky_custom_color").value
-            spoiler.settings.rambi_colors = js.document.getElementById("rambi_colors").value
+            spoiler.settings.rambi_colors = CharacterColors[js.document.getElementById("rambi_colors").value]
             spoiler.settings.rambi_custom_color = js.document.getElementById("rambi_custom_color").value
-            spoiler.settings.enguarde_colors = js.document.getElementById("enguarde_colors").value
+            spoiler.settings.enguarde_colors = CharacterColors[js.document.getElementById("enguarde_colors").value]
             spoiler.settings.enguarde_custom_color = js.document.getElementById("enguarde_custom_color").value
     else:
         if spoiler.settings.random_colors:
-            spoiler.settings.dk_colors = "randomized"
-            spoiler.settings.diddy_colors = "randomized"
-            spoiler.settings.lanky_colors = "randomized"
-            spoiler.settings.tiny_colors = "randomized"
-            spoiler.settings.chunky_colors = "randomized"
-            spoiler.settings.rambi_colors = "randomized"
-            spoiler.settings.enguarde_colors = "randomized"
+            spoiler.settings.dk_colors = CharacterColors.randomized
+            spoiler.settings.diddy_colors = CharacterColors.randomized
+            spoiler.settings.lanky_colors = CharacterColors.randomized
+            spoiler.settings.tiny_colors = CharacterColors.randomized
+            spoiler.settings.chunky_colors = CharacterColors.randomized
+            spoiler.settings.rambi_colors = CharacterColors.randomized
+            spoiler.settings.enguarde_colors = CharacterColors.randomized
 
     colors_dict = {
         "dk_colors": spoiler.settings.dk_colors,
@@ -177,16 +185,15 @@ def apply_cosmetic_colors(spoiler: Spoiler):
         process = True
         if kong["kong_index"] == 4:  # Chunky
             is_disco = spoiler.settings.disco_chunky
-            if spoiler.settings.krusha_slot == "chunky":
+            if spoiler.settings.krusha_kong == Kongs.chunky:
                 is_disco = False
             if is_disco and kong["kong"] == "chunky":
                 process = False
             elif not is_disco and kong["kong"] == "disco_chunky":
                 process = False
-        kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
         is_krusha = False
-        if spoiler.settings.krusha_slot in kong_names:
-            if kong_names.index(spoiler.settings.krusha_slot) == kong["kong_index"]:
+        if spoiler.settings.krusha_kong is not None:
+            if spoiler.settings.krusha_kong == kong["kong_index"]:
                 is_krusha = True
                 kong["palettes"] = [{"name": "krusha_skin", "image": 4971, "fill_type": "block"}, {"name": "krusha_indicator", "image": 4966, "fill_type": "kong"}]
                 process = True
@@ -199,17 +206,17 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                 elif palette["fill_type"] == "kong":
                     kong_colors = ["#ffd700", "#ff0000", "#1699ff", "#B045ff", "#41ff25"]
                     mode = spoiler.settings.colorblind_mode
-                    if mode != "off":
-                        if mode == "prot":
+                    if mode != ColorblindMode.off:
+                        if mode == ColorblindMode.prot:
                             kong_colors = ["#FDE400", "#0072FF", "#766D5A", "#FFFFFF", "#000000"]
-                        elif mode == "deut":
+                        elif mode == ColorblindMode.deut:
                             kong_colors = ["#E3A900", "#318DFF", "#7F6D59", "#FFFFFF", "#000000"]
-                        elif mode == "trit":
+                        elif mode == ColorblindMode.trit:
                             kong_colors = ["#FFA4A4", "#C72020", "#13C4D8", "#FFFFFF", "#000000"]
                     arr = [kong_colors[kong["kong_index"]]]
                 base_obj["zones"].append({"zone": palette["name"], "image": palette["image"], "fill_type": palette["fill_type"], "colors": arr})
-            if colors_dict[kong["base_setting"]] != "vanilla":
-                if colors_dict[kong["base_setting"]] == "randomized":
+            if colors_dict[kong["base_setting"]] != CharacterColors.vanilla:
+                if colors_dict[kong["base_setting"]] == CharacterColors.randomized:
                     color = f"#{format(randint(0, 0xFFFFFF), '06x')}"
                 else:
                     color = colors_dict[kong["custom_setting"]]
@@ -453,12 +460,12 @@ def overwrite_object_colors(spoiler: Spoiler):
     """Overwrite object colors."""
     global color_bases
     mode = spoiler.settings.colorblind_mode
-    if mode != "off":
-        if mode == "prot":
+    if mode != ColorblindMode.off:
+        if mode == ColorblindMode.prot:
             color_bases = ["#FDE400", "#0072FF", "#766D5A", "#FFFFFF", "#000000"]
-        elif mode == "deut":
+        elif mode == ColorblindMode.deut:
             color_bases = ["#E3A900", "#318DFF", "#7F6D59", "#FFFFFF", "#000000"]
-        elif mode == "trit":
+        elif mode == ColorblindMode.trit:
             color_bases = ["#FFA4A4", "#C72020", "#13C4D8", "#FFFFFF", "#000000"]
         file = 175
         dk_single = getFile(7, file, False, 44, 44, "rgba5551")
@@ -530,24 +537,43 @@ def overwrite_object_colors(spoiler: Spoiler):
 
 def applyKrushaKong(spoiler: Spoiler):
     """Apply Krusha Kong setting."""
-    kong_names = ["dk", "diddy", "lanky", "tiny", "chunky"]
-    if spoiler.settings.krusha_slot == "random":
-        slots = ["dk", "diddy", "lanky", "tiny"]
-        if not spoiler.settings.disco_chunky:
-            slots.append("chunky")  # Only add Chunky if Disco not on (People with disco on probably don't want Krusha as Chunky)
-        spoiler.settings.krusha_slot = random.choice(slots)
     ROM().seek(spoiler.settings.rom_data + 0x11C)
-    if spoiler.settings.krusha_slot == "no_slot":
+    if spoiler.settings.krusha_kong is None:
         ROM().write(255)
-    elif spoiler.settings.krusha_slot in kong_names:
-        krusha_index = kong_names.index(spoiler.settings.krusha_slot)
-        ROM().write(krusha_index)
-        placeKrushaHead(krusha_index)
-        if spoiler.settings.krusha_slot != "lanky":
-            changeKrushaModel()
+    elif spoiler.settings.krusha_kong < 5:
+        ROM().write(spoiler.settings.krusha_kong)
+        placeKrushaHead(spoiler.settings.krusha_kong)
+        changeKrushaModel(spoiler.settings.krusha_kong)
+        if spoiler.settings.krusha_kong == Kongs.donkey:
+            fixBaboonBlasts()
 
 
-def changeKrushaModel():
+DK_SCALE = 0.75
+GENERIC_SCALE = 0.49
+krusha_scaling = [
+    # [x, y, z, xz, y]
+    # DK
+    [lambda x: x * DK_SCALE, lambda x: x * DK_SCALE, lambda x: x * GENERIC_SCALE, lambda x: x * DK_SCALE, lambda x: x * DK_SCALE],
+    # Diddy
+    [lambda x: (x * 1.043) - 41.146, lambda x: (x * 9.893) - 8.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 1.103) - 14.759, lambda x: (x * 0.823) + 35.220],
+    # Lanky
+    [lambda x: (x * 0.841) - 17.231, lambda x: (x * 6.925) - 2.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 0.680) - 18.412, lambda x: (x * 0.789) + 42.138],
+    # Tiny
+    [lambda x: (x * 0.632) + 7.590, lambda x: (x * 6.925) + 0.0, lambda x: x * GENERIC_SCALE, lambda x: (x * 1.567) - 21.676, lambda x: (x * 0.792) + 41.509],
+    # Chunky
+    [lambda x: x, lambda x: x, lambda x: x, lambda x: x, lambda x: x],
+]
+
+
+def readListAsInt(arr: list, start: int, size: int) -> int:
+    """Read list and convert to int."""
+    val = 0
+    for i in range(size):
+        val = (val * 256) + arr[start + i]
+    return val
+
+
+def changeKrushaModel(krusha_kong: int):
     """Modify Krusha Model to be smaller to enable him to fit through smaller gaps."""
     krusha_model_start = js.pointer_addresses[5]["entries"][0xDA]["pointing_to"]
     krusha_model_finish = js.pointer_addresses[5]["entries"][0xDB]["pointing_to"]
@@ -561,22 +587,65 @@ def changeKrushaModel():
     num_data = []  # data, but represented as nums rather than b strings
     for d in data:
         num_data.append(d)
-    for i in range(int(0x220 / 4)):
-        val = 0
-        for j in range(4):
-            val = (val * 256) + num_data[0x4504 + (i * 4) + j]
-        if val != 0xFFFFFFFF and val > 0x10000000:
-            # My messed up way to ensure value is float
-            val_f = intf_to_float(val)
-            val_f *= 0.55  # Scale down coordinates
+    base = 0x450C
+    count_0 = readListAsInt(num_data, base, 4)
+    changes = krusha_scaling[krusha_kong][:3]
+    changes_0 = [
+        krusha_scaling[krusha_kong][3],
+        krusha_scaling[krusha_kong][4],
+        krusha_scaling[krusha_kong][3],
+    ]
+    for i in range(count_0):
+        i_start = base + 4 + (i * 0x14)
+        for coord_index, change in enumerate(changes):
+            val_i = readListAsInt(num_data, i_start + (4 * coord_index) + 4, 4)
+            val_f = change(intf_to_float(val_i))
             val_i = int(float_to_hex(val_f), 16)
             for di, d in enumerate(int_to_list(val_i, 4)):
-                num_data[0x4504 + (i * 4) + di] = d
+                num_data[i_start + (4 * coord_index) + 4 + di] = d
+    section_2_start = base + 4 + (count_0 * 0x14)
+    count_1 = readListAsInt(num_data, section_2_start, 4)
+    for i in range(count_1):
+        i_start = section_2_start + 4 + (i * 0x10)
+        for coord_index, change in enumerate(changes_0):
+            val_i = readListAsInt(num_data, i_start + (4 * coord_index), 4)
+            val_f = change(intf_to_float(val_i))
+            val_i = int(float_to_hex(val_f), 16)
+            for di, d in enumerate(int_to_list(val_i, 4)):
+                num_data[i_start + (4 * coord_index) + di] = d
     data = bytearray(num_data)  # convert num_data back to binary string
     if indicator == 0x1F8B:
         data = gzip.compress(data, compresslevel=9)
     ROM().seek(krusha_model_start)
     ROM().writeBytes(data)
+
+
+def fixBaboonBlasts():
+    """Fix various baboon blasts to work for Krusha."""
+    # Fungi Baboon Blast
+    for id in (2, 5):
+        item_start = getObjectAddress(0xBC, id, "actor")
+        if item_start is not None:
+            ROM().seek(item_start + 0x14)
+            ROM().writeMultipleBytes(0xFFFFFFEC, 4)
+            ROM().seek(item_start + 0x1B)
+            ROM().writeMultipleBytes(0, 1)
+    # Caves Baboon Blast
+    item_start = getObjectAddress(0xBA, 4, "actor")
+    if item_start is not None:
+        ROM().seek(item_start + 0x4)
+        ROM().writeMultipleBytes(int(float_to_hex(510), 16), 4)
+    item_start = getObjectAddress(0xBA, 12, "actor")
+    if item_start is not None:
+        ROM().seek(item_start + 0x4)
+        ROM().writeMultipleBytes(int(float_to_hex(333), 16), 4)
+    # Castle Baboon Blast
+    item_start = getObjectAddress(0xBB, 4, "actor")
+    if item_start is not None:
+        ROM().seek(item_start + 0x0)
+        ROM().writeMultipleBytes(int(float_to_hex(2472), 16), 4)
+        ROM().seek(item_start + 0x8)
+        ROM().writeMultipleBytes(int(float_to_hex(1980), 16), 4)
 
 
 def placeKrushaHead(slot):
@@ -645,20 +714,21 @@ def writeMiscCosmeticChanges(spoiler: Spoiler):
     """Write miscellaneous changes to the cosmetic colors."""
     if spoiler.settings.misc_cosmetics:
         # Melon HUD
-        data = {
-            7: [0x13C, 0x147],
-            14: [0x5A, 0x5D],
-        }
+        data = {7: [0x13C, 0x147], 14: [0x5A, 0x5D], 25: [0x17B2, 0x17B2]}
         shift = random.randint(0, 359)
         for table in data:
             table_data = data[table]
             for img in range(table_data[0], table_data[1] + 1):
-                melon_im = getFile(table, img, table != 7, 48, 42, "rgba5551")
+                if table == 25 and img == 0x17B2:
+                    dims = (32, 32)
+                else:
+                    dims = (48, 42)
+                melon_im = getFile(table, img, table != 7, dims[0], dims[1], "rgba5551")
                 melon_im = hueShift(melon_im, shift)
                 melon_px = melon_im.load()
                 bytes_array = []
-                for y in range(42):
-                    for x in range(48):
+                for y in range(dims[1]):
+                    for x in range(dims[0]):
                         pix_data = list(melon_px[x, y])
                         red = int((pix_data[0] >> 3) << 11)
                         green = int((pix_data[1] >> 3) << 6)
@@ -717,16 +787,16 @@ def applyHelmDoorCosmetics(spoiler: Spoiler):
         HelmDoorSetting(spoiler.settings.coin_door_item, spoiler.settings.coin_door_item_count, 6024, 6025),
     ]
     Images = [
-        HelmDoorImages("req_gb", [0x155C]),
-        HelmDoorImages("req_bp", [x + 4 for x in (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)], False, 25, (48, 42)),
-        HelmDoorImages("req_bean", [0], True, 6, (20, 20)),
-        HelmDoorImages("req_pearl", [0xD5F], False, 25, (32, 32)),
-        HelmDoorImages("req_fairy", [0x16ED], False, 25, (32, 32), "rgba32"),
-        HelmDoorImages("req_key", [5877]),
-        HelmDoorImages("req_medal", [0x156C]),
-        HelmDoorImages("req_rainbowcoin", [5963], False, 25, (48, 42)),
-        HelmDoorImages("req_crown", [5893]),
-        HelmDoorImages("req_companycoins", [5905, 5912]),
+        HelmDoorImages(HelmDoorItem.req_gb, [0x155C]),
+        HelmDoorImages(HelmDoorItem.req_bp, [x + 4 for x in (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)], False, 25, (48, 42)),
+        HelmDoorImages(HelmDoorItem.req_bean, [0], True, 6, (20, 20)),
+        HelmDoorImages(HelmDoorItem.req_pearl, [0xD5F], False, 25, (32, 32)),
+        HelmDoorImages(HelmDoorItem.req_fairy, [0x16ED], False, 25, (32, 32), "rgba32"),
+        HelmDoorImages(HelmDoorItem.req_key, [5877]),
+        HelmDoorImages(HelmDoorItem.req_medal, [0x156C]),
+        HelmDoorImages(HelmDoorItem.req_rainbowcoin, [5963], False, 25, (48, 42)),
+        HelmDoorImages(HelmDoorItem.req_crown, [5893]),
+        HelmDoorImages(HelmDoorItem.req_companycoins, [5905, 5912]),
     ]
     for door in Doors:
         for image_data in Images:
@@ -754,7 +824,7 @@ def applyHelmDoorCosmetics(spoiler: Spoiler):
                     new_width = image_data.dimensions[0] * (44 / image_data.dimensions[1])
                     base_overlay = base_overlay.resize((int(new_width), 44))
                     base.paste(base_overlay, (int(22 - (new_width / 2)), 0), base_overlay)
-                if door.item_setting == "req_pearl":
+                if door.item_setting == HelmDoorItem.req_pearl:
                     pearl_mask_im = Image.new("RGBA", (44, 44), (0, 0, 0, 255))
                     draw = ImageDraw.Draw(pearl_mask_im)
                     draw.ellipse((0, 0, 43, 43), fill=(0, 0, 0, 0), outline=(0, 0, 0, 0))
@@ -770,7 +840,8 @@ def applyHelmDoorCosmetics(spoiler: Spoiler):
 
 def applyHolidayMode(spoiler: Spoiler):
     """Change grass texture to snow."""
-    if spoiler.settings.holiday_mode:
+    enable_holiday_override = False
+    if spoiler.settings.holiday_mode and enable_holiday_override:
         ROM().seek(0x1FF8000)
         snow_im = Image.new(mode="RGBA", size=((32, 32)))
         snow_px = snow_im.load()
@@ -800,3 +871,77 @@ def applyHolidayMode(spoiler: Spoiler):
             start = js.pointer_addresses[25]["entries"][img]["pointing_to"]
             ROM().seek(start)
             ROM().writeBytes(byte_data)
+
+
+boot_phrases = (
+    "Removing Lanky Kong",
+    "Telling 2dos to play DK64",
+    "Locking K. Lumsy in a cage",
+    "Stealing the Banana Hoard",
+    "Finishing the game in a cave",
+    "Becoming the peak of randomizers",
+    "Giving kops better eyesight",
+    "Patching in the glitches",
+    "Enhancing Cfox Luck",
+    "Finding Rareware GB in Galleon",
+    "Resurrecting Chunky Kong",
+    "Shouting out Grant Kirkhope",
+    "Crediting L. Godfrey",
+    "Removing Stop n Swop",
+    "Assembling the scraps",
+    "Blowing in the cartridge",
+    "Backflipping in Chunky Phase",
+    "Hiding 20 fairies",
+    "Randomizing collision normals",
+    "Removing hit detection",
+    "Compressing K Rools Voice Lines",
+    "Checking divide by 0 doesnt work",
+    "Adding every move to Isles",
+    "Segueing in dk64randomizer.com",
+    "Removing lag. Or am I?",
+    "Hiding a dirt patch under grass",
+    "Giving Wrinkly the spoiler log",
+    "Questioning sub 2:30 in LUA Rando",
+    "Chasing Lanky in Fungi Forest",
+    "Banning Potions from Candys Shop",
+    "Finding someone who can help you",
+    "Messing up your seed",
+    "Crashing Krem Isle",
+    "Increasing Robot Punch Resistance",
+    "Caffeinating banana fairies",
+    "Bothering Beavers",
+    "Inflating Banana Balloons",
+    "Counting to 16",
+    "Removing Walls",
+    "Taking it to the fridge",
+    "Brewing potions",
+    "Reticulating Splines",  # SimCity 2000
+    "Ironing Donks",
+    "Replacing mentions of Hero with Hoard",
+    "Suggesting you also try BK Randomizer",
+    "Scattering 3500 Bananas",
+    "Stealing ideas from other randomizers",
+    "Fixing Krushas Collision",
+    "Falling on 75m",
+    "Summoning Salt",
+    "Combing Chunkys Afro",
+    "Asking what you gonna do",
+    "Thinking with portals",
+    "Reminding you to hydrate",
+    "Injecting lag",
+    "Turning Sentient",
+    "Performing for you",
+    "Charging 2 coins per save",
+    "Loading in Beavers",
+    "Lifting Boulders with Relative Ease",
+    "Doing Monkey Science Probably",
+)
+
+
+def writeBootMessages(spoiler: Spoiler):
+    """Write boot messages into ROM."""
+    placed_messages = random.sample(boot_phrases, 4)
+    print(placed_messages)
+    for message_index, message in enumerate(placed_messages):
+        ROM().seek(0x1FFD000 + (0x40 * message_index))
+        ROM().writeBytes(message.upper().encode("ascii"))

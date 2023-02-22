@@ -78,3 +78,11 @@
 .definelabel setActorModel, 0x80613194
 .definelabel spawn3DActor, 0x8067B2DC
 .definelabel getChunk, 0x806531B8
+.definelabel trapPlayer, 0x806F027c
+.definelabel applyDamage, 0x806C9974
+.definelabel damage, 0x806EE10C
+.definelabel checkDeathAction, 0x806EB400
+.definelabel unkLightFunc_0, 0x80604cbc
+.definelabel kongFollowingLightFunc, 0x8072a920
+.definelabel lightShiningLightFunc, 0x806c6530
+.definelabel updateBones, 0x80671A6C

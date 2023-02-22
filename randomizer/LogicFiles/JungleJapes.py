@@ -18,7 +18,7 @@ LogicRegions = {
         LocationLogic(Locations.JapesLankyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.lanky] >= l.settings.medal_cb_req),
         LocationLogic(Locations.JapesTinyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.tiny] >= l.settings.medal_cb_req),
         LocationLogic(Locations.JapesChunkyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.chunky] >= l.settings.medal_cb_req),
-    ], [], []),
+    ], [], [], restart=-1),
 
     Regions.JungleJapesMain: Region("Jungle Japes Main", "Japes Outdoors", Levels.JungleJapes, True, None, [
         LocationLogic(Locations.DiddyKong, lambda l: l.CanFreeDiddy()),
@@ -31,10 +31,16 @@ LogicRegions = {
         LocationLogic(Locations.JapesChunkyBoulder, lambda l: l.chunky and l.barrels),
         LocationLogic(Locations.JapesChunkyCagedBanana, lambda l: ((Events.JapesChunkySwitch in l.Events or l.phasewalk or l.CanSkew(False)) and l.chunky) or ((l.phasewalk or l.CanSkew(False)) and l.settings.free_trade_items)),
         LocationLogic(Locations.JapesBattleArena, lambda l: not l.settings.crown_placement_rando),
+        LocationLogic(Locations.RainbowCoin_Location00, lambda l: l.shockwave and ((l.islanky and l.handstand) or (l.istiny and l.twirl)))
     ], [
         Event(Events.JapesEntered, lambda l: True),
-        Event(Events.JapesSpawnW5, lambda l: Events.JapesMountainTopGB in l.Events or l.settings.activate_all_bananaports),
         Event(Events.JapesFreeKongOpenGates, lambda l: l.CanOpenJapesGates()),
+        Event(Events.JapesW1aTagged, lambda l: True),
+        Event(Events.JapesW1bTagged, lambda l: True),
+        Event(Events.JapesW2aTagged, lambda l: True),
+        Event(Events.JapesW2bTagged, lambda l: True),
+        Event(Events.JapesW3aTagged, lambda l: True),
+        Event(Events.JapesW3bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesLobby, lambda l: True, Transitions.JapesToIsles),
@@ -55,7 +61,7 @@ LogicRegions = {
     Regions.JapesTopOfMountain: Region("Japes Top of Mountain", "Japes Outdoors", Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesDiddyMountain, lambda l: Events.JapesDiddySwitch2 in l.Events and (l.isdiddy or l.settings.free_trade_items)),
     ], [
-        Event(Events.JapesMountainTopGB, lambda l: Events.JapesDiddySwitch2 in l.Events and (l.isdiddy or l.settings.free_trade_items)),
+        Event(Events.JapesW5bTagged, lambda l: Locations.JapesDiddyMountain in l.SpecialLocationsReached),
     ], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
@@ -90,16 +96,17 @@ LogicRegions = {
     Regions.JapesBeyondFeatherGate: Region("Japes Beyond Feather Gate", "Hive Area", Levels.JungleJapes, True, -1, [
         LocationLogic(Locations.JapesTinyStump, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSkew(False)),
         LocationLogic(Locations.JapesChunkyGiantBonusBarrel, lambda l: l.hunkyChunky and l.ischunky, MinigameType.BonusBarrel),
-    ], [], [
+    ], [
+        Event(Events.JapesW5aTagged, lambda l: True),
+    ], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: True),
         TransitionFront(Regions.TinyHive, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSkew(False) or (l.hunkyChunky and l.ischunky and l.generalclips), Transitions.JapesMainToTinyHive),
-        TransitionFront(Regions.JapesTopOfMountain, lambda l: Events.JapesSpawnW5 in l.Events),
         TransitionFront(Regions.BeyondRambiGate, lambda l: l.hunkyChunky and l.ischunky and l.generalclips),
     ]),
 
     Regions.TinyHive: Region("Tiny Hive", "Hive Area", Levels.JungleJapes, False, -1, [
-        LocationLogic(Locations.JapesTinyBeehive, lambda l: (l.istiny and ((l.Slam and (l.saxophone or l.oranges)) or l.phasewalk or l.generalclips)) or (l.settings.free_trade_items and l.phasewalk)),
+        LocationLogic(Locations.JapesTinyBeehive, lambda l: (l.istiny and ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.phasewalk or l.generalclips)) or (l.settings.free_trade_items and l.phasewalk)),
     ], [], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.isdiddy or l.istiny or l.islanky or l.phasewalk, Transitions.JapesTinyHiveToMain),  # It is technically possible to leave with DK and Chunky, just tricky
@@ -111,10 +118,12 @@ LogicRegions = {
         LocationLogic(Locations.JapesKasplatNearLab, lambda l: not l.settings.kasplat_rando),
     ], [
         Event(Events.Rambi, lambda l: (l.coconut and l.isdonkey) or l.phasewalk),
-        Event(Events.JapesDonkeySwitch, lambda l: (Events.Rambi in l.Events or l.phasewalk) and l.Slam and l.donkey),
-        Event(Events.JapesDiddySwitch1, lambda l: (Events.Rambi in l.Events or l.phasewalk) and l.Slam and l.diddy),
-        Event(Events.JapesLankySwitch, lambda l: (Events.Rambi in l.Events or l.phasewalk) and l.Slam and l.lanky),
-        Event(Events.JapesTinySwitch, lambda l: (Events.Rambi in l.Events or l.phasewalk) and l.Slam and l.tiny),
+        Event(Events.JapesDonkeySwitch, lambda l: (Events.Rambi in l.Events or l.phasewalk) and l.CanSlamSwitch(Levels.JungleJapes, 1) and l.donkey),
+        Event(Events.JapesDiddySwitch1, lambda l: (Events.Rambi in l.Events or l.phasewalk) and l.CanSlamSwitch(Levels.JungleJapes, 1) and l.diddy),
+        Event(Events.JapesLankySwitch, lambda l: (Events.Rambi in l.Events or l.phasewalk) and l.CanSlamSwitch(Levels.JungleJapes, 1) and l.lanky),
+        Event(Events.JapesTinySwitch, lambda l: (Events.Rambi in l.Events or l.phasewalk) and l.CanSlamSwitch(Levels.JungleJapes, 1) and l.tiny),
+        Event(Events.JapesW4aTagged, lambda l: True),
+        Event(Events.JapesW4bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
@@ -126,7 +135,7 @@ LogicRegions = {
     Regions.BeyondRambiGate: Region("Beyond Rambi Gate", "Japes Tunnels", Levels.JungleJapes, False, -1, [
         LocationLogic(Locations.JapesBananaFairyRambiCave, lambda l: l.camera),
     ], [
-        Event(Events.JapesChunkySwitch, lambda l: l.Slam and l.ischunky and l.barrels),
+        Event(Events.JapesChunkySwitch, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and l.ischunky and l.barrels),
     ], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: True),
@@ -145,17 +154,16 @@ LogicRegions = {
     Regions.Mine: Region("Mine", "Japes Underground", Levels.JungleJapes, False, -1, [], [
         # You're supposed to get to the switch by shooting a peanut switch,
         # but can just jump without too much trouble.
-        Event(Events.JapesDiddySwitch2, lambda l: l.Slam and l.isdiddy),
+        Event(Events.JapesDiddySwitch2, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy),
     ], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True, Transitions.JapesMineToMain),
-        TransitionFront(Regions.JapesMinecarts, lambda l: (l.Slam or l.phasewalk) and ((l.charge and l.isdiddy) or l.phasewalk or (l.advanced_platforming and l.isdiddy))),
+        TransitionFront(Regions.JapesMinecarts, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and ((l.charge and l.isdiddy) or l.phasewalk or (l.advanced_platforming and l.isdiddy))),
     ]),
 
     Regions.JapesMinecarts: Region("Japes Minecarts", "Japes Underground", Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesDiddyMinecarts, lambda l: l.isdiddy or l.settings.free_trade_items),
     ], [], [
-        TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
     ], Transitions.JapesMineToCarts
     ),

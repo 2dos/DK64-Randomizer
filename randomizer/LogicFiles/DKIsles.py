@@ -6,6 +6,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import MinigameBarrels
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
@@ -36,6 +37,8 @@ LogicRegions = {
         LocationLogic(Locations.IslesSwimTrainingBarrel, lambda l: True),
         LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: True),
         LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: True),
+        LocationLogic(Locations.RainbowCoin_Location13, lambda l: l.shockwave),
+        LocationLogic(Locations.RainbowCoin_Location14, lambda l: l.shockwave and (l.vines or l.CanMoonkick())),  # Banana Hoard patch
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesStartToMain),
         TransitionFront(Regions.Treehouse, lambda l: True, Transitions.IslesStartToTreehouse),
@@ -47,41 +50,47 @@ LogicRegions = {
         # the starting kong, so for logic we assume any kong can grab it since that's practically true.
         LocationLogic(Locations.IslesDonkeyJapesRock, lambda l: (l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events)),
         LocationLogic(Locations.IslesTinyCagedBanana, lambda l: (l.feather and l.tiny) or ((l.phasewalk or l.CanSTS()) and (l.istiny or l.settings.free_trade_items))),
-        LocationLogic(Locations.IslesTinyInstrumentPad, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.tiny),
         LocationLogic(Locations.IslesLankyCagedBanana, lambda l: ((l.grape or l.CanPhaseswim() or l.phasewalk) and l.lanky) or (l.phasewalk and l.settings.free_trade_items)),
         LocationLogic(Locations.IslesChunkyCagedBanana, lambda l: (l.pineapple and l.chunky) or ((l.CanSTS() or l.phasewalk) and (l.ischunky or l.settings.free_trade_items))),
         LocationLogic(Locations.IslesChunkyPoundtheX, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.hunkyChunky and l.Slam and l.chunky),
         LocationLogic(Locations.IslesBananaFairyIsland, lambda l: l.camera),
-        LocationLogic(Locations.IslesBananaFairyCrocodisleIsle, lambda l: l.camera and ((l.monkeyport and l.tiny) or l.tbs)),
+        LocationLogic(Locations.RainbowCoin_Location04, lambda l: l.shockwave),
     ], [
-        Event(Events.IslesChunkyBarrelSpawn, lambda l: (l.monkeyport or l.tbs) and l.saxophone and l.tiny),
+        Event(Events.IslesW1aTagged, lambda l: True),
+        Event(Events.IslesW1bTagged, lambda l: True),
+        Event(Events.IslesW2aTagged, lambda l: True),
+        Event(Events.IslesW3aTagged, lambda l: True),
+        Event(Events.IslesW3bTagged, lambda l: True),
+        Event(Events.IslesW4aTagged, lambda l: True),
+        Event(Events.IslesW5aTagged, lambda l: True),
+        Event(Events.IslesW5bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.TrainingGrounds, lambda l: True, Transitions.IslesMainToStart),
         TransitionFront(Regions.Prison, lambda l: True),
         TransitionFront(Regions.BananaFairyRoom, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSTS(), Transitions.IslesMainToFairy),
         TransitionFront(Regions.JungleJapesLobby, lambda l: l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events or l.phasewalk or l.CanSTS(), Transitions.IslesMainToJapesLobby),
-        TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanMoonkick() or l.tbs),
-        TransitionFront(Regions.IslesMainUpper, lambda l: l.vines or l.CanMoonkick() or l.pathMode),
-        TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanPhaseswim()) and (l.swim or l.pathMode), Transitions.IslesMainToGalleonLobby),
+        TransitionFront(Regions.KremIsle, lambda l: True),
+        TransitionFront(Regions.IslesMainUpper, lambda l: l.vines or l.CanMoonkick() or l.assumeUpperIslesAccess),
         TransitionFront(Regions.CabinIsle, lambda l: l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events or l.CanMoonkick()),
         TransitionFront(Regions.CreepyCastleLobby, lambda l: l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events, Transitions.IslesMainToCastleLobby),
-        TransitionFront(Regions.HideoutHelmLobby, lambda l: (l.monkeyport and l.istiny and (l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events) or (l.generalclips and l.twirl))) or l.tbs),
-        # If you have monkeyport, you can warp up to the hideout helm entrance and drop down to the upper part of Crocodile Isle
-        TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: l.monkeyport and l.istiny),
-        TransitionFront(Regions.KRool, lambda l: l.CanAccessKRool()),
+        TransitionFront(Regions.KremIsleTopLevel, lambda l: l.tbs),
+        TransitionFront(Regions.KRool, lambda l: l.CanAccessKRool() or l.assumeKRoolAccess),
     ]),
 
     Regions.IslesMainUpper: Region("Isles Main Upper", "DK Isle", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesChunkyInstrumentPad, lambda l: l.triangle and l.chunky and l.barrels),
     ], [
         Event(Events.IslesDiddyBarrelSpawn, lambda l: l.chunky and l.trombone and l.lanky and l.barrels),
+        Event(Events.IslesW2bTagged, lambda l: True),
     ], [
+        TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.AngryAztecLobby, lambda l: l.settings.open_lobbies or Events.JapesKeyTurnedIn in l.Events or l.phasewalk, Transitions.IslesMainToAztecLobby),
         TransitionFront(Regions.CrystalCavesLobby, lambda l: (l.settings.open_lobbies or Events.ForestKeyTurnedIn in l.Events) and (l.isdonkey or l.ischunky or (l.istiny and l.twirl) or ((l.isdiddy or l.islanky) and l.advanced_platforming) or l.CanMoonkick()), Transitions.IslesMainToCavesLobby),
     ]),
 
     Regions.Prison: Region("Prison", "Krem Isle", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesLankyPrisonOrangsprint, lambda l: (l.sprint and l.islanky) or (l.phasewalk and (l.islanky or l.settings.free_trade_items))),
+        LocationLogic(Locations.RainbowCoin_Location12, lambda l: l.shockwave),
     ], [
         Event(Events.KLumsyTalkedTo, lambda l: True),
         Event(Events.JapesKeyTurnedIn, lambda l: l.JapesKey),
@@ -118,7 +127,7 @@ LogicRegions = {
     ]),
 
     Regions.AngryAztecLobby: Region("Angry Aztec Lobby", "Level Lobbies", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesTinyAztecLobby, lambda l: (((l.charge and l.diddy and l.twirl) or l.settings.bonus_barrels == "skip") and l.istiny) or (l.settings.bonus_barrels == "skip" and l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.IslesTinyAztecLobby, lambda l: (((l.charge and l.diddy and l.twirl) or l.settings.bonus_barrels == MinigameBarrels.skip) and l.istiny) or (l.settings.bonus_barrels == MinigameBarrels.skip and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.AztecDiddyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.AztecLankyDoor, lambda l: not l.settings.wrinkly_location_rando),
@@ -129,19 +138,38 @@ LogicRegions = {
         TransitionFront(Regions.AngryAztecStart, lambda l: l.IsLevelEnterable(Levels.AngryAztec), Transitions.IslesToAztec),
     ]),
 
-    Regions.CrocodileIsleBeyondLift: Region("Crocodile Isle Beyond Lift", "Krem Isle", Levels.DKIsles, False, None, [
-        LocationLogic(Locations.IslesDonkeyCagedBanana, lambda l: (l.coconut and l.isdonkey) or ((l.CanSkew(True) and l.CanSTS()) and (l.isdonkey or l.settings.free_trade_items))),
-    ], [], [
+    Regions.KremIsle: Region("Krem Isle Base", "Krem Isle", Levels.DKIsles, False, None, [], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
+        TransitionFront(Regions.KremIsleBeyondLift, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanMoonkick() or l.tbs),
+        TransitionFront(Regions.KremIsleTopLevel, lambda l: l.monkeyport and l.istiny),
+    ]),
+
+    Regions.KremIsleBeyondLift: Region("Krem Isle Beyond Lift", "Krem Isle", Levels.DKIsles, False, None, [
+        LocationLogic(Locations.IslesDonkeyCagedBanana, lambda l: (l.coconut and l.isdonkey) or ((l.CanSkew(True) and l.CanSTS()) and (l.isdonkey or l.settings.free_trade_items))),
+    ], [
+        Event(Events.IslesW4bTagged, lambda l: True),
+    ], [
+        TransitionFront(Regions.KremIsle, lambda l: True),
+        TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanPhaseswim()) and (l.swim or l.assumeLevel4Entry), Transitions.IslesMainToGalleonLobby),
         TransitionFront(Regions.IslesSnideRoom, lambda l: True, Transitions.IslesMainToSnideRoom),
         TransitionFront(Regions.FranticFactoryLobby, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or (l.CanSkew(True) and l.CanSTS()), Transitions.IslesMainToFactoryLobby),
     ]),
 
+    Regions.KremIsleTopLevel: Region("Krem Isle Top Level", "Krem Isle", Levels.DKIsles, False, None, [
+        LocationLogic(Locations.IslesTinyInstrumentPad, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.tiny),
+        LocationLogic(Locations.IslesBananaFairyCrocodisleIsle, lambda l: l.camera),
+    ], [
+        Event(Events.IslesChunkyBarrelSpawn, lambda l: l.saxophone and l.tiny),
+    ], [
+        TransitionFront(Regions.HideoutHelmLobby, lambda l: (l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events) or (l.generalclips and l.twirl)) or l.tbs),
+        TransitionFront(Regions.KremIsleBeyondLift, lambda l: True),
+    ]),
+
     Regions.IslesSnideRoom: Region("Isles Snide Room", "Krem Isle", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesDiddySnidesLobby, lambda l: ((l.settings.bonus_barrels == "skip" or l.spring) and l.isdiddy) or (l.settings.bonus_barrels == "skip" and l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.IslesDiddySnidesLobby, lambda l: ((l.settings.bonus_barrels == MinigameBarrels.skip or l.spring) and l.isdiddy) or (l.settings.bonus_barrels == MinigameBarrels.skip and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.IslesBattleArena1, lambda l: not l.settings.crown_placement_rando and l.chunky and l.barrels),
     ], [], [
-        TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: True, Transitions.IslesSnideRoomToMain),
+        TransitionFront(Regions.KremIsleBeyondLift, lambda l: True, Transitions.IslesSnideRoomToMain),
         TransitionFront(Regions.Snide, lambda l: True),
     ]),
 
@@ -155,7 +183,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryTinyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)))),
         LocationLogic(Locations.FactoryChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
     ], [], [
-        TransitionFront(Regions.CrocodileIsleBeyondLift, lambda l: True, Transitions.IslesFactoryLobbyToMain),
+        TransitionFront(Regions.KremIsleBeyondLift, lambda l: True, Transitions.IslesFactoryLobbyToMain),
         TransitionFront(Regions.FranticFactoryStart, lambda l: l.IsLevelEnterable(Levels.FranticFactory), Transitions.IslesToFactory),
     ]),
 
@@ -165,7 +193,7 @@ LogicRegions = {
     ]),
 
     Regions.GloomyGalleonLobby: Region("Gloomy Galleon Lobby", "Level Lobbies", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesTinyGalleonLobby, lambda l: ((l.chunky and l.superSlam and l.mini and l.twirl and l.swim and l.tiny) or (l.CanPhaseswim() and (l.istiny or l.settings.free_trade_items)))),
+        LocationLogic(Locations.IslesTinyGalleonLobby, lambda l: ((l.chunky and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.mini and l.twirl and l.swim and l.tiny) or (l.CanPhaseswim() and (l.istiny or l.settings.free_trade_items)))),
         LocationLogic(Locations.IslesKasplatGalleonLobby, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.GalleonDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.GalleonDiddyDoor, lambda l: not l.settings.wrinkly_location_rando),
@@ -180,6 +208,8 @@ LogicRegions = {
     Regions.CabinIsle: Region("Cabin Isle", "DK Isle", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesDiddyCagedBanana, lambda l: ((Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack) or (l.advanced_platforming and (l.isdiddy or l.isdonkey or (l.istiny and l.twirl) or l.ischunky))) and (l.peanut or l.phasewalk) and l.isdiddy),
         LocationLogic(Locations.IslesDiddySummit, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
+        LocationLogic(Locations.RainbowCoin_Location03, lambda l: l.shockwave),
+        LocationLogic(Locations.RainbowCoin_Location05, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy and l.shockwave),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.IslesMainToForestLobby),
@@ -221,6 +251,7 @@ LogicRegions = {
         LocationLogic(Locations.CastleLankyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.CastleTinyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.CastleChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
+        LocationLogic(Locations.RainbowCoin_Location15, lambda l: l.shockwave and ((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl))),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesCastleLobbyToMain),
         TransitionFront(Regions.CreepyCastleMain, lambda l: l.IsLevelEnterable(Levels.CreepyCastle), Transitions.IslesToCastle),
@@ -230,7 +261,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesChunkyHelmLobby, lambda l: (l.gorillaGone and l.ischunky and l.vines) or (l.advanced_platforming and l.istiny and l.twirl and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.IslesKasplatHelmLobby, lambda l: not l.settings.kasplat_rando and l.scope and l.coconut and l.donkey),
     ], [], [
-        TransitionFront(Regions.IslesMain, lambda l: True),
+        TransitionFront(Regions.KremIsleTopLevel, lambda l: True),
         TransitionFront(Regions.HideoutHelmStart, lambda l: ((l.gorillaGone and l.chunky and l.vines) or (l.CanMoonkick() and l.donkey)) and l.IsLevelEnterable(Levels.HideoutHelm)),
     ]),
 

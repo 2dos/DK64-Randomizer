@@ -15,6 +15,10 @@ START:
 		LUI a2, 0x807F
 		JAL dmaFileTransfer
 		ORI a2, a2, 0xF800 //RAM location to copy to
+		// Boot image
+		// LUI a0, 0x8060
+		// JAL 0x805FB7E4 // Render Nintendo Logo
+		// SW r0, 0xBBCC (a0)
 		// Load item data
 		LUI a0, hi(itemROM)
 		LUI a1, hi(itemROM + itemdatasize)
@@ -245,6 +249,9 @@ PauseControlHook:
 PauseSpriteHook:
 	J 	PauseControl_Sprite
 	NOP
+HandleSlamCheckHook:
+	J 	HandleSlamCheck
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -276,6 +283,12 @@ loadExtraHooks:
 	LUI t4, 0x806A
 	SW t3, 0x8420 (t4) // Store Hook
 	SW r0, 0x8424 (t4) // Store NOP
+	
+	LUI t3, hi(HandleSlamCheckHook)
+	LW t3, lo(HandleSlamCheckHook) (t3)
+	LUI t4, 0x8064
+	SW t3, 0xED7C (t4) // Store Hook
+	SW r0, 0xED80 (t4) // Store NOP
 	
 	LUI t3, hi(ModifyCameraColorHook)
 	LW t3, lo(ModifyCameraColorHook) (t3)

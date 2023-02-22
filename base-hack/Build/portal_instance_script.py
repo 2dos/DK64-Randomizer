@@ -24,6 +24,6 @@ portal_data = [
 
 for map in portal_data:
     for portal_index in range(map.count):
-        with open(f"assets/Non-Code/instance_scripts/{map.folder}/tns_{portal_index}.script", "w") as fh:
+        with open(f"assets/instance_scripts/{map.folder}/tns_{portal_index}.script", "w") as fh:
             lines = [".data", f"id = {0x220 + portal_index}", ".code", f"EXEC 7 | 125 65532 {0x220 + portal_index}", "ENDBLOCK"]
             fh.write("\n".join(lines))

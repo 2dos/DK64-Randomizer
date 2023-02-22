@@ -29,7 +29,6 @@ def encrypt_settings_string(dict_data: dict):
         "enguarde_colors",
         "enguarde_custom_color",
         "klaptrap_model",
-        "krusha_slot",
         "misc_cosmetics",
         "disco_chunky",
         "lanky_colors",
@@ -48,6 +47,7 @@ def encrypt_settings_string(dict_data: dict):
         "colorblind_mode",
         "search",
         "holiday_mode",
+        "homebrew_header",
     ]:
         dict_data.pop(pop)
     ordered_dict = collections.OrderedDict(sorted(dict_data.items()))

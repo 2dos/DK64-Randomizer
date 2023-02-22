@@ -1,4 +1,6 @@
 .definelabel coinCBCollectHandle, 0x806F54E0
+.definelabel standardCrateHandle, 0x806F5A48
+.definelabel bunchHandle, 0x806F58A0
 .definelabel getCollectableOffset, 0x806F544C
 .definelabel changeCollectableCount, 0x806F91B4
 .definelabel calculateFilePercentage, 0x80032304

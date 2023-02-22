@@ -1,6 +1,6 @@
 """Copies a base shop script to all shops."""
 
-ref_script = "assets/Non-Code/instance_scripts/base_shop_script/shop.script"
+ref_script = "assets/instance_scripts/base_shop_script/shop.script"
 
 shop_db = [
     {"map": "japes", "shops": {"snide": 0x54, "funky": 0x53}},
@@ -19,7 +19,7 @@ with open(ref_script, "r") as fh:
     for map_obj in shop_db:
         for shop in map_obj["shops"]:
             shop_id = map_obj["shops"][shop]
-            with open(f"assets/Non-Code/instance_scripts/{map_obj['map']}/{shop}.script", "w") as fg:
+            with open(f"assets/instance_scripts/{map_obj['map']}/{shop}.script", "w") as fg:
                 fg.write(f".data\nid = {hex(shop_id)}\n.code\n")
                 fh.seek(0)
                 fg.write(fh.read())

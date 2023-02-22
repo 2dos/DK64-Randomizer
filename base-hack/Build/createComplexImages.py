@@ -3,7 +3,7 @@
 import os
 
 import PIL
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageEnhance
 
 pre = "../"
 cwd = os.getcwd()
@@ -17,6 +17,49 @@ if last_part.upper() == "BUILD":
 def getDir(directory):
     """Convert directory into the right format based on where the script is run."""
     return f"{pre}{directory}"
+
+
+def hueShift(im, amount):
+    """Apply a hue shift on an image."""
+    hsv_im = im.convert("HSV")
+    im_px = im.load()
+    w, h = hsv_im.size
+    hsv_px = hsv_im.load()
+    for y in range(h):
+        for x in range(w):
+            old = list(hsv_px[x, y]).copy()
+            old[0] = (old[0] + amount) % 360
+            hsv_px[x, y] = (old[0], old[1], old[2])
+    rgb_im = hsv_im.convert("RGB")
+    rgb_px = rgb_im.load()
+    for y in range(h):
+        for x in range(w):
+            new = list(rgb_px[x, y])
+            new.append(list(im_px[x, y])[3])
+            im_px[x, y] = (new[0], new[1], new[2], new[3])
+    return im
+
+
+def maskImage(im_f, min_y, rgb: list):
+    """Apply RGB mask to image."""
+    w, h = im_f.size
+    converter = ImageEnhance.Color(im_f)
+    im_f = converter.enhance(0)
+    im_dupe = im_f.crop((0, min_y, w, h))
+    brightener = ImageEnhance.Brightness(im_dupe)
+    im_dupe = brightener.enhance(2)
+    im_f.paste(im_dupe, (0, min_y), im_dupe)
+    pix = im_f.load()
+    mask = rgb.copy()
+    w, h = im_f.size
+    for x in range(w):
+        for y in range(min_y, h):
+            base = list(pix[x, y])
+            if base[3] > 0:
+                for channel in range(3):
+                    base[channel] = int(mask[channel] * (base[channel] / 255))
+                pix[x, y] = (base[0], base[1], base[2], base[3])
+    return im_f
 
 
 print("Composing complex images")
@@ -45,12 +88,12 @@ number_crop = [
 
 kongs = ["dk", "diddy", "lanky", "tiny", "chunky"]
 
-hash_dir = getDir("assets/Non-Code/hash/")
+hash_dir = getDir("assets/hash/")
 if not os.path.exists(hash_dir):
     os.mkdir(hash_dir)
 kong_res = (32, 32)
 for kong in kongs:
-    base_dir = getDir("assets/Non-Code/displays/")
+    base_dir = getDir("assets/displays/")
     if not os.path.exists(base_dir):
         os.mkdir(base_dir)
     im = Image.new(mode="RGBA", size=(64, 64))
@@ -69,7 +112,7 @@ im = Image.new(mode="RGBA", size=(64, 64))
 shared_x_move = [4, 16, 30, 10, 26]
 shared_y_move = [0, 0, 0, 23, 23]
 kong_z_order = [0, 1, 2, 3, 4]
-disp_dir = getDir("assets/Non-Code/displays/")
+disp_dir = getDir("assets/displays/")
 for x in range(5):
     kong_index = kong_z_order[x]
     im1 = Image.open(f"{disp_dir}{kongs[kong_index]}_face.png")
@@ -135,7 +178,7 @@ for idx in range(2):
 # Ammo Crates
 crate_names = ["standard_crate", "homing_crate"]
 for crate in crate_names:
-    base_dir = getDir("assets/Non-Code/displays/")
+    base_dir = getDir("assets/displays/")
     if not os.path.exists(base_dir):
         os.mkdir(base_dir)
     im = Image.new(mode="RGBA", size=(64, 64))
@@ -156,8 +199,8 @@ for crate in crate_names:
 lit = ["num_6_lit", "num_1_lit"]
 unlit = ["num_6_unlit", "num_1_unlit"]
 num_types = [lit, unlit]
-base_dir = getDir("assets/Non-Code/displays/")
-hash_dir = getDir("assets/Non-Code/hash/")
+base_dir = getDir("assets/displays/")
+hash_dir = getDir("assets/hash/")
 for num_type in num_types:
     number = num_type[0]
     line_num = num_type[1]
@@ -211,7 +254,7 @@ for pel_index, pellet in enumerate(pellets):
     tracker_im.paste(pel_im, (gap * pel_index, 0), pel_im)
 for kong_index, kong in enumerate(kongs):
     for sub_index, sub in enumerate(kong_submoves):
-        move_im = Image.open(f"{getDir('assets/Non-Code/file_screen/')}tracker_images/{kong}{sub}.png")
+        move_im = Image.open(f"{getDir('assets/file_screen/')}tracker_images/{kong}{sub}.png")
         move_im = move_im.resize((dim, dim))
         tracker_im.paste(move_im, ((gap * kong_index), ((sub_index + 2) * gap)), move_im)
 for move_index, move in enumerate(extra_moves):
@@ -220,21 +263,21 @@ for move_index, move in enumerate(extra_moves):
     elif move in ("film"):
         move_im = Image.open(f"{hash_dir}{move}.png")
     else:
-        move_im = Image.open(f"{getDir('assets/Non-Code/file_screen/')}tracker_images/{move}.png")
+        move_im = Image.open(f"{getDir('assets/file_screen/')}tracker_images/{move}.png")
     move_im = move_im.resize((dim, dim))
     tracker_im.paste(move_im, ((6 * gap), (move_index * gap)), move_im)
 for move_index, move in enumerate(training_moves):
     if move in ("orange"):
         move_im = Image.open(f"{hash_dir}{move}.png")
     else:
-        move_im = Image.open(f"{getDir('assets/Non-Code/file_screen/')}tracker_images/{move}.png")
+        move_im = Image.open(f"{getDir('assets/file_screen/')}tracker_images/{move}.png")
     move_im = move_im.resize((dim, dim))
     tracker_im.paste(move_im, ((move_index * gap), 128 - dim), move_im)
 for file_info in number_crop:
     for num_info in file_info["image_list"]:
         key_num = num_info["num"]
         if key_num >= 1 and key_num <= 8:
-            base_dir = getDir("assets/Non-Code/hash/")
+            base_dir = getDir("assets/hash/")
             if not os.path.exists(base_dir):
                 os.mkdir(base_dir)
             file_dir = f"{base_dir}{file_info['image']}"
@@ -249,7 +292,7 @@ for file_info in number_crop:
             num_im = num_im.resize((new_w, targ_h))
             key_im.paste(num_im, (targ_h - num_w - [5, 0, 2, -2, 0, -1, 0, -1][key_num - 1], 2), num_im)
             key_im = key_im.resize((20, 20))
-            key_im.save(f"{getDir('assets/Non-Code/file_screen/key')}{key_num}.png")
+            key_im.save(f"{getDir('assets/file_screen/key')}{key_num}.png")
             tracker_im.paste(key_im, (249 - (small_gap * (9 - key_num)), 128 - dim), key_im)
 for melon in range(3):
     melon_im = Image.open(f"{hash_dir}melon.png")
@@ -269,7 +312,7 @@ for p_i, progressive in enumerate([f"{hash_dir}headphones.png", f"{disp_dir}stan
     num_im = num_im.resize((new_w, num_size))
     tracker_im.paste(num_im, (prog_offset + [22, 17][p_i], int(gap + 3 + (p_i * small_gap * 1.2))), num_im)
 
-tracker_im.save(f"{getDir('assets/Non-Code/file_screen/')}tracker.png")
+tracker_im.save(f"{getDir('assets/file_screen/')}tracker.png")
 
 # Nin/RW Coin Objects
 for coin in ("nin_coin", "rw_coin"):
@@ -358,7 +401,7 @@ pearl_im.resize((32, 32)).transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{dis
 # rainbow
 # rw coin
 
-arcade_dir = getDir("assets/Non-Code/arcade_jetpac/arcade/")
+arcade_dir = getDir("assets/arcade_jetpac/arcade/")
 dim = (20, 20)
 Image.open(f"{disp_dir}lanky_bp.png").resize(dim).save(f"{arcade_dir}blueprint.png")  # BP
 Image.open(f"{hash_dir}crown.png").resize(dim).save(f"{arcade_dir}crown.png")  # Crown
@@ -368,6 +411,32 @@ Image.open(f"{hash_dir}boss_key.png").resize(dim).save(f"{arcade_dir}key.png")  
 Image.open(f"{hash_dir}medal.png").resize(dim).save(f"{arcade_dir}medal.png")  # Medal
 Image.open(f"{hash_dir}rainbow_coin.png").resize(dim).save(f"{arcade_dir}rainbow.png")  # Rainbow Coin
 Image.open(f"{hash_dir}rw_coin.png").resize(dim).save(f"{arcade_dir}rwcoin.png")  # Rareware Coin
+Image.open(f"{hash_dir}melon_slice.png").resize(dim).save(f"{arcade_dir}melon.png")  # Watermelon Slice
+
+# Fake GB Sprite
+gb_im = Image.open(f"{hash_dir}gb.png")
+gb_im = hueShift(gb_im, 10)
+gb_im.save(f"{disp_dir}fake_gb.png")
+gb_im = Image.open(f"{disp_dir}gb.png")
+gb_im = hueShift(gb_im, 10)
+gb_im.transpose(Image.Transpose.FLIP_LEFT_RIGHT).save(f"{disp_dir}fake_gb_shop.png")
+
+# Melon
+melon_im = Image.open(f"{hash_dir}melon_resized.png")
+melon_im = melon_im.crop((4, 0, 46, 42))
+melon_im = melon_im.resize((32, 32))
+melon_im.save(f"{hash_dir}melon_resized.png")
+
+Image.open(f"{hash_dir}rainbow_coin.png").resize((32, 32)).save(f"{disp_dir}rainbow_coin.png")  # Rainbow Coin
+rain_im = Image.open(f"{hash_dir}rainbow_coin_noflip.png")
+rain_im = rain_im.crop((6, 3, 42, 40)).resize((64, 64))
+rain_im_0 = rain_im.crop((0, 0, 32, 64))
+rain_im_1 = rain_im.crop((32, 0, 64, 64))
+rain_im_0.save(f"{hash_dir}rainbow_0.png")  # Rainbow Coin
+rain_im_1.save(f"{hash_dir}rainbow_1.png")  # Rainbow Coin
+rain_im_2 = Image.open(f"{hash_dir}modified_coin_side.png")
+rain_im_2 = maskImage(rain_im_2, 0, [42, 79, 112])
+rain_im_2.save(f"{hash_dir}rainbow_2.png")  # Rainbow Side
 
 # Barrel Skins
 barrel_skin = Image.open(f"{hash_dir}bonus_skin.png")
@@ -395,12 +464,13 @@ skins = {
     "bean": ("bean32", None, "displays"),
     "pearl": ("pearl32", None, "displays"),
     "fairy": ("fairy", None, "hash"),
+    "rainbow": ("rainbow_coin", None, "hash"),
+    "fakegb": ("fake_gb", None, "displays"),
+    "melon": ("melon_slice", None, "hash"),
 }
 for skin_type in skins:
     skin_data = list(skins[skin_type])
-    skin_dir = getDir(f"assets/Non-Code/{skin_data[2]}/")
-    print(skin_data)
-    print(skin_dir)
+    skin_dir = getDir(f"assets/{skin_data[2]}/")
     if skin_data[1] is None:
         whole = Image.open(f"{skin_dir}{skin_data[0]}.png").resize((32, 32))
         left = whole.crop((0, 0, 16, 32))
@@ -471,6 +541,10 @@ num2_base.transpose(Image.Transpose.FLIP_TOP_BOTTOM).save(f"{disp_dir}num_2.png"
 
 Image.open(f"{hash_dir}fairy.png").save(f"{disp_dir}fairy.png")
 
+gb_shine = Image.open(f"{hash_dir}gb_shine.png")
+gb_shine = hueShift(gb_shine, 10)
+gb_shine.save(f"{disp_dir}gb_shine.png")
+
 rmve = [
     "01234.png",
     "56789.png",
@@ -495,10 +569,12 @@ rmve = [
     "nin_coin_noresize.png",
     "PQRS.png",
     "rw_coin_noresize.png",
+    "gb_shine.png",
+    "rainbow_coin_noflip.png",
 ]
 for kong in kongs:
     for x in range(2):
         rmve.append(f"{kong}_face_{x}.png")
 for x in rmve:
-    if os.path.exists(f"{getDir('assets/Non-Code/hash/')}{x}"):
-        os.remove(f"{getDir('assets/Non-Code/hash/')}{x}")
+    if os.path.exists(f"{getDir('assets/hash/')}{x}"):
+        os.remove(f"{getDir('assets/hash/')}{x}")
