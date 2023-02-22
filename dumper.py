@@ -1,4 +1,3 @@
-# fmt: off
 """Dump information from various custom location files into a json format in tools/dump."""
 import sys
 import json
@@ -260,16 +259,28 @@ def dump_cb(format: str):
         dump_to_file("colored_bananas", dumps, format, Dumpers.ColoredBananas)
 
 
+def getCrownX(item: dict):
+    """Get Crown X Position."""
+    return item["coords"][0]
+
+
+def getCrownY(item: dict):
+    """Get Crown Y Position."""
+    return item["coords"][1]
+
+
+def getCrownZ(item: dict):
+    """Get Crown Z Position."""
+    return item["coords"][2]
+
+
 def dump_crown(format: str):
     """Dump crown pad locations."""
     dumps = {}
     for level in CrownLocations:
         crown_data = []
         for crown in CrownLocations[level]:
-            x_f = lambda x: x["coords"][0]
-            y_f = lambda x: x["coords"][1]
-            z_f = lambda x: x["coords"][2]
-            crown_data.append(dump_to_dict(crown, ["is_vanilla", "is_rotating_room", "default_index", "placement_subindex"], ["map"], ["region"], "logic", x_f, y_f, z_f))
+            crown_data.append(dump_to_dict(crown, ["is_vanilla", "is_rotating_room", "default_index", "placement_subindex"], ["map"], ["region"], "logic", getCrownX, getCrownY, getCrownZ))
         if format == "md":
             dumps[level] = crown_data
         else:
@@ -278,16 +289,30 @@ def dump_crown(format: str):
         dump_to_file("crowns", dumps, format, Dumpers.Crowns)
 
 
+def getDoorX(item: dict):
+    """Get door X Position."""
+    return item["location"][0]
+
+
+def getDoorY(item: dict):
+    """Get door Y Position."""
+    return item["location"][1]
+
+
+def getDoorZ(item: dict):
+    """Get door Z Position."""
+    return item["location"][2]
+
+
 def dump_door(format: str):
     """Dump wrinkly and T&S locations."""
     dumps = {}
     for level in door_locations:
         door_data = []
         for door in door_locations[level]:
-            x_f = lambda x: x["location"][0]
-            y_f = lambda x: x["location"][1]
-            z_f = lambda x: x["location"][2]
-            door_data.append(dump_to_dict(door, ["rx", "rz", "group", "placed", "default_kong", "default_placed", "assigned_kong"], ["map", "kongs"], ["logicregion"], "logic", x_f, y_f, z_f))
+            door_data.append(
+                dump_to_dict(door, ["rx", "rz", "group", "placed", "default_kong", "default_placed", "assigned_kong"], ["map", "kongs"], ["logicregion"], "logic", getDoorX, getDoorY, getDoorZ)
+            )
         if format == "md":
             dumps[level] = door_data
         else:
@@ -326,16 +351,28 @@ def dump_fairy(format: str):
         dump_to_file("fairies", dumps, format, Dumpers.Fairies)
 
 
+def getKasplatX(item: dict):
+    """Get Kasplat X-Coordinate."""
+    return item["coords"][0]
+
+
+def getKasplatY(item: dict):
+    """Get Kasplat Y-Coordinate."""
+    return item["coords"][1]
+
+
+def getKasplatZ(item: dict):
+    """Get Kasplat Z-Coordinate."""
+    return item["coords"][2]
+
+
 def dump_kasplat(format: str):
     """Dump kasplat locations."""
     dumps = {}
     for level in KasplatLocationList:
         kasplat_data = []
         for kasplat in KasplatLocationList[level]:
-            x_f = lambda x: x["coords"][0]
-            y_f = lambda x: x["coords"][1]
-            z_f = lambda x: x["coords"][2]
-            kasplat_data.append(dump_to_dict(kasplat, ["selected", "vanilla"], ["map", "kong_lst"], ["region_id"], "additional_logic", x_f, y_f, z_f))
+            kasplat_data.append(dump_to_dict(kasplat, ["selected", "vanilla"], ["map", "kong_lst"], ["region_id"], "additional_logic", getKasplatX, getKasplatY, getKasplatZ))
         if format == "md":
             dumps[level] = kasplat_data
         else:
