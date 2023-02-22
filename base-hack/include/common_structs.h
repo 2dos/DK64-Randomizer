@@ -28,6 +28,52 @@ typedef struct renderingParamsData {
 typedef struct actor_subdata {
 	/* 0x000 */ int data[4];
 } actor_subdata;
+
+typedef struct bone_array {
+	/* 0x000 */ char unk_00[0x18];
+	/* 0x018 */ short xPos;
+	/* 0x01A */ short yPos;
+	/* 0x01C */ short zPos;
+	/* 0x01E */ char unk_20[0x30-0x1E];
+	/* 0x030 */ float fpos_x;
+	/* 0x034 */ float fpos_y;
+	/* 0x038 */ float fpos_z;
+	/* 0x03C */ char unk_3C[0x4];
+} bone_array;
+
+typedef struct bonepos {
+	/* 0x000 */ int unk_0;
+	/* 0x004 */ int unk_4;
+	/* 0x008 */ int unk_8;
+	/* 0x00C */ int boneX;
+	/* 0x010 */ int boneY;
+	/* 0x014 */ int boneZ;
+	/* 0x018 */ int id;
+	/* 0x01C */ void* next_bone;
+} bonepos;
+
+typedef struct bone_block_data {
+	/* 0x000 */ int unk0;
+	/* 0x004 */ bone_array* bone_arrays[2];
+	/* 0x00C */ char unk_C[0x14-0xC];
+	/* 0x014 */ int timer;
+	/* 0x018 */ int timer_0;
+	/* 0x01C */ char unk_1C[0x20-0x1C];
+	/* 0x020 */ bonepos* bone_positions;
+	/* 0x024 */ char unk_24[0x30-0x24];
+	/* 0x030 */ float ox;
+	/* 0x034 */ float oy;
+	/* 0x038 */ float oz;
+	/* 0x03C */ char unk_3C[0x40-0x3C];
+} bone_block_data;
+
+typedef struct bonedata {
+	/* 0x000 */ int unk_0;
+	/* 0x004 */ int unk_4;
+	/* 0x008 */ int unk_8;
+	/* 0x00C */ char unk_0C[0x70 - 0x0C];
+	/* 0x070 */ bone_block_data bone_block;
+} bonedata;
 typedef struct actorData {
 	/* 0x000 */ void* model;
 	/* 0x004 */ renderingParamsData* render;
@@ -63,7 +109,8 @@ typedef struct actorData {
 	/* 0x134 */ short health;
 	/* 0x136 */ char unk_136[0x138-0x136];
 	/* 0x138 */ int takes_enemy_damage;
-	/* 0x13C */ char unk_13C[0x144-0x13C];
+	/* 0x13C */ char unk_13C[0x140-0x13C];
+	/* 0x140 */ bonedata* bone_data;
 	/* 0x144 */ char noclip_byte;
 	/* 0x145 */ char unk_145[0x154-0x145];
 	/* 0x154 */ unsigned char control_state;
@@ -113,38 +160,14 @@ typedef struct timerActor {
 	/* 0x184 */ int test;
 } timerActor;
 
-typedef struct bone_array {
-	/* 0x000 */ char unk_00[0x58];
-	/* 0x058 */ short xPos;
-	/* 0x05A */ short yPos;
-	/* 0x05C */ short zPos;
-} bone_array;
-
 typedef struct rendering_params {
 	/* 0x000 */ char unk_00[0x14];
-	/* 0x014 */ bone_array* bone_array1;
-	/* 0x018 */ bone_array* bone_array2;
+	/* 0x014 */ bone_array* bone_arrays[2];
 	/* 0x01C */ char unk_1C[0x64-0x1C];
 	/* 0x064 */ short anim_idx;
 	/* 0x066 */ char unk_66[0x68-0x66];
 	/* 0x068 */ int anim_ptr;
 } rendering_params;
-
-typedef struct bonepos {
-	/* 0x000 */ char unk_00[0x0C - 0x00];
-	/* 0x00C */ int boneX;
-	/* 0x010 */ int boneY;
-	/* 0x014 */ int boneZ;
-	/* 0x018 */ void* unk_ptr;
-	/* 0x01C */ void* next_bone;
-} bonepos;
-
-typedef struct bonedata {
-	/* 0x000 */ char unk_00[0x84 - 0x00];
-	/* 0x084 */ int timer;
-	/* 0x088 */ char unk_88[0x90 - 0x88];
-	/* 0x090 */ bonepos* bone_positions;
-} bonedata;
 
 typedef struct playerData {
 	/* 0x000 */ char unk_00[0x4];
@@ -1413,3 +1436,8 @@ typedef struct collision_info {
     /* 0x012 */ short hitbox_radius;
     /* 0x014 */ short hitbox_height;
 } collision_info;
+
+typedef struct stack_trace_address_struct {
+	/* 0x000 */ void* address;
+	/* 0x004 */ int used;
+} stack_trace_address_struct;

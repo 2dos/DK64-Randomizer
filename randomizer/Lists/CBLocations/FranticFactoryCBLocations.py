@@ -1639,7 +1639,7 @@ BalloonList = [
     ),
     Balloon(
         id=33,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="Around hatch (Chunky)",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1649,7 +1649,7 @@ BalloonList = [
     ),
     Balloon(
         id=34,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="Top of pole by Snide (Chunky)",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1659,7 +1659,7 @@ BalloonList = [
     ),
     Balloon(
         id=35,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In piano game room (Lanky)",
         speed=6,
         konglist=[Kongs.lanky],
@@ -1670,7 +1670,7 @@ BalloonList = [
     ),
     Balloon(
         id=36,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In front of Snide (Tiny)",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1680,7 +1680,7 @@ BalloonList = [
     ),
     Balloon(
         id=37,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In Diddy's R&D room (back) (Diddy)",
         speed=3,
         konglist=[Kongs.diddy],
@@ -1691,7 +1691,7 @@ BalloonList = [
     ),
     Balloon(
         id=38,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In Diddy's R&D room (front) (Diddy)",
         speed=5,
         konglist=[Kongs.diddy],
@@ -1702,7 +1702,7 @@ BalloonList = [
     ),
     Balloon(
         id=39,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In R&D above hatch to Chunky's room (Donkey)",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1712,7 +1712,7 @@ BalloonList = [
     ),
     Balloon(
         id=40,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In front of Candy & Cranky (Donkey)",
         speed=7,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1722,7 +1722,7 @@ BalloonList = [
     ),
     Balloon(
         id=41,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="Around numbers game (Donkey)",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1732,7 +1732,7 @@ BalloonList = [
     ),
     Balloon(
         id=42,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In Diddy's R&D room (left) (Diddy)",
         speed=6,
         konglist=[Kongs.diddy],
@@ -1743,7 +1743,7 @@ BalloonList = [
     ),
     Balloon(
         id=43,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="Prod room, by center (Tiny)",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1753,7 +1753,7 @@ BalloonList = [
     ),
     Balloon(
         id=44,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="In front of Funky (Tiny)",
         speed=5,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1763,7 +1763,7 @@ BalloonList = [
     ),
     Balloon(
         id=45,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="Prod room, by highest tag barrel (Lanky)",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
@@ -1773,7 +1773,7 @@ BalloonList = [
     ),
     Balloon(
         id=46,
-        map_id=26,
+        map_id=Maps.FranticFactory,
         name="Chunky R&D room (Chunky)",
         speed=6,
         konglist=[Kongs.chunky],
@@ -1784,7 +1784,7 @@ BalloonList = [
     ),
     Balloon(
         id=47,
-        map_id=36,
+        map_id=Maps.FactoryCrusher,
         name="In crusher room (Lanky)",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],

@@ -73,7 +73,8 @@ int isCollidingWithCylinder(item_collision* item, player_collision_info* player_
     }
     float height = object_collisions[(int)item->collision_index].hitbox_height * item->scale;
     int top = item->y + height + player_collision->scale;
-    int bottom = item->y - 14; // Floor collision goes down by 14 units, this should prevent collision from beneath floors
+    int bottom = item->y - player_collision->scale;
+    // int bottom = item->y - 14; // Floor collision goes down by 14 units, this should prevent collision from beneath floors
     if ((player_collision->y < top) && (player_collision->y > bottom)) {
         int x_diff = item->x - player_collision->x;
         int z_diff = item->z - player_collision->z;
