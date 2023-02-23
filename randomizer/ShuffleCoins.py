@@ -22,7 +22,7 @@ import random
 import js
 
 KONG_COIN_REQUIREMENT = 75
-KONG_COIN_CAP = 125 # Can never exceed 175 due to overflow if you collect over 255 coins
+KONG_COIN_CAP = 125  # Can never exceed 175 due to overflow if you collect over 255 coins
 
 level_data = {
     Levels.DKIsles: randomizer.CollectibleLogicFiles.DKIsles.LogicRegions,
@@ -36,9 +36,11 @@ level_data = {
     Levels.DKIsles: randomizer.CollectibleLogicFiles.DKIsles.LogicRegions,
 }
 
+
 def getCoinRequirement() -> int:
     """Get requirement for a kong's coin amount."""
     return int(random.randint(KONG_COIN_REQUIREMENT, KONG_COIN_CAP) / 8)
+
 
 def ShuffleCoins(spoiler: Spoiler):
     """Shuffle Coins selected from location files."""
@@ -54,10 +56,10 @@ def ShuffleCoins(spoiler: Spoiler):
                 level_placement = []
                 global_divisor = 7 - level_index
                 kong_specific_left = {
-                    Kongs.donkey: getCoinRequirement(), 
-                    Kongs.diddy: getCoinRequirement(), 
-                    Kongs.lanky: getCoinRequirement(), 
-                    Kongs.tiny: getCoinRequirement(), 
+                    Kongs.donkey: getCoinRequirement(),
+                    Kongs.diddy: getCoinRequirement(),
+                    Kongs.lanky: getCoinRequirement(),
+                    Kongs.tiny: getCoinRequirement(),
                     Kongs.chunky: getCoinRequirement(),
                 }
                 coins_left = (KONG_COIN_CAP * 5) - total_coins

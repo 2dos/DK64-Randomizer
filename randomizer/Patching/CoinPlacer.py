@@ -12,13 +12,14 @@ import randomizer.Lists.CBLocations.FungiForestCBLocations
 import randomizer.Lists.CBLocations.CrystalCavesCBLocations
 import randomizer.Lists.CBLocations.CreepyCastleCBLocations
 
+
 def randomize_coins(spoiler: Spoiler):
     """Place Colored Bananas into ROM."""
     if spoiler.settings.coin_rando:
         for cont_map_id in range(216):
             # Wipe setup and paths of CB information
             # SETUP
-            coin_items = [0x1D, 0x24, 0x23, 0x1C, 0x27] # Has to remain in this order
+            coin_items = [0x1D, 0x24, 0x23, 0x1C, 0x27]  # Has to remain in this order
             setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
             ROM().seek(setup_table)
             model2_count = int.from_bytes(ROM().readBytes(4), "big")

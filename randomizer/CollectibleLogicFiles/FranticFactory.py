@@ -117,4 +117,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 1),  # High coin on elevators by W4
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl, None, 3),  # Past Tiny Bonus Barrel
     ],
+    Regions.FactoryTinyRace: [
+    
+    ]
 }
