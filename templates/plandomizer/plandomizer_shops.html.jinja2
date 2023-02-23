@@ -24,6 +24,8 @@
                     </label>
                     <select id="plando_{{location["enum_name"]}}_shop_item"
                             name="plando_{{location["enum_name"]}}_shop_item"
+                            data-toggle="tooltip"
+                            title
                             class="form-select plando-item-select">
                         <option value="">-- Randomize --</option>
                         {% for item in plando_items|plando_item_restrict(location) %}

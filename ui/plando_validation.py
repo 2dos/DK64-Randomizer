@@ -22,6 +22,32 @@ def validate_option(element):
     element.setAttribute("data-bs-original-title", "")
     element.classList.remove("invalid")
 
+def count_items():
+    """Count all currently placed items to ensure limits aren't exceeded.
+
+    The result will be a dictionary, where each item is linked to all of the
+    HTML selects that have this item selected.
+    """
+    count_dict = {}
+
+    def add_all_items(locList, suffix):
+        """Add all items from the location list into the dict."""
+        for itemLocation in locList:
+            elemName = f"plando_{itemLocation}{suffix}"
+            elemValue = js.document.getElementById(elemName).value
+            # The default value, for when no selection is made.
+            plandoItemEnum = PlandoItems.Randomize
+            if elemValue != "":
+                plandoItemEnum = PlandoItems[elemValue]
+            if plandoItemEnum in count_dict:
+                count_dict[plandoItemEnum].append(elemName)
+            else:
+                count_dict[plandoItemEnum] = [elemName]
+
+    add_all_items(ItemLocationList, "_item")
+    add_all_items(ShopLocationList, "_shop_item")
+    return count_dict
+
 ############
 # BINDINGS #
 ############
@@ -30,7 +56,32 @@ def validate_option(element):
 @bindList("change", ShopLocationList, prefix="plando_", suffix="_shop_item")
 def validate_item_limits(evt):
     """Raise an error if any item has been placed too many times."""
-    print(evt.target.name)
+    count_dict = count_items()
+    for item, locations in count_dict.items():
+        if item not in PlannableItemLimits:
+            print("Here with " + item.name)
+            for loc in locations:
+                validate_option(js.document.getElementById(loc))
+            continue
+        print("There with " + item.name)
+        itemCount = len(locations)
+        if item == PlandoItems.GoldenBanana:
+            # Add 40 items to account for blueprint rewards.
+            itemCount += 40
+        itemMax = PlannableItemLimits[item]
+        print(itemCount, itemMax)
+        if itemCount > itemMax:
+            print("And here with " + item.name)
+            maybePluralTimes = "time" if itemMax == 1 else "times"
+            errString = f"Item \"{GetNameFromPlandoItem(item)}\" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times."
+            if item == PlandoItems.GoldenBanana:
+                errString += " (40 Golden Bananas are always allocated to blueprint rewards.)"
+            for loc in locations:
+                invalidate_option(js.document.getElementById(loc), errString)
+        else:
+            print("And over there with " + item.name)
+            for loc in locations:
+                validate_option(js.document.getElementById(loc))
 
 
 @bindList("change", HintLocationList, prefix="plando_", suffix="_hint")
@@ -50,8 +101,8 @@ def validate_shop_costs(evt):
     """Raise an error if any shops have an invalid cost."""
     shopCost = evt.target.value
     if shopCost == "":
-        return
-    if shopCost.isdigit() and int(shopCost) >= 0 and int(shopCost) <= 255:
+        validate_option(evt.target)
+    elif shopCost.isdigit() and int(shopCost) >= 0 and int(shopCost) <= 255:
         validate_option(evt.target)
     else:
         invalidate_option(evt.target, "Shop costs must be a whole number between 0 and 255.")

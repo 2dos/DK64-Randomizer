@@ -198,9 +198,7 @@ for locationEnum, locationObj in LocationList.items():
     elif locationObj.type == Types.Hint:
         PlandomizerPanels["Hints"]["locations"][kongString].append(locationJson)
         HintLocationList.append(locationEnum.name)
-    elif locationObj.type == Types.Shop:
-        # This covers everything but the Rareware coin, but that will end up
-        # being placed into Shops as well.
+    elif locationObj.type == Types.Shop or locationObj.level == Levels.Shops:
         PlandomizerPanels["Shops"]["locations"][kongString].append(locationJson)
         ShopLocationList.append(locationEnum.name)
     else:
