@@ -441,6 +441,128 @@
 </details>
 </details>
 
+## Gloomy Galleon
+<details>
+<summary>Coin Locations</summary>
+
+<details>
+<summary>Gloomy Galleon</summary>
+
+| Name | Amount |
+| ---- | ------ |
+| Corner of Lanky Slam Switch | 3 | 
+| Around near W1 | 4 | 
+| Around near W2 | 4 | 
+| On top of GB Chest | 3 | 
+| On top of headphones chest | 3 | 
+| On top of fairy chest | 3 | 
+| Around crossroads tag barrel | 4 | 
+| On broken ship near Cranky's | 5 | 
+| On Broken Ship railings | 6 | 
+| Around Tiny's Kasplat | 6 | 
+| Around the T&S Portal near Cranky | 2 | 
+| Underneath Cranky's | 5 | 
+| In the corner of the main room | 3 | 
+| Near Tiny's Slam Switch | 3 | 
+| Around 5-Door Ship Exterior | 4 | 
+| Above W4 Platform | 4 | 
+| Near the 2-Door Ship | 2 | 
+| Above Candy's Platform | 4 | 
+| Seal Race Entrance | 2 | 
+| Mech Fish Grate | 4 | 
+| Near BBlast Pad | 4 | 
+| Around DK's slam switch | 4 | 
+| Around Lighthouse W5 | 4 | 
+| Snide Alcove Edge | 5 | 
+| Blueprint Water Alcove | 5 | 
+| Lighthouse Underwater corner (Circle) | 3 | 
+| Lighthouse Underwater corner (Stack) | 4 | 
+| Mermaid Palace Roof | 2 | 
+</details>
+<details>
+<summary>Galleon Sick Bay</summary>
+
+| Name | Amount |
+| ---- | ------ |
+| Behind the Cannon | 1 | 
+| In the corner before the grate | 3 | 
+</details>
+<details>
+<summary>Galleon Lighthouse</summary>
+
+| Name | Amount |
+| ---- | ------ |
+| Lighthouse Entry | 4 | 
+| Lighthouse Climb (1) | 3 | 
+| Lighthouse Climb (2) | 3 | 
+| Top of Lighthouse | 2 | 
+</details>
+<details>
+<summary>Galleon Mechafish</summary>
+
+| Name | Amount |
+| ---- | ------ |
+| Near Pillars | 6 | 
+</details>
+<details>
+<summary>Galleon Mermaid Room</summary>
+
+| Name | Amount |
+| ---- | ------ |
+| On fork in Mermaid Room | 1 | 
+</details>
+<details>
+<summary>Galleon Seal Race</summary>
+
+| Name | Amount |
+| ---- | ------ |
+| Seal Race Start | 2 | 
+</details>
+<details>
+<summary>Galleon5DShip Diddy Lanky Chunky</summary>
+
+| Name | Amount |
+| ---- | ------ |
+| Above Diddy Cannons | 2 | 
+| On Diddy Barrel | 2 | 
+| On Lanky Barrel | 2 | 
+| On Lanky Bench | 2 | 
+| Near Chunky Boxes | 3 | 
+</details>
+<details>
+<summary>Galleon5DShip DKTiny</summary>
+
+| Name | Amount |
+| ---- | ------ |
+| Corner of DK Bonus Room | 3 | 
+| Bed in DK Ship | 3 | 
+</details>
+<details>
+<summary>Galleon2DShip</summary>
+
+| Name | Amount |
+| ---- | ------ |
+| Corner of Tiny Entrance | 3 | 
+| Corners of Tiny's Main Room | 3 | 
+| Start of Lanky's Room | 2 | 
+</details>
+<details>
+<summary>Galleon Submarine</summary>
+
+| Name | Amount |
+| ---- | ------ |
+| Behind the desk | 3 | 
+| In the corner | 3 | 
+</details>
+<details>
+<summary>Galleon Treasure Chest</summary>
+
+| Name | Amount |
+| ---- | ------ |
+| Around the keyhole | 4 | 
+</details>
+</details>
+
 ## Fungi Forest
 <details>
 <summary>Coin Locations</summary>
