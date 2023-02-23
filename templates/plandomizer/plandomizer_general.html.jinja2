@@ -69,6 +69,8 @@
                     <p class="select-title">Starting Kongs</p>
                     <select name="plando_starting_kongs_selected"
                             id="plando_starting_kongs_selected"
+                            data-toggle="tooltip"
+                            title
                             class="form-select multi-select"
                             aria-label="Starting Kongs"
                             multiple
@@ -141,12 +143,14 @@
             <h2 class="title">Ordering</h2>
             <div class="item-select wide-select">
                 <p class="select-title">Level Order</p>
-                {% for i in range(1, 8) %}
+                {% for i in range(0, 7) %}
                     <label id="plando_level_order_div_{{i}}"
                         class="flex-container select-order">
                         <span class="order-label">Level {{i}}:</span>
                         <select id="plando_level_order_{{i}}"
                                 name="plando_level_order_{{i}}"
+                                data-toggle="tooltip"
+                                title
                                 class="form-select order-select">
                             <option value="" selected">
                                 -- Randomize --
@@ -178,12 +182,14 @@
             </div>
             <div class="item-select wide-select">
                 <p class="select-title">K. Rool Order</p>
-                {% for i in range(1, 6) %}
+                {% for i in range(0, 5) %}
                     <label id="plando_krool_order_div_{{i}}"
                         class="flex-container select-order">
                         <span class="order-label">Kong {{i}}:</span>
                         <select id="plando_krool_order_{{i}}"
                                 name="plando_krool_order_{{i}}"
+                                data-toggle="tooltip"
+                                title
                                 class="form-select order-select">
                             <option value="" selected">
                                 -- Randomize --
@@ -209,12 +215,14 @@
             </div>
             <div class="item-select wide-select">
                 <p class="select-title">Helm Order</p>
-                {% for i in range(1, 6) %}
+                {% for i in range(0, 5) %}
                     <label id="plando_helm_order_div_{{i}}"
                         class="flex-container select-order">
                         <span class="order-label">Kong {{i}}:</span>
                         <select id="plando_helm_order_{{i}}"
                                 name="plando_helm_order_{{i}}"
+                                data-toggle="tooltip"
+                                title
                                 class="form-select order-select">
                             <option value="" selected">
                                 -- Randomize --

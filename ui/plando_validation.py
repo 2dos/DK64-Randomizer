@@ -52,6 +52,7 @@ def count_items():
 # BINDINGS #
 ############
 
+
 @bindList("change", ItemLocationList, prefix="plando_", suffix="_item")
 @bindList("change", ShopLocationList, prefix="plando_", suffix="_shop_item")
 def validate_item_limits(evt):
@@ -59,19 +60,15 @@ def validate_item_limits(evt):
     count_dict = count_items()
     for item, locations in count_dict.items():
         if item not in PlannableItemLimits:
-            print("Here with " + item.name)
             for loc in locations:
                 validate_option(js.document.getElementById(loc))
             continue
-        print("There with " + item.name)
         itemCount = len(locations)
         if item == PlandoItems.GoldenBanana:
             # Add 40 items to account for blueprint rewards.
             itemCount += 40
         itemMax = PlannableItemLimits[item]
-        print(itemCount, itemMax)
         if itemCount > itemMax:
-            print("And here with " + item.name)
             maybePluralTimes = "time" if itemMax == 1 else "times"
             errString = f"Item \"{GetNameFromPlandoItem(item)}\" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times."
             if item == PlandoItems.GoldenBanana:
@@ -106,6 +103,103 @@ def validate_shop_costs(evt):
         validate_option(evt.target)
     else:
         invalidate_option(evt.target, "Shop costs must be a whole number between 0 and 255.")
+
+
+@bind("change", "starting_kongs_count")
+@bind("change", "plando_starting_kongs_selected")
+def validate_starting_kong_count(evt):
+    """Raise an error if the starting Kongs don't match the selected count."""
+    startingKongs = js.document.getElementById("plando_starting_kongs_selected")
+    selectedKongs = {x.value for x in startingKongs.selectedOptions}
+    numStartingKongs = int(js.document.getElementById("starting_kongs_count").value)
+    if len(selectedKongs) > numStartingKongs or (len(selectedKongs) < numStartingKongs and "" not in selectedKongs):
+        maybePluralKongText = "Kong was selected as a starting Kong" if len(selectedKongs) == 1 else "Kongs were selected as starting Kongs"
+        errSuffix = "." if len(selectedKongs) > numStartingKongs else ", and \"Random Kong(s)\" was not chosen."
+        errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(selectedKongs)} {maybePluralKongText}{errSuffix}"
+        invalidate_option(startingKongs, errString)
+    else:
+        validate_option(startingKongs)
+
+
+@bind("change", "plando_level_order_", 7)
+def validate_level_order_no_duplicates(evt):
+    """Raise an error if the same level is chosen twice in the level order."""
+    levelDict = {}
+    # Count the instances of each level.
+    for i in range(0, 7):
+        levelElemName = f"plando_level_order_{i}"
+        levelOrderElem = js.document.getElementById(levelElemName)
+        level = levelOrderElem.value
+        if level in levelDict:
+            levelDict[level].append(levelElemName)
+        else:
+            levelDict[level] = [levelElemName]
+    # Invalidate any selects that re-use the same level.
+    for level, selects in levelDict.items():
+        if level == "" or len(selects) == 1:
+            for select in selects:
+                selectElem = js.document.getElementById(select)
+                validate_option(selectElem)
+        else:
+            for select in selects:
+                selectElem = js.document.getElementById(select)
+                invalidate_option(selectElem, "The same level cannot be used twice in the level order.")
+
+
+@bind("change", "plando_krool_order_", 5)
+def validate_level_order_no_duplicates(evt):
+    """Raise an error if the same Kong is chosen twice in the K. Rool order."""
+    kongDict = {}
+    # Count the instances of each Kong.
+    for i in range(0, 5):
+        kroolElemName = f"plando_krool_order_{i}"
+        kroolOrderElem = js.document.getElementById(kroolElemName)
+        kong = kroolOrderElem.value
+        if kong in kongDict:
+            kongDict[kong].append(kroolElemName)
+        else:
+            kongDict[kong] = [kroolElemName]
+    # Invalidate any selects that re-use the same Kong.
+    for kong, selects in kongDict.items():
+        if kong == "" or len(selects) == 1:
+            for select in selects:
+                selectElem = js.document.getElementById(select)
+                validate_option(selectElem)
+        else:
+            for select in selects:
+                selectElem = js.document.getElementById(select)
+                invalidate_option(selectElem, "The same Kong cannot be used twice in the K. Rool order.")
+
+
+@bind("change", "plando_helm_order_", 5)
+def validate_level_order_no_duplicates(evt):
+    """Raise an error if the same Kong is chosen twice in the Helm order."""
+    kongDict = {}
+    # Count the instances of each Kong.
+    for i in range(0, 5):
+        helmElemName = f"plando_helm_order_{i}"
+        helmOrderElem = js.document.getElementById(helmElemName)
+        kong = helmOrderElem.value
+        if kong in kongDict:
+            kongDict[kong].append(helmElemName)
+        else:
+            kongDict[kong] = [helmElemName]
+    # Invalidate any selects that re-use the same Kong.
+    for kong, selects in kongDict.items():
+        if kong == "" or len(selects) == 1:
+            for select in selects:
+                selectElem = js.document.getElementById(select)
+                validate_option(selectElem)
+        else:
+            for select in selects:
+                selectElem = js.document.getElementById(select)
+                invalidate_option(selectElem, "The same Kong cannot be used twice in the Helm order.")
+
+
+@bind("click", "nav-plando-tab")
+def validate_on_nav(evt):
+    """A fallback for errors with Bootstrap sliders."""
+    validate_starting_kong_count(evt)
 
 ######################
 # SETTINGS FUNCTIONS #
@@ -340,7 +434,7 @@ def validate_plando_options(settings_dict):
 
     # Ensure that no level was selected more than once in the level order.
     levelOrderSet = set()
-    for i in range(1, 8):
+    for i in range(0, 7):
         level = plando_dict[f"plando_level_order_{i}"]
         if level == PlandoItems.Randomize:
             continue
@@ -353,7 +447,7 @@ def validate_plando_options(settings_dict):
 
     # Ensure that no Kong was selected more than once in the K. Rool order.
     kroolOrderSet = set()
-    for i in range(1, 6):
+    for i in range(0, 5):
         kong = plando_dict[f"plando_krool_order_{i}"]
         if kong == PlandoItems.Randomize:
             continue
@@ -366,7 +460,7 @@ def validate_plando_options(settings_dict):
 
     # Ensure that no Kong was selected more than once in the Helm order.
     helmOrderSet = set()
-    for i in range(1, 6):
+    for i in range(0, 5):
         kong = plando_dict[f"plando_helm_order_{i}"]
         if kong == PlandoItems.Randomize:
             continue

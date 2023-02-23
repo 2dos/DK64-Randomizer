@@ -504,9 +504,8 @@ def plando_hide_krool_options(evt):
     krool_phase_count = int(js.document.getElementById("krool_phase_count").value)
     krool_random = js.document.getElementById("krool_random").checked
     for i in range(0, 5):
-        # Add 1, because the actual HTML elements are one-indexd.
-        krool_phase_plando_div = js.document.getElementById(f"plando_krool_order_div_{i+1}")
-        krool_phase_plando = js.document.getElementById(f"plando_krool_order_{i+1}")
+        krool_phase_plando_div = js.document.getElementById(f"plando_krool_order_div_{i}")
+        krool_phase_plando = js.document.getElementById(f"plando_krool_order_{i}")
         if i < krool_phase_count or krool_random:
             krool_phase_plando_div.classList.remove("disabled-select")
             krool_phase_plando.removeAttribute("disabled")
@@ -524,9 +523,8 @@ def plando_hide_helm_options(evt):
     helm_phase_count = int(js.document.getElementById("helm_phase_count").value)
     helm_random = js.document.getElementById("helm_random").checked
     for i in range(0, 5):
-        # Add 1, because the actual HTML elements are one-indexd.
-        helm_phase_plando_div = js.document.getElementById(f"plando_helm_order_div_{i+1}")
-        helm_phase_plando = js.document.getElementById(f"plando_helm_order_{i+1}")
+        helm_phase_plando_div = js.document.getElementById(f"plando_helm_order_div_{i}")
+        helm_phase_plando = js.document.getElementById(f"plando_helm_order_{i}")
         if i < helm_phase_count or helm_random:
             helm_phase_plando_div.classList.remove("disabled-select")
             helm_phase_plando.removeAttribute("disabled")
