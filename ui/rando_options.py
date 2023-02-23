@@ -970,7 +970,7 @@ def plando_disable_keys(evt):
     item_dropdowns = js.document.getElementsByClassName("plando-item-select")
     # Look at every key and react if it's enabled or disabled.
     for i in range(1, 9):
-        key_string = keyDict[1]
+        key_string = keyDict[i]
         if key_string in disabled_keys:
             key_options = js.document.getElementsByClassName(f"plando-{key_string}-option")
             # Disable this key as a dropdown option.

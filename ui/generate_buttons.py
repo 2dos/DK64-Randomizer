@@ -265,8 +265,6 @@ def generate_seed(event):
         # Start the progressbar
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ProgressBar().update_progress(0, "Initalizing"))
-        print(form_data)
-        print(json.dumps(form_data))
         if not form_data.get("seed"):
             form_data["seed"] = str(random.randint(100000, 999999))
         js.apply_bps_javascript()

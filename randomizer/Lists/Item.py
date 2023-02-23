@@ -1,7 +1,5 @@
 """Stores the item class and a list of each item with its attributes."""
 
-import re
-
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
