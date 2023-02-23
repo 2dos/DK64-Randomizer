@@ -848,7 +848,7 @@ DirtPatchLocations = [
         z=1796.0,
         rotation=4073,
         group=1,
-        logicregion=Regions.BeyondHatch,
+        logicregion=Regions.LowerCore,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -860,7 +860,7 @@ DirtPatchLocations = [
         z=1350.0,
         rotation=193,
         group=1,
-        logicregion=Regions.BeyondHatch,
+        logicregion=Regions.LowerCore,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(

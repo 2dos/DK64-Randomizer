@@ -131,6 +131,7 @@ hint_list = [
     Hint(hint="What you gonna do, SpikeVegeta?", important=False, base=True),
     Hint(hint="You don't care? Just give it to me? Okay, here it is.", important=False, base=True),
     Hint(hint="Rumor has it this game was developed in a cave with only a box of scraps!", important=False, base=True),
+    Hint(hint="BOINNG! BOINNG! The current time is: 8:01!", important=False, base=True),
     Hint(hint="If you backflip right before Chunky punches K. Rool, you must go into first person camera to face him before the punch.", important=False, base=True),
     Hint(hint="The barrier to Hideout Helm can be cleared by obtaining 801 Golden Bananas. It can also be cleared with fewer than that.", important=False, base=True),
 ]
