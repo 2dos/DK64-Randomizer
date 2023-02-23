@@ -1195,10 +1195,10 @@ ColoredBananaGroupList = [
     ),
     ColoredBananaGroup(
         group=78,
-        map_id=Maps.AztecTinyTemple,
+        map_id=Maps.AztecTiny5DTemple,
         name="Right side Mini Monkey room (scale 0.6)",
         konglist=[Kongs.tiny],
-        region=Regions.TempleUnderwater,
+        region=Regions.TinyTemple,
         logic=lambda l: l.mini,
         locations=[
             [1, 0.6, 195, 48, 600],

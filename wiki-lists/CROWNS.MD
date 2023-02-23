@@ -229,7 +229,6 @@
 | Crystal Caves | Crystal Caves: Near Tiny 5DC | 
 | Crystal Caves | Crystal Caves: Near Diddy Upper 5DC | 
 | Caves Rotating Cabin | Crystal Caves - Rotating Room: Left Portion | 
-| Caves Diddy Igloo | Crystal Caves - Diddy 5DI: Center | 
 | Caves Donkey Igloo | Crystal Caves - DK 5DI: Behind Maze | 
 | Caves Lanky Igloo | Crystal Caves - Lanky 5DI: High Platform | 
 | Caves Tiny Igloo | Crystal Caves - Tiny 5DI: Opposite Entrance | 
