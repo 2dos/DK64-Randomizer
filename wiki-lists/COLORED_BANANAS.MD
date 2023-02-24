@@ -340,6 +340,7 @@
 | Path to GB | 21 | 
 | Path to GB | 4 | 
 | Dead end | 5 | 
+| Right side Mini Monkey room (scale 0.6) | 10 | 
 | Dead end | Balloon |
 </details>
 <details>
@@ -388,7 +389,6 @@
 | Monkey tongues (2 custom, 3 Diddy) | 5 | 
 | Path to Free Tiny (3 custom, 7 Diddy) | 10 | 
 | Path to Chunky's room (1 custom, 4 Chunky) | 5 | 
-| Right side Mini Monkey room (scale 0.6) | 10 | 
 | On vulture GB switch (Lanky) | 5 | 
 | Long monkey tongue (Diddy) | 15 | 
 | Mini Monkey tunnel (Tiny) | 5 | 
