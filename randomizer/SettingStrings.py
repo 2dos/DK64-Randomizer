@@ -55,10 +55,14 @@ def encrypt_settings_string_enum(dict_data: dict):
         "holiday_mode",
         "homebrew_header",
     ]:
-        dict_data.pop(pop)
+        if pop in dict_data:
+            dict_data.pop(pop)
     bitstring = ""
     for key in dict_data:
         value = dict_data[key]
+        # At this time, all strings represent ints, so just convert.
+        if type(value) == str:
+            value = int(value)
         key_enum = SettingsStringEnum[key]
         key_data_type = SettingsStringTypeMap[key_enum]
         # Encode the key.
@@ -75,6 +79,8 @@ def encrypt_settings_string_enum(dict_data: dict):
             bitstring += f"{len(value):08b}"
             key_list_data_type = SettingsStringListTypeMap[key_enum]
             for item in value:
+                if type(item) == str:
+                    item = int(item)
                 if key_list_data_type == SettingsStringDataType.bool:
                     bitstring += "1" if item else "0"
                 elif key_list_data_type == SettingsStringDataType.int4:
