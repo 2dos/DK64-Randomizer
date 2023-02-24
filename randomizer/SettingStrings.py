@@ -108,7 +108,7 @@ def encrypt_settings_string_enum(dict_data: dict):
     # letters.
     letter_string = ""
     for i in range(0, len(bitstring), 6):
-        chunk = int(bitstring[i:i+6], 2)
+        chunk = int(bitstring[i : i + 6], 2)
         letter_string += letters[chunk]
     return letter_string
 
@@ -135,9 +135,9 @@ def decrypt_settings_string_enum(encrypted_string: str):
     # If there are fewer than nine characters left in our bitstring, we have
     # hit the padding. (Nine characters is the minimum needed for a key and a
     # value.)
-    while bit_index < (bitstring_length-9):
+    while bit_index < (bitstring_length - 9):
         # Consume the next key.
-        key = int(bitstring[bit_index:bit_index+8], 2)
+        key = int(bitstring[bit_index : bit_index + 8], 2)
         bit_index += 8
         key_enum = SettingsStringEnum(key)
         key_name = key_enum.name
@@ -146,16 +146,16 @@ def decrypt_settings_string_enum(encrypted_string: str):
             settings_dict[key_name] = True if bitstring[bit_index] == "1" else False
             bit_index += 1
         elif key_data_type == SettingsStringDataType.int4:
-            settings_dict[key_name] = int(bitstring[bit_index:bit_index+4], 2)
+            settings_dict[key_name] = int(bitstring[bit_index : bit_index + 4], 2)
             bit_index += 4
         elif key_data_type == SettingsStringDataType.int8:
-            settings_dict[key_name] = int(bitstring[bit_index:bit_index+8], 2)
+            settings_dict[key_name] = int(bitstring[bit_index : bit_index + 8], 2)
             bit_index += 8
         elif key_data_type == SettingsStringDataType.int16:
-            settings_dict[key_name] = int(bitstring[bit_index:bit_index+16], 2)
+            settings_dict[key_name] = int(bitstring[bit_index : bit_index + 16], 2)
             bit_index += 16
         elif key_data_type == SettingsStringDataType.list:
-            list_length = int(bitstring[bit_index:bit_index+8], 2)
+            list_length = int(bitstring[bit_index : bit_index + 8], 2)
             bit_index += 8
             settings_dict[key_name] = []
             key_list_data_type = SettingsStringListTypeMap[key_enum]
@@ -164,22 +164,22 @@ def decrypt_settings_string_enum(encrypted_string: str):
                     settings_dict[key_name].append(True if bitstring[bit_index] == "1" else False)
                     bit_index += 1
                 elif key_list_data_type == SettingsStringDataType.int4:
-                    settings_dict[key_name].append(int(bitstring[bit_index:bit_index+4], 2))
+                    settings_dict[key_name].append(int(bitstring[bit_index : bit_index + 4], 2))
                     bit_index += 4
                 elif key_list_data_type == SettingsStringDataType.int8:
-                    settings_dict[key_name].append(int(bitstring[bit_index:bit_index+8], 2))
+                    settings_dict[key_name].append(int(bitstring[bit_index : bit_index + 8], 2))
                     bit_index += 8
                 elif key_list_data_type == SettingsStringDataType.int16:
-                    settings_dict[key_name].append(int(bitstring[bit_index:bit_index+16], 2))
+                    settings_dict[key_name].append(int(bitstring[bit_index : bit_index + 16], 2))
                     bit_index += 16
                 else:
                     enum_values = [member.value for member in key_list_data_type]
-                    index = int(bitstring[bit_index:bit_index+len(enum_values).bit_length()], 2)
+                    index = int(bitstring[bit_index : bit_index + len(enum_values).bit_length()], 2)
                     settings_dict[key_name].append(key_list_data_type(index))
                     bit_index += len(enum_values).bit_length()
         else:
             enum_values = [member.value for member in key_data_type]
-            index = int(bitstring[bit_index:bit_index+len(enum_values).bit_length()], 2)
+            index = int(bitstring[bit_index : bit_index + len(enum_values).bit_length()], 2)
             settings_dict[key_name] = key_data_type(index)
             bit_index += len(enum_values).bit_length()
     return settings_dict

@@ -580,11 +580,15 @@ SettingsMap = {
 }
 
 
-# This enum class maps setting names to key values, so they can be embedded
-# into the settings string.
 class SettingsStringEnum(IntEnum):
-    # Changing any of the existing values will cause setting strings to break.
-    # Next available value: 131
+    """Maps setting names to key values, for use in the ssettings string.
+
+    Changing any of the existing values will cause generated settings strings
+        to break. Only add new values.
+
+    Next available value: 131
+    """
+
     activate_all_bananaports = 1
     alter_switch_allocation = 2
     auto_keys = 3
@@ -718,6 +722,8 @@ class SettingsStringEnum(IntEnum):
 
 
 class SettingsStringDataType(IntEnum):
+    """Enum for mapping settings to data types for encryption/decryption."""
+
     bool = auto()
     # Can represent up to 16 values.
     int4 = auto()
