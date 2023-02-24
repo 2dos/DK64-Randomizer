@@ -32,6 +32,7 @@
     "enemy_rando": true,
     "enemy_speed_rando": true,
     "fast_gbs": true,
+    "fast_start_beginning_of_game": true,
     "fast_warps": true,
     "fps_display": false,
     "free_trade_setting": "none",
