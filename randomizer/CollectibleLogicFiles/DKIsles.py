@@ -50,7 +50,7 @@ LogicRegions = {
 
     ],
     Regions.GloomyGalleonLobbyEntrance: [
-    
+
     ],
     Regions.CabinIsle: [
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, ),  # In front of fungi lobby
