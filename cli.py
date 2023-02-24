@@ -9,7 +9,7 @@ import os
 import sys
 import traceback
 
-from randomizer.Enums.Settings import SettingsMap, SettingsStringEnum, SettingsStringListTypeMap, SettingsStringTypeMap
+from randomizer.Enums.Settings import SettingsMap, SettingsStringDataType, SettingsStringEnum, SettingsStringListTypeMap, SettingsStringTypeMap
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
 from randomizer.SettingStrings import decrypt_setting_string
@@ -146,28 +146,34 @@ def encode_enum_dict(enum_dict):
     for key in enum_dict:
         value = enum_dict[key]
         keyEnum = SettingsStringEnum[key]
-        if isinstance(value, bool):
-            bitstring += bin(keyEnum)[2:].zfill(8)
+        keyDataType = SettingsStringTypeMap[keyEnum]
+        bitstring += bin(keyEnum)[2:].zfill(8)
+        if keyDataType == SettingsStringDataType.bool:
             bitstring += "1" if value else "0"
-        elif isinstance(value, int):
-            bitstring += bin(keyEnum)[2:].zfill(8)
+        elif keyDataType == SettingsStringDataType.int4:
+            bitstring += bin(value)[2:].zfill(4)
+        elif keyDataType == SettingsStringDataType.int8:
+            bitstring += bin(value)[2:].zfill(8)
+        elif keyDataType == SettingsStringDataType.int16:
             bitstring += bin(value)[2:].zfill(16)
-        elif isinstance(value, list):
+        elif keyDataType == SettingsStringDataType.list:
+            bitstring += f"{len(value):08b}"
+            keyListDataType = SettingsStringListTypeMap[keyEnum]
             for item in value:
-                bitstring += bin(keyEnum)[2:].zfill(8)
-                if isinstance(item, bool):
+                if keyListDataType == SettingsStringDataType.bool:
                     bitstring += "1" if item else "0"
-                elif isinstance(item, int):
+                elif keyListDataType == SettingsStringDataType.int4:
+                    bitstring += bin(item)[2:].zfill(4)
+                elif keyListDataType == SettingsStringDataType.int8:
+                    bitstring += bin(item)[2:].zfill(8)
+                elif keyListDataType == SettingsStringDataType.int16:
                     bitstring += bin(item)[2:].zfill(16)
                 else:
-                    enum_class = type(item)
-                    enum_values = [member.value for member in enum_class]
+                    enum_values = [member.value for member in keyListDataType]
                     index = enum_values.index(item.value)
                     bitstring += format(index, f"0{len(enum_values).bit_length()}b")
         else:
-            bitstring += bin(keyEnum)[2:].zfill(8)
-            enum_class = type(value)
-            enum_values = [member.value for member in enum_class]
+            enum_values = [member.value for member in keyDataType]
             index = enum_values.index(value.value)
             bitstring += format(index, f"0{len(enum_values).bit_length()}b")
     
@@ -202,35 +208,46 @@ def decode_enum_dict(settings_string, default_dict):
         bit_index += 8
         keyEnum = SettingsStringEnum(key)
         keyName = keyEnum.name
-        settingType = SettingsStringTypeMap[keyEnum]
-        if settingType == bool:
+        keyDataType = SettingsStringTypeMap[keyEnum]
+        if keyDataType == SettingsStringDataType.bool:
             enum_dict[keyName] = True if bitstring[bit_index] == "1" else False
             bit_index += 1
-        elif settingType == int:
+        elif keyDataType == SettingsStringDataType.int4:
+            enum_dict[keyName] = int(bitstring[bit_index:bit_index+4], 2)
+            bit_index += 4
+        elif keyDataType == SettingsStringDataType.int8:
+            enum_dict[keyName] = int(bitstring[bit_index:bit_index+8], 2)
+            bit_index += 8
+        elif keyDataType == SettingsStringDataType.int16:
             enum_dict[keyName] = int(bitstring[bit_index:bit_index+16], 2)
             bit_index += 16
-        elif settingType == list:
-            listType = SettingsStringListTypeMap[keyEnum]
-            value = None
-            if listType == bool:
-                value = True if bitstring[bit_index] == "1" else False
-                bit_index += 1
-            elif listType == int:
-                value = int(bitstring[bit_index:bit_index+16], 2)
-                bit_index += 16
-            else:
-                enum_values = [member.value for member in listType]
-                index = int(bitstring[bit_index:bit_index+len(enum_values).bit_length()], 2)
-                value = listType(index)
-                bit_index += len(enum_values).bit_length()
-            if keyName not in enum_dict:
-                enum_dict[keyName] = [value]
-            else:
-                enum_dict[keyName].append(value)
+        elif keyDataType == SettingsStringDataType.list:
+            list_length = int(bitstring[bit_index:bit_index+8], 2)
+            bit_index += 8
+            enum_dict[keyName] = []
+            key_list_data_type = SettingsStringListTypeMap[keyEnum]
+            for _ in range(list_length):
+                if key_list_data_type == SettingsStringDataType.bool:
+                    enum_dict[keyName].append(True if bitstring[bit_index] == "1" else False)
+                    bit_index += 1
+                elif key_list_data_type == SettingsStringDataType.int4:
+                    enum_dict[keyName].append(int(bitstring[bit_index:bit_index+4], 2))
+                    bit_index += 4
+                elif key_list_data_type == SettingsStringDataType.int8:
+                    enum_dict[keyName].append(int(bitstring[bit_index:bit_index+8], 2))
+                    bit_index += 8
+                elif key_list_data_type == SettingsStringDataType.int16:
+                    enum_dict[keyName].append(int(bitstring[bit_index:bit_index+16], 2))
+                    bit_index += 16
+                else:
+                    enum_values = [member.value for member in key_list_data_type]
+                    index = int(bitstring[bit_index:bit_index+len(enum_values).bit_length()], 2)
+                    enum_dict[keyName].append(key_list_data_type(index))
+                    bit_index += len(enum_values).bit_length()
         else:
-            enum_values = [member.value for member in settingType]
+            enum_values = [member.value for member in keyDataType]
             index = int(bitstring[bit_index:bit_index+len(enum_values).bit_length()], 2)
-            enum_dict[key] = settingType(index)
+            enum_dict[keyName] = keyDataType(index)
             bit_index += len(enum_values).bit_length()
     return enum_dict
 
