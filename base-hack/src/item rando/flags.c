@@ -324,6 +324,15 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                     refreshPads(ITEMREFRESH_VINE);
                 }
             } else if ((flag_index == FLAG_ABILITY_CAMERA) || (flag_index == FLAG_ABILITY_SHOCKWAVE)) {
+                if (flag_index == FLAG_ABILITY_CAMERA) {
+                    if (CollectableBase.Film < 10) {
+                        CollectableBase.Film = 10;
+                    }
+                } else if (flag_index == FLAG_ABILITY_SHOCKWAVE) {
+                    if (CollectableBase.Crystals < (10*150)) {
+                        CollectableBase.Crystals = 10*150;
+                    }
+                }
                 spawn_overlay = 1;
                 item_type = 5;
                 item_index = flag_index;

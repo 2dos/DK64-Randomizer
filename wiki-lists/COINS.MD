@@ -15,6 +15,7 @@
 | On cliff top by Cranky's | 3 | 
 | Bottom of the pool | 3 | 
 | Banana hoard | 4 | 
+| Rear Tunnel | 3 | 
 </details>
 <details>
 <summary>Treehouse</summary>
@@ -216,6 +217,25 @@
 | Left side of fairy room | 4 | 
 | Right side of fairy room | 3 | 
 | Around torch in the middle of fairy room on water surface | 4 | 
+| Near entrance portal | 3 | 
+| Main Area Underwater (1) | 3 | 
+| Around the Baboon Blast Pad | 3 | 
+| Start of first tunnel | 3 | 
+| Diddy Cavern (1) | 3 | 
+| Fairy Pool | 5 | 
+| Near Rambi Box | 3 | 
+| Diddy Cavern (2) | 3 | 
+| Near Diddy Kasplat | 3 | 
+| Near Tiny Kasplat | 3 | 
+| In between the vines near Diddy Kasplat | 1 | 
+| Near DK Kasplat | 3 | 
+| Cannon Path | 2 | 
+| Near Lanky Kasplat | 3 | 
+| Main Area Underwater (2) | 2 | 
+| Main Area Underwater (3) | 3 | 
+| Behind the stump | 3 | 
+| On top of the mountain | 5 | 
+| Near Snide's HQ | 5 | 
 </details>
 <details>
 <summary>Japes Under Ground</summary>
@@ -225,6 +245,8 @@
 | Right side towards the end of the cave | 3 | 
 | Left side towards the end of the cave | 3 | 
 | Around center platform | 3 | 
+| Behind Entrance Cannon | 3 | 
+| Near Underground Reward | 3 | 
 </details>
 <details>
 <summary>Japes Lanky Cave</summary>
@@ -232,6 +254,7 @@
 | Name | Amount |
 | ---- | ------ |
 | Next to entrance | 3 | 
+| On Pegs | 2 | 
 </details>
 <details>
 <summary>Japes Mountain</summary>
@@ -241,6 +264,10 @@
 | On right minecart near entrance | 3 | 
 | In treadmills room front left corner | 2 | 
 | On coal pile in second room | 1 | 
+| Behind a barrel near the HI-LO Machine | 1 | 
+| Under the Conveyors | 1 | 
+| On the bridge | 1 | 
+| On a coal stack | 1 | 
 </details>
 <details>
 <summary>Japes Tiny Hive</summary>
@@ -249,6 +276,14 @@
 | ---- | ------ |
 | Behind Door 1 | 2 | 
 | Around final room | 4 | 
+| Behind Door 2 | 2 | 
+</details>
+<details>
+<summary>Japes Baboon Blast</summary>
+
+| Name | Amount |
+| ---- | ------ |
+| Between cannons in the Baboon Blast Course | 2 | 
 </details>
 </details>
 
@@ -291,6 +326,21 @@
 | On roof of 5 door temple | 3 | 
 | On roof of Llama Temple | 4 | 
 | Around far W5 | 4 | 
+| Near Cranky's Lab | 4 | 
+| Outside Funky's | 5 | 
+| Around Oasis Warp 2 | 5 | 
+| Under Snide's HQ Tag Barrel | 3 | 
+| On posts near Llama | 2 | 
+| At the end of the quicksand tunnel | 4 | 
+| Around the Giant Boulder | 3 | 
+| Around the Bonus Barrel Cage | 4 | 
+| Vines near Snide's HQ | 4 | 
+| Around Hunky Chunky Barrel | 3 | 
+| Behind 5-Door Temple | 3 | 
+| Under Oasis Tag | 4 | 
+| Around Totem W5 | 5 | 
+| Around Tiny Temple | 4 | 
+| Blueprint Cavern | 3 | 
 </details>
 <details>
 <summary>Aztec Baboon Blast</summary>
@@ -307,6 +357,7 @@
 | First Switch | 1 | 
 | On torches | 2 | 
 | On stairs | 3 | 
+| Around the temple | 4 | 
 </details>
 <details>
 <summary>Aztec Diddy5DTemple</summary>
@@ -314,6 +365,7 @@
 | Name | Amount |
 | ---- | ------ |
 | Behind some pillars | 4 | 
+| Dead Ends | 2 | 
 </details>
 <details>
 <summary>Aztec Donkey5DTemple</summary>
@@ -321,6 +373,7 @@
 | Name | Amount |
 | ---- | ------ |
 | Final pathway | 4 | 
+| Near 2nd Switch | 2 | 
 </details>
 <details>
 <summary>Aztec Lanky5DTemple</summary>
@@ -337,6 +390,8 @@
 | ---- | ------ |
 | Fairy Side Room | 4 | 
 | Other Side Room | 4 | 
+| Under Feather Switches and at Dead Ends | 1 | 
+| Under Feather Switches and at Dead Ends | 2 | 
 </details>
 <details>
 <summary>Aztec Llama Temple</summary>
@@ -348,6 +403,9 @@
 | Matching Game Room | 3 | 
 | Around the right lava room platform | 4 | 
 | Around the left lava room platform | 4 | 
+| Around Instrument Pad | 5 | 
+| Near Tag Barrel | 3 | 
+| Matching Game Room Vines | 2 | 
 </details>
 <details>
 <summary>Aztec Tiny Temple</summary>
@@ -359,6 +417,11 @@
 | Around Lanky Pedestal | 8 | 
 | On KONG Letters | 4 | 
 | Underwater tunnels | 3 | 
+| On Diddy's Guitar Pad | 1 | 
+| Around the Upper Lanky Pedestal | 4 | 
+| Starting Corner (1) | 3 | 
+| Starting Corner (2) | 3 | 
+| Near Kong Cage | 5 | 
 </details>
 </details>
 
@@ -417,6 +480,29 @@
 | In Chunky R&D Room | 4 | 
 | In Car Race Lobby | 6 | 
 | On Power Shed Platform | 5 | 
+| On spring small ledge | 3 | 
+| Around Snide's HQ W3 | 3 | 
+| On steps near Block Tower | 3 | 
+| Outside R&D Window | 3 | 
+| Around Storage W1 | 5 | 
+| Lower Production Room Window | 3 | 
+| Above chute to Power Shed | 5 | 
+| Around Hatch | 5 | 
+| Around Tiny's Kasplat | 5 | 
+| Around pole to Block Tower Room | 5 | 
+| Above pole to Snide's HQ | 5 | 
+| Around high W4 | 5 | 
+| Below pole to R&D | 5 | 
+| Above pole to R&D | 5 | 
+| On elevators to upper production room | 3 | 
+| Behind a box in Block Tower room | 4 | 
+| Alcoves in Block Tower Room | 4 | 
+| Around the spinning section in Production Room | 4 | 
+| Under a grate in R&D | 4 | 
+| Near Number Game | 3 | 
+| Around Arcade Tunnel Bonus | 3 | 
+| On boxes to Candy and Cranky | 3 | 
+| Near Tiny Twirl Bonus | 3 | 
 </details>
 <details>
 <summary>Factory Tiny Race</summary>
@@ -431,6 +517,7 @@
 | Name | Amount |
 | ---- | ------ |
 | In the Crusher Room near the GB | 4 | 
+| Crusher Start | 3 | 
 </details>
 <details>
 <summary>Factory Power Hut</summary>
@@ -438,6 +525,7 @@
 | Name | Amount |
 | ---- | ------ |
 | Inside the Power Hut | 3 | 
+| On top of doorway | 1 | 
 </details>
 </details>
 
@@ -478,6 +566,24 @@
 | Lighthouse Underwater corner (Circle) | 3 | 
 | Lighthouse Underwater corner (Stack) | 4 | 
 | Mermaid Palace Roof | 2 | 
+| On Mermaid Palace Shells | 5 | 
+| Behind Enguarde Door | 3 | 
+| On Rafter near Funky's | 4 | 
+| Around Cranky's Lab | 5 | 
+| Tunnel to Chests Area | 3 | 
+| Around Cactus | 4 | 
+| On Seal Cage | 3 | 
+| Around Lighthouse W1 | 3 | 
+| Behind Cannon Game Room gate | 3 | 
+| Under Lighthouse Enguarde Crate | 3 | 
+| Cannon Game Room Corner | 3 | 
+| Inside Shipyard Chest (1) | 3 | 
+| Inside Shipyard Chest (2) | 3 | 
+| Inside Shipyard Chest (3) | 3 | 
+| Inside Shipyard Chest (4) | 3 | 
+| Around Cactus Top | 5 | 
+| Under Mermaid Tag Barrel | 5 | 
+| Down the deep hole | 3 | 
 </details>
 <details>
 <summary>Galleon Sick Bay</summary>
@@ -486,6 +592,7 @@
 | ---- | ------ |
 | Behind the Cannon | 1 | 
 | In the corner before the grate | 3 | 
+| On Barrels near the spinning totem | 3 | 
 </details>
 <details>
 <summary>Galleon Lighthouse</summary>
@@ -510,6 +617,7 @@
 | Name | Amount |
 | ---- | ------ |
 | On fork in Mermaid Room | 1 | 
+| In the corner | 3 | 
 </details>
 <details>
 <summary>Galleon Seal Race</summary>
@@ -528,6 +636,8 @@
 | On Lanky Barrel | 2 | 
 | On Lanky Bench | 2 | 
 | Near Chunky Boxes | 3 | 
+| Under Lanky Bench | 3 | 
+| Near Chunky Treasure Chest | 3 | 
 </details>
 <details>
 <summary>Galleon5DShip DKTiny</summary>
@@ -536,6 +646,8 @@
 | ---- | ------ |
 | Corner of DK Bonus Room | 3 | 
 | Bed in DK Ship | 3 | 
+| On boxes near bed | 2 | 
+| At a dead end | 3 | 
 </details>
 <details>
 <summary>Galleon2DShip</summary>
@@ -545,6 +657,7 @@
 | Corner of Tiny Entrance | 3 | 
 | Corners of Tiny's Main Room | 3 | 
 | Start of Lanky's Room | 2 | 
+| In various chests | 4 | 
 </details>
 <details>
 <summary>Galleon Submarine</summary>
@@ -560,6 +673,14 @@
 | Name | Amount |
 | ---- | ------ |
 | Around the keyhole | 4 | 
+| On the coin floor | 4 | 
+</details>
+<details>
+<summary>Galleon Baboon Blast</summary>
+
+| Name | Amount |
+| ---- | ------ |
+| In the Baboon Blast Course | 2 | 
 </details>
 </details>
 
@@ -609,6 +730,23 @@
 | In front of the mill in the air | 3 | 
 | Behind the well exit | 3 | 
 | Near the thornvine barn | 3 | 
+| On Thorny Hedge | 3 | 
+| Around BBlast Pad | 3 | 
+| Behind Clock | 3 | 
+| On Mushroom near Mill far tag | 3 | 
+| Around Crown Pad | 3 | 
+| Around Tiny Kasplat | 5 | 
+| On Mushroom near Dark Rafters Barn | 3 | 
+| Behind Giant Mushroom | 3 | 
+| Under Hollow Tree | 3 | 
+| On Well | 3 | 
+| On Archway to Giant Mushroom Area | 3 | 
+| Inside Hollow Tree night fence | 4 | 
+| Near Beanstalk Mini Monkey Barrel | 3 | 
+| On Mushroom near Mill Well Exit | 3 | 
+| Behind Night Door in the Apple Area | 3 | 
+| On switch to face puzzle | 3 | 
+| Behind Well Entrance | 3 | 
 </details>
 <details>
 <summary>Forest Anthill</summary>
@@ -623,6 +761,7 @@
 | Name | Amount |
 | ---- | ------ |
 | On flour bags | 3 | 
+| Near the winch machine | 2 | 
 </details>
 <details>
 <summary>Forest Rafters</summary>
@@ -639,6 +778,7 @@
 | ---- | ------ |
 | On the fence | 3 | 
 | Behind some boxes | 3 | 
+| Inside the trough | 3 | 
 </details>
 <details>
 <summary>Forest Mill Front</summary>
@@ -648,6 +788,8 @@
 | On the levers | 3 | 
 | In front of the keg painting | 1 | 
 | On support beams | 2 | 
+| In the corner near the tag barrel | 3 | 
+| In front of the Mini Monkey Hole | 3 | 
 </details>
 <details>
 <summary>Forest Giant Mushroom</summary>
@@ -664,6 +806,7 @@
 | Name | Amount |
 | ---- | ------ |
 | Behind the starting box | 2 | 
+| Behind a box | 3 | 
 </details>
 <details>
 <summary>Forest Lanky Zingers Room</summary>
@@ -680,6 +823,7 @@
 | On the question mark box | 4 | 
 | Inside a keg | 1 | 
 | On boxes near spider | 3 | 
+| On various boxes | 3 | 
 </details>
 </details>
 
@@ -722,6 +866,21 @@
 | Outside the Sprint Cabin | 3 | 
 | Near the Sprint Cabin Headphones | 5 | 
 | On stalagtites in the Giant Kosha area | 2 | 
+| Back of Bonus Cave | 5 | 
+| Gorilla Gone Cavern | 3 | 
+| Giant Boulder Cavern | 3 | 
+| Giant Kosha Room | 3 | 
+| In Snide's Cavern | 3 | 
+| On Ice Castle | 4 | 
+| Near Cabin Waterfall | 3 | 
+| Behind Igloo Tag Barrel | 3 | 
+| On Slope to Cranky | 3 | 
+| Behind Spike near Igloo Area | 3 | 
+| Near Headphones | 3 | 
+| In water near Funky's | 3 | 
+| Pillar near Ice Castle | 2 | 
+| Behind Caves Igloo W1 | 3 | 
+| Entrance to Blueprint Cave | 3 | 
 </details>
 <details>
 <summary>Caves Baboon Blast</summary>
@@ -729,6 +888,7 @@
 | Name | Amount |
 | ---- | ------ |
 | On the path to the first hoop | 3 | 
+| In Baboon Blast Course | 3 | 
 </details>
 <details>
 <summary>Caves Lanky Race</summary>
@@ -744,6 +904,7 @@
 | Name | Amount |
 | ---- | ------ |
 | Near the Ice Tomato chair | 2 | 
+| On Board | 2 | 
 </details>
 <details>
 <summary>Caves Chunky Igloo</summary>
@@ -807,6 +968,7 @@
 | Name | Amount |
 | ---- | ------ |
 | On the corners of the center platform in Diddy Lower Cabin | 4 | 
+| In Corner Platforms | 4 | 
 </details>
 <details>
 <summary>Caves Diddy Upper Cabin</summary>
@@ -821,6 +983,7 @@
 | Name | Amount |
 | ---- | ------ |
 | In between the holes in Donkey Cabin | 3 | 
+| Above holes | 2 | 
 </details>
 <details>
 <summary>Caves Tiny Cabin</summary>
@@ -859,6 +1022,15 @@
 | Under Museum Entrance Platform | 2 | 
 | Outside Greenhouse | 3 | 
 | Around Castle Tree exterior | 3 | 
+| Around Tiny Kasplat | 3 | 
+| Around upper W2 | 3 | 
+| On thin tree near the Tree entrance | 2 | 
+| Behind Grave (1) | 3 | 
+| Hanging off ledge near Castle Tree entrance | 3 | 
+| Behind Grave (2) | 3 | 
+| On tree near Crypt Entrance | 2 | 
+| On Drawbridge | 4 | 
+| Above Window | 2 | 
 </details>
 <details>
 <summary>Castle Ballroom</summary>
@@ -869,6 +1041,7 @@
 | Ballroom Post Torches | 4 | 
 | Around the tiled Ballroom floor | 4 | 
 | Ballroom K. Rool Banners | 6 | 
+| Around Monkeyport Pad | 3 | 
 </details>
 <details>
 <summary>Castle Dungeon</summary>
@@ -881,6 +1054,9 @@
 | Dungeon - Behind Gate (3) | 2 | 
 | Donkey's Dungeon Room | 4 | 
 | Diddy's Dungeon Room | 4 | 
+| Around Donkey Switch | 4 | 
+| Inside punchable grate | 3 | 
+| Above the acid in Lanky's Room | 3 | 
 </details>
 <details>
 <summary>Castle Shed</summary>
@@ -888,6 +1064,7 @@
 | Name | Amount |
 | ---- | ------ |
 | Shed Interior Corners | 4 | 
+| Around punch box | 4 | 
 </details>
 <details>
 <summary>Castle Lower Cave</summary>
@@ -900,6 +1077,8 @@
 | Near Funky | 2 | 
 | Near Crypt Entrance | 4 | 
 | On Crypt Skull | 1 | 
+| Around the mausoleum entrance | 4 | 
+| Near the Crypt Staircase | 3 | 
 </details>
 <details>
 <summary>Castle Crypt</summary>
@@ -910,6 +1089,8 @@
 | On Diddy Coffin | 4 | 
 | On incorrect Minecart levers | 3 | 
 | Inside Chunky's Coffin | 4 | 
+| Inside Chunky Coffins | 3 | 
+| Inside Diddy Coffins | 3 | 
 </details>
 <details>
 <summary>Castle Mausoleum</summary>
@@ -918,6 +1099,8 @@
 | ---- | ------ |
 | On Goo Hands | 6 | 
 | Between Mausoleum Vines | 6 | 
+| Around Tiny Slam Pad | 2 | 
+| Around Lanky Reward | 3 | 
 </details>
 <details>
 <summary>Castle Upper Cave</summary>
@@ -926,6 +1109,9 @@
 | ---- | ------ |
 | Tunnel behind torch | 3 | 
 | Tunnel Rear Entry | 2 | 
+| Over pit | 3 | 
+| Near Candy's Shop | 3 | 
+| Outside Dungeon Entrance | 3 | 
 </details>
 <details>
 <summary>Castle Greenhouse</summary>
@@ -934,6 +1120,7 @@
 | ---- | ------ |
 | Greenhouse Exit Corner | 3 | 
 | Greenhouse Dead End | 3 | 
+| At a dead end | 3 | 
 </details>
 <details>
 <summary>Castle Library</summary>
@@ -955,6 +1142,7 @@
 | Car Race Second Chimney stack | 1 | 
 | Around mystery Museum Pillar | 7 | 
 | On mystery Museum Pillar | 3 | 
+| In front of shields | 3 | 
 </details>
 <details>
 <summary>Castle Tower</summary>
@@ -970,6 +1158,7 @@
 | ---- | ------ |
 | Around trash can cheese | 3 | 
 | Off the ledge of the trash can cheese | 3 | 
+| On the long sides of the cheese | 2 | 
 </details>
 <details>
 <summary>Castle Tree</summary>
@@ -978,5 +1167,13 @@
 | ---- | ------ |
 | Underwater in the DK Tree area | 4 | 
 | In Chunky's Tree area | 4 | 
+| On pathway to Chunky Bonus | 3 | 
+</details>
+<details>
+<summary>Castle Baboon Blast</summary>
+
+| Name | Amount |
+| ---- | ------ |
+| Inside the Baboon Blast Course | 5 | 
 </details>
 </details>

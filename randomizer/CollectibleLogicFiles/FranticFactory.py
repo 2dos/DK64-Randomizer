@@ -98,6 +98,9 @@ LogicRegions = {
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),
     ],
+    Regions.LowerCore: [
+    
+    ],
     Regions.MiddleCore: [
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 3),  # On steps on middle level
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),  # On middle level

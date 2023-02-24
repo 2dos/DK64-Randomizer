@@ -12,6 +12,8 @@ import randomizer.CollectibleLogicFiles.CreepyCastle
 from randomizer.Lists.BananaCoinLocations import BananaCoinGroupList
 from randomizer.LogicClasses import Collectible
 from randomizer.Enums.Collectibles import Collectibles
+from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Time import Time
 
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Levels import Levels
@@ -21,7 +23,7 @@ from randomizer.Logic import CollectibleRegions
 import random
 import js
 
-KONG_COIN_REQUIREMENT = 75
+KONG_COIN_REQUIREMENT = 100
 KONG_COIN_CAP = 125  # Can never exceed 175 due to overflow if you collect over 255 coins
 
 level_data = {
@@ -49,9 +51,9 @@ def ShuffleCoins(spoiler: Spoiler):
         try:
             total_coins = 0
             coin_data = []
-            # First, remove all placed colored bananas
+            # First, remove all placed coins (excl. Rabbit Race R1)
             for region_id in CollectibleRegions.keys():
-                CollectibleRegions[region_id] = [collectible for collectible in CollectibleRegions[region_id] if collectible.type != Collectibles.coin]
+                CollectibleRegions[region_id] = [collectible for collectible in CollectibleRegions[region_id] if collectible.type != Collectibles.coin or collectible.locked]
             for level_index, level in enumerate(level_data):
                 level_placement = []
                 global_divisor = 7 - level_index
