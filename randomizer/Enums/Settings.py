@@ -576,3 +576,279 @@ SettingsMap = {
     "bonus_barrels": MinigameBarrels,
     "helm_barrels": MinigameBarrels,
 }
+
+class SettingsStringEnum(IntEnum):
+    activate_all_bananaports = auto()
+    alter_switch_allocation = auto()
+    auto_keys = auto()
+    bananaport_rando = auto()
+    blocker_0 = auto()
+    blocker_1 = auto()
+    blocker_2 = auto()
+    blocker_3 = auto()
+    blocker_4 = auto()
+    blocker_5 = auto()
+    blocker_6 = auto()
+    blocker_7 = auto()
+    blocker_text = auto()
+    bonus_barrel_auto_complete = auto()
+    bonus_barrel_rando = auto()
+    boss_kong_rando = auto()
+    boss_location_rando = auto()
+    cb_rando = auto()
+    coin_door_item = auto()
+    coin_door_item_count = auto()
+    crown_door_item = auto()
+    crown_door_item_count = auto()
+    crown_enemy_rando = auto()
+    crown_placement_rando = auto()
+    damage_amount = auto()
+    enable_shop_hints = auto()
+    disable_tag_barrels = auto()
+    dpad_display = auto()
+    enable_tag_anywhere = auto()
+    enemies_selected = auto()
+    enemy_rando = auto()
+    enemy_speed_rando = auto()
+    fast_gbs = auto()
+    fast_warps = auto()
+    fps_display = auto()
+    free_trade_setting = auto()
+    generate_spoilerlog = auto()
+    glitches_selected = auto()
+    hard_blockers = auto()
+    hard_bosses = auto()
+    hard_enemies = auto()
+    hard_level_progression = auto()
+    hard_shooting = auto()
+    hard_troff_n_scoff = auto()
+    helm_hurry = auto()
+    helm_setting = auto()
+    helmhurry_list_starting_time = auto()
+    helmhurry_list_golden_banana = auto()
+    helmhurry_list_blueprint = auto()
+    helmhurry_list_company_coins = auto()
+    helmhurry_list_move = auto()
+    helmhurry_list_banana_medal = auto()
+    helmhurry_list_rainbow_coin = auto()
+    helmhurry_list_boss_key = auto()
+    helmhurry_list_battle_crown = auto()
+    helmhurry_list_bean = auto()
+    helmhurry_list_pearl = auto()
+    helmhurry_list_kongs = auto()
+    helmhurry_list_fairies = auto()
+    helmhurry_list_colored_bananas = auto()
+    helmhurry_list_ice_traps = auto()
+    high_req = auto()
+    item_rando_list_selected = auto()
+    item_reward_previews = auto()
+    kasplat_rando_setting = auto()
+    key_8_helm = auto()
+    keys_random = auto()
+    kong_rando = auto()
+    krool_access = auto()
+    krool_key_count = auto()
+    krool_phase_count = auto()
+    krool_phase_order_rando = auto()
+    krool_random = auto()
+    krusha_ui = auto()
+    helm_phase_order_rando = auto()
+    helm_random = auto()
+    helm_phase_count = auto()
+    level_randomization = auto()
+    logic_type = auto()
+    maximize_helm_blocker = auto()
+    medal_cb_req = auto()
+    medal_requirement = auto()
+    microhints_enabled = auto()
+    minigames_list_selected = auto()
+    misc_changes_selected = auto()
+    move_rando = auto()
+    no_healing = auto()
+    no_melons = auto()
+    open_levels = auto()
+    open_lobbies = auto()
+    perma_death = auto()
+    portal_numbers = auto()
+    puzzle_rando = auto()
+    quality_of_life = auto()
+    random_fairies = auto()
+    random_medal_requirement = auto()
+    random_patches = auto()
+    random_prices = auto()
+    random_starting_region = auto()
+    randomize_blocker_required_amounts = auto()
+    randomize_cb_required_amounts = auto()
+    randomize_pickups = auto()
+    rareware_gb_fairies = auto()
+    select_keys = auto()
+    shockwave_status = auto()
+    shop_indicator = auto()
+    shorten_boss = auto()
+    shuffle_items = auto()
+    shuffle_shops = auto()
+    smaller_shops = auto()
+    starting_keys_list_selected = auto()
+    starting_kongs_count = auto()
+    starting_random = auto()
+    tns_location_rando = auto()
+    training_barrels = auto()
+    troff_0 = auto()
+    troff_1 = auto()
+    troff_2 = auto()
+    troff_3 = auto()
+    troff_4 = auto()
+    troff_5 = auto()
+    troff_6 = auto()
+    troff_text = auto()
+    warp_level_list_selected = auto()
+    warp_to_isles = auto()
+    win_condition = auto()
+    wrinkly_available = auto()
+    wrinkly_hints = auto()
+    wrinkly_location_rando = auto()
+    fast_start_beginning_of_game = auto()
+
+
+SettingsStringTypeMap = {
+    SettingsStringEnum.activate_all_bananaports: int,
+    SettingsStringEnum.alter_switch_allocation: bool,
+    SettingsStringEnum.auto_keys: bool,
+    SettingsStringEnum.bananaport_rando: int,
+    SettingsStringEnum.blocker_0: int,
+    SettingsStringEnum.blocker_1: int,
+    SettingsStringEnum.blocker_2: int,
+    SettingsStringEnum.blocker_3: int,
+    SettingsStringEnum.blocker_4: int,
+    SettingsStringEnum.blocker_5: int,
+    SettingsStringEnum.blocker_6: int,
+    SettingsStringEnum.blocker_7: int,
+    SettingsStringEnum.blocker_text: int,
+    SettingsStringEnum.bonus_barrel_auto_complete: bool,
+    SettingsStringEnum.bonus_barrel_rando: bool,
+    SettingsStringEnum.boss_kong_rando: bool,
+    SettingsStringEnum.boss_location_rando: bool,
+    SettingsStringEnum.cb_rando: bool,
+    SettingsStringEnum.coin_door_item: int,
+    SettingsStringEnum.coin_door_item_count: int,
+    SettingsStringEnum.crown_door_item: int,
+    SettingsStringEnum.crown_door_item_count: int,
+    SettingsStringEnum.crown_enemy_rando: int,
+    SettingsStringEnum.crown_placement_rando: bool,
+    SettingsStringEnum.damage_amount: int,
+    SettingsStringEnum.enable_shop_hints: bool,
+    SettingsStringEnum.disable_tag_barrels: bool,
+    SettingsStringEnum.dpad_display: bool,
+    SettingsStringEnum.enable_tag_anywhere: bool,
+    SettingsStringEnum.enemies_selected: list,
+    SettingsStringEnum.enemy_rando: bool,
+    SettingsStringEnum.enemy_speed_rando: bool,
+    SettingsStringEnum.fast_gbs: bool,
+    SettingsStringEnum.fast_warps: bool,
+    SettingsStringEnum.fps_display: bool,
+    SettingsStringEnum.free_trade_setting: int,
+    SettingsStringEnum.generate_spoilerlog: bool,
+    SettingsStringEnum.glitches_selected: list,
+    SettingsStringEnum.hard_blockers: bool,
+    SettingsStringEnum.hard_bosses: bool,
+    SettingsStringEnum.hard_enemies: bool,
+    SettingsStringEnum.hard_level_progression: bool,
+    SettingsStringEnum.hard_shooting: bool,
+    SettingsStringEnum.hard_troff_n_scoff: bool,
+    SettingsStringEnum.helm_hurry: bool,
+    SettingsStringEnum.helm_setting: int,
+    SettingsStringEnum.helmhurry_list_starting_time: int,
+    SettingsStringEnum.helmhurry_list_golden_banana: int,
+    SettingsStringEnum.helmhurry_list_blueprint: int,
+    SettingsStringEnum.helmhurry_list_company_coins: int,
+    SettingsStringEnum.helmhurry_list_move: int,
+    SettingsStringEnum.helmhurry_list_banana_medal: int,
+    SettingsStringEnum.helmhurry_list_rainbow_coin: int,
+    SettingsStringEnum.helmhurry_list_boss_key: int,
+    SettingsStringEnum.helmhurry_list_battle_crown: int,
+    SettingsStringEnum.helmhurry_list_bean: int,
+    SettingsStringEnum.helmhurry_list_pearl: int,
+    SettingsStringEnum.helmhurry_list_kongs: int,
+    SettingsStringEnum.helmhurry_list_fairies: int,
+    SettingsStringEnum.helmhurry_list_colored_bananas: int,
+    SettingsStringEnum.helmhurry_list_ice_traps: int,
+    SettingsStringEnum.high_req: bool,
+    SettingsStringEnum.item_rando_list_selected: list,
+    SettingsStringEnum.item_reward_previews: bool,
+    SettingsStringEnum.kasplat_rando_setting: int,
+    SettingsStringEnum.key_8_helm: bool,
+    SettingsStringEnum.keys_random: bool,
+    SettingsStringEnum.kong_rando: bool,
+    SettingsStringEnum.krool_access: bool,
+    SettingsStringEnum.krool_key_count: int,
+    SettingsStringEnum.krool_phase_count: int,
+    SettingsStringEnum.krool_phase_order_rando: bool,
+    SettingsStringEnum.krool_random: bool,
+    SettingsStringEnum.krusha_ui: int,
+    SettingsStringEnum.helm_phase_order_rando: bool,
+    SettingsStringEnum.helm_random: bool,
+    SettingsStringEnum.helm_phase_count: int,
+    SettingsStringEnum.level_randomization: int,
+    SettingsStringEnum.logic_type: int,
+    SettingsStringEnum.maximize_helm_blocker: bool,
+    SettingsStringEnum.medal_cb_req: int,
+    SettingsStringEnum.medal_requirement: int,
+    SettingsStringEnum.microhints_enabled: int,
+    SettingsStringEnum.minigames_list_selected: list,
+    SettingsStringEnum.misc_changes_selected: list,
+    SettingsStringEnum.move_rando: int,
+    SettingsStringEnum.no_healing: bool,
+    SettingsStringEnum.no_melons: bool,
+    SettingsStringEnum.open_levels: bool,
+    SettingsStringEnum.open_lobbies: bool,
+    SettingsStringEnum.perma_death: bool,
+    SettingsStringEnum.portal_numbers: bool,
+    SettingsStringEnum.puzzle_rando: bool,
+    SettingsStringEnum.quality_of_life: bool,
+    SettingsStringEnum.random_fairies: bool,
+    SettingsStringEnum.random_medal_requirement: bool,
+    SettingsStringEnum.random_patches: bool,
+    SettingsStringEnum.random_prices: int,
+    SettingsStringEnum.random_starting_region: bool,
+    SettingsStringEnum.randomize_blocker_required_amounts: bool,
+    SettingsStringEnum.randomize_cb_required_amounts: bool,
+    SettingsStringEnum.randomize_pickups: bool,
+    SettingsStringEnum.rareware_gb_fairies: int,
+    SettingsStringEnum.select_keys: bool,
+    SettingsStringEnum.shockwave_status: int,
+    SettingsStringEnum.shop_indicator: bool,
+    SettingsStringEnum.shorten_boss: bool,
+    SettingsStringEnum.shuffle_items: bool,
+    SettingsStringEnum.shuffle_shops: bool,
+    SettingsStringEnum.smaller_shops: bool,
+    SettingsStringEnum.starting_keys_list_selected: list,
+    SettingsStringEnum.starting_kongs_count: int,
+    SettingsStringEnum.starting_random: bool,
+    SettingsStringEnum.tns_location_rando: bool,
+    SettingsStringEnum.training_barrels: int,
+    SettingsStringEnum.troff_0: int,
+    SettingsStringEnum.troff_1: int,
+    SettingsStringEnum.troff_2: int,
+    SettingsStringEnum.troff_3: int,
+    SettingsStringEnum.troff_4: int,
+    SettingsStringEnum.troff_5: int,
+    SettingsStringEnum.troff_6: int,
+    SettingsStringEnum.troff_text: int,
+    SettingsStringEnum.warp_level_list_selected: list,
+    SettingsStringEnum.warp_to_isles: bool,
+    SettingsStringEnum.win_condition: int,
+    SettingsStringEnum.wrinkly_available: bool,
+    SettingsStringEnum.wrinkly_hints: int,
+    SettingsStringEnum.wrinkly_location_rando: bool,
+    SettingsStringEnum.fast_start_beginning_of_game: bool,
+}
+
+SettingsStringListTypeMap = {
+    SettingsStringEnum.enemies_selected: int,
+    SettingsStringEnum.glitches_selected: int,
+    SettingsStringEnum.item_rando_list_selected: int,
+    SettingsStringEnum.minigames_list_selected: int,
+    SettingsStringEnum.misc_changes_selected: int,
+    SettingsStringEnum.starting_keys_list_selected: int,
+    SettingsStringEnum.warp_level_list_selected: int,
+}
