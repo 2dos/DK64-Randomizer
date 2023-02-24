@@ -70,9 +70,9 @@ LogicRegions = {
 
     ],
     Regions.Treehouse: [
-    
+
     ],
     Regions.IslesMainUpper: [
-    
+
     ],
 }

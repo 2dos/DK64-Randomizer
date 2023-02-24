@@ -144,9 +144,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) or l.twirl, None, 2),  # Behind Mini tunnel
     ],
     Regions.AngryAztecConnectorTunnel: [
-    
     ],
     Regions.AztecTunnelBeforeOasis: [
-    
     ],
 }

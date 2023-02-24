@@ -99,7 +99,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),
     ],
     Regions.LowerCore: [
-    
+
     ],
     Regions.MiddleCore: [
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 3),  # On steps on middle level
@@ -121,6 +121,6 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl, None, 3),  # Past Tiny Bonus Barrel
     ],
     Regions.FactoryTinyRace: [
-    
+
     ]
 }
