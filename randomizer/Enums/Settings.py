@@ -586,7 +586,7 @@ class SettingsStringEnum(IntEnum):
     Changing any of the existing values will cause generated settings strings
         to break. Only add new values.
 
-    Next available value: 131
+    Next available value: 132
     """
 
     activate_all_bananaports = 1
@@ -609,6 +609,7 @@ class SettingsStringEnum(IntEnum):
     cb_rando = 18
     coin_door_item = 19
     coin_door_item_count = 20
+    coin_rando = 131
     crown_door_item = 21
     crown_door_item_count = 22
     crown_enemy_rando = 23
@@ -758,6 +759,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.cb_rando: SettingsStringDataType.bool,
     SettingsStringEnum.coin_door_item: SettingsStringDataType.int8,
     SettingsStringEnum.coin_door_item_count: SettingsStringDataType.int16,
+    SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
     SettingsStringEnum.crown_door_item: SettingsStringDataType.int8,
     SettingsStringEnum.crown_door_item_count: SettingsStringDataType.int16,
     SettingsStringEnum.crown_enemy_rando: SettingsStringDataType.int4,
