@@ -11,7 +11,7 @@ import traceback
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
-from randomizer.SettingStrings import decrypt_setting_string
+from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Spoiler import Spoiler
 
 
@@ -35,9 +35,8 @@ def main():
     args = parser.parse_args()
     if not os.environ.get("POST_BODY"):
         if args.settings_string is not None:
-            decrypt_setting_string(args.settings_string)
             try:
-                setting_data = decrypt_setting_string(args.settings_string)
+                setting_data = decrypt_settings_string_enum(args.settings_string)
             except Exception:
                 print("Invalid settings String")
                 sys.exit(2)
