@@ -14,15 +14,15 @@ letter_to_index = {letters[i]: i for i in range(len(letters))}
 
 
 def int_to_bin_string(num, bytesize):
-    """Converts an integer to a binary representation.
+    """Convert an integer to a binary representation.
 
     This function is needed to handle negative numbers.
     """
-    return format(num if num >= 0 else (1 << bytesize) + num, f'0{bytesize}b').zfill(bytesize)
+    return format(num if num >= 0 else (1 << bytesize) + num, f"0{bytesize}b").zfill(bytesize)
 
 
 def bin_string_to_int(bin_str, bytesize):
-    """Converts a binary string to an integer.
+    """Convert a binary string to an integer.
 
     This function is needed to handle negative numbers.
     """
