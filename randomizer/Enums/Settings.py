@@ -725,11 +725,11 @@ class SettingsStringDataType(IntEnum):
     """Enum for mapping settings to data types for encryption/decryption."""
 
     bool = auto()
-    # Can represent up to 16 values.
+    # Can represent up to 16 values (-8 to 7).
     int4 = auto()
-    # Can represent up to 256 values.
+    # Can represent up to 256 values (-128 to 127).
     int8 = auto()
-    # Can represent up to 65,536 values.
+    # Can represent up to 65,536 values (-32,768 to 32,767).
     int16 = auto()
     str = auto()
     list = auto()
@@ -811,7 +811,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.keys_random: SettingsStringDataType.bool,
     SettingsStringEnum.kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.krool_access: SettingsStringDataType.bool,
-    SettingsStringEnum.krool_key_count: SettingsStringDataType.int4,
+    SettingsStringEnum.krool_key_count: SettingsStringDataType.int8,
     SettingsStringEnum.krool_phase_count: SettingsStringDataType.int4,
     SettingsStringEnum.krool_phase_order_rando: SettingsStringDataType.bool,
     SettingsStringEnum.krool_random: SettingsStringDataType.bool,
@@ -877,6 +877,6 @@ SettingsStringListTypeMap = {
     SettingsStringEnum.item_rando_list_selected: SettingsStringDataType.int8,
     SettingsStringEnum.minigames_list_selected: SettingsStringDataType.int8,
     SettingsStringEnum.misc_changes_selected: SettingsStringDataType.int8,
-    SettingsStringEnum.starting_keys_list_selected: SettingsStringDataType.int4,
+    SettingsStringEnum.starting_keys_list_selected: SettingsStringDataType.int8,
     SettingsStringEnum.warp_level_list_selected: SettingsStringDataType.int8,
 }
