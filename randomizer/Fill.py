@@ -658,10 +658,6 @@ def CalculateFoolish(spoiler, WothLocations):
     # Use the settings to determine non-progression Major Items
     # majorItems = [item for item in majorItems if item not in foolishItems]
     majorItems = ItemPool.AllKongMoves()
-    if Types.Bean in spoiler.settings.shuffled_location_types:
-        majorItems.append(Items.Bean)
-    if Types.Pearl in spoiler.settings.shuffled_location_types:
-        majorItems.append(Items.Pearl)
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         majorItems.extend(ItemPool.TrainingBarrelAbilities())
     if spoiler.settings.shockwave_status != ShockwaveStatus.shuffled_decoupled:
@@ -678,6 +674,9 @@ def CalculateFoolish(spoiler, WothLocations):
         if x == HelmDoorItem.req_companycoins:
             requires_rareware = True
             requires_nintendo = True
+
+    # TODO: consider helm doors for other guys too
+
     if Types.Coin in spoiler.settings.shuffled_location_types and requires_rareware:
         majorItems.append(Items.RarewareCoin)
     if Types.Coin in spoiler.settings.shuffled_location_types and requires_nintendo:
@@ -1622,6 +1621,10 @@ def FillKongsAndMovesForLevelOrder(spoiler):
                 SetNewProgressionRequirementsUnordered(spoiler.settings)
             else:
                 SetNewProgressionRequirements(spoiler.settings)
+            # After setting B. Lockers and bosses, make sure the game is still 101%-able
+            Reset()
+            if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckAllReachable):
+                raise Ex.GameNotBeatableException("Game not able to complete 101% after setting progression.")
             # Once progression requirements updated, no longer assume we need kongs freed for level progression
             spoiler.settings.kongs_for_progression = False
             # Check if game is beatable
