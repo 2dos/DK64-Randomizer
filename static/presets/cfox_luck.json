@@ -78,6 +78,7 @@
     "auto_keys":true,
     "win_condition": "beat_krool",
     "cb_rando":false,
+    "coin_rando":false,
     "shuffle_items": false,
     "shockwave_status": "vanilla",
     "training_barrels": "normal",

@@ -516,14 +516,6 @@ def compileHints(spoiler: Spoiler):
         kong_location_ids = [id for id, location in LocationList.items() if location.item in (Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky)]
         for kong_location_id in kong_location_ids:
             kong_location = LocationList[kong_location_id]
-            level_restriction = None
-            # Put hints in or before the level the location is (or levels 1-2) (regardless of whether or not you can read it, we'll sort that out later)
-            # This only matters if level order matters
-            if level_order_matters:
-                if kong_location.level in (Levels.DKIsles, Levels.Shops):
-                    level_restriction = [spoiler.settings.level_order[1], spoiler.settings.level_order[2]]
-                else:
-                    level_restriction = [level for level in all_levels if spoiler.settings.EntryGBs[level] <= spoiler.settings.EntryGBs[kong_location.level]]
             hint_options = []
             # Attempt to find a door that will be accessible before the Kong
             if kong_location_id in spoiler.accessible_hints_for_location.keys():  # This will fail if the Kong is not WotH

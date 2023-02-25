@@ -21,18 +21,20 @@ from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Lists.FairyLocations import fairy_locations
 from randomizer.Lists.KasplatLocations import KasplatLocationList
 from randomizer.Lists.Patches import DirtPatchLocations
+from randomizer.Lists.BananaCoinLocations import BananaCoinGroupList
 
 # USAGE OF FILE
 # - python ./dumper.py {format} {desired-files}
 # Eg: python ./dumper.py json cb crown fairy
 # Valid formats: "csv", "json", "md"
-# Valid files: "all", "cb", "crown", "door", "fairy", "kasplat", "patch"
+# Valid files: "all", "cb", "coin", "crown", "door", "fairy", "kasplat", "patch"
 
 
 class Dumpers(IntEnum):
     """Enum for dumper types."""
 
     ColoredBananas = auto()
+    Coins = auto()
     Crowns = auto()
     Doors = auto()
     Fairies = auto()
@@ -161,6 +163,7 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                         fh.write(f"\n## {x}\n")
                     headers = {
                         Dumpers.ColoredBananas: "Colored Banana Locations",
+                        Dumpers.Coins: "Coin Locations",
                         Dumpers.Crowns: "Crown Pad Locations",
                         Dumpers.Doors: "Door Locations",
                         Dumpers.Fairies: "Fairy Locations",
@@ -179,8 +182,12 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                         fh.write("| --- | ---- | --------------------------------- |\n")
                     groupings = {}
                     for y in data[x]:
-                        if dumper == Dumpers.ColoredBananas:
-                            if y["class"] == "cb":
+                        if dumper in (Dumpers.ColoredBananas, Dumpers.Coins):
+                            if dumper == Dumpers.Coins:
+                                if y["map"] not in groupings:
+                                    groupings[y["map"]] = []
+                                groupings[y["map"]].append(f"| {y['name']} | {len(y['locations'])} | \n")
+                            elif y["class"] == "cb":
                                 if y["map"] not in groupings:
                                     groupings[y["map"]] = []
                                 groupings[y["map"]].append(f"| {y['name']} | {sum([a[0] for a in y['locations']])} | \n")
@@ -195,7 +202,7 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                         elif dumper == Dumpers.Patches:
                             fh.write(f"| {getMapNameFromIndex(y['map_id'])} | {y['name']} | \n")
                     for group in groupings:
-                        if dumper == Dumpers.ColoredBananas:
+                        if dumper in (Dumpers.ColoredBananas, Dumpers.Coins):
                             fh.write("<details>\n")
                             fh.write(f"<summary>{getMapNameFromIndex(group)}</summary>\n\n")
                             fh.write("| Name | Amount |\n")
@@ -397,7 +404,23 @@ def dump_patch(format: str):
             dump_to_file(f"patches_{level.name}", dumps[level], format, Dumpers.Patches)
 
 
-all_args = ["cb", "crown", "door", "fairy", "kasplat", "patch"]
+def dump_coin(format: str):
+    """Dump coin locations."""
+    dumps = {}
+    for level in BananaCoinGroupList:
+        for coin_group in BananaCoinGroupList[level]:
+            as_dict = dump_to_dict(coin_group, ["group"], ["map", "kongs"], ["region"], "logic")
+            if level not in dumps:
+                dumps[level] = []
+            dumps[level].append(as_dict)
+    if format == "md":
+        dump_to_file("coins", dumps, format, Dumpers.Coins)
+    else:
+        for level in dumps:
+            dump_to_file(f"coins_{level.name}", dumps[level], format, Dumpers.Coins)
+
+
+all_args = ["cb", "coin", "crown", "door", "fairy", "kasplat", "patch"]
 valid_args = all_args + ["all"]
 args = sys.argv[2:]
 if "all" in args:
