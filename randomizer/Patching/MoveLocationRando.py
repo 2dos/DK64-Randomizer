@@ -78,7 +78,7 @@ def pushItemMicrohints(spoiler: Spoiler, move_dict: dict, level: int, kong: int,
                     if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][2]):
                         move = item_hint
             if move is not None:
-                data = {"textbox_index": hinted_items[move][1], "mode": "replace_whole", "target": spoiler.microhints[ItemList[item_hint].name]}
+                data = {"textbox_index": hinted_items[move][1], "mode": "replace_whole", "target": spoiler.microhints[ItemList[move].name]}
                 if 19 in spoiler.text_changes:
                     spoiler.text_changes[19].append(data)
                 else:
