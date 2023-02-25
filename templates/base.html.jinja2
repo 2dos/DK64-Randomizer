@@ -122,10 +122,10 @@
                             {% include 'overworld.html.jinja2' %}
                         </div>
                         <div class="tab-pane fade"
-                             id="nav-difficulty"
+                             id="nav-progression"
                              role="tabpanel"
-                             aria-labelledby="nav-difficulty-tab">
-                            {% include 'difficulty.html.jinja2' %}
+                             aria-labelledby="nav-progression-tab">
+                            {% include 'progression.html.jinja2' %}
                         </div>
                         <div class="tab-pane fade"
                              id="nav-qol"
@@ -246,6 +246,24 @@
                                                            checked/>
                                                     Generate Spoiler Log
                                                 </label>
+                                            </div>
+                                            <div class="form-check form-switch item-switch" style="text-align: center">
+                                                <label data-toggle="tooltip"
+                                                        title="Enables the homebrew header to be written to the ROM. This makes the ROM viable on some platforms but can break other platforms. Click the link on the icon for more information.">
+                                                    <input class="form-check-input"
+                                                        type="checkbox"
+                                                        name="homebrew_header"
+                                                        id="homebrew_header"
+                                                        value="True"/>
+                                                    Advanced ROM Header
+                                                </label>
+                                                <a href="https://github.com/2dos/DK64-Randomizer/wiki/Advanced-Homebrew-ROM-Header"
+                                                    title="Click me for more information"
+                                                target="_blank">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" class="warning-icon" stroke="#ffff00" fill="#ffff00">
+                                                        <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
+                                                    </svg>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
