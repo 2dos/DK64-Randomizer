@@ -1,29 +1,21 @@
-"""Apply CB Rando changes."""
+"""Apply Coin Rando changes."""
 import js
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Patching.Lib import float_to_hex, short_to_ushort
 
-import randomizer.Lists.CBLocations.JungleJapesCBLocations
-import randomizer.Lists.CBLocations.AngryAztecCBLocations
-import randomizer.Lists.CBLocations.FranticFactoryCBLocations
-import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
-import randomizer.Lists.CBLocations.FungiForestCBLocations
-import randomizer.Lists.CBLocations.CrystalCavesCBLocations
-import randomizer.Lists.CBLocations.CreepyCastleCBLocations
-
 
 def randomize_coins(spoiler: Spoiler):
-    """Place Colored Bananas into ROM."""
+    """Place Coins into ROM."""
     if spoiler.settings.coin_rando:
         for cont_map_id in range(216):
-            # Wipe setup and paths of CB information
+            # Wipe setup and paths of Coin information
             # SETUP
             coin_items = [0x1D, 0x24, 0x23, 0x1C, 0x27]  # Has to remain in this order
             setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
             ROM().seek(setup_table)
             model2_count = int.from_bytes(ROM().readBytes(4), "big")
-            # Model Two CBs
+            # Model Two Coins
             persisted_m2_data = []
             used_m2_ids = []
             for item in range(model2_count):
