@@ -56,6 +56,7 @@ from randomizer.ShuffleFairies import ShuffleFairyLocations
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
 from randomizer.ShuffleWarps import LinkWarps, ShuffleWarps, ShuffleWarpsCrossMap
 from randomizer.ShuffleCBs import ShuffleCBs
+from randomizer.ShuffleCoins import ShuffleCoins
 from randomizer.ShuffleCrowns import ShuffleCrowns
 from randomizer.ShuffleItems import ShuffleItems
 
@@ -2202,6 +2203,9 @@ def ShuffleMisc(spoiler):
     # CB Shuffle
     if spoiler.settings.cb_rando:
         ShuffleCBs(spoiler)
+    # Coin Shuffle
+    if spoiler.settings.coin_rando:
+        ShuffleCoins(spoiler)
     # Random Patches
     if spoiler.settings.random_patches:
         human_patches = []
