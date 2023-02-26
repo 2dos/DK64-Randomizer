@@ -2,7 +2,165 @@
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col border panel">
-            <h2 class="title">GLOBAL</h2>
+            <h2 class="title">MAJOR ITEMS</h2>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip" title="Items are shuffled amongst each other.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="shuffle_items"
+                                id="shuffle_items"
+                                value="True"/>
+                        Item Randomizer
+                    </label>
+                    {{ list_selector(itemRando, "item_rando_list", "ITEM RANDO SELECTOR", "This will open a popup that will let you customize what items are shuffled in the pool.&#10;This defaults to All options.", 14) }}
+                    {# Remove end </div> as it's included in the macro for formatting #}
+                <div class="spacer"></div>
+            </div>
+            <div class="flex-container">
+                <div class="item-select">
+                    <p class="select-title">Move Randomizer</p>
+                    <select name="move_rando"
+                            id="move_rando"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Determines if and how moves are randomized.&#10;-Vanilla: Moves are in their vanilla locations and can only be bought by their normal kongs.&#10;-Shuffle: Moves can be randomized to different shops, but must still be bought by their normal kong. Shared moves can be bought by any kong.&#10;-Cross Kong Purchases: Kongs can now purchase another kongs moves. Shop Indicator will still show which kong buys the move.&#10;-Unlock All Moves: This option will make all moves available from the start without purchasing them.">
+                        <option id="move_off"
+                                selected
+                                value="off"
+                                title="Moves are in their vanilla locations and can only be bought by their normal kongs.">
+                            Vanilla
+                        </option>
+                        <option id="move_on" value="on">
+                            Shuffle
+                        </option>
+                        <option id="move_on_cross_purchase" value="cross_purchase">
+                            Cross Kong Purchases
+                        </option>
+                        <option id="move_start_with" value="start_with">
+                            Unlock All Moves
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Training Barrels</p>
+                    <select name="training_barrels"
+                            id="training_barrels"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Determines if and how training barrel moves are randomized.&#10;-Vanilla: Training barrel moves are learned from the training barrels.&#10;-Shuffle: Training barrel moves are shuffled with other moves, giving you 4 random starting moves.">
+                        <option id="training_barrels_normal" value="normal">
+                            Vanilla
+                        </option>
+                        <option id="training_barrels_shuffled" value="shuffled">
+                            Shuffle
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <hr>
+            <h2 class="title">SHUFFLED LOCATIONS</h2>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Dirt Patches for Rainbow Coins are in random locations.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="random_patches"
+                                id="random_patches"
+                                value="True"/>
+                        Dirt Patches
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Shuffle the locations of colored bananas within each Level.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="cb_rando"
+                                id="cb_rando"
+                                value="True"/>
+                        Colored Bananas
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Shuffle the locations of coins within each Level.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="coin_rando"
+                                id="coin_rando"
+                                value="True"/>
+                        Banana Coins
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Fairy checks are in random locations.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="random_fairies"
+                                id="random_fairies"
+                                value="True"/>
+                        Banana Fairies
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip" title="Wrinkly Door Locations are randomized">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="wrinkly_location_rando"
+                                value="True"/>
+                        Wrinkly Doors
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip" title="T&S Portal Locations are randomized">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="tns_location_rando"
+                                value="True"/>
+                        Troff 'n' Scoff Portals
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Crown Locations are randomized. There's 1 in each level, except Isles which has two.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="crown_placement_rando"
+                                value="True"/>
+                        Battle Crowns
+                    </label>
+                </div>
+                <div class="spacer"></div>
+            </div>
+            <div class="flex-container">
+                <div class="item-select">
+                    <p class="select-title">Kasplats</p>
+                    <select name="kasplat_rando_setting"
+                            id="kasplat_rando_setting"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="Determines if and how Kasplats are randomized.&#10;-Vanilla: Kasplats are in their vanilla locations and hold blueprints for their normal kongs.&#10;-Vanilla Locations: Random placement of kasplats between existing spawns.&#10;-Location Shuffle: Random placement of kasplats with new and interesting locations.">
+                        <option id="off" selected value="off">
+                            Vanilla
+                        </option>
+                        <option id="vanilla_locations" value="vanilla_locations">
+                            Vanilla Locations
+                        </option>
+                        <option id="location_shuffle" value="location_shuffle">
+                            Location Shuffle
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+            <div class="col border panel">
+                <h2 class="title">GLOBAL</h2>
             <div class="flex-container">
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
@@ -251,164 +409,6 @@
                     </div>
                 </div> 
             </div>
-        </div>
-            <div class="col border panel">
-                <h2 class="title">SHUFFLED LOCATIONS</h2>
-                <div class="flex-container">
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                                title="Dirt Patches for Rainbow Coins are in random locations.">
-                            <input class="form-check-input"
-                                    type="checkbox"
-                                    name="random_patches"
-                                    id="random_patches"
-                                    value="True"/>
-                            Dirt Patches
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                                title="Shuffle the locations of colored bananas within each Level.">
-                            <input class="form-check-input"
-                                    type="checkbox"
-                                    name="cb_rando"
-                                    id="cb_rando"
-                                    value="True"/>
-                            Colored Bananas
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                                title="Shuffle the locations of coins within each Level.">
-                            <input class="form-check-input"
-                                    type="checkbox"
-                                    name="coin_rando"
-                                    id="coin_rando"
-                                    value="True"/>
-                            Banana Coins
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                                title="Fairy checks are in random locations.">
-                            <input class="form-check-input"
-                                    type="checkbox"
-                                    name="random_fairies"
-                                    id="random_fairies"
-                                    value="True"/>
-                            Banana Fairies
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip" title="Wrinkly Door Locations are randomized">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="wrinkly_location_rando"
-                                   value="True"/>
-                            Wrinkly Doors
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip" title="T&S Portal Locations are randomized">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="tns_location_rando"
-                                   value="True"/>
-                            Troff 'n' Scoff Portals
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="Crown Locations are randomized. There's 1 in each level, except Isles which has two.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="crown_placement_rando"
-                                   value="True"/>
-                            Battle Crowns
-                        </label>
-                    </div>
-                    <div class="spacer"></div>
-                </div>
-                <div class="flex-container">
-                    <div class="item-select">
-                        <p class="select-title">Kasplats</p>
-                        <select name="kasplat_rando_setting"
-                                id="kasplat_rando_setting"
-                                class="form-select"
-                                aria-label="Randomization type"
-                                data-toggle="tooltip"
-                                title="Determines if and how Kasplats are randomized.&#10;-Vanilla: Kasplats are in their vanilla locations and hold blueprints for their normal kongs.&#10;-Vanilla Locations: Random placement of kasplats between existing spawns.&#10;-Location Shuffle: Random placement of kasplats with new and interesting locations.">
-                            <option id="off" selected value="off">
-                                Vanilla
-                            </option>
-                            <option id="vanilla_locations" value="vanilla_locations">
-                                Vanilla Locations
-                            </option>
-                            <option id="location_shuffle" value="location_shuffle">
-                                Location Shuffle
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <hr />
-                <h2 class="title">MAJOR ITEMS</h2>
-                <div class="flex-container">
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip" title="Items are shuffled amongst each other.">
-                            <input class="form-check-input"
-                                    type="checkbox"
-                                    name="shuffle_items"
-                                    id="shuffle_items"
-                                    value="True"/>
-                            Item Randomizer
-                        </label>
-                        {{ list_selector(itemRando, "item_rando_list", "ITEM RANDO SELECTOR", "This will open a popup that will let you customize what items are shuffled in the pool.&#10;This defaults to All options.", 14) }}
-                        {# Remove end </div> as it's included in the macro for formatting #}
-                    <div class="spacer"></div>
-                </div>
-                <div class="flex-container">
-                    <div class="item-select">
-                        <p class="select-title">Move Randomizer</p>
-                        <select name="move_rando"
-                                id="move_rando"
-                                class="form-select"
-                                aria-label="Randomization type"
-                                data-toggle="tooltip"
-                                title="Determines if and how moves are randomized.&#10;-Vanilla: Moves are in their vanilla locations and can only be bought by their normal kongs.&#10;-Shuffle: Moves can be randomized to different shops, but must still be bought by their normal kong. Shared moves can be bought by any kong.&#10;-Cross Kong Purchases: Kongs can now purchase another kongs moves. Shop Indicator will still show which kong buys the move.&#10;-Unlock All Moves: This option will make all moves available from the start without purchasing them.">
-                            <option id="move_off"
-                                    selected
-                                    value="off"
-                                    title="Moves are in their vanilla locations and can only be bought by their normal kongs.">
-                                Vanilla
-                            </option>
-                            <option id="move_on" value="on">
-                                Shuffle
-                            </option>
-                            <option id="move_on_cross_purchase" value="cross_purchase">
-                                Cross Kong Purchases
-                            </option>
-                            <option id="move_start_with" value="start_with">
-                                Unlock All Moves
-                            </option>
-                        </select>
-                    </div>
-                    <div class="item-select">
-                        <p class="select-title">Training Barrels</p>
-                        <select name="training_barrels"
-                                id="training_barrels"
-                                class="form-select"
-                                aria-label="Randomization type"
-                                data-toggle="tooltip"
-                                title="Determines if and how training barrel moves are randomized.&#10;-Vanilla: Training barrel moves are learned from the training barrels.&#10;-Shuffle: Training barrel moves are shuffled with other moves, giving you 4 random starting moves.">
-                            <option id="training_barrels_normal" value="normal">
-                                Vanilla
-                            </option>
-                            <option id="training_barrels_shuffled" value="shuffled">
-                                Shuffle
-                            </option>
-                        </select>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
