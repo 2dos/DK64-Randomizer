@@ -3,7 +3,6 @@
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import DamageAmount
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Regions import Regions
@@ -4187,7 +4186,6 @@ BananaCoinGroupList = {
             name="Above Candy's Platform",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.Shipyard,
-            logic=lambda l: l.isdiddy or l.istiny or Events.WaterSwitch in l.Events,
             locations=[
                 [1.0, 2911, 1623, 694],
                 [1.0, 2908, 1623, 413],
