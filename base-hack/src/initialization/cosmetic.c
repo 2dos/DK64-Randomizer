@@ -217,7 +217,7 @@ void initWrinklyColoring(void) {
 
 void initSeasonalChanges(void) {
     if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
-        *(int*)(0x8075E0B8) = 0x807080E0;
+        *(int*)(0x8075E0B8) = 0x807080E0; // Makes isles reference Castle skybox data
     }
 }
 

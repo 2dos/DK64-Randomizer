@@ -294,6 +294,7 @@ extern void populatePatchItem(int id, int map, int index, int world);
 extern int isObjectTangible_detailed(int id);
 
 extern void insertROMMessages(void);
+extern void handleModelTwoOpacity(short object_type, unsigned char* unk0, short* opacity);
 
 extern item_collision* writeItemScale(int id);
 extern item_collision* writeItemActorScale(void);

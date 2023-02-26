@@ -404,6 +404,7 @@ extern short HelmMinigameFlags[10];
 extern short p1PressedButtons;
 extern short p1HeldButtons;
 extern char player_count;
+extern char FocusedPlayerIndex;
 extern int* sprite_table[0xAF];
 extern char sprite_translucency;
 extern int* bbbandit_array[4];

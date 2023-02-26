@@ -101,6 +101,7 @@
 .definelabel p1PressedButtons, 0x807ECD48
 .definelabel p1HeldButtons, 0x807ECD58
 .definelabel player_count, 0x807FC928
+.definelabel FocusedPlayerIndex, 0x807FC929
 .definelabel sprite_table, 0x80755390
 .definelabel sprite_translucency, 0x807FC80F
 .definelabel bbbandit_array, 0x8002DB80
