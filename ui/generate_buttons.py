@@ -49,6 +49,11 @@ def import_settings_string(event):
     """
     settings_string = js.settings_string.value
     settings = decrypt_settings_string_enum(settings_string)
+    # Clear all select boxes on the page so as long as its not in the nav-cosmetics div
+    for select in js.document.getElementsByTagName("select"):
+        if js.document.querySelector("#nav-cosmetics").contains(select) is False:
+            select.selectedIndex = -1
+    js.document.getElementById("presets").selectedIndex = 0
     for key in settings:
         try:
             if type(settings[key]) is bool:
@@ -61,42 +66,27 @@ def import_settings_string(event):
                 js.jq(f"#{key}").removeAttr("disabled")
             elif type(settings[key]) is list:
                 selector = js.document.getElementById(key)
-                # Set the selectedIndex to the value of the option
                 if selector.tagName == "SELECT":
-                    # Check if its a multi select
-                    if selector.hasAttribute("multiple"):
-                        for i in range(0, selector.options.length):
-                            selector.item(i).selected = selector.item(i).value in settings[key]
-                    else:
-                        selector.selectedIndex = settings[key]
-                        # Get the option that is selected
-                        option = selector.options[selector.selectedIndex]
-                        # Set the value of the select box to the value of the option
-                        option.selected = True
-                else:
-                    for i in range(0, selector.options.length):
-                        selector.item(i).selected = selector.item(i).value in settings[key]
+                    for item in settings[key]:
+                        for option in selector.options:
+                            if option.value == item.name:
+                                option.selected = True
             else:
                 if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
                     js.jq(f"#{key}").slider("setValue", settings[key])
                     js.jq(f"#{key}").slider("enable")
                     js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
                 else:
-                    if key == "level_randomization":
-                        print(settings[key])
                     selector = js.document.getElementById(key)
                     # If the selector is a select box, set the selectedIndex to the value of the option
                     if selector.tagName == "SELECT":
-                        if selector.hasAttribute("multiple"):
-                            for i in range(0, selector.options.length):
-                                selector.item(i).selected = selector.item(i).value in settings[key]
-                        else:
-                            selector.selectedIndex = settings[key]
-                            # Get the option that is selected
-                            option = selector.options[selector.selectedIndex]
-                            # Set the value of the select box to the value of the option
-                            option.selected = True
-                    js.jq(f"#{key}").val(settings[key])
+                        for option in selector.options:
+                            if option.value == SettingsMap[key](settings[key]).name:
+                                # Set the value of the select box to the value of the option
+                                option.selected = True
+                                break
+                    else:        
+                        js.jq(f"#{key}").val(settings[key])
                 js.jq(f"#{key}").removeAttr("disabled")
         except Exception as e:
             print(e)
