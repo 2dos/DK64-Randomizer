@@ -746,7 +746,6 @@ CrownLocations = {
             z=1822,
             scale=0.45,
             region=Regions.TrainingGrounds,
-            logic=lambda l: (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey),
         ),
         CrownLocation(
             map=Maps.TrainingGrounds,
