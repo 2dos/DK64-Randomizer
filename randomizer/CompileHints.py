@@ -543,6 +543,13 @@ def compileHints(spoiler: Spoiler):
                 if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
                     location_name = random.choice(item_type_names_cryptic[kong_location.type])
                 message = f"{freed_kong} is held by {location_name} in {level_name}."
+            elif location.type == Types.Shop:
+                message = f"{freed_kong} can be bought in {level_name}."
+            elif freeing_kong_name == freed_kong:
+                grammar = "himself"
+                if kong_location.kong == Kongs.tiny:
+                    grammar = "herself"
+                message = f"{freeing_kong_name} can find {grammar} in {level_name}? How odd..."
             else:
                 message = f"{freeing_kong_name} can find {freed_kong} in {level_name}."
             hint_location.hint_type = HintType.KongLocation
@@ -687,6 +694,8 @@ def compileHints(spoiler: Spoiler):
                     if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
                         location_name = random.choice(item_type_names_cryptic[location.type])
                     message = f"{key_item.name} is held by {location_name} in {level_name}."
+                elif location.type == Types.Shop:
+                    message = f"{key_item.name} can be bought in {level_name}."
                 else:
                     message = f"{key_item.name} can be acquired with {kong_name} in {level_name}."
                 hint_location.hint_type = HintType.RequiredKeyHint
@@ -1310,6 +1319,8 @@ def compileMicrohints(spoiler: Spoiler):
                 item = ItemList[location.item]
                 if location.type in item_type_names.keys():
                     hint_text = f"You would be better off looking for {item_type_names[location.type]} in {level_list_everything[location.level]} for this.".upper()
+                elif location.type == Types.Shop:
+                    hint_text = f"You would be better off looking for shops in {level_list_everything[location.level]} for this.".upper()
                 else:
                     hint_text = f"You would be better off looking in {level_list_everything[location.level]} with {kong_list[location.kong]} for this.".upper()
                 spoiler.microhints[item.name] = hint_text
