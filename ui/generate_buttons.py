@@ -9,7 +9,7 @@ import js
 from randomizer.BackgroundRandomizer import generate_playthrough
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Patching.ApplyRandomizer import patching_response
-from randomizer.SettingStrings import decrypt_setting_string, encrypt_settings_string
+from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Worker import background
 from ui.bindings import bind
 from ui.progress_bar import ProgressBar
@@ -35,8 +35,8 @@ def export_settings_string(event):
     Args:
         event (event): Javascript event object.
     """
-    form_data = serialize_settings()
-    settings_string = encrypt_settings_string(form_data)
+    setting_data = serialize_settings()
+    settings_string = encrypt_settings_string_enum(setting_data)
     js.settings_string.value = settings_string
 
 
@@ -48,43 +48,58 @@ def import_settings_string(event):
         event (event): Javascript Event object.
     """
     settings_string = js.settings_string.value
-    try:
-        settings = decrypt_setting_string(settings_string)
-        for key in settings:
-            try:
-                if type(settings[key]) is bool:
-                    if settings[key] is False:
-                        js.jq(f"#{key}").checked = False
-                        js.document.getElementsByName(key)[0].checked = False
-                    else:
-                        js.jq(f"#{key}").checked = True
-                        js.document.getElementsByName(key)[0].checked = True
-                    js.jq(f"#{key}").removeAttr("disabled")
-                elif type(settings[key]) is list:
-                    selector = js.document.getElementById(key)
-                    for i in range(0, selector.options.length):
-                        selector.item(i).selected = selector.item(i).value in settings[key]
+    settings = decrypt_settings_string_enum(settings_string)
+    # Clear all select boxes on the page so as long as its not in the nav-cosmetics div
+    for select in js.document.getElementsByTagName("select"):
+        if js.document.querySelector("#nav-cosmetics").contains(select) is False:
+            select.selectedIndex = -1
+    js.document.getElementById("presets").selectedIndex = 0
+    for key in settings:
+        try:
+            if type(settings[key]) is bool:
+                if settings[key] is False:
+                    js.jq(f"#{key}").checked = False
+                    js.document.getElementsByName(key)[0].checked = False
                 else:
-                    if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
-                        js.jq(f"#{key}").slider("setValue", settings[key])
-                        js.jq(f"#{key}").slider("enable")
-                        js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                    js.jq(f"#{key}").checked = True
+                    js.document.getElementsByName(key)[0].checked = True
+                js.jq(f"#{key}").removeAttr("disabled")
+            elif type(settings[key]) is list:
+                selector = js.document.getElementById(key)
+                if selector.tagName == "SELECT":
+                    for item in settings[key]:
+                        for option in selector.options:
+                            if option.value == item.name:
+                                option.selected = True
+            else:
+                if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
+                    js.jq(f"#{key}").slider("setValue", settings[key])
+                    js.jq(f"#{key}").slider("enable")
+                    js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                else:
+                    selector = js.document.getElementById(key)
+                    # If the selector is a select box, set the selectedIndex to the value of the option
+                    if selector.tagName == "SELECT":
+                        for option in selector.options:
+                            if option.value == SettingsMap[key](settings[key]).name:
+                                # Set the value of the select box to the value of the option
+                                option.selected = True
+                                break
                     else:
                         js.jq(f"#{key}").val(settings[key])
-                    js.jq(f"#{key}").removeAttr("disabled")
-            except Exception as e:
-                pass
-        toggle_counts_boxes(None)
-        toggle_b_locker_boxes(None)
-        update_boss_required(None)
-        disable_colors(None)
-        disable_music(None)
-        disable_move_shuffles(None)
-        max_randomized_blocker(None)
-        max_randomized_troff(None)
-        disable_barrel_modal(None)
-    except Exception:
-        pass
+                js.jq(f"#{key}").removeAttr("disabled")
+        except Exception as e:
+            print(e)
+            pass
+    toggle_counts_boxes(None)
+    toggle_b_locker_boxes(None)
+    update_boss_required(None)
+    disable_colors(None)
+    disable_music(None)
+    disable_move_shuffles(None)
+    max_randomized_blocker(None)
+    max_randomized_troff(None)
+    disable_barrel_modal(None)
 
 
 @bind("change", "patchfileloader")
