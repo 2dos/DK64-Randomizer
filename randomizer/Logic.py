@@ -831,8 +831,15 @@ class LogicVarHolder:
         """Check if you meet the logical requirements to obtain the Rareware Coin."""
         have_enough_medals = self.BananaMedals >= self.settings.medal_requirement
         # Make sure you have access to enough levels to fit the locations in. This isn't super precise and doesn't need to be.
-        required_level = min(ceil(self.settings.medal_requirement / 4), 6)
+        required_level = max(2, min(ceil(self.settings.medal_requirement / 4), 6))  # At least level 3 to give space for medal placements, at most level 6 to allow shenanigans
         return have_enough_medals and self.IsLevelEnterable(required_level)
+
+    def CanGetRarewareGB(self):
+        """Check if you meet the logical requirements to obtain the Rareware GB."""
+        have_enough_fairies = self.BananaFairies >= self.settings.rareware_gb_fairies
+        is_correct_kong = self.istiny or self.settings.free_trade_items
+        required_level = max(2, min(ceil(self.settings.rareware_gb_fairies / 2), 5))  # At least level 2 to give space for fairy placements, at most level 5 to allow shenanigans
+        return have_enough_fairies and is_correct_kong and self.IsLevelEnterable(required_level)
 
     def BanItems(self, items):
         """Prevent an item from being picked up by the logic."""

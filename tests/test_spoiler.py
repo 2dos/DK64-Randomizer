@@ -21,7 +21,8 @@ from randomizer.Enums.Settings import (
     ShockwaveStatus,
     TrainingBarrels,
     WinCondition,
-    WrinklyHints
+    WrinklyHints,
+    FillAlgorithm
 )
 # from randomizer.Enums.Items import Items
 import randomizer.Lists.Exceptions as Ex
@@ -179,7 +180,7 @@ def generate_settings():
 
 def test_forward_fill(generate_lo_rando_race_settings):
     """Asdf."""
-    generate_lo_rando_race_settings["algorithm"] = "forward"
+    generate_lo_rando_race_settings["algorithm"] = FillAlgorithm.forward
     settings = Settings(generate_lo_rando_race_settings)
     spoiler = Spoiler(settings)
     Generate_Spoiler(spoiler)

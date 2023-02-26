@@ -9,7 +9,9 @@ from randomizer.Lists.MapsAndExits import Maps
 class Minigame:
     """Class which stores name and logic for a minigame."""
 
-    def __init__(self, *, name="No Game", group="No Group", map_id=0, helm_enabled=True, can_repeat=True, difficulty_lvl=0, logic=0):
+    def __init__(
+        self, *, name="No Game", group="No Group", map_id=0, helm_enabled=True, can_repeat=True, difficulty_lvl=0, logic=0, kong_list=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
+    ):
         """Initialize with given parameters."""
         self.name = name
         self.map = map_id
@@ -18,6 +20,7 @@ class Minigame:
         self.difficulty = difficulty_lvl
         self.logic = logic
         self.group = group
+        self.kong_list = kong_list
 
 
 HelmMinigameLocations = [
@@ -55,6 +58,7 @@ MinigameRequirements = {
         group="Busy Barrel Barrage",
         map_id=Maps.BusyBarrelBarrageEasy,
         logic=lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.istiny and l.feather) or (l.ischunky and l.pineapple),
+        kong_list=[Kongs.donkey, Kongs.diddy, Kongs.tiny, Kongs.chunky],
     ),
     Minigames.BusyBarrelBarrageNormal: Minigame(
         name="Busy Barrel Barrage (45 seconds, Medium Respawn)",
@@ -62,6 +66,7 @@ MinigameRequirements = {
         map_id=Maps.BusyBarrelBarrageNormal,
         difficulty_lvl=1,
         logic=lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.istiny and l.feather) or (l.ischunky and l.pineapple),
+        kong_list=[Kongs.donkey, Kongs.diddy, Kongs.tiny, Kongs.chunky],
     ),
     Minigames.BusyBarrelBarrageHard: Minigame(
         name="Busy Barrel Barrage (60 seconds, Random Spawns)",
@@ -69,19 +74,22 @@ MinigameRequirements = {
         map_id=Maps.BusyBarrelBarrageHard,
         difficulty_lvl=2,
         logic=lambda l: (l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.istiny and l.feather) or (l.ischunky and l.pineapple),
+        kong_list=[Kongs.donkey, Kongs.diddy, Kongs.tiny, Kongs.chunky],
     ),
     # Mad Maze Maul - 120/11 requires shockwave to beat, as such, banned from Helm
     Minigames.MadMazeMaulEasy: Minigame(name="Mad Maze Maul (60 seconds, 5 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulEasy, logic=lambda l: True),
     Minigames.MadMazeMaulNormal: Minigame(name="Mad Maze Maul (60 seconds, 7 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulNormal, difficulty_lvl=1, logic=lambda l: True),
     Minigames.MadMazeMaulHard: Minigame(
-        name="Mad Maze Maul (120 seconds, 11 enemies)",
+        name="Mad Maze Maul (120 seconds, 11 enemies, beefy enemies)",
         group="Mad Maze Maul",
         map_id=Maps.MadMazeMaulHard,
         helm_enabled=False,
         difficulty_lvl=2,
         logic=lambda l: (l.shockwave or l.oranges) and l.HasGun(Kongs.any),
     ),
-    Minigames.MadMazeMaulInsane: Minigame(name="Mad Maze Maul (125 seconds, 10 enemies)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulInsane, difficulty_lvl=3, logic=lambda l: l.HasGun(Kongs.any)),
+    Minigames.MadMazeMaulInsane: Minigame(
+        name="Mad Maze Maul (125 seconds, 10 enemies, need gun)", group="Mad Maze Maul", map_id=Maps.MadMazeMaulInsane, difficulty_lvl=3, logic=lambda l: l.HasGun(Kongs.any)
+    ),
     # Minecart Mayhem - Higher two difficulties are too hard for those who don't have a guide to do in Helm
     Minigames.MinecartMayhemEasy: Minigame(name="Minecart Mayhem (30 seconds, 1 TNT)", group="Minecart Mayhem", map_id=Maps.MinecartMayhemEasy, logic=lambda l: True),
     Minigames.MinecartMayhemNormal: Minigame(
@@ -128,11 +136,12 @@ MinigameRequirements = {
     # Speedy Swing Sortie
     Minigames.SpeedySwingSortieEasy: Minigame(name="Speedy Swing Sortie (40 seconds, 9 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieEasy, logic=lambda l: l.vines),
     Minigames.SpeedySwingSortieNormal: Minigame(
-        name="Speedy Swing Sortie (45 seconds, 14 coins)",
+        name="Speedy Swing Sortie (45 seconds, 14 coins, need twirl)",
         group="Speedy Swing Sortie",
         map_id=Maps.SpeedySwingSortieNormal,
         difficulty_lvl=1,
         logic=lambda l: l.vines and (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey),
+        kong_list=[Kongs.tiny],
     ),
     Minigames.SpeedySwingSortieHard: Minigame(
         name="Speedy Swing Sortie (60 seconds, 6 coins)", group="Speedy Swing Sortie", map_id=Maps.SpeedySwingSortieHard, helm_enabled=False, difficulty_lvl=2, logic=lambda l: l.vines
@@ -165,7 +174,7 @@ MinigameRequirements = {
     Minigames.PerilPathPanicHard: Minigame(name="Peril Path Panic (12 points)", group="Peril Path Panic", map_id=Maps.PerilPathPanicHard, difficulty_lvl=3, logic=lambda l: True),
     # Helm barrels
     Minigames.DonkeyRambi: Minigame(name="Hideout Helm: DK Rambi", group="Helm Minigames", map_id=Maps.HelmBarrelDKRambi, can_repeat=True, logic=lambda l: True),
-    Minigames.DonkeyTarget: Minigame(name="Hideout Helm: DK Targets", group="Helm Minigames", map_id=Maps.HelmBarrelDKTarget, can_repeat=True, logic=lambda l: l.isdonkey),
+    Minigames.DonkeyTarget: Minigame(name="Hideout Helm: DK Targets", group="Helm Minigames", map_id=Maps.HelmBarrelDKTarget, can_repeat=True, logic=lambda l: l.isdonkey, kong_list=[Kongs.donkey]),
     Minigames.DiddyKremling: Minigame(name="Hideout Helm: Diddy Kremlings", group="Helm Minigames", map_id=Maps.HelmBarrelDiddyKremling, can_repeat=True, logic=lambda l: l.Slam),
     Minigames.DiddyRocketbarrel: Minigame(
         name="Hideout Helm: Diddy Rocketbarrel",
@@ -173,6 +182,7 @@ MinigameRequirements = {
         map_id=Maps.HelmBarrelDiddyRocketbarrel,
         can_repeat=True,
         logic=lambda l: l.Slam and (l.jetpack and l.peanut and l.isdiddy) or l.phasewalk,
+        kong_list=[Kongs.diddy],
     ),
     # Supposed to use sprint but can make it without), even with Chunky
     Minigames.LankyMaze: Minigame(name="Hideout Helm: Lanky Maze", group="Helm Minigames", map_id=Maps.HelmBarrelLankyMaze, can_repeat=True, logic=lambda l: True),
@@ -185,7 +195,13 @@ MinigameRequirements = {
     ),
     Minigames.TinyMushroom: Minigame(name="Hideout Helm: Tiny Mushroom", group="Helm Minigames", map_id=Maps.HelmBarrelTinyMush, helm_enabled=True, can_repeat=True, logic=lambda l: True),
     Minigames.TinyPonyTailTwirl: Minigame(
-        name="Hideout Helm: Tiny Ponytail Twirl", group="Helm Minigames", map_id=Maps.HelmBarrelTinyPTT, helm_enabled=True, can_repeat=True, logic=lambda l: l.twirl and l.istiny
+        name="Hideout Helm: Tiny Ponytail Twirl",
+        group="Helm Minigames",
+        map_id=Maps.HelmBarrelTinyPTT,
+        helm_enabled=True,
+        can_repeat=True,
+        logic=lambda l: l.twirl and l.istiny,
+        kong_list=[Kongs.tiny],
     ),
     Minigames.ChunkyHiddenKremling: Minigame(
         name="Hideout Helm: Chunky Hidden Kremling",
@@ -194,6 +210,7 @@ MinigameRequirements = {
         helm_enabled=True,
         can_repeat=True,
         logic=lambda l: l.hunkyChunky and l.punch and l.ischunky,
+        kong_list=[Kongs.chunky],
     ),
     Minigames.ChunkyShooting: Minigame(
         name="Hideout Helm: Chunky Shooting",
@@ -219,65 +236,66 @@ for minigame in MinigameRequirements.values():
 class MinigameLocationData:
     """Class which stores container map and barrel id for a minigame barrel."""
 
-    def __init__(self, map_id, barrel_id, minigame):
+    def __init__(self, map_id, barrel_id, minigame, kong):
         """Initialize with given parameters."""
         self.map = map_id
         self.barrel_id = barrel_id
         self.minigame = minigame
+        self.kong = kong
 
 
 BarrelMetaData = {
-    Locations.IslesDiddySnidesLobby: MinigameLocationData(Maps.IslesSnideRoom, 2, Minigames.BattyBarrelBanditNormal),
-    Locations.IslesTinyAztecLobby: MinigameLocationData(Maps.AngryAztecLobby, 1, Minigames.BigBugBashNormal),
-    Locations.IslesChunkyHelmLobby: MinigameLocationData(Maps.HideoutHelmLobby, 10, Minigames.KremlingKoshHard),
-    Locations.IslesDiddySummit: MinigameLocationData(Maps.Isles, 11, Minigames.PerilPathPanicNormal),
-    Locations.IslesLankyCastleLobby: MinigameLocationData(Maps.CreepyCastleLobby, 2, Minigames.SearchlightSeekHard),
-    Locations.JapesLankyGrapeGate: MinigameLocationData(Maps.JungleJapes, 32, Minigames.MadMazeMaulEasy),
-    Locations.JapesChunkyGiantBonusBarrel: MinigameLocationData(Maps.JungleJapes, 33, Minigames.MinecartMayhemEasy),
-    Locations.JapesLankySlope: MinigameLocationData(Maps.JungleJapes, 34, Minigames.SpeedySwingSortieEasy),
-    Locations.JapesTinyFeatherGateBarrel: MinigameLocationData(Maps.JungleJapes, 31, Minigames.SplishSplashSalvageNormal),
-    Locations.AztecLanky5DoorTemple: MinigameLocationData(Maps.AztecLanky5DTemple, 0, Minigames.BigBugBashVEasy),
-    Locations.AztecChunkyCagedBarrel: MinigameLocationData(Maps.AngryAztec, 35, Minigames.BusyBarrelBarrageEasy),
-    Locations.AztecChunky5DoorTemple: MinigameLocationData(Maps.AztecChunky5DTemple, 0, Minigames.KremlingKoshVEasy),
-    Locations.AztecDonkeyQuicksandCave: MinigameLocationData(Maps.AngryAztec, 33, Minigames.StealthySnoopVEasy),
-    Locations.AztecLankyLlamaTempleBarrel: MinigameLocationData(Maps.AztecLlamaTemple, 2, Minigames.TeeteringTurtleTroubleVEasy),
-    Locations.FactoryLankyTestingRoomBarrel: MinigameLocationData(Maps.FranticFactory, 15, Minigames.BattyBarrelBanditEasy),
-    Locations.FactoryDiddyChunkyRoomBarrel: MinigameLocationData(Maps.FranticFactory, 13, Minigames.BeaverBotherEasy),
-    Locations.FactoryTinyProductionRoom: MinigameLocationData(Maps.FranticFactory, 16, Minigames.KrazyKongKlamourEasy),
-    Locations.FactoryDiddyBlockTower: MinigameLocationData(Maps.FranticFactory, 0, Minigames.PerilPathPanicVEasy),
-    Locations.FactoryChunkybyArcade: MinigameLocationData(Maps.FranticFactory, 14, Minigames.StashSnatchEasy),
-    Locations.GalleonChunky5DoorShip: MinigameLocationData(Maps.Galleon5DShipDiddyLankyChunky, 1, Minigames.BattyBarrelBanditVEasy),
-    Locations.GalleonTinySubmarine: MinigameLocationData(Maps.GalleonSubmarine, 3, Minigames.BigBugBashEasy),
-    Locations.GalleonDonkey5DoorShip: MinigameLocationData(Maps.Galleon5DShipDKTiny, 0, Minigames.KrazyKongKlamourEasy),
-    Locations.GalleonTiny2DoorShip: MinigameLocationData(Maps.Galleon2DShip, 0, Minigames.KremlingKoshEasy),
-    Locations.GalleonLankyGoldTower: MinigameLocationData(Maps.GloomyGalleon, 7, Minigames.SearchlightSeekVEasy),
-    Locations.GalleonDiddy5DoorShip: MinigameLocationData(Maps.Galleon5DShipDiddyLankyChunky, 0, Minigames.SplishSplashSalvageEasy),
-    Locations.GalleonDiddyGoldTower: MinigameLocationData(Maps.GloomyGalleon, 6, Minigames.StealthySnoopNormal),
-    Locations.ForestDiddyOwlRace: MinigameLocationData(Maps.FungiForest, 21, Minigames.BusyBarrelBarrageNormal),
-    Locations.ForestLankyColoredMushrooms: MinigameLocationData(Maps.ForestLankyMushroomsRoom, 0, Minigames.KrazyKongKlamourHard),
-    Locations.ForestDonkeyBarn: MinigameLocationData(Maps.ForestThornvineBarn, 3, Minigames.MinecartMayhemNormal),
-    Locations.ForestDonkeyBaboonBlast: MinigameLocationData(Maps.ForestBaboonBlast, 22, Minigames.PerilPathPanicEasy),
-    Locations.ForestTinyMushroomBarrel: MinigameLocationData(Maps.ForestGiantMushroom, 8, Minigames.SpeedySwingSortieNormal),
-    Locations.ForestDiddyTopofMushroom: MinigameLocationData(Maps.FungiForest, 18, Minigames.TeeteringTurtleTroubleEasy),
-    Locations.CavesDonkeyBaboonBlast: MinigameLocationData(Maps.CavesBaboonBlast, 19, Minigames.BusyBarrelBarrageHard),
-    Locations.CavesTinyCaveBarrel: MinigameLocationData(Maps.CrystalCaves, 7, Minigames.KrazyKongKlamourHard),
-    Locations.CavesDiddyJetpackBarrel: MinigameLocationData(Maps.CrystalCaves, 6, Minigames.MadMazeMaulNormal),
-    Locations.CavesChunky5DoorCabin: MinigameLocationData(Maps.CavesChunkyCabin, 0, Minigames.SearchlightSeekNormal),
-    Locations.CastleLankyTower: MinigameLocationData(Maps.CastleTower, 0, Minigames.BeaverBotherNormal),
-    Locations.CastleChunkyTree: MinigameLocationData(Maps.CastleTree, 0, Minigames.BeaverBotherNormal),
-    Locations.CastleDiddyAboveCastle: MinigameLocationData(Maps.CreepyCastle, 9, Minigames.BigBugBashHard),
-    Locations.CastleLankyDungeon: MinigameLocationData(Maps.CastleDungeon, 0, Minigames.KremlingKoshNormal),
-    Locations.CastleDiddyBallroom: MinigameLocationData(Maps.CastleBallroom, 1, Minigames.MinecartMayhemHard),
-    Locations.CastleChunkyCrypt: MinigameLocationData(Maps.CastleCrypt, 0, Minigames.SearchlightSeekHard),
-    Locations.CastleTinyOverChasm: MinigameLocationData(Maps.CastleUpperCave, 0, Minigames.TeeteringTurtleTroubleNormal),
-    Locations.HelmDonkey1: MinigameLocationData(Maps.HideoutHelm, 16, Minigames.DonkeyRambi),
-    Locations.HelmDonkey2: MinigameLocationData(Maps.HideoutHelm, 15, Minigames.DonkeyTarget),
-    Locations.HelmDiddy1: MinigameLocationData(Maps.HideoutHelm, 8, Minigames.DiddyKremling),
-    Locations.HelmDiddy2: MinigameLocationData(Maps.HideoutHelm, 9, Minigames.DiddyRocketbarrel),
-    Locations.HelmLanky1: MinigameLocationData(Maps.HideoutHelm, 10, Minigames.LankyMaze),
-    Locations.HelmLanky2: MinigameLocationData(Maps.HideoutHelm, 11, Minigames.LankyShooting),
-    Locations.HelmTiny1: MinigameLocationData(Maps.HideoutHelm, 13, Minigames.TinyMushroom),
-    Locations.HelmTiny2: MinigameLocationData(Maps.HideoutHelm, 12, Minigames.TinyPonyTailTwirl),
-    Locations.HelmChunky1: MinigameLocationData(Maps.HideoutHelm, 14, Minigames.ChunkyHiddenKremling),
-    Locations.HelmChunky2: MinigameLocationData(Maps.HideoutHelm, 7, Minigames.ChunkyShooting),
+    Locations.IslesDiddySnidesLobby: MinigameLocationData(Maps.IslesSnideRoom, 2, Minigames.BattyBarrelBanditNormal, Kongs.diddy),
+    Locations.IslesTinyAztecLobby: MinigameLocationData(Maps.AngryAztecLobby, 1, Minigames.BigBugBashNormal, Kongs.tiny),
+    Locations.IslesChunkyHelmLobby: MinigameLocationData(Maps.HideoutHelmLobby, 10, Minigames.KremlingKoshHard, Kongs.chunky),
+    Locations.IslesDiddySummit: MinigameLocationData(Maps.Isles, 11, Minigames.PerilPathPanicNormal, Kongs.diddy),
+    Locations.IslesLankyCastleLobby: MinigameLocationData(Maps.CreepyCastleLobby, 2, Minigames.SearchlightSeekHard, Kongs.lanky),
+    Locations.JapesLankyGrapeGate: MinigameLocationData(Maps.JungleJapes, 32, Minigames.MadMazeMaulEasy, Kongs.lanky),
+    Locations.JapesChunkyGiantBonusBarrel: MinigameLocationData(Maps.JungleJapes, 33, Minigames.MinecartMayhemEasy, Kongs.chunky),
+    Locations.JapesLankySlope: MinigameLocationData(Maps.JungleJapes, 34, Minigames.SpeedySwingSortieEasy, Kongs.lanky),
+    Locations.JapesTinyFeatherGateBarrel: MinigameLocationData(Maps.JungleJapes, 31, Minigames.SplishSplashSalvageNormal, Kongs.tiny),
+    Locations.AztecLanky5DoorTemple: MinigameLocationData(Maps.AztecLanky5DTemple, 0, Minigames.BigBugBashVEasy, Kongs.lanky),
+    Locations.AztecChunkyCagedBarrel: MinigameLocationData(Maps.AngryAztec, 35, Minigames.BusyBarrelBarrageEasy, Kongs.chunky),
+    Locations.AztecChunky5DoorTemple: MinigameLocationData(Maps.AztecChunky5DTemple, 0, Minigames.KremlingKoshVEasy, Kongs.chunky),
+    Locations.AztecDonkeyQuicksandCave: MinigameLocationData(Maps.AngryAztec, 33, Minigames.StealthySnoopVEasy, Kongs.donkey),
+    Locations.AztecLankyLlamaTempleBarrel: MinigameLocationData(Maps.AztecLlamaTemple, 2, Minigames.TeeteringTurtleTroubleVEasy, Kongs.lanky),
+    Locations.FactoryLankyTestingRoomBarrel: MinigameLocationData(Maps.FranticFactory, 15, Minigames.BattyBarrelBanditEasy, Kongs.lanky),
+    Locations.FactoryDiddyChunkyRoomBarrel: MinigameLocationData(Maps.FranticFactory, 13, Minigames.BeaverBotherEasy, Kongs.diddy),
+    Locations.FactoryTinyProductionRoom: MinigameLocationData(Maps.FranticFactory, 16, Minigames.KrazyKongKlamourEasy, Kongs.tiny),
+    Locations.FactoryDiddyBlockTower: MinigameLocationData(Maps.FranticFactory, 0, Minigames.PerilPathPanicVEasy, Kongs.diddy),
+    Locations.FactoryChunkybyArcade: MinigameLocationData(Maps.FranticFactory, 14, Minigames.StashSnatchEasy, Kongs.chunky),
+    Locations.GalleonChunky5DoorShip: MinigameLocationData(Maps.Galleon5DShipDiddyLankyChunky, 1, Minigames.BattyBarrelBanditVEasy, Kongs.chunky),
+    Locations.GalleonTinySubmarine: MinigameLocationData(Maps.GalleonSubmarine, 3, Minigames.BigBugBashEasy, Kongs.tiny),
+    Locations.GalleonDonkey5DoorShip: MinigameLocationData(Maps.Galleon5DShipDKTiny, 0, Minigames.KrazyKongKlamourEasy, Kongs.donkey),
+    Locations.GalleonTiny2DoorShip: MinigameLocationData(Maps.Galleon2DShip, 0, Minigames.KremlingKoshEasy, Kongs.tiny),
+    Locations.GalleonLankyGoldTower: MinigameLocationData(Maps.GloomyGalleon, 7, Minigames.SearchlightSeekVEasy, Kongs.lanky),
+    Locations.GalleonDiddy5DoorShip: MinigameLocationData(Maps.Galleon5DShipDiddyLankyChunky, 0, Minigames.SplishSplashSalvageEasy, Kongs.diddy),
+    Locations.GalleonDiddyGoldTower: MinigameLocationData(Maps.GloomyGalleon, 6, Minigames.StealthySnoopNormal, Kongs.diddy),
+    Locations.ForestDiddyOwlRace: MinigameLocationData(Maps.FungiForest, 21, Minigames.BusyBarrelBarrageNormal, Kongs.diddy),
+    Locations.ForestLankyColoredMushrooms: MinigameLocationData(Maps.ForestLankyMushroomsRoom, 0, Minigames.KrazyKongKlamourHard, Kongs.lanky),
+    Locations.ForestDonkeyBarn: MinigameLocationData(Maps.ForestThornvineBarn, 3, Minigames.MinecartMayhemNormal, Kongs.donkey),
+    Locations.ForestDonkeyBaboonBlast: MinigameLocationData(Maps.ForestBaboonBlast, 22, Minigames.PerilPathPanicEasy, Kongs.donkey),
+    Locations.ForestTinyMushroomBarrel: MinigameLocationData(Maps.ForestGiantMushroom, 8, Minigames.SpeedySwingSortieNormal, Kongs.tiny),
+    Locations.ForestDiddyTopofMushroom: MinigameLocationData(Maps.FungiForest, 18, Minigames.TeeteringTurtleTroubleEasy, Kongs.diddy),
+    Locations.CavesDonkeyBaboonBlast: MinigameLocationData(Maps.CavesBaboonBlast, 19, Minigames.BusyBarrelBarrageHard, Kongs.donkey),
+    Locations.CavesTinyCaveBarrel: MinigameLocationData(Maps.CrystalCaves, 7, Minigames.KrazyKongKlamourHard, Kongs.tiny),
+    Locations.CavesDiddyJetpackBarrel: MinigameLocationData(Maps.CrystalCaves, 6, Minigames.MadMazeMaulNormal, Kongs.diddy),
+    Locations.CavesChunky5DoorCabin: MinigameLocationData(Maps.CavesChunkyCabin, 0, Minigames.SearchlightSeekNormal, Kongs.chunky),
+    Locations.CastleLankyTower: MinigameLocationData(Maps.CastleTower, 0, Minigames.BeaverBotherNormal, Kongs.lanky),
+    Locations.CastleChunkyTree: MinigameLocationData(Maps.CastleTree, 0, Minigames.BeaverBotherNormal, Kongs.chunky),
+    Locations.CastleDiddyAboveCastle: MinigameLocationData(Maps.CreepyCastle, 9, Minigames.BigBugBashHard, Kongs.diddy),
+    Locations.CastleLankyDungeon: MinigameLocationData(Maps.CastleDungeon, 0, Minigames.KremlingKoshNormal, Kongs.lanky),
+    Locations.CastleDiddyBallroom: MinigameLocationData(Maps.CastleBallroom, 1, Minigames.MinecartMayhemHard, Kongs.diddy),
+    Locations.CastleChunkyCrypt: MinigameLocationData(Maps.CastleCrypt, 0, Minigames.SearchlightSeekHard, Kongs.chunky),
+    Locations.CastleTinyOverChasm: MinigameLocationData(Maps.CastleUpperCave, 0, Minigames.TeeteringTurtleTroubleNormal, Kongs.tiny),
+    Locations.HelmDonkey1: MinigameLocationData(Maps.HideoutHelm, 16, Minigames.DonkeyRambi, Kongs.donkey),
+    Locations.HelmDonkey2: MinigameLocationData(Maps.HideoutHelm, 15, Minigames.DonkeyTarget, Kongs.donkey),
+    Locations.HelmDiddy1: MinigameLocationData(Maps.HideoutHelm, 8, Minigames.DiddyKremling, Kongs.diddy),
+    Locations.HelmDiddy2: MinigameLocationData(Maps.HideoutHelm, 9, Minigames.DiddyRocketbarrel, Kongs.diddy),
+    Locations.HelmLanky1: MinigameLocationData(Maps.HideoutHelm, 10, Minigames.LankyMaze, Kongs.lanky),
+    Locations.HelmLanky2: MinigameLocationData(Maps.HideoutHelm, 11, Minigames.LankyShooting, Kongs.lanky),
+    Locations.HelmTiny1: MinigameLocationData(Maps.HideoutHelm, 13, Minigames.TinyMushroom, Kongs.tiny),
+    Locations.HelmTiny2: MinigameLocationData(Maps.HideoutHelm, 12, Minigames.TinyPonyTailTwirl, Kongs.tiny),
+    Locations.HelmChunky1: MinigameLocationData(Maps.HideoutHelm, 14, Minigames.ChunkyHiddenKremling, Kongs.chunky),
+    Locations.HelmChunky2: MinigameLocationData(Maps.HideoutHelm, 7, Minigames.ChunkyShooting, Kongs.chunky),
 }
