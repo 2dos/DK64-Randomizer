@@ -3,6 +3,8 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando
 from randomizer.Enums.Types import Types
+from randomizer.Lists.Item import ItemList
+from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 
@@ -62,13 +64,13 @@ def pushItemMicrohints(spoiler: Spoiler, move_dict: dict, level: int, kong: int,
             move = None  # Using no item for the purpose of a default
             hinted_items = {
                 # Key = Item, Value = Textbox index in text file 19
-                "Monkeyport": [("special", 2, Kongs.tiny), 26, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
-                "Gorilla Gone": [("special", 2, Kongs.chunky), 25, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
-                "Bongo Blast": [("instrument", 0, Kongs.donkey), 27, [MicrohintsEnabled.all]],
-                "Triangle Trample": [("instrument", 0, Kongs.chunky), 28, [MicrohintsEnabled.all]],
-                "Saxophone Slam": [("instrument", 0, Kongs.tiny), 29, [MicrohintsEnabled.all]],
-                "Trombone Tremor": [("instrument", 0, Kongs.lanky), 30, [MicrohintsEnabled.all]],
-                "Guitar Gazump": [("instrument", 0, Kongs.diddy), 31, [MicrohintsEnabled.all]],
+                Items.Monkeyport: [("special", 2, Kongs.tiny), 26, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
+                Items.GorillaGone: [("special", 2, Kongs.chunky), 25, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
+                Items.Bongos: [("instrument", 0, Kongs.donkey), 27, [MicrohintsEnabled.all]],
+                Items.Triangle: [("instrument", 0, Kongs.chunky), 28, [MicrohintsEnabled.all]],
+                Items.Saxophone: [("instrument", 0, Kongs.tiny), 29, [MicrohintsEnabled.all]],
+                Items.Trombone: [("instrument", 0, Kongs.lanky), 30, [MicrohintsEnabled.all]],
+                Items.Guitar: [("instrument", 0, Kongs.diddy), 31, [MicrohintsEnabled.all]],
             }
             for item_hint in hinted_items:
                 move_data = hinted_items[item_hint][0]
@@ -76,7 +78,7 @@ def pushItemMicrohints(spoiler: Spoiler, move_dict: dict, level: int, kong: int,
                     if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][2]):
                         move = item_hint
             if move is not None:
-                data = {"textbox_index": hinted_items[move][1], "mode": "replace_whole", "target": spoiler.microhints[move]}
+                data = {"textbox_index": hinted_items[move][1], "mode": "replace_whole", "target": spoiler.microhints[ItemList[move].name]}
                 if 19 in spoiler.text_changes:
                     spoiler.text_changes[19].append(data)
                 else:
