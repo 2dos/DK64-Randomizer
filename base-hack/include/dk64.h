@@ -554,6 +554,7 @@ extern unsigned short PotionAnimations[6];
 extern char ArcadeBackgrounds[4];
 extern unsigned char ArcadeExited;
 extern unsigned char ArcadeStoryMode;
+extern unsigned char ArcadeMap;
 extern unsigned char ArcadeEnableReward;
 
 extern unsigned char CharSpawnerActorSubtypes[113];

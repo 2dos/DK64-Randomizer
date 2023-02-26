@@ -65,6 +65,19 @@ void arcadeExit(void) {
 	}
 }
 
+int determineArcadeLevel(void) {
+	if (checkFlag(FLAG_ARCADE_ROUND1, 0)) {
+		if (checkFlag(FLAG_COLLECTABLE_NINTENDOCOIN, 0)) {
+			ArcadeMap = 8;
+			return 0;
+		}
+		ArcadeMap = 4;
+		return 0;
+	}
+	ArcadeMap = 0;
+	return 0;
+}
+
 /*
 	Arcade Reward Indexes:
 	0 - Nintendo Coin / No Item
@@ -146,10 +159,10 @@ void initArcade(void) {
 	*(int*)(0x800257B4) = 0x0C000000 | (((int)&arcadeExit & 0xFFFFFF) >> 2);
 	*(int*)(0x8002B6D4) = 0x0C000000 | (((int)&arcadeExit & 0xFFFFFF) >> 2);
 	*(int*)(0x8002FA58) = 0x0C000000 | (((int)&arcadeExit & 0xFFFFFF) >> 2);
-	*(short*)(0x80024F32) = 0x82; // Swap flags
-	*(short*)(0x80024F56) = 0x84; // Swap flags
-	*(short*)(0x80024F4A) = 4; // Swap levels
-	*(short*)(0x80024F6E) = 8; // Swap levels
+	// Fix arcade level setting logic
+	*(int*)(0x80024F34) = 0x0C000000 | (((int)&determineArcadeLevel & 0xFFFFFF) >> 2); // Change log
+	*(int*)(0x80024F70) = 0; // Prevent level set
+	*(int*)(0x80024F50) = 0; // Prevent level set
 	for (int i = 0; i < 4; i++) {
 		// Arcade Level Order Rando
 		ArcadeBackgrounds[i] = Rando.arcade_order[i];
