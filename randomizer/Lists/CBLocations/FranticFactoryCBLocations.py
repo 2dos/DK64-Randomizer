@@ -484,7 +484,7 @@ ColoredBananaGroupList = [
         name="On Simian Spring ledge with coins",
         konglist=[Kongs.diddy],
         region=Regions.BeyondHatch,
-        logic=lambda l: l.spring and l.isdiddy,
+        logic=lambda l: (l.spring and l.isdiddy) or l.phasewalk,
         locations=[[5, 1.0, 1072, 182, 478], [5, 1.0, 1092, 182, 478]],
     ),
     ColoredBananaGroup(
