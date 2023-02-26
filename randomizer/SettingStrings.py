@@ -183,13 +183,16 @@ def decrypt_settings_string_enum(encrypted_string: str):
                     settings_dict[key_name].append(True if bitstring[bit_index] == "1" else False)
                     bit_index += 1
                 elif key_list_data_type == SettingsStringDataType.int4:
-                    settings_dict[key_name] = bin_string_to_int(bitstring[bit_index : bit_index + 4], 4)
+                    int_value = bin_string_to_int(bitstring[bit_index : bit_index + 4], 4)
+                    settings_dict[key_name].append(int_value)
                     bit_index += 4
                 elif key_list_data_type == SettingsStringDataType.int8:
-                    settings_dict[key_name] = bin_string_to_int(bitstring[bit_index : bit_index + 8], 8)
+                    int_value = bin_string_to_int(bitstring[bit_index : bit_index + 8], 8)
+                    settings_dict[key_name].append(int_value)
                     bit_index += 8
                 elif key_list_data_type == SettingsStringDataType.int16:
-                    settings_dict[key_name] = bin_string_to_int(bitstring[bit_index : bit_index + 16], 16)
+                    int_value = bin_string_to_int(bitstring[bit_index : bit_index + 16], 16)
+                    settings_dict[key_name].append(int_value)
                     bit_index += 16
                 else:
                     enum_values = [member.value for member in key_list_data_type]
