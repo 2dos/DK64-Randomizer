@@ -261,7 +261,8 @@ LogicRegions = {
         LocationLogic(Locations.IslesChunkyHelmLobby, lambda l: (l.gorillaGone and l.ischunky and l.vines) or (l.settings.bonus_barrels == MinigameBarrels.skip and l.advanced_platforming and l.istiny and l.twirl and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.IslesKasplatHelmLobby, lambda l: not l.settings.kasplat_rando and l.scope and l.coconut and l.donkey),
     ], [], [
-        TransitionFront(Regions.KremIsleTopLevel, lambda l: True),
+        TransitionFront(Regions.KremIsleTopLevel, lambda l: l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events)),
+        TransitionFront(Regions.KremIsleBeyondLift, lambda l: True),  # You fall through the mouth if the lobby hasn't been opened (if you used a glitch to get in)
         TransitionFront(Regions.HideoutHelmStart, lambda l: ((l.gorillaGone and l.chunky and l.vines) or (l.CanMoonkick() and l.donkey)) and l.IsLevelEnterable(Levels.HideoutHelm)),
     ]),
 

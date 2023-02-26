@@ -225,8 +225,9 @@ BananaCoinGroupList = {
             map_id=Maps.Isles,
             name="On top of K. Lumsy's prison",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.KremIsleTopLevel,
-            logic=lambda l: ((l.istiny and l.twirl) or l.settings.damage_amount != DamageAmount.ohko),
+            region=Regions.KremIsle,
+            logic=lambda l: (l.monkeyport and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko)))
+            or (l.GalleonKey and Events.IslesDiddyBarrelSpawn in l.Events and l.isdiddy and l.jetpack),
             locations=[
                 [1.0, 3343, 712, 3376],
                 [1.0, 3318, 710, 3427],
@@ -755,7 +756,7 @@ BananaCoinGroupList = {
             name="On top of center piece",
             konglist=[Kongs.lanky],
             region=Regions.CreepyCastleLobby,
-            logic=lambda l: l.chunky and l.barrels and l. islanky and l.balloon,
+            logic=lambda l: l.chunky and l.barrels and l.islanky and l.balloon,
             locations=[
                 [1.0, 629, 245, 650],
                 [1.0, 528, 245, 650],
@@ -1104,7 +1105,7 @@ BananaCoinGroupList = {
             name="On riverbed near tag barrel",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.JungleJapesMain,
-            logic = lambda l: l.swim,
+            logic=lambda l: l.swim,
             locations=[
                 [1.3, 1908, 163, 1625],
                 [1.3, 1733, 163, 1603],
@@ -2596,7 +2597,6 @@ BananaCoinGroupList = {
             name="On KONG Letters",
             konglist=[Kongs.diddy, Kongs.tiny],
             region=Regions.TempleUnderwater,
-            logic = lambda l: Locations.TinyKong in l.SpecialLocationsReached, # Can't reach the top of the O without the platform
             locations=[
                 [1.0, 758, 412, 1703],
                 [1.0, 354, 412, 1822],
@@ -4017,7 +4017,7 @@ BananaCoinGroupList = {
             group=4,
             map_id=Maps.GloomyGalleon,
             name="On top of headphones chest",
-            konglist=[Kongs.diddy, Kongs.tiny, Kongs.chunky], # This chest is 2 units too high for the other two kongs
+            konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.GloomyGalleonStart,
             locations=[
                 [1.0, 3668, 1729, 3837],
@@ -4163,7 +4163,6 @@ BananaCoinGroupList = {
             name="Above W4 Platform",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.Shipyard,
-            logic = lambda l: l.isdiddy or l.istiny or Events.WaterSwitch in l.Events,
             locations=[
                 [1.0, 2709, 1606, 1474],
                 [1.0, 2822, 1606, 1470],
@@ -4188,7 +4187,7 @@ BananaCoinGroupList = {
             name="Above Candy's Platform",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.Shipyard,
-            logic = lambda l: l.isdiddy or l.istiny or Events.WaterSwitch in l.Events,
+            logic=lambda l: l.isdiddy or l.istiny or Events.WaterSwitch in l.Events,
             locations=[
                 [1.0, 2911, 1623, 694],
                 [1.0, 2908, 1623, 413],
@@ -4449,7 +4448,7 @@ BananaCoinGroupList = {
             konglist=[Kongs.diddy],
             region=Regions.GuitarShip,
             locations=[
-                [1.0, 1112, 1, 811], # TODO: Test this one and if needed, find a better place for this coin
+                [1.0, 1150, 1, 811],
                 [1.0, 1115, 50, 811],
             ],
         ),
@@ -4461,7 +4460,7 @@ BananaCoinGroupList = {
             region=Regions.TromboneShip,
             locations=[
                 [1.0, 984, 47, 1587],
-                [1.0, 1057, 1, 1589],
+                [1.0, 1056, 1, 1581],
             ],
         ),
         BananaCoinGroup(
@@ -4618,7 +4617,7 @@ BananaCoinGroupList = {
             name="On Rafter near Funky's",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.Shipyard,
-            logic=lambda l: l.isdiddy or l.istiny or Events.WaterSwitch in l.Events,
+            logic=lambda l: Events.WaterSwitch in l.Events,
             locations=[
                 [1.0, 3645.180419921875, 1648.24267578125, 1823.3914794921875],
                 [1.0, 3509.1142578125, 1637.95849609375, 1949.4278564453125],
@@ -5380,7 +5379,7 @@ BananaCoinGroupList = {
             group=34,
             map_id=Maps.FungiForest,
             name="In front of the mill in the air",
-            konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            konglist=[Kongs.lanky],
             region=Regions.MillArea,
             logic=lambda l: l.balloon and l.islanky,
             locations=[
@@ -5560,7 +5559,7 @@ BananaCoinGroupList = {
             group=49,
             map_id=Maps.ForestMillAttic,
             name="Behind the starting box",
-            konglist=[Kongs.lanky],
+            konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.MillAttic,
             locations=[
                 [1.0, 438, 0, 136],

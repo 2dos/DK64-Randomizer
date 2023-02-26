@@ -377,7 +377,7 @@ DirtPatchLocations = [
         rotation=489,
         group=1,
         logicregion=Regions.TrainingGrounds,
-        logic=lambda l: ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey)) and l.shockwave,
+        logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles - Treehouse: Back of the treehouse",
