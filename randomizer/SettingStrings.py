@@ -210,7 +210,7 @@ def decrypt_settings_string_enum(encrypted_string: str):
             settings_dict[key_name] = key_data_type(index)
             bit_index += len(enum_values).bit_length()
         # Convert to enum, if necessary.
-        if convert_to_enum and type(val) != list:
+        if convert_to_enum and key_data_type != SettingsStringDataType.list:
             val = SettingsMap[key_name](val)
         settings_dict[key_name] = val
     return settings_dict
