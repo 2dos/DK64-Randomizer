@@ -196,7 +196,7 @@
 | Behind melon crate | 3 | 
 | On slope between mountain and Diddy cage | 3 | 
 | Around tree in front of Diddy's cage | 4 | 
-| In front of T&S portal | 3 | 
+| In front of T&S portal near Diddy kasplat | 3 | 
 | In pit near Diddy kasplat | 3 | 
 | Around tunnel W4 | 3 | 
 | Around small torch in W4 tunnel | 4 | 
@@ -297,7 +297,7 @@
 | Name | Amount |
 | ---- | ------ |
 | In front of Chunky vase room door | 4 | 
-| In front of Chunky kasplat room door | 3 | 
+| In front of Donkey kasplat room door | 3 | 
 | Left side across the sand from Candy's store | 3 | 
 | Right side of Candy's store | 3 | 
 | Next to quicksand close to llama cage | 3 | 
@@ -446,7 +446,7 @@
 | Corner of tunnel to Production Room | 3 | 
 | On low boxes in lower Production Room | 4 | 
 | On a pipe in lower Production Room | 3 | 
-| On the spinning sectio in Lower Production Room | 4 | 
+| On the spinning section in Lower Production Room | 4 | 
 | On the boxes at the top of production Room | 2 | 
 | Around the production room Simian Spring pad | 4 | 
 | On various boxes around Production Room | 4 | 
@@ -704,7 +704,7 @@
 | Level Entry | 3 | 
 | On bouncy mushroom in clock area | 3 | 
 | Left of pink tunnel | 1 | 
-| Near boncy mushroom tag in the Giant Mushroom area | 3 | 
+| Near bouncy mushroom tag in the Giant Mushroom area | 3 | 
 | Around a torch in the outer Giant Mushroom area | 3 | 
 | Above a patch of grass in the Giant Mushroom area | 3 | 
 | On the pink tunnel rim on the Giant Mushroom side | 3 | 
@@ -719,7 +719,6 @@
 | On the hollow tree branches | 4 | 
 | On the stump at the start of the hollow tree area | 2 | 
 | Around the shop in the Worm area | 4 | 
-| On the beanstalk patch | 3 | 
 | Beanstalk Fence | 4 | 
 | On the Green Tunnel Roof | 3 | 
 | On a mushroom in the Worm Area | 4 | 
@@ -865,7 +864,7 @@
 | On the doorway to Rotating Room | 2 | 
 | Outside the Sprint Cabin | 3 | 
 | Near the Sprint Cabin Headphones | 5 | 
-| On stalagtites in the Giant Kosha area | 2 | 
+| On stalactite in the Giant Kosha area | 2 | 
 | Back of Bonus Cave | 5 | 
 | Gorilla Gone Cavern | 3 | 
 | Giant Boulder Cavern | 3 | 
