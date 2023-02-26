@@ -30,43 +30,32 @@ def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
             continue
         # Check each remaining minigame to see if placing it will produce a valid world
         success = False
-        helm = False
+        helm_minigame_available = False
         for minigame in minigamePool:
             # Check if any minigames can be placed in helm
             if MinigameRequirements[minigame].helm_enabled:
-                helm = True
+                helm_minigame_available = True
         for minigame in minigamePool:
-            BarrelMetaData[location].minigame = minigame
-            # If there is a minigame that can be placed in Helm, skip banned minigames, otherwise continue as normal
-            if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm and helm is True:
+            # If this minigame isn't a minigame for the kong of this location, don't use it
+            if BarrelMetaData[location].kong not in MinigameRequirements[minigame].kong_list:
                 continue
-            # If world is still valid, keep minigame associated there
+            # If there is a minigame that can be placed in Helm, skip banned minigames, otherwise continue as normal
+            if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm and helm_minigame_available is True:
+                continue
+            # Place the minigame
+            BarrelMetaData[location].minigame = minigame
+            # Remove the minigame from the pool
+            minigamePool.remove(minigame)
+            # It is a random chance that the minigame will return to the pool
+            replacement_index = random.randint(int(len(minigamePool) / 2), len(minigamePool))
             if settings.bonus_barrels != MinigameBarrels.selected and (settings.helm_barrels == MinigameBarrels.skip or not settings.minigames_list_selected):
-                if Fill.VerifyWorld(settings):
-                    minigamePool.remove(minigame)
-                    if MinigameRequirements[minigame].repeat:
-                        replacement_index = random.randint(20, len(minigamePool))
-                        if replacement_index >= len(minigamePool):
-                            minigamePool.append(minigame)
-                        else:
-                            minigamePool.insert(replacement_index, minigame)
-                    success = True
-                    break
+                replacement_index = random.randint(20, len(minigamePool))
+            if MinigameRequirements[minigame].repeat:
+                if replacement_index >= len(minigamePool):
+                    minigamePool.append(minigame)
                 else:
-                    BarrelMetaData[location].minigame = Minigames.NoGame
-            else:
-                if Fill.VerifyWorld(settings):
-                    minigamePool.remove(minigame)
-                    if MinigameRequirements[minigame].repeat:
-                        replacement_index = random.randint(int(len(minigamePool) / 2), len(minigamePool))
-                        if replacement_index >= len(minigamePool):
-                            minigamePool.append(minigame)
-                        else:
-                            minigamePool.insert(replacement_index, minigame)
-                    success = True
-                    break
-                else:
-                    BarrelMetaData[location].minigame = Minigames.NoGame
+                    minigamePool.insert(replacement_index, minigame)
+            success = True
         if not success:
             raise Ex.BarrelOutOfMinigames
 
