@@ -85,7 +85,7 @@ def import_settings_string(event):
                                 # Set the value of the select box to the value of the option
                                 option.selected = True
                                 break
-                    else:        
+                    else:
                         js.jq(f"#{key}").val(settings[key])
                 js.jq(f"#{key}").removeAttr("disabled")
         except Exception as e:
