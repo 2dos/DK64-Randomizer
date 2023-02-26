@@ -543,7 +543,7 @@ def compileHints(spoiler: Spoiler):
                 if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
                     location_name = random.choice(item_type_names_cryptic[kong_location.type])
                 message = f"{freed_kong} is held by {location_name} in {level_name}."
-            elif location.type == Types.Shop:
+            elif kong_location.type == Types.Shop:
                 message = f"{freed_kong} can be bought in {level_name}."
             elif freeing_kong_name == freed_kong:
                 grammar = "himself"
