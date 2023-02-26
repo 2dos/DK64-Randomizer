@@ -1,7 +1,6 @@
 """File containing main UI button events that travel between tabs."""
 import asyncio
 import json
-import pprint
 import random
 
 from pyodide import create_proxy
@@ -37,10 +36,7 @@ def export_settings_string(event):
         event (event): Javascript event object.
     """
     setting_data = serialize_settings()
-    pprint.pprint(setting_data)
     settings_string = encrypt_settings_string_enum(setting_data)
-    print(settings_string)
-    pprint.pprint(decrypt_settings_string_enum(settings_string))
     js.settings_string.value = settings_string
 
 
