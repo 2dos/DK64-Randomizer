@@ -565,6 +565,9 @@ def toggle_item_rando(evt):
     item_rando_pool = document.getElementById("item_rando_list_selected").options
     smaller_shops = document.getElementById("smaller_shops")
     shockwave = document.getElementById("shockwave_status_shuffled")
+    move_vanilla = document.getElementById("move_off")
+    move_rando = document.getElementById("move_on")
+    move_start = document.getElementById("move_start_with")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -585,6 +588,9 @@ def toggle_item_rando(evt):
             smaller_shops.setAttribute("disabled", "disabled")
             smaller_shops.checked = False
             shockwave.removeAttribute("disabled")
+            move_vanilla.removeAttribute("disabled")
+            move_rando.removeAttribute("disabled")
+            move_start.removeAttribute("disabled")
         else:
             # Enable item rando modal, prevent shockwave/camera coupling, and enable smaller shops if it's in the pool
             selector.removeAttribute("disabled")
