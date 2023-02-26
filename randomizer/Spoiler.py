@@ -162,6 +162,7 @@ class Spoiler:
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
         settings["Randomize CB Locations"] = self.settings.cb_rando
+        settings["Randomize Coin Locations"] = self.settings.coin_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
         settings["Crown Door Open"] = self.settings.crown_door_item == HelmDoorItem.opened
         settings["Coin Door Open"] = self.settings.coin_door_item == HelmDoorItem.opened
@@ -581,6 +582,24 @@ class Spoiler:
                 humanspoiler["Colored Banana Locations"][f"{lvl_name.split(' ')[idx]} {NameFromKong(group['kong'])}"][human_cb_type_map[group["type"]].strip()].append(
                     f"{map_name.strip()}: {group['name']}"
                 )
+        if self.settings.coin_rando:
+            humanspoiler["Coin Locations"] = {}
+            coin_levels = ["Japes", "Aztec", "Factory", "Galleon", "Fungi", "Caves", "Castle", "Isles"]
+            coin_kongs = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
+            for lvl in coin_levels:
+                for kng in coin_kongs:
+                    humanspoiler["Coin Locations"][f"{lvl} {kng}"] = []
+            for group in self.coin_placements:
+                lvl_name = level_dict[group["level"]]
+                idx = 1
+                if group["level"] == Levels.FungiForest:
+                    idx = 0
+                map_name = "".join(map(lambda x: x if x.islower() else " " + x, Maps(group["map"]).name)).strip()
+                join_combos = ["2 D Ship", "5 D Ship", "5 D Temple"]
+                for combo in join_combos:
+                    if combo in map_name:
+                        map_name = map_name.replace(combo, combo.replace(" ", ""))
+                humanspoiler["Coin Locations"][f"{lvl_name.split(' ')[idx]} {NameFromKong(group['kong'])}"].append(f"{map_name.strip()}: {group['name']}")
 
         self.json = json.dumps(humanspoiler, indent=4)
 
