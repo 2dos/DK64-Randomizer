@@ -197,14 +197,14 @@ def decrypt_settings_string_enum(encrypted_string: str):
                     # The value is an enum.
                     max_value = max([member.value for member in key_list_data_type])
                     int_val = int(bitstring[bit_index : bit_index + max_value.bit_length()], 2)
-                    list_val = SettingsMap[key_name](int_val)
+                    list_val = key_list_data_type(int_val)
                     bit_index += max_value.bit_length()
                 val.append(list_val)
         else:
             # The value is an enum.
             max_value = max([member.value for member in key_data_type])
             int_val = int(bitstring[bit_index : bit_index + max_value.bit_length()], 2)
-            val = SettingsMap[key_name](int_val)
+            val = key_data_type(int_val)
             bit_index += max_value.bit_length()
         settings_dict[key_name] = val
     return settings_dict
