@@ -1052,6 +1052,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (param2 == LLAMA_LAVAGATE) {
 					if (Rando.quality_of_life.remove_cutscenes) {
 						hideObject(behaviour_pointer);
+						behaviour_pointer->pause_state = 1;
 					}
 				} else if (param2 == LLAMA_BAMBOOGATE) {
 					if (index == 0) {
