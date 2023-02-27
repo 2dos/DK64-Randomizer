@@ -65,6 +65,10 @@ assistant_devs = [
 # Fuzzyness
 # KaptainKohl
 # Kiwikiller67
+# Nukkuler
+# Obiyo
+# Revven
+# Riley
 # SirSmackStrikesBack
 # UsedPizza
 # VidyaJames
