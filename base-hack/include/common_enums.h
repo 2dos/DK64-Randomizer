@@ -93,6 +93,28 @@ typedef enum helm_hurry_items {
 	/* 0x00E */ HHITEM_FAKEITEM,
 } helm_hurry_items;
 
+typedef enum purchase_classification {
+	/* 0x000 */ PCLASS_NOTHING,
+	/* 0x001 */ PCLASS_MOVE,
+	/* 0x002 */ PCLASS_INSTRUMENT,
+	/* 0x003 */ PCLASS_GUN,
+	/* 0x004 */ PCLASS_CAMERA,
+	/* 0x005 */ PCLASS_SHOCKWAVE,
+	/* 0x006 */ PCLASS_CAMSHOCK,
+	/* 0x007 */ PCLASS_GB,
+	/* 0x008 */ PCLASS_BLUEPRINT,
+	/* 0x009 */ PCLASS_COMPANYCOIN,
+	/* 0x00A */ PCLASS_MEDAL,
+	/* 0x00B */ PCLASS_RAINBOWCOIN,
+	/* 0x00C */ PCLASS_KEY,
+	/* 0x00D */ PCLASS_CROWN,
+	/* 0x00E */ PCLASS_BEAN,
+	/* 0x00F */ PCLASS_PEARL,
+	/* 0x010 */ PCLASS_KONG,
+	/* 0x011 */ PCLASS_FAIRY,
+	/* 0x012 */ PCLASS_FAKEITEM,
+} purchase_classification;
+
 typedef enum pad_refresh_signals {
     /* 0x000 */ ITEMREFRESH_BLAST,
     /* 0x001 */ ITEMREFRESH_SPRING,

@@ -288,7 +288,7 @@ void CheckKasplatSpawnBitfield(void) {
                 }
                 if (is_drop) {
                     int flag = referenced_spawner->flag;
-                    if ((flag >= FLAG_BP_JAPES_DK_HAS) && (flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
+                    if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
                         // Is Kasplat Drop
                         int kong = (flag - FLAG_BP_JAPES_DK_HAS) % 5;
                         int shift = 1 << kong;

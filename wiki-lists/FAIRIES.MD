@@ -4,219 +4,219 @@
 <details>
 <summary>Fairy Locations</summary>
 
-| Map | Name |
-| --- | ---- |
-| Jungle Japes | Rambi Door Pool | 
-| Japes Lanky Cave | Painting Room | 
-| Jungle Japes | Near Kong Cage | 
-| Jungle Japes | Near Mountain | 
-| Jungle Japes | Above Underground Entrance | 
-| Jungle Japes | Hive Area | 
-| Jungle Japes | Storm Area | 
-| Japes Tiny Hive | Inside Hive | 
-| Japes Under Ground | Underground Pathway | 
-| Japes Under Ground | Underground Vine Area | 
-| Japes Mountain | Mine Entry | 
+| Map | Name | Logic |
+| --- | ---- | ----- |
+| Jungle Japes | Rambi Door Pool | l.camera | 
+| Japes Lanky Cave | Painting Room | (((l.grape or l.trombone) and l.Slam) or l.generalclips) and l.islanky and l.camera | 
+| Jungle Japes | Near Kong Cage | l.camera | 
+| Jungle Japes | Near Mountain | l.camera | 
+| Jungle Japes | Above Underground Entrance | l.camera | 
+| Jungle Japes | Hive Area | l.camera | 
+| Jungle Japes | Storm Area | l.camera | 
+| Japes Tiny Hive | Inside Hive | l.camera | 
+| Japes Under Ground | Underground Pathway | l.camera | 
+| Japes Under Ground | Underground Vine Area | l.camera | 
+| Japes Mountain | Mine Entry | l.camera | 
 </details>
 
 ## Angry Aztec
 <details>
 <summary>Fairy Locations</summary>
 
-| Map | Name |
-| --- | ---- |
-| Aztec Tiny5DTemple | Tiny 5-Door Temple | 
-| Aztec Llama Temple | Llama Temple | 
-| Angry Aztec | Vase Room | 
-| Angry Aztec | Oasis | 
-| Angry Aztec | Behind Tiny Temple | 
-| Angry Aztec | Near Snake Road | 
-| Angry Aztec | Bonus Cage | 
-| Angry Aztec | Around Totem | 
-| Angry Aztec | Gong Tower | 
-| Aztec Donkey5DTemple | Donkey 5DT | 
-| Aztec Chunky5DTemple | Chunky 5DT | 
-| Aztec Diddy5DTemple | Diddy 5DT | 
-| Aztec Lanky5DTemple | Lanky 5DT | 
-| Aztec Llama Temple | Start of Llama Temple | 
-| Aztec Llama Temple | Matching Room | 
-| Aztec Tiny Temple | Tiny Temple Start | 
-| Aztec Tiny Temple | Tiny Temple Kong Cage Room | 
+| Map | Name | Logic |
+| --- | ---- | ----- |
+| Aztec Tiny5DTemple | Tiny 5-Door Temple | l.camera and ((l.feather and l.mini and l.istiny) or l.phasewalk) | 
+| Aztec Llama Temple | Llama Temple | l.camera | 
+| Angry Aztec | Vase Room | l.camera and ((l.pineapple and l.chunky) or l.phasewalk) | 
+| Angry Aztec | Oasis | l.camera | 
+| Angry Aztec | Behind Tiny Temple | l.camera | 
+| Angry Aztec | Near Snake Road | l.camera | 
+| Angry Aztec | Bonus Cage | l.camera | 
+| Angry Aztec | Around Totem | l.camera | 
+| Angry Aztec | Gong Tower | l.camera | 
+| Aztec Donkey5DTemple | Donkey 5DT | l.camera and ((l.coconut and l.isdonkey) or l.phasewalk) | 
+| Aztec Chunky5DTemple | Chunky 5DT | l.camera and ((l.pineapple and l.ischunky) or l.phasewalk) | 
+| Aztec Diddy5DTemple | Diddy 5DT | l.camera | 
+| Aztec Lanky5DTemple | Lanky 5DT | l.camera and ((l.grape and l.islanky) or l.phasewalk) | 
+| Aztec Llama Temple | Start of Llama Temple | l.camera | 
+| Aztec Llama Temple | Matching Room | l.camera and ((l.grape and l.islanky) or l.phasewalk or l.CanOStandTBSNoclip()) | 
+| Aztec Tiny Temple | Tiny Temple Start | l.camera | 
+| Aztec Tiny Temple | Tiny Temple Kong Cage Room | l.camera | 
 </details>
 
 ## Frantic Factory
 <details>
 <summary>Fairy Locations</summary>
 
-| Map | Name |
-| --- | ---- |
-| Frantic Factory | Number Game | 
-| Frantic Factory | Near Funky's | 
-| Frantic Factory | Entrance | 
-| Frantic Factory | Pole | 
-| Frantic Factory | Lower portion of Production Room | 
-| Frantic Factory | Mid-section of Production Room | 
-| Frantic Factory | Upper portion of Production Room | 
-| Frantic Factory | Storage Room | 
-| Frantic Factory | Near Cranky's | 
-| Frantic Factory | Arcade Tunnel | 
-| Frantic Factory | Arcade Room | 
-| Frantic Factory | Upper Block Tower | 
-| Frantic Factory | Near Dartboard Boxes | 
-| Frantic Factory | Research and Development Pole | 
-| Frantic Factory | Car Race Entryway | 
-| Frantic Factory | Toy Monster Room | 
-| Frantic Factory | Diddy Research and Development Room | 
-| Frantic Factory | Chute to Storage Room | 
-| Frantic Factory | Dark Room | 
-| Factory Crusher | Crusher Room | 
+| Map | Name | Logic |
+| --- | ---- | ----- |
+| Frantic Factory | Number Game | l.camera | 
+| Frantic Factory | Near Funky's | l.camera and Events.DartsPlayed in l.Events | 
+| Frantic Factory | Entrance | l.camera | 
+| Frantic Factory | Pole | l.camera | 
+| Frantic Factory | Lower portion of Production Room | l.camera | 
+| Frantic Factory | Mid-section of Production Room | l.camera | 
+| Frantic Factory | Upper portion of Production Room | l.camera | 
+| Frantic Factory | Storage Room | l.camera | 
+| Frantic Factory | Near Cranky's | l.camera | 
+| Frantic Factory | Arcade Tunnel | l.camera | 
+| Frantic Factory | Arcade Room | l.camera | 
+| Frantic Factory | Upper Block Tower | l.camera and (l.spring and l.isdiddy) | 
+| Frantic Factory | Near Dartboard Boxes | l.camera | 
+| Frantic Factory | Research and Development Pole | l.camera | 
+| Frantic Factory | Car Race Entryway | l.camera | 
+| Frantic Factory | Toy Monster Room | l.camera and ((l.triangle and l.punch and l.ischunky) or l.CanAccessRNDRoom()) | 
+| Frantic Factory | Diddy Research and Development Room | l.camera and ((l.guitar and l.isdiddy) or l.CanAccessRNDRoom()) | 
+| Frantic Factory | Chute to Storage Room | l.camera | 
+| Frantic Factory | Dark Room | l.camera and l.punch and l.chunky | 
+| Factory Crusher | Crusher Room | l.camera | 
 </details>
 
 ## Gloomy Galleon
 <details>
 <summary>Fairy Locations</summary>
 
-| Map | Name |
-| --- | ---- |
-| Gloomy Galleon | In a chest | 
-| Galleon5DShip DKTiny | Inside Tiny 5-Door Ship | 
-| Gloomy Galleon | Tiny Slam Button | 
-| Gloomy Galleon | Tunnel Intersection | 
-| Gloomy Galleon | Under Cranky Platform | 
-| Gloomy Galleon | Tunnel to Chest Area | 
-| Gloomy Galleon | Inbetween 5-Door Ship and 2-Door Ship | 
-| Gloomy Galleon | Inbetween 5-Door Ship and Seal Race | 
-| Gloomy Galleon | Around Cactus | 
-| Gloomy Galleon | Around Lighthouse | 
-| Galleon Sick Bay | Seasick Ship | 
-| Galleon Lighthouse | Top of Lighthouse | 
-| Galleon Mermaid Room | Mermaid Window | 
-| Galleon5DShip Diddy Lanky Chunky | Lanky's 5-Door Ship | 
-| Galleon2DShip | Tiny's 2-Door Ship | 
-| Galleon Submarine | Submarine | 
-| Galleon Treasure Chest | Inside the Treasure Chest | 
+| Map | Name | Logic |
+| --- | ---- | ----- |
+| Gloomy Galleon | In a chest | l.camera and l.punch and l.chunky | 
+| Galleon5DShip DKTiny | Inside Tiny 5-Door Ship | l.camera | 
+| Gloomy Galleon | Tiny Slam Button | l.camera | 
+| Gloomy Galleon | Tunnel Intersection | l.camera | 
+| Gloomy Galleon | Under Cranky Platform | l.camera | 
+| Gloomy Galleon | Tunnel to Chest Area | l.camera | 
+| Gloomy Galleon | Inbetween 5-Door Ship and 2-Door Ship | l.camera | 
+| Gloomy Galleon | Inbetween 5-Door Ship and Seal Race | l.camera | 
+| Gloomy Galleon | Around Cactus | l.camera | 
+| Gloomy Galleon | Around Lighthouse | l.camera | 
+| Galleon Sick Bay | Seasick Ship | l.camera | 
+| Galleon Lighthouse | Top of Lighthouse | l.camera | 
+| Galleon Mermaid Room | Mermaid Window | l.camera | 
+| Galleon5DShip Diddy Lanky Chunky | Lanky's 5-Door Ship | l.camera | 
+| Galleon2DShip | Tiny's 2-Door Ship | l.camera | 
+| Galleon Submarine | Submarine | l.camera | 
+| Galleon Treasure Chest | Inside the Treasure Chest | l.camera | 
 </details>
 
 ## Fungi Forest
 <details>
 <summary>Fairy Locations</summary>
 
-| Map | Name |
-| --- | ---- |
-| Forest Thornvine Barn | DK's Barn | 
-| Forest Rafters | Dark Attic | 
-| Fungi Forest | Above Blue Tunnel | 
-| Fungi Forest | Above the Clock | 
-| Fungi Forest | Above the Well | 
-| Fungi Forest | Above BBlast Entrance | 
-| Fungi Forest | Near Crown | 
-| Fungi Forest | Top of Giant Mushroom | 
-| Fungi Forest | Owl Tree Tunnel | 
-| Fungi Forest | Above Rabbit Race | 
-| Fungi Forest | Opposite Rabbit Race | 
-| Fungi Forest | Above Mill | 
-| Fungi Forest | Barn Alcove | 
-| Fungi Forest | Above path to Thornvine Barn | 
-| Forest Anthill | Anthill | 
-| Forest Winch Room | Winch Room | 
-| Forest Mill Front | Front of Mill | 
-| Forest Giant Mushroom | Lower Giant Mushroom Interior | 
-| Forest Giant Mushroom | Upper Giant Mushroom Interior | 
-| Forest Mill Attic | Lanky's Attic | 
-| Forest Mill Back | Mill Interior (Rear) | 
-| Forest Spider | Spider Boss Room | 
+| Map | Name | Logic |
+| --- | ---- | ----- |
+| Forest Thornvine Barn | DK's Barn | l.Slam and l.camera | 
+| Forest Rafters | Dark Attic | l.guitar and l.isdiddy and l.camera | 
+| Fungi Forest | Above Blue Tunnel | l.camera | 
+| Fungi Forest | Above the Clock | l.camera | 
+| Fungi Forest | Above the Well | l.camera and l.vines | 
+| Fungi Forest | Above BBlast Entrance | l.camera | 
+| Fungi Forest | Near Crown | l.camera | 
+| Fungi Forest | Top of Giant Mushroom | l.camera | 
+| Fungi Forest | Owl Tree Tunnel | l.camera | 
+| Fungi Forest | Above Rabbit Race | l.camera | 
+| Fungi Forest | Opposite Rabbit Race | l.camera | 
+| Fungi Forest | Above Mill | l.camera | 
+| Fungi Forest | Barn Alcove | l.camera | 
+| Fungi Forest | Above path to Thornvine Barn | l.camera | 
+| Forest Anthill | Anthill | l.camera | 
+| Forest Winch Room | Winch Room | l.camera | 
+| Forest Mill Front | Front of Mill | l.camera | 
+| Forest Giant Mushroom | Lower Giant Mushroom Interior | l.camera | 
+| Forest Giant Mushroom | Upper Giant Mushroom Interior | l.camera | 
+| Forest Mill Attic | Lanky's Attic | l.camera | 
+| Forest Mill Back | Mill Interior (Rear) | l.camera | 
+| Forest Spider | Spider Boss Room | l.camera | 
 </details>
 
 ## Crystal Caves
 <details>
 <summary>Fairy Locations</summary>
 
-| Map | Name |
-| --- | ---- |
-| Caves Diddy Upper Cabin | Diddy Candles Cabin | 
-| Caves Tiny Igloo | Tiny Igloo | 
-| Crystal Caves | Level Start | 
-| Crystal Caves | Gorilla Gone Room | 
-| Crystal Caves | Ice Castle Roof | 
-| Crystal Caves | Near Small Boulder | 
-| Crystal Caves | Bananaport Pillar | 
-| Crystal Caves | Giant Boulder Room | 
-| Crystal Caves | Bonus Room | 
-| Crystal Caves | On 5-Door Igloo | 
-| Crystal Caves | Near Bonus Waterfall | 
-| Crystal Caves | Blueprint Cave | 
-| Crystal Caves | 5-Door Cabin Exterior | 
-| Crystal Caves | Near 1-Door Cabin | 
-| Crystal Caves | Under Waterfall Bridge | 
-| Caves Frozen Castle | Inside Tile Flip Room | 
-| Caves Chunky Igloo | Chunky 5-Door Igloo | 
-| Caves Diddy Igloo | Diddy 5-Door Igloo | 
-| Caves Donkey Igloo | Donkey 5-Door Igloo | 
-| Caves Lanky Cabin | 1-Door Cabin | 
-| Caves Chunky Cabin | Chunky 5-Door Cabin | 
+| Map | Name | Logic |
+| --- | ---- | ----- |
+| Caves Diddy Upper Cabin | Diddy Candles Cabin | l.camera and (l.guitar or l.oranges) and l.spring and l.jetpack and l.isdiddy | 
+| Caves Tiny Igloo | Tiny Igloo | l.Slam and (l.istiny or l.settings.free_trade_items) and l.camera | 
+| Crystal Caves | Level Start | l.camera | 
+| Crystal Caves | Gorilla Gone Room | l.camera and ((l.chunky and l.punch) or l.phasewalk or l.CanPhaseswim()) | 
+| Crystal Caves | Ice Castle Roof | l.camera | 
+| Crystal Caves | Near Small Boulder | l.camera | 
+| Crystal Caves | Bananaport Pillar | l.camera | 
+| Crystal Caves | Giant Boulder Room | l.camera | 
+| Crystal Caves | Bonus Room | l.camera | 
+| Crystal Caves | On 5-Door Igloo | l.camera | 
+| Crystal Caves | Near Bonus Waterfall | l.camera | 
+| Crystal Caves | Blueprint Cave | l.camera | 
+| Crystal Caves | 5-Door Cabin Exterior | l.camera | 
+| Crystal Caves | Near 1-Door Cabin | l.camera | 
+| Crystal Caves | Under Waterfall Bridge | l.camera | 
+| Caves Frozen Castle | Inside Tile Flip Room | l.camera | 
+| Caves Chunky Igloo | Chunky 5-Door Igloo | l.camera | 
+| Caves Diddy Igloo | Diddy 5-Door Igloo | l.camera | 
+| Caves Donkey Igloo | Donkey 5-Door Igloo | l.camera | 
+| Caves Lanky Cabin | 1-Door Cabin | l.camera | 
+| Caves Chunky Cabin | Chunky 5-Door Cabin | l.camera | 
 </details>
 
 ## Creepy Castle
 <details>
 <summary>Fairy Locations</summary>
 
-| Map | Name |
-| --- | ---- |
-| Castle Tree | Tree Sniper Room | 
-| Castle Museum | Near Car Race | 
-| Creepy Castle | Start | 
-| Creepy Castle | On Castle Tree | 
-| Creepy Castle | Above Moat | 
-| Creepy Castle | Opposite Library Entrance | 
-| Creepy Castle | Above Snide's | 
-| Creepy Castle | Near Wind Tower | 
-| Castle Ballroom | Ballroom | 
-| Castle Dungeon | Lanky Dungeon | 
-| Castle Dungeon | Donkey Dungeon | 
-| Castle Lower Cave | Above entrance to Mausoleum | 
-| Castle Lower Cave | Near Funky's | 
-| Castle Lower Cave | Above Donkey Diddy Chunky Crypt Entrance | 
-| Castle Tower | Wind Tower | 
-| Castle Library | Library | 
+| Map | Name | Logic |
+| --- | ---- | ----- |
+| Castle Tree | Tree Sniper Room | l.camera and (((l.coconut or l.generalclips) and l.isdonkey) or l.phasewalk) | 
+| Castle Museum | Near Car Race | l.camera | 
+| Creepy Castle | Start | l.camera | 
+| Creepy Castle | On Castle Tree | l.camera | 
+| Creepy Castle | Above Moat | l.camera | 
+| Creepy Castle | Opposite Library Entrance | l.camera | 
+| Creepy Castle | Above Snide's | l.camera | 
+| Creepy Castle | Near Wind Tower | l.camera | 
+| Castle Ballroom | Ballroom | l.camera and l.jetpack and l.isdiddy | 
+| Castle Dungeon | Lanky Dungeon | l.camera and (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) and l.trombone and l.balloon and l.islanky | 
+| Castle Dungeon | Donkey Dungeon | l.camera and ((l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey) or l.phasewalk) | 
+| Castle Lower Cave | Above entrance to Mausoleum | l.camera | 
+| Castle Lower Cave | Near Funky's | l.camera | 
+| Castle Lower Cave | Above Donkey Diddy Chunky Crypt Entrance | l.camera | 
+| Castle Tower | Wind Tower | l.camera | 
+| Castle Library | Library | l.camera | 
 </details>
 
 ## DK Isles
 <details>
 <summary>Fairy Locations</summary>
 
-| Map | Name |
-| --- | ---- |
-| Isles | Small Island | 
-| Isles | Upper Krem Isles | 
-| Frantic Factory Lobby | Factory Lobby | 
-| Fungi Forest Lobby | Fungi Lobby | 
-| Isles | Aztec Roof | 
-| Isles | Behind Fungi Building | 
-| Isles | On Banana Fairy Island | 
-| Isles | Lower Krem Isles | 
-| Isles | On K. Lumsy | 
-| Isles | In Front of Krem Isles | 
-| Banana Fairy Room | Inside Fairy Island | 
-| Angry Aztec Lobby | Angry Aztec Lobby | 
-| Creepy Castle Lobby | Creepy Castle Lobby | 
-| Crystal Caves Lobby | Crystal Caves Lobby | 
-| Isles Snide Room | Snide Room | 
-| Training Grounds | Training Grounds Entrance | 
-| Training Grounds | Training Grounds Hidden Mountain | 
-| Treehouse | Treehouse Windows | 
+| Map | Name | Logic |
+| --- | ---- | ----- |
+| Isles | Small Island | l.camera | 
+| Isles | Upper Krem Isles | l.camera | 
+| Frantic Factory Lobby | Factory Lobby | l.camera and l.punch and l.chunky | 
+| Fungi Forest Lobby | Fungi Lobby | l.camera and l.feather and l.tiny | 
+| Isles | Aztec Roof | l.camera | 
+| Isles | Behind Fungi Building | l.camera | 
+| Isles | On Banana Fairy Island | l.camera and l.jetpack and l.isdiddy and Events.IslesDiddyBarrelSpawn in l.Events | 
+| Isles | Lower Krem Isles | l.camera | 
+| Isles | On K. Lumsy | l.camera | 
+| Isles | In Front of Krem Isles | l.camera | 
+| Banana Fairy Room | Inside Fairy Island | l.camera | 
+| Angry Aztec Lobby | Angry Aztec Lobby | l.camera and ((l.feather and l.tiny) or l.phasewalk) | 
+| Creepy Castle Lobby | Creepy Castle Lobby | l.camera | 
+| Crystal Caves Lobby | Crystal Caves Lobby | l.camera and ((l.punch and l.chunky) or l.phasewalk or l.ledgeclip) | 
+| Isles Snide Room | Snide Room | l.camera | 
+| Training Grounds | Training Grounds Entrance | l.camera | 
+| Training Grounds | Training Grounds Hidden Mountain | l.camera | 
+| Treehouse | Treehouse Windows | l.camera | 
 </details>
 
 ## Hideout Helm
 <details>
 <summary>Fairy Locations</summary>
 
-| Map | Name |
-| --- | ---- |
-| Hideout Helm | Key 8 Room (1) | 
-| Hideout Helm | Key 8 Room (2) | 
-| Hideout Helm | Pineapple Switch Room | 
-| Hideout Helm | Under Grate | 
-| Hideout Helm | Under Chunky Room Stairs | 
-| Hideout Helm | Above the Blast-o-Matic | 
-| Hideout Helm | Navigation Room | 
+| Map | Name | Logic |
+| --- | ---- | ----- |
+| Hideout Helm | Key 8 Room (1) | l.camera and Events.HelmKeyAccess in l.Events | 
+| Hideout Helm | Key 8 Room (2) | l.camera and Events.HelmKeyAccess in l.Events | 
+| Hideout Helm | Pineapple Switch Room | l.camera and (l.handstand and l.lanky) | 
+| Hideout Helm | Under Grate | l.camera and (l.handstand and l.lanky) and (l.chunky and l.pineapple and l.vines) | 
+| Hideout Helm | Under Chunky Room Stairs | l.camera | 
+| Hideout Helm | Above the Blast-o-Matic | l.camera and l.jetpack and l.isdiddy | 
+| Hideout Helm | Navigation Room | l.camera | 
 </details>

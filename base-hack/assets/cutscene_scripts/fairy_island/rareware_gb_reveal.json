@@ -64,24 +64,6 @@
         },
         {
             "unk0": 0,
-            "command": 13,
-            "head": [
-                27,
-                43
-            ],
-            "detailed_command": {
-                "sub_command": 21,
-                "params": [
-                    48,
-                    10,
-                    0,
-                    0
-                ]
-            },
-            "duration": 20
-        },
-        {
-            "unk0": 0,
             "command": 4,
             "head": [
                 63,

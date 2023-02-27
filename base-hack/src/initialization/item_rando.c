@@ -187,6 +187,11 @@ void initItemRando(void) {
     *(int*)(0x806F6350) = 0x0C000000 | (((int)&getObjectCollectability & 0xFFFFFF) >> 2); // Modify Function Call
     *(int*)(0x8070E1F0) = 0x0C000000 | (((int)&handleDynamicItemText & 0xFFFFFF) >> 2); // Handle Dynamic Text Item Name
 
+    *(int*)(0x806A7AEC) = 0x0C000000 | (((int)&BalloonShoot & 0xFFFFFF) >> 2); // Balloon Shoot Hook
+    // Rainbow Coins
+    *(int*)(0x806A222C) = 0x0C000000 | (((int)&getPatchFlag & 0xFFFFFF) >> 2); // Get Patch Flags
+    *(int*)(0x806A2058) = 0x0C000000 | (((int)&getPatchFlag & 0xFFFFFF) >> 2); // Get Patch Flags
+    *(short*)(0x80688C8E) = 0x30; // Reduce scope of detecting if balloon or patch, so patches don't have dynamic flags
     // Item Rando
     for (int i = 0; i < 54; i++) {
         BonusBarrelData[i].spawn_actor = 45; // Spawn GB - Have as default
@@ -242,9 +247,6 @@ void initItemRando(void) {
         *(int*)(0x806C5F04) = 0x0C000000 | (((int)&giveFairyItem & 0xFFFFFF) >> 2); // Fairy Flag Set
         // Rainbow Coins
         *(int*)(0x806A2268) = 0x0C000000 | (((int)&spawnDirtPatchReward & 0xFFFFFF) >> 2); // Spawn Reward
-        *(int*)(0x806A222C) = 0x0C000000 | (((int)&getPatchFlag & 0xFFFFFF) >> 2); // Get Patch Flags
-        *(int*)(0x806A2058) = 0x0C000000 | (((int)&getPatchFlag & 0xFFFFFF) >> 2); // Get Patch Flags
-        *(short*)(0x80688C8E) = 0x30; // Reduce scope of detecting if balloon or patch, so patches don't have dynamic flags
         if (Rando.location_visuals & 1) {
             // Barrel Aesthetic
             initBarrelChange();

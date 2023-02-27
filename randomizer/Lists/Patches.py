@@ -245,7 +245,7 @@ DirtPatchLocations = [
         rotation=2048,
         group=7,
         logicregion=Regions.HideoutHelmLobby,
-        logic=lambda l: l.gorillaGone and l.ischunky and l.shockwave,
+        logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles - Hideout Helm Lobby: Blueprint Platform",

@@ -2,7 +2,7 @@
 import sys
 import json
 import os
-from typing import Callable
+import inspect
 from copy import deepcopy
 from enum import IntEnum, auto
 
@@ -66,11 +66,14 @@ def dump_to_dict(class_instance, deleted=[], enum_value=[], enum_name=[], logic_
                 as_dict[item] = as_dict[item].name
     if logic_var is not None:
         if logic_var in as_dict:
-            del as_dict[logic_var]
-            # logic_raw = inspect.getsourcelines(as_dict[logic_var])[0][0]
-            # if "lambda l: True":
-            #     logic_raw = True
-            # as_dict[logic_var] = logic_raw
+            logic_raw = " ".join([x.strip() for x in inspect.getsourcelines(as_dict[logic_var])[0]]).replace("\n", "").replace("\t", "")
+            if "lambda l: True" in logic_raw:
+                del as_dict[logic_var]
+            else:
+                logic_raw = logic_raw.strip()
+                if logic_raw[-1:] == ",":
+                    logic_raw = logic_raw[:-1]
+                as_dict[logic_var] = logic_raw.split("lambda l: ")[-1]
     func_dict = {
         "X": x_func,
         "Y": y_func,
@@ -175,38 +178,40 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                         dumper_header = headers[dumper]
                     fh.write(f"<details>\n<summary>{dumper_header}</summary>\n\n")
                     if dumper in (Dumpers.Crowns, Dumpers.Fairies, Dumpers.Kasplats, Dumpers.Patches):
-                        fh.write("| Map | Name |\n")
-                        fh.write("| --- | ---- |\n")
+                        fh.write("| Map | Name | Logic |\n")
+                        fh.write("| --- | ---- | ----- |\n")
                     elif dumper == Dumpers.Doors:
-                        fh.write("| Map | Name | Door types acceptable in location |\n")
-                        fh.write("| --- | ---- | --------------------------------- |\n")
+                        fh.write("| Map | Name | Door types acceptable in location | Logic |\n")
+                        fh.write("| --- | ---- | --------------------------------- | ----- |\n")
                     groupings = {}
                     for y in data[x]:
                         if dumper in (Dumpers.ColoredBananas, Dumpers.Coins):
                             if dumper == Dumpers.Coins:
                                 if y["map"] not in groupings:
                                     groupings[y["map"]] = []
-                                groupings[y["map"]].append(f"| {y['name']} | {len(y['locations'])} | \n")
+                                groupings[y["map"]].append(f"| {y['name']} | {len(y['locations'])} | {y.get('logic', '')} | \n")
                             elif y["class"] == "cb":
                                 if y["map"] not in groupings:
                                     groupings[y["map"]] = []
-                                groupings[y["map"]].append(f"| {y['name']} | {sum([a[0] for a in y['locations']])} | \n")
+                                groupings[y["map"]].append(f"| {y['name']} | {sum([a[0] for a in y['locations']])} | {y.get('logic', '')} | \n")
                             elif y["class"] == "balloon":
                                 if y["map"] not in groupings:
                                     groupings[y["map"]] = []
-                                groupings[y["map"]].append(f"| {y['name']} | Balloon |\n")
-                        elif dumper in (Dumpers.Crowns, Dumpers.Fairies, Dumpers.Kasplats):
-                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | \n")
+                                groupings[y["map"]].append(f"| {y['name']} | Balloon | {y.get('logic', '')} | \n")
+                        elif dumper in (Dumpers.Crowns, Dumpers.Fairies):
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y.get('logic', '')} | \n")
+                        elif dumper == Dumpers.Kasplats:
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y.get('additional_logic', '')} | \n")
                         elif dumper == Dumpers.Doors:
-                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y['door_type'].title()} | \n")
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y['door_type'].title()} | {y.get('logic', '')} | \n")
                         elif dumper == Dumpers.Patches:
-                            fh.write(f"| {getMapNameFromIndex(y['map_id'])} | {y['name']} | \n")
+                            fh.write(f"| {getMapNameFromIndex(y['map_id'])} | {y['name']} | {y.get('logic', '')} | \n")
                     for group in groupings:
                         if dumper in (Dumpers.ColoredBananas, Dumpers.Coins):
                             fh.write("<details>\n")
                             fh.write(f"<summary>{getMapNameFromIndex(group)}</summary>\n\n")
-                            fh.write("| Name | Amount |\n")
-                            fh.write("| ---- | ------ |\n")
+                            fh.write("| Name | Amount | Logic |\n")
+                            fh.write("| ---- | ------ | ----- |\n")
                             for item in groupings[group]:
                                 fh.write(item)
                             fh.write("</details>\n")

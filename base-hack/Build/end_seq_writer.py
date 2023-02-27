@@ -49,17 +49,31 @@ main_devs = [
 
 assistant_devs = [
     CreditItem("top", "header", ["Assistant Developers"]),
-    CreditItem("right", "normal", ["Aljex", "GloriousLiar", "JXJacob", "Mittenz"]),
-    CreditItem("left", "normal", ["Naramgamjan", "OnlySpaghettiCode", "Plessy", "Rain"]),
+    CreditItem("right", "normal", ["Aljex", "GloriousLiar", "JXJacob"]),
+    CreditItem("left", "normal", ["Mittenz", "Naramgamjan", "OnlySpaghettiCode"]),
+    CreditItem("right", "normal", ["Plessy", "Rain", "The Sound Defense"]),
 ]
 
-beta_testers = [
-    CreditItem("top", "header", ["Beta Testers"]),
-    CreditItem("left", "normal", ["Adam Whitmore", "Auphonium", "CandyBoots", "ChelseyXLynn", "ChristianVega64"]),
-    CreditItem("right", "normal", ["Connor75", "CornCobx0", "Fuzzyness", "KaptainKohl", "KiwiKiller67"]),
-    CreditItem("left", "normal", ["Nukkuler", "Obiyo", "Revven", "Riley"]),
-    CreditItem("bottom", "normal", ["SirSmackStrikesBack", "UsedPizza", "VidyaJames", "Wex", "Zorulda"]),
-]
+# BETA TESTERS
+# Adam Whitmore
+# Auphonium
+# Candy Boots
+# ChelseyXLynn
+# ChristianVega64
+# Connor75
+# CornCobX0
+# Fuzzyness
+# KaptainKohl
+# Kiwikiller67
+# Nukkuler
+# Obiyo
+# Revven
+# Riley
+# SirSmackStrikesBack
+# UsedPizza
+# VidyaJames
+# Wex_AZ
+# Zorulda
 
 bbb_contest = [CreditItem("top", "header", ["Big Bug Bashers"]), CreditItem("right", "normal", basher_names)]
 
@@ -68,6 +82,7 @@ additional_thanks = [
     CreditItem("left", "normal", ["Game Developers", " ", "Rareware Ltd", "Nintendo"]),
     CreditItem("bottom", "normal", ["Crankys Lab Developer", "Isotarge"]),
     CreditItem("right", "normal", ["SpikeVegeta", "KeiperDontCare"]),
+    CreditItem("left", "normal", ["Beta Testers", "Dev Branch Testers"]),
 ]
 
 links = [CreditItem("top", "longheader", ["You have been playing", "DK64 Randomizer", "dk64randomizer.com"]), CreditItem("bottom", "longheader", ["Discord", " ", "discord.dk64randomizer.com"])]
@@ -76,8 +91,6 @@ end_sequence_cards = []
 end_sequence_cards.extend(main_devs)
 end_sequence_cards.extend(assistant_devs)
 
-if not is_v2_release:
-    end_sequence_cards.extend(beta_testers)
 if len(basher_names) > 0 and is_v2_release:
     end_sequence_cards.extend(bbb_contest)
 end_sequence_cards.extend(additional_thanks)

@@ -101,6 +101,7 @@
 .definelabel p1PressedButtons, 0x807ECD48
 .definelabel p1HeldButtons, 0x807ECD58
 .definelabel player_count, 0x807FC928
+.definelabel FocusedPlayerIndex, 0x807FC929
 .definelabel sprite_table, 0x80755390
 .definelabel sprite_translucency, 0x807FC80F
 .definelabel bbbandit_array, 0x8002DB80
@@ -221,7 +222,10 @@
 .definelabel ArcadeBackgrounds, 0x8004A788
 .definelabel ArcadeExited, 0x8004A73C
 .definelabel ArcadeStoryMode, 0x8004A740
+.definelabel ArcadeMap, 0x8004C723
 .definelabel ArcadeEnableReward, 0x8004A770
+.definelabel ArcadeScores, 0x8004A74C
+.definelabel ArcadeCurrentScore, 0x8004A748
 
 .definelabel CharSpawnerActorSubtypes, 0x80755698
 .definelabel CharSpawnerActorData, 0x8075EB80
