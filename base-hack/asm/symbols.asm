@@ -224,6 +224,8 @@
 .definelabel ArcadeStoryMode, 0x8004A740
 .definelabel ArcadeMap, 0x8004C723
 .definelabel ArcadeEnableReward, 0x8004A770
+.definelabel ArcadeScores, 0x8004A74C
+.definelabel ArcadeCurrentScore, 0x8004A748
 
 .definelabel CharSpawnerActorSubtypes, 0x80755698
 .definelabel CharSpawnerActorData, 0x8075EB80

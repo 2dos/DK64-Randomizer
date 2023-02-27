@@ -61,6 +61,8 @@ extern void setArcadeTextColor(int red, int green, int blue, int alpha);
 extern int arcadeGetObjIndexOfType(int obj_type);
 extern int arcadeGetNextVacantSlot(void);
 extern void setArcadeSong(int songIndex);
+extern void sendToHiScorePage(void);
+extern void sendToNextMap(void);
 extern void hideHUD(void);
 extern void tagKong(int kong_actor_index);
 extern void clearGun(void* player);
@@ -557,6 +559,8 @@ extern unsigned char ArcadeExited;
 extern unsigned char ArcadeStoryMode;
 extern unsigned char ArcadeMap;
 extern unsigned char ArcadeEnableReward;
+extern int ArcadeScores[5];
+extern int ArcadeCurrentScore;
 
 extern unsigned char CharSpawnerActorSubtypes[113];
 extern charSpawnerActorInfo CharSpawnerActorData[113];

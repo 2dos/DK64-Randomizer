@@ -102,6 +102,7 @@
     "short_bosses":1,
     "fast_warp":1,
     "activate_all_bananaports":1,
+    "arcade_order":[2, 3, 4, 1],
     "piano_game_order":[
        5,
        0,

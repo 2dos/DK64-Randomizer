@@ -570,7 +570,7 @@ for x in range(6):
 for x in range(221):
     file_dict.append(File(name=f"Zones for map {x}", pointer_table_index=TableNames.Triggers, file_index=x, source_file=f"lz{x}.bin", target_compressed_size=0x850, do_not_recompress=True))
 # Setup
-setup_expansion_size = 0x12C0
+setup_expansion_size = 0x2580
 for x in range(221):
     local_expansion = setup_expansion_size
     if x in (0, 1, 2, 5, 9, 15, 0x19):
