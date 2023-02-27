@@ -531,7 +531,7 @@ class LogicVarHolder:
             HelmDoorItem.req_medal: self.BananaMedals,
             HelmDoorItem.req_crown: self.BattleCrowns,
             HelmDoorItem.req_fairy: self.BananaFairies,
-            # HelmDoorItem.req_rainbowcoin: self.BattleCrowns,
+            HelmDoorItem.req_rainbowcoin: self.RainbowCoins,
             HelmDoorItem.req_bean: self.Beans,
             HelmDoorItem.req_pearl: self.Pearls,
         }

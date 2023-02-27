@@ -99,6 +99,7 @@ void initQoL_Fixes(void) {
         *(int*)(0x806BE8D8) = 0x0C000000 | (((int)&RabbitRaceInfiniteCode & 0xFFFFFF) >> 2); // Modify Function Call
         *(int*)(0x8067C168) = 0x0C000000 | (((int)&fixDilloTNTPads & 0xFFFFFF) >> 2); // Modify Function Call
         actor_functions[249] = &squawks_with_spotlight_actor_code;
+        *(int*)(0x806E5C04) = 0x0C000000 | (((int)&fixCrownEntrySKong & 0xFFFFFF) >> 2); // Modify Function Call
     }
 }
 
@@ -150,7 +151,7 @@ void bootSpeedup(void) {
 					for (int j = 0; j < actor_count; j++) {
 						int actor = *(short*)((int)focused_actor + 0x32) + 0x10;
 						balloon_patch_count += isBalloonOrPatch(actor);
-						if ((Rando.item_rando) && (actor == 139)) {
+						if (actor == 139) {
                             int world = 7;
                             if (!isLobby(i)) {
 								world = levelIndexMapping[i];
