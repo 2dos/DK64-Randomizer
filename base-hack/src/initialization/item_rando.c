@@ -187,6 +187,7 @@ void initItemRando(void) {
     *(int*)(0x806F6350) = 0x0C000000 | (((int)&getObjectCollectability & 0xFFFFFF) >> 2); // Modify Function Call
     *(int*)(0x8070E1F0) = 0x0C000000 | (((int)&handleDynamicItemText & 0xFFFFFF) >> 2); // Handle Dynamic Text Item Name
 
+    *(int*)(0x806A7AEC) = 0x0C000000 | (((int)&BalloonShoot & 0xFFFFFF) >> 2); // Balloon Shoot Hook
     // Item Rando
     for (int i = 0; i < 54; i++) {
         BonusBarrelData[i].spawn_actor = 45; // Spawn GB - Have as default

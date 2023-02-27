@@ -475,6 +475,11 @@ void forceDance(void) {
     }    
 }
 
+void BalloonShoot(int item, int player, int change) {
+    addHelmTime(HHITEM_CB, change);
+    changeCollectableCount(item, player, change);
+}
+
 void getItem(int object_type) {
     /**
      * @brief Item Grab hook, at the point of touching the item, before the flag is set.
@@ -590,7 +595,7 @@ void getItem(int object_type) {
             // Blueprint
             playSong(69, *(int*)(&pickup_volume));
             forceDance();
-            // hh_item = HHITEM_BLUEPRINT; // Ignored as it's handled in a separate case
+            hh_item = HHITEM_BLUEPRINT;
             break;
         case 0xEC:
         case 0x1D2:

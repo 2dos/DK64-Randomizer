@@ -48,6 +48,13 @@ int convertSubIDToIndex(short obj_index) {
 	return index;
 }
 
+int isFlagInRange(int test_flag, int start_flag, int count) {
+	if (test_flag >= start_flag) {
+		return test_flag < (start_flag + count);
+	}
+	return 0;
+}
+
 
 void* findActorWithType(int search_actor_type) {
 	for (int i = 0; i < ActorCount; i++) {

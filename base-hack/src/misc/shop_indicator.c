@@ -187,11 +187,11 @@ int getCounterItem(int shop_index, int kong, int level) {
 			case PURCHASE_FLAG:
 				{
 					int flag = data->purchase_value;
-					if ((flag >= FLAG_BP_JAPES_DK_HAS) && (flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
+					if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 						return COUNTER_BP;
-					} else if ((flag >= FLAG_MEDAL_JAPES_DK) && (flag < (FLAG_MEDAL_JAPES_DK + 40))) {
+					} else if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
 						return COUNTER_MEDAL;
-					} else if ((flag >= FLAG_CROWN_JAPES) && (flag < (FLAG_CROWN_JAPES + 10))) {
+					} else if (isFlagInRange(flag, FLAG_CROWN_JAPES, 10)) {
 						return COUNTER_CROWN;
 					} else if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
 						return COUNTER_NINCOIN;
@@ -199,19 +199,19 @@ int getCounterItem(int shop_index, int kong, int level) {
 						return COUNTER_RWCOIN;
 					} else if (flag == FLAG_COLLECTABLE_BEAN) {
 						return COUNTER_BEAN;
-					} else if ((flag >= FLAG_PEARL_0_COLLECTED) && (flag < (FLAG_PEARL_0_COLLECTED + 5))) {
+					} else if (isFlagInRange(flag, FLAG_PEARL_0_COLLECTED, 5)) {
 						return COUNTER_PEARL;
-					} else if ((flag >= FLAG_FAIRY_1) && (flag < (FLAG_FAIRY_1 + 20))) {
+					} else if (isFlagInRange(flag, FLAG_FAIRY_1, 20)) {
 						return COUNTER_FAIRY;
-					} else if ((flag >= FLAG_RAINBOWCOIN_0) && (flag < (FLAG_RAINBOWCOIN_0 + 16))) {
+					} else if (isFlagInRange(flag, FLAG_RAINBOWCOIN_0, 16)) {
 						return COUNTER_RAINBOWCOIN;
-					} else if ((flag >= FLAG_FAKEITEM) && (flag < (FLAG_FAKEITEM + 16))) {
+					} else if (isFlagInRange(flag, FLAG_FAKEITEM, 16)) {
 						return COUNTER_FAKEITEM;
 					} else {
-						if ((flag == FLAG_TBARREL_BARREL) || (flag == FLAG_TBARREL_DIVE) || (flag == FLAG_TBARREL_ORANGE) || (flag == FLAG_TBARREL_VINE)) {
+						if (isTBarrelFlag(flag)) {
 							return COUNTER_POTION;
 						}
-						if ((flag == FLAG_ABILITY_CAMERA) || (flag == FLAG_ABILITY_SHOCKWAVE)) {
+						if (isFairyFlag(flag)) {
 							return COUNTER_POTION;
 						}
 						int subtype = getMoveProgressiveFlagType(flag);

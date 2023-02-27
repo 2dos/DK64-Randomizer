@@ -295,6 +295,10 @@ extern int isObjectTangible_detailed(int id);
 
 extern void insertROMMessages(void);
 extern void handleModelTwoOpacity(short object_type, unsigned char* unk0, short* opacity);
+extern int isTBarrelFlag(int flag);
+extern int isFairyFlag(int flag);
+extern int isFlagInRange(int test_flag, int start_flag, int count);
+extern void BalloonShoot(int item, int player, int change);
 
 extern item_collision* writeItemScale(int id);
 extern item_collision* writeItemActorScale(void);
