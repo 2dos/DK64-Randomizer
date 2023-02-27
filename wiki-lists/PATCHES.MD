@@ -24,7 +24,7 @@
 | Banana Fairy Room | DK Isles - Banana Fairy Room: Behind Fairy Chair | l.shockwave | 
 | Banana Fairy Room | DK Isles - Banana Fairy Room: Behind the Rareware Door | l.BananaFairies >= l.settings.rareware_gb_fairies and l.shockwave | 
 | KLumsy | DK Isles - K Lumsy: Under K. Lumsy | (l.CanAccessKRool() or l.phasewalk) and l.shockwave | 
-| Hideout Helm Lobby | DK Isles - Hideout Helm Lobby: Next to Tag Barrel | l.gorillaGone and l.ischunky and l.shockwave | 
+| Hideout Helm Lobby | DK Isles - Hideout Helm Lobby: Next to Tag Barrel | l.shockwave | 
 | Hideout Helm Lobby | DK Isles - Hideout Helm Lobby: Blueprint Platform | ((l.coconut and l.scope) or (l.twirl and l.istiny and l.advanced_platforming)) and l.shockwave | 
 | Jungle Japes Lobby | DK Isles - Jungle Japes Lobby: Near Tag Barrel | l.shockwave | 
 | Angry Aztec Lobby | DK Isles - Angry Aztec Lobby: Behind Feather Door | l.feather and l.shockwave | 

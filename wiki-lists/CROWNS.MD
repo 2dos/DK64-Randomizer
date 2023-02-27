@@ -345,17 +345,17 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Hideout Helm | Hideout Helm - Metal grate by Mini Monkey barrel | l.lanky | 
-| Hideout Helm | Hideout Helm - Mini Monkey room right side | l.lanky | 
-| Hideout Helm | Hideout Helm - Pineapple switch room in ammo alcove | l.lanky | 
+| Hideout Helm | Hideout Helm - Metal grate by Mini Monkey barrel | ( l.lanky and l.handstand and ((l.chunky and l.pineapple and l.vines) or l.phasewalk) and ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) ) | 
+| Hideout Helm | Hideout Helm - Mini Monkey room right side | ( l.lanky and l.handstand and ((l.chunky and l.pineapple and l.vines) or l.phasewalk) and ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) ) | 
+| Hideout Helm | Hideout Helm - Pineapple switch room in ammo alcove | ( l.lanky and l.handstand and l.settings.helm_setting == HelmSetting.skip_all or (Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events) ) | 
 | Hideout Helm | Hideout Helm - First room left of Tag barrel | ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) | 
-| Hideout Helm | Hideout Helm - Top of Blast-o-Matic | l.jetpack | 
+| Hideout Helm | Hideout Helm - Top of Blast-o-Matic | ( l.jetpack and l.isdiddy and ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) ) | 
 | Hideout Helm | Hideout Helm - Blast-o-Matic platform left side | ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) | 
 | Hideout Helm | Hideout Helm - Blast-o-Matic platform right side | ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) | 
 | Hideout Helm | Hideout Helm - Under K. Rool door | ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) | 
-| Hideout Helm | Hideout Helm - Navigation room near terminals |  | 
-| Hideout Helm | Hideout Helm - Navigation room near left window |  | 
-| Hideout Helm | Hideout Helm - Navigation room near right window |  | 
-| Hideout Helm | Hideout Helm - K. Rool room near kong faces | ((l.CrownDoorOpened() and l.CoinDoorOpened()) or l.generalclips) | 
-| Hideout Helm | Hideout Helm - K. Rool room in front of chair | ((l.CrownDoorOpened() and l.CoinDoorOpened()) or l.generalclips) | 
+| Hideout Helm | Hideout Helm - Navigation room near terminals | ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) | 
+| Hideout Helm | Hideout Helm - Navigation room near left window | ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) | 
+| Hideout Helm | Hideout Helm - Navigation room near right window | ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) | 
+| Hideout Helm | Hideout Helm - K. Rool room near kong faces | ( ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) and (l.CrownDoorOpened() or l.generalclips) ) | 
+| Hideout Helm | Hideout Helm - K. Rool room in front of chair | ( ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) and (l.CrownDoorOpened() or l.generalclips) ) | 
 </details>
