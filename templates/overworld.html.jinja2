@@ -74,7 +74,18 @@
                             Helm Hurry Mode
                         </label>
                         {{ properties_selector(helm_hurry_items, "helmhurry_list", "HELM HURRY SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.") }}
-                    <div class="spacer"></div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                            title="Item rando with shops only. Reduces the number of items offered in shops to a maximum of 3."
+                            style="text-align: left">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="smaller_shops"
+                                id="smaller_shops"
+                                value="True"/>
+                            Smaller Shops
+                        </label>
+                    </div>
                     </div>
                     <div class="flex-container">
                         <div class="item-select">
