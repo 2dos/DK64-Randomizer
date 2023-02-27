@@ -298,6 +298,8 @@ void initHack(int source) {
 			*(short*)(0x806F916A) = FLAG_ABILITY_CAMERA; // Film max
 			// LZ Save
 			*(int*)(0x80712EC4) = 0x0C000000 | (((int)&postKRoolSaveCheck & 0xFFFFFF) >> 2);
+			// Opacity fixes
+			*(int*)(0x806380B0) = 0x0C000000 | (((int)&handleModelTwoOpacity & 0xFFFFFF) >> 2);
 			if (Rando.medal_cb_req > 0) {
 				// Change CB Req
 				*(short*)(0x806F934E) = Rando.medal_cb_req; // Acquisition

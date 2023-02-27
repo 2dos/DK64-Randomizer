@@ -215,7 +215,7 @@ int checkDoorItem(int index, int count) {
 		case DOORITEM_MEDAL:
 			return countFlagsDuplicate(FLAG_MEDAL_JAPES_DK, 40, 0) >= count;
 		case DOORITEM_RAINBOWCOIN:
-			return 1;
+			return countFlagsDuplicate(FLAG_RAINBOWCOIN_0, 16, 0) >= count;
 		case DOORITEM_CROWN:
 			return countFlagsDuplicate(FLAG_CROWN_JAPES, 10, 0) >= count;
 		case DOORITEM_COMPANYCOIN:

@@ -475,6 +475,11 @@ void forceDance(void) {
     }    
 }
 
+void BalloonShoot(int item, int player, int change) {
+    addHelmTime(HHITEM_CB, change);
+    changeCollectableCount(item, player, change);
+}
+
 void getItem(int object_type) {
     /**
      * @brief Item Grab hook, at the point of touching the item, before the flag is set.
@@ -590,7 +595,7 @@ void getItem(int object_type) {
             // Blueprint
             playSong(69, *(int*)(&pickup_volume));
             forceDance();
-            // hh_item = HHITEM_BLUEPRINT; // Ignored as it's handled in a separate case
+            hh_item = HHITEM_BLUEPRINT;
             break;
         case 0xEC:
         case 0x1D2:
@@ -722,6 +727,12 @@ int getObjectCollectability(int id, int unk1, int model2_type) {
     } else if (model2_type == 0x8F) {
         // Regular Crate
         return MovesBase[(int)Character].weapon_bitfield & 1;
+    } else if (model2_type == 0x56) {
+        // Orange
+        if (CurrentMap == 0xB4) { // Orange Barrel
+            return 1;
+        }
+        return checkFlagDuplicate(FLAG_TBARREL_ORANGE, 0);
     } else if (model2_type == 0x90) {
         // Medal
         if (CurrentMap == 0x11) {
@@ -734,7 +745,7 @@ int getObjectCollectability(int id, int unk1, int model2_type) {
         }
     } else if (model2_type == 0x98) {
         // Film
-        return checkFlag(FLAG_ABILITY_CAMERA,0);
+        return checkFlagDuplicate(FLAG_ABILITY_CAMERA,0);
     }
     int collectable_state = _object->collectable_state;
     if (((collectable_state & 8) == 0) || (Player->new_kong == 2)) {
@@ -753,4 +764,68 @@ int getObjectCollectability(int id, int unk1, int model2_type) {
         return 0;
     }
     return 0;
+}
+
+int isCollectable(int type) {
+    int player_index = FocusedPlayerIndex;
+    int kong = -1;
+    switch(type) {
+        case 0xD: // DK Single
+        case 0x1D: // DK Coin
+        case 0x2B: // DK Bunch
+            kong = KONG_DK;
+        case 0xA: // Diddy Single
+        case 0x24: // Diddy Coin
+        case 0x208: // Diddy Bunch
+            if (kong == -1) {
+                kong = KONG_DIDDY;
+            }
+        case 0x1E: // Lanky Single
+        case 0x23: // Lanky Coin
+        case 0x205: // Lanky Bunch
+            if (kong == -1) {
+                kong = KONG_LANKY;
+            }
+        case 0x16: // Tiny Single
+        case 0x1C: // Tiny Coin
+        case 0x207: // Tiny Bunch
+            if (kong == -1) {
+                kong = KONG_TINY;
+            }
+        case 0x1F: // Chunky Single
+        case 0x27: // Chunky Coin
+        case 0x206: // Chunky Bunch
+            if (kong == -1) {
+                kong = KONG_CHUNKY;
+            }
+            if (kong > -1) {
+                if (Rando.quality_of_life.rambi_enguarde_pickup) {
+                    return SwapObject[player_index].player->new_kong == kong + 2;
+                }
+                return SwapObject[player_index].player->characterID == kong + 2;
+            }
+            return 1;
+        case 0x11: // Homing Crate
+            return (MovesBase[(int)Character].weapon_bitfield & 3) == 3;
+        case 0x8E: // Crystal
+            return SwapObject[player_index].player->unk_fairycam_bitfield & 2;
+        case 0x8F: // Ammo Crate
+            return MovesBase[(int)Character].weapon_bitfield & 1;
+        case 0x98: // Film
+            return checkFlagDuplicate(FLAG_ABILITY_CAMERA, 0);
+        case 0x56: // Oranges
+            if (CurrentMap != 0xB4) {
+                return checkFlagDuplicate(FLAG_TBARREL_ORANGE, 0);
+            }
+    }
+    return 1;
+}
+
+void handleModelTwoOpacity(short object_type, unsigned char* unk0, short* opacity) {
+    if (!isCollectable(object_type)) {
+        *unk0 = 0;
+        if (*opacity > 100) {
+            *opacity = 100;
+        }
+    }
 }

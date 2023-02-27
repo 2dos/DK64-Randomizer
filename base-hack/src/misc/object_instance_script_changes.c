@@ -1052,6 +1052,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if (param2 == LLAMA_LAVAGATE) {
 					if (Rando.quality_of_life.remove_cutscenes) {
 						hideObject(behaviour_pointer);
+						behaviour_pointer->pause_state = 1;
 					}
 				} else if (param2 == LLAMA_BAMBOOGATE) {
 					if (index == 0) {
@@ -1697,7 +1698,6 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 											PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
 											setFlag(FLAG_MODIFIER_HELMBOM, 1, 0);
 											setFlag(0x50,1,2);
-											*(int*)(0x807FF704) = param2;
 										} else if (next_slot > -1) {
 											// Move to next
 											PlayCutsceneFromModelTwoScript(behaviour_pointer, current_slot + 4, 1, 0);
@@ -1706,19 +1706,18 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 										if (previous_slot == -1) {
 											// First or not in sequence
 											return 1;
-										} else {
-											return checkFlag(previous_slot + 0x4B, 2);
 										}
+										return checkFlag(previous_slot + 0x4B, 2);
 									}
 								} else  if (index == 2) {
 									if ((Rando.microhints > 1) && ((MovesBase[helm_pad_kong].instrument_bitfield & 1) == 0)) {
 										behaviour_pointer->next_state = 20;
-										behaviour_pointer->current_state = 20;
+										// behaviour_pointer->current_state = 20;
 									}
 								} else if (index == 3) {
 									if (MovesBase[helm_pad_kong].instrument_bitfield & 1) {
 										behaviour_pointer->next_state = 0;
-										behaviour_pointer->current_state = 0;
+										// behaviour_pointer->current_state = 0;
 									}
 								}
 							}

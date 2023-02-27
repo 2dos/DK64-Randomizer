@@ -4,3 +4,5 @@
 .definelabel arcadeGetObjIndexOfType, 0x80024860
 .definelabel arcadeGetNextVacantSlot, 0x800247B8
 .definelabel setArcadeSong, 0x800252A4
+.definelabel sendToHiScorePage, 0x80024B04
+.definelabel sendToNextMap, 0x800257D8

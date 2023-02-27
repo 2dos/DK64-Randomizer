@@ -6,7 +6,7 @@ from itertools import groupby
 
 import js
 
-from randomizer.Enums.Settings import SettingsMap, SettingsStringDataType, SettingsStringEnum, SettingsStringListTypeMap, SettingsStringTypeMap
+from randomizer.Enums.Settings import SettingsStringDataType, SettingsStringEnum, SettingsStringListTypeMap, SettingsStringTypeMap
 
 letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 index_to_letter = {i: letters[i] for i in range(64)}
@@ -109,13 +109,13 @@ def encrypt_settings_string_enum(dict_data: dict):
                 elif key_list_data_type == SettingsStringDataType.int16:
                     bitstring += int_to_bin_string(item, 16)
                 else:
-                    enum_values = [member.value for member in key_list_data_type]
-                    index = enum_values.index(item.value)
-                    bitstring += format(index, f"0{len(enum_values).bit_length()}b")
+                    # The value is an enum.
+                    max_value = max([member.value for member in key_list_data_type])
+                    bitstring += format(item.value, f"0{max_value.bit_length()}b")
         else:
-            enum_values = [member.value for member in key_data_type]
-            index = enum_values.index(value.value)
-            bitstring += format(index, f"0{len(enum_values).bit_length()}b")
+            # The value is an enum.
+            max_value = max([member.value for member in key_data_type])
+            bitstring += format(value.value, f"0{max_value.bit_length()}b")
 
     # Pad the bitstring with zeroes until the length is divisible by 6.
     remainder = len(bitstring) % 6
@@ -160,8 +160,6 @@ def decrypt_settings_string_enum(encrypted_string: str):
         bit_index += 8
         key_enum = SettingsStringEnum(key)
         key_name = key_enum.name
-        # If this key is in the SettingsMap, convert the value to enum.
-        convert_to_enum = key_name in SettingsMap
         key_data_type = SettingsStringTypeMap[key_enum]
         val = None
         if key_data_type == SettingsStringDataType.bool:
@@ -196,21 +194,17 @@ def decrypt_settings_string_enum(encrypted_string: str):
                     list_val = bin_string_to_int(bitstring[bit_index : bit_index + 16], 16)
                     bit_index += 16
                 else:
-                    enum_values = [member.value for member in key_list_data_type]
-                    index = int(bitstring[bit_index : bit_index + len(enum_values).bit_length()], 2)
-                    list_val = key_list_data_type(index)
-                    bit_index += len(enum_values).bit_length()
-                # Convert to enum, if necessary.
-                if convert_to_enum:
-                    list_val = SettingsMap[key_name](list_val)
+                    # The value is an enum.
+                    max_value = max([member.value for member in key_list_data_type])
+                    int_val = int(bitstring[bit_index : bit_index + max_value.bit_length()], 2)
+                    list_val = key_list_data_type(int_val)
+                    bit_index += max_value.bit_length()
                 val.append(list_val)
         else:
-            enum_values = [member.value for member in key_data_type]
-            index = int(bitstring[bit_index : bit_index + len(enum_values).bit_length()], 2)
-            settings_dict[key_name] = key_data_type(index)
-            bit_index += len(enum_values).bit_length()
-        # Convert to enum, if necessary.
-        if convert_to_enum and key_data_type != SettingsStringDataType.list:
-            val = SettingsMap[key_name](val)
+            # The value is an enum.
+            max_value = max([member.value for member in key_data_type])
+            int_val = int(bitstring[bit_index : bit_index + max_value.bit_length()], 2)
+            val = key_data_type(int_val)
+            bit_index += max_value.bit_length()
         settings_dict[key_name] = val
     return settings_dict

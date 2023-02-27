@@ -68,9 +68,9 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 				base = MRT_NOBUY_FAIRYMOVE;
 			} else if (purchase_type == PURCHASE_GB) {
 				base = MRT_NOBUY_BANANA;
-			} else if ((shop_data->flag >= FLAG_BP_JAPES_DK_HAS) && (shop_data->flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
+			} else if (isFlagInRange(shop_data->flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 				base = MRT_NOBUY_BLUEPRINT;
-			} else if ((shop_data->flag >= FLAG_MEDAL_JAPES_DK) && (shop_data->flag < (FLAG_MEDAL_JAPES_DK + 40))) {
+			} else if (isFlagInRange(shop_data->flag, FLAG_MEDAL_JAPES_DK, 40)) {
 				base = MRT_NOBUY_MEDAL;
 			} else if (subtype == 0) {
 				base = MRT_NOBUY_SLAM;
@@ -123,23 +123,23 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 				}
 				if (base == 0) {
 					int flag = shop_data->flag;
-					if ((flag >= FLAG_BP_JAPES_DK_HAS) && (flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
+					if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 						base = MRT_CANBUY_BLUEPRINT;
-					} else if ((flag >= FLAG_MEDAL_JAPES_DK) && (flag < (FLAG_MEDAL_JAPES_DK + 40))) {
+					} else if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
 						base = MRT_CANBUY_MEDAL;
 					} else if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
 						base = MRT_CANBUY_NINTENDO;
 					} else if (flag == FLAG_COLLECTABLE_RAREWARECOIN) {
 						base = MRT_CANBUY_RAREWARE;
-					} else if ((flag >= FLAG_CROWN_JAPES) && (flag < (FLAG_CROWN_JAPES + 10))) {
+					} else if (isFlagInRange(flag, FLAG_CROWN_JAPES, 10)) {
 						base = MRT_CANBUY_CROWN;
 					} else if (flag == FLAG_COLLECTABLE_BEAN) {
 						base = MRT_CANBUY_BEAN;
-					} else if ((flag >= FLAG_PEARL_0_COLLECTED) && (flag < (FLAG_PEARL_0_COLLECTED + 5))) {
+					} else if (isFlagInRange(flag, FLAG_PEARL_0_COLLECTED, 5)) {
 						base = MRT_CANBUY_PEARL;
-					} else if ((flag >= FLAG_FAIRY_1) && (flag < (FLAG_FAIRY_1 + 20))) {
+					} else if (isFlagInRange(flag, FLAG_FAIRY_1, 20)) {
 						base = MRT_CANBUY_FAIRY;
-					} else if ((flag >= FLAG_FAKEITEM) && (flag < (FLAG_FAKEITEM + 0x10))) {
+					} else if (isFlagInRange(flag, FLAG_FAKEITEM, 0x10)) {
 						base = MRT_CANBUY_FAKEITEM;
 					} else {
 						// Kongs

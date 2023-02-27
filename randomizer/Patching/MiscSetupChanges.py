@@ -233,7 +233,7 @@ def randomize_setup(spoiler: Spoiler):
                         y_position = random.uniform(-131, 500)
                         star_donut_center = [1055.704, 3446.966]
                         if y_position < 0:
-                            star_donut_boundaries = [230, 335.971]
+                            star_donut_boundaries = [230, 300.971]
                         else:
                             star_donut_boundaries = [123.128, 235.971]
                         star_height_boundaries = [y_position, y_position]
