@@ -68,7 +68,6 @@ def dump_to_dict(class_instance, deleted=[], enum_value=[], enum_name=[], logic_
         if logic_var in as_dict:
             logic_raw = " ".join([x.strip() for x in inspect.getsourcelines(as_dict[logic_var])[0]]).replace("\n", "").replace("\t", "")
             if "lambda l: True" in logic_raw:
-                # as_dict[logic_var] = True
                 del as_dict[logic_var]
             else:
                 logic_raw = logic_raw.strip()

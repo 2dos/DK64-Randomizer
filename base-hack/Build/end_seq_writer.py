@@ -54,7 +54,7 @@ assistant_devs = [
     CreditItem("right", "normal", ["Plessy", "Rain", "The Sound Defense"]),
 ]
 
-## Beta Testers
+# BETA TESTERS
 # Adam Whitmore
 # Auphonium
 # Candy Boots
@@ -68,7 +68,7 @@ assistant_devs = [
 # SirSmackStrikesBack
 # UsedPizza
 # VidyaJames
-# WexAZ
+# Wex_AZ
 # Zorulda
 
 bbb_contest = [CreditItem("top", "header", ["Big Bug Bashers"]), CreditItem("right", "normal", basher_names)]
