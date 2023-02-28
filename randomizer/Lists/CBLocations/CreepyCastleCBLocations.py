@@ -1198,7 +1198,7 @@ ColoredBananaGroupList = [
         logic=lambda l: l.peanut,
         locations=[[5, 1.0, 2071, 81, 394], [1, 1.0, 2071, 81, 370], [1, 1.0, 2048, 81, 387], [1, 1.0, 2057, 81, 413], [1, 1.0, 2085, 81, 413], [1, 1.0, 2094, 81, 387]],
     ),
-    ColoredBananaGroup( 
+    ColoredBananaGroup(
         group=102,
         map_id=Maps.CastleMausoleum,
         name="On Goo hands",
