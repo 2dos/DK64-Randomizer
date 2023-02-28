@@ -65,6 +65,32 @@ void arcadeExit(void) {
 	}
 }
 
+int determineArcadeLevel(void) {
+	if (checkFlag(FLAG_ARCADE_ROUND1, 0)) {
+		if (checkFlag(FLAG_COLLECTABLE_NINTENDOCOIN, 0)) {
+			ArcadeMap = 8;
+			return 0;
+		}
+		ArcadeMap = 4;
+		return 0;
+	}
+	ArcadeMap = 0;
+	return 0;
+}
+
+void HandleArcadeVictory(void) {
+	if ((ArcadeStoryMode) && ((ArcadeMap & 3) == 0)) {
+		ArcadeEnableReward = 1;
+		if (ArcadeScores[4] < ArcadeCurrentScore) {
+			sendToHiScorePage();
+		} else {
+			arcadeExit();
+		}
+	} else {
+		sendToNextMap();
+	}
+}
+
 /*
 	Arcade Reward Indexes:
 	0 - Nintendo Coin / No Item
@@ -146,14 +172,18 @@ void initArcade(void) {
 	*(int*)(0x800257B4) = 0x0C000000 | (((int)&arcadeExit & 0xFFFFFF) >> 2);
 	*(int*)(0x8002B6D4) = 0x0C000000 | (((int)&arcadeExit & 0xFFFFFF) >> 2);
 	*(int*)(0x8002FA58) = 0x0C000000 | (((int)&arcadeExit & 0xFFFFFF) >> 2);
-	*(short*)(0x80024F32) = 0x82; // Swap flags
-	*(short*)(0x80024F56) = 0x84; // Swap flags
-	*(short*)(0x80024F4A) = 4; // Swap levels
-	*(short*)(0x80024F6E) = 8; // Swap levels
+	// Fix arcade level setting logic
+	*(int*)(0x80024F34) = 0x0C000000 | (((int)&determineArcadeLevel & 0xFFFFFF) >> 2); // Change log
+	*(int*)(0x80024F70) = 0; // Prevent level set
+	*(int*)(0x80024F50) = 0; // Prevent level set
+	// Arcade Level Order Rando
 	for (int i = 0; i < 4; i++) {
-		// Arcade Level Order Rando
 		ArcadeBackgrounds[i] = Rando.arcade_order[i];
 	}
+	*(int*)(0x8002F7BC) = 0x0C000000 | (((int)&HandleArcadeVictory & 0xFFFFFF) >> 2);
+	*(int*)(0x8002FA68) = 0x0C000000 | (((int)&HandleArcadeVictory & 0xFFFFFF) >> 2);
+	*(short*)(0x8002FA24) = 0x1000;
+	// Load Arcade Sprite
 	if ((*(unsigned short*)(0x8002E8B6) == 0x8004) && (*(unsigned short*)(0x8002E8BA) == 0xAE58) && (Rando.arcade_reward > 0)) {
 		// Change Arcade Reward Sprite
 		// Ensure code is only run once
@@ -173,7 +203,6 @@ void initJetpac(void) {
 		*(int*)(0x8002D9F8) = (int)getPointerFile(6, Rando.jetpac_reward - 1 + ARCADE_IMAGE_COUNT);
 	}
 }
-
 
 void overlay_changes(void) {
 	/**

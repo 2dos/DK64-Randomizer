@@ -62,3 +62,6 @@
 .definelabel enableComplexFree, 0x8066B424
 .definelabel complexFreeWrapper, 0x8066B434
 .definelabel writeDynamicFlagItemToFile, 0x8060E430
+.definelabel dumpReturns, 0x80732158
+.definelabel __osGetThreadId, 0x800078A0
+.definelabel __osViSwapContext, 0x80009F10

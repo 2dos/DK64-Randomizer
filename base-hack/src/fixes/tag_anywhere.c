@@ -793,3 +793,87 @@ void tagAnywhereBunch(int player, int obj, int player_index) {
     }
     populateSFXCache(Banana,64,5,3,id,0);
 }
+
+int updatePosition_New(actorData* actor, int bone_index, float* x, float* y, float* z) {
+    if (actor->bone_data) {
+        updateBones(actor->bone_data, 1);
+        bonepos* bone_pos = actor->bone_data->bone_block.bone_positions;
+        bone_index -= 1;
+        if ((bone_pos) && (bone_index != 0)) {
+            while (1) {
+                bone_pos = (bonepos*)bone_pos->next_bone;
+                bone_index -= 1;
+                if ((bone_index == 0) || (!bone_pos)) {
+                    break;
+                }
+            }
+        }
+        if (!bone_pos) {
+            *x = actor->xPos;
+            *y = actor->yPos;
+            *z = actor->zPos;
+            *(float*)(0x807FF700) = *x;
+            *(float*)(0x807FF704) = *z;
+            *(int*)(0x807FF708) = 1;
+            return 0;
+        } else {
+            int size_x = bone_pos->boneX;
+            if (size_x < 0) {
+                size_x = -size_x;
+            }
+            int size_z = bone_pos->boneZ;
+            if (size_z < 0) {
+                size_z = -size_z;
+            }
+            int lim = 50 << 3;
+            if ((size_x < lim) && (size_z < lim)) {
+                *x = actor->xPos;
+                *y = actor->yPos;
+                *z = actor->zPos;
+                *(float*)(0x807FF700) = *x;
+                *(float*)(0x807FF704) = *z;
+                *(int*)(0x807FF708) = 2;
+                rendering_params* render = (rendering_params*)actor->render;
+                if (render) {
+                    int ba0 = (int)render->bone_arrays[0];
+                    int ba1 = (int)render->bone_arrays[1];
+                    int bone_count = (ba1-ba0) >> 6;
+                    for (int bone = 0; bone < bone_count; bone++) {
+                        for (int frame = 0; frame < 2; frame++) {
+                            render->bone_arrays[frame][bone].xPos = *x;
+                            render->bone_arrays[frame][bone].yPos = *y;
+                            render->bone_arrays[frame][bone].zPos = *z;
+                            render->bone_arrays[frame][bone].fpos_x = *x;
+                            render->bone_arrays[frame][bone].fpos_y = *y;
+                            render->bone_arrays[frame][bone].fpos_z = *z;
+                        }
+                    }
+                }
+                bone_pos->boneX = *x * 8;
+                bone_pos->boneY = *y * 8;
+                bone_pos->boneZ = *z * 8;
+            } else {
+                *x = bone_pos->boneX / 8;
+                *y = bone_pos->boneY / 8;
+                *z = bone_pos->boneZ / 8;
+            }
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void initTagAnywhere(void) {
+    // Fixes for position
+    *(int*)(0x806DE3F0) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
+    *(int*)(0x806DE4F4) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
+    *(int*)(0x806DE5D8) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
+    *(int*)(0x806DE6B4) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
+    *(int*)(0x806DE7B8) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
+    *(int*)(0x8072F6E0) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
+    *(int*)(0x8072F6FC) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
+    *(int*)(0x8072FB1C) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
+    *(int*)(0x807302C8) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
+    *(int*)(0x80730328) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
+    *(int*)(0x807303E8) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
+}

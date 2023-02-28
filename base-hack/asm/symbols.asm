@@ -101,6 +101,7 @@
 .definelabel p1PressedButtons, 0x807ECD48
 .definelabel p1HeldButtons, 0x807ECD58
 .definelabel player_count, 0x807FC928
+.definelabel FocusedPlayerIndex, 0x807FC929
 .definelabel sprite_table, 0x80755390
 .definelabel sprite_translucency, 0x807FC80F
 .definelabel bbbandit_array, 0x8002DB80
@@ -221,14 +222,21 @@
 .definelabel ArcadeBackgrounds, 0x8004A788
 .definelabel ArcadeExited, 0x8004A73C
 .definelabel ArcadeStoryMode, 0x8004A740
+.definelabel ArcadeMap, 0x8004C723
 .definelabel ArcadeEnableReward, 0x8004A770
+.definelabel ArcadeScores, 0x8004A74C
+.definelabel ArcadeCurrentScore, 0x8004A748
 
 .definelabel CharSpawnerActorSubtypes, 0x80755698
 .definelabel CharSpawnerActorData, 0x8075EB80
 
+.definelabel SelectedDLIndex, 0x807444FC
+
 .definelabel balloonPatchCounts, 0x807FC408
 .definelabel coloredBananaCounts, 0x807F6150
 
-.definelabel unkLightFunc_0, 0x80604cbc
-.definelabel kongFollowingLightFunc, 0x8072a920
-.definelabel lightShiningLightFunc, 0x806c6530
+.definelabel StackTraceAddresses, 0x807FEF80
+.definelabel StackTraceX, 0x807FEF70
+.definelabel StackTraceY, 0x807FEF74
+.definelabel StackTraceSize, 0x807FEF78
+.definelabel StackTraceStartX, 0x807FEF7C

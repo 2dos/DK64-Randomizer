@@ -565,6 +565,9 @@ def toggle_item_rando(evt):
     item_rando_pool = document.getElementById("item_rando_list_selected").options
     smaller_shops = document.getElementById("smaller_shops")
     shockwave = document.getElementById("shockwave_status_shuffled")
+    move_vanilla = document.getElementById("move_off")
+    move_rando = document.getElementById("move_on")
+    move_start = document.getElementById("move_start_with")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -585,6 +588,9 @@ def toggle_item_rando(evt):
             smaller_shops.setAttribute("disabled", "disabled")
             smaller_shops.checked = False
             shockwave.removeAttribute("disabled")
+            move_vanilla.removeAttribute("disabled")
+            move_rando.removeAttribute("disabled")
+            move_start.removeAttribute("disabled")
         else:
             # Enable item rando modal, prevent shockwave/camera coupling, and enable smaller shops if it's in the pool
             selector.removeAttribute("disabled")
@@ -760,7 +766,7 @@ def toggle_bananaport_selector(event):
 @bind("click", "nav-patch-tab")
 def toggle_patch_ui(event):
     """Disable non-cosmetic tabs if using patch file."""
-    for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-difficulty-tab", "nav-qol-tab"]:
+    for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-progression-tab", "nav-qol-tab"]:
         document.getElementById(tab).setAttribute("disabled", "disabled")
     document.getElementById("nav-cosmetics-tab").click()
 
@@ -768,7 +774,7 @@ def toggle_patch_ui(event):
 @bind("click", "nav-seed-gen-tab")
 def toggle_patch_ui(event):
     """Re-enable non-cosmetic tabs and hide override option if generating a new seed."""
-    for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-difficulty-tab", "nav-qol-tab"]:
+    for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-progression-tab", "nav-qol-tab"]:
         document.getElementById(tab).removeAttribute("disabled")
     document.getElementById("override_div").setAttribute("hidden", "hidden")
 

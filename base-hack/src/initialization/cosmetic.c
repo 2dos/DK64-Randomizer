@@ -211,6 +211,16 @@ void initWrinklyColoring(void) {
     }
 }
 
+#define SEASON_NONE 0
+#define SEASON_HALLOWEEN 1
+#define SEASON_CHRISTMAS 2
+
+void initSeasonalChanges(void) {
+    if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
+        *(int*)(0x8075E0B8) = 0x807080E0; // Makes isles reference Castle skybox data
+    }
+}
+
 void initCosmetic(void) {
     /**
      * @brief Initialize all cosmetic functionality
@@ -226,4 +236,5 @@ void initCosmetic(void) {
     initSkyboxRando();
     initKlaptraps();
     initWrinklyColoring();
+    initSeasonalChanges();
 }

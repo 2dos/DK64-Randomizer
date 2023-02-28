@@ -61,6 +61,8 @@ extern void setArcadeTextColor(int red, int green, int blue, int alpha);
 extern int arcadeGetObjIndexOfType(int obj_type);
 extern int arcadeGetNextVacantSlot(void);
 extern void setArcadeSong(int songIndex);
+extern void sendToHiScorePage(void);
+extern void sendToNextMap(void);
 extern void hideHUD(void);
 extern void tagKong(int kong_actor_index);
 extern void clearGun(void* player);
@@ -74,9 +76,11 @@ extern void __osCreateMesgQueue(void* queue, void* message, int unk);
 extern void __osRecvMesg(void* queue, void* message, int os_state);
 extern void __osEPiStartDMA(void* unk, void* iomessage, int os_state);
 extern void __osPiRawReadIo(int a0, void* a1);
+extern int __osGetThreadId(void* thread);
 extern int __osDisableInt();
 extern void __osRestoreInt(int mask);
 extern int __osEepromProbe(void* unk0);
+extern void __osViSwapContext(void);
 extern void copyFunc(int rom_offset, int size, void* write_location);
 extern void* getMapData(data_indexes data_idx, int _index, char compressbyte0, char compressbyte1);
 extern void loadSetup(void* setup_file, int unk0, int unk1);
@@ -221,6 +225,8 @@ extern void _guScaleF(void* mtx, int x, int y, int z);
 extern void _guTranslateF(void* mtx, int x, int y, int z);
 extern void _guMtxCatF(void* mtx, void* unk0, void* unk1);
 extern void _guMtxF2L(void* mtx, void* unk0);
+extern void _guMtxXFML(void* unk0, int unk1, int unk2, int unk3, float* x, float* y, float* z);
+extern void _guMtxXFMF(void* unk0, int unk1, int unk2, int unk3, float* x, float* y, float* z);
 extern void* getTextPointer(int file, int text_index, int unk0);
 extern void addDLToOverlay(int code, void* actor, int delay);
 extern int groundContactCheck(void);
@@ -307,6 +313,10 @@ extern void writeDynamicFlagItemToFile(int flag, int data, int world);
 
 extern void* deleteModelTwo(int index, int id_of_next);
 extern void spawnModelTwoWithDelay(int type, int x, int y, int z, int delay);
+
+extern int printDebugText(char* string, int v1, int v2, int v3, int v4);
+extern void dumpReturns(void* info);
+extern void updateBones(bonedata* bone, int force_update);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -396,6 +406,7 @@ extern short HelmMinigameFlags[10];
 extern short p1PressedButtons;
 extern short p1HeldButtons;
 extern char player_count;
+extern char FocusedPlayerIndex;
 extern int* sprite_table[0xAF];
 extern char sprite_translucency;
 extern int* bbbandit_array[4];
@@ -546,7 +557,10 @@ extern unsigned short PotionAnimations[6];
 extern char ArcadeBackgrounds[4];
 extern unsigned char ArcadeExited;
 extern unsigned char ArcadeStoryMode;
+extern unsigned char ArcadeMap;
 extern unsigned char ArcadeEnableReward;
+extern int ArcadeScores[5];
+extern int ArcadeCurrentScore;
 
 extern unsigned char CharSpawnerActorSubtypes[113];
 extern charSpawnerActorInfo CharSpawnerActorData[113];
@@ -556,6 +570,19 @@ extern unsigned short coloredBananaCounts[8];
 
 extern collected_item_struct* CollectedObjects;
 extern collected_item_struct* LatestCollectedObject;
+
+extern char SelectedDLIndex;
+
+extern stack_trace_address_struct StackTraceAddresses[19];
+
+extern char* ReasonExceptions[20];
+extern unsigned char ReasonCode;
+extern int ReasonValues[3];
+
+extern int StackTraceX;
+extern int StackTraceY;
+extern int StackTraceSize;
+extern int StackTraceStartX;
 
 //hack data
 extern int TestVariable;

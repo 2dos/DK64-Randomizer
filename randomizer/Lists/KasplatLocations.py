@@ -4,6 +4,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import DamageAmount
 from randomizer.Lists.MapsAndExits import Maps
 
 
@@ -265,10 +266,10 @@ KasplatLocationList = {
         KasplatLocation(
             name="Aztec Kasplat: Behind the DK Stone Door",
             map_id=Maps.AngryAztec,
-            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            kong_lst=[Kongs.donkey, Kongs.tiny],
             coords=[1363, 162, 738],
             region=Regions.AztecTunnelBeforeOasis,
-            additional_logic=lambda l: (l.coconut or l.phasewalk) and ((l.strongKong and l.isdonkey) or l.settings.damage_amount == "default"),
+            additional_logic=lambda l: l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
             vanilla=True,
         ),
         KasplatLocation(
@@ -326,8 +327,8 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[1997, 280, 3500],
             xmin=1970,
-            xmax=2020,
-            zmin=3470,
+            xmax=2017,
+            zmin=3485,
             zmax=3520,
             region=Regions.AngryAztecMain,
         ),
@@ -549,7 +550,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[1579, 811, 2197],
             xmin=1510,
-            xmax=1660,
+            xmax=1602,
             zmin=2120,
             zmax=2240,
             region=Regions.Testing,

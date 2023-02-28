@@ -6,6 +6,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import MinigameBarrels
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
@@ -106,7 +107,7 @@ LogicRegions = {
 
     Regions.BananaFairyRoom: Region("Banana Fairy Room", "Banana Fairy Room", Levels.DKIsles, False, None, [
         LocationLogic(Locations.CameraAndShockwave, lambda l: True),
-        LocationLogic(Locations.RarewareBanana, lambda l: l.BananaFairies >= l.settings.rareware_gb_fairies and (l.istiny or l.settings.free_trade_items)),
+        LocationLogic(Locations.RarewareBanana, lambda l: l.CanGetRarewareGB()),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesFairyToMain),
     ]),
@@ -126,7 +127,7 @@ LogicRegions = {
     ]),
 
     Regions.AngryAztecLobby: Region("Angry Aztec Lobby", "Level Lobbies", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesTinyAztecLobby, lambda l: (((l.charge and l.diddy and l.twirl) or l.settings.bonus_barrels == "skip") and l.istiny) or (l.settings.bonus_barrels == "skip" and l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.IslesTinyAztecLobby, lambda l: (((l.charge and l.diddy and l.twirl) or l.settings.bonus_barrels == MinigameBarrels.skip) and l.istiny) or (l.settings.bonus_barrels == MinigameBarrels.skip and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.AztecDiddyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.AztecLankyDoor, lambda l: not l.settings.wrinkly_location_rando),
@@ -165,7 +166,7 @@ LogicRegions = {
     ]),
 
     Regions.IslesSnideRoom: Region("Isles Snide Room", "Krem Isle", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesDiddySnidesLobby, lambda l: ((l.settings.bonus_barrels == "skip" or l.spring) and l.isdiddy) or (l.settings.bonus_barrels == "skip" and l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.IslesDiddySnidesLobby, lambda l: ((l.settings.bonus_barrels == MinigameBarrels.skip or l.spring) and l.isdiddy) or (l.settings.bonus_barrels == MinigameBarrels.skip and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.IslesBattleArena1, lambda l: not l.settings.crown_placement_rando and l.chunky and l.barrels),
     ], [], [
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: True, Transitions.IslesSnideRoomToMain),
@@ -257,10 +258,11 @@ LogicRegions = {
     ]),
 
     Regions.HideoutHelmLobby: Region("Hideout Helm Lobby", "Level Lobbies", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesChunkyHelmLobby, lambda l: (l.gorillaGone and l.ischunky and l.vines) or (l.advanced_platforming and l.istiny and l.twirl and l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.IslesChunkyHelmLobby, lambda l: (l.gorillaGone and l.ischunky and l.vines) or (l.settings.bonus_barrels == MinigameBarrels.skip and l.advanced_platforming and l.istiny and l.twirl and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.IslesKasplatHelmLobby, lambda l: not l.settings.kasplat_rando and l.scope and l.coconut and l.donkey),
     ], [], [
-        TransitionFront(Regions.KremIsleTopLevel, lambda l: True),
+        TransitionFront(Regions.KremIsleTopLevel, lambda l: l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events)),
+        TransitionFront(Regions.KremIsleBeyondLift, lambda l: True),  # You fall through the mouth if the lobby hasn't been opened (if you used a glitch to get in)
         TransitionFront(Regions.HideoutHelmStart, lambda l: ((l.gorillaGone and l.chunky and l.vines) or (l.CanMoonkick() and l.donkey)) and l.IsLevelEnterable(Levels.HideoutHelm)),
     ]),
 

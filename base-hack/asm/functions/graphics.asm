@@ -2,6 +2,8 @@
 .definelabel _guTranslateF, 0x80005D80
 .definelabel _guMtxCatF, 0x800088B0
 .definelabel _guMtxF2L, 0x8000A6C0
+.definelabel _guMtxXFMF, 0x80008810
+.definelabel _guMtxXFML, 0x80008A20
 .definelabel initDisplayList, 0x807132DC
 .definelabel displayText, 0x806FC530
 .definelabel displayImage, 0x8068C5A8
@@ -18,3 +20,4 @@
 .definelabel applyImageToActor, 0x80688370
 .definelabel writeImageSlotToActor, 0x80688320
 .definelabel getCenterOffset, 0x806FBD5C
+.definelabel printDebugText, 0x80731D20

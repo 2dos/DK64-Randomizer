@@ -7,6 +7,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
@@ -18,7 +19,7 @@ LogicRegions = {
         LocationLogic(Locations.GalleonLankyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.lanky] >= l.settings.medal_cb_req),
         LocationLogic(Locations.GalleonTinyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.tiny] >= l.settings.medal_cb_req),
         LocationLogic(Locations.GalleonChunkyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.chunky] >= l.settings.medal_cb_req),
-    ], [], []),
+    ], [], [], restart=-1),
 
     Regions.GloomyGalleonStart: Region("Gloomy Galleon Start", "Galleon Caves", Levels.GloomyGalleon, True, None, [
         LocationLogic(Locations.GalleonChunkyChest, lambda l: l.punch and l.chunky),
@@ -157,7 +158,7 @@ LogicRegions = {
         Event(Events.GalleonW5bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
-        TransitionFront(Regions.GloomyGalleonStart, lambda l: l.settings.shuffle_loading_zones == "all" or Events.ShipyardGateOpened in l.Events),
+        TransitionFront(Regions.GloomyGalleonStart, lambda l: l.settings.shuffle_loading_zones == ShuffleLoadingZones.all or Events.ShipyardGateOpened in l.Events),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: l.swim),
         TransitionFront(Regions.SealRace, lambda l: (Events.SealReleased in l.Events and Events.WaterSwitch in l.Events and l.isdonkey) or l.CanPhaseswim(), Transitions.GalleonShipyardToSeal),
         TransitionFront(Regions.CandyGalleon, lambda l: True),

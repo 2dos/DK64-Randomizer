@@ -262,3 +262,8 @@ int canPlayJetpac(void) {
 		return countFlagArray(FLAG_MEDAL_JAPES_DK, 40, 0);
 	}
 }
+
+void fixCrownEntrySKong(playerData* player, int animation) {
+	player->strong_kong_ostand_bitfield &= 0xFFFFFFEF;
+	playAnimation(player, animation);
+}
