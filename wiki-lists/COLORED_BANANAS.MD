@@ -60,7 +60,11 @@
 | Next to Snide | 10 |  | 
 | Diddy cave around exterior | 10 |  | 
 | On the edge of Diddy's cage platform | 5 |  | 
+| Tiny's caged GB | 10 | ((Events.JapesTinySwitch in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny) | 
+| Lanky's caged GB | 10 | ((Events.JapesLankySwitch in l.Events or l.CanSkew(False)) and l.lanky) or (l.CanSkew(False) and l.settings.free_trade_items) | 
 | T&S above diddy BP (2 custom, 1 Donkey bunch) | 15 |  | 
+| Diddy's Caged GB | 10 | ((Events.JapesDiddySwitch1 in l.Events or l.phasewalk or l.generalclips or l.CanSkew(False)) and l.diddy) | 
+| Chunky's Caged GB | 10 | ((Events.JapesChunkySwitch in l.Events or l.phasewalk or l.CanSkew(False)) and l.chunky) or ((l.phasewalk or l.CanSkew(False)) and l.settings.free_trade_items) | 
 | between vines from funky to cannon | 10 | l.vines | 
 | Behind stump in beehive area | 10 |  | 
 | Above Melon Crate behind mountain | 5 |  | 
@@ -1239,7 +1243,7 @@
 | W4 (Diddy) | 5 |  | 
 | Above Tiny and Chunky igloos (Diddy) | 10 | l.jetpack | 
 | Around Diddy blueprint (Diddy) | 5 |  | 
-| Chunky igloo (Chunky) | 5 |  | 
+| Chunky igloo (Chunky) | 5 | Events.CavesLargeBoulderButton in l.Events or l.generalclips or l.CanPhaseswim() | 
 | On Gorilla Gone pad (Chunky) | 5 | l.punch and l.chunky | 
 | On small boulder switch (Chunky) | 5 |  | 
 | Inside giant boulder (Chunky) | 5 | l.barrels and l.hunkyChunky and l.chunky | 
@@ -1618,6 +1622,7 @@
 
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
+| On Goo hands | 15 | l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.twirl | 
 | On torches on Tiny's path | 10 |  | 
 | Path to Lanky's side | 20 |  | 
 | On trombone pad | 5 | l.grape and l.sprint, locations=[[5, 1.0, 2100, 94, 560]] | 

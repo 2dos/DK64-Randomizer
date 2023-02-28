@@ -3423,8 +3423,8 @@ BananaCoinGroupList = {
             region=Regions.Testing,
             logic=lambda l: (l.istiny and l.mini) or l.phasewalk,
             locations=[
-                [1.0, 2435, 1106, 779],
-                [1.0, 2333, 1106, 789],
+                [1.0, 2435, 1106, 784],
+                [1.0, 2344, 1106, 789],
             ],
         ),
         BananaCoinGroup(
@@ -3435,8 +3435,8 @@ BananaCoinGroupList = {
             region=Regions.Testing,
             logic=lambda l: (l.istiny and l.mini) or l.phasewalk,
             locations=[
-                [1.0, 2606, 1106, 846],
-                [1.0, 2607, 1106, 959],
+                [1.0, 2576, 1106, 846],
+                [1.0, 2577, 1106, 959],
                 [1.0, 2429, 1106, 844],
                 [1.0, 2431, 1106, 957],
             ],
