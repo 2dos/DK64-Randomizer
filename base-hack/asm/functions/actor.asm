@@ -86,3 +86,7 @@
 .definelabel kongFollowingLightFunc, 0x8072a920
 .definelabel lightShiningLightFunc, 0x806c6530
 .definelabel updateBones, 0x80671A6C
+.definelabel removeGorillaGone, 0x806F12FC
+.definelabel resetActorDL, 0x80613214
+.definelabel resetKongVars, 0x806D0408
+.definelabel handleAnimation, 0x80614D90
