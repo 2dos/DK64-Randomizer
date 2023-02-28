@@ -264,6 +264,7 @@ extern void handleDynamicItemText(char* location, char* format, int character);
 extern void mermaidCheck(void);
 extern void initItemDictionary(void);
 extern void initActorExpansion(void);
+extern void initTextChanges(void);
 extern void giveGB(int kong, int level);
 extern void giveRainbowCoin(void);
 extern void giveAmmo(void);

@@ -163,6 +163,7 @@ void initHack(int source) {
             initItemRando();
 			initCosmetic();
 			initStackTrace();
+			initTextChanges();
 
 			replace_zones(1);
 			randomize_bosses();
