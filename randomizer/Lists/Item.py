@@ -35,6 +35,8 @@ class Item:
             self.rando_flag = data[0]
         if type == Types.Hint:
             self.level = data[0]
+        if type == Types.Coin:
+            self.flag = data[0]
 
 
 def ItemFromKong(kong):

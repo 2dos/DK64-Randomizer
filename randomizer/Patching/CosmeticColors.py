@@ -236,6 +236,9 @@ def apply_cosmetic_colors(spoiler: Spoiler):
                             base_obj["zones"][0]["colors"][1] = opp_color
                 color_palettes.append(base_obj)
                 color_obj[f"{kong['kong']}"] = color
+            elif is_krusha:
+                del base_obj["zones"][0]
+                color_palettes.append(base_obj)
     spoiler.settings.colors = color_obj
     if len(color_palettes) > 0:
         convertColors(color_palettes)
@@ -935,6 +938,7 @@ boot_phrases = (
     "Loading in Beavers",
     "Lifting Boulders with Relative Ease",
     "Doing Monkey Science Probably",
+    "Telling Killklli to eventually play DK64",
 )
 
 
