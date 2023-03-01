@@ -228,7 +228,7 @@ def patching_response(responded_data):
         BooleanProperties(spoiler.settings.coin_door_item == HelmDoorItem.opened, 0x33),  # Coin Door Open
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 7),  # Bonus Matches Contents
         BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers
-        BooleanProperties(spoiler.settings.dark_mode_textboxes, 0x44),  # Portal Numbers
+        BooleanProperties(spoiler.settings.dark_mode_textboxes, 0x44),  # Dark Mode Text bubble
     ]
 
     for prop in boolean_props:
