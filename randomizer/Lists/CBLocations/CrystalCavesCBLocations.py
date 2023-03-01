@@ -1232,6 +1232,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.IglooArea,
         vanilla=True,
+        logic=lambda l: Events.CavesLargeBoulderButton in l.Events or l.generalclips or l.CanPhaseswim(),
         locations=[
             [1, 1.0, 807.6382446289062, 48.5, 760.23779296875],
             [1, 1.0, 786.4091186523438, 48.5, 824.6043090820312],
