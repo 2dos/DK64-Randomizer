@@ -107,6 +107,10 @@ extern int getPadGravity(void* actor);
 extern void BananaMedalGet(void);
 extern void CrownGet(void);
 
+extern void cancelMusic(int song, int unk0);
+extern void removeGorillaGone(void* actor);
+extern void resetActorDL(void* actor);
+
 extern void wipeStoredSetup(void* setup);
 extern void complex_free(void* ptr);
 extern void createCollision(int type, void* player, collision_types subtype, int map, int exit, int x, int y, int z);
@@ -317,6 +321,8 @@ extern void spawnModelTwoWithDelay(int type, int x, int y, int z, int delay);
 extern int printDebugText(char* string, int v1, int v2, int v3, int v4);
 extern void dumpReturns(void* info);
 extern void updateBones(bonedata* bone, int force_update);
+extern void resetKongVars(void);
+extern void handleAnimation(void* actor);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -445,6 +451,10 @@ extern short MapVoid_MinX;
 extern short MapVoid_MinZ;
 extern short MapVoid_MaxX;
 extern short MapVoid_MaxZ;
+
+extern float LeaveWaterVelocity[7];
+extern float unkGravity[7];
+extern float GroundAttackSpeedThreshold[7];
 
 extern bonus_vanilla_info BonusBarrelData[54];
 
