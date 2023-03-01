@@ -228,6 +228,7 @@ def patching_response(responded_data):
         BooleanProperties(spoiler.settings.coin_door_item == HelmDoorItem.opened, 0x33),  # Coin Door Open
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 7),  # Bonus Matches Contents
         BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers
+        BooleanProperties(spoiler.settings.dark_mode_textboxes, 0x44),  # Dark Mode Text bubble
     ]
 
     for prop in boolean_props:
@@ -364,6 +365,11 @@ def patching_response(responded_data):
     ROM().seek(sav + 0x11D)
     # The WinCondition enum is indexed to allow this.
     ROM().write(int(spoiler.settings.win_condition))
+
+    # Colorblind mode
+    ROM().seek(sav + 0x43)
+    # The ColorblindMode enum is indexed to allow this.
+    ROM().write(int(spoiler.settings.colorblind_mode))
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:

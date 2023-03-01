@@ -375,6 +375,7 @@ class Settings:
         self.enguarde_colors = CharacterColors.vanilla
         self.enguarde_custom_color = "#000000"
         self.disco_chunky = False
+        self.dark_mode_textboxes = False
         self.krusha_ui = KrushaUi.no_slot
         self.krusha_kong = None
         self.misc_cosmetics = False

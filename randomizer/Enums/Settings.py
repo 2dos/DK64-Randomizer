@@ -465,6 +465,9 @@ class CharacterColors(IntEnum):
 class ColorblindMode(IntEnum):
     """Determines which colorblind mode setting is used.
 
+    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
+    change these enum values or seed generation will break.
+
     off: Normal colors.
     prot: Setting for protanomaly/protanopia (red/green color blindness,
         biased toward red).
@@ -473,10 +476,10 @@ class ColorblindMode(IntEnum):
     trit: Setting for tritanomaly/tritanopia (blue/yellow color blindness).
     """
 
-    off = auto()
-    prot = auto()
-    deut = auto()
-    trit = auto()
+    off = 0
+    prot = 1
+    deut = 2
+    trit = 3
 
 
 # Additional enums not currently shown on the web site.

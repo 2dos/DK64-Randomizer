@@ -8,6 +8,7 @@ base_rom = "./rom/dk64.z64"
 instance_dir = "./assets/instance_scripts"
 script_table = 0x0
 temp_file = "temp.bin"
+COMMENT_TAG = "//"
 
 new_block_count = 0
 new_cond_count = 0
@@ -147,8 +148,9 @@ with open(base_rom, "rb") as fh:
                                 print(f"{pre_message} {file.replace('.script','')} ({hex(script_data['id'])})")
                                 if contains_code and code_start > -1:
                                     resetCond(True)
-                                    for code_line in script_info[code_start:]:
+                                    for code_line in [x.split(COMMENT_TAG)[0].strip() for x in script_info[code_start:] if len(x.split(COMMENT_TAG)[0].strip()) > 0]:
                                         code_line = code_line.replace("\n", "")
+                                        print(code_line)
                                         code_split = code_line.split(" ")
                                         if "COND" in code_line.upper():
                                             cond_or = 0

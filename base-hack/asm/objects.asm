@@ -18,6 +18,7 @@
 .importobj "obj/src_initialization_item_rando.o"
 .importobj "obj/src_initialization_qol.o"
 .importobj "obj/src_initialization_stack_trace.o"
+.importobj "obj/src_initialization_text.o"
 .importobj "obj/src_item rando_actors.o"
 .importobj "obj/src_item rando_collision.o"
 .importobj "obj/src_item rando_defs.o"
