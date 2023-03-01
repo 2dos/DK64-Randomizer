@@ -118,6 +118,7 @@ def ShuffleItems(spoiler: Spoiler):
     }
     junk_flag_dict = list(range(0x320, 0x320 + 100))
     flag_dict = {}
+    blueprint_flag_dict = {}
     locations_not_needing_flags = []
     locations_needing_flags = []
 
@@ -179,6 +180,10 @@ def ShuffleItems(spoiler: Spoiler):
                     else:
                         location_selection.new_flag = new_item.rando_flag
                     locations_not_needing_flags.append(location_selection)
+                # Company Coins keep their original flag
+                elif new_item.type == Types.Coin:
+                    location_selection.new_flag = new_item.flag
+                    locations_not_needing_flags.append(location_selection)
                 elif new_item.type == Types.JunkItem:
                     location_selection.new_flag = junk_flag_dict.pop()
                     locations_not_needing_flags.append(location_selection)
@@ -193,22 +198,15 @@ def ShuffleItems(spoiler: Spoiler):
                 locations_not_needing_flags.append(location_selection)
             # Add this location's flag to the lists of available flags by location
             # Initialize relevant list if it doesn't exist
-            if item_location.type not in flag_dict.keys():
-                if item_location.type == Types.Blueprint:
-                    flag_dict[item_location.type] = {}
-                    flag_dict[item_location.type][Kongs.donkey] = []
-                    flag_dict[item_location.type][Kongs.diddy] = []
-                    flag_dict[item_location.type][Kongs.lanky] = []
-                    flag_dict[item_location.type][Kongs.tiny] = []
-                    flag_dict[item_location.type][Kongs.chunky] = []
-                else:
-                    flag_dict[item_location.type] = []
+            if item_location.type not in flag_dict.keys() and item_location.type != Types.Blueprint:
+                flag_dict[item_location.type] = []
             # Add this location's vanilla flag as a valid flag for this type of item/kong pairing
             vanilla_item_type = ItemList[item_location.default].type
             if item_location.type == Types.Shop:  # Except for shop locations - many of these are non-vanilla locations and won't have a valid vanilla item
                 flag_dict[item_location.type].append(old_flag)
-            elif vanilla_item_type == Types.Blueprint:  # Blueprints need to be saved with the kong as well
-                flag_dict[vanilla_item_type][old_kong].append(old_flag)
+            # Link blueprint Items to their default flags stored in their Location
+            elif item_location.type == Types.Blueprint:
+                blueprint_flag_dict[item_location.default] = item_location.default_mapid_data[0].flag
             else:
                 flag_dict[vanilla_item_type].append(old_flag)
     # Shuffle the list of locations needing flags so the flags are assigned randomly across seeds
@@ -216,7 +214,7 @@ def ShuffleItems(spoiler: Spoiler):
     for location in locations_needing_flags:
         if location.new_flag is None:
             if location.new_item == Types.Blueprint:
-                location.new_flag = flag_dict[location.new_item][location.new_kong].pop()
+                location.new_flag = blueprint_flag_dict[LocationList[location.location].item]
             else:
                 location.new_flag = flag_dict[location.new_item].pop()
 
