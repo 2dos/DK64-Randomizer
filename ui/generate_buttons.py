@@ -23,6 +23,8 @@ from ui.rando_options import (
     toggle_b_locker_boxes,
     updateDoorOneNumAccess,
     updateDoorTwoNumAccess,
+    updateDoorOneCountText,
+    updateDoorTwoCountText,
     toggle_counts_boxes,
     update_boss_required,
 )
@@ -100,6 +102,8 @@ def import_settings_string(event):
     max_randomized_blocker(None)
     max_randomized_troff(None)
     disable_barrel_modal(None)
+    updateDoorOneCountText(None)
+    updateDoorTwoCountText(None)
 
 
 @bind("change", "patchfileloader")
