@@ -56,6 +56,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "klaptrap_model",
         "misc_cosmetics",
         "disco_chunky",
+        "dark_mode_textboxes",
         "lanky_colors",
         "lanky_custom_color",
         "rambi_colors",

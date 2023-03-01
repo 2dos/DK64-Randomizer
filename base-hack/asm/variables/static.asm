@@ -14,3 +14,6 @@
 .definelabel ReasonExceptions, 0x80756360
 .definelabel ReasonCode, 0x807FF01C
 .definelabel ReasonValues, 0x807FF020
+.definelabel LeaveWaterVelocity, 0x807531C4
+.definelabel unkGravity, 0x80753170
+.definelabel GroundAttackSpeedThreshold, 0x807531E0
