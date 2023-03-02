@@ -39,6 +39,7 @@ class CustomActors(IntEnum):
     Fairy = auto()
     FakeItem = auto()
     Medal = auto()
+    JetpacItemOverlay = auto()
 
 
 model_two_indexes = {

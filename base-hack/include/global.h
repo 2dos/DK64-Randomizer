@@ -15,6 +15,7 @@ extern void quickInit(void);
 extern int getCenter(int style, char* str);
 extern int getActorIndex(int actor_input);
 extern int getCustomActorIndex(new_custom_actors offset);
+extern void spawnItemOverlay(int type, int kong, int index, int force);
 
 extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);

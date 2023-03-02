@@ -83,10 +83,7 @@ void banana_medal_acquisition(int flag) {
                     for (int i = 0; i < 8; i++) {
                         if ((checkFlagDuplicate(getKeyFlag(i), 0)) && ((key_bitfield & (1 << i)) == 0)) {
                             if (!spawned) {
-                                spawnActor(324, 0);
-                                TextOverlayData.type = 5;
-                                TextOverlayData.flag = getKeyFlag(i);
-                                TextOverlayData.kong = 0;
+                                spawnItemOverlay(5, 0, getKeyFlag(i), 0);
                                 spawned = 1;
                             }
                         }
@@ -276,10 +273,7 @@ void collectKey(void) {
     for (int i = 0; i < 8; i++) {
         if (checkFlagDuplicate(getKeyFlag(i), 0)) {
             if ((old_keys & (1 << i)) == 0) {
-                spawnActor(324,0);
-                TextOverlayData.type = 5;
-                TextOverlayData.flag = getKeyFlag(i);
-                TextOverlayData.kong = 0;
+                spawnItemOverlay(5, 0, getKeyFlag(i), 0);
             }
         }
     }
@@ -389,10 +383,7 @@ void giveFairyItem(int flag, int state, int type) {
         for (int i = 0; i < 8; i++) {
             if ((checkFlagDuplicate(getKeyFlag(i), 0)) && ((key_bitfield & (1 << i)) == 0)) {
                 if (!spawned) {
-                    spawnActor(324, 0);
-                    TextOverlayData.type = 5;
-                    TextOverlayData.flag = getKeyFlag(i);
-                    TextOverlayData.kong = 0;
+                    spawnItemOverlay(5, 0, getKeyFlag(i), 0);
                     spawned = 1;
                 }
             }
