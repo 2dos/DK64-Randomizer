@@ -86,7 +86,8 @@ def encrypt_settings_string_enum(dict_data: dict):
         key_enum = SettingsStringEnum[key]
         key_data_type = SettingsStringTypeMap[key_enum]
         # Encode the key.
-        bitstring += bin(key_enum)[2:].zfill(8)
+        key_size = max([member.value for member in SettingsStringEnum]).bit_length()
+        bitstring += bin(key_enum)[2:].zfill(key_size)
         if key_data_type == SettingsStringDataType.bool:
             bitstring += "1" if value else "0"
         elif key_data_type == SettingsStringDataType.int4:
@@ -152,13 +153,14 @@ def decrypt_settings_string_enum(encrypted_string: str):
     bitstring_length = len(bitstring)
     settings_dict = {}
     bit_index = 0
-    # If there are fewer than nine characters left in our bitstring, we have
-    # hit the padding. (Nine characters is the minimum needed for a key and a
-    # value.)
-    while bit_index < (bitstring_length - 9):
+    key_size = max([member.value for member in SettingsStringEnum]).bit_length()
+    # If there are fewer than (key_size + 1) characters left in our bitstring,
+    # we have hit the padding. (key_size + 1 characters is the minimum needed
+    # for a key and a value.)
+    while bit_index < (bitstring_length - (key_size + 1)):
         # Consume the next key.
-        key = int(bitstring[bit_index : bit_index + 8], 2)
-        bit_index += 8
+        key = int(bitstring[bit_index : bit_index + key_size], 2)
+        bit_index += key_size
         key_enum = SettingsStringEnum(key)
         key_name = key_enum.name
         key_data_type = SettingsStringTypeMap[key_enum]
