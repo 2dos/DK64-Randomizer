@@ -273,6 +273,8 @@ class Spoiler:
         if self.settings.coin_door_item != HelmDoorItem.opened:
             humanspoiler["End Game"]["Coin Door Item"] = self.settings.coin_door_item.name
             humanspoiler["End Game"]["Coin Door Item Amount"] = self.settings.coin_door_item_count
+        if self.settings.shuffle_items:
+            humanspoiler["Item Pool"] = [enum.name for enum in self.settings.shuffled_location_types]
         humanspoiler["Items"] = {
             "Kongs": {},
             "Shops": {},
@@ -449,7 +451,16 @@ class Spoiler:
                 level_data[level_name][ShufflableExits[exit].name] = dest.spoilerName
             humanspoiler["Shuffled Exits"] = shuffled_exits
             humanspoiler["Shuffled Exits (Sorted by destination)"] = level_data
-
+        if self.settings.alter_switch_allocation:
+            humanspoiler["Level Switch Strength"] = {
+                "Jungle Japes": self.settings.switch_allocation[Levels.JungleJapes],
+                "Angry Aztec": self.settings.switch_allocation[Levels.AngryAztec],
+                "Frantic Factory": self.settings.switch_allocation[Levels.FranticFactory],
+                "Gloomy Galleon": self.settings.switch_allocation[Levels.GloomyGalleon],
+                "Fungi Forest": self.settings.switch_allocation[Levels.FungiForest],
+                "Crystal Caves": self.settings.switch_allocation[Levels.CrystalCaves],
+                "Creepy Castle": self.settings.switch_allocation[Levels.CreepyCastle],
+            }
         humanspoiler["Bosses"] = {}
         if self.settings.boss_location_rando:
             shuffled_bosses = OrderedDict()
@@ -518,7 +529,16 @@ class Spoiler:
         if len(self.microhints) > 0:
             humanspoiler["Direct Item Hints"] = self.microhints
         if len(self.hint_list) > 0:
-            humanspoiler["Wrinkly Hints"] = self.hint_list
+            human_hint_list = {}
+            # Here it filters out the coloring from the hints to make it actually readable in the spoiler log
+            for name, hint in self.hint_list.items():
+                filtered_hint = hint.replace("\x04", "")
+                filtered_hint = filtered_hint.replace("\x05", "")
+                filtered_hint = filtered_hint.replace("\x06", "")
+                filtered_hint = filtered_hint.replace("\x07", "")
+                filtered_hint = filtered_hint.replace("\x08", "")
+                human_hint_list[name] = filtered_hint
+            humanspoiler["Wrinkly Hints"] = human_hint_list
         if self.settings.wrinkly_location_rando:
             humanspoiler["Wrinkly Door Locations"] = self.human_hint_doors
         if self.settings.tns_location_rando:
