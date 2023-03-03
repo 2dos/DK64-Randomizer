@@ -40,13 +40,20 @@
       "problemMatcher": []
     },
     {
+      "label": "Update Custom Location Lists",
+      "type": "shell",
+      "command": "${command:python.interpreterPath} ./dumper.py md all",
+      "problemMatcher": []
+    },
+    {
       "label": "Lint Repo",
       "dependsOn": [
         "Format Repo",
         "Validate Styles",
         "Validate Docstrings",
-        "Validate Jinja2",
-        "Validate C"
+        //"Validate Jinja2",
+        "Validate C",
+        "Update Custom Location Lists"
       ],
       "problemMatcher": []
     },

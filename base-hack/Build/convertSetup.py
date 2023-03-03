@@ -1,10 +1,12 @@
 """Convert file setup."""
 import os
 import shutil
-import struct
+from BuildLib import float_to_hex, intf_to_float
 
 from getMoveSignLocations import getMoveSignData
 from place_vines import generateVineSeries
+
+BUTTON_DIST_NORMAL = 20
 
 
 def convertSetup(file_name):
@@ -32,18 +34,6 @@ def writedatatoarr(stream, value, size, location):
     for x in range(size):
         stream[location + x] = bytearray(value.to_bytes(size, "big"))[x]
     return stream
-
-
-def int_to_float(val):
-    """Convert a hex int to a float."""
-    return struct.unpack("!f", bytes.fromhex(hex(val).split("0x")[1]))[0]
-
-
-def float_to_hex(f):
-    """Convert float to hex."""
-    if f == 0:
-        return "0x00000000"
-    return hex(struct.unpack("<I", struct.pack("<f", f))[0])
 
 
 base_stream = 0
@@ -101,7 +91,7 @@ def modify(file_name, map_index):
                 base_stream = byte_stream
                 _x = int.from_bytes(byte_read[read_location + 0 : read_location + 4], "big")
                 _y = int.from_bytes(byte_read[read_location + 4 : read_location + 8], "big")
-                _yf = int_to_float(_y) - 30
+                _yf = intf_to_float(_y) - 30
                 _y = int(float_to_hex(_yf), 16)
                 _z = int.from_bytes(byte_read[read_location + 8 : read_location + 12], "big")
                 _ax = int.from_bytes(byte_read[read_location + 0x18 : read_location + 0x1C], "big")
@@ -215,8 +205,8 @@ def modify(file_name, map_index):
                 # Standardize lanky phase buttons
                 buttons = (0xE, 0xF, 0x10, 0x11)
                 platforms = (0xD, 0x13, 0x14, 0x12)
-                button_loc = ((780, 419.629), (1135.232, 780), (780, 1116.334), (438.904, 780))
-                platform_loc = ((778.365, 396.901), (1158.427, 778.632), (780.283, 1138.851), (416.092, 778.456))
+                button_loc = ((780, 419.629 + BUTTON_DIST_NORMAL), (1135.232 - BUTTON_DIST_NORMAL, 780), (780, 1116.334 - BUTTON_DIST_NORMAL), (438.904 + BUTTON_DIST_NORMAL, 780))
+                platform_loc = ((778.365, 396.901 + BUTTON_DIST_NORMAL), (1158.427 - BUTTON_DIST_NORMAL, 778.632), (780.283, 1138.851 - BUTTON_DIST_NORMAL), (416.092 + BUTTON_DIST_NORMAL, 778.456))
                 if _id >= 0xD and _id <= 0x14:
                     x = 0
                     z = 0
@@ -245,6 +235,29 @@ def modify(file_name, map_index):
                 for x in range(0x30 - 0x8):
                     repl_byte += byte_stream[x + 0x8].to_bytes(1, "big")
                 byte_stream = repl_byte
+            elif map_index == 0x48:
+                # Underwater Items, Caves
+                ranges = (
+                    list(range(0xA5, 0xAF)),  # Lanky underwater CBs
+                    list(range(0xC0, 0xCA)),  # Tiny underwater CBs
+                    list(range(0x73, 0x76)),  # Chunky underwater coins
+                    list(range(0xD8, 0xDB)),  # Tiny underwater coins
+                    list(range(0xB7, 0xBA)),  # Lanky underwater coins (1)
+                    list(range(0xBD, 0xC0)),  # Lanky underwater coins (2)
+                )
+                in_range = False
+                for selection in ranges:
+                    if _id in selection:
+                        in_range = True
+                if in_range:
+                    repl_byte = b""
+                    new_y = int(float_to_hex(30), 16)
+                    for x in range(0x4):
+                        repl_byte += byte_stream[x].to_bytes(1, "big")
+                    repl_byte += new_y.to_bytes(4, "big")
+                    for x in range(0x30 - 0x8):
+                        repl_byte += byte_stream[x + 0x8].to_bytes(1, "big")
+                    byte_stream = repl_byte
             data = {"stream": byte_stream, "type": _type}
             model2.append(data)
             read_location += 0x30

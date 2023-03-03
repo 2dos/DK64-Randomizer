@@ -18,6 +18,7 @@ class Item:
         self.playthrough = playthrough
         self.type = type
         self.kong = kong
+        self.movetype = None
         self.rando_flag = None  # The flag the ROM reads to know if you have this item - set to -1 for progressive moves as those are special
         if type == Types.Shop:
             self.movetype = data[0]
@@ -34,6 +35,8 @@ class Item:
             self.rando_flag = data[0]
         if type == Types.Hint:
             self.level = data[0]
+        if type == Types.Coin:
+            self.flag = data[0]
 
 
 def ItemFromKong(kong):
@@ -162,6 +165,13 @@ ItemList = {
     Items.BattleCrown: Item("Battle Crown", False, Types.Crown, Kongs.any),
     Items.Bean: Item("Bean", False, Types.Bean, Kongs.any),
     Items.Pearl: Item("Pearl", False, Types.Pearl, Kongs.any),
+    Items.RainbowCoin: Item("Rainbow Coin", False, Types.RainbowCoin, Kongs.any),
+    Items.FakeItem: Item("Ice Trap", False, Types.FakeItem, Kongs.any),
+    Items.JunkCrystal: Item("Junk Item (Crystal)", False, Types.JunkItem, Kongs.any),
+    Items.JunkMelon: Item("Junk Item (Melon Slice)", False, Types.JunkItem, Kongs.any),
+    Items.JunkAmmo: Item("Junk Item (Ammo Crate)", False, Types.JunkItem, Kongs.any),
+    Items.JunkFilm: Item("Junk Item (Film)", False, Types.JunkItem, Kongs.any),
+    Items.JunkOrange: Item("Junk Item (Orange)", False, Types.JunkItem, Kongs.any),
     Items.DKIslesDonkeyBlueprint: Item("DK Isles Donkey Blueprint", False, Types.Blueprint, Kongs.donkey),
     Items.DKIslesDiddyBlueprint: Item("DK Isles Diddy Blueprint", False, Types.Blueprint, Kongs.diddy),
     Items.DKIslesLankyBlueprint: Item("DK Isles Lanky Blueprint", False, Types.Blueprint, Kongs.lanky),
@@ -239,3 +249,24 @@ ItemList = {
     Items.CastleChunkyHint: Item("Castle Chunky Hint", False, Types.Hint, Kongs.chunky, [Levels.CreepyCastle]),
     Items.BananaHoard: Item("Banana Hoard", True, Types.Constant, Kongs.any),
 }
+
+HHItemSelector = []
+HHItems = [
+    ("Starting Time", 20 * 60),
+    ("Golden Banana", 20),
+    ("Blueprint", 45),
+    ("Company Coins", 300),
+    ("Move", 30),
+    ("Banana Medal", 60),
+    ("Rainbow Coin", 15),
+    ("Boss Key", 150),
+    ("Battle Crown", 90),
+    ("Bean", 120),
+    ("Pearl", 50),
+    ("Kongs", 240),
+    ("Fairies", 50),
+    ("Colored Bananas", 3),
+    ("Ice Traps", -40),
+]
+for item in HHItems:
+    HHItemSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_"), "tooltip": "", "default": item[1]})

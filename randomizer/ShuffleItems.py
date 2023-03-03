@@ -4,6 +4,7 @@ import random
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Items import Items
 from randomizer.Lists.Location import LocationList
+from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Kongs import Kongs
@@ -53,6 +54,7 @@ class LocationSelection:
         self.new_item = None
         self.new_flag = None
         self.new_kong = None
+        self.new_subitem = None
 
     def PlaceFlag(self, flag, kong):
         """Place item for assortment."""
@@ -108,8 +110,15 @@ move_list = {
 
 def ShuffleItems(spoiler: Spoiler):
     """Shuffle items into assortment."""
-    progressive_move_flag_dict = {Items.ProgressiveSlam: [0x290, 0x291], Items.ProgressiveAmmoBelt: [0x292, 0x293], Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296]}
+    progressive_move_flag_dict = {
+        Items.ProgressiveSlam: [0x290, 0x291],
+        Items.ProgressiveAmmoBelt: [0x292, 0x293],
+        Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
+        Items.FakeItem: list(range(0x2AE, 0x2BE)),
+    }
+    junk_flag_dict = list(range(0x320, 0x320 + 100))
     flag_dict = {}
+    blueprint_flag_dict = {}
     locations_not_needing_flags = []
     locations_needing_flags = []
 
@@ -136,14 +145,14 @@ def ShuffleItems(spoiler: Spoiler):
             price = 0
             if item_location.type == Types.Shop:
                 # Vanilla prices are based on item, not location
-                if spoiler.settings.random_prices == "vanilla":
+                if spoiler.settings.random_prices == RandomPrices.vanilla:
                     # If it's not in the prices dictionary, the item is free
                     if item_location.item in spoiler.settings.prices.keys():
                         price = spoiler.settings.prices[item_location.item]
                 else:
                     price = spoiler.settings.prices[location_enum]
             location_selection = LocationSelection(
-                vanilla_item=item_location.type,
+                vanilla_item=ItemList[item_location.default].type,
                 flag=old_flag,
                 placement_data=placement_info,
                 is_reward_point=item_location.is_reward,
@@ -163,12 +172,20 @@ def ShuffleItems(spoiler: Spoiler):
             if new_item is not None:
                 location_selection.new_item = new_item.type
                 location_selection.new_kong = new_item.kong
+                location_selection.new_subitem = item_location.item
                 # If this item has a dedicated specific flag, then set it now (Keys and Coins right now)
-                if new_item.rando_flag is not None:
-                    if new_item.rando_flag == -1:  # This means it's a progressive move and they need special flags
+                if new_item.rando_flag is not None or new_item.type == Types.FakeItem:
+                    if new_item.rando_flag == -1 or new_item.type == Types.FakeItem:  # This means it's a progressive move or fake item and they need special flags
                         location_selection.new_flag = progressive_move_flag_dict[item_location.item].pop()
                     else:
                         location_selection.new_flag = new_item.rando_flag
+                    locations_not_needing_flags.append(location_selection)
+                # Company Coins keep their original flag
+                elif new_item.type == Types.Coin:
+                    location_selection.new_flag = new_item.flag
+                    locations_not_needing_flags.append(location_selection)
+                elif new_item.type == Types.JunkItem:
+                    location_selection.new_flag = junk_flag_dict.pop()
                     locations_not_needing_flags.append(location_selection)
                 # Otherwise we need to put it in the list of locations needing flags
                 else:
@@ -181,27 +198,23 @@ def ShuffleItems(spoiler: Spoiler):
                 locations_not_needing_flags.append(location_selection)
             # Add this location's flag to the lists of available flags by location
             # Initialize relevant list if it doesn't exist
-            if item_location.type not in flag_dict.keys():
-                if item_location.type == Types.Blueprint:
-                    flag_dict[item_location.type] = {}
-                    flag_dict[item_location.type][Kongs.donkey] = []
-                    flag_dict[item_location.type][Kongs.diddy] = []
-                    flag_dict[item_location.type][Kongs.lanky] = []
-                    flag_dict[item_location.type][Kongs.tiny] = []
-                    flag_dict[item_location.type][Kongs.chunky] = []
-                else:
-                    flag_dict[item_location.type] = []
-            # Add this location's flag as a valid flag for this type of item/kong pairing
-            if item_location.type == Types.Blueprint:
-                flag_dict[item_location.type][old_kong].append(old_flag)
-            else:
+            if item_location.type not in flag_dict.keys() and item_location.type != Types.Blueprint:
+                flag_dict[item_location.type] = []
+            # Add this location's vanilla flag as a valid flag for this type of item/kong pairing
+            vanilla_item_type = ItemList[item_location.default].type
+            if item_location.type == Types.Shop:  # Except for shop locations - many of these are non-vanilla locations and won't have a valid vanilla item
                 flag_dict[item_location.type].append(old_flag)
+            # Link blueprint Items to their default flags stored in their Location
+            elif item_location.type == Types.Blueprint:
+                blueprint_flag_dict[item_location.default] = item_location.default_mapid_data[0].flag
+            else:
+                flag_dict[vanilla_item_type].append(old_flag)
     # Shuffle the list of locations needing flags so the flags are assigned randomly across seeds
     random.shuffle(locations_needing_flags)
     for location in locations_needing_flags:
         if location.new_flag is None:
             if location.new_item == Types.Blueprint:
-                location.new_flag = flag_dict[location.new_item][location.new_kong].pop()
+                location.new_flag = blueprint_flag_dict[LocationList[location.location].item]
             else:
                 location.new_flag = flag_dict[location.new_item].pop()
 

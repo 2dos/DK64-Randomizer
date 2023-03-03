@@ -102,7 +102,7 @@ LogicRegions = {
 
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack and l.TimeAccess(Regions.HollowTreeArea, Time.Night), None, 4),  # Alcove in tree
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # Near Lanky BP
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Day) and l.trombone, None, 3),  # Beat first rabbit race
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Day) and l.trombone, None, 3, True, True, "vanilla", True),  # Beat first rabbit race
     ],
     Regions.Anthill: [
     ],
@@ -116,7 +116,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.TimeAccess(Regions.MillArea, Time.Night), None, 1),  # Attic Entrance
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: l.swim, None, 17),  # Underwater
 
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # In patch of grass
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # In patch of grass
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 3),  # On mushroom near back Tag Barrel
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # On mushroom near rafters attic
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # On mushroom near Chunky minecart exit
@@ -168,7 +168,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 9),
 
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # In front of beanstalk
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # In front of beanstalk
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),  # By Mini Monkey barrel
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.TimeAccess(Regions.WormArea, Time.Night) or l.phasewalk, None, 3),  # By T&S portal
     ],

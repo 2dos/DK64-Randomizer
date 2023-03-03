@@ -12,7 +12,6 @@ static short past_lag[LAG_CAP] = {};
 static char lag_counter = 0;
 static float current_avg_lag = 0;
 static char has_loaded = 0;
-static char good_eeprom = 0;
 static char new_picture = 0;
 
 void cFuncLoop(void) {
@@ -20,24 +19,21 @@ void cFuncLoop(void) {
 	unlockKongs();
 	tagAnywhere();
 	initHack(0);
-	//fixCastleAutowalk();
 	level_order_rando_funcs();
 	qualityOfLife_fixes();
 	qualityOfLife_shorteners();
-	decouple_moves_fixes();
+	overlay_changes();
 	replace_zones(0);
 	alter_boss_key_flags();
 	if (ObjectModel2Timer <= 2) {
 		setFlag(0x78, 0, 2); // Clear K. Lumsy temp flag
 		setFlag(0x79, 0, 2); // Clear BFI Reward Cutscene temp flag
-		if (!Rando.tns_portal_rando_on) {
+		if ((!Rando.tns_portal_rando_on) && (Rando.tns_indicator)) {
 			shiftBrokenJapesPortal();
 		}
 		openCoinDoor();
 		priceTransplant();
-		if (CurrentMap == 0x50) {
-			good_eeprom = EEPROMType == 2;
-		} else if (CurrentMap == 0xE) {
+		if (CurrentMap == 0xE) {
 			TextItemName = Rando.aztec_beetle_reward;
 		} else if (CurrentMap == 0x52) {
 			TextItemName = Rando.caves_beetle_reward;
@@ -49,6 +45,7 @@ void cFuncLoop(void) {
 				CheckKasplatSpawnBitfield();
 			}
 		}
+		callIceTrap();
 	}
 	// displayNumberOnTns();
 	if (Rando.music_rando_on) {
@@ -61,9 +58,7 @@ void cFuncLoop(void) {
 	if (CurrentMap == 0x50) {
 		colorMenuSky();
 	}
-	fixDKFreeSoftlock();
 	callParentMapFilter();
-	recolorKongControl();
 	spawnCannonWrapper();
 	setCrusher();
 	if (Rando.win_condition == GOAL_POKESNAP) {
@@ -86,6 +81,7 @@ void cFuncLoop(void) {
 	if (Rando.perma_lose_kongs) {
 		preventBossCheese();
 		kong_has_died();
+		fixGraceCheese();
 		forceBossKong();
 	} else {
 		if (CurrentMap == 0xC7) {
@@ -221,9 +217,9 @@ void earlyFrame(void) {
 	}
 	// Cutscene DK Code
 	if ((CurrentMap == 0x28) || (CurrentMap == 0x4C)) {
-		*(int*)(0x8074C3B0) = 0x806C1640;
+		actor_functions[196] = (void*)0x806C1640;
 	} else {
-		*(int*)(0x8074C3B0) = (int)&cutsceneDKCode;
+		actor_functions[196] = &cutsceneDKCode;
 	}
 	fastWarpShockwaveFix();
 	catchWarpHandle();
@@ -257,7 +253,7 @@ void earlyFrame(void) {
 		}
 	}
 	handle_WTI();
-	adjust_galleon_water();
+	adjust_level_modifiers();
 	finalizeBeatGame();
 	for (int kong = 0; kong < 5; kong++) {
 		for (int level = 0; level < 7; level++) {
@@ -292,24 +288,71 @@ static char hud_timer = 0;
 static char wait_progress_master = 0;
 static char wait_progress_timer = 0;
 
+#define WAIT_SIZE 64
+static char wait_text_0[WAIT_SIZE] = "REMOVING LANKY KONG";
+static char wait_text_1[WAIT_SIZE] = "TELLING 2DOS TO PLAY DK64";
+static char wait_text_2[WAIT_SIZE] = "LOCKING K. LUMSY IN A CAGE";
+static char wait_text_3[WAIT_SIZE] = "STEALING THE BANANA HOARD";
+static unsigned char wait_text_lengths[] = {19, 25, 26, 25};
+
+void insertROMMessages(void) {
+	for (int i = 0; i < 4; i++) {
+		unsigned char* message_write = dk_malloc(WAIT_SIZE);
+		int message_size = WAIT_SIZE;
+		int* message_file_size;
+		*(int*)(&message_file_size) = message_size;
+		void* ptr = 0;
+		if (i == 0) {
+			ptr = &wait_text_0;
+		} else if (i == 1) {
+			ptr = &wait_text_1;
+		} else if (i == 2) {
+			ptr = &wait_text_2;
+		} else if (i == 3) {
+			ptr = &wait_text_3;
+		}
+		copyFromROM(0x1FFD000 + (WAIT_SIZE * i),message_write,&message_file_size,0,0,0,0);
+		if (message_write[0] != 0) {
+			dk_memcpy(ptr, message_write, WAIT_SIZE);
+			wait_text_lengths[i] = 0;
+			for (int j = 0; j < WAIT_SIZE; j++) {
+				if ((message_write[j] == 0) && (wait_text_lengths[i] == 0)) {
+					wait_text_lengths[i] = j;
+				}
+			}
+		}
+	}
+}
+
 static const char* wait_texts[] = {
 	"BOOTING UP THE RANDOMIZER",
-	"REMOVING LANKY KONG",
-	"TELLING 2DOS TO PLAY DK64",
-	"LOCKING K. LUMSY IN A CAGE",
-	"STEALING THE BANANA HOARD"
+	wait_text_0,
+	wait_text_1,
+	wait_text_2,
+	wait_text_3,
 };
-static const char wait_x_offsets[] = {55, 85, 55, 53, 55};
 static unsigned char ammo_hud_timer = 0;
 
 #define HERTZ 60
-#define ACTOR_MAINMENUCONTROLLER 0x146
-
 
 #define LOADBAR_START 350
 #define LOADBAR_FINISH 900
 #define LOADBAR_MAXWIDTH 200
 #define LOADBAR_DIVISOR 35
+
+#define INFO_STYLE 6
+int* drawInfoText(int* dl, int x_offset, int y, char* str, int error) {
+	int x = 93 + x_offset;
+	if (x_offset == -1) {
+		x = getCenter(INFO_STYLE,str);
+	}
+	int non_red = 0xFF;
+	if (error) {
+		non_red = 0;
+	}
+	return drawTextContainer(dl, INFO_STYLE, x, y, str, 0xFF, non_red, non_red, 255, 0);
+}
+
 int* displayListModifiers(int* dl) {
 	if (CurrentMap != NINTENDO_LOGO) {
 		if (CurrentMap == NFR_SCREEN) {
@@ -340,14 +383,52 @@ int* displayListModifiers(int* dl) {
 				right = LOADBAR_START;
 			}
 			dl = drawScreenRect(dl, left, 475, right, 485, *(unsigned char*)(address + 0), *(unsigned char*)(address + 1), *(unsigned char*)(address + 2), *(unsigned char*)(address + 3));
-			dl = drawPixelTextContainer(dl, wait_x_offsets[(int)wait_progress_master], 130, (char*)wait_texts[(int)wait_progress_master], 0xFF, 0xFF, 0xFF, 0xFF, 1);
+			int wait_x_offset = 55;
+			if (wait_progress_master > 0) {
+				wait_x_offset = 160 - (wait_text_lengths[wait_progress_master - 1] << 2);
+			}
+			dl = drawPixelTextContainer(dl, wait_x_offset, 130, (char*)wait_texts[(int)wait_progress_master], 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			dl = drawPixelTextContainer(dl, 110, 150, "PLEASE WAIT", 0xFF, 0xFF, 0xFF, 0xFF, 1);
 		} else if (CurrentMap == MAIN_MENU) {
-			if (!good_eeprom) {
-				dl = drawPixelTextContainer(dl, 0x52, 0x66, "BAD EEPROM SETTINGS.", 0xFF, 0xFF, 0xFF, 0xFF, 1);
-				dl = drawPixelTextContainer(dl, 0x3E, 0x6F, "YOUR GAME WILL NOT SAVE.", 0xFF, 0, 0, 0xFF, 1);
-				dl = drawPixelTextContainer(dl, 0x3E, 0x87, "CHECK THE SETUP GUIDE IN", 0xFF, 0xFF, 0xFF, 0xFF, 1);
-				dl = drawPixelTextContainer(dl, 0x34, 0x92, "THE WIKI TO FIX THIS ERROR.", 0xFF, 0xFF, 0xFF, 0xFF, 1);
+			if (EEPROMType != 2) {
+				int i = 0;
+				while (i < LoadedActorCount) {
+					if (LoadedActorArray[i].actor) {
+						if (LoadedActorArray[i].actor->actorType == 0x146) {
+							int screen = *(char*)((int)(LoadedActorArray[i].actor) + 0x18A);
+							if (screen < 2) {
+								// EEPROM Warning
+								dl = drawScreenRect(dl, 250, 200, 1000, 700, 3, 3, 3, 1);
+								dl = drawPixelTextContainer(dl, 128, 60, "WARNING", 0xFF, 0, 0, 0xFF, 1);
+								int y_info = 150;
+								int spacing = 14;
+								dl = drawInfoText(dl, -88, y_info, "DUE TO YOUR EMULATOR SETUP", 0);
+								y_info += spacing;
+								dl = drawInfoText(dl, -80, y_info, "YOUR GAME MAY EXPERIENCE", 0);
+								y_info += spacing;
+								dl = drawInfoText(dl, -96, y_info, "ABNORMALITIES LIKE NOT SAVING", 0);
+								y_info += spacing;
+								dl = drawInfoText(dl, -86, y_info, "AND SPORADIC CRASHES THAT", 0);
+								y_info += spacing;
+								dl = drawInfoText(dl, -56, y_info, "WE             SUPPORT.", 0);
+								dl = drawInfoText(dl, -31, y_info, "CANNOT", 1);
+								y_info += spacing;
+								dl = drawInfoText(dl, -72, y_info, "PLEASE CONSULT THE WIKI", 0);
+								y_info += spacing;
+								dl = drawInfoText(dl, -40, y_info, "OR THE DISCORD", 0);
+								y_info += spacing;
+								dl = drawInfoText(dl, -88, y_info, "DISCORD.DK64RANDOMIZER.COM", 0);
+								y_info += spacing;
+								dl = drawInfoText(dl, -8, y_info, "FOR HELP", 0);
+								y_info += spacing;
+							}
+							break;
+						}
+					}
+					i++;
+				}
+				
+
 			}
 		} else {
 			if (Rando.item_rando) {

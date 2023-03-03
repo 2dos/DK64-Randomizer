@@ -18,7 +18,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 45),  # Path from W2 to W5
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),  # W5
 
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # Behind Snide's
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # Behind Snide's
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # By Tiny BP
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # W2
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack, None, 4),  # Above main warps

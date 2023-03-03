@@ -40,7 +40,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 5),  # By Snide's
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # By DK Portal
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.swim, None, 3),  # In river
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny) or l.CanMoonkick() or ((l.generalclips or l.phasewalk) and (l.istiny or l.isdiddy))), None, 1),  # Rainbow coin
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny) or l.CanMoonkick() or ((l.generalclips or l.phasewalk) and (l.istiny or l.isdiddy))), None, 1),  # Rainbow coin
     ],
     Regions.JapesBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 2),
@@ -128,10 +128,10 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.swim, None, 5),  # In water by fairy
     ],
     Regions.TinyHive: [
-        Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 8),
+        Collectible(Collectibles.banana, Kongs.tiny, lambda l: ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.phasewalk or l.generalclips), None, 8),
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
 
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 2),
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.phasewalk or l.generalclips), None, 2),
     ],
     Regions.JapesCatacomb: [
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 5),

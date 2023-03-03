@@ -7,8 +7,9 @@ from pyodide import create_proxy
 
 import js
 from randomizer.BackgroundRandomizer import generate_playthrough
+from randomizer.Enums.Settings import SettingsMap
 from randomizer.Patching.ApplyRandomizer import patching_response
-from randomizer.SettingStrings import decrypt_setting_string, encrypt_settings_string
+from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Worker import background
 from ui.bindings import bind
 from ui.progress_bar import ProgressBar
@@ -22,6 +23,8 @@ from ui.rando_options import (
     toggle_b_locker_boxes,
     updateDoorOneNumAccess,
     updateDoorTwoNumAccess,
+    updateDoorOneCountText,
+    updateDoorTwoCountText,
     toggle_counts_boxes,
     update_boss_required,
 )
@@ -34,8 +37,8 @@ def export_settings_string(event):
     Args:
         event (event): Javascript event object.
     """
-    form_data = serialize_settings()
-    settings_string = encrypt_settings_string(form_data)
+    setting_data = serialize_settings()
+    settings_string = encrypt_settings_string_enum(setting_data)
     js.settings_string.value = settings_string
 
 
@@ -47,43 +50,60 @@ def import_settings_string(event):
         event (event): Javascript Event object.
     """
     settings_string = js.settings_string.value
-    try:
-        settings = decrypt_setting_string(settings_string)
-        for key in settings:
-            try:
-                if type(settings[key]) is bool:
-                    if settings[key] is False:
-                        js.jq(f"#{key}").checked = False
-                        js.document.getElementsByName(key)[0].checked = False
-                    else:
-                        js.jq(f"#{key}").checked = True
-                        js.document.getElementsByName(key)[0].checked = True
-                    js.jq(f"#{key}").removeAttr("disabled")
-                elif type(settings[key]) is list:
-                    selector = js.document.getElementById(key)
-                    for i in range(0, selector.options.length):
-                        selector.item(i).selected = selector.item(i).value in settings[key]
+    settings = decrypt_settings_string_enum(settings_string)
+    # Clear all select boxes on the page so as long as its not in the nav-cosmetics div
+    for select in js.document.getElementsByTagName("select"):
+        if js.document.querySelector("#nav-cosmetics").contains(select) is False:
+            select.selectedIndex = -1
+    js.document.getElementById("presets").selectedIndex = 0
+    for key in settings:
+        try:
+            if type(settings[key]) is bool:
+                if settings[key] is False:
+                    js.jq(f"#{key}").checked = False
+                    js.document.getElementsByName(key)[0].checked = False
                 else:
-                    if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
-                        js.jq(f"#{key}").slider("setValue", settings[key])
-                        js.jq(f"#{key}").slider("enable")
-                        js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                    js.jq(f"#{key}").checked = True
+                    js.document.getElementsByName(key)[0].checked = True
+                js.jq(f"#{key}").removeAttr("disabled")
+            elif type(settings[key]) is list:
+                selector = js.document.getElementById(key)
+                if selector.tagName == "SELECT":
+                    for item in settings[key]:
+                        for option in selector.options:
+                            if option.value == item.name:
+                                option.selected = True
+            else:
+                if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
+                    js.jq(f"#{key}").slider("setValue", settings[key])
+                    js.jq(f"#{key}").slider("enable")
+                    js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                else:
+                    selector = js.document.getElementById(key)
+                    # If the selector is a select box, set the selectedIndex to the value of the option
+                    if selector.tagName == "SELECT":
+                        for option in selector.options:
+                            if option.value == SettingsMap[key](settings[key]).name:
+                                # Set the value of the select box to the value of the option
+                                option.selected = True
+                                break
                     else:
                         js.jq(f"#{key}").val(settings[key])
-                    js.jq(f"#{key}").removeAttr("disabled")
-            except Exception as e:
-                pass
-        toggle_counts_boxes(None)
-        toggle_b_locker_boxes(None)
-        update_boss_required(None)
-        disable_colors(None)
-        disable_music(None)
-        disable_move_shuffles(None)
-        max_randomized_blocker(None)
-        max_randomized_troff(None)
-        disable_barrel_modal(None)
-    except Exception:
-        pass
+                js.jq(f"#{key}").removeAttr("disabled")
+        except Exception as e:
+            print(e)
+            pass
+    toggle_counts_boxes(None)
+    toggle_b_locker_boxes(None)
+    update_boss_required(None)
+    disable_colors(None)
+    disable_music(None)
+    disable_move_shuffles(None)
+    max_randomized_blocker(None)
+    max_randomized_troff(None)
+    disable_barrel_modal(None)
+    updateDoorOneCountText(None)
+    updateDoorTwoCountText(None)
 
 
 @bind("change", "patchfileloader")
@@ -147,7 +167,7 @@ def generate_seed_from_patch(event):
 
 
 def serialize_settings():
-    """Serialize form settings into a JSON string.
+    """Serialize form settings into an enum-focused JSON string.
 
     Returns:
         dict: Dictionary of form settings.
@@ -174,6 +194,18 @@ def serialize_settings():
         except ValueError:
             pass
 
+    def get_enum_or_string_value(valueString, settingName):
+        """Obtain the enum or string value for the provided setting.
+
+        Args:
+            valueString (str) - The value from the HTML input.
+            settingName (str) - The name of the HTML input.
+        """
+        if settingName in SettingsMap:
+            return SettingsMap[settingName][valueString]
+        else:
+            return valueString
+
     for obj in form:
         # Verify each object if its value is a string convert it to a bool
         if obj.value.lower() in ["true", "false"]:
@@ -182,7 +214,7 @@ def serialize_settings():
             if is_number(obj.value):
                 form_data[obj.name] = int(obj.value)
             else:
-                form_data[obj.name] = obj.value
+                form_data[obj.name] = get_enum_or_string_value(obj.value, obj.name)
     # find all input boxes and verify their checked status
     for element in js.document.getElementsByTagName("input"):
         if element.type == "checkbox" and not element.checked:
@@ -191,13 +223,14 @@ def serialize_settings():
     # Re disable all previously disabled options
     for element in disabled_options:
         element.setAttribute("disabled", "disabled")
+    # Create value lists for multi-select options
     for element in js.document.getElementsByTagName("select"):
         if "selected" in element.className:
             length = element.options.length
             values = []
             for i in range(0, length):
                 if element.options.item(i).selected:
-                    values.append(element.options.item(i).value)
+                    values.append(get_enum_or_string_value(element.options.item(i).value, element.getAttribute("name")))
             form_data[element.getAttribute("name")] = values
     return form_data
 

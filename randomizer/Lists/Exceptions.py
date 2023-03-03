@@ -95,3 +95,15 @@ class BossOutOfLocationsException(FillException):
     """Exception triggered when there are no valid levels to put a boss."""
 
     pass
+
+
+class CBFillFailureException(FillException):
+    """Exception triggered when CB rando fails to correctly generate a valid set of groups."""
+
+    pass
+
+
+class CoinFillFailureException(FillException):
+    """Exception triggered when coin rando fails to correctly generate a valid set of groups."""
+
+    pass

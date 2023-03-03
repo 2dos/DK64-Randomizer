@@ -1,3 +1,13 @@
+/**
+ * @file item_db.c
+ * @author Ballaam
+ * @brief Item Database for the checks screen
+ * @version 0.1
+ * @date 2022-11-15
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "../../include/common.h"
 
 const check_struct item_db[] = {

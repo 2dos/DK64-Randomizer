@@ -45,7 +45,6 @@ class DoorData:
             self.logic = lambda l: True
         else:
             self.logic = logic
-        self.logic = logic
         self.placed = placed
         self.default_kong = default_kong
         self.default_placed = placed  # info about what door_type a door location is in vanilla
@@ -170,6 +169,7 @@ door_locations = {
             logicregion=Regions.JungleJapesMain,
             location=[703.0, 538.0, 2293.0, 54.0],
             group=3,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Jungle Japes: Alcove Above Diddy Tunnel - left",
@@ -177,6 +177,7 @@ door_locations = {
             logicregion=Regions.JungleJapesMain,
             location=[817.0, 538.0, 2372.0, 232.0],
             group=3,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Jungle Japes: Next to Minecart Exit -right", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[1029.0, 287.0, 2032.0, 251.5], rx=-10, group=3, logic=lambda l: True
@@ -2565,6 +2566,7 @@ door_locations = {
             scale=0.95,
             group=2,
             logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Creepy Castle: On Stairs to Tag Barrel at the Warp Pad Hub",

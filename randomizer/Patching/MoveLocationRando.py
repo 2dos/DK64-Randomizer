@@ -1,7 +1,10 @@
 """Randomize Move Locations."""
 from randomizer.Patching.Patcher import ROM
 from randomizer.Spoiler import Spoiler
+from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando
 from randomizer.Enums.Types import Types
+from randomizer.Lists.Item import ItemList
+from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 
@@ -56,23 +59,30 @@ kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "L
 
 def pushItemMicrohints(spoiler: Spoiler, move_dict: dict, level: int, kong: int, slot: int):
     """Push hint for the micro-hints system."""
-    if kong != Kongs.any or slot == 0:
-        move = None  # Using no item for the purpose of a default
-        hinted_items = {
-            # Key = Item, Value = Textbox index in text file 19
-            "Monkeyport": [("special", 2, Kongs.tiny), 26],
-            "Gorilla Gone": [("special", 2, Kongs.chunky), 25],
-        }
-        for item_hint in hinted_items:
-            move_data = hinted_items[item_hint][0]
-            if move_dict["move_type"] == move_data[0] and move_dict["move_lvl"] == move_data[1] and move_dict["move_kong"] == move_data[2]:
-                move = item_hint
-        if move is not None:
-            data = {"textbox_index": hinted_items[move][1], "mode": "replace_whole", "target": spoiler.microhints[move]}
-            if 19 in spoiler.text_changes:
-                spoiler.text_changes[19].append(data)
-            else:
-                spoiler.text_changes[19] = [data]
+    if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
+        if kong != Kongs.any or slot == 0:
+            move = None  # Using no item for the purpose of a default
+            hinted_items = {
+                # Key = Item, Value = Textbox index in text file 19
+                Items.Monkeyport: [("special", 2, Kongs.tiny), 26, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
+                Items.GorillaGone: [("special", 2, Kongs.chunky), 25, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
+                Items.Bongos: [("instrument", 0, Kongs.donkey), 27, [MicrohintsEnabled.all]],
+                Items.Triangle: [("instrument", 0, Kongs.chunky), 28, [MicrohintsEnabled.all]],
+                Items.Saxophone: [("instrument", 0, Kongs.tiny), 29, [MicrohintsEnabled.all]],
+                Items.Trombone: [("instrument", 0, Kongs.lanky), 30, [MicrohintsEnabled.all]],
+                Items.Guitar: [("instrument", 0, Kongs.diddy), 31, [MicrohintsEnabled.all]],
+            }
+            for item_hint in hinted_items:
+                move_data = hinted_items[item_hint][0]
+                if move_dict["move_type"] == move_data[0] and move_dict["move_lvl"] == move_data[1] and move_dict["move_kong"] == move_data[2]:
+                    if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][2]):
+                        move = item_hint
+            if move is not None:
+                data = {"textbox_index": hinted_items[move][1], "mode": "replace_whole", "target": spoiler.microhints[ItemList[move].name]}
+                if 19 in spoiler.text_changes:
+                    spoiler.text_changes[19].append(data)
+                else:
+                    spoiler.text_changes[19] = [data]
 
 
 def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler: Spoiler, kong_slot: int, kongs: list, level_override=None):
@@ -121,7 +131,7 @@ def randomize_moves(spoiler: Spoiler):
     hint_enabled = True
     if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.valid_locations:
         hint_enabled = False
-    if spoiler.settings.move_rando not in ("off", "starts_with") and spoiler.move_data is not None:
+    if spoiler.settings.move_rando not in (MoveRando.off, MoveRando.start_with) and spoiler.move_data is not None:
         # Take a copy of move_data before modifying
         move_arrays = spoiler.move_data.copy()
 

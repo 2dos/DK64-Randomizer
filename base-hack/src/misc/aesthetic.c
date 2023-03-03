@@ -1,8 +1,21 @@
+/**
+ * @file aesthetic.c
+ * @author Ballaam
+ * @brief Alter cosmetic elements about the game outside of initialization
+ * @version 0.1
+ * @date 2022-04-25
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "../../include/common.h"
 
 static short rgb_offsets[3] = {0,0,0};
 
 void colorMenuSky(void) {
+	/**
+	 * @brief Alters menu sky color to be a color fade
+	 */
 	if (!Rando.misc_cosmetic_on) {
 		int top_rgb[3] = {0,0,0};
 		int magnitude = (ObjectModel2Timer / 10) % 300;

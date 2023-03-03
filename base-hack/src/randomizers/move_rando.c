@@ -340,6 +340,88 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 	paad->melons = CollectableBase.Melons;
 }
 
+purchase_classification getPurchaseClassification(int purchase_type, int flag) {
+	if ((purchase_type == PURCHASE_MOVES) || (purchase_type == PURCHASE_SLAM)) {
+		return PCLASS_MOVE;
+	} else if ((purchase_type == PURCHASE_AMMOBELT) || (purchase_type == PURCHASE_GUN)) {
+		return PCLASS_GUN;
+	} else if (purchase_type == PURCHASE_INSTRUMENT) {
+		return PCLASS_INSTRUMENT;
+	} else if (purchase_type == PURCHASE_GB) {
+		return PCLASS_GB;
+	} else if (purchase_type == PURCHASE_FLAG) {
+		int subtype = getMoveProgressiveFlagType(flag);
+		if (subtype == 0) {
+			return PCLASS_MOVE;
+		} else if (subtype == 1) {
+			return PCLASS_GUN;
+		} else if (subtype == 2) {
+			return PCLASS_INSTRUMENT;
+		}
+		if (flag == -2) {
+			return PCLASS_CAMSHOCK;
+		} else if (isTBarrelFlag(flag)) {
+			return PCLASS_MOVE;
+		} else if (flag == FLAG_ABILITY_CAMERA) {
+			return PCLASS_CAMERA;
+		} else if (flag == FLAG_ABILITY_SHOCKWAVE) {
+			return PCLASS_SHOCKWAVE;
+		} else if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
+			return PCLASS_BLUEPRINT;
+		} else if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
+			return PCLASS_MEDAL;
+		} else if ((flag == FLAG_COLLECTABLE_NINTENDOCOIN) || (flag == FLAG_COLLECTABLE_RAREWARECOIN)) {
+			return PCLASS_COMPANYCOIN;
+		} else if (isFlagInRange(flag, FLAG_CROWN_JAPES, 10)) {
+			return PCLASS_CROWN;
+		} else if (flag == FLAG_COLLECTABLE_BEAN) {
+			return PCLASS_BEAN;
+		} else if (isFlagInRange(flag, FLAG_PEARL_0_COLLECTED, 5)) {
+			return PCLASS_PEARL;
+		} else if (isFlagInRange(flag, FLAG_FAIRY_1, 20)) {
+			return PCLASS_FAIRY;
+		} else if (isFlagInRange(flag, FLAG_FAKEITEM, 0x10)) {
+			return PCLASS_FAKEITEM;
+		} else {
+			for (int i = 0; i < 8; i++) {
+				if (flag == getKeyFlag(i)) {
+					return PCLASS_KEY;
+				}
+			}
+		}
+	}
+	return PCLASS_NOTHING;
+}
+
+void addHelmHurryPurchaseTime(int purchase_type, int flag) {
+	purchase_classification pclass = getPurchaseClassification(purchase_type, flag);
+	helm_hurry_items hh_item_list[] = {
+		HHITEM_NOTHING, // PCLASS_NOTHING,
+		HHITEM_MOVE, // PCLASS_MOVE,
+		HHITEM_MOVE, // PCLASS_INSTRUMENT,
+		HHITEM_MOVE, // PCLASS_GUN,
+		HHITEM_MOVE, // PCLASS_CAMERA,
+		HHITEM_MOVE, // PCLASS_SHOCKWAVE,
+		HHITEM_MOVE, // PCLASS_CAMSHOCK,
+		HHITEM_NOTHING, // PCLASS_GB, - Handled separately
+		HHITEM_BLUEPRINT, // PCLASS_BLUEPRINT,
+		HHITEM_COMPANYCOIN, // PCLASS_COMPANYCOIN,
+		HHITEM_MEDAL, // PCLASS_MEDAL,
+		HHITEM_RAINBOWCOIN, // PCLASS_RAINBOWCOIN,
+		HHITEM_KEY, // PCLASS_KEY,
+		HHITEM_CROWN, // PCLASS_CROWN,
+		HHITEM_BEAN, // PCLASS_BEAN,
+		HHITEM_PEARL, // PCLASS_PEARL,
+		HHITEM_KONG, // PCLASS_KONG,
+		HHITEM_FAIRY, // PCLASS_FAIRY,
+		HHITEM_FAKEITEM, // PCLASS_FAKEITEM,
+	};
+	helm_hurry_items hh_item = hh_item_list[(int)pclass];
+	if (hh_item != HHITEM_NOTHING) {
+		addHelmTime(hh_item, 1);
+	}
+}
+
 void purchaseMove(shop_paad* paad) {
 	int item_given = -1;
 	int crystals_unlocked = crystalsUnlocked(paad->kong);
@@ -367,6 +449,9 @@ void purchaseMove(shop_paad* paad) {
 			if (paad->flag == -2) {
 				setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, 0);
 				setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, 0);
+			} else if ((paad->flag >= FLAG_FAKEITEM) && (paad->flag < (FLAG_FAKEITEM + 0x10))) {
+				setFlagDuplicate(paad->flag, 1, 0);
+				queueIceTrap();
 			} else {
 				setFlagDuplicate(paad->flag, 1, 0);
 			}
@@ -393,6 +478,7 @@ void purchaseMove(shop_paad* paad) {
 	if (item_given > -1) {
 		changeCollectableCount(item_given, 0, 9999);
 	}
+	addHelmHurryPurchaseTime(paad->purchase_type, paad->flag);
 	save();
 }
 
@@ -450,6 +536,9 @@ void setLocation(purchase_struct* purchase_data) {
 			// BFI Coupled Moves
 			setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,1,0);
 			setFlagDuplicate(FLAG_ABILITY_CAMERA,1,0);
+		} else if ((p_type == PURCHASE_FLAG) && (isFlagInRange(purchase_data->purchase_value, FLAG_FAKEITEM, 0x10))) {
+			setFlagDuplicate(purchase_data->purchase_value,1,0);
+			queueIceTrap();
 		} else if (p_type == PURCHASE_FLAG) {
 			// IsFlag
 			progressiveChange(purchase_data->purchase_value);
@@ -465,6 +554,7 @@ void setLocation(purchase_struct* purchase_data) {
 				giveGB(p_kong, world);
 			}
 		}
+		addHelmHurryPurchaseTime(p_type, purchase_data->purchase_value);
 	}
 }
 
@@ -723,61 +813,64 @@ void getNextMoveText(void) {
 				case PURCHASE_FLAG:
 					{
 						if (p_flag == -2) {
-							top_item = 59;
+							top_item = ITEMTEXT_CAMERACOMBO;
 						} else {
 							if (!writeProgressiveText(p_flag, &top_item, &bottom_item)) {
 								int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
 								for (int i = 0; i < sizeof(tied_flags) / 4; i++) {
 									if (tied_flags[i] == p_flag) {
-										top_item = 53 + i;
+										top_item = ITEMTEXT_DIVE + i;
 									}
 								}
 							}
 						}
 						if (top_item == -1) {
-							if ((p_flag >= FLAG_BP_JAPES_DK_HAS) && (p_flag < (FLAG_BP_JAPES_DK_HAS + 40))) {
+							if (isFlagInRange(p_flag, FLAG_BP_JAPES_DK_HAS, 40)) {
 								// Blueprint
 								int kong = (p_flag - FLAG_BP_JAPES_DK_HAS) % 5;
-								top_item = 62 + kong;
-							} else if ((p_flag >= FLAG_MEDAL_JAPES_DK) && (p_flag < (FLAG_MEDAL_JAPES_DK + 40))) {
+								top_item = ITEMTEXT_BLUEPRINT_DK + kong;
+							} else if (isFlagInRange(p_flag, FLAG_MEDAL_JAPES_DK, 40)) {
 								// Medal
-								top_item = 61;
+								top_item = ITEMTEXT_MEDAL;
 							} else if (p_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
 								// Nintendo Coin
-								top_item = 67;
+								top_item = ITEMTEXT_NINTENDO;
 							} else if (p_flag == FLAG_COLLECTABLE_RAREWARECOIN) {
 								// Rareware Coin
-								top_item = 68;
-							} else if ((p_flag >= FLAG_CROWN_JAPES) && (p_flag < (FLAG_CROWN_JAPES + 10))) {
+								top_item = ITEMTEXT_RAREWARE;
+							} else if (isFlagInRange(p_flag, FLAG_CROWN_JAPES, 10)) {
 								// Crown
-								top_item = 70;
+								top_item = ITEMTEXT_CROWN;
 							} else if (p_flag == FLAG_COLLECTABLE_BEAN) {
 								// Fungi Bean
-								top_item = 71;
-							} else if ((p_flag >= FLAG_PEARL_0_COLLECTED) && (p_flag < (FLAG_PEARL_0_COLLECTED + 5))) {
+								top_item = ITEMTEXT_BEAN;
+							} else if (isFlagInRange(p_flag, FLAG_PEARL_0_COLLECTED, 5)) {
 								// Galleon Pearls
-								top_item = 80;
-							} else if ((p_flag >= FLAG_FAIRY_1) && (p_flag < (FLAG_FAIRY_1 + 20))) {
+								top_item = ITEMTEXT_PEARL;
+							} else if (isFlagInRange(p_flag, FLAG_FAIRY_1, 20)) {
 								// Banana Fairy
-								top_item = 86;
+								top_item = ITEMTEXT_FAIRY;
+							} else if (isFlagInRange(p_flag, FLAG_FAKEITEM, 0x10)) {
+								// Fake Item
+								top_item = ITEMTEXT_FAKEITEM;
 							} else {
 								// Key Number
 								for (int i = 0; i < 8; i++) {
 									if (p_flag == getKeyFlag(i)) {
-										top_item = 72 + i;
+										top_item = ITEMTEXT_KEY1 + i;
 									}
 								}
 								// Kongs
 								if (top_item == -1) {
 									for (int i = 0; i < 5; i++) {
 										if (p_flag == kong_flags[i]) {
-											top_item = 81 + i;
+											top_item = ITEMTEXT_KONG_DK + i;
 										}
 									}
 								}
 								if (top_item == -1) {
 									// Default to GB
-									top_item = 60;
+									top_item = ITEMTEXT_BANANA;
 								}
 							}
 						}
@@ -908,9 +1001,10 @@ void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag) {
 						int move_flags[] = {FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE, -2};
 						text_item_1 = 0x0;
 						text_file = 8;
+						int explanation_start = 0x25;
 						for (int i = 0; i < sizeof(move_flags)/4; i++) {
 							if (move_flags[i] == paad->flag) {
-								text_item_1 = 0x24 + i;
+								text_item_1 = explanation_start + i;
 							}
 						}
 						int subtype = getMoveProgressiveFlagType(paad->flag);
@@ -933,7 +1027,7 @@ void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_flag) {
 								text_file = 9;
 							}
 						} else {
-							text_item_1 = 0x2B;
+							text_item_1 = explanation_start + 7;
 							text_file = 8;
 						}
 					}

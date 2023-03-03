@@ -7,140 +7,140 @@
 
 const name_latin_struct SimianSlamNames[] = {
 	{
-		.name = 0,
-		.latin = 0,
+		.name = ITEMTEXT_SLAM1,
+		.latin = ITEMTEXT_SLAM1,
 	},
 	{
-		.name = 0,
-		.latin = 1,
+		.name = ITEMTEXT_SLAM1,
+		.latin = ITEMTEXT_SLAM1_LATIN,
 	},
 	{
-		.name = 2,
-		.latin = 3,
+		.name = ITEMTEXT_SLAM2,
+		.latin = ITEMTEXT_SLAM2_LATIN,
 	},
 	{
-		.name = 4,
-		.latin = 5,
+		.name = ITEMTEXT_SLAM3,
+		.latin = ITEMTEXT_SLAM3_LATIN,
 	},
 };
 
 const name_latin_struct SpecialMovesNames[] = {
 	{
-		.name = 0,
-		.latin = 0,
+		.name = ITEMTEXT_SLAM1,
+		.latin = ITEMTEXT_SLAM1,
 	},
 	{
-		.name = 6,
-		.latin = 7,
+		.name = ITEMTEXT_BBLAST,
+		.latin = ITEMTEXT_BBLAST_LATIN,
 	},
 	{
-		.name = 8,
-		.latin = 9,
+		.name = ITEMTEXT_SKONG,
+		.latin = ITEMTEXT_SKONG_LATIN,
 	},
 	{
-		.name = 10,
-		.latin = 11,
+		.name = ITEMTEXT_GGRAB,
+		.latin = ITEMTEXT_GGRAB_LATIN,
 	},
 	{
-		.name = 0,
-		.latin = 0,
+		.name = ITEMTEXT_SLAM1,
+		.latin = ITEMTEXT_SLAM1,
 	},
 	{
-		.name = 12,
-		.latin = 13,
+		.name = ITEMTEXT_CCHARGE,
+		.latin = ITEMTEXT_CCHARGE_LATIN,
 	},
 	{
-		.name = 14,
-		.latin = 15,
+		.name = ITEMTEXT_RBARREL,
+		.latin = ITEMTEXT_RBARREL_LATIN,
 	},
 	{
-		.name = 16,
-		.latin = 17,
+		.name = ITEMTEXT_SSPRING,
+		.latin = ITEMTEXT_SSPRING_LATIN,
 	},
 	{
-		.name = 0,
-		.latin = 0,
+		.name = ITEMTEXT_SLAM1,
+		.latin = ITEMTEXT_SLAM1,
 	},
 	{
-		.name = 18,
-		.latin = 19,
+		.name = ITEMTEXT_OSTAND,
+		.latin = ITEMTEXT_OSTAND_LATIN,
 	},
 	{
-		.name = 20,
-		.latin = 21,
+		.name = ITEMTEXT_BBALLOON,
+		.latin = ITEMTEXT_BBALLOON_LATIN,
 	},
 	{
-		.name = 22,
-		.latin = 23,
+		.name = ITEMTEXT_OSPRINT,
+		.latin = ITEMTEXT_OSPRINT_LATIN,
 	},
 	{
-		.name = 0,
-		.latin = 0,
+		.name = ITEMTEXT_SLAM1,
+		.latin = ITEMTEXT_SLAM1,
 	},
 	{
-		.name = 24,
-		.latin = 25,
+		.name = ITEMTEXT_MMONKEY,
+		.latin = ITEMTEXT_MMONKEY_LATIN,
 	},
 	{
-		.name = 26,
-		.latin = 27,
+		.name = ITEMTEXT_PTT,
+		.latin = ITEMTEXT_PTT_LATIN,
 	},
 	{
-		.name = 28,
-		.latin = 29,
+		.name = ITEMTEXT_MPORT,
+		.latin = ITEMTEXT_MPORT_LATIN,
 	},
 	{
-		.name = 0,
-		.latin = 0,
+		.name = ITEMTEXT_SLAM1,
+		.latin = ITEMTEXT_SLAM1,
 	},
 	{
-		.name = 30,
-		.latin = 31,
+		.name = ITEMTEXT_HCHUNKY,
+		.latin = ITEMTEXT_HCHUNKY_LATIN,
 	},
 	{
-		.name = 32,
-		.latin = 33,
+		.name = ITEMTEXT_PPUNCH,
+		.latin = ITEMTEXT_PPUNCH_LATIN,
 	},
 	{
-		.name = 34,
-		.latin = 35,
+		.name = ITEMTEXT_GGONE,
+		.latin = ITEMTEXT_GGONE_LATIN,
 	},
 };
 
 const unsigned char GunNames[] = {
-	36,
-	37,
-	38,
-	39,
-	40,
+	ITEMTEXT_COCONUT,
+	ITEMTEXT_PEANUT,
+	ITEMTEXT_GRAPE,
+	ITEMTEXT_FEATHER,
+	ITEMTEXT_PINEAPPLE,
 };
 
 const unsigned char GunUpgNames[] = {
-	0,
-	0,
-	46,
-	47,
+	ITEMTEXT_SLAM1,
+	ITEMTEXT_SLAM1,
+	ITEMTEXT_HOMING,
+	ITEMTEXT_SNIPER,
 };
 
 const unsigned char AmmoBeltNames[] = {
-	0,
-	48,
-	49,
+	ITEMTEXT_SLAM1,
+	ITEMTEXT_BELT1,
+	ITEMTEXT_BELT2,
 };
 
 const unsigned char InstrumentNames[] = {
-	41,
-	42,
-	43,
-	44,
-	45,
+	ITEMTEXT_BONGOS,
+	ITEMTEXT_GUITAR,
+	ITEMTEXT_TROMBONE,
+	ITEMTEXT_SAX,
+	ITEMTEXT_TRIANGLE,
 };
 
 const unsigned char InstrumentUpgNames[] = {
-	0,
-	0,
-	51,
-	50,
-	52,
+	ITEMTEXT_SLAM1,
+	ITEMTEXT_SLAM1,
+	ITEMTEXT_INSUPGRADE1,
+	ITEMTEXT_THIRDMELON,
+	ITEMTEXT_INSUPGRADE2,
 };
 

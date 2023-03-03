@@ -30,7 +30,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: l.punch or l.phasewalk or l.CanPhaseswim(), None, 3),  # Gorilla Gone room
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # On small boulder switch
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Underneath small boulder
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.barrels, None, 1),  # Underneath small boulder
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 3),  # On bridge to small boulder switch
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: (l.punch or l.phasewalk or l.CanPhaseswim()) and l.chunky, None, 3),  # Gorilla Gone room
@@ -101,7 +101,7 @@ LogicRegions = {
     Regions.GiantKosha: [
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 4),
 
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),
     ],
     Regions.DonkeyIgloo: [

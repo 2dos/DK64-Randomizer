@@ -25,7 +25,7 @@ LogicRegions = {
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 2),  # Llama cage
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: (l.coconut or l.phasewalk) and l.strongKong, None, 3),  # DK BP room
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # Oasis
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),  # Oasis
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 5),  # W2
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 4),  # Oasis
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 4),  # Outside Tiny Temple
@@ -117,7 +117,7 @@ LogicRegions = {
     Regions.ChunkyTemple: [
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 2),
 
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.pineapple or l.phasewalk, None, 1),  # Start of second section
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.pineapple or l.phasewalk, None, 1),  # Under second pineapple switch
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.pineapple or l.phasewalk, None, 1),  # Under third pineapple switch
@@ -142,5 +142,9 @@ LogicRegions = {
     Regions.LlamaTempleBack: [
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 2),
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) or l.twirl, None, 2),  # Behind Mini tunnel
+    ],
+    Regions.AngryAztecConnectorTunnel: [
+    ],
+    Regions.AztecTunnelBeforeOasis: [
     ],
 }

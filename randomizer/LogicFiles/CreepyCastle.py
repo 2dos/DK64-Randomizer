@@ -18,14 +18,25 @@ LogicRegions = {
         LocationLogic(Locations.CastleLankyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.lanky] >= l.settings.medal_cb_req),
         LocationLogic(Locations.CastleTinyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.tiny] >= l.settings.medal_cb_req),
         LocationLogic(Locations.CastleChunkyMedal, lambda l: l.ColoredBananas[Levels.CreepyCastle][Kongs.chunky] >= l.settings.medal_cb_req),
-    ], [], []),
+    ], [], [], restart=-1),
 
     Regions.CreepyCastleMain: Region("Creepy Castle Main", "Castle Surroundings", Levels.CreepyCastle, True, None, [
         LocationLogic(Locations.CastleDiddyAboveCastle, lambda l: l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.CastleKasplatHalfway, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.CastleKasplatLowerLedge, lambda l: not l.settings.kasplat_rando),
+        LocationLogic(Locations.RainbowCoin_Location11, lambda l: l.shockwave),
     ], [
         Event(Events.CastleEntered, lambda l: True),
+        Event(Events.CastleW1aTagged, lambda l: True),
+        Event(Events.CastleW1bTagged, lambda l: True),
+        Event(Events.CastleW2aTagged, lambda l: True),
+        Event(Events.CastleW2bTagged, lambda l: True),
+        Event(Events.CastleW3aTagged, lambda l: True),
+        Event(Events.CastleW3bTagged, lambda l: True),
+        Event(Events.CastleW4aTagged, lambda l: True),
+        Event(Events.CastleW4bTagged, lambda l: True),
+        Event(Events.CastleW5aTagged, lambda l: True),
+        Event(Events.CastleW5bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.CreepyCastleLobby, lambda l: True, Transitions.CastleToIsles),
@@ -79,7 +90,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleLibraryStartToMain),
-        TransitionFront(Regions.CreepyCastleMain, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey and l.strongKong) or ((l.phasewalk or l.ledgeclip) and l.settings.free_trade_items), Transitions.CastleLibraryEndToMain),
+        TransitionFront(Regions.CreepyCastleMain, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey and l.coconut and l.strongKong) or ((l.phasewalk or l.ledgeclip) and l.settings.free_trade_items), Transitions.CastleLibraryEndToMain),
     ]),
 
     Regions.Ballroom: Region("Ballroom", "Castle Rooms", Levels.CreepyCastle, False, -1, [
@@ -102,7 +113,6 @@ LogicRegions = {
     Regions.CastleTinyRace: Region("Castle Tiny Race", "Castle Rooms", Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleTinyCarRace, lambda l: l.istiny or l.settings.free_trade_items),
     ], [], [
-        TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.MuseumBehindGlass, lambda l: True, Transitions.CastleRaceToMuseum)
     ], Transitions.CastleMuseumToCarRace
     ),
@@ -159,7 +169,14 @@ LogicRegions = {
     Regions.Crypt: Region("Crypt", "Castle Underground", Levels.CreepyCastle, False, -1, [
         LocationLogic(Locations.CastleDiddyCrypt, lambda l: (l.peanut or l.phasewalk) and l.charge and l.isdiddy),
         LocationLogic(Locations.CastleChunkyCrypt, lambda l: (((l.pineapple and l.punch) or l.phasewalk) and l.ischunky) or (l.phasewalk and l.settings.free_trade_items), MinigameType.BonusBarrel),
-    ], [], [
+    ], [
+        Event(Events.CryptW1aTagged, lambda l: True),
+        Event(Events.CryptW1bTagged, lambda l: True),
+        Event(Events.CryptW2aTagged, lambda l: True),
+        Event(Events.CryptW2bTagged, lambda l: True),
+        Event(Events.CryptW3aTagged, lambda l: True),
+        Event(Events.CryptW3bTagged, lambda l: True),
+    ], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.LowerCave, lambda l: True, Transitions.CastleCryptToLower),
         TransitionFront(Regions.CastleMinecarts, lambda l: ((l.coconut and l.grab and l.isdonkey) or l.generalclips or l.phasewalk), Transitions.CastleCryptToCarts),
@@ -168,7 +185,6 @@ LogicRegions = {
     Regions.CastleMinecarts: Region("Castle Minecarts", "Castle Underground", Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleDonkeyMinecarts, lambda l: l.isdonkey or l.settings.free_trade_items),
     ], [], [
-        TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.Crypt, lambda l: True, Transitions.CastleCartsToCrypt),
     ], Transitions.CastleCryptToCarts
     ),
@@ -194,7 +210,7 @@ LogicRegions = {
     ]),
 
     Regions.Dungeon: Region("Dungeon", "Castle Underground", Levels.CreepyCastle, True, None, [
-        LocationLogic(Locations.CastleDonkeyDungeon, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or (l.CanSlamSwitch and l.phasewalk)) and l.donkey),
+        LocationLogic(Locations.CastleDonkeyDungeon, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or (l.Slam and l.phasewalk)) and l.donkey),
         LocationLogic(Locations.CastleDiddyDungeon, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.scope and l.peanut and l.diddy and l.vines) or (l.phasewalk and (l.isdiddy or l.settings.free_trade_items))),
         LocationLogic(Locations.CastleLankyDungeon, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) and l.trombone and l.balloon and l.islanky, MinigameType.BonusBarrel),
     ], [], [

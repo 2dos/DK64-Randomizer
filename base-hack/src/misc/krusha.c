@@ -1,9 +1,19 @@
+/**
+ * @file krusha.c
+ * @author Ballaam
+ * @brief Live adjustments for implementing Krusha in-game
+ * @version 0.1
+ * @date 2022-09-25
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "../../include/common.h"
 
 void adjustAnimationTables(void) {
-    /*
-        Called during map load
-    */
+    /**
+     * @brief Adjust animation tables so that other kongs get Krusha's animations
+     */
     int slot = Rando.krusha_slot;
     if ((slot >= 0) && (slot <= 4)) {
         if (slot == 2) {
@@ -13,7 +23,7 @@ void adjustAnimationTables(void) {
                 *(short*)(0x8075D7CE) = 0x36B4; // Prevent arm stretching (DK64 is a giant meme)
             }
         }
-        for (int i = 0; i < 0x8C; i++) {
+        for (int i = 0; i < 0x8D; i++) {
             if (i < 0x31) {
                 AnimationTable3[(7 * i) + slot] = AnimationTable3[(7 * i) + 5];
             }
@@ -29,6 +39,9 @@ void adjustAnimationTables(void) {
             } else if ((i >= 0x30) && (i <= 0x32)) {
                 excl_extra = 1;
             } else if ((i >= 0x48) && (i <= 0x4E)) {
+                // excl_extra = 1;
+            } else if ((i == 0x26) && (slot == 0) && (CurrentMap == 0xBC)) {
+                // BBlast
                 // excl_extra = 1;
             }
             if (i < 0x6E) {
@@ -47,11 +60,27 @@ void adjustAnimationTables(void) {
                 }
             */
             int excl_base = 0;
+            int dances[] = {0x43A, 0x434};
             if (i == 0x5A) {
                 // Instrument
                 excl_base = 1;
             } else if ((i >= 0x3F) && (i <= 0x41) && (CurrentMap == 0xCD) && (slot == 2)) {
                 // Punch - During Lanky Phase
+                excl_base = 1;
+            } else if ((i >= 0x5C) && (i <= 0x5D)) {
+                // Dances
+                /*
+                    Animation 0x5B is also a good dance (Animation 0x43A), but replacing it will mean that you aren't transitioned out in crowns
+                */
+                AnimationTable1[(7 * i) + slot] = dances[i - 0x5C];
+                excl_base = 1;
+            } else if ((i >= 0x8A) && (i <= 0x8C)) {
+                // Tag Animation
+                int dance = dances[1];
+                if (i == 0x8B) {
+                    dance = dances[0];
+                }
+                AnimationTable1[(7 * i) + slot] = dance;
                 excl_base = 1;
             }
             if (!excl_base) {
@@ -63,6 +92,9 @@ void adjustAnimationTables(void) {
 }
 
 void KrushaSlide(void) {
+    /**
+     * @brief Code to play Krusha's skating animation
+     */
     Player->yAccel = -20.0f;
     CurrentActorPointer_0->control_state = 0x2B;
     CurrentActorPointer_0->control_state_progress = 0;
@@ -71,6 +103,13 @@ void KrushaSlide(void) {
 }
 
 void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_index) {
+    /**
+     * @brief Handle the Z+B process for Krusha on Lanky/Chunky
+     * 
+     * @param action Action being forced on the player
+     * @param player Player actor
+     * @param player_index Player Index
+     */
     int permit = 0;
     if ((MovesBase[4].special_moves & 2) && (Rando.krusha_slot == 4)) {
         permit = 1;
@@ -94,6 +133,12 @@ void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_ind
 }
 
 void adaptKrushaZBAnimation_Charge(actorData* actor, int anim) {
+    /**
+     * @brief Handle the Z+B process for Krusha on Diddy
+     * 
+     * @param actor Player
+     * @param anim Charge Animation
+     */
     if (MovesBase[1].special_moves & 1) {
         if (Player->hSpeed < 70) {
             Player->turn_speed = 100;
@@ -112,6 +157,12 @@ void adaptKrushaZBAnimation_Charge(actorData* actor, int anim) {
 }
 
 void updateCutsceneModels(actorData* actor, int size) {
+    /**
+     * @brief Change cutscene models to account for Krusha
+     * 
+     * @param actor Player actor
+     * @param size Player scale
+     */
     short* model = actor->paad3;
     if (*model == 0xDB) {
         TiedCharacterSpawner->unk_46 |= 0x1000;
@@ -124,6 +175,14 @@ void updateCutsceneModels(actorData* actor, int size) {
 }
 
 void* DiddySwimFix(int ptr, int file, int c0, int c1) {
+    /**
+     * @brief Fix Diddy & Lanky's swimming animations
+     * 
+     * @param ptr Pointer table index
+     * @param file File Index
+     * @param c0 Unk Compression Var
+     * @param c1 Unk Compression Var
+     */
     float* data = (float*)getMapData(ptr, file, c0, c1);
     if ((file == 210) && (KrushaSlot == 1)) {
         // Diddy Swim Animation
@@ -135,11 +194,18 @@ void* DiddySwimFix(int ptr, int file, int c0, int c1) {
 }
 
 void MinecartJumpFix(void* player, int anim) {
+    /**
+     * @brief Fix Minecart jumping being broken as Krusha
+     */
     CurrentActorPointer_0->control_state_progress = 1;
     playAnimation(player, anim);
 }
 
 void MinecartJumpFix_0(void) {
+    /**
+     * @brief Fix Minecart jumping being broken as Krusha
+     * 
+     */
     if (CurrentActorPointer_0->yVelocity < 0) {
         CurrentActorPointer_0->yAccel = -20.f;
     }

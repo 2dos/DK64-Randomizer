@@ -19,34 +19,39 @@ LogicRegions = {
         LocationLogic(Locations.ForestLankyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.lanky] >= l.settings.medal_cb_req),
         LocationLogic(Locations.ForestTinyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.tiny] >= l.settings.medal_cb_req),
         LocationLogic(Locations.ForestChunkyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.chunky] >= l.settings.medal_cb_req),
-    ], [], []),
+    ], [], [], restart=-1),
 
     Regions.FungiForestStart: Region("Fungi Forest Start", "Forest Center and Beanstalk", Levels.FungiForest, True, None, [], [
         Event(Events.ForestEntered, lambda l: True),
         Event(Events.Night, lambda l: l.HasGun(Kongs.any)),
-        Event(Events.WormGatesOpened, lambda l: (l.feather and l.tiny) and (l.pineapple and l.chunky)),
+        Event(Events.WormGatesOpened, lambda l: l.settings.open_levels or (l.feather and l.tiny and l.pineapple and l.chunky)),
+        Event(Events.ForestW1aTagged, lambda l: True),
+        Event(Events.ForestW2aTagged, lambda l: True),
+        Event(Events.ForestW3aTagged, lambda l: True),
+        Event(Events.ForestW4aTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.ForestToIsles),
         TransitionFront(Regions.ForestMinecarts, lambda l: l.Slam and l.ischunky),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
         TransitionFront(Regions.MillArea, lambda l: True),
-        TransitionFront(Regions.WormArea, lambda l: l.settings.open_levels or Events.WormGatesOpened in l.Events or l.phasewalk or l.CanPhaseswim()),
+        TransitionFront(Regions.WormArea, lambda l: Events.WormGatesOpened in l.Events or l.phasewalk or l.CanPhaseswim()),
     ]),
 
     Regions.ForestMinecarts: Region("Forest Minecarts", "Forest Center and Beanstalk", Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestChunkyMinecarts, lambda l: l.ischunky or l.settings.free_trade_items),
     ], [], [
-        TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.FungiForestStart, lambda l: True),
     ], Transitions.ForestMainToCarts
     ),
 
     Regions.GiantMushroomArea: Region("Giant Mushroom Area", "Giant Mushroom Exterior", Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestDiddyTopofMushroom, lambda l: l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
-        LocationLogic(Locations.ForestLankyRabbitRace, lambda l: (l.CanOStandTBSNoclip() and l.spawn_snags)),
+        LocationLogic(Locations.ForestLankyRabbitRace, lambda l: (l.CanOStandTBSNoclip() and l.spawn_snags), isAuxiliary=True),
     ], [
         Event(Events.HollowTreeGateOpened, lambda l: l.grape and l.lanky),
+        Event(Events.ForestW3bTagged, lambda l: True),
+        Event(Events.ForestW5bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.FungiForestStart, lambda l: True),
@@ -116,7 +121,9 @@ LogicRegions = {
 
     Regions.MushroomUpperExterior: Region("Mushroom Upper Exterior", "Giant Mushroom Exterior", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestBattleArena, lambda l: not l.settings.crown_placement_rando),
-    ], [], [
+    ], [
+        Event(Events.ForestW5aTagged, lambda l: True),
+    ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MushroomUpper, lambda l: True, Transitions.ForestUpperExteriorToUpperMushroom),
         TransitionFront(Regions.MushroomNightExterior, lambda l: True),
@@ -152,7 +159,9 @@ LogicRegions = {
         LocationLogic(Locations.ForestDiddyOwlRace, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Night) and l.jetpack and l.guitar and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.ForestLankyRabbitRace, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Day) and l.trombone and l.sprint and l.lanky),
         LocationLogic(Locations.ForestKasplatOwlTree, lambda l: not l.settings.kasplat_rando),
-    ], [], [
+    ], [
+        Event(Events.ForestW4bTagged, lambda l: True),
+    ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.GiantMushroomArea, lambda l: l.settings.open_levels or Events.HollowTreeGateOpened in l.Events or l.phasewalk),
         TransitionFront(Regions.Anthill, lambda l: l.mini and l.saxophone and l.istiny, Transitions.ForestTreeToAnthill),
@@ -160,8 +169,8 @@ LogicRegions = {
     ]),
 
     Regions.Anthill: Region("Anthill", "Owl Tree", Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestTinyAnthill, lambda l: (l.istiny or l.settings.free_trade_items) and (l.oranges or l.HasInstrument(Kongs.any))),
-        LocationLogic(Locations.ForestBean, lambda l: (l.istiny or l.settings.free_trade_items) and (l.oranges or l.HasInstrument(Kongs.any))),
+        LocationLogic(Locations.ForestTinyAnthill, lambda l: (l.istiny or l.settings.free_trade_items) and (l.oranges or l.saxophone or (l.settings.free_trade_items and l.HasInstrument(Kongs.any)))),
+        LocationLogic(Locations.ForestBean, lambda l: (l.istiny or l.settings.free_trade_items) and (l.oranges or l.saxophone or (l.settings.free_trade_items and l.HasInstrument(Kongs.any)))),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.HollowTreeArea, lambda l: True, Transitions.ForestAnthillToTree),
@@ -170,7 +179,10 @@ LogicRegions = {
     Regions.MillArea: Region("Mill Area", "Forest Mills", Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestDonkeyMill, lambda l: (l.TimeAccess(Regions.MillArea, Time.Night) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip) and Events.ConveyorActivated in l.Events and l.donkey),
         LocationLogic(Locations.ForestDiddyCagedBanana, lambda l: (l.TimeAccess(Regions.MillArea, Time.Night) and Events.WinchRaised in l.Events and l.guitar and l.diddy) or ((l.CanPhaseswim() or l.ledgeclip) and (l.isdiddy or l.settings.free_trade_items))),
-    ], [], [
+        LocationLogic(Locations.RainbowCoin_Location07, lambda l: l.shockwave),
+    ], [
+        Event(Events.ForestW1bTagged, lambda l: True),
+    ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.FungiForestStart, lambda l: True),
         TransitionFront(Regions.MillChunkyTinyArea, lambda l: (l.punch and l.ischunky) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip, Transitions.ForestMainToChunkyMill, time=Time.Day),
@@ -246,7 +258,7 @@ LogicRegions = {
     ]),
 
     Regions.ThornvineBarn: Region("Thornvine Barn", "Forest Mills", Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.isdonkey and (l.vines or l.advanced_platforming), MinigameType.BonusBarrel),
+        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FungiForest, 1) and l.isdonkey and (l.vines or l.advanced_platforming), MinigameType.BonusBarrel),
         LocationLogic(Locations.ForestBananaFairyThornvines, lambda l: l.Slam and l.camera),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
@@ -256,7 +268,11 @@ LogicRegions = {
     Regions.WormArea: Region("Worm Area", "Forest Center and Beanstalk", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestTinyBeanstalk, lambda l: l.saxophone and l.mini and l.istiny and l.Beans >= 1),
         LocationLogic(Locations.ForestChunkyApple, lambda l: Events.WormGatesOpened in l.Events and l.hunkyChunky and l.ischunky and l.barrels),
-    ], [], [
+        LocationLogic(Locations.RainbowCoin_Location08, lambda l: l.shockwave),
+    ], [
+        Event(Events.ForestW2aTagged, lambda l: True),
+        Event(Events.WormGatesOpened, lambda l: l.settings.open_levels),
+    ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.FungiForestStart, lambda l: Events.WormGatesOpened in l.Events),
         TransitionFront(Regions.FunkyForest, lambda l: True),

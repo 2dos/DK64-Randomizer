@@ -1,8 +1,21 @@
+/**
+ * @file pause_menu.c
+ * @author Ballaam
+ * @brief Pause Menu functions
+ * @version 0.1
+ * @date 2022-10-03
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "../../include/common.h"
 
 static char igt_text[20] = "IGT: 0000:00:00";
 
 int* printLevelIGT(int* dl, int x, int y, float scale, char* str) {
+    /**
+     * @brief Print Level In-Game time to screen
+     */
     dl = printText(dl, x, y, scale, str);
     int level_index = -1;
     for (int i = 0; i < 12; i++) {
@@ -58,9 +71,10 @@ static char* items[] = {
     "BANANA FAIRIES",
     "DK ARCADE",
     "KASPLATS",
-    "KONGS",
-    "BEAN",
-    "PEARLS",
+    "KONG CAGES",
+    "ANTHILL SECOND REWARD",
+    "TREASURE CHEST CLAMS",
+    "DIRT PATCHES",
 };
 static char* raw_items[] = {
     "GOLDEN BANANAS",
@@ -74,6 +88,7 @@ static char* raw_items[] = {
     "KONGS",
     "BEAN",
     "PEARLS",
+    "RAINBOW COINS",
 };
 
 static char check_level = 0;
@@ -90,13 +105,17 @@ static char level_check_text[0x18] = "";
 #define CHECK_KONG 8
 #define CHECK_BEAN 9
 #define CHECK_PEARLS 10
+#define CHECK_RAINBOW 11
 
-#define PAUSE_ITEM_COUNT 11
-#define ROTATION_SPLIT 372 // 0x1000 / PAUSE_ITEM_COUNT
+#define PAUSE_ITEM_COUNT 12
+#define ROTATION_SPLIT 341 // 0x1000 / PAUSE_ITEM_COUNT
 
 static unsigned char check_data[2][9][PAUSE_ITEM_COUNT] = {}; // 8 items, 9 levels, numerator + denominator
 
 void checkItemDB(void) {
+    /**
+     * @brief Check item database for variables, and change check screen totals to accommodate
+     */
     renderScreenTransition(7);
     initTracker();
     for (int i = 0; i < PAUSE_ITEM_COUNT; i++) {
@@ -110,7 +129,14 @@ void checkItemDB(void) {
             if (item_db[k].type == i) {
                 int search_flag = item_db[k].flag;
                 int lvl = item_db[k].associated_level;
-                check_data[1][lvl][i] += 1;
+                check_data[0][lvl][i] += checkFlag(search_flag, 0);
+            }
+        }
+        // Check Rainbow Flags
+        if (i == CHECK_RAINBOW) {
+            for (int k = 0; k < 16; k++) {
+                int search_flag = FLAG_RAINBOWCOIN_0 + k;
+                int lvl = getPatchWorld(k);
                 check_data[0][lvl][i] += checkFlag(search_flag, 0);
             }
         }
@@ -172,6 +198,22 @@ void checkItemDB(void) {
                         check_data[1][j][CHECK_PEARLS] = 5;
                     }
                     break;
+                case CHECK_RAINBOW:
+                    if (!Rando.item_rando) {
+                        if (j == 7) {
+                            check_data[1][j][CHECK_RAINBOW] = 7;
+                        } else if ((j == 1) || (j == 4)) {
+                            check_data[1][j][CHECK_RAINBOW] = 2;
+                        } else {
+                            check_data[1][j][CHECK_RAINBOW] = 1;
+                        }
+                    } else {
+                        for (int k = 0; k < 16; k++) {
+                            if ((getPatchWorld(k) == j) && (j < 8)) {
+                                check_data[1][j][CHECK_RAINBOW] += 1;
+                            }
+                        }
+                    }
                 break;
             }
         }
@@ -179,6 +221,13 @@ void checkItemDB(void) {
 }
 
 int* pauseScreen3And4Header(int* dl) {
+    /**
+     * @brief Alter pause screen totals header to display the checks screen
+     * 
+     * @param dl Display List Address
+     * 
+     * @return New display list address
+     */
     pause_paad* paad = CurrentActorPointer_0->paad;
     if (paad->screen == 3) {
         return printText(dl, 0x280, 0x3C, 0.65f, "TOTALS");
@@ -194,6 +243,9 @@ int* pauseScreen3And4Header(int* dl) {
 }
 
 int* pauseScreen3And4ItemName(int* dl, int x, int y, float scale, char* text) {
+    /**
+     * @brief Changes the item name depending on the screen you're on
+     */
     pause_paad* paad = CurrentActorPointer_0->paad;
     int item_index = MenuActivatedItems[ViewedPauseItem];
     if (paad->screen == 3) {
@@ -205,6 +257,9 @@ int* pauseScreen3And4ItemName(int* dl, int x, int y, float scale, char* text) {
 }
 
 int* pauseScreen3And4Counter(int x, int y, int top, int bottom, int* dl, int unk0, int scale) {
+    /**
+     * @brief Changes the counter on-screen depending on what screen you're on
+     */
     pause_paad* paad = CurrentActorPointer_0->paad;
     if (paad->screen == 3) {
         return printOutOfCounter(x, y, top, bottom, dl, unk0, scale);
@@ -233,6 +288,9 @@ int* pauseScreen3And4Counter(int x, int y, int top, int bottom, int* dl, int unk
 }
 
 void changePauseScreen(void) {
+    /**
+     * @brief Hook into the change pause screen function
+     */
     pause_paad* paad = CurrentActorPointer_0->paad;
     if ((paad->screen != 5) && (paad->next_screen == 5)) {
         resetTracker();
@@ -241,10 +299,16 @@ void changePauseScreen(void) {
 }
 
 void updatePauseScreenWheel(void* write_location, void* sprite, int x, int y, float scale, int local_index, int index) {
+    /**
+     * @brief Update the pause screen wheel to be a carousel instead.
+     */
     displaySprite(write_location, sprite, local_index, 0x78, 1.0f, 2, 16);
 }
 
 void newPauseSpriteCode(sprite_struct* sprite, char* render) {
+    /**
+     * @brief Sprite code for the carousel pause screen effect
+     */
     spriteControlCode(sprite, render);
     pause_paad* pause_control = (pause_paad*)sprite->control;
     // float opacity_scale = 1.0f;
@@ -323,6 +387,11 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render) {
 }
 
 void handleSpriteCode(int control_type) {
+    /**
+     * @brief Changes sprite code to be the carousel effect if the index is greater than 16
+     * 
+     * @param control_type Type of sprite that's being displayed and the controls you have access to
+     */
     if (control_type < 16) {
         loadSpriteFunction(0x806AC07C);
     } else {
@@ -331,6 +400,9 @@ void handleSpriteCode(int control_type) {
 }
 
 int changeSelectedLevel(int unk0, int unk1) {
+    /**
+     * @brief Change selected level in the checks screen
+     */
     pause_paad* paad = CurrentActorPointer_0->paad;
     if (paad->screen == 4) {
         // Checks Screen
@@ -352,7 +424,7 @@ int changeSelectedLevel(int unk0, int unk1) {
 static short file_items[16] = {
     0, 0, 0, 0, // GBs, Crowns, Keys, Medals
     0, 0, 0, 0, // RW, Fairy, Nintendo, BP
-    0, 0, 0, 0, // Kongs, Beans, Pearls
+    0, 0, 0, 0, // Kongs, Beans, Pearls, Rainbow
     0, 0, 0, 0,
 };
 
@@ -368,32 +440,42 @@ static int file_sprites[17] = {
     0x807214A0, // Kong
     (int)&bean_sprite, // Bean
     (int)&pearl_sprite, // Pearls
-    0,
+    0x80721378, // Rainbow Coins
     0, 0, 0, 0,
     0, // Null Item, Leave Empty
 };
 static short file_item_caps[16] = {
     201, 10, 8, 40,
     1, 20, 1, 40,
-    5, 1, 5, 0,
+    5, 1, 5, 16,
     0, 0, 0, 0,
 };
 
 void updateFileVariables(void) {
+    /**
+     * @brief Update file variables on pause menu initialization
+     */
     updateFilePercentage();
     for (int i = 0; i < 8; i++) {
         file_items[i] = FileVariables[i];
     }
-    file_items[8] = 0;
-    file_items[9] = checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, 0);
-    file_items[10] = 0;
+    file_items[CHECK_KONG] = 0;
+    file_items[CHECK_BEAN] = checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, 0);
+    file_items[CHECK_PEARLS] = 0;
+    file_items[CHECK_RAINBOW] = 0;
     for (int i = 0; i < 5; i++) {
-        file_items[8] += checkFlagDuplicate(kong_flags[i], 0);
-        file_items[10] += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 0);
+        file_items[CHECK_KONG] += checkFlagDuplicate(kong_flags[i], 0);
+        file_items[CHECK_PEARLS] += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 0);
+    }
+    for (int i = 0; i < 16; i++) {
+        file_items[CHECK_RAINBOW] += checkFlagDuplicate(FLAG_RAINBOWCOIN_0 + i, 0);
     }
 }
 
 int* handleOutOfCounters(int x, int y, int top, int bottom, int* dl, int unk0, int scale) {
+    /**
+     * @brief Handle the "out of" counters to be corrected
+     */
     if (Rando.item_rando) {
         char text[4] = "";
         dk_strFormat((char*)&text, "%d", top);
@@ -403,6 +485,9 @@ int* handleOutOfCounters(int x, int y, int top, int bottom, int* dl, int unk0, i
 }
 
 void initPauseMenu(void) {
+    /**
+     * @brief Initialize the pause menu changes for Rando
+     */
     *(short*)(0x806AB35A) = getHi(&file_sprites[0]);
     *(short*)(0x806AB35E) = getLo(&file_sprites[0]);
     *(int*)(0x806A84C8) = 0x0C000000 | (((int)&updateFileVariables & 0xFFFFFF) >> 2); // Update file variables to transfer old locations to current
@@ -423,6 +508,31 @@ void initPauseMenu(void) {
         // *(int*)(0x806AA860) = 0x31EF0007; // ANDI $t7, $t7, 7 - Show GB (Kong Specific)
         // *(int*)(0x806AADC4) = 0x33390007; // ANDI $t9, $t9, 7 - Show GB (All Kongs)
         // *(int*)(0x806AADC8) = 0xAFB90058; // SW $t9, 0x58 ($sp) - Show GB (All Kongs)
-
     }
+    // Prevent GBs being required to view extra screens
+    *(int*)(0x806A8624) = 0; // GBs doesn't lock other pause screens
+    *(int*)(0x806AB468) = 0; // Show R/Z Icon
+    *(int*)(0x806AB318) = 0x24060001; // ADDIU $a2, $r0, 1
+    *(int*)(0x806AB31C) = 0xA466C83C; // SH $a2, 0xC83C ($v1) | Overwrite trap func, Replace with overwrite of wheel segments
+    *(short*)(0x8075056C) = 201; // Change GB Item cap to 201
+    // In-Level IGT
+    *(int*)(0x8060DF28) = 0x0C000000 | (((int)&updateLevelIGT & 0xFFFFFF) >> 2); // Modify Function Call
+    *(int*)(0x806ABB0C) = 0x0C000000 | (((int)&printLevelIGT & 0xFFFFFF) >> 2); // Modify Function Call
+    *(short*)(0x806ABB32) = 106; // Adjust kong name height
+    // Pause Totals/Checks Revamp
+    *(int*)(0x806AB3C4) = 0x0C000000 | (((int)&updatePauseScreenWheel & 0xFFFFFF) >> 2); // Change Wheel to scroller
+    *(int*)(0x806AB3B4) = 0xAFB00018; // SW $s0, 0x18 ($sp). Change last param to index
+    *(int*)(0x806AB3A0) = 0xAFA90014; // SW $t1, 0x14 ($sp). Change 2nd-to-last param to local index
+    *(int*)(0x806AB444) = 0; // Prevent joystick sprite rendering
+    *(int*)(0x806AB528) = 0x0C000000 | (((int)&handleSpriteCode & 0xFFFFFF) >> 2); // Change sprite control function
+    *(int*)(0x806AB52C) = 0x8FA40060; // LW $a0, 0x60 ($sp). Change param
+    *(short*)(0x806A8DB2) = 0x0029; // Swap left/right direction
+    *(short*)(0x806A8DBA) = 0xFFD8; // Swap left/right direction
+    *(short*)(0x806A8DB4) = 0x5420; // BEQL -> BNEL
+    *(short*)(0x806A8DF0) = 0x1020; // BNE -> BEQ
+    *(int*)(0x806A9F74) = 0x0C000000 | (((int)&pauseScreen3And4ItemName & 0xFFFFFF) >> 2); // Item Name
+    // Disable Item Checks
+    *(int*)(0x806AB2E8) = 0;
+    *(int*)(0x806AB360) = 0;
+    *(short*)(0x806ABFCE) = FLAG_BP_JAPES_DK_HAS; // Change BP trigger to being collecting BP rather than turning it in
 }

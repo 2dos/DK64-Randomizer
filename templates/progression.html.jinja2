@@ -1,0 +1,468 @@
+{% from 'macros.html.jinja2' import list_selector %}
+<div class="container" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col border panel">
+            <h2 class="title">LEVEL REQUIREMENTS</h2>
+            <table id="leveltable">
+                <tr>
+                    <th>Progression</th>
+                    <th>B Locker
+                        <label data-toggle="tooltip"
+                                title="Randomize Required B-Locker totals">
+                            <input class="dice_checkbox"
+                                    type="checkbox"
+                                    name="randomize_blocker_required_amounts"
+                                    id="randomize_blocker_required_amounts"
+                                    value="True"/>
+                            <label for="randomize_blocker_required_amounts"></label>
+                        </label>
+                    </th>
+                    <th>Troff N Scoff
+                        <label data-toggle="tooltip"
+                                title="Randomize Required CB totals">
+                            <input class="dice_checkbox"
+                                    type="checkbox"
+                                    name="randomize_cb_required_amounts"
+                                    id="randomize_cb_required_amounts"
+                                    value="True"/>
+                            <label for="randomize_cb_required_amounts"></label>
+                        </label>
+                    </th>
+                </tr>
+                {% for i in range(0, 8) %}
+                    <tr>
+                        <td>Level {{ i + 1 }}</td>
+                        <td>
+                            <input class="form-control"
+                                   min="0"
+                                   max="200"
+                                   name="blocker_{{ i }}"
+                                   id="blocker_{{ i }}"
+                                   style="width: 100%"
+                                   value="{{ i+1 }}"
+                                   type="number"
+                                   data-toggle="tooltip"
+                                   title="You can adjust each individual B Locker amount to any number between 0-200.&#10;Note that if you make the game impossible to beat the glitchless, the program does validate if a game is beatable glitchless by adjusting your B Locker settings.&#10;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
+                        </td>
+                        {% if i < 7 %}
+                            <td>
+                                <input class="form-control"
+                                       min="0"
+                                       max="500"
+                                       name="troff_{{ i }}"
+                                       id="troff_{{ i }}"
+                                       style="width: 100%"
+                                       value="{{ i+1 }}"
+                                       type="number"
+                                       data-toggle="tooltip"
+                                       title="You can adjust each individual Troff n Scoff amount to any number between 1-500.&#10;Note that if you make the game impossible to beat the glitchless, the program does validate if a game is beatable glitchless by adjusting your Troff n Scoff settings.&#10;If you are unsure what to adjust the level values to, use the presets dropdown instead."/>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+            <div class="flex-container">
+                <div class="group-spacer"></div>
+                <div class="item-group">
+                    <p class="select-title">B Locker Max:</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend"
+                             data-toggle="tooltip"
+                             title="Check box to ensure Helm is 'Max Value'.">
+                            <div class="input-group-text">
+                                <input type="checkbox"
+                                       value="True"
+                                       id="maximize_helm_blocker"
+                                       name="maximize_helm_blocker">
+                            </div>
+                        </div>
+                        <input class="form-control"
+                               min="0"
+                               max="200"
+                               name="blocker_text"
+                               id="blocker_text"
+                               type="number"
+                               data-toggle="tooltip"
+                               title="Maximum Randomized value"
+                               default="50"
+                               placeholder="50"/>
+                    </div>
+                </div>
+                <div class="group-spacer"></div>
+                <div class="item-group">
+                    <p class="select-title">Troff N' Scoff Max:</p>
+                    <input class="form-control"
+                           min="0"
+                           max="500"
+                           name="troff_text"
+                           id="troff_text"
+                           type="number"
+                           data-toggle="tooltip"
+                           title="Maximum Randomized value"
+                           default="300"
+                           placeholder="300"/>
+                </div>
+            </div>
+            <hr>
+            <h5 class="select-title">Banana Medal/Fairy Requirements</h5>
+            <div class="flex-container">
+                <div class="item-select">
+                    <p class="select-title">Medals for Rareware Coin
+                        <label data-toggle="tooltip"
+                            title="Randomizes the amount of banana medals needed for Jetpac.&#10;Range is roughly 4 to 15 with an average of 10.">
+                        <input class="dice_checkbox"
+                                type="checkbox"
+                                name="random_medal_requirement"
+                                id="random_medal_requirement"
+                                value="True"/>
+                        <label for="random_medal_requirement"></label>
+                        </label>
+                    </p>
+                    <input min="0"
+                            max="40"
+                            name="medal_requirement"
+                            id="medal_requirement"
+                            style="width: 15%"
+                            class="form-control center-div"
+                            type="number"
+                            data-toggle="tooltip"
+                            title="Amount of Banana Medals Required for Jetpac/Rareware Coin."
+                            default="15"
+                            placeholder="15"/>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Medal Color Banana Requirement</p>
+                    <input min="1"
+                            max="100"
+                            name="medal_cb_req"
+                            id="medal_cb_req"
+                            style="width: 15%"
+                            class="form-control center-div"
+                            type="number"
+                            data-toggle="tooltip"
+                            title="Amount of Colored Bananas required for Banana Medals."
+                            default="75"
+                            placeholder="75"/>
+                </div>
+            </div>
+            <div class="flex-container">
+                <div class="item-select">
+                    <p class="select-title">Fairies for Rareware GB</p>
+                    <input min="0"
+                            max="20"
+                            name="rareware_gb_fairies"
+                            id="rareware_gb_fairies"
+                            style="width: 15%"
+                            class="form-control center-div"
+                            type="number"
+                            data-toggle="tooltip"
+                            title="Amount of fairies required to open the Rareware Door in Fairy Island."
+                            default="20"
+                            placeholder="20"/>
+                </div>
+            </div>
+        </div>
+        <div class="col border panel">
+            <h2 class="title">GAME LENGTH SETTINGS</h2>
+            <h5 class="select-title">K-Rool Phase Length
+                <label data-toggle="tooltip"
+                        title="Selects a random number of K Rool Phases.">
+                    <input class="dice_checkbox"
+                            type="checkbox"
+                            name="krool_random"
+                            onchange="toggle_clicks()"
+                            id="krool_random"
+                            value="True"/>
+                    <label for="krool_random"></label>
+                </label></h5>
+            <div>
+                <input type="text"
+                        name="krool_phase_count"
+                        id="krool_phase_count"
+                        data-provide="slider"
+                        data-slider-ticks="[1, 2, 3, 4, 5]"
+                        data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
+                        data-slider-min="1"
+                        data-slider-max="5"
+                        data-slider-step="1"
+                        data-slider-value="5"
+                        style="width: 80%">
+            </div>
+            <hr>
+            <h5 class="select-title">Helm Length
+                <label data-toggle="tooltip"
+                        title="Selects a random number of rooms that need to be completed in Hideout Helm.">
+                    <input class="dice_checkbox"
+                            type="checkbox"
+                            name="helm_random"
+                            onchange="toggle_clicks()"
+                            id="helm_random"
+                            value="True"/>
+                    <label for="helm_random"></label>
+                </label></h5>
+            <div>
+                <input type="text"
+                        name="helm_phase_count"
+                        id="helm_phase_count"
+                        data-provide="slider"
+                        data-slider-ticks="[1, 2, 3, 4, 5]"
+                        data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
+                        data-slider-min="1"
+                        data-slider-max="5"
+                        data-slider-step="1"
+                        data-slider-value="5"
+                        style="width: 80%">
+            </div>
+            <hr>
+            <h5 class="select-title">Keys Required To Beat K. Rool
+                <label data-toggle="tooltip"
+                        title="Selects a random amount of pre-turned in Keys.&#10;i.e. Selecting '5' means 3 keys will be pre-turned in and you need 5 more.">
+                    <input class="dice_checkbox"
+                            type="checkbox"
+                            name="keys_random"
+                            id="keys_random"
+                            onchange="toggle_clicks()"
+                            value="True"/>
+                    <label for="keys_random"></label>
+                </label></h5>
+            <div class="flex-container">
+                <div class="form-check form-switch item-switch center-flex">
+                    <label data-toggle="tooltip" title="Select the exact keys you start with.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="select_keys"
+                                id="select_keys"
+                                onchange="toggle_clicks()"
+                                value="True"/>
+                        Select Starting Keys
+                    </label>
+                    {{ list_selector(keys, "starting_keys_list", "STARTING KEYS SELECTOR", "This will open a popup that will let you customize what Keys you start with.&#10;This defaults to starting with no keys if none are selected.", 8) }}
+                </div>
+                <div class="flex-container">
+                    <div class="form-check form-switch item-switch center-flex">
+                        <label data-toggle="tooltip"
+                                title="If Key 8 were to be shuffled, force Key 8 to be in its vanilla location in Helm.">
+                            <input class="form-check-input"
+                                    type="checkbox"
+                                    name="key_8_helm"
+                                    id="key_8_helm"
+                                    value="True"/>
+                            Lock Key 8 in Helm
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch center-flex">
+                        <label data-toggle="tooltip"
+                                title="Required to get Key 8 from Helm to access K Rool or leave it up to chance.">
+                            <input class="form-check-input"
+                                    type="checkbox"
+                                    name="krool_access"
+                                    id="krool_access"
+                                    value="True"/>
+                            Key 8 Required
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <input type="text"
+                            name="krool_key_count"
+                            id="krool_key_count"
+                            data-provide="slider"
+                            data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8]"
+                            data-slider-ticks-labels='["0", "1", "2", "3", "4", "5", "6", "7", "8"]'
+                            data-slider-min="0"
+                            data-slider-max="8"
+                            data-slider-step="1"
+                            data-slider-value="8"
+                            style="width: 80%">
+                </div>
+                <hr>
+                <h5 class="select-title">Number of Starting Kongs
+                    <label data-toggle="tooltip"
+                            title="Selects a random value from Slider to determine how many kongs you start with.">
+                        <input class="dice_checkbox"
+                                type="checkbox"
+                                name="starting_random"
+                                id="starting_random"
+                                onchange="toggle_clicks()"
+                                value="True"/>
+                        <label for="starting_random"></label>
+                    </label></h5>
+                <input type="text"
+                        name="starting_kongs_count"
+                        id="starting_kongs_count"
+                        data-provide="slider"
+                        data-slider-ticks="[1, 2, 3, 4, 5]"
+                        data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
+                        data-slider-min="1"
+                        data-slider-max="5"
+                        data-slider-step="1"
+                        data-slider-value="5"
+                        style="width: 80%">
+                <hr>
+                <h5 class="select-title">Helm Door Requirements</h5>
+                <div class="flex-container">
+                    <div class="item-select">
+                        <p class="select-title">Door 1 Requirements</p>
+                        <select name="crown_door_item"
+                                id="crown_door_item"
+                                class="form-select center-div"
+                                aria-label="Door 1 Requirements"
+                                data-toggle="tooltip"
+                                title="Changes the requirement to open the first door in Helm">
+                            <option selected id="vanilla" value="vanilla" title="">
+                                Vanilla (Crowns)
+                            </option>
+                            <option id="opened" value="opened">
+                                Opened
+                            </option>
+                            <option id="random" value="random">
+                                Random
+                            </option>
+                            <option id="req_gb" value="req_gb">
+                                Golden Bananas
+                            </option>
+                            <option id="req_bp" value="req_bp">
+                                Blueprints
+                            </option>
+                            <option id="req_companycoins" value="req_companycoins">
+                                Company Coins
+                            </option>
+                            <option id="req_key" value="req_key">
+                                Keys
+                            </option>
+                            <option id="req_medal" value="req_medal">
+                                Medals
+                            </option>
+                            <option id="req_fairy" value="req_fairy">
+                                Fairies
+                            </option>
+                            <option id="req_rainbowcoin" value="req_rainbowcoin">
+                                Rainbow Coins
+                            </option>
+                            <option id="req_bean" value="req_bean">
+                                Bean
+                            </option>
+                            <option id="req_pearl" value="req_pearl">
+                                Pearls
+                            </option>
+                        </select>
+                    </div>
+                    <div class="item-select">
+                        <p id="door-1-select-title" class="select-title">Door 1 Item Count</p>
+                        <input min="0"
+                                max="201"
+                                name="crown_door_item_count"
+                                id="crown_door_item_count"
+                                style="width: 15%"
+                                class="form-control center-div"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of the item specified to open the door."
+                                default="1"
+                                placeholder="1"/>
+                    </div>
+                </div>
+                <div class="flex-container">
+                    <div class="item-select">
+                        <p class="select-title">Door 2 Requirements</p>
+                        <select name="coin_door_item"
+                                id="coin_door_item"
+                                class="form-select center-div"
+                                aria-label="Door 2 Requirements"
+                                data-toggle="tooltip"
+                                title="Changes the requirement to open the second door in Helm">
+                            <option selected id="vanilla" value="vanilla" title="">
+                                Vanilla (Company Coins)
+                            </option>
+                            <option id="opened" value="opened">
+                                Opened
+                            </option>
+                            <option id="random" value="random">
+                                Random
+                            </option>
+                            <option id="req_gb" value="req_gb">
+                                Golden Bananas
+                            </option>
+                            <option id="req_bp" value="req_bp">
+                                Blueprints
+                            </option>
+                            <option id="req_key" value="req_key">
+                                Keys
+                            </option>
+                            <option id="req_medal" value="req_medal">
+                                Medals
+                            </option>
+                            <option id="req_crown" value="req_crown">
+                                Crowns
+                            </option>
+                            <option id="req_fairy" value="req_fairy">
+                                Fairies
+                            </option>
+                            <option id="req_rainbowcoin" value="req_rainbowcoin">
+                                Rainbow Coins
+                            </option>
+                            <option id="req_bean" value="req_bean">
+                                Bean
+                            </option>
+                            <option id="req_pearl" value="req_pearl">
+                                Pearls
+                            </option>
+                        </select>
+                    </div>
+                    <div class="item-select">
+                        <p id="door-2-select-title" class="select-title">Door 2 Item Count</p>
+                        <input min="0"
+                                max="201"
+                                name="coin_door_item_count"
+                                id="coin_door_item_count"
+                                style="width: 15%"
+                                class="form-control center-div"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of the item specified to open the door."
+                                default="1"
+                                placeholder="1"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<script>
+    $('.nav-tabs').click(function() {
+        setTimeout(() => {
+            $('#krool_phase_count').slider("relayout");
+            $('#krool_key_count').slider("relayout");
+            $('#starting_kongs_count').slider("relayout");
+            $('#helm_phase_count').slider("relayout");
+            toggle_clicks()
+        }, 200);
+    })
+    
+    function toggle_clicks() {
+        if (document.getElementById("krool_random").checked === true) {
+            $("#krool_phase_count").slider("disable")
+        } else {
+            $("#krool_phase_count").slider("enable")
+        }
+        if (document.getElementById("helm_random").checked === true) {
+            $("#helm_phase_count").slider("disable")
+        } else {
+            $("#helm_phase_count").slider("enable")
+        }
+        if ((document.getElementById("keys_random").checked === true) || (document.getElementById("select_keys").checked === true)) {
+            $("#krool_key_count").slider("disable")
+        } else {
+            $("#krool_key_count").slider("enable")
+        }
+        if (document.getElementById("starting_random").checked === true) {
+            $("#starting_kongs_count").slider("disable")
+        } else {
+            $("#starting_kongs_count").slider("enable")
+        }
+    }
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover'
+        })
+    })
+</script>

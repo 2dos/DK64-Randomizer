@@ -70,7 +70,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 4),
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),
 
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
     ],
     Regions.MermaidRoom: [
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: True, None, 3),

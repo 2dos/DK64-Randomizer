@@ -60,7 +60,7 @@ LogicRegions = {
     Regions.ChunkyRoomPlatform: [
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.punch, None, 3),
 
-        Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
+        # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave, None, 1),
     ],
     Regions.PowerHut: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 3),
@@ -98,6 +98,9 @@ LogicRegions = {
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),
     ],
+    Regions.LowerCore: [
+
+    ],
     Regions.MiddleCore: [
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 3),  # On steps on middle level
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),  # On middle level
@@ -117,4 +120,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 1),  # High coin on elevators by W4
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl, None, 3),  # Past Tiny Bonus Barrel
     ],
+    Regions.FactoryTinyRace: [
+
+    ]
 }
