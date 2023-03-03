@@ -332,10 +332,10 @@ def maskImageLankyPickups(im_f, base_index, min_y, type=""):
                 # image is 48 wide and 42 high, so disregard the edges
                 if x < 41:
                     new_pixel = old_pixels[47 - y][41 - x]
-                    pix[(x + 3) % 48, y] = (new_pixel[0], new_pixel[1], new_pixel[2], new_pixel[3])
+                    pix[x, y] = (new_pixel[0], new_pixel[1], new_pixel[2], new_pixel[3])
                 else:
                     base = list(pix[x, y])
-                    pix[(x + 3) % 48, y] = (base[0], base[1], base[2], 0)
+                    pix[x, y] = (base[0], base[1], base[2], 0)
     elif type == "single" or type == "bunch":
         for x in range(w):
             for y in range(min_y, h):
