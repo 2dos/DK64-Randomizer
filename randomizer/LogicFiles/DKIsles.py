@@ -93,13 +93,13 @@ LogicRegions = {
         LocationLogic(Locations.RainbowCoin_Location12, lambda l: l.shockwave),
     ], [
         Event(Events.KLumsyTalkedTo, lambda l: True),
-        Event(Events.JapesKeyTurnedIn, lambda l: l.JapesKey),
-        Event(Events.AztecKeyTurnedIn, lambda l: l.AztecKey),
+        Event(Events.JapesKeyTurnedIn, lambda l: l.JapesKey and l.HasFillRequirementsForLevel(l.settings.level_order[2])),  # To be able to turn a key in, you must have the *fill moves* required to enter the next level
+        Event(Events.AztecKeyTurnedIn, lambda l: l.AztecKey and l.HasFillRequirementsForLevel(l.settings.level_order[3])),  # Only the kongs and moves, not the GBs
         Event(Events.FactoryKeyTurnedIn, lambda l: l.FactoryKey),
-        Event(Events.GalleonKeyTurnedIn, lambda l: l.GalleonKey),
-        Event(Events.ForestKeyTurnedIn, lambda l: l.ForestKey),
-        Event(Events.CavesKeyTurnedIn, lambda l: l.CavesKey),
-        Event(Events.CastleKeyTurnedIn, lambda l: l.CastleKey),
+        Event(Events.GalleonKeyTurnedIn, lambda l: l.GalleonKey and l.HasFillRequirementsForLevel(l.settings.level_order[5])),  # This helps prevent weird fill issues in simple level order
+        Event(Events.ForestKeyTurnedIn, lambda l: l.ForestKey and l.HasFillRequirementsForLevel(l.settings.level_order[6])),  # For example, if a Kong were in lobby 7, this could wreak havoc on key placement
+        Event(Events.CavesKeyTurnedIn, lambda l: l.CavesKey and l.HasFillRequirementsForLevel(Levels.HideoutHelm)),
+        Event(Events.CastleKeyTurnedIn, lambda l: l.CastleKey and l.HasFillRequirementsForLevel(Levels.HideoutHelm)),
         Event(Events.HelmKeyTurnedIn, lambda l: l.HelmKey),
     ], [
         TransitionFront(Regions.IslesMain, lambda l: True),
