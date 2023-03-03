@@ -299,6 +299,60 @@ def maskImage(im_f, base_index, min_y, keep_dark=False):
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
+def maskImageTwoColorAnimation(im_f, color1, color2, animation_index, keep_dark=False):
+    """Apply RGB mask to image."""
+    w, h = im_f.size
+    converter = ImageEnhance.Color(im_f)
+    im_f = converter.enhance(0)
+    im_dupe = im_f.crop((0, 0, w, h))
+    if keep_dark is False:
+        brightener = ImageEnhance.Brightness(im_dupe)
+        im_dupe = brightener.enhance(2)
+    im_f.paste(im_dupe, (0, 0), im_dupe)
+    pix = im_f.load()
+    mask = getRGBFromHash(color1)
+    mask2 = getRGBFromHash(color2)
+    mask_total = [0, 0, 0]
+    if animation_index > 3:
+        animation_index = 7-animation_index
+    for i in range(3):
+        mask_total[i] = int((((8 - animation_index) * mask[i]) + (animation_index * mask2[i]))/8)
+    w, h = im_f.size
+    for x in range(w):
+        for y in range(0, h):
+            base = list(pix[x, y])
+            if base[3] > 0:
+                for channel in range(3):
+                    base[channel] = int(mask_total[channel] * (base[channel] / 255))
+                pix[x, y] = (base[0], base[1], base[2], base[3])
+    return im_f
+
+def maskImageTwoColorScroll(im_f, color1, color2, animation_index, keep_dark=False):
+    """Apply RGB mask to image."""
+    w, h = im_f.size
+    converter = ImageEnhance.Color(im_f)
+    im_f = converter.enhance(0)
+    im_dupe = im_f.crop((0, 0, w, h))
+    if keep_dark is False:
+        brightener = ImageEnhance.Brightness(im_dupe)
+        im_dupe = brightener.enhance(2)
+    im_f.paste(im_dupe, (0, 0), im_dupe)
+    pix = im_f.load()
+    mask = getRGBFromHash(color1)
+    mask2 = getRGBFromHash(color2)
+    w, h = im_f.size
+    for x in range(w):
+        for y in range(0, h):
+            base = list(pix[x, y])
+            if base[3] > 0:
+                for channel in range(3):
+                    if (y + (5 *animation_index)) % h > (h/2):
+                        base[channel] = int(mask[channel] * (base[channel] / 255))
+                    else:
+                        base[channel] = int(mask2[channel] * (base[channel] / 255))
+                pix[x, y] = (base[0], base[1], base[2], base[3])
+    return im_f
+
 def maskImageLankyPickups(im_f, base_index, min_y, type=""):
     """Apply RGB mask to image."""
     w, h = im_f.size
@@ -555,19 +609,19 @@ def overwrite_object_colors(spoiler: Spoiler):
                 for file in range(152, 160):
                     # Single
                     single_im = getFile(7, file, False, 44, 44, "rgba5551")
-                    single_im = maskImageMonochrome(single_im, kong_index, 0, "single")
+                    single_im = maskImageTwoColorAnimation(single_im, color_bases[0], color_bases[1], (file - 152))
                     single_start = [168, 152, 232, 208, 240]
                     writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False)
                 for file in range(216, 224):
                     # Coin
                     coin_im = getFile(7, file, False, 48, 42, "rgba5551")
-                    coin_im = maskImageMonochrome(coin_im, kong_index, 0)
+                    coin_im = maskImageTwoColorAnimation(coin_im, color_bases[0], color_bases[1], (file - 216))
                     coin_start = [224, 256, 248, 216, 264]
                     writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False)
                 for file in range(274, 286):
                     # Bunch
                     bunch_im = getFile(7, file, False, 44, 44, "rgba5551")
-                    bunch_im = maskImageMonochrome(bunch_im, kong_index, 0, "bunch")
+                    bunch_im = maskImageTwoColorAnimation(bunch_im, color_bases[0], color_bases[1], (file - 274))
                     bunch_start = [274, 854, 818, 842, 830]
                     writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False)
                 for file in range(5819, 5827):
