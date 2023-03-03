@@ -183,7 +183,8 @@ void initHack(int source) {
 			}
 			actor_functions[70] = &newCounterCode;
 			*(short*)(0x8074DC84) = 0x53; // Increase PAAD size
-			fixMusicRando();			
+			fixMusicRando();
+			*(int*)(0x80748014) = (int)&spawnWrinklyWrapper; // Change function to include setFlag call	
 			// Style 6 Mtx
 			int base_mtx = 75;
 			style6Mtx[0x0] = base_mtx;

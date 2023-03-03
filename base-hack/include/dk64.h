@@ -81,6 +81,7 @@ extern int __osDisableInt();
 extern void __osRestoreInt(int mask);
 extern int __osEepromProbe(void* unk0);
 extern void __osViSwapContext(void);
+extern int cstring_strlen(char* str);
 extern void copyFunc(int rom_offset, int size, void* write_location);
 extern void* getMapData(data_indexes data_idx, int _index, char compressbyte0, char compressbyte1);
 extern void loadSetup(void* setup_file, int unk0, int unk1);
@@ -139,6 +140,7 @@ extern void enterPortal(void* player);
 extern void drawBossDoorNumber(behaviour_data* behaviour, int index, int unk0, int unk1);
 
 extern int* initDisplayList(int* dl);
+extern int* initDisplayList_0(int* dl);
 extern int getTextStyleHeight(int style);
 extern int* displayText(int* dl, int style, int x, int y, void* text_pointer, char unk0);
 extern int* displayImage(int* dl, int texture_index, int unk3, codecs codec_index, int width, int height, int x, int y, float xScale, float yScale, int unk11, float unk12);

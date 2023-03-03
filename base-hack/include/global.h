@@ -303,6 +303,9 @@ extern int isFlagInRange(int test_flag, int start_flag, int count);
 extern void BalloonShoot(int item, int player, int change);
 extern void fixCrownEntrySKong(playerData* player, int animation);
 
+extern void wipeHintCache(void);
+extern void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0);
+
 extern item_collision* writeItemScale(int id);
 extern item_collision* writeItemActorScale(void);
 

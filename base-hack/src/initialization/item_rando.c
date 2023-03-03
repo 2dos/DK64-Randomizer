@@ -207,6 +207,17 @@ void initItemRando(void) {
     *(int*)(0x80681854) = 0x0C000000 | (((int)&getBonusFlag & 0xFFFFFF) >> 2); // Get Bonus Flag Check
     *(int*)(0x806C63A8) = 0x0C000000 | (((int)&getBonusFlag & 0xFFFFFF) >> 2); // Get Bonus Flag Check
     *(int*)(0x806F78B8) = 0x0C000000 | (((int)&getKongFromBonusFlag & 0xFFFFFF) >> 2); // Reward Table Kong Check
+    // Checks Screen
+    pausescreenlist screen_count = PAUSESCREEN_TERMINATOR; // 4 screens vanilla + hint screen + check screen + move tracker
+    *(short*)(0x806A8672) = screen_count - 1; // Screen decrease cap
+    *(short*)(0x806A8646) = screen_count; // Screen increase cap
+    *(int*)(0x806A94CC) = 0x2C610003; // SLTIU $at, $v1, 0x3 (Changes render check for <3 rather than == 3)
+    *(int*)(0x806A94D0) = 0x10200298; // BEQZ $at, 0x298 (Changes render check for <3 rather than == 3)
+    *(int*)(0x806A9F98) = 0x0C000000 | (((int)&pauseScreen3And4Header & 0xFFFFFF) >> 2); // Header
+    *(int*)(0x806AA03C) = 0x0C000000 | (((int)&pauseScreen3And4Counter & 0xFFFFFF) >> 2); // Counter
+    *(int*)(0x806A86BC) = 0x0C000000 | (((int)&changePauseScreen & 0xFFFFFF) >> 2); // Change screen hook
+    *(int*)(0x806A8D20) = 0x0C000000 | (((int)&changeSelectedLevel & 0xFFFFFF) >> 2); // Change selected level on checks screen
+    *(int*)(0x806A84F8) = 0x0C000000 | (((int)&checkItemDB & 0xFFFFFF) >> 2); // Populate Item Databases
     if (Rando.item_rando) {
         *(short*)(0x806B4E1A) = getActorIndex(Rando.vulture_item);
         *(short*)(0x8069C266) = getActorIndex(Rando.japes_rock_item);
@@ -253,21 +264,7 @@ void initItemRando(void) {
         }
         // Mill GB
         *(int*)(0x806F633C) = 0x0C000000 | (((int)&isObjectTangible_detailed & 0xFFFFFF) >> 2); // Change object tangibility check function
-        // Checks Screen
-        int screen_count = 5;
-        *(short*)(0x806A8672) = screen_count; // Screen decrease cap
-        *(short*)(0x806A8646) = screen_count + 1; // Screen increase cap
-        *(int*)(0x806A94CC) = 0x2C610003; // SLTIU $at, $v1, 0x3 (Changes render check for <3 rather than == 3)
-        *(int*)(0x806A94D0) = 0x10200298; // BEQZ $at, 0x298 (Changes render check for <3 rather than == 3)
-        *(int*)(0x806A9F98) = 0x0C000000 | (((int)&pauseScreen3And4Header & 0xFFFFFF) >> 2); // Header
-        *(int*)(0x806AA03C) = 0x0C000000 | (((int)&pauseScreen3And4Counter & 0xFFFFFF) >> 2); // Counter
-        *(int*)(0x806A86BC) = 0x0C000000 | (((int)&changePauseScreen & 0xFFFFFF) >> 2); // Change screen hook
-        // *(int*)(0x806A86F8) = 0x2CA10003; // SLTIU $at, $a1, 0x3 (Changes control check for <3 rather than == 3)
-        // *(int*)(0x806A86FC) = 0x10200182; // BEQZ $at, 0x182 (Changes control check for <3 rather than == 3)
-        // *(int*)(0x806AA410) = 0x2C410003; // SLTIU $at, $v0, 0x3 (Changes sprite check for <3 rather than == 3)
-        // *(int*)(0x806AA414) = 0x102003AA; // BEQZ $at, 0x3AA (Changes sprite check for <3 rather than == 3)
-        *(int*)(0x806A8D20) = 0x0C000000 | (((int)&changeSelectedLevel & 0xFFFFFF) >> 2); // Change selected level on checks screen
-        *(int*)(0x806A84F8) = 0x0C000000 | (((int)&checkItemDB & 0xFFFFFF) >> 2); // Populate Item Databases
+        
         *(int*)(0x806C5C7C) = 0; // Cancel out fairy draw distance reduction
         *(short*)(0x806C46AA) = 0x4100; // Bring squawks closer to the player for minecarts (X)
         *(short*)(0x806C46E2) = 0x4100; // Bring squawks closer to the player for minecarts (Z)

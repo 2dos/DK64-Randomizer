@@ -279,3 +279,14 @@ typedef enum item_purchase_text {
 	/* 0x057 */ ITEMTEXT_RAINBOWCOIN,
 	/* 0x058 */ ITEMTEXT_FAKEITEM,
 } item_purchase_text;
+
+typedef enum pausescreenlist {
+	/* 0x000 */ PAUSESCREEN_MAIN,
+	/* 0x001 */ PAUSESCREEN_LEVEL_KONGS,
+	/* 0x002 */ PAUSESCREEN_LEVEL_ALL,
+	/* 0x003 */ PAUSESCREEN_TOTALS,
+	/* 0x004 */ PAUSESCREEN_CHECKS,
+	/* 0x005 */ PAUSESCREEN_HINTS,
+	/* 0x006 */ PAUSESCREEN_MOVES,
+	/* ----- */ PAUSESCREEN_TERMINATOR,
+} pausescreenlist;
