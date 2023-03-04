@@ -11,22 +11,22 @@
 #include "../../include/common.h"
 
 static char* text_rewards[] = {
-    "\x04GOLDEN BANANA\x04", // 0
-    "\x04BLUEPRINT\x04", // 1
-    "\x04BOSS KEY\x04", // 2
-    "\x04BATTLE CROWN\x04", // 3
-    "\x04BANANA FAIRY\x04", // 4
-    "\x04RAREWARE COIN\x04", // 5
-    "\x04NINTENDO COIN\x04", // 6
-    "\x04BANANA MEDAL\x04", // 7
-    "\x04POTION\x04", // 8
-    "\x04KONG\x04", // 9
-    "\x04BEAN\x04", // 10
-    "\x04PEARL\x04", // 11
-    "\x04RAINBOW COIN\x04", // 12
-    "\x04GLODEN BANANE\x04", // 13
-    "\x04NOTHING\x04", // 14
-    "\x04JUNK ITEM\x04", // 15
+    "GOLDEN BANANA", // 0
+    "BLUEPRINT", // 1
+    "BOSS KEY", // 2
+    "BATTLE CROWN", // 3
+    "BANANA FAIRY", // 4
+    "RAREWARE COIN", // 5
+    "NINTENDO COIN", // 6
+    "BANANA MEDAL", // 7
+    "POTION", // 8
+    "KONG", // 9
+    "BEAN", // 10
+    "PEARL", // 11
+    "RAINBOW COIN", // 12
+    "GLODEN BANANE", // 13
+    "NOTHING", // 14
+    "JUNK ITEM", // 15
 };
 
 void handleDynamicItemText(char* location, char* format, int character) {

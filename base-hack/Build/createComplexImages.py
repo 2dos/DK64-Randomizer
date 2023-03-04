@@ -545,6 +545,18 @@ gb_shine = Image.open(f"{hash_dir}gb_shine.png")
 gb_shine = hueShift(gb_shine, 10)
 gb_shine.save(f"{disp_dir}gb_shine.png")
 
+# Text Bubble
+bubble_im = Image.open(f"{hash_dir}text_bubble.png")
+bubble_im = bubble_im.resize((48, 32))
+bubble_px = bubble_im.load()
+w, h = bubble_im.size
+for y in range(h):
+    for x in range(w):
+        base = list(bubble_px[x, y])
+        bubble_px[x, y] = (0, 0, 0, base[3])
+bubble_im.save(f"{disp_dir}text_bubble_dark.png")
+
+
 rmve = [
     "01234.png",
     "56789.png",
@@ -571,6 +583,7 @@ rmve = [
     "rw_coin_noresize.png",
     "gb_shine.png",
     "rainbow_coin_noflip.png",
+    "text_bubble.png",
 ]
 for kong in kongs:
     for x in range(2):

@@ -132,8 +132,8 @@ class TextboxChange:
 
 
 textboxes = [
-    TextboxChange(Locations.AztecTinyBeetleRace, 14, 0, "GOLDEN BANANA", "|", True),
-    TextboxChange(Locations.CavesLankyBeetleRace, 14, 0, "GOLDEN BANANA", "|", True),
+    TextboxChange(Locations.AztecTinyBeetleRace, 14, 0, "GOLDEN BANANA", "\x04|\x04", True),
+    TextboxChange(Locations.CavesLankyBeetleRace, 14, 0, "GOLDEN BANANA", "\x04|\x04", True),
     TextboxChange(Locations.JapesDiddyMinecarts, 16, 2, "GOLDEN BANANA"),
     TextboxChange(Locations.JapesDiddyMinecarts, 16, 3, "BANANA"),
     TextboxChange(Locations.JapesDiddyMinecarts, 16, 4, "BANANA"),

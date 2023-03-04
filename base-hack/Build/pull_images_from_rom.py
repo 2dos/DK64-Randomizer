@@ -86,6 +86,7 @@ images = [
     ImageData("rainbow_coin_noflip", "rgba16", 25, 5963, 48, 44, False, False),
     ImageData("melon_resized", "rgba16", 7, 544, 48, 42, False, False),
     ImageData("melon_slice", "rgba16", 7, 0x142, 48, 42, False, True),
+    ImageData("text_bubble", "ia8", 14, 0x52, 96, 64, False, False),
 ]
 
 kong_tex = ["chunky", "tiny", "lanky", "diddy", "dk"]
@@ -143,6 +144,15 @@ with open("rom/dk64.z64", "rb") as fh:
                 green = (pixel_data >> 16) & 0xFF
                 blue = (pixel_data >> 8) & 0xFF
                 alpha = pixel_data & 0xFF
+            elif x.format == "ia8":
+                start = pixel
+                end = pixel + 1
+                pixel_data = int.from_bytes(dec[start:end], "big")
+                intensity = int(((pixel_data >> 4) / 0xF) * 255)
+                alpha = int(((pixel_data & 0xF) / 0xF) * 255)
+                red = intensity
+                green = intensity
+                blue = intensity
             pix_x = pixel % x.width
             pix_y = int(pixel / x.width)
             pix[pix_x, pix_y] = (red, green, blue, alpha)

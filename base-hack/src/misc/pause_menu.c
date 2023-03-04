@@ -239,7 +239,8 @@ void checkItemDB(void) {
     }
 }
 
-static char string_copy[256] = "";
+#define STRING_MAX_SIZE 256
+static char string_copy[STRING_MAX_SIZE] = "";
 static mtx_item static_mtx[20];
 static char mtx_counter = 0;
 
@@ -284,22 +285,31 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
     int last_safe = 0;
     while (1) {
         char referenced_character = *(char*)(string_copy_ref + header);
+        int is_control = 0;
         if (referenced_character == 0) {
             // Terminator
             return drawHintText(dl, (char*)(string_copy_ref), x, curr_y);
         } else if (referenced_character == 0x20) {
             // Space
             last_safe = header;
+        } else if ((referenced_character > 0) && (referenced_character < 0x10)) {
+            // Control byte character
+            is_control = 1;
+            int end = (int)(string_copy) + (STRING_MAX_SIZE - 1);
+            int size = end - (string_copy_ref + header + 1);
+            dk_memcpy((void*)(string_copy_ref + header), (void*)(string_copy_ref + header + 1), size);
         }
-        if (header > 50) {
-            *(char*)(string_copy_ref + last_safe) = 0; // Stick terminator in last safe
-            dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y);
-            curr_y += y_sep;
-            string_copy_ref += (last_safe + 1);
-            header = 0;
-            last_safe = 0;
-        } else {
-            header += 1;
+        if (!is_control) {
+            if (header > 50) {
+                *(char*)(string_copy_ref + last_safe) = 0; // Stick terminator in last safe
+                dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y);
+                curr_y += y_sep;
+                string_copy_ref += (last_safe + 1);
+                header = 0;
+                last_safe = 0;
+            } else {
+                header += 1;
+            }
         }
     }
     return dl;
@@ -342,17 +352,9 @@ int* pauseScreen3And4Header(int* dl) {
         dk_strFormat((char*)level_hint_text, "w %s e", levels[(int)hint_level + 1]);
         dl = printText(dl, 0x280, 120, 0.5f, level_hint_text);
         // Display Hints
-        // *(unsigned int*)(dl++) = 0xE7000000;
-	    // *(unsigned int*)(dl++) = 0x00000000;
-        // *(unsigned int*)(dl++) = 0xFA000000;
-        // *(unsigned int*)(dl++) = 0x000000FF;
-        // // dl = drawImageWithFilter(dl, 0x52, IA8, 96, 64, *(int*)(0x807FF700), *(int*)(0x807FF704), *(float*)(0x807FF708), *(float*)(0x807FF70C), 0, 0, 0, 0xFF);
-        // dl = displayImage(dl, 0x52, 0, IA8, 96, 64, *(int*)(0x807FF700), *(int*)(0x807FF704), *(float*)(0x807FF708), *(float*)(0x807FF70C), 0, 0.0f);
-        // *(unsigned int*)(dl++) = 0xD8380002;
-        // *(unsigned int*)(dl++) = 0x00000040;
-        // *(unsigned int*)(dl++) = 0xE7000000;
-	    // *(unsigned int*)(dl++) = 0x00000000;
-        // dl = drawScreenRect(dl, 100, 160, 1020, 750, 3, 3, 3, 1); // 250, 200, 1000, 700
+        *(unsigned int*)(dl++) = 0xFA000000;
+        *(unsigned int*)(dl++) = 0xFFFFFF96;
+        dl = displayImage(dl, 107, 0, RGBA16, 48, 32, 625, 465, 24.0f, 20.0f, 0, 0.0f);
         mtx_counter = 0;
         for (int i = 0; i < 5; i++) {
             char* string = "???";
