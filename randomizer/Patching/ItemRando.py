@@ -171,22 +171,22 @@ rareware_coin_reward = ("RAREWARE COIN", "DOUBLOON OF THE RAREST KIND")
 nintendo_coin_reward = ("NINTENDO COIN", "ANCIENT DOUBLOON")
 
 text_rewards = {
-    Types.Banana: ("GOLDEN BANANA", "BANANA OF PURE GOLD"),
-    Types.Blueprint: ("BLUEPRINT", "MAP O' DEATH MACHINE"),
-    Types.Key: ("BOSS KEY", "KEY TO DAVY JONES LOCKER"),
-    Types.Crown: ("BATTLE CROWN", "CROWN TO PLACE ATOP YER HEAD"),
-    Types.Fairy: ("BANANA FAIRY", "MAGICAL FLYING PIXIE"),
-    Types.Medal: ("BANANA MEDAL", "MEDALLION"),
-    Types.Shop: ("POTION", "BOTTLE OF GROG"),
-    Types.Shockwave: ("POTION", "BOTTLE OF GROG"),
-    Types.TrainingBarrel: ("POTION", "BOTTLE OF GROG"),
-    Types.Kong: ("KONG", "WEIRD MONKEY"),
-    Types.Bean: ("BEAN", "QUESTIONABLE VEGETABLE"),
-    Types.Pearl: ("PEARL", "BLACK PEARL"),
-    Types.RainbowCoin: ("RAINBOW COIN", "COLORFUL COIN HIDDEN FOR 17 YEARS"),
-    Types.FakeItem: ("GLODEN BANANE", "BANANA OF FOOLS GOLD"),
-    Types.JunkItem: ("JUNK ITEM", "SOME HEAP OF JUNK"),
-    Types.NoItem: ("NOTHING", "DIDDLY SQUAT"),
+    Types.Banana: ("\x04GOLDEN BANANA\x04", "\x04BANANA OF PURE GOLD\x04"),
+    Types.Blueprint: ("\x04BLUEPRINT\x04", "\x04MAP O' DEATH MACHINE\x04"),
+    Types.Key: ("\x04BOSS KEY\x04", "\x04KEY TO DAVY JONES LOCKER\x04"),
+    Types.Crown: ("\x04BATTLE CROWN\x04", "\x04CROWN TO PLACE ATOP YER HEAD\x04"),
+    Types.Fairy: ("\x04BANANA FAIRY\x04", "\x04MAGICAL FLYING PIXIE\x04"),
+    Types.Medal: ("\x04BANANA MEDAL\x04", "\x04MEDALLION\x04"),
+    Types.Shop: ("\x04POTION\x04", "\x04BOTTLE OF GROG\x04"),
+    Types.Shockwave: ("\x04POTION\x04", "\x04BOTTLE OF GROG\x04"),
+    Types.TrainingBarrel: ("\x04POTION\x04", "\x04BOTTLE OF GROG\x04"),
+    Types.Kong: ("\x04KONG\x04", "\x04WEIRD MONKEY\x04"),
+    Types.Bean: ("\x04BEAN\x04", "\x04QUESTIONABLE VEGETABLE\x04"),
+    Types.Pearl: ("\x04PEARL\x04", "\x04BLACK PEARL\x04"),
+    Types.RainbowCoin: ("\x04RAINBOW COIN\x04", "\x04COLORFUL COIN HIDDEN FOR 17 YEARS\x04"),
+    Types.FakeItem: ("\x04GLODEN BANANE\x04", "\x04BANANA OF FOOLS GOLD\x04"),
+    Types.JunkItem: ("\x04JUNK ITEM\x04", "\x04SOME HEAP OF JUNK\x04"),
+    Types.NoItem: ("\x04NOTHING\x04", "\x04DIDDLY SQUAT\x04"),
 }
 
 level_names = {
