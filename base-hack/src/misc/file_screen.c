@@ -251,9 +251,9 @@ int getInitFileMove(int index) {
 						}
 					} else if (subtype == 1) {
 						// Belts
-						if (belt_screen_level == 0) {
+						if (belt_screen_level == 1) {
 							found |= index == TRACKER_TYPE_BELT_1;
-						} else {
+						} else if (belt_screen_level == 2) {
 							found |= index == TRACKER_TYPE_BELT_2;
 						}
 					} else if (subtype == 2) {
