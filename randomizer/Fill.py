@@ -39,7 +39,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Warps import Warps
 from randomizer.Lists.Item import ItemList, KongFromItem
-from randomizer.Lists.Location import LocationList, TrainingBarrelLocations, SharedMoveLocations
+from randomizer.Lists.Location import LocationList, TrainingBarrelLocations, SharedMoveLocations, PreGivenLocations
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
@@ -1598,25 +1598,39 @@ def FillKongsAndMoves(spoiler, placedTypes):
     # Final touches to item placement, some locations need special treatment
     if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != MoveRando.off:
         # If we're shuffling training moves, always put a move in each training barrel
-        if spoiler.settings.training_barrels == TrainingBarrels.shuffled:
-            emptyTrainingBarrels = [loc for loc in TrainingBarrelLocations if LocationList[loc].item is None]
-            if len(emptyTrainingBarrels) > 0:
-                # Find the list of locations that have a kong move in them
-                kongMoveLocationsList = []
-                for location_id, location in LocationList.items():
-                    if location.item in ItemPool.AllKongMoves() and location_id not in TrainingBarrelLocations:
-                        kongMoveLocationsList.append(location_id)
-                # Worth noting that moving a move to the training barrels will always make it more accessible, and thus doesn't need any additional logic
-                for emptyBarrel in emptyTrainingBarrels:
-                    # Pick a random Kong move to put in the training barrel. This should be both more interesting than a shared move and lead to fewer empty shops.
-                    locationToVacate = choice(kongMoveLocationsList)
-                    itemToBeMoved = LocationList[locationToVacate].item
-                    LocationList[emptyBarrel].PlaceItem(itemToBeMoved)
-                    LocationList[locationToVacate].UnplaceItem()
-                    kongMoveLocationsList.remove(locationToVacate)
-                    if locationToVacate in spoiler.settings.debug_fill.keys():  # Should only fail in no logic
-                        del spoiler.settings.debug_fill[locationToVacate]
-                        spoiler.settings.debug_fill[emptyBarrel] = itemToBeMoved
+        move_slots = spoiler.settings.starting_move_count - 4  # Remove Training Moves
+        if spoiler.settings.shockwave_status == ShockwaveStatus.start_with:
+            move_slots -= 2
+        fill_checks = [
+            [
+                spoiler.settings.training_barrels == TrainingBarrels.shuffled, # Check
+                [loc for loc in TrainingBarrelLocations if LocationList[loc].item is None], # Empty List
+            ],
+            [
+                move_slots > 0, # Check
+                [loc for index, loc in enumerate(PreGivenLocations) if LocationList[loc].item is None and index < move_slots], # Empty List
+            ],
+        ]
+        for check in fill_checks:
+            if check[0]:
+                emptyLocations = check[1]
+                if len(emptyLocations) > 0:
+                    # Find the list of locations that have a kong move in them
+                    kongMoveLocationsList = []
+                    for location_id, location in LocationList.items():
+                        if location.item in ItemPool.AllKongMoves() and location_id not in TrainingBarrelLocations and location_id not in PreGivenLocations:
+                            kongMoveLocationsList.append(location_id)
+                    # Worth noting that moving a move to the training barrels will always make it more accessible, and thus doesn't need any additional logic
+                    for emptyBarrel in emptyLocations:
+                        # Pick a random Kong move to put in the training barrel. This should be both more interesting than a shared move and lead to fewer empty shops.
+                        locationToVacate = choice(kongMoveLocationsList)
+                        itemToBeMoved = LocationList[locationToVacate].item
+                        LocationList[emptyBarrel].PlaceItem(itemToBeMoved)
+                        LocationList[locationToVacate].UnplaceItem()
+                        kongMoveLocationsList.remove(locationToVacate)
+                        if locationToVacate in spoiler.settings.debug_fill.keys():  # Should only fail in no logic
+                            del spoiler.settings.debug_fill[locationToVacate]
+                            spoiler.settings.debug_fill[emptyBarrel] = itemToBeMoved
     spoiler.settings.debug_preplaced_priority_moves = preplacedPriorityMoves
     if preplacedPriorityMoves.count(Items.ProgressiveSlam) > 2:
         raise Ex.FillException("Somehow managed to place 3 slams? This shouldn't happen.")
