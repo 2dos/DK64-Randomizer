@@ -491,6 +491,14 @@ def GetItemsNeedingToBeAssumed(settings, placed_types):
     #     itemPool.extend(JunkItems())
     # if Types.Hint in unplacedTypes: someday???
     #     itemPool.extend(HintItems()) hints in the pool???
+    # If shops are not part of the larger item pool and are not placed, we may still need to assume them
+    # It is worth noting that TrainingBarrel and Shockwave type items are contingent on Shop type items being in the item rando pool
+    if Types.Shop not in settings.shuffled_location_types and Types.Shop not in placed_types and settings.move_rando != MoveRando.off:
+        itemPool.extend(AllKongMoves())
+        if settings.training_barrels == TrainingBarrels.shuffled:
+            itemPool.extend(TrainingBarrelAbilities().copy())
+        if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
+            itemPool.extend(ShockwaveTypeItems(settings))
     return itemPool
 
 

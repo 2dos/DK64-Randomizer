@@ -861,3 +861,19 @@ def disable_helm_hurry(evt):
             selector.removeAttribute("disabled")
     except AttributeError:
         pass
+
+
+@bind("click", "vanilla_door_rando")
+def toggle_vanilla_door_rando(evt):
+    """Force Wrinkly and T&S Rando to be on when Vanilla Door Rando is on."""
+    vanilla_door_shuffle = js.document.getElementById("vanilla_door_rando")
+    wrinkly_rando = js.document.getElementById("wrinkly_location_rando")
+    tns_rando = js.document.getElementById("tns_location_rando")
+    if vanilla_door_shuffle.checked:
+        wrinkly_rando.checked = True
+        wrinkly_rando.setAttribute("disabled", "disabled")
+        tns_rando.checked = True
+        tns_rando.setAttribute("disabled", "disabled")
+    else:
+        wrinkly_rando.removeAttribute("disabled")
+        tns_rando.removeAttribute("disabled")

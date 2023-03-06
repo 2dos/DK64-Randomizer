@@ -12,6 +12,7 @@
 | Jungle Japes Lobby | Jungle Japes: Lobby - Far Right | Wrinkly |  | 
 | Jungle Japes Lobby | Jungle Japes: Lobby - Close Left | Wrinkly |  | 
 | Jungle Japes | Jungle Japes: Diddy Cave | Both |  | 
+| Jungle Japes | Jungle Japes: Near Painting Room | Wrinkly |  | 
 | Jungle Japes | Jungle Japes: Fairy Cave | Both |  | 
 | Jungle Japes | Jungle Japes: Next to Diddy Cage - right | Both |  | 
 | Jungle Japes | Jungle Japes: Alcove Above Diddy Tunnel - right | Wrinkly |  | 

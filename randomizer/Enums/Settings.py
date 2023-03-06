@@ -529,9 +529,9 @@ class MinigameBarrels(IntEnum):
     selected = auto()
 
 
-# A dictionary that maps setting names to the associated enum for that specific
-# setting. This only applies to select-based settings. The key for each enum
-# must exactly match the HTML name of the associated select.
+# ALL SELECT-BASED SETTINGS NEED AN ENTRY HERE!
+# A dictionary that maps setting names to the associated enum for that specific setting.
+# The key for each enum must exactly match the HTML name of the associated select.
 SettingsMap = {
     # Randomizer
     "enemies_selected": Enemies,
@@ -584,12 +584,14 @@ SettingsMap = {
 
 
 class SettingsStringEnum(IntEnum):
-    """Maps setting names to key values, for use in the ssettings string.
+    """Maps setting names to key values, for use in the settings string.
 
     Changing any of the existing values will cause generated settings strings
         to break. Only add new values.
 
-    Next available value: 132
+    ALL SETTINGS NEED AN ENTRY HERE!
+
+    Next available value: 133
     """
 
     activate_all_bananaports = 1
@@ -723,6 +725,7 @@ class SettingsStringEnum(IntEnum):
     wrinkly_hints = 129
     wrinkly_location_rando = 130
     coin_rando = 131
+    vanilla_door_rando = 132
 
 
 class SettingsStringDataType(IntEnum):
@@ -739,6 +742,7 @@ class SettingsStringDataType(IntEnum):
     list = auto()
 
 
+# ALL SETTINGS NEED AN ENTRY HERE!
 # This maps settings to the data types that will be used to encode them in the
 # settings string. Any enum-based settings should use that enum as their data
 # type, to shrink the payload as much as possible.
@@ -868,6 +872,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.troff_5: SettingsStringDataType.int16,
     SettingsStringEnum.troff_6: SettingsStringDataType.int16,
     SettingsStringEnum.troff_text: SettingsStringDataType.int16,
+    SettingsStringEnum.vanilla_door_rando: SettingsStringDataType.bool,
     SettingsStringEnum.warp_level_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.warp_to_isles: SettingsStringDataType.bool,
     SettingsStringEnum.win_condition: WinCondition,
@@ -876,6 +881,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.wrinkly_location_rando: SettingsStringDataType.bool,
 }
 
+# ALL LIST SETTINGS NEED AN ENTRY HERE!
 # Another map for list settings, for the underlying data type of the list.
 SettingsStringListTypeMap = {
     SettingsStringEnum.enemies_selected: Enemies,
