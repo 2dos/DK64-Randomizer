@@ -433,6 +433,7 @@ class Settings:
         self.hard_enemies = False
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
+        self.vanilla_door_rando = False
         self.minigames_list_selected = []
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
@@ -480,6 +481,11 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
+        # If we're using the vanilla door shuffle, turn both wrinkly and tns rando on
+        if self.vanilla_door_rando:
+            self.wrinkly_location_rando = True
+            self.tns_location_rando = True
+
         # Move Location Rando
         if self.move_rando == MoveRando.start_with:
             self.unlock_all_moves = True

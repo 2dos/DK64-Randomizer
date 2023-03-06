@@ -151,7 +151,9 @@ door_locations = {
             logic=lambda l: True,
             placed="tns",
         ),  # T&S Door in Diddy Cave
-        # DoorData(name="Jungle Japes: Near Painting Room", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[722.473, 538.0, 2386.608, 141.0], group=3, placed="tns"),  # T&S Door in Near Painting Room. Omitted because the indicator is weird
+        DoorData(
+            name="Jungle Japes: Near Painting Room", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[722.473, 538.0, 2386.608, 141.0], group=3, placed="tns", door_type="wrinkly"
+        ),  # T&S Door in Near Painting Room. Ironically cannot be a T&S because the indicator is weird
         DoorData(
             name="Jungle Japes: Fairy Cave",
             map=Maps.JungleJapes,
@@ -2020,6 +2022,7 @@ door_locations = {
             map=Maps.CrystalCavesLobby,
             logicregion=Regions.CrystalCavesLobby,
             location=[731.84, 280.5, 704.935, 120.0],
+            kong_lst=[Kongs.diddy],
             group=1,
             moveless=False,
             logic=lambda l: l.isdiddy and l.jetpack,
@@ -2107,7 +2110,7 @@ door_locations = {
         ),  # T&S Portal on Sprint Cabin
         DoorData(
             name="Crystal Caves: Near 5DI", map=Maps.CrystalCaves, logicregion=Regions.IglooArea, location=[120.997, 50.167, 1182.974, 75.146], group=5, logic=lambda l: True, placed="tns"
-        ),  # T&S Portal near 5DI (Custom)
+        ),  # T&S Portal near 5DI (Custom but treated as vanilla)
         DoorData(name="Crystal Caves: Outside Lanky's Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[2400.0, 276.0, 1892.5, 21.75], group=2, logic=lambda l: True),
         DoorData(name="Crystal Caves: Outside Chunky's Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[3515.65, 175.0, 1893.0, 273.7], group=2, logic=lambda l: True),
         DoorData(name="Crystal Caves: Outside Diddy's Lower Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[3697.5, 260.0, 1505.0, 291.0], group=2, logic=lambda l: True),

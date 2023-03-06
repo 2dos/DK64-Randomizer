@@ -26,6 +26,7 @@ from ui.rando_options import (
     item_rando_list_changed,
     toggle_key_settings,
     disable_helm_hurry,
+    toggle_vanilla_door_rando,
 )
 
 # Call the generate_buttons function just to force loading of the file
@@ -57,3 +58,4 @@ updateDoorTwoNumAccess(None)
 item_rando_list_changed(None)
 toggle_key_settings(None)
 disable_helm_hurry(None)
+toggle_vanilla_door_rando(None)
