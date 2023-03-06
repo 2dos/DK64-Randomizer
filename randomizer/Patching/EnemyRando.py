@@ -490,7 +490,7 @@ def randomize_enemies(spoiler: Spoiler):
                                 new_enemy_id = arr[sub_index]
                                 sub_index += 1
                                 if new_enemy_id != Enemies.Book or cont_map_id not in (Maps.CavesDonkeyCabin, Maps.JapesLankyCave, Maps.AngryAztecLobby):
-                                    if new_enemy_id != Enemies.SpiderSmall or cont_map_id != Maps.JungleJapes:
+                                    if new_enemy_id != Enemies.SpiderSmall or cont_map_id not in (Maps.JungleJapes, Maps.JapesMountain):
                                         if new_enemy_id != Enemies.Kosha or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyCabin):
                                             if new_enemy_id != Enemies.Guard or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin):
                                                 if cont_map_id != Maps.AztecTinyTemple or spawner["index"] < 20 or spawner["index"] > 23 or not no_ground_simple_selected:

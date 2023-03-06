@@ -188,7 +188,7 @@ int clampFlag(int flag) {
     return 0;
 }
 
-void moveGiveHook(int kong, int type, int index) {
+void moveGiveHook(int kong, int type, int index, int is_jetpac) {
     /**
      * @brief Hook into the move give function, only for non-progressive moves purchased from Cranky, Candy and Funky
      * 
@@ -204,10 +204,7 @@ void moveGiveHook(int kong, int type, int index) {
             }
         }
     }
-    spawnActor(324,0);
-    TextOverlayData.type = type;
-    TextOverlayData.flag = index;
-    TextOverlayData.kong = kong;
+    spawnItemOverlay(type, kong, index, is_jetpac);
     if (type == 4) {
         if (CollectableBase.Melons < 2) {
             CollectableBase.Melons = 2;
@@ -219,10 +216,7 @@ void moveGiveHook(int kong, int type, int index) {
 void displayKeyText(int flag) {
     for (int i = 0; i < 8; i++) {
         if (getKeyFlag(i) == flag) {
-            spawnActor(324, 0);
-            TextOverlayData.type = 5;
-            TextOverlayData.flag = getKeyFlag(i);
-            TextOverlayData.kong = 0;
+            spawnItemOverlay(5, 0, getKeyFlag(i), 0);
         }
     }
 }
@@ -259,7 +253,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
             int init_val = *(char*)(temp_fba + item_type);
             if (((init_val & (1 << *flag)) == 0) && (source == 1)) {
                 // Move given
-                moveGiveHook(item_kong, item_type, item_index);
+                moveGiveHook(item_kong, item_type, item_index, vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN);
                 
             }
             return temp_fba + item_type;
@@ -395,10 +389,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                 }
             }
             if (spawn_overlay) {
-                spawnActor(324, 0);
-                TextOverlayData.type = item_type;
-                TextOverlayData.flag = item_index;
-                TextOverlayData.kong = item_kong;
+                spawnItemOverlay(item_type, item_kong, item_index, vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN);
             }
         }
     }

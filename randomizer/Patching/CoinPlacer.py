@@ -58,7 +58,6 @@ def randomize_coins(spoiler: Spoiler):
             # Place all new coins
             new_id = 0
             for new_coin in spoiler.coin_placements:
-                print(new_coin["name"])
                 if new_coin["map"] == cont_map_id:
                     # Model Two Coins
                     for loc in new_coin["locations"]:

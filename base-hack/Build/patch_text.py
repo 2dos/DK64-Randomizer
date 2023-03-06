@@ -851,7 +851,9 @@ fairy_text = grabText(40)
 fairy_text[4] = [{"text": ["~ REMEMBER, MUST GET FAIRIES TO OBTAIN SPECIAL REWARD."]}]
 writeText("fairy_rw_text.bin", fairy_text)
 
+# byte_lst = ["\x04","\x05","\x06","\x07","\x08","\x09","\x0A","\x0B","\x0C","\x0D",]
 squawks_text = grabText(19)
+# squawks_text.append([{"text": [f"TEST {' '.join([(x + 'TEST' + x) for x in byte_lst])}."]}])
 squawks_text.append([{"text": ["YOU CAN FIND \x04GORILLA GONE\x04 IN \x05CAVES CRANKY\x05."]}])
 squawks_text.append([{"text": ["YOU CAN FIND \x04MONKEYPORT\x04 IN \x05CAVES CRANKY\x05."]}])
 squawks_text.append([{"text": ["YOU CAN FIND \x04BONGO BLAST\x04 IN \x05AZTEC CANDY\x05."]}])

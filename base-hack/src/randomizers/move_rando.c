@@ -705,12 +705,15 @@ void getNextMoveText(void) {
 	int start_hiding = 0;
 	actorData* shop_owner = paad->shop_owner;
 	shop_paad* shop_data = 0;
-	if ((shop_owner == 0) && ((CurrentMap == CRANKY) || (CurrentMap == FUNKY) || (CurrentMap == CANDY))) {
-		shop_owner = getSpawnerTiedActor(1,0);
-		paad->shop_owner = shop_owner;
-	}
-	if ((paad->shop_owner) && ((CurrentMap == CRANKY) || (CurrentMap == FUNKY) || (CurrentMap == CANDY))) {
-		shop_data = shop_owner->paad2;
+	int is_jetpac = CurrentActorPointer_0->actorType == getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY);
+	if (!is_jetpac) {
+		if ((shop_owner == 0) && ((CurrentMap == CRANKY) || (CurrentMap == FUNKY) || (CurrentMap == CANDY))) {
+			shop_owner = getSpawnerTiedActor(1,0);
+			paad->shop_owner = shop_owner;
+		}
+		if ((paad->shop_owner) && ((CurrentMap == CRANKY) || (CurrentMap == FUNKY) || (CurrentMap == CANDY))) {
+			shop_data = shop_owner->paad2;
+		}
 	}
 	int p_value = 0;
 	int p_type = 0;
@@ -777,7 +780,7 @@ void getNextMoveText(void) {
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->unk_50);
 			paad->timer = 0x82;
-			if (CurrentMap == CRANKY) {
+			if ((CurrentMap == CRANKY) && (!is_jetpac)) {
 				paad->timer = 300;
 			}
 			switch(p_type) {

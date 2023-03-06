@@ -15,6 +15,7 @@ extern void quickInit(void);
 extern int getCenter(int style, char* str);
 extern int getActorIndex(int actor_input);
 extern int getCustomActorIndex(new_custom_actors offset);
+extern void spawnItemOverlay(int type, int kong, int index, int force);
 
 extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);
@@ -301,6 +302,9 @@ extern int isFairyFlag(int flag);
 extern int isFlagInRange(int test_flag, int start_flag, int count);
 extern void BalloonShoot(int item, int player, int change);
 extern void fixCrownEntrySKong(playerData* player, int animation);
+
+extern void wipeHintCache(void);
+extern void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0);
 
 extern item_collision* writeItemScale(int id);
 extern item_collision* writeItemActorScale(void);
