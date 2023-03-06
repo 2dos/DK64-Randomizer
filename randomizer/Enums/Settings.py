@@ -589,7 +589,7 @@ class SettingsStringEnum(IntEnum):
     Changing any of the existing values will cause generated settings strings
         to break. Only add new values.
 
-    Next available value: 132
+    Next available value: 133
     """
 
     activate_all_bananaports = 1
@@ -612,6 +612,7 @@ class SettingsStringEnum(IntEnum):
     cb_rando = 18
     coin_door_item = 19
     coin_door_item_count = 20
+    coin_rando = 131
     crown_door_item = 21
     crown_door_item_count = 22
     crown_enemy_rando = 23
@@ -619,6 +620,7 @@ class SettingsStringEnum(IntEnum):
     damage_amount = 25
     disable_tag_barrels = 26
     dpad_display = 27
+    enable_plandomizer = 132
     enable_shop_hints = 28
     enable_tag_anywhere = 29
     enemies_selected = 30
@@ -722,7 +724,6 @@ class SettingsStringEnum(IntEnum):
     wrinkly_available = 128
     wrinkly_hints = 129
     wrinkly_location_rando = 130
-    coin_rando = 131
 
 
 class SettingsStringDataType(IntEnum):
@@ -771,6 +772,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
     SettingsStringEnum.dpad_display: SettingsStringDataType.bool,
+    SettingsStringEnum.enable_plandomizer: SettingsStringDataType.bool,
     SettingsStringEnum.enable_shop_hints: SettingsStringDataType.bool,
     SettingsStringEnum.enable_tag_anywhere: SettingsStringDataType.bool,
     SettingsStringEnum.enemies_selected: SettingsStringDataType.list,
