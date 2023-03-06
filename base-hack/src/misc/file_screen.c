@@ -184,53 +184,53 @@ int isMovePregiven(int index) {
 		case TRACKER_TYPE_TRIANGLE:
 			return initFile_hasInstrument((index - 1) / 5);
 		case TRACKER_TYPE_GRAB:
-			return Rando.moves_pregiven.grab;
+			return Rando.moves_pregiven.grab || initFile_checkTraining(PURCHASE_MOVES, 0, 3);
 		case TRACKER_TYPE_BLAST:
-			return Rando.moves_pregiven.blast;
+			return Rando.moves_pregiven.blast || initFile_checkTraining(PURCHASE_MOVES, 0, 1);
 		case TRACKER_TYPE_STRONG:
-			return Rando.moves_pregiven.strong_kong;
+			return Rando.moves_pregiven.strong_kong || initFile_checkTraining(PURCHASE_MOVES, 0, 2);
 		case TRACKER_TYPE_CHARGE:
-			return Rando.moves_pregiven.charge;
+			return Rando.moves_pregiven.charge || initFile_checkTraining(PURCHASE_MOVES, 1, 1);
 		case TRACKER_TYPE_SPRING:
-			return Rando.moves_pregiven.spring;
+			return Rando.moves_pregiven.spring || initFile_checkTraining(PURCHASE_MOVES, 1, 3);
 		case TRACKER_TYPE_ROCKET:
-			return Rando.moves_pregiven.rocketbarrel;
+			return Rando.moves_pregiven.rocketbarrel || initFile_checkTraining(PURCHASE_MOVES, 1, 2);
 		case TRACKER_TYPE_OSTAND:
-			return Rando.moves_pregiven.ostand;
+			return Rando.moves_pregiven.ostand || initFile_checkTraining(PURCHASE_MOVES, 2, 1);
 		case TRACKER_TYPE_BALLOON:
-			return Rando.moves_pregiven.balloon;
+			return Rando.moves_pregiven.balloon || initFile_checkTraining(PURCHASE_MOVES, 2, 2);
 		case TRACKER_TYPE_OSPRINT:
-			return Rando.moves_pregiven.osprint;
+			return Rando.moves_pregiven.osprint || initFile_checkTraining(PURCHASE_MOVES, 2, 3);
 		case TRACKER_TYPE_PTT:
-			return Rando.moves_pregiven.twirl;
+			return Rando.moves_pregiven.twirl || initFile_checkTraining(PURCHASE_MOVES, 3, 2);
 		case TRACKER_TYPE_MONKEYPORT:
-			return Rando.moves_pregiven.monkeyport;
+			return Rando.moves_pregiven.monkeyport || initFile_checkTraining(PURCHASE_MOVES, 3, 3);
 		case TRACKER_TYPE_MINI:
-			return Rando.moves_pregiven.mini;
+			return Rando.moves_pregiven.mini || initFile_checkTraining(PURCHASE_MOVES, 3, 1);
 		case TRACKER_TYPE_PUNCH:
-			return Rando.moves_pregiven.punch;
+			return Rando.moves_pregiven.punch || initFile_checkTraining(PURCHASE_MOVES, 4, 2);
 		case TRACKER_TYPE_GONE:
-			return Rando.moves_pregiven.gone;
+			return Rando.moves_pregiven.gone || initFile_checkTraining(PURCHASE_MOVES, 4, 3);
 		case TRACKER_TYPE_HUNKY:
-			return Rando.moves_pregiven.hunky;
+			return Rando.moves_pregiven.hunky || initFile_checkTraining(PURCHASE_MOVES, 4, 1);
 		case TRACKER_TYPE_CAMERA:
-			return Rando.moves_pregiven.camera;
+			return Rando.moves_pregiven.camera || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_CAMERA) || initFile_checkTraining(PURCHASE_FLAG, -1, -2);
 		case TRACKER_TYPE_SHOCKWAVE:
-			return Rando.moves_pregiven.shockwave;
+			return Rando.moves_pregiven.shockwave || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_SHOCKWAVE) || initFile_checkTraining(PURCHASE_FLAG, -1, -2);
 		case TRACKER_TYPE_SLAM:
 			return initFile_getSlamLevel();
 		case TRACKER_TYPE_HOMING:
-			return Rando.moves_pregiven.homing;
+			return Rando.moves_pregiven.homing || initFile_checkTraining(PURCHASE_GUN, -1, 2);
 		case TRACKER_TYPE_SNIPER:
-			return Rando.moves_pregiven.sniper;
+			return Rando.moves_pregiven.sniper || initFile_checkTraining(PURCHASE_GUN, -1, 3);
 		case TRACKER_TYPE_DIVE:
-			return Rando.moves_pregiven.dive;
+			return Rando.moves_pregiven.dive || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_DIVE);
 		case TRACKER_TYPE_ORANGE:
-			return Rando.moves_pregiven.oranges;
+			return Rando.moves_pregiven.oranges || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_ORANGE);
 		case TRACKER_TYPE_BARREL:
-			return Rando.moves_pregiven.barrels;
+			return Rando.moves_pregiven.barrels || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_BARREL);
 		case TRACKER_TYPE_VINE:
-			return Rando.moves_pregiven.vines;
+			return Rando.moves_pregiven.vines || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_VINE);
 		case TRACKER_TYPE_MELON_2:
 			for (int i = 0; i < 5; i++) {
 				if (initFile_hasInstrument(i)) {

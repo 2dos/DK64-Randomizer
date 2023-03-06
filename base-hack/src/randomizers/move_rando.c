@@ -30,15 +30,15 @@ int getMoveIndex(move_rom_item* item) {
 	int index = ((item->move_master_data >> 3) & 3) + 1;
 	int original_item_type = ((item->move_master_data) >> 5) & 7;
 	if (original_item_type == PURCHASE_SLAM) {
-		slam_flag += 1;
-		return slam_flag - 1;
+		slam_flag -= 1;
+		return slam_flag + 1;
 	} else if (original_item_type == PURCHASE_AMMOBELT) {
-		belt_flag += 1;
-		return belt_flag - 1;
+		belt_flag -= 1;
+		return belt_flag + 1;
 	} else if (original_item_type == PURCHASE_INSTRUMENT) {
 		if (index > 1) {
-			ins_flag += 1;
-			return ins_flag - 1;
+			ins_flag -= 1;
+			return ins_flag + 1;
 		}
 	}
 	if ((item_type == PURCHASE_FLAG) || (item_type == PURCHASE_GB)) {
@@ -61,9 +61,9 @@ move_block* getMoveBlock(void) {
 }
 
 void moveTransplant(void) {
-	slam_flag = FLAG_ITEM_SLAM_0;
-	belt_flag = FLAG_ITEM_BELT_0;
-	ins_flag = FLAG_ITEM_INS_0;
+	slam_flag = FLAG_ITEM_SLAM_1;
+	belt_flag = FLAG_ITEM_BELT_1;
+	ins_flag = FLAG_ITEM_INS_2;
 	move_block* move_data = getMoveBlock();
 	if (move_data) {
 		for (int i = 0; i < LEVEL_COUNT; i++) {

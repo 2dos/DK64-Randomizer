@@ -718,6 +718,7 @@ LocationList = {
     Locations.PreGiven_Location37: Location(Levels.DKIsles, "Pre-Given Move (37)", Items.NoItem, Types.PreGivenMove),
     Locations.PreGiven_Location38: Location(Levels.DKIsles, "Pre-Given Move (38)", Items.NoItem, Types.PreGivenMove),
     Locations.PreGiven_Location39: Location(Levels.DKIsles, "Pre-Given Move (39)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location40: Location(Levels.DKIsles, "Pre-Given Move (40)", Items.NoItem, Types.PreGivenMove),
 }
 
 TrainingBarrelLocations = {
@@ -927,6 +928,7 @@ PreGivenLocations = {
     Locations.PreGiven_Location37,
     Locations.PreGiven_Location38,
     Locations.PreGiven_Location39,
+    Locations.PreGiven_Location40,
 }
 
 # Dictionary to speed up lookups of related shop locations

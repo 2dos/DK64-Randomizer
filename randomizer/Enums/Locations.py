@@ -634,3 +634,4 @@ class Locations(IntEnum):
     PreGiven_Location37 = auto()
     PreGiven_Location38 = auto()
     PreGiven_Location39 = auto()
+    PreGiven_Location40 = auto()

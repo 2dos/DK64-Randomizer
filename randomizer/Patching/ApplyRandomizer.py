@@ -21,7 +21,7 @@ from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.MiscSetupChanges import randomize_setup, updateRandomSwitches
-from randomizer.Patching.MoveLocationRando import randomize_moves
+from randomizer.Patching.MoveLocationRando import randomize_moves, place_pregiven_moves
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.Patcher import ROM
@@ -460,6 +460,7 @@ def patching_response(responded_data):
     randomize_coins(spoiler)
     ApplyShopRandomizer(spoiler)
     place_randomized_items(spoiler)  # Has to be after kong rando cosmetic and moves
+    place_pregiven_moves(spoiler)
     remove_existing_indicators(spoiler)
     place_door_locations(spoiler)
     randomize_crown_pads(spoiler)
