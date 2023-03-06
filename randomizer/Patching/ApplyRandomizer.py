@@ -192,9 +192,7 @@ def patching_response(responded_data):
         ROM().write(bin_value)
 
     boolean_props = [
-        BooleanProperties(spoiler.settings.unlock_all_moves, 0x2D),  # Unlock All Moves
         BooleanProperties(True, 0x2E),  # Fast Start Game
-        BooleanProperties(spoiler.settings.shockwave_status == ShockwaveStatus.start_with, 0x2F),  # Unlock Shockwave
         BooleanProperties(spoiler.settings.enable_tag_anywhere, 0x30),  # Tag Anywhere
         BooleanProperties(spoiler.settings.fps_display, 0x96),  # FPS Display
         BooleanProperties(spoiler.settings.crown_door_item == HelmDoorItem.opened, 0x32),  # Crown Door Open
@@ -276,6 +274,21 @@ def patching_response(responded_data):
         ROM().write(door_checks[spoiler.settings.coin_door_item])
         ROM().seek(sav + 0x4F)
         ROM().write(spoiler.settings.coin_door_item_count)
+
+    # Unlock all moves / Camera unlocked
+    given_moves = []
+    if spoiler.settings.unlock_all_moves:
+        given_moves = list(range(39)) # Potions, slam upgrades, guns, instruments, belts, homing, sniper, instrument upgrades, tbarrels
+    if spoiler.settings.shockwave_status == ShockwaveStatus.start_with:
+        given_moves.extend([39, 40]) # 39 = Camera, 40 = Shockwave
+    move_bitfields = [0]*6
+    for move in given_moves:
+        offset = int(move >> 3)
+        check = int(move % 8)
+        move_bitfields[offset] |= 0x80 >> check
+    for offset, value in enumerate(move_bitfields):
+        ROM().seek(sav + 0xD5 + offset)
+        ROM().writeMultipleBytes(value, 1)
 
     # Free Trade Agreement
     if spoiler.settings.free_trade_items:
