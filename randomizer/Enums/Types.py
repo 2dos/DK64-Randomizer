@@ -28,6 +28,7 @@ class Types(IntEnum):
     ToughBanana = auto()
     JunkItem = auto()
     Hint = auto()
+    PreGivenMove = auto()
 
 
 # If you make change to this selector, make sure to change the corresponding
