@@ -30,7 +30,7 @@ int initFile_getBeltLevel(void) {
 	for (int i = 0; i < 2; i++) {
 		if (belts[i]) {
 			belt_level += 1;
-			setFlagDuplicate(FLAG_ITEM_BELT_0 + i, 1, 0);
+			// setFlagDuplicate(FLAG_ITEM_BELT_0 + i, 1, 0);
 		}
 		if (initFile_checkTraining(PURCHASE_FLAG, -1, belt_flags[i])) {
 			belt_level += 1;
@@ -46,7 +46,7 @@ int initFile_getInsUpgradeLevel(void) {
 	for (int i = 0; i < 3; i++) {
 		if (instrument_upgrades[i]) {
 			instrument_upgrade_level += 1;
-			setFlagDuplicate(FLAG_ITEM_INS_0 + i, 1, 0);
+			// setFlagDuplicate(FLAG_ITEM_INS_0 + i, 1, 0);
 		}
 		if (initFile_checkTraining(PURCHASE_FLAG, -1, ins_upg_flags[i])) {
 			instrument_upgrade_level += 1;
@@ -63,7 +63,7 @@ int initFile_getSlamLevel(void) {
 	for (int i = DEFAULT_SLAM_LEVEL; i < 3; i++) {
 		if (slams[i]) {
 			slam_level += 1;
-			setFlagDuplicate(FLAG_ITEM_SLAM_0 + i, 1, 0);
+			// setFlagDuplicate(FLAG_ITEM_SLAM_0 + i, 1, 0);
 		}
 		if (initFile_checkTraining(PURCHASE_FLAG, -1, slam_flags[i-DEFAULT_SLAM_LEVEL])) {
 			slam_level += 1;

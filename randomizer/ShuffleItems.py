@@ -111,9 +111,9 @@ move_list = {
 def ShuffleItems(spoiler: Spoiler):
     """Shuffle items into assortment."""
     progressive_move_flag_dict = {
-        Items.ProgressiveSlam: [0x291, 0x290],
-        Items.ProgressiveAmmoBelt: [0x293, 0x292],
-        Items.ProgressiveInstrumentUpgrade: [0x296, 0x295, 0x294],
+        Items.ProgressiveSlam: [0x290, 0x291],
+        Items.ProgressiveAmmoBelt: [0x292, 0x293],
+        Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
         Items.FakeItem: list(range(0x2AE, 0x2BE)),
     }
     junk_flag_dict = list(range(0x320, 0x320 + 100))
