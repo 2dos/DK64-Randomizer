@@ -66,6 +66,9 @@ void arcadeExit(void) {
 }
 
 int determineArcadeLevel(void) {
+	/**
+	 * @brief Determines the arcade level based on R1 & Nin Coin flags
+	 */
 	if (checkFlag(FLAG_ARCADE_ROUND1, 0)) {
 		if (checkFlag(FLAG_COLLECTABLE_NINTENDOCOIN, 0)) {
 			ArcadeMap = 8;
@@ -79,6 +82,9 @@ int determineArcadeLevel(void) {
 }
 
 void HandleArcadeVictory(void) {
+	/**
+	 * @brief Determine how to handle where to send the player after beating a stage in DK Arcade
+	 */
 	if ((ArcadeStoryMode) && ((ArcadeMap & 3) == 0)) {
 		ArcadeEnableReward = 1;
 		if (ArcadeScores[4] < ArcadeCurrentScore) {
@@ -208,7 +214,9 @@ void initJetpac(void) {
 		*(short*)(0x80024D8E) = getHi(&jetpacRewardText);
 		*(short*)(0x80024D96) = getLo(&jetpacRewardText);
 	}
-	// *(short*)(0x80027DCA) = 5; // Jetpac score requirement
+	if (Rando.fast_gbs) {
+		*(short*)(0x80027DCA) = 2500; // Jetpac score requirement
+	}
 }
 
 void overlay_changes(void) {
@@ -305,6 +313,7 @@ void overlay_changes(void) {
 	if (ObjectModel2Timer < 2) {
 		// Wipe warp data pointer to prevent pointing to free memory
 		WarpData = 0;
+		wipeHintCache();
 	}
 	if (CurrentMap == 2) { // Arcade
 		initArcade();

@@ -391,3 +391,14 @@ int getCustomActorIndex(new_custom_actors offset) {
 	 */
 	return CUSTOM_ACTORS_START + offset;
 }
+
+void spawnItemOverlay(int type, int kong, int index, int force) {
+	if (force) {
+		spawnActor(getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY), 0);
+	} else {
+		spawnActor(324,0);
+	}
+    TextOverlayData.type = type;
+    TextOverlayData.flag = index;
+    TextOverlayData.kong = kong;
+}

@@ -20,7 +20,7 @@
        9
     ],
     "unlock_kongs":31,
-    "unlock_moves":1,
+    "unlock_moves":0,
     "fast_start_beginning":1,
     "camera_unlocked":1,
     "tag_anywhere":1,
@@ -128,7 +128,7 @@
     "starting_exit":0,
     "disco_chunky":1,
     "krusha_slot":0,
-    "starting_kong":0,
+    "starting_kong":4,
     "test_zone":[
        174,
        1

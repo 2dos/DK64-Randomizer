@@ -626,16 +626,15 @@ for x in range(221):
             do_not_recompress=True,
         )
     )
-for x in range(8):
-    file_dict.append(
-        File(
-            name=f"Key {x+1} file screen",
-            pointer_table_index=TableNames.TexturesHUD,
-            file_index=107 + x,
-            source_file=f"assets/file_screen/key{x+1}.png",
-            texture_format=TextureFormat.RGBA5551,
-        )
+file_dict.append(
+    File(
+        name="Dark Cloud",
+        pointer_table_index=TableNames.TexturesHUD,
+        file_index=107,
+        source_file=f"assets/displays/text_bubble_dark.png",
+        texture_format=TextureFormat.RGBA5551,
     )
+)
 for x in range(43):
     if x not in (13, 32, 0x18, 0x27, 8, 37, 2, 40, 19):
         file_dict.append(
@@ -1383,6 +1382,7 @@ with open(newROMName, "r+b") as fh:
         "gb_shine",
         "melon_surface",
         "melon_resized",
+        "text_bubble_dark",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])

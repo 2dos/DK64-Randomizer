@@ -349,6 +349,15 @@ def patching_response(responded_data):
     # The ActivateAllBananaports enum is indexed to allow this.
     ROM().write(int(spoiler.settings.activate_all_bananaports))
 
+    # Fast GBs - Change jetpac text
+    if spoiler.settings.fast_gbs:
+        cranky_index = 8
+        data = {"textbox_index": 2, "mode": "replace", "search": "5000", "target": "2500"}
+        if cranky_index in spoiler.text_changes:
+            spoiler.text_changes[8].append(data)
+        else:
+            spoiler.text_changes[8] = [data]
+
     if spoiler.settings.hard_bosses:
         # KKO Phase Order
         for phase_slot in range(3):

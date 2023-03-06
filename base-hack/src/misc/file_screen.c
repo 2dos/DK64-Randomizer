@@ -251,20 +251,22 @@ int getInitFileMove(int index) {
 						}
 					} else if (subtype == 1) {
 						// Belts
-						if (belt_screen_level == 0) {
+						if (belt_screen_level == 1) {
 							found |= index == TRACKER_TYPE_BELT_1;
-						} else {
+						} else if (belt_screen_level == 2) {
 							found |= index == TRACKER_TYPE_BELT_2;
 						}
 					} else if (subtype == 2) {
 						// Ins Upg
-						if (ins_screen_level == 0) {
+						if (ins_screen_level == 1) {
 							found |= index == TRACKER_TYPE_INSUPG_1;
-						} else if (ins_screen_level == 1) {
+						} else if (ins_screen_level == 2) {
 							found |= index == TRACKER_TYPE_MELON_3;
-						} else {
+						} else if (ins_screen_level == 3) {
 							found |= index == TRACKER_TYPE_INSUPG_2;
 						}
+						found |= index == TRACKER_TYPE_MELON_2;
+
 					}
 				}
 				break;

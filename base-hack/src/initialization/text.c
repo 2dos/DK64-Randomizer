@@ -18,6 +18,11 @@ static unsigned int emph_text_colors[] = {
     0x2828FF00,
     0x8000FF00,
     0x00800000,
+    0xB0005800,
+    0x00808000,
+    0xC0404000,
+    0x13295800,
+    0x275E1E00,
 };
 
 typedef struct text_params {
@@ -39,7 +44,7 @@ int* displayModifiedText(int* dl, int style, int x, int y, char* text, text_para
     int dl_old = (int)dl;
     dl_old -= 4;
     *(unsigned int*)(dl_old) = base_text_color | (*(int*)(dl_old) & 0xFF);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 10; i++) {
         if (params->effect_bitfield & (0x10 << i)) {
             *(unsigned int*)(dl_old) = emph_text_colors[i] | (*(int*)(dl_old) & 0xFF);
         }
@@ -60,6 +65,11 @@ void initTextChanges(void) {
         emph_text_colors[2] = 0x0C7DED00;
         emph_text_colors[3] = 0xBB1CFF00;
         emph_text_colors[4] = 0x59FF6400;
+        emph_text_colors[5] = 0xE8489800;
+        emph_text_colors[6] = 0x3EE1E100;
+        emph_text_colors[7] = 0xD2575700;
+        emph_text_colors[8] = 0xB5CDFF00;
+        emph_text_colors[9] = 0x00CE0E00;
     } else {
         float opacity = 200.0f;
         *(short*)(0x806A45C6) = *(short*)(&opacity);
