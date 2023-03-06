@@ -1210,7 +1210,7 @@ def compileHints(spoiler: Spoiler):
     # No need to do anything fancy here - there's already a K. Rool hint on the player's path (the wall in Helm)
     for i in range(hint_distribution[HintType.KRoolOrder]):
         hint_location = getRandomHintLocation()
-        kong_krool_order = [kong_list(kong) for kong in spoiler.settings.krool_order]
+        kong_krool_order = [kong_list[kong] for kong in spoiler.settings.krool_order]
         kong_krool_text = ", then ".join(kong_krool_order)
         associated_hint = f"\x08King K. Rool\x08 will face off in the ring against {kong_krool_text}."
         hint_location.hint_type = HintType.KRoolOrder
