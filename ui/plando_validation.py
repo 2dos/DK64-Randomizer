@@ -48,6 +48,7 @@ def count_items():
     add_all_items(ShopLocationList, "_shop_item")
     return count_dict
 
+
 ############
 # BINDINGS #
 ############
@@ -76,7 +77,6 @@ def validate_item_limits(evt):
             for loc in locations:
                 invalidate_option(js.document.getElementById(loc), errString)
         else:
-            print("And over there with " + item.name)
             for loc in locations:
                 validate_option(js.document.getElementById(loc))
 
