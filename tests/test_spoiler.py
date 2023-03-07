@@ -56,11 +56,12 @@ def generate_lo_rando_race_settings():
     data["activate_all_bananaports"] = ActivateAllBananaports.isles  # usually isles, could be all or off
 
     # item shuffler options here
+    data["starting_move_count"] = 8  # 0-35
     data["move_rando"] = MoveRando.on  # usually "on" but i like "cross_purchase", rarely need to test with "start_with"
     # if start_with, next two are FORCED to be normal and vanilla
     data["training_barrels"] = TrainingBarrels.shuffled  # usually "normal", could be "shuffled"
     data["shockwave_status"] = ShockwaveStatus.shuffled_decoupled  # usually "vanilla", could be "shuffled" or "shuffled_decoupled" or "start_with"
-    # If true, the above is always decoupled or vanilla
+    # If below is true, the above is always shuffled_decoupled, vanilla, or start_with
     data["shuffle_items"] = True  # Must be true to trigger the list selector below
     # data["item_rando_list_selected"] = ["shop", "banana", "toughbanana", "crown", "blueprint", "key", "medal", "coin", "kong", "fairy", "rainbowcoin", "beanpearl", "fakeitem", "junkitem"]  # all options
 
