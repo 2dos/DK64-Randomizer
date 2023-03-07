@@ -356,8 +356,8 @@ class Settings:
         self.music_events = MusicCosmetics.default
         self.random_music = False
 
-        #  Unlock Moves
-        self.starting_move_count = 10
+        #  Unlock Moves - 0-40?
+        self.starting_move_count = 0
 
         #  Color
         self.colors = {}
@@ -484,7 +484,7 @@ class Settings:
             self.prices = RandomizePrices(self.random_prices)
 
     def resolve_settings(self):
-        """Resolve settings which are not directly set through the UI."""
+        """Resolve settings which are not directly set through the UI."""        
         # If we're using the vanilla door shuffle, turn both wrinkly and tns rando on
         if self.vanilla_door_rando:
             self.wrinkly_location_rando = True
@@ -492,7 +492,7 @@ class Settings:
 
         # Move Location Rando
         if self.move_rando == MoveRando.start_with:
-            self.unlock_all_moves = True
+            self.starting_move_count = 40  # maybe???
             self.training_barrels = TrainingBarrels.normal
             self.shockwave_status = ShockwaveStatus.start_with
 
@@ -558,11 +558,27 @@ class Settings:
             if self.coin_door_item_count > helmdoor_items[self.coin_door_item]["max"]:
                 self.coin_door_item_count = helmdoor_items[self.coin_door_item]["max"]
 
+        # Starting Move Locations
+        locations_to_add = self.starting_move_count
+        # If the training barrels are shuffled in, we may have to remove the training barrel locations because of the above comment
+        if self.training_barrels == TrainingBarrels.shuffled:
+            locations_to_add -= 4
+        last_location = (Locations.PreGiven_Location00 + locations_to_add)
+        # If we have fewer starting items than training barrels, then we have to prevent some training barrels from having items
+        if locations_to_add < 0:
+            last_location = Locations.PreGiven_Location00
+            invalid_training_barrels = [Locations.IslesVinesTrainingBarrel, Locations.IslesSwimTrainingBarrel, Locations.IslesOrangesTrainingBarrel, Locations.IslesBarrelsTrainingBarrel][self.starting_move_count:]
+            for locationId in invalid_training_barrels:
+                LocationList[locationId].default = Items.NoItem
+                LocationList[locationId].constant = True
+        # We need to filter the GameStart region's locations to remove the locations that aren't valid anymore
+        randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations = [loclogic for loclogic in randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations if loclogic.id < last_location]
+        for locationId in PreGivenLocations:
+            if locationId >= last_location:
+                del LocationList[locationId]
         kongs = GetKongs()
 
-        self.shuffled_location_types = [
-            Types.PreGivenMove,
-        ]
+        self.shuffled_location_types = []
         if self.shuffle_items:
             if not self.item_rando_list_selected:
                 self.shuffled_location_types = [
@@ -581,7 +597,6 @@ class Settings:
                     Types.RainbowCoin,
                     Types.FakeItem,
                     Types.JunkItem,
-                    Types.PreGivenMove,
                 ]
             else:
                 for item in self.item_rando_list_selected:
@@ -598,6 +613,8 @@ class Settings:
                     self.shockwave_status = ShockwaveStatus.shuffled_decoupled  # Forced to be decoupled in item rando
                 if self.training_barrels != TrainingBarrels.normal:
                     self.shuffled_location_types.append(Types.TrainingBarrel)
+                if locations_to_add > 0:
+                    self.shuffled_location_types.append(Types.PreGivenMove)
         self.shuffle_prices()
 
         # Smaller shop setting deletes 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
@@ -940,7 +957,7 @@ class Settings:
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
-        bad_fake_types = [Types.TrainingBarrel]
+        bad_fake_types = [Types.TrainingBarrel, Types.PreGivenMove]
         is_bad = location.type in bad_fake_types
         if self.damage_amount in (DamageAmount.quad, DamageAmount.ohko) or self.perma_death:
             is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm) or location.type == Types.Shockwave
@@ -950,12 +967,6 @@ class Settings:
         """Calculate (or recalculate) valid locations for items by type."""
         self.valid_locations = {}
         self.valid_locations[Types.Kong] = self.kong_locations.copy()
-        # Calculate amount of pre-given moves
-        move_slots = self.starting_move_count - 4  # Remove Training Moves
-        if self.shockwave_status == ShockwaveStatus.start_with:
-            move_slots -= 2
-        if move_slots > 0:
-            filtered_pregiven_locations = {loc for index, loc in enumerate(PreGivenLocations.copy()) if index < move_slots}
         # If shops are not shuffled into the larger pool, calculate shop locations for shop-bound moves
         if self.move_rando not in (MoveRando.off, MoveRando.item_shuffle):
             self.valid_locations[Types.Shop] = {}
@@ -993,16 +1004,15 @@ class Settings:
             if self.training_barrels == TrainingBarrels.shuffled and Types.TrainingBarrel not in self.shuffled_location_types:
                 for kong in Kongs:
                     self.valid_locations[Types.Shop][kong].update(TrainingBarrelLocations.copy())
-            if move_slots > 0:
+            if self.starting_move_count > 0:
                 for kong in Kongs:
-                    self.valid_locations[Types.Shop][kong].extend([loc for loc in filtered_pregiven_locations.copy()])
+                    self.valid_locations[Types.Shop][kong].extend(PreGivenLocations.copy())
             self.valid_locations[Types.Shockwave] = self.valid_locations[Types.Shop][Kongs.any]
             self.valid_locations[Types.TrainingBarrel] = self.valid_locations[Types.Shop][Kongs.any]
 
         if self.shuffle_items and any(self.shuffled_location_types):
             # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) - those can only be Kongs
             shuffledLocations = [location for location in LocationList if LocationList[location].type in self.shuffled_location_types and LocationList[location].type != Types.Kong]
-            shuffledLocations = [loc for loc in shuffledLocations if LocationList[loc].type != Types.PreGivenMove or ((loc - Locations.PreGiven_Location00) < move_slots)]
             shuffledNonMoveLocations = [location for location in shuffledLocations if LocationList[location].type != Types.PreGivenMove]
             fairyBannedLocations = [location for location in shuffledNonMoveLocations if LocationList[location].type != Types.Fairy]
             if Types.Shop in self.shuffled_location_types:
@@ -1115,8 +1125,6 @@ class Settings:
                 self.valid_locations[Types.Kong].extend(
                     [loc for loc in shuffledNonMoveLocations if loc not in banned_kong_locations]
                 )  # No items can be in Kong cages but Kongs can be in all other locations
-            if Types.PreGivenMove in self.shuffled_location_types:
-                self.valid_locations[Types.PreGivenMove] = []
 
     def GetValidLocationsForItem(self, item_id):
         """Return the valid locations the input item id can be placed in."""

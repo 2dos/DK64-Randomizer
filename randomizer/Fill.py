@@ -1528,12 +1528,56 @@ def FillKongsAndMoves(spoiler, placedTypes):
         FillKongs(spoiler, placedTypes)
     preplacedPriorityMoves = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]  # Kongs are now placed, either in the above method or by default
 
+    # First place our starting moves randomly
+    startingMoves = []
+    locationsNeedingMoves = []
+    # We can expect that all locations in this region are starting move locations or Training Barrels
+    for locationLogic in RegionList[Regions.GameStart].locations:
+        if LocationList[locationLogic.id].item is not None:
+            startingMoves.append(LocationList[locationLogic.id].item)
+        else:
+            locationsNeedingMoves.append(locationLogic.id)
+    # Fill the empty starting locations
+    if any(locationsNeedingMoves):
+        newlyPlacedItems = []
+        toBeUnplaced = []
+        possibleStartingMoves = ItemPool.AllKongMoves()
+        possibleStartingMoves.extend(ItemPool.JunkSharedMoves)
+        if spoiler.settings.training_barrels == TrainingBarrels.shuffled:
+            possibleStartingMoves.extend(ItemPool.TrainingBarrelAbilities())
+        if spoiler.settings.shockwave_status in (ShockwaveStatus.shuffled, ShockwaveStatus.shuffled_decoupled):
+            possibleStartingMoves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
+        shuffle(possibleStartingMoves)
+        # For each location needing a move, put in a random valid move
+        for locationId in locationsNeedingMoves:
+            startingMove = possibleStartingMoves.pop()
+            # If we picked a move to place that we already placed, we have to go Unplace it later
+            if startingMove in preplacedPriorityMoves:
+                toBeUnplaced.append(startingMove)
+            # Else it's a newly placed move, note it down as being placed
+            else:
+                newlyPlacedItems.append(startingMove)
+            LocationList[locationId].PlaceItem(startingMove)
+            # Helpful debug code to keep track of where all major items are placed - do not rely on this variable anywhere
+            if locationId in spoiler.settings.debug_fill.keys():
+                del spoiler.settings.debug_fill[locationId]
+            spoiler.settings.debug_fill[locationId] = startingMove
+        # For any move that we've now placed twice, Unplace it from the non-starting-move location
+        if any(toBeUnplaced):
+            for location in LocationList.values():
+                if location.item in (toBeUnplaced) and location.type not in (Types.TrainingBarrel, Types.PreGivenMove):
+                    toBeUnplaced.remove(location.item)
+                    location.UnplaceItem()
+        # Compile all the moves we now know are placed
+        preplacedPriorityMoves.extend(newlyPlacedItems)
+
     levelBlockInPlace = False
     # Once Kongs are placed, the top priority is placing training barrel moves first. These (mostly) need to be very early because they block access to whole levels.
     if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != MoveRando.off and spoiler.settings.training_barrels == TrainingBarrels.shuffled:
         # First place barrels - needed for most bosses
-        itemsPlacedForBarrels = PlacePriorityItems(spoiler, [Items.Barrels], preplacedPriorityMoves, placedTypes)  # , levelBlock=needBarrelsByThisLevel)
-        preplacedPriorityMoves.extend(itemsPlacedForBarrels)
+        if Items.Barrels not in preplacedPriorityMoves:
+            itemsPlacedForBarrels = PlacePriorityItems(spoiler, [Items.Barrels], preplacedPriorityMoves, placedTypes)  # , levelBlock=needBarrelsByThisLevel)
+            preplacedPriorityMoves.extend(itemsPlacedForBarrels)
         # Next place vines - needed to beat Aztec and maybe get to upper DK Isle
         if Items.Vines not in preplacedPriorityMoves:
             itemsPlacedForVines = PlacePriorityItems(spoiler, [Items.Vines], preplacedPriorityMoves, placedTypes)  # , levelBlock=needVinesByThisLevel)
@@ -1549,7 +1593,7 @@ def FillKongsAndMoves(spoiler, placedTypes):
     if spoiler.settings.kong_rando:
         # If kongs are our progression, then place moves that unlock those kongs before anything else
         # This logic only matters if the level order is critical to progression (i.e. not loading zone shuffled)
-        if spoiler.settings.kongs_for_progression and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all and spoiler.settings.move_rando != MoveRando.start_with:
+        if spoiler.settings.kongs_for_progression and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all and spoiler.settings.starting_move_count < 10:
             lockedKongs = [kong for kong in GetKongs() if kong not in spoiler.settings.starting_kong_list]
             for kong in lockedKongs:
                 # We need the item representation of the kong
@@ -1595,43 +1639,6 @@ def FillKongsAndMoves(spoiler, placedTypes):
                     emptySharedShops.append(location)
         raise Ex.ItemPlacementException(str(unplaced) + " unplaced items.")
 
-    # Final touches to item placement, some locations need special treatment
-    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != MoveRando.off:
-        # If we're shuffling training moves, always put a move in each training barrel
-        move_slots = spoiler.settings.starting_move_count - 4  # Remove Training Moves
-        if spoiler.settings.shockwave_status == ShockwaveStatus.start_with:
-            move_slots -= 2
-        fill_checks = [
-            [
-                spoiler.settings.training_barrels == TrainingBarrels.shuffled, # Check
-                [loc for loc in TrainingBarrelLocations if LocationList[loc].item is None], # Empty List
-            ],
-            [
-                move_slots > 0, # Check
-                [loc for index, loc in enumerate(PreGivenLocations) if LocationList[loc].item is None and index < move_slots], # Empty List
-            ],
-        ]
-        for check in fill_checks:
-            if check[0]:
-                emptyLocations = check[1]
-                if len(emptyLocations) > 0:
-                    # Find the list of locations that have a kong move in them
-                    kongMoveLocationsList = []
-                    for location_id, location in LocationList.items():
-                        if location.item in ItemPool.AllKongMoves() and location_id not in TrainingBarrelLocations and location_id not in PreGivenLocations:
-                            kongMoveLocationsList.append(location_id)
-                    # Worth noting that moving a move to the training barrels will always make it more accessible, and thus doesn't need any additional logic
-                    for emptyBarrel in emptyLocations:
-                        # Pick a random Kong move to put in the training barrel. This should be both more interesting than a shared move and lead to fewer empty shops.
-                        locationToVacate = choice(kongMoveLocationsList)
-                        itemToBeMoved = LocationList[locationToVacate].item
-                        LocationList[emptyBarrel].PlaceItem(itemToBeMoved)
-                        LocationList[locationToVacate].UnplaceItem()
-                        kongMoveLocationsList.remove(locationToVacate)
-                        if locationToVacate in spoiler.settings.debug_fill.keys():  # Should only fail in no logic
-                            del spoiler.settings.debug_fill[locationToVacate]
-                            spoiler.settings.debug_fill[emptyBarrel] = itemToBeMoved
-    spoiler.settings.debug_preplaced_priority_moves = preplacedPriorityMoves
     if preplacedPriorityMoves.count(Items.ProgressiveSlam) > 2:
         raise Ex.FillException("Somehow managed to place 3 slams? This shouldn't happen.")
 

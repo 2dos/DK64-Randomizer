@@ -13,7 +13,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.ItemPool import GetKongForItem
 from randomizer.Lists.Item import ItemList, NameFromKong
-from randomizer.Lists.Location import LocationList, SharedShopLocations, TrainingBarrelLocations
+from randomizer.Lists.Location import LocationList, SharedShopLocations, TrainingBarrelLocations, PreGivenLocations
 from randomizer.Lists.MapsAndExits import GetMapId
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import ClearHintMessages, hints
@@ -764,8 +764,8 @@ def compileHints(spoiler: Spoiler):
                     # If there are no doors available (very unlikely) then just get a random one. Tough luck.
                     else:
                         hint_location = getRandomHintLocation()
-                    if path_location_id in TrainingBarrelLocations:
-                        # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
+                    if path_location_id in TrainingBarrelLocations or path_location_id in PreGivenLocations:
+                        # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                         hinted_item_name = ItemList[LocationList[path_location_id].item].name
                         message = f"Your \x05training with {hinted_item_name}\x05 is on the path to \x04{key_item.name}\x04."
                     else:
@@ -786,8 +786,8 @@ def compileHints(spoiler: Spoiler):
                 hinted_location_text = region.hint_name
                 # Every hint door is available before K. Rool so we can pick randomly
                 hint_location = getRandomHintLocation()
-                if path_location_id in TrainingBarrelLocations:
-                    # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
+                if path_location_id in TrainingBarrelLocations or path_location_id in PreGivenLocations:
+                    # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[LocationList[path_location_id].item].name
                     message = f"Your \x05training with {hinted_item_name}\x05 is on the path to \x08aiding your fight against K. Rool\x08."
                 else:
@@ -814,8 +814,8 @@ def compileHints(spoiler: Spoiler):
                 # If there are no doors available (unlikely by now) then just get a random one. Tough luck.
                 else:
                     hint_location = getRandomHintLocation()
-                if path_location_id in TrainingBarrelLocations:
-                    # Training Grounds will have 4 moves - instead of being super vague we'll hint the specific item directly.
+                if path_location_id in TrainingBarrelLocations or path_location_id in PreGivenLocations:
+                    # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[LocationList[path_location_id].item].name
                     message = f"Your \x05training with {hinted_item_name}\x05 is on the path to \x07taking photos\x07."
                 else:
@@ -1027,8 +1027,8 @@ def compileHints(spoiler: Spoiler):
         hintable_location_ids = []
         for location_id in spoiler.woth_locations:
             location = LocationList[location_id]
-            # Only hint things that are in shuffled locations - don't hint training barrels because you can't know which move it refers to and don't hint the Helm Key if you know key 8 is there
-            if location.type in spoiler.settings.shuffled_location_types and location.type != Types.TrainingBarrel and not (spoiler.settings.key_8_helm and location_id == Locations.HelmKey):
+            # Only hint things that are in shuffled locations - don't hint starting moves because you can't know which move it refers to and don't hint the Helm Key if you know key 8 is there
+            if location.type in spoiler.settings.shuffled_location_types and location.type not in (Types.TrainingBarrel, Types.PreGivenMove) and not (spoiler.settings.key_8_helm and location_id == Locations.HelmKey):
                 hintable_location_ids.append(location_id)
         random.shuffle(hintable_location_ids)
         placed_woth_hints = 0

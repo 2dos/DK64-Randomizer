@@ -593,7 +593,7 @@ class Locations(IntEnum):
     RainbowCoin_Location14 = auto()
     RainbowCoin_Location15 = auto()
 
-    # Pre-given move locations (40 locations)
+    # Pre-given move locations (40 locations) - the integer value of these matter for starting move count
     PreGiven_Location00 = auto()
     PreGiven_Location01 = auto()
     PreGiven_Location02 = auto()

@@ -13,6 +13,7 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
 
 LogicRegions = {
     Regions.GameStart: Region("Game Start", "Training Grounds", Levels.DKIsles, False, None, [
+        # The locations in this region should *only* be training barrels and starting moves - if you need to put something here, make another region (e.g. Credits)
         LocationLogic(Locations.IslesVinesTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
         LocationLogic(Locations.IslesSwimTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
         LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
