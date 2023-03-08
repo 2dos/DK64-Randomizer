@@ -317,6 +317,14 @@ extern int initFile_checkTraining(int type_check, int kong_check, int value_chec
 extern item_collision* writeItemScale(int id);
 extern item_collision* writeItemActorScale(void);
 
+extern void fixHelmTimerCorrection(void);
+extern void helmTime_restart(void);
+extern void helmTime_exitBonus(void);
+extern void helmTime_exitRace(void);
+extern void helmTime_exitLevel(void);
+extern void helmTime_exitBoss(void);
+extern void helmTime_exitKRool(void);
+
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
 extern const short kong_flags[5];
