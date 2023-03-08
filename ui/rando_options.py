@@ -92,6 +92,17 @@ def max_randomized_fairies(event):
     elif int(fairy_req.value) > 20:
         fairy_req.value = 20
 
+@bind("focusout", "starting_moves_count")
+def max_starting_moves_count(event):
+    """Validate starting moves count input on loss of focus."""
+    move_count = js.document.getElementById("starting_moves_count")
+    if not move_count.value:
+        move_count.value = 4
+    elif 0 > int(move_count.value):
+        move_count.value = 0
+    elif int(move_count.value) > 40:
+        move_count.value = 40
+
 
 @bind("change", "crown_door_item")
 def updateDoorOneNumAccess(event):
