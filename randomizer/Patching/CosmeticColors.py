@@ -255,8 +255,13 @@ def getFile(table_index: int, file_index: int, compressed: bool, width: int, hei
     file_size = file_end - file_start
     ROM().seek(file_start)
     data = ROM().readBytes(file_size)
+    print("Currently processing file: ", file_index)
+    print("Start: ", hex(file_start))
+    print("End: ", hex(file_end))
+    print("Size: ", hex(file_size))
     if compressed:
         data = zlib.decompress(data, (15 + 32))
+    print("I like this file: ", file_index)
     im_f = Image.new(mode="RGBA", size=(width, height))
     pix = im_f.load()
     for y in range(height):
@@ -309,42 +314,6 @@ def maskImage(im_f, base_index, min_y, keep_dark=False):
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
-def maskImageLankyPickups(im_f, base_index, min_y, type=""):
-    """Apply RGB mask to image."""
-    w, h = im_f.size
-    im_f_original = im_f
-    converter = ImageEnhance.Color(im_f)
-    im_f = converter.enhance(0)
-    im_dupe = im_f.crop((0, min_y, w, h))
-    if type != "bunch":
-        brightener = ImageEnhance.Brightness(im_dupe)
-        im_dupe = brightener.enhance(2)
-    im_f.paste(im_dupe, (0, min_y), im_dupe)
-    pix = im_f.load()
-    pix2 = im_f_original.load()
-    mask = getRGBFromHash(color_bases[base_index])
-    mask2 = getRGBFromHash(color_bases[0])
-    # if type != "coin":
-    #     for channel in range(3):
-    #         mask2[channel] = int(255 - mask2[channel])
-    w, h = im_f.size
-    for x in range(w):
-        for y in range(min_y, h):
-            base = list(pix[x, y])
-            base2 = list(pix2[x, y])
-            if base[3] > 0:
-                if (type == "coin" and base2[1] >= 100):
-                    for channel in range(3):
-                        base[channel] = int(mask2[channel] * (base[channel] / 255))
-                elif type == "bunch" or type == "single":
-                    for channel in range(3):
-                        base[channel] = int(mask2[channel] * (base[channel] / 255))
-                else:
-                    for channel in range(3):
-                        base[channel] = int(mask[channel] * (base[channel] / 255))
-                pix[x, y] = (base[0], base[1], base[2], base[3])
-    return im_f
-
 
 def hueShift(im, amount):
     """Apply a hue shift on an image."""
@@ -367,7 +336,7 @@ def hueShift(im, amount):
     return im
 
 
-def maskImageMonochrome(im_f, base_index, min_y, type=""):
+def maskImageWithOutline(im_f, base_index, min_y, type=""):
     """Apply RGB mask to image in Black and White."""
     w, h = im_f.size
     converter = ImageEnhance.Color(im_f)
@@ -379,41 +348,47 @@ def maskImageMonochrome(im_f, base_index, min_y, type=""):
     im_f.paste(im_dupe, (0, min_y), im_dupe)
     pix = im_f.load()
     mask = getRGBFromHash(color_bases[base_index])
-    mask2 = mask.copy()
-    previous_pixel_opaque = False
+    if base_index == 2 or (base_index == 3 and color_bases[base_index] == "#13C4D8"):  # lanky or (tiny in Tritanopia mode)
+        border_color = color_bases[4]
+    else:
+        border_color = color_bases[1]
+    mask2 = getRGBFromHash(border_color)
     contrast = False
-    if base_index == 4: 
+    if base_index == 0:
         contrast = True
     for channel in range(3):
         mask[channel] = max(39, mask[channel])  # Too black is bad for these items
-        if base_index == 4 and type == "single": #Chunky's single
+        if base_index == 0 and type == "single":  # Donkey's single
             mask[channel] += 20
-        mask2[channel] = int(255 - mask[channel])
     w, h = im_f.size
     for x in range(w):
         for y in range(min_y, h):
             base = list(pix[x, y])
             if base[3] > 0:
-                if not previous_pixel_opaque or (x < (w - 1) and list(pix[(x + 1), y])[3] == 0):
-                    # create an outline that contrasts the main color (black if white, white if black)
-                    for channel in range(3):
-                        base[channel] = int(mask2[channel])
-                else:
-                    for channel in range(3):
-                        base[channel] = int(mask[channel] * (base[channel] / 255))
-                        if contrast is True:
-                            if base[channel] > 30:
-                                base[channel] = int(base[channel]/2)
-                            else:
-                                base[channel] = int(base[channel]/4)
+                for channel in range(3):
+                    base[channel] = int(mask[channel] * (base[channel] / 255))
+                    if contrast is True:
+                        if base[channel] > 30:
+                            base[channel] = int(base[channel] / 2)
+                        else:
+                            base[channel] = int(base[channel] / 4)
                 pix[x, y] = (base[0], base[1], base[2], base[3])
-                previous_pixel_opaque = True
-            else:
-                previous_pixel_opaque = False
+    for t in range(3):
+        for x in range(w):
+            for y in range(min_y, h):
+                base = list(pix[x, y])
+                if base[3] > 0:
+                    if (
+                        (x + t < w and list(pix[x + t, y])[3] == 0)
+                        or (y + t < h and list(pix[x, y + t])[3] == 0)
+                        or (x - t > -1 and list(pix[x - t, y])[3] == 0)
+                        or (y - t > min_y - 1 and list(pix[x, y - t])[3] == 0)
+                    ):
+                        pix[x, y] = (mask2[0], mask2[1], mask2[2], base[3])
     return im_f
 
 
-def writeColorImageToROM(im_f, table_index, file_index, width, height, transparent_border: bool):
+def writeColorImageToROM(im_f, table_index, file_index, width, height, transparent_border: bool, format: str):
     """Write texture to ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
@@ -428,14 +403,20 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
                 pix_data = [0, 0, 0, 0]
             else:
                 pix_data = list(pix[x, y])
-            red = int((pix_data[0] >> 3) << 11)
-            green = int((pix_data[1] >> 3) << 6)
-            blue = int((pix_data[2] >> 3) << 1)
-            alpha = int(pix_data[3] != 0)
-            value = red | green | blue | alpha
-            bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
+            if format == "rgba32":
+                bytes_array.extend(pix_data)
+            else:
+                red = int((pix_data[0] >> 3) << 11)
+                green = int((pix_data[1] >> 3) << 6)
+                blue = int((pix_data[2] >> 3) << 1)
+                alpha = int(pix_data[3] != 0)
+                value = red | green | blue | alpha
+                bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
     data = bytearray(bytes_array)
-    if len(data) > (2 * width * height):
+    bytes_per_px = 2
+    if format == "rgba32":
+        bytes_per_px = 4
+    if len(data) > (bytes_per_px * width * height):
         print(f"Image too big error: {table_index} > {file_index}")
     if table_index in (14, 25):
         data = gzip.compress(data, compresslevel=9)
@@ -444,24 +425,31 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
     ROM().writeBytes(data)
 
 
-def writeKasplatHairColorToROM(color, table_index, file_index):
+def writeKasplatHairColorToROM(color, table_index, file_index, format: str):
     """Write color to ROM for kasplats."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     mask = getRGBFromHash(color)
-    val_r = int((mask[0] >> 3) << 11)
-    val_g = int((mask[1] >> 3) << 6)
-    val_b = int((mask[2] >> 3) << 1)
-    rgba_val = val_r | val_g | val_b | 1
+    if format == "rgba32":
+        color_lst = mask.copy()
+        color_lst.append(255)  # Alpha
+        null_color = [0] * 4
+    else:
+        val_r = int((mask[0] >> 3) << 11)
+        val_g = int((mask[1] >> 3) << 6)
+        val_b = int((mask[2] >> 3) << 1)
+        rgba_val = val_r | val_g | val_b | 1
+        color_lst = [(rgba_val >> 8) & 0xFF, rgba_val & 0xFF]
+        null_color = [0, 0]
     bytes_array = []
     for y in range(42):
         for x in range(32):
-            bytes_array.extend([(rgba_val >> 8) & 0xFF, rgba_val & 0xFF])
+            bytes_array.extend(color_lst)
     for i in range(18):
-        bytes_array.extend([(rgba_val >> 8) & 0xFF, rgba_val & 0xFF])
+        bytes_array.extend(color_lst)
     for i in range(4):
-        bytes_array.extend([0, 0])
+        bytes_array.extend(null_color)
     for i in range(3):
-        bytes_array.extend([(rgba_val >> 8) & 0xFF, rgba_val & 0xFF])
+        bytes_array.extend(color_lst)
     data = bytearray(bytes_array)
     if table_index == 25:
         data = gzip.compress(data, compresslevel=9)
@@ -469,37 +457,48 @@ def writeKasplatHairColorToROM(color, table_index, file_index):
     ROM().writeBytes(data)
 
 
-def writeWhiteKasplatHairColorToROM(color, table_index, file_index):
+def writeWhiteKasplatHairColorToROM(color1, color2, table_index, file_index, format: str):
     """Write color to ROM for white kasplats."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
-    mask = getRGBFromHash("#FFFFFF")
-    val_r = int((mask[0] >> 3) << 11)
-    val_g = int((mask[1] >> 3) << 6)
-    val_b = int((mask[2] >> 3) << 1)
-    rgba_val = val_r | val_g | val_b | 1
-    mask2 = getRGBFromHash(color)
-    val_r2 = int((mask2[0] >> 3) << 11)
-    val_g2 = int((mask2[1] >> 3) << 6)
-    val_b2 = int((mask2[2] >> 3) << 1)
-    rgba_val2 = val_r2 | val_g2 | val_b2 | 1
+    mask = getRGBFromHash(color1)
+    mask2 = getRGBFromHash(color2)
+    if format == "rgba32":
+        color_lst_0 = mask.copy()
+        color_lst_0.append(255)
+        color_lst_1 = mask2.copy()
+        color_lst_1.append(255)
+        null_color = [0] * 4
+    else:
+        val_r = int((mask[0] >> 3) << 11)
+        val_g = int((mask[1] >> 3) << 6)
+        val_b = int((mask[2] >> 3) << 1)
+        rgba_val = val_r | val_g | val_b | 1
+        val_r2 = int((mask2[0] >> 3) << 11)
+        val_g2 = int((mask2[1] >> 3) << 6)
+        val_b2 = int((mask2[2] >> 3) << 1)
+        rgba_val2 = val_r2 | val_g2 | val_b2 | 1
+        color_lst_0 = [(rgba_val >> 8) & 0xFF, rgba_val & 0xFF]
+        color_lst_1 = [(rgba_val2 >> 8) & 0xFF, rgba_val2 & 0xFF]
+        null_color = [0] * 2
     bytes_array = []
     for y in range(42):
         for x in range(32):
-            if y % 10 > 1:
-                bytes_array.extend([(rgba_val >> 8) & 0xFF, rgba_val & 0xFF])
+            if (int(y / 7) + int(x / 8)) % 2 == 0:
+                bytes_array.extend(color_lst_0)
             else:
-                bytes_array.extend([(rgba_val2 >> 8) & 0xFF, rgba_val2 & 0xFF])
+                bytes_array.extend(color_lst_1)
     for i in range(18):
-        bytes_array.extend([(rgba_val >> 8) & 0xFF, rgba_val & 0xFF])
+        bytes_array.extend(color_lst_0)
     for i in range(4):
-        bytes_array.extend([0, 0])
+        bytes_array.extend(null_color)
     for i in range(3):
-        bytes_array.extend([(rgba_val >> 8) & 0xFF, rgba_val & 0xFF])
+        bytes_array.extend(color_lst_0)
     data = bytearray(bytes_array)
     if table_index == 25:
         data = gzip.compress(data, compresslevel=9)
     ROM().seek(file_start)
     ROM().writeBytes(data)
+
 
 def maskBlueprintImage(im_f, base_index, monochrome=False):
     """Apply RGB mask to blueprint image."""
@@ -525,8 +524,8 @@ def maskBlueprintImage(im_f, base_index, monochrome=False):
             if base[3] > 0:
                 # Filter out the wooden frame
                 # brown is orange, is red and (red+green), is very little blue
-                # but, if the color is light, we can't rely on the blue value alone. 
-                if base2[2] > 20 and (base2[2] > base2[1] or base2[1]-base2[2] < 20):  
+                # but, if the color is light, we can't rely on the blue value alone.
+                if base2[2] > 20 and (base2[2] > base2[1] or base2[1] - base2[2] < 20):
                     for channel in range(3):
                         base[channel] = int(mask[channel] * (base[channel] / 255))
                     pix[x, y] = (base[0], base[1], base[2], base[3])
@@ -534,128 +533,93 @@ def maskBlueprintImage(im_f, base_index, monochrome=False):
                     pix[x, y] = (base2[0], base2[1], base2[2], base2[3])
     return im_f
 
+
 def overwrite_object_colors(spoiler: Spoiler):
     """Overwrite object colors."""
     global color_bases
     mode = spoiler.settings.colorblind_mode
     if mode != ColorblindMode.off:
         if mode == ColorblindMode.prot:
-            color_bases = ["#FDE400", "#0072FF", "#766D5A", "#FFFFFF", "#000000"]
+            color_bases = ["#000000", "#0072FF", "#766D5A", "#FFFFFF", "#FDE400"]
         elif mode == ColorblindMode.deut:
-            color_bases = ["#E3A900", "#318DFF", "#7F6D59", "#FFFFFF", "#000000"]
+            color_bases = ["#000000", "#318DFF", "#7F6D59", "#FFFFFF", "#E3A900"]
         elif mode == ColorblindMode.trit:
-            color_bases = ["#FFA4A4", "#C72020", "#13C4D8", "#FFFFFF", "#000000"]
+            color_bases = ["#000000", "#C72020", "#13C4D8", "#FFFFFF", "#FFA4A4"]
         file = 175
         dk_single = getFile(7, file, False, 44, 44, "rgba5551")
         dk_single = dk_single.resize((21, 21))
+        writeWhiteKasplatHairColorToROM("#FFFFFF", "#000000", 25, 4125, "rgba5551")
         for kong_index in range(5):
-            if kong_index == 3 or kong_index == 4:  # Tiny or Chunky
-                if color_bases[kong_index] == "#FFFFFF":
-                    writeWhiteKasplatHairColorToROM("#000000", 25, [4124, 4122, 4123, 4120, 4121][kong_index])
-                else:
-                    writeKasplatHairColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
+            # file = 4120
+            # # Kasplat Hair
+            # hair_im = getFile(25, file, True, 32, 44, "rgba5551")
+            # hair_im = maskImage(hair_im, kong_index, 0)
+            # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44, False)
+            writeKasplatHairColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index], "rgba5551")
+            for file in range(5519, 5527):
+                # Blueprint sprite
+                blueprint_start = [5624, 5608, 5519, 5632, 5616]
+                blueprint_im = getFile(25, blueprint_start[kong_index] + (file - 5519), True, 48, 42, "rgba5551")
+                blueprint_im = maskBlueprintImage(blueprint_im, kong_index, True)
+                writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False, "rgba5551")
+            for file in range(6):
+                # Shockwave
+                shockwave_start = [4897, 4903, 4712, 4950, 4925]
+                shockwave_im = getFile(25, shockwave_start[kong_index] + file, True, 32, 32, "rgba32")
+                shockwave_im = maskImage(shockwave_im, kong_index, 0)
+                writeColorImageToROM(shockwave_im, 25, shockwave_start[kong_index] + file, 32, 32, False, "rgba32")
+            if kong_index == 0 or kong_index == 3 or (kong_index == 2 and mode != ColorblindMode.trit):  # Lanky (prot, deut only) or DK or Tiny
                 for file in range(152, 160):
                     # Single
-                    single_im = getFile(7, file, False, 44, 44, "rgba5551")
-                    single_im = maskImageMonochrome(single_im, kong_index, 0, "single")
                     single_start = [168, 152, 232, 208, 240]
-                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False)
+                    single_im = getFile(7, single_start[kong_index] + (file - 152), False, 44, 44, "rgba5551")
+                    single_im = maskImageWithOutline(single_im, kong_index, 0, "single")
+                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False, "rgba5551")
                 for file in range(216, 224):
                     # Coin
-                    coin_im = getFile(7, file, False, 48, 42, "rgba5551")
-                    coin_im = maskImageMonochrome(coin_im, kong_index, 0)
                     coin_start = [224, 256, 248, 216, 264]
-                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False)
+                    coin_im = getFile(7, coin_start[kong_index] + (file - 216), False, 48, 42, "rgba5551")
+                    coin_im = maskImageWithOutline(coin_im, kong_index, 0)
+                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False, "rgba5551")
                 for file in range(274, 286):
                     # Bunch
-                    bunch_im = getFile(7, file, False, 44, 44, "rgba5551")
-                    bunch_im = maskImageMonochrome(bunch_im, kong_index, 0, "bunch")
                     bunch_start = [274, 854, 818, 842, 830]
-                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False)
+                    bunch_im = getFile(7, bunch_start[kong_index] + (file - 274), False, 44, 44, "rgba5551")
+                    bunch_im = maskImageWithOutline(bunch_im, kong_index, 0, "bunch")
+                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False, "rgba5551")
                 for file in range(5819, 5827):
                     # Balloon
-                    balloon_im = getFile(25, file, True, 32, 64, "rgba5551")
-                    balloon_im = maskImageMonochrome(balloon_im, kong_index, 33)
-                    balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
                     balloon_start = [5835, 5827, 5843, 5851, 5819]
-                    writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64, False)
-                for file in range(5519, 5527):
-                    # Blueprint sprite
-                    blueprint_im = getFile(25, file, True, 48, 42, "rgba5551")
-                    blueprint_im = maskBlueprintImage(blueprint_im, kong_index, True)
-                    blueprint_start = [5624, 5608, 5519, 5632, 5616]
-                    writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False)
-            elif kong_index == 2:
-                writeKasplatHairColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
-                for file in range(152, 160):
-                    # Single
-                    single_im = getFile(7, file, False, 44, 44, "rgba5551")
-                    single_im = maskImageLankyPickups(single_im, kong_index, 0, "single")
-                    single_start = [168, 152, 232, 208, 240]
-                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False)
-                for file in range(216, 224):
-                    # Coin
-                    coin_im = getFile(7, file, False, 48, 42, "rgba5551")
-                    coin_im = maskImageLankyPickups(coin_im, kong_index, 0, "coin")
-                    coin_start = [224, 256, 248, 216, 264]
-                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False)
-                for file in range(274, 286):
-                    # Bunch
-                    bunch_im = getFile(7, file, False, 44, 44, "rgba5551")
-                    bunch_im = maskImageLankyPickups(bunch_im, kong_index, 0, "bunch")
-                    bunch_start = [274, 854, 818, 842, 830]
-                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False)
-                for file in range(5819, 5827):
-                    # Balloon
-                    balloon_im = getFile(25, file, True, 32, 64, "rgba5551")
-                    balloon_im = maskImage(balloon_im, kong_index, 33)
+                    balloon_im = getFile(25, balloon_start[kong_index] + (file - 5819), True, 32, 64, "rgba5551")
+                    balloon_im = maskImageWithOutline(balloon_im, kong_index, 33)
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
-                    balloon_start = [5835, 5827, 5843, 5851, 5819]
-                    writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64, False)
-                for file in range(5519, 5527):
-                    # Blueprint sprite
-                    blueprint_im = getFile(25, file, True, 48, 42, "rgba5551")
-                    blueprint_im = maskBlueprintImage(blueprint_im, kong_index)
-                    blueprint_start = [5624, 5608, 5519, 5632, 5616]
-                    writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False)
+                    writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64, False, "rgba5551")
             else:
-                # file = 4120
-                # # Kasplat Hair
-                # hair_im = getFile(25, file, True, 32, 44, "rgba5551")
-                # hair_im = maskImage(hair_im, kong_index, 0)
-                writeKasplatHairColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index])
-                # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44, False)
                 for file in range(152, 160):
                     # Single
-                    single_im = getFile(7, file, False, 44, 44, "rgba5551")
-                    single_im = maskImage(single_im, kong_index, 0)
                     single_start = [168, 152, 232, 208, 240]
-                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False)
+                    single_im = getFile(7, single_start[kong_index] + (file - 152), False, 44, 44, "rgba5551")
+                    single_im = maskImage(single_im, kong_index, 0)
+                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False, "rgba5551")
                 for file in range(216, 224):
                     # Coin
-                    coin_im = getFile(7, file, False, 48, 42, "rgba5551")
-                    coin_im = maskImage(coin_im, kong_index, 0)
                     coin_start = [224, 256, 248, 216, 264]
-                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False)
+                    coin_im = getFile(7, coin_start[kong_index] + (file - 216), False, 48, 42, "rgba5551")
+                    coin_im = maskImage(coin_im, kong_index, 0)
+                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False, "rgba5551")
                 for file in range(274, 286):
                     # Bunch
-                    bunch_im = getFile(7, file, False, 44, 44, "rgba5551")
-                    bunch_im = maskImage(bunch_im, kong_index, 0, True)
                     bunch_start = [274, 854, 818, 842, 830]
-                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False)
+                    bunch_im = getFile(7, bunch_start[kong_index] + (file - 274), False, 44, 44, "rgba5551")
+                    bunch_im = maskImage(bunch_im, kong_index, 0, True)
+                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False, "rgba5551")
                 for file in range(5819, 5827):
                     # Balloon
-                    balloon_im = getFile(25, file, True, 32, 64, "rgba5551")
+                    balloon_start = [5835, 5827, 5843, 5851, 5819]
+                    balloon_im = getFile(25, balloon_start[kong_index] + (file - 5819), True, 32, 64, "rgba5551")
                     balloon_im = maskImage(balloon_im, kong_index, 33)
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
-                    balloon_start = [5835, 5827, 5843, 5851, 5819]
-                    writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64, False)
-                for file in range(5519, 5527):
-                    # Blueprint sprite
-                    blueprint_im = getFile(25, file, True, 48, 42, "rgba5551")
-                    blueprint_im = maskBlueprintImage(blueprint_im, kong_index)
-                    blueprint_start = [5624, 5608, 5519, 5632, 5616]
-                    writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False)
+                    writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64, False, "rgba5551")
 
 
 def applyKrushaKong(spoiler: Spoiler):
