@@ -255,13 +255,8 @@ def getFile(table_index: int, file_index: int, compressed: bool, width: int, hei
     file_size = file_end - file_start
     ROM().seek(file_start)
     data = ROM().readBytes(file_size)
-    print("Currently processing file: ", file_index)
-    print("Start: ", hex(file_start))
-    print("End: ", hex(file_end))
-    print("Size: ", hex(file_size))
     if compressed:
         data = zlib.decompress(data, (15 + 32))
-    print("I like this file: ", file_index)
     im_f = Image.new(mode="RGBA", size=(width, height))
     pix = im_f.load()
     for y in range(height):
@@ -548,6 +543,10 @@ def overwrite_object_colors(spoiler: Spoiler):
         file = 175
         dk_single = getFile(7, file, False, 44, 44, "rgba5551")
         dk_single = dk_single.resize((21, 21))
+        blueprint_lanky = []
+        # Preload blueprint images. Lanky's blueprint image is so much easier to mask, because it is blue, and the frame is brown
+        for file in range(8):
+            blueprint_lanky.append(getFile(25, 5519 + (file), True, 48, 42, "rgba5551"))
         writeWhiteKasplatHairColorToROM("#FFFFFF", "#000000", 25, 4125, "rgba5551")
         for kong_index in range(5):
             # file = 4120
@@ -559,15 +558,15 @@ def overwrite_object_colors(spoiler: Spoiler):
             for file in range(5519, 5527):
                 # Blueprint sprite
                 blueprint_start = [5624, 5608, 5519, 5632, 5616]
-                blueprint_im = getFile(25, blueprint_start[kong_index] + (file - 5519), True, 48, 42, "rgba5551")
+                blueprint_im = blueprint_lanky[(file - 5519)]
                 blueprint_im = maskBlueprintImage(blueprint_im, kong_index, True)
                 writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False, "rgba5551")
-            for file in range(6):
+            for file in range(4925, 4931):
                 # Shockwave
                 shockwave_start = [4897, 4903, 4712, 4950, 4925]
-                shockwave_im = getFile(25, shockwave_start[kong_index] + file, True, 32, 32, "rgba32")
+                shockwave_im = getFile(25, shockwave_start[kong_index] + (file - 4925), True, 32, 32, "rgba32")
                 shockwave_im = maskImage(shockwave_im, kong_index, 0)
-                writeColorImageToROM(shockwave_im, 25, shockwave_start[kong_index] + file, 32, 32, False, "rgba32")
+                writeColorImageToROM(shockwave_im, 25, shockwave_start[kong_index] + (file - 4925), 32, 32, False, "rgba32")
             if kong_index == 0 or kong_index == 3 or (kong_index == 2 and mode != ColorblindMode.trit):  # Lanky (prot, deut only) or DK or Tiny
                 for file in range(152, 160):
                     # Single

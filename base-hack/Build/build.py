@@ -321,6 +321,19 @@ for kong_index, kong in enumerate(kong_names):
         )
     )
 
+for start in [4897, 4903, 4712, 4950, 4925]:
+    for offset in range(6):
+        file_dict.append(
+            File(
+                name=f"Shockwave Frame {start + offset}",
+                pointer_table_index=TableNames.TexturesGeometry,
+                file_index=start + offset,
+                source_file=f"shockwave_{start+offset}.bin",
+                target_compressed_size=32 * 32 * 4,
+                target_uncompressed_size=32 * 32 * 4,
+            )
+        )
+
 shop_face_array = [
     "none",  # No Face
     "dk_face",
