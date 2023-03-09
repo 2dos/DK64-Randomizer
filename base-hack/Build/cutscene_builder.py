@@ -5,10 +5,9 @@ import json
 from typing import BinaryIO
 from BuildEnums import TableNames
 from BuildClasses import File
+from BuildLib import ROMName, main_pointer_table_offset
 
-base_rom = "./rom/dk64.z64"
 instance_dir = "./assets/cutscene_scripts"
-pointer_table_offset = 0x101C50
 script_table = 0x0
 temp_file = "temp.bin"
 
@@ -317,9 +316,9 @@ def buildScripts() -> list:
     """Run through cutscenes folder and compile cutscenes to send back to file_dict."""
     print("\nCOMPILING CUTSCENES")
     appended_items = []
-    with open(base_rom, "rb") as fh:
-        fh.seek(pointer_table_offset + (8 * 4))
-        script_table = pointer_table_offset + int.from_bytes(fh.read(4), "big")
+    with open(ROMName, "rb") as fh:
+        fh.seek(main_pointer_table_offset + (8 * 4))
+        script_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
         map_data = []
 
         if script_table != 0:
@@ -340,8 +339,8 @@ def buildScripts() -> list:
                     if map_index > -1:
                         # .Map index found
                         fh.seek(script_table + (map_index * 4))
-                        cutscene_start = pointer_table_offset + int.from_bytes(fh.read(4), "big")
-                        cutscene_end = pointer_table_offset + int.from_bytes(fh.read(4), "big")
+                        cutscene_start = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+                        cutscene_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
                         cutscene_size = cutscene_end - cutscene_start
                         fh.seek(cutscene_start)
                         indicator = int.from_bytes(fh.read(2), "big")

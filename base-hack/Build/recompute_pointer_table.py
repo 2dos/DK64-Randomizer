@@ -57,8 +57,7 @@ def writeUncompressedSize(fh: BinaryIO, pointer_table_index: int, file_index: in
     ROMAddress = main_pointer_table_offset + int.from_bytes(fh.read(4), "big") + file_index * 4
 
     # Game seems to align these mod 2
-    if uncompressed_size % 2 == 1:
-        uncompressed_size += 1
+    uncompressed_size += (uncompressed_size % 2)
 
     print(" - Writing new uncompressed size " + hex(uncompressed_size) + " for file " + str(pointer_table_index) + "->" + str(file_index) + " to ROM address " + hex(ROMAddress))
 
@@ -95,9 +94,6 @@ def parsePointerTables(fh: BinaryIO):
     for x in pointer_tables:
         if x.num_entries > 0:
             for yi, y in enumerate(x.entries):
-                if y is None:
-                    print(f"{yi}: {x.index}: {x.name}")
-                    print(x.entries)
                 if not y.bit_set:
                     absolute_size = y.next_absolute_address - y.absolute_address
                     if absolute_size > 0:
@@ -143,7 +139,7 @@ def getFileInfo(pointer_table_index: int, file_index: int) -> PointerFile:
     if pointer_table_index not in range(len(pointer_tables)):
         return
 
-    if file_index not in range(len(pointer_tables[pointer_table_index].entries)):
+    if file_index < 0 or file_index >= len(pointer_tables[pointer_table_index].entries):
         return
 
     if not pointer_tables[pointer_table_index].entries[file_index].new_sha1 in pointer_table_files[pointer_table_index]:
@@ -173,7 +169,7 @@ def replaceROMFile(rom: BinaryIO, pointer_table_index: int, file_index: int, dat
     if file_index >= len(pointer_tables[pointer_table_index].entries):
         diff = file_index - len(pointer_tables[pointer_table_index].entries) + 1
         print(f" - Appending {diff} extra entries to {pointer_tables[pointer_table_index].name} ({(file_index+1)-diff}->{file_index+1})")
-        for d in range(diff):
+        for _ in range(diff):
             pointer_tables[pointer_table_index].entries.append(TableEntry(file_index))
         rom.seek(main_pointer_table_offset + (4 * len(pointer_tables)) + (4 * pointer_table_index))
         rom.write((file_index + 1).to_bytes(4, "big"))

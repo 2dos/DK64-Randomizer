@@ -3,7 +3,7 @@ import os
 import zlib
 
 from PIL import Image
-from BuildLib import main_pointer_table_offset
+from BuildLib import main_pointer_table_offset, ROMName
 
 
 class ImageData:
@@ -101,7 +101,7 @@ if not os.path.exists("assets/hash"):
     os.mkdir("assets/hash")
 
 print("Extracting Images from ROM")
-with open("rom/dk64.z64", "rb") as fh:
+with open(ROMName, "rb") as fh:
     for x in images:
         fh.seek(main_pointer_table_offset + (x.table * 4))
         ptr_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")

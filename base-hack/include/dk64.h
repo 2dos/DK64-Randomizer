@@ -113,6 +113,7 @@ extern void CrownGet(void);
 extern void cancelMusic(int song, int unk0);
 extern void removeGorillaGone(void* actor);
 extern void resetActorDL(void* actor);
+extern int getActorModelIndex(void* actor);
 
 extern void wipeStoredSetup(void* setup);
 extern void complex_free(void* ptr);

@@ -1,12 +1,11 @@
 """Build Helm Geometry file."""
 
 import zlib
-from BuildLib import main_pointer_table_offset
+from BuildLib import main_pointer_table_offset, ROMName
 
-rom_file = "./rom/dk64.z64"
 geo_file = "helm.bin"
 
-with open(rom_file, "rb") as rom:
+with open(ROMName, "rb") as rom:
     rom.seek(main_pointer_table_offset + (4 * 1))
     geo_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     rom.seek(geo_table + (0x11 * 4))

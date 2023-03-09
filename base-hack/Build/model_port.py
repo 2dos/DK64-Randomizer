@@ -2,9 +2,8 @@
 
 import zlib
 import os
-from BuildLib import intf_to_float, main_pointer_table_offset
+from BuildLib import intf_to_float, main_pointer_table_offset, ROMName
 
-rom_file = "rom/dk64.z64"
 temp_file = "temp.bin"
 m2_table = 4
 ac_table = 5
@@ -32,7 +31,7 @@ class BoneVertex:
 
 def portalModel_M2(vtx_file, dl_file, overlay_dl_file, model_name, base):
     """Convert model two model file from various source files."""
-    with open(rom_file, "rb") as rom:
+    with open(ROMName, "rb") as rom:
         rom.seek(main_pointer_table_offset + (m2_table * 4))
         table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         rom.seek(table + (base * 4))
@@ -98,7 +97,7 @@ def portalModel_M2(vtx_file, dl_file, overlay_dl_file, model_name, base):
 
 def portalModel_Actor(vtx_file, dl_file, model_name, base):
     """Create actor file from various source files."""
-    with open(rom_file, "rb") as rom:
+    with open(ROMName, "rb") as rom:
         rom.seek(main_pointer_table_offset + (ac_table * 4))
         table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         rom.seek(table + (base * 4))
@@ -170,7 +169,7 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
     """Port Actor to Model Two."""
     if input_file == "":
         # Use Actor Index
-        with open(rom_file, "rb") as rom:
+        with open(ROMName, "rb") as rom:
             rom.seek(main_pointer_table_offset + (ac_table * 4))
             table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
             rom.seek(table + (actor_index * 4))
@@ -324,7 +323,7 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
 
 def createSpriteModelTwo(new_image: int, scaling: float, output_file: str):
     """Create a model two object based on a singular image."""
-    with open(rom_file, "rb") as rom:
+    with open(ROMName, "rb") as rom:
         rom.seek(main_pointer_table_offset + (m2_table * 4))
         table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         rom.seek(table + (436 * 4))

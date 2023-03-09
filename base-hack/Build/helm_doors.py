@@ -1,13 +1,10 @@
 """Generate models for the two Helm doors."""
 import zlib
-from BuildLib import main_pointer_table_offset
-
-rom_file = "rom/dk64.z64"
-
+from BuildLib import main_pointer_table_offset, ROMName
 
 def getHelmDoorModel(new_item_image: int, new_number_image: int, filename: str):
     """Get the model file for the Helm coin door, which will be the template for both doors."""
-    with open(rom_file, "rb") as rom:
+    with open(ROMName, "rb") as rom:
         rom.seek(main_pointer_table_offset + (4 << 2))
         om2_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
         rom.seek(om2_table + (423 << 2))

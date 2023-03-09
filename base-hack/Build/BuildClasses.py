@@ -3,7 +3,7 @@
 from image_converter import convertToRGBA32
 from typing import BinaryIO
 import subprocess
-from BuildEnums import ChangeType, TableNames, TextureFormat
+from BuildEnums import ChangeType, TableNames, TextureFormat, CompressionMethods
 from BuildLib import main_pointer_table_offset
 import encoders
 
@@ -19,8 +19,7 @@ class File:
         start=None,
         compressed_size=0,
         source_file="",
-        use_external_gzip=False,
-        use_zlib=False,
+        compression_method=CompressionMethods.PythonGzip,
         patcher=None,
         pointer_table_index: TableNames = TableNames.MusicMIDI,
         file_index=0,
@@ -31,6 +30,7 @@ class File:
         do_not_delete=False,
         target_compressed_size=None,
         target_uncompressed_size=None,
+        target_size=None,
         do_not_extract=False,
         do_not_compress=False,
         do_not_recompress=False,
@@ -41,8 +41,7 @@ class File:
         self.start = start
         self.compressed_size = compressed_size
         self.source_file = source_file
-        self.use_external_gzip = use_external_gzip
-        self.use_zlib = use_zlib
+        self.compression_method = compression_method
         self.patcher = patcher
         self.pointer_table_index = pointer_table_index
         self.file_index = file_index
@@ -53,6 +52,9 @@ class File:
         self.do_not_delete = do_not_delete
         self.target_compressed_size = target_compressed_size
         self.target_uncompressed_size = target_uncompressed_size
+        if target_size is not None:
+            self.target_compressed_size = target_size
+            self.target_uncompressed_size = target_size
         self.do_not_extract = do_not_extract
         self.do_not_compress = do_not_compress
         self.do_not_recompress = do_not_recompress
@@ -85,6 +87,11 @@ class File:
                 self.source_file = self.source_file.replace(".png", ".rgba32")
             else:
                 print(" - ERROR: Unsupported texture format " + self.getTextureFormatName())
+
+    def setTargetSize(self, size):
+        """Set compressed and uncompressed size."""
+        self.target_compressed_size = size
+        self.target_uncompressed_size = size
 
 
 class TableEntry:
@@ -353,3 +360,32 @@ class PointerFile:
         self.data = data
         self.sha1 = sha1
         self.uncompressed_size = uncompressed_size
+
+class HashIcon:
+    """Class to store information regarding a hash icon."""
+
+    def __init__(self, icon_file: str, file_index:int):
+        """Initialize with given parameters."""
+        self.icon_file = icon_file
+        self.file_index = file_index
+
+class ModelChange:
+    """Class to store information regarding a model change."""
+
+    def __init__(self, model_index: int, model_file: str):
+        """Initialize with given parameters."""
+        self.model_index = model_index
+        self.model_file = model_file
+
+class TextChange:
+    """Class to store information regarding a text change."""
+
+    def __init__(self, name: str, change_expansion: int, file: str):
+        """Initialize with given parameters."""
+        self.name = name
+        self.change = False
+        if file is not None:
+            if file != "":
+                self.change = True
+        self.change_expansion = change_expansion
+        self.file = file

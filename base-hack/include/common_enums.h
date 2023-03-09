@@ -290,3 +290,10 @@ typedef enum pausescreenlist {
 	/* 0x006 */ PAUSESCREEN_MOVES,
 	/* ----- */ PAUSESCREEN_TERMINATOR,
 } pausescreenlist;
+
+typedef enum colorblind_modes {
+	/* 0x000 */ COLORBLIND_OFF,
+	/* 0x001 */ COLORBLIND_PROT,
+	/* 0x002 */ COLORBLIND_DEUT,
+	/* 0x003 */ COLORBLIND_TRIT,
+} colorblind_modes;

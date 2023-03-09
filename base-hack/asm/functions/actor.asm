@@ -90,3 +90,4 @@
 .definelabel resetActorDL, 0x80613214
 .definelabel resetKongVars, 0x806D0408
 .definelabel handleAnimation, 0x80614D90
+.definelabel getActorModelIndex, 0x80613448

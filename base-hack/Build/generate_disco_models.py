@@ -1,7 +1,7 @@
 """Write new Disco Chunky models."""
 import zlib
 import os
-from BuildLib import main_pointer_table_offset
+from BuildLib import main_pointer_table_offset, ROMName
 
 
 class Vert:
@@ -17,9 +17,6 @@ class Vert:
         self.rgba = rgba
         self.other = other
 
-
-rom_file = "rom/dk64.z64"
-main_pointer_table_offset = 0x101C50
 temp_file = "temp.bin"
 ins_file = "disco_instrument.bin"
 
@@ -202,7 +199,7 @@ beater_new_dl = """
 #     06 1C 1A 28 00 1C 28 26
 # """
 
-with open(rom_file, "rb") as rom:
+with open(ROMName, "rb") as rom:
     rom.seek(main_pointer_table_offset + (5 * 4))
     actor_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     rom.seek(actor_table + (0xD * 4))

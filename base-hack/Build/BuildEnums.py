@@ -21,6 +21,13 @@ class TextureFormat(IntEnum):
     IA8 = auto()
     IA4 = auto()
 
+class CompressionMethods(IntEnum):
+    """Texture Format Enum."""
+
+    PythonGzip = auto()
+    ExternalGzip = auto()
+    Zlib = auto()
+
 
 class TableNames(IntEnum):
     """Pointer Table Enum."""

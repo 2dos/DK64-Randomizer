@@ -4,7 +4,8 @@ from typing import BinaryIO
 
 main_pointer_table_offset = 0x101C50
 BLOCK_COLOR_SIZE = 64  # Bytes allocated to a block 32x32 image. Brute forcer says we can go as low as 0x25 bytes, but leaving some room for me to have left out something
-
+ROMName = "rom/dk64.z64"
+newROMName = "rom/dk64-randomizer-base.z64"
 
 def intf_to_float(intf):
     """Convert float as int format to float."""
