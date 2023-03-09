@@ -344,10 +344,12 @@ for locEnum, locObj in LocationList.items():
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
         ItemRestrictionsPerLocation[locEnum.name].update(blueprintItemSet)
 
-# Junk items cannot be placed anywhere in Hideout Helm.
+# Junk items cannot be placed anywhere in Hideout Helm. Due to technical
+# limitations, neither can Golden Bananas.
 for locEnum, locObj in LocationList.items():
     if locObj.level == Levels.HideoutHelm:
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.GoldenBanana.name)
 
 # Training barrels should not have anything but moves as a reward.
 trainingBarrelLocationList = [

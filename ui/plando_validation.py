@@ -341,7 +341,6 @@ def populate_plando_options(form):
         # Extract the location name.
         location_name = re.search("^plando_(.+)_shop_cost$", shop_cost.name)[1]
         location = Locations[location_name]
-        item_cost = PlandoItems.Randomize
         if shop_cost.value != "":
             item_cost = int(shop_cost.value)
             # Update this shop item with the cost.
