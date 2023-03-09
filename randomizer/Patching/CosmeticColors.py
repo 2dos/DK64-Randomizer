@@ -528,6 +528,48 @@ def maskBlueprintImage(im_f, base_index, monochrome=False):
                     pix[x, y] = (base2[0], base2[1], base2[2], base2[3])
     return im_f
 
+def recolorWrinklyDoors():
+    """Recolor the Wrinkly hint door doorframes for colorblind mode."""
+    file = [0xF0, 0xF2, 0xEF, 0x67, 0xF1]
+    for kong in range(5):
+        wrinkly_door_start = js.pointer_addresses[4]["entries"][file[kong]]["pointing_to"]
+        wrinkly_door_finish = js.pointer_addresses[4]["entries"][file[kong]+1]["pointing_to"]
+        wrinkly_door_size = wrinkly_door_finish - wrinkly_door_start
+        ROM().seek(wrinkly_door_start)
+        indicator = int.from_bytes(ROM().readBytes(2), "big")
+        ROM().seek(wrinkly_door_start)
+        data = ROM().readBytes(wrinkly_door_size)
+        if indicator == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        num_data = []  # data, but represented as nums rather than b strings
+        for d in data:
+            num_data.append(d)
+        # Figure out which colors to use and where to put them
+        color1_offsets = [1548, 1580, 1612, 1644, 1676, 1708, 1756, 1788, 1804, 1820, 1836, 1852, 1868, 1884, 1900, 1916, 
+                          1932, 1948, 1964, 1980, 1996, 2012, 2028, 2044, 2076, 2108, 2124, 2156, 2188, 2220, 2252, 2284, 
+                          2316, 2348, 2380, 2396, 2412, 2428, 2444, 2476, 2508, 2540, 2572, 2604, 2636, 2652, 2668, 2684, 
+                          2700, 2716, 2732, 2748, 2764, 2780, 2796, 2812, 2828, 2860, 2892, 2924, 2956, 2988, 3020, 3052]
+        color2_offsets = [1564, 1596, 1628, 1660, 1692, 1724, 1740, 1772, 2332, 2364, 2460, 2492, 2524, 2556, 2588, 2620]
+        new_color1 = getRGBFromHash(color_bases[kong])
+        new_color2 = getRGBFromHash(color_bases[kong])
+        if kong == 0:
+            for channel in range(3):
+                new_color2[channel] = max(80, new_color1[channel])
+                new_color2[channel] = max(39, new_color1[channel])  # Too black is bad
+
+        # Recolor the doorframe
+        for offset in color1_offsets:
+            for i in range(3):
+                num_data[offset+i] = new_color1[i]
+        for offset in color2_offsets:
+            for i in range(3):
+                num_data[offset+i] = new_color2[i]
+
+        data = bytearray(num_data)  # convert num_data back to binary string
+        if indicator == 0x1F8B:
+            data = gzip.compress(data, compresslevel=9)
+        ROM().seek(wrinkly_door_start)
+        ROM().writeBytes(data)
 
 def overwrite_object_colors(spoiler: Spoiler):
     """Overwrite object colors."""
@@ -548,6 +590,7 @@ def overwrite_object_colors(spoiler: Spoiler):
         for file in range(8):
             blueprint_lanky.append(getFile(25, 5519 + (file), True, 48, 42, "rgba5551"))
         writeWhiteKasplatHairColorToROM("#FFFFFF", "#000000", 25, 4125, "rgba5551")
+        recolorWrinklyDoors()
         for kong_index in range(5):
             # file = 4120
             # # Kasplat Hair
