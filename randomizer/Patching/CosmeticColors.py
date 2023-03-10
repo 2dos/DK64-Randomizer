@@ -571,6 +571,52 @@ def recolorWrinklyDoors():
         ROM().seek(wrinkly_door_start)
         ROM().writeBytes(data)
 
+def recolorSlamSwitches():
+    """Recolor the Wrinkly hint door doorframes for colorblind mode."""
+    file = [0x94, 0x93, 0x95, 0x96, 0xB8, 
+            0x16C, 0x16B, 0x16D, 0x16E, 0x16A, 
+            0x167, 0x166, 0x168, 0x169, 0x165]
+    for switch in range(15):
+        slam_switch_start = js.pointer_addresses[4]["entries"][file[switch]]["pointing_to"]
+        slam_switch_finish = js.pointer_addresses[4]["entries"][file[switch]+1]["pointing_to"]
+        slam_switch_size = slam_switch_finish - slam_switch_start
+        ROM().seek(slam_switch_start)
+        indicator = int.from_bytes(ROM().readBytes(2), "big")
+        ROM().seek(slam_switch_start)
+        data = ROM().readBytes(slam_switch_size)
+        if indicator == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        num_data = []  # data, but represented as nums rather than b strings
+        for d in data:
+            num_data.append(d)
+        # Figure out which colors to use and where to put them
+        color_offsets = [1828, 1844, 1860, 1876, 1892, 1908]
+        new_color1 = getRGBFromHash(color_bases[4])
+        new_color2 = getRGBFromHash(color_bases[2])
+        new_color3 = getRGBFromHash(color_bases[1])
+
+        # Green switches
+        if switch < 5:
+            for offset in color_offsets:
+                for i in range(3):
+                    num_data[offset+i] = new_color1[i]
+        # Blue switches
+        elif switch < 10:
+            for offset in color_offsets:
+                for i in range(3):
+                    num_data[offset+i] = new_color2[i]
+        # Red switches
+        else:
+            for offset in color_offsets:
+                for i in range(3):
+                    num_data[offset+i] = new_color3[i]
+
+        data = bytearray(num_data)  # convert num_data back to binary string
+        if indicator == 0x1F8B:
+            data = gzip.compress(data, compresslevel=9)
+        ROM().seek(slam_switch_start)
+        ROM().writeBytes(data)
+
 def overwrite_object_colors(spoiler: Spoiler):
     """Overwrite object colors."""
     global color_bases
@@ -591,6 +637,7 @@ def overwrite_object_colors(spoiler: Spoiler):
             blueprint_lanky.append(getFile(25, 5519 + (file), True, 48, 42, "rgba5551"))
         writeWhiteKasplatHairColorToROM("#FFFFFF", "#000000", 25, 4125, "rgba5551")
         recolorWrinklyDoors()
+        recolorSlamSwitches()
         for kong_index in range(5):
             # file = 4120
             # # Kasplat Hair
