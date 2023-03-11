@@ -211,13 +211,24 @@ void initWrinklyColoring(void) {
     }
 }
 
-#define SEASON_NONE 0
-#define SEASON_HALLOWEEN 1
-#define SEASON_CHRISTMAS 2
-
 void initSeasonalChanges(void) {
     if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
         *(int*)(0x8075E0B8) = 0x807080E0; // Makes isles reference Castle skybox data
+    } else if (Rando.seasonal_changes == SEASON_CHRISTMAS) {
+        for (int i = 0; i < 6; i++) {
+            *WeatherData[i].texture_pointer = 0x173B;
+            WeatherData[i].width = 0x40;
+            WeatherData[i].height = 0x40;
+            WeatherData[i].codec_info = 0x0301;
+            WeatherData[i].frame_count = 1;
+        }
+        int addr = 0x80759EC4;
+        for (int i = 0; i < 6; i++) {
+            *(int*)(addr + (4 * i)) = 0x8068B5D8;
+        }
+        *(int*)(0x80711A64) = 0x24140010;
+        *(int*)(0x80711A5C) = 0x24140010;
+        *(int*)(0x80711A70) = 0x24140010;
     }
 }
 

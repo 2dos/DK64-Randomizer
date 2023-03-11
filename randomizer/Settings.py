@@ -519,7 +519,7 @@ class Settings:
             HelmDoorItem.req_medal: {"max": 40, "random_min": 5, "random_max": 20},
             HelmDoorItem.req_crown: {"max": 10, "random_min": 2, "random_max": 6},
             HelmDoorItem.req_fairy: {"max": 18, "random_min": 3, "random_max": 10},  # Remove two fairies since you can't get the final two fairies glitchless if on the crown door
-            HelmDoorItem.req_rainbowcoin: {"max": 16, "random_min": 4, "random_max": 16},
+            HelmDoorItem.req_rainbowcoin: {"max": 16, "random_min": 4, "random_max": 10},
             HelmDoorItem.req_bean: {"max": 1, "random_min": 1, "random_max": 1},
             HelmDoorItem.req_pearl: {"max": 5, "random_min": 1, "random_max": 3},
         }
@@ -531,6 +531,7 @@ class Settings:
             HelmDoorItem.req_fairy,
             HelmDoorItem.req_bean,
             HelmDoorItem.req_pearl,
+            HelmDoorItem.req_rainbowcoin,
         ]
         if self.crown_door_item == HelmDoorItem.random and self.coin_door_item == HelmDoorItem.random:
             self.crown_door_random = True

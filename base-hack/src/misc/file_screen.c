@@ -218,7 +218,7 @@ int isMovePregiven(int index) {
 		case TRACKER_TYPE_SHOCKWAVE:
 			return Rando.moves_pregiven.shockwave || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_SHOCKWAVE) || initFile_checkTraining(PURCHASE_FLAG, -1, -2);
 		case TRACKER_TYPE_SLAM:
-			return initFile_getSlamLevel();
+			return initFile_getSlamLevel(1);
 		case TRACKER_TYPE_HOMING:
 			return Rando.moves_pregiven.homing || initFile_checkTraining(PURCHASE_GUN, -1, 2);
 		case TRACKER_TYPE_SNIPER:
@@ -239,21 +239,21 @@ int isMovePregiven(int index) {
 			}
 			return 0;
 		case TRACKER_TYPE_MELON_3:
-			return initFile_getInsUpgradeLevel() >= 2;
+			return initFile_getInsUpgradeLevel(1) >= 2;
 		case TRACKER_TYPE_INSUPG_1:
-			return initFile_getInsUpgradeLevel() >= 1;
+			return initFile_getInsUpgradeLevel(1) >= 1;
 		case TRACKER_TYPE_INSUPG_2:
-			return initFile_getInsUpgradeLevel() >= 3;
+			return initFile_getInsUpgradeLevel(1) >= 3;
 		case TRACKER_TYPE_BELT_1:
-			return initFile_getBeltLevel() >= 1;
+			return initFile_getBeltLevel(1) >= 1;
 		case TRACKER_TYPE_BELT_2:
-			return initFile_getBeltLevel() >= 2;
+			return initFile_getBeltLevel(1) >= 2;
 		case TRACKER_TYPE_AMMOBELT:
-			return initFile_getBeltLevel();
+			return initFile_getBeltLevel(1);
 		case TRACKER_TYPE_INSTRUMENT_UPG:
-			if (initFile_getInsUpgradeLevel() >= 3) {
+			if (initFile_getInsUpgradeLevel(1) >= 3) {
 				return 2;
-			} else if (initFile_getInsUpgradeLevel() >= 1) {
+			} else if (initFile_getInsUpgradeLevel(1) >= 1) {
 				return 1;
 			}
 			return 0;

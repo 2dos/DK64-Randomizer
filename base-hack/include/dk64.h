@@ -599,6 +599,8 @@ extern int StackTraceY;
 extern int StackTraceSize;
 extern int StackTraceStartX;
 
+extern weather_struct WeatherData[6];
+
 //hack data
 extern int TestVariable;
 extern char LoadedHooks;

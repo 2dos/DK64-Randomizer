@@ -23,7 +23,7 @@ int initFile_hasInstrument(int kong) {
 	return (instruments[kong] != 0) || (initFile_checkTraining(PURCHASE_INSTRUMENT, kong, 1));
 }
 
-int initFile_getBeltLevel(void) {
+int initFile_getBeltLevel(int inc_training) {
 	int belts[] = {Rando.moves_pregiven.belt_upgrade_0, Rando.moves_pregiven.belt_upgrade_1};
 	int belt_flags[] = {FLAG_ITEM_BELT_0, FLAG_ITEM_BELT_1};
 	int belt_level = 0;
@@ -32,14 +32,16 @@ int initFile_getBeltLevel(void) {
 			belt_level += 1;
 			// setFlagDuplicate(FLAG_ITEM_BELT_0 + i, 1, 0);
 		}
-		if (initFile_checkTraining(PURCHASE_FLAG, -1, belt_flags[i])) {
-			belt_level += 1;
+		if (inc_training) {
+			if (initFile_checkTraining(PURCHASE_FLAG, -1, belt_flags[i])) {
+				belt_level += 1;
+			}
 		}
 	}
 	return belt_level;
 }
 
-int initFile_getInsUpgradeLevel(void) {
+int initFile_getInsUpgradeLevel(int inc_training) {
 	int instrument_upgrades[] = {Rando.moves_pregiven.ins_upgrade_0, Rando.moves_pregiven.ins_upgrade_1, Rando.moves_pregiven.ins_upgrade_2};
 	int ins_upg_flags[] = {FLAG_ITEM_INS_0, FLAG_ITEM_INS_1, FLAG_ITEM_INS_2};
 	int instrument_upgrade_level = 0;
@@ -48,15 +50,17 @@ int initFile_getInsUpgradeLevel(void) {
 			instrument_upgrade_level += 1;
 			// setFlagDuplicate(FLAG_ITEM_INS_0 + i, 1, 0);
 		}
-		if (initFile_checkTraining(PURCHASE_FLAG, -1, ins_upg_flags[i])) {
-			instrument_upgrade_level += 1;
+		if (inc_training) {
+			if (initFile_checkTraining(PURCHASE_FLAG, -1, ins_upg_flags[i])) {
+				instrument_upgrade_level += 1;
+			}
 		}
 	}
 	return instrument_upgrade_level;
 }
 
 #define DEFAULT_SLAM_LEVEL 1
-int initFile_getSlamLevel(void) {
+int initFile_getSlamLevel(int inc_training) {
 	int slams[] = {Rando.moves_pregiven.slam_upgrade_0, Rando.moves_pregiven.slam_upgrade_1, Rando.moves_pregiven.slam_upgrade_2};
 	int slam_flags[] = {FLAG_ITEM_SLAM_0, FLAG_ITEM_SLAM_1};
 	int slam_level = DEFAULT_SLAM_LEVEL;
@@ -65,8 +69,10 @@ int initFile_getSlamLevel(void) {
 			slam_level += 1;
 			// setFlagDuplicate(FLAG_ITEM_SLAM_0 + i, 1, 0);
 		}
-		if (initFile_checkTraining(PURCHASE_FLAG, -1, slam_flags[i-DEFAULT_SLAM_LEVEL])) {
-			slam_level += 1;
+		if (inc_training) {
+			if (initFile_checkTraining(PURCHASE_FLAG, -1, slam_flags[i-DEFAULT_SLAM_LEVEL])) {
+				slam_level += 1;
+			}
 		}
 	}
 	return slam_level;
@@ -102,10 +108,10 @@ void unlockMoves(void) {
 	}
 	CollectableBase.Oranges = 15;
 	CollectableBase.Crystals = 1500;
-	int slam_level = initFile_getSlamLevel();
-	int belt_level = initFile_getBeltLevel();
+	int slam_level = initFile_getSlamLevel(0);
+	int belt_level = initFile_getBeltLevel(0);
 	int base_gun_bitfield = 0;
-	int base_ins_bitfield = ((1 << initFile_getInsUpgradeLevel()) - 1) << 1;
+	int base_ins_bitfield = ((1 << initFile_getInsUpgradeLevel(0)) - 1) << 1;
 	if ((Rando.moves_pregiven.homing) || (initFile_checkTraining(PURCHASE_GUN, -1, 2))) {
 		base_gun_bitfield |= 2;
 	}
@@ -128,7 +134,7 @@ void unlockMoves(void) {
 			CollectableBase.StandardAmmo = 100;
 		}
 	}
-	if (initFile_getInsUpgradeLevel() >= 2) {
+	if (initFile_getInsUpgradeLevel(1) >= 2) {
 		CollectableBase.Melons = 3;
 		CollectableBase.Health = 12;
 	} else {
@@ -148,5 +154,17 @@ void unlockMoves(void) {
 	}
 	if ((Rando.moves_pregiven.shockwave) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_SHOCKWAVE) || (initFile_checkTraining(PURCHASE_FLAG, -1, -2)))) {
 		setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, 0);
+	}
+	if ((Rando.moves_pregiven.dive) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_DIVE))) {
+		setFlagDuplicate(FLAG_TBARREL_DIVE, 1, 0);
+	}
+	if ((Rando.moves_pregiven.oranges) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_ORANGE))) {
+		setFlagDuplicate(FLAG_TBARREL_ORANGE, 1, 0);
+	}
+	if ((Rando.moves_pregiven.barrels) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_BARREL))) {
+		setFlagDuplicate(FLAG_TBARREL_BARREL, 1, 0);
+	}
+	if ((Rando.moves_pregiven.vines) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_VINE))) {
+		setFlagDuplicate(FLAG_TBARREL_VINE, 1, 0);
 	}
 }

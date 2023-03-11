@@ -16,6 +16,7 @@ extern int getCenter(int style, char* str);
 extern int getActorIndex(int actor_input);
 extern int getCustomActorIndex(new_custom_actors offset);
 extern void spawnItemOverlay(int type, int kong, int index, int force);
+extern int giveSlamLevel(void);
 
 extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);
@@ -308,9 +309,9 @@ extern void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, 
 
 extern int initFile_hasGun(int kong);
 extern int initFile_hasInstrument(int kong);
-extern int initFile_getBeltLevel(void);
-extern int initFile_getInsUpgradeLevel(void);
-extern int initFile_getSlamLevel(void);
+extern int initFile_getBeltLevel(int inc_training);
+extern int initFile_getInsUpgradeLevel(int inc_training);
+extern int initFile_getSlamLevel(int inc_training);
 extern int initFile_getKongPotionBitfield(int kong);
 extern int initFile_checkTraining(int type_check, int kong_check, int value_check);
 

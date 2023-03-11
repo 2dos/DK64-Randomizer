@@ -297,3 +297,9 @@ typedef enum colorblind_modes {
 	/* 0x002 */ COLORBLIND_DEUT,
 	/* 0x003 */ COLORBLIND_TRIT,
 } colorblind_modes;
+
+typedef enum seasons {
+	/* 0x000 */ SEASON_NONE,
+	/* 0x001 */ SEASON_HALLOWEEN,
+	/* 0x002 */ SEASON_CHRISTMAS,
+} seasons;

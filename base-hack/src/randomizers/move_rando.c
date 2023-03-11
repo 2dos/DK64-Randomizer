@@ -152,14 +152,7 @@ void progressiveChange(int flag) {
 		int subtype = getMoveProgressiveFlagType(flag);
 		if (subtype == 0) {
 			// Slam
-			int slam_level = MovesBase[0].simian_slam + 1;
-			if (slam_level == 1) {
-				// Fix if initial slam is slam 0
-				slam_level = 2;
-			}
-			for (int i = 0; i < 5; i++) {
-				MovesBase[i].simian_slam = slam_level;
-			}
+			giveSlamLevel();
 		} else if (subtype == 1) {
 			// Belt
 			int belt_level = MovesBase[0].ammo_belt + 1;

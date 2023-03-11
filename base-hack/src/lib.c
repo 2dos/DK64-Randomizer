@@ -402,3 +402,14 @@ void spawnItemOverlay(int type, int kong, int index, int force) {
     TextOverlayData.flag = index;
     TextOverlayData.kong = kong;
 }
+
+int giveSlamLevel(void) {
+	int level = MovesBase[0].simian_slam;
+	if (level < 3) {
+		for (int i = 0; i < 5; i++) {
+			MovesBase[i].simian_slam = level + 1;
+		}
+		return level + 1;
+	}
+	return 3;
+}
