@@ -1573,7 +1573,7 @@ def FillKongsAndMoves(spoiler, placedTypes):
 
     levelBlockInPlace = False
     # Once Kongs are placed, the top priority is placing training barrel moves first. These (mostly) need to be very early because they block access to whole levels.
-    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != MoveRando.off and spoiler.settings.training_barrels == TrainingBarrels.shuffled:
+    if spoiler.settings.move_rando != MoveRando.off and spoiler.settings.training_barrels == TrainingBarrels.shuffled:
         # First place barrels - needed for most bosses
         if Items.Barrels not in preplacedPriorityMoves:
             itemsPlacedForBarrels = PlacePriorityItems(spoiler, [Items.Barrels], preplacedPriorityMoves, placedTypes)  # , levelBlock=needBarrelsByThisLevel)
@@ -1593,7 +1593,7 @@ def FillKongsAndMoves(spoiler, placedTypes):
     if spoiler.settings.kong_rando:
         # If kongs are our progression, then place moves that unlock those kongs before anything else
         # This logic only matters if the level order is critical to progression (i.e. not loading zone shuffled)
-        if spoiler.settings.kongs_for_progression and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all and spoiler.settings.starting_move_count < 10:
+        if spoiler.settings.kongs_for_progression and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all and spoiler.settings.starting_moves_count < 10:
             lockedKongs = [kong for kong in GetKongs() if kong not in spoiler.settings.starting_kong_list]
             for kong in lockedKongs:
                 # We need the item representation of the kong
@@ -1607,7 +1607,7 @@ def FillKongsAndMoves(spoiler, placedTypes):
                 preplacedPriorityMoves.extend(newlyPlacedItems)
 
     # Handle shared moves before other moves in move rando
-    if not spoiler.settings.unlock_all_moves and spoiler.settings.move_rando != MoveRando.off:
+    if spoiler.settings.move_rando != MoveRando.off:
         # Shuffle the shared move locations since they must be done first
         ShuffleSharedMoves(spoiler, preplacedPriorityMoves.copy(), placedTypes)
         # Set up remaining kong moves to be shuffled
@@ -1744,13 +1744,6 @@ def SetNewProgressionRequirements(settings: Settings):
     goldenBananaTotals = []
     ownedKongs = {}
     ownedMoves = {}
-    if settings.unlock_all_moves:
-        allMoves = ItemPool.DonkeyMoves.copy()
-        allMoves.extend(ItemPool.DiddyMoves)
-        allMoves.extend(ItemPool.LankyMoves)
-        allMoves.extend(ItemPool.TinyMoves)
-        allMoves.extend(ItemPool.ChunkyMoves)
-        allMoves.extend(ItemPool.ImportantSharedMoves)
     # Get sphere 0 GB count
     BlockAccessToLevel(settings, 0)
     Reset()
@@ -1769,15 +1762,12 @@ def SetNewProgressionRequirements(settings: Settings):
         coloredBananaCounts.append(LogicVariables.ColoredBananas[thisLevel])
         goldenBananaTotals.append(LogicVariables.GoldenBananas)
         ownedKongs[thisLevel] = LogicVariables.GetKongs()
-        if settings.unlock_all_moves:
-            ownedMoves[thisLevel] = allMoves
-        else:
-            accessibleMoves = [
-                LocationList[x].item
-                for x in accessible
-                if LocationList[x].item != Items.NoItem and LocationList[x].item is not None and ItemList[LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
-            ]
-            ownedMoves[thisLevel] = accessibleMoves
+        accessibleMoves = [
+            LocationList[x].item
+            for x in accessible
+            if LocationList[x].item != Items.NoItem and LocationList[x].item is not None and ItemList[LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
+        ]
+        ownedMoves[thisLevel] = accessibleMoves
     # Cap the B. Locker amounts based on a random fraction of accessible bananas & GBs
     BLOCKER_MIN = 0.4
     BLOCKER_MAX = 0.7
@@ -2032,15 +2022,12 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
                 else:
                     settings.BossBananas[bossCompletedLevel] = initialTNS[bossCompletedLevel]
                 ownedKongs[bossCompletedLevel] = LogicVariables.GetKongs()
-                if settings.unlock_all_moves:
-                    ownedMoves[bossCompletedLevel] = allMoves
-                else:
-                    accessibleMoves = [
-                        LocationList[x].item
-                        for x in accessible
-                        if LocationList[x].item != Items.NoItem and LocationList[x].item is not None and ItemList[LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
-                    ]
-                    ownedMoves[bossCompletedLevel] = accessibleMoves
+                accessibleMoves = [
+                    LocationList[x].item
+                    for x in accessible
+                    if LocationList[x].item != Items.NoItem and LocationList[x].item is not None and ItemList[LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
+                ]
+                ownedMoves[bossCompletedLevel] = accessibleMoves
 
     # For any boss location behind a T&S we didn't lower...
     bossLocations = [
@@ -2205,7 +2192,7 @@ def Generate_Spoiler(spoiler):
             ShuffleExits.ExitShuffle(spoiler.settings)
             spoiler.UpdateExits()
         # Handle Item Fill
-        if (spoiler.settings.move_rando != MoveRando.off and not spoiler.settings.unlock_all_moves) or spoiler.settings.kong_rando or any(spoiler.settings.shuffled_location_types):
+        if spoiler.settings.move_rando != MoveRando.off or spoiler.settings.kong_rando or any(spoiler.settings.shuffled_location_types):
             FillKongsAndMovesGeneric(spoiler)
         else:
             # Just check if normal item locations are beatable with given settings

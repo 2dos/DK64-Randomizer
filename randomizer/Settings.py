@@ -94,9 +94,6 @@ class Settings:
         if self.hard_level_progression:
             self.troff_min = [self.troff_min[-1] for x in self.troff_min]
 
-        # set to true if move_rando set to start_with
-        self.unlock_all_moves = False
-
         # Pointless with just move rando, maybe have it once full rando
         # progressive_upgrades: bool
         self.progressive_upgrades = False
@@ -357,7 +354,7 @@ class Settings:
         self.random_music = False
 
         #  Unlock Moves - 0-40?
-        self.starting_move_count = 0
+        self.starting_moves_count = 0
 
         #  Color
         self.colors = {}
@@ -492,7 +489,7 @@ class Settings:
 
         # Move Location Rando
         if self.move_rando == MoveRando.start_with:
-            self.starting_move_count = 40  # maybe???
+            self.starting_moves_count = 40
             self.training_barrels = TrainingBarrels.normal
             self.shockwave_status = ShockwaveStatus.start_with
 
@@ -559,7 +556,7 @@ class Settings:
                 self.coin_door_item_count = helmdoor_items[self.coin_door_item]["max"]
 
         # Starting Move Locations
-        locations_to_add = self.starting_move_count
+        locations_to_add = self.starting_moves_count
         # If the training barrels are shuffled in, we may have to remove the training barrel locations because of the above comment
         if self.training_barrels == TrainingBarrels.shuffled:
             locations_to_add -= 4
@@ -568,11 +565,11 @@ class Settings:
         if locations_to_add < 0:
             last_location = Locations.PreGiven_Location00
             invalid_training_barrels = [Locations.IslesVinesTrainingBarrel, Locations.IslesSwimTrainingBarrel, Locations.IslesOrangesTrainingBarrel, Locations.IslesBarrelsTrainingBarrel][
-                self.starting_move_count :
+                self.starting_moves_count :
             ]
             for locationId in invalid_training_barrels:
                 LocationList[locationId].default = Items.NoItem
-                LocationList[locationId].constant = True
+                LocationList[locationId].type = Types.Constant
         # We need to filter the GameStart region's locations to remove the locations that aren't valid anymore
         randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations = [
             loclogic for loclogic in randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations if loclogic.id < last_location
@@ -610,8 +607,7 @@ class Settings:
                         if type in (Types.Bean, Types.Pearl) and item == ItemRandoListSelected.beanpearl:
                             self.shuffled_location_types.extend([Types.Bean, Types.Pearl])
             if Types.Shop in self.shuffled_location_types:
-                if self.move_rando != MoveRando.start_with:
-                    self.move_rando = MoveRando.item_shuffle
+                self.move_rando = MoveRando.item_shuffle
                 if self.shockwave_status not in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with):
                     self.shuffled_location_types.append(Types.Shockwave)
                     self.shockwave_status = ShockwaveStatus.shuffled_decoupled  # Forced to be decoupled in item rando
@@ -1008,9 +1004,9 @@ class Settings:
             if self.training_barrels == TrainingBarrels.shuffled and Types.TrainingBarrel not in self.shuffled_location_types:
                 for kong in Kongs:
                     self.valid_locations[Types.Shop][kong].update(TrainingBarrelLocations.copy())
-            if self.starting_move_count > 0:
+            if self.starting_moves_count > 0:
                 for kong in Kongs:
-                    self.valid_locations[Types.Shop][kong].extend(PreGivenLocations.copy())
+                    self.valid_locations[Types.Shop][kong].update(PreGivenLocations.copy())
             self.valid_locations[Types.Shockwave] = self.valid_locations[Types.Shop][Kongs.any]
             self.valid_locations[Types.TrainingBarrel] = self.valid_locations[Types.Shop][Kongs.any]
 

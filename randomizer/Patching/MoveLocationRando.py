@@ -133,7 +133,7 @@ def randomize_moves(spoiler: Spoiler):
     hint_enabled = True
     if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.valid_locations:
         hint_enabled = False
-    if spoiler.settings.move_rando not in (MoveRando.off, MoveRando.start_with) and spoiler.move_data is not None:
+    if spoiler.settings.move_rando != MoveRando.off and spoiler.move_data is not None:
         # Take a copy of move_data before modifying
         move_arrays = spoiler.move_data.copy()
 

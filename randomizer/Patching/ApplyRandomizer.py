@@ -277,8 +277,6 @@ def patching_response(responded_data):
 
     # Unlock all moves / Camera unlocked
     given_moves = []
-    if spoiler.settings.unlock_all_moves:
-        given_moves = list(range(39))  # Potions, slam upgrades, guns, instruments, belts, homing, sniper, instrument upgrades, tbarrels
     if spoiler.settings.shockwave_status == ShockwaveStatus.start_with:
         given_moves.extend([39, 40])  # 39 = Camera, 40 = Shockwave
     move_bitfields = [0] * 6
