@@ -1,6 +1,5 @@
 """Library functions for the build procedure."""
 import struct
-from typing import BinaryIO
 
 main_pointer_table_offset = 0x101C50
 BLOCK_COLOR_SIZE = 64  # Bytes allocated to a block 32x32 image. Brute forcer says we can go as low as 0x25 bytes, but leaving some room for me to have left out something
@@ -22,16 +21,3 @@ def float_to_hex(f):
     if f == 0:
         return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
-
-
-def getFileData(rom: BinaryIO, table_index: int, file_index: int) -> tuple:
-    """Get data of file from pointer table."""
-    rom.seek(main_pointer_table_offset + (table_index * 4))
-    table_address = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-    rom.seek(table_address + (file_index * 4))
-    file_address = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-    file_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-    file_size = file_end - file_address
-    rom.seek(file_address)
-    compressed = int.from_bytes(rom.read(2), "big") == 0x1F8B
-    return file_address, file_size, compressed

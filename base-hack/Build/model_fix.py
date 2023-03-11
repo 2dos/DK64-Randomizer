@@ -3,6 +3,7 @@
 import zlib
 import os
 from BuildLib import intf_to_float, float_to_hex, main_pointer_table_offset, ROMName
+from BuildEnums import TableNames
 
 diddy_fix = """
     E7 00 00 00 00 00 00 00
@@ -141,9 +142,9 @@ if os.path.exists(krusha_file):
         krusha_kong = int(fh.read())
 
 with open(ROMName, "rb") as rom:
-    rom.seek(main_pointer_table_offset + (5 * 4))
+    rom.seek(main_pointer_table_offset + (TableNames.ActorGeometry * 4))
     actor_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-    rom.seek(main_pointer_table_offset + (4 * 4))
+    rom.seek(main_pointer_table_offset + (TableNames.ModelTwoGeometry * 4))
     modeltwo_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     for model in modifications:
         idx = model["model_index"]

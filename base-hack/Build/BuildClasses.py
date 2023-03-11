@@ -395,7 +395,7 @@ class TextChange:
 
 
 class SetupRequirement:
-    """Class to store information regarding requirements for a setup action to"""
+    """Class to store information regarding requirements for a setup action to."""
 
     def __init__(self, *, map_id=None, obj_type: int = None, obj_id: int = None, banned_maps: list = []):
         """Initialize with given parameters."""
@@ -405,7 +405,7 @@ class SetupRequirement:
         self.banned_maps = banned_maps.copy()
 
     def allow(self, map_id: int, obj_type: int, obj_id: int) -> bool:
-        """Does input conditions fulfill the requirements."""
+        """Will input conditions fulfill the requirements."""
         if map_id in self.banned_maps:
             return False
         if self.map_id is None or self.map_id == -1 or self.map_id == map_id:
@@ -419,7 +419,6 @@ class SetupActionModelTwo:
 
     def __init__(self, *, requirement: SetupRequirement = None, base_byte_stream=None, type=None, x=None, y=None, z=None, rx=None, ry=None, rz=None, id=None, scale=None, spawn_limit=1):
         """Initialize with given parameters."""
-
         self.requirement = requirement
         self.base_byte_stream = base_byte_stream
         self.type = type
@@ -456,3 +455,18 @@ class SetupActionModelTwo:
     def canSpawn(self) -> bool:
         """Determine whether a spawn can occur with this change."""
         return self.spawn_limit >= 1 and self.requirement.allow()
+
+
+class ROMPointerFile:
+    """Class to store information about a ROM Pointer table file."""
+
+    def __init__(self, rom: BinaryIO, table_index: int, file_index: int):
+        """Initialize with given data."""
+        rom.seek(main_pointer_table_offset + (table_index * 4))
+        table_address = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        rom.seek(table_address + (file_index * 4))
+        self.start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        self.end = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        self.size = self.end - self.start
+        rom.seek(self.start)
+        self.compressed = int.from_bytes(rom.read(2), "big") == 0x1F8B

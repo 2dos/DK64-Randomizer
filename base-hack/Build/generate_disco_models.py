@@ -2,6 +2,8 @@
 import zlib
 import os
 from BuildLib import main_pointer_table_offset, ROMName
+from BuildClasses import ROMPointerFile
+from BuildEnums import TableNames
 
 
 class Vert:
@@ -201,14 +203,9 @@ beater_new_dl = """
 # """
 
 with open(ROMName, "rb") as rom:
-    rom.seek(main_pointer_table_offset + (5 * 4))
-    actor_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-    rom.seek(actor_table + (0xD * 4))
-    disco_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-    disco_finish = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-    disco_size = disco_finish - disco_start
-    rom.seek(disco_start)
-    disco_data = zlib.decompress(rom.read(disco_size), (15 + 32))
+    disco_f = ROMPointerFile(rom, TableNames.ActorGeometry, 0xD)
+    rom.seek(disco_f.start)
+    disco_data = zlib.decompress(rom.read(disco_f.size), (15 + 32))
     vert_end = 0x38E8
     dl_end = 0x58B8
     # Disco Chunky + Instrument

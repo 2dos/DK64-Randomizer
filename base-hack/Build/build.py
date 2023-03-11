@@ -17,8 +17,8 @@ import model_fix
 import generate_disco_models
 import model_port
 from BuildEnums import ChangeType, TextureFormat, TableNames, CompressionMethods
-from BuildClasses import File, HashIcon, ModelChange, TextChange
-from BuildLib import main_pointer_table_offset, BLOCK_COLOR_SIZE, getFileData, ROMName, newROMName
+from BuildClasses import File, HashIcon, ModelChange, TextChange, ROMPointerFile
+from BuildLib import main_pointer_table_offset, BLOCK_COLOR_SIZE, ROMName, newROMName
 
 # Patcher functions for the extracted files
 import patch_text
@@ -499,7 +499,7 @@ for ki, kong in enumerate(switches):
 with open("./instance_scripts_data.json", "r") as json_f:
     instance_script_maps = json.load(json_f)
 maps_to_expand = list(range(0, 216))
-script_expansion_size = 0x200
+SCRIPT_EXPANSION_SIZE = 0x200
 for x in instance_script_maps:
     maps_to_expand.remove(x["map"])
     script_file_name = f"{x['name']}.raw"
@@ -507,7 +507,7 @@ for x in instance_script_maps:
     with open(script_file_name, "rb") as script_f:
         data = script_f.read()
         compress = gzip.compress(data, compresslevel=9)
-        expand_size = len(data) + script_expansion_size
+        expand_size = len(data) + SCRIPT_EXPANSION_SIZE
     file_dict.append(
         File(
             name=f"{x['name'].replace('_',' ')} Instance Scripts",
@@ -521,16 +521,10 @@ for x in instance_script_maps:
     )
 for x in maps_to_expand:
     with open(ROMName, "rb") as fh:
-        fh.seek(main_pointer_table_offset + (10 * 4))
-        script_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-        fh.seek(script_table + (x * 4))
-        item_start = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        item_end = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        fh.seek(item_start)
-        is_compressed = int.from_bytes(fh.read(2), "big") == 0x1F8B
-        item_size = item_end - item_start
-        if is_compressed:
-            fh.seek(item_start)
+        instance_f = ROMPointerFile(fh, TableNames.InstanceScripts, x)
+        item_size = instance_f.size
+        if instance_f.compressed:
+            fh.seek(instance_f.start)
             data = fh.read(item_size)
             data = zlib.decompress(data, (15 + 32))
             item_size = len(data)
@@ -540,7 +534,7 @@ for x in maps_to_expand:
                 pointer_table_index=TableNames.InstanceScripts,
                 file_index=x,
                 source_file=f"script{x}.bin",
-                target_size=item_size + script_expansion_size,
+                target_size=item_size + SCRIPT_EXPANSION_SIZE,
                 do_not_recompress=True,
             )
         )
@@ -576,18 +570,11 @@ for x in range(221):
     if x in (0, 1, 2, 5, 9, 15, 0x19):
         local_expansion = 0
     with open(ROMName, "rb") as fh:
-        setup_tbl_index = 9
-        fh.seek(main_pointer_table_offset + (setup_tbl_index * 4))
-        script_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-        fh.seek(script_table + (x * 4))
-        item_start = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        item_end = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        fh.seek(item_start)
-        is_compressed = int.from_bytes(fh.read(2), "big") == 0x1F8B
-        item_size = item_end - item_start
-        if is_compressed:
-            fh.seek(item_start)
-            data = fh.read(item_size)
+        setup_f = ROMPointerFile(fh, TableNames.Setups, x)
+        item_size = setup_f.size
+        if setup_f.compressed:
+            fh.seek(setup_f.start)
+            data = fh.read(setup_f.size)
             data = zlib.decompress(data, (15 + 32))
             item_size = len(data)
         file_dict.append(
@@ -1101,17 +1088,17 @@ with open(newROMName, "r+b") as fh:
     dumpPointerTableDetails("rom/build.log", fh, False)
 
     # Change Helm Geometry (Can't use main CL Build System because of forced duplication)
-    file_start, file_size, file_compressed = getFileData(fh, TableNames.MapGeometry, 0x11)
-    fh.seek(file_start)
-    for by_i in range(file_size):
+    geo_file = ROMPointerFile(fh, TableNames.MapGeometry, 0x11)
+    fh.seek(geo_file.start)
+    for by_i in range(geo_file.size):
         fh.write((0).to_bytes(1, "big"))
-    fh.seek(file_start)
+    fh.seek(geo_file.start)
     with open("helm.bin", "rb") as helm_geo:
         fh.write(gzip.compress(helm_geo.read(), compresslevel=9))
 
     # Replace Helm Text
-    file_start, file_size, file_compressed = getFileData(fh, TableNames.Text, 19)
-    fh.seek(file_start + 0x7B9)
+    text_file = ROMPointerFile(fh, TableNames.Text, 19)
+    fh.seek(text_file.start + 0x7B9)
     fh.write(("?").encode("ascii"))
     for i in range(0x15):
         fh.write(("\0").encode("ascii"))

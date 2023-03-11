@@ -2,29 +2,22 @@
 import zlib
 import os
 from BuildLib import main_pointer_table_offset, ROMName
-from BuildEnums import Icons
+from BuildEnums import Icons, TableNames
+from BuildClasses import ROMPointerFile
 
 temp_file = "decodedtext.bin"
-text_table_index = 12
 
 
 def grabText(file_index: int) -> list:
     """Pull text from ROM with a particular file index."""
     with open(ROMName, "rb") as fh:
-        fh.seek(main_pointer_table_offset + (text_table_index * 4))
-        text_table = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        fh.seek(text_table + (file_index * 4))
-        text_start = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        text_end = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        text_size = text_end
-        fh.seek(text_start)
-        indic = int.from_bytes(fh.read(2), "big")
-        fh.seek(text_start)
+        text_file = ROMPointerFile(fh, TableNames.Text, file_index)
+        fh.seek(text_file.start)
         with open(temp_file, "wb") as fg:
-            if indic == 0x1F8B:
-                fg.write(zlib.decompress(fh.read(text_size), (15 + 32)))
+            if text_file.compressed:
+                fg.write(zlib.decompress(fh.read(text_file.size), (15 + 32)))
             else:
-                fg.write(fh.read(text_size))
+                fg.write(fh.read(text_file.size))
 
     with open(temp_file, "rb") as fh:
         fh.seek(0)

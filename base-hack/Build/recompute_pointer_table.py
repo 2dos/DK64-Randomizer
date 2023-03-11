@@ -6,7 +6,7 @@ from typing import BinaryIO
 from BuildNames import maps
 from BuildLib import main_pointer_table_offset
 from BuildEnums import TableNames
-from BuildClasses import TableEntry, pointer_tables, PointerFile
+from BuildClasses import TableEntry, pointer_tables, PointerFile, ROMPointerFile
 
 # The address of the next available byte of free space in ROM
 # used when appending files to the end of the ROM
@@ -119,7 +119,7 @@ def addFileToDatabase(fh: BinaryIO, absolute_address: int, absolute_size: int, p
     # TODO: Get rid of this check
     for x in pointer_tables:
         if x.absolute_address == absolute_address:
-            print("WARNING: POINTER TABLE " + str(x["index"]) + " BEING USED AS FILE!")
+            print("WARNING: POINTER TABLE " + str(x.index) + " BEING USED AS FILE!")
             return
 
     fh.seek(absolute_address)
@@ -176,17 +176,12 @@ def replaceROMFile(rom: BinaryIO, pointer_table_index: int, file_index: int, dat
         pointer_tables[pointer_table_index].num_entries = file_index + 1
 
         # Update uncompressed pointer table entry
-        rom.seek(main_pointer_table_offset + (4 * 26))
-        uncompressed_table_location = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-        rom.seek(uncompressed_table_location + (4 * pointer_table_index))
-        uncompressed_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-        uncompressed_finish = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-        uncompressed_table_size = uncompressed_finish - uncompressed_start
-        if uncompressed_table_size > 0:
-            print(f" - Expanding pointer table {pointer_table_index} from {uncompressed_table_size} bytes to {4 * (file_index + 1)} bytes")
-            rom.seek(uncompressed_start)
-            new_uncompressed_data = bytearray(rom.read(uncompressed_table_size))
-            for d in range((4 * (file_index + 1)) - uncompressed_table_size):
+        size_file = ROMPointerFile(rom, TableNames.UncompressedFileSizes, pointer_table_index)
+        if size_file.size > 0:
+            print(f" - Expanding pointer table {pointer_table_index} from {size_file.size} bytes to {4 * (file_index + 1)} bytes")
+            rom.seek(size_file.start)
+            new_uncompressed_data = bytearray(rom.read(size_file.size))
+            for d in range((4 * (file_index + 1)) - size_file.size):
                 new_uncompressed_data.append(0)
             replaceROMFile(rom, TableNames.UncompressedFileSizes, pointer_table_index, bytes(new_uncompressed_data), 4 * (file_index + 1))
 
@@ -207,16 +202,11 @@ def clampCompressedTextures(rom: BinaryIO, cap: int):
         pointer_tables[TableNames.TexturesGeometry].num_entries = cap
 
         # Update uncompressed pointer table entry
-        rom.seek(main_pointer_table_offset + (4 * TableNames.UncompressedFileSizes))
-        uncompressed_table_location = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-        rom.seek(uncompressed_table_location + (4 * TableNames.TexturesGeometry))
-        uncompressed_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-        uncompressed_finish = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-        uncompressed_table_size = uncompressed_finish - uncompressed_start
-        if uncompressed_table_size > 0:
+        size_file = ROMPointerFile(rom, TableNames.UncompressedFileSizes, TableNames.TexturesGeometry)
+        if size_file.size > 0:
             new_size = 4 * cap
-            print(f" - Compressing pointer table 25 from {uncompressed_table_size} bytes to {new_size} bytes")
-            rom.seek(uncompressed_start)
+            print(f" - Compressing pointer table 25 from {size_file.size} bytes to {new_size} bytes")
+            rom.seek(size_file.start)
             new_uncompressed_data = bytearray(rom.read(new_size))
             replaceROMFile(rom, TableNames.UncompressedFileSizes, 25, bytes(new_uncompressed_data), new_size)
 
@@ -289,7 +279,7 @@ def writeModifiedPointerTablesToROM(fh: BinaryIO):
 
     # Recompute the pointer tables using the new file addresses and write them in the reserved space
     for x in reversed(pointer_tables):
-        fh.seek(main_pointer_table_offset + (26 * 4))
+        fh.seek(main_pointer_table_offset + (TableNames.UncompressedFileSizes * 4))
         print(f"Pointer Table {x.index}. New Location: {hex(main_pointer_table_offset + int.from_bytes(fh.read(4),'big'))}. Write Location:")
         if not shouldWritePointerTable(x.index):
             continue
