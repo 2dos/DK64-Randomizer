@@ -50,6 +50,7 @@ def resetCond(reset_block):
     new_conds = []
     new_execs = []
 
+
 def BuildInstanceScripts():
     """Build instance scripts."""
     global new_block_count

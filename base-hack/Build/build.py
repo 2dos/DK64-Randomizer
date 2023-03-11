@@ -65,7 +65,15 @@ getHelmDoorModel(6022, 6023, "crown_door.bin")
 getHelmDoorModel(6024, 6025, "coin_door.bin")
 
 file_dict = [
-    File(name="Static ASM Code", subtype=ChangeType.FixedLocation, start=0x113F0, compressed_size=0xB15E4, source_file="StaticCode.bin", compression_method=CompressionMethods.ExternalGzip, patcher=patchStaticCode),
+    File(
+        name="Static ASM Code",
+        subtype=ChangeType.FixedLocation,
+        start=0x113F0,
+        compressed_size=0xB15E4,
+        source_file="StaticCode.bin",
+        compression_method=CompressionMethods.ExternalGzip,
+        patcher=patchStaticCode,
+    ),
     File(name="Dolby Logo", pointer_table_index=TableNames.TexturesHUD, file_index=176, source_file="assets/Dolby/DolbyThin.png", texture_format=TextureFormat.IA4),
     File(name="Thumb Image", pointer_table_index=TableNames.TexturesHUD, file_index=94, source_file="assets/Nintendo Logo/Nintendo5.png", texture_format=TextureFormat.RGBA5551),
     File(name="DKTV Image", pointer_table_index=TableNames.TexturesHUD, file_index=44, source_file="assets/DKTV/logo3.png", texture_format=TextureFormat.RGBA5551),
@@ -1090,7 +1098,7 @@ with open(newROMName, "r+b") as fh:
     writeModifiedOverlaysToROM(fh)
 
     print("[6 / 7] - Dumping details of all pointer tables to rom/build.log")
-    dumpPointerTableDetails("rom/build.log", fh)
+    dumpPointerTableDetails("rom/build.log", fh, False)
 
     # Change Helm Geometry (Can't use main CL Build System because of forced duplication)
     file_start, file_size, file_compressed = getFileData(fh, TableNames.MapGeometry, 0x11)

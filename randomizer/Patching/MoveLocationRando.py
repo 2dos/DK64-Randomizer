@@ -201,6 +201,7 @@ def randomize_moves(spoiler: Spoiler):
         writeMoveDataToROM(training_moves, hint_enabled, spoiler, 0, [Kongs.any, Kongs.any, Kongs.any, Kongs.any], 7)
         writeMoveDataToROM(bfi_move, hint_enabled, spoiler, 0, [Kongs.tiny], 7)
 
+
 def getNextSlot(spoiler: Spoiler, item: Items) -> int:
     """Get slot for progressive item with pre-given moves."""
     slots = []
@@ -209,7 +210,7 @@ def getNextSlot(spoiler: Spoiler, item: Items) -> int:
     elif item == Items.ProgressiveInstrumentUpgrade:
         slots = [0x20, 0x21, 0x22]
     elif item == Items.ProgressiveSlam:
-        slots = [0x10, 0x11] # 0xF excluded as slam 1 is pre-given
+        slots = [0x10, 0x11]  # 0xF excluded as slam 1 is pre-given
     if len(slots) == 0:
         return None
     for slot in slots:
@@ -220,7 +221,7 @@ def getNextSlot(spoiler: Spoiler, item: Items) -> int:
         if (val & (0x80 >> check)) == 0:
             return slot
     return None
-    
+
 
 def place_pregiven_moves(spoiler: Spoiler):
     """Place pre-given moves."""
@@ -276,13 +277,13 @@ def place_pregiven_moves(spoiler: Spoiler):
             elif item in item_order:
                 new_slot = item_order.index(item)
             elif item == Items.CameraAndShockwave:
-                new_slot = None # Setting is handled by the code below
+                new_slot = None  # Setting is handled by the code below
                 for index in [item_order.index(Items.Camera), item_order.index(Items.Shockwave)]:
                     offset = int(index >> 3)
                     check = int(index % 8)
                     ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
                     val = int.from_bytes(ROM().readBytes(1), "big")
-                    val |= (0x80 >> check)
+                    val |= 0x80 >> check
                     ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
                     ROM().writeMultipleBytes(val, 1)
             if new_slot is not None:
@@ -290,8 +291,6 @@ def place_pregiven_moves(spoiler: Spoiler):
                 check = int(new_slot % 8)
                 ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
                 val = int.from_bytes(ROM().readBytes(1), "big")
-                val |= (0x80 >> check)
+                val |= 0x80 >> check
                 ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
                 ROM().writeMultipleBytes(val, 1)
-
-                

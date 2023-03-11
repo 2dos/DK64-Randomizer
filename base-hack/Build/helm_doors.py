@@ -2,6 +2,7 @@
 import zlib
 from BuildLib import main_pointer_table_offset, ROMName
 
+
 def getHelmDoorModel(new_item_image: int, new_number_image: int, filename: str):
     """Get the model file for the Helm coin door, which will be the template for both doors."""
     with open(ROMName, "rb") as rom:

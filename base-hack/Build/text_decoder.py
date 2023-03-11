@@ -1,7 +1,8 @@
 """Decode text file into arrays of text items."""
 import zlib
 import os
-from BuildLib import icon_db, main_pointer_table_offset, ROMName
+from BuildLib import main_pointer_table_offset, ROMName
+from BuildEnums import Icons
 
 temp_file = "decodedtext.bin"
 text_table_index = 12
@@ -61,7 +62,7 @@ def grabText(file_index: int) -> list:
                             _pos = int.from_bytes(fh.read(2), "big")
                             fh.seek(data_start + _block)
                             _dat = int.from_bytes(fh.read(4), "big")
-                            text_blocks.append({"type": "sprite", "position": _pos, "data": hex(_dat), "sprite": icon_db[(_dat >> 8) & 0xFF]})
+                            text_blocks.append({"type": "sprite", "position": _pos, "data": hex(_dat), "sprite": Icons((_dat >> 8) & 0xFF)})
                         added = block_start + 2 + offset + (4 * sec3ct) + 4
                 else:
                     fh.seek(data_start + block_start + offset + 1)

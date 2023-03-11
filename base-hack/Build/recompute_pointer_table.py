@@ -57,7 +57,7 @@ def writeUncompressedSize(fh: BinaryIO, pointer_table_index: int, file_index: in
     ROMAddress = main_pointer_table_offset + int.from_bytes(fh.read(4), "big") + file_index * 4
 
     # Game seems to align these mod 2
-    uncompressed_size += (uncompressed_size % 2)
+    uncompressed_size += uncompressed_size % 2
 
     print(" - Writing new uncompressed size " + hex(uncompressed_size) + " for file " + str(pointer_table_index) + "->" + str(file_index) + " to ROM address " + hex(ROMAddress))
 
@@ -327,7 +327,7 @@ def writeModifiedPointerTablesToROM(fh: BinaryIO):
 dataset = []
 
 
-def dumpPointerTableDetails(filename: str, fr: BinaryIO):
+def dumpPointerTableDetails(filename: str, fr: BinaryIO, generate_json: bool):
     """Dump the pointer table info into a JSON readable pointer table."""
     print("Dumping Pointer Table Details to " + filename)
     for x in pointer_tables:
@@ -361,8 +361,9 @@ def dumpPointerTableDetails(filename: str, fr: BinaryIO):
         }
         dataset.insert(x.index, section_data)
 
-    with open("../static/patches/pointer_addresses.json", "w") as fh:
-        fh.write(json.dumps(dataset))
+    if generate_json:
+        with open("../static/patches/pointer_addresses.json", "w") as fh:
+            fh.write(json.dumps(dataset))
 
 
 def dumpPointerTableDetailsLegacy(filename: str, fr: BinaryIO):

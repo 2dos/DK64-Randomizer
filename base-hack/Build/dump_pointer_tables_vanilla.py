@@ -4,4 +4,4 @@ from BuildLib import ROMName
 
 with open(ROMName, "rb") as fh:
     parsePointerTables(fh)
-    dumpPointerTableDetails("rom/pointer_tables_vanilla.log", fh)
+    dumpPointerTableDetails("rom/pointer_tables_vanilla.log", fh, False)

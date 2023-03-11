@@ -484,7 +484,7 @@ class Settings:
             self.prices = RandomizePrices(self.random_prices)
 
     def resolve_settings(self):
-        """Resolve settings which are not directly set through the UI."""        
+        """Resolve settings which are not directly set through the UI."""
         # If we're using the vanilla door shuffle, turn both wrinkly and tns rando on
         if self.vanilla_door_rando:
             self.wrinkly_location_rando = True
@@ -563,16 +563,20 @@ class Settings:
         # If the training barrels are shuffled in, we may have to remove the training barrel locations because of the above comment
         if self.training_barrels == TrainingBarrels.shuffled:
             locations_to_add -= 4
-        last_location = (Locations.PreGiven_Location00 + locations_to_add)
+        last_location = Locations.PreGiven_Location00 + locations_to_add
         # If we have fewer starting items than training barrels, then we have to prevent some training barrels from having items
         if locations_to_add < 0:
             last_location = Locations.PreGiven_Location00
-            invalid_training_barrels = [Locations.IslesVinesTrainingBarrel, Locations.IslesSwimTrainingBarrel, Locations.IslesOrangesTrainingBarrel, Locations.IslesBarrelsTrainingBarrel][self.starting_move_count:]
+            invalid_training_barrels = [Locations.IslesVinesTrainingBarrel, Locations.IslesSwimTrainingBarrel, Locations.IslesOrangesTrainingBarrel, Locations.IslesBarrelsTrainingBarrel][
+                self.starting_move_count :
+            ]
             for locationId in invalid_training_barrels:
                 LocationList[locationId].default = Items.NoItem
                 LocationList[locationId].constant = True
         # We need to filter the GameStart region's locations to remove the locations that aren't valid anymore
-        randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations = [loclogic for loclogic in randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations if loclogic.id < last_location]
+        randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations = [
+            loclogic for loclogic in randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations if loclogic.id < last_location
+        ]
         for locationId in PreGivenLocations:
             if locationId >= last_location:
                 del LocationList[locationId]

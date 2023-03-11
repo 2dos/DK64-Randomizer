@@ -4,7 +4,7 @@ from image_converter import convertToRGBA32
 from typing import BinaryIO
 import subprocess
 from BuildEnums import ChangeType, TableNames, TextureFormat, CompressionMethods
-from BuildLib import main_pointer_table_offset
+from BuildLib import main_pointer_table_offset, float_to_hex
 import encoders
 
 
@@ -361,13 +361,15 @@ class PointerFile:
         self.sha1 = sha1
         self.uncompressed_size = uncompressed_size
 
+
 class HashIcon:
     """Class to store information regarding a hash icon."""
 
-    def __init__(self, icon_file: str, file_index:int):
+    def __init__(self, icon_file: str, file_index: int):
         """Initialize with given parameters."""
         self.icon_file = icon_file
         self.file_index = file_index
+
 
 class ModelChange:
     """Class to store information regarding a model change."""
@@ -376,6 +378,7 @@ class ModelChange:
         """Initialize with given parameters."""
         self.model_index = model_index
         self.model_file = model_file
+
 
 class TextChange:
     """Class to store information regarding a text change."""
@@ -389,3 +392,67 @@ class TextChange:
                 self.change = True
         self.change_expansion = change_expansion
         self.file = file
+
+
+class SetupRequirement:
+    """Class to store information regarding requirements for a setup action to"""
+
+    def __init__(self, *, map_id=None, obj_type: int = None, obj_id: int = None, banned_maps: list = []):
+        """Initialize with given parameters."""
+        self.map_id = map_id
+        self.obj_type = obj_type
+        self.obj_id = obj_id
+        self.banned_maps = banned_maps.copy()
+
+    def allow(self, map_id: int, obj_type: int, obj_id: int) -> bool:
+        """Does input conditions fulfill the requirements."""
+        if map_id in self.banned_maps:
+            return False
+        if self.map_id is None or self.map_id == -1 or self.map_id == map_id:
+            if self.obj_type is None or self.obj_type == -1 or self.obj_type == obj_type:
+                return self.obj_id is None or self.obj_id == -1 or self.obj_id == obj_id
+        return False
+
+
+class SetupActionModelTwo:
+    """Class to store information regarding an added model two item to the setup."""
+
+    def __init__(self, *, requirement: SetupRequirement = None, base_byte_stream=None, type=None, x=None, y=None, z=None, rx=None, ry=None, rz=None, id=None, scale=None, spawn_limit=1):
+        """Initialize with given parameters."""
+
+        self.requirement = requirement
+        self.base_byte_stream = base_byte_stream
+        self.type = type
+        # Defaults
+        self.x = None
+        self.y = None
+        self.z = None
+        self.rx = None
+        self.ry = None
+        self.rz = None
+        self.scale = None
+        if x is not None:
+            self.x = int(float_to_hex(x), 16)
+        if y is not None:
+            self.y = int(float_to_hex(y), 16)
+        if z is not None:
+            self.z = int(float_to_hex(z), 16)
+        if rx is not None:
+            self.rx = int(float_to_hex(rx), 16)
+        if ry is not None:
+            self.ry = int(float_to_hex(ry), 16)
+        if rz is not None:
+            self.rz = int(float_to_hex(rz), 16)
+        if scale is not None:
+            self.scale = int(float_to_hex(scale), 16)
+        self.id = id
+        self.spawn_limit = spawn_limit
+
+    def spawn(self):
+        """Spawn item."""
+        if self.spawn_limit > 1:
+            self.spawn_limit -= 1
+
+    def canSpawn(self) -> bool:
+        """Determine whether a spawn can occur with this change."""
+        return self.spawn_limit >= 1 and self.requirement.allow()

@@ -17,6 +17,7 @@ class Vert:
         self.rgba = rgba
         self.other = other
 
+
 temp_file = "temp.bin"
 ins_file = "disco_instrument.bin"
 

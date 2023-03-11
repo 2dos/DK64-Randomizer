@@ -1028,7 +1028,11 @@ def compileHints(spoiler: Spoiler):
         for location_id in spoiler.woth_locations:
             location = LocationList[location_id]
             # Only hint things that are in shuffled locations - don't hint starting moves because you can't know which move it refers to and don't hint the Helm Key if you know key 8 is there
-            if location.type in spoiler.settings.shuffled_location_types and location.type not in (Types.TrainingBarrel, Types.PreGivenMove) and not (spoiler.settings.key_8_helm and location_id == Locations.HelmKey):
+            if (
+                location.type in spoiler.settings.shuffled_location_types
+                and location.type not in (Types.TrainingBarrel, Types.PreGivenMove)
+                and not (spoiler.settings.key_8_helm and location_id == Locations.HelmKey)
+            ):
                 hintable_location_ids.append(location_id)
         random.shuffle(hintable_location_ids)
         placed_woth_hints = 0

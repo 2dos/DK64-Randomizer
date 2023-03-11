@@ -92,6 +92,7 @@ def max_randomized_fairies(event):
     elif int(fairy_req.value) > 20:
         fairy_req.value = 20
 
+
 @bind("focusout", "starting_moves_count")
 def max_starting_moves_count(event):
     """Validate starting moves count input on loss of focus."""
