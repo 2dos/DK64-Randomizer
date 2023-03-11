@@ -54,10 +54,6 @@ def PlaceConstants(settings):
     for location in LocationList:
         if LocationList[location].type in typesOfItemsNotShuffled:
             LocationList[location].PlaceDefaultItem()
-    # # Depending on the number of starting moves and the training barrel setting, some training barrels may be constant while others are not. Handle these specially.
-    # for location in TrainingBarrelLocations:
-    #     if LocationList[location].constant:
-    #         LocationList[location].PlaceDefaultItem()
 
     # Empty out some locations based on the settings
     if settings.starting_kongs_count == 5:
