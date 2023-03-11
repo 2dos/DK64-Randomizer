@@ -1186,9 +1186,6 @@ def Fill(spoiler):
 
 def ShuffleSharedMoves(spoiler, placedMoves, placedTypes):
     """Shuffles shared kong moves into shops and then returns the remaining ones and their valid locations."""
-    # First place constant items
-    ItemPool.PlaceConstants(spoiler.settings)
-
     # Confirm there are enough locations available for each remaining shared move
     availableSharedShops = [location for location in SharedMoveLocations if LocationList[location].item is None]
     placedSharedMoves = [move for move in placedMoves if move in ItemPool.ImportantSharedMoves or move in ItemPool.JunkSharedMoves]
@@ -1533,8 +1530,9 @@ def FillKongsAndMoves(spoiler, placedTypes):
     locationsNeedingMoves = []
     # We can expect that all locations in this region are starting move locations or Training Barrels
     for locationLogic in RegionList[Regions.GameStart].locations:
-        if LocationList[locationLogic.id].item is not None:
-            startingMoves.append(LocationList[locationLogic.id].item)
+        location = LocationList[locationLogic.id]
+        if location.item not in (None, Items.NoItem) or (location.item == Items.NoItem and not location.constant):
+            startingMoves.append(location.item)
         else:
             locationsNeedingMoves.append(locationLogic.id)
     # Fill the empty starting locations
