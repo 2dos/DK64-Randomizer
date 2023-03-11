@@ -55,11 +55,6 @@ LogicRegions = {
         LocationLogic(Locations.PreGiven_Location33, lambda l: True),
         LocationLogic(Locations.PreGiven_Location34, lambda l: True),
         LocationLogic(Locations.PreGiven_Location35, lambda l: True),
-        LocationLogic(Locations.PreGiven_Location36, lambda l: True),
-        LocationLogic(Locations.PreGiven_Location37, lambda l: True),
-        LocationLogic(Locations.PreGiven_Location38, lambda l: True),
-        LocationLogic(Locations.PreGiven_Location39, lambda l: True),
-        LocationLogic(Locations.PreGiven_Location40, lambda l: True),
     ], [], [
         TransitionFront(Regions.Credits, lambda l: True),
         # Replace these with the actual starting region if we choose to randomize it

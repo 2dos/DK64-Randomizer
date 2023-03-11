@@ -132,11 +132,49 @@ class Location:
 
 
 LocationList = {
-    # DK Isles locations
+    # Training Barrel locations
     Locations.IslesVinesTrainingBarrel: Location(Levels.DKIsles, "Isles Vines Training Barrel", Items.Vines, Types.TrainingBarrel, Kongs.any, [123]),
     Locations.IslesSwimTrainingBarrel: Location(Levels.DKIsles, "Isles Swim Training Barrel", Items.Swim, Types.TrainingBarrel, Kongs.any, [120]),
     Locations.IslesOrangesTrainingBarrel: Location(Levels.DKIsles, "Isles Oranges Training Barrel", Items.Oranges, Types.TrainingBarrel, Kongs.any, [121]),
     Locations.IslesBarrelsTrainingBarrel: Location(Levels.DKIsles, "Isles Barrels Training Barrel", Items.Barrels, Types.TrainingBarrel, Kongs.any, [122]),
+    # Pre-Given Moves
+    Locations.PreGiven_Location00: Location(Levels.DKIsles, "Pre-Given Move (00)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location01: Location(Levels.DKIsles, "Pre-Given Move (01)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location02: Location(Levels.DKIsles, "Pre-Given Move (02)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location03: Location(Levels.DKIsles, "Pre-Given Move (03)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location04: Location(Levels.DKIsles, "Pre-Given Move (04)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location05: Location(Levels.DKIsles, "Pre-Given Move (05)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location06: Location(Levels.DKIsles, "Pre-Given Move (06)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location07: Location(Levels.DKIsles, "Pre-Given Move (07)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location08: Location(Levels.DKIsles, "Pre-Given Move (08)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location09: Location(Levels.DKIsles, "Pre-Given Move (09)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location10: Location(Levels.DKIsles, "Pre-Given Move (10)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location11: Location(Levels.DKIsles, "Pre-Given Move (11)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location12: Location(Levels.DKIsles, "Pre-Given Move (12)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location13: Location(Levels.DKIsles, "Pre-Given Move (13)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location14: Location(Levels.DKIsles, "Pre-Given Move (14)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location15: Location(Levels.DKIsles, "Pre-Given Move (15)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location16: Location(Levels.DKIsles, "Pre-Given Move (16)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location17: Location(Levels.DKIsles, "Pre-Given Move (17)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location18: Location(Levels.DKIsles, "Pre-Given Move (18)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location19: Location(Levels.DKIsles, "Pre-Given Move (19)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location20: Location(Levels.DKIsles, "Pre-Given Move (20)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location21: Location(Levels.DKIsles, "Pre-Given Move (21)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location22: Location(Levels.DKIsles, "Pre-Given Move (22)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location23: Location(Levels.DKIsles, "Pre-Given Move (23)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location24: Location(Levels.DKIsles, "Pre-Given Move (24)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location25: Location(Levels.DKIsles, "Pre-Given Move (25)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location26: Location(Levels.DKIsles, "Pre-Given Move (26)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location27: Location(Levels.DKIsles, "Pre-Given Move (27)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location28: Location(Levels.DKIsles, "Pre-Given Move (28)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location29: Location(Levels.DKIsles, "Pre-Given Move (29)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location30: Location(Levels.DKIsles, "Pre-Given Move (30)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location31: Location(Levels.DKIsles, "Pre-Given Move (31)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location32: Location(Levels.DKIsles, "Pre-Given Move (32)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location33: Location(Levels.DKIsles, "Pre-Given Move (33)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location34: Location(Levels.DKIsles, "Pre-Given Move (34)", Items.NoItem, Types.PreGivenMove),
+    Locations.PreGiven_Location35: Location(Levels.DKIsles, "Pre-Given Move (35)", Items.NoItem, Types.PreGivenMove),
+    # DK Isles locations
     Locations.IslesDonkeyJapesRock: Location(Levels.DKIsles, "Isles Japes Lobby Entrance Item", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(Maps.Isles, 0x4, 381, Kongs.donkey)]),  # Can be assigned to other kongs
     Locations.IslesTinyCagedBanana: Location(Levels.DKIsles, "Isles Tiny Feather Cage", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.Isles, 0x2B, 420, Kongs.tiny)]),
     Locations.IslesTinyInstrumentPad: Location(Levels.DKIsles, "Isles Tiny Saxophone Pad", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(0, -1, 425, Kongs.tiny)]),
@@ -676,49 +714,6 @@ LocationList = {
     Locations.RainbowCoin_Location13: Location(Levels.DKIsles, "Isles Dirt Patch (Back of Training Grounds)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2AB)]),  # Back of TG
     Locations.RainbowCoin_Location14: Location(Levels.DKIsles, "Isles Dirt Patch (Banana Hoard)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2AC)]),  # Banana Hoard
     Locations.RainbowCoin_Location15: Location(Levels.DKIsles, "Isles Dirt Patch (Castle Lobby)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x2AD)]),  # Castle Lobby
-
-    # Pre-Given Moves
-    Locations.PreGiven_Location00: Location(Levels.DKIsles, "Pre-Given Move (00)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location01: Location(Levels.DKIsles, "Pre-Given Move (01)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location02: Location(Levels.DKIsles, "Pre-Given Move (02)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location03: Location(Levels.DKIsles, "Pre-Given Move (03)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location04: Location(Levels.DKIsles, "Pre-Given Move (04)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location05: Location(Levels.DKIsles, "Pre-Given Move (05)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location06: Location(Levels.DKIsles, "Pre-Given Move (06)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location07: Location(Levels.DKIsles, "Pre-Given Move (07)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location08: Location(Levels.DKIsles, "Pre-Given Move (08)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location09: Location(Levels.DKIsles, "Pre-Given Move (09)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location10: Location(Levels.DKIsles, "Pre-Given Move (10)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location11: Location(Levels.DKIsles, "Pre-Given Move (11)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location12: Location(Levels.DKIsles, "Pre-Given Move (12)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location13: Location(Levels.DKIsles, "Pre-Given Move (13)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location14: Location(Levels.DKIsles, "Pre-Given Move (14)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location15: Location(Levels.DKIsles, "Pre-Given Move (15)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location16: Location(Levels.DKIsles, "Pre-Given Move (16)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location17: Location(Levels.DKIsles, "Pre-Given Move (17)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location18: Location(Levels.DKIsles, "Pre-Given Move (18)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location19: Location(Levels.DKIsles, "Pre-Given Move (19)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location20: Location(Levels.DKIsles, "Pre-Given Move (20)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location21: Location(Levels.DKIsles, "Pre-Given Move (21)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location22: Location(Levels.DKIsles, "Pre-Given Move (22)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location23: Location(Levels.DKIsles, "Pre-Given Move (23)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location24: Location(Levels.DKIsles, "Pre-Given Move (24)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location25: Location(Levels.DKIsles, "Pre-Given Move (25)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location26: Location(Levels.DKIsles, "Pre-Given Move (26)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location27: Location(Levels.DKIsles, "Pre-Given Move (27)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location28: Location(Levels.DKIsles, "Pre-Given Move (28)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location29: Location(Levels.DKIsles, "Pre-Given Move (29)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location30: Location(Levels.DKIsles, "Pre-Given Move (30)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location31: Location(Levels.DKIsles, "Pre-Given Move (31)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location32: Location(Levels.DKIsles, "Pre-Given Move (32)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location33: Location(Levels.DKIsles, "Pre-Given Move (33)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location34: Location(Levels.DKIsles, "Pre-Given Move (34)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location35: Location(Levels.DKIsles, "Pre-Given Move (35)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location36: Location(Levels.DKIsles, "Pre-Given Move (36)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location37: Location(Levels.DKIsles, "Pre-Given Move (37)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location38: Location(Levels.DKIsles, "Pre-Given Move (38)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location39: Location(Levels.DKIsles, "Pre-Given Move (39)", Items.NoItem, Types.PreGivenMove),
-    Locations.PreGiven_Location40: Location(Levels.DKIsles, "Pre-Given Move (40)", Items.NoItem, Types.PreGivenMove),
 }
 
 TrainingBarrelLocations = {
@@ -924,11 +919,6 @@ PreGivenLocations = {
     Locations.PreGiven_Location33,
     Locations.PreGiven_Location34,
     Locations.PreGiven_Location35,
-    Locations.PreGiven_Location36,
-    Locations.PreGiven_Location37,
-    Locations.PreGiven_Location38,
-    Locations.PreGiven_Location39,
-    Locations.PreGiven_Location40,
 }
 
 # Dictionary to speed up lookups of related shop locations

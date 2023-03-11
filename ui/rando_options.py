@@ -562,6 +562,7 @@ def disable_move_shuffles(evt):
     prices = js.document.getElementById("random_prices")
     training_barrels = js.document.getElementById("training_barrels")
     shockwave_status = js.document.getElementById("shockwave_status")
+    starting_moves_count = js.document.getElementById("starting_moves_count")
     try:
         if moves.value == "start_with":
             prices.setAttribute("disabled", "disabled")
@@ -569,16 +570,21 @@ def disable_move_shuffles(evt):
             training_barrels.setAttribute("disabled", "disabled")
             shockwave_status.value = "vanilla"
             shockwave_status.setAttribute("disabled", "disabled")
+            starting_moves_count.value = 40
+            starting_moves_count.setAttribute("disabled", "disabled")
         elif moves.value == "off":
             prices.removeAttribute("disabled")
             training_barrels.value = "normal"
             training_barrels.setAttribute("disabled", "disabled")
             shockwave_status.value = "vanilla"
             shockwave_status.setAttribute("disabled", "disabled")
+            starting_moves_count.value = 40
+            starting_moves_count.setAttribute("disabled", "disabled")
         else:
             prices.removeAttribute("disabled")
             training_barrels.removeAttribute("disabled")
             shockwave_status.removeAttribute("disabled")
+            starting_moves_count.removeAttribute("disabled")
     except AttributeError:
         pass
 
@@ -627,7 +633,6 @@ def toggle_item_rando(evt):
     shockwave = document.getElementById("shockwave_status_shuffled")
     move_vanilla = document.getElementById("move_off")
     move_rando = document.getElementById("move_on")
-    move_start = document.getElementById("move_start_with")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -650,7 +655,6 @@ def toggle_item_rando(evt):
             shockwave.removeAttribute("disabled")
             move_vanilla.removeAttribute("disabled")
             move_rando.removeAttribute("disabled")
-            move_start.removeAttribute("disabled")
         else:
             # Enable item rando modal, prevent shockwave/camera coupling, and enable smaller shops if it's in the pool
             selector.removeAttribute("disabled")
@@ -671,7 +675,6 @@ def item_rando_list_changed(evt):
     smaller_shops = document.getElementById("smaller_shops")
     move_vanilla = document.getElementById("move_off")
     move_rando = document.getElementById("move_on")
-    move_start = document.getElementById("move_start_with")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -687,12 +690,11 @@ def item_rando_list_changed(evt):
         # Prevent camera/shockwave from being coupled and enable smaller shops if shops are in the pool
         if shockwave.selected is True:
             document.getElementById("shockwave_status_shuffled_decoupled").selected = True
-        if move_vanilla.selected is True or move_rando.selected is True or move_start.selected is True:
+        if move_vanilla.selected is True or move_rando.selected is True:
             document.getElementById("move_on_cross_purchase").selected = True
         shockwave.setAttribute("disabled", "disabled")
         move_vanilla.setAttribute("disabled", "disabled")
         move_rando.setAttribute("disabled", "disabled")
-        move_start.setAttribute("disabled", "disabled")
         smaller_shops.removeAttribute("disabled")
         # Prevent UI breaking if Vanilla/Unlock All moves was selected before selection Shops in Item Rando
         js.document.getElementById("training_barrels").removeAttribute("disabled")
@@ -703,7 +705,6 @@ def item_rando_list_changed(evt):
         shockwave.removeAttribute("disabled")
         move_vanilla.removeAttribute("disabled")
         move_rando.removeAttribute("disabled")
-        move_start.removeAttribute("disabled")
         smaller_shops.setAttribute("disabled", "disabled")
         smaller_shops.checked = False
 
