@@ -333,7 +333,7 @@ def compileHints(spoiler: Spoiler):
     if spoiler.settings.helm_setting != HelmSetting.skip_all and spoiler.settings.helm_phase_count < 5:
         valid_types.append(HintType.HelmOrder)
         minned_hint_types.append(HintType.HelmOrder)
-    if spoiler.settings.move_rando not in (MoveRando.off, MoveRando.item_shuffle) and Types.Shop not in spoiler.settings.shuffled_locations_types:
+    if spoiler.settings.move_rando not in (MoveRando.off, MoveRando.item_shuffle) and Types.Shop not in spoiler.settings.shuffled_location_types:
         valid_types.append(HintType.FullShopWithItems)
         valid_types.append(HintType.MoveLocation)
     if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.shuffled_location_types:

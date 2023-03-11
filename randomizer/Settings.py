@@ -556,30 +556,6 @@ class Settings:
             if self.coin_door_item_count > helmdoor_items[self.coin_door_item]["max"]:
                 self.coin_door_item_count = helmdoor_items[self.coin_door_item]["max"]
 
-        # Starting Move Locations
-        locations_to_add = self.starting_moves_count
-        # If the training barrels are shuffled in, we may have to remove the training barrel locations because of the above comment
-        if self.training_barrels == TrainingBarrels.shuffled:
-            locations_to_add -= 4
-        last_location = Locations.PreGiven_Location00 + locations_to_add
-        # If we have fewer starting items than training barrels, then we have to prevent some training barrels from having items
-        if locations_to_add < 0:
-            last_location = Locations.PreGiven_Location00
-            invalid_training_barrels = [Locations.IslesVinesTrainingBarrel, Locations.IslesSwimTrainingBarrel, Locations.IslesOrangesTrainingBarrel, Locations.IslesBarrelsTrainingBarrel][
-                self.starting_moves_count :
-            ]
-            for locationId in invalid_training_barrels:
-                LocationList[locationId].default = Items.NoItem
-                LocationList[locationId].type = Types.Constant
-        # We need to filter the GameStart region's locations to remove the locations that aren't valid anymore
-        randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations = [
-            loclogic for loclogic in randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations if loclogic.id < last_location
-        ]
-        for locationId in PreGivenLocations:
-            if locationId >= last_location:
-                del LocationList[locationId]
-        kongs = GetKongs()
-
         self.shuffled_location_types = []
         if self.shuffle_items:
             if not self.item_rando_list_selected:
@@ -614,9 +590,39 @@ class Settings:
                     self.shockwave_status = ShockwaveStatus.shuffled_decoupled  # Forced to be decoupled in item rando
                 if self.training_barrels != TrainingBarrels.normal:
                     self.shuffled_location_types.append(Types.TrainingBarrel)
-                if locations_to_add > 0:
-                    self.shuffled_location_types.append(Types.PreGivenMove)
+                self.shuffled_location_types.append(Types.PreGivenMove)
         self.shuffle_prices()
+
+        # Starting Move Locations
+        location_cap = 36
+        if self.shockwave_status in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with):
+            location_cap -= 2
+        if self.shockwave_status == ShockwaveStatus.shuffled:
+            location_cap -= 1
+        locations_to_add = self.starting_moves_count
+        # If the training barrels are shuffled in, we may have to remove the training barrel locations because of the above comment
+        if self.training_barrels == TrainingBarrels.shuffled:
+            locations_to_add -= 4
+        if locations_to_add > location_cap:
+            locations_to_add = location_cap
+        last_location = Locations.PreGiven_Location00 + locations_to_add
+        # If we have fewer starting items than training barrels, then we have to prevent some training barrels from having items
+        if locations_to_add < 0:
+            last_location = Locations.PreGiven_Location00
+            invalid_training_barrels = [Locations.IslesVinesTrainingBarrel, Locations.IslesSwimTrainingBarrel, Locations.IslesOrangesTrainingBarrel, Locations.IslesBarrelsTrainingBarrel][
+                self.starting_moves_count :
+            ]
+            for locationId in invalid_training_barrels:
+                LocationList[locationId].default = Items.NoItem
+                LocationList[locationId].type = Types.Constant
+        # We need to filter the GameStart region's locations to remove the locations that aren't valid anymore
+        randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations = [
+            loclogic for loclogic in randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations if loclogic.id < last_location
+        ]
+        for locationId in PreGivenLocations:
+            if locationId >= last_location:
+                del LocationList[locationId]
+        kongs = GetKongs()
 
         # Smaller shop setting deletes 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
