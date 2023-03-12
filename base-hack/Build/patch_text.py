@@ -2,6 +2,7 @@
 
 from text_encoder import writeText
 from text_decoder import grabText
+from BuildEnums import Icons
 import shutil
 
 from text_encoder import writeText
@@ -513,7 +514,7 @@ writeText(
         [{"text": ["AW NO! SO THAT WHAT CRANKY MEAN ABOUT REPTILE...", "DONKEY NOT BELIEVE IT. KING K.ROOL? WE FINISHED K. ROOL OFF IN LAST GAME!"]}],
         [
             {"text": ["OKAY!", "DONKEY IS FREE NOW. THANK YOU, MY FRIEND.", "DONKEY CAN COLLECT YELLOW BANANAS."]},
-            {"text": ["dk_coloured_banana"]},
+            {"text": [Icons.BananaDK_0]},
             {"text": ["DONKEY WILL BE INSIDE THE TAG BARREL UNTIL YOU NEED MY HELP."]},
         ],
     ],
@@ -774,27 +775,27 @@ writeText("move_names.bin", move_names_arr)
 move_explanations = [
     {
         "move": "dive_barrel",  # 0x25
-        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW DIVE UNDERWATER. PRESS"]}, {"text": ["z_button"]}, {"text": ["TO SUBMERGE YOURSELF."]}],
+        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW DIVE UNDERWATER. PRESS"]}, {"text": [Icons.ButtonZ]}, {"text": ["TO SUBMERGE YOURSELF."]}],
     },
     {
         "move": "orange_barrel",  # 0x26
         "explanation": [
             {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW THROW ORANGE GRENADES. PRESS"]},
-            {"text": ["z_button"]},
+            {"text": [Icons.ButtonZ]},
             {"text": ["THEN"]},
-            {"text": ["c_left_button"]},
+            {"text": [Icons.ButtonCL]},
             {"text": ["TO FIRE AN EXPLOSIVE FRUIT."]},
         ],
     },
     {
         "move": "barrel_barrel",  # 0x27
-        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW PICK UP OBJECTS. PRESS"]}, {"text": ["b_button"]}, {"text": ["TO GRAB AN OBJECT WITH RELATIVE EASE."]}],
+        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW PICK UP OBJECTS. PRESS"]}, {"text": [Icons.ButtonB]}, {"text": ["TO GRAB AN OBJECT WITH RELATIVE EASE."]}],
     },
     {
         "move": "vine_barrel",  # 0x28
         "explanation": [
             {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW SWING ON VINES. JUMP TO GRAB ONTO THE VINE AND PRESS "]},
-            {"text": ["a_button"]},
+            {"text": [Icons.ButtonA]},
             {"text": ["TO LAUNCH YOURSELF FROM IT."]},
         ],
     },
@@ -802,27 +803,31 @@ move_explanations = [
         "move": "camera_solo",  # 0x29
         "explanation": [
             {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW USE A CAMERA TO SNAP BANANA FAIRIES. PRESS"]},
-            {"text": ["z_button"]},
+            {"text": [Icons.ButtonZ]},
             {"text": ["THEN"]},
-            {"text": ["c_down_button"]},
+            {"text": [Icons.ButtonCD]},
             {"text": ["TO PULL OUT THE CAMERA. PRESS"]},
-            {"text": ["b_button"]},
+            {"text": [Icons.ButtonB]},
             {"text": ["TO TAKE A PICTURE."]},
         ],
     },
     {
         "move": "shockwave_solo",  # 0x2A
-        "explanation": [{"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE. PRESS AND HOLD"]}, {"text": ["b_button"]}, {"text": ["TO CHARGE THE SHOCKWAVE."]}],
+        "explanation": [
+            {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE. PRESS AND HOLD"]},
+            {"text": [Icons.ButtonB]},
+            {"text": ["TO CHARGE THE SHOCKWAVE."]},
+        ],
     },
     {
         "move": "camera_shockwave_combo",  # 0x2B
         "explanation": [
             {"text": ["PAY ATTENTION, ~. YOU AND ALL THE OTHER KONGS CAN NOW RELEASE A SHOCKWAVE CHARGE AND USE A CAMERA TO SNAP BANANA FAIRIES. PRESS AND HOLD"]},
-            {"text": ["b_button"]},
+            {"text": [Icons.ButtonB]},
             {"text": ["TO CHARGE THE SHOCKWAVE. PRESS "]},
-            {"text": ["z_button"]},
+            {"text": [Icons.ButtonZ]},
             {"text": ["THEN"]},
-            {"text": ["c_down_button"]},
+            {"text": [Icons.ButtonCD]},
             {"text": ["TO PULL OUT THE CAMERA."]},
         ],
     },

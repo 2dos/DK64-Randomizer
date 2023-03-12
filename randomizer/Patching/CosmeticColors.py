@@ -945,7 +945,6 @@ boot_phrases = (
 def writeBootMessages(spoiler: Spoiler):
     """Write boot messages into ROM."""
     placed_messages = random.sample(boot_phrases, 4)
-    print(placed_messages)
     for message_index, message in enumerate(placed_messages):
         ROM().seek(0x1FFD000 + (0x40 * message_index))
         ROM().writeBytes(message.upper().encode("ascii"))

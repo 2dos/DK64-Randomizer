@@ -726,6 +726,7 @@ class SettingsStringEnum(IntEnum):
     wrinkly_location_rando = 130
     coin_rando = 131
     vanilla_door_rando = 132
+    starting_moves_count = 133
 
 
 class SettingsStringDataType(IntEnum):
@@ -861,6 +862,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.smaller_shops: SettingsStringDataType.bool,
     SettingsStringEnum.starting_keys_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.starting_kongs_count: SettingsStringDataType.int4,
+    SettingsStringEnum.starting_moves_count: SettingsStringDataType.int16,
     SettingsStringEnum.starting_random: SettingsStringDataType.bool,
     SettingsStringEnum.tns_location_rando: SettingsStringDataType.bool,
     SettingsStringEnum.training_barrels: TrainingBarrels,

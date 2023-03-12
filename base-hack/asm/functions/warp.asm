@@ -2,6 +2,8 @@
 .definelabel initiateTransition_0, 0x805FF9AC
 .definelabel WarpToParent, 0x805FF8F8
 .definelabel ExitFromBonus, 0x805FF898
+.definelabel ExitRace, 0x805FF544
+.definelabel ExitFromLevel, 0x80600044
 .definelabel isLobby, 0x805FEF74
 .definelabel getWorld, 0x805FF030
 .definelabel voidWarp, 0x805FF1B0

@@ -13,6 +13,7 @@ from ui.rando_options import (
     max_randomized_medals,
     max_randomized_medal_cb_req,
     max_randomized_fairies,
+    max_starting_moves_count,
     max_doorone_requirement,
     max_doortwo_requirement,
     updateDoorOneNumAccess,
@@ -51,6 +52,7 @@ toggle_medals_box(None)
 max_randomized_medals(None)
 max_randomized_medal_cb_req(None)
 max_randomized_fairies(None)
+max_starting_moves_count(None)
 max_doorone_requirement(None)
 max_doortwo_requirement(None)
 updateDoorOneNumAccess(None)

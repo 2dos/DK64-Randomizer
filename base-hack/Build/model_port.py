@@ -2,9 +2,10 @@
 
 import zlib
 import os
-from BuildLib import intf_to_float, main_pointer_table_offset
+from BuildLib import intf_to_float, main_pointer_table_offset, ROMName
+from BuildClasses import ROMPointerFile
+from BuildEnums import TableNames
 
-rom_file = "rom/dk64.z64"
 temp_file = "temp.bin"
 m2_table = 4
 ac_table = 5
@@ -32,18 +33,11 @@ class BoneVertex:
 
 def portalModel_M2(vtx_file, dl_file, overlay_dl_file, model_name, base):
     """Convert model two model file from various source files."""
-    with open(rom_file, "rb") as rom:
-        rom.seek(main_pointer_table_offset + (m2_table * 4))
-        table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-        rom.seek(table + (base * 4))
-        start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-        finish = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-        size = finish - start
-        rom.seek(start)
-        data = rom.read(size)
-        rom.seek(start)
-        indic = int.from_bytes(rom.read(2), "big")
-        if indic == 0x1F8B:
+    with open(ROMName, "rb") as rom:
+        model_f = ROMPointerFile(rom, TableNames.ModelTwoGeometry, base)
+        rom.seek(model_f.start)
+        data = rom.read(model_f.size)
+        if model_f.compressed:
             data = zlib.decompress(data, (15 + 32))
         with open(temp_file, "wb") as fh:
             fh.write(data)
@@ -98,18 +92,11 @@ def portalModel_M2(vtx_file, dl_file, overlay_dl_file, model_name, base):
 
 def portalModel_Actor(vtx_file, dl_file, model_name, base):
     """Create actor file from various source files."""
-    with open(rom_file, "rb") as rom:
-        rom.seek(main_pointer_table_offset + (ac_table * 4))
-        table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-        rom.seek(table + (base * 4))
-        start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-        finish = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-        size = finish - start
-        rom.seek(start)
-        data = rom.read(size)
-        rom.seek(start)
-        indic = int.from_bytes(rom.read(2), "big")
-        if indic == 0x1F8B:
+    with open(ROMName, "rb") as rom:
+        model_f = ROMPointerFile(rom, TableNames.ActorGeometry, base)
+        rom.seek(model_f.start)
+        data = rom.read(model_f.size)
+        if model_f.compressed:
             data = zlib.decompress(data, (15 + 32))
         with open(temp_file, "wb") as fh:
             fh.write(data)
@@ -170,18 +157,11 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
     """Port Actor to Model Two."""
     if input_file == "":
         # Use Actor Index
-        with open(rom_file, "rb") as rom:
-            rom.seek(main_pointer_table_offset + (ac_table * 4))
-            table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-            rom.seek(table + (actor_index * 4))
-            start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-            finish = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-            size = finish - start
-            rom.seek(start)
-            data = rom.read(size)
-            rom.seek(start)
-            indic = int.from_bytes(rom.read(2), "big")
-            if indic == 0x1F8B:
+        with open(ROMName, "rb") as rom:
+            model_f = ROMPointerFile(rom, TableNames.ActorGeometry, actor_index)
+            rom.seek(model_f.start)
+            data = rom.read(model_f.size)
+            if model_f.compressed:
                 data = zlib.decompress(data, (15 + 32))
             with open(temp_file, "wb") as fh:
                 fh.write(data)
@@ -324,18 +304,11 @@ def portActorToModelTwo(actor_index: int, input_file: str, output_file: str, bas
 
 def createSpriteModelTwo(new_image: int, scaling: float, output_file: str):
     """Create a model two object based on a singular image."""
-    with open(rom_file, "rb") as rom:
-        rom.seek(main_pointer_table_offset + (m2_table * 4))
-        table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-        rom.seek(table + (436 * 4))
-        start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-        finish = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-        size = finish - start
-        rom.seek(start)
-        data = rom.read(size)
-        rom.seek(start)
-        indic = int.from_bytes(rom.read(2), "big")
-        if indic == 0x1F8B:
+    with open(ROMName, "rb") as rom:
+        model_f = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 436)
+        rom.seek(model_f.start)
+        data = rom.read(model_f.size)
+        if model_f.compressed:
             data = zlib.decompress(data, (15 + 32))
         with open(f"{output_file}_om2.bin", "wb") as fh:
             fh.write(data)

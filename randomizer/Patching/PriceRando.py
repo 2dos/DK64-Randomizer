@@ -7,7 +7,7 @@ from randomizer.Spoiler import Spoiler
 
 def randomize_prices(spoiler: Spoiler):
     """Write prices to ROM variable space based on settings."""
-    if spoiler.settings.random_prices != RandomPrices.vanilla or spoiler.settings.move_rando != MoveRando.start_with:
+    if spoiler.settings.random_prices != RandomPrices.vanilla:
         varspaceOffset = spoiler.settings.rom_data
         ROM().seek(varspaceOffset + 0x35)
         # /* 0x035 */ char price_rando_on; // 0 = Price Randomizer off, 1 = On

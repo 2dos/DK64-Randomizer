@@ -4,9 +4,9 @@
 #define CRANKY 5
 #define CANDY 0x19
 
-static unsigned short slam_flag = FLAG_SHOPMOVE_SLAM_0;
-static unsigned short belt_flag = FLAG_SHOPMOVE_BELT_0;
-static unsigned short ins_flag = FLAG_SHOPMOVE_INS_0;
+static unsigned short slam_flag = FLAG_ITEM_SLAM_0;
+static unsigned short belt_flag = FLAG_ITEM_BELT_0;
+static unsigned short ins_flag = FLAG_ITEM_INS_0;
 
 int getMoveType(int value) {
 	int ret = (value >> 5) & 7;
@@ -61,9 +61,9 @@ move_block* getMoveBlock(void) {
 }
 
 void moveTransplant(void) {
-	slam_flag = FLAG_SHOPMOVE_SLAM_0;
-	belt_flag = FLAG_SHOPMOVE_BELT_0;
-	ins_flag = FLAG_SHOPMOVE_INS_0;
+	slam_flag = FLAG_ITEM_SLAM_1;
+	belt_flag = FLAG_ITEM_BELT_1;
+	ins_flag = FLAG_ITEM_INS_2;
 	move_block* move_data = getMoveBlock();
 	if (move_data) {
 		for (int i = 0; i < LEVEL_COUNT; i++) {
@@ -152,14 +152,7 @@ void progressiveChange(int flag) {
 		int subtype = getMoveProgressiveFlagType(flag);
 		if (subtype == 0) {
 			// Slam
-			int slam_level = MovesBase[0].simian_slam + 1;
-			if (slam_level == 1) {
-				// Fix if initial slam is slam 0
-				slam_level = 2;
-			}
-			for (int i = 0; i < 5; i++) {
-				MovesBase[i].simian_slam = slam_level;
-			}
+			giveSlamLevel();
 		} else if (subtype == 1) {
 			// Belt
 			int belt_level = MovesBase[0].ammo_belt + 1;
@@ -193,27 +186,22 @@ void progressiveChange(int flag) {
 }
 
 int getMoveProgressiveFlagType(int flag) {
-	int slams[] = {FLAG_SHOPMOVE_SLAM_0, FLAG_SHOPMOVE_SLAM_1, FLAG_ITEM_SLAM_0, FLAG_ITEM_SLAM_1};
-	int belts[] = {FLAG_SHOPMOVE_BELT_0, FLAG_SHOPMOVE_BELT_1, FLAG_ITEM_BELT_0, FLAG_ITEM_BELT_1};
+	int slams[] = {FLAG_ITEM_SLAM_0, FLAG_ITEM_SLAM_1};
+	int belts[] = {FLAG_ITEM_BELT_0, FLAG_ITEM_BELT_1};
 	int instruments[] = {
-		FLAG_SHOPMOVE_INS_0,
-		FLAG_SHOPMOVE_INS_1,
-		FLAG_SHOPMOVE_INS_2,
 		FLAG_ITEM_INS_0,
 		FLAG_ITEM_INS_1,
 		FLAG_ITEM_INS_2,
 	};
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 2; i++) {
 		if (flag == slams[i]) {
 			return 0;
 		}
-	}
-	for (int i = 0; i < 4; i++) {
 		if (flag == belts[i]) {
 			return 1;
 		}
 	}
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < 3; i++) {
 		if (flag == instruments[i]) {
 			return 2;
 		}

@@ -27,6 +27,8 @@ typedef struct guard_paad {
     /* 0x00E */ short z_something;
     /* 0x010 */ char unk_10[0x1A-0x10];
     /* 0x01A */ short unk_1A;
+    /* 0x01C */ char unk_1C[0x47-0x1C];
+    /* 0x047 */ char played_uhoh;
 } guard_paad;
 
 int isBadMovementState(void) {
@@ -143,6 +145,19 @@ void newGuardCode(void) {
                 CurrentActorPointer_0->control_state = 0x41;
                 CurrentActorPointer_0->control_state_progress = 0;
             }
+        }
+    }
+    if ((level_state & 0x104000) == 0) { // If not in SSnoop
+        guard_paad* paad = CurrentActorPointer_0->paad;
+        if (CurrentActorPointer_0->grounded & 4) {
+            // Touching Water
+            if (paad->played_uhoh == 0) {
+                playSFX(UhOh);
+                spawnSparkles(CurrentActorPointer_0->xPos, CurrentActorPointer_0->yPos, CurrentActorPointer_0->zPos, 5);
+            }
+            paad->played_uhoh = 1;
+            CurrentActorPointer_0->control_state = 0x40;
+            CurrentActorPointer_0->control_state_progress = 0;
         }
     }
     int control_state = CurrentActorPointer_0->control_state;
