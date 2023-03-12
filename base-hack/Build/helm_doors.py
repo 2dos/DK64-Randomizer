@@ -1,24 +1,17 @@
 """Generate models for the two Helm doors."""
 import zlib
-from BuildLib import main_pointer_table_offset
-
-rom_file = "rom/dk64.z64"
+from BuildLib import main_pointer_table_offset, ROMName
+from BuildClasses import ROMPointerFile
+from BuildEnums import TableNames
 
 
 def getHelmDoorModel(new_item_image: int, new_number_image: int, filename: str):
     """Get the model file for the Helm coin door, which will be the template for both doors."""
-    with open(rom_file, "rb") as rom:
-        rom.seek(main_pointer_table_offset + (4 << 2))
-        om2_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-        rom.seek(om2_table + (423 << 2))
-        file_start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-        file_end = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-        file_size = file_end - file_start
-        rom.seek(file_start)
-        indic = int.from_bytes(rom.read(2), "big")
-        rom.seek(file_start)
-        data = rom.read(file_size)
-        if indic == 0x1F8B:
+    with open(ROMName, "rb") as rom:
+        door_f = ROMPointerFile(rom, TableNames.ModelTwoGeometry, 423)
+        rom.seek(door_f.start)
+        data = rom.read(door_f.size)
+        if door_f.compressed:
             data = zlib.decompress(data, (15 + 32))
         with open(filename, "wb") as fh:
             fh.write(data)

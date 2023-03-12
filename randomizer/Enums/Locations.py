@@ -5,11 +5,51 @@ from enum import IntEnum, auto
 class Locations(IntEnum):
     """Location enum."""
 
-    # DK Isles locations
+    # Training Barrel locations
     IslesVinesTrainingBarrel = auto()
     IslesSwimTrainingBarrel = auto()
     IslesOrangesTrainingBarrel = auto()
     IslesBarrelsTrainingBarrel = auto()
+
+    # Pre-given move locations (36 locations) - the integer value of these matter for starting move count
+    PreGiven_Location00 = auto()
+    PreGiven_Location01 = auto()
+    PreGiven_Location02 = auto()
+    PreGiven_Location03 = auto()
+    PreGiven_Location04 = auto()
+    PreGiven_Location05 = auto()
+    PreGiven_Location06 = auto()
+    PreGiven_Location07 = auto()
+    PreGiven_Location08 = auto()
+    PreGiven_Location09 = auto()
+    PreGiven_Location10 = auto()
+    PreGiven_Location11 = auto()
+    PreGiven_Location12 = auto()
+    PreGiven_Location13 = auto()
+    PreGiven_Location14 = auto()
+    PreGiven_Location15 = auto()
+    PreGiven_Location16 = auto()
+    PreGiven_Location17 = auto()
+    PreGiven_Location18 = auto()
+    PreGiven_Location19 = auto()
+    PreGiven_Location20 = auto()
+    PreGiven_Location21 = auto()
+    PreGiven_Location22 = auto()
+    PreGiven_Location23 = auto()
+    PreGiven_Location24 = auto()
+    PreGiven_Location25 = auto()
+    PreGiven_Location26 = auto()
+    PreGiven_Location27 = auto()
+    PreGiven_Location28 = auto()
+    PreGiven_Location29 = auto()
+    PreGiven_Location30 = auto()
+    PreGiven_Location31 = auto()
+    PreGiven_Location32 = auto()
+    PreGiven_Location33 = auto()
+    PreGiven_Location34 = auto()
+    PreGiven_Location35 = auto()
+
+    # DK Isles locations
     IslesDonkeyJapesRock = auto()
     IslesTinyCagedBanana = auto()
     IslesTinyInstrumentPad = auto()

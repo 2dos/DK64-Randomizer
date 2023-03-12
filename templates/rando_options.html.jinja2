@@ -38,9 +38,6 @@
                         <option id="move_on_cross_purchase" value="cross_purchase">
                             Cross Kong Purchases
                         </option>
-                        <option id="move_start_with" value="start_with">
-                            Unlock All Moves
-                        </option>
                     </select>
                 </div>
                 <div class="item-select">
@@ -58,6 +55,20 @@
                             Shuffle
                         </option>
                     </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Starting Moves Count</p>
+                    <input min="0"
+                            max="40"
+                            name="starting_moves_count"
+                            id="starting_moves_count"
+                            style="width: 15%"
+                            class="form-control center-div"
+                            type="number"
+                            data-toggle="tooltip"
+                            title="Amount of moves given at the start of a new seed that would be otherwise randomized."
+                            default="0"
+                            placeholder="0"/>
                 </div>
             </div>
             <hr>

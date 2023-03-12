@@ -279,7 +279,7 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
     int curr_y = y;
     int string_length = cstring_strlen(str);
     int string_copy_ref = (int)string_copy;
-    wipeMemory(string_copy, 256);
+    wipeMemory(string_copy, STRING_MAX_SIZE);
     dk_memcpy(string_copy, str, string_length);
     int header = 0;
     int last_safe = 0;

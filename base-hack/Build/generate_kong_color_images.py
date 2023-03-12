@@ -4,7 +4,9 @@ import zlib
 import math
 import os
 from PIL import Image
-from BuildLib import main_pointer_table_offset
+from BuildLib import main_pointer_table_offset, finalROM
+from BuildClasses import ROMPointerFile
+from BuildEnums import TableNames
 
 color_palettes = [
     {"kong": "dk", "zones": [{"zone": "base", "image": 3724, "colors": ["#2da1ad"], "fill_type": "block"}]},  # 2da1ad
@@ -194,12 +196,9 @@ def convertColors():
             with open(f"{palette['kong']}{zone['zone']}.bin", "wb") as fh:
                 fh.write(bytearray(bytes_array))
 
-            with open("rom/dk64-randomizer-base-dev.z64", "r+b") as fh:
-                fh.seek(main_pointer_table_offset + (25 * 0x4))
-                texture_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-                fh.seek(texture_table + (zone["image"] * 4))
-                write_point = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-                fh.seek(write_point)
+            with open(finalROM, "r+b") as fh:
+                texture_f = ROMPointerFile(fh, TableNames.TexturesGeometry, zone["image"])
+                fh.seek(texture_f.start)
                 comp = gzip.compress(bytearray(bytes_array), compresslevel=9)
                 fh.write(comp)
 
@@ -227,7 +226,7 @@ def hueShift(im, amount):
 
 def applyMelonMask(shift: int):
     """Apply a mask to the melon sprites."""
-    with open("rom/dk64-randomizer-base-dev.z64", "r+b") as fh:
+    with open(finalROM, "r+b") as fh:
         data = {
             7: (0x13C, 0x147),
             14: (0x5A, 0x5D),

@@ -1,5 +1,6 @@
 """Encode text file to ROM."""
-from BuildLib import float_to_hex, icon_db
+from BuildLib import float_to_hex
+from BuildEnums import Icons
 
 
 def writeText(file_name, text):
@@ -14,10 +15,8 @@ def writeText(file_name, text):
                 # Get Icon State
                 icon_id = -1
                 for string in block["text"]:
-                    if string in icon_db.values():
-                        for icon in icon_db:
-                            if icon_db[icon] == string:
-                                icon_id = icon
+                    if isinstance(string, Icons):
+                        icon_id = string.value
                 if icon_id > -1:
                     fh.write(bytearray([2, 1]))
                     fh.write(icon_id.to_bytes(2, "big"))
@@ -38,8 +37,7 @@ def writeText(file_name, text):
             for block in textbox:
                 is_icon = False
                 for string in block["text"]:
-                    if string in icon_db.values():
-                        is_icon = True
+                    is_icon = isinstance(string, Icons)
                 if not is_icon:
                     for string in block["text"]:
                         fh.write(string.encode("ascii"))

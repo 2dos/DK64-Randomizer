@@ -3,8 +3,8 @@
 from image_converter import convertToRGBA32
 from typing import BinaryIO
 import subprocess
-from BuildEnums import ChangeType, TableNames, TextureFormat
-from BuildLib import main_pointer_table_offset
+from BuildEnums import ChangeType, TableNames, TextureFormat, CompressionMethods
+from BuildLib import main_pointer_table_offset, float_to_hex
 import encoders
 
 
@@ -19,8 +19,7 @@ class File:
         start=None,
         compressed_size=0,
         source_file="",
-        use_external_gzip=False,
-        use_zlib=False,
+        compression_method=CompressionMethods.PythonGzip,
         patcher=None,
         pointer_table_index: TableNames = TableNames.MusicMIDI,
         file_index=0,
@@ -31,6 +30,7 @@ class File:
         do_not_delete=False,
         target_compressed_size=None,
         target_uncompressed_size=None,
+        target_size=None,
         do_not_extract=False,
         do_not_compress=False,
         do_not_recompress=False,
@@ -41,8 +41,7 @@ class File:
         self.start = start
         self.compressed_size = compressed_size
         self.source_file = source_file
-        self.use_external_gzip = use_external_gzip
-        self.use_zlib = use_zlib
+        self.compression_method = compression_method
         self.patcher = patcher
         self.pointer_table_index = pointer_table_index
         self.file_index = file_index
@@ -53,6 +52,9 @@ class File:
         self.do_not_delete = do_not_delete
         self.target_compressed_size = target_compressed_size
         self.target_uncompressed_size = target_uncompressed_size
+        if target_size is not None:
+            self.target_compressed_size = target_size
+            self.target_uncompressed_size = target_size
         self.do_not_extract = do_not_extract
         self.do_not_compress = do_not_compress
         self.do_not_recompress = do_not_recompress
@@ -85,6 +87,11 @@ class File:
                 self.source_file = self.source_file.replace(".png", ".rgba32")
             else:
                 print(" - ERROR: Unsupported texture format " + self.getTextureFormatName())
+
+    def setTargetSize(self, size):
+        """Set compressed and uncompressed size."""
+        self.target_compressed_size = size
+        self.target_uncompressed_size = size
 
 
 class TableEntry:
@@ -353,3 +360,113 @@ class PointerFile:
         self.data = data
         self.sha1 = sha1
         self.uncompressed_size = uncompressed_size
+
+
+class HashIcon:
+    """Class to store information regarding a hash icon."""
+
+    def __init__(self, icon_file: str, file_index: int):
+        """Initialize with given parameters."""
+        self.icon_file = icon_file
+        self.file_index = file_index
+
+
+class ModelChange:
+    """Class to store information regarding a model change."""
+
+    def __init__(self, model_index: int, model_file: str):
+        """Initialize with given parameters."""
+        self.model_index = model_index
+        self.model_file = model_file
+
+
+class TextChange:
+    """Class to store information regarding a text change."""
+
+    def __init__(self, name: str, change_expansion: int, file: str):
+        """Initialize with given parameters."""
+        self.name = name
+        self.change = False
+        if file is not None:
+            if file != "":
+                self.change = True
+        self.change_expansion = change_expansion
+        self.file = file
+
+
+class SetupRequirement:
+    """Class to store information regarding requirements for a setup action to."""
+
+    def __init__(self, *, map_id=None, obj_type: int = None, obj_id: int = None, banned_maps: list = []):
+        """Initialize with given parameters."""
+        self.map_id = map_id
+        self.obj_type = obj_type
+        self.obj_id = obj_id
+        self.banned_maps = banned_maps.copy()
+
+    def allow(self, map_id: int, obj_type: int, obj_id: int) -> bool:
+        """Will input conditions fulfill the requirements."""
+        if map_id in self.banned_maps:
+            return False
+        if self.map_id is None or self.map_id == -1 or self.map_id == map_id:
+            if self.obj_type is None or self.obj_type == -1 or self.obj_type == obj_type:
+                return self.obj_id is None or self.obj_id == -1 or self.obj_id == obj_id
+        return False
+
+
+class SetupActionModelTwo:
+    """Class to store information regarding an added model two item to the setup."""
+
+    def __init__(self, *, requirement: SetupRequirement = None, base_byte_stream=None, type=None, x=None, y=None, z=None, rx=None, ry=None, rz=None, id=None, scale=None, spawn_limit=1):
+        """Initialize with given parameters."""
+        self.requirement = requirement
+        self.base_byte_stream = base_byte_stream
+        self.type = type
+        # Defaults
+        self.x = None
+        self.y = None
+        self.z = None
+        self.rx = None
+        self.ry = None
+        self.rz = None
+        self.scale = None
+        if x is not None:
+            self.x = int(float_to_hex(x), 16)
+        if y is not None:
+            self.y = int(float_to_hex(y), 16)
+        if z is not None:
+            self.z = int(float_to_hex(z), 16)
+        if rx is not None:
+            self.rx = int(float_to_hex(rx), 16)
+        if ry is not None:
+            self.ry = int(float_to_hex(ry), 16)
+        if rz is not None:
+            self.rz = int(float_to_hex(rz), 16)
+        if scale is not None:
+            self.scale = int(float_to_hex(scale), 16)
+        self.id = id
+        self.spawn_limit = spawn_limit
+
+    def spawn(self):
+        """Spawn item."""
+        if self.spawn_limit > 1:
+            self.spawn_limit -= 1
+
+    def canSpawn(self) -> bool:
+        """Determine whether a spawn can occur with this change."""
+        return self.spawn_limit >= 1 and self.requirement.allow()
+
+
+class ROMPointerFile:
+    """Class to store information about a ROM Pointer table file."""
+
+    def __init__(self, rom: BinaryIO, table_index: int, file_index: int):
+        """Initialize with given data."""
+        rom.seek(main_pointer_table_offset + (table_index * 4))
+        table_address = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
+        rom.seek(table_address + (file_index * 4))
+        self.start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        self.end = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
+        self.size = self.end - self.start
+        rom.seek(self.start)
+        self.compressed = int.from_bytes(rom.read(2), "big") == 0x1F8B

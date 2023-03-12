@@ -3,7 +3,8 @@ import os
 import zlib
 
 from PIL import Image
-from BuildLib import main_pointer_table_offset
+from BuildLib import main_pointer_table_offset, ROMName
+from BuildClasses import ROMPointerFile
 
 
 class ImageData:
@@ -101,20 +102,14 @@ if not os.path.exists("assets/hash"):
     os.mkdir("assets/hash")
 
 print("Extracting Images from ROM")
-with open("rom/dk64.z64", "rb") as fh:
+with open(ROMName, "rb") as fh:
     for x in images:
-        fh.seek(main_pointer_table_offset + (x.table * 4))
-        ptr_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-        fh.seek(ptr_table + (x.index * 4))
-        img_start = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-        fh.seek(ptr_table + ((x.index + 1) * 4))
-        img_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-        img_size = img_end - img_start
-        fh.seek(img_start)
+        image_file = ROMPointerFile(fh, x.table, x.index)
+        fh.seek(image_file.start)
         if x.table == 7:
-            dec = fh.read(img_size)
+            dec = fh.read(image_file.size)
         else:
-            dec = zlib.decompress(fh.read(img_size), 15 + 32)
+            dec = zlib.decompress(fh.read(image_file.size), 15 + 32)
         img_name = f"assets/hash/{x.name}.png"
         if os.path.exists(img_name):
             os.remove(img_name)

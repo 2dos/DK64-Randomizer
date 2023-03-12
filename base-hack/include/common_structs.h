@@ -1444,3 +1444,58 @@ typedef struct stack_trace_address_struct {
 	/* 0x000 */ void* address;
 	/* 0x004 */ int used;
 } stack_trace_address_struct;
+
+typedef struct moves_pregiven_bitfield {
+	unsigned char blast : 1; // 0
+	unsigned char strong_kong : 1; // 1
+	unsigned char grab : 1; // 2
+	unsigned char charge : 1; // 3
+	unsigned char rocketbarrel : 1; // 4
+	unsigned char spring : 1; // 5
+	unsigned char ostand : 1; // 6
+	unsigned char balloon : 1; // 7
+	unsigned char osprint : 1; // 0
+	unsigned char mini : 1; // 1
+	unsigned char twirl : 1; // 2
+	unsigned char monkeyport : 1; // 3
+	unsigned char hunky : 1; // 4
+	unsigned char punch : 1; // 5
+	unsigned char gone : 1; // 6
+	unsigned char slam_upgrade_0 : 1; // 7
+	unsigned char slam_upgrade_1 : 1; // 0
+	unsigned char slam_upgrade_2 : 1; // 1
+	unsigned char coconut : 1; // 2
+	unsigned char peanut : 1; // 3
+	unsigned char grape : 1; // 4
+	unsigned char feather : 1; // 5
+	unsigned char pineapple : 1; // 6
+	unsigned char bongos : 1; // 7
+	unsigned char guitar : 1; // 0
+	unsigned char trombone : 1; // 1
+	unsigned char sax : 1; // 2
+	unsigned char triangle : 1; // 3
+	unsigned char belt_upgrade_0 : 1; // 4
+	unsigned char belt_upgrade_1 : 1; // 5
+	unsigned char homing : 1; // 6
+	unsigned char sniper : 1; // 7
+	unsigned char ins_upgrade_0 : 1; // 0
+	unsigned char ins_upgrade_1 : 1; // 1
+	unsigned char ins_upgrade_2 : 1; // 2
+	unsigned char dive : 1; // 3
+	unsigned char oranges : 1; // 4
+	unsigned char barrels : 1; // 5
+	unsigned char vines : 1; // 6
+	unsigned char camera : 1; // 7
+	unsigned char shockwave : 1; // 0
+} moves_pregiven_bitfield;
+
+typedef struct weather_struct {
+	/* 0x000 */ char frame_count;
+	/* 0x001 */ char unk_1[3];
+	/* 0x004 */ short* texture_pointer;
+	/* 0x008 */ short codec_info;
+	/* 0x00A */ unsigned char width;
+	/* 0x00B */ unsigned char height;
+	/* 0x00C */ void* unkC;
+	/* 0x010 */ void* falling_func;
+} weather_struct;

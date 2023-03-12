@@ -267,11 +267,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
         if ((source == 1) && (!checkFlagDuplicate(flag_index, 0)) && (Gamemode == 6)) {
             if ((flag_index == FLAG_ITEM_SLAM_0) || (flag_index == FLAG_ITEM_SLAM_1)) {
                 // Slam
-                MovesBase[0].simian_slam += 1;
-                item_index = MovesBase[0].simian_slam;
-                for (int i = 1; i < 5; i++) {
-                    MovesBase[i].simian_slam = item_index;
-                }
+                item_index = giveSlamLevel();
                 spawn_overlay = 1;
                 item_type = 1;
             } else if ((flag_index == FLAG_ITEM_BELT_0) || (flag_index == FLAG_ITEM_BELT_1)) {

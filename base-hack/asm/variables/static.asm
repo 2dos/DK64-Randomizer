@@ -17,3 +17,4 @@
 .definelabel LeaveWaterVelocity, 0x807531C4
 .definelabel unkGravity, 0x80753170
 .definelabel GroundAttackSpeedThreshold, 0x807531E0
+.definelabel WeatherData, 0x80755264

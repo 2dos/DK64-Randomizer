@@ -9,9 +9,11 @@ extern void initiateTransition(int map, int exit);
 extern void initiateTransition_0(int map, int exit, int unk0, int unk1);
 extern void WarpToParent(void);
 extern void ExitFromBonus(void);
+extern void ExitRace(void);
+extern void ExitFromLevel(void);
 extern int* getFlagBlockAddress(char flagType);
 extern int isAddressActor(void* address);
-extern int getTimestamp();
+extern unsigned long long getTimestamp(void);
 extern void dmaFileTransfer(int romStart, int romEnd, int ramStart);
 extern void deleteActor(void* actor);
 extern int spawnActor(int actorID, int actorBehaviour);
@@ -111,6 +113,7 @@ extern void CrownGet(void);
 extern void cancelMusic(int song, int unk0);
 extern void removeGorillaGone(void* actor);
 extern void resetActorDL(void* actor);
+extern int getActorModelIndex(void* actor);
 
 extern void wipeStoredSetup(void* setup);
 extern void complex_free(void* ptr);
@@ -595,6 +598,8 @@ extern int StackTraceX;
 extern int StackTraceY;
 extern int StackTraceSize;
 extern int StackTraceStartX;
+
+extern weather_struct WeatherData[6];
 
 //hack data
 extern int TestVariable;

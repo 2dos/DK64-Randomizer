@@ -16,6 +16,7 @@ extern int getCenter(int style, char* str);
 extern int getActorIndex(int actor_input);
 extern int getCustomActorIndex(new_custom_actors offset);
 extern void spawnItemOverlay(int type, int kong, int index, int force);
+extern int giveSlamLevel(void);
 
 extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);
@@ -306,8 +307,24 @@ extern void fixCrownEntrySKong(playerData* player, int animation);
 extern void wipeHintCache(void);
 extern void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0);
 
+extern int initFile_hasGun(int kong);
+extern int initFile_hasInstrument(int kong);
+extern int initFile_getBeltLevel(int inc_training);
+extern int initFile_getInsUpgradeLevel(int inc_training);
+extern int initFile_getSlamLevel(int inc_training);
+extern int initFile_getKongPotionBitfield(int kong);
+extern int initFile_checkTraining(int type_check, int kong_check, int value_check);
+
 extern item_collision* writeItemScale(int id);
 extern item_collision* writeItemActorScale(void);
+
+extern void fixHelmTimerCorrection(void);
+extern void helmTime_restart(void);
+extern void helmTime_exitBonus(void);
+extern void helmTime_exitRace(void);
+extern void helmTime_exitLevel(void);
+extern void helmTime_exitBoss(void);
+extern void helmTime_exitKRool(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];

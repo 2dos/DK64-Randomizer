@@ -1,29 +1,23 @@
 """Decode text file into arrays of text items."""
 import zlib
 import os
-from BuildLib import icon_db, main_pointer_table_offset
+from BuildLib import main_pointer_table_offset, ROMName
+from BuildEnums import Icons, TableNames
+from BuildClasses import ROMPointerFile
 
 temp_file = "decodedtext.bin"
-text_table_index = 12
 
 
 def grabText(file_index: int) -> list:
     """Pull text from ROM with a particular file index."""
-    with open("rom/dk64.z64", "rb") as fh:
-        fh.seek(main_pointer_table_offset + (text_table_index * 4))
-        text_table = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        fh.seek(text_table + (file_index * 4))
-        text_start = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        text_end = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        text_size = text_end
-        fh.seek(text_start)
-        indic = int.from_bytes(fh.read(2), "big")
-        fh.seek(text_start)
+    with open(ROMName, "rb") as fh:
+        text_file = ROMPointerFile(fh, TableNames.Text, file_index)
+        fh.seek(text_file.start)
         with open(temp_file, "wb") as fg:
-            if indic == 0x1F8B:
-                fg.write(zlib.decompress(fh.read(text_size), (15 + 32)))
+            if text_file.compressed:
+                fg.write(zlib.decompress(fh.read(text_file.size), (15 + 32)))
             else:
-                fg.write(fh.read(text_size))
+                fg.write(fh.read(text_file.size))
 
     with open(temp_file, "rb") as fh:
         fh.seek(0)
@@ -61,7 +55,7 @@ def grabText(file_index: int) -> list:
                             _pos = int.from_bytes(fh.read(2), "big")
                             fh.seek(data_start + _block)
                             _dat = int.from_bytes(fh.read(4), "big")
-                            text_blocks.append({"type": "sprite", "position": _pos, "data": hex(_dat), "sprite": icon_db[(_dat >> 8) & 0xFF]})
+                            text_blocks.append({"type": "sprite", "position": _pos, "data": hex(_dat), "sprite": Icons((_dat >> 8) & 0xFF)})
                         added = block_start + 2 + offset + (4 * sec3ct) + 4
                 else:
                     fh.seek(data_start + block_start + offset + 1)

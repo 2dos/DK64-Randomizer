@@ -12,13 +12,13 @@ import generate_watch_file
 import shop_instance_script  # HAS TO BE BEFORE `instance_script_maker`
 from writeWarpData import generateDefaultPadPairing  # HAS TO BE BEFORE `instance_script_maker`
 import portal_instance_script  # HAS TO BE BEFORE `instance_script_maker`
-import instance_script_maker
+from instance_script_maker import BuildInstanceScripts
 import model_fix
 import generate_disco_models
 import model_port
-from BuildEnums import ChangeType, TextureFormat, TableNames
-from BuildClasses import File, pointer_tables
-from BuildLib import main_pointer_table_offset, BLOCK_COLOR_SIZE, getFileData
+from BuildEnums import ChangeType, TextureFormat, TableNames, CompressionMethods
+from BuildClasses import File, HashIcon, ModelChange, TextChange, ROMPointerFile
+from BuildLib import main_pointer_table_offset, BLOCK_COLOR_SIZE, ROMName, newROMName
 
 # Patcher functions for the extracted files
 import patch_text
@@ -39,7 +39,6 @@ from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, rep
 from recompute_pointer_table import (
     dumpPointerTableDetails,
     getFileInfo,
-    make_safe_filename,
     parsePointerTables,
     replaceROMFile,
     writeModifiedPointerTablesToROM,
@@ -48,12 +47,11 @@ from recompute_pointer_table import (
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
 
-ROMName = "rom/dk64.z64"
-newROMName = "rom/dk64-randomizer-base.z64"
-
 if os.path.exists(newROMName):
     os.remove(newROMName)
 shutil.copyfile(ROMName, newROMName)
+
+BuildInstanceScripts()
 
 portal_images = []
 portal_images.append(convertPortalImage("assets/portals/DK_rando_portal_1.png"))
@@ -67,7 +65,15 @@ getHelmDoorModel(6022, 6023, "crown_door.bin")
 getHelmDoorModel(6024, 6025, "coin_door.bin")
 
 file_dict = [
-    File(name="Static ASM Code", subtype=ChangeType.FixedLocation, start=0x113F0, compressed_size=0xB15E4, source_file="StaticCode.bin", use_external_gzip=True, patcher=patchStaticCode),
+    File(
+        name="Static ASM Code",
+        subtype=ChangeType.FixedLocation,
+        start=0x113F0,
+        compressed_size=0xB15E4,
+        source_file="StaticCode.bin",
+        compression_method=CompressionMethods.ExternalGzip,
+        patcher=patchStaticCode,
+    ),
     File(name="Dolby Logo", pointer_table_index=TableNames.TexturesHUD, file_index=176, source_file="assets/Dolby/DolbyThin.png", texture_format=TextureFormat.IA4),
     File(name="Thumb Image", pointer_table_index=TableNames.TexturesHUD, file_index=94, source_file="assets/Nintendo Logo/Nintendo5.png", texture_format=TextureFormat.RGBA5551),
     File(name="DKTV Image", pointer_table_index=TableNames.TexturesHUD, file_index=44, source_file="assets/DKTV/logo3.png", texture_format=TextureFormat.RGBA5551),
@@ -239,8 +245,7 @@ for x in range(5):
             file_index=0xDD + x,
             source_file=f"blueprint{x}.bin",
             do_not_delete_source=True,
-            target_compressed_size=0x6C4,
-            target_uncompressed_size=0x6C4,
+            target_size=0x6C4,
         )
     )
 for x in range(0x5A, 0x5E):
@@ -290,8 +295,7 @@ for si, s in enumerate(starts):
                 pointer_table_index=TableNames.TexturesGeometry,
                 file_index=s + x,
                 source_file=f"bp{si}_{x}.bin",
-                target_compressed_size=48 * 42 * 2,
-                target_uncompressed_size=48 * 42 * 2,
+                target_size=48 * 42 * 2,
             )
         )
 
@@ -468,8 +472,7 @@ for door in (0xF2, 0xEF, 0x67, 0xF1):
             pointer_table_index=TableNames.ModelTwoGeometry,
             file_index=door,
             source_file=f"door{door}.bin",
-            target_compressed_size=0x1420,
-            target_uncompressed_size=0x1420,
+            target_size=0x1420,
         )
     )
 
@@ -488,8 +491,7 @@ for ki, kong in enumerate(switches):
                 pointer_table_index=TableNames.ModelTwoGeometry,
                 file_index=lvl,
                 source_file=f"switch{lvl}.bin",
-                target_compressed_size=0xC70,
-                target_uncompressed_size=0xC70,
+                target_size=0xC70,
             )
         )
 
@@ -497,7 +499,7 @@ for ki, kong in enumerate(switches):
 with open("./instance_scripts_data.json", "r") as json_f:
     instance_script_maps = json.load(json_f)
 maps_to_expand = list(range(0, 216))
-script_expansion_size = 0x200
+SCRIPT_EXPANSION_SIZE = 0x200
 for x in instance_script_maps:
     maps_to_expand.remove(x["map"])
     script_file_name = f"{x['name']}.raw"
@@ -505,31 +507,24 @@ for x in instance_script_maps:
     with open(script_file_name, "rb") as script_f:
         data = script_f.read()
         compress = gzip.compress(data, compresslevel=9)
-        expand_size = len(data) + script_expansion_size
+        expand_size = len(data) + SCRIPT_EXPANSION_SIZE
     file_dict.append(
         File(
             name=f"{x['name'].replace('_',' ')} Instance Scripts",
             pointer_table_index=TableNames.InstanceScripts,
             file_index=x["map"],
             source_file=script_file_name,
-            target_compressed_size=expand_size,
-            target_uncompressed_size=expand_size,
+            target_size=expand_size,
             do_not_recompress=True,
             do_not_delete_source=True,
         )
     )
 for x in maps_to_expand:
     with open(ROMName, "rb") as fh:
-        fh.seek(main_pointer_table_offset + (10 * 4))
-        script_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-        fh.seek(script_table + (x * 4))
-        item_start = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        item_end = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        fh.seek(item_start)
-        is_compressed = int.from_bytes(fh.read(2), "big") == 0x1F8B
-        item_size = item_end - item_start
-        if is_compressed:
-            fh.seek(item_start)
+        instance_f = ROMPointerFile(fh, TableNames.InstanceScripts, x)
+        item_size = instance_f.size
+        if instance_f.compressed:
+            fh.seek(instance_f.start)
             data = fh.read(item_size)
             data = zlib.decompress(data, (15 + 32))
             item_size = len(data)
@@ -539,8 +534,7 @@ for x in maps_to_expand:
                 pointer_table_index=TableNames.InstanceScripts,
                 file_index=x,
                 source_file=f"script{x}.bin",
-                target_compressed_size=item_size + script_expansion_size,
-                target_uncompressed_size=item_size + script_expansion_size,
+                target_size=item_size + SCRIPT_EXPANSION_SIZE,
                 do_not_recompress=True,
             )
         )
@@ -576,18 +570,11 @@ for x in range(221):
     if x in (0, 1, 2, 5, 9, 15, 0x19):
         local_expansion = 0
     with open(ROMName, "rb") as fh:
-        setup_tbl_index = 9
-        fh.seek(main_pointer_table_offset + (setup_tbl_index * 4))
-        script_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
-        fh.seek(script_table + (x * 4))
-        item_start = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        item_end = main_pointer_table_offset + (int.from_bytes(fh.read(4), "big") & 0x7FFFFFFF)
-        fh.seek(item_start)
-        is_compressed = int.from_bytes(fh.read(2), "big") == 0x1F8B
-        item_size = item_end - item_start
-        if is_compressed:
-            fh.seek(item_start)
-            data = fh.read(item_size)
+        setup_f = ROMPointerFile(fh, TableNames.Setups, x)
+        item_size = setup_f.size
+        if setup_f.compressed:
+            fh.seek(setup_f.start)
+            data = fh.read(setup_f.size)
             data = zlib.decompress(data, (15 + 32))
             item_size = len(data)
         file_dict.append(
@@ -596,8 +583,7 @@ for x in range(221):
                 pointer_table_index=TableNames.Setups,
                 file_index=x,
                 source_file=f"setup{x}.bin",
-                target_compressed_size=item_size + local_expansion,
-                target_uncompressed_size=item_size + local_expansion,
+                target_size=item_size + local_expansion,
                 do_not_recompress=True,
             )
         )
@@ -609,8 +595,7 @@ for x in range(221):
                 pointer_table_index=TableNames.Paths,
                 file_index=x,
                 source_file=f"paths{x}.bin",
-                target_uncompressed_size=0x600,
-                target_compressed_size=0x600,
+                target_size=0x600,
                 do_not_recompress=True,
             )
         )
@@ -621,8 +606,7 @@ for x in range(221):
             pointer_table_index=TableNames.Spawners,
             file_index=x,
             source_file=f"charspawners{x}.bin",
-            target_compressed_size=0x1400,
-            target_uncompressed_size=0x1400,
+            target_size=0x1400,
             do_not_recompress=True,
         )
     )
@@ -635,19 +619,6 @@ file_dict.append(
         texture_format=TextureFormat.RGBA5551,
     )
 )
-for x in range(43):
-    if x not in (13, 32, 0x18, 0x27, 8, 37, 2, 40, 19):
-        file_dict.append(
-            File(
-                name=f"Text {x}",
-                pointer_table_index=TableNames.Text,
-                file_index=x,
-                source_file=f"text{x}.bin",
-                target_compressed_size=0x2000,
-                target_uncompressed_size=0x2000,
-                do_not_recompress=True,
-            )
-        )
 for x in range(10):
     file_dict.append(
         File(
@@ -784,53 +755,48 @@ shrinkModel(True, "potion_any_om1.bin", 0, 0.08, "shrink_potion_any.bin", False)
 shrinkModel(False, "", 0x3C, 5, "shrink_fairy.bin", True)  # Fairy
 
 model_changes = [
-    {"model_index": 0, "model_file": "diddy_base.bin"},
-    {"model_index": 1, "model_file": "diddy_ins.bin"},
-    {"model_index": 5, "model_file": "lanky_base.bin"},
-    {"model_index": 6, "model_file": "lanky_ins.bin"},
-    {"model_index": 3, "model_file": "dk_base.bin"},
-    {"model_index": 8, "model_file": "tiny_base.bin"},
-    {"model_index": 9, "model_file": "tiny_ins.bin"},
-    {"model_index": 0xEC, "model_file": "disco_instrument.bin"},
-    {"model_index": 0xDA, "model_file": "krusha_base.bin"},
-    {"model_index": 0xED, "model_file": "potion_dk_om1.bin"},
-    {"model_index": 0xEE, "model_file": "potion_diddy_om1.bin"},
-    {"model_index": 0xEF, "model_file": "potion_lanky_om1.bin"},
-    {"model_index": 0xF0, "model_file": "potion_tiny_om1.bin"},
-    {"model_index": 0xF1, "model_file": "potion_chunky_om1.bin"},
-    {"model_index": 0xF2, "model_file": "potion_any_om1.bin"},
-    {"model_index": 0xF3, "model_file": "shrink_crown.bin"},
-    {"model_index": 0xF4, "model_file": "shrink_key.bin"},
-    {"model_index": 0xF5, "model_file": "shrink_potion_dk.bin"},
-    {"model_index": 0xF6, "model_file": "shrink_potion_diddy.bin"},
-    {"model_index": 0xF7, "model_file": "shrink_potion_lanky.bin"},
-    {"model_index": 0xF8, "model_file": "shrink_potion_tiny.bin"},
-    {"model_index": 0xF9, "model_file": "shrink_potion_chunky.bin"},
-    {"model_index": 0xFA, "model_file": "shrink_potion_any.bin"},
-    {"model_index": 0xFB, "model_file": "shrink_fairy.bin"},
-    {"model_index": 0x10E, "model_file": "fake_item_actor.bin"},
-    {"model_index": 0xA3, "model_file": "counter.bin"},
+    ModelChange(0, "diddy_base.bin"),
+    ModelChange(1, "diddy_ins.bin"),
+    ModelChange(5, "lanky_base.bin"),
+    ModelChange(6, "lanky_ins.bin"),
+    ModelChange(3, "dk_base.bin"),
+    ModelChange(8, "tiny_base.bin"),
+    ModelChange(9, "tiny_ins.bin"),
+    ModelChange(0xEC, "disco_instrument.bin"),
+    ModelChange(0xDA, "krusha_base.bin"),
+    ModelChange(0xED, "potion_dk_om1.bin"),
+    ModelChange(0xEE, "potion_diddy_om1.bin"),
+    ModelChange(0xEF, "potion_lanky_om1.bin"),
+    ModelChange(0xF0, "potion_tiny_om1.bin"),
+    ModelChange(0xF1, "potion_chunky_om1.bin"),
+    ModelChange(0xF2, "potion_any_om1.bin"),
+    ModelChange(0xF3, "shrink_crown.bin"),
+    ModelChange(0xF4, "shrink_key.bin"),
+    ModelChange(0xF5, "shrink_potion_dk.bin"),
+    ModelChange(0xF6, "shrink_potion_diddy.bin"),
+    ModelChange(0xF7, "shrink_potion_lanky.bin"),
+    ModelChange(0xF8, "shrink_potion_tiny.bin"),
+    ModelChange(0xF9, "shrink_potion_chunky.bin"),
+    ModelChange(0xFA, "shrink_potion_any.bin"),
+    ModelChange(0xFB, "shrink_fairy.bin"),
+    ModelChange(0x10E, "fake_item_actor.bin"),
+    ModelChange(0xA3, "counter.bin"),
 ]
 for bi, b in enumerate(barrel_skins):
-    model_changes.append(
-        {
-            "model_index": 0xFC + bi,
-            "model_file": f"barrel_skin_{b}.bin",
-        }
-    )
-model_changes = sorted(model_changes, key=lambda d: d["model_index"])
+    model_changes.append(ModelChange(0xFC + bi, f"barrel_skin_{b}.bin"))
+model_changes = sorted(model_changes, key=lambda d: d.model_index)
 
 for x in model_changes:
     data = File(
-        name=f"Model {x['model_index']}",
+        name=f"Model {x.model_index}",
         pointer_table_index=TableNames.ActorGeometry,
-        file_index=x["model_index"],
-        source_file=x["model_file"],
+        file_index=x.model_index,
+        source_file=x.model_file,
         do_not_delete_source=True,
     )
-    if x["model_index"] > 0xEB:
+    if x.model_index > 0xEB:
         data.do_not_extract = True
-    if x["model_index"] == 0xDA:
+    if x.model_index == 0xDA:
         data.target_compressed_size = 0x4740
         data.target_uncompressed_size = 0x4740
     file_dict.append(data)
@@ -857,53 +823,92 @@ for x in range(2):
                 )
             )
 
-hash_icons = ["bongos.png", "crown.png", "dkcoin.png", "fairy.png", "guitar.png", "nin_coin.png", "orange.png", "rainbow_coin.png", "rw_coin.png", "sax.png"]
-hash_indexes = [48, 49, 50, 51, 55, 62, 63, 64, 65, 76]
-for x in range(len(hash_indexes)):
-    idx = hash_indexes[x]
+hash_icons = [
+    HashIcon("bongos.png", 48),
+    HashIcon("crown.png", 49),
+    HashIcon("dkcoin.png", 50),
+    HashIcon("fairy.png", 51),
+    HashIcon("guitar.png", 55),
+    HashIcon("nin_coin.png", 62),
+    HashIcon("orange.png", 63),
+    HashIcon("rainbow_coin.png", 64),
+    HashIcon("rw_coin.png", 65),
+    HashIcon("sax.png", 76),
+]
+for index, icon in enumerate(hash_icons):
     file_dict.append(
         File(
-            name=f"Hash Icon {x+1}",
+            name=f"Hash Icon {index}",
             pointer_table_index=TableNames.TexturesHUD,
-            file_index=idx,
-            source_file=f"assets/hash/{hash_icons[x]}",
+            file_index=icon.file_index,
+            source_file=f"assets/hash/{icon.icon_file}",
             texture_format=TextureFormat.RGBA5551,
         )
     )
+
 text_files = (
-    {"name": "Dolby Text", "index": 13, "file": "dolby_text.bin"},
-    {"name": "Custom Text", "index": 32, "file": "custom_text.bin"},
-    {"name": "DK Text", "index": 0x18, "file": "dk_text.bin"},
-    {"name": "Move Names Text", "index": 0x27, "file": "move_names.bin"},
-    {"name": "Cranky Text", "index": 8, "file": "cranky_text.bin"},
-    {"name": "Menu Text", "index": 37, "file": "menu_text.bin"},
-    {"name": "Kong Name Text", "index": 2, "file": "kongname_text.bin"},
-    {"name": "BFI Rareware Door Text", "index": 40, "file": "fairy_rw_text.bin"},
+    TextChange("Bonus Instructions", 0, ""),
+    TextChange("Story Level Intro", 0, ""),
+    TextChange("Kong Names", 0, "kongname_text.bin"),
+    TextChange("Diddy", 0, ""),
+    TextChange("Tiny", 0, ""),
+    TextChange("Chunky", 0, ""),
+    TextChange("Lanky", 0, ""),
+    TextChange("Funky", 0, ""),
+    TextChange("Cranky", 0, "cranky_text.bin"),
+    TextChange("Candy", 0, ""),
+    TextChange("Llama", 0, ""),
+    TextChange("Snide", 0, ""),
+    TextChange("DK TV Screen", 0, ""),
+    TextChange("Dolby", 0, "dolby_text.bin"),
+    TextChange("Beetle", 0, ""),
+    TextChange("Vulture", 0, ""),
+    TextChange("Squawks", 0, ""),
+    TextChange("Factory Car Race", 0, ""),
+    TextChange("Seal Race", 0, ""),
+    TextChange("Misc & Microbuffer", 0x1200, "misc_squawks_text.bin"),
+    TextChange("Rabbit", 0, ""),
+    TextChange("Owl", 0, ""),
+    TextChange("Worm", 0, ""),
+    TextChange("Mermaid", 0, ""),
+    TextChange("DK", 0, "dk_text.bin"),
+    TextChange("Training Grounds", 0, ""),
+    TextChange("Bonus Encouragement", 0, ""),
+    TextChange("K. Lumsy", 0, ""),
+    TextChange("Seal Race 2", 0, ""),
+    TextChange("B. Locker", 0, ""),
+    TextChange("Fairy Queen", 0, ""),
+    TextChange("Beanstalk", 0, ""),
+    TextChange("Custom", 0, "custom_text.bin"),
+    TextChange("Ice Tomato", 0, ""),
+    TextChange("Castle Car Race", 0, ""),
+    TextChange("Location/Level Names", 0, ""),
+    TextChange("Pause Menu", 0, ""),
+    TextChange("Main Menu", 0, "menu_text.bin"),
+    TextChange("Race Positions", 0, ""),
+    TextChange("Move Names", 0, "move_names.bin"),
+    TextChange("Fairy Queen Rareware Door", 0, "fairy_rw_text.bin"),
+    TextChange("Wrinkly", 0x2800, ""),
+    TextChange("Snide's Bonus Games", 0, ""),
 )
-for file in text_files:
-    file_dict.append(
-        File(
-            name=file["name"],
-            pointer_table_index=TableNames.Text,
-            file_index=file["index"],
-            source_file=file["file"],
-            do_not_compress=True,
-            do_not_delete_source=True,
-        )
-    )
-file_dict.append(
-    File(
-        name="Misc Squawks Text",
+
+for index, text in enumerate(text_files):
+    data = File(
+        name=f"{text.name} Text",
         pointer_table_index=TableNames.Text,
-        file_index=19,
-        source_file="misc_squawks_text.bin",
-        do_not_compress=True,
-        do_not_recompress=True,
-        do_not_delete_source=True,
-        target_uncompressed_size=0x1200,
-        target_compressed_size=0x1200,
+        file_index=index,
+        source_file=f"text{index}.bin" if text.file == "" else text.file,
     )
-)
+    if text.change:
+        data.do_not_compress = True
+        data.do_not_delete_source = True
+    else:
+        data.do_not_recompress = True
+        data.setTargetSize(0x2000)
+    if text.change_expansion > 0:
+        data.setTargetSize(text.change_expansion)
+        data.do_not_recompress = True
+    file_dict.append(data)
 
 with open(ROMName, "rb") as fh:
     adjustExits(fh)
@@ -919,81 +924,13 @@ with open(ROMName, "rb") as fh:
     parsePointerTables(fh)
     readOverlayOriginalData(fh)
 
-    # for x in map_replacements:
-    #     print(" - Processing map replacement " + x["name"])
-    #     if os.path.exists(x["map_folder"]):
-    #         found_geometry = False
-    #         found_floors = False
-    #         found_walls = False
-    #         should_compress_walls = True
-    #         should_compress_floors = True
-    #         for y in pointer_tables:
-    #             if "encoded_filename" not in y:
-    #                 continue
-
-    #             # Convert decoded_filename to encoded_filename using the encoder function
-    #             # Eg. exits.json to exits.bin
-    #             if "encoder" in y and callable(y["encoder"]):
-    #                 if "decoded_filename" in y and os.path.exists(x["map_folder"] + y["decoded_filename"]):
-    #                     y["encoder"](x["map_folder"] + y["decoded_filename"], x["map_folder"] + y["encoded_filename"])
-
-    #             if os.path.exists(x["map_folder"] + y["encoded_filename"]):
-    #                 if y["index"] == 1:
-    #                     with open(x["map_folder"] + y["encoded_filename"], "rb") as fg:
-    #                         byte_read = fg.read(10)
-    #                         should_compress_walls = (byte_read[9] & 0x1) != 0
-    #                         should_compress_floors = (byte_read[9] & 0x2) != 0
-    #                     found_geometry = True
-    #                 elif y["index"] == 2:
-    #                     found_walls = True
-    #                 elif y["index"] == 3:
-    #                     found_floors = True
-
-    #         # Check that all walls|floors|geometry files exist on disk, or that none of them do
-    #         walls_floors_geometry_valid = (found_geometry == found_walls) and (found_geometry == found_floors)
-
-    #         if not walls_floors_geometry_valid:
-    #             print("  - WARNING: In map replacement: " + x["name"])
-    #             print("    - Need all 3 files present to replace walls, floors, and geometry.")
-    #             print("    - Only found 1 or 2 of them out of 3. Make sure all 3 exist on disk.")
-    #             print("    - Will skip replacing walls, floors, and geometry to prevent crashes.")
-
-    #         for y in pointer_tables:
-    #             if "encoded_filename" not in y:
-    #                 continue
-
-    #             if os.path.exists(x["map_folder"] + y["encoded_filename"]):
-    #                 # Special case to prevent crashes with custom level geometry, walls, and floors
-    #                 # Some of the files are compressed in ROM, some are not
-    #                 if y["index"] in [1, 2, 3] and not walls_floors_geometry_valid:
-    #                     continue
-
-    #                 do_not_compress = "do_not_compress" in y and y["do_not_compress"]
-    #                 if y["index"] == 2:
-    #                     do_not_compress = not should_compress_walls
-    #                 elif y["index"] == 3:
-    #                     do_not_compress = not should_compress_floors
-
-    #                 print("  - Found " + x["map_folder"] + y["encoded_filename"])
-    #                 file_dict.append(
-    #                     {
-    #                         "name": x["name"] + y["name"],
-    #                         "pointer_table_index": y["index"],
-    #                         "file_index": x["map_index"],
-    #                         "source_file": x["map_folder"] + y["encoded_filename"],
-    #                         "do_not_extract": True,
-    #                         "do_not_compress": do_not_compress,
-    #                         "use_external_gzip": "use_external_gzip" in y and y["use_external_gzip"],
-    #                     }
-    #                 )
-
     print("[2 / 7] - Extracting files from ROM")
     for x in file_dict:
         # N64Tex conversions do not need to be extracted to disk from ROM
         x.generateOutputFile()
 
         # gzip.exe appends .gz to the filename, we'll do the same
-        if x.use_external_gzip:
+        if x.compression_method == CompressionMethods.ExternalGzip:
             x.output_file += ".gz"
 
         # If we're not extracting the file to disk, we're using a custom .bin that shoudn't be deleted
@@ -1079,7 +1016,7 @@ with open(newROMName, "r+b") as fh:
                 fg.write(compress)
             x.output_file = x.source_file
 
-        if x.use_external_gzip:
+        if x.compression_method == CompressionMethods.ExternalGzip:
             if os.path.exists(x.source_file):
                 result = subprocess.check_output(["./build/gzip.exe", "-f", "-n", "-k", "-q", "-9", x.output_file.replace(".gz", "")])
                 if os.path.exists(x.output_file):
@@ -1098,9 +1035,9 @@ with open(newROMName, "r+b") as fh:
 
             if x.do_not_compress:
                 compress = bytearray(byte_read)
-            elif x.use_external_gzip:
+            elif x.compression_method == CompressionMethods.ExternalGzip:
                 compress = bytearray(byte_read)
-            elif x.use_zlib:
+            elif x.compression_method == CompressionMethods.Zlib:
                 compressor = zlib.compressobj(zlib.Z_BEST_COMPRESSION, zlib.DEFLATED, 25)
                 compress = compressor.compress(byte_read)
                 compress += compressor.flush()
@@ -1148,20 +1085,20 @@ with open(newROMName, "r+b") as fh:
     writeModifiedOverlaysToROM(fh)
 
     print("[6 / 7] - Dumping details of all pointer tables to rom/build.log")
-    dumpPointerTableDetails("rom/build.log", fh)
+    dumpPointerTableDetails("rom/build.log", fh, False)
 
     # Change Helm Geometry (Can't use main CL Build System because of forced duplication)
-    file_start, file_size, file_compressed = getFileData(fh, TableNames.MapGeometry, 0x11)
-    fh.seek(file_start)
-    for by_i in range(file_size):
+    geo_file = ROMPointerFile(fh, TableNames.MapGeometry, 0x11)
+    fh.seek(geo_file.start)
+    for by_i in range(geo_file.size):
         fh.write((0).to_bytes(1, "big"))
-    fh.seek(file_start)
+    fh.seek(geo_file.start)
     with open("helm.bin", "rb") as helm_geo:
         fh.write(gzip.compress(helm_geo.read(), compresslevel=9))
 
     # Replace Helm Text
-    file_start, file_size, file_compressed = getFileData(fh, TableNames.Text, 19)
-    fh.seek(file_start + 0x7B9)
+    text_file = ROMPointerFile(fh, TableNames.Text, 19)
+    fh.seek(text_file.start + 0x7B9)
     fh.write(("?").encode("ascii"))
     for i in range(0x15):
         fh.write(("\0").encode("ascii"))
@@ -1331,7 +1268,7 @@ with open(newROMName, "r+b") as fh:
         fh.seek(0x1FED020 + x)
         fh.write(x.to_bytes(1, "big"))
     for x in hash_icons:
-        pth = f"assets/hash/{x}"
+        pth = f"assets/hash/{x.icon_file}"
         if os.path.exists(pth):
             os.remove(pth)
     other_remove = []
