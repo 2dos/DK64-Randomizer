@@ -275,7 +275,7 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x4F)
         ROM().write(spoiler.settings.coin_door_item_count)
 
-    # Unlock all moves / Camera unlocked
+    # Camera unlocked
     given_moves = []
     if spoiler.settings.shockwave_status == ShockwaveStatus.start_with:
         given_moves.extend([39, 40])  # 39 = Camera, 40 = Shockwave
