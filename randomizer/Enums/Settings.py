@@ -747,6 +747,10 @@ class SettingsStringDataType(IntEnum):
 # This maps settings to the data types that will be used to encode them in the
 # settings string. Any enum-based settings should use that enum as their data
 # type, to shrink the payload as much as possible.
+#
+# When adding an int setting, make sure to use the smallest int possible.
+# This will reduce the characters added to the settings string. See the above
+# enum for valid int values.
 SettingsStringTypeMap = {
     SettingsStringEnum.activate_all_bananaports: ActivateAllBananaports,
     SettingsStringEnum.alter_switch_allocation: SettingsStringDataType.bool,
@@ -862,7 +866,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.smaller_shops: SettingsStringDataType.bool,
     SettingsStringEnum.starting_keys_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.starting_kongs_count: SettingsStringDataType.int4,
-    SettingsStringEnum.starting_moves_count: SettingsStringDataType.int16,
+    SettingsStringEnum.starting_moves_count: SettingsStringDataType.int8,
     SettingsStringEnum.starting_random: SettingsStringDataType.bool,
     SettingsStringEnum.tns_location_rando: SettingsStringDataType.bool,
     SettingsStringEnum.training_barrels: TrainingBarrels,
