@@ -257,6 +257,18 @@ int isMovePregiven(int index) {
 				return 1;
 			}
 			return 0;
+		case TRACKER_TYPE_KEY1:
+		case TRACKER_TYPE_KEY2:
+		case TRACKER_TYPE_KEY3:
+		case TRACKER_TYPE_KEY4:
+		case TRACKER_TYPE_KEY5:
+		case TRACKER_TYPE_KEY6:
+		case TRACKER_TYPE_KEY7:
+		case TRACKER_TYPE_KEY8:
+			if (Rando.keys_preturned & (1 << (index - TRACKER_TYPE_KEY1))) {
+				return 1;
+			}
+			return 0;
 	}
 	return 0;
 }

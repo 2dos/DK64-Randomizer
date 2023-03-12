@@ -99,8 +99,8 @@ def max_starting_moves_count(event):
     move_count = js.document.getElementById("starting_moves_count")
     if not move_count.value:
         move_count.value = 4
-    elif 0 > int(move_count.value):
-        move_count.value = 0
+    elif 4 > int(move_count.value):
+        move_count.value = 4
     elif int(move_count.value) > 40:
         move_count.value = 40
 
@@ -135,6 +135,8 @@ def updateDoorOneNumAccess(event):
         door_one_req.value = 1
     elif door_one_selection.value == "req_pearl" and int(door_one_req.value) > 5:
         door_one_req.value = 5
+    elif door_one_selection.value == "req_rainbowcoin" and int(door_one_req.value) > 16:
+        door_one_req.value = 16
 
 
 @bind("click", "nav-progression-tab")
@@ -191,6 +193,8 @@ def updateDoorTwoNumAccess(event):
         door_two_req.value = 1
     elif door_two_selection.value == "req_pearl" and int(door_two_req.value) > 5:
         door_two_req.value = 5
+    elif door_two_selection.value == "req_rainbowcoin" and int(door_two_req.value) > 16:
+        door_two_req.value = 16
 
 
 @bind("click", "nav-progression-tab")
