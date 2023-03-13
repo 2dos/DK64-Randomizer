@@ -137,11 +137,12 @@ void unlockMoves(void) {
 			CollectableBase.StandardAmmo = 100;
 		}
 	}
-	if (initFile_getInsUpgradeLevel(1) >= 2) {
+	int ins_check = initFile_getInsUpgradeLevel(1);
+	if (ins_check >= 2) {
 		CollectableBase.Melons = 3;
 		CollectableBase.Health = 12;
 	} else {
-		if (has_instrument) {
+		if ((has_instrument) || (ins_check >= 1)) {
 			CollectableBase.Melons = 2;
 			CollectableBase.Health = 8;
 		}
