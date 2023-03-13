@@ -326,7 +326,7 @@ int getEnabledState(int index) {
 		case TRACKER_TYPE_OSPRINT:
 			return MovesBase[2].special_moves & 4;
 		case TRACKER_TYPE_PTT:
-			return MovesBase[2].special_moves & 2;
+			return MovesBase[3].special_moves & 2;
 		case TRACKER_TYPE_MONKEYPORT:
 			return MovesBase[3].special_moves & 4;
 		case TRACKER_TYPE_MINI:
