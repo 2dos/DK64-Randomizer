@@ -268,7 +268,7 @@ def place_pregiven_moves(spoiler: Spoiler):
         Items.Camera,
         Items.Shockwave,
     ]
-    for item in enumerate(spoiler.pregiven_items):
+    for item in spoiler.pregiven_items:
         print(item)
         if item is not None and item != Items.NoItem:
             new_slot = None
