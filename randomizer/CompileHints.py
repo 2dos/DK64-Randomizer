@@ -314,10 +314,15 @@ hint_distribution = {
 }
 HINT_CAP = 35  # There are this many total slots for hints
 
+hint_reroll_cap = 1  # How many times are you willing to reroll a hinted location?
+hint_reroll_chance = 1.0  # What % of the time do you reroll in conditions that could trigger a reroll?
+globally_hinted_location_ids = []
+
 
 def compileHints(spoiler: Spoiler):
     """Create a hint distribution, generate buff hints, and place them in locations."""
     ClearHintMessages()
+    globally_hinted_location_ids = []
     locked_hint_types = [HintType.RequiredKongHint, HintType.RequiredKeyHint, HintType.RequiredWinConditionHint, HintType.RequiredHelmDoorHint]  # Some hint types cannot have their value changed
     maxed_hint_types = []  # Some hint types cannot have additional hints placed
     minned_hint_types = []  # Some hint types cannot have all their hints removed
@@ -753,7 +758,14 @@ def compileHints(spoiler: Spoiler):
                     # Don't hint the Helm Key in Helm when you know it's there
                     if key_id == Items.HideoutHelmKey and spoiler.settings.key_8_helm:
                         path = [loc for loc in path if loc != Locations.HelmKey]
-                    path_location_id = random.choice([loc for loc in path if loc not in already_hinted_locations])
+                    hintable_location_ids = [loc for loc in path if loc not in already_hinted_locations]  # Never hint the same location for the same path twice
+                    path_location_id = random.choice(hintable_location_ids)
+                    # Soft reroll duplicate hints based on hint reroll parameters
+                    rerolls = 0
+                    while rerolls < hint_reroll_cap and path_location_id in globally_hinted_location_ids and random.random() >= hint_reroll_chance:
+                        path_location_id = random.choice(hintable_location_ids)
+                        rerolls += 1
+                    globally_hinted_location_ids.append(path_location_id)
                     already_hinted_locations.append(path_location_id)
                     region = GetRegionOfLocation(path_location_id)
                     hinted_location_text = region.hint_name
@@ -780,7 +792,14 @@ def compileHints(spoiler: Spoiler):
             path = spoiler.woth_paths[Locations.BananaHoard]
             already_chosen_krool_path_locations = []
             for i in range(hint_distribution[HintType.RequiredWinConditionHint]):
-                path_location_id = random.choice([loc for loc in path if loc not in already_chosen_krool_path_locations and loc != Locations.BananaHoard])
+                hintable_location_ids = [loc for loc in path if loc not in already_chosen_krool_path_locations and loc != Locations.BananaHoard]
+                path_location_id = random.choice(hintable_location_ids)
+                # Soft reroll duplicate hints based on hint reroll parameters
+                rerolls = 0
+                while rerolls < hint_reroll_cap and path_location_id in globally_hinted_location_ids and random.random() >= hint_reroll_chance:
+                    path_location_id = random.choice(hintable_location_ids)
+                    rerolls += 1
+                globally_hinted_location_ids.append(path_location_id)
                 already_chosen_krool_path_locations.append(path_location_id)
                 region = GetRegionOfLocation(path_location_id)
                 hinted_location_text = region.hint_name
@@ -803,7 +822,14 @@ def compileHints(spoiler: Spoiler):
             path = spoiler.woth_paths[camera_location_id]
             already_chosen_camera_path_locations = []
             for i in range(hint_distribution[HintType.RequiredWinConditionHint]):
-                path_location_id = random.choice([loc for loc in path if loc not in already_chosen_camera_path_locations])
+                hintable_location_ids = [loc for loc in path if loc not in already_chosen_camera_path_locations]
+                path_location_id = random.choice(hintable_location_ids)
+                # Soft reroll duplicate hints based on hint reroll parameters
+                rerolls = 0
+                while rerolls < hint_reroll_cap and path_location_id in globally_hinted_location_ids and random.random() >= hint_reroll_chance:
+                    path_location_id = random.choice(hintable_location_ids)
+                    rerolls += 1
+                globally_hinted_location_ids.append(path_location_id)
                 already_chosen_camera_path_locations.append(path_location_id)
                 region = GetRegionOfLocation(path_location_id)
                 hinted_location_text = region.hint_name
@@ -1042,7 +1068,14 @@ def compileHints(spoiler: Spoiler):
                 hint_distribution[HintType.WothLocation] -= 1
                 hint_distribution[HintType.Joke] += 1
                 continue
-            hinted_loc_id = hintable_location_ids.pop()
+            hinted_loc_id = random.choice(hintable_location_ids)
+            # Soft reroll duplicate hints based on hint reroll parameters
+            rerolls = 0
+            while rerolls < hint_reroll_cap and hinted_loc_id in globally_hinted_location_ids and random.random() >= hint_reroll_chance:
+                hinted_loc_id = random.choice(hintable_location_ids)
+                rerolls += 1
+            globally_hinted_location_ids.append(hinted_loc_id)
+            hintable_location_ids.remove(hinted_loc_id)
             # Attempt to find a door that will be accessible before the location is
             hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[hinted_loc_id])
             if len(hint_options) > 0:
@@ -1211,7 +1244,7 @@ def compileHints(spoiler: Spoiler):
         hint_location.hint_type = HintType.FullShopWithItems
         UpdateHint(hint_location, message)
 
-    # No need to do anything fancy here - there's already a K. Rool hint on the player's path (the wall in Helm)
+    # No need to do anything fancy here - there's often already a K. Rool hint on the player's path (the wall in Helm)
     for i in range(hint_distribution[HintType.KRoolOrder]):
         hint_location = getRandomHintLocation()
         kong_krool_order = [kong_list[kong] for kong in spoiler.settings.krool_order]
