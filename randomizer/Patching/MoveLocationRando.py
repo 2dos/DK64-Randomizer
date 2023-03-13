@@ -268,8 +268,8 @@ def place_pregiven_moves(spoiler: Spoiler):
         Items.Camera,
         Items.Shockwave,
     ]
-    for diff, item in enumerate(spoiler.pregiven_items):
-        print(f"{diff}: {item}")
+    for item in spoiler.pregiven_items:
+        print(item)
         if item is not None and item != Items.NoItem:
             new_slot = None
             if item in (Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam):
