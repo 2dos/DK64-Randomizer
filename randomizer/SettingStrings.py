@@ -98,7 +98,7 @@ settingsExclusionMap = {
     "bonus_barrel_rando": {False: ["minigames_list_selected"]},
     "bananaport_rando": {BananaportRando.off: ["warp_level_list_selected"]},
     "logic_type": {LogicType.glitchless: ["glitches_selected"], LogicType.nologic: ["glitches_selected"]},
-    "select_keys": {False: ["starting_keys_list_selected"]},
+    "select_keys": {False: ["starting_keys_list_selected"], True: ["krool_key_count"]},
     "quality_of_life": {False: ["misc_changes_selected"]},
 }
 
