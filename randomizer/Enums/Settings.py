@@ -753,6 +753,9 @@ class SettingsStringDataType(IntEnum):
 # When adding an int setting, make sure to use the smallest int possible.
 # This will reduce the characters added to the settings string. See the above
 # enum for valid int values.
+#
+# If you are using the var_int type, you must use the addSettingIntRange()
+# function below to specify the valid int range.
 SettingsStringTypeMap = {
     SettingsStringEnum.activate_all_bananaports: ActivateAllBananaports,
     SettingsStringEnum.alter_switch_allocation: SettingsStringDataType.bool,
