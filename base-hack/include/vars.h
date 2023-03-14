@@ -105,13 +105,13 @@
 #define FLAG_ITEM_INS_0 0x294
 #define FLAG_ITEM_INS_1 0x295
 #define FLAG_ITEM_INS_2 0x296
-// 0x297
-// 0x298
-// 0x299
-// 0x29A
-// 0x29B
-// 0x29C
-// 0x29D
+#define FLAG_SHOPMOVE_SLAM_0 0x297
+#define FLAG_SHOPMOVE_SLAM_1 0x298
+#define FLAG_SHOPMOVE_BELT_0 0x299
+#define FLAG_SHOPMOVE_BELT_1 0x29A
+#define FLAG_SHOPMOVE_INS_0 0x29B
+#define FLAG_SHOPMOVE_INS_1 0x29C
+#define FLAG_SHOPMOVE_INS_2 0x29D
 #define FLAG_RAINBOWCOIN_0 0x29E // 0x29E -> 0x2AD (inc.) (16 flags)
 #define FLAG_FAKEITEM 0x2AE // 0x2AE -> 0x2BD (inc.) (16 flags)
 #define FLAG_JUNKITEM 0x320 // 0x320 -> 0x383 (inc.) (100 flags)

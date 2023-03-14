@@ -28,7 +28,7 @@ from randomizer.Enums.Settings import (
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
-from randomizer.Lists.Location import LocationList
+from randomizer.Lists.Location import LocationList, PreGivenLocations
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
 from randomizer.Prices import ProgressiveMoves
@@ -329,14 +329,13 @@ class Spoiler:
                 extra = " " + str(wothSlams)
             humanspoiler["Paths"][destination_item.name + extra] = path_dict
 
-        self.pregiven_items = [None] * 41
+        self.pregiven_items = []
         for location_id, location in LocationList.items():
             # No need to spoiler constants or hints
             if location.type == Types.Constant or location.type == Types.Hint:
                 continue
-            pregiven_diff = location_id - Locations.PreGiven_Location00
-            if (pregiven_diff >= 0) and (pregiven_diff < 41):
-                self.pregiven_items[pregiven_diff] = location.item
+            if location_id in PreGivenLocations:
+                self.pregiven_items.append(location.item)
             # Prevent weird null issues but get the item at the location
             if location.item is None:
                 item = Items.NoItem

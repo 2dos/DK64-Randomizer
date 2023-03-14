@@ -232,6 +232,9 @@ int isMovePregiven(int index) {
 		case TRACKER_TYPE_VINE:
 			return Rando.moves_pregiven.vines || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_VINE);
 		case TRACKER_TYPE_MELON_2:
+			if (initFile_getInsUpgradeLevel(1) >= 1) {
+				return 1;
+			}
 			for (int i = 0; i < 5; i++) {
 				if (initFile_hasInstrument(i)) {
 					return 1;
@@ -326,7 +329,7 @@ int getEnabledState(int index) {
 		case TRACKER_TYPE_OSPRINT:
 			return MovesBase[2].special_moves & 4;
 		case TRACKER_TYPE_PTT:
-			return MovesBase[2].special_moves & 2;
+			return MovesBase[3].special_moves & 2;
 		case TRACKER_TYPE_MONKEYPORT:
 			return MovesBase[3].special_moves & 4;
 		case TRACKER_TYPE_MINI:
