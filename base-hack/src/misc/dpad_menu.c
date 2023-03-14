@@ -122,7 +122,7 @@ void handleDPadFunctionality(void) {
     if (canUseDPad()) {
         if (Rando.quality_of_life.hud_bp_multibunch) {
             updateMultibunchCount();
-            if (NewlyPressedControllerInput.Buttons & D_Up) {
+            if (NewlyPressedControllerInput.Buttons.d_up) {
                 displayItemOnHUD(0xC,0,0);
                 int world = getWorld(CurrentMap,0);
                 if ((world < 7) && (CurrentMap != 0x2A)) {

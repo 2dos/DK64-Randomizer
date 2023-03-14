@@ -287,12 +287,6 @@ typedef struct TextOverlay {
 	/* 0x178 */ char* string;
 } TextOverlay;
 
-typedef struct Controller {
-	/* 0x000 */ short Buttons;
-	/* 0x002 */ char stickX;
-	/* 0x003 */ char stickY;
-} Controller;
-
 typedef struct InventoryBase {
 	/* 0x000 */ short StandardAmmo;
 	/* 0x002 */ short HomingAmmo;
@@ -1499,3 +1493,28 @@ typedef struct weather_struct {
 	/* 0x00C */ void* unkC;
 	/* 0x010 */ void* falling_func;
 } weather_struct;
+
+typedef struct buttons {
+	unsigned char a : 1; // 0x8000
+	unsigned char b : 1; // 0x4000
+	unsigned char z : 1; // 0x2000
+	unsigned char start : 1; // 0x1000
+	unsigned char d_up : 1; // 0x0800
+	unsigned char d_down : 1; // 0x0400
+	unsigned char d_left : 1; // 0x0200
+	unsigned char d_right : 1; // 0x0100
+	unsigned char unused_0 : 1; // 0x0080
+	unsigned char unused_1 : 1; // 0x0040
+	unsigned char l : 1; // 0x0020
+	unsigned char r : 1; // 0x0010
+	unsigned char c_up : 1; // 0x0008
+	unsigned char c_down : 1; // 0x0004
+	unsigned char c_left : 1; // 0x0002
+	unsigned char c_right : 1; // 0x0001
+} buttons;
+
+typedef struct Controller {
+	/* 0x000 */ buttons Buttons;
+	/* 0x002 */ char stickX;
+	/* 0x003 */ char stickY;
+} Controller;

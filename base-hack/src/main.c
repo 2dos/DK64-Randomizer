@@ -522,7 +522,7 @@ int* displayListModifiers(int* dl) {
 
 void toggleStandardAmmo(void) {
 	if (Gamemode == 6) {
-		if (NewlyPressedControllerInput.Buttons & D_Down) {
+		if (NewlyPressedControllerInput.Buttons.d_down) {
 			if (MovesBase[(int)Character].weapon_bitfield & 2) {
 				if (CollectableBase.HomingAmmo > 0) {
 					ForceStandardAmmo = 1 ^ ForceStandardAmmo;

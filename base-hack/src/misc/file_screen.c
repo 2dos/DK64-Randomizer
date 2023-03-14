@@ -311,45 +311,45 @@ int getEnabledState(int index) {
 				return MovesBase[kong].instrument_bitfield & 1;
 			}
 		case TRACKER_TYPE_GRAB:
-			return MovesBase[0].special_moves & 4;
+			return MovesBase[KONG_DK].special_moves & MOVECHECK_GRAB;
 		case TRACKER_TYPE_BLAST:
-			return MovesBase[0].special_moves & 1;
+			return MovesBase[KONG_DK].special_moves & MOVECHECK_BLAST;
 		case TRACKER_TYPE_STRONG:
-			return MovesBase[0].special_moves & 2;
+			return MovesBase[KONG_DK].special_moves & MOVECHECK_STRONG;
 		case TRACKER_TYPE_CHARGE:
-			return MovesBase[1].special_moves & 1;
+			return MovesBase[KONG_DIDDY].special_moves & MOVECHECK_CHARGE;
 		case TRACKER_TYPE_SPRING:
-			return MovesBase[1].special_moves & 4;
+			return MovesBase[KONG_DIDDY].special_moves & MOVECHECK_SPRING;
 		case TRACKER_TYPE_ROCKET:
-			return MovesBase[1].special_moves & 2;
+			return MovesBase[KONG_DIDDY].special_moves & MOVECHECK_ROCKETBARREL;
 		case TRACKER_TYPE_OSTAND:
-			return MovesBase[2].special_moves & 1;
+			return MovesBase[KONG_LANKY].special_moves & MOVECHECK_OSTAND;
 		case TRACKER_TYPE_BALLOON:
-			return MovesBase[2].special_moves & 1;
+			return MovesBase[KONG_LANKY].special_moves & MOVECHECK_BALLOON;
 		case TRACKER_TYPE_OSPRINT:
-			return MovesBase[2].special_moves & 4;
+			return MovesBase[KONG_LANKY].special_moves & MOVECHECK_OSPRINT;
 		case TRACKER_TYPE_PTT:
-			return MovesBase[3].special_moves & 2;
+			return MovesBase[KONG_TINY].special_moves & MOVECHECK_TWIRL;
 		case TRACKER_TYPE_MONKEYPORT:
-			return MovesBase[3].special_moves & 4;
+			return MovesBase[KONG_TINY].special_moves & MOVECHECK_MONKEYPORT;
 		case TRACKER_TYPE_MINI:
-			return MovesBase[3].special_moves & 1;
+			return MovesBase[KONG_TINY].special_moves & MOVECHECK_MINI;
 		case TRACKER_TYPE_PUNCH:
-			return MovesBase[4].special_moves & 2;
+			return MovesBase[KONG_CHUNKY].special_moves & MOVECHECK_PUNCH;
 		case TRACKER_TYPE_GONE:
-			return MovesBase[4].special_moves & 4;
+			return MovesBase[KONG_CHUNKY].special_moves & MOVECHECK_GONE;
 		case TRACKER_TYPE_HUNKY:
-			return MovesBase[4].special_moves & 1;
+			return MovesBase[KONG_CHUNKY].special_moves & MOVECHECK_HUNKY;
 		case TRACKER_TYPE_CAMERA:
 			return checkFlagDuplicate(FLAG_ABILITY_CAMERA, 0);
 		case TRACKER_TYPE_SHOCKWAVE:
 			return checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 0);
 		case TRACKER_TYPE_SLAM:
-			return MovesBase[0].simian_slam;
+			return MovesBase[KONG_DK].simian_slam;
 		case TRACKER_TYPE_HOMING:
-			return MovesBase[0].weapon_bitfield & 2;
+			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_HOMING;
 		case TRACKER_TYPE_SNIPER:
-			return MovesBase[0].weapon_bitfield & 4;
+			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_SNIPER;
 		case TRACKER_TYPE_DIVE:
 			return checkFlagDuplicate(FLAG_TBARREL_DIVE, 0);
 		case TRACKER_TYPE_ORANGE:
@@ -366,21 +366,21 @@ int getEnabledState(int index) {
 			}
 			return 0;
 		case TRACKER_TYPE_MELON_3:
-			return MovesBase[0].instrument_bitfield & 4;
+			return MovesBase[KONG_DK].instrument_bitfield & MOVECHECK_THIRDMELON;
 		case TRACKER_TYPE_INSUPG_1:
-			return MovesBase[0].instrument_bitfield & 2;
+			return MovesBase[KONG_DK].instrument_bitfield & MOVECHECK_UPGRADE1;
 		case TRACKER_TYPE_INSUPG_2:
-			return MovesBase[0].instrument_bitfield & 8;
+			return MovesBase[KONG_DK].instrument_bitfield & MOVECHECK_UPGRADE2;
 		case TRACKER_TYPE_BELT_1:
-			return MovesBase[0].ammo_belt >= 1;
+			return MovesBase[KONG_DK].ammo_belt >= 1;
 		case TRACKER_TYPE_BELT_2:
-			return MovesBase[0].ammo_belt >= 2;
+			return MovesBase[KONG_DK].ammo_belt >= 2;
 		case TRACKER_TYPE_AMMOBELT:
-			return MovesBase[0].ammo_belt;
+			return MovesBase[KONG_DK].ammo_belt;
 		case TRACKER_TYPE_INSTRUMENT_UPG:
-			if (MovesBase[0].instrument_bitfield & 8) {
+			if (MovesBase[KONG_DK].instrument_bitfield & MOVECHECK_UPGRADE2) {
 				return 2;
-			} else if (MovesBase[0].instrument_bitfield & 2) {
+			} else if (MovesBase[KONG_DK].instrument_bitfield & MOVECHECK_UPGRADE1) {
 				return 1;
 			}
 			return 0;
