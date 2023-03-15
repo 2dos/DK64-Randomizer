@@ -309,6 +309,102 @@ def maskImage(im_f, base_index, min_y, keep_dark=False):
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
+def recolorRotatingRoomTiles():
+    """Determine how to recolor the tiles rom the memory game in Donkey's Rotating Room in Caves."""
+    question_mark_tiles = [900, 901, 892, 893, 896, 897, 890, 891, 898, 899, 894, 895]
+    face_tiles = [874, 878, 875, 879, 876, 886, 877, 885, 880, 887, 881, 888, 870, 872, 871, 873, 866, 882, 867, 883, 868, 889, 869, 884]
+    question_mark_tile_masks = [508, 509]
+    face_tile_masks = [636, 635, 633, 634, 631, 632, 630, 629, 627, 628, 5478, 5478]
+    question_mark_resize = [17, 37]
+    face_resize = [[32, 64], [32, 64], [32, 64], [32, 64], [32, 64], [71, 66]]
+    question_mark_offsets = [[16, 14], [0, 14]]
+    face_offsets = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [-5, -1], [-38, -1]]
+
+    for tile in range(len(question_mark_tiles)):
+        tile_image = getFile(7, question_mark_tiles[tile], False, 32, 64, "rgba5551")
+        mask = getFile(7, question_mark_tile_masks[(tile % 2)], False, 32, 64, "rgba5551")
+        resize = question_mark_resize
+        mask = mask.resize((resize[0], resize[1]))
+        masked_tile = maskImageRotatingRoomTile(tile_image, mask, question_mark_offsets[(tile % 2)], int(tile / 2), (tile % 2))
+        writeColorImageToROM(masked_tile, 7, question_mark_tiles[tile], 32, 64, False, "rgba5551")
+    for tile in range(len(face_tiles)):
+        face_index = int(tile / 4)
+        if face_index < 5:
+            width = 32
+            height = 64
+        else:
+            width = 44
+            height = 44
+        mask = getFile(25, face_tile_masks[int(tile / 2)], True, width, height, "rgba5551")
+        resize = face_resize[face_index]
+        mask = mask.resize((resize[0], resize[1]))
+        tile_image = getFile(7, face_tiles[tile], False, 32, 64, "rgba5551")
+        masked_tile = maskImageRotatingRoomTile(tile_image, mask, face_offsets[int(tile / 2)], face_index, (int(tile / 2) % 2))
+        writeColorImageToROM(masked_tile, 7, face_tiles[tile], 32, 64, False, "rgba5551")
+
+def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, tile_side):
+    """Apply RGB mask to image of a Rotating Room Memory Tile."""
+    w, h = im_f.size
+    im_original = im_f
+    pix_original = im_original.load()
+    pixels_original = []
+    for x in range(w):
+        pixels_original.append([])
+        for y in range(h):
+            pixels_original[x].append(list(pix_original[x, y]).copy())
+    converter = ImageEnhance.Color(im_f)
+    im_f = converter.enhance(0)
+    brightener = ImageEnhance.Brightness(im_f)
+    im_f = brightener.enhance(2)
+    pix = im_f.load()
+    pix_mask = im_mask.load()
+    w2, h2 = im_mask.size
+    mask_coords = []
+    for x in range(w2):
+        for y in range(h2):
+            coord = list(pix_mask[x, y])
+            if coord[3] > 0:
+                mask_coords.append([(x + paste_coords[0]), (y + paste_coords[1])])
+    if image_color_index < 5:   
+        mask = getRGBFromHash(color_bases[image_color_index])
+        for channel in range(3):
+            mask[channel] = max(39, mask[channel]) # Too dark looks bad
+    else:
+        mask = getRGBFromHash(color_bases[2])
+    mask2 = getRGBFromHash("#000000")
+    if image_color_index == 0:
+        mask2 = getRGBFromHash("#FFFFFF")
+    for x in range(w):
+        for y in range(h):
+            base = list(pix[x, y])
+            base_original = list(pixels_original[x][y])
+            if [x, y] not in mask_coords:
+                if image_color_index in [1, 2, 4]: # Diddy, Lanky and Chunky don't get any special features
+                    for channel in range(3):
+                        base[channel] = int(mask[channel] * (base[channel] / 255))
+                elif image_color_index in [0, 3]: # Donkey and Tiny get a diamond-shape frame
+                    side = w
+                    if tile_side == 1:
+                        side = 0
+                    if abs(abs(side - x) - y) < 2 or abs(abs(side - x) - abs(h - y)) < 2:
+                        for channel in range(3):
+                            base[channel] = int(mask2[channel] * (base[channel] / 255))
+                    else:
+                        for channel in range(3):
+                            base[channel] = int(mask[channel] * (base[channel] / 255))
+                else: # Golden Banana gets a block-pattern
+                    if (int(x / 8) + int(y / 8)) % 2 == 0:
+                        for channel in range(3):
+                            base[channel] = int(mask[channel] * (base[channel] / 255))
+                    else:
+                        for channel in range(3):
+                            base[channel] = int(mask2[channel] * (base[channel] / 255))
+            else:
+                for channel in range(3):
+                    base[channel] = base_original[channel]
+            pix[x, y] = (base[0], base[1], base[2], base[3])
+    return im_f
+
 
 def hueShift(im, amount):
     """Apply a hue shift on an image."""
@@ -332,7 +428,7 @@ def hueShift(im, amount):
 
 
 def maskImageWithOutline(im_f, base_index, min_y, type=""):
-    """Apply RGB mask to image in Black and White."""
+    """Apply RGB mask to image with an Outline in a different color."""
     w, h = im_f.size
     converter = ImageEnhance.Color(im_f)
     im_f = converter.enhance(0)
@@ -638,6 +734,7 @@ def overwrite_object_colors(spoiler: Spoiler):
         writeWhiteKasplatHairColorToROM("#FFFFFF", "#000000", 25, 4125, "rgba5551")
         recolorWrinklyDoors()
         recolorSlamSwitches()
+        recolorRotatingRoomTiles()
         for kong_index in range(5):
             # file = 4120
             # # Kasplat Hair
