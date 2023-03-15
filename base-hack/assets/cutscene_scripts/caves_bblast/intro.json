@@ -1,0 +1,133 @@
+{
+    "index": 0,
+    "point_data": [
+        {
+            "unk0": 0,
+            "command": 4,
+            "points": [
+                {
+                    "x": 674,
+                    "y": 1087,
+                    "z": 1711,
+                    "zoom": 45,
+                    "roll": 0,
+                    "rot": {
+                        "x": 8192,
+                        "y": 0,
+                        "z": 8192
+                    }
+                },
+                {
+                    "x": 625,
+                    "y": 1131,
+                    "z": 1844,
+                    "zoom": 45,
+                    "roll": 0,
+                    "rot": {
+                        "x": 2048,
+                        "y": 750,
+                        "z": 2048
+                    }
+                },
+                {
+                    "x": 806,
+                    "y": 1152,
+                    "z": 1900,
+                    "zoom": 45,
+                    "roll": 0,
+                    "rot": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    }
+                }
+            ],
+            "duration": 150,
+            "detailed_command": {
+                "sub_command": 0,
+                "params": [
+                    0,
+                    0
+                ]
+            },
+            "head": [
+                0,
+                0
+            ],
+            "song": 0,
+            "point_start": {
+                "x": 3,
+                "y": 0,
+                "z": 0,
+                "zoom": 0,
+                "roll": 0,
+                "rot": 0
+            },
+            "point_end": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "zoom": 0,
+                "roll": 0,
+                "rot": 0
+            }
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                0,
+                0
+            ],
+            "detailed_command": {
+                "sub_command": 0,
+                "params": [
+                    139,
+                    431,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 0,
+            "command": 5,
+            "head": [
+                0,
+                0
+            ],
+            "point_start": {
+                "x": 2,
+                "y": 0,
+                "z": 0,
+                "zoom": 141,
+                "roll": 255
+            },
+            "point_end": {
+                "x": 188,
+                "y": 255,
+                "z": 930,
+                "zoom": 0,
+                "roll": 0
+            },
+            "points": [
+                {
+                    "x": 1595,
+                    "y": 397,
+                    "z": 261,
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 1594,
+                    "y": 397,
+                    "z": 261,
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 150
+        }
+    ]
+}

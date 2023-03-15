@@ -337,12 +337,12 @@ int* pauseScreen3And4Header(int* dl) {
         dl = printText(dl, 0x280, 0x3C, 0.65f, "HINTS");
         // Handle Controls
         int hint_level_cap = 7;
-        if (NewlyPressedControllerInput.Buttons & C_Left) {
+        if (NewlyPressedControllerInput.Buttons.c_left) {
             hint_level -= 1;
             if (hint_level < 0) {
                 hint_level = hint_level_cap - 1;
             }
-        } else if (NewlyPressedControllerInput.Buttons & C_Right) {
+        } else if (NewlyPressedControllerInput.Buttons.c_right) {
             hint_level += 1;
             if (hint_level >= hint_level_cap) {
                 hint_level = 0;
@@ -532,12 +532,12 @@ int changeSelectedLevel(int unk0, int unk1) {
     pause_paad* paad = CurrentActorPointer_0->paad;
     if (paad->screen == PAUSESCREEN_CHECKS) {
         // Checks Screen
-        if (NewlyPressedControllerInput.Buttons & C_Left) {
+        if (NewlyPressedControllerInput.Buttons.c_left) {
             check_level -= 1;
             if (check_level < 0) {
                 check_level = (sizeof(levels) / 4) - 1;
             }
-        } else if (NewlyPressedControllerInput.Buttons & C_Right) {
+        } else if (NewlyPressedControllerInput.Buttons.c_right) {
             check_level += 1;
             if (check_level >= (sizeof(levels) / 4)) {
                 check_level = 0;
