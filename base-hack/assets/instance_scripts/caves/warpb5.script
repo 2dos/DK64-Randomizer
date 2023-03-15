@@ -1,5 +1,0 @@
-.data
-id = 0xB5
-.code
-EXEC 7 | 125 65535 181
-ENDBLOCK

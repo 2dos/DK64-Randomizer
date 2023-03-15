@@ -1,6 +1,7 @@
 """Copies a base shop script to all shops."""
+import json
 
-ref_script = "assets/instance_scripts/base_shop_script/shop.script"
+ref_script = "assets/instance_scripts/base_shop_script/shop.json"
 
 shop_db = [
     {"map": "japes", "shops": {"snide": 0x54, "funky": 0x53}},
@@ -16,10 +17,11 @@ shop_db = [
 ]
 
 with open(ref_script, "r") as fh:
+    base_data = json.load(fh)
     for map_obj in shop_db:
         for shop in map_obj["shops"]:
             shop_id = map_obj["shops"][shop]
-            with open(f"assets/instance_scripts/{map_obj['map']}/{shop}.script", "w") as fg:
-                fg.write(f".data\nid = {hex(shop_id)}\n.code\n")
-                fh.seek(0)
-                fg.write(fh.read())
+            with open(f"assets/instance_scripts/{map_obj['map']}/{shop}.json", "w") as fg:
+                shop_data = base_data.copy()
+                shop_data["id"] = shop_id
+                json.dump(shop_data, fg, indent=4)
