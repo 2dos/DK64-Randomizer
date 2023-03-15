@@ -1,0 +1,121 @@
+{
+    "index": 0,
+    "point_data": [
+        {
+            "unk0": 0,
+            "command": 4,
+            "points": [
+                {
+                    "x": 1226,
+                    "y": 669,
+                    "z": 1187,
+                    "zoom": 45,
+                    "roll": 0,
+                    "rot": {
+                        "x": 30288,
+                        "y": 0,
+                        "z": 30288
+                    }
+                },
+                {
+                    "x": 1140,
+                    "y": 657,
+                    "z": 1370,
+                    "zoom": 45,
+                    "roll": 0,
+                    "rot": {
+                        "x": 8192,
+                        "y": 0,
+                        "z": 60000
+                    }
+                }
+            ],
+            "duration": 120,
+            "detailed_command": {
+                "sub_command": 0,
+                "params": [
+                    0,
+                    0
+                ]
+            },
+            "head": [
+                0,
+                0
+            ],
+            "song": 0,
+            "point_start": {
+                "x": 2,
+                "y": 0,
+                "z": 0,
+                "zoom": 0,
+                "roll": 0,
+                "rot": 0
+            },
+            "point_end": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "zoom": 0,
+                "roll": 0,
+                "rot": 0
+            }
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                255,
+                195
+            ],
+            "detailed_command": {
+                "sub_command": 0,
+                "params": [
+                    206,
+                    400,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        },
+        {
+            "unk0": 0,
+            "command": 5,
+            "head": [
+                72,
+                9
+            ],
+            "point_start": {
+                "x": 2,
+                "y": -59,
+                "z": -59,
+                "zoom": 255,
+                "roll": 197
+            },
+            "point_end": {
+                "x": -11063,
+                "y": 20489,
+                "z": 2180,
+                "zoom": 8,
+                "roll": 132
+            },
+            "points": [
+                {
+                    "x": 891,
+                    "y": 537,
+                    "z": 2192,
+                    "zoom": 45,
+                    "roll": 0
+                },
+                {
+                    "x": 891,
+                    "y": 537,
+                    "z": 2192,
+                    "zoom": 45,
+                    "roll": 0
+                }
+            ],
+            "duration": 110
+        }
+    ]
+}

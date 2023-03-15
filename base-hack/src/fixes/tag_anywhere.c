@@ -600,7 +600,7 @@ void tagAnywhere(void) {
             if (Character < TAG_ANYWHERE_KONG_LIMIT) {
 				int change = 0;     
 
-                if (ControllerInput.Buttons & D_Left) {    
+                if (ControllerInput.Buttons.d_left) {    
                     if (can_tag_left){
                         change -= 1;      
                     }                  
@@ -610,7 +610,7 @@ void tagAnywhere(void) {
                     can_tag_left = 1;
                 }                
 
-                if (ControllerInput.Buttons & D_Right) {    
+                if (ControllerInput.Buttons.d_right) {    
                     if (can_tag_right){                    
                         change += 1;                        
                     }
