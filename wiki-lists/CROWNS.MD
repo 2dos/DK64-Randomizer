@@ -62,7 +62,7 @@
 | Angry Aztec | Angry Aztec: Near Snoop Tunnel Shop |  | 
 | Angry Aztec | Angry Aztec: On 5-Door Temple | (l.jetpack and l.diddy) or l.CanMoonkick() | 
 | Angry Aztec | Angry Aztec: Near Snoop Tunnel Exterior Warp |  | 
-| Angry Aztec | Angry Aztec: Near Vulture Cage | l.vines) | 
+| Angry Aztec | Angry Aztec: Near Vulture Cage | l.vines or (l.jetpack and l.diddy)) | 
 | Angry Aztec | Angry Aztec: Under Vulture Cage |  | 
 | Angry Aztec | Angry Aztec: Near Gong Tower |  | 
 | Angry Aztec | Angry Aztec: Snoop Tunnel |  | 
