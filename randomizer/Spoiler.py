@@ -181,6 +181,7 @@ class Spoiler:
         settings["Select Starting Keys"] = self.settings.select_keys
         if not self.settings.keys_random:
             settings["Number of Keys Required"] = self.settings.krool_key_count
+        settings["Starting Moves Count"] = self.settings.starting_moves_count
         settings["Fast Start"] = self.settings.fast_start_beginning_of_game
         settings["Helm Setting"] = self.settings.helm_setting.name
         settings["Quality of Life"] = self.settings.quality_of_life

@@ -791,6 +791,9 @@ class LogicVarHolder:
                 # Require one of twirl or hunky chunky by level 7 to prevent non-hard-boss fill failures
                 if not self.settings.hard_bosses and order_of_level >= 7 and not (self.twirl or self.hunkyChunky):
                     return False
+                # Require both hunky chunky and twirl (or hard bosses) before Helm to prevent boss fill failures
+                if order_of_level > 7 and not self.hunkyChunky or (not self.twirl and not self.settings.hard_bosses):
+                    return False
         # If we have the moves, ensure we have enough kongs as well
         return self.HasEnoughKongs(level, forPreviousLevel=True)
 

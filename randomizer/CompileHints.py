@@ -714,6 +714,7 @@ def compileHints(spoiler: Spoiler):
                 continue
             # For early Keys 1-2, place one hint with their required Kong and the level they're in
             if key_id in (Items.JungleJapesKey, Items.AngryAztecKey) and level_order_matters and not spoiler.settings.hard_level_progression:
+                globally_hinted_location_ids.append(key_location_ids[key_id])
                 location = LocationList[key_location_ids[key_id]]
                 key_item = ItemList[key_id]
                 kong_index = location.kong
@@ -762,7 +763,7 @@ def compileHints(spoiler: Spoiler):
                     path_location_id = random.choice(hintable_location_ids)
                     # Soft reroll duplicate hints based on hint reroll parameters
                     rerolls = 0
-                    while rerolls < hint_reroll_cap and path_location_id in globally_hinted_location_ids and random.random() >= hint_reroll_chance:
+                    while rerolls < hint_reroll_cap and path_location_id in globally_hinted_location_ids and random.random() <= hint_reroll_chance:
                         path_location_id = random.choice(hintable_location_ids)
                         rerolls += 1
                     globally_hinted_location_ids.append(path_location_id)
@@ -796,7 +797,7 @@ def compileHints(spoiler: Spoiler):
                 path_location_id = random.choice(hintable_location_ids)
                 # Soft reroll duplicate hints based on hint reroll parameters
                 rerolls = 0
-                while rerolls < hint_reroll_cap and path_location_id in globally_hinted_location_ids and random.random() >= hint_reroll_chance:
+                while rerolls < hint_reroll_cap and path_location_id in globally_hinted_location_ids and random.random() <= hint_reroll_chance:
                     path_location_id = random.choice(hintable_location_ids)
                     rerolls += 1
                 globally_hinted_location_ids.append(path_location_id)
@@ -826,7 +827,7 @@ def compileHints(spoiler: Spoiler):
                 path_location_id = random.choice(hintable_location_ids)
                 # Soft reroll duplicate hints based on hint reroll parameters
                 rerolls = 0
-                while rerolls < hint_reroll_cap and path_location_id in globally_hinted_location_ids and random.random() >= hint_reroll_chance:
+                while rerolls < hint_reroll_cap and path_location_id in globally_hinted_location_ids and random.random() <= hint_reroll_chance:
                     path_location_id = random.choice(hintable_location_ids)
                     rerolls += 1
                 globally_hinted_location_ids.append(path_location_id)
@@ -1071,7 +1072,7 @@ def compileHints(spoiler: Spoiler):
             hinted_loc_id = random.choice(hintable_location_ids)
             # Soft reroll duplicate hints based on hint reroll parameters
             rerolls = 0
-            while rerolls < hint_reroll_cap and hinted_loc_id in globally_hinted_location_ids and random.random() >= hint_reroll_chance:
+            while rerolls < hint_reroll_cap and hinted_loc_id in globally_hinted_location_ids and random.random() <= hint_reroll_chance:
                 hinted_loc_id = random.choice(hintable_location_ids)
                 rerolls += 1
             globally_hinted_location_ids.append(hinted_loc_id)

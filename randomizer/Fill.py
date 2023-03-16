@@ -1180,6 +1180,7 @@ def Fill(spoiler):
     # Finally, check if game is beatable
     Reset()
     if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckAllReachable):
+        print("Failed 101% check")
         raise Ex.GameNotBeatableException("Game not able to complete 101% after placing all items.")
     return
 
@@ -1531,10 +1532,10 @@ def FillKongsAndMoves(spoiler, placedTypes):
     # We can expect that all locations in this region are starting move locations or Training Barrels
     for locationLogic in RegionList[Regions.GameStart].locations:
         location = LocationList[locationLogic.id]
-        if location.item not in (None, Items.NoItem) or (location.item == Items.NoItem and not location.constant):
-            startingMoves.append(location.item)
-        else:
+        if location.item is None:
             locationsNeedingMoves.append(locationLogic.id)
+        elif location.item not in (None, Items.NoItem):
+            startingMoves.append(location.item)
     # Fill the empty starting locations
     if any(locationsNeedingMoves):
         newlyPlacedItems = []
@@ -1676,6 +1677,7 @@ def FillKongsAndMovesForLevelOrder(spoiler):
             # After setting B. Lockers and bosses, make sure the game is still 101%-able
             Reset()
             if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckAllReachable):
+                print("Failed post-progression 101% check?")
                 raise Ex.GameNotBeatableException("Game not able to complete 101% after setting progression.")
             # Once progression requirements updated, no longer assume we need kongs freed for level progression
             spoiler.settings.kongs_for_progression = False
