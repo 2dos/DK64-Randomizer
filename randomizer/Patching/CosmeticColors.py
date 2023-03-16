@@ -309,6 +309,7 @@ def maskImage(im_f, base_index, min_y, keep_dark=False):
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
+
 def recolorRotatingRoomTiles():
     """Determine how to recolor the tiles rom the memory game in Donkey's Rotating Room in Caves."""
     question_mark_tiles = [900, 901, 892, 893, 896, 897, 890, 891, 898, 899, 894, 895]
@@ -342,6 +343,7 @@ def recolorRotatingRoomTiles():
         masked_tile = maskImageRotatingRoomTile(tile_image, mask, face_offsets[int(tile / 2)], face_index, (int(tile / 2) % 2))
         writeColorImageToROM(masked_tile, 7, face_tiles[tile], 32, 64, False, "rgba5551")
 
+
 def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, tile_side):
     """Apply RGB mask to image of a Rotating Room Memory Tile."""
     w, h = im_f.size
@@ -365,10 +367,10 @@ def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, ti
             coord = list(pix_mask[x, y])
             if coord[3] > 0:
                 mask_coords.append([(x + paste_coords[0]), (y + paste_coords[1])])
-    if image_color_index < 5:   
+    if image_color_index < 5:
         mask = getRGBFromHash(color_bases[image_color_index])
         for channel in range(3):
-            mask[channel] = max(39, mask[channel]) # Too dark looks bad
+            mask[channel] = max(39, mask[channel])  # Too dark looks bad
     else:
         mask = getRGBFromHash(color_bases[2])
     mask2 = getRGBFromHash("#000000")
@@ -379,10 +381,10 @@ def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, ti
             base = list(pix[x, y])
             base_original = list(pixels_original[x][y])
             if [x, y] not in mask_coords:
-                if image_color_index in [1, 2, 4]: # Diddy, Lanky and Chunky don't get any special features
+                if image_color_index in [1, 2, 4]:  # Diddy, Lanky and Chunky don't get any special features
                     for channel in range(3):
                         base[channel] = int(mask[channel] * (base[channel] / 255))
-                elif image_color_index in [0, 3]: # Donkey and Tiny get a diamond-shape frame
+                elif image_color_index in [0, 3]:  # Donkey and Tiny get a diamond-shape frame
                     side = w
                     if tile_side == 1:
                         side = 0
@@ -392,7 +394,7 @@ def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, ti
                     else:
                         for channel in range(3):
                             base[channel] = int(mask[channel] * (base[channel] / 255))
-                else: # Golden Banana gets a block-pattern
+                else:  # Golden Banana gets a block-pattern
                     if (int(x / 8) + int(y / 8)) % 2 == 0:
                         for channel in range(3):
                             base[channel] = int(mask[channel] * (base[channel] / 255))
@@ -624,12 +626,13 @@ def maskBlueprintImage(im_f, base_index, monochrome=False):
                     pix[x, y] = (base2[0], base2[1], base2[2], base2[3])
     return im_f
 
+
 def recolorWrinklyDoors():
     """Recolor the Wrinkly hint door doorframes for colorblind mode."""
     file = [0xF0, 0xF2, 0xEF, 0x67, 0xF1]
     for kong in range(5):
         wrinkly_door_start = js.pointer_addresses[4]["entries"][file[kong]]["pointing_to"]
-        wrinkly_door_finish = js.pointer_addresses[4]["entries"][file[kong]+1]["pointing_to"]
+        wrinkly_door_finish = js.pointer_addresses[4]["entries"][file[kong] + 1]["pointing_to"]
         wrinkly_door_size = wrinkly_door_finish - wrinkly_door_start
         ROM().seek(wrinkly_door_start)
         indicator = int.from_bytes(ROM().readBytes(2), "big")
@@ -650,16 +653,15 @@ def recolorWrinklyDoors():
         new_color2 = getRGBFromHash(color_bases[kong])
         if kong == 0:
             for channel in range(3):
-                new_color2[channel] = max(80, new_color1[channel])
-                new_color2[channel] = max(39, new_color1[channel])  # Too black is bad
+                new_color2[channel] = max(80, new_color1[channel])  # Too black is bad
 
         # Recolor the doorframe
         for offset in color1_offsets:
             for i in range(3):
-                num_data[offset+i] = new_color1[i]
+                num_data[offset + i] = new_color1[i]
         for offset in color2_offsets:
             for i in range(3):
-                num_data[offset+i] = new_color2[i]
+                num_data[offset + i] = new_color2[i]
 
         data = bytearray(num_data)  # convert num_data back to binary string
         if indicator == 0x1F8B:
@@ -667,14 +669,13 @@ def recolorWrinklyDoors():
         ROM().seek(wrinkly_door_start)
         ROM().writeBytes(data)
 
+
 def recolorSlamSwitches():
     """Recolor the Wrinkly hint door doorframes for colorblind mode."""
-    file = [0x94, 0x93, 0x95, 0x96, 0xB8, 
-            0x16C, 0x16B, 0x16D, 0x16E, 0x16A, 
-            0x167, 0x166, 0x168, 0x169, 0x165]
+    file = [0x94, 0x93, 0x95, 0x96, 0xB8, 0x16C, 0x16B, 0x16D, 0x16E, 0x16A, 0x167, 0x166, 0x168, 0x169, 0x165]
     for switch in range(15):
         slam_switch_start = js.pointer_addresses[4]["entries"][file[switch]]["pointing_to"]
-        slam_switch_finish = js.pointer_addresses[4]["entries"][file[switch]+1]["pointing_to"]
+        slam_switch_finish = js.pointer_addresses[4]["entries"][file[switch] + 1]["pointing_to"]
         slam_switch_size = slam_switch_finish - slam_switch_start
         ROM().seek(slam_switch_start)
         indicator = int.from_bytes(ROM().readBytes(2), "big")
@@ -695,23 +696,76 @@ def recolorSlamSwitches():
         if switch < 5:
             for offset in color_offsets:
                 for i in range(3):
-                    num_data[offset+i] = new_color1[i]
+                    num_data[offset + i] = new_color1[i]
         # Blue switches
         elif switch < 10:
             for offset in color_offsets:
                 for i in range(3):
-                    num_data[offset+i] = new_color2[i]
+                    num_data[offset + i] = new_color2[i]
         # Red switches
         else:
             for offset in color_offsets:
                 for i in range(3):
-                    num_data[offset+i] = new_color3[i]
+                    num_data[offset + i] = new_color3[i]
 
         data = bytearray(num_data)  # convert num_data back to binary string
         if indicator == 0x1F8B:
             data = gzip.compress(data, compresslevel=9)
         ROM().seek(slam_switch_start)
         ROM().writeBytes(data)
+
+
+def recolorBlueprintModelTwo():
+    """Recolor the Blueprint Model2 items for colorblind mode."""
+    file = [0xDE, 0xE0, 0xE1, 0xDD, 0xDF]
+    for kong in range(5):
+        blueprint_model2_start = js.pointer_addresses[4]["entries"][file[kong]]["pointing_to"]
+        blueprint_model2_finish = js.pointer_addresses[4]["entries"][file[kong] + 1]["pointing_to"]
+        blueprint_model2_size = blueprint_model2_finish - blueprint_model2_start
+        ROM().seek(blueprint_model2_start)
+        indicator = int.from_bytes(ROM().readBytes(2), "big")
+        ROM().seek(blueprint_model2_start)
+        data = ROM().readBytes(blueprint_model2_size)
+        if indicator == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        num_data = []  # data, but represented as nums rather than b strings
+        for d in data:
+            num_data.append(d)
+        # Figure out which colors to use and where to put them
+        color1_offsets = [0x52C, 0x54C, 0x57C, 0x58C, 0x5AC, 0x5CC, 0x5FC, 0x61C]
+        color2_offsets = [0x53C, 0x55C, 0x5EC, 0x60C]
+        color3_offsets = [0x56C, 0x59C, 0x5BC, 0x5DC]
+        new_color = getRGBFromHash(color_bases[kong])
+        if kong == 0:
+            for channel in range(3):
+                new_color[channel] = max(39, new_color[channel])  # Too black is bad
+
+        # Recolor the model2 item
+        for offset in color1_offsets:
+            total_light = int(num_data[offset] + num_data[offset + 1] + num_data[offset + 2])
+            for i in range(3):
+                num_data[offset + i] = int(total_light / 3)
+            for i in range(3):
+                num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
+        for offset in color2_offsets:
+            total_light = int(num_data[offset] + num_data[offset + 1] + num_data[offset + 2])
+            for i in range(3):
+                num_data[offset + i] = int(total_light / 3)
+            for i in range(3):
+                num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
+        for offset in color3_offsets:
+            total_light = int(num_data[offset] + num_data[offset + 1] + num_data[offset + 2])
+            for i in range(3):
+                num_data[offset + i] = int(total_light / 3)
+            for i in range(3):
+                num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
+
+        data = bytearray(num_data)  # convert num_data back to binary string
+        if indicator == 0x1F8B:
+            data = gzip.compress(data, compresslevel=9)
+        ROM().seek(blueprint_model2_start)
+        ROM().writeBytes(data)
+
 
 def overwrite_object_colors(spoiler: Spoiler):
     """Overwrite object colors."""
@@ -735,6 +789,7 @@ def overwrite_object_colors(spoiler: Spoiler):
         recolorWrinklyDoors()
         recolorSlamSwitches()
         recolorRotatingRoomTiles()
+        recolorBlueprintModelTwo()
         for kong_index in range(5):
             # file = 4120
             # # Kasplat Hair
