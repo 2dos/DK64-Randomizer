@@ -766,6 +766,40 @@ def recolorBlueprintModelTwo():
         ROM().seek(blueprint_model2_start)
         ROM().writeBytes(data)
 
+def recolorBells():
+    """Recolor the Chunky Minecart bells for colorblind mode (prot/deut)."""
+    file = 693
+    minecart_bell_start = js.pointer_addresses[4]["entries"][file]["pointing_to"]
+    minecart_bell_finish = js.pointer_addresses[4]["entries"][file + 1]["pointing_to"]
+    minecart_bell_size = minecart_bell_finish - minecart_bell_start
+    ROM().seek(minecart_bell_start)
+    indicator = int.from_bytes(ROM().readBytes(2), "big")
+    ROM().seek(minecart_bell_start)
+    data = ROM().readBytes(minecart_bell_size)
+    if indicator == 0x1F8B:
+        data = zlib.decompress(data, (15 + 32))
+    num_data = []  # data, but represented as nums rather than b strings
+    for d in data:
+        num_data.append(d)
+    # Figure out which colors to use and where to put them
+    color1_offsets = [0x214, 0x244, 0x264, 0x274, 0x284]
+    color2_offsets = [0x224, 0x234, 0x254]
+    new_color1 = getRGBFromHash("#0066FF")
+    new_color2 = getRGBFromHash("#0000FF")
+
+    # Recolor the bell
+    for offset in color1_offsets:
+        for i in range(3):
+            num_data[offset + i] = new_color1[i]
+    for offset in color2_offsets:
+        for i in range(3):
+            num_data[offset + i] = new_color2[i]
+
+    data = bytearray(num_data)  # convert num_data back to binary string
+    if indicator == 0x1F8B:
+        data = gzip.compress(data, compresslevel=9)
+    ROM().seek(minecart_bell_start)
+    ROM().writeBytes(data)
 
 def overwrite_object_colors(spoiler: Spoiler):
     """Overwrite object colors."""
@@ -778,6 +812,8 @@ def overwrite_object_colors(spoiler: Spoiler):
             color_bases = ["#000000", "#318DFF", "#7F6D59", "#FFFFFF", "#E3A900"]
         elif mode == ColorblindMode.trit:
             color_bases = ["#000000", "#C72020", "#13C4D8", "#FFFFFF", "#FFA4A4"]
+        if mode in (ColorblindMode.prot, ColorblindMode.deut):
+            recolorBells()
         file = 175
         dk_single = getFile(7, file, False, 44, 44, "rgba5551")
         dk_single = dk_single.resize((21, 21))
