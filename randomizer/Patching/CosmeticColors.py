@@ -593,7 +593,7 @@ def writeWhiteKasplatHairColorToROM(color1, color2, table_index, file_index, for
     ROM().writeBytes(data)
 
 
-def maskBlueprintImage(im_f, base_index, monochrome=False):
+def maskBlueprintImage(im_f, base_index):
     """Apply RGB mask to blueprint image."""
     w, h = im_f.size
     im_f_original = im_f
@@ -606,7 +606,7 @@ def maskBlueprintImage(im_f, base_index, monochrome=False):
     pix = im_f.load()
     pix2 = im_f_original.load()
     mask = getRGBFromHash(color_bases[base_index])
-    if monochrome is True:
+    if max(mask[0], max(mask[1], mask[2])) < 39:
         for channel in range(3):
             mask[channel] = max(39, mask[channel])  # Too black is bad for these items
     w, h = im_f.size
@@ -626,6 +626,33 @@ def maskBlueprintImage(im_f, base_index, monochrome=False):
                     pix[x, y] = (base2[0], base2[1], base2[2], base2[3])
     return im_f
 
+def maskLaserImage(im_f, base_index):
+    """Apply RGB mask to blueprint image."""
+    w, h = im_f.size
+    im_f_original = im_f
+    converter = ImageEnhance.Color(im_f)
+    im_f = converter.enhance(0)
+    im_dupe = im_f.crop((0, 0, w, h))
+    brightener = ImageEnhance.Brightness(im_dupe)
+    im_dupe = brightener.enhance(2)
+    im_f.paste(im_dupe, (0, 0), im_dupe)
+    pix = im_f.load()
+    pix2 = im_f_original.load()
+    mask = getRGBFromHash(color_bases[base_index])
+    w, h = im_f.size
+    for x in range(w):
+        for y in range(h):
+            base = list(pix[x, y])
+            base2 = list(pix2[x, y])
+            if base[3] > 0:
+                # Filter out the white center of the laser
+                if min(base2[0], min(base2[1], base2[2])) <= 210:
+                    for channel in range(3):
+                        base[channel] = int(mask[channel] * (base[channel] / 255))
+                    pix[x, y] = (base[0], base[1], base[2], base[3])
+                else:
+                    pix[x, y] = (base2[0], base2[1], base2[2], base2[3])
+    return im_f
 
 def recolorWrinklyDoors():
     """Recolor the Wrinkly hint door doorframes for colorblind mode."""
@@ -837,7 +864,7 @@ def overwrite_object_colors(spoiler: Spoiler):
                 # Blueprint sprite
                 blueprint_start = [5624, 5608, 5519, 5632, 5616]
                 blueprint_im = blueprint_lanky[(file - 5519)]
-                blueprint_im = maskBlueprintImage(blueprint_im, kong_index, True)
+                blueprint_im = maskBlueprintImage(blueprint_im, kong_index)
                 writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False, "rgba5551")
             for file in range(4925, 4931):
                 # Shockwave
@@ -845,6 +872,12 @@ def overwrite_object_colors(spoiler: Spoiler):
                 shockwave_im = getFile(25, shockwave_start[kong_index] + (file - 4925), True, 32, 32, "rgba32")
                 shockwave_im = maskImage(shockwave_im, kong_index, 0)
                 writeColorImageToROM(shockwave_im, 25, shockwave_start[kong_index] + (file - 4925), 32, 32, False, "rgba32")
+            for file in range(784, 796):
+                # Helm Laser (will probably also affect the Pufftoss laser and the Game Over laser)
+                laser_start = [784, 748, 363, 760, 772]
+                laser_im = getFile(7, laser_start[kong_index] + (file - 784), False, 32, 32, "rgba32")
+                laser_im = maskLaserImage(laser_im, kong_index)
+                writeColorImageToROM(laser_im, 7, laser_start[kong_index] + (file - 784), 32, 32, False, "rgba32")
             if kong_index == 0 or kong_index == 3 or (kong_index == 2 and mode != ColorblindMode.trit):  # Lanky (prot, deut only) or DK or Tiny
                 for file in range(152, 160):
                     # Single
