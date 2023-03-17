@@ -627,7 +627,7 @@ def maskBlueprintImage(im_f, base_index):
     return im_f
 
 def maskLaserImage(im_f, base_index):
-    """Apply RGB mask to blueprint image."""
+    """Apply RGB mask to laser texture."""
     w, h = im_f.size
     im_f_original = im_f
     converter = ImageEnhance.Color(im_f)
