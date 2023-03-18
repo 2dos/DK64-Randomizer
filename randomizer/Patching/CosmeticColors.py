@@ -592,6 +592,91 @@ def writeWhiteKasplatHairColorToROM(color1, color2, table_index, file_index, for
     ROM().seek(file_start)
     ROM().writeBytes(data)
 
+def writeKlaptrapSkinColorToROM(color_index, table_index, file_index, format: str):
+    """Write color to ROM for klaptraps."""
+    im_f = getFile(table_index, file_index, True, 32, 43, format)
+    im_f = maskImage(im_f, color_index, 0, (color_index != 3))
+    pix = im_f.load()
+    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
+    if format == "rgba32":
+        null_color = [0] * 4
+    else:
+        null_color = [0, 0]
+    bytes_array = []
+    for y in range(42):
+        for x in range(32):
+            color_lst = calculateKlaptrapPixel(list(pix[x, y]), format)
+            bytes_array.extend(color_lst)
+    for i in range(18):
+        color_lst = calculateKlaptrapPixel(list(pix[i, 42]), format)
+        bytes_array.extend(color_lst)
+    for i in range(4):
+        bytes_array.extend(null_color)
+    for i in range(3):
+        color_lst = calculateKlaptrapPixel(list(pix[(22 + i), 42]), format)
+        bytes_array.extend(color_lst)
+    data = bytearray(bytes_array)
+    if table_index == 25:
+        data = gzip.compress(data, compresslevel=9)
+    ROM().seek(file_start)
+    ROM().writeBytes(data)
+
+def writeSpecialKlaptrapTextureToROM(color_index, table_index, file_index, format: str, pixels_to_ignore: list):
+    """Write color to ROM for klaptraps special texture(s)."""
+    im_f = getFile(table_index, file_index, True, 32, 43, format)
+    pix_original = im_f.load()
+    pixels_original = []
+    for x in range(32):
+        pixels_original.append([])
+        for y in range(43):
+            pixels_original[x].append(list(pix_original[x, y]).copy())
+    im_f_masked = maskImage(im_f, color_index, 0, (color_index != 3))
+    pix = im_f_masked.load()
+    file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
+    if format == "rgba32":
+        null_color = [0] * 4
+    else:
+        null_color = [0, 0]
+    bytes_array = []
+    for y in range(42):
+        for x in range(32):
+            if [x, y] not in pixels_to_ignore:
+                color_lst = calculateKlaptrapPixel(list(pix[x, y]), format)
+            else:
+                color_lst = calculateKlaptrapPixel(list(pixels_original[x][y]), format)
+            bytes_array.extend(color_lst)
+    for i in range(18):
+        if [i, 42] not in pixels_to_ignore:
+            color_lst = calculateKlaptrapPixel(list(pix[i, 42]), format)
+        else:
+            color_lst = calculateKlaptrapPixel(list(pixels_original[i][42]), format)
+        bytes_array.extend(color_lst)
+    for i in range(4):
+        bytes_array.extend(null_color)
+    for i in range(3):
+        if [(22+i), 42] not in pixels_to_ignore:
+            color_lst = calculateKlaptrapPixel(list(pix[(22 + i), 42]), format)
+        else:
+            color_lst = calculateKlaptrapPixel(list(pixels_original[(22+i)][42]), format)
+        bytes_array.extend(color_lst)
+    data = bytearray(bytes_array)
+    if table_index == 25:
+        data = gzip.compress(data, compresslevel=9)
+    ROM().seek(file_start)
+    ROM().writeBytes(data)
+
+def calculateKlaptrapPixel(mask: list, format: str):
+    """Calculate the new color for the given pixel."""
+    if format == "rgba32":
+        color_lst = mask.copy()
+        color_lst.append(255)  # Alpha
+    else:
+        val_r = int((mask[0] >> 3) << 11)
+        val_g = int((mask[1] >> 3) << 6)
+        val_b = int((mask[2] >> 3) << 1)
+        rgba_val = val_r | val_g | val_b | 1
+        color_lst = [(rgba_val >> 8) & 0xFF, rgba_val & 0xFF]
+    return color_lst
 
 def maskBlueprintImage(im_f, base_index):
     """Apply RGB mask to blueprint image."""
@@ -828,6 +913,29 @@ def recolorBells():
     ROM().seek(minecart_bell_start)
     ROM().writeBytes(data)
 
+def recolorKlaptraps():
+    """Recolor the klaptrap models for colorblind mode."""
+    green_files = [ 0xF31, 0xF32, 0xF33, 0xF35, 0xF37, 0xF39] # 0xF38 belly 0xF2F collar? 0xF30 feet?
+    red_files = [0xF44, 0xF45, 0xF46, 0xF47, 0xF48, 0xF49] # , 0xF42 collar? 0xF43 feet?
+    purple_files = [0xF3C, 0xF3D, 0xF3E, 0xF3F, 0xF40, 0xF41] # 0xF3B feet?, 0xF3A collar?
+
+    # Regular textures
+    for file in range(6):
+        writeKlaptrapSkinColorToROM(4, 25, green_files[file], "rgba5551")
+        writeKlaptrapSkinColorToROM(1, 25, red_files[file], "rgba5551")
+        writeKlaptrapSkinColorToROM(3, 25, purple_files[file], "rgba5551")
+
+    belly_pixels_to_ignore = []
+    for x in range(32):
+        for y in range(43):
+            if y < 29 or (y > 31 and y < 39) or y == 40 or y == 42:
+                belly_pixels_to_ignore.append([x, y])
+            elif (y == 39 and x < 16) or (y == 41 and x < 24):
+                belly_pixels_to_ignore.append([x, y])
+            
+    # Special texture that requires only partial recoloring
+    writeSpecialKlaptrapTextureToROM(4, 25, 0xF38, "rgba5551", belly_pixels_to_ignore)
+
 def overwrite_object_colors(spoiler: Spoiler):
     """Overwrite object colors."""
     global color_bases
@@ -853,6 +961,7 @@ def overwrite_object_colors(spoiler: Spoiler):
         recolorSlamSwitches()
         recolorRotatingRoomTiles()
         recolorBlueprintModelTwo()
+        recolorKlaptraps()
         for kong_index in range(5):
             # file = 4120
             # # Kasplat Hair
