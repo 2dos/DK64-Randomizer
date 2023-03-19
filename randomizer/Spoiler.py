@@ -541,6 +541,11 @@ class Spoiler:
                 filtered_hint = filtered_hint.replace("\x06", "")
                 filtered_hint = filtered_hint.replace("\x07", "")
                 filtered_hint = filtered_hint.replace("\x08", "")
+                filtered_hint = filtered_hint.replace("\x09", "")
+                filtered_hint = filtered_hint.replace("\x0a", "")
+                filtered_hint = filtered_hint.replace("\x0b", "")
+                filtered_hint = filtered_hint.replace("\x0c", "")
+                filtered_hint = filtered_hint.replace("\x0d", "")
                 human_hint_list[name] = filtered_hint
             humanspoiler["Wrinkly Hints"] = human_hint_list
         if self.settings.wrinkly_location_rando:

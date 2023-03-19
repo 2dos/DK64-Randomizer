@@ -69,6 +69,7 @@ class Items(IntEnum):
     NintendoCoin = auto()
     RarewareCoin = auto()
 
+    # Key items must be in order for best fills
     JungleJapesKey = auto()
     AngryAztecKey = auto()
     FranticFactoryKey = auto()
