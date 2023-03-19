@@ -206,9 +206,17 @@
                                                 <label for="settings_string" class="select-title">
                                                     Settings String
                                                 </label>
-                                                <input name="settings_string"
-                                                       id="settings_string"
-                                                       placeholder="Click Export or Copy Settings to fill"/>
+                                                <span class="row settings-string-container">
+                                                    <input name="settings_string"
+                                                           id="settings_string"
+                                                           placeholder="Click Export or Copy Settings to fill"/>
+                                                    <img name="settings_string_copy"
+                                                         id="settings_string_copy"
+                                                         class="copy-icon"
+                                                         data-toggle="tooltip"
+                                                         title="Click to copy the settings string to your clipboard."
+                                                         src="./static/img/copy-to-clipboard.svg">
+                                                </span>
                                             </div>
                                             <div>
                                                 <input id="import_settings"
@@ -458,6 +466,17 @@
                 var el = $(this);
                 el.prop('disabled', true);
                 setTimeout(function(){el.prop('disabled', false);}, 2000);
+            })
+
+            $("#settings_string").on('click', function (event) {
+                var input = $("#settings_string");
+                input.select();
+            })
+
+            $("#settings_string_copy").on('click', function (event) {
+                var input = $("#settings_string");
+                input.select();
+                navigator.clipboard.writeText(input.val());
             })
         })
     </script>
