@@ -483,7 +483,6 @@ def compileHints(spoiler: Spoiler):
         if hint_distribution[removed_type] > 0:
             hint_distribution[removed_type] -= 1
             hint_count -= 1
-        
 
     progression_hint_locations = None
     if level_order_matters:
