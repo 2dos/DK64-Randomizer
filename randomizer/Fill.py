@@ -215,8 +215,8 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                         newLocations.add(location.id)
                 # Check accessibility for each exit in this region
                 exits = region.exits.copy()
-                # If loading zones are shuffled, the "Exit Level" button in the pause menu could potentially take you somewhere new
-                if settings.shuffle_loading_zones and region.level != Levels.DKIsles and region.level != Levels.Shops:
+                # If loading zones are shuffled or your respawn is in a random location, the "Exit Level" button in the pause menu could potentially take you somewhere new
+                if (settings.shuffle_loading_zones or settings.random_starting_region) and region.level != Levels.DKIsles and region.level != Levels.Shops:
                     levelExit = GetExitLevelExit(region)
                     # When shuffling levels, unplaced level entrances will have no destination yet
                     if levelExit is not None:
@@ -1008,8 +1008,25 @@ def PlaceItems(settings, algorithm, itemsToPlace, ownedItems=None, inOrder=False
 
 def FillShuffledKeys(spoiler, placed_types):
     """Fill Keys in shuffled locations based on the settings."""
-    keysToPlace = ItemPool.Keys().copy()
-    if spoiler.settings.key_8_helm:
+    keysToPlace = []
+    for keyEvent in spoiler.settings.krool_keys_required:
+        if keyEvent == Events.JapesKeyTurnedIn:
+            keysToPlace.append(Items.JungleJapesKey)
+        elif keyEvent == Events.AztecKeyTurnedIn:
+            keysToPlace.append(Items.AngryAztecKey)
+        elif keyEvent == Events.FactoryKeyTurnedIn:
+            keysToPlace.append(Items.FranticFactoryKey)
+        elif keyEvent == Events.GalleonKeyTurnedIn:
+            keysToPlace.append(Items.GloomyGalleonKey)
+        elif keyEvent == Events.ForestKeyTurnedIn:
+            keysToPlace.append(Items.FungiForestKey)
+        elif keyEvent == Events.CavesKeyTurnedIn:
+            keysToPlace.append(Items.CrystalCavesKey)
+        elif keyEvent == Events.CastleKeyTurnedIn:
+            keysToPlace.append(Items.CreepyCastleKey)
+        elif keyEvent == Events.HelmKeyTurnedIn:
+            keysToPlace.append(Items.HideoutHelmKey)
+    if spoiler.settings.key_8_helm and Items.HideoutHelmKey in keysToPlace:
         keysToPlace.remove(Items.HideoutHelmKey)
     # Level-agnostic key placement settings include...
     # - No logic (totally random)
@@ -1024,33 +1041,10 @@ def FillShuffledKeys(spoiler, placed_types):
         keysUnplaced = PlaceItems(spoiler.settings, keyAlgorithm, keysToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types))
         if keysUnplaced > 0:
             raise Ex.ItemPlacementException(str(keysUnplaced) + " unplaced keys.")
-    # Simple linear level order progression leads to straightforward key placement
-    elif spoiler.settings.kongs_for_progression:  # This check is so we don't accidentally wipe progression on settings we don't want to
-        assumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types)
-        # Key 1 must be before level 2
-        BlockAccessToLevel(spoiler.settings, 2)
-        keysUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, [Items.JungleJapesKey], assumedItems)
-        # Key 2 must be before level 3
-        BlockAccessToLevel(spoiler.settings, 3)
-        keysUnplaced += PlaceItems(spoiler.settings, spoiler.settings.algorithm, [Items.AngryAztecKey], assumedItems)
-        # Keys 3 and 4 must be before level 5
-        BlockAccessToLevel(spoiler.settings, 5)
-        keysUnplaced += PlaceItems(spoiler.settings, spoiler.settings.algorithm, [Items.FranticFactoryKey, Items.GloomyGalleonKey], assumedItems, doubleTime=True)
-        # Key 5 must be before level 6
-        BlockAccessToLevel(spoiler.settings, 6)
-        keysUnplaced += PlaceItems(spoiler.settings, spoiler.settings.algorithm, [Items.FungiForestKey], assumedItems)
-        # Keys 6 and 7 must be before level 8
-        BlockAccessToLevel(spoiler.settings, 8)
-        keysUnplaced += PlaceItems(spoiler.settings, spoiler.settings.algorithm, [Items.CrystalCavesKey, Items.CreepyCastleKey], assumedItems, doubleTime=True)
-        # Key 8 can be anywhere
-        BlockAccessToLevel(spoiler.settings, 100)
-        if Items.HideoutHelmKey in keysToPlace:
-            keysUnplaced += PlaceItems(spoiler.settings, spoiler.settings.algorithm, [Items.HideoutHelmKey], assumedItems)
-        if keysUnplaced > 0:
-            raise Ex.ItemPlacementException(str(keysUnplaced) + " unplaced keys.")
-    # Not entirely sure what settings these are but being careful doesn't hurt
+    # # Simple linear level order progression leads to straightforward key placement
     else:
         # Place the keys in order
+        keysToPlace.sort()
         keysUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, keysToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), inOrder=True)
         if keysUnplaced > 0:
             raise Ex.ItemPlacementException(str(keysUnplaced) + " unplaced keys.")
@@ -2176,8 +2170,8 @@ def Generate_Spoiler(spoiler):
     InitKasplatMap(LogicVariables)
     # Handle misc randomizations
     ShuffleMisc(spoiler)
-    # Handle Kong Rando + Level Rando combination separately since it is more restricted
-    if spoiler.settings.kongs_for_progression:
+    # Level order rando may have to affect the progression to be fillable
+    if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:
         # Handle Level Order if randomized
         if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
             ShuffleExits.ExitShuffle(spoiler.settings)
