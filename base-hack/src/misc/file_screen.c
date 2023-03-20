@@ -158,17 +158,11 @@ void wipeTrackerCache(void) {
 	}
 }
 
-static const int tracker_move_0[] = {TRACKER_TYPE_BLAST, TRACKER_TYPE_CHARGE, TRACKER_TYPE_OSTAND, TRACKER_TYPE_MINI, TRACKER_TYPE_HUNKY};
-static const int tracker_move_1[] = {TRACKER_TYPE_STRONG, TRACKER_TYPE_ROCKET, TRACKER_TYPE_BALLOON, TRACKER_TYPE_PTT, TRACKER_TYPE_PUNCH};
-static const int tracker_move_2[] = {TRACKER_TYPE_GRAB, TRACKER_TYPE_SPRING, TRACKER_TYPE_OSPRINT, TRACKER_TYPE_MONKEYPORT, TRACKER_TYPE_GONE};
-static const int tracker_instrument[] = {TRACKER_TYPE_BONGOS, TRACKER_TYPE_GUITAR, TRACKER_TYPE_TROMBONE, TRACKER_TYPE_SAX, TRACKER_TYPE_TRIANGLE};
-static const int tracker_gun[] = {TRACKER_TYPE_COCONUT, TRACKER_TYPE_PEANUT, TRACKER_TYPE_GRAPE, TRACKER_TYPE_FEATHER, TRACKER_TYPE_PINEAPPLE};
-
 static unsigned char slam_screen_level = 0;
 static unsigned char belt_screen_level = 0;
 static unsigned char ins_screen_level = 0;
 
-int getInitFileMove(int index) {
+int isMovePregiven(int index) {
 	/**
 	 * @brief Get the tracker move initial state (Empty File)
 	 * 
@@ -176,101 +170,110 @@ int getInitFileMove(int index) {
 	 * 
 	 * @return State
 	 */
-	int found = 0;
-	for (int i = 0; i < 4; i++) {
-		int move_type = TrainingMoves_New[i].purchase_type;
-		int move_value = TrainingMoves_New[i].purchase_value;
-		int move_kong = TrainingMoves_New[i].move_kong;
-		switch(move_type) {
-			case PURCHASE_MOVES:
-				if (move_value == 1) {
-					found |= tracker_move_0[move_kong] == index;
-				} else if (move_value == 2) {
-					found |= tracker_move_1[move_kong] == index;
-				} else if (move_value == 3) {
-					found |= tracker_move_2[move_kong] == index;
+	switch(index) {
+		case TRACKER_TYPE_COCONUT:
+		case TRACKER_TYPE_PEANUT:
+		case TRACKER_TYPE_GRAPE:
+		case TRACKER_TYPE_FEATHER:
+		case TRACKER_TYPE_PINEAPPLE:
+			return initFile_hasGun(index / 5);
+		case TRACKER_TYPE_BONGOS:
+		case TRACKER_TYPE_GUITAR:
+		case TRACKER_TYPE_TROMBONE:
+		case TRACKER_TYPE_SAX:
+		case TRACKER_TYPE_TRIANGLE:
+			return initFile_hasInstrument((index - 1) / 5);
+		case TRACKER_TYPE_GRAB:
+			return Rando.moves_pregiven.grab || initFile_checkTraining(PURCHASE_MOVES, 0, 3);
+		case TRACKER_TYPE_BLAST:
+			return Rando.moves_pregiven.blast || initFile_checkTraining(PURCHASE_MOVES, 0, 1);
+		case TRACKER_TYPE_STRONG:
+			return Rando.moves_pregiven.strong_kong || initFile_checkTraining(PURCHASE_MOVES, 0, 2);
+		case TRACKER_TYPE_CHARGE:
+			return Rando.moves_pregiven.charge || initFile_checkTraining(PURCHASE_MOVES, 1, 1);
+		case TRACKER_TYPE_SPRING:
+			return Rando.moves_pregiven.spring || initFile_checkTraining(PURCHASE_MOVES, 1, 3);
+		case TRACKER_TYPE_ROCKET:
+			return Rando.moves_pregiven.rocketbarrel || initFile_checkTraining(PURCHASE_MOVES, 1, 2);
+		case TRACKER_TYPE_OSTAND:
+			return Rando.moves_pregiven.ostand || initFile_checkTraining(PURCHASE_MOVES, 2, 1);
+		case TRACKER_TYPE_BALLOON:
+			return Rando.moves_pregiven.balloon || initFile_checkTraining(PURCHASE_MOVES, 2, 2);
+		case TRACKER_TYPE_OSPRINT:
+			return Rando.moves_pregiven.osprint || initFile_checkTraining(PURCHASE_MOVES, 2, 3);
+		case TRACKER_TYPE_PTT:
+			return Rando.moves_pregiven.twirl || initFile_checkTraining(PURCHASE_MOVES, 3, 2);
+		case TRACKER_TYPE_MONKEYPORT:
+			return Rando.moves_pregiven.monkeyport || initFile_checkTraining(PURCHASE_MOVES, 3, 3);
+		case TRACKER_TYPE_MINI:
+			return Rando.moves_pregiven.mini || initFile_checkTraining(PURCHASE_MOVES, 3, 1);
+		case TRACKER_TYPE_PUNCH:
+			return Rando.moves_pregiven.punch || initFile_checkTraining(PURCHASE_MOVES, 4, 2);
+		case TRACKER_TYPE_GONE:
+			return Rando.moves_pregiven.gone || initFile_checkTraining(PURCHASE_MOVES, 4, 3);
+		case TRACKER_TYPE_HUNKY:
+			return Rando.moves_pregiven.hunky || initFile_checkTraining(PURCHASE_MOVES, 4, 1);
+		case TRACKER_TYPE_CAMERA:
+			return Rando.moves_pregiven.camera || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_CAMERA) || initFile_checkTraining(PURCHASE_FLAG, -1, -2);
+		case TRACKER_TYPE_SHOCKWAVE:
+			return Rando.moves_pregiven.shockwave || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_SHOCKWAVE) || initFile_checkTraining(PURCHASE_FLAG, -1, -2);
+		case TRACKER_TYPE_SLAM:
+			return initFile_getSlamLevel(1);
+		case TRACKER_TYPE_HOMING:
+			return Rando.moves_pregiven.homing || initFile_checkTraining(PURCHASE_GUN, -1, 2);
+		case TRACKER_TYPE_SNIPER:
+			return Rando.moves_pregiven.sniper || initFile_checkTraining(PURCHASE_GUN, -1, 3);
+		case TRACKER_TYPE_DIVE:
+			return Rando.moves_pregiven.dive || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_DIVE);
+		case TRACKER_TYPE_ORANGE:
+			return Rando.moves_pregiven.oranges || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_ORANGE);
+		case TRACKER_TYPE_BARREL:
+			return Rando.moves_pregiven.barrels || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_BARREL);
+		case TRACKER_TYPE_VINE:
+			return Rando.moves_pregiven.vines || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_VINE);
+		case TRACKER_TYPE_MELON_2:
+			if (initFile_getInsUpgradeLevel(1) >= 1) {
+				return 1;
+			}
+			for (int i = 0; i < 5; i++) {
+				if (initFile_hasInstrument(i)) {
+					return 1;
 				}
-				break;
-			case PURCHASE_SLAM:
-				if (index == TRACKER_TYPE_SLAM) {
-					if (move_value >= 2) {
-						return move_value;
-					}
-				}
-				break;
-			case PURCHASE_GUN:
-				if (move_value == 1) {
-					found |= tracker_gun[move_kong] == index;
-				} else if (move_value == 2) {
-					found |= TRACKER_TYPE_HOMING == index;
-				} else if (move_value == 3) {
-					found |= TRACKER_TYPE_SNIPER == index;
-				}
-				break;
-			case PURCHASE_AMMOBELT:
-				if (move_value == 1) {
-					found |= index == TRACKER_TYPE_BELT_1;
-				} else if (move_value == 2) {
-					found |= index == TRACKER_TYPE_BELT_2;
-				}
-				break;
-			case PURCHASE_INSTRUMENT:
-				if (move_value == 1) {
-					found |= tracker_instrument[move_kong] == index;
-				} else if (move_value == 2) {
-					found |= index == TRACKER_TYPE_INSUPG_1;
-				} else if (move_value == 4) {
-					found |= index == TRACKER_TYPE_INSUPG_2;
-				} else if (move_value == 3) {
-					found |= index == TRACKER_TYPE_MELON_3;
-				}
-				found |= index == TRACKER_TYPE_MELON_2;
-				break;
-			case PURCHASE_FLAG:
-				if (move_value == FLAG_TBARREL_DIVE) {
-					found |= index == TRACKER_TYPE_DIVE;
-				} else if (move_value == FLAG_TBARREL_BARREL) {
-					found |= index == TRACKER_TYPE_BARREL;
-				} else if (move_value == FLAG_TBARREL_ORANGE) {
-					found |= index == TRACKER_TYPE_ORANGE;
-				} else if (move_value == FLAG_TBARREL_VINE) {
-					found |= index == TRACKER_TYPE_VINE;
-				} else if (move_value == FLAG_ABILITY_CAMERA) {
-					found |= index == TRACKER_TYPE_CAMERA;
-				} else if (move_value == FLAG_ABILITY_SHOCKWAVE) {
-					found |= index == TRACKER_TYPE_SHOCKWAVE;
-				} else if (move_value == -2) {
-					found |= (index == TRACKER_TYPE_CAMERA);
-					found |= (index == TRACKER_TYPE_SHOCKWAVE);
-				} else {
-					int subtype = getMoveProgressiveFlagType(move_value);
-					if (subtype == 0) {
-						// Slams
-						if (index == TRACKER_TYPE_SLAM) {
-							return slam_screen_level + 1;
-						}
-					} else if (subtype == 1) {
-						// Belts
-						if (belt_screen_level == 0) {
-							found |= index == TRACKER_TYPE_BELT_1;
-						} else {
-							found |= index == TRACKER_TYPE_BELT_2;
-						}
-					} else if (subtype == 2) {
-						// Ins Upg
-						if (ins_screen_level == 0) {
-							found |= index == TRACKER_TYPE_INSUPG_1;
-						} else if (ins_screen_level == 1) {
-							found |= index == TRACKER_TYPE_MELON_3;
-						} else {
-							found |= index == TRACKER_TYPE_INSUPG_2;
-						}
-					}
-				}
-				break;
-		}
+			}
+			return 0;
+		case TRACKER_TYPE_MELON_3:
+			return initFile_getInsUpgradeLevel(1) >= 2;
+		case TRACKER_TYPE_INSUPG_1:
+			return initFile_getInsUpgradeLevel(1) >= 1;
+		case TRACKER_TYPE_INSUPG_2:
+			return initFile_getInsUpgradeLevel(1) >= 3;
+		case TRACKER_TYPE_BELT_1:
+			return initFile_getBeltLevel(1) >= 1;
+		case TRACKER_TYPE_BELT_2:
+			return initFile_getBeltLevel(1) >= 2;
+		case TRACKER_TYPE_AMMOBELT:
+			return initFile_getBeltLevel(1);
+		case TRACKER_TYPE_INSTRUMENT_UPG:
+			if (initFile_getInsUpgradeLevel(1) >= 3) {
+				return 2;
+			} else if (initFile_getInsUpgradeLevel(1) >= 1) {
+				return 1;
+			}
+			return 0;
+		case TRACKER_TYPE_KEY1:
+		case TRACKER_TYPE_KEY2:
+		case TRACKER_TYPE_KEY3:
+		case TRACKER_TYPE_KEY4:
+		case TRACKER_TYPE_KEY5:
+		case TRACKER_TYPE_KEY6:
+		case TRACKER_TYPE_KEY7:
+		case TRACKER_TYPE_KEY8:
+			if (Rando.keys_preturned & (1 << (index - TRACKER_TYPE_KEY1))) {
+				return 1;
+			}
+			return 0;
 	}
-	return found;
+	return 0;
 }
 
 int getEnabledState(int index) {
@@ -281,169 +284,125 @@ int getEnabledState(int index) {
 	 * 
 	 * @return State
 	 */
-	int is_pre_given = getInitFileMove(index);
-	if (index == TRACKER_TYPE_SLAM) {
-		if ((is_pre_given >= 2) && (MovesBase[0].simian_slam < 2)) {
-			return is_pre_given;
-		}
-	} else {
-		if (is_pre_given) {
-			return 1;
-		}
+	int file_empty = 0;
+	if (CurrentMap == 0x50) {
+		file_empty = isFileEmpty(0);
 	}
-	if (index < 25) {
-		int kong = index / 5;
-		int submove = index % 5;
-		if (Rando.unlock_moves) {
-			return 1;
-		}
-		if (submove == 0) {
-			// Gun
-			return MovesBase[kong].weapon_bitfield & 1;
-		} else if (submove == 1) {
-			// Instrument
-			return MovesBase[kong].instrument_bitfield & 1;
-		} else if (submove == 2) {
-			// Move
-			int move_placement = 0;
-			if (kong == 0) {
-				move_placement = 2;
-			} else if (kong > 2) {
-				move_placement = 1;
+	if (file_empty) { // Empty file check
+		return isMovePregiven(index);
+	}
+	switch(index) {
+		case TRACKER_TYPE_COCONUT:
+		case TRACKER_TYPE_PEANUT:
+		case TRACKER_TYPE_GRAPE:
+		case TRACKER_TYPE_FEATHER:
+		case TRACKER_TYPE_PINEAPPLE:
+			{
+				int kong = index / 5;
+				return MovesBase[kong].weapon_bitfield & 1;
 			}
-			return (MovesBase[kong].special_moves & (1 << move_placement)) != 0;
-		} else if (submove == 3) {
-			// Barrel
-			int barrel_placement = 0;
-			if (kong < 2) {
-				barrel_placement = 1;
-			} else if (kong == 2) {
-				barrel_placement = 2;
+		case TRACKER_TYPE_BONGOS:
+		case TRACKER_TYPE_GUITAR:
+		case TRACKER_TYPE_TROMBONE:
+		case TRACKER_TYPE_SAX:
+		case TRACKER_TYPE_TRIANGLE:
+			{
+				int kong = index / 5;
+				return MovesBase[kong].instrument_bitfield & 1;
 			}
-			return (MovesBase[kong].special_moves & (1 << barrel_placement)) != 0;
-		} else if (submove == 4) {
-			// Pad
-			int pad_placement = 2;
-			if (kong == 0) {
-				pad_placement = 0;
-			} else if (kong == 2) {
-				pad_placement = 1;
-			}
-			return (MovesBase[kong].special_moves & (1 << pad_placement)) != 0;
-		}
-	} else {
-		if (index < 34) {
-			if (Rando.unlock_moves) {
-				if (index == TRACKER_TYPE_SLAM) {
-					return 3;
+		case TRACKER_TYPE_GRAB:
+			return MovesBase[KONG_DK].special_moves & MOVECHECK_GRAB;
+		case TRACKER_TYPE_BLAST:
+			return MovesBase[KONG_DK].special_moves & MOVECHECK_BLAST;
+		case TRACKER_TYPE_STRONG:
+			return MovesBase[KONG_DK].special_moves & MOVECHECK_STRONG;
+		case TRACKER_TYPE_CHARGE:
+			return MovesBase[KONG_DIDDY].special_moves & MOVECHECK_CHARGE;
+		case TRACKER_TYPE_SPRING:
+			return MovesBase[KONG_DIDDY].special_moves & MOVECHECK_SPRING;
+		case TRACKER_TYPE_ROCKET:
+			return MovesBase[KONG_DIDDY].special_moves & MOVECHECK_ROCKETBARREL;
+		case TRACKER_TYPE_OSTAND:
+			return MovesBase[KONG_LANKY].special_moves & MOVECHECK_OSTAND;
+		case TRACKER_TYPE_BALLOON:
+			return MovesBase[KONG_LANKY].special_moves & MOVECHECK_BALLOON;
+		case TRACKER_TYPE_OSPRINT:
+			return MovesBase[KONG_LANKY].special_moves & MOVECHECK_OSPRINT;
+		case TRACKER_TYPE_PTT:
+			return MovesBase[KONG_TINY].special_moves & MOVECHECK_TWIRL;
+		case TRACKER_TYPE_MONKEYPORT:
+			return MovesBase[KONG_TINY].special_moves & MOVECHECK_MONKEYPORT;
+		case TRACKER_TYPE_MINI:
+			return MovesBase[KONG_TINY].special_moves & MOVECHECK_MINI;
+		case TRACKER_TYPE_PUNCH:
+			return MovesBase[KONG_CHUNKY].special_moves & MOVECHECK_PUNCH;
+		case TRACKER_TYPE_GONE:
+			return MovesBase[KONG_CHUNKY].special_moves & MOVECHECK_GONE;
+		case TRACKER_TYPE_HUNKY:
+			return MovesBase[KONG_CHUNKY].special_moves & MOVECHECK_HUNKY;
+		case TRACKER_TYPE_CAMERA:
+			return checkFlagDuplicate(FLAG_ABILITY_CAMERA, 0);
+		case TRACKER_TYPE_SHOCKWAVE:
+			return checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 0);
+		case TRACKER_TYPE_SLAM:
+			return MovesBase[KONG_DK].simian_slam;
+		case TRACKER_TYPE_HOMING:
+			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_HOMING;
+		case TRACKER_TYPE_SNIPER:
+			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_SNIPER;
+		case TRACKER_TYPE_DIVE:
+			return checkFlagDuplicate(FLAG_TBARREL_DIVE, 0);
+		case TRACKER_TYPE_ORANGE:
+			return checkFlagDuplicate(FLAG_TBARREL_ORANGE, 0);
+		case TRACKER_TYPE_BARREL:
+			return checkFlagDuplicate(FLAG_TBARREL_BARREL, 0);
+		case TRACKER_TYPE_VINE:
+			return checkFlagDuplicate(FLAG_TBARREL_VINE, 0);
+		case TRACKER_TYPE_MELON_2:
+			for (int i = 0; i < 5; i++) {
+				if (MovesBase[i].instrument_bitfield & 1) {
+					return 1;
 				}
-				if ((index == TRACKER_TYPE_AMMOBELT) || (index == TRACKER_TYPE_INSTRUMENT_UPG)) {
-					return 2;
-				}
+			}
+			return 0;
+		case TRACKER_TYPE_MELON_3:
+			return MovesBase[KONG_DK].instrument_bitfield & MOVECHECK_THIRDMELON;
+		case TRACKER_TYPE_INSUPG_1:
+			return MovesBase[KONG_DK].instrument_bitfield & MOVECHECK_UPGRADE1;
+		case TRACKER_TYPE_INSUPG_2:
+			return MovesBase[KONG_DK].instrument_bitfield & MOVECHECK_UPGRADE2;
+		case TRACKER_TYPE_BELT_1:
+			return MovesBase[KONG_DK].ammo_belt >= 1;
+		case TRACKER_TYPE_BELT_2:
+			return MovesBase[KONG_DK].ammo_belt >= 2;
+		case TRACKER_TYPE_AMMOBELT:
+			return MovesBase[KONG_DK].ammo_belt;
+		case TRACKER_TYPE_INSTRUMENT_UPG:
+			if (MovesBase[KONG_DK].instrument_bitfield & MOVECHECK_UPGRADE2) {
+				return 2;
+			} else if (MovesBase[KONG_DK].instrument_bitfield & MOVECHECK_UPGRADE1) {
 				return 1;
 			}
-		} else if (index < 36) {
-			if (Rando.camera_unlocked) {
-				return 1;
+			return 0;
+		case TRACKER_TYPE_KEY1:
+		case TRACKER_TYPE_KEY2:
+		case TRACKER_TYPE_KEY3:
+		case TRACKER_TYPE_KEY4:
+		case TRACKER_TYPE_KEY5:
+		case TRACKER_TYPE_KEY6:
+		case TRACKER_TYPE_KEY7:
+		case TRACKER_TYPE_KEY8:
+			{
+				// Keys in
+				int key_index = index - TRACKER_TYPE_KEY1;
+				int key_there = checkFlag(FLAG_KEYIN_KEY1 + key_index, 0);
+				if (!key_there) {
+					if (Rando.keys_preturned & (1 << key_index)) {
+						key_there = 1;
+					}
+				}
+				return key_there;
 			}
-		}
-		switch(index) {
-			case TRACKER_TYPE_SLAM:
-				{
-					// Slam
-					int slam_val = MovesBase[0].simian_slam;
-					if (slam_val < 1) {
-						return 1;
-					} else if (slam_val > 3) {
-						return 3;
-					}
-					return slam_val;
-				}
-			case TRACKER_TYPE_HOMING:
-				// Homing
-				return (MovesBase[0].weapon_bitfield & 2) != 0;
-			case TRACKER_TYPE_SNIPER:
-				// Sniper
-				return (MovesBase[0].weapon_bitfield & 4) != 0;
-			case TRACKER_TYPE_AMMOBELT:
-				// Ammo Belt
-				return MovesBase[0].ammo_belt;
-			case TRACKER_TYPE_INSTRUMENT_UPG:
-				// Instrument Upgrade
-				if (MovesBase[0].instrument_bitfield & 8) {
-					return 2;
-				} else if (MovesBase[0].instrument_bitfield & 2) {
-					return 1;
-				}
-				return 0;
-			case TRACKER_TYPE_DIVE:
-				// Dive
-				return checkFlag(FLAG_TBARREL_DIVE,0);
-			case TRACKER_TYPE_ORANGE:
-				// Orange
-				return checkFlag(FLAG_TBARREL_ORANGE,0);
-			case TRACKER_TYPE_BARREL:
-				// Barrel
-				return checkFlag(FLAG_TBARREL_BARREL,0);
-			case TRACKER_TYPE_VINE:
-				// Vine
-				return checkFlag(FLAG_TBARREL_VINE,0);
-			case TRACKER_TYPE_CAMERA:
-				// Camera
-				return checkFlag(FLAG_ABILITY_CAMERA,0);
-			case TRACKER_TYPE_SHOCKWAVE:
-				// Shockwave
-				return checkFlag(FLAG_ABILITY_SHOCKWAVE,0);
-			case TRACKER_TYPE_KEY1:
-			case TRACKER_TYPE_KEY2:
-			case TRACKER_TYPE_KEY3:
-			case TRACKER_TYPE_KEY4:
-			case TRACKER_TYPE_KEY5:
-			case TRACKER_TYPE_KEY6:
-			case TRACKER_TYPE_KEY7:
-			case TRACKER_TYPE_KEY8:
-				{
-					// Keys in
-					int key_index = index - TRACKER_TYPE_KEY1;
-					int key_there = checkFlag(FLAG_KEYIN_KEY1 + key_index, 0);
-					if (!key_there) {
-						if (Rando.keys_preturned & (1 << key_index)) {
-							key_there = 1;
-						}
-					}
-					return key_there;
-				}
-			case TRACKER_TYPE_MELON_2:
-				if (Rando.unlock_moves) {
-					return 1;
-				}
-				return CollectableBase.Melons >= 2;
-			case TRACKER_TYPE_MELON_3:
-				if (Rando.unlock_moves) {
-					return 1;
-				}
-				return CollectableBase.Melons >= 3;
-			case TRACKER_TYPE_INSUPG_1:
-				if (Rando.unlock_moves) {
-					return 1;
-				}
-				return (MovesBase[0].instrument_bitfield & 2) != 0;
-			case TRACKER_TYPE_INSUPG_2:
-				if (Rando.unlock_moves) {
-					return 1;
-				}
-				return (MovesBase[0].instrument_bitfield & 8) != 0;
-			case TRACKER_TYPE_BELT_1:
-				if (Rando.unlock_moves) {
-					return 1;
-				}
-				return MovesBase[0].ammo_belt >= 1;
-			case TRACKER_TYPE_BELT_2:
-				if (Rando.unlock_moves) {
-					return 1;
-				}
-				return MovesBase[0].ammo_belt >= 2;
-		}
 	}
 	return 0;
 }

@@ -61,7 +61,11 @@ void spawnMinecartReward(int object, int flag) {
     for (int i = 0; i < 95; i++) {
         if (bonus_data[i].flag == flag) {
             if (bonus_data[i].spawn_actor != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
-                spawnObjectAtActor(bonus_data[i].spawn_actor, flag);
+                int x_f = *(int*)(&Player->xPos);
+                int y_f = *(int*)(&Player->yPos);
+                int z_f = *(int*)(&Player->zPos);
+                spawnActorWithFlag(bonus_data[i].spawn_actor, x_f, y_f, z_f, 0, 0, flag, 0);
+                // spawnObjectAtActor(bonus_data[i].spawn_actor, flag); // Causes some interesting side-effects with collision
             }
             return;
         }

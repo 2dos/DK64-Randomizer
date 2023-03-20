@@ -103,42 +103,42 @@ class LogicVarHolder:
         self.oranges = self.settings.training_barrels == TrainingBarrels.normal
         self.barrels = self.settings.training_barrels == TrainingBarrels.normal
 
-        self.progDonkey = 3 if self.settings.unlock_all_moves else 0
-        self.blast = self.settings.unlock_all_moves
-        self.strongKong = self.settings.unlock_all_moves
-        self.grab = self.settings.unlock_all_moves
+        self.progDonkey = 0
+        self.blast = False
+        self.strongKong = False
+        self.grab = False
 
-        self.progDiddy = 3 if self.settings.unlock_all_moves else 0
-        self.charge = self.settings.unlock_all_moves
-        self.jetpack = self.settings.unlock_all_moves
-        self.spring = self.settings.unlock_all_moves
+        self.progDiddy = 0
+        self.charge = False
+        self.jetpack = False
+        self.spring = False
 
-        self.progLanky = 3 if self.settings.unlock_all_moves else 0
-        self.handstand = self.settings.unlock_all_moves
-        self.balloon = self.settings.unlock_all_moves
-        self.sprint = self.settings.unlock_all_moves
+        self.progLanky = 0
+        self.handstand = False
+        self.balloon = False
+        self.sprint = False
 
-        self.progTiny = 3 if self.settings.unlock_all_moves else 0
-        self.mini = self.settings.unlock_all_moves
-        self.twirl = self.settings.unlock_all_moves
-        self.monkeyport = self.settings.unlock_all_moves
+        self.progTiny = 0
+        self.mini = False
+        self.twirl = False
+        self.monkeyport = False
 
-        self.progChunky = 3 if self.settings.unlock_all_moves else 0
-        self.hunkyChunky = self.settings.unlock_all_moves
-        self.punch = self.settings.unlock_all_moves
-        self.gorillaGone = self.settings.unlock_all_moves
+        self.progChunky = 0
+        self.hunkyChunky = False
+        self.punch = False
+        self.gorillaGone = False
 
-        self.coconut = self.settings.unlock_all_moves
-        self.peanut = self.settings.unlock_all_moves
-        self.grape = self.settings.unlock_all_moves
-        self.feather = self.settings.unlock_all_moves
-        self.pineapple = self.settings.unlock_all_moves
+        self.coconut = False
+        self.peanut = False
+        self.grape = False
+        self.feather = False
+        self.pineapple = False
 
-        self.bongos = self.settings.unlock_all_moves
-        self.guitar = self.settings.unlock_all_moves
-        self.trombone = self.settings.unlock_all_moves
-        self.saxophone = self.settings.unlock_all_moves
-        self.triangle = self.settings.unlock_all_moves
+        self.bongos = False
+        self.guitar = False
+        self.trombone = False
+        self.saxophone = False
+        self.triangle = False
 
         self.nintendoCoin = False
         self.rarewareCoin = False
@@ -146,8 +146,8 @@ class LogicVarHolder:
         self.camera = self.settings.shockwave_status == ShockwaveStatus.start_with
         self.shockwave = self.settings.shockwave_status == ShockwaveStatus.start_with
 
-        self.scope = self.settings.unlock_all_moves
-        self.homing = self.settings.unlock_all_moves
+        self.scope = False
+        self.homing = False
 
         self.JapesKey = False
         self.AztecKey = False
@@ -169,17 +169,17 @@ class LogicVarHolder:
         self.HelmChunky1 = False
         self.HelmChunky2 = False
 
-        self.Slam = 3 if self.settings.unlock_all_moves else STARTING_SLAM
-        self.AmmoBelts = 2 if self.settings.unlock_all_moves else 0
-        self.InstUpgrades = 3 if self.settings.unlock_all_moves else 0
+        self.Slam = STARTING_SLAM
+        self.AmmoBelts = 0
+        self.InstUpgrades = 0
 
         self.GoldenBananas = 0
         self.BananaFairies = 0
         self.BananaMedals = 0
         self.BattleCrowns = 0
 
-        self.superSlam = self.settings.unlock_all_moves
-        self.superDuperSlam = self.settings.unlock_all_moves
+        self.superSlam = False
+        self.superDuperSlam = False
 
         self.Blueprints = []
 
@@ -347,11 +347,11 @@ class LogicVarHolder:
         self.HelmChunky1 = self.HelmChunky1 or Items.HelmChunky1 in ownedItems
         self.HelmChunky2 = self.HelmChunky2 or Items.HelmChunky2 in ownedItems
 
-        self.Slam = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveSlam) + STARTING_SLAM
+        self.Slam = sum(1 for x in ownedItems if x == Items.ProgressiveSlam) + STARTING_SLAM
         if Items.ProgressiveSlam in self.banned_items:  # If slam is banned, prevent logic from owning a better slam
             self.Slam = STARTING_SLAM
-        self.AmmoBelts = 2 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
-        self.InstUpgrades = 3 if self.settings.unlock_all_moves else sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
+        self.AmmoBelts = sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
+        self.InstUpgrades = sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
 
         self.GoldenBananas = sum(1 for x in ownedItems if x == Items.GoldenBanana)
         self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
@@ -791,6 +791,9 @@ class LogicVarHolder:
                 # Require one of twirl or hunky chunky by level 7 to prevent non-hard-boss fill failures
                 if not self.settings.hard_bosses and order_of_level >= 7 and not (self.twirl or self.hunkyChunky):
                     return False
+                # Require both hunky chunky and twirl (or hard bosses) before Helm to prevent boss fill failures
+                if order_of_level > 7 and not self.hunkyChunky or (not self.twirl and not self.settings.hard_bosses):
+                    return False
         # If we have the moves, ensure we have enough kongs as well
         return self.HasEnoughKongs(level, forPreviousLevel=True)
 
@@ -843,15 +846,15 @@ class LogicVarHolder:
         """Check if you meet the logical requirements to obtain the Rareware Coin."""
         have_enough_medals = self.BananaMedals >= self.settings.medal_requirement
         # Make sure you have access to enough levels to fit the locations in. This isn't super precise and doesn't need to be.
-        required_level = max(2, min(ceil(self.settings.medal_requirement / 4), 6))  # At least level 3 to give space for medal placements, at most level 6 to allow shenanigans
-        return have_enough_medals and self.IsLevelEnterable(required_level)
+        required_level_order = max(2, min(ceil(self.settings.medal_requirement / 4), 6))  # At least level 2 to give space for medal placements, at most level 6 to allow shenanigans
+        return have_enough_medals and self.HasFillRequirementsForLevel(self.settings.level_order[required_level_order])
 
     def CanGetRarewareGB(self):
         """Check if you meet the logical requirements to obtain the Rareware GB."""
         have_enough_fairies = self.BananaFairies >= self.settings.rareware_gb_fairies
         is_correct_kong = self.istiny or self.settings.free_trade_items
-        required_level = max(2, min(ceil(self.settings.rareware_gb_fairies / 2), 5))  # At least level 2 to give space for fairy placements, at most level 5 to allow shenanigans
-        return have_enough_fairies and is_correct_kong and self.IsLevelEnterable(required_level)
+        required_level_order = max(2, min(ceil(self.settings.rareware_gb_fairies / 2), 5))  # At least level 2 to give space for fairy placements, at most level 5 to allow shenanigans
+        return have_enough_fairies and is_correct_kong and self.HasFillRequirementsForLevel(self.settings.level_order[required_level_order])
 
     def BanItems(self, items):
         """Prevent an item from being picked up by the logic."""

@@ -1,26 +1,18 @@
 """Build Helm Geometry file."""
 
 import zlib
-from BuildLib import main_pointer_table_offset
+from BuildLib import main_pointer_table_offset, ROMName
+from BuildClasses import ROMPointerFile
+from BuildEnums import TableNames
 
-rom_file = "./rom/dk64.z64"
 geo_file = "helm.bin"
 
-with open(rom_file, "rb") as rom:
-    rom.seek(main_pointer_table_offset + (4 * 1))
-    geo_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-    rom.seek(geo_table + (0x11 * 4))
-    helm_start = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-    helm_end = main_pointer_table_offset + (int.from_bytes(rom.read(4), "big") & 0x7FFFFFFF)
-    helm_size = helm_end - helm_start
-    rom.seek(helm_start)
-    compress = rom.read(helm_size)
-    rom.seek(helm_start)
-    compress_0 = int.from_bytes(rom.read(2), "big")
-    if compress_0 == 0x1F8B:
-        data = zlib.decompress(compress, (15 + 32))
-    else:
-        data = compress
+with open(ROMName, "rb") as rom:
+    geo_f = ROMPointerFile(rom, TableNames.MapGeometry, 0x11)
+    rom.seek(geo_f.start)
+    data = rom.read(geo_f.size)
+    if geo_f.compressed:
+        data = zlib.decompress(data, (15 + 32))
     with open(geo_file, "wb") as geo:
         geo.write(data)
     with open(geo_file, "r+b") as geo:

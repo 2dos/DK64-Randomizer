@@ -11,6 +11,9 @@ const short normal_key_flags[] = {
 	FLAG_KEYHAVE_KEY7,
 	FLAG_KEYHAVE_KEY8
 };
+const unsigned short slam_flags[] = {FLAG_ITEM_SLAM_0, FLAG_ITEM_SLAM_1, FLAG_SHOPMOVE_SLAM_0, FLAG_SHOPMOVE_SLAM_1};
+const unsigned short belt_flags[] = {FLAG_ITEM_BELT_0, FLAG_ITEM_BELT_1, FLAG_SHOPMOVE_BELT_0, FLAG_SHOPMOVE_BELT_1};
+const unsigned short instrument_flags[] = {FLAG_ITEM_INS_0, FLAG_ITEM_INS_1, FLAG_ITEM_INS_2, FLAG_SHOPMOVE_INS_0, FLAG_SHOPMOVE_INS_1, FLAG_SHOPMOVE_INS_2};
 
 void playSFX(short sfxIndex) {
 	playSound(sfxIndex,0x7FFF,0x427C0000,0x3F800000,0,0);
@@ -390,4 +393,53 @@ int getCustomActorIndex(new_custom_actors offset) {
 	 * @return Actor index
 	 */
 	return CUSTOM_ACTORS_START + offset;
+}
+
+void spawnItemOverlay(int type, int kong, int index, int force) {
+	if (force) {
+		spawnActor(getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY), 0);
+	} else {
+		spawnActor(324,0);
+	}
+    TextOverlayData.type = type;
+    TextOverlayData.flag = index;
+    TextOverlayData.kong = kong;
+}
+
+int giveSlamLevel(void) {
+	int level = MovesBase[0].simian_slam;
+	if (level < 3) {
+		for (int i = 0; i < 5; i++) {
+			MovesBase[i].simian_slam = level + 1;
+		}
+		return level + 1;
+	}
+	return 3;
+}
+
+int isSlamFlag(int flag) {
+	for (int i = 0; i < 4; i++) {
+		if (flag == slam_flags[i]) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+int isBeltFlag(int flag) {
+	for (int i = 0; i < 4; i++) {
+		if (flag == belt_flags[i]) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+int isInstrumentUpgradeFlag(int flag) {
+	for (int i = 0; i < 6; i++) {
+		if (flag == instrument_flags[i]) {
+			return 1;
+		}
+	}
+	return 0;
 }

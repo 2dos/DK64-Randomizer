@@ -279,3 +279,53 @@ typedef enum item_purchase_text {
 	/* 0x057 */ ITEMTEXT_RAINBOWCOIN,
 	/* 0x058 */ ITEMTEXT_FAKEITEM,
 } item_purchase_text;
+
+typedef enum pausescreenlist {
+	/* 0x000 */ PAUSESCREEN_MAIN,
+	/* 0x001 */ PAUSESCREEN_LEVEL_KONGS,
+	/* 0x002 */ PAUSESCREEN_LEVEL_ALL,
+	/* 0x003 */ PAUSESCREEN_TOTALS,
+	/* 0x004 */ PAUSESCREEN_CHECKS,
+	/* 0x005 */ PAUSESCREEN_HINTS,
+	/* 0x006 */ PAUSESCREEN_MOVES,
+	/* ----- */ PAUSESCREEN_TERMINATOR,
+} pausescreenlist;
+
+typedef enum colorblind_modes {
+	/* 0x000 */ COLORBLIND_OFF,
+	/* 0x001 */ COLORBLIND_PROT,
+	/* 0x002 */ COLORBLIND_DEUT,
+	/* 0x003 */ COLORBLIND_TRIT,
+} colorblind_modes;
+
+typedef enum seasons {
+	/* 0x000 */ SEASON_NONE,
+	/* 0x001 */ SEASON_HALLOWEEN,
+	/* 0x002 */ SEASON_CHRISTMAS,
+} seasons;
+
+typedef enum kongs {
+	/* 0x000 */ KONG_DK,
+	/* 0x001 */ KONG_DIDDY,
+	/* 0x002 */ KONG_LANKY,
+	/* 0x003 */ KONG_TINY,
+	/* 0x004 */ KONG_CHUNKY,
+} kongs;
+
+typedef enum win_conditions {
+	/* 0x000 */ GOAL_KROOL,
+	/* 0x001 */ GOAL_KEY8,
+	/* 0x002 */ GOAL_ALLFAIRIES,
+	/* 0x003 */ GOAL_ALLBLUEPRINTS,
+	/* 0x004 */ GOAL_ALLMEDALS,
+	/* 0x005 */ GOAL_POKESNAP,
+	/* 0x006 */ GOAL_ALLKEYS,
+} win_conditions;
+
+typedef enum master_types_list {
+	/* 0x000 */ ACTORMASTER_UNUSED,
+	/* 0x001 */ ACTORMASTER_LOWLEVEL,
+	/* 0x002 */ ACTORMASTER_3D,
+	/* 0x003 */ ACTORMASTER_CONTROLLER,
+	/* 0x004 */ ACTORMASTER_SPRITE,
+} master_types_list;

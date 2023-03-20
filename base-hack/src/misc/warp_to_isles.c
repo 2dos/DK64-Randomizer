@@ -28,4 +28,5 @@ void handle_WTI(void) {
 
 void warpToIsles(void) {
 	initiateTransition(Rando.starting_map, Rando.starting_exit);
+	fixHelmTimerCorrection();
 }

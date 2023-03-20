@@ -1,21 +1,5 @@
 #define NULL 0
 
-// N64 Buttons
-#define L_Button 0x0020
-#define D_Up 0x0800
-#define D_Down 0x0400
-#define D_Left 0x0200
-#define D_Right 0x0100
-#define B_Button 0x4000
-#define A_Button 0x8000
-#define Z_Button 0x2000
-#define R_Button 0x0010
-#define Start_Button 0x1000
-#define C_Up 0x0008
-#define C_Down 0x0004
-#define C_Left 0x0002
-#define C_Right 0x0001
-
 // Colors
 #define SelectedRGB 0xFFD700 // CSS Gold
 #define ReturnRGB 0xFF4500 // CSS OrangeRed
@@ -114,7 +98,8 @@
 #define FLAG_SHOPMOVE_INS_2 0x29D
 #define FLAG_RAINBOWCOIN_0 0x29E // 0x29E -> 0x2AD (inc.) (16 flags)
 #define FLAG_FAKEITEM 0x2AE // 0x2AE -> 0x2BD (inc.) (16 flags)
-#define FLAG_JUNKITEM 0x320 // 0x320 -> 0x384 (inc.) (100 flags)
+#define FLAG_JUNKITEM 0x320 // 0x320 -> 0x383 (inc.) (100 flags)
+#define FLAG_WRINKLYVIEWED 0x384 // 0x384 -> 0x3A6 (inc.) (35 flags)
 
 #define IMAGE_DPAD 187
 #define IMAGE_AMMO_START 188
@@ -131,22 +116,24 @@
 #define PURCHASE_GB 6
 #define PURCHASE_NOTHING -1
 
-#define KONG_DK 0
-#define KONG_DIDDY 1
-#define KONG_LANKY 2
-#define KONG_TINY 3
-#define KONG_CHUNKY 4
-
-#define GOAL_KROOL 0
-#define GOAL_KEY8 1
-#define GOAL_ALLFAIRIES 2
-#define GOAL_ALLBLUEPRINTS 3
-#define GOAL_ALLMEDALS 4
-#define GOAL_POKESNAP 5
-#define GOAL_ALLKEYS 6
-
-#define ACTORMASTER_UNUSED 0
-#define ACTORMASTER_LOWLEVEL 1
-#define ACTORMASTER_3D 2
-#define ACTORMASTER_CONTROLLER 3
-#define ACTORMASTER_SPRITE 4
+// Move Bitfield Checks
+#define MOVECHECK_BLAST 1
+#define MOVECHECK_STRONG 2
+#define MOVECHECK_GRAB 4
+#define MOVECHECK_CHARGE 1
+#define MOVECHECK_ROCKETBARREL 2
+#define MOVECHECK_SPRING 4
+#define MOVECHECK_OSTAND 1
+#define MOVECHECK_BALLOON 2
+#define MOVECHECK_OSPRINT 4
+#define MOVECHECK_MINI 1
+#define MOVECHECK_TWIRL 2
+#define MOVECHECK_MONKEYPORT 4
+#define MOVECHECK_HUNKY 1
+#define MOVECHECK_PUNCH 2
+#define MOVECHECK_GONE 4
+#define MOVECHECK_HOMING 2
+#define MOVECHECK_SNIPER 4
+#define MOVECHECK_UPGRADE1 2
+#define MOVECHECK_THIRDMELON 4
+#define MOVECHECK_UPGRADE2 8

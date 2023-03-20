@@ -89,7 +89,7 @@ void qualityOfLife_shorteners(void) {
 		TempFlagBlock[0xC] |= 0x80;
 		TempFlagBlock[0xD] |= 0x3F;
     }
-	if (Rando.quality_of_life.reduce_lag) {
+	if ((Rando.quality_of_life.reduce_lag) && (Rando.seasonal_changes != SEASON_CHRISTMAS)) {
         if (CurrentMap == 0x57) {
             if (ObjectModel2Timer <= 5) {
                 actorData* lzcontroller = (actorData*)findActorWithType(0xC);

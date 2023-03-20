@@ -91,36 +91,83 @@ with open("include/variable_space_structs.h", "r") as varspace:
                 if lz_type == 9 and lz_map == 0xB0 and lz_exit == 0:
                     writeToROMNoOffset(isles_list + (0x38 * lz_index) + 0x12, set_variables[x][0], 2, "Isles -> TGrounds Zone Map")
                     writeToROMNoOffset(isles_list + (0x38 * lz_index) + 0x14, set_variables[x][1], 2, "Isles -> TGrounds Zone Exit")
-        elif x == "quality_of_life":
-            order = [
-                "reduce_lag",
-                "remove_cutscenes",
-                "fast_picture",
-                "aztec_lobby_bonus",
-                "dance_skip",
-                "fast_boot",
-                "fast_transform",
-                "ammo_swap",
-                "cb_indicator",
-                "galleon_star",
-                "vanilla_fixes",
-                "textbox_hold",
-                "caves_kosha_dead",
-                "rambi_enguarde_pickup",
-                "hud_bp_multibunch",
-                "homing_balloons",
-            ]
-            for y in set_variables["quality_of_life"]:
-                if set_variables["quality_of_life"][y]:
+        elif x in ("quality_of_life", "moves_pregiven"):
+            if x == "quality_of_life":
+                order = [
+                    "reduce_lag",
+                    "remove_cutscenes",
+                    "fast_picture",
+                    "aztec_lobby_bonus",
+                    "dance_skip",
+                    "fast_boot",
+                    "fast_transform",
+                    "ammo_swap",
+                    "cb_indicator",
+                    "galleon_star",
+                    "vanilla_fixes",
+                    "textbox_hold",
+                    "caves_kosha_dead",
+                    "rambi_enguarde_pickup",
+                    "hud_bp_multibunch",
+                    "homing_balloons",
+                ]
+                bitfield_offset = 0xB0
+            elif x == "moves_pregiven":
+                order = [
+                    "blast",
+                    "strong_kong",
+                    "grab",
+                    "charge",
+                    "rocketbarrel",
+                    "spring",
+                    "ostand",
+                    "balloon",
+                    "osprint",
+                    "mini",
+                    "twirl",
+                    "monkeyport",
+                    "hunky",
+                    "punch",
+                    "gone",
+                    "slam_upgrade_0",
+                    "slam_upgrade_1",
+                    "slam_upgrade_2",
+                    "coconut",
+                    "peanut",
+                    "grape",
+                    "feather",
+                    "pineapple",
+                    "bongos",
+                    "guitar",
+                    "trombone",
+                    "sax",
+                    "triangle",
+                    "belt_upgrade_0",
+                    "belt_upgrade_1",
+                    "homing",
+                    "sniper",
+                    "ins_upgrade_0",
+                    "ins_upgrade_1",
+                    "ins_upgrade_2",
+                    "dive",
+                    "oranges",
+                    "barrels",
+                    "vines",
+                    "camera",
+                    "shockwave",
+                ]
+                bitfield_offset = 0xD5
+            for y in set_variables[x]:
+                if set_variables[x][y]:
                     index = order.index(y)
                     offset = int(index >> 3)
                     check = int(index % 8)
-                    pre = readFromROM(0x1FED020 + 0xB0 + offset, 1)
+                    pre = readFromROM(0x1FED020 + bitfield_offset + offset, 1)
                     pre_copy = pre
                     pre |= 0x80 >> check
                     print("")
                     print(f"{y} ({index}): {offset} {check} | {pre_copy} -> {pre}")
-                    writeToROM(0xB0 + offset, pre, 1, y)
+                    writeToROM(bitfield_offset + offset, pre, 1, y)
         else:
             for y in struct_data2:
                 if x == y[2]:

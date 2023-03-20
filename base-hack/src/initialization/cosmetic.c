@@ -211,13 +211,79 @@ void initWrinklyColoring(void) {
     }
 }
 
-#define SEASON_NONE 0
-#define SEASON_HALLOWEEN 1
-#define SEASON_CHRISTMAS 2
-
 void initSeasonalChanges(void) {
     if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
         *(int*)(0x8075E0B8) = 0x807080E0; // Makes isles reference Castle skybox data
+    } else if (Rando.seasonal_changes == SEASON_CHRISTMAS) {
+        for (int i = 0; i < 6; i++) {
+            *WeatherData[i].texture_pointer = 0x173B;
+            WeatherData[i].width = 0x40;
+            WeatherData[i].height = 0x40;
+            WeatherData[i].codec_info = 0x0301;
+            WeatherData[i].frame_count = 1;
+        }
+        int addr = 0x80759EC4;
+        for (int i = 0; i < 6; i++) {
+            *(int*)(addr + (4 * i)) = 0x8068B5D8;
+        }
+        *(int*)(0x80711A64) = 0x24140010;
+        *(int*)(0x80711A5C) = 0x24140010;
+        *(int*)(0x80711A70) = 0x24140010;
+    }
+}
+
+static const rgb kong_shockwave_colors[15] = {
+    // Protan
+    {.red=0x00, .green=0x00, .blue=0x00}, // DK
+    {.red=0x00, .green=0x72, .blue=0xFF}, // Diddy
+    {.red=0x76, .green=0x6D, .blue=0x5A}, // Lanky
+    {.red=0xFF, .green=0xFF, .blue=0xFF}, // Tiny
+    {.red=0xFD, .green=0xE4, .blue=0x00}, // Chunky
+    // Deutan
+    {.red=0x00, .green=0x00, .blue=0x00}, // DK
+    {.red=0x31, .green=0x8D, .blue=0xFF}, // Diddy
+    {.red=0x7F, .green=0x6D, .blue=0x59}, // Lanky
+    {.red=0xFF, .green=0xFF, .blue=0xFF}, // Tiny
+    {.red=0xE3, .green=0xA9, .blue=0x00}, // Chunky
+    // Tritan
+    {.red=0x00, .green=0x00, .blue=0x00}, // DK
+    {.red=0xC7, .green=0x20, .blue=0x20}, // Diddy
+    {.red=0x13, .green=0xC4, .blue=0xD8}, // Lanky
+    {.red=0xFF, .green=0xFF, .blue=0xFF}, // Tiny
+    {.red=0xFF, .green=0xA4, .blue=0xA4}, // Chunky
+};
+
+typedef struct shockwave_paad {
+    /* 0x000 */ char unk_00[0x10];
+    /* 0x010 */ rgb light_rgb;
+} shockwave_paad;
+
+int determineShockwaveColor(actorData* shockwave) {
+    shockwave_paad* paad = shockwave->paad;
+    int model = getActorModelIndex(shockwave);
+    int shockwave_models[] = {0xAD,0xAE,0xD0,0xD1,0xCF};
+    int kong_index = -1;
+    int offset = ((Rando.colorblind_mode - 1) * 5);
+    for (int i = 0; i < 5; i++) {
+        if (shockwave_models[i] == model) {
+            kong_index = i;
+        }
+    }
+    if (kong_index > -1) {
+        paad->light_rgb.red = kong_shockwave_colors[offset + kong_index].red;
+        paad->light_rgb.green = kong_shockwave_colors[offset + kong_index].green;
+        paad->light_rgb.blue = kong_shockwave_colors[offset + kong_index].blue;
+    }
+    return model;
+}
+
+void initColorblindChanges(void) {
+    if (Rando.colorblind_mode != COLORBLIND_OFF) {
+        *(int*)(0x8069E968) = 0x0C000000 | (((int)&determineShockwaveColor & 0xFFFFFF) >> 2); // Shockwave handler
+        *(short*)(0x8069E974) = 0x1000; // Force first option
+        *(int*)(0x8069E9B0) = 0; // Prevent write
+        *(int*)(0x8069E9B4) = 0; // Prevent write
+        *(int*)(0x8069E9BC) = 0; // Prevent write
     }
 }
 
@@ -237,4 +303,5 @@ void initCosmetic(void) {
     initKlaptraps();
     initWrinklyColoring();
     initSeasonalChanges();
+    initColorblindChanges();
 }

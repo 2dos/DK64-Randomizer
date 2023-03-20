@@ -56,11 +56,12 @@ def generate_lo_rando_race_settings():
     data["activate_all_bananaports"] = ActivateAllBananaports.isles  # usually isles, could be all or off
 
     # item shuffler options here
-    data["move_rando"] = MoveRando.on  # usually "on" but i like "cross_purchase", rarely need to test with "start_with"
+    data["starting_moves_count"] = 0  # 0-40
+    data["move_rando"] = MoveRando.cross_purchase  # usually "on" but i like "cross_purchase", rarely need to test with "start_with"
     # if start_with, next two are FORCED to be normal and vanilla
     data["training_barrels"] = TrainingBarrels.shuffled  # usually "normal", could be "shuffled"
     data["shockwave_status"] = ShockwaveStatus.shuffled_decoupled  # usually "vanilla", could be "shuffled" or "shuffled_decoupled" or "start_with"
-    # If true, the above is always decoupled or vanilla
+    # If below is true, the above is always shuffled_decoupled, vanilla, or start_with
     data["shuffle_items"] = True  # Must be true to trigger the list selector below
     # data["item_rando_list_selected"] = ["shop", "banana", "toughbanana", "crown", "blueprint", "key", "medal", "coin", "kong", "fairy", "rainbowcoin", "beanpearl", "fakeitem", "junkitem"]  # all options
 
@@ -137,10 +138,11 @@ def generate_lo_rando_race_settings():
     data["crown_placement_rando"] = False  # usually false
     data["hard_blockers"] = False  # likely to be False
     data["hard_troff_n_scoff"] = False  # likely to be False
-    data["cb_rando"] = True  # likely to be False?
+    data["cb_rando"] = False  # likely to be False?
     data["win_condition"] = WinCondition.beat_krool  # lots of options: all_keys | get_key8 | beat_krool | all_medals | all_fairies | all_blueprints | poke_snap
     data["wrinkly_location_rando"] = False  # likely to be False
     data["tns_location_rando"] = False  # likely to be False
+    data["vanilla_door_rando"] = False  # unclear, likely prefer True? easier to debug when False
     data["key_8_helm"] = True  # likely to be True in most settings
     data["misc_changes_selected"] = []  # a whole suite of things it includes
 
@@ -152,7 +154,7 @@ def generate_lo_rando_race_settings():
     data["glitches_selected"] = []
     data["microhints_enabled"] = MicrohintsEnabled.all  # off/base/all
     data["smaller_shops"] = True  # likely to be True in item rando, many settings force it to be false
-    data["alter_switch_allocation"] = True  # likely to be True, easier to test things when false
+    data["alter_switch_allocation"] = False  # likely to be True, easier to test things when false
     data["random_starting_region"] = False  # likely to be False
     data["random_fairies"] = False  # likely to be False
 

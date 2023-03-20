@@ -44,6 +44,14 @@ a:hover {
   stroke: #035e30;
 }
 
+.copy-icon {
+  cursor: pointer;
+  height: 32px;
+  margin-left: 8px;
+  padding: 0;
+  width: 32px;
+}
+
 .form-switch {
   transform: scale(1.3);
 }
@@ -77,6 +85,12 @@ input[type="number"]::-webkit-inner-spin-button{background-color:#252525;color:#
   border-color: #ced4da;
   height: 35px;
   min-width: 300px;
+}
+
+.settings-string-container {
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: center;
 }
 
 #apply_preset {

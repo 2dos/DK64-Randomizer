@@ -92,7 +92,9 @@ static char* raw_items[] = {
 };
 
 static char check_level = 0;
+static char hint_level = 0;
 static char level_check_text[0x18] = "";
+static char level_hint_text[0x18] = "";
 
 #define CHECK_GB 0
 #define CHECK_CROWN 1
@@ -112,12 +114,29 @@ static char level_check_text[0x18] = "";
 
 static unsigned char check_data[2][9][PAUSE_ITEM_COUNT] = {}; // 8 items, 9 levels, numerator + denominator
 
+static int hint_pointers[35] = {};
+
+void initHints(void) {
+    if (hint_pointers[0] == 0) {
+        for (int i = 0; i < 35; i++) {
+            hint_pointers[i] = (int)getTextPointer(41, 1+i, 0);
+        }
+    }
+}
+
+void wipeHintCache(void) {
+    for (int i = 0; i < 35; i++) {
+        hint_pointers[i] = 0;
+    }
+}
+
 void checkItemDB(void) {
     /**
      * @brief Check item database for variables, and change check screen totals to accommodate
      */
     renderScreenTransition(7);
     initTracker();
+    initHints();
     for (int i = 0; i < PAUSE_ITEM_COUNT; i++) {
         // Wipe data upon every search
         for (int j = 0; j < 9; j++) {
@@ -220,6 +239,82 @@ void checkItemDB(void) {
     }
 }
 
+#define STRING_MAX_SIZE 256
+static char string_copy[STRING_MAX_SIZE] = "";
+static mtx_item static_mtx[20];
+static char mtx_counter = 0;
+
+int* drawHintText(int* dl, char* str, int x, int y) {
+    mtx_item mtx0;
+    mtx_item mtx1;
+    _guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
+    float position = y;
+    int pos_f = *(int*)&position;
+    _guTranslateF(&mtx1, 0x44200000, pos_f, 0x0);
+    _guMtxCatF(&mtx0, &mtx1, &mtx0);
+    _guTranslateF(&mtx1, 0, 0x42400000, 0);
+    _guMtxCatF(&mtx0, &mtx1, &mtx0);
+    _guMtxF2L(&mtx0, &static_mtx[(int)mtx_counter]);
+
+    *(unsigned int*)(dl++) = 0xDE000000;
+	*(unsigned int*)(dl++) = 0x01000118;
+	*(unsigned int*)(dl++) = 0xDA380002;
+	*(unsigned int*)(dl++) = 0x02000180;
+	*(unsigned int*)(dl++) = 0xE7000000;
+	*(unsigned int*)(dl++) = 0x00000000;
+	*(unsigned int*)(dl++) = 0xFCFF97FF;
+	*(unsigned int*)(dl++) = 0xFF2CFE7F;
+	*(unsigned int*)(dl++) = 0xFA000000;
+    *(unsigned int*)(dl++) = 0xFFFFFFFF;
+    *(unsigned int*)(dl++) = 0xDA380002;
+    *(unsigned int*)(dl++) = (int)&static_mtx[(int)mtx_counter];
+    dl = displayText((int*)dl,6,0,0,str,0x80);
+    mtx_counter += 1;
+    *(unsigned int*)(dl++) = 0xD8380002;
+    *(unsigned int*)(dl++) = 0x00000040;
+    return dl;
+}
+
+int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
+    int curr_y = y;
+    int string_length = cstring_strlen(str);
+    int string_copy_ref = (int)string_copy;
+    wipeMemory(string_copy, STRING_MAX_SIZE);
+    dk_memcpy(string_copy, str, string_length);
+    int header = 0;
+    int last_safe = 0;
+    while (1) {
+        char referenced_character = *(char*)(string_copy_ref + header);
+        int is_control = 0;
+        if (referenced_character == 0) {
+            // Terminator
+            return drawHintText(dl, (char*)(string_copy_ref), x, curr_y);
+        } else if (referenced_character == 0x20) {
+            // Space
+            last_safe = header;
+        } else if ((referenced_character > 0) && (referenced_character < 0x10)) {
+            // Control byte character
+            is_control = 1;
+            int end = (int)(string_copy) + (STRING_MAX_SIZE - 1);
+            int size = end - (string_copy_ref + header + 1);
+            dk_memcpy((void*)(string_copy_ref + header), (void*)(string_copy_ref + header + 1), size);
+        }
+        if (!is_control) {
+            if (header > 50) {
+                *(char*)(string_copy_ref + last_safe) = 0; // Stick terminator in last safe
+                dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y);
+                curr_y += y_sep;
+                string_copy_ref += (last_safe + 1);
+                header = 0;
+                last_safe = 0;
+            } else {
+                header += 1;
+            }
+        }
+    }
+    return dl;
+}
+
 int* pauseScreen3And4Header(int* dl) {
     /**
      * @brief Alter pause screen totals header to display the checks screen
@@ -229,15 +324,46 @@ int* pauseScreen3And4Header(int* dl) {
      * @return New display list address
      */
     pause_paad* paad = CurrentActorPointer_0->paad;
-    if (paad->screen == 3) {
+    if (paad->screen == PAUSESCREEN_TOTALS) {
         return printText(dl, 0x280, 0x3C, 0.65f, "TOTALS");
-    } else if (paad->screen == 4) {
+    } else if (paad->screen == PAUSESCREEN_CHECKS) {
         dl = printText(dl, 0x280, 0x3C, 0.65f, "CHECKS");
         dk_strFormat((char*)level_check_text, "w %s e", levels[(int)check_level]);
         return printText(dl, 0x280, 160, 0.5f, level_check_text);
-    } else if (paad->screen == 5) {
+    } else if (paad->screen == PAUSESCREEN_MOVES) {
         dl = display_file_images(dl, -50);
         return printText(dl, 0x280, 0x3C, 0.65f, "MOVES");
+    } else if (paad->screen == PAUSESCREEN_HINTS) {
+        dl = printText(dl, 0x280, 0x3C, 0.65f, "HINTS");
+        // Handle Controls
+        int hint_level_cap = 7;
+        if (NewlyPressedControllerInput.Buttons.c_left) {
+            hint_level -= 1;
+            if (hint_level < 0) {
+                hint_level = hint_level_cap - 1;
+            }
+        } else if (NewlyPressedControllerInput.Buttons.c_right) {
+            hint_level += 1;
+            if (hint_level >= hint_level_cap) {
+                hint_level = 0;
+            }
+        }
+        // Display level
+        dk_strFormat((char*)level_hint_text, "w %s e", levels[(int)hint_level + 1]);
+        dl = printText(dl, 0x280, 120, 0.5f, level_hint_text);
+        // Display Hints
+        *(unsigned int*)(dl++) = 0xFA000000;
+        *(unsigned int*)(dl++) = 0xFFFFFF96;
+        dl = displayImage(dl, 107, 0, RGBA16, 48, 32, 625, 465, 24.0f, 20.0f, 0, 0.0f);
+        mtx_counter = 0;
+        for (int i = 0; i < 5; i++) {
+            char* string = "???";
+            if (checkFlag(FLAG_WRINKLYVIEWED + (5 * hint_level) + i, 0)) {
+                string = (char*)hint_pointers[(5 * hint_level) + i];
+            }
+            dl = drawSplitString(dl, string, 640, 140 + (120 * i), 40);
+        }
+        return dl;
     }
     return dl;
 }
@@ -248,9 +374,9 @@ int* pauseScreen3And4ItemName(int* dl, int x, int y, float scale, char* text) {
      */
     pause_paad* paad = CurrentActorPointer_0->paad;
     int item_index = MenuActivatedItems[ViewedPauseItem];
-    if (paad->screen == 3) {
+    if (paad->screen == PAUSESCREEN_TOTALS) {
         return printText(dl, x, y, scale, raw_items[item_index]);
-    } else if (paad->screen == 4) {
+    } else if (paad->screen == PAUSESCREEN_CHECKS) {
         return printText(dl, x, y, scale, items[item_index]);
     }
     return dl;
@@ -261,9 +387,9 @@ int* pauseScreen3And4Counter(int x, int y, int top, int bottom, int* dl, int unk
      * @brief Changes the counter on-screen depending on what screen you're on
      */
     pause_paad* paad = CurrentActorPointer_0->paad;
-    if (paad->screen == 3) {
+    if (paad->screen == PAUSESCREEN_TOTALS) {
         return printOutOfCounter(x, y, top, bottom, dl, unk0, scale);
-    } else if (paad->screen == 4) {
+    } else if (paad->screen == PAUSESCREEN_CHECKS) {
         int item_index = MenuActivatedItems[ViewedPauseItem];
         int top_num = 0;
         int bottom_num = 0;
@@ -292,7 +418,7 @@ void changePauseScreen(void) {
      * @brief Hook into the change pause screen function
      */
     pause_paad* paad = CurrentActorPointer_0->paad;
-    if ((paad->screen != 5) && (paad->next_screen == 5)) {
+    if ((paad->screen != PAUSESCREEN_MOVES) && (paad->next_screen == PAUSESCREEN_MOVES)) {
         resetTracker();
     }
     playSFX(0x2C9);
@@ -404,14 +530,14 @@ int changeSelectedLevel(int unk0, int unk1) {
      * @brief Change selected level in the checks screen
      */
     pause_paad* paad = CurrentActorPointer_0->paad;
-    if (paad->screen == 4) {
+    if (paad->screen == PAUSESCREEN_CHECKS) {
         // Checks Screen
-        if (NewlyPressedControllerInput.Buttons & C_Left) {
+        if (NewlyPressedControllerInput.Buttons.c_left) {
             check_level -= 1;
             if (check_level < 0) {
                 check_level = (sizeof(levels) / 4) - 1;
             }
-        } else if (NewlyPressedControllerInput.Buttons & C_Right) {
+        } else if (NewlyPressedControllerInput.Buttons.c_right) {
             check_level += 1;
             if (check_level >= (sizeof(levels) / 4)) {
                 check_level = 0;

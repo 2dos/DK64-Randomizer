@@ -164,7 +164,7 @@ CrownLocations = {
             map=Maps.AngryAztec, name="Angry Aztec: On 5-Door Temple", x=2056, y=420, z=3648, scale=0.3, region=Regions.AngryAztecMain, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick()
         ),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Snoop Tunnel Exterior Warp", x=3422, y=120, z=4514, scale=0.35, region=Regions.AngryAztecMain),
-        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Vulture Cage", x=4013, y=226, z=4589, scale=0.18, region=Regions.AngryAztecMain, logic=lambda l: l.vines),
+        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Vulture Cage", x=4013, y=226, z=4589, scale=0.18, region=Regions.AngryAztecMain, logic=lambda l: l.vines or (l.jetpack and l.diddy)),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Under Vulture Cage", x=4102, y=120, z=4548, scale=0.4, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Gong Tower", x=4212, y=80, z=2959, scale=0.4, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Snoop Tunnel", x=2783, y=120, z=4817, scale=0.35, region=Regions.AztecDonkeyQuicksandCave),

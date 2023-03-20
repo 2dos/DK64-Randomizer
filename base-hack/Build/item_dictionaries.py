@@ -55,6 +55,7 @@ class CustomActors(IntEnum):
     Fairy = auto()
     FakeItem = auto()
     Medal = auto()
+    JetpacItemOverlay = auto()
 
 
 base_potion = InGameItem(scale=0.25, bounce=True)

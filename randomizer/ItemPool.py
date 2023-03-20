@@ -39,7 +39,7 @@ def PlaceConstants(settings):
     typesOfItemsShuffled = []
     if settings.kong_rando:
         typesOfItemsShuffled.append(Types.Kong)
-    if not settings.unlock_all_moves and settings.move_rando != MoveRando.off:
+    if settings.move_rando != MoveRando.off:
         typesOfItemsShuffled.append(Types.Shop)
         if settings.training_barrels == TrainingBarrels.shuffled:
             typesOfItemsShuffled.append(Types.TrainingBarrel)
@@ -61,42 +61,6 @@ def PlaceConstants(settings):
         LocationList[Locations.LankyKong].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.TinyKong].PlaceConstantItem(Items.NoItem)
         LocationList[Locations.ChunkyKong].PlaceConstantItem(Items.NoItem)
-    if settings.unlock_all_moves and not (settings.shuffle_items and Types.Shop in settings.shuffled_location_types):
-        LocationList[Locations.SimianSlam].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.SuperSimianSlam].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.SuperDuperSimianSlam].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.BaboonBlast].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.StrongKong].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.GorillaGrab].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.ChimpyCharge].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.RocketbarrelBoost].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.SimianSpring].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.Orangstand].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.BaboonBalloon].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.OrangstandSprint].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.MiniMonkey].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.PonyTailTwirl].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.Monkeyport].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.HunkyChunky].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.PrimatePunch].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.GorillaGone].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.CoconutGun].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.PeanutGun].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.GrapeGun].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.FeatherGun].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.PineappleGun].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.AmmoBelt1].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.HomingAmmo].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.AmmoBelt2].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.SniperSight].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.Bongos].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.Guitar].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.Trombone].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.Saxophone].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.Triangle].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.MusicUpgrade1].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.ThirdMelon].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.MusicUpgrade2].PlaceConstantItem(Items.NoItem)
     if settings.shockwave_status == ShockwaveStatus.start_with:
         LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
 
@@ -291,18 +255,12 @@ def GetKongForItem(item):
 
 def Guns(settings):
     """Return all gun items."""
-    guns = []
-    if not settings.unlock_all_moves:
-        guns.extend([Items.Coconut, Items.Peanut, Items.Grape, Items.Feather, Items.Pineapple])
-    return guns
+    return [Items.Coconut, Items.Peanut, Items.Grape, Items.Feather, Items.Pineapple]
 
 
 def Instruments(settings):
     """Return all instrument items."""
-    instruments = []
-    if not settings.unlock_all_moves:
-        instruments.extend([Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle])
-    return instruments
+    return [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle]
 
 
 def TrainingBarrelAbilities():
@@ -318,38 +276,37 @@ def Upgrades(settings):
     if settings.training_barrels == TrainingBarrels.shuffled:
         upgrades.extend(TrainingBarrelAbilities())
     # Add either progressive upgrade items or individual ones depending on settings
-    if not settings.unlock_all_moves:
-        upgrades.extend(itertools.repeat(Items.ProgressiveSlam, 3 - 1))  # -1 for starting slam
-        if settings.progressive_upgrades:
-            upgrades.extend(itertools.repeat(Items.ProgressiveDonkeyPotion, 3))
-            upgrades.extend(itertools.repeat(Items.ProgressiveDiddyPotion, 3))
-            upgrades.extend(itertools.repeat(Items.ProgressiveLankyPotion, 3))
-            upgrades.extend(itertools.repeat(Items.ProgressiveTinyPotion, 3))
-            upgrades.extend(itertools.repeat(Items.ProgressiveChunkyPotion, 3))
-        else:
-            upgrades.extend(
-                [
-                    Items.BaboonBlast,
-                    Items.StrongKong,
-                    Items.GorillaGrab,
-                    Items.ChimpyCharge,
-                    Items.RocketbarrelBoost,
-                    Items.SimianSpring,
-                    Items.Orangstand,
-                    Items.BaboonBalloon,
-                    Items.OrangstandSprint,
-                    Items.MiniMonkey,
-                    Items.PonyTailTwirl,
-                    Items.Monkeyport,
-                    Items.HunkyChunky,
-                    Items.PrimatePunch,
-                    Items.GorillaGone,
-                ]
-            )
-        upgrades.append(Items.HomingAmmo)
-        upgrades.append(Items.SniperSight)
-        upgrades.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
-        upgrades.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 3))
+    upgrades.extend(itertools.repeat(Items.ProgressiveSlam, 3 - 1))  # -1 for starting slam
+    if settings.progressive_upgrades:
+        upgrades.extend(itertools.repeat(Items.ProgressiveDonkeyPotion, 3))
+        upgrades.extend(itertools.repeat(Items.ProgressiveDiddyPotion, 3))
+        upgrades.extend(itertools.repeat(Items.ProgressiveLankyPotion, 3))
+        upgrades.extend(itertools.repeat(Items.ProgressiveTinyPotion, 3))
+        upgrades.extend(itertools.repeat(Items.ProgressiveChunkyPotion, 3))
+    else:
+        upgrades.extend(
+            [
+                Items.BaboonBlast,
+                Items.StrongKong,
+                Items.GorillaGrab,
+                Items.ChimpyCharge,
+                Items.RocketbarrelBoost,
+                Items.SimianSpring,
+                Items.Orangstand,
+                Items.BaboonBalloon,
+                Items.OrangstandSprint,
+                Items.MiniMonkey,
+                Items.PonyTailTwirl,
+                Items.Monkeyport,
+                Items.HunkyChunky,
+                Items.PrimatePunch,
+                Items.GorillaGone,
+            ]
+        )
+    upgrades.append(Items.HomingAmmo)
+    upgrades.append(Items.SniperSight)
+    upgrades.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))
+    upgrades.extend(itertools.repeat(Items.ProgressiveInstrumentUpgrade, 3))
     if settings.shockwave_status != ShockwaveStatus.start_with:
         if settings.shockwave_status == ShockwaveStatus.vanilla or settings.shockwave_status == ShockwaveStatus.shuffled:
             upgrades.append(Items.CameraAndShockwave)
@@ -491,6 +448,14 @@ def GetItemsNeedingToBeAssumed(settings, placed_types):
     #     itemPool.extend(JunkItems())
     # if Types.Hint in unplacedTypes: someday???
     #     itemPool.extend(HintItems()) hints in the pool???
+    # If shops are not part of the larger item pool and are not placed, we may still need to assume them
+    # It is worth noting that TrainingBarrel and Shockwave type items are contingent on Shop type items being in the item rando pool
+    if Types.Shop not in settings.shuffled_location_types and Types.Shop not in placed_types and settings.move_rando != MoveRando.off:
+        itemPool.extend(AllKongMoves())
+        if settings.training_barrels == TrainingBarrels.shuffled:
+            itemPool.extend(TrainingBarrelAbilities().copy())
+        if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
+            itemPool.extend(ShockwaveTypeItems(settings))
     return itemPool
 
 

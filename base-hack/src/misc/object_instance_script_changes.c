@@ -273,6 +273,11 @@ void getModelTwoItemFromActor(int actor, short* item, float* scale) {
 	}
 }
 
+void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0) {
+	setPermFlag(FLAG_WRINKLYVIEWED + kong + (5 * getWorld(CurrentMap, 0)));
+	spawnWrinkly(behaviour, index, kong, unk0);
+}
+
 void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 	/**
 	 * @brief Generic code for a bananaport
@@ -1812,7 +1817,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				if (getPlayerObjectDistance()) {
 					unkObjFunction2(id, 1, 1);
 					PauseText = 1;
-					spawnWrinkly(behaviour_pointer, id, kong, 0);
+					spawnWrinklyWrapper(behaviour_pointer, id, kong, 0);
 					playSFXFromObject(id, 19, 255, 127, 20, 0, 0.3f);
 					behaviour_pointer->next_state = 2;
 				}

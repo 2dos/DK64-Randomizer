@@ -21,7 +21,7 @@ from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.MiscSetupChanges import randomize_setup, updateRandomSwitches
-from randomizer.Patching.MoveLocationRando import randomize_moves
+from randomizer.Patching.MoveLocationRando import randomize_moves, place_pregiven_moves
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.Patcher import ROM
@@ -192,9 +192,7 @@ def patching_response(responded_data):
         ROM().write(bin_value)
 
     boolean_props = [
-        BooleanProperties(spoiler.settings.unlock_all_moves, 0x2D),  # Unlock All Moves
         BooleanProperties(True, 0x2E),  # Fast Start Game
-        BooleanProperties(spoiler.settings.shockwave_status == ShockwaveStatus.start_with, 0x2F),  # Unlock Shockwave
         BooleanProperties(spoiler.settings.enable_tag_anywhere, 0x30),  # Tag Anywhere
         BooleanProperties(spoiler.settings.fps_display, 0x96),  # FPS Display
         BooleanProperties(spoiler.settings.crown_door_item == HelmDoorItem.opened, 0x32),  # Crown Door Open
@@ -277,6 +275,19 @@ def patching_response(responded_data):
         ROM().seek(sav + 0x4F)
         ROM().write(spoiler.settings.coin_door_item_count)
 
+    # Camera unlocked
+    given_moves = []
+    if spoiler.settings.shockwave_status == ShockwaveStatus.start_with:
+        given_moves.extend([39, 40])  # 39 = Camera, 40 = Shockwave
+    move_bitfields = [0] * 6
+    for move in given_moves:
+        offset = int(move >> 3)
+        check = int(move % 8)
+        move_bitfields[offset] |= 0x80 >> check
+    for offset, value in enumerate(move_bitfields):
+        ROM().seek(sav + 0xD5 + offset)
+        ROM().writeMultipleBytes(value, 1)
+
     # Free Trade Agreement
     if spoiler.settings.free_trade_items:
         ROM().seek(sav + 0x113)
@@ -348,6 +359,15 @@ def patching_response(responded_data):
     ROM().seek(sav + 0x138)
     # The ActivateAllBananaports enum is indexed to allow this.
     ROM().write(int(spoiler.settings.activate_all_bananaports))
+
+    # Fast GBs - Change jetpac text
+    if spoiler.settings.fast_gbs:
+        cranky_index = 8
+        data = {"textbox_index": 2, "mode": "replace", "search": "5000", "target": "2500"}
+        if cranky_index in spoiler.text_changes:
+            spoiler.text_changes[8].append(data)
+        else:
+            spoiler.text_changes[8] = [data]
 
     if spoiler.settings.hard_bosses:
         # KKO Phase Order
@@ -438,6 +458,7 @@ def patching_response(responded_data):
     randomize_coins(spoiler)
     ApplyShopRandomizer(spoiler)
     place_randomized_items(spoiler)  # Has to be after kong rando cosmetic and moves
+    place_pregiven_moves(spoiler)
     remove_existing_indicators(spoiler)
     place_door_locations(spoiler)
     randomize_crown_pads(spoiler)

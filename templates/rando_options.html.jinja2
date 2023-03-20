@@ -38,9 +38,6 @@
                         <option id="move_on_cross_purchase" value="cross_purchase">
                             Cross Kong Purchases
                         </option>
-                        <option id="move_start_with" value="start_with">
-                            Unlock All Moves
-                        </option>
                     </select>
                 </div>
                 <div class="item-select">
@@ -58,6 +55,20 @@
                             Shuffle
                         </option>
                     </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Starting Moves Count</p>
+                    <input min="0"
+                            max="40"
+                            name="starting_moves_count"
+                            id="starting_moves_count"
+                            style="width: 15%"
+                            class="form-control center-div"
+                            type="number"
+                            data-toggle="tooltip"
+                            title="Amount of moves given at the start of a new seed that would be otherwise randomized."
+                            default="0"
+                            placeholder="0"/>
                 </div>
             </div>
             <hr>
@@ -110,6 +121,7 @@
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip" title="Wrinkly Door Locations are randomized">
                         <input class="form-check-input"
+                                id="wrinkly_location_rando"
                                 type="checkbox"
                                 name="wrinkly_location_rando"
                                 value="True"/>
@@ -119,10 +131,22 @@
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip" title="T&S Portal Locations are randomized">
                         <input class="form-check-input"
+                                id="tns_location_rando"
                                 type="checkbox"
                                 name="tns_location_rando"
                                 value="True"/>
                         Troff 'n' Scoff Portals
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Wrinkly Doors and T&S Portals are shuffled among the vanilla locations.">
+                        <input class="form-check-input"
+                                id="vanilla_door_rando"
+                                type="checkbox"
+                                name="vanilla_door_rando"
+                                value="True"/>
+                        Vanilla Door Shuffle
                     </label>
                 </div>
                 <div class="form-check form-switch item-switch">
@@ -135,7 +159,6 @@
                         Battle Crowns
                     </label>
                 </div>
-                <div class="spacer"></div>
             </div>
             <div class="flex-container">
                 <div class="item-select">

@@ -49,6 +49,10 @@ void writeEndSequence(void) {
 	copyFromROM(0x1FFF800,(int*)0x807506D0,&file_size,0,0,0,0);
 }
 
+float getOscillationDelta(void) {
+	return 0.5f;
+}
+
 void initHack(int source) {
 	/**
 	 * @brief Initialize Hack
@@ -117,6 +121,7 @@ void initHack(int source) {
 			initActor(NEWACTOR_PEARL, 1, &pearlCode, ACTORMASTER_SPRITE, 0, 1, 8, 45);
 			initActor(NEWACTOR_FAIRY, 1, &fairyDuplicateCode, ACTORMASTER_3D, 0, 1, 8, 45);
 			initActor(NEWACTOR_FAKEITEM, 1, &FakeGBCode, ACTORMASTER_3D, 0, 1, 8, 45);
+			initActor(NEWACTOR_JETPACITEMOVERLAY, 1, &getNextMoveText, ACTORMASTER_CONTROLLER, 0, 0, 0x10, 324);
 			// Kong Rando
 			initKongRando();
 			initFiles();
@@ -178,7 +183,8 @@ void initHack(int source) {
 			}
 			actor_functions[70] = &newCounterCode;
 			*(short*)(0x8074DC84) = 0x53; // Increase PAAD size
-			fixMusicRando();			
+			fixMusicRando();
+			*(int*)(0x80748014) = (int)&spawnWrinklyWrapper; // Change function to include setFlag call	
 			// Style 6 Mtx
 			int base_mtx = 75;
 			style6Mtx[0x0] = base_mtx;
@@ -277,8 +283,10 @@ void initHack(int source) {
 				*(int*)(0x80661B64) = 0; // Remove Ripple Timer 1
 				*(int*)(0x8068BDF4) = 0; // Disable rocking in Seasick Ship
 				*(short*)(0x8068BDFC) = 0x1000; // Disable rocking in Mech Fish
-				*(int*)(0x806609DC) = 0x44802000; // Change ripple oscillation X to 0 (mtc1 $zero, $f4)
-				*(int*)(0x806609EC) = 0x44805000; // Change ripple oscillation Z to 0 (mtc1 $zero, $f10)
+				// *(int*)(0x806609DC) = 0x44802000; // Change ripple oscillation X to 0 (mtc1 $zero, $f4)
+				// *(int*)(0x806609EC) = 0x44805000; // Change ripple oscillation Z to 0 (mtc1 $zero, $f10)
+				*(int*)(0x80660994) = 0x0C000000 | (((int)&getOscillationDelta & 0xFFFFFF) >> 2);
+				*(int*)(0x806609BC) = 0x0C000000 | (((int)&getOscillationDelta & 0xFFFFFF) >> 2);
 			}
 			// Slow Turn Fix
 			*(int*)(0x806D2FC0) = 0x0C000000 | (((int)&fixRBSlowTurn & 0xFFFFFF) >> 2);

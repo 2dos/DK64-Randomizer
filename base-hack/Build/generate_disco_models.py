@@ -1,7 +1,9 @@
 """Write new Disco Chunky models."""
 import zlib
 import os
-from BuildLib import main_pointer_table_offset
+from BuildLib import main_pointer_table_offset, ROMName
+from BuildClasses import ROMPointerFile
+from BuildEnums import TableNames
 
 
 class Vert:
@@ -18,8 +20,6 @@ class Vert:
         self.other = other
 
 
-rom_file = "rom/dk64.z64"
-main_pointer_table_offset = 0x101C50
 temp_file = "temp.bin"
 ins_file = "disco_instrument.bin"
 
@@ -202,15 +202,10 @@ beater_new_dl = """
 #     06 1C 1A 28 00 1C 28 26
 # """
 
-with open(rom_file, "rb") as rom:
-    rom.seek(main_pointer_table_offset + (5 * 4))
-    actor_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-    rom.seek(actor_table + (0xD * 4))
-    disco_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-    disco_finish = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
-    disco_size = disco_finish - disco_start
-    rom.seek(disco_start)
-    disco_data = zlib.decompress(rom.read(disco_size), (15 + 32))
+with open(ROMName, "rb") as rom:
+    disco_f = ROMPointerFile(rom, TableNames.ActorGeometry, 0xD)
+    rom.seek(disco_f.start)
+    disco_data = zlib.decompress(rom.read(disco_f.size), (15 + 32))
     vert_end = 0x38E8
     dl_end = 0x58B8
     # Disco Chunky + Instrument

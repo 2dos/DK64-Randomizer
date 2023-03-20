@@ -152,14 +152,7 @@ void progressiveChange(int flag) {
 		int subtype = getMoveProgressiveFlagType(flag);
 		if (subtype == 0) {
 			// Slam
-			int slam_level = MovesBase[0].simian_slam + 1;
-			if (slam_level == 1) {
-				// Fix if initial slam is slam 0
-				slam_level = 2;
-			}
-			for (int i = 0; i < 5; i++) {
-				MovesBase[i].simian_slam = slam_level;
-			}
+			giveSlamLevel();
 		} else if (subtype == 1) {
 			// Belt
 			int belt_level = MovesBase[0].ammo_belt + 1;
@@ -193,30 +186,12 @@ void progressiveChange(int flag) {
 }
 
 int getMoveProgressiveFlagType(int flag) {
-	int slams[] = {FLAG_SHOPMOVE_SLAM_0, FLAG_SHOPMOVE_SLAM_1, FLAG_ITEM_SLAM_0, FLAG_ITEM_SLAM_1};
-	int belts[] = {FLAG_SHOPMOVE_BELT_0, FLAG_SHOPMOVE_BELT_1, FLAG_ITEM_BELT_0, FLAG_ITEM_BELT_1};
-	int instruments[] = {
-		FLAG_SHOPMOVE_INS_0,
-		FLAG_SHOPMOVE_INS_1,
-		FLAG_SHOPMOVE_INS_2,
-		FLAG_ITEM_INS_0,
-		FLAG_ITEM_INS_1,
-		FLAG_ITEM_INS_2,
-	};
-	for (int i = 0; i < 4; i++) {
-		if (flag == slams[i]) {
-			return 0;
-		}
-	}
-	for (int i = 0; i < 4; i++) {
-		if (flag == belts[i]) {
-			return 1;
-		}
-	}
-	for (int i = 0; i < 6; i++) {
-		if (flag == instruments[i]) {
-			return 2;
-		}
+	if (isSlamFlag(flag)) {
+		return 0;
+	} else if (isBeltFlag(flag)) {
+		return 1;
+	} else if (isInstrumentUpgradeFlag(flag)) {
+		return 2;
 	}
 	return -1;
 }
@@ -705,12 +680,15 @@ void getNextMoveText(void) {
 	int start_hiding = 0;
 	actorData* shop_owner = paad->shop_owner;
 	shop_paad* shop_data = 0;
-	if ((shop_owner == 0) && ((CurrentMap == CRANKY) || (CurrentMap == FUNKY) || (CurrentMap == CANDY))) {
-		shop_owner = getSpawnerTiedActor(1,0);
-		paad->shop_owner = shop_owner;
-	}
-	if ((paad->shop_owner) && ((CurrentMap == CRANKY) || (CurrentMap == FUNKY) || (CurrentMap == CANDY))) {
-		shop_data = shop_owner->paad2;
+	int is_jetpac = CurrentActorPointer_0->actorType == getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY);
+	if (!is_jetpac) {
+		if ((shop_owner == 0) && ((CurrentMap == CRANKY) || (CurrentMap == FUNKY) || (CurrentMap == CANDY))) {
+			shop_owner = getSpawnerTiedActor(1,0);
+			paad->shop_owner = shop_owner;
+		}
+		if ((paad->shop_owner) && ((CurrentMap == CRANKY) || (CurrentMap == FUNKY) || (CurrentMap == CANDY))) {
+			shop_data = shop_owner->paad2;
+		}
 	}
 	int p_value = 0;
 	int p_type = 0;
@@ -777,7 +755,7 @@ void getNextMoveText(void) {
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->unk_50);
 			paad->timer = 0x82;
-			if (CurrentMap == CRANKY) {
+			if ((CurrentMap == CRANKY) && (!is_jetpac)) {
 				paad->timer = 300;
 			}
 			switch(p_type) {

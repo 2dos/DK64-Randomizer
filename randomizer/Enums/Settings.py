@@ -295,7 +295,7 @@ class HelmDoorItem(IntEnum):
     req_companycoins: The Rareware and Nintendo coins.
     req_key: Keys.
     req_medal: Banana Medals.
-    req_crown: Battle Browns.
+    req_crown: Battle Crowns.
     req_fairy: Banana Fairies.
     req_rainbowcoin: Rainbow Coins.
     req_bean: The bean.
@@ -529,9 +529,9 @@ class MinigameBarrels(IntEnum):
     selected = auto()
 
 
-# A dictionary that maps setting names to the associated enum for that specific
-# setting. This only applies to select-based settings. The key for each enum
-# must exactly match the HTML name of the associated select.
+# ALL SELECT-BASED SETTINGS NEED AN ENTRY HERE!
+# A dictionary that maps setting names to the associated enum for that specific setting.
+# The key for each enum must exactly match the HTML name of the associated select.
 SettingsMap = {
     # Randomizer
     "enemies_selected": Enemies,
@@ -584,12 +584,14 @@ SettingsMap = {
 
 
 class SettingsStringEnum(IntEnum):
-    """Maps setting names to key values, for use in the ssettings string.
+    """Maps setting names to key values, for use in the settings string.
 
     Changing any of the existing values will cause generated settings strings
         to break. Only add new values.
 
-    Next available value: 132
+    ALL SETTINGS NEED AN ENTRY HERE!
+
+    Next available value: 133
     """
 
     activate_all_bananaports = 1
@@ -723,6 +725,8 @@ class SettingsStringEnum(IntEnum):
     wrinkly_hints = 129
     wrinkly_location_rando = 130
     coin_rando = 131
+    vanilla_door_rando = 132
+    starting_moves_count = 133
 
 
 class SettingsStringDataType(IntEnum):
@@ -735,36 +739,46 @@ class SettingsStringDataType(IntEnum):
     int8 = auto()
     # Can represent up to 65,536 values (-32,768 to 32,767).
     int16 = auto()
+    # Will be shrunk down to the smallest possible size.
+    var_int = auto()
     str = auto()
     list = auto()
 
 
+# ALL SETTINGS NEED AN ENTRY HERE!
 # This maps settings to the data types that will be used to encode them in the
 # settings string. Any enum-based settings should use that enum as their data
 # type, to shrink the payload as much as possible.
+#
+# When adding an int setting, make sure to use the smallest int possible.
+# This will reduce the characters added to the settings string. See the above
+# enum for valid int values.
+#
+# If you are using the var_int type, you must use the addSettingIntRange()
+# function below to specify the valid int range.
 SettingsStringTypeMap = {
     SettingsStringEnum.activate_all_bananaports: ActivateAllBananaports,
     SettingsStringEnum.alter_switch_allocation: SettingsStringDataType.bool,
     SettingsStringEnum.auto_keys: SettingsStringDataType.bool,
     SettingsStringEnum.bananaport_rando: BananaportRando,
-    SettingsStringEnum.blocker_0: SettingsStringDataType.int16,
-    SettingsStringEnum.blocker_1: SettingsStringDataType.int16,
-    SettingsStringEnum.blocker_2: SettingsStringDataType.int16,
-    SettingsStringEnum.blocker_3: SettingsStringDataType.int16,
-    SettingsStringEnum.blocker_4: SettingsStringDataType.int16,
-    SettingsStringEnum.blocker_5: SettingsStringDataType.int16,
-    SettingsStringEnum.blocker_6: SettingsStringDataType.int16,
-    SettingsStringEnum.blocker_7: SettingsStringDataType.int16,
-    SettingsStringEnum.blocker_text: SettingsStringDataType.int16,
+    SettingsStringEnum.blocker_0: SettingsStringDataType.var_int,
+    SettingsStringEnum.blocker_1: SettingsStringDataType.var_int,
+    SettingsStringEnum.blocker_2: SettingsStringDataType.var_int,
+    SettingsStringEnum.blocker_3: SettingsStringDataType.var_int,
+    SettingsStringEnum.blocker_4: SettingsStringDataType.var_int,
+    SettingsStringEnum.blocker_5: SettingsStringDataType.var_int,
+    SettingsStringEnum.blocker_6: SettingsStringDataType.var_int,
+    SettingsStringEnum.blocker_7: SettingsStringDataType.var_int,
+    SettingsStringEnum.blocker_text: SettingsStringDataType.var_int,
     SettingsStringEnum.bonus_barrel_auto_complete: SettingsStringDataType.bool,
     SettingsStringEnum.bonus_barrel_rando: SettingsStringDataType.bool,
     SettingsStringEnum.boss_kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.boss_location_rando: SettingsStringDataType.bool,
     SettingsStringEnum.cb_rando: SettingsStringDataType.bool,
     SettingsStringEnum.coin_door_item: HelmDoorItem,
-    SettingsStringEnum.coin_door_item_count: SettingsStringDataType.int16,
+    SettingsStringEnum.coin_door_item_count: SettingsStringDataType.var_int,
     SettingsStringEnum.crown_door_item: HelmDoorItem,
-    SettingsStringEnum.crown_door_item_count: SettingsStringDataType.int16,
+    SettingsStringEnum.crown_door_item_count: SettingsStringDataType.var_int,
     SettingsStringEnum.crown_enemy_rando: CrownEnemyRando,
     SettingsStringEnum.crown_placement_rando: SettingsStringDataType.bool,
     SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
@@ -790,7 +804,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.hard_shooting: SettingsStringDataType.bool,
     SettingsStringEnum.hard_troff_n_scoff: SettingsStringDataType.bool,
     SettingsStringEnum.helm_hurry: SettingsStringDataType.bool,
-    SettingsStringEnum.helm_phase_count: SettingsStringDataType.int4,
+    SettingsStringEnum.helm_phase_count: SettingsStringDataType.var_int,
     SettingsStringEnum.helm_phase_order_rando: SettingsStringDataType.bool,
     SettingsStringEnum.helm_random: SettingsStringDataType.bool,
     SettingsStringEnum.helm_setting: HelmSetting,
@@ -817,16 +831,16 @@ SettingsStringTypeMap = {
     SettingsStringEnum.keys_random: SettingsStringDataType.bool,
     SettingsStringEnum.kong_rando: SettingsStringDataType.bool,
     SettingsStringEnum.krool_access: SettingsStringDataType.bool,
-    SettingsStringEnum.krool_key_count: SettingsStringDataType.int8,
-    SettingsStringEnum.krool_phase_count: SettingsStringDataType.int4,
+    SettingsStringEnum.krool_key_count: SettingsStringDataType.var_int,
+    SettingsStringEnum.krool_phase_count: SettingsStringDataType.var_int,
     SettingsStringEnum.krool_phase_order_rando: SettingsStringDataType.bool,
     SettingsStringEnum.krool_random: SettingsStringDataType.bool,
     SettingsStringEnum.krusha_ui: KrushaUi,
     SettingsStringEnum.level_randomization: LevelRandomization,
     SettingsStringEnum.logic_type: LogicType,
     SettingsStringEnum.maximize_helm_blocker: SettingsStringDataType.bool,
-    SettingsStringEnum.medal_cb_req: SettingsStringDataType.int16,
-    SettingsStringEnum.medal_requirement: SettingsStringDataType.int16,
+    SettingsStringEnum.medal_cb_req: SettingsStringDataType.var_int,
+    SettingsStringEnum.medal_requirement: SettingsStringDataType.var_int,
     SettingsStringEnum.microhints_enabled: MicrohintsEnabled,
     SettingsStringEnum.minigames_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.misc_changes_selected: SettingsStringDataType.list,
@@ -847,7 +861,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.randomize_blocker_required_amounts: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_cb_required_amounts: SettingsStringDataType.bool,
     SettingsStringEnum.randomize_pickups: SettingsStringDataType.bool,
-    SettingsStringEnum.rareware_gb_fairies: SettingsStringDataType.int8,
+    SettingsStringEnum.rareware_gb_fairies: SettingsStringDataType.var_int,
     SettingsStringEnum.select_keys: SettingsStringDataType.bool,
     SettingsStringEnum.shockwave_status: ShockwaveStatus,
     SettingsStringEnum.shop_indicator: SettingsStringDataType.bool,
@@ -856,18 +870,20 @@ SettingsStringTypeMap = {
     SettingsStringEnum.shuffle_shops: SettingsStringDataType.bool,
     SettingsStringEnum.smaller_shops: SettingsStringDataType.bool,
     SettingsStringEnum.starting_keys_list_selected: SettingsStringDataType.list,
-    SettingsStringEnum.starting_kongs_count: SettingsStringDataType.int4,
+    SettingsStringEnum.starting_kongs_count: SettingsStringDataType.var_int,
+    SettingsStringEnum.starting_moves_count: SettingsStringDataType.var_int,
     SettingsStringEnum.starting_random: SettingsStringDataType.bool,
     SettingsStringEnum.tns_location_rando: SettingsStringDataType.bool,
     SettingsStringEnum.training_barrels: TrainingBarrels,
-    SettingsStringEnum.troff_0: SettingsStringDataType.int16,
-    SettingsStringEnum.troff_1: SettingsStringDataType.int16,
-    SettingsStringEnum.troff_2: SettingsStringDataType.int16,
-    SettingsStringEnum.troff_3: SettingsStringDataType.int16,
-    SettingsStringEnum.troff_4: SettingsStringDataType.int16,
-    SettingsStringEnum.troff_5: SettingsStringDataType.int16,
-    SettingsStringEnum.troff_6: SettingsStringDataType.int16,
-    SettingsStringEnum.troff_text: SettingsStringDataType.int16,
+    SettingsStringEnum.troff_0: SettingsStringDataType.var_int,
+    SettingsStringEnum.troff_1: SettingsStringDataType.var_int,
+    SettingsStringEnum.troff_2: SettingsStringDataType.var_int,
+    SettingsStringEnum.troff_3: SettingsStringDataType.var_int,
+    SettingsStringEnum.troff_4: SettingsStringDataType.var_int,
+    SettingsStringEnum.troff_5: SettingsStringDataType.var_int,
+    SettingsStringEnum.troff_6: SettingsStringDataType.var_int,
+    SettingsStringEnum.troff_text: SettingsStringDataType.var_int,
+    SettingsStringEnum.vanilla_door_rando: SettingsStringDataType.bool,
     SettingsStringEnum.warp_level_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.warp_to_isles: SettingsStringDataType.bool,
     SettingsStringEnum.win_condition: WinCondition,
@@ -876,6 +892,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.wrinkly_location_rando: SettingsStringDataType.bool,
 }
 
+# ALL LIST SETTINGS NEED AN ENTRY HERE!
 # Another map for list settings, for the underlying data type of the list.
 SettingsStringListTypeMap = {
     SettingsStringEnum.enemies_selected: Enemies,
@@ -886,3 +903,42 @@ SettingsStringListTypeMap = {
     SettingsStringEnum.starting_keys_list_selected: Items,
     SettingsStringEnum.warp_level_list_selected: Maps,
 }
+
+# This map specifies the minimum and maximum values for numeric settings.
+SettingsStringIntRangeMap = {}
+
+
+def addSettingIntRange(settingEnum, maxVal, minVal=0):
+    """Add an entry to the SettingsStringIntRangeMap."""
+    SettingsStringIntRangeMap[settingEnum] = {"max": maxVal, "min": minVal}
+
+
+# ALL NUMERIC VAR_INT SETTINGS NEED AN ENTRY HERE!
+# Minimum values only need to be supplied if they are negative.
+addSettingIntRange(SettingsStringEnum.blocker_0, 201)
+addSettingIntRange(SettingsStringEnum.blocker_1, 201)
+addSettingIntRange(SettingsStringEnum.blocker_2, 201)
+addSettingIntRange(SettingsStringEnum.blocker_3, 201)
+addSettingIntRange(SettingsStringEnum.blocker_4, 201)
+addSettingIntRange(SettingsStringEnum.blocker_5, 201)
+addSettingIntRange(SettingsStringEnum.blocker_6, 201)
+addSettingIntRange(SettingsStringEnum.blocker_7, 201)
+addSettingIntRange(SettingsStringEnum.blocker_text, 201)
+addSettingIntRange(SettingsStringEnum.coin_door_item_count, 201)
+addSettingIntRange(SettingsStringEnum.crown_door_item_count, 201)
+addSettingIntRange(SettingsStringEnum.helm_phase_count, 5)
+addSettingIntRange(SettingsStringEnum.krool_key_count, 8)
+addSettingIntRange(SettingsStringEnum.krool_phase_count, 5)
+addSettingIntRange(SettingsStringEnum.medal_cb_req, 100)
+addSettingIntRange(SettingsStringEnum.medal_requirement, 40)
+addSettingIntRange(SettingsStringEnum.rareware_gb_fairies, 20)
+addSettingIntRange(SettingsStringEnum.starting_kongs_count, 5)
+addSettingIntRange(SettingsStringEnum.starting_moves_count, 40)
+addSettingIntRange(SettingsStringEnum.troff_0, 500)
+addSettingIntRange(SettingsStringEnum.troff_1, 500)
+addSettingIntRange(SettingsStringEnum.troff_2, 500)
+addSettingIntRange(SettingsStringEnum.troff_3, 500)
+addSettingIntRange(SettingsStringEnum.troff_4, 500)
+addSettingIntRange(SettingsStringEnum.troff_5, 500)
+addSettingIntRange(SettingsStringEnum.troff_6, 500)
+addSettingIntRange(SettingsStringEnum.troff_text, 500)

@@ -28,7 +28,7 @@ from randomizer.Enums.Settings import (
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
-from randomizer.Lists.Location import LocationList
+from randomizer.Lists.Location import LocationList, PreGivenLocations
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
 from randomizer.Prices import ProgressiveMoves
@@ -181,6 +181,7 @@ class Spoiler:
         settings["Select Starting Keys"] = self.settings.select_keys
         if not self.settings.keys_random:
             settings["Number of Keys Required"] = self.settings.krool_key_count
+        settings["Starting Moves Count"] = self.settings.starting_moves_count
         settings["Fast Start"] = self.settings.fast_start_beginning_of_game
         settings["Helm Setting"] = self.settings.helm_setting.name
         settings["Quality of Life"] = self.settings.quality_of_life
@@ -329,10 +330,13 @@ class Spoiler:
                 extra = " " + str(wothSlams)
             humanspoiler["Paths"][destination_item.name + extra] = path_dict
 
+        self.pregiven_items = []
         for location_id, location in LocationList.items():
             # No need to spoiler constants or hints
             if location.type == Types.Constant or location.type == Types.Hint:
                 continue
+            if location_id in PreGivenLocations:
+                self.pregiven_items.append(location.item)
             # Prevent weird null issues but get the item at the location
             if location.item is None:
                 item = Items.NoItem
@@ -366,7 +370,7 @@ class Spoiler:
             # Filter everything else by level - each location conveniently contains a level-identifying bit in their name
             else:
                 level = "Special"
-                if "Isles" in location.name:
+                if "Isles" in location.name or location.type == Types.PreGivenMove:
                     level = "DK Isles"
                 elif "Japes" in location.name:
                     level = "Jungle Japes"
@@ -537,6 +541,11 @@ class Spoiler:
                 filtered_hint = filtered_hint.replace("\x06", "")
                 filtered_hint = filtered_hint.replace("\x07", "")
                 filtered_hint = filtered_hint.replace("\x08", "")
+                filtered_hint = filtered_hint.replace("\x09", "")
+                filtered_hint = filtered_hint.replace("\x0a", "")
+                filtered_hint = filtered_hint.replace("\x0b", "")
+                filtered_hint = filtered_hint.replace("\x0c", "")
+                filtered_hint = filtered_hint.replace("\x0d", "")
                 human_hint_list[name] = filtered_hint
             humanspoiler["Wrinkly Hints"] = human_hint_list
         if self.settings.wrinkly_location_rando:

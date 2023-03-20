@@ -33,5 +33,6 @@ typedef enum new_custom_actors {
 	/* 0x012 */ NEWACTOR_FAIRY, 
 	/* 0x013 */ NEWACTOR_FAKEITEM, 
 	/* 0x014 */ NEWACTOR_MEDAL, 
+	/* 0x015 */ NEWACTOR_JETPACITEMOVERLAY, 
 	/* ----- */ NEWACTOR_TERMINATOR, 
 } new_custom_actors;

@@ -26,9 +26,11 @@ void initQoL_Lag(void) {
     if (Rando.quality_of_life.reduce_lag) {
         *(int*)(0x80748010) = 0x8064F2F0; // Cancel Sandstorm
         // No Rain
-        *(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0
         *(int*)(0x80004EB4) = 0x0C000000 | (((int)&disableAntiAliasing & 0xFFFFFF) >> 2); // Disable Anti-Aliasing
-        *(int*)(0x8068AF90) = 0; // Disable weather
+        if (Rando.seasonal_changes != SEASON_CHRISTMAS) {
+            *(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0
+            *(int*)(0x8068AF90) = 0; // Disable weather
+        }
     }
 }
 
@@ -94,12 +96,19 @@ void initQoL_Fixes(void) {
      * Definition of an "unwanted DK64 vanilla bug":
      * - Removing the bug doesn't negatively impact speedrunners/game glitches OR
      * - Leaving the bug in produces a crash or leaves a prominent effect in the game which is undesirable (see Dillo TNT Pads)
+     * - Pausing and exiting to another map during Helm Timer will correctly apply the helm timer pause correction
      */
     if (Rando.quality_of_life.vanilla_fixes) {
         *(int*)(0x806BE8D8) = 0x0C000000 | (((int)&RabbitRaceInfiniteCode & 0xFFFFFF) >> 2); // Modify Function Call
         *(int*)(0x8067C168) = 0x0C000000 | (((int)&fixDilloTNTPads & 0xFFFFFF) >> 2); // Modify Function Call
         actor_functions[249] = &squawks_with_spotlight_actor_code;
         *(int*)(0x806E5C04) = 0x0C000000 | (((int)&fixCrownEntrySKong & 0xFFFFFF) >> 2); // Modify Function Call
+        *(int*)(0x806A8844) = 0x0C000000 | (((int)&helmTime_restart & 0xFFFFFF) >> 2); // Modify Function Call
+        *(int*)(0x806A89E8) = 0x0C000000 | (((int)&helmTime_exitBonus & 0xFFFFFF) >> 2); // Modify Function Call
+        *(int*)(0x806A89F8) = 0x0C000000 | (((int)&helmTime_exitRace & 0xFFFFFF) >> 2); // Modify Function Call
+        *(int*)(0x806A89C4) = 0x0C000000 | (((int)&helmTime_exitLevel & 0xFFFFFF) >> 2); // Modify Function Call
+        *(int*)(0x806A89B4) = 0x0C000000 | (((int)&helmTime_exitBoss & 0xFFFFFF) >> 2); // Modify Function Call
+        *(int*)(0x806A8988) = 0x0C000000 | (((int)&helmTime_exitKRool & 0xFFFFFF) >> 2); // Modify Function Call
     }
 }
 

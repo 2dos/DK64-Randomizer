@@ -7,6 +7,8 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
+from randomizer.Lists.Location import LocationList
 
 # /* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.
 # /* 0x0A8 */ unsigned char dk_crankymoves[7]; // First 4 bits indicates the moves type, 0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 0xF = No Upgrade. Last 4 bits indicate move level (eg. 1 = Baboon Blast, 2 = Strong Kong, 3 = Gorilla Grab). Each item in the array indicates the level it is given (eg. 1st slot is purchased in Japes, 2nd for Aztec etc.)
@@ -131,7 +133,7 @@ def randomize_moves(spoiler: Spoiler):
     hint_enabled = True
     if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.valid_locations:
         hint_enabled = False
-    if spoiler.settings.move_rando not in (MoveRando.off, MoveRando.start_with) and spoiler.move_data is not None:
+    if spoiler.settings.move_rando != MoveRando.off and spoiler.move_data is not None:
         # Take a copy of move_data before modifying
         move_arrays = spoiler.move_data.copy()
 
@@ -198,3 +200,97 @@ def randomize_moves(spoiler: Spoiler):
         writeMoveDataToROM(chunky_candymoves, hint_enabled, spoiler, 4, kong_lists[2][4])
         writeMoveDataToROM(training_moves, hint_enabled, spoiler, 0, [Kongs.any, Kongs.any, Kongs.any, Kongs.any], 7)
         writeMoveDataToROM(bfi_move, hint_enabled, spoiler, 0, [Kongs.tiny], 7)
+
+
+def getNextSlot(spoiler: Spoiler, item: Items) -> int:
+    """Get slot for progressive item with pre-given moves."""
+    slots = []
+    if item == Items.ProgressiveAmmoBelt:
+        slots = [0x1C, 0x1D]
+    elif item == Items.ProgressiveInstrumentUpgrade:
+        slots = [0x20, 0x21, 0x22]
+    elif item == Items.ProgressiveSlam:
+        slots = [0x10, 0x11]  # 0xF excluded as slam 1 is pre-given
+    if len(slots) == 0:
+        return None
+    for slot in slots:
+        offset = int(slot >> 3)
+        check = int(slot % 8)
+        ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
+        val = int.from_bytes(ROM().readBytes(1), "big")
+        if (val & (0x80 >> check)) == 0:
+            return slot
+    return None
+
+
+def place_pregiven_moves(spoiler: Spoiler):
+    """Place pre-given moves."""
+    item_order = [
+        Items.BaboonBlast,
+        Items.StrongKong,
+        Items.GorillaGrab,
+        Items.ChimpyCharge,
+        Items.RocketbarrelBoost,
+        Items.SimianSpring,
+        Items.Orangstand,
+        Items.BaboonBalloon,
+        Items.OrangstandSprint,
+        Items.MiniMonkey,
+        Items.PonyTailTwirl,
+        Items.Monkeyport,
+        Items.HunkyChunky,
+        Items.PrimatePunch,
+        Items.GorillaGone,
+        Items.ProgressiveSlam,
+        Items.ProgressiveSlam,
+        Items.ProgressiveSlam,
+        Items.Coconut,
+        Items.Peanut,
+        Items.Grape,
+        Items.Feather,
+        Items.Pineapple,
+        Items.Bongos,
+        Items.Guitar,
+        Items.Trombone,
+        Items.Saxophone,
+        Items.Triangle,
+        Items.ProgressiveAmmoBelt,
+        Items.ProgressiveAmmoBelt,
+        Items.HomingAmmo,
+        Items.SniperSight,
+        Items.ProgressiveInstrumentUpgrade,
+        Items.ProgressiveInstrumentUpgrade,
+        Items.ProgressiveInstrumentUpgrade,
+        Items.Swim,
+        Items.Oranges,
+        Items.Barrels,
+        Items.Vines,
+        Items.Camera,
+        Items.Shockwave,
+    ]
+    for item in spoiler.pregiven_items:
+        print(item)
+        if item is not None and item != Items.NoItem:
+            new_slot = None
+            if item in (Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam):
+                new_slot = getNextSlot(spoiler, item)
+            elif item in item_order:
+                new_slot = item_order.index(item)
+            elif item == Items.CameraAndShockwave:
+                new_slot = None  # Setting is handled by the code below
+                for index in [item_order.index(Items.Camera), item_order.index(Items.Shockwave)]:
+                    offset = int(index >> 3)
+                    check = int(index % 8)
+                    ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
+                    val = int.from_bytes(ROM().readBytes(1), "big")
+                    val |= 0x80 >> check
+                    ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
+                    ROM().writeMultipleBytes(val, 1)
+            if new_slot is not None:
+                offset = int(new_slot >> 3)
+                check = int(new_slot % 8)
+                ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
+                val = int.from_bytes(ROM().readBytes(1), "big")
+                val |= 0x80 >> check
+                ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
+                ROM().writeMultipleBytes(val, 1)

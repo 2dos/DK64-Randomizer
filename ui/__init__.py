@@ -13,6 +13,7 @@ from ui.rando_options import (
     max_randomized_medals,
     max_randomized_medal_cb_req,
     max_randomized_fairies,
+    max_starting_moves_count,
     max_doorone_requirement,
     max_doortwo_requirement,
     updateDoorOneNumAccess,
@@ -26,6 +27,7 @@ from ui.rando_options import (
     item_rando_list_changed,
     toggle_key_settings,
     disable_helm_hurry,
+    toggle_vanilla_door_rando,
 )
 
 # Call the generate_buttons function just to force loading of the file
@@ -50,6 +52,7 @@ toggle_medals_box(None)
 max_randomized_medals(None)
 max_randomized_medal_cb_req(None)
 max_randomized_fairies(None)
+max_starting_moves_count(None)
 max_doorone_requirement(None)
 max_doortwo_requirement(None)
 updateDoorOneNumAccess(None)
@@ -57,3 +60,4 @@ updateDoorTwoNumAccess(None)
 item_rando_list_changed(None)
 toggle_key_settings(None)
 disable_helm_hurry(None)
+toggle_vanilla_door_rando(None)

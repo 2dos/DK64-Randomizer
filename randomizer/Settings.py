@@ -28,6 +28,7 @@ from randomizer.Lists.Location import (
     ShopLocationReference,
     TinyMoveLocations,
     TrainingBarrelLocations,
+    PreGivenLocations,
 )
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.MapsAndExits import GetMapId, GetExitId, RegionMapList
@@ -92,9 +93,6 @@ class Settings:
         # In hard level progression we go through levels in a random order, so we set every level's troff min weight to the largest weight
         if self.hard_level_progression:
             self.troff_min = [self.troff_min[-1] for x in self.troff_min]
-
-        # set to true if move_rando set to start_with
-        self.unlock_all_moves = False
 
         # Pointless with just move rando, maybe have it once full rando
         # progressive_upgrades: bool
@@ -355,6 +353,9 @@ class Settings:
         self.music_events = MusicCosmetics.default
         self.random_music = False
 
+        #  Unlock Moves - 0-40?
+        self.starting_moves_count = 0
+
         #  Color
         self.colors = {}
         self.color_palettes = {}
@@ -433,6 +434,7 @@ class Settings:
         self.hard_enemies = False
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
+        self.vanilla_door_rando = False
         self.minigames_list_selected = []
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
@@ -480,9 +482,14 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
+        # If we're using the vanilla door shuffle, turn both wrinkly and tns rando on
+        if self.vanilla_door_rando:
+            self.wrinkly_location_rando = True
+            self.tns_location_rando = True
+
         # Move Location Rando
         if self.move_rando == MoveRando.start_with:
-            self.unlock_all_moves = True
+            self.starting_moves_count = 40
             self.training_barrels = TrainingBarrels.normal
             self.shockwave_status = ShockwaveStatus.start_with
 
@@ -512,7 +519,7 @@ class Settings:
             HelmDoorItem.req_medal: {"max": 40, "random_min": 5, "random_max": 20},
             HelmDoorItem.req_crown: {"max": 10, "random_min": 2, "random_max": 6},
             HelmDoorItem.req_fairy: {"max": 18, "random_min": 3, "random_max": 10},  # Remove two fairies since you can't get the final two fairies glitchless if on the crown door
-            HelmDoorItem.req_rainbowcoin: {"max": 16, "random_min": 4, "random_max": 16},
+            HelmDoorItem.req_rainbowcoin: {"max": 16, "random_min": 4, "random_max": 10},
             HelmDoorItem.req_bean: {"max": 1, "random_min": 1, "random_max": 1},
             HelmDoorItem.req_pearl: {"max": 5, "random_min": 1, "random_max": 3},
         }
@@ -524,6 +531,7 @@ class Settings:
             HelmDoorItem.req_fairy,
             HelmDoorItem.req_bean,
             HelmDoorItem.req_pearl,
+            HelmDoorItem.req_rainbowcoin,
         ]
         if self.crown_door_item == HelmDoorItem.random and self.coin_door_item == HelmDoorItem.random:
             self.crown_door_random = True
@@ -547,8 +555,6 @@ class Settings:
         if self.coin_door_item in helmdoor_items.keys():
             if self.coin_door_item_count > helmdoor_items[self.coin_door_item]["max"]:
                 self.coin_door_item_count = helmdoor_items[self.coin_door_item]["max"]
-
-        kongs = GetKongs()
 
         self.shuffled_location_types = []
         if self.shuffle_items:
@@ -578,14 +584,45 @@ class Settings:
                         if type in (Types.Bean, Types.Pearl) and item == ItemRandoListSelected.beanpearl:
                             self.shuffled_location_types.extend([Types.Bean, Types.Pearl])
             if Types.Shop in self.shuffled_location_types:
-                if self.move_rando != MoveRando.start_with:
-                    self.move_rando = MoveRando.item_shuffle
+                self.move_rando = MoveRando.item_shuffle
                 if self.shockwave_status not in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with):
                     self.shuffled_location_types.append(Types.Shockwave)
                     self.shockwave_status = ShockwaveStatus.shuffled_decoupled  # Forced to be decoupled in item rando
                 if self.training_barrels != TrainingBarrels.normal:
                     self.shuffled_location_types.append(Types.TrainingBarrel)
+                self.shuffled_location_types.append(Types.PreGivenMove)
         self.shuffle_prices()
+
+        # Starting Move Locations
+        location_cap = 36
+        if self.shockwave_status in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with):
+            location_cap -= 2
+        if self.shockwave_status == ShockwaveStatus.shuffled:
+            location_cap -= 1
+        locations_to_add = self.starting_moves_count
+        # If the training barrels are shuffled in, we may have to remove the training barrel locations because of the above comment
+        if self.training_barrels == TrainingBarrels.shuffled:
+            locations_to_add -= 4
+        if locations_to_add > location_cap:
+            locations_to_add = location_cap
+        last_location = Locations.PreGiven_Location00 + locations_to_add
+        # If we have fewer starting items than training barrels, then we have to prevent some training barrels from having items
+        if locations_to_add < 0:
+            last_location = Locations.PreGiven_Location00
+            invalid_training_barrels = [Locations.IslesVinesTrainingBarrel, Locations.IslesSwimTrainingBarrel, Locations.IslesOrangesTrainingBarrel, Locations.IslesBarrelsTrainingBarrel][
+                self.starting_moves_count :
+            ]
+            for locationId in invalid_training_barrels:
+                LocationList[locationId].default = Items.NoItem
+                LocationList[locationId].type = Types.Constant
+        # We need to filter the GameStart region's locations to remove the locations that aren't valid anymore
+        randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations = [
+            loclogic for loclogic in randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations if loclogic.id < last_location
+        ]
+        for locationId in PreGivenLocations:
+            if locationId >= last_location:
+                del LocationList[locationId]
+        kongs = GetKongs()
 
         # Smaller shop setting deletes 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
@@ -927,7 +964,7 @@ class Settings:
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
-        bad_fake_types = [Types.TrainingBarrel]
+        bad_fake_types = [Types.TrainingBarrel, Types.PreGivenMove]
         is_bad = location.type in bad_fake_types
         if self.damage_amount in (DamageAmount.quad, DamageAmount.ohko) or self.perma_death:
             is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm) or location.type == Types.Shockwave
@@ -974,13 +1011,17 @@ class Settings:
             if self.training_barrels == TrainingBarrels.shuffled and Types.TrainingBarrel not in self.shuffled_location_types:
                 for kong in Kongs:
                     self.valid_locations[Types.Shop][kong].update(TrainingBarrelLocations.copy())
+            if self.starting_moves_count > 0:
+                for kong in Kongs:
+                    self.valid_locations[Types.Shop][kong].update(PreGivenLocations.copy())
             self.valid_locations[Types.Shockwave] = self.valid_locations[Types.Shop][Kongs.any]
             self.valid_locations[Types.TrainingBarrel] = self.valid_locations[Types.Shop][Kongs.any]
 
         if self.shuffle_items and any(self.shuffled_location_types):
             # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) - those can only be Kongs
             shuffledLocations = [location for location in LocationList if LocationList[location].type in self.shuffled_location_types and LocationList[location].type != Types.Kong]
-            fairyBannedLocations = [location for location in shuffledLocations if LocationList[location].type != Types.Fairy]
+            shuffledNonMoveLocations = [location for location in shuffledLocations if LocationList[location].type != Types.PreGivenMove]
+            fairyBannedLocations = [location for location in shuffledNonMoveLocations if LocationList[location].type != Types.Fairy]
             if Types.Shop in self.shuffled_location_types:
                 self.valid_locations[Types.Shop] = {}
                 # Cross-kong acquisition is assumed in full item rando, calculate the list of all Kong-specific shops
@@ -1017,7 +1058,7 @@ class Settings:
                     Locations.AztecDonkeyFreeLanky,
                     Locations.FactoryLankyFreeChunky,
                 )
-                blueprintLocations = [location for location in shuffledLocations if location not in badBPLocations and LocationList[location].type in blueprintValidTypes]
+                blueprintLocations = [location for location in shuffledNonMoveLocations if location not in badBPLocations and LocationList[location].type in blueprintValidTypes]
                 self.valid_locations[Types.Blueprint] = {}
                 self.valid_locations[Types.Blueprint][Kongs.donkey] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.donkey]
                 self.valid_locations[Types.Blueprint][Kongs.diddy] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.diddy]
@@ -1025,7 +1066,7 @@ class Settings:
                 self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.tiny]
                 self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if LocationList[location].kong == Kongs.chunky]
             if Types.Banana in self.shuffled_location_types:
-                self.valid_locations[Types.Banana] = [location for location in shuffledLocations if LocationList[location].level != Levels.HideoutHelm]
+                self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations if LocationList[location].level != Levels.HideoutHelm]
             if Types.Crown in self.shuffled_location_types:
                 # Banned for technical reasons
                 banned_crown_locations = (
@@ -1035,9 +1076,9 @@ class Settings:
                     Locations.HelmTinyMedal,
                     Locations.HelmChunkyMedal,
                 )
-                self.valid_locations[Types.Crown] = [location for location in shuffledLocations if location not in banned_crown_locations]
+                self.valid_locations[Types.Crown] = [location for location in shuffledNonMoveLocations if location not in banned_crown_locations]
             if Types.Key in self.shuffled_location_types:
-                self.valid_locations[Types.Key] = shuffledLocations
+                self.valid_locations[Types.Key] = shuffledNonMoveLocations
             if Types.Medal in self.shuffled_location_types:
                 self.valid_locations[Types.Medal] = fairyBannedLocations
             if Types.Coin in self.shuffled_location_types:
@@ -1047,9 +1088,9 @@ class Settings:
             if Types.Bean in self.shuffled_location_types:
                 self.valid_locations[Types.Bean] = fairyBannedLocations
             if Types.Fairy in self.shuffled_location_types:
-                self.valid_locations[Types.Fairy] = shuffledLocations
+                self.valid_locations[Types.Fairy] = shuffledNonMoveLocations
             if Types.RainbowCoin in self.shuffled_location_types:
-                self.valid_locations[Types.RainbowCoin] = [x for x in fairyBannedLocations if LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave)]
+                self.valid_locations[Types.RainbowCoin] = [x for x in fairyBannedLocations if LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove)]
             if Types.FakeItem in self.shuffled_location_types:
                 bad_fake_locations = (
                     # Caves Beetle Race causes issues with a blueprint potentially being there
@@ -1072,10 +1113,12 @@ class Settings:
                     Locations.NintendoCoin,
                     Locations.RarewareCoin,
                 )
-                self.valid_locations[Types.FakeItem] = [x for x in shuffledLocations if not self.isBadIceTrapLocation(LocationList[x]) and x not in bad_fake_locations]
+                self.valid_locations[Types.FakeItem] = [x for x in shuffledNonMoveLocations if not self.isBadIceTrapLocation(LocationList[x]) and x not in bad_fake_locations]
             if Types.JunkItem in self.shuffled_location_types:
                 self.valid_locations[Types.JunkItem] = [
-                    x for x in fairyBannedLocations if LocationList[x].type not in (Types.Shop, Types.Crown) and (LocationList[x].type != Types.Key or LocationList[x].level == Levels.HideoutHelm)
+                    x
+                    for x in fairyBannedLocations
+                    if LocationList[x].type not in (Types.Shop, Types.Crown, Types.PreGivenMove) and (LocationList[x].type != Types.Key or LocationList[x].level == Levels.HideoutHelm)
                 ]
             if Types.Kong in self.shuffled_location_types:
                 # Banned because it defeats the purpose of starting with X Kongs
@@ -1086,7 +1129,9 @@ class Settings:
                     Locations.IslesOrangesTrainingBarrel,
                     Locations.IslesDonkeyJapesRock,
                 )
-                self.valid_locations[Types.Kong].extend([loc for loc in shuffledLocations if loc not in banned_kong_locations])  # No items can be in Kong cages but Kongs can be in all other locations
+                self.valid_locations[Types.Kong].extend(
+                    [loc for loc in shuffledNonMoveLocations if loc not in banned_kong_locations]
+                )  # No items can be in Kong cages but Kongs can be in all other locations
 
     def GetValidLocationsForItem(self, item_id):
         """Return the valid locations the input item id can be placed in."""

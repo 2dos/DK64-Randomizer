@@ -9,9 +9,11 @@ extern void initiateTransition(int map, int exit);
 extern void initiateTransition_0(int map, int exit, int unk0, int unk1);
 extern void WarpToParent(void);
 extern void ExitFromBonus(void);
+extern void ExitRace(void);
+extern void ExitFromLevel(void);
 extern int* getFlagBlockAddress(char flagType);
 extern int isAddressActor(void* address);
-extern int getTimestamp();
+extern unsigned long long getTimestamp(void);
 extern void dmaFileTransfer(int romStart, int romEnd, int ramStart);
 extern void deleteActor(void* actor);
 extern int spawnActor(int actorID, int actorBehaviour);
@@ -81,6 +83,7 @@ extern int __osDisableInt();
 extern void __osRestoreInt(int mask);
 extern int __osEepromProbe(void* unk0);
 extern void __osViSwapContext(void);
+extern int cstring_strlen(char* str);
 extern void copyFunc(int rom_offset, int size, void* write_location);
 extern void* getMapData(data_indexes data_idx, int _index, char compressbyte0, char compressbyte1);
 extern void loadSetup(void* setup_file, int unk0, int unk1);
@@ -110,6 +113,7 @@ extern void CrownGet(void);
 extern void cancelMusic(int song, int unk0);
 extern void removeGorillaGone(void* actor);
 extern void resetActorDL(void* actor);
+extern int getActorModelIndex(void* actor);
 
 extern void wipeStoredSetup(void* setup);
 extern void complex_free(void* ptr);
@@ -139,6 +143,7 @@ extern void enterPortal(void* player);
 extern void drawBossDoorNumber(behaviour_data* behaviour, int index, int unk0, int unk1);
 
 extern int* initDisplayList(int* dl);
+extern int* initDisplayList_0(int* dl);
 extern int getTextStyleHeight(int style);
 extern int* displayText(int* dl, int style, int x, int y, void* text_pointer, char unk0);
 extern int* displayImage(int* dl, int texture_index, int unk3, codecs codec_index, int width, int height, int x, int y, float xScale, float yScale, int unk11, float unk12);
@@ -593,6 +598,8 @@ extern int StackTraceX;
 extern int StackTraceY;
 extern int StackTraceSize;
 extern int StackTraceStartX;
+
+extern weather_struct WeatherData[6];
 
 //hack data
 extern int TestVariable;
