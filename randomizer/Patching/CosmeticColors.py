@@ -429,7 +429,7 @@ def hueShift(im, amount):
     return im
 
 
-def maskImageWithOutline(im_f, base_index, min_y, type=""):
+def maskImageWithOutline(im_f, base_index, min_y, colorblind_mode, type=""):
     """Apply RGB mask to image with an Outline in a different color."""
     w, h = im_f.size
     converter = ImageEnhance.Color(im_f)
@@ -441,7 +441,7 @@ def maskImageWithOutline(im_f, base_index, min_y, type=""):
     im_f.paste(im_dupe, (0, min_y), im_dupe)
     pix = im_f.load()
     mask = getRGBFromHash(color_bases[base_index])
-    if base_index == 2 or (base_index == 3 and color_bases[base_index] == "#13C4D8"):  # lanky or (tiny in Tritanopia mode)
+    if base_index == 2 or (base_index == 0 and colorblind_mode == ColorblindMode.trit):  # lanky or (DK in tritanopia mode)
         border_color = color_bases[4]
     else:
         border_color = color_bases[1]
@@ -551,7 +551,7 @@ def writeKasplatHairColorToROM(color, table_index, file_index, format: str):
 
 
 def writeWhiteKasplatHairColorToROM(color1, color2, table_index, file_index, format: str):
-    """Write color to ROM for white kasplats."""
+    """Write color to ROM for white kasplats, giving them a black-white block pattern."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     mask = getRGBFromHash(color1)
     mask2 = getRGBFromHash(color2)
@@ -592,6 +592,7 @@ def writeWhiteKasplatHairColorToROM(color1, color2, table_index, file_index, for
     ROM().seek(file_start)
     ROM().writeBytes(data)
 
+
 def writeKlaptrapSkinColorToROM(color_index, table_index, file_index, format: str):
     """Write color to ROM for klaptraps."""
     im_f = getFile(table_index, file_index, True, 32, 43, format)
@@ -620,6 +621,7 @@ def writeKlaptrapSkinColorToROM(color_index, table_index, file_index, format: st
         data = gzip.compress(data, compresslevel=9)
     ROM().seek(file_start)
     ROM().writeBytes(data)
+
 
 def writeSpecialKlaptrapTextureToROM(color_index, table_index, file_index, format: str, pixels_to_ignore: list):
     """Write color to ROM for klaptraps special texture(s)."""
@@ -654,16 +656,17 @@ def writeSpecialKlaptrapTextureToROM(color_index, table_index, file_index, forma
     for i in range(4):
         bytes_array.extend(null_color)
     for i in range(3):
-        if [(22+i), 42] not in pixels_to_ignore:
+        if [(22 + i), 42] not in pixels_to_ignore:
             color_lst = calculateKlaptrapPixel(list(pix[(22 + i), 42]), format)
         else:
-            color_lst = calculateKlaptrapPixel(list(pixels_original[(22+i)][42]), format)
+            color_lst = calculateKlaptrapPixel(list(pixels_original[(22 + i)][42]), format)
         bytes_array.extend(color_lst)
     data = bytearray(bytes_array)
     if table_index == 25:
         data = gzip.compress(data, compresslevel=9)
     ROM().seek(file_start)
     ROM().writeBytes(data)
+
 
 def calculateKlaptrapPixel(mask: list, format: str):
     """Calculate the new color for the given pixel."""
@@ -677,6 +680,7 @@ def calculateKlaptrapPixel(mask: list, format: str):
         rgba_val = val_r | val_g | val_b | 1
         color_lst = [(rgba_val >> 8) & 0xFF, rgba_val & 0xFF]
     return color_lst
+
 
 def maskBlueprintImage(im_f, base_index):
     """Apply RGB mask to blueprint image."""
@@ -711,6 +715,7 @@ def maskBlueprintImage(im_f, base_index):
                     pix[x, y] = (base2[0], base2[1], base2[2], base2[3])
     return im_f
 
+
 def maskLaserImage(im_f, base_index):
     """Apply RGB mask to laser texture."""
     w, h = im_f.size
@@ -739,6 +744,36 @@ def maskLaserImage(im_f, base_index):
                     pix[x, y] = (base2[0], base2[1], base2[2], base2[3])
     return im_f
 
+def maskPotionImage(im_f, primary_color, secondary_color=None):
+    """Apply RGB mask to DK arcade potion reward preview texture."""
+    w, h = im_f.size
+    pix = im_f.load()
+    mask = getRGBFromHash(primary_color)
+    if secondary_color is not None:
+        mask2 = secondary_color
+    for channel in range(3):
+        mask[channel] = max(1, mask[channel])
+    w, h = im_f.size
+    for x in range(w):
+        for y in range(h):
+            base = list(pix[x, y])
+            # Filter out transparent pixels and the cork
+            if base[3] > 0 and y > 2 and [x, y] not in [[9, 4], [10, 4]]:
+                # Filter out the bottle's contents
+                if base[0] == base[1] and base[1] == base[2]:
+                    if secondary_color is not None:
+                        # Color the bottle itself
+                        for channel in range(3):
+                            base[channel] = int(mask2[channel] * (base[channel] / 255))
+                else:
+                    # Color the bottle's contents
+                    average_light = int((base[0] + base[1] + base[2]) / 3)
+                    for channel in range(3):
+                        base[channel] = int(mask[channel] * (average_light / 255))
+            pix[x, y] = (base[0], base[1], base[2], base[3])
+    return im_f
+
+
 def recolorWrinklyDoors():
     """Recolor the Wrinkly hint door doorframes for colorblind mode."""
     file = [0xF0, 0xF2, 0xEF, 0x67, 0xF1]
@@ -755,17 +790,17 @@ def recolorWrinklyDoors():
         num_data = []  # data, but represented as nums rather than b strings
         for d in data:
             num_data.append(d)
-        # Figure out which colors to use and where to put them
-        color1_offsets = [1548, 1580, 1612, 1644, 1676, 1708, 1756, 1788, 1804, 1820, 1836, 1852, 1868, 1884, 1900, 1916, 
-                          1932, 1948, 1964, 1980, 1996, 2012, 2028, 2044, 2076, 2108, 2124, 2156, 2188, 2220, 2252, 2284, 
-                          2316, 2348, 2380, 2396, 2412, 2428, 2444, 2476, 2508, 2540, 2572, 2604, 2636, 2652, 2668, 2684, 
-                          2700, 2716, 2732, 2748, 2764, 2780, 2796, 2812, 2828, 2860, 2892, 2924, 2956, 2988, 3020, 3052]
+        # Figure out which colors to use and where to put them (list extensions to mitigate the linter's "artistic freedom" putting 1 value per line)
+        color1_offsets = [1548, 1580, 1612, 1644, 1676, 1708, 1756, 1788, 1804, 1820, 1836, 1852, 1868, 1884, 1900, 1916]
+        color1_offsets = color1_offsets + [1932, 1948, 1964, 1980, 1996, 2012, 2028, 2044, 2076, 2108, 2124, 2156, 2188, 2220, 2252, 2284]
+        color1_offsets = color1_offsets + [2316, 2348, 2380, 2396, 2412, 2428, 2444, 2476, 2508, 2540, 2572, 2604, 2636, 2652, 2668, 2684]
+        color1_offsets = color1_offsets + [2700, 2716, 2732, 2748, 2764, 2780, 2796, 2812, 2828, 2860, 2892, 2924, 2956, 2988, 3020, 3052]
         color2_offsets = [1564, 1596, 1628, 1660, 1692, 1724, 1740, 1772, 2332, 2364, 2460, 2492, 2524, 2556, 2588, 2620]
         new_color1 = getRGBFromHash(color_bases[kong])
         new_color2 = getRGBFromHash(color_bases[kong])
         if kong == 0:
             for channel in range(3):
-                new_color2[channel] = max(80, new_color1[channel])  # Too black is bad
+                new_color2[channel] = max(80, new_color1[channel])  # Too black is bad, because anything times 0 is 0
 
         # Recolor the doorframe
         for offset in color1_offsets:
@@ -783,7 +818,7 @@ def recolorWrinklyDoors():
 
 
 def recolorSlamSwitches():
-    """Recolor the Wrinkly hint door doorframes for colorblind mode."""
+    """Recolor the Simian Slam switches for colorblind mode."""
     file = [0x94, 0x93, 0x95, 0x96, 0xB8, 0x16C, 0x16B, 0x16D, 0x16E, 0x16A, 0x167, 0x166, 0x168, 0x169, 0x165]
     for switch in range(15):
         slam_switch_start = js.pointer_addresses[4]["entries"][file[switch]]["pointing_to"]
@@ -800,9 +835,9 @@ def recolorSlamSwitches():
             num_data.append(d)
         # Figure out which colors to use and where to put them
         color_offsets = [1828, 1844, 1860, 1876, 1892, 1908]
-        new_color1 = getRGBFromHash(color_bases[4])
-        new_color2 = getRGBFromHash(color_bases[2])
-        new_color3 = getRGBFromHash(color_bases[1])
+        new_color1 = getRGBFromHash(color_bases[4])  # chunky's color
+        new_color2 = getRGBFromHash(color_bases[2])  # lanky's color
+        new_color3 = getRGBFromHash(color_bases[1])  # diddy's color
 
         # Green switches
         if switch < 5:
@@ -850,7 +885,7 @@ def recolorBlueprintModelTwo():
         new_color = getRGBFromHash(color_bases[kong])
         if kong == 0:
             for channel in range(3):
-                new_color[channel] = max(39, new_color[channel])  # Too black is bad
+                new_color[channel] = max(39, new_color[channel])  # Too black is bad, because anything times 0 is 0
 
         # Recolor the model2 item
         for offset in color1_offsets:
@@ -877,6 +912,7 @@ def recolorBlueprintModelTwo():
             data = gzip.compress(data, compresslevel=9)
         ROM().seek(blueprint_model2_start)
         ROM().writeBytes(data)
+
 
 def recolorBells():
     """Recolor the Chunky Minecart bells for colorblind mode (prot/deut)."""
@@ -913,11 +949,12 @@ def recolorBells():
     ROM().seek(minecart_bell_start)
     ROM().writeBytes(data)
 
+
 def recolorKlaptraps():
     """Recolor the klaptrap models for colorblind mode."""
-    green_files = [ 0xF31, 0xF32, 0xF33, 0xF35, 0xF37, 0xF39] # 0xF38 belly 0xF2F collar? 0xF30 feet?
-    red_files = [0xF44, 0xF45, 0xF46, 0xF47, 0xF48, 0xF49] # , 0xF42 collar? 0xF43 feet?
-    purple_files = [0xF3C, 0xF3D, 0xF3E, 0xF3F, 0xF40, 0xF41] # 0xF3B feet?, 0xF3A collar?
+    green_files = [0xF31, 0xF32, 0xF33, 0xF35, 0xF37, 0xF39]  # 0xF2F collar? 0xF30 feet?
+    red_files = [0xF44, 0xF45, 0xF46, 0xF47, 0xF48, 0xF49]  # , 0xF42 collar? 0xF43 feet?
+    purple_files = [0xF3C, 0xF3D, 0xF3E, 0xF3F, 0xF40, 0xF41]  # 0xF3B feet?, 0xF3A collar?
 
     # Regular textures
     for file in range(6):
@@ -932,9 +969,176 @@ def recolorKlaptraps():
                 belly_pixels_to_ignore.append([x, y])
             elif (y == 39 and x < 16) or (y == 41 and x < 24):
                 belly_pixels_to_ignore.append([x, y])
-            
-    # Special texture that requires only partial recoloring
+
+    # Special texture that requires only partial recoloring, in this case file 0xF38 which is the belly, and only the few green pixels
     writeSpecialKlaptrapTextureToROM(4, 25, 0xF38, "rgba5551", belly_pixels_to_ignore)
+
+
+def recolorPotions(colorblind_mode):
+    """Overwrite potion colors."""
+    secondary_color = [color_bases[1], None, color_bases[4], color_bases[1], None, None]
+    if colorblind_mode == ColorblindMode.trit:
+        secondary_color[0] = color_bases[4]
+        secondary_color[2] = None
+    for color in range(len(secondary_color)):
+        if secondary_color[color] is not None:
+            secondary_color[color] = getRGBFromHash(secondary_color[color])
+
+    # Actor:
+    file = [[0xED, 0xEE, 0xEF, 0xF0, 0xF1, 0xF2], [0xF5, 0xF6, 0xF7, 0xF8, 0xF9, 0xFA]]
+    for type in range(2):
+        for potion_color in range(6):
+            potion_actor_start = js.pointer_addresses[5]["entries"][file[type][potion_color]]["pointing_to"]
+            potion_actor_finish = js.pointer_addresses[5]["entries"][file[type][potion_color] + 1]["pointing_to"]
+            potion_actor_size = potion_actor_finish - potion_actor_start
+            ROM().seek(potion_actor_start)
+            indicator = int.from_bytes(ROM().readBytes(2), "big")
+            ROM().seek(potion_actor_start)
+            data = ROM().readBytes(potion_actor_size)
+            if indicator == 0x1F8B:
+                data = zlib.decompress(data, (15 + 32))
+            num_data = []  # data, but represented as nums rather than b strings
+            for d in data:
+                num_data.append(d)
+            # Figure out which colors to use and where to put them
+            color1_offsets = [0x34]
+            color2_offsets = [0x44, 0x54, 0xA4]
+            color3_offsets = [0x64, 0x74, 0x84, 0xE4]
+            color4_offsets = [0x94]
+            color5_offsets = [0xB4, 0xC4, 0xD4]
+            # color6_offsets = [0xF4, 0x104, 0x114, 0x124, 0x134, 0x144, 0x154, 0x164]
+            if potion_color < 5:
+                new_color = getRGBFromHash(color_bases[potion_color])
+            else:
+                new_color = getRGBFromHash("#FFFFFF")
+
+            # Recolor the actor item
+            for offset in color1_offsets:
+                total_light = int(num_data[offset] + num_data[offset + 1] + num_data[offset + 2])
+                for i in range(3):
+                    num_data[offset + i] = int(total_light / 3)
+                for i in range(3):
+                    if secondary_color[potion_color] is not None and potion_color == 3: # tiny
+                        num_data[offset + i] = int(num_data[offset + i] * (secondary_color[potion_color][i] / 255))
+                    elif secondary_color[potion_color] is not None: # donkey gets an even darker shade
+                        num_data[offset + i] = int(num_data[offset + i] * (int(secondary_color[potion_color][i] / 8) / 255))
+                    elif secondary_color[potion_color] is not None: # other kongs with a secondary color get a darker shade
+                        num_data[offset + i] = int(num_data[offset + i] * (int(secondary_color[potion_color][i] / 4) / 255))
+                    else:
+                        num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
+            for offset in color2_offsets:
+                total_light = int(num_data[offset] + num_data[offset + 1] + num_data[offset + 2])
+                for i in range(3):
+                    num_data[offset + i] = int(total_light / 3)
+                for i in range(3):
+                    num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
+            for offset in color3_offsets:
+                total_light = int(num_data[offset] + num_data[offset + 1] + num_data[offset + 2])
+                for i in range(3):
+                    num_data[offset + i] = int(total_light / 3)
+                for i in range(3):
+                    num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
+            for offset in color4_offsets:
+                total_light = int(num_data[offset] + num_data[offset + 1] + num_data[offset + 2])
+                for i in range(3):
+                    num_data[offset + i] = int(total_light / 3)
+                for i in range(3):
+                    num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
+            for offset in color5_offsets:
+                total_light = int(num_data[offset] + num_data[offset + 1] + num_data[offset + 2])
+                for i in range(3):
+                    num_data[offset + i] = int(total_light / 3)
+                for i in range(3):
+                    num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
+
+            data = bytearray(num_data)  # convert num_data back to binary string
+            if indicator == 0x1F8B:
+                data = gzip.compress(data, compresslevel=9)
+            ROM().seek(potion_actor_start)
+            ROM().writeBytes(data)
+
+    # Model2:
+    file = [91, 498, 89, 499, 501, 502]
+    for potion_color in range(6):
+        potion_model2_start = js.pointer_addresses[4]["entries"][file[potion_color]]["pointing_to"]
+        potion_model2_finish = js.pointer_addresses[4]["entries"][file[potion_color] + 1]["pointing_to"]
+        potion_model2_size = potion_model2_finish - potion_model2_start
+        ROM().seek(potion_model2_start)
+        indicator = int.from_bytes(ROM().readBytes(2), "big")
+        ROM().seek(potion_model2_start)
+        data = ROM().readBytes(potion_model2_size)
+        if indicator == 0x1F8B:
+            data = zlib.decompress(data, (15 + 32))
+        num_data = []  # data, but represented as nums rather than b strings
+        for d in data:
+            num_data.append(d)
+        # Figure out which colors to use and where to put them
+        color1_offsets = [0x144]
+        color2_offsets = [0x154, 0x164, 0x1B4]
+        color3_offsets = [0x174, 0x184, 0x194, 0x1F4]
+        color4_offsets = [0x1A4]
+        color5_offsets = [0x1C4, 0x1D4, 0x1E4]
+        # color6_offsets = [0x204, 0x214, 0x224, 0x234, 0x244, 0x254, 0x264, 0x274]
+        if potion_color < 5:
+            new_color = getRGBFromHash(color_bases[potion_color])
+        else:
+            new_color = getRGBFromHash("#FFFFFF")
+
+        # Recolor the model2 item
+        for offset in color1_offsets:
+            total_light = int(num_data[offset] + num_data[offset + 1] + num_data[offset + 2])
+            for i in range(3):
+                num_data[offset + i] = int(total_light / 3)
+            for i in range(3):
+                if secondary_color[potion_color] is not None and potion_color == 3: # tiny
+                    num_data[offset + i] = int(num_data[offset + i] * (secondary_color[potion_color][i] / 255))
+                elif secondary_color[potion_color] is not None: # donkey gets an even darker shade
+                        num_data[offset + i] = int(num_data[offset + i] * (int(secondary_color[potion_color][i] / 8) / 255))
+                elif secondary_color[potion_color] is not None: # other kongs with a secondary color get a darker shade
+                    num_data[offset + i] = int(num_data[offset + i] * (int(secondary_color[potion_color][i] / 4) / 255))
+                else:
+                    num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
+        for offset in color2_offsets:
+            total_light = int(num_data[offset] + num_data[offset + 1] + num_data[offset + 2])
+            for i in range(3):
+                num_data[offset + i] = int(total_light / 3)
+            for i in range(3):
+                num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
+        for offset in color3_offsets:
+            total_light = int(num_data[offset] + num_data[offset + 1] + num_data[offset + 2])
+            for i in range(3):
+                num_data[offset + i] = int(total_light / 3)
+            for i in range(3):
+                num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
+        for offset in color4_offsets:
+            total_light = int(num_data[offset] + num_data[offset + 1] + num_data[offset + 2])
+            for i in range(3):
+                num_data[offset + i] = int(total_light / 3)
+            for i in range(3):
+                num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
+        for offset in color5_offsets:
+            total_light = int(num_data[offset] + num_data[offset + 1] + num_data[offset + 2])
+            for i in range(3):
+                num_data[offset + i] = int(total_light / 3)
+            for i in range(3):
+                num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
+
+        data = bytearray(num_data)  # convert num_data back to binary string
+        if indicator == 0x1F8B:
+            data = gzip.compress(data, compresslevel=9)
+        ROM().seek(potion_model2_start)
+        ROM().writeBytes(data)
+
+    # DK Arcade sprites
+    for file in range(8, 14):
+        index = file - 8
+        if (index < 5):
+            color = color_bases[index]
+        else:
+            color = "#FFFFFF"
+        potion_image = getFile(6, file, False, 20, 20, "rgba5551")
+        potion_image = maskPotionImage(potion_image, color, secondary_color[index])
+        writeColorImageToROM(potion_image, 6, file, 20, 20, False, "rgba5551")
 
 def overwrite_object_colors(spoiler: Spoiler):
     """Overwrite object colors."""
@@ -949,6 +1153,7 @@ def overwrite_object_colors(spoiler: Spoiler):
             color_bases = ["#000000", "#C72020", "#13C4D8", "#FFFFFF", "#FFA4A4"]
         if mode in (ColorblindMode.prot, ColorblindMode.deut):
             recolorBells()
+        # Preload DK single cb image to paste onto balloons
         file = 175
         dk_single = getFile(7, file, False, 44, 44, "rgba5551")
         dk_single = dk_single.resize((21, 21))
@@ -962,6 +1167,7 @@ def overwrite_object_colors(spoiler: Spoiler):
         recolorRotatingRoomTiles()
         recolorBlueprintModelTwo()
         recolorKlaptraps()
+        recolorPotions(mode)
         for kong_index in range(5):
             # file = 4120
             # # Kasplat Hair
@@ -992,25 +1198,25 @@ def overwrite_object_colors(spoiler: Spoiler):
                     # Single
                     single_start = [168, 152, 232, 208, 240]
                     single_im = getFile(7, single_start[kong_index] + (file - 152), False, 44, 44, "rgba5551")
-                    single_im = maskImageWithOutline(single_im, kong_index, 0, "single")
+                    single_im = maskImageWithOutline(single_im, kong_index, 0, mode, "single")
                     writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False, "rgba5551")
                 for file in range(216, 224):
                     # Coin
                     coin_start = [224, 256, 248, 216, 264]
                     coin_im = getFile(7, coin_start[kong_index] + (file - 216), False, 48, 42, "rgba5551")
-                    coin_im = maskImageWithOutline(coin_im, kong_index, 0)
+                    coin_im = maskImageWithOutline(coin_im, kong_index, 0, mode)
                     writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False, "rgba5551")
                 for file in range(274, 286):
                     # Bunch
                     bunch_start = [274, 854, 818, 842, 830]
                     bunch_im = getFile(7, bunch_start[kong_index] + (file - 274), False, 44, 44, "rgba5551")
-                    bunch_im = maskImageWithOutline(bunch_im, kong_index, 0, "bunch")
+                    bunch_im = maskImageWithOutline(bunch_im, kong_index, 0, mode, "bunch")
                     writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False, "rgba5551")
                 for file in range(5819, 5827):
                     # Balloon
                     balloon_start = [5835, 5827, 5843, 5851, 5819]
                     balloon_im = getFile(25, balloon_start[kong_index] + (file - 5819), True, 32, 64, "rgba5551")
-                    balloon_im = maskImageWithOutline(balloon_im, kong_index, 33)
+                    balloon_im = maskImageWithOutline(balloon_im, kong_index, 33, mode)
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
                     writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64, False, "rgba5551")
             else:
