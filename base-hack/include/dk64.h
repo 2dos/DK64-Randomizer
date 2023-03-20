@@ -129,6 +129,14 @@ extern void unkObjFunction5(int behav_38, int unk0);
 extern void unkObjFunction6(int behav_38, int unk0);
 extern void unkObjFunction7(int id, int unk0, int unk1);
 extern int unkObjFunction8(int id, int unk0);
+extern void unkObjFunction9(int id, int unk0, int unk1);
+extern void unkObjFunction10(int id, int unk0, int unk1, int unk2);
+extern void unkObjFunction11(int id, int unk0);
+extern int unkObjFunction12(int id, int unk0, int unk1, int unk2, int unk3, float unk4, int unk5);
+extern void unkObjFunction13(int unk0, int unk1, int unk2);
+extern void unkObjFunction14(int unk0);
+extern void unkObjFunction15(int unk0, int x, int y, int z);
+
 extern int touchingModel2Object(int id);
 extern int GetKongUnlockedFlag(int actor_type, int kong_index);
 extern void setNextTransitionType(int type);
@@ -141,6 +149,8 @@ extern void exitPortalPath(behaviour_data* behaviour, int index, int unk0, int u
 extern int getInteractionOfContactActor(int contact_actor);
 extern void enterPortal(void* player);
 extern void drawBossDoorNumber(behaviour_data* behaviour, int index, int unk0, int unk1);
+extern void displayShopIcon(behaviour_data* behaviour_data, int id, int image_index, int unk0);
+extern void hideShop(behaviour_data* behaviour_data, int id, int unk0, int unk1);
 
 extern int* initDisplayList(int* dl);
 extern int* initDisplayList_0(int* dl);
@@ -328,6 +338,8 @@ extern void dumpReturns(void* info);
 extern void updateBones(bonedata* bone, int force_update);
 extern void resetKongVars(void);
 extern void handleAnimation(void* actor);
+
+extern int CanDive(void);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -600,6 +612,9 @@ extern int StackTraceSize;
 extern int StackTraceStartX;
 
 extern weather_struct WeatherData[6];
+extern hitbox_master_struct* ModelTwoHitboxPointer;
+extern item_collision* MiscHitboxPointer;
+extern rgb BlueprintLargeImageColors[16];
 
 //hack data
 extern int TestVariable;

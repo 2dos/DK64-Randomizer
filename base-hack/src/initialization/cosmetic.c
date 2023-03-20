@@ -232,27 +232,6 @@ void initSeasonalChanges(void) {
     }
 }
 
-static const rgb kong_shockwave_colors[15] = {
-    // Protan
-    {.red=0x00, .green=0x00, .blue=0x00}, // DK
-    {.red=0x00, .green=0x72, .blue=0xFF}, // Diddy
-    {.red=0x76, .green=0x6D, .blue=0x5A}, // Lanky
-    {.red=0xFF, .green=0xFF, .blue=0xFF}, // Tiny
-    {.red=0xFD, .green=0xE4, .blue=0x00}, // Chunky
-    // Deutan
-    {.red=0x00, .green=0x00, .blue=0x00}, // DK
-    {.red=0x31, .green=0x8D, .blue=0xFF}, // Diddy
-    {.red=0x7F, .green=0x6D, .blue=0x59}, // Lanky
-    {.red=0xFF, .green=0xFF, .blue=0xFF}, // Tiny
-    {.red=0xE3, .green=0xA9, .blue=0x00}, // Chunky
-    // Tritan
-    {.red=0x00, .green=0x00, .blue=0x00}, // DK
-    {.red=0xC7, .green=0x20, .blue=0x20}, // Diddy
-    {.red=0x13, .green=0xC4, .blue=0xD8}, // Lanky
-    {.red=0xFF, .green=0xFF, .blue=0xFF}, // Tiny
-    {.red=0xFF, .green=0xA4, .blue=0xA4}, // Chunky
-};
-
 typedef struct shockwave_paad {
     /* 0x000 */ char unk_00[0x10];
     /* 0x010 */ rgb light_rgb;
@@ -270,9 +249,9 @@ int determineShockwaveColor(actorData* shockwave) {
         }
     }
     if (kong_index > -1) {
-        paad->light_rgb.red = kong_shockwave_colors[offset + kong_index].red;
-        paad->light_rgb.green = kong_shockwave_colors[offset + kong_index].green;
-        paad->light_rgb.blue = kong_shockwave_colors[offset + kong_index].blue;
+        paad->light_rgb.red = colorblind_colors[offset + kong_index].red;
+        paad->light_rgb.green = colorblind_colors[offset + kong_index].green;
+        paad->light_rgb.blue = colorblind_colors[offset + kong_index].blue;
     }
     return model;
 }

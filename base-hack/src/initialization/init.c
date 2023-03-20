@@ -202,6 +202,7 @@ void initHack(int source) {
 			style128Mtx[0xF] = 100;
 			writeCoinRequirements(0);
 			writeEndSequence();
+			initSmallerQuadChecks();
 			*(int*)(0x805FEBC0) = 0x0C000000 | (((int)&parseCutsceneData & 0xFFFFFF) >> 2); // modifyCutsceneHook
 			*(int*)(0x807313A4) = 0x0C000000 | (((int)&checkVictory_flaghook & 0xFFFFFF) >> 2); // perm flag set hook
 			*(int*)(0x80748088) = (int)&CrownDoorCheck; // Update check on Crown Door

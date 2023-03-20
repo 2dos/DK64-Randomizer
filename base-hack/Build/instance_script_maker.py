@@ -143,7 +143,6 @@ def BuildInstanceScripts():
                                         new_block_count = len(script_data["script"])
                                         for block in script_data["script"]:
                                             arr = [len(block["conditions"])]
-                                            new_conds = [[], [], []]
                                             for cond in block["conditions"]:
                                                 cond_or = 0
                                                 if cond["inverted"]:

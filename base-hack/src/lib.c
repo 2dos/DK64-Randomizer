@@ -14,6 +14,26 @@ const short normal_key_flags[] = {
 const unsigned short slam_flags[] = {FLAG_ITEM_SLAM_0, FLAG_ITEM_SLAM_1, FLAG_SHOPMOVE_SLAM_0, FLAG_SHOPMOVE_SLAM_1};
 const unsigned short belt_flags[] = {FLAG_ITEM_BELT_0, FLAG_ITEM_BELT_1, FLAG_SHOPMOVE_BELT_0, FLAG_SHOPMOVE_BELT_1};
 const unsigned short instrument_flags[] = {FLAG_ITEM_INS_0, FLAG_ITEM_INS_1, FLAG_ITEM_INS_2, FLAG_SHOPMOVE_INS_0, FLAG_SHOPMOVE_INS_1, FLAG_SHOPMOVE_INS_2};
+const rgb colorblind_colors[15] = {
+    // Protan
+    {.red=0x27, .green=0x27, .blue=0x27}, // DK
+    {.red=0x00, .green=0x72, .blue=0xFF}, // Diddy
+    {.red=0x76, .green=0x6D, .blue=0x5A}, // Lanky
+    {.red=0xFF, .green=0xFF, .blue=0xFF}, // Tiny
+    {.red=0xFD, .green=0xE4, .blue=0x00}, // Chunky
+    // Deutan
+    {.red=0x27, .green=0x27, .blue=0x27}, // DK
+    {.red=0x31, .green=0x8D, .blue=0xFF}, // Diddy
+    {.red=0x7F, .green=0x6D, .blue=0x59}, // Lanky
+    {.red=0xFF, .green=0xFF, .blue=0xFF}, // Tiny
+    {.red=0xE3, .green=0xA9, .blue=0x00}, // Chunky
+    // Tritan
+    {.red=0x27, .green=0x27, .blue=0x27}, // DK
+    {.red=0xC7, .green=0x20, .blue=0x20}, // Diddy
+    {.red=0x13, .green=0xC4, .blue=0xD8}, // Lanky
+    {.red=0xFF, .green=0xFF, .blue=0xFF}, // Tiny
+    {.red=0xFF, .green=0xA4, .blue=0xA4}, // Chunky
+};
 
 void playSFX(short sfxIndex) {
 	playSound(sfxIndex,0x7FFF,0x427C0000,0x3F800000,0,0);

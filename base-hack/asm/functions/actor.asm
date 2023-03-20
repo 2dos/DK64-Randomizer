@@ -91,3 +91,4 @@
 .definelabel resetKongVars, 0x806D0408
 .definelabel handleAnimation, 0x80614D90
 .definelabel getActorModelIndex, 0x80613448
+.definelabel CanDive, 0x806E770C
