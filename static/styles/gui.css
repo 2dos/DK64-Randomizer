@@ -47,7 +47,7 @@ a:hover {
 .copy-icon {
   cursor: pointer;
   height: 32px;
-  margin-left: 8px;
+  margin: 0 20px 0 8px;
   padding: 0;
   width: 32px;
 }
