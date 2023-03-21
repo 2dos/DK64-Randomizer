@@ -309,6 +309,38 @@ def maskImage(im_f, base_index, min_y, keep_dark=False):
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
+def maskMushroomImage(im_f, reference_image, color, side_2=False):
+    """Apply RGB mask to mushroom image."""
+    w, h = im_f.size
+    pixels_to_mask = []
+    pix_ref = reference_image.load()
+    for x in range(w):
+        for y in range(h):
+            base_ref = list(pix_ref[x, y])
+            # Filter out the white dots that won't get filtered out correctly with the below conditions
+            if not (max(abs(base_ref[0] - base_ref[2]), abs(base_ref[1] - base_ref[2])) < 41 and abs(base_ref[0] - base_ref[1]) < 11):
+                # Filter out that one lone pixel that is technically blue AND gets through the above filter, but should REALLY not be blue
+                if not (side_2 == True and x == 51 and y == 21):
+                    # Select the exact pixels to mask, which is all the "blue" pixels, filtering out the white spots
+                    if base_ref[2] > base_ref[0] and base_ref[2] > base_ref[1] and int(base_ref[0] + base_ref[1]) < 200:
+                        pixels_to_mask.append([x, y])
+                    # Select the darker blue pixels as well
+                    elif base_ref[2] > int(base_ref[0] + base_ref[1]):
+                        pixels_to_mask.append([x, y])
+    pix = im_f.load()
+    mask = getRGBFromHash(color)
+    for channel in range(3):
+        mask[channel] = max(1, mask[channel]) # Absolute black is bad
+    for x in range(w):
+        for y in range(h):
+            base = list(pix[x, y])
+            if base[3] > 0 and [x, y] in pixels_to_mask:
+                average_light = int((base[0] + base[1] + base[2]) / 3)
+                for channel in range(3):
+                    base[channel] = int(mask[channel] * (average_light / 255))
+                pix[x, y] = (base[0], base[1], base[2], base[3])
+    return im_f
+
 
 def recolorRotatingRoomTiles():
     """Determine how to recolor the tiles rom the memory game in Donkey's Rotating Room in Caves."""
@@ -1140,6 +1172,28 @@ def recolorPotions(colorblind_mode):
         potion_image = maskPotionImage(potion_image, color, secondary_color[index])
         writeColorImageToROM(potion_image, 6, file, 20, 20, False, "rgba5551")
 
+def recolorMushrooms():
+    reference_mushroom_image = getFile(7, 297, False, 32, 32, "rgba5551")
+    reference_mushroom_image_side1 = getFile(25, 0xD64, True, 64, 32, "rgba5551")
+    reference_mushroom_image_side2 = getFile(25, 0xD65, True, 64, 32, "rgba5551")
+    files_table_7 = [296, 295, 297, 299, 298]
+    files_table_25_side_1 = [0xD60, 0x67F, 0xD64, 0xD62, 0xD66]
+    files_table_25_side_2 = [0xD61, 0x680, 0xD65, 0xD63, 0xD67]
+    for file in range(5):
+        # Mushroom on the ceiling inside Fungi Forest Lobby
+        mushroom_image = getFile(7, files_table_7[file], False, 32, 32, "rgba5551")
+        mushroom_image = maskMushroomImage(mushroom_image, reference_mushroom_image, color_bases[file])
+        writeColorImageToROM(mushroom_image, 7, files_table_7[file], 32, 32, False, "rgba5551")
+        # Mushrooms in Lanky's colored mushroom puzzle (and possibly also the bouncy mushrooms)
+        mushroom_image_side_1 = getFile(25, files_table_25_side_1[file], True, 64, 32, "rgba5551")
+        mushroom_image_side_1 = maskMushroomImage(mushroom_image_side_1, reference_mushroom_image_side1, color_bases[file])
+        writeColorImageToROM(mushroom_image_side_1, 25, files_table_25_side_1[file], 64, 32, False, "rgba5551")
+        mushroom_image_side_2 = getFile(25, files_table_25_side_2[file], True, 64, 32, "rgba5551")
+        mushroom_image_side_2 = maskMushroomImage(mushroom_image_side_2, reference_mushroom_image_side2, color_bases[file], True)
+        writeColorImageToROM(mushroom_image_side_2, 25, files_table_25_side_2[file], 64, 32, False, "rgba5551")
+
+
+
 def overwrite_object_colors(spoiler: Spoiler):
     """Overwrite object colors."""
     global color_bases
@@ -1168,6 +1222,7 @@ def overwrite_object_colors(spoiler: Spoiler):
         recolorBlueprintModelTwo()
         recolorKlaptraps()
         recolorPotions(mode)
+        recolorMushrooms()
         for kong_index in range(5):
             # file = 4120
             # # Kasplat Hair
