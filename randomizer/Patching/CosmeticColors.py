@@ -309,6 +309,7 @@ def maskImage(im_f, base_index, min_y, keep_dark=False):
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
+
 def maskMushroomImage(im_f, reference_image, color, side_2=False):
     """Apply RGB mask to mushroom image."""
     w, h = im_f.size
@@ -320,7 +321,7 @@ def maskMushroomImage(im_f, reference_image, color, side_2=False):
             # Filter out the white dots that won't get filtered out correctly with the below conditions
             if not (max(abs(base_ref[0] - base_ref[2]), abs(base_ref[1] - base_ref[2])) < 41 and abs(base_ref[0] - base_ref[1]) < 11):
                 # Filter out that one lone pixel that is technically blue AND gets through the above filter, but should REALLY not be blue
-                if not (side_2 == True and x == 51 and y == 21):
+                if not (side_2 is True and x == 51 and y == 21):
                     # Select the exact pixels to mask, which is all the "blue" pixels, filtering out the white spots
                     if base_ref[2] > base_ref[0] and base_ref[2] > base_ref[1] and int(base_ref[0] + base_ref[1]) < 200:
                         pixels_to_mask.append([x, y])
@@ -330,7 +331,7 @@ def maskMushroomImage(im_f, reference_image, color, side_2=False):
     pix = im_f.load()
     mask = getRGBFromHash(color)
     for channel in range(3):
-        mask[channel] = max(1, mask[channel]) # Absolute black is bad
+        mask[channel] = max(1, mask[channel])  # Absolute black is bad
     for x in range(w):
         for y in range(h):
             base = list(pix[x, y])
@@ -776,6 +777,7 @@ def maskLaserImage(im_f, base_index):
                     pix[x, y] = (base2[0], base2[1], base2[2], base2[3])
     return im_f
 
+
 def maskPotionImage(im_f, primary_color, secondary_color=None):
     """Apply RGB mask to DK arcade potion reward preview texture."""
     w, h = im_f.size
@@ -1050,11 +1052,11 @@ def recolorPotions(colorblind_mode):
                 for i in range(3):
                     num_data[offset + i] = int(total_light / 3)
                 for i in range(3):
-                    if secondary_color[potion_color] is not None and potion_color == 3: # tiny
+                    if secondary_color[potion_color] is not None and potion_color == 3:  # tiny
                         num_data[offset + i] = int(num_data[offset + i] * (secondary_color[potion_color][i] / 255))
-                    elif secondary_color[potion_color] is not None: # donkey gets an even darker shade
+                    elif secondary_color[potion_color] is not None:  # donkey gets an even darker shade
                         num_data[offset + i] = int(num_data[offset + i] * (int(secondary_color[potion_color][i] / 8) / 255))
-                    elif secondary_color[potion_color] is not None: # other kongs with a secondary color get a darker shade
+                    elif secondary_color[potion_color] is not None:  # other kongs with a secondary color get a darker shade
                         num_data[offset + i] = int(num_data[offset + i] * (int(secondary_color[potion_color][i] / 4) / 255))
                     else:
                         num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
@@ -1122,11 +1124,11 @@ def recolorPotions(colorblind_mode):
             for i in range(3):
                 num_data[offset + i] = int(total_light / 3)
             for i in range(3):
-                if secondary_color[potion_color] is not None and potion_color == 3: # tiny
+                if secondary_color[potion_color] is not None and potion_color == 3:  # tiny
                     num_data[offset + i] = int(num_data[offset + i] * (secondary_color[potion_color][i] / 255))
-                elif secondary_color[potion_color] is not None: # donkey gets an even darker shade
-                        num_data[offset + i] = int(num_data[offset + i] * (int(secondary_color[potion_color][i] / 8) / 255))
-                elif secondary_color[potion_color] is not None: # other kongs with a secondary color get a darker shade
+                elif secondary_color[potion_color] is not None:  # donkey gets an even darker shade
+                    num_data[offset + i] = int(num_data[offset + i] * (int(secondary_color[potion_color][i] / 8) / 255))
+                elif secondary_color[potion_color] is not None:  # other kongs with a secondary color get a darker shade
                     num_data[offset + i] = int(num_data[offset + i] * (int(secondary_color[potion_color][i] / 4) / 255))
                 else:
                     num_data[offset + i] = int(num_data[offset + i] * (new_color[i] / 255))
@@ -1164,7 +1166,7 @@ def recolorPotions(colorblind_mode):
     # DK Arcade sprites
     for file in range(8, 14):
         index = file - 8
-        if (index < 5):
+        if index < 5:
             color = color_bases[index]
         else:
             color = "#FFFFFF"
@@ -1172,7 +1174,9 @@ def recolorPotions(colorblind_mode):
         potion_image = maskPotionImage(potion_image, color, secondary_color[index])
         writeColorImageToROM(potion_image, 6, file, 20, 20, False, "rgba5551")
 
+
 def recolorMushrooms():
+    """Recolor the various colored mushrooms in the game for colorblind mode."""
     reference_mushroom_image = getFile(7, 297, False, 32, 32, "rgba5551")
     reference_mushroom_image_side1 = getFile(25, 0xD64, True, 64, 32, "rgba5551")
     reference_mushroom_image_side2 = getFile(25, 0xD65, True, 64, 32, "rgba5551")
@@ -1191,7 +1195,6 @@ def recolorMushrooms():
         mushroom_image_side_2 = getFile(25, files_table_25_side_2[file], True, 64, 32, "rgba5551")
         mushroom_image_side_2 = maskMushroomImage(mushroom_image_side_2, reference_mushroom_image_side2, color_bases[file], True)
         writeColorImageToROM(mushroom_image_side_2, 25, files_table_25_side_2[file], 64, 32, False, "rgba5551")
-
 
 
 def overwrite_object_colors(spoiler: Spoiler):

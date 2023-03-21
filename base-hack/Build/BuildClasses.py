@@ -380,7 +380,7 @@ class HashIcon:
 class ModelChange:
     """Class to store information regarding a model change."""
 
-    def __init__(self, model_index: int, model_file: str, bloat: bool=False):
+    def __init__(self, model_index: int, model_file: str, bloat: bool = False):
         """Initialize with given parameters."""
         self.model_index = model_index
         self.model_file = model_file
