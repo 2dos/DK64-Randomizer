@@ -30,6 +30,7 @@
 .definelabel spawnEnemyDrops_Vanilla, 0x806A5C60
 .definelabel spawnActorWithFlag, 0x806A5DF0
 .definelabel spawnObjectAtActor, 0x8069E490
+.definelabel spawnSpiderSilk, 0x806AD9AC
 .definelabel isActorLoaded, 0x8067ADB4
 .definelabel beaverControlSwitchCase, 0x806AD260
 .definelabel spawnProjectile, 0x80690A28

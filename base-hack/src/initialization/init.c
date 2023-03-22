@@ -278,6 +278,10 @@ void initHack(int source) {
 				*(short*)(0x806B12FE) = 0x3B3; // Kasplat Shockwave Chance
 				actor_health_damage[259].init_health = 9; // Increase Guard Health
 			}
+			// Fix some silk memes
+			*(int*)(0x806ADA6C) = 0;
+			*(int*)(0x806ADA70) = 0x0C000000 | (((int)&HandleSpiderSilkSpawn & 0xFFFFFF) >> 2);
+			*(int*)(0x806ADA78) = 0;
 			// Oscillation Effects
 			if (Rando.remove_oscillation_effects) {
 				*(int*)(0x80661B54) = 0; // Remove Ripple Timer 0

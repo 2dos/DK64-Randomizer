@@ -2,6 +2,7 @@
 from typing import BinaryIO
 import json
 
+
 class WarpInfo:
     """Warp Vanilla Information."""
 
@@ -79,21 +80,7 @@ for pad_pair in warp_info_data:
         pad_id = pad_pair.ids[sub_index]
         script_lines = [f"EXEC 7 | 125 65535 {pad_id}", "ENDBLOCK"]
         with open(f"./assets/instance_scripts/{script_folder_list[pad_pair.map]}/warp{hex(pad_id)[2:]}.json", "w") as script_f:
-            json_data = {
-                "id": pad_id,
-                "output_version": 2,
-                "script": [
-                    {
-                        "conditions": [],
-                        "executions": [
-                            {
-                                "function": 7,
-                                "parameters": [125, 65535, pad_id]
-                            }
-                        ]
-                    }
-                ]
-            }
+            json_data = {"id": pad_id, "output_version": 2, "script": [{"conditions": [], "executions": [{"function": 7, "parameters": [125, 65535, pad_id]}]}]}
             json.dump(json_data, script_f)
 
 

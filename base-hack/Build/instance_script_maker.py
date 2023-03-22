@@ -133,7 +133,7 @@ def BuildInstanceScripts():
                                             "id": script_data.get("id", 0),
                                             "behav_9C": script_data.get("behav_9C", 0),
                                             "ignore": script_data.get("ignore", False),
-                                            "script": script_data["script"]
+                                            "script": script_data["script"],
                                         }
                                         script_data = new_data.copy()
                                         if script_data["ignore"] == 0:

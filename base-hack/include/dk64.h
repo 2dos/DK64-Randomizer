@@ -212,6 +212,7 @@ extern void spawnSparkles(float x, float y, float z, int size);
 extern void spawnEnemyDrops_Vanilla(void* actor);
 extern void spawnActorWithFlag(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
 extern void spawnObjectAtActor(int object, int flag);
+extern void spawnSpiderSilk(void);
 extern void* isActorLoaded(int actor_type);
 extern void beaverControlSwitchCase(int unk0, int unk1, int unk2);
 extern void BonusBarrelCode(void);
