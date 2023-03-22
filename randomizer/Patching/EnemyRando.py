@@ -136,14 +136,14 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
         # Make sure every list is populated, even if too few crown-enabled enemies have been selected
         # This breaks the crown balancing, but what the player wants, the player gets
         if len(disruptive_max_1) == 0:
-            disruptive_max_1.append(every_enemy.copy())
+            disruptive_max_1.extend(every_enemy.copy())
             for enemy in EnemyMetaData:
                 if EnemyMetaData[enemy].disruptive > 1:
                     EnemyMetaData[enemy].disruptive = 1
         if len(disruptive_at_most_kasplat) == 0:
-            disruptive_at_most_kasplat.append(disruptive_max_1.copy())
+            disruptive_at_most_kasplat.extend(disruptive_max_1.copy())
         if len(disruptive_0) == 0:
-            disruptive_0.append(disruptive_at_most_kasplat)
+            disruptive_0.extend(disruptive_at_most_kasplat)
             for enemy in EnemyMetaData:
                 if EnemyMetaData[enemy].disruptive > 0:
                     EnemyMetaData[enemy].disruptive = 0

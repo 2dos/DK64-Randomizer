@@ -1604,8 +1604,8 @@ def applyHelmDoorCosmetics(spoiler: Spoiler):
                             r, g, b, a = pearl_mask_im.getpixel((x, y))
                             if a > 128:
                                 pix_pearl[x, y] = (0, 0, 0, 0)
-                writeColorImageToROM(base, 25, door.item_image, 44, 44, True)
-                writeColorImageToROM(numberToImage(door.count, (44, 44)).transpose(Image.FLIP_TOP_BOTTOM), 25, door.number_image, 44, 44, True)
+                writeColorImageToROM(base, 25, door.item_image, 44, 44, True, "rgba5551")
+                writeColorImageToROM(numberToImage(door.count, (44, 44)).transpose(Image.FLIP_TOP_BOTTOM), 25, door.number_image, 44, 44, True, "rgba5551")
 
 
 def applyHolidayMode(spoiler: Spoiler):
