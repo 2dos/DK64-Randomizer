@@ -282,6 +282,15 @@ void initHack(int source) {
 			*(int*)(0x806ADA6C) = 0;
 			*(int*)(0x806ADA70) = 0x0C000000 | (((int)&HandleSpiderSilkSpawn & 0xFFFFFF) >> 2);
 			*(int*)(0x806ADA78) = 0;
+			// Fix spider crashes
+			int fixed_anim = 0x2F5;
+			*(short*)(0x8075F46C) = fixed_anim;
+			*(short*)(0x806ADA26) = fixed_anim;
+			*(short*)(0x806ADA2A) = fixed_anim;
+			*(short*)(0x806ADA32) = fixed_anim;
+			*(short*)(0x806ADBC6) = fixed_anim;
+			*(short*)(0x806ADC66) = fixed_anim;
+			*(short*)(0x806ADD3A) = fixed_anim;
 			// Oscillation Effects
 			if (Rando.remove_oscillation_effects) {
 				*(int*)(0x80661B54) = 0; // Remove Ripple Timer 0

@@ -548,14 +548,13 @@ def randomize_enemies(spoiler: Spoiler):
                                 new_enemy_id = arr[sub_index]
                                 sub_index += 1
                                 if new_enemy_id != Enemies.Book or cont_map_id not in (Maps.CavesDonkeyCabin, Maps.JapesLankyCave, Maps.AngryAztecLobby):
-                                    if new_enemy_id != Enemies.SpiderSmall or cont_map_id not in (Maps.JungleJapes, Maps.JapesMountain):
-                                        if new_enemy_id != Enemies.Kosha or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyCabin):
-                                            if new_enemy_id != Enemies.Guard or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin):
-                                                if cont_map_id != Maps.AztecTinyTemple or spawner["index"] < 20 or spawner["index"] > 23 or not no_ground_simple_selected:
-                                                    if cont_map_id != Maps.CastleBallroom or spawner["index"] > 5 or not no_ground_simple_selected:
-                                                        if cont_map_id != Maps.CastleLibrary or spawner["index"] > 4 or not no_ground_simple_selected:
-                                                            if cont_map_id != Maps.ForestSpider or EnemyMetaData[new_enemy_id].aggro != 4:  # Prevent enemies being stuck in the ceiling
-                                                                writeEnemy(spoiler, cont_map_spawner_address, new_enemy_id, spawner, cont_map_id, 0)
+                                    if new_enemy_id != Enemies.Kosha or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyCabin):
+                                        if new_enemy_id != Enemies.Guard or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin):
+                                            if cont_map_id != Maps.AztecTinyTemple or spawner["index"] < 20 or spawner["index"] > 23 or not no_ground_simple_selected:
+                                                if cont_map_id != Maps.CastleBallroom or spawner["index"] > 5 or not no_ground_simple_selected:
+                                                    if cont_map_id != Maps.CastleLibrary or spawner["index"] > 4 or not no_ground_simple_selected:
+                                                        if cont_map_id != Maps.ForestSpider or EnemyMetaData[new_enemy_id].aggro != 4:  # Prevent enemies being stuck in the ceiling
+                                                            writeEnemy(spoiler, cont_map_spawner_address, new_enemy_id, spawner, cont_map_id, 0)
             if spoiler.settings.enemy_rando and cont_map_id in minigame_maps_total:
                 tied_enemy_list = []
                 if cont_map_id in minigame_maps_easy:
