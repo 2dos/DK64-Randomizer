@@ -34,6 +34,7 @@ class File:
         do_not_extract=False,
         do_not_compress=False,
         do_not_recompress=False,
+        bloat_compression=False,
     ):
         """Initialize with given parameters."""
         self.name = name
@@ -55,6 +56,11 @@ class File:
         if target_size is not None:
             self.target_compressed_size = target_size
             self.target_uncompressed_size = target_size
+        elif bloat_compression and self.source_file != "":
+            with open(self.source_file, "rb") as sf:
+                size = len(sf.read())
+                self.target_compressed_size = size
+                self.target_uncompressed_size = size
         self.do_not_extract = do_not_extract
         self.do_not_compress = do_not_compress
         self.do_not_recompress = do_not_recompress
@@ -374,10 +380,11 @@ class HashIcon:
 class ModelChange:
     """Class to store information regarding a model change."""
 
-    def __init__(self, model_index: int, model_file: str):
+    def __init__(self, model_index: int, model_file: str, bloat: bool = False):
         """Initialize with given parameters."""
         self.model_index = model_index
         self.model_file = model_file
+        self.bloat = bloat
 
 
 class TextChange:
