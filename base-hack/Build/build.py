@@ -124,12 +124,12 @@ file_dict = [
     File(name="Nintendo Coin Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=72, source_file="nintendo_coin_om2.bin", do_not_delete_source=True),
     File(name="Nintendo Coin Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=183, source_file="rainbow_coin_om2.bin", do_not_delete_source=True),
     File(name="Rareware Coin Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=655, source_file="rareware_coin_om2.bin", do_not_delete_source=True),
-    File(name="Potion (DK) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=91, source_file="potion_dk_om2.bin", do_not_delete_source=True),
-    File(name="Potion (Diddy) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=498, source_file="potion_diddy_om2.bin", do_not_delete_source=True),
-    File(name="Potion (Lanky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=89, source_file="potion_lanky_om2.bin", do_not_delete_source=True),
-    File(name="Potion (Tiny) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=499, source_file="potion_tiny_om2.bin", do_not_delete_source=True),
-    File(name="Potion (Chunky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=501, source_file="potion_chunky_om2.bin", do_not_delete_source=True),
-    File(name="Potion (Any) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=502, source_file="potion_any_om2.bin", do_not_delete_source=True),
+    File(name="Potion (DK) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=91, source_file="potion_dk_om2.bin", do_not_delete_source=True, bloat_compression=True),
+    File(name="Potion (Diddy) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=498, source_file="potion_diddy_om2.bin", do_not_delete_source=True, bloat_compression=True),
+    File(name="Potion (Lanky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=89, source_file="potion_lanky_om2.bin", do_not_delete_source=True, bloat_compression=True),
+    File(name="Potion (Tiny) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=499, source_file="potion_tiny_om2.bin", do_not_delete_source=True, bloat_compression=True),
+    File(name="Potion (Chunky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=501, source_file="potion_chunky_om2.bin", do_not_delete_source=True, bloat_compression=True),
+    File(name="Potion (Any) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=502, source_file="potion_any_om2.bin", do_not_delete_source=True, bloat_compression=True),
     File(
         name="Krusha Head",
         subtype=ChangeType.FixedLocation,
@@ -208,6 +208,28 @@ file_dict = [
 ]
 
 file_dict = file_dict + buildScripts()
+
+for bell in [692, 693]:
+    file_dict.append(
+        File(
+            name=f"Bell {bell}",
+            pointer_table_index=TableNames.ModelTwoGeometry,
+            file_index=bell,
+            source_file=f"bell{bell}.png",
+            target_size=0x35C,
+        )
+    )
+
+for klap_tex in [0xF31, 0xF32, 0xF33, 0xF35, 0xF37, 0xF38, 0xF39, 0xF3C, 0xF3D, 0xF3E, 0xF3F, 0xF40, 0xF41, 0xF44, 0xF45, 0xF46, 0xF47, 0xF48, 0xF49]:
+    file_dict.append(
+        File(
+            name=f"Klaptrap Texture {hex(klap_tex)}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=klap_tex,
+            source_file=f"klap_tex{klap_tex}.png",
+            target_size=0xAB8,
+        )
+    )
 
 for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 0xF8, 0x136):
     file_dict.append(
@@ -322,6 +344,30 @@ for kong_index, kong in enumerate(kong_names):
             source_file=f"assets/displays/{kong.lower()}_face.png",
             texture_format=TextureFormat.RGBA5551,
             target_compressed_size=32 * 32 * 2,
+        )
+    )
+
+for start in [4897, 4903, 4712, 4950, 4925]:
+    for offset in range(6):
+        file_dict.append(
+            File(
+                name=f"Shockwave Frame {start + offset}",
+                pointer_table_index=TableNames.TexturesGeometry,
+                file_index=start + offset,
+                source_file=f"shockwave_{start+offset}.bin",
+                target_compressed_size=32 * 32 * 4,
+                target_uncompressed_size=32 * 32 * 4,
+            )
+        )
+
+for start in [0xD60, 0x67F, 0xD64, 0xD62, 0xD66, 0xD61, 0x680, 0xD65, 0xD63, 0xD67]:
+    file_dict.append(
+        File(
+            name=f"Mushroom {start}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=start,
+            source_file=f"Mushroom_{start}.bin",
+            target_size=64 * 32 * 2,
         )
     )
 
@@ -764,20 +810,20 @@ model_changes = [
     ModelChange(9, "tiny_ins.bin"),
     ModelChange(0xEC, "disco_instrument.bin"),
     ModelChange(0xDA, "krusha_base.bin"),
-    ModelChange(0xED, "potion_dk_om1.bin"),
-    ModelChange(0xEE, "potion_diddy_om1.bin"),
-    ModelChange(0xEF, "potion_lanky_om1.bin"),
-    ModelChange(0xF0, "potion_tiny_om1.bin"),
-    ModelChange(0xF1, "potion_chunky_om1.bin"),
-    ModelChange(0xF2, "potion_any_om1.bin"),
+    ModelChange(0xED, "potion_dk_om1.bin", True),
+    ModelChange(0xEE, "potion_diddy_om1.bin", True),
+    ModelChange(0xEF, "potion_lanky_om1.bin", True),
+    ModelChange(0xF0, "potion_tiny_om1.bin", True),
+    ModelChange(0xF1, "potion_chunky_om1.bin", True),
+    ModelChange(0xF2, "potion_any_om1.bin", True),
     ModelChange(0xF3, "shrink_crown.bin"),
     ModelChange(0xF4, "shrink_key.bin"),
-    ModelChange(0xF5, "shrink_potion_dk.bin"),
-    ModelChange(0xF6, "shrink_potion_diddy.bin"),
-    ModelChange(0xF7, "shrink_potion_lanky.bin"),
-    ModelChange(0xF8, "shrink_potion_tiny.bin"),
-    ModelChange(0xF9, "shrink_potion_chunky.bin"),
-    ModelChange(0xFA, "shrink_potion_any.bin"),
+    ModelChange(0xF5, "shrink_potion_dk.bin", True),
+    ModelChange(0xF6, "shrink_potion_diddy.bin", True),
+    ModelChange(0xF7, "shrink_potion_lanky.bin", True),
+    ModelChange(0xF8, "shrink_potion_tiny.bin", True),
+    ModelChange(0xF9, "shrink_potion_chunky.bin", True),
+    ModelChange(0xFA, "shrink_potion_any.bin", True),
     ModelChange(0xFB, "shrink_fairy.bin"),
     ModelChange(0x10E, "fake_item_actor.bin"),
     ModelChange(0xA3, "counter.bin"),
