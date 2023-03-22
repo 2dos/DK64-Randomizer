@@ -360,6 +360,17 @@ for start in [4897, 4903, 4712, 4950, 4925]:
             )
         )
 
+for start in [0xD60, 0x67F, 0xD64, 0xD62, 0xD66, 0xD61, 0x680, 0xD65, 0xD63, 0xD67]:
+    file_dict.append(
+        File(
+            name=f"Mushroom {start}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=start,
+            source_file=f"Mushroom_{start}.bin",
+            target_size=64 * 32 * 2,
+        )
+    )
+
 shop_face_array = [
     "none",  # No Face
     "dk_face",
