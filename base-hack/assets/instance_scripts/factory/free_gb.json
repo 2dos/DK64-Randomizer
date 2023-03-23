@@ -1,0 +1,36 @@
+{
+    "id": 120,
+    "behav_9C": 0,
+    "ignore": false,
+    "output_version": 2,
+    "script": [
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [0, 0, 0]},
+                {"function": 6, "inverted": false, "parameters": [7, 0, 120]}
+            ],
+            "executions": [
+                {"function": 38, "parameters": [2, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [0, 0, 0]},
+                {"function": 6, "inverted": false, "parameters": [7, 1, 120]}
+            ],
+            "executions": [
+                {"function": 69, "parameters": [1, 0, 255]},
+                {"function": 38, "parameters": [2, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [10, 0, 0]}
+            ],
+            "executions": [
+                {"function": 69, "parameters": [0, 0, 255]},
+                {"function": 38, "parameters": [2, 0, 0]}
+            ]
+        }
+    ]
+}

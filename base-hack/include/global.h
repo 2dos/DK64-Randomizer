@@ -133,6 +133,7 @@ extern void initStackTrace(void);
 extern void initItemDropTable(void);
 extern void initCollectableCollision(void);
 extern void initActorDefs(void);
+extern void initSmallerQuadChecks(void);
 extern void newGuardCode(void);
 extern void goldBeaverCode(void);
 extern void ninCoinCode(void);
@@ -146,6 +147,7 @@ extern void FakeGBCode(void);
 extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern void handleSpiderTrapCode(void);
+extern void HandleSpiderSilkSpawn(void);
 extern void fastWarpShockwaveFix(void);
 extern int fixDilloTNTPads(void* actor);
 extern int canPlayJetpac(void);
@@ -162,6 +164,8 @@ extern void showPostMoveText(shop_paad* paad, KongBase* kong_base, int intro_fla
 extern void fixRBSlowTurn(void);
 extern void postKRoolSaveCheck(void);
 extern int* displayHeadTexture(int* dl, int texture, float x, float y, float scale);
+
+extern int CanDive_WithCheck(void);
 
 extern void tagBarrelBackgroundKong(int kong_actor);
 extern void tagAnywhereInit(int is_homing, int model2_id, int obj);
@@ -336,6 +340,7 @@ extern const short normal_key_flags[8];
 extern const unsigned short slam_flags[4];
 extern const unsigned short belt_flags[4];
 extern const unsigned short instrument_flags[6];
+extern const rgb colorblind_colors[15];
 extern const check_struct item_db[292];
 
 extern sprite_data_struct bean_sprite;

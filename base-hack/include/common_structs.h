@@ -305,12 +305,6 @@ typedef struct AutowalkData {
 	/* 0x016 */ short zPos;
 } AutowalkData;
 
-typedef struct RGB {
-	/* 0x000 */ unsigned char red;
-	/* 0x001 */ unsigned char green;
-	/* 0x002 */ unsigned char blue;
-} RGB;
-
 typedef struct KongBase {
 	/* 0x000 */ char special_moves;
 	/* 0x001 */ char simian_slam;
@@ -712,13 +706,15 @@ typedef struct settingsData {
 
 typedef struct behaviour_data {
 	/* 0x000 */ void* extra_data;
-	/* 0x004 */ char unk_04[0x14-0x4];
+	/* 0x004 */ char unk_04[0x10-0x4];
+	/* 0x010 */ short unk_10;
+	/* 0x012 */ char unk_12[0x14-0x12];
 	/* 0x014 */ float unk_14;
 	/* 0x018 */ char unk_18[0x38-0x18];
 	/* 0x038 */ int unk_38;
 	/* 0x03C */ char unk_3C[0x44-0x3C];
 	/* 0x044 */ unsigned short timer;
-	/* 0x046 */ char unk_46[0x48-0x46];
+	/* 0x046 */ unsigned short unk_46;
 	/* 0x048 */ unsigned char current_state;
 	/* 0x049 */ char counter;
 	/* 0x04A */ char unk_4A;
@@ -1391,6 +1387,10 @@ typedef struct item_collision {
 	/* 0x018 */ void* next;
 	/* 0x01C */ float scale;
 } item_collision;
+
+typedef struct hitbox_master_struct {
+	/* 0x000 */ item_collision* hitbox[512];
+} hitbox_master_struct;
 
 typedef struct fairy_location_item {
 	/* 0x000 */ short flag;

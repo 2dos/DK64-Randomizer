@@ -77,4 +77,6 @@ void initTextChanges(void) {
     // Text
     *(int*)(0x806A3B38) = 0xAFB10014; // Pass in effect bitfield as the last arg
     *(int*)(0x806A3B4C) = 0x0C000000 | (((int)&displayModifiedText & 0xFFFFFF) >> 2); // Modify draw function to reference new code
+    *(short*)(0x806A3B1A) = (base_text_color >> 16) & 0xFFFF;
+    *(short*)(0x806A3B1E) = base_text_color & 0xFF00;
 }

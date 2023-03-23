@@ -1,0 +1,76 @@
+{
+    "id": 10,
+    "behav_9C": 0,
+    "ignore": 1,
+    "output_version": 2,
+    "script": [
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [0, 0, 0]},
+                {"function": 45, "inverted": false, "parameters": [220, 0, 0]}
+            ],
+            "executions": [
+                {"function": 69, "parameters": [1, 0, 255]},
+                {"function": 38, "parameters": [2, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [0, 0, 0]},
+                {"function": 45, "inverted": true, "parameters": [220, 0, 0]}
+            ],
+            "executions": [
+                {"function": 7, "parameters": [125, 0, 10]},
+                {"function": 38, "parameters": [2, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [10, 0, 0]}
+            ],
+            "executions": [
+                {"function": 34, "parameters": [0, 1, 1]},
+                {"function": 33, "parameters": [1, 0, 0]},
+                {"function": 36, "parameters": [1, 0, 0]},
+                {"function": 2, "parameters": [2, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [10, 0, 0]}
+            ],
+            "executions": [
+                {"function": 1, "parameters": [11, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [11, 0, 0]}
+            ],
+            "executions": [
+                {"function": 83, "parameters": [10, 0, 0]},
+                {"function": 4, "parameters": [0, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [11, 0, 0]},
+                {"function": 15, "inverted": true, "parameters": [0, 0, 0]}
+            ],
+            "executions": [
+                {"function": 83, "parameters": [20, 0, 0]},
+                {"function": 3, "parameters": [0, 60, 0]},
+                {"function": 1, "parameters": [12, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [12, 0, 0]},
+                {"function": 4, "inverted": false, "parameters": [0, 0, 0]}
+            ],
+            "executions": [
+                {"function": 38, "parameters": [2, 0, 0]}
+            ]
+        }
+    ]
+}

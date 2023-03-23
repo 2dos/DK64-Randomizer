@@ -124,101 +124,136 @@ def BuildInstanceScripts():
                             os.remove(temp_file)
                         for file in files:
                             if file != ".map":
-                                with open(f"{f}/{file}", "r") as script_file:
-                                    script_info = script_file.readlines()
-                                    contains_code = False
-                                    contains_data = False
-                                    code_start = -1
-                                    data_end = len(script_info) - 1
-                                    data_start = -1
-                                    for line_index, script_line in enumerate(script_info):
-                                        if ".code" in script_line:
-                                            contains_code = True
-                                            code_start = line_index + 1
-                                            data_end = line_index
-                                        elif ".data" in script_line:
-                                            contains_data = True
-                                            data_start = line_index + 1
-                                    script_data = {"id": -1, "behav_9C": -1, "ignore": 0}
-                                    if contains_data and data_start > -1:
-                                        for data_line in script_info[data_start:data_end]:
-                                            data_line = data_line.replace("\n", "")
-                                            for attr in ["id", "behav_9C", "ignore"]:
-                                                if f"{attr} = " in data_line:
-                                                    val = data_line.split(f"{attr} = ")[1]
-                                                    if "0x" in val:
-                                                        val = int(val, 16)
-                                                    else:
-                                                        val = int(val)
-                                                    script_data[attr] = val
-                                    pre_message = f"[x] - Ignoring"
-                                    if script_data["ignore"] == 0:
-                                        pre_message = f"    - Compiling"
-                                    print(f"{pre_message} {file.replace('.script','')} ({hex(script_data['id'])})")
-                                    if contains_code and code_start > -1:
+                                if ".json" in file:
+                                    with open(f"{f}/{file}", "r") as script_file:
+                                        print(f"{f}/{file}")
+                                        script_data = json.loads(script_file.read())
+                                        pre_message = f"[x] - Ignoring"
+                                        new_data = {
+                                            "id": script_data.get("id", 0),
+                                            "behav_9C": script_data.get("behav_9C", 0),
+                                            "ignore": script_data.get("ignore", False),
+                                            "script": script_data["script"],
+                                        }
+                                        script_data = new_data.copy()
+                                        if script_data["ignore"] == 0:
+                                            pre_message = f"    - Compiling"
+                                        print(f"{pre_message} {file.replace('.json','')} ({hex(script_data['id'])})")
                                         resetCond(True)
-                                        for code_line in [x.split(COMMENT_TAG)[0].strip() for x in script_info[code_start:] if len(x.split(COMMENT_TAG)[0].strip()) > 0]:
-                                            code_line = code_line.replace("\n", "")
-                                            # print(code_line)
-                                            code_split = code_line.split(" ")
-                                            if "COND" in code_line.upper():
+                                        new_block_count = len(script_data["script"])
+                                        for block in script_data["script"]:
+                                            arr = [len(block["conditions"])]
+                                            for cond in block["conditions"]:
                                                 cond_or = 0
-                                                if "CONDINV" in code_line.upper():
+                                                if cond["inverted"]:
                                                     cond_or = 0x8000
-                                                arr = [int(code_split[1]) | cond_or]
-                                                for i in range(3):
-                                                    arr.append(int(code_split[3 + i]))
-                                                new_conds.append(arr)
-                                                new_cond_count += 1
-                                            elif "EXEC" in code_line.upper():
-                                                arr = [int(code_split[1])]
-                                                for i in range(3):
-                                                    arr.append(int(code_split[3 + i]))
-                                                new_execs.append(arr)
-                                                new_exec_count += 1
-                                            elif "ENDBLOCK" in code_line.upper():
-                                                arr = [new_cond_count]
-                                                for x_i in new_conds:
-                                                    arr.extend(x_i)
-                                                arr.append(new_exec_count)
-                                                for x_i in new_execs:
-                                                    arr.extend(x_i)
-                                                new_blocks.append(arr)
-                                                resetCond(False)
-                                                new_block_count += 1
-                                    if script_data["id"] > -1 and script_data["ignore"] == 0:
-                                        found_existing = False
-                                        found_index = -1
-                                        found_9c = -1
-                                        for script_index, script_item in enumerate(script_list):
-                                            if script_item["id"] == script_data["id"]:
-                                                found_index = script_index
-                                                found_9c = script_item["behav_9C"]
-                                                found_existing = True
-                                        if found_existing and found_index > -1:
-                                            data = [script_data["id"], new_block_count, found_9c]
-                                            for n in new_blocks:
-                                                data.extend(n)
-                                            with open(temp_file, "wb") as tp:
-                                                for d in data:
-                                                    d = d % 65536
-                                                    tp.write(d.to_bytes(2, "big"))
-                                            with open(temp_file, "rb") as tp:
-                                                script_list[found_index]["data"] = tp.read()
-                                            if os.path.exists(temp_file):
-                                                os.remove(temp_file)
-                                        else:
-                                            data = [script_data["id"], new_block_count, script_data["behav_9C"]]
-                                            for n in new_blocks:
-                                                data.extend(n)
-                                            with open(temp_file, "wb") as tp:
-                                                for d in data:
-                                                    d = d % 65536
-                                                    tp.write(d.to_bytes(2, "big"))
-                                            with open(temp_file, "rb") as tp:
-                                                script_list.append({"id": script_data["id"], "behav_9C": script_data["behav_9C"], "data": tp.read()})
-                                            if os.path.exists(temp_file):
-                                                os.remove(temp_file)
+                                                cond_arr = [int(cond["function"]) | cond_or]
+                                                cond_arr.extend(cond["parameters"])
+                                                arr.extend(cond_arr)
+                                            arr.append(len(block["executions"]))
+                                            for exec in block["executions"]:
+                                                exec_arr = [exec["function"]]
+                                                exec_arr.extend(exec["parameters"])
+                                                arr.extend(exec_arr)
+                                            new_blocks.append(arr)
+                                            resetCond(False)
+                                elif ".script" in file:
+                                    with open(f"{f}/{file}", "r") as script_file:
+                                        script_info = script_file.readlines()
+                                        contains_code = False
+                                        contains_data = False
+                                        code_start = -1
+                                        data_end = len(script_info) - 1
+                                        data_start = -1
+                                        for line_index, script_line in enumerate(script_info):
+                                            if ".code" in script_line:
+                                                contains_code = True
+                                                code_start = line_index + 1
+                                                data_end = line_index
+                                            elif ".data" in script_line:
+                                                contains_data = True
+                                                data_start = line_index + 1
+                                        script_data = {"id": -1, "behav_9C": -1, "ignore": 0}
+                                        if contains_data and data_start > -1:
+                                            for data_line in script_info[data_start:data_end]:
+                                                data_line = data_line.replace("\n", "")
+                                                for attr in ["id", "behav_9C", "ignore"]:
+                                                    if f"{attr} = " in data_line:
+                                                        val = data_line.split(f"{attr} = ")[1]
+                                                        if "0x" in val:
+                                                            val = int(val, 16)
+                                                        else:
+                                                            val = int(val)
+                                                        script_data[attr] = val
+                                        pre_message = f"[x] - Ignoring"
+                                        if script_data["ignore"] == 0:
+                                            pre_message = f"    - Compiling"
+                                        print(f"{pre_message} {file.replace('.script','')} ({hex(script_data['id'])})")
+                                        if contains_code and code_start > -1:
+                                            resetCond(True)
+                                            for code_line in [x.split(COMMENT_TAG)[0].strip() for x in script_info[code_start:] if len(x.split(COMMENT_TAG)[0].strip()) > 0]:
+                                                code_line = code_line.replace("\n", "")
+                                                # print(code_line)
+                                                code_split = code_line.split(" ")
+                                                if "COND" in code_line.upper():
+                                                    cond_or = 0
+                                                    if "CONDINV" in code_line.upper():
+                                                        cond_or = 0x8000
+                                                    arr = [int(code_split[1]) | cond_or]
+                                                    for i in range(3):
+                                                        arr.append(int(code_split[3 + i]))
+                                                    new_conds.append(arr)
+                                                    new_cond_count += 1
+                                                elif "EXEC" in code_line.upper():
+                                                    arr = [int(code_split[1])]
+                                                    for i in range(3):
+                                                        arr.append(int(code_split[3 + i]))
+                                                    new_execs.append(arr)
+                                                    new_exec_count += 1
+                                                elif "ENDBLOCK" in code_line.upper():
+                                                    arr = [new_cond_count]
+                                                    for x_i in new_conds:
+                                                        arr.extend(x_i)
+                                                    arr.append(new_exec_count)
+                                                    for x_i in new_execs:
+                                                        arr.extend(x_i)
+                                                    new_blocks.append(arr)
+                                                    resetCond(False)
+                                                    new_block_count += 1
+                                # Convert blocks
+                                if script_data["id"] > -1 and script_data["ignore"] == 0:
+                                    found_existing = False
+                                    found_index = -1
+                                    found_9c = -1
+                                    for script_index, script_item in enumerate(script_list):
+                                        if script_item["id"] == script_data["id"]:
+                                            found_index = script_index
+                                            found_9c = script_item["behav_9C"]
+                                            found_existing = True
+                                    if found_existing and found_index > -1:
+                                        data = [script_data["id"], new_block_count, found_9c]
+                                        for n in new_blocks:
+                                            data.extend(n)
+                                        with open(temp_file, "wb") as tp:
+                                            for d in data:
+                                                d = d % 65536
+                                                tp.write(d.to_bytes(2, "big"))
+                                        with open(temp_file, "rb") as tp:
+                                            script_list[found_index]["data"] = tp.read()
+                                        if os.path.exists(temp_file):
+                                            os.remove(temp_file)
+                                    else:
+                                        data = [script_data["id"], new_block_count, script_data["behav_9C"]]
+                                        for n in new_blocks:
+                                            data.extend(n)
+                                        with open(temp_file, "wb") as tp:
+                                            for d in data:
+                                                d = d % 65536
+                                                tp.write(d.to_bytes(2, "big"))
+                                        with open(temp_file, "rb") as tp:
+                                            script_list.append({"id": script_data["id"], "behav_9C": script_data["behav_9C"], "data": tp.read()})
+                                        if os.path.exists(temp_file):
+                                            os.remove(temp_file)
                         with open(f"{f.replace('./','')}.raw", "wb") as new_raw:
                             new_raw.write(len(script_list).to_bytes(2, "big"))
                             for script in script_list:

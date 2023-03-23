@@ -329,3 +329,10 @@ typedef enum master_types_list {
 	/* 0x003 */ ACTORMASTER_CONTROLLER,
 	/* 0x004 */ ACTORMASTER_SPRITE,
 } master_types_list;
+
+typedef enum vendors {
+	/* 0x000 */ SHOP_CRANKY,
+	/* 0x001 */ SHOP_FUNKY,
+	/* 0x002 */ SHOP_CANDY,
+	/* 0x003 */ SHOP_SNIDE,
+} vendors;
