@@ -7,3 +7,5 @@
 .definelabel ModelTwoCollisionArray, 0x80753EF0
 .definelabel CollectedObjects, 0x807FD730
 .definelabel LatestCollectedObject, 0x807FD734
+.definelabel ModelTwoHitboxPointer, 0x80754244
+.definelabel MiscHitboxPointer, 0x807FD72C

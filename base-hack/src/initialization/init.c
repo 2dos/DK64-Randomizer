@@ -202,6 +202,7 @@ void initHack(int source) {
 			style128Mtx[0xF] = 100;
 			writeCoinRequirements(0);
 			writeEndSequence();
+			initSmallerQuadChecks();
 			*(int*)(0x805FEBC0) = 0x0C000000 | (((int)&parseCutsceneData & 0xFFFFFF) >> 2); // modifyCutsceneHook
 			*(int*)(0x807313A4) = 0x0C000000 | (((int)&checkVictory_flaghook & 0xFFFFFF) >> 2); // perm flag set hook
 			*(int*)(0x80748088) = (int)&CrownDoorCheck; // Update check on Crown Door
@@ -277,6 +278,19 @@ void initHack(int source) {
 				*(short*)(0x806B12FE) = 0x3B3; // Kasplat Shockwave Chance
 				actor_health_damage[259].init_health = 9; // Increase Guard Health
 			}
+			// Fix some silk memes
+			*(int*)(0x806ADA6C) = 0;
+			*(int*)(0x806ADA70) = 0x0C000000 | (((int)&HandleSpiderSilkSpawn & 0xFFFFFF) >> 2);
+			*(int*)(0x806ADA78) = 0;
+			// Fix spider crashes
+			int fixed_anim = 0x2F5;
+			*(short*)(0x8075F46C) = fixed_anim;
+			*(short*)(0x806ADA26) = fixed_anim;
+			*(short*)(0x806ADA2A) = fixed_anim;
+			*(short*)(0x806ADA32) = fixed_anim;
+			*(short*)(0x806ADBC6) = fixed_anim;
+			*(short*)(0x806ADC66) = fixed_anim;
+			*(short*)(0x806ADD3A) = fixed_anim;
 			// Oscillation Effects
 			if (Rando.remove_oscillation_effects) {
 				*(int*)(0x80661B54) = 0; // Remove Ripple Timer 0

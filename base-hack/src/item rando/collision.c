@@ -11,6 +11,78 @@
 
 #include "../../include/common.h"
 
+#define QUAD_SIZE 100
+
+int getCollisionSquare_New(float x, float z) {
+    float size = QUAD_SIZE;
+    float x_quadrant_float = x / size;
+    float z_quadrant_float = z / size;
+    int x_quad = x_quadrant_float;
+    int z_quad = z_quadrant_float;
+    if ((x >= 0.0f) && (z >= 0.0f)) {
+        int x_quad_limit = *(short*)(0x807FD722);
+        int z_quad_limit = *(short*)(0x807FD724);
+        if ((x_quad <= x_quad_limit) && (z_quad <= z_quad_limit)) {
+            return (x_quad_limit * z_quad) + x_quad;
+        }
+    }
+    return -1;
+}
+
+void checkForValidCollision(int player_index, player_collision_info* player) {
+    if (CollectableBase.Health > 0) {
+        int cached_squares[] = {
+            -1, -1, -1,
+            -1, -1, -1,
+            -1, -1, -1,
+        };
+        for (int i = 0; i < 9; i++) {
+            int x_offset = ((i % 3) - 1) * player->scale;
+            int z_offset = ((i / 3) - 1) * player->scale;
+            float x = player->x + x_offset;
+            if ((*(short*)(0x807FD726) + player->scale) >= x) {
+                float z = player->z + z_offset;
+                if ((*(short*)(0x807FD728) + player->scale) >= z) {
+                    int current_collision_square = getCollisionSquare_New(x, z);
+                    int permit = 1;
+                    if (i > 0) {
+                        int j = 0;
+                        while (j < i) {
+                            if (cached_squares[j] == current_collision_square) {
+                                permit = 0;
+                                break;
+                            }
+                            j++;
+                        }
+                    }
+                    cached_squares[i] = current_collision_square;
+                    if ((current_collision_square > -1) && (permit)) {
+                        checkModelTwoItemCollision((*ModelTwoHitboxPointer).hitbox[current_collision_square], player_index, player);
+                    }
+                }
+            }
+        }
+        checkModelTwoItemCollision(MiscHitboxPointer, player_index, player);
+    }
+}
+
+void initSmallerQuadChecks(void) {
+    *(short*)(0x806F4ACA) = QUAD_SIZE;
+
+    *(int*)(0x806F4BF0) = 0x240A0000 | QUAD_SIZE; // addiu $t2, $zero, QUAD_SIZE
+    *(int*)(0x806F4BF4) = 0x01510019; // multu $t2, $s1
+    *(int*)(0x806F4BF8) = 0x00008812; // mflo $s1
+    *(int*)(0x806F4BFC) = 0; // NOP
+    *(int*)(0x806F4C00) = 0; // NOP
+    *(short*)(0x806F4C16) = QUAD_SIZE;
+    *(short*)(0x806F4C52) = QUAD_SIZE;
+
+    *(int*)(0x806F502C) = 0x0C000000 | (((int)&getCollisionSquare_New & 0xFFFFFF) >> 2); // Assigning hitbox to data table
+    *(int*)(0x806F5134) = 0x0C000000 | (((int)&getCollisionSquare_New & 0xFFFFFF) >> 2); // Assigning hitbox to data table
+    *(int*)(0x806F6A0C) = 0x0C000000 | (((int)&checkForValidCollision & 0xFFFFFF) >> 2); // Detecting if object is inside current quadrant
+    *(int*)(0x806F6A2C) = 0x0C000000 | (((int)&checkForValidCollision & 0xFFFFFF) >> 2); // Detecting if object is inside current quadrant
+}
+
 item_collision* writeItemScale(int id) {
     /**
      * @brief Write item scale to the collision object

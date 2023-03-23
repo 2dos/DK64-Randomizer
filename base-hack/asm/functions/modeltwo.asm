@@ -7,6 +7,13 @@
 .definelabel unkObjFunction6, 0x80723284
 .definelabel unkObjFunction7, 0x80634EA4
 .definelabel unkObjFunction8, 0x80650D04
+.definelabel unkObjFunction9, 0x80650C98
+.definelabel unkObjFunction10, 0x80650AD8
+.definelabel unkObjFunction11, 0x8065092C
+.definelabel unkObjFunction12, 0x80605044
+.definelabel unkObjFunction13, 0x80604BE8
+.definelabel unkObjFunction14, 0x80605380
+.definelabel unkObjFunction15, 0x8072ECFC
 .definelabel touchingModel2Object, 0x806F70A8
 .definelabel loadObjectForScripting, 0x8063B4C0
 .definelabel updateObjectScript, 0x8063E078
@@ -37,3 +44,5 @@
 .definelabel addNewCollectedObject, 0x806F53EC
 .definelabel deleteModelTwo, 0x806355DC
 .definelabel spawnModelTwoWithDelay, 0x806F5FE8
+.definelabel displayShopIcon, 0x8064826C
+.definelabel hideShop, 0x8064C9F8

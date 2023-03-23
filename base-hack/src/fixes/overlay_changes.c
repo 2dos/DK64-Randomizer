@@ -289,6 +289,19 @@ void overlay_changes(void) {
 			*(int*)(0x80024880) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Flag change to FLUT
 			*(int*)(0x800248B0) = 0x0C000000 | (((int)&setFlagDuplicate & 0xFFFFFF) >> 2); // Flag change to FLUT
 		}
+		if (Rando.colorblind_mode != COLORBLIND_OFF) {
+			int colorblind_offset = 5 * (Rando.colorblind_mode - 1);
+			for (int i = 0; i < 16; i++) {
+				int mapping = i / 3;
+				if (mapping == 5) {
+					mapping = 4;
+				}
+				rgb color = colorblind_colors[colorblind_offset + mapping];
+				BlueprintLargeImageColors[i].red = color.red;
+				BlueprintLargeImageColors[i].green = color.green;
+				BlueprintLargeImageColors[i].blue = color.blue;
+			}
+		}
 	} else if (CurrentMap == 0x11) {
 		// Initialize Helm
 		HelmInit(0);

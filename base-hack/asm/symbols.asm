@@ -240,3 +240,5 @@
 .definelabel StackTraceY, 0x807FEF74
 .definelabel StackTraceSize, 0x807FEF78
 .definelabel StackTraceStartX, 0x807FEF7C
+
+.definelabel BlueprintLargeImageColors, 0x80033228

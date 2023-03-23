@@ -1,5 +1,0 @@
-.data
-id = 0x18
-.code
-EXEC 7 | 125 65535 24
-ENDBLOCK

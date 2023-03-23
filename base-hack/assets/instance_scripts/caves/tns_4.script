@@ -1,5 +1,0 @@
-.data
-id = 548
-.code
-EXEC 7 | 125 65532 548
-ENDBLOCK

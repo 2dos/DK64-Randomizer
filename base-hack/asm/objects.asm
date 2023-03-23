@@ -9,7 +9,7 @@
 .importobj "obj/src_fixes_overlay_changes.o"
 .importobj "obj/src_fixes_parent.o"
 .importobj "obj/src_fixes_quality_fixes.o"
-.importobj "obj/src_fixes_spiderTrap.o"
+.importobj "obj/src_fixes_spiders.o"
 .importobj "obj/src_fixes_squawks_with_spotlight.o"
 .importobj "obj/src_fixes_tag_anywhere.o"
 .importobj "obj/src_initialization_cosmetic.o"

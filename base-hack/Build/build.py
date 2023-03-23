@@ -1416,7 +1416,7 @@ with open(newROMName, "r+b") as fh:
         "melon_slice",
     ]
     script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
-    shop_files = ["snide.script", "cranky.script", "funky.script", "candy.script"]
+    shop_files = ["snide.json", "cranky.json", "funky.json", "candy.json"]
     for folder in script_files:
         for file in os.listdir(folder):
             file = f"{folder}/{file}"
