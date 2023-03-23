@@ -53,6 +53,13 @@ void checkNinWarp(void) {
 	}
 }
 
+int CanDive_WithCheck(void) {
+	if (ObjectModel2Timer < 5) {
+		return 1;
+	}
+	return CanDive();
+}
+
 static unsigned short previous_total_cbs = 0xFFFF;
 static unsigned char previous_world = 0xFF;
 

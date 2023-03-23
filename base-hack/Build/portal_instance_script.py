@@ -1,4 +1,5 @@
 """Add instance scripts for portal indicators."""
+import json
 
 
 class PortalInfo:
@@ -24,6 +25,6 @@ portal_data = [
 
 for map in portal_data:
     for portal_index in range(map.count):
-        with open(f"assets/instance_scripts/{map.folder}/tns_{portal_index}.script", "w") as fh:
-            lines = [".data", f"id = {0x220 + portal_index}", ".code", f"EXEC 7 | 125 65532 {0x220 + portal_index}", "ENDBLOCK"]
-            fh.write("\n".join(lines))
+        with open(f"assets/instance_scripts/{map.folder}/tns_{portal_index}.json", "w") as fh:
+            json_new = {"id": 0x220 + portal_index, "output_version": 2, "script": [{"conditions": [], "executions": [{"function": 7, "parameters": [125, 65532, 0x220 + portal_index]}]}]}
+            json.dump(json_new, fh, indent=4)

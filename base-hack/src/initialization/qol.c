@@ -467,6 +467,8 @@ void initNonControllableFixes(void) {
     // Better Collision
     *(int*)(0x806F6618) = 0x0C000000 | (((int)&checkModelTwoItemCollision & 0xFFFFFF) >> 2);
     *(int*)(0x806F662C) = 0x0C000000 | (((int)&checkModelTwoItemCollision & 0xFFFFFF) >> 2);
+    // Dive Check
+    *(int*)(0x806E9658) = 0x0C000000 | (((int)&CanDive_WithCheck & 0xFFFFFF) >> 2);
     
 }
 

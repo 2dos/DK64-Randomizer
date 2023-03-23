@@ -1,5 +1,0 @@
-.data
-id = 0x143
-.code
-EXEC 7 | 125 65535 323
-ENDBLOCK

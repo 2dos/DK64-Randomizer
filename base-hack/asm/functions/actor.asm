@@ -30,6 +30,7 @@
 .definelabel spawnEnemyDrops_Vanilla, 0x806A5C60
 .definelabel spawnActorWithFlag, 0x806A5DF0
 .definelabel spawnObjectAtActor, 0x8069E490
+.definelabel spawnSpiderSilk, 0x806AD9AC
 .definelabel isActorLoaded, 0x8067ADB4
 .definelabel beaverControlSwitchCase, 0x806AD260
 .definelabel spawnProjectile, 0x80690A28
@@ -91,3 +92,4 @@
 .definelabel resetKongVars, 0x806D0408
 .definelabel handleAnimation, 0x80614D90
 .definelabel getActorModelIndex, 0x80613448
+.definelabel CanDive, 0x806E770C

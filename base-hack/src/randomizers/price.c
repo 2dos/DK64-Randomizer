@@ -11,11 +11,7 @@
 #define PURCHASE_INSTRUMENT 4
 #define PURCHASE_NOTHING -1
 
-#define SHOP_CRANKY 0
-#define SHOP_FUNKY 1
-#define SHOP_CANDY 2
-
-void alter_price(int purchase_type, int purchase_value, int kong, int level, int shop_index) {
+void alter_price(int purchase_type, int purchase_value, int kong, int level, vendors shop_index) {
 	int write = -1;
 	if (purchase_type == PURCHASE_FLAG) {
 		int subtype = getMoveProgressiveFlagType(purchase_value);
@@ -46,6 +42,9 @@ void alter_price(int purchase_type, int purchase_value, int kong, int level, int
 				break;
 			case SHOP_CANDY:
 				CandyMoves_New[kong][level].price = write;
+				break;
+			case SHOP_SNIDE:
+				break;
 			break;
 		}
 	}

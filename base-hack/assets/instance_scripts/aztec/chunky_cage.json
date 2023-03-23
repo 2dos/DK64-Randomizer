@@ -1,0 +1,164 @@
+{
+    "id": 36,
+    "behav_9C": 0,
+    "ignore": false,
+    "output_version": 2,
+    "script": [
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [0, 0, 0]}
+            ],
+            "executions": [
+                {"function": 20, "parameters": [1, 20, 0]},
+                {"function": 38, "parameters": [3, 700, 0]},
+                {"function": 22, "parameters": [1, 1, 0]},
+                {"function": 1, "parameters": [1, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [1, 0, 0]},
+                {"function": 17, "inverted": false, "parameters": [61, 0, 0]}
+            ],
+            "executions": [
+                {"function": 38, "parameters": [1, 0, 0]},
+                {"function": 1, "parameters": [2, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [1, 0, 0]},
+                {"function": 17, "inverted": false, "parameters": [6, 0, 0]},
+                {"function": 26, "inverted": false, "parameters": [2, 0, 0]}
+            ],
+            "executions": [
+                {"function": 38, "parameters": [1, 0, 0]},
+                {"function": 1, "parameters": [2, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [2, 0, 0]}
+            ],
+            "executions": [
+                {"function": 17, "parameters": [1, 1, 0]},
+                {"function": 15, "parameters": [429, 0, 50]},
+                {"function": 14, "parameters": [291, 0, 0]},
+                {"function": 1, "parameters": [3, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [3, 0, 0]},
+                {"function": 21, "inverted": true, "parameters": [1, 0, 0]}
+            ],
+            "executions": [
+                {"function": 16, "parameters": [0, 0, 0]},
+                {"function": 5, "parameters": [37, 10, 0]},
+                {"function": 84, "parameters": [37, 1, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [3, 0, 0]},
+                {"function": 21, "inverted": true, "parameters": [1, 0, 0]}
+            ],
+            "executions": [
+                {"function": 3, "parameters": [0, 110, 0]},
+                {"function": 1, "parameters": [4, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [4, 0, 0]},
+                {"function": 4, "inverted": false, "parameters": [0, 0, 0]}
+            ],
+            "executions": [
+                {"function": 1, "parameters": [5, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [5, 0, 0]},
+                {"function": 40, "inverted": false, "parameters": [0, 0, 0]}
+            ],
+            "executions": [
+                {"function": 5, "parameters": [37, 30, 0]},
+                {"function": 84, "parameters": [37, 1, 0]},
+                {"function": 17, "parameters": [1, 1, 0]},
+                {"function": 1, "parameters": [20, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [5, 0, 0]},
+                {"function": 6, "inverted": false, "parameters": [7, 0, 36]},
+                {"function": 25, "inverted": true, "parameters": [6, 0, 0]}
+            ],
+            "executions": [
+                {"function": 118, "parameters": [0, 0, 0]},
+                {"function": 1, "parameters": [6, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [5, 0, 0]},
+                {"function": 17, "inverted": true, "parameters": [61, 0, 0]},
+                {"function": 17, "inverted": true, "parameters": [6, 0, 0]},
+                {"function": 40, "inverted": true, "parameters": [0, 0, 0]}
+            ],
+            "executions": [
+                {"function": 1, "parameters": [6, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [6, 0, 0]}
+            ],
+            "executions": [
+                {"function": 17, "parameters": [1, 1, 0]},
+                {"function": 14, "parameters": [291, 0, 0]},
+                {"function": 1, "parameters": [7, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [7, 0, 0]},
+                {"function": 21, "inverted": true, "parameters": [1, 0, 0]}
+            ],
+            "executions": [
+                {"function": 16, "parameters": [0, 0, 0]},
+                {"function": 5, "parameters": [37, 20, 0]},
+                {"function": 84, "parameters": [37, 1, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [7, 0, 0]},
+                {"function": 21, "inverted": true, "parameters": [1, 0, 0]}
+            ],
+            "executions": [
+                {"function": 3, "parameters": [0, 30, 0]},
+                {"function": 1, "parameters": [8, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [8, 0, 0]},
+                {"function": 4, "inverted": false, "parameters": [0, 0, 0]}
+            ],
+            "executions": [
+                {"function": 1, "parameters": [0, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [20, 0, 0]},
+                {"function": 21, "inverted": true, "parameters": [1, 0, 0]}
+            ],
+            "executions": [
+                {"function": 1, "parameters": [0, 0, 0]}
+            ]
+        }
+    ]
+}
