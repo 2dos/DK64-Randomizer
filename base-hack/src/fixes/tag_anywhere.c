@@ -430,7 +430,7 @@ int canTagAnywhere(void) {
     if (ModelTwoTouchCount > 0) {
         return 0;
     }
-    if (CurrentMap == 0x2A) {
+    if (CurrentMap == MAP_TROFFNSCOFF) {
         if (MapState & 0x10) {
             return 0;
         }
@@ -513,10 +513,10 @@ int getTagAnywhereKong(int direction) {
     int reached_limit = 0;
     while (i < TAG_ANYWHERE_KONG_LIMIT) {
         int pass = 0;
-        if (checkFlag(kong_flags[next_character],0)) {
+        if (checkFlag(kong_flags[next_character],FLAGTYPE_PERMANENT)) {
             pass = 1;
             if (Rando.perma_lose_kongs) {
-                if (checkFlag(KONG_LOCKED_START + next_character,0)) {
+                if (checkFlag(KONG_LOCKED_START + next_character,FLAGTYPE_PERMANENT)) {
                     if ((!curseRemoved()) && (!hasPermaLossGrace(CurrentMap))) {
                         pass = 0;
                     }
@@ -562,7 +562,7 @@ void tagAnywhere(void) {
             if (tag_countdown > 0) {
                 tag_countdown -= 1;
             }
-            if (CurrentMap == 0x2A) {
+            if (CurrentMap == MAP_TROFFNSCOFF) {
                 if (tag_countdown == 2) {
                     HUD->item[0].hud_state = 1;
                     if (Player->control_state == 108) {
@@ -653,7 +653,7 @@ void tagAnywhere(void) {
                             }
                         }
                         // Fix HUD memes
-                        if (CurrentMap == 0x2A) {
+                        if (CurrentMap == MAP_TROFFNSCOFF) {
                             if (!hasTurnedInEnoughCBs()) {
                                 tag_countdown = 3;
                                 HUD->item[0].hud_state_timer = 0x100;

@@ -61,7 +61,7 @@ void initHack(int source) {
 	 * 
 	 */
 	if (LoadedHooks == 0) {
-		if ((source == 1) || (CurrentMap == 0x28)) {
+		if ((source == 1) || (CurrentMap == MAP_NINTENDOLOGO)) {
 			DebugInfoOn = 1;
 			if (Rando.fast_start_beginning) {
 				*(int*)(0x80714540) = 0;
@@ -383,7 +383,7 @@ void quickInit(void) {
 	 */
 	initHack(1);
 	if (Rando.quality_of_life.fast_boot) {
-		initiateTransitionFade(0x51, 0, 5);
+		initiateTransitionFade(MAP_NFRTITLESCREEN, 0, 5);
 		CutsceneWillPlay = 0;
 		Gamemode = 5;
 		Mode = 5;

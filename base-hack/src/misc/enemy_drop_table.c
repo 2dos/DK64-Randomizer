@@ -134,7 +134,7 @@ void spawnEnemyDrops(actorData* actor) {
                 if ((actor_index >= 241) && (actor_index <= 245)) {
                     int world = getWorld(CurrentMap, 1);
                     flag = 469 + (5 * world) + (actor_index - 241);
-                    if (checkFlag(flag, 0)) {
+                    if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
                         return;
                     } else {
                         if (Rando.item_rando) {

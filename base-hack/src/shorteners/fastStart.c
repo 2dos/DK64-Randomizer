@@ -16,10 +16,10 @@ void applyFastStart(void) {
 		setPermFlag(FLAG_ABILITY_SIMSLAM); // Cranky given SSlam
 		setPermFlag(getKongFlag(Rando.starting_kong)); // Starting Kong Free
 		if (Rando.moves_pregiven.camera) {
-			setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, 0);
+			setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, FLAGTYPE_PERMANENT);
 		}
 		if (Rando.moves_pregiven.shockwave) {
-			setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, 0);
+			setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, FLAGTYPE_PERMANENT);
 		}
 	}
 }

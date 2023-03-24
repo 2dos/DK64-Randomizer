@@ -48,55 +48,55 @@ static const cutscene_wipe wipe_prevent_list[] = {
 	// Cutscenes where the filtration process is prevented, regardless of map permissions
 	{
 		// Mountain GB Spawn Cutscene
-		.map = 7,
+		.map = MAP_JAPES,
 		.cutscene = 13,
 		.cutscene_type = 0,
 	},
 	{
 		// Fungi Crusher On
-		.map = 61,
+		.map = MAP_FUNGIMILLFRONT,
 		.cutscene = 2,
 		.cutscene_type = 0,
 	},
 	{
 		// Fungi Turn Waterwheel
-		.map = 48,
+		.map = MAP_FUNGI,
 		.cutscene = 10,
 		.cutscene_type = 0,
 	},
 	{
 		// Fungi Mill GB Spawn
-		.map = 48,
+		.map = MAP_FUNGI,
 		.cutscene = 9,
 		.cutscene_type = 0,
 	},
 	{
 		// Fungi break box
-		.map = 48,
+		.map = MAP_FUNGI,
 		.cutscene = 11,
 		.cutscene_type = 0,
 	},
 	{
 		// Aztec Snoop Door Open
-		.map = 38,
+		.map = MAP_AZTEC,
 		.cutscene = 17,
 		.cutscene_type = 0,
 	},
 	{
 		// Fungi Winch
-		.map = 48,
+		.map = MAP_FUNGI,
 		.cutscene = 7,
 		.cutscene_type = 0,	
 	},
 	{
 		// Factory Power Shed
-		.map = 26,
+		.map = MAP_FACTORY,
 		.cutscene = 7,
 		.cutscene_type = 0,
 	},
 	{
 		// Galleon Ship Spawn
-		.map = 30,
+		.map = MAP_GALLEON,
 		.cutscene = 14,
 		.cutscene_type = 0,
 	}

@@ -46,11 +46,11 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 				}
 			} else if ((purchase_type == PURCHASE_FLAG) || (purchase_type == PURCHASE_GB)) {
 				if (purchase_value == -2) { // Shockwave & Camera Combo
-					if ((!checkFlagDuplicate(FLAG_ABILITY_CAMERA,0)) || (!checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,0))) {
+					if ((!checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT)) || (!checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT))) {
 						return 6;
 					}
 				} else {
-					if (!checkFlagDuplicate(purchase_value,0)) {
+					if (!checkFlagDuplicate(purchase_value, FLAGTYPE_PERMANENT)) {
 						int is_shared = 0;
 						int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
 						for (int i = 0; i < (sizeof(tied_flags) / 4); i++) {
@@ -287,7 +287,7 @@ void wipeCounterImageCache(void) {
 
 void* loadInternalTexture(int texture_start, int texture_offset) {
 	if (texture_load[texture_offset] == 0) {
-		texture_data[texture_offset] = getMapData(0xE, texture_start + texture_offset, 1, 1);
+		texture_data[texture_offset] = getMapData(TABLE_TEXTURES, texture_start + texture_offset, 1, 1);
 	}
 	texture_load[texture_offset] = 3;
 	return texture_data[texture_offset];
@@ -437,7 +437,7 @@ void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
 		// Init Code
-		if (CurrentMap != 0x11) {
+		if (CurrentMap != MAP_HELM) {
 			if (Rando.shop_indicator_on) {
 				if (Rando.shop_indicator_on == 2) {
 					paad->use_item_display = 1;
@@ -505,7 +505,7 @@ void newCounterCode(void) {
 			paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], face+1, 1);
 		}
 	} else {
-		if (CurrentMap != 0x11) {
+		if (CurrentMap != MAP_HELM) {
 			if ((ObjectModel2Timer % 20) == 0) {
 				int lim = paad->cap;
 				if (lim > 1) {
@@ -523,7 +523,7 @@ void newCounterCode(void) {
 					CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFFFFB;
 				}
 			}
-			if (CurrentMap == 0x1E) {
+			if (CurrentMap == MAP_GALLEON) {
 				int shop = paad->shop;
 				int* m2location = (int*)ObjectModel2Pointer;
 				if (shop == 1) {

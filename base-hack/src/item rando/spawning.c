@@ -45,7 +45,7 @@ void spawnRewardAtActor(int object, int flag) {
         object = bonus_data[index].spawn_actor;
     }
     if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
-        if (!checkFlag(flag, 0)) {
+        if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
             spawnObjectAtActor(object, flag);
         }
     }
@@ -113,17 +113,17 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
     }
     if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
         // Protect against null objects
-        if ((actor_master_types[object] == ACTORMASTER_SPRITE) && ((CurrentMap == 0x53) || (CurrentMap == 0xC5))) {
+        if ((actor_master_types[object] == ACTORMASTER_SPRITE) && ((CurrentMap == MAP_FUNGIDOGADON) || (CurrentMap == MAP_AZTECDOGADON))) {
             // Sprite & Dogadon Fight
             cutscene = 1;
             x_f = 0x43ED8000;
             y_f = 0x43570000;
             z_f = 0x443B8000;
-        } else if ((object != 72) && (CurrentMap == 0x6F)) {
+        } else if ((object != 72) && (CurrentMap == MAP_GALLEONPUFFTOSS)) {
             // Pufftoss - Not a key
             cutscene = 100;
         }
-        if ((CurrentMap == 0x9A) || (CurrentMap == 0xC4)) {
+        if ((CurrentMap == MAP_FACTORYJACK) || (CurrentMap == MAP_CAVESDILLO)) {
             // AD2/MJ
             cutscene = 1;
         }

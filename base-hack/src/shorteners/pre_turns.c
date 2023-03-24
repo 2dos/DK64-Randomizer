@@ -17,7 +17,7 @@ void apply_key(int index, int remove_troff, int set_key) {
 	if (index < 7) {
 		if (Rando.level_order_rando_on) {
 			if (set_key) {
-				setFlagDuplicate(Rando.key_flags[index],1,0);
+				setFlagDuplicate(Rando.key_flags[index],1,FLAGTYPE_PERMANENT);
 			}
 			if (remove_troff) {
 				for (int j = 0; j < 7; j++) {
@@ -28,7 +28,7 @@ void apply_key(int index, int remove_troff, int set_key) {
 			}
 		} else {
 			if (set_key) {
-				setFlagDuplicate(normal_key_flags[index],1,0);
+				setFlagDuplicate(normal_key_flags[index],1,FLAGTYPE_PERMANENT);
 			}
 			if (remove_troff) {
 				setPermFlag(tnsportal_flags[index]);
@@ -36,7 +36,7 @@ void apply_key(int index, int remove_troff, int set_key) {
 		}
 	} else {
 		if (set_key) {
-			setFlagDuplicate(normal_key_flags[7],1,0); // Set Key 8
+			setFlagDuplicate(normal_key_flags[7],1,FLAGTYPE_PERMANENT); // Set Key 8
 		}
 	}
 }
@@ -51,7 +51,7 @@ void pre_turn_keys(void) {
 				if (normal_key_flags[i] == vanilla_flag) {
 					keys_in_item_pool = 1;
 					int new_flag = ItemRando_FLUT[(2 * j) + 1];
-					if (checkFlagDuplicate(new_flag, 0)) {
+					if (checkFlagDuplicate(new_flag, FLAGTYPE_PERMANENT)) {
 						setPermFlag(tnsportal_flags[i]);
 					}
 				} else if (vanilla_flag == -1) {
@@ -77,7 +77,7 @@ void pre_turn_keys(void) {
 				int vanilla_flag = ItemRando_FLUT[2 * j];
 				if (normal_key_flags[i] == vanilla_flag) {
 					int new_flag = ItemRando_FLUT[(2 * j) + 1];
-					if (checkFlagDuplicate(new_flag, 0)) {
+					if (checkFlagDuplicate(new_flag, FLAGTYPE_PERMANENT)) {
 						setPermFlag(tnsportal_flags[i]);
 					}
 				} else if (vanilla_flag == -1) {
@@ -93,15 +93,15 @@ void pre_turn_keys(void) {
 	*/
 	// if (Rando.item_rando) {
 	// 	for (int i = 0; i < 7; i++) {
-	// 		if (checkFlag(getKeyFlag(i), 0)) {
+	// 		if (checkFlag(getKeyFlag(i), FLAGTYPE_PERMANENT)) {
 	// 			if (Rando.level_order_rando_on) {
 	// 				for (int j = 0; j < 7; j++) {
 	// 					if (Rando.level_order[j] == i) {
-	// 						setFlagDuplicate(tnsportal_flags[j], 1, 0);
+	// 						setFlagDuplicate(tnsportal_flags[j], 1, FLAGTYPE_PERMANENT);
 	// 					}
 	// 				}
 	// 			} else {
-	// 				setFlagDuplicate(tnsportal_flags[i], 1, 0);
+	// 				setFlagDuplicate(tnsportal_flags[i], 1, FLAGTYPE_PERMANENT);
 	// 			}
 	// 		}
 	// 	}
@@ -117,15 +117,15 @@ void auto_turn_keys(void) {
 		for (int i = 0; i < 8; i++) {
 			if (Rando.level_order_rando_on) {
 				if (i < 7) {
-					if (checkFlagDuplicate(Rando.key_flags[i],0)) {
+					if (checkFlagDuplicate(Rando.key_flags[i], FLAGTYPE_PERMANENT)) {
 						writeKeyFlags(i);
 					}
 				}
-				if (checkFlagDuplicate(normal_key_flags[7],0)) {
+				if (checkFlagDuplicate(normal_key_flags[7], FLAGTYPE_PERMANENT)) {
 					writeKeyFlags(7);
 				}
 			} else {
-				if (checkFlagDuplicate(normal_key_flags[i],0)) {
+				if (checkFlagDuplicate(normal_key_flags[i], FLAGTYPE_PERMANENT)) {
 					writeKeyFlags(i);
 				}
 			}

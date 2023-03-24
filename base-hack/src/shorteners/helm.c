@@ -1,22 +1,20 @@
 #include "../../include/common.h"
 
-#define HELM_LOBBY 0xAA
-#define HELM_MAIN 0x11
 #define TRIGGER_ELEMENT_SIZE 0x3A
 
 void changeHelmLZ(void) {
 	if (Rando.fast_start_helm) {
-		if (CurrentMap == HELM_LOBBY) {
+		if (CurrentMap == MAP_HELMLOBBY) {
 			if (ObjectModel2Timer == 3) {
 				setPermFlag(FLAG_STORY_HELM); // Helm Story
-				setFlag(FLAG_HELM_ROMANDOORS_OPEN,1,2); // Roman Numeral Doors
+				setFlag(FLAG_HELM_ROMANDOORS_OPEN,1,FLAGTYPE_TEMPORARY); // Roman Numeral Doors
 				for (int j = 0; j < 4; j++) {
-					setFlag(FLAG_HELM_GATE_0 + j,1,2); // Gates knocked down
+					setFlag(FLAG_HELM_GATE_0 + j,1,FLAGTYPE_TEMPORARY); // Gates knocked down
 				}
 				for (int i = 0; i < TriggerSize; i++) {
 					trigger* focused_trigger = getObjectArrayAddr(TriggerArray,TRIGGER_ELEMENT_SIZE,i);
 					if (focused_trigger->type == 9) {
-						if (focused_trigger->map == HELM_MAIN) {
+						if (focused_trigger->map == MAP_HELM) {
 							if (focused_trigger->exit == 0) {
 								if (Rando.fast_start_helm == 1) {
 									focused_trigger->exit = 3;
@@ -64,9 +62,9 @@ void HelmInit(int init_stage) {
 				}
 			}
 			if (!in_helm) {
-				setFlag(0x4B + i,1,2); // Section Complete
-				setFlag(minigame_0_flags[i],1,2);
-				setFlag(minigame_1_flags[i],1,2);
+				setFlag(0x4B + i,1,FLAGTYPE_TEMPORARY); // Section Complete
+				setFlag(minigame_0_flags[i],1,FLAGTYPE_TEMPORARY);
+				setFlag(minigame_1_flags[i],1,FLAGTYPE_TEMPORARY);
 			}
 		}
 		// Tag entrance W1
@@ -148,11 +146,11 @@ void HelmBarrelCode(void) {
 		if (CurrentActorPointer_0->data_pointer) {
 			barrel_index = CurrentActorPointer_0->data_pointer->data[2];
 		}
-		if (checkFlag(FLAG_MODIFIER_HELMBOM,0)) {
+		if (checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT)) {
 			deleteActorContainer(CurrentActorPointer_0);
 			deleted = 1;
 		} else if (barrel_index > -1) {
-			if (checkFlag(HelmMinigameFlags[barrel_index],2)) {
+			if (checkFlag(HelmMinigameFlags[barrel_index], FLAGTYPE_TEMPORARY)) {
 				deleteActorContainer(CurrentActorPointer_0);
 				deleted = 1;
 			}
@@ -162,7 +160,7 @@ void HelmBarrelCode(void) {
 		BonusBarrelCode();
 		if (CurrentActorPointer_0->control_state == 0xC) {
 			if (paad->destroy_timer < 3) {
-				setFlag(HelmMinigameFlags[(int)paad->barrel_index],1,2);
+				setFlag(HelmMinigameFlags[(int)paad->barrel_index],1,FLAGTYPE_TEMPORARY);
 				DisplayExplosionSprite();
 				deleteActorContainer(CurrentActorPointer_0);
 			}
@@ -197,29 +195,29 @@ int checkDoorItem(int index, int count) {
 				return gb_count >= count;
 			}
 		case DOORITEM_BP:
-			return countFlagsDuplicate(FLAG_BP_JAPES_DK_HAS, 40, 0) >= count;
+			return countFlagsDuplicate(FLAG_BP_JAPES_DK_HAS, 40, FLAGTYPE_PERMANENT) >= count;
 		case DOORITEM_BEAN:
-			return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, 0);
+			return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
 		case DOORITEM_PEARL:
-			return countFlagsDuplicate(FLAG_PEARL_0_COLLECTED, 5, 0) >= count;
+			return countFlagsDuplicate(FLAG_PEARL_0_COLLECTED, 5, FLAGTYPE_PERMANENT) >= count;
 		case DOORITEM_FAIRY:
-			return countFlagsDuplicate(FLAG_FAIRY_1, 20, 0) >= count;
+			return countFlagsDuplicate(FLAG_FAIRY_1, 20, FLAGTYPE_PERMANENT) >= count;
 		case DOORITEM_KEY:
 			{
 				int key_count = 0;
 				for (int i = 0; i < 8; i++) {
-					key_count += checkFlagDuplicate(normal_key_flags[i], 0);
+					key_count += checkFlagDuplicate(normal_key_flags[i], FLAGTYPE_PERMANENT);
 				}
 				return key_count >= count;
 			}
 		case DOORITEM_MEDAL:
-			return countFlagsDuplicate(FLAG_MEDAL_JAPES_DK, 40, 0) >= count;
+			return countFlagsDuplicate(FLAG_MEDAL_JAPES_DK, 40, FLAGTYPE_PERMANENT) >= count;
 		case DOORITEM_RAINBOWCOIN:
-			return countFlagsDuplicate(FLAG_RAINBOWCOIN_0, 16, 0) >= count;
+			return countFlagsDuplicate(FLAG_RAINBOWCOIN_0, 16, FLAGTYPE_PERMANENT) >= count;
 		case DOORITEM_CROWN:
-			return countFlagsDuplicate(FLAG_CROWN_JAPES, 10, 0) >= count;
+			return countFlagsDuplicate(FLAG_CROWN_JAPES, 10, FLAGTYPE_PERMANENT) >= count;
 		case DOORITEM_COMPANYCOIN:
-			return (checkFlagDuplicate(FLAG_COLLECTABLE_NINTENDOCOIN, 0) + checkFlagDuplicate(FLAG_COLLECTABLE_RAREWARECOIN, 0)) >= count;
+			return (checkFlagDuplicate(FLAG_COLLECTABLE_NINTENDOCOIN, FLAGTYPE_PERMANENT) + checkFlagDuplicate(FLAG_COLLECTABLE_RAREWARECOIN, FLAGTYPE_PERMANENT)) >= count;
 	}
 	return 1;
 }

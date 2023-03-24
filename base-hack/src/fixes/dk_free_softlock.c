@@ -34,7 +34,7 @@ void cutsceneDKCode(void) {
 		// Initialization of the actor
 		jumping_started = 0;
 		alterCutsceneKongProperties();
-		if (CurrentMap == 0x4C) {
+		if (CurrentMap == MAP_DKRAP) {
 			CurrentActorPointer_0->render->scale_x *= 0.8f;
 			CurrentActorPointer_0->render->scale_y *= 0.8f;
 			CurrentActorPointer_0->render->scale_z *= 0.8f;

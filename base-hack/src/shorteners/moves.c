@@ -29,7 +29,7 @@ int initFile_getBeltLevel(int inc_training) {
 	for (int i = 0; i < 2; i++) {
 		if (belts[i]) {
 			belt_level += 1;
-			// setFlagDuplicate(FLAG_ITEM_BELT_0 + i, 1, 0);
+			// setFlagDuplicate(FLAG_ITEM_BELT_0 + i, 1, FLAGTYPE_PERMANENT);
 		}
 	}
 	if (inc_training) {
@@ -48,7 +48,7 @@ int initFile_getInsUpgradeLevel(int inc_training) {
 	for (int i = 0; i < 3; i++) {
 		if (instrument_upgrades[i]) {
 			instrument_upgrade_level += 1;
-			// setFlagDuplicate(FLAG_ITEM_INS_0 + i, 1, 0);
+			// setFlagDuplicate(FLAG_ITEM_INS_0 + i, 1, FLAGTYPE_PERMANENT);
 		}
 	}
 	if (inc_training) {
@@ -68,7 +68,7 @@ int initFile_getSlamLevel(int inc_training) {
 	for (int i = DEFAULT_SLAM_LEVEL; i < 3; i++) {
 		if (slams[i]) {
 			slam_level += 1;
-			// setFlagDuplicate(FLAG_ITEM_SLAM_0 + i, 1, 0);
+			// setFlagDuplicate(FLAG_ITEM_SLAM_0 + i, 1, FLAGTYPE_PERMANENT);
 		}
 	}
 	if (inc_training) {
@@ -153,22 +153,22 @@ void unlockMoves(void) {
 		}
 	}
 	if ((Rando.moves_pregiven.camera) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_CAMERA) || (initFile_checkTraining(PURCHASE_FLAG, -1, -2)))) {
-		setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, 0);
+		setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, FLAGTYPE_PERMANENT);
 		CollectableBase.Film = 5;
 	}
 	if ((Rando.moves_pregiven.shockwave) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_SHOCKWAVE) || (initFile_checkTraining(PURCHASE_FLAG, -1, -2)))) {
-		setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, 0);
+		setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, FLAGTYPE_PERMANENT);
 	}
 	if ((Rando.moves_pregiven.dive) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_DIVE))) {
-		setFlagDuplicate(FLAG_TBARREL_DIVE, 1, 0);
+		setFlagDuplicate(FLAG_TBARREL_DIVE, 1, FLAGTYPE_PERMANENT);
 	}
 	if ((Rando.moves_pregiven.oranges) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_ORANGE))) {
-		setFlagDuplicate(FLAG_TBARREL_ORANGE, 1, 0);
+		setFlagDuplicate(FLAG_TBARREL_ORANGE, 1, FLAGTYPE_PERMANENT);
 	}
 	if ((Rando.moves_pregiven.barrels) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_BARREL))) {
-		setFlagDuplicate(FLAG_TBARREL_BARREL, 1, 0);
+		setFlagDuplicate(FLAG_TBARREL_BARREL, 1, FLAGTYPE_PERMANENT);
 	}
 	if ((Rando.moves_pregiven.vines) || (initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_TBARREL_VINE))) {
-		setFlagDuplicate(FLAG_TBARREL_VINE, 1, 0);
+		setFlagDuplicate(FLAG_TBARREL_VINE, 1, FLAGTYPE_PERMANENT);
 	}
 }

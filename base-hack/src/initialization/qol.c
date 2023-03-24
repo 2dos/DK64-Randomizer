@@ -146,7 +146,7 @@ void bootSpeedup(void) {
 		int patch_index = 0;
 		for (int i = 0; i < 221; i++) {
 			balloonPatchCounts[i] = balloon_patch_count;
-			int* setup = getMapData(9,i,1,1);
+			int* setup = getMapData(TABLE_MAP_SETUPS,i,1,1);
 			char* modeltwo_setup = 0;
 			char* actor_setup = 0;
 			if (setup) {

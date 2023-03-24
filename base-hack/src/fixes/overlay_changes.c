@@ -11,12 +11,6 @@
 
 #include "../../include/common.h"
 
-#define FUNKY 1
-#define CRANKY 5
-#define CANDY 0x19
-#define MAIN_MENU 0x50
-#define SNIDE 0xF
-
 static const char moves_values[] = {1,1,3,1,7,1,1,7}; // Move values for the main menu changes
 
 void crossKongInit(void) {
@@ -42,22 +36,20 @@ void crossKongInit(void) {
 	*(int*)(0x80026C00) = 0x916D0004; // LBU 	t5, 0x4 (t3)
 }
 
-static const unsigned char boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7,0xCB,0xCC,0xCD,0xCE,0xCF,0xD6}; // Boss Maps
-
 void arcadeExit(void) {
 	/**
 	 * @brief Arcade exit procedure to fix a bug with Arcade if you have R2 Reward before R1 Reward
 	 */
 	if (!ArcadeExited) {
 		if ((ArcadeEnableReward) && (ArcadeStoryMode)) {
-			if (!checkFlag(FLAG_ARCADE_ROUND1, 0)) {
-				setFlag(0x10, 1, 2); // Spawn R1 Reward
-			} else if (!checkFlag(FLAG_COLLECTABLE_NINTENDOCOIN, 0)) {
-				setFlag(0x11, 1, 2); // Spawn R2 Reward
+			if (!checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
+				setFlag(0x10, 1, FLAGTYPE_TEMPORARY); // Spawn R1 Reward
+			} else if (!checkFlag(FLAG_COLLECTABLE_NINTENDOCOIN, FLAGTYPE_PERMANENT)) {
+				setFlag(0x11, 1, FLAGTYPE_TEMPORARY); // Spawn R2 Reward
 			}
 		}
 		if (!ArcadeStoryMode) {
-			initiateTransition(0x50, 0);
+			initiateTransition(MAP_MAINMENU, 0);
 		} else {
 			ExitFromBonus();
 		}
@@ -69,8 +61,8 @@ int determineArcadeLevel(void) {
 	/**
 	 * @brief Determines the arcade level based on R1 & Nin Coin flags
 	 */
-	if (checkFlag(FLAG_ARCADE_ROUND1, 0)) {
-		if (checkFlag(FLAG_COLLECTABLE_NINTENDOCOIN, 0)) {
+	if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
+		if (checkFlag(FLAG_COLLECTABLE_NINTENDOCOIN, FLAGTYPE_PERMANENT)) {
 			ArcadeMap = 8;
 			return 0;
 		}
@@ -223,7 +215,7 @@ void overlay_changes(void) {
 	/**
 	 * @brief All changes upon loading an overlay
 	 */
-	if ((CurrentMap == CRANKY) || (CurrentMap == CANDY) || (CurrentMap == FUNKY)) {
+	if ((CurrentMap == MAP_CRANKY) || (CurrentMap == MAP_CANDY) || (CurrentMap == MAP_FUNKY)) {
 		PatchCrankyCode(); // Change cranky code to handle an extra variable
 		*(int*)(0x80025E9C) = 0x0C009751; // Change writing of move to "write bitfield move" function call
 		writeJetpacMedalReq(); // Adjust medal requirement for Jetpac
@@ -247,13 +239,13 @@ void overlay_changes(void) {
 		*(int*)(0x80026508) = 0x0C000000 | (((int)&canPlayJetpac & 0xFFFFFF) >> 2);
 		*(int*)(0x80026F64) = 0; //  Disable check for whether you have a move before giving donation at shop
 		*(int*)(0x80026F68) = 0; //  Disable check for whether you have a move before giving donation at shop
-		if (CurrentMap == CRANKY) {
+		if (CurrentMap == MAP_CRANKY) {
 			*(short*)(0x80026FBA) = 3; // Coconut giving cutscene
 			*(short*)(0x80026E6A) = 0xBD; // Cranky
 			*(short*)(0x80026E8E) = 5; // Coconuts
 			*(short*)(0x80026FB2) = 9999; // Change coconut gift from 6.6 coconuts to 66.6 coconuts
 		}
-	} else if (CurrentMap == MAIN_MENU) {
+	} else if (CurrentMap == MAP_MAINMENU) {
 		*(short*)(0x8002E266) = 7; // Enguarde Arena Movement Write
 		*(short*)(0x8002F01E) = 7; // Rambi Arena Movement Write
 		for (int i = 0; i < 8; i++) {
@@ -280,7 +272,7 @@ void overlay_changes(void) {
 		*(short*)(0x80028CA6) = 5; // Change selecting orange to delete confirm screen
 		// Options
 		initOptionScreen();
-	} else if (CurrentMap == SNIDE) {
+	} else if (CurrentMap == MAP_SNIDE) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
 		if (Rando.item_rando) {		
@@ -302,14 +294,14 @@ void overlay_changes(void) {
 				BlueprintLargeImageColors[i].blue = color.blue;
 			}
 		}
-	} else if (CurrentMap == 0x11) {
+	} else if (CurrentMap == MAP_HELM) {
 		// Initialize Helm
 		HelmInit(0);
-	} else if ((CurrentMap == 0xAA) && (Rando.perma_lose_kongs)) {
+	} else if ((CurrentMap == MAP_HELMLOBBY) && (Rando.perma_lose_kongs)) {
 		// Prevent Helm Lobby B. Locker requiring Chunky
 		*(short*)(0x80027970) = 0x1000;
 	}
-	if ((CurrentMap == 0x35) || (CurrentMap == 0x49) || ((CurrentMap >= 0x9B) && (CurrentMap <= 0xA2))) {
+	if (inBattleCrown(CurrentMap)) {
 		// Change crown spawn
 		if (Rando.item_rando) {
 			*(int*)(0x8002501C) = 0x0C000000 | (((int)&spawnCrownReward & 0xFFFFFF) >> 2); // Crown Spawn
@@ -317,9 +309,9 @@ void overlay_changes(void) {
 	}
 	// Change Dillo Health based on map
 	if (Rando.short_bosses) {
-		if ((CurrentMap == 8) || (DestMap == 8)) {
+		if ((CurrentMap == MAP_JAPESDILLO) || (DestMap == MAP_JAPESDILLO)) {
 			actor_health_damage[185].init_health = 4; // Dillo Health - AD1
-		} else if ((CurrentMap == 0xC4) || (CurrentMap == 0xC4)) {
+		} else if ((CurrentMap == MAP_CAVESDILLO) || (CurrentMap == MAP_CAVESDILLO)) {
 			actor_health_damage[185].init_health = 3; // Dillo Health - AD2
 		}
 	}
@@ -328,9 +320,9 @@ void overlay_changes(void) {
 		WarpData = 0;
 		wipeHintCache();
 	}
-	if (CurrentMap == 2) { // Arcade
+	if (CurrentMap == MAP_DKARCADE) { // Arcade
 		initArcade();
-	} else if (CurrentMap == 9) { // Jetpac
+	} else if (CurrentMap == MAP_JETPAC) { // Jetpac
 		initJetpac();
 	}
 	writeCoinRequirements(1);
@@ -342,7 +334,7 @@ void overlay_changes(void) {
 	} else if (*(int*)(0x807FBB64) & 0x104000) { // Minigames
 		*(short*)(0x80024266) = 1; // Set Minigame oranges as infinite
 	}
-	if (CurrentMap == 0xBD) { // BFI
+	if (CurrentMap == MAP_FAIRYISLAND) { // BFI
 		*(int*)(0x80028080) = 0x0C000000 | (((int)&displayBFIMoveText & 0xFFFFFF) >> 2); // BFI Text Display
 		if (Rando.rareware_gb_fairies > 0) {
 			*(int*)(0x80027E70) = 0x2C410000 | Rando.rareware_gb_fairies; // SLTIU $at, $v0, count
@@ -353,7 +345,7 @@ void overlay_changes(void) {
 			*(int*)(0x80028104) = 0x0C000000 | (((int)&fairyQueenCutsceneCheck & 0xFFFFFF) >> 2); // BFI, Cutscene Play
 		}
 	}
-	if (CurrentMap == 0xD6) {
+	if (CurrentMap == MAP_KROOLSHOE) {
 		// Shoe
 		if (Rando.randomize_toes) {
 			for (int i = 0; i < 5; i++) {
@@ -362,13 +354,7 @@ void overlay_changes(void) {
 			}
 		}
 	}
-	int in_boss = 0;
-	for (int i = 0; i < sizeof(boss_maps); i++) {
-		if (CurrentMap == boss_maps[i]) {
-			in_boss = 1;
-		}
-	}
-	if (in_boss) {
+	if (inBossMap(CurrentMap, 1, 1, 1)) {
 		if (Rando.item_rando) {
 			*(int*)(0x80028650) = 0x0C000000 | (((int)&spawnBossReward & 0xFFFFFF) >> 2); // Key Spawn
 		}
@@ -378,16 +364,16 @@ void overlay_changes(void) {
 		}
 	}
 	if (Rando.misc_cosmetic_on) {
-		if ((CurrentMap >= 0x90) && (CurrentMap <= 0x93)) {
+		if ((CurrentMap >= MAP_PPPANIC_VEASY) && (CurrentMap <= MAP_PPPANIC_HARD)) {
 			// PPPanic
 			*(short*)(0x8002A55E) = 0x21 + Rando.pppanic_klaptrap_color; // PPPanic Klaptrap Color
 		}
-		if ((CurrentMap == 0x67) || ((CurrentMap >= 0x8A) && (CurrentMap <= 0x8C))) {
+		if ((CurrentMap == MAP_SEARCHLIGHT_VEASY) || ((CurrentMap >= MAP_SEARCHLIGHT_EASY) && (CurrentMap <= MAP_SEARCHLIGHT_HARD))) {
 			// SSeek
 			*(short*)(0x8002C22E) = 0x21 + Rando.sseek_klaptrap_color; // SSeek Klaptrap Color
 		}
 	}
-	if ((CurrentMap == 0x65) || ((CurrentMap >= 0x8D) && (CurrentMap <= 0x8F))) {
+	if ((CurrentMap == MAP_KLAMOUR_EASY) || ((CurrentMap >= MAP_KLAMOUR_NORMAL) && (CurrentMap <= MAP_KLAMOUR_INSANE))) {
 		// Krazy Kong Klamour - Adjsut flicker speeds
 		PatchBonusCode();
 		// Adjust Krazy KK Flicker Speeds
@@ -406,7 +392,7 @@ void overlay_changes(void) {
 			KrazyKKModels[(int)Rando.krusha_slot] = 0xDB; // Change to krusha model
 		}
 	}
-	if (CurrentMap == 0x9A) { // Mad Jack
+	if (CurrentMap == MAP_FACTORYJACK) { // Mad Jack
 		// Change phase reset differential to 40.0f units
 		*(short*)(0x80033B26) = 0x4220; // Jumping Around
 		*(short*)(0x800331AA) = 0x4220; // Random Square
@@ -419,13 +405,13 @@ void overlay_changes(void) {
 	}
 
 	if (Rando.fast_gbs) {
-		if (CurrentMap == 0x1B) { // Factory Car Race
+		if (CurrentMap == MAP_FACTORYCARRACE) { // Factory Car Race
 			*(short*)(0x8002D03A) = 0x0001; // 1 Lap
 		}
-		if(CurrentMap == 0xB9) { //Castle Car Race
+		if(CurrentMap == MAP_CASTLECARRACE) { //Castle Car Race
 			*(short*)(0x8002D096) = 0x0001; // 1 Lap
 		}
-		if(CurrentMap == 0x27) { //Seal Race
+		if(CurrentMap == MAP_GALLEONSEALRACE) { //Seal Race
 			*(short*)(0x8002D0E2) = 0x0001; // 1 Lap
 		}
 	}
@@ -436,8 +422,8 @@ void parseCutsceneData(void) {
 	 * @brief Handle Cutscene Data
 	 */
 	wipeCounterImageCache();
-	if ((CurrentMap >= 0xCB) && (CurrentMap <= 0xCF)) {
-		int phase = CurrentMap - 0xCB;
+	if ((CurrentMap >= MAP_KROOLDK) && (CurrentMap <= MAP_KROOLCHUNKY)) {
+		int phase = CurrentMap - MAP_KROOLDK;
 		initKRool(phase);
 	}
 	if (Rando.quality_of_life.remove_cutscenes) {

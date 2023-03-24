@@ -52,7 +52,7 @@ int getMedalItem(int index) {
 	return medal_item_table[index];
 }
 
-int getCrownItem(int map) {
+int getCrownItem(maps map) {
     /**
      * @brief Get Crown item from map index
      * 
@@ -60,9 +60,8 @@ int getCrownItem(int map) {
      * 
      * @return Actor Index of the reward
      */
-	int map_list[] = {0x35,0x49,0x9B,0x9C,0x9F,0xA0,0xA1,0x9D,0xA2,0x9E};
 	for (int i = 0; i < 10; i++) {
-		if (map == map_list[i]) {
+		if (map == crown_maps[i]) {
 			return getActorIndex(crown_item_table[i]);
 		}
 	}
