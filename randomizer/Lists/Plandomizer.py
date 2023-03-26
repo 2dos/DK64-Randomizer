@@ -467,6 +467,61 @@ for minigameEnum, minigameObj in MinigameRequirements.items():
 
 PlannableSpawns = []
 
+# A dictionary for sorting locations by hint_name.
+hintNameSortDict = {
+    Levels.DKIsles: {
+        "Training Grounds": 1,
+        "DK Isle": 2,
+        "Krem Isle": 3,
+        "Banana Fairy Room": 4,
+        "Level Lobbies": 5
+    },
+    Levels.JungleJapes: {
+        "Japes Outdoors": 1,
+        "Japes Tunnels": 2,
+        "Hive Area": 3,
+        "Japes Underground": 4
+    },
+    Levels.AngryAztec: {
+        "Various Aztec Tunnels": 1,
+        "Aztec Oasis": 2,
+        "Aztec Totem Area": 3,
+        "Tiny Temple": 4,
+        "5 Door Temple": 5,
+        "Llama Temple": 6
+    },
+    Levels.FranticFactory: {
+        "Frantic Factory Start": 1,
+        "Testing Area": 2,
+        "Research and Development Area": 3,
+        "Storage Area": 4,
+        "Production Room": 5
+    },
+    Levels.GloomyGalleon: {
+        "Galleon Caves": 1,
+        "Lighthouse Area": 2,
+        "Shipyard Area": 3,
+        "Treasure Room": 4
+    },
+    Levels.FungiForest: {
+        "Forest Center and Beanstalk": 1,
+        "Giant Mushroom Exterior": 2,
+        "Giant Mushroom Interior": 3,
+        "Owl Tree": 4,
+        "Forest Mills": 5
+    },
+    Levels.CrystalCaves: {
+        "Main Caves Area": 1,
+        "Igloo Area": 2,
+        "Caves Cabins": 3
+    },
+    Levels.CreepyCastle: {
+        "Castle Surroundings": 1,
+        "Castle Rooms": 2,
+        "Castle Underground": 3
+    }
+}
+
 # Go through each level and add the valid spawn locations.
 allSpawnableLevels = [
     DKIslesRegions,
@@ -479,10 +534,18 @@ allSpawnableLevels = [
     CreepyCastleRegions
 ]
 for level in allSpawnableLevels:
-    for regionEnum, regionObj in level.items():
-        if regionEnum in RegionMapList:
-            regionJson = {
-                "display_name": f"{getLevelString(regionObj.level)}: {regionObj.hint_name} - {regionObj.name}",
-                "enum_name": regionEnum.name
-            }
-            PlannableSpawns.append(regionJson)
+    # Remove locations we should not spawn into (such as the credits).
+    filteredLocations = dict(filter(lambda x: x[0] in RegionMapList, level.items()))
+
+    # Sort by hint name, for better readability.
+    def spawnKey(loc):
+        _, regionObj = loc
+        return hintNameSortDict[regionObj.level][regionObj.hint_name]
+    sortedLocations = dict(sorted(filteredLocations.items(), key=spawnKey))
+
+    for regionEnum, regionObj in sortedLocations.items():
+        regionJson = {
+            "display_name": f"{getLevelString(regionObj.level)}: {regionObj.hint_name} - {regionObj.name}",
+            "enum_name": regionEnum.name
+        }
+        PlannableSpawns.append(regionJson)
