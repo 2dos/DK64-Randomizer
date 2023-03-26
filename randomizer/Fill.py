@@ -189,8 +189,11 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                 for location in region.locations:
                     if location.id not in newLocations and location.id not in accessible and location.logic(LogicVariables):
                         location_obj = LocationList[location.id]
+                        # If this location is flagged as inaccessible, ignore it
+                        if location_obj.inaccessible:
+                            continue
                         # If this location is a bonus barrel, must make sure its logic is met as well
-                        if (
+                        elif (
                             (location.bonusBarrel is MinigameType.BonusBarrel and settings.bonus_barrels != MinigameBarrels.skip)
                             or (location.bonusBarrel is MinigameType.HelmBarrel and settings.helm_barrels != MinigameBarrels.skip)
                         ) and (not MinigameRequirements[BarrelMetaData[location.id].minigame].logic(LogicVariables)):
@@ -290,16 +293,20 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
     elif searchType == SearchMode.GeneratePlaythrough:
         return playthroughLocations
     elif searchType == SearchMode.CheckAllReachable:
+        expected_accessible_locations = [x for x in LocationList if not LocationList[x].inaccessible]
+        # incorrectly_accessible = [x for x in accessible if x not in expected_accessible_locations]
+        # incorrectly_inaccessible = [x for x in expected_accessible_locations if x not in accessible]
+        # always_inaccessible_locations = [x for x in LocationList if LocationList[x].inaccessible]
         # settings.debug_accessible = accessible
         # settings.debug_accessible_not = [location for location in LocationList if location not in accessible]
         # settings.debug_enormous_pain_1 = [LocationList[location] for location in settings.debug_accessible]
         # settings.debug_enormous_pain_3 = [LocationList[location] for location in settings.debug_accessible_not]
-        # if len(accessible) != len(LocationList):
+        # if len(accessible) != len(expected_accessible_locations):
         #     return False
         # return True
-        return len(accessible) == len(LocationList)
+        return len(accessible) == len(expected_accessible_locations)
     elif searchType == SearchMode.GetUnreachable:
-        return [x for x in LocationList if x not in accessible]
+        return [x for x in LocationList if x not in accessible and not LocationList[x].inaccessible]
 
 
 def VerifyWorld(settings):
@@ -753,7 +760,7 @@ def RandomFill(settings, itemsToPlace, inOrder=False):
     while len(itemsToPlace) > 0:
         item = itemsToPlace.pop()
         validLocations = settings.GetValidLocationsForItem(item)
-        itemEmpty = [x for x in empty if x in validLocations and LocationList[x].item is None]
+        itemEmpty = [x for x in empty if x in validLocations and LocationList[x].item is None and not LocationList[x].inaccessible]
         if len(itemEmpty) == 0:
             # invalid_empty_reachable = [x for x in itemEmpty if x not in validLocations]
             # empty_locations = [x for x in LocationList.values() if x.item is None]
@@ -1075,7 +1082,7 @@ def Fill(spoiler):
     if Types.Blueprint in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Blueprint)
         Reset()
-        # Blueprints can be placed randomly - there's no location that can cause blueprints to lock themselves
+        # Blueprints can be placed randomly - there's no location (yet) that can cause blueprints to lock themselves
         blueprintsUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, ItemPool.Blueprints().copy(), ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types))
         if blueprintsUnplaced > 0:
             raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
@@ -1526,7 +1533,7 @@ def FillKongsAndMoves(spoiler, placedTypes):
     # We can expect that all locations in this region are starting move locations or Training Barrels
     for locationLogic in RegionList[Regions.GameStart].locations:
         location = LocationList[locationLogic.id]
-        if location.item is None:
+        if location.item is None and not location.inaccessible:
             locationsNeedingMoves.append(locationLogic.id)
         elif location.item not in (None, Items.NoItem):
             startingMoves.append(location.item)
@@ -2170,8 +2177,8 @@ def Generate_Spoiler(spoiler):
     InitKasplatMap(LogicVariables)
     # Handle misc randomizations
     ShuffleMisc(spoiler)
-    # Level order rando may have to affect the progression to be fillable
-    if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all:
+    # Level order rando may have to affect the progression to be fillable - no logic doesn't care about your silly progression, however
+    if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all and spoiler.settings.logic_type != LogicType.nologic:
         # Handle Level Order if randomized
         if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
             ShuffleExits.ExitShuffle(spoiler.settings)

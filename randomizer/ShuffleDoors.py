@@ -143,7 +143,8 @@ def ShuffleVanillaDoors(spoiler):
                 vanilla_door_indexes.append(door_index)
         random.shuffle(vanilla_door_indexes)
         # One random vanilla T&S per level is locked to being a T&S
-        locked_tns_index = random.choice([idx for idx in vanilla_door_indexes if door_locations[level][idx].default_placed == "tns" and door_locations[level][idx].door_type != "wrinkly"])
+        locked_tns_options = [idx for idx in vanilla_door_indexes if door_locations[level][idx].default_placed == "tns" and door_locations[level][idx].door_type != "wrinkly"]
+        locked_tns_index = random.choice(locked_tns_options)
         locked_tns = door_locations[level][locked_tns_index]
         locked_tns.assignPortal()
         human_portal_doors[level_list[level]]["T&S #1"] = locked_tns.name
@@ -167,7 +168,7 @@ def ShuffleVanillaDoors(spoiler):
         placed_tns_count = 1
         for door_index in vanilla_door_indexes:
             vanilla_door = door_locations[level][door_index]
-            if vanilla_door.placed == "none" and vanilla_door.default_placed == "tns":
+            if vanilla_door.placed == "none" and vanilla_door.default_placed == "tns" and vanilla_door.door_type != "wrinkly":
                 placed_tns_count += 1
                 vanilla_door.assignPortal()
                 human_portal_doors[level_list[level]]["T&S #" + str(placed_tns_count)] = vanilla_door.name
