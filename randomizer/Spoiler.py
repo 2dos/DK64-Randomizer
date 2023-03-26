@@ -342,6 +342,9 @@ class Spoiler:
                 item = Items.NoItem
             else:
                 item = ItemList[location.item]
+            # Empty PreGiven locations don't really exist and shouldn't show up in the spoiler log
+            if location.type == Types.PreGivenMove and location.item in (None, Items.NoItem):
+                continue
             # Separate Kong locations
             if location.type == Types.Kong:
                 humanspoiler["Items"]["Kongs"][location.name] = item.name
@@ -531,7 +534,20 @@ class Spoiler:
             humanspoiler["Shuffled Bananaport Levels"] = shuffled_warp_levels
             humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
         if len(self.microhints) > 0:
-            humanspoiler["Direct Item Hints"] = self.microhints
+            human_microhints = {}
+            for name, hint in self.microhints.items():
+                filtered_hint = hint.replace("\x04", "")
+                filtered_hint = filtered_hint.replace("\x05", "")
+                filtered_hint = filtered_hint.replace("\x06", "")
+                filtered_hint = filtered_hint.replace("\x07", "")
+                filtered_hint = filtered_hint.replace("\x08", "")
+                filtered_hint = filtered_hint.replace("\x09", "")
+                filtered_hint = filtered_hint.replace("\x0a", "")
+                filtered_hint = filtered_hint.replace("\x0b", "")
+                filtered_hint = filtered_hint.replace("\x0c", "")
+                filtered_hint = filtered_hint.replace("\x0d", "")
+                human_microhints[name] = filtered_hint
+            humanspoiler["Direct Item Hints"] = human_microhints
         if len(self.hint_list) > 0:
             human_hint_list = {}
             # Here it filters out the coloring from the hints to make it actually readable in the spoiler log
