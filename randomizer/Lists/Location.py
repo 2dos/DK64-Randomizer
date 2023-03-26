@@ -41,6 +41,7 @@ class Location:
         self.kong = kong
         self.logically_relevant = logically_relevant  # This is True if this location is needed to derive the logic for another location
         self.placement_index = None
+        self.inaccessible = False
         if self.type == Types.Shop:
             self.movetype = data[0]
             self.index = data[1]

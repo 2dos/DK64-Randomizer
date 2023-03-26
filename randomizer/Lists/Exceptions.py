@@ -107,3 +107,9 @@ class CoinFillFailureException(FillException):
     """Exception triggered when coin rando fails to correctly generate a valid set of groups."""
 
     pass
+
+
+class SettingsIncompatibleException(FillException):
+    """Exception triggered when conditions arise that are most likely a settings incompatibility."""
+
+    pass

@@ -4,6 +4,7 @@ import inspect
 import json
 import js
 import random
+from randomizer.LogicClasses import LocationLogic
 from version import whl_hash
 from random import randint
 
@@ -605,29 +606,26 @@ class Settings:
             locations_to_add -= 4
         if locations_to_add > location_cap:
             locations_to_add = location_cap
-        last_location = Locations.PreGiven_Location00 + locations_to_add
+        first_empty_location = Locations.PreGiven_Location00 + locations_to_add
         # If we have fewer starting items than training barrels, then we have to prevent some training barrels from having items
         if locations_to_add < 0:
-            last_location = Locations.PreGiven_Location00
+            first_empty_location = Locations.PreGiven_Location00
             invalid_training_barrels = [Locations.IslesVinesTrainingBarrel, Locations.IslesSwimTrainingBarrel, Locations.IslesOrangesTrainingBarrel, Locations.IslesBarrelsTrainingBarrel][
                 self.starting_moves_count :
             ]
             for locationId in invalid_training_barrels:
                 LocationList[locationId].default = Items.NoItem
                 LocationList[locationId].type = Types.Constant
-        # We need to filter the GameStart region's locations to remove the locations that aren't valid anymore
-        randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations = [
-            loclogic for loclogic in randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].locations if loclogic.id < last_location
-        ]
-        for locationId in PreGivenLocations:
-            if locationId >= last_location:
-                del LocationList[locationId]
+        # We need to block PreGiven locations depending on the id of the first empty location
+        for location_id in PreGivenLocations:
+            LocationList[location_id].inaccessible = location_id >= first_empty_location
+
         kongs = GetKongs()
 
-        # Smaller shop setting deletes 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
+        # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
-            # To evenly distribute the locations deleted, we can use the fact there are 20 shops to our advantage
-            # These evenly distributed pairs will represent "locations to delete" for each shop
+            # To evenly distribute the locations blocked, we can use the fact there are 20 shops to our advantage
+            # These evenly distributed pairs will represent "locations to block" for each shop
             kongPairs = [
                 (Kongs.donkey, Kongs.diddy),
                 (Kongs.donkey, Kongs.diddy),
@@ -650,25 +648,20 @@ class Settings:
                 (Kongs.tiny, Kongs.chunky),
                 (Kongs.tiny, Kongs.chunky),
             ]
-            random.shuffle(kongPairs)  # Shuffle this list so we don't delete the same locations every time
+            random.shuffle(kongPairs)  # Shuffle this list so we don't block the same locations every time
 
-            # First we identify the locations we need to remove and delete them from the list of locations we care about (LocationList)
+            # First we identify the locations we need to remove and make them inaccessible
             for level in ShopLocationReference:
                 for vendor in ShopLocationReference[level]:
                     # For each shop, get a pair of kongs
                     kongsToBeRemoved = kongPairs.pop()
-                    # Remove the first kong's location
-                    del LocationList[ShopLocationReference[level][vendor][kongsToBeRemoved[0]]]
-                    RemovedShopLocations.append(ShopLocationReference[level][vendor][kongsToBeRemoved[0]])
-                    # Remove the second kong's location
-                    del LocationList[ShopLocationReference[level][vendor][kongsToBeRemoved[1]]]
-                    RemovedShopLocations.append(ShopLocationReference[level][vendor][kongsToBeRemoved[1]])
-            # Next we remove the locations from the logic so they are not found as accessible locations
-            # Because they're deleted from LocationList, it will error if the location logic is left alone
-            for region in randomizer.LogicFiles.Shops.LogicRegions:
-                randomizer.LogicFiles.Shops.LogicRegions[region].locations = [
-                    location for location in randomizer.LogicFiles.Shops.LogicRegions[region].locations if location.id not in RemovedShopLocations
-                ]
+                    # Determine which shop locations are accessible and inaccessible
+                    inaccessible_shops = [ShopLocationReference[level][vendor][kongsToBeRemoved[0]], ShopLocationReference[level][vendor][kongsToBeRemoved[1]]]
+                    accessible_shops = [location_id for location_id in ShopLocationReference[level][vendor] if location_id not in inaccessible_shops]
+                    for location_id in inaccessible_shops:
+                        LocationList[location_id].inaccessible = True
+                    for location_id in accessible_shops:
+                        LocationList[location_id].inaccessible = False
 
         # B Locker and Troff n Scoff amounts Rando
         self.update_progression_totals()
