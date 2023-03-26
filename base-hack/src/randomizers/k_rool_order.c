@@ -7,8 +7,6 @@ static const int krool_write_locations[] = {
 	0x8002FAF2, // Tiny > Chunky
 };
 
-#define ISLES_OVERWORLD 0x22
-
 void determine_krool_order(void) {
 	int containing = 0;
 	int destination = 0;
@@ -78,7 +76,7 @@ void initKRool(int phase) {
 	} else {
 		if (is_last) {
 			int phase_items[] = {134,102,111,174};
-			modifyCutsceneItem(0, phase_items[phase], 0x29, 0x22, 29);
+			modifyCutsceneItem(0, phase_items[phase], 0x29, MAP_ISLES, 29);
 		}
 	}
 }

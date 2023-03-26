@@ -15,26 +15,26 @@
 
 static const unsigned char banned_filter_maps[] = {
 	// Maps where the filtration process is banned
-	1, // Funky's
-	2, // Arcade
-	5, // Cranky's
-	9, // Jetpac
-	15, // Snide's
-	0x19, // Candy's
-	0x2A, // T&S
-	0x33, // Mech FIsh
-	0x8, // Japes Dillo
-	0xC5, // Aztec Dog
-	0x9A, // MJ
-	0x6F, // Pufftoss
-	0x53, // Fungi Dog
-	0xC4, // Caves Dillo
-	0xC7, // KKO
-	0x29, // Aztec BBlast
-	0x36, // Galleon BBlast
-	0x6E, // Factory BBlast
-	0xBB, // Castle BBlast
-	0x25, // Japes BBlast
+	MAP_FUNKY, // Funky's
+	MAP_DKARCADE, // Arcade
+	MAP_CRANKY, // Cranky's
+	MAP_JETPAC, // Jetpac
+	MAP_SNIDE, // Snide's
+	MAP_CANDY, // Candy's
+	MAP_TROFFNSCOFF, // T&S
+	MAP_GALLEONMECHFISH, // Mech FIsh
+	MAP_JAPESDILLO, // Japes Dillo
+	MAP_AZTECDOGADON, // Aztec Dog
+	MAP_FACTORYJACK, // MJ
+	MAP_GALLEONPUFFTOSS, // Pufftoss
+	MAP_FUNGIDOGADON, // Fungi Dog
+	MAP_CAVESDILLO, // Caves Dillo
+	MAP_CASTLEKUTOUT, // KKO
+	MAP_AZTECBBLAST, // Aztec BBlast
+	MAP_GALLEONBBLAST, // Galleon BBlast
+	MAP_FACTORYBBLAST, // Factory BBlast
+	MAP_CASTLEBBLAST, // Castle BBlast
+	MAP_JAPESBBLAST, // Japes BBlast
 };
 
 typedef struct cutscene_wipe {

@@ -948,6 +948,7 @@ for index, text in enumerate(text_files):
     if text.change:
         data.do_not_compress = True
         data.do_not_delete_source = True
+        data.do_not_extract = True
     else:
         data.do_not_recompress = True
         data.setTargetSize(0x2000)
@@ -996,7 +997,6 @@ with open(ROMName, "rb") as fh:
             fh.seek(x.start)
             byte_read = fh.read(x.compressed_size)
 
-            print(f"{x.name} - {hex(x.start)}")
             if not x.do_not_delete_source:
                 if os.path.exists(x.source_file):
                     os.remove(x.source_file)

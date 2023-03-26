@@ -140,7 +140,7 @@
    "jetpac_medal_requirement":1,
    "free_target_llama":255,
    "free_source_llama":0,
-   "keys_preturned":255,
+   "keys_preturned":0,
    "short_bosses":1,
    "fast_warp":1,
    "activate_all_bananaports":1,

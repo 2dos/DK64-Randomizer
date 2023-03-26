@@ -49,7 +49,7 @@ extern void priceTransplant(void);
 extern void squawks_with_spotlight_actor_code(void);
 extern void shine_light_at_kong(unsigned short height_variance, unsigned short min_follow_distance, unsigned short param_3);
 
-extern void changeCharSpawnerFlag(int map, int spawner_id, int new_flag);
+extern void changeCharSpawnerFlag(maps map, int spawner_id, int new_flag);
 extern void changeHelmLZ(void);
 extern void HelmBarrelCode(void);
 extern void WarpHandle(void);
@@ -77,7 +77,7 @@ extern void createCollisionObjInstance(collision_types subtype, int map, int exi
 extern int spawnCannonWrapper(void);
 extern void disableDiddyRDDoors(void);
 extern void fixkey8(void);
-extern void alterGBKong(int map, int id, int new_kong);
+extern void alterGBKong(maps map, int id, int new_kong);
 
 extern void preventBossCheese(void);
 extern void determineStartKong_PermaLossMode(void);

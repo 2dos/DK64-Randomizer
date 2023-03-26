@@ -796,7 +796,7 @@ void initOptionScreen(void) {
 	*(int*)(0x8002DEC4) = 0x0C000000 | (((int)&displayInverted & 0xFFFFFF) >> 2); // Modify Function Call
 }
 
-static unsigned char previous_map_save = 0x22;
+static unsigned char previous_map_save = MAP_ISLES;
 
 void setPrevSaveMap(void) {
 	/**

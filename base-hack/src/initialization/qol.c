@@ -44,7 +44,7 @@ void initQoL_Cutscenes(void) {
      */
     if (Rando.quality_of_life.remove_cutscenes) {
         // K. Lumsy
-        *(short*)(0x80750680) = 0x22;
+        *(short*)(0x80750680) = MAP_ISLES;
         *(short*)(0x80750682) = 0x1;
         *(int*)(0x806BDC24) = 0x0C17FCDE; // Change takeoff warp func
         *(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
@@ -57,14 +57,14 @@ void initQoL_Cutscenes(void) {
         *(int*)(0x806BE3E0) = 0; // NOP
         if (Rando.item_rando) {
             int cs_unskip[] = {
-                0x1A, 2,
-                0x1A, 3,
-                0x1A, 4,
-                0x1A, 5,
-                0x26, 14,
-                0x40, 0,
-                0x40, 1,
-                0xA8, 0,
+                MAP_FACTORY, 2,
+                MAP_FACTORY, 3,
+                MAP_FACTORY, 4,
+                MAP_FACTORY, 5,
+                MAP_AZTEC, 14,
+                MAP_FUNGIGIANTMUSHROOM, 0,
+                MAP_FUNGIGIANTMUSHROOM, 1,
+                MAP_CASTLEGREENHOUSE, 0,
             };
             for (int i = 0; i < (sizeof(cs_unskip) / 8); i++) {
                 int cs_offset = 0;
@@ -280,7 +280,7 @@ void initSpawn(void) {
     int starting_map_rando_on = 1;
     if (Rando.starting_map == 0) {
         // Default
-        Rando.starting_map = 0x22;
+        Rando.starting_map = MAP_ISLES;
         Rando.starting_exit = 0;
         starting_map_rando_on = 0;
     } else {
@@ -469,7 +469,8 @@ void initNonControllableFixes(void) {
     *(int*)(0x806F662C) = 0x0C000000 | (((int)&checkModelTwoItemCollision & 0xFFFFFF) >> 2);
     // Dive Check
     *(int*)(0x806E9658) = 0x0C000000 | (((int)&CanDive_WithCheck & 0xFFFFFF) >> 2);
-    
+    // Prevent Japes Dillo Cutscene for the key acquisition
+    *(short*)(0x806EFCEC) = 0x1000;
 }
 
 void initQoL(void) {
