@@ -10,75 +10,7 @@ from randomizer.Lists.MapsAndExits import Maps
 # Do not change the values of any enums in this file, or settings strings will
 # break.
 
-# Randomizers
-
-
-class LogicType(IntEnum):
-    """The logic use to place items in the seed.
-
-    glitchless: No glitches will be required.
-    glitch: Some glitches may be required.
-    nologic: The seed may not be beatable.
-    """
-
-    glitchless = 1
-    glitch = 2
-    nologic = 3
-
-
-class GlitchesSelected(IntEnum):
-    """Glitch categories that can be selected for the seed logic.
-
-    These values are tied to the GlitchSelector in randomizer.Lists.Logic. More
-    details on each can be found in that file.
-    """
-
-    advanced_platforming = 1
-    b_locker_skips = 2
-    boulder_clips = 3
-    general_clips = 4
-    ledge_clips = 5
-    moonkicks = 6
-    phase_swimming = 7
-    phase_walking = 8
-    skew = 9
-    spawn_snags = 10
-    swim_through_shores = 11
-    tag_barrel_storage = 12
-    troff_n_scoff_skips = 13
-
-
-class ActivateAllBananaports(IntEnum):
-    """Whether bananaports should start as activated, and where.
-
-    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
-    change these enum values or seed generation will break.
-
-    off: No bananaports will be activated.
-    all: All bananaports will be activated.
-    isles: Only bananaports in D.K. Isles will be activated.
-    """
-
-    off = 0
-    all = 1
-    isles = 2
-
-
-class LevelRandomization(IntEnum):
-    """Determines how entrances are randomized and placed.
-
-    vanilla: All entrances are the same as the base game.
-    level_order: Randomizes the order that the levels are in.
-    loadingzone: All entrances except for Helm/Helm Lobby.
-    loadingzonesdecoupled: All entrances except for Helm/Helm Lobby.
-        Going back through an entrance may not take you back to where you
-        just were.
-    """
-
-    vanilla = 0
-    level_order = 1
-    loadingzone = 2
-    loadingzonesdecoupled = 3
+# RANDOMIZERS
 
 
 # TODO: merge this with the Types enum.
@@ -103,21 +35,6 @@ class ItemRandoListSelected(IntEnum):
     beanpearl = 12
     fakeitem = 13
     junkitem = 14
-
-
-class KasplatRandoSetting(IntEnum):
-    """Determines if and how Kasplats are randomized.
-
-    off: Kasplats are in their original locations with original blueprints.
-    vanilla_locations: Kasplats are shuffled between the locations that exist
-        in the vanilla game.
-    location_shuffle: Kasplats will be shuffled between all possible locations,
-        including new ones not in the vanilla game.
-    """
-
-    off = 0
-    vanilla_locations = 1
-    location_shuffle = 2
 
 
 class MoveRando(IntEnum):
@@ -150,6 +67,63 @@ class TrainingBarrels(IntEnum):
 
     normal = 0
     shuffled = 1
+
+
+class KasplatRandoSetting(IntEnum):
+    """Determines if and how Kasplats are randomized.
+
+    off: Kasplats are in their original locations with original blueprints.
+    vanilla_locations: Kasplats are shuffled between the locations that exist
+        in the vanilla game.
+    location_shuffle: Kasplats will be shuffled between all possible locations,
+        including new ones not in the vanilla game.
+    """
+
+    off = 0
+    vanilla_locations = 1
+    location_shuffle = 2
+
+
+class MinigamesListSelected(IntEnum):
+    """Minigame categories used for the web selector.
+
+    These values are tied to the MinigameSelector in randomizer.Lists.Minigame.
+    More details on each can be found in that file.
+    """
+
+    batty_barrel_bandit = 1
+    big_bug_bash = 2
+    busy_barrel_barrage = 3
+    mad_maze_maul = 4
+    minecart_mayhem = 5
+    beaver_bother = 6
+    teetering_turtle_trouble = 7
+    stealthy_snoop = 8
+    stash_snatch = 9
+    splish_splash_salvage = 10
+    speedy_swing_sortie = 11
+    krazy_kong_klamour = 12
+    searchlight_seek = 13
+    kremling_kosh = 14
+    peril_path_panic = 15
+    helm_minigames = 16
+
+
+class LevelRandomization(IntEnum):
+    """Determines how entrances are randomized and placed.
+
+    vanilla: All entrances are the same as the base game.
+    level_order: Randomizes the order that the levels are in.
+    loadingzone: All entrances except for Helm/Helm Lobby.
+    loadingzonesdecoupled: All entrances except for Helm/Helm Lobby.
+        Going back through an entrance may not take you back to where you
+        just were.
+    """
+
+    vanilla = 0
+    level_order = 1
+    loadingzone = 2
+    loadingzonesdecoupled = 3
 
 
 class RandomPrices(IntEnum):
@@ -205,32 +179,42 @@ class BananaportRando(IntEnum):
     crossmap_decoupled = 3
 
 
-# Overworld
+# OVERWORLD
 
 
-class MinigamesListSelected(IntEnum):
-    """Minigame categories used for the web selector.
+class LogicType(IntEnum):
+    """The logic use to place items in the seed.
 
-    These values are tied to the MinigameSelector in randomizer.Lists.Minigame.
-    More details on each can be found in that file.
+    glitchless: No glitches will be required.
+    glitch: Some glitches may be required.
+    nologic: The seed may not be beatable.
     """
 
-    batty_barrel_bandit = 1
-    big_bug_bash = 2
-    busy_barrel_barrage = 3
-    mad_maze_maul = 4
-    minecart_mayhem = 5
-    beaver_bother = 6
-    teetering_turtle_trouble = 7
-    stealthy_snoop = 8
-    stash_snatch = 9
-    splish_splash_salvage = 10
-    speedy_swing_sortie = 11
-    krazy_kong_klamour = 12
-    searchlight_seek = 13
-    kremling_kosh = 14
-    peril_path_panic = 15
-    helm_minigames = 16
+    glitchless = 1
+    glitch = 2
+    nologic = 3
+
+
+class GlitchesSelected(IntEnum):
+    """Glitch categories that can be selected for the seed logic.
+
+    These values are tied to the GlitchSelector in randomizer.Lists.Logic. More
+    details on each can be found in that file.
+    """
+
+    advanced_platforming = 1
+    b_locker_skips = 2
+    boulder_clips = 3
+    general_clips = 4
+    ledge_clips = 5
+    moonkicks = 6
+    phase_swimming = 7
+    phase_walking = 8
+    skew = 9
+    spawn_snags = 10
+    swim_through_shores = 11
+    tag_barrel_storage = 12
+    troff_n_scoff_skips = 13
 
 
 class WinCondition(IntEnum):
@@ -271,6 +255,22 @@ class FreeTradeSetting(IntEnum):
     major_collectibles = 2
 
 
+class ActivateAllBananaports(IntEnum):
+    """Whether bananaports should start as activated, and where.
+
+    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
+    change these enum values or seed generation will break.
+
+    off: No bananaports will be activated.
+    all: All bananaports will be activated.
+    isles: Only bananaports in D.K. Isles will be activated.
+    """
+
+    off = 0
+    all = 1
+    isles = 2
+
+
 class KrushaUi(IntEnum):
     """Which Kong model will be replaced with Krusha."""
 
@@ -281,6 +281,33 @@ class KrushaUi(IntEnum):
     tiny = 4
     chunky = 5
     random = 6
+
+
+class DamageAmount(IntEnum):
+    """The damage multipler.
+
+    default: Normal damage.
+    double: Damage is 2x normal.
+    quad: Damage is 4x normal.
+    ohko: Damage is 12x normal (one hit kills).
+    """
+
+    default = 0
+    double = 1
+    quad = 2
+    ohko = 3
+
+
+class CrownEnemyRando(IntEnum):
+    """Determines the difficulty of enemies in Battle Arenas."""
+
+    off = 0
+    easy = 1
+    medium = 2
+    hard = 3
+
+
+# PROGRESSION
 
 
 class HelmDoorItem(IntEnum):
@@ -317,34 +344,7 @@ class HelmDoorItem(IntEnum):
     req_pearl = 12
 
 
-# Difficulty
-
-
-class DamageAmount(IntEnum):
-    """The damage multipler.
-
-    default: Normal damage.
-    double: Damage is 2x normal.
-    quad: Damage is 4x normal.
-    ohko: Damage is 12x normal (one hit kills).
-    """
-
-    default = 0
-    double = 1
-    quad = 2
-    ohko = 3
-
-
-class CrownEnemyRando(IntEnum):
-    """Determines the difficulty of enemies in Battle Arenas."""
-
-    off = 0
-    easy = 1
-    medium = 2
-    hard = 3
-
-
-# Quality of Life
+# QUALITY OF LIFE
 
 
 class MiscChangesSelected(IntEnum):
@@ -421,7 +421,7 @@ class MicrohintsEnabled(IntEnum):
     all = 2
 
 
-# Cosmetics
+# COSMETICS
 
 
 class MusicCosmetics(IntEnum):
@@ -533,31 +533,31 @@ class MinigameBarrels(IntEnum):
 # A dictionary that maps setting names to the associated enum for that specific setting.
 # The key for each enum must exactly match the HTML name of the associated select.
 SettingsMap = {
-    # Randomizer
-    "enemies_selected": Enemies,
-    "logic_type": LogicType,
-    "glitches_selected": GlitchesSelected,
-    "activate_all_bananaports": ActivateAllBananaports,
-    "level_randomization": LevelRandomization,
+    # Randomizers
     "item_rando_list_selected": ItemRandoListSelected,
-    "kasplat_rando_setting": KasplatRandoSetting,
     "move_rando": MoveRando,
     "training_barrels": TrainingBarrels,
+    "kasplat_rando_setting": KasplatRandoSetting,
+    "enemies_selected": Enemies,
+    "minigames_list_selected": MinigamesListSelected,
+    "level_randomization": LevelRandomization,
     "random_prices": RandomPrices,
     "shockwave_status": ShockwaveStatus,
     "bananaport_rando": BananaportRando,
     "warp_level_list_selected": Maps,
     # Overworld
-    "minigames_list_selected": MinigamesListSelected,
+    "logic_type": LogicType,
+    "glitches_selected": GlitchesSelected,
     "win_condition": WinCondition,
     "free_trade_setting": FreeTradeSetting,
+    "activate_all_bananaports": ActivateAllBananaports,
     "krusha_ui": KrushaUi,
+    "damage_amount": DamageAmount,
+    "crown_enemy_rando": CrownEnemyRando,
+    # Progression
     "starting_keys_list_selected": Items,
     "crown_door_item": HelmDoorItem,
     "coin_door_item": HelmDoorItem,
-    # Difficulty
-    "damage_amount": DamageAmount,
-    "crown_enemy_rando": CrownEnemyRando,
     # Quality of Life
     "misc_changes_selected": MiscChangesSelected,
     "wrinkly_hints": WrinklyHints,
