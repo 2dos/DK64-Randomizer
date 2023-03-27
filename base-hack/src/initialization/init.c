@@ -219,9 +219,6 @@ void initHack(int source) {
 				*(int*)(0x807125A4) = 0x0C000000 | (((int)&initHelmHurry & 0xFFFFFF) >> 2); // Change write
 				*(int*)(0x807125CC) = 0; // Prevent Helm Timer Overwrite
 			}
-			if (Rando.always_show_coin_cbs) {
-				*(int*)(0x806324D4) = 0x24020001; // ADDIU $v0, $r0, 1 // Disable kong flag check
-			}
 			if (Rando.version == 0) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0

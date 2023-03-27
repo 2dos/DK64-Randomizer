@@ -371,7 +371,8 @@ class MiscChangesSelected(IntEnum):
     lowered_aztec_lobby_bonus = 15
     quicker_galleon_star = 16
     vanilla_bug_fixes = 17
-    save_krool_progress = 18
+    save_k_rool_progress = 18
+    small_bananas_always_visible = 19
 
 
 class WrinklyHints(IntEnum):

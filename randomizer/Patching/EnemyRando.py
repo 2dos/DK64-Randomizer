@@ -31,6 +31,7 @@ class PkmnSnapEnemy:
         """Reset enemy to default state."""
         self.spawned = self.default
 
+
 class Spawner:
     """Class which stores information pertaining to a spawner."""
 
@@ -39,6 +40,7 @@ class Spawner:
         self.enemy_id = enemy_id
         self.offset = offset
         self.index = index
+
 
 pkmn_snap_enemies = [
     PkmnSnapEnemy(Enemies.Kaboom),

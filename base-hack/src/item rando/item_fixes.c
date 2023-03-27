@@ -334,6 +334,7 @@ void refreshPads(pad_refresh_signals signal) {
                         behaviour_data* behavior = _object->behaviour_pointer;
                         if (behavior) {
                             if (pads[i].target_state >= 0) {
+                                behavior->current_state = pads[i].target_state;   
                                 behavior->next_state = pads[i].target_state;   
                             }
                             behavior->unk_60 = 0; // Remove opacity filter

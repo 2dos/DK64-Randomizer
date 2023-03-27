@@ -153,6 +153,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "tiny_custom_color",
         "override_cosmetics",
         "remove_water_oscillation",
+        "head_balloons",
         "colorblind_mode",
         "search",
         "holiday_mode",

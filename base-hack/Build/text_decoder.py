@@ -1,7 +1,7 @@
 """Decode text file into arrays of text items."""
 import zlib
 import os
-from BuildLib import main_pointer_table_offset, ROMName
+from BuildLib import ROMName
 from BuildEnums import Icons, TableNames
 from BuildClasses import ROMPointerFile
 

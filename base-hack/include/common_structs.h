@@ -1202,6 +1202,8 @@ typedef struct quality_options {
 	unsigned char hud_bp_multibunch : 1;
 	unsigned char homing_balloons : 1; // 16
 	unsigned char save_krool_progress : 1;
+	unsigned char cbs_visible : 1; // 18
+	unsigned char blueprint_compression : 1;
 } quality_options;
 
 typedef struct image_cache_struct {

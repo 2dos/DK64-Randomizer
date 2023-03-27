@@ -130,6 +130,10 @@ void initQoL_Misc(void) {
         // Lower Aztec Lobby Bonus
         *(short*)(0x80680D56) = 0x7C; // 0x89 if this needs to be unreachable without PTT
     }
+    if (Rando.quality_of_life.cbs_visible) {
+        *(int*)(0x806324D4) = 0x24020001; // ADDIU $v0, $r0, 1 // Disable kong flag check
+        *(int*)(0x806A78C4) = 0; // NOP // Disable kong flag check
+    }
 }
 
 static char boot_speedup_done = 0;

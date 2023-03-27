@@ -2,7 +2,7 @@
 import os
 import shutil
 import zlib
-from BuildLib import main_pointer_table_offset, ROMName
+from BuildLib import ROMName
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames
 

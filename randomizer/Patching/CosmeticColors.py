@@ -523,9 +523,10 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
     pix = im_f.load()
     width, height = im_f.size
     bytes_array = []
+    border = 0
     for y in range(height):
         for x in range(width):
-            if transparent_border and ((x == 0) or (y == 0) or (x >= (width - 1)) or (y >= (height - 1))):
+            if transparent_border and ((x < border) or (y < border) or (x >= (width - border)) or (y >= (height - border))):
                 pix_data = [0, 0, 0, 0]
             else:
                 pix_data = list(pix[x, y])
@@ -1197,6 +1198,9 @@ def recolorMushrooms():
         writeColorImageToROM(mushroom_image_side_2, 25, files_table_25_side_2[file], 64, 32, False, "rgba5551")
 
 
+BALLOON_START = [5835, 5827, 5843, 5851, 5819]
+
+
 def overwrite_object_colors(spoiler: Spoiler):
     """Overwrite object colors."""
     global color_bases
@@ -1272,11 +1276,10 @@ def overwrite_object_colors(spoiler: Spoiler):
                     writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False, "rgba5551")
                 for file in range(5819, 5827):
                     # Balloon
-                    balloon_start = [5835, 5827, 5843, 5851, 5819]
-                    balloon_im = getFile(25, balloon_start[kong_index] + (file - 5819), True, 32, 64, "rgba5551")
+                    balloon_im = getFile(25, BALLOON_START[kong_index] + (file - 5819), True, 32, 64, "rgba5551")
                     balloon_im = maskImageWithOutline(balloon_im, kong_index, 33, mode)
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
-                    writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64, False, "rgba5551")
+                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + (file - 5819), 32, 64, False, "rgba5551")
             else:
                 for file in range(152, 160):
                     # Single
@@ -1298,11 +1301,18 @@ def overwrite_object_colors(spoiler: Spoiler):
                     writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False, "rgba5551")
                 for file in range(5819, 5827):
                     # Balloon
-                    balloon_start = [5835, 5827, 5843, 5851, 5819]
-                    balloon_im = getFile(25, balloon_start[kong_index] + (file - 5819), True, 32, 64, "rgba5551")
+                    balloon_im = getFile(25, BALLOON_START[kong_index] + (file - 5819), True, 32, 64, "rgba5551")
                     balloon_im = maskImage(balloon_im, kong_index, 33)
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
-                    writeColorImageToROM(balloon_im, 25, balloon_start[kong_index] + (file - 5819), 32, 64, False, "rgba5551")
+                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + (file - 5819), 32, 64, False, "rgba5551")
+    if spoiler.settings.head_balloons:
+        for kong in range(5):
+            for offset in range(8):
+                balloon_im = getFile(25, BALLOON_START[kong] + offset, True, 32, 64, "rgba5551")
+                kong_im = getFile(14, 190 + kong, True, 32, 32, "rgba5551")
+                kong_im = kong_im.transpose(Image.FLIP_TOP_BOTTOM).resize((20, 20))
+                balloon_im.paste(kong_im, (5, 39), kong_im)
+                writeColorImageToROM(balloon_im, 25, BALLOON_START[kong] + offset, 32, 64, False, "rgba5551")
 
 
 def applyKrushaKong(spoiler: Spoiler):
@@ -1533,21 +1543,42 @@ def numberToImage(number: int, dim: tuple):
         digits = 2
     else:
         digits = 3
-    allocation_per_digit = (dim[0] / digits, dim[1])
-    base = Image.new(mode="RGBA", size=dim)
     current = number
-    for d in range(digits):
-        num_im = getNumberImage(current % 10)
+    nums = []
+    total_width = 0
+    max_height = 0
+    sep_dist = 1
+    for _ in range(digits):
+        base = getNumberImage(current % 10)
+        bbox = base.getbbox()
+        base = base.crop(bbox)
+        nums.append(base)
+        base_w, base_h = base.size
+        max_height = max(max_height, base_h)
+        total_width += base_w
         current = int(current / 10)
-        num_w, num_h = num_im.size
-        xscale = allocation_per_digit[0] / num_w
-        yscale = allocation_per_digit[1] / num_h
-        scale = min(xscale, yscale)
-        num_im = num_im.resize((int(num_w * scale), int(num_h * scale)))
-        slot_start = (dim[0] / digits) * ((digits - 1) - d)
-        slot_middle = slot_start + ((dim[0] / digits) / 2)
-        base.paste(num_im, (int(slot_middle - ((num_w * scale) / 2)), 0), num_im)
-    return base
+    nums.reverse()
+    total_width += (digits - 1) * sep_dist
+    base = Image.new(mode="RGBA", size=(total_width, max_height))
+    pos = 0
+    for num in nums:
+        base.paste(num, (pos, 0), num)
+        num_w, num_h = num.size
+        pos += num_w + sep_dist
+    output = Image.new(mode="RGBA", size=dim)
+    xScale = dim[0] / total_width
+    yScale = dim[1] / max_height
+    scale = xScale
+    if yScale < xScale:
+        scale = yScale
+    new_w = int(total_width * scale)
+    new_h = int(max_height * scale)
+    x_offset = int((dim[0] - new_w) / 2)
+    y_offset = int((dim[1] - new_h) / 2)
+    new_dim = (new_w, new_h)
+    base = base.resize(new_dim)
+    output.paste(base, (x_offset, y_offset), base)
+    return output
 
 
 def applyHelmDoorCosmetics(spoiler: Spoiler):
@@ -1610,8 +1641,7 @@ def applyHelmDoorCosmetics(spoiler: Spoiler):
 
 def applyHolidayMode(spoiler: Spoiler):
     """Change grass texture to snow."""
-    enable_holiday_override = False
-    if spoiler.settings.holiday_mode and enable_holiday_override:
+    if spoiler.settings.holiday_mode:
         ROM().seek(0x1FF8000)
         snow_im = Image.new(mode="RGBA", size=((32, 32)))
         snow_px = snow_im.load()
