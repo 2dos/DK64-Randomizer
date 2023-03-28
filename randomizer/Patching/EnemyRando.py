@@ -366,6 +366,8 @@ def writeEnemy(spoiler: Spoiler, cont_map_spawner_address: int, new_enemy_id: in
             ROM().seek(cont_map_spawner_address + spawner.offset + 0xB)
             ROM().writeMultipleBytes(0xC8, 1)
         elif new_enemy_id == Enemies.SpiderSmall:
+            ROM().seek(cont_map_spawner_address + spawner.offset + 0x1)
+            ROM().writeMultipleBytes(0, 1)
             ROM().seek(cont_map_spawner_address + spawner.offset + 0xB)
             ROM().writeMultipleBytes(0, 1)
         if (cont_map_id in crown_maps or cont_map_id in minigame_maps_total) and EnemyMetaData[new_enemy_id].air:
