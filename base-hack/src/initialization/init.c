@@ -61,7 +61,7 @@ void initHack(int source) {
 	 * 
 	 */
 	if (LoadedHooks == 0) {
-		if ((source == 1) || (CurrentMap == 0x28)) {
+		if ((source == 1) || (CurrentMap == MAP_NINTENDOLOGO)) {
 			DebugInfoOn = 1;
 			if (Rando.fast_start_beginning) {
 				*(int*)(0x80714540) = 0;
@@ -218,9 +218,6 @@ void initHack(int source) {
 				*(short*)(0x8071256A) = 15; // Init Helm Timer = 15 minutes
 				*(int*)(0x807125A4) = 0x0C000000 | (((int)&initHelmHurry & 0xFFFFFF) >> 2); // Change write
 				*(int*)(0x807125CC) = 0; // Prevent Helm Timer Overwrite
-			}
-			if (Rando.always_show_coin_cbs) {
-				*(int*)(0x806324D4) = 0x24020001; // ADDIU $v0, $r0, 1 // Disable kong flag check
 			}
 			if (Rando.version == 0) {
 				// Disable Graphical Debugger
@@ -383,7 +380,7 @@ void quickInit(void) {
 	 */
 	initHack(1);
 	if (Rando.quality_of_life.fast_boot) {
-		initiateTransitionFade(0x51, 0, 5);
+		initiateTransitionFade(MAP_NFRTITLESCREEN, 0, 5);
 		CutsceneWillPlay = 0;
 		Gamemode = 5;
 		Mode = 5;

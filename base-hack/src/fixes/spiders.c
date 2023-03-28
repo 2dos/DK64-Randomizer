@@ -72,31 +72,13 @@ static const unsigned char bad_movement_states[] = {
 	0x88, // Exiting Portal
 };
 
-static const unsigned char banned_trap_maps[] = {
-	// Maps where the spider cannot fire a projectile
-
-	0x3C, // Spider Fight
-	0x35, // Japes: Crown
-    0x49, // Aztec: Crown
-    0x9B, // Factory: Crown
-    0x9C, // Galleon: Crown
-    0x9F, // Fungi: Crown
-    0xA0, // Caves: Crown
-    0xA1, // Castle: Crown
-    0xA2, // Helm: Crown
-    0x9D, // Isles: Lobby Crown
-    0x9E, // Isles: Snide Crown
-};
-
 void handleSpiderTrapCode(void) {
 	/**
 	 * @brief Projectile Spawning Code
 	 */
-	for (int i = 0; i < sizeof(banned_trap_maps); i++) {
-		if (CurrentMap == banned_trap_maps[i]) {
-			renderActor(CurrentActorPointer_0,0);
-			return;
-		}
+	if ((inBattleCrown(CurrentMap)) || (CurrentMap == MAP_FUNGISPIDER)) {
+		renderActor(CurrentActorPointer_0,0);
+		return;
 	}
 	int rng = 0;
 	if (CurrentActorPointer_0->control_state == 0x23) {
@@ -132,7 +114,7 @@ void handleSpiderTrapCode(void) {
 }
 
 void HandleSpiderSilkSpawn(void) {
-	if (CurrentMap != 0x3C) {
+	if (CurrentMap != MAP_FUNGISPIDER) {
 		return;
 	}
 	CurrentActorPointer_0->control_state = 0x1E;

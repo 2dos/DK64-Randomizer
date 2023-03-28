@@ -63,16 +63,16 @@ static const short poke_snap_actors[] = {
 };
 
 void checkSeedVictory(void) {
-    if (!checkFlag(FLAG_GAME_BEATEN,0)) {
+    if (!checkFlag(FLAG_GAME_BEATEN, FLAGTYPE_PERMANENT)) {
         switch(Rando.win_condition) {
             case GOAL_KEY8:
-                if (checkFlagDuplicate(FLAG_KEYHAVE_KEY8,0)) {
+                if (checkFlagDuplicate(FLAG_KEYHAVE_KEY8, FLAGTYPE_PERMANENT)) {
                     beatGame();
                 }
                 break;
             case GOAL_ALLFAIRIES:
                 for (int i = 0; i < 20; i++) {
-                    if (!checkFlag(FLAG_FAIRY_1 + i,0)) {
+                    if (!checkFlagDuplicate(FLAG_FAIRY_1 + i, FLAGTYPE_PERMANENT)) {
                         return;
                     }
                 }
@@ -80,7 +80,7 @@ void checkSeedVictory(void) {
                 break;
             case GOAL_ALLBLUEPRINTS:
                 for (int i = 0; i < 40; i++) {
-                    if (!checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + i,0)) {
+                    if (!checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + i, FLAGTYPE_PERMANENT)) {
                         return;
                     }
                 }
@@ -88,7 +88,7 @@ void checkSeedVictory(void) {
                 break;
             case GOAL_ALLMEDALS:
                 for (int i = 0; i < 40; i++) {
-                    if (!checkFlagDuplicate(FLAG_MEDAL_JAPES_DK + i,0)) {
+                    if (!checkFlagDuplicate(FLAG_MEDAL_JAPES_DK + i, FLAGTYPE_PERMANENT)) {
                         return;
                     }
                 }
@@ -99,7 +99,7 @@ void checkSeedVictory(void) {
                     int offset = i >> 3;
                     int shift = i & 7;
                     if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
-                        if (!checkFlag(FLAG_PKMNSNAP_PICTURES + i, 0)) {
+                        if (!checkFlag(FLAG_PKMNSNAP_PICTURES + i, FLAGTYPE_PERMANENT)) {
                             return;
                         }
                     }
@@ -108,7 +108,7 @@ void checkSeedVictory(void) {
                 break;
             case GOAL_ALLKEYS:
                 for (int i = 0; i < 8; i++) {
-                    if (!checkFlagDuplicate(getKeyFlag(i), 0)) {
+                    if (!checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) {
                         return;
                     }
                 }
@@ -131,7 +131,7 @@ int isSnapEnemyInRange(void) {
             if ((type != 0) && (type >= 175) && (type <= 291)) {
                 for (int j = 0; j < (sizeof(poke_snap_actors) / 2); j++) {
                     if (poke_snap_actors[j] == type) {
-                        if (!checkFlag(FLAG_PKMNSNAP_PICTURES + j, 0)) {
+                        if (!checkFlag(FLAG_PKMNSNAP_PICTURES + j, FLAGTYPE_PERMANENT)) {
                             int offset = j >> 3;
                             int shift = j & 7;
                             if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
@@ -181,7 +181,7 @@ void pokemonSnapMode(void) {
             if ((type != 0) && (type >= 175) && (type <= 291)) {
                 for (int j = 0; j < (sizeof(poke_snap_actors) / 2); j++) {
                     if (poke_snap_actors[j] == type) {
-                        if (!checkFlag(FLAG_PKMNSNAP_PICTURES + j, 0)) {
+                        if (!checkFlag(FLAG_PKMNSNAP_PICTURES + j, FLAGTYPE_PERMANENT)) {
                             int offset = j >> 3;
                             int shift = j & 7;
                             if (Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) {
@@ -207,7 +207,7 @@ void pokemonSnapMode(void) {
         int captured_count = 0;
         int total_count = 0;
         for (int i = 0; i < (sizeof(poke_snap_actors) / 2); i++) {
-            captured_count += checkFlag(FLAG_PKMNSNAP_PICTURES + i, 0);
+            captured_count += checkFlag(FLAG_PKMNSNAP_PICTURES + i, FLAGTYPE_PERMANENT);
             int offset = i >> 3;
             int shift = i & 7;
             total_count += ((Rando.enabled_pkmnsnap_enemies[offset] & (1 << shift)) != 0);

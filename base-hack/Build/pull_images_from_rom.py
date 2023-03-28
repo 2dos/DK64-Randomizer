@@ -3,7 +3,7 @@ import os
 import zlib
 
 from PIL import Image
-from BuildLib import main_pointer_table_offset, ROMName
+from BuildLib import ROMName
 from BuildClasses import ROMPointerFile
 from BuildEnums import TextureFormat, TableNames
 

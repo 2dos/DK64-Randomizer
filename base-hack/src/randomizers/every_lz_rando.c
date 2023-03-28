@@ -20,8 +20,6 @@
 	Enter Castle Lobby (!)
 */
 
-#define ISLES_OVERWORLD 0x22
-
 void replace_zones(int init_flag) {
 	int race_flag = 0;
 	int race_container_map = 0;
@@ -97,9 +95,9 @@ void replace_zones(int init_flag) {
 			}
 		} else {
 			if (TransitionSpeed < 0) {
-				if (CurrentMap == ISLES_OVERWORLD) {
+				if (CurrentMap == MAP_ISLES) {
 					if (isRDRAM(CastleCannonPointer)) {
-						if (CastleCannonPointer->source_map == ISLES_OVERWORLD) {
+						if (CastleCannonPointer->source_map == MAP_ISLES) {
 							CastleCannonPointer->destination_map = (Rando.castle_lobby_enter >> 8) & 0xFF;
 							CastleCannonPointer->destination_exit = Rando.castle_lobby_enter & 0xFF;
 						}

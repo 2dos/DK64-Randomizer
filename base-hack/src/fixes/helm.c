@@ -15,8 +15,8 @@ void fixkey8(void) {
 	 * @brief Fixes Fake Key at the end of Hideout Helm
 	 * 
 	 */
-	if (CurrentMap == 0x11) { // Hideout Helm
-		if (checkFlag(FLAG_KEYHAVE_KEY8,0) == 0) { // Doesn't have Key 8
+	if (CurrentMap == MAP_HELM) { // Hideout Helm
+		if (checkFlag(FLAG_KEYHAVE_KEY8,FLAGTYPE_PERMANENT) == 0) { // Doesn't have Key 8
 			if (touchingModel2Object(0x5A)) {
 				setPermFlag(FLAG_KEYHAVE_KEY8); // Give Key 8
 			}
@@ -81,7 +81,7 @@ void helmTime_exitBoss(void) {
 	 * @brief Instance of the correction code which overwrites the instruction to exit out of a boss
 	 * 
 	 */
-	initiateTransition(0x2A, 2);
+	initiateTransition(MAP_TROFFNSCOFF, 2);
 	fixHelmTimerCorrection();
 }
 
@@ -90,6 +90,6 @@ void helmTime_exitKRool(void) {
 	 * @brief Instance of the correction code which overwrites the instruction to exit out of K. Rool
 	 * 
 	 */
-	initiateTransition(0x22, 12);
+	initiateTransition(MAP_ISLES, 12);
 	fixHelmTimerCorrection();
 }

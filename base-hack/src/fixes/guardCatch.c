@@ -85,15 +85,15 @@ void WarpHandle(void) {
     /**
      * @brief Handles the warp procedure for guards, voiding and death
      */
-    if (CurrentMap == 0x11) {
+    if (CurrentMap == MAP_HELM) {
         if (Rando.fast_start_helm == 2) { // Skip All
-            initiateTransition(0x11,4); // Crown Door
-        } else if (checkFlag(FLAG_HELM_ROMANDOORS_OPEN,2) || checkFlag(FLAG_MODIFIER_HELMBOM,0)) { // Roman Doors Open or BoM off
-            initiateTransition(0x11,3); // Lever
+            initiateTransition(MAP_HELM,4); // Crown Door
+        } else if (checkFlag(FLAG_HELM_ROMANDOORS_OPEN,FLAGTYPE_TEMPORARY) || checkFlag(FLAG_MODIFIER_HELMBOM,FLAGTYPE_PERMANENT)) { // Roman Doors Open or BoM off
+            initiateTransition(MAP_HELM,3); // Lever
         } else {
-            initiateTransition(0x11,0); // Start
+            initiateTransition(MAP_HELM,0); // Start
         }
-        setFlag(0x50,0,2); // Prevent Helm Door hardlock
+        setFlag(0x50,0,FLAGTYPE_TEMPORARY); // Prevent Helm Door hardlock
     } else {
         voidWarp();
     }

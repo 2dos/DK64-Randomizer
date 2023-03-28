@@ -1,9 +1,5 @@
 #include "../../include/common.h"
 
-#define FUNKY 1
-#define CRANKY 5
-#define CANDY 0x19
-
 static unsigned short slam_flag = FLAG_SHOPMOVE_SLAM_0;
 static unsigned short belt_flag = FLAG_SHOPMOVE_BELT_0;
 static unsigned short ins_flag = FLAG_SHOPMOVE_INS_0;
@@ -148,7 +144,7 @@ void moveTransplant(void) {
 }
 
 void progressiveChange(int flag) {
-	if (!checkFlagDuplicate(flag, 0)) {
+	if (!checkFlagDuplicate(flag, FLAGTYPE_PERMANENT)) {
 		int subtype = getMoveProgressiveFlagType(flag);
 		if (subtype == 0) {
 			// Slam
@@ -226,7 +222,7 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 	int latest_level_entered = 0;
 	int has_entered_level = 1; // Set to 0 forcing level entry requirement
 	for (int i = 0; i < 7; i++) {
-		if (checkFlag((FLAG_STORY_JAPES + i),0)) {
+		if (checkFlag((FLAG_STORY_JAPES + i), FLAGTYPE_PERMANENT)) {
 			latest_level_entered = i;
 			has_entered_level = 1;
 		}
@@ -281,9 +277,9 @@ void getNextMovePurchase(shop_paad* paad, KongBase* movedata) {
 					case PURCHASE_GB:
 					case PURCHASE_FLAG:
 						if (p_value == -2) {
-							has_purchase = 1 ^ (checkFlagDuplicate(FLAG_ABILITY_CAMERA,0) & checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,0));
+							has_purchase = 1 ^ (checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT) & checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT));
 						} else {
-							has_purchase = 1 ^ checkFlagDuplicate(p_value,0);
+							has_purchase = 1 ^ checkFlagDuplicate(p_value, FLAGTYPE_PERMANENT);
 						}
 					break;
 				}
@@ -422,13 +418,13 @@ void purchaseMove(shop_paad* paad) {
 		case PURCHASE_FLAG:
 			progressiveChange(paad->flag);
 			if (paad->flag == -2) {
-				setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, 0);
-				setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, 0);
+				setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, FLAGTYPE_PERMANENT);
+				setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, FLAGTYPE_PERMANENT);
 			} else if ((paad->flag >= FLAG_FAKEITEM) && (paad->flag < (FLAG_FAKEITEM + 0x10))) {
-				setFlagDuplicate(paad->flag, 1, 0);
+				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
 				queueIceTrap();
 			} else {
-				setFlagDuplicate(paad->flag, 1, 0);
+				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
 			}
 		break;
 	}
@@ -509,19 +505,19 @@ void setLocation(purchase_struct* purchase_data) {
 			}
 		} else if ((p_type == PURCHASE_FLAG) && (purchase_data->purchase_value == -2)) {
 			// BFI Coupled Moves
-			setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,1,0);
-			setFlagDuplicate(FLAG_ABILITY_CAMERA,1,0);
+			setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,1,FLAGTYPE_PERMANENT);
+			setFlagDuplicate(FLAG_ABILITY_CAMERA,1,FLAGTYPE_PERMANENT);
 		} else if ((p_type == PURCHASE_FLAG) && (isFlagInRange(purchase_data->purchase_value, FLAG_FAKEITEM, 0x10))) {
-			setFlagDuplicate(purchase_data->purchase_value,1,0);
+			setFlagDuplicate(purchase_data->purchase_value,1,FLAGTYPE_PERMANENT);
 			queueIceTrap();
 		} else if (p_type == PURCHASE_FLAG) {
 			// IsFlag
 			progressiveChange(purchase_data->purchase_value);
-			setFlagDuplicate(purchase_data->purchase_value,1,0);
+			setFlagDuplicate(purchase_data->purchase_value,1,FLAGTYPE_PERMANENT);
 		} else if (p_type == PURCHASE_GB) {
 			// IsFlag + GB Update
-			if (!checkFlagDuplicate(purchase_data->purchase_value,0)) {
-				setFlagDuplicate(purchase_data->purchase_value,1,0);
+			if (!checkFlagDuplicate(purchase_data->purchase_value, FLAGTYPE_PERMANENT)) {
+				setFlagDuplicate(purchase_data->purchase_value,1,FLAGTYPE_PERMANENT);
 				int world = getWorld(CurrentMap,1);
 				if (world > 7) {
 					world = 7;
@@ -561,10 +557,10 @@ int getLocation(purchase_struct* purchase_data) {
 			}
 		} else if ((p_type == PURCHASE_FLAG) && (purchase_data->purchase_value == -2)) {
 			// BFI Coupled Moves
-			return checkFlagDuplicate(FLAG_ABILITY_CAMERA,0) & checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,0);
+			return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT) & checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT);
 		} else if ((p_type == PURCHASE_FLAG) || (p_type == PURCHASE_GB)) {
 			// IsFlag
-			return checkFlagDuplicate(purchase_data->purchase_value,0);
+			return checkFlagDuplicate(purchase_data->purchase_value, FLAGTYPE_PERMANENT);
 		}
 	}
 	return 1;
@@ -606,12 +602,12 @@ void fixTBarrelsAndBFI(int init) {
 		*(int*)(0x80681C98) = 0x0C000000 | (((int)&getLocationStatus & 0xFFFFFF) >> 2); // Get TBarrels Move
 	} else {
 		unsigned char tbarrel_bfi_maps[] = {
-			0xB0, // TGrounds
-			0xB1, // Dive
-			0xB4, // Orange
-			0xB5, // Barrel
-			0xB6, // Vine
-			0xBD, // BFI
+			MAP_TRAININGGROUNDS, // TGrounds
+			MAP_TBARREL_DIVE, // Dive
+			MAP_TBARREL_ORANGE, // Orange
+			MAP_TBARREL_BARREL, // Barrel
+			MAP_TBARREL_VINE, // Vine
+			MAP_FAIRYISLAND, // BFI
 		};
 		int is_in_tbarrel_bfi = 0;
 		for (int i = 0; i < sizeof(tbarrel_bfi_maps); i++) {
@@ -682,11 +678,11 @@ void getNextMoveText(void) {
 	shop_paad* shop_data = 0;
 	int is_jetpac = CurrentActorPointer_0->actorType == getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY);
 	if (!is_jetpac) {
-		if ((shop_owner == 0) && ((CurrentMap == CRANKY) || (CurrentMap == FUNKY) || (CurrentMap == CANDY))) {
+		if ((shop_owner == 0) && ((CurrentMap == MAP_CRANKY) || (CurrentMap == MAP_FUNKY) || (CurrentMap == MAP_CANDY))) {
 			shop_owner = getSpawnerTiedActor(1,0);
 			paad->shop_owner = shop_owner;
 		}
-		if ((paad->shop_owner) && ((CurrentMap == CRANKY) || (CurrentMap == FUNKY) || (CurrentMap == CANDY))) {
+		if ((paad->shop_owner) && ((CurrentMap == MAP_CRANKY) || (CurrentMap == MAP_FUNKY) || (CurrentMap == MAP_CANDY))) {
 			shop_data = shop_owner->paad2;
 		}
 	}
@@ -707,14 +703,14 @@ void getNextMoveText(void) {
 		p_value = TextOverlayData.flag;
 		p_kong = TextOverlayData.kong;
 		p_flag = p_value;
-	} else if (CurrentMap == 0xBD) {
+	} else if (CurrentMap == MAP_FAIRYISLAND) {
 		has_data = 1;
 		p_type = BFIMove_New.purchase_type;
 		p_value = BFIMove_New.purchase_value;
 		p_kong = BFIMove_New.move_kong;
 		p_flag = p_value;
 	} else {
-		unsigned char tbarrel_maps[] = {0xB1,0xB4,0xB5,0xB6};
+		unsigned char tbarrel_maps[] = {MAP_TBARREL_DIVE,MAP_TBARREL_ORANGE,MAP_TBARREL_BARREL,MAP_TBARREL_VINE};
 		for (int i = 0; i < sizeof(tbarrel_maps); i++) {
 			if ((CurrentMap == tbarrel_maps[i]) && (!has_data)) {
 				has_data = 1;
@@ -755,7 +751,7 @@ void getNextMoveText(void) {
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->unk_50);
 			paad->timer = 0x82;
-			if ((CurrentMap == CRANKY) && (!is_jetpac)) {
+			if ((CurrentMap == MAP_CRANKY) && (!is_jetpac)) {
 				paad->timer = 300;
 			}
 			switch(p_type) {

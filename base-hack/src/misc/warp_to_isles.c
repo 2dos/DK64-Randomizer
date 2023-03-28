@@ -12,13 +12,13 @@ void handle_WTI(void) {
 	} else if (levelIndexMapping[CurrentMap] < 7) {
 		// Any Map explicitly in first 7 worlds
 		writeWTI(1);
-	} else if ((CurrentMap == 0x11) && (checkFlag(FLAG_MODIFIER_HELMBOM,0))) {
+	} else if ((CurrentMap == MAP_HELM) && (checkFlag(FLAG_MODIFIER_HELMBOM, FLAGTYPE_PERMANENT))) {
 		// Helm (Only if BoM is off)
 		writeWTI(1);
-	} else if ((CurrentMap == 0x22) || (CurrentMap == 0xBD) || (CurrentMap == 0x61) || (CurrentMap == 0xC3)) {
+	} else if ((CurrentMap == MAP_ISLES) || (CurrentMap == MAP_FAIRYISLAND) || (CurrentMap == MAP_KLUMSY) || (CurrentMap == MAP_ISLES_SNIDEROOM)) {
 		// Isles, BFI, K. Lumsy, Snide Room
 		writeWTI(1);
-	} else if ((checkFlagDuplicate(FLAG_ESCAPE, 0)) && ((CurrentMap == 0xB0) || (CurrentMap == 0xAB))) {
+	} else if ((checkFlagDuplicate(FLAG_ESCAPE, FLAGTYPE_PERMANENT)) && ((CurrentMap == MAP_TRAININGGROUNDS) || (CurrentMap == MAP_TREEHOUSE))) {
 		// TGrounds & Treehouse (Only if escaped from Isles)
 		writeWTI(1);
 	} else {

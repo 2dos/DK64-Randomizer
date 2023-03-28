@@ -1,6 +1,6 @@
 """Shrink Models and create a duplicate."""
 import zlib
-from BuildLib import intf_to_float, float_to_hex, main_pointer_table_offset, ROMName
+from BuildLib import intf_to_float, float_to_hex, ROMName
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames
 

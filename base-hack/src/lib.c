@@ -34,13 +34,34 @@ const rgb colorblind_colors[15] = {
     {.red=0xFF, .green=0xFF, .blue=0xFF}, // Tiny
     {.red=0xFF, .green=0xA4, .blue=0xA4}, // Chunky
 };
+const unsigned char crown_maps[] = {
+	MAP_BATTLEARENA_BEAVERBRAWL,
+	MAP_BATTLEARENA_KRITTERKARNAGE,
+	MAP_BATTLEARENA_ARENAAMBUSH,
+	MAP_BATTLEARENA_MOREKRITTERKARNAGE,
+	MAP_BATTLEARENA_KAMIKAZEKREMLINGS,
+	MAP_BATTLEARENA_PLINTHPANIC,
+	MAP_BATTLEARENA_PINNACLEPALAVER,
+	MAP_BATTLEARENA_FORESTFRACAS,
+	MAP_BATTLEARENA_SHOCKWAVESHOWDOWN,
+	MAP_BATTLEARENA_BISHBASHBRAWL
+};
+const unsigned char regular_boss_maps[] = {
+	MAP_JAPESDILLO,
+    MAP_AZTECDOGADON,
+    MAP_FACTORYJACK,
+    MAP_GALLEONPUFFTOSS,
+    MAP_FUNGIDOGADON,
+    MAP_CAVESDILLO,
+    MAP_CASTLEKUTOUT
+};
 
 void playSFX(short sfxIndex) {
 	playSound(sfxIndex,0x7FFF,0x427C0000,0x3F800000,0,0);
 }
 
 void setPermFlag(short flagIndex) {
-	setFlag(flagIndex,1,0);
+	setFlag(flagIndex,1,FLAGTYPE_PERMANENT);
 }
 
 int convertIDToIndex(short obj_index) {
@@ -116,7 +137,7 @@ void createCollisionObjInstance(collision_types subtype, int map, int exit) {
 	createCollision(0,Player,subtype,map,exit,collisionPos[0],collisionPos[1],collisionPos[2]);
 }
 
-void changeCharSpawnerFlag(int map, int spawner_id, int new_flag) {
+void changeCharSpawnerFlag(maps map, int spawner_id, int new_flag) {
 	for (int i = 0; i < 0x1F; i++) {
 		if (charspawnerflags[i].map == map) {
 			if (charspawnerflags[i].spawner_id == spawner_id) {
@@ -133,7 +154,22 @@ void resetMapContainer(void) {
 	}
 }
 
-static const unsigned char dk_portal_maps[] = {0x07,0x26,0x1A,0x1E,0x30,0x48,0x57,0xA9,0xAD,0xAF,0xAE,0xB2,0xC2,0xC1};
+static const unsigned char dk_portal_maps[] = {
+	MAP_JAPES,
+	MAP_AZTEC,
+	MAP_FACTORY,
+	MAP_GALLEON,
+	MAP_FUNGI,
+	MAP_CAVES,
+	MAP_CASTLE,
+	MAP_JAPESLOBBY,
+	MAP_AZTECLOBBY,
+	MAP_FACTORYLOBBY,
+	MAP_GALLEONLOBBY,
+	MAP_FUNGILOBBY,
+	MAP_CAVESLOBBY,
+	MAP_CASTLELOBBY
+};
 void correctDKPortal(void) {
 	int is_portal_map = 0;
 	for (int i = 0; i < sizeof(dk_portal_maps); i++) {
@@ -148,7 +184,7 @@ void correctDKPortal(void) {
 		if (portal_exit == exit) {
 			portal_state = 0;
 		}
-		if ((CurrentMap == 7) && (exit == 15)) {
+		if ((CurrentMap == MAP_JAPES) && (exit == 15)) {
 			portal_state = 0;
 		}
 		int _count = ObjectModel2Count;
@@ -166,7 +202,7 @@ void correctDKPortal(void) {
 	}
 }
 
-void alterGBKong(int map, int id, int new_kong) {
+void alterGBKong(maps map, int id, int new_kong) {
 	for (int i = 0; i < 113; i++) {
 		if (GBDictionary[i].map == map) {
 			if (GBDictionary[i].model2_id == id) {
@@ -460,6 +496,34 @@ int isInstrumentUpgradeFlag(int flag) {
 		if (flag == instrument_flags[i]) {
 			return 1;
 		}
+	}
+	return 0;
+}
+
+int inBattleCrown(maps map) {
+	if (map == MAP_BATTLEARENA_BEAVERBRAWL) {
+		return 1;
+	} else if (map == MAP_BATTLEARENA_KRITTERKARNAGE) {
+		return 1;
+	}
+	return (map >= MAP_BATTLEARENA_ARENAAMBUSH) && (map <= MAP_BATTLEARENA_SHOCKWAVESHOWDOWN);
+}
+
+int inBossMap(maps map, int include_regular, int include_krool, int include_shoe) {
+	if (include_regular) {
+		for (int i = 0; i < 7; i++) {
+			if (regular_boss_maps[i] == map) {
+				return 1;
+			}
+		}
+	}
+	if (include_krool) {
+		if ((map >= MAP_KROOLDK) && (map <= MAP_KROOLCHUNKY)) {
+			return 1;
+		}
+	}
+	if (include_shoe) {
+		return map == MAP_KROOLSHOE;
 	}
 	return 0;
 }

@@ -10,7 +10,6 @@
  */
 #include "../../include/common.h"
 
-#define JAPES_MAIN 7
 #define MODE_DKTV 3
 
 void qualityOfLife_fixes(void) {
@@ -29,7 +28,7 @@ void qualityOfLife_fixes(void) {
 		setPermFlag(FLAG_TBARREL_SPAWNED); // Training Barrels Spawned
 		fixkey8();
 		// Prevent a bug where detransforming from Rambi shortly before getting hit will keep you locked as Rambi
-		if (CurrentMap == JAPES_MAIN) {
+		if (CurrentMap == MAP_JAPES) {
 			if (Player) {
 				if (Character == 6) { // Rambi
 					if (Player->detransform_timer == 0) {
@@ -49,7 +48,7 @@ void checkNinWarp(void) {
 		WarpToDKTV();
 		TransitionType = 0;
 	} else {
-		initiateTransitionFade(0x4C,0,2); // DK Rap
+		initiateTransitionFade(MAP_DKRAP,0,2); // DK Rap
 	}
 }
 
@@ -111,8 +110,8 @@ void CBDing(void) {
 				total_cbs += MovesBase[kong].cb_count[world];
 			}
 			int req_cbs = TroffNScoffReqArray[world];
-			if ((previous_total_cbs < req_cbs) && (total_cbs >= req_cbs) && (previous_world == world) && (CurrentMap != 0x2A)) { // Ban in T&S because of delayed update to turn in array
-				if (!checkFlag(tnsportal_flags[world],0)) {
+			if ((previous_total_cbs < req_cbs) && (total_cbs >= req_cbs) && (previous_world == world) && (CurrentMap != MAP_TROFFNSCOFF)) { // Ban in T&S because of delayed update to turn in array
+				if (!checkFlag(tnsportal_flags[world],FLAGTYPE_PERMANENT)) {
 					playCBDing();
 				}
 			}
@@ -137,7 +136,7 @@ void postKRoolSaveCheck(void) {
 	/**
 	 * @brief Prevent the game saving on the transition from Chunky Phase to the K. Rool launch cutscene
 	 */
-	if ((CurrentMap != 0x22) || (!CutsceneFadeActive) || (CutsceneFadeIndex != 29)) {
+	if ((CurrentMap != MAP_ISLES) || (!CutsceneFadeActive) || (CutsceneFadeIndex != 29)) {
 		save();
 	}
 }
@@ -223,7 +222,7 @@ void RabbitRaceInfiniteCode(void) {
 	 * This only applies to Round 2, and will end the infinite coconuts upon the race finishing
 	 */
 	initCharSpawnerActor();
-	if (checkFlag(FLAG_RABBIT_ROUND1,0)) {
+	if (checkFlag(FLAG_RABBIT_ROUND1,FLAGTYPE_PERMANENT)) {
 		int control_state = CurrentActorPointer_0->control_state;
 		if (control_state == 0x1F) {
 			if (CurrentActorPointer_0->control_state_progress == 2) {
@@ -250,7 +249,7 @@ int fixDilloTNTPads(void* actor) {
 	 * 
 	 * @return Does actor obey gravity
 	 */
-	if ((CurrentMap == 8) || (CurrentMap == 0xC4)) {
+	if ((CurrentMap == MAP_JAPESDILLO) || (CurrentMap == MAP_CAVESDILLO)) {
 		return 0;
 	}
 	return getPadGravity(actor);
@@ -263,7 +262,7 @@ int canPlayJetpac(void) {
 	 * 
 	 * @return Amount of medals the player has. Set to 0 if you have the Jetpac Reward
 	 */
-	if (checkFlag(FLAG_COLLECTABLE_RAREWARECOIN, 0)) {
+	if (checkFlag(FLAG_COLLECTABLE_RAREWARECOIN, FLAGTYPE_PERMANENT)) {
 		return 0;
 	} else {
 		return countFlagArray(FLAG_MEDAL_JAPES_DK, 40, 0);

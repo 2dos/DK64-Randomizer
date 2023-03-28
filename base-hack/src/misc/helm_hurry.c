@@ -23,7 +23,7 @@ int canSaveHelmHurry(void) {
         return 0;
     }
     if (Rando.helm_hurry_mode) {
-        if (checkFlag(FLAG_LOADED_GAME_OVER,0)) {
+        if (checkFlag(FLAG_LOADED_GAME_OVER, FLAGTYPE_PERMANENT)) {
             return 0;
         }
     }
@@ -54,7 +54,7 @@ void checkTotalCache(void) {
         for (int level = 0; level < 8; level++) {
             current_gb_total += MovesBase[kong].gb_count[level];
         }
-        if (checkFlag(kong_flags[kong],0)) {
+        if (checkFlag(kong_flags[kong], FLAGTYPE_PERMANENT)) {
             current_kong_bitfield |= (1 << kong);
         }
     }

@@ -1,9 +1,5 @@
 #include "../../include/common.h"
 
-#define FUNKY 1
-#define CRANKY 5
-#define CANDY 0x19
-
 #define PURCHASE_MOVES 0
 #define PURCHASE_SLAM 1
 #define PURCHASE_GUN 2
