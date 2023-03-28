@@ -156,7 +156,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "head_balloons",
         "colorblind_mode",
         "search",
-        "holiday_mode",
+        "holiday_setting",
         "homebrew_header",
     ]:
         if pop in dict_data:
