@@ -1,0 +1,1 @@
+#define MUSIC_SIZE 0x8000

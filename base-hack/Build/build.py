@@ -18,7 +18,7 @@ import generate_disco_models
 import model_port
 from BuildEnums import ChangeType, TextureFormat, TableNames, CompressionMethods
 from BuildClasses import File, HashIcon, ModelChange, TextChange, ROMPointerFile
-from BuildLib import BLOCK_COLOR_SIZE, ROMName, newROMName
+from BuildLib import BLOCK_COLOR_SIZE, ROMName, newROMName, music_size
 
 # Patcher functions for the extracted files
 import patch_text
@@ -501,7 +501,7 @@ for song in song_replacements:
         pointer_table_index=TableNames.MusicMIDI,
         file_index=song["index"],
         source_file=f"assets/music/{song['name']}.bin",
-        target_compressed_size=0x2DDE,
+        target_compressed_size=music_size,
     )
     if song["bps"]:
         item.bps_file = f"assets/music/{song['name']}.bps"
@@ -594,7 +594,7 @@ for x in range(175):
                     pointer_table_index=TableNames.MusicMIDI,
                     file_index=x,
                     source_file=f"song{x}.bin",
-                    target_compressed_size=0x2DDE,
+                    target_compressed_size=music_size,
                 )
             )
 for x in range(6):

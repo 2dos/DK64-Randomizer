@@ -1,7 +1,7 @@
 """Handle heap size."""
 
-heap_size = 0x2C000
-flut_size = 0x640
+from BuildLib import music_size, heap_size, flut_size
+
 code_end = 0x805FAE00
 
 variables = {"start": code_end - heap_size, "upper": ((code_end - heap_size) >> 16) & 0xFFFF, "lower": (code_end - heap_size) & 0xFFFF}
@@ -34,6 +34,8 @@ def handleHeap(size: int, rando_flut_size: int):
     with open("asm/header.asm", "w") as fh:
         fh.write(f".headersize {hex(0x7E000000 | (variables['start'] & 0xFFFFFF))}\n")
         fh.write(f".org {hex(variables['start'])}")
+    with open("include/music.h", "w") as fh:
+        fh.write(f"#define MUSIC_SIZE {hex(music_size)}")
 
 
 handleHeap(heap_size, flut_size)
