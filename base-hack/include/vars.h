@@ -53,6 +53,7 @@
 #define FileStateSize 0x340
 #define flagMenuScreenCount 11
 #define pointer_table_offset 0x101C50
+#define static_expansion_size 0x100
 
 #define ACTOR_VANILLA_LIMIT 345
 #define COLLISION_LIMIT 60

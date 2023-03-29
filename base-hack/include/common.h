@@ -12,5 +12,6 @@
 #include "flags.h"
 #include "global.h"
 #include "vars.h"
+#include "archipelago.h"
 
 #endif

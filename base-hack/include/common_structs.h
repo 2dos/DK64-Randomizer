@@ -1268,6 +1268,7 @@ typedef struct arbitrary_overlay {
 	/* 0x000 */ unsigned char type;
 	/* 0x001 */ unsigned char kong;
 	/* 0x002 */ short flag;
+	/* 0x004 */ char* string;
 } arbitrary_overlay;
 
 typedef struct rgb {

@@ -274,6 +274,10 @@ void earlyFrame(void) {
 			}
 		}
 	}
+	if (Rando.archipelago) {
+		handleArchipelagoFeed();
+		handleArchipelagoString();
+	}
 }
 
 static char fpsStr[15] = "";
