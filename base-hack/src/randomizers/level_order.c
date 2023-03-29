@@ -18,19 +18,18 @@ void randomizeLevelOrder(void) {
 	if (ObjectModel2Timer == 2) {
 		if (TriggerArray) {
 			for (int i = 0; i < TriggerSize; i++) {
-				trigger* focused_trigger = getObjectArrayAddr(TriggerArray,TRIGGER_ELEMENT_SIZE,i);
-				if (focused_trigger->type == 9) {
+				if (TriggerArray[i].type == 9) {
 					if (CurrentMap == MAP_ISLES) {
 						// Change Map
 						int j = 0;
 						while (j < LOBBY_COUNT) {
-							if (lobbies[j] == focused_trigger->map) {
-								focused_trigger->map = lobbies[(int)Rando.level_order[j]];
+							if (lobbies[j] == TriggerArray[i].map) {
+								TriggerArray[i].map = lobbies[(int)Rando.level_order[j]];
 								break;
 							}
 							j++;
 						}
-					} else if (focused_trigger->map == MAP_ISLES) {
+					} else if (TriggerArray[i].map == MAP_ISLES) {
 						// Change Exit
 						int k = 0;
 						while (k < LOBBY_COUNT) {
@@ -38,7 +37,7 @@ void randomizeLevelOrder(void) {
 								int a = 0;
 								while (a < LOBBY_COUNT) {
 									if (k == Rando.level_order[a]) {
-										focused_trigger->exit = lobbyexits[a];
+										TriggerArray[i].exit = lobbyexits[a];
 										break;
 									}
 									a++;
