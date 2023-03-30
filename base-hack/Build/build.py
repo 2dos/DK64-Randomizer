@@ -901,7 +901,7 @@ text_files = (
     TextChange("Chunky", 0, ""),
     TextChange("Lanky", 0, ""),
     TextChange("Funky", 0, ""),
-    TextChange("Cranky", 0, "cranky_text.bin"),
+    TextChange("Cranky", 0x2800, "cranky_text.bin"),
     TextChange("Candy", 0, ""),
     TextChange("Llama", 0, ""),
     TextChange("Snide", 0, ""),

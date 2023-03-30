@@ -1641,7 +1641,7 @@ def applyHelmDoorCosmetics(spoiler: Spoiler):
 
 def applyHolidayMode(spoiler: Spoiler):
     """Change grass texture to snow."""
-    if spoiler.settings.holiday_mode:
+    if spoiler.settings.holiday_setting:
         ROM().seek(0x1FF8000)
         snow_im = Image.new(mode="RGBA", size=((32, 32)))
         snow_px = snow_im.load()
