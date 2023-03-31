@@ -2,7 +2,7 @@
 
 import zlib
 import os
-from BuildLib import intf_to_float, main_pointer_table_offset, ROMName
+from BuildLib import intf_to_float, ROMName
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames
 

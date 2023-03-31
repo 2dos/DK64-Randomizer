@@ -2,9 +2,16 @@
 
 #define TRIGGER_ELEMENT_SIZE 0x3A
 #define LOBBY_COUNT 7
-#define ISLES_OVERWORLD 0x22
 
-static const unsigned char lobbies[] = {0xA9,0xAD,0xAF,0xAE,0xB2,0xC2,0xC1};
+static const unsigned char lobbies[] = {
+	MAP_JAPESLOBBY,
+	MAP_AZTECLOBBY,
+	MAP_FACTORYLOBBY,
+	MAP_GALLEONLOBBY,
+	MAP_FUNGILOBBY,
+	MAP_CAVESLOBBY,
+	MAP_CASTLELOBBY
+};
 static const unsigned char lobbyexits[] = {2,3,4,5,6,10,11};
 
 void randomizeLevelOrder(void) {
@@ -13,7 +20,7 @@ void randomizeLevelOrder(void) {
 			for (int i = 0; i < TriggerSize; i++) {
 				trigger* focused_trigger = getObjectArrayAddr(TriggerArray,TRIGGER_ELEMENT_SIZE,i);
 				if (focused_trigger->type == 9) {
-					if (CurrentMap == ISLES_OVERWORLD) {
+					if (CurrentMap == MAP_ISLES) {
 						// Change Map
 						int j = 0;
 						while (j < LOBBY_COUNT) {
@@ -23,7 +30,7 @@ void randomizeLevelOrder(void) {
 							}
 							j++;
 						}
-					} else if (focused_trigger->map == ISLES_OVERWORLD) {
+					} else if (focused_trigger->map == MAP_ISLES) {
 						// Change Exit
 						int k = 0;
 						while (k < LOBBY_COUNT) {
@@ -44,9 +51,9 @@ void randomizeLevelOrder(void) {
 				}
 			}
 		}
-		if (CurrentMap == ISLES_OVERWORLD) {
+		if (CurrentMap == MAP_ISLES) {
 			if (isRDRAM(CastleCannonPointer)) {
-				if (CastleCannonPointer->source_map == ISLES_OVERWORLD) {
+				if (CastleCannonPointer->source_map == MAP_ISLES) {
 					CastleCannonPointer->destination_map = lobbies[(int)Rando.level_order[6]];
 				}
 			}

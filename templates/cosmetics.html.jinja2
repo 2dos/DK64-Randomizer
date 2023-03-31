@@ -167,8 +167,8 @@
                                title="Happy Holidays from the DK64 Randomizer Dev Team. Limited time option.">
                             <input class="form-check-input"
                                    type="checkbox"
-                                   name="holiday_mode"
-                                   id="holiday_mode"
+                                   name="holiday_setting"
+                                   id="holiday_setting"
                                    value="False"/>
                             Holiday Mode
                         </label>
@@ -416,7 +416,16 @@
                             Remove Water Oscillation
                         </label>
                     </div>
-                    <div class="spacer">
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="Adds kong faces to balloons, making them easier to distinguish in various lighting conditions.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="head_balloons"
+                                   id="head_balloons"
+                                   value="True"/>
+                            Kong Head on Balloons
+                        </label>
                     </div>
                 </div>
                 <div class="flex-container">

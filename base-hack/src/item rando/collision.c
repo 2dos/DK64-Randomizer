@@ -133,7 +133,7 @@ int isObjectTangible_detailed(int id) {
      * 
      * @return Object tangibility, boolean
      */
-    if ((CurrentMap == 61) && (id == 0xA)) {
+    if ((CurrentMap == MAP_FUNGIMILLFRONT) && (id == 0xA)) {
         return 0;
     }
     return isObjectTangible(id);

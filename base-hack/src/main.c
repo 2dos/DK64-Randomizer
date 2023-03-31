@@ -1,11 +1,7 @@
 #include "../include/common.h"
 
-#define MAIN_MENU 0x50
-#define NINTENDO_LOGO 0x28
-#define JAPES_MAIN 7
 #define ADVENTURE_MODE 6
 #define SNIDES_BONUS_GAMES 13
-#define NFR_SCREEN 0x51
 
 #define LAG_CAP 10
 static short past_lag[LAG_CAP] = {};
@@ -26,18 +22,19 @@ void cFuncLoop(void) {
 	replace_zones(0);
 	alter_boss_key_flags();
 	if (ObjectModel2Timer <= 2) {
-		setFlag(0x78, 0, 2); // Clear K. Lumsy temp flag
-		setFlag(0x79, 0, 2); // Clear BFI Reward Cutscene temp flag
+		setFlag(0x78, 0, FLAGTYPE_TEMPORARY); // Clear K. Lumsy temp flag
+		setFlag(0x79, 0, FLAGTYPE_TEMPORARY); // Clear BFI Reward Cutscene temp flag
 		if ((!Rando.tns_portal_rando_on) && (Rando.tns_indicator)) {
 			shiftBrokenJapesPortal();
 		}
 		openCoinDoor();
 		priceTransplant();
-		if (CurrentMap == 0xE) {
+		if (CurrentMap == MAP_AZTECBEETLE) {
 			TextItemName = Rando.aztec_beetle_reward;
-		} else if (CurrentMap == 0x52) {
+		} else if (CurrentMap == MAP_CAVESBEETLERACE) {
 			TextItemName = Rando.caves_beetle_reward;
 		}
+		handleKRoolSaveProgress();
 	}
 	if (Rando.item_rando) {
 		if (TransitionSpeed > 0) {
@@ -49,13 +46,13 @@ void cFuncLoop(void) {
 	}
 	// displayNumberOnTns();
 	if (Rando.music_rando_on) {
-		if (CurrentMap == 0x28) {
+		if (CurrentMap == MAP_NINTENDOLOGO) {
 			if (ObjectModel2Timer == 5) {
 				preventSongPlaying = 0;
 			}
 		}
 	}
-	if (CurrentMap == 0x50) {
+	if (CurrentMap == MAP_MAINMENU) {
 		colorMenuSky();
 	}
 	callParentMapFilter();
@@ -84,11 +81,11 @@ void cFuncLoop(void) {
 		fixGraceCheese();
 		forceBossKong();
 	} else {
-		if (CurrentMap == 0xC7) {
+		if (CurrentMap == MAP_CASTLEKUTOUT) {
 			if (TransitionSpeed > 0.0f) {
 				if (LZFadeoutProgress == 30.0f) {
 					for (int i = 0; i < 7; i++) {
-						if (BossMapArray[i] == 0xC7) {
+						if (BossMapArray[i] == MAP_CASTLEKUTOUT) {
 							Character = BossKongArray[i];
 						}
 					}
@@ -100,7 +97,7 @@ void cFuncLoop(void) {
 	handleSFXCache();
 	if (Rando.fast_start_helm == 2) {
 		if (TransitionSpeed > 0) {
-			if ((DestMap == 0x11) && (CurrentMap == 0xAA)) {
+			if ((DestMap == MAP_HELM) && (CurrentMap == MAP_HELMLOBBY)) {
 				setPermFlag(FLAG_MODIFIER_HELMBOM);
 			}
 		}
@@ -119,17 +116,17 @@ void cFuncLoop(void) {
 	// if (Rando.item_rando) {
 	// 	controlKeyText();
 	// }
-	if (CurrentMap == 0x11) {
+	if (CurrentMap == MAP_HELM) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) != 0)) {
 			if ((CutsceneIndex == 0) || (CutsceneIndex == 4) || (CutsceneIndex == 7) || (CutsceneIndex == 8) || (CutsceneIndex == 9)) {
-				if (checkFlag(FLAG_MODIFIER_HELMBOM,0)) {
-					setFlag(0x50,0,2); // Prevent Helm Door hardlock
+				if (checkFlag(FLAG_MODIFIER_HELMBOM,FLAGTYPE_PERMANENT)) {
+					setFlag(0x50,0,FLAGTYPE_TEMPORARY); // Prevent Helm Door hardlock
 				}
 			}
 		}
-	} else if ((CurrentMap == 0xAA) && (ObjectModel2Timer < 5)) {
-		if (checkFlag(FLAG_MODIFIER_HELMBOM,0)) {
-			setFlag(0x50,0,2); // Prevent Helm Door hardlock
+	} else if ((CurrentMap == MAP_HELMLOBBY) && (ObjectModel2Timer < 5)) {
+		if (checkFlag(FLAG_MODIFIER_HELMBOM,FLAGTYPE_PERMANENT)) {
+			setFlag(0x50,0,FLAGTYPE_TEMPORARY); // Prevent Helm Door hardlock
 		}
 	}
 	past_lag[(int)(lag_counter % LAG_CAP)] = StoredLag;
@@ -144,34 +141,34 @@ void cFuncLoop(void) {
 
 void earlyFrame(void) {
 	if (ObjectModel2Timer == 2) {
-		setFlag(FLAG_KROOL_INTRO_DK,1,2); // DK Phase Intro
-		setFlag(FLAG_KROOL_INTRO_TINY,1,2); // Tiny Phase Intro
-		if (CurrentMap == 0x22) {
+		setFlag(FLAG_KROOL_INTRO_DK,1,FLAGTYPE_TEMPORARY); // DK Phase Intro
+		setFlag(FLAG_KROOL_INTRO_TINY,1,FLAGTYPE_TEMPORARY); // Tiny Phase Intro
+		if (CurrentMap == MAP_ISLES) {
 			KRoolRound = 0;
 			for (int i = 0; i < 4; i++) {
-				setFlag(FLAG_KROOL_TOE_1 + i,0,2); // Clear Toes
+				setFlag(FLAG_KROOL_TOE_1 + i,0,FLAGTYPE_TEMPORARY); // Clear Toes
 			}
 		}
-		int boat_speed = 5000 << (CurrentMap == 0x6F);
+		int boat_speed = 5000 << (CurrentMap == MAP_GALLEONPUFFTOSS);
 		for (int i = 0; i < 2; i++) {
 			BoatSpeeds[i] = boat_speed;
 		}
 		PauseText = 0;
 		if (isLobby(CurrentMap)) {
 			PauseText = 1;
-		} else if ((CurrentMap == 1) || (CurrentMap == 5) || (CurrentMap == 0x19)) {
+		} else if ((CurrentMap == MAP_FUNKY) || (CurrentMap == MAP_CRANKY) || (CurrentMap == MAP_CANDY)) {
 			PauseText = 1;
 		}
-		if (CurrentMap == 0x11) {
+		if (CurrentMap == MAP_HELM) {
 			HelmInit(1);
 		}
-		if (CurrentMap == 0x40) {
+		if (CurrentMap == MAP_FUNGIGIANTMUSHROOM) {
 			// Adjust Giant Mushroom Void
 			MapVoid_MinX = -259;
 			MapVoid_MinZ = -227;
 			MapVoid_MaxX = 1210;
 			MapVoid_MaxZ = 1239;
-		} else if (CurrentMap == 13) {
+		} else if (CurrentMap == MAP_JAPESPAINTING) {
 			// Adjust Painting Void
 			MapVoid_MinX = -284;
 			MapVoid_MinZ = -320;
@@ -185,26 +182,26 @@ void earlyFrame(void) {
 			QueueHelmTimer = 0;
 		}
 	}
-	if (CurrentMap == 0x6F) { // Pufftoss
+	if (CurrentMap == MAP_GALLEONPUFFTOSS) { // Pufftoss
 		if ((CutsceneActive) && (CutsceneIndex == 20) && (CutsceneTimer == 2)) { // Short Intro Cutscene
 			if (Rando.music_rando_on) {
 				MusicTrackChannels[0] = 0; // Disables boss intro music
 			}
 		}
-	} else if (CurrentMap == 0x6E) { // Factory BBlast
+	} else if (CurrentMap == MAP_FACTORYBBLAST) { // Factory BBlast
 		if (Rando.fast_gbs) {
-			if (!checkFlag(FLAG_ARCADE_LEVER,0)) {
-				if (checkFlag(FLAG_ARCADE_ROUND1,0)) {
+			if (!checkFlag(FLAG_ARCADE_LEVER,FLAGTYPE_PERMANENT)) {
+				if (checkFlag(FLAG_ARCADE_ROUND1,FLAGTYPE_PERMANENT)) {
 					if (TransitionSpeed > 0) {
-						if (DestMap == 0x1A) {
-							delayedObjectModel2Change(0x1A,45,10);
+						if (DestMap == MAP_FACTORY) {
+							delayedObjectModel2Change(MAP_FACTORY,45,10);
 						}
 						setPermFlag(FLAG_ARCADE_LEVER);
 					}
 				}
 			}
 		}
-	} else if (CurrentMap == 0x9A) {
+	} else if (CurrentMap == MAP_FACTORYJACK) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)) {
 			if ((CutsceneIndex == 8) || (CutsceneIndex == 2) || (CutsceneIndex == 16) || (CutsceneIndex == 18) || (CutsceneIndex == 17)) {
 				// Falling off Mad Jack
@@ -216,7 +213,7 @@ void earlyFrame(void) {
 		}
 	}
 	// Cutscene DK Code
-	if ((CurrentMap == 0x28) || (CurrentMap == 0x4C)) {
+	if ((CurrentMap == MAP_NINTENDOLOGO) || (CurrentMap == MAP_DKRAP)) {
 		actor_functions[196] = (void*)0x806C1640;
 	} else {
 		actor_functions[196] = &cutsceneDKCode;
@@ -261,18 +258,18 @@ void earlyFrame(void) {
 			MovesBase[kong].tns_cb_count[level] &= 0xFF;
 		}
 	}
-	if ((CurrentMap == MAIN_MENU) && (ObjectModel2Timer < 5)) {
+	if ((CurrentMap == MAP_MAINMENU) && (ObjectModel2Timer < 5)) {
 		FileScreenDLCode_Write();
 		initTracker();
 	}
-	if (CurrentMap == NFR_SCREEN) {
+	if (CurrentMap == MAP_NFRTITLESCREEN) {
 		if (ObjectModel2Timer == 5) {
 			preventSongPlaying = 0;
 		}
 		int loaded = *(char*)(0x807F01A6);
 		if ((loaded) || (ObjectModel2Timer > 800)) {
 			if (has_loaded == 0) {
-				initiateTransitionFade(0x50, 0, 5);
+				initiateTransitionFade(MAP_MAINMENU, 0, 5);
 				has_loaded = 1;
 			}
 		}
@@ -354,8 +351,8 @@ int* drawInfoText(int* dl, int x_offset, int y, char* str, int error) {
 }
 
 int* displayListModifiers(int* dl) {
-	if (CurrentMap != NINTENDO_LOGO) {
-		if (CurrentMap == NFR_SCREEN) {
+	if (CurrentMap != MAP_NINTENDOLOGO) {
+		if (CurrentMap == MAP_NFRTITLESCREEN) {
 			wait_progress_timer += 1;
 			if (wait_progress_timer > LOADBAR_DIVISOR) {
 				wait_progress_timer = 0;
@@ -389,7 +386,7 @@ int* displayListModifiers(int* dl) {
 			}
 			dl = drawPixelTextContainer(dl, wait_x_offset, 130, (char*)wait_texts[(int)wait_progress_master], 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			dl = drawPixelTextContainer(dl, 110, 150, "PLEASE WAIT", 0xFF, 0xFF, 0xFF, 0xFF, 1);
-		} else if (CurrentMap == MAIN_MENU) {
+		} else if (CurrentMap == MAP_MAINMENU) {
 			if (EEPROMType != 2) {
 				int i = 0;
 				while (i < LoadedActorCount) {
@@ -468,8 +465,8 @@ int* displayListModifiers(int* dl) {
 						bp_numerator = 0;
 						bp_denominator = 0;
 						for (int i = 0; i < 8; i++) {
-							int bp_has = checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + (i * 5) + Character,0);
-							int bp_turn = checkFlagDuplicate(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,0);
+							int bp_has = checkFlagDuplicate(FLAG_BP_JAPES_DK_HAS + (i * 5) + Character,FLAGTYPE_PERMANENT);
+							int bp_turn = checkFlagDuplicate(FLAG_BP_JAPES_DK_TURN + (i * 5) + Character,FLAGTYPE_PERMANENT);
 							if ((bp_has) && (!bp_turn)) {
 								bp_numerator += 1;
 							}

@@ -131,7 +131,7 @@
 | Gloomy Galleon | Gloomy Galleon: On Rocketbarrel platform |  | 
 | Gloomy Galleon | Gloomy Galleon: Blueprint Alcove |  | 
 | Gloomy Galleon | Gloomy Galleon: Behind Snide's |  | 
-| Gloomy Galleon | Gloomy Galleon: On Gold Tower |  | 
+| Gloomy Galleon | Gloomy Galleon: On Gold Tower | (l.balloon and l.islanky and Events.WaterSwitch in l.Events) or l.CanMoonkick()) | 
 | Galleon Sick Bay | Gloomy Galleon - Seasick Ship: Left of Cannon |  | 
 | Galleon Sick Bay | Gloomy Galleon - Seasick Ship: Right of Cannon |  | 
 | Galleon Sick Bay | Gloomy Galleon - Seasick Ship: Behind Spinning Barrels | (l.punch and l.ischunky) or l.phasewalk | 

@@ -250,7 +250,7 @@ void initActorDefs(void) {
 #define GB_DICTIONARY_COUNT 120
 static GBDictItem NewGBDictionary[GB_DICTIONARY_COUNT] = {};
 
-int addDictionaryItem(int index, int map, int id, int flag, int kong) {
+int addDictionaryItem(int index, maps map, int id, int flag, int kong) {
     /**
      * @brief Add flag mapping item
      * 
@@ -285,36 +285,36 @@ void initItemDictionary(void) {
         int id = GBDictionary[i].model2_id;
         int kong = GBDictionary[i].intended_kong_actor - 2;
         int flag = GBDictionary[i].flag_index;
-        if ((map == 0x22) && (id == 4)) {
+        if ((map == MAP_ISLES) && (id == 4)) {
             kong = Rando.starting_kong;
-        } else if ((map == 0x7) && ((id == 0x69) || (id == 0x48))) {
+        } else if ((map == MAP_JAPES) && ((id == 0x69) || (id == 0x48))) {
             kong = Rando.free_source_japes;
-        } else if ((map == 0x10) && (id == 0x5B)) {
+        } else if ((map == MAP_AZTECTINYTEMPLE) && (id == 0x5B)) {
             kong = Rando.free_source_ttemple;
-        } else if ((map == 0x14) && (id == 0x6C)) {
+        } else if ((map == MAP_AZTECLLAMATEMPLE) && (id == 0x6C)) {
             kong = Rando.free_source_llama;
-        } else if ((map == 0x1A) && (id == 0x78)) {
+        } else if ((map == MAP_FACTORY) && (id == 0x78)) {
             kong = Rando.free_source_factory;
-        } else if ((map == 0x11) && (id == 0x5E)) {
+        } else if ((map == MAP_HELM) && (id == 0x5E)) {
             flag = 0x24C;
-        } else if ((map == 0x11) && (id == 0x61)) {
+        } else if ((map == MAP_HELM) && (id == 0x61)) {
             flag = 0x249;
         }
         NewGBDictionary[i].intended_kong_actor = kong + 2;
         NewGBDictionary[i].flag_index = flag;
         if ((flag == FLAG_ARCADE_ROUND1) && (Rando.fast_gbs)) {
-            NewGBDictionary[i].map = 0x6E;
+            NewGBDictionary[i].map = MAP_FACTORYBBLAST;
             NewGBDictionary[i].model2_id = 0;
         }
     }
     // Add new entries
-    int size = addDictionaryItem(113, 0x2C, 0, FLAG_PEARL_0_COLLECTED, -2);
+    int size = addDictionaryItem(113, MAP_GALLEONTREASURECHEST, 0, FLAG_PEARL_0_COLLECTED, -2);
     for (int i = 1; i < 5; i++) {
-        size = addDictionaryItem(size, 0x2C, i, FLAG_PEARL_0_COLLECTED + i, -2);
+        size = addDictionaryItem(size, MAP_GALLEONTREASURECHEST, i, FLAG_PEARL_0_COLLECTED + i, -2);
     }
-    size = addDictionaryItem(size, 0x34, 5, FLAG_COLLECTABLE_BEAN, -2);
+    size = addDictionaryItem(size, MAP_FUNGIANTHILL, 5, FLAG_COLLECTABLE_BEAN, -2);
     if (Rando.quality_of_life.vanilla_fixes) {
-        size = addDictionaryItem(size, 0x11, 0x5A, FLAG_KEYHAVE_KEY8, -2); // Fake Key backup fix
+        size = addDictionaryItem(size, MAP_HELM, 0x5A, FLAG_KEYHAVE_KEY8, -2); // Fake Key backup fix
     }
     /*
         Had to disable this. Caused crashes when you would collect one version, then load the setup which contains the other version (No parent filter)

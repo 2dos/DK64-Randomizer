@@ -17,7 +17,7 @@ void adjustAnimationTables(void) {
     int slot = Rando.krusha_slot;
     if ((slot >= 0) && (slot <= 4)) {
         if (slot == 2) {
-            if (CurrentMap == 0xCD) {
+            if (CurrentMap == MAP_KROOLLANKY) {
                 *(short*)(0x8075D7CE) = 0x3320; // Allow arm stretching
             } else {
                 *(short*)(0x8075D7CE) = 0x36B4; // Prevent arm stretching (DK64 is a giant meme)
@@ -32,16 +32,13 @@ void adjustAnimationTables(void) {
                 // Instrument
                 excl_extra = 1;
             } else if ((i >= 0x50) && (i <= 0x52)) {
-                if (((CurrentMap == 0xCD) && (slot == 2)) || ((CurrentMap == 0x53) && (slot == 4))) {
+                if (((CurrentMap == MAP_KROOLLANKY) && (slot == 2)) || ((CurrentMap == MAP_FUNGIDOGADON) && (slot == 4))) {
                     // Punch - During Lanky Phase and Dogadon 2
                     excl_extra = 1;
                 }
             } else if ((i >= 0x30) && (i <= 0x32)) {
                 excl_extra = 1;
             } else if ((i >= 0x48) && (i <= 0x4E)) {
-                // excl_extra = 1;
-            } else if ((i == 0x26) && (slot == 0) && (CurrentMap == 0xBC)) {
-                // BBlast
                 // excl_extra = 1;
             }
             if (i < 0x6E) {
@@ -64,7 +61,7 @@ void adjustAnimationTables(void) {
             if (i == 0x5A) {
                 // Instrument
                 excl_base = 1;
-            } else if ((i >= 0x3F) && (i <= 0x41) && (CurrentMap == 0xCD) && (slot == 2)) {
+            } else if ((i >= 0x3F) && (i <= 0x41) && (CurrentMap == MAP_KROOLLANKY) && (slot == 2)) {
                 // Punch - During Lanky Phase
                 excl_base = 1;
             } else if ((i >= 0x5C) && (i <= 0x5D)) {

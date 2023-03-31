@@ -285,7 +285,7 @@ int getEnabledState(int index) {
 	 * @return State
 	 */
 	int file_empty = 0;
-	if (CurrentMap == 0x50) {
+	if (CurrentMap == MAP_MAINMENU) {
 		file_empty = isFileEmpty(0);
 	}
 	if (file_empty) { // Empty file check
@@ -341,9 +341,9 @@ int getEnabledState(int index) {
 		case TRACKER_TYPE_HUNKY:
 			return MovesBase[KONG_CHUNKY].special_moves & MOVECHECK_HUNKY;
 		case TRACKER_TYPE_CAMERA:
-			return checkFlagDuplicate(FLAG_ABILITY_CAMERA, 0);
+			return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_SHOCKWAVE:
-			return checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 0);
+			return checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_SLAM:
 			return MovesBase[KONG_DK].simian_slam;
 		case TRACKER_TYPE_HOMING:
@@ -351,13 +351,13 @@ int getEnabledState(int index) {
 		case TRACKER_TYPE_SNIPER:
 			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_SNIPER;
 		case TRACKER_TYPE_DIVE:
-			return checkFlagDuplicate(FLAG_TBARREL_DIVE, 0);
+			return checkFlagDuplicate(FLAG_TBARREL_DIVE, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_ORANGE:
-			return checkFlagDuplicate(FLAG_TBARREL_ORANGE, 0);
+			return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_BARREL:
-			return checkFlagDuplicate(FLAG_TBARREL_BARREL, 0);
+			return checkFlagDuplicate(FLAG_TBARREL_BARREL, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_VINE:
-			return checkFlagDuplicate(FLAG_TBARREL_VINE, 0);
+			return checkFlagDuplicate(FLAG_TBARREL_VINE, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_MELON_2:
 			for (int i = 0; i < 5; i++) {
 				if (MovesBase[i].instrument_bitfield & 1) {
@@ -395,7 +395,7 @@ int getEnabledState(int index) {
 			{
 				// Keys in
 				int key_index = index - TRACKER_TYPE_KEY1;
-				int key_there = checkFlag(FLAG_KEYIN_KEY1 + key_index, 0);
+				int key_there = checkFlag(FLAG_KEYIN_KEY1 + key_index, FLAGTYPE_PERMANENT);
 				if (!key_there) {
 					if (Rando.keys_preturned & (1 << key_index)) {
 						key_there = 1;
@@ -603,24 +603,24 @@ void correctKongFaces(void) {
 	 */
 	if (Rando.unlock_kongs) {
 		for (int i = 0; i < 5; i++) {
-			int flag = checkFlag(kong_flags[i],0);
+			int flag = checkFlag(kong_flags[i], FLAGTYPE_PERMANENT);
 			KongUnlockedMenuArray[i] = flag;
 			if (!flag) {
 				KongUnlockedMenuArray[i] = (Rando.unlock_kongs & (1 << i)) != 0;
 			}
 		}
-		if (!checkFlag(FLAG_KONG_DK,0)) {
+		if (!checkFlag(FLAG_KONG_DK, FLAGTYPE_PERMANENT)) {
 			if ((Rando.unlock_kongs & 1) == 0) {
 				KongUnlockedMenuArray[0] = 0;
 			}
 		}
 	} else {
 		for (int i = 0; i < 5; i++) {
-			KongUnlockedMenuArray[i] = checkFlag(kong_flags[i],0);
+			KongUnlockedMenuArray[i] = checkFlag(kong_flags[i], FLAGTYPE_PERMANENT);
 		}
 		KongUnlockedMenuArray[(int)Rando.starting_kong] = 1;
 		if (Rando.starting_kong != 0) {
-			if (!checkFlag(FLAG_KONG_DK,0)) {
+			if (!checkFlag(FLAG_KONG_DK, FLAGTYPE_PERMANENT)) {
 				KongUnlockedMenuArray[0] = 0;
 			}
 		}
@@ -701,7 +701,7 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 				fileStart(0);
 				if (file_empty) {
 					// New File
-					setFlagDuplicate(0,1,0); // Set null flag as it ensures no=item stuff is actually no-item
+					setFlagDuplicate(0,1,FLAGTYPE_PERMANENT); // Set null flag as it ensures no=item stuff is actually no-item
 					unlockMoves();
 					applyFastStart();
 					openCrownDoor();
@@ -726,7 +726,7 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					for (int i = 0; i < 9; i++) {
 						StoredSettings.file_extra.level_igt[i] = 0;
 					}
-					if (checkFlag(FLAG_ARCADE_ROUND1, 0)) {
+					if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
 						setPermFlag(FLAG_ARCADE_LEVER);
 					}
 					SaveToGlobal();
@@ -736,7 +736,7 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					determineStartKong_PermaLossMode();
 					giveCollectables();
 					if (Rando.helm_hurry_mode) {
-						setFlag(FLAG_LOADED_GAME_OVER,1,0);
+						setFlag(FLAG_LOADED_GAME_OVER,1,FLAGTYPE_PERMANENT);
 					}
 				}
 				ForceStandardAmmo = 0;
@@ -796,7 +796,7 @@ void initOptionScreen(void) {
 	*(int*)(0x8002DEC4) = 0x0C000000 | (((int)&displayInverted & 0xFFFFFF) >> 2); // Modify Function Call
 }
 
-static unsigned char previous_map_save = 0x22;
+static unsigned char previous_map_save = MAP_ISLES;
 
 void setPrevSaveMap(void) {
 	/**

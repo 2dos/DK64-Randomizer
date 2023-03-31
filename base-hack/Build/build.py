@@ -18,7 +18,7 @@ import generate_disco_models
 import model_port
 from BuildEnums import ChangeType, TextureFormat, TableNames, CompressionMethods
 from BuildClasses import File, HashIcon, ModelChange, TextChange, ROMPointerFile
-from BuildLib import main_pointer_table_offset, BLOCK_COLOR_SIZE, ROMName, newROMName
+from BuildLib import BLOCK_COLOR_SIZE, ROMName, newROMName
 
 # Patcher functions for the extracted files
 import patch_text
@@ -755,7 +755,7 @@ for change in colorblind_changes:
                 pointer_table_index=TableNames.TexturesGeometry,
                 file_index=file_index,
                 source_file=f"colorblind_exp_{file_index}.bin",
-                target_compressed_size=2 * change[2] * change[3],
+                target_size=2 * change[2] * change[3],
             )
         )
 barrel_skins = (
@@ -901,7 +901,7 @@ text_files = (
     TextChange("Chunky", 0, ""),
     TextChange("Lanky", 0, ""),
     TextChange("Funky", 0, ""),
-    TextChange("Cranky", 0, "cranky_text.bin"),
+    TextChange("Cranky", 0x2800, "cranky_text.bin"),
     TextChange("Candy", 0, ""),
     TextChange("Llama", 0, ""),
     TextChange("Snide", 0, ""),
@@ -948,6 +948,7 @@ for index, text in enumerate(text_files):
     if text.change:
         data.do_not_compress = True
         data.do_not_delete_source = True
+        data.do_not_extract = True
     else:
         data.do_not_recompress = True
         data.setTargetSize(0x2000)
@@ -996,7 +997,6 @@ with open(ROMName, "rb") as fh:
             fh.seek(x.start)
             byte_read = fh.read(x.compressed_size)
 
-            print(f"{x.name} - {hex(x.start)}")
             if not x.do_not_delete_source:
                 if os.path.exists(x.source_file):
                     os.remove(x.source_file)

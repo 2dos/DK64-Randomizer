@@ -212,7 +212,6 @@ def patching_response(responded_data):
         BooleanProperties(spoiler.settings.auto_keys, 0x15B),  # Auto-Turn Keys
         BooleanProperties(spoiler.settings.disco_chunky, 0x12F),  # Disco Chunky
         BooleanProperties(spoiler.settings.tns_location_rando, 0x10E),  # T&S Portal Location Rando
-        BooleanProperties(spoiler.settings.cb_rando or spoiler.settings.coin_rando, 0xAF),  # Show CBs/Coins
         BooleanProperties(spoiler.settings.cb_rando, 0x10B),  # Remove Rock Bunch
         BooleanProperties(spoiler.settings.wrinkly_location_rando or spoiler.settings.remove_wrinkly_puzzles, 0x11F),  # Wrinkly Rando
         BooleanProperties(spoiler.settings.helm_hurry, 0xAE),  # Helm Hurry
@@ -305,7 +304,7 @@ def patching_response(responded_data):
         if len(enabled_qol) == 0:
             for item in QoLSelector:
                 enabled_qol.append(MiscChangesSelected[item["value"]])
-        write_data = [0, 0]
+        write_data = [0] * 3
         for item in QoLSelector:
             if MiscChangesSelected[item["value"]] in enabled_qol and item["shift"] >= 0:
                 offset = int(item["shift"] >> 3)

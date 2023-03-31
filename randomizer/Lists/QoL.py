@@ -32,6 +32,8 @@ QoLItems = [
     QoLItem("Lowered Aztec Lobby Bonus", 3, "The bonus barrel in Aztec Lobby is lowered to make it easier to reach."),
     QoLItem("Quicker Galleon Star", 9, "The star in Gloomy Galleon now only requires Enguarde to go through it once to open the Gold Tower Gate."),
     QoLItem("Vanilla Bug Fixes", 10, "Various bugs in the vanilla game have been fixed."),
+    QoLItem("Save K Rool Progress", 16, "Re-Entering K Rool after dying or pause exiting will spawn you in the latest phase you reached."),
+    QoLItem("Small Bananas always visible", 17, "Small Bananas will always be visible regardless of whether you have the kong unlocked or not."),
 ]
 for item in QoLItems:
     if item.name != "No Group":

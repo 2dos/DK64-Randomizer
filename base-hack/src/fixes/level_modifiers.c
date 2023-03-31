@@ -11,11 +11,6 @@
 
 #include "../../include/common.h"
 
-#define GLOOMY_GALLEON 0x1E
-#define ANGRY_AZTEC 0x26
-#define FUNGI_FOREST 0x30
-#define CRYSTAL_CAVES 0x48
-
 #define TORCH_ALT 0xC7
 
 void load_object_script(int obj_instance_id) {
@@ -41,23 +36,23 @@ void adjust_level_modifiers(void) {
 	 * @brief Adjust level modifiers on map load
 	 */
 	if (ObjectModel2Timer < 5) {
-		if (CurrentMap == GLOOMY_GALLEON) {
+		if (CurrentMap == MAP_GALLEON) {
 			// Water Level
 			load_object_script(0); // Up Switch
 			load_object_script(1); // Down Switch
-			if (checkFlag(FLAG_MODIFIER_GALLEONWATER,0)) {
+			if (checkFlag(FLAG_MODIFIER_GALLEONWATER,FLAGTYPE_PERMANENT)) {
 				// Adjust water height in all chunks if water is raised
 				for (int i = 0; i < 20; i++) {
 					setWaterHeight(i,55.0f,1000.0f);
 				}
 			}
-		} else if (CurrentMap == ANGRY_AZTEC) {
+		} else if (CurrentMap == MAP_AZTEC) {
 			// Sandstorm Effect
 			load_object_script(0xC1);
-		} else if (CurrentMap == CRYSTAL_CAVES) {
+		} else if (CurrentMap == MAP_CAVES) {
 			// Giant Kosha Timer
 			load_object_script(0x31);
-		} else if (CurrentMap == FUNGI_FOREST) {
+		} else if (CurrentMap == MAP_FUNGI) {
 			// Daytime/Nighttime
 			load_object_script(0x4);
 		}

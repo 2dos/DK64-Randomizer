@@ -41,7 +41,8 @@
       "caves_kosha_dead":true,
       "rambi_enguarde_pickup":true,
       "hud_bp_multibunch":true,
-      "homing_balloons":true
+      "homing_balloons":true,
+      "save_krool_progress":true
    },
    "moves_pregiven":{
       "blast":true,
@@ -88,11 +89,11 @@
    },
    "price_rando_on":1,
    "k_rool_order":[
-      2,
+      1,
       0,
-      4,
-      3,
-      1
+      255,
+      255,
+      255
    ],
    "damage_multiplier":0,
    "fps_on":1,
@@ -170,7 +171,7 @@
    "remove_high_requirements":1,
    "open_level_sections":1,
    "auto_keys":0,
-   "starting_map":15,
+   "starting_map":34,
    "starting_exit":0,
    "disco_chunky":1,
    "krusha_slot":255,

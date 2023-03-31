@@ -382,6 +382,7 @@ class Settings:
         self.krusha_kong = None
         self.misc_cosmetics = False
         self.remove_water_oscillation = False
+        self.head_balloons = False
         self.homebrew_header = False
 
         #  Misc
@@ -450,7 +451,7 @@ class Settings:
         self.key_8_helm = False
         self.random_starting_region = False
         self.starting_region = {}
-        self.holiday_mode = False
+        self.holiday_setting = False
         self.remove_wrinkly_puzzles = False
         self.smaller_shops = False
         self.alter_switch_allocation = False

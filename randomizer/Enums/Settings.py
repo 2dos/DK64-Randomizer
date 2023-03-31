@@ -10,20 +10,127 @@ from randomizer.Lists.MapsAndExits import Maps
 # Do not change the values of any enums in this file, or settings strings will
 # break.
 
-# Randomizers
 
+class ActivateAllBananaports(IntEnum):
+    """Whether bananaports should start as activated, and where.
 
-class LogicType(IntEnum):
-    """The logic use to place items in the seed.
+    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
+    change these enum values or seed generation will break.
 
-    glitchless: No glitches will be required.
-    glitch: Some glitches may be required.
-    nologic: The seed may not be beatable.
+    off: No bananaports will be activated.
+    all: All bananaports will be activated.
+    isles: Only bananaports in D.K. Isles will be activated.
     """
 
-    glitchless = 1
-    glitch = 2
-    nologic = 3
+    off = 0
+    all = 1
+    isles = 2
+
+
+class BananaportRando(IntEnum):
+    """Determines how bananaports are shuffled.
+
+    off: Bananaports have their vanilla locations.
+    in_level: Bananaport warps are shuffled within their own levels.
+    crossmap_coupled: Bananaport warps are shuffled among all bananaports in
+        all levels.
+    crossmap_decoupled: Same as crossmap_coupled, but going back through one
+        bananaport may not take you to the same location.
+    """
+
+    off = 0
+    in_level = 1
+    crossmap_coupled = 2
+    crossmap_decoupled = 3
+
+
+class CharacterColors(IntEnum):
+    """Determines the colors for the Kongs, Rambi and Enguarde.
+
+    vanilla: The character uses vanilla colors.
+    randomized: The character uses a random color.
+    custom: The character uses a user-provided color.
+    """
+
+    vanilla = auto()
+    randomized = auto()
+    custom = auto()
+
+
+class ColorblindMode(IntEnum):
+    """Determines which colorblind mode setting is used.
+
+    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
+    change these enum values or seed generation will break.
+
+    off: Normal colors.
+    prot: Setting for protanomaly/protanopia (red/green color blindness,
+        biased toward red).
+    deut: Setting for deuteranomaly/deuteranopia (red/green color blindness,
+        biased toward green).
+    trit: Setting for tritanomaly/tritanopia (blue/yellow color blindness).
+    """
+
+    off = 0
+    prot = 1
+    deut = 2
+    trit = 3
+
+
+class CrownEnemyRando(IntEnum):
+    """Determines the difficulty of enemies in Battle Arenas."""
+
+    off = 0
+    easy = 1
+    medium = 2
+    hard = 3
+
+
+class DamageAmount(IntEnum):
+    """The damage multipler.
+
+    default: Normal damage.
+    double: Damage is 2x normal.
+    quad: Damage is 4x normal.
+    ohko: Damage is 12x normal (one hit kills).
+    """
+
+    default = 0
+    double = 1
+    quad = 2
+    ohko = 3
+
+
+class FillAlgorithm(IntEnum):
+    """The algorithm used for placing items.
+
+    This enum does not correspond to any website setting.
+
+    forward: Places items in locations that are available with what's already
+        been placed. Faster than assumed.
+    assumed: Attempts to place items in locations under the assumption that
+        those locations will be valid. More likely to place items deeper into
+        a seed.
+    random: Places items with no regard for logic.
+    """
+
+    forward = auto()
+    assumed = auto()
+    random = auto()
+
+
+class FreeTradeSetting(IntEnum):
+    """Determines if Kongs can collect items assigned to other Kongs.
+
+    none: Items can only be collected by their original assigned Kong.
+    not_blueprints: Major items can be collected by any Kong, except for
+        blueprints.
+    major_collectibles: Major items can be collected by any Kong.
+    """
+
+    none = 0
+    not_blueprints = 1
+    major_collectibles = 2
 
 
 class GlitchesSelected(IntEnum):
@@ -48,37 +155,55 @@ class GlitchesSelected(IntEnum):
     troff_n_scoff_skips = 13
 
 
-class ActivateAllBananaports(IntEnum):
-    """Whether bananaports should start as activated, and where.
+class HelmDoorItem(IntEnum):
+    """Items that are required to open the crown/coin doors in Helm.
+
+    vanilla: The originally required item (crowns for door 1, company coins for
+        door 2).
+    opened: The door is automatically opened.
+    random: The door is opened by a randomly selected item.
+    req_gb: Golden Bananas.
+    req_bp: Blueprints.
+    req_companycoins: The Rareware and Nintendo coins.
+    req_key: Keys.
+    req_medal: Banana Medals.
+    req_crown: Battle Crowns.
+    req_fairy: Banana Fairies.
+    req_rainbowcoin: Rainbow Coins.
+    req_bean: The bean.
+    req_pearl: Pearls.
+    """
+
+    vanilla = 0
+    opened = 1
+    random = 2
+    req_gb = 3
+    req_bp = 4
+    req_companycoins = 5
+    req_key = 6
+    req_medal = 7
+    req_crown = 8
+    req_fairy = 9
+    req_rainbowcoin = 10
+    req_bean = 11
+    req_pearl = 12
+
+
+class HelmSetting(IntEnum):
+    """Determines where the player starts when entering Hideout Helm.
 
     This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
     change these enum values or seed generation will break.
 
-    off: No bananaports will be activated.
-    all: All bananaports will be activated.
-    isles: Only bananaports in D.K. Isles will be activated.
+    default: Player starts at the entrance to Helm.
+    skip_start: Player starts in the Blast-O-Matic room, with the roman numeral
+        doors opened and no gates blocking the music pads.
+    skip_all: Player starts at the crown door.
     """
 
-    off = 0
-    all = 1
-    isles = 2
-
-
-class LevelRandomization(IntEnum):
-    """Determines how entrances are randomized and placed.
-
-    vanilla: All entrances are the same as the base game.
-    level_order: Randomizes the order that the levels are in.
-    loadingzone: All entrances except for Helm/Helm Lobby.
-    loadingzonesdecoupled: All entrances except for Helm/Helm Lobby.
-        Going back through an entrance may not take you back to where you
-        just were.
-    """
-
-    vanilla = 0
-    level_order = 1
-    loadingzone = 2
-    loadingzonesdecoupled = 3
+    default = 0
+    skip_start = 1
+    skip_all = 2
 
 
 # TODO: merge this with the Types enum.
@@ -120,6 +245,146 @@ class KasplatRandoSetting(IntEnum):
     location_shuffle = 2
 
 
+class KlaptrapModel(IntEnum):
+    """Determines which model is used for Klaptrap in Beaver Bother."""
+
+    green = auto()
+    purple = auto()
+    red = auto()
+    random_klap = auto()
+    random_model = auto()
+
+
+class KrushaUi(IntEnum):
+    """Which Kong model will be replaced with Krusha."""
+
+    no_slot = 0
+    dk = 1
+    diddy = 2
+    lanky = 3
+    tiny = 4
+    chunky = 5
+    random = 6
+
+
+class LevelRandomization(IntEnum):
+    """Determines how entrances are randomized and placed.
+
+    vanilla: All entrances are the same as the base game.
+    level_order: Randomizes the order that the levels are in.
+    loadingzone: All entrances except for Helm/Helm Lobby.
+    loadingzonesdecoupled: All entrances except for Helm/Helm Lobby.
+        Going back through an entrance may not take you back to where you
+        just were.
+    """
+
+    vanilla = 0
+    level_order = 1
+    loadingzone = 2
+    loadingzonesdecoupled = 3
+
+
+class LogicType(IntEnum):
+    """The logic use to place items in the seed.
+
+    glitchless: No glitches will be required.
+    glitch: Some glitches may be required.
+    nologic: The seed may not be beatable.
+    """
+
+    glitchless = 1
+    glitch = 2
+    nologic = 3
+
+
+class MicrohintsEnabled(IntEnum):
+    """Adds some additional hints for late-game-required items.
+
+    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
+    change these enum values or seed generation will break.
+
+    off: No extra hints are added.
+    base: Monkeyport and Gorilla Gone hints are added to the Krem Isle pads if
+        the user is otherwise able to access the Hideout Helm lobby.
+    all: Same as base, but the instrument pads in Hideout Helm will provide
+        hints as to their locations.
+    """
+
+    off = 0
+    base = 1
+    all = 2
+
+
+class MinigameBarrels(IntEnum):
+    """Determines how the minigames are shuffled between barrels.
+
+    This enum does not correspond to any website setting.
+
+    normal: Minigames are the same as in the vanilla game.
+    skip: Minigames are auto-completed.
+    random: Minigames are shuffled randomly.
+    selected: Minigames are shuffled among the selections made by the user.
+    """
+
+    normal = auto()
+    skip = auto()
+    random = auto()
+    selected = auto()
+
+
+class MinigamesListSelected(IntEnum):
+    """Minigame categories used for the web selector.
+
+    These values are tied to the MinigameSelector in randomizer.Lists.Minigame.
+    More details on each can be found in that file.
+    """
+
+    batty_barrel_bandit = 1
+    big_bug_bash = 2
+    busy_barrel_barrage = 3
+    mad_maze_maul = 4
+    minecart_mayhem = 5
+    beaver_bother = 6
+    teetering_turtle_trouble = 7
+    stealthy_snoop = 8
+    stash_snatch = 9
+    splish_splash_salvage = 10
+    speedy_swing_sortie = 11
+    krazy_kong_klamour = 12
+    searchlight_seek = 13
+    kremling_kosh = 14
+    peril_path_panic = 15
+    helm_minigames = 16
+
+
+class MiscChangesSelected(IntEnum):
+    """Various quality of life fixes that can be applied.
+
+    These values are tied to the QoLSelector in randomizer.Lists.QoL. More
+    details on each can be found in that file.
+    """
+
+    auto_dance_skip = 1
+    fast_boot = 2
+    calm_caves = 3
+    animal_buddies_grab_items = 4
+    reduced_lag = 5
+    remove_extraneous_cutscenes = 6
+    hint_textbox_hold = 7
+    remove_wrinkly_puzzles = 8
+    fast_picture_taking = 9
+    hud_hotkey = 10
+    ammo_swap = 11
+    homing_balloons = 12
+    fast_transform_animation = 13
+    troff_n_scoff_audio_indicator = 14
+    lowered_aztec_lobby_bonus = 15
+    quicker_galleon_star = 16
+    vanilla_bug_fixes = 17
+    save_k_rool_progress = 18
+    small_bananas_always_visible = 19
+
+
 class MoveRando(IntEnum):
     """Determines if and how moves are randomized.
 
@@ -140,16 +405,19 @@ class MoveRando(IntEnum):
     item_shuffle = 4
 
 
-class TrainingBarrels(IntEnum):
-    """Determines if and how training barrels are randomized.
+class MusicCosmetics(IntEnum):
+    """Determines how BGM, fanfare or event music is shuffled.
 
-    normal: Training barrels give the vanilla moves.
-    shuffled: Training moves are shuffled into the item pool, and the training
-        barrels gives four random moves.
+    default: Music is not shuffled.
+    randomized: Music is shuffled.
+    chaos: All D.K. Rap, all the time.
+    uploaded: Use music files provided by the user.
     """
 
-    normal = 0
-    shuffled = 1
+    default = auto()
+    randomized = auto()
+    chaos = auto()
+    uploaded = auto()
 
 
 class RandomPrices(IntEnum):
@@ -188,49 +456,31 @@ class ShockwaveStatus(IntEnum):
     start_with = 3
 
 
-class BananaportRando(IntEnum):
-    """Determines how bananaports are shuffled.
+class ShuffleLoadingZones(IntEnum):
+    """Determines how loading zones are shuffled.
 
-    off: Bananaports have their vanilla locations.
-    in_level: Bananaport warps are shuffled within their own levels.
-    crossmap_coupled: Bananaport warps are shuffled among all bananaports in
-        all levels.
-    crossmap_decoupled: Same as crossmap_coupled, but going back through one
-        bananaport may not take you to the same location.
+    This enum does not correspond to any website setting.
+
+    none: No loading zones are shuffled.
+    levels: Only level entrances are shuffled.
+    all: All loading zones are shuffled.
     """
 
-    off = 0
-    in_level = 1
-    crossmap_coupled = 2
-    crossmap_decoupled = 3
+    none = auto()
+    levels = auto()
+    all = auto()
 
 
-# Overworld
+class TrainingBarrels(IntEnum):
+    """Determines if and how training barrels are randomized.
 
-
-class MinigamesListSelected(IntEnum):
-    """Minigame categories used for the web selector.
-
-    These values are tied to the MinigameSelector in randomizer.Lists.Minigame.
-    More details on each can be found in that file.
+    normal: Training barrels give the vanilla moves.
+    shuffled: Training moves are shuffled into the item pool, and the training
+        barrels gives four random moves.
     """
 
-    batty_barrel_bandit = 1
-    big_bug_bash = 2
-    busy_barrel_barrage = 3
-    mad_maze_maul = 4
-    minecart_mayhem = 5
-    beaver_bother = 6
-    teetering_turtle_trouble = 7
-    stealthy_snoop = 8
-    stash_snatch = 9
-    splish_splash_salvage = 10
-    speedy_swing_sortie = 11
-    krazy_kong_klamour = 12
-    searchlight_seek = 13
-    kremling_kosh = 14
-    peril_path_panic = 15
-    helm_minigames = 16
+    normal = 0
+    shuffled = 1
 
 
 class WinCondition(IntEnum):
@@ -257,122 +507,6 @@ class WinCondition(IntEnum):
     all_keys = 6
 
 
-class FreeTradeSetting(IntEnum):
-    """Determines if Kongs can collect items assigned to other Kongs.
-
-    none: Items can only be collected by their original assigned Kong.
-    not_blueprints: Major items can be collected by any Kong, except for
-        blueprints.
-    major_collectibles: Major items can be collected by any Kong.
-    """
-
-    none = 0
-    not_blueprints = 1
-    major_collectibles = 2
-
-
-class KrushaUi(IntEnum):
-    """Which Kong model will be replaced with Krusha."""
-
-    no_slot = 0
-    dk = 1
-    diddy = 2
-    lanky = 3
-    tiny = 4
-    chunky = 5
-    random = 6
-
-
-class HelmDoorItem(IntEnum):
-    """Items that are required to open the crown/coin doors in Helm.
-
-    vanilla: The originally required item (crowns for door 1, company coins for
-        door 2).
-    opened: The door is automatically opened.
-    random: The door is opened by a randomly selected item.
-    req_gb: Golden Bananas.
-    req_bp: Blueprints.
-    req_companycoins: The Rareware and Nintendo coins.
-    req_key: Keys.
-    req_medal: Banana Medals.
-    req_crown: Battle Crowns.
-    req_fairy: Banana Fairies.
-    req_rainbowcoin: Rainbow Coins.
-    req_bean: The bean.
-    req_pearl: Pearls.
-    """
-
-    vanilla = 0
-    opened = 1
-    random = 2
-    req_gb = 3
-    req_bp = 4
-    req_companycoins = 5
-    req_key = 6
-    req_medal = 7
-    req_crown = 8
-    req_fairy = 9
-    req_rainbowcoin = 10
-    req_bean = 11
-    req_pearl = 12
-
-
-# Difficulty
-
-
-class DamageAmount(IntEnum):
-    """The damage multipler.
-
-    default: Normal damage.
-    double: Damage is 2x normal.
-    quad: Damage is 4x normal.
-    ohko: Damage is 12x normal (one hit kills).
-    """
-
-    default = 0
-    double = 1
-    quad = 2
-    ohko = 3
-
-
-class CrownEnemyRando(IntEnum):
-    """Determines the difficulty of enemies in Battle Arenas."""
-
-    off = 0
-    easy = 1
-    medium = 2
-    hard = 3
-
-
-# Quality of Life
-
-
-class MiscChangesSelected(IntEnum):
-    """Various quality of life fixes that can be applied.
-
-    These values are tied to the QoLSelector in randomizer.Lists.QoL. More
-    details on each can be found in that file.
-    """
-
-    auto_dance_skip = 1
-    fast_boot = 2
-    calm_caves = 3
-    animal_buddies_grab_items = 4
-    reduced_lag = 5
-    remove_extraneous_cutscenes = 6
-    hint_textbox_hold = 7
-    remove_wrinkly_puzzles = 8
-    fast_picture_taking = 9
-    hud_hotkey = 10
-    ammo_swap = 11
-    homing_balloons = 12
-    fast_transform_animation = 13
-    troff_n_scoff_audio_indicator = 14
-    lowered_aztec_lobby_bonus = 15
-    quicker_galleon_star = 16
-    vanilla_bug_fixes = 17
-
-
 class WrinklyHints(IntEnum):
     """Whether or not Wrinkly hints are replaced with useful randomizer hints.
 
@@ -386,200 +520,51 @@ class WrinklyHints(IntEnum):
     cryptic = 2
 
 
-class HelmSetting(IntEnum):
-    """Determines where the player starts when entering Hideout Helm.
-
-    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
-    change these enum values or seed generation will break.
-
-    default: Player starts at the entrance to Helm.
-    skip_start: Player starts in the Blast-O-Matic room, with the roman numeral
-        doors opened and no gates blocking the music pads.
-    skip_all: Player starts at the crown door.
-    """
-
-    default = 0
-    skip_start = 1
-    skip_all = 2
-
-
-class MicrohintsEnabled(IntEnum):
-    """Adds some additional hints for late-game-required items.
-
-    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
-    change these enum values or seed generation will break.
-
-    off: No extra hints are added.
-    base: Monkeyport and Gorilla Gone hints are added to the Krem Isle pads if
-        the user is otherwise able to access the Hideout Helm lobby.
-    all: Same as base, but the instrument pads in Hideout Helm will provide
-        hints as to their locations.
-    """
-
-    off = 0
-    base = 1
-    all = 2
-
-
-# Cosmetics
-
-
-class MusicCosmetics(IntEnum):
-    """Determines how BGM, fanfare or event music is shuffled.
-
-    default: Music is not shuffled.
-    randomized: Music is shuffled.
-    chaos: All D.K. Rap, all the time.
-    uploaded: Use music files provided by the user.
-    """
-
-    default = auto()
-    randomized = auto()
-    chaos = auto()
-    uploaded = auto()
-
-
-class KlaptrapModel(IntEnum):
-    """Determines which model is used for Klaptrap in Beaver Bother."""
-
-    green = auto()
-    purple = auto()
-    red = auto()
-    random_klap = auto()
-    random_model = auto()
-
-
-class CharacterColors(IntEnum):
-    """Determines the colors for the Kongs, Rambi and Enguarde.
-
-    vanilla: The character uses vanilla colors.
-    randomized: The character uses a random color.
-    custom: The character uses a user-provided color.
-    """
-
-    vanilla = auto()
-    randomized = auto()
-    custom = auto()
-
-
-class ColorblindMode(IntEnum):
-    """Determines which colorblind mode setting is used.
-
-    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
-    change these enum values or seed generation will break.
-
-    off: Normal colors.
-    prot: Setting for protanomaly/protanopia (red/green color blindness,
-        biased toward red).
-    deut: Setting for deuteranomaly/deuteranopia (red/green color blindness,
-        biased toward green).
-    trit: Setting for tritanomaly/tritanopia (blue/yellow color blindness).
-    """
-
-    off = 0
-    prot = 1
-    deut = 2
-    trit = 3
-
-
-# Additional enums not currently shown on the web site.
-
-
-class FillAlgorithm(IntEnum):
-    """The algorithm used for placing items.
-
-    forward: Places items in locations that are available with what's already
-        been placed. Faster than assumed.
-    assumed: Attempts to place items in locations under the assumption that
-        those locations will be valid. More likely to place items deeper into
-        a seed.
-    random: Places items with no regard for logic.
-    """
-
-    forward = auto()
-    assumed = auto()
-    random = auto()
-
-
-class ShuffleLoadingZones(IntEnum):
-    """Determines how loading zones are shuffled.
-
-    none: No loading zones are shuffled.
-    levels: Only level entrances are shuffled.
-    all: All loading zones are shuffled.
-    """
-
-    none = auto()
-    levels = auto()
-    all = auto()
-
-
-class MinigameBarrels(IntEnum):
-    """Determines how the minigames are shuffled between barrels.
-
-    normal: Minigames are the same as in the vanilla game.
-    skip: Minigames are auto-completed.
-    random: Minigames are shuffled randomly.
-    selected: Minigames are shuffled among the selections made by the user.
-    """
-
-    normal = auto()
-    skip = auto()
-    random = auto()
-    selected = auto()
-
-
 # ALL SELECT-BASED SETTINGS NEED AN ENTRY HERE!
 # A dictionary that maps setting names to the associated enum for that specific setting.
 # The key for each enum must exactly match the HTML name of the associated select.
 SettingsMap = {
-    # Randomizer
-    "enemies_selected": Enemies,
-    "logic_type": LogicType,
-    "glitches_selected": GlitchesSelected,
     "activate_all_bananaports": ActivateAllBananaports,
-    "level_randomization": LevelRandomization,
+    "bananaport_rando": BananaportRando,
+    "bonus_barrels": MinigameBarrels,
+    "chunky_colors": CharacterColors,
+    "coin_door_item": HelmDoorItem,
+    "colorblind_mode": ColorblindMode,
+    "crown_door_item": HelmDoorItem,
+    "crown_enemy_rando": CrownEnemyRando,
+    "damage_amount": DamageAmount,
+    "diddy_colors": CharacterColors,
+    "dk_colors": CharacterColors,
+    "enemies_selected": Enemies,
+    "enguarde_colors": CharacterColors,
+    "free_trade_setting": FreeTradeSetting,
+    "glitches_selected": GlitchesSelected,
+    "helm_barrels": MinigameBarrels,
+    "helm_setting": HelmSetting,
     "item_rando_list_selected": ItemRandoListSelected,
     "kasplat_rando_setting": KasplatRandoSetting,
+    "klaptrap_model": KlaptrapModel,
+    "krusha_ui": KrushaUi,
+    "lanky_colors": CharacterColors,
+    "level_randomization": LevelRandomization,
+    "logic_type": LogicType,
+    "microhints_enabled": MicrohintsEnabled,
+    "minigames_list_selected": MinigamesListSelected,
+    "misc_changes_selected": MiscChangesSelected,
     "move_rando": MoveRando,
-    "training_barrels": TrainingBarrels,
+    "music_bgm": MusicCosmetics,
+    "music_events": MusicCosmetics,
+    "music_fanfares": MusicCosmetics,
+    "rambi_colors": CharacterColors,
     "random_prices": RandomPrices,
     "shockwave_status": ShockwaveStatus,
-    "bananaport_rando": BananaportRando,
-    "warp_level_list_selected": Maps,
-    # Overworld
-    "minigames_list_selected": MinigamesListSelected,
-    "win_condition": WinCondition,
-    "free_trade_setting": FreeTradeSetting,
-    "krusha_ui": KrushaUi,
-    "starting_keys_list_selected": Items,
-    "crown_door_item": HelmDoorItem,
-    "coin_door_item": HelmDoorItem,
-    # Difficulty
-    "damage_amount": DamageAmount,
-    "crown_enemy_rando": CrownEnemyRando,
-    # Quality of Life
-    "misc_changes_selected": MiscChangesSelected,
-    "wrinkly_hints": WrinklyHints,
-    "helm_setting": HelmSetting,
-    "microhints_enabled": MicrohintsEnabled,
-    # Cosmetics
-    "music_bgm": MusicCosmetics,
-    "music_fanfares": MusicCosmetics,
-    "music_events": MusicCosmetics,
-    "klaptrap_model": KlaptrapModel,
-    "dk_colors": CharacterColors,
-    "diddy_colors": CharacterColors,
-    "lanky_colors": CharacterColors,
-    "tiny_colors": CharacterColors,
-    "chunky_colors": CharacterColors,
-    "rambi_colors": CharacterColors,
-    "enguarde_colors": CharacterColors,
-    "colorblind_mode": ColorblindMode,
-    # Other
     "shuffle_loading_zones": ShuffleLoadingZones,
-    "bonus_barrels": MinigameBarrels,
-    "helm_barrels": MinigameBarrels,
+    "starting_keys_list_selected": Items,
+    "tiny_colors": CharacterColors,
+    "training_barrels": TrainingBarrels,
+    "warp_level_list_selected": Maps,
+    "win_condition": WinCondition,
+    "wrinkly_hints": WrinklyHints,
 }
 
 
@@ -590,8 +575,6 @@ class SettingsStringEnum(IntEnum):
         to break. Only add new values.
 
     ALL SETTINGS NEED AN ENTRY HERE!
-
-    Next available value: 133
     """
 
     activate_all_bananaports = 1

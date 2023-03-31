@@ -20,6 +20,8 @@ extern int giveSlamLevel(void);
 extern int isSlamFlag(int flag);
 extern int isBeltFlag(int flag);
 extern int isInstrumentUpgradeFlag(int flag);
+extern int inBattleCrown(maps map);
+extern int inBossMap(maps map, int include_regular, int include_krool, int include_shoe);
 
 extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);
@@ -37,6 +39,7 @@ extern void qualityOfLife_fixes(void);
 extern void qualityOfLife_shorteners(void);
 extern void overlay_changes(void);
 extern void determine_krool_order(void);
+extern void handleKRoolSaveProgress(void);
 extern void replace_zones(int init_flag);
 extern void randomize_bosses(void);
 extern void alter_boss_key_flags(void);
@@ -46,7 +49,7 @@ extern void priceTransplant(void);
 extern void squawks_with_spotlight_actor_code(void);
 extern void shine_light_at_kong(unsigned short height_variance, unsigned short min_follow_distance, unsigned short param_3);
 
-extern void changeCharSpawnerFlag(int map, int spawner_id, int new_flag);
+extern void changeCharSpawnerFlag(maps map, int spawner_id, int new_flag);
 extern void changeHelmLZ(void);
 extern void HelmBarrelCode(void);
 extern void WarpHandle(void);
@@ -74,14 +77,14 @@ extern void createCollisionObjInstance(collision_types subtype, int map, int exi
 extern int spawnCannonWrapper(void);
 extern void disableDiddyRDDoors(void);
 extern void fixkey8(void);
-extern void alterGBKong(int map, int id, int new_kong);
+extern void alterGBKong(maps map, int id, int new_kong);
 
 extern void preventBossCheese(void);
 extern void determineStartKong_PermaLossMode(void);
 extern void kong_has_died(void);
 extern int curseRemoved(void);
 extern void forceBossKong(void);
-extern int hasPermaLossGrace(int map);
+extern int hasPermaLossGrace(maps map);
 extern void fixGraceCheese(void);
 
 extern void writeJetpacMedalReq(void);
@@ -227,12 +230,12 @@ extern void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int
 extern void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
 extern void spawnRewardAtActor(int object, int flag);
 extern void spawnMinecartReward(int object, int flag);
-extern int checkFlagDuplicate(short flag, int type);
-extern void setFlagDuplicate(short flag, int set, int type);
-extern void* updateFlag(int type, short* flag, void* fba, int source);
+extern int checkFlagDuplicate(short flag, flagtypes type);
+extern void setFlagDuplicate(short flag, int set, flagtypes type);
+extern void* updateFlag(flagtypes type, short* flag, void* fba, int source);
 extern void spawnEnemyDrops(actorData* actor);
 extern int countFlagsForKongFLUT(int startFlag, int start, int cap, int kong);
-extern int countFlagsDuplicate(int start, int count, int type);
+extern int countFlagsDuplicate(int start, int count, flagtypes type);
 extern int getKongFromBonusFlag(int flag);
 extern void banana_medal_acquisition(int flag);
 extern void finalizeBeatGame(void);
@@ -240,7 +243,7 @@ extern void finalizeBeatGame(void);
 extern int getFlagIndex_Corrected(int start, int level);
 extern int getBPItem(int index);
 extern int getMedalItem(int index);
-extern int getCrownItem(int map);
+extern int getCrownItem(maps map);
 extern int getKeyItem(int old_flag);
 extern int getFairyModel(int flag);
 extern int getRainbowCoinItem(int old_flag);
@@ -284,10 +287,10 @@ extern void giveCrystal(void);
 extern int CrownDoorCheck(void);
 extern int CoinDoorCheck(void);
 
-extern int fairyQueenCutsceneInit(int start, int count, int type);
+extern int fairyQueenCutsceneInit(int start, int count, flagtypes type);
 extern void fairyQueenCutsceneCheck(void);
 extern void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner);
-extern void giveFairyItem(int flag, int state, int type);
+extern void giveFairyItem(int flag, int state, flagtypes type);
 extern void SpawnBarrel(spawnerPacket* packet);
 extern void initBarrelChange(void);
 
@@ -342,6 +345,8 @@ extern const unsigned short belt_flags[4];
 extern const unsigned short instrument_flags[6];
 extern const rgb colorblind_colors[15];
 extern const check_struct item_db[292];
+extern const unsigned char crown_maps[10];
+extern const unsigned char regular_boss_maps[7];
 
 extern sprite_data_struct bean_sprite;
 extern sprite_data_struct pearl_sprite;

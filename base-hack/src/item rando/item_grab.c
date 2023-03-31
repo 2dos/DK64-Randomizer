@@ -42,16 +42,16 @@ void banana_medal_acquisition(int flag) {
      * @param flag Flag index of the banana medal
      */
     int item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
-    if (!checkFlag(flag, 0)) {
+    if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
         if (item_type != MEDALITEM_KEY) {
-            setFlag(flag, 1, 0);
+            setFlag(flag, 1, FLAGTYPE_PERMANENT);
         }
         int song = 0;
         void* sprite = 0;
         int sprite_index = -1;
         short flut_flag = flag;
         helm_hurry_items hh_item = HHITEM_NOTHING;
-        updateFlag(0, (short*)&flut_flag, (void*)0, -1);
+        updateFlag(FLAGTYPE_PERMANENT, (short*)&flut_flag, (void*)0, -1);
         switch (item_type) {
             case MEDALITEM_GB:
                 giveGB(getKong(0), getWorld(CurrentMap, 1));
@@ -74,14 +74,14 @@ void banana_medal_acquisition(int flag) {
                     // Display key text
                     int key_bitfield = 0;
                     for (int i = 0; i < 8; i++) {
-                        if (checkFlagDuplicate(getKeyFlag(i), 0)) {
+                        if (checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) {
                             key_bitfield |= (1 << i);
                         }
                     }
-                    setFlag(flag, 1, 0);
+                    setFlag(flag, 1, FLAGTYPE_PERMANENT);
                     int spawned = 0;
                     for (int i = 0; i < 8; i++) {
-                        if ((checkFlagDuplicate(getKeyFlag(i), 0)) && ((key_bitfield & (1 << i)) == 0)) {
+                        if ((checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) && ((key_bitfield & (1 << i)) == 0)) {
                             if (!spawned) {
                                 spawnItemOverlay(5, 0, getKeyFlag(i), 0);
                                 spawned = 1;
@@ -245,7 +245,7 @@ void keyGrabHook(int song, int vol) {
     playSong(song, vol);
     int val = 0;
     for (int i = 0; i < 8; i++) {
-        if (checkFlagDuplicate(getKeyFlag(i), 0)) {
+        if (checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) {
             val |= (1 << i);
         }
     }
@@ -264,14 +264,12 @@ int getFlagIndex_Corrected(int start, int level) {
     return start + (5 * level) + getKong(0);
 }
 
-static const short boss_maps[] = {0x8,0xC5,0x9A,0x6F,0x53,0xC4,0xC7};
-
 void collectKey(void) {
     /**
      * @brief Collect a key, display the text and turn in keys
      */
     for (int i = 0; i < 8; i++) {
-        if (checkFlagDuplicate(getKeyFlag(i), 0)) {
+        if (checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) {
             if ((old_keys & (1 << i)) == 0) {
                 spawnItemOverlay(5, 0, getKeyFlag(i), 0);
             }
@@ -295,18 +293,16 @@ int itemGrabHook(int collectable_type, int obj_type, int is_homing) {
         if (obj_type == 0x13C) {
             collectKey();
         } else {
-            for (int i = 0; i < 7; i++) {
-                if (CurrentMap == boss_maps[i]) {
-                    for (int j = 0; j < (sizeof(acceptable_items) / 2); j++) {
-                        if (obj_type == acceptable_items[j]) {
-                            setAction(0x41, 0, 0);
-                        }
+            if (inBossMap(CurrentMap, 1, 0, 0)) {
+                for (int j = 0; j < (sizeof(acceptable_items) / 2); j++) {
+                    if (obj_type == acceptable_items[j]) {
+                        setAction(0x41, 0, 0);
                     }
                 }
             }
         }
         if (obj_type != 0x18D) {
-            if ((CurrentMap == 0x35) || (CurrentMap == 0x49) || ((CurrentMap >= 0x9B) && (CurrentMap <= 0xA2))) {
+            if (inBattleCrown(CurrentMap)) {
                 for (int j = 0; j < (sizeof(acceptable_items) / 2); j++) {
                     if (obj_type == acceptable_items[j]) {
                         setAction(0x42, 0, 0);
@@ -349,7 +345,7 @@ int* controlKeyText(int* dl) {
     return dl;
 }
 
-void giveFairyItem(int flag, int state, int type) {
+void giveFairyItem(int flag, int state, flagtypes type) {
     /**
      * @brief Handle acquisition of the item tied to a fairy
      * 
@@ -368,7 +364,7 @@ void giveFairyItem(int flag, int state, int type) {
     } else if (model == 0xF5) {
         // Key
         for (int i = 0; i < 8; i++) {
-            if (checkFlagDuplicate(getKeyFlag(i), 0)) {
+            if (checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) {
                 key_bitfield |= (1 << i);
             }
         }
@@ -381,7 +377,7 @@ void giveFairyItem(int flag, int state, int type) {
         // Key - Post flag set
         int spawned = 0;
         for (int i = 0; i < 8; i++) {
-            if ((checkFlagDuplicate(getKeyFlag(i), 0)) && ((key_bitfield & (1 << i)) == 0)) {
+            if ((checkFlagDuplicate(getKeyFlag(i), FLAGTYPE_PERMANENT)) && ((key_bitfield & (1 << i)) == 0)) {
                 if (!spawned) {
                     spawnItemOverlay(5, 0, getKeyFlag(i), 0);
                     spawned = 1;
@@ -393,36 +389,19 @@ void giveFairyItem(int flag, int state, int type) {
 }
 
 static const unsigned char dance_skip_ban_maps[] = {
-    0x0E, // Aztec Beetle
-    0x1B, // Factory Car Race
-    0x27, // Galleon Seal Race
-    0x52, // Caves Beetle
-    0xB9, // Castle Car Race
-    0x08, // AD1
-    0xC5, // Dog1
-    0x9A, // MJ
-    0x6F, // Pufftoss
-    0x53, // Dog2
-    0xC4, // AD2
-    0xC7, // KKO
-    0x35, // Japes: Crown
-    0x49, // Aztec: Crown
-    0x9B, // Factory: Crown
-    0x9C, // Galleon: Crown
-    0x9F, // Fungi: Crown
-    0xA0, // Caves: Crown
-    0xA1, // Castle: Crown
-    0xA2, // Helm: Crown
-    0x9D, // Isles: Lobby Crown
-    0x9E, // Isles: Snide Crown
+    MAP_AZTECBEETLE, // Aztec Beetle
+    MAP_FACTORYCARRACE, // Factory Car Race
+    MAP_GALLEONSEALRACE, // Galleon Seal Race
+    MAP_CAVESBEETLERACE, // Caves Beetle
+    MAP_CASTLECARRACE, // Castle Car Race
 };
 
 static const unsigned char dance_force_maps[] = {
-    0x0E, // Aztec Beetle
-    0x1B, // Factory Car Race
-    0x27, // Galleon Seal Race
-    0x52, // Caves Beetle
-    0xB9, // Castle Car Race
+    MAP_AZTECBEETLE, // Aztec Beetle
+    MAP_FACTORYCARRACE, // Factory Car Race
+    MAP_GALLEONSEALRACE, // Galleon Seal Race
+    MAP_CAVESBEETLERACE, // Caves Beetle
+    MAP_CASTLECARRACE, // Castle Car Race
 };
 
 int canDanceSkip(void) {
@@ -431,7 +410,7 @@ int canDanceSkip(void) {
      * 
      * @return Dance Skip enabled
      */
-    if (CurrentMap == 0x6F) {
+    if (CurrentMap == MAP_GALLEONPUFFTOSS) {
         return 0;
     }
     if ((Player->yPos - Player->floor) >= 100.0f) {
@@ -444,7 +423,10 @@ int canDanceSkip(void) {
         return 1;
     }
     if (Rando.quality_of_life.dance_skip) {
-        int is_banned_map = 0;
+        int is_banned_map = inBattleCrown(CurrentMap);
+        if (inBossMap(CurrentMap, 1, 0, 0)) {
+            is_banned_map = 1;
+        }
         for (int i = 0; i < sizeof(dance_skip_ban_maps); i++) {
             if (dance_skip_ban_maps[i] == CurrentMap) {
                 is_banned_map = 1;
@@ -631,14 +613,14 @@ void getItem(int object_type) {
             // Pearl
             {
                 playSong(128, 0x3F800000);
-                // if (CurrentMap == 0x2C) { // Treasure Chest
+                // if (CurrentMap == MAP_GALLEONTREASURECHEST) { // Treasure Chest
                 //     int requirement = 5;
                 //     if (Rando.fast_gbs) {
                 //         requirement = 1;
                 //     }
                 //     int count = 0;
                 //     for (int i = 0; i < 5; i++) {
-                //         count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 0);
+                //         count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
                 //     }
                 //     if (count == (requirement - 1)) {
                 //         playCutscene((void*)0, 1, 0);
@@ -720,13 +702,13 @@ int getObjectCollectability(int id, int unk1, int model2_type) {
         return MovesBase[(int)Character].weapon_bitfield & 1;
     } else if (model2_type == 0x56) {
         // Orange
-        if (CurrentMap == 0xB4) { // Orange Barrel
+        if (CurrentMap == MAP_TBARREL_ORANGE) { // Orange Barrel
             return 1;
         }
-        return checkFlagDuplicate(FLAG_TBARREL_ORANGE, 0);
+        return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
     } else if (model2_type == 0x90) {
         // Medal
-        if (CurrentMap == 0x11) {
+        if (CurrentMap == MAP_HELM) {
             behaviour_data* behaviour = _object->behaviour_pointer;
             if (behaviour) {
                 if (behaviour->unk_64 != 0xFF) {
@@ -736,7 +718,7 @@ int getObjectCollectability(int id, int unk1, int model2_type) {
         }
     } else if (model2_type == 0x98) {
         // Film
-        return checkFlagDuplicate(FLAG_ABILITY_CAMERA,0);
+        return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
     }
     int collectable_state = _object->collectable_state;
     if (((collectable_state & 8) == 0) || (Player->new_kong == 2)) {
@@ -803,10 +785,10 @@ int isCollectable(int type) {
         case 0x8F: // Ammo Crate
             return MovesBase[(int)Character].weapon_bitfield & 1;
         case 0x98: // Film
-            return checkFlagDuplicate(FLAG_ABILITY_CAMERA, 0);
+            return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
         case 0x56: // Oranges
-            if (CurrentMap != 0xB4) {
-                return checkFlagDuplicate(FLAG_TBARREL_ORANGE, 0);
+            if (CurrentMap != MAP_TBARREL_ORANGE) {
+                return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
             }
     }
     return 1;

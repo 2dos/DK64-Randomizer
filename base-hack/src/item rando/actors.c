@@ -165,7 +165,7 @@ void mermaidCheck(void) {
     }
     int count = 0;
     for (int i = 0; i < 5; i++) {
-        count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 0);
+        count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
     }
     if (count == 0) {
         CurrentActorPointer_0->control_state = 0x1E;
@@ -177,7 +177,7 @@ void mermaidCheck(void) {
     CurrentActorPointer_0->control_state_progress = 0;
 }
 
-int fairyQueenCutsceneInit(int start, int count, int type) {
+int fairyQueenCutsceneInit(int start, int count, flagtypes type) {
     /**
      * @brief Set BFI Queen control state based on the amount of fairies you have
      */
@@ -202,10 +202,10 @@ void fairyQueenCutsceneCheck(void) {
         float dz = CurrentActorPointer_0->zPos - Player->zPos;
         if ((dx * dx) + (dz * dz) < 10000.0f) {
             // In Range
-            if (!checkFlag(0x79, 2)) {
+            if (!checkFlag(0x79, FLAGTYPE_TEMPORARY)) {
                 playCutscene(Player, 3, 1);
                 CurrentActorPointer_0->control_state = 11;
-                setFlag(0x79, 1, 2);
+                setFlag(0x79, 1, FLAGTYPE_TEMPORARY);
             }
         }
     }

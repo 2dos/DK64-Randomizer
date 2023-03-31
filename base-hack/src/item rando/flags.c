@@ -18,7 +18,7 @@
         It's the crux of how item rando works without having to alter a large majority of the game code.
 */
 
-int checkFlagDuplicate(short flag, int type) {
+int checkFlagDuplicate(short flag, flagtypes type) {
     /**
      * @brief Duplicate of the check flag function, but instead of going through the FLUT, it checks the vanilla flag
      * 
@@ -31,7 +31,7 @@ int checkFlagDuplicate(short flag, int type) {
         return 0;
     }
     unsigned char* fba = 0;
-    if ((type == 0) || (type == 2)) {
+    if ((type == FLAGTYPE_PERMANENT) || (type == FLAGTYPE_GLOBAL)) {
         fba = (unsigned char*)getFlagBlockAddress(type);
     } else {
         fba = (unsigned char*)&TempFlagBlock[0];
@@ -41,7 +41,7 @@ int checkFlagDuplicate(short flag, int type) {
     return (fba[offset] >> shift) & 1;
 }
 
-void setFlagDuplicate(short flag, int set, int type) {
+void setFlagDuplicate(short flag, int set, flagtypes type) {
     /**
      * @brief Duplicate of the set flag function, but instead of going through the FLUT, it sets the vanilla flag
      * 
@@ -51,7 +51,7 @@ void setFlagDuplicate(short flag, int set, int type) {
      */
     if (flag != -1) {
         unsigned char* fba = 0;
-        if ((type == 0) || (type == 2)) {
+        if ((type == FLAGTYPE_PERMANENT) || (type == FLAGTYPE_GLOBAL)) {
             fba = (unsigned char*)getFlagBlockAddress(type);
         } else {
             fba = (unsigned char*)&TempFlagBlock[0];
@@ -84,14 +84,14 @@ int countFlagsForKongFLUT(int startFlag, int start, int cap, int kong) {
         for (int i = start; i <= cap; i++) {
             int check = getFlagIndex(startFlag, i, kong);
             if (check > -1) {
-                count += checkFlag(check, 0);
+                count += checkFlag(check, FLAGTYPE_PERMANENT);
             }
         }
     }
     return count;
 }
 
-int countFlagsDuplicate(int start, int count, int type) {
+int countFlagsDuplicate(int start, int count, flagtypes type) {
     /**
      * @brief Counts a flag array for the amount of flags set within that array. Doesn't go via the FLUT
      * 
@@ -264,7 +264,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
         int item_type = 0;
         int item_index = 0;
         int item_kong = 0;
-        if ((source == 1) && (!checkFlagDuplicate(flag_index, 0)) && (Gamemode == 6)) {
+        if ((source == 1) && (!checkFlagDuplicate(flag_index, FLAGTYPE_PERMANENT)) && (Gamemode == 6)) {
             if ((flag_index == FLAG_ITEM_SLAM_0) || (flag_index == FLAG_ITEM_SLAM_1)) {
                 // Slam
                 item_index = giveSlamLevel();
@@ -372,7 +372,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                         break;
                 }
             }
-            if (!checkFlag(vanilla_flag, 0)) {
+            if (!checkFlag(vanilla_flag, FLAGTYPE_PERMANENT)) {
                 if (give_gb) {
                     int world = getWorld(CurrentMap, 1);
                     if (world < 8) {
@@ -479,7 +479,7 @@ void* searchFlag(int old_flag, short* flag_write, int source, void* fba) {
     return fba;
 }
 
-void* updateFlag(int type, short* flag, void* fba, int source) {
+void* updateFlag(flagtypes type, short* flag, void* fba, int source) {
     /**
      * @brief Container function for updating the flag from a set/check flag call to reference the FLUT
      * 
@@ -488,7 +488,7 @@ void* updateFlag(int type, short* flag, void* fba, int source) {
      * @param fba Flag Block Address
      * @param source Whether this function is being called from a set flag call (1) or check flag call (0)
      */
-    if ((Rando.item_rando) && (type == 0) && (*flag != 0)) {
+    if ((Rando.item_rando) && (type == FLAGTYPE_PERMANENT) && (*flag != 0)) {
         if (flut_size == -1) {
             getFLUTSize();
         }
