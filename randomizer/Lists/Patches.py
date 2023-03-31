@@ -1311,7 +1311,7 @@ DirtPatchLocations = [
         rotation=1137,
         group=4,
         logicregion=Regions.MushroomUpper,
-        logic=lambda l: l.twirl or l.donkey and l.shockwave,
+        logic=lambda l: ((l.istiny and l.twirl) or l.isdonkey) and l.shockwave,
     ),
     DirtPatchData(
         name="Fungi Forest - Forest Giant Mushroom: Next to the cannon below the night door",
