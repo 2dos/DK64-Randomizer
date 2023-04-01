@@ -308,8 +308,37 @@ void CheckKasplatSpawnBitfield(void) {
     }
 }
 
+int isFlaggedWatermelon(void) {
+    if (ActorSpawnerPointer) {
+        actorSpawnerData* referenced_spawner = ActorSpawnerPointer;
+        while (1 == 1) {
+            if (referenced_spawner) {
+                if (referenced_spawner->tied_actor == CurrentActorPointer_0) {
+                    int flag = referenced_spawner->flag;
+                    if (flag != -1) {
+                        // Is flagged drop
+                        return 1;
+                    }
+                }
+                // Get Next Spawner
+                if (referenced_spawner->next_spawner) {
+                    referenced_spawner = referenced_spawner->next_spawner;
+                }
+                return 0;
+            }
+            return 0;
+        }
+    }
+    return 0;
+}
+
 int canItemPersist(void) {
     int actor = CurrentActorPointer_0->actorType;
+    if (actor == 0x2F) {
+        if (isFlaggedWatermelon()) {
+            return 1;
+        }
+    }
     if ((actor == 0x2F) || (actor == 0x36)) {
         return isCutsceneActive();
     }

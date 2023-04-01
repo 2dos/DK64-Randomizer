@@ -54,7 +54,7 @@ def randomize_music(spoiler: Spoiler):
     if spoiler.settings.music_bgm != MusicCosmetics.default:
         # If the user selected standard rando
         if spoiler.settings.music_bgm in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
-            if spoiler.settings.music_bgm == MusicCosmetics.uploaded:
+            if spoiler.settings.music_bgm == MusicCosmetics.uploaded and js.cosmetics is not None:
                 # If uploaded, replace some songs with the uploaded songs
                 insertUploaded(list(js.cosmetics.bgm), SongType.BGM)
             # Generate the list of BGM songs
@@ -101,7 +101,7 @@ def randomize_music(spoiler: Spoiler):
     if spoiler.settings.music_fanfares != MusicCosmetics.default:
         # Check if our setting is just rando
         if spoiler.settings.music_fanfares in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
-            if spoiler.settings.music_fanfares == MusicCosmetics.uploaded:
+            if spoiler.settings.music_fanfares == MusicCosmetics.uploaded and js.cosmetics is not None:
                 # If uploaded, replace some songs with the uploaded songs
                 insertUploaded(list(js.cosmetics.fanfares), SongType.Fanfare)
             # Load the list of fanfares
@@ -119,7 +119,7 @@ def randomize_music(spoiler: Spoiler):
     if spoiler.settings.music_events != MusicCosmetics.default:
         # Check if our setting is just rando
         if spoiler.settings.music_events in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
-            if spoiler.settings.music_events == MusicCosmetics.uploaded:
+            if spoiler.settings.music_events == MusicCosmetics.uploaded and js.cosmetics is not None:
                 # If uploaded, replace some songs with the uploaded songs
                 insertUploaded(list(js.cosmetics.events), SongType.Event)
             # Load the list of events
