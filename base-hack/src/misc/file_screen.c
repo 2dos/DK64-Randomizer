@@ -12,6 +12,7 @@
 
 static char balanced_igt[20] = "";
 static char perc_str[7] = "";
+static char gb_str[5] = "";
 
 #define LINE_GAP 0x8C
 static char updated_tracker = 0;
@@ -576,6 +577,9 @@ int* display_text(int* dl) {
 	// Percentage Counter
 	dk_strFormat((char*)perc_str, "%d%%", FilePercentage);
 	dl = drawText(dl, 1, 410, y + 50, (char*)perc_str, 0xFF, 0xFF, 0xFF, 0xFF);
+	// GB Count
+	dk_strFormat((char*)gb_str, "%03d", *(int*)(0x8003380C));
+	dl = drawText(dl, 1, 435, y + 20, (char*)gb_str, 0xFF, 0xFF, 0xFF, 0xFF);
 	dl = display_file_images(dl, FileScreenDLOffset - 720);
 	return dl;
 }
