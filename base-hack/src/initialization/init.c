@@ -284,7 +284,7 @@ void initHack(int source) {
 			// Fix spider crashes
 			int fixed_anim = 0x2F5;
 			*(short*)(0x8075F46C) = fixed_anim;
-			*(short*)(0x806ADA26) = fixed_anim;
+			*(short*)(0x806ADA26) = fixed_anim; // This might fix spawning if set on non-init
 			*(short*)(0x806ADA2A) = fixed_anim;
 			*(short*)(0x806ADA32) = fixed_anim;
 			*(short*)(0x806ADBC6) = fixed_anim;
