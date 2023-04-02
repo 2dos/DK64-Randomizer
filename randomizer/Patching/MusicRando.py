@@ -57,6 +57,7 @@ def randomize_music(spoiler: Spoiler):
     for song in song_data:
         song.Reset()
     # Check if we have anything beyond default set for BGM
+    print(js.cosmetic_names.bgm)
     if spoiler.settings.music_bgm != MusicCosmetics.default:
         # If the user selected standard rando
         if spoiler.settings.music_bgm in (MusicCosmetics.randomized, MusicCosmetics.uploaded):

@@ -89,31 +89,22 @@ document
         fanfare_names = [];
         events = [];
         event_names = [];
-        for (var file in new_zip.files) {
+        for (const file of Object.keys(new_zip.files)) {
           if (file.includes("bgm/") && file.slice(-4) == ".bin") {
-            new_zip
-              .file(file)
-              .async("Uint8Array")
-              .then(function (content) {
-                bgm.push(content)
-                bgm_names.push(file.slice(0, -4))
-              });
+            new_zip.files[file].async("uint8array").then(function (content) {
+              bgm.push(content);
+              bgm_names.push(file);
+            })
           } else if (file.includes("fanfares/") && file.slice(-4) == ".bin") {
-            new_zip
-              .file(file)
-              .async("Uint8Array")
-              .then(function (content) {
-                fanfares.push(content)
-                fanfare_names.push(file.slice(0, -4))
-              });
+            new_zip.files[file].async("uint8array").then(function (content) {
+              fanfares.push(content);
+              fanfare_names.push(file);
+            })
           } else if (file.includes("events/") && file.slice(-4) == ".bin") {
-            new_zip
-              .file(file)
-              .async("Uint8Array")
-              .then(function (content) {
-                events.push(content)
-                event_names.push(file.slice(0, -4))
-              });
+            new_zip.files[file].async("uint8array").then(function (content) {
+              events.push(content);
+              event_names.push(file);
+            })
           }
         }
         cosmetics = { bgm: bgm, fanfares: fanfares, events: events };
