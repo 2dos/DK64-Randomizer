@@ -481,6 +481,8 @@ def patching_response(responded_data):
         wipeHints()
         PushHints(spoiler)
 
+    spoiler.updateJSONCosmetics()
+
     # Apply Hash
     order = 0
     loaded_hash = get_hash_images()
