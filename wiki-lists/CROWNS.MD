@@ -279,7 +279,6 @@
 | Castle Mausoleum | Creepy Castle - Lanky Crypt: Lanky Tunnel |  | 
 | Castle Upper Cave | Creepy Castle - Tunnel: Near Pit |  | 
 | Castle Upper Cave | Creepy Castle - Tunnel: Near Candy's |  | 
-| Castle Library | Creepy Castle - Library: Enemy Gauntlet Room |  | 
 | Castle Library | Creepy Castle - Library: Flying Book Room | (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey and (l.strongKong or l.settings.damage_amount == DamageAmount.default)) or l.phasewalk | 
 | Castle Museum | Creepy Castle - Museum: Near Race |  | 
 | Castle Museum | Creepy Castle - Museum: Behind Pillar | (l.monkeyport and l.istiny) or l.phasewalk | 
