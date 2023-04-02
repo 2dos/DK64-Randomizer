@@ -301,12 +301,12 @@ def compileHints(spoiler: Spoiler):
     level_order_matters = spoiler.settings.logic_type != LogicType.nologic and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all
     # Determine what hint types are valid for these settings
     valid_types = [HintType.Joke]
-    if spoiler.settings.krool_phase_count < 5 and spoiler.settings.win_condition == WinCondition.beat_krool:
+    if (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random) and spoiler.settings.win_condition == WinCondition.beat_krool:
         valid_types.append(HintType.KRoolOrder)
         # If the seed doesn't funnel you into helm, guarantee one K. Rool order hint
         if Events.HelmKeyTurnedIn not in spoiler.settings.krool_keys_required or not spoiler.settings.key_8_helm:
             minned_hint_types.append(HintType.KRoolOrder)
-    if spoiler.settings.helm_setting != HelmSetting.skip_all and spoiler.settings.helm_phase_count < 5:
+    if spoiler.settings.helm_setting != HelmSetting.skip_all and (spoiler.settings.helm_phase_count < 5 or spoiler.settings.helm_random):
         valid_types.append(HintType.HelmOrder)
         minned_hint_types.append(HintType.HelmOrder)
     if spoiler.settings.move_rando not in (MoveRando.off, MoveRando.item_shuffle) and Types.Shop not in spoiler.settings.shuffled_location_types:
@@ -357,8 +357,8 @@ def compileHints(spoiler: Spoiler):
                 #     hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Mini Monkey hint
                 # if Kongs.chunky in spoiler.settings.krool_order:
                 #     hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Hunky Chunky hint
-            # All fairies seeds need help finding the camera (if you don't start with it) - variable amount of unique hints for it
-            if spoiler.settings.win_condition == WinCondition.all_fairies and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+            # Some win conditions need help finding the camera (if you don't start with it) - variable amount of unique hints for it
+            if spoiler.settings.win_condition in (WinCondition.all_fairies, WinCondition.poke_snap) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
                 valid_types.append(HintType.RequiredWinConditionHint)
                 camera_location_id = None
                 for id, loc in LocationList.items():
@@ -796,7 +796,7 @@ def compileHints(spoiler: Spoiler):
                 hint_location.hint_type = HintType.RequiredWinConditionHint
                 UpdateHint(hint_location, message)
         # All fairies seeds get 2 path hints for the camera
-        if spoiler.settings.win_condition == WinCondition.all_fairies:
+        if spoiler.settings.win_condition == WinCondition.all_fairies or spoiler.settings.win_condition == WinCondition.poke_snap:
             for location_id in spoiler.woth_paths.keys():
                 if LocationList[location_id].item == Items.Camera:
                     camera_location_id = location_id

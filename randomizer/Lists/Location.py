@@ -216,7 +216,7 @@ LocationList = {
     Locations.JapesLankyMedal: Location(Levels.JungleJapes, "Japes Lanky Medal", Items.BananaMedal, Types.Medal, Kongs.lanky),
     Locations.JapesTinyMedal: Location(Levels.JungleJapes, "Japes Tiny Medal", Items.BananaMedal, Types.Medal, Kongs.tiny),
     Locations.JapesChunkyMedal: Location(Levels.JungleJapes, "Japes Chunky Medal", Items.BananaMedal, Types.Medal, Kongs.chunky),
-    Locations.DiddyKong: Location(Levels.JungleJapes, "Diddy Kong", Items.Diddy, Types.Kong, Kongs.any, [MapIDCombo(0, -1, 6)], logically_relevant=True),
+    Locations.DiddyKong: Location(Levels.JungleJapes, "Diddy Kong's Cage", Items.Diddy, Types.Kong, Kongs.any, [MapIDCombo(0, -1, 6)], logically_relevant=True),
     Locations.JapesDonkeyFrontofCage: Location(Levels.JungleJapes, "Japes in Front of Diddy Cage", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(Maps.JungleJapes, 0x69, 4, Kongs.donkey)], logically_relevant=True),  # Can be assigned to other kongs
     Locations.JapesDonkeyFreeDiddy: Location(Levels.JungleJapes, "Japes Free Diddy Item", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(Maps.JungleJapes, 0x48, 5, Kongs.donkey)]),  # Can be assigned to other kongs
     Locations.JapesDonkeyCagedBanana: Location(Levels.JungleJapes, "Japes Donkey Floor Cage Banana", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.JungleJapes, 0x44, 20, Kongs.donkey)]),
@@ -258,7 +258,7 @@ LocationList = {
     Locations.AztecKasplatOnTinyTemple: Location(Levels.AngryAztec, "Aztec Kasplat On Tiny Temple", Items.AngryAztecDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.AngryAztec]),
     Locations.AztecTinyKlaptrapRoom: Location(Levels.AngryAztec, "Aztec Tiny Klaptrap Room", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.AztecTinyTemple, 0x7E, 65, Kongs.tiny)]),
     Locations.AztecChunkyKlaptrapRoom: Location(Levels.AngryAztec, "Aztec Chunky Klaptrap Room", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.AztecTinyTemple, 0x9, 64, Kongs.chunky)]),
-    Locations.TinyKong: Location(Levels.AngryAztec, "Tiny Kong", Items.Tiny, Types.Kong, Kongs.any, [MapIDCombo(0, -1, 66)], logically_relevant=True),
+    Locations.TinyKong: Location(Levels.AngryAztec, "Tiny Kong's Cage", Items.Tiny, Types.Kong, Kongs.any, [MapIDCombo(0, -1, 66)], logically_relevant=True),
     Locations.AztecDiddyFreeTiny: Location(Levels.AngryAztec, "Aztec Free Tiny Item", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, 0x5B, 67, Kongs.diddy)]),  # Can be assigned to other kongs
     Locations.AztecLankyVulture: Location(Levels.AngryAztec, "Aztec Lanky Vulture Shooting", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 68, Kongs.lanky)]),
     Locations.AztecBattleArena: Location(Levels.AngryAztec, "Aztec Battle Arena", Items.BattleCrown, Types.Crown, Kongs.any, [MapIDCombo(Maps.AztecCrown, -1, 610)]),
@@ -275,7 +275,7 @@ LocationList = {
     Locations.AztecChunky5DoorTemple: Location(Levels.AngryAztec, "Aztec Chunky 5 Door Temple", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(0, -1, 59, Kongs.chunky)]),
     Locations.AztecKasplatChunky5DT: Location(Levels.AngryAztec, "Aztec Kasplat Inside Chunky's 5-Door Temple", Items.AngryAztecChunkyBlueprint, Types.Blueprint, Kongs.chunky, [Maps.AztecChunky5DTemple]),
     Locations.AztecTinyBeetleRace: Location(Levels.AngryAztec, "Aztec Tiny Beetle Race", Items.GoldenBanana, Types.ToughBanana, Kongs.tiny, [MapIDCombo(Maps.AztecTinyRace, 0x48, 75, Kongs.tiny)]),
-    Locations.LankyKong: Location(Levels.AngryAztec, "Lanky Kong", Items.Lanky, Types.Kong, Kongs.any, [MapIDCombo(0, -1, 70)], logically_relevant=True),
+    Locations.LankyKong: Location(Levels.AngryAztec, "Lanky Kong's Cage", Items.Lanky, Types.Kong, Kongs.any, [MapIDCombo(0, -1, 70)], logically_relevant=True),
     Locations.AztecDonkeyFreeLanky: Location(Levels.AngryAztec, "Aztec Free Lanky Item", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(Maps.AztecLlamaTemple, 0x6C, 77, Kongs.donkey)]),  # Can be assigned to other kongs
     Locations.AztecLankyLlamaTempleBarrel: Location(Levels.AngryAztec, "Aztec Lanky Llama Temple Barrel", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 73, Kongs.lanky)]),
     Locations.AztecLankyMatchingGame: Location(Levels.AngryAztec, "Aztec Lanky Matching Game", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(Maps.AztecLlamaTemple, 0x2B, 72, Kongs.lanky)]),
@@ -304,7 +304,7 @@ LocationList = {
     Locations.FactoryTinyCarRace: Location(Levels.FranticFactory, "Factory Tiny Car Race", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.FactoryTinyRace, 0x62, 139, Kongs.tiny)]),
     Locations.FactoryDiddyChunkyRoomBarrel: Location(Levels.FranticFactory, "Factory Diddy Storage Room Barrel", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(0, -1, 134, Kongs.diddy)]),
     Locations.FactoryDonkeyPowerHut: Location(Levels.FranticFactory, "Factory Donkey Power Hut", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.FactoryPowerHut, 0x2, 112, Kongs.donkey)]),
-    Locations.ChunkyKong: Location(Levels.FranticFactory, "Chunky Kong", Items.Chunky, Types.Kong, Kongs.any, [MapIDCombo(0, -1, 117)], logically_relevant=True),
+    Locations.ChunkyKong: Location(Levels.FranticFactory, "Chunky Kong's Cage", Items.Chunky, Types.Kong, Kongs.any, [MapIDCombo(0, -1, 117)], logically_relevant=True),
     Locations.NintendoCoin: Location(Levels.FranticFactory, "DK Arcade Round 2", Items.NintendoCoin, Types.Coin, Kongs.donkey, [MapIDCombo(Maps.FranticFactory, 0x13E, 132)]),
     Locations.FactoryDonkeyDKArcade: Location(Levels.FranticFactory, "Factory Donkey DK Arcade Round 1", Items.GoldenBanana, Types.ToughBanana, Kongs.donkey, [MapIDCombo(Maps.FranticFactory, 0x108, 130, Kongs.donkey), MapIDCombo(Maps.FactoryBaboonBlast, 0, 130, Kongs.donkey)]),
     Locations.FactoryLankyFreeChunky: Location(Levels.FranticFactory, "Factory Free Chunky Item", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(Maps.FranticFactory, 0x78, 118, Kongs.lanky)]),  # Can be assigned to other kongs
