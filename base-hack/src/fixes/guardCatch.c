@@ -124,8 +124,10 @@ void newGuardCode(void) {
     if (CurrentActorPointer_0->control_state <= 0x35) {
         if (Player) {
             if ((Player->strong_kong_ostand_bitfield & 0x60) == 0) { // No GGone / OSprint
-                // Guard detection can't happen if being damaged or dying, or ggone/osprint
-                handleGuardDetection(40.0f,70.0f);
+                if (!isBadMovementState()) {
+                    // Guard detection can't happen if being damaged or dying, the kong being in a bad movement state, or ggone/osprint
+                    handleGuardDetection(40.0f,70.0f);
+                }
             }
         }
     }

@@ -101,7 +101,9 @@ typedef struct actorData {
 	/* 0x0EA */ char unk_EA[0x4];
 	/* 0x0EE */ short rot_y_copy;
 	/* 0x0F0 */ short reward_index;
-	/* 0x0F2 */ char unk_F2[0x124-0xF2];
+	/* 0x0F2 */ char unk_F2[0x11C-0xF2];
+	/* 0x11C */ void* parent;
+	/* 0x120 */ char unk_120[0x124-0x120];
 	/* 0x124 */ actor_subdata* data_pointer;
 	/* 0x128 */ short shadow_intensity;
 	/* 0x12A */ char unk_12A[0x132-0x12A];
@@ -1268,6 +1270,7 @@ typedef struct arbitrary_overlay {
 	/* 0x000 */ unsigned char type;
 	/* 0x001 */ unsigned char kong;
 	/* 0x002 */ short flag;
+	/* 0x004 */ char* string;
 } arbitrary_overlay;
 
 typedef struct rgb {

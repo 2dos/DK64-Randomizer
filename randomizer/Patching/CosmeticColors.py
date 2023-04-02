@@ -5,7 +5,7 @@ from random import randint
 import js
 from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import intf_to_float, float_to_hex, int_to_list, getObjectAddress
+from randomizer.Patching.Lib import intf_to_float, float_to_hex, int_to_list, getObjectAddress, TextureFormat
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorItem, KlaptrapModel
@@ -28,7 +28,7 @@ class HelmDoorSetting:
 class HelmDoorImages:
     """Class to store information regarding helm door item images."""
 
-    def __init__(self, setting: HelmDoorItem, image_indexes: list, flip=False, table=25, dimensions=(44, 44), format="rgba5551"):
+    def __init__(self, setting: HelmDoorItem, image_indexes: list, flip=False, table=25, dimensions=(44, 44), format=TextureFormat.RGBA5551):
         """Initialize with given parameters."""
         self.setting = setting
         self.image_indexes = image_indexes
@@ -261,7 +261,7 @@ def getFile(table_index: int, file_index: int, compressed: bool, width: int, hei
     pix = im_f.load()
     for y in range(height):
         for x in range(width):
-            if format == "rgba32":
+            if format == TextureFormat.RGBA32:
                 offset = ((y * width) + x) * 4
                 pix_data = int.from_bytes(data[offset : offset + 4], "big")
                 red = (pix_data >> 24) & 0xFF
@@ -355,12 +355,12 @@ def recolorRotatingRoomTiles():
     face_offsets = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [-5, -1], [-38, -1]]
 
     for tile in range(len(question_mark_tiles)):
-        tile_image = getFile(7, question_mark_tiles[tile], False, 32, 64, "rgba5551")
-        mask = getFile(7, question_mark_tile_masks[(tile % 2)], False, 32, 64, "rgba5551")
+        tile_image = getFile(7, question_mark_tiles[tile], False, 32, 64, TextureFormat.RGBA5551)
+        mask = getFile(7, question_mark_tile_masks[(tile % 2)], False, 32, 64, TextureFormat.RGBA5551)
         resize = question_mark_resize
         mask = mask.resize((resize[0], resize[1]))
         masked_tile = maskImageRotatingRoomTile(tile_image, mask, question_mark_offsets[(tile % 2)], int(tile / 2), (tile % 2))
-        writeColorImageToROM(masked_tile, 7, question_mark_tiles[tile], 32, 64, False, "rgba5551")
+        writeColorImageToROM(masked_tile, 7, question_mark_tiles[tile], 32, 64, False, TextureFormat.RGBA5551)
     for tile in range(len(face_tiles)):
         face_index = int(tile / 4)
         if face_index < 5:
@@ -369,12 +369,12 @@ def recolorRotatingRoomTiles():
         else:
             width = 44
             height = 44
-        mask = getFile(25, face_tile_masks[int(tile / 2)], True, width, height, "rgba5551")
+        mask = getFile(25, face_tile_masks[int(tile / 2)], True, width, height, TextureFormat.RGBA5551)
         resize = face_resize[face_index]
         mask = mask.resize((resize[0], resize[1]))
-        tile_image = getFile(7, face_tiles[tile], False, 32, 64, "rgba5551")
+        tile_image = getFile(7, face_tiles[tile], False, 32, 64, TextureFormat.RGBA5551)
         masked_tile = maskImageRotatingRoomTile(tile_image, mask, face_offsets[int(tile / 2)], face_index, (int(tile / 2) % 2))
-        writeColorImageToROM(masked_tile, 7, face_tiles[tile], 32, 64, False, "rgba5551")
+        writeColorImageToROM(masked_tile, 7, face_tiles[tile], 32, 64, False, TextureFormat.RGBA5551)
 
 
 def maskImageRotatingRoomTile(im_f, im_mask, paste_coords, image_color_index, tile_side):
@@ -993,9 +993,9 @@ def recolorKlaptraps():
 
     # Regular textures
     for file in range(6):
-        writeKlaptrapSkinColorToROM(4, 25, green_files[file], "rgba5551")
-        writeKlaptrapSkinColorToROM(1, 25, red_files[file], "rgba5551")
-        writeKlaptrapSkinColorToROM(3, 25, purple_files[file], "rgba5551")
+        writeKlaptrapSkinColorToROM(4, 25, green_files[file], TextureFormat.RGBA5551)
+        writeKlaptrapSkinColorToROM(1, 25, red_files[file], TextureFormat.RGBA5551)
+        writeKlaptrapSkinColorToROM(3, 25, purple_files[file], TextureFormat.RGBA5551)
 
     belly_pixels_to_ignore = []
     for x in range(32):
@@ -1006,7 +1006,7 @@ def recolorKlaptraps():
                 belly_pixels_to_ignore.append([x, y])
 
     # Special texture that requires only partial recoloring, in this case file 0xF38 which is the belly, and only the few green pixels
-    writeSpecialKlaptrapTextureToROM(4, 25, 0xF38, "rgba5551", belly_pixels_to_ignore)
+    writeSpecialKlaptrapTextureToROM(4, 25, 0xF38, TextureFormat.RGBA5551, belly_pixels_to_ignore)
 
 
 def recolorPotions(colorblind_mode):
@@ -1171,31 +1171,31 @@ def recolorPotions(colorblind_mode):
             color = color_bases[index]
         else:
             color = "#FFFFFF"
-        potion_image = getFile(6, file, False, 20, 20, "rgba5551")
+        potion_image = getFile(6, file, False, 20, 20, TextureFormat.RGBA5551)
         potion_image = maskPotionImage(potion_image, color, secondary_color[index])
-        writeColorImageToROM(potion_image, 6, file, 20, 20, False, "rgba5551")
+        writeColorImageToROM(potion_image, 6, file, 20, 20, False, TextureFormat.RGBA5551)
 
 
 def recolorMushrooms():
     """Recolor the various colored mushrooms in the game for colorblind mode."""
-    reference_mushroom_image = getFile(7, 297, False, 32, 32, "rgba5551")
-    reference_mushroom_image_side1 = getFile(25, 0xD64, True, 64, 32, "rgba5551")
-    reference_mushroom_image_side2 = getFile(25, 0xD65, True, 64, 32, "rgba5551")
+    reference_mushroom_image = getFile(7, 297, False, 32, 32, TextureFormat.RGBA5551)
+    reference_mushroom_image_side1 = getFile(25, 0xD64, True, 64, 32, TextureFormat.RGBA5551)
+    reference_mushroom_image_side2 = getFile(25, 0xD65, True, 64, 32, TextureFormat.RGBA5551)
     files_table_7 = [296, 295, 297, 299, 298]
     files_table_25_side_1 = [0xD60, 0x67F, 0xD64, 0xD62, 0xD66]
     files_table_25_side_2 = [0xD61, 0x680, 0xD65, 0xD63, 0xD67]
     for file in range(5):
         # Mushroom on the ceiling inside Fungi Forest Lobby
-        mushroom_image = getFile(7, files_table_7[file], False, 32, 32, "rgba5551")
+        mushroom_image = getFile(7, files_table_7[file], False, 32, 32, TextureFormat.RGBA5551)
         mushroom_image = maskMushroomImage(mushroom_image, reference_mushroom_image, color_bases[file])
-        writeColorImageToROM(mushroom_image, 7, files_table_7[file], 32, 32, False, "rgba5551")
+        writeColorImageToROM(mushroom_image, 7, files_table_7[file], 32, 32, False, TextureFormat.RGBA5551)
         # Mushrooms in Lanky's colored mushroom puzzle (and possibly also the bouncy mushrooms)
-        mushroom_image_side_1 = getFile(25, files_table_25_side_1[file], True, 64, 32, "rgba5551")
+        mushroom_image_side_1 = getFile(25, files_table_25_side_1[file], True, 64, 32, TextureFormat.RGBA5551)
         mushroom_image_side_1 = maskMushroomImage(mushroom_image_side_1, reference_mushroom_image_side1, color_bases[file])
-        writeColorImageToROM(mushroom_image_side_1, 25, files_table_25_side_1[file], 64, 32, False, "rgba5551")
-        mushroom_image_side_2 = getFile(25, files_table_25_side_2[file], True, 64, 32, "rgba5551")
+        writeColorImageToROM(mushroom_image_side_1, 25, files_table_25_side_1[file], 64, 32, False, TextureFormat.RGBA5551)
+        mushroom_image_side_2 = getFile(25, files_table_25_side_2[file], True, 64, 32, TextureFormat.RGBA5551)
         mushroom_image_side_2 = maskMushroomImage(mushroom_image_side_2, reference_mushroom_image_side2, color_bases[file], True)
-        writeColorImageToROM(mushroom_image_side_2, 25, files_table_25_side_2[file], 64, 32, False, "rgba5551")
+        writeColorImageToROM(mushroom_image_side_2, 25, files_table_25_side_2[file], 64, 32, False, TextureFormat.RGBA5551)
 
 
 BALLOON_START = [5835, 5827, 5843, 5851, 5819]
@@ -1216,13 +1216,13 @@ def overwrite_object_colors(spoiler: Spoiler):
             recolorBells()
         # Preload DK single cb image to paste onto balloons
         file = 175
-        dk_single = getFile(7, file, False, 44, 44, "rgba5551")
+        dk_single = getFile(7, file, False, 44, 44, TextureFormat.RGBA5551)
         dk_single = dk_single.resize((21, 21))
         blueprint_lanky = []
         # Preload blueprint images. Lanky's blueprint image is so much easier to mask, because it is blue, and the frame is brown
         for file in range(8):
-            blueprint_lanky.append(getFile(25, 5519 + (file), True, 48, 42, "rgba5551"))
-        writeWhiteKasplatHairColorToROM("#FFFFFF", "#000000", 25, 4125, "rgba5551")
+            blueprint_lanky.append(getFile(25, 5519 + (file), True, 48, 42, TextureFormat.RGBA5551))
+        writeWhiteKasplatHairColorToROM("#FFFFFF", "#000000", 25, 4125, TextureFormat.RGBA5551)
         recolorWrinklyDoors()
         recolorSlamSwitches()
         recolorRotatingRoomTiles()
@@ -1233,86 +1233,86 @@ def overwrite_object_colors(spoiler: Spoiler):
         for kong_index in range(5):
             # file = 4120
             # # Kasplat Hair
-            # hair_im = getFile(25, file, True, 32, 44, "rgba5551")
+            # hair_im = getFile(25, file, True, 32, 44, TextureFormat.RGBA5551)
             # hair_im = maskImage(hair_im, kong_index, 0)
             # writeColorImageToROM(hair_im, 25, [4124, 4122, 4123, 4120, 4121][kong_index], 32, 44, False)
-            writeKasplatHairColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index], "rgba5551")
+            writeKasplatHairColorToROM(color_bases[kong_index], 25, [4124, 4122, 4123, 4120, 4121][kong_index], TextureFormat.RGBA5551)
             for file in range(5519, 5527):
                 # Blueprint sprite
                 blueprint_start = [5624, 5608, 5519, 5632, 5616]
                 blueprint_im = blueprint_lanky[(file - 5519)]
                 blueprint_im = maskBlueprintImage(blueprint_im, kong_index)
-                writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False, "rgba5551")
+                writeColorImageToROM(blueprint_im, 25, blueprint_start[kong_index] + (file - 5519), 48, 42, False, TextureFormat.RGBA5551)
             for file in range(4925, 4931):
                 # Shockwave
                 shockwave_start = [4897, 4903, 4712, 4950, 4925]
-                shockwave_im = getFile(25, shockwave_start[kong_index] + (file - 4925), True, 32, 32, "rgba32")
+                shockwave_im = getFile(25, shockwave_start[kong_index] + (file - 4925), True, 32, 32, TextureFormat.RGBA32)
                 shockwave_im = maskImage(shockwave_im, kong_index, 0)
-                writeColorImageToROM(shockwave_im, 25, shockwave_start[kong_index] + (file - 4925), 32, 32, False, "rgba32")
+                writeColorImageToROM(shockwave_im, 25, shockwave_start[kong_index] + (file - 4925), 32, 32, False, TextureFormat.RGBA32)
             for file in range(784, 796):
                 # Helm Laser (will probably also affect the Pufftoss laser and the Game Over laser)
                 laser_start = [784, 748, 363, 760, 772]
-                laser_im = getFile(7, laser_start[kong_index] + (file - 784), False, 32, 32, "rgba32")
+                laser_im = getFile(7, laser_start[kong_index] + (file - 784), False, 32, 32, TextureFormat.RGBA32)
                 laser_im = maskLaserImage(laser_im, kong_index)
-                writeColorImageToROM(laser_im, 7, laser_start[kong_index] + (file - 784), 32, 32, False, "rgba32")
+                writeColorImageToROM(laser_im, 7, laser_start[kong_index] + (file - 784), 32, 32, False, TextureFormat.RGBA32)
             if kong_index == 0 or kong_index == 3 or (kong_index == 2 and mode != ColorblindMode.trit):  # Lanky (prot, deut only) or DK or Tiny
                 for file in range(152, 160):
                     # Single
                     single_start = [168, 152, 232, 208, 240]
-                    single_im = getFile(7, single_start[kong_index] + (file - 152), False, 44, 44, "rgba5551")
+                    single_im = getFile(7, single_start[kong_index] + (file - 152), False, 44, 44, TextureFormat.RGBA5551)
                     single_im = maskImageWithOutline(single_im, kong_index, 0, mode, "single")
-                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False, "rgba5551")
+                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False, TextureFormat.RGBA5551)
                 for file in range(216, 224):
                     # Coin
                     coin_start = [224, 256, 248, 216, 264]
-                    coin_im = getFile(7, coin_start[kong_index] + (file - 216), False, 48, 42, "rgba5551")
+                    coin_im = getFile(7, coin_start[kong_index] + (file - 216), False, 48, 42, TextureFormat.RGBA5551)
                     coin_im = maskImageWithOutline(coin_im, kong_index, 0, mode)
-                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False, "rgba5551")
+                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False, TextureFormat.RGBA5551)
                 for file in range(274, 286):
                     # Bunch
                     bunch_start = [274, 854, 818, 842, 830]
-                    bunch_im = getFile(7, bunch_start[kong_index] + (file - 274), False, 44, 44, "rgba5551")
+                    bunch_im = getFile(7, bunch_start[kong_index] + (file - 274), False, 44, 44, TextureFormat.RGBA5551)
                     bunch_im = maskImageWithOutline(bunch_im, kong_index, 0, mode, "bunch")
-                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False, "rgba5551")
+                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False, TextureFormat.RGBA5551)
                 for file in range(5819, 5827):
                     # Balloon
-                    balloon_im = getFile(25, BALLOON_START[kong_index] + (file - 5819), True, 32, 64, "rgba5551")
+                    balloon_im = getFile(25, BALLOON_START[kong_index] + (file - 5819), True, 32, 64, TextureFormat.RGBA5551)
                     balloon_im = maskImageWithOutline(balloon_im, kong_index, 33, mode)
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
-                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + (file - 5819), 32, 64, False, "rgba5551")
+                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + (file - 5819), 32, 64, False, TextureFormat.RGBA5551)
             else:
                 for file in range(152, 160):
                     # Single
                     single_start = [168, 152, 232, 208, 240]
-                    single_im = getFile(7, single_start[kong_index] + (file - 152), False, 44, 44, "rgba5551")
+                    single_im = getFile(7, single_start[kong_index] + (file - 152), False, 44, 44, TextureFormat.RGBA5551)
                     single_im = maskImage(single_im, kong_index, 0)
-                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False, "rgba5551")
+                    writeColorImageToROM(single_im, 7, single_start[kong_index] + (file - 152), 44, 44, False, TextureFormat.RGBA5551)
                 for file in range(216, 224):
                     # Coin
                     coin_start = [224, 256, 248, 216, 264]
-                    coin_im = getFile(7, coin_start[kong_index] + (file - 216), False, 48, 42, "rgba5551")
+                    coin_im = getFile(7, coin_start[kong_index] + (file - 216), False, 48, 42, TextureFormat.RGBA5551)
                     coin_im = maskImage(coin_im, kong_index, 0)
-                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False, "rgba5551")
+                    writeColorImageToROM(coin_im, 7, coin_start[kong_index] + (file - 216), 48, 42, False, TextureFormat.RGBA5551)
                 for file in range(274, 286):
                     # Bunch
                     bunch_start = [274, 854, 818, 842, 830]
-                    bunch_im = getFile(7, bunch_start[kong_index] + (file - 274), False, 44, 44, "rgba5551")
+                    bunch_im = getFile(7, bunch_start[kong_index] + (file - 274), False, 44, 44, TextureFormat.RGBA5551)
                     bunch_im = maskImage(bunch_im, kong_index, 0, True)
-                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False, "rgba5551")
+                    writeColorImageToROM(bunch_im, 7, bunch_start[kong_index] + (file - 274), 44, 44, False, TextureFormat.RGBA5551)
                 for file in range(5819, 5827):
                     # Balloon
-                    balloon_im = getFile(25, BALLOON_START[kong_index] + (file - 5819), True, 32, 64, "rgba5551")
+                    balloon_im = getFile(25, BALLOON_START[kong_index] + (file - 5819), True, 32, 64, TextureFormat.RGBA5551)
                     balloon_im = maskImage(balloon_im, kong_index, 33)
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
-                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + (file - 5819), 32, 64, False, "rgba5551")
+                    writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + (file - 5819), 32, 64, False, TextureFormat.RGBA5551)
     if spoiler.settings.head_balloons:
         for kong in range(5):
             for offset in range(8):
-                balloon_im = getFile(25, BALLOON_START[kong] + offset, True, 32, 64, "rgba5551")
-                kong_im = getFile(14, 190 + kong, True, 32, 32, "rgba5551")
+                balloon_im = getFile(25, BALLOON_START[kong] + offset, True, 32, 64, TextureFormat.RGBA5551)
+                kong_im = getFile(14, 190 + kong, True, 32, 32, TextureFormat.RGBA5551)
                 kong_im = kong_im.transpose(Image.FLIP_TOP_BOTTOM).resize((20, 20))
                 balloon_im.paste(kong_im, (5, 39), kong_im)
-                writeColorImageToROM(balloon_im, 25, BALLOON_START[kong] + offset, 32, 64, False, "rgba5551")
+                writeColorImageToROM(balloon_im, 25, BALLOON_START[kong] + offset, 32, 64, False, TextureFormat.RGBA5551)
 
 
 def applyKrushaKong(spoiler: Spoiler):
@@ -1503,7 +1503,7 @@ def writeMiscCosmeticChanges(spoiler: Spoiler):
                     dims = (32, 32)
                 else:
                     dims = (48, 42)
-                melon_im = getFile(table, img, table != 7, dims[0], dims[1], "rgba5551")
+                melon_im = getFile(table, img, table != 7, dims[0], dims[1], TextureFormat.RGBA5551)
                 melon_im = hueShift(melon_im, shift)
                 melon_px = melon_im.load()
                 bytes_array = []
@@ -1528,10 +1528,10 @@ def getNumberImage(number: int):
     if number < 5:
         num_0_bounds = [0, 20, 30, 45, 58, 76]
         x = number
-        return getFile(14, 15, True, 76, 24, "rgba5551").crop((num_0_bounds[x], 0, num_0_bounds[x + 1], 24))
+        return getFile(14, 15, True, 76, 24, TextureFormat.RGBA5551).crop((num_0_bounds[x], 0, num_0_bounds[x + 1], 24))
     num_1_bounds = [0, 15, 28, 43, 58, 76]
     x = number - 5
-    return getFile(14, 16, True, 76, 24, "rgba5551").crop((num_1_bounds[x], 0, num_1_bounds[x + 1], 24))
+    return getFile(14, 16, True, 76, 24, TextureFormat.RGBA5551).crop((num_1_bounds[x], 0, num_1_bounds[x + 1], 24))
 
 
 def numberToImage(number: int, dim: tuple):
@@ -1592,7 +1592,7 @@ def applyHelmDoorCosmetics(spoiler: Spoiler):
         HelmDoorImages(HelmDoorItem.req_bp, [x + 4 for x in (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)], False, 25, (48, 42)),
         HelmDoorImages(HelmDoorItem.req_bean, [0], True, 6, (20, 20)),
         HelmDoorImages(HelmDoorItem.req_pearl, [0xD5F], False, 25, (32, 32)),
-        HelmDoorImages(HelmDoorItem.req_fairy, [0x16ED], False, 25, (32, 32), "rgba32"),
+        HelmDoorImages(HelmDoorItem.req_fairy, [0x16ED], False, 25, (32, 32), TextureFormat.RGBA32),
         HelmDoorImages(HelmDoorItem.req_key, [5877]),
         HelmDoorImages(HelmDoorItem.req_medal, [0x156C]),
         HelmDoorImages(HelmDoorItem.req_rainbowcoin, [5963], False, 25, (48, 42)),
@@ -1635,8 +1635,8 @@ def applyHelmDoorCosmetics(spoiler: Spoiler):
                             r, g, b, a = pearl_mask_im.getpixel((x, y))
                             if a > 128:
                                 pix_pearl[x, y] = (0, 0, 0, 0)
-                writeColorImageToROM(base, 25, door.item_image, 44, 44, True, "rgba5551")
-                writeColorImageToROM(numberToImage(door.count, (44, 44)).transpose(Image.FLIP_TOP_BOTTOM), 25, door.number_image, 44, 44, True, "rgba5551")
+                writeColorImageToROM(base, 25, door.item_image, 44, 44, True, TextureFormat.RGBA5551)
+                writeColorImageToROM(numberToImage(door.count, (44, 44)).transpose(Image.FLIP_TOP_BOTTOM), 25, door.number_image, 44, 44, True, TextureFormat.RGBA5551)
 
 
 def applyHolidayMode(spoiler: Spoiler):

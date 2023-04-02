@@ -12,6 +12,8 @@
  */
 #include "../../include/common.h"
 
+static char music_storage[MUSIC_SIZE];
+
 typedef struct musicInfo {
 	/* 0x000 */ short data[0xB0];
 } musicInfo;
@@ -70,7 +72,7 @@ void initHack(int source) {
 			*(int*)(0x8060E04C) = 0; // Prevent moves overwrite
 			*(short*)(0x8060DDAA) = 0; // Writes readfile data to moves
 			*(short*)(0x806C9CDE) = 7; // GiveEverything, write to bitfield. Seems to be unused but might as well
-			
+			*(int*)(0x8076BF38) = (int)&music_storage[0]; // Increase music storage
 			DamageMultiplier = Rando.damage_multiplier;
 			WarpToIslesEnabled = Rando.warp_to_isles_enabled;
 			permaLossMode = Rando.perma_lose_kongs;
@@ -282,7 +284,7 @@ void initHack(int source) {
 			// Fix spider crashes
 			int fixed_anim = 0x2F5;
 			*(short*)(0x8075F46C) = fixed_anim;
-			*(short*)(0x806ADA26) = fixed_anim;
+			*(short*)(0x806ADA26) = fixed_anim; // This might fix spawning if set on non-init
 			*(short*)(0x806ADA2A) = fixed_anim;
 			*(short*)(0x806ADA32) = fixed_anim;
 			*(short*)(0x806ADBC6) = fixed_anim;

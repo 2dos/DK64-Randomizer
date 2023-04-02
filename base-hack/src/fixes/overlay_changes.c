@@ -272,9 +272,15 @@ void overlay_changes(void) {
 		*(int*)(0x80030604) = 0x0C000000 | (((int)&file_progress_screen_code & 0xFFFFFF) >> 2); // New file progress code
 		*(int*)(0x80029FE0) = 0x0C000000 | (((int)&wipeFileMod & 0xFFFFFF) >> 2); // Wipe File Hook
 		*(int*)(0x80028C88) = 0x0C000000 | (((int)&enterFileProgress & 0xFFFFFF) >> 2); // Enter File Progress Screen Hook
-		*(int*)(0x80029874) = 0; // Hide GB
 		*(int*)(0x80029818) = 0; // Hide A
 		*(int*)(0x80029840) = 0; // Hide B
+		// *(int*)(0x80029874) = 0; // Hide GB
+		*(short*)(0x8002986E) = 0xD0; // Move GB to right
+		*(short*)(0x80029872) = 0x9A; // Move GB down
+		*(short*)(0x8002985A) = 0; // Change sprite mode for GB
+		*(float*)(0x80033CA8) = 0.4f; // Change GB Scale
+
+		
 		// File Select
 		*(int*)(0x80028CB0) = 0xA0600000; // SB $r0, 0x0 (v0) - Always view file index 0
 		*(int*)(0x80028CC4) = 0; // Prevent file index overwrite

@@ -460,6 +460,7 @@ void spawnItemOverlay(int type, int kong, int index, int force) {
     TextOverlayData.type = type;
     TextOverlayData.flag = index;
     TextOverlayData.kong = kong;
+	TextOverlayData.string = (char*)0;
 }
 
 int giveSlamLevel(void) {
@@ -526,4 +527,17 @@ int inBossMap(maps map, int include_regular, int include_krool, int include_shoe
 		return map == MAP_KROOLSHOE;
 	}
 	return 0;
+}
+
+int isGamemode(int target_mode, int force_both) {
+	if (force_both) {
+		if ((Gamemode == target_mode) && (Mode == target_mode)) {
+			return 1;
+		}
+		return 0;
+	}
+	if (Gamemode == target_mode) {
+		return 1;
+	}
+	return Mode == target_mode;
 }
