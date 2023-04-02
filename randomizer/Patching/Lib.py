@@ -466,6 +466,7 @@ def getObjectAddress(map: int, id: int, object_type: str) -> int:
                 return item_start
     return None
 
+
 class TextureFormat(IntEnum):
     """Texture Format Enum."""
 
@@ -476,6 +477,7 @@ class TextureFormat(IntEnum):
     I4 = auto()
     IA8 = auto()
     IA4 = auto()
+
 
 class TableNames(IntEnum):
     """Pointer Table Enum."""

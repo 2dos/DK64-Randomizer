@@ -199,6 +199,7 @@ banned_enemy_maps = {
     Enemies.Guard: [Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin],
 }
 
+
 def isBanned(new_enemy_id: Enemies, cont_map_id: Maps, spawner: Spawner, no_ground_simple_selected: bool) -> bool:
     """Define if enemy is banned in current circumstances."""
     if new_enemy_id in banned_enemy_maps:
@@ -216,6 +217,7 @@ def isBanned(new_enemy_id: Enemies, cont_map_id: Maps, spawner: Spawner, no_grou
     if cont_map_id == Maps.ForestGiantMushroom and spawner.index in (3, 4):
         return True
     return False
+
 
 def resetPkmnSnap():
     """Reset Pokemon Snap Listing."""

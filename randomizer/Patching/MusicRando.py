@@ -13,6 +13,7 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 
+
 def insertUploaded(uploaded_songs: list, target_type: SongType):
     """Insert uploaded songs into ROM."""
     added_songs = uploaded_songs
@@ -24,6 +25,7 @@ def insertUploaded(uploaded_songs: list, target_type: SongType):
         ROM().seek(entry_data["pointing_to"])
         zipped_data = gzip.compress(bytes(added_songs[index]), compresslevel=9)
         ROM().writeBytes(zipped_data)
+
 
 def randomize_music(spoiler: Spoiler):
     """Randomize music passed from the misc music settings.
@@ -132,6 +134,7 @@ def randomize_music(spoiler: Spoiler):
             duped_song_list = event_list.copy()
             random.shuffle(duped_song_list)
             shuffle_music(spoiler, event_list.copy(), duped_song_list)
+
 
 def shuffle_music(spoiler: Spoiler, pool_to_shuffle, shuffled_list):
     """Shuffle the music pool based on the OG list and the shuffled list.
