@@ -145,7 +145,7 @@
 | Forest Mill Back | Fungi Forest - Forest Mill Back: Inside the water mill - near Chunky's coins (Chunky's punch door) | l.shockwave | 
 | Fungi Forest | Fungi Forest: Next to Diddy Pad | l.shockwave | 
 | Forest Thornvine Barn | Fungi Forest - Forest Thornvine Barn: Next to ladder | l.shockwave | 
-| Forest Giant Mushroom | Fungi Forest - Forest Giant Mushroom: Next to a cannon | l.twirl or l.donkey and l.shockwave | 
+| Forest Giant Mushroom | Fungi Forest - Forest Giant Mushroom: Next to a cannon | ((l.istiny and l.twirl) or l.isdonkey) and l.shockwave | 
 | Forest Giant Mushroom | Fungi Forest - Forest Giant Mushroom: Next to the cannon below the night door | l.vines and l.shockwave | 
 | Fungi Forest | Fungi Forest: Next to Crusher Output | l.shockwave | 
 | Fungi Forest | Fungi Forest: On the Tomato Field | l.shockwave | 
