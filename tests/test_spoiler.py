@@ -40,7 +40,7 @@ def generate_lo_rando_race_settings():
     # You may have to add new options as you add them or as they get added
 
     data = {}
-    data["seed"] = random.randint(0, 1000000)  # Can be fixed if you want to test a specific seed repeatedly
+    data["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
     data["settings_string"] = "Vy6IURioqPw+QRGkV6mTCIW6nrGmoBFCkNQX8EoAycRkF1ls0FAXUAgwE7AIHA3cBhAI8AQJBXkChQM9AYLB3sDhgQow0ofJYpnqUtoolsvaTSocWKiLAImIoAr9sjsctd+kcDwKZKorsbokmtoSQZgQRzQgYM5kBxbLQCFxvLBZFgpLgaFAtFYqMJNGJHNJGOSAEgeAFUAfQBWAA    "
 
     # Randomizers

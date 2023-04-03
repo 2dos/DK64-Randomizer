@@ -210,10 +210,7 @@ def serialize_settings():
         else:
             return valueString
 
-    form_debug = []
     for obj in form:
-        new_entry = obj.name + ": " + obj.value
-        form_debug.append(new_entry)
         # Verify each object if its value is a string convert it to a bool
         if obj.value.lower() in ["true", "false"]:
             form_data[obj.name] = bool(obj.value)
@@ -239,13 +236,6 @@ def serialize_settings():
                 if element.options.item(i).selected:
                     values.append(get_enum_or_string_value(element.options.item(i).value, element.getAttribute("name")))
             form_data[element.getAttribute("name")] = values
-    move_rando_element = js.document.getElementsByName("move_rando")[0]
-    print("FORM: move_rando value is ", move_rando_element.value)
-    print("FORMDATA", form_debug, "ENDFORMDATA")
-    if form_data.get("move_rando"):
-        print("Form data has move_rando")
-    else: 
-        print("Form data does NOT have rando")
     return form_data
 
 
