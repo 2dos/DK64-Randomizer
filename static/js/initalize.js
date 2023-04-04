@@ -74,6 +74,7 @@ function getFile(file) {
   }).responseText;
 }
 var cosmetics;
+var cosmetic_names;
 document
   .getElementById("music_file")
   .addEventListener("change", function (evt) {
@@ -81,35 +82,67 @@ document
     var fileReader = new FileReader();
     fileReader.onload = function (fileLoadedEvent) {
       var new_zip = new JSZip();
-      new_zip.loadAsync(fileLoadedEvent.target.result).then(function () {
-        bgm = [];
-        fanfares = [];
-        events = [];
-        for (var file in new_zip.files) {
-          if (file.includes("bgm/") && file.slice(-4) == ".bin") {
-            new_zip
-              .file(file)
-              .async("Uint8Array")
-              .then(function (content) {
-                bgm.push(content);
-              });
-          } else if (file.includes("fanfares/") && file.slice(-4) == ".bin") {
-            new_zip
-              .file(file)
-              .async("Uint8Array")
-              .then(function (content) {
-                fanfares.push(content);
-              });
-          } else if (file.includes("events/") && file.slice(-4) == ".bin") {
-            new_zip
-              .file(file)
-              .async("Uint8Array")
-              .then(function (content) {
-                events.push(content);
-              });
+      new_zip.loadAsync(fileLoadedEvent.target.result).then(async function () {
+        let bgm_promises = [];
+        let fanfare_promises = [];
+        let event_promises = [];
+
+        for (var filename of Object.keys(new_zip.files)) {
+          if (filename.includes("bgm/") && filename.slice(-4) == ".bin") {
+            bgm_promises.push(new Promise((resolve, reject) => {
+              var current_filename = filename;
+              new_zip
+                .file(current_filename)
+                .async("Uint8Array")
+                .then(function (content) {
+                  resolve({
+                    name: current_filename.slice(0, -4),
+                    file: content
+                  })
+                });
+            }));
+          } else if (filename.includes("fanfares/") && filename.slice(-4) == ".bin") {
+            fanfare_promises.push(new Promise((resolve, reject) => {
+              var current_filename = filename;
+              new_zip
+                .file(current_filename)
+                .async("Uint8Array")
+                .then(function (content) {
+                  resolve({
+                    name: current_filename.slice(0, -4),
+                    file: content
+                  })
+                });
+            }));
+          } else if (filename.includes("events/") && filename.slice(-4) == ".bin") {
+            event_promises.push(new Promise((resolve, reject) => {
+              var current_filename = filename;
+              new_zip
+                .file(current_filename)
+                .async("Uint8Array")
+                .then(function (content) {
+                  resolve({
+                    name: current_filename.slice(0, -4),
+                    file: content
+                  })
+                });
+            }));
           }
         }
+
+        let bgm_files = await Promise.all(bgm_promises);
+        let fanfare_files = await Promise.all(fanfare_promises);
+        let event_files = await Promise.all(event_promises);
+
+        let bgm = bgm_files.map(x => x.file);
+        let bgm_names = bgm_files.map(x => x.name);
+        let fanfares = fanfare_files.map(x => x.file);
+        let fanfare_names = fanfare_files.map(x => x.name);
+        let events = event_files.map(x => x.file);
+        let event_names = event_files.map(x => x.name);
+
         cosmetics = { bgm: bgm, fanfares: fanfares, events: events };
+        cosmetic_names = {bgm: bgm_names, fanfares: fanfare_names, events: event_names };
       });
     };
 

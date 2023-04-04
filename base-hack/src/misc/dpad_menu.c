@@ -30,30 +30,27 @@ int canUseDPad(void) {
     if (player_count > 1) {
         return 0; // In Multiplayer
     }
-    if ((CurrentMap == 0x22) && (CutsceneActive) && (CutsceneIndex == 29)) {
+    if ((CurrentMap == MAP_ISLES) && (CutsceneActive) && (CutsceneIndex == 29)) {
         return 0; // In "K. Rool gets launched" Cutscene
     }
-    if ((CurrentMap >= 0xCB) && (CurrentMap <= 0xCF)) {
-        return 0; // In 5 main K. Rool Phase Maps
-    }
-    if (CurrentMap == 0xD6) {
-        return 0; // In Shoe
+    if (inBossMap(CurrentMap, 0, 1, 1)) {
+        return 0; // In 5 main K. Rool Phase Maps or Shoe
     }
     if (TBVoidByte & 2) {
         return 0; // Pausing/Paused
     }
-    if ((CurrentMap == 1) || (CurrentMap == 5) || (CurrentMap == 0x19)) {
+    if ((CurrentMap == MAP_FUNKY) || (CurrentMap == MAP_CRANKY) || (CurrentMap == MAP_CANDY)) {
         return 0; // In Shop
     }
     if (
-        (CurrentMap == 0x06) || // Japes Minecart
-        (CurrentMap == 0x37) || // Fungi Minecart
-        (CurrentMap == 0x6A) || // Castle Minecart
-        (CurrentMap == 0x0E) || // Aztec Beetle
-        (CurrentMap == 0x52) || // Caves Beetle
-        (CurrentMap == 0x1B) || // Factory Car Race
-        (CurrentMap == 0xB9) || // Castle Car Race
-        (CurrentMap == 0x27) // Seal Race
+        (CurrentMap == MAP_JAPESMINECART) || // Japes Minecart
+        (CurrentMap == MAP_FUNGIMINECART) || // Fungi Minecart
+        (CurrentMap == MAP_CASTLEMINECART) || // Castle Minecart
+        (CurrentMap == MAP_AZTECBEETLE) || // Aztec Beetle
+        (CurrentMap == MAP_CAVESBEETLERACE) || // Caves Beetle
+        (CurrentMap == MAP_FACTORYCARRACE) || // Factory Car Race
+        (CurrentMap == MAP_CASTLECARRACE) || // Castle Car Race
+        (CurrentMap == MAP_GALLEONSEALRACE) // Seal Race
     ) {
         return 0; // In Race
     }
@@ -125,7 +122,7 @@ void handleDPadFunctionality(void) {
             if (NewlyPressedControllerInput.Buttons.d_up) {
                 displayItemOnHUD(0xC,0,0);
                 int world = getWorld(CurrentMap,0);
-                if ((world < 7) && (CurrentMap != 0x2A)) {
+                if ((world < 7) && (CurrentMap != MAP_TROFFNSCOFF)) {
                     displayItemOnHUD(0xA,0,0);
                 }
             }

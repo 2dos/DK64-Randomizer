@@ -7,16 +7,14 @@ static const int krool_write_locations[] = {
 	0x8002FAF2, // Tiny > Chunky
 };
 
-#define ISLES_OVERWORLD 0x22
-
 void determine_krool_order(void) {
 	int containing = 0;
 	int destination = 0;
 	int current_phase = 0;
 	if (ObjectModel2Timer < 5) {
-		if (CurrentMap >= 0xCB) {
-			if (CurrentMap <= 0xCF) {
-				current_phase = CurrentMap - 0xCB;
+		if (CurrentMap >= MAP_KROOLDK) {
+			if (CurrentMap <= MAP_KROOLCHUNKY) {
+				current_phase = CurrentMap - MAP_KROOLDK;
 				if (Character != current_phase) {
 					tagKong(current_phase + 2);
 				}
@@ -24,7 +22,7 @@ void determine_krool_order(void) {
 					containing = Rando.k_rool_order[i];
 					destination = Rando.k_rool_order[i + 1];
 					if ((containing > -1) && (destination > -1) && (containing < 4)) {
-						*(short*)(*(int*)((int)&krool_write_locations[containing])) = 0xCB + destination;
+						*(short*)(*(int*)((int)&krool_write_locations[containing])) = MAP_KROOLDK + destination;
 					}
 				}
 			}
@@ -35,8 +33,8 @@ void determine_krool_order(void) {
 void disable_krool_health_refills(void) {
 	if (ObjectModel2Timer < 5) {
 		if (Rando.no_health_refill) {
-			if (CurrentMap >= 0xCB) {
-				if (CurrentMap <= 0xCF) {
+			if (CurrentMap >= MAP_KROOLDK) {
+				if (CurrentMap <= MAP_KROOLCHUNKY) {
 					*(int*)(0x800289B0) = 0; // Between Phases
 				}
 			}
@@ -71,14 +69,59 @@ void initKRool(int phase) {
 	if (phase == 4) {
 		if (!is_last) {
 			modifyCutsceneItem(0, 7, 8, 12, 0); // Set to Kremlings Running Out Cutscene
-			modifyCutsceneItem(0, 8, 0x29, 0xCB + next_phase, microbuffer_cutscenes[next_phase]); // Set to Kremlings Running Out Cutscene
+			modifyCutsceneItem(0, 8, 0x29, MAP_KROOLDK + next_phase, microbuffer_cutscenes[next_phase]); // Set to Kremlings Running Out Cutscene
 			modifyCutscenePoint(0, 22, 40, 7); // Overwrite playsong call with change of cutscene
 			modifyCutscenePoint(0, 12, 22, 8); // End of cutscene 12 should bring you to next phase
 		}
 	} else {
 		if (is_last) {
 			int phase_items[] = {134,102,111,174};
-			modifyCutsceneItem(0, phase_items[phase], 0x29, 0x22, 29);
+			modifyCutsceneItem(0, phase_items[phase], 0x29, MAP_ISLES, 29);
+		}
+	}
+}
+
+static unsigned char valid_lz_types[] = {9, 12, 13, 16};
+void handleKRoolSaveProgress(void) {
+	if (Rando.quality_of_life.save_krool_progress) {
+		// Save Progress
+		int krool_phase_diff = CurrentMap - MAP_KROOLDK;
+		if ((krool_phase_diff >= 0) && (krool_phase_diff < 5)) {
+			setFlag(FLAG_KROOL_ENTERED + krool_phase_diff, 1, FLAGTYPE_PERMANENT);
+		}
+		if (CurrentMap == MAP_ISLES) {
+			// Wipe Progress
+			if (
+				((CutsceneActive == 1) && (CutsceneIndex == 29) && ((CutsceneStateBitfield & 4) == 0)) ||
+				((CutsceneFadeActive) && (CutsceneFadeIndex == 29))	
+			) {
+				// K Rool flying cutscene
+				for (int i = 0; i < 5; i++) {
+					setFlag(FLAG_KROOL_ENTERED + i, 0, FLAGTYPE_PERMANENT);
+				}
+			}
+			// Load Progress
+			int latest_map = -1;
+			for (int i = 1; i < 5; i++) {
+				if (Rando.k_rool_order[i] != -1) {
+					if (checkFlag(FLAG_KROOL_ENTERED + Rando.k_rool_order[i], 0)) {
+						latest_map = MAP_KROOLDK + Rando.k_rool_order[i];
+					}
+				}
+			}
+			if (latest_map > -1) {
+				for (int i = 0; i < TriggerSize; i++) {
+					if ((TriggerArray[i].map >= MAP_KROOLDK) && (TriggerArray[i].map <= MAP_KROOLCHUNKY)) {
+						for (int j = 0; j < sizeof(valid_lz_types); j++) {
+							if (TriggerArray[i].type == valid_lz_types[j]) {
+								TriggerArray[i].map = latest_map;
+								return;
+							}
+						}
+					}
+				}
+			}
+			
 		}
 	}
 }

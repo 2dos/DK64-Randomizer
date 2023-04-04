@@ -131,7 +131,7 @@
 | Gloomy Galleon | Gloomy Galleon: On Rocketbarrel platform |  | 
 | Gloomy Galleon | Gloomy Galleon: Blueprint Alcove |  | 
 | Gloomy Galleon | Gloomy Galleon: Behind Snide's |  | 
-| Gloomy Galleon | Gloomy Galleon: On Gold Tower |  | 
+| Gloomy Galleon | Gloomy Galleon: On Gold Tower | (l.balloon and l.islanky and Events.WaterSwitch in l.Events) or l.CanMoonkick() | 
 | Galleon Sick Bay | Gloomy Galleon - Seasick Ship: Left of Cannon |  | 
 | Galleon Sick Bay | Gloomy Galleon - Seasick Ship: Right of Cannon |  | 
 | Galleon Sick Bay | Gloomy Galleon - Seasick Ship: Behind Spinning Barrels | (l.punch and l.ischunky) or l.phasewalk | 
@@ -279,7 +279,6 @@
 | Castle Mausoleum | Creepy Castle - Lanky Crypt: Lanky Tunnel |  | 
 | Castle Upper Cave | Creepy Castle - Tunnel: Near Pit |  | 
 | Castle Upper Cave | Creepy Castle - Tunnel: Near Candy's |  | 
-| Castle Library | Creepy Castle - Library: Enemy Gauntlet Room |  | 
 | Castle Library | Creepy Castle - Library: Flying Book Room | (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey and (l.strongKong or l.settings.damage_amount == DamageAmount.default)) or l.phasewalk | 
 | Castle Museum | Creepy Castle - Museum: Near Race |  | 
 | Castle Museum | Creepy Castle - Museum: Behind Pillar | (l.monkeyport and l.istiny) or l.phasewalk | 

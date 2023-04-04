@@ -101,7 +101,9 @@ typedef struct actorData {
 	/* 0x0EA */ char unk_EA[0x4];
 	/* 0x0EE */ short rot_y_copy;
 	/* 0x0F0 */ short reward_index;
-	/* 0x0F2 */ char unk_F2[0x124-0xF2];
+	/* 0x0F2 */ char unk_F2[0x11C-0xF2];
+	/* 0x11C */ void* parent;
+	/* 0x120 */ char unk_120[0x124-0x120];
 	/* 0x124 */ actor_subdata* data_pointer;
 	/* 0x128 */ short shadow_intensity;
 	/* 0x12A */ char unk_12A[0x132-0x12A];
@@ -1186,21 +1188,24 @@ typedef struct collected_item_struct {
 
 typedef struct quality_options {
 	unsigned char reduce_lag : 1;
-	unsigned char remove_cutscenes : 1;
+	unsigned char remove_cutscenes : 1; // 2
 	unsigned char fast_picture : 1;
-	unsigned char aztec_lobby_bonus : 1;
+	unsigned char aztec_lobby_bonus : 1; // 4
 	unsigned char dance_skip : 1;
-	unsigned char fast_boot : 1;
+	unsigned char fast_boot : 1; // 6
 	unsigned char fast_transform : 1;
-	unsigned char ammo_swap : 1;
+	unsigned char ammo_swap : 1; // 8
 	unsigned char cb_indicator : 1;
-	unsigned char galleon_star : 1;
+	unsigned char galleon_star : 1; // 10
 	unsigned char vanilla_fixes : 1;
-	unsigned char textbox_hold : 1;
+	unsigned char textbox_hold : 1; // 12
 	unsigned char caves_kosha_dead : 1;
-	unsigned char rambi_enguarde_pickup : 1;
+	unsigned char rambi_enguarde_pickup : 1; // 14
 	unsigned char hud_bp_multibunch : 1;
-	unsigned char homing_balloons : 1;
+	unsigned char homing_balloons : 1; // 16
+	unsigned char save_krool_progress : 1;
+	unsigned char cbs_visible : 1; // 18
+	unsigned char blueprint_compression : 1;
 } quality_options;
 
 typedef struct image_cache_struct {
@@ -1265,6 +1270,7 @@ typedef struct arbitrary_overlay {
 	/* 0x000 */ unsigned char type;
 	/* 0x001 */ unsigned char kong;
 	/* 0x002 */ short flag;
+	/* 0x004 */ char* string;
 } arbitrary_overlay;
 
 typedef struct rgb {

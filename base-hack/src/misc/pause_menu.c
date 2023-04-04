@@ -148,7 +148,7 @@ void checkItemDB(void) {
             if (item_db[k].type == i) {
                 int search_flag = item_db[k].flag;
                 int lvl = item_db[k].associated_level;
-                check_data[0][lvl][i] += checkFlag(search_flag, 0);
+                check_data[0][lvl][i] += checkFlag(search_flag, FLAGTYPE_PERMANENT);
             }
         }
         // Check Rainbow Flags
@@ -156,7 +156,7 @@ void checkItemDB(void) {
             for (int k = 0; k < 16; k++) {
                 int search_flag = FLAG_RAINBOWCOIN_0 + k;
                 int lvl = getPatchWorld(k);
-                check_data[0][lvl][i] += checkFlag(search_flag, 0);
+                check_data[0][lvl][i] += checkFlag(search_flag, FLAGTYPE_PERMANENT);
             }
         }
         // Get Denominator
@@ -358,7 +358,7 @@ int* pauseScreen3And4Header(int* dl) {
         mtx_counter = 0;
         for (int i = 0; i < 5; i++) {
             char* string = "???";
-            if (checkFlag(FLAG_WRINKLYVIEWED + (5 * hint_level) + i, 0)) {
+            if (checkFlag(FLAG_WRINKLYVIEWED + (5 * hint_level) + i, FLAGTYPE_PERMANENT)) {
                 string = (char*)hint_pointers[(5 * hint_level) + i];
             }
             dl = drawSplitString(dl, string, 640, 140 + (120 * i), 40);
@@ -586,15 +586,15 @@ void updateFileVariables(void) {
         file_items[i] = FileVariables[i];
     }
     file_items[CHECK_KONG] = 0;
-    file_items[CHECK_BEAN] = checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, 0);
+    file_items[CHECK_BEAN] = checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
     file_items[CHECK_PEARLS] = 0;
     file_items[CHECK_RAINBOW] = 0;
     for (int i = 0; i < 5; i++) {
-        file_items[CHECK_KONG] += checkFlagDuplicate(kong_flags[i], 0);
-        file_items[CHECK_PEARLS] += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 0);
+        file_items[CHECK_KONG] += checkFlagDuplicate(kong_flags[i], FLAGTYPE_PERMANENT);
+        file_items[CHECK_PEARLS] += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
     }
     for (int i = 0; i < 16; i++) {
-        file_items[CHECK_RAINBOW] += checkFlagDuplicate(FLAG_RAINBOWCOIN_0 + i, 0);
+        file_items[CHECK_RAINBOW] += checkFlagDuplicate(FLAG_RAINBOWCOIN_0 + i, FLAGTYPE_PERMANENT);
     }
 }
 

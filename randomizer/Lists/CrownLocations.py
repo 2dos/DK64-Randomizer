@@ -335,7 +335,16 @@ CrownLocations = {
         CrownLocation(map=Maps.GloomyGalleon, name="Gloomy Galleon: On Rocketbarrel platform", x=1336, y=1660, z=4071, scale=0.2, region=Regions.LighthousePlatform),
         CrownLocation(map=Maps.GloomyGalleon, name="Gloomy Galleon: Blueprint Alcove", x=680, y=1564, z=3940, scale=0.55, region=Regions.LighthouseSurface),
         CrownLocation(map=Maps.GloomyGalleon, name="Gloomy Galleon: Behind Snide's", x=2071, y=1610, z=4823, scale=0.3, region=Regions.LighthouseSnideAlcove),
-        CrownLocation(map=Maps.GloomyGalleon, name="Gloomy Galleon: On Gold Tower", x=1660, y=2040, z=487, scale=0.25, region=Regions.TreasureRoomDiddyGoldTower),
+        CrownLocation(
+            map=Maps.GloomyGalleon,
+            name="Gloomy Galleon: On Gold Tower",
+            x=1660,
+            y=2040,
+            z=487,
+            scale=0.25,
+            region=Regions.TreasureRoom,
+            logic=lambda l: (l.balloon and l.islanky and Events.WaterSwitch in l.Events) or l.CanMoonkick(),
+        ),
         CrownLocation(map=Maps.GalleonSickBay, name="Gloomy Galleon - Seasick Ship: Left of Cannon", x=718, y=20, z=129, scale=0.35, region=Regions.SickBay),
         CrownLocation(map=Maps.GalleonSickBay, name="Gloomy Galleon - Seasick Ship: Right of Cannon", x=544, y=20, z=129, scale=0.35, region=Regions.SickBay),
         # CrownLocation(
@@ -594,7 +603,7 @@ CrownLocations = {
         CrownLocation(map=Maps.CastleMausoleum, name="Creepy Castle - Lanky Crypt: Lanky Tunnel", x=1186, y=160, z=130, scale=0.4, region=Regions.Mausoleum),
         CrownLocation(map=Maps.CastleUpperCave, name="Creepy Castle - Tunnel: Near Pit", x=704, y=200, z=852, scale=0.4, region=Regions.UpperCave),
         CrownLocation(map=Maps.CastleUpperCave, name="Creepy Castle - Tunnel: Near Candy's", x=1104, y=300, z=2241, scale=0.4, region=Regions.UpperCave),
-        CrownLocation(map=Maps.CastleLibrary, name="Creepy Castle - Library: Enemy Gauntlet Room", x=289, y=190, z=530, scale=0.5, region=Regions.Library),
+        # CrownLocation(map=Maps.CastleLibrary, name="Creepy Castle - Library: Enemy Gauntlet Room", x=289, y=190, z=530, scale=0.5, region=Regions.Library), # Disabled - if you do the crown first the enemies don't spawn, locking you in
         CrownLocation(
             map=Maps.CastleLibrary,
             name="Creepy Castle - Library: Flying Book Room",

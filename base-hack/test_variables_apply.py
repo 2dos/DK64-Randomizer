@@ -110,6 +110,9 @@ with open("include/variable_space_structs.h", "r") as varspace:
                     "rambi_enguarde_pickup",
                     "hud_bp_multibunch",
                     "homing_balloons",
+                    "save_krool_progress",
+                    "cbs_visible",
+                    "blueprint_compression",
                 ]
                 bitfield_offset = 0xB0
             elif x == "moves_pregiven":

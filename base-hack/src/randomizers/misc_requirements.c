@@ -17,31 +17,32 @@ int* writeHUDAmount(char* str_location, char* format, int value, int item_index,
 	int found = 0;
 	int amt = -1;
 	if (item_index == 0xB) {
-		int curr = CurrentMap;
-		switch(curr) {
-			case 0xE:
+		switch(CurrentMap) {
+			case MAP_AZTECBEETLE:
 				amt = Rando.coinreq_aztecbeetle;
 				break;
-			case 0x6:
+			case MAP_JAPESMINECART:
 				amt = Rando.coinreq_japescart;
 				break;
-			case 0x37:
+			case MAP_FUNGIMINECART:
 				amt = Rando.coinreq_fungicart;
 				break;
-			case 0x52:
+			case MAP_CAVESBEETLERACE:
 				amt = Rando.coinreq_cavesbeetle;
 				break;
-			case 0x1B:
+			case MAP_FACTORYCARRACE:
 				amt = Rando.coinreq_factorycar;
 				break;
-			case 0xB9:
+			case MAP_CASTLECARRACE:
 				amt = Rando.coinreq_castlecar;
 				break;
-			case 0x27:
+			case MAP_GALLEONSEALRACE:
 				amt = Rando.coinreq_sealrace;
 				break;
-			case 0x6A:
+			case MAP_CASTLEMINECART:
 				amt = Rando.coinreq_castlecart;
+				break;
+			default:
 			break;
 		}
 		if (amt > -1) {
@@ -58,7 +59,13 @@ int* writeHUDAmount(char* str_location, char* format, int value, int item_index,
 	return dl;
 }
 
-static const unsigned char race_maps[] = {0xE,0x52,0x1B,0xB9,0x27};
+static const unsigned char race_maps[] = {
+	MAP_AZTECBEETLE,
+	MAP_CAVESBEETLERACE,
+	MAP_FACTORYCARRACE,
+	MAP_CASTLECARRACE,
+	MAP_GALLEONSEALRACE
+};
 
 void writeCoinRequirements(int source) {
 	if (source == 1) {

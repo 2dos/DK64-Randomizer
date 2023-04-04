@@ -53,6 +53,7 @@
 #define FileStateSize 0x340
 #define flagMenuScreenCount 11
 #define pointer_table_offset 0x101C50
+#define static_expansion_size 0x100
 
 #define ACTOR_VANILLA_LIMIT 345
 #define COLLISION_LIMIT 60
@@ -100,6 +101,7 @@
 #define FLAG_FAKEITEM 0x2AE // 0x2AE -> 0x2BD (inc.) (16 flags)
 #define FLAG_JUNKITEM 0x320 // 0x320 -> 0x383 (inc.) (100 flags)
 #define FLAG_WRINKLYVIEWED 0x384 // 0x384 -> 0x3A6 (inc.) (35 flags)
+#define FLAG_KROOL_ENTERED 0x3A7 // 0x3A7 = DK, 0x3A8 = Diddy, 0x3A9 = Lanky, 0x3AA = Tiny, 0x3AB = Chunky
 
 #define IMAGE_DPAD 187
 #define IMAGE_AMMO_START 188

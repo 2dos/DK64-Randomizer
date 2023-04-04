@@ -1,7 +1,7 @@
 """Write new Disco Chunky models."""
 import zlib
 import os
-from BuildLib import main_pointer_table_offset, ROMName
+from BuildLib import ROMName
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames
 

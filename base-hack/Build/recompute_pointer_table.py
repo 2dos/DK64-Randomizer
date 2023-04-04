@@ -4,7 +4,7 @@ import json
 from typing import BinaryIO
 
 from BuildNames import maps
-from BuildLib import main_pointer_table_offset
+from BuildLib import main_pointer_table_offset, heap_size
 from BuildEnums import TableNames
 from BuildClasses import TableEntry, pointer_tables, PointerFile, ROMPointerFile
 
@@ -12,7 +12,7 @@ from BuildClasses import TableEntry, pointer_tables, PointerFile, ROMPointerFile
 # used when appending files to the end of the ROM
 # next_available_free_space = 0x1FED020
 # next_available_free_space = 0x2000000
-next_available_free_space = 0x2030000  # TODO: Get this calculating automatically
+next_available_free_space = 0x2000000 + heap_size
 
 # These will be indexed by pointer table index then by SHA1 hash of the data
 pointer_table_files = []

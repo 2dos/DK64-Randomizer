@@ -20,20 +20,20 @@ void handleFootProgress(actorData* actor) {
         playAnimation(Player,0x4A);
         setNextTransitionType(1);
         ISGActive = 1;
-        initiateTransition(0xCE,0);
-        setFlag(FLAG_KROOL_TOE_1 + progress,1,2);
+        initiateTransition(MAP_KROOLTINY,0);
+        setFlag(FLAG_KROOL_TOE_1 + progress,1, FLAGTYPE_TEMPORARY);
         actor->control_state_progress += 1;
     } else {
         // Stay
-        setFlag(FLAG_KROOL_TOE_1 + progress,1,2);
-        if (checkFlag(FLAG_KROOL_TOE_1,2)) {
+        setFlag(FLAG_KROOL_TOE_1 + progress,1, FLAGTYPE_TEMPORARY);
+        if (checkFlag(FLAG_KROOL_TOE_1, FLAGTYPE_TEMPORARY)) {
             setToeTexture(actor,4);
             actor->sub_state = 2;
             toes->toe[0]->sub_state = 1;
             data->progress = 1;
         }
         for (int i = 0; i < 2; i++) {
-            if (checkFlag(FLAG_KROOL_TOE_2 + i,2)) {
+            if (checkFlag(FLAG_KROOL_TOE_2 + i, FLAGTYPE_TEMPORARY)) {
                 setToeTexture(toes->toe[i],4);
                 toes->toe[i]->sub_state = 2;
                 toes->toe[i + 1]->sub_state = 1;

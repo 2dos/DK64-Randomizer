@@ -194,43 +194,6 @@ class Spoiler:
             settings["Game Mode"] = "Helm Hurry"
         humanspoiler["Settings"] = settings
         humanspoiler["Cosmetics"] = {}
-        if self.settings.colors != {} or self.settings.klaptrap_model_index:
-            humanspoiler["Cosmetics"]["Colors and Models"] = {}
-            for color_item in self.settings.colors:
-                if color_item == "dk":
-                    humanspoiler["Cosmetics"]["Colors and Models"]["DK Color"] = self.settings.colors[color_item]
-                else:
-                    humanspoiler["Cosmetics"]["Colors and Models"][f"{color_item.capitalize()} Color"] = self.settings.colors[color_item]
-            klap_models = {
-                0x19: "Beaver",
-                0x1E: "Klobber",
-                0x20: "Kaboom",
-                0x21: "Green Klaptrap",
-                0x22: "Purple Klaptrap",
-                0x23: "Red Klaptrap",
-                0x24: "Klaptrap Teeth",
-                0x26: "Krash",
-                0x27: "Troff",
-                0x30: "N64 Logo",
-                0x34: "Mech Fish",
-                0x42: "Krossbones",
-                0x47: "Rabbit",
-                0x4B: "Minecart Skeleton Head",
-                0x51: "Tomato",
-                0x62: "Ice Tomato",
-                0x69: "Golden Banana",
-                0x70: "Microbuffer",
-                0x72: "Bell",
-                0x96: "Missile (Car Race)",
-                0xB0: "Red Buoy",
-                0xB1: "Green Buoy",
-                0xBD: "Rareware Logo",
-            }
-            if self.settings.klaptrap_model_index in klap_models:
-                humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = klap_models[self.settings.klaptrap_model_index]
-            else:
-                humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
-
         humanspoiler["Requirements"] = {}
         if self.settings.random_starting_region:
             humanspoiler["Game Start"] = {}
@@ -517,12 +480,6 @@ class Spoiler:
             if len(shuffled_barrels) > 0:
                 humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
 
-        if self.settings.music_bgm == MusicCosmetics.randomized:
-            humanspoiler["Cosmetics"]["Background Music"] = self.music_bgm_data
-        if self.settings.music_fanfares == MusicCosmetics.randomized:
-            humanspoiler["Cosmetics"]["Fanfares"] = self.music_fanfare_data
-        if self.settings.music_events == MusicCosmetics.randomized:
-            humanspoiler["Cosmetics"]["Event Themes"] = self.music_event_data
         if self.settings.kasplat_rando:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
         if self.settings.random_fairies:
@@ -646,6 +603,53 @@ class Spoiler:
                         map_name = map_name.replace(combo, combo.replace(" ", ""))
                 humanspoiler["Coin Locations"][f"{lvl_name.split(' ')[idx]} {NameFromKong(group['kong'])}"].append(f"{map_name.strip()}: {group['name']}")
 
+        self.json = json.dumps(humanspoiler, indent=4)
+
+    def updateJSONCosmetics(self):
+        """Update spoiler JSON with cosmetic settings."""
+        humanspoiler = json.loads(self.json)
+        if self.settings.colors != {} or self.settings.klaptrap_model_index:
+            humanspoiler["Cosmetics"]["Colors and Models"] = {}
+            for color_item in self.settings.colors:
+                if color_item == "dk":
+                    humanspoiler["Cosmetics"]["Colors and Models"]["DK Color"] = self.settings.colors[color_item]
+                else:
+                    humanspoiler["Cosmetics"]["Colors and Models"][f"{color_item.capitalize()} Color"] = self.settings.colors[color_item]
+            klap_models = {
+                0x19: "Beaver",
+                0x1E: "Klobber",
+                0x20: "Kaboom",
+                0x21: "Green Klaptrap",
+                0x22: "Purple Klaptrap",
+                0x23: "Red Klaptrap",
+                0x24: "Klaptrap Teeth",
+                0x26: "Krash",
+                0x27: "Troff",
+                0x30: "N64 Logo",
+                0x34: "Mech Fish",
+                0x42: "Krossbones",
+                0x47: "Rabbit",
+                0x4B: "Minecart Skeleton Head",
+                0x51: "Tomato",
+                0x62: "Ice Tomato",
+                0x69: "Golden Banana",
+                0x70: "Microbuffer",
+                0x72: "Bell",
+                0x96: "Missile (Car Race)",
+                0xB0: "Red Buoy",
+                0xB1: "Green Buoy",
+                0xBD: "Rareware Logo",
+            }
+            if self.settings.klaptrap_model_index in klap_models:
+                humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = klap_models[self.settings.klaptrap_model_index]
+            else:
+                humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
+        if self.settings.music_bgm in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
+            humanspoiler["Cosmetics"]["Background Music"] = self.music_bgm_data
+        if self.settings.music_fanfares in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
+            humanspoiler["Cosmetics"]["Fanfares"] = self.music_fanfare_data
+        if self.settings.music_events in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
+            humanspoiler["Cosmetics"]["Event Themes"] = self.music_event_data
         self.json = json.dumps(humanspoiler, indent=4)
 
     def UpdateKasplats(self, kasplat_map):

@@ -11,48 +11,6 @@
  */
 #include "../../include/common.h"
 
-#define GLOOMY_GALLEON 0x1E
-#define ANGRY_AZTEC 0x26
-#define FUNGI_FOREST 0x30
-#define CASTLE_BALLROOM 0x58
-#define CASTLE_MUSEUM 0x71
-#define JUNGLE_JAPES 0x7
-#define FRANTIC_FACTORY 0x1A
-#define CRYSTAL_CAVES 0x48
-#define CREEPY_CASTLE 0x57
-#define DK_ISLES 0x22
-#define LLAMA_TEMPLE 0x14
-#define JAPES_MOUNTAIN 0x4
-#define MILL_FRONT 0x3D
-#define MILL_REAR 0x3E
-#define FUNGI_GMUSH 0x40
-#define TRAINING_GROUNDS 0xB0
-#define TINY_TEMPLE 0x10
-#define CAVES_CHUNKY_5DC 0x5A
-#define HELM_LOBBY 0xAA
-#define GALLEON_FISH 0x33
-#define TREASURE_CHEST 0x2C
-#define CAVES_DK5DI 0x56
-#define HIDEOUT_HELM 0x11
-#define CRYPT_LT 0x6C
-#define CRYPT_DDC 0x70
-#define CASTLE_DUNGEON 0xA3
-#define CASTLE_TREE 0xA4
-#define CAVES_ROTATING 0x59
-#define FUNGI_ANTHILL 0x34
-#define TROFF_N_SCOFF 0x2A
-
-#define CROWN_0 0x35
-#define CROWN_1 0x49
-#define CROWN_2 0x9B
-#define CROWN_3 0x9C
-#define CROWN_4 0x9F
-#define CROWN_5 0xA0
-#define CROWN_6 0xA1
-#define CROWN_7 0x9D
-#define CROWN_8 0xA2
-#define CROWN_9 0x9E
-
 #define FUNGI_MINECART_GRATE 0x22
 #define SEASICK_SHIP 0x27
 #define AZTEC_BEETLE_GRATE 0x1E
@@ -307,7 +265,7 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 	warp_info_data* selected_warp = getObjectArrayAddr(warploc,0xA,current_index);
 	warp_info_data* tied_warp = getObjectArrayAddr(warploc,0xA,tied_index);
 	int float_index = -1;
-	if (CurrentMap == 0x1E) {
+	if (CurrentMap == MAP_GALLEON) {
 		int float_id = -1;
 		if (selected_warp->id == 0x6C) {
 			float_id = 100;
@@ -326,31 +284,31 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 	if (behaviour->current_state == 0) {
 		if ((selected_warp->appear_flag > -1) && (Rando.activate_all_bananaports != 1)) {
 			// Has an appear flag
-			if (checkFlag(selected_warp->appear_flag,0)) {
+			if (checkFlag(selected_warp->appear_flag, FLAGTYPE_PERMANENT)) {
 				setPermFlag(selected_warp->active_flag);
 			}
-			if (checkFlag(selected_warp->appear_flag,0)) {
-				if (!checkFlag(selected_warp->active_flag,0)) {
+			if (checkFlag(selected_warp->appear_flag, FLAGTYPE_PERMANENT)) {
+				if (!checkFlag(selected_warp->active_flag, FLAGTYPE_PERMANENT)) {
 					behaviour->unk_60 = 1;
 					behaviour->unk_62 = 70;
 					behaviour->unk_66 = 255;
 				}
 			}
-			if (checkFlag(selected_warp->active_flag,0) == 0) {
+			if (checkFlag(selected_warp->active_flag, FLAGTYPE_PERMANENT) == 0) {
 				behaviour->unk_71 = 0;
 				behaviour->unk_60 = 1;
 				behaviour->unk_62 = 0;
 				behaviour->unk_66 = 255;
 				behaviour->next_state = 50;
 			}
-			if (checkFlag(selected_warp->active_flag,0) || checkFlag(selected_warp->appear_flag,0)) {
+			if (checkFlag(selected_warp->active_flag, FLAGTYPE_PERMANENT) || checkFlag(selected_warp->appear_flag, FLAGTYPE_PERMANENT)) {
 				setScriptRunState(behaviour,3,300);
 				behaviour->next_state = 1;
 			}
 
 		} else {
 			// Always shown
-			if (checkFlag(selected_warp->active_flag,0) == 0) {
+			if (checkFlag(selected_warp->active_flag, FLAGTYPE_PERMANENT) == 0) {
 				behaviour->unk_60 = 1;
 				behaviour->unk_62 = 70;
 				behaviour->unk_66 = 255;
@@ -367,7 +325,7 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 			if (Player->touching_object == 1) {
 				if (Player->standing_on_index == index) {
 					if (Player->standing_on_subposition == 2) {
-						if (checkFlag(selected_warp->active_flag,0) == 0) {
+						if (checkFlag(selected_warp->active_flag, FLAGTYPE_PERMANENT) == 0) {
 							// Play Warp Tagging Effect
 							if (Character < 5) {
 								// Sparkles
@@ -378,7 +336,7 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 								setPermFlag(selected_warp->active_flag);
 								displayWarpSparkles(behaviour, index, 0, 0);
 								// Cutscene
-								if (checkFlag(FLAG_FTT_BANANAPORT,0) == 0) {
+								if (checkFlag(FLAG_FTT_BANANAPORT, FLAGTYPE_PERMANENT) == 0) {
 									*(char*)(0x807F693F) = 1;
 									PlayCutsceneFromModelTwoScript(behaviour,16,1,0);
 									if (float_index == -1) {
@@ -389,7 +347,7 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 								}
 							}
 						} else {
-							if (checkFlag(tied_warp->active_flag,0)) {
+							if (checkFlag(tied_warp->active_flag, FLAGTYPE_PERMANENT)) {
 								// Execute Warp
 								if (Character < 5) {
 									if (selected_warp->warp_map == tied_warp->warp_map) {
@@ -430,7 +388,7 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 		behaviour->next_state = 0;
 	} else if (behaviour->current_state == 50) {
 		if ((selected_warp->appear_flag > -1) && (Rando.activate_all_bananaports != 1)) {
-			if (checkFlag(selected_warp->appear_flag,0)) {
+			if (checkFlag(selected_warp->appear_flag, FLAGTYPE_PERMANENT)) {
 				behaviour->timer = 30;
 				behaviour->next_state = 51;
 			}
@@ -487,7 +445,7 @@ void shopGenericCode(behaviour_data* behaviour, int index, int id, vendors shop)
 	int appear_subparam = 2;
 	int appear_volume = 127;
 	int floating_id = -1;
-	if (CurrentMap == 0x1E) {
+	if (CurrentMap == MAP_GALLEON) {
 		if (id == 94) {
 			floating_id = 54;
 		} else if (id == 500) {
@@ -725,14 +683,14 @@ void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
 		unkObjFunction1(index, 1, 160);
 		unkObjFunction0(index, 3, 0);
 		unkObjFunction1(index, 3, 115);
-		if (checkFlag(tnsportal_flags[world],0)) {
+		if (checkFlag(tnsportal_flags[world], FLAGTYPE_PERMANENT)) {
 			hideObject(behaviour);
 			behaviour->next_state = 20;
 		} else {
 			behaviour->timer = 45;
 			behaviour->next_state = 1;
 		}
-		if (!checkFlag(normal_key_flags[world],0)) {
+		if (!checkFlag(normal_key_flags[world], FLAGTYPE_PERMANENT)) {
 			unkObjFunction2(index, 1, -1);
 			unkObjFunction2(index, 3, -1);
 		}
@@ -756,7 +714,7 @@ void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
 			behaviour->next_state = 3;
 		}
 	} else if (behaviour->current_state == 3) {
-		if (checkFlag(tnsportal_flags[world],0)) {
+		if (checkFlag(tnsportal_flags[world], FLAGTYPE_PERMANENT)) {
 			hideObject(behaviour);
 			behaviour->next_state = 20;
 		}
@@ -772,7 +730,7 @@ void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
 	} else if (behaviour->current_state == 4) {
 		if (behaviour->timer == 0) {
 			enterPortal(Player);
-			initiateTransition_0(0x2A, 0, 0, 3); // Param 3 is tied exit
+			initiateTransition_0(MAP_TROFFNSCOFF, 0, 0, 3); // Param 3 is tied exit
 			behaviour->next_state = 5;
 		}
 	} else if (behaviour->current_state == 40) {
@@ -792,7 +750,7 @@ void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
 		}
 	} else if (behaviour->current_state == 100) {
 		if (behaviour->timer == 0) {
-			if (checkFlag(normal_key_flags[world],0)) {
+			if (checkFlag(normal_key_flags[world], FLAGTYPE_PERMANENT)) {
 				behaviour->timer = 60;
 				setPermFlag(tnsportal_flags[world]);
 				behaviour->next_state = 40;
@@ -816,12 +774,12 @@ void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id) {
 			unkObjFunction7(index, 1, 0);
 		}
 		int world = getWorld(CurrentMap, 0);
-		if ((checkFlag(tnsportal_flags[world],0)) || (!Rando.tns_indicator)) {
+		if ((checkFlag(tnsportal_flags[world], FLAGTYPE_PERMANENT)) || (!Rando.tns_indicator)) {
 			behaviour->next_state = 2;
 		} else {
 			behaviour->next_state = 1;
 		}
-		if (CurrentMap == 7) {
+		if (CurrentMap == MAP_JAPES) {
 			if (id == 0x220) {
 				int* m2location = (int*)ObjectModel2Pointer;
 				int slot = convertIDToIndex(0x220);
@@ -847,7 +805,7 @@ void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id) {
 			displayNumberOnObject(id,i,tex, 0, 0);
 			display_number /= 10;
 		}
-		if (checkFlag(tnsportal_flags[world],0)) {
+		if (checkFlag(tnsportal_flags[world], FLAGTYPE_PERMANENT)) {
 			behaviour->next_state = 2;
 		}
 	} else if (behaviour->current_state == 2) {
@@ -855,17 +813,17 @@ void TNSIndicatorGenericCode(behaviour_data* behaviour, int index, int id) {
 	}
 }
 
-static const int crown_maps[] = {
-	0x35, // Japes
-	0x49, // Aztec
-	0x9B, // Factory
-	0x9C, // Galleon
-	0x9F, // Fungi
-	0x9D, // Fungi Lobby
-	0x9E, // Snide's
-	0xA0, // Caves
-	0xA1, // Castle
-	0xA2, // Helm
+static const int crown_maps_flags[] = {
+	MAP_BATTLEARENA_BEAVERBRAWL, // Japes
+	MAP_BATTLEARENA_KRITTERKARNAGE, // Aztec
+	MAP_BATTLEARENA_ARENAAMBUSH, // Factory
+	MAP_BATTLEARENA_MOREKRITTERKARNAGE, // Galleon
+	MAP_BATTLEARENA_KAMIKAZEKREMLINGS, // Fungi
+	MAP_BATTLEARENA_FORESTFRACAS, // Fungi Lobby
+	MAP_BATTLEARENA_BISHBASHBRAWL, // Snide's
+	MAP_BATTLEARENA_PLINTHPANIC, // Caves
+	MAP_BATTLEARENA_PINNACLEPALAVER, // Castle
+	MAP_BATTLEARENA_SHOCKWAVESHOWDOWN, // Helm
 };
 
 void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown_level_index) {
@@ -891,7 +849,7 @@ void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown
 			crown_offset = 9;
 		}
 	}
-	if (checkFlag(FLAG_CROWN_JAPES + crown_offset,0)) {
+	if (checkFlag(FLAG_CROWN_JAPES + crown_offset, FLAGTYPE_PERMANENT)) {
 		behaviour->unk_71 = 0;
 		behaviour->unk_60 = 1;
 		behaviour->unk_62 = 0;
@@ -903,7 +861,7 @@ void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown
 			if ((Player->characterID >= 2) && (Player->characterID <= 6)) {
 				if (Player->touching_object == 1) {
 					if (index == Player->standing_on_index) {
-						if (!checkFlag(FLAG_FTT_CROWNPAD,0)) {
+						if (!checkFlag(FLAG_FTT_CROWNPAD, FLAGTYPE_PERMANENT)) {
 							setPermFlag(FLAG_FTT_CROWNPAD);
 							*(char*)(0x807F693F) = 1;
 							PlayCutsceneFromModelTwoScript(behaviour, 24, 1, 0);
@@ -911,7 +869,7 @@ void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown
 						}
 						if (Player->standing_on_subposition == 2) {
 							if (behaviour->current_state >= 0) {
-								createCollision(0, Player, COLLISION_BATTLE_CROWN, crown_maps[crown_offset], 2, collisionPos[0], collisionPos[1], collisionPos[2]);
+								createCollision(0, Player, COLLISION_BATTLE_CROWN, crown_maps_flags[crown_offset], 2, collisionPos[0], collisionPos[1], collisionPos[2]);
 							}
 						}
 					}
@@ -968,7 +926,7 @@ void setCrusher(void) {
 	/**
 	 * @brief Set the Crusher in the Fungi Mill to be the correct object state
 	 */
-	if (CurrentMap == MILL_FRONT) {
+	if (CurrentMap == MAP_FUNGIMILLFRONT) {
 		if ((ObjectModel2Timer < 10) && (ObjectModel2Timer > 5)) {
 			int crusher_index = convertIDToIndex(8);
 			int* m2location = (int*)ObjectModel2Pointer;
@@ -1063,7 +1021,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	 */
 	if (index >= 0) {
 		switch(CurrentMap) {
-			case GLOOMY_GALLEON:
+			case MAP_GALLEON:
 				{
 					int gate_index = -1;
 					int gate_flag = -1;
@@ -1072,7 +1030,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if (Rando.randomize_more_loading_zones) {
 								initiateTransition_0((Rando.seasick_ship_enter >> 8) & 0xFF, Rando.seasick_ship_enter & 0xFF, 0, 0);
 							} else {
-								initiateTransition_0(31, 0, 0, 0);
+								initiateTransition_0(MAP_GALLEONSEASICKSHIP, 0, 0, 0);
 							}
 							break;
 						case GALLEON_DKSTAR:
@@ -1136,7 +1094,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							}
 							if (index == 0) {
 								if (Rando.remove_high_requirements) {
-									if (checkFlag(gate_flag,0)) {
+									if (checkFlag(gate_flag, FLAGTYPE_PERMANENT)) {
 										behaviour_pointer->current_state = 10;
 										behaviour_pointer->next_state = 10;
 									}
@@ -1150,17 +1108,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case ANGRY_AZTEC:
+			case MAP_AZTEC:
 				if (param2 == AZTEC_BEETLE_GRATE) {
 					if (Rando.randomize_more_loading_zones) {
 						initiateTransition_0((Rando.aztec_beetle_enter >> 8) & 0xFF, Rando.aztec_beetle_enter & 0xFF, 0, 0);
 					} else {
-						initiateTransition_0(14, 0, 0, 0);
+						initiateTransition_0(MAP_AZTECBEETLE, 0, 0, 0);
 					}
 				} else if (param2 == AZTEC_SNOOPDOOR) {
 					if (index == 0) {
 						// Flag Check
-						if (checkFlag(SNOOPDOOR_OPEN,0)) {
+						if (checkFlag(SNOOPDOOR_OPEN, FLAGTYPE_PERMANENT)) {
 							behaviour_pointer->next_state = 40;
 							behaviour_pointer->current_state = 40;
 						}
@@ -1177,18 +1135,18 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return !Rando.tag_anywhere;
 				}
 				break;
-			case FUNGI_FOREST:
+			case MAP_FUNGI:
 				if (param2 == FUNGI_MINECART_GRATE) {
 					if (Rando.randomize_more_loading_zones) {
 						initiateTransition_0((Rando.fungi_minecart_enter >> 8) & 0xFF, Rando.fungi_minecart_enter & 0xFF, 0, 0);
 					} else {
-						initiateTransition_0(55, 0, 0, 0);
+						initiateTransition_0(MAP_FUNGIMINECART, 0, 0, 0);
 					}
 				} else if (param2 == FUNGI_BEANCONTROLLER) {
-					return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, 0);
+					return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
 				}
 				break;
-			case CASTLE_BALLROOM:
+			case MAP_CASTLEBALLROOM:
 				if (param2 == BALLROOM_MONKEYPORT) {
 					if (Rando.randomize_more_loading_zones) {
 						createCollisionObjInstance(COLLISION_MAPWARP,(Rando.ballroom_to_museum >> 8 & 0xFF), Rando.ballroom_to_museum & 0xFF);
@@ -1197,7 +1155,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case CASTLE_MUSEUM:
+			case MAP_CASTLEMUSEUM:
 				if (param2 == MUSEUM_WARP_MONKEYPORT) {
 					if (Rando.randomize_more_loading_zones) {
 						createCollisionObjInstance(COLLISION_MAPWARP,(Rando.museum_to_ballroom >> 8 & 0xFF), Rando.museum_to_ballroom & 0xFF);
@@ -1206,7 +1164,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case DK_ISLES:
+			case MAP_ISLES:
 				if (param2 == ISLES_JAPESBOULDER) {
 					if (Rando.lobbies_open_bitfield & 1) {
 						hideObject(behaviour_pointer);
@@ -1227,7 +1185,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						hideObject(behaviour_pointer);
 					}
 				} else if (param2 == ISLES_FACTORYDOORCOLLISION) {
-					if ((Rando.lobbies_open_bitfield & 4) || (checkFlag(FLAG_KEYIN_KEY2,0) || ((CutsceneIndex == 7) && (CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)))) {
+					if ((Rando.lobbies_open_bitfield & 4) || (checkFlag(FLAG_KEYIN_KEY2, FLAGTYPE_PERMANENT) || ((CutsceneIndex == 7) && (CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)))) {
 						hideObject(behaviour_pointer);
 						behaviour_pointer->next_state = 1;
 					}
@@ -1289,9 +1247,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					// *(int*)(0x807FF700) = id;
 				}
 				break;
-			case LLAMA_TEMPLE:
+			case MAP_AZTECLLAMATEMPLE:
 				if (param2 == LLAMA_SNOOPPAD) {
-					if (checkFlag(SNOOPDOOR_OPEN,0)) {
+					if (checkFlag(SNOOPDOOR_OPEN, FLAGTYPE_PERMANENT)) {
 						behaviour_pointer->current_state = 20;
 						behaviour_pointer->next_state = 20;
 					}
@@ -1304,15 +1262,15 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == LLAMA_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_llama),0);
+						return checkFlag(getKongFlag(Rando.free_target_llama), FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_llama),0);
+						return !checkFlag(getKongFlag(Rando.free_target_llama), FLAGTYPE_PERMANENT);
 					}
 				} else if (param2 == LLAMA_GUNSWITCH) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_llama),0);
+						return checkFlag(getKongFlag(Rando.free_target_llama), FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_llama),0);
+						return !checkFlag(getKongFlag(Rando.free_target_llama), FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
 						setPermFlag(getKongFlag(Rando.free_target_llama));
 					} else if ((index >= 3) && (index <= 6)) {
@@ -1352,7 +1310,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					
 				}
 				break;
-			case CAVES_CHUNKY_5DC:
+			case MAP_CAVES5DCCHUNKY:
 				if ((param2 == CHUNKY5DC_GGONE) || (param2 == CHUNKY5DC_TARGET0) || (param2 == CHUNKY5DC_TARGET1) || (param2 == CHUNKY5DC_TARGET2)) {
 					if (index == 0) {
 						return isBonus(PreviousMap);
@@ -1361,16 +1319,16 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case CROWN_0:
-			case CROWN_1:
-			case CROWN_2:
-			case CROWN_3:
-			case CROWN_4:
-			case CROWN_5:
-			case CROWN_6:
-			case CROWN_7:
-			case CROWN_8:
-			case CROWN_9:
+			case MAP_BATTLEARENA_BEAVERBRAWL:
+			case MAP_BATTLEARENA_KRITTERKARNAGE:
+			case MAP_BATTLEARENA_ARENAAMBUSH:
+			case MAP_BATTLEARENA_MOREKRITTERKARNAGE:
+			case MAP_BATTLEARENA_FORESTFRACAS:
+			case MAP_BATTLEARENA_BISHBASHBRAWL:
+			case MAP_BATTLEARENA_KAMIKAZEKREMLINGS:
+			case MAP_BATTLEARENA_PLINTHPANIC:
+			case MAP_BATTLEARENA_PINNACLEPALAVER:
+			case MAP_BATTLEARENA_SHOCKWAVESHOWDOWN:
 				if (Rando.location_visuals & 4) {
 					if (param2 == CROWN_CONTROLLER) {
 						float x = 730.0f;
@@ -1406,7 +1364,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case TROFF_N_SCOFF:
+			case MAP_TROFFNSCOFF:
 				if (Rando.location_visuals & 2) {
 					if (param2 == TNS_NUMBER) {
 						float x = 600.0f;
@@ -1444,7 +1402,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case HELM_LOBBY:
+			case MAP_HELMLOBBY:
 				if (param2 == HELMLOBBY_GGONE) {
 					if (index == 0) {
 						return isBonus(PreviousMap);
@@ -1453,29 +1411,29 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case JUNGLE_JAPES:
+			case MAP_JAPES:
 				if (param2 == JAPES_DKCAGEGB) {
 					if (index == 0) {
-						if (checkFlag(DKJAPESCAGEGB_OPEN,0)) {
+						if (checkFlag(DKJAPESCAGEGB_OPEN, FLAGTYPE_PERMANENT)) {
 							behaviour_pointer->current_state = 5;
 							behaviour_pointer->next_state = 5;
 						}
 					} else if (index == 1) {
 						setPermFlag(DKJAPESCAGEGB_OPEN);
 					} else if (index == 2) {
-						if (checkFlag(DKJAPESCAGEGB_OPEN,0)) {
+						if (checkFlag(DKJAPESCAGEGB_OPEN, FLAGTYPE_PERMANENT)) {
 							behaviour_pointer->current_state = 6;
 							behaviour_pointer->next_state = 6;
 						}
 					}
 				} else if (param2 == JAPES_DKCAGESWITCH) {
-					if (checkFlag(DKJAPESCAGEGB_OPEN,0)) {
+					if (checkFlag(DKJAPESCAGEGB_OPEN, FLAGTYPE_PERMANENT)) {
 						behaviour_pointer->current_state = 20;
 						behaviour_pointer->next_state = 20;
 					}
 				} else if (param2 == JAPES_MOUNTAINGB) {
 					if (index == 0) {
-						if (checkFlag(JAPESMOUNTAINSPAWNED,0)) {
+						if (checkFlag(JAPESMOUNTAINSPAWNED, FLAGTYPE_PERMANENT)) {
 							behaviour_pointer->current_state = 20;
 							behaviour_pointer->next_state = 20;
 						}
@@ -1484,17 +1442,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == JAPES_DIDDYBAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_japes),0);
+						return checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_japes),0);
+						return !checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
 						setPermFlag(getKongFlag(Rando.free_target_japes));
 					}
 				} else if ((param2 == JAPES_GUNSWITCH0) || (param2 == JAPES_GUNSWITCH1) || (param2 == JAPES_GUNSWITCH2)) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_japes),0);
+						return checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_japes),0);
+						return !checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
 					} else if ((index == 2) || (index == 3)) {
 						return getPressedSwitch(behaviour_pointer, kong_pellets[(int)Rando.free_source_japes], id);
 					} else if (index == 4) {
@@ -1507,35 +1465,35 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == JAPES_DIDDYFREEGB) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_japes),0);
+						return checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_japes),0);
+						return !checkFlag(getKongFlag(Rando.free_target_japes), FLAGTYPE_PERMANENT);
 					}
 				} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
 					return !Rando.tag_anywhere;
 				}
 				break;
-			case JAPES_MOUNTAIN:
+			case MAP_JAPESMOUNTAIN:
 				if (param2 == JAPES_MOUNTAINGBSWITCH) {
-					if (checkFlag(JAPESMOUNTAINSPAWNED,0)) {
+					if (checkFlag(JAPESMOUNTAINSPAWNED, FLAGTYPE_PERMANENT)) {
 						behaviour_pointer->current_state = 20;
 						behaviour_pointer->next_state = 20;
 					}
 				}
 				break;
-			case FUNGI_ANTHILL:
+			case MAP_FUNGIANTHILL:
 				if (param2 == FUNGI_BEAN) {
 					if (index == 0) {
-						return checkFlag(FLAG_COLLECTABLE_BEAN, 0);
+						return checkFlag(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						setFlag(FLAG_COLLECTABLE_BEAN, 1, 0);
+						setFlag(FLAG_COLLECTABLE_BEAN, 1, FLAGTYPE_PERMANENT);
 					}
 				}
 				break;
-			case FRANTIC_FACTORY:
+			case MAP_FACTORY:
 				if (param2 == FACTORY_DIDDYPRODGB) {
 					if (index == 0) {
-						if (checkFlag(FACTORYDIDDYPRODSPAWNED,0)) {
+						if (checkFlag(FACTORYDIDDYPRODSPAWNED, FLAGTYPE_PERMANENT)) {
 							behaviour_pointer->current_state = 11;
 							behaviour_pointer->next_state = 11;
 						}
@@ -1549,9 +1507,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == FACTORY_FREESWITCH) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_factory),0);
+						return checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_factory),0);
+						return !checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
 						return Character == Rando.free_source_factory;
 					} else if (index == 3) {
@@ -1559,15 +1517,15 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == FACTORY_CAGE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_factory),0);
+						return checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_factory),0);
+						return !checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
 					}
 				} else if (param2 == FACTORY_FREEGB) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_factory),0);
+						return checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_factory),0);
+						return !checkFlag(getKongFlag(Rando.free_target_factory), FLAGTYPE_PERMANENT);
 					}
 				} else if (param2 == FACTORY_PIANO) {
 					if (index < 7) {
@@ -1652,16 +1610,16 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					behaviour_pointer->timer = (RNG & 63) + 15;
 				}
 				break;
-			case MILL_FRONT:
+			case MAP_FUNGIMILLFRONT:
 				if (param2 == MILL_WARNINGLIGHTS) {
-					if (checkFlag(FUNGICRUSHERON,0)) {
+					if (checkFlag(FUNGICRUSHERON, FLAGTYPE_PERMANENT)) {
 						behaviour_pointer->current_state = MILL_CRUSHER_PROGRESS * 2;
 						behaviour_pointer->next_state = MILL_CRUSHER_PROGRESS * 2;
 					}
 				} else if (param2 == MILL_CRUSHER) {
 					if (index == 0) {
-						if (checkFlag(FUNGICRUSHERON,0)) {
-							if (!checkFlag(FLAG_COLLECTABLE_FUNGI_CHUNKY_KEGGB,0)) { // If GB not acquired
+						if (checkFlag(FUNGICRUSHERON, FLAGTYPE_PERMANENT)) {
+							if (!checkFlag(FLAG_COLLECTABLE_FUNGI_CHUNKY_KEGGB, FLAGTYPE_PERMANENT)) { // If GB not acquired
 								if (behaviour_pointer->counter == 0) {
 									behaviour_pointer->current_state = 12;
 									behaviour_pointer->next_state = 12;
@@ -1676,9 +1634,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case MILL_REAR:
+			case MAP_FUNGIMILLREAR:
 				if (param2 == MILL_TRIANGLEPAD) {
-					if (checkFlag(FUNGICRUSHERON,0)) {
+					if (checkFlag(FUNGICRUSHERON, FLAGTYPE_PERMANENT)) {
 						behaviour_pointer->current_state = 3;
 						behaviour_pointer->next_state = 3;
 					}
@@ -1686,11 +1644,11 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return Player->characterID == 6 || Rando.quality_of_life.vanilla_fixes;
 				}
 				break;
-			case FUNGI_GMUSH:
+			case MAP_FUNGIGIANTMUSHROOM:
 				if (param2 == GMUSH_BOARD) {
 					int switch_count = 0;
 					for (int i = 0; i < 5; i++) {
-						if (checkFlag(FLAG_MUSHSWITCH_0 + i,0)) {
+						if (checkFlag(FLAG_MUSHSWITCH_0 + i, FLAGTYPE_PERMANENT)) {
 							switch_count += 1;
 						}
 					}
@@ -1701,10 +1659,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case CRYSTAL_CAVES:
+			case MAP_CAVES:
 				if (param2 == CAVES_GBDOME) {
 					if (index == 0) {
-						if (checkFlag(CAVESGBDOME_DESTROYED,0)) {
+						if (checkFlag(CAVESGBDOME_DESTROYED, FLAGTYPE_PERMANENT)) {
 							hideObject(behaviour_pointer);
 							behaviour_pointer->current_state = 11;
 							behaviour_pointer->next_state = 11;
@@ -1713,13 +1671,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						setPermFlag(CAVESGBDOME_DESTROYED);
 					}
 				} else if (param2 == CAVES_SMALLBOULDERPAD) {
-					if (checkFlag(CAVESBOULDERDOME_DESTROYED,0)) {
+					if (checkFlag(CAVESBOULDERDOME_DESTROYED, FLAGTYPE_PERMANENT)) {
 						behaviour_pointer->current_state = 20;
 						behaviour_pointer->next_state = 20;
 					}
 				} else if (param2 == CAVES_BOULDERDOME) {
 					if (index == 0) {
-						if (checkFlag(CAVESBOULDERDOME_DESTROYED,0)) {
+						if (checkFlag(CAVESBOULDERDOME_DESTROYED, FLAGTYPE_PERMANENT)) {
 							hideObject(behaviour_pointer);
 							behaviour_pointer->current_state = 11;
 							behaviour_pointer->next_state = 11;
@@ -1728,8 +1686,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						setPermFlag(CAVESBOULDERDOME_DESTROYED);
 					}
 				} else if (param2 == CAVES_BIGBOULDERPAD) {
-					if (checkFlag(CAVESBOULDERDOME_DESTROYED,0)) {
-						if (checkFlag(CAVESGBDOME_DESTROYED,0)) {
+					if (checkFlag(CAVESBOULDERDOME_DESTROYED, FLAGTYPE_PERMANENT)) {
+						if (checkFlag(CAVESGBDOME_DESTROYED, FLAGTYPE_PERMANENT)) {
 							hideObject(behaviour_pointer);
 							behaviour_pointer->current_state = 20;
 							behaviour_pointer->next_state = 20;
@@ -1740,32 +1698,32 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case TRAINING_GROUNDS:
+			case MAP_TRAININGGROUNDS:
 				if (param2 == TGROUNDS_SWITCH) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.starting_kong),0);
+						return checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.starting_kong),0);
+						return !checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
 						setPermFlag(getKongFlag(Rando.starting_kong));
 					}
 				} else if (param2 == TGROUNDS_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.starting_kong),0);
+						return checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.starting_kong),0);
+						return !checkFlag(getKongFlag(Rando.starting_kong), FLAGTYPE_PERMANENT);
 					}
 				}
 				break;
-			case CAVES_ROTATING:
+			case MAP_CAVESROTATINGROOM:
 				if (param2 == ROTATING_ROOM_OBJ) {
 					if (!Rando.disable_rotating_crown) {
-						return checkFlag(FLAG_CROWN_CAVES,0);
+						return checkFlag(FLAG_CROWN_CAVES, FLAGTYPE_PERMANENT);
 					}
 					return 1;
 				}
 				break;
-			case GALLEON_FISH:
+			case MAP_GALLEONMECHFISH:
 				if ((param2 == FISH_SHIELD1) || (param2 == FISH_SHIELD2) || (param2 == FISH_SHIELD3)) {
 					int fish_state = 1;
 					if (Rando.fast_gbs) {
@@ -1779,18 +1737,18 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			// 		if (Rando.fast_gbs) {
 			// 			int pearls_collected = 0;
 			// 			for (int i = 0; i < 5; i++) {
-			// 				pearls_collected += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i,0);
+			// 				pearls_collected += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
 			// 			}
 			// 			if (pearls_collected >= 1) {
 			// 				for (int i = 0; i < 5; i++) {
-			// 					setFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 1, 0);
+			// 					setFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, 1, FLAGTYPE_PERMANENT);
 			// 				}
 			// 				behaviour_pointer->next_state = 2;
 			// 			}
 			// 		}
 			// 	}
 			// 	break;
-			case CAVES_DK5DI:
+			case MAP_CAVES5DIDK:
 				if (param2 == ICE_MAZE) {
 					if (behaviour_pointer->switch_pressed == index) {
 						if ((behaviour_pointer->contact_actor_type >= 2) && (behaviour_pointer->contact_actor_type <= 6)) { // isKong
@@ -1806,22 +1764,22 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return 0;
 				}
 				break;
-			case TINY_TEMPLE:
+			case MAP_AZTECTINYTEMPLE:
 				if (param2 == TTEMPLE_SWITCH) {
 					return Character == 1;
 				} else if (param2 == TTEMPLE_GUITARPAD) {
 					return Character == 1;
 				} else if (param2 == TTEMPLE_BAMBOOGATE) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_ttemple),0);
+						return checkFlag(getKongFlag(Rando.free_target_ttemple), FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
 						setPermFlag(getKongFlag(Rando.free_target_ttemple));
 					}
 				} else if (param2 == TTEMPLE_CHARGESWITCH) {
 					if (index == 0) {
-						return checkFlag(getKongFlag(Rando.free_target_ttemple),0);
+						return checkFlag(getKongFlag(Rando.free_target_ttemple), FLAGTYPE_PERMANENT);
 					} else if (index == 1) {
-						return !checkFlag(getKongFlag(Rando.free_target_ttemple),0);
+						return !checkFlag(getKongFlag(Rando.free_target_ttemple), FLAGTYPE_PERMANENT);
 					} else if (index == 2) {
 						return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
 					}
@@ -1829,7 +1787,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return checkControlState(kong_press_states[(int)Rando.free_source_ttemple]);
 				}
 				break;
-			case CRYPT_LT:
+			case MAP_CASTLECRYPTLANKYTINY:
 				if (param2 == CRYPT_LT_GRAPE){
 					if (index == 0){
 						return !Rando.tag_anywhere;
@@ -1907,22 +1865,22 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				}
 				break;
-			case CRYPT_DDC:
+			case MAP_CASTLECRYPTDKDIDDYCHUNKY:
 				if ((param2 == CRYPT_DDC_D) || (param2 == CRYPT_DDC_E) || (param2 == CRYPT_DDC_F)) {
 					return !Rando.tag_anywhere;
 				}
 				break;
-			case CASTLE_DUNGEON:
+			case MAP_CASTLEBASEMENT:
 				if ((param2 == DUNGEON_SLAM_DK) || (param2 == DUNGEON_SLAM_DIDDY) || (param2 == DUNGEON_SLAM_LANKY)) {
 					return !Rando.tag_anywhere;
 				}
 				break;
-			case CASTLE_TREE:
+			case MAP_CASTLETREE:
 				if ((param2 == TREE_DOOR_DK) || (param2 == TREE_DOOR_CHUNKY)) {
 					return !Rando.tag_anywhere;
 				}
 				break;
-			case HIDEOUT_HELM:
+			case MAP_HELM:
 				{
 					int slot = -1;
 					int next_slot = -1;
@@ -1934,7 +1892,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if (index == 0) {
 								return CoinDoorCheck();
 							} else if (index == 1) {
-								return checkFlagDuplicate(FLAG_HELM_COINDOOR, 0) || Rando.coin_door_open == 1;
+								return checkFlagDuplicate(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || Rando.coin_door_open == 1;
 							}
 							break;
 						case HELM_PAD_BONGO:
@@ -1978,8 +1936,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 										if ((next_slot == -1) && (current_slot > -1)) {
 											// Helm Complete
 											PlayCutsceneFromModelTwoScript(behaviour_pointer, 8, 1, 0);
-											setFlag(FLAG_MODIFIER_HELMBOM, 1, 0);
-											setFlag(0x50,1,2);
+											setFlag(FLAG_MODIFIER_HELMBOM, 1, FLAGTYPE_PERMANENT);
+											setFlag(0x50,1,FLAGTYPE_TEMPORARY);
 										} else if (next_slot > -1) {
 											// Move to next
 											PlayCutsceneFromModelTwoScript(behaviour_pointer, current_slot + 4, 1, 0);
@@ -1989,7 +1947,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 											// First or not in sequence
 											return 1;
 										}
-										return checkFlag(previous_slot + 0x4B, 2);
+										return checkFlag(previous_slot + 0x4B, FLAGTYPE_TEMPORARY);
 									}
 								} else  if (index == 2) {
 									if ((Rando.microhints > 1) && ((MovesBase[helm_pad_kong].instrument_bitfield & 1) == 0)) {
@@ -2005,7 +1963,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							}
 						break;
 					}
+					break;
 				}
+			default:
 			break;
 		}
 	} else if (index == -1) {
@@ -2047,7 +2007,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			displayImageOnObject(id, 2, 1, 0);
 			unkObjFunction0(id, 1, 1);
 			unkObjFunction1(id, 1, 10);
-			if ((!checkFlag(kong_flags[kong],0)) && (!Rando.disable_wrinkly_kong_requirement)) {
+			if ((!checkFlag(kong_flags[kong], FLAGTYPE_PERMANENT)) && (!Rando.disable_wrinkly_kong_requirement)) {
 				behaviour_pointer->next_state = 20;
 			} else {
 				displayImageOnObject(id, 1, 0, 0);
@@ -2090,7 +2050,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 	} else if (index == -6) {
 		CrownPadGenericCode(behaviour_pointer, id, param2, 1);
 	} else if (index == -7) {
-		return checkFlag(kong_flags[param2], 0) || Rando.disable_wrinkly_kong_requirement;
+		return checkFlag(kong_flags[param2], FLAGTYPE_PERMANENT) || Rando.disable_wrinkly_kong_requirement;
 	} else if (index == -8) {
 		// Fairy check
 		if (Rando.fairy_rando_on) {
@@ -2149,7 +2109,7 @@ int spawnCannonWrapper(void) {
 	 * 
 	 * @return Cannon is being spawned
 	 */
-	if (CurrentMap == DK_ISLES) {
+	if (CurrentMap == MAP_ISLES) {
 		int spawner_id = getActorSpawnerIDFromTiedActor(CurrentActorPointer);
 		if (spawner_id == 8) { // Castle Cannon
 			if (Rando.lobbies_open_bitfield & 0x40) {

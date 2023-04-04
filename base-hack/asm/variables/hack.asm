@@ -38,6 +38,8 @@
 .definelabel TextOverlayData, 0x807FFFA0
 .definelabel RandomSwitches, 0x807FFF20
 .definelabel SwitchLevel, 0x807FFF21
+.definelabel FedItem, 0x807FFF1C
+.definelabel FedString, 0x807FFEDF
 
 .definelabel KrushaSlot, 0x807FFF2E
 .definelabel KasplatSpawnBitfield, 0x807FFF2F

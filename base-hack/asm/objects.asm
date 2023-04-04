@@ -20,6 +20,7 @@
 .importobj "obj/src_initialization_stack_trace.o"
 .importobj "obj/src_initialization_text.o"
 .importobj "obj/src_item rando_actors.o"
+.importobj "obj/src_item rando_archipelago.o"
 .importobj "obj/src_item rando_collision.o"
 .importobj "obj/src_item rando_defs.o"
 .importobj "obj/src_item rando_flags.o"

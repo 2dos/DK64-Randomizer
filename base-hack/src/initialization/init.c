@@ -12,6 +12,8 @@
  */
 #include "../../include/common.h"
 
+static char music_storage[MUSIC_SIZE];
+
 typedef struct musicInfo {
 	/* 0x000 */ short data[0xB0];
 } musicInfo;
@@ -61,7 +63,7 @@ void initHack(int source) {
 	 * 
 	 */
 	if (LoadedHooks == 0) {
-		if ((source == 1) || (CurrentMap == 0x28)) {
+		if ((source == 1) || (CurrentMap == MAP_NINTENDOLOGO)) {
 			DebugInfoOn = 1;
 			if (Rando.fast_start_beginning) {
 				*(int*)(0x80714540) = 0;
@@ -70,7 +72,7 @@ void initHack(int source) {
 			*(int*)(0x8060E04C) = 0; // Prevent moves overwrite
 			*(short*)(0x8060DDAA) = 0; // Writes readfile data to moves
 			*(short*)(0x806C9CDE) = 7; // GiveEverything, write to bitfield. Seems to be unused but might as well
-			
+			*(int*)(0x8076BF38) = (int)&music_storage[0]; // Increase music storage
 			DamageMultiplier = Rando.damage_multiplier;
 			WarpToIslesEnabled = Rando.warp_to_isles_enabled;
 			permaLossMode = Rando.perma_lose_kongs;
@@ -219,9 +221,6 @@ void initHack(int source) {
 				*(int*)(0x807125A4) = 0x0C000000 | (((int)&initHelmHurry & 0xFFFFFF) >> 2); // Change write
 				*(int*)(0x807125CC) = 0; // Prevent Helm Timer Overwrite
 			}
-			if (Rando.always_show_coin_cbs) {
-				*(int*)(0x806324D4) = 0x24020001; // ADDIU $v0, $r0, 1 // Disable kong flag check
-			}
 			if (Rando.version == 0) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
@@ -285,7 +284,7 @@ void initHack(int source) {
 			// Fix spider crashes
 			int fixed_anim = 0x2F5;
 			*(short*)(0x8075F46C) = fixed_anim;
-			*(short*)(0x806ADA26) = fixed_anim;
+			*(short*)(0x806ADA26) = fixed_anim; // This might fix spawning if set on non-init
 			*(short*)(0x806ADA2A) = fixed_anim;
 			*(short*)(0x806ADA32) = fixed_anim;
 			*(short*)(0x806ADBC6) = fixed_anim;
@@ -383,7 +382,7 @@ void quickInit(void) {
 	 */
 	initHack(1);
 	if (Rando.quality_of_life.fast_boot) {
-		initiateTransitionFade(0x51, 0, 5);
+		initiateTransitionFade(MAP_NFRTITLESCREEN, 0, 5);
 		CutsceneWillPlay = 0;
 		Gamemode = 5;
 		Mode = 5;

@@ -77,7 +77,11 @@ void initFiles(void) {
 	 */
     // Save File Expansion
     int balloon_patch_count = 300; // Normally 121
-    expandSaveFile(0x100,balloon_patch_count);
+	int static_expansion = static_expansion_size;
+	if (Rando.archipelago) {
+		static_expansion += ARCHIPELAGO_FLAG_SIZE;
+	}
+    expandSaveFile(static_expansion,balloon_patch_count);
     // 1-File Fixes
     *(int*)(0x8060CF34) = 0x240E0001; // Slot 1
     *(int*)(0x8060CF38) = 0x240F0002; // Slot 2
