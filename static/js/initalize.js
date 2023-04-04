@@ -96,7 +96,7 @@ document
                 .async("Uint8Array")
                 .then(function (content) {
                   resolve({
-                    name: current_filename,
+                    name: current_filename.slice(0, -4),
                     file: content
                   })
                 });
@@ -109,7 +109,7 @@ document
                 .async("Uint8Array")
                 .then(function (content) {
                   resolve({
-                    name: current_filename,
+                    name: current_filename.slice(0, -4),
                     file: content
                   })
                 });
@@ -122,7 +122,7 @@ document
                 .async("Uint8Array")
                 .then(function (content) {
                   resolve({
-                    name: current_filename,
+                    name: current_filename.slice(0, -4),
                     file: content
                   })
                 });
