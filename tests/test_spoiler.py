@@ -41,7 +41,7 @@ def generate_lo_rando_race_settings():
 
     data = {}
     data["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
-    data["settings_string"] = "Vy6IURioqPw+QRGkV6mTCIW6nrGmoBFCkNQX8EoAycRkF1ls0FAXUAgwE7AIHA3cBhAI8AQJBXkChQM9AYLB3sDhgQow0ofJYpnqUtoolsvaTSocWKiLAImIoAr9sjsctd+kcDwKZKorsbokmtoSQZgQRzQgYM5kBxbLQCFxvLBZFgpLgaFAtFYqMJNGJHNJGOSAEgeAFUAfQBWAA    "
+    data["settings_string"] = "Vy6IURioqPw+QRGkV6mTCIW6nrGmoBFCkNQX8EoAycRkF1ls0FAXUAgwE7AIHA3cBhAI8AQJBXkChQM9AYLB3sDhgQow0ofJYpnqUtoolsvaTSocWKiLAImIoAr9sjsctd+kcDwKZKorsbokmtoSQZgQRzQgYM5kBxbLQCFxvLBZFgpLgaFAtFYqMJNGJHNJGOSAEgeAFUAfQBWAA"
 
     # Randomizers
     # Major Items
@@ -146,7 +146,7 @@ def generate_lo_rando_race_settings():
     data["medal_requirement"] = 15  # vanilla is 15
     data["medal_cb_req"] = 75  # vanilla is 75
     data["rareware_gb_fairies"] = 20
-        
+
     data["fast_start_beginning_of_game"] = True
     data["random_medal_requirement"] = False
 
@@ -190,7 +190,7 @@ def generate_lo_rando_race_settings():
     data["fps_display"] = False
     data["portal_numbers"] = True
     data["dpad_display"] = True
-    data["item_reward_previews"] = True    
+    data["item_reward_previews"] = True
 
     return data
 
