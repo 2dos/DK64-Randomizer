@@ -182,6 +182,10 @@ def serialize_settings():
         if element.disabled:
             disabled_options.append(element)
             element.removeAttribute("disabled")
+    for element in js.document.getElementsByTagName("option"):
+        if element.disabled:
+            disabled_options.append(element)
+            element.removeAttribute("disabled")
     # Serialize the form into json
     form = js.jquery("#form").serializeArray()
     form_data = {}

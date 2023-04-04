@@ -768,7 +768,7 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On the torch at the start | 1 |  | 
-| On various rafters | 4 |  | 
+| On various rafters | 4 | l.guitar and l.isdiddy | 
 </details>
 <details>
 <summary>Forest Thornvine Barn</summary>
