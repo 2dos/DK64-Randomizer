@@ -86,6 +86,7 @@ document
         let bgm_promises = [];
         let fanfare_promises = [];
         let event_promises = [];
+
         for (var filename of Object.keys(new_zip.files)) {
           if (filename.includes("bgm/") && filename.slice(-4) == ".bin") {
             bgm_promises.push(new Promise((resolve, reject) => {
@@ -128,6 +129,7 @@ document
             }));
           }
         }
+
         let bgm_files = await Promise.all(bgm_promises);
         let fanfare_files = await Promise.all(fanfare_promises);
         let event_files = await Promise.all(event_promises);
