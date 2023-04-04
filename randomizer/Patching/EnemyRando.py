@@ -193,6 +193,30 @@ replacement_priority = {
     EnemySubtype.Water: [EnemySubtype.Air, EnemySubtype.GroundSimple, EnemySubtype.GroundBeefy],
     EnemySubtype.Air: [EnemySubtype.GroundSimple, EnemySubtype.GroundBeefy, EnemySubtype.Water],
 }
+banned_enemy_maps = {
+    Enemies.Book: [Maps.CavesDonkeyCabin, Maps.JapesLankyCave, Maps.AngryAztecLobby],
+    Enemies.Kosha: [Maps.CavesDiddyLowerCabin, Maps.CavesTinyCabin],
+    Enemies.Guard: [Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin],
+}
+
+
+def isBanned(new_enemy_id: Enemies, cont_map_id: Maps, spawner: Spawner, no_ground_simple_selected: bool) -> bool:
+    """Define if enemy is banned in current circumstances."""
+    if new_enemy_id in banned_enemy_maps:
+        if cont_map_id in banned_enemy_maps[new_enemy_id]:
+            return True
+    if no_ground_simple_selected:
+        if cont_map_id == Maps.AztecTinyTemple and spawner.index in list(range(20, 24)):
+            return True
+        if cont_map_id == Maps.CastleBallroom and spawner.index <= 5:
+            return True
+        if cont_map_id == Maps.CastleLibrary and spawner.index <= 4:
+            return True
+    if cont_map_id == Maps.ForestSpider and EnemyMetaData[new_enemy_id].aggro == 4:
+        return True
+    if cont_map_id == Maps.ForestGiantMushroom and spawner.index in (3, 4):
+        return True
+    return False
 
 
 def resetPkmnSnap():
@@ -359,6 +383,7 @@ def writeEnemy(spoiler: Spoiler, cont_map_spawner_address: int, new_enemy_id: in
     """Write enemy to ROM."""
     ROM().seek(cont_map_spawner_address + spawner.offset)
     ROM().writeMultipleBytes(new_enemy_id, 1)
+    # Enemy fixes
     if new_enemy_id in EnemyMetaData.keys():
         ROM().seek(cont_map_spawner_address + spawner.offset + 0x10)
         ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].aggro, 1)
@@ -389,7 +414,7 @@ def writeEnemy(spoiler: Spoiler, cont_map_spawner_address: int, new_enemy_id: in
                 get_out_timer = 1
             ROM().writeMultipleBytes(get_out_timer, 1)
             ROM().writeMultipleBytes(get_out_timer, 1)
-
+        # Scale Adjustment
         ROM().seek(cont_map_spawner_address + spawner.offset + 0xF)
         default_scale = int.from_bytes(ROM().readBytes(1), "big")
         if EnemyMetaData[new_enemy_id].size_cap > 0:
@@ -401,6 +426,7 @@ def writeEnemy(spoiler: Spoiler, cont_map_spawner_address: int, new_enemy_id: in
         if pre_size < EnemyMetaData[new_enemy_id].bbbarrage_min_scale and cont_map_id in bbbarrage_maps:
             ROM().seek(cont_map_spawner_address + spawner.offset + 0xF)
             ROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].bbbarrage_min_scale, 1)
+        # Speed Adjustment
         if spoiler.settings.enemy_speed_rando:
             if cont_map_id not in banned_speed_maps:
                 min_speed = EnemyMetaData[new_enemy_id].min_speed
@@ -564,14 +590,8 @@ def randomize_enemies(spoiler: Spoiler):
                             if cont_map_id != Maps.FranticFactory or spawner.index < 35 or spawner.index > 44:
                                 new_enemy_id = arr[sub_index]
                                 sub_index += 1
-                                if new_enemy_id != Enemies.Book or cont_map_id not in (Maps.CavesDonkeyCabin, Maps.JapesLankyCave, Maps.AngryAztecLobby):
-                                    if new_enemy_id != Enemies.Kosha or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyCabin):
-                                        if new_enemy_id != Enemies.Guard or cont_map_id not in (Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin):
-                                            if cont_map_id != Maps.AztecTinyTemple or spawner.index < 20 or spawner.index > 23 or not no_ground_simple_selected:
-                                                if cont_map_id != Maps.CastleBallroom or spawner.index > 5 or not no_ground_simple_selected:
-                                                    if cont_map_id != Maps.CastleLibrary or spawner.index > 4 or not no_ground_simple_selected:
-                                                        if cont_map_id != Maps.ForestSpider or EnemyMetaData[new_enemy_id].aggro != 4:  # Prevent enemies being stuck in the ceiling
-                                                            writeEnemy(spoiler, cont_map_spawner_address, new_enemy_id, spawner, cont_map_id, 0)
+                                if not isBanned(new_enemy_id, cont_map_id, spawner, no_ground_simple_selected):
+                                    writeEnemy(spoiler, cont_map_spawner_address, new_enemy_id, spawner, cont_map_id, 0)
             if spoiler.settings.enemy_rando and cont_map_id in minigame_maps_total:
                 tied_enemy_list = []
                 if cont_map_id in minigame_maps_easy:

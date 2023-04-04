@@ -690,6 +690,7 @@ void getNextMoveText(void) {
 	int p_type = 0;
 	int p_kong = 0;
 	int p_flag = 0;
+	char* p_string = 0;
 	int has_data = 0;
 	if (shop_data) {
 		has_data = 1;
@@ -702,6 +703,7 @@ void getNextMoveText(void) {
 		p_type = TextOverlayData.type;
 		p_value = TextOverlayData.flag;
 		p_kong = TextOverlayData.kong;
+		p_string = TextOverlayData.string;
 		p_flag = p_value;
 	} else if (CurrentMap == MAP_FAIRYISLAND) {
 		has_data = 1;
@@ -721,11 +723,13 @@ void getNextMoveText(void) {
 			}
 		}
 	}
+	int override_string = Rando.archipelago && p_type == 8;
 	if ((has_data) || (paad->upper_text) || (paad->lower_text)) {
 		if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
 			TextOverlayData.kong = 0;
 			TextOverlayData.flag = 0;
 			TextOverlayData.type = 0;
+			TextOverlayData.string = 0;
 			int overlay_count = 0;
 			for (int i = 0; i < LoadedActorCount; i++) {
 				actorData* actor = (actorData*)LoadedActorArray[i].actor;
@@ -851,10 +855,14 @@ void getNextMoveText(void) {
 					}
 				break;
 			}
-			if (top_item < 0) {
-				paad->upper_text = (void*)0;
+			if (override_string) {
+				paad->upper_text = p_string;
 			} else {
-				paad->upper_text = getTextPointer(0x27,top_item,0);
+				if (top_item < 0) {
+					paad->upper_text = (void*)0;
+				} else {
+					paad->upper_text = getTextPointer(0x27,top_item,0);
+				}
 			}
 			if (bottom_item < 0) {
 				paad->lower_text = (void*)0;

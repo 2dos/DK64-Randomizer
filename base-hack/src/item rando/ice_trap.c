@@ -386,11 +386,37 @@ void customDamageCode(void) {
     }
 }
 
+void trapPlayer_New(void) {
+    Player->old_tag_state = -1;
+    float val = 8.0f;
+    float val2 = -30.0f;
+    if ((Character >= 1) && (Character <= 3)) {
+        val = 10.0f;
+    } else if (Character == 6) {
+        val = 15.0f;
+    }
+    if ((Character < 2) || (Character == 4) || (Character == 5)) {
+        val2 = -20.0f;
+    }
+    Player->unk_1B0 = val;
+    Player->yAccel = val2;
+    if (Player->control_state != 0x7C) {
+        Player->shockwave_timer = -1;
+        Player->control_state = 0x7C;
+        Player->control_state_progress = 0;
+        playActorAnimation(Player, 0x13);
+        spawnActor(0x117, 0xC5);
+        actorData* trapBubble = (actorData*)CurrentActorPointer;
+        trapBubble->parent = Player;
+        Player->noclip = 0x3C;
+    }
+}
+
 void initIceTrap(void) {
     /**
      * @brief Initialize an ice trap
      */
-    trapPlayer();
+    trapPlayer_New();
     Player->trap_bubble_timer = 200;
     playSFX(0x2D4); // K Rool Laugh
     customDamageCode();
@@ -422,6 +448,9 @@ void callIceTrap(void) {
                 return;
             }
             if (IsAutowalking) {
+                return;
+            }
+            if (Player->shockwave_timer != -1) {
                 return;
             }
             // Check Map

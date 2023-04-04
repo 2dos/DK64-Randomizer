@@ -14,6 +14,21 @@ from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 
 
+def insertUploaded(uploaded_songs: list, uploaded_song_names: list, target_type: SongType):
+    """Insert uploaded songs into ROM."""
+    added_songs = list(zip(uploaded_songs, uploaded_song_names))
+    random.shuffle(added_songs)
+    all_target_songs = [song for song in song_data if song.type == target_type]
+    songs_to_be_replaced = random.sample(all_target_songs, len(added_songs))
+    for index, song in enumerate(songs_to_be_replaced):
+        song_idx = song_data.index(song)
+        song_data[song_idx].output_name = added_songs[index][1]
+        entry_data = js.pointer_addresses[0]["entries"][song_idx]
+        ROM().seek(entry_data["pointing_to"])
+        zipped_data = gzip.compress(bytes(added_songs[index][0]), compresslevel=9)
+        ROM().writeBytes(zipped_data)
+
+
 def randomize_music(spoiler: Spoiler):
     """Randomize music passed from the misc music settings.
 
@@ -39,14 +54,15 @@ def randomize_music(spoiler: Spoiler):
         sav = spoiler.settings.rom_data
         ROM().seek(sav + 0x12E)
         ROM().write(1)
+    for song in song_data:
+        song.Reset()
     # Check if we have anything beyond default set for BGM
     if spoiler.settings.music_bgm != MusicCosmetics.default:
         # If the user selected standard rando
-        if spoiler.settings.music_bgm == MusicCosmetics.randomized:
-            # These lines exist for testing only
-            # file = open('static/patches/pointer_addresses.json')
-            # pointer_addresses = json.load(file)
-
+        if spoiler.settings.music_bgm in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
+            if spoiler.settings.music_bgm == MusicCosmetics.uploaded and js.cosmetics is not None and js.cosmetic_names is not None:
+                # If uploaded, replace some songs with the uploaded songs
+                insertUploaded(list(js.cosmetics.bgm), list(js.cosmetic_names.bgm), SongType.BGM)
             # Generate the list of BGM songs
             song_list = []
             for channel_index in range(12):
@@ -87,40 +103,13 @@ def randomize_music(spoiler: Spoiler):
                 # Update data
                 ROM().seek(0x1FFF000 + (song["index"] * 2))
                 ROM().writeMultipleBytes(song_data[rap["index"]].memory, 2)
-        elif js.document.getElementById("music_bgm").value == MusicCosmetics.uploaded:
-            # Generate the list of BGM songs
-            song_list = []
-            for song in song_data:
-                if song.type == SongType.BGM:
-                    song_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
-
-            # Load our BGM data and just shuffle it around
-            added_bgm = list(js.cosmetics.bgm)
-            random.shuffle(added_bgm)
-
-            already_modified = []
-            for item in added_bgm:
-
-                def check_song():
-                    random_song = random.choice(song_list)
-                    # Exit loop for recursion
-                    if len(already_modified) >= len(song_list):
-                        return
-                    if random_song not in already_modified:
-                        ROM().seek(random_song["pointing_to"])
-                        ROM().writeBytes(gzip.compress(bytes(item), compresslevel=9))
-                        already_modified.append(random_song)
-                    else:
-                        check_song()
-
-                check_song()
-            duped_song_list = song_list.copy()
-            random.shuffle(duped_song_list)
-            shuffle_music(spoiler, song_list.copy(), duped_song_list)
     # If the user wants to randomize fanfares
     if spoiler.settings.music_fanfares != MusicCosmetics.default:
         # Check if our setting is just rando
-        if spoiler.settings.music_fanfares == MusicCosmetics.randomized:
+        if spoiler.settings.music_fanfares in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
+            if spoiler.settings.music_fanfares == MusicCosmetics.uploaded and js.cosmetics is not None and js.cosmetic_names is not None:
+                # If uploaded, replace some songs with the uploaded songs
+                insertUploaded(list(js.cosmetics.fanfares), list(js.cosmetic_names.fanfares), SongType.Fanfare)
             # Load the list of fanfares
             fanfare_list = []
             for song in song_data:
@@ -131,41 +120,14 @@ def randomize_music(spoiler: Spoiler):
             shuffled_music = fanfare_list.copy()
             random.shuffle(shuffled_music)
             shuffle_music(spoiler, fanfare_list.copy(), shuffled_music)
-        elif js.document.getElementById("music_fanfares").value == MusicCosmetics.uploaded:
-            # Generate the list of fanfares songs
-            song_list = []
-            for song in song_data:
-                if song.type == SongType.Fanfare:
-                    song_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
-
-            # Load our fanfares data and just shuffle it around
-            added_fanfares = list(js.cosmetics.fanfares)
-            random.shuffle(added_fanfares)
-
-            already_modified = []
-            for item in added_fanfares:
-
-                def check_song():
-                    random_song = random.choice(song_list)
-                    # Exit loop for recursion
-                    if len(already_modified) >= len(song_list):
-                        return
-                    if random_song not in already_modified:
-                        ROM().seek(random_song["pointing_to"])
-                        ROM().writeBytes(gzip.compress(bytes(item), compresslevel=9))
-                        already_modified.append(random_song)
-                    else:
-                        check_song()
-
-                check_song()
-            duped_song_list = song_list.copy()
-            random.shuffle(duped_song_list)
-            shuffle_music(spoiler, song_list.copy(), duped_song_list)
 
     # If the user wants to randomize events
     if spoiler.settings.music_events != MusicCosmetics.default:
         # Check if our setting is just rando
-        if spoiler.settings.music_events == MusicCosmetics.randomized:
+        if spoiler.settings.music_events in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
+            if spoiler.settings.music_events == MusicCosmetics.uploaded and js.cosmetics is not None and js.cosmetic_names is not None:
+                # If uploaded, replace some songs with the uploaded songs
+                insertUploaded(list(js.cosmetics.events), list(js.cosmetic_names.events), SongType.Event)
             # Load the list of events
             event_list = []
             for song in song_data:
@@ -173,86 +135,9 @@ def randomize_music(spoiler: Spoiler):
                     event_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
 
             # Shuffle the event list
-            # ShuffleMusicWithSizeCheck(spoiler, event_list)
             duped_song_list = event_list.copy()
             random.shuffle(duped_song_list)
             shuffle_music(spoiler, event_list.copy(), duped_song_list)
-
-
-def ShuffleMusicWithSizeCheck(spoiler: Spoiler, song_list: list):
-    """Facilitate shuffling of music."""
-    retries = 0
-    while True:
-        try:
-            # Copy the existing list of songs and shuffle it
-            vanilla_music = song_list.copy()
-            shuffled_music = song_list.copy()
-            random.shuffle(shuffled_music)
-            vanilla_song_list = []
-            new_song_list = []
-            song_map_vanillaTotalSize = {}
-            song_map_newTotalSize = {}
-            while len(vanilla_music) > 0:
-                song_item = vanilla_music.pop(0)
-                vanillaSong: Song = song_data[song_item["index"]]
-                newSong: Song = None
-                for shuffled_song_item in shuffled_music:
-                    newSong: Song = song_data[shuffled_song_item["index"]]
-                    # BGM has groups to control size of assigned songs
-                    if vanillaSong.group is not None and vanillaSong.type == SongType.BGM:
-                        groupName = SongGroup(vanillaSong.group).name
-                        if groupName not in song_map_vanillaTotalSize:
-                            song_map_vanillaTotalSize[groupName] = 0
-                        if groupName not in song_map_newTotalSize:
-                            song_map_newTotalSize[groupName] = 0
-                        if SongGroup(vanillaSong.group) == SongGroup.Self:
-                            if shuffled_song_item["uncompressed_size"] > song_item["uncompressed_size"]:
-                                continue
-                        else:
-                            # If the new size exceeds the vanilla size, pick a different song
-                            if (song_map_newTotalSize[groupName] + shuffled_song_item["uncompressed_size"]) > (song_map_vanillaTotalSize[groupName] + song_item["uncompressed_size"]):
-                                continue
-                        song_map_vanillaTotalSize[groupName] += song_item["uncompressed_size"]
-                        song_map_newTotalSize[groupName] += shuffled_song_item["uncompressed_size"]
-                    # Fanfares have different rule for limiting size
-                    elif vanillaSong.type == SongType.Fanfare:
-                        if shuffled_song_item["uncompressed_size"] > song_item["uncompressed_size"] * 1.5:
-                            continue
-                    # If it gets this far, the assignment is good
-                    shuffled_music.remove(shuffled_song_item)
-                    vanilla_song_list.append(song_item)
-                    new_song_list.append(shuffled_song_item)
-
-                    # Write to spoiler
-                    if vanillaSong.type == SongType.BGM:
-                        spoiler.music_bgm_data[vanillaSong.name] = newSong.name
-                    elif vanillaSong.type == SongType.Fanfare:
-                        spoiler.music_fanfare_data[vanillaSong.name] = newSong.name
-                    elif vanillaSong.type == SongType.Event:
-                        spoiler.music_event_data[vanillaSong.name] = newSong.name
-
-                    break
-                else:
-                    raise Ex.MusicPlacementExceededMapThreshold
-
-            print(song_map_vanillaTotalSize)
-            print(song_map_newTotalSize)
-            # For testing, comment out shuffle_music
-            shuffle_music(vanilla_song_list, new_song_list)
-            return
-        except Ex.MusicPlacementExceededMapThreshold:
-            if retries == 20:
-                print("Music rando failed, out of retries.")
-                raise Ex.MusicAttemptCountExceeded
-            retries += 1
-            print("Music rando failed. Retrying. Tries: " + str(retries))
-            # Reset spoiler object
-            if vanillaSong.type == SongType.BGM:
-                spoiler.music_bgm_data = {}
-            elif vanillaSong.type == SongType.Fanfare:
-                spoiler.music_fanfare_data = {}
-            elif vanillaSong.type == SongType.Event:
-                spoiler.music_event_data = {}
 
 
 def shuffle_music(spoiler: Spoiler, pool_to_shuffle, shuffled_list):
@@ -301,9 +186,9 @@ def shuffle_music(spoiler: Spoiler, pool_to_shuffle, shuffled_list):
         ROM().seek(0x1FFF000 + 2 * originalIndex)
         ROM().writeMultipleBytes(memory, 2)
         if song_data[originalIndex].type == SongType.BGM:
-            spoiler.music_bgm_data[song_data[originalIndex].name] = song_data[shuffledIndex].name
+            spoiler.music_bgm_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
         elif song_data[originalIndex].type == SongType.Fanfare:
-            spoiler.music_fanfare_data[song_data[originalIndex].name] = song_data[shuffledIndex].name
+            spoiler.music_fanfare_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
         elif song_data[originalIndex].type == SongType.Event:
-            spoiler.music_event_data[song_data[originalIndex].name] = song_data[shuffledIndex].name
+            spoiler.music_event_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
         # print(f"Vanilla Index {originalIndex}: Song {shuffledIndex}")

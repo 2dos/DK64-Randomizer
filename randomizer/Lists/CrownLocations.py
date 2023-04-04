@@ -603,7 +603,7 @@ CrownLocations = {
         CrownLocation(map=Maps.CastleMausoleum, name="Creepy Castle - Lanky Crypt: Lanky Tunnel", x=1186, y=160, z=130, scale=0.4, region=Regions.Mausoleum),
         CrownLocation(map=Maps.CastleUpperCave, name="Creepy Castle - Tunnel: Near Pit", x=704, y=200, z=852, scale=0.4, region=Regions.UpperCave),
         CrownLocation(map=Maps.CastleUpperCave, name="Creepy Castle - Tunnel: Near Candy's", x=1104, y=300, z=2241, scale=0.4, region=Regions.UpperCave),
-        CrownLocation(map=Maps.CastleLibrary, name="Creepy Castle - Library: Enemy Gauntlet Room", x=289, y=190, z=530, scale=0.5, region=Regions.Library),
+        # CrownLocation(map=Maps.CastleLibrary, name="Creepy Castle - Library: Enemy Gauntlet Room", x=289, y=190, z=530, scale=0.5, region=Regions.Library), # Disabled - if you do the crown first the enemies don't spawn, locking you in
         CrownLocation(
             map=Maps.CastleLibrary,
             name="Creepy Castle - Library: Flying Book Room",

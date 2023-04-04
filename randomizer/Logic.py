@@ -202,7 +202,23 @@ class LogicVarHolder:
         ]
         for keyEvent in keyEvents:
             if keyEvent not in self.settings.krool_keys_required:
-                self.Events.append(keyEvent)
+                # This is horrifyingly bad to go keys -> events -> keys but the patcher is expecting events in krool_keys_required and I'm not touching the math there to fix it
+                if keyEvent == Events.JapesKeyTurnedIn:
+                    self.JapesKey = True
+                elif keyEvent == Events.AztecKeyTurnedIn:
+                    self.AztecKey = True
+                elif keyEvent == Events.FactoryKeyTurnedIn:
+                    self.FactoryKey = True
+                elif keyEvent == Events.GalleonKeyTurnedIn:
+                    self.GalleonKey = True
+                elif keyEvent == Events.ForestKeyTurnedIn:
+                    self.ForestKey = True
+                elif keyEvent == Events.CavesKeyTurnedIn:
+                    self.CavesKey = True
+                elif keyEvent == Events.CastleKeyTurnedIn:
+                    self.CastleKey = True
+                elif keyEvent == Events.HelmKeyTurnedIn:
+                    self.HelmKey = True
 
         activated_warp_maps = []
         if self.settings.activate_all_bananaports == ActivateAllBananaports.all:
@@ -816,10 +832,11 @@ class LogicVarHolder:
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
-        if (
-            self.settings.win_condition == WinCondition.beat_krool or self.settings.win_condition == WinCondition.poke_snap
-        ):  # Photo taking doesn't have a clear wincon so this'll do until something better is concocted
+        if self.settings.win_condition == WinCondition.beat_krool:
             return Events.KRoolDefeated in self.Events
+        # Photo taking doesn't have a perfect wincon so this'll do until something better is concocted
+        if self.settings.win_condition == WinCondition.poke_snap:
+            return Events.KRoolDefeated in self.Events and self.camera
         elif self.settings.win_condition == WinCondition.get_key8:
             return self.HelmKey
         elif self.settings.win_condition == WinCondition.all_fairies:
