@@ -1583,9 +1583,15 @@ def numberToImage(number: int, dim: tuple):
 
 def applyHelmDoorCosmetics(spoiler: Spoiler):
     """Apply Helm Door Cosmetic Changes."""
+    crown_door_required_item = spoiler.settings.crown_door_item
+    if crown_door_required_item == HelmDoorItem.vanilla and spoiler.settings.crown_door_item_count != 4:
+        crown_door_required_item = HelmDoorItem.req_crown
+    coin_door_required_item = spoiler.settings.coin_door_item
+    if coin_door_required_item == HelmDoorItem.vanilla and spoiler.settings.coin_door_item_count != 2:
+        coin_door_required_item = HelmDoorItem.req_companycoins
     Doors = [
-        HelmDoorSetting(spoiler.settings.crown_door_item, spoiler.settings.crown_door_item_count, 6022, 6023),
-        HelmDoorSetting(spoiler.settings.coin_door_item, spoiler.settings.coin_door_item_count, 6024, 6025),
+        HelmDoorSetting(crown_door_required_item, spoiler.settings.crown_door_item_count, 6022, 6023),
+        HelmDoorSetting(coin_door_required_item, spoiler.settings.coin_door_item_count, 6024, 6025),
     ]
     Images = [
         HelmDoorImages(HelmDoorItem.req_gb, [0x155C]),

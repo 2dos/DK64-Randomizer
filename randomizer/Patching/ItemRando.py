@@ -167,8 +167,8 @@ textboxes = [
     TextboxChange(Locations.ForestDiddyOwlRace, 21, 0, "WHEN YOU CAN FLY", "WHEN YOU CAN FLY TO HAVE A CHANCE TO RECEIVE A |"),
 ]
 
-rareware_coin_reward = ("RAREWARE COIN", "DOUBLOON OF THE RAREST KIND")
-nintendo_coin_reward = ("NINTENDO COIN", "ANCIENT DOUBLOON")
+rareware_coin_reward = ("\x04RAREWARE COIN\x04", "\x04DOUBLOON OF THE RAREST KIND\x04")
+nintendo_coin_reward = ("\x04NINTENDO COIN\x04", "\x04ANCIENT DOUBLOON\x04")
 
 text_rewards = {
     Types.Banana: ("\x04GOLDEN BANANA\x04", "\x04BANANA OF PURE GOLD\x04"),
