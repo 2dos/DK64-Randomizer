@@ -22,7 +22,7 @@ storage_banks = {
 
 
 def doesSongLoop(data: bytes) -> bool:
-    """Checks if song loops."""
+    """Check if song loops."""
     byte_list = [x for xi, x in enumerate(data) if xi >= 0x44]  # Get byte list, exclude header
     for ps in range(len(byte_list) - 3):
         if byte_list[ps] == 0xFF and byte_list[ps + 1] == 0x2E and byte_list[ps + 2] == 0x00 and byte_list[ps + 3] == 0xFF:
