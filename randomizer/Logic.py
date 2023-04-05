@@ -560,7 +560,7 @@ class LogicVarHolder:
         if self.settings.crown_door_item == HelmDoorItem.opened:
             return True
         elif self.settings.crown_door_item == HelmDoorItem.vanilla:
-            return self.BattleCrowns >= 4
+            return self.DoorItemCheck(HelmDoorItem.req_crown, self.settings.crown_door_item_count)
         return self.DoorItemCheck(self.settings.crown_door_item, self.settings.crown_door_item_count)
 
     def CoinDoorOpened(self):
@@ -568,7 +568,7 @@ class LogicVarHolder:
         if self.settings.coin_door_item == HelmDoorItem.opened:
             return True
         elif self.settings.coin_door_item == HelmDoorItem.vanilla:
-            return self.nintendoCoin and self.rarewareCoin
+            return self.DoorItemCheck(HelmDoorItem.req_companycoins, self.settings.crown_door_item_count)
         return self.DoorItemCheck(self.settings.coin_door_item, self.settings.coin_door_item_count)
 
     def CanFreeDiddy(self):
