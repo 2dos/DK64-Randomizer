@@ -86,6 +86,19 @@ void initQoL_Cutscenes(void) {
     }
 }
 
+void quickWrinklyTextboxes(void) {
+    /**
+     * @brief Speeds up the wrinkly textboxes by setting the textbox timer to 0x1e upon init if A is pressed
+     */
+    if (CurrentActorPointer_0->control_state == 0) {
+        if (NewlyPressedControllerInput.Buttons.a) {
+            short* paad = CurrentActorPointer_0->paad;
+            *paad = 0x1E;
+        }
+    }
+    unkTextFunction(CurrentActorPointer_0);
+}
+
 void initQoL_Fixes(void) {
     /**
      * @brief Initialize any quality of life features which aim to fix unwanted DK64 vanilla bugs
@@ -133,6 +146,14 @@ void initQoL_Misc(void) {
     if (Rando.quality_of_life.cbs_visible) {
         *(int*)(0x806324D4) = 0x24020001; // ADDIU $v0, $r0, 1 // Disable kong flag check
         *(int*)(0x806A78C4) = 0; // NOP // Disable kong flag check
+    }
+    if (Rando.quality_of_life.fast_hints) {
+        int control_cap = 1;
+        *(short*)(0x8069E0F6) = control_cap;
+        *(short*)(0x8069E112) = control_cap;
+        *(unsigned char*)(0x80758BC9) = 0xAE; // Quadruple Growth Speed (8E -> AE)
+        *(unsigned char*)(0x80758BD1) = 0xAE; // Quadruple Shrink Speed (8E -> AE)
+        *(int*)(0x806A5C30) = 0x0C000000 | (((int)&quickWrinklyTextboxes & 0xFFFFFF) >> 2);
     }
 }
 

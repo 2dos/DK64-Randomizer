@@ -42,7 +42,8 @@
       "rambi_enguarde_pickup":true,
       "hud_bp_multibunch":true,
       "homing_balloons":true,
-      "save_krool_progress":true
+      "save_krool_progress":true,
+      "fast_hints":true
    },
    "moves_pregiven":{
       "blast":true,
@@ -205,7 +206,7 @@
    "win_condition":5,
    "version":2,
    "item_rando":1,
-   "vulture_item":72,
+   "vulture_item":47,
    "japes_rock_item":76,
    "medal_cb_req":5,
    "hard_enemies":1,

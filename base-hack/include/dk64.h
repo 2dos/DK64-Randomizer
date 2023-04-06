@@ -341,6 +341,7 @@ extern void resetKongVars(void);
 extern void handleAnimation(void* actor);
 
 extern int CanDive(void);
+extern void unkTextFunction(void* actor);
 
 //vanilla data
 extern float TransitionSpeed;

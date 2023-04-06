@@ -93,3 +93,4 @@
 .definelabel handleAnimation, 0x80614D90
 .definelabel getActorModelIndex, 0x80613448
 .definelabel CanDive, 0x806E770C
+.definelabel unkTextFunction, 0x806A4DDC

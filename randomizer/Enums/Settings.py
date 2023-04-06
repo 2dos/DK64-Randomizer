@@ -383,6 +383,7 @@ class MiscChangesSelected(IntEnum):
     vanilla_bug_fixes = 17
     save_k_rool_progress = 18
     small_bananas_always_visible = 19
+    fast_hints = 20
 
 
 class MoveRando(IntEnum):
