@@ -79,6 +79,9 @@ class Spoiler:
                 if self.settings.training_barrels == TrainingBarrels.normal:
                     for tbarrel_type in ["dive", "orange", "barrel", "vine"]:
                         master_moves.append({"move_type": "flag", "flag": tbarrel_type, "price": 0})
+                else:
+                    for tbarrel_type in ["dive", "orange", "barrel", "vine"]:
+                        master_moves.append({"move_type": None})
             elif move_master_type == 2:
                 # BFI
                 if self.settings.shockwave_status == ShockwaveStatus.vanilla:

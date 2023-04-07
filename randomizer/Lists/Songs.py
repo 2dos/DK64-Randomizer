@@ -19,12 +19,14 @@ class Song:
         self.type = type
         self.group = group
         self.memory = memory
+        self.default_memory = memory
         self.channel = channel
         self.prevent_rando = prevent_rando
 
     def Reset(self):
         """Reset song object so that output_name is reset between generations."""
         self.output_name = self.name
+        self.memory = self.default_memory
 
 
 class SongGroup(IntEnum):

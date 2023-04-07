@@ -323,10 +323,12 @@ int isFlaggedWatermelon(void) {
                 // Get Next Spawner
                 if (referenced_spawner->next_spawner) {
                     referenced_spawner = referenced_spawner->next_spawner;
+                } else {
+                    return 0;
                 }
+            } else {
                 return 0;
             }
-            return 0;
         }
     }
     return 0;

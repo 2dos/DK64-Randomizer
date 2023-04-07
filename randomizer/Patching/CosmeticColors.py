@@ -1326,6 +1326,12 @@ def applyKrushaKong(spoiler: Spoiler):
         changeKrushaModel(spoiler.settings.krusha_kong)
         if spoiler.settings.krusha_kong == Kongs.donkey:
             fixBaboonBlasts()
+        # Orange Switches
+        switch_faces = [0xB25, 0xB1E, 0xC81, 0xC80, 0xB24]
+        base_im = getFile(25, 0xC20, True, 32, 32, TextureFormat.RGBA5551)
+        orange_im = getFile(7, 0x136, False, 32, 32, TextureFormat.RGBA5551)
+        base_im.paste(orange_im, (0, 0), orange_im)
+        writeColorImageToROM(base_im, 25, switch_faces[spoiler.settings.krusha_kong], 32, 32, False, TextureFormat.RGBA5551)
 
 
 DK_SCALE = 0.75
@@ -1583,9 +1589,15 @@ def numberToImage(number: int, dim: tuple):
 
 def applyHelmDoorCosmetics(spoiler: Spoiler):
     """Apply Helm Door Cosmetic Changes."""
+    crown_door_required_item = spoiler.settings.crown_door_item
+    if crown_door_required_item == HelmDoorItem.vanilla and spoiler.settings.crown_door_item_count != 4:
+        crown_door_required_item = HelmDoorItem.req_crown
+    coin_door_required_item = spoiler.settings.coin_door_item
+    if coin_door_required_item == HelmDoorItem.vanilla and spoiler.settings.coin_door_item_count != 2:
+        coin_door_required_item = HelmDoorItem.req_companycoins
     Doors = [
-        HelmDoorSetting(spoiler.settings.crown_door_item, spoiler.settings.crown_door_item_count, 6022, 6023),
-        HelmDoorSetting(spoiler.settings.coin_door_item, spoiler.settings.coin_door_item_count, 6024, 6025),
+        HelmDoorSetting(crown_door_required_item, spoiler.settings.crown_door_item_count, 6022, 6023),
+        HelmDoorSetting(coin_door_required_item, spoiler.settings.coin_door_item_count, 6024, 6025),
     ]
     Images = [
         HelmDoorImages(HelmDoorItem.req_gb, [0x155C]),

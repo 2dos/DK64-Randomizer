@@ -13,20 +13,57 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 
+storage_banks = {
+    0: 0x8000,
+    1: 0x11C0,
+    2: 0x07C0,
+    3: 0x0160,
+}
+
+
+def doesSongLoop(data: bytes) -> bool:
+    """Check if song loops."""
+    byte_list = [x for xi, x in enumerate(data) if xi >= 0x44]  # Get byte list, exclude header
+    for ps in range(len(byte_list) - 3):
+        if byte_list[ps] == 0xFF and byte_list[ps + 1] == 0x2E and byte_list[ps + 2] == 0x00 and byte_list[ps + 3] == 0xFF:
+            return True
+    return False
+
 
 def insertUploaded(uploaded_songs: list, uploaded_song_names: list, target_type: SongType):
     """Insert uploaded songs into ROM."""
     added_songs = list(zip(uploaded_songs, uploaded_song_names))
     random.shuffle(added_songs)
     all_target_songs = [song for song in song_data if song.type == target_type]
-    songs_to_be_replaced = random.sample(all_target_songs, len(added_songs))
+    swap_amount = len(added_songs)
+    if swap_amount > len(all_target_songs):
+        swap_amount = len(all_target_songs)
+    songs_to_be_replaced = random.sample(all_target_songs, swap_amount)
     for index, song in enumerate(songs_to_be_replaced):
-        song_idx = song_data.index(song)
-        song_data[song_idx].output_name = added_songs[index][1]
-        entry_data = js.pointer_addresses[0]["entries"][song_idx]
-        ROM().seek(entry_data["pointing_to"])
-        zipped_data = gzip.compress(bytes(added_songs[index][0]), compresslevel=9)
-        ROM().writeBytes(zipped_data)
+        selected_bank = None
+        selected_cap = 0xFFFFFF
+        new_song_data = bytes(added_songs[index][0])
+        for bank in storage_banks:
+            if len(new_song_data) <= storage_banks[bank]:  # Song can fit in bank
+                if selected_cap > storage_banks[bank]:  # Bank size is new lowest that fits
+                    selected_bank = bank
+                    selected_cap = storage_banks[bank]
+        if selected_bank is not None:
+            song_idx = song_data.index(song)
+            # Construct new memory data based on variables
+            song_data[song_idx].memory &= 0xFEF9
+            song_data[song_idx].memory |= selected_bank << 1
+            loop = doesSongLoop(new_song_data)
+            loop_val = 0
+            if loop:
+                loop_val = 1
+            song_data[song_idx].memory |= loop_val << 8
+            # Write Song
+            song_data[song_idx].output_name = added_songs[index][1]
+            entry_data = js.pointer_addresses[0]["entries"][song_idx]
+            ROM().seek(entry_data["pointing_to"])
+            zipped_data = gzip.compress(new_song_data, compresslevel=9)
+            ROM().writeBytes(zipped_data)
 
 
 def randomize_music(spoiler: Spoiler):

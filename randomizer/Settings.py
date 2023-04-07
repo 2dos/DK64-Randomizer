@@ -1161,12 +1161,12 @@ class Settings:
         ):
             # Move a random location to a non-Aztec location
             kongCageLocations.pop()
-            kongCageLocations.append(random.choice(Locations.DiddyKong, Locations.ChunkyKong))
+            kongCageLocations.append(random.choice([Locations.DiddyKong, Locations.ChunkyKong]))
         # In case Diddy is the only kong to free, he can't be in the Llama Temple since it's behind the Guitar door
         if not bypass_guitar_door and self.starting_kongs_count == 4 and Kongs.diddy not in self.starting_kong_list and Locations.LankyKong in kongCageLocations:
             # Move diddy kong from llama temple to another cage randomly chosen
             kongCageLocations.remove(Locations.LankyKong)
-            kongCageLocations.append(random.choice(Locations.DiddyKong, Locations.TinyKong, Locations.ChunkyKong))
+            kongCageLocations.append(random.choice([Locations.DiddyKong, Locations.TinyKong, Locations.ChunkyKong]))
         return kongCageLocations
 
     def __repr__(self):

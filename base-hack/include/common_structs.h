@@ -101,7 +101,9 @@ typedef struct actorData {
 	/* 0x0EA */ char unk_EA[0x4];
 	/* 0x0EE */ short rot_y_copy;
 	/* 0x0F0 */ short reward_index;
-	/* 0x0F2 */ char unk_F2[0x11C-0xF2];
+	/* 0x0F2 */ char unk_F2[0xFD-0xF2];
+	/* 0x0FD */ unsigned char unk_FD;
+	/* 0x0FE */ char unk_FE[0x11C-0xFE];
 	/* 0x11C */ void* parent;
 	/* 0x120 */ char unk_120[0x124-0x120];
 	/* 0x124 */ actor_subdata* data_pointer;
@@ -122,7 +124,10 @@ typedef struct actorData {
 	/* 0x15F */ char sub_state;
 	/* 0x160 */ char unk_160[0x16A-0x160];
 	/* 0x16A */ char rgb_mask[3];
-	/* 0x16D */ char unk_16D[0x174-0x16D];
+	/* 0x16D */ char unk_16D;
+	/* 0x16E */ char unk_16E;
+	/* 0x16F */ char unk_16F;
+	/* 0x170 */ char unk_170[0x174-0x170];
 	/* 0x174 */ void* paad;
 	/* 0x178 */ void* paad2;
 	/* 0x17C */ void* paad3;
@@ -1188,24 +1193,25 @@ typedef struct collected_item_struct {
 
 typedef struct quality_options {
 	unsigned char reduce_lag : 1;
-	unsigned char remove_cutscenes : 1; // 2
+	unsigned char remove_cutscenes : 1; // 1
 	unsigned char fast_picture : 1;
-	unsigned char aztec_lobby_bonus : 1; // 4
+	unsigned char aztec_lobby_bonus : 1; // 3
 	unsigned char dance_skip : 1;
-	unsigned char fast_boot : 1; // 6
+	unsigned char fast_boot : 1; // 5
 	unsigned char fast_transform : 1;
-	unsigned char ammo_swap : 1; // 8
+	unsigned char ammo_swap : 1; // 7
 	unsigned char cb_indicator : 1;
-	unsigned char galleon_star : 1; // 10
+	unsigned char galleon_star : 1; // 9
 	unsigned char vanilla_fixes : 1;
-	unsigned char textbox_hold : 1; // 12
+	unsigned char textbox_hold : 1; // 11
 	unsigned char caves_kosha_dead : 1;
-	unsigned char rambi_enguarde_pickup : 1; // 14
+	unsigned char rambi_enguarde_pickup : 1; // 13
 	unsigned char hud_bp_multibunch : 1;
-	unsigned char homing_balloons : 1; // 16
+	unsigned char homing_balloons : 1; // 15
 	unsigned char save_krool_progress : 1;
-	unsigned char cbs_visible : 1; // 18
+	unsigned char cbs_visible : 1; // 17
 	unsigned char blueprint_compression : 1;
+	unsigned char fast_hints : 1; // 19
 } quality_options;
 
 typedef struct image_cache_struct {

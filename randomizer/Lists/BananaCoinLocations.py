@@ -5451,7 +5451,7 @@ BananaCoinGroupList = {
             name="On various rafters",
             konglist=[Kongs.diddy],
             region=Regions.MillRafters,
-            logic=lambda l: True,
+            logic=lambda l: l.guitar and l.isdiddy,
             locations=[
                 [1.0, 247, 0, 561],
                 [1.0, 246, -25, 481],

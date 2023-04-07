@@ -247,6 +247,15 @@ void initActorDefs(void) {
     *(unsigned short*)(0x80689452) = DEFS_LIMIT;
 }
 
+void changeFeatherToSprite(void) {
+    actor_defs[24].model = 0;
+    actor_master_types[43] = ACTORMASTER_SPRITE;
+}
+
+void setActorDamage(int actor, int new_damage) {
+    actor_health_damage[actor].damage_applied = new_damage;
+}
+
 #define GB_DICTIONARY_COUNT 120
 static GBDictItem NewGBDictionary[GB_DICTIONARY_COUNT] = {};
 

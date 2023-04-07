@@ -182,7 +182,7 @@ DirtPatchLocations = [
         rotation=1934,
         group=2,
         logicregion=Regions.IslesMain,
-        logic=lambda l: (l.GalleonKey or l.phasewalk) and l.shockwave,
+        logic=lambda l: (Events.GalleonKeyTurnedIn in l.Events or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles: Behind Fungi Building", level=Levels.DKIsles, map_id=Maps.Isles, x=2436.0, y=1498.0, z=817.0, rotation=637, group=2, logicregion=Regions.CabinIsle, logic=lambda l: l.shockwave
@@ -1311,7 +1311,7 @@ DirtPatchLocations = [
         rotation=1137,
         group=4,
         logicregion=Regions.MushroomUpper,
-        logic=lambda l: l.twirl or l.donkey and l.shockwave,
+        logic=lambda l: ((l.istiny and l.twirl) or l.isdonkey) and l.shockwave,
     ),
     DirtPatchData(
         name="Fungi Forest - Forest Giant Mushroom: Next to the cannon below the night door",
