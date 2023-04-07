@@ -337,6 +337,7 @@ door_locations = {
             rx=6,
             group=2,
             moveless=False,
+            door_type="wrinkly",
             logic=lambda l: True,
         ),
         DoorData(

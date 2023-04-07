@@ -37,7 +37,7 @@
 | Jungle Japes | Jungle Japes: Entrance Tunnel - Near Diddy Cave - front left | Both |  | 
 | Jungle Japes | Jungle Japes: Entrance Tunnel - Near Warppad 1 and 2 | Both |  | 
 | Jungle Japes | Jungle Japes: Diddy Tunnel - next to hole - river side | Both |  | 
-| Jungle Japes | Jungle Japes: Diddy Tunnel - river side | Both |  | 
+| Jungle Japes | Jungle Japes: Diddy Tunnel - river side | Wrinkly |  | 
 | Jungle Japes | Jungle Japes: Near Warp 4 and Tunnel Threeway crossing | Both |  | 
 | Jungle Japes | Jungle Japes: Cranky Tunnel - Crossroad | Wrinkly |  | 
 | Jungle Japes | Jungle Japes: Cranky Area - front-right | Both |  | 
