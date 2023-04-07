@@ -101,7 +101,9 @@ typedef struct actorData {
 	/* 0x0EA */ char unk_EA[0x4];
 	/* 0x0EE */ short rot_y_copy;
 	/* 0x0F0 */ short reward_index;
-	/* 0x0F2 */ char unk_F2[0x11C-0xF2];
+	/* 0x0F2 */ char unk_F2[0xFD-0xF2];
+	/* 0x0FD */ unsigned char unk_FD;
+	/* 0x0FE */ char unk_FE[0x11C-0xFE];
 	/* 0x11C */ void* parent;
 	/* 0x120 */ char unk_120[0x124-0x120];
 	/* 0x124 */ actor_subdata* data_pointer;
@@ -122,7 +124,10 @@ typedef struct actorData {
 	/* 0x15F */ char sub_state;
 	/* 0x160 */ char unk_160[0x16A-0x160];
 	/* 0x16A */ char rgb_mask[3];
-	/* 0x16D */ char unk_16D[0x174-0x16D];
+	/* 0x16D */ char unk_16D;
+	/* 0x16E */ char unk_16E;
+	/* 0x16F */ char unk_16F;
+	/* 0x170 */ char unk_170[0x174-0x170];
 	/* 0x174 */ void* paad;
 	/* 0x178 */ void* paad2;
 	/* 0x17C */ void* paad3;
