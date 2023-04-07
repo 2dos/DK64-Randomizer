@@ -225,7 +225,7 @@ typedef struct projectile_extra {
     /* 0x000 */ float initial_rotation;
     /* 0x004 */ float initial_velocity;
     /* 0x008 */ float initial_yvelocity;
-    /* 0x00C */ int unkC;
+    /* 0x00C */ float unkC;
     /* 0x010 */ float unk10;
     /* 0x014 */ float unk14;
 } projectile_extra;
@@ -249,7 +249,7 @@ void OrangeGunCode(void) {
         unkSpriteRenderFunc(-1);
         unkSpriteRenderFunc_1(1);
         unkSpriteRenderFunc_2(4);
-        unkCutsceneKongFunction(0x80720268, extra->unkC, CurrentActorPointer_0, 1, 2);
+        unkCutsceneKongFunction(0x80720268, *(int*)&extra->unkC, CurrentActorPointer_0, 1, 2);
         paad->unk_14 = extra->unkC;
         paad->init_actor_timer = current_actor_timer;
         CurrentActorPointer_0->obj_props_bitfield |= 0x01080000;
@@ -271,7 +271,7 @@ void OrangeGunCode(void) {
         if (player_count > 1) {
             homing_bitfield = 3;
         }
-        homing_code(homing_bitfield, CurrentActorPointer_0, 0x68, 0);
+        homing_code(homing_bitfield, CurrentActorPointer_0, 0x80720268, 0);
     }
     if (paad->fired_bitfield & 4) { // Sniper
         orange_life = 0x64;
