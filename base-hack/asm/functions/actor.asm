@@ -93,3 +93,13 @@
 .definelabel handleAnimation, 0x80614D90
 .definelabel getActorModelIndex, 0x80613448
 .definelabel CanDive, 0x806E770C
+.definelabel unkTextFunction, 0x806A4DDC
+.definelabel homing_code, 0x80690C60
+.definelabel madeContact, 0x80665558
+.definelabel madeGroundContact, 0x8066641C
+.definelabel unkProjectileCode_0, 0x8066EB40
+.definelabel unkProjectileCode_1, 0x8066E8E4
+.definelabel allocateBone, 0x8066E854
+.definelabel unkProjectileCode_2, 0x806651FC
+.definelabel unkProjectileCode_3, 0x80665564
+.definelabel unkProjectileCode_4, 0x80608528

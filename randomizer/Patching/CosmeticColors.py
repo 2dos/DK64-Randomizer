@@ -1326,6 +1326,12 @@ def applyKrushaKong(spoiler: Spoiler):
         changeKrushaModel(spoiler.settings.krusha_kong)
         if spoiler.settings.krusha_kong == Kongs.donkey:
             fixBaboonBlasts()
+        # Orange Switches
+        switch_faces = [0xB25, 0xB1E, 0xC81, 0xC80, 0xB24]
+        base_im = getFile(25, 0xC20, True, 32, 32, TextureFormat.RGBA5551)
+        orange_im = getFile(7, 0x136, False, 32, 32, TextureFormat.RGBA5551)
+        base_im.paste(orange_im, (0, 0), orange_im)
+        writeColorImageToROM(base_im, 25, switch_faces[spoiler.settings.krusha_kong], 32, 32, False, TextureFormat.RGBA5551)
 
 
 DK_SCALE = 0.75

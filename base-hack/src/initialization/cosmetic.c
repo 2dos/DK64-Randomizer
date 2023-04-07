@@ -31,6 +31,12 @@ void initDiscoChunky(void) {
     }
 }
 
+static short pellets[] = {48, 36, 42, 43, 38};
+
+#define ORANGE_GUN_SFX 400
+#define ORANGE_GUN_VARIANCE 5
+#define ENABLE_ORANGE_GUN 1
+
 void initKrusha(void) {
     /**
      * @brief Initialize the Krusha Cosmetic/Gameplay feature
@@ -51,6 +57,16 @@ void initKrusha(void) {
         *(short*)(0x8074AB5A) = 0x0040; // Enables Krusha's spin attack to knock kasplats down
         PotionAnimations[slot] = PotionAnimations[4];
         actor_functions[2 + slot] = (void*)0x806C9F44; // Replace Kong Code w/ Krusha Code
+        if (ENABLE_ORANGE_GUN) {
+            // Gun Stuff
+            int focused_pellet = pellets[slot];
+            actor_functions[focused_pellet] = &OrangeGunCode;
+            *(short*)(0x806E241A) = focused_pellet;
+            *(int*)(0x8075D154 + (slot << 2)) = 0x806E2408;
+            setActorDamage(focused_pellet, 3);
+            *(int*)(0x8071AAC4) = 0;
+            *(int*)(0x8075DBB4 + (slot << 2)) = 0x806FAE0C;
+        }
         switch (slot) {
             case 0:
                 // DK
@@ -60,6 +76,10 @@ void initKrusha(void) {
                 *(int*)(0x806F0AF0) = 0x24050001; // Fix Hand State
                 *(int*)(0x806D5EC4) = 0; // Prevent Moving Ground Attack pop up
                 *(short*)(0x8064AF5E) = 5; // Reduce slam range for DK Dungeon GB Slam
+                if (ENABLE_ORANGE_GUN) {
+                    *(short*)(0x806E2AA2) = ORANGE_GUN_SFX; // SFX
+                    *(short*)(0x806E2AA6) = ORANGE_GUN_VARIANCE; // Variance
+                }
                 break;
             case 1:
                 // Diddy
@@ -87,6 +107,9 @@ void initKrusha(void) {
                 *(short*)(0x8074974C) = 10; // Fix Diddy Swimming (Z/First Person)
                 *(int*)(0x806E903C) = 0x0C000000 | (((int)&MinecartJumpFix & 0xFFFFFF) >> 2); // Fix Diddy Minecart Jump
                 *(int*)(0x806D259C) = 0x0C000000 | (((int)&MinecartJumpFix_0 & 0xFFFFFF) >> 2); // Fix Diddy Minecart Jump
+                if (ENABLE_ORANGE_GUN) {
+                    *(short*)(0x806E2AB2) = ORANGE_GUN_SFX; // SFX
+                }
                 break;
             case 2:
                 // Lanky
@@ -105,6 +128,10 @@ void initKrusha(void) {
                 *(short*)(0x80749C80) = 10; // Fix Lanky Swimming (B)
                 *(short*)(0x80749CA4) = 10; // Fix Lanky Swimming (Z/First Person)
                 *(int*)(0x806141B4) = 0x0C000000 | (((int)&DiddySwimFix & 0xFFFFFF) >> 2); // Fix Lanky's Swim Animation
+                if (ENABLE_ORANGE_GUN) {
+                    *(short*)(0x806E2A7E) = ORANGE_GUN_SFX; // SFX
+                    *(short*)(0x806E2A86) = ORANGE_GUN_VARIANCE; // Variance
+                }
                 break;
             case 3:
                 // Tiny
@@ -117,6 +144,12 @@ void initKrusha(void) {
                 *(short*)(0x806832C0) = 0x5000; // Prevent tag blinking
                 *(int*)(0x806C1058) = 0; // Prevent Cutscene Kong blinking
                 *(int*)(0x806F0AD0) = 0x24050001; // Fix Hand State
+                if (ENABLE_ORANGE_GUN) {
+                    changeFeatherToSprite();
+                    *(short*)(0x806E2A8A) = ORANGE_GUN_SFX; // SFX
+                    *(int*)(0x806E2A90) = 0x24030000 | ORANGE_GUN_VARIANCE; // Variance
+                    *(float*)(0x80753E38) = 350.0f;
+                }
                 break;
             case 4:
                 // Chunky
