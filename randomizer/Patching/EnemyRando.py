@@ -216,6 +216,23 @@ def isBanned(new_enemy_id: Enemies, cont_map_id: Maps, spawner: Spawner, no_grou
         return True
     if cont_map_id == Maps.ForestGiantMushroom and spawner.index in (3, 4):
         return True
+    gun_enemy_gauntlets = (
+        Maps.ForestMillAttic,
+        Maps.CavesDonkeyCabin,
+        Maps.JapesLankyCave,
+        Maps.CastleShed,
+    )
+    enemies_cant_kill_gun = (
+        Enemies.Klump,
+        Enemies.RoboKremling,
+        Enemies.Kosha,
+        Enemies.Klobber,
+        Enemies.Kaboom,
+        Enemies.KlaptrapPurple,
+        Enemies.Guard,
+    )
+    if (cont_map_id in gun_enemy_gauntlets or (cont_map_id == Maps.AztecTinyTemple and spawner.index < 17)) and new_enemy_id in enemies_cant_kill_gun:
+        return True
     return False
 
 
@@ -395,6 +412,17 @@ def writeEnemy(spoiler: Spoiler, cont_map_spawner_address: int, new_enemy_id: in
             ROM().writeMultipleBytes(0, 1)
             ROM().seek(cont_map_spawner_address + spawner.offset + 0xB)
             ROM().writeMultipleBytes(0, 1)
+            # Spawning fixes
+            # Prevent respawn anim if that's how they initially appear
+            ROM().seek(cont_map_spawner_address + spawner.offset + 0x12)
+            init_respawn_state = int.from_bytes(ROM().readBytes(1), "big")
+            if init_respawn_state == 3:
+                ROM().seek(cont_map_spawner_address + spawner.offset + 0x12)
+                ROM().writeMultipleBytes(0, 1)
+            # Prevent them respawning
+            ROM().seek(cont_map_spawner_address + spawner.offset + 0x14)
+            ROM().writeMultipleBytes(0, 1)
+
         if (cont_map_id in crown_maps or cont_map_id in minigame_maps_total) and EnemyMetaData[new_enemy_id].air:
             height = 300
             if cont_map_id in crown_maps:
@@ -608,9 +636,15 @@ def randomize_enemies(spoiler: Spoiler):
                 for spawner in vanilla_spawners:
                     if spawner.enemy_id in tied_enemy_list:
                         new_enemy_id = random.choice(tied_enemy_list)
-                        # Balance beaver bother so it's a 2:1 ratio of blue to gold beavers
+                        # Balance beaver bother so it's a 4:1 ratio of blue to gold beavers, guarantee 1 gold
                         if cont_map_id in minigame_maps_beavers:
-                            new_enemy_id = random.choice([Enemies.BeaverBlue, Enemies.BeaverBlue, Enemies.BeaverGold])
+                            if spawner.index == 1:
+                                new_enemy_id = Enemies.BeaverGold
+                            else:
+                                selection = random.uniform(0, 1)
+                                new_enemy_id = Enemies.BeaverBlue
+                                if selection < 0.2:
+                                    new_enemy_id = Enemies.BeaverGold
                         writeEnemy(spoiler, cont_map_spawner_address, new_enemy_id, spawner, cont_map_id, 0)
             if spoiler.settings.crown_enemy_rando != CrownEnemyRando.off and cont_map_id in crown_maps:
                 # Determine Crown Timer
