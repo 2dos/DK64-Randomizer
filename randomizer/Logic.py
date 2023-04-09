@@ -568,7 +568,7 @@ class LogicVarHolder:
         if self.settings.coin_door_item == HelmDoorItem.opened:
             return True
         elif self.settings.coin_door_item == HelmDoorItem.vanilla:
-            return self.DoorItemCheck(HelmDoorItem.req_companycoins, self.settings.crown_door_item_count)
+            return self.DoorItemCheck(HelmDoorItem.req_companycoins, self.settings.coin_door_item_count)
         return self.DoorItemCheck(self.settings.coin_door_item, self.settings.coin_door_item_count)
 
     def CanFreeDiddy(self):
