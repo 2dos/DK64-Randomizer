@@ -113,6 +113,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
                     "save_krool_progress",
                     "cbs_visible",
                     "blueprint_compression",
+                    "fast_hints",
                 ]
                 bitfield_offset = 0xB0
             elif x == "moves_pregiven":

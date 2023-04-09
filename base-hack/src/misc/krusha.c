@@ -211,3 +211,106 @@ void MinecartJumpFix_0(void) {
         CurrentActorPointer_0->control_state_progress = 0;
     }
 }
+
+typedef struct projectile_paad {
+    /* 0x000 */ int init_actor_timer;
+    /* 0x004 */ char unk_04[0x13-0x4];
+    /* 0x013 */ unsigned char fired_bitfield;
+    /* 0x014 */ float unk_14;
+    /* 0x018 */ char unk_18[0x1C-0x18];
+    /* 0x01C */ int unk_1C;
+} projectile_paad;
+
+typedef struct projectile_extra {
+    /* 0x000 */ float initial_rotation;
+    /* 0x004 */ float initial_velocity;
+    /* 0x008 */ float initial_yvelocity;
+    /* 0x00C */ float unkC;
+    /* 0x010 */ float unk10;
+    /* 0x014 */ float unk14;
+} projectile_extra;
+
+void OrangeGunCode(void) {
+    /**
+     * @brief New code for the orange projectile fired from a gun
+     */
+    projectile_paad* paad = CurrentActorPointer_0->paad;
+    projectile_extra* extra = (projectile_extra*)CurrentActorPointer_0->data_pointer;
+    int current_actor_timer = *(int*)(0x8076A068);
+    if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+        CurrentActorPointer_0->grounded &= 0xFFFE;
+        CurrentActorPointer_0->rot_y_copy = (extra->initial_rotation / *(float*)(0x8075A170)) * *(float*)(0x8075A174);
+        CurrentActorPointer_0->hSpeed = extra->initial_velocity;
+        CurrentActorPointer_0->yVelocity = extra->initial_yvelocity;
+        CurrentActorPointer_0->noclip_byte = 0x3C;
+        unkProjectileCode_0(CurrentActorPointer_0, 0x42700000);
+        unkProjectileCode_1(CurrentActorPointer_0, 0, 0, 0, 0x42480000, -1);
+        allocateBone(CurrentActorPointer_0, 0, 0, 0, -1);
+        unkSpriteRenderFunc(-1);
+        unkSpriteRenderFunc_1(1);
+        unkSpriteRenderFunc_2(4);
+        unkCutsceneKongFunction(0x80720268, *(int*)&extra->unkC, CurrentActorPointer_0, 1, 2);
+        paad->unk_14 = extra->unkC;
+        paad->init_actor_timer = current_actor_timer;
+        CurrentActorPointer_0->obj_props_bitfield |= 0x01080000;
+        CurrentActorPointer_0->unk_16E = 0x3C;
+        CurrentActorPointer_0->unk_16F = 0x3C;
+        int val = extra->unk10;
+        if (val < 0) {
+            val = 0xFF;
+        }
+        paad->fired_bitfield = val;
+        paad->unk_1C = 0;
+    }
+    int orange_life = 0x32; // No Sniper
+    if (paad->fired_bitfield & 2) { // Homing
+        int homing_bitfield = 2;
+        if (Rando.quality_of_life.homing_balloons) {
+            homing_bitfield = 10;
+        }
+        if (player_count > 1) {
+            homing_bitfield = 3;
+        }
+        homing_code(homing_bitfield, CurrentActorPointer_0, 0x80720268, 0);
+    }
+    if (paad->fired_bitfield & 4) { // Sniper
+        orange_life = 0x64;
+    }
+    float life = orange_life;
+    unkBonusFunction(CurrentActorPointer_0);
+    unkProjectileCode_2(CurrentActorPointer_0);
+    unkProjectileCode_3(CurrentActorPointer_0, 0);
+    int making_contact = madeContact();
+    if (
+        (making_contact) ||
+        (CurrentActorPointer_0->unk_FD) ||
+        ((CurrentActorPointer_0->grounded & 1) && (madeGroundContact() == 1)) ||
+        (collisionActive) ||
+        ((extra->unk14 != 0.0f) && ((paad->init_actor_timer + 1) < current_actor_timer))
+    ) {
+        unkSpriteRenderFunc_1(1);
+        unkSpriteRenderFunc_3(0x1006E);
+        loadSpriteFunction(0x8071A8B0); // TODO: Remove light rendering, saves 4fps
+        float x = CurrentActorPointer_0->xPos;
+        float y = CurrentActorPointer_0->yPos;
+        float z = CurrentActorPointer_0->zPos;
+        displaySpriteAtXYZ(sprite_table[39], 0x40000000, x, y, z);
+        // displaySpriteAtXYZ(sprite_table[5], 0x3EE66666, x, y, z);
+        unkProjectileCode_4(CurrentActorPointer_0, 0xF6, 0xFF, 0x7F, 0x1E);
+        deleteActorContainer(CurrentActorPointer_0);
+        if (*(char*)(0x80750AD0) == 0) {
+            for (int i = 0; i < 6; i++) {
+                unkSpriteRenderFunc_1(1);
+                unkSpriteRenderFunc_3(0xB000000 + (i << 1));
+                loadSpriteFunction(0x8071ABDC);
+                displaySpriteAtXYZ(sprite_table[38], 0x3EB33333, x, y, z);
+            }
+        }
+    }
+    if (player_count > 1) {
+        life *= 1.4f;
+    }
+    if ((paad->init_actor_timer + life) < current_actor_timer) {
+        deleteActorContainer(CurrentActorPointer_0);
+    }
+}

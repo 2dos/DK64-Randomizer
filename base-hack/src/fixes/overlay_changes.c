@@ -457,5 +457,9 @@ void parseCutsceneData(void) {
 	if (Rando.quality_of_life.remove_cutscenes) {
 		updateSkippableCutscenes();
 	}
+	if (Rando.quality_of_life.fast_hints) {
+		modifyCutscenePointTime(1, 0x22, 1, 1);
+		modifyCutscenePointTime(1, 0x22, 3, 1);
+	}
 	loadDKTVData(); // Has to be last
 }

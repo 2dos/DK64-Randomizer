@@ -324,6 +324,18 @@ for si, s in enumerate(starts):
 kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
 ammo_names = ["standard_crate", "homing_crate"]
 
+switch_faces = [0xB25, 0xB1E, 0xC81, 0xC80, 0xB24]
+for face_index, face in enumerate(switch_faces):
+    file_dict.append(
+        File(
+            name=f"Switch Face (Kong {face_index + 1})",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=face,
+            source_file=f"switch_face_{face}.bin",
+            target_size=32 * 32 * 2,
+        )
+    )
+
 for ammo_index, ammo in enumerate(ammo_names):
     file_dict.append(
         File(
