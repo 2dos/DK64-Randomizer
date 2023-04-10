@@ -448,7 +448,7 @@
 | R&D corners of room with lever | 10 |  | 
 | Corners of Car race room (right) | 10 | l.mini | 
 | Corners of Car race room (left) | 10 | l.mini | 
-| Diddy R&D room | 10 |  | 
+| Diddy R&D room | 10 | l.guitar | 
 | Diddy R&D room in front of 4 buttons | 20 | l.guitar | 
 | Leading to Chunky R&D room | 2 | l.punch and l.chunky | 
 | Leading to Chunky R&D room | 3 |  | 
