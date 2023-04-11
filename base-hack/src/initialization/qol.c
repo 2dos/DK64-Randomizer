@@ -496,6 +496,8 @@ void initNonControllableFixes(void) {
     *(int*)(0x806E9658) = 0x0C000000 | (((int)&CanDive_WithCheck & 0xFFFFFF) >> 2);
     // Prevent Japes Dillo Cutscene for the key acquisition
     *(short*)(0x806EFCEC) = 0x1000;
+    // Make getting out of spider traps easier on controllers
+    *(int*)(0x80752ADC) = (int)&exitTrapBubbleController;
 }
 
 void initQoL(void) {

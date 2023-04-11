@@ -282,3 +282,32 @@ void fixCrownEntrySKong(playerData* player, int animation) {
 	player->strong_kong_ostand_bitfield &= 0xFFFFFFEF;
 	playAnimation(player, animation);
 }
+
+void reduceTrapBubbleLife(void) {
+	Player->trap_bubble_timer -= 5;
+	if (Player->trap_bubble_timer < 1) {
+		Player->trap_bubble_timer = 1;
+	}
+}
+
+void exitTrapBubbleController(void) {
+	int x = stickX_interpretted;
+	int y = stickY_interpretted;
+	int threshold = 0x28;
+	if (((x > threshold) || (y > threshold)) && (Player->unk_288 != 0.0f)) {
+		Player->unk_288 = 1.0f;
+		reduceTrapBubbleLife();
+		return;
+	}
+	if (((x < -threshold) || (y < -threshold)) && (Player->unk_288 == 0.0f)) {
+		Player->unk_288 = 0.0f;
+		reduceTrapBubbleLife();
+		return;
+	}
+	if (NewlyPressedControllerInput.Buttons.a) {
+		// Perform reduction twice to counteract that this can be done once per two frames
+		reduceTrapBubbleLife();
+		reduceTrapBubbleLife();
+		return;
+	}
+}
