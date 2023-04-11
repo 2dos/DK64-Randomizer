@@ -531,7 +531,7 @@ CrownLocations = {
         CrownLocation(map=Maps.CavesLankyIgloo, name="Crystal Caves - Lanky 5DI: High Platform", x=273, y=123.3, z=245, scale=0.25, region=Regions.LankyIgloo, logic=lambda l: l.balloon and l.islanky),
         CrownLocation(map=Maps.CavesTinyIgloo, name="Crystal Caves - Tiny 5DI: Opposite Entrance", x=385, y=0, z=200, scale=0.4, region=Regions.TinyIgloo),
         CrownLocation(map=Maps.CavesLankyCabin, name="Crystal Caves - Lanky 1DC: Carpet", x=448, y=0, z=332, scale=0.45, region=Regions.LankyCabin),
-        CrownLocation(map=Maps.CavesChunkyCabin, name="Crystal Caves - Chunky 5DC: Back Left Corner", x=493, y=0, z=536, scale=0.35, region=Regions.ChunkyCabin),
+        # CrownLocation(map=Maps.CavesChunkyCabin, name="Crystal Caves - Chunky 5DC: Back Left Corner", x=493, y=0, z=536, scale=0.35, region=Regions.ChunkyCabin),
         CrownLocation(map=Maps.CavesDiddyUpperCabin, name="Crystal Caves - Diddy Upper 5DC: Right", x=106, y=0, z=353, scale=0.45, region=Regions.DiddyUpperCabin),
         CrownLocation(map=Maps.CavesDonkeyCabin, name="Crystal Caves - DK 5DC: Opposite Entrance", x=165, y=0, z=463, scale=0.35, region=Regions.DonkeyCabin),
         CrownLocation(map=Maps.CavesTinyCabin, name="Crystal Caves - Tiny Cabin: Interior", x=179, y=0, z=255, scale=0.35, region=Regions.TinyCabin),

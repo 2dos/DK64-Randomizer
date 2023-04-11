@@ -233,7 +233,6 @@
 | Caves Lanky Igloo | Crystal Caves - Lanky 5DI: High Platform | l.balloon and l.islanky) | 
 | Caves Tiny Igloo | Crystal Caves - Tiny 5DI: Opposite Entrance |  | 
 | Caves Lanky Cabin | Crystal Caves - Lanky 1DC: Carpet |  | 
-| Caves Chunky Cabin | Crystal Caves - Chunky 5DC: Back Left Corner |  | 
 | Caves Diddy Upper Cabin | Crystal Caves - Diddy Upper 5DC: Right |  | 
 | Caves Donkey Cabin | Crystal Caves - DK 5DC: Opposite Entrance |  | 
 | Caves Tiny Cabin | Crystal Caves - Tiny Cabin: Interior |  | 
