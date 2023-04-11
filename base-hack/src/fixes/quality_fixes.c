@@ -36,6 +36,15 @@ void qualityOfLife_fixes(void) {
 					}
 				}
 			}
+		} else if (CurrentMap == MAP_CAVESROTATINGROOM) {
+			if (Player) {
+				if (Player->yPos < 50.0f) {
+					Player->xPos = 317.0f;
+					Player->yPos = 124.0f;
+					Player->zPos = 295.0f;
+					displaySpriteAtXYZ(sprite_table[19], 0x3F800000, Player->xPos, Player->yPos, Player->zPos);
+				}
+			}
 		}
 	}
 }
