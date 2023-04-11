@@ -34,6 +34,13 @@ void cFuncLoop(void) {
 		} else if (CurrentMap == MAP_CAVESBEETLERACE) {
 			TextItemName = Rando.caves_beetle_reward;
 		}
+		if (Rando.krusha_slot == 3) {
+			if (CurrentMap == MAP_KROOLSHOE) {
+				setActorDamage(43, 1);
+			} else {
+				setActorDamage(43, 3);
+			}
+		}
 		handleKRoolSaveProgress();
 	}
 	if (Rando.item_rando) {
