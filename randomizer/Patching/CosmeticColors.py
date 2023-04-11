@@ -530,7 +530,7 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
                 pix_data = [0, 0, 0, 0]
             else:
                 pix_data = list(pix[x, y])
-            if format == "rgba32":
+            if format == TextureFormat.RGBA32:
                 bytes_array.extend(pix_data)
             else:
                 red = int((pix_data[0] >> 3) << 11)
@@ -541,7 +541,7 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
                 bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
     data = bytearray(bytes_array)
     bytes_per_px = 2
-    if format == "rgba32":
+    if format == TextureFormat.RGBA32:
         bytes_per_px = 4
     if len(data) > (bytes_per_px * width * height):
         print(f"Image too big error: {table_index} > {file_index}")
@@ -556,7 +556,7 @@ def writeKasplatHairColorToROM(color, table_index, file_index, format: str):
     """Write color to ROM for kasplats."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     mask = getRGBFromHash(color)
-    if format == "rgba32":
+    if format == TextureFormat.RGBA32:
         color_lst = mask.copy()
         color_lst.append(255)  # Alpha
         null_color = [0] * 4
@@ -589,7 +589,7 @@ def writeWhiteKasplatHairColorToROM(color1, color2, table_index, file_index, for
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     mask = getRGBFromHash(color1)
     mask2 = getRGBFromHash(color2)
-    if format == "rgba32":
+    if format == TextureFormat.RGBA32:
         color_lst_0 = mask.copy()
         color_lst_0.append(255)
         color_lst_1 = mask2.copy()
@@ -633,7 +633,7 @@ def writeKlaptrapSkinColorToROM(color_index, table_index, file_index, format: st
     im_f = maskImage(im_f, color_index, 0, (color_index != 3))
     pix = im_f.load()
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
-    if format == "rgba32":
+    if format == TextureFormat.RGBA32:
         null_color = [0] * 4
     else:
         null_color = [0, 0]
@@ -669,7 +669,7 @@ def writeSpecialKlaptrapTextureToROM(color_index, table_index, file_index, forma
     im_f_masked = maskImage(im_f, color_index, 0, (color_index != 3))
     pix = im_f_masked.load()
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
-    if format == "rgba32":
+    if format == TextureFormat.RGBA32:
         null_color = [0] * 4
     else:
         null_color = [0, 0]
@@ -704,7 +704,7 @@ def writeSpecialKlaptrapTextureToROM(color_index, table_index, file_index, forma
 
 def calculateKlaptrapPixel(mask: list, format: str):
     """Calculate the new color for the given pixel."""
-    if format == "rgba32":
+    if format == TextureFormat.RGBA32:
         color_lst = mask.copy()
         color_lst.append(255)  # Alpha
     else:

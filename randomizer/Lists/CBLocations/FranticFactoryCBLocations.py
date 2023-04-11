@@ -364,6 +364,7 @@ ColoredBananaGroupList = [
         name="Diddy R&D room",
         konglist=[Kongs.diddy],
         region=Regions.RandD,
+        logic=lambda l: l.guitar,
         locations=[
             [1, 1.0, 4340, 1336, 680],
             [1, 1.0, 4380, 1336, 740],

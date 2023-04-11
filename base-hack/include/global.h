@@ -243,6 +243,7 @@ extern int countFlagsDuplicate(int start, int count, flagtypes type);
 extern int getKongFromBonusFlag(int flag);
 extern void banana_medal_acquisition(int flag);
 extern void finalizeBeatGame(void);
+extern void exitTrapBubbleController(void);
 
 extern int getFlagIndex_Corrected(int start, int level);
 extern int getBPItem(int index);
