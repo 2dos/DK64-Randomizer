@@ -252,6 +252,9 @@ PauseSpriteHook:
 HandleSlamCheckHook:
 	J 	HandleSlamCheck
 	NOP
+brightenMMMEnemiesHook:
+	J 	brightenMMMEnemies
+	NOP
 
 loadExtraHooks:
 	LUI t3, hi(InstanceScriptHook)
@@ -608,6 +611,18 @@ loadExtraHooks:
 	SW r0, 0xA418 (t4) // Store NOP
 
 	loadExtraHooks_4:
+	LUI t3, hi(MMMEnemiesBrightened)
+	LBU t3, lo(MMMEnemiesBrightened) (t3)
+	BEQZ t3, loadExtraHooks_5
+	NOP
+
+	LUI t3, hi(brightenMMMEnemiesHook)
+	LW t3, lo(brightenMMMEnemiesHook) (t3)
+	LUI t4, 0x8063
+	SW t3, 0x1380 (t4) // Store Hook
+	SW r0, 0x1384 (t4) // Store NOP
+
+	loadExtraHooks_5:
 	JR ra
 	NOP
 

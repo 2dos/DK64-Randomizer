@@ -114,6 +114,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
                     "cbs_visible",
                     "blueprint_compression",
                     "fast_hints",
+                    "brighten_mmm_enemies",
                 ]
                 bitfield_offset = 0xB0
             elif x == "moves_pregiven":

@@ -90,6 +90,9 @@ void initHack(int source) {
 			for (int i = 0; i < 7; i++) {
 				SwitchLevel[i] = Rando.slam_level[i];
 			}
+			if (Rando.quality_of_life.brighten_mmm_enemies) {
+				MMMEnemiesBrightened = 1;
+			}
 			if (Rando.fairy_rando_on) {
 				// Fairy Location Table
 				int fairy_size = 20<<2;

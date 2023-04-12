@@ -335,3 +335,24 @@ HandleSlamCheck:
     HandleSlamCheck_Finish:
         j 0x8063ed84
         nop
+
+brightenMMMEnemies:
+    ori $t4, $t2, 0xFF
+    lui $t5, hi(CurrentMap)
+    lw $t5, lo(CurrentMap) ($t5)
+    addiu $t6, $zero, 0x42
+    beq $t5, $t6, brightenMMMEnemies_brighen ; Hard
+    addiu $t6, $zero, 0x44
+    beq $t5, $t6, brightenMMMEnemies_brighen ; Easy
+    addiu $t6, $zero, 0x45
+    beq $t5, $t6, brightenMMMEnemies_brighen ; Normal
+    addiu $t6, $zero, 0x7C
+    bne $t5, $t6, brightenMMMEnemies_finish ; Insane
+    nop
+
+    brightenMMMEnemies_brighen:
+        li $t4, -1
+
+    brightenMMMEnemies_finish:
+        j 0x80631388
+        sw $t4, 0x4 ($v0)
