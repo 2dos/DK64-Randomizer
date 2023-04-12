@@ -18,7 +18,7 @@ void initDiscoChunky(void) {
     if (Rando.disco_chunky) {
         // Disco
         *(char*)(0x8075C45B) = 0xE; // General Model
-        *(short*)(0x806F123A) = 0xED; // Instrument
+        *(short*)(0x806F123A) = 0xED; // Instrument. Any devs copying this line, change the write to 0xE **UNLESS* you are also importing the custom disco chunky w/ instrument model.
         *(int*)(0x806CF37C) = 0; // Fix object holding
         *(short*)(0x8074E82C) = 0xE; // Tag Barrel Model
         *(short*)(0x8075EDAA) = 0xE; // Cutscene Chunky Model
