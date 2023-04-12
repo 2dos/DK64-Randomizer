@@ -117,12 +117,12 @@ void loadHooks(void) {
 		loadSingularHook(0x8070E83C, &TextHandler);
 	}
 	loadSingularHook(0x806AE55C, &GuardAutoclear);
+	loadSingularHook(0x80637148, &ObjectRotate);
 	if (Rando.item_rando) {
-		loadSingularHook(0x80637148, &ObjectRotate);
 		loadSingularHook(0x806A6708, &SpriteFix);
-		loadSingularHook(0x806A86FC, &PauseControl_Control);
-		loadSingularHook(0x806AA414, &PauseControl_Sprite);
 	}
+	loadSingularHook(0x806A86FC, &PauseControl_Control);
+	loadSingularHook(0x806AA414, &PauseControl_Sprite);
 	if (Rando.quality_of_life.brighten_mmm_enemies) {
 		loadSingularHook(0x80631380, &brightenMMMEnemies);
 	}
