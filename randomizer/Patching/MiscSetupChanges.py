@@ -10,6 +10,7 @@ from randomizer.Spoiler import Spoiler
 from randomizer.Patching.Lib import float_to_hex
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Settings import DamageAmount
 
 
 def pickRandomPositionCircle(center_x, center_z, min_radius, max_radius):
@@ -154,11 +155,12 @@ def randomize_setup(spoiler: Spoiler):
         enabled = enabled or setting
     swap_list = [
         {"map": Maps.AztecLlamaTemple, "item_list": [0xBC, 0x22B, 0x229, 0x22A]},
-        {"map": Maps.CastleMuseum, "item_list": [0x17]},
         {"map": Maps.AztecTinyTemple, "item_list": [0xA7, 0xA6, 0xA5, 0xA4]},
         {"map": Maps.FranticFactory, "item_list": [0x14D, 0x14C, 0x14B, 0x14A]},
         {"map": Maps.CastleCrypt, "item_list": [0x247, 0x248, 0x249, 0x24A]},
     ]
+    if not spoiler.settings.perma_death and spoiler.settings.damage_amount not in (DamageAmount.quad, DamageAmount.ohko):
+        swap_list.append({"map": Maps.CastleMuseum, "item_list": [0x17]})
     number_gb_data = [
         {"subtype": "corner", "numbers": [{"number": 12, "rot": 0}, {"number": 3, "rot": 1}, {"number": 5, "rot": 2}, {"number": 6, "rot": 3}]},
         {

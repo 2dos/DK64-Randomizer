@@ -121,12 +121,24 @@ void newGuardCode(void) {
      * @brief Guard Actor Code
      */
     unsigned int level_state = *(unsigned int*)(0x807FBB64);
-    if (CurrentActorPointer_0->control_state <= 0x35) {
+    if (CurrentActorPointer_0->control_state <= 0x35) { // Not damaged/dying
         if (Player) {
             if ((Player->strong_kong_ostand_bitfield & 0x60) == 0) { // No GGone / OSprint
-                if (!isBadMovementState()) {
-                    // Guard detection can't happen if being damaged or dying, the kong being in a bad movement state, or ggone/osprint
-                    handleGuardDetection(40.0f,70.0f);
+                if (!isBadMovementState()) { // Bad Movement State
+                    float dist = 40.0f;
+                    float radius = 70.0f;
+                    if ((level_state & 0x104000) == 0) { // Not in snoop
+                        if (CurrentActorPointer_0->control_state == 0x11) { // Is Idle
+                            radius = 40.0f;
+                            if (getAnimationTimer(CurrentActorPointer_0) > 60.0f) { // Smacking light
+                                dist = 0.0f;
+                                radius = 0.0f;
+                            }
+                        }
+                    }
+                    if (radius > 0.0f) {
+                        handleGuardDetection(dist, radius);
+                    }
                 }
             }
         }
