@@ -55,6 +55,79 @@ float getOscillationDelta(void) {
 	return 0.5f;
 }
 
+void loadSingularHook(int write_address, void* hook_jump) {
+	int write = 0x08000000 | (((int)(hook_jump) & 0xFFFFFF) >> 2);
+	*(int*)(write_address) = write;
+	*(int*)(write_address + 4) = 0;
+}
+
+void loadHooks(void) {
+	loadSingularHook(0x8063EE08, &InstanceScriptCheck);
+	loadSingularHook(0x80731168, &checkFlag_ItemRando);
+	loadSingularHook(0x807312F8, &setFlag_ItemRando);
+	loadSingularHook(0x8069840C, &VineCode);
+	loadSingularHook(0x80698420, &VineShowCode);
+	loadSingularHook(0x8063ED7C, &HandleSlamCheck);
+	loadSingularHook(0x806FF384, &ModifyCameraColor);
+	loadSingularHook(0x8061E684, &SkipCutscenePans);
+	loadSingularHook(0x80648364, &ShopImageHandler);
+	loadSingularHook(0x806EA70C, &InvertCameraControls);
+	loadSingularHook(0x8061CE38, &PlayCutsceneVelocity);
+	loadSingularHook(0x80677C14, &FixPufftossInvalidWallCollision);
+	loadSingularHook(0x8060DFF4, &SaveToFileFixes);
+	loadSingularHook(0x806F6EA0, &BarrelMovesFixes);
+	loadSingularHook(0x806E4930, &ChimpyChargeFix);
+	loadSingularHook(0x806E48AC, &OStandFix);
+	loadSingularHook(0x8067ECB8, &HunkyChunkyFix2);
+	loadSingularHook(0x805FC3FC, &EarlyFrameCode);
+	loadSingularHook(0x8071417C, &displayListCode);
+	loadSingularHook(0x806F8610, &GiveItemPointerToMulti);
+	loadSingularHook(0x806F88C8, &CoinHUDReposition);
+	loadSingularHook(0x8060005C, &getLobbyExit);
+	loadSingularHook(0x806C9A7C, &damageMultiplerCode);
+	loadSingularHook(0x8060DEF4, &SaveHelmHurryCheck);
+	if (Rando.warp_to_isles_enabled) {
+		loadSingularHook(0x806A995C, &PauseExtraSlotCode);
+		loadSingularHook(0x806A9818, &PauseExtraHeight);
+		loadSingularHook(0x806A87BC, &PauseExtraSlotClamp0);
+		loadSingularHook(0x806A8760, &PauseExtraSlotClamp1);
+		loadSingularHook(0x806A8804, &PauseExtraSlotCustomCode);
+		loadSingularHook(0x806A9898, &PauseCounterCap);
+	}
+	loadSingularHook(0x806F3E74, &AutowalkFix);
+	loadSingularHook(0x80610948, &DynamicCodeFixes);
+	if (Rando.perma_lose_kongs) {
+		loadSingularHook(0x80682F2C, &permaLossTagCheck);
+		loadSingularHook(0x80683620, &permaLossTagSet);
+		loadSingularHook(0x806840C4, &permaLossTagDisplayCheck);
+	}
+	loadSingularHook(0x80689534, &tagPreventCode);
+	if (Rando.resolve_bonus) {
+		//loadSingularHook(0x80680D10, &destroyAllBarrelsCode);
+	}
+	loadSingularHook(0x806BD328, &KeyCompressionCode);
+	loadSingularHook(0x8067B684, &CannonForceCode);
+	loadSingularHook(0x806F9F88, &HUDDisplayCode);
+	loadSingularHook(0x806E22B0, &HomingDisable);
+	loadSingularHook(0x806EB574, &HomingHUDHandle);
+	loadSingularHook(0x806324C4, &DKCollectableFix);
+	loadSingularHook(0x806AF70C, &GuardDeathHandle);
+	loadSingularHook(0x807132BC, &NinWarpCode);
+	if (Rando.quality_of_life.textbox_hold) {
+		loadSingularHook(0x8070E83C, &TextHandler);
+	}
+	loadSingularHook(0x806AE55C, &GuardAutoclear);
+	loadSingularHook(0x80637148, &ObjectRotate);
+	if (Rando.item_rando) {
+		loadSingularHook(0x806A6708, &SpriteFix);
+	}
+	loadSingularHook(0x806A86FC, &PauseControl_Control);
+	loadSingularHook(0x806AA414, &PauseControl_Sprite);
+	if (Rando.quality_of_life.brighten_mmm_enemies) {
+		loadSingularHook(0x80631380, &brightenMMMEnemies);
+	}
+}
+
 void initHack(int source) {
 	/**
 	 * @brief Initialize Hack
@@ -89,6 +162,9 @@ void initHack(int source) {
 			initActorExpansion();
 			for (int i = 0; i < 7; i++) {
 				SwitchLevel[i] = Rando.slam_level[i];
+			}
+			if (Rando.quality_of_life.brighten_mmm_enemies) {
+				MMMEnemiesBrightened = 1;
 			}
 			if (Rando.fairy_rando_on) {
 				// Fairy Location Table
@@ -174,6 +250,7 @@ void initHack(int source) {
 
 			replace_zones(1);
 			randomize_bosses();
+			loadHooks();
 			loadExtraHooks();
 			// Moves & Prices
 			fixTBarrelsAndBFI(1);

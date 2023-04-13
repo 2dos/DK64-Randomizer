@@ -384,6 +384,8 @@ class MiscChangesSelected(IntEnum):
     save_k_rool_progress = 18
     small_bananas_always_visible = 19
     fast_hints = 20
+    brighten_mad_maze_maul_enemies = 21
+    raise_fungi_dirt_patch = 22
 
 
 class MoveRando(IntEnum):

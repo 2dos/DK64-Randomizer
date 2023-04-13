@@ -346,7 +346,6 @@ void overlay_changes(void) {
 	if (ObjectModel2Timer < 2) {
 		// Wipe warp data pointer to prevent pointing to free memory
 		WarpData = 0;
-		wipeHintCache();
 	}
 	if (CurrentMap == MAP_DKARCADE) { // Arcade
 		initArcade();

@@ -1213,6 +1213,7 @@ typedef struct quality_options {
 	unsigned char cbs_visible : 1; // 17
 	unsigned char blueprint_compression : 1;
 	unsigned char fast_hints : 1; // 19
+	unsigned char brighten_mmm_enemies : 1;
 } quality_options;
 
 typedef struct image_cache_struct {

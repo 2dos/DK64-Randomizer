@@ -10,6 +10,7 @@
 #include "dk64.h"
 #include "enums.h"
 #include "flags.h"
+#include "hooks.h"
 #include "global.h"
 #include "vars.h"
 #include "archipelago.h"
