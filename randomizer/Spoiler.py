@@ -47,6 +47,7 @@ class Spoiler:
         self.woth = {}
         self.woth_locations = {}
         self.woth_paths = {}
+        self.krool_paths = {}
         self.shuffled_barrel_data = {}
         self.shuffled_exit_data = {}
         self.shuffled_exit_instructions = []
@@ -295,6 +296,23 @@ class Spoiler:
                 wothSlams += 1
                 extra = " " + str(wothSlams)
             humanspoiler["Paths"][destination_item.name + extra] = path_dict
+        # Paths for K. Rool phases - also do not show up on the site, just for debugging
+        for kong, path in self.krool_paths.items():
+            path_dict = {}
+            for path_loc_id in path:
+                path_location = LocationList[path_loc_id]
+                path_item = ItemList[path_location.item]
+                path_dict[path_location.name] = path_item.name
+            phase_name = "K. Rool Donkey Phase"
+            if kong == Kongs.diddy:
+                phase_name = "K. Rool Diddy Phase"
+            elif kong == Kongs.lanky:
+                phase_name = "K. Rool Lanky Phase"
+            elif kong == Kongs.tiny:
+                phase_name = "K. Rool Tiny Phase"
+            elif kong == Kongs.chunky:
+                phase_name = "K. Rool Chunky Phase"
+            humanspoiler["Paths"][phase_name] = path_dict
 
         self.pregiven_items = []
         for location_id, location in LocationList.items():

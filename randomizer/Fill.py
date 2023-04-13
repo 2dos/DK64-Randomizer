@@ -557,6 +557,10 @@ def CalculateWothPaths(spoiler, WothLocations):
     # Prep the dictionary that will contain the path for the key item
     for locationId in WothLocations:
         spoiler.woth_paths[locationId] = [locationId]  # The endpoint is on its own path
+    # If K. Rool is the win condition, prepare phase-specific paths as well
+    if spoiler.settings.win_condition == WinCondition.beat_krool:
+        for phase in spoiler.settings.krool_order:
+            spoiler.krool_paths[phase] = []
     for locationId in WothLocations:
         # Remove the item from the location
         location = LocationList[locationId]
@@ -574,6 +578,18 @@ def CalculateWothPaths(spoiler, WothLocations):
             # If it is no longer accessible, then this location is on the path of that other location
             if other_location not in accessible:
                 spoiler.woth_paths[other_location].append(locationId)
+        # If the win condition is K. Rool, also add this location to those paths as applicable
+        if spoiler.settings.win_condition == WinCondition.beat_krool:
+            if Kongs.donkey in spoiler.settings.krool_order and Events.KRoolDonkey not in LogicVariables.Events:
+                spoiler.krool_paths[Kongs.donkey].append(locationId)
+            if Kongs.diddy in spoiler.settings.krool_order and Events.KRoolDiddy not in LogicVariables.Events:
+                spoiler.krool_paths[Kongs.diddy].append(locationId)
+            if Kongs.lanky in spoiler.settings.krool_order and Events.KRoolLanky not in LogicVariables.Events:
+                spoiler.krool_paths[Kongs.lanky].append(locationId)
+            if Kongs.tiny in spoiler.settings.krool_order and Events.KRoolTiny not in LogicVariables.Events:
+                spoiler.krool_paths[Kongs.tiny].append(locationId)
+            if Kongs.chunky in spoiler.settings.krool_order and Events.KRoolChunky not in LogicVariables.Events:
+                spoiler.krool_paths[Kongs.chunky].append(locationId)
         # Put the item back for future calculations
         location.PlaceItem(item_id)
     # After everything is calculated, get rid of paths for false WotH locations
