@@ -10,7 +10,7 @@ from randomizer.Spoiler import Spoiler
 from randomizer.Patching.Lib import float_to_hex
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import DamageAmount
+from randomizer.Enums.Settings import DamageAmount, MiscChangesSelected
 
 
 def pickRandomPositionCircle(center_x, center_z, min_radius, max_radius):
@@ -149,6 +149,7 @@ def randomize_setup(spoiler: Spoiler):
         spoiler.settings.puzzle_rando,
         spoiler.settings.hard_bosses,
         spoiler.settings.high_req,
+        MiscChangesSelected.raise_fungi_dirt_patch in spoiler.settings.misc_changes_selected,
     ]
     enabled = False
     for setting in allowed_settings:
@@ -195,6 +196,7 @@ def randomize_setup(spoiler: Spoiler):
         chunky_5dc_pads = pickChunkyCabinPadPositions()
         random.shuffle(vase_puzzle_positions)
         vase_puzzle_rando_progress = 0
+        raise_patch = (MiscChangesSelected.raise_fungi_dirt_patch in spoiler.settings.misc_changes_selected) or (len(spoiler.settings.misc_changes_selected) == 0)
         for cont_map_id in range(216):
             cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
             ROM().seek(cont_map_setup_address)
@@ -364,7 +366,10 @@ def randomize_setup(spoiler: Spoiler):
                                     new_actor_id += 1
                             dirt_bytes = []
                             dirt_bytes.append(int(float_to_hex(patch.x), 16))
-                            dirt_bytes.append(int(float_to_hex(patch.y), 16))
+                            if patch.is_fungi_hidden_patch and raise_patch:
+                                dirt_bytes.append(int(float_to_hex(155), 16))
+                            else:
+                                dirt_bytes.append(int(float_to_hex(patch.y), 16))
                             dirt_bytes.append(int(float_to_hex(patch.z), 16))
                             dirt_bytes.append(int(float_to_hex(patch.scale), 16))
                             for x in range(8):
@@ -389,6 +394,8 @@ def randomize_setup(spoiler: Spoiler):
                 actor_start = actor_block_start + 4 + (actor_item * 0x38)
                 ROM().seek(actor_start + 0x32)
                 actor_type = int.from_bytes(ROM().readBytes(2), "big") + 0x10
+                ROM().seek(actor_start + 0x34)
+                actor_id = int.from_bytes(ROM().readBytes(2), "big")
                 if actor_type >= 100 and actor_type <= 105 and spoiler.settings.puzzle_rando and cont_map_id == Maps.CavesDiddyIgloo:  # 5DI Spawner
                     spawner_pos = diddy_5di_pads["picked"][diddy_5di_pads["index"]]
                     ROM().seek(actor_start)
@@ -402,6 +409,10 @@ def randomize_setup(spoiler: Spoiler):
                     for coord in range(3):
                         ROM().writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
                     vase_puzzle_rando_progress += 1
+                elif actor_type == 139 and raise_patch and not spoiler.settings.random_patches:
+                    if cont_map_id == Maps.FungiForest and actor_id == 47:
+                        ROM().seek(actor_start + 4)
+                        ROM().writeMultipleBytes(int(float_to_hex(155), 16), 4)
 
 
 def updateRandomSwitches(spoiler: Spoiler):
