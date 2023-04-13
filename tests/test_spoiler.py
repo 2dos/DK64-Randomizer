@@ -29,6 +29,7 @@ from randomizer.Enums.Settings import (
 # from randomizer.Enums.Items import Items
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Fill import Generate_Spoiler
+from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 
@@ -214,10 +215,26 @@ def generate_settings():
     return data
 
 
-def test_forward_fill(generate_lo_rando_race_settings):
+def test_manual_settings_dict(generate_lo_rando_race_settings):
     """Asdf."""
     generate_lo_rando_race_settings["algorithm"] = FillAlgorithm.forward
     settings = Settings(generate_lo_rando_race_settings)
+    spoiler = Spoiler(settings)
+    Generate_Spoiler(spoiler)
+    print(spoiler)
+    print(spoiler.json)
+    asdf = 1 / 0
+    print(asdf)
+    raise Exception
+
+
+def test_with_settings_string():
+    """Confirm that settings strings decryption is working and generate a spoiler log with it."""
+    # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
+    settings_string = "baGFiRorPN5yunTChIoPw+qhoRDIhKlsa58CCI0ivUyYRCnrG2rBACoUht9QX8EsAycBkF1ls0FAXUAgwE7AIHA3cBhAI8AQJBXkChQM9AYLB3sDhgQow08fGQpnqShoKlsvbTcAM0NjlGuKFRFgMTEUDF+2R2OWvAX6RwPApkqkuxuiSaxBJBmBBHNCBgzm4yA4tloXFgsiwUlwNCgWisVGEmjEjkk5CQPACsAA"
+
+    settings_dict = decrypt_settings_string_enum(settings_string)
+    settings = Settings(settings_dict)
     spoiler = Spoiler(settings)
     Generate_Spoiler(spoiler)
     print(spoiler)
