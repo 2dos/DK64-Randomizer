@@ -234,6 +234,7 @@ void earlyFrame(void) {
 	CBDing();
 	if (ObjectModel2Timer < 5) {
 		auto_turn_keys();
+		wipeHintCache();
 	}
 	if (Rando.item_rando) {
 		int has_sniper = 0;

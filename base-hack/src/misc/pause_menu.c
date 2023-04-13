@@ -114,13 +114,15 @@ static char level_hint_text[0x18] = "";
 
 static unsigned char check_data[2][9][PAUSE_ITEM_COUNT] = {}; // 8 items, 9 levels, numerator + denominator
 
+static char hints_initialized = 0;
 static int hint_pointers[35] = {};
 
 void initHints(void) {
-    if (hint_pointers[0] == 0) {
+    if (!hints_initialized) {
         for (int i = 0; i < 35; i++) {
             hint_pointers[i] = (int)getTextPointer(41, 1+i, 0);
         }
+        hints_initialized = 1;
     }
 }
 
@@ -128,6 +130,7 @@ void wipeHintCache(void) {
     for (int i = 0; i < 35; i++) {
         hint_pointers[i] = 0;
     }
+    hints_initialized = 0;
 }
 
 void checkItemDB(void) {
@@ -292,7 +295,7 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
         } else if (referenced_character == 0x20) {
             // Space
             last_safe = header;
-        } else if ((referenced_character > 0) && (referenced_character < 0x10)) {
+        } else if ((referenced_character > 0) && (referenced_character <= 0x10)) {
             // Control byte character
             is_control = 1;
             int end = (int)(string_copy) + (STRING_MAX_SIZE - 1);
@@ -357,11 +360,12 @@ int* pauseScreen3And4Header(int* dl) {
         dl = displayImage(dl, 107, 0, RGBA16, 48, 32, 625, 465, 24.0f, 20.0f, 0, 0.0f);
         mtx_counter = 0;
         for (int i = 0; i < 5; i++) {
-            char* string = "???";
             if (checkFlag(FLAG_WRINKLYVIEWED + (5 * hint_level) + i, FLAGTYPE_PERMANENT)) {
-                string = (char*)hint_pointers[(5 * hint_level) + i];
+                dl = drawSplitString(dl, (char*)hint_pointers[(5 * hint_level) + i], 640, 140 + (120 * i), 40);
+            } else {
+                dl = drawSplitString(dl, "???", 640, 140 + (120 * i), 40);
             }
-            dl = drawSplitString(dl, string, 640, 140 + (120 * i), 40);
+            
         }
         return dl;
     }
