@@ -144,6 +144,8 @@ hint_list = [
 ]
 
 kong_list = ["\x04Donkey\x04", "\x05Diddy\x05", "\x06Lanky\x06", "\x07Tiny\x07", "\x08Chunky\x08", "\x04Any kong\x04"]
+colorless_kong_list = ["Donkey", "Diddy", "Lanky", "Tiny", "Chunky"]
+kong_colors = ["\x04", "\x05", "\x06", "\x07", "\x08", "\x04"]
 
 kong_cryptic = [
     ["The kong who is bigger, faster and potentially stronger too", "The kong who fires in spurts", "The kong with a tie", "The kong who slaps their instrument to the jungle beat"],
@@ -769,7 +771,7 @@ def compileHints(spoiler: Spoiler):
 
     # Some win conditions need very specific items that we really should hint
     if hint_distribution[HintType.RequiredWinConditionHint] > 0:
-        # To aid K. Rool goals, always hint Rocketbarrel, Mini Monkey, and Hunky Chunky if they are needed to beat K. Rool
+        # To aid K. Rool goals create a number of path hints to help find items required specifically for K. Rool
         if spoiler.settings.win_condition == WinCondition.beat_krool:
             path = spoiler.woth_paths[Locations.BananaHoard]
             already_chosen_krool_path_locations = []
@@ -785,14 +787,18 @@ def compileHints(spoiler: Spoiler):
                 already_chosen_krool_path_locations.append(path_location_id)
                 region = GetRegionOfLocation(path_location_id)
                 hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
+                # Determine what phases this item could be for
+                phases_needing_this_item = [kong for kong in spoiler.krool_paths.keys() if path_location_id in spoiler.krool_paths[kong]]
+                hinted_kong = random.choice(phases_needing_this_item)
+                kong_color = kong_colors[hinted_kong]
                 # Every hint door is available before K. Rool so we can pick randomly
                 hint_location = getRandomHintLocation()
                 if path_location_id in TrainingBarrelLocations or path_location_id in PreGivenLocations:
                     # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[LocationList[path_location_id].item].name
-                    message = f"Your \x0btraining with {hinted_item_name}\x0b is on the path to \x08aiding your fight against K. Rool\x08."
+                    message = f"Your \x0btraining with {hinted_item_name}\x0b is on the path to {kong_color}aiding {colorless_kong_list[hinted_kong]}'s fight against K. Rool{kong_color}."
                 else:
-                    message = f"An item in the {hinted_location_text} is on the path to \x08aiding your fight against K. Rool\x08."
+                    message = f"An item in the {hinted_location_text} is on the path to {kong_color}aiding {colorless_kong_list[hinted_kong]}'s fight against K. Rool{kong_color}."
                 hint_location.hint_type = HintType.RequiredWinConditionHint
                 UpdateHint(hint_location, message)
         # All fairies seeds get 2 path hints for the camera

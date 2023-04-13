@@ -810,6 +810,18 @@ class LogicVarHolder:
                 # Require both hunky chunky and twirl (or hard bosses) before Helm to prevent boss fill failures
                 if order_of_level > 7 and not self.hunkyChunky or (not self.twirl and not self.settings.hard_bosses):
                     return False
+            # Make sure we have access to all prior required keys before entering the next level - this prevents keys from being placed in levels beyond what they unlock
+            if order_of_level > 1 and not self.JapesKey:
+                return False
+            elif order_of_level > 2 and not self.AztecKey:
+                return False
+            elif order_of_level > 4 and (not self.FactoryKey or not self.GalleonKey):
+                return False
+            elif order_of_level > 5 and not self.ForestKey:
+                return False
+            elif order_of_level > 7 and (not self.CavesKey or not self.CastleKey):
+                return False
+
         # If we have the moves, ensure we have enough kongs as well
         return self.HasEnoughKongs(level, forPreviousLevel=True)
 

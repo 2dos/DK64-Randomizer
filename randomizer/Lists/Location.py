@@ -703,7 +703,7 @@ LocationList = {
     Locations.RainbowCoin_Location01: Location(Levels.AngryAztec, "Aztec Dirt Patch (Chunky Temple)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.AztecChunky5DTemple, -1, 0x29F)]),  # Chunky 5DT
     Locations.RainbowCoin_Location02: Location(Levels.FranticFactory, "Factory Dirt Patch (Dark Room)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x2A0)]),  # Dark Room
     Locations.RainbowCoin_Location03: Location(Levels.DKIsles, "Isles Dirt Patch (Fungi Island)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A1)]),  # Fungi Entrance
-    Locations.RainbowCoin_Location04: Location(Levels.DKIsles, "Isles Dirt Patch (Waterfall)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A2)]),  # Caves Slope
+    Locations.RainbowCoin_Location04: Location(Levels.DKIsles, "Isles Dirt Patch (Under Caves Lobby)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A2)]),  # Caves Slope
     Locations.RainbowCoin_Location05: Location(Levels.DKIsles, "Isles Dirt Patch (Aztec Roof)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A3)]),  # Aztec Roof
     Locations.RainbowCoin_Location06: Location(Levels.AngryAztec, "Aztec Dirt Patch (Oasis)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2A4)]),  # Oasis
     Locations.RainbowCoin_Location07: Location(Levels.FungiForest, "Forest Dirt Patch (Grass)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2A5)]),  # Isotarge Coin
