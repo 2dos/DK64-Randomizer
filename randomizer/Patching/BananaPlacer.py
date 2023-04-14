@@ -25,6 +25,7 @@ level_data = {
 
 PATH_CAP = 64
 
+
 def randomize_cbs(spoiler: Spoiler):
     """Place Colored Bananas into ROM."""
     if spoiler.settings.cb_rando:

@@ -408,21 +408,6 @@ class MoveRando(IntEnum):
     item_shuffle = 4
 
 
-class MusicCosmetics(IntEnum):
-    """Determines how BGM, fanfare or event music is shuffled.
-
-    default: Music is not shuffled.
-    randomized: Music is shuffled.
-    chaos: All D.K. Rap, all the time.
-    uploaded: Use music files provided by the user.
-    """
-
-    default = auto()
-    randomized = auto()
-    chaos = auto()
-    uploaded = auto()
-
-
 class RandomPrices(IntEnum):
     """Determines how and if shop prices are randomized.
 
@@ -555,9 +540,6 @@ SettingsMap = {
     "minigames_list_selected": MinigamesListSelected,
     "misc_changes_selected": MiscChangesSelected,
     "move_rando": MoveRando,
-    "music_bgm": MusicCosmetics,
-    "music_events": MusicCosmetics,
-    "music_fanfares": MusicCosmetics,
     "rambi_colors": CharacterColors,
     "random_prices": RandomPrices,
     "shockwave_status": ShockwaveStatus,

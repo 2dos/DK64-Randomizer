@@ -121,7 +121,7 @@ subitems = (Items.JunkOrange, Items.JunkAmmo, Items.JunkCrystal, Items.JunkMelon
 class TextboxChange:
     """Class to store information which pertains to a change of textbox information."""
 
-    def __init__(self, location, file_index, textbox_index, text_replace, default_type:Types, replacement_text="|", force_pipe=False):
+    def __init__(self, location, file_index, textbox_index, text_replace, default_type: Types, replacement_text="|", force_pipe=False):
         """Initialize with given paremeters."""
         self.location = location
         self.file_index = file_index
@@ -153,8 +153,8 @@ textboxes = [
     TextboxChange(Locations.AztecDiddyVultureRace, 15, 1, "PRIZE", Types.Banana),
     TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 1, "ALL THIS SAND", Types.Banana, "THIS |"),
     TextboxChange(Locations.AztecDonkeyFreeLlama, 10, 2, "BANANA", Types.Banana),
-    TextboxChange(Locations.RarewareCoin, 8, 2, "RAREWARE COIN", Types.Coin), # Rareware Coin
-    TextboxChange(Locations.RarewareCoin, 8, 34, "RAREWARE COIN", Types.Coin), # Rareware Coin
+    TextboxChange(Locations.RarewareCoin, 8, 2, "RAREWARE COIN", Types.Coin),  # Rareware Coin
+    TextboxChange(Locations.RarewareCoin, 8, 34, "RAREWARE COIN", Types.Coin),  # Rareware Coin
     TextboxChange(Locations.ForestLankyRabbitRace, 20, 1, "TROPHY", Types.Banana, "| TROPHY"),
     TextboxChange(Locations.ForestLankyRabbitRace, 20, 2, "TROPHY", Types.Banana, "| TROPHY"),
     TextboxChange(Locations.ForestLankyRabbitRace, 20, 3, "TROPHY", Types.Banana, "| TROPHY"),
@@ -610,7 +610,7 @@ def place_randomized_items(spoiler: Spoiler):
         if spoiler.settings.item_reward_previews:
             for textbox in textboxes:
                 new_item = textbox.default_type
-                flag = 379 # Rareware Coin flag for RW Coin textbox
+                flag = 379  # Rareware Coin flag for RW Coin textbox
                 for item in item_data:
                     if textbox.location == item.location:
                         new_item = item.new_item

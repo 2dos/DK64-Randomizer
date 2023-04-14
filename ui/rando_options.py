@@ -506,10 +506,11 @@ def disable_music(evt):
     if js.document.getElementById("random_music").checked:
         disabled = True
     for i in ["bgm", "fanfares", "events"]:
-        music = js.document.getElementById(f"music_{i}")
+        music = js.document.getElementById(f"music_{i}_randomized")
         try:
             if disabled:
                 music.setAttribute("disabled", "disabled")
+                music.setAttribute("checked", "checked")
             else:
                 music.removeAttribute("disabled")
         except AttributeError:

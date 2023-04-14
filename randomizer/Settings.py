@@ -349,9 +349,9 @@ class Settings:
         self.shockwave_status = ShockwaveStatus.vanilla
 
         #  Music
-        self.music_bgm = MusicCosmetics.default
-        self.music_fanfares = MusicCosmetics.default
-        self.music_events = MusicCosmetics.default
+        self.music_bgm_randomized = False
+        self.music_fanfares_randomized = False
+        self.music_events_randomized = False
         self.random_music = False
 
         #  Unlock Moves - 0-40?
