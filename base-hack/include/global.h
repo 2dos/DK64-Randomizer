@@ -321,6 +321,7 @@ extern void fixCrownEntrySKong(playerData* player, int animation);
 
 extern void wipeHintCache(void);
 extern void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0);
+extern void initPathExpansion(void);
 
 extern int initFile_hasGun(int kong);
 extern int initFile_hasInstrument(int kong);
