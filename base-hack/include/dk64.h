@@ -172,6 +172,7 @@ extern void displayImageOnObject(int obj_id, int position, int image_index, int 
 extern void drawNumberObject(int model, int unk2, int image_index, int unk4);
 extern int isLobby(maps map);
 extern float determineXRatioMovement(unsigned int unk);
+extern float determineZRatioMovement(unsigned int unk);
 extern int countFlagArray(int starting_flag, int count, int flagType);
 extern int canHitSwitch(void);
 extern void setSomeTimer(int model2_type);

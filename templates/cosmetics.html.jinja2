@@ -27,65 +27,44 @@
                 </label>
             </h2>
             <div class="flex-container">
-                <div class="item-select">
-                    <p class="select-title">Background Music</p>
-                    <select name="music_bgm"
-                            id="music_bgm"
-                            class="form-select"
-                            aria-label="Background Music">
-                        <option selected value="default">
-                            Default Music
-                        </option>
-                        <option value="randomized">
-                            Randomized
-                        </option>
-                        <option value="chaos">
-                            Chaos
-                        </option>
-                        <option value="uploaded">
-                            Upload your own
-                        </option>
-                    </select>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Randomizes Background Music.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="music_bgm_randomized"
+                                id="music_bgm_randomized"
+                                value="True"/>
+                        Random Background Music
+                    </label>
                 </div>
-                <div class="item-select">
-                    <p class="select-title">Fanfares</p>
-                    <select name="music_fanfares"
-                            id="music_fanfares"
-                            class="form-select"
-                            aria-label="Fanfares">
-                        <option selected value="default">
-                            Default Fanfares
-                        </option>
-                        <option value="randomized">
-                            Randomized
-                        </option>
-                        <option value="uploaded">
-                            Upload your own
-                        </option>
-                    </select>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Randomizes Fanfare Themes.">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="music_fanfares_randomized"
+                            id="music_fanfares_randomized"
+                            value="True"/>
+                        Random Fanfares
+                    </label>
                 </div>
-                <div class="item-select">
-                    <p class="select-title">Events</p>
-                    <select name="music_events"
-                            id="music_events"
-                            class="form-select"
-                            aria-label="Events">
-                        <option selected value="default">
-                            Default Events
-                        </option>
-                        <option value="randomized">
-                            Randomized
-                        </option>
-                        <option value="uploaded">
-                            Upload your own
-                        </option>
-                    </select>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Randomizes Event Themes.">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="music_events_randomized"
+                            id="music_events_randomized"
+                            value="True"/>
+                        Random Event Themes
+                    </label>
                 </div>
                 <div class="spacer"></div>
             </div>
             <hr />
             <h2 class="title">CUSTOM MUSIC</h2>
-            <p class="select-title">Cosmetics ZIP (Check wiki for format)</p>
+            <p class="select-title">Cosmetics ZIP (Check <a style="text-decoration:underline" target="_blank" href="https://github.com/2dos/DK64-Randomizer/wiki/Creating-Cosmetics-Data-packs">wiki</a> for format)</p>
             <input accept=".zip"
                    class="form-control"
                    type="file"

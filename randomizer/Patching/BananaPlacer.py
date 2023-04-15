@@ -23,6 +23,8 @@ level_data = {
     Levels.CreepyCastle: {"cb": randomizer.Lists.CBLocations.CreepyCastleCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList},
 }
 
+PATH_CAP = 64
+
 
 def randomize_cbs(spoiler: Spoiler):
     """Place Colored Bananas into ROM."""
@@ -165,7 +167,7 @@ def randomize_cbs(spoiler: Spoiler):
                                     found_actor_id = act_id
                                     found_vacant_actor = True
                                 act_id += 1
-                            if found_path_id < 26:
+                            if found_path_id < PATH_CAP:
                                 item_data.append(found_path_id)
                             else:
                                 item_data.append(0xFFFF)  # Fixes a crash from too many balloons - might have some side-effects
@@ -176,7 +178,7 @@ def randomize_cbs(spoiler: Spoiler):
                             item_data.append((found_actor_id << 16) + 0x6E08)
                             persisted_act_data.append(item_data)
                             # Path
-                            if found_path_id < 26:  # Crashing issues with more than 26 paths
+                            if found_path_id < PATH_CAP:  # Crashing issues with more than PATH_CAP paths
                                 item_data = []
                                 item_data.append(found_path_id)
                                 item_data.append(len(list_item.points))

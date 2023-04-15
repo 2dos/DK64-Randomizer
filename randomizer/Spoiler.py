@@ -18,7 +18,6 @@ from randomizer.Enums.Settings import (
     HelmDoorItem,
     LogicType,
     MinigameBarrels,
-    MusicCosmetics,
     RandomPrices,
     ShockwaveStatus,
     ShuffleLoadingZones,
@@ -665,11 +664,11 @@ class Spoiler:
                 humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = klap_models[self.settings.klaptrap_model_index]
             else:
                 humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
-        if self.settings.music_bgm in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
+        if self.settings.music_bgm_randomized:
             humanspoiler["Cosmetics"]["Background Music"] = self.music_bgm_data
-        if self.settings.music_fanfares in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
+        if self.settings.music_fanfares_randomized:
             humanspoiler["Cosmetics"]["Fanfares"] = self.music_fanfare_data
-        if self.settings.music_events in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
+        if self.settings.music_events_randomized:
             humanspoiler["Cosmetics"]["Event Themes"] = self.music_event_data
         self.json = json.dumps(humanspoiler, indent=4)
 
