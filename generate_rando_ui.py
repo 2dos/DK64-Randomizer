@@ -80,24 +80,6 @@ async def initialize():
     js.document.write(rendered)
     js.document.close()
 
-    # Load settings from the cookies if it exists
-    try:
-        cookie_data = document.cookie
-        if cookie_data:
-            for cookie in cookie_data.split(";"):
-                if "settings=" in cookie:
-                    settings_cookie = str(cookie).replace("settings=", "")
-                    break
-            json_data = json.loads(settings_cookie)
-            for key in json_data:
-                try:
-                    # TODO: Validate this still works now that we switched engines
-                    document.getElementById(key).value = json_data[key]
-                except Exception:
-                    pass
-    except Exception:
-        pass
-
 
 # Run the script (This will be run as async later on)
 initialize()
