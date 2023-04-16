@@ -43,7 +43,8 @@
       "hud_bp_multibunch":true,
       "homing_balloons":true,
       "save_krool_progress":true,
-      "fast_hints":true
+      "fast_hints":true,
+      "brighten_mmm_enemies":true
    },
    "moves_pregiven":{
       "blast":true,

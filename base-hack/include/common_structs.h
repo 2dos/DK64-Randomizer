@@ -759,7 +759,10 @@ typedef struct model_struct {
 	/* 0x004 */ float y;
 	/* 0x008 */ float z;
 	/* 0x00C */ float scale;
-	/* 0x010 */ char unk_10[0x50-0x10];
+	/* 0x010 */ float rot_x;
+	/* 0x014 */ float rot_y;
+	/* 0x018 */ float rot_z;
+	/* 0x01C */ char unk_1C[0x50-0x1C];
 	/* 0x050 */ int unk_50;
 	/* 0x054 */ char unk_54[0xB8-0x54];
 	/* 0X0B8 */ int unk_B8;
@@ -1213,6 +1216,7 @@ typedef struct quality_options {
 	unsigned char cbs_visible : 1; // 17
 	unsigned char blueprint_compression : 1;
 	unsigned char fast_hints : 1; // 19
+	unsigned char brighten_mmm_enemies : 1;
 } quality_options;
 
 typedef struct image_cache_struct {

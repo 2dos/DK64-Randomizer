@@ -10,7 +10,7 @@ from randomizer.Lists.MapsAndExits import Maps
 class DirtPatchData:
     """Information about the dirt patch location."""
 
-    def __init__(self, *, name="", level=0, map_id=0, vanilla=False, x=0, y=0, z=0, scale=1, rotation=0, group=0, logicregion="", logic=0):
+    def __init__(self, *, name="", level=0, map_id=0, vanilla=False, x=0, y=0, z=0, scale=1, rotation=0, group=0, logicregion="", logic=0, is_fungi_hidden_patch=False):
         """Initialize with given parameters."""
         self.name = name
         self.level_name = level
@@ -25,6 +25,7 @@ class DirtPatchData:
         self.group = group
         self.logicregion = logicregion
         self.logic = logic
+        self.is_fungi_hidden_patch = is_fungi_hidden_patch
 
     def setPatch(self, used):
         """Set patch's state regarding rando."""
@@ -1192,6 +1193,7 @@ DirtPatchLocations = [
         group=2,
         logicregion=Regions.MillArea,
         logic=lambda l: l.shockwave,
+        is_fungi_hidden_patch=True,
     ),
     DirtPatchData(
         name="Fungi Forest: Top of Owl Tree",

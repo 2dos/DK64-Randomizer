@@ -6,7 +6,6 @@ from ast import And
 
 import js
 import randomizer.Lists.Exceptions as Ex
-from randomizer.Enums.Settings import MusicCosmetics
 from randomizer.Enums.SongType import SongType
 from randomizer.Lists.Songs import Song, SongGroup, song_data
 from randomizer.Patching.Patcher import ROM
@@ -66,6 +65,9 @@ def insertUploaded(uploaded_songs: list, uploaded_song_names: list, target_type:
             ROM().writeBytes(zipped_data)
 
 
+ENABLE_CHAOS = False  # Enable DK Rap everywhere
+
+
 def randomize_music(spoiler: Spoiler):
     """Randomize music passed from the misc music settings.
 
@@ -75,29 +77,29 @@ def randomize_music(spoiler: Spoiler):
     settings: Settings = spoiler.settings
     if js.document.getElementById("override_cosmetics").checked:
         if js.document.getElementById("random_music").checked:
-            spoiler.settings.music_bgm = MusicCosmetics.randomized
-            spoiler.settings.music_fanfares = MusicCosmetics.randomized
-            spoiler.settings.music_events = MusicCosmetics.randomized
+            spoiler.settings.music_bgm_randomized = True
+            spoiler.settings.music_fanfares_randomized = True
+            spoiler.settings.music_events_randomized = True
         else:
-            spoiler.settings.music_bgm = MusicCosmetics[js.document.getElementById("music_bgm").value]
-            spoiler.settings.music_fanfares = MusicCosmetics[js.document.getElementById("music_fanfares").value]
-            spoiler.settings.music_events = MusicCosmetics[js.document.getElementById("music_events").value]
+            spoiler.settings.music_bgm_randomized = js.document.getElementById("music_bgm_randomized").checked
+            spoiler.settings.music_fanfares_randomized = js.document.getElementById("music_fanfares_randomized").checked
+            spoiler.settings.music_events_randomized = js.document.getElementById("music_events_randomized").checked
     else:
         if spoiler.settings.random_music:
-            spoiler.settings.music_bgm = MusicCosmetics.randomized
-            spoiler.settings.music_fanfares = MusicCosmetics.randomized
-            spoiler.settings.music_events = MusicCosmetics.randomized
-    if spoiler.settings.music_bgm != MusicCosmetics.default or spoiler.settings.music_events != MusicCosmetics.default or spoiler.settings.music_fanfares != MusicCosmetics.default:
+            spoiler.settings.music_bgm_randomized = True
+            spoiler.settings.music_fanfares_randomized = True
+            spoiler.settings.music_events_randomized = True
+    if spoiler.settings.music_bgm_randomized or spoiler.settings.music_events_randomized or spoiler.settings.music_fanfares_randomized:
         sav = spoiler.settings.rom_data
         ROM().seek(sav + 0x12E)
         ROM().write(1)
     for song in song_data:
         song.Reset()
     # Check if we have anything beyond default set for BGM
-    if spoiler.settings.music_bgm != MusicCosmetics.default:
+    if spoiler.settings.music_bgm_randomized:
         # If the user selected standard rando
-        if spoiler.settings.music_bgm in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
-            if spoiler.settings.music_bgm == MusicCosmetics.uploaded and js.cosmetics is not None and js.cosmetic_names is not None:
+        if not ENABLE_CHAOS:
+            if js.cosmetics is not None and js.cosmetic_names is not None:
                 # If uploaded, replace some songs with the uploaded songs
                 insertUploaded(list(js.cosmetics.bgm), list(js.cosmetic_names.bgm), SongType.BGM)
             # Generate the list of BGM songs
@@ -115,7 +117,7 @@ def randomize_music(spoiler: Spoiler):
                 random.shuffle(shuffled_music)
                 shuffle_music(spoiler, song_list[channel_index].copy(), shuffled_music)
         # If the user was a poor sap and selected chaos put DK rap for everything
-        elif spoiler.settings.music_bgm == MusicCosmetics.chaos:
+        else:
             # Find the DK rap in the list
             rap = js.pointer_addresses[0]["entries"][song_data.index(next((x for x in song_data if x.name == "DK Rap"), None))]
             # Find all BGM songs
@@ -141,40 +143,36 @@ def randomize_music(spoiler: Spoiler):
                 ROM().seek(0x1FFF000 + (song["index"] * 2))
                 ROM().writeMultipleBytes(song_data[rap["index"]].memory, 2)
     # If the user wants to randomize fanfares
-    if spoiler.settings.music_fanfares != MusicCosmetics.default:
-        # Check if our setting is just rando
-        if spoiler.settings.music_fanfares in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
-            if spoiler.settings.music_fanfares == MusicCosmetics.uploaded and js.cosmetics is not None and js.cosmetic_names is not None:
-                # If uploaded, replace some songs with the uploaded songs
-                insertUploaded(list(js.cosmetics.fanfares), list(js.cosmetic_names.fanfares), SongType.Fanfare)
-            # Load the list of fanfares
-            fanfare_list = []
-            for song in song_data:
-                if song.type == SongType.Fanfare:
-                    fanfare_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
-            # Shuffle the fanfare list
-            # ShuffleMusicWithSizeCheck(spoiler, fanfare_list)
-            shuffled_music = fanfare_list.copy()
-            random.shuffle(shuffled_music)
-            shuffle_music(spoiler, fanfare_list.copy(), shuffled_music)
+    if spoiler.settings.music_fanfares_randomized:
+        if js.cosmetics is not None and js.cosmetic_names is not None:
+            # If uploaded, replace some songs with the uploaded songs
+            insertUploaded(list(js.cosmetics.fanfares), list(js.cosmetic_names.fanfares), SongType.Fanfare)
+        # Load the list of fanfares
+        fanfare_list = []
+        for song in song_data:
+            if song.type == SongType.Fanfare:
+                fanfare_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+        # Shuffle the fanfare list
+        # ShuffleMusicWithSizeCheck(spoiler, fanfare_list)
+        shuffled_music = fanfare_list.copy()
+        random.shuffle(shuffled_music)
+        shuffle_music(spoiler, fanfare_list.copy(), shuffled_music)
 
     # If the user wants to randomize events
-    if spoiler.settings.music_events != MusicCosmetics.default:
-        # Check if our setting is just rando
-        if spoiler.settings.music_events in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
-            if spoiler.settings.music_events == MusicCosmetics.uploaded and js.cosmetics is not None and js.cosmetic_names is not None:
-                # If uploaded, replace some songs with the uploaded songs
-                insertUploaded(list(js.cosmetics.events), list(js.cosmetic_names.events), SongType.Event)
-            # Load the list of events
-            event_list = []
-            for song in song_data:
-                if song.type == SongType.Event:
-                    event_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+    if spoiler.settings.music_events_randomized:
+        if js.cosmetics is not None and js.cosmetic_names is not None:
+            # If uploaded, replace some songs with the uploaded songs
+            insertUploaded(list(js.cosmetics.events), list(js.cosmetic_names.events), SongType.Event)
+        # Load the list of events
+        event_list = []
+        for song in song_data:
+            if song.type == SongType.Event:
+                event_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
 
-            # Shuffle the event list
-            duped_song_list = event_list.copy()
-            random.shuffle(duped_song_list)
-            shuffle_music(spoiler, event_list.copy(), duped_song_list)
+        # Shuffle the event list
+        duped_song_list = event_list.copy()
+        random.shuffle(duped_song_list)
+        shuffle_music(spoiler, event_list.copy(), duped_song_list)
 
 
 def shuffle_music(spoiler: Spoiler, pool_to_shuffle, shuffled_list):

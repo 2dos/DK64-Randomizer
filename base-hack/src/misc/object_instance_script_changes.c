@@ -669,6 +669,32 @@ static const short tnsportal_flags[] = {
 	FLAG_PORTAL_CASTLE,
 };
 
+#define PORTAL_DELTA 40
+
+void alterParentLocationTNS(int id) {
+	int* m2location = (int*)ObjectModel2Pointer;
+	for (int i = 0; i < 17; i++) {
+		if (parentData[i].in_submap) {
+			if ((parentData[i].map == CurrentMap) && (parentData[i].transition_properties_bitfield == 3)) {
+				int index = convertIDToIndex(id);
+				ModelTwoData* tied_object = getObjectArrayAddr(m2location,0x90,index);
+				model_struct* model = tied_object->model_pointer;
+				float angle = model->rot_y;
+				angle /= 360;
+				angle *= 4096;
+				int angle_int = angle;
+				float dx = PORTAL_DELTA * determineXRatioMovement(angle_int);
+				float dz = PORTAL_DELTA * determineZRatioMovement(angle_int);
+				parentData[i].positions.xPos = tied_object->xPos + dx;
+				parentData[i].positions.zPos = tied_object->zPos + dz;
+				int opp_angle = angle_int + 2048;
+				parentData[i].facing_angle = opp_angle & 0xFFF;
+				return;
+			}
+		}
+	}
+}
+
 void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
 	/**
 	 * @brief Generic code for a T&S Portal
@@ -730,7 +756,8 @@ void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
 	} else if (behaviour->current_state == 4) {
 		if (behaviour->timer == 0) {
 			enterPortal(Player);
-			initiateTransition_0(MAP_TROFFNSCOFF, 0, 0, 3); // Param 3 is tied exit
+			initiateTransition_0(MAP_TROFFNSCOFF, 0, 0, 3);
+			alterParentLocationTNS(id);
 			behaviour->next_state = 5;
 		}
 	} else if (behaviour->current_state == 40) {

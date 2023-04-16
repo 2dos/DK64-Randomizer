@@ -384,6 +384,8 @@ class MiscChangesSelected(IntEnum):
     save_k_rool_progress = 18
     small_bananas_always_visible = 19
     fast_hints = 20
+    brighten_mad_maze_maul_enemies = 21
+    raise_fungi_dirt_patch = 22
 
 
 class MoveRando(IntEnum):
@@ -404,21 +406,6 @@ class MoveRando(IntEnum):
     cross_purchase = 2
     start_with = 3
     item_shuffle = 4
-
-
-class MusicCosmetics(IntEnum):
-    """Determines how BGM, fanfare or event music is shuffled.
-
-    default: Music is not shuffled.
-    randomized: Music is shuffled.
-    chaos: All D.K. Rap, all the time.
-    uploaded: Use music files provided by the user.
-    """
-
-    default = auto()
-    randomized = auto()
-    chaos = auto()
-    uploaded = auto()
 
 
 class RandomPrices(IntEnum):
@@ -553,9 +540,6 @@ SettingsMap = {
     "minigames_list_selected": MinigamesListSelected,
     "misc_changes_selected": MiscChangesSelected,
     "move_rando": MoveRando,
-    "music_bgm": MusicCosmetics,
-    "music_events": MusicCosmetics,
-    "music_fanfares": MusicCosmetics,
     "rambi_colors": CharacterColors,
     "random_prices": RandomPrices,
     "shockwave_status": ShockwaveStatus,

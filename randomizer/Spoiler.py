@@ -18,7 +18,6 @@ from randomizer.Enums.Settings import (
     HelmDoorItem,
     LogicType,
     MinigameBarrels,
-    MusicCosmetics,
     RandomPrices,
     ShockwaveStatus,
     ShuffleLoadingZones,
@@ -47,6 +46,7 @@ class Spoiler:
         self.woth = {}
         self.woth_locations = {}
         self.woth_paths = {}
+        self.krool_paths = {}
         self.shuffled_barrel_data = {}
         self.shuffled_exit_data = {}
         self.shuffled_exit_instructions = []
@@ -295,6 +295,23 @@ class Spoiler:
                 wothSlams += 1
                 extra = " " + str(wothSlams)
             humanspoiler["Paths"][destination_item.name + extra] = path_dict
+        # Paths for K. Rool phases - also do not show up on the site, just for debugging
+        for kong, path in self.krool_paths.items():
+            path_dict = {}
+            for path_loc_id in path:
+                path_location = LocationList[path_loc_id]
+                path_item = ItemList[path_location.item]
+                path_dict[path_location.name] = path_item.name
+            phase_name = "K. Rool Donkey Phase"
+            if kong == Kongs.diddy:
+                phase_name = "K. Rool Diddy Phase"
+            elif kong == Kongs.lanky:
+                phase_name = "K. Rool Lanky Phase"
+            elif kong == Kongs.tiny:
+                phase_name = "K. Rool Tiny Phase"
+            elif kong == Kongs.chunky:
+                phase_name = "K. Rool Chunky Phase"
+            humanspoiler["Paths"][phase_name] = path_dict
 
         self.pregiven_items = []
         for location_id, location in LocationList.items():
@@ -647,11 +664,11 @@ class Spoiler:
                 humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = klap_models[self.settings.klaptrap_model_index]
             else:
                 humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
-        if self.settings.music_bgm in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
+        if self.settings.music_bgm_randomized:
             humanspoiler["Cosmetics"]["Background Music"] = self.music_bgm_data
-        if self.settings.music_fanfares in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
+        if self.settings.music_fanfares_randomized:
             humanspoiler["Cosmetics"]["Fanfares"] = self.music_fanfare_data
-        if self.settings.music_events in (MusicCosmetics.randomized, MusicCosmetics.uploaded):
+        if self.settings.music_events_randomized:
             humanspoiler["Cosmetics"]["Event Themes"] = self.music_event_data
         self.json = json.dumps(humanspoiler, indent=4)
 
