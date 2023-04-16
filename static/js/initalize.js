@@ -8,17 +8,7 @@ if (window.location.protocol != "https:") {
     location.href = location.href.replace("http://", "https://");
   }
 }
-if (
-  location.hostname == "dev.dk64randomizer.com" ||
-  location.hostname == "dk64randomizer.com"
-) {
-  var _LTracker = _LTracker || [];
-  _LTracker.push({
-    logglyKey: "5d3aa1b3-6ef7-4bc3-80ae-778d48a571b0",
-    sendConsoleErrors: true,
-    tag: "loggly-jslogger",
-  });
-}
+
 run_python_file("ui/__init__.py");
 // Sleep function to run functions after X seconds
 async function sleep(seconds, func, args) {
@@ -268,11 +258,14 @@ function filebox() {
     $("#rom_3").val(file.name);
     $("#rom_3").attr("placeholder", file.name);
     // Get the original fiile
-    var db = romdatabase.result;
-    var tx = db.transaction("ROMStorage", "readwrite");
-    var store = tx.objectStore("ROMStorage");
-    // Store it in the database
-    store.put({ ROM: "N64", value: file });
+    try{
+      var db = romdatabase.result;
+      var tx = db.transaction("ROMStorage", "readwrite");
+      var store = tx.objectStore("ROMStorage");
+      // Store it in the database
+      store.put({ ROM: "N64", value: file });
+    }
+    catch{}
     // Make sure we load the file into the rompatcher
     romFile = new MarcFile(file, _parseROM);
   };
