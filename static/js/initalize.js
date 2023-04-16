@@ -402,7 +402,7 @@ function generate_seed(url, json, git_branch, run_id) {
               success: function (response) {
                 // Start Patching
                 event_response_data = response;
-                pyodide.runPython(
+                pyodide.runPythonAsync(
                   `
                 import js
                 from randomizer.Patching.ApplyRandomizer import patching_response
