@@ -352,7 +352,7 @@ def set_preset_options():
     updateDoorOneNumAccess(None)
     updateDoorTwoNumAccess(None)
 
-    js.load_cookies()
+    js.load_data()
 
 
 @bind("click", "randomize_blocker_required_amounts")

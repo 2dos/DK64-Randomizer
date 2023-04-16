@@ -144,9 +144,9 @@ jq = $;
 $("#form input").on("input change", function (e) {
   //This would be called if any of the input element has got a change inside the form
   var disabled = $("form").find(":input:disabled").removeAttr("disabled");
-  const data = new FormData(document.querySelector("form"));
+  data = new FormData(document.querySelector("form"));
   disabled.attr("disabled", "disabled");
-  const json = Object.fromEntries(data.entries());
+  json = Object.fromEntries(data.entries());
   for (element of document.getElementsByTagName("select")) {
     if (element.className.includes("selected")) {
       length = element.options.length;
@@ -159,14 +159,14 @@ $("#form input").on("input change", function (e) {
       json[element.name] = values;
     }
   }
-  setCookie("saved_settings", JSON.stringify(json), 30);
+  saveDataToIndexedDB("saved_settings", JSON.stringify(json));
 });
 $("#form select").on("change", function (e) {
   //This would be called if any of the input element has got a change inside the form
   var disabled = $("form").find(":input:disabled").removeAttr("disabled");
-  const data = new FormData(document.querySelector("form"));
+  data = new FormData(document.querySelector("form"));
   disabled.attr("disabled", "disabled");
-  const json = Object.fromEntries(data.entries());
+  json = Object.fromEntries(data.entries());
   for (element of document.getElementsByTagName("select")) {
     if (element.className.includes("selected")) {
       length = element.options.length;
@@ -179,66 +179,9 @@ $("#form select").on("change", function (e) {
       json[element.name] = values;
     }
   }
-  setCookie("saved_settings", JSON.stringify(json), 30);
+  saveDataToIndexedDB("saved_settings", JSON.stringify(json));
 });
 
-function setCookie(name, value, days) {
-  var expires = "";
-  if (days) {
-    var date = new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    expires = "; expires=" + date.toUTCString();
-  }
-  document.cookie = name + "=" + (value || "") + expires + "; path=/;";
-}
-function getCookie(name) {
-  var nameEQ = name + "=";
-  var ca = document.cookie.split(";");
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == " ") c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-  }
-  return null;
-}
-function eraseCookie(name) {
-  document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-}
-
-function load_cookies() {
-  try {
-    if (getCookie("saved_settings") != null) {
-      json = JSON.parse(getCookie("saved_settings"));
-      if (json !== null) {
-        for (var key in json) {
-          element = document.getElementsByName(key)[0];
-          if (json[key] == "True") {
-            element.checked = true;
-          } else if (json[key] == "False") {
-            element.checked = false;
-          }
-          try {
-            element.value = json[key];
-            if (element.hasAttribute("data-slider-value")) {
-              element.setAttribute("data-slider-value", json[key]);
-            }
-            if (element.className.includes("selected")) {
-              for (var i = 0; i < element.options.length; i++) {
-                element.options[i].selected =
-                  json[key].indexOf(element.options[i].value) >= 0;
-              }
-            }
-          } catch {}
-        }
-      }
-    } else {
-      load_presets();
-    }
-  } catch {
-    eraseCookie("saved_settings");
-  }
-}
-load_cookies();
 async function load_presets() {
   await pyodide.runPythonAsync(`from ui.rando_options import preset_select_changed
 preset_select_changed(None)`);
@@ -284,7 +227,16 @@ var indexedDB =
 // Open (or create) the database
 var romdatabase = indexedDB.open("ROMStorage", 1);
 var seeddatabase = indexedDB.open("SeedStorage", 1);
-
+var settingsdatabase = indexedDB.open("SettingsDB", 1);
+settingsdatabase.onupgradeneeded = function () {
+  try {
+    var settingsdb = settingsdatabase.result;
+    settingsdb.createObjectStore("saved_settings");
+  } catch{}
+};
+settingsdatabase.onsuccess = function () {
+  load_data();
+};
 // Create the schema
 romdatabase.onupgradeneeded = function () {
   try {
@@ -489,3 +441,82 @@ function generate_seed(url, json, git_branch, run_id) {
     },
   });
 }
+
+function saveDataToIndexedDB(key, value) {
+  try{
+    var settingsdb = settingsdatabase.result;
+    transaction = settingsdb.transaction("saved_settings", "readwrite");
+    objectStore = transaction.objectStore("saved_settings");
+    objectStore.put(value, key);
+  }
+  catch{}
+}
+
+function loadDataFromIndexedDB(key) {
+  return new Promise((resolve, reject) => {
+   
+    var settingsdb = settingsdatabase.result;
+    transaction = settingsdb.transaction("saved_settings", "readonly");
+    objectStore = transaction.objectStore("saved_settings");
+    request = objectStore.get(key);
+    request.onerror = function (event) {
+      reject("Transaction error: " + event.target.errorCode);
+    };
+
+    request.onsuccess = function (event) {
+      value = event.target.result;
+      console.log(value)
+      resolve(value);
+    };
+  });
+}
+
+
+function load_data() {
+
+
+  try{
+    
+    var settingsdb = settingsdatabase.result;
+    transaction = settingsdb.transaction("saved_settings", "readonly");
+    objectStore = transaction.objectStore("saved_settings");
+    getRequest = objectStore.get("saved_settings");
+    getRequest.onerror = function(event) {
+      console.error("Failed to retrieve saved settings");
+    };
+    getRequest.onsuccess = function(event) {
+      if (getRequest.result) {
+        json = JSON.parse(getRequest.result);
+        if (json !== null) {
+          for (var key in json) {
+            element = document.getElementsByName(key)[0];
+            if (json[key] == "True") {
+              element.checked = true;
+            } else if (json[key] == "False") {
+              element.checked = false;
+            }
+            try {
+              element.value = json[key];
+              if (element.hasAttribute("data-slider-value")) {
+                element.setAttribute("data-slider-value", json[key]);
+              }
+              if (element.className.includes("selected")) {
+                for (var i = 0; i < element.options.length; i++) {
+                  element.options[i].selected =
+                    json[key].indexOf(element.options[i].value) >= 0;
+                }
+              }
+            } catch {}
+          }
+        }
+      } else {
+        load_presets();
+      }
+    };
+  }
+  catch{
+    load_presets();
+  }
+
+}
+load_data();
