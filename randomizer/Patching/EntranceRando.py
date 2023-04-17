@@ -213,6 +213,7 @@ def filterEntranceType():
                 ROM().seek(cont_map_lzs_address + start + 0x16)
                 ROM().writeMultipleBytes(0, 2)
 
+
 def enableSpiderText(spoiler: Spoiler):
     """Change the cutscene trigger in Spider Boss to the specific item reward cutscene."""
     if spoiler.settings.item_reward_previews:

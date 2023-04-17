@@ -1501,7 +1501,7 @@ def writeMiscCosmeticChanges(spoiler: Spoiler):
     if spoiler.settings.misc_cosmetics:
         # Melon HUD
         data = {7: [0x13C, 0x147], 14: [0x5A, 0x5D], 25: [0x17B2, 0x17B2]}
-        shift = random.randint(0, 359)
+        shift = random.randint(-359, 359)
         for table in data:
             table_data = data[table]
             for img in range(table_data[0], table_data[1] + 1):
