@@ -194,7 +194,7 @@ LogicRegions = {
         TransitionFront(Regions.ThornvineArea, lambda l: True, time=Time.Night),
         TransitionFront(Regions.Snide, lambda l: True, time=Time.Day),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando, time=Time.Day),
-        TransitionFront(Regions.ThornvineBarn, lambda l: l.CanPhaseswim(), Transitions.ForestMainToBarn),
+        TransitionFront(Regions.ThornvineBarn, lambda l: l.CanPhaseswim(), Transitions.ForestMainToBarn, isGlitchTransition=True),
     ]),
 
     Regions.MillChunkyTinyArea: Region("Mill Back Room", "Forest Mills", Levels.FungiForest, False, -1, [], [

@@ -176,13 +176,15 @@ class TransitionBack:
 class TransitionFront:
     """The entered side of a transition between regions."""
 
-    def __init__(self, dest, logic, exitShuffleId=None, assumed=False, time=Time.Both):
+    def __init__(self, dest, logic, exitShuffleId=None, assumed=False, time=Time.Both, isGlitchTransition=False, isBananaportTransition=False):
         """Initialize with given parameters."""
         self.dest = dest  # Planning to remove this
         self.logic = logic  # Lambda function for accessibility
         self.exitShuffleId = exitShuffleId  # Planning to remove this
         self.time = time
         self.assumed = assumed  # Indicates this is an assumed exit attached to the root
+        self.isGlitchTransition = isGlitchTransition  # Indicates if this is a glitch-logic transition for this entrance
+        self.isBananaportTransition = isBananaportTransition  # Indicates if this transition is due to a Bananaport
 
 
 class Sphere:

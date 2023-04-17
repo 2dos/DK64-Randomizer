@@ -223,22 +223,34 @@ def test_manual_settings_dict(generate_lo_rando_race_settings):
     Generate_Spoiler(spoiler)
     print(spoiler)
     print(spoiler.json)
-    asdf = 1 / 0
-    print(asdf)
-    raise Exception
+    print("all done")
 
 
 def test_with_settings_string():
     """Confirm that settings strings decryption is working and generate a spoiler log with it."""
     # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
+    # This top one is always the S2 Preset (probably up to date)
     settings_string = "baGFiRorPN5yunTChIoPw+qhoRDIhKlsa58CCI0ivUyYRCnrG2rBACoUht9QX8EsAycBkF1ls0FAXUAgwE7AIHA3cBhAI8AQJBXkChQM9AYLB3sDhgQow08fGQpnqShoKlsvbTcAM0NjlGuKFRFgMTEUDF+2R2OWvAX6RwPApkqkuxuiSaxBJBmBBHNCBgzm4yA4tloXFgsiwUlwNCgWisVGEmjEjkk5CQPACsAA"
+    # This one is for ease of testing, go wild with it
+    # settings_string = "baGFiRorPN5yunTChQVzwlFB+H1UNCIZEJUtjXPgQRGkV6mTCIW6yU9Y21YIgVCkNvqC/glgGTgMgustmgoC6gEGAnYBA4G7gMIBHgCBIK8gUKBnoDBYO9gcMCFGGnj4yFM9SUNBUtl7abgBmhsco1xQqIsBiYigYv2yOxy14C/SOB4FMlUl2N0STWIJIMwBgzg4tloXFgsiwUlwNCgWisVGEmjEjkk5CQPAD6AKwA"
 
     settings_dict = decrypt_settings_string_enum(settings_string)
+    settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
     settings = Settings(settings_dict)
     spoiler = Spoiler(settings)
     Generate_Spoiler(spoiler)
     print(spoiler)
     print(spoiler.json)
-    asdf = 1 / 0
-    print(asdf)
-    raise Exception
+    # printHintDistribution(spoiler)
+    print("all done")
+
+
+def printHintDistribution(spoiler: Spoiler):
+    """Print the hint distribution for the given spoiler log."""
+    types = ""
+    values = ""
+    for key, value in spoiler.hint_distribution.items():
+        types += (key.name + ", ")
+        values += (str(value) + ", ")
+    print(types)
+    print(values)
