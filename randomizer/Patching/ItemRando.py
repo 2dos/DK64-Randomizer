@@ -166,6 +166,7 @@ textboxes = [
     TextboxChange(Locations.CavesLankyCastle, 33, 0, "HOW ABOUT IT", Types.Banana, "HOW ABOUT A |"),
     TextboxChange(Locations.CastleTinyCarRace, 34, 4, "BANANA", Types.Banana),
     TextboxChange(Locations.ForestDiddyOwlRace, 21, 0, "WHEN YOU CAN FLY", Types.Banana, "WHEN YOU CAN FLY TO HAVE A CHANCE TO RECEIVE A |"),
+    TextboxChange(Locations.ForestTinySpiderBoss, 19, 32, "\x04GOLDEN BANANA\x04", Types.Banana),
 ]
 
 rareware_coin_reward = ("\x04RAREWARE COIN\x04", "\x04DOUBLOON OF THE RAREST KIND\x04")

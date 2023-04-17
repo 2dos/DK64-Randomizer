@@ -797,7 +797,7 @@ void initOptionScreen(void) {
 	*(short*)(0x8002DADE) = getHi(&InvertedControls); // Save to global
 	*(short*)(0x8002DAE2) = getLo(&InvertedControls); // Save to global
 	*(short*)(0x8002DA88) = 0x1000; // Prevent Language Update
-	*(int*)(0x8002DEC4) = 0x0C000000 | (((int)&displayInverted & 0xFFFFFF) >> 2); // Modify Function Call
+	writeFunction(0x8002DEC4, &displayInverted); // Modify Function Call
 }
 
 static unsigned char previous_map_save = MAP_ISLES;

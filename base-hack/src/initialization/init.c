@@ -55,12 +55,6 @@ float getOscillationDelta(void) {
 	return 0.5f;
 }
 
-void loadSingularHook(int write_address, void* hook_jump) {
-	int write = 0x08000000 | (((int)(hook_jump) & 0xFFFFFF) >> 2);
-	*(int*)(write_address) = write;
-	*(int*)(write_address + 4) = 0;
-}
-
 void loadHooks(void) {
 	loadSingularHook(0x8063EE08, &InstanceScriptCheck);
 	loadSingularHook(0x80731168, &checkFlag_ItemRando);
@@ -222,6 +216,7 @@ void initHack(int source) {
 			if (Rando.short_bosses) {
 				actor_health_damage[236].init_health = 44; // Dogadon Health: 3 + (62 * (2 / 3))
 				actor_health_damage[185].init_health = 3; // Dillo Health
+				actor_health_damage[251].init_health = 3; // Spider Boss Health
 			}
 			if (Rando.resolve_bonus & 1) {
 				*(short*)(0x806818DE) = 0x4248; // Make Aztec Lobby GB spawn above the trapdoor)
@@ -233,7 +228,7 @@ void initHack(int source) {
 				*(short*)(0x806809C8) = 0x1000; // Prevent Fungi TTTrouble Bonus dropping
 			}
 			if (Rando.resolve_bonus) {
-				*(int*)(0x80681158) = 0x0C000000 | (((int)&completeBonus & 0xFFFFFF) >> 2); // Modify Function Call
+				writeFunction(0x80681158, &completeBonus); // Modify Function Call
 				*(short*)(0x80681962) = 1; // Make bonus noclip	
 			}
 			if (Rando.tns_portal_rando_on) {
@@ -283,11 +278,11 @@ void initHack(int source) {
 			writeCoinRequirements(0);
 			writeEndSequence();
 			initSmallerQuadChecks();
-			*(int*)(0x805FEBC0) = 0x0C000000 | (((int)&parseCutsceneData & 0xFFFFFF) >> 2); // modifyCutsceneHook
-			*(int*)(0x807313A4) = 0x0C000000 | (((int)&checkVictory_flaghook & 0xFFFFFF) >> 2); // perm flag set hook
+			writeFunction(0x805FEBC0, &parseCutsceneData); // modifyCutsceneHook
+			writeFunction(0x807313A4, &checkVictory_flaghook); // perm flag set hook
 			*(int*)(0x80748088) = (int)&CrownDoorCheck; // Update check on Crown Door
 			// New Mermaid Checking Code
-			*(int*)(0x806C3B5C) = 0x0C000000 | (((int)&mermaidCheck & 0xFFFFFF) >> 2); // Mermaid Check
+			writeFunction(0x806C3B5C, &mermaidCheck); // Mermaid Check
 			*(short*)(0x806C3B64) = 0x1000; // Force to branch
 			*(short*)(0x806C3BD0) = 0x1000; // Force to branch
 			*(int*)(0x806C3C20) = 0; // NOP - Cancel control state write
@@ -296,7 +291,7 @@ void initHack(int source) {
 				*(int*)(0x80713CCC) = 0; // Prevent Helm Timer Disable
 				*(int*)(0x80713CD8) = 0; // Prevent Shutdown Song Playing
 				*(short*)(0x8071256A) = 15; // Init Helm Timer = 15 minutes
-				*(int*)(0x807125A4) = 0x0C000000 | (((int)&initHelmHurry & 0xFFFFFF) >> 2); // Change write
+				writeFunction(0x807125A4, &initHelmHurry); // Change write
 				*(int*)(0x807125CC) = 0; // Prevent Helm Timer Overwrite
 			}
 			if (Rando.version == 0) {
@@ -308,6 +303,7 @@ void initHack(int source) {
 				*(short*)(0x806C58D6) = 0x0008; //Owl ring amount
 				*(short*)(0x806C5B16) = 0x0008;
 				*(int*)(0x806BEDFC) = 0; //Spawn banana coins on beating rabbit 2 (Beating round 2 branches to banana coin spawning label before continuing)
+				*(short*)(0x806BC582) = 30; // Ice Tomato Timer
 			}
 			int kko_phase_rando = 0;
 			for (int i = 0; i < 3; i++) {
@@ -321,18 +317,18 @@ void initHack(int source) {
 			*(short*)(0x806C8B42) = Rando.klaptrap_color_bbother;
 			if (Rando.wrinkly_rando_on) {
 				*(int*)(0x8064F170) = 0; // Prevent edge cases for Aztec Chunky/Fungi Wheel
-				*(int*)(0x8069E154) = 0x0C000000 | (((int)&getWrinklyLevelIndex & 0xFFFFFF) >> 2); // Modify Function Call
+				writeFunction(0x8069E154, &getWrinklyLevelIndex); // Modify Function Call
 			}
 			// Object Instance Scripts
 			*(int*)(0x80748064) = (int)&change_object_scripts;
 			*(int*)(0x806416BC) = 0; // Prevent parent map check in cross-map object change communications
 			// Deathwarp Handle
-			*(int*)(0x8071292C) = 0x0C000000 | (((int)&WarpHandle & 0xFFFFFF) >> 2); // Check if in Helm, in which case, apply transition
+			writeFunction(0x8071292C, &WarpHandle); // Check if in Helm, in which case, apply transition
 			// New Guard Code
 			*(short*)(0x806AF75C) = 0x1000;
 			// Gold Beaver Code
       		actor_functions[212] = (void*)0x806AD54C; // Set as Blue Beaver Code
-			*(int*)(0x806AD750) = 0x0C000000 | (((int)&beaverExtraHitHandle & 0xFFFFFF) >> 2); // Remove buff until we think of something better
+			writeFunction(0x806AD750, &beaverExtraHitHandle); // Remove buff until we think of something better
 			// Move Text Code
 			actor_functions[324] = &getNextMoveText;
 			actor_functions[320] = &getNextMoveText;
@@ -350,14 +346,14 @@ void initHack(int source) {
 			// Spider Projectile
 			*(int*)(0x806CBD78) = 0x18400005; // BLEZ $v0, 0x5 - Decrease in health occurs if trap bubble active
 			if (Rando.hard_enemies) {
-				*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2);
+				writeFunction(0x806ADDC0, &handleSpiderTrapCode);
 				*(short*)(0x806B12DA) = 0x3A9; // Kasplat Shockwave Chance
 				*(short*)(0x806B12FE) = 0x3B3; // Kasplat Shockwave Chance
 				actor_health_damage[259].init_health = 9; // Increase Guard Health
 			}
 			// Fix some silk memes
 			*(int*)(0x806ADA6C) = 0;
-			*(int*)(0x806ADA70) = 0x0C000000 | (((int)&HandleSpiderSilkSpawn & 0xFFFFFF) >> 2);
+			writeFunction(0x806ADA70, &HandleSpiderSilkSpawn);
 			*(int*)(0x806ADA78) = 0;
 			// Fix spider crashes
 			int fixed_anim = 0x2F5;
@@ -376,11 +372,11 @@ void initHack(int source) {
 				*(short*)(0x8068BDFC) = 0x1000; // Disable rocking in Mech Fish
 				// *(int*)(0x806609DC) = 0x44802000; // Change ripple oscillation X to 0 (mtc1 $zero, $f4)
 				// *(int*)(0x806609EC) = 0x44805000; // Change ripple oscillation Z to 0 (mtc1 $zero, $f10)
-				*(int*)(0x80660994) = 0x0C000000 | (((int)&getOscillationDelta & 0xFFFFFF) >> 2);
-				*(int*)(0x806609BC) = 0x0C000000 | (((int)&getOscillationDelta & 0xFFFFFF) >> 2);
+				writeFunction(0x80660994, &getOscillationDelta);
+				writeFunction(0x806609BC, &getOscillationDelta);
 			}
 			// Slow Turn Fix
-			*(int*)(0x806D2FC0) = 0x0C000000 | (((int)&fixRBSlowTurn & 0xFFFFFF) >> 2);
+			writeFunction(0x806D2FC0, &fixRBSlowTurn);
 			// CB Bunch
 			*(int*)(0x806A65B8) = 0x240A0006; // Always ensure chunky bunch sprite (Rock Bunch)
 			// Coins
@@ -399,9 +395,9 @@ void initHack(int source) {
 			*(short*)(0x806F6F76) = FLAG_ABILITY_CAMERA; // Film Refill
 			*(short*)(0x806F916A) = FLAG_ABILITY_CAMERA; // Film max
 			// LZ Save
-			*(int*)(0x80712EC4) = 0x0C000000 | (((int)&postKRoolSaveCheck & 0xFFFFFF) >> 2);
+			writeFunction(0x80712EC4, &postKRoolSaveCheck);
 			// Opacity fixes
-			*(int*)(0x806380B0) = 0x0C000000 | (((int)&handleModelTwoOpacity & 0xFFFFFF) >> 2);
+			writeFunction(0x806380B0, &handleModelTwoOpacity);
 			if (Rando.medal_cb_req > 0) {
 				// Change CB Req
 				*(short*)(0x806F934E) = Rando.medal_cb_req; // Acquisition
@@ -414,14 +410,14 @@ void initHack(int source) {
 				*(int*)(0x806F6D94) = 0; // Prevent delayed collection
 				// Standard Ammo
 				*(short*)(0x806F5B68) = 0x1000;
-				*(int*)(0x806F5BE8) = 0x0C000000 | (((int)&tagAnywhereAmmo & 0xFFFFFF) >> 2);
+				writeFunction(0x806F5BE8, &tagAnywhereAmmo);
 				// Bunch
 				*(short*)(0x806F59A8) = 0x1000;
-				*(int*)(0x806F5A08) = 0x0C000000 | (((int)&tagAnywhereBunch & 0xFFFFFF) >> 2);
+				writeFunction(0x806F5A08, &tagAnywhereBunch);
 
 				*(int*)(0x806F6CAC) = 0x9204001A; // LBU $a0, 0x1A ($s0)
 				*(int*)(0x806F6CB0) = 0x86060002; // LH $a2, 0x2 ($s0)
-				*(int*)(0x806F6CB4) = 0x0C000000 | (((int)&tagAnywhereInit & 0xFFFFFF) >> 2);
+				writeFunction(0x806F6CB4, &tagAnywhereInit);
 				*(int*)(0x806F53AC) = 0; // Prevent LZ case
 
 				// initTagAnywhere();

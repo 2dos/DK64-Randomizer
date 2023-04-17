@@ -16,7 +16,7 @@ from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
 from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong, writeMiscCosmeticChanges, applyHolidayMode, applyHelmDoorCosmetics, writeBootMessages
 from randomizer.Patching.EnemyRando import randomize_enemies
-from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranceType
+from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranceType, enableSpiderText
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
@@ -88,7 +88,7 @@ def patching_response(responded_data):
     if spoiler.settings.download_patch_file:
         spoiler.settings.download_patch_file = False
 
-        js.save_text_as_file(codecs.encode(pickle.dumps(spoiler), "base64").decode(), f"dk64-{spoiler.settings.seed_id}.lanky")
+        js.save_text_as_file(codecs.encode(pickle.dumps(spoiler), "base64").decode(), f"dk64r-patch-{spoiler.settings.seed_id}.lanky")
     js.write_seed_history(spoiler.settings.seed_id, codecs.encode(pickle.dumps(spoiler), "base64").decode(), spoiler.settings.public_hash)
     # Write date to ROM for debugging purposes
     dt = js.getDate()
@@ -466,6 +466,7 @@ def patching_response(responded_data):
     replaceIngameText(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
     writeBootMessages(spoiler)
+    enableSpiderText(spoiler)
 
     random.seed(spoiler.settings.seed)
     randomize_music(spoiler)
@@ -522,7 +523,7 @@ def patching_response(responded_data):
             name.innerHTML = setting
             description.innerHTML = FormatSpoiler(value)
     ROM().fixSecurityValue()
-    ROM().save(f"dk64-{spoiler.settings.seed_id}.z64")
+    ROM().save(f"dk64r-rom-{spoiler.settings.seed_id}.z64")
     loop.run_until_complete(ProgressBar().reset())
     js.jq("#nav-settings-tab").tab("show")
 

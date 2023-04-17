@@ -152,6 +152,7 @@ extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern void handleSpiderTrapCode(void);
 extern void HandleSpiderSilkSpawn(void);
+extern void SpiderBossExtraCode(void);
 extern void fastWarpShockwaveFix(void);
 extern int fixDilloTNTPads(void* actor);
 extern int canPlayJetpac(void);
@@ -341,6 +342,9 @@ extern void helmTime_exitRace(void);
 extern void helmTime_exitLevel(void);
 extern void helmTime_exitBoss(void);
 extern void helmTime_exitKRool(void);
+
+extern void loadSingularHook(int write_address, void* hook_jump);
+extern void writeFunction(int write_address, void* new_function);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];

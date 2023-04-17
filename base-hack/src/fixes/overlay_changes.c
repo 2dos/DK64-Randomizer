@@ -166,20 +166,20 @@ void initArcade(void) {
 	*(int*)(0x80024F10) = 0x240E0005; // ADDIU $t6, $r0, 0x5
 	*(short*)(0x80024F2A) = 0xC71B;
 	*(int*)(0x80024F2C) = 0xA0CEC71B; // SB $t6, 0xC71B ($a2)
-	*(int*)(0x80024D5C) = 0x0C000000 | (((int)&arcadeExit & 0xFFFFFF) >> 2);
-	*(int*)(0x800257B4) = 0x0C000000 | (((int)&arcadeExit & 0xFFFFFF) >> 2);
-	*(int*)(0x8002B6D4) = 0x0C000000 | (((int)&arcadeExit & 0xFFFFFF) >> 2);
-	*(int*)(0x8002FA58) = 0x0C000000 | (((int)&arcadeExit & 0xFFFFFF) >> 2);
+	writeFunction(0x80024D5C, &arcadeExit);
+	writeFunction(0x800257B4, &arcadeExit);
+	writeFunction(0x8002B6D4, &arcadeExit);
+	writeFunction(0x8002FA58, &arcadeExit);
 	// Fix arcade level setting logic
-	*(int*)(0x80024F34) = 0x0C000000 | (((int)&determineArcadeLevel & 0xFFFFFF) >> 2); // Change log
+	writeFunction(0x80024F34, &determineArcadeLevel); // Change log
 	*(int*)(0x80024F70) = 0; // Prevent level set
 	*(int*)(0x80024F50) = 0; // Prevent level set
 	// Arcade Level Order Rando
 	for (int i = 0; i < 4; i++) {
 		ArcadeBackgrounds[i] = Rando.arcade_order[i];
 	}
-	*(int*)(0x8002F7BC) = 0x0C000000 | (((int)&HandleArcadeVictory & 0xFFFFFF) >> 2);
-	*(int*)(0x8002FA68) = 0x0C000000 | (((int)&HandleArcadeVictory & 0xFFFFFF) >> 2);
+	writeFunction(0x8002F7BC, &HandleArcadeVictory);
+	writeFunction(0x8002FA68, &HandleArcadeVictory);
 	*(short*)(0x8002FA24) = 0x1000;
 	// Load Arcade Sprite
 	if ((*(unsigned short*)(0x8002E8B6) == 0x8004) && (*(unsigned short*)(0x8002E8BA) == 0xAE58) && (Rando.arcade_reward > 0)) {
@@ -236,23 +236,19 @@ void overlay_changes(void) {
 		*(int*)(0x80025E9C) = 0x0C009751; // Change writing of move to "write bitfield move" function call
 		writeJetpacMedalReq(); // Adjust medal requirement for Jetpac
 		// Apply shop hints
-		int func_call = 0;
 		if (Rando.shop_hints) {
-			func_call = 0x0C000000 | (((int)&getMoveHint & 0xFFFFFF) >> 2);
-			*(int*)(0x8002661C) = func_call;
-			*(int*)(0x800265F0) = func_call;
+			writeFunction(0x8002661C, &getMoveHint);
+			writeFunction(0x800265F0, &getMoveHint);
 		}
 		// Change move purchase
-		func_call = 0x0C000000 | (((int)&getNextMovePurchase & 0xFFFFFF) >> 2);
-		*(int*)(0x80026720) = func_call;
-		*(int*)(0x8002683C) = func_call;
+		writeFunction(0x80026720, &getNextMovePurchase);
+		writeFunction(0x8002683C, &getNextMovePurchase);
 		crossKongInit();
 		// Write Modified purchase move stuff
-		func_call = 0x0C000000 | (((int)&purchaseMove & 0xFFFFFF) >> 2);
-		*(int*)(0x80027324) = func_call;
-		*(int*)(0x8002691C) = func_call;
-		*(int*)(0x800270B8) = 0x0C000000 | (((int)&showPostMoveText & 0xFFFFFF) >> 2);
-		*(int*)(0x80026508) = 0x0C000000 | (((int)&canPlayJetpac & 0xFFFFFF) >> 2);
+		writeFunction(0x80027324, &purchaseMove);
+		writeFunction(0x8002691C, &purchaseMove);
+		writeFunction(0x800270B8, &showPostMoveText);
+		writeFunction(0x80026508, &canPlayJetpac);
 		*(int*)(0x80026F64) = 0; //  Disable check for whether you have a move before giving donation at shop
 		*(int*)(0x80026F68) = 0; //  Disable check for whether you have a move before giving donation at shop
 		if (CurrentMap == MAP_CRANKY) {
@@ -269,9 +265,9 @@ void overlay_changes(void) {
 			MainMenuMoves[i].moves = moves_values[i];
 		}
 		// Main Menu visual changes
-		*(int*)(0x80030604) = 0x0C000000 | (((int)&file_progress_screen_code & 0xFFFFFF) >> 2); // New file progress code
-		*(int*)(0x80029FE0) = 0x0C000000 | (((int)&wipeFileMod & 0xFFFFFF) >> 2); // Wipe File Hook
-		*(int*)(0x80028C88) = 0x0C000000 | (((int)&enterFileProgress & 0xFFFFFF) >> 2); // Enter File Progress Screen Hook
+		writeFunction(0x80030604, &file_progress_screen_code); // New file progress code
+		writeFunction(0x80029FE0, &wipeFileMod); // Wipe File Hook
+		writeFunction(0x80028C88, &enterFileProgress); // Enter File Progress Screen Hook
 		*(int*)(0x80029818) = 0; // Hide A
 		*(int*)(0x80029840) = 0; // Hide B
 		// *(int*)(0x80029874) = 0; // Hide GB
@@ -288,8 +284,8 @@ void overlay_changes(void) {
 		*(int*)(0x80028F60) = 0; // File 2 Opacity
 		*(int*)(0x80028FCC) = 0; // File 3 render
 		*(int*)(0x80028FA4) = 0; // File 3 Opacity
-		*(int*)(0x80028D04) = 0x0C000000 | (((int)&changeFileSelectAction & 0xFFFFFF) >> 2); // File select change action
-		*(int*)(0x80028D10) = 0x0C000000 | (((int)&changeFileSelectAction_0 & 0xFFFFFF) >> 2); // File select change action
+		writeFunction(0x80028D04, &changeFileSelectAction); // File select change action
+		writeFunction(0x80028D10, &changeFileSelectAction_0); // File select change action
 		*(int*)(0x80028DB8) = 0x1040000A; // BEQ $v0, $r0, 0xA - Change text signal
 		*(short*)(0x80028CA6) = 5; // Change selecting orange to delete confirm screen
 		// Options
@@ -298,12 +294,12 @@ void overlay_changes(void) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
 		if (Rando.item_rando) {		
-			*(int*)(0x80024CF0) = 0x0C000000 | (((int)&countFlagsDuplicate & 0xFFFFFF) >> 2); // Flag change to FLUT
-			*(int*)(0x80024854) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Flag change to FLUT
-			*(int*)(0x80024880) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Flag change to FLUT
-			*(int*)(0x800248B0) = 0x0C000000 | (((int)&setFlagDuplicate & 0xFFFFFF) >> 2); // Flag change to FLUT
+			writeFunction(0x80024CF0, &countFlagsDuplicate); // Flag change to FLUT
+			writeFunction(0x80024854, &checkFlagDuplicate); // Flag change to FLUT
+			writeFunction(0x80024880, &checkFlagDuplicate); // Flag change to FLUT
+			writeFunction(0x800248B0, &setFlagDuplicate); // Flag change to FLUT
 			if (Rando.quality_of_life.blueprint_compression) {
-				*(int*)(0x80024840) = 0x0C000000 | (((int)&give_all_blueprints & 0xFFFFFF) >> 2); // Change initial check
+				writeFunction(0x80024840, &give_all_blueprints); // Change initial check
 				*(int*)(0x80024850) = 0xAFA90040; // SW $t1, 0x40 ($sp)
 				*(int*)(0x80024854) = 0; // NOP
 				*(short*)(0x8002485C) = 0x1000; // Force Branch
@@ -332,7 +328,7 @@ void overlay_changes(void) {
 	if (inBattleCrown(CurrentMap)) {
 		// Change crown spawn
 		if (Rando.item_rando) {
-			*(int*)(0x8002501C) = 0x0C000000 | (((int)&spawnCrownReward & 0xFFFFFF) >> 2); // Crown Spawn
+			writeFunction(0x8002501C, &spawnCrownReward); // Crown Spawn
 		}
 	}
 	// Change Dillo Health based on map
@@ -362,14 +358,14 @@ void overlay_changes(void) {
 		*(short*)(0x80024266) = 1; // Set Minigame oranges as infinite
 	}
 	if (CurrentMap == MAP_FAIRYISLAND) { // BFI
-		*(int*)(0x80028080) = 0x0C000000 | (((int)&displayBFIMoveText & 0xFFFFFF) >> 2); // BFI Text Display
+		writeFunction(0x80028080, &displayBFIMoveText); // BFI Text Display
 		if (Rando.rareware_gb_fairies > 0) {
 			*(int*)(0x80027E70) = 0x2C410000 | Rando.rareware_gb_fairies; // SLTIU $at, $v0, count
 			*(short*)(0x80027E74) = 0x1420; // BNEZ $at, 0x6
 		}
 		if (Rando.item_rando) {
-			*(int*)(0x80027E68) = 0x0C000000 | (((int)&fairyQueenCutsceneInit & 0xFFFFFF) >> 2); // BFI, Init Cutscene Setup
-			*(int*)(0x80028104) = 0x0C000000 | (((int)&fairyQueenCutsceneCheck & 0xFFFFFF) >> 2); // BFI, Cutscene Play
+			writeFunction(0x80027E68, &fairyQueenCutsceneInit); // BFI, Init Cutscene Setup
+			writeFunction(0x80028104, &fairyQueenCutsceneCheck); // BFI, Cutscene Play
 		}
 	}
 	if (CurrentMap == MAP_KROOLSHOE) {
@@ -380,10 +376,12 @@ void overlay_changes(void) {
 				ToeSet2[(4 * i) + 2] = Rando.k_rool_toes[5 + i];
 			}
 		}
+	} else if (CurrentMap == MAP_FUNGISPIDER) {
+		writeFunction(0x8002D20C, &SpiderBossExtraCode); // Handle preventing spider boss being re-fightable
 	}
 	if (inBossMap(CurrentMap, 1, 1, 1)) {
 		if (Rando.item_rando) {
-			*(int*)(0x80028650) = 0x0C000000 | (((int)&spawnBossReward & 0xFFFFFF) >> 2); // Key Spawn
+			writeFunction(0x80028650, &spawnBossReward); // Key Spawn
 		}
 		PatchKRoolCode();
 		if (Rando.quality_of_life.vanilla_fixes) {

@@ -3,16 +3,29 @@ import gzip
 import zlib
 import math
 import os
-from PIL import Image
+from PIL import Image, ImageEnhance
 from BuildLib import main_pointer_table_offset, finalROM
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames
 
 color_palettes = [
-    {"kong": "dk", "zones": [{"zone": "base", "image": 3724, "colors": ["#2da1ad"], "fill_type": "block"}]},  # 2da1ad
+    {
+        "kong": "dk",
+        "zones": [
+            {"zone": "base", "image": 3724, "colors": ["#2da1ad"], "fill_type": "block"},
+            {"zone": "tie_loop", "image": 0x177D, "colors": ["#8feb34"], "fill_type": "block"},
+            {"zone": "tie_hang", "image": 0xE8D, "colors": ["#8feb34"], "fill_type": "patch"},
+        ],
+    },  # 2da1ad
     {"kong": "diddy", "zones": [{"zone": "cap_shirt", "image": 3686, "colors": ["#00ff37"], "fill_type": "block"}]},
     {"kong": "lanky", "zones": [{"zone": "overalls", "image": 3689, "colors": ["#3e1c73"], "fill_type": "block"}, {"zone": "patch", "image": 3734, "colors": ["#3e1c73"], "fill_type": "patch"}]},
-    {"kong": "tiny", "zones": [{"zone": "overalls", "image": 6014, "colors": ["#ff3beb"], "fill_type": "block"}]},
+    {
+        "kong": "tiny",
+        "zones": [
+            {"zone": "overalls", "image": 6014, "colors": ["#ff3beb"], "fill_type": "block"},
+            {"zone": "hair", "image": 0xE68, "colors": ["#ff6026"], "fill_type": "block"},
+        ],
+    },
     {
         "kong": "chunky",
         "zones": [
@@ -284,5 +297,59 @@ def applyMelonMask(shift: int):
                     os.remove(temp_name)
 
 
+def freezeKey():
+    """Change key images to be blue, reflecting the ice key."""
+    with open(finalROM, "r+b") as fh:
+        key_textures = (0xBAB, 0xC6F)
+        for tx in key_textures:
+            dim = 32
+            if tx == 0xC6F:
+                dim = 4
+            fh.seek(main_pointer_table_offset + (25 * 0x4))
+            texture_table = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+            fh.seek(texture_table + (tx * 4))
+            file_start = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+            file_end = main_pointer_table_offset + int.from_bytes(fh.read(4), "big")
+            file_size = file_end - file_start
+            fh.seek(file_start)
+            file_data = fh.read(file_size)
+            file_data = zlib.decompress(file_data, (15 + 32))
+            temp_name = "temp.bin"
+            with open(temp_name, "wb") as fg:
+                fg.write(file_data)
+            melon_im = Image.new(mode="RGBA", size=(dim, dim))
+            px = melon_im.load()
+            with open(temp_name, "rb") as fg:
+                for y in range(dim):
+                    for x in range(dim):
+                        px_info = int.from_bytes(fg.read(2), "big")
+                        px_red = int(((px_info >> 11) << 3) & 0xFF)
+                        px_green = int(((px_info >> 6) << 3) & 0xFF)
+                        px_blue = int(((px_info >> 1) << 3) & 0xFF)
+                        px_alpha = int((px_info & 1) * 255)
+                        px[x, y] = (px_red, px_green, px_blue, px_alpha)
+                melon_im = hueShift(melon_im, -240)
+                brightener = ImageEnhance.Brightness(melon_im)
+                melon_im = brightener.enhance(2)
+            with open(temp_name, "wb") as fg:
+                for y in range(dim):
+                    for x in range(dim):
+                        px_info = list(px[x, y])
+                        px_red = (px_info[0] >> 3) << 11
+                        px_green = (px_info[1] >> 3) << 6
+                        px_blue = (px_info[2] >> 3) << 1
+                        px_alpha = 1 if px_info[3] > 0 else 0
+                        px_word = px_red | px_green | px_blue | px_alpha
+                        fg.write(px_word.to_bytes(2, "big"))
+            with open(temp_name, "rb") as fg:
+                new_data = fg.read()
+                new_data = gzip.compress(new_data, compresslevel=9)
+                fh.seek(file_start)
+                fh.write(new_data)
+            if os.path.exists(temp_name):
+                os.remove(temp_name)
+
+
 applyMelonMask(60)
 convertColors()
+freezeKey()

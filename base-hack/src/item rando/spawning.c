@@ -316,5 +316,5 @@ void initBarrelChange(void) {
      */
     actor_master_types[0x1C] = 5;
     *(int*)(0x8074DA44) = (int)&SpawnBarrel;
-    *(int*)(0x80689368) = 0x0C000000 | (((int)&SpawnPreSpawnedBarrel & 0xFFFFFF) >> 2); // Change model if barrel is being reloaded
+    writeFunction(0x80689368, &SpawnPreSpawnedBarrel); // Change model if barrel is being reloaded
 }

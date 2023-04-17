@@ -866,4 +866,5 @@ squawks_text.append([{"text": ["YOU CAN FIND \x04TRIANGLE TRAMPLE\x04 IN \x05AZT
 squawks_text.append([{"text": ["YOU CAN FIND \x04SAXOPHONE SLAM\x04 IN \x05AZTEC CANDY\x05."]}])
 squawks_text.append([{"text": ["YOU CAN FIND \x04TROMBONE TREMOR\x04 IN \x05AZTEC CANDY\x05."]}])
 squawks_text.append([{"text": ["YOU CAN FIND \x04GUITAR GAZUMP\x04 IN \x05AZTEC CANDY\x05."]}])
+squawks_text.append([{"text": ["MYUM, MYUM. I WILL NEVER GIVE UP MY \x04GOLDEN BANANA\x04 TO THIS INTRUDER."]}])
 writeText("misc_squawks_text.bin", squawks_text)

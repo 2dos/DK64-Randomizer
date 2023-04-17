@@ -172,24 +172,24 @@ void initItemRando(void) {
      * @brief Initialize Item Rando functionality
      */
     // Item Get
-    *(int*)(0x806F64C8) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
-    *(int*)(0x806F6BA8) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
-    *(int*)(0x806F7740) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
-    *(int*)(0x806F7764) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
-    *(int*)(0x806F7774) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
-    *(int*)(0x806F7798) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
-    *(int*)(0x806F77B0) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
-    *(int*)(0x806F77C4) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
-    *(int*)(0x806F7804) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
-    *(int*)(0x806F781C) = 0x0C000000 | (((int)&getItem & 0xFFFFFF) >> 2); // Modify Function Call
+    writeFunction(0x806F64C8, &getItem); // Modify Function Call
+    writeFunction(0x806F6BA8, &getItem); // Modify Function Call
+    writeFunction(0x806F7740, &getItem); // Modify Function Call
+    writeFunction(0x806F7764, &getItem); // Modify Function Call
+    writeFunction(0x806F7774, &getItem); // Modify Function Call
+    writeFunction(0x806F7798, &getItem); // Modify Function Call
+    writeFunction(0x806F77B0, &getItem); // Modify Function Call
+    writeFunction(0x806F77C4, &getItem); // Modify Function Call
+    writeFunction(0x806F7804, &getItem); // Modify Function Call
+    writeFunction(0x806F781C, &getItem); // Modify Function Call
 
-    *(int*)(0x806F6350) = 0x0C000000 | (((int)&getObjectCollectability & 0xFFFFFF) >> 2); // Modify Function Call
-    *(int*)(0x8070E1F0) = 0x0C000000 | (((int)&handleDynamicItemText & 0xFFFFFF) >> 2); // Handle Dynamic Text Item Name
+    writeFunction(0x806F6350, &getObjectCollectability); // Modify Function Call
+    writeFunction(0x8070E1F0, &handleDynamicItemText); // Handle Dynamic Text Item Name
 
-    *(int*)(0x806A7AEC) = 0x0C000000 | (((int)&BalloonShoot & 0xFFFFFF) >> 2); // Balloon Shoot Hook
+    writeFunction(0x806A7AEC, &BalloonShoot); // Balloon Shoot Hook
     // Rainbow Coins
-    *(int*)(0x806A222C) = 0x0C000000 | (((int)&getPatchFlag & 0xFFFFFF) >> 2); // Get Patch Flags
-    *(int*)(0x806A2058) = 0x0C000000 | (((int)&getPatchFlag & 0xFFFFFF) >> 2); // Get Patch Flags
+    writeFunction(0x806A222C, &getPatchFlag); // Get Patch Flags
+    writeFunction(0x806A2058, &getPatchFlag); // Get Patch Flags
     *(short*)(0x80688C8E) = 0x30; // Reduce scope of detecting if balloon or patch, so patches don't have dynamic flags
     // Item Rando
     for (int i = 0; i < 54; i++) {
@@ -202,67 +202,67 @@ void initItemRando(void) {
     bonus_data[94].flag = 215;
     bonus_data[94].spawn_actor = 45;
     bonus_data[94].kong_actor = 6;
-    *(int*)(0x80680AE8) = 0x0C000000 | (((int)&getBonusFlag & 0xFFFFFF) >> 2); // Get Bonus Flag Check
-    *(int*)(0x80681854) = 0x0C000000 | (((int)&getBonusFlag & 0xFFFFFF) >> 2); // Get Bonus Flag Check
-    *(int*)(0x806C63A8) = 0x0C000000 | (((int)&getBonusFlag & 0xFFFFFF) >> 2); // Get Bonus Flag Check
-    *(int*)(0x806F78B8) = 0x0C000000 | (((int)&getKongFromBonusFlag & 0xFFFFFF) >> 2); // Reward Table Kong Check
+    writeFunction(0x80680AE8, &getBonusFlag); // Get Bonus Flag Check
+    writeFunction(0x80681854, &getBonusFlag); // Get Bonus Flag Check
+    writeFunction(0x806C63A8, &getBonusFlag); // Get Bonus Flag Check
+    writeFunction(0x806F78B8, &getKongFromBonusFlag); // Reward Table Kong Check
     // Checks Screen
     pausescreenlist screen_count = PAUSESCREEN_TERMINATOR; // 4 screens vanilla + hint screen + check screen + move tracker
     *(short*)(0x806A8672) = screen_count - 1; // Screen decrease cap
     *(short*)(0x806A8646) = screen_count; // Screen increase cap
     *(int*)(0x806A94CC) = 0x2C610003; // SLTIU $at, $v1, 0x3 (Changes render check for <3 rather than == 3)
     *(int*)(0x806A94D0) = 0x10200298; // BEQZ $at, 0x298 (Changes render check for <3 rather than == 3)
-    *(int*)(0x806A9F98) = 0x0C000000 | (((int)&pauseScreen3And4Header & 0xFFFFFF) >> 2); // Header
-    *(int*)(0x806AA03C) = 0x0C000000 | (((int)&pauseScreen3And4Counter & 0xFFFFFF) >> 2); // Counter
-    *(int*)(0x806A86BC) = 0x0C000000 | (((int)&changePauseScreen & 0xFFFFFF) >> 2); // Change screen hook
-    *(int*)(0x806A8D20) = 0x0C000000 | (((int)&changeSelectedLevel & 0xFFFFFF) >> 2); // Change selected level on checks screen
-    *(int*)(0x806A84F8) = 0x0C000000 | (((int)&checkItemDB & 0xFFFFFF) >> 2); // Populate Item Databases
+    writeFunction(0x806A9F98, &pauseScreen3And4Header); // Header
+    writeFunction(0x806AA03C, &pauseScreen3And4Counter); // Counter
+    writeFunction(0x806A86BC, &changePauseScreen); // Change screen hook
+    writeFunction(0x806A8D20, &changeSelectedLevel); // Change selected level on checks screen
+    writeFunction(0x806A84F8, &checkItemDB); // Populate Item Databases
     if (Rando.item_rando) {
         *(short*)(0x806B4E1A) = getActorIndex(Rando.vulture_item);
         *(short*)(0x8069C266) = getActorIndex(Rando.japes_rock_item);
-        *(int*)(0x806A78A8) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Balloon: Kong Check
-        *(int*)(0x806AAB3C) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: BP Get
-        *(int*)(0x806AAB9C) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: BP In
-        *(int*)(0x806AAD70) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: Fairies
-        *(int*)(0x806AAF70) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: Crowns
-        *(int*)(0x806AB064) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: Isle Crown 1
-        *(int*)(0x806AB0B4) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Pause: Isle Crown 2
-        *(int*)(0x806ABF00) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File Percentage: Keys
-        *(int*)(0x806ABF78) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File Percentage: Crowns
-        *(int*)(0x806ABFA8) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File Percentage: NCoin
-        *(int*)(0x806ABFBC) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File Percentage: RCoin
-        *(int*)(0x806AC00C) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // File Percentage: Kongs
-        *(int*)(0x806BD304) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Key flag check: K. Lumsy
-        *(int*)(0x80731A6C) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Count flag-kong array
-        *(int*)(0x80731AE8) = 0x0C000000 | (((int)&checkFlagDuplicate & 0xFFFFFF) >> 2); // Count flag array
-        *(int*)(0x806B1E48) = 0x0C000000 | (((int)&countFlagsForKongFLUT & 0xFFFFFF) >> 2); // Kasplat Check Flag
+        writeFunction(0x806A78A8, &checkFlagDuplicate); // Balloon: Kong Check
+        writeFunction(0x806AAB3C, &checkFlagDuplicate); // Pause: BP Get
+        writeFunction(0x806AAB9C, &checkFlagDuplicate); // Pause: BP In
+        writeFunction(0x806AAD70, &checkFlagDuplicate); // Pause: Fairies
+        writeFunction(0x806AAF70, &checkFlagDuplicate); // Pause: Crowns
+        writeFunction(0x806AB064, &checkFlagDuplicate); // Pause: Isle Crown 1
+        writeFunction(0x806AB0B4, &checkFlagDuplicate); // Pause: Isle Crown 2
+        writeFunction(0x806ABF00, &checkFlagDuplicate); // File Percentage: Keys
+        writeFunction(0x806ABF78, &checkFlagDuplicate); // File Percentage: Crowns
+        writeFunction(0x806ABFA8, &checkFlagDuplicate); // File Percentage: NCoin
+        writeFunction(0x806ABFBC, &checkFlagDuplicate); // File Percentage: RCoin
+        writeFunction(0x806AC00C, &checkFlagDuplicate); // File Percentage: Kongs
+        writeFunction(0x806BD304, &checkFlagDuplicate); // Key flag check: K. Lumsy
+        writeFunction(0x80731A6C, &checkFlagDuplicate); // Count flag-kong array
+        writeFunction(0x80731AE8, &checkFlagDuplicate); // Count flag array
+        writeFunction(0x806B1E48, &countFlagsForKongFLUT); // Kasplat Check Flag
         *(int*)(0x806F56F8) = 0; // Disable Flag Set for blueprints
-        *(int*)(0x806F938C) = 0x0C000000 | (((int)&banana_medal_acquisition & 0xFFFFFF) >> 2); // Medal Give
+        writeFunction(0x806F938C, &banana_medal_acquisition); // Medal Give
         *(int*)(0x806F9394) = 0;
-        *(int*)(0x806F5564) = 0x0C000000 | (((int)&itemGrabHook & 0xFFFFFF) >> 2); // Item Get Hook - Post Flag
-        *(int*)(0x806A6CA8) = 0x0C000000 | (((int)&canItemPersist & 0xFFFFFF) >> 2); // Item Despawn Check
+        writeFunction(0x806F5564, &itemGrabHook); // Item Get Hook - Post Flag
+        writeFunction(0x806A6CA8, &canItemPersist); // Item Despawn Check
         *(int*)(0x806A741C) = 0; // Prevent Key Twinkly Sound
-        *(int*)(0x80688714) = 0x0C000000 | (((int)&setupHook & 0xFFFFFF) >> 2); // Setup Load Hook
+        writeFunction(0x80688714, &setupHook); // Setup Load Hook
         // Fairy Adjustments
-        *(int*)(0x8072728C) = 0x0C000000 | (((int)&spawnCharSpawnerActor & 0xFFFFFF) >> 2); // Spawn 1
+        writeFunction(0x8072728C, &spawnCharSpawnerActor); // Spawn 1
         *(int*)(0x80727290) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
-        *(int*)(0x8072777C) = 0x0C000000 | (((int)&spawnCharSpawnerActor & 0xFFFFFF) >> 2); // Spawn 2
+        writeFunction(0x8072777C, &spawnCharSpawnerActor); // Spawn 2
         *(int*)(0x80727780) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
-        *(int*)(0x807277D0) = 0x0C000000 | (((int)&spawnCharSpawnerActor & 0xFFFFFF) >> 2); // Spawn 3
+        writeFunction(0x807277D0, &spawnCharSpawnerActor); // Spawn 3
         *(int*)(0x807277D4) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
-        *(int*)(0x80727B88) = 0x0C000000 | (((int)&spawnCharSpawnerActor & 0xFFFFFF) >> 2); // Spawn 4
+        writeFunction(0x80727B88, &spawnCharSpawnerActor); // Spawn 4
         *(int*)(0x80727B8C) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
-        *(int*)(0x80727C10) = 0x0C000000 | (((int)&spawnCharSpawnerActor & 0xFFFFFF) >> 2); // Spawn 4
+        writeFunction(0x80727C10, &spawnCharSpawnerActor); // Spawn 4
         *(int*)(0x80727C14) = 0x36050000; // ORI $a1, $s0, 0x0 -> Change second parameter to the spawner
-        *(int*)(0x806C5F04) = 0x0C000000 | (((int)&giveFairyItem & 0xFFFFFF) >> 2); // Fairy Flag Set
+        writeFunction(0x806C5F04, &giveFairyItem); // Fairy Flag Set
         // Rainbow Coins
-        *(int*)(0x806A2268) = 0x0C000000 | (((int)&spawnDirtPatchReward & 0xFFFFFF) >> 2); // Spawn Reward
+        writeFunction(0x806A2268, &spawnDirtPatchReward); // Spawn Reward
         if (Rando.location_visuals & 1) {
             // Barrel Aesthetic
             initBarrelChange();
         }
         // Mill GB
-        *(int*)(0x806F633C) = 0x0C000000 | (((int)&isObjectTangible_detailed & 0xFFFFFF) >> 2); // Change object tangibility check function
+        writeFunction(0x806F633C, &isObjectTangible_detailed); // Change object tangibility check function
         
         *(int*)(0x806C5C7C) = 0; // Cancel out fairy draw distance reduction
         *(short*)(0x806C46AA) = 0x4100; // Bring squawks closer to the player for minecarts (X)
@@ -344,15 +344,15 @@ void initItemRando(void) {
             }
         }
     }
-    *(int*)(0x80681910) = 0x0C000000 | (((int)&spawnBonusReward & 0xFFFFFF) >> 2); // Spawn Bonus Reward
-    *(int*)(0x806C63BC) = 0x0C000000 | (((int)&spawnRewardAtActor & 0xFFFFFF) >> 2); // Spawn Squawks Reward
-    *(int*)(0x806C4654) = 0x0C000000 | (((int)&spawnMinecartReward & 0xFFFFFF) >> 2); // Spawn Squawks Reward - Minecart
+    writeFunction(0x80681910, &spawnBonusReward); // Spawn Bonus Reward
+    writeFunction(0x806C63BC, &spawnRewardAtActor); // Spawn Squawks Reward
+    writeFunction(0x806C4654, &spawnMinecartReward); // Spawn Squawks Reward - Minecart
     // Initialize fixed item scales
-    *(int*)(0x806F4918) = 0x0C000000 | (((int)&writeItemScale & 0xFFFFFF) >> 2); // Write scale to collision info
+    writeFunction(0x806F4918, &writeItemScale); // Write scale to collision info
     *(int*)(0x806F491C) = 0x87A40066; // LH $a0, 0x66 ($sp)
     *(short*)(0x806F4C6E) = 0x20; // Change size
     *(short*)(0x806F4C82) = 0x20; // Change size
-    *(int*)(0x806F515C) = 0x0C000000 | (((int)&writeItemActorScale & 0xFFFFFF) >> 2); // Write actor scale to collision info
+    writeFunction(0x806F515C, &writeItemActorScale); // Write actor scale to collision info
     // Other init
     initItemDropTable();
     initCollectableCollision();

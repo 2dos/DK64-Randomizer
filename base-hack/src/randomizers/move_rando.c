@@ -596,10 +596,10 @@ void fixTBarrelsAndBFI(int init) {
 		*(short*)(0x80681CFA) = (short)LOCATION_ORANGE;
 		*(short*)(0x80681D06) = (short)LOCATION_BARREL;
 		*(short*)(0x80681D12) = (short)LOCATION_VINE;
-		*(int*)(0x80681D38) = 0x0C000000 | (((int)&getLocationStatus & 0xFFFFFF) >> 2); // Get TBarrels Move
+		writeFunction(0x80681D38, &getLocationStatus); // Get TBarrels Move
 		// All Barrels Complete check
 		*(short*)(0x80681C8A) = (short)LOCATION_DIVE;
-		*(int*)(0x80681C98) = 0x0C000000 | (((int)&getLocationStatus & 0xFFFFFF) >> 2); // Get TBarrels Move
+		writeFunction(0x80681C98, &getLocationStatus); // Get TBarrels Move
 	} else {
 		unsigned char tbarrel_bfi_maps[] = {
 			MAP_TRAININGGROUNDS, // TGrounds
@@ -621,12 +621,12 @@ void fixTBarrelsAndBFI(int init) {
 			*(short*)(0x80029606) = (short)LOCATION_ORANGE;
 			*(short*)(0x800295FE) = (short)LOCATION_VINE;
 			*(short*)(0x800295DA) = (short)LOCATION_BARREL;
-			*(int*)(0x80029610) = 0x0C000000 | (((int)&setLocationStatus & 0xFFFFFF) >> 2); // Set TBarrels Move
+			writeFunction(0x80029610, &setLocationStatus); // Set TBarrels Move
 			// BFI
 			*(short*)(0x80027F2A) = (short)LOCATION_BFI;
 			*(short*)(0x80027E1A) = (short)LOCATION_BFI;
-			*(int*)(0x80027F24) = 0x0C000000 | (((int)&setLocationStatus & 0xFFFFFF) >> 2); // Set BFI Move
-			*(int*)(0x80027E20) = 0x0C000000 | (((int)&getLocationStatus & 0xFFFFFF) >> 2); // Get BFI Move
+			writeFunction(0x80027F24, &setLocationStatus); // Set BFI Move
+			writeFunction(0x80027E20, &getLocationStatus); // Get BFI Move
 		}
 	}
 }
