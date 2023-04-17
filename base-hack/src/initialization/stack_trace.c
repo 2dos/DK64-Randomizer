@@ -170,6 +170,6 @@ void CrashHandler(crash_handler_info* info) {
 }
 
 void initStackTrace(void) {
-    *(int*)(0x80732314) = 0x0C000000 | (((int)&CrashHandler & 0xFFFFFF) >> 2);
-    *(int*)(0x8073231C) = 0x0C000000 | (((int)&CrashHandler & 0xFFFFFF) >> 2);
+    writeFunction(0x80732314, &CrashHandler);
+    writeFunction(0x8073231C, &CrashHandler);
 }
