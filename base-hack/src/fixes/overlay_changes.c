@@ -380,6 +380,8 @@ void overlay_changes(void) {
 				ToeSet2[(4 * i) + 2] = Rando.k_rool_toes[5 + i];
 			}
 		}
+	} else if (CurrentMap == MAP_FUNGISPIDER) {
+		*(int*)(0x8002D20C) = 0x0C000000 | (((int)&SpiderBossExtraCode & 0xFFFFFF) >> 2); // Handle preventing spider boss being re-fightable
 	}
 	if (inBossMap(CurrentMap, 1, 1, 1)) {
 		if (Rando.item_rando) {
