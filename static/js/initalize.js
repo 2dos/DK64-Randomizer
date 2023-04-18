@@ -454,20 +454,22 @@ function saveDataToIndexedDB(key, value) {
 
 function loadDataFromIndexedDB(key) {
   return new Promise((resolve, reject) => {
-   
-    var settingsdb = settingsdatabase.result;
-    transaction = settingsdb.transaction("saved_settings", "readonly");
-    objectStore = transaction.objectStore("saved_settings");
-    request = objectStore.get(key);
-    request.onerror = function (event) {
-      reject("Transaction error: " + event.target.errorCode);
-    };
+   try{
+      var settingsdb = settingsdatabase.result;
+      transaction = settingsdb.transaction("saved_settings", "readonly");
+      objectStore = transaction.objectStore("saved_settings");
+      request = objectStore.get(key);
+      request.onerror = function (event) {
+        reject("Transaction error: " + event.target.errorCode);
+      };
 
-    request.onsuccess = function (event) {
-      value = event.target.result;
-      console.log(value)
-      resolve(value);
-    };
+      request.onsuccess = function (event) {
+        value = event.target.result;
+        console.log(value)
+        resolve(value);
+      };
+    }
+    catch{reject("Read Error")}
   });
 }
 
@@ -476,7 +478,6 @@ function load_data() {
 
 
   try{
-    
     var settingsdb = settingsdatabase.result;
     transaction = settingsdb.transaction("saved_settings", "readonly");
     objectStore = transaction.objectStore("saved_settings");
