@@ -486,33 +486,36 @@ function load_data() {
       console.error("Failed to retrieve saved settings");
     };
     getRequest.onsuccess = function(event) {
-      if (getRequest.result) {
-        json = JSON.parse(getRequest.result);
-        if (json !== null) {
-          for (var key in json) {
-            element = document.getElementsByName(key)[0];
-            if (json[key] == "True") {
-              element.checked = true;
-            } else if (json[key] == "False") {
-              element.checked = false;
-            }
-            try {
-              element.value = json[key];
-              if (element.hasAttribute("data-slider-value")) {
-                element.setAttribute("data-slider-value", json[key]);
+      try{
+        if (getRequest.result) {
+          json = JSON.parse(getRequest.result);
+          if (json !== null) {
+            for (var key in json) {
+              element = document.getElementsByName(key)[0];
+              if (json[key] == "True") {
+                element.checked = true;
+              } else if (json[key] == "False") {
+                element.checked = false;
               }
-              if (element.className.includes("selected")) {
-                for (var i = 0; i < element.options.length; i++) {
-                  element.options[i].selected =
-                    json[key].indexOf(element.options[i].value) >= 0;
+              try {
+                element.value = json[key];
+                if (element.hasAttribute("data-slider-value")) {
+                  element.setAttribute("data-slider-value", json[key]);
                 }
-              }
-            } catch {}
+                if (element.className.includes("selected")) {
+                  for (var i = 0; i < element.options.length; i++) {
+                    element.options[i].selected =
+                      json[key].indexOf(element.options[i].value) >= 0;
+                  }
+                }
+              } catch {}
+            }
           }
+        } else {
+          load_presets();
         }
-      } else {
-        load_presets();
       }
+      catch{load_presets();}
     };
   }
   catch{
