@@ -18,7 +18,7 @@
     "random_patches":false,
     "shuffle_shops":false,
     "move_rando":"off",
-    "random_prices":"low",
+    "random_prices":"vanilla",
     "randomize_blocker_required_amounts":false,
     "randomize_cb_required_amounts":false,
     "blocker_0":1,

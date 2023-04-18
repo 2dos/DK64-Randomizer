@@ -95,9 +95,11 @@ def ShuffleShopLocations(spoiler: Spoiler):
         shops_in_levels = []
         for shop in shop_array:
             if not shop.locked:
-                # This is a valid shop to shuffle, so we need to remove the preexisting logical access
-                old_region = Logic.Regions[shop.containing_region]
-                old_region.exits = [exit for exit in old_region.exits if exit.dest != shop.shop_exit]
+                # This is a valid shop to shuffle, so we need to remove all preexisting logical access, wherever it is
+                possible_containing_region_ids = [shop_location.containing_region for shop_location in shop_array]
+                for region_id in possible_containing_region_ids:
+                    old_region = Logic.Regions[region_id]
+                    old_region.exits = [exit for exit in old_region.exits if exit.dest != shop.shop_exit]
                 shops_in_levels.append(shop)
         random.shuffle(shops_in_levels)
         # Assign shuffle to data

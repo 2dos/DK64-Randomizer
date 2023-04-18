@@ -144,9 +144,13 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled, selec
 
 def LinkWarps():
     """Given the current state of warps, create the transitions between them."""
+    # Remove all existing transitions that are warp transitions - this prevents warp logic from bleeding between seed gens
+    for region in Logic.Regions.values():
+        region.exits = [exit for exit in region.exits if not exit.isBananaportTransition]
+    # For each warp, identify the source and destination regions
     for warp_data in BananaportVanilla.values():
         destination_warp_data = getWarpFromSwapIndex(warp_data.tied_index)
         if warp_data.region_id != destination_warp_data.region_id:
             source_region = Logic.Regions[warp_data.region_id]
             # The source region gets a transition to the destination region conditionally based on the destination warp being tagged
-            source_region.exits.append(TransitionFront(destination_warp_data.region_id, destination_warp_data.event_logic))
+            source_region.exits.append(TransitionFront(destination_warp_data.region_id, destination_warp_data.event_logic, isBananaportTransition=True))

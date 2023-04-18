@@ -70,7 +70,7 @@ LogicRegions = {
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.Testing, lambda l: True),
         TransitionFront(Regions.FactoryTinyRaceLobby, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanOStandTBSNoclip()),
-        TransitionFront(Regions.FactoryTinyRace, lambda l: l.phasewalk or l.CanOStandTBSNoclip(), Transitions.FactoryRandDToRace),
+        TransitionFront(Regions.FactoryTinyRace, lambda l: l.phasewalk or l.CanOStandTBSNoclip(), Transitions.FactoryRandDToRace, isGlitchTransition=True),
         TransitionFront(Regions.ChunkyRoomPlatform, lambda l: True),
         TransitionFront(Regions.FactoryBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
@@ -169,7 +169,7 @@ LogicRegions = {
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.LowerCore, lambda l: True),
         TransitionFront(Regions.UpperCore, lambda l: Events.MainCoreActivated in l.Events),
-        TransitionFront(Regions.InsideCore, lambda l: l.ledgeclip, Transitions.FactoryBeyondHatchToInsideCore),
+        TransitionFront(Regions.InsideCore, lambda l: l.ledgeclip, Transitions.FactoryBeyondHatchToInsideCore, isGlitchTransition=True),
     ]),
 
     Regions.UpperCore: Region("Upper Core", "Production Room", Levels.FranticFactory, False, -1, [

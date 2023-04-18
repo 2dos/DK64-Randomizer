@@ -1275,12 +1275,14 @@ def FillKongsAndMovesGeneric(spoiler):
             retries += 1
             if retries % 5 == 0:
                 js.postMessage("Retrying fill really hard. Tries: " + str(retries))
-                # Handle Loading Zones - does not work right now but is something I want here eventually
+                # TODO: Handle Loading Zones - does not work right now but is something I want here eventually
                 # if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
                 #     ShuffleExits.Reset()
                 #     ShuffleExits.ExitShuffle(spoiler.settings)
                 #     spoiler.UpdateExits()
                 spoiler.settings.shuffle_prices()
+                if spoiler.settings.random_starting_region:
+                    spoiler.settings.RandomizeStartingLocation()
             else:
                 js.postMessage("Retrying fill. Tries: " + str(retries))
             Reset()
@@ -1709,10 +1711,12 @@ def FillKongsAndMovesForLevelOrder(spoiler):
             if retries == 20:
                 js.postMessage("Fill failed, out of retries.")
                 raise ex
-            # Every 5th fill, retry more aggressively by reshuffling level order and move prices
+            # Every 5th fill, retry more aggressively by reshuffling level order, move prices, and starting location as applicable
             if retries % 5 == 0:
                 js.postMessage("Retrying fill really hard. Tries: " + str(retries))
                 spoiler.settings.shuffle_prices()
+                if spoiler.settings.random_starting_region:
+                    spoiler.settings.RandomizeStartingLocation()
                 if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
                     ShuffleExits.ShuffleExits(spoiler.settings)
                     spoiler.UpdateExits()
