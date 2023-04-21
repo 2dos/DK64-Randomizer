@@ -106,6 +106,7 @@ extern int* drawDPad(int* dl);
 extern int* drawImageWithFilter(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity);
 extern void correctKongFaces(void);
 extern int* display_file_images(int* dl, int y_offset);
+extern int* drawTextPointers(int* dl);
 
 extern int getLo(void* addr);
 extern int getHi(void* addr);
