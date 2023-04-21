@@ -44,12 +44,13 @@ import randomizer.LogicFiles.FungiForest
 import randomizer.LogicFiles.CrystalCaves
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.Shops
+from typing import Any, Dict, List, Set, Union
 
 
 class Settings:
     """Class used to store settings for seed generation."""
 
-    def __init__(self, form_data: dict):
+    def __init__(self, form_data: dict) -> None:
         """Init all the settings using the form data to set the flags.
 
         Args:
@@ -127,7 +128,7 @@ class Settings:
         self.resolve_settings()
         self.update_valid_locations()
 
-    def apply_form_data(self, form_data):
+    def apply_form_data(self, form_data: Dict[str, Any]) -> None:
         """Convert and apply the provided form data to this class."""
 
         def get_enum_value(keyString, valueString):
@@ -158,7 +159,7 @@ class Settings:
                 # The value is a basic type, so assign it directly.
                 setattr(self, k, v)
 
-    def update_progression_totals(self):
+    def update_progression_totals(self) -> None:
         """Update the troff and blocker totals if we're randomly setting them."""
         # Assign weights to Troff n Scoff based on level order if not shuffling loading zones
         # Hard level shuffling makes these weights meaningless, as you'll be going into levels in a random order
@@ -218,7 +219,7 @@ class Settings:
         self.EntryGBs = [self.blocker_0, self.blocker_1, self.blocker_2, self.blocker_3, self.blocker_4, self.blocker_5, self.blocker_6, self.blocker_7]
         self.BossBananas = [self.troff_0, self.troff_1, self.troff_2, self.troff_3, self.troff_4, self.troff_5, self.troff_6]
 
-    def generate_main(self):
+    def generate_main(self) -> None:
         """Set Default items on main page."""
         self.seed = None
         self.download_patch_file = None
@@ -244,11 +245,11 @@ class Settings:
         # major_collectibles - includes blueprints, does not include lesser collectibles like cbs and coins
         self.free_trade_setting = FreeTradeSetting.none
 
-    def set_seed(self):
+    def set_seed(self) -> None:
         """Forcibly re-set the random seed to the seed set in the config."""
         random.seed(self.seed)
 
-    def generate_progression(self):
+    def generate_progression(self) -> None:
         """Set default items on progression page."""
         self.blocker_0 = None
         self.blocker_1 = None
@@ -270,7 +271,7 @@ class Settings:
         self.blocker_text = ""
         self.troff_text = ""
 
-    def generate_misc(self):
+    def generate_misc(self) -> None:
         """Set default items on misc page."""
         #  Settings which affect logic
         # crown_door_random: bool
@@ -476,13 +477,13 @@ class Settings:
         self.helmhurry_list_colored_bananas = 3
         self.helmhurry_list_ice_traps = -40
 
-    def shuffle_prices(self):
+    def shuffle_prices(self) -> None:
         """Price randomization. Reuseable if we need to reshuffle prices."""
         # Price Rando
         if self.random_prices != RandomPrices.vanilla:
             self.prices = RandomizePrices(self.random_prices)
 
-    def resolve_settings(self):
+    def resolve_settings(self) -> None:
         """Resolve settings which are not directly set through the UI."""
         # If we're using the vanilla door shuffle, turn both wrinkly and tns rando on
         if self.vanilla_door_rando:
@@ -928,7 +929,7 @@ class Settings:
             # On Fast GBs, this location refers to the blast course, not the arcade
             LocationList[Locations.FactoryDonkeyDKArcade].name = "Factory Donkey Blast Course"
 
-    def isBadIceTrapLocation(self, location: Locations):
+    def isBadIceTrapLocation(self, location: Locations) -> bool:
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
         bad_fake_types = [Types.TrainingBarrel, Types.PreGivenMove]
         is_bad = location.type in bad_fake_types
@@ -936,7 +937,7 @@ class Settings:
             is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm) or location.type == Types.Shockwave
         return is_bad
 
-    def update_valid_locations(self):
+    def update_valid_locations(self) -> None:
         """Calculate (or recalculate) valid locations for items by type."""
         self.valid_locations = {}
         self.valid_locations[Types.Kong] = self.kong_locations.copy()
@@ -1099,7 +1100,7 @@ class Settings:
                     [loc for loc in shuffledNonMoveLocations if loc not in banned_kong_locations]
                 )  # No items can be in Kong cages but Kongs can be in all other locations
 
-    def GetValidLocationsForItem(self, item_id):
+    def GetValidLocationsForItem(self, item_id: Items) -> Union[List[Locations], Set[Locations]]:
         """Return the valid locations the input item id can be placed in."""
         item_obj = ItemList[item_id]
         valid_locations = []
@@ -1110,7 +1111,7 @@ class Settings:
             valid_locations = self.valid_locations[item_obj.type]
         return valid_locations
 
-    def SelectKongLocations(self):
+    def SelectKongLocations(self) -> List[Locations]:
         """Select which random kong locations to use depending on number of starting kongs."""
         # First determine which kong cages will have a kong to free
         kongCageLocations = [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong]
@@ -1191,7 +1192,7 @@ class Settings:
         if self.__hash != hash:
             raise Exception("Error: Comparison failed, Hashes do not match.")
 
-    def verify_hash(self):
+    def verify_hash(self) -> bool:
         """Verify our hash files match our existing code."""
         try:
             if self.__hash == self.__get_hash():
@@ -1201,7 +1202,7 @@ class Settings:
         except Exception:
             return False
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name: str, value: Any) -> None:
         """Set an attributes value but only after verifying our hash."""
         self.verify_hash()
         super().__setattr__(name, value)

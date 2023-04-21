@@ -5,12 +5,13 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Types import Types
+from typing import List, Optional, Union
 
 
 class Item:
     """Stores information about an item."""
 
-    def __init__(self, name, playthrough, type, kong, data=None):
+    def __init__(self, name: str, playthrough: bool, type: Types, kong: Kongs, data: Optional[Union[List[Levels], List[Union[MoveTypes, str, int]], List[Union[MoveTypes, int]], List[int]]]=None) -> None:
         """Initialize with given parameters."""
         if data is None:
             data = []
@@ -39,7 +40,7 @@ class Item:
             self.flag = data[0]
 
 
-def ItemFromKong(kong):
+def ItemFromKong(kong: Kongs) -> Items:
     """Get the item representation of a Kong enum."""
     if kong == Kongs.donkey:
         return Items.Donkey
@@ -55,7 +56,7 @@ def ItemFromKong(kong):
         return Items.NoItem
 
 
-def NameFromKong(kong):
+def NameFromKong(kong: Kongs) -> str:
     """Get the name of a kong from its Kong enum value."""
     if kong == Kongs.donkey:
         return "Donkey"
@@ -71,7 +72,7 @@ def NameFromKong(kong):
         return "No Kong"
 
 
-def KongFromItem(item):
+def KongFromItem(item: Items) -> Kongs:
     """Get the Kong enum representation of a kong item."""
     if item == Items.Donkey:
         return Kongs.donkey

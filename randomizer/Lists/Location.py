@@ -9,12 +9,13 @@ from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Types import Types
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.VendorType import VendorType
+from typing import Any, Optional, Union
 
 
 class MapIDCombo:
     """A combination of a map and an associated item ID. If id == -1 and map == 0, has no model 2 item, ignore those."""
 
-    def __init__(self, map=None, id=None, flag=None, kong=Kongs.any):
+    def __init__(self, map: Optional[Union[int, Maps]]=None, id: Optional[int]=None, flag: Optional[int]=None, kong: Kongs=Kongs.any) -> None:
         """Initialize with given parameters."""
         self.map = map
         self.id = id
@@ -25,7 +26,7 @@ class MapIDCombo:
 class Location:
     """A shufflable location at which a random item can be placed."""
 
-    def __init__(self, level, name, default, location_type, kong=Kongs.any, data=None, logically_relevant=False):
+    def __init__(self, level: Levels, name: str, default: Items, location_type: Types, kong: Kongs=Kongs.any, data: Optional[Any]=None, logically_relevant: bool=False) -> None:
         """Initialize with given parameters."""
         if data is None:
             data = []
@@ -79,7 +80,7 @@ class Location:
         if self.default_mapid_data is not None and len(self.default_mapid_data) > 0 and type(self.default_mapid_data[0]) is MapIDCombo and self.default_mapid_data[0].id == -1 and self.type != Types.Kong:
             self.is_reward = True
 
-    def PlaceItem(self, item):
+    def PlaceItem(self, item: Items) -> None:
         """Place item at this location."""
         self.item = item
         # If we're placing a real move here, lock out mutually exclusive shop locations
@@ -95,21 +96,21 @@ class Location:
                     LocationList[location].PlaceItem(Items.NoItem)
                     break  # There's only one shared spot to block
 
-    def PlaceConstantItem(self, item):
+    def PlaceConstantItem(self, item: Items) -> None:
         """Place item at this location, and set constant so it's ignored in the spoiler."""
         self.PlaceItem(item)
         self.constant = True
 
-    def SetDelayedItem(self, item):
+    def SetDelayedItem(self, item: Items) -> None:
         """Set an item to be added back later."""
         self.delayedItem = item
 
-    def PlaceDelayedItem(self):
+    def PlaceDelayedItem(self) -> None:
         """Place the delayed item at this location."""
         self.PlaceItem(self.delayedItem)
         self.delayedItem = None
 
-    def PlaceDefaultItem(self):
+    def PlaceDefaultItem(self) -> None:
         """Place whatever this location's default (vanilla) item is at it."""
         self.PlaceItem(self.default)
         self.constant = True

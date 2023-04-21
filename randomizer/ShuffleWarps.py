@@ -5,7 +5,7 @@ import js
 import randomizer.Logic as Logic
 from randomizer.Enums.Warps import Warps
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Lists.Warps import BananaportVanilla, VanillaBananaportSelector
+from randomizer.Lists.Warps import BananaportData, BananaportVanilla, VanillaBananaportSelector
 from randomizer.LogicClasses import TransitionFront
 
 
@@ -76,7 +76,7 @@ def ShuffleWarps(bananaport_replacements, human_ports, selected_warps):
                 break
 
 
-def getWarpFromSwapIndex(index):
+def getWarpFromSwapIndex(index: int) -> BananaportData:
     """Acquire warp name from index."""
     for warp in BananaportVanilla.values():
         if warp.swap_index == index:
@@ -142,7 +142,7 @@ def ShuffleWarpsCrossMap(bananaport_replacements, human_ports, is_coupled, selec
                         selected_warp_list.append(warp.swap_index)
 
 
-def LinkWarps():
+def LinkWarps() -> None:
     """Given the current state of warps, create the transitions between them."""
     # Remove all existing transitions that are warp transitions - this prevents warp logic from bleeding between seed gens
     for region in Logic.Regions.values():

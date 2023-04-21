@@ -3,6 +3,7 @@ from enum import IntEnum
 
 from randomizer.LogicClasses import Regions, TransitionBack
 from randomizer.Enums.Levels import Levels
+import randomizer.Enums.Regions
 
 
 class Maps(IntEnum):
@@ -714,12 +715,12 @@ MapExitTable = {
 }
 
 
-def GetMapId(regionId):
+def GetMapId(regionId: randomizer.Enums.Regions.Regions) -> Maps:
     """Get the map id of a transition."""
     return RegionMapList[regionId]
 
 
-def GetExitId(back: TransitionBack):
+def GetExitId(back: TransitionBack) -> int:
     """Get exit id of a transition."""
     mapId = GetMapId(back.regionId)
     if mapId in MapExitTable:

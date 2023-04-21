@@ -35,7 +35,7 @@ def main():
     parser.add_argument("--preset", help="Preset to use", required=False)
     parser.add_argument("--output", help="File to name patch file", required=True)
     parser.add_argument("--seed", help="Seed ID to use", required=False)
-    parser.add_argument("--generate_spoiler", help="Dumps the Spoiler log to a file along with the patch file.", required=False, action=argparse.BooleanOptionalAction)
+    parser.add_argument("--generate_spoiler", help="Dumps the Spoiler log to a file along with the patch file.", required=False)
     args = parser.parse_args()
     if not os.environ.get("POST_BODY"):
         if args.settings_string is not None:

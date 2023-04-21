@@ -7,12 +7,14 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.LogicClasses import TransitionBack
+from randomizer.Enums.Levels import Levels
+from typing import Optional, Set
 
 
 class ShufflableExit:
     """Class that stores data about an exit to be shuffled."""
 
-    def __init__(self, name, region, back, category=None, entryKongs=None, regionKongs=None, move=False):
+    def __init__(self, name: str, region: Regions, back: TransitionBack, category: Optional[ExitCategories]=None, entryKongs: Optional[Set[Kongs]]=None, regionKongs: Optional[Set[Kongs]]=None, move: bool=False) -> None:
         """Initialize with given parameters."""
         if entryKongs is None:
             entryKongs = {Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky}
@@ -256,7 +258,7 @@ ShufflableExits = {
 }
 
 
-def GetShuffledLevelIndex(level):
+def GetShuffledLevelIndex(level: Levels) -> Levels:
     """Get index of where the given level fits in the level order. Ex: If Caves is the 1st level, passing 5 will return 0."""
     lobbyExit = ShufflableExits[LevelInfoList[level].TransitionsFrom].shuffledId
     if lobbyExit is not None:
@@ -266,7 +268,7 @@ def GetShuffledLevelIndex(level):
     return levelIndex
 
 
-def GetLevelShuffledToIndex(levelIndex):
+def GetLevelShuffledToIndex(levelIndex: int) -> Levels:
     """Get level located at the given level index. Ex: If Caves is the 1st level, passing 0 will return 5."""
     lobbyEntrance = ShufflableExits[LevelInfoList[levelIndex].TransitionTo].shuffledId
     if lobbyEntrance is not None:

@@ -12,7 +12,7 @@ from re import sub
 class BananaportData:
     """Information about the bananaport."""
 
-    def __init__(self, *, name="", map_id=0, region_id=0, obj_id_vanilla=0, locked=False, vanilla_warp=0, swap_index=None, event=None, restricted=False):
+    def __init__(self, *, name="", map_id=0, region_id=0, obj_id_vanilla=0, locked=False, vanilla_warp=0, swap_index=None, event=None, restricted=False) -> None:
         """Initialize with given parameters."""
         self.name = name
         self.map_id = map_id

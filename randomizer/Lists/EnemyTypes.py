@@ -129,7 +129,7 @@ class EnemyData:
         disruptive=0,
         bbbarrage_min_scale=50,
         selector_enabled=True
-    ):
+    ) -> None:
         """Initialize with given parameters."""
         self.name = name
         self.aggro = aggro

@@ -11,7 +11,7 @@ class Minigame:
 
     def __init__(
         self, *, name="No Game", group="No Group", map_id=0, helm_enabled=True, can_repeat=True, difficulty_lvl=0, logic=0, kong_list=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
-    ):
+    ) -> None:
         """Initialize with given parameters."""
         self.name = name
         self.map = map_id
@@ -236,7 +236,7 @@ for minigame in MinigameRequirements.values():
 class MinigameLocationData:
     """Class which stores container map and barrel id for a minigame barrel."""
 
-    def __init__(self, map_id, barrel_id, minigame, kong):
+    def __init__(self, map_id: Maps, barrel_id: int, minigame: Minigames, kong: Kongs) -> None:
         """Initialize with given parameters."""
         self.map = map_id
         self.barrel_id = barrel_id

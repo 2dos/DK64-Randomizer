@@ -10,7 +10,7 @@ from randomizer.Enums.Settings import DamageAmount, HelmSetting
 class CrownLocation:
     """Class to store information pertaining to a crown location."""
 
-    def __init__(self, *, map=0, name="", x=0, y=0, z=0, scale=1, region=0, logic=None, is_vanilla=False, is_rotating_room=False, default_index=0):
+    def __init__(self, *, map=0, name="", x=0, y=0, z=0, scale=1, region=0, logic=None, is_vanilla=False, is_rotating_room=False, default_index=0) -> None:
         """Initialize with given data."""
         self.map = map
         self.name = name
