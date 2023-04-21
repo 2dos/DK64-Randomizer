@@ -7,7 +7,7 @@ ROMName = "rom/dk64.z64"
 newROMName = "rom/dk64-randomizer-base.z64"
 finalROM = "rom/dk64-randomizer-base-dev.z64"
 music_size = 0x8000
-heap_size = 0x2C000 + music_size
+heap_size = 0x34000 + music_size
 flut_size = 0x640
 
 

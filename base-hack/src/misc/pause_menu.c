@@ -25,7 +25,7 @@ int* printLevelIGT(int* dl, int x, int y, float scale, char* str) {
     }
     int igt_data = 0;
     if (level_index < 9) {
-        igt_data = StoredSettings.file_extra.level_igt[level_index];
+        igt_data = ReadFile(DATA_LEVELIGT, 0, level_index, 0);
     }
     int igt_h = igt_data / 3600;
     int igt_m = (igt_data / 60) % 60;

@@ -117,4 +117,6 @@ void initFiles(void) {
     *(int*)(0x8060C6C4) = 0x24040000; // Force file 0 - Read
     *(int*)(0x8060C6D4) = 0xAFA00034; // Force file 0 - Read
     *(int*)(0x8060D294) = 0; // Cartridge EEPROM Wipe cancel
+	// Add Global Data Entries
+	writeFunction(0x8060C3A4, &GrabParameters_Global);
 }

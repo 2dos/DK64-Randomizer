@@ -1434,7 +1434,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (index == 0) {
 						return isBonus(PreviousMap);
 					} else if (index == 1) {
-						return Rando.microhints > 0;
+						int gb_count = 0;
+						int max_gbs = 0;
+						for (int level = 0; level < 8; level++) {
+							for (int kong = 0; kong < 5; kong++) {
+								gb_count += MovesBase[kong].gb_count[level];
+							}
+							if (BLockerDefaultArray[level] > max_gbs) {
+								max_gbs = BLockerDefaultArray[level];
+							}
+						}
+						return (gb_count >= max_gbs) && (Rando.microhints > 0); 
 					}
 				}
 				break;

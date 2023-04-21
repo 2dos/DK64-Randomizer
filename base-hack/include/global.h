@@ -138,6 +138,7 @@ extern void initItemDropTable(void);
 extern void initCollectableCollision(void);
 extern void initActorDefs(void);
 extern void initSmallerQuadChecks(void);
+extern void initStatistics(void);
 extern void newGuardCode(void);
 extern void goldBeaverCode(void);
 extern void ninCoinCode(void);
@@ -345,6 +346,11 @@ extern void helmTime_exitKRool(void);
 
 extern void loadSingularHook(int write_address, void* hook_jump);
 extern void writeFunction(int write_address, void* new_function);
+extern void GrabParameters_Global(int index, int level, short* file_base, char* bit_size);
+extern int changeStat(bonus_stat statistic, int delta);
+extern int getStat(bonus_stat statistic);
+extern void setStat(bonus_stat statistic, int amount);
+extern void setKongIgt(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];

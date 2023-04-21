@@ -32,6 +32,7 @@
 .definelabel dk_strFormat, 0x800031E0
 .definelabel convertTimestamp, 0x80005818
 .definelabel ReadFile, 0x8060C6B8
+.definelabel SaveToFile, 0x8060C648
 .definelabel assessFlagMapping, 0x807314F4
 .definelabel WipeFile, 0x8060C830
 .definelabel WipeImageCache, 0x8068C080

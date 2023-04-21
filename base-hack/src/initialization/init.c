@@ -253,6 +253,8 @@ void initHack(int source) {
 			// Place Move Data
 			moveTransplant();
 			priceTransplant();
+
+			initStatistics();
 			if (Rando.disable_boss_kong_check) {
 				*(int*)(0x8064EC00) = 0x24020001;
 			}
