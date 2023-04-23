@@ -230,9 +230,9 @@ def test_with_settings_string():
     """Confirm that settings strings decryption is working and generate a spoiler log with it."""
     # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
     # This top one is always the S2 Preset (probably up to date)
-    settings_string = "baGFiRorPN5yunTChIoPw+qhoRDIhKlsa58CCI0ivUyYRCnrG2rBACoUht9QX8EsAycBkF1ls0FAXUAgwE7AIHA3cBhAI8AQJBXkChQM9AYLB3sDhgQow08fGQpnqShoKlsvbTcAM0NjlGuKFRFgMTEUDF+2R2OWvAX6RwPApkqkuxuiSaxBJBmBBHNCBgzm4yA4tloXFgsiwUlwNCgWisVGEmjEjkk5CQPACsAA"
+    settings_string = "baGFiRorPN5yunTChooPw+qhoRDIhKlsa58CCI0ivUyYRCnrG2rBACoUhqC/glgGTgMgustmgoC6gEGAnYBA4G7gMIBHgCBIK8gUKBnoDBYO9gcMCFGGnj4yFM9SUNBUtl7abgBmhsco1xQqIsBiYigYv2yOxy14C/SOB4HMlUl2N0STWIJIMwII5oQMGc3GQHFstC43lgsiwUlwNCgWisVGEmjEjkk5CQPACsAA"
     # This one is for ease of testing, go wild with it
-    # settings_string = "baGFiRorPN5yunTChQVzwlFB+H1UNCIZEJUtjXPgQRGkV6mTCIW6yU9Y21YIgVCkNvqC/glgGTgMgustmgoC6gEGAnYBA4G7gMIBHgCBIK8gUKBnoDBYO9gcMCFGGnj4yFM9SUNBUtl7abgBmhsco1xQqIsBiYigYv2yOxy14C/SOB4FMlUl2N0STWIJIMwBgzg4tloXFgsiwUlwNCgWisVGEmjEjkk5CQPAD6AKwA"
+    # settings_string = "baGGiRorxNXm8rp0woolg7Bc4xRYfh8giNIr1MmEQs9uslPWOtWCAFQpDb6hE4CL/iWAROBZKY1K5VGQXmWzQUBdQCDATsAgcDdwGEAjwBAkFeQKFAz0BgsHewOGBCjDTx8V7DUz1I80KTaXTGX1GpNKZxQqQsBCZCgCv2yOxy14C/SOB4FMlUiSuxuiSaxIJCA4tloXFgslwUC0jmk5B4AVQBWAA"
 
     settings_dict = decrypt_settings_string_enum(settings_string)
     settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
