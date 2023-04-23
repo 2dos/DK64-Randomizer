@@ -18,7 +18,7 @@
 | Isles | DK Isles: Back of Kroc Isle (Lower) | l.shockwave | 
 | Isles | DK Isles: Back of Kroc Isle (Middle) | l.shockwave | 
 | Isles | DK Isles: Kroc Isle Left Arm | l.shockwave | 
-| Isles | DK Isles: In Fungi Boulder | (Events.GalleonKeyTurnedIn in l.Events or l.phasewalk) and l.shockwave | 
+| Isles | DK Isles: In Fungi Boulder | (l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events or l.phasewalk) and l.shockwave | 
 | Isles | DK Isles: Behind Fungi Building | l.shockwave | 
 | Isles | DK Isles: Behind Aztec Building | l.shockwave | 
 | Banana Fairy Room | DK Isles - Banana Fairy Room: Behind Fairy Chair | l.shockwave | 
