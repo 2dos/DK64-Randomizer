@@ -348,7 +348,7 @@ void initHack(int source) {
 			// Spider Projectile
 			*(int*)(0x806CBD78) = 0x18400005; // BLEZ $v0, 0x5 - Decrease in health occurs if trap bubble active
 			if (Rando.hard_enemies) {
-				writeFunction(0x806ADDC0, &handleSpiderTrapCode);
+				// writeFunction(0x806ADDC0, &handleSpiderTrapCode);
 				*(short*)(0x806B12DA) = 0x3A9; // Kasplat Shockwave Chance
 				*(short*)(0x806B12FE) = 0x3B3; // Kasplat Shockwave Chance
 				actor_health_damage[259].init_health = 9; // Increase Guard Health
