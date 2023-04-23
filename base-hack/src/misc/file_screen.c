@@ -721,14 +721,16 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					if (Rando.helm_hurry_mode) {
 						QueueHelmTimer = 1;
 					}
-					setPermFlag(FLAG_ESCAPE);
 					Character = Rando.starting_kong;
-					StoredSettings.file_extra.location_sss_purchased = 0;
-					StoredSettings.file_extra.location_ab1_purchased = 0;
-					StoredSettings.file_extra.location_ug1_purchased = 0;
-					StoredSettings.file_extra.location_mln_purchased = 0;
 					for (int i = 0; i < 9; i++) {
-						StoredSettings.file_extra.level_igt[i] = 0;
+						SaveToFile(DATA_LEVELIGT, 0, i, 0, 0);
+					}
+					for (int i = 0; i < STAT_TERMINATOR; i++) {
+						// Reset Statistics
+						SaveToFile(DATA_BONUSSTAT, 0, i, 0, 0);
+					}
+					for (int i = 0; i < 5; i++) {
+						SaveToFile(DATA_KONGIGT, 0, i, 0, 0);
 					}
 					if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
 						setPermFlag(FLAG_ARCADE_LEVER);
@@ -743,6 +745,7 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 						setFlag(FLAG_LOADED_GAME_OVER,1,FLAGTYPE_PERMANENT);
 					}
 				}
+				setKongIgt();
 				ForceStandardAmmo = 0;
 			} else if (buttons & 2) { // B
 				playSFX(0x2C9);
@@ -818,12 +821,13 @@ int updateLevelIGT(void) {
 	int new_igt = getNewSaveTime();
 	int sum = 0;
 	for (int i = 0; i < 9; i++) {
-		sum += StoredSettings.file_extra.level_igt[i];
+		sum += ReadFile(DATA_LEVELIGT, 0, i, 0);
 	}
 	int diff = new_igt - sum;
 	int world = getWorld(previous_map_save, 1);
 	if (world < 9) {
-		StoredSettings.file_extra.level_igt[world] += diff;
+		int old = ReadFile(DATA_LEVELIGT, 0, world, 0);
+		SaveToFile(DATA_LEVELIGT, 0, world, 0, old + diff);
 	}
 	previous_map_save = CurrentMap;
 	SaveToGlobal();

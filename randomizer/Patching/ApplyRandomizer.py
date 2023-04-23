@@ -468,7 +468,7 @@ def patching_response(responded_data):
     writeBootMessages(spoiler)
     enableSpiderText(spoiler)
 
-    random.seed(spoiler.settings.seed)
+    random.seed(None)
     randomize_music(spoiler)
     applyKrushaKong(spoiler)
     apply_cosmetic_colors(spoiler)

@@ -109,6 +109,7 @@ extern float getAnimationTimer(void* actor);
 extern int getPadGravity(void* actor);
 extern void BananaMedalGet(void);
 extern void CrownGet(void);
+extern void updateModel(void* data);
 
 extern void cancelMusic(int song, int unk0);
 extern void removeGorillaGone(void* actor);
@@ -256,6 +257,7 @@ extern int getRefillCount(int item, int player);
 extern int doAllKongsHaveMove(shop_paad* paad, int unk0);
 extern void getSequentialPurchase(shop_paad* paad, KongBase* movedata);
 extern int ReadFile(int data, int kong, int level, int file);
+extern void SaveToFile(int data, int kong, int level, int file, int value);
 extern int* printText(int* dl, short x, short y, float scale, char* str);
 extern int* printOutOfCounter(int x, int y, int top, int bottom, int* dl, int unk0, int scale);
 

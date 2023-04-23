@@ -4,6 +4,8 @@ import random
 import js
 from js import document
 from ui.bindings import bind
+from randomizer.SettingStrings import decrypt_settings_string_enum
+from randomizer.Enums.Settings import SettingsMap
 
 
 def randomseed(evt):
@@ -722,30 +724,75 @@ def preset_select_changed(event):
     for val in js.progression_presets:
         if val.get("name") == element.value:
             presets = val
-    for key in presets:
-        try:
-            if type(presets[key]) is bool:
-                if presets[key] is False:
-                    js.jq(f"#{key}").checked = False
-                    js.document.getElementsByName(key)[0].checked = False
+    if presets is not None and "settings_string" in presets:
+        # Pass in setting string
+        settings = decrypt_settings_string_enum(presets["settings_string"])
+        for select in js.document.getElementsByTagName("select"):
+            if js.document.querySelector("#nav-cosmetics").contains(select) is False:
+                select.selectedIndex = -1
+        js.document.getElementById("presets").selectedIndex = 0
+        for key in settings:
+            try:
+                if type(settings[key]) is bool:
+                    if settings[key] is False:
+                        js.jq(f"#{key}").checked = False
+                        js.document.getElementsByName(key)[0].checked = False
+                    else:
+                        js.jq(f"#{key}").checked = True
+                        js.document.getElementsByName(key)[0].checked = True
+                    js.jq(f"#{key}").removeAttr("disabled")
+                elif type(settings[key]) is list:
+                    selector = js.document.getElementById(key)
+                    if selector.tagName == "SELECT":
+                        for item in settings[key]:
+                            for option in selector.options:
+                                if option.value == item.name:
+                                    option.selected = True
                 else:
-                    js.jq(f"#{key}").checked = True
-                    js.document.getElementsByName(key)[0].checked = True
-                js.jq(f"#{key}").removeAttr("disabled")
-            elif type(presets[key]) is list:
-                selector = js.document.getElementById(key)
-                for i in range(0, selector.options.length):
-                    selector.item(i).selected = selector.item(i).value in presets[key]
-            else:
-                if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
-                    js.jq(f"#{key}").slider("setValue", presets[key])
-                    js.jq(f"#{key}").slider("enable")
-                    js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                    if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
+                        js.jq(f"#{key}").slider("setValue", settings[key])
+                        js.jq(f"#{key}").slider("enable")
+                        js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                    else:
+                        selector = js.document.getElementById(key)
+                        # If the selector is a select box, set the selectedIndex to the value of the option
+                        if selector.tagName == "SELECT":
+                            for option in selector.options:
+                                if option.value == SettingsMap[key](settings[key]).name:
+                                    # Set the value of the select box to the value of the option
+                                    option.selected = True
+                                    break
+                        else:
+                            js.jq(f"#{key}").val(settings[key])
+                    js.jq(f"#{key}").removeAttr("disabled")
+            except Exception as e:
+                print(e)
+                pass
+    else:
+        for key in presets:
+            try:
+                if type(presets[key]) is bool:
+                    if presets[key] is False:
+                        js.jq(f"#{key}").checked = False
+                        js.document.getElementsByName(key)[0].checked = False
+                    else:
+                        js.jq(f"#{key}").checked = True
+                        js.document.getElementsByName(key)[0].checked = True
+                    js.jq(f"#{key}").removeAttr("disabled")
+                elif type(presets[key]) is list:
+                    selector = js.document.getElementById(key)
+                    for i in range(0, selector.options.length):
+                        selector.item(i).selected = selector.item(i).value in presets[key]
                 else:
-                    js.jq(f"#{key}").val(presets[key])
-                js.jq(f"#{key}").removeAttr("disabled")
-        except Exception as e:
-            pass
+                    if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
+                        js.jq(f"#{key}").slider("setValue", presets[key])
+                        js.jq(f"#{key}").slider("enable")
+                        js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                    else:
+                        js.jq(f"#{key}").val(presets[key])
+                    js.jq(f"#{key}").removeAttr("disabled")
+            except Exception as e:
+                pass
     toggle_counts_boxes(None)
     toggle_b_locker_boxes(None)
     update_boss_required(None)

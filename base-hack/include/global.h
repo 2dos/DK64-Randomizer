@@ -106,6 +106,7 @@ extern int* drawDPad(int* dl);
 extern int* drawImageWithFilter(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity);
 extern void correctKongFaces(void);
 extern int* display_file_images(int* dl, int y_offset);
+extern int* drawTextPointers(int* dl);
 
 extern int getLo(void* addr);
 extern int getHi(void* addr);
@@ -138,6 +139,7 @@ extern void initItemDropTable(void);
 extern void initCollectableCollision(void);
 extern void initActorDefs(void);
 extern void initSmallerQuadChecks(void);
+extern void initStatistics(void);
 extern void newGuardCode(void);
 extern void goldBeaverCode(void);
 extern void ninCoinCode(void);
@@ -345,6 +347,11 @@ extern void helmTime_exitKRool(void);
 
 extern void loadSingularHook(int write_address, void* hook_jump);
 extern void writeFunction(int write_address, void* new_function);
+extern void GrabParameters_Global(int index, int level, short* file_base, char* bit_size);
+extern int changeStat(bonus_stat statistic, int delta);
+extern int getStat(bonus_stat statistic);
+extern void setStat(bonus_stat statistic, int amount);
+extern void setKongIgt(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
