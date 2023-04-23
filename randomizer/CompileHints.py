@@ -830,6 +830,13 @@ def compileHints(spoiler: Spoiler):
             already_chosen_krool_path_locations = []
             for i in range(hint_distribution[HintType.RequiredWinConditionHint]):
                 hintable_location_ids = [loc for loc in path if loc not in already_chosen_krool_path_locations and loc != Locations.BananaHoard]
+                if len(hintable_location_ids) == 0 and spoiler.settings.wrinkly_hints == WrinklyHints.fixed_racing:
+                    # This only happens when you're on a fixed hint distribution - some rare fills can have fewer items on the path to K. Rool than you have dedicated hints for
+                    hint_location = getRandomHintLocation()
+                    hint_location.hint_type = HintType.RequiredWinConditionHint
+                    message = "\x05Very little\x05 is on the path to \x0ddefeating K. Rool.\x0d"  # So we'll hint exactly that - there's very little on the path to K. Rool
+                    UpdateHint(hint_location, message)
+                    continue
                 path_location_id = random.choice(hintable_location_ids)
                 # Soft reroll duplicate hints based on hint reroll parameters
                 rerolls = 0
@@ -849,9 +856,9 @@ def compileHints(spoiler: Spoiler):
                 if path_location_id in TrainingBarrelLocations or path_location_id in PreGivenLocations:
                     # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[LocationList[path_location_id].item].name
-                    message = f"Your \x0btraining with {hinted_item_name}\x0b is on the path to {kong_color}aiding {colorless_kong_list[hinted_kong]}'s fight against K. Rool{kong_color}."
+                    message = f"Your \x0btraining with {hinted_item_name}\x0b is on the path to {kong_color}aiding {colorless_kong_list[hinted_kong]}'s fight against K. Rool.{kong_color}"
                 else:
-                    message = f"An item in the {hinted_location_text} is on the path to {kong_color}aiding {colorless_kong_list[hinted_kong]}'s fight against K. Rool{kong_color}."
+                    message = f"An item in the {hinted_location_text} is on the path to {kong_color}aiding {colorless_kong_list[hinted_kong]}'s fight against K. Rool.{kong_color}"
                 hint_location.hint_type = HintType.RequiredWinConditionHint
                 UpdateHint(hint_location, message)
         # All fairies seeds get 2 path hints for the camera
