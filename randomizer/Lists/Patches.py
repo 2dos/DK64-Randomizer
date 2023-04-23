@@ -183,7 +183,7 @@ DirtPatchLocations = [
         rotation=1934,
         group=2,
         logicregion=Regions.IslesMain,
-        logic=lambda l: (Events.GalleonKeyTurnedIn in l.Events or l.phasewalk) and l.shockwave,
+        logic=lambda l: (l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
         name="DK Isles: Behind Fungi Building", level=Levels.DKIsles, map_id=Maps.Isles, x=2436.0, y=1498.0, z=817.0, rotation=637, group=2, logicregion=Regions.CabinIsle, logic=lambda l: l.shockwave

@@ -478,7 +478,7 @@ def patching_response(responded_data):
     applyHelmDoorCosmetics(spoiler)
     random.seed(spoiler.settings.seed)
 
-    if spoiler.settings.wrinkly_hints in [WrinklyHints.standard, WrinklyHints.cryptic]:
+    if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         wipeHints()
         PushHints(spoiler)
 
