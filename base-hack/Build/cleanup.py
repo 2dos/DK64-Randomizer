@@ -8,8 +8,9 @@ for f in os.listdir(instance_dir):
     joined = os.path.join(instance_dir, f)
     if os.path.isfile(joined) and os.path.exists(joined) and ".raw" in f:
         os.remove(joined)
-with open(finalROM, "rb") as fh:
-    fh.seek(0x2000000 + heap_size - 4)
-    data = int.from_bytes(fh.read(4), "big")
-    if data != 0:
-        raise Exception("Code is too big. Suggest increasing the heap.")
+if os.path.exists(finalROM):
+    with open(finalROM, "rb") as fh:
+        fh.seek(0x2000000 + heap_size - 4)
+        data = int.from_bytes(fh.read(4), "big")
+        if data != 0:
+            raise Exception("Code is too big. Suggest increasing the heap.")

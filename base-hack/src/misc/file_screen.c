@@ -721,7 +721,6 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					if (Rando.helm_hurry_mode) {
 						QueueHelmTimer = 1;
 					}
-					setPermFlag(FLAG_ESCAPE);
 					Character = Rando.starting_kong;
 					for (int i = 0; i < 9; i++) {
 						SaveToFile(DATA_LEVELIGT, 0, i, 0, 0);
