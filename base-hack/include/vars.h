@@ -108,6 +108,9 @@
 #define IMAGE_KONG_START 190
 #define IMAGE_TRACKER 0xA1
 #define LEVEL_COUNT 8
+#define IGT_BITS 22
+#define HELM_HURRY_BITS 16
+#define STAT_BITS 16
 
 #define PURCHASE_MOVES 0
 #define PURCHASE_SLAM 1

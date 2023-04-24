@@ -11,6 +11,7 @@
 #include "../../include/common.h"
 
 static char igt_text[20] = "IGT: 0000:00:00";
+static int stored_igt = 0;
 
 int* printLevelIGT(int* dl, int x, int y, float scale, char* str) {
     /**
@@ -142,6 +143,12 @@ void checkItemDB(void) {
     renderScreenTransition(7);
     initTracker();
     initHints();
+    stored_igt = getNewSaveTime();
+    if (Rando.helm_hurry_mode) {
+        if (ReadFile(DATA_HELMHURRYOFF, 0, 0, 0)) {
+            stored_igt = IGT;
+        }
+    }
     for (int i = 0; i < PAUSE_ITEM_COUNT; i++) {
         // Wipe data upon every search
         for (int j = 0; j < 9; j++) {
@@ -338,6 +345,11 @@ int* pauseScreen3And4Header(int* dl) {
         return printText(dl, 0x280, 160, 0.5f, level_check_text);
     } else if (paad->screen == PAUSESCREEN_MOVES) {
         dl = display_file_images(dl, -50);
+        int igt_h = stored_igt / 3600;
+        int igt_s = stored_igt % 60;
+        int igt_m = (stored_igt / 60) % 60;
+        dk_strFormat((char*)igt_text, "%03d:%02d:%02d", igt_h, igt_m, igt_s);
+        dl = printText(dl, 0x280, 675, 0.5f, igt_text);
         return printText(dl, 0x280, 0x3C, 0.65f, "MOVES");
     } else if (paad->screen == PAUSESCREEN_HINTS) {
         display_billboard_fix = 1;

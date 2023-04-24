@@ -580,8 +580,10 @@ typedef enum file_data_indexes {
     DATA_LANGUAGE = 0x1F,
     DATA_CAMERATYPE = 0x20,
     DATA_LEVELIGT = 0x21,
-	DATA_BONUSSTAT = 0x22,
-	DATA_KONGIGT = 0x23,
+	DATA_HELMHURRYIGT = 0x22,
+	DATA_HELMHURRYOFF = 0x23,
+	DATA_BONUSSTAT = 0x24,
+	DATA_KONGIGT = 0x25,
 } file_data_indexes;
 
 typedef enum bonus_stat {

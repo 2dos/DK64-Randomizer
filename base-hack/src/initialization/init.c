@@ -294,7 +294,9 @@ void initHack(int source) {
 				*(int*)(0x80713CD8) = 0; // Prevent Shutdown Song Playing
 				*(short*)(0x8071256A) = 15; // Init Helm Timer = 15 minutes
 				writeFunction(0x807125A4, &initHelmHurry); // Change write
+				writeFunction(0x80713DE0, &finishHelmHurry); // Change write
 				*(int*)(0x807125CC) = 0; // Prevent Helm Timer Overwrite
+				*(short*)(0x807095BE) = 0x2D4; // Change Zipper with K. Rool Laugh
 			}
 			if (Rando.version == 0) {
 				// Disable Graphical Debugger
