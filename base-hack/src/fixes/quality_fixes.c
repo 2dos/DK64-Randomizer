@@ -310,3 +310,11 @@ void exitTrapBubbleController(void) {
 		return;
 	}
 }
+
+void fixChimpyCamBug(void) {
+	/**
+	 * @brief Things to be reset upon first boot of the game on PJ64 (Because PJ64 is weird)
+	 */
+	wipeGlobalFlags();
+	SaveToFile(DATA_CAMERATYPE, 0, 0, 0, 0);
+}

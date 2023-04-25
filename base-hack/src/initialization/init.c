@@ -198,6 +198,7 @@ void initHack(int source) {
 			// Kong Rando
 			initKongRando();
 			initFiles();
+			writeFunction(0x8060CB7C, &fixChimpyCamBug);
             
 			if (Rando.no_health_refill) {
 				*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
