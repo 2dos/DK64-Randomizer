@@ -67,3 +67,4 @@
 .definelabel __osGetThreadId, 0x800078A0
 .definelabel __osViSwapContext, 0x80009F10
 .definelabel cstring_strlen, 0x80002F18
+.definelabel wipeGlobalFlags, 0x807310BC

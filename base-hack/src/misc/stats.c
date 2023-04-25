@@ -25,26 +25,37 @@ int getStat(bonus_stat statistic) {
     return ReadFile(DATA_BONUSSTAT, 0, statistic, 0);
 }
 
+#define FILE_COUNT 1
 void GrabParameters_Global(int index, int level, short* file_base, char* bit_size) {
-    *file_base = (((((((*(short*)(0x807ECEA0) + 0x6B7) & 0xFFC0) + 0x27) & 0xFFF8) << 2) + 0x3F) & 0xFFC0) + 0x40;
+    *file_base = (((((((*(short*)(0x807ECEA0) + getNewFileSize()) & 0xFFC0) + 0x27) & 0xFFF8) * FILE_COUNT) + 0x3F) & 0xFFC0) + 0x40;
     *bit_size = 0;
     switch (index) {
         case DATA_KONGIGT:
             if (*bit_size == 0) {
-                *bit_size = 22;
-                *file_base = *file_base + (level * 22);
+                *bit_size = IGT_BITS;
+                *file_base = *file_base + (level * IGT_BITS);
             }
-            *file_base = *file_base + (16 * STAT_TERMINATOR);
+            *file_base = *file_base + (STAT_BITS * STAT_TERMINATOR);
         case DATA_BONUSSTAT:
             if (*bit_size == 0) {
-                *bit_size = 16;
-                *file_base = *file_base + (level * 16);
+                *bit_size = STAT_BITS;
+                *file_base = *file_base + (level * STAT_BITS);
             }
-            *file_base = *file_base + (22 * 9);
+            *file_base = *file_base + HELM_HURRY_BITS;
+        case DATA_HELMHURRYIGT:
+            if (*bit_size == 0) {
+                *bit_size = HELM_HURRY_BITS;
+            }
+            *file_base = *file_base + 1;
+        case DATA_HELMHURRYOFF:
+            if (*bit_size == 0) {
+                *bit_size = 1;
+            }
+            *file_base = *file_base + (IGT_BITS * 9);
         case DATA_LEVELIGT:
             if (*bit_size == 0) {
-                *bit_size = 22;
-                *file_base = *file_base + (level * 22);
+                *bit_size = IGT_BITS;
+                *file_base = *file_base + (level * IGT_BITS);
             }
             *file_base = *file_base + 1;
         case DATA_CAMERATYPE:
@@ -168,10 +179,10 @@ void updatePercentageKongStat(void) {
 
 
 void updateTagStat(void* data) {
-    // *(int*)(0x807FF700) = changeStat(STAT_TAGCOUNT, 1);
-    if (isGamemode(6, 1)) {
+    if (isGamemode(6, 1) && (canSaveHelmHurry())) {
         changeStat(STAT_TAGCOUNT, 1);
         updatePercentageKongStat();
+        SaveToGlobal();
     }
     updateModel(data);
 }

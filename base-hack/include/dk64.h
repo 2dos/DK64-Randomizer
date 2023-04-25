@@ -358,6 +358,8 @@ extern void unkProjectileCode_2(void* actor);
 extern void unkProjectileCode_3(void* actor, int unk0);
 extern void unkProjectileCode_4(void* actor, int sfx, int unk0, int unk1, int unk2);
 
+extern void wipeGlobalFlags(void);
+
 //vanilla data
 extern float TransitionSpeed;
 extern char CutsceneWillPlay;
@@ -442,6 +444,7 @@ extern unsigned int PauseTimestampMinor;
 extern unsigned int HelmStartTimestampMajor;
 extern unsigned int HelmStartTimestampMinor;
 extern int HelmStartTime;
+extern int HelmCurrentTime;
 extern short HelmMinigameFlags[10];
 extern short p1PressedButtons;
 extern short p1HeldButtons;

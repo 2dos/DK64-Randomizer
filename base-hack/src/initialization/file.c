@@ -10,6 +10,12 @@
  */
 #include "../../include/common.h"
 
+static int new_file_size = 0;
+
+int getNewFileSize(void) {
+	return new_file_size;
+}
+
 void expandSaveFile(int static_expansion, int actor_count) {
 	/**
 	 * @brief Expand save file to account for expanded data, including flags and larger GB capacity
@@ -38,6 +44,7 @@ void expandSaveFile(int static_expansion, int actor_count) {
 	int kong_var_size = 0xA1 + added_bits;
 	int file_info_location = flag_block_size + (5 * kong_var_size);
 	int file_default_size = file_info_location + 0x72;
+	new_file_size = file_default_size;
 	// Flag Block Size
 	*(short*)(0x8060E36A) = file_default_size;
 	*(short*)(0x8060E31E) = file_default_size;
@@ -119,4 +126,16 @@ void initFiles(void) {
     *(int*)(0x8060D294) = 0; // Cartridge EEPROM Wipe cancel
 	// Add Global Data Entries
 	writeFunction(0x8060C3A4, &GrabParameters_Global);
+	// int added_global_bits = HELM_HURRY_BITS + (IGT_BITS * 9) + (STAT_BITS * STAT_TERMINATOR) + (IGT_BITS * 5) + 1;
+	// int global_expansion = ((added_global_bits >> 3) + 1);
+	// int leftover = global_expansion & 3;
+	// if (leftover != 0) {
+	// 	global_expansion += (4 - leftover);
+	// }
+	// int global_size = 0x40 + global_expansion;
+	// *(short*)(0x8060CFAA) = global_size;
+	// *(short*)(0x8060CFE2) = global_size - 4;
+	// *(short*)(0x8060D4EA) = global_size;
+	// *(short*)(0x8060D516) = global_size - 4;
+	// *(short*)(0x8060D586) = -global_size;
 }
