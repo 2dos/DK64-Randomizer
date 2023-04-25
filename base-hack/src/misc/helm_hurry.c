@@ -23,7 +23,7 @@ int canSaveHelmHurry(void) {
         return 0;
     }
     if (Rando.helm_hurry_mode) {
-        if (checkFlag(FLAG_LOADED_GAME_OVER, FLAGTYPE_PERMANENT)) {
+        if (ReadFile(DATA_HELMHURRYOFF, 0, 0, 0)) {
             return 0;
         }
     }
@@ -69,14 +69,36 @@ void checkTotalCache(void) {
     kong_bitfield = current_kong_bitfield;
 }
 
+void finishHelmHurry(void) {
+    save(); // Save all stats
+    SaveToFile(DATA_HELMHURRYOFF, 0, 0, 0, 1); // disable saving
+    SaveToGlobal();
+    LoadGameOver();
+}
+
 int initHelmHurry(void) {
     /**
      * @brief Initializes the Helm Hurry timer
      */
+    if (getNewSaveTime() > 5) {
+        // Old file loaded
+        HelmStartTime = ReadFile(DATA_HELMHURRYIGT, 0, 0, 0);
+        return 0;
+    }
     if (Rando.helm_hurry_start == 0) {
         HelmStartTime = 60;
         return 0;
     }
     HelmStartTime = Rando.helm_hurry_start;
     return 0;
+}
+
+void saveHelmHurryTime(void) {
+    if ((Rando.helm_hurry_mode) && (isGamemode(6, 1) && (HelmTimerShown))) {
+        int save_value = HelmCurrentTime;
+        if (save_value > 65535) {
+            save_value = 65535; // Allows for 18h12m15s of time
+        }
+        SaveToFile(DATA_HELMHURRYIGT, 0, 0, 0, save_value);
+    }
 }

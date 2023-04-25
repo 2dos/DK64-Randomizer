@@ -47,8 +47,8 @@ void initKrusha(void) {
         int slot = Rando.krusha_slot;
         KongModelData[slot].model = 0xDB; // General Model
         TagModelData[slot].model = 0xDB; // Tag Barrel Model
-        *(int*)(0x80677E94) = 0x0C000000 | (((int)&adjustAnimationTables & 0xFFFFFF) >> 2); // Give Krusha animations to slot
-        *(int*)(0x806C32B8) = 0x0C000000 | (((int)&updateCutsceneModels & 0xFFFFFF) >> 2); // Fix cutscene models
+        writeFunction(0x80677E94, &adjustAnimationTables); // Give Krusha animations to slot
+        writeFunction(0x806C32B8, &updateCutsceneModels); // Fix cutscene models
         RollingSpeeds[slot] = 175; // Increase Krusha slide speed to 175
         KongTagNames[slot] = 6; // Change kong name in Tag Barrel
         KongTextNames[slot] = KongTextNames[5];
@@ -92,7 +92,7 @@ void initKrusha(void) {
                 *(int*)(0x806E4940) = 0; // NOP Animation calls
                 *(int*)(0x806E4950) = 0; // NOP Animation calls
                 *(int*)(0x806E4958) = 0; // NOP Animation calls
-                *(int*)(0x806E495C) = 0x0C000000 | (((int)&adaptKrushaZBAnimation_Charge & 0xFFFFFF) >> 2); // Allow Krusha to use slide move if fast enough (Charge)
+                writeFunction(0x806E495C, &adaptKrushaZBAnimation_Charge); // Allow Krusha to use slide move if fast enough (Charge)
                 *(int*)(0x806E499C) = 0; // NOP Animation calls
                 *(int*)(0x806E49C8) = 0; // NOP Animation calls
                 *(int*)(0x806E49F0) = 0; // NOP Animation calls
@@ -101,12 +101,12 @@ void initKrusha(void) {
                 *(int*)(0x806832B8) = 0; // Prevent tag blinking
                 *(int*)(0x806C1050) = 0; // Prevent Cutscene Kong blinking
                 *(unsigned char*)(0x8075D19F) = 0xA0; // Fix Gun Firing
-                *(int*)(0x806141B4) = 0x0C000000 | (((int)&DiddySwimFix & 0xFFFFFF) >> 2); // Fix Diddy's Swim Animation
+                writeFunction(0x806141B4, &DiddySwimFix); // Fix Diddy's Swim Animation
                 *(short*)(0x80749764) = 10; // Fix Diddy Swimming (A)
                 *(short*)(0x80749758) = 10; // Fix Diddy Swimming (B)
                 *(short*)(0x8074974C) = 10; // Fix Diddy Swimming (Z/First Person)
-                *(int*)(0x806E903C) = 0x0C000000 | (((int)&MinecartJumpFix & 0xFFFFFF) >> 2); // Fix Diddy Minecart Jump
-                *(int*)(0x806D259C) = 0x0C000000 | (((int)&MinecartJumpFix_0 & 0xFFFFFF) >> 2); // Fix Diddy Minecart Jump
+                writeFunction(0x806E903C, &MinecartJumpFix); // Fix Diddy Minecart Jump
+                writeFunction(0x806D259C, &MinecartJumpFix_0); // Fix Diddy Minecart Jump
                 if (ENABLE_ORANGE_GUN) {
                     *(short*)(0x806E2AB2) = ORANGE_GUN_SFX; // SFX
                 }
@@ -121,13 +121,13 @@ void initKrusha(void) {
                 *(short*)(0x8075ED7A) = 0xDB; // Cutscene Lanky Model
                 *(short*)(0x8075573A) = 0xDB; // Generic Cutscene Model
                 *(short*)(0x806F0ABE) = 0; // Remove gun from hands in Tag Barrel
-                *(int*)(0x806E48BC) = 0x0C000000 | (((int)&adaptKrushaZBAnimation_PunchOStand & 0xFFFFFF) >> 2); // Allow Krusha to use slide move if fast enough (OStand)
+                writeFunction(0x806E48BC, &adaptKrushaZBAnimation_PunchOStand); // Allow Krusha to use slide move if fast enough (OStand)
                 *(int*)(0x806E48B4) = 0; // Always run `adaptKrushaZBAnimation`
                 *(int*)(0x806F0AB0) = 0x24050001; // Fix Hand State
                 *(short*)(0x80749C74) = 10; // Fix Lanky Swimming (A)
                 *(short*)(0x80749C80) = 10; // Fix Lanky Swimming (B)
                 *(short*)(0x80749CA4) = 10; // Fix Lanky Swimming (Z/First Person)
-                *(int*)(0x806141B4) = 0x0C000000 | (((int)&DiddySwimFix & 0xFFFFFF) >> 2); // Fix Lanky's Swim Animation
+                writeFunction(0x806141B4, &DiddySwimFix); // Fix Lanky's Swim Animation
                 if (ENABLE_ORANGE_GUN) {
                     *(short*)(0x806E2A7E) = ORANGE_GUN_SFX; // SFX
                     *(short*)(0x806E2A86) = ORANGE_GUN_VARIANCE; // Variance
@@ -160,7 +160,7 @@ void initKrusha(void) {
                 *(short*)(0x80755738) = 0xDB; // Generic Cutscene Model
                 *(int*)(0x806F1274) = 0; // Prevent model change for GGone
                 *(int*)(0x806CBB84) = 0; // Enable opacity filter GGone
-                *(int*)(0x806E4900) = 0x0C000000 | (((int)&adaptKrushaZBAnimation_PunchOStand & 0xFFFFFF) >> 2); // Allow Krusha to use slide move if fast enough (PPunch)
+                writeFunction(0x806E4900, &adaptKrushaZBAnimation_PunchOStand); // Allow Krusha to use slide move if fast enough (PPunch)
                 *(int*)(0x806E48F8) = 0; // Always run `adaptKrushaZBAnimation`
                 *(short*)(0x806F0A9E) = 0; // Remove gun from hands in Tag Barrel
                 *(int*)(0x806F0A90) = 0x24050001; // Fix Hand State
@@ -291,7 +291,7 @@ int determineShockwaveColor(actorData* shockwave) {
 
 void initColorblindChanges(void) {
     if (Rando.colorblind_mode != COLORBLIND_OFF) {
-        *(int*)(0x8069E968) = 0x0C000000 | (((int)&determineShockwaveColor & 0xFFFFFF) >> 2); // Shockwave handler
+        writeFunction(0x8069E968, &determineShockwaveColor); // Shockwave handler
         *(short*)(0x8069E974) = 0x1000; // Force first option
         *(int*)(0x8069E9B0) = 0; // Prevent write
         *(int*)(0x8069E9B4) = 0; // Prevent write

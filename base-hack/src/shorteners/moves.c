@@ -1,11 +1,13 @@
 #include "../../include/common.h"
 
 int initFile_checkTraining(int type_check, int kong_check, int value_check) {
-	for (int i = 0; i < 4; i++) {
-		if (TrainingMoves_New[i].purchase_type == type_check) {
-			if ((kong_check == -1) || (TrainingMoves_New[i].move_kong == kong_check)) {
-				if (TrainingMoves_New[i].purchase_value == value_check) {
-					return 1;
+	if (Rando.fast_start_beginning) {
+		for (int i = 0; i < 4; i++) {
+			if (TrainingMoves_New[i].purchase_type == type_check) {
+				if ((kong_check == -1) || (TrainingMoves_New[i].move_kong == kong_check)) {
+					if (TrainingMoves_New[i].purchase_value == value_check) {
+						return 1;
+					}
 				}
 			}
 		}
@@ -65,6 +67,9 @@ int initFile_getInsUpgradeLevel(int inc_training) {
 int initFile_getSlamLevel(int inc_training) {
 	int slams[] = {Rando.moves_pregiven.slam_upgrade_0, Rando.moves_pregiven.slam_upgrade_1, Rando.moves_pregiven.slam_upgrade_2};
 	int slam_level = DEFAULT_SLAM_LEVEL;
+	if (!Rando.fast_start_beginning) {
+		slam_level = 0;
+	}
 	for (int i = DEFAULT_SLAM_LEVEL; i < 3; i++) {
 		if (slams[i]) {
 			slam_level += 1;

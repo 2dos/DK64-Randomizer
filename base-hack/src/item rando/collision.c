@@ -77,10 +77,10 @@ void initSmallerQuadChecks(void) {
     *(short*)(0x806F4C16) = QUAD_SIZE;
     *(short*)(0x806F4C52) = QUAD_SIZE;
 
-    *(int*)(0x806F502C) = 0x0C000000 | (((int)&getCollisionSquare_New & 0xFFFFFF) >> 2); // Assigning hitbox to data table
-    *(int*)(0x806F5134) = 0x0C000000 | (((int)&getCollisionSquare_New & 0xFFFFFF) >> 2); // Assigning hitbox to data table
-    *(int*)(0x806F6A0C) = 0x0C000000 | (((int)&checkForValidCollision & 0xFFFFFF) >> 2); // Detecting if object is inside current quadrant
-    *(int*)(0x806F6A2C) = 0x0C000000 | (((int)&checkForValidCollision & 0xFFFFFF) >> 2); // Detecting if object is inside current quadrant
+    writeFunction(0x806F502C, &getCollisionSquare_New); // Assigning hitbox to data table
+    writeFunction(0x806F5134, &getCollisionSquare_New); // Assigning hitbox to data table
+    writeFunction(0x806F6A0C, &checkForValidCollision); // Detecting if object is inside current quadrant
+    writeFunction(0x806F6A2C, &checkForValidCollision); // Detecting if object is inside current quadrant
 }
 
 item_collision* writeItemScale(int id) {

@@ -25,7 +25,6 @@ void qualityOfLife_fixes(void) {
 	if (Rando.quality_of_life.vanilla_fixes) {
 		// Set some flags in-game
 		setPermFlag(FLAG_FTT_CRANKY); // Cranky FTT
-		setPermFlag(FLAG_TBARREL_SPAWNED); // Training Barrels Spawned
 		fixkey8();
 		// Prevent a bug where detransforming from Rambi shortly before getting hit will keep you locked as Rambi
 		if (CurrentMap == MAP_JAPES) {
@@ -310,4 +309,12 @@ void exitTrapBubbleController(void) {
 		reduceTrapBubbleLife();
 		return;
 	}
+}
+
+void fixChimpyCamBug(void) {
+	/**
+	 * @brief Things to be reset upon first boot of the game on PJ64 (Because PJ64 is weird)
+	 */
+	wipeGlobalFlags();
+	SaveToFile(DATA_CAMERATYPE, 0, 0, 0, 0);
 }

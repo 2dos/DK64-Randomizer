@@ -546,7 +546,7 @@ class Spoiler:
         if self.settings.tns_location_rando:
             humanspoiler["T&S Portal Locations"] = self.human_portal_doors
         if self.settings.crown_placement_rando:
-            humanspoiler["Shuffled Crowns"] = self.human_crowns
+            humanspoiler["Battle Arena Locations"] = self.human_crowns
         level_dict = {
             Levels.DKIsles: "DK Isles",
             Levels.JungleJapes: "Jungle Japes",

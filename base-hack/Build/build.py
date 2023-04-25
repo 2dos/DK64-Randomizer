@@ -308,6 +308,21 @@ file_dict.append(
     )
 )
 
+key_textures = (0xBAB, 0xC6F)
+for tx in key_textures:
+    dim = 32
+    if tx == 0xC6F:
+        dim = 4
+    file_dict.append(
+        File(
+            name=f"Key Texture {tx}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=tx,
+            source_file=f"key_tex{tx}.png",
+            target_size=2 * dim * dim,
+        )
+    )
+
 starts = (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)
 for si, s in enumerate(starts):
     for x in range(8):

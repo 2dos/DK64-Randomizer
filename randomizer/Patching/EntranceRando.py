@@ -212,3 +212,20 @@ def filterEntranceType():
                 # Change fade type to spin
                 ROM().seek(cont_map_lzs_address + start + 0x16)
                 ROM().writeMultipleBytes(0, 2)
+
+
+def enableSpiderText(spoiler: Spoiler):
+    """Change the cutscene trigger in Spider Boss to the specific item reward cutscene."""
+    if spoiler.settings.item_reward_previews:
+        cont_map_lzs_address = js.pointer_addresses[18]["entries"][Maps.ForestSpider]["pointing_to"]
+        ROM().seek(cont_map_lzs_address)
+        lz_count = int.from_bytes(ROM().readBytes(2), "big")
+        for lz_id in range(lz_count):
+            start = (lz_id * 0x38) + 2
+            ROM().seek(cont_map_lzs_address + start + 0x10)
+            lz_type = int.from_bytes(ROM().readBytes(2), "big")
+            lz_cutscene = int.from_bytes(ROM().readBytes(2), "big")
+            if lz_type == 10 and lz_cutscene == 3:
+                # Change cutscene to 9
+                ROM().seek(cont_map_lzs_address + start + 0x12)
+                ROM().writeMultipleBytes(9, 2)

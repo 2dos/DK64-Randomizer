@@ -48,6 +48,10 @@ def ShuffleDoors(spoiler):
     """Shuffle Wrinkly and T&S Doors based on settings."""
     # Reset Doors
     for level in door_locations:
+        # Also reset the data structures that share info across processes
+        shuffled_door_data[level] = []
+        human_hint_doors[level_list[level]] = {}
+        human_portal_doors[level_list[level]] = {}
         for door in door_locations[level]:
             door.placed = door.default_placed
             if spoiler.settings.wrinkly_location_rando:
@@ -135,6 +139,10 @@ def ShuffleDoors(spoiler):
 def ShuffleVanillaDoors(spoiler):
     """Shuffle T&S and Wrinkly doors amongst the vanilla locations."""
     for level in door_locations:
+        # Reset the data structures for door shuffling information sharing
+        shuffled_door_data[level] = []
+        human_hint_doors[level_list[level]] = {}
+        human_portal_doors[level_list[level]] = {}
         # Find the vanilla doors that are valid hint locations and clear their door
         vanilla_door_indexes = []
         for door_index, door in enumerate(door_locations[level]):

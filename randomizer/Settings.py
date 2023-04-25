@@ -739,35 +739,7 @@ class Settings:
 
         # Start Region
         if self.random_starting_region:
-            region_data = [
-                randomizer.LogicFiles.DKIsles.LogicRegions,
-                randomizer.LogicFiles.JungleJapes.LogicRegions,
-                randomizer.LogicFiles.AngryAztec.LogicRegions,
-                randomizer.LogicFiles.FranticFactory.LogicRegions,
-                randomizer.LogicFiles.GloomyGalleon.LogicRegions,
-                randomizer.LogicFiles.FungiForest.LogicRegions,
-                randomizer.LogicFiles.CrystalCaves.LogicRegions,
-                randomizer.LogicFiles.CreepyCastle.LogicRegions,
-            ]
-            selected_region_world = random.choice(region_data)
-            valid_starting_regions = []
-            for region in selected_region_world:
-                region_data = selected_region_world[region]
-                transitions = [
-                    x.exitShuffleId for x in region_data.exits if x.exitShuffleId is not None and x.exitShuffleId in ShufflableExits and ShufflableExits[x.exitShuffleId].back.reverse is not None
-                ]
-                if region in RegionMapList:
-                    # Has tied map
-                    tied_map = GetMapId(region)
-                    for transition in transitions:
-                        relevant_transition = ShufflableExits[transition].back.reverse
-                        tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
-                        valid_starting_regions.append(
-                            {"region": region, "map": tied_map, "exit": tied_exit, "region_name": region_data.name, "exit_name": ShufflableExits[relevant_transition].back.name}
-                        )
-            self.starting_region = random.choice(valid_starting_regions)
-            for x in range(2):
-                randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
+            self.RandomizeStartingLocation()
 
         # Initial Switch Level Placement - Will be corrected if level order rando is on during the fill process. Disable it for vanilla
         if self.level_randomization == LevelRandomization.vanilla:
@@ -941,9 +913,9 @@ class Settings:
             ItemList[Items.BananaMedal].playthrough = True
         if self.crown_door_item in (HelmDoorItem.vanilla, HelmDoorItem.req_crown) or self.coin_door_item == HelmDoorItem.req_crown:
             ItemList[Items.BattleCrown].playthrough = True
-        if self.crown_door_item == HelmDoorItem.req_bean or self.coin_door_item == HelmDoorItem.req_bean:
+        if self.crown_door_item == HelmDoorItem.req_bean or self.coin_door_item == HelmDoorItem.req_bean or Types.Bean in self.shuffled_location_types:
             ItemList[Items.Bean].playthrough = True
-        if self.crown_door_item == HelmDoorItem.req_pearl or self.coin_door_item == HelmDoorItem.req_pearl:
+        if self.crown_door_item == HelmDoorItem.req_pearl or self.coin_door_item == HelmDoorItem.req_pearl or Types.Pearl in self.shuffled_location_types:
             ItemList[Items.Pearl].playthrough = True
 
         self.free_trade_items = self.free_trade_setting != FreeTradeSetting.none
@@ -1168,6 +1140,38 @@ class Settings:
             kongCageLocations.remove(Locations.LankyKong)
             kongCageLocations.append(random.choice([Locations.DiddyKong, Locations.TinyKong, Locations.ChunkyKong]))
         return kongCageLocations
+
+    def RandomizeStartingLocation(self):
+        """Randomize the starting point of this seed."""
+        region_data = [
+            randomizer.LogicFiles.DKIsles.LogicRegions,
+            randomizer.LogicFiles.JungleJapes.LogicRegions,
+            randomizer.LogicFiles.AngryAztec.LogicRegions,
+            randomizer.LogicFiles.FranticFactory.LogicRegions,
+            randomizer.LogicFiles.GloomyGalleon.LogicRegions,
+            randomizer.LogicFiles.FungiForest.LogicRegions,
+            randomizer.LogicFiles.CrystalCaves.LogicRegions,
+            randomizer.LogicFiles.CreepyCastle.LogicRegions,
+        ]
+        selected_region_world = random.choice(region_data)
+        valid_starting_regions = []
+        for region in selected_region_world:
+            region_data = selected_region_world[region]
+            transitions = [
+                x.exitShuffleId
+                for x in region_data.exits
+                if x.exitShuffleId is not None and x.exitShuffleId in ShufflableExits and ShufflableExits[x.exitShuffleId].back.reverse is not None and not x.isGlitchTransition
+            ]
+            if region in RegionMapList:
+                # Has tied map
+                tied_map = GetMapId(region)
+                for transition in transitions:
+                    relevant_transition = ShufflableExits[transition].back.reverse
+                    tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
+                    valid_starting_regions.append({"region": region, "map": tied_map, "exit": tied_exit, "region_name": region_data.name, "exit_name": ShufflableExits[relevant_transition].back.name})
+        self.starting_region = random.choice(valid_starting_regions)
+        for x in range(2):
+            randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
 
     def __repr__(self):
         """Return printable version of the object as json.

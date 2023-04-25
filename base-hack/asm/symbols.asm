@@ -98,6 +98,7 @@
 .definelabel HelmStartTimestampMajor, 0x80755340 // u32
 .definelabel HelmStartTimestampMinor, 0x80755344 // u32
 .definelabel HelmStartTime, 0x8075534C // u32
+.definelabel HelmCurrentTime, 0x80755348 // u32
 .definelabel p1PressedButtons, 0x807ECD48
 .definelabel p1HeldButtons, 0x807ECD58
 .definelabel player_count, 0x807FC928

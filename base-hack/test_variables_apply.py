@@ -1,6 +1,12 @@
 """Set debugging vars to the build."""
 import os
 import json
+import sys
+
+APPLY_VARIABLES = True
+
+if not APPLY_VARIABLES:
+    sys.exit()
 
 set_variables = {}
 with open("test.json", "r") as fh:
