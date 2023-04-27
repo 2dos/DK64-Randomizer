@@ -1747,7 +1747,9 @@ boot_phrases = (
     "Loading in Beavers",
     "Lifting Boulders with Relative Ease",
     "Doing Monkey Science Probably",
-    "Telling Killklli to eventually play DK64",
+    "Telling Killi to eventually play DK64",
+    "Crediting Grant Kirkhope",
+    "Dropping Crayons",
 )
 
 

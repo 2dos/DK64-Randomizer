@@ -359,6 +359,7 @@ extern void unkProjectileCode_3(void* actor, int unk0);
 extern void unkProjectileCode_4(void* actor, int sfx, int unk0, int unk1, int unk2);
 
 extern void wipeGlobalFlags(void);
+extern void setIntroStoryPlaying(int value);
 
 //vanilla data
 extern float TransitionSpeed;

@@ -62,6 +62,16 @@ void cFuncLoop(void) {
 	if (CurrentMap == MAP_MAINMENU) {
 		colorMenuSky();
 	}
+	if (isGamemode(6, 1)) {
+		if ((CurrentMap == MAP_HELM_INTROSTORY) || (CurrentMap == MAP_ISLES_INTROSTORYROCK) || ((CurrentMap == MAP_ISLES_DKTHEATRE) && (CutsceneIndex < 8))) { // Intro Story Map
+			if ((CutsceneActive) && (TransitionSpeed == 0.0f)) { // Playing a cutscene that's part of intro story
+				if ((NewlyPressedControllerInput.Buttons.a) || (NewlyPressedControllerInput.Buttons.start)) {
+					setIntroStoryPlaying(0);
+					initiateTransition(0xB0, 1);
+				}
+			}
+		}
+	}
 	callParentMapFilter();
 	spawnCannonWrapper();
 	setCrusher();
