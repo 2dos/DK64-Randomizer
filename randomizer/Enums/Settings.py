@@ -501,11 +501,13 @@ class WrinklyHints(IntEnum):
     off: Hints are the same as the vanilla game.
     standard: Normal randomizer hints are provided.
     cryptic: Cryptic randomizer hints are provided.
+    fixed_racing: Fixed distribution - this one is for the S2 racing preset.
     """
 
     off = 0
     standard = 1
     cryptic = 2
+    fixed_racing = 3
 
 
 # ALL SELECT-BASED SETTINGS NEED AN ENTRY HERE!

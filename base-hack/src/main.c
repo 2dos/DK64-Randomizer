@@ -440,6 +440,7 @@ int* displayListModifiers(int* dl) {
 
 			}
 		} else {
+			dl = drawTextPointers(dl);
 			if (Rando.item_rando) {
 				dl = controlKeyText(dl);
 			}

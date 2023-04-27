@@ -2220,7 +2220,7 @@ def Generate_Spoiler(spoiler: Spoiler) -> Spoiler:
                 raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
     CorrectBossKongLocations(spoiler)
     GeneratePlaythrough(spoiler)
-    if spoiler.settings.wrinkly_hints in [WrinklyHints.standard, WrinklyHints.cryptic]:
+    if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         compileHints(spoiler)
     compileMicrohints(spoiler)
     Reset()

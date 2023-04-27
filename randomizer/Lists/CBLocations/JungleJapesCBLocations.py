@@ -718,7 +718,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
         logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
-        locations=[[5, 2.0, 1331, 228, 1143], [5, 1.0, 1425, 228, 1143]],
+        locations=[[5, 2.0, 1331, 228, 1143], [5, 2.0, 1425, 228, 1143]],
     ),
     ColoredBananaGroup(
         group=55,

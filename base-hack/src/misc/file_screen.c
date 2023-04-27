@@ -718,18 +718,19 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 						setPermFlag(FLAG_MODIFIER_KOSHADEAD); // Giant Kosha Dead
 					}
 					pre_turn_keys();
-					if (Rando.helm_hurry_mode) {
-						QueueHelmTimer = 1;
-					}
-					setPermFlag(FLAG_ESCAPE);
 					Character = Rando.starting_kong;
-					StoredSettings.file_extra.location_sss_purchased = 0;
-					StoredSettings.file_extra.location_ab1_purchased = 0;
-					StoredSettings.file_extra.location_ug1_purchased = 0;
-					StoredSettings.file_extra.location_mln_purchased = 0;
 					for (int i = 0; i < 9; i++) {
-						StoredSettings.file_extra.level_igt[i] = 0;
+						SaveToFile(DATA_LEVELIGT, 0, i, 0, 0);
 					}
+					for (int i = 0; i < STAT_TERMINATOR; i++) {
+						// Reset Statistics
+						SaveToFile(DATA_BONUSSTAT, 0, i, 0, 0);
+					}
+					for (int i = 0; i < 5; i++) {
+						SaveToFile(DATA_KONGIGT, 0, i, 0, 0);
+					}
+					SaveToFile(DATA_HELMHURRYIGT, 0, 0, 0, 0);
+					SaveToFile(DATA_HELMHURRYOFF, 0, 0, 0, 0);
 					if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
 						setPermFlag(FLAG_ARCADE_LEVER);
 					}
@@ -739,10 +740,11 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					Character = Rando.starting_kong;
 					determineStartKong_PermaLossMode();
 					giveCollectables();
-					if (Rando.helm_hurry_mode) {
-						setFlag(FLAG_LOADED_GAME_OVER,1,FLAGTYPE_PERMANENT);
-					}
 				}
+				if ((Rando.helm_hurry_mode) && (!ReadFile(DATA_HELMHURRYOFF, 0, 0, 0))) {
+					QueueHelmTimer = 1;
+				}
+				setKongIgt();
 				ForceStandardAmmo = 0;
 			} else if (buttons & 2) { // B
 				playSFX(0x2C9);
@@ -815,15 +817,19 @@ int updateLevelIGT(void) {
 	 * 
 	 * @return New in-game time
 	 */
+	saveHelmHurryTime();
 	int new_igt = getNewSaveTime();
-	int sum = 0;
-	for (int i = 0; i < 9; i++) {
-		sum += StoredSettings.file_extra.level_igt[i];
-	}
-	int diff = new_igt - sum;
-	int world = getWorld(previous_map_save, 1);
-	if (world < 9) {
-		StoredSettings.file_extra.level_igt[world] += diff;
+	if (canSaveHelmHurry()) {
+		int sum = 0;
+		for (int i = 0; i < 9; i++) {
+			sum += ReadFile(DATA_LEVELIGT, 0, i, 0);
+		}
+		int diff = new_igt - sum;
+		int world = getWorld(previous_map_save, 1);
+		if (world < 9) {
+			int old = ReadFile(DATA_LEVELIGT, 0, world, 0);
+			SaveToFile(DATA_LEVELIGT, 0, world, 0, old + diff);
+		}
 	}
 	previous_map_save = CurrentMap;
 	SaveToGlobal();

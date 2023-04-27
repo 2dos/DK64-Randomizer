@@ -198,6 +198,7 @@ void initHack(int source) {
 			// Kong Rando
 			initKongRando();
 			initFiles();
+			writeFunction(0x8060CB7C, &fixChimpyCamBug);
             
 			if (Rando.no_health_refill) {
 				*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
@@ -253,6 +254,8 @@ void initHack(int source) {
 			// Place Move Data
 			moveTransplant();
 			priceTransplant();
+
+			initStatistics();
 			if (Rando.disable_boss_kong_check) {
 				*(int*)(0x8064EC00) = 0x24020001;
 			}
@@ -292,7 +295,9 @@ void initHack(int source) {
 				*(int*)(0x80713CD8) = 0; // Prevent Shutdown Song Playing
 				*(short*)(0x8071256A) = 15; // Init Helm Timer = 15 minutes
 				writeFunction(0x807125A4, &initHelmHurry); // Change write
+				writeFunction(0x80713DE0, &finishHelmHurry); // Change write
 				*(int*)(0x807125CC) = 0; // Prevent Helm Timer Overwrite
+				*(short*)(0x807095BE) = 0x2D4; // Change Zipper with K. Rool Laugh
 			}
 			if (Rando.version == 0) {
 				// Disable Graphical Debugger
@@ -346,7 +351,7 @@ void initHack(int source) {
 			// Spider Projectile
 			*(int*)(0x806CBD78) = 0x18400005; // BLEZ $v0, 0x5 - Decrease in health occurs if trap bubble active
 			if (Rando.hard_enemies) {
-				writeFunction(0x806ADDC0, &handleSpiderTrapCode);
+				// writeFunction(0x806ADDC0, &handleSpiderTrapCode);
 				*(short*)(0x806B12DA) = 0x3A9; // Kasplat Shockwave Chance
 				*(short*)(0x806B12FE) = 0x3B3; // Kasplat Shockwave Chance
 				actor_health_damage[259].init_health = 9; // Increase Guard Health
