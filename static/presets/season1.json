@@ -92,7 +92,7 @@
     "dpad_display":true,
     "auto_keys":true,
     "win_condition": "beat_krool",
-    "cb_rando":true,
+    "cb_rando":false,
     "coin_rando":true,
     "shuffle_items": true,
     "shockwave_status": "vanilla",
