@@ -101,9 +101,9 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
     spoiler.shuffled_kasplat_map = {}
     LogicVariables.kasplat_map = {}
     for location in shufflable:
-        Logic.LocationList.pop(location, None)
+        Logic.LocationList[location].inaccessible = True
     for location in constants:
-        Logic.LocationList.pop(location, None)
+        Logic.LocationList[location].inaccessible = True
     # Fill kasplats level by level
     for level in KasplatLocationList:
         kasplats = KasplatLocationList[level]
@@ -141,9 +141,9 @@ def ShuffleKasplatsInVanillaLocations(spoiler, LogicVariables):
     spoiler.shuffled_kasplat_map = {}
     LogicVariables.kasplat_map = {}
     for location in shufflable:
-        Logic.LocationList.pop(location, None)
+        Logic.LocationList[location].inaccessible = True
     for location in constants:
-        Logic.LocationList.pop(location, None)
+        Logic.LocationList[location].inaccessible = True
     # Place by level
     for level in KasplatLocationList:
         availableKongs = GetKongs().copy()
@@ -221,6 +221,11 @@ def ShuffleKasplats(LogicVariables):
 
 def KasplatShuffle(spoiler, LogicVariables):
     """Facilitate the shuffling of kasplat types."""
+    # If these were ever set at any prior point (likely only relevant running locally) then reset them - the upcoming methods will handle this TODO: maybe do this on other shufflers
+    for location in shufflable:
+        Logic.LocationList[location].inaccessible = False
+    for location in constants:
+        Logic.LocationList[location].inaccessible = False
     if spoiler.settings.kasplat_rando:
         retries = 0
         while True:
