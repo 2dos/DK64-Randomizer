@@ -1754,10 +1754,14 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_CAVESROTATINGROOM:
 				if (param2 == ROTATING_ROOM_OBJ) {
-					if (!Rando.disable_rotating_crown) {
-						return checkFlag(FLAG_CROWN_CAVES, FLAGTYPE_PERMANENT);
+					if (index == 0) {
+						if (!Rando.disable_rotating_crown) {
+							return checkFlag(FLAG_CROWN_CAVES, FLAGTYPE_PERMANENT);
+						}
+						return 1;
+					} else if (index == 1) {
+						return !checkFlag(FLAG_COLLECTABLE_ROTATINGGB, FLAGTYPE_PERMANENT);
 					}
-					return 1;
 				}
 				break;
 			case MAP_GALLEONMECHFISH:
