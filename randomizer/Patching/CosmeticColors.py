@@ -523,7 +523,7 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
     pix = im_f.load()
     width, height = im_f.size
     bytes_array = []
-    border = 1
+    border = 3
     for y in range(height):
         for x in range(width):
             if transparent_border and ((x < border) or (y < border) or (x >= (width - border)) or (y >= (height - border))):
@@ -1750,6 +1750,7 @@ boot_phrases = (
     "Telling Killi to eventually play DK64",
     "Crediting Grant Kirkhope",
     "Dropping Crayons",
+    "Saying Hello when others wont",
 )
 
 
