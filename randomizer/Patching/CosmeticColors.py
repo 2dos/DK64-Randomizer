@@ -523,10 +523,11 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
     pix = im_f.load()
     width, height = im_f.size
     bytes_array = []
-    border = 3
+    border = 1
+    right_border = 3
     for y in range(height):
         for x in range(width):
-            if transparent_border and ((x < border) or (y < border) or (x >= (width - border)) or (y >= (height - border))):
+            if transparent_border and ((x < border) or (y < border) or (x >= (width - border)) or (y >= (height - border))) or (x == (width - right_border)):
                 pix_data = [0, 0, 0, 0]
             else:
                 pix_data = list(pix[x, y])
