@@ -463,7 +463,7 @@ void quickInit(void) {
 	if (Rando.quality_of_life.fast_boot) {
 		initiateTransitionFade(MAP_NFRTITLESCREEN, 0, 5);
 		CutsceneWillPlay = 0;
-		Gamemode = 5;
+		Gamemode = GAMEMODE_MAINMENU;
 		Mode = 5;
 		StorySkip = 1;
 		*(char*)(0x80745D20) = 7;

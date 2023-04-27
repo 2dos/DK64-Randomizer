@@ -62,7 +62,7 @@ void cFuncLoop(void) {
 	if (CurrentMap == MAP_MAINMENU) {
 		colorMenuSky();
 	}
-	if (isGamemode(6, 1)) {
+	if (isGamemode(GAMEMODE_ADVENTURE, 1)) {
 		if ((CurrentMap == MAP_HELM_INTROSTORY) || (CurrentMap == MAP_ISLES_INTROSTORYROCK) || ((CurrentMap == MAP_ISLES_DKTHEATRE) && (CutsceneIndex < 8))) { // Intro Story Map
 			if ((CutsceneActive) && (TransitionSpeed == 0.0f)) { // Playing a cutscene that's part of intro story
 				if ((NewlyPressedControllerInput.Buttons.a) || (NewlyPressedControllerInput.Buttons.start)) {
@@ -121,7 +121,7 @@ void cFuncLoop(void) {
 	}
 	handleDPadFunctionality();
 	if (Rando.quality_of_life.fast_boot) {
-		if (Gamemode == 3) {
+		if (Gamemode == GAMEMODE_DKTV) {
 			if (TransitionSpeed < 0) {
 				TransitionType = 1;
 			}
@@ -541,7 +541,7 @@ int* displayListModifiers(int* dl) {
 }
 
 void toggleStandardAmmo(void) {
-	if (Gamemode == 6) {
+	if (Gamemode == GAMEMODE_ADVENTURE) {
 		if (NewlyPressedControllerInput.Buttons.d_down) {
 			if (MovesBase[(int)Character].weapon_bitfield & 2) {
 				if (CollectableBase.HomingAmmo > 0) {

@@ -179,7 +179,7 @@ void updatePercentageKongStat(void) {
 
 
 void updateTagStat(void* data) {
-    if (isGamemode(6, 1) && (canSaveHelmHurry())) {
+    if (isGamemode(GAMEMODE_ADVENTURE, 1) && (canSaveHelmHurry())) {
         changeStat(STAT_TAGCOUNT, 1);
         updatePercentageKongStat();
         SaveToGlobal();

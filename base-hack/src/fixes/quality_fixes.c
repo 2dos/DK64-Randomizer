@@ -18,7 +18,7 @@ void qualityOfLife_fixes(void) {
 	 */
 	if (Rando.quality_of_life.remove_cutscenes) {
 		// Upon ROM Boot, set "Story Skip" to on
-		if (Gamemode == 0) {
+		if (Gamemode == GAMEMODE_NINTENDOLOGO) {
 			StorySkip = 1;
 		}
 	}
