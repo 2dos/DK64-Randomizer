@@ -168,8 +168,10 @@ void updatePercentageKongStat(void) {
         if (Player) {
             current_kong = Player->characterID - 2;
         }
-        int old = ReadFile(DATA_KONGIGT, 0, current_kong, 0);
-        SaveToFile(DATA_KONGIGT, 0, current_kong, 0, old + current_kong_diff);
+        if (current_kong <= 4) {
+            int old = ReadFile(DATA_KONGIGT, 0, current_kong, 0);
+            SaveToFile(DATA_KONGIGT, 0, current_kong, 0, old + current_kong_diff);
+        }
         for (int i = 0; i < 5; i++) {
             *(int*)(0x807FF700 + (i << 2)) = ReadFile(DATA_KONGIGT, 0, i, 0);
         }
