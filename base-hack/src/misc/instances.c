@@ -1934,6 +1934,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 								return CoinDoorCheck();
 							} else if (index == 1) {
 								return checkFlagDuplicate(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || Rando.coin_door_open == 1;
+							} else if (index == 2) {
+								// Disable coin door text
+								return 1;
 							}
 							break;
 						case HELM_PAD_BONGO:

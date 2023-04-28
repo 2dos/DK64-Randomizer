@@ -32,6 +32,9 @@ void replace_zones(int init_flag) {
 				if (i < 7) {
 					WorldArray[i] = (Rando.enter_levels[i] >> 8) & 0xFF;
 					WorldExitArray[i] = Rando.enter_levels[i] & 0xFF;
+					if ((WorldArray[i] != MAP_CASTLE) || (WorldExitArray[i] != 0)) {
+						WorldCutsceneArray[i] = 0;
+					}
 				}
 				ReplacementLobbiesArray[i] = (Rando.exit_levels[i] >> 8) & 0xFF;
 				ReplacementLobbyExitsArray[i] = Rando.exit_levels[i] & 0xFF;

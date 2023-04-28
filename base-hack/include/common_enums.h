@@ -177,15 +177,16 @@ typedef enum moverando_hinttext {
 	/* 0x031 */ MRT_NOBUY_SPECIALMOVE,
 	/* 0x032 */ MRT_NOBUY_SLAM,
 	/* 0x033 */ MRT_NOBUY_GUN,
-	/* 0x034 */ MRT_NOBUY_AMMOBELT,
-	/* 0x035 */ MRT_NOBUY_INSTRUMENT,
-	/* 0x036 */ MRT_NOBUY_TRAINING,
-	/* 0x037 */ MRT_NOBUY_FAIRYMOVE,
-	/* 0x038 */ MRT_NOBUY_ITEM,
-	/* 0x039 */ MRT_NOBUY_BANANA,
-	/* 0x03A */ MRT_NOBUY_BLUEPRINT,
-	/* 0x03B */ MRT_NOBUY_MEDAL,
-	/* 0x03C */ MRT_NOBUY_KONG,
+	/* 0x034 */ MRT_NOBUY_GUNUPGRADE,
+	/* 0x035 */ MRT_NOBUY_AMMOBELT,
+	/* 0x036 */ MRT_NOBUY_INSTRUMENT,
+	/* 0x037 */ MRT_NOBUY_TRAINING,
+	/* 0x038 */ MRT_NOBUY_FAIRYMOVE,
+	/* 0x039 */ MRT_NOBUY_ITEM,
+	/* 0x03A */ MRT_NOBUY_BANANA,
+	/* 0x03B */ MRT_NOBUY_BLUEPRINT,
+	/* 0x03C */ MRT_NOBUY_MEDAL,
+	/* 0x03D */ MRT_NOBUY_KONG,
 } moverando_hinttext;
 
 typedef enum item_purchase_text {
@@ -584,6 +585,7 @@ typedef enum file_data_indexes {
 	DATA_HELMHURRYOFF = 0x23,
 	DATA_BONUSSTAT = 0x24,
 	DATA_KONGIGT = 0x25,
+	DATA_FILENAME = 0x26,
 } file_data_indexes;
 
 typedef enum bonus_stat {

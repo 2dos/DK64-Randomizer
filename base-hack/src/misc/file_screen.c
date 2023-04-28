@@ -732,6 +732,9 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					for (int i = 0; i < 5; i++) {
 						SaveToFile(DATA_KONGIGT, 0, i, 0, 0);
 					}
+					for (int i = 0; i < 8; i++) {
+						SaveToFile(DATA_FILENAME, 0, i, 0, 0);
+					}
 					SaveToFile(DATA_HELMHURRYIGT, 0, 0, 0, 0);
 					SaveToFile(DATA_HELMHURRYOFF, 0, 0, 0, 0);
 					if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
@@ -743,6 +746,9 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					Character = Rando.starting_kong;
 					determineStartKong_PermaLossMode();
 					giveCollectables();
+				}
+				if (ENABLE_FILENAME) {
+					writeDefaultFilename();
 				}
 				if ((Rando.helm_hurry_mode) && (!ReadFile(DATA_HELMHURRYOFF, 0, 0, 0))) {
 					QueueHelmTimer = 1;

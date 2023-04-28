@@ -157,6 +157,7 @@
 .definelabel DataIsCompressed, 0x80748E18
 .definelabel WorldArray, 0x8074809C
 .definelabel WorldExitArray, 0x807480AC
+.definelabel WorldCutsceneArray, 0x807480BC
 .definelabel LobbiesArray, 0x80744734
 .definelabel RaceExitArray, 0x807447A0
 .definelabel BossMapArray, 0x80744700
