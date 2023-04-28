@@ -94,7 +94,7 @@ int initHelmHurry(void) {
 }
 
 void saveHelmHurryTime(void) {
-    if ((Rando.helm_hurry_mode) && (isGamemode(6, 1) && (HelmTimerShown))) {
+    if ((Rando.helm_hurry_mode) && (isGamemode(GAMEMODE_ADVENTURE, 1) && (HelmTimerShown))) {
         int save_value = HelmCurrentTime;
         if (save_value > 65535) {
             save_value = 65535; // Allows for 18h12m15s of time

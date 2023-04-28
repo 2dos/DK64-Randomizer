@@ -529,7 +529,7 @@ int inBossMap(maps map, int include_regular, int include_krool, int include_shoe
 	return 0;
 }
 
-int isGamemode(int target_mode, int force_both) {
+int isGamemode(gamemodes target_mode, int force_both) {
 	if (force_both) {
 		if ((Gamemode == target_mode) && (Mode == target_mode)) {
 			return 1;
