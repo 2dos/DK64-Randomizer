@@ -42,7 +42,7 @@ LogicRegions = {
         TransitionFront(Regions.CreepyCastleLobby, lambda l: True, Transitions.CastleToIsles),
         TransitionFront(Regions.CastleWaterfall, lambda l: True),
         TransitionFront(Regions.CastleTree, lambda l: (Events.CastleTreeOpened in l.Events) or l.phasewalk or l.CanPhaseswim(), Transitions.CastleMainToTree),
-        TransitionFront(Regions.Library, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey) or l.phasewalk or l.ledgeclip, Transitions.CastleMainToLibraryStart),
+        TransitionFront(Regions.Library, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey), Transitions.CastleMainToLibraryStart),
         # Special Case for back door - it's only open right when you leave
         # TransitionFront(Regions.Library, lambda l: True, Transitions.CastleMainToLibraryEnd),
         TransitionFront(Regions.Ballroom, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.diddy) or l.phasewalk or l.CanSkew(True), Transitions.CastleMainToBallroom),  # Stays open

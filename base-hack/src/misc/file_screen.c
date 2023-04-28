@@ -717,6 +717,9 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					if (Rando.quality_of_life.caves_kosha_dead) {
 						setPermFlag(FLAG_MODIFIER_KOSHADEAD); // Giant Kosha Dead
 					}
+					if (checkFlag(FLAG_COLLECTABLE_LLAMAGB, FLAGTYPE_PERMANENT)) {
+						setPermFlag(FLAG_MODIFIER_LLAMAFREE); // No item check
+					}
 					pre_turn_keys();
 					Character = Rando.starting_kong;
 					for (int i = 0; i < 9; i++) {
