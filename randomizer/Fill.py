@@ -88,7 +88,7 @@ def GetExitLevelExit(region):
         return ShuffleExits.ShufflableExits[Transitions.CastleToIsles].shuffledId
 
 
-def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.GetReachable, purchaseList=None, targetItemId=None):
+def GetAccessibleLocations(settings, startingOwnedItems, searchType, purchaseList=None, targetItemId=None):
     """Search to find all reachable locations given owned items."""
     # No logic? Calls to this method that are checking things just return True
     if settings.logic_type == LogicType.nologic and searchType in [SearchMode.CheckAllReachable, SearchMode.CheckBeatable, SearchMode.CheckSpecificItemReachable]:
@@ -100,6 +100,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
     ownedItems = startingOwnedItems.copy()
     newItems = []  # debug code utility
     playthroughLocations = []
+    unpurchasedEmptyShopLocationIds = []
     eventAdded = True
     # Continue doing searches until nothing new is found
     while len(newLocations) > 0 or eventAdded:
@@ -207,14 +208,23 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                         # If this location is a Kasplat but doesn't have a blueprint, still make sure this is the correct kong to be accessible at all
                         elif (location_obj.type == Types.Blueprint) and (not LogicVariables.IsKong(location_obj.kong) and not settings.free_trade_items):
                             continue
-                        # Every shop has a price
-                        elif (location_obj.type == Types.Shop and location_obj.item is not None and location_obj.item != Items.NoItem) and (
-                            searchType != SearchMode.GetReachableWithControlledPurchases or location.id in purchaseList
-                        ):
-                            # In search mode GetReachableWithControlledPurchases, only allowed to purchase at locations from what is passed in as "purchaseList"
-                            LogicVariables.PurchaseShopItem(location.id)
+                        # If this location is a shop then we know it's reachable and that we have the money for it, but we may want to purchase the location
+                        elif location_obj.type == Types.Shop:
+                            # The handling of shop locations is a bit complicated so it's broken up for readability
+                            # Empty locations are notable because we don't want to buy empty shops (and waste coins) if the fill is complete
+                            shopIsEmpty = location_obj.item is None or location_obj.item == Items.NoItem
+                            # When handling coin logic we want to buy specific moves, so we may not be allowed to purchase every location
+                            locationCanBeBought = searchType != SearchMode.GetReachableWithControlledPurchases or location.id in purchaseList
+                            # We always buy non-empty locations if we are not prevented from buying this location
+                            if not shopIsEmpty and locationCanBeBought:
+                                LogicVariables.PurchaseShopItem(location.id)
+                            # Empty locations are accessible, but we need to note them down and possibly purchase them later depending on the search type
+                            elif shopIsEmpty:
+                                unpurchasedEmptyShopLocationIds.append(location.id)
                         elif location.id == Locations.NintendoCoin:
-                            LogicVariables.SpentCoins[Kongs.donkey] += 2  # Spend Two Coins for arcade lever
+                            # Spend Two Coins for arcade lever
+                            LogicVariables.Coins[Kongs.donkey] -= 2
+                            LogicVariables.SpentCoins[Kongs.donkey] += 2
                         newLocations.add(location.id)
                 # Check accessibility for each exit in this region
                 exits = region.exits.copy()
@@ -283,8 +293,18 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType=SearchMode.G
                         if region.nightAccess:
                             Logic.Regions[destination].nightAccess = True
                             eventAdded = True
-
-    if searchType in (SearchMode.GetReachable, SearchMode.GetReachableWithControlledPurchases):
+    # If we're here to get accessible locations for fill purposes, we need to take a harder look at all the empty shops we didn't buy
+    if searchType == SearchMode.GetReachableForFilling:
+        shuffle(unpurchasedEmptyShopLocationIds)  # This shuffle is to not bias fills towards earlier shops
+        # For each location...
+        for location_id in unpurchasedEmptyShopLocationIds:
+            # If we can, buy it. This will affect our ability to buy future locations. It's not a guarantee we'll be able to buy all of these locations.
+            if LogicVariables.CanBuy(location_id):
+                LogicVariables.PurchaseShopItem(location_id)
+            # If we can't, treat the location as inaccessible
+            else:
+                accessible.remove(location_id)
+    if searchType in (SearchMode.GetReachable, SearchMode.GetReachableForFilling, SearchMode.GetReachableWithControlledPurchases):
         return accessible
     elif searchType == SearchMode.CheckBeatable or searchType == SearchMode.CheckSpecificItemReachable:
         # If the search has completed and the target item has not been found, then we failed to find it
@@ -805,7 +825,7 @@ def ForwardFill(settings, itemsToPlace, ownedItems=None, inOrder=False, doubleTi
         if not doubleTime or needToRefreshReachable:
             # Find a random empty location which is reachable with current items
             Reset()
-            reachable = GetAccessibleLocations(settings, ownedItems.copy())
+            reachable = GetAccessibleLocations(settings, ownedItems.copy(), SearchMode.GetReachableForFilling)
         validLocations = settings.GetValidLocationsForItem(item)
         validReachable = [x for x in reachable if LocationList[x].item is None and x in validLocations]
         if len(validReachable) == 0:  # If there are no empty reachable locations, reached a dead end
@@ -857,7 +877,7 @@ def AssumedFill(settings, itemsToPlace, ownedItems=None, inOrder=False):
         itemValidLocations = settings.GetValidLocationsForItem(item)
         # Find all valid reachable locations for this item
         Reset()
-        reachable = GetAccessibleLocations(settings, owned)
+        reachable = GetAccessibleLocations(settings, owned, SearchMode.GetReachableForFilling)
         validReachable = [x for x in reachable if LocationList[x].item is None and x in itemValidLocations]
         # If there are no empty reachable locations, reached a dead end
         if len(validReachable) == 0:
@@ -883,7 +903,7 @@ def AssumedFill(settings, itemsToPlace, ownedItems=None, inOrder=False):
                 owned = itemsToPlace.copy()
                 owned.extend(ownedItems)
                 Reset()
-                reachable = GetAccessibleLocations(settings, owned)
+                reachable = GetAccessibleLocations(settings, owned, SearchMode.GetReachableForFilling)
                 valid = True
                 # For each remaining item, ensure that it has a valid location reachable after placing this item
                 for checkItem in itemsToPlace:
@@ -1768,7 +1788,7 @@ def SetNewProgressionRequirements(settings: Settings):
     # Get sphere 0 GB count
     BlockAccessToLevel(settings, 0)
     Reset()
-    accessible = GetAccessibleLocations(settings, [])
+    accessible = GetAccessibleLocations(settings, [], SearchMode.GetReachable)
     goldenBananaTotals.append(LogicVariables.GoldenBananas)
     # For each level, calculate the available moves and number of bananas
     for level in range(1, 8):
@@ -1778,7 +1798,7 @@ def SetNewProgressionRequirements(settings: Settings):
         settings.BossBananas[thisLevel] = 1000  # also block this level's boss
         # Set up the logic variables with the available locations and items
         Reset()
-        accessible = GetAccessibleLocations(settings, [])
+        accessible = GetAccessibleLocations(settings, [], SearchMode.GetReachable)
         # Save the available counts for this level
         coloredBananaCounts.append(LogicVariables.ColoredBananas[thisLevel])
         goldenBananaTotals.append(LogicVariables.GoldenBananas)
@@ -1861,7 +1881,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
     # This is likely to be 1, but depending on the settings there are pretty good odds more are available
     BlockAccessToLevel(settings, 0)
     Reset()
-    accessible = GetAccessibleLocations(settings, [])
+    accessible = GetAccessibleLocations(settings, [], SearchMode.GetReachable)
     runningGBTotal = LogicVariables.GoldenBananas
     minimumBLockerGBs = 0
 
@@ -1926,7 +1946,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
             # This allows logic to get items from any other accessible level to beat this one
             BlockCompletionOfLevelSet(settings, accessibleIncompleteLevels)
         Reset()
-        accessible = GetAccessibleLocations(settings, [])
+        accessible = GetAccessibleLocations(settings, [], SearchMode.GetReachable)
         runningGBTotal = LogicVariables.GoldenBananas
 
         # If at any moment we can get keys, let's see if we found any here
@@ -1998,7 +2018,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
                     ownedKongs[priorityBossLocation.level] = LogicVariables.GetKongs()
                     # Now that this boss location is accessible, let's see what's new and then repeat this loop in case we didn't find a new key
                     Reset()
-                    accessible = GetAccessibleLocations(settings, [])
+                    accessible = GetAccessibleLocations(settings, [], SearchMode.GetReachable)
                 else:
                     # To break out of this loop, we either have a level we can progress to or we've just found all the levels
                     break
@@ -2075,7 +2095,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
             # If it could contain progression, place a dummy item there and see if we can reach it
             bossLocation.PlaceItem(Items.TestItem)
             Reset()
-            accessible = GetAccessibleLocations(settings, [])
+            accessible = GetAccessibleLocations(settings, [], SearchMode.GetReachable)
             if not LogicVariables.found_test_item:
                 # If we can't reach it eventually in this world state, then we need to lower this T&S
                 randomlyRolledRatio = initialTNS[bossLocation.level] / settings.troff_max

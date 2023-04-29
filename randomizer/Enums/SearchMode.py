@@ -6,6 +6,7 @@ class SearchMode(IntEnum):
     """Search mode enum."""
 
     GetReachable = auto()
+    GetReachableForFilling = auto()
     GeneratePlaythrough = auto()
     CheckBeatable = auto()
     CheckAllReachable = auto()

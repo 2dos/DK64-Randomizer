@@ -682,23 +682,22 @@ class LogicVarHolder:
                 collectible.added = True
 
     def PurchaseShopItem(self, location_id):
-        """Purchase items from shops and subtract price from logical coin counts."""
+        """Purchase from this location and subtract price from logical coin counts."""
         location = LocationList[location_id]
-        if location.item is not None and location.item is not Items.NoItem:
-            price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
-            if price is None:  # This probably shouldn't happen but I think it's harmless
-                return  # TODO: solve this
-            # print("BuyShopItem for location: " + location.name)
-            # print("Item: " + ItemList[location.item].name + " has Price: " + str(price))
-            # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
-            if location.kong == Kongs.any:
-                for kong in range(0, 5):
-                    self.Coins[kong] -= price
-                    self.SpentCoins[kong] += price
-            # If kong specific move, just that kong paid for it
-            else:
-                self.Coins[location.kong] -= price
-                self.SpentCoins[location.kong] += price
+        price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
+        if price is None:  # This shouldn't happen but it's probably harmless
+            return  # TODO: solve this
+        # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
+        if location.kong == Kongs.any:
+            for kong in range(0, 5):
+                self.Coins[kong] -= price
+                self.SpentCoins[kong] += price
+            return
+        # If kong specific move, just that kong paid for it
+        else:
+            self.Coins[location.kong] -= price
+            self.SpentCoins[location.kong] += price
+            return
 
     @staticmethod
     def HasAccess(region, kong):
