@@ -455,22 +455,22 @@ def VerifyWorldWithWorstCoinUsage(settings):
         mostExpensivePearl = None
         pearlShops = [location for location in newReachableShops if LocationList[location].item == Items.Pearl]
         for shop in pearlShops:
-            if mostExpensivePearl == None or settings.prices[shop] > settings.prices[mostExpensivePearl]:
+            if mostExpensivePearl is None or settings.prices[shop] > settings.prices[mostExpensivePearl]:
                 mostExpensivePearl = shop
         mostExpensiveMedal = None
         medalShops = [location for location in newReachableShops if LocationList[location].item == Items.BananaMedal]
         for shop in medalShops:
-            if mostExpensiveMedal == None or settings.prices[shop] > settings.prices[mostExpensiveMedal]:
+            if mostExpensiveMedal is None or settings.prices[shop] > settings.prices[mostExpensiveMedal]:
                 mostExpensiveMedal = shop
         mostExpensiveFairy = None
         fairyShops = [location for location in newReachableShops if LocationList[location].item == Items.BananaFairy]
         for shop in fairyShops:
-            if mostExpensiveFairy == None or settings.prices[shop] > settings.prices[mostExpensiveFairy]:
+            if mostExpensiveFairy is None or settings.prices[shop] > settings.prices[mostExpensiveFairy]:
                 mostExpensiveFairy = shop
         mostExpensiveGB = None
         gbShops = [location for location in newReachableShops if (LocationList[location].item == Items.GoldenBanana or LocationList[location].item in ItemPool.Blueprints())]
         for shop in gbShops:
-            if mostExpensiveGB == None or settings.prices[shop] > settings.prices[mostExpensiveGB]:
+            if mostExpensiveGB is None or settings.prices[shop] > settings.prices[mostExpensiveGB]:
                 mostExpensiveGB = shop
         # Prepare the candidates for "worst location" - exclude any of the threshold items that we know the worst of
         thresholdItems = ItemPool.Blueprints().copy()
