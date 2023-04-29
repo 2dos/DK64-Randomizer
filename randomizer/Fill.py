@@ -362,6 +362,12 @@ def VerifyWorldWithWorstCoinUsage(settings):
         GetMaxForKong(settings, Kongs.tiny),
         GetMaxForKong(settings, Kongs.chunky),
     ]
+    # Set up some thresholds for speeding this method up
+    medalThreshold = settings.medal_requirement
+    fairyThreshold = settings.rareware_gb_fairies
+    pearlThreshold = 5
+    if settings.fast_gbs:
+        pearlThreshold = 1
     while 1:
         Reset()
         reachable = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithControlledPurchases, locationsToPurchase)
@@ -402,46 +408,122 @@ def VerifyWorldWithWorstCoinUsage(settings):
             print("Seed is invalid, coin locked with purchase order: " + str([LocationList[x].name + ": " + LocationList[x].item.name + ", " for x in locationsToPurchase]))
             Reset()
             return False
-        locationToBuy = None
-        # print("Accessible Shops: " + str([LocationList[x].name for x in newReachableShops]))
-        for shopLocation in newReachableShops:
-            # print("Check buying " + LocationList[shopLocation].item.name + " from location " + LocationList[shopLocation].name)
-            # Recheck accessible to see how many coins will be available afterward
-            tempLocationsToPurchase = locationsToPurchase.copy()
-            tempLocationsToPurchase.append(shopLocation)
-            Reset()
-            reachableAfter: list = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithControlledPurchases, tempLocationsToPurchase)
-            LogicVariables.UpdateCoins()
-            coinsAfter = LogicVariables.Coins.copy()
-            # Calculate the coin differential
-            coinDifferential = [0, 0, 0, 0, 0]
-            for kong in LogicVariables.GetKongs():
-                coinDifferential[kong] = coinsAfter[kong] - coinsBefore[kong]
-            # print("Coin differential: " + str(coinDifferential))
-            shopDifferentials[shopLocation] = coinDifferential
-            shopUnlocksItems[shopLocation] = [LocationList[x].item for x in reachableAfter if x not in reachable and LocationList[x].item is not None]
-            # Determine if this is the new worst move
-            if locationToBuy is None:
-                locationToBuy = shopLocation
-                continue
-            # Coin differential must be negative for at least one kong to be considered new worst
-            if len([x for x in shopDifferentials[shopLocation] if x < 0]) == 0:
-                continue
-            # If a move unlocks new kongs it is more useful than others, even if it has a worse coin differential
-            existingMoveKongsUnlocked = len([x for x in shopUnlocksItems[locationToBuy] if ItemList[x].type == Types.Kong])
-            currentMoveKongsUnlocked = len([x for x in shopUnlocksItems[shopLocation] if ItemList[x].type == Types.Kong])
-            if currentMoveKongsUnlocked > existingMoveKongsUnlocked:
-                continue
-            # If a move unlocks a new boss key it is more useful than others, even if it has a worse coin differential
-            existingMoveKeysUnlocked = len([x for x in shopUnlocksItems[locationToBuy] if ItemList[x].type == Types.Key])
-            currentMoveKeysUnlocked = len([x for x in shopUnlocksItems[shopLocation] if ItemList[x].type == Types.Key])
-            if currentMoveKeysUnlocked > existingMoveKeysUnlocked:
-                continue
-            # All else equal, pick the move with the lowest overall coin differential
-            existingMoveCoinDiff = sum(list(shopDifferentials[locationToBuy]))
-            currentMoveCoinDiff = sum(list(shopDifferentials[shopLocation]))
-            if currentMoveCoinDiff < existingMoveCoinDiff:
-                locationToBuy = shopLocation
+        # We can cheat some - here we calculate things we know we can add to the purchase order for free
+        # All we have to do is ensure that these items are not progressive in ANY way
+        # If we manage to add anything to the purchase order, we cut N GetAccessibleLocation calls where N is the length of newReachableShops
+        anythingAddedToPurchaseOrder = False
+        # Thresholds are the values that would cause the next item of that type to give you access to more locations
+        # The GB threshold is the next B. Locker from what we've previously found - opening a B. Locker likely gives you access to more coins
+        currentGBCount = LogicVariables.GoldenBananas
+        gbThreshold = 1000
+        for blocker in range(0, 8):
+            if settings.EntryGBs[blocker] > currentGBCount and settings.EntryGBs[blocker] < gbThreshold:
+                gbThreshold = settings.EntryGBs[blocker]
+        currentMedalCount = LogicVariables.BananaMedals  # Jetpac access might give you another item that gives you access to more coins
+        currentFairyCount = LogicVariables.BananaFairies  # Rareware GB access might do the same
+        currentPearlCount = LogicVariables.Pearls  # Mermaid GB access might do the same
+        for shopLocationId in newReachableShops:
+            # Check all of the newly reachable shops' items
+            shopItem = LocationList[shopLocationId].item
+            # If the item is not going to exactly meet that item type's threshold, we can freely purchase it knowing it will never be progression
+            if shopItem == Items.Pearl and (currentPearlCount < (pearlThreshold - 1) or currentPearlCount >= pearlThreshold):
+                currentPearlCount += 1  # Treat the item as collected for future calculations, we might approach the threshold during this process
+                locationsToPurchase.append(shopLocationId)
+                anythingAddedToPurchaseOrder = True
+            if shopItem == Items.BananaMedal and (currentMedalCount < (medalThreshold - 1) or currentMedalCount >= medalThreshold):
+                currentMedalCount += 1
+                locationsToPurchase.append(shopLocationId)
+                anythingAddedToPurchaseOrder = True
+            if shopItem == Items.BananaFairy and (currentFairyCount < (fairyThreshold - 1) or currentFairyCount >= fairyThreshold):
+                currentFairyCount += 1
+                locationsToPurchase.append(shopLocationId)
+                anythingAddedToPurchaseOrder = True
+            # Treat GBs and Blueprints as identical
+            if (shopItem == Items.GoldenBanana or shopItem in ItemPool.Blueprints()) and (currentGBCount < (gbThreshold - 1) or currentGBCount > gbThreshold):
+                currentGBCount += 1
+                locationsToPurchase.append(shopLocationId)
+                anythingAddedToPurchaseOrder = True
+            # These items will never practically give progression. Helm doors are not really relevant here, as any theoretical coin lock will happen WELL before this point.
+            if shopItem in (Items.BattleCrown, Items.FakeItem, Items.RarewareCoin, Items.NintendoCoin):
+                locationsToPurchase.append(shopLocationId)
+                anythingAddedToPurchaseOrder = True
+        # If we added anything to the purchase order, short-circuit back to the top of the loop and keep going with a (hopefully) greatly expanded purchase list
+        if anythingAddedToPurchaseOrder:
+            continue
+        # Now that we know our next item has to give us progression in some form, we can consolidate our "worst location candidates" into the worst options among each type
+        # Find the most expensive location of each type (it may not exist)
+        mostExpensivePearl = None
+        pearlShops = [location for location in newReachableShops if LocationList[location].item == Items.Pearl]
+        for shop in pearlShops:
+            if mostExpensivePearl == None or settings.prices[shop] > settings.prices[mostExpensivePearl]:
+                mostExpensivePearl = shop
+        mostExpensiveMedal = None
+        medalShops = [location for location in newReachableShops if LocationList[location].item == Items.BananaMedal]
+        for shop in medalShops:
+            if mostExpensiveMedal == None or settings.prices[shop] > settings.prices[mostExpensiveMedal]:
+                mostExpensiveMedal = shop
+        mostExpensiveFairy = None
+        fairyShops = [location for location in newReachableShops if LocationList[location].item == Items.BananaFairy]
+        for shop in fairyShops:
+            if mostExpensiveFairy == None or settings.prices[shop] > settings.prices[mostExpensiveFairy]:
+                mostExpensiveFairy = shop
+        mostExpensiveGB = None
+        gbShops = [location for location in newReachableShops if (LocationList[location].item == Items.GoldenBanana or LocationList[location].item in ItemPool.Blueprints())]
+        for shop in gbShops:
+            if mostExpensiveGB == None or settings.prices[shop] > settings.prices[mostExpensiveGB]:
+                mostExpensiveGB = shop
+        # Prepare the candidates for "worst location" - exclude any of the threshold items that we know the worst of
+        thresholdItems = ItemPool.Blueprints().copy()
+        thresholdItems.extend([Items.Pearl, Items.BananaMedal, Items.BananaFairy, Items.GoldenBanana])
+        worstLocationCandidates = [shop for shop in newReachableShops if LocationList[shop].item not in thresholdItems]
+        # If there exists a spot of this type, then we add the worst of this type to our list of candidates
+        if mostExpensivePearl is not None:
+            worstLocationCandidates.append(mostExpensivePearl)
+        if mostExpensiveMedal is not None:
+            worstLocationCandidates.append(mostExpensiveMedal)
+        if mostExpensiveFairy is not None:
+            worstLocationCandidates.append(mostExpensiveFairy)
+        if mostExpensiveGB is not None:
+            worstLocationCandidates.append(mostExpensiveGB)
+        locationToBuy = worstLocationCandidates[0]
+        if len(worstLocationCandidates) > 1:  # Things can be sped up if there's only one option (this tends to happen)
+            for shopLocation in worstLocationCandidates:
+                # Recheck accessible to see how many coins will be available afterward
+                tempLocationsToPurchase = locationsToPurchase.copy()
+                tempLocationsToPurchase.append(shopLocation)
+                Reset()
+                reachableAfter: list = GetAccessibleLocations(settings, [], SearchMode.GetReachableWithControlledPurchases, tempLocationsToPurchase)
+                LogicVariables.UpdateCoins()
+                coinsAfter = LogicVariables.Coins.copy()
+                # Calculate the coin differential
+                coinDifferential = [0, 0, 0, 0, 0]
+                for kong in LogicVariables.GetKongs():
+                    coinDifferential[kong] = coinsAfter[kong] - coinsBefore[kong]
+                # print("Coin differential: " + str(coinDifferential))
+                shopDifferentials[shopLocation] = coinDifferential
+                shopUnlocksItems[shopLocation] = [LocationList[x].item for x in reachableAfter if x not in reachable and LocationList[x].item is not None]
+                # Determine if this is the new worst move
+                if locationToBuy is None:
+                    locationToBuy = shopLocation
+                    continue
+                # Coin differential must be negative for at least one kong to be considered new worst
+                if len([x for x in shopDifferentials[shopLocation] if x < 0]) == 0:
+                    continue
+                # If a move unlocks new kongs it is more useful than others, even if it has a worse coin differential
+                existingMoveKongsUnlocked = len([x for x in shopUnlocksItems[locationToBuy] if ItemList[x].type == Types.Kong])
+                currentMoveKongsUnlocked = len([x for x in shopUnlocksItems[shopLocation] if ItemList[x].type == Types.Kong])
+                if currentMoveKongsUnlocked > existingMoveKongsUnlocked:
+                    continue
+                # If a move unlocks a new boss key it is more useful than others, even if it has a worse coin differential
+                existingMoveKeysUnlocked = len([x for x in shopUnlocksItems[locationToBuy] if ItemList[x].type == Types.Key])
+                currentMoveKeysUnlocked = len([x for x in shopUnlocksItems[shopLocation] if ItemList[x].type == Types.Key])
+                if currentMoveKeysUnlocked > existingMoveKeysUnlocked:
+                    continue
+                # All else equal, pick the move with the lowest overall coin differential
+                existingMoveCoinDiff = sum(list(shopDifferentials[locationToBuy]))
+                currentMoveCoinDiff = sum(list(shopDifferentials[shopLocation]))
+                if currentMoveCoinDiff < existingMoveCoinDiff:
+                    locationToBuy = shopLocation
         # Purchase the "least helpful" move & add to owned Items
         # print("Choosing to buy " + LocationList[locationToBuy].item.name + " from " + LocationList[locationToBuy].name)
         locationsToPurchase.append(locationToBuy)
