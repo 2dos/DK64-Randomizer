@@ -217,7 +217,7 @@ void handleSentItem(void) {
 }
 
 int canReceiveItem(void) {
-    if (isGamemode(6, 1) || isGamemode(14, 1)) {
+    if (isGamemode(GAMEMODE_ADVENTURE, 1) || isGamemode(GAMEMODE_SNIDEGAMES, 1)) {
         if (LZFadeoutProgress == 0) {
             return 1;
         }

@@ -24,7 +24,7 @@ int canUseDPad(void) {
      * 
      * @return DPad is useable
      */
-    if (Gamemode != 6) {
+    if (Gamemode != GAMEMODE_ADVENTURE) {
         return 0; // Not in Adv Mode
     }
     if (player_count > 1) {

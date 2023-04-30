@@ -316,7 +316,7 @@ class Spoiler:
         self.pregiven_items = []
         for location_id, location in LocationList.items():
             # No need to spoiler constants or hints
-            if location.type == Types.Constant or location.type == Types.Hint:
+            if location.type == Types.Constant or location.type == Types.Hint or location.inaccessible:
                 continue
             if location_id in PreGivenLocations:
                 self.pregiven_items.append(location.item)

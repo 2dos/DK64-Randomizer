@@ -168,8 +168,10 @@ void updatePercentageKongStat(void) {
         if (Player) {
             current_kong = Player->characterID - 2;
         }
-        int old = ReadFile(DATA_KONGIGT, 0, current_kong, 0);
-        SaveToFile(DATA_KONGIGT, 0, current_kong, 0, old + current_kong_diff);
+        if (current_kong <= 4) {
+            int old = ReadFile(DATA_KONGIGT, 0, current_kong, 0);
+            SaveToFile(DATA_KONGIGT, 0, current_kong, 0, old + current_kong_diff);
+        }
         for (int i = 0; i < 5; i++) {
             *(int*)(0x807FF700 + (i << 2)) = ReadFile(DATA_KONGIGT, 0, i, 0);
         }
@@ -179,7 +181,7 @@ void updatePercentageKongStat(void) {
 
 
 void updateTagStat(void* data) {
-    if (isGamemode(6, 1) && (canSaveHelmHurry())) {
+    if (isGamemode(GAMEMODE_ADVENTURE, 1) && (canSaveHelmHurry())) {
         changeStat(STAT_TAGCOUNT, 1);
         updatePercentageKongStat();
         SaveToGlobal();
