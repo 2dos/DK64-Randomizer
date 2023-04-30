@@ -49,9 +49,12 @@ def insertUploaded(uploaded_songs: list, uploaded_song_names: list, target_type:
                     selected_cap = storage_banks[bank]
         if selected_bank is not None:
             song_idx = song_data.index(song)
+            old_bank = (song_data[song_idx].memory >> 1) & 3
+            if old_bank < selected_bank:
+                selected_bank = old_bank # If vanilla bank is bigger, use the vanilla bank
             # Construct new memory data based on variables
             song_data[song_idx].memory &= 0xFEF9
-            song_data[song_idx].memory |= selected_bank << 1
+            song_data[song_idx].memory |= (selected_bank & 3) << 1
             loop = doesSongLoop(new_song_data)
             loop_val = 0
             if loop:

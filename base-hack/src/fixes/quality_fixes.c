@@ -326,6 +326,7 @@ void fixChimpyCamBug(void) {
 	 */
 	wipeGlobalFlags();
 	SaveToFile(DATA_CAMERATYPE, 0, 0, 0, 0);
+	wipeFileStats();
 	if (ENABLE_FILENAME) {
 		writeDefaultFilename();
 	}
