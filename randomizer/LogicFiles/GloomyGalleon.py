@@ -64,7 +64,7 @@ LogicRegions = {
         TransitionFront(Regions.Shipyard, lambda l: l.CanPhaseswim() or (l.phasewalk and l.CanGetOnCannonGamePlatform())),
     ]),
 
-    Regions.LighthouseSurface: Region("Lighthouse Surface", "Lighthouse Area", Levels.GloomyGalleon, False, -1, [
+    Regions.LighthouseSurface: Region("Lighthouse Surface", "Lighthouse Area", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonKasplatLighthouseArea, lambda l: not l.settings.kasplat_rando),
     ], [
         Event(Events.GalleonChunkyPad, lambda l: (l.triangle and l.chunky) and (l.swim or l.settings.high_req)),

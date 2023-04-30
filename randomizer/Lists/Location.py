@@ -89,10 +89,10 @@ class Location:
                     continue
                 # If this is a shared spot, lock out kong-specific locations in this shop
                 if self.kong == Kongs.any and LocationList[location].kong != Kongs.any:
-                    LocationList[location].PlaceItem(Items.NoItem)
+                    LocationList[location].inaccessible = True
                 # If this is a kong-specific spot, lock out the shared location in this shop
                 if self.kong != Kongs.any and LocationList[location].kong == Kongs.any:
-                    LocationList[location].PlaceItem(Items.NoItem)
+                    LocationList[location].inaccessible = True
                     break  # There's only one shared spot to block
 
     def PlaceConstantItem(self, item):
@@ -123,13 +123,14 @@ class Location:
             for location_id in ShopLocationReference[self.level][self.vendor]:
                 if location_id in RemovedShopLocations:
                     continue
-                if LocationList[location_id].kong == Kongs.any and LocationList[location_id].item == Items.NoItem:
+                if LocationList[location_id].kong == Kongs.any and LocationList[location_id].inaccessible:
+                    # If there are no other items remaining in this shop, then we can unlock the shared location
                     itemsInThisShop = len([location for location in ShopLocationReference[self.level][self.vendor] if location not in RemovedShopLocations and LocationList[location].item not in (None, Items.NoItem)])
                     if itemsInThisShop == 0:
-                        location_id.item = None
-                # Items.NoItem are only placed when locking out locations. If any exist, they're because this location caused them to be placed here
-                elif LocationList[location_id].item == Items.NoItem:
-                    LocationList[location_id].item = None
+                        LocationList[location_id].inaccessible = False
+                # Locations are only inaccessible due to lockouts. If any exist, they're because this location caused them to be locked out.
+                elif LocationList[location_id].inaccessible:
+                    LocationList[location_id].inaccessible = False
 
 
 LocationList = {
