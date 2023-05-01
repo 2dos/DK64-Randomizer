@@ -128,7 +128,7 @@ KasplatLocationList = {
             xmax=1100,
             zmin=460,
             zmax=800,
-            region=Regions.JungleJapesMain,
+            region=Regions.JungleJapesStart,
         ),
         KasplatLocation(
             name="Japes Kasplat: Diddy Cave",
@@ -150,7 +150,7 @@ KasplatLocationList = {
             xmax=1650,
             zmin=1650,
             zmax=1800,
-            region=Regions.JungleJapesMain,
+            region=Regions.JungleJapesStart,
             additional_logic=lambda l: l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)),
         ),
         KasplatLocation(
