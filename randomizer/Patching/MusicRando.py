@@ -1,8 +1,6 @@
 """Randomize Music passed from Misc options."""
 import gzip
-import json
 import random
-from ast import And
 
 import js
 import randomizer.Lists.Exceptions as Ex
@@ -51,7 +49,7 @@ def insertUploaded(uploaded_songs: list, uploaded_song_names: list, target_type:
             song_idx = song_data.index(song)
             old_bank = (song_data[song_idx].memory >> 1) & 3
             if old_bank < selected_bank:
-                selected_bank = old_bank # If vanilla bank is bigger, use the vanilla bank
+                selected_bank = old_bank  # If vanilla bank is bigger, use the vanilla bank
             # Construct new memory data based on variables
             song_data[song_idx].memory &= 0xFEF9
             song_data[song_idx].memory |= (selected_bank & 3) << 1

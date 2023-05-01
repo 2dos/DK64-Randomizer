@@ -716,7 +716,6 @@
 | On the Giant Mushroom top | 12 | (l.jetpack and l.isdiddy) or (l.islanky and l.handstand) | 
 | On the Rabbit Race roof | 5 |  | 
 | Around the Saxophone pad | 4 |  | 
-| On the hollow tree branches | 4 | l.jetpack and l.isdiddy | 
 | On the stump at the start of the hollow tree area | 2 |  | 
 | Around the shop in the Worm area | 4 |  | 
 | Beanstalk Fence | 4 |  | 
