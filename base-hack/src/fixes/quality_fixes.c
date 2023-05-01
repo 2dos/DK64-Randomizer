@@ -311,10 +311,23 @@ void exitTrapBubbleController(void) {
 	}
 }
 
+static const char test_file_name[] = "BALLAAM";
+
+void writeDefaultFilename(void) {
+	for (int i = 0; i < 8; i++) {
+		SaveToFile(DATA_FILENAME, 0, i, 0, test_file_name[i]);
+		// SaveToFile(DATA_FILENAME, 0, i, 0, 0);
+	}
+}
+
 void fixChimpyCamBug(void) {
 	/**
 	 * @brief Things to be reset upon first boot of the game on PJ64 (Because PJ64 is weird)
 	 */
 	wipeGlobalFlags();
 	SaveToFile(DATA_CAMERATYPE, 0, 0, 0, 0);
+	wipeFileStats();
+	if (ENABLE_FILENAME) {
+		writeDefaultFilename();
+	}
 }

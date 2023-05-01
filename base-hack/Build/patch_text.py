@@ -373,6 +373,13 @@ move_hints = [
         "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS WEAPON.",
     },
     {
+        "move": "Not enough coins - Gun Upgrade",
+        "kong": "~",
+        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS WEAPON UPGRADE.",
+        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. MY COOL WEAPON UPGRADES DON'T GROW ON TREES!",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS WEAPON UPGRADE.",
+    },
+    {
         "move": "Not enough coins - Ammo Belt",
         "kong": "~",
         "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD TO UPGRADE YOUR AMMO COUNT.",

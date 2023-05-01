@@ -534,6 +534,7 @@ extern purchase_struct FunkyMoves[5][7];
 extern short LobbiesArray[8];
 extern short WorldArray[8];
 extern short WorldExitArray[8];
+extern short WorldCutsceneArray[8];
 extern race_exit_struct RaceExitArray[8];
 
 extern short BossMapArray[8];

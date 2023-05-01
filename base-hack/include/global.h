@@ -98,6 +98,8 @@ extern void saveHelmHurryTime(void);
 extern void finishHelmHurry(void);
 extern int getNewFileSize(void);
 extern void fixChimpyCamBug(void);
+extern void writeDefaultFilename(void);
+extern void wipeFileStats(void);
 
 extern int* drawTri(int* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha);
 extern int* drawImage(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity);
@@ -285,6 +287,7 @@ extern void initPauseMenu(void);
 extern void changePauseScreen(void);
 
 extern void handleDynamicItemText(char* location, char* format, int character);
+extern void handleFilename(char* location, char* format, char* new_name);
 extern void mermaidCheck(void);
 extern void initItemDictionary(void);
 extern void initActorExpansion(void);

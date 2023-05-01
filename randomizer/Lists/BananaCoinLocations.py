@@ -5245,20 +5245,6 @@ BananaCoinGroupList = {
             ],
         ),
         BananaCoinGroup(
-            group=23,
-            map_id=Maps.FungiForest,
-            name="On the hollow tree branches",
-            konglist=[Kongs.diddy],
-            region=Regions.HollowTreeArea,
-            logic=lambda l: l.jetpack and l.isdiddy,
-            locations=[
-                [1.0, 1255, 291, 4595],
-                [1.0, 1274, 294, 4620],
-                [1.0, 1305, 291, 4592],
-                [1.0, 1277, 288, 4569],
-            ],
-        ),
-        BananaCoinGroup(
             group=24,
             map_id=Maps.FungiForest,
             name="On the stump at the start of the hollow tree area",

@@ -59,7 +59,21 @@ int getHintTextIndex(int shop_owner, shop_paad* shop_data) {
 	int kong = shop_data->kong;
 	if (shop_data->price > MovesBase[(int)Character].coins) {
 		if (purchase_type < 5) {
-			base = MRT_NOBUY_SPECIALMOVE + purchase_type;
+			moverando_hinttext bases[] = {
+				MRT_NOBUY_SPECIALMOVE,
+				MRT_NOBUY_SLAM,
+				MRT_NOBUY_GUN,
+				MRT_NOBUY_AMMOBELT,
+				MRT_NOBUY_INSTRUMENT,
+			};
+			if (purchase_type == PURCHASE_GUN) {
+				base = MRT_NOBUY_GUNUPGRADE; // Homing or Sniper
+				if (purchase_value == 1) { // Base Gun
+					base = MRT_NOBUY_GUN;
+				}
+			} else {
+				base = bases[purchase_type];
+			}
 		} else {
 			int subtype = getMoveProgressiveFlagType(shop_data->flag);
 			if (isTBarrelFlag(shop_data->flag)) {

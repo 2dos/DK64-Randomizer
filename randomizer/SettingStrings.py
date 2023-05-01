@@ -148,7 +148,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "random_music",
         "music_bgm_randomized",
         "music_events_randomized",
-        "music_fanfares_randomized",
+        "music_pickups_randomized",
         "tiny_colors",
         "tiny_custom_color",
         "override_cosmetics",

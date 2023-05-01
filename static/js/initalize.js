@@ -74,7 +74,7 @@ document
       var new_zip = new JSZip();
       new_zip.loadAsync(fileLoadedEvent.target.result).then(async function () {
         let bgm_promises = [];
-        let fanfare_promises = [];
+        let pickup_promises = [];
         let event_promises = [];
 
         for (var filename of Object.keys(new_zip.files)) {
@@ -91,8 +91,8 @@ document
                   })
                 });
             }));
-          } else if (filename.includes("fanfares/") && filename.slice(-4) == ".bin") {
-            fanfare_promises.push(new Promise((resolve, reject) => {
+          } else if (filename.includes("pickups/") && filename.slice(-4) == ".bin") {
+            pickup_promises.push(new Promise((resolve, reject) => {
               var current_filename = filename;
               new_zip
                 .file(current_filename)
@@ -121,18 +121,18 @@ document
         }
 
         let bgm_files = await Promise.all(bgm_promises);
-        let fanfare_files = await Promise.all(fanfare_promises);
+        let pickup_files = await Promise.all(pickup_promises);
         let event_files = await Promise.all(event_promises);
 
         let bgm = bgm_files.map(x => x.file);
         let bgm_names = bgm_files.map(x => x.name);
-        let fanfares = fanfare_files.map(x => x.file);
-        let fanfare_names = fanfare_files.map(x => x.name);
+        let pickups = pickup_files.map(x => x.file);
+        let pickup_names = pickup_files.map(x => x.name);
         let events = event_files.map(x => x.file);
         let event_names = event_files.map(x => x.name);
 
-        cosmetics = { bgm: bgm, fanfares: fanfares, events: events };
-        cosmetic_names = {bgm: bgm_names, fanfares: fanfare_names, events: event_names };
+        cosmetics = { bgm: bgm, pickups: pickups, events: events };
+        cosmetic_names = {bgm: bgm_names, pickups: pickup_names, events: event_names };
       });
     };
 

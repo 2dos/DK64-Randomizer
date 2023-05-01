@@ -30,6 +30,12 @@ void GrabParameters_Global(int index, int level, short* file_base, char* bit_siz
     *file_base = (((((((*(short*)(0x807ECEA0) + getNewFileSize()) & 0xFFC0) + 0x27) & 0xFFF8) * FILE_COUNT) + 0x3F) & 0xFFC0) + 0x40;
     *bit_size = 0;
     switch (index) {
+        case DATA_FILENAME:
+            if (*bit_size == 0) {
+                *bit_size = LETTER_BITS;
+                *file_base = *file_base + (level * LETTER_BITS);
+            }
+            *file_base = *file_base + (IGT_BITS * 5);
         case DATA_KONGIGT:
             if (*bit_size == 0) {
                 *bit_size = IGT_BITS;

@@ -350,7 +350,7 @@ class Settings:
 
         #  Music
         self.music_bgm_randomized = False
-        self.music_fanfares_randomized = False
+        self.music_pickups_randomized = False
         self.music_events_randomized = False
         self.random_music = False
 
