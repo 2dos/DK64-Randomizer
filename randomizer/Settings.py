@@ -625,6 +625,7 @@ class Settings:
 
         # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
+            RemovedShopLocations = []
             # To evenly distribute the locations blocked, we can use the fact there are 20 shops to our advantage
             # These evenly distributed pairs will represent "locations to block" for each shop
             kongPairs = [
@@ -661,6 +662,7 @@ class Settings:
                     accessible_shops = [location_id for location_id in ShopLocationReference[level][vendor] if location_id not in inaccessible_shops]
                     for location_id in inaccessible_shops:
                         LocationList[location_id].inaccessible = True
+                        RemovedShopLocations.append(location_id)
                     for location_id in accessible_shops:
                         LocationList[location_id].inaccessible = False
 
