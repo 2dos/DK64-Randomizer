@@ -534,7 +534,7 @@ DirtPatchLocations = [
         z=1114.0,
         rotation=3784,
         group=2,
-        logicregion=Regions.JungleJapesMain,
+        logicregion=Regions.JungleJapesStart,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -546,7 +546,7 @@ DirtPatchLocations = [
         z=797.0,
         rotation=1171,
         group=3,
-        logicregion=Regions.JungleJapesMain,
+        logicregion=Regions.JungleJapesStart,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -558,7 +558,7 @@ DirtPatchLocations = [
         z=824.0,
         rotation=796,
         group=3,
-        logicregion=Regions.JungleJapesMain,
+        logicregion=Regions.JungleJapesStart,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
@@ -570,7 +570,7 @@ DirtPatchLocations = [
         z=205.0,
         rotation=3572,
         group=3,
-        logicregion=Regions.JungleJapesMain,
+        logicregion=Regions.JungleJapesStart,
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(

@@ -246,6 +246,7 @@ RegionMapList = {
     Regions.CrystalCavesLobby: Maps.CrystalCavesLobby,
     Regions.CreepyCastleLobby: Maps.CreepyCastleLobby,
     # Japes
+    Regions.JungleJapesStart: Maps.JungleJapes,
     Regions.JungleJapesMain: Maps.JungleJapes,
     Regions.JapesBeyondCoconutGate1: Maps.JungleJapes,
     Regions.JapesBeyondCoconutGate2: Maps.JungleJapes,

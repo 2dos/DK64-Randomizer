@@ -723,6 +723,7 @@ class Spoiler:
                     loading_zone_mapping["new_exit"] = GetExitId(shuffledBack)
                     containerMaps[containerMapId]["zones"].append(loading_zone_mapping)
                 except Exception as ex:
+                    print("Exit Update Error with:")
                     print(ex)
         for key, containerMap in containerMaps.items():
             self.shuffled_exit_instructions.append(containerMap)

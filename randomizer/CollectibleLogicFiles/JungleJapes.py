@@ -9,37 +9,41 @@ from randomizer.LogicClasses import Collectible
 from randomizer.Enums.Levels import Levels
 
 LogicRegions = {
-    Regions.JungleJapesMain: [
+    Regions.JungleJapesStart: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: l.vines or l.advanced_platforming, None, 5),  # Starting area
-        Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 6),  # Between Snide's and Diddy's cage
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 2),  # W3
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Tree by Funky's
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Tree by cannon
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Tree by Diddy's cage
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # By Troff n Scoff
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # W3
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Above underground
-        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Snide's
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),  # Starting area
-        Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 7),  # Around mountain
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 2),  # Treetops, TB side
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 2),  # Treetops, Painting room side
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.swim, None, 2),  # Underwater
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.swim, None, 5),  # In river
-        Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.handstand, None, 3),  # To painting room
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Treetop by Snide's
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Next to Snide's
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 5),  # In first tunnel
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 5),  # Around entrance to underground
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 2),  # On Funky's store
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # In first tunnel
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.vines, None, 3),  # Around BBlast pad
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.swim, None, 3),  # In river
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 2),  # Cannon to Diddy's cage
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.swim, None, 2),  # In river
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 5),  # By Snide's
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # By DK Portal
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.swim, None, 3),  # In river
+    ],
+    Regions.JungleJapesMain: [
+        Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 6),  # Between Snide's and Diddy's cage
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # W3
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Tree by Funky's
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Tree by cannon
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Tree by Diddy's cage
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # By Troff n Scoff
+        Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Snide's
+        Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 7),  # Around mountain
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 2),  # Treetops, Painting room side
+        Collectible(Collectibles.banana, Kongs.lanky, lambda l: l.handstand, None, 3),  # To painting room
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Treetop by Snide's
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Next to Snide's
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 2),  # On Funky's store
+
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 2),  # Cannon to Diddy's cage
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 5),  # By Snide's
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny) or l.CanMoonkick() or ((l.generalclips or l.phasewalk) and (l.istiny or l.isdiddy))), None, 1),  # Rainbow coin
     ],
     Regions.JapesBaboonBlast: [

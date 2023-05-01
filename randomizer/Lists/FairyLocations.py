@@ -117,7 +117,7 @@ fairy_locations = {
         FairyData(
             name="Above Underground Entrance",
             map=Maps.JungleJapes,
-            region=Regions.JungleJapesMain,
+            region=Regions.JungleJapesStart,
             fence=Fence(2223, 1255, 2524, 1322),
             spawn_y=370,
         ),

@@ -63,7 +63,7 @@ LogicRegions = {
         TransitionFront(Regions.CrankyForest, lambda l: True),
     ]),
 
-    Regions.MushroomLower: Region("Mushroom Lower", "Giant Mushroom Interior", Levels.FungiForest, True, None, [
+    Regions.MushroomLower: Region("Mushroom Lower", "Giant Mushroom Insides", Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestTinyMushroomBarrel, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.istiny, MinigameType.BonusBarrel),
     ], [
         Event(Events.MushroomCannonsSpawned, lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple
@@ -93,7 +93,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomLowerExterior, lambda l: True)
     ]),
 
-    Regions.MushroomUpper: Region("Mushroom Upper", "Giant Mushroom Interior", Levels.FungiForest, True, -1, [
+    Regions.MushroomUpper: Region("Mushroom Upper", "Giant Mushroom Insides", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestDonkeyMushroomCannons, lambda l: Events.MushroomCannonsSpawned in l.Events and Events.DonkeyMushroomSwitch in l.Events),
         LocationLogic(Locations.ForestKasplatInsideMushroom, lambda l: not l.settings.kasplat_rando),
     ], [], [
@@ -105,7 +105,7 @@ LogicRegions = {
     ]),
 
     # This region basically just exists to facilitate the two entrances into upper mushroom
-    Regions.MushroomNightDoor: Region("Mushroom Night Door", "Giant Mushroom Interior", Levels.FungiForest, False, None, [], [], [
+    Regions.MushroomNightDoor: Region("Mushroom Night Door", "Giant Mushroom Insides", Levels.FungiForest, False, None, [], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MushroomUpper, lambda l: True),
         TransitionFront(Regions.MushroomNightExterior, lambda l: True, Transitions.ForestNightToExterior, time=Time.Night),
@@ -134,21 +134,21 @@ LogicRegions = {
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
-    Regions.MushroomChunkyRoom: Region("Mushroom Chunky Room", "Giant Mushroom Interior", Levels.FungiForest, False, -1, [
+    Regions.MushroomChunkyRoom: Region("Mushroom Chunky Room", "Giant Mushroom Insides", Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestChunkyFacePuzzle, lambda l: l.pineapple and l.CanSlamSwitch(Levels.FungiForest, 2) and l.ischunky),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: True, Transitions.ForestChunkyToExterior),
     ]),
 
-    Regions.MushroomLankyZingersRoom: Region("Mushroom Lanky Zingers Room", "Giant Mushroom Interior", Levels.FungiForest, False, -1, [
+    Regions.MushroomLankyZingersRoom: Region("Mushroom Lanky Zingers Room", "Giant Mushroom Insides", Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestLankyZingers, lambda l: l.islanky or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: True, Transitions.ForestZingersToExterior),
     ]),
 
-    Regions.MushroomLankyMushroomsRoom: Region("Mushroom Lanky Mushrooms Room", "Giant Mushroom Interior", Levels.FungiForest, False, None, [
+    Regions.MushroomLankyMushroomsRoom: Region("Mushroom Lanky Mushrooms Room", "Giant Mushroom Insides", Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestLankyColoredMushrooms, lambda l: l.Slam and (l.islanky or l.settings.free_trade_items), MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),

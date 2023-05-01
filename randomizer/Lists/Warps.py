@@ -41,13 +41,13 @@ class BananaportData:
 BananaportVanilla = {
     # Japes
     Warps.JapesNearPortal: BananaportData(
-        name="Jungle Japes: Near Portal", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesMain, obj_id_vanilla=0x59, vanilla_warp=0, swap_index=10, event=Events.JapesW1aTagged
+        name="Jungle Japes: Near Portal", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesStart, obj_id_vanilla=0x59, vanilla_warp=0, swap_index=10, event=Events.JapesW1aTagged
     ),
     Warps.JapesEndOfTunnel: BananaportData(
-        name="Jungle Japes: End of Tunnel", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesMain, obj_id_vanilla=0x5A, vanilla_warp=0, swap_index=11, event=Events.JapesW1bTagged
+        name="Jungle Japes: End of Tunnel", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesStart, obj_id_vanilla=0x5A, vanilla_warp=0, swap_index=11, event=Events.JapesW1bTagged
     ),
     Warps.JapesNearMainTag: BananaportData(
-        name="Jungle Japes: Near Main Tag", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesMain, obj_id_vanilla=0x98, vanilla_warp=1, swap_index=12, event=Events.JapesW2aTagged
+        name="Jungle Japes: Near Main Tag", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesStart, obj_id_vanilla=0x98, vanilla_warp=1, swap_index=12, event=Events.JapesW2aTagged
     ),
     Warps.JapesNearMountain: BananaportData(
         name="Jungle Japes: Outside the Mountain", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesMain, obj_id_vanilla=0x9F, vanilla_warp=1, swap_index=13, event=Events.JapesW2bTagged
@@ -56,7 +56,7 @@ BananaportVanilla = {
         name="Jungle Japes: Near Painting Room", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesMain, obj_id_vanilla=0x9E, vanilla_warp=2, swap_index=14, event=Events.JapesW3aTagged
     ),
     Warps.JapesFarLeft: BananaportData(
-        name="Jungle Japes: Near Baboon Blast", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesMain, obj_id_vanilla=0x97, vanilla_warp=2, swap_index=15, event=Events.JapesW3bTagged
+        name="Jungle Japes: Near Baboon Blast", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesStart, obj_id_vanilla=0x97, vanilla_warp=2, swap_index=15, event=Events.JapesW3bTagged
     ),
     Warps.JapesCrankyTunnelNear: BananaportData(
         name="Jungle Japes: Start of Cranky Tunnel", map_id=Maps.JungleJapes, region_id=Regions.JapesBeyondCoconutGate2, obj_id_vanilla=0x5E, vanilla_warp=3, swap_index=16, event=Events.JapesW4aTagged

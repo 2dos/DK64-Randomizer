@@ -605,8 +605,8 @@ def PareWoth(spoiler, PlaythroughLocations):
         # Don't want constant locations in woth and we can filter out some types of items as not being essential to the woth
         for loc in [
             loc
-            for loc in sphere.locations  # If the Helm Key is in Helm, we may still want path hints for it even though it's a constant item.
-            if (not LocationList[loc].constant or loc == Locations.HelmKey)
+            for loc in sphere.locations  # If Keys are constant, we may still want path hints for them.
+            if (not LocationList[loc].constant or ItemList[LocationList[loc].item].type == Types.Key)
             and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)
         ]:
             WothLocations.append(loc)
@@ -632,6 +632,13 @@ def PareWoth(spoiler, PlaythroughLocations):
         CalculateWothPaths(spoiler, WothLocations)
         CalculateFoolish(spoiler, WothLocations)
     spoiler.accessible_hints_for_location = AccessibleHintsForLocation
+    # We kept Keys around to generate paths better, but we don't need them in the spoiler log or being hinted (except for the Helm Key if it's there and also keep the Banana Hoard path)
+    WothLocations = [loc for loc in WothLocations if not LocationList[loc].constant or loc == Locations.HelmKey or loc == Locations.BananaHoard]
+    if spoiler.settings.shuffle_items:
+        # The non-key 8 paths are a bit misleading, so it's best not to show them
+        for path_loc in [key for key in spoiler.woth_paths.keys()]:
+            if path_loc not in WothLocations:
+                del spoiler.woth_paths[path_loc]
     return WothLocations
 
 
@@ -1109,6 +1116,7 @@ def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=
                     break
         if mysteryLocation is None:
             raise Ex.ItemPlacementException("Target item not placed??")
+        # debug_reachable = GetAccessibleLocations(spoiler.settings, settingsRequiredMoves.copy() + moveList.copy(), SearchMode.GetReachable)
         print("Item placed in an inaccessible location: " + str(mysteryLocation.name))
         raise Ex.ItemPlacementException("Item placed in an inaccessible location: " + str(mysteryLocation.name))
 
@@ -1563,6 +1571,7 @@ def PlaceKongsInKongLocations(spoiler, kongItems, kongLocations):
                     kongToBeFreed = choice(progressionKongItems)
             # Now that we have a combination guaranteed to not break the seed or logic, lock it in
             LocationList[progressionLocation].PlaceItem(kongToBeFreed)
+            spoiler.settings.debug_fill[progressionLocation] = kongToBeFreed
             kongItems.remove(kongToBeFreed)
             ownedKongs.append(ItemPool.GetKongForItem(kongToBeFreed))
             # Refresh the location list and repeat until all Kongs are free
@@ -1851,7 +1860,7 @@ def WipeProgressionRequirements(settings: Settings):
         settings.BossBananas[i] = 0
         # Assume starting kong can beat all the bosses for now
         settings.boss_kongs[i] = settings.starting_kong
-        settings.boss_maps[i] = Maps.JapesBoss  # This requires barrels, forcing it to be placed very early, reducing (removing?) boss fill fail possiblities
+        settings.boss_maps[i] = Maps.CastleBoss  # This requires nothing, allowing the fill to proceed as normal
     # Also for now consider any kong can free any other kong, to avoid false failures in fill
     if settings.kong_rando:
         settings.diddy_freeing_kong = Kongs.any

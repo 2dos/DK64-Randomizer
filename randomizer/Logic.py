@@ -785,7 +785,7 @@ class LogicVarHolder:
                     order_of_level = level_order
             if order_of_level == 4 and not self.barrels:  # Prevent Barrels on boss 3
                 return False
-            if order_of_level == 7 and not self.hunkyChunky or (not self.twirl and not self.settings.hard_bosses):  # Prevent Hunky on boss 7, and also Twirl on non-hard bosses
+            if order_of_level == 7 and (not self.hunkyChunky or (not self.twirl and not self.settings.hard_bosses)):  # Prevent Hunky on boss 7, and also Twirl on non-hard bosses
                 return False
         return self.IsKong(requiredKong) and hasRequiredMoves
 

@@ -145,7 +145,7 @@ class Region:
         if self.level == Levels.DKIsles:
             return Regions.IslesMain
         elif self.level == Levels.JungleJapes:
-            return Regions.JungleJapesMain
+            return Regions.JungleJapesStart
         elif self.level == Levels.AngryAztec:
             return Regions.AngryAztecStart
         elif self.level == Levels.FranticFactory:
