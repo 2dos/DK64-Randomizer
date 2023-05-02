@@ -115,7 +115,7 @@ song_data = [
     Song("Nintendo Logo (Old?)", type=SongType.System, memory=0x102),  # 85
     Song("Success (Races)", type=SongType.Event, memory=0x118),
     Song("Failure (Races & Try Again)", type=SongType.Event, memory=0x118),
-    Song("Bonus Barrel Introduction", type=SongType.BGM, memory=0x100),
+    Song("Bonus Barrel Introduction", type=SongType.System, memory=0x100),
     Song("Stealthy Snoop", type=SongType.BGM, memory=0x188),
     Song("Minecart Mayhem", type=SongType.BGM, memory=0x100),  # 90
     Song("Gloomy Galleon (Mechanical Fish)", type=SongType.BGM, memory=0x101),
@@ -197,7 +197,7 @@ song_data = [
     Song("K Rool's Entrance", type=SongType.BGM, memory=0x100),
     Song("Monkey Smash", type=SongType.BGM, memory=0x100),
     Song("Fungi Forest (Rabbit Race)", type=SongType.BGM, memory=0x188),
-    Song("Game Over", type=SongType.Event, memory=0x1D8),  # 170
+    Song("Game Over", type=SongType.System, memory=0x1D8),  # 170
     Song("Wrinkly Kong", type=SongType.BGM, memory=0x18A),
     Song("100th CB Get", type=SongType.Event, memory=0x645),
     Song("K Rool's Defeat", type=SongType.Protected, memory=0x18),
