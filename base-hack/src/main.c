@@ -463,9 +463,7 @@ int* displayListModifiers(int* dl) {
 				dk_strFormat((char *)fpsStr, "FPS %d", fps_int);
 				dl = drawPixelTextContainer(dl, 250, 210, fpsStr, 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			}
-			if (Rando.dpad_visual_enabled) {
-				dl = drawDPad(dl);
-			}
+			dl = drawDPad(dl);
 			if (ammo_hud_timer) {
 				int ammo_x = 150;
 				int ammo_default_y = 850;

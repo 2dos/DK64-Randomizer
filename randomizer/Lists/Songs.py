@@ -1,13 +1,11 @@
 """Data of the song breakdowns in ROM."""
-from enum import IntEnum, auto
-
 from randomizer.Enums.SongType import SongType
-
+from randomizer.Enums.SongGroups import SongGroup
 
 class Song:
     """Class used for managing song objects."""
 
-    def __init__(self, name, type=SongType.System, memory=None):
+    def __init__(self, name, type=SongType.System, memory=None, groups=[]):
         """Init SONG objects.
 
         Args:
@@ -20,6 +18,7 @@ class Song:
         self.memory = memory
         self.default_memory = memory
         self.channel = (memory >> 3) & 0xF
+        self.groups = groups.copy()
 
     def Reset(self):
         """Reset song object so that output_name is reset between generations."""
