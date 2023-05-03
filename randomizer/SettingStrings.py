@@ -159,6 +159,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "search",
         "holiday_setting",
         "homebrew_header",
+        "dpad_display",
     ]:
         if pop in dict_data:
             dict_data.pop(pop)

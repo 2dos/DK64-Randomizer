@@ -417,7 +417,7 @@ class Settings:
         self.kongs_for_progression = False
         self.wrinkly_hints = WrinklyHints.off
         self.fast_warps = False
-        self.dpad_display = False
+        self.dpad_display = DPadDisplays.off
         self.high_req = False
         self.fast_gbs = False
         self.auto_keys = False

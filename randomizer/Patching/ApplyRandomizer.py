@@ -206,7 +206,6 @@ def patching_response(responded_data):
         BooleanProperties(spoiler.settings.open_levels, 0x137),  # Open Levels
         BooleanProperties(spoiler.settings.shorten_boss, 0x13B),  # Shorten Boss Fights
         BooleanProperties(spoiler.settings.fast_warps, 0x13A),  # Fast Warps
-        BooleanProperties(spoiler.settings.dpad_display, 0x139),  # DPad Display
         BooleanProperties(spoiler.settings.high_req, 0x179),  # Remove High Requirements
         BooleanProperties(spoiler.settings.fast_gbs, 0x17A),  # Fast GBs
         BooleanProperties(spoiler.settings.auto_keys, 0x15B),  # Auto-Turn Keys
@@ -389,6 +388,11 @@ def patching_response(responded_data):
     ROM().seek(sav + 0x43)
     # The ColorblindMode enum is indexed to allow this.
     ROM().write(int(spoiler.settings.colorblind_mode))
+
+    # D-Pad Display
+    ROM().seek(sav + 0x139)
+    # The DPadDisplays enum is indexed to allow this.
+    ROM().write(int(spoiler.settings.dpad_display))
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:
