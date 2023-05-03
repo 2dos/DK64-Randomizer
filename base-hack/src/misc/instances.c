@@ -186,6 +186,9 @@
 #define FACTORY_BLOCKELEVATOR_5 0x27
 #define FACTORY_BLOCKELEVATOR_6 0x28
 
+#define FACTORY_BBLAST_STAR 0x0
+#define FACTORY_BBLAST_CONTROLLER 0x1
+
 void hideObject(behaviour_data* behaviour_pointer) {
 	/**
 	 * @brief Hide object model 2 item and make it intangible
@@ -1771,6 +1774,28 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						fish_state = 5;
 					}
 					behaviour_pointer->next_state = fish_state;
+				}
+				break;
+			case MAP_FACTORYBBLAST:
+				if (param2 == FACTORY_BBLAST_STAR) {
+					if (Rando.fast_gbs) {
+						behaviour_pointer->next_state = 20;
+						behaviour_pointer->current_state = 20;
+					}
+				} else if (param2 == FACTORY_BBLAST_CONTROLLER) {
+					if (Rando.fast_gbs) {
+						if (!checkFlag(FLAG_ARCADE_LEVER,FLAGTYPE_PERMANENT)) {
+							if (checkFlag(FLAG_ARCADE_ROUND1,FLAGTYPE_PERMANENT)) {
+								isObjectLoadedInMap(MAP_FACTORY, 45, 10); // Run just to load the setup properly
+								delayedObjectModel2Change(MAP_FACTORY, 45, 10);
+								setNextTransitionType(0);
+								setIntroStoryPlaying(2);
+								setNextTransitionType(0);
+								initiateTransition_0(MAP_FACTORY, 15, 0, 0);
+								behaviour_pointer->next_state = 1;
+							}
+						}
+					}
 				}
 				break;
 			// case TREASURE_CHEST:

@@ -189,6 +189,7 @@ extern void updateObjectScript(void* behaviour_pointer);
 extern void executeBehaviourScript(void* behaviour_pointer, int unk0);
 extern void* loadCounterFontTexture(int texture_base, void* write_location, int position, int texture_offset, int width);
 extern void delayedObjectModel2Change(maps map, int model2_id, int state);
+extern int isObjectLoadedInMap(maps map, int model2_id, int state);
 extern void cycleRNG(void);
 extern void voidWarp(void);
 extern void setToeTexture(void* actor, int data);
