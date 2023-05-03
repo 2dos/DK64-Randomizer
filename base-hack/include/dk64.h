@@ -485,6 +485,7 @@ extern char TransitionType;
 extern char DKTVKong;
 extern cutsceneType CutsceneBanks[2];
 extern int EEPROMType;
+extern unsigned char ReverseMillLeverOrder[5];
 
 extern short MapVoid_MinX;
 extern short MapVoid_MinZ;

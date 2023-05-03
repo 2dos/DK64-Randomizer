@@ -18,3 +18,4 @@
 .definelabel unkGravity, 0x80753170
 .definelabel GroundAttackSpeedThreshold, 0x807531E0
 .definelabel WeatherData, 0x80755264
+.definelabel ReverseMillLeverOrder, 0x807482E0

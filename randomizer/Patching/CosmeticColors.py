@@ -1685,6 +1685,45 @@ def applyHolidayMode(spoiler: Spoiler):
             ROM().seek(start)
             ROM().writeBytes(byte_data)
 
+def updateMillLeverTexture(spoiler: Spoiler):
+    """Update the 21132 texture."""
+    if spoiler.settings.mill_levers[0] > 0:
+        # Get Number bounds
+        base_num_texture = getFile(table_index=25, file_index=0x7CA, compressed=True, width=64, height=32, format=TextureFormat.RGBA5551)
+        number_textures = [None, None, None]
+        number_x_bounds = (
+            (18, 25),
+            (5, 16),
+            (36, 47),
+        )
+        modified_tex = getFile(table_index=25, file_index=0x7CA, compressed=True, width=64, height=32, format=TextureFormat.RGBA5551)
+        for tex in range(3):
+            number_textures[tex] = base_num_texture.crop((number_x_bounds[tex][0],7,number_x_bounds[tex][1],25))
+        total_width = 0
+        for x in range(5):
+            if spoiler.settings.mill_levers[x] > 0:
+                idx = spoiler.settings.mill_levers[x] - 1
+                total_width += (number_x_bounds[idx][1] - number_x_bounds[idx][0])
+        # Overwrite old panel
+        overwrite_panel = Image.new(mode="RGBA", size=(58, 26), color=(131, 65, 24))
+        modified_tex.paste(overwrite_panel, (3, 3), overwrite_panel)
+        # Generate new number texture
+        new_num_texture = Image.new(mode="RGBA", size=(total_width, 18))
+        x_pos = 0
+        for num in range(5):
+            if spoiler.settings.mill_levers[num] > 0:
+                num_val = spoiler.settings.mill_levers[num] - 1
+                new_num_texture.paste(number_textures[num_val], (x_pos, 0), number_textures[num_val])
+                x_pos += (number_x_bounds[num_val][1] - number_x_bounds[num_val][0])
+        scale_x = 58 / total_width
+        scale_y = 26 / 18
+        scale = min(scale_x, scale_y)
+        x_size = int(total_width * scale)
+        y_size = int(18 * scale)
+        new_num_texture = new_num_texture.resize((x_size, y_size))
+        x_offset = int((58 - x_size) / 2)
+        modified_tex.paste(new_num_texture, (3 + x_offset, 3), new_num_texture)
+        writeColorImageToROM(modified_tex, 25, 0x7CA, 64, 32, False, TextureFormat.RGBA5551)
 
 boot_phrases = (
     "Removing Lanky Kong",

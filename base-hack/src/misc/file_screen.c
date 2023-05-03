@@ -792,6 +792,9 @@ int* displayInverted(int* dl, int style, int x, int y, char* str, int unk0) {
 	 * 
 	 * @return New Display List Address
 	 */
+	if (InvertedControls > 1) {
+		InvertedControls = 1;
+	}
 	return displayText(dl, style, x, y, inverted_controls_str[(int)InvertedControls], unk0);
 }
 

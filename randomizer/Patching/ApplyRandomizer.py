@@ -14,7 +14,7 @@ from randomizer.Lists.EnemyTypes import Enemies
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong, writeMiscCosmeticChanges, applyHolidayMode, applyHelmDoorCosmetics, writeBootMessages
+from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong, writeMiscCosmeticChanges, applyHolidayMode, applyHelmDoorCosmetics, updateMillLeverTexture, writeBootMessages
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranceType, enableSpiderText
 from randomizer.Patching.Hash import get_hash_images
@@ -394,6 +394,24 @@ def patching_response(responded_data):
     # The DPadDisplays enum is indexed to allow this.
     ROM().write(int(spoiler.settings.dpad_display))
 
+    # Mill Levers
+    if spoiler.settings.mill_levers[0] > 0:
+        mill_text = ""
+        for x in range(5):
+            ROM().seek(sav + 0xD0 + x)
+            ROM().write(spoiler.settings.mill_levers[x])
+            if spoiler.settings.mill_levers[x] > 0:
+                mill_text += str(spoiler.settings.mill_levers[x])
+        # Change default wrinkly hint
+        if spoiler.settings.wrinkly_hints == WrinklyHints.off:
+            if spoiler.settings.fast_gbs or spoiler.settings.puzzle_rando:
+                wrinkly_index = 41
+                data = {"textbox_index": 21, "mode": "replace", "search": "21132", "target": mill_text}
+                if wrinkly_index in spoiler.text_changes:
+                    spoiler.text_changes[41].append(data)
+                else:
+                    spoiler.text_changes[41] = [data]
+
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:
         for key in spoiler.settings.krool_keys_required:
@@ -469,6 +487,7 @@ def patching_response(responded_data):
     filterEntranceType()
     replaceIngameText(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
+    updateMillLeverTexture(spoiler)
     writeBootMessages(spoiler)
     enableSpiderText(spoiler)
 
