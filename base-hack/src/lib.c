@@ -766,14 +766,3 @@ int isGamemode(gamemodes target_mode, int force_both) {
 	}
 	return Mode == target_mode;
 }
-
-void loadSingularHook(int write_address, void* hook_jump) {
-	int write = 0x08000000 | (((int)(hook_jump) & 0xFFFFFF) >> 2);
-	*(int*)(write_address) = write;
-	*(int*)(write_address + 4) = 0;
-}
-
-void writeFunction(int write_address, void* new_function) {
-	int write = 0x0C000000 | (((int)(new_function) & 0xFFFFFF) >> 2);
-	*(int*)(write_address) = write;
-}

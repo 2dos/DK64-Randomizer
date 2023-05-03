@@ -79,18 +79,22 @@ def randomize_music(spoiler: Spoiler):
     if js.document.getElementById("override_cosmetics").checked:
         if js.document.getElementById("random_music").checked:
             spoiler.settings.music_bgm_randomized = True
-            spoiler.settings.music_pickups_randomized = True
+            spoiler.settings.music_majoritems_randomized = True
+            spoiler.settings.music_minoritems_randomized = True
             spoiler.settings.music_events_randomized = True
         else:
             spoiler.settings.music_bgm_randomized = js.document.getElementById("music_bgm_randomized").checked
-            spoiler.settings.music_pickups_randomized = js.document.getElementById("music_pickups_randomized").checked
+            spoiler.settings.music_majoritems_randomized = js.document.getElementById("music_majoritems_randomized").checked
+            spoiler.settings.music_majoritems_randomized = js.document.getElementById("music_majoritems_randomized").checked
+            spoiler.settings.music_minoritems_randomized = js.document.getElementById("music_minoritems_randomized").checked
             spoiler.settings.music_events_randomized = js.document.getElementById("music_events_randomized").checked
     else:
         if spoiler.settings.random_music:
             spoiler.settings.music_bgm_randomized = True
-            spoiler.settings.music_pickups_randomized = True
+            spoiler.settings.music_majoritems_randomized = True
+            spoiler.settings.music_minoritems_randomized = True
             spoiler.settings.music_events_randomized = True
-    if spoiler.settings.music_bgm_randomized or spoiler.settings.music_events_randomized or spoiler.settings.music_pickups_randomized:
+    if spoiler.settings.music_bgm_randomized or spoiler.settings.music_events_randomized or spoiler.settings.music_majoritems_randomized or spoiler.settings.music_minoritems_randomized:
         sav = spoiler.settings.rom_data
         ROM().seek(sav + 0x12E)
         ROM().write(1)
@@ -143,21 +147,36 @@ def randomize_music(spoiler: Spoiler):
                 # Update data
                 ROM().seek(0x1FFF000 + (song["index"] * 2))
                 ROM().writeMultipleBytes(song_data[rap["index"]].memory, 2)
-    # If the user wants to randomize pickups
-    if spoiler.settings.music_pickups_randomized:
+    # If the user wants to randomize major items
+    if spoiler.settings.music_majoritems_randomized:
         if js.cosmetics is not None and js.cosmetic_names is not None:
             # If uploaded, replace some songs with the uploaded songs
-            insertUploaded(list(js.cosmetics.pickups), list(js.cosmetic_names.pickups), SongType.Pickup)
-        # Load the list of pickups
-        pickup_list = []
+            insertUploaded(list(js.cosmetics.majoritems), list(js.cosmetic_names.majoritems), SongType.MajorItem)
+        # Load the list of majoritems
+        majoritem_list = []
         for song in song_data:
-            if song.type == SongType.Pickup:
-                pickup_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
-        # Shuffle the pickup list
-        # ShuffleMusicWithSizeCheck(spoiler, pickup_list)
-        shuffled_music = pickup_list.copy()
+            if song.type == SongType.MajorItem:
+                majoritem_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+        # Shuffle the majoritem list
+        # ShuffleMusicWithSizeCheck(spoiler, majoritem_list)
+        shuffled_music = majoritem_list.copy()
         random.shuffle(shuffled_music)
-        shuffle_music(spoiler, pickup_list.copy(), shuffled_music)
+        shuffle_music(spoiler, majoritem_list.copy(), shuffled_music)
+    # If the user wants to randomize minor items
+    if spoiler.settings.music_minoritems_randomized:
+        if js.cosmetics is not None and js.cosmetic_names is not None:
+            # If uploaded, replace some songs with the uploaded songs
+            insertUploaded(list(js.cosmetics.minoritems), list(js.cosmetic_names.minoritems), SongType.MinorItem)
+        # Load the list of minoritems
+        minoritem_list = []
+        for song in song_data:
+            if song.type == SongType.MinorItem:
+                minoritem_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+        # Shuffle the minoritem list
+        # ShuffleMusicWithSizeCheck(spoiler, minoritem_list)
+        shuffled_music = minoritem_list.copy()
+        random.shuffle(shuffled_music)
+        shuffle_music(spoiler, minoritem_list.copy(), shuffled_music)
 
     # If the user wants to randomize events
     if spoiler.settings.music_events_randomized:
@@ -213,7 +232,9 @@ def shuffle_music(spoiler: Spoiler, pool_to_shuffle, shuffled_list):
         ROM().writeMultipleBytes(memory, 2)
         if song_data[originalIndex].type == SongType.BGM:
             spoiler.music_bgm_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
-        elif song_data[originalIndex].type == SongType.Pickup:
-            spoiler.music_pickup_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
+        elif song_data[originalIndex].type == SongType.MajorItem:
+            spoiler.music_majoritem_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
+        elif song_data[originalIndex].type == SongType.MinorItem:
+            spoiler.music_minoritem_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
         elif song_data[originalIndex].type == SongType.Event:
             spoiler.music_event_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name

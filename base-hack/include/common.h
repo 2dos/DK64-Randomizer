@@ -16,5 +16,6 @@
 #include "vars.h"
 #include "archipelago.h"
 #include "music.h"
+#include "macros.h"
 
 #endif

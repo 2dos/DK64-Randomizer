@@ -74,7 +74,8 @@ document
       var new_zip = new JSZip();
       new_zip.loadAsync(fileLoadedEvent.target.result).then(async function () {
         let bgm_promises = [];
-        let pickup_promises = [];
+        let majoritem_promises = [];
+        let minoritem_promises = [];
         let event_promises = [];
 
         for (var filename of Object.keys(new_zip.files)) {
@@ -91,8 +92,21 @@ document
                   })
                 });
             }));
-          } else if (filename.includes("pickups/") && filename.slice(-4) == ".bin") {
-            pickup_promises.push(new Promise((resolve, reject) => {
+          } else if (filename.includes("majoritems/") && filename.slice(-4) == ".bin") {
+            majoritem_promises.push(new Promise((resolve, reject) => {
+              var current_filename = filename;
+              new_zip
+                .file(current_filename)
+                .async("Uint8Array")
+                .then(function (content) {
+                  resolve({
+                    name: current_filename.slice(0, -4),
+                    file: content
+                  })
+                });
+            }));
+          } else if (filename.includes("minoritems/") && filename.slice(-4) == ".bin") {
+            minoritem_promises.push(new Promise((resolve, reject) => {
               var current_filename = filename;
               new_zip
                 .file(current_filename)
@@ -121,18 +135,21 @@ document
         }
 
         let bgm_files = await Promise.all(bgm_promises);
-        let pickup_files = await Promise.all(pickup_promises);
+        let majoritem_files = await Promise.all(majoritem_promises);
+        let minoritem_files = await Promise.all(minoritem_promises);
         let event_files = await Promise.all(event_promises);
 
         let bgm = bgm_files.map(x => x.file);
         let bgm_names = bgm_files.map(x => x.name);
-        let pickups = pickup_files.map(x => x.file);
-        let pickup_names = pickup_files.map(x => x.name);
+        let majoritems = majoritem_files.map(x => x.file);
+        let majoritem_names = majoritem_files.map(x => x.name);
+        let minoritems = minoritem_files.map(x => x.file);
+        let minoritem_names = minoritem_files.map(x => x.name);
         let events = event_files.map(x => x.file);
         let event_names = event_files.map(x => x.name);
 
-        cosmetics = { bgm: bgm, pickups: pickups, events: events };
-        cosmetic_names = {bgm: bgm_names, pickups: pickup_names, events: event_names };
+        cosmetics = { bgm: bgm, majoritems: majoritems, minoritems: minoritems, events: events };
+        cosmetic_names = {bgm: bgm_names, majoritems: majoritem_names, minoritems: minoritem_names, events: event_names };
       });
     };
 

@@ -517,7 +517,7 @@ song_replacements = [
     {"name": "move_get", "index": 114, "bps": True},
     {"name": "nintendo_logo", "index": 174, "bps": True},
     {"name": "success_races", "index": 86, "bps": True},
-    {"name": "klumsy_celebration", "index": 125, "bps": True},
+    # {"name": "klumsy_celebration", "index": 125, "bps": True},
     {"name": "coin_sfx", "index": 7, "bps": False},
     {"name": "intro_story", "index": 122, "bps": True},
 ]
