@@ -13,6 +13,7 @@ def chooseSFX():
     bank = random.choice(banks)
     return random.randint(bank[0], bank[1])
 
+
 def shiftCastleMinecartRewardZones():
     """Shifts the triggers for the reward point in castle minecart."""
     cont_map_lzs_address = js.pointer_addresses[18]["entries"][Maps.CastleMinecarts]["pointing_to"]
@@ -37,6 +38,7 @@ def shiftCastleMinecartRewardZones():
             ROM().seek(cont_map_lzs_address + start + 6)
             ROM().writeMultipleBytes(40, 2)
 
+
 def shortenCastleMinecart(spoiler: Spoiler):
     """Shorten Castle Minecart to end at the u-turn point."""
     if not spoiler.settings.fast_gbs:
@@ -50,11 +52,7 @@ def shortenCastleMinecart(spoiler: Spoiler):
     offset = 2
     fence_bytes = []
     used_fence_ids = []
-    fence_4_data = {
-        "fence_6": [],
-        "fence_A": [],
-        "footer": 1
-    }
+    fence_4_data = {"fence_6": [], "fence_A": [], "footer": 1}
     if fence_count > 0:
         for x in range(fence_count):
             fence = []
@@ -162,15 +160,16 @@ def shortenCastleMinecart(spoiler: Spoiler):
         for y in x:
             ROM().writeMultipleBytes(y, 1)
 
+
 def randomize_puzzles(spoiler: Spoiler):
     """Shuffle elements of puzzles. Currently limited to coin challenge requirements but will be extended in future."""
     sav = spoiler.settings.rom_data
     if spoiler.settings.puzzle_rando:
         race_requirements = {
             "factory_race": [5, 15],
-            "castle_race": [5, 15], 
+            "castle_race": [5, 15],
             "seal_race": [5, 12],
-            "castle_cart": [5, 45],
+            "castle_cart": [10, 45],
         }
         if spoiler.settings.fast_gbs:
             race_requirements["factory_race"] = [3, 8]

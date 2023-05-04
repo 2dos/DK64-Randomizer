@@ -100,6 +100,7 @@ class DamageAmount(IntEnum):
     quad = 2
     ohko = 3
 
+
 class DPadDisplays(IntEnum):
     """Varying methods of displaying the dpad.
 

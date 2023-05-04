@@ -14,7 +14,17 @@ from randomizer.Lists.EnemyTypes import Enemies
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong, writeMiscCosmeticChanges, applyHolidayMode, applyHelmDoorCosmetics, updateMillLeverTexture, updateCryptLeverTexture, writeBootMessages
+from randomizer.Patching.CosmeticColors import (
+    apply_cosmetic_colors,
+    overwrite_object_colors,
+    applyKrushaKong,
+    writeMiscCosmeticChanges,
+    applyHolidayMode,
+    applyHelmDoorCosmetics,
+    updateMillLeverTexture,
+    updateCryptLeverTexture,
+    writeBootMessages,
+)
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranceType, enableSpiderText
 from randomizer.Patching.Hash import get_hash_images

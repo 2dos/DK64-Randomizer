@@ -2,6 +2,7 @@
 from randomizer.Enums.SongType import SongType
 from randomizer.Enums.SongGroups import SongGroup
 
+
 class Song:
     """Class used for managing song objects."""
 
