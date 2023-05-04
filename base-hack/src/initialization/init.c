@@ -343,6 +343,12 @@ void initHack(int source) {
 					ReverseMillLeverOrder[i] = Rando.mill_lever_order[(sequence_length - 1) - i];
 				}
 			}
+			// Crypt Lever
+			if (Rando.crypt_lever_order[0] > 0) {
+				for (int i = 0; i < 3; i++) {
+					ReverseCryptLeverOrder[i] = Rando.crypt_lever_order[2 - i];
+				}
+			}
 			// Object Instance Scripts
 			*(int*)(0x80748064) = (int)&change_object_scripts;
 			*(int*)(0x806416BC) = 0; // Prevent parent map check in cross-map object change communications

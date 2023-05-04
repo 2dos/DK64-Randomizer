@@ -1725,6 +1725,34 @@ def updateMillLeverTexture(spoiler: Spoiler):
         modified_tex.paste(new_num_texture, (3 + x_offset, 3), new_num_texture)
         writeColorImageToROM(modified_tex, 25, 0x7CA, 64, 32, False, TextureFormat.RGBA5551)
 
+def updateCryptLeverTexture(spoiler: Spoiler):
+    """Update the two textures for Donkey Minecart entry."""
+    if spoiler.settings.crypt_levers[0] > 0:
+        # Get a blank texture
+        texture_0 = getFile(table_index=25, file_index=0x999, compressed=True, width=32, height=64, format=TextureFormat.RGBA5551)
+        blank = texture_0.crop((8, 5, 23, 22))
+        texture_0.paste(blank, (8, 42), blank)
+        texture_1 = texture_0.copy()
+        for xi, x in enumerate(spoiler.settings.crypt_levers):
+            corrected = x - 1
+            y_slot = corrected % 3
+            num = getNumberImage(xi + 1)
+            num = num.transpose(Image.FLIP_TOP_BOTTOM)
+            w, h = num.size
+            scale = 2 / 3
+            y_offset = int((h * scale) / 2)
+            x_offset = int((w * scale) / 2)
+            num = num.resize((int(w * scale), int(h * scale)))
+            y_pos = (51, 33, 14)
+            tl_y = y_pos[y_slot] - y_offset
+            tl_x = 16 - x_offset
+            if corrected < 3:
+                texture_0.paste(num, (tl_x, tl_y), num)
+            else:
+                texture_1.paste(num, (tl_x, tl_y), num)
+        writeColorImageToROM(texture_0, 25, 0x99A, 32, 64, False, TextureFormat.RGBA5551)
+        writeColorImageToROM(texture_1, 25, 0x999, 32, 64, False, TextureFormat.RGBA5551)
+
 boot_phrases = (
     "Removing Lanky Kong",
     "Telling 2dos to play DK64",

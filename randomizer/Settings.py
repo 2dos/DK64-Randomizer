@@ -424,6 +424,7 @@ class Settings:
         self.kko_phase_order = [0, 0, 0]
         self.toe_order = [0] * 10
         self.mill_levers = [0] * 5
+        self.crypt_levers = [1, 4, 3]
         self.enemy_rando = False
         self.crown_enemy_rando = CrownEnemyRando.off
         self.enemy_speed_rando = False
@@ -753,13 +754,18 @@ class Settings:
             random.shuffle(allocation)
             self.switch_allocation = allocation.copy()
 
+        # Mill Levers
         if not self.puzzle_rando and self.fast_gbs:
             self.mill_levers = [2, 3, 1, 0, 0]
         elif self.puzzle_rando:
             mill_lever_cap = 3 if self.fast_gbs else 5
             self.mill_levers = [0] * 5
             for slot in range(mill_lever_cap):
-                self.mill_levers[slot] = random.randint(1, 3)                
+                self.mill_levers[slot] = random.randint(1, 3)
+
+        # Crypt Levers
+        if self.puzzle_rando:
+            self.crypt_levers = random.sample([x + 1 for x in range(6)], 3)
 
         # Set keys required for KRool
         KeyEvents = [

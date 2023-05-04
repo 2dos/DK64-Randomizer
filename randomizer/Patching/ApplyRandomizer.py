@@ -14,7 +14,7 @@ from randomizer.Lists.EnemyTypes import Enemies
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong, writeMiscCosmeticChanges, applyHolidayMode, applyHelmDoorCosmetics, updateMillLeverTexture, writeBootMessages
+from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong, writeMiscCosmeticChanges, applyHolidayMode, applyHelmDoorCosmetics, updateMillLeverTexture, updateCryptLeverTexture, writeBootMessages
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranceType, enableSpiderText
 from randomizer.Patching.Hash import get_hash_images
@@ -412,6 +412,12 @@ def patching_response(responded_data):
                 else:
                     spoiler.text_changes[41] = [data]
 
+    # Crypt Levers
+    if spoiler.settings.crypt_levers[0] > 0:
+        for xi, x in enumerate(spoiler.settings.crypt_levers):
+            ROM().seek(sav + 0xCD + xi)
+            ROM().write(x)
+
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:
         for key in spoiler.settings.krool_keys_required:
@@ -488,6 +494,7 @@ def patching_response(responded_data):
     replaceIngameText(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
     updateMillLeverTexture(spoiler)
+    updateCryptLeverTexture(spoiler)
     writeBootMessages(spoiler)
     enableSpiderText(spoiler)
 
