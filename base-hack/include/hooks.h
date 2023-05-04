@@ -51,3 +51,14 @@ extern void SpriteFix(void);
 extern void PauseControl_Control(void);
 extern void PauseControl_Sprite(void);
 extern void brightenMMMEnemies(void);
+
+extern void CrankyDecouple(void);
+extern void ForceToBuyMoveInOneLevel(void);
+extern void PriceKongStore(void);
+extern void CharacterCollectableBaseModify(void);
+extern void SetMoveBaseBitfield(void);
+extern void SetMoveBaseProgressive(void);
+extern void FixInvisibleText_0(void);
+extern void FixInvisibleText_1(void);
+extern void CrankyCoconutDonation(void);
+extern void AlwaysCandyInstrument(void);

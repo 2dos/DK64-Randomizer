@@ -51,7 +51,8 @@ class Spoiler:
         self.shuffled_exit_data = {}
         self.shuffled_exit_instructions = []
         self.music_bgm_data = {}
-        self.music_pickup_data = {}
+        self.music_majoritem_data = {}
+        self.music_minoritem_data = {}
         self.music_event_data = {}
         self.location_data = {}
         self.enemy_replacements = []
@@ -666,8 +667,10 @@ class Spoiler:
                 humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
         if self.settings.music_bgm_randomized:
             humanspoiler["Cosmetics"]["Background Music"] = self.music_bgm_data
-        if self.settings.music_pickups_randomized:
-            humanspoiler["Cosmetics"]["Pickup Themes"] = self.music_pickup_data
+        if self.settings.music_majoritems_randomized:
+            humanspoiler["Cosmetics"]["Major Item Themes"] = self.music_majoritem_data
+        if self.settings.music_minoritems_randomized:
+            humanspoiler["Cosmetics"]["Minor Item Themes"] = self.music_minoritem_data
         if self.settings.music_events_randomized:
             humanspoiler["Cosmetics"]["Event Themes"] = self.music_event_data
         self.json = json.dumps(humanspoiler, indent=4)

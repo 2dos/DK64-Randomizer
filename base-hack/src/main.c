@@ -205,19 +205,6 @@ void earlyFrame(void) {
 				MusicTrackChannels[0] = 0; // Disables boss intro music
 			}
 		}
-	} else if (CurrentMap == MAP_FACTORYBBLAST) { // Factory BBlast
-		if (Rando.fast_gbs) {
-			if (!checkFlag(FLAG_ARCADE_LEVER,FLAGTYPE_PERMANENT)) {
-				if (checkFlag(FLAG_ARCADE_ROUND1,FLAGTYPE_PERMANENT)) {
-					if (TransitionSpeed > 0) {
-						if (DestMap == MAP_FACTORY) {
-							delayedObjectModel2Change(MAP_FACTORY,45,10);
-						}
-						setPermFlag(FLAG_ARCADE_LEVER);
-					}
-				}
-			}
-		}
 	} else if (CurrentMap == MAP_FACTORYJACK) {
 		if ((CutsceneActive == 1) && ((CutsceneStateBitfield & 4) == 0)) {
 			if ((CutsceneIndex == 8) || (CutsceneIndex == 2) || (CutsceneIndex == 16) || (CutsceneIndex == 18) || (CutsceneIndex == 17)) {
@@ -463,9 +450,7 @@ int* displayListModifiers(int* dl) {
 				dk_strFormat((char *)fpsStr, "FPS %d", fps_int);
 				dl = drawPixelTextContainer(dl, 250, 210, fpsStr, 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			}
-			if (Rando.dpad_visual_enabled) {
-				dl = drawDPad(dl);
-			}
+			dl = drawDPad(dl);
 			if (ammo_hud_timer) {
 				int ammo_x = 150;
 				int ammo_default_y = 850;

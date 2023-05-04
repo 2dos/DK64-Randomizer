@@ -188,7 +188,7 @@
       2,
       0
    ],
-   "dpad_visual_enabled":1,
+   "dpad_visual_enabled":2,
    "helm_order":[
       2,
       0,
@@ -223,6 +223,13 @@
       0,
       0,
       255
+   ],
+   "mill_lever_order":[
+      2,
+      3,
+      1,
+      0,
+      0
    ],
    "dark_mode_textboxes":1,
    "archipelago":1

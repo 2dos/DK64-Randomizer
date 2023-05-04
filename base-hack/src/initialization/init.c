@@ -324,6 +324,31 @@ void initHack(int source) {
 				*(int*)(0x8064F170) = 0; // Prevent edge cases for Aztec Chunky/Fungi Wheel
 				writeFunction(0x8069E154, &getWrinklyLevelIndex); // Modify Function Call
 			}
+			// Mill Lever
+			if (Rando.mill_lever_order[0] > 0) {
+				int sequence_length = 0;
+				int sequence_ended = 0;
+				for (int i = 0; i < 5; i++) {
+					ReverseMillLeverOrder[i] = 0;
+					if (!sequence_ended) {
+						if (Rando.mill_lever_order[i] == 0) {
+							sequence_ended = 1;
+						} else {
+							sequence_length += 1;
+						}
+					}
+				}
+				*(short*)(0x8064E4CE) = sequence_length;
+				for (int i = 0; i < sequence_length; i++) {
+					ReverseMillLeverOrder[i] = Rando.mill_lever_order[(sequence_length - 1) - i];
+				}
+			}
+			// Crypt Lever
+			if (Rando.crypt_lever_order[0] > 0) {
+				for (int i = 0; i < 3; i++) {
+					ReverseCryptLeverOrder[i] = Rando.crypt_lever_order[2 - i];
+				}
+			}
 			// Object Instance Scripts
 			*(int*)(0x80748064) = (int)&change_object_scripts;
 			*(int*)(0x806416BC) = 0; // Prevent parent map check in cross-map object change communications

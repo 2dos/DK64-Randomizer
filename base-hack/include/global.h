@@ -22,6 +22,7 @@ extern int isBeltFlag(int flag);
 extern int isInstrumentUpgradeFlag(int flag);
 extern int inBattleCrown(maps map);
 extern int inBossMap(maps map, int include_regular, int include_krool, int include_shoe);
+extern int inMinigame(maps map);
 extern int isGamemode(gamemodes target_mode, int force_both);
 
 extern int getWrinklyLevelIndex(void);
@@ -352,8 +353,6 @@ extern void helmTime_exitLevel(void);
 extern void helmTime_exitBoss(void);
 extern void helmTime_exitKRool(void);
 
-extern void loadSingularHook(int write_address, void* hook_jump);
-extern void writeFunction(int write_address, void* new_function);
 extern void GrabParameters_Global(int index, int level, short* file_base, char* bit_size);
 extern int changeStat(bonus_stat statistic, int delta);
 extern int getStat(bonus_stat statistic);

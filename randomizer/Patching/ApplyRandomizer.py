@@ -14,7 +14,17 @@ from randomizer.Lists.EnemyTypes import Enemies
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, overwrite_object_colors, applyKrushaKong, writeMiscCosmeticChanges, applyHolidayMode, applyHelmDoorCosmetics, writeBootMessages
+from randomizer.Patching.CosmeticColors import (
+    apply_cosmetic_colors,
+    overwrite_object_colors,
+    applyKrushaKong,
+    writeMiscCosmeticChanges,
+    applyHolidayMode,
+    applyHelmDoorCosmetics,
+    updateMillLeverTexture,
+    updateCryptLeverTexture,
+    writeBootMessages,
+)
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranceType, enableSpiderText
 from randomizer.Patching.Hash import get_hash_images
@@ -27,7 +37,7 @@ from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
-from randomizer.Patching.PuzzleRando import randomize_puzzles
+from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
 from randomizer.Patching.UpdateHints import PushHints, wipeHints, replaceIngameText
 from randomizer.Patching.MiscSetupChanges import randomize_setup
 from randomizer.Patching.BananaPlacer import randomize_cbs
@@ -206,7 +216,6 @@ def patching_response(responded_data):
         BooleanProperties(spoiler.settings.open_levels, 0x137),  # Open Levels
         BooleanProperties(spoiler.settings.shorten_boss, 0x13B),  # Shorten Boss Fights
         BooleanProperties(spoiler.settings.fast_warps, 0x13A),  # Fast Warps
-        BooleanProperties(spoiler.settings.dpad_display, 0x139),  # DPad Display
         BooleanProperties(spoiler.settings.high_req, 0x179),  # Remove High Requirements
         BooleanProperties(spoiler.settings.fast_gbs, 0x17A),  # Fast GBs
         BooleanProperties(spoiler.settings.auto_keys, 0x15B),  # Auto-Turn Keys
@@ -390,6 +399,35 @@ def patching_response(responded_data):
     # The ColorblindMode enum is indexed to allow this.
     ROM().write(int(spoiler.settings.colorblind_mode))
 
+    # D-Pad Display
+    ROM().seek(sav + 0x139)
+    # The DPadDisplays enum is indexed to allow this.
+    ROM().write(int(spoiler.settings.dpad_display))
+
+    # Mill Levers
+    if spoiler.settings.mill_levers[0] > 0:
+        mill_text = ""
+        for x in range(5):
+            ROM().seek(sav + 0xD0 + x)
+            ROM().write(spoiler.settings.mill_levers[x])
+            if spoiler.settings.mill_levers[x] > 0:
+                mill_text += str(spoiler.settings.mill_levers[x])
+        # Change default wrinkly hint
+        if spoiler.settings.wrinkly_hints == WrinklyHints.off:
+            if spoiler.settings.fast_gbs or spoiler.settings.puzzle_rando:
+                wrinkly_index = 41
+                data = {"textbox_index": 21, "mode": "replace", "search": "21132", "target": mill_text}
+                if wrinkly_index in spoiler.text_changes:
+                    spoiler.text_changes[41].append(data)
+                else:
+                    spoiler.text_changes[41] = [data]
+
+    # Crypt Levers
+    if spoiler.settings.crypt_levers[0] > 0:
+        for xi, x in enumerate(spoiler.settings.crypt_levers):
+            ROM().seek(sav + 0xCD + xi)
+            ROM().write(x)
+
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:
         for key in spoiler.settings.krool_keys_required:
@@ -465,8 +503,11 @@ def patching_response(responded_data):
     filterEntranceType()
     replaceIngameText(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
+    updateMillLeverTexture(spoiler)
+    updateCryptLeverTexture(spoiler)
     writeBootMessages(spoiler)
     enableSpiderText(spoiler)
+    shortenCastleMinecart(spoiler)
 
     random.seed(None)
     randomize_music(spoiler)

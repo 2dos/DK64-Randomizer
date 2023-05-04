@@ -27,7 +27,7 @@
     "damage_amount": "default",
     "enable_shop_hints": true,
     "disable_tag_barrels": false,
-    "dpad_display": true,
+    "dpad_display": "on",
     "enable_tag_anywhere": true,
     "enemies_selected": [],
     "enemy_rando": true,

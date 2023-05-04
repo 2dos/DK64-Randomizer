@@ -190,7 +190,6 @@ def generate_lo_rando_race_settings():
     # Other
     data["fps_display"] = False
     data["portal_numbers"] = True
-    data["dpad_display"] = True
     data["item_reward_previews"] = True
 
     return data
