@@ -315,8 +315,7 @@ static const char test_file_name[] = "BALLAAM";
 
 void writeDefaultFilename(void) {
 	for (int i = 0; i < 8; i++) {
-		SaveToFile(DATA_FILENAME, 0, i, 0, test_file_name[i]);
-		// SaveToFile(DATA_FILENAME, 0, i, 0, 0);
+		SaveExtraData(EGD_FILENAME, i, test_file_name[i]);
 	}
 }
 
