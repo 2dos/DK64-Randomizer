@@ -486,5 +486,12 @@ void parseCutsceneData(void) {
 		modifyCutscenePointTime(1, 0x22, 1, 1);
 		modifyCutscenePointTime(1, 0x22, 3, 1);
 	}
+	if ((Rando.fast_gbs) && (CurrentMap == MAP_CASTLEMINECART)) {
+		int rx = 8931;
+		int ry = 0;
+		int rz = 7590;
+		modifyCutscenePanPoint(0, 7, 0, 3100, 500, 500, rx, ry, rz, 45, 0);
+		modifyCutscenePanPoint(0, 7, 1, 3200, 500, 500, rx, ry, rz, 45, 0);
+	}
 	loadDKTVData(); // Has to be last
 }

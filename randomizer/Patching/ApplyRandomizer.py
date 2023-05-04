@@ -27,7 +27,7 @@ from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
-from randomizer.Patching.PuzzleRando import randomize_puzzles
+from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
 from randomizer.Patching.UpdateHints import PushHints, wipeHints, replaceIngameText
 from randomizer.Patching.MiscSetupChanges import randomize_setup
 from randomizer.Patching.BananaPlacer import randomize_cbs
@@ -497,6 +497,7 @@ def patching_response(responded_data):
     updateCryptLeverTexture(spoiler)
     writeBootMessages(spoiler)
     enableSpiderText(spoiler)
+    shortenCastleMinecart(spoiler)
 
     random.seed(None)
     randomize_music(spoiler)
