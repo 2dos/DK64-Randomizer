@@ -324,9 +324,12 @@ void fixChimpyCamBug(void) {
 	 * @brief Things to be reset upon first boot of the game on PJ64 (Because PJ64 is weird)
 	 */
 	wipeGlobalFlags();
-	SaveToFile(DATA_CAMERATYPE, 0, 0, 0, 0);
+	SaveToFile(DATA_CAMERATYPE, 0, 0, 0, Rando.default_camera_type);
+	SaveToFile(DATA_LANGUAGE, 0, 0, 0, Rando.default_camera_type);
+	SaveToFile(DATA_SOUNDTYPE, 0, 0, 0, Rando.default_sound_type);
 	wipeFileStats();
 	if (ENABLE_FILENAME) {
 		writeDefaultFilename();
 	}
+	SaveToGlobal();
 }

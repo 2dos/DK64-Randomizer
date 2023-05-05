@@ -127,7 +127,9 @@ def getMapNameFromIndex(index: int):
             return camelCaseSplit(e.name)
     return "Unknown"
 
+
 DISPLAY_TOTALS = False
+
 
 def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.ColoredBananas):
     """Dump data to a JSON file."""

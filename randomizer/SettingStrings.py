@@ -160,6 +160,12 @@ def encrypt_settings_string_enum(dict_data: dict):
         "holiday_setting",
         "homebrew_header",
         "dpad_display",
+        "camera_is_follow",
+        "sfx_volume",
+        "music_volume",
+        "camera_is_widescreen",
+        "camera_is_not_inverted",
+        "sound_type",
     ]:
         if pop in dict_data:
             dict_data.pop(pop)

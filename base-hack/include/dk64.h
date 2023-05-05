@@ -362,6 +362,10 @@ extern void unkProjectileCode_4(void* actor, int sfx, int unk0, int unk1, int un
 extern void wipeGlobalFlags(void);
 extern void setIntroStoryPlaying(int value);
 
+extern void alterSFXVolume(int channel, int volume);
+extern void alterMusicVolume(int channel);
+extern void adjustSFXType_Internal(int subtype);
+
 //vanilla data
 extern float TransitionSpeed;
 extern char CutsceneWillPlay;
@@ -409,6 +413,7 @@ extern float PositionFloatWarps[3];
 extern unsigned short PositionFacingAngle;
 extern char ChimpyCam;
 extern char ScreenRatio;
+extern char SoundType;
 extern int* CurrentActorPointer;
 extern char LoadedActorCount;
 extern loadedActorArr LoadedActorArray[64];
@@ -640,6 +645,9 @@ extern weather_struct WeatherData[6];
 extern hitbox_master_struct* ModelTwoHitboxPointer;
 extern item_collision* MiscHitboxPointer;
 extern rgb BlueprintLargeImageColors[16];
+
+extern char SFXVolume;
+extern char MusicVolume;
 
 //hack data
 extern int TestVariable;

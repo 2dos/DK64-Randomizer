@@ -20,6 +20,8 @@ from ui.rando_options import (
     disable_move_shuffles,
     max_randomized_blocker,
     max_randomized_troff,
+    max_music,
+    max_sfx,
     toggle_b_locker_boxes,
     updateDoorOneNumAccess,
     updateDoorTwoNumAccess,
@@ -101,6 +103,8 @@ def import_settings_string(event):
     disable_move_shuffles(None)
     max_randomized_blocker(None)
     max_randomized_troff(None)
+    max_music(None)
+    max_sfx(None)
     disable_barrel_modal(None)
     updateDoorOneCountText(None)
     updateDoorTwoCountText(None)
