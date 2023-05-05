@@ -63,6 +63,7 @@
 .definelabel PositionFacingAngle, 0x8076AEF0 // u16
 .definelabel ChimpyCam, 0x80744530
 .definelabel ScreenRatio, 0x807444C0
+.definelabel SoundType, 0x80745844
 .definelabel CurrentActorPointer, 0x807FBB44
 .definelabel CurrentActorPointer_0, 0x807FBB40
 .definelabel LoadedActorCount, 0x807FBB35
@@ -244,3 +245,6 @@
 .definelabel StackTraceStartX, 0x807FEF7C
 
 .definelabel BlueprintLargeImageColors, 0x80033228
+
+.definelabel SFXVolume, 0x8074583C
+.definelabel MusicVolume, 0x80745840

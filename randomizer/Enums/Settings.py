@@ -472,6 +472,19 @@ class ShuffleLoadingZones(IntEnum):
     all = auto()
 
 
+class SoundType(IntEnum):
+    """Determines the default sound mode.
+
+    stereo: Default.
+    surround: Dolby Surround.
+    mono: Mono audio type.
+    """
+
+    stereo = 0
+    mono = 1
+    surround = 2
+
+
 class TrainingBarrels(IntEnum):
     """Determines if and how training barrels are randomized.
 
@@ -560,6 +573,7 @@ SettingsMap = {
     "random_prices": RandomPrices,
     "shockwave_status": ShockwaveStatus,
     "shuffle_loading_zones": ShuffleLoadingZones,
+    "sound_type": SoundType,
     "starting_keys_list_selected": Items,
     "tiny_colors": CharacterColors,
     "training_barrels": TrainingBarrels,

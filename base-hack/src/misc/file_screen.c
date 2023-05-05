@@ -675,20 +675,19 @@ void giveCollectables(void) {
 
 void wipeFileStats(void) {
 	for (int i = 0; i < 9; i++) {
-		SaveToFile(DATA_LEVELIGT, 0, i, 0, 0);
+		ResetExtraData(EGD_LEVELIGT, i);
 	}
 	for (int i = 0; i < STAT_TERMINATOR; i++) {
 		// Reset Statistics
-		SaveToFile(DATA_BONUSSTAT, 0, i, 0, 0);
+		ResetExtraData(EGD_BONUSSTAT, i);
 	}
 	for (int i = 0; i < 5; i++) {
-		SaveToFile(DATA_KONGIGT, 0, i, 0, 0);
+		ResetExtraData(EGD_KONGIGT, i);
 	}
 	for (int i = 0; i < 8; i++) {
-		SaveToFile(DATA_FILENAME, 0, i, 0, 0);
+		ResetExtraData(EGD_FILENAME, i);
 	}
-	SaveToFile(DATA_HELMHURRYIGT, 0, 0, 0, 0);
-	SaveToFile(DATA_HELMHURRYOFF, 0, 0, 0, 0);
+	ResetExtraData(EGD_HELMHURRYIGT, 0);
 }
 
 void file_progress_screen_code(actorData* actor, int buttons) {
@@ -834,13 +833,14 @@ int updateLevelIGT(void) {
 	if (canSaveHelmHurry()) {
 		int sum = 0;
 		for (int i = 0; i < 9; i++) {
-			sum += ReadFile(DATA_LEVELIGT, 0, i, 0);
+			int value = ReadExtraData(EGD_LEVELIGT, i);
+			sum += value; 
 		}
 		int diff = new_igt - sum;
 		int world = getWorld(previous_map_save, 1);
 		if (world < 9) {
-			int old = ReadFile(DATA_LEVELIGT, 0, world, 0);
-			SaveToFile(DATA_LEVELIGT, 0, world, 0, old + diff);
+			int old = ReadExtraData(EGD_LEVELIGT, world);
+			SaveExtraData(EGD_LEVELIGT, world, old + diff);
 		}
 	}
 	previous_map_save = CurrentMap;

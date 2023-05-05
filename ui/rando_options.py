@@ -59,6 +59,30 @@ def max_randomized_troff(event):
         troff_text.value = 500
 
 
+@bind("focusout", "music_volume")
+def max_music(event):
+    """Validate music input on loss of focus."""
+    music_text = js.document.getElementById("music_volume")
+    if not music_text.value:
+        music_text.value = 100
+    elif int(music_text.value) > 100:
+        music_text.value = 100
+    elif int(music_text.value) < 0:
+        music_text.value = 0
+
+
+@bind("focusout", "sfx_volume")
+def max_sfx(event):
+    """Validate sfx input on loss of focus."""
+    sfx_text = js.document.getElementById("sfx_volume")
+    if not sfx_text.value:
+        sfx_text.value = 100
+    elif int(sfx_text.value) > 100:
+        sfx_text.value = 100
+    elif int(sfx_text.value) < 0:
+        sfx_text.value = 0
+
+
 @bind("focusout", "medal_requirement")
 def max_randomized_medals(event):
     """Validate medal input on loss of focus."""
@@ -801,6 +825,8 @@ def preset_select_changed(event):
     disable_move_shuffles(None)
     max_randomized_blocker(None)
     max_randomized_troff(None)
+    max_music(None)
+    max_sfx(None)
     disable_barrel_modal(None)
 
 

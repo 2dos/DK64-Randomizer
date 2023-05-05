@@ -116,6 +116,25 @@
                             </select>
                         </div>
                     </div>
+                    <div class="item-select">
+                        <p class="select-title">D-Pad Display</p>
+                        <select name="dpad_display"
+                                id="dpad_display"
+                                class="form-select center-div"
+                                aria-label="Randomization type"
+                                data-toggle="tooltip"
+                                title="Displays a D-pad overlay for Tag Anywhere and a Homing Ammo Toggle.">
+                            <option selected value="off">
+                                Off
+                            </option>
+                            <option value="on">
+                                On
+                            </option>
+                            <option value="minimal">
+                                Minimalistic
+                            </option>
+                        </select>
+                    </div>
                 </div>
                 <div class="flex-container">
                     <div class="form-check form-switch item-switch">
@@ -151,25 +170,7 @@
                             Dark Mode Textboxes
                         </label>
                     </div>
-                    <div class="item-select">
-                        <p class="select-title">D-Pad Display</p>
-                        <select name="dpad_display"
-                                id="dpad_display"
-                                class="form-select center-div"
-                                aria-label="Randomization type"
-                                data-toggle="tooltip"
-                                title="Displays a D-pad overlay for Tag Anywhere and a Homing Ammo Toggle.">
-                            <option selected value="off">
-                                Off
-                            </option>
-                            <option value="on">
-                                On
-                            </option>
-                            <option value="minimal">
-                                Minimalistic
-                            </option>
-                        </select>
-                    </div>
+                    <div class="spacer"></div>
                     <div class="form-check form-switch item-switch holiday" hidden>
                         <label data-toggle="tooltip"
                                title="Happy Holidays from the DK64 Randomizer Dev Team. Limited time option.">
@@ -182,6 +183,58 @@
                         </label>
                     </div>
                     <div class="spacer holiday" hidden></div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <h2 class="title">ACCESSIBILITY</h2>
+                <div class="flex-container">
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="Remove water oscillation effects and the seasick ship rocking effect. For those who feel motion sick from these effects.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="remove_water_oscillation"
+                                   id="remove_water_oscillation"
+                                   value="True"/>
+                            Remove Water Oscillation
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="Adds kong faces to balloons, making them easier to distinguish in various lighting conditions.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="head_balloons"
+                                   id="head_balloons"
+                                   value="True"/>
+                            Kong Head on Balloons
+                        </label>
+                    </div>
+                </div>
+                <div class="flex-container">
+                    <div class="item-select">
+                        <p class="select-title">
+                            Colorblind Mode
+                        </p>
+                        <select name="colorblind_mode"
+                                id="colorblind_mode"
+                                class="form-select"
+                                aria-label="Colorblind Mode">
+                            <option selected value="off">
+                                Off
+                            </option>
+                            <option value="prot">
+                                Red-Green (Protan)
+                            </option>
+                            <option value="deut">
+                                Red-Green (Deutan)
+                            </option>
+                            <option value="trit">
+                                Blue-Yellow (Tritan)
+                            </option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -411,53 +464,90 @@
             </div>
             <hr />
             <div class="row">
-                <h2 class="title">ACCESSIBILITY</h2>
+                <h2 class="title">DEFAULT GAME SETTINGS</h2>
                 <div class="flex-container">
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                               title="Remove water oscillation effects and the seasick ship rocking effect. For those who feel motion sick from these effects.">
+                               title="NOTE: This isn't true widescreen, just the game's version of it.">
                             <input class="form-check-input"
                                    type="checkbox"
-                                   name="remove_water_oscillation"
-                                   id="remove_water_oscillation"
+                                   name="camera_is_widescreen"
+                                   id="camera_is_widescreen"
                                    value="True"/>
-                            Remove Water Oscillation
+                            Anamorphic Widescreen
                         </label>
                     </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                               title="Adds kong faces to balloons, making them easier to distinguish in various lighting conditions.">
+                               title="If enabled, the camera will look up when the player holds up on the stick, the opposite of how the vanilla game behaves.">
                             <input class="form-check-input"
                                    type="checkbox"
-                                   name="head_balloons"
-                                   id="head_balloons"
+                                   name="camera_is_not_inverted"
+                                   id="camera_is_not_inverted"
                                    value="True"/>
-                            Kong Head on Balloons
+                            Disable Y-Inverted First Person Camera
                         </label>
                     </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="Camera will always follow behind the player.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="camera_is_follow"
+                                   id="camera_is_follow"
+                                   value="True"/>
+                            Follow Cam
+                        </label>
+                    </div>
+                    <div class="spacer"></div>
                 </div>
-                <div class="flex-container">
+                {# <div class="flex-container">
                     <div class="item-select">
                         <p class="select-title">
-                            Colorblind Mode
+                            Sound Type
                         </p>
-                        <select name="colorblind_mode"
-                                id="colorblind_mode"
+                        <select name="sound_type"
+                                id="sound_type"
                                 class="form-select"
                                 aria-label="Colorblind Mode">
-                            <option selected value="off">
-                                Off
+                            <option selected value="stereo">
+                                Stereo (Default)
                             </option>
-                            <option value="prot">
-                                Red-Green (Protan)
+                            <option value="surround">
+                                Surround
                             </option>
-                            <option value="deut">
-                                Red-Green (Deutan)
-                            </option>
-                            <option value="trit">
-                                Blue-Yellow (Tritan)
+                            <option value="mono">
+                                Mono
                             </option>
                         </select>
+                    </div>
+                </div> #}
+                <div class="flex-container">
+                    <div class="item-group">
+                        <p class="select-title">Music Volume (%)</p>
+                        <input class="form-control"
+                            min="0"
+                            max="100"
+                            name="music_volume"
+                            id="music_volume"
+                            type="number"
+                            data-toggle="tooltip"
+                            title="Music Volume"
+                            default="100"
+                            placeholder="100"/>
+                    </div>
+                    <div class="item-group">
+                        <p class="select-title">SFX Volume (%)</p>
+                        <input class="form-control"
+                            min="0"
+                            max="100"
+                            name="sfx_volume"
+                            id="sfx_volume"
+                            type="number"
+                            data-toggle="tooltip"
+                            title="SFX Volume"
+                            default="100"
+                            placeholder="100"/>
                     </div>
                 </div>
             </div>

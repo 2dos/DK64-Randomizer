@@ -474,6 +474,22 @@ void initHack(int source) {
 			*(unsigned char*)(0x8064A2FD) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[5]];
 			*(unsigned char*)(0x8064A301) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[7]];
 			*(unsigned char*)(0x8064A305) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[8]];
+			SFXVolume = Rando.default_sfx_volume;
+			MusicVolume = Rando.default_music_volume;
+			ScreenRatio = Rando.default_screen_ratio;
+			SoundType = Rando.default_sound_type;
+			int sound_subtype = 1;
+			if (SoundType == 0) {
+				sound_subtype = 2;
+			} else if (SoundType == 2) {
+				sound_subtype = 4;
+			}
+			adjustSFXType_Internal(sound_subtype);
+			for (int i = 0; i < 4; i++) {
+				alterSFXVolume(i, (SFXVolume * 25000) / 40);
+			}
+			alterMusicVolume(0);
+			alterMusicVolume(2);
 			insertROMMessages();
 			LoadedHooks = 1;
 		}

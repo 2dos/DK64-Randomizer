@@ -128,6 +128,9 @@ def getMapNameFromIndex(index: int):
     return "Unknown"
 
 
+DISPLAY_TOTALS = False
+
+
 def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.ColoredBananas):
     """Dump data to a JSON file."""
     directory = "./tools/dumps"
@@ -140,6 +143,20 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
         output_file = f"{directory}/{name.upper()}.{format.upper()}"
     with open(output_file, "w") as fh:
         if format == "json":
+            if DISPLAY_TOTALS:
+                if dumper == Dumpers.ColoredBananas:
+                    total = 0
+                    for x in data:
+                        if x["class"] == "cb":
+                            for y in x["locations"]:
+                                total += y[0]
+                        else:
+                            total += 10
+                    print(total)
+                elif dumper == Dumpers.Coins:
+                    print(sum([len(x["locations"]) for x in data]))
+                else:
+                    print(len(data))
             json.dump(data, fh, indent=4)
         elif format == "csv":
             unique = []

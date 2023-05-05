@@ -588,6 +588,15 @@ typedef enum file_data_indexes {
 	DATA_FILENAME = 0x26,
 } file_data_indexes;
 
+typedef enum extra_global_data {
+	EGD_LEVELIGT,
+	EGD_HELMHURRYIGT,
+	EGD_BONUSSTAT,
+	EGD_KONGIGT,
+	EGD_FILENAME,
+	EGD_TERMINATOR,
+} extra_global_data;
+
 typedef enum bonus_stat {
     /* 0x000 */ STAT_TAGCOUNT,
     /* ----- */ STAT_TERMINATOR,

@@ -124,18 +124,4 @@ void initFiles(void) {
     *(int*)(0x8060C6C4) = 0x24040000; // Force file 0 - Read
     *(int*)(0x8060C6D4) = 0xAFA00034; // Force file 0 - Read
     *(int*)(0x8060D294) = 0; // Cartridge EEPROM Wipe cancel
-	// Add Global Data Entries
-	writeFunction(0x8060C3A4, &GrabParameters_Global);
-	// int added_global_bits = HELM_HURRY_BITS + (IGT_BITS * 9) + (STAT_BITS * STAT_TERMINATOR) + (IGT_BITS * 5) + 1;
-	// int global_expansion = ((added_global_bits >> 3) + 1);
-	// int leftover = global_expansion & 3;
-	// if (leftover != 0) {
-	// 	global_expansion += (4 - leftover);
-	// }
-	// int global_size = 0x40 + global_expansion;
-	// *(short*)(0x8060CFAA) = global_size;
-	// *(short*)(0x8060CFE2) = global_size - 4;
-	// *(short*)(0x8060D4EA) = global_size;
-	// *(short*)(0x8060D516) = global_size - 4;
-	// *(short*)(0x8060D586) = -global_size;
 }

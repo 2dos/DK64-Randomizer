@@ -19,6 +19,8 @@ from ui.rando_options import (
     updateDoorOneNumAccess,
     updateDoorTwoNumAccess,
     max_randomized_troff,
+    max_music,
+    max_sfx,
     set_preset_options,
     toggle_b_locker_boxes,
     toggle_counts_boxes,
@@ -43,6 +45,8 @@ disable_music(None)
 disable_move_shuffles(None)
 max_randomized_blocker(None)
 max_randomized_troff(None)
+max_music(None)
+max_sfx(None)
 disable_barrel_modal(None)
 disable_enemy_modal(None)
 toggle_item_rando(None)

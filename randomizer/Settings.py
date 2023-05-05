@@ -385,6 +385,12 @@ class Settings:
         self.remove_water_oscillation = False
         self.head_balloons = False
         self.homebrew_header = False
+        self.camera_is_follow = False
+        self.sfx_volume = 100
+        self.music_volume = 100
+        self.camera_is_widescreen = False
+        self.camera_is_not_inverted = False
+        self.sound_type = SoundType.stereo
 
         #  Misc
         self.generate_spoilerlog = None

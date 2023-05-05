@@ -235,6 +235,9 @@ def patching_response(responded_data):
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 7),  # Bonus Matches Contents
         BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers
         BooleanProperties(spoiler.settings.dark_mode_textboxes, 0x44),  # Dark Mode Text bubble
+        BooleanProperties(spoiler.settings.camera_is_follow, 0xCB),  # Free/Follow Cam
+        BooleanProperties(spoiler.settings.camera_is_widescreen, 0xCA),  # Normal/Widescreen
+        BooleanProperties(spoiler.settings.camera_is_not_inverted, 0xCC),  # Inverted/Non-Inverted Camera
     ]
 
     for prop in boolean_props:
@@ -403,6 +406,20 @@ def patching_response(responded_data):
     ROM().seek(sav + 0x139)
     # The DPadDisplays enum is indexed to allow this.
     ROM().write(int(spoiler.settings.dpad_display))
+
+    # Remaining Menu Settings
+    # ROM().seek(sav + 0xC7)
+    # ROM().write(int(spoiler.settings.sound_type)) # Sound Type
+    music_volume = 40
+    sfx_volume = 40
+    if spoiler.settings.sfx_volume is not None and spoiler.settings.sfx_volume != "":
+        sfx_volume = int(spoiler.settings.sfx_volume / 2.5)
+    if spoiler.settings.music_volume is not None and spoiler.settings.music_volume != "":
+        music_volume = int(spoiler.settings.music_volume / 2.5)
+    ROM().seek(sav + 0xC8)
+    ROM().write(sfx_volume)
+    ROM().seek(sav + 0xC9)
+    ROM().write(music_volume)
 
     # Mill Levers
     if spoiler.settings.mill_levers[0] > 0:
