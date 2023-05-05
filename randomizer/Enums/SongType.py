@@ -11,6 +11,8 @@ class SongType(IntEnum):
 
     System = auto()
     BGM = auto()
-    Fanfare = auto()
     Ambient = auto()
     Event = auto()
+    Protected = auto()
+    MajorItem = auto()
+    MinorItem = auto()

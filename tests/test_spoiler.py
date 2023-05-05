@@ -190,7 +190,6 @@ def generate_lo_rando_race_settings():
     # Other
     data["fps_display"] = False
     data["portal_numbers"] = True
-    data["dpad_display"] = True
     data["item_reward_previews"] = True
 
     return data
@@ -229,10 +228,10 @@ def test_manual_settings_dict(generate_lo_rando_race_settings):
 def test_with_settings_string():
     """Confirm that settings strings decryption is working and generate a spoiler log with it."""
     # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
-    # This top one is always the S2 Preset (probably up to date)
-    settings_string = "baGFiRorPN5yunTChooPw+qhoRDIhKlsa58CCI0ivUyYRCnrG2rBACoUhqC/glgGTgMgustmgoC6gEGAnYBA4G7gMIBHgCBIK8gUKBnoDBYO9gcMCFGGnj4yFM9SUNBUtl7abgBmhsco1xQqIsBiYigYv2yOxy14C/SOB4HMlUl2N0STWIJIMwII5oQMGc3GQHFstC43lgsiwUlwNCgWisVGEmjEjkk5CQPACsAA"
+    # This top one is always the S2 Preset (probably up to date, if it isn't go steal it from the season2.json)
+    settings_string = "baGFiRorPN5yunTChooPw+qhoRDIhKlsa58CCI0ivUyYRCnrG2rBACoUht9QX8EsAycBkF1ls0FAXUAgwE7AIHA3cBhAI8AQJBXkChQM9AYLB3sDhgQow08fGQpnqShoKlsvbTcAM0NjlGuKFRFgMTEUDF+2R2OWvAX6RwPA5kqkuxuiSaxBJBmBBHNCBgzm4yA4tloXFgsiwUlwNCgWisVGEmjEjkk5CQPACsAA"
     # This one is for ease of testing, go wild with it
-    # settings_string = "baGGiRorxNXm8rp0woolg7Bc4xRYfh8giNIr1MmEQs9uslPWOtWCAFQpDb6hE4CL/iWAROBZKY1K5VGQXmWzQUBdQCDATsAgcDdwGEAjwBAkFeQKFAz0BgsHewOGBCjDTx8V7DUz1I80KTaXTGX1GpNKZxQqQsBCZCgCv2yOxy14C/SOB4FMlUiSuxuiSaxIJCA4tloXFgslwUC0jmk5B4AVQBWAA"
+    # settings_string = "baunTCgMUSwcYoqPx4Wx3EGWsQgvXz+AePhhNHPmcUwpwPqoMIZTISQRGkV6mRC3U/Y21YIAVvqC/glAETqsSiWxlFxls0FAXUAgwE7AIHA3cBhAI8AQJBXkChQM9AYLB3sDhgQow2WfMgpnqUtool0vqTSocSKkLAYmQoFL8dtd+wKZCpLsbk1gQRzQgwM5kBxbLRCEIuLIsFJcDQrFRhJoxI5pIxyNgcQAjAYkIhDAFYA"
 
     settings_dict = decrypt_settings_string_enum(settings_string)
     settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly

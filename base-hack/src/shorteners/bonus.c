@@ -14,7 +14,7 @@ void completeBonus(actorData* actor) {
     unkBonusFunction(actor);
     int control_state = actor->control_state;
     if ((control_state == 0) || (control_state == 0x15) || ((DISREGARD_TANGIBILITY) && ((actor->obj_props_bitfield & 0x10) == 0))) {
-        if (Gamemode != 3) {
+        if (Gamemode != GAMEMODE_DKTV) {
             if ((Rando.resolve_bonus & 1) && (actor->actorType == 0x1C)) {
                 // Regular Bonus
                 destroyBonus(actor);

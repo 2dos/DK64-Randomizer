@@ -205,6 +205,9 @@ file_dict = [
     ),
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=605, source_file="fake_item.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Melon Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=606, source_file="melon_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="21132 Sign", pointer_table_index=TableNames.TexturesGeometry, file_index=0x7CA, source_file="21132_tex.bin", target_size=2 * 64 * 32),
+    File(name="Crypt Lever Sign 1", pointer_table_index=TableNames.TexturesGeometry, file_index=0x999, source_file="cryptlev1_tex.bin", target_size=2 * 64 * 32),
+    File(name="Crypt Lever Sign 2", pointer_table_index=TableNames.TexturesGeometry, file_index=0x99A, source_file="cryptlev2_tex.bin", target_size=2 * 64 * 32),
 ]
 
 file_dict = file_dict + buildScripts()
@@ -517,8 +520,9 @@ song_replacements = [
     {"name": "move_get", "index": 114, "bps": True},
     {"name": "nintendo_logo", "index": 174, "bps": True},
     {"name": "success_races", "index": 86, "bps": True},
-    {"name": "klumsy_celebration", "index": 125, "bps": True},
+    # {"name": "klumsy_celebration", "index": 125, "bps": True},
     {"name": "coin_sfx", "index": 7, "bps": False},
+    {"name": "intro_story", "index": 122, "bps": True},
 ]
 changed_song_indexes = []
 

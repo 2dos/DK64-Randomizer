@@ -666,15 +666,29 @@ void giveCollectables(void) {
 	for (int instrument_kong = 0; instrument_kong < 5; instrument_kong++) {
 		MovesBase[instrument_kong].instrument_energy = energy;
 	}
-	int mult = 1;
-	if (MovesBase[0].ammo_belt > 0) {
-		mult = 2 * MovesBase[0].ammo_belt;
-	}
 	CollectableBase.Health = CollectableBase.Melons * 4;
-	CollectableBase.StandardAmmo = 25 * mult;
+	CollectableBase.StandardAmmo = 25 * (1 << MovesBase[0].ammo_belt);
 	CollectableBase.Oranges = 10;
 	CollectableBase.Crystals = 1500;
 	CollectableBase.Film = 5;
+}
+
+void wipeFileStats(void) {
+	for (int i = 0; i < 9; i++) {
+		SaveToFile(DATA_LEVELIGT, 0, i, 0, 0);
+	}
+	for (int i = 0; i < STAT_TERMINATOR; i++) {
+		// Reset Statistics
+		SaveToFile(DATA_BONUSSTAT, 0, i, 0, 0);
+	}
+	for (int i = 0; i < 5; i++) {
+		SaveToFile(DATA_KONGIGT, 0, i, 0, 0);
+	}
+	for (int i = 0; i < 8; i++) {
+		SaveToFile(DATA_FILENAME, 0, i, 0, 0);
+	}
+	SaveToFile(DATA_HELMHURRYIGT, 0, 0, 0, 0);
+	SaveToFile(DATA_HELMHURRYOFF, 0, 0, 0, 0);
 }
 
 void file_progress_screen_code(actorData* actor, int buttons) {
@@ -717,20 +731,12 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					if (Rando.quality_of_life.caves_kosha_dead) {
 						setPermFlag(FLAG_MODIFIER_KOSHADEAD); // Giant Kosha Dead
 					}
+					if (checkFlag(FLAG_COLLECTABLE_LLAMAGB, FLAGTYPE_PERMANENT)) {
+						setPermFlag(FLAG_MODIFIER_LLAMAFREE); // No item check
+					}
 					pre_turn_keys();
 					Character = Rando.starting_kong;
-					for (int i = 0; i < 9; i++) {
-						SaveToFile(DATA_LEVELIGT, 0, i, 0, 0);
-					}
-					for (int i = 0; i < STAT_TERMINATOR; i++) {
-						// Reset Statistics
-						SaveToFile(DATA_BONUSSTAT, 0, i, 0, 0);
-					}
-					for (int i = 0; i < 5; i++) {
-						SaveToFile(DATA_KONGIGT, 0, i, 0, 0);
-					}
-					SaveToFile(DATA_HELMHURRYIGT, 0, 0, 0, 0);
-					SaveToFile(DATA_HELMHURRYOFF, 0, 0, 0, 0);
+					wipeFileStats();
 					if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
 						setPermFlag(FLAG_ARCADE_LEVER);
 					}
@@ -740,6 +746,9 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					Character = Rando.starting_kong;
 					determineStartKong_PermaLossMode();
 					giveCollectables();
+				}
+				if (ENABLE_FILENAME) {
+					writeDefaultFilename();
 				}
 				if ((Rando.helm_hurry_mode) && (!ReadFile(DATA_HELMHURRYOFF, 0, 0, 0))) {
 					QueueHelmTimer = 1;
@@ -783,6 +792,9 @@ int* displayInverted(int* dl, int style, int x, int y, char* str, int unk0) {
 	 * 
 	 * @return New Display List Address
 	 */
+	if (InvertedControls > 1) {
+		InvertedControls = 1;
+	}
 	return displayText(dl, style, x, y, inverted_controls_str[(int)InvertedControls], unk0);
 }
 

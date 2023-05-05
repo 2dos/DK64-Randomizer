@@ -22,7 +22,8 @@ extern int isBeltFlag(int flag);
 extern int isInstrumentUpgradeFlag(int flag);
 extern int inBattleCrown(maps map);
 extern int inBossMap(maps map, int include_regular, int include_krool, int include_shoe);
-extern int isGamemode(int target_mode, int force_both);
+extern int inMinigame(maps map);
+extern int isGamemode(gamemodes target_mode, int force_both);
 
 extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);
@@ -98,6 +99,8 @@ extern void saveHelmHurryTime(void);
 extern void finishHelmHurry(void);
 extern int getNewFileSize(void);
 extern void fixChimpyCamBug(void);
+extern void writeDefaultFilename(void);
+extern void wipeFileStats(void);
 
 extern int* drawTri(int* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha);
 extern int* drawImage(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity);
@@ -285,6 +288,7 @@ extern void initPauseMenu(void);
 extern void changePauseScreen(void);
 
 extern void handleDynamicItemText(char* location, char* format, int character);
+extern void handleFilename(char* location, char* format, char* new_name);
 extern void mermaidCheck(void);
 extern void initItemDictionary(void);
 extern void initActorExpansion(void);
@@ -349,8 +353,6 @@ extern void helmTime_exitLevel(void);
 extern void helmTime_exitBoss(void);
 extern void helmTime_exitKRool(void);
 
-extern void loadSingularHook(int write_address, void* hook_jump);
-extern void writeFunction(int write_address, void* new_function);
 extern void GrabParameters_Global(int index, int level, short* file_base, char* bit_size);
 extern int changeStat(bonus_stat statistic, int delta);
 extern int getStat(bonus_stat statistic);

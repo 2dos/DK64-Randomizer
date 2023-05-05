@@ -3,7 +3,6 @@ from randomizer.Enums.Events import Events
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Time import Time
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Logic import Regions as RegionList
 from randomizer.LogicClasses import TransitionFront
@@ -188,7 +187,7 @@ door_locations = {
         DoorData(
             name="Jungle Japes: Main Area - Next to Tunnel to Tiny Gate",
             map=Maps.JungleJapes,
-            logicregion=Regions.JungleJapesMain,
+            logicregion=Regions.JungleJapesStart,
             location=[2563.0, 286.0, 1567.0, 253.0],
             rx=-8,
             rz=9,
@@ -234,7 +233,7 @@ door_locations = {
         DoorData(
             name="Jungle Japes: Top of Lanky's Useless Slope - left",
             map=Maps.JungleJapes,
-            logicregion=Regions.JungleJapesMain,
+            logicregion=Regions.JapesBeyondCoconutGate2,
             location=[2299.0, 338.0, 3135.0, 296.0],
             kong_lst=[Kongs.lanky],
             group=7,
@@ -245,7 +244,7 @@ door_locations = {
         DoorData(
             name="Jungle Japes: Top of Lanky's Useless Slope - right",
             map=Maps.JungleJapes,
-            logicregion=Regions.JungleJapesMain,
+            logicregion=Regions.JapesBeyondCoconutGate2,
             location=[2095.5, 338.0, 3227.0, 118.7],
             kong_lst=[Kongs.lanky],
             group=7,
@@ -256,7 +255,7 @@ door_locations = {
         DoorData(
             name="Jungle Japes: Underwater by Warp 2",
             map=Maps.JungleJapes,
-            logicregion=Regions.JungleJapesMain,
+            logicregion=Regions.JungleJapesStart,
             location=[1475.0, 160.0, 1605.0, 351.0],
             group=5,
             moveless=False,
@@ -265,7 +264,7 @@ door_locations = {
         DoorData(
             name="Jungle Japes: Underwater by Chunky's underground",
             map=Maps.JungleJapes,
-            logicregion=Regions.JungleJapesMain,
+            logicregion=Regions.JungleJapesStart,
             location=[2151.0, 160.0, 1587.0, 350.0],
             group=5,
             moveless=False,
@@ -299,7 +298,7 @@ door_locations = {
         DoorData(
             name="Jungle Japes: Entrance Tunnel - Near Diddy Cave - back left",
             map=Maps.JungleJapes,
-            logicregion=Regions.JungleJapesMain,
+            logicregion=Regions.JungleJapesStart,
             location=[1891.0, 280.0, 879.0, 180.0],
             group=2,
             logic=lambda l: True,
@@ -307,7 +306,7 @@ door_locations = {
         DoorData(
             name="Jungle Japes: Entrance Tunnel - Near Diddy Cave - front left",
             map=Maps.JungleJapes,
-            logicregion=Regions.JungleJapesMain,
+            logicregion=Regions.JungleJapesStart,
             location=[2022.0, 280.0, 357.0, 295.6],
             group=2,
             logic=lambda l: True,
@@ -315,7 +314,7 @@ door_locations = {
         DoorData(
             name="Jungle Japes: Entrance Tunnel - Near Warppad 1 and 2",
             map=Maps.JungleJapes,
-            logicregion=Regions.JungleJapesMain,
+            logicregion=Regions.JungleJapesStart,
             location=[1432.8, 280.0, 1056.0, 89.2],
             group=2,
             logic=lambda l: True,

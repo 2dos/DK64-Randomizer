@@ -111,6 +111,7 @@
 #define IGT_BITS 22
 #define HELM_HURRY_BITS 16
 #define STAT_BITS 16
+#define LETTER_BITS 7
 
 #define PURCHASE_MOVES 0
 #define PURCHASE_SLAM 1

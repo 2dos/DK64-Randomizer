@@ -682,23 +682,22 @@ class LogicVarHolder:
                 collectible.added = True
 
     def PurchaseShopItem(self, location_id):
-        """Purchase items from shops and subtract price from logical coin counts."""
+        """Purchase from this location and subtract price from logical coin counts."""
         location = LocationList[location_id]
-        if location.item is not None and location.item is not Items.NoItem:
-            price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
-            if price is None:  # This probably shouldn't happen but I think it's harmless
-                return  # TODO: solve this
-            # print("BuyShopItem for location: " + location.name)
-            # print("Item: " + ItemList[location.item].name + " has Price: " + str(price))
-            # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
-            if location.kong == Kongs.any:
-                for kong in range(0, 5):
-                    self.Coins[kong] -= price
-                    self.SpentCoins[kong] += price
-            # If kong specific move, just that kong paid for it
-            else:
-                self.Coins[location.kong] -= price
-                self.SpentCoins[location.kong] += price
+        price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
+        if price is None:  # This shouldn't happen but it's probably harmless
+            return  # TODO: solve this
+        # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
+        if location.kong == Kongs.any:
+            for kong in range(0, 5):
+                self.Coins[kong] -= price
+                self.SpentCoins[kong] += price
+            return
+        # If kong specific move, just that kong paid for it
+        else:
+            self.Coins[location.kong] -= price
+            self.SpentCoins[location.kong] += price
+            return
 
     @staticmethod
     def HasAccess(region, kong):
@@ -769,13 +768,25 @@ class LogicVarHolder:
         """Return true if the boss for a given level is beatable according to boss location rando and boss kong rando."""
         requiredKong = self.settings.boss_kongs[level]
         bossFight = self.settings.boss_maps[level]
+        # Ensure we have the required moves for the boss fight itself
         hasRequiredMoves = True
-        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny:
+        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not self.settings.hard_bosses:
             hasRequiredMoves = self.twirl
         elif bossFight == Maps.FungiBoss:
             hasRequiredMoves = self.hunkyChunky and self.barrels
         elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
             hasRequiredMoves = self.barrels
+        # In simple level order, there are a couple very specific cases we have to account for in order to prevent boss fill failures
+        level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (ShuffleLoadingZones.none, ShuffleLoadingZones.levels)
+        if level_order_matters:
+            order_of_level = 7  # Guaranteed to be 1-7 here
+            for level_order in self.settings.level_order:
+                if self.settings.level_order[level_order] == level:
+                    order_of_level = level_order
+            if order_of_level == 4 and not self.barrels:  # Prevent Barrels on boss 3
+                return False
+            if order_of_level == 7 and (not self.hunkyChunky or (not self.twirl and not self.settings.hard_bosses)):  # Prevent Hunky on boss 7, and also Twirl on non-hard bosses
+                return False
         return self.IsKong(requiredKong) and hasRequiredMoves
 
     def HasFillRequirementsForLevel(self, level):
@@ -797,12 +808,12 @@ class LogicVarHolder:
             # You need to have vines or twirl before you can enter Aztec or any level beyond it
             if order_of_level >= order_of_aztec and not (self.vines or (self.istiny and self.twirl)):
                 return False
-            if order_of_level >= 3:
-                # Require barrels by level 3 to prevent boss barrel fill failures
-                if not self.barrels:
-                    return False
-                # Require swim by level 4 to prevent T&S being zero'd out
-                if order_of_level >= 4 and not self.swim:  # and not "the ability to dive without dive" whenever we get that squared away
+            if order_of_level >= 4:
+                # Require the following moves by level 4:
+                # - Swim so you can get into Lobby 4. This prevents logic from skipping this level for T&S requirements, preventing 0'd T&S.
+                # - Barrels so there will always be an eligible boss fill given the available moves at any level.
+                # - Vines for gameplay reasons. Needing vines for Helm is a frequent bottleneck and this eases the hunt for it.
+                if not self.swim or not self.barrels or not self.vines:
                     return False
                 # Require one of twirl or hunky chunky by level 7 to prevent non-hard-boss fill failures
                 if not self.settings.hard_bosses and order_of_level >= 7 and not (self.twirl or self.hunkyChunky):

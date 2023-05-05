@@ -74,7 +74,7 @@ void kong_has_died(void) {
 											setFlag(KONG_LOCKED_START + init_kong,0,FLAGTYPE_PERMANENT);
 											pass = 0;
 											resetMap(); // Resets parent chain to prevent SirSmack causing memes
-											Gamemode = 7; // Loading Game Over
+											Gamemode = GAMEMODE_LOADGAMEOVER; // Loading Game Over
 											Mode = 7;
 											return;
 										}

@@ -21,7 +21,7 @@ LogicRegions = {
         LocationLogic(Locations.GalleonChunkyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.chunky] >= l.settings.medal_cb_req),
     ], [], [], restart=-1),
 
-    Regions.GloomyGalleonStart: Region("Gloomy Galleon Start", "Galleon Caves", Levels.GloomyGalleon, True, None, [
+    Regions.GloomyGalleonStart: Region("Gloomy Galleon Start", "Galleon Caverns", Levels.GloomyGalleon, True, None, [
         LocationLogic(Locations.GalleonChunkyChest, lambda l: l.punch and l.chunky),
         LocationLogic(Locations.GalleonBattleArena, lambda l: (not l.settings.crown_placement_rando and ((l.punch and l.chunky)) or l.phasewalk or l.CanSkew(False))),
         LocationLogic(Locations.GalleonBananaFairybyCranky, lambda l: l.camera and l.punch and l.chunky),
@@ -45,7 +45,7 @@ LogicRegions = {
         TransitionFront(Regions.CrankyGalleon, lambda l: True),
     ]),
 
-    Regions.GalleonPastVines: Region("Galleon Past Vines", "Galleon Caves", Levels.GloomyGalleon, False, None, [
+    Regions.GalleonPastVines: Region("Galleon Past Vines", "Galleon Caverns", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonKasplatNearLab, lambda l: not l.settings.kasplat_rando),
     ], [
         Event(Events.GalleonW3aTagged, lambda l: True),
@@ -55,7 +55,7 @@ LogicRegions = {
         TransitionFront(Regions.GalleonBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
-    Regions.GalleonBeyondPineappleGate: Region("Galleon Beyond Pineapple Gate", "Galleon Caves", Levels.GloomyGalleon, False, None, [
+    Regions.GalleonBeyondPineappleGate: Region("Galleon Beyond Pineapple Gate", "Galleon Caverns", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonChunkyCannonGame, lambda l: l.CanGetOnCannonGamePlatform() and l.ischunky and l.barrels),
         LocationLogic(Locations.GalleonKasplatCannons, lambda l: not l.settings.kasplat_rando and l.CanGetOnCannonGamePlatform()),
     ], [], [
@@ -64,7 +64,7 @@ LogicRegions = {
         TransitionFront(Regions.Shipyard, lambda l: l.CanPhaseswim() or (l.phasewalk and l.CanGetOnCannonGamePlatform())),
     ]),
 
-    Regions.LighthouseSurface: Region("Lighthouse Surface", "Lighthouse Area", Levels.GloomyGalleon, False, -1, [
+    Regions.LighthouseSurface: Region("Lighthouse Surface", "Lighthouse Area", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonKasplatLighthouseArea, lambda l: not l.settings.kasplat_rando),
     ], [
         Event(Events.GalleonChunkyPad, lambda l: (l.triangle and l.chunky) and (l.swim or l.settings.high_req)),
@@ -144,7 +144,7 @@ LogicRegions = {
         TransitionFront(Regions.LighthousePlatform, lambda l: True, Transitions.GalleonSickBayToLighthouseArea),
     ]),
 
-    Regions.Shipyard: Region("Shipyard", "Shipyard Area", Levels.GloomyGalleon, True, None, [
+    Regions.Shipyard: Region("Shipyard", "Shipyard Outskirts", Levels.GloomyGalleon, True, None, [
         LocationLogic(Locations.GalleonDonkeyFreetheSeal, lambda l: Events.SealReleased in l.Events and (l.isdonkey or l.settings.free_trade_items)),
         LocationLogic(Locations.GalleonKasplatNearSub, lambda l: not l.settings.kasplat_rando),
     ], [
@@ -165,7 +165,7 @@ LogicRegions = {
         TransitionFront(Regions.FunkyGalleon, lambda l: True),
     ]),
 
-    Regions.ShipyardUnderwater: Region("Shipyard Underwater", "Shipyard Area", Levels.GloomyGalleon, True, None, [], [
+    Regions.ShipyardUnderwater: Region("Shipyard Underwater", "Shipyard Outskirts", Levels.GloomyGalleon, True, None, [], [
         Event(Events.ShipyardEnguarde, lambda l: l.lanky),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
@@ -183,7 +183,7 @@ LogicRegions = {
         TransitionFront(Regions.GalleonBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
-    Regions.SealRace: Region("Seal Race", "Shipyard Area", Levels.GloomyGalleon, False, None, [
+    Regions.SealRace: Region("Seal Race", "Shipyard Outskirts", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonDonkeySealRace, lambda l: l.isdonkey or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.Shipyard, lambda l: True, Transitions.GalleonSealToShipyard),
@@ -220,21 +220,21 @@ LogicRegions = {
         TransitionFront(Regions.TreasureRoom, lambda l: True, Transitions.GalleonChestToTreasure),
     ]),
 
-    Regions.Submarine: Region("Submarine", "Shipyard Area", Levels.GloomyGalleon, False, -1, [
+    Regions.Submarine: Region("Submarine", "Shipyard Outskirts", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonTinySubmarine, lambda l: l.istiny or l.settings.free_trade_items, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: True, Transitions.GalleonSubmarineToShipyard),
     ]),
 
-    Regions.Mechafish: Region("Mechafish", "Shipyard Area", Levels.GloomyGalleon, False, -1, [
+    Regions.Mechafish: Region("Mechafish", "Shipyard Outskirts", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonDiddyMechafish, lambda l: l.HasGun(Kongs.diddy) or (l.settings.free_trade_items and l.HasGun(Kongs.any))),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: True)
     ]),
 
-    Regions.LankyShip: Region("Lanky Ship", "Shipyard Area", Levels.GloomyGalleon, False, None, [
+    Regions.LankyShip: Region("Lanky Ship", "Shipyard Outskirts", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonLanky2DoorShip, lambda l: l.islanky or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
@@ -242,7 +242,7 @@ LogicRegions = {
         TransitionFront(Regions.TinyShip, lambda l: l.CanPhaseswim()),
     ]),
 
-    Regions.TinyShip: Region("Tiny Ship", "Shipyard Area", Levels.GloomyGalleon, False, -1, [
+    Regions.TinyShip: Region("Tiny Ship", "Shipyard Outskirts", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonTiny2DoorShip, lambda l: l.istiny or l.settings.free_trade_items, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
@@ -250,7 +250,7 @@ LogicRegions = {
         TransitionFront(Regions.LankyShip, lambda l: l.CanPhaseswim()),
     ]),
 
-    Regions.BongosShip: Region("Bongos Ship", "Shipyard Area", Levels.GloomyGalleon, False, -1, [
+    Regions.BongosShip: Region("Bongos Ship", "5 Door Ship", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonDonkey5DoorShip, lambda l: l.isdonkey or l.settings.free_trade_items, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
@@ -258,21 +258,21 @@ LogicRegions = {
         TransitionFront(Regions.SaxophoneShip, lambda l: l.CanPhaseswim()),
     ]),
 
-    Regions.GuitarShip: Region("Guitar Ship", "Shipyard Area", Levels.GloomyGalleon, False, -1, [
+    Regions.GuitarShip: Region("Guitar Ship", "5 Door Ship", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonDiddy5DoorShip, lambda l: l.isdiddy or l.settings.free_trade_items, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: True, Transitions.GalleonGuitarToShipyard),
     ]),
 
-    Regions.TromboneShip: Region("Trombone Ship", "Shipyard Area", Levels.GloomyGalleon, False, -1, [
+    Regions.TromboneShip: Region("Trombone Ship", "5 Door Ship", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonLanky5DoorShip, lambda l: l.islanky or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: True, Transitions.GalleonTromboneToShipyard),
     ]),
 
-    Regions.SaxophoneShip: Region("Saxophone Ship", "Shipyard Area", Levels.GloomyGalleon, False, -1, [
+    Regions.SaxophoneShip: Region("Saxophone Ship", "5 Door Ship", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonTiny5DoorShip, lambda l: l.istiny or l.settings.free_trade_items),
         LocationLogic(Locations.GalleonBananaFairy5DoorShip, lambda l: l.camera),
     ], [], [
@@ -280,7 +280,7 @@ LogicRegions = {
         TransitionFront(Regions.ShipyardUnderwater, lambda l: True, Transitions.GalleonSaxophoneToShipyard),
     ]),
 
-    Regions.TriangleShip: Region("Triangle Ship", "Shipyard Area", Levels.GloomyGalleon, False, -1, [
+    Regions.TriangleShip: Region("Triangle Ship", "5 Door Ship", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonChunky5DoorShip, lambda l: l.ischunky or l.settings.free_trade_items, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),

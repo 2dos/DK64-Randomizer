@@ -1,13 +1,11 @@
 """Randomize Music passed from Misc options."""
 import gzip
-import json
 import random
-from ast import And
 
 import js
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.SongType import SongType
-from randomizer.Lists.Songs import Song, SongGroup, song_data
+from randomizer.Lists.Songs import Song, song_data
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
@@ -49,9 +47,12 @@ def insertUploaded(uploaded_songs: list, uploaded_song_names: list, target_type:
                     selected_cap = storage_banks[bank]
         if selected_bank is not None:
             song_idx = song_data.index(song)
+            old_bank = (song_data[song_idx].memory >> 1) & 3
+            if old_bank < selected_bank:
+                selected_bank = old_bank  # If vanilla bank is bigger, use the vanilla bank
             # Construct new memory data based on variables
             song_data[song_idx].memory &= 0xFEF9
-            song_data[song_idx].memory |= selected_bank << 1
+            song_data[song_idx].memory |= (selected_bank & 3) << 1
             loop = doesSongLoop(new_song_data)
             loop_val = 0
             if loop:
@@ -78,18 +79,22 @@ def randomize_music(spoiler: Spoiler):
     if js.document.getElementById("override_cosmetics").checked:
         if js.document.getElementById("random_music").checked:
             spoiler.settings.music_bgm_randomized = True
-            spoiler.settings.music_fanfares_randomized = True
+            spoiler.settings.music_majoritems_randomized = True
+            spoiler.settings.music_minoritems_randomized = True
             spoiler.settings.music_events_randomized = True
         else:
             spoiler.settings.music_bgm_randomized = js.document.getElementById("music_bgm_randomized").checked
-            spoiler.settings.music_fanfares_randomized = js.document.getElementById("music_fanfares_randomized").checked
+            spoiler.settings.music_majoritems_randomized = js.document.getElementById("music_majoritems_randomized").checked
+            spoiler.settings.music_majoritems_randomized = js.document.getElementById("music_majoritems_randomized").checked
+            spoiler.settings.music_minoritems_randomized = js.document.getElementById("music_minoritems_randomized").checked
             spoiler.settings.music_events_randomized = js.document.getElementById("music_events_randomized").checked
     else:
         if spoiler.settings.random_music:
             spoiler.settings.music_bgm_randomized = True
-            spoiler.settings.music_fanfares_randomized = True
+            spoiler.settings.music_majoritems_randomized = True
+            spoiler.settings.music_minoritems_randomized = True
             spoiler.settings.music_events_randomized = True
-    if spoiler.settings.music_bgm_randomized or spoiler.settings.music_events_randomized or spoiler.settings.music_fanfares_randomized:
+    if spoiler.settings.music_bgm_randomized or spoiler.settings.music_events_randomized or spoiler.settings.music_majoritems_randomized or spoiler.settings.music_minoritems_randomized:
         sav = spoiler.settings.rom_data
         ROM().seek(sav + 0x12E)
         ROM().write(1)
@@ -142,21 +147,36 @@ def randomize_music(spoiler: Spoiler):
                 # Update data
                 ROM().seek(0x1FFF000 + (song["index"] * 2))
                 ROM().writeMultipleBytes(song_data[rap["index"]].memory, 2)
-    # If the user wants to randomize fanfares
-    if spoiler.settings.music_fanfares_randomized:
+    # If the user wants to randomize major items
+    if spoiler.settings.music_majoritems_randomized:
         if js.cosmetics is not None and js.cosmetic_names is not None:
             # If uploaded, replace some songs with the uploaded songs
-            insertUploaded(list(js.cosmetics.fanfares), list(js.cosmetic_names.fanfares), SongType.Fanfare)
-        # Load the list of fanfares
-        fanfare_list = []
+            insertUploaded(list(js.cosmetics.majoritems), list(js.cosmetic_names.majoritems), SongType.MajorItem)
+        # Load the list of majoritems
+        majoritem_list = []
         for song in song_data:
-            if song.type == SongType.Fanfare:
-                fanfare_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
-        # Shuffle the fanfare list
-        # ShuffleMusicWithSizeCheck(spoiler, fanfare_list)
-        shuffled_music = fanfare_list.copy()
+            if song.type == SongType.MajorItem:
+                majoritem_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+        # Shuffle the majoritem list
+        # ShuffleMusicWithSizeCheck(spoiler, majoritem_list)
+        shuffled_music = majoritem_list.copy()
         random.shuffle(shuffled_music)
-        shuffle_music(spoiler, fanfare_list.copy(), shuffled_music)
+        shuffle_music(spoiler, majoritem_list.copy(), shuffled_music)
+    # If the user wants to randomize minor items
+    if spoiler.settings.music_minoritems_randomized:
+        if js.cosmetics is not None and js.cosmetic_names is not None:
+            # If uploaded, replace some songs with the uploaded songs
+            insertUploaded(list(js.cosmetics.minoritems), list(js.cosmetic_names.minoritems), SongType.MinorItem)
+        # Load the list of minoritems
+        minoritem_list = []
+        for song in song_data:
+            if song.type == SongType.MinorItem:
+                minoritem_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+        # Shuffle the minoritem list
+        # ShuffleMusicWithSizeCheck(spoiler, minoritem_list)
+        shuffled_music = minoritem_list.copy()
+        random.shuffle(shuffled_music)
+        shuffle_music(spoiler, minoritem_list.copy(), shuffled_music)
 
     # If the user wants to randomize events
     if spoiler.settings.music_events_randomized:
@@ -196,16 +216,6 @@ def shuffle_music(spoiler: Spoiler, pool_to_shuffle, shuffled_list):
         new_bytes = ROM().readBytes(4)
         stored_song_sizes[song["index"]] = new_bytes
 
-    # Second loop over all songs to write data into ROM
-    # test0 = []
-    # test1 = []
-    # for x in range(len(pool_to_shuffle)):
-    #     test0.append({
-    #         "vanilla": pool_to_shuffle[x]["index"],
-    #         "shuffled": shuffled_list[x]["index"]
-    #     })
-    # print(test0)
-
     for song in pool_to_shuffle:
         shuffled_song = shuffled_list[pool_to_shuffle.index(song)]
         songs = stored_song_data[shuffled_song["index"]]
@@ -222,8 +232,9 @@ def shuffle_music(spoiler: Spoiler, pool_to_shuffle, shuffled_list):
         ROM().writeMultipleBytes(memory, 2)
         if song_data[originalIndex].type == SongType.BGM:
             spoiler.music_bgm_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
-        elif song_data[originalIndex].type == SongType.Fanfare:
-            spoiler.music_fanfare_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
+        elif song_data[originalIndex].type == SongType.MajorItem:
+            spoiler.music_majoritem_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
+        elif song_data[originalIndex].type == SongType.MinorItem:
+            spoiler.music_minoritem_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
         elif song_data[originalIndex].type == SongType.Event:
             spoiler.music_event_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
-        # print(f"Vanilla Index {originalIndex}: Song {shuffledIndex}")

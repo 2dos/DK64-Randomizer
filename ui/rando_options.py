@@ -508,7 +508,7 @@ def disable_music(evt):
     disabled = False
     if js.document.getElementById("random_music").checked:
         disabled = True
-    for i in ["bgm", "fanfares", "events"]:
+    for i in ["bgm", "majoritems", "minoritems", "events"]:
         music = js.document.getElementById(f"music_{i}_randomized")
         try:
             if disabled:

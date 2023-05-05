@@ -481,7 +481,7 @@ def compileHints(spoiler: Spoiler):
             valid_types.append(HintType.Entrance)
 
         # Dynamically calculate the number of key hints that need to be placed per key. Any WotH keys should have paths that we should hint.
-        if len(woth_key_ids) > 0:
+        if spoiler.settings.shuffle_items and len(woth_key_ids) > 0:
             valid_types.append(HintType.RequiredKeyHint)
             # Only hint keys that are in the Way of the Hoard
             for key_id in woth_key_ids:
@@ -1078,15 +1078,35 @@ def compileHints(spoiler: Spoiler):
     # Foolish Region hints state that a hint region is foolish. Useful in item rando.
     # Foolish regions contain no major items that would block any amount of progression, even non-required progression
     if hint_distribution[HintType.FoolishRegion] > 0:
+        # Determine how many locations are contained in the foolish regions
+        total_foolish_location_score = 0
+        foolish_region_location_score = {}
+        for foolish_name in spoiler.foolish_region_names:
+            foolish_location_score = 0
+            shops_in_region = 0
+            regions_in_region = [region for region in RegionList.values() if region.hint_name == foolish_name]
+            for region in regions_in_region:
+                foolish_location_score += len([loc for loc in region.locations if not LocationList[loc.id].inaccessible and LocationList[loc.id].type in spoiler.settings.shuffled_location_types])
+                if region.level == Levels.Shops:
+                    shops_in_region += 1
+            if "Medal Rewards" in foolish_name:  # "Medal Rewards" regions are cb foolish hints, which are just generally more valuable to hint foolish
+                foolish_location_score += 3
+            elif shops_in_region > 0:  # Shops are generally overvalued (4/6 locations per shop) with this method due to having mutually exclusive locations
+                foolish_location_score -= 1 * shops_in_region  # With smaller shops, this reduces the location count to 3 locations per shop
+            foolish_location_score = foolish_location_score**1.25  # Exponentiation of this score puts additional emphasis (but not too much) on larger regions
+            total_foolish_location_score += foolish_location_score
+            foolish_region_location_score[foolish_name] = foolish_location_score
         random.shuffle(spoiler.foolish_region_names)
         for i in range(hint_distribution[HintType.FoolishRegion]):
             # If you run out of foolish regions (maybe in an all medals run?) - this *should* be covered by the distribution earlier but this is a good failsafe
-            if len(spoiler.foolish_region_names) == 0:
+            if len(spoiler.foolish_region_names) == 0 or sum(foolish_region_location_score.values()) == 0:  # You can either expend the whole list or run out of eligible regions
                 # Replace remaining move hints with WotH location hints, sounds like you'll need them
                 hint_distribution[HintType.FoolishRegion] -= 1
                 hint_distribution[HintType.WothLocation] += 1
                 continue
-            hinted_region_name = spoiler.foolish_region_names.pop()
+            hinted_region_name = random.choices(list(foolish_region_location_score.keys()), foolish_region_location_score.values())[0]  # Weighted random choice from list of foolish region names
+            spoiler.foolish_region_names.remove(hinted_region_name)
+            del foolish_region_location_score[hinted_region_name]
             hint_location = getRandomHintLocation()
             level_color = "\x05"
             for region_id in Regions:
@@ -1146,7 +1166,7 @@ def compileHints(spoiler: Spoiler):
     # We must hint each of Japes, Aztec, and Factory at least once
     # The rest of the hints are tied to a variety of important locations
     if hint_distribution[HintType.Entrance] > 0:
-        criticalJapesRegions = [Regions.JungleJapesMain, Regions.JapesBeyondFeatherGate, Regions.TinyHive, Regions.JapesLankyCave, Regions.Mine]
+        criticalJapesRegions = [Regions.JungleJapesStart, Regions.JungleJapesMain, Regions.JapesBeyondFeatherGate, Regions.TinyHive, Regions.JapesLankyCave, Regions.Mine]
         criticalAztecRegions = [Regions.AngryAztecStart, Regions.AngryAztecOasis, Regions.AngryAztecMain]
         criticalFactoryRegions = [Regions.FranticFactoryStart, Regions.ChunkyRoomPlatform, Regions.PowerHut, Regions.BeyondHatch, Regions.InsideCore]
         usefulRegions = [
@@ -1430,7 +1450,7 @@ def compileMicrohints(spoiler: Spoiler):
 def AddLoadingZoneHints(spoiler: Spoiler):
     """Add hints for loading zone transitions and their destinations."""
     # One hint for each of the critical areas: Japes, Aztec, Factory
-    criticalJapesRegions = [Regions.JungleJapesMain, Regions.JapesBeyondFeatherGate, Regions.TinyHive, Regions.JapesLankyCave, Regions.Mine]
+    criticalJapesRegions = [Regions.JungleJapesStart, Regions.JungleJapesMain, Regions.JapesBeyondFeatherGate, Regions.TinyHive, Regions.JapesLankyCave, Regions.Mine]
     criticalAztecRegions = [Regions.AngryAztecStart, Regions.AngryAztecOasis, Regions.AngryAztecMain]
     criticalFactoryRegions = [Regions.FranticFactoryStart, Regions.ChunkyRoomPlatform, Regions.PowerHut, Regions.BeyondHatch, Regions.InsideCore]
     japesHintEntrances = [entrance for entrance, back in spoiler.shuffled_exit_data.items() if back.regionId in criticalJapesRegions]

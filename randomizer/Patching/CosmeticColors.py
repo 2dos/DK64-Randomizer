@@ -524,9 +524,10 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
     width, height = im_f.size
     bytes_array = []
     border = 1
+    right_border = 3
     for y in range(height):
         for x in range(width):
-            if transparent_border and ((x < border) or (y < border) or (x >= (width - border)) or (y >= (height - border))):
+            if transparent_border and ((x < border) or (y < border) or (x >= (width - border)) or (y >= (height - border))) or (x == (width - right_border)):
                 pix_data = [0, 0, 0, 0]
             else:
                 pix_data = list(pix[x, y])
@@ -1685,6 +1686,76 @@ def applyHolidayMode(spoiler: Spoiler):
             ROM().writeBytes(byte_data)
 
 
+def updateMillLeverTexture(spoiler: Spoiler):
+    """Update the 21132 texture."""
+    if spoiler.settings.mill_levers[0] > 0:
+        # Get Number bounds
+        base_num_texture = getFile(table_index=25, file_index=0x7CA, compressed=True, width=64, height=32, format=TextureFormat.RGBA5551)
+        number_textures = [None, None, None]
+        number_x_bounds = (
+            (18, 25),
+            (5, 16),
+            (36, 47),
+        )
+        modified_tex = getFile(table_index=25, file_index=0x7CA, compressed=True, width=64, height=32, format=TextureFormat.RGBA5551)
+        for tex in range(3):
+            number_textures[tex] = base_num_texture.crop((number_x_bounds[tex][0], 7, number_x_bounds[tex][1], 25))
+        total_width = 0
+        for x in range(5):
+            if spoiler.settings.mill_levers[x] > 0:
+                idx = spoiler.settings.mill_levers[x] - 1
+                total_width += number_x_bounds[idx][1] - number_x_bounds[idx][0]
+        # Overwrite old panel
+        overwrite_panel = Image.new(mode="RGBA", size=(58, 26), color=(131, 65, 24))
+        modified_tex.paste(overwrite_panel, (3, 3), overwrite_panel)
+        # Generate new number texture
+        new_num_texture = Image.new(mode="RGBA", size=(total_width, 18))
+        x_pos = 0
+        for num in range(5):
+            if spoiler.settings.mill_levers[num] > 0:
+                num_val = spoiler.settings.mill_levers[num] - 1
+                new_num_texture.paste(number_textures[num_val], (x_pos, 0), number_textures[num_val])
+                x_pos += number_x_bounds[num_val][1] - number_x_bounds[num_val][0]
+        scale_x = 58 / total_width
+        scale_y = 26 / 18
+        scale = min(scale_x, scale_y)
+        x_size = int(total_width * scale)
+        y_size = int(18 * scale)
+        new_num_texture = new_num_texture.resize((x_size, y_size))
+        x_offset = int((58 - x_size) / 2)
+        modified_tex.paste(new_num_texture, (3 + x_offset, 3), new_num_texture)
+        writeColorImageToROM(modified_tex, 25, 0x7CA, 64, 32, False, TextureFormat.RGBA5551)
+
+
+def updateCryptLeverTexture(spoiler: Spoiler):
+    """Update the two textures for Donkey Minecart entry."""
+    if spoiler.settings.crypt_levers[0] > 0:
+        # Get a blank texture
+        texture_0 = getFile(table_index=25, file_index=0x999, compressed=True, width=32, height=64, format=TextureFormat.RGBA5551)
+        blank = texture_0.crop((8, 5, 23, 22))
+        texture_0.paste(blank, (8, 42), blank)
+        texture_1 = texture_0.copy()
+        for xi, x in enumerate(spoiler.settings.crypt_levers):
+            corrected = x - 1
+            y_slot = corrected % 3
+            num = getNumberImage(xi + 1)
+            num = num.transpose(Image.FLIP_TOP_BOTTOM)
+            w, h = num.size
+            scale = 2 / 3
+            y_offset = int((h * scale) / 2)
+            x_offset = int((w * scale) / 2)
+            num = num.resize((int(w * scale), int(h * scale)))
+            y_pos = (51, 33, 14)
+            tl_y = y_pos[y_slot] - y_offset
+            tl_x = 16 - x_offset
+            if corrected < 3:
+                texture_0.paste(num, (tl_x, tl_y), num)
+            else:
+                texture_1.paste(num, (tl_x, tl_y), num)
+        writeColorImageToROM(texture_0, 25, 0x99A, 32, 64, False, TextureFormat.RGBA5551)
+        writeColorImageToROM(texture_1, 25, 0x999, 32, 64, False, TextureFormat.RGBA5551)
+
+
 boot_phrases = (
     "Removing Lanky Kong",
     "Telling 2dos to play DK64",
@@ -1747,7 +1818,10 @@ boot_phrases = (
     "Loading in Beavers",
     "Lifting Boulders with Relative Ease",
     "Doing Monkey Science Probably",
-    "Telling Killklli to eventually play DK64",
+    "Telling Killi to eventually play DK64",
+    "Crediting Grant Kirkhope",
+    "Dropping Crayons",
+    "Saying Hello when others wont",
 )
 
 

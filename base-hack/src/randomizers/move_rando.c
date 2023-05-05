@@ -420,11 +420,26 @@ void purchaseMove(shop_paad* paad) {
 			if (paad->flag == -2) {
 				setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, FLAGTYPE_PERMANENT);
 				setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, FLAGTYPE_PERMANENT);
+				if (CollectableBase.Film < 10) {
+					CollectableBase.Film = 10;
+				}
+				if (CollectableBase.Crystals < (10*150)) {
+					CollectableBase.Crystals = 10*150;
+				}
 			} else if ((paad->flag >= FLAG_FAKEITEM) && (paad->flag < (FLAG_FAKEITEM + 0x10))) {
 				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
 				queueIceTrap();
 			} else {
 				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
+				if (paad->flag == FLAG_ABILITY_CAMERA) {
+                    if (CollectableBase.Film < 10) {
+						CollectableBase.Film = 10;
+					}
+                } else if (paad->flag == FLAG_ABILITY_SHOCKWAVE) {
+                    if (CollectableBase.Crystals < (10*150)) {
+						CollectableBase.Crystals = 10*150;
+					}
+                }
 			}
 		break;
 	}
@@ -507,6 +522,12 @@ void setLocation(purchase_struct* purchase_data) {
 			// BFI Coupled Moves
 			setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,1,FLAGTYPE_PERMANENT);
 			setFlagDuplicate(FLAG_ABILITY_CAMERA,1,FLAGTYPE_PERMANENT);
+			if (CollectableBase.Film < 10) {
+				CollectableBase.Film = 10;
+			}
+			if (CollectableBase.Crystals < (10*150)) {
+				CollectableBase.Crystals = 10*150;
+			}
 		} else if ((p_type == PURCHASE_FLAG) && (isFlagInRange(purchase_data->purchase_value, FLAG_FAKEITEM, 0x10))) {
 			setFlagDuplicate(purchase_data->purchase_value,1,FLAGTYPE_PERMANENT);
 			queueIceTrap();
@@ -514,6 +535,15 @@ void setLocation(purchase_struct* purchase_data) {
 			// IsFlag
 			progressiveChange(purchase_data->purchase_value);
 			setFlagDuplicate(purchase_data->purchase_value,1,FLAGTYPE_PERMANENT);
+			if (purchase_data->purchase_value == FLAG_ABILITY_CAMERA) {
+				if (CollectableBase.Film < 10) {
+					CollectableBase.Film = 10;
+				}
+			} else if (purchase_data->purchase_value == FLAG_ABILITY_SHOCKWAVE) {
+				if (CollectableBase.Crystals < (10*150)) {
+					CollectableBase.Crystals = 10*150;
+				}
+			}
 		} else if (p_type == PURCHASE_GB) {
 			// IsFlag + GB Update
 			if (!checkFlagDuplicate(purchase_data->purchase_value, FLAGTYPE_PERMANENT)) {

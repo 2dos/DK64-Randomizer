@@ -30,6 +30,12 @@ void GrabParameters_Global(int index, int level, short* file_base, char* bit_siz
     *file_base = (((((((*(short*)(0x807ECEA0) + getNewFileSize()) & 0xFFC0) + 0x27) & 0xFFF8) * FILE_COUNT) + 0x3F) & 0xFFC0) + 0x40;
     *bit_size = 0;
     switch (index) {
+        case DATA_FILENAME:
+            if (*bit_size == 0) {
+                *bit_size = LETTER_BITS;
+                *file_base = *file_base + (level * LETTER_BITS);
+            }
+            *file_base = *file_base + (IGT_BITS * 5);
         case DATA_KONGIGT:
             if (*bit_size == 0) {
                 *bit_size = IGT_BITS;
@@ -168,8 +174,10 @@ void updatePercentageKongStat(void) {
         if (Player) {
             current_kong = Player->characterID - 2;
         }
-        int old = ReadFile(DATA_KONGIGT, 0, current_kong, 0);
-        SaveToFile(DATA_KONGIGT, 0, current_kong, 0, old + current_kong_diff);
+        if (current_kong <= 4) {
+            int old = ReadFile(DATA_KONGIGT, 0, current_kong, 0);
+            SaveToFile(DATA_KONGIGT, 0, current_kong, 0, old + current_kong_diff);
+        }
         for (int i = 0; i < 5; i++) {
             *(int*)(0x807FF700 + (i << 2)) = ReadFile(DATA_KONGIGT, 0, i, 0);
         }
@@ -179,7 +187,7 @@ void updatePercentageKongStat(void) {
 
 
 void updateTagStat(void* data) {
-    if (isGamemode(6, 1) && (canSaveHelmHurry())) {
+    if (isGamemode(GAMEMODE_ADVENTURE, 1) && (canSaveHelmHurry())) {
         changeStat(STAT_TAGCOUNT, 1);
         updatePercentageKongStat();
         SaveToGlobal();

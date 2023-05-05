@@ -189,6 +189,7 @@ extern void updateObjectScript(void* behaviour_pointer);
 extern void executeBehaviourScript(void* behaviour_pointer, int unk0);
 extern void* loadCounterFontTexture(int texture_base, void* write_location, int position, int texture_offset, int width);
 extern void delayedObjectModel2Change(maps map, int model2_id, int state);
+extern int isObjectLoadedInMap(maps map, int model2_id, int state);
 extern void cycleRNG(void);
 extern void voidWarp(void);
 extern void setToeTexture(void* actor, int data);
@@ -359,6 +360,7 @@ extern void unkProjectileCode_3(void* actor, int unk0);
 extern void unkProjectileCode_4(void* actor, int sfx, int unk0, int unk1, int unk2);
 
 extern void wipeGlobalFlags(void);
+extern void setIntroStoryPlaying(int value);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -483,6 +485,8 @@ extern char TransitionType;
 extern char DKTVKong;
 extern cutsceneType CutsceneBanks[2];
 extern int EEPROMType;
+extern unsigned char ReverseMillLeverOrder[5];
+extern unsigned char ReverseCryptLeverOrder[3];
 
 extern short MapVoid_MinX;
 extern short MapVoid_MinZ;
@@ -533,6 +537,7 @@ extern purchase_struct FunkyMoves[5][7];
 extern short LobbiesArray[8];
 extern short WorldArray[8];
 extern short WorldExitArray[8];
+extern short WorldCutsceneArray[8];
 extern race_exit_struct RaceExitArray[8];
 
 extern short BossMapArray[8];

@@ -322,7 +322,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.RandD,
         logic=lambda l: l.grab and l.donkey,
-        locations=[[5, 1.0, 4053, 1315, 784]],
+        locations=[[5, 1.0, 4053, 1313, 784]],
     ),
     ColoredBananaGroup(
         group=31,

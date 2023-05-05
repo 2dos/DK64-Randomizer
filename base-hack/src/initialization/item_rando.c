@@ -185,6 +185,9 @@ void initItemRando(void) {
 
     writeFunction(0x806F6350, &getObjectCollectability); // Modify Function Call
     writeFunction(0x8070E1F0, &handleDynamicItemText); // Handle Dynamic Text Item Name
+    if (ENABLE_FILENAME) {
+        writeFunction(0x8070E1BC, &handleFilename); // Handle Filename
+    }
 
     writeFunction(0x806A7AEC, &BalloonShoot); // Balloon Shoot Hook
     // Rainbow Coins

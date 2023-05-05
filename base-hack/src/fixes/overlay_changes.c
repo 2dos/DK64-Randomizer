@@ -131,6 +131,7 @@ void HandleArcadeVictory(void) {
 	12 - Nintendo Coin
 	13 - Melon
 */
+
 #define ARCADE_IMAGE_COUNT 22
 
 void* getFile(int size, int rom) {
@@ -156,6 +157,33 @@ void* getPointerFile(int table, int file) {
 	int file_end = table_loc[1] + ptr_offset;
 	int file_size = file_end - file_start;
 	return getFile(file_size, file_start);
+}
+
+void PatchCrankyCode(void) {
+	loadSingularHook(0x800260E0, &CrankyDecouple);
+	loadSingularHook(0x800260A8, &ForceToBuyMoveInOneLevel);
+	*(int*)(0x80026160) = 0;
+	loadSingularHook(0x80026140, &PriceKongStore);
+	loadSingularHook(0x80025FC0, &CharacterCollectableBaseModify);
+	loadSingularHook(0x800260F0, &SetMoveBaseBitfield);
+	loadSingularHook(0x8002611C, &SetMoveBaseProgressive);
+	if (CurrentMap == MAP_CRANKY) {
+		int timer = 300;
+		*(short*)(0x80027B72) = timer;
+		*(short*)(0x80027BCA) = timer;
+		*(short*)(0x80027BFA) = timer;
+		loadSingularHook(0x80026EFC, &CrankyCoconutDonation);
+	} else {
+		loadSingularHook(0x80027AE8, &FixInvisibleText_0);
+		loadSingularHook(0x80027B30, &FixInvisibleText_1);
+	}
+	loadSingularHook(0x80026924, &AlwaysCandyInstrument);
+	*(short*)(0x80026072) = getHi(&CrankyMoves_New);
+	*(short*)(0x8002607A) = getLo(&CrankyMoves_New);
+	*(short*)(0x8002607E) = getHi(&CandyMoves_New);
+	*(short*)(0x80026086) = getLo(&CandyMoves_New);
+	*(short*)(0x8002608A) = getHi(&FunkyMoves_New);
+	*(short*)(0x8002608E) = getLo(&FunkyMoves_New);
 }
 
 void initArcade(void) {
@@ -457,6 +485,13 @@ void parseCutsceneData(void) {
 	if (Rando.quality_of_life.fast_hints) {
 		modifyCutscenePointTime(1, 0x22, 1, 1);
 		modifyCutscenePointTime(1, 0x22, 3, 1);
+	}
+	if ((Rando.fast_gbs) && (CurrentMap == MAP_CASTLEMINECART)) {
+		int rx = 8931;
+		int ry = 0;
+		int rz = 7590;
+		modifyCutscenePanPoint(0, 7, 0, 3100, 500, 500, rx, ry, rz, 45, 0);
+		modifyCutscenePanPoint(0, 7, 1, 3200, 500, 500, rx, ry, rz, 45, 0);
 	}
 	loadDKTVData(); // Has to be last
 }

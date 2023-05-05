@@ -31,7 +31,7 @@ class CrownLocation:
 CrownLocations = {
     Levels.JungleJapes: [
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Near Funky", x=1989.7, y=520, z=2086.71, scale=0.45, region=Regions.JungleJapesMain, is_vanilla=True),
-        CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: On Tree (Starting Area)", x=1101, y=478, z=266, scale=0.25, region=Regions.JungleJapesMain),
+        CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: On Tree (Starting Area)", x=1101, y=478, z=266, scale=0.25, region=Regions.JungleJapesStart),
         CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Diddy Cavern", x=2381, y=280, z=392, scale=0.35, region=Regions.JapesBeyondPeanutGate),
         CrownLocation(
             map=Maps.JungleJapes,
@@ -75,10 +75,10 @@ CrownLocations = {
         #     y=280,
         #     z=1143,
         #     scale=0.4,
-        #     region=Regions.JungleJapesMain,
+        #     region=Regions.JungleJapesStart,
         # ),
-        CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Lower River", x=2381, y=280, z=1685, scale=0.45, region=Regions.JungleJapesMain),
-        # CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Starting Area (Low)", x=742, y=286, z=825, scale=0.35, region=Regions.JungleJapesMain),
+        CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Lower River", x=2381, y=280, z=1685, scale=0.45, region=Regions.JungleJapesStart),
+        # CrownLocation(map=Maps.JungleJapes, name="Jungle Japes: Starting Area (Low)", x=742, y=286, z=825, scale=0.35, region=Regions.JungleJapesStart),
         CrownLocation(map=Maps.JapesUnderGround, name="Jungle Japes - Underground: Behind Cannon", x=433, y=20, z=104, scale=0.25, region=Regions.JapesCatacomb),
         CrownLocation(map=Maps.JapesUnderGround, name="Jungle Japes - Underground: Near Vines", x=453, y=20, z=814, scale=0.35, region=Regions.JapesCatacomb),
         CrownLocation(map=Maps.JapesLankyCave, name="Jungle Japes - Painting Room: Near Peg", x=100, y=80, z=346, scale=0.3, region=Regions.JapesLankyCave),

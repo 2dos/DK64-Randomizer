@@ -51,7 +51,8 @@ class Spoiler:
         self.shuffled_exit_data = {}
         self.shuffled_exit_instructions = []
         self.music_bgm_data = {}
-        self.music_fanfare_data = {}
+        self.music_majoritem_data = {}
+        self.music_minoritem_data = {}
         self.music_event_data = {}
         self.location_data = {}
         self.enemy_replacements = []
@@ -241,7 +242,7 @@ class Spoiler:
             humanspoiler["End Game"]["Coin Door Item"] = self.settings.coin_door_item.name
             humanspoiler["End Game"]["Coin Door Item Amount"] = self.settings.coin_door_item_count
         if self.settings.shuffle_items:
-            humanspoiler["Item Pool"] = [enum.name for enum in self.settings.shuffled_location_types]
+            humanspoiler["Item Pool"] = list(set([enum.name for enum in self.settings.shuffled_location_types]))
         humanspoiler["Items"] = {
             "Kongs": {},
             "Shops": {},
@@ -316,7 +317,7 @@ class Spoiler:
         self.pregiven_items = []
         for location_id, location in LocationList.items():
             # No need to spoiler constants or hints
-            if location.type == Types.Constant or location.type == Types.Hint:
+            if location.type == Types.Constant or location.type == Types.Hint or location.inaccessible:
                 continue
             if location_id in PreGivenLocations:
                 self.pregiven_items.append(location.item)
@@ -666,8 +667,10 @@ class Spoiler:
                 humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
         if self.settings.music_bgm_randomized:
             humanspoiler["Cosmetics"]["Background Music"] = self.music_bgm_data
-        if self.settings.music_fanfares_randomized:
-            humanspoiler["Cosmetics"]["Fanfares"] = self.music_fanfare_data
+        if self.settings.music_majoritems_randomized:
+            humanspoiler["Cosmetics"]["Major Item Themes"] = self.music_majoritem_data
+        if self.settings.music_minoritems_randomized:
+            humanspoiler["Cosmetics"]["Minor Item Themes"] = self.music_minoritem_data
         if self.settings.music_events_randomized:
             humanspoiler["Cosmetics"]["Event Themes"] = self.music_event_data
         self.json = json.dumps(humanspoiler, indent=4)
@@ -723,6 +726,7 @@ class Spoiler:
                     loading_zone_mapping["new_exit"] = GetExitId(shuffledBack)
                     containerMaps[containerMapId]["zones"].append(loading_zone_mapping)
                 except Exception as ex:
+                    print("Exit Update Error with:")
                     print(ex)
         for key, containerMap in containerMaps.items():
             self.shuffled_exit_instructions.append(containerMap)

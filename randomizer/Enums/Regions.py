@@ -34,6 +34,7 @@ class Regions(IntEnum):
 
     # Jungle Japes Regions
     JungleJapesMedals = auto()
+    JungleJapesStart = auto()
     JungleJapesMain = auto()
     JapesBeyondPeanutGate = auto()
     JapesBeyondCoconutGate1 = auto()
