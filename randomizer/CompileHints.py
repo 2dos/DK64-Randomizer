@@ -275,7 +275,7 @@ hint_distribution_default = {
     HintType.TroffNScoff: 0,
     HintType.KongLocation: 1,  # must be placed before you find them and placed in a door of a free kong
     # HintType.MedalsRequired: 1,
-    HintType.Entrance: 8,
+    HintType.Entrance: 6,
     HintType.RequiredKongHint: -1,  # Fixed number based on the number of locked kongs
     HintType.RequiredKeyHint: -1,  # Fixed number based on the number of keys to be obtained over the seed
     HintType.RequiredWinConditionHint: 0,  # Fixed number based on what K. Rool phases you must defeat
