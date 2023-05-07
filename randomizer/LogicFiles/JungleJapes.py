@@ -40,7 +40,7 @@ LogicRegions = {
         TransitionFront(Regions.JapesBaboonBlast, lambda l: (l.vines or l.CanMoonkick()) and l.blast and l.isdonkey),  # , Transitions.JapesMainToBBlast)
     ]),
 
-    Regions.JungleJapesMain: Region("Jungle Japes Main", "Japes Highlands", Levels.JungleJapes, True, None, [
+    Regions.JungleJapesMain: Region("Jungle Japes Main", "Japes Hillside", Levels.JungleJapes, True, None, [
         LocationLogic(Locations.DiddyKong, lambda l: l.CanFreeDiddy()),
         LocationLogic(Locations.JapesDonkeyFrontofCage, lambda l: l.HasKong(l.settings.diddy_freeing_kong) or l.settings.free_trade_items),
         LocationLogic(Locations.JapesDonkeyFreeDiddy, lambda l: Events.JapesFreeKongOpenGates in l.Events),
@@ -67,7 +67,7 @@ LogicRegions = {
         TransitionFront(Regions.BeyondRambiGate, lambda l: l.CanPhaseswim() or l.CanSkew(False) or l.phasewalk or l.generalclips),
     ]),
 
-    Regions.JapesTopOfMountain: Region("Japes Top of Mountain", "Japes Highlands", Levels.JungleJapes, False, None, [
+    Regions.JapesTopOfMountain: Region("Japes Top of Mountain", "Japes Hillside", Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesDiddyMountain, lambda l: Events.JapesDiddySwitch2 in l.Events and (l.isdiddy or l.settings.free_trade_items)),
     ], [
         Event(Events.JapesW5bTagged, lambda l: Locations.JapesDiddyMountain in l.SpecialLocationsReached),
