@@ -42,7 +42,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
     """Apply cosmetic skins to kongs."""
     model_index = 0
     sav = spoiler.settings.rom_data
-    if js.document.getElementById("override_cosmetics").checked:
+    if js.document.getElementById("override_cosmetics").checked or True:
         model_setting = KlaptrapModel[js.document.getElementById("klaptrap_model").value]
     else:
         model_setting = spoiler.settings.klaptrap_model
@@ -131,7 +131,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
         {"kong": "enguarde", "palettes": [{"name": "base", "image": 3847, "fill_type": "block"}], "base_setting": "enguarde_colors", "custom_setting": "enguarde_custom_color", "kong_index": 6},
     ]
 
-    if js.document.getElementById("override_cosmetics").checked:
+    if js.document.getElementById("override_cosmetics").checked or True:
         if js.document.getElementById("random_colors").checked:
             spoiler.settings.dk_colors = CharacterColors.randomized
             spoiler.settings.diddy_colors = CharacterColors.randomized
