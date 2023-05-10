@@ -120,6 +120,10 @@ void loadHooks(void) {
 	if (Rando.quality_of_life.brighten_mmm_enemies) {
 		loadSingularHook(0x80631380, &brightenMMMEnemies);
 	}
+	if (Rando.krusha_slot >- 1) {
+		loadSingularHook(0x806F97B8, &FixKrushaAmmoHUDColor);
+		loadSingularHook(0x806F97E8, &FixKrushaAmmoHUDSize);
+	}
 }
 
 void initHack(int source) {

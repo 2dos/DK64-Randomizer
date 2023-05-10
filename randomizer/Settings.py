@@ -437,7 +437,7 @@ class Settings:
         self.cb_rando = False
         self.coin_rando = False
         self.crown_placement_rando = False
-        self.override_cosmetics = False
+        self.override_cosmetics = True
         self.random_colors = False
         self.hard_level_progression = False
         self.hard_blockers = False
