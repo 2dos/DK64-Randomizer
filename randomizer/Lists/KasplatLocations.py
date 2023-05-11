@@ -87,7 +87,9 @@ KasplatLocationList = {
             kong_lst=[Kongs.chunky],
             coords=[427, 20, 456],
             region=Regions.JapesCatacomb,
-            additional_logic=lambda l: (l.pineapple and l.vines),
+            additional_logic=lambda l: (l.vines and l.pineapple and l.ischunky)
+            or (((l.twirl and l.istiny) or (l.isdonkey and l.settings.krusha_kong != Kongs.donkey)) and l.advanced_platforming and l.settings.free_trade_items)
+            or l.phasewalk,
             vanilla=True,
         ),
         KasplatLocation(
@@ -662,7 +664,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[1308, 1610, 2794],
             region=Regions.GalleonBeyondPineappleGate,
-            additional_logic=lambda l: Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky)),
+            additional_logic=lambda l: l.CanGetOnCannonGamePlatform(),
             vanilla=True,
         ),
         KasplatLocation(

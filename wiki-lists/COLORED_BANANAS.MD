@@ -215,7 +215,8 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | At DK Portal before W1 | 5 | l.vines | 
-| First tunnel (5 custom, 5 Chunky) | 10 |  | 
+| First tunnel (5 custom, 5 Chunky) | 9 |  | 
+| First tunnel (5 custom, 5 Chunky) | 1 | l.vines | 
 | On DK BP archway | 10 | l.coconut and l.strongKong | 
 | First tunnel (5 custom, 5 Lanky) | 10 |  | 
 | Singles all around oasis (17 custom, 3 Donkey) | 20 |  | 
@@ -1080,7 +1081,7 @@
 | By night gate (Chunky) | 5 |  | 
 | Diddy BP floor | Balloon |  | 
 | Oranges level | Balloon |  | 
-| Top of giant mushroom (Lanky) | Balloon |  | 
+| Top of giant mushroom interior (Lanky) | Balloon |  | 
 | Bottom of giant mushroom (Lanky) | Balloon |  | 
 </details>
 <details>
