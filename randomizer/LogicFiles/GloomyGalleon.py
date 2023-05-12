@@ -138,7 +138,7 @@ LogicRegions = {
     ]),
 
     Regions.SickBay: Region("Sick Bay", "Lighthouse Area", Levels.GloomyGalleon, False, -1, [
-        LocationLogic(Locations.GalleonChunkySeasick, lambda l: (l.punch or (l.phasewalk and l.advanced_platforming)) and l.ischunky),
+        LocationLogic(Locations.GalleonChunkySeasick, lambda l: (l.punch and l.ischunky)),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.LighthousePlatform, lambda l: True, Transitions.GalleonSickBayToLighthouseArea),
