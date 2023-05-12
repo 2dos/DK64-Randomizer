@@ -87,9 +87,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.chunky],
             coords=[427, 20, 456],
             region=Regions.JapesCatacomb,
-            additional_logic=lambda l: (l.vines and l.pineapple and l.ischunky)
-            or (((l.twirl and l.istiny) or (l.isdonkey and l.settings.krusha_kong != Kongs.donkey)) and l.advanced_platforming and l.settings.free_trade_items)
-            or l.phasewalk,
+            additional_logic=lambda l: (l.vines and l.pineapple and l.ischunky) or (l.vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk,
             vanilla=True,
         ),
         KasplatLocation(

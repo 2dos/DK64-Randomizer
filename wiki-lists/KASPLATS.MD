@@ -11,7 +11,7 @@
 | Jungle Japes | Japes Kasplat: Beehive Area |  | 
 | Jungle Japes | Japes Kasplat: Lower area of Tunnel to Beehive |  | 
 | Jungle Japes | Japes Kasplat: Upper area of Tunnel to Beehive |  | 
-| Japes Under Ground | Japes Kasplat: Underground | (l.vines and l.pineapple and l.ischunky) | 
+| Japes Under Ground | Japes Kasplat: Underground | (l.vines and l.pineapple and l.ischunky) or (l.vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk | 
 | Jungle Japes | Japes Kasplat: Near Speedy Swing Sortie Bonus |  | 
 | Jungle Japes | Japes Kasplat: Near Painting Room |  | 
 | Jungle Japes | Japes Kasplat: Inside Tiny's Cage | (Events.Rambi in l.Events and l.CanSlamSwitch(Levels.JungleJapes, 1) and l.tiny) or l.phasewalk or l.CanPhaseswim() | 
