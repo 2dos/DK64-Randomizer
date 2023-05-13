@@ -263,7 +263,7 @@ LocationList = {
     Locations.AztecDiddyFreeTiny: Location(Levels.AngryAztec, "Aztec Free Tiny Item", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, 0x5B, 67, Kongs.diddy)]),  # Can be assigned to other kongs
     Locations.AztecLankyVulture: Location(Levels.AngryAztec, "Aztec Lanky Vulture Shooting", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 68, Kongs.lanky)]),
     Locations.AztecBattleArena: Location(Levels.AngryAztec, "Aztec Battle Arena", Items.BattleCrown, Types.Crown, Kongs.any, [MapIDCombo(Maps.AztecCrown, -1, 610)]),
-    Locations.AztecDonkeyQuicksandCave: Location(Levels.AngryAztec, "Aztec Donkey Quicksand Cave Barrel", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(0, -1, 62, Kongs.donkey)], logically_relevant=True),
+    Locations.AztecDonkeyQuicksandCave: Location(Levels.AngryAztec, "Aztec Donkey Sealed Quicksand Tunnel Barrel", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(0, -1, 62, Kongs.donkey)], logically_relevant=True),
     Locations.AztecDiddyRamGongs: Location(Levels.AngryAztec, "Aztec Diddy Ram Gongs", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(Maps.AngryAztec, 0xA3, 54, Kongs.diddy)]),
     Locations.AztecDiddyVultureRace: Location(Levels.AngryAztec, "Aztec Diddy Vulture Race", Items.GoldenBanana, Types.ToughBanana, Kongs.diddy, [MapIDCombo(Maps.AngryAztec, 0xEB, 63, Kongs.diddy)]),
     Locations.AztecChunkyCagedBarrel: Location(Levels.AngryAztec, "Aztec Chunky Giant Caged Barrel", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(0, -1, 52, Kongs.chunky)]),

@@ -59,13 +59,13 @@
 | Angry Aztec | Angry Aztec: Near Llama Temple (Left) |  | 
 | Angry Aztec | Angry Aztec: Near Llama Temple (Right) |  | 
 | Angry Aztec | Angry Aztec: On Llama Temple | (l.jetpack and l.diddy) or l.CanMoonkick() | 
-| Angry Aztec | Angry Aztec: Near Snoop Tunnel Shop |  | 
+| Angry Aztec | Angry Aztec: Near Sealed Quicksand Tunnel Shop |  | 
 | Angry Aztec | Angry Aztec: On 5-Door Temple | (l.jetpack and l.diddy) or l.CanMoonkick() | 
-| Angry Aztec | Angry Aztec: Near Snoop Tunnel Exterior Warp |  | 
+| Angry Aztec | Angry Aztec: Near Sealed Quicksand Tunnel Exterior Warp |  | 
 | Angry Aztec | Angry Aztec: Near Vulture Cage | l.vines or (l.jetpack and l.diddy)) | 
 | Angry Aztec | Angry Aztec: Under Vulture Cage |  | 
 | Angry Aztec | Angry Aztec: Near Gong Tower |  | 
-| Angry Aztec | Angry Aztec: Snoop Tunnel |  | 
+| Angry Aztec | Angry Aztec: Sealed Quicksand Tunnel |  | 
 | Aztec Donkey5DTemple | Angry Aztec - DK 5DT: Dead End | (l.coconut and l.isdonkey) or l.phasewalk | 
 | Aztec Diddy5DTemple | Angry Aztec - Diddy 5DT: Dead End | (l.peanut and l.isdiddy) or l.phasewalk | 
 | Aztec Lanky5DTemple | Angry Aztec - Lanky 5DT: Dead End | (l.grape and l.islanky) or l.phasewalk | 

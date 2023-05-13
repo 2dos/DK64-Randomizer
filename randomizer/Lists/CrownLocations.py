@@ -160,15 +160,15 @@ CrownLocations = {
         CrownLocation(
             map=Maps.AngryAztec, name="Angry Aztec: On Llama Temple", x=2884, y=437, z=2903, scale=0.4, region=Regions.AngryAztecMain, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick()
         ),
-        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Snoop Tunnel Shop", x=3000, y=120, z=4532, scale=0.35, region=Regions.AngryAztecMain),
+        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Sealed Quicksand Tunnel Shop", x=3000, y=120, z=4532, scale=0.35, region=Regions.AngryAztecMain),
         CrownLocation(
             map=Maps.AngryAztec, name="Angry Aztec: On 5-Door Temple", x=2056, y=420, z=3648, scale=0.3, region=Regions.AngryAztecMain, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick()
         ),
-        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Snoop Tunnel Exterior Warp", x=3422, y=120, z=4514, scale=0.35, region=Regions.AngryAztecMain),
+        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Sealed Quicksand Tunnel Exterior Warp", x=3422, y=120, z=4514, scale=0.35, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Vulture Cage", x=4013, y=226, z=4589, scale=0.18, region=Regions.AngryAztecMain, logic=lambda l: l.vines or (l.jetpack and l.diddy)),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Under Vulture Cage", x=4102, y=120, z=4548, scale=0.4, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Gong Tower", x=4212, y=80, z=2959, scale=0.4, region=Regions.AngryAztecMain),
-        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Snoop Tunnel", x=2783, y=120, z=4817, scale=0.35, region=Regions.AztecDonkeyQuicksandCave),
+        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Sealed Quicksand Tunnel", x=2783, y=120, z=4817, scale=0.35, region=Regions.AztecDonkeyQuicksandCave),
         CrownLocation(
             map=Maps.AztecDonkey5DTemple, name="Angry Aztec - DK 5DT: Dead End", x=99, y=20, z=464, scale=0.4, region=Regions.DonkeyTemple, logic=lambda l: (l.coconut and l.isdonkey) or l.phasewalk
         ),

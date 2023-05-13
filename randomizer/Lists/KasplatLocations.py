@@ -218,7 +218,7 @@ KasplatLocationList = {
     ],
     Levels.AngryAztec: [
         KasplatLocation(
-            name="Aztec Kasplat: In the Stealthy Snoop Tunnel",
+            name="Aztec Kasplat: In the Sealed Quicksand Tunnel",
             map_id=Maps.AngryAztec,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[2738, 120, 4763],

@@ -731,7 +731,7 @@ door_locations = {
             logic=lambda l: True,
         ),
         DoorData(
-            name="Angry Aztec: Strong Kong Tunnel",
+            name="Angry Aztec: in the sealed quicksand tunnel",
             map=Maps.AngryAztec,
             logicregion=Regions.AztecDonkeyQuicksandCave,
             location=[3208.25, 118.0, 4752.0, 225.0],

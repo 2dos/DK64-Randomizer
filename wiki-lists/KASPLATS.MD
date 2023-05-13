@@ -33,7 +33,7 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Angry Aztec | Aztec Kasplat: In the Stealthy Snoop Tunnel |  | 
+| Angry Aztec | Aztec Kasplat: In the Sealed Quicksand Tunnel |  | 
 | Angry Aztec | Aztec Kasplat: On the Oasis |  | 
 | Angry Aztec | Aztec Kasplat: On the Llama's Cage | l.vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick() | 
 | Angry Aztec | Aztec Kasplat: Near the giant boulder |  | 
