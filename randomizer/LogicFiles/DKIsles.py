@@ -228,7 +228,7 @@ LogicRegions = {
 
     Regions.GloomyGalleonLobbyEntrance: Region("Gloomy Galleon Lobby Entrance", "Level Lobbies", Levels.DKIsles, False, None, [], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesGalleonLobbyToMain),
-        TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Transitions.IslesToGalleon),
+        TransitionFront(Regions.GloomyGalleonLobby, lambda l: True),
     ]),
 
     Regions.GloomyGalleonLobby: Region("Gloomy Galleon Lobby", "Japes-Forest Lobbies", Levels.DKIsles, True, None, [
