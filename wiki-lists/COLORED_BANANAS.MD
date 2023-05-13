@@ -272,7 +272,7 @@
 | Around W5 near bonus barrel | 5 |  | 
 | Under Mini Monkey Barrel by Beetle Race Tower (Tiny) | 5 |  | 
 | On oasis treetops (Donkey) | 15 |  | 
-| DK Quicksand cave (Donkey) | 20 | Events.AztecDonkeySwitch in l.Events and l.strongKong | 
+| DK Sealed Quicksand Tunnel (Donkey) | 20 | Events.AztecDonkeySwitch in l.Events and l.strongKong | 
 | DK Blueprint cave (Donkey) | 10 | l.coconut and l.strongKong | 
 | On Melon crate on Llama Temple roof (Diddy) | 5 | l.jetpack | 
 | In sun (Diddy) | 5 | l.jetpack | 
@@ -302,7 +302,7 @@
 | In front of Tiny Temple (Diddy) | Balloon |  | 
 | Behind Llama Temple (Donkey) | Balloon |  | 
 | Near Cranky's Lab (left side) (Donkey) | Balloon |  | 
-| Quicksand cave (Diddy) | Balloon |  | 
+| Sealed Quicksand Tunnel (Diddy) | Balloon |  | 
 </details>
 <details>
 <summary>Aztec Donkey5DTemple</summary>

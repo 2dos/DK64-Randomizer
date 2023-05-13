@@ -1365,7 +1365,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=90,
         map_id=Maps.AngryAztec,
-        name="DK Quicksand cave (Donkey)",
+        name="DK Sealed Quicksand Tunnel (Donkey)",
         konglist=[Kongs.donkey],
         region=Regions.AztecDonkeyQuicksandCave,
         vanilla=True,
@@ -1819,7 +1819,7 @@ BalloonList = [
     Balloon(
         id=38,
         map_id=Maps.AngryAztec,
-        name="Quicksand cave (Diddy)",
+        name="Sealed Quicksand Tunnel (Diddy)",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AztecDonkeyQuicksandCave,
