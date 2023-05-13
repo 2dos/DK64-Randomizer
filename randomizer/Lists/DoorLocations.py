@@ -731,7 +731,7 @@ door_locations = {
             logic=lambda l: True,
         ),
         DoorData(
-            name="Angry Aztec: Strong Kong Tunnel",
+            name="Angry Aztec: in the sealed quicksand tunnel",
             map=Maps.AngryAztec,
             logicregion=Regions.AztecDonkeyQuicksandCave,
             location=[3208.25, 118.0, 4752.0, 225.0],
@@ -1387,10 +1387,22 @@ door_locations = {
             logic=lambda l: True,
         ),
         DoorData(
-            name="Gloomy Galleon: Under Baboon Blast pad", map=Maps.GloomyGalleon, logicregion=Regions.LighthousePlatform, location=[1674.5, 1610.0, 4042.5, 261.15], group=7, logic=lambda l: True
+            name="Gloomy Galleon: Under Baboon Blast pad",
+            map=Maps.GloomyGalleon,
+            logicregion=Regions.LighthousePlatform,
+            location=[1674.5, 1610.0, 4042.5, 261.15],
+            group=7,
+            moveless=False,
+            logic=lambda l: True,
         ),
         DoorData(
-            name="Gloomy Galleon: Under RocketBarrel barrel", map=Maps.GloomyGalleon, logicregion=Regions.LighthousePlatform, location=[1360.0, 1609.0, 4048.0, 86.0], group=7, logic=lambda l: True
+            name="Gloomy Galleon: Under RocketBarrel barrel",
+            map=Maps.GloomyGalleon,
+            logicregion=Regions.LighthousePlatform,
+            location=[1360.0, 1609.0, 4048.0, 86.0],
+            group=7,
+            moveless=False,
+            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Next to Cannonball game",

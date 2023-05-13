@@ -215,7 +215,8 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | At DK Portal before W1 | 5 | l.vines | 
-| First tunnel (5 custom, 5 Chunky) | 10 |  | 
+| First tunnel (5 custom, 5 Chunky) | 9 |  | 
+| First tunnel (5 custom, 5 Chunky) | 1 | l.vines | 
 | On DK BP archway | 10 | l.coconut and l.strongKong | 
 | First tunnel (5 custom, 5 Lanky) | 10 |  | 
 | Singles all around oasis (17 custom, 3 Donkey) | 20 |  | 
@@ -271,7 +272,7 @@
 | Around W5 near bonus barrel | 5 |  | 
 | Under Mini Monkey Barrel by Beetle Race Tower (Tiny) | 5 |  | 
 | On oasis treetops (Donkey) | 15 |  | 
-| DK Quicksand cave (Donkey) | 20 | Events.AztecDonkeySwitch in l.Events and l.strongKong | 
+| DK Sealed Quicksand Tunnel (Donkey) | 20 | Events.AztecDonkeySwitch in l.Events and l.strongKong | 
 | DK Blueprint cave (Donkey) | 10 | l.coconut and l.strongKong | 
 | On Melon crate on Llama Temple roof (Diddy) | 5 | l.jetpack | 
 | In sun (Diddy) | 5 | l.jetpack | 
@@ -301,7 +302,7 @@
 | In front of Tiny Temple (Diddy) | Balloon |  | 
 | Behind Llama Temple (Donkey) | Balloon |  | 
 | Near Cranky's Lab (left side) (Donkey) | Balloon |  | 
-| Quicksand cave (Diddy) | Balloon |  | 
+| Sealed Quicksand Tunnel (Diddy) | Balloon |  | 
 </details>
 <details>
 <summary>Aztec Donkey5DTemple</summary>
@@ -1080,7 +1081,7 @@
 | By night gate (Chunky) | 5 |  | 
 | Diddy BP floor | Balloon |  | 
 | Oranges level | Balloon |  | 
-| Top of giant mushroom (Lanky) | Balloon |  | 
+| Top of giant mushroom interior (Lanky) | Balloon |  | 
 | Bottom of giant mushroom (Lanky) | Balloon |  | 
 </details>
 <details>

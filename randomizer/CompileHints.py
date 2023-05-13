@@ -202,7 +202,7 @@ shop_cryptic = [
 
 crankys_cryptic = ["a location out of this world", "a location 5000 points deep", "a mad scientist's laboratory"]
 
-item_type_names = {Types.Blueprint: "\x06a kasplat\x06", Types.Fairy: "\x06a fairy\x06", Types.Crown: "\x06a battle crown\x06", Types.RainbowCoin: "\x06a dirt patch\x06"}
+item_type_names = {Types.Blueprint: "\x06a kasplat\x06", Types.Fairy: "\x06a fairy\x06", Types.Crown: "\x06a battle arena\x06", Types.RainbowCoin: "\x06a dirt patch\x06"}
 item_type_names_cryptic = {
     Types.Blueprint: ["a minion of K. Rool", "a shockwaving foe", "a colorfully haired henchman"],
     Types.Fairy: ["an aerial ace", "a bit of flying magic", "a Queenly representative"],

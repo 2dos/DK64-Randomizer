@@ -11,7 +11,7 @@
 | Jungle Japes | Japes Kasplat: Beehive Area |  | 
 | Jungle Japes | Japes Kasplat: Lower area of Tunnel to Beehive |  | 
 | Jungle Japes | Japes Kasplat: Upper area of Tunnel to Beehive |  | 
-| Japes Under Ground | Japes Kasplat: Underground | (l.pineapple and l.vines) | 
+| Japes Under Ground | Japes Kasplat: Underground | (l.vines and l.pineapple and l.ischunky) or (l.vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk | 
 | Jungle Japes | Japes Kasplat: Near Speedy Swing Sortie Bonus |  | 
 | Jungle Japes | Japes Kasplat: Near Painting Room |  | 
 | Jungle Japes | Japes Kasplat: Inside Tiny's Cage | (Events.Rambi in l.Events and l.CanSlamSwitch(Levels.JungleJapes, 1) and l.tiny) or l.phasewalk or l.CanPhaseswim() | 
@@ -33,7 +33,7 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Angry Aztec | Aztec Kasplat: In the Stealthy Snoop Tunnel |  | 
+| Angry Aztec | Aztec Kasplat: In the Sealed Quicksand Tunnel |  | 
 | Angry Aztec | Aztec Kasplat: On the Oasis |  | 
 | Angry Aztec | Aztec Kasplat: On the Llama's Cage | l.vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick() | 
 | Angry Aztec | Aztec Kasplat: Near the giant boulder |  | 
@@ -87,7 +87,7 @@
 | Gloomy Galleon | Galleon Kasplat: On the Lighthouse island |  | 
 | Gloomy Galleon | Galleon Kasplat: On Diddy's Gold Tower |  | 
 | Gloomy Galleon | Galleon Kasplat: In the Alcove near the Lighthouse |  | 
-| Gloomy Galleon | Galleon Kasplat: On the platforms in Cannon Game Room | Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky)) | 
+| Gloomy Galleon | Galleon Kasplat: On the platforms in Cannon Game Room | l.CanGetOnCannonGamePlatform() | 
 | Gloomy Galleon | Galleon Kasplat: Near the Troff 'n' Scoff near Cranky's |  | 
 | Gloomy Galleon | Galleon Kasplat: On the Cactus near the sunken submarine |  | 
 | Gloomy Galleon | Galleon Kasplat: On the Crown Pad | (l.punch and l.chunky) or l.phasewalk or l.CanSkew(False) | 
