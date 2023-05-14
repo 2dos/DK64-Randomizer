@@ -59,13 +59,13 @@
 | Angry Aztec | Angry Aztec: Near Llama Temple (Left) |  | 
 | Angry Aztec | Angry Aztec: Near Llama Temple (Right) |  | 
 | Angry Aztec | Angry Aztec: On Llama Temple | (l.jetpack and l.diddy) or l.CanMoonkick() | 
-| Angry Aztec | Angry Aztec: Near Snoop Tunnel Shop |  | 
+| Angry Aztec | Angry Aztec: Near Sealed Quicksand Tunnel Shop |  | 
 | Angry Aztec | Angry Aztec: On 5-Door Temple | (l.jetpack and l.diddy) or l.CanMoonkick() | 
-| Angry Aztec | Angry Aztec: Near Snoop Tunnel Exterior Warp |  | 
+| Angry Aztec | Angry Aztec: Near Sealed Quicksand Tunnel Exterior Warp |  | 
 | Angry Aztec | Angry Aztec: Near Vulture Cage | l.vines or (l.jetpack and l.diddy)) | 
 | Angry Aztec | Angry Aztec: Under Vulture Cage |  | 
 | Angry Aztec | Angry Aztec: Near Gong Tower |  | 
-| Angry Aztec | Angry Aztec: Snoop Tunnel |  | 
+| Angry Aztec | Angry Aztec: Sealed Quicksand Tunnel |  | 
 | Aztec Donkey5DTemple | Angry Aztec - DK 5DT: Dead End | (l.coconut and l.isdonkey) or l.phasewalk | 
 | Aztec Diddy5DTemple | Angry Aztec - Diddy 5DT: Dead End | (l.peanut and l.isdiddy) or l.phasewalk | 
 | Aztec Lanky5DTemple | Angry Aztec - Lanky 5DT: Dead End | (l.grape and l.islanky) or l.phasewalk | 
@@ -295,7 +295,7 @@
 | Isles Snide Room | DK Isles - Snide's Room: Under Rock | l.chunky and l.barrels | 
 | Fungi Forest Lobby | DK Isles - Fungi Lobby: Gorilla Gone Box | ((l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.donkey and l.diddy and l.lanky and l.tiny) or l.phasewalk) and l.chunky and l.gorillaGone | 
 | Isles | DK Isles: Fungi Platform |  | 
-| Isles | DK Isles: Waterfall Platform | (Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.isdonkey or l.isdiddy or l.ischunky or (l.istiny and l.twirl))) | 
+| Isles | DK Isles: Waterfall Platform | (Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy) | 
 | Isles | DK Isles: Near Caves Lobby Tree (1) |  | 
 | Isles | DK Isles: Near K. Rool |  | 
 | Isles | DK Isles: Near Fungi Cannon |  | 
@@ -326,7 +326,7 @@
 | Creepy Castle Lobby | DK Isles - Castle Lobby: Left of Portal |  | 
 | Hideout Helm Lobby | DK Isles - Helm Lobby: Bonus Platform | (l.vines and l.gorillaGone and l.ischunky) or (l.advanced_platforming and l.istiny and l.twirl) | 
 | Training Grounds | DK Isles - Training Grounds: Far Mountain |  | 
-| Training Grounds | DK Isles - Training Grounds: Near Mountain | (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey) | 
+| Training Grounds | DK Isles - Training Grounds: Near Mountain | (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey) | 
 | Training Grounds | DK Isles - Training Grounds: Rear Cave |  | 
 | Training Grounds | DK Isles - Training Grounds: Banana Hoard | l.vines or l.CanMoonkick() | 
 | Training Grounds | DK Isles - Training Grounds: Near Pool |  | 

@@ -230,6 +230,10 @@ typedef struct projectile_extra {
     /* 0x014 */ float unk14;
 } projectile_extra;
 
+void setKrushaAmmoColor(void) {
+    changeActorColor(0, 0xFF, 0, 0xFF);
+}
+
 void OrangeGunCode(void) {
     /**
      * @brief New code for the orange projectile fired from a gun
@@ -249,6 +253,7 @@ void OrangeGunCode(void) {
         unkSpriteRenderFunc(-1);
         unkSpriteRenderFunc_1(1);
         unkSpriteRenderFunc_2(4);
+        setKrushaAmmoColor();
         unkCutsceneKongFunction(0x80720268, *(int*)&extra->unkC, CurrentActorPointer_0, 1, 2);
         paad->unk_14 = extra->unkC;
         paad->init_actor_timer = current_actor_timer;

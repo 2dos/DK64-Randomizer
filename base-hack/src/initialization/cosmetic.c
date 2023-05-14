@@ -66,6 +66,7 @@ void initKrusha(void) {
             setActorDamage(focused_pellet, 3);
             *(int*)(0x8071AAC4) = 0;
             *(int*)(0x8075DBB4 + (slot << 2)) = 0x806FAE0C;
+            *(short*)(0x806E240A) = 0x3E80;
         }
         switch (slot) {
             case 0:

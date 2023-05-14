@@ -274,7 +274,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType, purchaseLis
                             Logic.Regions[destination].nightAccess = True
                             eventAdded = True
                 # Deathwarps currently send to the vanilla destination
-                if region.deathwarp is not None:
+                if region.deathwarp is not None and settings.perma_death is False:
                     destination = region.deathwarp.dest
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
                     if destination not in addedRegions and region.deathwarp.logic(LogicVariables):
@@ -1682,8 +1682,14 @@ def FillKongsAndMoves(spoiler, placedTypes):
     if any(locationsNeedingMoves):
         newlyPlacedItems = []
         toBeUnplaced = []
-        possibleStartingMoves = ItemPool.AllKongMoves()
-        possibleStartingMoves.extend(ItemPool.JunkSharedMoves)
+        possibleStartingMoves = ItemPool.AllKongMoves().copy()
+        if len(locationsNeedingMoves) < 10:
+            # Generally only include one copy of the useless progressive moves to bias against picking them when you only have a few starting moves
+            possibleStartingMoves.append(Items.ProgressiveAmmoBelt)
+            possibleStartingMoves.append(Items.ProgressiveInstrumentUpgrade)
+        else:
+            # If we have lots of starting moves, we'll need to include all copies so we have enough stuff to fill all locations
+            possibleStartingMoves.extend(ItemPool.JunkSharedMoves)
         if spoiler.settings.training_barrels == TrainingBarrels.shuffled:
             possibleStartingMoves.extend(ItemPool.TrainingBarrelAbilities())
         if spoiler.settings.shockwave_status in (ShockwaveStatus.shuffled, ShockwaveStatus.shuffled_decoupled):

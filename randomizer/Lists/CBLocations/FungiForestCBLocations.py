@@ -2109,7 +2109,7 @@ BalloonList = [
     Balloon(
         id=33,
         map_id=Maps.ForestGiantMushroom,
-        name="Top of giant mushroom (Lanky)",
+        name="Top of giant mushroom interior (Lanky)",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomUpper,

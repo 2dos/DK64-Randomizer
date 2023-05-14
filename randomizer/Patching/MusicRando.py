@@ -76,7 +76,7 @@ def randomize_music(spoiler: Spoiler):
         settings (Settings): Settings object from the windows form.
     """
     settings: Settings = spoiler.settings
-    if js.document.getElementById("override_cosmetics").checked:
+    if js.document.getElementById("override_cosmetics").checked or True:
         if js.document.getElementById("random_music").checked:
             spoiler.settings.music_bgm_randomized = True
             spoiler.settings.music_majoritems_randomized = True

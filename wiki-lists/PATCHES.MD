@@ -34,7 +34,7 @@
 | Crystal Caves Lobby | DK Isles - Crystal Caves Lobby: On the Lava | ((l.punch and l.strongKong and l.isdonkey) or l.phasewalk or l.ledgeclip) and l.shockwave | 
 | Creepy Castle Lobby | DK Isles - Creepy Castle Lobby: Behind the entrance | l.shockwave | 
 | Isles Snide Room | DK Isles - Isles Snide Room: Next to Snides | l.shockwave | 
-| Training Grounds | DK Isles - Training Grounds: On the entrance hill | ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey)) and l.shockwave | 
+| Training Grounds | DK Isles - Training Grounds: On the entrance hill | ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey)) and l.shockwave | 
 | Training Grounds | DK Isles - Training Grounds: On the rear hill | l.shockwave | 
 | Treehouse | DK Isles - Treehouse: Back of the treehouse | l.shockwave | 
 </details>
@@ -67,20 +67,20 @@
 | Map | Name | Logic |
 | --- | ---- | ----- |
 | Angry Aztec | Angry Aztec: Oasis | l.shockwave | 
-| Aztec Chunky5DTemple | Angry Aztec - Aztec Chunky5D Temple: Chunky 5DT | ((l.pineapple and l.ischunky) or l.phasewalk) and l.shockwave | 
+| Aztec Chunky5DTemple | Angry Aztec: Chunky 5D Temple: Chunky 5DT | ((l.pineapple and l.ischunky) or l.phasewalk) and l.shockwave | 
 | Angry Aztec | Angry Aztec: Behind Chunky Cage | l.shockwave | 
 | Angry Aztec | Angry Aztec: Entrance tunnel - near DK door | l.shockwave | 
 | Angry Aztec | Angry Aztec: Next to Tiny Temple - left | l.shockwave | 
 | Angry Aztec | Angry Aztec: Next to Tiny Temple - right | l.shockwave | 
 | Angry Aztec | Angry Aztec: Behind Llama Cage | l.shockwave | 
-| Aztec Tiny Temple | Angry Aztec - Aztec Tiny Temple: Main room back-left | l.shockwave | 
-| Aztec Tiny Temple | Angry Aztec - Aztec Tiny Temple: Next to Tiny cage | l.shockwave | 
+| Aztec Tiny Temple | Angry Aztec - Tiny Temple: Main room back-left | l.shockwave | 
+| Aztec Tiny Temple | Angry Aztec - Tiny Temple: Next to Tiny cage | l.shockwave | 
 | Angry Aztec | Angry Aztec: Next to Llama Temple | l.shockwave | 
 | Angry Aztec | Angry Aztec: Next to Snide | l.shockwave | 
 | Angry Aztec | Angry Aztec: Behind Gong-tower | l.shockwave | 
 | Angry Aztec | Angry Aztec: Left of Gong-tower | l.shockwave | 
-| Aztec Llama Temple | Angry Aztec - Aztec Llama Temple: Next to Llama Left | l.shockwave | 
-| Aztec Llama Temple | Angry Aztec - Aztec Llama Temple: Next to Llama Right | l.shockwave | 
+| Aztec Llama Temple | Angry Aztec - Llama Temple: Next to Llama Left | l.shockwave | 
+| Aztec Llama Temple | Angry Aztec - Llama Temple: Next to Llama Right | l.shockwave | 
 </details>
 
 ## Frantic Factory
@@ -93,7 +93,7 @@
 | Frantic Factory | Frantic Factory: Middle of Entrance Room | l.shockwave | 
 | Frantic Factory | Frantic Factory: Clock-in room left | l.shockwave | 
 | Frantic Factory | Frantic Factory: Clock-in room right | l.shockwave | 
-| Frantic Factory | Frantic Factory: Halfway the hatch near entrance - next to the window - Tiny's 10 CB | l.shockwave | 
+| Frantic Factory | Frantic Factory: Halfway the hatch near entrance - next to the window | l.shockwave | 
 | Frantic Factory | Frantic Factory: Tunnel to production room | l.shockwave | 
 | Frantic Factory | Frantic Factory: Next to DK Arcade | l.shockwave | 
 | Frantic Factory | Frantic Factory: Near Snide | l.shockwave | 
@@ -112,18 +112,18 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Galleon Lighthouse | Gloomy Galleon - Galleon Lighthouse: Interior Rear | l.shockwave | 
+| Galleon Lighthouse | Gloomy Galleon - Lighthouse: Interior Rear | l.shockwave | 
 | Gloomy Galleon | Gloomy Galleon: On the ship near Cranky | l.shockwave | 
-| Gloomy Galleon | Gloomy Galleon: Next to cannon in cannonball room | (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))) and l.shockwave | 
+| Gloomy Galleon | Gloomy Galleon: Next to cannon in cannonball room | l.CanGetOnCannonGamePlatform() and l.shockwave | 
 | Gloomy Galleon | Gloomy Galleon: Entrance tunnel - under tag barrel | l.shockwave | 
 | Gloomy Galleon | Gloomy Galleon: Next to Lighthouse ladder | l.shockwave | 
-| Galleon Lighthouse | Gloomy Galleon - Galleon Lighthouse: Behind Whomp's Fortress floor 2 | l.shockwave | 
-| Galleon Lighthouse | Gloomy Galleon - Galleon Lighthouse: On top of Whomp's Fortress | l.shockwave | 
-| Galleon Sick Bay | Gloomy Galleon - Galleon Sick Bay: Chunky ship entrance | l.shockwave | 
-| Galleon Sick Bay | Gloomy Galleon - Galleon Sick Bay: Chunky ship - backleft corner | l.shockwave | 
-| Galleon Sick Bay | Gloomy Galleon - Galleon Sick Bay: Chunky ship - behind the non-alcoholic tower | ((l.punch and l.ischunky) or l.phasewalk) and l.shockwave | 
-| Gloomy Galleon | Gloomy Galleon: Next to Cannonball - in front | (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky))) and l.shockwave | 
-| Gloomy Galleon | Gloomy Galleon: Next to Cannonball - behind | (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky))) and l.shockwave | 
+| Galleon Lighthouse | Gloomy Galleon - Lighthouse: Behind Whomp's Fortress floor 2 | l.shockwave | 
+| Galleon Lighthouse | Gloomy Galleon - Lighthouse: On top of Whomp's Fortress | l.shockwave | 
+| Galleon Sick Bay | Gloomy Galleon - Sick Bay: Chunky ship entrance | l.shockwave | 
+| Galleon Sick Bay | Gloomy Galleon - Sick Bay: Chunky ship - backleft corner | l.shockwave | 
+| Galleon Sick Bay | Gloomy Galleon - Sick Bay: Chunky ship - behind the non-alcoholic tower | ((l.punch and l.ischunky) or l.phasewalk) and l.shockwave | 
+| Gloomy Galleon | Gloomy Galleon: Next to Cannonball - in front | l.CanGetOnCannonGamePlatform() and l.shockwave | 
+| Gloomy Galleon | Gloomy Galleon: Next to Cannonball - behind | l.CanGetOnCannonGamePlatform() and l.shockwave | 
 | Gloomy Galleon | Gloomy Galleon: Behind Chunky's Big GB Chest | l.shockwave | 
 | Gloomy Galleon | Gloomy Galleon: Behind the ship you shoot onto with the cannon | l.shockwave | 
 | Gloomy Galleon | Gloomy Galleon: In front of Cranky | l.shockwave | 
@@ -141,12 +141,12 @@
 | Fungi Forest | Fungi Forest: Near BBlast | l.shockwave | 
 | Fungi Forest | Fungi Forest: Under the Owl Tree | l.shockwave | 
 | Fungi Forest | Fungi Forest: Next to Rabbit's house | l.shockwave | 
-| Forest Mill Front | Fungi Forest - Forest Mill Front: Inside the water mill - near DK's levers | l.shockwave | 
-| Forest Mill Back | Fungi Forest - Forest Mill Back: Inside the water mill - near Chunky's coins (Chunky's punch door) | l.shockwave | 
+| Forest Mill Front | Fungi Forest - Mill Front: near DK's levers | l.shockwave | 
+| Forest Mill Back | Fungi Forest - Mill Back: near Chunky's coins | l.shockwave | 
 | Fungi Forest | Fungi Forest: Next to Diddy Pad | l.shockwave | 
-| Forest Thornvine Barn | Fungi Forest - Forest Thornvine Barn: Next to ladder | l.shockwave | 
-| Forest Giant Mushroom | Fungi Forest - Forest Giant Mushroom: Next to a cannon | ((l.istiny and l.twirl) or l.isdonkey) and l.shockwave | 
-| Forest Giant Mushroom | Fungi Forest - Forest Giant Mushroom: Next to the cannon below the night door | l.vines and l.shockwave | 
+| Forest Thornvine Barn | Fungi Forest - Thornvine Barn: Next to ladder | l.shockwave | 
+| Forest Giant Mushroom | Fungi Forest - Giant Mushroom: Next to a cannon | ((l.istiny and l.twirl) or (l.isdonkey and l.settings.krusha_kong != Kongs.donkey)) and l.shockwave | 
+| Forest Giant Mushroom | Fungi Forest - Giant Mushroom: Next to the cannon below the night door | l.shockwave | 
 | Fungi Forest | Fungi Forest: Next to Crusher Output | l.shockwave | 
 | Fungi Forest | Fungi Forest: On the Tomato Field | l.shockwave | 
 | Fungi Forest | Fungi Forest: Near Funky with the fenced in Chunky coins | l.TimeAccess(Regions.WormArea, Time.Night) and l.shockwave | 
@@ -166,8 +166,8 @@
 | Crystal Caves | Crystal Caves: Next to Ice Castle | l.shockwave | 
 | Crystal Caves | Crystal Caves: Next to Lanky's 1DC - upper | l.shockwave | 
 | Crystal Caves | Crystal Caves: Next to Donkey's 1DC - left | l.shockwave | 
-| Caves Frozen Castle | Crystal Caves - Caves Frozen Castle: Next to Slam Puzzle - left | l.shockwave | 
-| Caves Frozen Castle | Crystal Caves - Caves Frozen Castle: Next to Slam Puzzle - right | l.shockwave | 
+| Caves Frozen Castle | Crystal Caves - Frozen Castle: Next to Slam Puzzle - left | l.shockwave | 
+| Caves Frozen Castle | Crystal Caves - Frozen Castle: Next to Slam Puzzle - right | l.shockwave | 
 | Crystal Caves | Crystal Caves: On top of the Igloo | l.shockwave | 
 | Crystal Caves | Crystal Caves: Under tag barrel near igloo | l.shockwave | 
 | Crystal Caves | Crystal Caves: Near Primate Punch wall opposite cranky | l.shockwave | 
@@ -185,16 +185,16 @@
 | Creepy Castle | Creepy Castle: Near the Catacombs Door | l.shockwave | 
 | Creepy Castle | Creepy Castle: Upper Gravestone | l.shockwave | 
 | Creepy Castle | Creepy Castle: Top of Castle near fence | l.shockwave | 
-| Castle Ballroom | Creepy Castle - Castle Ballroom: Ballroom - Back Left | l.shockwave | 
-| Castle Ballroom | Creepy Castle - Castle Ballroom: Ballroom - Back Right | l.shockwave | 
-| Castle Museum | Creepy Castle - Castle Museum: Museum - Pillar Front | ((l.monkeyport and l.istiny) or l.phasewalk) and l.shockwave | 
-| Castle Museum | Creepy Castle - Castle Museum: Museum - Pillar Back Right | ((l.monkeyport and l.istiny) or l.phasewalk) and l.shockwave | 
-| Castle Museum | Creepy Castle - Castle Museum: Museum - Pillar Back Left | ((l.monkeyport and l.istiny) or l.phasewalk) and l.shockwave | 
+| Castle Ballroom | Creepy Castle - Ballroom: Ballroom - Back Left | l.shockwave | 
+| Castle Ballroom | Creepy Castle - Ballroom: Ballroom - Back Right | l.shockwave | 
+| Castle Museum | Creepy Castle - Museum: Museum - Pillar Front | ((l.monkeyport and l.istiny) or l.phasewalk) and l.shockwave | 
+| Castle Museum | Creepy Castle - Museum: Museum - Pillar Back Right | ((l.monkeyport and l.istiny) or l.phasewalk) and l.shockwave | 
+| Castle Museum | Creepy Castle - Museum: Museum - Pillar Back Left | ((l.monkeyport and l.istiny) or l.phasewalk) and l.shockwave | 
 | Creepy Castle | Creepy Castle: Next to Greenhouse | l.shockwave | 
-| Castle Crypt | Creepy Castle - Castle Crypt: 3Kong crypt entrance | l.shockwave | 
-| Castle Mausoleum | Creepy Castle - Castle Mausoleum: 2kong crypt entrance | l.shockwave | 
+| Castle Crypt | Creepy Castle - Crypt: 3Kong crypt entrance | l.shockwave | 
+| Castle Mausoleum | Creepy Castle - Mausoleum: 2kong crypt entrance | l.shockwave | 
 | Creepy Castle | Creepy Castle: Between the catacombs door and Tiny Kasplat | l.shockwave | 
 | Creepy Castle | Creepy Castle: Next to the Drawing Drawbridge | l.shockwave | 
 | Creepy Castle | Creepy Castle: Next to Lanky coin tree (near catacombs door) | l.shockwave | 
-| Castle Dungeon | Creepy Castle - Castle Dungeon: Under the chunky balloon without coins | ((l.punch and l.ischunky) or l.phasewalk) and l.shockwave | 
+| Castle Dungeon | Creepy Castle - Dungeon: Under the chunky balloon without coins | ((l.punch and l.ischunky) or l.phasewalk) and l.shockwave | 
 </details>

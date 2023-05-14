@@ -42,7 +42,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
     """Apply cosmetic skins to kongs."""
     model_index = 0
     sav = spoiler.settings.rom_data
-    if js.document.getElementById("override_cosmetics").checked:
+    if js.document.getElementById("override_cosmetics").checked or True:
         model_setting = KlaptrapModel[js.document.getElementById("klaptrap_model").value]
     else:
         model_setting = spoiler.settings.klaptrap_model
@@ -131,7 +131,7 @@ def apply_cosmetic_colors(spoiler: Spoiler):
         {"kong": "enguarde", "palettes": [{"name": "base", "image": 3847, "fill_type": "block"}], "base_setting": "enguarde_colors", "custom_setting": "enguarde_custom_color", "kong_index": 6},
     ]
 
-    if js.document.getElementById("override_cosmetics").checked:
+    if js.document.getElementById("override_cosmetics").checked or True:
         if js.document.getElementById("random_colors").checked:
             spoiler.settings.dk_colors = CharacterColors.randomized
             spoiler.settings.diddy_colors = CharacterColors.randomized
@@ -285,6 +285,27 @@ def getRGBFromHash(hash: str):
     green = int(hash[3:5], 16)
     blue = int(hash[5:7], 16)
     return [red, green, blue]
+
+
+def maskImageWithColor(im_f: Image, mask: tuple):
+    """Apply rgb mask to image using a rgb color tuple."""
+    w, h = im_f.size
+    converter = ImageEnhance.Color(im_f)
+    im_f = converter.enhance(0)
+    im_dupe = im_f.copy()
+    brightener = ImageEnhance.Brightness(im_dupe)
+    im_dupe = brightener.enhance(2)
+    im_f.paste(im_dupe, (0, 0), im_dupe)
+    pix = im_f.load()
+    w, h = im_f.size
+    for x in range(w):
+        for y in range(h):
+            base = list(pix[x, y])
+            if base[3] > 0:
+                for channel in range(3):
+                    base[channel] = int(mask[channel] * (base[channel] / 255))
+                pix[x, y] = (base[0], base[1], base[2], base[3])
+    return im_f
 
 
 def maskImage(im_f, base_index, min_y, keep_dark=False):
@@ -1316,6 +1337,9 @@ def overwrite_object_colors(spoiler: Spoiler):
                 writeColorImageToROM(balloon_im, 25, BALLOON_START[kong] + offset, 32, 64, False, TextureFormat.RGBA5551)
 
 
+ORANGE_SCALING = 0.7
+
+
 def applyKrushaKong(spoiler: Spoiler):
     """Apply Krusha Kong setting."""
     ROM().seek(spoiler.settings.rom_data + 0x11C)
@@ -1331,7 +1355,14 @@ def applyKrushaKong(spoiler: Spoiler):
         switch_faces = [0xB25, 0xB1E, 0xC81, 0xC80, 0xB24]
         base_im = getFile(25, 0xC20, True, 32, 32, TextureFormat.RGBA5551)
         orange_im = getFile(7, 0x136, False, 32, 32, TextureFormat.RGBA5551)
-        base_im.paste(orange_im, (0, 0), orange_im)
+        if spoiler.settings.colorblind_mode == ColorblindMode.off:
+            orange_im = maskImageWithColor(orange_im, (0, 150, 0))
+        else:
+            orange_im = maskImageWithColor(orange_im, (0, 255, 0))  # Brighter green makes this more distinguishable for colorblindness
+        dim_length = int(32 * ORANGE_SCALING)
+        dim_offset = int((32 - dim_length) / 2)
+        orange_im = orange_im.resize((dim_length, dim_length))
+        base_im.paste(orange_im, (dim_offset, dim_offset), orange_im)
         writeColorImageToROM(base_im, 25, switch_faces[spoiler.settings.krusha_kong], 32, 32, False, TextureFormat.RGBA5551)
 
 
