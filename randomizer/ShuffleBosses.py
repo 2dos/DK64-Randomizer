@@ -129,6 +129,8 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
             factoryBossKongOptions = set(ownedKongs[factoryBossIndex]).intersection({Kongs.donkey, Kongs.chunky})
             if Kongs.tiny in ownedKongs[factoryBossIndex] and Items.PonyTailTwirl in ownedMoves[factoryBossIndex]:
                 factoryBossKongOptions.add(Kongs.tiny)
+            if settings.krusha_kong in factoryBossKongOptions and settings.krusha_kong != Kongs.tiny:
+                factoryBossKongOptions.remove(settings.krusha_kong)
             factoryBossKong = random.choice(list(factoryBossKongOptions))
         else:
             factoryBossIndex = random.choice(factoryBossOptions)
