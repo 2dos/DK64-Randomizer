@@ -480,8 +480,10 @@ void getItem(int object_type) {
         case 0x206:
         case 0x207:
         case 0x208:
-            hh_item = HHITEM_CB;
-            multiplier = 5;
+            if (Rando.tag_anywhere) {
+                hh_item = HHITEM_CB;
+                multiplier = 5;
+            }
             break;
         case 0x11:
         case 0x8F:
