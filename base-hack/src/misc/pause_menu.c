@@ -116,7 +116,7 @@ static char level_hint_text[0x18] = "";
 static unsigned char check_data[2][9][PAUSE_ITEM_COUNT] = {}; // 8 items, 9 levels, numerator + denominator
 
 static char hints_initialized = 0;
-static int hint_pointers[35] = {};
+
 static char display_billboard_fix = 0;
 
 void initHints(void) {
@@ -253,7 +253,6 @@ void checkItemDB(void) {
 
 #define STRING_MAX_SIZE 256
 static char string_copy[STRING_MAX_SIZE] = "";
-static mtx_item static_mtx[20];
 static char mtx_counter = 0;
 
 int* drawHintText(int* dl, char* str, int x, int y) {
