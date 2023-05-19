@@ -276,7 +276,8 @@ void OrangeGunCode(void) {
         if (player_count > 1) {
             homing_bitfield = 3;
         }
-        homing_code(homing_bitfield, CurrentActorPointer_0, 0x80720268, 0);
+        // homing_code(homing_bitfield, CurrentActorPointer_0, 0x80720268, 0); // Produces some weird artifacts with limes
+        homing_code(homing_bitfield, CurrentActorPointer_0, 0, 0);
     }
     if (paad->fired_bitfield & 4) { // Sniper
         orange_life = 0x64;
