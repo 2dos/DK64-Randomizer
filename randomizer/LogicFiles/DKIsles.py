@@ -8,6 +8,7 @@ from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import MinigameBarrels
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Kongs import Kongs
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
@@ -227,7 +228,7 @@ LogicRegions = {
 
     Regions.GloomyGalleonLobbyEntrance: Region("Gloomy Galleon Lobby Entrance", "Level Lobbies", Levels.DKIsles, False, None, [], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesGalleonLobbyToMain),
-        TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Transitions.IslesToGalleon),
+        TransitionFront(Regions.GloomyGalleonLobby, lambda l: True),
     ]),
 
     Regions.GloomyGalleonLobby: Region("Gloomy Galleon Lobby", "Japes-Forest Lobbies", Levels.DKIsles, True, None, [
@@ -244,7 +245,7 @@ LogicRegions = {
     ]),
 
     Regions.CabinIsle: Region("Cabin Isle", "DK Isle", Levels.DKIsles, False, None, [
-        LocationLogic(Locations.IslesDiddyCagedBanana, lambda l: ((Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack) or (l.advanced_platforming and (l.isdiddy or l.isdonkey or (l.istiny and l.twirl) or l.ischunky))) and (l.peanut or l.phasewalk) and l.isdiddy),
+        LocationLogic(Locations.IslesDiddyCagedBanana, lambda l: ((Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack) or (l.advanced_platforming and (l.isdiddy or (l.isdonkey and l.settings.krusha_kong != Kongs.donkey) or (l.istiny and l.twirl) or l.ischunky))) and ((l.peanut and l.isdiddy) or l.phasewalk and l.settings.free_trade_items)),
         LocationLogic(Locations.IslesDiddySummit, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.RainbowCoin_Location03, lambda l: l.shockwave),
         LocationLogic(Locations.RainbowCoin_Location05, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy and l.shockwave),
@@ -282,14 +283,14 @@ LogicRegions = {
     ]),
 
     Regions.CreepyCastleLobby: Region("Creepy Castle Lobby", "Caves-Helm Lobbies", Levels.DKIsles, True, None, [
-        LocationLogic(Locations.IslesLankyCastleLobby, lambda l: (l.chunky and l.balloon and l.islanky and l.barrels) or ((l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl)) and l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.IslesLankyCastleLobby, lambda l: (l.chunky and l.balloon and l.islanky and l.barrels) or ((l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and l.settings.krusha_kong != Kongs.tiny)) and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.IslesKasplatCastleLobby, lambda l: not l.settings.kasplat_rando and l.coconut and l.donkey),
         LocationLogic(Locations.CastleDonkeyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.CastleDiddyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.CastleLankyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.CastleTinyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.CastleChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.RainbowCoin_Location15, lambda l: l.shockwave and ((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl))),
+        LocationLogic(Locations.RainbowCoin_Location15, lambda l: l.shockwave and ((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and l.settings.krusha_kong != Kongs.tiny))),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesCastleLobbyToMain),
         TransitionFront(Regions.CreepyCastleMain, lambda l: l.IsLevelEnterable(Levels.CreepyCastle), Transitions.IslesToCastle),

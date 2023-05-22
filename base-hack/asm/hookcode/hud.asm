@@ -205,3 +205,54 @@ ModifyCameraColor:
     ModifyCameraColor_Finish:
         j 0x806FF38C
         lui $at, 0x3F00
+
+FixKrushaAmmoHUDColor:
+    lw $t0, 0x3C ($sp)
+    li $at, 0x2
+    bne $t0, $at, FixKrushaAmmoHUDColor_Finish
+    nop
+    jal getKong
+    li $a0, 0
+    lui $at, hi(KrushaSlot)
+    lbu $at, lo(KrushaSlot) ($at)
+    bne $v0, $at, FixKrushaAmmoHUDColor_Finish
+    nop
+    jal setKrushaAmmoColor
+    nop
+
+    FixKrushaAmmoHUDColor_Finish:
+        lw $t0, 0x3c ($sp)
+        j 0x806f97c0
+        li $at, 0x3
+
+FixKrushaAmmoHUDSize:
+    or $a0, $v0, $zero
+    lui $a1, 0x3F80
+    lw $a2, 0x3C ($sp)
+    li $a3, 0x2
+    beq $a2, $a3, FixKrushaAmmoHUDSize_IsAmmo
+    nop
+    li $a3, 0x3
+    bne $a2, $a3, FixKrushaAmmoHUDSize_Finish
+    nop
+
+    FixKrushaAmmoHUDSize_IsAmmo:
+        sw $v0, 0x8 ($s0)
+        jal getKong
+        li $a0, 0
+        lui $at, hi(KrushaSlot)
+        lbu $at, lo(KrushaSlot) ($at)
+        lui $a1, 0x3F80
+        bne $v0, $at, FixKrushaAmmoHUDSize_FixRegisters
+        nop
+        lui $a1, 0x3F40
+
+    FixKrushaAmmoHUDSize_FixRegisters:
+        lui $at, 0xC120
+        mtc1 $at, $f4
+        lw $v0, 0x8 ($s0)
+        or $a0, $v0, $zero
+
+    FixKrushaAmmoHUDSize_Finish:
+        j 0x806f97f0
+        nop

@@ -87,7 +87,7 @@
 | Angry Aztec | Angry Aztec: 5Door Temple Staircase - back | Both |  | 
 | Angry Aztec | Angry Aztec: Entrance Tunnel - next to Coconut Switch | Both |  | 
 | Angry Aztec | Angry Aztec: Entrance Tunnel - left (near the oasis end) | Both |  | 
-| Angry Aztec | Angry Aztec: Strong Kong Tunnel | Wrinkly | l.isdonkey and l.strongKong | 
+| Angry Aztec | Angry Aztec: in the sealed quicksand tunnel | Wrinkly | l.isdonkey and l.strongKong | 
 | Angry Aztec | Angry Aztec: Near Tag Barrel near Snides - strong kong | Wrinkly | l.isdonkey and l.strongKong | 
 | Aztec Llama Temple | Angry Aztec: In Face Matching Game - right | Wrinkly | (l.islanky and l.grape) or l.phasewalk | 
 | Aztec Llama Temple | Angry Aztec: In Face Matching Game - left | Wrinkly | (l.islanky and l.grape) or l.phasewalk | 

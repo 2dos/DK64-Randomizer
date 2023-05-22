@@ -102,7 +102,7 @@ LogicRegions = {
         TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.settings.open_levels or (l.feather and l.tiny) or l.phasewalk or l.CanSkew(False)),
     ]),
 
-    Regions.JapesBeyondFeatherGate: Region("Japes Beyond Feather Gate", "Hive Tunnel Area", Levels.JungleJapes, True, -1, [
+    Regions.JapesBeyondFeatherGate: Region("Japes Beyond Feather Gate", "Hive Tunnel Area", Levels.JungleJapes, True, None, [
         LocationLogic(Locations.JapesTinyStump, lambda l: (l.mini and l.istiny) or l.phasewalk or l.CanSkew(False)),
         LocationLogic(Locations.JapesChunkyGiantBonusBarrel, lambda l: l.hunkyChunky and l.ischunky, MinigameType.BonusBarrel),
     ], [
@@ -142,7 +142,7 @@ LogicRegions = {
         TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.CanMoonkick()),
     ]),
 
-    Regions.BeyondRambiGate: Region("Beyond Rambi Gate", "Japes Stormy Tunnel Area", Levels.JungleJapes, False, -1, [
+    Regions.BeyondRambiGate: Region("Beyond Rambi Gate", "Japes Stormy Tunnel Area", Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesBananaFairyRambiCave, lambda l: l.camera),
     ], [
         Event(Events.JapesChunkySwitch, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and l.ischunky and l.barrels),
@@ -153,7 +153,7 @@ LogicRegions = {
     ]),
 
     # Lanky Cave deathwarp: Requires you to be lanky and have simian slam so you can slam the pegs and summon zingers to kill you
-    Regions.JapesLankyCave: Region("Japes Lanky Cave", "Japes Caves and Mines", Levels.JungleJapes, False, TransitionFront(Regions.JungleJapesMain, lambda l: (l.Slam and l.islanky) or l.phasewalk or (l.generalclips and l.islanky)), [
+    Regions.JapesLankyCave: Region("Japes Lanky Cave", "Japes Caves and Mines", Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesLankyFairyCave, lambda l: (((l.grape or l.trombone) and l.Slam) or l.generalclips) and l.islanky),
         LocationLogic(Locations.JapesBananaFairyLankyCave, lambda l: (((l.grape or l.trombone) and l.Slam) or l.generalclips) and l.islanky and l.camera),
     ], [], [
@@ -180,8 +180,8 @@ LogicRegions = {
 
     # Catacomb deaths lead back to itself
     Regions.JapesCatacomb: Region("Japes Catacomb", "Japes Caves and Mines", Levels.JungleJapes, False, None, [
-        LocationLogic(Locations.JapesChunkyUnderground, lambda l: (l.vines and l.pineapple and l.ischunky) or (((l.twirl and l.istiny) or l.isdonkey) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk),
-        LocationLogic(Locations.JapesKasplatUnderground, lambda l: not l.settings.kasplat_rando and l.pineapple and l.vines),
+        LocationLogic(Locations.JapesChunkyUnderground, lambda l: (l.vines and l.pineapple and l.ischunky) or (((l.twirl and l.istiny) or (l.vines and (l.isdiddy or l.istiny)) or (l.isdonkey and l.settings.krusha_kong != Kongs.donkey)) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk),
+        LocationLogic(Locations.JapesKasplatUnderground, lambda l: not l.settings.kasplat_rando and ((l.vines and l.pineapple and l.ischunky) or (l.vines and (l.isdiddy or l.istiny) and l.advanced_platforming and l.settings.free_trade_items) or l.phasewalk)),
     ], [], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesStart, lambda l: True, Transitions.JapesCatacombToMain),

@@ -1,4 +1,5 @@
 """Crown Location List."""
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
@@ -159,15 +160,15 @@ CrownLocations = {
         CrownLocation(
             map=Maps.AngryAztec, name="Angry Aztec: On Llama Temple", x=2884, y=437, z=2903, scale=0.4, region=Regions.AngryAztecMain, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick()
         ),
-        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Snoop Tunnel Shop", x=3000, y=120, z=4532, scale=0.35, region=Regions.AngryAztecMain),
+        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Sealed Quicksand Tunnel Shop", x=3000, y=120, z=4532, scale=0.35, region=Regions.AngryAztecMain),
         CrownLocation(
             map=Maps.AngryAztec, name="Angry Aztec: On 5-Door Temple", x=2056, y=420, z=3648, scale=0.3, region=Regions.AngryAztecMain, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick()
         ),
-        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Snoop Tunnel Exterior Warp", x=3422, y=120, z=4514, scale=0.35, region=Regions.AngryAztecMain),
+        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Sealed Quicksand Tunnel Exterior Warp", x=3422, y=120, z=4514, scale=0.35, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Vulture Cage", x=4013, y=226, z=4589, scale=0.18, region=Regions.AngryAztecMain, logic=lambda l: l.vines or (l.jetpack and l.diddy)),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Under Vulture Cage", x=4102, y=120, z=4548, scale=0.4, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Near Gong Tower", x=4212, y=80, z=2959, scale=0.4, region=Regions.AngryAztecMain),
-        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Snoop Tunnel", x=2783, y=120, z=4817, scale=0.35, region=Regions.AztecDonkeyQuicksandCave),
+        CrownLocation(map=Maps.AngryAztec, name="Angry Aztec: Sealed Quicksand Tunnel", x=2783, y=120, z=4817, scale=0.35, region=Regions.AztecDonkeyQuicksandCave),
         CrownLocation(
             map=Maps.AztecDonkey5DTemple, name="Angry Aztec - DK 5DT: Dead End", x=99, y=20, z=464, scale=0.4, region=Regions.DonkeyTemple, logic=lambda l: (l.coconut and l.isdonkey) or l.phasewalk
         ),
@@ -662,7 +663,8 @@ CrownLocations = {
             z=1234,
             scale=0.4,
             region=Regions.CabinIsle,
-            logic=lambda l: (Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.isdonkey or l.isdiddy or l.ischunky or (l.istiny and l.twirl))),
+            logic=lambda l: (Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy)
+            or (l.advanced_platforming and ((l.isdonkey and l.settings.krusha_kong != Kongs.donkey) or l.isdiddy or l.ischunky or (l.istiny and l.twirl))),
         ),
         CrownLocation(map=Maps.Isles, name="DK Isles: Near Caves Lobby Tree (1)", x=2497, y=507, z=1903, scale=0.4, region=Regions.IslesMain),
         CrownLocation(map=Maps.Isles, name="DK Isles: Near K. Rool", x=3005, y=500, z=855, scale=0.5, region=Regions.IslesMain),
@@ -764,7 +766,7 @@ CrownLocations = {
             z=734,
             scale=0.45,
             region=Regions.TrainingGrounds,
-            logic=lambda l: (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey),
+            logic=lambda l: (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey),
         ),
         CrownLocation(map=Maps.TrainingGrounds, name="DK Isles - Training Grounds: Rear Cave", x=1196, y=36.4, z=2119, scale=0.35, region=Regions.TrainingGrounds),
         CrownLocation(

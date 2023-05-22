@@ -138,7 +138,7 @@ LogicRegions = {
     ]),
 
     Regions.SickBay: Region("Sick Bay", "Lighthouse Area", Levels.GloomyGalleon, False, -1, [
-        LocationLogic(Locations.GalleonChunkySeasick, lambda l: (l.punch or (l.phasewalk and l.advanced_platforming)) and l.ischunky),
+        LocationLogic(Locations.GalleonChunkySeasick, lambda l: (l.punch and l.ischunky)),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.LighthousePlatform, lambda l: True, Transitions.GalleonSickBayToLighthouseArea),
@@ -199,7 +199,7 @@ LogicRegions = {
         TransitionFront(Regions.TreasureRoomDiddyGoldTower, lambda l: (Events.WaterSwitch in l.Events and l.spring and l.diddy) or l.CanMoonkick() or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming and l.balloon and l.islanky)),
     ]),
 
-    Regions.TreasureRoomDiddyGoldTower: Region("Treasure Room Diddy Gold Tower", "Treasure Room", Levels.GloomyGalleon, False, -1, [  # Deathwarp is possible without the kasplat, but you can only take fall damage once
+    Regions.TreasureRoomDiddyGoldTower: Region("Treasure Room Diddy Gold Tower", "Treasure Room", Levels.GloomyGalleon, False, None, [  # Deathwarp is possible without the kasplat, but you can only take fall damage once
         LocationLogic(Locations.GalleonDiddyGoldTower, lambda l: (l.spring and l.isdiddy) or (l.CanMoonkick() and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.GalleonKasplatGoldTower, lambda l: not l.settings.kasplat_rando),
     ], [
@@ -220,7 +220,7 @@ LogicRegions = {
         TransitionFront(Regions.TreasureRoom, lambda l: True, Transitions.GalleonChestToTreasure),
     ]),
 
-    Regions.Submarine: Region("Submarine", "Shipyard Outskirts", Levels.GloomyGalleon, False, -1, [
+    Regions.Submarine: Region("Submarine", "Shipyard Outskirts", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonTinySubmarine, lambda l: l.istiny or l.settings.free_trade_items, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
@@ -242,7 +242,7 @@ LogicRegions = {
         TransitionFront(Regions.TinyShip, lambda l: l.CanPhaseswim()),
     ]),
 
-    Regions.TinyShip: Region("Tiny Ship", "Shipyard Outskirts", Levels.GloomyGalleon, False, -1, [
+    Regions.TinyShip: Region("Tiny Ship", "Shipyard Outskirts", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonTiny2DoorShip, lambda l: l.istiny or l.settings.free_trade_items, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
@@ -250,7 +250,7 @@ LogicRegions = {
         TransitionFront(Regions.LankyShip, lambda l: l.CanPhaseswim()),
     ]),
 
-    Regions.BongosShip: Region("Bongos Ship", "5 Door Ship", Levels.GloomyGalleon, False, -1, [
+    Regions.BongosShip: Region("Bongos Ship", "5 Door Ship", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonDonkey5DoorShip, lambda l: l.isdonkey or l.settings.free_trade_items, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
@@ -258,21 +258,21 @@ LogicRegions = {
         TransitionFront(Regions.SaxophoneShip, lambda l: l.CanPhaseswim()),
     ]),
 
-    Regions.GuitarShip: Region("Guitar Ship", "5 Door Ship", Levels.GloomyGalleon, False, -1, [
+    Regions.GuitarShip: Region("Guitar Ship", "5 Door Ship", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonDiddy5DoorShip, lambda l: l.isdiddy or l.settings.free_trade_items, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: True, Transitions.GalleonGuitarToShipyard),
     ]),
 
-    Regions.TromboneShip: Region("Trombone Ship", "5 Door Ship", Levels.GloomyGalleon, False, -1, [
+    Regions.TromboneShip: Region("Trombone Ship", "5 Door Ship", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonLanky5DoorShip, lambda l: l.islanky or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: True, Transitions.GalleonTromboneToShipyard),
     ]),
 
-    Regions.SaxophoneShip: Region("Saxophone Ship", "5 Door Ship", Levels.GloomyGalleon, False, -1, [
+    Regions.SaxophoneShip: Region("Saxophone Ship", "5 Door Ship", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonTiny5DoorShip, lambda l: l.istiny or l.settings.free_trade_items),
         LocationLogic(Locations.GalleonBananaFairy5DoorShip, lambda l: l.camera),
     ], [], [
@@ -280,7 +280,7 @@ LogicRegions = {
         TransitionFront(Regions.ShipyardUnderwater, lambda l: True, Transitions.GalleonSaxophoneToShipyard),
     ]),
 
-    Regions.TriangleShip: Region("Triangle Ship", "5 Door Ship", Levels.GloomyGalleon, False, -1, [
+    Regions.TriangleShip: Region("Triangle Ship", "5 Door Ship", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonChunky5DoorShip, lambda l: l.ischunky or l.settings.free_trade_items, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),

@@ -360,6 +360,7 @@ extern void setKongIgt(void);
 extern int ReadExtraData(extra_global_data data_type, int sub_index);
 extern void SaveExtraData(extra_global_data data_type, int sub_index, int value);
 extern void ResetExtraData(extra_global_data data_type, int sub_index);
+extern void setKrushaAmmoColor(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
@@ -384,3 +385,6 @@ extern unsigned char actor_master_types[ACTOR_LIMIT];
 extern short* actor_extra_data_sizes[ACTOR_LIMIT];
 extern collision_data_struct actor_collisions[ACTOR_LIMIT];
 extern collision_info object_collisions[COLLISION_LIMIT];
+
+extern mtx_item static_mtx[20];
+extern int hint_pointers[35];

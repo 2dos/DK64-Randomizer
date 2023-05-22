@@ -437,7 +437,7 @@ class Settings:
         self.cb_rando = False
         self.coin_rando = False
         self.crown_placement_rando = False
-        self.override_cosmetics = False
+        self.override_cosmetics = True
         self.random_colors = False
         self.hard_level_progression = False
         self.hard_blockers = False
@@ -810,10 +810,11 @@ class Settings:
         else:
             required_key_count = self.krool_key_count
         if self.krool_access or self.win_condition == WinCondition.get_key8:
-            # If helm is guaranteed or the win condition, make sure it's added and included in the key count
-            self.krool_keys_required.append(Events.HelmKeyTurnedIn)
+            # If key 8 is guaranteed to be needed, make sure it's added and included in the key count
+            if Events.HelmKeyTurnedIn not in self.krool_keys_required:
+                self.krool_keys_required.append(Events.HelmKeyTurnedIn)
+                required_key_count -= 1
             key_list.remove(Events.HelmKeyTurnedIn)
-            required_key_count -= 1
         if not self.select_keys:
             random.shuffle(key_list)
             for x in range(required_key_count):

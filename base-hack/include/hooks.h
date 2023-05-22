@@ -51,6 +51,8 @@ extern void SpriteFix(void);
 extern void PauseControl_Control(void);
 extern void PauseControl_Sprite(void);
 extern void brightenMMMEnemies(void);
+extern void FixKrushaAmmoHUDColor(void);
+extern void FixKrushaAmmoHUDSize(void);
 
 extern void CrankyDecouple(void);
 extern void ForceToBuyMoveInOneLevel(void);

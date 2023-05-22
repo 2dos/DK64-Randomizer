@@ -274,7 +274,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType, purchaseLis
                             Logic.Regions[destination].nightAccess = True
                             eventAdded = True
                 # Deathwarps currently send to the vanilla destination
-                if region.deathwarp is not None:
+                if region.deathwarp is not None and settings.perma_death is False:
                     destination = region.deathwarp.dest
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
                     if destination not in addedRegions and region.deathwarp.logic(LogicVariables):
