@@ -40,16 +40,6 @@ class ROM:
         """
         self.rom.writeBytes(bytes(byte_data))
 
-    def writeString(self, string: str, length: int):
-        """Write a string to the current position.
-
-        Starts at 0x0 as the inital position without seeking.
-
-        Args:
-            string (str): String to write.
-            length (int): Length in bytes to write.
-        """
-        self.rom.writeString(string, length)
 
     def writeMultipleBytes(self, value: int, size: int):
         """Write multiple bytes of a size to the current position.
@@ -76,14 +66,6 @@ class ROM:
         for x in arr:
             self.write(x)
 
-    def isEOF(self):
-        """Get if we are currently at the end of the ROM.
-
-        Returns:
-            bool: True or False if we are at the end of the file.
-        """
-        return bool(self.rom.isEOF())
-
     def save(self, file_name: str):
         """Save the patched file to a downloadable file.
 
@@ -96,18 +78,6 @@ class ROM:
         self.rom.fileName = file_name
         self.rom.save()
 
-    def slice(self, offset: int, length: int):
-        """Slice the rom at a position.
-
-        Args:
-            offset (int): Starting location to offset.
-            length (int): Length to retain.
-
-        Returns:
-            javascriptPatch: RompatcherJS MarcFile for patching.
-        """
-        return self.rom.slice(offset, length)
-
     def seek(self, val: int):
         """Seek to position in current file.
 
@@ -115,29 +85,6 @@ class ROM:
             val (int): Position to seek to.
         """
         self.rom.seek(val)
-
-    def read(self):
-        """Read at the current Position.
-
-        Starts at 0x0 as the inital position without seeking.
-
-        Returns:
-            int: Value read.
-        """
-        return int(self.rom.readU8())
-
-    def readString(self, len: int):
-        """Read data as a string.
-
-        Starts at 0x0 as the inital position without seeking.
-
-        Args:
-            len (int): Length to read.
-
-        Returns:
-            string: Data read in rom.
-        """
-        return str(self.rom.readString(len))
 
     def readBytes(self, len: int):
         """Read bytes from current position.

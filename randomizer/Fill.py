@@ -2360,6 +2360,8 @@ def Generate_Spoiler(spoiler):
     js.postMessage("Patching ROM...")
     # print(spoiler)
     # print(spoiler.json)
+    from randomizer.Patching import ApplyRandomizer
+    ApplyRandomizer.patching_response(spoiler)
     return spoiler
 
 

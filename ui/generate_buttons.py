@@ -6,7 +6,6 @@ import random
 from pyodide import create_proxy
 
 import js
-from randomizer.BackgroundRandomizer import generate_playthrough
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Patching.ApplyRandomizer import patching_response
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum

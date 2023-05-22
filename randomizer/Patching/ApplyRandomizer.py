@@ -6,7 +6,6 @@ import math
 import pickle
 import random
 
-import js
 from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, HelmDoorItem, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
@@ -45,8 +44,6 @@ from randomizer.Patching.CoinPlacer import randomize_coins
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
 from randomizer.Patching.FairyPlacer import PlaceFairies
-from ui.GenTracker import generateTracker
-from ui.GenSpoiler import GenerateSpoiler
 from randomizer.Patching.UpdateHints import PushHints, wipeHints
 from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
 from randomizer.Lists.QoL import QoLSelector
@@ -54,8 +51,6 @@ from randomizer.Lists.EnemyTypes import EnemySelector
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
-from ui.GenTracker import generateTracker
-from ui.progress_bar import ProgressBar
 
 
 class BooleanProperties:
@@ -68,29 +63,8 @@ class BooleanProperties:
         self.target = target
 
 
-def patching_response(responded_data):
-    """Response data from the background task.
+def patching_response(spoiler):
 
-    Args:
-        responded_data (str): Pickled data (or json)
-    """
-    loop = asyncio.get_event_loop()
-
-    try:
-        loaded_data = json.loads(responded_data)
-        if loaded_data.get("error"):
-            error = loaded_data.get("error")
-            ProgressBar().set_class("bg-danger")
-            js.toast_alert(error)
-            loop.run_until_complete(ProgressBar().update_progress(10, f"Error: {error}"))
-            loop.run_until_complete(ProgressBar().reset())
-            return None
-    except Exception:
-        pass
-
-    loop.run_until_complete(ProgressBar().update_progress(8, "Applying Patches"))
-    # spoiler: Spoiler = pickle.loads(codecs.decode(responded_data.encode(), "base64"))
-    spoiler = pickle.loads(codecs.decode(responded_data.encode(), "base64"))
     spoiler.settings.verify_hash()
     Settings({"seed": 0}).compare_hash(spoiler.settings.public_hash)
     # Make sure we re-load the seed id
@@ -98,10 +72,9 @@ def patching_response(responded_data):
     if spoiler.settings.download_patch_file:
         spoiler.settings.download_patch_file = False
 
-        js.save_text_as_file(codecs.encode(pickle.dumps(spoiler), "base64").decode(), f"dk64r-patch-{spoiler.settings.seed_id}.lanky")
-    js.write_seed_history(spoiler.settings.seed_id, codecs.encode(pickle.dumps(spoiler), "base64").decode(), spoiler.settings.public_hash)
     # Write date to ROM for debugging purposes
-    dt = js.getDate()
+    from datetime import datetime
+    dt = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     temp_json = json.loads(spoiler.json)
     temp_json["Settings"]["Generation Timestamp"] = dt
     spoiler.json = json.dumps(temp_json, indent=4)
@@ -548,42 +521,14 @@ def patching_response(responded_data):
     for count in spoiler.settings.seed_hash:
         ROM().seek(sav + 0x129 + order)
         ROM().write(count)
-        js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
+        #js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
         order += 1
 
-    loop.run_until_complete(ProgressBar().update_progress(10, "Seed Generated."))
-    js.document.getElementById("nav-settings-tab").style.display = ""
-    if spoiler.settings.generate_spoilerlog is True:
-        js.document.getElementById("spoiler_log_block").style.display = ""
-        loop.run_until_complete(GenerateSpoiler(spoiler.json))
-        js.document.getElementById("tracker_text").value = generateTracker(spoiler.json)
-    else:
-        js.document.getElementById("spoiler_log_text").innerHTML = ""
-        js.document.getElementById("spoiler_log_text").value = ""
-        js.document.getElementById("tracker_text").value = ""
-        js.document.getElementById("spoiler_log_block").style.display = "none"
-
-    js.document.getElementById("generated_seed_id").innerHTML = spoiler.settings.seed_id
+   
     loaded_settings = json.loads(spoiler.json)["Settings"]
-    tables = {}
-    t = 0
-    for i in range(0, 3):
-        js.document.getElementById(f"settings_table_{i}").innerHTML = ""
-        tables[i] = js.document.getElementById(f"settings_table_{i}")
-    for setting, value in loaded_settings.items():
-        hidden_settings = ["Seed", "algorithm"]
-        if setting not in hidden_settings:
-            if tables[t].rows.length > math.ceil((len(loaded_settings.items()) - len(hidden_settings)) / len(tables)):
-                t += 1
-            row = tables[t].insertRow(-1)
-            name = row.insertCell(0)
-            description = row.insertCell(1)
-            name.innerHTML = setting
-            description.innerHTML = FormatSpoiler(value)
+   
     ROM().fixSecurityValue()
     ROM().save(f"dk64r-rom-{spoiler.settings.seed_id}.z64")
-    loop.run_until_complete(ProgressBar().reset())
-    js.jq("#nav-settings-tab").tab("show")
 
 
 def FormatSpoiler(value):
