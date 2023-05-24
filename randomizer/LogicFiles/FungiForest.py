@@ -129,8 +129,8 @@ LogicRegions = {
         TransitionFront(Regions.MushroomNightExterior, lambda l: True),
         TransitionFront(Regions.GiantMushroomArea, lambda l: True),
         TransitionFront(Regions.MushroomChunkyRoom, lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) and l.ischunky) or l.phasewalk or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToChunky),
-        TransitionFront(Regions.MushroomLankyZingersRoom, lambda l: (l.handstand and l.CanSlamSwitch(Levels.FungiForest, 2) and l.islanky) or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToZingers),
-        TransitionFront(Regions.MushroomLankyMushroomsRoom, lambda l: (l.handstand and l.CanSlamSwitch(Levels.FungiForest, 2) and l.islanky) or l.phasewalk or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToMushrooms),
+        TransitionFront(Regions.MushroomLankyZingersRoom, lambda l: (l.handstand and (l.CanSlamSwitch(Levels.FungiForest, 2) and (l.trombone or l.oranges)) and l.islanky) or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToZingers),
+        TransitionFront(Regions.MushroomLankyMushroomsRoom, lambda l: (l.handstand and (l.CanSlamSwitch(Levels.FungiForest, 2) and (l.trombone or l.oranges)) and l.islanky) or l.phasewalk or l.CanOStandTBSNoclip(), Transitions.ForestExteriorToMushrooms),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
