@@ -146,13 +146,13 @@
 | Crystal Caves | Near Bonus Waterfall | l.camera | 
 | Crystal Caves | Blueprint Cave | l.camera | 
 | Crystal Caves | 5-Door Cabin Exterior | l.camera | 
-| Crystal Caves | Near 1-Door Cabin | l.camera | 
+| Crystal Caves | Near Lanky Cabin | l.camera | 
 | Crystal Caves | Under Waterfall Bridge | l.camera | 
 | Caves Frozen Castle | Inside Tile Flip Room | l.camera | 
 | Caves Chunky Igloo | Chunky 5-Door Igloo | l.camera | 
 | Caves Diddy Igloo | Diddy 5-Door Igloo | l.camera | 
 | Caves Donkey Igloo | Donkey 5-Door Igloo | l.camera | 
-| Caves Lanky Cabin | 1-Door Cabin | l.camera | 
+| Caves Lanky Cabin | Lanky Cabin | l.camera | 
 | Caves Chunky Cabin | Chunky 5-Door Cabin | l.camera | 
 </details>
 
