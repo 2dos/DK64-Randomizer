@@ -301,7 +301,7 @@
 | Isles | DK Isles: Near Fungi Cannon |  | 
 | Isles | DK Isles: Near Caves Lobby Tree (2) |  | 
 | Isles | DK Isles: Front of Aztec Building |  | 
-| Isles | DK Isles: Near K. Lumsy |  | 
+| Isles | DK Isles: Outside K. Lumsy |  | 
 | Isles | DK Isles: Near Monkeyport (1) |  | 
 | Isles | DK Isles: Near Monkeyport (2) |  | 
 | Isles | DK Isles: Under DK Caged GB |  | 
