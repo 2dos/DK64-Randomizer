@@ -1387,7 +1387,7 @@ DirtPatchLocations = [
         rotation=1103,
         group=1,
         logicregion=Regions.CabinArea,
-        logic=lambda l: (l.HasInstrument(Kongs.any) or (l.HasGun(Kongs.any) and l.oranges)) and l.shockwave,
+        logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
         name="Near Funky under Diddy's barrel",

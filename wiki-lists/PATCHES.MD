@@ -159,7 +159,7 @@
 | Map | Name | Logic |
 | --- | ---- | ----- |
 | Crystal Caves | Giant Kosha Room | l.shockwave | 
-| Crystal Caves | Near lanky's 1DC - lower | (l.HasInstrument(Kongs.any) or (l.HasGun(Kongs.any) and l.oranges)) and l.shockwave | 
+| Crystal Caves | Near lanky's 1DC - lower | l.shockwave | 
 | Crystal Caves | Near Funky under Diddy's barrel | l.shockwave | 
 | Crystal Caves | Near Diddy's top 5D Cabin door | l.shockwave | 
 | Crystal Caves | Near Tag barrel at 5D Cabin | l.shockwave | 
