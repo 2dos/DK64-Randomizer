@@ -680,7 +680,7 @@ CrownLocations = {
         #     region=Regions.IslesMainUpper,
         # ),
         CrownLocation(map=Maps.Isles, name="DK Isles: Front of Aztec Building", x=3225, y=1000, z=1613, scale=0.35, region=Regions.IslesMainUpper),
-        CrownLocation(map=Maps.Isles, name="DK Isles: Near K. Lumsy", x=3107, y=520, z=3500, scale=0.3, region=Regions.Prison),
+        CrownLocation(map=Maps.Isles, name="DK Isles: Near K. Lumsy", x=3107, y=520, z=3500, scale=0.3, region=Regions.KremIsle),
         CrownLocation(map=Maps.Isles, name="DK Isles: Near Monkeyport (1)", x=2519, y=550, z=4152, scale=0.5, region=Regions.KremIsle),
         CrownLocation(map=Maps.Isles, name="DK Isles: Near Monkeyport (2)", x=1852, y=600, z=3920, scale=0.5, region=Regions.KremIsle),
         CrownLocation(map=Maps.Isles, name="DK Isles: Under DK Caged GB", x=2000, y=550, z=3325, scale=0.5, region=Regions.KremIsle),
