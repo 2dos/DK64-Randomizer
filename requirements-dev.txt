@@ -16,4 +16,3 @@ djlint
 cpplint
 flask
 flask-cors
-discord-webhook

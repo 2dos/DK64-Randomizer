@@ -91,14 +91,6 @@ def main():
         with open("traceback.log", "w") as file_object:
             file_object.write(str(traceback.format_exc()))
         print(traceback.format_exc())
-        if os.environ.get("DISCORD_WEBHOOK"):
-            from discord_webhook import DiscordWebhook, DiscordEmbed
-
-            webhook = DiscordWebhook(url=os.environ.get("DISCORD_WEBHOOK"))
-            embed = DiscordEmbed(title="Error Generating Seed", description=str(traceback.format_exc()), color="800020")
-            embed.set_timestamp()
-            webhook.add_embed(embed)
-            webhook.execute()
         sys.exit(1)
 
 

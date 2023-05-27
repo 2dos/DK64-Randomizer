@@ -1,7 +1,6 @@
 """Apply Patch data to the ROM."""
 import json
 import os
-import pyxdelta
 from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, HelmDoorItem, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
@@ -471,6 +470,9 @@ def patching_response(spoiler):
     # Write the LocalROM.rom bytesIo to a file
     with open("patch.z64", "wb") as f:
         f.write(LocalROM().rom.getvalue())
+
+    import pyxdelta
+
     pyxdelta.run("dk64.z64", "patch.z64", "patch.xdelta")
     # Read the patch file
     with open("patch.xdelta", "rb") as f:

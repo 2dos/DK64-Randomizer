@@ -112,12 +112,15 @@ class ROM:
 
 from vidua import bps
 from io import BytesIO
-patch = open('./static/patches/shrink-dk64.bps', 'rb')
-original = open('dk64.z64', 'rb')
+# Try except for when the browser is trying to load this file
+try:
+    patch = open('./static/patches/shrink-dk64.bps', 'rb')
+    original = open('dk64.z64', 'rb')
 
-global patchedRom
-patchedRom = BytesIO(bps.patch(original, patch).read())
-
+    global patchedRom
+    patchedRom = BytesIO(bps.patch(original, patch).read())
+except Exception:
+    pass
 class LocalROM:
     """Patcher for ROM files loaded via Rompatcherjs."""
 

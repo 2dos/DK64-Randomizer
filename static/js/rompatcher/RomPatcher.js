@@ -57,7 +57,7 @@ addEvent(window, "load", function () {
   var min = dt.getMinutes();
   var hrs = dt.getHours();
   var total_seconds = (hrs*3600) + (min*60) + sec;
-  fetchPatch("./static/patches/shrink-dk64.bps?currtime=" + total_seconds);
+  //fetchPatch("./static/patches/shrink-dk64.bps?currtime=" + total_seconds);
   try {
     addEvent(document.getElementById("input-file-rom"), "change", function () {
       romFile = new MarcFile(this, _parseROM);
@@ -99,20 +99,30 @@ function updateChecksums(file, startOffset, force) {
   );
 }
 
-// Patches
-function fetchPatch(uri) {
-  var patchURI = decodeURI(uri.replace(/\#.*?$/, ""));
-  fetch(patchURI)
-    .then((result) => result.arrayBuffer()) // Gets the response and returns it as a blob
-    .then((arrayBuffer) => {
-      patchFile = new MarcFile(arrayBuffer);
-      _readPatchFile();
-    });
-}
+// // Patches
+// function fetchPatch(uri) {
+//   var patchURI = decodeURI(uri.replace(/\#.*?$/, ""));
+//   fetch(patchURI)
+//     .then((result) => result.arrayBuffer()) // Gets the response and returns it as a blob
+//     .then((arrayBuffer) => {
+//       patchFile = new MarcFile(arrayBuffer);
+//       _readPatchFile();
+//     });
+// }
 
-function _readPatchFile() {
-  patchFile.littleEndian = false;
-  patch = parseBPSFile(patchFile);
+// function _readPatchFile() {
+//   patchFile.littleEndian = false;
+//   patch = parseBPSFile(patchFile);
+// }
+
+
+function apply_xdelta(patchFile){
+  console.log("Starting XDelta Patch")
+  patch=parseVCDIFF(patchFile);
+  console.log("Applying XDelta Patch")
+  var romFile_internal = new MarcFile(romFile._u8array);
+  console.log(romFile_internal)
+  patchedRom = patch.apply(romFile_internal, false);
 }
 
 function apply_bps_javascript() {

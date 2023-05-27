@@ -9,7 +9,7 @@ from flask_executor import Executor
 import zipfile
 import traceback
 from io import BytesIO
-
+from flask_cors import CORS
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
@@ -19,7 +19,7 @@ from flask import request
 app = Flask(__name__)
 app.config['EXECUTOR_MAX_WORKERS'] = 1
 executor = Executor(app)
-
+CORS(app)
 def generate(generate_settings, file_name, gen_spoiler):
     """Gen a seed and write the file to an output file."""
     settings = Settings(generate_settings)
@@ -71,9 +71,8 @@ def start_gen():
     end = time.time()
     return patch, spoiler
 
-@app.route('/start_generation')
+@app.route('/generate', methods=['GET', 'POST'])
 def lambda_function():
-    """CLI Entrypoint for generating seeds."""
     # Flask get the query string parameters as a dict.
     query_string = request.args.to_dict()
     # See if we have a query for gen_key.
@@ -81,7 +80,7 @@ def lambda_function():
         gen_key = str(query_string.get("gen_key"))
         if executor.futures._futures.get(gen_key) and not executor.futures.done(gen_key):
             # We're not done generating yet.
-            response = make_response(json.dumps({'status': executor.futures._state(gen_key)}), 200)
+            response = make_response(json.dumps({'status': executor.futures._state(gen_key)}), 202)
             response.mimetype = "application/json"
             response.headers['Content-Type'] = 'application/json; charset=utf-8'
             return response
@@ -101,22 +100,22 @@ def lambda_function():
                 zip_file.writestr("hash", str(hash))
                 zip_file.writestr("spoiler_log", str(spoiler_log))
             zip_data.seek(0)
-            return send_file(zip_data, mimetype="application/zip", as_attachment=True, download_name=f"dk64r-{resp_data[1].settings.seed_id}.lanky")
+
+            # Convert the zip to a string of base64 data
+            zip_conv = codecs.encode(zip_data.getvalue(), "base64").decode()
+            # Return it as a text file
+            response = make_response(zip_conv, 200)
+            return response
+            #return send_file(zip_data, mimetype="application/zip", as_attachment=True, download_name=f"dk64r-{resp_data[1].settings.seed_id}.lanky")
         else:
             # We don't have a future for this key, so we need to start generating.
             executor.submit_stored(gen_key, start_gen)
-            response = make_response(json.dumps({"start_time": gen_key}), 200)
+            response = make_response(json.dumps({"start_time": gen_key}), 201)
             response.mimetype = "application/json"
             response.headers['Content-Type'] = 'application/json; charset=utf-8'
             return response
-    # Get the current time in milliseconds so we can use it as a key for the future.
-    # And a random number to use as a modifier for the key so we don't have to worry about collisions.
     else:
-        # We don't have a key, so we need to generate one.
-        random_seed = random.randint(0, 100000000)
-        start_time = str(int(round(time.time() * 1000)) + random_seed)
-        executor.submit_stored(start_time, start_gen)
-        response = make_response(json.dumps({"start_time": start_time}), 200)
+        response = make_response(json.dumps({"error": "error"}), 205)
         response.mimetype = "application/json"
         response.headers['Content-Type'] = 'application/json; charset=utf-8'
         return response

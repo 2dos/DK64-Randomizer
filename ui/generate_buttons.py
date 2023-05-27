@@ -7,7 +7,6 @@ from pyodide import create_proxy
 
 import js
 from randomizer.Enums.Settings import SettingsMap
-from randomizer.Patching.ApplyRandomizer import patching_response
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Worker import background
 from ui.bindings import bind
@@ -149,7 +148,7 @@ def generate_previous_seed(event):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ProgressBar().update_progress(0, "Loading Previous seed and applying data."))
         js.apply_bps_javascript()
-        patching_response(str(js.get_previous_seed_data()))
+        # patching_response(str(js.get_previous_seed_data()))
 
 
 @bind("click", "generate_lanky_seed")
@@ -166,7 +165,7 @@ def generate_seed_from_patch(event):
             js.document.getElementById("patchfileloader").classList.add("is-invalid")
     else:
         js.apply_bps_javascript()
-        patching_response(str(js.loaded_patch))
+         #patching_response(str(js.loaded_patch))
 
 
 def serialize_settings():
@@ -263,7 +262,6 @@ def generate_seed(event):
             form_data["seed"] = str(random.randint(100000, 999999))
         js.apply_bps_javascript()
         loop.run_until_complete(ProgressBar().update_progress(2, "Randomizing, this may take some time depending on settings."))
-        # background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
         background(form_data)
 
 

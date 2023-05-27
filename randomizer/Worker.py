@@ -2,6 +2,7 @@
 import json
 import uuid
 import js
+import time
 
 
 def background(body):
@@ -22,5 +23,7 @@ def background(body):
     else:
         url = "http://" + str(js.window.location.hostname) + ":5000/generate"
         branch = "dev"
-    id = str(uuid.uuid1())
-    js.generate_seed(url, json.dumps(body), branch, id)
+    # Get the current time in milliseconds so we can use it as a key for the future.
+    current_time = str(time.time()) + str(uuid.uuid1())
+    url = url + "?gen_key=" + current_time
+    js.generate_seed(url, json.dumps(body), branch)

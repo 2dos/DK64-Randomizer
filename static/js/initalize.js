@@ -371,84 +371,81 @@ function load_file_from_db() {
 var w;
 var CurrentRomHash;
 
-function site_version_checker() {
-  fetch("./static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
-    .then((response) => response.text())
-    .then((data) => {
-      CurrentRomHash = md5(data);
-    });
-  if (typeof Worker !== "undefined") {
-    if (typeof w == "undefined") {
-      w = new Worker("./static/js/version_worker.js");
+243
+
+
+function base64ToArrayBuffer(base64) {
+    var binaryString = atob(base64);
+    var bytes = new Uint8Array(binaryString.length);
+    for (var i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
     }
-    w.onmessage = function (event) {
-      if (CurrentRomHash != null && event.data != null) {
-        if (CurrentRomHash != event.data) {
-          alert("The Site has been updated. Please refresh the page.");
-        }
-      }
-    };
-  } else {
-    alert("Sorry! No Web Worker support. This site probably wont work.");
-  }
+    return bytes.buffer;
 }
-site_version_checker();
-function generate_seed(url, json, git_branch, run_id) {
+function generate_seed(url, json, git_branch) {
   $.ajax(url, {
     data: JSON.stringify({
-      task_id: run_id,
       branch: git_branch,
       post_body: json,
     }),
     contentType: "application/json",
     type: "POST",
-    success: function (xhr, textStatus) {
+    success: function (data, textStatus, xhr) {
       if (xhr.status == 202) {
+        console.log("seed gen queued")
         $("#progress-text").text(
           "Waiting in queue for other seeds to generate."
         );
         $("#patchprogress").width("40%");
-        setTimeout(generate_seed(json, git_branch, run_id), 5000);
-      } else {
-        $("#progress-text").text("Seed Gen Started");
-        $("#patchprogress").width("50%");
         setTimeout(function () {
-          var check_status = setInterval(function () {
-            $.ajax(url + "?" + $.param({ task_id: run_id }), {
-              type: "GET",
-              success: function (response) {
-                // Start Patching
-                event_response_data = response;
-                pyodide.runPythonAsync(
-                  `
-                import js
-                from randomizer.Patching.ApplyRandomizer import patching_response
-                patching_response(str(js.event_response_data))
-                `
-                );
-                clearInterval(check_status);
-              },
-              error: function (xhr, textStatus) {
-                if (xhr.status == 425) {
-                  $("#progress-text").text("Seed Generating");
-                  $("#patchprogress").width("70%");
-                } else {
-                  $("#patchprogress").addClass("bg-danger");
-                  $("#progress-text").text(xhr.responseText);
-                  $("#patchprogress").width("100%");
-                  setTimeout(function () {
-                    $("#progressmodal").modal("hide");
-                    $("#patchprogress").removeClass("bg-danger");
-                  }, 3000);
-                  clearInterval(check_status);
-                }
-              },
+          generate_seed(url, json, git_branch);
+        }, 5000);
+      } else if (xhr.status == 201) {
+        console.log("seed gen started")
+        $("#progress-text").text("Seed Gen Started");
+        $("#patchprogress").width("40%");
+        setTimeout(function () {
+          generate_seed(url, json, git_branch);
+        }, 5000);
+      } else {
+        $("#progress-text").text("Seed Gen Complete");
+        $("#patchprogress").width("80%");    
+        // Base64 decode the response
+        event_response_data = data
+        var decodedData = base64ToArrayBuffer(data);
+        zip = new JSZip();
+        // Load the zip file data into JSZip
+        zip.loadAsync(decodedData)
+          .then(function(zipFile) {
+            // Iterate over each file in the zip
+            zip.forEach(function(relativePath, zipEntry) {
+              if (!zipEntry.dir) {
+                // Extract the file content as a string or other appropriate format
+                zipEntry.async('string').then(function(fileContent) {
+                  // Store the file content in a variable with a name derived from the file name
+                  fileName = zipEntry.name.replace(/[^a-zA-Z0-9]/g, '_');
+                  if (fileName == "patch") {
+                    apply_xdelta(fileContent)
+                    pyodide.runPythonAsync(
+                      `
+                    import js
+                    from randomizer.Patching.ApplyLocal import patching_response
+                    patching_response(str(js.event_response_data))
+                    `
+                    );
+                  }
+                });
+              }
             });
-          }, 10000);
-        }, 1000);
+          })
+          .catch(function(error) {
+            console.error('Error unzipping the file:', error);
+          });
+
+       
       }
     },
-    error: function (xhr, textStatus) {
+    error: function (data, textStatus, xhr) {
       $("#patchprogress").addClass("bg-danger");
       $("#progress-text").text("Something went wrong please try again");
       $("#patchprogress").width("100%");
