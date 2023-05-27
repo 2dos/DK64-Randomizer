@@ -1,5 +1,5 @@
 """Randomize Move Locations."""
-from randomizer.Patching.Patcher import ROM
+from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando
 from randomizer.Enums.Types import Types
@@ -95,19 +95,19 @@ def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler: Spoiler, kong_slo
             flag_index = 0xFFFF
             if x["flag"] in flag_dict:
                 flag_index = flag_dict[x["flag"]]
-            ROM().writeMultipleBytes(5 << 5, 1)
-            ROM().writeMultipleBytes(x["price"], 1)
-            ROM().writeMultipleBytes(flag_index, 2)
+            LocalROM().writeMultipleBytes(5 << 5, 1)
+            LocalROM().writeMultipleBytes(x["price"], 1)
+            LocalROM().writeMultipleBytes(flag_index, 2)
         elif x["move_type"] is None:
-            ROM().writeMultipleBytes(7 << 5, 1)
-            ROM().writeMultipleBytes(0, 1)
-            ROM().writeMultipleBytes(0xFFFF, 2)
+            LocalROM().writeMultipleBytes(7 << 5, 1)
+            LocalROM().writeMultipleBytes(0, 1)
+            LocalROM().writeMultipleBytes(0xFFFF, 2)
         else:
             move_types = ["special", "slam", "gun", "ammo_belt", "instrument"]
             data = move_types.index(x["move_type"]) << 5 | (x["move_lvl"] << 3) | x["move_kong"]
-            ROM().writeMultipleBytes(data, 1)
-            ROM().writeMultipleBytes(x["price"], 1)
-            ROM().writeMultipleBytes(0xFFFF, 2)
+            LocalROM().writeMultipleBytes(data, 1)
+            LocalROM().writeMultipleBytes(x["price"], 1)
+            LocalROM().writeMultipleBytes(0xFFFF, 2)
         if enable_hints:
             if level_override is not None:
                 pushItemMicrohints(spoiler, x, level_override, kongs[xi], kong_slot)
@@ -180,9 +180,9 @@ def randomize_moves(spoiler: Spoiler):
                         applied_kong = Kongs.any
                     kong_lists[shop][kong][level] = applied_kong
 
-        ROM().seek(varspaceOffset + moveRandoOffset)
-        ROM().write(0x1)
-        ROM().seek(movespaceOffset)
+        LocalROM().seek(varspaceOffset + moveRandoOffset)
+        LocalROM().write(0x1)
+        LocalROM().seek(movespaceOffset)
         writeMoveDataToROM(dk_crankymoves, hint_enabled, spoiler, 0, kong_lists[0][0])
         writeMoveDataToROM(diddy_crankymoves, hint_enabled, spoiler, 1, kong_lists[0][1])
         writeMoveDataToROM(lanky_crankymoves, hint_enabled, spoiler, 2, kong_lists[0][2])
@@ -216,8 +216,8 @@ def getNextSlot(spoiler: Spoiler, item: Items) -> int:
     for slot in slots:
         offset = int(slot >> 3)
         check = int(slot % 8)
-        ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
-        val = int.from_bytes(ROM().readBytes(1), "big")
+        LocalROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
+        val = int.from_bytes(LocalROM().readBytes(1), "big")
         if (val & (0x80 >> check)) == 0:
             return slot
     return None
@@ -281,16 +281,16 @@ def place_pregiven_moves(spoiler: Spoiler):
                 for index in [item_order.index(Items.Camera), item_order.index(Items.Shockwave)]:
                     offset = int(index >> 3)
                     check = int(index % 8)
-                    ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
-                    val = int.from_bytes(ROM().readBytes(1), "big")
+                    LocalROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
+                    val = int.from_bytes(LocalROM().readBytes(1), "big")
                     val |= 0x80 >> check
-                    ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
-                    ROM().writeMultipleBytes(val, 1)
+                    LocalROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
+                    LocalROM().writeMultipleBytes(val, 1)
             if new_slot is not None:
                 offset = int(new_slot >> 3)
                 check = int(new_slot % 8)
-                ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
-                val = int.from_bytes(ROM().readBytes(1), "big")
+                LocalROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
+                val = int.from_bytes(LocalROM().readBytes(1), "big")
                 val |= 0x80 >> check
-                ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
-                ROM().writeMultipleBytes(val, 1)
+                LocalROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
+                LocalROM().writeMultipleBytes(val, 1)

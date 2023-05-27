@@ -4,7 +4,7 @@ from random import randint
 
 import js
 from randomizer.Patching.generate_kong_color_images import convertColors
-from randomizer.Patching.Patcher import ROM
+from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Patching.Lib import intf_to_float, float_to_hex, int_to_list, getObjectAddress, TextureFormat
 from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Kongs import Kongs
@@ -253,8 +253,8 @@ def getFile(table_index: int, file_index: int, compressed: bool, width: int, hei
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
     file_size = file_end - file_start
-    ROM().seek(file_start)
-    data = ROM().readBytes(file_size)
+    LocalROM().seek(file_start)
+    data = LocalROM().readBytes(file_size)
     if compressed:
         data = zlib.decompress(data, (15 + 32))
     im_f = Image.new(mode="RGBA", size=(width, height))
@@ -540,7 +540,7 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
     file_size = file_end - file_start
-    ROM().seek(file_start)
+    LocalROM().seek(file_start)
     pix = im_f.load()
     width, height = im_f.size
     bytes_array = []
@@ -571,7 +571,7 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
         data = gzip.compress(data, compresslevel=9)
     if len(data) > file_size:
         print(f"File too big error: {table_index} > {file_index}")
-    ROM().writeBytes(data)
+    LocalROM().writeBytes(data)
 
 
 def writeKasplatHairColorToROM(color, table_index, file_index, format: str):
@@ -1860,5 +1860,5 @@ def writeBootMessages(spoiler: Spoiler):
     """Write boot messages into ROM."""
     placed_messages = random.sample(boot_phrases, 4)
     for message_index, message in enumerate(placed_messages):
-        ROM().seek(0x1FFD000 + (0x40 * message_index))
-        ROM().writeBytes(message.upper().encode("ascii"))
+        LocalROM().seek(0x1FFD000 + (0x40 * message_index))
+        LocalROM().writeBytes(message.upper().encode("ascii"))

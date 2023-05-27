@@ -108,3 +108,96 @@ class ROM:
         self.seek(0x3154)
         self.write(0)
         self.fixChecksum()
+
+
+from vidua import bps
+from io import BytesIO
+patch = open('./static/patches/shrink-dk64.bps', 'rb')
+original = open('dk64.z64', 'rb')
+
+global patchedRom
+patchedRom = BytesIO(bps.patch(original, patch).read())
+
+class LocalROM:
+    """Patcher for ROM files loaded via Rompatcherjs."""
+
+    def __init__(self):
+        """Patch functions for the ROM loaded within Rompatcherjs.
+
+        This is mostly a hint file, you could directly call the javascript functions,
+        but to keep this a bit more logical for team members we just import it and treat
+        this like a bytesIO object.
+
+        Args:
+            file ([type], optional): [description]. Defaults to None.
+        """
+        self.rom = patchedRom
+
+    def write(self, val: int):
+        """Write value to current position.
+
+        Starts at 0x0 as the inital position without seeking.
+
+        Args:
+            val (int): Int value to write.
+        """
+        self.rom.write((val).to_bytes(8, byteorder='big', signed=False))
+
+    def writeBytes(self, byte_data: bytes):
+        """Write an array a bytes to the current position.
+
+        Starts at 0x0 as the inital position without seeking.
+
+        Args:
+            byte_data (bytes): Bytes object to write to current position.
+        """
+        self.rom.write(bytes(byte_data))
+
+
+    def writeMultipleBytes(self, value: int, size: int):
+        """Write multiple bytes of a size to the current position.
+
+        Starts at 0x0 as the inital position without seeking.
+
+        Args:
+            value (int): Value to write.
+            size (int): Size of the bytes to write.
+        """
+        arr = []
+        temp = value
+        for x in range(size):
+            arr.append(0)
+        will_pass = True
+        idx = size - 1
+        while will_pass:
+            if temp is None:
+                temp = 0
+            write = temp % 256
+            arr[idx] = write
+            temp = int((temp - write) / 256)
+            if idx == 0 or temp == 0:
+                will_pass = False
+            idx -= 1
+        for x in arr:
+            self.write(x)
+
+    def seek(self, val: int):
+        """Seek to position in current file.
+
+        Args:
+            val (int): Position to seek to.
+        """
+        self.rom.seek(val)
+
+    def readBytes(self, len: int):
+        """Read bytes from current position.
+
+        Starts at 0x0 as the inital position without seeking.
+
+        Args:
+            len (int): Length to read.
+
+        Returns:
+            bytes: List of bytes read from current position.
+        """
+        return bytes(self.rom.read(len))

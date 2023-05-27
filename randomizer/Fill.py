@@ -2,6 +2,7 @@
 from json import dumps
 from math import floor
 from random import shuffle, choice, uniform, randint
+from randomizer.Patching import ApplyRandomizer
 
 import js
 import randomizer.ItemPool as ItemPool
@@ -2360,9 +2361,8 @@ def Generate_Spoiler(spoiler):
     js.postMessage("Patching ROM...")
     # print(spoiler)
     # print(spoiler.json)
-    from randomizer.Patching import ApplyRandomizer
-    ApplyRandomizer.patching_response(spoiler)
-    return spoiler
+    patch_data = ApplyRandomizer.patching_response(spoiler)
+    return patch_data, spoiler
 
 
 def ShuffleMisc(spoiler):

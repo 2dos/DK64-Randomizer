@@ -5,7 +5,7 @@ import zlib
 
 from PIL import Image
 
-from randomizer.Patching.Patcher import ROM
+from randomizer.Patching.Patcher import ROM, LocalROM
 
 
 def get_hash_images():
@@ -26,18 +26,18 @@ def get_hash_images():
     ptr_offset = 0x101C50
     loaded_images = []
     for x in images:
-        ROM().seek(ptr_offset + (x["table"] * 4))
-        ptr_table = ptr_offset + int.from_bytes(ROM().readBytes(4), "big")
-        ROM().seek(ptr_table + (x["index"] * 4))
-        img_start = ptr_offset + int.from_bytes(ROM().readBytes(4), "big")
-        ROM().seek(ptr_table + ((x["index"] + 1) * 4))
-        img_end = ptr_offset + int.from_bytes(ROM().readBytes(4), "big")
+        LocalROM().seek(ptr_offset + (x["table"] * 4))
+        ptr_table = ptr_offset + int.from_bytes(LocalROM().readBytes(4), "big")
+        LocalROM().seek(ptr_table + (x["index"] * 4))
+        img_start = ptr_offset + int.from_bytes(LocalROM().readBytes(4), "big")
+        LocalROM().seek(ptr_table + ((x["index"] + 1) * 4))
+        img_end = ptr_offset + int.from_bytes(LocalROM().readBytes(4), "big")
         img_size = img_end - img_start
-        ROM().seek(img_start)
+        LocalROM().seek(img_start)
         if x["table"] == 25:
-            dec = zlib.decompress(ROM().readBytes(img_size), 15 + 32)
+            dec = zlib.decompress(LocalROM().readBytes(img_size), 15 + 32)
         else:
-            dec = ROM().readBytes(img_size)
+            dec = LocalROM().readBytes(img_size)
         im = Image.new(mode="RGBA", size=(x["w"], x["h"]))
         pix = im.load()
         pix_count = x["w"] * x["h"]
