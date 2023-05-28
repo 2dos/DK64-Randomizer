@@ -269,7 +269,7 @@ def place_pregiven_moves(spoiler: Spoiler):
         Items.Shockwave,
     ]
     for item in spoiler.pregiven_items:
-        print(item)
+        # print(item)
         if item is not None and item != Items.NoItem:
             new_slot = None
             if item in (Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam):
