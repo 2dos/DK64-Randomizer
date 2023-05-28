@@ -155,20 +155,10 @@ def patching_response(data):
             description.innerHTML = FormatSpoiler(value)
    
    
-   
-   
-   
-   
-   # TODO: DUMP THE SPOILER LOG DATA BEFORE WE REACH HERE
-   
-   
-   
-   
-   
     seed_id = str(extracted_variables["seed_id"].decode("utf-8"))
     loop.run_until_complete(ProgressBar().update_progress(10, "Seed Generated."))
     js.document.getElementById("nav-settings-tab").style.display = ""
-    if settings.generate_spoilerlog is True:
+    if spoiler.get("Requirements"):
         js.document.getElementById("spoiler_log_block").style.display = ""
         loop.run_until_complete(GenerateSpoiler(spoiler))
         js.document.getElementById("tracker_text").value = generateTracker(spoiler)

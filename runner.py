@@ -98,7 +98,12 @@ def lambda_function():
             future = executor.futures.pop(gen_key)
             resp_data = future.result()
             hash = resp_data[1].settings.seed_hash
-            spoiler_log = resp_data[1].json
+            spoiler_log = json.loads(resp_data[1].json)
+            # Only retain the Settings section and the Cosmetics section.
+            sections_to_retain = ["Settings", "Cosmetics"]
+            if resp_data[1].settings.generate_spoilerlog is False:
+                spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
+            
             patch = resp_data[0]
             # Zip all the data into a single file.
             # Create a new zip file
@@ -107,7 +112,7 @@ def lambda_function():
                 # Write each variable to the zip file
                 zip_file.writestr("patch", patch)
                 zip_file.writestr("hash", str(hash))
-                zip_file.writestr("spoiler_log", str(spoiler_log))
+                zip_file.writestr("spoiler_log", str(json.dumps(spoiler_log)))
                 zip_file.writestr("seed_id", str(resp_data[1].settings.seed_id))
             zip_data.seek(0)
 
