@@ -1,18 +1,18 @@
 """Apply Patch data to the ROM."""
 
 import random
-from randomizer.Patching.CosmeticColors import (
-    apply_cosmetic_colors,
-    overwrite_object_colors,
-    applyKrushaKong,
-    writeMiscCosmeticChanges,
-    applyHolidayMode,
-    applyHelmDoorCosmetics,
-)
+# from randomizer.Patching.CosmeticColors import (
+#     apply_cosmetic_colors,
+#     overwrite_object_colors,
+#     applyKrushaKong,
+#     writeMiscCosmeticChanges,
+#     applyHolidayMode,
+#     applyHelmDoorCosmetics,
+# )
 from randomizer.Patching.Patcher import ROM
 import json
 from randomizer.Patching.Hash import get_hash_images
-from randomizer.Patching.MusicRando import randomize_music
+# from randomizer.Patching.MusicRando import randomize_music
 import io
 import js
 import zipfile

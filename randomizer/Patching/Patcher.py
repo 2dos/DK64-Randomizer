@@ -144,7 +144,7 @@ class LocalROM:
         Args:
             val (int): Int value to write.
         """
-        self.rom.write((val).to_bytes(8, byteorder='big', signed=False))
+        self.rom.write((val).to_bytes(1, byteorder='big', signed=False))
 
     def writeBytes(self, byte_data: bytes):
         """Write an array a bytes to the current position.
