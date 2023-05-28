@@ -7,7 +7,6 @@ from randomizer.Enums.EnemySubtypes import EnemySubtype
 from randomizer.Enums.Settings import CrownEnemyRando, DamageAmount
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Spoiler import Spoiler
 
 
 class PkmnSnapEnemy:
@@ -252,7 +251,7 @@ def setPkmnSnapEnemy(focused_enemy):
             enemy.addEnemy()
 
 
-def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_setting):
+def getBalancedCrownEnemyRando(spoiler, crown_setting, damage_ohko_setting):
     """Get array of weighted enemies."""
     # this library will contain a list for every enemy it needs to generate
     enemy_swaps_library = {}
@@ -399,7 +398,7 @@ def getBalancedCrownEnemyRando(spoiler: Spoiler, crown_setting, damage_ohko_sett
     return enemy_swaps_library
 
 
-def writeEnemy(spoiler: Spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawner: Spawner, cont_map_id: Maps, crown_timer: int = 0):
+def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawner: Spawner, cont_map_id: Maps, crown_timer: int = 0):
     """Write enemy to ROM."""
     LocalROM().seek(cont_map_spawner_address + spawner.offset)
     LocalROM().writeMultipleBytes(new_enemy_id, 1)
@@ -488,7 +487,7 @@ def writeEnemy(spoiler: Spoiler, cont_map_spawner_address: int, new_enemy_id: in
                 LocalROM().writeMultipleBytes(new_speed, 1)
 
 
-def randomize_enemies(spoiler: Spoiler):
+def randomize_enemies(spoiler):
     """Write replaced enemies to ROM."""
     # Define Enemy Classes, Used for detection of if an enemy will be replaced
     enemy_classes = {

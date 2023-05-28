@@ -2,10 +2,9 @@
 import js
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Spoiler import Spoiler
 
 
-def randomize_barrels(spoiler: Spoiler):
+def randomize_barrels(spoiler):
     """Randomize barrel locations."""
     barrels = [12, 91]
     if spoiler.settings.bonus_barrel_rando or spoiler.settings.minigames_list_selected:

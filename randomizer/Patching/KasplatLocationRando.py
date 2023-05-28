@@ -4,10 +4,9 @@ from randomizer.Lists.EnemyTypes import Enemies
 from randomizer.Lists.KasplatLocations import KasplatLocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Spoiler import Spoiler
 
 
-def randomize_kasplat_locations(spoiler: Spoiler):
+def randomize_kasplat_locations(spoiler):
     """Write replaced enemies to ROM."""
     kasplat_types = [Enemies.KasplatDK, Enemies.KasplatDiddy, Enemies.KasplatLanky, Enemies.KasplatTiny, Enemies.KasplatChunky]
     vanilla_kasplat_maps = [

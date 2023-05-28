@@ -2,7 +2,6 @@
 import js
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Spoiler import Spoiler
 from randomizer.Patching.Lib import float_to_hex, getNextFreeID, addNewScript
 from randomizer.Enums.ScriptTypes import ScriptTypes
 
@@ -21,7 +20,7 @@ class CrownPlacementShortData:
         self.vanilla = vanilla
 
 
-def randomize_crown_pads(spoiler: Spoiler):
+def randomize_crown_pads(spoiler):
     """Place Crown Pads."""
     if spoiler.settings.crown_placement_rando:
         placements = []

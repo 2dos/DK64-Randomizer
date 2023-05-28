@@ -3,10 +3,9 @@ import js
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.EntranceRando import intToArr
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Spoiler import Spoiler
 
 
-def randomize_krool(spoiler: Spoiler):
+def randomize_krool(spoiler):
     """Apply K Rool Phase order based on krool_order from spoiler."""
     varspaceOffset = spoiler.settings.rom_data
     # /* 0x058 */ char k_rool_order[5]; // Order of K. Rool phases: [0,1,2,3,4] dictates DK->Diddy->Lanky->Tiny->Chunky. If K. Rool is being shortened to less than 5 phases, put the unused phases as -1
@@ -37,7 +36,7 @@ def randomize_krool(spoiler: Spoiler):
                 LocalROM().writeBytes(bytearray(map_bytes))
 
 
-def randomize_helm(spoiler: Spoiler):
+def randomize_helm(spoiler):
     """Apply Helm Room order based on helm_order from spoiler."""
     varspaceOffset = spoiler.settings.rom_data
     helmOffset = 0x190

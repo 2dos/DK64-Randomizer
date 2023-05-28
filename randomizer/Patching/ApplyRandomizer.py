@@ -12,6 +12,7 @@ from randomizer.Patching.CosmeticColors import (
     updateMillLeverTexture,
     updateCryptLeverTexture,
     writeBootMessages,
+    applyHelmDoorCosmetics
 )
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranceType, enableSpiderText
@@ -443,15 +444,16 @@ def patching_response(spoiler):
         wipeHints()
     PushHints(spoiler)
 
-    writeBootMessages(spoiler)
+    writeBootMessages()
     enableSpiderText(spoiler)
     shortenCastleMinecart(spoiler) 
     
     
     
-    updateMillLeverTexture(spoiler)
-    updateCryptLeverTexture(spoiler)
-    
+    updateMillLeverTexture(spoiler.settings)
+    updateCryptLeverTexture(spoiler.settings)
+    applyHelmDoorCosmetics(spoiler.settings)
+
     
     
     # D-Pad Display

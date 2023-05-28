@@ -1,6 +1,5 @@
 """Randomize Move Locations."""
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
@@ -59,7 +58,7 @@ level_names = [
 kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky", Kongs.any: "Any Kong"}
 
 
-def pushItemMicrohints(spoiler: Spoiler, move_dict: dict, level: int, kong: int, slot: int):
+def pushItemMicrohints(spoiler, move_dict: dict, level: int, kong: int, slot: int):
     """Push hint for the micro-hints system."""
     if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
         if kong != Kongs.any or slot == 0:
@@ -87,7 +86,7 @@ def pushItemMicrohints(spoiler: Spoiler, move_dict: dict, level: int, kong: int,
                     spoiler.text_changes[19] = [data]
 
 
-def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler: Spoiler, kong_slot: int, kongs: list, level_override=None):
+def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler, kong_slot: int, kongs: list, level_override=None):
     """Write move data to ROM."""
     for xi, x in enumerate(arr):
         if x["move_type"] == "flag":
@@ -126,7 +125,7 @@ def dictEqual(dict1: dict, dict2: dict) -> bool:
     return True
 
 
-def randomize_moves(spoiler: Spoiler):
+def randomize_moves(spoiler):
     """Randomize Move locations based on move_data from spoiler."""
     varspaceOffset = spoiler.settings.rom_data
     movespaceOffset = spoiler.settings.move_location_data
@@ -202,7 +201,7 @@ def randomize_moves(spoiler: Spoiler):
         writeMoveDataToROM(bfi_move, hint_enabled, spoiler, 0, [Kongs.tiny], 7)
 
 
-def getNextSlot(spoiler: Spoiler, item: Items) -> int:
+def getNextSlot(spoiler, item: Items) -> int:
     """Get slot for progressive item with pre-given moves."""
     slots = []
     if item == Items.ProgressiveAmmoBelt:
@@ -223,7 +222,7 @@ def getNextSlot(spoiler: Spoiler, item: Items) -> int:
     return None
 
 
-def place_pregiven_moves(spoiler: Spoiler):
+def place_pregiven_moves(spoiler):
     """Place pre-given moves."""
     item_order = [
         Items.BaboonBlast,

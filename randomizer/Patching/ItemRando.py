@@ -2,7 +2,6 @@
 import js
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Item import ItemList
@@ -206,7 +205,7 @@ level_names = {
 kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky", Kongs.any: "Any Kong"}
 
 
-def pushItemMicrohints(spoiler: Spoiler):
+def pushItemMicrohints(spoiler):
     """Push hint for the micro-hints system."""
     if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
         hinted_items = {
@@ -291,7 +290,7 @@ def getActorIndex(item):
     return actor_indexes[item.new_item]
 
 
-def place_randomized_items(spoiler: Spoiler):
+def place_randomized_items(spoiler):
     """Place randomized items into ROM."""
     if spoiler.settings.shuffle_items:
         sav = spoiler.settings.rom_data

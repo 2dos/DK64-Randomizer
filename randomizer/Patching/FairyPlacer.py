@@ -3,14 +3,13 @@
 import js
 
 from randomizer.Lists.FairyLocations import fairy_locations, relocated_5ds_fairy
-from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Levels import Levels
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.EnemyTypes import Enemies
 
 
-def ReplaceShipFairy(spoiler: Spoiler):
+def ReplaceShipFairy(spoiler):
     """Replace the fairy inside 5DS with an easier to get fairy."""
     file_start = js.pointer_addresses[16]["entries"][Maps.Galleon5DShipDKTiny]["pointing_to"]
     LocalROM().seek(file_start)
@@ -132,7 +131,7 @@ def ReplaceShipFairy(spoiler: Spoiler):
             LocalROM().writeMultipleBytes(y, 1)
 
 
-def PlaceFairies(spoiler: Spoiler):
+def PlaceFairies(spoiler):
     """Write Fairies to ROM."""
     ReplaceShipFairy(spoiler)
     sav = spoiler.settings.rom_data

@@ -7,11 +7,10 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.ShuffleShopLocations import available_shops
-from randomizer.Spoiler import Spoiler
 from randomizer.Patching.Lib import float_to_hex, intf_to_float
 
 
-def ApplyShopRandomizer(spoiler: Spoiler):
+def ApplyShopRandomizer(spoiler):
     """Write shop locations to ROM."""
     if spoiler.settings.shuffle_shops:
         shop_assortment = spoiler.shuffled_shop_locations

@@ -6,12 +6,11 @@ from randomizer.Enums.Settings import MiscChangesSelected
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Spoiler import Spoiler
 from randomizer.Patching.Lib import float_to_hex, getNextFreeID, addNewScript
 from randomizer.Enums.ScriptTypes import ScriptTypes
 
 
-def remove_existing_indicators(spoiler: Spoiler):
+def remove_existing_indicators(spoiler):
     """Remove all existing indicators."""
     if not spoiler.settings.portal_numbers:
         for cont_map_id in range(216):
@@ -51,7 +50,7 @@ def remove_existing_indicators(spoiler: Spoiler):
                 LocalROM().writeMultipleBytes(data, 4)
 
 
-def place_door_locations(spoiler: Spoiler):
+def place_door_locations(spoiler):
     """Place Wrinkly Doors, and eventually T&S Doors."""
     if spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando or spoiler.settings.remove_wrinkly_puzzles:
         wrinkly_doors = [0xF0, 0xF2, 0xEF, 0x67, 0xF1]

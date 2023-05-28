@@ -7,11 +7,10 @@ from randomizer.Lists.EnemyTypes import Enemies
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Items import Items
-from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Types import Types
 
 
-def apply_kongrando_cosmetic(spoiler: Spoiler):
+def apply_kongrando_cosmetic(spoiler):
     """Rando write bananaport locations."""
     if Types.Kong in spoiler.settings.shuffled_location_types:
         kong_locations = [x for x in spoiler.item_assignment if x.location in (Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong)]

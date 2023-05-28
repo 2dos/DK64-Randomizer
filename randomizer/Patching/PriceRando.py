@@ -2,10 +2,9 @@
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Settings import MoveRando, RandomPrices
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Spoiler import Spoiler
 
 
-def randomize_prices(spoiler: Spoiler):
+def randomize_prices(spoiler):
     """Write prices to ROM variable space based on settings."""
     if spoiler.settings.random_prices != RandomPrices.vanilla:
         varspaceOffset = spoiler.settings.rom_data

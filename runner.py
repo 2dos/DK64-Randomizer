@@ -108,7 +108,7 @@ def lambda_function():
                 zip_file.writestr("patch", patch)
                 zip_file.writestr("hash", str(hash))
                 zip_file.writestr("spoiler_log", str(spoiler_log))
-                zip_file.writestr("form_data", json.dumps(resp_data[1].settings.form_data))
+                zip_file.writestr("seed_id", str(resp_data[1].settings.seed_id))
             zip_data.seek(0)
 
             # Convert the zip to a string of base64 data
@@ -116,7 +116,6 @@ def lambda_function():
             # Return it as a text file
             response = make_response(zip_conv, 200)
             return response
-            #return send_file(zip_data, mimetype="application/zip", as_attachment=True, download_name=f"dk64r-{resp_data[1].settings.seed_id}.lanky")
         else:
             # We don't have a future for this key, so we need to start generating.
             executor.submit_stored(gen_key, start_gen, gen_key)

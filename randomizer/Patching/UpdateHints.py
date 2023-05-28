@@ -7,7 +7,6 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.WrinklyHints import HintLocation, hints
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Patching.Lib import grabText, writeText
-from randomizer.Spoiler import Spoiler
 
 
 def writeWrinklyHints(file_start_offset, text):
@@ -103,7 +102,7 @@ def wipeHints():
             hints[x].hint = ""
 
 
-def replaceIngameText(spoiler: Spoiler):
+def replaceIngameText(spoiler):
     """Replace text in-game with defined modifications."""
     for file_index in spoiler.text_changes:
         old_text = grabText(file_index)

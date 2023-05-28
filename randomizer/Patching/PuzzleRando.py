@@ -3,7 +3,6 @@ import random
 import js
 
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Spoiler import Spoiler
 from randomizer.Lists.MapsAndExits import Maps
 
 
@@ -39,7 +38,7 @@ def shiftCastleMinecartRewardZones():
             LocalROM().writeMultipleBytes(40, 2)
 
 
-def shortenCastleMinecart(spoiler: Spoiler):
+def shortenCastleMinecart(spoiler):
     """Shorten Castle Minecart to end at the u-turn point."""
     if not spoiler.settings.fast_gbs:
         return
@@ -161,7 +160,7 @@ def shortenCastleMinecart(spoiler: Spoiler):
             LocalROM().writeMultipleBytes(y, 1)
 
 
-def randomize_puzzles(spoiler: Spoiler):
+def randomize_puzzles(spoiler):
     """Shuffle elements of puzzles. Currently limited to coin challenge requirements but will be extended in future."""
     sav = spoiler.settings.rom_data
     if spoiler.settings.puzzle_rando:

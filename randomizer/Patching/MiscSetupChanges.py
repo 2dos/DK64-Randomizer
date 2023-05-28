@@ -6,7 +6,6 @@ import js
 from randomizer.Lists.MapsAndExits import Maps, LevelMapTable
 from randomizer.Lists.Patches import DirtPatchLocations
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Spoiler import Spoiler
 from randomizer.Patching.Lib import float_to_hex
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Kongs import Kongs
@@ -103,7 +102,7 @@ def pickChunkyCabinPadPositions():
     return {"picked": picked_pads.copy(), "index": 0}
 
 
-def randomize_setup(spoiler: Spoiler):
+def randomize_setup(spoiler):
     """Randomize setup."""
     pickup_weights = [
         {"item": "orange", "type": 0x56, "weight": 3},
@@ -415,7 +414,7 @@ def randomize_setup(spoiler: Spoiler):
                         LocalROM().writeMultipleBytes(int(float_to_hex(155), 16), 4)
 
 
-def updateRandomSwitches(spoiler: Spoiler):
+def updateRandomSwitches(spoiler):
     """Update setup to account for random switch placement."""
     if spoiler.settings.alter_switch_allocation:
         switches = {

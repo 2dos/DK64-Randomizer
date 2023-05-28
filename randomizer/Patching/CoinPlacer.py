@@ -1,11 +1,10 @@
 """Apply Coin Rando changes."""
 import js
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Spoiler import Spoiler
 from randomizer.Patching.Lib import float_to_hex, short_to_ushort
 
 
-def randomize_coins(spoiler: Spoiler):
+def randomize_coins(spoiler):
     """Place Coins into ROM."""
     if spoiler.settings.coin_rando:
         for cont_map_id in range(216):

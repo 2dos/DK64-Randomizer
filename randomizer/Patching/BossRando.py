@@ -1,9 +1,8 @@
 """Apply Boss Locations."""
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Spoiler import Spoiler
 
 
-def randomize_bosses(spoiler: Spoiler):
+def randomize_bosses(spoiler):
     """Apply Boss locations based on boss_maps from spoiler."""
     varspaceOffset = spoiler.settings.rom_data
     bossMapOffset = 0x097

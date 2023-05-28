@@ -5,10 +5,9 @@ import js
 from randomizer.Enums.Settings import BananaportRando
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Spoiler import Spoiler
 
 
-def randomize_bananaport(spoiler: Spoiler):
+def randomize_bananaport(spoiler):
     """Rando write bananaport locations."""
     pad_types = [0x214, 0x213, 0x211, 0x212, 0x210]
 

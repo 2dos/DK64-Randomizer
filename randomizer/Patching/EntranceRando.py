@@ -4,7 +4,6 @@ from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, MapExitTable, Maps
 from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Spoiler import Spoiler
 
 valid_lz_types = [9, 12, 13, 16]
 
@@ -36,7 +35,7 @@ def intToArr(val, size):
     return arr
 
 
-def randomize_entrances(spoiler: Spoiler):
+def randomize_entrances(spoiler):
     """Randomize Entrances based on shuffled_exit_instructions."""
     if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all and spoiler.shuffled_exit_instructions is not None:
         for cont_map in spoiler.shuffled_exit_instructions:
@@ -214,7 +213,7 @@ def filterEntranceType():
                 LocalROM().writeMultipleBytes(0, 2)
 
 
-def enableSpiderText(spoiler: Spoiler):
+def enableSpiderText(spoiler):
     """Change the cutscene trigger in Spider Boss to the specific item reward cutscene."""
     if spoiler.settings.item_reward_previews:
         cont_map_lzs_address = js.pointer_addresses[18]["entries"][Maps.ForestSpider]["pointing_to"]

@@ -2,7 +2,6 @@
 import js
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Levels import Levels
-from randomizer.Spoiler import Spoiler
 from randomizer.Patching.Lib import float_to_hex, short_to_ushort
 
 import randomizer.Lists.CBLocations.JungleJapesCBLocations
@@ -26,7 +25,7 @@ level_data = {
 PATH_CAP = 64
 
 
-def randomize_cbs(spoiler: Spoiler):
+def randomize_cbs(spoiler):
     """Place Colored Bananas into ROM."""
     if spoiler.settings.cb_rando:
         for cont_map_id in range(216):
