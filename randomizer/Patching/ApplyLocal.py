@@ -1,23 +1,24 @@
 """Apply Patch data to the ROM."""
-# import json
-# import js
-# import random
-# from randomizer.Patching.CosmeticColors import (
-#     apply_cosmetic_colors,
-#     overwrite_object_colors,
-#     applyKrushaKong,
-#     writeMiscCosmeticChanges,
-#     applyHolidayMode,
-#     applyHelmDoorCosmetics,
-# )
-# from randomizer.Patching.Hash import get_hash_images
-# from randomizer.Patching.MusicRando import randomize_music
+
+import random
+from randomizer.Patching.CosmeticColors import (
+    apply_cosmetic_colors,
+    overwrite_object_colors,
+    applyKrushaKong,
+    writeMiscCosmeticChanges,
+    applyHolidayMode,
+    applyHelmDoorCosmetics,
+)
+from randomizer.Patching.Patcher import ROM
+import json
+from randomizer.Patching.Hash import get_hash_images
+from randomizer.Patching.MusicRando import randomize_music
 import io
 import js
 import zipfile
 import base64
 # from randomizer.Spoiler import Spoiler
-#from randomizer.Settings import Settings
+from randomizer.Settings import Settings
 
 
 class BooleanProperties:
@@ -30,13 +31,13 @@ class BooleanProperties:
         self.target = target
 
 
-def patching_response(spoiler):
+def patching_response(data):
     # Unzip the data_passed
     
     # Base64 decode the data
-    spoiler = base64.b64decode(spoiler)
+    data = base64.b64decode(data)
  # Create an in-memory byte stream from the zip data
-    zip_stream = io.BytesIO(spoiler)
+    zip_stream = io.BytesIO(data)
 
     # Dictionary to store the extracted variables
     extracted_variables = {}
@@ -55,14 +56,12 @@ def patching_response(spoiler):
 
     print(extracted_variables["spoiler_log"])
     print(extracted_variables["hash"])    
-    
     # # Make sure we re-load the seed id
-    # spoiler.settings.set_seed()
     # if spoiler.settings.download_patch_file:
     #     spoiler.settings.download_patch_file = False
   
     
-    # sav = spoiler.settings.rom_data
+    sav = Settings(json.loads(extracted_variables["form_data"])).rom_data
 
 
     # random.seed(None)
@@ -73,7 +72,6 @@ def patching_response(spoiler):
     # writeMiscCosmeticChanges(spoiler)
     # applyHolidayMode(spoiler)
     # applyHelmDoorCosmetics(spoiler)
-    # random.seed(spoiler.settings.seed)
 
 
 
@@ -126,23 +124,23 @@ def patching_response(spoiler):
     #     if prop.check:
     #         ROM().seek(sav + prop.offset)
     #         ROM().write(prop.target)
-
-    # # Apply Hash
-    # order = 0
-    # loaded_hash = get_hash_images()
-    # for count in spoiler.settings.seed_hash:
-    #     js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
-    #     order += 1
+    
+    
+    # Apply Hash
+    order = 0
+    loaded_hash = get_hash_images("browser")
+    for count in json.loads(extracted_variables["hash"].decode("utf-8")):
+        js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
+        order += 1
 
     # spoiler.updateJSONCosmetics()
    
     
     # loaded_settings = json.loads(spoiler.json)["Settings"]
    
-    # ROM().fixSecurityValue()
-    # ROM().save(f"dk64r-rom-{spoiler.settings.seed_id}.z64")
+    ROM().fixSecurityValue()
+    ROM().save(f"dk64r-rom-124567.z64")
     
-
         
 
 def FormatSpoiler(value):

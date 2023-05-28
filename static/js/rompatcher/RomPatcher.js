@@ -117,11 +117,9 @@ function updateChecksums(file, startOffset, force) {
 
 
 function apply_xdelta(patchFile){
-  console.log("Starting XDelta Patch")
-  patch=parseVCDIFF(patchFile);
-  console.log("Applying XDelta Patch")
+  u8_array = new Uint8Array(patchFile)
+  patch=parseVCDIFF(new MarcFile(patchFile));
   var romFile_internal = new MarcFile(romFile._u8array);
-  console.log(romFile_internal)
   patchedRom = patch.apply(romFile_internal, false);
 }
 

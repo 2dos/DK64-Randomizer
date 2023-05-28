@@ -63,6 +63,7 @@ class Settings:
         self.generate_misc()
         self.rom_data = 0x1FED020
         self.move_location_data = 0x1FEF000
+        self.form_data = form_data
 
         self.apply_form_data(form_data)
         self.seed_id = str(self.seed)

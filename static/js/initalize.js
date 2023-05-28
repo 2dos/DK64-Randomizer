@@ -421,22 +421,23 @@ function generate_seed(url, json, git_branch) {
             zip.forEach(function(relativePath, zipEntry) {
               if (!zipEntry.dir) {
                 // Extract the file content as a string or other appropriate format
-                zipEntry.async('string').then(function(fileContent) {
-                  // Store the file content in a variable with a name derived from the file name
-                  fileName = zipEntry.name.replace(/[^a-zA-Z0-9]/g, '_');
-                  if (fileName == "patch") {
-                    apply_xdelta(fileContent)
-                    pyodide.runPythonAsync(
+                // Store the file content in a variable with a name derived from the file name
+                fileName = zipEntry.name.replace(/[^a-zA-Z0-9]/g, '_');
+                if (fileName == "patch") {
+                  zipEntry.async('uint8array').then(function(fileContent) {
+
+                      apply_xdelta(fileContent)
+                      pyodide.runPythonAsync(
+                        `
+                      import js
+                      from randomizer.Patching.ApplyLocal import patching_response
+                      patching_response(str(js.event_response_data))
                       `
-                    import js
-                    from randomizer.Patching.ApplyLocal import patching_response
-                    patching_response(str(js.event_response_data))
-                    `
-                    );
+                      );
+                    })
                   }
-                });
-              }
-            });
+                }});
+
           })
           .catch(function(error) {
             console.error('Error unzipping the file:', error);

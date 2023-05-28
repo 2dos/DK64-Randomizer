@@ -99,6 +99,7 @@ def lambda_function():
                 zip_file.writestr("patch", patch)
                 zip_file.writestr("hash", str(hash))
                 zip_file.writestr("spoiler_log", str(spoiler_log))
+                zip_file.writestr("form_data", json.dumps(resp_data[1].settings.form_data))
             zip_data.seek(0)
 
             # Convert the zip to a string of base64 data
