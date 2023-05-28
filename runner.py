@@ -20,7 +20,7 @@ app = Flask(__name__)
 app.config['EXECUTOR_MAX_WORKERS'] = 1
 executor = Executor(app)
 CORS(app)
-def generate(generate_settings, file_name, gen_spoiler):
+def generate(generate_settings):
     """Gen a seed and write the file to an output file."""
     settings = Settings(generate_settings)
     spoiler = Spoiler(settings)        
@@ -33,7 +33,6 @@ def start_gen():
     start = time.time()
     presets = json.load(open("static/presets/preset_files.json"))
     default = json.load(open("static/presets/default.json"))
-    found = False
     for file in presets.get("progression"):
         with open("static/presets/" + file, "r") as preset_file:
             data = json.load(preset_file)
@@ -43,7 +42,7 @@ def start_gen():
                     setting_data[key] = data[key]
                 setting_data.pop("name")
                 setting_data.pop("description")
-                found = True
+                break
     setting_data["seed"] = random.randint(0, 100000000)
     # Convert string data to enums where possible.
     for k, v in setting_data.items():
@@ -64,7 +63,7 @@ def start_gen():
                 except Exception:
                     pass
     try:
-        patch, spoiler = generate(setting_data, 'test', True)
+        patch, spoiler = generate(setting_data)
 
     except Exception as e:
         print(traceback.format_exc())
