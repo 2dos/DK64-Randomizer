@@ -20,6 +20,9 @@ app = Flask(__name__)
 app.config['EXECUTOR_MAX_WORKERS'] = 1
 executor = Executor(app)
 CORS(app)
+
+current_job = ""
+
 def generate(generate_settings):
     """Gen a seed and write the file to an output file."""
     settings = Settings(generate_settings)
@@ -28,9 +31,11 @@ def generate(generate_settings):
     return patch, spoiler
 
 
-def start_gen():
+def start_gen(gen_key):
     print("starting generation")
     start = time.time()
+    global current_job
+    current_job = gen_key
     presets = json.load(open("static/presets/preset_files.json"))
     default = json.load(open("static/presets/default.json"))
     for file in presets.get("progression"):
@@ -68,6 +73,7 @@ def start_gen():
     except Exception as e:
         print(traceback.format_exc())
     end = time.time()
+    current_job = ""
     return patch, spoiler
 
 @app.route('/generate', methods=['GET', 'POST'])
@@ -78,8 +84,12 @@ def lambda_function():
     if query_string.get("gen_key"):
         gen_key = str(query_string.get("gen_key"))
         if executor.futures._futures.get(gen_key) and not executor.futures.done(gen_key):
-            # We're not done generating yet.
-            response = make_response(json.dumps({'status': executor.futures._state(gen_key)}), 202)
+            # We're not done generating yet
+            global current_job
+            if str(current_job) == str(gen_key):
+                response = make_response(json.dumps({'status': executor.futures._state(gen_key)}), 203)
+            else:
+                response = make_response(json.dumps({'status': executor.futures._state(gen_key)}), 202)
             response.mimetype = "application/json"
             response.headers['Content-Type'] = 'application/json; charset=utf-8'
             return response
@@ -109,7 +119,7 @@ def lambda_function():
             #return send_file(zip_data, mimetype="application/zip", as_attachment=True, download_name=f"dk64r-{resp_data[1].settings.seed_id}.lanky")
         else:
             # We don't have a future for this key, so we need to start generating.
-            executor.submit_stored(gen_key, start_gen)
+            executor.submit_stored(gen_key, start_gen, gen_key)
             response = make_response(json.dumps({"start_time": gen_key}), 201)
             response.mimetype = "application/json"
             response.headers['Content-Type'] = 'application/json; charset=utf-8'

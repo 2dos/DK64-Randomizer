@@ -261,7 +261,6 @@ def generate_seed(event):
         if not form_data.get("seed"):
             form_data["seed"] = str(random.randint(100000, 999999))
         js.apply_bps_javascript()
-        loop.run_until_complete(ProgressBar().update_progress(2, "Randomizing, this may take some time depending on settings."))
         background(form_data)
 
 

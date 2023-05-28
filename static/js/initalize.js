@@ -402,11 +402,20 @@ function generate_seed(url, json, git_branch) {
         }, 5000);
       } else if (xhr.status == 201) {
         console.log("seed gen started")
-        $("#progress-text").text("Seed Gen Started");
-        $("#patchprogress").width("40%");
+        $("#progress-text").text("Seed Gen Queued");
+        $("#patchprogress").width("30%");
         setTimeout(function () {
           generate_seed(url, json, git_branch);
         }, 5000);
+        
+      } else if (xhr.status == 203) {
+        console.log("seed gen started")
+        $("#progress-text").text("Seed Gen Started");
+        $("#patchprogress").width("50%");
+        setTimeout(function () {
+          generate_seed(url, json, git_branch);
+        }, 5000);
+        
       } else {
         $("#progress-text").text("Seed Gen Complete");
         $("#patchprogress").width("80%");    
