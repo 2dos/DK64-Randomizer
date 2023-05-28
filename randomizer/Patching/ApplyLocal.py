@@ -8,6 +8,8 @@ from randomizer.Patching.CosmeticColors import (
     writeMiscCosmeticChanges,
     applyHolidayMode,
 )
+from ui.GenTracker import generateTracker
+from ui.GenSpoiler import GenerateSpoiler
 from randomizer.Patching.Patcher import ROM
 import json
 import math
@@ -39,7 +41,7 @@ def patching_response(data):
     loop = asyncio.get_event_loop()
     # Base64 decode the data
     data = base64.b64decode(data)
- # Create an in-memory byte stream from the zip data
+    # Create an in-memory byte stream from the zip data
     zip_stream = io.BytesIO(data)
 
     # Dictionary to store the extracted variables
@@ -57,7 +59,7 @@ def patching_response(data):
                 variable_name = file_name.split(".")[0]
                 extracted_variables[variable_name] = variable_value
     settings = Settings(serialize_settings())
-
+    spoiler = json.loads(extracted_variables["spoiler_log"])
     # Make sure we re-load the seed id
     if settings.download_patch_file:
         settings.download_patch_file = False
@@ -135,24 +137,47 @@ def patching_response(data):
     # spoiler.updateJSONCosmetics()
    
     
-    # loaded_settings = json.loads(spoiler.json)["Settings"]
-    # tables = {}
-    # t = 0
-    # for i in range(0, 3):
-    #     js.document.getElementById(f"settings_table_{i}").innerHTML = ""
-    #     tables[i] = js.document.getElementById(f"settings_table_{i}")
-    # for setting, value in loaded_settings.items():
-    #     hidden_settings = ["Seed", "algorithm"]
-    #     if setting not in hidden_settings:
-    #         if tables[t].rows.length > math.ceil((len(loaded_settings.items()) - len(hidden_settings)) / len(tables)):
-    #             t += 1
-    #         row = tables[t].insertRow(-1)
-    #         name = row.insertCell(0)
-    #         description = row.insertCell(1)
-    #         name.innerHTML = setting
-    #         description.innerHTML = FormatSpoiler(value)
+    loaded_settings = spoiler["Settings"]
+    tables = {}
+    t = 0
+    for i in range(0, 3):
+        js.document.getElementById(f"settings_table_{i}").innerHTML = ""
+        tables[i] = js.document.getElementById(f"settings_table_{i}")
+    for setting, value in loaded_settings.items():
+        hidden_settings = ["Seed", "algorithm"]
+        if setting not in hidden_settings:
+            if tables[t].rows.length > math.ceil((len(loaded_settings.items()) - len(hidden_settings)) / len(tables)):
+                t += 1
+            row = tables[t].insertRow(-1)
+            name = row.insertCell(0)
+            description = row.insertCell(1)
+            name.innerHTML = setting
+            description.innerHTML = FormatSpoiler(value)
+   
+   
+   
+   
+   
+   
+   # TODO: DUMP THE SPOILER LOG DATA BEFORE WE REACH HERE
+   
+   
+   
+   
    
     seed_id = str(extracted_variables["seed_id"].decode("utf-8"))
+    loop.run_until_complete(ProgressBar().update_progress(10, "Seed Generated."))
+    js.document.getElementById("nav-settings-tab").style.display = ""
+    if settings.generate_spoilerlog is True:
+        js.document.getElementById("spoiler_log_block").style.display = ""
+        loop.run_until_complete(GenerateSpoiler(spoiler))
+        js.document.getElementById("tracker_text").value = generateTracker(spoiler)
+    else:
+        js.document.getElementById("spoiler_log_text").innerHTML = ""
+        js.document.getElementById("spoiler_log_text").value = ""
+        js.document.getElementById("tracker_text").value = ""
+        js.document.getElementById("spoiler_log_block").style.display = "none"
+    js.document.getElementById("generated_seed_id").innerHTML = seed_id
     ROM().fixSecurityValue()
     ROM().save(f"dk64r-rom-{seed_id}.z64")
     loop.run_until_complete(ProgressBar().reset())

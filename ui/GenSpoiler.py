@@ -23,7 +23,7 @@ async def GenerateSpoiler(spoiler):
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     template = templateEnv.get_template("spoiler.html.jinja2")
     trimmed_spoiler = ""
-    for x in spoiler.split("\n"):
+    for x in json.dumps(spoiler).split("\n"):
         trimmed_spoiler += x.strip()
     formatted_spoiler = json.loads(trimmed_spoiler)
     # modified_spoiler = formatted_spoiler.pop("Settings")
