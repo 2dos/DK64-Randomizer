@@ -110,14 +110,13 @@ class ROM:
         self.fixChecksum()
 
 
-from vidua import bps
 from io import BytesIO
 # Try except for when the browser is trying to load this file
 try:
     patch = open('./static/patches/shrink-dk64.bps', 'rb')
     original = open('dk64.z64', 'rb')
-
     global patchedRom
+    from vidua import bps
     patchedRom = BytesIO(bps.patch(original, patch).read())
 except Exception as e:
     pass
