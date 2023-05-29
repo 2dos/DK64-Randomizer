@@ -252,8 +252,12 @@ def getFile(table_index: int, file_index: int, compressed: bool, width: int, hei
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
     file_size = file_end - file_start
-    LocalROM().seek(file_start)
-    data = LocalROM().readBytes(file_size)
+    try:
+        LocalROM().seek(file_start)
+        data = LocalROM().readBytes(file_size)
+    except Exception:
+        ROM().seek(file_start)
+        data = ROM().readBytes(file_size)
     if compressed:
         data = zlib.decompress(data, (15 + 32))
     im_f = Image.new(mode="RGBA", size=(width, height))
@@ -539,7 +543,10 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
     file_size = file_end - file_start
-    LocalROM().seek(file_start)
+    try:
+        LocalROM().seek(file_start)
+    except Exception:
+        ROM().seek(file_start)
     pix = im_f.load()
     width, height = im_f.size
     bytes_array = []
@@ -570,7 +577,10 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
         data = gzip.compress(data, compresslevel=9)
     if len(data) > file_size:
         print(f"File too big error: {table_index} > {file_index}")
-    LocalROM().writeBytes(data)
+    try:
+        LocalROM().writeBytes(data)
+    except Exception:
+        ROM().writeBytes(data)
 
 
 def writeKasplatHairColorToROM(color, table_index, file_index, format: str):
