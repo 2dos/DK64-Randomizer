@@ -31,24 +31,13 @@ def generate(generate_settings):
     return patch, spoiler
 
 
-def start_gen(gen_key):
+def start_gen(gen_key, post_body):
     print("starting generation")
-    start = time.time()
     global current_job
     current_job = gen_key
-    presets = json.load(open("static/presets/preset_files.json"))
-    default = json.load(open("static/presets/default.json"))
-    for file in presets.get("progression"):
-        with open("static/presets/" + file, "r") as preset_file:
-            data = json.load(preset_file)
-            if "Season 1 Race Settings" == data.get("name"):
-                setting_data = default
-                for key in data:
-                    setting_data[key] = data[key]
-                setting_data.pop("name")
-                setting_data.pop("description")
-                break
-    setting_data["seed"] = random.randint(0, 100000000)
+    setting_data = post_body
+    if not setting_data.get("seed"):
+        setting_data["seed"] = random.randint(0, 100000000)
     # Convert string data to enums where possible.
     for k, v in setting_data.items():
         if k in SettingsMap:
@@ -123,7 +112,8 @@ def lambda_function():
             return response
         else:
             # We don't have a future for this key, so we need to start generating.
-            executor.submit_stored(gen_key, start_gen, gen_key)
+            post_body = json.loads(request.get_json().get("post_body"))
+            executor.submit_stored(gen_key, start_gen, gen_key, post_body)
             response = make_response(json.dumps({"start_time": gen_key}), 201)
             response.mimetype = "application/json"
             response.headers['Content-Type'] = 'application/json; charset=utf-8'

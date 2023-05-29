@@ -2,6 +2,8 @@
 import http.server
 import threading
 from runner import app
+from waitress import serve
+
 PORT = 8000
 
 
@@ -28,7 +30,11 @@ def start_webserver():
     """Start the standard web server."""
     http.server.test(HandlerClass=NoCacheHTTPRequestHandler, port=PORT)
 
+def run_servers():
+    threading.Thread(target=start_webserver).start()
+    #app.debug = True
+    #serve(app, host='0.0.0.0', port=5000)
+
 
 if __name__ == "__main__":
-    threading.Thread(target=start_webserver).start()
-    # app.run(debug=True)
+    run_servers()

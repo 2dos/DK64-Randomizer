@@ -67,7 +67,6 @@ def patching_response(data):
     sav = settings.rom_data
 
     random.seed(None)
-    randomize_music(settings)
     applyKrushaKong(settings)
     apply_cosmetic_colors(settings)
     overwrite_object_colors(settings)
@@ -134,7 +133,9 @@ def patching_response(data):
         js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
         order += 1
 
-    # spoiler.updateJSONCosmetics()
+    music_data = randomize_music(settings)
+
+    spoiler = updateJSONCosmetics(spoiler, settings, music_data)
    
     
     loaded_settings = spoiler["Settings"]
@@ -184,3 +185,53 @@ def FormatSpoiler(value):
     formatted = string.replace("_", " ")
     result = formatted.title()
     return result
+
+
+def updateJSONCosmetics(spoiler, settings, music_data):
+    """Update spoiler JSON with cosmetic settings."""
+    humanspoiler = spoiler
+    if settings.colors != {} or settings.klaptrap_model_index:
+        humanspoiler["Cosmetics"]["Colors and Models"] = {}
+        for color_item in settings.colors:
+            if color_item == "dk":
+                humanspoiler["Cosmetics"]["Colors and Models"]["DK Color"] = settings.colors[color_item]
+            else:
+                humanspoiler["Cosmetics"]["Colors and Models"][f"{color_item.capitalize()} Color"] = settings.colors[color_item]
+        klap_models = {
+            0x19: "Beaver",
+            0x1E: "Klobber",
+            0x20: "Kaboom",
+            0x21: "Green Klaptrap",
+            0x22: "Purple Klaptrap",
+            0x23: "Red Klaptrap",
+            0x24: "Klaptrap Teeth",
+            0x26: "Krash",
+            0x27: "Troff",
+            0x30: "N64 Logo",
+            0x34: "Mech Fish",
+            0x42: "Krossbones",
+            0x47: "Rabbit",
+            0x4B: "Minecart Skeleton Head",
+            0x51: "Tomato",
+            0x62: "Ice Tomato",
+            0x69: "Golden Banana",
+            0x70: "Microbuffer",
+            0x72: "Bell",
+            0x96: "Missile (Car Race)",
+            0xB0: "Red Buoy",
+            0xB1: "Green Buoy",
+            0xBD: "Rareware Logo",
+        }
+        if settings.klaptrap_model_index in klap_models:
+            humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = klap_models[settings.klaptrap_model_index]
+        else:
+            humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(settings.klaptrap_model_index)}"
+    if settings.music_bgm_randomized:
+        humanspoiler["Cosmetics"]["Background Music"] = music_data.get("music_bgm_data")
+    if settings.music_majoritems_randomized:
+        humanspoiler["Cosmetics"]["Major Item Themes"] = music_data.get("music_majoritem_data")
+    if settings.music_minoritems_randomized:
+        humanspoiler["Cosmetics"]["Minor Item Themes"] = music_data.get("music_minoritem_data")
+    if settings.music_events_randomized:
+        humanspoiler["Cosmetics"]["Event Themes"] = music_data.get("music_event_data")
+    return humanspoiler

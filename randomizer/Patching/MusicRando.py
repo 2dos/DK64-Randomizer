@@ -74,7 +74,7 @@ def randomize_music(settings: Settings):
     Args:
         settings (Settings): Settings object from the windows form.
     """
-    spoiler = ""
+    music_data = {"music_bgm_data": {}, "music_majoritem_data": {}, "music_minoritem_data": {}, "music_event_data": {}}
     if js.document.getElementById("override_cosmetics").checked or True:
         if js.document.getElementById("random_music").checked:
             settings.music_bgm_randomized = True
@@ -115,11 +115,11 @@ def randomize_music(settings: Settings):
                     # For testing, flip these two lines
                     # song_list.append(pointer_addresses[0]["entries"][song_data.index(song)])
                     song_list[song.channel - 1].append(js.pointer_addresses[0]["entries"][song_data.index(song)])
-            # ShuffleMusicWithSizeCheck(spoiler, song_list)
+            # ShuffleMusicWithSizeCheck(music_data, song_list)
             for channel_index in range(12):
                 shuffled_music = song_list[channel_index].copy()
                 random.shuffle(shuffled_music)
-                shuffle_music(spoiler, song_list[channel_index].copy(), shuffled_music)
+                shuffle_music(music_data, song_list[channel_index].copy(), shuffled_music)
         # If the user was a poor sap and selected chaos put DK rap for everything
         else:
             # Find the DK rap in the list
@@ -157,10 +157,10 @@ def randomize_music(settings: Settings):
             if song.type == SongType.MajorItem:
                 majoritem_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
         # Shuffle the majoritem list
-        # ShuffleMusicWithSizeCheck(spoiler, majoritem_list)
+        # ShuffleMusicWithSizeCheck(music_data, majoritem_list)
         shuffled_music = majoritem_list.copy()
         random.shuffle(shuffled_music)
-        shuffle_music(spoiler, majoritem_list.copy(), shuffled_music)
+        shuffle_music(music_data, majoritem_list.copy(), shuffled_music)
     # If the user wants to randomize minor items
     if settings.music_minoritems_randomized:
         if js.cosmetics is not None and js.cosmetic_names is not None:
@@ -172,10 +172,10 @@ def randomize_music(settings: Settings):
             if song.type == SongType.MinorItem:
                 minoritem_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
         # Shuffle the minoritem list
-        # ShuffleMusicWithSizeCheck(spoiler, minoritem_list)
+        # ShuffleMusicWithSizeCheck(music_data, minoritem_list)
         shuffled_music = minoritem_list.copy()
         random.shuffle(shuffled_music)
-        shuffle_music(spoiler, minoritem_list.copy(), shuffled_music)
+        shuffle_music(music_data, minoritem_list.copy(), shuffled_music)
 
     # If the user wants to randomize events
     if settings.music_events_randomized:
@@ -191,10 +191,11 @@ def randomize_music(settings: Settings):
         # Shuffle the event list
         duped_song_list = event_list.copy()
         random.shuffle(duped_song_list)
-        shuffle_music(spoiler, event_list.copy(), duped_song_list)
+        shuffle_music(music_data, event_list.copy(), duped_song_list)
+    return music_data
 
 
-def shuffle_music(spoiler, pool_to_shuffle, shuffled_list):
+def shuffle_music(music_data, pool_to_shuffle, shuffled_list):
     """Shuffle the music pool based on the OG list and the shuffled list.
 
     Args:
@@ -229,11 +230,11 @@ def shuffle_music(spoiler, pool_to_shuffle, shuffled_list):
         memory = song_data[shuffledIndex].memory
         ROM().seek(0x1FFF000 + 2 * originalIndex)
         ROM().writeMultipleBytes(memory, 2)
-        # if song_data[originalIndex].type == SongType.BGM:
-        #     spoiler.music_bgm_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
-        # elif song_data[originalIndex].type == SongType.MajorItem:
-        #     spoiler.music_majoritem_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
-        # elif song_data[originalIndex].type == SongType.MinorItem:
-        #     spoiler.music_minoritem_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
-        # elif song_data[originalIndex].type == SongType.Event:
-        #     spoiler.music_event_data[song_data[originalIndex].name] = song_data[shuffledIndex].output_name
+        if song_data[originalIndex].type == SongType.BGM:
+            music_data["music_bgm_data"][song_data[originalIndex].name] = song_data[shuffledIndex].output_name
+        elif song_data[originalIndex].type == SongType.MajorItem:
+            music_data["music_majoritem_data"][song_data[originalIndex].name] = song_data[shuffledIndex].output_name
+        elif song_data[originalIndex].type == SongType.MinorItem:
+            music_data["music_minoritem_data"][song_data[originalIndex].name] = song_data[shuffledIndex].output_name
+        elif song_data[originalIndex].type == SongType.Event:
+            music_data["music_event_data"][song_data[originalIndex].name] = song_data[shuffledIndex].output_name

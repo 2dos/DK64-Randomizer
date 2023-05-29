@@ -119,7 +119,7 @@ try:
 
     global patchedRom
     patchedRom = BytesIO(bps.patch(original, patch).read())
-except Exception:
+except Exception as e:
     pass
 class LocalROM:
     """Patcher for ROM files loaded via Rompatcherjs."""
