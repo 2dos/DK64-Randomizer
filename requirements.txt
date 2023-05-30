@@ -4,3 +4,4 @@ flask-executor
 vidua
 pyxdelta
 flask-cors
+pillow
