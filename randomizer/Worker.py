@@ -19,7 +19,7 @@ def background(body):
         branch = "dev"
         if "dev" not in str(js.location.hostname).lower():
             branch = "master"
-        url = "https://dk64-seed-generator.adaptable.app/generate"
+        url = "https://generate.dk64rando.com/generate"
     else:
         url = "http://" + str(js.window.location.hostname) + ":5000/generate"
         branch = "dev"
