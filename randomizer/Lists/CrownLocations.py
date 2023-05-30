@@ -68,7 +68,7 @@ CrownLocations = {
         # CrownLocation(map=Maps.JungleJapes, name="On Mountain", x=1616, y=989, z=2439, scale=0.5, region=Regions.JapesTopOfMountain),
         CrownLocation(map=Maps.JungleJapes, name="Near Kong Cage", x=949, y=852, z=2384, scale=0.35, region=Regions.JungleJapesMain),
         CrownLocation(map=Maps.JungleJapes, name="Near Cannon Platform", x=1282, y=520, z=2262, scale=0.35, region=Regions.JungleJapesMain),
-        CrownLocation(map=Maps.JungleJapes, name="In T&S Alcove", x=770, y=538, z=2332, scale=0.35, region=Regions.JungleJapesMain),
+        CrownLocation(map=Maps.JungleJapes, name="In Troff 'n' Scoff Alcove", x=770, y=538, z=2332, scale=0.35, region=Regions.JungleJapesMain),
         # CrownLocation(
         #     map=Maps.JungleJapes,
         #     name="Near Underground Entrance",
@@ -86,9 +86,7 @@ CrownLocations = {
         CrownLocation(map=Maps.JapesMountain, name="Mountain: Near Entrance (Ground)", x=328, y=40, z=471, scale=0.3, region=Regions.Mine),
         CrownLocation(map=Maps.JapesMountain, name="Mountain: Near Entrance (High)", x=497, y=140, z=512, scale=0.35, region=Regions.Mine),
         CrownLocation(map=Maps.JapesMountain, name="Mountain: On Barrel", x=690, y=135, z=757, scale=0.4, region=Regions.Mine),
-        CrownLocation(
-            map=Maps.JapesMountain, name="Mountain: Near HiLo Machine", x=326, y=133, z=1510, scale=0.2, region=Regions.Mine, logic=lambda l: (l.charge or l.phasewalk) and l.diddy
-        ),
+        CrownLocation(map=Maps.JapesMountain, name="Mountain: Near HiLo Machine", x=326, y=133, z=1510, scale=0.2, region=Regions.Mine, logic=lambda l: (l.charge or l.phasewalk) and l.diddy),
         CrownLocation(
             map=Maps.JapesMountain,
             name="Mountain: Under Conveyor",
@@ -148,36 +146,24 @@ CrownLocations = {
         ),
         CrownLocation(map=Maps.AngryAztec, name="Oasis", x=2151, y=120, z=983, scale=0.35, region=Regions.AngryAztecOasis),
         CrownLocation(map=Maps.AngryAztec, name="Behind Tiny Temple", x=3345, y=153, z=507, scale=0.3, region=Regions.AngryAztecOasis),
-        CrownLocation(
-            map=Maps.AngryAztec, name="On Tiny Temple", x=3192, y=352, z=500, scale=0.3, region=Regions.AngryAztecOasis, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick()
-        ),
+        CrownLocation(map=Maps.AngryAztec, name="On Tiny Temple", x=3192, y=352, z=500, scale=0.3, region=Regions.AngryAztecOasis, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick()),
         CrownLocation(map=Maps.AngryAztec, name="Near Oasis Shop", x=2430, y=120, z=509, scale=0.35, region=Regions.AngryAztecOasis),
         CrownLocation(map=Maps.AngryAztec, name="Near Hunky Chunky Barrel", x=3216, y=120, z=1490, scale=0.35, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Next to Chunky Cage (1)", x=4276.6, y=120, z=2266, scale=0.4, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Next to Chunky Cage (2)", x=4283, y=120, z=2543.6, scale=0.4, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Near Llama Temple (Left)", x=2781, y=160, z=3264, scale=0.35, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Near Llama Temple (Right)", x=3154, y=160, z=3172, scale=0.35, region=Regions.AngryAztecMain),
-        CrownLocation(
-            map=Maps.AngryAztec, name="On Llama Temple", x=2884, y=437, z=2903, scale=0.4, region=Regions.AngryAztecMain, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick()
-        ),
+        CrownLocation(map=Maps.AngryAztec, name="On Llama Temple", x=2884, y=437, z=2903, scale=0.4, region=Regions.AngryAztecMain, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick()),
         CrownLocation(map=Maps.AngryAztec, name="Near Sealed Quicksand Tunnel Shop", x=3000, y=120, z=4532, scale=0.35, region=Regions.AngryAztecMain),
-        CrownLocation(
-            map=Maps.AngryAztec, name="On 5-Door Temple", x=2056, y=420, z=3648, scale=0.3, region=Regions.AngryAztecMain, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick()
-        ),
+        CrownLocation(map=Maps.AngryAztec, name="On 5-Door Temple", x=2056, y=420, z=3648, scale=0.3, region=Regions.AngryAztecMain, logic=lambda l: (l.jetpack and l.diddy) or l.CanMoonkick()),
         CrownLocation(map=Maps.AngryAztec, name="Near Sealed Quicksand Tunnel Exterior Warp", x=3422, y=120, z=4514, scale=0.35, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Near Vulture Cage", x=4013, y=226, z=4589, scale=0.18, region=Regions.AngryAztecMain, logic=lambda l: l.vines or (l.jetpack and l.diddy)),
         CrownLocation(map=Maps.AngryAztec, name="Under Vulture Cage", x=4102, y=120, z=4548, scale=0.4, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Near Gong Tower", x=4212, y=80, z=2959, scale=0.4, region=Regions.AngryAztecMain),
         CrownLocation(map=Maps.AngryAztec, name="Sealed Quicksand Tunnel", x=2783, y=120, z=4817, scale=0.35, region=Regions.AztecDonkeyQuicksandCave),
-        CrownLocation(
-            map=Maps.AztecDonkey5DTemple, name="DK 5DT: Dead End", x=99, y=20, z=464, scale=0.4, region=Regions.DonkeyTemple, logic=lambda l: (l.coconut and l.isdonkey) or l.phasewalk
-        ),
-        CrownLocation(
-            map=Maps.AztecDiddy5DTemple, name="Diddy 5DT: Dead End", x=1060, y=20, z=493, scale=0.4, region=Regions.DiddyTemple, logic=lambda l: (l.peanut and l.isdiddy) or l.phasewalk
-        ),
-        CrownLocation(
-            map=Maps.AztecLanky5DTemple, name="Lanky 5DT: Dead End", x=767, y=122, z=916, scale=0.3, region=Regions.LankyTemple, logic=lambda l: (l.grape and l.islanky) or l.phasewalk
-        ),
+        CrownLocation(map=Maps.AztecDonkey5DTemple, name="DK 5DT: Dead End", x=99, y=20, z=464, scale=0.4, region=Regions.DonkeyTemple, logic=lambda l: (l.coconut and l.isdonkey) or l.phasewalk),
+        CrownLocation(map=Maps.AztecDiddy5DTemple, name="Diddy 5DT: Dead End", x=1060, y=20, z=493, scale=0.4, region=Regions.DiddyTemple, logic=lambda l: (l.peanut and l.isdiddy) or l.phasewalk),
+        CrownLocation(map=Maps.AztecLanky5DTemple, name="Lanky 5DT: Dead End", x=767, y=122, z=916, scale=0.3, region=Regions.LankyTemple, logic=lambda l: (l.grape and l.islanky) or l.phasewalk),
         CrownLocation(
             map=Maps.AztecLanky5DTemple,
             name="Lanky 5DT: Near Vanilla Balloon",
@@ -188,9 +174,7 @@ CrownLocations = {
             region=Regions.LankyTemple,
             logic=lambda l: (l.grape and l.islanky) or l.phasewalk,
         ),
-        CrownLocation(
-            map=Maps.AztecTiny5DTemple, name="Tiny 5DT: Dead End", x=329, y=123, z=1420, scale=0.3, region=Regions.TinyTemple, logic=lambda l: (l.feather and l.istiny) or l.phasewalk
-        ),
+        CrownLocation(map=Maps.AztecTiny5DTemple, name="Tiny 5DT: Dead End", x=329, y=123, z=1420, scale=0.3, region=Regions.TinyTemple, logic=lambda l: (l.feather and l.istiny) or l.phasewalk),
         CrownLocation(
             map=Maps.AztecChunky5DTemple,
             name="Chunky 5DT: Path Split (1)",
@@ -227,9 +211,7 @@ CrownLocations = {
         CrownLocation(map=Maps.AztecLlamaTemple, name="Llama Temple: Lava Room", x=1227, y=420, z=3572, scale=0.35, region=Regions.LlamaTempleBack),
     ],
     Levels.FranticFactory: [
-        CrownLocation(
-            map=Maps.FranticFactory, name="Under R and D Grate (1)", x=4119, y=1313, z=1165.81, scale=0.51, region=Regions.RandD, logic=lambda l: l.grab and l.donkey, is_vanilla=True
-        ),
+        CrownLocation(map=Maps.FranticFactory, name="Under R and D Grate (1)", x=4119, y=1313, z=1165.81, scale=0.51, region=Regions.RandD, logic=lambda l: l.grab and l.donkey, is_vanilla=True),
         CrownLocation(map=Maps.FranticFactory, name="Foyer Carpet", x=1265, y=830, z=2504, scale=0.6, region=Regions.FranticFactoryStart),
         CrownLocation(map=Maps.FranticFactory, name="Foyer far left", x=1106, y=842, z=2106, scale=0.4, region=Regions.FranticFactoryStart),
         CrownLocation(map=Maps.FranticFactory, name="Near Hatch", x=519, y=804, z=1958, scale=0.35, region=Regions.FranticFactoryStart),
@@ -595,12 +577,8 @@ CrownLocations = {
         CrownLocation(map=Maps.CastleLowerCave, name="Crypt Hub: Lower Portion", x=559, y=90, z=1153, scale=0.4, region=Regions.LowerCave),
         CrownLocation(map=Maps.CastleLowerCave, name="Crypt Hub: Behind Lanky Crypt", x=1848, y=320, z=1186, scale=0.4, region=Regions.LowerCave),
         CrownLocation(map=Maps.CastleLowerCave, name="Crypt Hub: Near Funky's", x=1359, y=200, z=433, scale=0.4, region=Regions.LowerCave),
-        CrownLocation(
-            map=Maps.CastleCrypt, name="Chunky Crypt: Near Coffin", x=1280, y=160, z=2867, scale=0.45, region=Regions.Crypt, logic=lambda l: (l.pineapple and l.ischunky) or l.phasewalk
-        ),
-        CrownLocation(
-            map=Maps.CastleCrypt, name="Diddy Crypt: Near Coffin", x=2069, y=0, z=593, scale=0.45, region=Regions.Crypt, logic=lambda l: (l.peanut and l.isdiddy) or l.phasewalk
-        ),
+        CrownLocation(map=Maps.CastleCrypt, name="Chunky Crypt: Near Coffin", x=1280, y=160, z=2867, scale=0.45, region=Regions.Crypt, logic=lambda l: (l.pineapple and l.ischunky) or l.phasewalk),
+        CrownLocation(map=Maps.CastleCrypt, name="Diddy Crypt: Near Coffin", x=2069, y=0, z=593, scale=0.45, region=Regions.Crypt, logic=lambda l: (l.peanut and l.isdiddy) or l.phasewalk),
         CrownLocation(map=Maps.CastleMausoleum, name="Lanky Crypt: Lanky Tunnel", x=1186, y=160, z=130, scale=0.4, region=Regions.Mausoleum),
         CrownLocation(map=Maps.CastleUpperCave, name="Tunnel: Near Pit", x=704, y=200, z=852, scale=0.4, region=Regions.UpperCave),
         CrownLocation(map=Maps.CastleUpperCave, name="Tunnel: Near Candy's", x=1104, y=300, z=2241, scale=0.4, region=Regions.UpperCave),
@@ -769,9 +747,7 @@ CrownLocations = {
             logic=lambda l: (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey),
         ),
         CrownLocation(map=Maps.TrainingGrounds, name="Training Grounds: Rear Cave", x=1196, y=36.4, z=2119, scale=0.35, region=Regions.TrainingGrounds),
-        CrownLocation(
-            map=Maps.TrainingGrounds, name="Training Grounds: Banana Hoard", x=2500, y=211, z=920, scale=0.35, region=Regions.TrainingGrounds, logic=lambda l: l.vines or l.CanMoonkick()
-        ),
+        CrownLocation(map=Maps.TrainingGrounds, name="Training Grounds: Banana Hoard", x=2500, y=211, z=920, scale=0.35, region=Regions.TrainingGrounds, logic=lambda l: l.vines or l.CanMoonkick()),
         CrownLocation(map=Maps.TrainingGrounds, name="Training Grounds: Near Pool", x=1625, y=36, z=1585, scale=0.45, region=Regions.TrainingGrounds),
         CrownLocation(map=Maps.BananaFairyRoom, name="Fairy Island: Right of Queen", x=648, y=37.5, z=133, scale=0.5, region=Regions.BananaFairyRoom),
         CrownLocation(map=Maps.BananaFairyRoom, name="Fairy Island: Behind Queen", x=1025, y=37.5, z=508, scale=0.5, region=Regions.BananaFairyRoom),
