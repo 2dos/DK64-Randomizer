@@ -591,7 +591,7 @@ CrownLocations = {
             z=500,
             scale=0.4,
             region=Regions.Library,
-            logic=lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey and (l.strongKong or l.settings.damage_amount == DamageAmount.default)) or l.phasewalk,
+            logic=lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey and l.strongKong) or l.phasewalk,
         ),
         CrownLocation(map=Maps.CastleMuseum, name="Museum: Near Race", x=312, y=200, z=1784, scale=0.4, region=Regions.MuseumBehindGlass),
         CrownLocation(
