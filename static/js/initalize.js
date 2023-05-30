@@ -281,18 +281,21 @@ romdatabase.onsuccess = function () {
 
 function write_seed_history(seed_id, seed_data, seed_hash) {
   // Get the original fiile
-  var seed_db = seeddatabase.result;
-  var seed_tx = seed_db.transaction("SeedStorage", "readwrite");
-  var seed_store = seed_tx.objectStore("SeedStorage");
-  // Store it in the database
-  const now = new Date();
-  seed_store.put({
-    id: Math.random(),
-    value: seed_data,
-    hash: seed_hash,
-    seed_id: seed_id,
-    date: now,
-  });
+  try{
+    var seed_db = seeddatabase.result;
+    var seed_tx = seed_db.transaction("SeedStorage", "readwrite");
+    var seed_store = seed_tx.objectStore("SeedStorage");
+    // Store it in the database
+    const now = new Date();
+    seed_store.put({
+      id: Math.random(),
+      value: seed_data,
+      hash: seed_hash,
+      seed_id: seed_id,
+      date: now,
+    });
+  }
+  catch{}
 }
 
 function load_old_seeds() {
