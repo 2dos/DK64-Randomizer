@@ -805,7 +805,10 @@ def compileHints(spoiler: Spoiler):
                     globally_hinted_location_ids.append(path_location_id)
                     already_hinted_locations.append(path_location_id)
                     region = GetRegionOfLocation(path_location_id)
-                    hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
+                    if region.hint_name != "Troff 'N' Scoff":
+                        hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
+                    else:
+                        hinted_location_text = level_colors[Levels.DKIsles] + region.hint_name + level_colors[Levels.DKIsles]
                     # Attempt to find a door that will be accessible before the Key
                     hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[key_location_ids[key_id]])
                     if len(hint_options) > 0:
@@ -846,7 +849,10 @@ def compileHints(spoiler: Spoiler):
                 globally_hinted_location_ids.append(path_location_id)
                 already_chosen_krool_path_locations.append(path_location_id)
                 region = GetRegionOfLocation(path_location_id)
-                hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
+                if region.hint_name != "Troff 'N' Scoff":
+                    hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
+                else:
+                    hinted_location_text = level_colors[Levels.DKIsles] + region.hint_name + level_colors[Levels.DKIsles]
                 # Determine what phases this item could be for
                 phases_needing_this_item = [kong for kong in spoiler.krool_paths.keys() if path_location_id in spoiler.krool_paths[kong]]
                 hinted_kong = random.choice(phases_needing_this_item)
@@ -880,7 +886,10 @@ def compileHints(spoiler: Spoiler):
                 globally_hinted_location_ids.append(path_location_id)
                 already_chosen_camera_path_locations.append(path_location_id)
                 region = GetRegionOfLocation(path_location_id)
-                hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
+                if region.hint_name != "Troff 'N' Scoff":
+                    hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
+                else:
+                    hinted_location_text = level_colors[Levels.DKIsles] + region.hint_name + level_colors[Levels.DKIsles]
                 # Attempt to find a door that will be accessible before the Camera
                 hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[camera_location_id])
                 if len(hint_options) > 0:
