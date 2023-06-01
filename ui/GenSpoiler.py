@@ -38,5 +38,5 @@ async def GenerateSpoiler(spoiler):
             lzr_type = "decoupled"
 
     rendered = await template.render(spoiler=formatted_spoiler, lzr_type=lzr_type)
-    js.document.getElementById("spoiler_log_text").value = json.dumps(spoiler)
+    js.document.getElementById("spoiler_log_text").value = json.dumps(spoiler, indent=4)
     js.document.getElementById("spoiler_log_text").innerHTML = rendered
