@@ -60,3 +60,9 @@ with open("./static/py_libraries/dk64rando-1.0.0-py3-none-any.whl", "rb") as fil
     hash = md5(wheel).hexdigest()
     with open("version.py", "a") as version:
         version.write(f'\nwhl_hash = "{hash}"')
+
+
+# Create the file Gemfile
+with open("Gemfile", "w") as file:
+    file.write("""source 'https://rubygems.org'
+gem 'github-pages'""")

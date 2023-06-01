@@ -15,11 +15,12 @@ import json
 import math
 import asyncio
 from ui.progress_bar import ProgressBar
-from ui.generate_buttons import serialize_settings
+from ui.bindings import serialize_settings
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 import io
 import js
+import time
 import zipfile
 import base64
 # from randomizer.Spoiler import Spoiler
@@ -36,13 +37,13 @@ class BooleanProperties:
         self.target = target
 
 
-def patching_response(data):
+async def patching_response(data, from_patch_gen=False):
     # Unzip the data_passed
     loop = asyncio.get_event_loop()
     # Base64 decode the data
-    data = base64.b64decode(data)
+    decoded_data = base64.b64decode(data)
     # Create an in-memory byte stream from the zip data
-    zip_stream = io.BytesIO(data)
+    zip_stream = io.BytesIO(decoded_data)
 
     # Dictionary to store the extracted variables
     extracted_variables = {}
@@ -59,11 +60,17 @@ def patching_response(data):
                 variable_name = file_name.split(".")[0]
                 extracted_variables[variable_name] = variable_value
     settings = Settings(serialize_settings())
+    seed_id = str(extracted_variables["seed_id"].decode("utf-8"))
     spoiler = json.loads(extracted_variables["spoiler_log"])
     # Make sure we re-load the seed id
-    if settings.download_patch_file:
-        settings.download_patch_file = False
-  
+    if settings.download_patch_file and from_patch_gen is False:
+        js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
+        loop.run_until_complete(ProgressBar().reset())
+        return
+    elif from_patch_gen is True:
+        # Apply the base patch
+        await js.apply_patch(data)
+
     sav = settings.rom_data
 
     random.seed(None)
@@ -156,8 +163,7 @@ def patching_response(data):
             description.innerHTML = FormatSpoiler(value)
    
    
-    seed_id = str(extracted_variables["seed_id"].decode("utf-8"))
-    loop.run_until_complete(ProgressBar().update_progress(10, "Seed Generated."))
+    await ProgressBar().update_progress(10, "Seed Generated.")
     js.document.getElementById("nav-settings-tab").style.display = ""
     if spoiler.get("Requirements"):
         js.document.getElementById("spoiler_log_block").style.display = ""

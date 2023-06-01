@@ -422,40 +422,7 @@ function generate_seed(url, json, git_branch) {
       } else {
         $("#progress-text").text("Seed Gen Complete");
         $("#patchprogress").width("80%");    
-        // Base64 decode the response
-        event_response_data = data
-        var decodedData = base64ToArrayBuffer(data);
-        zip = new JSZip();
-        // Load the zip file data into JSZip
-        zip.loadAsync(decodedData)
-          .then(function(zipFile) {
-            // Iterate over each file in the zip
-            zip.forEach(function(relativePath, zipEntry) {
-              if (!zipEntry.dir) {
-                // Extract the file content as a string or other appropriate format
-                // Store the file content in a variable with a name derived from the file name
-                fileName = zipEntry.name.replace(/[^a-zA-Z0-9]/g, '_');
-                if (fileName == "patch") {
-                  zipEntry.async('uint8array').then(function(fileContent) {
-
-                      apply_xdelta(fileContent)
-                      pyodide.runPythonAsync(
-                        `
-                      import js
-                      from randomizer.Patching.ApplyLocal import patching_response
-                      patching_response(str(js.event_response_data))
-                      `
-                      );
-                    })
-                  }
-                }});
-
-          })
-          .catch(function(error) {
-            console.error('Error unzipping the file:', error);
-          });
-
-       
+        apply_patch(data, true);       
       }
     },
     error: function (data, textStatus, xhr) {
@@ -467,6 +434,53 @@ function generate_seed(url, json, git_branch) {
       }, 1000);
     },
   });
+}
+
+async function apply_patch(data, run_async) {
+  // Base64 decode the response
+  event_response_data = data;
+  var decodedData = base64ToArrayBuffer(data);
+  zip = new JSZip();
+
+  try {
+    // Load the zip file data into JSZip
+    const zipFile = await zip.loadAsync(decodedData);
+
+    // Create an array to store all the promises
+    const promises = [];
+
+    // Iterate over each file in the zip
+    zip.forEach(function(relativePath, zipEntry) {
+      if (!zipEntry.dir) {
+        // Extract the file content as a string or other appropriate format
+        // Store the file content in a variable with a name derived from the file name
+        fileName = zipEntry.name.replace(/[^a-zA-Z0-9]/g, '_');
+        if (fileName == "patch") {
+          // Create a promise for each async operation and add it to the array
+          const promise = zipEntry.async('uint8array').then(function(fileContent) {
+            console.log("Applying Xdelta Patch");
+            apply_xdelta(fileContent);
+
+            if (run_async == true) {
+              // Return the promise for pyodide.runPythonAsync
+              return pyodide.runPythonAsync(`
+                import js
+                from randomizer.Patching.ApplyLocal import patching_response
+                patching_response(str(js.event_response_data))
+              `);
+            }
+          });
+
+          promises.push(promise);
+        }
+      }
+    });
+
+    // Wait for all the promises to resolve
+    await Promise.all(promises);
+  } catch (error) {
+    console.error('Error unzipping the file:', error);
+  }
 }
 
 function saveDataToIndexedDB(key, value) {
