@@ -1,5 +1,6 @@
 """Patcher class and Functions for modifying ROM files."""
 import js
+import sys
 
 
 class ROM:
@@ -134,6 +135,9 @@ class LocalROM:
         Args:
             file ([type], optional): [description]. Defaults to None.
         """
+        if patchedRom is None:
+            print("No ROM was loaded, please make sure you have dk64.z64 in the root directory of the project.")
+            sys.exit(1)
         self.rom = patchedRom
 
     def write(self, val: int):
