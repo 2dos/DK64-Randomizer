@@ -3,6 +3,8 @@ import http.server
 import threading
 from runner import app
 from waitress import serve
+import os
+import sys
 
 PORT = 8000
 
@@ -33,6 +35,10 @@ def start_webserver():
 def run_servers():
     threading.Thread(target=start_webserver).start()
     app.debug = True
+    # Verify the rom.z64 file exists.
+    if not os.path.isfile("dk64.z64"):
+        print("dk64.z64 not found, please place a dk64.z64 file in the root directory.")
+        sys.exit(1)
     serve(app, host='0.0.0.0', port=5000)
 
 
