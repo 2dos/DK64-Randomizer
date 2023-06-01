@@ -2322,6 +2322,7 @@ def Generate_Spoiler(spoiler):
     """Generate a complete spoiler based on input settings."""
     # Init logic vars with settings
     global LogicVariables
+    LogicVariables = None
     LogicVariables = LogicVarHolder(spoiler.settings)
     # Initiate kasplat map with default
     InitKasplatMap(LogicVariables)

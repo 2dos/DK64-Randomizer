@@ -22,7 +22,7 @@ from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.MiscSetupChanges import randomize_setup, updateRandomSwitches
 from randomizer.Patching.MoveLocationRando import randomize_moves, place_pregiven_moves
 from randomizer.Patching.ItemRando import place_randomized_items
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Patching.Patcher import load_base_rom, LocalROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
@@ -482,6 +482,7 @@ def patching_response(spoiler):
     # Delete the patch.z64 file
     os.remove("patch.z64")
     os.remove("patch.xdelta")
+    load_base_rom()
     return patch
         
 

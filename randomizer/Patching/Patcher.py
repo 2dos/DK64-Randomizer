@@ -112,15 +112,19 @@ class ROM:
 
 
 from io import BytesIO
+import os
+patchedRom = None
 # Try except for when the browser is trying to load this file
-try:
-    patch = open('./static/patches/shrink-dk64.bps', 'rb')
-    original = open('dk64.z64', 'rb')
-    global patchedRom
-    from vidua import bps
-    patchedRom = BytesIO(bps.patch(original, patch).read())
-except Exception as e:
-    pass
+def load_base_rom():
+    try:
+        patch = open('./static/patches/shrink-dk64.bps', 'rb')
+        original = open('dk64.z64', 'rb')
+        global patchedRom
+        from vidua import bps
+        patchedRom = BytesIO(bps.patch(original, patch).read())
+    except Exception as e:
+        pass
+load_base_rom()
 class LocalROM:
     """Patcher for ROM files loaded via Rompatcherjs."""
 
@@ -134,9 +138,11 @@ class LocalROM:
         Args:
             file ([type], optional): [description]. Defaults to None.
         """
-        if patchedRom is None:
+        if not os.path.exists("dk64.z64"):
             print("No ROM was loaded, please make sure you have dk64.z64 in the root directory of the project.")
             sys.exit(1)
+        elif patchedRom is None:
+            load_base_rom()
         self.rom = patchedRom
 
     def write(self, val: int):
