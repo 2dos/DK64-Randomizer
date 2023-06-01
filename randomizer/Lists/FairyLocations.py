@@ -819,7 +819,7 @@ fairy_locations = {
             spawn_y=486,
         ),
         FairyData(
-            name="Near 1-Door Cabin",
+            name="Near Lanky Cabin",
             map=Maps.CrystalCaves,
             region=Regions.CabinArea,
             fence=Fence(2583, 1716, 3058, 1840),
@@ -861,7 +861,7 @@ fairy_locations = {
             spawn_y=74,
         ),
         FairyData(
-            name="1-Door Cabin",
+            name="Lanky Cabin",
             map=Maps.CavesLankyCabin,
             region=Regions.LankyCabin,
             fence=Fence(363, 330, 539, 488),

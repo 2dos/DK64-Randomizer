@@ -1936,7 +1936,7 @@ BananaCoinGroupList = {
             group=91,
             map_id=Maps.JapesLankyCave,
             name="On Pegs",
-            konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            konglist=[Kongs.lanky, Kongs.tiny],
             region=Regions.JapesLankyCave,
             locations=[
                 [1.0, 369.7975769042969, 112.0, 299.9463195800781],
