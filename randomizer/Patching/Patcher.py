@@ -116,7 +116,6 @@ from io import BytesIO
 try:
     patch = open('./static/patches/shrink-dk64.bps', 'rb')
     original = open('dk64.z64', 'rb')
-    print(original.read())
     global patchedRom
     from vidua import bps
     patchedRom = BytesIO(bps.patch(original, patch).read())
