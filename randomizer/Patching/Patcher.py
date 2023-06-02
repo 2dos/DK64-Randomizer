@@ -1,6 +1,5 @@
 """Patcher class and Functions for modifying ROM files."""
 import js
-import sys
 
 
 class ROM:
@@ -139,8 +138,7 @@ class LocalROM:
             file ([type], optional): [description]. Defaults to None.
         """
         if not os.path.exists("dk64.z64"):
-            print("No ROM was loaded, please make sure you have dk64.z64 in the root directory of the project.")
-            sys.exit(1)
+            raise Exception("No ROM was loaded, please make sure you have dk64.z64 in the root directory of the project.")
         elif patchedRom is None:
             load_base_rom()
         self.rom = patchedRom
