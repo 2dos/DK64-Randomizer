@@ -23,6 +23,7 @@ import js
 import time
 import zipfile
 import base64
+
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
 
@@ -38,6 +39,7 @@ class BooleanProperties:
 
 
 async def patching_response(data, from_patch_gen=False):
+    """Apply the patch data to the ROM in the BROWSER not the server."""
     # Unzip the data_passed
     loop = asyncio.get_event_loop()
     # Base64 decode the data
@@ -80,8 +82,6 @@ async def patching_response(data, from_patch_gen=False):
     writeMiscCosmeticChanges(settings)
     applyHolidayMode(settings)
 
-
-
     if settings.homebrew_header:
         # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM
         ROM().seek(0x3C)
@@ -89,24 +89,17 @@ async def patching_response(data, from_patch_gen=False):
         ROM().writeBytes(CARTRIDGE_ID.encode("ascii"))
         ROM().seek(0x3F)
         SAVE_TYPE = 2  # 16K EEPROM
-        ROM().writeMultipleBytes(SAVE_TYPE << 4, 1)     
-       
+        ROM().writeMultipleBytes(SAVE_TYPE << 4, 1)
 
     # Colorblind mode
     ROM().seek(sav + 0x43)
     # The ColorblindMode enum is indexed to allow this.
     ROM().write(int(settings.colorblind_mode))
 
-
-
-
-    #Remaining Menu Settings
+    # Remaining Menu Settings
     ROM().seek(sav + 0xC7)
-    ROM().write(int(settings.sound_type)) # Sound Type
-    
-    
-    
-    
+    ROM().write(int(settings.sound_type))  # Sound Type
+
     music_volume = 40
     sfx_volume = 40
     if settings.sfx_volume is not None and settings.sfx_volume != "":
@@ -116,8 +109,8 @@ async def patching_response(data, from_patch_gen=False):
     ROM().seek(sav + 0xC8)
     ROM().write(sfx_volume)
     ROM().seek(sav + 0xC9)
-    ROM().write(music_volume) 
-        
+    ROM().write(music_volume)
+
     boolean_props = [
         BooleanProperties(settings.disco_chunky, 0x12F),  # Disco Chunky
         BooleanProperties(settings.remove_water_oscillation, 0x10F),  # Remove Water Oscillation
@@ -131,8 +124,7 @@ async def patching_response(data, from_patch_gen=False):
         if prop.check:
             ROM().seek(sav + prop.offset)
             ROM().write(prop.target)
-    
-    
+
     # Apply Hash
     order = 0
     loaded_hash = get_hash_images("browser")
@@ -143,8 +135,7 @@ async def patching_response(data, from_patch_gen=False):
     music_data = randomize_music(settings)
 
     spoiler = updateJSONCosmetics(spoiler, settings, music_data)
-   
-    
+
     loaded_settings = spoiler["Settings"]
     tables = {}
     t = 0
@@ -161,8 +152,7 @@ async def patching_response(data, from_patch_gen=False):
             description = row.insertCell(1)
             name.innerHTML = setting
             description.innerHTML = FormatSpoiler(value)
-   
-   
+
     await ProgressBar().update_progress(10, "Seed Generated.")
     js.document.getElementById("nav-settings-tab").style.display = ""
     if spoiler.get("Requirements"):
@@ -179,7 +169,7 @@ async def patching_response(data, from_patch_gen=False):
     ROM().save(f"dk64r-rom-{seed_id}.z64")
     loop.run_until_complete(ProgressBar().reset())
     js.jq("#nav-settings-tab").tab("show")
-        
+
 
 def FormatSpoiler(value):
     """Format the values passed to the settings table into a more readable format.

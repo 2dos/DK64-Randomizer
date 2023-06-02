@@ -1,8 +1,7 @@
-from flask import Flask, make_response, send_file
-import argparse
+"""Server code for the randomizer."""
+from flask import Flask, make_response
 import codecs
 import json
-import pickle
 import random
 import time
 from flask_executor import Executor
@@ -13,25 +12,27 @@ from flask_cors import CORS
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
-from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Spoiler import Spoiler
 from flask import request
+
 app = Flask(__name__)
-app.config['EXECUTOR_MAX_WORKERS'] = 1
+app.config["EXECUTOR_MAX_WORKERS"] = 1
 executor = Executor(app)
 CORS(app)
 
 current_job = ""
 
+
 def generate(generate_settings):
     """Gen a seed and write the file to an output file."""
     settings = Settings(generate_settings)
-    spoiler = Spoiler(settings)        
+    spoiler = Spoiler(settings)
     patch, spoiler = Generate_Spoiler(spoiler)
     return patch, spoiler
 
 
 def start_gen(gen_key, post_body):
+    """Start the generation process."""
     print("starting generation")
     global current_job
     current_job = gen_key
@@ -65,8 +66,14 @@ def start_gen(gen_key, post_body):
     current_job = ""
     return patch, spoiler
 
-@app.route('/generate', methods=['GET', 'POST'])
+
+@app.route("/generate", methods=["GET", "POST"])
 def lambda_function():
+    """Lambda function to generate a seed.
+
+    Returns:
+        Response: Flask response object.
+    """
     # Flask get the query string parameters as a dict.
     query_string = request.args.to_dict()
     # See if we have a query for gen_key.
@@ -76,11 +83,11 @@ def lambda_function():
             # We're not done generating yet
             global current_job
             if str(current_job) == str(gen_key):
-                response = make_response(json.dumps({'status': executor.futures._state(gen_key)}), 203)
+                response = make_response(json.dumps({"status": executor.futures._state(gen_key)}), 203)
             else:
-                response = make_response(json.dumps({'status': executor.futures._state(gen_key)}), 202)
+                response = make_response(json.dumps({"status": executor.futures._state(gen_key)}), 202)
             response.mimetype = "application/json"
-            response.headers['Content-Type'] = 'application/json; charset=utf-8'
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
             return response
         elif executor.futures._futures.get(gen_key):
             # We're done generating, return the data.
@@ -92,7 +99,7 @@ def lambda_function():
             sections_to_retain = ["Settings", "Cosmetics"]
             if resp_data[1].settings.generate_spoilerlog is False:
                 spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
-            
+
             patch = resp_data[0]
             # Zip all the data into a single file.
             # Create a new zip file
@@ -116,10 +123,10 @@ def lambda_function():
             executor.submit_stored(gen_key, start_gen, gen_key, post_body)
             response = make_response(json.dumps({"start_time": gen_key}), 201)
             response.mimetype = "application/json"
-            response.headers['Content-Type'] = 'application/json; charset=utf-8'
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
             return response
     else:
         response = make_response(json.dumps({"error": "error"}), 205)
         response.mimetype = "application/json"
-        response.headers['Content-Type'] = 'application/json; charset=utf-8'
+        response.headers["Content-Type"] = "application/json; charset=utf-8"
         return response

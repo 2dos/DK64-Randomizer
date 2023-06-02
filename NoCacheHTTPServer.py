@@ -32,14 +32,16 @@ def start_webserver():
     """Start the standard web server."""
     http.server.test(HandlerClass=NoCacheHTTPRequestHandler, port=PORT)
 
+
 def run_servers():
+    """Start the web server and the flask server."""
     threading.Thread(target=start_webserver).start()
     app.debug = True
     # Verify the rom.z64 file exists.
     if not os.path.isfile("dk64.z64"):
         print("dk64.z64 not found, please place a dk64.z64 file in the root directory.")
         sys.exit(1)
-    serve(app, host='0.0.0.0', port=5000)
+    serve(app, host="0.0.0.0", port=5000)
 
 
 if __name__ == "__main__":

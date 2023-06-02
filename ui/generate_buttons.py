@@ -168,6 +168,7 @@ async def generate_seed_from_patch(event):
         js.apply_conversion()
         await patching_response(str(js.loaded_patch), True)
 
+
 @bind("click", "generate_seed")
 def generate_seed(event):
     """Generate a seed based off the current settings.

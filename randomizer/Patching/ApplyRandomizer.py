@@ -8,12 +8,7 @@ from randomizer.Lists.EnemyTypes import Enemies
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
-from randomizer.Patching.CosmeticColors import (
-    updateMillLeverTexture,
-    updateCryptLeverTexture,
-    writeBootMessages,
-    applyHelmDoorCosmetics
-)
+from randomizer.Patching.CosmeticColors import updateMillLeverTexture, updateCryptLeverTexture, writeBootMessages, applyHelmDoorCosmetics
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranceType, enableSpiderText
 from randomizer.Patching.Hash import get_hash_images
@@ -53,12 +48,13 @@ class BooleanProperties:
 
 
 def patching_response(spoiler):
-
+    """Apply the patch data to the ROM in the local server to be returned to the client."""
     # Make sure we re-load the seed id
     spoiler.settings.set_seed()
 
     # Write date to ROM for debugging purposes
     from datetime import datetime
+
     dt = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     temp_json = json.loads(spoiler.json)
     temp_json["Settings"]["Generation Timestamp"] = dt
@@ -412,7 +408,7 @@ def patching_response(spoiler):
         LocalROM().write(1)
         for x in range(7):
             LocalROM().seek(sav + 0x104 + x)
-            LocalROM().write(spoiler.settings.switch_allocation[x])     
+            LocalROM().write(spoiler.settings.switch_allocation[x])
 
     randomize_entrances(spoiler)
     randomize_moves(spoiler)
@@ -439,36 +435,31 @@ def patching_response(spoiler):
     filterEntranceType()
     replaceIngameText(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
-    
+
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         wipeHints()
     PushHints(spoiler)
 
     writeBootMessages()
     enableSpiderText(spoiler)
-    shortenCastleMinecart(spoiler) 
-    
-    
-    
+    shortenCastleMinecart(spoiler)
+
     updateMillLeverTexture(spoiler.settings)
     updateCryptLeverTexture(spoiler.settings)
     applyHelmDoorCosmetics(spoiler.settings)
 
-    
-    
     # D-Pad Display
     LocalROM().seek(sav + 0x139)
     # The DPadDisplays enum is indexed to allow this.
     LocalROM().write(int(spoiler.settings.dpad_display))
 
-    
     # Apply Hash
     order = 0
     for count in spoiler.settings.seed_hash:
         LocalROM().seek(sav + 0x129 + order)
         LocalROM().write(count)
         order += 1
-    
+
     # Write the LocalROM.rom bytesIo to a file
     with open("patch.z64", "wb") as f:
         f.write(LocalROM().rom.getvalue())
@@ -484,7 +475,7 @@ def patching_response(spoiler):
     os.remove("patch.xdelta")
     load_base_rom()
     return patch
-        
+
 
 def FormatSpoiler(value):
     """Format the values passed to the settings table into a more readable format.

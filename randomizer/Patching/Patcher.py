@@ -1,5 +1,9 @@
 """Patcher class and Functions for modifying ROM files."""
 import js
+from io import BytesIO
+import os
+
+patchedRom = None
 
 
 class ROM:
@@ -39,7 +43,6 @@ class ROM:
             byte_data (bytes): Bytes object to write to current position.
         """
         self.rom.writeBytes(bytes(byte_data))
-
 
     def writeMultipleBytes(self, value: int, size: int):
         """Write multiple bytes of a size to the current position.
@@ -110,20 +113,23 @@ class ROM:
         self.fixChecksum()
 
 
-from io import BytesIO
-import os
-patchedRom = None
 # Try except for when the browser is trying to load this file
 def load_base_rom():
+    """Load the base ROM file for patching."""
     try:
-        patch = open('./static/patches/shrink-dk64.bps', 'rb')
-        original = open('dk64.z64', 'rb')
+        patch = open("./static/patches/shrink-dk64.bps", "rb")
+        original = open("dk64.z64", "rb")
         global patchedRom
         from vidua import bps
+
         patchedRom = BytesIO(bps.patch(original, patch).read())
     except Exception as e:
         pass
+
+
 load_base_rom()
+
+
 class LocalROM:
     """Patcher for ROM files loaded via Rompatcherjs."""
 
@@ -151,7 +157,7 @@ class LocalROM:
         Args:
             val (int): Int value to write.
         """
-        self.rom.write((val).to_bytes(1, byteorder='big', signed=False))
+        self.rom.write((val).to_bytes(1, byteorder="big", signed=False))
 
     def writeBytes(self, byte_data: bytes):
         """Write an array a bytes to the current position.
@@ -162,7 +168,6 @@ class LocalROM:
             byte_data (bytes): Bytes object to write to current position.
         """
         self.rom.write(bytes(byte_data))
-
 
     def writeMultipleBytes(self, value: int, size: int):
         """Write multiple bytes of a size to the current position.
