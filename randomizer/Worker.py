@@ -19,7 +19,9 @@ def background(body):
         branch = "dev"
         if "dev" not in str(js.location.hostname).lower():
             branch = "master"
-        url = "https://generate.dk64rando.com/generate"
+            url = "https://generate.dk64rando.com/generate"
+        else:
+            url = "https://generate_dev.dk64rando.com/generate"
     else:
         url = "http://" + str(js.window.location.hostname) + ":5000/generate"
         branch = "dev"
