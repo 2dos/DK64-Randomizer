@@ -5,3 +5,4 @@ vidua
 pyxdelta
 flask-cors
 pillow
+boto3

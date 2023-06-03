@@ -22,3 +22,4 @@ flask-executor
 vidua
 pyxdelta
 pillow
+boto3
