@@ -18,6 +18,7 @@ from flask import request
 
 if os.environ.get("HOSTED_SERVER") is not None:
     import boto3
+
     session = boto3.Session(
         aws_access_key_id=os.environ.get("AWS_ID"),
         aws_secret_access_key=os.environ.get("AWS_KEY"),
