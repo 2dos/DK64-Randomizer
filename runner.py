@@ -22,6 +22,7 @@ if os.environ.get("HOSTED_SERVER") is not None:
     session = boto3.Session(
         aws_access_key_id=os.environ.get("AWS_ID"),
         aws_secret_access_key=os.environ.get("AWS_KEY"),
+        region_name="us-west-2"
     )
     dynamodb = session.resource("dynamodb")
     seed_table = dynamodb.Table("seed_db")
