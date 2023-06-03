@@ -19,10 +19,6 @@ from flask import request
 if os.environ.get("HOSTED_SERVER") is not None:
     import boto3
 
-    session = boto3.Session(aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
-    dynamodb = session.resource("dynamodb")
-    seed_table = dynamodb.Table("seed_db")
-    error_table = dynamodb.Table("dk64_error_db")
 
 app = Flask(__name__)
 app.config["EXECUTOR_MAX_WORKERS"] = 1
@@ -71,6 +67,11 @@ def start_gen(gen_key, post_body):
 
     except Exception as e:
         if os.environ.get("HOSTED_SERVER") is not None:
+            
+            
+            session = boto3.Session(aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
+            dynamodb = session.resource("dynamodb")
+            error_table = dynamodb.Table("dk64_error_db")
             error_table.put_item(
                 Item={
                     "time": str(time.time()),
@@ -112,6 +113,10 @@ def lambda_function():
             spoiler_log = json.loads(resp_data[1].json)
             # Only retain the Settings section and the Cosmetics section.
             if os.environ.get("HOSTED_SERVER") is not None:
+
+                session = boto3.Session(aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
+                dynamodb = session.resource("dynamodb")
+                seed_table = dynamodb.Table("seed_db")
                 seed_table.put_item(
                     Item={
                         "time": str(time.time()) + str(hash),
