@@ -27,7 +27,6 @@
 | Jungle Japes | Lower River |  | 
 | Japes Under Ground | Underground: Behind Cannon |  | 
 | Japes Under Ground | Underground: Near Vines |  | 
-| Japes Lanky Cave | Painting Room: Near Peg |  | 
 | Japes Mountain | Mountain: Near Entrance (Ground) |  | 
 | Japes Mountain | Mountain: Near Entrance (High) |  | 
 | Japes Mountain | Mountain: On Barrel |  | 
@@ -86,7 +85,7 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Frantic Factory | Under R and D Grate (1) | l.grab and l.donkey, is_vanilla=True) | 
+| Frantic Factory | Under R and D Grate (1) | (l.grab and l.donkey) or l.CanAccessRNDRoom() | 
 | Frantic Factory | Foyer Carpet |  | 
 | Frantic Factory | Foyer far left |  | 
 | Frantic Factory | Near Hatch |  | 
@@ -119,7 +118,7 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Gloomy Galleon | Under Cranky | (l.punch and l.chunky) or l.phasewalk | 
+| Gloomy Galleon | Under Cranky | (l.punch and l.chunky) or l.phasewalk or l.CanSkew(False) | 
 | Gloomy Galleon | Near Chest Cannon (1) |  | 
 | Gloomy Galleon | Near Chest Cannon (2) |  | 
 | Gloomy Galleon | Near Chest GB Tunnel |  | 
@@ -145,7 +144,7 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Fungi Forest | Giant Mushroom High Ladder Platform | Events.Night in l.Events or l.advanced_platforming | 
+| Fungi Forest | Giant Mushroom High Ladder Platform |  | 
 | Fungi Forest | Near Well |  | 
 | Fungi Forest | Behind Clock |  | 
 | Fungi Forest | In front of Clock |  | 
@@ -244,7 +243,7 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Castle Greenhouse | Greenhouse: Center |  | 
+| Castle Greenhouse | Greenhouse: Center | l.islanky or l.settings.free_trade_items | 
 | Castle Greenhouse | Greenhouse: Dead End (1) |  | 
 | Castle Greenhouse | Greenhouse: Dead End (2) |  | 
 | Castle Greenhouse | Greenhouse: GB Box |  | 

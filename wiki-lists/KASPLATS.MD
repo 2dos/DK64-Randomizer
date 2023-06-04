@@ -46,7 +46,7 @@
 | Angry Aztec | Aztec Kasplat: Near Snide's |  | 
 | Aztec Llama Temple | Aztec Kasplat: Below the Llama in Llama Temple |  | 
 | Aztec Tiny Temple | Aztec Kasplat: In the Free Tiny Room |  | 
-| Aztec Chunky5DTemple | Aztec Kasplat: In Chunky 5-Door Temple | l.ischunky and (l.pineapple or l.phasewalk) | 
+| Aztec Chunky5DTemple | Aztec Kasplat: In Chunky 5-Door Temple | (l.pineapple and l.ischunky) or l.phasewalk | 
 | Angry Aztec | Aztec Kasplat: Behind the Beetle Race |  | 
 | Aztec Llama Temple | Aztec Kasplat: Inside the Llama Temple Matching Game | l.grape or l.phasewalk | 
 | Aztec Tiny Temple | Aztec Kasplat: Inside Tiny Temple by Mini Monkey Barrel |  | 
@@ -169,7 +169,7 @@
 | Creepy Castle | Castle Kasplat: Near the Troff 'n' Scoff at the back of Castle |  | 
 | Castle Ballroom | Castle Kasplat: Inside the Ballroom |  | 
 | Creepy Castle | Castle Kasplat: At the top of the Castle |  | 
-| Castle Tree | Castle Kasplat: Inside the Tree | (l.coconut or l.generalclips) and l.isdonkey | 
+| Castle Tree | Castle Kasplat: Inside the Tree | (l.coconut or l.phasewalk or l.generalclips) and l.isdonkey | 
 | Castle Lower Cave | Castle Kasplat: In the Lower Cave straight ahead |  | 
 | Creepy Castle | Castle Kasplat: Near the upper Warp 2 |  | 
 | Creepy Castle | Castle Kasplat: Near the Crypt Entrance on a lone platform |  | 
