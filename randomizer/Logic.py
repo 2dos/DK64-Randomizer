@@ -778,7 +778,7 @@ class LogicVarHolder:
             hasRequiredMoves = self.barrels
         # In simple level order, there are a couple very specific cases we have to account for in order to prevent boss fill failures
         level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (ShuffleLoadingZones.none, ShuffleLoadingZones.levels)
-        if level_order_matters:
+        if level_order_matters and not self.assumeFillSuccess:  # These conditions only matter on fill, not on playthrough
             order_of_level = 7  # Guaranteed to be 1-7 here
             for level_order in self.settings.level_order:
                 if self.settings.level_order[level_order] == level:
