@@ -483,6 +483,7 @@ def patching_response(spoiler):
     os.remove("patch.xdelta")
     print("Reloading base ROM")
     load_base_rom()
+    print("Returning")
     return patch
 
 
