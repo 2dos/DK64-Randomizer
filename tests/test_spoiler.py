@@ -4,21 +4,33 @@ import random
 
 import pytest
 
+from randomizer.Enums.Settings import (
+    SettingsMap,
+    ActivateAllBananaports,
+    BananaportRando,
+    CrownEnemyRando,
+    DamageAmount,
+    FreeTradeSetting,
+    HelmDoorItem,
+    HelmSetting,
+    KasplatRandoSetting,
+    KrushaUi,
+    LevelRandomization,
+    LogicType,
+    MicrohintsEnabled,
+    MoveRando,
+    RandomPrices,
+    ShockwaveStatus,
+    TrainingBarrels,
+    WinCondition,
+    WrinklyHints,
+    FillAlgorithm
+)
 # from randomizer.Enums.Items import Items
 import randomizer.Lists.Exceptions as Ex
-from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando,
-                                       CrownEnemyRando, DamageAmount,
-                                       FillAlgorithm, FreeTradeSetting,
-                                       HelmDoorItem, HelmSetting,
-                                       KasplatRandoSetting, KrushaUi,
-                                       LevelRandomization, LogicType,
-                                       MicrohintsEnabled, MoveRando,
-                                       RandomPrices, SettingsMap,
-                                       ShockwaveStatus, TrainingBarrels,
-                                       WinCondition, WrinklyHints)
 from randomizer.Fill import Generate_Spoiler
-from randomizer.Settings import Settings
 from randomizer.SettingStrings import decrypt_settings_string_enum
+from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 
 
