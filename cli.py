@@ -37,6 +37,8 @@ def main():
     parser.add_argument("--seed", help="Seed ID to use", required=False)
     parser.add_argument("--generate_spoiler", help="Dumps the Spoiler log to a file along with the patch file.", required=False, action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
+    print("This file has been disabled until further notice.")
+    sys.exit(1)
     if not os.environ.get("POST_BODY"):
         if args.settings_string is not None:
             try:
