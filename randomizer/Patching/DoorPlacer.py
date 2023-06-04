@@ -2,12 +2,12 @@
 import random
 
 import js
-from randomizer.Enums.Settings import MiscChangesSelected
-from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Lists.DoorLocations import door_locations
-from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Patching.Lib import float_to_hex, getNextFreeID, addNewScript
 from randomizer.Enums.ScriptTypes import ScriptTypes
+from randomizer.Enums.Settings import MiscChangesSelected
+from randomizer.Lists.DoorLocations import door_locations
+from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Patching.Lib import addNewScript, float_to_hex, getNextFreeID
+from randomizer.Patching.Patcher import ROM, LocalROM
 
 
 def remove_existing_indicators(spoiler):

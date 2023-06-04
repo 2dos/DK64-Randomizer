@@ -1,24 +1,27 @@
 """Server code for the randomizer."""
-from flask import Flask, make_response
 import codecs
 import json
-import random
 import os
+import random
 import time
-from flask_executor import Executor
-import zipfile
 import traceback
+import zipfile
 from io import BytesIO
+
+from flask import Flask, make_response, request
 from flask_cors import CORS
+from flask_executor import Executor
+
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Fill import Generate_Spoiler
+from randomizer.Patching.Patcher import load_base_rom
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
-from flask import request
 
 if os.environ.get("HOSTED_SERVER") is not None:
     import boto3
 
+    load_base_rom()
     dynamodb = boto3.resource("dynamodb", aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
 
 

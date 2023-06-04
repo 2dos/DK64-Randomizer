@@ -1,8 +1,9 @@
 """Patcher class and Functions for modifying ROM files."""
-import js
-from io import BytesIO
-import os
 import copy
+import os
+from io import BytesIO
+
+import js
 
 patchedRom = None
 og_patched_rom = None

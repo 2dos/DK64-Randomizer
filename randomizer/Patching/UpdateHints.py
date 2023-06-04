@@ -5,8 +5,8 @@ from io import BytesIO
 import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.WrinklyHints import HintLocation, hints
-from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Patching.Lib import grabText, writeText
+from randomizer.Patching.Patcher import ROM, LocalROM
 
 
 def writeWrinklyHints(file_start_offset, text):

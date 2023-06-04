@@ -1,17 +1,18 @@
 """Apply item rando changes."""
+from enum import IntEnum, auto
+
 import js
-from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Enums.Types import Types
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Settings import MicrohintsEnabled
+from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationList
-from randomizer.Enums.Items import Items
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import MicrohintsEnabled
-from randomizer.Patching.Lib import intf_to_float, float_to_hex
-from enum import IntEnum, auto
+from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Patching.Lib import float_to_hex, intf_to_float
+from randomizer.Patching.Patcher import ROM, LocalROM
 
 
 class CustomActors(IntEnum):

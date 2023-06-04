@@ -3,9 +3,9 @@ import glob
 import os
 import shutil
 import subprocess
+from hashlib import md5
 from pathlib import Path
 from urllib.parse import urlparse
-from hashlib import md5
 
 import requests
 from bs4 import BeautifulSoup

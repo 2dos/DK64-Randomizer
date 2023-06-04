@@ -3,13 +3,13 @@ import math
 import random
 
 import js
-from randomizer.Lists.MapsAndExits import Maps, LevelMapTable
-from randomizer.Lists.Patches import DirtPatchLocations
-from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Patching.Lib import float_to_hex
-from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Settings import DamageAmount, MiscChangesSelected
+from randomizer.Lists.MapsAndExits import LevelMapTable, Maps
+from randomizer.Lists.Patches import DirtPatchLocations
+from randomizer.Patching.Lib import float_to_hex
+from randomizer.Patching.Patcher import ROM, LocalROM
 
 
 def pickRandomPositionCircle(center_x, center_z, min_radius, max_radius):

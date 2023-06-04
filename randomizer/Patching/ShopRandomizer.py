@@ -5,9 +5,9 @@ import math
 import js
 from randomizer.Enums.Regions import Regions
 from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Patching.Lib import float_to_hex, intf_to_float
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.ShuffleShopLocations import available_shops
-from randomizer.Patching.Lib import float_to_hex, intf_to_float
 
 
 def ApplyShopRandomizer(spoiler):

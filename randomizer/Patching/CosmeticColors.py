@@ -1,16 +1,17 @@
 """Apply cosmetic skins to kongs."""
+import gzip
 import random
+import zlib
 from random import randint
 
+from PIL import Image, ImageDraw, ImageEnhance
+
 import js
-from randomizer.Patching.generate_kong_color_images import convertColors
-from randomizer.Patching.Patcher import ROM, LocalROM
-from randomizer.Patching.Lib import intf_to_float, float_to_hex, int_to_list, getObjectAddress, TextureFormat
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorItem, KlaptrapModel
-from PIL import Image, ImageEnhance, ImageDraw
-import zlib
-import gzip
+from randomizer.Patching.generate_kong_color_images import convertColors
+from randomizer.Patching.Lib import TextureFormat, float_to_hex, getObjectAddress, int_to_list, intf_to_float
+from randomizer.Patching.Patcher import ROM, LocalROM
 
 
 class HelmDoorSetting:

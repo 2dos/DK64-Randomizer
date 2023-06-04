@@ -1,31 +1,26 @@
 """Apply Patch data to the ROM."""
 
-import random
-from randomizer.Patching.CosmeticColors import (
-    apply_cosmetic_colors,
-    overwrite_object_colors,
-    applyKrushaKong,
-    writeMiscCosmeticChanges,
-    applyHolidayMode,
-)
-from ui.GenTracker import generateTracker
-from ui.GenSpoiler import GenerateSpoiler
-from randomizer.Patching.Patcher import ROM
+import asyncio
+import base64
+import io
 import json
 import math
-import asyncio
-from ui.progress_bar import ProgressBar
-from ui.bindings import serialize_settings
-from randomizer.Patching.Hash import get_hash_images
-from randomizer.Patching.MusicRando import randomize_music
-import io
-import js
+import random
 import time
 import zipfile
-import base64
+
+import js
+from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolidayMode, applyKrushaKong, overwrite_object_colors, writeMiscCosmeticChanges
+from randomizer.Patching.Hash import get_hash_images
+from randomizer.Patching.MusicRando import randomize_music
+from randomizer.Patching.Patcher import ROM
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
+from ui.bindings import serialize_settings
+from ui.GenSpoiler import GenerateSpoiler
+from ui.GenTracker import generateTracker
+from ui.progress_bar import ProgressBar
 
 
 class BooleanProperties:

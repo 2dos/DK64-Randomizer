@@ -1,7 +1,7 @@
 """Spoiler class and functions."""
 
-from email.policy import default
 import json
+from email.policy import default
 from typing import OrderedDict
 
 import randomizer.ItemPool as ItemPool
@@ -12,28 +12,17 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import (
-    BananaportRando,
-    GlitchesSelected,
-    HelmDoorItem,
-    LogicType,
-    MinigameBarrels,
-    RandomPrices,
-    ShockwaveStatus,
-    ShuffleLoadingZones,
-    TrainingBarrels,
-    WinCondition,
-)
+from randomizer.Enums.Settings import BananaportRando, GlitchesSelected, HelmDoorItem, LogicType, MinigameBarrels, RandomPrices, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
 from randomizer.Lists.Location import LocationList, PreGivenLocations
+from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
-from randomizer.Lists.Logic import GlitchLogicItems
 
 
 class Spoiler:

@@ -1,9 +1,10 @@
 """Library functions for patching."""
 import struct
-import js
 from enum import IntEnum, auto
-from randomizer.Patching.Patcher import ROM, LocalROM
+
+import js
 from randomizer.Enums.ScriptTypes import ScriptTypes
+from randomizer.Patching.Patcher import ROM, LocalROM
 
 icon_db = {
     0x0: "waterfall_tall",

@@ -1,10 +1,12 @@
 """Run a self hosted HTTP server that has no cache tied to it."""
 import http.server
-import threading
-from runner import app
-from waitress import serve
 import os
 import sys
+import threading
+
+from waitress import serve
+
+from runner import app
 
 PORT = 8000
 

@@ -2,9 +2,9 @@
 import argparse
 import codecs
 import json
+import os
 import pickle
 import random
-import os
 import sys
 import traceback
 

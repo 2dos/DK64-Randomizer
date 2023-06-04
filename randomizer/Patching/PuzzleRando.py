@@ -1,9 +1,9 @@
 """Randomize puzzles."""
 import random
-import js
 
-from randomizer.Patching.Patcher import ROM, LocalROM
+import js
 from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Patching.Patcher import ROM, LocalROM
 
 
 def chooseSFX():

@@ -1,9 +1,11 @@
 """Push jinja2 file to spoiler."""
 
-from jinja2 import Environment, FunctionLoader
-import js
 import json
 import time
+
+from jinja2 import Environment, FunctionLoader
+
+import js
 
 
 def ajax_call(file):

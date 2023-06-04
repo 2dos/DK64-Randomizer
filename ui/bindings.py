@@ -2,10 +2,10 @@
 from functools import wraps
 
 from pyodide import create_proxy
-import js
-from randomizer.Enums.Settings import SettingsMap
 
+import js
 from js import document
+from randomizer.Enums.Settings import SettingsMap
 
 
 def bind(event, id, iterations=0):

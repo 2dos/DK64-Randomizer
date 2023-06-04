@@ -1,16 +1,15 @@
 """Apply CB Rando changes."""
 import js
-from randomizer.Patching.Patcher import ROM, LocalROM
+import randomizer.Lists.CBLocations.AngryAztecCBLocations
+import randomizer.Lists.CBLocations.CreepyCastleCBLocations
+import randomizer.Lists.CBLocations.CrystalCavesCBLocations
+import randomizer.Lists.CBLocations.FranticFactoryCBLocations
+import randomizer.Lists.CBLocations.FungiForestCBLocations
+import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
+import randomizer.Lists.CBLocations.JungleJapesCBLocations
 from randomizer.Enums.Levels import Levels
 from randomizer.Patching.Lib import float_to_hex, short_to_ushort
-
-import randomizer.Lists.CBLocations.JungleJapesCBLocations
-import randomizer.Lists.CBLocations.AngryAztecCBLocations
-import randomizer.Lists.CBLocations.FranticFactoryCBLocations
-import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
-import randomizer.Lists.CBLocations.FungiForestCBLocations
-import randomizer.Lists.CBLocations.CrystalCavesCBLocations
-import randomizer.Lists.CBLocations.CreepyCastleCBLocations
+from randomizer.Patching.Patcher import ROM, LocalROM
 
 level_data = {
     Levels.JungleJapes: {"cb": randomizer.Lists.CBLocations.JungleJapesCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.JungleJapesCBLocations.BalloonList},

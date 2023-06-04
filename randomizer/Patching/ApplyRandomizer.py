@@ -1,37 +1,35 @@
 """Apply Patch data to the ROM."""
 import json
 import os
+
 from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, HelmDoorItem, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
-from randomizer.Lists.EnemyTypes import Enemies
+from randomizer.Lists.EnemyTypes import Enemies, EnemySelector
+from randomizer.Lists.QoL import QoLSelector
+from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
-from randomizer.Patching.CosmeticColors import updateMillLeverTexture, updateCryptLeverTexture, writeBootMessages, applyHelmDoorCosmetics
+from randomizer.Patching.CoinPlacer import randomize_coins
+from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages
+from randomizer.Patching.CrownPlacer import randomize_crown_pads
+from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
 from randomizer.Patching.EnemyRando import randomize_enemies
-from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranceType, enableSpiderText
+from randomizer.Patching.EntranceRando import enableSpiderText, filterEntranceType, randomize_entrances
+from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.Hash import get_hash_images
+from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.MiscSetupChanges import randomize_setup, updateRandomSwitches
-from randomizer.Patching.MoveLocationRando import randomize_moves, place_pregiven_moves
-from randomizer.Patching.ItemRando import place_randomized_items
-from randomizer.Patching.Patcher import load_base_rom, LocalROM
+from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves
+from randomizer.Patching.Patcher import LocalROM, load_base_rom
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
-from randomizer.Patching.UpdateHints import PushHints, wipeHints, replaceIngameText
-from randomizer.Patching.MiscSetupChanges import randomize_setup
-from randomizer.Patching.BananaPlacer import randomize_cbs
-from randomizer.Patching.CoinPlacer import randomize_coins
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
-from randomizer.Patching.CrownPlacer import randomize_crown_pads
-from randomizer.Patching.FairyPlacer import PlaceFairies
-from randomizer.Patching.UpdateHints import PushHints, wipeHints
-from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
-from randomizer.Lists.QoL import QoLSelector
-from randomizer.Lists.EnemyTypes import EnemySelector
+from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings

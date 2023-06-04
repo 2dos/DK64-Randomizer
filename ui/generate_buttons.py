@@ -4,30 +4,30 @@ import json
 import random
 
 from pyodide import create_proxy
-from randomizer.Patching.ApplyLocal import patching_response
-from ui.bindings import serialize_settings
+
 import js
 from randomizer.Enums.Settings import SettingsMap
+from randomizer.Patching.ApplyLocal import patching_response
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Worker import background
-from ui.bindings import bind
+from ui.bindings import bind, serialize_settings
 from ui.progress_bar import ProgressBar
 from ui.rando_options import (
     disable_barrel_modal,
     disable_colors,
-    disable_music,
     disable_move_shuffles,
+    disable_music,
+    max_music,
     max_randomized_blocker,
     max_randomized_troff,
-    max_music,
     max_sfx,
     toggle_b_locker_boxes,
-    updateDoorOneNumAccess,
-    updateDoorTwoNumAccess,
-    updateDoorOneCountText,
-    updateDoorTwoCountText,
     toggle_counts_boxes,
     update_boss_required,
+    updateDoorOneCountText,
+    updateDoorOneNumAccess,
+    updateDoorTwoCountText,
+    updateDoorTwoNumAccess,
 )
 
 
