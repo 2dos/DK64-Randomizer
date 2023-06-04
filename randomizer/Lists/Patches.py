@@ -123,7 +123,8 @@ DirtPatchLocations = [
         vanilla=True,
         group=14,
         logicregion=Regions.CreepyCastleLobby,
-        logic=lambda l: ((l.chunky and l.barrels and l.balloon and l.islanky) or l.CanMoonkick()) and l.shockwave,
+        logic=lambda l: ((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and l.settings.krusha_kong != Kongs.tiny))
+        and l.shockwave,
     ),
     DirtPatchData(
         name="Isles Boulders",
@@ -1362,7 +1363,7 @@ DirtPatchLocations = [
         rotation=2947,
         group=1,
         logicregion=Regions.WormArea,
-        logic=lambda l: l.TimeAccess(Regions.WormArea, Time.Night) and l.shockwave,
+        logic=lambda l: (l.TimeAccess(Regions.WormArea, Time.Night)) and l.shockwave,
     ),
     DirtPatchData(
         name="Giant Kosha Room",

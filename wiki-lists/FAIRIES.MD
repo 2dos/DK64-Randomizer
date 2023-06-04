@@ -134,7 +134,7 @@
 | Map | Name | Logic |
 | --- | ---- | ----- |
 | Caves Diddy Upper Cabin | Diddy Candles Cabin | l.camera and (l.guitar or l.oranges) and l.spring and l.jetpack and l.isdiddy | 
-| Caves Tiny Igloo | Tiny Igloo | l.Slam and (l.istiny or l.settings.free_trade_items) and l.camera | 
+| Caves Tiny Igloo | Tiny Igloo | l.Slam and l.istiny and l.camera | 
 | Crystal Caves | Level Start | l.camera | 
 | Crystal Caves | Gorilla Gone Room | l.camera and ((l.chunky and l.punch) or l.phasewalk or l.CanPhaseswim()) | 
 | Crystal Caves | Ice Castle Roof | l.camera | 
@@ -162,7 +162,7 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Castle Tree | Tree Sniper Room | l.camera and (((l.coconut or l.generalclips) and l.isdonkey) or l.phasewalk) | 
+| Castle Tree | Tree Sniper Room | l.camera and l.swim and (((l.coconut or l.generalclips) and l.isdonkey) or l.phasewalk) | 
 | Castle Museum | Near Car Race | l.camera | 
 | Creepy Castle | Start | l.camera | 
 | Creepy Castle | On Castle Tree | l.camera | 

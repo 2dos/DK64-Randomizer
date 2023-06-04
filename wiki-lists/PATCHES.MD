@@ -12,7 +12,7 @@
 | Training Grounds | Banana Hoard | (l.vines or l.CanMoonkick()) and l.shockwave | 
 | Training Grounds | Training Grounds Rear Inside Tunnel | l.shockwave | 
 | KLumsy | Inside K. Lumsy's Island | l.shockwave | 
-| Creepy Castle Lobby | Castle Lobby | ((l.chunky and l.barrels and l.balloon and l.islanky) or l.CanMoonkick()) and l.shockwave | 
+| Creepy Castle Lobby | Castle Lobby | ((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and l.settings.krusha_kong != Kongs.tiny)) | 
 | Isles | Isles Boulders | l.shockwave | 
 | Isles | Behind BFI | l.shockwave) | 
 | Isles | Back of Kroc Isle (Lower) | l.shockwave | 
@@ -149,7 +149,7 @@
 | Forest Giant Mushroom | Giant Mushroom: Next to the cannon below the night door | l.shockwave | 
 | Fungi Forest | Next to Crusher Output | l.shockwave | 
 | Fungi Forest | On the Tomato Field | l.shockwave | 
-| Fungi Forest | Near Funky with the fenced in Chunky coins | l.TimeAccess(Regions.WormArea, Time.Night) and l.shockwave | 
+| Fungi Forest | Near Funky with the fenced in Chunky coins | (l.TimeAccess(Regions.WormArea, Time.Night)) and l.shockwave | 
 </details>
 
 ## Crystal Caves
