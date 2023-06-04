@@ -1,8 +1,8 @@
 """List of maps with in-game index."""
 from enum import IntEnum
 
-from randomizer.Enums.Levels import Levels
 from randomizer.LogicClasses import Regions, TransitionBack
+from randomizer.Enums.Levels import Levels
 
 
 class Maps(IntEnum):

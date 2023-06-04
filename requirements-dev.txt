@@ -16,10 +16,4 @@ djlint
 cpplint
 flask
 flask-cors
-waitress
-gunicorn
-flask-executor
-vidua
-pyxdelta
-pillow
-boto3
+discord-webhook

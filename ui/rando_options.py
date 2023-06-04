@@ -3,9 +3,9 @@ import random
 
 import js
 from js import document
-from randomizer.Enums.Settings import SettingsMap
-from randomizer.SettingStrings import decrypt_settings_string_enum
 from ui.bindings import bind
+from randomizer.SettingStrings import decrypt_settings_string_enum
+from randomizer.Enums.Settings import SettingsMap
 
 
 def randomseed(evt):

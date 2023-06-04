@@ -1,8 +1,0 @@
-flask
-gunicorn
-flask-executor
-vidua
-pyxdelta
-flask-cors
-pillow
-boto3

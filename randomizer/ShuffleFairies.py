@@ -2,6 +2,13 @@
 
 import random
 
+from randomizer.Lists.FairyLocations import fairy_locations
+from randomizer.Spoiler import Spoiler
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
+from randomizer.Lists.Location import LocationList
+from randomizer.LogicClasses import LocationLogic
+
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -11,12 +18,6 @@ import randomizer.LogicFiles.FungiForest
 import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.HideoutHelm
 import randomizer.LogicFiles.JungleJapes
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Locations import Locations
-from randomizer.Lists.FairyLocations import fairy_locations
-from randomizer.Lists.Location import LocationList
-from randomizer.LogicClasses import LocationLogic
-from randomizer.Spoiler import Spoiler
 
 
 class FairyPlacementInfo:

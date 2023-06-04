@@ -1,14 +1,15 @@
 """Module used to distribute items randomly."""
 from json import dumps
 from math import floor
-from random import choice, randint, shuffle, uniform
+from random import shuffle, choice, uniform, randint
 
 import js
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
-import randomizer.LogicFiles.DKIsles as IslesLogic
+from randomizer.ShuffleDoors import ShuffleDoors, ShuffleVanillaDoors
 import randomizer.ShuffleExits as ShuffleExits
+import randomizer.LogicFiles.DKIsles as IslesLogic
 from randomizer.CompileHints import compileHints, compileMicrohints
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
@@ -38,7 +39,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Warps import Warps
 from randomizer.Lists.Item import ItemList, KongFromItem
-from randomizer.Lists.Location import LocationList, PreGivenLocations, SharedMoveLocations, TrainingBarrelLocations
+from randomizer.Lists.Location import LocationList, TrainingBarrelLocations, SharedMoveLocations, PreGivenLocations
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
@@ -46,21 +47,19 @@ from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.Logic import Regions as RegionList
 from randomizer.LogicClasses import Sphere, TransitionFront
-from randomizer.Patching import ApplyRandomizer
 from randomizer.Prices import GetMaxForKong
 from randomizer.Settings import Settings
 from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleBosses import CorrectBossKongLocations, ShuffleBossesBasedOnOwnedItems
+from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
+from randomizer.ShufflePatches import ShufflePatches
+from randomizer.ShuffleFairies import ShuffleFairyLocations
+from randomizer.ShuffleShopLocations import ShuffleShopLocations
+from randomizer.ShuffleWarps import LinkWarps, ShuffleWarps, ShuffleWarpsCrossMap
 from randomizer.ShuffleCBs import ShuffleCBs
 from randomizer.ShuffleCoins import ShuffleCoins
 from randomizer.ShuffleCrowns import ShuffleCrowns
-from randomizer.ShuffleDoors import ShuffleDoors, ShuffleVanillaDoors
-from randomizer.ShuffleFairies import ShuffleFairyLocations
 from randomizer.ShuffleItems import ShuffleItems
-from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
-from randomizer.ShufflePatches import ShufflePatches
-from randomizer.ShuffleShopLocations import ShuffleShopLocations
-from randomizer.ShuffleWarps import LinkWarps, ShuffleWarps, ShuffleWarpsCrossMap
 
 
 def GetExitLevelExit(region):
@@ -2322,7 +2321,6 @@ def Generate_Spoiler(spoiler):
     """Generate a complete spoiler based on input settings."""
     # Init logic vars with settings
     global LogicVariables
-    LogicVariables = None
     LogicVariables = LogicVarHolder(spoiler.settings)
     # Initiate kasplat map with default
     InitKasplatMap(LogicVariables)
@@ -2362,8 +2360,7 @@ def Generate_Spoiler(spoiler):
     js.postMessage("Patching ROM...")
     # print(spoiler)
     # print(spoiler.json)
-    patch_data = ApplyRandomizer.patching_response(spoiler)
-    return patch_data, spoiler
+    return spoiler
 
 
 def ShuffleMisc(spoiler):

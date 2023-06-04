@@ -144,6 +144,7 @@ cython_debug/
 
 # Jekyll
 _site/
+Gemfile.lock
 
 # Randomizer specific
 spoilerlog*.txt
