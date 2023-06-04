@@ -69,8 +69,7 @@ def start_gen(gen_key, post_body):
         if os.environ.get("HOSTED_SERVER") is not None:
             
             
-            session = boto3.Session(aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
-            dynamodb = session.resource("dynamodb")
+            dynamodb = boto3.resource("dynamodb", aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
             error_table = dynamodb.Table("dk64_error_db")
             error_table.put_item(
                 Item={
@@ -113,10 +112,11 @@ def lambda_function():
             spoiler_log = json.loads(resp_data[1].json)
             # Only retain the Settings section and the Cosmetics section.
             if os.environ.get("HOSTED_SERVER") is not None:
-
-                session = boto3.Session(aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
-                dynamodb = session.resource("dynamodb")
+                print("Starting DynamoDB")
+                dynamodb = boto3.resource("dynamodb", aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
+                print("connecting to table")
                 seed_table = dynamodb.Table("seed_db")
+                print("putting item")
                 seed_table.put_item(
                     Item={
                         "time": str(time.time()) + str(hash),
