@@ -18,6 +18,7 @@ from flask import request
 
 if os.environ.get("HOSTED_SERVER") is not None:
     import boto3
+
     dynamodb = boto3.resource("dynamodb", aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
 
 
@@ -68,7 +69,6 @@ def start_gen(gen_key, post_body):
 
     except Exception as e:
         if os.environ.get("HOSTED_SERVER") is not None:
-            
             error_table = dynamodb.Table("dk64_error_db")
             error_table.put_item(
                 Item={
