@@ -169,7 +169,7 @@ LogicRegions = {
 
     Regions.TinyIgloo: Region("Tiny Igloo", "Igloo Area", Levels.CrystalCaves, False, -1, [
         LocationLogic(Locations.CavesTiny5DoorIgloo, lambda l: l.Slam and l.istiny),
-        LocationLogic(Locations.CavesBananaFairyIgloo, lambda l: l.Slam and (l.istiny or l.settings.free_trade_items) and l.camera),
+        LocationLogic(Locations.CavesBananaFairyIgloo, lambda l: l.Slam and l.istiny and l.camera),
     ], [], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
         TransitionFront(Regions.IglooArea, lambda l: True, Transitions.CavesTinyToIgloo),
@@ -198,7 +198,7 @@ LogicRegions = {
         TransitionFront(Regions.TinyCabin, lambda l: (l.saxophone and l.istiny) or l.phasewalk or l.CanSkew(True), Transitions.CavesCabinToTiny),
         TransitionFront(Regions.ChunkyCabin, lambda l: (l.triangle and l.ischunky) or l.phasewalk or l.CanSkew(True), Transitions.CavesCabinToChunky),
         TransitionFront(Regions.CandyCaves, lambda l: True),
-        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and ((l.jetpack and l.isdiddy) or (l.balloon or l.islanky) or l.CanMoonkick() or l.phasewalk)),
+        TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando and ((l.jetpack and l.isdiddy) or (l.balloon or l.islanky) or l.CanMoonkick() or ((l.isdiddy or l.istiny or l.islanky) and l.advanced_platforming) or l.phasewalk)),
     ]),
 
     Regions.RotatingCabin: Region("Rotating Cabin", "Cabins Area", Levels.CrystalCaves, False, None, [

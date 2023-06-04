@@ -567,7 +567,7 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[2268.343, 120.0, 448.669, 59.0],
             group=4,
-            logic=lambda l: l.vines or l.advanced_platforming,
+            logic=lambda l: True,
             placed="tns",
         ),  # T&S Portal by Candy
         DoorData(
@@ -596,7 +596,7 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[2468.0, 120.0, 473.5, 298.75],
             group=4,
-            logic=lambda l: l.vines or l.advanced_platforming,
+            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Under Diddy's Tiny Temple Switch",
@@ -1349,7 +1349,7 @@ door_locations = {
             location=[645.832, 1460.0, 4960.476, 133.0],
             group=5,
             moveless=False,
-            logic=lambda l: lambda l: Events.LighthouseEnguarde in l.Events and l.lanky,
+            logic=lambda l: lambda l: Events.LighthouseEnguarde in l.Events,
             placed="tns",
         ),  # T&S Door behind Enguarde Door
         DoorData(
@@ -1747,7 +1747,7 @@ door_locations = {
             location=[3665.871, 186.833, 945.745, 252.0],
             group=3,
             moveless=False,
-            logic=lambda l: Events.Night in l.Events or l.phasewalk,
+            logic=lambda l: Events.Night in l.Events,
             placed="tns",
         ),  # T&S Portal in Beanstalk Area
         DoorData(
@@ -2086,7 +2086,7 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=2,
             moveless=False,
-            logic=lambda l: (l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or l.islanky) and l.advanced_platforming),
+            logic=lambda l: (l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or l.islanky) and l.advanced_platforming) or l.phasewalk,
             placed="tns",
         ),  # T&S Portal on Rotating Room | Lanky can backflip onto the building from the window sill
         DoorData(
@@ -2117,7 +2117,7 @@ door_locations = {
             kong_lst=[Kongs.diddy, Kongs.lanky],
             group=2,
             moveless=False,
-            logic=lambda l: (l.isdiddy and l.jetpack) or (l.islanky and l.balloon) or l.CanMoonkick(),
+            logic=lambda l: (l.isdiddy and l.jetpack) or (l.islanky and l.balloon) or l.CanMoonkick() or l.phasewalk,
             placed="tns",
         ),  # T&S Portal on Sprint Cabin
         DoorData(

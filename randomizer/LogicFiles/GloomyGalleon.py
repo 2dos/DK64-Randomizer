@@ -23,7 +23,7 @@ LogicRegions = {
 
     Regions.GloomyGalleonStart: Region("Gloomy Galleon Start", "Galleon Caverns", Levels.GloomyGalleon, True, None, [
         LocationLogic(Locations.GalleonChunkyChest, lambda l: l.punch and l.chunky),
-        LocationLogic(Locations.GalleonBattleArena, lambda l: (not l.settings.crown_placement_rando and ((l.punch and l.chunky)) or l.phasewalk or l.CanSkew(False))),
+        LocationLogic(Locations.GalleonBattleArena, lambda l: (not l.settings.crown_placement_rando and ((l.punch and l.chunky) or l.phasewalk or l.CanSkew(False)))),
         LocationLogic(Locations.GalleonBananaFairybyCranky, lambda l: l.camera and l.punch and l.chunky),
     ], [
         Event(Events.GalleonEntered, lambda l: True),

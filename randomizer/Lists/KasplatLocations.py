@@ -371,7 +371,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.chunky],
             coords=[936, 122, 2027],
             region=Regions.ChunkyTemple,
-            additional_logic=lambda l: l.ischunky and (l.pineapple or l.phasewalk),
+            additional_logic=lambda l: (l.pineapple and l.ischunky) or l.phasewalk,
             vanilla=True,
         ),
         KasplatLocation(
@@ -1248,7 +1248,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey],
             coords=[937, 400, 1424],
             region=Regions.CastleTree,
-            additional_logic=lambda l: (l.coconut or l.generalclips) and l.isdonkey,
+            additional_logic=lambda l: (l.coconut or l.phasewalk or l.generalclips) and l.isdonkey,
             vanilla=True,
         ),
         KasplatLocation(
