@@ -1,17 +1,15 @@
 """Apply CB Rando changes."""
 import js
-from randomizer.Patching.Patcher import ROM
-from randomizer.Enums.Levels import Levels
-from randomizer.Spoiler import Spoiler
-from randomizer.Patching.Lib import float_to_hex, short_to_ushort
-
-import randomizer.Lists.CBLocations.JungleJapesCBLocations
 import randomizer.Lists.CBLocations.AngryAztecCBLocations
-import randomizer.Lists.CBLocations.FranticFactoryCBLocations
-import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
-import randomizer.Lists.CBLocations.FungiForestCBLocations
-import randomizer.Lists.CBLocations.CrystalCavesCBLocations
 import randomizer.Lists.CBLocations.CreepyCastleCBLocations
+import randomizer.Lists.CBLocations.CrystalCavesCBLocations
+import randomizer.Lists.CBLocations.FranticFactoryCBLocations
+import randomizer.Lists.CBLocations.FungiForestCBLocations
+import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
+import randomizer.Lists.CBLocations.JungleJapesCBLocations
+from randomizer.Enums.Levels import Levels
+from randomizer.Patching.Lib import float_to_hex, short_to_ushort
+from randomizer.Patching.Patcher import ROM, LocalROM
 
 level_data = {
     Levels.JungleJapes: {"cb": randomizer.Lists.CBLocations.JungleJapesCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.JungleJapesCBLocations.BalloonList},
@@ -26,7 +24,7 @@ level_data = {
 PATH_CAP = 64
 
 
-def randomize_cbs(spoiler: Spoiler):
+def randomize_cbs(spoiler):
     """Place Colored Bananas into ROM."""
     if spoiler.settings.cb_rando:
         for cont_map_id in range(216):
@@ -35,74 +33,74 @@ def randomize_cbs(spoiler: Spoiler):
             modeltwo_cbs = [0xA, 0xD, 0x16, 0x1E, 0x1F, 0x2B, 0x205, 0x206, 0x207, 0x208]
             actor_cbs = [91, 111, 112, 113, 114]
             setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
-            ROM().seek(setup_table)
-            model2_count = int.from_bytes(ROM().readBytes(4), "big")
+            LocalROM().seek(setup_table)
+            model2_count = int.from_bytes(LocalROM().readBytes(4), "big")
             # Model Two CBs
             persisted_m2_data = []
             used_m2_ids = []
             for item in range(model2_count):
                 item_start = setup_table + 4 + (item * 0x30)
-                ROM().seek(item_start + 0x28)
-                item_type = int.from_bytes(ROM().readBytes(2), "big")
+                LocalROM().seek(item_start + 0x28)
+                item_type = int.from_bytes(LocalROM().readBytes(2), "big")
                 if item_type not in modeltwo_cbs:  # Not CB
-                    ROM().seek(item_start + 0x2A)
-                    used_m2_ids.append(int.from_bytes(ROM().readBytes(2), "big"))
-                    ROM().seek(item_start)
+                    LocalROM().seek(item_start + 0x2A)
+                    used_m2_ids.append(int.from_bytes(LocalROM().readBytes(2), "big"))
+                    LocalROM().seek(item_start)
                     item_data = []
                     for x in range(int(0x30 / 4)):
-                        item_data.append(int.from_bytes(ROM().readBytes(4), "big"))
+                        item_data.append(int.from_bytes(LocalROM().readBytes(4), "big"))
                     persisted_m2_data.append(item_data)
-            ROM().seek(setup_table + 4 + (0x30 * model2_count))
-            mystery_count = int.from_bytes(ROM().readBytes(4), "big")
+            LocalROM().seek(setup_table + 4 + (0x30 * model2_count))
+            mystery_count = int.from_bytes(LocalROM().readBytes(4), "big")
             # Mystery
             persisted_mys_data = []
             for item in range(mystery_count):
-                ROM().seek(setup_table + 4 + (model2_count * 0x30) + 4 + (item * 0x24))
+                LocalROM().seek(setup_table + 4 + (model2_count * 0x30) + 4 + (item * 0x24))
                 item_data = []
                 for x in range(int(0x24 / 4)):
-                    item_data.append(int.from_bytes(ROM().readBytes(4), "big"))
+                    item_data.append(int.from_bytes(LocalROM().readBytes(4), "big"))
                 persisted_mys_data.append(item_data)
             actor_block = setup_table + 4 + (0x30 * model2_count) + 4 + (0x24 * mystery_count)
-            ROM().seek(actor_block)
-            actor_count = int.from_bytes(ROM().readBytes(4), "big")
+            LocalROM().seek(actor_block)
+            actor_count = int.from_bytes(LocalROM().readBytes(4), "big")
             # Actors
             persisted_act_data = []
             used_actor_ids = []
             remove_paths = []
             for item in range(actor_count):
                 actor_start = actor_block + 4 + (item * 0x38)
-                ROM().seek(actor_start + 0x32)
-                actor_type = int.from_bytes(ROM().readBytes(2), "big") + 0x10
+                LocalROM().seek(actor_start + 0x32)
+                actor_type = int.from_bytes(LocalROM().readBytes(2), "big") + 0x10
                 if actor_type not in actor_cbs:
-                    ROM().seek(actor_start + 0x34)
-                    used_actor_ids.append(int.from_bytes(ROM().readBytes(2), "big"))
-                    ROM().seek(actor_start)
+                    LocalROM().seek(actor_start + 0x34)
+                    used_actor_ids.append(int.from_bytes(LocalROM().readBytes(2), "big"))
+                    LocalROM().seek(actor_start)
                     item_data = []
                     for x in range(int(0x38 / 4)):
-                        item_data.append(int.from_bytes(ROM().readBytes(4), "big"))
+                        item_data.append(int.from_bytes(LocalROM().readBytes(4), "big"))
                     persisted_act_data.append(item_data)
                 else:
-                    ROM().seek(actor_start + 0x12)
-                    path_id = int.from_bytes(ROM().readBytes(2), "big")
+                    LocalROM().seek(actor_start + 0x12)
+                    path_id = int.from_bytes(LocalROM().readBytes(2), "big")
                     if path_id not in remove_paths:
                         remove_paths.append(path_id)
             # PATHS
             path_table = js.pointer_addresses[15]["entries"][cont_map_id]["pointing_to"]
-            ROM().seek(path_table)
-            path_count = int.from_bytes(ROM().readBytes(2), "big")
+            LocalROM().seek(path_table)
+            path_count = int.from_bytes(LocalROM().readBytes(2), "big")
             persisted_paths = []
             used_path_ids = []
             path_offset = 2
             for path_index in range(path_count):
-                ROM().seek(path_table + path_offset)
-                path_id = int.from_bytes(ROM().readBytes(2), "big")
-                point_count = int.from_bytes(ROM().readBytes(2), "big")
+                LocalROM().seek(path_table + path_offset)
+                path_id = int.from_bytes(LocalROM().readBytes(2), "big")
+                point_count = int.from_bytes(LocalROM().readBytes(2), "big")
                 if path_id not in remove_paths:
                     path_size = 6 + (point_count * 10)
                     item_data = []
-                    ROM().seek(path_table + path_offset)
+                    LocalROM().seek(path_table + path_offset)
                     for x in range(int(path_size / 2)):
-                        item_data.append(int.from_bytes(ROM().readBytes(2), "big"))
+                        item_data.append(int.from_bytes(LocalROM().readBytes(2), "big"))
                     persisted_paths.append(item_data)
                     used_path_ids.append(path_id)
                 path_offset += 6 + (10 * point_count)
@@ -200,22 +198,22 @@ def randomize_cbs(spoiler: Spoiler):
                                 persisted_paths = new_paths.copy()
             # Recompile Tables
             # SETUP
-            ROM().seek(setup_table)
-            ROM().writeMultipleBytes(len(persisted_m2_data), 4)
+            LocalROM().seek(setup_table)
+            LocalROM().writeMultipleBytes(len(persisted_m2_data), 4)
             for x in persisted_m2_data:
                 for y in x:
-                    ROM().writeMultipleBytes(y, 4)
-            ROM().writeMultipleBytes(len(persisted_mys_data), 4)
+                    LocalROM().writeMultipleBytes(y, 4)
+            LocalROM().writeMultipleBytes(len(persisted_mys_data), 4)
             for x in persisted_mys_data:
                 for y in x:
-                    ROM().writeMultipleBytes(y, 4)
-            ROM().writeMultipleBytes(len(persisted_act_data), 4)
+                    LocalROM().writeMultipleBytes(y, 4)
+            LocalROM().writeMultipleBytes(len(persisted_act_data), 4)
             for x in persisted_act_data:
                 for y in x:
-                    ROM().writeMultipleBytes(y, 4)
+                    LocalROM().writeMultipleBytes(y, 4)
             # print(f"{hex(cont_map_id)}: {hex(path_table)}")
-            ROM().seek(path_table)
-            ROM().writeMultipleBytes(len(persisted_paths), 2)
+            LocalROM().seek(path_table)
+            LocalROM().writeMultipleBytes(len(persisted_paths), 2)
             for x in persisted_paths:
                 for y in x:
-                    ROM().writeMultipleBytes(y, 2)
+                    LocalROM().writeMultipleBytes(y, 2)

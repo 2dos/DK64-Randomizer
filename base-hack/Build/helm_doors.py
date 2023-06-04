@@ -1,8 +1,9 @@
 """Generate models for the two Helm doors."""
 import zlib
-from BuildLib import ROMName
+
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames
+from BuildLib import ROMName
 
 
 def getHelmDoorModel(new_item_image: int, new_number_image: int, filename: str):

@@ -1,11 +1,12 @@
 """Shuffle Crown picks, excluding helm."""
 
 import random
+
 import randomizer.Logic as Logic
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Lists.Location import LocationList
 from randomizer.Lists.CrownLocations import CrownLocations
+from randomizer.Lists.Location import LocationList
 from randomizer.LogicClasses import LocationLogic
 
 

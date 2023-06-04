@@ -1,12 +1,10 @@
 """Crown Randomizer Placement Code."""
 import js
-from randomizer.Patching.Patcher import ROM
-from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Spoiler import Spoiler
-from randomizer.Patching.Lib import float_to_hex, getNextFreeID, addNewScript
 from randomizer.Enums.ScriptTypes import ScriptTypes
-
 from randomizer.Lists.CrownLocations import CrownLocations
+from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Patching.Lib import addNewScript, float_to_hex, getNextFreeID
+from randomizer.Patching.Patcher import ROM, LocalROM
 
 
 class CrownPlacementShortData:
@@ -21,7 +19,7 @@ class CrownPlacementShortData:
         self.vanilla = vanilla
 
 
-def randomize_crown_pads(spoiler: Spoiler):
+def randomize_crown_pads(spoiler):
     """Place Crown Pads."""
     if spoiler.settings.crown_placement_rando:
         placements = []
@@ -54,25 +52,25 @@ def randomize_crown_pads(spoiler: Spoiler):
                 if cont_map_id not in new_vanilla_crowns:
                     # Remove Caves Crown
                     sav = spoiler.settings.rom_data
-                    ROM().seek(sav + 0x195)
-                    ROM().write(1)
+                    LocalROM().seek(sav + 0x195)
+                    LocalROM().write(1)
             else:
                 setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
-                ROM().seek(setup_table)
-                model2_count = int.from_bytes(ROM().readBytes(4), "big")
+                LocalROM().seek(setup_table)
+                model2_count = int.from_bytes(LocalROM().readBytes(4), "big")
                 persisted_m2 = []
                 for model2_item in range(model2_count):
                     accept = True
                     item_start = setup_table + 4 + (model2_item * 0x30)
-                    ROM().seek(item_start + 0x28)
-                    item_type = int.from_bytes(ROM().readBytes(2), "big")
+                    LocalROM().seek(item_start + 0x28)
+                    item_type = int.from_bytes(LocalROM().readBytes(2), "big")
                     if cont_map_id in vanilla_crown_maps and cont_map_id not in new_vanilla_crowns and item_type == 0x1C6:
                         accept = False  # Crown is being removed
                     if accept:
-                        ROM().seek(item_start)
+                        LocalROM().seek(item_start)
                         data = []
                         for int_index in range(int(0x30 / 4)):
-                            data.append(int.from_bytes(ROM().readBytes(4), "big"))
+                            data.append(int.from_bytes(LocalROM().readBytes(4), "big"))
                         persisted_m2.append(data)
                 crown_ids = []
                 for crown in placements:
@@ -100,21 +98,21 @@ def randomize_crown_pads(spoiler: Spoiler):
                             addNewScript(cont_map_id, [selected_id], ScriptTypes.CrownMain)
                         elif crown.default == 1:
                             addNewScript(cont_map_id, [selected_id], ScriptTypes.CrownIsles2)
-                ROM().seek(setup_table + 4 + (model2_count * 0x30))
-                mystery_count = int.from_bytes(ROM().readBytes(4), "big")
+                LocalROM().seek(setup_table + 4 + (model2_count * 0x30))
+                mystery_count = int.from_bytes(LocalROM().readBytes(4), "big")
                 extra_data = [mystery_count]
                 for mys_item in range(mystery_count):
                     for int_index in range(int(0x24 / 4)):
-                        extra_data.append(int.from_bytes(ROM().readBytes(4), "big"))
-                actor_count = int.from_bytes(ROM().readBytes(4), "big")
+                        extra_data.append(int.from_bytes(LocalROM().readBytes(4), "big"))
+                actor_count = int.from_bytes(LocalROM().readBytes(4), "big")
                 extra_data.append(actor_count)
                 for act_item in range(actor_count):
                     for int_index in range(int(0x38 / 4)):
-                        extra_data.append(int.from_bytes(ROM().readBytes(4), "big"))
-                ROM().seek(setup_table)
-                ROM().writeMultipleBytes(len(persisted_m2), 4)
+                        extra_data.append(int.from_bytes(LocalROM().readBytes(4), "big"))
+                LocalROM().seek(setup_table)
+                LocalROM().writeMultipleBytes(len(persisted_m2), 4)
                 for model2 in persisted_m2:
                     for int_val in model2:
-                        ROM().writeMultipleBytes(int_val, 4)
+                        LocalROM().writeMultipleBytes(int_val, 4)
                 for int_val in extra_data:
-                    ROM().writeMultipleBytes(int_val, 4)
+                    LocalROM().writeMultipleBytes(int_val, 4)
