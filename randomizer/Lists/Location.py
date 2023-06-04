@@ -136,7 +136,7 @@ class Location:
 LocationList = {
     # Training Barrel locations
     Locations.IslesVinesTrainingBarrel: Location(Levels.DKIsles, "Isles Vines Training Barrel", Items.Vines, Types.TrainingBarrel, Kongs.any, [123]),
-    Locations.IslesSwimTrainingBarrel: Location(Levels.DKIsles, "Isles Swim Training Barrel", Items.Swim, Types.TrainingBarrel, Kongs.any, [120]),
+    Locations.IslesSwimTrainingBarrel: Location(Levels.DKIsles, "Isles Dive Training Barrel", Items.Swim, Types.TrainingBarrel, Kongs.any, [120]),
     Locations.IslesOrangesTrainingBarrel: Location(Levels.DKIsles, "Isles Oranges Training Barrel", Items.Oranges, Types.TrainingBarrel, Kongs.any, [121]),
     Locations.IslesBarrelsTrainingBarrel: Location(Levels.DKIsles, "Isles Barrels Training Barrel", Items.Barrels, Types.TrainingBarrel, Kongs.any, [122]),
     # Pre-Given Moves
