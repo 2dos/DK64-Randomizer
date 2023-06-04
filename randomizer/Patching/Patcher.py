@@ -2,8 +2,12 @@
 import js
 from io import BytesIO
 import os
+import copy
 
 patchedRom = None
+og_patched_rom = None
+patch = None
+original = None
 
 
 class ROM:
@@ -117,12 +121,20 @@ class ROM:
 def load_base_rom():
     """Load the base ROM file for patching."""
     try:
-        patch = open("./static/patches/shrink-dk64.bps", "rb")
-        original = open("dk64.z64", "rb")
+        global patch
+        if patch is None:
+            patch = open("./static/patches/shrink-dk64.bps", "rb")
+        global original
+        if original is None:
+            original = open("dk64.z64", "rb")
         global patchedRom
+        global og_patched_rom
         from vidua import bps
-
-        patchedRom = BytesIO(bps.patch(original, patch).read())
+        if patchedRom is None:
+            og_patched_rom = BytesIO(bps.patch(original, patch).read())
+            patchedRom = copy.deepcopy(og_patched_rom)
+        else:
+            patchedRom = copy.deepcopy(og_patched_rom)
     except Exception as e:
         pass
 
