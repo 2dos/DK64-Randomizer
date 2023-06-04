@@ -737,7 +737,7 @@ fairy_locations = {
             region=Regions.TinyIgloo,
             is_vanilla=True,
             spawn_xyz=[309, 90, 438],
-            logic=lambda l: l.Slam and (l.istiny or l.settings.free_trade_items) and l.camera,
+            logic=lambda l: l.Slam and l.istiny and l.camera,
             natural_index=0,
         ),
         FairyData(
@@ -882,7 +882,7 @@ fairy_locations = {
             region=Regions.CastleTree,
             is_vanilla=True,
             spawn_xyz=[1696, 400, 1054],
-            logic=lambda l: l.camera and (((l.coconut or l.generalclips) and l.isdonkey) or l.phasewalk),
+            logic=lambda l: l.camera and l.swim and (((l.coconut or l.generalclips) and l.isdonkey) or l.phasewalk),
             natural_index=1,
         ),
         FairyData(

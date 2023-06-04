@@ -111,8 +111,8 @@ LogicRegions = {
         LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: (not l.settings.fast_gbs and (Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey)) or (l.CanOStandTBSNoclip() and l.spawn_snags)),
         LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: l.CanFreeChunky()),
         LocationLogic(Locations.FactoryTinybyArcade, lambda l: (l.mini and l.tiny) or l.phasewalk),
-        LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: ((l.punch and l.CanSlamSwitch(Levels.FranticFactory, 1)) or l.generalclips) and l.ischunky),
-        LocationLogic(Locations.RainbowCoin_Location02, lambda l: l.punch and l.shockwave),
+        LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: ((l.punch and l.chunky) or l.phasewalk) and ((l.punch and l.CanSlamSwitch(Levels.FranticFactory, 1)) or l.generalclips) and l.ischunky),
+        LocationLogic(Locations.RainbowCoin_Location02, lambda l: ((l.punch and l.chunky) or l.phasewalk) and l.shockwave),
         LocationLogic(Locations.FactoryChunkybyArcade, lambda l: ((l.punch or l.phasewalk) and l.ischunky) or (l.phasewalk and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryKasplatStorage, lambda l: not l.settings.kasplat_rando),
     ], [
