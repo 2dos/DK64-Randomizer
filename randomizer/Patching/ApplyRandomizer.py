@@ -66,7 +66,7 @@ def patching_response(spoiler):
 
     # Starting index for our settings
     sav = spoiler.settings.rom_data
-
+    print("Shuffling zones")
     # Shuffle Levels
     if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
         LocalROM().seek(sav + 0)
@@ -187,7 +187,7 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 7),  # Bonus Matches Contents
         BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers
     ]
-
+    print("Applying boolean properties")
     for prop in boolean_props:
         if prop.check:
             LocalROM().seek(sav + prop.offset)
@@ -246,7 +246,7 @@ def patching_response(spoiler):
     for offset, value in enumerate(move_bitfields):
         LocalROM().seek(sav + 0xD5 + offset)
         LocalROM().writeMultipleBytes(value, 1)
-
+    print("Applying given moves")
     # Free Trade Agreement
     if spoiler.settings.free_trade_items:
         LocalROM().seek(sav + 0x113)
@@ -340,6 +340,7 @@ def patching_response(spoiler):
             LocalROM().seek(sav + 0x37 + slot)
             LocalROM().write(spoiler.settings.toe_order[slot])
 
+    print("Applying misc changes")
     # Win Condition
     LocalROM().seek(sav + 0x11D)
     # The WinCondition enum is indexed to allow this.
@@ -410,6 +411,7 @@ def patching_response(spoiler):
             LocalROM().seek(sav + 0x104 + x)
             LocalROM().write(spoiler.settings.switch_allocation[x])
 
+    print("Entrance Rando")
     randomize_entrances(spoiler)
     randomize_moves(spoiler)
     randomize_prices(spoiler)
@@ -417,6 +419,7 @@ def patching_response(spoiler):
     randomize_krool(spoiler)
     randomize_helm(spoiler)
     randomize_barrels(spoiler)
+    print("Bananaport Rando")
     randomize_bananaport(spoiler)
     randomize_kasplat_locations(spoiler)
     randomize_enemies(spoiler)
@@ -425,12 +428,14 @@ def patching_response(spoiler):
     randomize_puzzles(spoiler)
     randomize_cbs(spoiler)
     randomize_coins(spoiler)
+    print("Shop Rando")
     ApplyShopRandomizer(spoiler)
     place_randomized_items(spoiler)  # Has to be after kong rando cosmetic and moves
     place_pregiven_moves(spoiler)
     remove_existing_indicators(spoiler)
     place_door_locations(spoiler)
     randomize_crown_pads(spoiler)
+    print("Fairy Rando")
     PlaceFairies(spoiler)
     filterEntranceType()
     replaceIngameText(spoiler)
@@ -440,6 +445,7 @@ def patching_response(spoiler):
         wipeHints()
     PushHints(spoiler)
 
+    print("Writing boot messages")
     writeBootMessages()
     enableSpiderText(spoiler)
     shortenCastleMinecart(spoiler)
@@ -460,19 +466,22 @@ def patching_response(spoiler):
         LocalROM().write(count)
         order += 1
 
+    print("Writing to file")
     # Write the LocalROM.rom bytesIo to a file
     with open("patch.z64", "wb") as f:
         f.write(LocalROM().rom.getvalue())
 
     import pyxdelta
-
+    print("Writing xdelta")
     pyxdelta.run("dk64.z64", "patch.z64", "patch.xdelta")
     # Read the patch file
+    print("Reading Patch")
     with open("patch.xdelta", "rb") as f:
         patch = f.read()
     # Delete the patch.z64 file
     os.remove("patch.z64")
     os.remove("patch.xdelta")
+    print("Reloading base ROM")
     load_base_rom()
     return patch
 

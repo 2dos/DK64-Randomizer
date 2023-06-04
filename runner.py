@@ -16,6 +16,10 @@ from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 from flask import request
 
+if os.environ.get("HOSTED_SERVER") is not None:
+    import boto3
+    dynamodb = boto3.resource("dynamodb", aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
+
 
 app = Flask(__name__)
 app.config["EXECUTOR_MAX_WORKERS"] = 1
@@ -64,8 +68,14 @@ def start_gen(gen_key, post_body):
 
     except Exception as e:
         if os.environ.get("HOSTED_SERVER") is not None:
-            print("Temp")
             
+            error_table = dynamodb.Table("dk64_error_db")
+            error_table.put_item(
+                Item={
+                    "time": str(time.time()),
+                    "error_data": str(traceback.format_exc()),
+                }
+            )
         print(traceback.format_exc())
     current_job = ""
     return patch, spoiler
@@ -101,7 +111,14 @@ def lambda_function():
             spoiler_log = json.loads(resp_data[1].json)
             # Only retain the Settings section and the Cosmetics section.
             if os.environ.get("HOSTED_SERVER") is not None:
-                print("temp")
+                seed_table = dynamodb.Table("seed_db")
+                seed_table.put_item(
+                    Item={
+                        "time": str(time.time()) + str(hash),
+                        "seed_id": str(resp_data[1].settings.seed_id),
+                        "spoiler_log": str(json.dumps(spoiler_log)),
+                    }
+                )
             sections_to_retain = ["Settings", "Cosmetics"]
             if resp_data[1].settings.generate_spoilerlog is False:
                 spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
