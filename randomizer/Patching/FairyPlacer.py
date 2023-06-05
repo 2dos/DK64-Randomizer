@@ -1,18 +1,20 @@
 """Place fairies into the world."""
 
 import js
-from randomizer.Enums.Levels import Levels
-from randomizer.Lists.EnemyTypes import Enemies
+
 from randomizer.Lists.FairyLocations import fairy_locations, relocated_5ds_fairy
+from randomizer.Spoiler import Spoiler
+from randomizer.Enums.Levels import Levels
+from randomizer.Patching.Patcher import ROM
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Lists.EnemyTypes import Enemies
 
 
-def ReplaceShipFairy(spoiler):
+def ReplaceShipFairy(spoiler: Spoiler):
     """Replace the fairy inside 5DS with an easier to get fairy."""
     file_start = js.pointer_addresses[16]["entries"][Maps.Galleon5DShipDKTiny]["pointing_to"]
-    LocalROM().seek(file_start)
-    fence_count = int.from_bytes(LocalROM().readBytes(2), "big")
+    ROM().seek(file_start)
+    fence_count = int.from_bytes(ROM().readBytes(2), "big")
     offset = 2
     fence_bytes = []
     used_fence_ids = []
@@ -20,45 +22,45 @@ def ReplaceShipFairy(spoiler):
         for x in range(fence_count):
             fence = []
             fence_start = file_start + offset
-            LocalROM().seek(file_start + offset)
-            point_count = int.from_bytes(LocalROM().readBytes(2), "big")
+            ROM().seek(file_start + offset)
+            point_count = int.from_bytes(ROM().readBytes(2), "big")
             offset += (point_count * 6) + 2
-            LocalROM().seek(file_start + offset)
-            point0_count = int.from_bytes(LocalROM().readBytes(2), "big")
+            ROM().seek(file_start + offset)
+            point0_count = int.from_bytes(ROM().readBytes(2), "big")
             offset += (point0_count * 10) + 6
             fence_finish = file_start + offset
             fence_size = fence_finish - fence_start
-            LocalROM().seek(fence_finish - 4)
-            used_fence_ids.append(int.from_bytes(LocalROM().readBytes(2), "big"))
-            LocalROM().seek(fence_start)
+            ROM().seek(fence_finish - 4)
+            used_fence_ids.append(int.from_bytes(ROM().readBytes(2), "big"))
+            ROM().seek(fence_start)
             for y in range(int(fence_size / 2)):
-                fence.append(int.from_bytes(LocalROM().readBytes(2), "big"))
+                fence.append(int.from_bytes(ROM().readBytes(2), "big"))
             fence_bytes.append(fence)
-            LocalROM().seek(fence_finish)
+            ROM().seek(fence_finish)
     spawner_count_location = file_start + offset
-    LocalROM().seek(spawner_count_location)
-    spawner_count = int.from_bytes(LocalROM().readBytes(2), "big")
+    ROM().seek(spawner_count_location)
+    spawner_count = int.from_bytes(ROM().readBytes(2), "big")
     offset += 2
     spawner_bytes = []
     fairy_spawner_id = None
     for x in range(spawner_count):
         # Parse spawners
-        LocalROM().seek(file_start + offset)
-        enemy_id = int.from_bytes(LocalROM().readBytes(1), "big")
-        LocalROM().seek(file_start + offset + 0x13)
-        enemy_index = int.from_bytes(LocalROM().readBytes(1), "big")
+        ROM().seek(file_start + offset)
+        enemy_id = int.from_bytes(ROM().readBytes(1), "big")
+        ROM().seek(file_start + offset + 0x13)
+        enemy_index = int.from_bytes(ROM().readBytes(1), "big")
         init_offset = offset
-        LocalROM().seek(file_start + offset + 0x11)
-        extra_count = int.from_bytes(LocalROM().readBytes(1), "big")
+        ROM().seek(file_start + offset + 0x11)
+        extra_count = int.from_bytes(ROM().readBytes(1), "big")
         offset += 0x16 + (extra_count * 2)
         end_offset = offset
         if enemy_id != Enemies.Fairy:
             # Keep enemy if not fairy
             data_bytes = []
             spawner_size = end_offset - init_offset
-            LocalROM().seek(file_start + init_offset)
+            ROM().seek(file_start + init_offset)
             for x in range(spawner_size):
-                data_bytes.append(int.from_bytes(LocalROM().readBytes(1), "big"))
+                data_bytes.append(int.from_bytes(ROM().readBytes(1), "big"))
             spawner_bytes.append(data_bytes)
         else:
             # Is fairy
@@ -119,23 +121,23 @@ def ReplaceShipFairy(spoiler):
     new_fence_bytes.append(1)
     fence_bytes.append(new_fence_bytes)
     # Repack
-    LocalROM().seek(file_start)
-    LocalROM().writeMultipleBytes(len(fence_bytes), 2)
+    ROM().seek(file_start)
+    ROM().writeMultipleBytes(len(fence_bytes), 2)
     for x in fence_bytes:
         for y in x:
-            LocalROM().writeMultipleBytes(y, 2)
-    LocalROM().writeMultipleBytes(len(spawner_bytes), 2)
+            ROM().writeMultipleBytes(y, 2)
+    ROM().writeMultipleBytes(len(spawner_bytes), 2)
     for x in spawner_bytes:
         for y in x:
-            LocalROM().writeMultipleBytes(y, 1)
+            ROM().writeMultipleBytes(y, 1)
 
 
-def PlaceFairies(spoiler):
+def PlaceFairies(spoiler: Spoiler):
     """Write Fairies to ROM."""
     ReplaceShipFairy(spoiler)
     sav = spoiler.settings.rom_data
-    LocalROM().seek(sav + 0xE0)
-    LocalROM().writeMultipleBytes(0, 2)
+    ROM().seek(sav + 0xE0)
+    ROM().writeMultipleBytes(0, 2)
     if spoiler.settings.random_fairies:
         action_maps = [
             Maps.JungleJapes,
@@ -164,8 +166,8 @@ def PlaceFairies(spoiler):
         # Pull all character spawner files that are part of the action map list
         for map in action_maps:
             file_start = js.pointer_addresses[16]["entries"][map]["pointing_to"]
-            LocalROM().seek(file_start)
-            fence_count = int.from_bytes(LocalROM().readBytes(2), "big")
+            ROM().seek(file_start)
+            fence_count = int.from_bytes(ROM().readBytes(2), "big")
             offset = 2
             fence_bytes = []
             used_fence_ids = []
@@ -173,44 +175,44 @@ def PlaceFairies(spoiler):
                 for x in range(fence_count):
                     fence = []
                     fence_start = file_start + offset
-                    LocalROM().seek(file_start + offset)
-                    point_count = int.from_bytes(LocalROM().readBytes(2), "big")
+                    ROM().seek(file_start + offset)
+                    point_count = int.from_bytes(ROM().readBytes(2), "big")
                     offset += (point_count * 6) + 2
-                    LocalROM().seek(file_start + offset)
-                    point0_count = int.from_bytes(LocalROM().readBytes(2), "big")
+                    ROM().seek(file_start + offset)
+                    point0_count = int.from_bytes(ROM().readBytes(2), "big")
                     offset += (point0_count * 10) + 6
                     fence_finish = file_start + offset
                     fence_size = fence_finish - fence_start
-                    LocalROM().seek(fence_finish - 4)
-                    used_fence_ids.append(int.from_bytes(LocalROM().readBytes(2), "big"))
-                    LocalROM().seek(fence_start)
+                    ROM().seek(fence_finish - 4)
+                    used_fence_ids.append(int.from_bytes(ROM().readBytes(2), "big"))
+                    ROM().seek(fence_start)
                     for y in range(int(fence_size / 2)):
-                        fence.append(int.from_bytes(LocalROM().readBytes(2), "big"))
+                        fence.append(int.from_bytes(ROM().readBytes(2), "big"))
                     fence_bytes.append(fence)
-                    LocalROM().seek(fence_finish)
+                    ROM().seek(fence_finish)
             spawner_count_location = file_start + offset
-            LocalROM().seek(spawner_count_location)
-            spawner_count = int.from_bytes(LocalROM().readBytes(2), "big")
+            ROM().seek(spawner_count_location)
+            spawner_count = int.from_bytes(ROM().readBytes(2), "big")
             offset += 2
             spawner_bytes = []
             used_enemy_indexes = []
             for x in range(spawner_count):
                 # Parse spawners
-                LocalROM().seek(file_start + offset)
-                enemy_id = int.from_bytes(LocalROM().readBytes(1), "big")
-                LocalROM().seek(file_start + offset + 0x4)
+                ROM().seek(file_start + offset)
+                enemy_id = int.from_bytes(ROM().readBytes(1), "big")
+                ROM().seek(file_start + offset + 0x4)
                 enemy_coords = []
                 for y in range(3):
-                    coord = int.from_bytes(LocalROM().readBytes(2), "big")
+                    coord = int.from_bytes(ROM().readBytes(2), "big")
                     if coord > 32767:
                         coord -= 65536
                     enemy_coords.append(coord)
-                LocalROM().seek(file_start + offset + 0x13)
-                enemy_index = int.from_bytes(LocalROM().readBytes(1), "big")
+                ROM().seek(file_start + offset + 0x13)
+                enemy_index = int.from_bytes(ROM().readBytes(1), "big")
                 used_enemy_indexes.append(enemy_index)
                 init_offset = offset
-                LocalROM().seek(file_start + offset + 0x11)
-                extra_count = int.from_bytes(LocalROM().readBytes(1), "big")
+                ROM().seek(file_start + offset + 0x11)
+                extra_count = int.from_bytes(ROM().readBytes(1), "big")
                 offset += 0x16 + (extra_count * 2)
                 end_offset = offset
                 is_vanilla = False
@@ -229,9 +231,9 @@ def PlaceFairies(spoiler):
                     # Keep enemy if not fairy or is a vanilla fairy that's going to be kept
                     data_bytes = []
                     spawner_size = end_offset - init_offset
-                    LocalROM().seek(file_start + init_offset)
+                    ROM().seek(file_start + init_offset)
                     for x in range(spawner_size):
-                        data_bytes.append(int.from_bytes(LocalROM().readBytes(1), "big"))
+                        data_bytes.append(int.from_bytes(ROM().readBytes(1), "big"))
                     spawner_bytes.append(data_bytes)
             spawn_index = 1
             fence_index = 1
@@ -304,32 +306,32 @@ def PlaceFairies(spoiler):
                         new_fence_bytes.append(1)
                         fence_bytes.append(new_fence_bytes)
             # Repack
-            LocalROM().seek(file_start)
-            LocalROM().writeMultipleBytes(len(fence_bytes), 2)
+            ROM().seek(file_start)
+            ROM().writeMultipleBytes(len(fence_bytes), 2)
             for x in fence_bytes:
                 for y in x:
-                    LocalROM().writeMultipleBytes(y, 2)
-            LocalROM().writeMultipleBytes(len(spawner_bytes), 2)
+                    ROM().writeMultipleBytes(y, 2)
+            ROM().writeMultipleBytes(len(spawner_bytes), 2)
             for x in spawner_bytes:
                 for y in x:
-                    LocalROM().writeMultipleBytes(y, 1)
+                    ROM().writeMultipleBytes(y, 1)
         # Non-Spawner files
         # Setting Enable
-        LocalROM().seek(sav + 0x100)
-        LocalROM().write(1)
+        ROM().seek(sav + 0x100)
+        ROM().write(1)
         # Array construction
         write_data = [255, 255]
         for index, item in enumerate(spoiler.fairy_data_table):
-            LocalROM().seek(0x1FFC000 + (4 * index))
-            LocalROM().writeMultipleBytes(item["flag"], 2)
+            ROM().seek(0x1FFC000 + (4 * index))
+            ROM().writeMultipleBytes(item["flag"], 2)
             item_level = item["level"]
             item_map = fairy_locations[item_level][item["fairy_index"]].map
-            LocalROM().writeMultipleBytes(item_map, 1)
-            LocalROM().writeMultipleBytes(item["id"], 1)  # Get Spawner ID
+            ROM().writeMultipleBytes(item_map, 1)
+            ROM().writeMultipleBytes(item["id"], 1)  # Get Spawner ID
             if item["shift"] >= 0:
                 offset = int(item["shift"] >> 3)
                 check = int(item["shift"] % 8)
                 write_data[offset] &= 0xFF - (0x80 >> check)
-        LocalROM().seek(sav + 0xE0)
+        ROM().seek(sav + 0xE0)
         for byte_data in write_data:
-            LocalROM().writeMultipleBytes(byte_data, 1)
+            ROM().writeMultipleBytes(byte_data, 1)

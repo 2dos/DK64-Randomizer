@@ -1,17 +1,17 @@
 """Apply cosmetic skins to kongs."""
-import gzip
 import random
-import zlib
 from random import randint
 
-from PIL import Image, ImageDraw, ImageEnhance
-
 import js
+from randomizer.Patching.generate_kong_color_images import convertColors
+from randomizer.Patching.Patcher import ROM
+from randomizer.Patching.Lib import intf_to_float, float_to_hex, int_to_list, getObjectAddress, TextureFormat
+from randomizer.Spoiler import Spoiler
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorItem, KlaptrapModel
-from randomizer.Patching.generate_kong_color_images import convertColors
-from randomizer.Patching.Lib import TextureFormat, float_to_hex, getObjectAddressBrowser, int_to_list, intf_to_float
-from randomizer.Patching.Patcher import ROM, LocalROM
+from PIL import Image, ImageEnhance, ImageDraw
+import zlib
+import gzip
 
 
 class HelmDoorSetting:
@@ -38,14 +38,14 @@ class HelmDoorImages:
         self.format = format
 
 
-def apply_cosmetic_colors(settings):
+def apply_cosmetic_colors(spoiler: Spoiler):
     """Apply cosmetic skins to kongs."""
     model_index = 0
-    sav = settings.rom_data
+    sav = spoiler.settings.rom_data
     if js.document.getElementById("override_cosmetics").checked or True:
         model_setting = KlaptrapModel[js.document.getElementById("klaptrap_model").value]
     else:
-        model_setting = settings.klaptrap_model
+        model_setting = spoiler.settings.klaptrap_model
     if model_setting == KlaptrapModel.green:
         model_index = 0x21
     elif model_setting == KlaptrapModel.purple:
@@ -81,8 +81,8 @@ def apply_cosmetic_colors(settings):
             0xBD,  # Rareware Logo
         ]
         model_index = random.choice(permitted_models)
-    settings.klaptrap_model_index = model_index
-    if settings.misc_cosmetics:
+    spoiler.settings.klaptrap_model_index = model_index
+    if spoiler.settings.misc_cosmetics:
         ROM().seek(sav + 0x196)
         ROM().write(1)
         # Skybox RGBA
@@ -133,67 +133,67 @@ def apply_cosmetic_colors(settings):
 
     if js.document.getElementById("override_cosmetics").checked or True:
         if js.document.getElementById("random_colors").checked:
-            settings.dk_colors = CharacterColors.randomized
-            settings.diddy_colors = CharacterColors.randomized
-            settings.lanky_colors = CharacterColors.randomized
-            settings.tiny_colors = CharacterColors.randomized
-            settings.chunky_colors = CharacterColors.randomized
-            settings.rambi_colors = CharacterColors.randomized
-            settings.enguarde_colors = CharacterColors.randomized
+            spoiler.settings.dk_colors = CharacterColors.randomized
+            spoiler.settings.diddy_colors = CharacterColors.randomized
+            spoiler.settings.lanky_colors = CharacterColors.randomized
+            spoiler.settings.tiny_colors = CharacterColors.randomized
+            spoiler.settings.chunky_colors = CharacterColors.randomized
+            spoiler.settings.rambi_colors = CharacterColors.randomized
+            spoiler.settings.enguarde_colors = CharacterColors.randomized
         else:
-            settings.dk_colors = CharacterColors[js.document.getElementById("dk_colors").value]
-            settings.dk_custom_color = js.document.getElementById("dk_custom_color").value
-            settings.diddy_colors = CharacterColors[js.document.getElementById("diddy_colors").value]
-            settings.diddy_custom_color = js.document.getElementById("diddy_custom_color").value
-            settings.lanky_colors = CharacterColors[js.document.getElementById("lanky_colors").value]
-            settings.lanky_custom_color = js.document.getElementById("lanky_custom_color").value
-            settings.tiny_colors = CharacterColors[js.document.getElementById("tiny_colors").value]
-            settings.tiny_custom_color = js.document.getElementById("tiny_custom_color").value
-            settings.chunky_colors = CharacterColors[js.document.getElementById("chunky_colors").value]
-            settings.chunky_custom_color = js.document.getElementById("chunky_custom_color").value
-            settings.rambi_colors = CharacterColors[js.document.getElementById("rambi_colors").value]
-            settings.rambi_custom_color = js.document.getElementById("rambi_custom_color").value
-            settings.enguarde_colors = CharacterColors[js.document.getElementById("enguarde_colors").value]
-            settings.enguarde_custom_color = js.document.getElementById("enguarde_custom_color").value
+            spoiler.settings.dk_colors = CharacterColors[js.document.getElementById("dk_colors").value]
+            spoiler.settings.dk_custom_color = js.document.getElementById("dk_custom_color").value
+            spoiler.settings.diddy_colors = CharacterColors[js.document.getElementById("diddy_colors").value]
+            spoiler.settings.diddy_custom_color = js.document.getElementById("diddy_custom_color").value
+            spoiler.settings.lanky_colors = CharacterColors[js.document.getElementById("lanky_colors").value]
+            spoiler.settings.lanky_custom_color = js.document.getElementById("lanky_custom_color").value
+            spoiler.settings.tiny_colors = CharacterColors[js.document.getElementById("tiny_colors").value]
+            spoiler.settings.tiny_custom_color = js.document.getElementById("tiny_custom_color").value
+            spoiler.settings.chunky_colors = CharacterColors[js.document.getElementById("chunky_colors").value]
+            spoiler.settings.chunky_custom_color = js.document.getElementById("chunky_custom_color").value
+            spoiler.settings.rambi_colors = CharacterColors[js.document.getElementById("rambi_colors").value]
+            spoiler.settings.rambi_custom_color = js.document.getElementById("rambi_custom_color").value
+            spoiler.settings.enguarde_colors = CharacterColors[js.document.getElementById("enguarde_colors").value]
+            spoiler.settings.enguarde_custom_color = js.document.getElementById("enguarde_custom_color").value
     else:
-        if settings.random_colors:
-            settings.dk_colors = CharacterColors.randomized
-            settings.diddy_colors = CharacterColors.randomized
-            settings.lanky_colors = CharacterColors.randomized
-            settings.tiny_colors = CharacterColors.randomized
-            settings.chunky_colors = CharacterColors.randomized
-            settings.rambi_colors = CharacterColors.randomized
-            settings.enguarde_colors = CharacterColors.randomized
+        if spoiler.settings.random_colors:
+            spoiler.settings.dk_colors = CharacterColors.randomized
+            spoiler.settings.diddy_colors = CharacterColors.randomized
+            spoiler.settings.lanky_colors = CharacterColors.randomized
+            spoiler.settings.tiny_colors = CharacterColors.randomized
+            spoiler.settings.chunky_colors = CharacterColors.randomized
+            spoiler.settings.rambi_colors = CharacterColors.randomized
+            spoiler.settings.enguarde_colors = CharacterColors.randomized
 
     colors_dict = {
-        "dk_colors": settings.dk_colors,
-        "dk_custom_color": settings.dk_custom_color,
-        "diddy_colors": settings.diddy_colors,
-        "diddy_custom_color": settings.diddy_custom_color,
-        "lanky_colors": settings.lanky_colors,
-        "lanky_custom_color": settings.lanky_custom_color,
-        "tiny_colors": settings.tiny_colors,
-        "tiny_custom_color": settings.tiny_custom_color,
-        "chunky_colors": settings.chunky_colors,
-        "chunky_custom_color": settings.chunky_custom_color,
-        "rambi_colors": settings.rambi_colors,
-        "rambi_custom_color": settings.rambi_custom_color,
-        "enguarde_colors": settings.enguarde_colors,
-        "enguarde_custom_color": settings.enguarde_custom_color,
+        "dk_colors": spoiler.settings.dk_colors,
+        "dk_custom_color": spoiler.settings.dk_custom_color,
+        "diddy_colors": spoiler.settings.diddy_colors,
+        "diddy_custom_color": spoiler.settings.diddy_custom_color,
+        "lanky_colors": spoiler.settings.lanky_colors,
+        "lanky_custom_color": spoiler.settings.lanky_custom_color,
+        "tiny_colors": spoiler.settings.tiny_colors,
+        "tiny_custom_color": spoiler.settings.tiny_custom_color,
+        "chunky_colors": spoiler.settings.chunky_colors,
+        "chunky_custom_color": spoiler.settings.chunky_custom_color,
+        "rambi_colors": spoiler.settings.rambi_colors,
+        "rambi_custom_color": spoiler.settings.rambi_custom_color,
+        "enguarde_colors": spoiler.settings.enguarde_colors,
+        "enguarde_custom_color": spoiler.settings.enguarde_custom_color,
     }
     for kong in kong_settings:
         process = True
         if kong["kong_index"] == 4:  # Chunky
-            is_disco = settings.disco_chunky
-            if settings.krusha_kong == Kongs.chunky:
+            is_disco = spoiler.settings.disco_chunky
+            if spoiler.settings.krusha_kong == Kongs.chunky:
                 is_disco = False
             if is_disco and kong["kong"] == "chunky":
                 process = False
             elif not is_disco and kong["kong"] == "disco_chunky":
                 process = False
         is_krusha = False
-        if settings.krusha_kong is not None:
-            if settings.krusha_kong == kong["kong_index"]:
+        if spoiler.settings.krusha_kong is not None:
+            if spoiler.settings.krusha_kong == kong["kong_index"]:
                 is_krusha = True
                 kong["palettes"] = [{"name": "krusha_skin", "image": 4971, "fill_type": "block"}, {"name": "krusha_indicator", "image": 4966, "fill_type": "kong"}]
                 process = True
@@ -205,7 +205,7 @@ def apply_cosmetic_colors(settings):
                     arr = ["#000000", "#000000"]
                 elif palette["fill_type"] == "kong":
                     kong_colors = ["#ffd700", "#ff0000", "#1699ff", "#B045ff", "#41ff25"]
-                    mode = settings.colorblind_mode
+                    mode = spoiler.settings.colorblind_mode
                     if mode != ColorblindMode.off:
                         if mode == ColorblindMode.prot:
                             kong_colors = ["#FDE400", "#0072FF", "#766D5A", "#FFFFFF", "#000000"]
@@ -230,7 +230,7 @@ def apply_cosmetic_colors(settings):
                         green = int(f"0x{color[3:5]}", 16)
                         blue = int(f"0x{color[5:7]}", 16)
                         opp_color = f"#{format(255-red,'02x')}{format(255-green,'02x')}{format(255-blue,'02x')}"
-                        if settings.disco_chunky:
+                        if spoiler.settings.disco_chunky:
                             base_obj["zones"][1]["colors"][0] = opp_color
                         else:
                             base_obj["zones"][0]["colors"][1] = opp_color
@@ -239,7 +239,7 @@ def apply_cosmetic_colors(settings):
             elif is_krusha:
                 del base_obj["zones"][0]
                 color_palettes.append(base_obj)
-    settings.colors = color_obj
+    spoiler.settings.colors = color_obj
     if len(color_palettes) > 0:
         convertColors(color_palettes)
 
@@ -253,12 +253,8 @@ def getFile(table_index: int, file_index: int, compressed: bool, width: int, hei
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
     file_size = file_end - file_start
-    try:
-        LocalROM().seek(file_start)
-        data = LocalROM().readBytes(file_size)
-    except Exception:
-        ROM().seek(file_start)
-        data = ROM().readBytes(file_size)
+    ROM().seek(file_start)
+    data = ROM().readBytes(file_size)
     if compressed:
         data = zlib.decompress(data, (15 + 32))
     im_f = Image.new(mode="RGBA", size=(width, height))
@@ -544,10 +540,7 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
     file_size = file_end - file_start
-    try:
-        LocalROM().seek(file_start)
-    except Exception:
-        ROM().seek(file_start)
+    ROM().seek(file_start)
     pix = im_f.load()
     width, height = im_f.size
     bytes_array = []
@@ -578,10 +571,7 @@ def writeColorImageToROM(im_f, table_index, file_index, width, height, transpare
         data = gzip.compress(data, compresslevel=9)
     if len(data) > file_size:
         print(f"File too big error: {table_index} > {file_index}")
-    try:
-        LocalROM().writeBytes(data)
-    except Exception:
-        ROM().writeBytes(data)
+    ROM().writeBytes(data)
 
 
 def writeKasplatHairColorToROM(color, table_index, file_index, format: str):
@@ -1233,10 +1223,10 @@ def recolorMushrooms():
 BALLOON_START = [5835, 5827, 5843, 5851, 5819]
 
 
-def overwrite_object_colors(settings):
+def overwrite_object_colors(spoiler: Spoiler):
     """Overwrite object colors."""
     global color_bases
-    mode = settings.colorblind_mode
+    mode = spoiler.settings.colorblind_mode
     if mode != ColorblindMode.off:
         if mode == ColorblindMode.prot:
             color_bases = ["#000000", "#0072FF", "#766D5A", "#FFFFFF", "#FDE400"]
@@ -1337,7 +1327,7 @@ def overwrite_object_colors(settings):
                     balloon_im = maskImage(balloon_im, kong_index, 33)
                     balloon_im.paste(dk_single, balloon_single_frames[file - 5819], dk_single)
                     writeColorImageToROM(balloon_im, 25, BALLOON_START[kong_index] + (file - 5819), 32, 64, False, TextureFormat.RGBA5551)
-    if settings.head_balloons:
+    if spoiler.settings.head_balloons:
         for kong in range(5):
             for offset in range(8):
                 balloon_im = getFile(25, BALLOON_START[kong] + offset, True, 32, 64, TextureFormat.RGBA5551)
@@ -1350,22 +1340,22 @@ def overwrite_object_colors(settings):
 ORANGE_SCALING = 0.7
 
 
-def applyKrushaKong(settings):
+def applyKrushaKong(spoiler: Spoiler):
     """Apply Krusha Kong setting."""
-    ROM().seek(settings.rom_data + 0x11C)
-    if settings.krusha_kong is None:
+    ROM().seek(spoiler.settings.rom_data + 0x11C)
+    if spoiler.settings.krusha_kong is None:
         ROM().write(255)
-    elif settings.krusha_kong < 5:
-        ROM().write(settings.krusha_kong)
-        placeKrushaHead(settings.krusha_kong)
-        changeKrushaModel(settings.krusha_kong)
-        if settings.krusha_kong == Kongs.donkey:
+    elif spoiler.settings.krusha_kong < 5:
+        ROM().write(spoiler.settings.krusha_kong)
+        placeKrushaHead(spoiler.settings.krusha_kong)
+        changeKrushaModel(spoiler.settings.krusha_kong)
+        if spoiler.settings.krusha_kong == Kongs.donkey:
             fixBaboonBlasts()
         # Orange Switches
         switch_faces = [0xB25, 0xB1E, 0xC81, 0xC80, 0xB24]
         base_im = getFile(25, 0xC20, True, 32, 32, TextureFormat.RGBA5551)
         orange_im = getFile(7, 0x136, False, 32, 32, TextureFormat.RGBA5551)
-        if settings.colorblind_mode == ColorblindMode.off:
+        if spoiler.settings.colorblind_mode == ColorblindMode.off:
             orange_im = maskImageWithColor(orange_im, (0, 150, 0))
         else:
             orange_im = maskImageWithColor(orange_im, (0, 255, 0))  # Brighter green makes this more distinguishable for colorblindness
@@ -1373,7 +1363,7 @@ def applyKrushaKong(settings):
         dim_offset = int((32 - dim_length) / 2)
         orange_im = orange_im.resize((dim_length, dim_length))
         base_im.paste(orange_im, (dim_offset, dim_offset), orange_im)
-        writeColorImageToROM(base_im, 25, switch_faces[settings.krusha_kong], 32, 32, False, TextureFormat.RGBA5551)
+        writeColorImageToROM(base_im, 25, switch_faces[spoiler.settings.krusha_kong], 32, 32, False, TextureFormat.RGBA5551)
 
 
 DK_SCALE = 0.75
@@ -1452,23 +1442,23 @@ def fixBaboonBlasts():
     """Fix various baboon blasts to work for Krusha."""
     # Fungi Baboon Blast
     for id in (2, 5):
-        item_start = getObjectAddressBrowser(0xBC, id, "actor")
+        item_start = getObjectAddress(0xBC, id, "actor")
         if item_start is not None:
             ROM().seek(item_start + 0x14)
             ROM().writeMultipleBytes(0xFFFFFFEC, 4)
             ROM().seek(item_start + 0x1B)
             ROM().writeMultipleBytes(0, 1)
     # Caves Baboon Blast
-    item_start = getObjectAddressBrowser(0xBA, 4, "actor")
+    item_start = getObjectAddress(0xBA, 4, "actor")
     if item_start is not None:
         ROM().seek(item_start + 0x4)
         ROM().writeMultipleBytes(int(float_to_hex(510), 16), 4)
-    item_start = getObjectAddressBrowser(0xBA, 12, "actor")
+    item_start = getObjectAddress(0xBA, 12, "actor")
     if item_start is not None:
         ROM().seek(item_start + 0x4)
         ROM().writeMultipleBytes(int(float_to_hex(333), 16), 4)
     # Castle Baboon Blast
-    item_start = getObjectAddressBrowser(0xBB, 4, "actor")
+    item_start = getObjectAddress(0xBB, 4, "actor")
     if item_start is not None:
         ROM().seek(item_start + 0x0)
         ROM().writeMultipleBytes(int(float_to_hex(2472), 16), 4)
@@ -1538,9 +1528,9 @@ def placeKrushaHead(slot):
     ROM().writeBytes(bytearray(data32))
 
 
-def writeMiscCosmeticChanges(settings):
+def writeMiscCosmeticChanges(spoiler: Spoiler):
     """Write miscellaneous changes to the cosmetic colors."""
-    if settings.misc_cosmetics:
+    if spoiler.settings.misc_cosmetics:
         # Melon HUD
         data = {7: [0x13C, 0x147], 14: [0x5A, 0x5D], 25: [0x17B2, 0x17B2]}
         shift = random.randint(-359, 359)
@@ -1629,17 +1619,17 @@ def numberToImage(number: int, dim: tuple):
     return output
 
 
-def applyHelmDoorCosmetics(settings):
+def applyHelmDoorCosmetics(spoiler: Spoiler):
     """Apply Helm Door Cosmetic Changes."""
-    crown_door_required_item = settings.crown_door_item
-    if crown_door_required_item == HelmDoorItem.vanilla and settings.crown_door_item_count != 4:
+    crown_door_required_item = spoiler.settings.crown_door_item
+    if crown_door_required_item == HelmDoorItem.vanilla and spoiler.settings.crown_door_item_count != 4:
         crown_door_required_item = HelmDoorItem.req_crown
-    coin_door_required_item = settings.coin_door_item
-    if coin_door_required_item == HelmDoorItem.vanilla and settings.coin_door_item_count != 2:
+    coin_door_required_item = spoiler.settings.coin_door_item
+    if coin_door_required_item == HelmDoorItem.vanilla and spoiler.settings.coin_door_item_count != 2:
         coin_door_required_item = HelmDoorItem.req_companycoins
     Doors = [
-        HelmDoorSetting(crown_door_required_item, settings.crown_door_item_count, 6022, 6023),
-        HelmDoorSetting(coin_door_required_item, settings.coin_door_item_count, 6024, 6025),
+        HelmDoorSetting(crown_door_required_item, spoiler.settings.crown_door_item_count, 6022, 6023),
+        HelmDoorSetting(coin_door_required_item, spoiler.settings.coin_door_item_count, 6024, 6025),
     ]
     Images = [
         HelmDoorImages(HelmDoorItem.req_gb, [0x155C]),
@@ -1693,9 +1683,9 @@ def applyHelmDoorCosmetics(settings):
                 writeColorImageToROM(numberToImage(door.count, (44, 44)).transpose(Image.FLIP_TOP_BOTTOM), 25, door.number_image, 44, 44, True, TextureFormat.RGBA5551)
 
 
-def applyHolidayMode(settings):
+def applyHolidayMode(spoiler: Spoiler):
     """Change grass texture to snow."""
-    if settings.holiday_setting:
+    if spoiler.settings.holiday_setting:
         ROM().seek(0x1FF8000)
         snow_im = Image.new(mode="RGBA", size=((32, 32)))
         snow_px = snow_im.load()
@@ -1727,9 +1717,9 @@ def applyHolidayMode(settings):
             ROM().writeBytes(byte_data)
 
 
-def updateMillLeverTexture(settings):
+def updateMillLeverTexture(spoiler: Spoiler):
     """Update the 21132 texture."""
-    if settings.mill_levers[0] > 0:
+    if spoiler.settings.mill_levers[0] > 0:
         # Get Number bounds
         base_num_texture = getFile(table_index=25, file_index=0x7CA, compressed=True, width=64, height=32, format=TextureFormat.RGBA5551)
         number_textures = [None, None, None]
@@ -1743,8 +1733,8 @@ def updateMillLeverTexture(settings):
             number_textures[tex] = base_num_texture.crop((number_x_bounds[tex][0], 7, number_x_bounds[tex][1], 25))
         total_width = 0
         for x in range(5):
-            if settings.mill_levers[x] > 0:
-                idx = settings.mill_levers[x] - 1
+            if spoiler.settings.mill_levers[x] > 0:
+                idx = spoiler.settings.mill_levers[x] - 1
                 total_width += number_x_bounds[idx][1] - number_x_bounds[idx][0]
         # Overwrite old panel
         overwrite_panel = Image.new(mode="RGBA", size=(58, 26), color=(131, 65, 24))
@@ -1753,8 +1743,8 @@ def updateMillLeverTexture(settings):
         new_num_texture = Image.new(mode="RGBA", size=(total_width, 18))
         x_pos = 0
         for num in range(5):
-            if settings.mill_levers[num] > 0:
-                num_val = settings.mill_levers[num] - 1
+            if spoiler.settings.mill_levers[num] > 0:
+                num_val = spoiler.settings.mill_levers[num] - 1
                 new_num_texture.paste(number_textures[num_val], (x_pos, 0), number_textures[num_val])
                 x_pos += number_x_bounds[num_val][1] - number_x_bounds[num_val][0]
         scale_x = 58 / total_width
@@ -1768,15 +1758,15 @@ def updateMillLeverTexture(settings):
         writeColorImageToROM(modified_tex, 25, 0x7CA, 64, 32, False, TextureFormat.RGBA5551)
 
 
-def updateCryptLeverTexture(settings):
+def updateCryptLeverTexture(spoiler: Spoiler):
     """Update the two textures for Donkey Minecart entry."""
-    if settings.crypt_levers[0] > 0:
+    if spoiler.settings.crypt_levers[0] > 0:
         # Get a blank texture
         texture_0 = getFile(table_index=25, file_index=0x999, compressed=True, width=32, height=64, format=TextureFormat.RGBA5551)
         blank = texture_0.crop((8, 5, 23, 22))
         texture_0.paste(blank, (8, 42), blank)
         texture_1 = texture_0.copy()
-        for xi, x in enumerate(settings.crypt_levers):
+        for xi, x in enumerate(spoiler.settings.crypt_levers):
             corrected = x - 1
             y_slot = corrected % 3
             num = getNumberImage(xi + 1)
@@ -1866,9 +1856,9 @@ boot_phrases = (
 )
 
 
-def writeBootMessages():
+def writeBootMessages(spoiler: Spoiler):
     """Write boot messages into ROM."""
     placed_messages = random.sample(boot_phrases, 4)
     for message_index, message in enumerate(placed_messages):
-        LocalROM().seek(0x1FFD000 + (0x40 * message_index))
-        LocalROM().writeBytes(message.upper().encode("ascii"))
+        ROM().seek(0x1FFD000 + (0x40 * message_index))
+        ROM().writeBytes(message.upper().encode("ascii"))

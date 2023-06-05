@@ -1,15 +1,14 @@
 """Shuffles items for Item Rando."""
 
 import random
-
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Items import Items
-from randomizer.Enums.Kongs import Kongs
+from randomizer.Lists.Location import LocationList
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
-from randomizer.Lists.Item import ItemList, NameFromKong
-from randomizer.Lists.Location import LocationList
 from randomizer.Spoiler import Spoiler
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Lists.Item import ItemList, NameFromKong
 
 
 class LocationSelection:

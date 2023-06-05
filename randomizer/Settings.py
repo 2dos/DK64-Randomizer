@@ -2,20 +2,12 @@
 import hashlib
 import inspect
 import json
+import js
 import random
+from randomizer.LogicClasses import LocationLogic
+from version import whl_hash
 from random import randint
 
-import js
-import randomizer.ItemPool as ItemPool
-import randomizer.LogicFiles.AngryAztec
-import randomizer.LogicFiles.CreepyCastle
-import randomizer.LogicFiles.CrystalCaves
-import randomizer.LogicFiles.DKIsles
-import randomizer.LogicFiles.FranticFactory
-import randomizer.LogicFiles.FungiForest
-import randomizer.LogicFiles.GloomyGalleon
-import randomizer.LogicFiles.JungleJapes
-import randomizer.LogicFiles.Shops
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
@@ -24,6 +16,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import *
 from randomizer.Enums.Types import Types
+import randomizer.ItemPool as ItemPool
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import (
     ChunkyMoveLocations,
@@ -31,19 +24,26 @@ from randomizer.Lists.Location import (
     DonkeyMoveLocations,
     LankyMoveLocations,
     LocationList,
-    PreGivenLocations,
     RemovedShopLocations,
     SharedShopLocations,
     ShopLocationReference,
     TinyMoveLocations,
     TrainingBarrelLocations,
+    PreGivenLocations,
 )
-from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.LogicClasses import LocationLogic
+from randomizer.Lists.MapsAndExits import GetMapId, GetExitId, RegionMapList
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
-from version import whl_hash
+import randomizer.LogicFiles.DKIsles
+import randomizer.LogicFiles.JungleJapes
+import randomizer.LogicFiles.AngryAztec
+import randomizer.LogicFiles.FranticFactory
+import randomizer.LogicFiles.GloomyGalleon
+import randomizer.LogicFiles.FungiForest
+import randomizer.LogicFiles.CrystalCaves
+import randomizer.LogicFiles.CreepyCastle
+import randomizer.LogicFiles.Shops
 
 
 class Settings:
@@ -63,7 +63,6 @@ class Settings:
         self.generate_misc()
         self.rom_data = 0x1FED020
         self.move_location_data = 0x1FEF000
-        self.form_data = form_data
 
         self.apply_form_data(form_data)
         self.seed_id = str(self.seed)

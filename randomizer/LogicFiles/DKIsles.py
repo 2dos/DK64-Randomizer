@@ -2,13 +2,13 @@
 """Logic file for DK Isles."""
 
 from randomizer.Enums.Events import Events
-from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import MinigameBarrels
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Kongs import Kongs
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
