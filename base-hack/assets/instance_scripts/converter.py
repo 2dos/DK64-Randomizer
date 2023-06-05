@@ -1,6 +1,6 @@
 """Convert all script files to json files."""
-import os
 import json
+import os
 
 folders = [x[0] for x in os.walk("./")]
 for folder in folders:

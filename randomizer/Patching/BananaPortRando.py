@@ -4,11 +4,10 @@ from imp import source_from_cache
 import js
 from randomizer.Enums.Settings import BananaportRando
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Patching.Patcher import ROM
-from randomizer.Spoiler import Spoiler
+from randomizer.Patching.Patcher import ROM, LocalROM
 
 
-def randomize_bananaport(spoiler: Spoiler):
+def randomize_bananaport(spoiler):
     """Rando write bananaport locations."""
     pad_types = [0x214, 0x213, 0x211, 0x212, 0x210]
 
@@ -18,30 +17,30 @@ def randomize_bananaport(spoiler: Spoiler):
             cont_map_id = int(cont_map["containing_map"])
             cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
             # Pointer Table 9, use "containing_map" as a map index to grab setup start address
-            ROM().seek(cont_map_setup_address)
-            model2_count = int.from_bytes(ROM().readBytes(4), "big")
+            LocalROM().seek(cont_map_setup_address)
+            model2_count = int.from_bytes(LocalROM().readBytes(4), "big")
             for x in range(model2_count):
                 start = cont_map_setup_address + 4 + (x * 0x30)
-                ROM().seek(start + 0x28)
-                obj_type = int.from_bytes(ROM().readBytes(2), "big")
+                LocalROM().seek(start + 0x28)
+                obj_type = int.from_bytes(LocalROM().readBytes(2), "big")
                 if obj_type in pad_types:
                     pad_index = pad_types.index(obj_type)
-                    ROM().seek(start + 0x2A)
-                    obj_id = int.from_bytes(ROM().readBytes(2), "big")
-                    ROM().seek(start + 0)
-                    obj_x = int.from_bytes(ROM().readBytes(4), "big")
-                    ROM().seek(start + 4)
-                    obj_y = int.from_bytes(ROM().readBytes(4), "big")
-                    ROM().seek(start + 8)
-                    obj_z = int.from_bytes(ROM().readBytes(4), "big")
-                    ROM().seek(start + 12)
-                    obj_scale = int.from_bytes(ROM().readBytes(4), "big")
-                    ROM().seek(start + 0x18)
-                    obj_rotx = int.from_bytes(ROM().readBytes(4), "big")
-                    ROM().seek(start + 0x1C)
-                    obj_roty = int.from_bytes(ROM().readBytes(4), "big")
-                    ROM().seek(start + 0x20)
-                    obj_rotz = int.from_bytes(ROM().readBytes(4), "big")
+                    LocalROM().seek(start + 0x2A)
+                    obj_id = int.from_bytes(LocalROM().readBytes(2), "big")
+                    LocalROM().seek(start + 0)
+                    obj_x = int.from_bytes(LocalROM().readBytes(4), "big")
+                    LocalROM().seek(start + 4)
+                    obj_y = int.from_bytes(LocalROM().readBytes(4), "big")
+                    LocalROM().seek(start + 8)
+                    obj_z = int.from_bytes(LocalROM().readBytes(4), "big")
+                    LocalROM().seek(start + 12)
+                    obj_scale = int.from_bytes(LocalROM().readBytes(4), "big")
+                    LocalROM().seek(start + 0x18)
+                    obj_rotx = int.from_bytes(LocalROM().readBytes(4), "big")
+                    LocalROM().seek(start + 0x1C)
+                    obj_roty = int.from_bytes(LocalROM().readBytes(4), "big")
+                    LocalROM().seek(start + 0x20)
+                    obj_rotz = int.from_bytes(LocalROM().readBytes(4), "big")
                     banned = False
                     for warp in BananaportVanilla.values():
                         if warp.map_id == cont_map_id and warp.obj_id_vanilla == obj_id and warp.locked:
@@ -68,15 +67,15 @@ def randomize_bananaport(spoiler: Spoiler):
                         if vanilla_id in pad_vanilla and warp_id in pad_vanilla:  # Search and reference warp in location dump
                             vanilla_idx = pad_vanilla[vanilla_id]["idx"]
                             start = cont_map_setup_address + (0x30 * vanilla_idx) + 4
-                            ROM().seek(start)
-                            ROM().writeMultipleBytes(pad_vanilla[warp_id]["x"], 4)
-                            ROM().writeMultipleBytes(pad_vanilla[warp_id]["y"], 4)
-                            ROM().writeMultipleBytes(pad_vanilla[warp_id]["z"], 4)
-                            ROM().writeMultipleBytes(pad_vanilla[warp_id]["scale"], 4)
-                            ROM().seek(start + 0x18)
-                            ROM().writeMultipleBytes(pad_vanilla[warp_id]["rx"], 4)
-                            ROM().writeMultipleBytes(pad_vanilla[warp_id]["ry"], 4)
-                            ROM().writeMultipleBytes(pad_vanilla[warp_id]["rz"], 4)
+                            LocalROM().seek(start)
+                            LocalROM().writeMultipleBytes(pad_vanilla[warp_id]["x"], 4)
+                            LocalROM().writeMultipleBytes(pad_vanilla[warp_id]["y"], 4)
+                            LocalROM().writeMultipleBytes(pad_vanilla[warp_id]["z"], 4)
+                            LocalROM().writeMultipleBytes(pad_vanilla[warp_id]["scale"], 4)
+                            LocalROM().seek(start + 0x18)
+                            LocalROM().writeMultipleBytes(pad_vanilla[warp_id]["rx"], 4)
+                            LocalROM().writeMultipleBytes(pad_vanilla[warp_id]["ry"], 4)
+                            LocalROM().writeMultipleBytes(pad_vanilla[warp_id]["rz"], 4)
                         else:
                             print("ERROR: ID not found in pad location dump")
                     else:
@@ -86,22 +85,22 @@ def randomize_bananaport(spoiler: Spoiler):
         visual_warp_changes = []
         maps_used = []
         for port_index, port_new in enumerate(spoiler.bananaport_replacements):
-            ROM().seek(data_start + (port_index * 0xA))
-            map_id = int.from_bytes(ROM().readBytes(1), "big")
-            ROM().writeMultipleBytes(port_new[0], 1)
-            obj_id = int.from_bytes(ROM().readBytes(2), "big")
+            LocalROM().seek(data_start + (port_index * 0xA))
+            map_id = int.from_bytes(LocalROM().readBytes(1), "big")
+            LocalROM().writeMultipleBytes(port_new[0], 1)
+            obj_id = int.from_bytes(LocalROM().readBytes(2), "big")
             if map_id not in maps_used:
                 maps_used.append(map_id)
             visual_warp_changes.append([map_id, obj_id, port_new[1]])
         for cont_map_id in maps_used:
             cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
-            ROM().seek(cont_map_setup_address)
-            model2_count = int.from_bytes(ROM().readBytes(4), "big")
+            LocalROM().seek(cont_map_setup_address)
+            model2_count = int.from_bytes(LocalROM().readBytes(4), "big")
             for x in range(model2_count):
                 start = cont_map_setup_address + 4 + (x * 0x30)
-                ROM().seek(start + 0x2A)
-                obj_id = int.from_bytes(ROM().readBytes(2), "big")
+                LocalROM().seek(start + 0x2A)
+                obj_id = int.from_bytes(LocalROM().readBytes(2), "big")
                 for warp_change in visual_warp_changes:
                     if warp_change[0] == cont_map_id and warp_change[1] == obj_id:
-                        ROM().seek(start + 0x28)
-                        ROM().writeMultipleBytes(pad_types[warp_change[2]], 2)
+                        LocalROM().seek(start + 0x28)
+                        LocalROM().writeMultipleBytes(pad_types[warp_change[2]], 2)

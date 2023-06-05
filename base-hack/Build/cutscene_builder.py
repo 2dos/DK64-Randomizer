@@ -1,10 +1,11 @@
 """Build cutscene files from a series of modifications and return changes to the file dict in CL."""
-import zlib
-import os
 import json
+import os
+import zlib
 from typing import BinaryIO
-from BuildEnums import TableNames
+
 from BuildClasses import File
+from BuildEnums import TableNames
 from BuildLib import ROMName, main_pointer_table_offset
 
 instance_dir = "./assets/cutscene_scripts"
