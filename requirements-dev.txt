@@ -17,7 +17,6 @@ cpplint
 flask
 flask-cors
 waitress
-gunicorn
 flask-executor
 vidua
 pyxdelta

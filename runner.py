@@ -91,6 +91,9 @@ def lambda_function():
     Returns:
         Response: Flask response object.
     """
+    # Check if the request is an OPTIONS request if so drop it.
+    if request.method == "OPTIONS":
+        return make_response("", 200)
     # Flask get the query string parameters as a dict.
     query_string = request.args.to_dict()
     # See if we have a query for gen_key.
@@ -145,6 +148,7 @@ def lambda_function():
             return response
         else:
             # We don't have a future for this key, so we need to start generating.
+            print("Starting generation from webworker: " + str(gen_key))
             post_body = json.loads(request.get_json().get("post_body"))
             executor.submit_stored(gen_key, start_gen, gen_key, post_body)
             response = make_response(json.dumps({"start_time": gen_key}), 201)

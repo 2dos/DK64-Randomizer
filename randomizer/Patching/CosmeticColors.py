@@ -10,7 +10,7 @@ import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorItem, KlaptrapModel
 from randomizer.Patching.generate_kong_color_images import convertColors
-from randomizer.Patching.Lib import TextureFormat, float_to_hex, getObjectAddress, int_to_list, intf_to_float
+from randomizer.Patching.Lib import TextureFormat, float_to_hex, getObjectAddressBrowser, int_to_list, intf_to_float
 from randomizer.Patching.Patcher import ROM, LocalROM
 
 
@@ -1452,23 +1452,23 @@ def fixBaboonBlasts():
     """Fix various baboon blasts to work for Krusha."""
     # Fungi Baboon Blast
     for id in (2, 5):
-        item_start = getObjectAddress(0xBC, id, "actor")
+        item_start = getObjectAddressBrowser(0xBC, id, "actor")
         if item_start is not None:
             ROM().seek(item_start + 0x14)
             ROM().writeMultipleBytes(0xFFFFFFEC, 4)
             ROM().seek(item_start + 0x1B)
             ROM().writeMultipleBytes(0, 1)
     # Caves Baboon Blast
-    item_start = getObjectAddress(0xBA, 4, "actor")
+    item_start = getObjectAddressBrowser(0xBA, 4, "actor")
     if item_start is not None:
         ROM().seek(item_start + 0x4)
         ROM().writeMultipleBytes(int(float_to_hex(510), 16), 4)
-    item_start = getObjectAddress(0xBA, 12, "actor")
+    item_start = getObjectAddressBrowser(0xBA, 12, "actor")
     if item_start is not None:
         ROM().seek(item_start + 0x4)
         ROM().writeMultipleBytes(int(float_to_hex(333), 16), 4)
     # Castle Baboon Blast
-    item_start = getObjectAddress(0xBB, 4, "actor")
+    item_start = getObjectAddressBrowser(0xBB, 4, "actor")
     if item_start is not None:
         ROM().seek(item_start + 0x0)
         ROM().writeMultipleBytes(int(float_to_hex(2472), 16), 4)
