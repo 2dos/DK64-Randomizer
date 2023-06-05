@@ -3,10 +3,10 @@ import hashlib
 import json
 from typing import BinaryIO
 
-from BuildClasses import PointerFile, ROMPointerFile, TableEntry, pointer_tables
-from BuildEnums import TableNames
-from BuildLib import heap_size, main_pointer_table_offset
 from BuildNames import maps
+from BuildLib import main_pointer_table_offset, heap_size
+from BuildEnums import TableNames
+from BuildClasses import TableEntry, pointer_tables, PointerFile, ROMPointerFile
 
 # The address of the next available byte of free space in ROM
 # used when appending files to the end of the ROM

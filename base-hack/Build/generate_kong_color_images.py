@@ -1,13 +1,12 @@
 """Convert RGB colors into a kong color palette."""
 import gzip
+import zlib
 import math
 import os
-import zlib
-
+from PIL import Image, ImageEnhance
+from BuildLib import main_pointer_table_offset, finalROM
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames
-from BuildLib import finalROM, main_pointer_table_offset
-from PIL import Image, ImageEnhance
 
 color_palettes = [
     {

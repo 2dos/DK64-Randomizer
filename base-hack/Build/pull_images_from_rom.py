@@ -2,10 +2,10 @@
 import os
 import zlib
 
-from BuildClasses import ROMPointerFile
-from BuildEnums import TableNames, TextureFormat
-from BuildLib import ROMName
 from PIL import Image
+from BuildLib import ROMName
+from BuildClasses import ROMPointerFile
+from BuildEnums import TextureFormat, TableNames
 
 
 class ImageData:

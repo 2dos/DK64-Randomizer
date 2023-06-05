@@ -4,7 +4,6 @@ self.importScripts(
 	'./MarcFile.js',
 	'./crc.js',
 	'./formats/bps.js',
-	'./formats/vcdiff.js',
 );
 
 

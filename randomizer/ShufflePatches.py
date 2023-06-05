@@ -12,9 +12,9 @@ import randomizer.LogicFiles.JungleJapes
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Lists.Patches import DirtPatchLocations, DirtPatchData
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Location import LocationList
-from randomizer.Lists.Patches import DirtPatchData, DirtPatchLocations
 from randomizer.LogicClasses import LocationLogic
 from randomizer.Spoiler import Spoiler
 

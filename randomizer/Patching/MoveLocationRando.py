@@ -1,13 +1,14 @@
 """Randomize Move Locations."""
+from randomizer.Patching.Patcher import ROM
+from randomizer.Spoiler import Spoiler
+from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando
+from randomizer.Enums.Types import Types
+from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando
-from randomizer.Enums.Types import Types
-from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationList
-from randomizer.Patching.Patcher import ROM, LocalROM
 
 # /* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.
 # /* 0x0A8 */ unsigned char dk_crankymoves[7]; // First 4 bits indicates the moves type, 0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 0xF = No Upgrade. Last 4 bits indicate move level (eg. 1 = Baboon Blast, 2 = Strong Kong, 3 = Gorilla Grab). Each item in the array indicates the level it is given (eg. 1st slot is purchased in Japes, 2nd for Aztec etc.)
@@ -58,7 +59,7 @@ level_names = [
 kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky", Kongs.any: "Any Kong"}
 
 
-def pushItemMicrohints(spoiler, move_dict: dict, level: int, kong: int, slot: int):
+def pushItemMicrohints(spoiler: Spoiler, move_dict: dict, level: int, kong: int, slot: int):
     """Push hint for the micro-hints system."""
     if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
         if kong != Kongs.any or slot == 0:
@@ -86,7 +87,7 @@ def pushItemMicrohints(spoiler, move_dict: dict, level: int, kong: int, slot: in
                     spoiler.text_changes[19] = [data]
 
 
-def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler, kong_slot: int, kongs: list, level_override=None):
+def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler: Spoiler, kong_slot: int, kongs: list, level_override=None):
     """Write move data to ROM."""
     for xi, x in enumerate(arr):
         if x["move_type"] == "flag":
@@ -94,19 +95,19 @@ def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler, kong_slot: int, k
             flag_index = 0xFFFF
             if x["flag"] in flag_dict:
                 flag_index = flag_dict[x["flag"]]
-            LocalROM().writeMultipleBytes(5 << 5, 1)
-            LocalROM().writeMultipleBytes(x["price"], 1)
-            LocalROM().writeMultipleBytes(flag_index, 2)
+            ROM().writeMultipleBytes(5 << 5, 1)
+            ROM().writeMultipleBytes(x["price"], 1)
+            ROM().writeMultipleBytes(flag_index, 2)
         elif x["move_type"] is None:
-            LocalROM().writeMultipleBytes(7 << 5, 1)
-            LocalROM().writeMultipleBytes(0, 1)
-            LocalROM().writeMultipleBytes(0xFFFF, 2)
+            ROM().writeMultipleBytes(7 << 5, 1)
+            ROM().writeMultipleBytes(0, 1)
+            ROM().writeMultipleBytes(0xFFFF, 2)
         else:
             move_types = ["special", "slam", "gun", "ammo_belt", "instrument"]
             data = move_types.index(x["move_type"]) << 5 | (x["move_lvl"] << 3) | x["move_kong"]
-            LocalROM().writeMultipleBytes(data, 1)
-            LocalROM().writeMultipleBytes(x["price"], 1)
-            LocalROM().writeMultipleBytes(0xFFFF, 2)
+            ROM().writeMultipleBytes(data, 1)
+            ROM().writeMultipleBytes(x["price"], 1)
+            ROM().writeMultipleBytes(0xFFFF, 2)
         if enable_hints:
             if level_override is not None:
                 pushItemMicrohints(spoiler, x, level_override, kongs[xi], kong_slot)
@@ -125,7 +126,7 @@ def dictEqual(dict1: dict, dict2: dict) -> bool:
     return True
 
 
-def randomize_moves(spoiler):
+def randomize_moves(spoiler: Spoiler):
     """Randomize Move locations based on move_data from spoiler."""
     varspaceOffset = spoiler.settings.rom_data
     movespaceOffset = spoiler.settings.move_location_data
@@ -179,9 +180,9 @@ def randomize_moves(spoiler):
                         applied_kong = Kongs.any
                     kong_lists[shop][kong][level] = applied_kong
 
-        LocalROM().seek(varspaceOffset + moveRandoOffset)
-        LocalROM().write(0x1)
-        LocalROM().seek(movespaceOffset)
+        ROM().seek(varspaceOffset + moveRandoOffset)
+        ROM().write(0x1)
+        ROM().seek(movespaceOffset)
         writeMoveDataToROM(dk_crankymoves, hint_enabled, spoiler, 0, kong_lists[0][0])
         writeMoveDataToROM(diddy_crankymoves, hint_enabled, spoiler, 1, kong_lists[0][1])
         writeMoveDataToROM(lanky_crankymoves, hint_enabled, spoiler, 2, kong_lists[0][2])
@@ -201,7 +202,7 @@ def randomize_moves(spoiler):
         writeMoveDataToROM(bfi_move, hint_enabled, spoiler, 0, [Kongs.tiny], 7)
 
 
-def getNextSlot(spoiler, item: Items) -> int:
+def getNextSlot(spoiler: Spoiler, item: Items) -> int:
     """Get slot for progressive item with pre-given moves."""
     slots = []
     if item == Items.ProgressiveAmmoBelt:
@@ -215,14 +216,14 @@ def getNextSlot(spoiler, item: Items) -> int:
     for slot in slots:
         offset = int(slot >> 3)
         check = int(slot % 8)
-        LocalROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
-        val = int.from_bytes(LocalROM().readBytes(1), "big")
+        ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
+        val = int.from_bytes(ROM().readBytes(1), "big")
         if (val & (0x80 >> check)) == 0:
             return slot
     return None
 
 
-def place_pregiven_moves(spoiler):
+def place_pregiven_moves(spoiler: Spoiler):
     """Place pre-given moves."""
     item_order = [
         Items.BaboonBlast,
@@ -268,7 +269,7 @@ def place_pregiven_moves(spoiler):
         Items.Shockwave,
     ]
     for item in spoiler.pregiven_items:
-        # print(item)
+        print(item)
         if item is not None and item != Items.NoItem:
             new_slot = None
             if item in (Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam):
@@ -280,16 +281,16 @@ def place_pregiven_moves(spoiler):
                 for index in [item_order.index(Items.Camera), item_order.index(Items.Shockwave)]:
                     offset = int(index >> 3)
                     check = int(index % 8)
-                    LocalROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
-                    val = int.from_bytes(LocalROM().readBytes(1), "big")
+                    ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
+                    val = int.from_bytes(ROM().readBytes(1), "big")
                     val |= 0x80 >> check
-                    LocalROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
-                    LocalROM().writeMultipleBytes(val, 1)
+                    ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
+                    ROM().writeMultipleBytes(val, 1)
             if new_slot is not None:
                 offset = int(new_slot >> 3)
                 check = int(new_slot % 8)
-                LocalROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
-                val = int.from_bytes(LocalROM().readBytes(1), "big")
+                ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
+                val = int.from_bytes(ROM().readBytes(1), "big")
                 val |= 0x80 >> check
-                LocalROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
-                LocalROM().writeMultipleBytes(val, 1)
+                ROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
+                ROM().writeMultipleBytes(val, 1)
