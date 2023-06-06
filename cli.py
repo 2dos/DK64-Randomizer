@@ -2,9 +2,9 @@
 import argparse
 import codecs
 import json
+import os
 import pickle
 import random
-import os
 import sys
 import traceback
 
@@ -37,6 +37,8 @@ def main():
     parser.add_argument("--seed", help="Seed ID to use", required=False)
     parser.add_argument("--generate_spoiler", help="Dumps the Spoiler log to a file along with the patch file.", required=False, action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
+    print("This file has been disabled until further notice.")
+    sys.exit(1)
     if not os.environ.get("POST_BODY"):
         if args.settings_string is not None:
             try:
@@ -91,14 +93,6 @@ def main():
         with open("traceback.log", "w") as file_object:
             file_object.write(str(traceback.format_exc()))
         print(traceback.format_exc())
-        if os.environ.get("DISCORD_WEBHOOK"):
-            from discord_webhook import DiscordWebhook, DiscordEmbed
-
-            webhook = DiscordWebhook(url=os.environ.get("DISCORD_WEBHOOK"))
-            embed = DiscordEmbed(title="Error Generating Seed", description=str(traceback.format_exc()), color="800020")
-            embed.set_timestamp()
-            webhook.add_embed(embed)
-            webhook.execute()
         sys.exit(1)
 
 

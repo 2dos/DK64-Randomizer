@@ -1,9 +1,10 @@
 """Adjust exits to prevent logical problems with LZR."""
-from typing import BinaryIO
-import zlib
 import os
-from BuildLib import intf_to_float, main_pointer_table_offset
+import zlib
+from typing import BinaryIO
+
 from BuildEnums import TableNames
+from BuildLib import intf_to_float, main_pointer_table_offset
 
 new_caves_portal_coords = [120.997, 50, 1182.974]
 

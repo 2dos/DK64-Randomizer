@@ -1,9 +1,10 @@
 """Build Helm Geometry file."""
 
 import zlib
-from BuildLib import ROMName
+
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames
+from BuildLib import ROMName
 
 geo_file = "helm.bin"
 

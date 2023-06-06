@@ -2,8 +2,6 @@
 import random
 
 import js
-from randomizer.Enums.Settings import ActivateAllBananaports, RandomPrices, ShuffleLoadingZones
-from randomizer.Enums.Types import Types
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
@@ -11,7 +9,9 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import ActivateAllBananaports, RandomPrices, ShuffleLoadingZones
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Types import Types
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Settings import Settings

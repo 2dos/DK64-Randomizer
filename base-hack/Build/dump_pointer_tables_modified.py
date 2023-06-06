@@ -1,6 +1,6 @@
 """Dump the pointer tables of our modified rom."""
-from recompute_pointer_table import dumpPointerTableDetails, dumpPointerTableDetailsLegacy, parsePointerTables
 from BuildLib import finalROM
+from recompute_pointer_table import dumpPointerTableDetails, dumpPointerTableDetailsLegacy, parsePointerTables
 
 with open(finalROM, "rb") as fh:
     export_json = False
