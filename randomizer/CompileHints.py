@@ -13,7 +13,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.ItemPool import GetKongForItem, Keys
 from randomizer.Lists.Item import ItemList, NameFromKong
-from randomizer.Lists.Location import LocationList, PreGivenLocations, SharedShopLocations, TrainingBarrelLocations
+from randomizer.Lists.Location import LocationList, SharedShopLocations, TrainingBarrelLocations, PreGivenLocations
 from randomizer.Lists.MapsAndExits import GetMapId
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import ClearHintMessages, hints

@@ -1,6 +1,6 @@
 """Set debugging vars to the build."""
-import json
 import os
+import json
 import sys
 
 APPLY_VARIABLES = True

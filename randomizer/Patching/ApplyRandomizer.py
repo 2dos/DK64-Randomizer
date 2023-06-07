@@ -1,38 +1,61 @@
 """Apply Patch data to the ROM."""
+import asyncio
+import codecs
 import json
-import os
+import math
+import pickle
+import random
 
+import js
 from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, HelmDoorItem, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
-from randomizer.Lists.EnemyTypes import Enemies, EnemySelector
-from randomizer.Lists.QoL import QoLSelector
-from randomizer.Patching.BananaPlacer import randomize_cbs
+from randomizer.Lists.EnemyTypes import Enemies
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
-from randomizer.Patching.CoinPlacer import randomize_coins
-from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages
-from randomizer.Patching.CrownPlacer import randomize_crown_pads
-from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
+from randomizer.Patching.CosmeticColors import (
+    apply_cosmetic_colors,
+    overwrite_object_colors,
+    applyKrushaKong,
+    writeMiscCosmeticChanges,
+    applyHolidayMode,
+    applyHelmDoorCosmetics,
+    updateMillLeverTexture,
+    updateCryptLeverTexture,
+    writeBootMessages,
+)
 from randomizer.Patching.EnemyRando import randomize_enemies
-from randomizer.Patching.EntranceRando import enableSpiderText, filterEntranceType, randomize_entrances
-from randomizer.Patching.FairyPlacer import PlaceFairies
+from randomizer.Patching.EntranceRando import randomize_entrances, filterEntranceType, enableSpiderText
 from randomizer.Patching.Hash import get_hash_images
-from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.MiscSetupChanges import randomize_setup, updateRandomSwitches
-from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves
-from randomizer.Patching.Patcher import LocalROM, load_base_rom
+from randomizer.Patching.MoveLocationRando import randomize_moves, place_pregiven_moves
+from randomizer.Patching.MusicRando import randomize_music
+from randomizer.Patching.ItemRando import place_randomized_items
+from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
+from randomizer.Patching.UpdateHints import PushHints, wipeHints, replaceIngameText
+from randomizer.Patching.MiscSetupChanges import randomize_setup
+from randomizer.Patching.BananaPlacer import randomize_cbs
+from randomizer.Patching.CoinPlacer import randomize_coins
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
-from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints
+from randomizer.Patching.CrownPlacer import randomize_crown_pads
+from randomizer.Patching.FairyPlacer import PlaceFairies
+from ui.GenTracker import generateTracker
+from ui.GenSpoiler import GenerateSpoiler
+from randomizer.Patching.UpdateHints import PushHints, wipeHints
+from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
+from randomizer.Lists.QoL import QoLSelector
+from randomizer.Lists.EnemyTypes import EnemySelector
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
+from ui.GenTracker import generateTracker
+from ui.progress_bar import ProgressBar
 
 
 class BooleanProperties:
@@ -45,20 +68,45 @@ class BooleanProperties:
         self.target = target
 
 
-def patching_response(spoiler):
-    """Apply the patch data to the ROM in the local server to be returned to the client."""
+def patching_response(responded_data):
+    """Response data from the background task.
+
+    Args:
+        responded_data (str): Pickled data (or json)
+    """
+    loop = asyncio.get_event_loop()
+
+    try:
+        loaded_data = json.loads(responded_data)
+        if loaded_data.get("error"):
+            error = loaded_data.get("error")
+            ProgressBar().set_class("bg-danger")
+            js.toast_alert(error)
+            loop.run_until_complete(ProgressBar().update_progress(10, f"Error: {error}"))
+            loop.run_until_complete(ProgressBar().reset())
+            return None
+    except Exception:
+        pass
+
+    loop.run_until_complete(ProgressBar().update_progress(8, "Applying Patches"))
+    # spoiler: Spoiler = pickle.loads(codecs.decode(responded_data.encode(), "base64"))
+    spoiler = pickle.loads(codecs.decode(responded_data.encode(), "base64"))
+    spoiler.settings.verify_hash()
+    Settings({"seed": 0}).compare_hash(spoiler.settings.public_hash)
     # Make sure we re-load the seed id
     spoiler.settings.set_seed()
+    if spoiler.settings.download_patch_file:
+        spoiler.settings.download_patch_file = False
 
+        js.save_text_as_file(codecs.encode(pickle.dumps(spoiler), "base64").decode(), f"dk64r-patch-{spoiler.settings.seed_id}.lanky")
+    js.write_seed_history(spoiler.settings.seed_id, codecs.encode(pickle.dumps(spoiler), "base64").decode(), spoiler.settings.public_hash)
     # Write date to ROM for debugging purposes
-    from datetime import datetime
-
-    dt = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+    dt = js.getDate()
     temp_json = json.loads(spoiler.json)
     temp_json["Settings"]["Generation Timestamp"] = dt
     spoiler.json = json.dumps(temp_json, indent=4)
-    LocalROM().seek(0x1FFF200)
-    LocalROM().writeBytes(dt.encode("ascii"))
+    ROM().seek(0x1FFF200)
+    ROM().writeBytes(dt.encode("ascii"))
     # Initialize Text Changes
     spoiler.text_changes = {}
 
@@ -67,8 +115,8 @@ def patching_response(spoiler):
 
     # Shuffle Levels
     if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
-        LocalROM().seek(sav + 0)
-        LocalROM().write(1)
+        ROM().seek(sav + 0)
+        ROM().write(1)
 
         # Update Level Order
         vanilla_lobby_entrance_order = [
@@ -91,8 +139,8 @@ def patching_response(spoiler):
         ]
         order = 0
         for level in vanilla_lobby_entrance_order:
-            LocalROM().seek(sav + 1 + order)
-            LocalROM().write(vanilla_lobby_exit_order.index(spoiler.shuffled_exit_data[int(level)].reverse))
+            ROM().seek(sav + 1 + order)
+            ROM().write(vanilla_lobby_exit_order.index(spoiler.shuffled_exit_data[int(level)].reverse))
             order += 1
 
         # Key Order
@@ -119,39 +167,39 @@ def patching_response(spoiler):
         if Types.Key not in spoiler.settings.shuffled_location_types:
             for key, value in map_pointers.items():
                 new_world = spoiler.shuffled_exit_data.get(key).reverse
-                LocalROM().seek(sav + 0x01E + order)
-                LocalROM().writeMultipleBytes(key_mapping[int(new_world)], 2)
+                ROM().seek(sav + 0x01E + order)
+                ROM().writeMultipleBytes(key_mapping[int(new_world)], 2)
                 order += 2
         else:
             for key in key_mapping:
-                LocalROM().seek(sav + 0x1E + order)
-                LocalROM().writeMultipleBytes(key_mapping[key], 2)
+                ROM().seek(sav + 0x1E + order)
+                ROM().writeMultipleBytes(key_mapping[key], 2)
                 order += 2
 
     # Color Banana Requirements
     order = 0
     for count in spoiler.settings.BossBananas:
-        LocalROM().seek(sav + 0x008 + order)
-        LocalROM().writeMultipleBytes(count, 2)
+        ROM().seek(sav + 0x008 + order)
+        ROM().writeMultipleBytes(count, 2)
         order += 2
 
     # Golden Banana Requirements
     order = 0
     for count in spoiler.settings.EntryGBs:
-        LocalROM().seek(sav + 0x016 + order)
-        LocalROM().writeMultipleBytes(count, 1)
+        ROM().seek(sav + 0x016 + order)
+        ROM().writeMultipleBytes(count, 1)
         order += 1
 
     # Unlock All Kongs
     if spoiler.settings.starting_kongs_count == 5:
-        LocalROM().seek(sav + 0x02C)
-        LocalROM().write(0x1F)
+        ROM().seek(sav + 0x02C)
+        ROM().write(0x1F)
     else:
         bin_value = 0
         for x in spoiler.settings.starting_kong_list:
             bin_value |= 1 << x
-        LocalROM().seek(sav + 0x02C)
-        LocalROM().write(bin_value)
+        ROM().seek(sav + 0x02C)
+        ROM().write(bin_value)
 
     boolean_props = [
         BooleanProperties(True, 0x2E),  # Fast Start Game
@@ -171,10 +219,12 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.high_req, 0x179),  # Remove High Requirements
         BooleanProperties(spoiler.settings.fast_gbs, 0x17A),  # Fast GBs
         BooleanProperties(spoiler.settings.auto_keys, 0x15B),  # Auto-Turn Keys
+        BooleanProperties(spoiler.settings.disco_chunky, 0x12F),  # Disco Chunky
         BooleanProperties(spoiler.settings.tns_location_rando, 0x10E),  # T&S Portal Location Rando
         BooleanProperties(spoiler.settings.cb_rando, 0x10B),  # Remove Rock Bunch
         BooleanProperties(spoiler.settings.wrinkly_location_rando or spoiler.settings.remove_wrinkly_puzzles, 0x11F),  # Wrinkly Rando
         BooleanProperties(spoiler.settings.helm_hurry, 0xAE),  # Helm Hurry
+        BooleanProperties(spoiler.settings.remove_water_oscillation, 0x10F),  # Remove Water Oscillation
         BooleanProperties(spoiler.settings.hard_enemies, 0x116),  # Hard Enemies
         BooleanProperties(spoiler.settings.wrinkly_available, 0x52),  # Remove Wrinkly Kong Checks
         BooleanProperties(spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled), 0x47),  # Parent Map Filter
@@ -184,17 +234,21 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.coin_door_item == HelmDoorItem.opened, 0x33),  # Coin Door Open
         BooleanProperties(spoiler.settings.item_reward_previews, 0x101, 7),  # Bonus Matches Contents
         BooleanProperties(spoiler.settings.portal_numbers, 0x11E),  # Portal Numbers
+        BooleanProperties(spoiler.settings.dark_mode_textboxes, 0x44),  # Dark Mode Text bubble
+        BooleanProperties(spoiler.settings.camera_is_follow, 0xCB),  # Free/Follow Cam
+        BooleanProperties(spoiler.settings.camera_is_widescreen, 0xCA),  # Normal/Widescreen
+        BooleanProperties(spoiler.settings.camera_is_not_inverted, 0xCC),  # Inverted/Non-Inverted Camera
     ]
 
     for prop in boolean_props:
         if prop.check:
-            LocalROM().seek(sav + prop.offset)
-            LocalROM().write(prop.target)
+            ROM().seek(sav + prop.offset)
+            ROM().write(prop.target)
 
     # Fast Hideout
-    LocalROM().seek(sav + 0x031)
+    ROM().seek(sav + 0x031)
     # The HelmSetting enum is indexed to allow this.
-    LocalROM().write(int(spoiler.settings.helm_setting))
+    ROM().write(int(spoiler.settings.helm_setting))
 
     # Crown Door & Coin Door
     # define DOORITEM_DEFAULT 0 // Default
@@ -222,15 +276,15 @@ def patching_response(spoiler):
         HelmDoorItem.req_companycoins: 10,
     }
     if spoiler.settings.crown_door_item in door_checks.keys():
-        LocalROM().seek(sav + 0x4C)
-        LocalROM().write(door_checks[spoiler.settings.crown_door_item])
-        LocalROM().seek(sav + 0x4D)
-        LocalROM().write(spoiler.settings.crown_door_item_count)
+        ROM().seek(sav + 0x4C)
+        ROM().write(door_checks[spoiler.settings.crown_door_item])
+        ROM().seek(sav + 0x4D)
+        ROM().write(spoiler.settings.crown_door_item_count)
     if spoiler.settings.coin_door_item in door_checks.keys():
-        LocalROM().seek(sav + 0x4E)
-        LocalROM().write(door_checks[spoiler.settings.coin_door_item])
-        LocalROM().seek(sav + 0x4F)
-        LocalROM().write(spoiler.settings.coin_door_item_count)
+        ROM().seek(sav + 0x4E)
+        ROM().write(door_checks[spoiler.settings.coin_door_item])
+        ROM().seek(sav + 0x4F)
+        ROM().write(spoiler.settings.coin_door_item_count)
 
     # Camera unlocked
     given_moves = []
@@ -242,20 +296,20 @@ def patching_response(spoiler):
         check = int(move % 8)
         move_bitfields[offset] |= 0x80 >> check
     for offset, value in enumerate(move_bitfields):
-        LocalROM().seek(sav + 0xD5 + offset)
-        LocalROM().writeMultipleBytes(value, 1)
+        ROM().seek(sav + 0xD5 + offset)
+        ROM().writeMultipleBytes(value, 1)
 
     # Free Trade Agreement
     if spoiler.settings.free_trade_items:
-        LocalROM().seek(sav + 0x113)
-        old = int.from_bytes(LocalROM().readBytes(1), "big")
-        LocalROM().seek(sav + 0x113)
-        LocalROM().write(old | 1)
+        ROM().seek(sav + 0x113)
+        old = int.from_bytes(ROM().readBytes(1), "big")
+        ROM().seek(sav + 0x113)
+        ROM().write(old | 1)
     if spoiler.settings.free_trade_blueprints:
-        LocalROM().seek(sav + 0x113)
-        old = int.from_bytes(LocalROM().readBytes(1), "big")
-        LocalROM().seek(sav + 0x113)
-        LocalROM().write(old | 2)
+        ROM().seek(sav + 0x113)
+        old = int.from_bytes(ROM().readBytes(1), "big")
+        ROM().seek(sav + 0x113)
+        ROM().write(old | 2)
     # Quality of Life
     if spoiler.settings.quality_of_life:
         enabled_qol = spoiler.settings.misc_changes_selected.copy()
@@ -268,9 +322,9 @@ def patching_response(spoiler):
                 offset = int(item["shift"] >> 3)
                 check = int(item["shift"] % 8)
                 write_data[offset] |= 0x80 >> check
-        LocalROM().seek(sav + 0x0B0)
+        ROM().seek(sav + 0x0B0)
         for byte_data in write_data:
-            LocalROM().writeMultipleBytes(byte_data, 1)
+            ROM().writeMultipleBytes(byte_data, 1)
 
     # Damage amount
     damage_multipliers = {
@@ -279,13 +333,13 @@ def patching_response(spoiler):
         DamageAmount.quad: 4,
         DamageAmount.ohko: 12,
     }
-    LocalROM().seek(sav + 0x0A5)
-    LocalROM().write(damage_multipliers[spoiler.settings.damage_amount])
+    ROM().seek(sav + 0x0A5)
+    ROM().write(damage_multipliers[spoiler.settings.damage_amount])
 
     # Microhints
-    LocalROM().seek(sav + 0x102)
+    ROM().seek(sav + 0x102)
     # The MicrohintsEnabled enum is indexed to allow this.
-    LocalROM().write(int(spoiler.settings.microhints_enabled))
+    ROM().write(int(spoiler.settings.microhints_enabled))
 
     # Helm Hurry
 
@@ -306,16 +360,16 @@ def patching_response(spoiler):
         spoiler.settings.helmhurry_list_colored_bananas,
         spoiler.settings.helmhurry_list_ice_traps,
     ]
-    LocalROM().seek(sav + 0xE2)
+    ROM().seek(sav + 0xE2)
     for bonus in helm_hurry_bonuses:
         if bonus < 0:
             bonus += 65536
-        LocalROM().writeMultipleBytes(bonus, 2)
+        ROM().writeMultipleBytes(bonus, 2)
 
     # Activate Bananaports
-    LocalROM().seek(sav + 0x138)
+    ROM().seek(sav + 0x138)
     # The ActivateAllBananaports enum is indexed to allow this.
-    LocalROM().write(int(spoiler.settings.activate_all_bananaports))
+    ROM().write(int(spoiler.settings.activate_all_bananaports))
 
     # Fast GBs - Change jetpac text
     if spoiler.settings.fast_gbs:
@@ -329,26 +383,50 @@ def patching_response(spoiler):
     if spoiler.settings.hard_bosses:
         # KKO Phase Order
         for phase_slot in range(3):
-            LocalROM().seek(sav + 0x17B + phase_slot)
-            LocalROM().write(spoiler.settings.kko_phase_order[phase_slot])
+            ROM().seek(sav + 0x17B + phase_slot)
+            ROM().write(spoiler.settings.kko_phase_order[phase_slot])
         # Random Toe Sequence
-        LocalROM().seek(sav + 0x41)
-        LocalROM().write(1)
+        ROM().seek(sav + 0x41)
+        ROM().write(1)
         for slot in range(10):
-            LocalROM().seek(sav + 0x37 + slot)
-            LocalROM().write(spoiler.settings.toe_order[slot])
+            ROM().seek(sav + 0x37 + slot)
+            ROM().write(spoiler.settings.toe_order[slot])
 
     # Win Condition
-    LocalROM().seek(sav + 0x11D)
+    ROM().seek(sav + 0x11D)
     # The WinCondition enum is indexed to allow this.
-    LocalROM().write(int(spoiler.settings.win_condition))
+    ROM().write(int(spoiler.settings.win_condition))
+
+    # Colorblind mode
+    ROM().seek(sav + 0x43)
+    # The ColorblindMode enum is indexed to allow this.
+    ROM().write(int(spoiler.settings.colorblind_mode))
+
+    # D-Pad Display
+    ROM().seek(sav + 0x139)
+    # The DPadDisplays enum is indexed to allow this.
+    ROM().write(int(spoiler.settings.dpad_display))
+
+    # Remaining Menu Settings
+    # ROM().seek(sav + 0xC7)
+    # ROM().write(int(spoiler.settings.sound_type)) # Sound Type
+    music_volume = 40
+    sfx_volume = 40
+    if spoiler.settings.sfx_volume is not None and spoiler.settings.sfx_volume != "":
+        sfx_volume = int(spoiler.settings.sfx_volume / 2.5)
+    if spoiler.settings.music_volume is not None and spoiler.settings.music_volume != "":
+        music_volume = int(spoiler.settings.music_volume / 2.5)
+    ROM().seek(sav + 0xC8)
+    ROM().write(sfx_volume)
+    ROM().seek(sav + 0xC9)
+    ROM().write(music_volume)
 
     # Mill Levers
     if spoiler.settings.mill_levers[0] > 0:
         mill_text = ""
         for x in range(5):
-            LocalROM().seek(sav + 0xD0 + x)
-            LocalROM().write(spoiler.settings.mill_levers[x])
+            ROM().seek(sav + 0xD0 + x)
+            ROM().write(spoiler.settings.mill_levers[x])
             if spoiler.settings.mill_levers[x] > 0:
                 mill_text += str(spoiler.settings.mill_levers[x])
         # Change default wrinkly hint
@@ -364,8 +442,8 @@ def patching_response(spoiler):
     # Crypt Levers
     if spoiler.settings.crypt_levers[0] > 0:
         for xi, x in enumerate(spoiler.settings.crypt_levers):
-            LocalROM().seek(sav + 0xCD + xi)
-            LocalROM().write(x)
+            ROM().seek(sav + 0xCD + xi)
+            ROM().write(x)
 
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:
@@ -376,20 +454,20 @@ def patching_response(spoiler):
     key_bitfield = 0
     for key in keys_turned_in:
         key_bitfield = key_bitfield | (1 << key)
-    LocalROM().seek(sav + 0x127)
-    LocalROM().write(key_bitfield)
+    ROM().seek(sav + 0x127)
+    ROM().write(key_bitfield)
 
     if spoiler.settings.medal_requirement != 15:
-        LocalROM().seek(sav + 0x150)
-        LocalROM().write(spoiler.settings.medal_requirement)
+        ROM().seek(sav + 0x150)
+        ROM().write(spoiler.settings.medal_requirement)
 
     if spoiler.settings.rareware_gb_fairies != 20:
-        LocalROM().seek(sav + 0x36)
-        LocalROM().write(spoiler.settings.rareware_gb_fairies)
+        ROM().seek(sav + 0x36)
+        ROM().write(spoiler.settings.rareware_gb_fairies)
 
     if spoiler.settings.medal_cb_req != 75:
-        LocalROM().seek(sav + 0x112)
-        LocalROM().write(spoiler.settings.medal_cb_req)
+        ROM().seek(sav + 0x112)
+        ROM().write(spoiler.settings.medal_cb_req)
 
     if len(spoiler.settings.enemies_selected) == 0 and (spoiler.settings.enemy_rando or spoiler.settings.crown_enemy_rando != CrownEnemyRando.off):
         lst = []
@@ -398,15 +476,24 @@ def patching_response(spoiler):
         spoiler.settings.enemies_selected = lst
 
     if spoiler.settings.random_starting_region:
-        LocalROM().seek(sav + 0x10C)
-        LocalROM().write(spoiler.settings.starting_region["map"])
-        LocalROM().write(spoiler.settings.starting_region["exit"])
+        ROM().seek(sav + 0x10C)
+        ROM().write(spoiler.settings.starting_region["map"])
+        ROM().write(spoiler.settings.starting_region["exit"])
     if spoiler.settings.alter_switch_allocation:
-        LocalROM().seek(sav + 0x103)
-        LocalROM().write(1)
+        ROM().seek(sav + 0x103)
+        ROM().write(1)
         for x in range(7):
-            LocalROM().seek(sav + 0x104 + x)
-            LocalROM().write(spoiler.settings.switch_allocation[x])
+            ROM().seek(sav + 0x104 + x)
+            ROM().write(spoiler.settings.switch_allocation[x])
+
+    if spoiler.settings.homebrew_header:
+        # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM
+        ROM().seek(0x3C)
+        CARTRIDGE_ID = "ED"
+        ROM().writeBytes(CARTRIDGE_ID.encode("ascii"))
+        ROM().seek(0x3F)
+        SAVE_TYPE = 2  # 16K EEPROM
+        ROM().writeMultipleBytes(SAVE_TYPE << 4, 1)
 
     randomize_entrances(spoiler)
     randomize_moves(spoiler)
@@ -433,46 +520,70 @@ def patching_response(spoiler):
     filterEntranceType()
     replaceIngameText(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
-
-    if spoiler.settings.wrinkly_hints != WrinklyHints.off:
-        wipeHints()
-    PushHints(spoiler)
-
-    writeBootMessages()
+    updateMillLeverTexture(spoiler)
+    updateCryptLeverTexture(spoiler)
+    writeBootMessages(spoiler)
     enableSpiderText(spoiler)
     shortenCastleMinecart(spoiler)
 
-    updateMillLeverTexture(spoiler.settings)
-    updateCryptLeverTexture(spoiler.settings)
-    applyHelmDoorCosmetics(spoiler.settings)
+    random.seed(None)
+    randomize_music(spoiler)
+    applyKrushaKong(spoiler)
+    apply_cosmetic_colors(spoiler)
+    overwrite_object_colors(spoiler)
+    writeMiscCosmeticChanges(spoiler)
+    applyHolidayMode(spoiler)
+    applyHelmDoorCosmetics(spoiler)
+    random.seed(spoiler.settings.seed)
 
-    # D-Pad Display
-    LocalROM().seek(sav + 0x139)
-    # The DPadDisplays enum is indexed to allow this.
-    LocalROM().write(int(spoiler.settings.dpad_display))
+    if spoiler.settings.wrinkly_hints != WrinklyHints.off:
+        wipeHints()
+        PushHints(spoiler)
+
+    spoiler.updateJSONCosmetics()
 
     # Apply Hash
     order = 0
+    loaded_hash = get_hash_images()
     for count in spoiler.settings.seed_hash:
-        LocalROM().seek(sav + 0x129 + order)
-        LocalROM().write(count)
+        ROM().seek(sav + 0x129 + order)
+        ROM().write(count)
+        js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
         order += 1
 
-    # Write the LocalROM.rom bytesIo to a file
-    with open("patch.z64", "wb") as f:
-        f.write(LocalROM().rom.getvalue())
+    loop.run_until_complete(ProgressBar().update_progress(10, "Seed Generated."))
+    js.document.getElementById("nav-settings-tab").style.display = ""
+    if spoiler.settings.generate_spoilerlog is True:
+        js.document.getElementById("spoiler_log_block").style.display = ""
+        loop.run_until_complete(GenerateSpoiler(spoiler.json))
+        js.document.getElementById("tracker_text").value = generateTracker(spoiler.json)
+    else:
+        js.document.getElementById("spoiler_log_text").innerHTML = ""
+        js.document.getElementById("spoiler_log_text").value = ""
+        js.document.getElementById("tracker_text").value = ""
+        js.document.getElementById("spoiler_log_block").style.display = "none"
 
-    import pyxdelta
-
-    pyxdelta.run("dk64.z64", "patch.z64", "patch.xdelta")
-    # Read the patch file
-    with open("patch.xdelta", "rb") as f:
-        patch = f.read()
-    # Delete the patch.z64 file
-    os.remove("patch.z64")
-    os.remove("patch.xdelta")
-    load_base_rom()
-    return patch
+    js.document.getElementById("generated_seed_id").innerHTML = spoiler.settings.seed_id
+    loaded_settings = json.loads(spoiler.json)["Settings"]
+    tables = {}
+    t = 0
+    for i in range(0, 3):
+        js.document.getElementById(f"settings_table_{i}").innerHTML = ""
+        tables[i] = js.document.getElementById(f"settings_table_{i}")
+    for setting, value in loaded_settings.items():
+        hidden_settings = ["Seed", "algorithm"]
+        if setting not in hidden_settings:
+            if tables[t].rows.length > math.ceil((len(loaded_settings.items()) - len(hidden_settings)) / len(tables)):
+                t += 1
+            row = tables[t].insertRow(-1)
+            name = row.insertCell(0)
+            description = row.insertCell(1)
+            name.innerHTML = setting
+            description.innerHTML = FormatSpoiler(value)
+    ROM().fixSecurityValue()
+    ROM().save(f"dk64r-rom-{spoiler.settings.seed_id}.z64")
+    loop.run_until_complete(ProgressBar().reset())
+    js.jq("#nav-settings-tab").tab("show")
 
 
 def FormatSpoiler(value):

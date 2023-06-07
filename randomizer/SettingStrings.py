@@ -5,6 +5,7 @@ import json
 from itertools import groupby
 
 import js
+
 from randomizer.Enums.Settings import BananaportRando, LogicType, SettingsStringDataType, SettingsStringEnum, SettingsStringIntRangeMap, SettingsStringListTypeMap, SettingsStringTypeMap
 
 letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"

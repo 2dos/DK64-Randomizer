@@ -4,9 +4,10 @@ import json
 import js
 
 
-def generateTracker(spoiler):
+def generateTracker(spoilerJson):
     """Use the tracker template and spoiler data to generate a basic tracker."""
     tracker = js.getFile("./TrackerTemplate.html")
+    spoiler = json.loads(spoilerJson)
 
     header = "<!--Start Generated Content-->"
 
