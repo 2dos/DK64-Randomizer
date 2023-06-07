@@ -1,8 +1,0 @@
-flask
-flask-executor
-vidua
-pyxdelta
-flask-cors
-pillow
-boto3
-waitress

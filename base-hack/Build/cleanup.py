@@ -1,7 +1,6 @@
 """Clean up the repo to remove any files it doesn't need."""
 import os
-
-from BuildLib import finalROM, flut_size, heap_size
+from BuildLib import heap_size, flut_size, finalROM
 
 [os.remove(f) for f in os.listdir(".") if os.path.isfile(f) and os.path.exists(f) and ".bin" in f]
 instance_dir = "./assets/instance_scripts/"

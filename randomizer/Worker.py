@@ -2,7 +2,6 @@
 import json
 import uuid
 import js
-import time
 
 
 def background(body):
@@ -19,13 +18,9 @@ def background(body):
         branch = "dev"
         if "dev" not in str(js.location.hostname).lower():
             branch = "master"
-            url = "https://generate.dk64rando.com/generate"
-        else:
-            url = "https://generate.dk64rando.com/generate"
+        url = "https://dk64-seed-generator.adaptable.app/generate"
     else:
         url = "http://" + str(js.window.location.hostname) + ":5000/generate"
         branch = "dev"
-    # Get the current time in milliseconds so we can use it as a key for the future.
-    current_time = str(time.time()) + str(uuid.uuid1())
-    url = url + "?gen_key=" + current_time
-    js.generate_seed(url, json.dumps(body), branch)
+    id = str(uuid.uuid1())
+    js.generate_seed(url, json.dumps(body), branch, id)

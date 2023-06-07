@@ -1,7 +1,7 @@
 """Functions and data for setting and calculating prices."""
 
-import random
 from math import ceil
+import random
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
