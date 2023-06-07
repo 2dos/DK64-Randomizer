@@ -39,6 +39,7 @@ from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 load_base_rom()
 def generate(generate_settings):
+    '''Internal Exec of generation.'''
     settings = Settings(generate_settings)
     spoiler = Spoiler(settings)
     patch, spoiler = Generate_Spoiler(spoiler)
