@@ -1,9 +1,10 @@
 """Write new Disco Chunky models."""
-import zlib
 import os
-from BuildLib import ROMName
+import zlib
+
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames
+from BuildLib import ROMName
 
 
 class Vert:

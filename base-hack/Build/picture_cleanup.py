@@ -1,7 +1,8 @@
 """Clean up an image to fix any alpha inaccuracies with the n64tex converter."""
-from PIL import Image
 import tkinter as tk
 from tkinter import filedialog
+
+from PIL import Image
 
 root = tk.Tk()
 root.withdraw()

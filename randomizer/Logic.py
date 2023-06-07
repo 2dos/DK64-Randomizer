@@ -1,5 +1,6 @@
 """Contains the class which holds logic variables, and the master copy of regions."""
 from math import ceil
+
 import randomizer.CollectibleLogicFiles.AngryAztec
 import randomizer.CollectibleLogicFiles.CreepyCastle
 import randomizer.CollectibleLogicFiles.CrystalCaves
@@ -8,12 +9,6 @@ import randomizer.CollectibleLogicFiles.FranticFactory
 import randomizer.CollectibleLogicFiles.FungiForest
 import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
-from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Regions import Regions as RegionEnum
-from randomizer.Enums.Settings import ActivateAllBananaports, GlitchesSelected, HelmDoorItem, LogicType, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
-from randomizer.Enums.Types import Types
-from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Warps import BananaportVanilla
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -29,10 +24,16 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Regions import Regions as RegionEnum
+from randomizer.Enums.Settings import ActivateAllBananaports, GlitchesSelected, HelmDoorItem, LogicType, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
 from randomizer.Enums.Time import Time
+from randomizer.Enums.Types import Types
+from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
+from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Prices import CanBuy, GetPriceAtLocation
 
 STARTING_SLAM = 1  # Currently we're assuming you always start with 1 slam

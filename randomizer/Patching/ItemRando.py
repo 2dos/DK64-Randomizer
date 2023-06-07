@@ -1,18 +1,18 @@
 """Apply item rando changes."""
+from enum import IntEnum, auto
+
 import js
-from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Patching.Patcher import ROM
-from randomizer.Spoiler import Spoiler
-from randomizer.Enums.Types import Types
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Settings import MicrohintsEnabled
+from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationList
-from randomizer.Enums.Items import Items
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import MicrohintsEnabled
-from randomizer.Patching.Lib import intf_to_float, float_to_hex
-from enum import IntEnum, auto
+from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Patching.Lib import float_to_hex, intf_to_float
+from randomizer.Patching.Patcher import ROM, LocalROM
 
 
 class CustomActors(IntEnum):
@@ -206,7 +206,7 @@ level_names = {
 kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky", Kongs.any: "Any Kong"}
 
 
-def pushItemMicrohints(spoiler: Spoiler):
+def pushItemMicrohints(spoiler):
     """Push hint for the micro-hints system."""
     if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
         hinted_items = {
@@ -291,12 +291,12 @@ def getActorIndex(item):
     return actor_indexes[item.new_item]
 
 
-def place_randomized_items(spoiler: Spoiler):
+def place_randomized_items(spoiler):
     """Place randomized items into ROM."""
     if spoiler.settings.shuffle_items:
         sav = spoiler.settings.rom_data
-        ROM().seek(sav + 0x034)
-        ROM().write(1)  # Item Rando Enabled
+        LocalROM().seek(sav + 0x034)
+        LocalROM().write(1)  # Item Rando Enabled
         item_data = spoiler.item_assignment
         model_two_items = [
             0x74,  # GB
@@ -322,21 +322,21 @@ def place_randomized_items(spoiler: Spoiler):
             if item.can_have_item:
                 if item.is_shop:
                     # Write in placement index
-                    ROM().seek(sav + 0xA7)
-                    ROM().write(1)
+                    LocalROM().seek(sav + 0xA7)
+                    LocalROM().write(1)
                     movespaceOffset = spoiler.settings.move_location_data
                     for placement in item.placement_index:
                         write_space = movespaceOffset + (4 * placement)
                         if item.new_item is None:
                             # Is Nothing
                             # First check if there is an item here
-                            ROM().seek(write_space)
-                            check = int.from_bytes(ROM().readBytes(4), "big")
+                            LocalROM().seek(write_space)
+                            check = int.from_bytes(LocalROM().readBytes(4), "big")
                             if check == 0xE000FFFF or placement >= 120:  # No Item
-                                ROM().seek(write_space)
-                                ROM().writeMultipleBytes(7 << 5, 1)
-                                ROM().writeMultipleBytes(0, 1)
-                                ROM().writeMultipleBytes(0xFFFF, 2)
+                                LocalROM().seek(write_space)
+                                LocalROM().writeMultipleBytes(7 << 5, 1)
+                                LocalROM().writeMultipleBytes(0, 1)
+                                LocalROM().writeMultipleBytes(0xFFFF, 2)
                         elif item.new_flag & 0x8000:
                             # Is Move
                             item_kong = (item.new_flag >> 12) & 7
@@ -345,19 +345,19 @@ def place_randomized_items(spoiler: Spoiler):
                                 item_subindex = 0
                             else:
                                 item_subindex = (item.new_flag & 0xFF) - 1
-                            ROM().seek(write_space)
-                            ROM().writeMultipleBytes(item_subtype << 5 | (item_subindex << 3) | item_kong, 1)
-                            ROM().writeMultipleBytes(item.price, 1)
-                            ROM().writeMultipleBytes(0xFFFF, 2)
+                            LocalROM().seek(write_space)
+                            LocalROM().writeMultipleBytes(item_subtype << 5 | (item_subindex << 3) | item_kong, 1)
+                            LocalROM().writeMultipleBytes(item.price, 1)
+                            LocalROM().writeMultipleBytes(0xFFFF, 2)
                         else:
                             # Is Flagged Item
                             subtype = 5
                             if item.new_item == Types.Banana:
                                 subtype = 6
-                            ROM().seek(write_space)
-                            ROM().writeMultipleBytes(subtype << 5, 1)
-                            ROM().writeMultipleBytes(item.price, 1)
-                            ROM().writeMultipleBytes(item.new_flag, 2)
+                            LocalROM().seek(write_space)
+                            LocalROM().writeMultipleBytes(subtype << 5, 1)
+                            LocalROM().writeMultipleBytes(item.price, 1)
+                            LocalROM().writeMultipleBytes(item.new_flag, 2)
                 elif not item.reward_spot:
                     for map_id in item.placement_data:
                         if map_id not in map_items:
@@ -422,8 +422,8 @@ def place_randomized_items(spoiler: Spoiler):
                             arcade_reward_index = 9 + slot
                         elif item.new_item in arcade_rewards:
                             arcade_reward_index = arcade_rewards.index(item.new_item)
-                        ROM().seek(sav + 0x110)
-                        ROM().write(arcade_reward_index)
+                        LocalROM().seek(sav + 0x110)
+                        LocalROM().write(arcade_reward_index)
                     elif item.location == Locations.RarewareCoin:
                         jetpac_rewards = (
                             Types.NoItem,  # Or RW Coin
@@ -449,28 +449,28 @@ def place_randomized_items(spoiler: Spoiler):
                                 jetpac_reward_index = 12
                         elif item.new_item in jetpac_rewards:
                             jetpac_reward_index = jetpac_rewards.index(item.new_item)
-                        ROM().seek(sav + 0x111)
-                        ROM().write(jetpac_reward_index)
+                        LocalROM().seek(sav + 0x111)
+                        LocalROM().write(jetpac_reward_index)
                     elif item.location in (Locations.ForestDonkeyBaboonBlast, Locations.CavesDonkeyBaboonBlast):
                         # Autocomplete bonus barrel fix
                         actor_index = getActorIndex(item)
-                        ROM().seek(0x1FF1200 + (4 * bonus_table_offset))
-                        ROM().writeMultipleBytes(item.old_flag, 2)
-                        ROM().writeMultipleBytes(actor_index, 2)
+                        LocalROM().seek(0x1FF1200 + (4 * bonus_table_offset))
+                        LocalROM().writeMultipleBytes(item.old_flag, 2)
+                        LocalROM().writeMultipleBytes(actor_index, 2)
                         bonus_table_offset += 1
                     elif item.location in (Locations.AztecTinyBeetleRace, Locations.CavesLankyBeetleRace):
                         text_index = getTextRewardIndex(item)
                         if item.location == Locations.AztecTinyBeetleRace:
-                            ROM().seek(sav + 0x50)
+                            LocalROM().seek(sav + 0x50)
                         else:
-                            ROM().seek(sav + 0x51)
-                        ROM().write(text_index)
+                            LocalROM().seek(sav + 0x51)
+                        LocalROM().write(text_index)
                 elif item.old_item == Types.Kong:
                     for i in range(4):
                         if item.new_item is None or item.new_item == Types.NoItem:
                             # Write Empty Cage
-                            ROM().seek(sav + 0x152 + (2 * i))
-                            ROM().writeMultipleBytes(0xFF, 1)
+                            LocalROM().seek(sav + 0x152 + (2 * i))
+                            LocalROM().writeMultipleBytes(0xFF, 1)
                 else:
                     if item.old_item != Types.Medal:
                         actor_index = getActorIndex(item)
@@ -478,22 +478,22 @@ def place_randomized_items(spoiler: Spoiler):
                         # Write to BP Table
                         # Just needs to store an array of actors spawned
                         offset = (item.old_flag - 469) * 2
-                        ROM().seek(0x1FF0E00 + offset)
-                        ROM().writeMultipleBytes(actor_index, 2)
+                        LocalROM().seek(0x1FF0E00 + offset)
+                        LocalROM().writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.Crown:
                         # Write to Crown Table
                         crown_flags = [0x261, 0x262, 0x263, 0x264, 0x265, 0x268, 0x269, 0x266, 0x26A, 0x267]
-                        ROM().seek(0x1FF10C0 + (crown_flags.index(item.old_flag) * 2))
-                        ROM().writeMultipleBytes(actor_index, 2)
+                        LocalROM().seek(0x1FF10C0 + (crown_flags.index(item.old_flag) * 2))
+                        LocalROM().writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.Key:
                         key_flags = [26, 74, 138, 168, 236, 292, 317, 380]
-                        ROM().seek(0x1FF1000 + (key_flags.index(item.old_flag) * 2))
-                        ROM().writeMultipleBytes(actor_index, 2)
+                        LocalROM().seek(0x1FF1000 + (key_flags.index(item.old_flag) * 2))
+                        LocalROM().writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.RainbowCoin:
                         index = item.location - Locations.RainbowCoin_Location00
                         if index < 16:
-                            ROM().seek(0x1FF10E0 + (index * 2))
-                            ROM().writeMultipleBytes(actor_index, 2)
+                            LocalROM().seek(0x1FF10E0 + (index * 2))
+                            LocalROM().writeMultipleBytes(actor_index, 2)
                         else:
                             print("Dirt Patch Item Placement Error")
                     elif item.old_item == Types.Medal:
@@ -546,7 +546,7 @@ def place_randomized_items(spoiler: Spoiler):
                             None,  # No Item
                         ]
                         offset = item.old_flag - 549
-                        ROM().seek(0x1FF1080 + offset)
+                        LocalROM().seek(0x1FF1080 + offset)
                         if item.new_item == Types.Shop:
                             medal_index = 6
                             if item.new_flag in (0x290, 0x291):
@@ -561,24 +561,24 @@ def place_randomized_items(spoiler: Spoiler):
                                     medal_index = 8
                                 elif (subtype == 2) or (subtype == 3):
                                     medal_index = 7
-                            ROM().write(medal_index)
+                            LocalROM().write(medal_index)
                         elif item.new_item == Types.JunkItem:
-                            ROM().write(17 + subitems.index(item.new_subitem))
+                            LocalROM().write(17 + subitems.index(item.new_subitem))
                         else:
-                            ROM().write(slots.index(item.new_item))
+                            LocalROM().write(slots.index(item.new_item))
                     elif item.location == Locations.JapesChunkyBoulder:
                         # Write to Boulder Spawn Location
-                        ROM().seek(sav + 0xDC)
-                        ROM().writeMultipleBytes(actor_index, 2)
+                        LocalROM().seek(sav + 0xDC)
+                        LocalROM().writeMultipleBytes(actor_index, 2)
                     elif item.location == Locations.AztecLankyVulture:
                         # Write to Vulture Spawn Location
-                        ROM().seek(sav + 0xDE)
-                        ROM().writeMultipleBytes(actor_index, 2)
+                        LocalROM().seek(sav + 0xDE)
+                        LocalROM().writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.Banana:
                         # Bonus GB Table
-                        ROM().seek(0x1FF1200 + (4 * bonus_table_offset))
-                        ROM().writeMultipleBytes(item.old_flag, 2)
-                        ROM().writeMultipleBytes(actor_index, 2)
+                        LocalROM().seek(0x1FF1200 + (4 * bonus_table_offset))
+                        LocalROM().writeMultipleBytes(item.old_flag, 2)
+                        LocalROM().writeMultipleBytes(actor_index, 2)
                         bonus_table_offset += 1
                     elif item.old_item == Types.Fairy:
                         # Fairy Item
@@ -597,8 +597,8 @@ def place_randomized_items(spoiler: Spoiler):
                                 if item.new_flag in kong_flags:
                                     slot = kong_flags.index(item.new_flag)
                                 model = model_indexes[Types.Kong][slot]
-                            ROM().seek(0x1FF1040 + (2 * (item.old_flag - 589)))
-                            ROM().writeMultipleBytes(model, 2)
+                            LocalROM().seek(0x1FF1040 + (2 * (item.old_flag - 589)))
+                            LocalROM().writeMultipleBytes(model, 2)
             if not item.is_shop and item.can_have_item and item.old_item != Types.Kong:
                 # Write flag lookup table
                 data = [item.old_flag]
@@ -641,25 +641,25 @@ def place_randomized_items(spoiler: Spoiler):
 
         # Terminate FLUT
         flut_items.append([0xFFFF, 0xFFFF])
-        ROM().seek(0x1FF2000)
+        LocalROM().seek(0x1FF2000)
         for flut in sorted(flut_items, key=lambda x: x[0]):
             for flag in flut:
-                ROM().writeMultipleBytes(flag, 2)
+                LocalROM().writeMultipleBytes(flag, 2)
         # Setup Changes
         for map_id in map_items:
             cont_map_setup_address = js.pointer_addresses[9]["entries"][map_id]["pointing_to"]
-            ROM().seek(cont_map_setup_address)
-            model2_count = int.from_bytes(ROM().readBytes(4), "big")
+            LocalROM().seek(cont_map_setup_address)
+            model2_count = int.from_bytes(LocalROM().readBytes(4), "big")
             for item in range(model2_count):
                 start = cont_map_setup_address + 4 + (item * 0x30)
-                ROM().seek(start + 0x2A)
-                item_id = int.from_bytes(ROM().readBytes(2), "big")
+                LocalROM().seek(start + 0x2A)
+                item_id = int.from_bytes(LocalROM().readBytes(2), "big")
                 for item_slot in map_items[map_id]:
                     if item_slot["id"] == item_id:
-                        ROM().seek(start + 0x28)
-                        old_item = int.from_bytes(ROM().readBytes(2), "big")
+                        LocalROM().seek(start + 0x28)
+                        old_item = int.from_bytes(LocalROM().readBytes(2), "big")
                         if old_item in model_two_items:
-                            ROM().seek(start + 0x28)
+                            LocalROM().seek(start + 0x28)
                             item_obj_index = 0
                             if item_slot["obj"] == Types.Blueprint:
                                 item_obj_index = model_two_indexes[Types.Blueprint][item_slot["kong"]]
@@ -684,10 +684,10 @@ def place_randomized_items(spoiler: Spoiler):
                                 item_obj_index = model_two_indexes[Types.Kong][slot]
                             else:
                                 item_obj_index = model_two_indexes[item_slot["obj"]]
-                            ROM().writeMultipleBytes(item_obj_index, 2)
+                            LocalROM().writeMultipleBytes(item_obj_index, 2)
                             # Scaling fix
-                            ROM().seek(start + 0xC)
-                            old_scale = intf_to_float(int.from_bytes(ROM().readBytes(4), "big"))
+                            LocalROM().seek(start + 0xC)
+                            old_scale = intf_to_float(int.from_bytes(LocalROM().readBytes(4), "big"))
                             new_scale = old_scale * item_slot["upscale"]
-                            ROM().seek(start + 0xC)
-                            ROM().writeMultipleBytes(int(float_to_hex(new_scale), 16), 4)
+                            LocalROM().seek(start + 0xC)
+                            LocalROM().writeMultipleBytes(int(float_to_hex(new_scale), 16), 4)

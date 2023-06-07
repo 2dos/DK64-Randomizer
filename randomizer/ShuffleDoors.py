@@ -1,8 +1,9 @@
 """Shuffle Wrinkly and T&S Doors based on settings."""
 import random
-from randomizer.Enums.Levels import Levels
+
 import randomizer.Logic as Logic
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.LogicClasses import LocationLogic
