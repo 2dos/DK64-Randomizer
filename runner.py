@@ -13,15 +13,11 @@ from flask_cors import CORS
 from flask_executor import Executor
 
 from randomizer.Enums.Settings import SettingsMap
-from randomizer.Fill import Generate_Spoiler
-from randomizer.Patching.Patcher import load_base_rom
-from randomizer.Settings import Settings
-from randomizer.Spoiler import Spoiler
+
 
 if os.environ.get("HOSTED_SERVER") is not None:
     import boto3
 
-    load_base_rom()
     dynamodb = boto3.resource("dynamodb", aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
 
 
@@ -35,10 +31,36 @@ current_job = ""
 
 def generate(generate_settings):
     """Gen a seed and write the file to an output file."""
+
+    code = """
+from randomizer.Fill import Generate_Spoiler
+from randomizer.Patching.Patcher import load_base_rom
+from randomizer.Settings import Settings
+from randomizer.Spoiler import Spoiler
+load_base_rom()
+def generate(generate_settings):
     settings = Settings(generate_settings)
     spoiler = Spoiler(settings)
     patch, spoiler = Generate_Spoiler(spoiler)
     return patch, spoiler
+
+result = generate(provided_settings)
+"""
+
+    # Create a dictionary for the local and global namespaces
+    namespace = {}
+
+    # Pass variables to the code block
+    namespace["provided_settings"] = generate_settings
+
+    # Execute the code in isolation
+    exec(code, namespace)
+
+    # Retrieve the result from the code block
+    result = namespace["result"]
+    del namespace
+
+    return result[0], result[1]
 
 
 def start_gen(gen_key, post_body):
