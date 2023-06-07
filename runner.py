@@ -31,7 +31,6 @@ current_job = ""
 
 def generate(generate_settings):
     """Gen a seed and write the file to an output file."""
-
     code = """
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Patching.Patcher import load_base_rom
