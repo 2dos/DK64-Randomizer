@@ -1,9 +1,10 @@
 """Generate corrected Diddy and Lanky models."""
 
-import zlib
 import os
-from BuildLib import intf_to_float, float_to_hex, main_pointer_table_offset, ROMName
+import zlib
+
 from BuildEnums import TableNames
+from BuildLib import ROMName, float_to_hex, intf_to_float, main_pointer_table_offset
 
 diddy_fix = """
     E7 00 00 00 00 00 00 00

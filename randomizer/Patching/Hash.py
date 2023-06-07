@@ -5,10 +5,10 @@ import zlib
 
 from PIL import Image
 
-from randomizer.Patching.Patcher import ROM
+from randomizer.Patching.Patcher import ROM, LocalROM
 
 
-def get_hash_images():
+def get_hash_images(type="local"):
     """Get and return a list of hash images for the website UI."""
     images = [
         {"name": "bongos", "format": "rgba16", "table": 25, "index": 5548, "w": 40, "h": 40},
@@ -25,19 +25,24 @@ def get_hash_images():
 
     ptr_offset = 0x101C50
     loaded_images = []
+    rom_type = None
+    if type == "browser":
+        rom_type = ROM()
+    else:
+        rom_type = LocalROM()
     for x in images:
-        ROM().seek(ptr_offset + (x["table"] * 4))
-        ptr_table = ptr_offset + int.from_bytes(ROM().readBytes(4), "big")
-        ROM().seek(ptr_table + (x["index"] * 4))
-        img_start = ptr_offset + int.from_bytes(ROM().readBytes(4), "big")
-        ROM().seek(ptr_table + ((x["index"] + 1) * 4))
-        img_end = ptr_offset + int.from_bytes(ROM().readBytes(4), "big")
+        rom_type.seek(ptr_offset + (x["table"] * 4))
+        ptr_table = ptr_offset + int.from_bytes(rom_type.readBytes(4), "big")
+        rom_type.seek(ptr_table + (x["index"] * 4))
+        img_start = ptr_offset + int.from_bytes(rom_type.readBytes(4), "big")
+        rom_type.seek(ptr_table + ((x["index"] + 1) * 4))
+        img_end = ptr_offset + int.from_bytes(rom_type.readBytes(4), "big")
         img_size = img_end - img_start
-        ROM().seek(img_start)
+        rom_type.seek(img_start)
         if x["table"] == 25:
-            dec = zlib.decompress(ROM().readBytes(img_size), 15 + 32)
+            dec = zlib.decompress(rom_type.readBytes(img_size), 15 + 32)
         else:
-            dec = ROM().readBytes(img_size)
+            dec = rom_type.readBytes(img_size)
         im = Image.new(mode="RGBA", size=(x["w"], x["h"]))
         pix = im.load()
         pix_count = x["w"] * x["h"]

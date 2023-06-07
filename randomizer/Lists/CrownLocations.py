@@ -1,11 +1,10 @@
 """Crown Location List."""
+from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Events import Events
-from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Settings import DamageAmount, HelmSetting
+from randomizer.Lists.MapsAndExits import Maps
 
 
 class CrownLocation:
