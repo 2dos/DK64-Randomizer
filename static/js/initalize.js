@@ -431,6 +431,9 @@ function generate_seed(url, json, git_branch) {
       $("#patchprogress").width("100%");
       setTimeout(function () {
         $("#progressmodal").modal("hide");
+        $("#patchprogress").removeClass("bg-danger");
+        $("#patchprogress").width("0%");
+        $("#progress-text").text("");
       }, 1000);
     },
   });
