@@ -7,7 +7,10 @@ import time
 import traceback
 import zipfile
 from io import BytesIO
-
+from randomizer.Fill import Generate_Spoiler
+from randomizer.Patching.Patcher import load_base_rom
+from randomizer.Settings import Settings
+from randomizer.Spoiler import Spoiler
 from flask import Flask, make_response, request
 from flask_cors import CORS
 from flask_executor import Executor
@@ -17,6 +20,7 @@ from randomizer.Enums.Settings import SettingsMap
 
 if os.environ.get("HOSTED_SERVER") is not None:
     import boto3
+    load_base_rom()
 
     dynamodb = boto3.resource("dynamodb", aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
 
@@ -26,48 +30,24 @@ app.config["EXECUTOR_MAX_WORKERS"] = 1
 executor = Executor(app)
 CORS(app)
 
-current_job = ""
+current_job = []
 
 
 def generate(generate_settings):
     """Gen a seed and write the file to an output file."""
-    code = """
-from randomizer.Fill import Generate_Spoiler
-from randomizer.Patching.Patcher import load_base_rom
-from randomizer.Settings import Settings
-from randomizer.Spoiler import Spoiler
-load_base_rom()
-def generate(generate_settings):
-    '''Internal Exec of generation.'''
     settings = Settings(generate_settings)
     spoiler = Spoiler(settings)
     patch, spoiler = Generate_Spoiler(spoiler)
     return patch, spoiler
-
-result = generate(provided_settings)
-"""
-
-    # Create a dictionary for the local and global namespaces
-    namespace = {}
-
-    # Pass variables to the code block
-    namespace["provided_settings"] = generate_settings
-
-    # Execute the code in isolation
-    exec(code, namespace)
-
-    # Retrieve the result from the code block
-    result = namespace["result"]
-    del namespace
-
-    return result[0], result[1]
 
 
 def start_gen(gen_key, post_body):
     """Start the generation process."""
     print("starting generation")
     global current_job
-    current_job = gen_key
+    if current_job is None:
+        current_job = []
+    current_job.append(gen_key)
     setting_data = post_body
     if not setting_data.get("seed"):
         setting_data["seed"] = random.randint(0, 100000000)
@@ -102,7 +82,7 @@ def start_gen(gen_key, post_body):
                 }
             )
         print(traceback.format_exc())
-    current_job = ""
+    current_job.remove(gen_key)
     return patch, spoiler
 
 
@@ -124,7 +104,7 @@ def lambda_function():
         if executor.futures._futures.get(gen_key) and not executor.futures.done(gen_key):
             # We're not done generating yet
             global current_job
-            if str(current_job) == str(gen_key):
+            if  str(gen_key) in current_job:
                 response = make_response(json.dumps({"status": executor.futures._state(gen_key)}), 203)
             else:
                 response = make_response(json.dumps({"status": executor.futures._state(gen_key)}), 202)
