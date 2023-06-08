@@ -2,9 +2,10 @@
 import os
 import shutil
 import zlib
-from BuildLib import ROMName
+
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames
+from BuildLib import ROMName
 
 new_file = "assets/Gong/hint_door.bin"
 

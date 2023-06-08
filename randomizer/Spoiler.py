@@ -1,7 +1,7 @@
 """Spoiler class and functions."""
 
-from email.policy import default
 import json
+from email.policy import default
 from typing import OrderedDict
 
 import randomizer.ItemPool as ItemPool
@@ -12,28 +12,17 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import (
-    BananaportRando,
-    GlitchesSelected,
-    HelmDoorItem,
-    LogicType,
-    MinigameBarrels,
-    RandomPrices,
-    ShockwaveStatus,
-    ShuffleLoadingZones,
-    TrainingBarrels,
-    WinCondition,
-)
+from randomizer.Enums.Settings import BananaportRando, GlitchesSelected, HelmDoorItem, LogicType, MinigameBarrels, RandomPrices, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
 from randomizer.Lists.Location import LocationList, PreGivenLocations
+from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
-from randomizer.Lists.Logic import GlitchLogicItems
 
 
 class Spoiler:
@@ -624,55 +613,6 @@ class Spoiler:
                         map_name = map_name.replace(combo, combo.replace(" ", ""))
                 humanspoiler["Coin Locations"][f"{lvl_name.split(' ')[idx]} {NameFromKong(group['kong'])}"].append(f"{map_name.strip()}: {group['name']}")
 
-        self.json = json.dumps(humanspoiler, indent=4)
-
-    def updateJSONCosmetics(self):
-        """Update spoiler JSON with cosmetic settings."""
-        humanspoiler = json.loads(self.json)
-        if self.settings.colors != {} or self.settings.klaptrap_model_index:
-            humanspoiler["Cosmetics"]["Colors and Models"] = {}
-            for color_item in self.settings.colors:
-                if color_item == "dk":
-                    humanspoiler["Cosmetics"]["Colors and Models"]["DK Color"] = self.settings.colors[color_item]
-                else:
-                    humanspoiler["Cosmetics"]["Colors and Models"][f"{color_item.capitalize()} Color"] = self.settings.colors[color_item]
-            klap_models = {
-                0x19: "Beaver",
-                0x1E: "Klobber",
-                0x20: "Kaboom",
-                0x21: "Green Klaptrap",
-                0x22: "Purple Klaptrap",
-                0x23: "Red Klaptrap",
-                0x24: "Klaptrap Teeth",
-                0x26: "Krash",
-                0x27: "Troff",
-                0x30: "N64 Logo",
-                0x34: "Mech Fish",
-                0x42: "Krossbones",
-                0x47: "Rabbit",
-                0x4B: "Minecart Skeleton Head",
-                0x51: "Tomato",
-                0x62: "Ice Tomato",
-                0x69: "Golden Banana",
-                0x70: "Microbuffer",
-                0x72: "Bell",
-                0x96: "Missile (Car Race)",
-                0xB0: "Red Buoy",
-                0xB1: "Green Buoy",
-                0xBD: "Rareware Logo",
-            }
-            if self.settings.klaptrap_model_index in klap_models:
-                humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = klap_models[self.settings.klaptrap_model_index]
-            else:
-                humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
-        if self.settings.music_bgm_randomized:
-            humanspoiler["Cosmetics"]["Background Music"] = self.music_bgm_data
-        if self.settings.music_majoritems_randomized:
-            humanspoiler["Cosmetics"]["Major Item Themes"] = self.music_majoritem_data
-        if self.settings.music_minoritems_randomized:
-            humanspoiler["Cosmetics"]["Minor Item Themes"] = self.music_minoritem_data
-        if self.settings.music_events_randomized:
-            humanspoiler["Cosmetics"]["Event Themes"] = self.music_event_data
         self.json = json.dumps(humanspoiler, indent=4)
 
     def UpdateKasplats(self, kasplat_map):

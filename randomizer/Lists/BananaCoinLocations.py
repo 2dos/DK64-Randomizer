@@ -3,10 +3,10 @@
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Settings import DamageAmount
-from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import DamageAmount
 from randomizer.Enums.Time import Time
+from randomizer.Lists.MapsAndExits import Maps
 
 CAVES_WATER_HEIGHT = 30
 
