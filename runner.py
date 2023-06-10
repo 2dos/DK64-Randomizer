@@ -14,31 +14,36 @@ from randomizer.Spoiler import Spoiler
 from flask import Flask, make_response, request
 from flask_cors import CORS
 from flask_executor import Executor
-
+from multiprocessing import Process, Queue
 from randomizer.Enums.Settings import SettingsMap
 
 
 if os.environ.get("HOSTED_SERVER") is not None:
     import boto3
+
     load_base_rom()
 
     dynamodb = boto3.resource("dynamodb", aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
 
 
 app = Flask(__name__)
-app.config["EXECUTOR_MAX_WORKERS"] = 1
+app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 1)
 executor = Executor(app)
 CORS(app)
 
 current_job = []
 
 
-def generate(generate_settings):
+def generate(generate_settings, queue):
     """Gen a seed and write the file to an output file."""
     settings = Settings(generate_settings)
     spoiler = Spoiler(settings)
     patch, spoiler = Generate_Spoiler(spoiler)
-    return patch, spoiler
+    print("Returning")
+    return_dict = {}
+    return_dict["patch"] = patch
+    return_dict["spoiler"] = spoiler
+    queue.put(return_dict)
 
 
 def start_gen(gen_key, post_body):
@@ -70,7 +75,20 @@ def start_gen(gen_key, post_body):
                 except Exception:
                     pass
     try:
-        patch, spoiler = generate(setting_data)
+        queue = Queue()
+        p = Process(
+            target=generate,
+            args=(
+                setting_data,
+                queue,
+            ),
+        )
+        p.start()
+        return_dict = queue.get()
+        p.join()
+
+        patch = return_dict["patch"]
+        spoiler = return_dict["spoiler"]
 
     except Exception as e:
         if os.environ.get("HOSTED_SERVER") is not None:
@@ -104,7 +122,7 @@ def lambda_function():
         if executor.futures._futures.get(gen_key) and not executor.futures.done(gen_key):
             # We're not done generating yet
             global current_job
-            if  str(gen_key) in current_job:
+            if str(gen_key) in current_job:
                 response = make_response(json.dumps({"status": executor.futures._state(gen_key)}), 203)
             else:
                 response = make_response(json.dumps({"status": executor.futures._state(gen_key)}), 202)
