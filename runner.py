@@ -21,9 +21,7 @@ from randomizer.Enums.Settings import SettingsMap
 if os.environ.get("HOSTED_SERVER") is not None:
     import boto3
 
-    load_base_rom()
-
-    dynamodb = boto3.resource("dynamodb", aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")
+    dynamodb = boto3.resource("dynamodb", region_name="us-west-2")
 
 
 app = Flask(__name__)
@@ -36,6 +34,7 @@ current_job = []
 
 def generate(generate_settings, queue):
     """Gen a seed and write the file to an output file."""
+    load_base_rom()
     settings = Settings(generate_settings)
     spoiler = Spoiler(settings)
     patch, spoiler = Generate_Spoiler(spoiler)
