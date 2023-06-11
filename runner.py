@@ -83,7 +83,7 @@ def start_gen(gen_key, post_body):
             ),
         )
         p.start()
-        return_dict = queue.get(TIMEOUT)
+        return_dict = queue.get(timeout=TIMEOUT)
         p.join(0)
         if p.is_alive():
             print("Generation Hanged, Terminating")
