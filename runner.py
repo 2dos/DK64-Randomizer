@@ -19,18 +19,18 @@ from randomizer.Enums.Settings import SettingsMap
 from queue import Empty
 
 
-if os.environ.get("HOSTED_SERVER") is not None:
-    import boto3
-
-    dynamodb = boto3.resource("dynamodb", region_name="us-west-2")
-
-
 app = Flask(__name__)
 app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 2)
 executor = Executor(app)
 CORS(app)
 TIMEOUT = 300
 current_job = []
+
+
+if os.environ.get("HOSTED_SERVER") is not None:
+    import boto3
+
+    dynamodb = boto3.resource("dynamodb", region_name="us-west-2")
 
 
 def generate(generate_settings, queue):
