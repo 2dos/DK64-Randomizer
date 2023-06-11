@@ -106,6 +106,7 @@ def start_gen(gen_key, post_body):
 
 
 def write_error(error):
+    """Write an error to the error table."""
     error_table = dynamodb.Table("dk64_error_db")
     error_table.put_item(
         Item={
