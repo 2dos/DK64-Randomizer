@@ -83,13 +83,13 @@ def start_gen(gen_key, post_body):
             ),
         )
         p.start()
-        return_dict = queue.get()
-        p.join(TIMEOUT)
+        return_dict = queue.get(TIMEOUT)
+        p.join(0)
         if p.is_alive():
             print("Generation Hanged, Terminating")
             p.terminate()
             patch = return_dict["patch"]
-            spoiler = return_dict["spoiler"]
+            spoiler = return_dict["FORCEERROR"]
         else:
             patch = return_dict["patch"]
             spoiler = return_dict["spoiler"]
