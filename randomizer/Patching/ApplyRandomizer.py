@@ -1,6 +1,7 @@
 """Apply Patch data to the ROM."""
 import json
 import os
+import time
 
 from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, HelmDoorItem, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
 from randomizer.Enums.Transitions import Transitions
@@ -458,20 +459,22 @@ def patching_response(spoiler):
         LocalROM().write(count)
         order += 1
 
+    # Create a dummy time to attach to the end of the file name non decimal
+    current_time = str(time.time()).replace(".", "")
+
     # Write the LocalROM.rom bytesIo to a file
-    with open("patch.z64", "wb") as f:
+    with open(f"patch{current_time}.z64", "wb") as f:
         f.write(LocalROM().rom.getvalue())
 
     import pyxdelta
 
-    pyxdelta.run("dk64.z64", "patch.z64", "patch.xdelta")
+    pyxdelta.run("dk64.z64", f"patch{current_time}.z64", f"patch{current_time}.xdelta")
     # Read the patch file
-    with open("patch.xdelta", "rb") as f:
+    with open(f"patch{current_time}.xdelta", "rb") as f:
         patch = f.read()
     # Delete the patch.z64 file
-    os.remove("patch.z64")
-    os.remove("patch.xdelta")
-    load_base_rom()
+    os.remove(f"patch{current_time}.z64")
+    os.remove(f"patch{current_time}.xdelta")
     return patch
 
 

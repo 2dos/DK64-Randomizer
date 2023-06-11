@@ -35,11 +35,14 @@ if os.environ.get("HOSTED_SERVER") is not None:
 
 def generate(generate_settings, queue):
     """Gen a seed and write the file to an output file."""
-    load_base_rom()
-    settings = Settings(generate_settings)
-    spoiler = Spoiler(settings)
-    patch, spoiler = Generate_Spoiler(spoiler)
-    print("Returning")
+    try:
+        load_base_rom()
+        settings = Settings(generate_settings)
+        spoiler = Spoiler(settings)
+        patch, spoiler = Generate_Spoiler(spoiler)
+        print("Returning")
+    except Exception:
+        write_error(traceback.format_exc())
     return_dict = {}
     return_dict["patch"] = patch
     return_dict["spoiler"] = spoiler
@@ -54,6 +57,7 @@ def start_gen(gen_key, post_body):
         current_job = []
     current_job.append(gen_key)
     setting_data = post_body
+    print(post_body)
     if not setting_data.get("seed"):
         setting_data["seed"] = random.randint(0, 100000000)
     # Convert string data to enums where possible.
@@ -95,16 +99,21 @@ def start_gen(gen_key, post_body):
 
     except Exception as e:
         if os.environ.get("HOSTED_SERVER") is not None:
-            error_table = dynamodb.Table("dk64_error_db")
-            error_table.put_item(
-                Item={
-                    "time": str(time.time()),
-                    "error_data": str(traceback.format_exc()),
-                }
-            )
+            write_error(traceback.format_exc())
         print(traceback.format_exc())
     current_job.remove(gen_key)
     return patch, spoiler
+
+
+def write_error(error):
+    """Write an error to the error table."""
+    error_table = dynamodb.Table("dk64_error_db")
+    error_table.put_item(
+        Item={
+            "time": str(time.time()),
+            "error_data": str(error),
+        }
+    )
 
 
 @app.route("/generate", methods=["GET", "POST"])
