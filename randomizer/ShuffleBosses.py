@@ -203,7 +203,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         if isinstance(ex.args[0], str) and "pop from empty list" in ex.args[0]:
             print("Barrels bad.")
             raise BossOutOfLocationsException("No valid locations to place " + bossTryingToBePlaced)
-        raise ex
+        raise FillException("Something went wrong while assigning bosses.")
 
     # Only apply this shuffle if the settings permit it
     # If kongs are random we have to shuffle bosses and locations or else we might break logic

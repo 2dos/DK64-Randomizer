@@ -38,7 +38,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Warps import Warps
 from randomizer.Lists.Item import ItemList, KongFromItem
-from randomizer.Lists.Location import LocationList, PreGivenLocations, SharedMoveLocations, TrainingBarrelLocations
+from randomizer.Lists.Location import LocationList, ResetLocationList, SharedMoveLocations
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
@@ -87,6 +87,26 @@ def GetExitLevelExit(region):
         return ShuffleExits.ShufflableExits[Transitions.CavesToIsles].shuffledId
     elif level == Levels.CreepyCastle:
         return ShuffleExits.ShufflableExits[Transitions.CastleToIsles].shuffledId
+
+
+def GetLobbyOfRegion(region):
+    """Get the lobby region for the parameter's region."""
+    if region.level == Levels.JungleJapes:
+        return Regions.JungleJapesLobby
+    elif region.level == Levels.AngryAztec:
+        return Regions.AngryAztecLobby
+    elif region.level == Levels.FranticFactory:
+        return Regions.FranticFactoryLobby
+    elif region.level == Levels.GloomyGalleon:
+        return Regions.GloomyGalleonLobby
+    elif region.level == Levels.FungiForest:
+        return Regions.FungiForestLobby
+    elif region.level == Levels.CrystalCaves:
+        return Regions.CrystalCavesLobby
+    elif region.level == Levels.CreepyCastle:
+        return Regions.CreepyCastleLobby
+    else:
+        return None
 
 
 def GetAccessibleLocations(settings, startingOwnedItems, searchType, purchaseList=None, targetItemId=None):
@@ -229,13 +249,18 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType, purchaseLis
                         newLocations.add(location.id)
                 # Check accessibility for each exit in this region
                 exits = region.exits.copy()
-                # If loading zones are shuffled or your respawn is in a random location, the "Exit Level" button in the pause menu could potentially take you somewhere new
-                if (settings.shuffle_loading_zones or settings.random_starting_region) and region.level != Levels.DKIsles and region.level != Levels.Shops:
+                # If loading zones are shuffled, the "Exit Level" button in the pause menu could potentially take you somewhere new
+                if settings.shuffle_loading_zones == ShuffleLoadingZones.all and region.level != Levels.DKIsles and region.level != Levels.Shops:
                     levelExit = GetExitLevelExit(region)
                     # When shuffling levels, unplaced level entrances will have no destination yet
                     if levelExit is not None:
                         dest = ShuffleExits.ShufflableExits[levelExit].back.regionId
                         exits.append(TransitionFront(dest, lambda l: True))
+                # If loading zones are not shuffled but you have a random starting location, you may need to exit level to escape some regions
+                elif settings.random_starting_region and region.level != Levels.DKIsles and region.level != Levels.Shops:
+                    levelLobby = GetLobbyOfRegion(region)
+                    if levelLobby is not None and levelLobby not in addedRegions:
+                        exits.append(TransitionFront(levelLobby, lambda l: True))
                 for exit in exits:
                     destination = exit.dest
                     # If this exit has an entrance shuffle id and the shufflable exits list has it marked as shuffled,
@@ -902,6 +927,7 @@ def RandomFill(settings, itemsToPlace, inOrder=False):
         if len(itemEmpty) == 0:
             # invalid_empty_reachable = [x for x in itemEmpty if x not in validLocations]
             # empty_locations = [x for x in LocationList.values() if x.item is None]
+            # accessible_empty_locations = [x for x in empty_locations if not x.inaccessible]
             # noitem_locations = [x for x in LocationList.values() if x.type != Types.Shop and x.item is Items.NoItem]
             return len(itemsToPlace)
         shuffle(itemEmpty)
@@ -1264,21 +1290,18 @@ def Fill(spoiler):
         if logicallyPlacedMedals < 40 and medalsUnplaced > 0:
             raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced random medals.")
     # Then place Fairies
+    fairiesToBePlaced = ItemPool.FairyItems()
+    logicallyPlacedFairies = min(floor(spoiler.settings.rareware_gb_fairies * 1.2), 20)  # Place more fairies in logic than you may need
     if Types.Fairy in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Fairy)
         Reset()
-        fairiesToBePlaced = ItemPool.FairyItems()
         fairyAssumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types)
         # Fairies up to the Rareware GB requirement must be placed carefully
-        logicallyPlacedFairies = min(floor(spoiler.settings.rareware_gb_fairies * 1.2), 20)  # Place more fairies in logic than you may need
         rarewareRequiredFairies = fairiesToBePlaced[:logicallyPlacedFairies]
         fairyUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, rarewareRequiredFairies, fairyAssumedItems, doubleTime=True)
         if logicallyPlacedFairies > 0 and fairyUnplaced > 0:
             raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced logical fairies.")
-        # The remaining fairies can be placed randomly
-        fairyUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, fairiesToBePlaced[logicallyPlacedFairies:], fairyAssumedItems)
-        if logicallyPlacedFairies < 20 and fairyUnplaced > 0:
-            raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced random Fairies.")
+        # The remaining fairies can be placed randomly, so we'll do them later
     # Then place misc progression items
     if Types.Bean in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Bean)
@@ -1300,6 +1323,11 @@ def Fill(spoiler):
         gbsUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, ItemPool.ToughGoldenBananaItems(), [])
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced tough GBs.")
+    # Randomly placed fairies can be in more spots than nearly anything else so they'll go last
+    if Types.Fairy in spoiler.settings.shuffled_location_types:
+        fairyUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, fairiesToBePlaced[logicallyPlacedFairies:], fairyAssumedItems)
+        if logicallyPlacedFairies < 20 and fairyUnplaced > 0:
+            raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced random Fairies.")
     # Fill in fake items
     if Types.FakeItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.FakeItem)
@@ -2324,6 +2352,8 @@ def Generate_Spoiler(spoiler):
     global LogicVariables
     LogicVariables = None
     LogicVariables = LogicVarHolder(spoiler.settings)
+    # Reset LocationList for a new fill
+    ResetLocationList()
     # Initiate kasplat map with default
     InitKasplatMap(LogicVariables)
     # Handle misc randomizations

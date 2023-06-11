@@ -17,23 +17,6 @@ from randomizer.Lists.ShufflableExit import ShufflableExits
 
 def PlaceConstants(settings):
     """Place items which are to be put in a hard-coded location."""
-    # Handle key placements
-    if settings.key_8_helm:
-        LocationList[Locations.HelmKey].PlaceItem(Items.HideoutHelmKey)
-    if settings.shuffle_loading_zones == ShuffleLoadingZones.levels and Types.Key not in settings.shuffled_location_types:
-        # Place keys in the lobbies they normally belong in
-        # Ex. Whatever level is in the Japes lobby entrance will always have the Japes key
-        for level in LevelInfoList.values():
-            # If level exit isn't shuffled, use vanilla key
-            if not ShufflableExits[level.TransitionTo].shuffled:
-                LocationList[level.KeyLocation].PlaceConstantItem(level.KeyItem)
-            else:
-                # Find the transition this exit is attached to, and use that to get the proper location to place this key
-                dest = ShufflableExits[level.TransitionTo].shuffledId
-                shuffledTo = [x for x in LevelInfoList.values() if x.TransitionTo == dest][0]
-                LocationList[shuffledTo.KeyLocation].PlaceConstantItem(level.KeyItem)
-        # The key in Helm is always Key 8 in these settings
-        LocationList[Locations.HelmKey].PlaceConstantItem(Items.HideoutHelmKey)
     # Settings-dependent locations
     # Determine what types of locations are being shuffled
     typesOfItemsShuffled = []
@@ -54,6 +37,27 @@ def PlaceConstants(settings):
     for location in LocationList:
         if LocationList[location].type in typesOfItemsNotShuffled:
             LocationList[location].PlaceDefaultItem()
+        else:
+            LocationList[location].constant = False
+            LocationList[location].item = None
+    # Make extra sure the Helm Key is right
+    if settings.key_8_helm:
+        LocationList[Locations.HelmKey].PlaceItem(Items.HideoutHelmKey)
+    # Handle key placements
+    if settings.shuffle_loading_zones == ShuffleLoadingZones.levels and Types.Key not in settings.shuffled_location_types:
+        # Place keys in the lobbies they normally belong in
+        # Ex. Whatever level is in the Japes lobby entrance will always have the Japes key
+        for level in LevelInfoList.values():
+            # If level exit isn't shuffled, use vanilla key
+            if not ShufflableExits[level.TransitionTo].shuffled:
+                LocationList[level.KeyLocation].PlaceConstantItem(level.KeyItem)
+            else:
+                # Find the transition this exit is attached to, and use that to get the proper location to place this key
+                dest = ShufflableExits[level.TransitionTo].shuffledId
+                shuffledTo = [x for x in LevelInfoList.values() if x.TransitionTo == dest][0]
+                LocationList[shuffledTo.KeyLocation].PlaceConstantItem(level.KeyItem)
+        # The key in Helm is always Key 8 in these settings
+        LocationList[Locations.HelmKey].PlaceConstantItem(Items.HideoutHelmKey)
 
     # Empty out some locations based on the settings
     if settings.starting_kongs_count == 5:
