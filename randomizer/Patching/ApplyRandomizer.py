@@ -2,7 +2,7 @@
 import json
 import os
 import time
-
+from tempfile import mktemp
 from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, HelmDoorItem, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
@@ -25,7 +25,7 @@ from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.MiscSetupChanges import randomize_setup, updateRandomSwitches
 from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves
-from randomizer.Patching.Patcher import LocalROM, load_base_rom
+from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
@@ -462,19 +462,21 @@ def patching_response(spoiler):
     # Create a dummy time to attach to the end of the file name non decimal
     current_time = str(time.time()).replace(".", "")
 
+    created_tempfile = mktemp()
+    delta_tempfile = mktemp()
     # Write the LocalROM.rom bytesIo to a file
-    with open(f"patch{current_time}.z64", "wb") as f:
+    with open(created_tempfile, "wb") as f:
         f.write(LocalROM().rom.getvalue())
 
     import pyxdelta
 
-    pyxdelta.run("dk64.z64", f"patch{current_time}.z64", f"patch{current_time}.xdelta")
+    pyxdelta.run("dk64.z64", created_tempfile, delta_tempfile)
     # Read the patch file
-    with open(f"patch{current_time}.xdelta", "rb") as f:
+    with open(delta_tempfile, "rb") as f:
         patch = f.read()
     # Delete the patch.z64 file
-    os.remove(f"patch{current_time}.z64")
-    os.remove(f"patch{current_time}.xdelta")
+    os.remove(created_tempfile)
+    os.remove(delta_tempfile)
     return patch
 
 

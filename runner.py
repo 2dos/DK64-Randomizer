@@ -17,6 +17,7 @@ from flask_executor import Executor
 from multiprocessing import Process, Queue
 from randomizer.Enums.Settings import SettingsMap
 from queue import Empty
+from vidua import bps
 
 
 app = Flask(__name__)
@@ -26,6 +27,9 @@ CORS(app)
 TIMEOUT = 300
 current_job = []
 
+patch = open("./static/patches/shrink-dk64.bps", "rb")
+original = open("dk64.z64", "rb")
+og_patched_rom = BytesIO(bps.patch(original, patch).read())
 
 if os.environ.get("HOSTED_SERVER") is not None:
     import boto3
@@ -33,16 +37,18 @@ if os.environ.get("HOSTED_SERVER") is not None:
     dynamodb = boto3.resource("dynamodb", region_name="us-west-2")
 
 
-def generate(generate_settings, queue):
+def generate(default_rom, generate_settings, queue):
     """Gen a seed and write the file to an output file."""
     try:
-        load_base_rom()
+        load_base_rom(default_file=default_rom)
         settings = Settings(generate_settings)
         spoiler = Spoiler(settings)
         patch, spoiler = Generate_Spoiler(spoiler)
         print("Returning")
     except Exception:
-        write_error(traceback.format_exc())
+        if os.environ.get("HOSTED_SERVER") is not None:
+            write_error(traceback.format_exc())
+        print(traceback.format_exc())
     return_dict = {}
     return_dict["patch"] = patch
     return_dict["spoiler"] = spoiler
@@ -57,7 +63,6 @@ def start_gen(gen_key, post_body):
         current_job = []
     current_job.append(gen_key)
     setting_data = post_body
-    print(post_body)
     if not setting_data.get("seed"):
         setting_data["seed"] = random.randint(0, 100000000)
     # Convert string data to enums where possible.
@@ -83,6 +88,7 @@ def start_gen(gen_key, post_body):
         p = Process(
             target=generate,
             args=(
+                og_patched_rom,
                 setting_data,
                 queue,
             ),
