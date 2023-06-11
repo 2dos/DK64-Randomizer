@@ -1,8 +1,8 @@
 """Convert file setup."""
 import os
 import shutil
-from BuildLib import float_to_hex, intf_to_float
 
+from BuildLib import float_to_hex, intf_to_float
 from getMoveSignLocations import getMoveSignData
 from place_vines import generateVineSeries
 

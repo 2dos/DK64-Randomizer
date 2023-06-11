@@ -1,11 +1,12 @@
 """Global classes for the build process."""
 
-from image_converter import convertToRGBA32
-from typing import BinaryIO
 import subprocess
-from BuildEnums import ChangeType, TableNames, TextureFormat, CompressionMethods
-from BuildLib import main_pointer_table_offset, float_to_hex
+from typing import BinaryIO
+
 import encoders
+from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat
+from BuildLib import float_to_hex, main_pointer_table_offset
+from image_converter import convertToRGBA32
 
 
 class File:

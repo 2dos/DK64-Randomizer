@@ -1,5 +1,6 @@
 """Contains the class which holds logic variables, and the master copy of regions."""
 from math import ceil
+
 import randomizer.CollectibleLogicFiles.AngryAztec
 import randomizer.CollectibleLogicFiles.CreepyCastle
 import randomizer.CollectibleLogicFiles.CrystalCaves
@@ -8,12 +9,6 @@ import randomizer.CollectibleLogicFiles.FranticFactory
 import randomizer.CollectibleLogicFiles.FungiForest
 import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
-from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Regions import Regions as RegionEnum
-from randomizer.Enums.Settings import ActivateAllBananaports, GlitchesSelected, HelmDoorItem, LogicType, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
-from randomizer.Enums.Types import Types
-from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Warps import BananaportVanilla
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -29,10 +24,16 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Regions import Regions as RegionEnum
+from randomizer.Enums.Settings import ActivateAllBananaports, GlitchesSelected, HelmDoorItem, LogicType, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
 from randomizer.Enums.Time import Time
+from randomizer.Enums.Types import Types
+from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
+from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Prices import CanBuy, GetPriceAtLocation
 
 STARTING_SLAM = 1  # Currently we're assuming you always start with 1 slam
@@ -770,7 +771,7 @@ class LogicVarHolder:
         bossFight = self.settings.boss_maps[level]
         # Ensure we have the required moves for the boss fight itself
         hasRequiredMoves = True
-        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not self.settings.hard_bosses:
+        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not (self.settings.hard_bosses and self.settings.krusha_kong != Kongs.tiny):
             hasRequiredMoves = self.twirl
         elif bossFight == Maps.FungiBoss:
             hasRequiredMoves = self.hunkyChunky and self.barrels
@@ -778,7 +779,7 @@ class LogicVarHolder:
             hasRequiredMoves = self.barrels
         # In simple level order, there are a couple very specific cases we have to account for in order to prevent boss fill failures
         level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (ShuffleLoadingZones.none, ShuffleLoadingZones.levels)
-        if level_order_matters:
+        if level_order_matters and not self.assumeFillSuccess:  # These conditions only matter on fill, not on playthrough
             order_of_level = 7  # Guaranteed to be 1-7 here
             for level_order in self.settings.level_order:
                 if self.settings.level_order[level_order] == level:

@@ -1,6 +1,7 @@
 """Write new end sequence text credits."""
 import os
 import sys
+
 import requests as rs
 
 is_v2_release = False

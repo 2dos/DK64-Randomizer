@@ -115,8 +115,9 @@ KasplatLocationList = {
             xmax=1360,
             zmin=1910,
             zmax=1960,
-            region=Regions.JapesBeyondCoconutGate2,
-            additional_logic=lambda l: (Events.Rambi in l.Events and l.CanSlamSwitch(Levels.JungleJapes, 1) and l.tiny) or l.phasewalk or l.CanPhaseswim(),
+            region=Regions.JungleJapesMain,
+            additional_logic=lambda l: ((Events.JapesTinySwitch in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny)
+            or ((l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.settings.free_trade_items),
         ),
         KasplatLocation(
             name="Japes Kasplat: Starting Area",
@@ -370,7 +371,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.chunky],
             coords=[936, 122, 2027],
             region=Regions.ChunkyTemple,
-            additional_logic=lambda l: l.ischunky and (l.pineapple or l.phasewalk),
+            additional_logic=lambda l: (l.pineapple and l.ischunky) or l.phasewalk,
             vanilla=True,
         ),
         KasplatLocation(
@@ -1247,7 +1248,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey],
             coords=[937, 400, 1424],
             region=Regions.CastleTree,
-            additional_logic=lambda l: (l.coconut or l.generalclips) and l.isdonkey,
+            additional_logic=lambda l: (l.coconut or l.phasewalk or l.generalclips) and l.isdonkey,
             vanilla=True,
         ),
         KasplatLocation(

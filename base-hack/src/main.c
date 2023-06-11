@@ -9,6 +9,7 @@ static char lag_counter = 0;
 static float current_avg_lag = 0;
 static char has_loaded = 0;
 static char new_picture = 0;
+int hint_pointers[35] = {};
 
 void cFuncLoop(void) {
 	DataIsCompressed[18] = 0;

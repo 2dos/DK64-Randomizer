@@ -67,10 +67,10 @@
 | Angry Aztec Lobby | Angry Aztec: Lobby - Behind Feather Door | Wrinkly | (l.tiny and l.feather) or l.phasewalk | 
 | Angry Aztec | Angry Aztec: Near Funky's | Both |  | 
 | Angry Aztec | Angry Aztec: Near Cranky's | Both |  | 
-| Angry Aztec | Angry Aztec: Near Candy's | Both | l.vines or l.advanced_platforming | 
+| Angry Aztec | Angry Aztec: Near Candy's | Both |  | 
 | Angry Aztec | Angry Aztec: Near Snide's | Both |  | 
 | Angry Aztec | Angry Aztec: Behind 5DT | Both |  | 
-| Angry Aztec | Angry Aztec: Next to Candy - right | Both | l.vines or l.advanced_platforming | 
+| Angry Aztec | Angry Aztec: Next to Candy - right | Both |  | 
 | Angry Aztec | Angry Aztec: Under Diddy's Tiny Temple Switch | Tns |  | 
 | Angry Aztec | Angry Aztec: Under Chunky's Tiny Temple Switch | Tns |  | 
 | Angry Aztec | Angry Aztec: Under Tiny's Tiny Temple Switch | Tns |  | 
@@ -178,7 +178,7 @@
 | Gloomy Galleon | Gloomy Galleon: Near Cranky's | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: Deep Hole | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: Behind 2DS | Both |  | 
-| Gloomy Galleon | Gloomy Galleon: Behind Enguarde Door | Both | Events.LighthouseEnguarde in l.Events and l.lanky | 
+| Gloomy Galleon | Gloomy Galleon: Behind Enguarde Door | Both | Events.LighthouseEnguarde in l.Events | 
 | Gloomy Galleon | Gloomy Galleon: Cactus | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: In hallway to Shipyard - Tiny switch | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: In hallway to Shipyard - Lanky switch | Both |  | 
@@ -229,7 +229,7 @@
 | Fungi Forest Lobby | Fungi Forest: Lobby - Near B. Locker | Wrinkly |  | 
 | Fungi Forest Lobby | Fungi Forest: Lobby - Near Entrance | Wrinkly |  | 
 | Fungi Forest | Fungi Forest: Behind DK Barn | Both |  | 
-| Fungi Forest | Fungi Forest: Beanstalk Area | Both | Events.Night in l.Events or l.phasewalk | 
+| Fungi Forest | Fungi Forest: Beanstalk Area | Both | Events.Night in l.Events | 
 | Fungi Forest | Fungi Forest: Near Snide's | Both |  | 
 | Fungi Forest | Fungi Forest: Top of Giant Mushroom | Both |  | 
 | Fungi Forest | Fungi Forest: Owl Area | Both |  | 
@@ -280,10 +280,10 @@
 | Crystal Caves Lobby | Crystal Caves: Lobby - Near Left | Wrinkly |  | 
 | Crystal Caves Lobby | Crystal Caves: Lobby - Far Right | Wrinkly |  | 
 | Crystal Caves Lobby | Crystal Caves: Lobby - Near Right | Wrinkly |  | 
-| Crystal Caves | Crystal Caves: On Rotating Room | Both | (l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or l.islanky) and l.advanced_platforming) | 
+| Crystal Caves | Crystal Caves: On Rotating Room | Both | (l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or l.islanky) and l.advanced_platforming) or l.phasewalk | 
 | Crystal Caves | Crystal Caves: Near Snide's | Both |  | 
 | Crystal Caves | Crystal Caves: Giant Boulder Room | Both |  | 
-| Crystal Caves | Crystal Caves: On Sprint Cabin | Both | (l.isdiddy and l.jetpack) or (l.islanky and l.balloon) or l.CanMoonkick() | 
+| Crystal Caves | Crystal Caves: On Sprint Cabin | Both | (l.isdiddy and l.jetpack) or (l.islanky and l.balloon) or l.CanMoonkick() or l.phasewalk | 
 | Crystal Caves | Crystal Caves: Near 5DI | Both |  | 
 | Crystal Caves | Crystal Caves: Outside Lanky's Cabin | Both |  | 
 | Crystal Caves | Crystal Caves: Outside Chunky's Cabin | Both |  | 

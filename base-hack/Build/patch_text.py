@@ -1,10 +1,9 @@
 """Patch some common text."""
 
-from text_encoder import writeText
-from text_decoder import grabText
-from BuildEnums import Icons
 import shutil
 
+from BuildEnums import Icons
+from text_decoder import grabText
 from text_encoder import writeText
 
 move_hints = [
