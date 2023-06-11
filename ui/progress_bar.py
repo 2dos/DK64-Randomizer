@@ -27,14 +27,14 @@ class ProgressBar:
             self._width(val)
             self._text(text)
         else:
-            await asyncio.sleep(3)
+            await asyncio.sleep(2)
             self._show()
             self._width(val)
             self._text(text)
 
     async def reset(self):
         """Set hide, text, width and added classes of the progressbar to nil."""
-        await asyncio.sleep(7)
+        await asyncio.sleep(2)
         self._hide()
         self._width(0)
         self._text("")

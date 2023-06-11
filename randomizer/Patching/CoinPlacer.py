@@ -1,11 +1,10 @@
 """Apply Coin Rando changes."""
 import js
-from randomizer.Patching.Patcher import ROM
-from randomizer.Spoiler import Spoiler
 from randomizer.Patching.Lib import float_to_hex, short_to_ushort
+from randomizer.Patching.Patcher import ROM, LocalROM
 
 
-def randomize_coins(spoiler: Spoiler):
+def randomize_coins(spoiler):
     """Place Coins into ROM."""
     if spoiler.settings.coin_rando:
         for cont_map_id in range(216):
@@ -13,47 +12,47 @@ def randomize_coins(spoiler: Spoiler):
             # SETUP
             coin_items = [0x1D, 0x24, 0x23, 0x1C, 0x27]  # Has to remain in this order
             setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
-            ROM().seek(setup_table)
-            model2_count = int.from_bytes(ROM().readBytes(4), "big")
+            LocalROM().seek(setup_table)
+            model2_count = int.from_bytes(LocalROM().readBytes(4), "big")
             # Model Two Coins
             persisted_m2_data = []
             used_m2_ids = []
             for item in range(model2_count):
                 item_start = setup_table + 4 + (item * 0x30)
-                ROM().seek(item_start + 0x28)
-                item_type = int.from_bytes(ROM().readBytes(2), "big")
+                LocalROM().seek(item_start + 0x28)
+                item_type = int.from_bytes(LocalROM().readBytes(2), "big")
                 if item_type not in coin_items:  # Not Coin
-                    ROM().seek(item_start + 0x2A)
-                    used_m2_ids.append(int.from_bytes(ROM().readBytes(2), "big"))
-                    ROM().seek(item_start)
+                    LocalROM().seek(item_start + 0x2A)
+                    used_m2_ids.append(int.from_bytes(LocalROM().readBytes(2), "big"))
+                    LocalROM().seek(item_start)
                     item_data = []
                     for x in range(int(0x30 / 4)):
-                        item_data.append(int.from_bytes(ROM().readBytes(4), "big"))
+                        item_data.append(int.from_bytes(LocalROM().readBytes(4), "big"))
                     persisted_m2_data.append(item_data)
-            ROM().seek(setup_table + 4 + (0x30 * model2_count))
-            mystery_count = int.from_bytes(ROM().readBytes(4), "big")
+            LocalROM().seek(setup_table + 4 + (0x30 * model2_count))
+            mystery_count = int.from_bytes(LocalROM().readBytes(4), "big")
             # Mystery
             persisted_mys_data = []
             for item in range(mystery_count):
-                ROM().seek(setup_table + 4 + (model2_count * 0x30) + 4 + (item * 0x24))
+                LocalROM().seek(setup_table + 4 + (model2_count * 0x30) + 4 + (item * 0x24))
                 item_data = []
                 for x in range(int(0x24 / 4)):
-                    item_data.append(int.from_bytes(ROM().readBytes(4), "big"))
+                    item_data.append(int.from_bytes(LocalROM().readBytes(4), "big"))
                 persisted_mys_data.append(item_data)
             actor_block = setup_table + 4 + (0x30 * model2_count) + 4 + (0x24 * mystery_count)
-            ROM().seek(actor_block)
-            actor_count = int.from_bytes(ROM().readBytes(4), "big")
+            LocalROM().seek(actor_block)
+            actor_count = int.from_bytes(LocalROM().readBytes(4), "big")
             # Actors
             persisted_act_data = []
             used_actor_ids = []
             for item in range(actor_count):
                 actor_start = actor_block + 4 + (item * 0x38)
-                ROM().seek(actor_start + 0x34)
-                used_actor_ids.append(int.from_bytes(ROM().readBytes(2), "big"))
-                ROM().seek(actor_start)
+                LocalROM().seek(actor_start + 0x34)
+                used_actor_ids.append(int.from_bytes(LocalROM().readBytes(2), "big"))
+                LocalROM().seek(actor_start)
                 item_data = []
                 for x in range(int(0x38 / 4)):
-                    item_data.append(int.from_bytes(ROM().readBytes(4), "big"))
+                    item_data.append(int.from_bytes(LocalROM().readBytes(4), "big"))
                 persisted_act_data.append(item_data)
             # Place all new coins
             new_id = 0
@@ -82,16 +81,16 @@ def randomize_coins(spoiler: Spoiler):
                         persisted_m2_data.append(item_data)
             # Recompile Tables
             # SETUP
-            ROM().seek(setup_table)
-            ROM().writeMultipleBytes(len(persisted_m2_data), 4)
+            LocalROM().seek(setup_table)
+            LocalROM().writeMultipleBytes(len(persisted_m2_data), 4)
             for x in persisted_m2_data:
                 for y in x:
-                    ROM().writeMultipleBytes(y, 4)
-            ROM().writeMultipleBytes(len(persisted_mys_data), 4)
+                    LocalROM().writeMultipleBytes(y, 4)
+            LocalROM().writeMultipleBytes(len(persisted_mys_data), 4)
             for x in persisted_mys_data:
                 for y in x:
-                    ROM().writeMultipleBytes(y, 4)
-            ROM().writeMultipleBytes(len(persisted_act_data), 4)
+                    LocalROM().writeMultipleBytes(y, 4)
+            LocalROM().writeMultipleBytes(len(persisted_act_data), 4)
             for x in persisted_act_data:
                 for y in x:
-                    ROM().writeMultipleBytes(y, 4)
+                    LocalROM().writeMultipleBytes(y, 4)

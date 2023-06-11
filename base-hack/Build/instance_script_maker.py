@@ -2,7 +2,8 @@
 import json
 import os
 import zlib
-from BuildLib import main_pointer_table_offset, ROMName
+
+from BuildLib import ROMName, main_pointer_table_offset
 
 instance_dir = "./assets/instance_scripts"
 script_table = 0x0

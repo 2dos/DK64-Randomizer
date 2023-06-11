@@ -7,8 +7,8 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Types import Types
-from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.VendorType import VendorType
+from randomizer.Lists.MapsAndExits import Maps
 
 
 class MapIDCombo:
