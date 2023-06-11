@@ -605,7 +605,16 @@ class Settings:
                 self.shuffled_location_types.append(Types.PreGivenMove)
         self.shuffle_prices()
 
-        # Starting Move Locations
+        # Starting Move Location handling
+        # Undo any damage that might leak between seeds
+        LocationList[Locations.IslesVinesTrainingBarrel].default = Items.Vines
+        LocationList[Locations.IslesVinesTrainingBarrel].type = Types.TrainingBarrel
+        LocationList[Locations.IslesSwimTrainingBarrel].default = Items.Swim
+        LocationList[Locations.IslesSwimTrainingBarrel].type = Types.TrainingBarrel
+        LocationList[Locations.IslesBarrelsTrainingBarrel].default = Items.Barrels
+        LocationList[Locations.IslesBarrelsTrainingBarrel].type = Types.TrainingBarrel
+        LocationList[Locations.IslesOrangesTrainingBarrel].default = Items.Oranges
+        LocationList[Locations.IslesOrangesTrainingBarrel].type = Types.TrainingBarrel
         location_cap = 36
         if self.shockwave_status in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with):
             location_cap -= 2
