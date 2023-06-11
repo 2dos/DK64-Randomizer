@@ -16,6 +16,7 @@ from flask_cors import CORS
 from flask_executor import Executor
 from multiprocessing import Process, Queue
 from randomizer.Enums.Settings import SettingsMap
+from queue import Empty
 
 
 if os.environ.get("HOSTED_SERVER") is not None:
@@ -83,15 +84,14 @@ def start_gen(gen_key, post_body):
             ),
         )
         p.start()
-        return_dict = queue.get(timeout=TIMEOUT)
-        p.join(0)
-        if p.is_alive():
-            print("Generation Hanged, Terminating")
-            p.terminate()
+        try:
+            return_dict = queue.get(timeout=TIMEOUT)
+        # raise an exception if we timeout
+        except Empty:
             raise "Generation Timed out"
-        else:
-            patch = return_dict["patch"]
-            spoiler = return_dict["spoiler"]
+        p.join(0)
+        patch = return_dict["patch"]
+        spoiler = return_dict["spoiler"]
 
     except Exception as e:
         if os.environ.get("HOSTED_SERVER") is not None:
