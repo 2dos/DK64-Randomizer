@@ -437,7 +437,7 @@ def patching_response(spoiler):
 
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         wipeHints()
-    PushHints(spoiler)
+        PushHints(spoiler)
 
     writeBootMessages()
     enableSpiderText(spoiler)
