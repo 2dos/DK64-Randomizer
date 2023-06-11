@@ -25,10 +25,10 @@ if os.environ.get("HOSTED_SERVER") is not None:
 
 
 app = Flask(__name__)
-app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 1)
+app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 2)
 executor = Executor(app)
 CORS(app)
-
+TIMEOUT = 10
 current_job = []
 
 
@@ -84,10 +84,15 @@ def start_gen(gen_key, post_body):
         )
         p.start()
         return_dict = queue.get()
-        p.join()
-
-        patch = return_dict["patch"]
-        spoiler = return_dict["spoiler"]
+        p.join(TIMEOUT)
+        if p.is_alive():
+            print("Generation Hanged, Terminating")
+            p.terminate()
+            patch = return_dict["patch"]
+            spoiler = return_dict["spoiler"]
+        else:
+            patch = return_dict["patch"]
+            spoiler = return_dict["spoiler"]
 
     except Exception as e:
         if os.environ.get("HOSTED_SERVER") is not None:
