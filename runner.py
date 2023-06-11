@@ -29,7 +29,7 @@ app = Flask(__name__)
 app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 2)
 executor = Executor(app)
 CORS(app)
-TIMEOUT = 10
+TIMEOUT = 300
 current_job = []
 
 
