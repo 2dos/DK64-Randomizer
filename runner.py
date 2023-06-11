@@ -88,8 +88,7 @@ def start_gen(gen_key, post_body):
         if p.is_alive():
             print("Generation Hanged, Terminating")
             p.terminate()
-            patch = return_dict["patch"]
-            spoiler = return_dict["FORCEERROR"]
+            raise "Generation Timed out"
         else:
             patch = return_dict["patch"]
             spoiler = return_dict["spoiler"]
