@@ -459,10 +459,9 @@ def patching_response(spoiler):
         LocalROM().write(count)
         order += 1
 
-    
     # Create a dummy time to attach to the end of the file name non decimal
     current_time = str(time.time()).replace(".", "")
-    
+
     # Write the LocalROM.rom bytesIo to a file
     with open(f"patch{current_time}.z64", "wb") as f:
         f.write(LocalROM().rom.getvalue())

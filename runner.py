@@ -114,6 +114,7 @@ def write_error(error):
         }
     )
 
+
 @app.route("/generate", methods=["GET", "POST"])
 def lambda_function():
     """Lambda function to generate a seed.
