@@ -271,7 +271,7 @@ hint_distribution_default = {
     HintType.HelmOrder: 1,  # must have one on the path
     HintType.MoveLocation: 7,  # must be placed before you can buy the move
     # HintType.DirtPatch: 0,
-    HintType.BLocker: 1,  # must be placed on the path and before the level they hint
+    HintType.BLocker: 0,  # must be placed on the path and before the level they hint
     HintType.TroffNScoff: 0,
     HintType.KongLocation: 1,  # must be placed before you find them and placed in a door of a free kong
     # HintType.MedalsRequired: 1,
