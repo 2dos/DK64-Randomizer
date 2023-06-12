@@ -151,4 +151,4 @@ def ShuffleFairyLocations(spoiler: Spoiler):
 def ClearFairyLogic():
     """Clear out any fairy locations in preparation for filling custom ones."""
     for id, region in RegionList.items():
-        RegionList[region].locations = [loc for loc in RegionList[region].locations if loc.id not in all_fairy_locations]
+        region.locations = [loc for loc in region.locations if loc.id not in all_fairy_locations]
