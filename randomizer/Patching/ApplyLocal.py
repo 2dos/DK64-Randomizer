@@ -61,12 +61,17 @@ async def patching_response(data, from_patch_gen=False):
     spoiler = json.loads(extracted_variables["spoiler_log"])
     # Make sure we re-load the seed id
     if settings.download_patch_file and from_patch_gen is False:
+        js.write_seed_history(seed_id, str(data), json.dumps(settings.seed_hash))
+        js.load_old_seeds()
         js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
         loop.run_until_complete(ProgressBar().reset())
         return
     elif from_patch_gen is True:
         # Apply the base patch
         await js.apply_patch(data)
+    else:
+        js.write_seed_history(seed_id, str(data), json.dumps(settings.seed_hash))
+        js.load_old_seeds()
 
     sav = settings.rom_data
 
