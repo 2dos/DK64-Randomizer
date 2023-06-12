@@ -98,6 +98,10 @@ def start_gen(gen_key, post_body):
             return_dict = queue.get(timeout=TIMEOUT)
         # raise an exception if we timeout
         except Empty:
+            try:
+                p.kill()
+            except Exception:
+                pass
             return "timeout"
         p.join(0)
         patch = return_dict["patch"]
