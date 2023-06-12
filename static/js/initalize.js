@@ -419,6 +419,18 @@ function generate_seed(url, json, git_branch) {
           generate_seed(url, json, git_branch);
         }, 5000);
         
+      } else if (xhr.status == 204) {
+        console.log("Generation Timed Out")
+        $("#patchprogress").addClass("bg-danger");
+        $("#progress-text").text("Seed Generation Timed Out Please Try Again");
+        $("#patchprogress").width("100%");
+        setTimeout(function () {
+          $("#progressmodal").modal("hide");
+          $("#patchprogress").removeClass("bg-danger");
+          $("#patchprogress").width("0%");
+          $("#progress-text").text("");
+        }, 5000);
+        
       } else {
         $("#progress-text").text("Seed Gen Complete");
         $("#patchprogress").width("80%");    

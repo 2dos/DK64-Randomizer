@@ -24,7 +24,7 @@ app = Flask(__name__)
 app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 2)
 executor = Executor(app)
 CORS(app)
-TIMEOUT = 300
+TIMEOUT = 180
 current_job = []
 
 patch = open("./static/patches/shrink-dk64.bps", "rb")
@@ -98,7 +98,7 @@ def start_gen(gen_key, post_body):
             return_dict = queue.get(timeout=TIMEOUT)
         # raise an exception if we timeout
         except Empty:
-            raise Exception("Generation Timeout")
+            return "timeout"
         p.join(0)
         patch = return_dict["patch"]
         spoiler = return_dict["spoiler"]
@@ -151,6 +151,9 @@ def lambda_function():
             # We're done generating, return the data.
             future = executor.futures.pop(gen_key)
             resp_data = future.result()
+            if type(resp_data) is str:
+                response = make_response("Seed Generation Timed Out", 204)
+                return response
             hash = resp_data[1].settings.seed_hash
             spoiler_log = json.loads(resp_data[1].json)
             # Only retain the Settings section and the Cosmetics section.
