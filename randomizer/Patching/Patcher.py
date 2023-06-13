@@ -117,25 +117,27 @@ class ROM:
 
 
 # Try except for when the browser is trying to load this file
-def load_base_rom():
+def load_base_rom(default_file=None):
     """Load the base ROM file for patching."""
     try:
         global patchedRom
         global og_patched_rom
-        if patchedRom is None:
+        if patchedRom is None and default_file is None:
+            print("Loading base rom")
             from vidua import bps
 
             patch = open("./static/patches/shrink-dk64.bps", "rb")
             original = open("dk64.z64", "rb")
             og_patched_rom = BytesIO(bps.patch(original, patch).read())
             patchedRom = copy.deepcopy(og_patched_rom)
+        elif default_file is not None and patchedRom is None:
+            print("Using default file")
+            og_patched_rom = default_file
+            patchedRom = copy.deepcopy(og_patched_rom)
         else:
             patchedRom = copy.deepcopy(og_patched_rom)
     except Exception as e:
         pass
-
-
-load_base_rom()
 
 
 class LocalROM:

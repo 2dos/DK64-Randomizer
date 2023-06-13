@@ -17,6 +17,7 @@ from flask_executor import Executor
 from multiprocessing import Process, Queue
 from randomizer.Enums.Settings import SettingsMap
 from queue import Empty
+from vidua import bps
 
 
 app = Flask(__name__)
@@ -26,6 +27,9 @@ CORS(app)
 TIMEOUT = 300
 current_job = []
 
+patch = open("./static/patches/shrink-dk64.bps", "rb")
+original = open("dk64.z64", "rb")
+og_patched_rom = BytesIO(bps.patch(original, patch).read())
 
 if os.environ.get("HOSTED_SERVER") is not None:
     import boto3
@@ -33,20 +37,26 @@ if os.environ.get("HOSTED_SERVER") is not None:
     dynamodb = boto3.resource("dynamodb", region_name="us-west-2")
 
 
-def generate(generate_settings, queue):
+def generate(default_rom, generate_settings, queue):
     """Gen a seed and write the file to an output file."""
     try:
-        load_base_rom()
+        load_base_rom(default_file=default_rom)
         settings = Settings(generate_settings)
         spoiler = Spoiler(settings)
         patch, spoiler = Generate_Spoiler(spoiler)
         print("Returning")
-    except Exception:
-        write_error(traceback.format_exc())
-    return_dict = {}
-    return_dict["patch"] = patch
-    return_dict["spoiler"] = spoiler
-    queue.put(return_dict)
+        return_dict = {}
+        return_dict["patch"] = patch
+        return_dict["spoiler"] = spoiler
+        queue.put(return_dict)
+
+    except Exception as e:
+        if os.environ.get("HOSTED_SERVER") is not None:
+            write_error(traceback.format_exc())
+        print(traceback.format_exc())
+        # Return the error and the type of error.
+        error = str(type(e).__name__) + ": " + str(e)
+        queue.put(error)
 
 
 def start_gen(gen_key, post_body):
@@ -57,7 +67,6 @@ def start_gen(gen_key, post_body):
         current_job = []
     current_job.append(gen_key)
     setting_data = post_body
-    print(post_body)
     if not setting_data.get("seed"):
         setting_data["seed"] = random.randint(0, 100000000)
     # Convert string data to enums where possible.
@@ -83,26 +92,37 @@ def start_gen(gen_key, post_body):
         p = Process(
             target=generate,
             args=(
+                og_patched_rom,
                 setting_data,
                 queue,
             ),
         )
         p.start()
         try:
-            return_dict = queue.get(timeout=TIMEOUT)
+            return_data = queue.get(timeout=TIMEOUT)
         # raise an exception if we timeout
         except Empty:
-            raise Exception("Generation Timeout")
+            try:
+                p.kill()
+            except Exception:
+                pass
+            return "Seed Generation Timed Out"
         p.join(0)
-        patch = return_dict["patch"]
-        spoiler = return_dict["spoiler"]
+        if type(return_data) is str:
+            return return_data
+        else:
+            patch = return_data["patch"]
+            spoiler = return_data["spoiler"]
+            current_job.remove(gen_key)
+            return patch, spoiler
 
     except Exception as e:
         if os.environ.get("HOSTED_SERVER") is not None:
             write_error(traceback.format_exc())
+        current_job.remove(gen_key)
         print(traceback.format_exc())
-    current_job.remove(gen_key)
-    return patch, spoiler
+        error = str(type(e).__name__) + ": " + str(e)
+        return error
 
 
 def write_error(error):
@@ -145,6 +165,9 @@ def lambda_function():
             # We're done generating, return the data.
             future = executor.futures.pop(gen_key)
             resp_data = future.result()
+            if type(resp_data) is str:
+                response = make_response(resp_data, 208)
+                return response
             hash = resp_data[1].settings.seed_hash
             spoiler_log = json.loads(resp_data[1].json)
             # Only retain the Settings section and the Cosmetics section.

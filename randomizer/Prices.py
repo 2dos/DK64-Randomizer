@@ -240,7 +240,7 @@ def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, in
         if slamLevel in [1, 2]:
             return settings.prices[item][slamLevel - 1]
         else:
-            # If already have max slam, there's no move to buy (this shouldn't happen?)
+            # If already have max slam, there's no move to buy (this is fine only if it's in VerifyWorld)
             return 0
     elif item == Items.ProgressiveAmmoBelt:
         if ammoBelts in [0, 1]:

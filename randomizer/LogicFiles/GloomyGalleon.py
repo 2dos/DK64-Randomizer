@@ -235,7 +235,7 @@ LogicRegions = {
     ]),
 
     Regions.LankyShip: Region("Lanky Ship", "Shipyard Outskirts", Levels.GloomyGalleon, False, None, [
-        LocationLogic(Locations.GalleonLanky2DoorShip, lambda l: l.islanky or l.settings.free_trade_items),
+        LocationLogic(Locations.GalleonLanky2DoorShip, lambda l: l.islanky),
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: True, Transitions.GalleonLankyToShipyard),

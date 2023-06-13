@@ -1088,3 +1088,10 @@ ShopLocationReference[Levels.DKIsles] = {}
 ShopLocationReference[Levels.DKIsles][VendorType.Cranky] = [Locations.DonkeyIslesPotion, Locations.DiddyIslesPotion, Locations.LankyIslesPotion, Locations.TinyIslesPotion, Locations.ChunkyIslesPotion, Locations.SimianSlam]
 
 RemovedShopLocations = []
+
+
+def ResetLocationList():
+    """Reset the LocationList to values conducive to a new fill."""
+    for location in LocationList.values():
+        location.PlaceDefaultItem()
+    # Known to be incomplete - it should also confirm the correct locations of Fairies, Dirt, and Crowns
