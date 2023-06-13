@@ -652,8 +652,6 @@ def disable_enemy_modal(evt):
         pass
 
 
-@bind("click", "item_rando_list_select_all")
-@bind("click", "item_rando_list_reset")
 @bind("click", "shuffle_items")
 def toggle_item_rando(evt):
     """Enable and disable settings based on Item Rando being on/off."""
@@ -692,12 +690,22 @@ def toggle_item_rando(evt):
             if shops_in_pool:
                 if shockwave.selected is True:
                     document.getElementById("shockwave_status_shuffled_decoupled").selected = True
+                if move_vanilla.selected is True or move_rando.selected is True:
+                    document.getElementById("move_on_cross_purchase").selected = True
                 shockwave.setAttribute("disabled", "disabled")
+                move_vanilla.setAttribute("disabled", "disabled")
+                move_rando.setAttribute("disabled", "disabled")
                 smaller_shops.removeAttribute("disabled")
+                # Prevent UI breaking if Vanilla/Unlock All moves was selected before selection Shops in Item Rando
+                js.document.getElementById("training_barrels").removeAttribute("disabled")
+                js.document.getElementById("shockwave_status").removeAttribute("disabled")
+                js.document.getElementById("random_prices").removeAttribute("disabled")
     except AttributeError:
         pass
 
 
+@bind("click", "item_rando_list_select_all")
+@bind("click", "item_rando_list_reset")
 @bind("click", "item_rando_list_selected")
 def item_rando_list_changed(evt):
     """Enable and disable settings based on the Item Rando pool changing."""
@@ -828,6 +836,13 @@ def preset_select_changed(event):
     max_music(None)
     max_sfx(None)
     disable_barrel_modal(None)
+    item_rando_list_changed(None)
+    toggle_item_rando(None)
+    disable_enemy_modal(None)
+    toggle_bananaport_selector(None)
+    disable_helm_hurry(None)
+    toggle_logic_type(None)
+    toggle_key_settings(None)
 
 
 @bind("change", "dk_colors")
@@ -907,6 +922,7 @@ def toggle_patch_ui(event):
     """Disable non-cosmetic tabs if using patch file."""
     for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-progression-tab", "nav-qol-tab"]:
         document.getElementById(tab).setAttribute("disabled", "disabled")
+    document.getElementById("override_div").removeAttribute("hidden")
     document.getElementById("nav-cosmetics-tab").click()
 
 
@@ -916,6 +932,14 @@ def toggle_patch_ui(event):
     for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-progression-tab", "nav-qol-tab"]:
         document.getElementById(tab).removeAttribute("disabled")
     document.getElementById("override_div").setAttribute("hidden", "hidden")
+    document.getElementById("override_cosmetics").checked = True
+
+
+@bind("click", "nav-pastgen-tab")
+def hide_override_cosmetics(event):
+    """Hide the override cosmetics setting when clicking the Generate from Past Seed button."""
+    document.getElementById("override_div").setAttribute("hidden", "hidden")
+    document.getElementById("override_cosmetics").checked = True
 
 
 @bind("click", "select_keys")

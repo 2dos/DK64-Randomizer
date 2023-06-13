@@ -166,6 +166,7 @@ class Spoiler:
         settings["Random Shop Prices"] = self.settings.random_prices.name
         settings["Banana Port Randomization"] = self.settings.bananaport_rando.name
         settings["Activated Warps"] = self.settings.activate_all_bananaports.name
+        settings["Smaller Shops"] = self.settings.smaller_shops
         settings["Shuffle Shop Locations"] = self.settings.shuffle_shops
         settings["Shuffle Kasplats"] = self.settings.kasplat_rando_setting.name
 

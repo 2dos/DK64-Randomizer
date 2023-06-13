@@ -1558,6 +1558,7 @@ door_locations = {
             group=10,
             moveless=False,
             logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Gloomy Galleon: Mech Fish Gate - far right",
@@ -1569,6 +1570,7 @@ door_locations = {
             group=10,
             moveless=False,
             logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Gloomy Galleon: Cannonball Area Exit",
@@ -1618,6 +1620,7 @@ door_locations = {
             group=3,
             moveless=False,
             logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Gloomy Galleon: Lighthouse Interior",
@@ -1877,6 +1880,7 @@ door_locations = {
             rx=10,
             group=8,
             logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Fungi Forest: Clock Area - Next to Clock - right",
@@ -1886,6 +1890,7 @@ door_locations = {
             rx=10,
             group=8,
             logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Fungi Forest: Funky Area - Near Beanstalk - left",
@@ -2137,7 +2142,15 @@ door_locations = {
             logic=lambda l: l.swim,
         ),
         DoorData(
-            name="Crystal Caves: Across from the 5Door Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[2970.0, 128.0, 1499.0, 68.5], rx=9, rz=11, group=2, logic=lambda l: True
+            name="Crystal Caves: Across from the 5Door Cabin",
+            map=Maps.CrystalCaves,
+            logicregion=Regions.CabinArea,
+            location=[2970.0, 128.0, 1499.0, 68.5],
+            rx=9,
+            rz=11,
+            group=2,
+            logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Crystal Caves: 5Door Igloo - DK's right",
@@ -2247,6 +2260,7 @@ door_locations = {
             rx=4,
             group=6,
             logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Crystal Caves: Between Funky and Ice Castle - on land",

@@ -10,7 +10,7 @@ import time
 import zipfile
 
 import js
-from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolidayMode, applyKrushaKong, overwrite_object_colors, writeMiscCosmeticChanges
+from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolidayMode, overwrite_object_colors, writeMiscCosmeticChanges
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
@@ -74,67 +74,67 @@ async def patching_response(data, from_patch_gen=False):
         js.load_old_seeds()
 
     sav = settings.rom_data
-
     random.seed(None)
-    applyKrushaKong(settings)
     apply_cosmetic_colors(settings)
-    overwrite_object_colors(settings)
-    writeMiscCosmeticChanges(settings)
-    applyHolidayMode(settings)
 
-    if settings.homebrew_header:
-        # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM
-        ROM().seek(0x3C)
-        CARTRIDGE_ID = "ED"
-        ROM().writeBytes(CARTRIDGE_ID.encode("ascii"))
-        ROM().seek(0x3F)
-        SAVE_TYPE = 2  # 16K EEPROM
-        ROM().writeMultipleBytes(SAVE_TYPE << 4, 1)
+    if settings.override_cosmetics:
+        overwrite_object_colors(settings)
+        writeMiscCosmeticChanges(settings)
+        applyHolidayMode(settings)
 
-    # Colorblind mode
-    ROM().seek(sav + 0x43)
-    # The ColorblindMode enum is indexed to allow this.
-    ROM().write(int(settings.colorblind_mode))
+        if settings.homebrew_header:
+            # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM
+            ROM().seek(0x3C)
+            CARTRIDGE_ID = "ED"
+            ROM().writeBytes(CARTRIDGE_ID.encode("ascii"))
+            ROM().seek(0x3F)
+            SAVE_TYPE = 2  # 16K EEPROM
+            ROM().writeMultipleBytes(SAVE_TYPE << 4, 1)
 
-    # Remaining Menu Settings
-    ROM().seek(sav + 0xC7)
-    ROM().write(int(settings.sound_type))  # Sound Type
+        # Colorblind mode
+        ROM().seek(sav + 0x43)
+        # The ColorblindMode enum is indexed to allow this.
+        ROM().write(int(settings.colorblind_mode))
 
-    music_volume = 40
-    sfx_volume = 40
-    if settings.sfx_volume is not None and settings.sfx_volume != "":
-        sfx_volume = int(settings.sfx_volume / 2.5)
-    if settings.music_volume is not None and settings.music_volume != "":
-        music_volume = int(settings.music_volume / 2.5)
-    ROM().seek(sav + 0xC8)
-    ROM().write(sfx_volume)
-    ROM().seek(sav + 0xC9)
-    ROM().write(music_volume)
+        # Remaining Menu Settings
+        ROM().seek(sav + 0xC7)
+        ROM().write(int(settings.sound_type))  # Sound Type
 
-    boolean_props = [
-        BooleanProperties(settings.disco_chunky, 0x12F),  # Disco Chunky
-        BooleanProperties(settings.remove_water_oscillation, 0x10F),  # Remove Water Oscillation
-        BooleanProperties(settings.dark_mode_textboxes, 0x44),  # Dark Mode Text bubble
-        BooleanProperties(settings.camera_is_follow, 0xCB),  # Free/Follow Cam
-        BooleanProperties(settings.camera_is_widescreen, 0xCA),  # Normal/Widescreen
-        BooleanProperties(settings.camera_is_not_inverted, 0xCC),  # Inverted/Non-Inverted Camera
-    ]
+        music_volume = 40
+        sfx_volume = 40
+        if settings.sfx_volume is not None and settings.sfx_volume != "":
+            sfx_volume = int(settings.sfx_volume / 2.5)
+        if settings.music_volume is not None and settings.music_volume != "":
+            music_volume = int(settings.music_volume / 2.5)
+        ROM().seek(sav + 0xC8)
+        ROM().write(sfx_volume)
+        ROM().seek(sav + 0xC9)
+        ROM().write(music_volume)
 
-    for prop in boolean_props:
-        if prop.check:
-            ROM().seek(sav + prop.offset)
-            ROM().write(prop.target)
+        boolean_props = [
+            BooleanProperties(settings.disco_chunky, 0x12F),  # Disco Chunky
+            BooleanProperties(settings.remove_water_oscillation, 0x10F),  # Remove Water Oscillation
+            BooleanProperties(settings.dark_mode_textboxes, 0x44),  # Dark Mode Text bubble
+            BooleanProperties(settings.camera_is_follow, 0xCB),  # Free/Follow Cam
+            BooleanProperties(settings.camera_is_widescreen, 0xCA),  # Normal/Widescreen
+            BooleanProperties(settings.camera_is_not_inverted, 0xCC),  # Inverted/Non-Inverted Camera
+        ]
 
-    # Apply Hash
-    order = 0
-    loaded_hash = get_hash_images("browser")
-    for count in json.loads(extracted_variables["hash"].decode("utf-8")):
-        js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
-        order += 1
+        for prop in boolean_props:
+            if prop.check:
+                ROM().seek(sav + prop.offset)
+                ROM().write(prop.target)
 
-    music_data = randomize_music(settings)
+        # Apply Hash
+        order = 0
+        loaded_hash = get_hash_images("browser")
+        for count in json.loads(extracted_variables["hash"].decode("utf-8")):
+            js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
+            order += 1
 
-    spoiler = updateJSONCosmetics(spoiler, settings, music_data)
+        music_data = randomize_music(settings)
+
+        spoiler = updateJSONCosmetics(spoiler, settings, music_data)
 
     loaded_settings = spoiler["Settings"]
     tables = {}
