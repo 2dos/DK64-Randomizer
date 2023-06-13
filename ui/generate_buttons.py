@@ -219,6 +219,6 @@ def update_seed_text(event):
     """
     # When we click the download json event just change the button text
     if js.document.getElementById("download_patch_file").checked:
-        js.document.getElementById("generate_seed").value = "Generate Patch File and Seed"
+        js.document.getElementById("generate_seed").value = "Generate Patch File"
     else:
         js.document.getElementById("generate_seed").value = "Generate Seed"

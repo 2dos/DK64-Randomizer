@@ -13,7 +13,7 @@ from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
 from randomizer.Patching.CoinPlacer import randomize_coins
-from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages
+from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, applyKrushaKong, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
 from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
 from randomizer.Patching.EnemyRando import randomize_enemies
@@ -446,6 +446,7 @@ def patching_response(spoiler):
     updateMillLeverTexture(spoiler.settings)
     updateCryptLeverTexture(spoiler.settings)
     applyHelmDoorCosmetics(spoiler.settings)
+    applyKrushaKong(spoiler.settings)
 
     # D-Pad Display
     LocalROM().seek(sav + 0x139)

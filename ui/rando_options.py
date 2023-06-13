@@ -922,6 +922,7 @@ def toggle_patch_ui(event):
     """Disable non-cosmetic tabs if using patch file."""
     for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-progression-tab", "nav-qol-tab"]:
         document.getElementById(tab).setAttribute("disabled", "disabled")
+    document.getElementById("override_div").removeAttribute("hidden")
     document.getElementById("nav-cosmetics-tab").click()
 
 
@@ -931,6 +932,14 @@ def toggle_patch_ui(event):
     for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-progression-tab", "nav-qol-tab"]:
         document.getElementById(tab).removeAttribute("disabled")
     document.getElementById("override_div").setAttribute("hidden", "hidden")
+    document.getElementById("override_cosmetics").checked = True
+
+
+@bind("click", "nav-pastgen-tab")
+def hide_override_cosmetics(event):
+    """Hide the override cosmetics setting when clicking the Generate from Past Seed button."""
+    document.getElementById("override_div").setAttribute("hidden", "hidden")
+    document.getElementById("override_cosmetics").checked = True
 
 
 @bind("click", "select_keys")
