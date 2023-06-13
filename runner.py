@@ -45,14 +45,18 @@ def generate(default_rom, generate_settings, queue):
         spoiler = Spoiler(settings)
         patch, spoiler = Generate_Spoiler(spoiler)
         print("Returning")
-    except Exception:
+        return_dict = {}
+        return_dict["patch"] = patch
+        return_dict["spoiler"] = spoiler
+        queue.put(return_dict)
+
+    except Exception as e:
         if os.environ.get("HOSTED_SERVER") is not None:
             write_error(traceback.format_exc())
         print(traceback.format_exc())
-    return_dict = {}
-    return_dict["patch"] = patch
-    return_dict["spoiler"] = spoiler
-    queue.put(return_dict)
+        # Return the error and the type of error.
+        error = str(type(e).__name__) + ": " + str(e)
+        queue.put(error)
 
 
 def start_gen(gen_key, post_body):
@@ -95,24 +99,30 @@ def start_gen(gen_key, post_body):
         )
         p.start()
         try:
-            return_dict = queue.get(timeout=TIMEOUT)
+            return_data = queue.get(timeout=TIMEOUT)
         # raise an exception if we timeout
         except Empty:
             try:
                 p.kill()
             except Exception:
                 pass
-            return "timeout"
+            return "Seed Generation Timed Out"
         p.join(0)
-        patch = return_dict["patch"]
-        spoiler = return_dict["spoiler"]
+        if type(return_data) is str:
+            return return_data
+        else:
+            patch = return_data["patch"]
+            spoiler = return_data["spoiler"]
+            current_job.remove(gen_key)
+            return patch, spoiler
 
     except Exception as e:
         if os.environ.get("HOSTED_SERVER") is not None:
             write_error(traceback.format_exc())
+        current_job.remove(gen_key)
         print(traceback.format_exc())
-    current_job.remove(gen_key)
-    return patch, spoiler
+        error = str(type(e).__name__) + ": " + str(e)
+        return error
 
 
 def write_error(error):
@@ -156,7 +166,7 @@ def lambda_function():
             future = executor.futures.pop(gen_key)
             resp_data = future.result()
             if type(resp_data) is str:
-                response = make_response("Seed Generation Timed Out", 204)
+                response = make_response(resp_data, 208)
                 return response
             hash = resp_data[1].settings.seed_hash
             spoiler_log = json.loads(resp_data[1].json)
