@@ -2142,7 +2142,15 @@ door_locations = {
             logic=lambda l: l.swim,
         ),
         DoorData(
-            name="Crystal Caves: Across from the 5Door Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[2970.0, 128.0, 1499.0, 68.5], rx=9, rz=11, group=2, logic=lambda l: True, door_type="wrinkly",
+            name="Crystal Caves: Across from the 5Door Cabin",
+            map=Maps.CrystalCaves,
+            logicregion=Regions.CabinArea,
+            location=[2970.0, 128.0, 1499.0, 68.5],
+            rx=9,
+            rz=11,
+            group=2,
+            logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Crystal Caves: 5Door Igloo - DK's right",
