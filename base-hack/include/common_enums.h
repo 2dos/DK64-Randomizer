@@ -619,3 +619,9 @@ typedef enum gamemodes {
 	/* 0x00D */ GAMEMODE_SNIDEGAMES,
 	/* 0x00E */ GAMEMODE_ENDSEQTHEATRE,
 } gamemodes;
+
+typedef enum microhint_types {
+	/* 0x000 */ MICROHINTS_NONE,
+	/* 0x001 */ MICROHINTS_SOME,
+	/* 0x002 */ MICROHINTS_ALL,
+} microhint_types;

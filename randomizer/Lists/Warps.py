@@ -76,6 +76,7 @@ BananaportVanilla = {
         swap_index=19,
         event=Events.JapesW5bTagged,
         restricted=True,
+        locked=True,
     ),
     # Aztec
     Warps.AztecNearPortal: BananaportData(
@@ -114,6 +115,7 @@ BananaportVanilla = {
         swap_index=29,
         event=Events.AztecW5bTagged,
         restricted=True,
+        locked=True,
     ),
     # Llama Temple
     Warps.LlamaNearLeft: BananaportData(
@@ -206,6 +208,7 @@ BananaportVanilla = {
         swap_index=50,
         event=Events.GalleonW4aTagged,
         restricted=True,
+        locked=True,
     ),
     Warps.GalleonNearSeal: BananaportData(
         name="Gloomy Galleon: Near Seal Race", map_id=Maps.GloomyGalleon, region_id=Regions.Shipyard, obj_id_vanilla=0x56, locked=True, vanilla_warp=3, swap_index=51, event=Events.GalleonW4bTagged

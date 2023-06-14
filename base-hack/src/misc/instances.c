@@ -1259,7 +1259,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 								max_gbs = BLockerDefaultArray[level];
 							}
 						}
-						return (gb_count >= max_gbs) && (Rando.microhints > 0); 
+						return (gb_count >= max_gbs) && (Rando.microhints != MICROHINTS_NONE); 
 					} else if (index == 1) {
 						if (Player) {
 							if ((Player->obj_props_bitfield & 0x2000) == 0) {
@@ -1447,7 +1447,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 								max_gbs = BLockerDefaultArray[level];
 							}
 						}
-						return (gb_count >= max_gbs) && (Rando.microhints > 0); 
+						return (gb_count >= max_gbs) && (Rando.microhints != MICROHINTS_NONE); 
 					}
 				}
 				break;
@@ -2019,7 +2019,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 										return checkFlag(previous_slot + 0x4B, FLAGTYPE_TEMPORARY);
 									}
 								} else  if (index == 2) {
-									if ((Rando.microhints > 1) && ((MovesBase[helm_pad_kong].instrument_bitfield & 1) == 0)) {
+									if ((Rando.microhints == MICROHINTS_ALL) && ((MovesBase[helm_pad_kong].instrument_bitfield & 1) == 0)) {
 										behaviour_pointer->next_state = 20;
 										// behaviour_pointer->current_state = 20;
 									}
