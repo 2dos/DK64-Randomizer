@@ -189,6 +189,7 @@
 .definelabel CBTurnedInArray, 0x807FC930
 .definelabel charspawnerflags, 0x80755DA8
 .definelabel songData, 0x80745658
+.definelabel songVolumes, 0x807454F0
 .definelabel MusicTrackChannels, 0x807458DC
 .definelabel BoatSpeeds, 0x8075A04C
 .definelabel textParameter, 0x80750AC8
