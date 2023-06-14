@@ -356,7 +356,7 @@ void overlay_changes(void) {
 		*(short*)(0x80027970) = 0x1000;
 	} else if (CurrentMap == MAP_KROOLCHUNKY) {
 		// Add chunky phase microhint
-		if ((Rando.microhints == MICROHINTS_ALL) && (MovesBase[0].simian_slam < 2)) {
+		if ((Rando.microhints != MICROHINTS_NONE) && (MovesBase[0].simian_slam < 2)) {
 			*(short*)(0x800359A8) = 14; // Microhint Cutscene
 		}
 	}
