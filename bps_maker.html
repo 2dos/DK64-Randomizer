@@ -176,7 +176,17 @@
             );
             webWorkerCreate.onmessage = event => { // listen for events from the worker
                 var newPatchFile=new MarcFile(event.data.patchFileU8Array);
-                downloadBlob(newPatchFile._u8array,"output.bps","application/octet-stream")
+                let original_name = document.getElementById("rando_rom").value;
+                const extensions = [".z64",".v64",".n64"];
+                const directory_delimiters = ["/","\\"]
+                extensions.forEach(ext => {
+                    original_name = original_name.split(ext)[0];
+                })
+                directory_delimiters.forEach(delim => {
+                    const delim_array = original_name.split(delim)
+                    original_name = delim_array[delim_array.length - 1];
+                })
+                downloadBlob(newPatchFile._u8array,`${original_name}.bps`,"application/octet-stream")
             };
         }
     </script>

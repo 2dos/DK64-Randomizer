@@ -72,10 +72,13 @@ def pushItemMicrohints(spoiler, move_dict: dict, level: int, kong: int, slot: in
                 Items.Saxophone: [("instrument", 0, Kongs.tiny), 29, [MicrohintsEnabled.all]],
                 Items.Trombone: [("instrument", 0, Kongs.lanky), 30, [MicrohintsEnabled.all]],
                 Items.Guitar: [("instrument", 0, Kongs.diddy), 31, [MicrohintsEnabled.all]],
+                Items.ProgressiveSlam: [("slam", 1, Kongs.any), 33, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
             }
             for item_hint in hinted_items:
                 move_data = hinted_items[item_hint][0]
-                if move_dict["move_type"] == move_data[0] and move_dict["move_lvl"] == move_data[1] and move_dict["move_kong"] == move_data[2]:
+                if (move_dict["move_type"] == move_data[0] and move_dict["move_lvl"] == move_data[1] and move_dict["move_kong"] == move_data[2]) or (
+                    move_data["move_type"] == move_data[0] and move_data[0] == "slam"
+                ):
                     if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][2]):
                         move = item_hint
             if move is not None:

@@ -218,6 +218,7 @@ def pushItemMicrohints(spoiler):
             Items.Saxophone: (29, [MicrohintsEnabled.all]),
             Items.Trombone: (30, [MicrohintsEnabled.all]),
             Items.Guitar: (31, [MicrohintsEnabled.all]),
+            Items.ProgressiveSlam: (33, [MicrohintsEnabled.base, MicrohintsEnabled.all]),
         }
         for item_hint in hinted_items:
             if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][1]):

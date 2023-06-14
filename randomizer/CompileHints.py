@@ -1508,9 +1508,10 @@ def compileMicrohints(spoiler: Spoiler):
     """Create guaranteed level + kong hints for various items."""
     spoiler.microhints = {}
     if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
+        slam_levels = []
         microhint_categories = {
-            MicrohintsEnabled.base: [Items.Monkeyport, Items.GorillaGone],
-            MicrohintsEnabled.all: [Items.Monkeyport, Items.GorillaGone, Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle],
+            MicrohintsEnabled.base: [Items.Monkeyport, Items.GorillaGone, Items.ProgressiveSlam],
+            MicrohintsEnabled.all: [Items.Monkeyport, Items.GorillaGone, Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle, Items.ProgressiveSlam],
         }
         items_needing_microhints = microhint_categories[spoiler.settings.microhints_enabled].copy()
         # Loop through locations looking for the items that need a microhint
@@ -1518,13 +1519,24 @@ def compileMicrohints(spoiler: Spoiler):
             if location.item in items_needing_microhints:
                 item = ItemList[location.item]
                 level_color = level_colors[location.level]
-                if location.type in item_type_names.keys():
-                    hint_text = f"You would be better off looking for {item_type_names[location.type]} in {level_color}{level_list[location.level]}{level_color} for this.".upper()
-                elif location.type == Types.Shop:
-                    hint_text = f"You would be better off looking for shops in {level_color}{level_list[location.level]}{level_color} for this.".upper()
+                if location.item == Items.ProgressiveSlam:
+                    # Chunky Phase slam hint
+                    if location.level not in slam_levels:
+                        slam_levels.append(location.level)
                 else:
-                    hint_text = f"You would be better off looking in {level_color}{level_list[location.level]}{level_color} with {kong_list[location.kong]} for this.".upper()
-                spoiler.microhints[item.name] = hint_text
+                    if location.type in item_type_names.keys():
+                        hint_text = f"You would be better off looking for {item_type_names[location.type]} in {level_color}{level_list[location.level]}{level_color} for this.".upper()
+                    elif location.type == Types.Shop:
+                        hint_text = f"You would be better off looking for shops in {level_color}{level_list[location.level]}{level_color} for this.".upper()
+                    else:
+                        hint_text = f"You would be better off looking in {level_color}{level_list[location.level]}{level_color} with {kong_list[location.kong]} for this.".upper()
+                    spoiler.microhints[item.name] = hint_text
+        if len(slam_levels) > 0:
+            slam_text_entries = [f"{level_colors[x]}{level_list[x]}{level_colors[x]}" for x in slam_levels]
+            slam_text = " or ".join(slam_text_entries)
+            spoiler.microhints[
+                ItemList[Items.ProgressiveSlam].name
+            ] = f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptillian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
 
 
 def AddLoadingZoneHints(spoiler: Spoiler):

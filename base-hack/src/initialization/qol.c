@@ -12,8 +12,18 @@
 
 void disableAntiAliasing(void) {
     __osViSwapContext();
-    *(int*)(0x8001013C) = 0x3216;
-    *(int*)(0x8001016C) = 0x3216;
+    int disable_antialiasing = Rando.quality_of_life.reduce_lag;
+    if (Rando.quality_of_life.fast_boot) {
+        if (CurrentMap == MAP_NINTENDOLOGO) {
+            disable_antialiasing = 1;
+        }
+    } else if (FrameReal < 230) {
+        disable_antialiasing = 1;
+    }
+    if (disable_antialiasing) {
+        *(int*)(0x8001013C) = 0x3216;
+        *(int*)(0x8001016C) = 0x3216;
+    }
 }
 
 void initQoL_Lag(void) {
@@ -23,10 +33,10 @@ void initQoL_Lag(void) {
      * - Turning off the Aztec Sandstorm
      * - Disabling Rain in DK Isles
      */
+    writeFunction(0x80004EB4, &disableAntiAliasing); // Disable Anti-Aliasing
     if (Rando.quality_of_life.reduce_lag) {
         *(int*)(0x80748010) = 0x8064F2F0; // Cancel Sandstorm
         // No Rain
-        writeFunction(0x80004EB4, &disableAntiAliasing); // Disable Anti-Aliasing
         if (Rando.seasonal_changes != SEASON_CHRISTMAS) {
             *(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0
             *(int*)(0x8068AF90) = 0; // Disable weather
