@@ -589,6 +589,10 @@ class SettingsStringEnum(IntEnum):
     Changing any of the existing values will cause generated settings strings
         to break. Only add new values.
 
+    Do not delete settings from this enum. Instead, add an entry to the
+        DeprecatedSettings set below. This will be cleaned up with every major
+        release.
+
     ALL SETTINGS NEED AN ENTRY HERE!
     """
 
@@ -724,6 +728,14 @@ class SettingsStringEnum(IntEnum):
     coin_rando = 130
     vanilla_door_rando = 131
     starting_moves_count = 132
+
+
+# If a setting needs to be removed, add it to this set instead of removing it
+# from the enum above.
+DeprecatedSettings = {
+    # Example
+    # SettingsStringEnum.cb_rando,
+}
 
 
 class SettingsStringDataType(IntEnum):

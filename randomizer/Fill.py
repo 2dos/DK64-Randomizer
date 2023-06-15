@@ -38,7 +38,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Warps import Warps
 from randomizer.Lists.Item import ItemList, KongFromItem
-from randomizer.Lists.Location import LocationList, ResetLocationList, SharedMoveLocations
+from randomizer.Lists.Location import LocationList, ResetLocationList, SharedMoveLocations, SharedShopLocations
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
@@ -929,11 +929,20 @@ def RandomFill(settings, itemsToPlace, inOrder=False):
             # empty_locations = [x for x in LocationList.values() if x.item is None]
             # accessible_empty_locations = [x for x in empty_locations if not x.inaccessible]
             # noitem_locations = [x for x in LocationList.values() if x.type != Types.Shop and x.item is Items.NoItem]
-            return len(itemsToPlace)
+            return len(itemsToPlace) + 1
         shuffle(itemEmpty)
         locationId = itemEmpty.pop()
         LocationList[locationId].PlaceItem(item)
         empty.remove(locationId)
+        if locationId in SharedShopLocations:
+            settings.placed_shared_shops += 1
+            if settings.placed_shared_shops >= settings.max_shared_shops:
+                BanAllRemainingSharedShops()
+                # Have to recalculate empty after filling additional locations
+                empty = []
+                for id, location in LocationList.items():
+                    if location.item is None:
+                        empty.append(id)
     return 0
 
 
@@ -959,7 +968,7 @@ def ForwardFill(settings, itemsToPlace, ownedItems=None, inOrder=False, doubleTi
         if len(validReachable) == 0:  # If there are no empty reachable locations, reached a dead end
             # invalid_empty_reachable = [x for x in reachable if LocationList[x].item is None and x not in validLocations]
             # valid_empty = [x for x in LocationList.keys() if LocationList[x].item is None and x in validLocations]
-            return len(itemsToPlace)
+            return len(itemsToPlace) + 1
         shuffle(validReachable)
         locationId = validReachable.pop()
         # Place the item
@@ -971,6 +980,11 @@ def ForwardFill(settings, itemsToPlace, ownedItems=None, inOrder=False, doubleTi
         if item in ItemPool.Keys():
             settings.debug_fill[locationId] = item
         needToRefreshReachable = not needToRefreshReachable  # Alternate this variable every item for doubleTime
+        if locationId in SharedShopLocations:
+            settings.placed_shared_shops += 1
+            if settings.placed_shared_shops >= settings.max_shared_shops:
+                BanAllRemainingSharedShops()
+                needToRefreshReachable = True
     return 0
 
 
@@ -1053,11 +1067,22 @@ def AssumedFill(settings, itemsToPlace, ownedItems=None, inOrder=False):
             if item in ItemPool.Keys():
                 settings.debug_fill[locationId] = item
             itemShuffled = True
+            if locationId in SharedShopLocations:
+                settings.placed_shared_shops += 1
+                if settings.placed_shared_shops >= settings.max_shared_shops:
+                    BanAllRemainingSharedShops()
             break
         if not itemShuffled:
             js.postMessage("Failed placing item " + ItemList[item].name + " in any of remaining " + str(ItemList[item].type) + " type possible locations")
             return len(itemsToPlace) + 1
     return 0
+
+
+def BanAllRemainingSharedShops():
+    """Fill all empty shared shops with a NoItem."""
+    for location in SharedShopLocations:
+        if not LocationList[location].inaccessible and LocationList[location].item is None:
+            LocationList[location].PlaceItem(Items.NoItem)
 
 
 def GetMaxCoinsSpent(settings, purchasedShops):
@@ -1228,6 +1253,7 @@ def Fill(spoiler):
     spoiler.settings.debug_fill = {}
     spoiler.settings.debug_prerequisites = {}
     spoiler.settings.debug_fill_blueprints = {}
+    spoiler.settings.placed_shared_shops = 0
     # First place constant items - these will never vary and need to be in place for all other fills to know that
     ItemPool.PlaceConstants(spoiler.settings)
 
@@ -1837,6 +1863,7 @@ def FillKongsAndMovesForLevelOrder(spoiler):
     # ALGORITHM START
     # print("Starting Kongs: " + str([kong.name + " " for kong in spoiler.settings.starting_kong_list]))
     retries = 0
+    error_log = []
     while 1:
         try:
             # Need to place constants to update boss key items after shuffling levels
@@ -1863,6 +1890,7 @@ def FillKongsAndMovesForLevelOrder(spoiler):
                 raise Ex.GameNotBeatableException("Game potentially unbeatable after placing all items.")
             return
         except Ex.FillException as ex:
+            error_log.append(ex)
             Reset()
             Logic.ClearAllLocations()
             retries += 1

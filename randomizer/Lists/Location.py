@@ -42,6 +42,7 @@ class Location:
         self.logically_relevant = logically_relevant  # This is True if this location is needed to derive the logic for another location
         self.placement_index = None
         self.inaccessible = False
+        self.smallerShopsInaccessible = False
         if self.type == Types.Shop:
             self.movetype = data[0]
             self.index = data[1]
@@ -85,7 +86,7 @@ class Location:
         # If we're placing a real move here, lock out mutually exclusive shop locations
         if item != Items.NoItem and self.type == Types.Shop:
             for location in ShopLocationReference[self.level][self.vendor]:
-                if location in RemovedShopLocations:
+                if LocationList[location].smallerShopsInaccessible:
                     continue
                 # If this is a shared spot, lock out kong-specific locations in this shop
                 if self.kong == Kongs.any and LocationList[location].kong != Kongs.any:
@@ -121,11 +122,11 @@ class Location:
         if self.type == Types.Shop:
             # Check other locations in this shop
             for location_id in ShopLocationReference[self.level][self.vendor]:
-                if location_id in RemovedShopLocations:
+                if LocationList[location_id].smallerShopsInaccessible:
                     continue
                 if LocationList[location_id].kong == Kongs.any and LocationList[location_id].inaccessible:
                     # If there are no other items remaining in this shop, then we can unlock the shared location
-                    itemsInThisShop = len([location for location in ShopLocationReference[self.level][self.vendor] if location not in RemovedShopLocations and LocationList[location].item not in (None, Items.NoItem)])
+                    itemsInThisShop = len([location for location in ShopLocationReference[self.level][self.vendor] if LocationList[location].item not in (None, Items.NoItem)])
                     if itemsInThisShop == 0:
                         LocationList[location_id].inaccessible = False
                 # Locations are only inaccessible due to lockouts. If any exist, they're because this location caused them to be locked out.
@@ -1086,8 +1087,6 @@ ShopLocationReference[Levels.CreepyCastle][VendorType.Funky] = [
 ]
 ShopLocationReference[Levels.DKIsles] = {}
 ShopLocationReference[Levels.DKIsles][VendorType.Cranky] = [Locations.DonkeyIslesPotion, Locations.DiddyIslesPotion, Locations.LankyIslesPotion, Locations.TinyIslesPotion, Locations.ChunkyIslesPotion, Locations.SimianSlam]
-
-RemovedShopLocations = []
 
 
 def ResetLocationList():

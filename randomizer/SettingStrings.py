@@ -5,7 +5,16 @@ import json
 from itertools import groupby
 
 import js
-from randomizer.Enums.Settings import BananaportRando, LogicType, SettingsStringDataType, SettingsStringEnum, SettingsStringIntRangeMap, SettingsStringListTypeMap, SettingsStringTypeMap
+from randomizer.Enums.Settings import (
+    BananaportRando,
+    DeprecatedSettings,
+    LogicType,
+    SettingsStringDataType,
+    SettingsStringEnum,
+    SettingsStringIntRangeMap,
+    SettingsStringListTypeMap,
+    SettingsStringTypeMap,
+)
 
 letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 index_to_letter = {i: letters[i] for i in range(64)}
@@ -105,9 +114,12 @@ settingsExclusionMap = {
 def prune_settings(settings_dict: dict):
     """Remove certain settings based on the values of other settings."""
     settings_to_remove = []
+    # Remove settings based on the exclusion map above.
     for keySetting, exclusions in settingsExclusionMap.items():
         if settings_dict[keySetting] in exclusions:
             settings_to_remove.extend(exclusions[settings_dict[keySetting]])
+    # Remove any deprecated settings.
+    settings_to_remove.extend(setting.name for setting in DeprecatedSettings)
     for pop in settings_to_remove:
         if pop in settings_dict:
             settings_dict.pop(pop)
@@ -313,5 +325,7 @@ def decrypt_settings_string_enum(encrypted_string: str):
             int_val = int(bitstring[bit_index : bit_index + max_value.bit_length()], 2)
             val = key_data_type(int_val)
             bit_index += max_value.bit_length()
-        settings_dict[key_name] = val
+        # If this setting is not deprecated, add it.
+        if key_enum not in DeprecatedSettings:
+            settings_dict[key_name] = val
     return settings_dict
