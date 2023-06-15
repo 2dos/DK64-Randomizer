@@ -733,6 +733,8 @@ class SettingsStringEnum(IntEnum):
 # If a setting needs to be removed, add it to this set instead of removing it
 # from the enum above.
 DeprecatedSettings = {
+    # Example
+    # SettingsStringEnum.cb_rando,
 }
 
 
