@@ -2,6 +2,7 @@
 import hashlib
 import inspect
 import json
+import math
 import random
 from random import randint
 
@@ -32,7 +33,6 @@ from randomizer.Lists.Location import (
     LankyMoveLocations,
     LocationList,
     PreGivenLocations,
-    RemovedShopLocations,
     SharedShopLocations,
     ShopLocationReference,
     TinyMoveLocations,
@@ -644,7 +644,6 @@ class Settings:
 
         # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
-            RemovedShopLocations = []
             # To evenly distribute the locations blocked, we can use the fact there are 20 shops to our advantage
             # These evenly distributed pairs will represent "locations to block" for each shop
             kongPairs = [
@@ -681,9 +680,10 @@ class Settings:
                     accessible_shops = [location_id for location_id in ShopLocationReference[level][vendor] if location_id not in inaccessible_shops]
                     for location_id in inaccessible_shops:
                         LocationList[location_id].inaccessible = True
-                        RemovedShopLocations.append(location_id)
+                        LocationList[location_id].smallerShopsInaccessible = True
                     for location_id in accessible_shops:
                         LocationList[location_id].inaccessible = False
+                        LocationList[location_id].smallerShopsInaccessible = False
 
         # B Locker and Troff n Scoff amounts Rando
         self.update_progression_totals()
@@ -962,6 +962,29 @@ class Settings:
         if self.fast_gbs:
             # On Fast GBs, this location refers to the blast course, not the arcade
             LocationList[Locations.FactoryDonkeyDKArcade].name = "Factory Donkey Blast Course"
+
+        # Calculate the net balance of locations being added to the pool vs number of items being shuffled
+        # Positive means we have more locations than items, negatives means we have more items than locations (very bad!)
+        # The number is effectively (locations - items) so losing locations means we lower this value, losing items means we raise this value
+        self.location_item_balance = 0
+        if self.shuffle_items:
+            if Types.Shop in self.shuffled_location_types:
+                self.location_item_balance -= 34  # We're placing 34 shop items, but the number of locations varies by the number of shared shops. This forms the crux of how we use this balance.
+            if self.starting_moves_count < 4:
+                self.location_item_balance -= 4 - self.starting_moves_count  # We lose locations if we start with fewer than 4 moves
+            elif self.starting_moves_count > 4:
+                self.location_item_balance += self.starting_moves_count - 4  # We gain locations if we start with more than 4 moves
+            if Types.Shockwave in self.shuffled_location_types and self.shockwave_status == ShockwaveStatus.shuffled_decoupled:
+                self.location_item_balance -= 1  # If camera/shockwave is decoupled and shuffled, we gain one additional item
+            self.location_item_balance += 8 - len(self.krool_keys_required)  # We don't have to place starting keys so we may lose items here
+            if Types.Kong in self.shuffled_location_types:
+                self.location_item_balance -= 4  # Kong cages *can* be filled by Kongs, but nothing else. We'll treat these as lost locations in all worlds due to the rarity of this.
+        # With some light algebra we get the maximum number of shared shops we can fill before we start running into fill problems
+        self.max_shared_shops = math.floor(25 - self.location_item_balance / -4)
+        if self.smaller_shops:
+            self.max_shared_shops = math.floor(30 - self.location_item_balance / -2)
+        self.max_shared_shops -= 1  # Subtract 1 shared shop for a little buffer. If we manage to solve the empty Helm fill issue then we can probably remove this line.
+        self.placed_shared_shops = 0
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""

@@ -141,6 +141,11 @@ hint_list = [
         base=True,
     ),
     Hint(hint="[[WOTB]]", important=False, base=True),
+    Hint(
+        hint="By using DK64Randomizer.com, users agree to release the developers from any claims, damages, bad seeds, or liabilities. Please exercise caution and randomizer responsibly.",
+        important=False,
+        base=True,
+    ),
 ]
 
 kong_list = ["\x04Donkey\x04", "\x05Diddy\x05", "\x06Lanky\x06", "\x07Tiny\x07", "\x08Chunky\x08", "\x04Any kong\x04"]
@@ -353,7 +358,9 @@ def compileHints(spoiler: Spoiler):
             if key_id == Items.HideoutHelmKey and spoiler.settings.key_8_helm:
                 # Your training in Gorilla Gone, Monkeyport, and Vines are always pointless hints if Key 8 is in Helm, so let's not
                 useless_locations[Items.HideoutHelmKey] = [
-                    loc for loc in spoiler.woth_paths[key_location_ids[key_id]] if loc in TrainingBarrelLocations and LocationList[loc].item in [Items.GorillaGone, Items.Monkeyport, Items.Vines]
+                    loc
+                    for loc in spoiler.woth_paths[key_location_ids[key_id]]
+                    if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and LocationList[loc].item in [Items.GorillaGone, Items.Monkeyport, Items.Vines]
                 ]
                 path_length -= len(useless_locations[Items.HideoutHelmKey])
             key_difficulty_score[key_id] = path_length  # The length of the path serves as a "score" for how much this key needs hints
@@ -379,16 +386,22 @@ def compileHints(spoiler: Spoiler):
         # Determine which K. Rool path locations are useless
         # First calculate all of them correctly
         if Kongs.diddy in spoiler.settings.krool_order:
-            useless_locations[Kongs.diddy] = [loc for loc in spoiler.krool_paths[Kongs.diddy] if loc in TrainingBarrelLocations and LocationList[loc].item in [Items.Peanut, Items.RocketbarrelBoost]]
+            useless_locations[Kongs.diddy] = [
+                loc for loc in spoiler.krool_paths[Kongs.diddy] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and LocationList[loc].item in [Items.Peanut, Items.RocketbarrelBoost]
+            ]
         if Kongs.lanky in spoiler.settings.krool_order:
-            useless_locations[Kongs.lanky] = [loc for loc in spoiler.krool_paths[Kongs.lanky] if loc in TrainingBarrelLocations and LocationList[loc].item in [Items.Barrels, Items.Trombone]]
+            useless_locations[Kongs.lanky] = [
+                loc for loc in spoiler.krool_paths[Kongs.lanky] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and LocationList[loc].item in [Items.Barrels, Items.Trombone]
+            ]
         if Kongs.tiny in spoiler.settings.krool_order:
-            useless_locations[Kongs.tiny] = [loc for loc in spoiler.krool_paths[Kongs.tiny] if loc in TrainingBarrelLocations and LocationList[loc].item in [Items.Feather, Items.MiniMonkey]]
+            useless_locations[Kongs.tiny] = [
+                loc for loc in spoiler.krool_paths[Kongs.tiny] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and LocationList[loc].item in [Items.Feather, Items.MiniMonkey]
+            ]
         if Kongs.chunky in spoiler.settings.krool_order:
             useless_locations[Kongs.chunky] = [
                 loc
                 for loc in spoiler.krool_paths[Kongs.chunky]
-                if loc in TrainingBarrelLocations and LocationList[loc].item in [Items.ProgressiveSlam, Items.PrimatePunch, Items.HunkyChunky, Items.GorillaGone]
+                if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and LocationList[loc].item in [Items.ProgressiveSlam, Items.PrimatePunch, Items.HunkyChunky, Items.GorillaGone]
             ]
     # Otherwise we dynamically generate the hint distribution
     else:
@@ -430,24 +443,31 @@ def compileHints(spoiler: Spoiler):
                     if Kongs.diddy in spoiler.settings.krool_order:
                         hint_distribution[HintType.RequiredWinConditionHint] += 1
                         useless_locations[Kongs.diddy] = [
-                            loc for loc in spoiler.krool_paths[Kongs.diddy] if loc in TrainingBarrelLocations and LocationList[loc].item in [Items.Peanut, Items.RocketbarrelBoost]
+                            loc
+                            for loc in spoiler.krool_paths[Kongs.diddy]
+                            if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and LocationList[loc].item in [Items.Peanut, Items.RocketbarrelBoost]
                         ]
                     if Kongs.lanky in spoiler.settings.krool_order:
                         hint_distribution[HintType.RequiredWinConditionHint] += 1
                         useless_locations[Kongs.lanky] = [
-                            loc for loc in spoiler.krool_paths[Kongs.lanky] if loc in TrainingBarrelLocations and LocationList[loc].item in [Items.Barrels, Items.Trombone]
+                            loc
+                            for loc in spoiler.krool_paths[Kongs.lanky]
+                            if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and LocationList[loc].item in [Items.Barrels, Items.Trombone]
                         ]
                     if Kongs.tiny in spoiler.settings.krool_order:
                         hint_distribution[HintType.RequiredWinConditionHint] += 1
                         useless_locations[Kongs.tiny] = [
-                            loc for loc in spoiler.krool_paths[Kongs.tiny] if loc in TrainingBarrelLocations and LocationList[loc].item in [Items.Feather, Items.MiniMonkey]
+                            loc
+                            for loc in spoiler.krool_paths[Kongs.tiny]
+                            if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and LocationList[loc].item in [Items.Feather, Items.MiniMonkey]
                         ]
                     if Kongs.chunky in spoiler.settings.krool_order:
                         hint_distribution[HintType.RequiredWinConditionHint] += 2
                         useless_locations[Kongs.chunky] = [
                             loc
                             for loc in spoiler.krool_paths[Kongs.chunky]
-                            if loc in TrainingBarrelLocations and LocationList[loc].item in [Items.ProgressiveSlam, Items.PrimatePunch, Items.HunkyChunky, Items.GorillaGone]
+                            if (loc in TrainingBarrelLocations or loc in PreGivenLocations)
+                            and LocationList[loc].item in [Items.ProgressiveSlam, Items.PrimatePunch, Items.HunkyChunky, Items.GorillaGone]
                         ]
                     path_length -= len(useless_locations[Kongs.diddy]) + len(useless_locations[Kongs.lanky]) + len(useless_locations[Kongs.tiny]) + len(useless_locations[Kongs.chunky])
                     if hint_distribution[HintType.RequiredWinConditionHint] != 0:
@@ -536,7 +556,7 @@ def compileHints(spoiler: Spoiler):
                         useless_locations[Items.HideoutHelmKey] = [
                             loc
                             for loc in spoiler.woth_paths[key_location_ids[key_id]]
-                            if loc in TrainingBarrelLocations and LocationList[loc].item in [Items.GorillaGone, Items.Monkeyport, Items.Vines]
+                            if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and LocationList[loc].item in [Items.GorillaGone, Items.Monkeyport, Items.Vines]
                         ]
                         path_length -= len(useless_locations[Items.HideoutHelmKey])
                     if path_length <= 1:  # 1-2
