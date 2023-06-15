@@ -491,22 +491,24 @@ def compileHints(spoiler: Spoiler):
                     #     hint_distribution[HintType.RequiredWinConditionHint] += 1  # Dedicated Hunky Chunky hint
                 # Some win conditions need help finding the camera (if you don't start with it) - variable amount of unique hints for it
                 if spoiler.settings.win_condition in (WinCondition.all_fairies, WinCondition.poke_snap) and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
-                    valid_types.append(HintType.RequiredWinConditionHint)
                     camera_location_id = None
                     for id, loc in LocationList.items():
                         if loc.item in (Items.Camera, Items.CameraAndShockwave):
                             camera_location_id = id
                             break
-                    # Same rules as key path amounts
-                    path_length = len(spoiler.woth_paths[camera_location_id]) - 1  # Don't include the camera itself in the path length
-                    if path_length <= 1:  # 1-2
-                        hint_distribution[HintType.RequiredWinConditionHint] = 1
-                    elif path_length <= 5:  # 3-6
-                        hint_distribution[HintType.RequiredWinConditionHint] = 2
-                    elif path_length <= 9:  # 7-10
-                        hint_distribution[HintType.RequiredWinConditionHint] = 3
-                    else:  # 11+
-                        hint_distribution[HintType.RequiredWinConditionHint] = 4
+                    # Don't make a Camera path hint if Camera isn't woth
+                    if camera_location_id in spoiler.woth_paths.keys():
+                        valid_types.append(HintType.RequiredWinConditionHint)
+                        # Same rules as key path amounts
+                        path_length = len(spoiler.woth_paths[camera_location_id]) - 1  # Don't include the camera itself in the path length
+                        if path_length <= 1:  # 1-2
+                            hint_distribution[HintType.RequiredWinConditionHint] = 1
+                        elif path_length <= 5:  # 3-6
+                            hint_distribution[HintType.RequiredWinConditionHint] = 2
+                        elif path_length <= 9:  # 7-10
+                            hint_distribution[HintType.RequiredWinConditionHint] = 3
+                        else:  # 11+
+                            hint_distribution[HintType.RequiredWinConditionHint] = 4
         if spoiler.settings.crown_door_random or spoiler.settings.coin_door_random:
             valid_types.append(HintType.RequiredHelmDoorHint)
             if spoiler.settings.crown_door_random:
@@ -956,8 +958,9 @@ def compileHints(spoiler: Spoiler):
                 UpdateHint(hint_location, message)
         # All fairies seeds get 2 path hints for the camera
         if spoiler.settings.win_condition == WinCondition.all_fairies or spoiler.settings.win_condition == WinCondition.poke_snap:
+            camera_location_id = None
             for location_id in spoiler.woth_paths.keys():
-                if LocationList[location_id].item == Items.Camera:
+                if LocationList[location_id].item in (Items.Camera, Items.CameraAndShockwave):
                     camera_location_id = location_id
                     break
             path = spoiler.woth_paths[camera_location_id]
