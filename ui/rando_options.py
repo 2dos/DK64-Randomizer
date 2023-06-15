@@ -709,6 +709,7 @@ def toggle_item_rando(evt):
 @bind("click", "item_rando_list_selected")
 def item_rando_list_changed(evt):
     """Enable and disable settings based on the Item Rando pool changing."""
+    item_rando_disabled = True
     item_rando_pool = document.getElementById("item_rando_list_selected").options
     shockwave = document.getElementById("shockwave_status_shuffled")
     smaller_shops = document.getElementById("smaller_shops")
@@ -725,7 +726,9 @@ def item_rando_list_changed(evt):
             nothing_selected = False
     if nothing_selected:
         shops_in_pool = True
-    if shops_in_pool:
+    if js.document.getElementById("shuffle_items").checked:
+        item_rando_disabled = False
+    if shops_in_pool and not item_rando_disabled:
         # Prevent camera/shockwave from being coupled and enable smaller shops if shops are in the pool
         if shockwave.selected is True:
             document.getElementById("shockwave_status_shuffled_decoupled").selected = True

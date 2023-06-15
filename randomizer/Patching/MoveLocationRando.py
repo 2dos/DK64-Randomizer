@@ -107,8 +107,13 @@ def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler, kong_slot: int, k
         else:
             move_types = ["special", "slam", "gun", "ammo_belt", "instrument"]
             data = move_types.index(x["move_type"]) << 5 | (x["move_lvl"] << 3) | x["move_kong"]
+            price_var = 0
+            if type(x["price"]) == list:
+                price_var = 0
+            else:
+                price_var = x["price"]
             LocalROM().writeMultipleBytes(data, 1)
-            LocalROM().writeMultipleBytes(x["price"], 1)
+            LocalROM().writeMultipleBytes(price_var, 1)
             LocalROM().writeMultipleBytes(0xFFFF, 2)
         if enable_hints:
             if level_override is not None:
