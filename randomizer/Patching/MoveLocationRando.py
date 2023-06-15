@@ -77,7 +77,7 @@ def pushItemMicrohints(spoiler, move_dict: dict, level: int, kong: int, slot: in
             for item_hint in hinted_items:
                 move_data = hinted_items[item_hint][0]
                 if (move_dict["move_type"] == move_data[0] and move_dict["move_lvl"] == move_data[1] and move_dict["move_kong"] == move_data[2]) or (
-                    move_data["move_type"] == move_data[0] and move_data[0] == "slam"
+                    move_dict["move_type"] == move_data[0] and move_data[0] == "slam"
                 ):
                     if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][2]):
                         move = item_hint
