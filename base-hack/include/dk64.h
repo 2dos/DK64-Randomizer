@@ -553,7 +553,8 @@ extern char FilePercentage; // Unsigned is technically correct, but -124% is mor
 extern int FileGBCount;
 extern float FileScreenDLOffset;
 extern short CBTurnedInArray[8];
-extern short songData[0xB0];
+extern short songData[SONG_COUNT];
+extern short songVolumes[SONG_COUNT];
 extern unsigned int DKTVData[5];
 
 extern void* ExitPointer;

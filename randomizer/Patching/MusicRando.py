@@ -66,6 +66,8 @@ def insertUploaded(uploaded_songs: list, uploaded_song_names: list, target_type:
 
 
 ENABLE_CHAOS = False  # Enable DK Rap everywhere
+TYPE_ARRAY = 0x1FEE200
+TYPE_VALUES = [SongType.BGM, SongType.Event, SongType.MajorItem, SongType.MinorItem]
 
 
 def randomize_music(settings: Settings):
@@ -97,8 +99,14 @@ def randomize_music(settings: Settings):
         sav = settings.rom_data
         ROM().seek(sav + 0x12E)
         ROM().write(1)
-    for song in song_data:
+
+    for index, song in enumerate(song_data):
         song.Reset()
+        ROM().seek(TYPE_ARRAY + index)
+        if song.type in TYPE_VALUES:
+            ROM().write(TYPE_VALUES.index(song.type))
+        else:
+            ROM().write(255)
     # Check if we have anything beyond default set for BGM
     if settings.music_bgm_randomized:
         # If the user selected standard rando
