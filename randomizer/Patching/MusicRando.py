@@ -69,6 +69,7 @@ ENABLE_CHAOS = False  # Enable DK Rap everywhere
 TYPE_ARRAY = 0x1FEE200
 TYPE_VALUES = [SongType.BGM, SongType.Event, SongType.MajorItem, SongType.MinorItem]
 
+
 def randomize_music(settings: Settings):
     """Randomize music passed from the misc music settings.
 
