@@ -219,7 +219,7 @@ def test_with_settings_string_1():
     # This top one is always the S2 Preset (probably up to date, if it isn't go steal it from the season2.json)
     settings_string = "bKEFiRorPN5ysnPCBogPQ+qBoRDIhKlsa58B+I0eu0uXxCnLE2nBACoMgt1PX4EkAyaBkF1kssFAXQAgwE6gIHA3YBhAI7gQJBXgChQM8gYLB3oDhgQoQ08e2QpHqKhnKlMubRbwM0NjlFuCFRFgMTEUDF61xyN2q/32RQPAZiqcuUOS2EJIIvoE5IMMGY2mMHFosi0rlgVigthoTiwVCkwEwYEYkHERh0AVQA"
     # This one is for ease of testing, go wild with it
-    # settings_string = "baGFiRorPN5yunTChooPw+qhoRDIhKlsa58CCI0ivUyYRCnrGGrBACoUht9QX8EsAycBkF1ls0FAXUAgwE7AIHA3cBhAI8AQJBXkChQM9AYLB3sDhgQow08fGQpnqShoKlsvbTcAM0NjlGuKFRFgMTEUDF+2R2OWvAX6RwPA5kqkuxuiSaxBJBmBBHNCBgzm4yA4tloXFgsiwUlwNCgWisVGEmjEjkk5CQPACsAA"
+    # settings_string = "bKEGiRorPE1ecrJzwgDDEsFX7lGKJD0Pj8Ro9dpcviFmpyxRpgRArdT4mBxJFZ7fgSICJoV5XKJPLJVKYyi+yWWCgLoAQYCdQEDgbsAwgEdwIEgrwBQoGeQMFg70BwwIUIbkPf0UqFHIz0SqXVFpMOBFQFgoTAUAl6qgxTxnWzVgExFMXKHJcCgzaYwcWiyQRALSwWw0YCYMCMaCQcTWHA2fz6IgGIw6AKgA+AA"
 
     settings_dict = decrypt_settings_string_enum(settings_string)
     settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly

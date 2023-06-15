@@ -84,7 +84,7 @@ LogicRegions = {
         TransitionFront(Regions.CrankyIsles, lambda l: True),
     ]),
 
-    Regions.IslesMain: Region("Isles Main", "DK Isle", Levels.DKIsles, True, None, [
+    Regions.IslesMain: Region("Isles Main", "Outside DK Isle", Levels.DKIsles, True, None, [
         # Don't check for donkey for rock- If lobbies are closed and first B.Locker is not 0, this banana must be grabbable by
         # the starting kong, so for logic we assume any kong can grab it since that's practically true.
         LocationLogic(Locations.IslesDonkeyJapesRock, lambda l: (l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events)),
@@ -116,7 +116,7 @@ LogicRegions = {
         TransitionFront(Regions.KRool, lambda l: l.CanAccessKRool() or l.assumeKRoolAccess),
     ]),
 
-    Regions.IslesMainUpper: Region("Isles Main Upper", "DK Isle", Levels.DKIsles, False, None, [
+    Regions.IslesMainUpper: Region("Isles Main Upper", "Outside DK Isle", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesChunkyInstrumentPad, lambda l: l.triangle and l.chunky and l.barrels),
     ], [
         Event(Events.IslesDiddyBarrelSpawn, lambda l: l.chunky and l.trombone and l.lanky and l.barrels),
@@ -244,13 +244,14 @@ LogicRegions = {
         TransitionFront(Regions.GloomyGalleonStart, lambda l: l.IsLevelEnterable(Levels.GloomyGalleon), Transitions.IslesToGalleon),
     ]),
 
-    Regions.CabinIsle: Region("Cabin Isle", "DK Isle", Levels.DKIsles, False, None, [
+    Regions.CabinIsle: Region("Cabin Isle", "Outside DK Isle", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesDiddyCagedBanana, lambda l: ((Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack) or (l.advanced_platforming and (l.isdiddy or (l.isdonkey and l.settings.krusha_kong != Kongs.donkey) or (l.istiny and l.twirl) or l.ischunky))) and ((l.peanut and l.isdiddy) or l.phasewalk and l.settings.free_trade_items)),
         LocationLogic(Locations.IslesDiddySummit, lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.RainbowCoin_Location03, lambda l: l.shockwave),
         LocationLogic(Locations.RainbowCoin_Location05, lambda l: ((Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.advanced_platforming)) and l.shockwave),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
+        TransitionFront(Regions.IslesMainUpper, lambda l: l.twirl and l.istiny and l.advanced_platforming),
         TransitionFront(Regions.FungiForestLobby, lambda l: True, Transitions.IslesMainToForestLobby),
     ]),
 

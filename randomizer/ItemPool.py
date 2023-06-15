@@ -40,6 +40,9 @@ def PlaceConstants(settings):
         else:
             LocationList[location].constant = False
             LocationList[location].item = None
+        # While we're looping here, also reset shops that became inaccessible due to fill lockouts
+        if LocationList[location].type == Types.Shop:
+            LocationList[location].inaccessible = LocationList[location].smallerShopsInaccessible
     # Make extra sure the Helm Key is right
     if settings.key_8_helm:
         LocationList[Locations.HelmKey].PlaceItem(Items.HideoutHelmKey)
