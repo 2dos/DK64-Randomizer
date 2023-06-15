@@ -15,8 +15,8 @@ import model_port
 
 # Patcher functions for the extracted files
 import patch_text
-import portal_instance_script  # HAS TO BE BEFORE `instance_script_maker`
-import shop_instance_script  # HAS TO BE BEFORE `instance_script_maker`
+import portal_instance_script
+import shop_instance_script
 from adjust_exits import adjustExits
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
@@ -38,7 +38,7 @@ from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, rep
 from recompute_pointer_table import clampCompressedTextures, dumpPointerTableDetails, getFileInfo, parsePointerTables, replaceROMFile, writeModifiedPointerTablesToROM
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
-from writeWarpData import generateDefaultPadPairing  # HAS TO BE BEFORE `instance_script_maker`
+from writeWarpData import generateDefaultPadPairing
 
 if os.path.exists(newROMName):
     os.remove(newROMName)
@@ -1213,6 +1213,12 @@ with open(newROMName, "r+b") as fh:
     fh.write((4).to_bytes(1, "big"))
     fh.seek(0x1FED020 + 0x159)
     fh.write((2).to_bytes(1, "big"))
+
+    # Default Menu Settings
+    fh.seek(0x1FED020 + 0xC8)
+    fh.write((40).to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0xC9)
+    fh.write((40).to_bytes(1, "big"))
 
     # Pkmn Snap Default Enemies
     pkmn_snap_enemies = [

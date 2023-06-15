@@ -304,7 +304,6 @@ void overlay_changes(void) {
 		*(short*)(0x8002985A) = 0; // Change sprite mode for GB
 		*(float*)(0x80033CA8) = 0.4f; // Change GB Scale
 
-		
 		// File Select
 		*(int*)(0x80028CB0) = 0xA0600000; // SB $r0, 0x0 (v0) - Always view file index 0
 		*(int*)(0x80028CC4) = 0; // Prevent file index overwrite
@@ -318,6 +317,9 @@ void overlay_changes(void) {
 		*(short*)(0x80028CA6) = 5; // Change selecting orange to delete confirm screen
 		// Options
 		initOptionScreen();
+		// Disable Multiplayer
+		*(int*)(0x800280B0) = 0; // Disable access
+		*(int*)(0x80028A8C) = 0; // Lower Sprite Opacity
 	} else if (CurrentMap == MAP_SNIDE) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
@@ -352,6 +354,11 @@ void overlay_changes(void) {
 	} else if ((CurrentMap == MAP_HELMLOBBY) && (Rando.perma_lose_kongs)) {
 		// Prevent Helm Lobby B. Locker requiring Chunky
 		*(short*)(0x80027970) = 0x1000;
+	} else if (CurrentMap == MAP_KROOLCHUNKY) {
+		// Add chunky phase microhint
+		if ((Rando.microhints != MICROHINTS_NONE) && (MovesBase[0].simian_slam < 2)) {
+			*(short*)(0x800359A8) = 14; // Microhint Cutscene
+		}
 	}
 	if (inBattleCrown(CurrentMap)) {
 		// Change crown spawn

@@ -15,14 +15,23 @@ from ui.progress_bar import ProgressBar
 from ui.rando_options import (
     disable_barrel_modal,
     disable_colors,
+    disable_enemy_modal,
+    disable_helm_hurry,
+    disable_helm_phases,
+    disable_krool_phases,
     disable_move_shuffles,
     disable_music,
+    item_rando_list_changed,
     max_music,
     max_randomized_blocker,
     max_randomized_troff,
     max_sfx,
     toggle_b_locker_boxes,
+    toggle_bananaport_selector,
     toggle_counts_boxes,
+    toggle_item_rando,
+    toggle_key_settings,
+    toggle_logic_type,
     update_boss_required,
     updateDoorOneCountText,
     updateDoorOneNumAccess,
@@ -107,6 +116,15 @@ def import_settings_string(event):
     disable_barrel_modal(None)
     updateDoorOneCountText(None)
     updateDoorTwoCountText(None)
+    item_rando_list_changed(None)
+    toggle_item_rando(None)
+    disable_enemy_modal(None)
+    toggle_bananaport_selector(None)
+    disable_helm_hurry(None)
+    toggle_logic_type(None)
+    toggle_key_settings(None)
+    disable_krool_phases(None)
+    disable_helm_phases(None)
 
 
 @bind("change", "patchfileloader")
@@ -201,6 +219,6 @@ def update_seed_text(event):
     """
     # When we click the download json event just change the button text
     if js.document.getElementById("download_patch_file").checked:
-        js.document.getElementById("generate_seed").value = "Generate Patch File and Seed"
+        js.document.getElementById("generate_seed").value = "Generate Patch File"
     else:
         js.document.getElementById("generate_seed").value = "Generate Seed"

@@ -230,6 +230,8 @@ def KasplatShuffle(spoiler, LogicVariables):
         retries = 0
         while True:
             try:
+                # Clear any existing logic
+                ResetShuffledKasplatLocations()
                 # Shuffle kasplats
                 if spoiler.settings.kasplat_location_rando:
                     ShuffleKasplatsAndLocations(spoiler, LogicVariables)
@@ -244,14 +246,12 @@ def KasplatShuffle(spoiler, LogicVariables):
                         # This is the first VerifyWorld check, and serves as the canary in the coal mine
                         # If we get to this point in the code, the world itself is likely unstable from some combination of settings or bugs
                         js.postMessage("Settings combination is likely unstable.")
+                        ResetShuffledKasplatLocations()
                         raise Ex.SettingsIncompatibleException
                 return
             except Ex.KasplatPlacementException:
                 retries += 1
                 js.postMessage("Kasplat placement failed. Retrying. Tries: " + str(retries))
-                # We've added logic in kasplat location rando, now we need to remove it
-                if spoiler.settings.kasplat_location_rando:
-                    ResetShuffledKasplatLocations()
 
 
 def InitKasplatMap(LogicVariables):

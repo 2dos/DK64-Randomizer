@@ -395,7 +395,7 @@ function generate_seed(url, json, git_branch) {
     type: "POST",
     success: function (data, textStatus, xhr) {
       if (xhr.status == 202) {
-        console.log("seed gen queued")
+        console.log("seed gen waiting in queue")
         $("#progress-text").text(
           "Waiting in queue for other seeds to generate."
         );
@@ -404,7 +404,7 @@ function generate_seed(url, json, git_branch) {
           generate_seed(url, json, git_branch);
         }, 5000);
       } else if (xhr.status == 201) {
-        console.log("seed gen started")
+        console.log("seed gen queued")
         $("#progress-text").text("Seed Gen Queued");
         $("#patchprogress").width("30%");
         setTimeout(function () {
@@ -417,6 +417,18 @@ function generate_seed(url, json, git_branch) {
         $("#patchprogress").width("50%");
         setTimeout(function () {
           generate_seed(url, json, git_branch);
+        }, 5000);
+        
+      } else if (xhr.status == 208) {
+        console.log(data)
+        $("#progress-text").text(data);
+        $("#patchprogress").addClass("bg-danger");
+        $("#patchprogress").width("100%");
+        setTimeout(function () {
+          $("#progressmodal").modal("hide");
+          $("#patchprogress").removeClass("bg-danger");
+          $("#patchprogress").width("0%");
+          $("#progress-text").text("");
         }, 5000);
         
       } else {

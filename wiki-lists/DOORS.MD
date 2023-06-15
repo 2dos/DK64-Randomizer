@@ -203,13 +203,13 @@
 | Gloomy Galleon | Gloomy Galleon: Mech Fish Gate - far left | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: Mech Fish Gate - left | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: Mech Fish Gate - middle | Both |  | 
-| Gloomy Galleon | Gloomy Galleon: Mech Fish Gate - right | Both |  | 
-| Gloomy Galleon | Gloomy Galleon: Mech Fish Gate - far right | Both |  | 
+| Gloomy Galleon | Gloomy Galleon: Mech Fish Gate - right | Wrinkly |  | 
+| Gloomy Galleon | Gloomy Galleon: Mech Fish Gate - far right | Wrinkly |  | 
 | Gloomy Galleon | Gloomy Galleon: Cannonball Area Exit | Both | l.swim | 
 | Gloomy Galleon | Gloomy Galleon: 2Dship's secret 3rd door | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: Near Mermaid's Palace - right | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: Near Mermaid's Palace - left | Both |  | 
-| Gloomy Galleon | Gloomy Galleon: Near Mermaid's Palace - Under Tag Barrel | Both |  | 
+| Gloomy Galleon | Gloomy Galleon: Near Mermaid's Palace - Under Tag Barrel | Wrinkly |  | 
 | Galleon Lighthouse | Gloomy Galleon: Lighthouse Interior | Both |  | 
 | Galleon Mermaid Room | Gloomy Galleon: In Mermaid's Palace | Wrinkly |  | 
 | Galleon5DShip DKTiny | Gloomy Galleon: Tiny's 5D ship | Wrinkly |  | 
@@ -252,8 +252,8 @@
 | Fungi Forest | Fungi Forest: Mushroom Area - Next to Cranky | Both |  | 
 | Fungi Forest | Fungi Forest: Clock Area - Next to Purple Tunnel - left | Both |  | 
 | Fungi Forest | Fungi Forest: Clock Area - Next to Purple Tunnel - right | Both |  | 
-| Fungi Forest | Fungi Forest: Clock Area - Next to Clock - left | Both |  | 
-| Fungi Forest | Fungi Forest: Clock Area - Next to Clock - right | Both |  | 
+| Fungi Forest | Fungi Forest: Clock Area - Next to Clock - left | Wrinkly |  | 
+| Fungi Forest | Fungi Forest: Clock Area - Next to Clock - right | Wrinkly |  | 
 | Fungi Forest | Fungi Forest: Funky Area - Near Beanstalk - left | Both |  | 
 | Fungi Forest | Fungi Forest: Funky Area - Near Beanstalk - back | Both |  | 
 | Forest Giant Mushroom | Fungi Forest: Inside the Mushroom - All Kong Gun Switch - right | Both |  | 
@@ -290,7 +290,7 @@
 | Crystal Caves | Crystal Caves: Outside Diddy's Lower Cabin | Both |  | 
 | Crystal Caves | Crystal Caves: Outside Diddy's Upper Cabin | Both |  | 
 | Crystal Caves | Crystal Caves: Under the Waterfall (Cabin Area) | Both | l.swim | 
-| Crystal Caves | Crystal Caves: Across from the 5Door Cabin | Both |  | 
+| Crystal Caves | Crystal Caves: Across from the 5Door Cabin | Wrinkly |  | 
 | Crystal Caves | Crystal Caves: 5Door Igloo - DK's right | Tns |  | 
 | Crystal Caves | Crystal Caves: 5Door Igloo - Diddy's right | Tns |  | 
 | Crystal Caves | Crystal Caves: 5Door Igloo - Tiny's right | Tns |  | 
@@ -301,7 +301,7 @@
 | Crystal Caves | Crystal Caves: 5Door Igloo - Tiny's instrument pad | Tns | l.swim | 
 | Crystal Caves | Crystal Caves: 5Door Igloo - Chunky's instrument pad | Tns | l.swim | 
 | Crystal Caves | Crystal Caves: 5Door Igloo - Lanky's instrument pad | Tns | l.swim | 
-| Crystal Caves | Crystal Caves: Ice Castle Area - Near Rock Switch | Both |  | 
+| Crystal Caves | Crystal Caves: Ice Castle Area - Near Rock Switch | Wrinkly |  | 
 | Crystal Caves | Crystal Caves: Between Funky and Ice Castle - on land | Both |  | 
 | Crystal Caves | Crystal Caves: Between Funky and Ice Castle - underwater | Both | l.swim | 
 | Crystal Caves | Crystal Caves: In Water Near W4 Opposite Cranky - right | Both | l.swim | 

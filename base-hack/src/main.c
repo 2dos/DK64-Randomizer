@@ -200,6 +200,9 @@ void earlyFrame(void) {
 			QueueHelmTimer = 0;
 		}
 	}
+	if ((CurrentMap == MAP_KROOLCHUNKY) && (CutsceneIndex == 14) && (CutsceneActive == 1)) {
+		PauseText = 1;
+	}
 	if (CurrentMap == MAP_GALLEONPUFFTOSS) { // Pufftoss
 		if ((CutsceneActive) && (CutsceneIndex == 20) && (CutsceneTimer == 2)) { // Short Intro Cutscene
 			if (Rando.music_rando_on) {

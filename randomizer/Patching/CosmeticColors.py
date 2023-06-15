@@ -10,7 +10,7 @@ import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorItem, KlaptrapModel
 from randomizer.Patching.generate_kong_color_images import convertColors
-from randomizer.Patching.Lib import TextureFormat, float_to_hex, getObjectAddressBrowser, int_to_list, intf_to_float
+from randomizer.Patching.Lib import TextureFormat, float_to_hex, getObjectAddress, int_to_list, intf_to_float
 from randomizer.Patching.Patcher import ROM, LocalROM
 
 
@@ -42,7 +42,12 @@ def apply_cosmetic_colors(settings):
     """Apply cosmetic skins to kongs."""
     model_index = 0
     sav = settings.rom_data
-    if js.document.getElementById("override_cosmetics").checked or True:
+    ROM().seek(settings.rom_data + 0x11C)
+    krusha_byte = int.from_bytes(ROM().readBytes(1), "big")
+    if krusha_byte == 255:
+        krusha_byte = None
+    settings.krusha_kong = krusha_byte
+    if settings.override_cosmetics:
         model_setting = KlaptrapModel[js.document.getElementById("klaptrap_model").value]
     else:
         model_setting = settings.klaptrap_model
@@ -82,7 +87,7 @@ def apply_cosmetic_colors(settings):
         ]
         model_index = random.choice(permitted_models)
     settings.klaptrap_model_index = model_index
-    if settings.misc_cosmetics:
+    if settings.misc_cosmetics and settings.override_cosmetics:
         ROM().seek(sav + 0x196)
         ROM().write(1)
         # Skybox RGBA
@@ -206,7 +211,7 @@ def apply_cosmetic_colors(settings):
                 elif palette["fill_type"] == "kong":
                     kong_colors = ["#ffd700", "#ff0000", "#1699ff", "#B045ff", "#41ff25"]
                     mode = settings.colorblind_mode
-                    if mode != ColorblindMode.off:
+                    if mode != ColorblindMode.off and settings.override_cosmetics:
                         if mode == ColorblindMode.prot:
                             kong_colors = ["#FDE400", "#0072FF", "#766D5A", "#FFFFFF", "#000000"]
                         elif mode == ColorblindMode.deut:
@@ -215,7 +220,7 @@ def apply_cosmetic_colors(settings):
                             kong_colors = ["#FFA4A4", "#C72020", "#13C4D8", "#FFFFFF", "#000000"]
                     arr = [kong_colors[kong["kong_index"]]]
                 base_obj["zones"].append({"zone": palette["name"], "image": palette["image"], "fill_type": palette["fill_type"], "colors": arr})
-            if colors_dict[kong["base_setting"]] != CharacterColors.vanilla:
+            if settings.override_cosmetics and colors_dict[kong["base_setting"]] != CharacterColors.vanilla:
                 if colors_dict[kong["base_setting"]] == CharacterColors.randomized:
                     color = f"#{format(randint(0, 0xFFFFFF), '06x')}"
                 else:
@@ -1352,11 +1357,11 @@ ORANGE_SCALING = 0.7
 
 def applyKrushaKong(settings):
     """Apply Krusha Kong setting."""
-    ROM().seek(settings.rom_data + 0x11C)
+    LocalROM().seek(settings.rom_data + 0x11C)
     if settings.krusha_kong is None:
-        ROM().write(255)
+        LocalROM().write(255)
     elif settings.krusha_kong < 5:
-        ROM().write(settings.krusha_kong)
+        LocalROM().write(settings.krusha_kong)
         placeKrushaHead(settings.krusha_kong)
         changeKrushaModel(settings.krusha_kong)
         if settings.krusha_kong == Kongs.donkey:
@@ -1406,10 +1411,10 @@ def changeKrushaModel(krusha_kong: int):
     krusha_model_start = js.pointer_addresses[5]["entries"][0xDA]["pointing_to"]
     krusha_model_finish = js.pointer_addresses[5]["entries"][0xDB]["pointing_to"]
     krusha_model_size = krusha_model_finish - krusha_model_start
-    ROM().seek(krusha_model_start)
-    indicator = int.from_bytes(ROM().readBytes(2), "big")
-    ROM().seek(krusha_model_start)
-    data = ROM().readBytes(krusha_model_size)
+    LocalROM().seek(krusha_model_start)
+    indicator = int.from_bytes(LocalROM().readBytes(2), "big")
+    LocalROM().seek(krusha_model_start)
+    data = LocalROM().readBytes(krusha_model_size)
     if indicator == 0x1F8B:
         data = zlib.decompress(data, (15 + 32))
     num_data = []  # data, but represented as nums rather than b strings
@@ -1444,43 +1449,43 @@ def changeKrushaModel(krusha_kong: int):
     data = bytearray(num_data)  # convert num_data back to binary string
     if indicator == 0x1F8B:
         data = gzip.compress(data, compresslevel=9)
-    ROM().seek(krusha_model_start)
-    ROM().writeBytes(data)
+    LocalROM().seek(krusha_model_start)
+    LocalROM().writeBytes(data)
 
 
 def fixBaboonBlasts():
     """Fix various baboon blasts to work for Krusha."""
     # Fungi Baboon Blast
     for id in (2, 5):
-        item_start = getObjectAddressBrowser(0xBC, id, "actor")
+        item_start = getObjectAddress(0xBC, id, "actor")
         if item_start is not None:
-            ROM().seek(item_start + 0x14)
-            ROM().writeMultipleBytes(0xFFFFFFEC, 4)
-            ROM().seek(item_start + 0x1B)
-            ROM().writeMultipleBytes(0, 1)
+            LocalROM().seek(item_start + 0x14)
+            LocalROM().writeMultipleBytes(0xFFFFFFEC, 4)
+            LocalROM().seek(item_start + 0x1B)
+            LocalROM().writeMultipleBytes(0, 1)
     # Caves Baboon Blast
-    item_start = getObjectAddressBrowser(0xBA, 4, "actor")
+    item_start = getObjectAddress(0xBA, 4, "actor")
     if item_start is not None:
-        ROM().seek(item_start + 0x4)
-        ROM().writeMultipleBytes(int(float_to_hex(510), 16), 4)
-    item_start = getObjectAddressBrowser(0xBA, 12, "actor")
+        LocalROM().seek(item_start + 0x4)
+        LocalROM().writeMultipleBytes(int(float_to_hex(510), 16), 4)
+    item_start = getObjectAddress(0xBA, 12, "actor")
     if item_start is not None:
-        ROM().seek(item_start + 0x4)
-        ROM().writeMultipleBytes(int(float_to_hex(333), 16), 4)
+        LocalROM().seek(item_start + 0x4)
+        LocalROM().writeMultipleBytes(int(float_to_hex(333), 16), 4)
     # Castle Baboon Blast
-    item_start = getObjectAddressBrowser(0xBB, 4, "actor")
+    item_start = getObjectAddress(0xBB, 4, "actor")
     if item_start is not None:
-        ROM().seek(item_start + 0x0)
-        ROM().writeMultipleBytes(int(float_to_hex(2472), 16), 4)
-        ROM().seek(item_start + 0x8)
-        ROM().writeMultipleBytes(int(float_to_hex(1980), 16), 4)
+        LocalROM().seek(item_start + 0x0)
+        LocalROM().writeMultipleBytes(int(float_to_hex(2472), 16), 4)
+        LocalROM().seek(item_start + 0x8)
+        LocalROM().writeMultipleBytes(int(float_to_hex(1980), 16), 4)
 
 
 def placeKrushaHead(slot):
     """Replace a kong's face with the Krusha face."""
     kong_face_textures = [[0x27C, 0x27B], [0x279, 0x27A], [0x277, 0x278], [0x276, 0x275], [0x273, 0x274]]
     unc_face_textures = [[579, 586], [580, 587], [581, 588], [582, 589], [577, 578]]
-    ROM().seek(0x1FF6000)
+    LocalROM().seek(0x1FF6000)
     left = []
     right = []
     img32 = []
@@ -1491,8 +1496,8 @@ def placeKrushaHead(slot):
         x32 = []
         x32_rgba32 = []
         for x in range(64):
-            data_hi = int.from_bytes(ROM().readBytes(1), "big")
-            data_lo = int.from_bytes(ROM().readBytes(1), "big")
+            data_hi = int.from_bytes(LocalROM().readBytes(1), "big")
+            data_lo = int.from_bytes(LocalROM().readBytes(1), "big")
             val = (data_hi << 8) | data_lo
             val_r = ((val >> 11) & 0x1F) << 3
             val_g = ((val >> 6) & 0x1F) << 3
@@ -1524,18 +1529,18 @@ def placeKrushaHead(slot):
         texture_addr = js.pointer_addresses[25]["entries"][texture_index]["pointing_to"]
         unc_addr = js.pointer_addresses[7]["entries"][unc_index]["pointing_to"]
         data = gzip.compress(bytearray(img_data), compresslevel=9)
-        ROM().seek(texture_addr)
-        ROM().writeBytes(data)
-        ROM().seek(unc_addr)
-        ROM().writeBytes(bytearray(img_data))
+        LocalROM().seek(texture_addr)
+        LocalROM().writeBytes(data)
+        LocalROM().seek(unc_addr)
+        LocalROM().writeBytes(bytearray(img_data))
     rgba32_addr32 = js.pointer_addresses[14]["entries"][196 + slot]["pointing_to"]
     rgba16_addr32 = js.pointer_addresses[14]["entries"][190 + slot]["pointing_to"]
     data32 = gzip.compress(bytearray(img32), compresslevel=9)
     data32_rgba32 = gzip.compress(bytearray(img32_rgba32), compresslevel=9)
-    ROM().seek(rgba32_addr32)
-    ROM().writeBytes(bytearray(data32_rgba32))
-    ROM().seek(rgba16_addr32)
-    ROM().writeBytes(bytearray(data32))
+    LocalROM().seek(rgba32_addr32)
+    LocalROM().writeBytes(bytearray(data32_rgba32))
+    LocalROM().seek(rgba16_addr32)
+    LocalROM().writeBytes(bytearray(data32))
 
 
 def writeMiscCosmeticChanges(settings):
