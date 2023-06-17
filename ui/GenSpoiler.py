@@ -33,7 +33,7 @@ async def GenerateSpoiler(spoiler):
     # print(modified_spoiler)
 
     lzr_type = "none"
-    if formatted_spoiler["Settings"]["Loading Zones Shuffled"] == "all":
+    if formatted_spoiler.get("Settings", {}).get("Loading Zones Shuffled", "") == "all":
         if formatted_spoiler["Settings"]["Decoupled Loading Zones"] is False:
             lzr_type = "coupled"
         else:
