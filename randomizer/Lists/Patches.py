@@ -223,8 +223,8 @@ DirtPatchLocations = [
         z=1085.0,
         rotation=2048,
         group=4,
-        logicregion=Regions.BananaFairyRoom,
-        logic=lambda l: l.BananaFairies >= l.settings.rareware_gb_fairies and l.shockwave,
+        logicregion=Regions.RarewareGBRoom,
+        logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
         name="Under K. Lumsy",

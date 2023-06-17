@@ -241,6 +241,7 @@ RegionMapList = {
     Regions.IslesAirspace: Maps.Isles,
     Regions.AztecLobbyRoof: Maps.Isles,
     Regions.BananaFairyRoom: Maps.BananaFairyRoom,
+    Regions.RarewareGBRoom: Maps.BananaFairyRoom,
     Regions.JungleJapesLobby: Maps.JungleJapesLobby,
     Regions.AngryAztecLobby: Maps.AngryAztecLobby,
     Regions.FranticFactoryLobby: Maps.FranticFactoryLobby,

@@ -153,9 +153,15 @@ LogicRegions = {
 
     Regions.BananaFairyRoom: Region("Banana Fairy Room", "Outer Isles", Levels.DKIsles, False, None, [
         LocationLogic(Locations.CameraAndShockwave, lambda l: True),
-        LocationLogic(Locations.RarewareBanana, lambda l: l.CanGetRarewareGB()),
     ], [], [
         TransitionFront(Regions.OuterIsles, lambda l: True, Transitions.IslesFairyToMain),
+        TransitionFront(Regions.RarewareGBRoom, lambda l: l.CanGetRarewareGB())
+    ]),
+
+    Regions.RarewareGBRoom: Region("Rareware GB Room", "Rareware Banana Room", Levels.DKIsles, False, None, [
+        LocationLogic(Locations.RarewareBanana, lambda l: True),
+    ], [], [
+        TransitionFront(Regions.BananaFairyRoom, lambda l: True)
     ]),
 
     # All lobies take you to themselves when you die
