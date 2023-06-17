@@ -659,9 +659,7 @@ CrownLocations = {
             y=1490,
             z=1234,
             scale=0.4,
-            region=Regions.CabinIsle,
-            logic=lambda l: (Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy)
-            or (l.advanced_platforming and ((l.isdonkey and l.settings.krusha_kong != Kongs.donkey) or l.isdiddy or l.ischunky or (l.istiny and l.twirl))),
+            region=Regions.IslesAboveWaterfall,
         ),
         CrownLocation(map=Maps.Isles, name="Near Caves Lobby Tree (1)", x=2497, y=507, z=1903, scale=0.4, region=Regions.IslesMain),
         CrownLocation(map=Maps.Isles, name="Near K. Rool", x=3005, y=500, z=855, scale=0.5, region=Regions.IslesMain),

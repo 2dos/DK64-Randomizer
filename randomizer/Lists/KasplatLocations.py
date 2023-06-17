@@ -1588,8 +1588,7 @@ KasplatLocationList = {
             xmax=3532,
             zmin=1697,
             zmax=1765,
-            region=Regions.CabinIsle,
-            additional_logic=lambda l: (Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy) or (l.twirl and l.tiny and l.advanced_platforming),
+            region=Regions.AztecLobbyRoof,
         ),
         KasplatLocation(
             name="Isles Kasplat: Beneath the Waterfall",

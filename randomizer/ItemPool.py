@@ -414,7 +414,7 @@ def JunkItems():
     return itemPool
 
 
-def GetItemsNeedingToBeAssumed(settings, placed_types):
+def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
     """Return a list of all items that will be assumed for immediate item placement."""
     itemPool = []
     unplacedTypes = [typ for typ in settings.shuffled_location_types if typ not in placed_types]
@@ -463,6 +463,10 @@ def GetItemsNeedingToBeAssumed(settings, placed_types):
             itemPool.extend(TrainingBarrelAbilities().copy())
         if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
             itemPool.extend(ShockwaveTypeItems(settings))
+    # With a list of specifically placed items, we can't assume those
+    for item in placed_items:
+        if item in itemPool:
+            itemPool.remove(item)  # Remove one instance of the item (do not filter!)
     return itemPool
 
 

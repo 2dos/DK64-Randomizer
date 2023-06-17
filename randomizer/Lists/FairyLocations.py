@@ -1047,7 +1047,7 @@ fairy_locations = {
         FairyData(
             name="On Banana Fairy Island",
             map=Maps.Isles,
-            region=Regions.CabinIsle,  # Technically it's on BFI area, but it requires rocketbarrel to access
+            region=Regions.CabinIsle,  # Technically it's on BFI area, but it requires rocketbarrel to access. Notably, this is not in IslesAirspace because we want it to be hinted Outer Isles.
             fence=Fence(860, 2358, 868, 2486),
             spawn_y=1031,
             logic=lambda l: l.camera and l.jetpack and l.isdiddy and Events.IslesDiddyBarrelSpawn in l.Events,

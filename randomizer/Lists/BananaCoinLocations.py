@@ -210,8 +210,7 @@ BananaCoinGroupList = {
             map_id=Maps.Isles,
             name="On top of Aztec lobby",
             konglist=[Kongs.diddy],
-            region=Regions.CabinIsle,
-            logic=lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy,
+            region=Regions.AztecLobbyRoof,
             locations=[
                 [1.0, 3515, 1170, 1800],
                 [1.0, 3457, 1170, 1773],

@@ -44,8 +44,8 @@ DirtPatchLocations = [
         rotation=1784,
         vanilla=True,
         group=3,
-        logicregion=Regions.CabinIsle,
-        logic=lambda l: ((Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.advanced_platforming)) and l.shockwave,
+        logicregion=Regions.AztecLobbyRoof,
+        logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
         name="Under Caves Lobby Entrance",
