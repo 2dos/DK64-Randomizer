@@ -36,7 +36,7 @@
 | On slope on path to Aztec lobby | 3 |  | 
 | At the bottom of Aztec steps | 5 |  | 
 | In little alcove in DK's ear in front of Aztec lobby | 3 |  | 
-| On top of Aztec lobby | 4 | Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy | 
+| On top of Aztec lobby | 4 |  | 
 | On top of K. Lumsy's prison | 4 | (l.monkeyport and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko))) | 
 | On top of Fungi lobby | 3 |  | 
 | Hanging off the edge behind Fungi lobby | 3 |  | 

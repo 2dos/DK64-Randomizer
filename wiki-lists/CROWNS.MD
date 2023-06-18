@@ -294,7 +294,7 @@
 | Isles Snide Room | Snide's Room: Under Rock | l.chunky and l.barrels | 
 | Fungi Forest Lobby | Fungi Lobby: Gorilla Gone Box | ((l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.donkey and l.diddy and l.lanky and l.tiny) or l.phasewalk) and l.chunky and l.gorillaGone | 
 | Isles | Fungi Platform |  | 
-| Isles | Waterfall Platform | (Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy) | 
+| Isles | Waterfall Platform |  | 
 | Isles | Near Caves Lobby Tree (1) |  | 
 | Isles | Near K. Rool |  | 
 | Isles | Near Fungi Cannon |  | 
@@ -331,7 +331,7 @@
 | Training Grounds | Training Grounds: Near Pool |  | 
 | Banana Fairy Room | Fairy Island: Right of Queen |  | 
 | Banana Fairy Room | Fairy Island: Behind Queen |  | 
-| Banana Fairy Room | Fairy Island: Rareware Room | l.BananaFairies >= l.settings.rareware_gb_fairies and l.istiny | 
+| Banana Fairy Room | Fairy Island: Rareware Room |  | 
 | KLumsy | K. Lumsy: Back Right |  | 
 | KLumsy | K. Lumsy: Near Left |  | 
 </details>

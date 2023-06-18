@@ -1632,8 +1632,6 @@ def UpdateSpoilerHintList(spoiler: Spoiler):
 
 def GetRegionOfLocation(location_id):
     """Given the id of a Location, return the Region it belongs to."""
-    if location_id == Locations.RarewareBanana:
-        return "Rareware Banana Room"
     location = LocationList[location_id]
     # Shop locations are tied to the level, not the shop regions
     if location.type == Types.Shop:
