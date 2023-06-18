@@ -1397,7 +1397,12 @@ def Fill(spoiler):
         # Medals up to the Jetpac requirement must be placed carefully
         logicallyPlacedMedals = min(floor(spoiler.settings.medal_requirement * 1.2), 40)
         jetpacRequiredMedals = medalsToBePlaced[:logicallyPlacedMedals]
+        # Block access to Jetpac to ensure the first batch of medals is accessible before Jetpac
+        temp_medal_requirement = spoiler.settings.medal_requirement
+        spoiler.settings.medal_requirement = logicallyPlacedMedals
         medalsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, jetpacRequiredMedals, medalAssumedItems, doubleTime=True)
+        # Restore the Jetpac requirement to its former value
+        spoiler.settings.medal_requirement = temp_medal_requirement
         if logicallyPlacedMedals > 0 and medalsUnplaced > 0:
             raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced logical medals.")
         # The remaining medals can be placed randomly
@@ -1416,7 +1421,12 @@ def Fill(spoiler):
         # Fairies up to the Rareware GB requirement must be placed carefully
         logicallyPlacedFairies = min(floor(spoiler.settings.rareware_gb_fairies * 1.2), 20)  # Place more fairies in logic than you may need
         rarewareRequiredFairies = fairiesToBePlaced[:logicallyPlacedFairies]
+        # Block acces to the Rareware GB to ensure the first batch of fairies is accessible before the Rareware GB
+        temp_rareware_gb_fairies = spoiler.settings.rareware_gb_fairies
+        spoiler.settings.rareware_gb_fairies = logicallyPlacedFairies
         fairyUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, rarewareRequiredFairies, fairyAssumedItems, doubleTime=True)
+        # Restore the Rareware GB requirement to its former value
+        spoiler.settings.rareware_gb_fairies = temp_rareware_gb_fairies
         if logicallyPlacedFairies > 0 and fairyUnplaced > 0:
             raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced logical fairies.")
         # The remaining fairies can be placed randomly
