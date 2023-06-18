@@ -7,7 +7,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.LogicClasses import Balloon, ColoredBananaGroup
 
-WATER_HEIGHT = 30
+WATER_HEIGHT = 20
 
 ColoredBananaGroupList = [
     ColoredBananaGroup(
