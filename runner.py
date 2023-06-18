@@ -12,6 +12,8 @@ from randomizer.Patching.Patcher import load_base_rom
 from randomizer.Settings import Settings
 from randomizer.Spoiler import Spoiler
 from flask import Flask, make_response, request
+from randomizer.SettingStrings import encrypt_settings_string_enum
+
 from flask_cors import CORS
 from flask_executor import Executor
 from multiprocessing import Process, Queue
@@ -37,7 +39,7 @@ if os.environ.get("HOSTED_SERVER") is not None:
     dynamodb = boto3.resource("dynamodb", region_name="us-west-2")
 
 
-def generate(default_rom, generate_settings, queue):
+def generate(default_rom, generate_settings, queue, post_body):
     """Gen a seed and write the file to an output file."""
     try:
         load_base_rom(default_file=default_rom)
@@ -52,7 +54,7 @@ def generate(default_rom, generate_settings, queue):
 
     except Exception as e:
         if os.environ.get("HOSTED_SERVER") is not None:
-            write_error(traceback.format_exc())
+            write_error(traceback.format_exc(), post_body)
         print(traceback.format_exc())
         # Return the error and the type of error.
         error = str(type(e).__name__) + ": " + str(e)
@@ -95,6 +97,7 @@ def start_gen(gen_key, post_body):
                 og_patched_rom,
                 setting_data,
                 queue,
+                post_body,
             ),
         )
         p.start()
@@ -118,20 +121,22 @@ def start_gen(gen_key, post_body):
 
     except Exception as e:
         if os.environ.get("HOSTED_SERVER") is not None:
-            write_error(traceback.format_exc())
+            write_error(traceback.format_exc(), post_body)
         current_job.remove(gen_key)
         print(traceback.format_exc())
         error = str(type(e).__name__) + ": " + str(e)
         return error
 
 
-def write_error(error):
+def write_error(error, settings_string):
     """Write an error to the error table."""
+    converted_settings_string = encrypt_settings_string_enum(settings_string)
     error_table = dynamodb.Table("dk64_error_db")
     error_table.put_item(
         Item={
             "time": str(time.time()),
             "error_data": str(error),
+            "settings": str(converted_settings_string),
         }
     )
 
