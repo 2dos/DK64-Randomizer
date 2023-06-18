@@ -75,4 +75,16 @@ LogicRegions = {
     Regions.IslesMainUpper: [
 
     ],
+    Regions.OuterIsles: [
+
+    ],
+    Regions.AztecLobbyRoof: [
+
+    ],
+    Regions.IslesAboveWaterfall: [
+
+    ],
+    Regions.IslesAirspace: [
+
+    ],
 }

@@ -820,7 +820,7 @@ class LogicVarHolder:
                 if not self.settings.hard_bosses and order_of_level >= 7 and not (self.twirl or self.hunkyChunky):
                     return False
                 # Require both hunky chunky and twirl (or hard bosses) before Helm to prevent boss fill failures
-                if order_of_level > 7 and not self.hunkyChunky or (not self.twirl and not self.settings.hard_bosses):
+                if order_of_level > 7 and not (self.hunkyChunky and (self.twirl or self.settings.hard_bosses)):
                     return False
             # Make sure we have access to all prior required keys before entering the next level - this prevents keys from being placed in levels beyond what they unlock
             if order_of_level > 1 and not self.JapesKey:

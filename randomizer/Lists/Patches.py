@@ -44,8 +44,8 @@ DirtPatchLocations = [
         rotation=1784,
         vanilla=True,
         group=3,
-        logicregion=Regions.CabinIsle,
-        logic=lambda l: ((Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.advanced_platforming)) and l.shockwave,
+        logicregion=Regions.AztecLobbyRoof,
+        logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
         name="Under Caves Lobby Entrance",
@@ -223,8 +223,8 @@ DirtPatchLocations = [
         z=1085.0,
         rotation=2048,
         group=4,
-        logicregion=Regions.BananaFairyRoom,
-        logic=lambda l: l.BananaFairies >= l.settings.rareware_gb_fairies and l.shockwave,
+        logicregion=Regions.RarewareGBRoom,
+        logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
         name="Under K. Lumsy",

@@ -203,3 +203,13 @@ class Events(IntEnum):
     IslesW4bTagged = auto()
     IslesW5aTagged = auto()
     IslesW5bTagged = auto()
+
+    # Lobbies Entered Events - keep these in order!
+    JapesLobbyAccessed = auto()
+    AztecLobbyAccessed = auto()
+    FactoryLobbyAccessed = auto()
+    GalleonLobbyAccessed = auto()
+    ForestLobbyAccessed = auto()
+    CavesLobbyAccessed = auto()
+    CastleLobbyAccessed = auto()
+    HelmLobbyAccessed = auto()

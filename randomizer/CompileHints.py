@@ -537,7 +537,8 @@ def compileHints(spoiler: Spoiler):
         if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all:
             # In entrance rando, we care more about T&S than B. Locker
             temp = hint_distribution[HintType.BLocker]
-            hint_distribution[HintType.BLocker] = max(1, hint_distribution[HintType.TroffNScoff])  # Always want a helm hint in there
+            if spoiler.settings.randomize_blocker_required_amounts and not spoiler.settings.maximize_helm_blocker:
+                hint_distribution[HintType.BLocker] = max(1, hint_distribution[HintType.TroffNScoff])  # Always want a helm hint in there
             hint_distribution[HintType.TroffNScoff] = temp
             valid_types.append(HintType.Entrance)
 
@@ -590,7 +591,7 @@ def compileHints(spoiler: Spoiler):
             hint_count += 1
         # Remove random hints if we went over the cap
         while hint_count > HINT_CAP:
-            # In INSANELY rare circumstances, you may have more required hints than you have doors
+            # In many settings, you may have more required hints than you have doors
             locked_hint_count = sum([hint_distribution[typ] for typ in locked_hint_types]) + sum([hint_distribution[typ] for typ in minned_hint_types])
             # If this is the case (again, INSANELY rare) then you lose a random key hint
             if locked_hint_count > HINT_CAP:
@@ -936,6 +937,21 @@ def compileHints(spoiler: Spoiler):
                     already_chosen_krool_path_locations.append(path_location_id)
                     chosen_krool_path_location_cap += 1  # Increment this by one so we go through the loop an extra time and don't lose a hint
                     continue
+                hinted_kong = random.choice(hintable_phases)
+                hinted_item_id = LocationList[path_location_id].item
+                # Every hint door is available before K. Rool so we can pick randomly...
+                hint_location = getRandomHintLocation()
+                # ...unless the hinted location is specifically the end of a phase path - in this case, we do not want the hint to lock itself
+                if (
+                    (hinted_kong == Kongs.diddy and hinted_item_id in (Items.Peanut, Items.RocketbarrelBoost))
+                    or (hinted_kong == Kongs.lanky and hinted_item_id in (Items.Barrels, Items.Trombone))
+                    or (hinted_kong == Kongs.tiny and hinted_item_id in (Items.Feather, Items.MiniMonkey))
+                    or (hinted_kong == Kongs.chunky and hinted_item_id in (Items.ProgressiveSlam, Items.PrimatePunch, Items.HunkyChunky, Items.GorillaGone))
+                ):
+                    hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[path_location_id])
+                    # If no hint options are available (this should be quite unlikely), it will default to the random one
+                    if len(hint_options) > 0:
+                        hint_location = random.choice(hint_options)
                 globally_hinted_location_ids.append(path_location_id)
                 already_chosen_krool_path_locations.append(path_location_id)
                 # Begin to build the hint - determine the region of the location
@@ -944,13 +960,10 @@ def compileHints(spoiler: Spoiler):
                     hinted_location_text = level_colors[region.level] + region.hint_name + level_colors[region.level]
                 else:
                     hinted_location_text = level_colors[Levels.DKIsles] + region.hint_name + level_colors[Levels.DKIsles]
-                hinted_kong = random.choice(hintable_phases)
                 kong_color = kong_colors[hinted_kong]
-                # Every hint door is available before K. Rool so we can pick randomly
-                hint_location = getRandomHintLocation()
                 if path_location_id in TrainingBarrelLocations or path_location_id in PreGivenLocations:
                     # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
-                    hinted_item_name = ItemList[LocationList[path_location_id].item].name
+                    hinted_item_name = ItemList[hinted_item_id].name
                     message = f"Your \x0btraining with {hinted_item_name}\x0b is on the path to {kong_color}aiding {colorless_kong_list[hinted_kong]}'s fight against K. Rool.{kong_color}"
                 else:
                     message = f"An item in the {hinted_location_text} is on the path to {kong_color}aiding {colorless_kong_list[hinted_kong]}'s fight against K. Rool.{kong_color}"
@@ -1270,22 +1283,32 @@ def compileHints(spoiler: Spoiler):
     # The rest of the hints are tied to a variety of important locations
     if hint_distribution[HintType.Entrance] > 0:
         criticalJapesRegions = [Regions.JungleJapesStart, Regions.JungleJapesMain, Regions.JapesBeyondFeatherGate, Regions.TinyHive, Regions.JapesLankyCave, Regions.Mine]
-        criticalAztecRegions = [Regions.AngryAztecStart, Regions.AngryAztecOasis, Regions.AngryAztecMain]
-        criticalFactoryRegions = [Regions.FranticFactoryStart, Regions.ChunkyRoomPlatform, Regions.PowerHut, Regions.BeyondHatch, Regions.InsideCore]
+        criticalAztecRegions = [
+            Regions.AngryAztecStart,
+            Regions.AngryAztecOasis,
+            Regions.AngryAztecMain,
+            Regions.DonkeyTemple,
+            Regions.DiddyTemple,
+            Regions.LankyTemple,
+            Regions.TinyTemple,
+            Regions.ChunkyTemple,
+        ]
+        criticalFactoryRegions = [Regions.FranticFactoryStart, Regions.ChunkyRoomPlatform, Regions.PowerHut, Regions.BeyondHatch, Regions.LowerCore, Regions.InsideCore]
         usefulRegions = [
             criticalJapesRegions,
             criticalAztecRegions,
             criticalFactoryRegions,
             [Regions.BananaFairyRoom],
             [Regions.TrainingGrounds],
-            [Regions.GloomyGalleonStart, Regions.LighthousePlatform, Regions.LighthouseUnderwater, Regions.Shipyard],
-            [Regions.FungiForestStart, Regions.GiantMushroomArea, Regions.MushroomLowerExterior, Regions.MushroomNightExterior, Regions.MushroomUpperExterior, Regions.MillArea],
+            [Regions.GloomyGalleonStart, Regions.LighthousePlatform, Regions.LighthouseUnderwater, Regions.ShipyardUnderwater, Regions.Shipyard],
+            [Regions.FungiForestStart, Regions.GiantMushroomArea, Regions.MushroomLowerExterior, Regions.MushroomNightExterior, Regions.MushroomUpperExterior, Regions.MillArea, Regions.ThornvineArea],
             [Regions.CrystalCavesMain, Regions.IglooArea, Regions.CabinArea],
             [Regions.CreepyCastleMain, Regions.CastleWaterfall],
             [Regions.LowerCave],
             [Regions.UpperCave],
         ]
-        for i in range(hint_distribution[HintType.Entrance]):
+        placed_entrance_hints = 0
+        while placed_entrance_hints < hint_distribution[HintType.Entrance]:
             message = ""
             # Always put in at least one Japes hint
             if i == 0:
@@ -1339,9 +1362,15 @@ def compileHints(spoiler: Spoiler):
                         break
                 if not usefulHintPlaced:
                     print(f"Useful LZR hint to {usefulHinted.name} unable to be placed!")
+            if message == "":
+                # Then we somehow managed to fail to create a hint. This is real bad but we'll just laugh it off with a joke hint. Hahaha!
+                hint_distribution[HintType.Entrance] -= 1
+                hint_distribution[HintType.Joke] += 1
+                continue
             hint_location = getRandomHintLocation()
             hint_location.hint_type = HintType.Entrance
             UpdateHint(hint_location, message)
+            placed_entrance_hints += 1
 
     # If any Helm doors are random, place a hint for each random door somewhere
     if hint_distribution[HintType.RequiredHelmDoorHint] > 0:
@@ -1470,7 +1499,7 @@ def compileHints(spoiler: Spoiler):
     UpdateSpoilerHintList(spoiler)
     spoiler.hint_distribution = hint_distribution
 
-    # DEBUG CODE to alert when a hint is empty
+    # # DEBUG CODE to alert when a hint is empty
     # for hint in hints:
     #     if hint.hint == "":
     #         print("RED ALERT")
@@ -1562,120 +1591,6 @@ def compileMicrohints(spoiler: Spoiler):
             ] = f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptillian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
 
 
-def AddLoadingZoneHints(spoiler: Spoiler):
-    """Add hints for loading zone transitions and their destinations."""
-    # One hint for each of the critical areas: Japes, Aztec, Factory
-    criticalJapesRegions = [Regions.JungleJapesStart, Regions.JungleJapesMain, Regions.JapesBeyondFeatherGate, Regions.TinyHive, Regions.JapesLankyCave, Regions.Mine]
-    criticalAztecRegions = [Regions.AngryAztecStart, Regions.AngryAztecOasis, Regions.AngryAztecMain]
-    criticalFactoryRegions = [Regions.FranticFactoryStart, Regions.ChunkyRoomPlatform, Regions.PowerHut, Regions.BeyondHatch, Regions.InsideCore]
-    japesHintEntrances = [entrance for entrance, back in spoiler.shuffled_exit_data.items() if back.regionId in criticalJapesRegions]
-    random.shuffle(japesHintEntrances)
-    japesHintPlaced = False
-    while len(japesHintEntrances) > 0:
-        japesHinted = japesHintEntrances.pop()
-        if TryAddingLoadingZoneHint(spoiler, japesHinted, 1, criticalJapesRegions):
-            japesHintPlaced = True
-            break
-    if not japesHintPlaced:
-        print("Japes LZR hint unable to be placed!")
-
-    aztecHintEntrances = [entrance for entrance, back in spoiler.shuffled_exit_data.items() if back.regionId in criticalAztecRegions]
-    random.shuffle(aztecHintEntrances)
-    aztecHintPlaced = False
-    while len(aztecHintEntrances) > 0:
-        aztecHinted = aztecHintEntrances.pop()
-        if TryAddingLoadingZoneHint(spoiler, aztecHinted, 1, criticalAztecRegions):
-            aztecHintPlaced = True
-            break
-    if not aztecHintPlaced:
-        print("Aztec LZR hint unable to be placed!")
-
-    factoryHintEntrances = [entrance for entrance, back in spoiler.shuffled_exit_data.items() if back.regionId in criticalFactoryRegions]
-    random.shuffle(factoryHintEntrances)
-    factoryHintPlaced = False
-    while len(factoryHintEntrances) > 0:
-        factoryHinted = factoryHintEntrances.pop()
-        if TryAddingLoadingZoneHint(spoiler, factoryHinted, 1, criticalFactoryRegions):
-            factoryHintPlaced = True
-            break
-    if not factoryHintPlaced:
-        print("Factory LZR hint unable to be placed!")
-
-    # Three hints for any of these useful areas: Banana Fairy, Galleon, Fungi, Caves, Castle, Crypt, Tunnel
-    usefulRegions = [
-        [Regions.BananaFairyRoom],
-        [Regions.GloomyGalleonStart, Regions.LighthousePlatform, Regions.LighthouseUnderwater, Regions.Shipyard],
-        [Regions.FungiForestStart, Regions.GiantMushroomArea, Regions.MushroomLowerExterior, Regions.MushroomNightExterior, Regions.MushroomUpperExterior, Regions.MillArea],
-        [Regions.CrystalCavesMain, Regions.IglooArea, Regions.CabinArea],
-        [Regions.CreepyCastleMain, Regions.CastleWaterfall],
-        [Regions.LowerCave],
-        [Regions.UpperCave],
-    ]
-    hintedUsefulAreas = random.sample(usefulRegions, 3)
-    for regions in hintedUsefulAreas:
-        usefulHintEntrances = [entrance for entrance, back in spoiler.shuffled_exit_data.items() if back.regionId in regions]
-        random.shuffle(usefulHintEntrances)
-        usefulHintPlaced = False
-        while len(usefulHintEntrances) > 0:
-            usefulHinted = usefulHintEntrances.pop()
-            if TryAddingLoadingZoneHint(spoiler, usefulHinted, 3, regions):
-                usefulHintPlaced = True
-                break
-        if not usefulHintPlaced:
-            print(f"Useful LZR hint to {usefulHinted.name} unable to be placed!")
-
-    # Remaining hints for any shuffled exits in the game
-    # Restrict DK isles main areas from being hinted
-    uselessDkIslesRegions = [Regions.IslesMain, Regions.IslesMainUpper]
-    remainingTransitions = [entrance for entrance, back in spoiler.shuffled_exit_data.items() if back.regionId not in uselessDkIslesRegions]
-    random.shuffle(remainingTransitions)
-    remainingHintCount = 4
-    for transition in remainingTransitions:
-        if remainingHintCount == 0:
-            break
-        elif TryAddingLoadingZoneHint(spoiler, transition, 5):
-            remainingHintCount -= 1
-    if remainingHintCount > 0:
-        print("Unable to place remaining LZR hints!")
-
-
-def TryAddingLoadingZoneHint(spoiler: Spoiler, transition, useful_rating, disallowedRegions: list = None):
-    """Try to write a hint for the given transition. If this hint is determined to be bad, it will return false and not place the hint.
-
-    NOTE: ONLY USED IN OLD HINT SYSTEM. Functionality was replicated for new hint system elsewhere.
-    """
-    if disallowedRegions is None:
-        disallowedRegions = []
-    pathToHint = transition
-    # Don't hint entrances from dead-end rooms, follow the reverse pathway back until finding a place with multiple entrances
-    if spoiler.settings.decoupled_loading_zones:
-        while ShufflableExits[pathToHint].category is None:
-            originPaths = [x for x, back in spoiler.shuffled_exit_data.items() if back.reverse == pathToHint]
-            # In a few cases, there is no reverse loading zone. In this case we must keep the original path to hint
-            if len(originPaths) == 0:
-                break
-            pathToHint = originPaths[0]
-    # With coupled loading zones, never hint from a dead-end room, since it is forced to be coming from the same destination
-    elif ShufflableExits[pathToHint].category is None:
-        return False
-    # Validate the region of the hinted entrance is not in disallowedRegions
-    if ShufflableExits[pathToHint].region in disallowedRegions:
-        return False
-    # Validate the hinted destination is not the same as the hinted origin
-    entranceMap = GetMapId(ShufflableExits[pathToHint].region)
-    destinationMap = GetMapId(spoiler.shuffled_exit_data[transition].regionId)
-    if entranceMap == destinationMap:
-        return False
-    entranceName = ShufflableExits[pathToHint].name
-    destinationName: str = spoiler.shuffled_exit_data[transition].spoilerName
-    fromExitName = destinationName.find(" from ")
-    if fromExitName != -1:
-        # Remove exit name from destination
-        destinationName = destinationName[:fromExitName]
-    pushHintToList(Hint(hint=f"If you're looking for {destinationName}, follow the path from {entranceName}.", priority=useful_rating, subtype="lzr"))
-    return True
-
-
 def TryCreatingLoadingZoneHint(spoiler: Spoiler, transition, disallowedRegions: list = None):
     """Try to create a hint message for the given transition. If this hint is determined to be bad, it will return false and not place the hint."""
     if disallowedRegions is None:
@@ -1717,6 +1632,8 @@ def UpdateSpoilerHintList(spoiler: Spoiler):
 
 def GetRegionOfLocation(location_id):
     """Given the id of a Location, return the Region it belongs to."""
+    if location_id == Locations.RarewareBanana:
+        return "Rareware Banana Room"
     location = LocationList[location_id]
     # Shop locations are tied to the level, not the shop regions
     if location.type == Types.Shop:

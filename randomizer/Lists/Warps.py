@@ -379,7 +379,7 @@ BananaportVanilla = {
     ),
     Warps.IslesRing5: BananaportData(name="DK Isles: Ring (5)", map_id=Maps.Isles, region_id=Regions.IslesMain, obj_id_vanilla=0x15, vanilla_warp=4, swap_index=8, event=Events.IslesW5aTagged),
     Warps.IslesFairyIsland: BananaportData(
-        name="DK Isles: Fairy Island", map_id=Maps.Isles, region_id=Regions.IslesMain, obj_id_vanilla=0x19, vanilla_warp=4, swap_index=9, event=Events.IslesW5bTagged
+        name="DK Isles: Fairy Island", map_id=Maps.Isles, region_id=Regions.OuterIsles, obj_id_vanilla=0x19, vanilla_warp=4, swap_index=9, event=Events.IslesW5bTagged
     ),
 }
 
