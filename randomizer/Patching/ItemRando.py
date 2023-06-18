@@ -355,9 +355,14 @@ def place_randomized_items(spoiler):
                             subtype = 5
                             if item.new_item == Types.Banana:
                                 subtype = 6
+                            price_var = 0
+                            if type(item.price) == list:
+                                price_var = 0
+                            else:
+                                price_var = item.price
                             LocalROM().seek(write_space)
                             LocalROM().writeMultipleBytes(subtype << 5, 1)
-                            LocalROM().writeMultipleBytes(item.price, 1)
+                            LocalROM().writeMultipleBytes(price_var, 1)
                             LocalROM().writeMultipleBytes(item.new_flag, 2)
                 elif not item.reward_spot:
                     for map_id in item.placement_data:
