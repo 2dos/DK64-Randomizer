@@ -208,6 +208,6 @@
 | Jungle Japes Lobby | Isles Kasplat: Inside Jungle Japes Lobby |  | 
 | Isles | Isles Kasplat: By the Upper Monkeyport Pad |  | 
 | Isles Snide Room | Isles Kasplat: Near Snide's |  | 
-| Isles | Isles Kasplat: On top of Angry Aztec Lobby | (Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy) or (l.twirl and l.tiny and l.advanced_platforming) | 
+| Isles | Isles Kasplat: On top of Angry Aztec Lobby |  | 
 | Isles | Isles Kasplat: Beneath the Waterfall | l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)) | 
 </details>

@@ -6,7 +6,7 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Isles | On Aztec Building | ((Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.advanced_platforming)) and l.shockwave | 
+| Isles | On Aztec Building | l.shockwave | 
 | Isles | Under Caves Lobby Entrance | l.shockwave | 
 | Isles | Front of Fungi Building | l.shockwave | 
 | Training Grounds | Banana Hoard | (l.vines or l.CanMoonkick()) and l.shockwave | 
@@ -22,7 +22,7 @@
 | Isles | Behind Fungi Building | l.shockwave | 
 | Isles | Behind Aztec Building | l.shockwave | 
 | Banana Fairy Room | Banana Fairy Room: Behind Fairy Chair | l.shockwave | 
-| Banana Fairy Room | Behind the Rareware Door | l.BananaFairies >= l.settings.rareware_gb_fairies and l.shockwave | 
+| Banana Fairy Room | Behind the Rareware Door | l.shockwave | 
 | KLumsy | Under K. Lumsy | (l.CanAccessKRool() or l.phasewalk) and l.shockwave | 
 | Hideout Helm Lobby | Hideout Helm Lobby: Next to Tag Barrel | l.shockwave | 
 | Hideout Helm Lobby | Hideout Helm Lobby: Blueprint Platform | ((l.coconut and l.scope) or (l.twirl and l.istiny and l.advanced_platforming)) and l.shockwave | 
