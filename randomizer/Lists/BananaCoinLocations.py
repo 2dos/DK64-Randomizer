@@ -8,7 +8,7 @@ from randomizer.Enums.Settings import DamageAmount
 from randomizer.Enums.Time import Time
 from randomizer.Lists.MapsAndExits import Maps
 
-CAVES_WATER_HEIGHT = 30
+CAVES_WATER_HEIGHT = 20
 
 
 class BananaCoinGroup:

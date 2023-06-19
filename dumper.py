@@ -176,7 +176,7 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
             fh.write(f"# {' '.join(name.split('_')).title()} \n")
             if isinstance(data, dict):
                 for x in data:
-                    if "Levels." in str(x):
+                    if "Levels." in str(x) or isinstance(x, int):
                         fh.write(f"\n## {getLevelName(x)}\n")
                     else:
                         fh.write(f"\n## {x}\n")
