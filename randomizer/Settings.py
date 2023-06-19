@@ -850,6 +850,10 @@ class Settings:
         if self.random_medal_requirement:
             # Range roughly from 4 to 15, average around 10
             self.medal_requirement = round(random.normalvariate(10, 1.5))
+        self.original_medal_requirement = self.medal_requirement
+        self.logical_medal_requirement = min(math.floor(self.medal_requirement * 1.2), 40)
+        self.original_fairy_requirement = self.rareware_gb_fairies
+        self.logical_fairy_requirement = min(math.floor(self.rareware_gb_fairies * 1.2), 20)
 
         # Boss Rando
         self.boss_maps = ShuffleBosses(self.boss_location_rando)
@@ -940,6 +944,8 @@ class Settings:
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
         if self.win_condition == WinCondition.all_fairies or self.crown_door_item == HelmDoorItem.req_fairy or self.coin_door_item == HelmDoorItem.req_fairy:
             ItemList[Items.BananaFairy].playthrough = True
+        if self.crown_door_item == HelmDoorItem.req_rainbowcoin or self.coin_door_item == HelmDoorItem.req_rainbowcoin:
+            ItemList[Items.RainbowCoin].playthrough = True
         if self.win_condition == WinCondition.all_blueprints or self.crown_door_item == HelmDoorItem.req_bp or self.coin_door_item == HelmDoorItem.req_bp:
             for item_index in ItemList:
                 if ItemList[item_index].type == Types.Blueprint:

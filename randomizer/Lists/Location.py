@@ -196,21 +196,21 @@ LocationList = {
     Locations.IslesDiddySnidesLobby: Location(Levels.DKIsles, "Isles Diddy Snides Spring Barrel", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(0, -1, 416, Kongs.diddy)]),
     Locations.IslesBattleArena1: Location(Levels.DKIsles, "Isles Battle Arena 1 (Snide's Room: Under Rock)", Items.BattleCrown, Types.Crown, Kongs.any, [MapIDCombo(Maps.SnidesCrown, -1, 615)]),
     Locations.IslesDonkeyInstrumentPad: Location(Levels.DKIsles, "Isles Donkey Bongos Pad", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(0, -1, 404, Kongs.donkey)]),
-    Locations.IslesKasplatFactoryLobby: Location(Levels.DKIsles, "Isles Kasplat: Inside Factory Lobby in the ? Box", Items.DKIslesTinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.FranticFactoryLobby]),
+    Locations.IslesKasplatFactoryLobby: Location(Levels.DKIsles, "Isles Kasplat: Factory Lobby Box", Items.DKIslesTinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.FranticFactoryLobby]),
     Locations.IslesBananaFairyFactoryLobby: Location(Levels.DKIsles, "Isles Banana Fairy Factory Lobby", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.FranticFactoryLobby, -1, 593)]),
     Locations.IslesTinyGalleonLobby: Location(Levels.DKIsles, "Isles Tiny Galleon Lobby Swim", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.GloomyGalleonLobby, 0x9, 403)]),
-    Locations.IslesKasplatGalleonLobby: Location(Levels.DKIsles, "Isles Kasplat: Inside Gloomy Galleon Lobby", Items.DKIslesChunkyBlueprint, Types.Blueprint, Kongs.chunky, [Maps.GloomyGalleonLobby]),
+    Locations.IslesKasplatGalleonLobby: Location(Levels.DKIsles, "Isles Kasplat: Galleon Lobby", Items.DKIslesChunkyBlueprint, Types.Blueprint, Kongs.chunky, [Maps.GloomyGalleonLobby]),
     Locations.IslesDiddyCagedBanana: Location(Levels.DKIsles, "Isles Diddy Peanut Cage", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(Maps.Isles, 0x2E, 423, Kongs.diddy)]),
     Locations.IslesDiddySummit: Location(Levels.DKIsles, "Isles Diddy Summit Barrel", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(0, -1, 428, Kongs.diddy)]),
     Locations.IslesBattleArena2: Location(Levels.DKIsles, "Isles Battle Arena 2 (Fungi Lobby: Gorilla Gone Box)", Items.BattleCrown, Types.Crown, Kongs.any, [MapIDCombo(Maps.LobbyCrown, -1, 614)]),
     Locations.IslesBananaFairyForestLobby: Location(Levels.DKIsles, "Isles Forest Lobby Banana Fairy", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.FungiForestLobby, -1, 594)]),
     Locations.IslesDonkeyLavaBanana: Location(Levels.DKIsles, "Isles Donkey Caves Lava", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.CrystalCavesLobby, 0x5, 411, Kongs.donkey)]),
     Locations.IslesDiddyInstrumentPad: Location(Levels.DKIsles, "Isles Diddy Guitar Pad", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(0, -1, 410, Kongs.diddy)]),
-    Locations.IslesKasplatCavesLobby: Location(Levels.DKIsles, "Isles Kasplat: Inside Crystal Caves Lobby", Items.DKIslesLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.CrystalCavesLobby]),
+    Locations.IslesKasplatCavesLobby: Location(Levels.DKIsles, "Isles Kasplat: Caves Lobby Punch", Items.DKIslesLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.CrystalCavesLobby]),
     Locations.IslesLankyCastleLobby: Location(Levels.DKIsles, "Isles Lanky Castle Lobby Barrel", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 415, Kongs.lanky)]),
-    Locations.IslesKasplatCastleLobby: Location(Levels.DKIsles, "Isles Kasplat: Inside Creepy Castle Lobby", Items.DKIslesDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.CreepyCastleLobby]),
+    Locations.IslesKasplatCastleLobby: Location(Levels.DKIsles, "Isles Kasplat: Castle Lobby", Items.DKIslesDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.CreepyCastleLobby]),
     Locations.IslesChunkyHelmLobby: Location(Levels.DKIsles, "Isles Chunky Helm Lobby Barrel", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(0, -1, 406, Kongs.chunky)]),
-    Locations.IslesKasplatHelmLobby: Location(Levels.DKIsles, "Isles Kasplat: Inside Hideout Helm Lobby", Items.DKIslesDonkeyBlueprint, Types.Blueprint, Kongs.donkey, [Maps.HideoutHelmLobby]),
+    Locations.IslesKasplatHelmLobby: Location(Levels.DKIsles, "Isles Kasplat: Helm Lobby", Items.DKIslesDonkeyBlueprint, Types.Blueprint, Kongs.donkey, [Maps.HideoutHelmLobby]),
     Locations.BananaHoard: Location(Levels.DKIsles, "Banana Hoard", Items.BananaHoard, Types.Constant),
     # Jungle Japes location
     Locations.JapesDonkeyMedal: Location(Levels.JungleJapes, "Japes Donkey Medal", Items.BananaMedal, Types.Medal, Kongs.donkey),
@@ -233,14 +233,14 @@ LocationList = {
     Locations.JapesDiddyTunnel: Location(Levels.JungleJapes, "Japes Diddy Peanut Tunnel", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(Maps.JungleJapes, 0x1E, 31, Kongs.diddy)]),
     Locations.JapesLankyGrapeGate: Location(Levels.JungleJapes, "Japes Lanky Grape Gate Barrel", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 1, Kongs.lanky)]),
     Locations.JapesTinyFeatherGateBarrel: Location(Levels.JungleJapes, "Japes Tiny Feather Gate Barrel", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(0, -1, 2, Kongs.tiny)]),
-    Locations.JapesKasplatLeftTunnelNear: Location(Levels.JungleJapes, "Japes Kasplat: Lower area of Tunnel to Beehive", Items.JungleJapesDonkeyBlueprint, Types.Blueprint, Kongs.donkey, [Maps.JungleJapes]),
-    Locations.JapesKasplatLeftTunnelFar: Location(Levels.JungleJapes, "Japes Kasplat: Upper area of Tunnel to Beehive", Items.JungleJapesTinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.JungleJapes]),
+    Locations.JapesKasplatLeftTunnelNear: Location(Levels.JungleJapes, "Japes Kasplat: Hive Tunnel Lower", Items.JungleJapesDonkeyBlueprint, Types.Blueprint, Kongs.donkey, [Maps.JungleJapes]),
+    Locations.JapesKasplatLeftTunnelFar: Location(Levels.JungleJapes, "Japes Kasplat: Hive Tunnel Upper", Items.JungleJapesTinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.JungleJapes]),
     Locations.JapesTinyStump: Location(Levels.JungleJapes, "Japes Tiny Stump", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.JungleJapes, 0x68, 8, Kongs.tiny)]),
     Locations.JapesChunkyGiantBonusBarrel: Location(Levels.JungleJapes, "Japes Chunky Giant Bonus Barrel", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(0, -1, 28, Kongs.chunky)]),
     Locations.JapesTinyBeehive: Location(Levels.JungleJapes, "Japes Tiny Beehive", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.JapesTinyHive, 0x3F, 9, Kongs.tiny)]),
     Locations.JapesLankySlope: Location(Levels.JungleJapes, "Japes Lanky Slope Barrel", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 11, Kongs.lanky)]),
     Locations.JapesKasplatNearPaintingRoom: Location(Levels.JungleJapes, "Japes Kasplat: Near Painting Room", Items.JungleJapesDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.JungleJapes]),
-    Locations.JapesKasplatNearLab: Location(Levels.JungleJapes, "Japes Kasplat: Near Speedy Swing Sortie Bonus", Items.JungleJapesLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.JungleJapes]),
+    Locations.JapesKasplatNearLab: Location(Levels.JungleJapes, "Japes Kasplat: Near Lanky Bonus", Items.JungleJapesLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.JungleJapes]),
     Locations.JapesBananaFairyRambiCave: Location(Levels.JungleJapes, "Japes Rambi Cave Banana Fairy", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 589)]),
     Locations.JapesLankyFairyCave: Location(Levels.JungleJapes, "Japes Lanky Painting Room Zingers", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(Maps.JapesLankyCave, 0x4, 10, Kongs.lanky)]),
     Locations.JapesBananaFairyLankyCave: Location(Levels.JungleJapes, "Japes Painting Room Banana Fairy", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.JapesLankyCave, -1, 590)]),
@@ -256,7 +256,7 @@ LocationList = {
     Locations.AztecChunkyMedal: Location(Levels.AngryAztec, "Aztec Chunky Medal", Items.BananaMedal, Types.Medal, Kongs.chunky),
     Locations.AztecDonkeyFreeLlama: Location(Levels.AngryAztec, "Aztec Donkey Free Llama Blast", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.AngryAztec, 0x26, 51, Kongs.donkey)]),
     Locations.AztecChunkyVases: Location(Levels.AngryAztec, "Aztec Chunky Vases", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.AngryAztec, 0x23, 49, Kongs.chunky)]),
-    Locations.AztecKasplatSandyBridge: Location(Levels.AngryAztec, "Aztec Kasplat: Behind the DK Stone Door", Items.AngryAztecDonkeyBlueprint, Types.Blueprint, Kongs.donkey, [Maps.AngryAztec]),
+    Locations.AztecKasplatSandyBridge: Location(Levels.AngryAztec, "Aztec Kasplat: Behind DK Stone Door", Items.AngryAztecDonkeyBlueprint, Types.Blueprint, Kongs.donkey, [Maps.AngryAztec]),
     Locations.AztecKasplatOnTinyTemple: Location(Levels.AngryAztec, "Aztec Kasplat: On Tiny Temple", Items.AngryAztecDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.AngryAztec]),
     Locations.AztecTinyKlaptrapRoom: Location(Levels.AngryAztec, "Aztec Tiny Klaptrap Room", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.AztecTinyTemple, 0x7E, 65, Kongs.tiny)]),
     Locations.AztecChunkyKlaptrapRoom: Location(Levels.AngryAztec, "Aztec Chunky Klaptrap Room", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.AztecTinyTemple, 0x9, 64, Kongs.chunky)]),
@@ -268,14 +268,14 @@ LocationList = {
     Locations.AztecDiddyRamGongs: Location(Levels.AngryAztec, "Aztec Diddy Ram Gongs", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(Maps.AngryAztec, 0xA3, 54, Kongs.diddy)]),
     Locations.AztecDiddyVultureRace: Location(Levels.AngryAztec, "Aztec Diddy Vulture Race", Items.GoldenBanana, Types.ToughBanana, Kongs.diddy, [MapIDCombo(Maps.AngryAztec, 0xEB, 63, Kongs.diddy)]),
     Locations.AztecChunkyCagedBarrel: Location(Levels.AngryAztec, "Aztec Chunky Giant Caged Barrel", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(0, -1, 52, Kongs.chunky)]),
-    Locations.AztecKasplatNearLab: Location(Levels.AngryAztec, "Aztec Kasplat: Near the Hunky Chunky Barrel", Items.AngryAztecTinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.AngryAztec]),
+    Locations.AztecKasplatNearLab: Location(Levels.AngryAztec, "Aztec Kasplat: Hunky Chunky Barrel", Items.AngryAztecTinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.AngryAztec]),
     Locations.AztecDonkey5DoorTemple: Location(Levels.AngryAztec, "Aztec Donkey 5 Door Temple", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.AztecDonkey5DTemple, 0x6, 57, Kongs.donkey)]),
     Locations.AztecDiddy5DoorTemple: Location(Levels.AngryAztec, "Aztec Diddy 5 Door Temple", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(Maps.AztecDiddy5DTemple, 0x6, 56, Kongs.diddy)]),
     Locations.AztecLanky5DoorTemple: Location(Levels.AngryAztec, "Aztec Lanky 5 Door Temple", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 60, Kongs.lanky)]),
     Locations.AztecTiny5DoorTemple: Location(Levels.AngryAztec, "Aztec Tiny 5 Door Temple", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.AztecTiny5DTemple, 0x6, 58, Kongs.tiny)]),
     Locations.AztecBananaFairyTinyTemple: Location(Levels.AngryAztec, "Aztec Tiny 5 Door Temple Banana Fairy", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.AztecTiny5DTemple, -1, 601)]),
     Locations.AztecChunky5DoorTemple: Location(Levels.AngryAztec, "Aztec Chunky 5 Door Temple", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(0, -1, 59, Kongs.chunky)]),
-    Locations.AztecKasplatChunky5DT: Location(Levels.AngryAztec, "Aztec Kasplat: In Chunky 5-Door Temple", Items.AngryAztecChunkyBlueprint, Types.Blueprint, Kongs.chunky, [Maps.AztecChunky5DTemple]),
+    Locations.AztecKasplatChunky5DT: Location(Levels.AngryAztec, "Aztec Kasplat: Chunky 5-Door Temple", Items.AngryAztecChunkyBlueprint, Types.Blueprint, Kongs.chunky, [Maps.AztecChunky5DTemple]),
     Locations.AztecTinyBeetleRace: Location(Levels.AngryAztec, "Aztec Tiny Beetle Race", Items.GoldenBanana, Types.ToughBanana, Kongs.tiny, [MapIDCombo(Maps.AztecTinyRace, 0x48, 75, Kongs.tiny)]),
     Locations.LankyKong: Location(Levels.AngryAztec, "Lanky Kong's Cage", Items.Lanky, Types.Kong, Kongs.any, [MapIDCombo(0, -1, 70)], logically_relevant=True),
     Locations.AztecDonkeyFreeLanky: Location(Levels.AngryAztec, "Aztec Free Lanky Item", Items.GoldenBanana, Types.Banana, Kongs.any, [MapIDCombo(Maps.AztecLlamaTemple, 0x6C, 77, Kongs.donkey)]),  # Can be assigned to other kongs
@@ -283,7 +283,7 @@ LocationList = {
     Locations.AztecLankyMatchingGame: Location(Levels.AngryAztec, "Aztec Lanky Matching Game", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(Maps.AztecLlamaTemple, 0x2B, 72, Kongs.lanky)]),
     Locations.AztecBananaFairyLlamaTemple: Location(Levels.AngryAztec, "Aztec Llama Temple Banana Fairy", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.AztecLlamaTemple, -1, 600)]),
     Locations.AztecTinyLlamaTemple: Location(Levels.AngryAztec, "Aztec Tiny Llama Temple Lava Pedestals", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.AztecLlamaTemple, 0xAA, 71, Kongs.tiny)]),
-    Locations.AztecKasplatLlamaTemple: Location(Levels.AngryAztec, "Aztec Kasplat: In the lava room in Llama Temple", Items.AngryAztecLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.AztecLlamaTemple]),
+    Locations.AztecKasplatLlamaTemple: Location(Levels.AngryAztec, "Aztec Kasplat: Llama Temple Lava", Items.AngryAztecLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.AztecLlamaTemple]),
     Locations.AztecKey: Location(Levels.AngryAztec, "Aztec Boss Defeated", Items.AngryAztecKey, Types.Key, Kongs.any, [MapIDCombo(0, -1, 74)]),  # Can be assigned to any kong
     # Frantic Factory locations
     Locations.FactoryDonkeyMedal: Location(Levels.FranticFactory, "Factory Donkey Medal", Items.BananaMedal, Types.Medal, Kongs.donkey),
@@ -295,13 +295,13 @@ LocationList = {
     Locations.FactoryDiddyBlockTower: Location(Levels.FranticFactory, "Factory Diddy Block Tower", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(0, -1, 135, Kongs.diddy)]),
     Locations.FactoryLankyTestingRoomBarrel: Location(Levels.FranticFactory, "Factory Lanky Testing Room Barrel", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 137, Kongs.lanky)]),
     Locations.FactoryTinyDartboard: Location(Levels.FranticFactory, "Factory Tiny Dartboard", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.FranticFactory, 0x82, 124, Kongs.tiny)]),
-    Locations.FactoryKasplatBlocks: Location(Levels.FranticFactory, "Factory Kasplat: In Block Tower Room", Items.FranticFactoryChunkyBlueprint, Types.Blueprint, Kongs.chunky, [Maps.FranticFactory]),
+    Locations.FactoryKasplatBlocks: Location(Levels.FranticFactory, "Factory Kasplat: Block Tower", Items.FranticFactoryChunkyBlueprint, Types.Blueprint, Kongs.chunky, [Maps.FranticFactory]),
     Locations.FactoryBananaFairybyCounting: Location(Levels.FranticFactory, "Factory Banana Fairy by Counting", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 602)]),
     Locations.FactoryBananaFairybyFunky: Location(Levels.FranticFactory, "Factory Banana Fairy by Funky", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 591)]),
     Locations.FactoryDiddyRandD: Location(Levels.FranticFactory, "Factory Diddy Charge Enemies", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(Maps.FranticFactory, 0x60, 126, Kongs.diddy)]),
     Locations.FactoryLankyRandD: Location(Levels.FranticFactory, "Factory Lanky Piano Game", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(Maps.FranticFactory, 0x3E, 125, Kongs.lanky)]),
     Locations.FactoryChunkyRandD: Location(Levels.FranticFactory, "Factory Chunky Toy Monster", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.FranticFactory, 0x7C, 127, Kongs.chunky)]),
-    Locations.FactoryKasplatRandD: Location(Levels.FranticFactory, "Factory Kasplat: In Research and Development", Items.FranticFactoryLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.FranticFactory]),
+    Locations.FactoryKasplatRandD: Location(Levels.FranticFactory, "Factory Kasplat: Research and Development", Items.FranticFactoryLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.FranticFactory]),
     Locations.FactoryBattleArena: Location(Levels.FranticFactory, "Factory Battle Arena (Under R and D Grate)", Items.BattleCrown, Types.Crown, Kongs.any, [MapIDCombo(Maps.FactoryCrown, -1, 611)]),
     Locations.FactoryTinyCarRace: Location(Levels.FranticFactory, "Factory Tiny Car Race", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.FactoryTinyRace, 0x62, 139, Kongs.tiny)]),
     Locations.FactoryDiddyChunkyRoomBarrel: Location(Levels.FranticFactory, "Factory Diddy Storage Room Barrel", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(0, -1, 134, Kongs.diddy)]),
@@ -313,14 +313,14 @@ LocationList = {
     Locations.FactoryTinybyArcade: Location(Levels.FranticFactory, "Factory Tiny Mini by Arcade", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.FranticFactory, 0x23, 123, Kongs.tiny)]),
     Locations.FactoryChunkyDarkRoom: Location(Levels.FranticFactory, "Factory Chunky Dark Room", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.FranticFactory, 0x63, 121, Kongs.chunky)]),
     Locations.FactoryChunkybyArcade: Location(Levels.FranticFactory, "Factory Chunky Barrel by Arcade", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(0, -1, 136, Kongs.chunky)]),
-    Locations.FactoryKasplatProductionBottom: Location(Levels.FranticFactory, "Factory Kasplat: At the base of Production Room", Items.FranticFactoryDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.FranticFactory]),
-    Locations.FactoryKasplatStorage: Location(Levels.FranticFactory, "Factory Kasplat: Below the pole to the DK Arcade Machine", Items.FranticFactoryTinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.FranticFactory, Kongs.tiny]),
+    Locations.FactoryKasplatProductionBottom: Location(Levels.FranticFactory, "Factory Kasplat: Base of Production", Items.FranticFactoryDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.FranticFactory]),
+    Locations.FactoryKasplatStorage: Location(Levels.FranticFactory, "Factory Kasplat: Pole to Arcade", Items.FranticFactoryTinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.FranticFactory, Kongs.tiny]),
     Locations.FactoryDonkeyCrusherRoom: Location(Levels.FranticFactory, "Factory Donkey Crusher Room", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.FactoryCrusher, 0x7, 128, Kongs.donkey)]),
     Locations.FactoryDiddyProductionRoom: Location(Levels.FranticFactory, "Factory Diddy Production Spring", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(Maps.FranticFactory, 0x2C, 113, Kongs.diddy)]),
     Locations.FactoryLankyProductionRoom: Location(Levels.FranticFactory, "Factory Lanky Production Handstand", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(Maps.FranticFactory, 0x2A, 115, Kongs.lanky)]),
     Locations.FactoryTinyProductionRoom: Location(Levels.FranticFactory, "Factory Tiny Production Twirl", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(0, -1, 116, Kongs.tiny)]),
     Locations.FactoryChunkyProductionRoom: Location(Levels.FranticFactory, "Factory Chunky Production Timer", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.FranticFactory, 0x29, 114, Kongs.chunky)]),
-    Locations.FactoryKasplatProductionTop: Location(Levels.FranticFactory, "Factory Kasplat: Near the slippery pipe in Production Room", Items.FranticFactoryDonkeyBlueprint, Types.Blueprint, Kongs.donkey, [Maps.FranticFactory]),
+    Locations.FactoryKasplatProductionTop: Location(Levels.FranticFactory, "Factory Kasplat: Upper Production Pipe", Items.FranticFactoryDonkeyBlueprint, Types.Blueprint, Kongs.donkey, [Maps.FranticFactory]),
     Locations.FactoryKey: Location(Levels.FranticFactory, "Factory Boss Defeated", Items.FranticFactoryKey, Types.Key, Kongs.any, [MapIDCombo(0, -1, 138)]),  # Can be assigned to any kong
     # Gloomy Galleon locations
     Locations.GalleonDonkeyMedal: Location(Levels.GloomyGalleon, "Galleon Donkey Medal", Items.BananaMedal, Types.Medal, Kongs.donkey),
@@ -329,23 +329,23 @@ LocationList = {
     Locations.GalleonTinyMedal: Location(Levels.GloomyGalleon, "Galleon Tiny Medal", Items.BananaMedal, Types.Medal, Kongs.tiny),
     Locations.GalleonChunkyMedal: Location(Levels.GloomyGalleon, "Galleon Chunky Medal", Items.BananaMedal, Types.Medal, Kongs.chunky),
     Locations.GalleonChunkyChest: Location(Levels.GloomyGalleon, "Galleon Chunky Chest", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.GloomyGalleon, 0xE, 182, Kongs.chunky)]),
-    Locations.GalleonKasplatNearLab: Location(Levels.GloomyGalleon, "Galleon Kasplat: Near the Troff 'n' Scoff near Cranky's", Items.GloomyGalleonTinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.GloomyGalleon]),
+    Locations.GalleonKasplatNearLab: Location(Levels.GloomyGalleon, "Galleon Kasplat: Past Vines", Items.GloomyGalleonTinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.GloomyGalleon]),
     Locations.GalleonBattleArena: Location(Levels.GloomyGalleon, "Galleon Battle Arena (Under Cranky)", Items.BattleCrown, Types.Crown, Kongs.any, [MapIDCombo(Maps.GalleonCrown, -1, 612)]),
     Locations.GalleonBananaFairybyCranky: Location(Levels.GloomyGalleon, "Galleon Banana Fairy by Cranky", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 592)]),
     Locations.GalleonChunkyCannonGame: Location(Levels.GloomyGalleon, "Galleon Chunky Cannon Game", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.GloomyGalleon, 0x32, 154, Kongs.chunky)]),
-    Locations.GalleonKasplatCannons: Location(Levels.GloomyGalleon, "Galleon Kasplat: On the platforms in Cannon Game Room", Items.GloomyGalleonLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.GloomyGalleon]),
+    Locations.GalleonKasplatCannons: Location(Levels.GloomyGalleon, "Galleon Kasplat: Cannon Game Room", Items.GloomyGalleonLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.GloomyGalleon]),
     Locations.GalleonDiddyShipSwitch: Location(Levels.GloomyGalleon, "Galleon Diddy Top of Lighthouse", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(Maps.GloomyGalleon, 0x2D, 204, Kongs.diddy)]),
     Locations.GalleonLankyEnguardeChest: Location(Levels.GloomyGalleon, "Galleon Lanky Enguarde Chest", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(Maps.GloomyGalleon, 0x6B, 192, Kongs.lanky)]),
-    Locations.GalleonKasplatLighthouseArea: Location(Levels.GloomyGalleon, "Galleon Kasplat: In the Alcove near the Lighthouse", Items.GloomyGalleonDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.GloomyGalleon]),
+    Locations.GalleonKasplatLighthouseArea: Location(Levels.GloomyGalleon, "Galleon Kasplat: Lighthouse Alcove", Items.GloomyGalleonDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.GloomyGalleon]),
     Locations.GalleonDonkeyLighthouse: Location(Levels.GloomyGalleon, "Galleon Donkey Lighthouse", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.GalleonLighthouse, 0x2F, 157, Kongs.donkey)]),
     Locations.GalleonTinyPearls: Location(Levels.GloomyGalleon, "Galleon Tiny Mermaid Reward", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.GalleonMermaidRoom, 0xE, 191, Kongs.tiny)]),
     Locations.GalleonChunkySeasick: Location(Levels.GloomyGalleon, "Galleon Chunky Seasick", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.GalleonSickBay, 0x6, 166, Kongs.chunky)]),
     Locations.GalleonDonkeyFreetheSeal: Location(Levels.GloomyGalleon, "Galleon Donkey Free the Seal", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.GloomyGalleon, 0x2E, 193, Kongs.donkey)]),
-    Locations.GalleonKasplatNearSub: Location(Levels.GloomyGalleon, "Galleon Kasplat: On the Cactus near the sunken submarine", Items.GloomyGalleonChunkyBlueprint, Types.Blueprint, Kongs.chunky, [Maps.GloomyGalleon]),
+    Locations.GalleonKasplatNearSub: Location(Levels.GloomyGalleon, "Galleon Kasplat: Musical Cactus", Items.GloomyGalleonChunkyBlueprint, Types.Blueprint, Kongs.chunky, [Maps.GloomyGalleon]),
     Locations.GalleonDonkeySealRace: Location(Levels.GloomyGalleon, "Galleon Donkey Seal Race", Items.GoldenBanana, Types.ToughBanana, Kongs.donkey, [MapIDCombo(Maps.GalleonSealRace, 0x3B, 165, Kongs.donkey)]),
     Locations.GalleonDiddyGoldTower: Location(Levels.GloomyGalleon, "Galleon Diddy Gold Tower Barrel", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(0, -1, 163, Kongs.diddy)], logically_relevant=True),
     Locations.GalleonLankyGoldTower: Location(Levels.GloomyGalleon, "Galleon Lanky Gold Tower Barrel", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 164, Kongs.lanky)]),
-    Locations.GalleonKasplatGoldTower: Location(Levels.GloomyGalleon, "Galleon Kasplat: On Diddy's Gold Tower", Items.GloomyGalleonDonkeyBlueprint, Types.Blueprint, Kongs.donkey, [Maps.GloomyGalleon]),
+    Locations.GalleonKasplatGoldTower: Location(Levels.GloomyGalleon, "Galleon Kasplat: Diddy Gold Tower", Items.GloomyGalleonDonkeyBlueprint, Types.Blueprint, Kongs.donkey, [Maps.GloomyGalleon]),
     Locations.GalleonTinySubmarine: Location(Levels.GloomyGalleon, "Galleon Tiny Submarine Barrel", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(0, -1, 202, Kongs.tiny)]),
     Locations.GalleonDiddyMechafish: Location(Levels.GloomyGalleon, "Galleon Diddy Mechfish", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(Maps.GalleonMechafish, 0xF, 167, Kongs.diddy)]),
     Locations.GalleonLanky2DoorShip: Location(Levels.GloomyGalleon, "Galleon Lanky 2 Door Ship", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(Maps.Galleon2DShip, 0x0, 183, Kongs.lanky)]),
@@ -372,17 +372,17 @@ LocationList = {
     Locations.ForestDiddyTopofMushroom: Location(Levels.FungiForest, "Forest Diddy Top of Mushroom Barrel", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(0, -1, 211, Kongs.diddy)]),
     Locations.ForestTinyMushroomBarrel: Location(Levels.FungiForest, "Forest Tiny Mushroom Barrel", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(0, -1, 227, Kongs.tiny)]),
     Locations.ForestDonkeyBaboonBlast: Location(Levels.FungiForest, "Forest Donkey Baboon Blast", Items.GoldenBanana, Types.ToughBanana, Kongs.donkey, [MapIDCombo(Maps.FungiForest, 0x39, 254, Kongs.donkey)]),
-    Locations.ForestKasplatLowerMushroomExterior: Location(Levels.FungiForest, "Forest Kasplat: On a low platform on the exterior of Giant Mushroom", Items.FungiForestTinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.FungiForest]),
+    Locations.ForestKasplatLowerMushroomExterior: Location(Levels.FungiForest, "Forest Kasplat: Low Mushroom Exterior", Items.FungiForestTinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.FungiForest]),
     Locations.ForestDonkeyMushroomCannons: Location(Levels.FungiForest, "Forest Donkey Mushroom Cannons", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.ForestGiantMushroom, 0x3, 228, Kongs.donkey)]),
-    Locations.ForestKasplatInsideMushroom: Location(Levels.FungiForest, "Forest Kasplat: Inside the Giant Mushroom", Items.FungiForestDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.ForestGiantMushroom]),
-    Locations.ForestKasplatUpperMushroomExterior: Location(Levels.FungiForest, "Forest Kasplat: On a high platform on the exterior of Giant Mushroom", Items.FungiForestChunkyBlueprint, Types.Blueprint, Kongs.chunky, [Maps.FungiForest]),
+    Locations.ForestKasplatInsideMushroom: Location(Levels.FungiForest, "Forest Kasplat: Inside Giant Mushroom", Items.FungiForestDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.ForestGiantMushroom]),
+    Locations.ForestKasplatUpperMushroomExterior: Location(Levels.FungiForest, "Forest Kasplat: Mushroom Night Door", Items.FungiForestChunkyBlueprint, Types.Blueprint, Kongs.chunky, [Maps.FungiForest]),
     Locations.ForestBattleArena: Location(Levels.FungiForest, "Forest Battle Arena (Giant Mushroom High Ladder Platform)", Items.BattleCrown, Types.Crown, Kongs.any, [MapIDCombo(Maps.ForestCrown, -1, 613)]),
     Locations.ForestChunkyFacePuzzle: Location(Levels.FungiForest, "Forest Chunky Face Puzzle", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.ForestChunkyFaceRoom, 0x2, 225, Kongs.chunky)]),
     Locations.ForestLankyZingers: Location(Levels.FungiForest, "Forest Lanky Zinger Bounce", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(Maps.ForestLankyZingersRoom, 0x0, 226, Kongs.lanky)]),
     Locations.ForestLankyColoredMushrooms: Location(Levels.FungiForest, "Forest Lanky Colored Mushroom Slam", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 224, Kongs.lanky)]),
     Locations.ForestDiddyOwlRace: Location(Levels.FungiForest, "Forest Diddy Owl Race", Items.GoldenBanana, Types.ToughBanana, Kongs.diddy, [MapIDCombo(0, -1, 250, Kongs.diddy)]),
     Locations.ForestLankyRabbitRace: Location(Levels.FungiForest, "Forest Lanky Rabbit Race", Items.GoldenBanana, Types.ToughBanana, Kongs.lanky, [MapIDCombo(Maps.FungiForest, 0x57, 249)]),
-    Locations.ForestKasplatOwlTree: Location(Levels.FungiForest, "Forest Kasplat: Under the Owl's Tree", Items.FungiForestLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.FungiForest]),
+    Locations.ForestKasplatOwlTree: Location(Levels.FungiForest, "Forest Kasplat: Under Owl Tree", Items.FungiForestLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.FungiForest]),
     Locations.ForestTinyAnthill: Location(Levels.FungiForest, "Forest Tiny Anthill Banana", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.ForestAnthill, 0x0, 205, Kongs.tiny)]),
     Locations.ForestDonkeyMill: Location(Levels.FungiForest, "Forest Donkey Mill Levers", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.FungiForest, 0x2B, 219, Kongs.donkey), MapIDCombo(Maps.ForestMillFront, 0xA, 219, Kongs.donkey)]),
     Locations.ForestDiddyCagedBanana: Location(Levels.FungiForest, "Forest Diddy Winch Cage", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(Maps.FungiForest, 0x28, 214, Kongs.diddy)]),
@@ -409,14 +409,14 @@ LocationList = {
     Locations.CavesTinyCaveBarrel: Location(Levels.CrystalCaves, "Caves Tiny Mini Cave Barrel", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(0, -1, 295, Kongs.tiny)], logically_relevant=True),
     Locations.CavesTinyMonkeyportIgloo: Location(Levels.CrystalCaves, "Caves Tiny Monkeyport Igloo", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.CrystalCaves, 0x29, 297, Kongs.tiny)]),
     Locations.CavesChunkyGorillaGone: Location(Levels.CrystalCaves, "Caves Chunky Gorilla Gone", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.CrystalCaves, 0x3E, 268, Kongs.chunky)]),
-    Locations.CavesKasplatNearLab: Location(Levels.CrystalCaves, "Caves Kasplat: Near the Ice Castle", Items.CrystalCavesDonkeyBlueprint, Types.Blueprint, Kongs.donkey, [Maps.CrystalCaves]),
-    Locations.CavesKasplatNearFunky: Location(Levels.CrystalCaves, "Caves Kasplat: In the Hidden Room by Funky's", Items.CrystalCavesDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.CrystalCaves]),
-    Locations.CavesKasplatPillar: Location(Levels.CrystalCaves, "Caves Kasplat: On the platform near Funky's", Items.CrystalCavesLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.CrystalCaves]),
+    Locations.CavesKasplatNearLab: Location(Levels.CrystalCaves, "Caves Kasplat: Near Ice Castle", Items.CrystalCavesDonkeyBlueprint, Types.Blueprint, Kongs.donkey, [Maps.CrystalCaves]),
+    Locations.CavesKasplatNearFunky: Location(Levels.CrystalCaves, "Caves Kasplat: Mini Room by Funky", Items.CrystalCavesDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.CrystalCaves]),
+    Locations.CavesKasplatPillar: Location(Levels.CrystalCaves, "Caves Kasplat: On the Pillar", Items.CrystalCavesLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.CrystalCaves]),
     Locations.CavesKasplatNearCandy: Location(Levels.CrystalCaves, "Caves Kasplat: By the Far Warp 2", Items.CrystalCavesTinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.CrystalCaves]),
     Locations.CavesLankyBeetleRace: Location(Levels.CrystalCaves, "Caves Lanky Beetle Race", Items.GoldenBanana, Types.ToughBanana, Kongs.lanky, [MapIDCombo(Maps.CavesLankyRace, 0x1, 259, Kongs.lanky)]),
     Locations.CavesLankyCastle: Location(Levels.CrystalCaves, "Caves Lanky Ice Castle Slam Challenge", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(Maps.CavesFrozenCastle, 0x10, 271, Kongs.lanky)]),
     Locations.CavesChunkyTransparentIgloo: Location(Levels.CrystalCaves, "Caves Chunky Transparent Igloo", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.CrystalCaves, 0x28, 270, Kongs.chunky)]),
-    Locations.CavesKasplatOn5DI: Location(Levels.CrystalCaves, "Caves Kasplat: On the 5-Door Igloo", Items.CrystalCavesChunkyBlueprint, Types.Blueprint, Kongs.chunky, [Maps.CrystalCaves]),
+    Locations.CavesKasplatOn5DI: Location(Levels.CrystalCaves, "Caves Kasplat: On 5-Door Igloo", Items.CrystalCavesChunkyBlueprint, Types.Blueprint, Kongs.chunky, [Maps.CrystalCaves]),
     Locations.CavesDonkey5DoorIgloo: Location(Levels.CrystalCaves, "Caves Donkey 5 Door Igloo", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.CavesDonkeyIgloo, 0x1, 275, Kongs.donkey)]),
     Locations.CavesDiddy5DoorIgloo: Location(Levels.CrystalCaves, "Caves Diddy 5 Door Igloo", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(Maps.CavesDiddyIgloo, 0x1, 274, Kongs.diddy)]),
     Locations.CavesLanky5DoorIgloo: Location(Levels.CrystalCaves, "Caves Lanky 5 Door Igloo", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(Maps.CavesLankyIgloo, 0x3, 281, Kongs.lanky)]),
@@ -440,8 +440,8 @@ LocationList = {
     Locations.CastleTinyMedal: Location(Levels.CreepyCastle, "Castle Tiny Medal", Items.BananaMedal, Types.Medal, Kongs.tiny),
     Locations.CastleChunkyMedal: Location(Levels.CreepyCastle, "Castle Chunky Medal", Items.BananaMedal, Types.Medal, Kongs.chunky),
     Locations.CastleDiddyAboveCastle: Location(Levels.CreepyCastle, "Castle Diddy Above Castle", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(0, -1, 350, Kongs.diddy)]),
-    Locations.CastleKasplatHalfway: Location(Levels.CreepyCastle, "Castle Kasplat: Near the upper Warp 2", Items.CreepyCastleLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.CreepyCastle]),
-    Locations.CastleKasplatLowerLedge: Location(Levels.CreepyCastle, "Castle Kasplat: Near the Crypt Entrance on a lone platform", Items.CreepyCastleTinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.CreepyCastle]),
+    Locations.CastleKasplatHalfway: Location(Levels.CreepyCastle, "Castle Kasplat: Near Upper Warp 2", Items.CreepyCastleLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.CreepyCastle]),
+    Locations.CastleKasplatLowerLedge: Location(Levels.CreepyCastle, "Castle Kasplat: On a lone platform", Items.CreepyCastleTinyBlueprint, Types.Blueprint, Kongs.tiny, [Maps.CreepyCastle]),
     Locations.CastleDonkeyTree: Location(Levels.CreepyCastle, "Castle Donkey Tree Sniping", Items.GoldenBanana, Types.Banana, Kongs.donkey, [MapIDCombo(Maps.CastleTree, 0x8, 320, Kongs.donkey)]),
     Locations.CastleChunkyTree: Location(Levels.CreepyCastle, "Castle Chunky Tree Sniping Barrel", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(0, -1, 319, Kongs.chunky)]),
     Locations.CastleKasplatTree: Location(Levels.CreepyCastle, "Castle Kasplat: Inside the Tree", Items.CreepyCastleDonkeyBlueprint, Types.Blueprint, Kongs.donkey, [Maps.CastleTree]),
@@ -456,7 +456,7 @@ LocationList = {
     Locations.CastleTinyTrashCan: Location(Levels.CreepyCastle, "Castle Tiny Trash Can", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.CastleTrashCan, 0x4, 351, Kongs.tiny)]),
     Locations.CastleChunkyShed: Location(Levels.CreepyCastle, "Castle Chunky Shed", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.CastleShed, 0x6, 322, Kongs.chunky)]),
     Locations.CastleChunkyMuseum: Location(Levels.CreepyCastle, "Castle Chunky Museum", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(Maps.CastleMuseum, 0x7, 314, Kongs.chunky)]),
-    Locations.CastleKasplatCrypt: Location(Levels.CreepyCastle, "Castle Kasplat: In the Lower Cave straight ahead", Items.CreepyCastleDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.CastleLowerCave]),
+    Locations.CastleKasplatCrypt: Location(Levels.CreepyCastle, "Castle Kasplat: Lower Cave Center", Items.CreepyCastleDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.CastleLowerCave]),
     Locations.CastleDiddyCrypt: Location(Levels.CreepyCastle, "Castle Diddy Crypt", Items.GoldenBanana, Types.Banana, Kongs.diddy, [MapIDCombo(Maps.CastleCrypt, 0x8, 310, Kongs.diddy)]),
     Locations.CastleChunkyCrypt: Location(Levels.CreepyCastle, "Castle Chunky Crypt", Items.GoldenBanana, Types.Banana, Kongs.chunky, [MapIDCombo(0, -1, 311, Kongs.chunky)]),
     Locations.CastleDonkeyMinecarts: Location(Levels.CreepyCastle, "Castle Donkey Minecart", Items.GoldenBanana, Types.ToughBanana, Kongs.donkey, [MapIDCombo(0, -1, 318, Kongs.donkey)]),
@@ -701,22 +701,22 @@ LocationList = {
     Locations.CastleChunkyDoor: Location(Levels.CreepyCastle, "Castle Chunky Hint", Items.CastleChunkyHint, Types.Hint, Kongs.chunky),
 
     # Rainbow Coins - Has to be in order of map index
-    Locations.RainbowCoin_Location00: Location(Levels.JungleJapes, "Japes Dirt Patch (Painting Hill)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x29E)]),  # Painting Hill
-    Locations.RainbowCoin_Location01: Location(Levels.AngryAztec, "Aztec Dirt Patch (Chunky Temple)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.AztecChunky5DTemple, -1, 0x29F)]),  # Chunky 5DT
-    Locations.RainbowCoin_Location02: Location(Levels.FranticFactory, "Factory Dirt Patch (Dark Room)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x2A0)]),  # Dark Room
-    Locations.RainbowCoin_Location03: Location(Levels.DKIsles, "Isles Dirt Patch (Fungi Island)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A1)]),  # Fungi Entrance
-    Locations.RainbowCoin_Location04: Location(Levels.DKIsles, "Isles Dirt Patch (Under Caves Lobby)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A2)]),  # Caves Slope
-    Locations.RainbowCoin_Location05: Location(Levels.DKIsles, "Isles Dirt Patch (Aztec Roof)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A3)]),  # Aztec Roof
-    Locations.RainbowCoin_Location06: Location(Levels.AngryAztec, "Aztec Dirt Patch (Oasis)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2A4)]),  # Oasis
-    Locations.RainbowCoin_Location07: Location(Levels.FungiForest, "Forest Dirt Patch (Grass)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2A5)]),  # Isotarge Coin
-    Locations.RainbowCoin_Location08: Location(Levels.FungiForest, "Forest Dirt Patch (Beanstalk)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2A6)]),  # Beanstalk
-    Locations.RainbowCoin_Location09: Location(Levels.GloomyGalleon, "Galleon Dirt Patch (Lighthouse)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.GalleonLighthouse, -1, 0x2A7)]),  # Lighthouse
-    Locations.RainbowCoin_Location10: Location(Levels.CrystalCaves, "Caves Dirt Patch (Giant Kosha)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x2A8)]),  # Giant Kosha
-    Locations.RainbowCoin_Location11: Location(Levels.CreepyCastle, "Castle Dirt Patch (Top)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x2A9)]),  # Castle Top
-    Locations.RainbowCoin_Location12: Location(Levels.DKIsles, "Isles Dirt Patch (K. Lumsy)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.KLumsy, -1, 0x2AA)]),  # K. Lumsy
-    Locations.RainbowCoin_Location13: Location(Levels.DKIsles, "Isles Dirt Patch (Back of Training Grounds)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2AB)]),  # Back of TG
-    Locations.RainbowCoin_Location14: Location(Levels.DKIsles, "Isles Dirt Patch (Banana Hoard)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2AC)]),  # Banana Hoard
-    Locations.RainbowCoin_Location15: Location(Levels.DKIsles, "Isles Dirt Patch (Castle Lobby)", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x2AD)]),  # Castle Lobby
+    Locations.RainbowCoin_Location00: Location(Levels.JungleJapes, "Japes Dirt: Painting Hill", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x29E)]),  # Painting Hill
+    Locations.RainbowCoin_Location01: Location(Levels.AngryAztec, "Aztec Dirt: Chunky Temple", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.AztecChunky5DTemple, -1, 0x29F)]),  # Chunky 5DT
+    Locations.RainbowCoin_Location02: Location(Levels.FranticFactory, "Factory Dirt: Dark Room", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x2A0)]),  # Dark Room
+    Locations.RainbowCoin_Location03: Location(Levels.DKIsles, "Isles Dirt: Cabin Isle", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A1)]),  # Fungi Entrance
+    Locations.RainbowCoin_Location04: Location(Levels.DKIsles, "Isles Dirt: Under Caves Lobby", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A2)]),  # Caves Slope
+    Locations.RainbowCoin_Location05: Location(Levels.DKIsles, "Isles Dirt: Aztec Roof", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A3)]),  # Aztec Roof
+    Locations.RainbowCoin_Location06: Location(Levels.AngryAztec, "Aztec Dirt: Oasis", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2A4)]),  # Oasis
+    Locations.RainbowCoin_Location07: Location(Levels.FungiForest, "Forest Dirt: Grass", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2A5)]),  # Isotarge Coin
+    Locations.RainbowCoin_Location08: Location(Levels.FungiForest, "Forest Dirt: Beanstalk", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2A6)]),  # Beanstalk
+    Locations.RainbowCoin_Location09: Location(Levels.GloomyGalleon, "Galleon Dirt: Lighthouse", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.GalleonLighthouse, -1, 0x2A7)]),  # Lighthouse
+    Locations.RainbowCoin_Location10: Location(Levels.CrystalCaves, "Caves Dirt: Giant Kosha", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x2A8)]),  # Giant Kosha
+    Locations.RainbowCoin_Location11: Location(Levels.CreepyCastle, "Castle Dirt: Top", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x2A9)]),  # Castle Top
+    Locations.RainbowCoin_Location12: Location(Levels.DKIsles, "Isles Dirt: Prison", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.KLumsy, -1, 0x2AA)]),  # K. Lumsy
+    Locations.RainbowCoin_Location13: Location(Levels.DKIsles, "Isles Dirt: Training Grounds Back", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2AB)]),  # Back of TG
+    Locations.RainbowCoin_Location14: Location(Levels.DKIsles, "Isles Dirt: Banana Hoard", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2AC)]),  # Banana Hoard
+    Locations.RainbowCoin_Location15: Location(Levels.DKIsles, "Isles Dirt: Castle Lobby", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x2AD)]),  # Castle Lobby
 }
 
 TrainingBarrelLocations = {
