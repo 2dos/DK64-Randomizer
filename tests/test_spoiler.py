@@ -219,7 +219,7 @@ def test_with_settings_string_1():
     # This top one is always the S2 Preset (probably up to date, if it isn't go steal it from the season2.json)
     settings_string = "bKEFiRorPN5ysnPCBogPQ+qBoRDIhKlsa58B+I0eu0uXxCnLE2nBACoMgt1PX4EkAyaBkF1kssFAXQAgwE6gIHA3YBhAI7gQJBXgChQM8gYLB3oDhgQoQ08e2QpHqKhnKlMubRbwM0NjlFuCFRFgMTEUDF61xyN2q/32RQPAZiqcuUOS2EJIIvoE5IMMGY2mMHFosi0rlgVigthoTiwVCkwEwYEYkHERh0AVQA"
     # This one is for ease of testing, go wild with it
-    # settings_string = "bKEGiRorPE1ecrJzwgDDEsFX7lGKJD0Pj8Ro9dpcviFmpyxRpgRArdT4mBxJFZ7fgSICJoV5XKJPLJVKYyi+yWWCgLoAQYCdQEDgbsAwgEdwIEgrwBQoGeQMFg70BwwIUIbkPf0UqFHIz0SqXVFpMOBFQFgoTAUAl6qgxTxnWzVgExFMXKHJcCgzaYwcWiyQRALSwWw0YCYMCMaCQcTWHA2fz6IgGIw6AKgA+AA"
+    # settings_string = "bKEFiRorPN5ysnPCBogPQ+qBoRDIhKlsa58B+I0eu0uXxCnLE2nBACoMgt1PX4EkAyaBkF1kssFAXQAgwE6gIHA3YBhAI7gQJBXgChQM8gYLB3oDhgQoQ08e2QpHqKhnKlMubRbwM0NjlFuCFSFgMTIUDF61xyN2q/32RQPAZiqcuUOS2EJIIvoE5IMMGY2mMHFosi0rlgVigthoTiwVCkwEwYEYkHERh0AVQA"
 
     settings_dict = decrypt_settings_string_enum(settings_string)
     settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
@@ -314,8 +314,8 @@ def test_with_settings_string_5():
 def test_with_settings_string_6():
     """Confirm that settings strings decryption is working and generate a spoiler log with it."""
     # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
-    # Ice's settings
-    settings_string = "bKEGCRorPE1eKyc8IQwxLBV+5RiiQ9D6oIBEMhTHQlS2Nc+AjR67S5fELNbbHTlijTAgHQKgyC3U+JgEX7EkAybiuUSqMgvMllgoC6AEGAnUBA4G7AMIBHcCBIK8AUKBnkDBYO9AcMCA1Ge3CwVI9RUM6EylUubRbwI1N0W43CipCwIJkKAS9VRQIhkKY6EqWxrnwjOtmuOWq/32RQPAJiqcuUOS4FBh8tFkWlcsFsNCcWCkoDAjEgNiMOgA"
+    # Kamerson's settings
+    settings_string = "bKEGiRorPE1ecrJzwgDDEsFX7lGKJD0Pj8Ro9dpcviFmpyxRpgRArdT4mBxJFZ7fgSICJoV5XKJPLJVKYyi+yWWCgLoAQYCdQEDgbsAwgEdwIEgrwBQoGeQMFg70BwwIUIbkPf0UqFHIz0SqXVFpMOBFQFgoTAUAl6qgxTxnWzVgExFMXKHJcCgzaYwcWiyQRALSwWw0YCYMCMaCQcTWHA2fz6IgGIw6AKgA+AA"
 
     settings_dict = decrypt_settings_string_enum(settings_string)
     settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly

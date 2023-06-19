@@ -593,18 +593,11 @@ def ParePlaythrough(settings, PlaythroughLocations):
             # All GBs that make it here are logically required
             if location.item == Items.GoldenBanana:
                 continue
-            # Items that are part of the win condition are always part of the Playthrough but are never part of it otherwise
-            if location.item == Items.BananaFairy:
-                if settings.win_condition != WinCondition.all_fairies:
-                    sphere.locations.remove(locationId)
-                continue
-            if location.item == Items.BananaMedal:
-                if settings.win_condition != WinCondition.all_medals:
-                    sphere.locations.remove(locationId)
+            # These items aren't usually that important - to make it here they have to be part of the win condition or one of the Helm doors
+            # They'll be part of the Playthrough but aren't candidates for the WotH, so we don't have to do any calculations on them
+            if location.item in (Items.BananaFairy, Items.BananaMedal, Items.RainbowCoin, Items.BattleCrown):
                 continue
             if location.item is not None and ItemList[location.item].type == Types.Blueprint:
-                if settings.win_condition != WinCondition.all_blueprints:
-                    sphere.locations.remove(locationId)
                 continue
             # Copy out item from location
             item = location.item
@@ -645,7 +638,7 @@ def PareWoth(spoiler, PlaythroughLocations):
             loc
             for loc in sphere.locations  # If Keys are constant, we may still want path hints for them.
             if (not LocationList[loc].constant or ItemList[LocationList[loc].item].type == Types.Key)
-            and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)
+            and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint, Types.RainbowCoin)
         ]:
             WothLocations.append(loc)
     WothLocations.append(Locations.BananaHoard)  # The Banana Hoard is the endpoint of the Way of the Hoard
@@ -1305,6 +1298,9 @@ def Fill(spoiler):
     spoiler.settings.debug_prerequisites = {}
     spoiler.settings.debug_fill_blueprints = {}
     spoiler.settings.placed_shared_shops = 0
+    # To aid in finding these locations, treat Rareware Coin and Rareware GB as being ~15-20% more expensive for fill purposes (unless it's already very expensive)
+    spoiler.settings.medal_requirement = spoiler.settings.logical_medal_requirement
+    spoiler.settings.rareware_gb_fairies = spoiler.settings.logical_fairy_requirement
     # First place constant items - these will never vary and need to be in place for all other fills to know that
     ItemPool.PlaceConstants(spoiler.settings)
 
@@ -1394,15 +1390,14 @@ def Fill(spoiler):
             if item in medalsToBePlaced:
                 medalsToBePlaced.remove(item)
         medalAssumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=placed_in_helm)
-        # Medals up to the Jetpac requirement must be placed carefully
-        logicallyPlacedMedals = min(floor(spoiler.settings.medal_requirement * 1.2), 40)
-        jetpacRequiredMedals = medalsToBePlaced[:logicallyPlacedMedals]
+        # Medals up to the logical Jetpac requirement must be placed carefully
+        jetpacRequiredMedals = medalsToBePlaced[: spoiler.settings.logical_medal_requirement]
         medalsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, jetpacRequiredMedals, medalAssumedItems, doubleTime=True)
-        if logicallyPlacedMedals > 0 and medalsUnplaced > 0:
+        if medalsUnplaced > 0:
             raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced logical medals.")
         # The remaining medals can be placed randomly
-        medalsUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, medalsToBePlaced[logicallyPlacedMedals:], medalAssumedItems)
-        if logicallyPlacedMedals < 40 and medalsUnplaced > 0:
+        medalsUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, medalsToBePlaced[spoiler.settings.logical_medal_requirement :], medalAssumedItems)
+        if medalsUnplaced > 0:
             raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced random medals.")
     # Then place Fairies
     if Types.Fairy in spoiler.settings.shuffled_location_types:
@@ -1413,15 +1408,14 @@ def Fill(spoiler):
             if item in fairiesToBePlaced:
                 fairiesToBePlaced.remove(item)
         fairyAssumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=placed_in_helm)
-        # Fairies up to the Rareware GB requirement must be placed carefully
-        logicallyPlacedFairies = min(floor(spoiler.settings.rareware_gb_fairies * 1.2), 20)  # Place more fairies in logic than you may need
-        rarewareRequiredFairies = fairiesToBePlaced[:logicallyPlacedFairies]
+        # Fairies up to the logical Rareware GB requirement must be placed carefully
+        rarewareRequiredFairies = fairiesToBePlaced[: spoiler.settings.logical_fairy_requirement]
         fairyUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, rarewareRequiredFairies, fairyAssumedItems, doubleTime=True)
-        if logicallyPlacedFairies > 0 and fairyUnplaced > 0:
+        if fairyUnplaced > 0:
             raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced logical fairies.")
         # The remaining fairies can be placed randomly
-        fairyUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, fairiesToBePlaced[logicallyPlacedFairies:], fairyAssumedItems)
-        if logicallyPlacedFairies < 20 and fairyUnplaced > 0:
+        fairyUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, fairiesToBePlaced[spoiler.settings.logical_fairy_requirement :], fairyAssumedItems)
+        if fairyUnplaced > 0:
             raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced random Fairies.")
     # Then fill remaining locations with GBs
     if Types.Banana in spoiler.settings.shuffled_location_types:
@@ -1458,6 +1452,10 @@ def Fill(spoiler):
     if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckAllReachable):
         print("Failed 101% check")
         raise Ex.GameNotBeatableException("Game not able to complete 101% after placing all items.")
+    # We have successfully filled the seed by this point. All that is left is to confirm there are no purchase order locks
+    # Reset the adjustments made for fill purposes
+    spoiler.settings.medal_requirement = spoiler.settings.original_medal_requirement
+    spoiler.settings.rareware_gb_fairies = spoiler.settings.original_fairy_requirement
     return
 
 
