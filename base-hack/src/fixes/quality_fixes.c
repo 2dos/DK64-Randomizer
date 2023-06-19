@@ -44,6 +44,21 @@ void qualityOfLife_fixes(void) {
 					displaySpriteAtXYZ(sprite_table[19], 0x3F800000, Player->xPos, Player->yPos, Player->zPos);
 				}
 			}
+		} else {
+			int is_beaver_bother = CurrentMap == MAP_BBOTHER_EASY ||
+				CurrentMap == MAP_BBOTHER_HARD ||
+				CurrentMap == MAP_BBOTHER_NORMAL;
+			if (is_beaver_bother) {
+				if (Player) {
+					int control_state = Player->control_state;
+					int good_state = control_state == 0x7D || // Klaptrap
+						control_state == 0x73 || // Failure
+						control_state == 0x74; // Victory
+					if (!good_state) {
+						Player->control_state = 0x7D;
+					}
+				}
+			}
 		}
 	}
 }

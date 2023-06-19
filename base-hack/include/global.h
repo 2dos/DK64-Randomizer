@@ -24,6 +24,7 @@ extern int inBattleCrown(maps map);
 extern int inBossMap(maps map, int include_regular, int include_krool, int include_shoe);
 extern int inMinigame(maps map);
 extern int isGamemode(gamemodes target_mode, int force_both);
+extern int has_key(int index);
 
 extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);

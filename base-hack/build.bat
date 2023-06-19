@@ -10,6 +10,7 @@ IF EXIST "rom/dk64.z64" (
     echo 'ROM Exists.' >> rom/build.log
 ) ELSE (
     echo 'Error: DK64.z64 file missing from base-hack/rom/' >> rom/build.log
+	echo 'Error: DK64.z64 file missing from base-hack/rom/'
 	exit 1
 )
 mkdir obj

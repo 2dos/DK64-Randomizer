@@ -296,7 +296,7 @@ void OrangeGunCode(void) {
     ) {
         unkSpriteRenderFunc_1(1);
         unkSpriteRenderFunc_3(0x1006E);
-        loadSpriteFunction(0x8071A8B0); // TODO: Remove light rendering, saves 4fps
+        loadSpriteFunction(0x8071A8B0); // TODO(theballaam96): Remove light rendering, saves 4fps
         float x = CurrentActorPointer_0->xPos;
         float y = CurrentActorPointer_0->yPos;
         float z = CurrentActorPointer_0->zPos;
