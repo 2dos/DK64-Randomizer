@@ -240,7 +240,7 @@ LocationList = {
     Locations.JapesTinyBeehive: Location(Levels.JungleJapes, "Japes Tiny Beehive", Items.GoldenBanana, Types.Banana, Kongs.tiny, [MapIDCombo(Maps.JapesTinyHive, 0x3F, 9, Kongs.tiny)]),
     Locations.JapesLankySlope: Location(Levels.JungleJapes, "Japes Lanky Slope Barrel", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(0, -1, 11, Kongs.lanky)]),
     Locations.JapesKasplatNearPaintingRoom: Location(Levels.JungleJapes, "Japes Kasplat: Near Painting Room", Items.JungleJapesDiddyBlueprint, Types.Blueprint, Kongs.diddy, [Maps.JungleJapes]),
-    Locations.JapesKasplatNearLab: Location(Levels.JungleJapes, "Japes Kasplat: Near Lanky Bonus", Items.JungleJapesLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.JungleJapes]),
+    Locations.JapesKasplatNearLab: Location(Levels.JungleJapes, "Japes Kasplat: By Lanky Slope Bonus", Items.JungleJapesLankyBlueprint, Types.Blueprint, Kongs.lanky, [Maps.JungleJapes]),
     Locations.JapesBananaFairyRambiCave: Location(Levels.JungleJapes, "Japes Rambi Cave Banana Fairy", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 589)]),
     Locations.JapesLankyFairyCave: Location(Levels.JungleJapes, "Japes Lanky Painting Room Zingers", Items.GoldenBanana, Types.Banana, Kongs.lanky, [MapIDCombo(Maps.JapesLankyCave, 0x4, 10, Kongs.lanky)]),
     Locations.JapesBananaFairyLankyCave: Location(Levels.JungleJapes, "Japes Painting Room Banana Fairy", Items.BananaFairy, Types.Fairy, Kongs.any, [MapIDCombo(Maps.JapesLankyCave, -1, 590)]),
@@ -708,13 +708,13 @@ LocationList = {
     Locations.RainbowCoin_Location04: Location(Levels.DKIsles, "Isles Dirt: Under Caves Lobby", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A2)]),  # Caves Slope
     Locations.RainbowCoin_Location05: Location(Levels.DKIsles, "Isles Dirt: Aztec Roof", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x2A3)]),  # Aztec Roof
     Locations.RainbowCoin_Location06: Location(Levels.AngryAztec, "Aztec Dirt: Oasis", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x2A4)]),  # Oasis
-    Locations.RainbowCoin_Location07: Location(Levels.FungiForest, "Forest Dirt: Grass", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2A5)]),  # Isotarge Coin
+    Locations.RainbowCoin_Location07: Location(Levels.FungiForest, "Forest Dirt: Mills Grass", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2A5)]),  # Isotarge Coin
     Locations.RainbowCoin_Location08: Location(Levels.FungiForest, "Forest Dirt: Beanstalk", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x2A6)]),  # Beanstalk
     Locations.RainbowCoin_Location09: Location(Levels.GloomyGalleon, "Galleon Dirt: Lighthouse", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.GalleonLighthouse, -1, 0x2A7)]),  # Lighthouse
     Locations.RainbowCoin_Location10: Location(Levels.CrystalCaves, "Caves Dirt: Giant Kosha", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CrystalCaves, -1, 0x2A8)]),  # Giant Kosha
-    Locations.RainbowCoin_Location11: Location(Levels.CreepyCastle, "Castle Dirt: Top", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x2A9)]),  # Castle Top
-    Locations.RainbowCoin_Location12: Location(Levels.DKIsles, "Isles Dirt: Prison", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.KLumsy, -1, 0x2AA)]),  # K. Lumsy
-    Locations.RainbowCoin_Location13: Location(Levels.DKIsles, "Isles Dirt: Training Grounds Back", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2AB)]),  # Back of TG
+    Locations.RainbowCoin_Location11: Location(Levels.CreepyCastle, "Castle Dirt: Top Floor", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastle, -1, 0x2A9)]),  # Castle Top
+    Locations.RainbowCoin_Location12: Location(Levels.DKIsles, "Isles Dirt: Back of Prison", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.KLumsy, -1, 0x2AA)]),  # K. Lumsy
+    Locations.RainbowCoin_Location13: Location(Levels.DKIsles, "Isles Dirt: Training Grounds Rear Tunnel", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2AB)]),  # Back of TG
     Locations.RainbowCoin_Location14: Location(Levels.DKIsles, "Isles Dirt: Banana Hoard", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2AC)]),  # Banana Hoard
     Locations.RainbowCoin_Location15: Location(Levels.DKIsles, "Isles Dirt: Castle Lobby", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x2AD)]),  # Castle Lobby
 }
