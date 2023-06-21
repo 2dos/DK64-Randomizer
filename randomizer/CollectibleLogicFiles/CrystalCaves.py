@@ -145,7 +145,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 2),
     ],
     Regions.DiddyLowerCabin: [
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack or l.advanced_platforming, None, 1),
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),
 
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 4),
