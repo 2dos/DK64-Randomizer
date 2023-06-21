@@ -91,7 +91,7 @@ KasplatLocationList = {
             vanilla=True,
         ),
         KasplatLocation(
-            name="Japes Kasplat: Near Lanky Bonus",
+            name="Japes Kasplat: By Lanky Slope Bonus",
             map_id=Maps.JungleJapes,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[2014, 251, 2767],

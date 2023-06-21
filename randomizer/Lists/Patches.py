@@ -87,7 +87,7 @@ DirtPatchLocations = [
         logic=lambda l: (l.vines or l.CanMoonkick()) and l.shockwave,
     ),
     DirtPatchData(
-        name="Training Grounds Rear Inside Tunnel",
+        name="Training Grounds Rear Tunnel",
         level=Levels.DKIsles,
         map_id=Maps.TrainingGrounds,
         x=1223.714,
@@ -100,7 +100,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Inside K. Lumsy's Island",
+        name="Back of Prison",
         level=Levels.DKIsles,
         map_id=Maps.KLumsy,
         x=1499.675,

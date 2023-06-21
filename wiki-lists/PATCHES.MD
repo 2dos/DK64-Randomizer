@@ -10,8 +10,8 @@
 | Isles | Under Caves Lobby Entrance | l.shockwave | 
 | Isles | Front of Fungi Building | l.shockwave | 
 | Training Grounds | Banana Hoard | (l.vines or l.CanMoonkick()) and l.shockwave | 
-| Training Grounds | Training Grounds Rear Inside Tunnel | l.shockwave | 
-| KLumsy | Inside K. Lumsy's Island | l.shockwave | 
+| Training Grounds | Training Grounds Rear Tunnel | l.shockwave | 
+| KLumsy | Back of Prison | l.shockwave | 
 | Creepy Castle Lobby | Castle Lobby | ((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and l.settings.krusha_kong != Kongs.tiny)) | 
 | Isles | Isles Boulders | l.shockwave | 
 | Isles | Behind BFI | l.shockwave) | 

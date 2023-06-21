@@ -1311,7 +1311,7 @@ def compileHints(spoiler: Spoiler):
         while placed_entrance_hints < hint_distribution[HintType.Entrance]:
             message = ""
             # Always put in at least one Japes hint
-            if i == 0:
+            if placed_entrance_hints == 0:
                 japesHintEntrances = [entrance for entrance, back in spoiler.shuffled_exit_data.items() if back.regionId in criticalJapesRegions]
                 random.shuffle(japesHintEntrances)
                 japesHintPlaced = False
@@ -1324,7 +1324,7 @@ def compileHints(spoiler: Spoiler):
                 if not japesHintPlaced:
                     print("Japes LZR hint unable to be placed!")
             # Always put in at least one Aztec hint
-            elif i == 1:
+            elif placed_entrance_hints == 1:
                 aztecHintEntrances = [entrance for entrance, back in spoiler.shuffled_exit_data.items() if back.regionId in criticalAztecRegions]
                 random.shuffle(aztecHintEntrances)
                 aztecHintPlaced = False
@@ -1337,7 +1337,7 @@ def compileHints(spoiler: Spoiler):
                 if not aztecHintPlaced:
                     print("Aztec LZR hint unable to be placed!")
             # Always put in at least one Factory hint
-            elif i == 2:
+            elif placed_entrance_hints == 2:
                 factoryHintEntrances = [entrance for entrance, back in spoiler.shuffled_exit_data.items() if back.regionId in criticalFactoryRegions]
                 random.shuffle(factoryHintEntrances)
                 factoryHintPlaced = False
