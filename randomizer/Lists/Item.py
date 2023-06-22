@@ -96,7 +96,7 @@ ItemList = {
     Items.Tiny: Item("Tiny", True, Types.Kong, Kongs.any, [66]),
     Items.Chunky: Item("Chunky", True, Types.Kong, Kongs.any, [117]),
     Items.Vines: Item("Vines", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "vine", 387]),
-    Items.Swim: Item("Swim", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "dive", 386]),
+    Items.Swim: Item("Diving", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "dive", 386]),
     Items.Oranges: Item("Oranges", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "orange", 388]),
     Items.Barrels: Item("Barrels", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "barrel", 389]),
     Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop, Kongs.any, [MoveTypes.Slam, 2, -1]),

@@ -116,6 +116,13 @@ void catchWarpHandle(void) {
     }
 }
 
+int inRabbitRace(void) {
+    if (CurrentMap == MAP_FUNGI) {
+        return *(int*)(0x807FBB64) | 4; // In Rabbit Race
+    }
+    return 0;
+}
+
 void newGuardCode(void) {
     /**
      * @brief Guard Actor Code
@@ -126,19 +133,21 @@ void newGuardCode(void) {
         if (Player) {
             if ((Player->strong_kong_ostand_bitfield & 0x60) == 0) { // No GGone / OSprint
                 if (!isBadMovementState()) { // Bad Movement State
-                    float dist = 40.0f;
-                    float radius = 70.0f;
-                    if (in_snoop) { // Not in snoop
-                        if (CurrentActorPointer_0->control_state == 0x11) { // Is Idle
-                            radius = 40.0f;
-                            if (getAnimationTimer(CurrentActorPointer_0) > 60.0f) { // Smacking light
-                                dist = 0.0f;
-                                radius = 0.0f;
+                    if (!inRabbitRace()) {
+                        float dist = 40.0f;
+                        float radius = 70.0f;
+                        if (in_snoop) { // Not in snoop
+                            if (CurrentActorPointer_0->control_state == 0x11) { // Is Idle
+                                radius = 40.0f;
+                                if (getAnimationTimer(CurrentActorPointer_0) > 60.0f) { // Smacking light
+                                    dist = 0.0f;
+                                    radius = 0.0f;
+                                }
                             }
                         }
-                    }
-                    if (radius > 0.0f) {
-                        handleGuardDetection(dist, radius);
+                        if (radius > 0.0f) {
+                            handleGuardDetection(dist, radius);
+                        }
                     }
                 }
             }

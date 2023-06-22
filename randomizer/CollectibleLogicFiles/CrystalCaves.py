@@ -4,9 +4,9 @@
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.LogicClasses import Collectible
-from randomizer.Enums.Levels import Levels
 
 LogicRegions = {
     Regions.CrystalCavesMain: [
@@ -145,7 +145,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 2),
     ],
     Regions.DiddyLowerCabin: [
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack or l.advanced_platforming, None, 1),
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),
 
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 4),

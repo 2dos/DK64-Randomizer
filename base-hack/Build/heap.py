@@ -1,6 +1,6 @@
 """Handle heap size."""
 
-from BuildLib import music_size, heap_size, flut_size
+from BuildLib import flut_size, heap_size, music_size
 
 code_end = 0x805FAE00
 

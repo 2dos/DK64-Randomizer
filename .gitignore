@@ -144,7 +144,6 @@ cython_debug/
 
 # Jekyll
 _site/
-Gemfile.lock
 
 # Randomizer specific
 spoilerlog*.txt
@@ -193,3 +192,4 @@ static/py_libraries/dk64rando*.whl
 test.bps
 rom_tester.html
 tools/dumps
+test-result-*.json

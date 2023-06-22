@@ -1,7 +1,7 @@
 """Functions and data for setting and calculating prices."""
 
-from math import ceil
 import random
+from math import ceil
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -16,7 +16,6 @@ from randomizer.Lists.Location import (
     DonkeyMoveLocations,
     LankyMoveLocations,
     LocationList,
-    RemovedShopLocations,
     SharedMoveLocations,
     SharedShopLocations,
     TinyMoveLocations,
@@ -169,7 +168,7 @@ def GetMaxForKong(settings, kong):
         kongMoveLocations = ChunkyMoveLocations.copy()
 
     for location in kongMoveLocations:
-        if location in RemovedShopLocations:  # Ignore any shop locations that don't even exist anymore
+        if LocationList[location].inaccessible:  # Ignore any shop locations that don't even exist anymore
             continue
         item_id = LocationList[location].item
         if item_id is not None and item_id != Items.NoItem:
@@ -240,7 +239,7 @@ def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, in
         if slamLevel in [1, 2]:
             return settings.prices[item][slamLevel - 1]
         else:
-            # If already have max slam, there's no move to buy (this shouldn't happen?)
+            # If already have max slam, there's no move to buy (this is fine only if it's in VerifyWorld)
             return 0
     elif item == Items.ProgressiveAmmoBelt:
         if ammoBelts in [0, 1]:

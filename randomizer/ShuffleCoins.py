@@ -1,27 +1,27 @@
 """Select Coin Location selection."""
 
-import randomizer.Fill as Fill
-import randomizer.CollectibleLogicFiles.DKIsles
-import randomizer.CollectibleLogicFiles.JungleJapes
+import random
+
+import js
 import randomizer.CollectibleLogicFiles.AngryAztec
-import randomizer.CollectibleLogicFiles.FranticFactory
-import randomizer.CollectibleLogicFiles.GloomyGalleon
-import randomizer.CollectibleLogicFiles.FungiForest
-import randomizer.CollectibleLogicFiles.CrystalCaves
 import randomizer.CollectibleLogicFiles.CreepyCastle
-from randomizer.Lists.BananaCoinLocations import BananaCoinGroupList
-from randomizer.LogicClasses import Collectible
+import randomizer.CollectibleLogicFiles.CrystalCaves
+import randomizer.CollectibleLogicFiles.DKIsles
+import randomizer.CollectibleLogicFiles.FranticFactory
+import randomizer.CollectibleLogicFiles.FungiForest
+import randomizer.CollectibleLogicFiles.GloomyGalleon
+import randomizer.CollectibleLogicFiles.JungleJapes
+import randomizer.Fill as Fill
+import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Collectibles import Collectibles
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
-
-import randomizer.Lists.Exceptions as Ex
-from randomizer.Enums.Levels import Levels
-from randomizer.Spoiler import Spoiler
-from randomizer.Enums.Kongs import Kongs
+from randomizer.Lists.BananaCoinLocations import BananaCoinGroupList
 from randomizer.Logic import CollectibleRegions
-import random
-import js
+from randomizer.LogicClasses import Collectible
+from randomizer.Spoiler import Spoiler
 
 KONG_COIN_REQUIREMENT = 100
 KONG_COIN_CAP = 125  # Can never exceed 175 due to overflow if you collect over 255 coins

@@ -3,12 +3,12 @@
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Settings import DamageAmount
-from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import DamageAmount
 from randomizer.Enums.Time import Time
+from randomizer.Lists.MapsAndExits import Maps
 
-CAVES_WATER_HEIGHT = 30
+CAVES_WATER_HEIGHT = 20
 
 
 class BananaCoinGroup:
@@ -210,8 +210,7 @@ BananaCoinGroupList = {
             map_id=Maps.Isles,
             name="On top of Aztec lobby",
             konglist=[Kongs.diddy],
-            region=Regions.CabinIsle,
-            logic=lambda l: Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy,
+            region=Regions.AztecLobbyRoof,
             locations=[
                 [1.0, 3515, 1170, 1800],
                 [1.0, 3457, 1170, 1773],
@@ -1936,7 +1935,7 @@ BananaCoinGroupList = {
             group=91,
             map_id=Maps.JapesLankyCave,
             name="On Pegs",
-            konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            konglist=[Kongs.lanky, Kongs.tiny],
             region=Regions.JapesLankyCave,
             locations=[
                 [1.0, 369.7975769042969, 112.0, 299.9463195800781],

@@ -54,7 +54,7 @@ void handleFilename(char* location, char* format, char* new_name) {
         filename[8] = 0;
         int has_hit_limit = 0;
         for (int i = 0; i < 8; i++) {
-            int val = ReadFile(DATA_FILENAME, 0, i, 0);
+            int val = ReadExtraData(EGD_FILENAME, i);
             if ((val == 0) || (has_hit_limit)) {
                 filename[i] = 0;
                 has_hit_limit = 1;

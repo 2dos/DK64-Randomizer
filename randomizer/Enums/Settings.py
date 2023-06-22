@@ -472,6 +472,19 @@ class ShuffleLoadingZones(IntEnum):
     all = auto()
 
 
+class SoundType(IntEnum):
+    """Determines the default sound mode.
+
+    stereo: Default.
+    surround: Dolby Surround.
+    mono: Mono audio type.
+    """
+
+    stereo = 0
+    mono = 1
+    surround = 2
+
+
 class TrainingBarrels(IntEnum):
     """Determines if and how training barrels are randomized.
 
@@ -560,6 +573,7 @@ SettingsMap = {
     "random_prices": RandomPrices,
     "shockwave_status": ShockwaveStatus,
     "shuffle_loading_zones": ShuffleLoadingZones,
+    "sound_type": SoundType,
     "starting_keys_list_selected": Items,
     "tiny_colors": CharacterColors,
     "training_barrels": TrainingBarrels,
@@ -574,6 +588,10 @@ class SettingsStringEnum(IntEnum):
 
     Changing any of the existing values will cause generated settings strings
         to break. Only add new values.
+
+    Do not delete settings from this enum. Instead, add an entry to the
+        DeprecatedSettings set below. This will be cleaned up with every major
+        release.
 
     ALL SETTINGS NEED AN ENTRY HERE!
     """
@@ -710,6 +728,14 @@ class SettingsStringEnum(IntEnum):
     vanilla_door_rando = 131
     starting_moves_count = 132
     enable_plandomizer = 133
+
+
+# If a setting needs to be removed, add it to this set instead of removing it
+# from the enum above.
+DeprecatedSettings = {
+    # Example
+    # SettingsStringEnum.cb_rando,
+}
 
 
 class SettingsStringDataType(IntEnum):

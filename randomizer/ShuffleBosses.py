@@ -105,12 +105,14 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         if not settings.kong_rando and not settings.boss_location_rando and 4 not in forestBossOptions:
             raise ItemPlacementException("Items not placed to allow vanilla Dogadon 2.")
         # Then find levels we can place Mad jack (next most restrictive)
+        # Then find levels we can place Mad jack (next most restrictive)
+        factoryBossOptions = [x for x in bossLevelOptions if Kongs.tiny in ownedKongs[x] and Items.PonyTailTwirl in ownedMoves[x]]
         if settings.hard_bosses:
-            factoryBossOptions = [
-                x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x] or Kongs.chunky in ownedKongs[x] or (Kongs.tiny in ownedKongs[x] and Items.PonyTailTwirl in ownedMoves[x])
-            ]
-        else:
-            factoryBossOptions = [x for x in bossLevelOptions if Kongs.tiny in ownedKongs[x] and Items.PonyTailTwirl in ownedMoves[x]]
+            if settings.krusha_kong != Kongs.donkey:
+                factoryBossOptions.extend([x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x]])
+            if settings.krusha_kong != Kongs.chunky:
+                factoryBossOptions.extend([x for x in bossLevelOptions if Kongs.chunky in ownedKongs[x]])
+            factoryBossOptions = list(set(factoryBossOptions))
         # This sequence of placing Dogadon 2 and Mad Jack will only fail if both Hunky Chunky and Twirl are placed in level 7
         # If we have fewer options for Dogadon 2, place that first
         forestBossKong = None
@@ -127,6 +129,8 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
             factoryBossKongOptions = set(ownedKongs[factoryBossIndex]).intersection({Kongs.donkey, Kongs.chunky})
             if Kongs.tiny in ownedKongs[factoryBossIndex] and Items.PonyTailTwirl in ownedMoves[factoryBossIndex]:
                 factoryBossKongOptions.add(Kongs.tiny)
+            if settings.krusha_kong in factoryBossKongOptions and settings.krusha_kong != Kongs.tiny:
+                factoryBossKongOptions.remove(settings.krusha_kong)
             factoryBossKong = random.choice(list(factoryBossKongOptions))
         else:
             factoryBossIndex = random.choice(factoryBossOptions)
@@ -199,7 +203,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         if isinstance(ex.args[0], str) and "pop from empty list" in ex.args[0]:
             print("Barrels bad.")
             raise BossOutOfLocationsException("No valid locations to place " + bossTryingToBePlaced)
-        raise ex
+        raise FillException("Something went wrong while assigning bosses.")
 
     # Only apply this shuffle if the settings permit it
     # If kongs are random we have to shuffle bosses and locations or else we might break logic

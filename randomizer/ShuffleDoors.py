@@ -1,8 +1,9 @@
 """Shuffle Wrinkly and T&S Doors based on settings."""
 import random
-from randomizer.Enums.Levels import Levels
+
 import randomizer.Logic as Logic
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.LogicClasses import LocationLogic
@@ -60,6 +61,9 @@ def ShuffleDoors(spoiler):
             if spoiler.settings.tns_location_rando:
                 if door.placed == "tns":
                     door.placed = "none"
+    # Hint doors have Locations tied to them. If we're about to add new ones, then we must remove the old ones.
+    if spoiler.settings.wrinkly_location_rando:
+        ClearHintDoorLogic()
     # Assign Wrinkly Doors & T&S Portals
     for level in door_locations:
         # Get all door locations that can be given a door
@@ -138,6 +142,7 @@ def ShuffleDoors(spoiler):
 
 def ShuffleVanillaDoors(spoiler):
     """Shuffle T&S and Wrinkly doors amongst the vanilla locations."""
+    ClearHintDoorLogic()
     for level in door_locations:
         # Reset the data structures for door shuffling information sharing
         shuffled_door_data[level] = []
@@ -189,3 +194,9 @@ def ShuffleVanillaDoors(spoiler):
         spoiler.human_hint_doors = human_hint_doors
     if spoiler.settings.tns_location_rando:
         spoiler.human_portal_doors = human_portal_doors
+
+
+def ClearHintDoorLogic():
+    """Remove existing hint door locations from the logic in preparation for custom door locations to be added."""
+    for id, region in Logic.Regions.items():
+        region.locations = [loclogic for loclogic in region.locations if loclogic.id < Locations.JapesDonkeyDoor or loclogic.id > Locations.CastleChunkyDoor]

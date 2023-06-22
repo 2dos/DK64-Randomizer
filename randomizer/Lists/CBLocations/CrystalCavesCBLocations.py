@@ -1,13 +1,13 @@
 """Stores the data for the locations of colored bananas and balloons in Angry Aztec."""
 
 from randomizer.Enums.Events import Events
-from randomizer.Enums.Regions import Regions
-from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Regions import Regions
+from randomizer.Lists.MapsAndExits import Maps
 from randomizer.LogicClasses import Balloon, ColoredBananaGroup
 
-WATER_HEIGHT = 30
+WATER_HEIGHT = 20
 
 ColoredBananaGroupList = [
     ColoredBananaGroup(

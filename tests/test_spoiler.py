@@ -4,33 +4,21 @@ import random
 
 import pytest
 
-from randomizer.Enums.Settings import (
-    SettingsMap,
-    ActivateAllBananaports,
-    BananaportRando,
-    CrownEnemyRando,
-    DamageAmount,
-    FreeTradeSetting,
-    HelmDoorItem,
-    HelmSetting,
-    KasplatRandoSetting,
-    KrushaUi,
-    LevelRandomization,
-    LogicType,
-    MicrohintsEnabled,
-    MoveRando,
-    RandomPrices,
-    ShockwaveStatus,
-    TrainingBarrels,
-    WinCondition,
-    WrinklyHints,
-    FillAlgorithm
-)
 # from randomizer.Enums.Items import Items
 import randomizer.Lists.Exceptions as Ex
+from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando,
+                                       CrownEnemyRando, DamageAmount,
+                                       FillAlgorithm, FreeTradeSetting,
+                                       HelmDoorItem, HelmSetting,
+                                       KasplatRandoSetting, KrushaUi,
+                                       LevelRandomization, LogicType,
+                                       MicrohintsEnabled, MoveRando,
+                                       RandomPrices, SettingsMap,
+                                       ShockwaveStatus, TrainingBarrels,
+                                       WinCondition, WrinklyHints)
 from randomizer.Fill import Generate_Spoiler
-from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Settings import Settings
+from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Spoiler import Spoiler
 
 
@@ -214,24 +202,24 @@ def generate_settings():
     return data
 
 
-def test_manual_settings_dict(generate_lo_rando_race_settings):
-    """Asdf."""
-    generate_lo_rando_race_settings["algorithm"] = FillAlgorithm.forward
-    settings = Settings(generate_lo_rando_race_settings)
-    spoiler = Spoiler(settings)
-    Generate_Spoiler(spoiler)
-    print(spoiler)
-    print(spoiler.json)
-    print("all done")
+# def test_manual_settings_dict(generate_lo_rando_race_settings):
+#     """Asdf."""
+#     generate_lo_rando_race_settings["algorithm"] = FillAlgorithm.forward
+#     settings = Settings(generate_lo_rando_race_settings)
+#     spoiler = Spoiler(settings)
+#     Generate_Spoiler(spoiler)
+#     print(spoiler)
+#     print(spoiler.json)
+#     print("all done")
 
 
-def test_with_settings_string():
+def test_with_settings_string_1():
     """Confirm that settings strings decryption is working and generate a spoiler log with it."""
     # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
     # This top one is always the S2 Preset (probably up to date, if it isn't go steal it from the season2.json)
-    settings_string = "baGFiRorPN5yunTChooPw+qhoRDIhKlsa58CCI0ivUyYRCnrG2rBACoUht9QX8EsAycBkF1ls0FAXUAgwE7AIHA3cBhAI8AQJBXkChQM9AYLB3sDhgQow08fGQpnqShoKlsvbTcAM0NjlGuKFRFgMTEUDF+2R2OWvAX6RwPA5kqkuxuiSaxBJBmBBHNCBgzm4yA4tloXFgsiwUlwNCgWisVGEmjEjkk5CQPACsAA"
+    # settings_string = "bKEFiRorPN5ysnPCBogPQ+qBoRDIhKlsa58B+I0eu0uXxCnLE2nBACoMgt1PX4EkAyaBkF1kssFAXQAgwE6gIHA3YBhAI7gQJBXgChQM8gYLB3oDhgQoQ08e2QpHqKhnKlMubRbwM0NjlFuCFRFgMTEUDF61xyN2q/32RQPAZiqcuUOS2EJIIvoE5IMMGY2mMHFosi0rlgVigthoTiwVCkwEwYEYkHERh0AVQA"
     # This one is for ease of testing, go wild with it
-    # settings_string = "baunTCgMUSwcYoqPx4Wx3EGWsQgvXz+AePhhNHPmcUwpwPqoMIZTISQRGkV6mRC3U/Y21YIAVvqC/glAETqsSiWxlFxls0FAXUAgwE7AIHA3cBhAI8AQJBXkChQM9AYLB3sDhgQow2WfMgpnqUtool0vqTSocSKkLAYmQoFL8dtd+wKZCpLsbk1gQRzQgwM5kBxbLRCEIuLIsFJcDQrFRhJoxI5pIxyNgcQAjAYkIhDAFYA"
+    settings_string = "bKsnPCCCWCwNywdEB6Hx+I0eu0uXxCnTE2nBAOgVBkFup6/AkgGTQMgusllgoC6AEGAnUBA4G7AMIBHcCBIK8AUKBnkDBYO9AcMCFCGlD2AFIhRUM5EpFyRaRSUcEKiLAYmIoGL1rjkbtV/vsigeATFU5coclsJfDBmNpjLRZFpXLArFBbDQnFgqFJgJgwIxoOIjIQAOgCoAKoA"
 
     settings_dict = decrypt_settings_string_enum(settings_string)
     settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
@@ -241,7 +229,143 @@ def test_with_settings_string():
     print(spoiler)
     print(spoiler.json)
     # printHintDistribution(spoiler)
-    print("all done")
+    with open("test-result-1.json", "w") as outfile:
+        outfile.write(spoiler.json)
+    print("test 1 done")
+
+
+def test_with_settings_string_2():
+    """Confirm that settings strings decryption is working and generate a spoiler log with it."""
+    # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
+    # non-item rando seed
+    settings_string = "Vi5oQVEE4Yi0gIJ+/AkAETQMguAoC6DwGBXU8A4e7MgIHnd9BJk8SwKQXmvBag9ZAMZFCGnj2yFI9Rls9Eql1SKSjgRUBYEEwFAJejlqvsigeADEUxcktsMISQRfQJyQYYDwPD4RI5dJYvCBmNpjBxaLICIIgFpuK5YFYoLYaE4sFQpMhlMBMGBGNBFOJrDZ/EZDKoA"
+
+    settings_dict = decrypt_settings_string_enum(settings_string)
+    settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
+    settings = Settings(settings_dict)
+    spoiler = Spoiler(settings)
+    Generate_Spoiler(spoiler)
+    # print(spoiler)
+    # print(spoiler.json)
+    # printHintDistribution(spoiler)
+    with open("test-result-2.json", "w") as outfile:
+        outfile.write(spoiler.json)
+    print("test 2 done")
+
+
+def test_with_settings_string_3():
+    """Confirm that settings strings decryption is working and generate a spoiler log with it."""
+    # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
+    # S2
+    settings_string = "bKEFiRorPN5ysnPCBogPQ+qBoRDIhKlsa58B+I0eu0uXxCnLE2nBACoMgt1PX4EkAyaBkF1kssFAXQAgwE6gIHA3YBhAI7gQJBXgChQM8gYLB3oDhgQoQ08e2QpHqKhnKlMubRbwM0NjlFuCFRFgMTEUDF61xyN2q/32RQPAZiqcuUOS2EJIIvoE5IMMGY2mMHFosi0rlgVigthoTiwVCkwEwYEYkHERh0AVQA"
+
+    settings_dict = decrypt_settings_string_enum(settings_string)
+    settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
+    settings = Settings(settings_dict)
+    spoiler = Spoiler(settings)
+    Generate_Spoiler(spoiler)
+    # print(spoiler)
+    # print(spoiler.json)
+    # printHintDistribution(spoiler)
+    with open("test-result-3.json", "w") as outfile:
+        outfile.write(spoiler.json)
+    print("test 3 done")
+
+
+def test_with_settings_string_4():
+    """Confirm that settings strings decryption is working and generate a spoiler log with it."""
+    # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
+    # all location rando
+    for i in range(1, 11):
+        settings_string = "bKsnPCAMMSwVfwNyjFEh6H1QQCIZCmOhKlsa58B+I0eu0uXxCzW2x05Yi0wIB1arMCoMgp8TAIv2JIBk3FcolUZBeZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEBqM9uFgqR6ioZ0JlKpc2i3gRqbotxuFFSFgQTIUAl6qigRDIUx0JUtjXPhGdbNccjdqv99kUDwCYqnLlDkuDFpuK5YLYaE4sFJQGBGJAjIQAOgA"
+
+        settings_dict = decrypt_settings_string_enum(settings_string)
+        settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
+        settings = Settings(settings_dict)
+        spoiler = Spoiler(settings)
+        Generate_Spoiler(spoiler)
+        # print(spoiler)
+        # print(spoiler.json)
+        # printHintDistribution(spoiler)
+        with open("test-result-4." + str(i) + ".json", "w") as outfile:
+            outfile.write(spoiler.json)
+        print("test 4." + str(i) + " done")
+
+
+def test_with_settings_string_5():
+    """Confirm that settings strings decryption is working and generate a spoiler log with it."""
+    # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
+    # no location rando
+    settings_string = "bKsnPCBoiPQ+qCARDIUx0JUtjXPgPxGj12ly+IWa205Yi0wIB1arMCoMgp6/YkgGTcVyiVRkF5kssFAXQAgwE6gIHA3YBhAI7gQJBXgChQM8gYLB3oDhgQGoz24WCpHqKhnQlIubRbwI1N0W43CipCwIJkKAS9VRQIhkKY6EqWxrnwjOtmuORu1X++yKB4BMVTlyhyWwhJBF9AnJBhgxi03FcsFsNCcWCkoEwYEYkCMhAA6AA"
+
+    settings_dict = decrypt_settings_string_enum(settings_string)
+    settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
+    settings = Settings(settings_dict)
+    spoiler = Spoiler(settings)
+    Generate_Spoiler(spoiler)
+    # print(spoiler)
+    # print(spoiler.json)
+    # printHintDistribution(spoiler)
+    with open("test-result-5.json", "w") as outfile:
+        outfile.write(spoiler.json)
+    print("test 5 done")
+
+
+def test_with_settings_string_6():
+    """Confirm that settings strings decryption is working and generate a spoiler log with it."""
+    # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
+    # Kamerson's settings
+    settings_string = "bKEGiRorPE1ecrJzwgDDEsFX7lGKJD0Pj8Ro9dpcviFmpyxRpgRArdT4mBxJFZ7fgSICJoV5XKJPLJVKYyi+yWWCgLoAQYCdQEDgbsAwgEdwIEgrwBQoGeQMFg70BwwIUIbkPf0UqFHIz0SqXVFpMOBFQFgoTAUAl6qgxTxnWzVgExFMXKHJcCgzaYwcWiyQRALSwWw0YCYMCMaCQcTWHA2fz6IgGIw6AKgA+AA"
+
+    settings_dict = decrypt_settings_string_enum(settings_string)
+    settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
+    settings = Settings(settings_dict)
+    spoiler = Spoiler(settings)
+    Generate_Spoiler(spoiler)
+    # print(spoiler)
+    # print(spoiler.json)
+    # printHintDistribution(spoiler)
+    with open("test-result-6.json", "w") as outfile:
+        outfile.write(spoiler.json)
+    print("test 6 done")
+
+
+def test_with_settings_string_7():
+    """Confirm that settings strings decryption is working and generate a spoiler log with it."""
+    # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
+    # VBB
+    settings_string = "Vg5oShEE4Yg0gIJ+/AkAETQMguAoC6DwGBXU8A4e7MgIHnd9BJk8SwKQXmvBag9ZAMZFCGnj2yFI9Rls9Eql1SKTDgRUBYEEwFAJejlqvsigeADEUxcktsMISQRfQJyQYYDwPD4RI5dJYvCBmNpjBxaLICIIgFpuK5YFYoLYaE4sFQpMhlMBMGBGNBFOJrDZ/EZDKoA"
+
+    settings_dict = decrypt_settings_string_enum(settings_string)
+    settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
+    settings = Settings(settings_dict)
+    spoiler = Spoiler(settings)
+    Generate_Spoiler(spoiler)
+    # print(spoiler)
+    # print(spoiler.json)
+    # printHintDistribution(spoiler)
+    with open("test-result-7.json", "w") as outfile:
+        outfile.write(spoiler.json)
+    print("test 7 done")
+
+
+def test_with_settings_string_8():
+    """Confirm that settings strings decryption is working and generate a spoiler log with it."""
+    # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
+    # S2
+    settings_string = "bKEFiRorPN5ysnPCBogPQ+qBoRDIhKlsa58B+I0eu0uXxCnLE2nBACoMgt1PX4EkAyaBkF1kssFAXQAgwE6gIHA3YBhAI7gQJBXgChQM8gYLB3oDhgQoQ08e2QpHqKhnKlMubRbwM0NjlFuCFRFgMTEUDF61xyN2q/32RQPAZiqcuUOS2EJIIvoE5IMMGY2mMHFosi0rlgVigthoTiwVCkwEwYEYkHERh0AVQA"
+
+    settings_dict = decrypt_settings_string_enum(settings_string)
+    settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
+    settings = Settings(settings_dict)
+    spoiler = Spoiler(settings)
+    Generate_Spoiler(spoiler)
+    # print(spoiler)
+    # print(spoiler.json)
+    # printHintDistribution(spoiler)
+    with open("test-result-8.json", "w") as outfile:
+        outfile.write(spoiler.json)
+    print("test 8 done")
 
 
 def printHintDistribution(spoiler: Spoiler):

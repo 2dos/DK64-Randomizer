@@ -3,6 +3,7 @@
 
 #define F3DEX_GBI_2
 #define ENABLE_FILENAME 0
+#define SONG_COUNT 176
 #include "ultra64.h"
 #include "common_enums.h"
 #include "common_structs.h"

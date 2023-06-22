@@ -67,10 +67,10 @@
 | Angry Aztec Lobby | Angry Aztec: Lobby - Behind Feather Door | Wrinkly | (l.tiny and l.feather) or l.phasewalk | 
 | Angry Aztec | Angry Aztec: Near Funky's | Both |  | 
 | Angry Aztec | Angry Aztec: Near Cranky's | Both |  | 
-| Angry Aztec | Angry Aztec: Near Candy's | Both | l.vines or l.advanced_platforming | 
+| Angry Aztec | Angry Aztec: Near Candy's | Both |  | 
 | Angry Aztec | Angry Aztec: Near Snide's | Both |  | 
 | Angry Aztec | Angry Aztec: Behind 5DT | Both |  | 
-| Angry Aztec | Angry Aztec: Next to Candy - right | Both | l.vines or l.advanced_platforming | 
+| Angry Aztec | Angry Aztec: Next to Candy - right | Both |  | 
 | Angry Aztec | Angry Aztec: Under Diddy's Tiny Temple Switch | Tns |  | 
 | Angry Aztec | Angry Aztec: Under Chunky's Tiny Temple Switch | Tns |  | 
 | Angry Aztec | Angry Aztec: Under Tiny's Tiny Temple Switch | Tns |  | 
@@ -87,7 +87,7 @@
 | Angry Aztec | Angry Aztec: 5Door Temple Staircase - back | Both |  | 
 | Angry Aztec | Angry Aztec: Entrance Tunnel - next to Coconut Switch | Both |  | 
 | Angry Aztec | Angry Aztec: Entrance Tunnel - left (near the oasis end) | Both |  | 
-| Angry Aztec | Angry Aztec: Strong Kong Tunnel | Wrinkly | l.isdonkey and l.strongKong | 
+| Angry Aztec | Angry Aztec: in the sealed quicksand tunnel | Wrinkly | l.isdonkey and l.strongKong | 
 | Angry Aztec | Angry Aztec: Near Tag Barrel near Snides - strong kong | Wrinkly | l.isdonkey and l.strongKong | 
 | Aztec Llama Temple | Angry Aztec: In Face Matching Game - right | Wrinkly | (l.islanky and l.grape) or l.phasewalk | 
 | Aztec Llama Temple | Angry Aztec: In Face Matching Game - left | Wrinkly | (l.islanky and l.grape) or l.phasewalk | 
@@ -178,7 +178,7 @@
 | Gloomy Galleon | Gloomy Galleon: Near Cranky's | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: Deep Hole | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: Behind 2DS | Both |  | 
-| Gloomy Galleon | Gloomy Galleon: Behind Enguarde Door | Both | Events.LighthouseEnguarde in l.Events and l.lanky | 
+| Gloomy Galleon | Gloomy Galleon: Behind Enguarde Door | Both | Events.LighthouseEnguarde in l.Events | 
 | Gloomy Galleon | Gloomy Galleon: Cactus | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: In hallway to Shipyard - Tiny switch | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: In hallway to Shipyard - Lanky switch | Both |  | 
@@ -203,13 +203,13 @@
 | Gloomy Galleon | Gloomy Galleon: Mech Fish Gate - far left | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: Mech Fish Gate - left | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: Mech Fish Gate - middle | Both |  | 
-| Gloomy Galleon | Gloomy Galleon: Mech Fish Gate - right | Both |  | 
-| Gloomy Galleon | Gloomy Galleon: Mech Fish Gate - far right | Both |  | 
+| Gloomy Galleon | Gloomy Galleon: Mech Fish Gate - right | Wrinkly |  | 
+| Gloomy Galleon | Gloomy Galleon: Mech Fish Gate - far right | Wrinkly |  | 
 | Gloomy Galleon | Gloomy Galleon: Cannonball Area Exit | Both | l.swim | 
 | Gloomy Galleon | Gloomy Galleon: 2Dship's secret 3rd door | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: Near Mermaid's Palace - right | Both |  | 
 | Gloomy Galleon | Gloomy Galleon: Near Mermaid's Palace - left | Both |  | 
-| Gloomy Galleon | Gloomy Galleon: Near Mermaid's Palace - Under Tag Barrel | Both |  | 
+| Gloomy Galleon | Gloomy Galleon: Near Mermaid's Palace - Under Tag Barrel | Wrinkly |  | 
 | Galleon Lighthouse | Gloomy Galleon: Lighthouse Interior | Both |  | 
 | Galleon Mermaid Room | Gloomy Galleon: In Mermaid's Palace | Wrinkly |  | 
 | Galleon5DShip DKTiny | Gloomy Galleon: Tiny's 5D ship | Wrinkly |  | 
@@ -229,7 +229,7 @@
 | Fungi Forest Lobby | Fungi Forest: Lobby - Near B. Locker | Wrinkly |  | 
 | Fungi Forest Lobby | Fungi Forest: Lobby - Near Entrance | Wrinkly |  | 
 | Fungi Forest | Fungi Forest: Behind DK Barn | Both |  | 
-| Fungi Forest | Fungi Forest: Beanstalk Area | Both | Events.Night in l.Events or l.phasewalk | 
+| Fungi Forest | Fungi Forest: Beanstalk Area | Both | Events.Night in l.Events | 
 | Fungi Forest | Fungi Forest: Near Snide's | Both |  | 
 | Fungi Forest | Fungi Forest: Top of Giant Mushroom | Both |  | 
 | Fungi Forest | Fungi Forest: Owl Area | Both |  | 
@@ -252,8 +252,8 @@
 | Fungi Forest | Fungi Forest: Mushroom Area - Next to Cranky | Both |  | 
 | Fungi Forest | Fungi Forest: Clock Area - Next to Purple Tunnel - left | Both |  | 
 | Fungi Forest | Fungi Forest: Clock Area - Next to Purple Tunnel - right | Both |  | 
-| Fungi Forest | Fungi Forest: Clock Area - Next to Clock - left | Both |  | 
-| Fungi Forest | Fungi Forest: Clock Area - Next to Clock - right | Both |  | 
+| Fungi Forest | Fungi Forest: Clock Area - Next to Clock - left | Wrinkly |  | 
+| Fungi Forest | Fungi Forest: Clock Area - Next to Clock - right | Wrinkly |  | 
 | Fungi Forest | Fungi Forest: Funky Area - Near Beanstalk - left | Both |  | 
 | Fungi Forest | Fungi Forest: Funky Area - Near Beanstalk - back | Both |  | 
 | Forest Giant Mushroom | Fungi Forest: Inside the Mushroom - All Kong Gun Switch - right | Both |  | 
@@ -280,17 +280,17 @@
 | Crystal Caves Lobby | Crystal Caves: Lobby - Near Left | Wrinkly |  | 
 | Crystal Caves Lobby | Crystal Caves: Lobby - Far Right | Wrinkly |  | 
 | Crystal Caves Lobby | Crystal Caves: Lobby - Near Right | Wrinkly |  | 
-| Crystal Caves | Crystal Caves: On Rotating Room | Both | (l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or l.islanky) and l.advanced_platforming) | 
+| Crystal Caves | Crystal Caves: On Rotating Room | Both | (l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or l.islanky) and l.advanced_platforming) or l.phasewalk | 
 | Crystal Caves | Crystal Caves: Near Snide's | Both |  | 
 | Crystal Caves | Crystal Caves: Giant Boulder Room | Both |  | 
-| Crystal Caves | Crystal Caves: On Sprint Cabin | Both | (l.isdiddy and l.jetpack) or (l.islanky and l.balloon) or l.CanMoonkick() | 
+| Crystal Caves | Crystal Caves: On Sprint Cabin | Both | (l.isdiddy and l.jetpack) or (l.islanky and l.balloon) or l.CanMoonkick() or l.phasewalk | 
 | Crystal Caves | Crystal Caves: Near 5DI | Both |  | 
 | Crystal Caves | Crystal Caves: Outside Lanky's Cabin | Both |  | 
 | Crystal Caves | Crystal Caves: Outside Chunky's Cabin | Both |  | 
 | Crystal Caves | Crystal Caves: Outside Diddy's Lower Cabin | Both |  | 
 | Crystal Caves | Crystal Caves: Outside Diddy's Upper Cabin | Both |  | 
 | Crystal Caves | Crystal Caves: Under the Waterfall (Cabin Area) | Both | l.swim | 
-| Crystal Caves | Crystal Caves: Across from the 5Door Cabin | Both |  | 
+| Crystal Caves | Crystal Caves: Across from the 5Door Cabin | Wrinkly |  | 
 | Crystal Caves | Crystal Caves: 5Door Igloo - DK's right | Tns |  | 
 | Crystal Caves | Crystal Caves: 5Door Igloo - Diddy's right | Tns |  | 
 | Crystal Caves | Crystal Caves: 5Door Igloo - Tiny's right | Tns |  | 
@@ -301,7 +301,7 @@
 | Crystal Caves | Crystal Caves: 5Door Igloo - Tiny's instrument pad | Tns | l.swim | 
 | Crystal Caves | Crystal Caves: 5Door Igloo - Chunky's instrument pad | Tns | l.swim | 
 | Crystal Caves | Crystal Caves: 5Door Igloo - Lanky's instrument pad | Tns | l.swim | 
-| Crystal Caves | Crystal Caves: Ice Castle Area - Near Rock Switch | Both |  | 
+| Crystal Caves | Crystal Caves: Ice Castle Area - Near Rock Switch | Wrinkly |  | 
 | Crystal Caves | Crystal Caves: Between Funky and Ice Castle - on land | Both |  | 
 | Crystal Caves | Crystal Caves: Between Funky and Ice Castle - underwater | Both | l.swim | 
 | Crystal Caves | Crystal Caves: In Water Near W4 Opposite Cranky - right | Both | l.swim | 

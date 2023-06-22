@@ -1,9 +1,9 @@
 """Stores the data for each potential T&S and Wrinkly door location."""
 from randomizer.Enums.Events import Events
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Kongs import Kongs
+from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Logic import Regions as RegionList
 from randomizer.LogicClasses import TransitionFront
 
@@ -567,7 +567,7 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[2268.343, 120.0, 448.669, 59.0],
             group=4,
-            logic=lambda l: l.vines or l.advanced_platforming,
+            logic=lambda l: True,
             placed="tns",
         ),  # T&S Portal by Candy
         DoorData(
@@ -596,7 +596,7 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[2468.0, 120.0, 473.5, 298.75],
             group=4,
-            logic=lambda l: l.vines or l.advanced_platforming,
+            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Under Diddy's Tiny Temple Switch",
@@ -731,7 +731,7 @@ door_locations = {
             logic=lambda l: True,
         ),
         DoorData(
-            name="Angry Aztec: Strong Kong Tunnel",
+            name="Angry Aztec: in the sealed quicksand tunnel",
             map=Maps.AngryAztec,
             logicregion=Regions.AztecDonkeyQuicksandCave,
             location=[3208.25, 118.0, 4752.0, 225.0],
@@ -1349,7 +1349,7 @@ door_locations = {
             location=[645.832, 1460.0, 4960.476, 133.0],
             group=5,
             moveless=False,
-            logic=lambda l: lambda l: Events.LighthouseEnguarde in l.Events and l.lanky,
+            logic=lambda l: lambda l: Events.LighthouseEnguarde in l.Events,
             placed="tns",
         ),  # T&S Door behind Enguarde Door
         DoorData(
@@ -1387,10 +1387,22 @@ door_locations = {
             logic=lambda l: True,
         ),
         DoorData(
-            name="Gloomy Galleon: Under Baboon Blast pad", map=Maps.GloomyGalleon, logicregion=Regions.LighthousePlatform, location=[1674.5, 1610.0, 4042.5, 261.15], group=7, logic=lambda l: True
+            name="Gloomy Galleon: Under Baboon Blast pad",
+            map=Maps.GloomyGalleon,
+            logicregion=Regions.LighthousePlatform,
+            location=[1674.5, 1610.0, 4042.5, 261.15],
+            group=7,
+            moveless=False,
+            logic=lambda l: True,
         ),
         DoorData(
-            name="Gloomy Galleon: Under RocketBarrel barrel", map=Maps.GloomyGalleon, logicregion=Regions.LighthousePlatform, location=[1360.0, 1609.0, 4048.0, 86.0], group=7, logic=lambda l: True
+            name="Gloomy Galleon: Under RocketBarrel barrel",
+            map=Maps.GloomyGalleon,
+            logicregion=Regions.LighthousePlatform,
+            location=[1360.0, 1609.0, 4048.0, 86.0],
+            group=7,
+            moveless=False,
+            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Next to Cannonball game",
@@ -1546,6 +1558,7 @@ door_locations = {
             group=10,
             moveless=False,
             logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Gloomy Galleon: Mech Fish Gate - far right",
@@ -1557,6 +1570,7 @@ door_locations = {
             group=10,
             moveless=False,
             logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Gloomy Galleon: Cannonball Area Exit",
@@ -1606,6 +1620,7 @@ door_locations = {
             group=3,
             moveless=False,
             logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Gloomy Galleon: Lighthouse Interior",
@@ -1735,7 +1750,7 @@ door_locations = {
             location=[3665.871, 186.833, 945.745, 252.0],
             group=3,
             moveless=False,
-            logic=lambda l: Events.Night in l.Events or l.phasewalk,
+            logic=lambda l: Events.Night in l.Events,
             placed="tns",
         ),  # T&S Portal in Beanstalk Area
         DoorData(
@@ -1865,6 +1880,7 @@ door_locations = {
             rx=10,
             group=8,
             logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Fungi Forest: Clock Area - Next to Clock - right",
@@ -1874,6 +1890,7 @@ door_locations = {
             rx=10,
             group=8,
             logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Fungi Forest: Funky Area - Near Beanstalk - left",
@@ -2074,7 +2091,7 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=2,
             moveless=False,
-            logic=lambda l: (l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or l.islanky) and l.advanced_platforming),
+            logic=lambda l: (l.isdiddy and l.jetpack) or l.CanMoonkick() or ((l.isdiddy or l.istiny or l.islanky) and l.advanced_platforming) or l.phasewalk,
             placed="tns",
         ),  # T&S Portal on Rotating Room | Lanky can backflip onto the building from the window sill
         DoorData(
@@ -2105,7 +2122,7 @@ door_locations = {
             kong_lst=[Kongs.diddy, Kongs.lanky],
             group=2,
             moveless=False,
-            logic=lambda l: (l.isdiddy and l.jetpack) or (l.islanky and l.balloon) or l.CanMoonkick(),
+            logic=lambda l: (l.isdiddy and l.jetpack) or (l.islanky and l.balloon) or l.CanMoonkick() or l.phasewalk,
             placed="tns",
         ),  # T&S Portal on Sprint Cabin
         DoorData(
@@ -2125,7 +2142,15 @@ door_locations = {
             logic=lambda l: l.swim,
         ),
         DoorData(
-            name="Crystal Caves: Across from the 5Door Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[2970.0, 128.0, 1499.0, 68.5], rx=9, rz=11, group=2, logic=lambda l: True
+            name="Crystal Caves: Across from the 5Door Cabin",
+            map=Maps.CrystalCaves,
+            logicregion=Regions.CabinArea,
+            location=[2970.0, 128.0, 1499.0, 68.5],
+            rx=9,
+            rz=11,
+            group=2,
+            logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Crystal Caves: 5Door Igloo - DK's right",
@@ -2235,6 +2260,7 @@ door_locations = {
             rx=4,
             group=6,
             logic=lambda l: True,
+            door_type="wrinkly",
         ),
         DoorData(
             name="Crystal Caves: Between Funky and Ice Castle - on land",

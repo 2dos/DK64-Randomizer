@@ -1,12 +1,11 @@
 """Stores the data for the locations of colored bananas and balloons in Angry Aztec."""
 
 from randomizer.Enums.Events import Events
-from randomizer.Enums.Regions import Regions
-from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Regions import Regions
+from randomizer.Lists.MapsAndExits import Maps
 from randomizer.LogicClasses import Balloon, ColoredBananaGroup
-
 
 ColoredBananaGroupList = [
     ColoredBananaGroup(
@@ -29,12 +28,22 @@ ColoredBananaGroupList = [
             [1, 1.0, 812, 120, 948],
             [1, 1.0, 846, 120, 1118],
             [1, 1.0, 966, 120, 1199],
-            [1, 1.0, 1173, 155, 1204],
             [1, 1.0, 820.9889526367188, 120.0, 1033.1551513671875],
             [1, 1.0, 899.3162231445312, 120.0, 1168.6141357421875],
             [1, 1.0, 809.063720703125, 120.0, 849.666748046875],
             [1, 1.0, 1054.1512451171875, 120.0, 1204.6153564453125],
             [1, 1.0, 799.9443359375, 120.0, 688.669921875],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=2,
+        map_id=Maps.AngryAztec,
+        name="First tunnel (5 custom, 5 Chunky)",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.BetweenVinesByPortal,
+        logic=lambda l: l.vines,
+        locations=[
+            [1, 1.0, 1173, 155, 1204],
         ],
     ),
     ColoredBananaGroup(
@@ -1355,7 +1364,7 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=90,
         map_id=Maps.AngryAztec,
-        name="DK Quicksand cave (Donkey)",
+        name="DK Sealed Quicksand Tunnel (Donkey)",
         konglist=[Kongs.donkey],
         region=Regions.AztecDonkeyQuicksandCave,
         vanilla=True,
@@ -1809,7 +1818,7 @@ BalloonList = [
     Balloon(
         id=38,
         map_id=Maps.AngryAztec,
-        name="Quicksand cave (Diddy)",
+        name="Sealed Quicksand Tunnel (Diddy)",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AztecDonkeyQuicksandCave,

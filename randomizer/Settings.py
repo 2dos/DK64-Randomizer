@@ -2,12 +2,21 @@
 import hashlib
 import inspect
 import json
-import js
+import math
 import random
-from randomizer.LogicClasses import LocationLogic
-from version import whl_hash
 from random import randint
 
+import js
+import randomizer.ItemPool as ItemPool
+import randomizer.LogicFiles.AngryAztec
+import randomizer.LogicFiles.CreepyCastle
+import randomizer.LogicFiles.CrystalCaves
+import randomizer.LogicFiles.DKIsles
+import randomizer.LogicFiles.FranticFactory
+import randomizer.LogicFiles.FungiForest
+import randomizer.LogicFiles.GloomyGalleon
+import randomizer.LogicFiles.JungleJapes
+import randomizer.LogicFiles.Shops
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
@@ -16,7 +25,6 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import *
 from randomizer.Enums.Types import Types
-import randomizer.ItemPool as ItemPool
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import (
     ChunkyMoveLocations,
@@ -24,26 +32,18 @@ from randomizer.Lists.Location import (
     DonkeyMoveLocations,
     LankyMoveLocations,
     LocationList,
-    RemovedShopLocations,
+    PreGivenLocations,
     SharedShopLocations,
     ShopLocationReference,
     TinyMoveLocations,
     TrainingBarrelLocations,
-    PreGivenLocations,
 )
+from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.Lists.MapsAndExits import GetMapId, GetExitId, RegionMapList
+from randomizer.LogicClasses import LocationLogic
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
-import randomizer.LogicFiles.DKIsles
-import randomizer.LogicFiles.JungleJapes
-import randomizer.LogicFiles.AngryAztec
-import randomizer.LogicFiles.FranticFactory
-import randomizer.LogicFiles.GloomyGalleon
-import randomizer.LogicFiles.FungiForest
-import randomizer.LogicFiles.CrystalCaves
-import randomizer.LogicFiles.CreepyCastle
-import randomizer.LogicFiles.Shops
+from version import whl_hash
 
 
 class Settings:
@@ -63,6 +63,7 @@ class Settings:
         self.generate_misc()
         self.rom_data = 0x1FED020
         self.move_location_data = 0x1FEF000
+        self.form_data = form_data
 
         self.apply_form_data(form_data)
         self.seed_id = str(self.seed)
@@ -385,6 +386,12 @@ class Settings:
         self.remove_water_oscillation = False
         self.head_balloons = False
         self.homebrew_header = False
+        self.camera_is_follow = False
+        self.sfx_volume = 100
+        self.music_volume = 100
+        self.camera_is_widescreen = False
+        self.camera_is_not_inverted = False
+        self.sound_type = SoundType.stereo
 
         #  Misc
         self.generate_spoilerlog = None
@@ -431,7 +438,7 @@ class Settings:
         self.cb_rando = False
         self.coin_rando = False
         self.crown_placement_rando = False
-        self.override_cosmetics = False
+        self.override_cosmetics = True
         self.random_colors = False
         self.hard_level_progression = False
         self.hard_blockers = False
@@ -598,7 +605,16 @@ class Settings:
                 self.shuffled_location_types.append(Types.PreGivenMove)
         self.shuffle_prices()
 
-        # Starting Move Locations
+        # Starting Move Location handling
+        # Undo any damage that might leak between seeds
+        LocationList[Locations.IslesVinesTrainingBarrel].default = Items.Vines
+        LocationList[Locations.IslesVinesTrainingBarrel].type = Types.TrainingBarrel
+        LocationList[Locations.IslesSwimTrainingBarrel].default = Items.Swim
+        LocationList[Locations.IslesSwimTrainingBarrel].type = Types.TrainingBarrel
+        LocationList[Locations.IslesBarrelsTrainingBarrel].default = Items.Barrels
+        LocationList[Locations.IslesBarrelsTrainingBarrel].type = Types.TrainingBarrel
+        LocationList[Locations.IslesOrangesTrainingBarrel].default = Items.Oranges
+        LocationList[Locations.IslesOrangesTrainingBarrel].type = Types.TrainingBarrel
         location_cap = 36
         if self.shockwave_status in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with):
             location_cap -= 2
@@ -628,7 +644,6 @@ class Settings:
 
         # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
-            RemovedShopLocations = []
             # To evenly distribute the locations blocked, we can use the fact there are 20 shops to our advantage
             # These evenly distributed pairs will represent "locations to block" for each shop
             kongPairs = [
@@ -665,9 +680,10 @@ class Settings:
                     accessible_shops = [location_id for location_id in ShopLocationReference[level][vendor] if location_id not in inaccessible_shops]
                     for location_id in inaccessible_shops:
                         LocationList[location_id].inaccessible = True
-                        RemovedShopLocations.append(location_id)
+                        LocationList[location_id].smallerShopsInaccessible = True
                     for location_id in accessible_shops:
                         LocationList[location_id].inaccessible = False
+                        LocationList[location_id].smallerShopsInaccessible = False
 
         # B Locker and Troff n Scoff amounts Rando
         self.update_progression_totals()
@@ -804,10 +820,11 @@ class Settings:
         else:
             required_key_count = self.krool_key_count
         if self.krool_access or self.win_condition == WinCondition.get_key8:
-            # If helm is guaranteed or the win condition, make sure it's added and included in the key count
-            self.krool_keys_required.append(Events.HelmKeyTurnedIn)
+            # If key 8 is guaranteed to be needed, make sure it's added and included in the key count
+            if Events.HelmKeyTurnedIn not in self.krool_keys_required:
+                self.krool_keys_required.append(Events.HelmKeyTurnedIn)
+                required_key_count -= 1
             key_list.remove(Events.HelmKeyTurnedIn)
-            required_key_count -= 1
         if not self.select_keys:
             random.shuffle(key_list)
             for x in range(required_key_count):
@@ -833,6 +850,10 @@ class Settings:
         if self.random_medal_requirement:
             # Range roughly from 4 to 15, average around 10
             self.medal_requirement = round(random.normalvariate(10, 1.5))
+        self.original_medal_requirement = self.medal_requirement
+        self.logical_medal_requirement = min(math.floor(self.medal_requirement * 1.2), 40)
+        self.original_fairy_requirement = self.rareware_gb_fairies
+        self.logical_fairy_requirement = min(math.floor(self.rareware_gb_fairies * 1.2), 20)
 
         # Boss Rando
         self.boss_maps = ShuffleBosses(self.boss_location_rando)
@@ -923,6 +944,8 @@ class Settings:
         # Some settings (mostly win conditions) require modification of items in order to better generate the spoiler log
         if self.win_condition == WinCondition.all_fairies or self.crown_door_item == HelmDoorItem.req_fairy or self.coin_door_item == HelmDoorItem.req_fairy:
             ItemList[Items.BananaFairy].playthrough = True
+        if self.crown_door_item == HelmDoorItem.req_rainbowcoin or self.coin_door_item == HelmDoorItem.req_rainbowcoin:
+            ItemList[Items.RainbowCoin].playthrough = True
         if self.win_condition == WinCondition.all_blueprints or self.crown_door_item == HelmDoorItem.req_bp or self.coin_door_item == HelmDoorItem.req_bp:
             for item_index in ItemList:
                 if ItemList[item_index].type == Types.Blueprint:
@@ -945,6 +968,29 @@ class Settings:
         if self.fast_gbs:
             # On Fast GBs, this location refers to the blast course, not the arcade
             LocationList[Locations.FactoryDonkeyDKArcade].name = "Factory Donkey Blast Course"
+
+        # Calculate the net balance of locations being added to the pool vs number of items being shuffled
+        # Positive means we have more locations than items, negatives means we have more items than locations (very bad!)
+        # The number is effectively (locations - items) so losing locations means we lower this value, losing items means we raise this value
+        self.location_item_balance = 0
+        if self.shuffle_items:
+            if Types.Shop in self.shuffled_location_types:
+                self.location_item_balance -= 34  # We're placing 34 shop items, but the number of locations varies by the number of shared shops. This forms the crux of how we use this balance.
+            if self.starting_moves_count < 4:
+                self.location_item_balance -= 4 - self.starting_moves_count  # We lose locations if we start with fewer than 4 moves
+            elif self.starting_moves_count > 4:
+                self.location_item_balance += self.starting_moves_count - 4  # We gain locations if we start with more than 4 moves
+            if Types.Shockwave in self.shuffled_location_types and self.shockwave_status == ShockwaveStatus.shuffled_decoupled:
+                self.location_item_balance -= 1  # If camera/shockwave is decoupled and shuffled, we gain one additional item
+            self.location_item_balance += 8 - len(self.krool_keys_required)  # We don't have to place starting keys so we may lose items here
+            if Types.Kong in self.shuffled_location_types:
+                self.location_item_balance -= 4  # Kong cages *can* be filled by Kongs, but nothing else. We'll treat these as lost locations in all worlds due to the rarity of this.
+        # With some light algebra we get the maximum number of shared shops we can fill before we start running into fill problems
+        self.max_shared_shops = math.floor(25 - self.location_item_balance / -4)
+        if self.smaller_shops:
+            self.max_shared_shops = math.floor(30 - self.location_item_balance / -2)
+        self.max_shared_shops -= 1  # Subtract 1 shared shop for a little buffer. If we manage to solve the empty Helm fill issue then we can probably remove this line.
+        self.placed_shared_shops = 0
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""

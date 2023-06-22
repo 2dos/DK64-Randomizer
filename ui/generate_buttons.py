@@ -6,28 +6,38 @@ import random
 from pyodide import create_proxy
 
 import js
-from randomizer.BackgroundRandomizer import generate_playthrough
 from randomizer.Enums.Settings import SettingsMap
-from randomizer.Patching.ApplyRandomizer import patching_response
+from randomizer.Patching.ApplyLocal import patching_response
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Worker import background
-from ui.bindings import bind
-from ui.plando_validation import populate_plando_options, validate_plando_options
+from ui.bindings import bind, serialize_settings
+from ui.plando_validation import validate_plando_options
 from ui.progress_bar import ProgressBar
 from ui.rando_options import (
     disable_barrel_modal,
     disable_colors,
-    disable_music,
+    disable_enemy_modal,
+    disable_helm_hurry,
+    disable_helm_phases,
+    disable_krool_phases,
     disable_move_shuffles,
+    disable_music,
+    item_rando_list_changed,
+    max_music,
     max_randomized_blocker,
     max_randomized_troff,
+    max_sfx,
     toggle_b_locker_boxes,
-    updateDoorOneNumAccess,
-    updateDoorTwoNumAccess,
-    updateDoorOneCountText,
-    updateDoorTwoCountText,
+    toggle_bananaport_selector,
     toggle_counts_boxes,
+    toggle_item_rando,
+    toggle_key_settings,
+    toggle_logic_type,
     update_boss_required,
+    updateDoorOneCountText,
+    updateDoorOneNumAccess,
+    updateDoorTwoCountText,
+    updateDoorTwoNumAccess,
 )
 
 
@@ -102,9 +112,20 @@ def import_settings_string(event):
     disable_move_shuffles(None)
     max_randomized_blocker(None)
     max_randomized_troff(None)
+    max_music(None)
+    max_sfx(None)
     disable_barrel_modal(None)
     updateDoorOneCountText(None)
     updateDoorTwoCountText(None)
+    item_rando_list_changed(None)
+    toggle_item_rando(None)
+    disable_enemy_modal(None)
+    toggle_bananaport_selector(None)
+    disable_helm_hurry(None)
+    toggle_logic_type(None)
+    toggle_key_settings(None)
+    disable_krool_phases(None)
+    disable_helm_phases(None)
 
 
 @bind("change", "patchfileloader")
@@ -136,7 +157,7 @@ def lanky_file_changed(event):
 
 
 @bind("click", "generate_pastgen_seed")
-def generate_previous_seed(event):
+async def generate_previous_seed(event):
     """Generate a seed from a previous seed file."""
     # Check if the rom filebox has a file loaded in it.
     if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
@@ -146,12 +167,12 @@ def generate_previous_seed(event):
     else:
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ProgressBar().update_progress(0, "Loading Previous seed and applying data."))
-        js.apply_bps_javascript()
-        patching_response(str(js.get_previous_seed_data()))
+        js.apply_conversion()
+        await patching_response(str(js.get_previous_seed_data()), True)
 
 
 @bind("click", "generate_lanky_seed")
-def generate_seed_from_patch(event):
+async def generate_seed_from_patch(event):
     """Generate a seed from a patch file."""
     # Check if the rom filebox has a file loaded in it.
     if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
@@ -163,96 +184,8 @@ def generate_seed_from_patch(event):
         if "is-invalid" not in list(js.document.getElementById("patchfileloader").classList):
             js.document.getElementById("patchfileloader").classList.add("is-invalid")
     else:
-        js.apply_bps_javascript()
-        patching_response(str(js.loaded_patch))
-
-
-def serialize_settings():
-    """Serialize form settings into an enum-focused JSON string.
-
-    Returns:
-        dict: Dictionary of form settings.
-    """
-    # Remove all the disabled attributes and store them for later
-    disabled_options = []
-    for element in js.document.getElementsByTagName("input"):
-        if element.disabled:
-            disabled_options.append(element)
-            element.removeAttribute("disabled")
-    for element in js.document.getElementsByTagName("select"):
-        if element.disabled:
-            disabled_options.append(element)
-            element.removeAttribute("disabled")
-    for element in js.document.getElementsByTagName("option"):
-        if element.disabled:
-            disabled_options.append(element)
-            element.removeAttribute("disabled")
-    # Serialize the form into json
-    form = js.jquery("#form").serializeArray()
-    form_data = {}
-
-    # Plandomizer data is processed separately.
-    plando_form_data = populate_plando_options(form)
-    if plando_form_data is not None:
-        form_data["plandomizer"] = plando_form_data
-
-    def is_number(s):
-        """Check if a string is a number or not."""
-        try:
-            int(s)
-            return True
-        except ValueError:
-            pass
-    
-    def is_plando_input(inputName):
-        """Determine if an input is a plando input."""
-        return inputName is not None and inputName.startswith("plando_")
-
-    def get_enum_or_string_value(valueString, settingName):
-        """Obtain the enum or string value for the provided setting.
-
-        Args:
-            valueString (str) - The value from the HTML input.
-            settingName (str) - The name of the HTML input.
-        """
-        if settingName in SettingsMap:
-            return SettingsMap[settingName][valueString]
-        else:
-            return valueString
-
-    for obj in form:
-        if is_plando_input(obj.name):
-            continue
-        # Verify each object if its value is a string convert it to a bool
-        if obj.value.lower() in ["true", "false"]:
-            form_data[obj.name] = bool(obj.value)
-        else:
-            if is_number(obj.value):
-                form_data[obj.name] = int(obj.value)
-            else:
-                form_data[obj.name] = get_enum_or_string_value(obj.value, obj.name)
-    # find all input boxes and verify their checked status
-    for element in js.document.getElementsByTagName("input"):
-        if is_plando_input(element.name):
-            continue
-        if element.type == "checkbox" and not element.checked:
-            if not form_data.get(element.name):
-                form_data[element.name] = False
-    # Re disable all previously disabled options
-    for element in disabled_options:
-        element.setAttribute("disabled", "disabled")
-    # Create value lists for multi-select options
-    for element in js.document.getElementsByTagName("select"):
-        if "selected" in element.className:
-            if is_plando_input(element.getAttribute("name")):
-                continue
-            length = element.options.length
-            values = []
-            for i in range(0, length):
-                if element.options.item(i).selected:
-                    values.append(get_enum_or_string_value(element.options.item(i).value, element.getAttribute("name")))
-            form_data[element.getAttribute("name")] = values
-    return form_data
+        js.apply_conversion()
+        await patching_response(str(js.loaded_patch), True)
 
 
 @bind("click", "generate_seed")
@@ -290,9 +223,7 @@ def generate_seed(event):
         loop.run_until_complete(ProgressBar().update_progress(0, "Initalizing"))
         if not form_data.get("seed"):
             form_data["seed"] = str(random.randint(100000, 999999))
-        js.apply_bps_javascript()
-        loop.run_until_complete(ProgressBar().update_progress(2, "Randomizing, this may take some time depending on settings."))
-        # background(generate_playthrough, ["'''" + json.dumps(form_data) + "'''"], patching_response)
+        js.apply_conversion()
         background(form_data)
 
 
@@ -305,6 +236,6 @@ def update_seed_text(event):
     """
     # When we click the download json event just change the button text
     if js.document.getElementById("download_patch_file").checked:
-        js.document.getElementById("generate_seed").value = "Generate Patch File and Seed"
+        js.document.getElementById("generate_seed").value = "Generate Patch File"
     else:
         js.document.getElementById("generate_seed").value = "Generate Seed"

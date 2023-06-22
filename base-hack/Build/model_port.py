@@ -1,10 +1,11 @@
 """Port models to actors and model two objects, based on inputs of vertices and a display list."""
 
-import zlib
 import os
-from BuildLib import intf_to_float, ROMName
+import zlib
+
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames
+from BuildLib import ROMName, intf_to_float
 
 temp_file = "temp.bin"
 m2_table = 4

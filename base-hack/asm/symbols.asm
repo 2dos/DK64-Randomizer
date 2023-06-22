@@ -63,6 +63,7 @@
 .definelabel PositionFacingAngle, 0x8076AEF0 // u16
 .definelabel ChimpyCam, 0x80744530
 .definelabel ScreenRatio, 0x807444C0
+.definelabel SoundType, 0x80745844
 .definelabel CurrentActorPointer, 0x807FBB44
 .definelabel CurrentActorPointer_0, 0x807FBB40
 .definelabel LoadedActorCount, 0x807FBB35
@@ -188,6 +189,7 @@
 .definelabel CBTurnedInArray, 0x807FC930
 .definelabel charspawnerflags, 0x80755DA8
 .definelabel songData, 0x80745658
+.definelabel songVolumes, 0x807454F0
 .definelabel MusicTrackChannels, 0x807458DC
 .definelabel BoatSpeeds, 0x8075A04C
 .definelabel textParameter, 0x80750AC8
@@ -244,3 +246,6 @@
 .definelabel StackTraceStartX, 0x807FEF7C
 
 .definelabel BlueprintLargeImageColors, 0x80033228
+
+.definelabel SFXVolume, 0x8074583C
+.definelabel MusicVolume, 0x80745840

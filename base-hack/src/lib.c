@@ -766,3 +766,12 @@ int isGamemode(gamemodes target_mode, int force_both) {
 	}
 	return Mode == target_mode;
 }
+
+int has_key(int index) {
+	if (Rando.level_order_rando_on) {
+		if (index < 7) {
+			return checkFlagDuplicate(Rando.key_flags[index], FLAGTYPE_PERMANENT);
+		}
+	}
+	return checkFlagDuplicate(normal_key_flags[index], FLAGTYPE_PERMANENT);
+}

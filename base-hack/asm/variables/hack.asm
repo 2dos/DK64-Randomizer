@@ -49,3 +49,4 @@
 .definelabel FunkyMoves_New, 0x807FF5E0
 .definelabel TrainingMoves_New, 0x807FF6D0
 .definelabel BFIMove_New, 0x807FF6E8
+.definelabel ExtraSaveData, 0x807ED2A8

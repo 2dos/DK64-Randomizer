@@ -69,3 +69,6 @@
 .definelabel cstring_strlen, 0x80002F18
 .definelabel wipeGlobalFlags, 0x807310BC
 .definelabel setIntroStoryPlaying, 0x8070B308
+.definelabel alterSFXVolume, 0x80737B58
+.definelabel alterMusicVolume, 0x8060A398
+.definelabel adjustSFXType_Internal, 0x80737C20

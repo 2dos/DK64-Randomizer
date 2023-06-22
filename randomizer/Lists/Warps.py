@@ -1,12 +1,12 @@
 """Designates Bananaport properties."""
 
+from re import sub
+
 from randomizer.Enums.Events import Events
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Warps import Warps
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Enums.Kongs import Kongs
-
-from re import sub
 
 
 class BananaportData:
@@ -76,6 +76,7 @@ BananaportVanilla = {
         swap_index=19,
         event=Events.JapesW5bTagged,
         restricted=True,
+        locked=True,
     ),
     # Aztec
     Warps.AztecNearPortal: BananaportData(
@@ -114,6 +115,7 @@ BananaportVanilla = {
         swap_index=29,
         event=Events.AztecW5bTagged,
         restricted=True,
+        locked=True,
     ),
     # Llama Temple
     Warps.LlamaNearLeft: BananaportData(
@@ -206,6 +208,7 @@ BananaportVanilla = {
         swap_index=50,
         event=Events.GalleonW4aTagged,
         restricted=True,
+        locked=True,
     ),
     Warps.GalleonNearSeal: BananaportData(
         name="Gloomy Galleon: Near Seal Race", map_id=Maps.GloomyGalleon, region_id=Regions.Shipyard, obj_id_vanilla=0x56, locked=True, vanilla_warp=3, swap_index=51, event=Events.GalleonW4bTagged
@@ -376,7 +379,7 @@ BananaportVanilla = {
     ),
     Warps.IslesRing5: BananaportData(name="DK Isles: Ring (5)", map_id=Maps.Isles, region_id=Regions.IslesMain, obj_id_vanilla=0x15, vanilla_warp=4, swap_index=8, event=Events.IslesW5aTagged),
     Warps.IslesFairyIsland: BananaportData(
-        name="DK Isles: Fairy Island", map_id=Maps.Isles, region_id=Regions.IslesMain, obj_id_vanilla=0x19, vanilla_warp=4, swap_index=9, event=Events.IslesW5bTagged
+        name="DK Isles: Fairy Island", map_id=Maps.Isles, region_id=Regions.OuterIsles, obj_id_vanilla=0x19, vanilla_warp=4, swap_index=9, event=Events.IslesW5bTagged
     ),
 }
 

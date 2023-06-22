@@ -12,9 +12,9 @@ import randomizer.LogicFiles.JungleJapes
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Lists.Patches import DirtPatchLocations, DirtPatchData
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Location import LocationList
+from randomizer.Lists.Patches import DirtPatchData, DirtPatchLocations
 from randomizer.LogicClasses import LocationLogic
 from randomizer.Spoiler import Spoiler
 
@@ -43,7 +43,7 @@ def addPatch(patch: DirtPatchData, enum_val: int, name: str):
     }
     level_data = level_to_enum[patch.level_name]
     level_data[patch.logicregion].locations.append(LocationLogic(enum_val, patch.logic))
-    LocationList[enum_val].name = f"{level_to_name[patch.level_name]} Dirt Patch ({name})"
+    LocationList[enum_val].name = f"{level_to_name[patch.level_name]} Dirt: {name}"
     LocationList[enum_val].default_mapid_data[0].map = patch.map_id
     LocationList[enum_val].level = patch.level_name
 

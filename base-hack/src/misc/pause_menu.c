@@ -26,7 +26,7 @@ int* printLevelIGT(int* dl, int x, int y, float scale, char* str) {
     }
     int igt_data = 0;
     if (level_index < 9) {
-        igt_data = ReadFile(DATA_LEVELIGT, 0, level_index, 0);
+        igt_data = ReadExtraData(EGD_LEVELIGT, level_index);
     }
     int igt_h = igt_data / 3600;
     int igt_m = (igt_data / 60) % 60;
@@ -116,7 +116,7 @@ static char level_hint_text[0x18] = "";
 static unsigned char check_data[2][9][PAUSE_ITEM_COUNT] = {}; // 8 items, 9 levels, numerator + denominator
 
 static char hints_initialized = 0;
-static int hint_pointers[35] = {};
+
 static char display_billboard_fix = 0;
 
 void initHints(void) {
@@ -253,7 +253,6 @@ void checkItemDB(void) {
 
 #define STRING_MAX_SIZE 256
 static char string_copy[STRING_MAX_SIZE] = "";
-static mtx_item static_mtx[20];
 static char mtx_counter = 0;
 
 int* drawHintText(int* dl, char* str, int x, int y) {
@@ -295,6 +294,7 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
     dk_memcpy(string_copy, str, string_length);
     int header = 0;
     int last_safe = 0;
+    int line_count = 0;
     while (1) {
         char referenced_character = *(char*)(string_copy_ref + header);
         int is_control = 0;
@@ -315,6 +315,10 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
             if (header > 50) {
                 *(char*)(string_copy_ref + last_safe) = 0; // Stick terminator in last safe
                 dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y);
+                line_count += 1;
+                if (line_count == 3) {
+                    return dl;
+                }
                 curr_y += y_sep;
                 string_copy_ref += (last_safe + 1);
                 header = 0;

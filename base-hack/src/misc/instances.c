@@ -189,6 +189,8 @@
 #define FACTORY_BBLAST_STAR 0x0
 #define FACTORY_BBLAST_CONTROLLER 0x1
 
+#define JAPES_RAMBI_DOOR 0x115
+
 void hideObject(behaviour_data* behaviour_pointer) {
 	/**
 	 * @brief Hide object model 2 item and make it intangible
@@ -1259,7 +1261,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 								max_gbs = BLockerDefaultArray[level];
 							}
 						}
-						return (gb_count >= max_gbs) && (Rando.microhints > 0); 
+						return (gb_count >= max_gbs) && (Rando.microhints != MICROHINTS_NONE); 
 					} else if (index == 1) {
 						if (Player) {
 							if ((Player->obj_props_bitfield & 0x2000) == 0) {
@@ -1447,7 +1449,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 								max_gbs = BLockerDefaultArray[level];
 							}
 						}
-						return (gb_count >= max_gbs) && (Rando.microhints > 0); 
+						return (gb_count >= max_gbs) && (Rando.microhints != MICROHINTS_NONE); 
 					}
 				}
 				break;
@@ -1511,6 +1513,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
 					return !Rando.tag_anywhere;
+				} else if (param2 == JAPES_RAMBI_DOOR) {
+					if (Player) {
+						if ((Rando.quality_of_life.vanilla_fixes) && (Player->control_state == 41)) { // B attack
+							return 1;
+						}
+						return Player->control_state == 47; // Z+B Attack
+					}
 				}
 				break;
 			case MAP_JAPESMOUNTAIN:
@@ -2019,7 +2028,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 										return checkFlag(previous_slot + 0x4B, FLAGTYPE_TEMPORARY);
 									}
 								} else  if (index == 2) {
-									if ((Rando.microhints > 1) && ((MovesBase[helm_pad_kong].instrument_bitfield & 1) == 0)) {
+									if ((Rando.microhints == MICROHINTS_ALL) && ((MovesBase[helm_pad_kong].instrument_bitfield & 1) == 0)) {
 										behaviour_pointer->next_state = 20;
 										// behaviour_pointer->current_state = 20;
 									}

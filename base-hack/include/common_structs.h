@@ -108,7 +108,8 @@ typedef struct actorData {
 	/* 0x120 */ char unk_120[0x124-0x120];
 	/* 0x124 */ actor_subdata* data_pointer;
 	/* 0x128 */ short shadow_intensity;
-	/* 0x12A */ char unk_12A[0x132-0x12A];
+	/* 0x12A */ short draw_distance;
+	/* 0x12C */ char unk_12C[0x132-0x12C];
 	/* 0x132 */ short subdata;
 	/* 0x134 */ short health;
 	/* 0x136 */ char unk_136[0x138-0x136];

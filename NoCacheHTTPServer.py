@@ -1,20 +1,13 @@
 """Run a self hosted HTTP server that has no cache tied to it."""
 import http.server
-from flask import Flask, Response, request
-from flask_cors import CORS
-from os.path import exists
-from os import remove
+import os
+import sys
 import threading
-import codecs
-import json
-import pickle
-import random
-from randomizer.Fill import Generate_Spoiler
-from randomizer.Settings import Settings
-from randomizer.Spoiler import Spoiler
 
-app = Flask(__name__)
-CORS(app, support_credentials=True)
+from waitress import serve
+
+from runner import app
+
 PORT = 8000
 
 
@@ -37,45 +30,21 @@ class NoCacheHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header("Expires", "0")
 
 
-def generate_data(setting_data):
-    """Generate a seed from a set of json data."""
-    global seed_response
-    settings = Settings(setting_data)
-    spoiler = Spoiler(settings)
-    Generate_Spoiler(spoiler)
-    encoded = codecs.encode(pickle.dumps(spoiler), "base64").decode()
-    seed_response = encoded
-
-
-@app.route("/generate", methods=["POST", "GET"])
-def generator():
-    """Web events for generating seeds peers the actual web app."""
-    if request.method == "POST":
-        global seed_response
-        seed_response = None
-        setting_data = json.loads(str(request.json.get("post_body")))
-        if not setting_data.get("seed"):
-            setting_data["seed"] = random.randint(0, 100000000)
-        threading.Thread(target=generate_data, args=[setting_data]).start()
-        return "Build Started", 201
-    else:
-        if not seed_response:
-            if exists("error.log"):
-                with open("error.log", "r") as file_object:
-                    content = file_object.read()
-                remove("error.log")
-                return content, 400
-            else:
-                return "Pending", 425
-        else:
-            return Response(seed_response, mimetype="text/plain", direct_passthrough=True)
-
-
 def start_webserver():
     """Start the standard web server."""
     http.server.test(HandlerClass=NoCacheHTTPRequestHandler, port=PORT)
 
 
-if __name__ == "__main__":
+def run_servers():
+    """Start the web server and the flask server."""
     threading.Thread(target=start_webserver).start()
-    app.run(debug=True)
+    app.debug = True
+    # Verify the rom.z64 file exists.
+    if not os.path.isfile("dk64.z64"):
+        print("dk64.z64 not found, please place a dk64.z64 file in the root directory.")
+        sys.exit(1)
+    serve(app, host="0.0.0.0", port=5000)
+
+
+if __name__ == "__main__":
+    run_servers()

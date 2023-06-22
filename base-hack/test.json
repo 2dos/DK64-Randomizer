@@ -173,10 +173,10 @@
    "remove_high_requirements":1,
    "open_level_sections":1,
    "auto_keys":0,
-   "starting_map":34,
+   "starting_map":207,
    "starting_exit":0,
    "disco_chunky":1,
-   "krusha_slot":255,
+   "krusha_slot":2,
    "starting_kong":0,
    "test_zone":[
       174,

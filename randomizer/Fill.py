@@ -1,15 +1,14 @@
 """Module used to distribute items randomly."""
 from json import dumps
 from math import floor
-from random import shuffle, choice, uniform, randint
+from random import choice, randint, shuffle, uniform
 
 import js
 import randomizer.ItemPool as ItemPool
 import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
-from randomizer.ShuffleDoors import ShuffleDoors, ShuffleVanillaDoors
-import randomizer.ShuffleExits as ShuffleExits
 import randomizer.LogicFiles.DKIsles as IslesLogic
+import randomizer.ShuffleExits as ShuffleExits
 from randomizer.CompileHints import compileHints, compileMicrohints
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
@@ -39,7 +38,7 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Warps import Warps
 from randomizer.Lists.Item import ItemList, KongFromItem
-from randomizer.Lists.Location import LocationList, TrainingBarrelLocations, SharedMoveLocations, PreGivenLocations
+from randomizer.Lists.Location import LocationList, ResetLocationList, SharedMoveLocations, SharedShopLocations
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex, GetShuffledLevelIndex
@@ -47,19 +46,21 @@ from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Logic import LogicVarHolder, LogicVariables
 from randomizer.Logic import Regions as RegionList
 from randomizer.LogicClasses import Sphere, TransitionFront
+from randomizer.Patching import ApplyRandomizer
 from randomizer.Prices import GetMaxForKong
 from randomizer.Settings import Settings
 from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleBosses import CorrectBossKongLocations, ShuffleBossesBasedOnOwnedItems
-from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
-from randomizer.ShufflePatches import ShufflePatches
-from randomizer.ShuffleFairies import ShuffleFairyLocations
-from randomizer.ShuffleShopLocations import ShuffleShopLocations
-from randomizer.ShuffleWarps import LinkWarps, ShuffleWarps, ShuffleWarpsCrossMap
 from randomizer.ShuffleCBs import ShuffleCBs
 from randomizer.ShuffleCoins import ShuffleCoins
 from randomizer.ShuffleCrowns import ShuffleCrowns
+from randomizer.ShuffleDoors import ShuffleDoors, ShuffleVanillaDoors
+from randomizer.ShuffleFairies import ShuffleFairyLocations
 from randomizer.ShuffleItems import ShuffleItems
+from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
+from randomizer.ShufflePatches import ShufflePatches
+from randomizer.ShuffleShopLocations import ShuffleShopLocations
+from randomizer.ShuffleWarps import LinkWarps, ShuffleWarps, ShuffleWarpsCrossMap
 
 
 def GetExitLevelExit(region):
@@ -86,6 +87,26 @@ def GetExitLevelExit(region):
         return ShuffleExits.ShufflableExits[Transitions.CavesToIsles].shuffledId
     elif level == Levels.CreepyCastle:
         return ShuffleExits.ShufflableExits[Transitions.CastleToIsles].shuffledId
+
+
+def GetLobbyOfRegion(region):
+    """Get the lobby region for the parameter's region."""
+    if region.level == Levels.JungleJapes:
+        return Regions.JungleJapesLobby
+    elif region.level == Levels.AngryAztec:
+        return Regions.AngryAztecLobby
+    elif region.level == Levels.FranticFactory:
+        return Regions.FranticFactoryLobby
+    elif region.level == Levels.GloomyGalleon:
+        return Regions.GloomyGalleonLobby
+    elif region.level == Levels.FungiForest:
+        return Regions.FungiForestLobby
+    elif region.level == Levels.CrystalCaves:
+        return Regions.CrystalCavesLobby
+    elif region.level == Levels.CreepyCastle:
+        return Regions.CreepyCastleLobby
+    else:
+        return None
 
 
 def GetAccessibleLocations(settings, startingOwnedItems, searchType, purchaseList=None, targetItemId=None):
@@ -228,13 +249,18 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType, purchaseLis
                         newLocations.add(location.id)
                 # Check accessibility for each exit in this region
                 exits = region.exits.copy()
-                # If loading zones are shuffled or your respawn is in a random location, the "Exit Level" button in the pause menu could potentially take you somewhere new
-                if (settings.shuffle_loading_zones or settings.random_starting_region) and region.level != Levels.DKIsles and region.level != Levels.Shops:
+                # If loading zones are shuffled, the "Exit Level" button in the pause menu could potentially take you somewhere new
+                if settings.shuffle_loading_zones == ShuffleLoadingZones.all and region.level != Levels.DKIsles and region.level != Levels.Shops:
                     levelExit = GetExitLevelExit(region)
                     # When shuffling levels, unplaced level entrances will have no destination yet
                     if levelExit is not None:
                         dest = ShuffleExits.ShufflableExits[levelExit].back.regionId
                         exits.append(TransitionFront(dest, lambda l: True))
+                # If loading zones are not shuffled but you have a random starting location, you may need to exit level to escape some regions
+                elif settings.random_starting_region and region.level != Levels.DKIsles and region.level != Levels.Shops:
+                    levelLobby = GetLobbyOfRegion(region)
+                    if levelLobby is not None and levelLobby not in addedRegions:
+                        exits.append(TransitionFront(levelLobby, lambda l: True))
                 for exit in exits:
                     destination = exit.dest
                     # If this exit has an entrance shuffle id and the shufflable exits list has it marked as shuffled,
@@ -274,7 +300,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType, purchaseLis
                             Logic.Regions[destination].nightAccess = True
                             eventAdded = True
                 # Deathwarps currently send to the vanilla destination
-                if region.deathwarp is not None:
+                if region.deathwarp is not None and settings.perma_death is False:
                     destination = region.deathwarp.dest
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
                     if destination not in addedRegions and region.deathwarp.logic(LogicVariables):
@@ -567,18 +593,11 @@ def ParePlaythrough(settings, PlaythroughLocations):
             # All GBs that make it here are logically required
             if location.item == Items.GoldenBanana:
                 continue
-            # Items that are part of the win condition are always part of the Playthrough but are never part of it otherwise
-            if location.item == Items.BananaFairy:
-                if settings.win_condition != WinCondition.all_fairies:
-                    sphere.locations.remove(locationId)
-                continue
-            if location.item == Items.BananaMedal:
-                if settings.win_condition != WinCondition.all_medals:
-                    sphere.locations.remove(locationId)
+            # These items aren't usually that important - to make it here they have to be part of the win condition or one of the Helm doors
+            # They'll be part of the Playthrough but aren't candidates for the WotH, so we don't have to do any calculations on them
+            if location.item in (Items.BananaFairy, Items.BananaMedal, Items.RainbowCoin, Items.BattleCrown):
                 continue
             if location.item is not None and ItemList[location.item].type == Types.Blueprint:
-                if settings.win_condition != WinCondition.all_blueprints:
-                    sphere.locations.remove(locationId)
                 continue
             # Copy out item from location
             item = location.item
@@ -619,7 +638,7 @@ def PareWoth(spoiler, PlaythroughLocations):
             loc
             for loc in sphere.locations  # If Keys are constant, we may still want path hints for them.
             if (not LocationList[loc].constant or ItemList[LocationList[loc].item].type == Types.Key)
-            and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint)
+            and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint, Types.RainbowCoin)
         ]:
             WothLocations.append(loc)
     WothLocations.append(Locations.BananaHoard)  # The Banana Hoard is the endpoint of the Way of the Hoard
@@ -901,12 +920,22 @@ def RandomFill(settings, itemsToPlace, inOrder=False):
         if len(itemEmpty) == 0:
             # invalid_empty_reachable = [x for x in itemEmpty if x not in validLocations]
             # empty_locations = [x for x in LocationList.values() if x.item is None]
+            # accessible_empty_locations = [x for x in empty_locations if not x.inaccessible]
             # noitem_locations = [x for x in LocationList.values() if x.type != Types.Shop and x.item is Items.NoItem]
-            return len(itemsToPlace)
+            return len(itemsToPlace) + 1
         shuffle(itemEmpty)
         locationId = itemEmpty.pop()
         LocationList[locationId].PlaceItem(item)
         empty.remove(locationId)
+        if locationId in SharedShopLocations:
+            settings.placed_shared_shops += 1
+            if settings.placed_shared_shops >= settings.max_shared_shops:
+                BanAllRemainingSharedShops()
+                # Have to recalculate empty after filling additional locations
+                empty = []
+                for id, location in LocationList.items():
+                    if location.item is None:
+                        empty.append(id)
     return 0
 
 
@@ -916,7 +945,6 @@ def ForwardFill(settings, itemsToPlace, ownedItems=None, inOrder=False, doubleTi
         ownedItems = []
     if not inOrder:
         shuffle(itemsToPlace)
-    ownedItems = ownedItems.copy()
     needToRefreshReachable = True
     # While there are items to place
     while len(itemsToPlace) > 0:
@@ -932,11 +960,10 @@ def ForwardFill(settings, itemsToPlace, ownedItems=None, inOrder=False, doubleTi
         if len(validReachable) == 0:  # If there are no empty reachable locations, reached a dead end
             # invalid_empty_reachable = [x for x in reachable if LocationList[x].item is None and x not in validLocations]
             # valid_empty = [x for x in LocationList.keys() if LocationList[x].item is None and x in validLocations]
-            return len(itemsToPlace)
+            return len(itemsToPlace) + 1
         shuffle(validReachable)
         locationId = validReachable.pop()
         # Place the item
-        ownedItems.append(item)
         LocationList[locationId].PlaceItem(item)
         # Debug code utility for very important items
         if item in ItemPool.HighPriorityItems(settings):
@@ -944,6 +971,11 @@ def ForwardFill(settings, itemsToPlace, ownedItems=None, inOrder=False, doubleTi
         if item in ItemPool.Keys():
             settings.debug_fill[locationId] = item
         needToRefreshReachable = not needToRefreshReachable  # Alternate this variable every item for doubleTime
+        if locationId in SharedShopLocations:
+            settings.placed_shared_shops += 1
+            if settings.placed_shared_shops >= settings.max_shared_shops:
+                BanAllRemainingSharedShops()
+                needToRefreshReachable = True
     return 0
 
 
@@ -1026,11 +1058,22 @@ def AssumedFill(settings, itemsToPlace, ownedItems=None, inOrder=False):
             if item in ItemPool.Keys():
                 settings.debug_fill[locationId] = item
             itemShuffled = True
+            if locationId in SharedShopLocations:
+                settings.placed_shared_shops += 1
+                if settings.placed_shared_shops >= settings.max_shared_shops:
+                    BanAllRemainingSharedShops()
             break
         if not itemShuffled:
             js.postMessage("Failed placing item " + ItemList[item].name + " in any of remaining " + str(ItemList[item].type) + " type possible locations")
             return len(itemsToPlace) + 1
     return 0
+
+
+def BanAllRemainingSharedShops():
+    """Fill all empty shared shops with a NoItem."""
+    for location in SharedShopLocations:
+        if not LocationList[location].inaccessible and LocationList[location].item is None:
+            LocationList[location].PlaceItem(Items.NoItem)
 
 
 def GetMaxCoinsSpent(settings, purchasedShops):
@@ -1195,12 +1238,69 @@ def FillShuffledKeys(spoiler, placed_types):
             raise Ex.ItemPlacementException(str(keysUnplaced) + " unplaced keys.")
 
 
+def FillHelmLocations(spoiler, placed_types):
+    """Fill all currently empty Helm locations with eligible non-logic-critical items."""
+    placed_in_helm = []
+    # Get all the empty Helm locations
+    empty_helm_locations = [
+        loc_id for loc_id in LocationList.keys() if LocationList[loc_id].level == Levels.HideoutHelm and LocationList[loc_id].type != Types.Constant and LocationList[loc_id].item is None
+    ]
+    # Rig the valid_locations for all relevant items to only be able to place things in Helm
+    for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # Shops whould already be placed
+        # Company Coins and Medals cannot be on the fairy locations
+        if typ in [Types.Coin, Types.Medal]:
+            spoiler.settings.valid_locations[typ] = [loc for loc in empty_helm_locations if LocationList[loc].type != Types.Fairy]
+        # Crowns cannot be on the medal locations
+        elif typ == Types.Crown:
+            spoiler.settings.valid_locations[typ] = [loc for loc in empty_helm_locations if LocationList[loc].type != Types.Medal]
+        # Blueprints are tricky - they have to be in the right Kong's room
+        elif typ == Types.Blueprint:
+            empty_kong_rooms = [loc for loc in empty_helm_locations if LocationList[loc].type == Types.Medal]
+            empty_kong_rooms_kongs = [LocationList[loc].kong for loc in empty_kong_rooms]
+            for kong in Kongs:
+                if kong in empty_kong_rooms_kongs:
+                    spoiler.settings.valid_locations[Types.Blueprint][kong] = [loc for loc in empty_kong_rooms if LocationList[loc].kong == kong]
+                else:
+                    spoiler.settings.valid_locations[Types.Blueprint][kong] = []
+        # Everything else (fairies) can be in any location
+        else:
+            spoiler.settings.valid_locations[typ] = empty_helm_locations
+    # Now we get the full list of items we could place here
+    unplaced_items = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types)
+    failed_to_place_items = []
+    possible_items = [item for item in unplaced_items if item != Items.GoldenBanana]  # To save some time, we know GBs can't be in Helm
+    shuffle(possible_items)
+    # Until we have placed enough items...
+    while len(placed_in_helm) < len(empty_helm_locations):
+        if len(possible_items) == 0:
+            spoiler.settings.update_valid_locations()
+            raise Ex.FillException("Unable to fill Helm.")
+        # Grab the next one from the pile and attempt to place it
+        item_to_attempt_placement = possible_items.pop()
+        unplaced = PlaceItems(spoiler.settings, FillAlgorithm.forward, [item_to_attempt_placement], unplaced_items)
+        # If we succeed, mark this item as being placed in Helm
+        if unplaced == 0:
+            placed_in_helm.append(item_to_attempt_placement)
+            unplaced_items.remove(item_to_attempt_placement)
+        # If we failed, go again. This is most likely either a location conflict inherent to the item or a logical restriction based on a huge Fairy/Medal requirement
+        else:
+            failed_to_place_items.append(item_to_attempt_placement)  # This item we failed to place could be important earlier, so we need to assume it going forward
+    # Very important - we have to reset valid_locations to the correct state after this
+    spoiler.settings.update_valid_locations()
+    # Return all items we placed, all future methods must consider these when placing (and assuming) items
+    return placed_in_helm
+
+
 def Fill(spoiler):
     """Fully randomizes and places all items."""
     placed_types = []
     spoiler.settings.debug_fill = {}
     spoiler.settings.debug_prerequisites = {}
     spoiler.settings.debug_fill_blueprints = {}
+    spoiler.settings.placed_shared_shops = 0
+    # To aid in finding these locations, treat Rareware Coin and Rareware GB as being ~15-20% more expensive for fill purposes (unless it's already very expensive)
+    spoiler.settings.medal_requirement = spoiler.settings.logical_medal_requirement
+    spoiler.settings.rareware_gb_fairies = spoiler.settings.logical_fairy_requirement
     # First place constant items - these will never vary and need to be in place for all other fills to know that
     ItemPool.PlaceConstants(spoiler.settings)
 
@@ -1213,71 +1313,13 @@ def Fill(spoiler):
         if rcoinUnplaced > 0:
             raise Ex.ItemPlacementException(str(rcoinUnplaced) + " unplaced Rainbow Coins.")
 
+    # Now we place all logically-relevant low-quantity items
     # Then fill Kongs and Moves - this should be a very early fill type for hopefully obvious reasons
     FillKongsAndMoves(spoiler, placed_types)
-
-    # Then place Blueprints - these are moderately restrictive in their placement
-    if Types.Blueprint in spoiler.settings.shuffled_location_types:
-        placed_types.append(Types.Blueprint)
-        Reset()
-        # Blueprints can be placed randomly - there's no location (yet) that can cause blueprints to lock themselves
-        blueprintsUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, ItemPool.Blueprints().copy(), ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types))
-        if blueprintsUnplaced > 0:
-            raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
-    # Then place keys
+    # Then place Keys
     if Types.Key in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Key)
         FillShuffledKeys(spoiler, placed_types)
-    # Then place Nintendo & Rareware Coins
-    if Types.Coin in spoiler.settings.shuffled_location_types:
-        placed_types.append(Types.Coin)
-        Reset()
-        coinsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.CompanyCoinItems(), ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), doubleTime=True)
-        if coinsUnplaced > 0:
-            raise Ex.ItemPlacementException(str(coinsUnplaced) + " unplaced company coins.")
-    # Then place Battle Crowns
-    if Types.Crown in spoiler.settings.shuffled_location_types:
-        placed_types.append(Types.Crown)
-        Reset()
-        # Crowns can be placed randomly, but only if the helm doors don't need any
-        algo = FillAlgorithm.random
-        if spoiler.settings.coin_door_item == HelmDoorItem.req_crown or spoiler.settings.crown_door_item in (HelmDoorItem.vanilla, HelmDoorItem.req_crown):
-            algo = spoiler.settings.algorithm
-        crownsUnplaced = PlaceItems(spoiler.settings, algo, ItemPool.BattleCrownItems(), ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), doubleTime=True)
-        if crownsUnplaced > 0:
-            raise Ex.ItemPlacementException(str(crownsUnplaced) + " unplaced crowns.")
-    # Then place Banana Medals
-    if Types.Medal in spoiler.settings.shuffled_location_types:
-        placed_types.append(Types.Medal)
-        Reset()
-        medalsToBePlaced = ItemPool.BananaMedalItems()
-        medalAssumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types)
-        # Medals up to the Jetpac requirement must be placed carefully
-        logicallyPlacedMedals = min(floor(spoiler.settings.medal_requirement * 1.2), 40)
-        jetpacRequiredMedals = medalsToBePlaced[:logicallyPlacedMedals]
-        medalsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, jetpacRequiredMedals, medalAssumedItems, doubleTime=True)
-        if logicallyPlacedMedals > 0 and medalsUnplaced > 0:
-            raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced logical medals.")
-        # The remaining medals can be placed randomly
-        medalsUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, medalsToBePlaced[logicallyPlacedMedals:], medalAssumedItems)
-        if logicallyPlacedMedals < 40 and medalsUnplaced > 0:
-            raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced random medals.")
-    # Then place Fairies
-    if Types.Fairy in spoiler.settings.shuffled_location_types:
-        placed_types.append(Types.Fairy)
-        Reset()
-        fairiesToBePlaced = ItemPool.FairyItems()
-        fairyAssumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types)
-        # Fairies up to the Rareware GB requirement must be placed carefully
-        logicallyPlacedFairies = min(floor(spoiler.settings.rareware_gb_fairies * 1.2), 20)  # Place more fairies in logic than you may need
-        rarewareRequiredFairies = fairiesToBePlaced[:logicallyPlacedFairies]
-        fairyUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, rarewareRequiredFairies, fairyAssumedItems, doubleTime=True)
-        if logicallyPlacedFairies > 0 and fairyUnplaced > 0:
-            raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced logical fairies.")
-        # The remaining fairies can be placed randomly
-        fairyUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, fairiesToBePlaced[logicallyPlacedFairies:], fairyAssumedItems)
-        if logicallyPlacedFairies < 20 and fairyUnplaced > 0:
-            raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced random Fairies.")
     # Then place misc progression items
     if Types.Bean in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Bean)
@@ -1286,6 +1328,95 @@ def Fill(spoiler):
         miscUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, ItemPool.MiscItemRandoItems(), ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types))
         if miscUnplaced > 0:
             raise Ex.ItemPlacementException(str(miscUnplaced) + " unplaced Miscellaneous Items.")
+
+    # Now we place the (generally) filler items
+    placed_in_helm = []
+    # If Helm is having locations shuffled and we're shuffling GBs, we have to fill Helm now.
+    # This is because GBs can't be in Helm, so we might run out of locations to place them if these spots aren't filled
+    if Types.Banana in spoiler.settings.shuffled_location_types and (
+        Types.Medal in spoiler.settings.shuffled_location_types
+        or Types.Crown in spoiler.settings.shuffled_location_types
+        or Types.Fairy in spoiler.settings.shuffled_location_types
+        or Types.Key in spoiler.settings.shuffled_location_types
+    ):
+        placed_in_helm = FillHelmLocations(spoiler, placed_types)
+
+    # Then place Blueprints - these are moderately restrictive in their placement
+    if Types.Blueprint in spoiler.settings.shuffled_location_types:
+        placed_types.append(Types.Blueprint)
+        Reset()
+        blueprintsToPlace = ItemPool.Blueprints().copy()
+        for item in placed_in_helm:
+            if item in blueprintsToPlace:
+                blueprintsToPlace.remove(item)
+        # Blueprints can be placed randomly - there's no location (yet) that can cause blueprints to lock themselves
+        blueprintsUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, blueprintsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=placed_in_helm))
+        if blueprintsUnplaced > 0:
+            raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
+    # Then place Nintendo & Rareware Coins
+    if Types.Coin in spoiler.settings.shuffled_location_types:
+        placed_types.append(Types.Coin)
+        Reset()
+        coinsToPlace = ItemPool.CompanyCoinItems()
+        for item in placed_in_helm:
+            if item in coinsToPlace:
+                coinsToPlace.remove(item)
+        coinsUnplaced = PlaceItems(
+            spoiler.settings, spoiler.settings.algorithm, coinsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=placed_in_helm), doubleTime=True
+        )
+        if coinsUnplaced > 0:
+            raise Ex.ItemPlacementException(str(coinsUnplaced) + " unplaced company coins.")
+    # Then place Battle Crowns
+    if Types.Crown in spoiler.settings.shuffled_location_types:
+        placed_types.append(Types.Crown)
+        Reset()
+        crownsToPlace = ItemPool.BattleCrownItems()
+        for item in placed_in_helm:
+            if item in crownsToPlace:
+                crownsToPlace.remove(item)
+        # Crowns can be placed randomly, but only if the helm doors don't need any
+        algo = FillAlgorithm.random
+        if spoiler.settings.coin_door_item == HelmDoorItem.req_crown or spoiler.settings.crown_door_item in (HelmDoorItem.vanilla, HelmDoorItem.req_crown):
+            algo = spoiler.settings.algorithm
+        crownsUnplaced = PlaceItems(spoiler.settings, algo, crownsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=placed_in_helm), doubleTime=True)
+        if crownsUnplaced > 0:
+            raise Ex.ItemPlacementException(str(crownsUnplaced) + " unplaced crowns.")
+    # Then place Banana Medals
+    if Types.Medal in spoiler.settings.shuffled_location_types:
+        placed_types.append(Types.Medal)
+        Reset()
+        medalsToBePlaced = ItemPool.BananaMedalItems()
+        for item in placed_in_helm:
+            if item in medalsToBePlaced:
+                medalsToBePlaced.remove(item)
+        medalAssumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=placed_in_helm)
+        # Medals up to the logical Jetpac requirement must be placed carefully
+        jetpacRequiredMedals = medalsToBePlaced[: spoiler.settings.logical_medal_requirement]
+        medalsUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, jetpacRequiredMedals, medalAssumedItems, doubleTime=True)
+        if medalsUnplaced > 0:
+            raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced logical medals.")
+        # The remaining medals can be placed randomly
+        medalsUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, medalsToBePlaced[spoiler.settings.logical_medal_requirement :], medalAssumedItems)
+        if medalsUnplaced > 0:
+            raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced random medals.")
+    # Then place Fairies
+    if Types.Fairy in spoiler.settings.shuffled_location_types:
+        placed_types.append(Types.Fairy)
+        Reset()
+        fairiesToBePlaced = ItemPool.FairyItems()
+        for item in placed_in_helm:
+            if item in fairiesToBePlaced:
+                fairiesToBePlaced.remove(item)
+        fairyAssumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=placed_in_helm)
+        # Fairies up to the logical Rareware GB requirement must be placed carefully
+        rarewareRequiredFairies = fairiesToBePlaced[: spoiler.settings.logical_fairy_requirement]
+        fairyUnplaced = PlaceItems(spoiler.settings, spoiler.settings.algorithm, rarewareRequiredFairies, fairyAssumedItems, doubleTime=True)
+        if fairyUnplaced > 0:
+            raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced logical fairies.")
+        # The remaining fairies can be placed randomly
+        fairyUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, fairiesToBePlaced[spoiler.settings.logical_fairy_requirement :], fairyAssumedItems)
+        if fairyUnplaced > 0:
+            raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced random Fairies.")
     # Then fill remaining locations with GBs
     if Types.Banana in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Banana)
@@ -1321,6 +1452,10 @@ def Fill(spoiler):
     if not GetAccessibleLocations(spoiler.settings, [], SearchMode.CheckAllReachable):
         print("Failed 101% check")
         raise Ex.GameNotBeatableException("Game not able to complete 101% after placing all items.")
+    # We have successfully filled the seed by this point. All that is left is to confirm there are no purchase order locks
+    # Reset the adjustments made for fill purposes
+    spoiler.settings.medal_requirement = spoiler.settings.original_medal_requirement
+    spoiler.settings.rareware_gb_fairies = spoiler.settings.original_fairy_requirement
     return
 
 
@@ -1682,8 +1817,14 @@ def FillKongsAndMoves(spoiler, placedTypes):
     if any(locationsNeedingMoves):
         newlyPlacedItems = []
         toBeUnplaced = []
-        possibleStartingMoves = ItemPool.AllKongMoves()
-        possibleStartingMoves.extend(ItemPool.JunkSharedMoves)
+        possibleStartingMoves = ItemPool.AllKongMoves().copy()
+        if len(locationsNeedingMoves) < 10:
+            # Generally only include one copy of the useless progressive moves to bias against picking them when you only have a few starting moves
+            possibleStartingMoves.append(Items.ProgressiveAmmoBelt)
+            possibleStartingMoves.append(Items.ProgressiveInstrumentUpgrade)
+        else:
+            # If we have lots of starting moves, we'll need to include all copies so we have enough stuff to fill all locations
+            possibleStartingMoves.extend(ItemPool.JunkSharedMoves)
         if spoiler.settings.training_barrels == TrainingBarrels.shuffled:
             possibleStartingMoves.extend(ItemPool.TrainingBarrelAbilities())
         if spoiler.settings.shockwave_status in (ShockwaveStatus.shuffled, ShockwaveStatus.shuffled_decoupled):
@@ -1802,6 +1943,7 @@ def FillKongsAndMovesForLevelOrder(spoiler):
     # ALGORITHM START
     # print("Starting Kongs: " + str([kong.name + " " for kong in spoiler.settings.starting_kong_list]))
     retries = 0
+    error_log = []
     while 1:
         try:
             # Need to place constants to update boss key items after shuffling levels
@@ -1828,6 +1970,7 @@ def FillKongsAndMovesForLevelOrder(spoiler):
                 raise Ex.GameNotBeatableException("Game potentially unbeatable after placing all items.")
             return
         except Ex.FillException as ex:
+            error_log.append(ex)
             Reset()
             Logic.ClearAllLocations()
             retries += 1
@@ -2009,7 +2152,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
     # Until we've completed every level...
     while len(levelsProgressed) < 7:
         maxEnterableBlocker = round(runningGBTotal * BLOCKER_MAX)
-        openLevels = GetAccessibleOpenLevels(settings, accessible)
+        openLevels = GetAccessibleOpenLevels()
         # Pick a random accessible B. Locker
         accessibleIncompleteLevels = [level for level in openLevels if level not in levelsProgressed and settings.EntryGBs[level] <= maxEnterableBlocker]
         # If we have no levels accessible, we need to lower a B. Locker count to make one accessible
@@ -2056,7 +2199,7 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
         if isKeyItemRando:
             # Until we know a new level is accessible...
             while 1:
-                openLevels = GetAccessibleOpenLevels(settings, accessible)
+                openLevels = GetAccessibleOpenLevels()
                 # If we haven't found all the levels and have progressed through all open levels, we need to lower the CB requirement of one or more bosses for progression
                 if len(openLevels) < 7 and len(openLevels) == len(levelsProgressed):
                     bossLocations = [location for id, location in LocationList.items() if location.type == Types.Key and location.level in levelsProgressed]
@@ -2230,59 +2373,26 @@ def SetNewProgressionRequirementsUnordered(settings: Settings):
         raise Ex.GameNotBeatableException("Complex progression generation prevented 101%.")
 
 
-def GetAccessibleOpenLevels(settings, accessible):
+def GetAccessibleOpenLevels():
     """Return the list of levels (not lobbies) you have access to after running GetAccessibleLocations()."""
-    KeyEvents = [
-        Events.JapesKeyTurnedIn,
-        Events.AztecKeyTurnedIn,
-        Events.FactoryKeyTurnedIn,
-        Events.GalleonKeyTurnedIn,
-        Events.ForestKeyTurnedIn,
-        Events.CavesKeyTurnedIn,
-        Events.CastleKeyTurnedIn,
-        Events.HelmKeyTurnedIn,
-    ]
-    # Determine what keys we have
-    keysTurnedIn = [event for event in LogicVariables.Events if event in KeyEvents]
-    openLobbyIndexes = [1]
-    if not settings.open_lobbies:
-        # For the keys we have, determine what lobbies are open
-        for key in keysTurnedIn:
-            if key == Events.JapesKeyTurnedIn:
-                openLobbyIndexes.append(2)
-            elif key == Events.AztecKeyTurnedIn:
-                openLobbyIndexes.append(3)
-                openLobbyIndexes.append(4)
-            elif key == Events.GalleonKeyTurnedIn:
-                openLobbyIndexes.append(5)
-            elif key == Events.ForestKeyTurnedIn:
-                openLobbyIndexes.append(6)
-                openLobbyIndexes.append(7)
-    else:
-        # If the setting is on, then all lobbies are open
-        openLobbyIndexes = [1, 2, 3, 4, 5, 6, 7]
-    # We need a kong who can enter the Caves Lobby logically
-    if 6 in openLobbyIndexes and not LogicVariables.donkey and not LogicVariables.chunky and not (LogicVariables.tiny and LogicVariables.twirl):
-        openLobbyIndexes.remove(6)
-    # We may need training moves for access to some lobbies
-    if settings.training_barrels != TrainingBarrels.normal:
-        # Vines only matter if we don't have Isles warps activated
-        if settings.activate_all_bananaports == ActivateAllBananaports.off and not LogicVariables.vines:
-            # Aztec lobby requires vines to get to
-            if 2 in openLobbyIndexes:
-                openLobbyIndexes.remove(2)
-            # Caves lobby requires vines to get to
-            if 6 in openLobbyIndexes:
-                openLobbyIndexes.remove(6)
-        # Galleon lobby requires swim
-        if 4 in openLobbyIndexes and not LogicVariables.swim:
-            openLobbyIndexes.remove(4)
-    # Convert indexes to the shuffled levels
-    accessibleOpenLevels = [settings.level_order[index] for index in openLobbyIndexes]
-    # After converting to levels, double check that we can actually do anything in Aztec
-    if Levels.AngryAztec in accessibleOpenLevels:
-        if not LogicVariables.vines and not (LogicVariables.tiny and LogicVariables.twirl):  # Need vines or (tiny + twirl)
-            accessibleOpenLevels.remove(Levels.AngryAztec)
+    lobbyAccessEvents = [event for event in LogicVariables.Events if event >= Events.JapesLobbyAccessed and event <= Events.CastleLobbyAccessed]
+    accessibleOpenLevels = []
+    if Events.JapesLobbyAccessed in lobbyAccessEvents:
+        accessibleOpenLevels.append(Levels.JungleJapes)
+    if Events.AztecLobbyAccessed in lobbyAccessEvents:
+        # Also make sure we can do anything in Aztec
+        if LogicVariables.vines or (LogicVariables.tiny and LogicVariables.twirl) or LogicVariables.phasewalk:
+            accessibleOpenLevels.append(Levels.AngryAztec)
+    if Events.FactoryLobbyAccessed in lobbyAccessEvents:
+        accessibleOpenLevels.append(Levels.FranticFactory)
+    if Events.GalleonLobbyAccessed in lobbyAccessEvents:
+        accessibleOpenLevels.append(Levels.GloomyGalleon)
+    if Events.ForestLobbyAccessed in lobbyAccessEvents:
+        accessibleOpenLevels.append(Levels.FungiForest)
+    if Events.CavesLobbyAccessed in lobbyAccessEvents:
+        accessibleOpenLevels.append(Levels.CrystalCaves)
+    if Events.CastleLobbyAccessed in lobbyAccessEvents:
+        accessibleOpenLevels.append(Levels.CreepyCastle)
     return accessibleOpenLevels
 
 
@@ -2315,7 +2425,10 @@ def Generate_Spoiler(spoiler):
     """Generate a complete spoiler based on input settings."""
     # Init logic vars with settings
     global LogicVariables
+    LogicVariables = None
     LogicVariables = LogicVarHolder(spoiler.settings)
+    # Reset LocationList for a new fill
+    ResetLocationList()
     # Initiate kasplat map with default
     InitKasplatMap(LogicVariables)
     # Handle misc randomizations
@@ -2354,7 +2467,8 @@ def Generate_Spoiler(spoiler):
     js.postMessage("Patching ROM...")
     # print(spoiler)
     # print(spoiler.json)
-    return spoiler
+    patch_data = ApplyRandomizer.patching_response(spoiler)
+    return patch_data, spoiler
 
 
 def ShuffleMisc(spoiler):

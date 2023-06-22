@@ -1,12 +1,11 @@
 """Stores the data for the locations of colored bananas and balloons in Angry Aztec."""
 
 from randomizer.Enums.Events import Events
-from randomizer.Enums.Regions import Regions
-from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Regions import Regions
+from randomizer.Lists.MapsAndExits import Maps
 from randomizer.LogicClasses import Balloon, ColoredBananaGroup
-
 
 ColoredBananaGroupList = [
     ColoredBananaGroup(
@@ -2109,7 +2108,7 @@ BalloonList = [
     Balloon(
         id=33,
         map_id=Maps.ForestGiantMushroom,
-        name="Top of giant mushroom (Lanky)",
+        name="Top of giant mushroom interior (Lanky)",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomUpper,

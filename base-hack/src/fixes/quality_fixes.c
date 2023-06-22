@@ -44,6 +44,21 @@ void qualityOfLife_fixes(void) {
 					displaySpriteAtXYZ(sprite_table[19], 0x3F800000, Player->xPos, Player->yPos, Player->zPos);
 				}
 			}
+		} else {
+			int is_beaver_bother = CurrentMap == MAP_BBOTHER_EASY ||
+				CurrentMap == MAP_BBOTHER_HARD ||
+				CurrentMap == MAP_BBOTHER_NORMAL;
+			if (is_beaver_bother) {
+				if (Player) {
+					int control_state = Player->control_state;
+					int good_state = control_state == 0x7D || // Klaptrap
+						control_state == 0x73 || // Failure
+						control_state == 0x74; // Victory
+					if (!good_state) {
+						Player->control_state = 0x7D;
+					}
+				}
+			}
 		}
 	}
 }
@@ -315,8 +330,7 @@ static const char test_file_name[] = "BALLAAM";
 
 void writeDefaultFilename(void) {
 	for (int i = 0; i < 8; i++) {
-		SaveToFile(DATA_FILENAME, 0, i, 0, test_file_name[i]);
-		// SaveToFile(DATA_FILENAME, 0, i, 0, 0);
+		SaveExtraData(EGD_FILENAME, i, test_file_name[i]);
 	}
 }
 
@@ -325,9 +339,12 @@ void fixChimpyCamBug(void) {
 	 * @brief Things to be reset upon first boot of the game on PJ64 (Because PJ64 is weird)
 	 */
 	wipeGlobalFlags();
-	SaveToFile(DATA_CAMERATYPE, 0, 0, 0, 0);
+	SaveToFile(DATA_CAMERATYPE, 0, 0, 0, Rando.default_camera_type);
+	SaveToFile(DATA_LANGUAGE, 0, 0, 0, Rando.default_camera_type);
+	SaveToFile(DATA_SOUNDTYPE, 0, 0, 0, Rando.default_sound_type);
 	wipeFileStats();
 	if (ENABLE_FILENAME) {
 		writeDefaultFilename();
 	}
+	SaveToGlobal();
 }

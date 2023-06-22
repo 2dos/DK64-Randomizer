@@ -18,6 +18,13 @@ typedef struct musicInfo {
 	/* 0x000 */ short data[0xB0];
 } musicInfo;
 
+typedef enum song_types {
+	/* 0x000 */ SONGTYPE_BGM,
+	/* 0x001 */ SONGTYPE_EVENT,
+	/* 0x002 */ SONGTYPE_MAJORITEM,
+	/* 0x003 */ SONGTYPE_MINORITEM,
+} song_types;
+
 void fixMusicRando(void) {
 	/**
 	 * @brief Initialize Music Rando so that the data for each song is correct.
@@ -25,19 +32,43 @@ void fixMusicRando(void) {
 	 */
 	// Music
 	if (Rando.music_rando_on) {
-		int size = 0x160;
+		// Type bitfields
+		int size = SONG_COUNT << 1;
 		musicInfo* write_space = dk_malloc(size);
 		int* file_size;
 		*(int*)(&file_size) = size;
 		copyFromROM(0x1FFF000,write_space,&file_size,0,0,0,0);
-		for (int i = 0; i < 0xB0; i++) {
+		// Type indexes
+		size = SONG_COUNT;
+		char* write_space_0 = dk_malloc(size);
+		*(int*)(&file_size) = size;
+		copyFromROM(0x1FEE200,write_space_0,&file_size,0,0,0,0);
+		for (int i = 0; i < SONG_COUNT; i++) {
+			// Handle Bitfield
 			int subchannel = (write_space->data[i] & 6) >> 1;
 			int channel = (write_space->data[i] & 0x78) >> 3;
 			songData[i] &= 0xFF81;
 			songData[i] |= (subchannel & 3) << 1;
 			songData[i] |= (channel & 0xF) << 3;
+
+			// Handle Type Index
+			if (write_space_0[i] > -1) {
+				song_types type = write_space_0[i];
+				int volume = 0;
+				if (type == SONGTYPE_BGM) {
+					volume = 23000;
+				} else if (type == SONGTYPE_MAJORITEM) {
+					volume = 27000;
+				} else {
+					// Event or Minor Item
+					volume = 25000;
+				}
+				songVolumes[i] = volume;
+			}
 		}
 		complex_free(write_space);
+		complex_free(write_space_0);
+
 	}
 }
 
@@ -119,6 +150,10 @@ void loadHooks(void) {
 	loadSingularHook(0x806AA414, &PauseControl_Sprite);
 	if (Rando.quality_of_life.brighten_mmm_enemies) {
 		loadSingularHook(0x80631380, &brightenMMMEnemies);
+	}
+	if (Rando.krusha_slot >- 1) {
+		loadSingularHook(0x806F97B8, &FixKrushaAmmoHUDColor);
+		loadSingularHook(0x806F97E8, &FixKrushaAmmoHUDSize);
 	}
 }
 
@@ -474,6 +509,22 @@ void initHack(int source) {
 			*(unsigned char*)(0x8064A2FD) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[5]];
 			*(unsigned char*)(0x8064A301) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[7]];
 			*(unsigned char*)(0x8064A305) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[8]];
+			SFXVolume = Rando.default_sfx_volume;
+			MusicVolume = Rando.default_music_volume;
+			ScreenRatio = Rando.default_screen_ratio;
+			SoundType = Rando.default_sound_type;
+			int sound_subtype = 1;
+			if (SoundType == 0) {
+				sound_subtype = 2;
+			} else if (SoundType == 2) {
+				sound_subtype = 4;
+			}
+			adjustSFXType_Internal(sound_subtype);
+			for (int i = 0; i < 4; i++) {
+				alterSFXVolume(i, (SFXVolume * 25000) / 40);
+			}
+			alterMusicVolume(0);
+			alterMusicVolume(2);
 			insertROMMessages();
 			LoadedHooks = 1;
 		}

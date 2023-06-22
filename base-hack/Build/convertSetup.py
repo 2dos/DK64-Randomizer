@@ -1,12 +1,13 @@
 """Convert file setup."""
 import os
 import shutil
-from BuildLib import float_to_hex, intf_to_float
 
+from BuildLib import float_to_hex, intf_to_float
 from getMoveSignLocations import getMoveSignData
 from place_vines import generateVineSeries
 
 BUTTON_DIST_NORMAL = 20
+CAVES_ITEM_HEIGHT = 20
 
 
 def convertSetup(file_name):
@@ -251,13 +252,23 @@ def modify(file_name, map_index):
                         in_range = True
                 if in_range:
                     repl_byte = b""
-                    new_y = int(float_to_hex(30), 16)
+                    new_y = int(float_to_hex(CAVES_ITEM_HEIGHT), 16)
                     for x in range(0x4):
                         repl_byte += byte_stream[x].to_bytes(1, "big")
                     repl_byte += new_y.to_bytes(4, "big")
                     for x in range(0x30 - 0x8):
                         repl_byte += byte_stream[x + 0x8].to_bytes(1, "big")
                     byte_stream = repl_byte
+            elif map_index == 0x1A and _id == 0x2C:
+                # Diddy Prod GB
+                repl_byte = b""
+                new_y = int(float_to_hex(715), 16)
+                for x in range(0x4):
+                    repl_byte += byte_stream[x].to_bytes(1, "big")
+                repl_byte += new_y.to_bytes(4, "big")
+                for x in range(0x30 - 0x8):
+                    repl_byte += byte_stream[x + 0x8].to_bytes(1, "big")
+                byte_stream = repl_byte
             data = {"stream": byte_stream, "type": _type}
             model2.append(data)
             read_location += 0x30

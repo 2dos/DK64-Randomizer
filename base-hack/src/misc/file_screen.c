@@ -26,66 +26,6 @@ typedef struct tracker_struct {
 	/* 0x009 */ unsigned char type;
 } tracker_struct;
 
-#define TRACKER_TYPE_COCONUT 0
-#define TRACKER_TYPE_BONGOS 1
-#define TRACKER_TYPE_GRAB 2
-#define TRACKER_TYPE_STRONG 3
-#define TRACKER_TYPE_BLAST 4
-
-#define TRACKER_TYPE_PEANUT 5
-#define TRACKER_TYPE_GUITAR 6
-#define TRACKER_TYPE_CHARGE 7
-#define TRACKER_TYPE_ROCKET 8
-#define TRACKER_TYPE_SPRING 9
-
-#define TRACKER_TYPE_GRAPE 10
-#define TRACKER_TYPE_TROMBONE 11
-#define TRACKER_TYPE_OSTAND 12
-#define TRACKER_TYPE_OSPRINT 13
-#define TRACKER_TYPE_BALLOON 14
-
-#define TRACKER_TYPE_FEATHER 15
-#define TRACKER_TYPE_SAX 16
-#define TRACKER_TYPE_PTT 17
-#define TRACKER_TYPE_MINI 18
-#define TRACKER_TYPE_MONKEYPORT 19
-
-#define TRACKER_TYPE_PINEAPPLE 20
-#define TRACKER_TYPE_TRIANGLE 21
-#define TRACKER_TYPE_PUNCH 22
-#define TRACKER_TYPE_HUNKY 23
-#define TRACKER_TYPE_GONE 24
-
-#define TRACKER_TYPE_SLAM 25
-#define TRACKER_TYPE_HOMING 26
-#define TRACKER_TYPE_SNIPER 27
-#define TRACKER_TYPE_AMMOBELT 28
-#define TRACKER_TYPE_INSTRUMENT_UPG 29
-
-#define TRACKER_TYPE_DIVE 30
-#define TRACKER_TYPE_ORANGE 31
-#define TRACKER_TYPE_BARREL 32
-#define TRACKER_TYPE_VINE 33
-
-#define TRACKER_TYPE_CAMERA 34
-#define TRACKER_TYPE_SHOCKWAVE 35
-
-#define TRACKER_TYPE_KEY1 36
-#define TRACKER_TYPE_KEY2 37
-#define TRACKER_TYPE_KEY3 38
-#define TRACKER_TYPE_KEY4 39
-#define TRACKER_TYPE_KEY5 40
-#define TRACKER_TYPE_KEY6 41
-#define TRACKER_TYPE_KEY7 42
-#define TRACKER_TYPE_KEY8 43
-
-#define TRACKER_TYPE_MELON_2 44
-#define TRACKER_TYPE_MELON_3 45
-#define TRACKER_TYPE_INSUPG_1 46
-#define TRACKER_TYPE_INSUPG_2 47
-#define TRACKER_TYPE_BELT_1 48
-#define TRACKER_TYPE_BELT_2 49
-
 #define TRACKER_ENABLED_DEFAULT 1
 
 static tracker_struct tracker_info[] = {
@@ -273,6 +213,8 @@ int isMovePregiven(int index) {
 				return 1;
 			}
 			return 0;
+		default:
+			break;
 	}
 	return 0;
 }
@@ -396,7 +338,7 @@ int getEnabledState(int index) {
 			{
 				// Keys in
 				int key_index = index - TRACKER_TYPE_KEY1;
-				int key_there = checkFlag(FLAG_KEYIN_KEY1 + key_index, FLAGTYPE_PERMANENT);
+				int key_there = has_key(key_index);
 				if (!key_there) {
 					if (Rando.keys_preturned & (1 << key_index)) {
 						key_there = 1;
@@ -404,6 +346,8 @@ int getEnabledState(int index) {
 				}
 				return key_there;
 			}
+		default:
+			break;
 	}
 	return 0;
 }
@@ -675,20 +619,19 @@ void giveCollectables(void) {
 
 void wipeFileStats(void) {
 	for (int i = 0; i < 9; i++) {
-		SaveToFile(DATA_LEVELIGT, 0, i, 0, 0);
+		ResetExtraData(EGD_LEVELIGT, i);
 	}
 	for (int i = 0; i < STAT_TERMINATOR; i++) {
 		// Reset Statistics
-		SaveToFile(DATA_BONUSSTAT, 0, i, 0, 0);
+		ResetExtraData(EGD_BONUSSTAT, i);
 	}
 	for (int i = 0; i < 5; i++) {
-		SaveToFile(DATA_KONGIGT, 0, i, 0, 0);
+		ResetExtraData(EGD_KONGIGT, i);
 	}
 	for (int i = 0; i < 8; i++) {
-		SaveToFile(DATA_FILENAME, 0, i, 0, 0);
+		ResetExtraData(EGD_FILENAME, i);
 	}
-	SaveToFile(DATA_HELMHURRYIGT, 0, 0, 0, 0);
-	SaveToFile(DATA_HELMHURRYOFF, 0, 0, 0, 0);
+	ResetExtraData(EGD_HELMHURRYIGT, 0);
 }
 
 void file_progress_screen_code(actorData* actor, int buttons) {
@@ -834,13 +777,14 @@ int updateLevelIGT(void) {
 	if (canSaveHelmHurry()) {
 		int sum = 0;
 		for (int i = 0; i < 9; i++) {
-			sum += ReadFile(DATA_LEVELIGT, 0, i, 0);
+			int value = ReadExtraData(EGD_LEVELIGT, i);
+			sum += value; 
 		}
 		int diff = new_igt - sum;
 		int world = getWorld(previous_map_save, 1);
 		if (world < 9) {
-			int old = ReadFile(DATA_LEVELIGT, 0, world, 0);
-			SaveToFile(DATA_LEVELIGT, 0, world, 0, old + diff);
+			int old = ReadExtraData(EGD_LEVELIGT, world);
+			SaveExtraData(EGD_LEVELIGT, world, old + diff);
 		}
 	}
 	previous_map_save = CurrentMap;

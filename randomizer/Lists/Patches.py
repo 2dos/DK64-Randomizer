@@ -1,6 +1,7 @@
 """Designates Dirt Patch Location Properties."""
 
 from randomizer.Enums.Events import Events
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
@@ -34,7 +35,7 @@ class DirtPatchData:
 
 DirtPatchLocations = [
     DirtPatchData(
-        name="DK Isles: On Aztec Building",
+        name="On Aztec Building",
         level=Levels.DKIsles,
         map_id=Maps.Isles,
         x=3509.673,
@@ -43,11 +44,11 @@ DirtPatchLocations = [
         rotation=1784,
         vanilla=True,
         group=3,
-        logicregion=Regions.CabinIsle,
-        logic=lambda l: ((Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.advanced_platforming)) and l.shockwave,
+        logicregion=Regions.AztecLobbyRoof,
+        logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles: Under Caves Lobby Entrance",
+        name="Under Caves Lobby Entrance",
         level=Levels.DKIsles,
         map_id=Maps.Isles,
         x=2401.601,
@@ -60,7 +61,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles: Front of Fungi Building",
+        name="Front of Fungi Building",
         level=Levels.DKIsles,
         map_id=Maps.Isles,
         x=2647.643,
@@ -73,7 +74,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Training Grounds: Banana Hoard",
+        name="Banana Hoard",
         level=Levels.DKIsles,
         map_id=Maps.TrainingGrounds,
         x=2497.648,
@@ -86,7 +87,7 @@ DirtPatchLocations = [
         logic=lambda l: (l.vines or l.CanMoonkick()) and l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Training Grounds: Rear Inside Tunnel",
+        name="Training Grounds Rear Tunnel",
         level=Levels.DKIsles,
         map_id=Maps.TrainingGrounds,
         x=1223.714,
@@ -99,7 +100,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - K Lumsy: Inside K. Lumsy's Cage",
+        name="Back of Prison",
         level=Levels.DKIsles,
         map_id=Maps.KLumsy,
         x=1499.675,
@@ -112,7 +113,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Creepy Castle Lobby: Castle Lobby",
+        name="Castle Lobby",
         level=Levels.DKIsles,
         map_id=Maps.CreepyCastleLobby,
         x=579.809,
@@ -122,10 +123,11 @@ DirtPatchLocations = [
         vanilla=True,
         group=14,
         logicregion=Regions.CreepyCastleLobby,
-        logic=lambda l: ((l.chunky and l.barrels and l.balloon and l.islanky) or l.CanMoonkick()) and l.shockwave,
+        logic=lambda l: ((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and l.settings.krusha_kong != Kongs.tiny))
+        and l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles: Isles Boulders",
+        name="Isles Boulders",
         level=Levels.DKIsles,
         map_id=Maps.Isles,
         x=2813.0,
@@ -136,9 +138,9 @@ DirtPatchLocations = [
         logicregion=Regions.IslesMainUpper,
         logic=lambda l: l.shockwave,
     ),
-    DirtPatchData(name="DK Isles: Behind BFI", level=Levels.DKIsles, map_id=Maps.Isles, x=754.0, y=500.0, z=2386.0, rotation=807, group=4, logicregion=Regions.IslesMain, logic=lambda l: l.shockwave),
+    DirtPatchData(name="Behind BFI", level=Levels.DKIsles, map_id=Maps.Isles, x=754.0, y=500.0, z=2386.0, rotation=807, group=4, logicregion=Regions.IslesMain, logic=lambda l: l.shockwave),
     DirtPatchData(
-        name="DK Isles: Back of Kroc Isle (Lower)",
+        name="Back of Kroc Isle (Lower)",
         level=Levels.DKIsles,
         map_id=Maps.Isles,
         x=2019.0,
@@ -150,7 +152,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles: Back of Kroc Isle (Middle)",
+        name="Back of Kroc Isle (Middle)",
         level=Levels.DKIsles,
         map_id=Maps.Isles,
         x=2350.0,
@@ -162,7 +164,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles: Kroc Isle Left Arm",
+        name="Kroc Isle Left Arm",
         level=Levels.DKIsles,
         map_id=Maps.Isles,
         x=2313.0,
@@ -174,7 +176,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles: In Fungi Boulder",
+        name="In Fungi Boulder",
         level=Levels.DKIsles,
         map_id=Maps.Isles,
         x=3516.0,
@@ -186,10 +188,10 @@ DirtPatchLocations = [
         logic=lambda l: (l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles: Behind Fungi Building", level=Levels.DKIsles, map_id=Maps.Isles, x=2436.0, y=1498.0, z=817.0, rotation=637, group=2, logicregion=Regions.CabinIsle, logic=lambda l: l.shockwave
+        name="Behind Fungi Building", level=Levels.DKIsles, map_id=Maps.Isles, x=2436.0, y=1498.0, z=817.0, rotation=637, group=2, logicregion=Regions.CabinIsle, logic=lambda l: l.shockwave
     ),
     DirtPatchData(
-        name="DK Isles: Behind Aztec Building",
+        name="Behind Aztec Building",
         level=Levels.DKIsles,
         map_id=Maps.Isles,
         x=3643.0,
@@ -201,7 +203,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Banana Fairy Room: Behind Fairy Chair",
+        name="Banana Fairy Room: Behind Fairy Chair",
         level=Levels.DKIsles,
         map_id=Maps.BananaFairyRoom,
         x=835.0,
@@ -213,7 +215,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Banana Fairy Room: Behind the Rareware Door",
+        name="Behind the Rareware Door",
         level=Levels.DKIsles,
         map_id=Maps.BananaFairyRoom,
         x=644.0,
@@ -221,11 +223,11 @@ DirtPatchLocations = [
         z=1085.0,
         rotation=2048,
         group=4,
-        logicregion=Regions.BananaFairyRoom,
-        logic=lambda l: l.BananaFairies >= l.settings.rareware_gb_fairies and l.shockwave,
+        logicregion=Regions.RarewareGBRoom,
+        logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - K Lumsy: Under K. Lumsy",
+        name="Under K. Lumsy",
         level=Levels.DKIsles,
         map_id=Maps.KLumsy,
         x=1020.0,
@@ -237,7 +239,7 @@ DirtPatchLocations = [
         logic=lambda l: (l.CanAccessKRool() or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Hideout Helm Lobby: Next to Tag Barrel",
+        name="Hideout Helm Lobby: Next to Tag Barrel",
         level=Levels.DKIsles,
         map_id=Maps.HideoutHelmLobby,
         x=300.0,
@@ -249,7 +251,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Hideout Helm Lobby: Blueprint Platform",
+        name="Hideout Helm Lobby: Blueprint Platform",
         level=Levels.DKIsles,
         map_id=Maps.HideoutHelmLobby,
         x=325.0,
@@ -261,7 +263,7 @@ DirtPatchLocations = [
         logic=lambda l: ((l.coconut and l.scope) or (l.twirl and l.istiny and l.advanced_platforming)) and l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Jungle Japes Lobby: Near Tag Barrel",
+        name="Jungle Japes Lobby: Near Tag Barrel",
         level=Levels.DKIsles,
         map_id=Maps.JungleJapesLobby,
         x=713.0,
@@ -273,7 +275,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Angry Aztec Lobby: Behind Feather Door",
+        name="Angry Aztec Lobby: Behind Feather Door",
         level=Levels.DKIsles,
         map_id=Maps.AngryAztecLobby,
         x=1128.0,
@@ -285,7 +287,7 @@ DirtPatchLocations = [
         logic=lambda l: l.feather and l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Frantic Factory Lobby: High Platform",
+        name="Frantic Factory Lobby: High Platform",
         level=Levels.DKIsles,
         map_id=Maps.FranticFactoryLobby,
         x=664.0,
@@ -297,7 +299,7 @@ DirtPatchLocations = [
         logic=lambda l: ((l.grab and l.isdonkey) or l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))) and l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Gloomy Galleon Lobby: Behind Mini Monkey Gate",
+        name="Gloomy Galleon Lobby: Behind Mini Monkey Gate",
         level=Levels.DKIsles,
         map_id=Maps.GloomyGalleonLobby,
         x=838.0,
@@ -306,10 +308,10 @@ DirtPatchLocations = [
         rotation=978,
         group=11,
         logicregion=Regions.GloomyGalleonLobby,
-        logic=lambda l: ((l.mini and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.istiny and l.chunky) or l.CanPhaseswim()) and l.shockwave,
+        logic=lambda l: ((l.mini and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.istiny and l.chunky and l.swim) or l.CanPhaseswim()) and l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Fungi Forest Lobby: On Tag Crate",
+        name="Fungi Forest Lobby: On Tag Crate",
         level=Levels.DKIsles,
         map_id=Maps.FungiForestLobby,
         x=436.0,
@@ -321,7 +323,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Crystal Caves Lobby: On the Lava",
+        name="Crystal Caves Lobby: On the Lava",
         level=Levels.DKIsles,
         map_id=Maps.CrystalCavesLobby,
         x=387.0,
@@ -333,7 +335,7 @@ DirtPatchLocations = [
         logic=lambda l: ((l.punch and l.strongKong and l.isdonkey) or l.phasewalk or l.ledgeclip) and l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Creepy Castle Lobby: Behind the entrance",
+        name="Creepy Castle Lobby: Behind the entrance",
         level=Levels.DKIsles,
         map_id=Maps.CreepyCastleLobby,
         x=577.0,
@@ -345,7 +347,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Isles Snide Room: Next to Snides",
+        name="Next to Snides",
         level=Levels.DKIsles,
         map_id=Maps.IslesSnideRoom,
         x=576.0,
@@ -357,7 +359,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Training Grounds: On the entrance hill",
+        name="Training Grounds: On the entrance hill",
         level=Levels.DKIsles,
         map_id=Maps.TrainingGrounds,
         x=1108.0,
@@ -366,10 +368,10 @@ DirtPatchLocations = [
         rotation=3026,
         group=1,
         logicregion=Regions.TrainingGrounds,
-        logic=lambda l: ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey)) and l.shockwave,
+        logic=lambda l: ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey)) and l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Training Grounds: On the rear hill",
+        name="Training Grounds: On the rear hill",
         level=Levels.DKIsles,
         map_id=Maps.TrainingGrounds,
         x=1086.0,
@@ -381,7 +383,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="DK Isles - Treehouse: Back of the treehouse",
+        name="Back of the treehouse",
         level=Levels.DKIsles,
         map_id=Maps.Treehouse,
         x=288.0,
@@ -393,7 +395,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Jungle Japes: On Painting Hill",
+        name="On Painting Hill",
         level=Levels.JungleJapes,
         map_id=Maps.JungleJapes,
         x=550.814,
@@ -406,7 +408,7 @@ DirtPatchLocations = [
         logic=lambda l: ((l.handstand and l.islanky) or (l.twirl and l.istiny) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy))) and l.shockwave,
     ),
     DirtPatchData(
-        name="Jungle Japes: Inside Diddy's Cavern",
+        name="Inside Diddy's Cavern",
         level=Levels.JungleJapes,
         map_id=Maps.JungleJapes,
         x=2475.0,
@@ -418,7 +420,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     # DirtPatchData(
-    #     name="Jungle Japes - Japes Mountain: On a Barrel",
+    #     name="Mountain: On a Barrel",
     #     level=Levels.JungleJapes,
     #     map_id=Maps.JapesMountain,
     #     x=691.0,
@@ -430,7 +432,7 @@ DirtPatchLocations = [
     #     logic=lambda l: l.shockwave,
     # ),
     # DirtPatchData(
-    #     name="Jungle Japes: Minecart Exit",
+    #     name="Minecart Exit",
     #     level=Levels.JungleJapes,
     #     map_id=Maps.JungleJapes,
     #     x=1108.0,
@@ -442,7 +444,7 @@ DirtPatchLocations = [
     #     logic=lambda l: l.shockwave,
     # ),
     # DirtPatchData(
-    #     name="Jungle Japes: Under Chunky's Barrel",
+    #     name="Under Chunky's Barrel",
     #     level=Levels.JungleJapes,
     #     map_id=Maps.JungleJapes,
     #     x=2345.0,
@@ -454,7 +456,7 @@ DirtPatchLocations = [
     #     logic=lambda l: l.shockwave,
     # ),
     DirtPatchData(
-        name="Jungle Japes: Near Cannon to Diddy-freeing cage",
+        name="Near Cannon to Diddy-freeing cage",
         level=Levels.JungleJapes,
         map_id=Maps.JungleJapes,
         x=1274.0,
@@ -466,7 +468,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Jungle Japes: Near the Vine Pit",
+        name="Near the Vine Pit",
         level=Levels.JungleJapes,
         map_id=Maps.JungleJapes,
         x=796.0,
@@ -478,7 +480,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Jungle Japes: On the useless Lanky ramp",
+        name="On the useless Lanky ramp",
         level=Levels.JungleJapes,
         map_id=Maps.JungleJapes,
         x=2263.0,
@@ -490,7 +492,7 @@ DirtPatchLocations = [
         logic=lambda l: (l.handstand and l.islanky) and l.shockwave,
     ),
     DirtPatchData(
-        name="Jungle Japes: Cranky-tunnel Crossing",
+        name="Cranky-tunnel Crossing",
         level=Levels.JungleJapes,
         map_id=Maps.JungleJapes,
         x=1633.0,
@@ -502,7 +504,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Jungle Japes: Directly behind Cranky",
+        name="Directly behind Cranky",
         level=Levels.JungleJapes,
         map_id=Maps.JungleJapes,
         x=1697.0,
@@ -514,7 +516,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Jungle Japes: Next to topright's hut",
+        name="Next to topright's hut",
         level=Levels.JungleJapes,
         map_id=Maps.JungleJapes,
         x=1409.0,
@@ -526,7 +528,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Jungle Japes: Behind Chunky Boulder",
+        name="Behind Chunky Boulder",
         level=Levels.JungleJapes,
         map_id=Maps.JungleJapes,
         x=2433.0,
@@ -538,7 +540,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Jungle Japes: Inside the first tunnel - later half",
+        name="Inside the first tunnel - later half",
         level=Levels.JungleJapes,
         map_id=Maps.JungleJapes,
         x=1812.0,
@@ -550,7 +552,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Jungle Japes: Next to level entrance",
+        name="Next to level entrance",
         level=Levels.JungleJapes,
         map_id=Maps.JungleJapes,
         x=754.0,
@@ -562,7 +564,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Jungle Japes: Next to first tunnel entrance",
+        name="Next to first tunnel entrance",
         level=Levels.JungleJapes,
         map_id=Maps.JungleJapes,
         x=1357.0,
@@ -574,7 +576,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Jungle Japes: Behind Diddy's Mountain",
+        name="Behind Diddy's Mountain",
         level=Levels.JungleJapes,
         map_id=Maps.JungleJapes,
         x=1542.0,
@@ -586,7 +588,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Angry Aztec: Oasis",
+        name="Oasis",
         level=Levels.AngryAztec,
         map_id=Maps.AngryAztec,
         x=2426.34,
@@ -599,7 +601,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Angry Aztec - Aztec Chunky5D Temple: Chunky 5DT",
+        name="Chunky 5DT",
         level=Levels.AngryAztec,
         map_id=Maps.AztecChunky5DTemple,
         x=652.778,
@@ -612,7 +614,7 @@ DirtPatchLocations = [
         logic=lambda l: ((l.pineapple and l.ischunky) or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
-        name="Angry Aztec: Behind Chunky Cage",
+        name="Behind Chunky Cage",
         level=Levels.AngryAztec,
         map_id=Maps.AngryAztec,
         x=4395.0,
@@ -624,7 +626,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Angry Aztec: Entrance tunnel - near DK door",
+        name="Entrance tunnel - near DK door",
         level=Levels.AngryAztec,
         map_id=Maps.AngryAztec,
         x=1372.0,
@@ -636,7 +638,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Angry Aztec: Next to Tiny Temple - left",
+        name="Next to Tiny Temple - left",
         level=Levels.AngryAztec,
         map_id=Maps.AngryAztec,
         x=3184.0,
@@ -648,7 +650,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Angry Aztec: Next to Tiny Temple - right",
+        name="Next to Tiny Temple - right",
         level=Levels.AngryAztec,
         map_id=Maps.AngryAztec,
         x=3489.0,
@@ -660,7 +662,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Angry Aztec: Behind Llama Cage",
+        name="Behind Llama Cage",
         level=Levels.AngryAztec,
         map_id=Maps.AngryAztec,
         x=2070.0,
@@ -672,7 +674,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Angry Aztec - Aztec Tiny Temple: Main room back-left",
+        name="Tiny Temple: Main room back-left",
         level=Levels.AngryAztec,
         map_id=Maps.AztecTinyTemple,
         x=1727.0,
@@ -684,7 +686,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Angry Aztec - Aztec Tiny Temple: Next to Tiny cage",
+        name="Tiny Temple: Next to Tiny cage",
         level=Levels.AngryAztec,
         map_id=Maps.AztecTinyTemple,
         x=565.0,
@@ -696,7 +698,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     # DirtPatchData(
-    #     name="Angry Aztec: Next to Candy",
+    #     name="Next to Candy",
     #     level=Levels.AngryAztec,
     #     map_id=Maps.AngryAztec,
     #     x=2421.0,
@@ -708,7 +710,7 @@ DirtPatchLocations = [
     #     logic=lambda l: l.shockwave,
     # ),
     DirtPatchData(
-        name="Angry Aztec: Next to Llama Temple",
+        name="Next to Llama Temple",
         level=Levels.AngryAztec,
         map_id=Maps.AngryAztec,
         x=3110.0,
@@ -720,7 +722,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Angry Aztec: Next to Snide",
+        name="Next to Snide",
         level=Levels.AngryAztec,
         map_id=Maps.AngryAztec,
         x=4028.0,
@@ -732,7 +734,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Angry Aztec: Behind Gong-tower",
+        name="Behind Gong-tower",
         level=Levels.AngryAztec,
         map_id=Maps.AngryAztec,
         x=4524.0,
@@ -744,7 +746,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Angry Aztec: Left of Gong-tower",
+        name="Left of Gong-tower",
         level=Levels.AngryAztec,
         map_id=Maps.AngryAztec,
         x=4190.0,
@@ -756,7 +758,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Angry Aztec - Aztec Llama Temple: Next to Llama Left",
+        name="Llama Temple: Next to Llama Left",
         level=Levels.AngryAztec,
         map_id=Maps.AztecLlamaTemple,
         x=1795.0,
@@ -768,7 +770,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Angry Aztec - Aztec Llama Temple: Next to Llama Right",
+        name="Llama Temple: Next to Llama Right",
         level=Levels.AngryAztec,
         map_id=Maps.AztecLlamaTemple,
         x=1777.0,
@@ -780,7 +782,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Frantic Factory: Dark Room",
+        name="Dark Room",
         level=Levels.FranticFactory,
         map_id=Maps.FranticFactory,
         x=1850.584,
@@ -793,7 +795,7 @@ DirtPatchLocations = [
         logic=lambda l: ((l.punch and l.chunky) or l.phasewalk) and l.shockwave,
     ),
     # DirtPatchData(
-    #     name="Frantic Factory: Toy Room Under Stairs",
+    #     name="Toy Room Under Stairs",
     #     level=Levels.FranticFactory,
     #     map_id=Maps.FranticFactory,
     #     x=2015.0,
@@ -805,7 +807,7 @@ DirtPatchLocations = [
     #     logic=lambda l: l.shockwave,
     # ),
     DirtPatchData(
-        name="Frantic Factory: Middle of Entrance Room",
+        name="Middle of Entrance Room",
         level=Levels.FranticFactory,
         map_id=Maps.FranticFactory,
         x=1264.0,
@@ -817,7 +819,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Frantic Factory: Clock-in room left",
+        name="Clock-in room left",
         level=Levels.FranticFactory,
         map_id=Maps.FranticFactory,
         x=1130.0,
@@ -829,7 +831,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Frantic Factory: Clock-in room right",
+        name="Clock-in room right",
         level=Levels.FranticFactory,
         map_id=Maps.FranticFactory,
         x=1409.0,
@@ -841,7 +843,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Frantic Factory: Halfway the hatch near entrance - next to the window - Tiny's 10 CB",
+        name="Halfway the hatch near entrance - next to the window",
         level=Levels.FranticFactory,
         map_id=Maps.FranticFactory,
         x=642.0,
@@ -853,7 +855,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Frantic Factory: Tunnel to production room",
+        name="Tunnel to production room",
         level=Levels.FranticFactory,
         map_id=Maps.FranticFactory,
         x=70.0,
@@ -865,7 +867,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Frantic Factory: Next to DK Arcade",
+        name="Next to DK Arcade",
         level=Levels.FranticFactory,
         map_id=Maps.FranticFactory,
         x=1784.0,
@@ -877,7 +879,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Frantic Factory: Near Snide",
+        name="Near Snide",
         level=Levels.FranticFactory,
         map_id=Maps.FranticFactory,
         x=1603.0,
@@ -889,7 +891,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Frantic Factory: On Diddy's Block Tower",
+        name="On Diddy's Block Tower",
         level=Levels.FranticFactory,
         map_id=Maps.FranticFactory,
         x=2375.0,
@@ -902,7 +904,7 @@ DirtPatchLocations = [
         logic=lambda l: (l.spring or l.CanMoonkick()) and l.shockwave,
     ),
     DirtPatchData(
-        name="Frantic Factory: In Lanky's Piano Room",
+        name="In Lanky's Piano Room",
         level=Levels.FranticFactory,
         map_id=Maps.FranticFactory,
         x=3470.0,
@@ -914,7 +916,7 @@ DirtPatchLocations = [
         logic=lambda l: ((l.trombone and l.islanky) or l.CanAccessRNDRoom()) and l.shockwave,
     ),
     DirtPatchData(
-        name="Frantic Factory: In Diddy's Pincode enemies room",
+        name="In Diddy's Pincode enemies room",
         level=Levels.FranticFactory,
         map_id=Maps.FranticFactory,
         x=4463.0,
@@ -926,7 +928,7 @@ DirtPatchLocations = [
         logic=lambda l: ((l.guitar and l.isdiddy) or l.CanAccessRNDRoom()) and l.shockwave,
     ),
     DirtPatchData(
-        name="Frantic Factory: In front of Chunky's toy boss room",
+        name="In front of Chunky's toy boss room",
         level=Levels.FranticFactory,
         map_id=Maps.FranticFactory,
         x=4345.0,
@@ -938,7 +940,7 @@ DirtPatchLocations = [
         logic=lambda l: ((l.punch and l.ischunky) or l.CanAccessRNDRoom()) and l.shockwave,
     ),
     DirtPatchData(
-        name="Frantic Factory: Near Funky",
+        name="Near Funky",
         level=Levels.FranticFactory,
         map_id=Maps.FranticFactory,
         x=1656.0,
@@ -950,7 +952,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Frantic Factory: Tiny race entry area",
+        name="Tiny race entry area",
         level=Levels.FranticFactory,
         map_id=Maps.FranticFactory,
         x=3544.0,
@@ -962,7 +964,7 @@ DirtPatchLocations = [
         logic=lambda l: ((l.mini and l.istiny) or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
-        name="Frantic Factory: R&D lever room - by Tiny's barrel",
+        name="R and D lever room - by Tiny's barrel",
         level=Levels.FranticFactory,
         map_id=Maps.FranticFactory,
         x=3693.0,
@@ -974,7 +976,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Gloomy Galleon - Galleon Lighthouse: Interior Rear",
+        name="Lighthouse: Interior Rear",
         level=Levels.GloomyGalleon,
         map_id=Maps.GalleonLighthouse,
         x=457.54,
@@ -987,7 +989,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Gloomy Galleon: On the ship near Cranky",
+        name="On the ship near Cranky",
         level=Levels.GloomyGalleon,
         map_id=Maps.GloomyGalleon,
         x=3068.0,
@@ -999,7 +1001,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Gloomy Galleon: Next to cannon in cannonball room",
+        name="Next to cannon in cannonball room",
         level=Levels.GloomyGalleon,
         map_id=Maps.GloomyGalleon,
         x=1310.0,
@@ -1008,10 +1010,10 @@ DirtPatchLocations = [
         rotation=2048,
         group=4,
         logicregion=Regions.GalleonBeyondPineappleGate,
-        logic=lambda l: (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))) and l.shockwave,
+        logic=lambda l: l.CanGetOnCannonGamePlatform() and l.shockwave,
     ),
     DirtPatchData(
-        name="Gloomy Galleon: Entrance tunnel - under tag barrel",
+        name="Entrance tunnel - under tag barrel",
         level=Levels.GloomyGalleon,
         map_id=Maps.GloomyGalleon,
         x=2534.0,
@@ -1023,7 +1025,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Gloomy Galleon: Next to Lighthouse ladder",
+        name="Next to Lighthouse ladder",
         level=Levels.GloomyGalleon,
         map_id=Maps.GloomyGalleon,
         x=1611.0,
@@ -1035,7 +1037,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     # DirtPatchData(
-    #     name="Gloomy Galleon: Under Diddy Barrel",
+    #     name="Under Diddy Barrel",
     #     level=Levels.GloomyGalleon,
     #     map_id=Maps.GloomyGalleon,
     #     x=1340.0,
@@ -1049,7 +1051,7 @@ DirtPatchLocations = [
     #
     # ),
     DirtPatchData(
-        name="Gloomy Galleon - Galleon Lighthouse: Behind Whomp's Fortress floor 2",
+        name="Lighthouse: Behind Whomp's Fortress floor 2",
         level=Levels.GloomyGalleon,
         map_id=Maps.GalleonLighthouse,
         x=453.0,
@@ -1061,7 +1063,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Gloomy Galleon - Galleon Lighthouse: On top of Whomp's Fortress",
+        name="Lighthouse: On top of Whomp's Fortress",
         level=Levels.GloomyGalleon,
         map_id=Maps.GalleonLighthouse,
         x=418.0,
@@ -1073,7 +1075,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Gloomy Galleon - Galleon Sick Bay: Chunky ship entrance",
+        name="Sick Bay: Chunky ship entrance",
         level=Levels.GloomyGalleon,
         map_id=Maps.GalleonSickBay,
         x=628.0,
@@ -1085,7 +1087,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Gloomy Galleon - Galleon Sick Bay: Chunky ship - backleft corner",
+        name="Sick Bay: Chunky ship - back left corner",
         level=Levels.GloomyGalleon,
         map_id=Maps.GalleonSickBay,
         x=701.0,
@@ -1097,7 +1099,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Gloomy Galleon - Galleon Sick Bay: Chunky ship - behind the non-alcoholic tower",
+        name="Sick Bay: Chunky ship - behind the non-alcoholic tower",
         level=Levels.GloomyGalleon,
         map_id=Maps.GalleonSickBay,
         x=159.0,
@@ -1109,7 +1111,7 @@ DirtPatchLocations = [
         logic=lambda l: ((l.punch and l.ischunky) or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
-        name="Gloomy Galleon: Next to Cannonball - in front",
+        name="Next to Cannonball - in front",
         level=Levels.GloomyGalleon,
         map_id=Maps.GloomyGalleon,
         x=1366.0,
@@ -1118,10 +1120,10 @@ DirtPatchLocations = [
         rotation=0,
         group=4,
         logicregion=Regions.GalleonBeyondPineappleGate,
-        logic=lambda l: (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky))) and l.shockwave,
+        logic=lambda l: l.CanGetOnCannonGamePlatform() and l.shockwave,
     ),
     DirtPatchData(
-        name="Gloomy Galleon: Next to Cannonball - behind",
+        name="Next to Cannonball - behind",
         level=Levels.GloomyGalleon,
         map_id=Maps.GloomyGalleon,
         x=1261.0,
@@ -1130,10 +1132,10 @@ DirtPatchLocations = [
         rotation=0,
         group=4,
         logicregion=Regions.GalleonBeyondPineappleGate,
-        logic=lambda l: (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky))) and l.shockwave,
+        logic=lambda l: l.CanGetOnCannonGamePlatform() and l.shockwave,
     ),
     DirtPatchData(
-        name="Gloomy Galleon: Behind Chunky's Big GB Chest",
+        name="Behind Chunky's Big GB Chest",
         level=Levels.GloomyGalleon,
         map_id=Maps.GloomyGalleon,
         x=3564.0,
@@ -1145,7 +1147,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Gloomy Galleon: Behind the ship you shoot onto with the cannon",
+        name="Behind the ship you shoot onto with the cannon",
         level=Levels.GloomyGalleon,
         map_id=Maps.GloomyGalleon,
         x=3199.0,
@@ -1157,7 +1159,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Gloomy Galleon: In front of Cranky",
+        name="In front of Cranky",
         level=Levels.GloomyGalleon,
         map_id=Maps.GloomyGalleon,
         x=3357.0,
@@ -1169,7 +1171,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Fungi Forest: Beanstalk",
+        name="Beanstalk",
         level=Levels.FungiForest,
         map_id=Maps.FungiForest,
         x=2279.848,
@@ -1182,7 +1184,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Fungi Forest: Mill Grass",
+        name="Mill Grass",
         level=Levels.FungiForest,
         map_id=Maps.FungiForest,
         x=4674.706,
@@ -1196,7 +1198,7 @@ DirtPatchLocations = [
         is_fungi_hidden_patch=True,
     ),
     DirtPatchData(
-        name="Fungi Forest: Top of Owl Tree",
+        name="Top of Owl Tree",
         level=Levels.FungiForest,
         map_id=Maps.FungiForest,
         x=1268.0,
@@ -1208,7 +1210,7 @@ DirtPatchLocations = [
         logic=lambda l: ((l.jetpack and l.isdiddy) or l.CanMoonkick()) and l.shockwave,
     ),
     DirtPatchData(
-        name="Fungi Forest: Near BBlast",
+        name="Near Baboon Blast",
         level=Levels.FungiForest,
         map_id=Maps.FungiForest,
         x=752.0,
@@ -1220,7 +1222,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Fungi Forest: Under the Owl Tree",
+        name="Under the Owl Tree",
         level=Levels.FungiForest,
         map_id=Maps.FungiForest,
         x=1274.0,
@@ -1232,7 +1234,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     # DirtPatchData(
-    #     name="Fungi Forest: Owl and Rabbit area - near Diddy Barrel",
+    #     name="Owl and Rabbit area - near Diddy Barrel",
     #     level=Levels.FungiForest,
     #     map_id=Maps.FungiForest,
     #     x=549.0,
@@ -1244,7 +1246,7 @@ DirtPatchLocations = [
     #     logic=lambda l: l.shockwave,
     # ),
     DirtPatchData(
-        name="Fungi Forest: Next to Rabbit's house",
+        name="Next to Rabbit's house",
         level=Levels.FungiForest,
         map_id=Maps.FungiForest,
         x=2297.0,
@@ -1256,7 +1258,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Fungi Forest - Forest Mill Front: Inside the water mill - near DK's levers",
+        name="near DK's levers",
         level=Levels.FungiForest,
         map_id=Maps.ForestMillFront,
         x=234.0,
@@ -1268,7 +1270,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Fungi Forest - Forest Mill Back: Inside the water mill - near Chunky's coins (Chunky's punch door)",
+        name="Mill Back: near Chunky's coins",
         level=Levels.FungiForest,
         map_id=Maps.ForestMillBack,
         x=608.0,
@@ -1280,7 +1282,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Fungi Forest: Next to Diddy Pad",
+        name="Next to Diddy Pad",
         level=Levels.FungiForest,
         map_id=Maps.FungiForest,
         x=3396.0,
@@ -1292,7 +1294,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Fungi Forest - Forest Thornvine Barn: Next to ladder",
+        name="Thornvine Barn: Next to ladder",
         level=Levels.FungiForest,
         map_id=Maps.ForestThornvineBarn,
         x=80.0,
@@ -1304,7 +1306,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Fungi Forest - Forest Giant Mushroom: Next to a cannon",
+        name="Giant Mushroom: Next to a cannon",
         level=Levels.FungiForest,
         map_id=Maps.ForestGiantMushroom,
         x=127.0,
@@ -1313,10 +1315,10 @@ DirtPatchLocations = [
         rotation=1137,
         group=4,
         logicregion=Regions.MushroomUpper,
-        logic=lambda l: ((l.istiny and l.twirl) or l.isdonkey) and l.shockwave,
+        logic=lambda l: ((l.istiny and l.twirl) or (l.isdonkey and l.settings.krusha_kong != Kongs.donkey)) and l.shockwave,
     ),
     DirtPatchData(
-        name="Fungi Forest - Forest Giant Mushroom: Next to the cannon below the night door",
+        name="Giant Mushroom: Next to the cannon below the night door",
         level=Levels.FungiForest,
         map_id=Maps.ForestGiantMushroom,
         x=763.0,
@@ -1324,11 +1326,11 @@ DirtPatchLocations = [
         z=513.0,
         rotation=3163,
         group=4,
-        logicregion=Regions.MushroomUpper,
-        logic=lambda l: l.vines and l.shockwave,
+        logicregion=Regions.MushroomNightDoor,
+        logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Fungi Forest: Next to Crusher Output",
+        name="Next to Crusher Output",
         level=Levels.FungiForest,
         map_id=Maps.FungiForest,
         x=4404.0,
@@ -1340,7 +1342,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Fungi Forest: On the Tomato Field",
+        name="On the Tomato Field",
         level=Levels.FungiForest,
         map_id=Maps.FungiForest,
         x=3158.0,
@@ -1352,7 +1354,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Fungi Forest: Near Funky with the fenced in Chunky coins",
+        name="Near Funky with the fenced in Chunky coins",
         level=Levels.FungiForest,
         map_id=Maps.FungiForest,
         x=3635.0,
@@ -1361,10 +1363,10 @@ DirtPatchLocations = [
         rotation=2947,
         group=1,
         logicregion=Regions.WormArea,
-        logic=lambda l: l.TimeAccess(Regions.WormArea, Time.Night) and l.shockwave,
+        logic=lambda l: (l.TimeAccess(Regions.WormArea, Time.Night)) and l.shockwave,
     ),
     DirtPatchData(
-        name="Crystal Caves: Giant Kosha Room",
+        name="Giant Kosha Room",
         level=Levels.CrystalCaves,
         map_id=Maps.CrystalCaves,
         x=1820.313,
@@ -1377,7 +1379,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Crystal Caves: Near lanky's 1DC - lower",
+        name="Near lanky's 1DC - lower",
         level=Levels.CrystalCaves,
         map_id=Maps.CrystalCaves,
         x=2735.0,
@@ -1389,7 +1391,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Crystal Caves: Near Funky under Diddy's barrel",
+        name="Near Funky under Diddy's barrel",
         level=Levels.CrystalCaves,
         map_id=Maps.CrystalCaves,
         x=3013.0,
@@ -1401,7 +1403,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Crystal Caves: Near Diddy's top 5D Cabin door",
+        name="Near Diddy's top 5D Cabin door",
         level=Levels.CrystalCaves,
         map_id=Maps.CrystalCaves,
         x=3610.0,
@@ -1413,7 +1415,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Crystal Caves: Near Tag barrel at 5D Cabin",
+        name="Near Tag barrel at 5D Cabin",
         level=Levels.CrystalCaves,
         map_id=Maps.CrystalCaves,
         x=3631.0,
@@ -1425,7 +1427,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Crystal Caves: Next to Ice Castle",
+        name="Next to Ice Castle",
         level=Levels.CrystalCaves,
         map_id=Maps.CrystalCaves,
         x=2125.0,
@@ -1437,7 +1439,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Crystal Caves: Next to Lanky's 1DC - upper",
+        name="Next to Lanky's 1DC - upper",
         level=Levels.CrystalCaves,
         map_id=Maps.CrystalCaves,
         x=2404.0,
@@ -1449,7 +1451,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Crystal Caves: Next to Donkey's 1DC - left",
+        name="Next to Donkey's 1DC - left",
         level=Levels.CrystalCaves,
         map_id=Maps.CrystalCaves,
         x=2961.0,
@@ -1461,7 +1463,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     # DirtPatchData(
-    #     name="Crystal Caves: Next to Donkey's 1DC - right",
+    #     name="Next to Donkey's 1DC - right",
     #     level=Levels.CrystalCaves,
     #     map_id=Maps.CrystalCaves,
     #     x=2666.0,
@@ -1474,7 +1476,7 @@ DirtPatchLocations = [
     #
     # ),
     DirtPatchData(
-        name="Crystal Caves - Caves Frozen Castle: Next to Slam Puzzle - left",
+        name="Frozen Castle: Next to Slam Puzzle - left",
         level=Levels.CrystalCaves,
         map_id=Maps.CavesFrozenCastle,
         x=311.0,
@@ -1486,7 +1488,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Crystal Caves - Caves Frozen Castle: Next to Slam Puzzle - right",
+        name="Frozen Castle: Next to Slam Puzzle - right",
         level=Levels.CrystalCaves,
         map_id=Maps.CavesFrozenCastle,
         x=227.0,
@@ -1498,7 +1500,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Crystal Caves: On top of the Igloo",
+        name="On top of the Igloo",
         level=Levels.CrystalCaves,
         map_id=Maps.CrystalCaves,
         x=576.0,
@@ -1510,7 +1512,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Crystal Caves: Under tag barrel near igloo",
+        name="Under tag barrel near igloo",
         level=Levels.CrystalCaves,
         map_id=Maps.CrystalCaves,
         x=221.0,
@@ -1522,7 +1524,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Crystal Caves: Near Primate Punch wall opposite cranky",
+        name="Near Primate Punch wall opposite cranky",
         level=Levels.CrystalCaves,
         map_id=Maps.CrystalCaves,
         x=1416.0,
@@ -1534,7 +1536,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Crystal Caves: Near Primate Punch wall near entrance",
+        name="Near Primate Punch wall near entrance",
         level=Levels.CrystalCaves,
         map_id=Maps.CrystalCaves,
         x=2264.0,
@@ -1546,7 +1548,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Crystal Caves: Near Primate Punch wall near snide",
+        name="Near Primate Punch wall near snide",
         level=Levels.CrystalCaves,
         map_id=Maps.CrystalCaves,
         x=1473.0,
@@ -1558,7 +1560,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle: Top of Castle near shop",
+        name="Top of Castle near shop",
         level=Levels.CreepyCastle,
         map_id=Maps.CreepyCastle,
         x=655.9,
@@ -1571,7 +1573,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle: Near the Catacombs Door",
+        name="Near the Catacombs Door",
         level=Levels.CreepyCastle,
         map_id=Maps.CreepyCastle,
         x=1319.0,
@@ -1583,7 +1585,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle: Upper Gravestone",
+        name="Upper Gravestone",
         level=Levels.CreepyCastle,
         map_id=Maps.CreepyCastle,
         x=746.0,
@@ -1595,7 +1597,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle: Top of Castle near fence",
+        name="Top of Castle near fence",
         level=Levels.CreepyCastle,
         map_id=Maps.CreepyCastle,
         x=1696.0,
@@ -1607,7 +1609,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle - Castle Ballroom: Ballroom - Back Left",
+        name="Ballroom - Back Left",
         level=Levels.CreepyCastle,
         map_id=Maps.CastleBallroom,
         x=261.0,
@@ -1619,7 +1621,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle - Castle Ballroom: Ballroom - Back Right",
+        name="Ballroom - Back Right",
         level=Levels.CreepyCastle,
         map_id=Maps.CastleBallroom,
         x=825.0,
@@ -1631,7 +1633,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle - Castle Museum: Museum - Pillar Front",
+        name="Museum - Pillar Front",
         level=Levels.CreepyCastle,
         map_id=Maps.CastleMuseum,
         x=1003.0,
@@ -1643,7 +1645,7 @@ DirtPatchLocations = [
         logic=lambda l: ((l.monkeyport and l.istiny) or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle - Castle Museum: Museum - Pillar Back Right",
+        name="Museum - Pillar Back Right",
         level=Levels.CreepyCastle,
         map_id=Maps.CastleMuseum,
         x=1238.0,
@@ -1655,7 +1657,7 @@ DirtPatchLocations = [
         logic=lambda l: ((l.monkeyport and l.istiny) or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle - Castle Museum: Museum - Pillar Back Left",
+        name="Museum - Pillar Back Left",
         level=Levels.CreepyCastle,
         map_id=Maps.CastleMuseum,
         x=1236.0,
@@ -1667,7 +1669,7 @@ DirtPatchLocations = [
         logic=lambda l: ((l.monkeyport and l.istiny) or l.phasewalk) and l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle: Next to Greenhouse",
+        name="Next to Greenhouse",
         level=Levels.CreepyCastle,
         map_id=Maps.CreepyCastle,
         x=1588.0,
@@ -1679,7 +1681,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle - Castle Crypt: 3Kong crypt entrance",
+        name="3Kong crypt entrance",
         level=Levels.CreepyCastle,
         map_id=Maps.CastleCrypt,
         x=626.0,
@@ -1691,7 +1693,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle - Castle Mausoleum: 2kong crypt entrance",
+        name="2kong crypt entrance",
         level=Levels.CreepyCastle,
         map_id=Maps.CastleMausoleum,
         x=731.0,
@@ -1703,7 +1705,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle: Between the catacombs door and Tiny Kasplat",
+        name="Between the catacombs door and Tiny Kasplat",
         level=Levels.CreepyCastle,
         map_id=Maps.CreepyCastle,
         x=245.0,
@@ -1715,7 +1717,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle: Next to the Drawing Drawbridge",
+        name="Next to the Drawing Drawbridge",
         level=Levels.CreepyCastle,
         map_id=Maps.CreepyCastle,
         x=662.0,
@@ -1727,7 +1729,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle: Next to Lanky coin tree (near catacombs door)",
+        name="Next to Lanky coin tree (near catacombs door)",
         level=Levels.CreepyCastle,
         map_id=Maps.CreepyCastle,
         x=1691.0,
@@ -1739,7 +1741,7 @@ DirtPatchLocations = [
         logic=lambda l: l.shockwave,
     ),
     DirtPatchData(
-        name="Creepy Castle - Castle Dungeon: Under the chunky balloon without coins",
+        name="Dungeon: Under the chunky balloon without coins",
         level=Levels.CreepyCastle,
         map_id=Maps.CastleDungeon,
         x=316.0,

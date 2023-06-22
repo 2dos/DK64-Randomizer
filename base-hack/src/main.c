@@ -9,6 +9,7 @@ static char lag_counter = 0;
 static float current_avg_lag = 0;
 static char has_loaded = 0;
 static char new_picture = 0;
+int hint_pointers[35] = {};
 
 void cFuncLoop(void) {
 	DataIsCompressed[18] = 0;
@@ -198,6 +199,9 @@ void earlyFrame(void) {
 			}
 			QueueHelmTimer = 0;
 		}
+	}
+	if ((CurrentMap == MAP_KROOLCHUNKY) && (CutsceneIndex == 14) && (CutsceneActive == 1)) {
+		PauseText = 1;
 	}
 	if (CurrentMap == MAP_GALLEONPUFFTOSS) { // Pufftoss
 		if ((CutsceneActive) && (CutsceneIndex == 20) && (CutsceneTimer == 2)) { // Short Intro Cutscene

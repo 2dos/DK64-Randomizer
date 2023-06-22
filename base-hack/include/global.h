@@ -24,6 +24,7 @@ extern int inBattleCrown(maps map);
 extern int inBossMap(maps map, int include_regular, int include_krool, int include_shoe);
 extern int inMinigame(maps map);
 extern int isGamemode(gamemodes target_mode, int force_both);
+extern int has_key(int index);
 
 extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);
@@ -353,11 +354,14 @@ extern void helmTime_exitLevel(void);
 extern void helmTime_exitBoss(void);
 extern void helmTime_exitKRool(void);
 
-extern void GrabParameters_Global(int index, int level, short* file_base, char* bit_size);
 extern int changeStat(bonus_stat statistic, int delta);
 extern int getStat(bonus_stat statistic);
 extern void setStat(bonus_stat statistic, int amount);
 extern void setKongIgt(void);
+extern int ReadExtraData(extra_global_data data_type, int sub_index);
+extern void SaveExtraData(extra_global_data data_type, int sub_index, int value);
+extern void ResetExtraData(extra_global_data data_type, int sub_index);
+extern void setKrushaAmmoColor(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
@@ -382,3 +386,6 @@ extern unsigned char actor_master_types[ACTOR_LIMIT];
 extern short* actor_extra_data_sizes[ACTOR_LIMIT];
 extern collision_data_struct actor_collisions[ACTOR_LIMIT];
 extern collision_info object_collisions[COLLISION_LIMIT];
+
+extern mtx_item static_mtx[20];
+extern int hint_pointers[35];
