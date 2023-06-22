@@ -467,59 +467,18 @@ for minigameEnum, minigameObj in MinigameRequirements.items():
 
 PlannableSpawns = []
 
-# A dictionary for sorting locations by hint_name.
+# A dictionary for sorting locations by hint_name. This is filled in
+# programmatically, because hint regions may change and we don't want to adjust
+# this dictionary every time hint regions change.
 hintNameSortDict = {
-    Levels.DKIsles: {
-        "Training Grounds": 1,
-        "DK Isle": 2,
-        "Krem Isle": 3,
-        "Banana Fairy Room": 4,
-        "Level Lobbies": 5
-    },
-    Levels.JungleJapes: {
-        "Japes Outdoors": 1,
-        "Japes Tunnels": 2,
-        "Hive Area": 3,
-        "Japes Underground": 4
-    },
-    Levels.AngryAztec: {
-        "Various Aztec Tunnels": 1,
-        "Aztec Oasis": 2,
-        "Aztec Totem Area": 3,
-        "Tiny Temple": 4,
-        "5 Door Temple": 5,
-        "Llama Temple": 6
-    },
-    Levels.FranticFactory: {
-        "Frantic Factory Start": 1,
-        "Testing Area": 2,
-        "Research and Development Area": 3,
-        "Storage Area": 4,
-        "Production Room": 5
-    },
-    Levels.GloomyGalleon: {
-        "Galleon Caves": 1,
-        "Lighthouse Area": 2,
-        "Shipyard Area": 3,
-        "Treasure Room": 4
-    },
-    Levels.FungiForest: {
-        "Forest Center and Beanstalk": 1,
-        "Giant Mushroom Exterior": 2,
-        "Giant Mushroom Interior": 3,
-        "Owl Tree": 4,
-        "Forest Mills": 5
-    },
-    Levels.CrystalCaves: {
-        "Main Caves Area": 1,
-        "Igloo Area": 2,
-        "Caves Cabins": 3
-    },
-    Levels.CreepyCastle: {
-        "Castle Surroundings": 1,
-        "Castle Rooms": 2,
-        "Castle Underground": 3
-    }
+    Levels.DKIsles: dict(),
+    Levels.JungleJapes: dict(),
+    Levels.AngryAztec: dict(),
+    Levels.FranticFactory: dict(),
+    Levels.GloomyGalleon: dict(),
+    Levels.FungiForest: dict(),
+    Levels.CrystalCaves: dict(),
+    Levels.CreepyCastle: dict()
 }
 
 # Go through each level and add the valid spawn locations.
@@ -536,6 +495,14 @@ allSpawnableLevels = [
 for level in allSpawnableLevels:
     # Remove locations we should not spawn into (such as the credits).
     filteredLocations = dict(filter(lambda x: x[0] in RegionMapList, level.items()))
+
+    # Populate the sorting dictionary.
+    for regionObj in filteredLocations.values():
+        hintName = regionObj.hint_name
+        hintNameDict = hintNameSortDict[regionObj.level]
+        if hintName not in hintNameDict:
+            numRegions = len(hintNameDict)
+            hintNameDict[hintName] = numRegions + 1
 
     # Sort by hint name, for better readability.
     def spawnKey(loc):
