@@ -10,7 +10,7 @@ from randomizer.Enums.Settings import SettingsMap
 from randomizer.Patching.ApplyLocal import patching_response
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Worker import background
-from ui.bindings import bind, serialize_settings
+from ui.bindings import bind
 from ui.plando_validation import validate_plando_options
 from ui.progress_bar import ProgressBar
 from ui.rando_options import (
@@ -39,6 +39,7 @@ from ui.rando_options import (
     updateDoorTwoCountText,
     updateDoorTwoNumAccess,
 )
+from ui.serialize_settings import serialize_settings
 
 
 @bind("click", "export_settings")
