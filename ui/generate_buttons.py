@@ -26,6 +26,7 @@ from ui.rando_options import (
     max_randomized_blocker,
     max_randomized_troff,
     max_sfx,
+    max_starting_moves_count,
     toggle_b_locker_boxes,
     toggle_bananaport_selector,
     toggle_counts_boxes,
@@ -125,6 +126,7 @@ def import_settings_string(event):
     toggle_key_settings(None)
     disable_krool_phases(None)
     disable_helm_phases(None)
+    max_starting_moves_count(None)
 
 
 @bind("change", "patchfileloader")
