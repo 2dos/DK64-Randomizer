@@ -119,16 +119,28 @@ def max_randomized_fairies(event):
         fairy_req.value = 20
 
 
+@bind("click", "shuffle_items")
+@bind("change", "training_barrels")
+@bind("change", "move_rando")
 @bind("focusout", "starting_moves_count")
 def max_starting_moves_count(event):
     """Validate starting moves count input on loss of focus."""
     move_count = js.document.getElementById("starting_moves_count")
+    moves = js.document.getElementById("move_rando")
+    item_rando = js.document.getElementById("shuffle_items")
+    training_barrels = js.document.getElementById("training_barrels")
+    max_starting_moves = 40
+    if not item_rando.checked and moves.value != "off":
+        if training_barrels.value == "normal":
+            max_starting_moves = 0
+        else:
+            max_starting_moves = 4
     if not move_count.value:
         move_count.value = 4
     elif 0 > int(move_count.value):
         move_count.value = 0
-    elif int(move_count.value) > 40:
-        move_count.value = 40
+    elif int(move_count.value) > max_starting_moves:
+        move_count.value = max_starting_moves
 
 
 @bind("change", "crown_door_item")
@@ -846,6 +858,7 @@ def preset_select_changed(event):
     disable_helm_hurry(None)
     toggle_logic_type(None)
     toggle_key_settings(None)
+    max_starting_moves_count(None)
 
 
 @bind("change", "dk_colors")

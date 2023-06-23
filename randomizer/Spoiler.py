@@ -760,6 +760,11 @@ class Spoiler:
                                 "price": price,
                             }
                         )
+                    # Clean up the default value from this list
+                    for x in range(len(self.move_data[1])):
+                        if self.move_data[1][x] == {"move_type": None}:
+                            del self.move_data[1][x]
+                            break
                 elif location.type == Types.Shockwave and self.settings.shockwave_status != ShockwaveStatus.vanilla:
                     # Use the item to find the data to write
                     updated_item = ItemList[location.item]
