@@ -11,7 +11,7 @@ class PlandoItems(IntEnum):
     # Used when the user has not chosen anything.
     Randomize = -1
 
-    NoItem = auto()
+    NoItem = 0
 
     Donkey = auto()
     Diddy = auto()

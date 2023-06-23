@@ -1164,7 +1164,7 @@ def plando_lock_key_8_in_helm(evt):
     """If key 8 is locked in Helm, force that location to hold key 8 in the
        plandomizer."""
     key_8_locked_in_helm = js.document.getElementById("key_8_helm").checked
-    end_of_helm_dropdown = js.document.getElementById("plando_HelmKey")
+    end_of_helm_dropdown = js.document.getElementById("plando_HelmKey_item")
     if (key_8_locked_in_helm):
         # Forcibly select Key 8 for the End of Helm dropdown and disable it.
         end_of_helm_dropdown.value = "HideoutHelmKey"
