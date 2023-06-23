@@ -67,6 +67,7 @@
         <div class="center_block">
             <h1>DK64 Randomizer BPS Maker</h1>
             <p>This tool generates a BPS patch that the devs of DK64 Randomizer may need in order to bug test your ROM.</p>
+            <p>Note: BPS Patches currently exceed Discord's no-nitro file size limit. Please use <a href="./dkp_maker.html" style="text-decoration:underline">this</a> instead.</p>
     
             <div class="upload_box vanilla_upload">
                 <label for="input-file-rom_1" class="select-title">Vanilla ROM</label>
@@ -175,7 +176,17 @@
             );
             webWorkerCreate.onmessage = event => { // listen for events from the worker
                 var newPatchFile=new MarcFile(event.data.patchFileU8Array);
-                downloadBlob(newPatchFile._u8array,"output.bps","application/octet-stream")
+                let original_name = document.getElementById("rando_rom").value;
+                const extensions = [".z64",".v64",".n64"];
+                const directory_delimiters = ["/","\\"]
+                extensions.forEach(ext => {
+                    original_name = original_name.split(ext)[0];
+                })
+                directory_delimiters.forEach(delim => {
+                    const delim_array = original_name.split(delim)
+                    original_name = delim_array[delim_array.length - 1];
+                })
+                downloadBlob(newPatchFile._u8array,`${original_name}.bps`,"application/octet-stream")
             };
         }
     </script>

@@ -1,4 +1,4 @@
-{% from 'macros.html.jinja2' import list_selector %}
+{% from 'macros.html.jinja2' import list_selector, properties_selector %}
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col border panel">
@@ -6,38 +6,15 @@
             <div class="flex-container">
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                           title="This option makes the fairy camera and shockwave attack available from the start.&#10;Normally obtainable by visiting the Banana Fairy Queen with Tiny as Mini Monkey.">
+                           title="Bonus Barrels outside of Helm auto complete.">
                         <input class="form-check-input"
                                type="checkbox"
-                               name="unlock_fairy_shockwave"
-                               id="unlock_fairy_shockwave"
+                               name="bonus_barrel_auto_complete"
+                               id="bonus_barrel_auto_complete"
                                value="True"/>
-                        Unlock Fairy Camera and Shockwave Attack
+                        Auto Complete Bonus Barrels
                     </label>
                 </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                           title="Bonus Barrels are randomly chosen from the pool of available Bonus Barrels.">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="bonus_barrel_rando"
-                               id="bonus_barrel_rando"
-                               value="True"/>
-                        Shuffle Bonus Barrels
-                    </label>
-                    {{ list_selector(minigames, "minigames_list", "MINIGAME SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.") }}
-                    {# Remove end </div> as it's included in the macro for formatting #}
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="Bonus Barrels outside of Helm auto complete.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="bonus_barrel_auto_complete"
-                                   id="bonus_barrel_auto_complete"
-                                   value="True"/>
-                            Auto Complete Bonus Barrels
-                        </label>
-                    </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                title="All lobbies will be open as if the key to K. Lumsy was already turned in.&#10;This does not affect K. Rool's ship.">
@@ -60,12 +37,12 @@
                     </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                               title="All Replenishables in the game are randomized.&#10;*Homing Ammo, Regular Ammo, Oranges, Film, Crystals">
+                               title="Simian Slam switches will be adjusted to match the level order so that tougher switches will always be in later levels.&#10;The first four levels will have green switches, the next two will have blue and the final level will have red switches.&#10;In LZR, these are assigned to random levels with no regard for level order.">
                             <input class="form-check-input"
                                    type="checkbox"
-                                   name="randomize_pickups"
+                                   name="alter_switch_allocation"
                                    value="True"/>
-                            Randomize Pickups
+                            Progressive Switch Strength
                         </label>
                     </div>
                     <div class="form-check form-switch item-switch">
@@ -77,246 +54,326 @@
                     </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                               title="Speeds up several of the 'Slower' Golden Bananas in the game.">
+                               title="Speeds up several of the 'Slower' Checks in the game.">
                             <input class="form-check-input" type="checkbox" name="fast_gbs" value="True"/>
-                            Fast GBs
+                            Faster Checks
                         </label>
-                        <a href="https://github.com/2dos/DK64-Randomizer/wiki/Feature-Explanations#fast-golden-bananas"
+                        <a href="https://github.com/2dos/DK64-Randomizer/wiki/Feature-Explanations#faster-checks"
                            target="_blank">
                             <img class="icon" src="./static/img/external_link.png">
                         </a>
                     </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                               title="Randomizes the amount of banana medals needed for Jetpac.&#10;Range is roughly 4 to 15 with an average of 10.">
+                               title="Donkey Kong 64 with a few twists:&#10;- Hideout Helm timer starts as soon as you load up a file.&#10;- Picking up a blueprint gives you 2 extra minutes on the clock. Each kong freed gives you 5 minutes. Every Golden Banana collected gives you 30 seconds.&#10;- As soon as the time runs out, saving is disabled on your file.&#10;Aim is to get the highest percentage you can before the clock runs out.">
                             <input class="form-check-input"
                                    type="checkbox"
-                                   name="random_medal_requirement"
-                                   id="random_medal_requirement"
+                                   name="helm_hurry"
+                                   id="helm_hurry"
                                    value="True"/>
-                            Randomize Medal Requirement
+                            Helm Hurry Mode
                         </label>
-                    </div>
-                    <div class="spacer"></div>
-                </div>
-            </div>
-            <div class="col border panel">
-                <h2 class="title">GAME LENGTH SETTINGS</h2>
-                <h5 class="select-title">K-Rool Phase Length</h5>
-                <div class="flex-container">
-                    <div class="form-check form-switch item-switch center-flex">
-                        <label data-toggle="tooltip"
-                               title="Selects a random value from Slider to determine the number of K Rool Phases.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="krool_random"
-                                   onchange="toggle_clicks()"
-                                   id="krool_random"
-                                   value="True"/>
-                            Random Selection
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <input type="text"
-                           name="krool_phase_count"
-                           id="krool_phase_count"
-                           data-provide="slider"
-                           data-slider-ticks="[1, 2, 3, 4, 5]"
-                           data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
-                           data-slider-min="1"
-                           data-slider-max="5"
-                           data-slider-step="1"
-                           data-slider-value="5"
-                           style="width: 80%">
-                </div>
-                <hr>
-                <h5 class="select-title">Helm Length</h5>
-                <div class="flex-container">
-                    <div class="form-check form-switch item-switch center-flex">
-                        <label data-toggle="tooltip"
-                               title="Selects a random value from Slider to determine the number of rooms that need to be completed in Hideout Helm.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="helm_random"
-                                   onchange="toggle_clicks()"
-                                   id="helm_random"
-                                   value="True"/>
-                            Random Selection
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <input type="text"
-                           name="helm_phase_count"
-                           id="helm_phase_count"
-                           data-provide="slider"
-                           data-slider-ticks="[1, 2, 3, 4, 5]"
-                           data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
-                           data-slider-min="1"
-                           data-slider-max="5"
-                           data-slider-step="1"
-                           data-slider-value="5"
-                           style="width: 80%">
-                </div>
-                <hr>
-                <div data-toggle="tooltip"
-                     title="Determines how many Keys are left to be collected to access K. Rool.&#10;i.e. Selecting '5' means 3 keys will be pre-turned in and you need 5 more.">
-                    <h5 class="select-title">Keys required to beat K. Rool</h5>
-                </div>
-                <div class="flex-container">
-                    <div class="form-check form-switch item-switch center-flex">
-                        <label data-toggle="tooltip"
-                               title="Required to get Key 8 from Helm to access K Rool or leave it up to chance.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="krool_access"
-                                   id="krool_access"
-                                   value="True"/>
-                            Key 8 Required
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch center-flex">
-                        <label data-toggle="tooltip"
-                               title="Selects a random value from Slider to determine how many Keys are pre-turned in.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="keys_random"
-                                   id="keys_random"
-                                   onchange="toggle_clicks()"
-                                   value="True"/>
-                            Random Selection
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <input type="text"
-                           name="krool_key_count"
-                           id="krool_key_count"
-                           data-provide="slider"
-                           data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8]"
-                           data-slider-ticks-labels='["0", "1", "2", "3", "4", "5", "6", "7", "8"]'
-                           data-slider-min="0"
-                           data-slider-max="8"
-                           data-slider-step="1"
-                           data-slider-value="8"
-                           style="width: 80%">
-                </div>
-                <hr>
-                <h5 class="select-title">Number of Starting Kongs</h5>
-                <div class = "flex-container">
-                    <div class="form-check form-switch item-switch center-flex">
-                        <label data-toggle="tooltip"
-                               title="Selects a random value from Slider to determine how many kongs you start with.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="starting_random"
-                                   id="starting_random"
-                                   onchange="toggle_clicks()"
-                                   value="True"/>
-                            Random Selection
-                        </label>
-                    </div>
-                </div>
-                <input type="text"
-                       name="starting_kongs_count"
-                       id="starting_kongs_count"
-                       data-provide="slider"
-                       data-slider-ticks="[1, 2, 3, 4, 5]"
-                       data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
-                       data-slider-min="1"
-                       data-slider-max="5"
-                       data-slider-step="1"
-                       data-slider-value="5"
-                       style="width: 80%">
-                <hr>
-                <div class="flex-container">
+                        {{ properties_selector(helm_hurry_items, "helmhurry_list", "HELM HURRY SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.") }}
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                               title="You do not need to collect 4 crowns to collect Key 8.">
+                            title="Item rando with shops only. Reduces the number of items offered in shops to a maximum of 3."
+                            style="text-align: left">
                             <input class="form-check-input"
-                                   type="checkbox"
-                                   name="crown_door_open"
-                                   value="True"/>
-                            Open Crown Door
+                                type="checkbox"
+                                name="smaller_shops"
+                                id="smaller_shops"
+                                value="True"/>
+                            Smaller Shops
                         </label>
                     </div>
-                    <div class="spacer"></div>
+                    </div>
+                    <div class="flex-container">
+                        <div class="item-select">
+                            <p class="select-title">Logic</p>
+                            <div class="customize-select">
+                            <select name="logic_type"
+                                    id="logic_type"
+                                    class="form-select"
+                                    aria-label="Logic"
+                                    data-toggle="tooltip"
+                                    title="If this is checked, then locations and entrances will be shuffled without logic.&#10;WARNING: This can lead to unbeatable seeds, or seeds that require a high level of glitch knowledge to complete.">
+                                <option id="glitchless" selected value="glitchless">
+                                    Glitchless Logic
+                                </option>
+                                <option id="glitch" value="glitch">
+                                    Glitch Logic
+                                </option>
+                                <option id="nologic" value="nologic">
+                                    No Logic
+                                </option>
+                            </select>
+                            <div style="padding: 5px;">
+                                {{ list_selector(glitches, "glitches", "GLITCHES", "This will open a popup that will let you customize what tricks are considered by logic with glitch logic.&#10;This defaults to All options.", 16) }}
+                                {# Remove end </div> as it's included in the macro for formatting #}
+                            </div>
+                        </div>
+                        <div class="item-select">
+                            <p class="select-title">Win Condition</p>
+                            <select name="win_condition"
+                                    id="win_condition"
+                                    class="form-select center-div"
+                                    aria-label="Win Condition"
+                                    data-toggle="tooltip"
+                                    title="Alter the condition required to show the credits.">
+                                <option selected id="beat_krool" value="beat_krool" title="">
+                                    Beat K. Rool
+                                </option>
+                                <option id="get_key8" value="get_key8">
+                                    Acquire Key 8
+                                </option>
+                                <option id="all_keys" value="all_keys">
+                                    All Keys
+                                </option>
+                                <option id="all_fairies" value="all_fairies">
+                                    All Fairies
+                                </option>
+                                <option id="all_blueprints" value="all_blueprints">
+                                    All Blueprints
+                                </option>
+                                <option id="all_medals" value="all_medals">
+                                    All Medals
+                                </option>
+                                <option id="poke_snap" value="poke_snap">
+                                    Kremling Kapture
+                                </option>
+                            </select>
+                        </div>
+                        <div class="item-select">
+                            <p class="select-title">Free Trade Agreement</p>
+                            <select name="free_trade_setting"
+                                    id="free_trade_setting"
+                                    class="form-select"
+                                    aria-label="Randomization type"
+                                    data-toggle="tooltip"
+                                    title="Allow Kongs to pick up items assigned to other kongs.&#10;-None: Kongs must pick up items assigned to them.&#10;-Major Collectibles except Blueprints: Keys, Crowns, and GBs can be picked up by any Kong.&#10;-Major Collectibles: Same as above plus Blueprints.">
+                                <option id="none" selected value="none">
+                                    None
+                                </option>
+                                <option id="not_blueprints" value="not_blueprints">
+                                    Major Collectibles except Blueprints
+                                </option>
+                                <option id="major_collectibles" value="major_collectibles">
+                                    Major Collectibles
+                                </option>
+                            </select>
+                        </div>
+                        <div class="item-select">
+                            <p class="select-title">Activate Bananaports</p>
+                            <select name="activate_all_bananaports"
+                                    id="activate_all_bananaports"
+                                    class="form-select"
+                                    aria-label="Activate Bananaports"
+                                    data-toggle="tooltip"
+                                    title="Determines which (if any) bananaports are activated by default.&#10;-Off: Bananaports are off by default.&#10;-Isles Only: Only the Bananaports in Isles are on by default.&#10;-All: All Bananaports are on by default.">
+                                <option selected id="off" value="off">
+                                    Off
+                                </option>
+                                <option id="isles" value="isles">
+                                    Isles Only
+                                </option>
+                                <option id="all" value="all">
+                                    All
+                                </option>
+                            </select>
+                        </div>
+                        <div class="item-select">
+                            <p class="select-title">Krusha Slot</p>
+                            <select name="krusha_ui"
+                                    id="krusha_ui"
+                                    class="form-select"
+                                    aria-label="Krusha">
+                                <option selected value="no_slot">
+                                    No Slot
+                                </option>
+                                <option value="dk">
+                                    DK
+                                </option>
+                                <option value="diddy">
+                                    Diddy
+                                </option>
+                                <option value="lanky">
+                                    Lanky
+                                </option>
+                                <option value="tiny">
+                                    Tiny
+                                </option>
+                                <option value="chunky">
+                                    Chunky
+                                </option>
+                                <option value="random"
+                                        data-toggle="tooltip"
+                                        title="Selects a random kong (If Disco Chunky is on, Chunky will not be selected).">
+                                    Random
+                                </option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex-container">
-                    <div class="item-select">
-                        <p class="select-title">Key 8 Door Requirements</p>
-                        <select name="coin_door_open"
-                                id="coin_door_open"
-                                class="form-select center-div"
-                                aria-label="Key 8 Door Requirements"
-                                data-toggle="tooltip"
-                                title="Determines Rareware/Nintendo Coin requirements to acquire Key 8 in Helm.&#10;-Need 0 Coins: You do not need to collect the Nintendo or Rareware coin.&#10;-Need Both Coins: You need to collect both the Nintendo and Rareware coins.&#10;-Need Rareware Coin Only: You only need the Rareware coin.&#10;-Need Nintendo Coin Only: You only need the Nintendo coin.">
-                            <option selected id="need_zero" value="need_zero" title="">
-                                Need 0 Coins
-                            </option>
-                            <option id="need_both" value="need_both">
-                                Need Both Coins
-                            </option>
-                            <option id="need_rw" value="need_rw">
-                                Need Rareware Coin Only
-                            </option>
-                            <option id="need_nin" value="need_nin">
-                                Need Nintendo Coin Only
-                            </option>
-                        </select>
-                    </div>
-                    <div class="item-select">
-                        <p class="select-title">Medals for Rareware Coin</p>
-                        <input min="0"
-                               max="40"
-                               name="medal_requirement"
-                               id="medal_requirement"
-                               style="width: 15%;"
-                               class="form-control center-div"
-                               type="number"
-                               data-toggle="tooltip"
-                               title="Amount of Banana Medals Required for Jetpac/Rareware Coin."
-                               default="15"
-                               placeholder="15"/>
-                    </div>
+                <div class="col border panel">
+            <h2 class="title">DIFFICULTY</h2>
+            <div class = "flex-container">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Tag Barrels, Boss Fights, Candy Upgrades etc don't heal you like they normally would.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="no_healing"
+                               value="True"/>
+                        No Heals
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip" title="No melons are dropped from enemies.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="no_melons"
+                               value="True"/>
+                        No Melon Slice Drops
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Enabling this setting means logic may expect you to do some difficult shooting challenges without help. If this setting is disabled, then the following requirements exist:&#10;* Lanky's attic in Fungi Forest requires homing ammo.&#10;* Donkey's 5 door cabin in Crystal Caves requires homing ammo.&#10;* Tiny's trash can in Creepy Castle requires homing ammo. (This can be bypassed with Saxophone)&#10;* Chunky's tree banana in Creepy Castle requires sniper scope. (This requirement can be skipped by shooting from below the switch.)&#10;* Chunky's shooting barrel in Hideout Helm requires either sniper scope or homing ammo.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="hard_shooting"
+                               value="True"/>
+                        Hard Shooting
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Enables potentially harder versions of boss fights:&#10;- Mad Jack: if Boss Kong Shuffle is on, you may be required to fight the boss as Donkey or Chunky.&#10;- Pufftoss: Stars are placed randomly in random orientations.&#10;- King Kut Out: Phases are shuffled, including the unused Phase 4.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="hard_bosses"
+                               value="True"/>
+                        Hard Bosses
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="When a kong dies you can no longer use the kong excluding for boss fights, you can enter any boss arena with any kong and it will force you to the required kong, if a kong is dead all moves will be granted.&#10;WARNING: Seeds might become unbeatable.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="perma_death"
+                               value="True"/>
+                        Irondonk
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Disables tag barrels from spawning outside troff and scoff rooms.">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="disable_tag_barrels"
+                               id="disable_tag_barrels"
+                               value="True"/>
+                        Tag Barrels Disabled
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Only relevant in Level Order shuffle. Generally increase the values randomly rolled by B. Lockers, making them closer to the total number of available GBs."
+                           style="text-align: left">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="hard_blockers"
+                               id="hard_blockers"
+                               value="True"/>
+                        Hard B. Lockers
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Increase the minimum values rollable by Troff n Scoff."
+                           style="text-align: left">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="hard_troff_n_scoff"
+                               id="hard_troff_n_scoff"
+                               value="True"/>
+                        Hard Troff N' Scoff
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Level Order randomizer only. Shuffles levels without regard for key acquisition order or steady Kong progression. May have Kongs locked very deep into seeds. Likely to have high cost Troff n Scoffs that require returning to levels later."
+                           style="text-align: left">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="hard_level_progression"
+                               id="hard_level_progression"
+                               value="True"/>
+                        Complex Level Progression
+                    </label>
+                </div>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                           title="Makes certain enemies tougher:&#10;- Kasplats have a 6% higher chance to shockwave.&#10;- Guards have a higher health."
+                           style="text-align: left">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="hard_enemies"
+                               id="hard_enemies"
+                               value="True"/>
+                        Hard Enemies
+                    </label>
+                </div>
+            </div>
+            <div class = "flex-container">
+                <div class="item-select">
+                    <p class="select-title">Damage</p>
+                    <select name="damage_amount"
+                            id="damage_amount"
+                            class="form-select center-div"
+                            aria-label="Damage Options">
+                        <option selected value="default">
+                            Normal
+                        </option>
+                        <option value="ohko">
+                            OHKO
+                        </option>
+                        <option value="double">
+                            Double Damage
+                        </option>
+                        <option value="quad">
+                            Quad Damage
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Crown Enemies</p>
+                    <select name="crown_enemy_rando"
+                            id="crown_enemy_rando"
+                            class="form-select"
+                            aria-label="Activate Bananaports"
+                            data-toggle="tooltip"
+                            title="Battle Crown Enemies are Randomized.&#10;-Vanilla: No crown enemy randomization will take place.&#10;-Easy: Crown enemies are randomized with a bias towards the easier enemies.&#10;-Medium: Crown enemies are randomized with a bias towards the medium-difficulty enemies.&#10;-Hard: Crown enemies are randomized with a bias towards the hardest enemies.">
+                        <option selected id="off" value="off">
+                            Vanilla
+                        </option>
+                        <option id="easy" value="easy">
+                            Easy
+                        </option>
+                        <option id="medium" value="medium">
+                            Medium
+                        </option>
+                        <option id="hard" value="hard">
+                            Hard
+                        </option>
+                    </select>
                 </div>
             </div>
         </div>
     </div>
+</div>
     <script>
-        $('.nav-tabs').click(function() {
-            setTimeout(() => {
-                $('#krool_phase_count').slider("relayout");
-                $('#krool_key_count').slider("relayout");
-                $('#starting_kongs_count').slider("relayout");
-                $('#helm_phase_count').slider("relayout");
-                toggle_clicks()
-            }, 200);
-        })
-        
-        function toggle_clicks() {
-            if (document.getElementById("krool_random").checked === true) {
-                $("#krool_phase_count").slider("disable")
-            } else {
-                $("#krool_phase_count").slider("enable")
-            }
-            if (document.getElementById("helm_random").checked === true) {
-                $("#helm_phase_count").slider("disable")
-            } else {
-                $("#helm_phase_count").slider("enable")
-            }
-            if (document.getElementById("keys_random").checked === true) {
-                $("#krool_key_count").slider("disable")
-            } else {
-                $("#krool_key_count").slider("enable")
-            }
-            if (document.getElementById("starting_random").checked === true) {
-                $("#starting_kongs_count").slider("disable")
-            } else {
-                $("#starting_kongs_count").slider("enable")
-            }
-        }
         $(function() {
             $('[data-toggle="tooltip"]').tooltip()
         })

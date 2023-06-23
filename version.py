@@ -2,7 +2,7 @@
 import js
 
 stable_version = "1.5"
-dev_version = "1.5"
+dev_version = "2.0"
 
 try:
     url = js.location.href.lower().replace("/", "").replace("http:", "").replace("https:", "")
@@ -26,3 +26,4 @@ try:
     js.document.getElementById("live-version").text = current_version + " | "
 except Exception:
     pass
+whl_hash = "no_file_using_filler_hash"

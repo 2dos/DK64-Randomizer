@@ -13,3 +13,12 @@ beautifulsoup4
 wheel
 setuptools
 djlint
+cpplint
+flask
+flask-cors
+waitress
+flask-executor
+vidua
+pyxdelta
+pillow
+boto3

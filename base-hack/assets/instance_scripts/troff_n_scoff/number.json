@@ -1,0 +1,62 @@
+{
+    "id": 21,
+    "behav_9C": 0,
+    "ignore": false,
+    "output_version": 2,
+    "script": [
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [0, 0, 0]}
+            ],
+            "executions": [
+                {"function": 39, "parameters": [1, 0, 0]},
+                {"function": 39, "parameters": [2, 0, 0]},
+                {"function": 39, "parameters": [3, 0, 0]},
+                {"function": 7, "parameters": [125, 0, 21]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [0, 0, 0]},
+                {"function": 6, "inverted": true, "parameters": [2, 0, 0]}
+            ],
+            "executions": [
+                {"function": 1, "parameters": [1, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [0, 0, 0]},
+                {"function": 6, "inverted": false, "parameters": [2, 0, 0]}
+            ],
+            "executions": [
+                {"function": 1, "parameters": [2, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [1, 0, 0]}
+            ],
+            "executions": [
+                {"function": 7, "parameters": [115, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [1, 0, 0]},
+                {"function": 6, "inverted": false, "parameters": [2, 0, 0]}
+            ],
+            "executions": [
+                {"function": 1, "parameters": [2, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [2, 0, 0]}
+            ],
+            "executions": [
+                {"function": 69, "parameters": [1, 0, 255]}
+            ]
+        }
+    ]
+}

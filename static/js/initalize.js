@@ -8,14 +8,13 @@ if (window.location.protocol != "https:") {
     location.href = location.href.replace("http://", "https://");
   }
 }
-if (location.hostname == "dev.dk64randomizer.com" || location.hostname == "dk64randomizer.com") {
-  var _LTracker = _LTracker || [];
-  _LTracker.push({
-    logglyKey: "5d3aa1b3-6ef7-4bc3-80ae-778d48a571b0",
-    sendConsoleErrors: true,
-    tag: "loggly-jslogger",
-  });
+
+// if the domain is not the main domain, hide spoiler_warning_2 and spoiler_warning_1
+if (location.hostname == "dk64randomizer.com") {
+  document.getElementById("spoiler_warning_2").style.display = "none";
+  document.getElementById("spoiler_warning_1").style.display = "none";
 }
+
 run_python_file("ui/__init__.py");
 // Sleep function to run functions after X seconds
 async function sleep(seconds, func, args) {
@@ -48,7 +47,7 @@ window.onerror = function (error) {
 };
 function toast_alert(text) {
   try {
-    _LTracker.push({"text": text, "agent": user_agent});
+    _LTracker.push({ text: text, agent: user_agent });
   } catch {}
   Toastify({
     text: text,
@@ -71,6 +70,7 @@ function getFile(file) {
   }).responseText;
 }
 var cosmetics;
+var cosmetic_names;
 document
   .getElementById("music_file")
   .addEventListener("change", function (evt) {
@@ -78,35 +78,84 @@ document
     var fileReader = new FileReader();
     fileReader.onload = function (fileLoadedEvent) {
       var new_zip = new JSZip();
-      new_zip.loadAsync(fileLoadedEvent.target.result).then(function () {
-        bgm = [];
-        fanfares = [];
-        events = [];
-        for (var file in new_zip.files) {
-          if (file.includes("bgm/") && file.slice(-4) == ".bin") {
-            new_zip
-              .file(file)
-              .async("Uint8Array")
-              .then(function (content) {
-                bgm.push(content);
-              });
-          } else if (file.includes("fanfares/") && file.slice(-4) == ".bin") {
-            new_zip
-              .file(file)
-              .async("Uint8Array")
-              .then(function (content) {
-                fanfares.push(content);
-              });
-          } else if (file.includes("events/") && file.slice(-4) == ".bin") {
-            new_zip
-              .file(file)
-              .async("Uint8Array")
-              .then(function (content) {
-                events.push(content);
-              });
+      new_zip.loadAsync(fileLoadedEvent.target.result).then(async function () {
+        let bgm_promises = [];
+        let majoritem_promises = [];
+        let minoritem_promises = [];
+        let event_promises = [];
+
+        for (var filename of Object.keys(new_zip.files)) {
+          if (filename.includes("bgm/") && filename.slice(-4) == ".bin") {
+            bgm_promises.push(new Promise((resolve, reject) => {
+              var current_filename = filename;
+              new_zip
+                .file(current_filename)
+                .async("Uint8Array")
+                .then(function (content) {
+                  resolve({
+                    name: current_filename.slice(0, -4),
+                    file: content
+                  })
+                });
+            }));
+          } else if (filename.includes("majoritems/") && filename.slice(-4) == ".bin") {
+            majoritem_promises.push(new Promise((resolve, reject) => {
+              var current_filename = filename;
+              new_zip
+                .file(current_filename)
+                .async("Uint8Array")
+                .then(function (content) {
+                  resolve({
+                    name: current_filename.slice(0, -4),
+                    file: content
+                  })
+                });
+            }));
+          } else if (filename.includes("minoritems/") && filename.slice(-4) == ".bin") {
+            minoritem_promises.push(new Promise((resolve, reject) => {
+              var current_filename = filename;
+              new_zip
+                .file(current_filename)
+                .async("Uint8Array")
+                .then(function (content) {
+                  resolve({
+                    name: current_filename.slice(0, -4),
+                    file: content
+                  })
+                });
+            }));
+          } else if (filename.includes("events/") && filename.slice(-4) == ".bin") {
+            event_promises.push(new Promise((resolve, reject) => {
+              var current_filename = filename;
+              new_zip
+                .file(current_filename)
+                .async("Uint8Array")
+                .then(function (content) {
+                  resolve({
+                    name: current_filename.slice(0, -4),
+                    file: content
+                  })
+                });
+            }));
           }
         }
-        cosmetics = { bgm: bgm, fanfares: fanfares, events: events };
+
+        let bgm_files = await Promise.all(bgm_promises);
+        let majoritem_files = await Promise.all(majoritem_promises);
+        let minoritem_files = await Promise.all(minoritem_promises);
+        let event_files = await Promise.all(event_promises);
+
+        let bgm = bgm_files.map(x => x.file);
+        let bgm_names = bgm_files.map(x => x.name);
+        let majoritems = majoritem_files.map(x => x.file);
+        let majoritem_names = majoritem_files.map(x => x.name);
+        let minoritems = minoritem_files.map(x => x.file);
+        let minoritem_names = minoritem_files.map(x => x.name);
+        let events = event_files.map(x => x.file);
+        let event_names = event_files.map(x => x.name);
+
+        cosmetics = { bgm: bgm, majoritems: majoritems, minoritems: minoritems, events: events };
+        cosmetic_names = {bgm: bgm_names, majoritems: majoritem_names, minoritems: minoritem_names, events: event_names };
       });
     };
 
@@ -118,9 +167,9 @@ jq = $;
 $("#form input").on("input change", function (e) {
   //This would be called if any of the input element has got a change inside the form
   var disabled = $("form").find(":input:disabled").removeAttr("disabled");
-  const data = new FormData(document.querySelector("form"));
+  data = new FormData(document.querySelector("form"));
   disabled.attr("disabled", "disabled");
-  const json = Object.fromEntries(data.entries());
+  json = Object.fromEntries(data.entries());
   for (element of document.getElementsByTagName("select")) {
     if (element.className.includes("selected")) {
       length = element.options.length;
@@ -133,14 +182,14 @@ $("#form input").on("input change", function (e) {
       json[element.name] = values;
     }
   }
-  setCookie("saved_settings", JSON.stringify(json), 30);
+  saveDataToIndexedDB("saved_settings", JSON.stringify(json));
 });
 $("#form select").on("change", function (e) {
   //This would be called if any of the input element has got a change inside the form
   var disabled = $("form").find(":input:disabled").removeAttr("disabled");
-  const data = new FormData(document.querySelector("form"));
+  data = new FormData(document.querySelector("form"));
   disabled.attr("disabled", "disabled");
-  const json = Object.fromEntries(data.entries());
+  json = Object.fromEntries(data.entries());
   for (element of document.getElementsByTagName("select")) {
     if (element.className.includes("selected")) {
       length = element.options.length;
@@ -153,66 +202,9 @@ $("#form select").on("change", function (e) {
       json[element.name] = values;
     }
   }
-  setCookie("saved_settings", JSON.stringify(json), 30);
+  saveDataToIndexedDB("saved_settings", JSON.stringify(json));
 });
 
-function setCookie(name, value, days) {
-  var expires = "";
-  if (days) {
-    var date = new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    expires = "; expires=" + date.toUTCString();
-  }
-  document.cookie = name + "=" + (value || "") + expires + "; path=/;";
-}
-function getCookie(name) {
-  var nameEQ = name + "=";
-  var ca = document.cookie.split(";");
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == " ") c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-  }
-  return null;
-}
-function eraseCookie(name) {
-  document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-}
-
-function load_cookies() {
-  try {
-    if (getCookie("saved_settings") != null) {
-      json = JSON.parse(getCookie("saved_settings"));
-      if (json !== null) {
-        for (var key in json) {
-          element = document.getElementsByName(key)[0];
-          if (json[key] == "True") {
-            element.checked = true;
-          } else if (json[key] == "False") {
-            element.checked = false;
-          }
-          try {
-            element.value = json[key];
-            if (element.hasAttribute("data-slider-value")) {
-              element.setAttribute("data-slider-value", json[key]);
-            }
-            if (element.className.includes("selected")) {
-              for (var i = 0; i < element.options.length; i++) {
-                element.options[i].selected =
-                  json[key].indexOf(element.options[i].value) >= 0;
-              }
-            }
-          } catch {}
-        }
-      }
-    } else {
-      load_presets();
-    }
-  } catch {
-    eraseCookie("saved_settings");
-  }
-}
-load_cookies();
 async function load_presets() {
   await pyodide.runPythonAsync(`from ui.rando_options import preset_select_changed
 preset_select_changed(None)`);
@@ -232,11 +224,14 @@ function filebox() {
     $("#rom_3").val(file.name);
     $("#rom_3").attr("placeholder", file.name);
     // Get the original fiile
-    var db = romdatabase.result;
-    var tx = db.transaction("ROMStorage", "readwrite");
-    var store = tx.objectStore("ROMStorage");
-    // Store it in the database
-    store.put({ ROM: "N64", value: file });
+    try{
+      var db = romdatabase.result;
+      var tx = db.transaction("ROMStorage", "readwrite");
+      var store = tx.objectStore("ROMStorage");
+      // Store it in the database
+      store.put({ ROM: "N64", value: file });
+    }
+    catch{}
     // Make sure we load the file into the rompatcher
     romFile = new MarcFile(file, _parseROM);
   };
@@ -255,7 +250,16 @@ var indexedDB =
 // Open (or create) the database
 var romdatabase = indexedDB.open("ROMStorage", 1);
 var seeddatabase = indexedDB.open("SeedStorage", 1);
-
+var settingsdatabase = indexedDB.open("SettingsDB", 1);
+settingsdatabase.onupgradeneeded = function () {
+  try {
+    var settingsdb = settingsdatabase.result;
+    settingsdb.createObjectStore("saved_settings");
+  } catch{}
+};
+settingsdatabase.onsuccess = function () {
+  load_data();
+};
 // Create the schema
 romdatabase.onupgradeneeded = function () {
   try {
@@ -283,18 +287,21 @@ romdatabase.onsuccess = function () {
 
 function write_seed_history(seed_id, seed_data, seed_hash) {
   // Get the original fiile
-  var seed_db = seeddatabase.result;
-  var seed_tx = seed_db.transaction("SeedStorage", "readwrite");
-  var seed_store = seed_tx.objectStore("SeedStorage");
-  // Store it in the database
-  const now = new Date();
-  seed_store.put({
-    id: Math.random(),
-    value: seed_data,
-    hash: seed_hash,
-    seed_id: seed_id,
-    date: now,
-  });
+  try{
+    var seed_db = seeddatabase.result;
+    var seed_tx = seed_db.transaction("SeedStorage", "readwrite");
+    var seed_store = seed_tx.objectStore("SeedStorage");
+    // Store it in the database
+    const now = new Date();
+    seed_store.put({
+      id: Math.random(),
+      value: seed_data,
+      hash: seed_hash,
+      seed_id: seed_id,
+      date: now,
+    });
+  }
+  catch{}
 }
 
 function load_old_seeds() {
@@ -373,25 +380,209 @@ function load_file_from_db() {
 var w;
 var CurrentRomHash;
 
-function site_version_checker() {
-  fetch("./static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
-    .then((response) => response.text())
-    .then((data) => {
-      CurrentRomHash = md5(data);
-    });
-  if (typeof Worker !== "undefined") {
-    if (typeof w == "undefined") {
-      w = new Worker("./static/js/version_worker.js");
+243
+
+
+function base64ToArrayBuffer(base64) {
+    var binaryString = atob(base64);
+    var bytes = new Uint8Array(binaryString.length);
+    for (var i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
     }
-    w.onmessage = function (event) {
-      if (CurrentRomHash != null && event.data != null) {
-        if (CurrentRomHash != event.data) {
-          alert("The Site has been updated. Please refresh the page.");
+    return bytes.buffer;
+}
+function generate_seed(url, json, git_branch) {
+  $.ajax(url, {
+    data: JSON.stringify({
+      branch: git_branch,
+      post_body: json,
+    }),
+    contentType: "application/json",
+    type: "POST",
+    success: function (data, textStatus, xhr) {
+      if (xhr.status == 202) {
+        console.log("seed gen waiting in queue")
+        $("#progress-text").text(
+          "Waiting in queue for other seeds to generate."
+        );
+        $("#patchprogress").width("40%");
+        setTimeout(function () {
+          generate_seed(url, json, git_branch);
+        }, 5000);
+      } else if (xhr.status == 201) {
+        console.log("seed gen queued")
+        $("#progress-text").text("Seed Gen Queued");
+        $("#patchprogress").width("30%");
+        setTimeout(function () {
+          generate_seed(url, json, git_branch);
+        }, 5000);
+        
+      } else if (xhr.status == 203) {
+        console.log("seed gen started")
+        $("#progress-text").text("Seed Gen Started");
+        $("#patchprogress").width("50%");
+        setTimeout(function () {
+          generate_seed(url, json, git_branch);
+        }, 5000);
+        
+      } else if (xhr.status == 208) {
+        console.log(data)
+        $("#progress-text").text(data);
+        $("#patchprogress").addClass("bg-danger");
+        $("#patchprogress").width("100%");
+        setTimeout(function () {
+          $("#progressmodal").modal("hide");
+          $("#patchprogress").removeClass("bg-danger");
+          $("#patchprogress").width("0%");
+          $("#progress-text").text("");
+        }, 5000);
+        
+      } else {
+        $("#progress-text").text("Seed Gen Complete");
+        $("#patchprogress").width("80%");    
+        apply_patch(data, true);       
+      }
+    },
+    error: function (data, textStatus, xhr) {
+      $("#patchprogress").addClass("bg-danger");
+      $("#progress-text").text("Something went wrong please try again");
+      $("#patchprogress").width("100%");
+      setTimeout(function () {
+        $("#progressmodal").modal("hide");
+        $("#patchprogress").removeClass("bg-danger");
+        $("#patchprogress").width("0%");
+        $("#progress-text").text("");
+      }, 1000);
+    },
+  });
+}
+
+async function apply_patch(data, run_async) {
+  // Base64 decode the response
+  event_response_data = data;
+  var decodedData = base64ToArrayBuffer(data);
+  zip = new JSZip();
+
+  try {
+    // Load the zip file data into JSZip
+    const zipFile = await zip.loadAsync(decodedData);
+
+    // Create an array to store all the promises
+    const promises = [];
+
+    // Iterate over each file in the zip
+    zip.forEach(function(relativePath, zipEntry) {
+      if (!zipEntry.dir) {
+        // Extract the file content as a string or other appropriate format
+        // Store the file content in a variable with a name derived from the file name
+        fileName = zipEntry.name.replace(/[^a-zA-Z0-9]/g, '_');
+        if (fileName == "patch") {
+          // Create a promise for each async operation and add it to the array
+          const promise = zipEntry.async('uint8array').then(function(fileContent) {
+            console.log("Applying Xdelta Patch");
+            apply_xdelta(fileContent);
+
+            if (run_async == true) {
+              // Return the promise for pyodide.runPythonAsync
+              return pyodide.runPythonAsync(`
+                import js
+                from randomizer.Patching.ApplyLocal import patching_response
+                patching_response(str(js.event_response_data))
+              `);
+            }
+          });
+
+          promises.push(promise);
         }
       }
-    };
-  } else {
-    alert("Sorry! No Web Worker support. This site probably wont work.");
+    });
+
+    // Wait for all the promises to resolve
+    await Promise.all(promises);
+  } catch (error) {
+    console.error('Error unzipping the file:', error);
   }
 }
-site_version_checker();
+
+function saveDataToIndexedDB(key, value) {
+  try{
+    var settingsdb = settingsdatabase.result;
+    transaction = settingsdb.transaction("saved_settings", "readwrite");
+    objectStore = transaction.objectStore("saved_settings");
+    objectStore.put(value, key);
+  }
+  catch{}
+}
+
+function loadDataFromIndexedDB(key) {
+  return new Promise((resolve, reject) => {
+   try{
+      var settingsdb = settingsdatabase.result;
+      transaction = settingsdb.transaction("saved_settings", "readonly");
+      objectStore = transaction.objectStore("saved_settings");
+      request = objectStore.get(key);
+      request.onerror = function (event) {
+        reject("Transaction error: " + event.target.errorCode);
+      };
+
+      request.onsuccess = function (event) {
+        value = event.target.result;
+        console.log(value)
+        resolve(value);
+      };
+    }
+    catch{reject("Read Error")}
+  });
+}
+
+
+function load_data() {
+
+
+  try{
+    var settingsdb = settingsdatabase.result;
+    transaction = settingsdb.transaction("saved_settings", "readonly");
+    objectStore = transaction.objectStore("saved_settings");
+    getRequest = objectStore.get("saved_settings");
+    getRequest.onerror = function(event) {
+      console.error("Failed to retrieve saved settings");
+    };
+    getRequest.onsuccess = function(event) {
+      try{
+        if (getRequest.result) {
+          json = JSON.parse(getRequest.result);
+          if (json !== null) {
+            for (var key in json) {
+              element = document.getElementsByName(key)[0];
+              if (json[key] == "True") {
+                element.checked = true;
+              } else if (json[key] == "False") {
+                element.checked = false;
+              }
+              try {
+                element.value = json[key];
+                if (element.hasAttribute("data-slider-value")) {
+                  element.setAttribute("data-slider-value", json[key]);
+                }
+                if (element.className.includes("selected")) {
+                  for (var i = 0; i < element.options.length; i++) {
+                    element.options[i].selected =
+                      json[key].indexOf(element.options[i].value) >= 0;
+                  }
+                }
+              } catch {}
+            }
+          }
+        } else {
+          load_presets();
+        }
+      }
+      catch{load_presets();}
+    };
+  }
+  catch{
+    load_presets();
+  }
+
+}
+load_data();

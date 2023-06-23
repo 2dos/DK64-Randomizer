@@ -18,7 +18,7 @@
     {
       "label": "Validate Styles",
       "type": "shell",
-      "command": "${command:python.interpreterPath} -m pycodestyle --ignore E501,W605,W503,E203 ${workspaceFolder}",
+      "command": "${command:python.interpreterPath} -m pycodestyle --ignore E501,W605,W503,E203,E741 ${workspaceFolder}",
       "problemMatcher": []
     },
     {
@@ -34,15 +34,34 @@
       "problemMatcher": []
     },
     {
+      "label": "Validate C",
+      "type": "shell",
+      "command": "Get-ChildItem -Path \"./base-hack/src\" -Recurse -Filter *.c |\nForeach-Object {\n${command:python.interpreterPath} -m cpplint --quiet --filter=-whitespace,-legal/copyright,-readability/casting,-runtime/int,-readability/fn_size $_.FullName\n}",
+      "problemMatcher": []
+    },
+    {
+      "label": "Update Custom Location Lists",
+      "type": "shell",
+      "command": "${command:python.interpreterPath} ./dumper.py md all",
+      "problemMatcher": []
+    },
+    {
       "label": "Lint Repo",
-      "dependsOn": ["Format Repo", "Validate Styles", "Validate Docstrings", "Validate Jinja2"],
-      "problemMatcher": [],
+      "dependsOn": [
+        "Format Repo",
+        "Validate Styles",
+        "Validate Docstrings",
+        //"Validate Jinja2",
+        "Validate C",
+        "Update Custom Location Lists"
+      ],
+      "problemMatcher": []
     },
     {
       "label": "Run Tests",
       "type": "shell",
       "command": "${command:python.interpreterPath} -m pytest -v --cov=${workspaceFolder}/ --cov-report html ${workspaceFolder}/tests",
-      "problemMatcher": [],
+      "problemMatcher": []
     },
     {
       "label": "Build BPS",
@@ -54,5 +73,11 @@
         "isDefault": true
       }
     },
+    {
+      "label": "Run Server",
+      "type": "shell",
+      "command": "${command:python.interpreterPath} ./NoCacheHTTPServer.py",
+      "problemMatcher": []
+    }
   ]
 }

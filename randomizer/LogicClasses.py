@@ -3,17 +3,17 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
-from randomizer.Enums.Transitions import Transitions
 
 
 class LocationLogic:
     """Logic for a location."""
 
-    def __init__(self, id, logic, bonusBarrel=None):
+    def __init__(self, id, logic, bonusBarrel=None, isAuxiliary=False):
         """Initialize with given parameters."""
         self.id = id
         self.logic = logic  # Lambda function for accessibility
         self.bonusBarrel = bonusBarrel  # Uses MinigameType enum
+        self.isAuxiliaryLocation = isAuxiliary  # For when the Location needs to be in a region but not count as in the region (only used for rabbit race glitched as of now)
 
 
 class Event:
@@ -33,7 +33,7 @@ class Event:
 class Collectible:
     """Class used for colored bananas and banana coins."""
 
-    def __init__(self, type, kong, logic, coords, amount=1, enabled=True, vanilla=True):
+    def __init__(self, type, kong, logic, coords, amount=1, enabled=True, vanilla=True, name="vanilla", locked=False):
         """Initialize with given parameters."""
         self.type = type
         self.kong = kong
@@ -43,14 +43,17 @@ class Collectible:
         self.added = False
         self.enabled = enabled
         self.vanilla = vanilla
+        self.name = name
+        self.locked = locked
 
 
 class Region:
     """Region contains shufflable locations, events, and transitions to other regions."""
 
-    def __init__(self, name, level, tagbarrel, deathwarp, locations, events, transitionFronts, restart=None):
+    def __init__(self, name, hint_name, level, tagbarrel, deathwarp, locations, events, transitionFronts, restart=None):
         """Initialize with given parameters."""
         self.name = name
+        self.hint_name = hint_name
         self.level = level
         self.tagbarrel = tagbarrel
         self.deathwarp = None
@@ -142,7 +145,7 @@ class Region:
         if self.level == Levels.DKIsles:
             return Regions.IslesMain
         elif self.level == Levels.JungleJapes:
-            return Regions.JungleJapesMain
+            return Regions.JungleJapesStart
         elif self.level == Levels.AngryAztec:
             return Regions.AngryAztecStart
         elif self.level == Levels.FranticFactory:
@@ -173,20 +176,15 @@ class TransitionBack:
 class TransitionFront:
     """The entered side of a transition between regions."""
 
-    def __init__(
-        self,
-        dest,
-        logic,
-        exitShuffleId=None,
-        assumed=False,
-        time=Time.Both,
-    ):
+    def __init__(self, dest, logic, exitShuffleId=None, assumed=False, time=Time.Both, isGlitchTransition=False, isBananaportTransition=False):
         """Initialize with given parameters."""
         self.dest = dest  # Planning to remove this
         self.logic = logic  # Lambda function for accessibility
         self.exitShuffleId = exitShuffleId  # Planning to remove this
         self.time = time
         self.assumed = assumed  # Indicates this is an assumed exit attached to the root
+        self.isGlitchTransition = isGlitchTransition  # Indicates if this is a glitch-logic transition for this entrance
+        self.isBananaportTransition = isBananaportTransition  # Indicates if this transition is due to a Bananaport
 
 
 class Sphere:
@@ -201,5 +199,59 @@ class Sphere:
 
     def __init__(self):
         """Initialize with given parameters."""
+        self.seedBeaten = False
         self.availableGBs = 0
         self.locations = []
+
+
+class ColoredBananaGroup:
+    """Stores data for each group of colored bananas."""
+
+    def __init__(self, *, group=0, name="No Location", map_id=0, konglist=[], region=None, logic=None, vanilla=False, locations=[]):
+        """Initialize with given parameters."""
+        self.group = group
+        self.name = name
+        self.map = map_id
+        self.kongs = konglist
+        self.locations = locations  # 5 numbers: {int amount, float scale, int x, y, z}
+        self.region = region
+        if logic is None:
+            self.logic = lambda l: True
+        else:
+            self.logic = logic
+        self.selected = False
+
+
+class Balloon:
+    """Stores data for each balloon."""
+
+    def __init__(self, *, id=0, name="No Location", map_id=0, speed=0, konglist=[], region=None, logic=None, vanilla=False, points=[]):
+        """Initialize with given parameters."""
+        self.id = id
+        self.name = name
+        self.map = map_id
+        self.speed = speed
+        self.kongs = konglist
+        self.points = points  # 3 numbers: [int x, y, z]
+        self.region = region
+        if logic is None:
+            self.logic = lambda l: True
+        else:
+            self.logic = logic
+        self.spawnPoint = self.setSpawnPoint(points)
+        self.selected = False
+
+    def setSpawnPoint(self, points=[]):
+        """Set the spawn point of a balloon based on its path."""
+        spawnX = 0
+        spawnY = 0
+        spawnZ = 0
+        for p in points:
+            spawnX += p[0]
+            spawnY += p[1]
+            spawnZ += p[2]
+        spawnX /= len(points)
+        spawnY /= len(points)
+        spawnY -= 100  # Most balloons are at least 100 units off the ground
+        spawnZ /= len(points)
+        return [int(spawnX), int(spawnY), int(spawnZ)]

@@ -8,92 +8,81 @@
                    type="checkbox"
                    name="override_cosmetics"
                    id="override_cosmetics"
-                   value="False"/>
-            Override Patch File Cosmetics
+                   value="True"
+                   checked/>
+            Override Default Cosmetics
         </label>
     </div>
     <div class="row">
         <div class="col border panel">
-            <h2 class="title">MUSIC RANDO</h2>
+            <h2 class="title">MUSIC RANDO
+                <label data-toggle="tooltip" 
+                        title="Randomizes all Music Selections.">
+                    <input class="dice_checkbox"
+                            type="checkbox"
+                            name="random_music"
+                            id="random_music"
+                            value="True"/>
+                    <label for="random_music"></label>
+                </label>
+            </h2>
             <div class="flex-container">
-                <div class="form-check form-switch item-switch center-flex">
-                    <label data-toggle="tooltip" title="Randomizes all Music Selections.">
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Randomizes Background Music.">
                         <input class="form-check-input"
-                               type="checkbox"
-                               name="random_music"
-                               id="random_music"
-                               value="True"/>
-                        Randomize All Music
+                                type="checkbox"
+                                name="music_bgm_randomized"
+                                id="music_bgm_randomized"
+                                value="True"/>
+                        Random Background Music
                     </label>
                 </div>
-            </div>
-            <div class="flex-container">
-                <div class="item-select">
-                    <p class="select-title">Background Music</p>
-                    <select name="music_bgm"
-                            id="music_bgm"
-                            class="form-select"
-                            aria-label="Background Music">
-                        <option selected value="default">
-                            Default Music
-                        </option>
-                        <option value="randomized">
-                            Randomized
-                        </option>
-                        <option value="chaos">
-                            Chaos
-                        </option>
-                        <option value="uploaded">
-                            Upload your own
-                        </option>
-                    </select>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Randomizes Major Item Themes.">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="music_majoritems_randomized"
+                            id="music_majoritems_randomized"
+                            value="True"/>
+                        Random Major Item Themes
+                    </label>
                 </div>
-                <div class="item-select">
-                    <p class="select-title">Fanfares</p>
-                    <select name="music_fanfares"
-                            id="music_fanfares"
-                            class="form-select"
-                            aria-label="Fanfares">
-                        <option selected value="default">
-                            Default Fanfares
-                        </option>
-                        <option value="randomized">
-                            Randomized
-                        </option>
-                        <option value="uploaded">
-                            Upload your own
-                        </option>
-                    </select>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Randomizes Minor Item Themes.">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="music_minoritems_randomized"
+                            id="music_minoritems_randomized"
+                            value="True"/>
+                        Random Minor Item Themes
+                    </label>
                 </div>
-                <div class="item-select">
-                    <p class="select-title">Events</p>
-                    <select name="music_events"
-                            id="music_events"
-                            class="form-select"
-                            aria-label="Events">
-                        <option selected value="default">
-                            Default Events
-                        </option>
-                        <option value="randomized">
-                            Randomized
-                        </option>
-                        <option value="uploaded">
-                            Upload your own
-                        </option>
-                    </select>
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Randomizes Event Themes.">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="music_events_randomized"
+                            id="music_events_randomized"
+                            value="True"/>
+                        Random Event Themes
+                    </label>
                 </div>
                 <div class="spacer"></div>
             </div>
             <hr />
             <h2 class="title">CUSTOM MUSIC</h2>
-            <p class="select-title">Cosmetics ZIP (Check wiki for format)</p>
+            <p class="select-title">Cosmetics ZIP (Check <a style="text-decoration:underline" target="_blank" href="https://github.com/2dos/DK64-Randomizer/wiki/Creating-Cosmetics-Data-packs">wiki</a> for format)</p>
             <input accept=".zip"
                    class="form-control"
                    type="file"
                    id="music_file"
                    name="music_file"/>
+            <hr />
             <div class="row">
-                <hr />
                 <h2 class="title">MISCELLANEOUS</h2>
                 <div class="flex-container">
                     <div class="item-multiselect">
@@ -127,24 +116,140 @@
                             </select>
                         </div>
                     </div>
+                    <div class="item-select">
+                        <p class="select-title">D-Pad Display</p>
+                        <select name="dpad_display"
+                                id="dpad_display"
+                                class="form-select center-div"
+                                aria-label="Randomization type"
+                                data-toggle="tooltip"
+                                title="Displays a D-pad overlay for Tag Anywhere and a Homing Ammo Toggle.">
+                            <option selected value="off">
+                                Off
+                            </option>
+                            <option value="on">
+                                On
+                            </option>
+                            <option value="minimal">
+                                Minimalistic
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex-container">
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="Randomizes miscellaneous cosmetic elements, including:&#10;- Peril Path Panic/Searchlight Seek Klaptraps&#10;- Skybox colors">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="misc_cosmetics"
+                                   id="misc_cosmetics"
+                                   value="True"/>
+                            Random Miscellaneous Cosmetics
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                                title="Chunky will be replaced with his 'disco' variant that appears at the start of the DK Rap.">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="disco_chunky"
+                                id="disco_chunky"
+                                value="True"/>
+                            Disco Chunky
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                                title="Text bubbles will be darkened, with the font brightened.">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="dark_mode_textboxes"
+                                id="dark_mode_textboxes"
+                                value="True"/>
+                            Dark Mode Textboxes
+                        </label>
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="form-check form-switch item-switch holiday" hidden>
+                        <label data-toggle="tooltip"
+                               title="Happy Holidays from the DK64 Randomizer Dev Team. Limited time option.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="holiday_setting"
+                                   id="holiday_setting"
+                                   value="False"/>
+                            Holiday Mode
+                        </label>
+                    </div>
+                    <div class="spacer holiday" hidden></div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <h2 class="title">ACCESSIBILITY</h2>
+                <div class="flex-container">
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="Remove water oscillation effects and the seasick ship rocking effect. For those who feel motion sick from these effects.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="remove_water_oscillation"
+                                   id="remove_water_oscillation"
+                                   value="True"/>
+                            Remove Water Oscillation
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="Adds kong faces to balloons, making them easier to distinguish in various lighting conditions.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="head_balloons"
+                                   id="head_balloons"
+                                   value="True"/>
+                            Kong Head on Balloons
+                        </label>
+                    </div>
+                </div>
+                <div class="flex-container">
+                    <div class="item-select">
+                        <p class="select-title">
+                            Colorblind Mode
+                        </p>
+                        <select name="colorblind_mode"
+                                id="colorblind_mode"
+                                class="form-select"
+                                aria-label="Colorblind Mode">
+                            <option selected value="off">
+                                Off
+                            </option>
+                            <option value="prot">
+                                Red-Green (Protan)
+                            </option>
+                            <option value="deut">
+                                Red-Green (Deutan)
+                            </option>
+                            <option value="trit">
+                                Blue-Yellow (Tritan)
+                            </option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col border panel">
-            <h2 class="title">COLORS</h2>
-            <div class="flex-container">
-                <div class="form-check form-switch item-switch center-flex">
-                    <label data-toggle="tooltip"
-                           title="Randomizes all Kong and Transformation Colors.">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="random_colors"
-                               id="random_colors"
-                               value="True"/>
-                        Randomize All Colors
-                    </label>
-                </div>
-            </div>
+            <h2 class="title">COLORS
+                <label data-toggle="tooltip"
+                        title="Randomizes all Kong and Transformation Colors.">
+                    <input class="dice_checkbox"
+                            type="checkbox"
+                            name="random_colors"
+                            id="random_colors"
+                            value="True"/>
+                    <label for="random_colors"></label>
+                </label>
+            </h2>
             <div class="flex-container">
                 <div class="item-color-select">
                     <div class="color-selector">
@@ -357,6 +462,95 @@
                     </div>
                 </div>
             </div>
+            <hr />
+            <div class="row">
+                <h2 class="title">DEFAULT GAME SETTINGS</h2>
+                <div class="flex-container">
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="NOTE: This isn't true widescreen, just the game's version of it.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="camera_is_widescreen"
+                                   id="camera_is_widescreen"
+                                   value="True"/>
+                            Anamorphic Widescreen
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="If enabled, the camera will look up when the player holds up on the stick, the opposite of how the vanilla game behaves.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="camera_is_not_inverted"
+                                   id="camera_is_not_inverted"
+                                   value="True"/>
+                            Disable Y-Inverted First Person Camera
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch">
+                        <label data-toggle="tooltip"
+                               title="Camera will always follow behind the player.">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="camera_is_follow"
+                                   id="camera_is_follow"
+                                   value="True"/>
+                            Follow Cam
+                        </label>
+                    </div>
+                    <div class="spacer"></div>
+                </div>
+                {# <div class="flex-container">
+                    <div class="item-select">
+                        <p class="select-title">
+                            Sound Type
+                        </p>
+                        <select name="sound_type"
+                                id="sound_type"
+                                class="form-select"
+                                aria-label="Colorblind Mode">
+                            <option selected value="stereo">
+                                Stereo (Default)
+                            </option>
+                            <option value="surround">
+                                Surround
+                            </option>
+                            <option value="mono">
+                                Mono
+                            </option>
+                        </select>
+                    </div>
+                </div> #}
+                <div class="flex-container">
+                    <div class="item-group">
+                        <p class="select-title">Music Volume (%)</p>
+                        <input class="form-control"
+                            min="0"
+                            max="100"
+                            name="music_volume"
+                            id="music_volume"
+                            type="number"
+                            data-toggle="tooltip"
+                            title="Music Volume"
+                            default="100"
+                            placeholder="100"/>
+                    </div>
+                    <div class="item-group">
+                        <p class="select-title">SFX Volume (%)</p>
+                        <input class="form-control"
+                            min="0"
+                            max="100"
+                            name="sfx_volume"
+                            id="sfx_volume"
+                            type="number"
+                            data-toggle="tooltip"
+                            title="SFX Volume"
+                            default="100"
+                            placeholder="100"/>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -432,5 +626,26 @@
                 $('.enguardeColorPicker').attr('style', 'background-color:' + object.enguarde_custom_color + ';')
             }
         }
+    })
+    $(function() {
+        var pattern = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+        var current = 0;
+
+        var keyHandler = function (event) {
+            // If the key isn't in the pattern, or isn't the current key in the pattern, reset
+            if (pattern.indexOf(event.key) < 0 || event.key !== pattern[current]) {
+                current = 0;
+                return;
+            }
+            // Update how much of the pattern is complete
+            current++;
+            // If complete, remove hidden and reset
+            if (pattern.length === current) {
+                current = 0;
+                $('.holiday').removeAttr('hidden');
+            }
+        };
+        // Listen for keydown events
+        document.addEventListener('keydown', keyHandler, false);
     })
 </script>

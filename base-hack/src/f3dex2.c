@@ -12,11 +12,11 @@ int* drawImageWithFilter(int* dl, int text_index, codecs codec_index, int img_wi
 	*(unsigned int*)(dl++) = 0x00000000;
 	dl = displayImage(dl++, text_index, 0, codec_index, img_width, img_height, x, y, xScale, yScale, 0, 0.0f);
 	return dl;
-};
+}
 
 int* drawImage(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity) {
 	return drawImageWithFilter(dl, text_index, codec_index, img_width, img_height, x, y, xScale, yScale, 0xFF, 0xFF, 0xFF, opacity);
-};
+}
 
 int* drawTri(int* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha) {
 	dl = initDisplayList(dl);
@@ -68,7 +68,7 @@ int* drawPixelText(int* dl, int x, int y, char* str, int red, int green, int blu
     *(unsigned int*)(dl++) = 0x00504240;
     dl = textDraw(dl,2,x,y,str);
 	return dl;
-};
+}
 
 int* drawPixelTextContainer(int* dl, int x, int y, char* str, int red, int green, int blue, int alpha, int offset) {
 	if (offset) {
@@ -99,13 +99,18 @@ int* drawScreenRect(int* dl, int x1, int y1, int x2, int y2, int red, int green,
 int* drawString(int* dl, int style, float x, float y, char* str) {
 	float height = (float)getTextStyleHeight(style);
 	float text_y = y - (height * 0x5);
-	int* dl_copy = displayText(dl, style, 4 * x, 4 * text_y, str, 0);
+	int centered = 0;
+	if (style & 0x80) {
+		centered = 0x80;
+	}
+	int* dl_copy = displayText(dl, style & 0x7F, 4 * x, 4 * text_y, str, centered);
 	return dl_copy;
 }
 
 int* drawText(int* dl, int style, float x, float y, char* str, int red, int green, int blue, int opacity) {
 	dl = initDisplayList(dl);
-	if (style == 1) {
+	int short_style = style & 0x7F;
+	if (short_style == 1) {
 		*(unsigned int*)(dl++) = 0xFC119623; // G_SETCOMBINE
 		*(unsigned int*)(dl++) = 0xFF2FFFFF; // G_SETCIMG format: 1, 1, -1
 		*(unsigned int*)(dl++) = 0xDA380003;
@@ -115,10 +120,10 @@ int* drawText(int* dl, int style, float x, float y, char* str, int red, int gree
 		*(unsigned int*)(dl++) = 0x01000118; // G_VTX 0 11
 		*(unsigned int*)(dl++) = 0xFC119623; // G_SETCOMBINE
 		*(unsigned int*)(dl++) = 0xFF2FFFFF; // G_SETCIMG format: 1, 1, -1
-		if (style == 6) {
+		if (short_style == 6) {
 			*(unsigned int*)(dl++) = 0xDA380003;
 			*(unsigned int*)(dl++) = (int)&style6Mtx[0];
-		} else if (style == 2) {
+		} else if (short_style == 2) {
 			*(unsigned int*)(dl++) = 0xDA380003;
 			*(unsigned int*)(dl++) = (int)&style2Mtx[0];
 		}

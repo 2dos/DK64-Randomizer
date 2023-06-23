@@ -1,0 +1,56 @@
+{
+    "id": 59,
+    "behav_9C": 0,
+    "ignore": false,
+    "output_version": 2,
+    "script": [
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [0, 0, 0]}
+            ],
+            "executions": [
+                {"function": 116, "parameters": [2, 0, 0]},
+                {"function": 38, "parameters": [3, 200, 0]},
+                {"function": 1, "parameters": [1, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [1, 0, 0]},
+                {"function": 13, "inverted": false, "parameters": [2, 0, 0]},
+                {"function": 25, "inverted": false, "parameters": [4, 0, 0]},
+                {"function": 23, "inverted": false, "parameters": [103, 0, 0]}
+            ],
+            "executions": [
+                {"function": 3, "parameters": [0, 80, 0]},
+                {"function": 38, "parameters": [1, 0, 0]},
+                {"function": 1, "parameters": [2, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [2, 0, 0]},
+                {"function": 4, "inverted": false, "parameters": [0, 0, 0]},
+                {"function": 35, "inverted": true, "parameters": [0, 0, 0]}
+            ],
+            "executions": [
+                {"function": 84, "parameters": [58, 1, 0]},
+                {"function": 5, "parameters": [58, 10, 0]},
+                {"function": 38, "parameters": [0, 0, 0]},
+                {"function": 1, "parameters": [3, 0, 0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function": 1, "inverted": false, "parameters": [3, 0, 0]},
+                {"function": 6, "inverted": false, "parameters": [7, 0, 59]},
+                {"function": 25, "inverted": true, "parameters": [4, 0, 0]}
+            ],
+            "executions": [
+                {"function": 84, "parameters": [58, 1, 0]},
+                {"function": 5, "parameters": [58, 20, 0]},
+                {"function": 1, "parameters": [0, 0, 0]}
+            ]
+        }
+    ]
+}

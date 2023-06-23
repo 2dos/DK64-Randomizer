@@ -12,13 +12,24 @@ typedef struct varspace {
 	/* 0x031 */ char fast_start_helm; // 0 = "Fast Start for Helm" setting not applied. 1 = Applied
 	/* 0x032 */ char crown_door_open; // 0 = Crown Door not opened by default. 1 = Opened by default
 	/* 0x033 */ char coin_door_open; // 0 = Coin Door not opened by default. 1 = Opened by default. 2 = Only requires RW Coin. 3 = Only requires Nin Coin.
-	/* 0x034 */ char quality_of_life; // 0 = Quality of life features not applied. 1 = Applied
+	/* 0x034 */ char item_rando; // 0 = Off, 1 = On
 	/* 0x035 */ char price_rando_on; // 0 = Price Randomizer off, 1 = On
-	/* 0x036 */ unsigned char special_move_prices[5][3]; // Array of an array of prices [[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3]]. Each item of the parent array is for a kong, each item of the sub arrays is the price of the moves in order of their vanilla purchase (eg. DK: Baboon Blast > Strong Kong > Gorilla Grab)
+	/* 0x036 */ char rareware_gb_fairies; // Fairy requirement to access Rareware GB
+	/* 0x037 */ char k_rool_toes[10];
+	/* 0x041 */ char randomize_toes;
+	/* 0x042 */ char random_drops; // Random enemy item drops
+	/* 0x043 */ char colorblind_mode; // 0 = Off, 1 = Prot, 2 = Deut, 3 = Trit
+	/* 0x044 */ char dark_mode_textboxes; // 0 = Light Mode, 1 = Dark Mode
 	/* 0x045 */ unsigned char slam_prices[2]; // Array of simian slam upgrade prices: [1,2]. First item is super simian slam (blue), 2nd is super duper simian slam (red)
-	/* 0x047 */ unsigned char gun_prices[5]; // Array of prices for the base gun for each kong. [1,2,3,4,5]. 1 item for each kong
-	/* 0x04C */ unsigned char instrument_prices[5]; // Array of prices for the base instrument for each kong. [1,2,3,4,5]. 1 item for each kong
-	/* 0x051 */ unsigned char gun_upgrade_prices[2]; // Array of gun upgrade prices: [1,2]. First item is homing ammo upgrade. 2nd is Sniper Scope (Zoom)
+	/* 0x047 */ char call_parent_filter; // Calls filter to remove "unnecessary" links from the parent chain
+	/* 0x048 */ char arcade_order[4]; // 01 = 25m, 04 = 50m, 03 = 75m, 02 = 100m
+	/* 0x04C */ char crown_door_item;
+	/* 0x04D */ unsigned char crown_door_item_count;
+	/* 0x04E */ char coin_door_item;
+	/* 0x04F */ unsigned char coin_door_item_count;
+	/* 0x050 */ unsigned char aztec_beetle_reward;
+	/* 0x051 */ unsigned char caves_beetle_reward;
+	/* 0x052 */ char disable_wrinkly_kong_requirement; // Disable Kongs being required to access a wrinkly door
 	/* 0x053 */ unsigned char ammo_belt_prices[2]; // Array of ammo belt prices: [1,2]. 1 item for each level of ammo belt
 	/* 0x055 */ unsigned char instrument_upgrade_prices[3]; // Array of instrument upgrade prices: [1,2,3]. 1st and 3rd items are the Upgrades 1 and 2 respectively. 2nd item is the 3rd melon cost
 	/* 0x058 */ char k_rool_order[5]; // Order of K. Rool phases: [0,1,2,3,4] dictates DK->Diddy->Lanky->Tiny->Chunky. If K. Rool is being shortened to less than 5 phases, put the unused phases as -1
@@ -44,21 +55,49 @@ typedef struct varspace {
 	/* 0x0A5 */ char damage_multiplier; // 1 = Normal. 2 = Double. Any value greater than 11 will be 1 hit KO
 	/* 0x0A6 */ char no_health_refill; // 0 = Vanilla. 1 =  No health refill for Tag Barrels, "Voiding", Bonus Barrels, Fairies, K. Rool Health Refills
 	/* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.
-	/* 0x0A8 */ unsigned char dk_crankymoves[8]; // tttl lkkk. t = Type (0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 5 = No Move), l = move level, k = kong
-	/* 0x0B0 */ unsigned char diddy_crankymoves[8]; // See "dk_crankymoves"
-	/* 0x0B8 */ unsigned char lanky_crankymoves[8]; // See "dk_crankymoves"
-	/* 0x0C0 */ unsigned char tiny_crankymoves[8]; // See "dk_crankymoves"
-	/* 0x0C8 */ unsigned char chunky_crankymoves[8]; // See "dk_crankymoves"
-	/* 0x0D0 */ unsigned char dk_funkymoves[8]; // See "dk_crankymoves"
-	/* 0x0D8 */ unsigned char diddy_funkymoves[8]; // See "dk_crankymoves"
-	/* 0x0E0 */ unsigned char lanky_funkymoves[8]; // See "dk_crankymoves"
-	/* 0x0E8 */ unsigned char tiny_funkymoves[8]; // See "dk_crankymoves"
-	/* 0x0F0 */ unsigned char chunky_funkymoves[8]; // See "dk_crankymoves"
-	/* 0x0F8 */ unsigned char dk_candymoves[8]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
-	/* 0x100 */ unsigned char diddy_candymoves[8]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
-	/* 0x108 */ unsigned char lanky_candymoves[8]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
-	/* 0x110 */ unsigned char tiny_candymoves[8]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
-	/* 0x118 */ unsigned char chunky_candymoves[8]; // See "dk_crankymoves". Note: Do not assign anything to item 0 or 4 as there's no Candy's in Japes or Fungi
+	/* 0x0A8 */ unsigned char tbarrel_prices[4]; // Array of training barrel move prices. First is dive, then orange, then barrel, then vine
+	/* 0x0AC */ unsigned char fairy_prices[2]; // Array of fairy move prices. First is camera, second is shockwave. Shockwave/Camera combo price is calculated as the sum of the two
+	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
+	/* 0x0AF */ char archipelago; // DK64R is being run through Archipelago
+	/* 0x0B0 */ quality_options quality_of_life; // Size: 3
+	/* 0x0B3 */ char unk_B0[0xC7 - 0xB3];
+	/* 0x0C7 */ unsigned char default_sound_type; // 0 = Stereo, 1 = Surround, 2 = Mono
+	/* 0x0C8 */ unsigned char default_sfx_volume; // 0 - 40
+	/* 0x0C9 */ unsigned char default_music_volume; // 0 - 40
+	/* 0x0CA */ unsigned char default_screen_ratio; // 0 = Normal, 1 = Widescreen
+	/* 0x0CB */ unsigned char default_camera_type; // 0 = Free, 1 = Follow
+	/* 0x0CC */ unsigned char default_camera_mode; // 0 = Inverted, 1 = Non-Inverted
+	/* 0x0CD */ unsigned char crypt_lever_order[3]; // 0 = No lever, 1-6 = code
+	/* 0x0D0 */ unsigned char mill_lever_order[5]; // 0 = no lever, 1-3 = Code
+	/* 0x0D5 */ moves_pregiven_bitfield moves_pregiven; // Bitfield, Size 0x6
+	/* 0x0DB */ unsigned char seasonal_changes; // 0 = None, 1 = Halloween, 2 = Christmas
+	/* 0x0DC */ unsigned short japes_rock_item; // Actor ID of item that spawns from destroying the rock covering Japes Underground
+	/* 0x0DE */ unsigned short vulture_item; // Actor ID of item that the vulture in Tiny Temple has
+	/* 0x0E0 */ fairy_activations fairy_triggers_disabled;
+	/* 0x0E2 */ short helm_hurry_start;
+	/* 0x0E4 */ short helm_hurry_bonuses[0xE];
+	/* 0x100 */ char fairy_rando_on;
+	/* 0x101 */ char location_visuals; // Bitfield for visual hints of what is inside a location. 0000 0abc. a = Crowns , b = Boss Doors , c = Bonus Barrels
+	/* 0x102 */ char microhints; // 0 = Off, 1 = GGone/Monkeyport, 2 = GGone/MPort, Instruments in Helm
+	/* 0x103 */ char random_switches;
+	/* 0x104 */ char slam_level[7]; // Level of slam required to slam a switch in a level (if random_switches is on)
+	/* 0x10B */ unsigned char remove_rock_bunch; // Remove rock bunch in Jungle Japes
+	/* 0x10C */ unsigned char starting_map; // 0 = Isles - from escape
+	/* 0x10D */ unsigned char starting_exit;
+	/* 0x10E */ unsigned char tns_portal_rando_on;
+	/* 0x10F */ unsigned char remove_oscillation_effects; // Removes water oscillation + Seasick Ship interior rocking
+	/* 0x110 */ unsigned char arcade_reward; // Reward Index for R2 of Arcade
+	/* 0x111 */ unsigned char jetpac_reward; // Reward Index for Jetpac 5000 Pts
+	/* 0x112 */ unsigned char medal_cb_req; // 0 = default (75). int (1-100)
+	/* 0x113 */ unsigned char any_kong_items; // Bitfield 0000 00ba. a = All items except blueprints disabling kong check. b = Blueprints disable kong check.
+	/* 0x114 */ unsigned char unk114;
+	/* 0x115 */ unsigned char unk115;
+	/* 0x116 */ char hard_enemies; // 0 = Off, 1 = On
+	/* 0x117 */ unsigned char enabled_pkmnsnap_enemies[5]; // Bitfield
+	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
+	/* 0x11D */ unsigned char win_condition; // See vars.h for enum
+	/* 0x11E */ char tns_indicator;
+	/* 0x11F */ char wrinkly_rando_on;
 	/* 0x120 */ char kut_out_kong_order[5]; // Value of item: 0 = DK, 1 = Diddy, 2 = Lanky, 3 = Tiny, 4 = Chunky. Kongs can be repeated
 	/* 0x125 */ unsigned char remove_blockers; // Bitfield of B. Lockers to remove. 0 = Remove None. 0x7F = remove all except Helm Lobby. 0xFF = Remove all.
 	/* 0x126 */ char resolve_bonus; // Bitfield. 0000 0001 = auto-complete bonus barrels. 0000 0010 = auto-complete helm barrels. 0 = Off. 3 = Resolve Helm & Bonus Barrels
@@ -66,10 +105,10 @@ typedef struct varspace {
 	/* 0x128 */ char disable_drops; // 0 = Off. 1 = No Klump/Melon/Ammo Crate Drops
 	/* 0x129 */ char hash[5];
 	/* 0x12E */ char music_rando_on; // 0 = Off, 1 = Music Rando on, apply extra data shuffle
-	/* 0x12F */ char unk_12F;
+	/* 0x12F */ char disco_chunky; // 0 = Normal, 1 = Disco. Overriden by Krusha if Krusha replaces Chunky
 	/* 0x130 */ unsigned short ballroom_to_museum; // Same as "aztec_beetle_enter" but for the loading zone dictated by the name
 	/* 0x132 */ unsigned short museum_to_ballroom; // Same as "aztec_beetle_enter" but for the loading zone dictated by the nametc
-	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Render amount of moves that can be purchased from that shop
+	/* 0x134 */ char shop_indicator_on; // 0 = Off, 1 = Only kong displayed, 2 = Both item and kong
 	/* 0x135 */ char warp_to_isles_enabled; // 0 = Off, 1 = Add Warp to Isles option
 	/* 0x136 */ unsigned char klaptrap_color_bbother; // 0 = Green, 1 = Purple, 2 = Red
 	/* 0x137 */ char open_level_sections; // 0 = Off, 1 = On
@@ -114,4 +153,10 @@ typedef struct varspace {
 	/* 0x17E */ char dk_face_puzzle_init[9];
 	/* 0x187 */ char chunky_face_puzzle_init[9];
 	/* 0x190 */ char helm_order[5]; // Each item is a place in the order. -1 for an empty slot. For each item, 0 = DK, 1 = Chunky, 2 = Tiny, 3 = Lanky, 4 = Diddy. DK has to either be first or not present.
+	/* 0x195 */ char disable_rotating_crown; // 0 = Checks flag, 1 = Disabled
+	/* 0x196 */ char misc_cosmetic_on;
+	/* 0x197 */ rgb skybox_colors[8];
+	/* 0x1AF */ char pppanic_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
+	/* 0x1B0 */ char sseek_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
+	/* 0x1B1 */ unsigned char wrinkly_rgb[3];
 } varspace;

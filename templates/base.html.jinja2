@@ -14,7 +14,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js"></script>
     <script type="text/javascript" src="static/js/izoColorPicker.js"></script>
     <script type="text/javascript" src="static/js/md5.min.js"></script>
-    <script type="text/javascript" src="static/js/loggly.tracker-2.2.4.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css"
           rel="stylesheet"/>
     <link rel="stylesheet"
@@ -77,7 +76,7 @@
                              aria-valuemin="0"
                              aria-valuemax="100"
                              id="patchprogress"
-                             style="width: 0%;">
+                             style="width: 0%">
                         </div>
                         <small id="progress-text"
                                style="color:black"
@@ -122,10 +121,10 @@
                             {% include 'overworld.html.jinja2' %}
                         </div>
                         <div class="tab-pane fade"
-                             id="nav-difficulty"
+                             id="nav-progression"
                              role="tabpanel"
-                             aria-labelledby="nav-difficulty-tab">
-                            {% include 'difficulty.html.jinja2' %}
+                             aria-labelledby="nav-progression-tab">
+                            {% include 'progression.html.jinja2' %}
                         </div>
                         <div class="tab-pane fade"
                              id="nav-qol"
@@ -196,21 +195,27 @@
                                     <div class="row" style="margin-top: 10px">
                                         <!--Randomize Seed-->
                                         <div class="flex-container" style="justify-content: center;">
-                                            <div class="form-group row item-select">
+                                            <div class="form-group item-select">
                                                 <label for="seed" class="select-title">
-                                                    Seed
+                                                    Seed ID
                                                 </label>
                                                 <input name="seed" id="seed" placeholder="Auto fills when empty"/>
                                             </div>
-                                        </div>
-                                        <div class="flex-container" style="justify-content: center;">
                                             <div class="form-group item-select" style="min-width:300px;">
                                                 <label for="settings_string" class="select-title">
                                                     Settings String
                                                 </label>
-                                                <input name="settings_string"
-                                                       id="settings_string"
-                                                       placeholder="Click Export or Copy Settings to fill"/>
+                                                <span class="row settings-string-container">
+                                                    <input name="settings_string"
+                                                           id="settings_string"
+                                                           placeholder="Click Export or Copy Settings to fill"/>
+                                                    <img name="settings_string_copy"
+                                                         id="settings_string_copy"
+                                                         class="copy-icon"
+                                                         data-toggle="tooltip"
+                                                         title="Click to copy the settings string to your clipboard."
+                                                         src="./static/img/copy-to-clipboard.svg">
+                                                </span>
                                             </div>
                                             <div>
                                                 <input id="import_settings"
@@ -226,8 +231,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="flex-container" style="justify-content: center;">
-                                            <div class="form-check form-switch item-switch"
-                                                 style="text-align: center;">
+                                            <div class="form-check form-switch item-switch" style="text-align: center">
                                                 <label data-toggle="tooltip"
                                                        title="Used for Races to download generated ROM as patch file.">
                                                     <input class="form-check-input"
@@ -238,8 +242,7 @@
                                                     Generate Patch File
                                                 </label>
                                             </div>
-                                            <div class="form-check form-switch item-switch"
-                                                 style="text-align: center;">
+                                            <div class="form-check form-switch item-switch" style="text-align: center">
                                                 <label data-toggle="tooltip"
                                                        title="This option enables spoiler log files to be created on randomizer generation.">
                                                     <input class="form-check-input"
@@ -251,6 +254,24 @@
                                                     Generate Spoiler Log
                                                 </label>
                                             </div>
+                                            <div class="form-check form-switch item-switch" style="text-align: center">
+                                                <label data-toggle="tooltip"
+                                                        title="Enables the homebrew header to be written to the ROM. This makes the ROM viable on some platforms but can break other platforms. Click the link on the icon for more information.">
+                                                    <input class="form-check-input"
+                                                        type="checkbox"
+                                                        name="homebrew_header"
+                                                        id="homebrew_header"
+                                                        value="True"/>
+                                                    Advanced ROM Header
+                                                </label>
+                                                <a href="https://github.com/2dos/DK64-Randomizer/wiki/Advanced-Homebrew-ROM-Header"
+                                                    title="Click me for more information"
+                                                target="_blank">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" class="warning-icon" stroke="#ffff00" fill="#ffff00">
+                                                        <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
+                                                    </svg>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -258,10 +279,9 @@
                                             ROM File
                                         </label>
                                         <div class="input-group mb-3 file-select"
-                                             style="width: 50%;
-                                                    margin: 0 auto;">
+                                             style="width: 50%; margin: 0 auto">
                                             <div class="input-group-text choose-file"
-                                                 style="background-color: #6c757d;">
+                                                 style="background-color: #6c757d">
                                                 <input class="btn btn-primary file-button"
                                                        type="button"
                                                        value="Choose File"
@@ -279,9 +299,7 @@
                                     <br id="formbreak" />
                                     <input id="generate_seed"
                                            class="btn btn-primary"
-                                           style="width: 60%;
-                                                  height: 50px;
-                                                  text-align: center;"
+                                           style="width: 60%; height: 50px; text-align: center"
                                            type="button"
                                            value="Generate Seed"/>
                                 </div>
@@ -301,19 +319,15 @@
                                            class="form-control"
                                            type="file"
                                            accept=".lanky"
-                                           style="margin-right: 5px;
-                                                  width: 50%;
-                                                  height: 100%;
-                                                  margin: 0 auto;"/>
+                                           style="margin-right: 5px; width: 50%; height: 100%; margin: 0 auto"/>
                                     <div class="row">
                                         <label for="input-file-rom_1" class="select-title">
                                             ROM File
                                         </label>
                                         <div class="input-group mb-3 file-select"
-                                             style="width: 50%;
-                                                    margin: 0 auto;">
+                                             style="width: 50%; margin: 0 auto">
                                             <div class="input-group-text choose-file"
-                                                 style="background-color: #6c757d;">
+                                                 style="background-color: #6c757d">
                                                 <input class="btn btn-primary file-button"
                                                        type="button"
                                                        value="Choose File"
@@ -332,9 +346,7 @@
                                 <br id="formbreak" />
                                 <input id="generate_lanky_seed"
                                        class="btn btn-primary"
-                                       style="width: 60%;
-                                              height: 50px;
-                                              text-align: center;"
+                                       style="width: 60%; height: 50px; text-align: center"
                                        type="button"
                                        value="Generate Seed from Patch"/>
                             </div>
@@ -358,10 +370,9 @@
                                             ROM File
                                         </label>
                                         <div class="input-group mb-3 file-select"
-                                             style="width: 50%;
-                                                    margin: 0 auto;">
+                                             style="width: 50%; margin: 0 auto">
                                             <div class="input-group-text choose-file"
-                                                 style="background-color: #6c757d;">
+                                                 style="background-color: #6c757d">
                                                 <input class="btn btn-primary file-button"
                                                        type="button"
                                                        value="Choose File"
@@ -380,9 +391,7 @@
                                 <br id="formbreak" />
                                 <input id="generate_pastgen_seed"
                                        class="btn btn-primary"
-                                       style="width: 60%;
-                                              height: 50px;
-                                              text-align: center;"
+                                       style="width: 60%; height: 50px; text-align: center"
                                        type="button"
                                        value="Generate Seed from history"/>
                             </div>
@@ -397,17 +406,17 @@
     <div class="center">
         <a href="https://github.com/2dos/DK64-Randomizer"
            target="_blank"
-           style="text-decoration: none;">
+           style="text-decoration: none">
             <img src="./static/img/github.png" alt="GitHub" />
         </a>
         <a href="https://github.com/2dos/DK64-Randomizer/wiki"
            target="_blank"
-           style="text-decoration: none;">
+           style="text-decoration: none">
             <img src="./static/img/wiki.png" alt="Wiki" />
         </a>
         <a href="https://discord.dk64randomizer.com"
            target="_blank"
-           style="text-decoration: none;">
+           style="text-decoration: none">
             <img src="./static/img/discord.png" alt="Discord" />
         </a>
     </div>
@@ -427,6 +436,8 @@
     <script type="text/javascript" src="./static/js/rompatcher/crc.js" defer></script>
     <script type="text/javascript" src="./static/js/rompatcher/formats/bps.js" defer></script>
     <script type="text/javascript" src="./static/js/rompatcher/MarcFile.js" defer></script>
+    <script type="text/javascript" src="./static/js/rompatcher/formats/vcdiff.js" defer></script>
+
     <script type="text/javascript" src="./static/js/rompatcher/RomPatcher.js" defer></script>
     <script type="text/javascript" src="./static/js/rompatcher/filesaver.js" defer></script>
     <script type="text/javascript" src="./static/js/initalize.js"></script>
@@ -447,6 +458,26 @@
         $(function() {
             $('[data-toggle="tooltip"]').tooltip({
                 trigger: 'hover'
+            })
+        })
+
+        $(document).ready(function () {
+            $("#generate_seed").on('click', function (event) {
+                event.preventDefault();
+                var el = $(this);
+                el.prop('disabled', true);
+                setTimeout(function(){el.prop('disabled', false);}, 2000);
+            })
+
+            $("#settings_string").on('click', function (event) {
+                var input = $("#settings_string");
+                input.select();
+            })
+
+            $("#settings_string_copy").on('click', function (event) {
+                var input = $("#settings_string");
+                input.select();
+                navigator.clipboard.writeText(input.val());
             })
         })
     </script>

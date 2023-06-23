@@ -1,8 +1,7 @@
-{% macro list_selector(list, name, title, tooltip) %}
+{% macro list_selector(list, name, title, tooltip, size) %}
     <!-- Icon triggers modal -->
-    <input class="btn btn-primary customize"
+    <input class="customize"
            type="button"
-           value="Customize"
            href="#"
            id="{{ name }}_modal"
            data-bs-toggle="modal"
@@ -43,9 +42,9 @@
                                     class="form-select multi-select selected"
                                     aria-label="List_Selector"
                                     multiple
-                                    size="16">
+                                    size="{{ size }}">
                                 {% for item in list %}
-                                    <option value="{{ item.value }}">
+                                    <option value="{{ item.value }}" title="{{ item.tooltip }}">
                                         {{ item.name }}
                                     </option>
                                 {% endfor %}
@@ -98,5 +97,67 @@
             }
         }
     });
+</script>
+{% endmacro %}
+{% macro properties_selector(list, name, title, tooltip) %}
+    <!-- Icon triggers modal -->
+    <input class="customize"
+           type="button"
+           href="#"
+           id="{{ name }}_modal"
+           data-bs-toggle="modal"
+           data-bs-target="#{{ name }}_Modal"
+           data-toggle="tooltip"
+           title="{{ tooltip }}"/>
+</div>
+<!-- Modal -->
+<div class="modal fade"
+     id="{{ name }}_Modal"
+     tabindex="-1"
+     aria-labelledby="{{ name }}_ModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="max-width:700px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title title" id="{{ name }}_ModalLabel">{{ title }}</h3>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="flex-container">
+                        {% for item in list %}
+                            <div class="item-select" style="margin:0;flex:0;min-width:150px;">
+                                <p class="select-title">{{ item.name }}</p>
+                                <input min="-32768"
+                                       max="32767"
+                                       name="{{ name }}_{{ item.value }}"
+                                       id="{{ name }}_{{ item.value }}"
+                                       style="width:15%"
+                                       class="form-control center-div"
+                                       type="number"
+                                       value="{{ item.default }}"
+                                       default_val="{{ item.default }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="{{ name }}_reset">Reset</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#{{ name }}_reset').click(function() {
+        {% for item in list %}
+            $('#{{ name }}_{{ item.value }}').prop('value', $('#{{ name }}_{{ item.value }}').attr('default_val'))
+            $('#{{ name }}_{{ item.value }}').trigger('change')
+        {% endfor %}
+    })
 </script>
 {% endmacro %}

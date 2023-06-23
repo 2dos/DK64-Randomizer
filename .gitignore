@@ -144,7 +144,6 @@ cython_debug/
 
 # Jekyll
 _site/
-Gemfile.lock
 
 # Randomizer specific
 spoilerlog*.txt
@@ -153,6 +152,7 @@ settings*.json
 *.z64
 *.n64
 *.v64
+*.dkp
 *.bin
 *.bin.gz
 *.raw
@@ -183,6 +183,13 @@ web_cache/*
 n64chain.zip
 base-hack/build/n64chain
 base-hack/rom_tester/output.txt
-base-hack/assets/Non-Code/instance_scripts/dump
+base-hack/assets/instance_scripts/dump
 tests/test_spoiler.py
+coloredbananas.txt
+balloons.txt
 static/py_libraries/dk64rando*.whl
+!cutscenes_skipped.csv
+test.bps
+rom_tester.html
+tools/dumps
+test-result-*.json

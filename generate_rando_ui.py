@@ -36,7 +36,13 @@ async def initialize():
         pass
 
     # Module of Lists used for list_selector macro
+    from randomizer.Enums.Types import ItemRandoSelector, KeySelector
+    from randomizer.Lists.EnemyTypes import EnemySelector
+    from randomizer.Lists.Item import HHItemSelector
+    from randomizer.Lists.Logic import GlitchSelector
     from randomizer.Lists.Minigame import MinigameSelector
+    from randomizer.Lists.QoL import QoLSelector
+    from randomizer.Lists.Warps import VanillaBananaportSelector
 
     js.listeners = []
     js.progression_presets = []
@@ -59,29 +65,20 @@ async def initialize():
 
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     template = templateEnv.get_template("base.html.jinja2")
-    rendered = await template.render(minigames=MinigameSelector)
+    rendered = await template.render(
+        minigames=MinigameSelector,
+        misc_changes=QoLSelector,
+        enemies=EnemySelector,
+        itemRando=ItemRandoSelector,
+        keys=KeySelector,
+        glitches=GlitchSelector,
+        helm_hurry_items=HHItemSelector,
+        vanilla_warps=VanillaBananaportSelector,
+    )
     js.document.documentElement.innerHTML = ""
     js.document.open()
     js.document.write(rendered)
     js.document.close()
-
-    # Load settings from the cookies if it exists
-    try:
-        cookie_data = document.cookie
-        if cookie_data:
-            for cookie in cookie_data.split(";"):
-                if "settings=" in cookie:
-                    settings_cookie = str(cookie).replace("settings=", "")
-                    break
-            json_data = json.loads(settings_cookie)
-            for key in json_data:
-                try:
-                    # TODO: Validate this still works now that we switched engines
-                    document.getElementById(key).value = json_data[key]
-                except Exception:
-                    pass
-    except Exception:
-        pass
 
 
 # Run the script (This will be run as async later on)

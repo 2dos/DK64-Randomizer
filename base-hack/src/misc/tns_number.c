@@ -1,7 +1,7 @@
 #include "../../include/common.h"
 
 void displayNumberOnObject(int id, int param2, int imageindex, int param4, int subtype) {
-	int* m2location = ObjectModel2Pointer;
+	int* m2location = (int*)ObjectModel2Pointer;
 	int slot = convertIDToIndex(id);
 	ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);
 	model_struct* _model = _object->model_pointer;
@@ -15,8 +15,8 @@ void displayNumberOnObject(int id, int param2, int imageindex, int param4, int s
 }
 
 void shiftBrokenJapesPortal(void) {
-	if (CurrentMap == 7) {
-		int* m2location = ObjectModel2Pointer;
+	if (CurrentMap == MAP_JAPES) {
+		int* m2location = (int*)ObjectModel2Pointer;
 		int slot = convertIDToIndex(0x220);
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);
 		model_struct* _model = _object->model_pointer;
@@ -28,15 +28,15 @@ void shiftBrokenJapesPortal(void) {
 }
 
 static const unsigned char tns_maps[] = {
-	0x7, // Japes
-	0x1A, // Factory
-	0x1E, // Galleon
-	0x26, // Aztec
-	0x30, // Fungi
-	0x48, // Caves
-	0x57, // Castle
-	0x97, // Castle Dungeon Tunnel
-	0xB7, // Castle Crypt
+	MAP_JAPES, // Japes
+	MAP_FACTORY, // Factory
+	MAP_GALLEON, // Galleon
+	MAP_AZTEC, // Aztec
+	MAP_FUNGI, // Fungi
+	MAP_CAVES, // Caves
+	MAP_CASTLE, // Castle
+	MAP_CASTLEDUNGEON, // Castle Dungeon Tunnel
+	MAP_CASTLECRYPT, // Castle Crypt
 };
 
 static const unsigned char tns_count[] = {
@@ -71,7 +71,7 @@ void displayNumberOnTns(void) {
 	if (in_tns_map > -1) {
 		int world_index = getWorld(CurrentMap, 0);
 		if (world_index <= 7) {
-			if (checkFlag(tns_flags[world_index],0) == 0) {
+			if (checkFlag(tns_flags[world_index], FLAGTYPE_PERMANENT) == 0) {
 				for (int j = 0; j < tns_count[in_tns_map]; j++) {
 					int display_number = TroffNScoffReqArray[world_index] - TroffNScoffTurnedArray[world_index];
 					if (display_number < 0) {
@@ -83,7 +83,7 @@ void displayNumberOnTns(void) {
 					}
 				}
 			} else {
-				int* m2location = ObjectModel2Pointer;
+				int* m2location = (int*)ObjectModel2Pointer;
 				for (int j = 0; j < tns_count[in_tns_map]; j++) {
 					int slot = convertIDToIndex(0x220 + j);
 					ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,slot);

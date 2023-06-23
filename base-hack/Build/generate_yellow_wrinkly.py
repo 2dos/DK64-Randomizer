@@ -3,22 +3,19 @@ import os
 import shutil
 import zlib
 
-new_file = "assets/Non-Code/Gong/hint_door.bin"
+from BuildClasses import ROMPointerFile
+from BuildEnums import TableNames
+from BuildLib import ROMName
+
+new_file = "assets/Gong/hint_door.bin"
 
 
 def generateYellowWrinkly():
     """Pull geo file from ROM and modify."""
-    pointer_table_offset = 0x101C50
-    with open("rom/dk64.z64", "rb") as fh:
-        fh.seek(pointer_table_offset + (4 * 4))
-        om2_geo_table = pointer_table_offset + int.from_bytes(fh.read(4), "big")
-        fh.seek(om2_geo_table + (4 * 0xF1))
-        chunky_wrinkly_start = pointer_table_offset + int.from_bytes(fh.read(4), "big")
-        fh.seek(om2_geo_table + (4 * 0xF1) + 4)
-        chunky_wrinkly_end = pointer_table_offset + int.from_bytes(fh.read(4), "big")
-        geo_size = chunky_wrinkly_end - chunky_wrinkly_start
-        fh.seek(chunky_wrinkly_start)
-        dec = zlib.decompress(fh.read(geo_size), 15 + 32)
+    with open(ROMName, "rb") as fh:
+        wrinkly_f = ROMPointerFile(fh, TableNames.ModelTwoGeometry, 0xF1)
+        fh.seek(wrinkly_f.start)
+        dec = zlib.decompress(fh.read(wrinkly_f.size), 15 + 32)
         with open(new_file, "wb") as fg:
             fg.write(dec)
 

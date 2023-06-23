@@ -4,23 +4,23 @@ int curseRemoved(void) {
 	return checkFlag(FLAG_MODIFIER_HELMBOM,0); // BoM turned off
 }
 
-int hasPermaLossGrace(void) {
-	return (CurrentMap == 0x11) || (CurrentMap == 0xAA);
+int hasPermaLossGrace(maps map) {
+	return (map == MAP_HELM) || (map == MAP_HELMLOBBY);
 }
 
 int determineKongUnlock(int actorType, int kong_index) {
 	int unlock_flag = GetKongUnlockedFlag(actorType,kong_index);
-	int kong_freed = checkFlag(unlock_flag,0);
+	int kong_freed = checkFlag(unlock_flag, FLAGTYPE_PERMANENT);
 	if (!Rando.perma_lose_kongs) {
 		return kong_freed;
 	}
-	if (hasPermaLossGrace()) {
+	if (hasPermaLossGrace(CurrentMap)) {
 		return kong_freed;
 	}
 	if (curseRemoved()) {
 		return kong_freed;
 	}
-	int kong_locked = checkFlag(KONG_LOCKED_START + kong_index,0);
+	int kong_locked = checkFlag(KONG_LOCKED_START + kong_index, FLAGTYPE_PERMANENT);
 	if (kong_locked || (!kong_freed)) {
 		return 0;
 	} else {
@@ -30,7 +30,7 @@ int determineKongUnlock(int actorType, int kong_index) {
 
 void unlockKongPermaLoss(int actorType, int kong_index) {
 	int unlock_flag = GetKongUnlockedFlag(actorType,kong_index);
-	int kong_locked = checkFlag(KONG_LOCKED_START + kong_index,0);
+	int kong_locked = checkFlag(KONG_LOCKED_START + kong_index, FLAGTYPE_PERMANENT);
 	if (Rando.perma_lose_kongs) {
 		if (kong_locked && (!curseRemoved())) {
 			return;
@@ -64,17 +64,17 @@ void kong_has_died(void) {
 								int pass = 1;
 								int counter = 0;
 								while (pass) {
-									int kong_locked = checkFlag(KONG_LOCKED_START + new_kong,0);
+									int kong_locked = checkFlag(KONG_LOCKED_START + new_kong, FLAGTYPE_PERMANENT);
 									int unlock_flag = GetKongUnlockedFlag(Player->characterID,new_kong);
-									int kong_freed = checkFlag(unlock_flag,0);
+									int kong_freed = checkFlagDuplicate(unlock_flag, FLAGTYPE_PERMANENT);
 									if ((!kong_freed) || (kong_locked)) {
 										new_kong = (new_kong + 1) % 5;
 										counter += 1;
 										if (counter >= 5) {
-											setFlag(KONG_LOCKED_START + init_kong,0,0);
+											setFlag(KONG_LOCKED_START + init_kong,0,FLAGTYPE_PERMANENT);
 											pass = 0;
 											resetMap(); // Resets parent chain to prevent SirSmack causing memes
-											Gamemode = 7; // Loading Game Over
+											Gamemode = GAMEMODE_LOADGAMEOVER; // Loading Game Over
 											Mode = 7;
 											return;
 										}
@@ -98,9 +98,9 @@ void determineStartKong_PermaLossMode(void) {
 	if (Rando.perma_lose_kongs) {
 		if (!curseRemoved()) {
 			for (int i = 0; i < 5; i++) {
-				int kong_locked = checkFlag(KONG_LOCKED_START + i,0);
+				int kong_locked = checkFlag(KONG_LOCKED_START + i,FLAGTYPE_PERMANENT);
 				int unlock_flag = GetKongUnlockedFlag(2 + i,i);
-				int kong_freed = checkFlag(unlock_flag,0);
+				int kong_freed = checkFlagDuplicate(unlock_flag, FLAGTYPE_PERMANENT);
 				if ((kong_freed) && (!kong_locked)) {
 					Character = i;
 					return;
@@ -112,14 +112,14 @@ void determineStartKong_PermaLossMode(void) {
 
 void transitionKong(void) {
 	if (!curseRemoved()) {
-		if (checkFlag(KONG_LOCKED_START + Character,0)) {
+		if (checkFlag(KONG_LOCKED_START + Character, FLAGTYPE_PERMANENT)) {
 			int new_kong = (Character + 1) % 5;
 			int pass = 1;
 			int counter = 0;
 			while (pass) {
-				int kong_locked = checkFlag(KONG_LOCKED_START + new_kong,0);
+				int kong_locked = checkFlag(KONG_LOCKED_START + new_kong, FLAGTYPE_PERMANENT);
 				int unlock_flag = GetKongUnlockedFlag(Player->characterID,new_kong);
-				int kong_freed = checkFlag(unlock_flag,0);
+				int kong_freed = checkFlagDuplicate(unlock_flag, FLAGTYPE_PERMANENT);
 				if ((!kong_freed) || (kong_locked)) {
 					new_kong = (new_kong + 1) % 5;
 					counter += 1;
@@ -131,6 +131,29 @@ void transitionKong(void) {
 					pass = 0;
 					Character = new_kong;
 					return;
+				}
+			}
+		}
+	}
+}
+
+void fixGraceCheese(void) {
+	if (Rando.perma_lose_kongs) {
+		if (TransitionSpeed > 0.0f) {
+			if (LZFadeoutProgress == 30.0f) {
+				if (!hasPermaLossGrace(DestMap)) {
+					if (CurrentMap == MAP_TROFFNSCOFF) {
+						int transitioning_to_boss = 0;
+						for (int i = 0; i < 7; i++) {
+							if (BossMapArray[i] == DestMap) {
+								transitioning_to_boss = 1;
+							}
+						}
+						if (transitioning_to_boss) {
+							return;
+						}
+					}
+					transitionKong();
 				}
 			}
 		}
@@ -150,7 +173,7 @@ void changeKongOnTransition_Permaloss(void) {
 
 void forceBossKong(void) {
 	if (Rando.perma_lose_kongs) {
-		if (CurrentMap == 0x2A) {
+		if (CurrentMap == MAP_TROFFNSCOFF) {
 			int transitioning_to_boss = 0;
 			for (int i = 0; i < 7; i++) {
 				if (BossMapArray[i] == DestMap) {

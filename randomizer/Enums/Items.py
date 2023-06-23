@@ -6,6 +6,7 @@ class Items(IntEnum):
     """Item enum."""
 
     NoItem = auto()
+    TestItem = auto()
 
     Donkey = auto()
     Diddy = auto()
@@ -61,11 +62,14 @@ class Items(IntEnum):
     Triangle = auto()
     ProgressiveInstrumentUpgrade = auto()
 
+    Camera = auto()
+    Shockwave = auto()
+    CameraAndShockwave = auto()
+
     NintendoCoin = auto()
     RarewareCoin = auto()
 
-    CameraAndShockwave = auto()
-
+    # Key items must be in order for best fills
     JungleJapesKey = auto()
     AngryAztecKey = auto()
     FranticFactoryKey = auto()
@@ -91,7 +95,54 @@ class Items(IntEnum):
     BananaMedal = auto()
     BattleCrown = auto()
 
+    Bean = auto()
+    Pearl = auto()
+    RainbowCoin = auto()
+    FakeItem = auto()
+
+    JunkCrystal = auto()
+    JunkMelon = auto()
+    JunkAmmo = auto()
+    JunkFilm = auto()
+    JunkOrange = auto()
+
     BananaHoard = auto()
+
+    JapesDonkeyHint = auto()
+    JapesDiddyHint = auto()
+    JapesLankyHint = auto()
+    JapesTinyHint = auto()
+    JapesChunkyHint = auto()
+    AztecDonkeyHint = auto()
+    AztecDiddyHint = auto()
+    AztecLankyHint = auto()
+    AztecTinyHint = auto()
+    AztecChunkyHint = auto()
+    FactoryDonkeyHint = auto()
+    FactoryDiddyHint = auto()
+    FactoryLankyHint = auto()
+    FactoryTinyHint = auto()
+    FactoryChunkyHint = auto()
+    GalleonDonkeyHint = auto()
+    GalleonDiddyHint = auto()
+    GalleonLankyHint = auto()
+    GalleonTinyHint = auto()
+    GalleonChunkyHint = auto()
+    ForestDonkeyHint = auto()
+    ForestDiddyHint = auto()
+    ForestLankyHint = auto()
+    ForestTinyHint = auto()
+    ForestChunkyHint = auto()
+    CavesDonkeyHint = auto()
+    CavesDiddyHint = auto()
+    CavesLankyHint = auto()
+    CavesTinyHint = auto()
+    CavesChunkyHint = auto()
+    CastleDonkeyHint = auto()
+    CastleDiddyHint = auto()
+    CastleLankyHint = auto()
+    CastleTinyHint = auto()
+    CastleChunkyHint = auto()
 
     # Blueprint items are intentionally grouped together in this specific order for Kasplat location logic.
     JungleJapesDonkeyBlueprint = auto()

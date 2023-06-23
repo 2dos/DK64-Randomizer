@@ -1,25 +1,40 @@
+/**
+ * @file dk_free_softlock.c
+ * @author Ballaam
+ * @brief Fixes the softlock when freeing DK from a cage
+ * @version 0.1
+ * @date 2022-04-13
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #include "../../include/common.h"
 
 void freeDK(void) {
-	cancelCutscene(0);
+	/**
+	 * @brief Cancel the softlocked cutscene
+	 */
+	cancelCutscene(0); // Cancel cutscene
+	// Delete cutscene DK
 	actorData* cutscene_dk = (actorData*)findActorWithType(196);
 	SpawnerInfo* spawner = cutscene_dk->tied_character_spawner;
 	spawner->spawn_state = 0;
 	deleteActorContainer(cutscene_dk);
 }
 
-void fixDKFreeSoftlock(void) {
-	
-}
-
-static char jumping_started = 0;
+static char jumping_started = 0; // Global variable indicating that the jumping sequence has started
 
 void cutsceneDKCode(void) {
-	initCharSpawnerActor();
+	/**
+	 * @brief Actor code for cutscene DK
+	 */
+	initCharSpawnerActor(); // Initialize Char Spawner
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
+		// Initialization of the actor
 		jumping_started = 0;
 		alterCutsceneKongProperties();
-		if (CurrentMap == 0x4C) {
+		if (CurrentMap == MAP_DKRAP) {
 			CurrentActorPointer_0->render->scale_x *= 0.8f;
 			CurrentActorPointer_0->render->scale_y *= 0.8f;
 			CurrentActorPointer_0->render->scale_z *= 0.8f;
@@ -47,11 +62,13 @@ void cutsceneDKCode(void) {
 		unkCutsceneKongFunction_1(0);
 		DisplayTextFlagCheck(6,1,temp_flag);
 	}
+	// Define jump as having an animation timer > 80.0f
 	int anim_timer = getAnimationTimer(CurrentActorPointer_0);
 	if (anim_timer > 80.0f) {
 		jumping_started = 1;
 	}
 	if (jumping_started) {
+		// If no textbox is present, cancel cutscene
 		int found_actor = 0;
 		for (int i = 0; i < ActorCount; i++) {
 			actorData* _actor_ = (actorData*)ActorArray[i];

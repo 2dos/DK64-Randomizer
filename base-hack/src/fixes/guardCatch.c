@@ -1,7 +1,18 @@
+/**
+ * @file guardCatch.c
+ * @author Ballaam
+ * @brief All functions associated with the guard actor normally present in Stealthy Snoop
+ * @version 0.1
+ * @date 2022-07-07
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "../../include/common.h"
 
-static char warp_timer = 0;
+static char warp_timer = 0; // Global variable for a warp timer upon getting caught by a guard
 static unsigned char bad_guard_states[] = {
+    // Control States that you can't be caught in
     0x18, // BBlast Pad
     0x52, // Bananaport
     0x53, // Monkeyport
@@ -16,9 +27,14 @@ typedef struct guard_paad {
     /* 0x00E */ short z_something;
     /* 0x010 */ char unk_10[0x1A-0x10];
     /* 0x01A */ short unk_1A;
+    /* 0x01C */ char unk_1C[0x47-0x1C];
+    /* 0x047 */ char played_uhoh;
 } guard_paad;
 
 int isBadMovementState(void) {
+    /**
+     * @brief Check if you're in a bad control state
+     */
     if (Player) {
         int control_state = Player->control_state;
         for (int i = 0; i < sizeof(bad_guard_states); i++) {
@@ -32,8 +48,18 @@ int isBadMovementState(void) {
 }
 
 void guardCatch(void) {
+    /**
+     * @brief Catch Code for a guard
+     */
     if (Player) {
         if ((warp_timer == 0) && (TransitionSpeed == 0) && (!isBadMovementState()) && (CutsceneActive == 0)) {
+            /*
+                Only activates in the following conditions:
+                - Not caught by a guard at all (warp_timer == 0)
+                - Not in a transition process (TransitionSpeed == 0)
+                - Not in a bad movement state (!isBadMovementState())
+                - Not in a cutscene (CutsceneActive == 0)
+            */
             warp_timer = 80;
             tagKong(Player->new_kong);
             Player->noclip = 1;
@@ -56,56 +82,112 @@ void guardCatch(void) {
 }
 
 void WarpHandle(void) {
-    if (CurrentMap == 0x11) {
+    /**
+     * @brief Handles the warp procedure for guards, voiding and death
+     */
+    if (CurrentMap == MAP_HELM) {
         if (Rando.fast_start_helm == 2) { // Skip All
-            initiateTransition(0x11,4); // Crown Door
-        } else if (checkFlag(FLAG_HELM_ROMANDOORS_OPEN,2) || checkFlag(FLAG_MODIFIER_HELMBOM,0)) { // Roman Doors Open or BoM off
-            initiateTransition(0x11,3); // Lever
+            initiateTransition(MAP_HELM,4); // Crown Door
+        } else if (checkFlag(FLAG_HELM_ROMANDOORS_OPEN,FLAGTYPE_TEMPORARY) || checkFlag(FLAG_MODIFIER_HELMBOM,FLAGTYPE_PERMANENT)) { // Roman Doors Open or BoM off
+            initiateTransition(MAP_HELM,3); // Lever
         } else {
-            initiateTransition(0x11,0); // Start
+            initiateTransition(MAP_HELM,0); // Start
         }
-        setFlag(0x50,0,2); // Prevent Helm Door hardlock
+        setFlag(0x50,0,FLAGTYPE_TEMPORARY); // Prevent Helm Door hardlock
     } else {
         voidWarp();
     }
 }
 
 void catchWarpHandle(void) {
+    /**
+     * @brief Handle the catch procedure for a guard
+     */
     if (warp_timer > 0) {
         if ((warp_timer == 1) && (TransitionSpeed == 0)) {
+            // Warp on the final frame if not in a transition already
             WarpHandle();
         }
         warp_timer -= 1;
     }
     if (TransitionSpeed != 0) {
+        // Protect against warping if in a transition, which can cause a warp to an invalid map
         warp_timer = 0;
     }
 }
 
-void newGuardCode(void) {
-    unsigned int level_state = *(unsigned int*)(0x807FBB64);
-    if (CurrentActorPointer_0->control_state <= 0x35) {
-        handleGuardDetection(40.0f,70.0f);
+int inRabbitRace(void) {
+    if (CurrentMap == MAP_FUNGI) {
+        return *(int*)(0x807FBB64) | 4; // In Rabbit Race
     }
-    if ((collisionType == 4) || (collisionType == 9) || (collisionActive)) {
-        if ((level_state & 0x104000) == 0) {
+    return 0;
+}
+
+void newGuardCode(void) {
+    /**
+     * @brief Guard Actor Code
+     */
+    unsigned int level_state = *(unsigned int*)(0x807FBB64);
+    int in_snoop = (level_state & 0x104000) == 0;
+    if (CurrentActorPointer_0->control_state <= 0x35) { // Not damaged/dying
+        if (Player) {
+            if ((Player->strong_kong_ostand_bitfield & 0x60) == 0) { // No GGone / OSprint
+                if (!isBadMovementState()) { // Bad Movement State
+                    if (!inRabbitRace()) {
+                        float dist = 40.0f;
+                        float radius = 70.0f;
+                        if (in_snoop) { // Not in snoop
+                            if (CurrentActorPointer_0->control_state == 0x11) { // Is Idle
+                                radius = 40.0f;
+                                if (getAnimationTimer(CurrentActorPointer_0) > 60.0f) { // Smacking light
+                                    dist = 0.0f;
+                                    radius = 0.0f;
+                                }
+                            }
+                        }
+                        if (radius > 0.0f) {
+                            handleGuardDetection(dist, radius);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if ((collisionType == 4) || (collisionType == 9) || (collisionActive)) { // If being damaged
+        if (in_snoop) { // If not in SSnoop
             // Hit by ammo/oranges
-            if ((CurrentActorPointer_0->health <= 0) || (collisionActive)) {
+            if ((CurrentActorPointer_0->health <= 0) || (collisionActive)) { // If being attacked and with zero/negative health
+                // Death procedure
                 CurrentActorPointer_0->health = 0;
                 playActorAnimation(CurrentActorPointer_0,0x201);
                 CurrentActorPointer_0->control_state = 0x42;
                 CurrentActorPointer_0->control_state_progress = 0;
                 CurrentActorPointer_0->noclip_byte = 1;
             } else {
+                // Damage procedure
                 playActorAnimation(CurrentActorPointer_0,0x1FF);
                 CurrentActorPointer_0->control_state = 0x41;
                 CurrentActorPointer_0->control_state_progress = 0;
             }
         }
     }
+    if (in_snoop) { // If not in SSnoop
+        guard_paad* paad = CurrentActorPointer_0->paad;
+        if (CurrentActorPointer_0->grounded & 4) {
+            // Touching Water
+            if (paad->played_uhoh == 0) {
+                playSFX(UhOh);
+                spawnSparkles(CurrentActorPointer_0->xPos, CurrentActorPointer_0->yPos, CurrentActorPointer_0->zPos, 5);
+            }
+            paad->played_uhoh = 1;
+            CurrentActorPointer_0->control_state = 0x40;
+            CurrentActorPointer_0->control_state_progress = 0;
+        }
+    }
     int control_state = CurrentActorPointer_0->control_state;
     if (control_state > 0x35) {
         if (control_state == 0x37) {
+            // Spawn Enemy Drops
             CurrentActorPointer_0->control_state = 0x40;
             CurrentActorPointer_0->control_state_progress = 0;
             spawnEnemyDrops(CurrentActorPointer_0);

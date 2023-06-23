@@ -4,11 +4,7 @@ import math
 import struct
 from typing import BinaryIO
 
-from actor_names import actor_names
-from character_spawner_names import character_spawner_names
-from map_names import maps
-from model2_names import model2_names
-from model_names import cutscene_model_names
+from BuildNames import actor_names, character_spawner_names, cutscene_model_names, maps, model2_names
 
 # Useful for detecting booleans, enums, indexes etc
 valueSamples = {}
@@ -210,10 +206,7 @@ lz_struct = [
     {"name": "activation_type", "type": "byte"},
     {"name": "boolD", "type": bool, "size": 1},  # If set, enter K. Rool LZ is active without all keys
     {"name": "unkE", "type": "byte"},  # Usually 1, but values range from 0-4
-    {
-        "name": "unkF",
-        "type": "byte",
-    },  # Usually 0, but other known values are 2,4,5,32,48,50,64,75,80,96,128,144,209,228,255
+    {"name": "unkF", "type": "byte"},  # Usually 0, but other known values are 2,4,5,32,48,50,64,75,80,96,128,144,209,228,255
     {"name": "object_type", "type": "short", "index_of": lz_object_types},
     {"name": "destination_map", "type": "ushort", "index_of": maps},
     {"name": "destination_exit", "type": "ushort"},
@@ -337,10 +330,7 @@ def decodePaths(decoded_filename: str, encoded_filename: str):
         for i in range(num_paths):
             this_path = byte_read[path_base : path_base + 0x6]
             num_points = int.from_bytes(this_path[0x2:0x4], byteorder="big")
-            path = {
-                "id": int.from_bytes(this_path[0x0:0x2], byteorder="big"),
-                "unk4": int.from_bytes(this_path[0x4:0x6], byteorder="big"),
-            }
+            path = {"id": int.from_bytes(this_path[0x0:0x2], byteorder="big"), "unk4": int.from_bytes(this_path[0x4:0x6], byteorder="big")}
             # sampleValue("path->unk4", path["unk4"])
             path_base += 0x6
 
@@ -441,11 +431,7 @@ def encodeCheckpoints(decoded_filename: str, encoded_filename: str):
             writeStructArray(fh, checkpoints, checkpoint_struct)
 
 
-character_spawner_point_0x6_struct = [
-    {"name": "x_pos", "type": "short"},
-    {"name": "y_pos", "type": "short"},
-    {"name": "z_pos", "type": "short"},
-]
+character_spawner_point_0x6_struct = [{"name": "x_pos", "type": "short"}, {"name": "y_pos", "type": "short"}, {"name": "z_pos", "type": "short"}]
 character_spawner_point_0xA_struct = [
     {"name": "x_pos", "type": "short"},
     {"name": "y_pos", "type": "short"},
@@ -463,10 +449,7 @@ character_spawner_struct = [
     {"name": "unkB", "type": "byte"},  # Seen values 0-215 with some gaps, 0 and 40 are most common
     {"name": "max_idle_speed", "type": "byte"},
     {"name": "max_aggro_speed", "type": "byte"},
-    {
-        "name": "unkE",
-        "type": "byte",
-    },  # Seen values 1-47 with decreasing frequency as the value increases, possibly an index?
+    {"name": "unkE", "type": "byte"},  # Seen values 1-47 with decreasing frequency as the value increases, possibly an index?
     {"name": "scale", "type": "byte"},
     {"name": "aggro", "type": "byte"},
     {"name": "extra_data_count", "type": "byte"},
@@ -598,11 +581,7 @@ setup_model2_struct = [
     {"name": "unk2A", "type": bytes, "size": 0x30 - 0x2A},  # TODO: Break this down into smaller fields
 ]
 setup_conveyor_data_struct = [
-    {
-        "name": "model2Index",
-        "type": int,
-        "size": 4,
-    },  # Note: Not included in JSON, instead this struct lives in setup["model2"][index]["conveyorData"]
+    {"name": "model2Index", "type": int, "size": 4},  # Note: Not included in JSON, instead this struct lives in setup["model2"][index]["conveyorData"]
     {"name": "unk4", "type": float},
     {"name": "unk8", "type": float},
     {"name": "unkC", "type": float},

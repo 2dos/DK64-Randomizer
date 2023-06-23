@@ -9,7 +9,9 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import ActivateAllBananaports, RandomPrices, ShuffleLoadingZones
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Types import Types
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Settings import Settings
@@ -26,7 +28,7 @@ LobbyEntrancePool = [
 ]
 
 # Root is the starting spawn, which is the main area of DK Isles.
-root = Regions.IslesMain
+root = Regions.GameStart
 
 
 def GetRootExit(exitId):
@@ -193,19 +195,24 @@ def ShuffleExits(settings: Settings):
     """Shuffle exit pools depending on settings."""
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
-    if settings.shuffle_loading_zones == "levels":
-        if settings.kongs_for_progression:
+    if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+        # If we are restricted on kong locations, we need to carefully place levels in order to meet the kongs-by-level requirement
+        if settings.kongs_for_progression and not (settings.shuffle_items and Types.Kong in settings.shuffled_location_types):
             ShuffleLevelOrderWithRestrictions(settings)
         else:
             ShuffleLevelExits(settings)
-    elif settings.shuffle_loading_zones == "all":
+        if settings.alter_switch_allocation:
+            allocation = [1, 1, 1, 1, 2, 2, 3]
+            for x in range(7):
+                settings.switch_allocation[settings.level_order[x + 1]] = allocation[x]
+    elif settings.shuffle_loading_zones == ShuffleLoadingZones.all:
         frontpool = []
         backpool = []
         AssumeExits(settings, frontpool, backpool, list(ShufflableExits.keys()))
         # Shuffle each entrance pool
         ShuffleExitsInPool(settings, frontpool, backpool)
     # If levels rando is on, need to update Blocker and T&S requirements to match
-    if settings.shuffle_loading_zones == "levels":
+    if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
         UpdateLevelProgression(settings)
 
 
@@ -237,14 +244,14 @@ def UpdateLevelProgression(settings: Settings):
         Regions.JungleJapesLobby,
         Regions.AngryAztecLobby,
         Regions.FranticFactoryLobby,
-        Regions.GloomyGalleonLobby,
+        Regions.GloomyGalleonLobbyEntrance,
         Regions.FungiForestLobby,
         Regions.CrystalCavesLobby,
         Regions.CreepyCastleLobby,
     ]
     for levelIndex in range(len(lobbies)):
         newIndex = levelIndex
-        if settings.shuffle_loading_zones == "levels":
+        if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
             shuffledEntrance = ShufflableExits[LobbyEntrancePool[levelIndex]].shuffledId
             newDestRegion = ShufflableExits[shuffledEntrance].back.regionId
             # print(LobbyEntrancePool[levelIndex].name + " goes to " + newDestRegion.name)
@@ -276,15 +283,7 @@ def ShuffleLevelExits(settings: Settings, newLevelOrder: dict = None):
         Transitions.IslesMainToCavesLobby: Levels.CrystalCaves,
         Transitions.IslesMainToCastleLobby: Levels.CreepyCastle,
     }
-    shuffledLevelOrder = {
-        1: None,
-        2: None,
-        3: None,
-        4: None,
-        5: None,
-        6: None,
-        7: None,
-    }
+    shuffledLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
 
     # For each back exit, select a random valid front entrance to attach to it
     # Assuming there are no inherently invalid level orders, but if there are, validation will check after this
@@ -309,13 +308,25 @@ def ShuffleLevelExits(settings: Settings, newLevelOrder: dict = None):
 
 def ShuffleLevelOrderWithRestrictions(settings: Settings):
     """Determine level order given starting kong and the need to find more kongs along the way."""
-    if settings.starting_kongs_count == 1:
+    if settings.hard_level_progression:
+        newLevelOrder = ShuffleLevelOrderUnrestricted(settings)
+    elif settings.starting_kongs_count == 1:
         newLevelOrder = ShuffleLevelOrderForOneStartingKong(settings)
     else:
         newLevelOrder = ShuffleLevelOrderForMultipleStartingKongs(settings)
     if None in newLevelOrder.values():
         raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
     ShuffleLevelExits(settings, newLevelOrder)
+
+
+def ShuffleLevelOrderUnrestricted(settings):
+    """Shuffle the level order without Kong placement restrictions."""
+    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
+    allLevels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
+    random.shuffle(allLevels)
+    for i in range(len(allLevels)):
+        newLevelOrder[i + 1] = allLevels[i]
+    return newLevelOrder
 
 
 def ShuffleLevelOrderForOneStartingKong(settings):
@@ -334,13 +345,13 @@ def ShuffleLevelOrderForOneStartingKong(settings):
     # If Aztec is level 4, both of Japes/Factory need to be in level 1-3
     if aztecIndex == 4:
         # Tiny has no coins and no T&S access in Japes so it can't be first for her unless prices are free
-        if settings.starting_kong == Kongs.tiny and settings.random_prices != "free":
+        if settings.starting_kong == Kongs.tiny and settings.random_prices != RandomPrices.free:
             japesOptions = list(levelIndexChoices.intersection({2, 3}))
         else:
             japesOptions = list(levelIndexChoices.intersection({1, 3}))
     else:
         # Tiny has no coins and no T&S access in Japes so it can't be first for her unless prices are free
-        if settings.starting_kong == Kongs.tiny and settings.random_prices != "free":
+        if settings.starting_kong == Kongs.tiny and settings.random_prices != RandomPrices.free:
             japesOptions = list(levelIndexChoices.intersection({2, 3, 4, 5}))
         else:
             japesOptions = list(levelIndexChoices.intersection({1, 2, 3, 4, 5}))
@@ -403,15 +414,7 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
     """Determine level order given starting with 2 to 4 kongs and the need to find more kongs along the way."""
     levelIndicesToFill = {1, 2, 3, 4, 5, 6, 7}
     # Initialize level order
-    newLevelOrder = {
-        1: None,
-        2: None,
-        3: None,
-        4: None,
-        5: None,
-        6: None,
-        7: None,
-    }
+    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
     # Sort levels by most to least kongs
     kongsInLevels = {
         Levels.JungleJapes: 1 if Locations.DiddyKong in settings.kong_locations else 0,
@@ -450,7 +453,9 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
                     # If a kong is in Llama temple, need to be able to get past the guitar door and one of Donkey, Lanky, or Tiny to open the Llama temple
                     if lankyAccessible:
                         guitarDoorAccess = (
-                            Kongs.diddy in settings.starting_kong_list or settings.open_levels or (Kongs.donkey in settings.starting_kong_list and settings.activate_all_bananaports == "all")
+                            Kongs.diddy in settings.starting_kong_list
+                            or settings.open_levels
+                            or (Kongs.donkey in settings.starting_kong_list and settings.activate_all_bananaports == ActivateAllBananaports.all)
                         )
                         if not guitarDoorAccess or (
                             Kongs.donkey not in settings.starting_kong_list and Kongs.lanky not in settings.starting_kong_list and Kongs.tiny not in settings.starting_kong_list

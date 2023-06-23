@@ -1,10 +1,13 @@
 """Convert file setup."""
 import os
 import shutil
-import struct
 
+from BuildLib import float_to_hex, intf_to_float
 from getMoveSignLocations import getMoveSignData
 from place_vines import generateVineSeries
+
+BUTTON_DIST_NORMAL = 20
+CAVES_ITEM_HEIGHT = 20
 
 
 def convertSetup(file_name):
@@ -32,18 +35,6 @@ def writedatatoarr(stream, value, size, location):
     for x in range(size):
         stream[location + x] = bytearray(value.to_bytes(size, "big"))[x]
     return stream
-
-
-def int_to_float(val):
-    """Convert a hex int to a float."""
-    return struct.unpack("!f", bytes.fromhex(hex(val).split("0x")[1]))[0]
-
-
-def float_to_hex(f):
-    """Convert float to hex."""
-    if f == 0:
-        return "0x00000000"
-    return hex(struct.unpack("<I", struct.pack("<f", f))[0])
 
 
 base_stream = 0
@@ -101,7 +92,7 @@ def modify(file_name, map_index):
                 base_stream = byte_stream
                 _x = int.from_bytes(byte_read[read_location + 0 : read_location + 4], "big")
                 _y = int.from_bytes(byte_read[read_location + 4 : read_location + 8], "big")
-                _yf = int_to_float(_y) - 30
+                _yf = intf_to_float(_y) - 30
                 _y = int(float_to_hex(_yf), 16)
                 _z = int.from_bytes(byte_read[read_location + 8 : read_location + 12], "big")
                 _ax = int.from_bytes(byte_read[read_location + 0x18 : read_location + 0x1C], "big")
@@ -112,20 +103,7 @@ def modify(file_name, map_index):
                     if model2_index == 0x220:
                         _x = int(float_to_hex(805.6618), 16)
                         _z = int(float_to_hex(2226.797), 16)
-                added_model2.append(
-                    {
-                        "base_byte_stream": byte_stream,
-                        "type": 0x2AB,
-                        "x": _x,
-                        "y": _y,
-                        "z": _z,
-                        "rx": 0,
-                        "ry": _ay,
-                        "rz": 0,
-                        "id": model2_index,
-                        "scale": int(float_to_hex(0.35), 16),
-                    }
-                )
+                added_model2.append({"base_byte_stream": byte_stream, "type": 0x2AB, "x": _x, "y": _y, "z": _z, "rx": 0, "ry": _ay, "rz": 0, "id": model2_index, "scale": int(float_to_hex(0.35), 16)})
                 model2_index += 1
             if map_index == 0x22 and not added_factory_barracade and _id == 0x6:
                 added_factory_barracade = True
@@ -152,6 +130,25 @@ def modify(file_name, map_index):
                 repl_byte += _type.to_bytes(1, "big")
                 for x in range(0x30 - 0x2A):
                     repl_byte += byte_stream[x + 0x2A].to_bytes(1, "big")
+                byte_stream = repl_byte
+            elif map_index == 7 and _id == 0x52:
+                # Mountain GB
+                repl_byte = b""
+                coords = [1648.095, 990, 2431.953]
+                for c in coords:
+                    repl_byte += int(float_to_hex(c), 16).to_bytes(4, "big")
+                for x in range(0x30 - 0xC):
+                    repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
+                byte_stream = repl_byte
+            elif (map_index == 0x1A and _id == 0x13E) or (map_index == 5 and _id == 2):
+                # Nintendo/Rareware Coin
+                repl_byte = b""
+                scale = int(float_to_hex(0.2), 16)
+                for x in range(0xC):
+                    repl_byte += byte_stream[x].to_bytes(1, "big")
+                repl_byte += scale.to_bytes(4, "big")
+                for x in range(0x30 - 0x10):
+                    repl_byte += byte_stream[x + 0x10].to_bytes(1, "big")
                 byte_stream = repl_byte
             if map_index == 0x1A and _id == 0x24:
                 repl_byte = b""
@@ -205,6 +202,31 @@ def modify(file_name, map_index):
                     for x in range(0x30 - 0xC):
                         repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
                     byte_stream = repl_byte
+            if map_index == 0xCD:
+                # Standardize lanky phase buttons
+                buttons = (0xE, 0xF, 0x10, 0x11)
+                platforms = (0xD, 0x13, 0x14, 0x12)
+                button_loc = ((780, 419.629 + BUTTON_DIST_NORMAL), (1135.232 - BUTTON_DIST_NORMAL, 780), (780, 1116.334 - BUTTON_DIST_NORMAL), (438.904 + BUTTON_DIST_NORMAL, 780))
+                platform_loc = ((778.365, 396.901 + BUTTON_DIST_NORMAL), (1158.427 - BUTTON_DIST_NORMAL, 778.632), (780.283, 1138.851 - BUTTON_DIST_NORMAL), (416.092 + BUTTON_DIST_NORMAL, 778.456))
+                if _id >= 0xD and _id <= 0x14:
+                    x = 0
+                    z = 0
+                    if _id in buttons:
+                        index = buttons.index(_id)
+                        x = button_loc[index][0]
+                        z = button_loc[index][1]
+                    else:
+                        index = platforms.index(_id)
+                        x = platform_loc[index][0]
+                        z = platform_loc[index][1]
+                    repl_byte = b""
+                    repl_byte += int(float_to_hex(x), 16).to_bytes(4, "big")
+                    for x in range(4):
+                        repl_byte += byte_stream[x + 4].to_bytes(1, "big")
+                    repl_byte += int(float_to_hex(z), 16).to_bytes(4, "big")
+                    for x in range(0x30 - 0xC):
+                        repl_byte += byte_stream[x + 0xC].to_bytes(1, "big")
+                    byte_stream = repl_byte
             if map_index == 0x7 and _id == 0xC9:
                 repl_byte = b""
                 new_y = int(float_to_hex(400), 16)
@@ -214,10 +236,40 @@ def modify(file_name, map_index):
                 for x in range(0x30 - 0x8):
                     repl_byte += byte_stream[x + 0x8].to_bytes(1, "big")
                 byte_stream = repl_byte
-            data = {
-                "stream": byte_stream,
-                "type": _type,
-            }
+            elif map_index == 0x48:
+                # Underwater Items, Caves
+                ranges = (
+                    list(range(0xA5, 0xAF)),  # Lanky underwater CBs
+                    list(range(0xC0, 0xCA)),  # Tiny underwater CBs
+                    list(range(0x73, 0x76)),  # Chunky underwater coins
+                    list(range(0xD8, 0xDB)),  # Tiny underwater coins
+                    list(range(0xB7, 0xBA)),  # Lanky underwater coins (1)
+                    list(range(0xBD, 0xC0)),  # Lanky underwater coins (2)
+                )
+                in_range = False
+                for selection in ranges:
+                    if _id in selection:
+                        in_range = True
+                if in_range:
+                    repl_byte = b""
+                    new_y = int(float_to_hex(CAVES_ITEM_HEIGHT), 16)
+                    for x in range(0x4):
+                        repl_byte += byte_stream[x].to_bytes(1, "big")
+                    repl_byte += new_y.to_bytes(4, "big")
+                    for x in range(0x30 - 0x8):
+                        repl_byte += byte_stream[x + 0x8].to_bytes(1, "big")
+                    byte_stream = repl_byte
+            elif map_index == 0x1A and _id == 0x2C:
+                # Diddy Prod GB
+                repl_byte = b""
+                new_y = int(float_to_hex(715), 16)
+                for x in range(0x4):
+                    repl_byte += byte_stream[x].to_bytes(1, "big")
+                repl_byte += new_y.to_bytes(4, "big")
+                for x in range(0x30 - 0x8):
+                    repl_byte += byte_stream[x + 0x8].to_bytes(1, "big")
+                byte_stream = repl_byte
+            data = {"stream": byte_stream, "type": _type}
             model2.append(data)
             read_location += 0x30
         shop_signs = getMoveSignData(map_index, base_stream)
@@ -230,9 +282,7 @@ def modify(file_name, map_index):
         read_location += 4
         for x in range(mystery_count):
             byte_stream = byte_read[read_location : read_location + 0x24]
-            data = {
-                "stream": byte_stream,
-            }
+            data = {"stream": byte_stream}
             mystery.append(data)
             read_location += 0x24
         actor_count = int.from_bytes(byte_read[read_location : read_location + 4], "big")
@@ -251,17 +301,31 @@ def modify(file_name, map_index):
                 writedatatoarr(byte_stream, int(float_to_hex(new_x), 16), 4, 0x0)
                 writedatatoarr(byte_stream, int(float_to_hex(new_y), 16), 4, 0x4)
                 writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
+            elif map_index == 0x1E and obj_id == 36:
+                # tag barrel near mermaid in galleon
+                temp = []
+                for y in range(0x38):
+                    temp.append(byte_stream[y])
+                byte_stream = temp.copy()
+                new_y = 383.8333
+                writedatatoarr(byte_stream, int(float_to_hex(new_y), 16), 4, 0x4)
+            elif map_index == 0x1E and obj_id in (23, 25):
+                temp = []
+                for y in range(0x38):
+                    temp.append(byte_stream[y])
+                byte_stream = temp.copy()
+                new_x = 1296
+                new_y = 1600
+                new_z = 2028
+                if obj_id == 23:
+                    writedatatoarr(byte_stream, int(float_to_hex(new_x), 16), 4, 0x0)
+                    writedatatoarr(byte_stream, int(float_to_hex(new_z), 16), 4, 0x8)
+                writedatatoarr(byte_stream, int(float_to_hex(new_y), 16), 4, 0x4)
             elif map_index == 0x11 and not added_helm_faces:
                 face_z = 5423.538
                 face_hi = 160
                 face_lo = 104.5
-                face_coords = [
-                    [575.763, face_hi],
-                    [494.518, face_hi],
-                    [606.161, face_lo],
-                    [534.567, face_lo],
-                    [463.642, face_lo],
-                ]
+                face_coords = [[575.763, face_hi], [494.518, face_hi], [606.161, face_lo], [534.567, face_lo], [463.642, face_lo]]
                 for face_index, face in enumerate(face_coords):
                     added_actor.append(
                         {
@@ -347,24 +411,7 @@ def modify(file_name, map_index):
             byte_stream_arr = []
             for y in range(0x10):
                 byte_stream_arr.append(0)
-            new_data_1 = [
-                0xFF,
-                0xFB,
-                0x00,
-                0x00,
-                0x15,
-                0x00,
-                0x00,
-                0x00,
-                0x40,
-                0xC0,
-                0x00,
-                0x00,
-                0x43,
-                0xB3,
-                0x00,
-                0x00,
-            ]
+            new_data_1 = [0xFF, 0xFB, 0x00, 0x00, 0x15, 0x00, 0x00, 0x00, 0x40, 0xC0, 0x00, 0x00, 0x43, 0xB3, 0x00, 0x00]
             for y in new_data_1:
                 byte_stream_arr.append(y)
             for y in range(0xC):

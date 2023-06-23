@@ -5,20 +5,32 @@ from enum import IntEnum, auto
 class Regions(IntEnum):
     """Region enum."""
 
+    # Special regions
+    GameStart = auto()  # This holds your training barrels for fast start and sends you off to your starting region
+    Credits = auto()  # This holds the Banana Hoard
+
     # DK Isles Regions
     Treehouse = auto()
     TrainingGrounds = auto()
     IslesMain = auto()
+    OuterIsles = auto()
     IslesMainUpper = auto()
     Prison = auto()
     BananaFairyRoom = auto()
+    RarewareGBRoom = auto()
     JungleJapesLobby = auto()
     AngryAztecLobby = auto()
-    CrocodileIsleBeyondLift = auto()
+    KremIsle = auto()
+    KremIsleBeyondLift = auto()
+    KremIsleTopLevel = auto()
     IslesSnideRoom = auto()
     FranticFactoryLobby = auto()
     GloomyGalleonLobby = auto()
+    GloomyGalleonLobbyEntrance = auto()
     CabinIsle = auto()
+    IslesAboveWaterfall = auto()
+    IslesAirspace = auto()
+    AztecLobbyRoof = auto()
     FungiForestLobby = auto()
     CrystalCavesLobby = auto()
     CreepyCastleLobby = auto()
@@ -26,6 +38,8 @@ class Regions(IntEnum):
     KRool = auto()
 
     # Jungle Japes Regions
+    JungleJapesMedals = auto()
+    JungleJapesStart = auto()
     JungleJapesMain = auto()
     JapesBeyondPeanutGate = auto()
     JapesBeyondCoconutGate1 = auto()
@@ -43,9 +57,14 @@ class Regions(IntEnum):
     JapesBaboonBlast = auto()
 
     # Angry Aztec Regions
+    AngryAztecMedals = auto()
     AngryAztecStart = auto()
+    BetweenVinesByPortal = auto()
+    AztecTunnelBeforeOasis = auto()
+    AngryAztecOasis = auto()
     TempleStart = auto()
     TempleUnderwater = auto()
+    AngryAztecConnectorTunnel = auto()
     AngryAztecMain = auto()
     AztecDonkeyQuicksandCave = auto()
     DonkeyTemple = auto()
@@ -61,6 +80,7 @@ class Regions(IntEnum):
     AztecBaboonBlast = auto()
 
     # Frantic Factory Regions
+    FranticFactoryMedals = auto()
     FranticFactoryStart = auto()
     Testing = auto()
     RandD = auto()
@@ -69,6 +89,7 @@ class Regions(IntEnum):
     ChunkyRoomPlatform = auto()
     PowerHut = auto()
     BeyondHatch = auto()
+    LowerCore = auto()
     InsideCore = auto()
     MiddleCore = auto()
     UpperCore = auto()
@@ -77,13 +98,19 @@ class Regions(IntEnum):
     FactoryBaboonBlast = auto()
 
     # Gloomy Galleon Regions
+    GloomyGalleonMedals = auto()
     GloomyGalleonStart = auto()
+    GalleonPastVines = auto()
     GalleonBeyondPineappleGate = auto()
-    LighthouseArea = auto()
+    LighthouseSurface = auto()
+    LighthousePlatform = auto()
+    LighthouseUnderwater = auto()
+    LighthouseSnideAlcove = auto()
     Lighthouse = auto()
     MermaidRoom = auto()
     SickBay = auto()
     Shipyard = auto()
+    ShipyardUnderwater = auto()
     SealRace = auto()
     TreasureRoom = auto()
     TreasureRoomDiddyGoldTower = auto()
@@ -102,6 +129,7 @@ class Regions(IntEnum):
     GalleonBaboonBlast = auto()
 
     # Fungi Forest Regions
+    FungiForestMedals = auto()
     FungiForestStart = auto()
     ForestMinecarts = auto()
     GiantMushroomArea = auto()
@@ -117,8 +145,7 @@ class Regions(IntEnum):
     HollowTreeArea = auto()
     Anthill = auto()
     MillArea = auto()
-    MillChunkyArea = auto()
-    MillTinyArea = auto()
+    MillChunkyTinyArea = auto()
     SpiderRoom = auto()
     GrinderRoom = auto()
     MillRafters = auto()
@@ -132,6 +159,7 @@ class Regions(IntEnum):
     ForestBaboonBlast = auto()
 
     # Crystal Caves Regions
+    CrystalCavesMedals = auto()
     CrystalCavesMain = auto()
     CavesSnideArea = auto()
     CavesBlueprintCave = auto()
@@ -161,6 +189,7 @@ class Regions(IntEnum):
     CavesBaboonBlast = auto()
 
     # Creepy Castle Regions
+    CreepyCastleMedals = auto()
     CreepyCastleMain = auto()
     CastleWaterfall = auto()
     CastleTree = auto()
@@ -186,6 +215,12 @@ class Regions(IntEnum):
     # Hideout Helm Regions
     HideoutHelmStart = auto()
     HideoutHelmMain = auto()
+    HideoutHelmDonkeyRoom = auto()
+    HideoutHelmDiddyRoom = auto()
+    HideoutHelmLankyRoom = auto()
+    HideoutHelmTinyRoom = auto()
+    HideoutHelmChunkyRoom = auto()
+    HideoutHelmAfterBoM = auto()
 
     # Shop Regions
     FunkyGeneric = auto()

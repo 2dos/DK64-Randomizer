@@ -3,6 +3,7 @@ import glob
 import os
 import shutil
 import subprocess
+from hashlib import md5
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -51,6 +52,19 @@ for f in [*get_files(os.getcwd(), "html.jinja2", recursive=True), *get_files(os.
                     writer.write(html)
 
 # subprocess.run(["css-html-js-minify", "static/styles/", "--overwrite"])
-subprocess.run(["pyminify", "-i", "."])
+# subprocess.run(["pyminify", "-i", "."])
 subprocess.run(["python3", "setup.py", "bdist_wheel"])
 shutil.copyfile("dist/dk64rando-1.0.0-py3-none-any.whl", "static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
+with open("./static/py_libraries/dk64rando-1.0.0-py3-none-any.whl", "rb") as file:
+    wheel = file.read()
+    hash = md5(wheel).hexdigest()
+    with open("version.py", "a") as version:
+        version.write(f'\nwhl_hash = "{hash}"')
+
+
+# Create the file Gemfile
+with open("Gemfile", "w") as file:
+    file.write(
+        """source 'https://rubygems.org'
+gem 'github-pages'"""
+    )

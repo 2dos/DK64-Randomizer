@@ -1,15 +1,11 @@
 #include "../../include/common.h"
 
-#define PURCHASE_MOVES 0
-#define PURCHASE_SLAM 1
-#define PURCHASE_GUN 2
-#define PURCHASE_AMMOBELT 3
-#define PURCHASE_INSTRUMENT 4
-#define PURCHASE_NOTHING -1
-
 int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
+	if (kong > 4) {
+		kong = 0;
+	}
 	if (purchase_type != PURCHASE_NOTHING) {
-		if (purchase_value > 0) {
+		if (purchase_value != 0) {
 			if (purchase_type == PURCHASE_MOVES) {
 				if (MovesBase[kong].special_moves & (1 << (purchase_value - 1))) {
 					return 0;
@@ -48,11 +44,34 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 						return 5;
 					}
 				}
+			} else if ((purchase_type == PURCHASE_FLAG) || (purchase_type == PURCHASE_GB)) {
+				if (purchase_value == -2) { // Shockwave & Camera Combo
+					if ((!checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT)) || (!checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT))) {
+						return 6;
+					}
+				} else {
+					if (!checkFlagDuplicate(purchase_value, FLAGTYPE_PERMANENT)) {
+						int is_shared = 0;
+						int tied_flags[] = {FLAG_TBARREL_DIVE,FLAG_TBARREL_ORANGE,FLAG_TBARREL_BARREL,FLAG_TBARREL_VINE,FLAG_ABILITY_CAMERA,FLAG_ABILITY_SHOCKWAVE};
+						for (int i = 0; i < (sizeof(tied_flags) / 4); i++) {
+							if (purchase_value == tied_flags[i]) {
+								is_shared = 1;
+							}
+						}
+						if (getMoveProgressiveFlagType(purchase_value) > -1) {
+							is_shared = 1;
+						}
+						if (is_shared) {
+							return 6;
+						}
+						return 1;
+					}
+				}
 			}
 		}
 	}
 	return 0;
-};
+}
 
 #define MOVEBTF_DK 1
 #define MOVEBTF_DIDDY 2
@@ -65,11 +84,166 @@ int doesKongPossessMove(int purchase_type, int purchase_value, int kong) {
 #define SHOPINDEX_FUNKY 1
 #define SHOPINDEX_CANDY 2
 
-int getMoveCountInShop(int shop_index) {
+int isSharedMove(int shop_index, int level) {
+	if (shop_index == SHOPINDEX_CRANKY) {
+		purchase_struct* targ = (purchase_struct*)&CrankyMoves_New[0][level];
+		for (int i = 1; i < 5; i++) {
+			purchase_struct* src = (purchase_struct*)&CrankyMoves_New[i][level];
+			if (targ->move_kong != src->move_kong) {
+				return 0;
+			}
+			if (targ->purchase_type != src->purchase_type) {
+				return 0;
+			}
+			if (targ->purchase_value != src->purchase_value) {
+				return 0;
+			}
+		}
+	} else if (shop_index == SHOPINDEX_FUNKY) {
+		purchase_struct* targ = (purchase_struct*)&FunkyMoves_New[0][level];
+		for (int i = 1; i < 5; i++) {
+			purchase_struct* src = (purchase_struct*)&FunkyMoves_New[i][level];
+			if (targ->move_kong != src->move_kong) {
+				return 0;
+			}
+			if (targ->purchase_type != src->purchase_type) {
+				return 0;
+			}
+			if (targ->purchase_value != src->purchase_value) {
+				return 0;
+			}
+		}
+	} else if (shop_index == SHOPINDEX_CANDY) {
+		purchase_struct* targ = (purchase_struct*)&CandyMoves_New[0][level];
+		for (int i = 1; i < 5; i++) {
+			purchase_struct* src = (purchase_struct*)&CandyMoves_New[i][level];
+			if (targ->move_kong != src->move_kong) {
+				return 0;
+			}
+			if (targ->purchase_type != src->purchase_type) {
+				return 0;
+			}
+			if (targ->purchase_value != src->purchase_value) {
+				return 0;
+			}
+		}
+	}
+	return 1;
+}
+
+typedef struct counter_paad {
+	/* 0x000 */ void* image_slots[3];
+	/* 0x00C */ behaviour_data* linked_behaviour;
+	/* 0x010 */ unsigned char kong_images[5];
+	/* 0x015 */ unsigned char item_images[5];
+	/* 0x016 */ unsigned char use_item_display;
+	/* 0x017 */ unsigned char cap;
+	/* 0x018 */ unsigned char current_slot;
+	/* 0x019 */ unsigned char shop;
+} counter_paad;
+
+typedef enum counter_items {
+	/* 0x000 */ COUNTER_NO_ITEM,
+	/* 0x001 */ COUNTER_DK_FACE,
+	/* 0x002 */ COUNTER_DIDDY_FACE,
+	/* 0x003 */ COUNTER_LANKY_FACE,
+	/* 0x004 */ COUNTER_TINY_FACE,
+	/* 0x005 */ COUNTER_CHUNKY_FACE,
+	/* 0x006 */ COUNTER_SHARED_FACE,
+	/* 0x007 */ COUNTER_SOLDOUT,
+	/* 0x008 */ COUNTER_GB,
+	/* 0x009 */ COUNTER_BP,
+	/* 0x00A */ COUNTER_CROWN,
+	/* 0x00B */ COUNTER_KEY,
+	/* 0x00C */ COUNTER_MEDAL,
+	/* 0x00D */ COUNTER_POTION,
+	/* 0x00E */ COUNTER_NINCOIN,
+	/* 0x00F */ COUNTER_RWCOIN,
+	/* 0x010 */ COUNTER_BEAN,
+	/* 0x011 */ COUNTER_PEARL,
+	/* 0x012 */ COUNTER_FAIRY,
+	/* 0x013 */ COUNTER_RAINBOWCOIN,
+	/* 0x014 */ COUNTER_FAKEITEM,
+} counter_items;
+
+int getCounterItem(int shop_index, int kong, int level) {
+	purchase_struct* data = 0;
+	if (shop_index == SHOPINDEX_CRANKY) {
+		data = (purchase_struct*)&CrankyMoves_New[kong][level];
+	} else if (shop_index == SHOPINDEX_FUNKY) {
+		data = (purchase_struct*)&FunkyMoves_New[kong][level];
+	} else if (shop_index == SHOPINDEX_CANDY) {
+		data = (purchase_struct*)&CandyMoves_New[kong][level];
+	}
+	if (data) {
+		switch(data->purchase_type) {
+			case PURCHASE_MOVES:
+			case PURCHASE_SLAM:
+			case PURCHASE_GUN:
+			case PURCHASE_AMMOBELT:
+			case PURCHASE_INSTRUMENT:
+				return COUNTER_POTION;
+				break;
+			case PURCHASE_FLAG:
+				{
+					int flag = data->purchase_value;
+					if (isFlagInRange(flag, FLAG_BP_JAPES_DK_HAS, 40)) {
+						return COUNTER_BP;
+					} else if (isFlagInRange(flag, FLAG_MEDAL_JAPES_DK, 40)) {
+						return COUNTER_MEDAL;
+					} else if (isFlagInRange(flag, FLAG_CROWN_JAPES, 10)) {
+						return COUNTER_CROWN;
+					} else if (flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
+						return COUNTER_NINCOIN;
+					} else if (flag == FLAG_COLLECTABLE_RAREWARECOIN) {
+						return COUNTER_RWCOIN;
+					} else if (flag == FLAG_COLLECTABLE_BEAN) {
+						return COUNTER_BEAN;
+					} else if (isFlagInRange(flag, FLAG_PEARL_0_COLLECTED, 5)) {
+						return COUNTER_PEARL;
+					} else if (isFlagInRange(flag, FLAG_FAIRY_1, 20)) {
+						return COUNTER_FAIRY;
+					} else if (isFlagInRange(flag, FLAG_RAINBOWCOIN_0, 16)) {
+						return COUNTER_RAINBOWCOIN;
+					} else if (isFlagInRange(flag, FLAG_FAKEITEM, 16)) {
+						return COUNTER_FAKEITEM;
+					} else {
+						if (isTBarrelFlag(flag)) {
+							return COUNTER_POTION;
+						}
+						if (isFairyFlag(flag)) {
+							return COUNTER_POTION;
+						}
+						int subtype = getMoveProgressiveFlagType(flag);
+						if (subtype >= 0) {
+							return COUNTER_POTION;
+						}
+						for (int i = 0; i < 8; i++) {
+							if (flag == getKeyFlag(i)) {
+								return COUNTER_KEY;
+							}
+						}
+						for (int i = 0; i < 5; i++) {
+							if (flag == getKongFlag(i)) {
+								return COUNTER_DK_FACE + i;
+							}
+						}
+					}
+				}
+				break;
+			case PURCHASE_GB:
+				return COUNTER_GB;
+			break;
+		}
+	}
+	return COUNTER_NO_ITEM;
+}
+
+void getMoveCountInShop(counter_paad* paad, int shop_index) {
 	int level = getWorld(CurrentMap,0);
 	int possess = 0;
-	int btf = 0;
 	int count = 0;
+	int slot = 0;
 	if (level < LEVEL_COUNT) {
 		for (int i = 0; i < 5; i++) {
 			if (shop_index == SHOPINDEX_CRANKY) {
@@ -79,52 +253,76 @@ int getMoveCountInShop(int shop_index) {
 			} else if (shop_index == SHOPINDEX_CANDY) {
 				possess = doesKongPossessMove(CandyMoves_New[i][level].purchase_type, CandyMoves_New[i][level].purchase_value, CandyMoves_New[i][level].move_kong);
 			}
+			if ((possess == 1) && (isSharedMove(shop_index, level))) {
+				possess = 7;
+			}
 			if (possess == 1) {
-				btf |= (1 << i);
+				paad->kong_images[slot] = i + 1;
+				paad->item_images[slot] = getCounterItem(shop_index, i, level);
+				slot += 1;
 				count += 1;
 			} else if (possess > 1) {
-				btf |= MOVEBTF_SHARED;
-				count = 1;
+				paad->kong_images[0] = COUNTER_SHARED_FACE;
+				paad->item_images[0] = getCounterItem(shop_index, i, level);
+				paad->cap = 1;
+				return;
 			}
 		}
 	}
-	CurrentActorPointer_0->rgb_mask[0] |= (count << 4);
-	return btf;
+	paad->cap = count;
 }
-
-typedef struct counter_paad {
-	/* 0x000 */ void* image_slots[3];
-	/* 0x00C */ behaviour_data* linked_behaviour;
-} counter_paad;
 
 #define IMG_WIDTH 32
 
-void* loadFontTexture_Counter(void* slot, int index) {
-	return loadCounterFontTexture(0x21,slot,1,index,IMG_WIDTH);
+#define COUNTER_CACHE_SIZE 32
+static void* texture_data[COUNTER_CACHE_SIZE] = {};
+static unsigned char texture_load[COUNTER_CACHE_SIZE] = {};
+
+void wipeCounterImageCache(void) {
+	for (int i = 0; i < COUNTER_CACHE_SIZE; i++) {
+		texture_data[i] = 0;
+		texture_load[i] = 0;
+	}
+}
+
+void* loadInternalTexture(int texture_start, int texture_offset) {
+	if (texture_load[texture_offset] == 0) {
+		texture_data[texture_offset] = getMapData(TABLE_TEXTURES, texture_start + texture_offset, 1, 1);
+	}
+	texture_load[texture_offset] = 3;
+	return texture_data[texture_offset];
+}
+
+void* loadFontTexture_Counter(void* slot, int index, int slot_index) {
+	void* texture = loadInternalTexture(195, index); // Load texture
+	if (slot) {
+		wipeTextureSlot(slot);
+	}
+	void* location = dk_malloc(IMG_WIDTH << 7);
+	copyImage(location, texture, IMG_WIDTH);
+	blink(CurrentActorPointer_0, slot_index, 0xFFFF);
+	applyImageToActor(CurrentActorPointer_0, slot_index, 0);
+	writeImageSlotToActor(CurrentActorPointer_0, slot_index, 0, location);
+	return location;
 }
 
 void updateCounterDisplay(void) {
-	int kongs_btf = CurrentActorPointer_0->rgb_mask[1];
-	int index = CurrentActorPointer_0->rgb_mask[2];
-	int cap = CurrentActorPointer_0->rgb_mask[0] >> 4;
 	counter_paad* paad = CurrentActorPointer_0->paad;
-	if (kongs_btf & MOVEBTF_SHARED) {
-		index = 0;
-		paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1],6);
-	} else {
-		int found_index = 0;
-		for (int kong = 0; kong < 5; kong++) {
-			if (kongs_btf & (1 << kong)) {
-				if (found_index == index) {
-					paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1],kong+1);
-					return;
-				} else {
-					found_index += 1;
-					if (found_index == cap) {
-						return;
-					}
-				}
-			}
+	int index = paad->current_slot;
+	if (paad->cap > 0) {
+		int kong_image = paad->kong_images[index];
+		int item_image = paad->item_images[index];
+		if ((kong_image < 0) || (kong_image > 0x14)) {
+			kong_image = 0;
+		}
+		if ((item_image < 0) || (item_image > 0x14)) {
+			item_image = 0;
+		}
+		if (paad->use_item_display) {
+			paad->image_slots[0] = loadFontTexture_Counter(paad->image_slots[0], kong_image, 0);
+			paad->image_slots[2] = loadFontTexture_Counter(paad->image_slots[2], item_image, 2);
+		} else {
+			paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], kong_image, 1);
 		}
 	}
 }
@@ -150,7 +348,7 @@ int getClosestShop(void) {
 		Snide's HQ: 0x79
 	*/
 	unsigned int dists[4] = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF};
-	int* m2location = ObjectModel2Pointer;
+	int* m2location = (int*)ObjectModel2Pointer;
 	int found_counter = 0;
 	behaviour_data* behavs[4] = {};
 	counter_paad* paad = CurrentActorPointer_0->paad;
@@ -202,7 +400,7 @@ typedef struct ModelData {
 } ModelData;
 
 float getShopScale(int index) {
-	int* m2location = ObjectModel2Pointer;
+	int* m2location = (int*)ObjectModel2Pointer;
 	for (int i = 0; i < ObjectModel2Count; i++) {
 		ModelTwoData* _object = getObjectArrayAddr(m2location,0x90,i);
 		if (_object) {
@@ -239,22 +437,31 @@ void newCounterCode(void) {
 	counter_paad* paad = CurrentActorPointer_0->paad;
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
 		// Init Code
-		if (CurrentMap != 0x11) {
+		if (CurrentMap != MAP_HELM) {
 			if (Rando.shop_indicator_on) {
+				if (Rando.shop_indicator_on == 2) {
+					paad->use_item_display = 1;
+				} else {
+					paad->use_item_display = 0;
+				}
+				// Initialize slots
 				for (int i = 0; i < 3; i++) {
-					paad->image_slots[i] = loadCounterFontTexture(0x21,paad->image_slots[i],i,0,IMG_WIDTH);
+					paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], 0, i);
 				}
 				CurrentActorPointer_0->rot_z = 3072; // Facing vertical
 				int closest_shop = getClosestShop();
-				CurrentActorPointer_0->rgb_mask[0] = closest_shop;
+				paad->shop = closest_shop;
 				if (closest_shop == 3) { // Snide is closest
 					deleteActorContainer(CurrentActorPointer_0);
 				} else {
-					CurrentActorPointer_0->rgb_mask[1] = getMoveCountInShop(CurrentActorPointer_0->rgb_mask[0] & 0xF);
-					CurrentActorPointer_0->rgb_mask[2] = 0;
+					getMoveCountInShop(paad, paad->shop);
+					paad->current_slot = 0;
 					updateCounterDisplay();
-					if (CurrentActorPointer_0->rgb_mask[1] == 0) {
-						paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1],7);
+					if (paad->cap == 0) {
+						paad->kong_images[0] = COUNTER_SOLDOUT;
+						paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], 7, 1);
+						paad->cap = 1;
+						paad->use_item_display = 0;
 					}
 					// Update Position depending on scale
 					float h_factor = 1.0f;
@@ -288,22 +495,23 @@ void newCounterCode(void) {
 				deleteActorContainer(CurrentActorPointer_0);
 			}
 		} else {
+			// Helm Indicator
 			for (int i = 0; i < 3; i++) {
-				paad->image_slots[i] = loadCounterFontTexture(0x21,paad->image_slots[i],i,0,IMG_WIDTH);
+				paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], 0, i);
 			}
 			int id = getActorSpawnerIDFromTiedActor(CurrentActorPointer_0);
 			int face = Rando.k_rool_order[id - 0x100];
 			CurrentActorPointer_0->rot_z = 3072; // Facing vertical
-			paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1],face+1);
+			paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], face+1, 1);
 		}
 	} else {
-		if (CurrentMap != 0x11) {
+		if (CurrentMap != MAP_HELM) {
 			if ((ObjectModel2Timer % 20) == 0) {
-				int lim = CurrentActorPointer_0->rgb_mask[0] >> 4;
+				int lim = paad->cap;
 				if (lim > 1) {
-					CurrentActorPointer_0->rgb_mask[2] += 1;
-					if (CurrentActorPointer_0->rgb_mask[2] >= lim) {
-						CurrentActorPointer_0->rgb_mask[2] = 0;
+					paad->current_slot += 1;
+					if (paad->current_slot >= lim) {
+						paad->current_slot = 0;
 					}
 					updateCounterDisplay();
 				}
@@ -315,9 +523,9 @@ void newCounterCode(void) {
 					CurrentActorPointer_0->obj_props_bitfield &= 0xFFFFFFFB;
 				}
 			}
-			if (CurrentMap == 0x1E) {
-				int shop = CurrentActorPointer_0->rgb_mask[0] & 0xF;
-				int* m2location = ObjectModel2Pointer;
+			if (CurrentMap == MAP_GALLEON) {
+				int shop = paad->shop;
+				int* m2location = (int*)ObjectModel2Pointer;
 				if (shop == 1) {
 					int funky = convertIDToIndex(0x1F4);
 					if (funky > -1) {

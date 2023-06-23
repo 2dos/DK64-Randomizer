@@ -4,6 +4,7 @@ import random
 import randomizer.Logic as Logic
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.LogicClasses import TransitionFront
 from randomizer.Spoiler import Spoiler
@@ -39,8 +40,8 @@ available_shops = {
         ShopLocation(Regions.FunkyGeneric, Maps.JungleJapes, Regions.JungleJapesMain, Regions.FunkyJapes),
     ],
     Levels.AngryAztec: [
-        ShopLocation(Regions.CrankyGeneric, Maps.AngryAztec, Regions.AngryAztecMain, Regions.CrankyAztec),
-        ShopLocation(Regions.CandyGeneric, Maps.AngryAztec, Regions.AngryAztecStart, Regions.CandyAztec),
+        ShopLocation(Regions.CrankyGeneric, Maps.AngryAztec, Regions.AngryAztecConnectorTunnel, Regions.CrankyAztec),
+        ShopLocation(Regions.CandyGeneric, Maps.AngryAztec, Regions.AngryAztecOasis, Regions.CandyAztec),
         ShopLocation(Regions.FunkyGeneric, Maps.AngryAztec, Regions.AngryAztecMain, Regions.FunkyAztec),
         ShopLocation(Regions.Snide, Maps.AngryAztec, Regions.AngryAztecMain, Regions.Snide),
     ],
@@ -54,7 +55,7 @@ available_shops = {
         ShopLocation(Regions.CrankyGeneric, Maps.GloomyGalleon, Regions.GloomyGalleonStart, Regions.CrankyGalleon),
         ShopLocation(Regions.CandyGeneric, Maps.GloomyGalleon, Regions.Shipyard, Regions.CandyGalleon, locked=True),  # Locked because on water
         ShopLocation(Regions.FunkyGeneric, Maps.GloomyGalleon, Regions.Shipyard, Regions.FunkyGalleon, locked=True),  # Locked because on water
-        ShopLocation(Regions.Snide, Maps.GloomyGalleon, Regions.LighthouseArea, Regions.Snide),
+        ShopLocation(Regions.Snide, Maps.GloomyGalleon, Regions.LighthouseSnideAlcove, Regions.Snide),
     ],
     Levels.FungiForest: [
         ShopLocation(Regions.CrankyGeneric, Maps.FungiForest, Regions.GiantMushroomArea, Regions.CrankyForest),
@@ -87,16 +88,18 @@ def ShuffleShopLocations(spoiler: Spoiler):
     assortment = {}
     for level in available_shops:
         # Don't shuffle Isles shops in entrance rando. This prevents having the one-entrance-locked Isles Snide room from being progression.
-        if level == Levels.DKIsles and spoiler.settings.shuffle_loading_zones == "all":
+        if level == Levels.DKIsles and spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all:
             continue
         shop_array = available_shops[level]
         # Get list of shops in level
         shops_in_levels = []
         for shop in shop_array:
             if not shop.locked:
-                # This is a valid shop to shuffle, so we need to remove the preexisting logical access
-                old_region = Logic.Regions[shop.containing_region]
-                old_region.exits = [exit for exit in old_region.exits if exit.dest != shop.shop_exit]
+                # This is a valid shop to shuffle, so we need to remove all preexisting logical access, wherever it is
+                possible_containing_region_ids = [shop_location.containing_region for shop_location in shop_array]
+                for region_id in possible_containing_region_ids:
+                    old_region = Logic.Regions[region_id]
+                    old_region.exits = [exit for exit in old_region.exits if exit.dest != shop.shop_exit]
                 shops_in_levels.append(shop)
         random.shuffle(shops_in_levels)
         # Assign shuffle to data
