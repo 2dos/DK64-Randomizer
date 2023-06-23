@@ -42,8 +42,3 @@ jobs:
         DEST_FOLDER: ./
         DEST_PREDEPLOY_CLEANUP: rm -rf ./*
 
-    - name: DigitalOcean App Platform deployment
-      uses: digitalocean/app_action@v1.1.5
-      with:
-        app_name: dk64-randomizer
-        token: ${{ secrets.DEPLOYMENT_TOKEN }}
