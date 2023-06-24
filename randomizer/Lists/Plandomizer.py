@@ -188,6 +188,10 @@ for locationEnum, locationObj in LocationList.items():
     # Do not randomize constant rewards.
     if locationObj.type == Types.Constant:
         continue
+    # Do not include training barrels or pre-given move locations. We will fill
+    # those automatically based on the user's selected starting moves.
+    if locationObj.type in [Types.TrainingBarrel, Types.PreGivenMove]:
+        continue
     locationJson = {
         "display_name": locationObj.name,
         "enum_name": locationEnum.name
@@ -273,34 +277,56 @@ PlandomizerPanels["Minigames"]["levels"]["HideoutHelm"]["locations"] = [
 # ITEMS #
 #########
 
-# These items are not available as starting items.
-invalidStartingItems = {
-    PlandoItems.NoItem,
-    PlandoItems.Donkey,
-    PlandoItems.Diddy,
-    PlandoItems.Lanky,
-    PlandoItems.Tiny,
-    PlandoItems.Chunky,
-    PlandoItems.GoldenBanana,
-    PlandoItems.BananaFairy,
-    PlandoItems.BananaMedal,
-    PlandoItems.BattleCrown,
-    PlandoItems.RainbowCoin,
-    PlandoItems.FakeItem,
-    PlandoItems.JunkItem,
-    PlandoItems.DonkeyBlueprint,
-    PlandoItems.DiddyBlueprint,
-    PlandoItems.LankyBlueprint,
-    PlandoItems.TinyBlueprint,
-    PlandoItems.ChunkyBlueprint
+# These moves can be specified as starting moves.
+startingMoves = {
+    PlandoItems.BaboonBlast,
+    PlandoItems.StrongKong,
+    PlandoItems.GorillaGrab,
+    PlandoItems.ChimpyCharge,
+    PlandoItems.RocketbarrelBoost,
+    PlandoItems.SimianSpring,
+    PlandoItems.Orangstand,
+    PlandoItems.BaboonBalloon,
+    PlandoItems.OrangstandSprint,
+    PlandoItems.MiniMonkey,
+    PlandoItems.PonyTailTwirl,
+    PlandoItems.Monkeyport,
+    PlandoItems.HunkyChunky,
+    PlandoItems.PrimatePunch,
+    PlandoItems.GorillaGone,
+    PlandoItems.ProgressiveSlam,
+    PlandoItems.ProgressiveSlam,
+    PlandoItems.ProgressiveSlam,
+    PlandoItems.Coconut,
+    PlandoItems.Peanut,
+    PlandoItems.Grape,
+    PlandoItems.Feather,
+    PlandoItems.Pineapple,
+    PlandoItems.Bongos,
+    PlandoItems.Guitar,
+    PlandoItems.Trombone,
+    PlandoItems.Saxophone,
+    PlandoItems.Triangle,
+    PlandoItems.ProgressiveAmmoBelt,
+    PlandoItems.ProgressiveAmmoBelt,
+    PlandoItems.HomingAmmo,
+    PlandoItems.SniperSight,
+    PlandoItems.ProgressiveInstrumentUpgrade,
+    PlandoItems.ProgressiveInstrumentUpgrade,
+    PlandoItems.ProgressiveInstrumentUpgrade,
+    PlandoItems.Swim,
+    PlandoItems.Oranges,
+    PlandoItems.Barrels,
+    PlandoItems.Vines,
+    PlandoItems.Camera,
+    PlandoItems.Shockwave,
 }
 
-# The below items may be added multiple times as starting items.
-multipleStartingItems = {
+# The below moves may be added multiple times as starting moves.
+multipleStartingMoves = {
     PlandoItems.ProgressiveSlam: 2,
     PlandoItems.ProgressiveAmmoBelt: 2,
     PlandoItems.ProgressiveInstrumentUpgrade: 3,
-    PlandoItems.Pearl: 5
 }
 
 # These PlandoItems enums have multiple Items enums that map to each of them,
@@ -316,9 +342,7 @@ doNotAutoAddItemSet = {
 }
 
 PlannableItems = []  # Used to select rewards for locations.
-# Starting items are not currently supported, but the code is still here for
-# when support for this arrives.
-PlannableStartingItems = []  # Used to select starting items.
+PlannableStartingMoves = []  # Used to select starting moves.
 
 for itemEnum, itemObj in ItemList.items():
     # Only include items that have a matching item in the plando map.
@@ -337,18 +361,18 @@ for itemEnum, itemObj in ItemList.items():
     PlannableItems.append(itemJson)
 
     # Add this item to the list of possible starting items, if valid.
-    if plandoItemEnum in invalidStartingItems:
+    if plandoItemEnum not in startingMoves:
         continue
-    if plandoItemEnum in multipleStartingItems:
-        itemCount = multipleStartingItems[plandoItemEnum]
+    if plandoItemEnum in multipleStartingMoves:
+        itemCount = multipleStartingMoves[plandoItemEnum]
         for i in range(1, itemCount+1):
             multipleItemJson = {
                 "display_name": itemObj.name,
-                "enum_name": f"{plandoItemEnum.name}_{i}"
+                "enum_name": plandoItemEnum.name
             }
-            PlannableStartingItems.append(multipleItemJson)
+            PlannableStartingMoves.append(multipleItemJson)
     else:
-        PlannableStartingItems.append(itemJson)
+        PlannableStartingMoves.append(itemJson)
 
 PlannableItems.append({
     "display_name": "Blueprint (Donkey)",

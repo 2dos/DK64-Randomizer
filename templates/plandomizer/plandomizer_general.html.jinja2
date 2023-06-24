@@ -1,5 +1,6 @@
 <style>
-    .item-select.wide-select {
+    .item-select.wide-select,
+    .item-multiselect.wide-select {
         max-width: 350px;
     }
 
@@ -136,6 +137,28 @@
                         </select>
                     </label>
                 {% endfor %}
+            </div>
+            <div class="flex-container">
+                <div class="item-multiselect wide-select">
+                    <p class="select-title">Starting Moves</p>
+                    <select name="plando_starting_moves_selected"
+                            id="plando_starting_moves_selected"
+                            data-toggle="tooltip"
+                            title
+                            class="form-select multi-select"
+                            aria-label="Starting Moves"
+                            multiple
+                            size="10">
+                        <option selected value="">
+                            Random Move(s)
+                        </option>
+                        {% for move in plando_moves %}
+                            <option value="{{move["enum_name"]}}">
+                                {{move["display_name"]}}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
         </div>
         <div class="col panel"

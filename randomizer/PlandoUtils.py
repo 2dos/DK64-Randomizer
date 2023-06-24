@@ -351,48 +351,6 @@ for locEnum, locObj in LocationList.items():
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.GoldenBanana.name)
 
-# Training barrels should not have anything but moves as a reward.
-trainingBarrelLocationList = [
-    Locations.IslesVinesTrainingBarrel.name,
-    Locations.IslesSwimTrainingBarrel.name,
-    Locations.IslesOrangesTrainingBarrel.name,
-    Locations.IslesBarrelsTrainingBarrel.name
-]
-trainingBarrelRestrictedItemSet = {
-    PlandoItems.NoItem.name,
-    PlandoItems.Donkey.name,
-    PlandoItems.Diddy.name,
-    PlandoItems.Lanky.name,
-    PlandoItems.Tiny.name,
-    PlandoItems.Chunky.name,
-    PlandoItems.NintendoCoin.name,
-    PlandoItems.RarewareCoin.name,
-    PlandoItems.JungleJapesKey.name,
-    PlandoItems.AngryAztecKey.name,
-    PlandoItems.FranticFactoryKey.name,
-    PlandoItems.GloomyGalleonKey.name,
-    PlandoItems.FungiForestKey.name,
-    PlandoItems.CrystalCavesKey.name,
-    PlandoItems.CreepyCastleKey.name,
-    PlandoItems.HideoutHelmKey.name,
-    PlandoItems.GoldenBanana.name,
-    PlandoItems.BananaFairy.name,
-    PlandoItems.BananaMedal.name,
-    PlandoItems.BattleCrown.name,
-    PlandoItems.Bean.name,
-    PlandoItems.Pearl.name,
-    PlandoItems.RainbowCoin.name,
-    PlandoItems.FakeItem.name,
-    PlandoItems.JunkItem.name,
-    PlandoItems.DonkeyBlueprint.name,
-    PlandoItems.DiddyBlueprint.name,
-    PlandoItems.LankyBlueprint.name,
-    PlandoItems.TinyBlueprint.name,
-    PlandoItems.ChunkyBlueprint.name,
-}
-for locationName in trainingBarrelLocationList:
-    ItemRestrictionsPerLocation[locationName].update(trainingBarrelRestrictedItemSet)
-
 # This one rock can't have Kongs as a reward.
 ItemRestrictionsPerLocation[Locations.IslesDonkeyJapesRock.name].update(KongSet)
 
@@ -421,13 +379,7 @@ badFakeItemLocationList = [
 for locationName in badFakeItemLocationList:
     ItemRestrictionsPerLocation[locationName].add(PlandoItems.FakeItem.name)
 
-# Training barrels also cannot have fake items.
-for locationName in trainingBarrelLocationList:
-    ItemRestrictionsPerLocation[locationName].add(PlandoItems.FakeItem.name)
-
-# Rainbow coins cannot be placed on training barrels or on the Banana Fairy's gift.
-for locationName in trainingBarrelLocationList:
-    ItemRestrictionsPerLocation[locationName].add(PlandoItems.RainbowCoin.name)
+# Rainbow coins cannot be placed on the Banana Fairy's gift.
 ItemRestrictionsPerLocation[Locations.CameraAndShockwave.name].add(PlandoItems.RainbowCoin.name)
 
 # Dirt patches cannot have blueprints placed on them.
@@ -731,6 +683,7 @@ PlandoEnumMap = {
     "plando_kong_rescue_lanky": Kongs,
     "plando_kong_rescue_tiny": Kongs,
     "plando_kong_rescue_chunky": Kongs,
+    "plando_starting_moves_selected": PlandoItems,
     "plando_level_order_0": Levels,
     "plando_level_order_1": Levels,
     "plando_level_order_2": Levels,
