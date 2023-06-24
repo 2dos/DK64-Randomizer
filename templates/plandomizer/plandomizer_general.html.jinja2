@@ -59,8 +59,8 @@
                         -- Randomize --
                     </option>
                     {% for spawn in plando_spawns %}
-                        <option value="{{spawn["enum_name"]}}">
-                            {{spawn["display_name"]}}
+                        <option value="{{spawn["value"]}}">
+                            {{spawn["name"]}}
                         </option>
                     {% endfor %}
                 </select>
@@ -153,8 +153,8 @@
                             Random Move(s)
                         </option>
                         {% for move in plando_moves %}
-                            <option value="{{move["enum_name"]}}">
-                                {{move["display_name"]}}
+                            <option value="{{move["value"]}}">
+                                {{move["name"]}}
                             </option>
                         {% endfor %}
                     </select>

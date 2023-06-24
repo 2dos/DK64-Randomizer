@@ -87,94 +87,94 @@ def isMinigameLocation(locationEnum):
 
 PlandomizerPanels = {
     "DKIsles": {
-        "display_name": "D.K. Isles",
+        "name": "D.K. Isles",
         "locations": createPlannableLocationObj()
     },
     "JungleJapes": {
-        "display_name": "Jungle Japes",
+        "name": "Jungle Japes",
         "locations": createPlannableLocationObj()
     },
     "AngryAztec": {
-        "display_name": "Angry Aztec",
+        "name": "Angry Aztec",
         "locations": createPlannableLocationObj()
     },
     "FranticFactory": {
-        "display_name": "Frantic Factory",
+        "name": "Frantic Factory",
         "locations": createPlannableLocationObj()
     },
     "GloomyGalleon": {
-        "display_name": "Gloomy Galleon",
+        "name": "Gloomy Galleon",
         "locations": createPlannableLocationObj()
     },
     "FungiForest": {
-        "display_name": "Fungi Forest",
+        "name": "Fungi Forest",
         "locations": createPlannableLocationObj()
     },
     "CrystalCaves": {
-        "display_name": "Crystal Caves",
+        "name": "Crystal Caves",
         "locations": createPlannableLocationObj()
     },
     "CreepyCastle": {
-        "display_name": "Creepy Castle",
+        "name": "Creepy Castle",
         "locations": createPlannableLocationObj()
     },
     "HideoutHelm": {
-        "display_name": "Hideout Helm",
+        "name": "Hideout Helm",
         "locations": createPlannableLocationObj()
     },
     "Shops": {
-        "display_name": "Shops",
+        "name": "Shops",
         "locations": createPlannableLocationObj()
     },
     "Blueprints": {
-        "display_name": "Blueprints",
+        "name": "Blueprints",
         "locations": createPlannableLocationObj()
     },
     # Minigames are grouped by level, not by Kong.
     "Minigames": {
-        "display_name": "Minigames",
+        "name": "Minigames",
         "levels": {
             "DKIsles": {
-                "display_name": "D.K. Isles",
+                "name": "D.K. Isles",
                 "locations": []
             },
             "JungleJapes": {
-                "display_name": "Jungle Japes",
+                "name": "Jungle Japes",
                 "locations": []
             },
             "AngryAztec": {
-                "display_name": "Angry Aztec",
+                "name": "Angry Aztec",
                 "locations": []
             },
             "FranticFactory": {
-                "display_name": "Frantic Factory",
+                "name": "Frantic Factory",
                 "locations": []
             },
             "GloomyGalleon": {
-                "display_name": "Gloomy Galleon",
+                "name": "Gloomy Galleon",
                 "locations": []
             },
             "FungiForest": {
-                "display_name": "Fungi Forest",
+                "name": "Fungi Forest",
                 "locations": []
             },
             "CrystalCaves": {
-                "display_name": "Crystal Caves",
+                "name": "Crystal Caves",
                 "locations": []
             },
             "CreepyCastle": {
-                "display_name": "Creepy Castle",
+                "name": "Creepy Castle",
                 "locations": []
             },
             "HideoutHelm": {
-                "display_name": "Hideout Helm",
+                "name": "Hideout Helm",
                 "locations": []
             }
         }
     },
     # There are no "All Kongs" hints.
     "Hints": {
-        "display_name": "Hints",
+        "name": "Hints",
         "locations": {
             "Donkey": [],
             "Diddy": [],
@@ -193,8 +193,8 @@ for locationEnum, locationObj in LocationList.items():
     if locationObj.type in [Types.TrainingBarrel, Types.PreGivenMove]:
         continue
     locationJson = {
-        "display_name": locationObj.name,
-        "enum_name": locationEnum.name
+        "name": locationObj.name,
+        "value": locationEnum.name
     }
     kongString = getKongString(locationObj.kong)
     if locationObj.type == Types.BlueprintBanana:
@@ -213,8 +213,8 @@ for locationEnum, locationObj in LocationList.items():
         # If this is a minigame location, add it to the Minigames list.
         if isMinigameLocation(locationEnum):
             PlandomizerPanels["Minigames"]["levels"][levelName]["locations"].append({
-                "display_name": locationObj.name,
-                "enum_name": locationEnum.name,
+                "name": locationObj.name,
+                "value": locationEnum.name,
                 "kong": kongString
             })
 
@@ -222,53 +222,53 @@ for locationEnum, locationObj in LocationList.items():
 # locations where rewards can be placed, so they don't get naturally added.
 PlandomizerPanels["Minigames"]["levels"]["HideoutHelm"]["locations"] = [
     {
-        "display_name": "Helm Donkey 1",
-        "enum_name": "HelmDonkey1",
+        "name": "Helm Donkey 1",
+        "value": "HelmDonkey1",
         "kong": "Donkey"
     },
     {
-        "display_name": "Helm Donkey 2",
-        "enum_name": "HelmDonkey2",
+        "name": "Helm Donkey 2",
+        "value": "HelmDonkey2",
         "kong": "Donkey"
     },
     {
-        "display_name": "Helm Diddy 1",
-        "enum_name": "HelmDiddy1",
+        "name": "Helm Diddy 1",
+        "value": "HelmDiddy1",
         "kong": "Diddy"
     },
     {
-        "display_name": "Helm Diddy 2",
-        "enum_name": "HelmDiddy2",
+        "name": "Helm Diddy 2",
+        "value": "HelmDiddy2",
         "kong": "Diddy"
     },
     {
-        "display_name": "Helm Lanky 1",
-        "enum_name": "HelmLanky1",
+        "name": "Helm Lanky 1",
+        "value": "HelmLanky1",
         "kong": "Lanky"
     },
     {
-        "display_name": "Helm Lanky 2",
-        "enum_name": "HelmLanky2",
+        "name": "Helm Lanky 2",
+        "value": "HelmLanky2",
         "kong": "Lanky"
     },
     {
-        "display_name": "Helm Tiny 1",
-        "enum_name": "HelmTiny1",
+        "name": "Helm Tiny 1",
+        "value": "HelmTiny1",
         "kong": "Tiny"
     },
     {
-        "display_name": "Helm Tiny 2",
-        "enum_name": "HelmTiny2",
+        "name": "Helm Tiny 2",
+        "value": "HelmTiny2",
         "kong": "Tiny"
     },
     {
-        "display_name": "Helm Chunky 1",
-        "enum_name": "HelmChunky1",
+        "name": "Helm Chunky 1",
+        "value": "HelmChunky1",
         "kong": "Chunky"
     },
     {
-        "display_name": "Helm Chunky 2",
-        "enum_name": "HelmChunky2",
+        "name": "Helm Chunky 2",
+        "value": "HelmChunky2",
         "kong": "Chunky"
     }
 ]
@@ -355,8 +355,8 @@ for itemEnum, itemObj in ItemList.items():
     if plandoItemEnum in doNotAutoAddItemSet:
         continue
     itemJson = {
-        "display_name": itemObj.name,
-        "enum_name": plandoItemEnum.name
+        "name": itemObj.name,
+        "value": plandoItemEnum.name
     }
     PlannableItems.append(itemJson)
 
@@ -367,36 +367,36 @@ for itemEnum, itemObj in ItemList.items():
         itemCount = multipleStartingMoves[plandoItemEnum]
         for i in range(1, itemCount+1):
             multipleItemJson = {
-                "display_name": itemObj.name,
-                "enum_name": plandoItemEnum.name
+                "name": itemObj.name,
+                "value": plandoItemEnum.name
             }
             PlannableStartingMoves.append(multipleItemJson)
     else:
         PlannableStartingMoves.append(itemJson)
 
 PlannableItems.append({
-    "display_name": "Blueprint (Donkey)",
-    "enum_name": "DonkeyBlueprint"
+    "name": "Blueprint (Donkey)",
+    "value": "DonkeyBlueprint"
 })
 PlannableItems.append({
-    "display_name": "Blueprint (Diddy)",
-    "enum_name": "DiddyBlueprint"
+    "name": "Blueprint (Diddy)",
+    "value": "DiddyBlueprint"
 })
 PlannableItems.append({
-    "display_name": "Blueprint (Lanky)",
-    "enum_name": "LankyBlueprint"
+    "name": "Blueprint (Lanky)",
+    "value": "LankyBlueprint"
 })
 PlannableItems.append({
-    "display_name": "Blueprint (Tiny)",
-    "enum_name": "TinyBlueprint"
+    "name": "Blueprint (Tiny)",
+    "value": "TinyBlueprint"
 })
 PlannableItems.append({
-    "display_name": "Blueprint (Chunky)",
-    "enum_name": "ChunkyBlueprint"
+    "name": "Blueprint (Chunky)",
+    "value": "ChunkyBlueprint"
 })
 PlannableItems.append({
-    "display_name": "Junk Item",
-    "enum_name": "JunkItem"
+    "name": "Junk Item",
+    "value": "JunkItem"
 })
 
 # The maximum amount of each item that the user is allowed to place.
@@ -480,8 +480,8 @@ for minigameEnum, minigameObj in MinigameRequirements.items():
     if minigameEnum == Minigames.NoGame:
         continue
     minigameJson = {
-        "display_name": minigameObj.name,
-        "enum_name": minigameEnum.name
+        "name": minigameObj.name,
+        "value": minigameEnum.name
     }
     PlannableMinigames.append(minigameJson)
 
@@ -536,7 +536,7 @@ for level in allSpawnableLevels:
 
     for regionEnum, regionObj in sortedLocations.items():
         regionJson = {
-            "display_name": f"{getLevelString(regionObj.level)}: {regionObj.hint_name} - {regionObj.name}",
-            "enum_name": regionEnum.name
+            "name": f"{getLevelString(regionObj.level)}: {regionObj.hint_name} - {regionObj.name}",
+            "value": regionEnum.name
         }
         PlannableSpawns.append(regionJson)

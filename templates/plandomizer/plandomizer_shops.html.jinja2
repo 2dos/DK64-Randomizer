@@ -13,25 +13,25 @@
      id="nav-plando-{{panelName}}"
      role="tabpanel"
      aria-labelledby="nav-plando-{{panelName}}-tab">
-    <h2 class="title">{{panel["display_name"]}}</h2>
+    <h2 class="title">{{panel["name"]}}</h2>
     {% for kong, locations in panel["locations"].items() %}
         <h3 class="title">{{kong}}</h3>
         <div class="flex-container flex-center">
             {% for location in locations|plando_shop_sort %}
                 <div class="location-picker">
-                    <label for="plando_{{location["enum_name"]}}_shop_item" class="location-label">
-                        {{location["display_name"]}}
+                    <label for="plando_{{location["value"]}}_shop_item" class="location-label">
+                        {{location["name"]}}
                     </label>
-                    <select id="plando_{{location["enum_name"]}}_shop_item"
-                            name="plando_{{location["enum_name"]}}_shop_item"
+                    <select id="plando_{{location["value"]}}_shop_item"
+                            name="plando_{{location["value"]}}_shop_item"
                             data-toggle="tooltip"
                             title
                             class="form-select plando-item-select">
                         <option value="">-- Randomize --</option>
                         {% for item in plando_items|plando_item_restrict(location) %}
-                            <option value="{{item["enum_name"]}}"
-                                {{plando_option_class_annotation(panel["display_name"], kong, location["enum_name"], item["enum_name"])}}>
-                                {{item["display_name"]}}
+                            <option value="{{item["value"]}}"
+                                {{plando_option_class_annotation(panel["name"], kong, location["value"], item["value"])}}>
+                                {{item["name"]}}
                             </option>
                         {% endfor %}
                     </select>
@@ -43,8 +43,8 @@
                                 step="1"
                                 data-toggle="tooltip"
                                 title
-                                id="plando_{{location["enum_name"]}}_shop_cost"
-                                name="plando_{{location["enum_name"]}}_shop_cost"
+                                id="plando_{{location["value"]}}_shop_cost"
+                                name="plando_{{location["value"]}}_shop_cost"
                                 class="form-control shop-cost-input">
                         Coins
                     </label>

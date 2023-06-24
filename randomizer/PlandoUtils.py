@@ -422,13 +422,13 @@ def PlandoItemFilter(itemList, location):
        
        Args:
            itemList (dict[]): The list of possible plando items. Each item
-               contains "display_name" and "enum_name" string fields.
+               contains "name" and "value" string fields.
            location (str): The location where we are trying to place items.
                Equal to the string name of the Location enum.
     """
 
     # Filter out every item that appears in the restricted set for this location.
-    return [item for item in itemList if item["enum_name"] not in ItemRestrictionsPerLocation[location["enum_name"]]]
+    return [item for item in itemList if item["value"] not in ItemRestrictionsPerLocation[location["value"]]]
 
 # A dictionary indicating which mini-games are unavailable to certain Kongs.
 kongMinigameRestrictions = {
@@ -474,7 +474,7 @@ def PlandoMinigameFilter(minigameList, kong):
     """
     if kong == "All Kongs":
         return minigameList
-    return [game for game in minigameList if game["enum_name"] not in kongMinigameRestrictions[kong]]
+    return [game for game in minigameList if game["value"] not in kongMinigameRestrictions[kong]]
 
 invalidTabPanels = {
     "Blueprints"
@@ -642,7 +642,7 @@ def PlandoShopSortFilter(shopLocationList):
            shopLocationList (str[]): The list of all shop locations.
     """
     def shopKey(shopLocation):
-        return shopLocationOrderingDict[shopLocation["enum_name"]]
+        return shopLocationOrderingDict[shopLocation["value"]]
     
     return sorted(shopLocationList, key=shopKey)
 

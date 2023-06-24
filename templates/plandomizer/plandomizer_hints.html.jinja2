@@ -8,7 +8,7 @@
      id="nav-plando-{{panelName}}"
      role="tabpanel"
      aria-labelledby="nav-plando-{{panelName}}-tab">
-    <h2 class="title">{{panel["display_name"]}}</h2>
+    <h2 class="title">{{panel["name"]}}</h2>
     <div class="hint-info">
         Hints can be a maximum of 900 characters. The only permitted characters
         are letters, numbers, spaces, and the characters ,.-?!
@@ -18,13 +18,13 @@
         <div class="flex-container flex-center">
             {% for location in locations %}
                 <div class="location-picker">
-                    <label for="plando_{{location["enum_name"]}}_hint" class="location-label">
-                        {{location["display_name"]}}
+                    <label for="plando_{{location["value"]}}_hint" class="location-label">
+                        {{location["name"]}}
                     </label>
                     <div>
                         <input type="text"
-                               id="plando_{{location["enum_name"]}}_hint"
-                               name="plando_{{location["enum_name"]}}_hint"
+                               id="plando_{{location["value"]}}_hint"
+                               name="plando_{{location["value"]}}_hint"
                                data-toggle="tooltip"
                                title
                                placeholder="Enter hint text."
