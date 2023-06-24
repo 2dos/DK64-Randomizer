@@ -1,11 +1,11 @@
 """Holds the version for DK64 Rando."""
 import js
 
-stable_version = "1.5"
+stable_version = "2.0"
 dev_version = "2.0"
 
 try:
-    url = js.location.href.lower().replace("/", "").replace("http:", "").replace("https:", "")
+    url = js.location.hostname.lower().replace("/", "").replace("http:", "").replace("https:", "")
 except Exception:
     url = "localhost"
 
