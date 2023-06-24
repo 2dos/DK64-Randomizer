@@ -82,6 +82,11 @@ async def patching_response(data, from_patch_gen=False):
         writeMiscCosmeticChanges(settings)
         applyHolidayMode(settings)
 
+        # D-Pad Display
+        ROM().seek(sav + 0x139)
+        # The DPadDisplays enum is indexed to allow this.
+        ROM().write(int(settings.dpad_display))
+
         if settings.homebrew_header:
             # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM
             ROM().seek(0x3C)

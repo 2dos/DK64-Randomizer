@@ -448,11 +448,6 @@ def patching_response(spoiler):
     applyHelmDoorCosmetics(spoiler.settings)
     applyKrushaKong(spoiler.settings)
 
-    # D-Pad Display
-    LocalROM().seek(sav + 0x139)
-    # The DPadDisplays enum is indexed to allow this.
-    LocalROM().write(int(spoiler.settings.dpad_display))
-
     # Apply Hash
     order = 0
     for count in spoiler.settings.seed_hash:
