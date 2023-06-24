@@ -66,7 +66,7 @@
                 </select>
             </div>
             <div class="flex-container">
-                <div class="item-multiselect">
+                <div class="item-multiselect wide-select">
                     <p class="select-title">Starting Kongs</p>
                     <select name="plando_starting_kongs_selected"
                             id="plando_starting_kongs_selected"
@@ -272,3 +272,12 @@
         </div>
     </div>
 </div>
+<script>
+    $('#plando_starting_kongs_selected option').mousedown(function(e) {
+        $(this).prop('selected', !$(this).prop('selected'));
+        // For some reason, jQuery will not trigger this event properly.
+        document.getElementById('plando_starting_kongs_selected').dispatchEvent(new Event('change'));
+    
+        return false;
+    });
+</script>
