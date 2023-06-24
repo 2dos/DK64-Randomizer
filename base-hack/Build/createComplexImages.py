@@ -249,6 +249,8 @@ for pel_index, pellet in enumerate(pellets):
         pel_im = pel_im.resize((dim, int(dim * 1.5)))
     elif pellet == "coconut":
         pel_im = pel_im.resize((dim, int(dim * 1.275)))
+        enhancer = ImageEnhance.Brightness(pel_im)
+        pel_im = enhancer.enhance(1.5)
     else:
         pel_im = pel_im.resize((dim, dim))
     tracker_im.paste(pel_im, (gap * pel_index, 0), pel_im)

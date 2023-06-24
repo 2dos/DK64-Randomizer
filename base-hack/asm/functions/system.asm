@@ -32,6 +32,7 @@
 .definelabel dk_strFormat, 0x800031E0
 .definelabel convertTimestamp, 0x80005818
 .definelabel ReadFile, 0x8060C6B8
+.definelabel SaveToFile, 0x8060C648
 .definelabel assessFlagMapping, 0x807314F4
 .definelabel WipeFile, 0x8060C830
 .definelabel WipeImageCache, 0x8068C080
@@ -66,3 +67,8 @@
 .definelabel __osGetThreadId, 0x800078A0
 .definelabel __osViSwapContext, 0x80009F10
 .definelabel cstring_strlen, 0x80002F18
+.definelabel wipeGlobalFlags, 0x807310BC
+.definelabel setIntroStoryPlaying, 0x8070B308
+.definelabel alterSFXVolume, 0x80737B58
+.definelabel alterMusicVolume, 0x8060A398
+.definelabel adjustSFXType_Internal, 0x80737C20

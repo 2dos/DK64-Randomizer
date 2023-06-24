@@ -1,5 +1,6 @@
 """Contains the class which holds logic variables, and the master copy of regions."""
 from math import ceil
+
 import randomizer.CollectibleLogicFiles.AngryAztec
 import randomizer.CollectibleLogicFiles.CreepyCastle
 import randomizer.CollectibleLogicFiles.CrystalCaves
@@ -8,12 +9,6 @@ import randomizer.CollectibleLogicFiles.FranticFactory
 import randomizer.CollectibleLogicFiles.FungiForest
 import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
-from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Regions import Regions as RegionEnum
-from randomizer.Enums.Settings import ActivateAllBananaports, GlitchesSelected, HelmDoorItem, LogicType, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
-from randomizer.Enums.Types import Types
-from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Warps import BananaportVanilla
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -29,10 +24,16 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Regions import Regions as RegionEnum
+from randomizer.Enums.Settings import ActivateAllBananaports, GlitchesSelected, HelmDoorItem, LogicType, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
 from randomizer.Enums.Time import Time
+from randomizer.Enums.Types import Types
+from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
+from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Prices import CanBuy, GetPriceAtLocation
 
 STARTING_SLAM = 1  # Currently we're assuming you always start with 1 slam
@@ -202,7 +203,23 @@ class LogicVarHolder:
         ]
         for keyEvent in keyEvents:
             if keyEvent not in self.settings.krool_keys_required:
-                self.Events.append(keyEvent)
+                # This is horrifyingly bad to go keys -> events -> keys but the patcher is expecting events in krool_keys_required and I'm not touching the math there to fix it
+                if keyEvent == Events.JapesKeyTurnedIn:
+                    self.JapesKey = True
+                elif keyEvent == Events.AztecKeyTurnedIn:
+                    self.AztecKey = True
+                elif keyEvent == Events.FactoryKeyTurnedIn:
+                    self.FactoryKey = True
+                elif keyEvent == Events.GalleonKeyTurnedIn:
+                    self.GalleonKey = True
+                elif keyEvent == Events.ForestKeyTurnedIn:
+                    self.ForestKey = True
+                elif keyEvent == Events.CavesKeyTurnedIn:
+                    self.CavesKey = True
+                elif keyEvent == Events.CastleKeyTurnedIn:
+                    self.CastleKey = True
+                elif keyEvent == Events.HelmKeyTurnedIn:
+                    self.HelmKey = True
 
         activated_warp_maps = []
         if self.settings.activate_all_bananaports == ActivateAllBananaports.all:
@@ -420,7 +437,7 @@ class LogicVarHolder:
 
     def CanGetOnCannonGamePlatform(self):
         """Determine whether the player can get on the platform in Cannon Game Room in Gloomy Galleon."""
-        return Events.WaterSwitch in self.Events or (self.advanced_platforming and (self.ischunky or self.islanky))
+        return Events.WaterSwitch in self.Events or (self.advanced_platforming and (self.ischunky or (self.islanky and self.settings.krusha_kong != Kongs.lanky)))
 
     def CanSkew(self, swim, kong_req=Kongs.any):
         """Determine whether the player can skew."""
@@ -544,7 +561,7 @@ class LogicVarHolder:
         if self.settings.crown_door_item == HelmDoorItem.opened:
             return True
         elif self.settings.crown_door_item == HelmDoorItem.vanilla:
-            return self.BattleCrowns >= 4
+            return self.DoorItemCheck(HelmDoorItem.req_crown, self.settings.crown_door_item_count)
         return self.DoorItemCheck(self.settings.crown_door_item, self.settings.crown_door_item_count)
 
     def CoinDoorOpened(self):
@@ -552,7 +569,7 @@ class LogicVarHolder:
         if self.settings.coin_door_item == HelmDoorItem.opened:
             return True
         elif self.settings.coin_door_item == HelmDoorItem.vanilla:
-            return self.nintendoCoin and self.rarewareCoin
+            return self.DoorItemCheck(HelmDoorItem.req_companycoins, self.settings.coin_door_item_count)
         return self.DoorItemCheck(self.settings.coin_door_item, self.settings.coin_door_item_count)
 
     def CanFreeDiddy(self):
@@ -666,23 +683,22 @@ class LogicVarHolder:
                 collectible.added = True
 
     def PurchaseShopItem(self, location_id):
-        """Purchase items from shops and subtract price from logical coin counts."""
+        """Purchase from this location and subtract price from logical coin counts."""
         location = LocationList[location_id]
-        if location.item is not None and location.item is not Items.NoItem:
-            price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
-            if price is None:  # This probably shouldn't happen but I think it's harmless
-                return  # TODO: solve this
-            # print("BuyShopItem for location: " + location.name)
-            # print("Item: " + ItemList[location.item].name + " has Price: " + str(price))
-            # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
-            if location.kong == Kongs.any:
-                for kong in range(0, 5):
-                    self.Coins[kong] -= price
-                    self.SpentCoins[kong] += price
-            # If kong specific move, just that kong paid for it
-            else:
-                self.Coins[location.kong] -= price
-                self.SpentCoins[location.kong] += price
+        price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
+        if price is None:  # This shouldn't happen but it's probably harmless
+            return  # TODO: solve this
+        # If shared move, take the price from all kongs EVEN IF THEY AREN'T FREED YET
+        if location.kong == Kongs.any:
+            for kong in range(0, 5):
+                self.Coins[kong] -= price
+                self.SpentCoins[kong] += price
+            return
+        # If kong specific move, just that kong paid for it
+        else:
+            self.Coins[location.kong] -= price
+            self.SpentCoins[location.kong] += price
+            return
 
     @staticmethod
     def HasAccess(region, kong):
@@ -753,13 +769,25 @@ class LogicVarHolder:
         """Return true if the boss for a given level is beatable according to boss location rando and boss kong rando."""
         requiredKong = self.settings.boss_kongs[level]
         bossFight = self.settings.boss_maps[level]
+        # Ensure we have the required moves for the boss fight itself
         hasRequiredMoves = True
-        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny:
+        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not (self.settings.hard_bosses and self.settings.krusha_kong != Kongs.tiny):
             hasRequiredMoves = self.twirl
         elif bossFight == Maps.FungiBoss:
             hasRequiredMoves = self.hunkyChunky and self.barrels
         elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
             hasRequiredMoves = self.barrels
+        # In simple level order, there are a couple very specific cases we have to account for in order to prevent boss fill failures
+        level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (ShuffleLoadingZones.none, ShuffleLoadingZones.levels)
+        if level_order_matters and not self.assumeFillSuccess:  # These conditions only matter on fill, not on playthrough
+            order_of_level = 7  # Guaranteed to be 1-7 here
+            for level_order in self.settings.level_order:
+                if self.settings.level_order[level_order] == level:
+                    order_of_level = level_order
+            if order_of_level == 4 and not self.barrels:  # Prevent Barrels on boss 3
+                return False
+            if order_of_level == 7 and (not self.hunkyChunky or (not self.twirl and not self.settings.hard_bosses)):  # Prevent Hunky on boss 7, and also Twirl on non-hard bosses
+                return False
         return self.IsKong(requiredKong) and hasRequiredMoves
 
     def HasFillRequirementsForLevel(self, level):
@@ -781,19 +809,31 @@ class LogicVarHolder:
             # You need to have vines or twirl before you can enter Aztec or any level beyond it
             if order_of_level >= order_of_aztec and not (self.vines or (self.istiny and self.twirl)):
                 return False
-            if order_of_level >= 3:
-                # Require barrels by level 3 to prevent boss barrel fill failures
-                if not self.barrels:
-                    return False
-                # Require swim by level 4 to prevent T&S being zero'd out
-                if order_of_level >= 4 and not self.swim:  # and not "the ability to dive without dive" whenever we get that squared away
+            if order_of_level >= 4:
+                # Require the following moves by level 4:
+                # - Swim so you can get into Lobby 4. This prevents logic from skipping this level for T&S requirements, preventing 0'd T&S.
+                # - Barrels so there will always be an eligible boss fill given the available moves at any level.
+                # - Vines for gameplay reasons. Needing vines for Helm is a frequent bottleneck and this eases the hunt for it.
+                if not self.swim or not self.barrels or not self.vines:
                     return False
                 # Require one of twirl or hunky chunky by level 7 to prevent non-hard-boss fill failures
                 if not self.settings.hard_bosses and order_of_level >= 7 and not (self.twirl or self.hunkyChunky):
                     return False
                 # Require both hunky chunky and twirl (or hard bosses) before Helm to prevent boss fill failures
-                if order_of_level > 7 and not self.hunkyChunky or (not self.twirl and not self.settings.hard_bosses):
+                if order_of_level > 7 and not (self.hunkyChunky and (self.twirl or self.settings.hard_bosses)):
                     return False
+            # Make sure we have access to all prior required keys before entering the next level - this prevents keys from being placed in levels beyond what they unlock
+            if order_of_level > 1 and not self.JapesKey:
+                return False
+            elif order_of_level > 2 and not self.AztecKey:
+                return False
+            elif order_of_level > 4 and (not self.FactoryKey or not self.GalleonKey):
+                return False
+            elif order_of_level > 5 and not self.ForestKey:
+                return False
+            elif order_of_level > 7 and (not self.CavesKey or not self.CastleKey):
+                return False
+
         # If we have the moves, ensure we have enough kongs as well
         return self.HasEnoughKongs(level, forPreviousLevel=True)
 
@@ -816,10 +856,11 @@ class LogicVarHolder:
 
     def WinConditionMet(self):
         """Check if the current game state has met the win condition."""
-        if (
-            self.settings.win_condition == WinCondition.beat_krool or self.settings.win_condition == WinCondition.poke_snap
-        ):  # Photo taking doesn't have a clear wincon so this'll do until something better is concocted
+        if self.settings.win_condition == WinCondition.beat_krool:
             return Events.KRoolDefeated in self.Events
+        # Photo taking doesn't have a perfect wincon so this'll do until something better is concocted
+        if self.settings.win_condition == WinCondition.poke_snap:
+            return Events.KRoolDefeated in self.Events and self.camera
         elif self.settings.win_condition == WinCondition.get_key8:
             return self.HelmKey
         elif self.settings.win_condition == WinCondition.all_fairies:

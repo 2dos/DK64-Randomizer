@@ -2,13 +2,6 @@
 
 import random
 
-from randomizer.Lists.FairyLocations import fairy_locations
-from randomizer.Spoiler import Spoiler
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Locations import Locations
-from randomizer.Lists.Location import LocationList
-from randomizer.LogicClasses import LocationLogic
-
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -18,6 +11,13 @@ import randomizer.LogicFiles.FungiForest
 import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.HideoutHelm
 import randomizer.LogicFiles.JungleJapes
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
+from randomizer.Lists.FairyLocations import fairy_locations
+from randomizer.Lists.Location import LocationList
+from randomizer.LogicClasses import LocationLogic
+from randomizer.Logic import Regions as RegionList
+from randomizer.Spoiler import Spoiler
 
 
 class FairyPlacementInfo:
@@ -30,6 +30,30 @@ class FairyPlacementInfo:
         self.internal_level_index = internal_level_index
         self.id = id
         self.shift = shift
+
+
+all_fairy_locations = [
+    Locations.JapesBananaFairyRambiCave,
+    Locations.JapesBananaFairyLankyCave,
+    Locations.AztecBananaFairyLlamaTemple,
+    Locations.AztecBananaFairyTinyTemple,
+    Locations.FactoryBananaFairybyFunky,
+    Locations.FactoryBananaFairybyCounting,
+    Locations.GalleonBananaFairybyCranky,
+    Locations.GalleonBananaFairy5DoorShip,
+    Locations.CavesBananaFairyIgloo,
+    Locations.CavesBananaFairyCabin,
+    Locations.ForestBananaFairyRafters,
+    Locations.ForestBananaFairyThornvines,
+    Locations.CastleBananaFairyBallroom,
+    Locations.CastleBananaFairyTree,
+    Locations.IslesBananaFairyFactoryLobby,
+    Locations.IslesBananaFairyForestLobby,
+    Locations.IslesBananaFairyIsland,
+    Locations.IslesBananaFairyCrocodisleIsle,
+    Locations.HelmBananaFairy1,
+    Locations.HelmBananaFairy2,
+]
 
 
 def ShuffleFairyLocations(spoiler: Spoiler):
@@ -60,6 +84,7 @@ def ShuffleFairyLocations(spoiler: Spoiler):
         Levels.HideoutHelm: "Helm",
     }
     if spoiler.settings.random_fairies:
+        ClearFairyLogic()
         fairy_data_table = [
             # HAS to remain in this order. DO NOT REORDER
             FairyPlacementInfo(Locations.JapesBananaFairyRambiCave, Levels.JungleJapes, 0, 51),
@@ -121,3 +146,9 @@ def ShuffleFairyLocations(spoiler: Spoiler):
                         new_region = fairy_locations[level][x].region
                         level_to_enum[level][new_region].locations.append(LocationLogic(data.location, fairy_locations[level][x].logic))
                         LocationList[data.location].name = f"{level_to_name[level]} Fairy ({fairy_locations[level][x].name})"
+
+
+def ClearFairyLogic():
+    """Clear out any fairy locations in preparation for filling custom ones."""
+    for id, region in RegionList.items():
+        region.locations = [loc for loc in region.locations if loc.id not in all_fairy_locations]

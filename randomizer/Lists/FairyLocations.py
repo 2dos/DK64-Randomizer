@@ -1,9 +1,9 @@
 """Stores the data for each potential fairy location."""
 
-from randomizer.Enums.Levels import Levels
-from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Events import Events
+from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Regions import Regions
+from randomizer.Lists.MapsAndExits import Maps
 
 
 class Fence:
@@ -117,7 +117,7 @@ fairy_locations = {
         FairyData(
             name="Above Underground Entrance",
             map=Maps.JungleJapes,
-            region=Regions.JungleJapesMain,
+            region=Regions.JungleJapesStart,
             fence=Fence(2223, 1255, 2524, 1322),
             spawn_y=370,
         ),
@@ -737,7 +737,7 @@ fairy_locations = {
             region=Regions.TinyIgloo,
             is_vanilla=True,
             spawn_xyz=[309, 90, 438],
-            logic=lambda l: l.Slam and (l.istiny or l.settings.free_trade_items) and l.camera,
+            logic=lambda l: l.Slam and l.istiny and l.camera,
             natural_index=0,
         ),
         FairyData(
@@ -819,7 +819,7 @@ fairy_locations = {
             spawn_y=486,
         ),
         FairyData(
-            name="Near 1-Door Cabin",
+            name="Near Lanky Cabin",
             map=Maps.CrystalCaves,
             region=Regions.CabinArea,
             fence=Fence(2583, 1716, 3058, 1840),
@@ -861,7 +861,7 @@ fairy_locations = {
             spawn_y=74,
         ),
         FairyData(
-            name="1-Door Cabin",
+            name="Lanky Cabin",
             map=Maps.CavesLankyCabin,
             region=Regions.LankyCabin,
             fence=Fence(363, 330, 539, 488),
@@ -882,7 +882,7 @@ fairy_locations = {
             region=Regions.CastleTree,
             is_vanilla=True,
             spawn_xyz=[1696, 400, 1054],
-            logic=lambda l: l.camera and (((l.coconut or l.generalclips) and l.isdonkey) or l.phasewalk),
+            logic=lambda l: l.camera and l.swim and (((l.coconut or l.generalclips) and l.isdonkey) or l.phasewalk),
             natural_index=1,
         ),
         FairyData(
@@ -1047,7 +1047,7 @@ fairy_locations = {
         FairyData(
             name="On Banana Fairy Island",
             map=Maps.Isles,
-            region=Regions.CabinIsle,  # Technically it's on BFI area, but it requires rocketbarrel to access
+            region=Regions.CabinIsle,  # Technically it's on BFI area, but it requires rocketbarrel to access. Notably, this is not in IslesAirspace because we want it to be hinted Outer Isles.
             fence=Fence(860, 2358, 868, 2486),
             spawn_y=1031,
             logic=lambda l: l.camera and l.jetpack and l.isdiddy and Events.IslesDiddyBarrelSpawn in l.Events,

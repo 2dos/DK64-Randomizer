@@ -1,8 +1,8 @@
 """List of maps with in-game index."""
 from enum import IntEnum
 
-from randomizer.LogicClasses import Regions, TransitionBack
 from randomizer.Enums.Levels import Levels
+from randomizer.LogicClasses import Regions, TransitionBack
 
 
 class Maps(IntEnum):
@@ -230,13 +230,18 @@ RegionMapList = {
     Regions.Treehouse: Maps.Treehouse,
     Regions.TrainingGrounds: Maps.TrainingGrounds,
     Regions.IslesMain: Maps.Isles,
+    Regions.OuterIsles: Maps.Isles,
     Regions.IslesMainUpper: Maps.Isles,
     Regions.KremIsle: Maps.Isles,
     Regions.KremIsleBeyondLift: Maps.Isles,
     Regions.KremIsleTopLevel: Maps.Isles,
     Regions.IslesSnideRoom: Maps.IslesSnideRoom,
     Regions.CabinIsle: Maps.Isles,
+    Regions.IslesAboveWaterfall: Maps.Isles,
+    Regions.IslesAirspace: Maps.Isles,
+    Regions.AztecLobbyRoof: Maps.Isles,
     Regions.BananaFairyRoom: Maps.BananaFairyRoom,
+    Regions.RarewareGBRoom: Maps.BananaFairyRoom,
     Regions.JungleJapesLobby: Maps.JungleJapesLobby,
     Regions.AngryAztecLobby: Maps.AngryAztecLobby,
     Regions.FranticFactoryLobby: Maps.FranticFactoryLobby,
@@ -246,6 +251,7 @@ RegionMapList = {
     Regions.CrystalCavesLobby: Maps.CrystalCavesLobby,
     Regions.CreepyCastleLobby: Maps.CreepyCastleLobby,
     # Japes
+    Regions.JungleJapesStart: Maps.JungleJapes,
     Regions.JungleJapesMain: Maps.JungleJapes,
     Regions.JapesBeyondCoconutGate1: Maps.JungleJapes,
     Regions.JapesBeyondCoconutGate2: Maps.JungleJapes,

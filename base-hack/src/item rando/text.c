@@ -39,11 +39,31 @@ void handleDynamicItemText(char* location, char* format, int character) {
      */
     if (character == 0x7C) {
         // Dynamic Text
-        if (TextItemName >= 14) {
+        if ((TextItemName == 14) || (TextItemName > 15)) {
             TextItemName = 0;
         }
         dk_strFormat(location, "%s", text_rewards[(int)TextItemName]);
     } else {
         dk_strFormat(location, format, character);
+    }
+}
+static char filename[9] = "";
+
+void handleFilename(char* location, char* format, char* new_name) {
+    if (ENABLE_FILENAME) {
+        filename[8] = 0;
+        int has_hit_limit = 0;
+        for (int i = 0; i < 8; i++) {
+            int val = ReadExtraData(EGD_FILENAME, i);
+            if ((val == 0) || (has_hit_limit)) {
+                filename[i] = 0;
+                has_hit_limit = 1;
+            } else {
+                filename[i] = val;
+            }
+        }
+        dk_strFormat(location, format, &filename);
+    } else {
+        dk_strFormat(location, format, new_name);
     }
 }

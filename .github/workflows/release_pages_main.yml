@@ -41,3 +41,4 @@ jobs:
         DEST_BRANCH: main
         DEST_FOLDER: ./
         DEST_PREDEPLOY_CLEANUP: rm -rf ./*
+

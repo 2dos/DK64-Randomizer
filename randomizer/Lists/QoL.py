@@ -34,6 +34,9 @@ QoLItems = [
     QoLItem("Vanilla Bug Fixes", 10, "Various bugs in the vanilla game have been fixed."),
     QoLItem("Save K Rool Progress", 16, "Re-Entering K Rool after dying or pause exiting will spawn you in the latest phase you reached."),
     QoLItem("Small Bananas always visible", 17, "Small Bananas will always be visible regardless of whether you have the kong unlocked or not."),
+    QoLItem("Fast Hints", 19, "Wrinkly will appear faster out of her door. Additionally, pressing A during any text bubble growth will skip to it's fully grown state."),
+    QoLItem("Brighten Mad Maze Maul Enemies", 20, "Enemies in Mad Maze Maul will be at full brightness, making them easier to see in dark areas."),
+    QoLItem("Raise Fungi Dirt Patch", -1, "The Fungi Dirt Patch near the mill that was discovered in 2017 is slightly raised to make it visible."),
 ]
 for item in QoLItems:
     if item.name != "No Group":

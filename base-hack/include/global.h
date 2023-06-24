@@ -22,7 +22,9 @@ extern int isBeltFlag(int flag);
 extern int isInstrumentUpgradeFlag(int flag);
 extern int inBattleCrown(maps map);
 extern int inBossMap(maps map, int include_regular, int include_krool, int include_shoe);
-extern int isGamemode(int target_mode, int force_both);
+extern int inMinigame(maps map);
+extern int isGamemode(gamemodes target_mode, int force_both);
+extern int has_key(int index);
 
 extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);
@@ -94,6 +96,12 @@ extern void correctDKPortal(void);
 extern int canSaveHelmHurry(void);
 extern int initHelmHurry(void);
 extern void addHelmTime(helm_hurry_items item, int multiplier);
+extern void saveHelmHurryTime(void);
+extern void finishHelmHurry(void);
+extern int getNewFileSize(void);
+extern void fixChimpyCamBug(void);
+extern void writeDefaultFilename(void);
+extern void wipeFileStats(void);
 
 extern int* drawTri(int* dl, short x1, short y1, short x2, short y2, short x3, short y3, int red, int green, int blue, int alpha);
 extern int* drawImage(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int opacity);
@@ -106,6 +114,7 @@ extern int* drawDPad(int* dl);
 extern int* drawImageWithFilter(int* dl, int text_index, codecs codec_index, int img_width, int img_height, int x, int y, float xScale, float yScale, int red, int green, int blue, int opacity);
 extern void correctKongFaces(void);
 extern int* display_file_images(int* dl, int y_offset);
+extern int* drawTextPointers(int* dl);
 
 extern int getLo(void* addr);
 extern int getHi(void* addr);
@@ -138,6 +147,7 @@ extern void initItemDropTable(void);
 extern void initCollectableCollision(void);
 extern void initActorDefs(void);
 extern void initSmallerQuadChecks(void);
+extern void initStatistics(void);
 extern void newGuardCode(void);
 extern void goldBeaverCode(void);
 extern void ninCoinCode(void);
@@ -152,6 +162,7 @@ extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
 extern void handleSpiderTrapCode(void);
 extern void HandleSpiderSilkSpawn(void);
+extern void SpiderBossExtraCode(void);
 extern void fastWarpShockwaveFix(void);
 extern int fixDilloTNTPads(void* actor);
 extern int canPlayJetpac(void);
@@ -206,6 +217,9 @@ extern void parseCutsceneData(void);
 extern void adjustAnimationTables(void);
 extern void adaptKrushaZBAnimation_PunchOStand(int action, void* player, int player_index);
 extern void adaptKrushaZBAnimation_Charge(actorData* actor, int anim);
+extern void OrangeGunCode(void);
+extern void changeFeatherToSprite(void);
+extern void setActorDamage(int actor, int new_damage);
 extern void updateCutsceneModels(actorData* actor, int size);
 extern void* DiddySwimFix(int ptr, int file, int c0, int c1);
 extern void updateUnderwaterCollisions(actorData* player, int anim, int unk0, int unk1);
@@ -240,6 +254,7 @@ extern int countFlagsDuplicate(int start, int count, flagtypes type);
 extern int getKongFromBonusFlag(int flag);
 extern void banana_medal_acquisition(int flag);
 extern void finalizeBeatGame(void);
+extern void exitTrapBubbleController(void);
 
 extern int getFlagIndex_Corrected(int start, int level);
 extern int getBPItem(int index);
@@ -274,6 +289,7 @@ extern void initPauseMenu(void);
 extern void changePauseScreen(void);
 
 extern void handleDynamicItemText(char* location, char* format, int character);
+extern void handleFilename(char* location, char* format, char* new_name);
 extern void mermaidCheck(void);
 extern void initItemDictionary(void);
 extern void initActorExpansion(void);
@@ -317,6 +333,7 @@ extern void fixCrownEntrySKong(playerData* player, int animation);
 
 extern void wipeHintCache(void);
 extern void spawnWrinklyWrapper(behaviour_data* behaviour, int index, int kong, int unk0);
+extern void initPathExpansion(void);
 
 extern int initFile_hasGun(int kong);
 extern int initFile_hasInstrument(int kong);
@@ -336,6 +353,15 @@ extern void helmTime_exitRace(void);
 extern void helmTime_exitLevel(void);
 extern void helmTime_exitBoss(void);
 extern void helmTime_exitKRool(void);
+
+extern int changeStat(bonus_stat statistic, int delta);
+extern int getStat(bonus_stat statistic);
+extern void setStat(bonus_stat statistic, int amount);
+extern void setKongIgt(void);
+extern int ReadExtraData(extra_global_data data_type, int sub_index);
+extern void SaveExtraData(extra_global_data data_type, int sub_index, int value);
+extern void ResetExtraData(extra_global_data data_type, int sub_index);
+extern void setKrushaAmmoColor(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
@@ -360,3 +386,6 @@ extern unsigned char actor_master_types[ACTOR_LIMIT];
 extern short* actor_extra_data_sizes[ACTOR_LIMIT];
 extern collision_data_struct actor_collisions[ACTOR_LIMIT];
 extern collision_info object_collisions[COLLISION_LIMIT];
+
+extern mtx_item static_mtx[20];
+extern int hint_pointers[35];

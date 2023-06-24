@@ -1,9 +1,10 @@
 """Decode text file into arrays of text items."""
-import zlib
 import os
-from BuildLib import ROMName
-from BuildEnums import Icons, TableNames
+import zlib
+
 from BuildClasses import ROMPointerFile
+from BuildEnums import Icons, TableNames
+from BuildLib import ROMName
 
 temp_file = "decodedtext.bin"
 

@@ -1,10 +1,9 @@
 """Patch some common text."""
 
-from text_encoder import writeText
-from text_decoder import grabText
-from BuildEnums import Icons
 import shutil
 
+from BuildEnums import Icons
+from text_decoder import grabText
 from text_encoder import writeText
 
 move_hints = [
@@ -371,6 +370,13 @@ move_hints = [
         "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS WEAPON.",
         "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. MY COOL WEAPONS DON'T GROW ON TREES!",
         "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS WEAPON.",
+    },
+    {
+        "move": "Not enough coins - Gun Upgrade",
+        "kong": "~",
+        "cranky": "YOU'RE UNLUCKY TO BE SO POOR YOU CAN'T AFFORD THIS WEAPON UPGRADE.",
+        "funky": "'FRAID I CAN'T JUST GIVE IT TO YA, THOUGH. MY COOL WEAPON UPGRADES DON'T GROW ON TREES!",
+        "candy": "BUT YOU'LL NEED TO SCRAPE TOGETHER SOME MORE COINS TO GET THIS WEAPON UPGRADE.",
     },
     {
         "move": "Not enough coins - Ammo Belt",
@@ -866,4 +872,14 @@ squawks_text.append([{"text": ["YOU CAN FIND \x04TRIANGLE TRAMPLE\x04 IN \x05AZT
 squawks_text.append([{"text": ["YOU CAN FIND \x04SAXOPHONE SLAM\x04 IN \x05AZTEC CANDY\x05."]}])
 squawks_text.append([{"text": ["YOU CAN FIND \x04TROMBONE TREMOR\x04 IN \x05AZTEC CANDY\x05."]}])
 squawks_text.append([{"text": ["YOU CAN FIND \x04GUITAR GAZUMP\x04 IN \x05AZTEC CANDY\x05."]}])
+squawks_text.append([{"text": ["MYUM, MYUM. I WILL NEVER GIVE UP MY \x04GOLDEN BANANA\x04 TO THIS INTRUDER."]}])
+squawks_text.append(
+    [
+        {
+            "text": [
+                "LADIES AND GENTLEMEN! IT APPEARS THAT ONE FIGHTER HAS COME UNEQUIPPED TO PROPERLY HANDLE THIS REPTILLIAN BEAST. PERHAPS THEY SHOULD HAVE LOOKED IN \x07FUNGI FOREST\x07 OR \x09CREEPY CASTLE\x09 FOR THE ELUSIVE SLAM."
+            ]
+        }
+    ]
+)
 writeText("misc_squawks_text.bin", squawks_text)

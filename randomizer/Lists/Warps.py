@@ -1,12 +1,12 @@
 """Designates Bananaport properties."""
 
+from re import sub
+
 from randomizer.Enums.Events import Events
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Warps import Warps
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Enums.Kongs import Kongs
-
-from re import sub
 
 
 class BananaportData:
@@ -41,13 +41,13 @@ class BananaportData:
 BananaportVanilla = {
     # Japes
     Warps.JapesNearPortal: BananaportData(
-        name="Jungle Japes: Near Portal", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesMain, obj_id_vanilla=0x59, vanilla_warp=0, swap_index=10, event=Events.JapesW1aTagged
+        name="Jungle Japes: Near Portal", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesStart, obj_id_vanilla=0x59, vanilla_warp=0, swap_index=10, event=Events.JapesW1aTagged
     ),
     Warps.JapesEndOfTunnel: BananaportData(
-        name="Jungle Japes: End of Tunnel", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesMain, obj_id_vanilla=0x5A, vanilla_warp=0, swap_index=11, event=Events.JapesW1bTagged
+        name="Jungle Japes: End of Tunnel", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesStart, obj_id_vanilla=0x5A, vanilla_warp=0, swap_index=11, event=Events.JapesW1bTagged
     ),
     Warps.JapesNearMainTag: BananaportData(
-        name="Jungle Japes: Near Main Tag", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesMain, obj_id_vanilla=0x98, vanilla_warp=1, swap_index=12, event=Events.JapesW2aTagged
+        name="Jungle Japes: Near Main Tag", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesStart, obj_id_vanilla=0x98, vanilla_warp=1, swap_index=12, event=Events.JapesW2aTagged
     ),
     Warps.JapesNearMountain: BananaportData(
         name="Jungle Japes: Outside the Mountain", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesMain, obj_id_vanilla=0x9F, vanilla_warp=1, swap_index=13, event=Events.JapesW2bTagged
@@ -56,7 +56,7 @@ BananaportVanilla = {
         name="Jungle Japes: Near Painting Room", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesMain, obj_id_vanilla=0x9E, vanilla_warp=2, swap_index=14, event=Events.JapesW3aTagged
     ),
     Warps.JapesFarLeft: BananaportData(
-        name="Jungle Japes: Near Baboon Blast", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesMain, obj_id_vanilla=0x97, vanilla_warp=2, swap_index=15, event=Events.JapesW3bTagged
+        name="Jungle Japes: Near Baboon Blast", map_id=Maps.JungleJapes, region_id=Regions.JungleJapesStart, obj_id_vanilla=0x97, vanilla_warp=2, swap_index=15, event=Events.JapesW3bTagged
     ),
     Warps.JapesCrankyTunnelNear: BananaportData(
         name="Jungle Japes: Start of Cranky Tunnel", map_id=Maps.JungleJapes, region_id=Regions.JapesBeyondCoconutGate2, obj_id_vanilla=0x5E, vanilla_warp=3, swap_index=16, event=Events.JapesW4aTagged
@@ -76,6 +76,7 @@ BananaportVanilla = {
         swap_index=19,
         event=Events.JapesW5bTagged,
         restricted=True,
+        locked=True,
     ),
     # Aztec
     Warps.AztecNearPortal: BananaportData(
@@ -114,6 +115,7 @@ BananaportVanilla = {
         swap_index=29,
         event=Events.AztecW5bTagged,
         restricted=True,
+        locked=True,
     ),
     # Llama Temple
     Warps.LlamaNearLeft: BananaportData(
@@ -206,6 +208,7 @@ BananaportVanilla = {
         swap_index=50,
         event=Events.GalleonW4aTagged,
         restricted=True,
+        locked=True,
     ),
     Warps.GalleonNearSeal: BananaportData(
         name="Gloomy Galleon: Near Seal Race", map_id=Maps.GloomyGalleon, region_id=Regions.Shipyard, obj_id_vanilla=0x56, locked=True, vanilla_warp=3, swap_index=51, event=Events.GalleonW4bTagged
@@ -376,7 +379,7 @@ BananaportVanilla = {
     ),
     Warps.IslesRing5: BananaportData(name="DK Isles: Ring (5)", map_id=Maps.Isles, region_id=Regions.IslesMain, obj_id_vanilla=0x15, vanilla_warp=4, swap_index=8, event=Events.IslesW5aTagged),
     Warps.IslesFairyIsland: BananaportData(
-        name="DK Isles: Fairy Island", map_id=Maps.Isles, region_id=Regions.IslesMain, obj_id_vanilla=0x19, vanilla_warp=4, swap_index=9, event=Events.IslesW5bTagged
+        name="DK Isles: Fairy Island", map_id=Maps.Isles, region_id=Regions.OuterIsles, obj_id_vanilla=0x19, vanilla_warp=4, swap_index=9, event=Events.IslesW5bTagged
     ),
 }
 

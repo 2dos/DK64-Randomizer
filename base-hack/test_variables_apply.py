@@ -1,6 +1,12 @@
 """Set debugging vars to the build."""
-import os
 import json
+import os
+import sys
+
+APPLY_VARIABLES = True
+
+if not APPLY_VARIABLES:
+    sys.exit()
 
 set_variables = {}
 with open("test.json", "r") as fh:
@@ -113,6 +119,8 @@ with open("include/variable_space_structs.h", "r") as varspace:
                     "save_krool_progress",
                     "cbs_visible",
                     "blueprint_compression",
+                    "fast_hints",
+                    "brighten_mmm_enemies",
                 ]
                 bitfield_offset = 0xB0
             elif x == "moves_pregiven":

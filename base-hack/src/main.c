@@ -9,6 +9,7 @@ static char lag_counter = 0;
 static float current_avg_lag = 0;
 static char has_loaded = 0;
 static char new_picture = 0;
+int hint_pointers[35] = {};
 
 void cFuncLoop(void) {
 	DataIsCompressed[18] = 0;
@@ -34,6 +35,13 @@ void cFuncLoop(void) {
 		} else if (CurrentMap == MAP_CAVESBEETLERACE) {
 			TextItemName = Rando.caves_beetle_reward;
 		}
+		if (Rando.krusha_slot == 3) {
+			if (CurrentMap == MAP_KROOLSHOE) {
+				setActorDamage(43, 1);
+			} else {
+				setActorDamage(43, 3);
+			}
+		}
 		handleKRoolSaveProgress();
 	}
 	if (Rando.item_rando) {
@@ -54,6 +62,16 @@ void cFuncLoop(void) {
 	}
 	if (CurrentMap == MAP_MAINMENU) {
 		colorMenuSky();
+	}
+	if (isGamemode(GAMEMODE_ADVENTURE, 1)) {
+		if ((CurrentMap == MAP_HELM_INTROSTORY) || (CurrentMap == MAP_ISLES_INTROSTORYROCK) || ((CurrentMap == MAP_ISLES_DKTHEATRE) && (CutsceneIndex < 8))) { // Intro Story Map
+			if ((CutsceneActive) && (TransitionSpeed == 0.0f)) { // Playing a cutscene that's part of intro story
+				if ((NewlyPressedControllerInput.Buttons.a) || (NewlyPressedControllerInput.Buttons.start)) {
+					setIntroStoryPlaying(0);
+					initiateTransition(0xB0, 1);
+				}
+			}
+		}
 	}
 	callParentMapFilter();
 	spawnCannonWrapper();
@@ -104,7 +122,7 @@ void cFuncLoop(void) {
 	}
 	handleDPadFunctionality();
 	if (Rando.quality_of_life.fast_boot) {
-		if (Gamemode == 3) {
+		if (Gamemode == GAMEMODE_DKTV) {
 			if (TransitionSpeed < 0) {
 				TransitionType = 1;
 			}
@@ -182,23 +200,13 @@ void earlyFrame(void) {
 			QueueHelmTimer = 0;
 		}
 	}
+	if ((CurrentMap == MAP_KROOLCHUNKY) && (CutsceneIndex == 14) && (CutsceneActive == 1)) {
+		PauseText = 1;
+	}
 	if (CurrentMap == MAP_GALLEONPUFFTOSS) { // Pufftoss
 		if ((CutsceneActive) && (CutsceneIndex == 20) && (CutsceneTimer == 2)) { // Short Intro Cutscene
 			if (Rando.music_rando_on) {
 				MusicTrackChannels[0] = 0; // Disables boss intro music
-			}
-		}
-	} else if (CurrentMap == MAP_FACTORYBBLAST) { // Factory BBlast
-		if (Rando.fast_gbs) {
-			if (!checkFlag(FLAG_ARCADE_LEVER,FLAGTYPE_PERMANENT)) {
-				if (checkFlag(FLAG_ARCADE_ROUND1,FLAGTYPE_PERMANENT)) {
-					if (TransitionSpeed > 0) {
-						if (DestMap == MAP_FACTORY) {
-							delayedObjectModel2Change(MAP_FACTORY,45,10);
-						}
-						setPermFlag(FLAG_ARCADE_LEVER);
-					}
-				}
 			}
 		}
 	} else if (CurrentMap == MAP_FACTORYJACK) {
@@ -227,6 +235,7 @@ void earlyFrame(void) {
 	CBDing();
 	if (ObjectModel2Timer < 5) {
 		auto_turn_keys();
+		wipeHintCache();
 	}
 	if (Rando.item_rando) {
 		int has_sniper = 0;
@@ -432,6 +441,7 @@ int* displayListModifiers(int* dl) {
 
 			}
 		} else {
+			dl = drawTextPointers(dl);
 			if (Rando.item_rando) {
 				dl = controlKeyText(dl);
 			}
@@ -444,9 +454,7 @@ int* displayListModifiers(int* dl) {
 				dk_strFormat((char *)fpsStr, "FPS %d", fps_int);
 				dl = drawPixelTextContainer(dl, 250, 210, fpsStr, 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			}
-			if (Rando.dpad_visual_enabled) {
-				dl = drawDPad(dl);
-			}
+			dl = drawDPad(dl);
 			if (ammo_hud_timer) {
 				int ammo_x = 150;
 				int ammo_default_y = 850;
@@ -522,7 +530,7 @@ int* displayListModifiers(int* dl) {
 }
 
 void toggleStandardAmmo(void) {
-	if (Gamemode == 6) {
+	if (Gamemode == GAMEMODE_ADVENTURE) {
 		if (NewlyPressedControllerInput.Buttons.d_down) {
 			if (MovesBase[(int)Character].weapon_bitfield & 2) {
 				if (CollectableBase.HomingAmmo > 0) {

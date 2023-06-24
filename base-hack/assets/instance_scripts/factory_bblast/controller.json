@@ -1,0 +1,24 @@
+{
+    "id": 1,
+    "behav_9C": 0,
+    "ignore": false,
+    "output_version": 2,
+    "script": [
+        {
+            "conditions": [
+                {"function":0,"inverted":false,"parameters":[0,0,0]}
+            ],
+            "executions": [
+                {"function":7,"parameters":[15,0,0]}
+            ]
+        },
+        {
+            "conditions": [
+                {"function":1,"inverted":false,"parameters":[0,0,0]}
+            ],
+            "executions": [
+                {"function":7,"parameters":[125,0,1]}
+            ]
+        }
+    ]
+}

@@ -40,6 +40,7 @@
 .definelabel SwitchLevel, 0x807FFF21
 .definelabel FedItem, 0x807FFF1C
 .definelabel FedString, 0x807FFEDF
+.definelabel MMMEnemiesBrightened, 0x807FFF28
 
 .definelabel KrushaSlot, 0x807FFF2E
 .definelabel KasplatSpawnBitfield, 0x807FFF2F
@@ -48,3 +49,4 @@
 .definelabel FunkyMoves_New, 0x807FF5E0
 .definelabel TrainingMoves_New, 0x807FF6D0
 .definelabel BFIMove_New, 0x807FF6E8
+.definelabel ExtraSaveData, 0x807ED2A8

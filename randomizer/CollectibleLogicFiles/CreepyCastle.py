@@ -4,9 +4,9 @@
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.LogicClasses import Collectible
-from randomizer.Enums.Levels import Levels
 
 LogicRegions = {
     Regions.CreepyCastleMain: [
@@ -42,7 +42,7 @@ LogicRegions = {
     ],
     Regions.Library: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # In switch room
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk, None, 2),  # In haunted books corridor
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) and l.strongKong, None, 2),  # In haunted books corridor
 
     ],
     Regions.Ballroom: [

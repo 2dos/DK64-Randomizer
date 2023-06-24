@@ -36,7 +36,7 @@
 | On slope on path to Aztec lobby | 3 |  | 
 | At the bottom of Aztec steps | 5 |  | 
 | In little alcove in DK's ear in front of Aztec lobby | 3 |  | 
-| On top of Aztec lobby | 4 | Events.IslesDiddyBarrelSpawn in l.Events and l.jetpack and l.isdiddy | 
+| On top of Aztec lobby | 4 |  | 
 | On top of K. Lumsy's prison | 4 | (l.monkeyport and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko))) | 
 | On top of Fungi lobby | 3 |  | 
 | Hanging off the edge behind Fungi lobby | 3 |  | 
@@ -716,7 +716,6 @@
 | On the Giant Mushroom top | 12 | (l.jetpack and l.isdiddy) or (l.islanky and l.handstand) | 
 | On the Rabbit Race roof | 5 |  | 
 | Around the Saxophone pad | 4 |  | 
-| On the hollow tree branches | 4 | l.jetpack and l.isdiddy | 
 | On the stump at the start of the hollow tree area | 2 |  | 
 | Around the shop in the Worm area | 4 |  | 
 | Beanstalk Fence | 4 |  | 
@@ -768,7 +767,7 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | On the torch at the start | 1 |  | 
-| On various rafters | 4 |  | 
+| On various rafters | 4 | l.guitar and l.isdiddy | 
 </details>
 <details>
 <summary>Forest Thornvine Barn</summary>

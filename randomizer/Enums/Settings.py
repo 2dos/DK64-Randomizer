@@ -101,6 +101,19 @@ class DamageAmount(IntEnum):
     ohko = 3
 
 
+class DPadDisplays(IntEnum):
+    """Varying methods of displaying the dpad.
+
+    off: display isn't rendered.
+    on: display is rendered including all elements.
+    minimal: only the medal is rendered.
+    """
+
+    off = 0
+    on = 1
+    minimal = 2
+
+
 class FillAlgorithm(IntEnum):
     """The algorithm used for placing items.
 
@@ -383,6 +396,9 @@ class MiscChangesSelected(IntEnum):
     vanilla_bug_fixes = 17
     save_k_rool_progress = 18
     small_bananas_always_visible = 19
+    fast_hints = 20
+    brighten_mad_maze_maul_enemies = 21
+    raise_fungi_dirt_patch = 22
 
 
 class MoveRando(IntEnum):
@@ -403,21 +419,6 @@ class MoveRando(IntEnum):
     cross_purchase = 2
     start_with = 3
     item_shuffle = 4
-
-
-class MusicCosmetics(IntEnum):
-    """Determines how BGM, fanfare or event music is shuffled.
-
-    default: Music is not shuffled.
-    randomized: Music is shuffled.
-    chaos: All D.K. Rap, all the time.
-    uploaded: Use music files provided by the user.
-    """
-
-    default = auto()
-    randomized = auto()
-    chaos = auto()
-    uploaded = auto()
 
 
 class RandomPrices(IntEnum):
@@ -471,6 +472,19 @@ class ShuffleLoadingZones(IntEnum):
     all = auto()
 
 
+class SoundType(IntEnum):
+    """Determines the default sound mode.
+
+    stereo: Default.
+    surround: Dolby Surround.
+    mono: Mono audio type.
+    """
+
+    stereo = 0
+    mono = 1
+    surround = 2
+
+
 class TrainingBarrels(IntEnum):
     """Determines if and how training barrels are randomized.
 
@@ -513,11 +527,13 @@ class WrinklyHints(IntEnum):
     off: Hints are the same as the vanilla game.
     standard: Normal randomizer hints are provided.
     cryptic: Cryptic randomizer hints are provided.
+    fixed_racing: Fixed distribution - this one is for the S2 racing preset.
     """
 
     off = 0
     standard = 1
     cryptic = 2
+    fixed_racing = 3
 
 
 # ALL SELECT-BASED SETTINGS NEED AN ENTRY HERE!
@@ -535,6 +551,7 @@ SettingsMap = {
     "damage_amount": DamageAmount,
     "diddy_colors": CharacterColors,
     "dk_colors": CharacterColors,
+    "dpad_display": DPadDisplays,
     "enemies_selected": Enemies,
     "enguarde_colors": CharacterColors,
     "free_trade_setting": FreeTradeSetting,
@@ -552,13 +569,11 @@ SettingsMap = {
     "minigames_list_selected": MinigamesListSelected,
     "misc_changes_selected": MiscChangesSelected,
     "move_rando": MoveRando,
-    "music_bgm": MusicCosmetics,
-    "music_events": MusicCosmetics,
-    "music_fanfares": MusicCosmetics,
     "rambi_colors": CharacterColors,
     "random_prices": RandomPrices,
     "shockwave_status": ShockwaveStatus,
     "shuffle_loading_zones": ShuffleLoadingZones,
+    "sound_type": SoundType,
     "starting_keys_list_selected": Items,
     "tiny_colors": CharacterColors,
     "training_barrels": TrainingBarrels,
@@ -573,6 +588,10 @@ class SettingsStringEnum(IntEnum):
 
     Changing any of the existing values will cause generated settings strings
         to break. Only add new values.
+
+    Do not delete settings from this enum. Instead, add an entry to the
+        DeprecatedSettings set below. This will be cleaned up with every major
+        release.
 
     ALL SETTINGS NEED AN ENTRY HERE!
     """
@@ -603,113 +622,120 @@ class SettingsStringEnum(IntEnum):
     crown_placement_rando = 24
     damage_amount = 25
     disable_tag_barrels = 26
-    dpad_display = 27
-    enable_shop_hints = 28
-    enable_tag_anywhere = 29
-    enemies_selected = 30
-    enemy_rando = 31
-    enemy_speed_rando = 32
-    fast_gbs = 33
-    fast_start_beginning_of_game = 34
-    fast_warps = 35
-    fps_display = 36
-    free_trade_setting = 37
-    generate_spoilerlog = 38
-    glitches_selected = 39
-    hard_blockers = 40
-    hard_bosses = 41
-    hard_enemies = 42
-    hard_level_progression = 43
-    hard_shooting = 44
-    hard_troff_n_scoff = 45
-    helm_hurry = 46
-    helm_phase_count = 47
-    helm_phase_order_rando = 48
-    helm_random = 49
-    helm_setting = 50
-    helmhurry_list_banana_medal = 51
-    helmhurry_list_battle_crown = 52
-    helmhurry_list_bean = 53
-    helmhurry_list_blueprint = 54
-    helmhurry_list_boss_key = 55
-    helmhurry_list_colored_bananas = 56
-    helmhurry_list_company_coins = 57
-    helmhurry_list_fairies = 58
-    helmhurry_list_golden_banana = 59
-    helmhurry_list_ice_traps = 60
-    helmhurry_list_kongs = 61
-    helmhurry_list_move = 62
-    helmhurry_list_pearl = 63
-    helmhurry_list_rainbow_coin = 64
-    helmhurry_list_starting_time = 65
-    high_req = 66
-    item_rando_list_selected = 67
-    item_reward_previews = 68
-    kasplat_rando_setting = 69
-    key_8_helm = 70
-    keys_random = 71
-    kong_rando = 72
-    krool_access = 73
-    krool_key_count = 74
-    krool_phase_count = 75
-    krool_phase_order_rando = 76
-    krool_random = 77
-    krusha_ui = 78
-    level_randomization = 79
-    logic_type = 80
-    maximize_helm_blocker = 81
-    medal_cb_req = 82
-    medal_requirement = 83
-    microhints_enabled = 84
-    minigames_list_selected = 85
-    misc_changes_selected = 86
-    move_rando = 87
-    no_healing = 88
-    no_melons = 89
-    open_levels = 90
-    open_lobbies = 91
-    perma_death = 92
-    portal_numbers = 93
-    puzzle_rando = 94
-    quality_of_life = 95
-    random_fairies = 96
-    random_medal_requirement = 97
-    random_patches = 98
-    random_prices = 99
-    random_starting_region = 100
-    randomize_blocker_required_amounts = 101
-    randomize_cb_required_amounts = 102
-    randomize_pickups = 103
-    rareware_gb_fairies = 104
-    select_keys = 105
-    shockwave_status = 106
-    shop_indicator = 107
-    shorten_boss = 108
-    shuffle_items = 109
-    shuffle_shops = 110
-    smaller_shops = 111
-    starting_keys_list_selected = 112
-    starting_kongs_count = 113
-    starting_random = 114
-    tns_location_rando = 115
-    training_barrels = 116
-    troff_0 = 117
-    troff_1 = 118
-    troff_2 = 119
-    troff_3 = 120
-    troff_4 = 121
-    troff_5 = 122
-    troff_6 = 123
-    troff_text = 124
-    warp_level_list_selected = 125
-    warp_to_isles = 126
-    win_condition = 127
-    wrinkly_available = 128
-    wrinkly_hints = 129
-    wrinkly_location_rando = 130
-    coin_rando = 131
-    vanilla_door_rando = 132
-    starting_moves_count = 133
+    enable_shop_hints = 27
+    enable_tag_anywhere = 28
+    enemies_selected = 29
+    enemy_rando = 30
+    enemy_speed_rando = 31
+    fast_gbs = 32
+    fast_start_beginning_of_game = 33
+    fast_warps = 34
+    fps_display = 35
+    free_trade_setting = 36
+    generate_spoilerlog = 37
+    glitches_selected = 38
+    hard_blockers = 39
+    hard_bosses = 40
+    hard_enemies = 41
+    hard_level_progression = 42
+    hard_shooting = 43
+    hard_troff_n_scoff = 44
+    helm_hurry = 45
+    helm_phase_count = 46
+    helm_phase_order_rando = 47
+    helm_random = 48
+    helm_setting = 49
+    helmhurry_list_banana_medal = 50
+    helmhurry_list_battle_crown = 51
+    helmhurry_list_bean = 52
+    helmhurry_list_blueprint = 53
+    helmhurry_list_boss_key = 54
+    helmhurry_list_colored_bananas = 55
+    helmhurry_list_company_coins = 56
+    helmhurry_list_fairies = 57
+    helmhurry_list_golden_banana = 58
+    helmhurry_list_ice_traps = 59
+    helmhurry_list_kongs = 60
+    helmhurry_list_move = 61
+    helmhurry_list_pearl = 62
+    helmhurry_list_rainbow_coin = 63
+    helmhurry_list_starting_time = 64
+    high_req = 65
+    item_rando_list_selected = 66
+    item_reward_previews = 67
+    kasplat_rando_setting = 68
+    key_8_helm = 69
+    keys_random = 70
+    kong_rando = 71
+    krool_access = 72
+    krool_key_count = 73
+    krool_phase_count = 74
+    krool_phase_order_rando = 75
+    krool_random = 76
+    krusha_ui = 77
+    level_randomization = 78
+    logic_type = 79
+    maximize_helm_blocker = 80
+    medal_cb_req = 81
+    medal_requirement = 82
+    microhints_enabled = 83
+    minigames_list_selected = 84
+    misc_changes_selected = 85
+    move_rando = 86
+    no_healing = 87
+    no_melons = 88
+    open_levels = 89
+    open_lobbies = 90
+    perma_death = 91
+    portal_numbers = 92
+    puzzle_rando = 93
+    quality_of_life = 94
+    random_fairies = 95
+    random_medal_requirement = 96
+    random_patches = 97
+    random_prices = 98
+    random_starting_region = 99
+    randomize_blocker_required_amounts = 100
+    randomize_cb_required_amounts = 101
+    randomize_pickups = 102
+    rareware_gb_fairies = 103
+    select_keys = 104
+    shockwave_status = 105
+    shop_indicator = 106
+    shorten_boss = 107
+    shuffle_items = 108
+    shuffle_shops = 109
+    smaller_shops = 110
+    starting_keys_list_selected = 111
+    starting_kongs_count = 112
+    starting_random = 113
+    tns_location_rando = 114
+    training_barrels = 115
+    troff_0 = 116
+    troff_1 = 117
+    troff_2 = 118
+    troff_3 = 119
+    troff_4 = 120
+    troff_5 = 121
+    troff_6 = 122
+    troff_text = 123
+    warp_level_list_selected = 124
+    warp_to_isles = 125
+    win_condition = 126
+    wrinkly_available = 127
+    wrinkly_hints = 128
+    wrinkly_location_rando = 129
+    coin_rando = 130
+    vanilla_door_rando = 131
+    starting_moves_count = 132
+
+
+# If a setting needs to be removed, add it to this set instead of removing it
+# from the enum above.
+DeprecatedSettings = {
+    # Example
+    # SettingsStringEnum.cb_rando,
+}
 
 
 class SettingsStringDataType(IntEnum):
@@ -767,7 +793,6 @@ SettingsStringTypeMap = {
     SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
-    SettingsStringEnum.dpad_display: SettingsStringDataType.bool,
     SettingsStringEnum.enable_shop_hints: SettingsStringDataType.bool,
     SettingsStringEnum.enable_tag_anywhere: SettingsStringDataType.bool,
     SettingsStringEnum.enemies_selected: SettingsStringDataType.list,

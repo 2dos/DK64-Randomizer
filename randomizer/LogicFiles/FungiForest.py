@@ -58,12 +58,12 @@ LogicRegions = {
         TransitionFront(Regions.MushroomLower, lambda l: True, Transitions.ForestMainToLowerMushroom),
         TransitionFront(Regions.MushroomLowerExterior, lambda l: (l.jetpack and l.isdiddy) or (l.advanced_platforming and l.twirl and l.istiny)),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: l.jetpack and l.isdiddy),
-        TransitionFront(Regions.HollowTreeArea, lambda l: l.settings.open_levels or Events.HollowTreeGateOpened in l.Events or l.CanPhaseswim() or l.phasewalk or l.CanOStandTBSNoclip()),
-        TransitionFront(Regions.Anthill, lambda l: l.CanSkew(True), Transitions.ForestTreeToAnthill),
+        TransitionFront(Regions.HollowTreeArea, lambda l: l.settings.open_levels or Events.HollowTreeGateOpened in l.Events or l.CanPhaseswim() or l.phasewalk or l.CanOStandTBSNoclip() or l.CanSkew(True)),
+        TransitionFront(Regions.Anthill, lambda l: l.CanSkew(True), Transitions.ForestTreeToAnthill, isGlitchTransition=True),
         TransitionFront(Regions.CrankyForest, lambda l: True),
     ]),
 
-    Regions.MushroomLower: Region("Mushroom Lower", "Giant Mushroom Interior", Levels.FungiForest, True, None, [
+    Regions.MushroomLower: Region("Mushroom Lower", "Giant Mushroom Insides", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestTinyMushroomBarrel, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.istiny, MinigameType.BonusBarrel),
     ], [
         Event(Events.MushroomCannonsSpawned, lambda l: l.coconut and l.peanut and l.grape and l.feather and l.pineapple
@@ -76,7 +76,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomUpper, lambda l: Events.MushroomCannonsSpawned in l.Events),
     ]),
 
-    Regions.MushroomLowerExterior: Region("Mushroom Lower Exterior", "Giant Mushroom Exterior", Levels.FungiForest, True, -1, [
+    Regions.MushroomLowerExterior: Region("Mushroom Lower Exterior", "Giant Mushroom Exterior", Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestKasplatLowerMushroomExterior, lambda l: not l.settings.kasplat_rando),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
@@ -93,7 +93,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomLowerExterior, lambda l: True)
     ]),
 
-    Regions.MushroomUpper: Region("Mushroom Upper", "Giant Mushroom Interior", Levels.FungiForest, True, -1, [
+    Regions.MushroomUpper: Region("Mushroom Upper", "Giant Mushroom Insides", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestDonkeyMushroomCannons, lambda l: Events.MushroomCannonsSpawned in l.Events and Events.DonkeyMushroomSwitch in l.Events),
         LocationLogic(Locations.ForestKasplatInsideMushroom, lambda l: not l.settings.kasplat_rando),
     ], [], [
@@ -105,7 +105,7 @@ LogicRegions = {
     ]),
 
     # This region basically just exists to facilitate the two entrances into upper mushroom
-    Regions.MushroomNightDoor: Region("Mushroom Night Door", "Giant Mushroom Interior", Levels.FungiForest, False, None, [], [], [
+    Regions.MushroomNightDoor: Region("Mushroom Night Door", "Giant Mushroom Insides", Levels.FungiForest, False, None, [], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MushroomUpper, lambda l: True),
         TransitionFront(Regions.MushroomNightExterior, lambda l: True, Transitions.ForestNightToExterior, time=Time.Night),
@@ -134,21 +134,21 @@ LogicRegions = {
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
-    Regions.MushroomChunkyRoom: Region("Mushroom Chunky Room", "Giant Mushroom Interior", Levels.FungiForest, False, -1, [
+    Regions.MushroomChunkyRoom: Region("Mushroom Chunky Room", "Giant Mushroom Insides", Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestChunkyFacePuzzle, lambda l: l.pineapple and l.CanSlamSwitch(Levels.FungiForest, 2) and l.ischunky),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: True, Transitions.ForestChunkyToExterior),
     ]),
 
-    Regions.MushroomLankyZingersRoom: Region("Mushroom Lanky Zingers Room", "Giant Mushroom Interior", Levels.FungiForest, False, -1, [
+    Regions.MushroomLankyZingersRoom: Region("Mushroom Lanky Zingers Room", "Giant Mushroom Insides", Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestLankyZingers, lambda l: l.islanky or l.settings.free_trade_items),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: True, Transitions.ForestZingersToExterior),
     ]),
 
-    Regions.MushroomLankyMushroomsRoom: Region("Mushroom Lanky Mushrooms Room", "Giant Mushroom Interior", Levels.FungiForest, False, None, [
+    Regions.MushroomLankyMushroomsRoom: Region("Mushroom Lanky Mushrooms Room", "Giant Mushroom Insides", Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestLankyColoredMushrooms, lambda l: l.Slam and (l.islanky or l.settings.free_trade_items), MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
@@ -173,7 +173,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestBean, lambda l: (l.istiny or l.settings.free_trade_items) and (l.oranges or l.saxophone or (l.settings.free_trade_items and l.HasInstrument(Kongs.any)))),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
-        TransitionFront(Regions.HollowTreeArea, lambda l: True, Transitions.ForestAnthillToTree),
+        TransitionFront(Regions.HollowTreeArea, lambda l: (l.istiny or l.settings.free_trade_items) and (l.oranges or l.saxophone or (l.settings.free_trade_items and l.HasInstrument(Kongs.any))), Transitions.ForestAnthillToTree),
     ]),
 
     Regions.MillArea: Region("Mill Area", "Forest Mills", Levels.FungiForest, True, None, [
@@ -194,7 +194,7 @@ LogicRegions = {
         TransitionFront(Regions.ThornvineArea, lambda l: True, time=Time.Night),
         TransitionFront(Regions.Snide, lambda l: True, time=Time.Day),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando, time=Time.Day),
-        TransitionFront(Regions.ThornvineBarn, lambda l: l.CanPhaseswim(), Transitions.ForestMainToBarn),
+        TransitionFront(Regions.ThornvineBarn, lambda l: l.CanPhaseswim(), Transitions.ForestMainToBarn, isGlitchTransition=True),
     ]),
 
     Regions.MillChunkyTinyArea: Region("Mill Back Room", "Forest Mills", Levels.FungiForest, False, -1, [], [
@@ -241,7 +241,7 @@ LogicRegions = {
         TransitionFront(Regions.MillArea, lambda l: True, Transitions.ForestWinchToMain),
     ]),
 
-    Regions.MillAttic: Region("Mill Attic", "Forest Mills", Levels.FungiForest, False, TransitionFront(Regions.FungiForestStart, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and l.islanky), [
+    Regions.MillAttic: Region("Mill Attic", "Forest Mills", Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestLankyAttic, lambda l: l.CanSlamSwitch(Levels.FungiForest, 2) and (l.homing or l.settings.hard_shooting) and l.grape and l.islanky),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
@@ -258,7 +258,7 @@ LogicRegions = {
     ]),
 
     Regions.ThornvineBarn: Region("Thornvine Barn", "Forest Mills", Levels.FungiForest, False, -1, [
-        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FungiForest, 1) and l.isdonkey and (l.vines or l.advanced_platforming), MinigameType.BonusBarrel),
+        LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FungiForest, 1) and l.isdonkey and (l.vines or l.advanced_platforming), MinigameType.BonusBarrel),  # Krusha can make it by jumping onto the beam first.
         LocationLogic(Locations.ForestBananaFairyThornvines, lambda l: l.Slam and l.camera),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),

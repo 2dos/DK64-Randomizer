@@ -101,9 +101,9 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
     spoiler.shuffled_kasplat_map = {}
     LogicVariables.kasplat_map = {}
     for location in shufflable:
-        Logic.LocationList.pop(location, None)
+        Logic.LocationList[location].inaccessible = True
     for location in constants:
-        Logic.LocationList.pop(location, None)
+        Logic.LocationList[location].inaccessible = True
     # Fill kasplats level by level
     for level in KasplatLocationList:
         kasplats = KasplatLocationList[level]
@@ -141,9 +141,9 @@ def ShuffleKasplatsInVanillaLocations(spoiler, LogicVariables):
     spoiler.shuffled_kasplat_map = {}
     LogicVariables.kasplat_map = {}
     for location in shufflable:
-        Logic.LocationList.pop(location, None)
+        Logic.LocationList[location].inaccessible = True
     for location in constants:
-        Logic.LocationList.pop(location, None)
+        Logic.LocationList[location].inaccessible = True
     # Place by level
     for level in KasplatLocationList:
         availableKongs = GetKongs().copy()
@@ -221,10 +221,17 @@ def ShuffleKasplats(LogicVariables):
 
 def KasplatShuffle(spoiler, LogicVariables):
     """Facilitate the shuffling of kasplat types."""
+    # If these were ever set at any prior point (likely only relevant running locally) then reset them - the upcoming methods will handle this TODO: maybe do this on other shufflers
+    for location in shufflable:
+        Logic.LocationList[location].inaccessible = False
+    for location in constants:
+        Logic.LocationList[location].inaccessible = False
     if spoiler.settings.kasplat_rando:
         retries = 0
         while True:
             try:
+                # Clear any existing logic
+                ResetShuffledKasplatLocations()
                 # Shuffle kasplats
                 if spoiler.settings.kasplat_location_rando:
                     ShuffleKasplatsAndLocations(spoiler, LogicVariables)
@@ -239,14 +246,12 @@ def KasplatShuffle(spoiler, LogicVariables):
                         # This is the first VerifyWorld check, and serves as the canary in the coal mine
                         # If we get to this point in the code, the world itself is likely unstable from some combination of settings or bugs
                         js.postMessage("Settings combination is likely unstable.")
+                        ResetShuffledKasplatLocations()
                         raise Ex.SettingsIncompatibleException
                 return
             except Ex.KasplatPlacementException:
                 retries += 1
                 js.postMessage("Kasplat placement failed. Retrying. Tries: " + str(retries))
-                # We've added logic in kasplat location rando, now we need to remove it
-                if spoiler.settings.kasplat_location_rando:
-                    ResetShuffledKasplatLocations()
 
 
 def InitKasplatMap(LogicVariables):

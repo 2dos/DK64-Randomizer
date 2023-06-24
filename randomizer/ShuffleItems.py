@@ -1,14 +1,15 @@
 """Shuffles items for Item Rando."""
 
 import random
+
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Items import Items
-from randomizer.Lists.Location import LocationList
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
-from randomizer.Spoiler import Spoiler
-from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.Item import ItemList, NameFromKong
+from randomizer.Lists.Location import LocationList
+from randomizer.Spoiler import Spoiler
 
 
 class LocationSelection:
@@ -126,12 +127,16 @@ def ShuffleItems(spoiler: Spoiler):
         item_location = LocationList[location_enum]
         # If location is a shuffled one...
         if (
-            item_location.default_mapid_data is not None
-            or item_location.type in (Types.Shop, Types.Shockwave)
-            or (
-                item_location.type == Types.TrainingBarrel and not item_location.constant
-            )  # Depending on starting moves, training barrels can be empty (only when constant). This quick check prevents weirdness later in this method.
-        ) and item_location.type in spoiler.settings.shuffled_location_types:
+            (
+                item_location.default_mapid_data is not None
+                or item_location.type in (Types.Shop, Types.Shockwave)
+                or (
+                    item_location.type == Types.TrainingBarrel and not item_location.constant
+                )  # Depending on starting moves, training barrels can be empty (only when constant). This quick check prevents weirdness later in this method.
+            )
+            and not item_location.inaccessible
+            and item_location.type in spoiler.settings.shuffled_location_types
+        ):
             # Create placement info for the patcher to use
             placement_info = {}
             # Items that need specific placement in the world, either as a reward or something spawned in

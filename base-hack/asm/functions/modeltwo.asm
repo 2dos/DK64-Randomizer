@@ -28,6 +28,7 @@
 .definelabel setSomeTimer, 0x80641724
 .definelabel indexOfNextObj, 0x80659470
 .definelabel delayedObjectModel2Change, 0x8063DB3C
+.definelabel isObjectLoadedInMap, 0x805FFE50
 .definelabel modifyObjectState, 0x8063DA40
 .definelabel spawnPianoKremling, 0x80641874
 .definelabel setAcceptablePianoKey, 0x806508B4

@@ -12,6 +12,7 @@
 
 static char balanced_igt[20] = "";
 static char perc_str[7] = "";
+static char gb_str[5] = "";
 
 #define LINE_GAP 0x8C
 static char updated_tracker = 0;
@@ -24,66 +25,6 @@ typedef struct tracker_struct {
 	/* 0x008 */ unsigned char enabled;
 	/* 0x009 */ unsigned char type;
 } tracker_struct;
-
-#define TRACKER_TYPE_COCONUT 0
-#define TRACKER_TYPE_BONGOS 1
-#define TRACKER_TYPE_GRAB 2
-#define TRACKER_TYPE_STRONG 3
-#define TRACKER_TYPE_BLAST 4
-
-#define TRACKER_TYPE_PEANUT 5
-#define TRACKER_TYPE_GUITAR 6
-#define TRACKER_TYPE_CHARGE 7
-#define TRACKER_TYPE_ROCKET 8
-#define TRACKER_TYPE_SPRING 9
-
-#define TRACKER_TYPE_GRAPE 10
-#define TRACKER_TYPE_TROMBONE 11
-#define TRACKER_TYPE_OSTAND 12
-#define TRACKER_TYPE_OSPRINT 13
-#define TRACKER_TYPE_BALLOON 14
-
-#define TRACKER_TYPE_FEATHER 15
-#define TRACKER_TYPE_SAX 16
-#define TRACKER_TYPE_PTT 17
-#define TRACKER_TYPE_MINI 18
-#define TRACKER_TYPE_MONKEYPORT 19
-
-#define TRACKER_TYPE_PINEAPPLE 20
-#define TRACKER_TYPE_TRIANGLE 21
-#define TRACKER_TYPE_PUNCH 22
-#define TRACKER_TYPE_HUNKY 23
-#define TRACKER_TYPE_GONE 24
-
-#define TRACKER_TYPE_SLAM 25
-#define TRACKER_TYPE_HOMING 26
-#define TRACKER_TYPE_SNIPER 27
-#define TRACKER_TYPE_AMMOBELT 28
-#define TRACKER_TYPE_INSTRUMENT_UPG 29
-
-#define TRACKER_TYPE_DIVE 30
-#define TRACKER_TYPE_ORANGE 31
-#define TRACKER_TYPE_BARREL 32
-#define TRACKER_TYPE_VINE 33
-
-#define TRACKER_TYPE_CAMERA 34
-#define TRACKER_TYPE_SHOCKWAVE 35
-
-#define TRACKER_TYPE_KEY1 36
-#define TRACKER_TYPE_KEY2 37
-#define TRACKER_TYPE_KEY3 38
-#define TRACKER_TYPE_KEY4 39
-#define TRACKER_TYPE_KEY5 40
-#define TRACKER_TYPE_KEY6 41
-#define TRACKER_TYPE_KEY7 42
-#define TRACKER_TYPE_KEY8 43
-
-#define TRACKER_TYPE_MELON_2 44
-#define TRACKER_TYPE_MELON_3 45
-#define TRACKER_TYPE_INSUPG_1 46
-#define TRACKER_TYPE_INSUPG_2 47
-#define TRACKER_TYPE_BELT_1 48
-#define TRACKER_TYPE_BELT_2 49
 
 #define TRACKER_ENABLED_DEFAULT 1
 
@@ -272,6 +213,8 @@ int isMovePregiven(int index) {
 				return 1;
 			}
 			return 0;
+		default:
+			break;
 	}
 	return 0;
 }
@@ -395,7 +338,7 @@ int getEnabledState(int index) {
 			{
 				// Keys in
 				int key_index = index - TRACKER_TYPE_KEY1;
-				int key_there = checkFlag(FLAG_KEYIN_KEY1 + key_index, FLAGTYPE_PERMANENT);
+				int key_there = has_key(key_index);
 				if (!key_there) {
 					if (Rando.keys_preturned & (1 << key_index)) {
 						key_there = 1;
@@ -403,6 +346,8 @@ int getEnabledState(int index) {
 				}
 				return key_there;
 			}
+		default:
+			break;
 	}
 	return 0;
 }
@@ -576,6 +521,9 @@ int* display_text(int* dl) {
 	// Percentage Counter
 	dk_strFormat((char*)perc_str, "%d%%", FilePercentage);
 	dl = drawText(dl, 1, 410, y + 50, (char*)perc_str, 0xFF, 0xFF, 0xFF, 0xFF);
+	// GB Count
+	dk_strFormat((char*)gb_str, "%03d", *(int*)(0x8003380C));
+	dl = drawText(dl, 1, 435, y + 20, (char*)gb_str, 0xFF, 0xFF, 0xFF, 0xFF);
 	dl = display_file_images(dl, FileScreenDLOffset - 720);
 	return dl;
 }
@@ -662,15 +610,28 @@ void giveCollectables(void) {
 	for (int instrument_kong = 0; instrument_kong < 5; instrument_kong++) {
 		MovesBase[instrument_kong].instrument_energy = energy;
 	}
-	int mult = 1;
-	if (MovesBase[0].ammo_belt > 0) {
-		mult = 2 * MovesBase[0].ammo_belt;
-	}
 	CollectableBase.Health = CollectableBase.Melons * 4;
-	CollectableBase.StandardAmmo = 25 * mult;
+	CollectableBase.StandardAmmo = 25 * (1 << MovesBase[0].ammo_belt);
 	CollectableBase.Oranges = 10;
 	CollectableBase.Crystals = 1500;
 	CollectableBase.Film = 5;
+}
+
+void wipeFileStats(void) {
+	for (int i = 0; i < 9; i++) {
+		ResetExtraData(EGD_LEVELIGT, i);
+	}
+	for (int i = 0; i < STAT_TERMINATOR; i++) {
+		// Reset Statistics
+		ResetExtraData(EGD_BONUSSTAT, i);
+	}
+	for (int i = 0; i < 5; i++) {
+		ResetExtraData(EGD_KONGIGT, i);
+	}
+	for (int i = 0; i < 8; i++) {
+		ResetExtraData(EGD_FILENAME, i);
+	}
+	ResetExtraData(EGD_HELMHURRYIGT, 0);
 }
 
 void file_progress_screen_code(actorData* actor, int buttons) {
@@ -713,19 +674,12 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					if (Rando.quality_of_life.caves_kosha_dead) {
 						setPermFlag(FLAG_MODIFIER_KOSHADEAD); // Giant Kosha Dead
 					}
+					if (checkFlag(FLAG_COLLECTABLE_LLAMAGB, FLAGTYPE_PERMANENT)) {
+						setPermFlag(FLAG_MODIFIER_LLAMAFREE); // No item check
+					}
 					pre_turn_keys();
-					if (Rando.helm_hurry_mode) {
-						QueueHelmTimer = 1;
-					}
-					setPermFlag(FLAG_ESCAPE);
 					Character = Rando.starting_kong;
-					StoredSettings.file_extra.location_sss_purchased = 0;
-					StoredSettings.file_extra.location_ab1_purchased = 0;
-					StoredSettings.file_extra.location_ug1_purchased = 0;
-					StoredSettings.file_extra.location_mln_purchased = 0;
-					for (int i = 0; i < 9; i++) {
-						StoredSettings.file_extra.level_igt[i] = 0;
-					}
+					wipeFileStats();
 					if (checkFlag(FLAG_ARCADE_ROUND1, FLAGTYPE_PERMANENT)) {
 						setPermFlag(FLAG_ARCADE_LEVER);
 					}
@@ -735,10 +689,14 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					Character = Rando.starting_kong;
 					determineStartKong_PermaLossMode();
 					giveCollectables();
-					if (Rando.helm_hurry_mode) {
-						setFlag(FLAG_LOADED_GAME_OVER,1,FLAGTYPE_PERMANENT);
-					}
 				}
+				if (ENABLE_FILENAME) {
+					writeDefaultFilename();
+				}
+				if ((Rando.helm_hurry_mode) && (!ReadFile(DATA_HELMHURRYOFF, 0, 0, 0))) {
+					QueueHelmTimer = 1;
+				}
+				setKongIgt();
 				ForceStandardAmmo = 0;
 			} else if (buttons & 2) { // B
 				playSFX(0x2C9);
@@ -777,6 +735,9 @@ int* displayInverted(int* dl, int style, int x, int y, char* str, int unk0) {
 	 * 
 	 * @return New Display List Address
 	 */
+	if (InvertedControls > 1) {
+		InvertedControls = 1;
+	}
 	return displayText(dl, style, x, y, inverted_controls_str[(int)InvertedControls], unk0);
 }
 
@@ -793,7 +754,7 @@ void initOptionScreen(void) {
 	*(short*)(0x8002DADE) = getHi(&InvertedControls); // Save to global
 	*(short*)(0x8002DAE2) = getLo(&InvertedControls); // Save to global
 	*(short*)(0x8002DA88) = 0x1000; // Prevent Language Update
-	*(int*)(0x8002DEC4) = 0x0C000000 | (((int)&displayInverted & 0xFFFFFF) >> 2); // Modify Function Call
+	writeFunction(0x8002DEC4, &displayInverted); // Modify Function Call
 }
 
 static unsigned char previous_map_save = MAP_ISLES;
@@ -811,15 +772,20 @@ int updateLevelIGT(void) {
 	 * 
 	 * @return New in-game time
 	 */
+	saveHelmHurryTime();
 	int new_igt = getNewSaveTime();
-	int sum = 0;
-	for (int i = 0; i < 9; i++) {
-		sum += StoredSettings.file_extra.level_igt[i];
-	}
-	int diff = new_igt - sum;
-	int world = getWorld(previous_map_save, 1);
-	if (world < 9) {
-		StoredSettings.file_extra.level_igt[world] += diff;
+	if (canSaveHelmHurry()) {
+		int sum = 0;
+		for (int i = 0; i < 9; i++) {
+			int value = ReadExtraData(EGD_LEVELIGT, i);
+			sum += value; 
+		}
+		int diff = new_igt - sum;
+		int world = getWorld(previous_map_save, 1);
+		if (world < 9) {
+			int old = ReadExtraData(EGD_LEVELIGT, world);
+			SaveExtraData(EGD_LEVELIGT, world, old + diff);
+		}
 	}
 	previous_map_save = CurrentMap;
 	SaveToGlobal();

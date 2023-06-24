@@ -3,6 +3,8 @@ import random
 
 import js
 from js import document
+from randomizer.Enums.Settings import SettingsMap
+from randomizer.SettingStrings import decrypt_settings_string_enum
 from ui.bindings import bind
 
 
@@ -57,6 +59,30 @@ def max_randomized_troff(event):
         troff_text.value = 500
 
 
+@bind("focusout", "music_volume")
+def max_music(event):
+    """Validate music input on loss of focus."""
+    music_text = js.document.getElementById("music_volume")
+    if not music_text.value:
+        music_text.value = 100
+    elif int(music_text.value) > 100:
+        music_text.value = 100
+    elif int(music_text.value) < 0:
+        music_text.value = 0
+
+
+@bind("focusout", "sfx_volume")
+def max_sfx(event):
+    """Validate sfx input on loss of focus."""
+    sfx_text = js.document.getElementById("sfx_volume")
+    if not sfx_text.value:
+        sfx_text.value = 100
+    elif int(sfx_text.value) > 100:
+        sfx_text.value = 100
+    elif int(sfx_text.value) < 0:
+        sfx_text.value = 0
+
+
 @bind("focusout", "medal_requirement")
 def max_randomized_medals(event):
     """Validate medal input on loss of focus."""
@@ -93,16 +119,28 @@ def max_randomized_fairies(event):
         fairy_req.value = 20
 
 
+@bind("click", "shuffle_items")
+@bind("change", "training_barrels")
+@bind("change", "move_rando")
 @bind("focusout", "starting_moves_count")
 def max_starting_moves_count(event):
     """Validate starting moves count input on loss of focus."""
     move_count = js.document.getElementById("starting_moves_count")
+    moves = js.document.getElementById("move_rando")
+    item_rando = js.document.getElementById("shuffle_items")
+    training_barrels = js.document.getElementById("training_barrels")
+    max_starting_moves = 40
+    if not item_rando.checked and moves.value != "off":
+        if training_barrels.value == "normal":
+            max_starting_moves = 0
+        else:
+            max_starting_moves = 4
     if not move_count.value:
         move_count.value = 4
     elif 0 > int(move_count.value):
         move_count.value = 0
-    elif int(move_count.value) > 40:
-        move_count.value = 40
+    elif int(move_count.value) > max_starting_moves:
+        move_count.value = max_starting_moves
 
 
 @bind("change", "crown_door_item")
@@ -352,7 +390,7 @@ def set_preset_options():
     updateDoorOneNumAccess(None)
     updateDoorTwoNumAccess(None)
 
-    js.load_cookies()
+    js.load_data()
 
 
 @bind("click", "randomize_blocker_required_amounts")
@@ -505,11 +543,12 @@ def disable_music(evt):
     disabled = False
     if js.document.getElementById("random_music").checked:
         disabled = True
-    for i in ["bgm", "fanfares", "events"]:
-        music = js.document.getElementById(f"music_{i}")
+    for i in ["bgm", "majoritems", "minoritems", "events"]:
+        music = js.document.getElementById(f"music_{i}_randomized")
         try:
             if disabled:
                 music.setAttribute("disabled", "disabled")
+                music.setAttribute("checked", "checked")
             else:
                 music.removeAttribute("disabled")
         except AttributeError:
@@ -625,8 +664,6 @@ def disable_enemy_modal(evt):
         pass
 
 
-@bind("click", "item_rando_list_select_all")
-@bind("click", "item_rando_list_reset")
 @bind("click", "shuffle_items")
 def toggle_item_rando(evt):
     """Enable and disable settings based on Item Rando being on/off."""
@@ -665,15 +702,26 @@ def toggle_item_rando(evt):
             if shops_in_pool:
                 if shockwave.selected is True:
                     document.getElementById("shockwave_status_shuffled_decoupled").selected = True
+                if move_vanilla.selected is True or move_rando.selected is True:
+                    document.getElementById("move_on_cross_purchase").selected = True
                 shockwave.setAttribute("disabled", "disabled")
+                move_vanilla.setAttribute("disabled", "disabled")
+                move_rando.setAttribute("disabled", "disabled")
                 smaller_shops.removeAttribute("disabled")
+                # Prevent UI breaking if Vanilla/Unlock All moves was selected before selection Shops in Item Rando
+                js.document.getElementById("training_barrels").removeAttribute("disabled")
+                js.document.getElementById("shockwave_status").removeAttribute("disabled")
+                js.document.getElementById("random_prices").removeAttribute("disabled")
     except AttributeError:
         pass
 
 
+@bind("click", "item_rando_list_select_all")
+@bind("click", "item_rando_list_reset")
 @bind("click", "item_rando_list_selected")
 def item_rando_list_changed(evt):
     """Enable and disable settings based on the Item Rando pool changing."""
+    item_rando_disabled = True
     item_rando_pool = document.getElementById("item_rando_list_selected").options
     shockwave = document.getElementById("shockwave_status_shuffled")
     smaller_shops = document.getElementById("smaller_shops")
@@ -690,7 +738,9 @@ def item_rando_list_changed(evt):
             nothing_selected = False
     if nothing_selected:
         shops_in_pool = True
-    if shops_in_pool:
+    if js.document.getElementById("shuffle_items").checked:
+        item_rando_disabled = False
+    if shops_in_pool and not item_rando_disabled:
         # Prevent camera/shockwave from being coupled and enable smaller shops if shops are in the pool
         if shockwave.selected is True:
             document.getElementById("shockwave_status_shuffled_decoupled").selected = True
@@ -721,30 +771,75 @@ def preset_select_changed(event):
     for val in js.progression_presets:
         if val.get("name") == element.value:
             presets = val
-    for key in presets:
-        try:
-            if type(presets[key]) is bool:
-                if presets[key] is False:
-                    js.jq(f"#{key}").checked = False
-                    js.document.getElementsByName(key)[0].checked = False
+    if presets is not None and "settings_string" in presets:
+        # Pass in setting string
+        settings = decrypt_settings_string_enum(presets["settings_string"])
+        for select in js.document.getElementsByTagName("select"):
+            if js.document.querySelector("#nav-cosmetics").contains(select) is False:
+                select.selectedIndex = -1
+        js.document.getElementById("presets").selectedIndex = 0
+        for key in settings:
+            try:
+                if type(settings[key]) is bool:
+                    if settings[key] is False:
+                        js.jq(f"#{key}").checked = False
+                        js.document.getElementsByName(key)[0].checked = False
+                    else:
+                        js.jq(f"#{key}").checked = True
+                        js.document.getElementsByName(key)[0].checked = True
+                    js.jq(f"#{key}").removeAttr("disabled")
+                elif type(settings[key]) is list:
+                    selector = js.document.getElementById(key)
+                    if selector.tagName == "SELECT":
+                        for item in settings[key]:
+                            for option in selector.options:
+                                if option.value == item.name:
+                                    option.selected = True
                 else:
-                    js.jq(f"#{key}").checked = True
-                    js.document.getElementsByName(key)[0].checked = True
-                js.jq(f"#{key}").removeAttr("disabled")
-            elif type(presets[key]) is list:
-                selector = js.document.getElementById(key)
-                for i in range(0, selector.options.length):
-                    selector.item(i).selected = selector.item(i).value in presets[key]
-            else:
-                if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
-                    js.jq(f"#{key}").slider("setValue", presets[key])
-                    js.jq(f"#{key}").slider("enable")
-                    js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                    if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
+                        js.jq(f"#{key}").slider("setValue", settings[key])
+                        js.jq(f"#{key}").slider("enable")
+                        js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                    else:
+                        selector = js.document.getElementById(key)
+                        # If the selector is a select box, set the selectedIndex to the value of the option
+                        if selector.tagName == "SELECT":
+                            for option in selector.options:
+                                if option.value == SettingsMap[key](settings[key]).name:
+                                    # Set the value of the select box to the value of the option
+                                    option.selected = True
+                                    break
+                        else:
+                            js.jq(f"#{key}").val(settings[key])
+                    js.jq(f"#{key}").removeAttr("disabled")
+            except Exception as e:
+                print(e)
+                pass
+    else:
+        for key in presets:
+            try:
+                if type(presets[key]) is bool:
+                    if presets[key] is False:
+                        js.jq(f"#{key}").checked = False
+                        js.document.getElementsByName(key)[0].checked = False
+                    else:
+                        js.jq(f"#{key}").checked = True
+                        js.document.getElementsByName(key)[0].checked = True
+                    js.jq(f"#{key}").removeAttr("disabled")
+                elif type(presets[key]) is list:
+                    selector = js.document.getElementById(key)
+                    for i in range(0, selector.options.length):
+                        selector.item(i).selected = selector.item(i).value in presets[key]
                 else:
-                    js.jq(f"#{key}").val(presets[key])
-                js.jq(f"#{key}").removeAttr("disabled")
-        except Exception as e:
-            pass
+                    if js.document.getElementsByName(key)[0].hasAttribute("data-slider-value"):
+                        js.jq(f"#{key}").slider("setValue", presets[key])
+                        js.jq(f"#{key}").slider("enable")
+                        js.jq(f"#{key}").parent().find(".slider-disabled").removeClass("slider-disabled")
+                    else:
+                        js.jq(f"#{key}").val(presets[key])
+                    js.jq(f"#{key}").removeAttr("disabled")
+            except Exception as e:
+                pass
     toggle_counts_boxes(None)
     toggle_b_locker_boxes(None)
     update_boss_required(None)
@@ -753,7 +848,17 @@ def preset_select_changed(event):
     disable_move_shuffles(None)
     max_randomized_blocker(None)
     max_randomized_troff(None)
+    max_music(None)
+    max_sfx(None)
     disable_barrel_modal(None)
+    item_rando_list_changed(None)
+    toggle_item_rando(None)
+    disable_enemy_modal(None)
+    toggle_bananaport_selector(None)
+    disable_helm_hurry(None)
+    toggle_logic_type(None)
+    toggle_key_settings(None)
+    max_starting_moves_count(None)
 
 
 @bind("change", "dk_colors")
@@ -833,6 +938,7 @@ def toggle_patch_ui(event):
     """Disable non-cosmetic tabs if using patch file."""
     for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-progression-tab", "nav-qol-tab"]:
         document.getElementById(tab).setAttribute("disabled", "disabled")
+    document.getElementById("override_div").removeAttribute("hidden")
     document.getElementById("nav-cosmetics-tab").click()
 
 
@@ -842,6 +948,14 @@ def toggle_patch_ui(event):
     for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-progression-tab", "nav-qol-tab"]:
         document.getElementById(tab).removeAttribute("disabled")
     document.getElementById("override_div").setAttribute("hidden", "hidden")
+    document.getElementById("override_cosmetics").checked = True
+
+
+@bind("click", "nav-pastgen-tab")
+def hide_override_cosmetics(event):
+    """Hide the override cosmetics setting when clicking the Generate from Past Seed button."""
+    document.getElementById("override_div").setAttribute("hidden", "hidden")
+    document.getElementById("override_cosmetics").checked = True
 
 
 @bind("click", "select_keys")

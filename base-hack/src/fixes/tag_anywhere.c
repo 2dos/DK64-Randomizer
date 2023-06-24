@@ -356,7 +356,7 @@ static const movement_bitfield banned_movement_btf = {
     .loss_dance = 1, // Reason: Locked Movement
     .victory_dance = 1, // Reason: Locked Movement
     .vehicle_castle_car_race = 0,
-    .entering_battle_crown = 0,
+    .entering_battle_crown = 1, // Reason: Couple glitches can arise from this
     .locked_cutscenes = 0,
     .gorilla_grab = 1, // Reason: Locked Movement
     .learning_move = 1, // Reason: Locked Movement
@@ -879,16 +879,16 @@ void tagAnywhereBunch(int player, int obj, int player_index) {
 
     void initTagAnywhere(void) {
         // Fixes for position
-        *(int*)(0x806DE3F0) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
-        *(int*)(0x806DE4F4) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
-        *(int*)(0x806DE5D8) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
-        *(int*)(0x806DE6B4) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
-        *(int*)(0x806DE7B8) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
-        *(int*)(0x8072F6E0) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
-        *(int*)(0x8072F6FC) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
-        *(int*)(0x8072FB1C) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
-        *(int*)(0x807302C8) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
-        *(int*)(0x80730328) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
-        *(int*)(0x807303E8) = 0x0C000000 | (((int)&updatePosition_New & 0xFFFFFF) >> 2);
+        writeFunction(0x806DE3F0, &updatePosition_New);
+        writeFunction(0x806DE4F4, &updatePosition_New);
+        writeFunction(0x806DE5D8, &updatePosition_New);
+        writeFunction(0x806DE6B4, &updatePosition_New);
+        writeFunction(0x806DE7B8, &updatePosition_New);
+        writeFunction(0x8072F6E0, &updatePosition_New);
+        writeFunction(0x8072F6FC, &updatePosition_New);
+        writeFunction(0x8072FB1C, &updatePosition_New);
+        writeFunction(0x807302C8, &updatePosition_New);
+        writeFunction(0x80730328, &updatePosition_New);
+        writeFunction(0x807303E8, &updatePosition_New);
     }
 */

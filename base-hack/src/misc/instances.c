@@ -186,6 +186,11 @@
 #define FACTORY_BLOCKELEVATOR_5 0x27
 #define FACTORY_BLOCKELEVATOR_6 0x28
 
+#define FACTORY_BBLAST_STAR 0x0
+#define FACTORY_BBLAST_CONTROLLER 0x1
+
+#define JAPES_RAMBI_DOOR 0x115
+
 void hideObject(behaviour_data* behaviour_pointer) {
 	/**
 	 * @brief Hide object model 2 item and make it intangible
@@ -669,6 +674,32 @@ static const short tnsportal_flags[] = {
 	FLAG_PORTAL_CASTLE,
 };
 
+#define PORTAL_DELTA 40
+
+void alterParentLocationTNS(int id) {
+	int* m2location = (int*)ObjectModel2Pointer;
+	for (int i = 0; i < 17; i++) {
+		if (parentData[i].in_submap) {
+			if ((parentData[i].map == CurrentMap) && (parentData[i].transition_properties_bitfield == 3)) {
+				int index = convertIDToIndex(id);
+				ModelTwoData* tied_object = getObjectArrayAddr(m2location,0x90,index);
+				model_struct* model = tied_object->model_pointer;
+				float angle = model->rot_y;
+				angle /= 360;
+				angle *= 4096;
+				int angle_int = angle;
+				float dx = PORTAL_DELTA * determineXRatioMovement(angle_int);
+				float dz = PORTAL_DELTA * determineZRatioMovement(angle_int);
+				parentData[i].positions.xPos = tied_object->xPos + dx;
+				parentData[i].positions.zPos = tied_object->zPos + dz;
+				int opp_angle = angle_int + 2048;
+				parentData[i].facing_angle = opp_angle & 0xFFF;
+				return;
+			}
+		}
+	}
+}
+
 void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
 	/**
 	 * @brief Generic code for a T&S Portal
@@ -730,7 +761,8 @@ void TNSPortalGenericCode(behaviour_data* behaviour, int index, int id) {
 	} else if (behaviour->current_state == 4) {
 		if (behaviour->timer == 0) {
 			enterPortal(Player);
-			initiateTransition_0(MAP_TROFFNSCOFF, 0, 0, 3); // Param 3 is tied exit
+			initiateTransition_0(MAP_TROFFNSCOFF, 0, 0, 3);
+			alterParentLocationTNS(id);
 			behaviour->next_state = 5;
 		}
 	} else if (behaviour->current_state == 40) {
@@ -1229,7 +1261,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 								max_gbs = BLockerDefaultArray[level];
 							}
 						}
-						return (gb_count >= max_gbs) && (Rando.microhints > 0); 
+						return (gb_count >= max_gbs) && (Rando.microhints != MICROHINTS_NONE); 
 					} else if (index == 1) {
 						if (Player) {
 							if ((Player->obj_props_bitfield & 0x2000) == 0) {
@@ -1407,7 +1439,17 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					if (index == 0) {
 						return isBonus(PreviousMap);
 					} else if (index == 1) {
-						return Rando.microhints > 0;
+						int gb_count = 0;
+						int max_gbs = 0;
+						for (int level = 0; level < 8; level++) {
+							for (int kong = 0; kong < 5; kong++) {
+								gb_count += MovesBase[kong].gb_count[level];
+							}
+							if (BLockerDefaultArray[level] > max_gbs) {
+								max_gbs = BLockerDefaultArray[level];
+							}
+						}
+						return (gb_count >= max_gbs) && (Rando.microhints != MICROHINTS_NONE); 
 					}
 				}
 				break;
@@ -1471,6 +1513,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if ((param2 == JAPES_CAVE_GATE) || (param2 == JAPES_PEANUT_MOUNTAIN) || (param2 == JAPES_COCONUT_RAMBI)) {
 					return !Rando.tag_anywhere;
+				} else if (param2 == JAPES_RAMBI_DOOR) {
+					if (Player) {
+						if ((Rando.quality_of_life.vanilla_fixes) && (Player->control_state == 41)) { // B attack
+							return 1;
+						}
+						return Player->control_state == 47; // Z+B Attack
+					}
 				}
 				break;
 			case MAP_JAPESMOUNTAIN:
@@ -1717,10 +1766,14 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_CAVESROTATINGROOM:
 				if (param2 == ROTATING_ROOM_OBJ) {
-					if (!Rando.disable_rotating_crown) {
-						return checkFlag(FLAG_CROWN_CAVES, FLAGTYPE_PERMANENT);
+					if (index == 0) {
+						if (!Rando.disable_rotating_crown) {
+							return checkFlag(FLAG_CROWN_CAVES, FLAGTYPE_PERMANENT);
+						}
+						return 1;
+					} else if (index == 1) {
+						return !checkFlag(FLAG_COLLECTABLE_ROTATINGGB, FLAGTYPE_PERMANENT);
 					}
-					return 1;
 				}
 				break;
 			case MAP_GALLEONMECHFISH:
@@ -1730,6 +1783,28 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						fish_state = 5;
 					}
 					behaviour_pointer->next_state = fish_state;
+				}
+				break;
+			case MAP_FACTORYBBLAST:
+				if (param2 == FACTORY_BBLAST_STAR) {
+					if (Rando.fast_gbs) {
+						behaviour_pointer->next_state = 20;
+						behaviour_pointer->current_state = 20;
+					}
+				} else if (param2 == FACTORY_BBLAST_CONTROLLER) {
+					if (Rando.fast_gbs) {
+						if (!checkFlag(FLAG_ARCADE_LEVER,FLAGTYPE_PERMANENT)) {
+							if (checkFlag(FLAG_ARCADE_ROUND1,FLAGTYPE_PERMANENT)) {
+								isObjectLoadedInMap(MAP_FACTORY, 45, 10); // Run just to load the setup properly
+								delayedObjectModel2Change(MAP_FACTORY, 45, 10);
+								setNextTransitionType(0);
+								setIntroStoryPlaying(2);
+								setNextTransitionType(0);
+								initiateTransition_0(MAP_FACTORY, 15, 0, 0);
+								behaviour_pointer->next_state = 1;
+							}
+						}
+					}
 				}
 				break;
 			// case TREASURE_CHEST:
@@ -1893,6 +1968,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 								return CoinDoorCheck();
 							} else if (index == 1) {
 								return checkFlagDuplicate(FLAG_HELM_COINDOOR, FLAGTYPE_PERMANENT) || Rando.coin_door_open == 1;
+							} else if (index == 2) {
+								// Disable coin door text
+								return 1;
 							}
 							break;
 						case HELM_PAD_BONGO:
@@ -1950,7 +2028,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 										return checkFlag(previous_slot + 0x4B, FLAGTYPE_TEMPORARY);
 									}
 								} else  if (index == 2) {
-									if ((Rando.microhints > 1) && ((MovesBase[helm_pad_kong].instrument_bitfield & 1) == 0)) {
+									if ((Rando.microhints == MICROHINTS_ALL) && ((MovesBase[helm_pad_kong].instrument_bitfield & 1) == 0)) {
 										behaviour_pointer->next_state = 20;
 										// behaviour_pointer->current_state = 20;
 									}

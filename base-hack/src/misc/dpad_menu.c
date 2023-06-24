@@ -17,14 +17,21 @@
 #define DPAD_Y_LOW 250
 #define HUD_CHECK_COUNT 4
 
+#define CAN_USE_DPAD 1
+#define CAN_SHOW_DPAD 2
+
+#define DPADVISIBLE_HIDE 0
+#define DPADVISIBLE_ALL 1
+#define DPADVISIBLE_MINIMAL 2
+
 int canUseDPad(void) {
     /**
      * @brief Determines whether the player will be able to use the DPad Menu.
      * This operates outside of Tag Anywhere as Tag Anywhere has different rules
      * 
-     * @return DPad is useable
+     * @return Bitfield of whether the dpad can be shown or used
      */
-    if (Gamemode != 6) {
+    if (Gamemode != GAMEMODE_ADVENTURE) {
         return 0; // Not in Adv Mode
     }
     if (player_count > 1) {
@@ -54,7 +61,13 @@ int canUseDPad(void) {
     ) {
         return 0; // In Race
     }
-    return 1;
+    if (inMinigame(CurrentMap)) {
+        return CAN_USE_DPAD;
+    }
+    if (inBattleCrown(CurrentMap)) {
+        return CAN_USE_DPAD;
+    }
+    return CAN_USE_DPAD | CAN_SHOW_DPAD;
 }
 
 int* drawDPad(int* dl) {
@@ -65,32 +78,37 @@ int* drawDPad(int* dl) {
      * 
      * @return New Display List Address
      */
-    if (!canUseDPad()) {
+    if (Rando.dpad_visual_enabled == DPADVISIBLE_HIDE) {
+        return dl;
+    }
+    if ((canUseDPad() & CAN_SHOW_DPAD) == 0) {
         return dl;
     }
     int DPAD_Y = DPAD_Y_HIGH;
-    dl = drawImage(dl, IMAGE_DPAD, RGBA16, 32, 32, DPAD_X + 75, DPAD_Y + 70, DPAD_SCALE, DPAD_SCALE, 0xC0);
-    if ((Rando.tag_anywhere) && (Character < 5)) {
-        // Tag Anywhere Faces
-        int kong_left = getTagAnywhereKong(-1);
-        int kong_right = getTagAnywhereKong(1);
-        int can_ta = getTAState();
-        int ta_opacity = 0x80;
-        if (can_ta) {
-            ta_opacity = 0xFF;
-        }
-        dl = drawImage(dl, IMAGE_KONG_START + kong_left, RGBA16, 32, 32, DPAD_X, DPAD_Y + 70, ICON_SCALE, ICON_SCALE, ta_opacity);
-        dl = drawImage(dl, IMAGE_KONG_START + kong_right, RGBA16, 32, 32, DPAD_X + 140, DPAD_Y + 70, ICON_SCALE, ICON_SCALE, ta_opacity);
-    }
-    if (Rando.quality_of_life.ammo_swap) {
-        // Homing Ammo Toggle
-        if (MovesBase[(int)Character].weapon_bitfield & 2) {
-            int render_homing = 1 ^ ForceStandardAmmo;
-            if (CollectableBase.HomingAmmo == 0) {
-                render_homing = 0;
+    if (Rando.dpad_visual_enabled == DPADVISIBLE_ALL) {
+        dl = drawImage(dl, IMAGE_DPAD, RGBA16, 32, 32, DPAD_X + 75, DPAD_Y + 70, DPAD_SCALE, DPAD_SCALE, 0xC0);
+        if ((Rando.tag_anywhere) && (Character < 5)) {
+            // Tag Anywhere Faces
+            int kong_left = getTagAnywhereKong(-1);
+            int kong_right = getTagAnywhereKong(1);
+            int can_ta = getTAState();
+            int ta_opacity = 0x80;
+            if (can_ta) {
+                ta_opacity = 0xFF;
             }
-            dl = drawImage(dl, IMAGE_AMMO_START + render_homing, RGBA16, 32, 32, DPAD_X + 75, DPAD_Y + 145, ICON_SCALE, ICON_SCALE, 0xFF);
+            dl = drawImage(dl, IMAGE_KONG_START + kong_left, RGBA16, 32, 32, DPAD_X, DPAD_Y + 70, ICON_SCALE, ICON_SCALE, ta_opacity);
+            dl = drawImage(dl, IMAGE_KONG_START + kong_right, RGBA16, 32, 32, DPAD_X + 140, DPAD_Y + 70, ICON_SCALE, ICON_SCALE, ta_opacity);
+        }
+        if (Rando.quality_of_life.ammo_swap) {
+            // Homing Ammo Toggle
+            if (MovesBase[(int)Character].weapon_bitfield & 2) {
+                int render_homing = 1 ^ ForceStandardAmmo;
+                if (CollectableBase.HomingAmmo == 0) {
+                    render_homing = 0;
+                }
+                dl = drawImage(dl, IMAGE_AMMO_START + render_homing, RGBA16, 32, 32, DPAD_X + 75, DPAD_Y + 145, ICON_SCALE, ICON_SCALE, 0xFF);
 
+            }
         }
     }
     if (Rando.quality_of_life.hud_bp_multibunch) {
@@ -116,7 +134,7 @@ void handleDPadFunctionality(void) {
     /**
      * @brief Handle inputs on the DPad and their corresponding functionality
      */
-    if (canUseDPad()) {
+    if (canUseDPad() & CAN_USE_DPAD) {
         if (Rando.quality_of_life.hud_bp_multibunch) {
             updateMultibunchCount();
             if (NewlyPressedControllerInput.Buttons.d_up) {

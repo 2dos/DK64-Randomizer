@@ -101,10 +101,15 @@ typedef struct actorData {
 	/* 0x0EA */ char unk_EA[0x4];
 	/* 0x0EE */ short rot_y_copy;
 	/* 0x0F0 */ short reward_index;
-	/* 0x0F2 */ char unk_F2[0x124-0xF2];
+	/* 0x0F2 */ char unk_F2[0xFD-0xF2];
+	/* 0x0FD */ unsigned char unk_FD;
+	/* 0x0FE */ char unk_FE[0x11C-0xFE];
+	/* 0x11C */ void* parent;
+	/* 0x120 */ char unk_120[0x124-0x120];
 	/* 0x124 */ actor_subdata* data_pointer;
 	/* 0x128 */ short shadow_intensity;
-	/* 0x12A */ char unk_12A[0x132-0x12A];
+	/* 0x12A */ short draw_distance;
+	/* 0x12C */ char unk_12C[0x132-0x12C];
 	/* 0x132 */ short subdata;
 	/* 0x134 */ short health;
 	/* 0x136 */ char unk_136[0x138-0x136];
@@ -120,7 +125,10 @@ typedef struct actorData {
 	/* 0x15F */ char sub_state;
 	/* 0x160 */ char unk_160[0x16A-0x160];
 	/* 0x16A */ char rgb_mask[3];
-	/* 0x16D */ char unk_16D[0x174-0x16D];
+	/* 0x16D */ char unk_16D;
+	/* 0x16E */ char unk_16E;
+	/* 0x16F */ char unk_16F;
+	/* 0x170 */ char unk_170[0x174-0x170];
 	/* 0x174 */ void* paad;
 	/* 0x178 */ void* paad2;
 	/* 0x17C */ void* paad3;
@@ -243,7 +251,8 @@ typedef struct playerData {
 	/* 0x254 */ short invulnerability_timer;
 	/* 0x256 */ char unk_256[0x284 - 0x256];
 	/* 0x284 */ cameraData* camera_pointer;
-	/* 0x288 */ char unk_288[0x2BC - 0x288];
+	/* 0x288 */ float unk_288;
+	/* 0x28C */ char unk_28C[0x2BC - 0x28C];
 	/* 0x2BC */ floatPos grabPos;
 	/* 0x2C8 */ char unk_2C8[0x323 - 0x2C8];
 	/* 0x323 */ char unk_rocketbarrel_value3;
@@ -751,7 +760,10 @@ typedef struct model_struct {
 	/* 0x004 */ float y;
 	/* 0x008 */ float z;
 	/* 0x00C */ float scale;
-	/* 0x010 */ char unk_10[0x50-0x10];
+	/* 0x010 */ float rot_x;
+	/* 0x014 */ float rot_y;
+	/* 0x018 */ float rot_z;
+	/* 0x01C */ char unk_1C[0x50-0x1C];
 	/* 0x050 */ int unk_50;
 	/* 0x054 */ char unk_54[0xB8-0x54];
 	/* 0X0B8 */ int unk_B8;
@@ -1186,24 +1198,26 @@ typedef struct collected_item_struct {
 
 typedef struct quality_options {
 	unsigned char reduce_lag : 1;
-	unsigned char remove_cutscenes : 1; // 2
+	unsigned char remove_cutscenes : 1; // 1
 	unsigned char fast_picture : 1;
-	unsigned char aztec_lobby_bonus : 1; // 4
+	unsigned char aztec_lobby_bonus : 1; // 3
 	unsigned char dance_skip : 1;
-	unsigned char fast_boot : 1; // 6
+	unsigned char fast_boot : 1; // 5
 	unsigned char fast_transform : 1;
-	unsigned char ammo_swap : 1; // 8
+	unsigned char ammo_swap : 1; // 7
 	unsigned char cb_indicator : 1;
-	unsigned char galleon_star : 1; // 10
+	unsigned char galleon_star : 1; // 9
 	unsigned char vanilla_fixes : 1;
-	unsigned char textbox_hold : 1; // 12
+	unsigned char textbox_hold : 1; // 11
 	unsigned char caves_kosha_dead : 1;
-	unsigned char rambi_enguarde_pickup : 1; // 14
+	unsigned char rambi_enguarde_pickup : 1; // 13
 	unsigned char hud_bp_multibunch : 1;
-	unsigned char homing_balloons : 1; // 16
+	unsigned char homing_balloons : 1; // 15
 	unsigned char save_krool_progress : 1;
-	unsigned char cbs_visible : 1; // 18
+	unsigned char cbs_visible : 1; // 17
 	unsigned char blueprint_compression : 1;
+	unsigned char fast_hints : 1; // 19
+	unsigned char brighten_mmm_enemies : 1;
 } quality_options;
 
 typedef struct image_cache_struct {

@@ -1,8 +1,9 @@
 """Shrink Models and create a duplicate."""
 import zlib
-from BuildLib import intf_to_float, float_to_hex, ROMName
+
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames
+from BuildLib import ROMName, float_to_hex, intf_to_float
 
 
 def shrinkModel(is_file: bool, file_name: str, file_index: int, scale: float, output_file: str, realign_bones: bool):

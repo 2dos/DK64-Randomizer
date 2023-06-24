@@ -1,7 +1,7 @@
 """Functions and data for setting and calculating prices."""
 
-from math import ceil
 import random
+from math import ceil
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -16,7 +16,6 @@ from randomizer.Lists.Location import (
     DonkeyMoveLocations,
     LankyMoveLocations,
     LocationList,
-    RemovedShopLocations,
     SharedMoveLocations,
     SharedShopLocations,
     TinyMoveLocations,
@@ -169,7 +168,7 @@ def GetMaxForKong(settings, kong):
         kongMoveLocations = ChunkyMoveLocations.copy()
 
     for location in kongMoveLocations:
-        if location in RemovedShopLocations:  # Ignore any shop locations that don't even exist anymore
+        if LocationList[location].inaccessible:  # Ignore any shop locations that don't even exist anymore
             continue
         item_id = LocationList[location].item
         if item_id is not None and item_id != Items.NoItem:
@@ -235,31 +234,33 @@ meaning we just must consider the maximum price for every location.
 def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, instUpgrades):
     """Get the price at this location."""
     item = location.item
-    if item is None or item == Items.NoItem:
-        return 0
-    elif item == Items.ProgressiveSlam:
+    # Progressive items have their prices managed separately
+    if item == Items.ProgressiveSlam:
         if slamLevel in [1, 2]:
             return settings.prices[item][slamLevel - 1]
         else:
-            # If already have max slam, there's move to buy
+            # If already have max slam, there's no move to buy (this is fine only if it's in VerifyWorld)
             return 0
     elif item == Items.ProgressiveAmmoBelt:
         if ammoBelts in [0, 1]:
             return settings.prices[item][ammoBelts]
         else:
-            # If already have max ammo belt, there's move to buy
+            # If already have max ammo belt, there's no move to buy (this shouldn't happen?)
             return 0
     elif item == Items.ProgressiveInstrumentUpgrade:
         if instUpgrades in [0, 1, 2]:
             return settings.prices[item][instUpgrades]
         else:
-            # If already have max instrument upgrade, there's move to buy
+            # If already have max instrument upgrade, there's no move to buy (this shouldn't happen?)
             return 0
     # Vanilla prices are by item, not by location
     elif settings.random_prices == RandomPrices.vanilla:
+        # Treat the location as free if it's empty
+        if item is None or item == Items.NoItem:
+            return 0
         return settings.prices[item]
-    else:
-        return settings.prices[location_id]
+    # In all other cases, the price is determined solely by the location
+    return settings.prices[location_id]
 
 
 def KongCanBuy(location_id, logic, kong):

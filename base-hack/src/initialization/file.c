@@ -10,6 +10,12 @@
  */
 #include "../../include/common.h"
 
+static int new_file_size = 0;
+
+int getNewFileSize(void) {
+	return new_file_size;
+}
+
 void expandSaveFile(int static_expansion, int actor_count) {
 	/**
 	 * @brief Expand save file to account for expanded data, including flags and larger GB capacity
@@ -38,6 +44,7 @@ void expandSaveFile(int static_expansion, int actor_count) {
 	int kong_var_size = 0xA1 + added_bits;
 	int file_info_location = flag_block_size + (5 * kong_var_size);
 	int file_default_size = file_info_location + 0x72;
+	new_file_size = file_default_size;
 	// Flag Block Size
 	*(short*)(0x8060E36A) = file_default_size;
 	*(short*)(0x8060E31E) = file_default_size;

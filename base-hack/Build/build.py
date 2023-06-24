@@ -8,44 +8,37 @@ import sys
 import zlib
 
 import create_helm_geo
-import generate_watch_file
-import shop_instance_script  # HAS TO BE BEFORE `instance_script_maker`
-from writeWarpData import generateDefaultPadPairing  # HAS TO BE BEFORE `instance_script_maker`
-import portal_instance_script  # HAS TO BE BEFORE `instance_script_maker`
-from instance_script_maker import BuildInstanceScripts
-import model_fix
 import generate_disco_models
+import generate_watch_file
+import model_fix
 import model_port
-from BuildEnums import ChangeType, TextureFormat, TableNames, CompressionMethods
-from BuildClasses import File, HashIcon, ModelChange, TextChange, ROMPointerFile
-from BuildLib import BLOCK_COLOR_SIZE, ROMName, newROMName, music_size
 
 # Patcher functions for the extracted files
 import patch_text
+import portal_instance_script
+import shop_instance_script
 from adjust_exits import adjustExits
 from adjust_zones import modifyTriggers
+from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
+from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat
+from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
+from cutscene_builder import buildScripts
 from end_seq_writer import createSquishFile, createTextFile
 from generate_yellow_wrinkly import generateYellowWrinkly
 from helm_doors import getHelmDoorModel
+from instance_script_maker import BuildInstanceScripts
 from model_shrink import shrinkModel
-from cutscene_builder import buildScripts
 
 # Infrastructure for recomputing DK64 global pointer tables
 # from BuildNames import maps
 from populateSongData import writeVanillaSongData
 from recompute_overlays import isROMAddressOverlay, readOverlayOriginalData, replaceOverlayData, writeModifiedOverlaysToROM
-from recompute_pointer_table import (
-    dumpPointerTableDetails,
-    getFileInfo,
-    parsePointerTables,
-    replaceROMFile,
-    writeModifiedPointerTablesToROM,
-    clampCompressedTextures,
-)
+from recompute_pointer_table import clampCompressedTextures, dumpPointerTableDetails, getFileInfo, parsePointerTables, replaceROMFile, writeModifiedPointerTablesToROM
 from staticcode import patchStaticCode
 from vanilla_move_data import writeVanillaMoveData
+from writeWarpData import generateDefaultPadPairing
 
 if os.path.exists(newROMName):
     os.remove(newROMName)
@@ -205,6 +198,9 @@ file_dict = [
     ),
     File(name="Fake Item Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=605, source_file="fake_item.bin", do_not_delete_source=True, do_not_extract=True),
     File(name="Melon Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=606, source_file="melon_om2.bin", do_not_extract=True, do_not_delete_source=True),
+    File(name="21132 Sign", pointer_table_index=TableNames.TexturesGeometry, file_index=0x7CA, source_file="21132_tex.bin", target_size=2 * 64 * 32),
+    File(name="Crypt Lever Sign 1", pointer_table_index=TableNames.TexturesGeometry, file_index=0x999, source_file="cryptlev1_tex.bin", target_size=2 * 64 * 32),
+    File(name="Crypt Lever Sign 2", pointer_table_index=TableNames.TexturesGeometry, file_index=0x99A, source_file="cryptlev2_tex.bin", target_size=2 * 64 * 32),
 ]
 
 file_dict = file_dict + buildScripts()
@@ -308,6 +304,21 @@ file_dict.append(
     )
 )
 
+key_textures = (0xBAB, 0xC6F)
+for tx in key_textures:
+    dim = 32
+    if tx == 0xC6F:
+        dim = 4
+    file_dict.append(
+        File(
+            name=f"Key Texture {tx}",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=tx,
+            source_file=f"key_tex{tx}.png",
+            target_size=2 * dim * dim,
+        )
+    )
+
 starts = (0x15F8, 0x15E8, 0x158F, 0x1600, 0x15F0)
 for si, s in enumerate(starts):
     for x in range(8):
@@ -323,6 +334,18 @@ for si, s in enumerate(starts):
 
 kong_names = ["DK", "Diddy", "Lanky", "Tiny", "Chunky"]
 ammo_names = ["standard_crate", "homing_crate"]
+
+switch_faces = [0xB25, 0xB1E, 0xC81, 0xC80, 0xB24]
+for face_index, face in enumerate(switch_faces):
+    file_dict.append(
+        File(
+            name=f"Switch Face (Kong {face_index + 1})",
+            pointer_table_index=TableNames.TexturesGeometry,
+            file_index=face,
+            source_file=f"switch_face_{face}.bin",
+            target_size=32 * 32 * 2,
+        )
+    )
 
 for ammo_index, ammo in enumerate(ammo_names):
     file_dict.append(
@@ -490,8 +513,9 @@ song_replacements = [
     {"name": "move_get", "index": 114, "bps": True},
     {"name": "nintendo_logo", "index": 174, "bps": True},
     {"name": "success_races", "index": 86, "bps": True},
-    {"name": "klumsy_celebration", "index": 125, "bps": True},
+    # {"name": "klumsy_celebration", "index": 125, "bps": True},
     {"name": "coin_sfx", "index": 7, "bps": False},
+    {"name": "intro_story", "index": 122, "bps": True},
 ]
 changed_song_indexes = []
 
@@ -1189,6 +1213,12 @@ with open(newROMName, "r+b") as fh:
     fh.write((4).to_bytes(1, "big"))
     fh.seek(0x1FED020 + 0x159)
     fh.write((2).to_bytes(1, "big"))
+
+    # Default Menu Settings
+    fh.seek(0x1FED020 + 0xC8)
+    fh.write((40).to_bytes(1, "big"))
+    fh.seek(0x1FED020 + 0xC9)
+    fh.write((40).to_bytes(1, "big"))
 
     # Pkmn Snap Default Enemies
     pkmn_snap_enemies = [

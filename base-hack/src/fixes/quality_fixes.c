@@ -18,14 +18,13 @@ void qualityOfLife_fixes(void) {
 	 */
 	if (Rando.quality_of_life.remove_cutscenes) {
 		// Upon ROM Boot, set "Story Skip" to on
-		if (Gamemode == 0) {
+		if (Gamemode == GAMEMODE_NINTENDOLOGO) {
 			StorySkip = 1;
 		}
 	}
 	if (Rando.quality_of_life.vanilla_fixes) {
 		// Set some flags in-game
 		setPermFlag(FLAG_FTT_CRANKY); // Cranky FTT
-		setPermFlag(FLAG_TBARREL_SPAWNED); // Training Barrels Spawned
 		fixkey8();
 		// Prevent a bug where detransforming from Rambi shortly before getting hit will keep you locked as Rambi
 		if (CurrentMap == MAP_JAPES) {
@@ -33,6 +32,30 @@ void qualityOfLife_fixes(void) {
 				if (Character == 6) { // Rambi
 					if (Player->detransform_timer == 0) {
 						Player->rambi_enabled = 1;
+					}
+				}
+			}
+		} else if (CurrentMap == MAP_CAVESROTATINGROOM) {
+			if (Player) {
+				if (Player->yPos < 50.0f) {
+					Player->xPos = 317.0f;
+					Player->yPos = 124.0f;
+					Player->zPos = 295.0f;
+					displaySpriteAtXYZ(sprite_table[19], 0x3F800000, Player->xPos, Player->yPos, Player->zPos);
+				}
+			}
+		} else {
+			int is_beaver_bother = CurrentMap == MAP_BBOTHER_EASY ||
+				CurrentMap == MAP_BBOTHER_HARD ||
+				CurrentMap == MAP_BBOTHER_NORMAL;
+			if (is_beaver_bother) {
+				if (Player) {
+					int control_state = Player->control_state;
+					int good_state = control_state == 0x7D || // Klaptrap
+						control_state == 0x73 || // Failure
+						control_state == 0x74; // Victory
+					if (!good_state) {
+						Player->control_state = 0x7D;
 					}
 				}
 			}
@@ -272,4 +295,56 @@ int canPlayJetpac(void) {
 void fixCrownEntrySKong(playerData* player, int animation) {
 	player->strong_kong_ostand_bitfield &= 0xFFFFFFEF;
 	playAnimation(player, animation);
+}
+
+void reduceTrapBubbleLife(void) {
+	Player->trap_bubble_timer -= 5;
+	if (Player->trap_bubble_timer < 1) {
+		Player->trap_bubble_timer = 1;
+	}
+}
+
+void exitTrapBubbleController(void) {
+	int x = stickX_interpretted;
+	int y = stickY_interpretted;
+	int threshold = 0x28;
+	if (((x > threshold) || (y > threshold)) && (Player->unk_288 != 0.0f)) {
+		Player->unk_288 = 1.0f;
+		reduceTrapBubbleLife();
+		return;
+	}
+	if (((x < -threshold) || (y < -threshold)) && (Player->unk_288 == 0.0f)) {
+		Player->unk_288 = 0.0f;
+		reduceTrapBubbleLife();
+		return;
+	}
+	if (NewlyPressedControllerInput.Buttons.a) {
+		// Perform reduction twice to counteract that this can be done once per two frames
+		reduceTrapBubbleLife();
+		reduceTrapBubbleLife();
+		return;
+	}
+}
+
+static const char test_file_name[] = "BALLAAM";
+
+void writeDefaultFilename(void) {
+	for (int i = 0; i < 8; i++) {
+		SaveExtraData(EGD_FILENAME, i, test_file_name[i]);
+	}
+}
+
+void fixChimpyCamBug(void) {
+	/**
+	 * @brief Things to be reset upon first boot of the game on PJ64 (Because PJ64 is weird)
+	 */
+	wipeGlobalFlags();
+	SaveToFile(DATA_CAMERATYPE, 0, 0, 0, Rando.default_camera_type);
+	SaveToFile(DATA_LANGUAGE, 0, 0, 0, Rando.default_camera_type);
+	SaveToFile(DATA_SOUNDTYPE, 0, 0, 0, Rando.default_sound_type);
+	wipeFileStats();
+	if (ENABLE_FILENAME) {
+		writeDefaultFilename();
+	}
+	SaveToGlobal();
 }

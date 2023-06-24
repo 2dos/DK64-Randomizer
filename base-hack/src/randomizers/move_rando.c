@@ -420,11 +420,26 @@ void purchaseMove(shop_paad* paad) {
 			if (paad->flag == -2) {
 				setFlagDuplicate(FLAG_ABILITY_CAMERA, 1, FLAGTYPE_PERMANENT);
 				setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, 1, FLAGTYPE_PERMANENT);
+				if (CollectableBase.Film < 10) {
+					CollectableBase.Film = 10;
+				}
+				if (CollectableBase.Crystals < (10*150)) {
+					CollectableBase.Crystals = 10*150;
+				}
 			} else if ((paad->flag >= FLAG_FAKEITEM) && (paad->flag < (FLAG_FAKEITEM + 0x10))) {
 				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
 				queueIceTrap();
 			} else {
 				setFlagDuplicate(paad->flag, 1, FLAGTYPE_PERMANENT);
+				if (paad->flag == FLAG_ABILITY_CAMERA) {
+                    if (CollectableBase.Film < 10) {
+						CollectableBase.Film = 10;
+					}
+                } else if (paad->flag == FLAG_ABILITY_SHOCKWAVE) {
+                    if (CollectableBase.Crystals < (10*150)) {
+						CollectableBase.Crystals = 10*150;
+					}
+                }
 			}
 		break;
 	}
@@ -507,6 +522,12 @@ void setLocation(purchase_struct* purchase_data) {
 			// BFI Coupled Moves
 			setFlagDuplicate(FLAG_ABILITY_SHOCKWAVE,1,FLAGTYPE_PERMANENT);
 			setFlagDuplicate(FLAG_ABILITY_CAMERA,1,FLAGTYPE_PERMANENT);
+			if (CollectableBase.Film < 10) {
+				CollectableBase.Film = 10;
+			}
+			if (CollectableBase.Crystals < (10*150)) {
+				CollectableBase.Crystals = 10*150;
+			}
 		} else if ((p_type == PURCHASE_FLAG) && (isFlagInRange(purchase_data->purchase_value, FLAG_FAKEITEM, 0x10))) {
 			setFlagDuplicate(purchase_data->purchase_value,1,FLAGTYPE_PERMANENT);
 			queueIceTrap();
@@ -514,6 +535,15 @@ void setLocation(purchase_struct* purchase_data) {
 			// IsFlag
 			progressiveChange(purchase_data->purchase_value);
 			setFlagDuplicate(purchase_data->purchase_value,1,FLAGTYPE_PERMANENT);
+			if (purchase_data->purchase_value == FLAG_ABILITY_CAMERA) {
+				if (CollectableBase.Film < 10) {
+					CollectableBase.Film = 10;
+				}
+			} else if (purchase_data->purchase_value == FLAG_ABILITY_SHOCKWAVE) {
+				if (CollectableBase.Crystals < (10*150)) {
+					CollectableBase.Crystals = 10*150;
+				}
+			}
 		} else if (p_type == PURCHASE_GB) {
 			// IsFlag + GB Update
 			if (!checkFlagDuplicate(purchase_data->purchase_value, FLAGTYPE_PERMANENT)) {
@@ -596,10 +626,10 @@ void fixTBarrelsAndBFI(int init) {
 		*(short*)(0x80681CFA) = (short)LOCATION_ORANGE;
 		*(short*)(0x80681D06) = (short)LOCATION_BARREL;
 		*(short*)(0x80681D12) = (short)LOCATION_VINE;
-		*(int*)(0x80681D38) = 0x0C000000 | (((int)&getLocationStatus & 0xFFFFFF) >> 2); // Get TBarrels Move
+		writeFunction(0x80681D38, &getLocationStatus); // Get TBarrels Move
 		// All Barrels Complete check
 		*(short*)(0x80681C8A) = (short)LOCATION_DIVE;
-		*(int*)(0x80681C98) = 0x0C000000 | (((int)&getLocationStatus & 0xFFFFFF) >> 2); // Get TBarrels Move
+		writeFunction(0x80681C98, &getLocationStatus); // Get TBarrels Move
 	} else {
 		unsigned char tbarrel_bfi_maps[] = {
 			MAP_TRAININGGROUNDS, // TGrounds
@@ -621,12 +651,12 @@ void fixTBarrelsAndBFI(int init) {
 			*(short*)(0x80029606) = (short)LOCATION_ORANGE;
 			*(short*)(0x800295FE) = (short)LOCATION_VINE;
 			*(short*)(0x800295DA) = (short)LOCATION_BARREL;
-			*(int*)(0x80029610) = 0x0C000000 | (((int)&setLocationStatus & 0xFFFFFF) >> 2); // Set TBarrels Move
+			writeFunction(0x80029610, &setLocationStatus); // Set TBarrels Move
 			// BFI
 			*(short*)(0x80027F2A) = (short)LOCATION_BFI;
 			*(short*)(0x80027E1A) = (short)LOCATION_BFI;
-			*(int*)(0x80027F24) = 0x0C000000 | (((int)&setLocationStatus & 0xFFFFFF) >> 2); // Set BFI Move
-			*(int*)(0x80027E20) = 0x0C000000 | (((int)&getLocationStatus & 0xFFFFFF) >> 2); // Get BFI Move
+			writeFunction(0x80027F24, &setLocationStatus); // Set BFI Move
+			writeFunction(0x80027E20, &getLocationStatus); // Get BFI Move
 		}
 	}
 }

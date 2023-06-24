@@ -1,6 +1,6 @@
 """Encode text file to ROM."""
-from BuildLib import float_to_hex
 from BuildEnums import Icons
+from BuildLib import float_to_hex
 
 
 def writeText(file_name, text):

@@ -60,7 +60,15 @@ typedef struct varspace {
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char archipelago; // DK64R is being run through Archipelago
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 3
-	/* 0x0B3 */ char unk_B0[0xD5 - 0xB3];
+	/* 0x0B3 */ char unk_B0[0xC7 - 0xB3];
+	/* 0x0C7 */ unsigned char default_sound_type; // 0 = Stereo, 1 = Surround, 2 = Mono
+	/* 0x0C8 */ unsigned char default_sfx_volume; // 0 - 40
+	/* 0x0C9 */ unsigned char default_music_volume; // 0 - 40
+	/* 0x0CA */ unsigned char default_screen_ratio; // 0 = Normal, 1 = Widescreen
+	/* 0x0CB */ unsigned char default_camera_type; // 0 = Free, 1 = Follow
+	/* 0x0CC */ unsigned char default_camera_mode; // 0 = Inverted, 1 = Non-Inverted
+	/* 0x0CD */ unsigned char crypt_lever_order[3]; // 0 = No lever, 1-6 = code
+	/* 0x0D0 */ unsigned char mill_lever_order[5]; // 0 = no lever, 1-3 = Code
 	/* 0x0D5 */ moves_pregiven_bitfield moves_pregiven; // Bitfield, Size 0x6
 	/* 0x0DB */ unsigned char seasonal_changes; // 0 = None, 1 = Halloween, 2 = Christmas
 	/* 0x0DC */ unsigned short japes_rock_item; // Actor ID of item that spawns from destroying the rock covering Japes Underground

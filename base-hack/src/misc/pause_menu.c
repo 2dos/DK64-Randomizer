@@ -11,6 +11,7 @@
 #include "../../include/common.h"
 
 static char igt_text[20] = "IGT: 0000:00:00";
+static int stored_igt = 0;
 
 int* printLevelIGT(int* dl, int x, int y, float scale, char* str) {
     /**
@@ -25,7 +26,7 @@ int* printLevelIGT(int* dl, int x, int y, float scale, char* str) {
     }
     int igt_data = 0;
     if (level_index < 9) {
-        igt_data = StoredSettings.file_extra.level_igt[level_index];
+        igt_data = ReadExtraData(EGD_LEVELIGT, level_index);
     }
     int igt_h = igt_data / 3600;
     int igt_m = (igt_data / 60) % 60;
@@ -114,20 +115,25 @@ static char level_hint_text[0x18] = "";
 
 static unsigned char check_data[2][9][PAUSE_ITEM_COUNT] = {}; // 8 items, 9 levels, numerator + denominator
 
-static int hint_pointers[35] = {};
+static char hints_initialized = 0;
+
+static char display_billboard_fix = 0;
 
 void initHints(void) {
-    if (hint_pointers[0] == 0) {
+    if (!hints_initialized) {
         for (int i = 0; i < 35; i++) {
             hint_pointers[i] = (int)getTextPointer(41, 1+i, 0);
         }
+        hints_initialized = 1;
     }
+    display_billboard_fix = 0;
 }
 
 void wipeHintCache(void) {
     for (int i = 0; i < 35; i++) {
         hint_pointers[i] = 0;
     }
+    hints_initialized = 0;
 }
 
 void checkItemDB(void) {
@@ -137,6 +143,12 @@ void checkItemDB(void) {
     renderScreenTransition(7);
     initTracker();
     initHints();
+    stored_igt = getNewSaveTime();
+    if (Rando.helm_hurry_mode) {
+        if (ReadFile(DATA_HELMHURRYOFF, 0, 0, 0)) {
+            stored_igt = IGT;
+        }
+    }
     for (int i = 0; i < PAUSE_ITEM_COUNT; i++) {
         // Wipe data upon every search
         for (int j = 0; j < 9; j++) {
@@ -241,7 +253,6 @@ void checkItemDB(void) {
 
 #define STRING_MAX_SIZE 256
 static char string_copy[STRING_MAX_SIZE] = "";
-static mtx_item static_mtx[20];
 static char mtx_counter = 0;
 
 int* drawHintText(int* dl, char* str, int x, int y) {
@@ -283,6 +294,7 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
     dk_memcpy(string_copy, str, string_length);
     int header = 0;
     int last_safe = 0;
+    int line_count = 0;
     while (1) {
         char referenced_character = *(char*)(string_copy_ref + header);
         int is_control = 0;
@@ -292,7 +304,7 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
         } else if (referenced_character == 0x20) {
             // Space
             last_safe = header;
-        } else if ((referenced_character > 0) && (referenced_character < 0x10)) {
+        } else if ((referenced_character > 0) && (referenced_character <= 0x10)) {
             // Control byte character
             is_control = 1;
             int end = (int)(string_copy) + (STRING_MAX_SIZE - 1);
@@ -303,6 +315,10 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
             if (header > 50) {
                 *(char*)(string_copy_ref + last_safe) = 0; // Stick terminator in last safe
                 dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y);
+                line_count += 1;
+                if (line_count == 3) {
+                    return dl;
+                }
                 curr_y += y_sep;
                 string_copy_ref += (last_safe + 1);
                 header = 0;
@@ -324,6 +340,7 @@ int* pauseScreen3And4Header(int* dl) {
      * @return New display list address
      */
     pause_paad* paad = CurrentActorPointer_0->paad;
+    display_billboard_fix = 0;
     if (paad->screen == PAUSESCREEN_TOTALS) {
         return printText(dl, 0x280, 0x3C, 0.65f, "TOTALS");
     } else if (paad->screen == PAUSESCREEN_CHECKS) {
@@ -332,8 +349,14 @@ int* pauseScreen3And4Header(int* dl) {
         return printText(dl, 0x280, 160, 0.5f, level_check_text);
     } else if (paad->screen == PAUSESCREEN_MOVES) {
         dl = display_file_images(dl, -50);
+        int igt_h = stored_igt / 3600;
+        int igt_s = stored_igt % 60;
+        int igt_m = (stored_igt / 60) % 60;
+        dk_strFormat((char*)igt_text, "%03d:%02d:%02d", igt_h, igt_m, igt_s);
+        dl = printText(dl, 0x280, 675, 0.5f, igt_text);
         return printText(dl, 0x280, 0x3C, 0.65f, "MOVES");
     } else if (paad->screen == PAUSESCREEN_HINTS) {
+        display_billboard_fix = 1;
         dl = printText(dl, 0x280, 0x3C, 0.65f, "HINTS");
         // Handle Controls
         int hint_level_cap = 7;
@@ -357,13 +380,24 @@ int* pauseScreen3And4Header(int* dl) {
         dl = displayImage(dl, 107, 0, RGBA16, 48, 32, 625, 465, 24.0f, 20.0f, 0, 0.0f);
         mtx_counter = 0;
         for (int i = 0; i < 5; i++) {
-            char* string = "???";
             if (checkFlag(FLAG_WRINKLYVIEWED + (5 * hint_level) + i, FLAGTYPE_PERMANENT)) {
-                string = (char*)hint_pointers[(5 * hint_level) + i];
+                dl = drawSplitString(dl, (char*)hint_pointers[(5 * hint_level) + i], 640, 140 + (120 * i), 40);
+            } else {
+                dl = drawSplitString(dl, "???", 640, 140 + (120 * i), 40);
             }
-            dl = drawSplitString(dl, string, 640, 140 + (120 * i), 40);
+            
         }
         return dl;
+    }
+    return dl;
+}
+
+static char teststr[5] = "";
+
+int* drawTextPointers(int* dl) {
+    if ((TBVoidByte & 2) && (display_billboard_fix)) {
+        dk_strFormat((char *)teststr, "%d", hints_initialized);
+        dl = drawPixelTextContainer(dl, 0, 0, teststr, 0xFF, 0xFF, 0xFF, 0xFF, 1);
     }
     return dl;
 }
@@ -616,7 +650,7 @@ void initPauseMenu(void) {
      */
     *(short*)(0x806AB35A) = getHi(&file_sprites[0]);
     *(short*)(0x806AB35E) = getLo(&file_sprites[0]);
-    *(int*)(0x806A84C8) = 0x0C000000 | (((int)&updateFileVariables & 0xFFFFFF) >> 2); // Update file variables to transfer old locations to current
+    writeFunction(0x806A84C8, &updateFileVariables); // Update file variables to transfer old locations to current
     *(short*)(0x806AB2CA) = getHi(&file_items[0]);
     *(short*)(0x806AB2DA) = getLo(&file_items[0]);
     *(short*)(0x806A9FC2) = getHi(&file_items[0]);
@@ -627,8 +661,8 @@ void initPauseMenu(void) {
     *(short*)(0x806AB2D6) = getLo(&file_items[PAUSE_ITEM_COUNT]);
     *(short*)(0x806AB3F6) = PAUSE_ITEM_COUNT;
     if (Rando.item_rando) {
-        *(int*)(0x806A9D50) = 0x0C000000 | (((int)&handleOutOfCounters & 0xFFFFFF) >> 2); // Print out of counter, depending on item rando state
-        *(int*)(0x806A9EFC) = 0x0C000000 | (((int)&handleOutOfCounters & 0xFFFFFF) >> 2); // Print out of counter, depending on item rando state
+        writeFunction(0x806A9D50, &handleOutOfCounters); // Print out of counter, depending on item rando state
+        writeFunction(0x806A9EFC, &handleOutOfCounters); // Print out of counter, depending on item rando state
         *(int*)(0x806A9C80) = 0; // Show counter on Helm Menu - Kong specific screeen
         *(int*)(0x806A9E54) = 0; // Show counter on Helm Menu - All Kongs screen
         // *(int*)(0x806AA860) = 0x31EF0007; // ANDI $t7, $t7, 7 - Show GB (Kong Specific)
@@ -642,21 +676,21 @@ void initPauseMenu(void) {
     *(int*)(0x806AB31C) = 0xA466C83C; // SH $a2, 0xC83C ($v1) | Overwrite trap func, Replace with overwrite of wheel segments
     *(short*)(0x8075056C) = 201; // Change GB Item cap to 201
     // In-Level IGT
-    *(int*)(0x8060DF28) = 0x0C000000 | (((int)&updateLevelIGT & 0xFFFFFF) >> 2); // Modify Function Call
-    *(int*)(0x806ABB0C) = 0x0C000000 | (((int)&printLevelIGT & 0xFFFFFF) >> 2); // Modify Function Call
+    writeFunction(0x8060DF28, &updateLevelIGT); // Modify Function Call
+    writeFunction(0x806ABB0C, &printLevelIGT); // Modify Function Call
     *(short*)(0x806ABB32) = 106; // Adjust kong name height
     // Pause Totals/Checks Revamp
-    *(int*)(0x806AB3C4) = 0x0C000000 | (((int)&updatePauseScreenWheel & 0xFFFFFF) >> 2); // Change Wheel to scroller
+    writeFunction(0x806AB3C4, &updatePauseScreenWheel); // Change Wheel to scroller
     *(int*)(0x806AB3B4) = 0xAFB00018; // SW $s0, 0x18 ($sp). Change last param to index
     *(int*)(0x806AB3A0) = 0xAFA90014; // SW $t1, 0x14 ($sp). Change 2nd-to-last param to local index
     *(int*)(0x806AB444) = 0; // Prevent joystick sprite rendering
-    *(int*)(0x806AB528) = 0x0C000000 | (((int)&handleSpriteCode & 0xFFFFFF) >> 2); // Change sprite control function
+    writeFunction(0x806AB528, &handleSpriteCode); // Change sprite control function
     *(int*)(0x806AB52C) = 0x8FA40060; // LW $a0, 0x60 ($sp). Change param
     *(short*)(0x806A8DB2) = 0x0029; // Swap left/right direction
     *(short*)(0x806A8DBA) = 0xFFD8; // Swap left/right direction
     *(short*)(0x806A8DB4) = 0x5420; // BEQL -> BNEL
     *(short*)(0x806A8DF0) = 0x1020; // BNE -> BEQ
-    *(int*)(0x806A9F74) = 0x0C000000 | (((int)&pauseScreen3And4ItemName & 0xFFFFFF) >> 2); // Item Name
+    writeFunction(0x806A9F74, &pauseScreen3And4ItemName); // Item Name
     // Disable Item Checks
     *(int*)(0x806AB2E8) = 0;
     *(int*)(0x806AB360) = 0;

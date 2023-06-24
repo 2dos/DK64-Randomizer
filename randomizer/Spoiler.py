@@ -1,7 +1,7 @@
 """Spoiler class and functions."""
 
-from email.policy import default
 import json
+from email.policy import default
 from typing import OrderedDict
 
 import randomizer.ItemPool as ItemPool
@@ -12,29 +12,17 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import (
-    BananaportRando,
-    GlitchesSelected,
-    HelmDoorItem,
-    LogicType,
-    MinigameBarrels,
-    MusicCosmetics,
-    RandomPrices,
-    ShockwaveStatus,
-    ShuffleLoadingZones,
-    TrainingBarrels,
-    WinCondition,
-)
+from randomizer.Enums.Settings import BananaportRando, GlitchesSelected, HelmDoorItem, LogicType, MinigameBarrels, RandomPrices, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
 from randomizer.Lists.Location import LocationList, PreGivenLocations
+from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
-from randomizer.Lists.Logic import GlitchLogicItems
 
 
 class Spoiler:
@@ -47,11 +35,13 @@ class Spoiler:
         self.woth = {}
         self.woth_locations = {}
         self.woth_paths = {}
+        self.krool_paths = {}
         self.shuffled_barrel_data = {}
         self.shuffled_exit_data = {}
         self.shuffled_exit_instructions = []
         self.music_bgm_data = {}
-        self.music_fanfare_data = {}
+        self.music_majoritem_data = {}
+        self.music_minoritem_data = {}
         self.music_event_data = {}
         self.location_data = {}
         self.enemy_replacements = []
@@ -79,6 +69,9 @@ class Spoiler:
                 if self.settings.training_barrels == TrainingBarrels.normal:
                     for tbarrel_type in ["dive", "orange", "barrel", "vine"]:
                         master_moves.append({"move_type": "flag", "flag": tbarrel_type, "price": 0})
+                else:
+                    for tbarrel_type in ["dive", "orange", "barrel", "vine"]:
+                        master_moves.append({"move_type": None})
             elif move_master_type == 2:
                 # BFI
                 if self.settings.shockwave_status == ShockwaveStatus.vanilla:
@@ -173,6 +166,7 @@ class Spoiler:
         settings["Random Shop Prices"] = self.settings.random_prices.name
         settings["Banana Port Randomization"] = self.settings.bananaport_rando.name
         settings["Activated Warps"] = self.settings.activate_all_bananaports.name
+        settings["Smaller Shops"] = self.settings.smaller_shops
         settings["Shuffle Shop Locations"] = self.settings.shuffle_shops
         settings["Shuffle Kasplats"] = self.settings.kasplat_rando_setting.name
 
@@ -194,43 +188,6 @@ class Spoiler:
             settings["Game Mode"] = "Helm Hurry"
         humanspoiler["Settings"] = settings
         humanspoiler["Cosmetics"] = {}
-        if self.settings.colors != {} or self.settings.klaptrap_model_index:
-            humanspoiler["Cosmetics"]["Colors and Models"] = {}
-            for color_item in self.settings.colors:
-                if color_item == "dk":
-                    humanspoiler["Cosmetics"]["Colors and Models"]["DK Color"] = self.settings.colors[color_item]
-                else:
-                    humanspoiler["Cosmetics"]["Colors and Models"][f"{color_item.capitalize()} Color"] = self.settings.colors[color_item]
-            klap_models = {
-                0x19: "Beaver",
-                0x1E: "Klobber",
-                0x20: "Kaboom",
-                0x21: "Green Klaptrap",
-                0x22: "Purple Klaptrap",
-                0x23: "Red Klaptrap",
-                0x24: "Klaptrap Teeth",
-                0x26: "Krash",
-                0x27: "Troff",
-                0x30: "N64 Logo",
-                0x34: "Mech Fish",
-                0x42: "Krossbones",
-                0x47: "Rabbit",
-                0x4B: "Minecart Skeleton Head",
-                0x51: "Tomato",
-                0x62: "Ice Tomato",
-                0x69: "Golden Banana",
-                0x70: "Microbuffer",
-                0x72: "Bell",
-                0x96: "Missile (Car Race)",
-                0xB0: "Red Buoy",
-                0xB1: "Green Buoy",
-                0xBD: "Rareware Logo",
-            }
-            if self.settings.klaptrap_model_index in klap_models:
-                humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = klap_models[self.settings.klaptrap_model_index]
-            else:
-                humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(self.settings.klaptrap_model_index)}"
-
         humanspoiler["Requirements"] = {}
         if self.settings.random_starting_region:
             humanspoiler["Game Start"] = {}
@@ -275,7 +232,7 @@ class Spoiler:
             humanspoiler["End Game"]["Coin Door Item"] = self.settings.coin_door_item.name
             humanspoiler["End Game"]["Coin Door Item Amount"] = self.settings.coin_door_item_count
         if self.settings.shuffle_items:
-            humanspoiler["Item Pool"] = [enum.name for enum in self.settings.shuffled_location_types]
+            humanspoiler["Item Pool"] = list(set([enum.name for enum in self.settings.shuffled_location_types]))
         humanspoiler["Items"] = {
             "Kongs": {},
             "Shops": {},
@@ -329,11 +286,28 @@ class Spoiler:
                 wothSlams += 1
                 extra = " " + str(wothSlams)
             humanspoiler["Paths"][destination_item.name + extra] = path_dict
+        # Paths for K. Rool phases - also do not show up on the site, just for debugging
+        for kong, path in self.krool_paths.items():
+            path_dict = {}
+            for path_loc_id in path:
+                path_location = LocationList[path_loc_id]
+                path_item = ItemList[path_location.item]
+                path_dict[path_location.name] = path_item.name
+            phase_name = "K. Rool Donkey Phase"
+            if kong == Kongs.diddy:
+                phase_name = "K. Rool Diddy Phase"
+            elif kong == Kongs.lanky:
+                phase_name = "K. Rool Lanky Phase"
+            elif kong == Kongs.tiny:
+                phase_name = "K. Rool Tiny Phase"
+            elif kong == Kongs.chunky:
+                phase_name = "K. Rool Chunky Phase"
+            humanspoiler["Paths"][phase_name] = path_dict
 
         self.pregiven_items = []
         for location_id, location in LocationList.items():
             # No need to spoiler constants or hints
-            if location.type == Types.Constant or location.type == Types.Hint:
+            if location.type == Types.Constant or location.type == Types.Hint or location.inaccessible:
                 continue
             if location_id in PreGivenLocations:
                 self.pregiven_items.append(location.item)
@@ -517,12 +491,6 @@ class Spoiler:
             if len(shuffled_barrels) > 0:
                 humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
 
-        if self.settings.music_bgm == MusicCosmetics.randomized:
-            humanspoiler["Cosmetics"]["Background Music"] = self.music_bgm_data
-        if self.settings.music_fanfares == MusicCosmetics.randomized:
-            humanspoiler["Cosmetics"]["Fanfares"] = self.music_fanfare_data
-        if self.settings.music_events == MusicCosmetics.randomized:
-            humanspoiler["Cosmetics"]["Event Themes"] = self.music_event_data
         if self.settings.kasplat_rando:
             humanspoiler["Shuffled Kasplats"] = self.human_kasplats
         if self.settings.random_fairies:
@@ -569,7 +537,7 @@ class Spoiler:
         if self.settings.tns_location_rando:
             humanspoiler["T&S Portal Locations"] = self.human_portal_doors
         if self.settings.crown_placement_rando:
-            humanspoiler["Shuffled Crowns"] = self.human_crowns
+            humanspoiler["Battle Arena Locations"] = self.human_crowns
         level_dict = {
             Levels.DKIsles: "DK Isles",
             Levels.JungleJapes: "Jungle Japes",
@@ -699,6 +667,7 @@ class Spoiler:
                     loading_zone_mapping["new_exit"] = GetExitId(shuffledBack)
                     containerMaps[containerMapId]["zones"].append(loading_zone_mapping)
                 except Exception as ex:
+                    print("Exit Update Error with:")
                     print(ex)
         for key, containerMap in containerMaps.items():
             self.shuffled_exit_instructions.append(containerMap)
@@ -791,6 +760,11 @@ class Spoiler:
                                 "price": price,
                             }
                         )
+                    # Clean up the default value from this list
+                    for x in range(len(self.move_data[1])):
+                        if self.move_data[1][x] == {"move_type": None}:
+                            del self.move_data[1][x]
+                            break
                 elif location.type == Types.Shockwave and self.settings.shockwave_status != ShockwaveStatus.vanilla:
                     # Use the item to find the data to write
                     updated_item = ItemList[location.item]

@@ -180,7 +180,7 @@ EnemyMetaData = {
     Enemies.SirDomino: EnemyData(name="Sir Domino", crown_weight=10, simple=True, bbbarrage_min_scale=60),  #
     Enemies.MrDice1: EnemyData(name="Mr Dice (Red)", crown_weight=10, simple=True, bbbarrage_min_scale=100),  #
     Enemies.FireballGlasses: EnemyData(name="Fireball with Glasses", aggro=35, min_speed=100, max_speed=255, crown_weight=10, killable=False),  # 29 for if you want them to respond to the rabbit
-    Enemies.SpiderSmall: EnemyData(name="Spider", crown_weight=7, disruptive=1),  # with projectiles, disruptive will need to be set to 2
+    Enemies.SpiderSmall: EnemyData(name="Spider", crown_weight=7, disruptive=1, crown_enabled=False),  # with projectiles, disruptive will need to be set to 2
     Enemies.Bat: EnemyData(name="Bat", air=True, crown_weight=5, minigame_enabled=False, disruptive=1),  #
     Enemies.EvilTomato: EnemyData(name="Evil Tomato", aggro=4, crown_enabled=False, minigame_enabled=False, selector_enabled=False),
     Enemies.Ghost: EnemyData(name="Ghost", crown_weight=10, simple=True, bbbarrage_min_scale=70),  #

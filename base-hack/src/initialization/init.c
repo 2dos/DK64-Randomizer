@@ -18,6 +18,13 @@ typedef struct musicInfo {
 	/* 0x000 */ short data[0xB0];
 } musicInfo;
 
+typedef enum song_types {
+	/* 0x000 */ SONGTYPE_BGM,
+	/* 0x001 */ SONGTYPE_EVENT,
+	/* 0x002 */ SONGTYPE_MAJORITEM,
+	/* 0x003 */ SONGTYPE_MINORITEM,
+} song_types;
+
 void fixMusicRando(void) {
 	/**
 	 * @brief Initialize Music Rando so that the data for each song is correct.
@@ -25,19 +32,43 @@ void fixMusicRando(void) {
 	 */
 	// Music
 	if (Rando.music_rando_on) {
-		int size = 0x160;
+		// Type bitfields
+		int size = SONG_COUNT << 1;
 		musicInfo* write_space = dk_malloc(size);
 		int* file_size;
 		*(int*)(&file_size) = size;
 		copyFromROM(0x1FFF000,write_space,&file_size,0,0,0,0);
-		for (int i = 0; i < 0xB0; i++) {
+		// Type indexes
+		size = SONG_COUNT;
+		char* write_space_0 = dk_malloc(size);
+		*(int*)(&file_size) = size;
+		copyFromROM(0x1FEE200,write_space_0,&file_size,0,0,0,0);
+		for (int i = 0; i < SONG_COUNT; i++) {
+			// Handle Bitfield
 			int subchannel = (write_space->data[i] & 6) >> 1;
 			int channel = (write_space->data[i] & 0x78) >> 3;
 			songData[i] &= 0xFF81;
 			songData[i] |= (subchannel & 3) << 1;
 			songData[i] |= (channel & 0xF) << 3;
+
+			// Handle Type Index
+			if (write_space_0[i] > -1) {
+				song_types type = write_space_0[i];
+				int volume = 0;
+				if (type == SONGTYPE_BGM) {
+					volume = 23000;
+				} else if (type == SONGTYPE_MAJORITEM) {
+					volume = 27000;
+				} else {
+					// Event or Minor Item
+					volume = 25000;
+				}
+				songVolumes[i] = volume;
+			}
 		}
 		complex_free(write_space);
+		complex_free(write_space_0);
+
 	}
 }
 
@@ -53,6 +84,77 @@ void writeEndSequence(void) {
 
 float getOscillationDelta(void) {
 	return 0.5f;
+}
+
+void loadHooks(void) {
+	loadSingularHook(0x8063EE08, &InstanceScriptCheck);
+	loadSingularHook(0x80731168, &checkFlag_ItemRando);
+	loadSingularHook(0x807312F8, &setFlag_ItemRando);
+	loadSingularHook(0x8069840C, &VineCode);
+	loadSingularHook(0x80698420, &VineShowCode);
+	loadSingularHook(0x8063ED7C, &HandleSlamCheck);
+	loadSingularHook(0x806FF384, &ModifyCameraColor);
+	loadSingularHook(0x8061E684, &SkipCutscenePans);
+	loadSingularHook(0x80648364, &ShopImageHandler);
+	loadSingularHook(0x806EA70C, &InvertCameraControls);
+	loadSingularHook(0x8061CE38, &PlayCutsceneVelocity);
+	loadSingularHook(0x80677C14, &FixPufftossInvalidWallCollision);
+	loadSingularHook(0x8060DFF4, &SaveToFileFixes);
+	loadSingularHook(0x806F6EA0, &BarrelMovesFixes);
+	loadSingularHook(0x806E4930, &ChimpyChargeFix);
+	loadSingularHook(0x806E48AC, &OStandFix);
+	loadSingularHook(0x8067ECB8, &HunkyChunkyFix2);
+	loadSingularHook(0x805FC3FC, &EarlyFrameCode);
+	loadSingularHook(0x8071417C, &displayListCode);
+	loadSingularHook(0x806F8610, &GiveItemPointerToMulti);
+	loadSingularHook(0x806F88C8, &CoinHUDReposition);
+	loadSingularHook(0x8060005C, &getLobbyExit);
+	loadSingularHook(0x806C9A7C, &damageMultiplerCode);
+	loadSingularHook(0x8060DEF4, &SaveHelmHurryCheck);
+	if (Rando.warp_to_isles_enabled) {
+		loadSingularHook(0x806A995C, &PauseExtraSlotCode);
+		loadSingularHook(0x806A9818, &PauseExtraHeight);
+		loadSingularHook(0x806A87BC, &PauseExtraSlotClamp0);
+		loadSingularHook(0x806A8760, &PauseExtraSlotClamp1);
+		loadSingularHook(0x806A8804, &PauseExtraSlotCustomCode);
+		loadSingularHook(0x806A9898, &PauseCounterCap);
+	}
+	loadSingularHook(0x806F3E74, &AutowalkFix);
+	loadSingularHook(0x80610948, &DynamicCodeFixes);
+	if (Rando.perma_lose_kongs) {
+		loadSingularHook(0x80682F2C, &permaLossTagCheck);
+		loadSingularHook(0x80683620, &permaLossTagSet);
+		loadSingularHook(0x806840C4, &permaLossTagDisplayCheck);
+	}
+	loadSingularHook(0x80689534, &tagPreventCode);
+	if (Rando.resolve_bonus) {
+		//loadSingularHook(0x80680D10, &destroyAllBarrelsCode);
+	}
+	loadSingularHook(0x806BD328, &KeyCompressionCode);
+	loadSingularHook(0x8067B684, &CannonForceCode);
+	loadSingularHook(0x806F9F88, &HUDDisplayCode);
+	loadSingularHook(0x806E22B0, &HomingDisable);
+	loadSingularHook(0x806EB574, &HomingHUDHandle);
+	loadSingularHook(0x806324C4, &DKCollectableFix);
+	loadSingularHook(0x806AF70C, &GuardDeathHandle);
+	loadSingularHook(0x807132BC, &NinWarpCode);
+	if (Rando.quality_of_life.textbox_hold) {
+		loadSingularHook(0x8070E83C, &TextHandler);
+	}
+	loadSingularHook(0x806AE55C, &GuardAutoclear);
+	loadSingularHook(0x80637148, &ObjectRotate);
+	if (Rando.item_rando) {
+		loadSingularHook(0x806A6708, &SpriteFix);
+	}
+	loadSingularHook(0x806A86FC, &PauseControl_Control);
+	loadSingularHook(0x806AA414, &PauseControl_Sprite);
+	if (Rando.quality_of_life.brighten_mmm_enemies) {
+		loadSingularHook(0x80631380, &brightenMMMEnemies);
+	}
+	if (Rando.krusha_slot >- 1) {
+		loadSingularHook(0x806F97B8, &FixKrushaAmmoHUDColor);
+		loadSingularHook(0x806F97E8, &FixKrushaAmmoHUDSize);
+	}
 }
 
 void initHack(int source) {
@@ -87,8 +189,12 @@ void initHack(int source) {
 			KrushaSlot = Rando.krusha_slot;
 			RandomSwitches = Rando.random_switches;
 			initActorExpansion();
+			initPathExpansion();
 			for (int i = 0; i < 7; i++) {
 				SwitchLevel[i] = Rando.slam_level[i];
+			}
+			if (Rando.quality_of_life.brighten_mmm_enemies) {
+				MMMEnemiesBrightened = 1;
 			}
 			if (Rando.fairy_rando_on) {
 				// Fairy Location Table
@@ -127,6 +233,7 @@ void initHack(int source) {
 			// Kong Rando
 			initKongRando();
 			initFiles();
+			writeFunction(0x8060CB7C, &fixChimpyCamBug);
             
 			if (Rando.no_health_refill) {
 				*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
@@ -145,6 +252,7 @@ void initHack(int source) {
 			if (Rando.short_bosses) {
 				actor_health_damage[236].init_health = 44; // Dogadon Health: 3 + (62 * (2 / 3))
 				actor_health_damage[185].init_health = 3; // Dillo Health
+				actor_health_damage[251].init_health = 3; // Spider Boss Health
 			}
 			if (Rando.resolve_bonus & 1) {
 				*(short*)(0x806818DE) = 0x4248; // Make Aztec Lobby GB spawn above the trapdoor)
@@ -156,7 +264,7 @@ void initHack(int source) {
 				*(short*)(0x806809C8) = 0x1000; // Prevent Fungi TTTrouble Bonus dropping
 			}
 			if (Rando.resolve_bonus) {
-				*(int*)(0x80681158) = 0x0C000000 | (((int)&completeBonus & 0xFFFFFF) >> 2); // Modify Function Call
+				writeFunction(0x80681158, &completeBonus); // Modify Function Call
 				*(short*)(0x80681962) = 1; // Make bonus noclip	
 			}
 			if (Rando.tns_portal_rando_on) {
@@ -174,12 +282,15 @@ void initHack(int source) {
 
 			replace_zones(1);
 			randomize_bosses();
+			loadHooks();
 			loadExtraHooks();
 			// Moves & Prices
 			fixTBarrelsAndBFI(1);
 			// Place Move Data
 			moveTransplant();
 			priceTransplant();
+
+			initStatistics();
 			if (Rando.disable_boss_kong_check) {
 				*(int*)(0x8064EC00) = 0x24020001;
 			}
@@ -205,11 +316,11 @@ void initHack(int source) {
 			writeCoinRequirements(0);
 			writeEndSequence();
 			initSmallerQuadChecks();
-			*(int*)(0x805FEBC0) = 0x0C000000 | (((int)&parseCutsceneData & 0xFFFFFF) >> 2); // modifyCutsceneHook
-			*(int*)(0x807313A4) = 0x0C000000 | (((int)&checkVictory_flaghook & 0xFFFFFF) >> 2); // perm flag set hook
+			writeFunction(0x805FEBC0, &parseCutsceneData); // modifyCutsceneHook
+			writeFunction(0x807313A4, &checkVictory_flaghook); // perm flag set hook
 			*(int*)(0x80748088) = (int)&CrownDoorCheck; // Update check on Crown Door
 			// New Mermaid Checking Code
-			*(int*)(0x806C3B5C) = 0x0C000000 | (((int)&mermaidCheck & 0xFFFFFF) >> 2); // Mermaid Check
+			writeFunction(0x806C3B5C, &mermaidCheck); // Mermaid Check
 			*(short*)(0x806C3B64) = 0x1000; // Force to branch
 			*(short*)(0x806C3BD0) = 0x1000; // Force to branch
 			*(int*)(0x806C3C20) = 0; // NOP - Cancel control state write
@@ -218,8 +329,10 @@ void initHack(int source) {
 				*(int*)(0x80713CCC) = 0; // Prevent Helm Timer Disable
 				*(int*)(0x80713CD8) = 0; // Prevent Shutdown Song Playing
 				*(short*)(0x8071256A) = 15; // Init Helm Timer = 15 minutes
-				*(int*)(0x807125A4) = 0x0C000000 | (((int)&initHelmHurry & 0xFFFFFF) >> 2); // Change write
+				writeFunction(0x807125A4, &initHelmHurry); // Change write
+				writeFunction(0x80713DE0, &finishHelmHurry); // Change write
 				*(int*)(0x807125CC) = 0; // Prevent Helm Timer Overwrite
+				*(short*)(0x807095BE) = 0x2D4; // Change Zipper with K. Rool Laugh
 			}
 			if (Rando.version == 0) {
 				// Disable Graphical Debugger
@@ -230,6 +343,7 @@ void initHack(int source) {
 				*(short*)(0x806C58D6) = 0x0008; //Owl ring amount
 				*(short*)(0x806C5B16) = 0x0008;
 				*(int*)(0x806BEDFC) = 0; //Spawn banana coins on beating rabbit 2 (Beating round 2 branches to banana coin spawning label before continuing)
+				*(short*)(0x806BC582) = 30; // Ice Tomato Timer
 			}
 			int kko_phase_rando = 0;
 			for (int i = 0; i < 3; i++) {
@@ -243,18 +357,43 @@ void initHack(int source) {
 			*(short*)(0x806C8B42) = Rando.klaptrap_color_bbother;
 			if (Rando.wrinkly_rando_on) {
 				*(int*)(0x8064F170) = 0; // Prevent edge cases for Aztec Chunky/Fungi Wheel
-				*(int*)(0x8069E154) = 0x0C000000 | (((int)&getWrinklyLevelIndex & 0xFFFFFF) >> 2); // Modify Function Call
+				writeFunction(0x8069E154, &getWrinklyLevelIndex); // Modify Function Call
+			}
+			// Mill Lever
+			if (Rando.mill_lever_order[0] > 0) {
+				int sequence_length = 0;
+				int sequence_ended = 0;
+				for (int i = 0; i < 5; i++) {
+					ReverseMillLeverOrder[i] = 0;
+					if (!sequence_ended) {
+						if (Rando.mill_lever_order[i] == 0) {
+							sequence_ended = 1;
+						} else {
+							sequence_length += 1;
+						}
+					}
+				}
+				*(short*)(0x8064E4CE) = sequence_length;
+				for (int i = 0; i < sequence_length; i++) {
+					ReverseMillLeverOrder[i] = Rando.mill_lever_order[(sequence_length - 1) - i];
+				}
+			}
+			// Crypt Lever
+			if (Rando.crypt_lever_order[0] > 0) {
+				for (int i = 0; i < 3; i++) {
+					ReverseCryptLeverOrder[i] = Rando.crypt_lever_order[2 - i];
+				}
 			}
 			// Object Instance Scripts
 			*(int*)(0x80748064) = (int)&change_object_scripts;
 			*(int*)(0x806416BC) = 0; // Prevent parent map check in cross-map object change communications
 			// Deathwarp Handle
-			*(int*)(0x8071292C) = 0x0C000000 | (((int)&WarpHandle & 0xFFFFFF) >> 2); // Check if in Helm, in which case, apply transition
+			writeFunction(0x8071292C, &WarpHandle); // Check if in Helm, in which case, apply transition
 			// New Guard Code
 			*(short*)(0x806AF75C) = 0x1000;
 			// Gold Beaver Code
       		actor_functions[212] = (void*)0x806AD54C; // Set as Blue Beaver Code
-			*(int*)(0x806AD750) = 0x0C000000 | (((int)&beaverExtraHitHandle & 0xFFFFFF) >> 2); // Remove buff until we think of something better
+			writeFunction(0x806AD750, &beaverExtraHitHandle); // Remove buff until we think of something better
 			// Move Text Code
 			actor_functions[324] = &getNextMoveText;
 			actor_functions[320] = &getNextMoveText;
@@ -272,19 +411,19 @@ void initHack(int source) {
 			// Spider Projectile
 			*(int*)(0x806CBD78) = 0x18400005; // BLEZ $v0, 0x5 - Decrease in health occurs if trap bubble active
 			if (Rando.hard_enemies) {
-				*(int*)(0x806ADDC0) = 0x0C000000 | (((int)&handleSpiderTrapCode & 0xFFFFFF) >> 2);
+				// writeFunction(0x806ADDC0, &handleSpiderTrapCode);
 				*(short*)(0x806B12DA) = 0x3A9; // Kasplat Shockwave Chance
 				*(short*)(0x806B12FE) = 0x3B3; // Kasplat Shockwave Chance
 				actor_health_damage[259].init_health = 9; // Increase Guard Health
 			}
 			// Fix some silk memes
 			*(int*)(0x806ADA6C) = 0;
-			*(int*)(0x806ADA70) = 0x0C000000 | (((int)&HandleSpiderSilkSpawn & 0xFFFFFF) >> 2);
+			writeFunction(0x806ADA70, &HandleSpiderSilkSpawn);
 			*(int*)(0x806ADA78) = 0;
 			// Fix spider crashes
 			int fixed_anim = 0x2F5;
 			*(short*)(0x8075F46C) = fixed_anim;
-			*(short*)(0x806ADA26) = fixed_anim;
+			*(short*)(0x806ADA26) = fixed_anim; // This might fix spawning if set on non-init
 			*(short*)(0x806ADA2A) = fixed_anim;
 			*(short*)(0x806ADA32) = fixed_anim;
 			*(short*)(0x806ADBC6) = fixed_anim;
@@ -298,11 +437,11 @@ void initHack(int source) {
 				*(short*)(0x8068BDFC) = 0x1000; // Disable rocking in Mech Fish
 				// *(int*)(0x806609DC) = 0x44802000; // Change ripple oscillation X to 0 (mtc1 $zero, $f4)
 				// *(int*)(0x806609EC) = 0x44805000; // Change ripple oscillation Z to 0 (mtc1 $zero, $f10)
-				*(int*)(0x80660994) = 0x0C000000 | (((int)&getOscillationDelta & 0xFFFFFF) >> 2);
-				*(int*)(0x806609BC) = 0x0C000000 | (((int)&getOscillationDelta & 0xFFFFFF) >> 2);
+				writeFunction(0x80660994, &getOscillationDelta);
+				writeFunction(0x806609BC, &getOscillationDelta);
 			}
 			// Slow Turn Fix
-			*(int*)(0x806D2FC0) = 0x0C000000 | (((int)&fixRBSlowTurn & 0xFFFFFF) >> 2);
+			writeFunction(0x806D2FC0, &fixRBSlowTurn);
 			// CB Bunch
 			*(int*)(0x806A65B8) = 0x240A0006; // Always ensure chunky bunch sprite (Rock Bunch)
 			// Coins
@@ -321,9 +460,9 @@ void initHack(int source) {
 			*(short*)(0x806F6F76) = FLAG_ABILITY_CAMERA; // Film Refill
 			*(short*)(0x806F916A) = FLAG_ABILITY_CAMERA; // Film max
 			// LZ Save
-			*(int*)(0x80712EC4) = 0x0C000000 | (((int)&postKRoolSaveCheck & 0xFFFFFF) >> 2);
+			writeFunction(0x80712EC4, &postKRoolSaveCheck);
 			// Opacity fixes
-			*(int*)(0x806380B0) = 0x0C000000 | (((int)&handleModelTwoOpacity & 0xFFFFFF) >> 2);
+			writeFunction(0x806380B0, &handleModelTwoOpacity);
 			if (Rando.medal_cb_req > 0) {
 				// Change CB Req
 				*(short*)(0x806F934E) = Rando.medal_cb_req; // Acquisition
@@ -336,14 +475,14 @@ void initHack(int source) {
 				*(int*)(0x806F6D94) = 0; // Prevent delayed collection
 				// Standard Ammo
 				*(short*)(0x806F5B68) = 0x1000;
-				*(int*)(0x806F5BE8) = 0x0C000000 | (((int)&tagAnywhereAmmo & 0xFFFFFF) >> 2);
+				writeFunction(0x806F5BE8, &tagAnywhereAmmo);
 				// Bunch
 				*(short*)(0x806F59A8) = 0x1000;
-				*(int*)(0x806F5A08) = 0x0C000000 | (((int)&tagAnywhereBunch & 0xFFFFFF) >> 2);
+				writeFunction(0x806F5A08, &tagAnywhereBunch);
 
 				*(int*)(0x806F6CAC) = 0x9204001A; // LBU $a0, 0x1A ($s0)
 				*(int*)(0x806F6CB0) = 0x86060002; // LH $a2, 0x2 ($s0)
-				*(int*)(0x806F6CB4) = 0x0C000000 | (((int)&tagAnywhereInit & 0xFFFFFF) >> 2);
+				writeFunction(0x806F6CB4, &tagAnywhereInit);
 				*(int*)(0x806F53AC) = 0; // Prevent LZ case
 
 				// initTagAnywhere();
@@ -370,6 +509,22 @@ void initHack(int source) {
 			*(unsigned char*)(0x8064A2FD) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[5]];
 			*(unsigned char*)(0x8064A301) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[7]];
 			*(unsigned char*)(0x8064A305) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[8]];
+			SFXVolume = Rando.default_sfx_volume;
+			MusicVolume = Rando.default_music_volume;
+			ScreenRatio = Rando.default_screen_ratio;
+			SoundType = Rando.default_sound_type;
+			int sound_subtype = 1;
+			if (SoundType == 0) {
+				sound_subtype = 2;
+			} else if (SoundType == 2) {
+				sound_subtype = 4;
+			}
+			adjustSFXType_Internal(sound_subtype);
+			for (int i = 0; i < 4; i++) {
+				alterSFXVolume(i, (SFXVolume * 25000) / 40);
+			}
+			alterMusicVolume(0);
+			alterMusicVolume(2);
 			insertROMMessages();
 			LoadedHooks = 1;
 		}
@@ -384,9 +539,32 @@ void quickInit(void) {
 	if (Rando.quality_of_life.fast_boot) {
 		initiateTransitionFade(MAP_NFRTITLESCREEN, 0, 5);
 		CutsceneWillPlay = 0;
-		Gamemode = 5;
+		Gamemode = GAMEMODE_MAINMENU;
 		Mode = 5;
 		StorySkip = 1;
 		*(char*)(0x80745D20) = 7;
 	}
+}
+
+#define PATH_CAP 64
+static int balloon_path_pointers[PATH_CAP];
+
+void initPathExpansion(void) {
+	*(short*)(0x80722E56) = getHi(&balloon_path_pointers[0]);
+	*(short*)(0x80722E7A) = getLo(&balloon_path_pointers[0]);
+	*(short*)(0x80722E92) = PATH_CAP;
+	*(short*)(0x80722FF6) = getHi(&balloon_path_pointers[0]);
+	*(short*)(0x80722FFE) = getLo(&balloon_path_pointers[0]);
+	*(short*)(0x80723026) = getHi(&balloon_path_pointers[0]);
+	*(short*)(0x8072302E) = getLo(&balloon_path_pointers[0]);
+	*(short*)(0x80723CF6) = getHi(&balloon_path_pointers[0]);
+	*(short*)(0x80723D06) = getLo(&balloon_path_pointers[0]);
+	*(short*)(0x80723FEA) = getHi(&balloon_path_pointers[0]);
+	*(short*)(0x80723FEE) = getLo(&balloon_path_pointers[0]);
+	*(short*)(0x807241CE) = getHi(&balloon_path_pointers[0]);
+	*(short*)(0x807241DE) = getLo(&balloon_path_pointers[0]);
+	*(short*)(0x80724312) = getHi(&balloon_path_pointers[0]);
+	*(short*)(0x8072431E) = getLo(&balloon_path_pointers[0]);
+	*(short*)(0x807245DE) = getHi(&balloon_path_pointers[0]);
+	*(short*)(0x807245E6) = getLo(&balloon_path_pointers[0]);
 }

@@ -12,8 +12,18 @@
 
 void disableAntiAliasing(void) {
     __osViSwapContext();
-    *(int*)(0x8001013C) = 0x3216;
-    *(int*)(0x8001016C) = 0x3216;
+    int disable_antialiasing = Rando.quality_of_life.reduce_lag;
+    if (Rando.quality_of_life.fast_boot) {
+        if (CurrentMap == MAP_NINTENDOLOGO) {
+            disable_antialiasing = 1;
+        }
+    } else if (FrameReal < 230) {
+        disable_antialiasing = 1;
+    }
+    if (disable_antialiasing) {
+        *(int*)(0x8001013C) = 0x3216;
+        *(int*)(0x8001016C) = 0x3216;
+    }
 }
 
 void initQoL_Lag(void) {
@@ -23,10 +33,10 @@ void initQoL_Lag(void) {
      * - Turning off the Aztec Sandstorm
      * - Disabling Rain in DK Isles
      */
+    writeFunction(0x80004EB4, &disableAntiAliasing); // Disable Anti-Aliasing
     if (Rando.quality_of_life.reduce_lag) {
         *(int*)(0x80748010) = 0x8064F2F0; // Cancel Sandstorm
         // No Rain
-        *(int*)(0x80004EB4) = 0x0C000000 | (((int)&disableAntiAliasing & 0xFFFFFF) >> 2); // Disable Anti-Aliasing
         if (Rando.seasonal_changes != SEASON_CHRISTMAS) {
             *(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0
             *(int*)(0x8068AF90) = 0; // Disable weather
@@ -50,9 +60,9 @@ void initQoL_Cutscenes(void) {
         *(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
         *(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
         // Fast Vulture
-        *(int*)(0x806C50BC) = 0x0C000000 | (((int)&clearVultureCutscene & 0xFFFFFF) >> 2); // Modify Function Call
+        writeFunction(0x806C50BC, &clearVultureCutscene); // Modify Function Call
         // General
-        *(int*)(0x80628508) = 0x0C000000 | (((int)&renderScreenTransitionCheck & 0xFFFFFF) >> 2); // Remove transition effects if skipped cutscene
+        writeFunction(0x80628508, &renderScreenTransitionCheck); // Remove transition effects if skipped cutscene
         // Speedy T&S Turn-Ins
         *(int*)(0x806BE3E0) = 0; // NOP
         if (Rando.item_rando) {
@@ -86,6 +96,19 @@ void initQoL_Cutscenes(void) {
     }
 }
 
+void quickWrinklyTextboxes(void) {
+    /**
+     * @brief Speeds up the wrinkly textboxes by setting the textbox timer to 0x1e upon init if A is pressed
+     */
+    if (CurrentActorPointer_0->control_state == 0) {
+        if (NewlyPressedControllerInput.Buttons.a) {
+            short* paad = CurrentActorPointer_0->paad;
+            *paad = 0x1E;
+        }
+    }
+    unkTextFunction(CurrentActorPointer_0);
+}
+
 void initQoL_Fixes(void) {
     /**
      * @brief Initialize any quality of life features which aim to fix unwanted DK64 vanilla bugs
@@ -99,16 +122,16 @@ void initQoL_Fixes(void) {
      * - Pausing and exiting to another map during Helm Timer will correctly apply the helm timer pause correction
      */
     if (Rando.quality_of_life.vanilla_fixes) {
-        *(int*)(0x806BE8D8) = 0x0C000000 | (((int)&RabbitRaceInfiniteCode & 0xFFFFFF) >> 2); // Modify Function Call
-        *(int*)(0x8067C168) = 0x0C000000 | (((int)&fixDilloTNTPads & 0xFFFFFF) >> 2); // Modify Function Call
+        writeFunction(0x806BE8D8, &RabbitRaceInfiniteCode); // Modify Function Call
+        writeFunction(0x8067C168, &fixDilloTNTPads); // Modify Function Call
         actor_functions[249] = &squawks_with_spotlight_actor_code;
-        *(int*)(0x806E5C04) = 0x0C000000 | (((int)&fixCrownEntrySKong & 0xFFFFFF) >> 2); // Modify Function Call
-        *(int*)(0x806A8844) = 0x0C000000 | (((int)&helmTime_restart & 0xFFFFFF) >> 2); // Modify Function Call
-        *(int*)(0x806A89E8) = 0x0C000000 | (((int)&helmTime_exitBonus & 0xFFFFFF) >> 2); // Modify Function Call
-        *(int*)(0x806A89F8) = 0x0C000000 | (((int)&helmTime_exitRace & 0xFFFFFF) >> 2); // Modify Function Call
-        *(int*)(0x806A89C4) = 0x0C000000 | (((int)&helmTime_exitLevel & 0xFFFFFF) >> 2); // Modify Function Call
-        *(int*)(0x806A89B4) = 0x0C000000 | (((int)&helmTime_exitBoss & 0xFFFFFF) >> 2); // Modify Function Call
-        *(int*)(0x806A8988) = 0x0C000000 | (((int)&helmTime_exitKRool & 0xFFFFFF) >> 2); // Modify Function Call
+        writeFunction(0x806E5C04, &fixCrownEntrySKong); // Modify Function Call
+        writeFunction(0x806A8844, &helmTime_restart); // Modify Function Call
+        writeFunction(0x806A89E8, &helmTime_exitBonus); // Modify Function Call
+        writeFunction(0x806A89F8, &helmTime_exitRace); // Modify Function Call
+        writeFunction(0x806A89C4, &helmTime_exitLevel); // Modify Function Call
+        writeFunction(0x806A89B4, &helmTime_exitBoss); // Modify Function Call
+        writeFunction(0x806A8988, &helmTime_exitKRool); // Modify Function Call
     }
 }
 
@@ -133,6 +156,14 @@ void initQoL_Misc(void) {
     if (Rando.quality_of_life.cbs_visible) {
         *(int*)(0x806324D4) = 0x24020001; // ADDIU $v0, $r0, 1 // Disable kong flag check
         *(int*)(0x806A78C4) = 0; // NOP // Disable kong flag check
+    }
+    if (Rando.quality_of_life.fast_hints) {
+        int control_cap = 1;
+        *(short*)(0x8069E0F6) = control_cap;
+        *(short*)(0x8069E112) = control_cap;
+        *(unsigned char*)(0x80758BC9) = 0xAE; // Quadruple Growth Speed (8E -> AE)
+        *(unsigned char*)(0x80758BD1) = 0xAE; // Quadruple Shrink Speed (8E -> AE)
+        writeFunction(0x806A5C30, &quickWrinklyTextboxes);
     }
 }
 
@@ -204,7 +235,7 @@ void initQoL_Boot(void) {
         *(short*)(0x8071404E) = 5;
     }
     // Faster Boot
-    *(int*)(0x805FEB00) = 0x0C000000 | (((int)&bootSpeedup & 0xFFFFFF) >> 2); // Modify Function Call
+    writeFunction(0x805FEB00, &bootSpeedup); // Modify Function Call
     *(int*)(0x805FEB08) = 0; // Cancel 2nd check
 }
 
@@ -268,8 +299,8 @@ void initQoL_FastWarp(void) {
     if (Rando.fast_warp) {
         // Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
         *(short*)(0x806EE692) = 0x54;
-        *(int*)(0x806DC2AC) = 0x0C000000 | (((int)&fastWarp & 0xFFFFFF) >> 2); // Modify Function Call
-        *(int*)(0x806DC318) = 0x0C000000 | (((int)&fastWarp_playMusic & 0xFFFFFF) >> 2); // Modify Function Call
+        writeFunction(0x806DC2AC, &fastWarp); // Modify Function Call
+        writeFunction(0x806DC318, &fastWarp_playMusic); // Modify Function Call
     }
 }
 
@@ -356,16 +387,16 @@ void initQoL_HUD(void) {
     // Multibunch HUD
     if (Rando.quality_of_life.hud_bp_multibunch) {
         *(short*)(0x806F860A) = y_bottom - (5 * y_spacing); // Multi CB
-        *(int*)(0x806F97D8) = 0x0C000000 | (((int)&getHUDSprite_HUD & 0xFFFFFF) >> 2); // Change Sprite
-        *(int*)(0x806F6BF0) = 0x0C000000 | (((int)&preventMedalHUD & 0xFFFFFF) >> 2); // Prevent Model Two Medals showing HUD
+        writeFunction(0x806F97D8, &getHUDSprite_HUD); // Change Sprite
+        writeFunction(0x806F6BF0, &preventMedalHUD); // Prevent Model Two Medals showing HUD
         *(short*)(0x806F8606) = 0x122; // Position X
         *(int*)(0x806F862C) = 0x4600F306; // MOV.S $f12, $f30
         *(int*)(0x806F8634) = 0x4600A386; // MOV.S $f14, $f20
-        *(int*)(0x806F98E4) = 0x0C000000 | (((int)&initHUDDirection & 0xFFFFFF) >> 2); // HUD Direction
-        *(int*)(0x806F9A00) = 0x0C000000 | (((int)&initHUDDirection & 0xFFFFFF) >> 2); // HUD Direction
-        *(int*)(0x806F9A78) = 0x0C000000 | (((int)&initHUDDirection & 0xFFFFFF) >> 2); // HUD Direction
-        *(int*)(0x806F9BC0) = 0x0C000000 | (((int)&initHUDDirection & 0xFFFFFF) >> 2); // HUD Direction
-        *(int*)(0x806F9D14) = 0x0C000000 | (((int)&initHUDDirection & 0xFFFFFF) >> 2); // HUD Direction
+        writeFunction(0x806F98E4, &initHUDDirection); // HUD Direction
+        writeFunction(0x806F9A00, &initHUDDirection); // HUD Direction
+        writeFunction(0x806F9A78, &initHUDDirection); // HUD Direction
+        writeFunction(0x806F9BC0, &initHUDDirection); // HUD Direction
+        writeFunction(0x806F9D14, &initHUDDirection); // HUD Direction
         *(int*)(0x806FA62C) = 0; // NOP: Enable Number Rendering
         *(int*)(0x806FA56C) = 0; // NOP: Prevent opacity check
     }
@@ -415,8 +446,8 @@ void initNonControllableFixes(void) {
     *(short*)(0x806FFA96) = 0x00FF;
 
     *(int*)(0x806A7564) = 0xC4440080; // Crown default floor will be it's initial Y spawn position. Fixes a crash on N64
-    *(int*)(0x806F56E0) = 0x0C000000 | (((int)&getFlagIndex_Corrected & 0xFFFFFF) >> 2); // BP Acquisition - Correct for character
-    *(int*)(0x806F9374) = 0x0C000000 | (((int)&getFlagIndex_Corrected & 0xFFFFFF) >> 2); // Medal Acquisition - Correct for character
+    writeFunction(0x806F56E0, &getFlagIndex_Corrected); // BP Acquisition - Correct for character
+    writeFunction(0x806F9374, &getFlagIndex_Corrected); // Medal Acquisition - Correct for character
     // Inverted Controls Option
     *(short*)(0x8060D01A) = getHi(&InvertedControls); // Change language store to inverted controls store
     *(short*)(0x8060D01E) = getLo(&InvertedControls); // Change language store to inverted controls store
@@ -467,14 +498,16 @@ void initNonControllableFixes(void) {
     // GetOut Timer
     *(unsigned short*)(0x806B7ECA) = 125; // 0x8078 for center-bottom ms timer
     // Fix Tag Barrel Background Kong memes
-    *(int*)(0x806839F0) = 0x0C000000 | (((int)&tagBarrelBackgroundKong & 0xFFFFFF) >> 2);
+    writeFunction(0x806839F0, &tagBarrelBackgroundKong);
     // Better Collision
-    *(int*)(0x806F6618) = 0x0C000000 | (((int)&checkModelTwoItemCollision & 0xFFFFFF) >> 2);
-    *(int*)(0x806F662C) = 0x0C000000 | (((int)&checkModelTwoItemCollision & 0xFFFFFF) >> 2);
+    writeFunction(0x806F6618, &checkModelTwoItemCollision);
+    writeFunction(0x806F662C, &checkModelTwoItemCollision);
     // Dive Check
-    *(int*)(0x806E9658) = 0x0C000000 | (((int)&CanDive_WithCheck & 0xFFFFFF) >> 2);
+    writeFunction(0x806E9658, &CanDive_WithCheck);
     // Prevent Japes Dillo Cutscene for the key acquisition
     *(short*)(0x806EFCEC) = 0x1000;
+    // Make getting out of spider traps easier on controllers
+    *(int*)(0x80752ADC) = (int)&exitTrapBubbleController;
 }
 
 void initQoL(void) {

@@ -42,7 +42,9 @@
       "rambi_enguarde_pickup":true,
       "hud_bp_multibunch":true,
       "homing_balloons":true,
-      "save_krool_progress":true
+      "save_krool_progress":true,
+      "fast_hints":true,
+      "brighten_mmm_enemies":true
    },
    "moves_pregiven":{
       "blast":true,
@@ -171,10 +173,10 @@
    "remove_high_requirements":1,
    "open_level_sections":1,
    "auto_keys":0,
-   "starting_map":34,
+   "starting_map":207,
    "starting_exit":0,
    "disco_chunky":1,
-   "krusha_slot":255,
+   "krusha_slot":2,
    "starting_kong":0,
    "test_zone":[
       174,
@@ -186,7 +188,7 @@
       2,
       0
    ],
-   "dpad_visual_enabled":1,
+   "dpad_visual_enabled":2,
    "helm_order":[
       2,
       0,
@@ -205,7 +207,7 @@
    "win_condition":5,
    "version":2,
    "item_rando":1,
-   "vulture_item":72,
+   "vulture_item":47,
    "japes_rock_item":76,
    "medal_cb_req":5,
    "hard_enemies":1,
@@ -221,6 +223,13 @@
       0,
       0,
       255
+   ],
+   "mill_lever_order":[
+      2,
+      3,
+      1,
+      0,
+      0
    ],
    "dark_mode_textboxes":1,
    "archipelago":1

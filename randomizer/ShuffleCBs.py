@@ -1,30 +1,30 @@
 """Select CB Location selection."""
-import randomizer.Fill as Fill
-from randomizer.LogicClasses import Collectible
-from .Enums.Collectibles import Collectibles
-import randomizer.Lists.CBLocations.JungleJapesCBLocations
-import randomizer.Lists.CBLocations.AngryAztecCBLocations
-import randomizer.Lists.CBLocations.FranticFactoryCBLocations
-import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
-import randomizer.Lists.CBLocations.FungiForestCBLocations
-import randomizer.Lists.CBLocations.CrystalCavesCBLocations
-import randomizer.Lists.CBLocations.CreepyCastleCBLocations
-import randomizer.Lists.Exceptions as Ex
-import randomizer.CollectibleLogicFiles.JungleJapes
-import randomizer.CollectibleLogicFiles.AngryAztec
-import randomizer.CollectibleLogicFiles.FranticFactory
-import randomizer.CollectibleLogicFiles.GloomyGalleon
-import randomizer.CollectibleLogicFiles.FungiForest
-import randomizer.CollectibleLogicFiles.CrystalCaves
-import randomizer.CollectibleLogicFiles.CreepyCastle
-
-from randomizer.Enums.Levels import Levels
-from randomizer.Spoiler import Spoiler
-from randomizer.Enums.Kongs import Kongs
-from randomizer.Logic import CollectibleRegions
 import random
-import js
 
+import js
+import randomizer.CollectibleLogicFiles.AngryAztec
+import randomizer.CollectibleLogicFiles.CreepyCastle
+import randomizer.CollectibleLogicFiles.CrystalCaves
+import randomizer.CollectibleLogicFiles.FranticFactory
+import randomizer.CollectibleLogicFiles.FungiForest
+import randomizer.CollectibleLogicFiles.GloomyGalleon
+import randomizer.CollectibleLogicFiles.JungleJapes
+import randomizer.Fill as Fill
+import randomizer.Lists.CBLocations.AngryAztecCBLocations
+import randomizer.Lists.CBLocations.CreepyCastleCBLocations
+import randomizer.Lists.CBLocations.CrystalCavesCBLocations
+import randomizer.Lists.CBLocations.FranticFactoryCBLocations
+import randomizer.Lists.CBLocations.FungiForestCBLocations
+import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
+import randomizer.Lists.CBLocations.JungleJapesCBLocations
+import randomizer.Lists.Exceptions as Ex
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Levels import Levels
+from randomizer.Logic import CollectibleRegions
+from randomizer.LogicClasses import Collectible
+from randomizer.Spoiler import Spoiler
+
+from .Enums.Collectibles import Collectibles
 
 max_balloons = 105
 max_singles = 780  # 793 Singles in Vanilla, under-representing this to help with the calculation formula
