@@ -22,6 +22,7 @@ from ui.rando_options import (
     disable_krool_phases,
     disable_move_shuffles,
     disable_music,
+    enable_plandomizer,
     item_rando_list_changed,
     max_music,
     max_randomized_blocker,
@@ -129,6 +130,7 @@ def import_settings_string(event):
     disable_krool_phases(None)
     disable_helm_phases(None)
     max_starting_moves_count(None)
+    enable_plandomizer(None)
 
 
 @bind("change", "patchfileloader")
