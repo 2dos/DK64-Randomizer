@@ -125,15 +125,48 @@ PlandomizerPanels = {
             "Medals": []
         }
     },
+    # Shops, minigames and hints are grouped by level, not by Kong.
     "Shops": {
         "name": "Shops",
-        "locations": createPlannableLocationObj()
+        "levels": {
+            "DKIsles": {
+                "name": "D.K. Isles",
+                "locations": []
+            },
+            "JungleJapes": {
+                "name": "Jungle Japes",
+                "locations": []
+            },
+            "AngryAztec": {
+                "name": "Angry Aztec",
+                "locations": []
+            },
+            "FranticFactory": {
+                "name": "Frantic Factory",
+                "locations": []
+            },
+            "GloomyGalleon": {
+                "name": "Gloomy Galleon",
+                "locations": []
+            },
+            "FungiForest": {
+                "name": "Fungi Forest",
+                "locations": []
+            },
+            "CrystalCaves": {
+                "name": "Crystal Caves",
+                "locations": []
+            },
+            "CreepyCastle": {
+                "name": "Creepy Castle",
+                "locations": []
+            }
+        }
     },
     #"Blueprints": {
     #    "name": "Blueprints",
     #    "locations": createPlannableLocationObj()
     #},
-    # Minigames and hints are grouped by level, not by Kong.
     "Minigames": {
         "name": "Minigames",
         "levels": {
@@ -229,8 +262,13 @@ for locationEnum, locationObj in LocationList.items():
         levelName = locationObj.level.name
         PlandomizerPanels["Hints"]["levels"][levelName]["locations"].append(locationJson)
         HintLocationList.append(locationEnum.name)
-    elif locationObj.type == Types.Shop or locationObj.level == Levels.Shops:
-        PlandomizerPanels["Shops"]["locations"][kongString].append(locationJson)
+    elif locationObj.type == Types.Shop:
+        levelName = locationObj.level.name
+        PlandomizerPanels["Shops"]["levels"][levelName]["locations"].append(locationJson)
+        ShopLocationList.append(locationEnum.name)
+    elif locationObj.level == Levels.Shops:
+        # This is the Rareware coin.
+        PlandomizerPanels["Shops"]["levels"]["DKIsles"]["locations"].append(locationJson)
         ShopLocationList.append(locationEnum.name)
     else:
         levelName = locationObj.level.name
