@@ -232,6 +232,7 @@ RegionMapList = {
     Regions.IslesMain: Maps.Isles,
     Regions.OuterIsles: Maps.Isles,
     Regions.IslesMainUpper: Maps.Isles,
+    Regions.IslesEar: Maps.Isles,
     Regions.KremIsle: Maps.Isles,
     Regions.KremIsleBeyondLift: Maps.Isles,
     Regions.KremIsleTopLevel: Maps.Isles,
