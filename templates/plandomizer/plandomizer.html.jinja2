@@ -42,7 +42,7 @@
                 aria-selected="true">
             <p class="select-title">General</p>
         </button>
-        {% for panelName, panel in (plando_panels|plando_panel_restrict).items() %}
+        {% for panelName, panel in plando_panels.items() %}
             <button class="nav-link nav-item plando-pill"
                     id="nav-plando-{{panelName}}-tab"
                     data-bs-toggle="tab"
@@ -60,7 +60,7 @@
     {# The individual level tabs are populated here. Only one will show at a time. #}
     <div class="tab-content" id="nav-tabContent">
         {% include 'plandomizer/plandomizer_general.html.jinja2' %}
-        {% for panelName, panel in (plando_panels|plando_panel_restrict).items() %}
+        {% for panelName, panel in plando_panels.items() %}
             {% if panelName == "Shops" %}
                 {% include 'plandomizer/plandomizer_shops.html.jinja2' %}
             {% elif panelName == "Minigames" %}

@@ -45,7 +45,7 @@ async def initialize():
     from randomizer.Lists.Warps import VanillaBananaportSelector
 
     # Module of lists and utils used for plandomizer
-    from randomizer.PlandoUtils import PlandoItemFilter, PlandoMinigameFilter, PlandoOptionClassAnnotation, PlandoPanelFilter, PlandoShopSortFilter
+    from randomizer.PlandoUtils import PlandoItemFilter, PlandoMinigameFilter, PlandoOptionClassAnnotation, PlandoShopSortFilter
     from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableItems, PlannableMinigames, PlannableSpawns, PlannableStartingMoves
 
     js.listeners = []
@@ -71,7 +71,6 @@ async def initialize():
     # Add custom Jinja2 filter functions.
     templateEnv.filters["plando_item_restrict"] = PlandoItemFilter
     templateEnv.filters["plando_minigame_restrict"] = PlandoMinigameFilter
-    templateEnv.filters["plando_panel_restrict"] = PlandoPanelFilter
     templateEnv.filters["plando_shop_sort"] = PlandoShopSortFilter
     template = templateEnv.get_template("base.html.jinja2")
     # Add custom Jinja2 functions.

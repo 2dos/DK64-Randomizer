@@ -683,26 +683,6 @@ def disable_move_shuffles(evt):
         pass
 
 
-@bind("change", "move_rando")
-def plando_disable_move_items(evt):
-    """Disable moves in the plando dropdowns if starting with all moves."""
-    move_rando = js.document.getElementById("move_rando").value
-    item_dropdowns = js.document.getElementsByClassName("plando-item-select")
-    move_options = js.document.getElementsByClassName(f"plando-move-option")
-    if move_rando == "start_with":
-        # Disable this move as a dropdown option.
-        for option in move_options:
-            option.setAttribute("disabled", "disabled")
-        # De-select this Kong everywhere they are selected.
-        for dropdown in item_dropdowns:
-            if dropdown.value in MoveSet:
-                dropdown.value = ""
-    else:
-        # Re-add this Kong as a dropdown option.
-        for option in move_options:
-            option.removeAttribute("disabled")
-
-
 @bind("click", "bonus_barrel_rando")
 def disable_barrel_modal(evt):
     """Disable Minigame Selector when Shuffle Bonus Barrels is off."""

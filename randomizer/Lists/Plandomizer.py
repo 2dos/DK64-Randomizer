@@ -126,10 +126,10 @@ PlandomizerPanels = {
         "name": "Shops",
         "locations": createPlannableLocationObj()
     },
-    "Blueprints": {
-        "name": "Blueprints",
-        "locations": createPlannableLocationObj()
-    },
+    #"Blueprints": {
+    #    "name": "Blueprints",
+    #    "locations": createPlannableLocationObj()
+    #},
     # Minigames are grouped by level, not by Kong.
     "Minigames": {
         "name": "Minigames",
@@ -198,7 +198,8 @@ for locationEnum, locationObj in LocationList.items():
     }
     kongString = getKongString(locationObj.kong)
     if locationObj.type == Types.BlueprintBanana:
-        PlandomizerPanels["Blueprints"]["locations"][kongString].append(locationJson)
+        #PlandomizerPanels["Blueprints"]["locations"][kongString].append(locationJson)
+        continue
     elif locationObj.type == Types.Hint:
         PlandomizerPanels["Hints"]["locations"][kongString].append(locationJson)
         HintLocationList.append(locationEnum.name)

@@ -476,25 +476,6 @@ def PlandoMinigameFilter(minigameList, kong):
         return minigameList
     return [game for game in minigameList if game["value"] not in kongMinigameRestrictions[kong]]
 
-invalidTabPanels = {
-    "Blueprints"
-}
-
-def PlandoPanelFilter(locationDict):
-    """A Jinja filter that returns a filtered dict of plando panels that
-       we want the user to interact with. This feeds the list of visible tabs
-       and panels on the plando page. (This includes Shops, Blueprints and
-       Hints.)
-
-       Currently, we do not want to display the Blueprints tab, as blueprint
-       rewards cannot be shuffled.
-       
-       Args:
-           locationDict (dict[]): The dict of possible locations/tabs/panels.
-           We are only interested in the keys.
-    """
-    return {locName:locObj for locName, locObj in locationDict.items() if locName not in invalidTabPanels}
-
 # This dictionary allows us to efficiently sort the shop locations. Shops are
 # sorted first by level, then by vendor, then by Kong. This sorting is easier
 # to visually browse, as a user.
