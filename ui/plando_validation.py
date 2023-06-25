@@ -89,7 +89,7 @@ def count_items():
                 count_dict[plandoItemEnum] = [elemName]
 
     add_all_items(ItemLocationList, "_item")
-    add_all_items(ShopLocationList, "_shop_item")
+    add_all_items(ShopLocationList, "_item")
     return count_dict
 
 
@@ -99,7 +99,7 @@ def count_items():
 
 
 @bindList("change", ItemLocationList, prefix="plando_", suffix="_item")
-@bindList("change", ShopLocationList, prefix="plando_", suffix="_shop_item")
+@bindList("change", ShopLocationList, prefix="plando_", suffix="_item")
 def validate_item_limits(evt):
     """Raise an error if any item has been placed too many times."""
     count_dict = count_items()
@@ -284,7 +284,6 @@ def populate_plando_options(form):
 
     plando_form_data = {}
     item_objects = []
-    shop_item_objects = []
     shop_cost_objects = []
     minigame_objects = []
     hint_objects = []
@@ -322,10 +321,7 @@ def populate_plando_options(form):
         if not is_plando_input(obj.name):
             continue
         # Sort the selects into their appropriate lists.
-        if obj.name.endswith("_shop_item"):
-            shop_item_objects.append(obj)
-            continue
-        elif obj.name.endswith("_shop_cost"):
+        if obj.name.endswith("_shop_cost"):
             shop_cost_objects.append(obj)
             continue
         elif obj.name.endswith("_item"):
@@ -383,7 +379,8 @@ def populate_plando_options(form):
 
     # The starting moves require some extra processing. Instead of passing them
     # as a list, we will use them to fill in the locations for starting moves.
-    # (The list actually gets removed during validation.)
+    # (The list stays part of the data object until validation, when it gets
+    # removed.)
     if "plando_starting_moves_selected" in plando_form_data:
         startingMoveDict = dict()
         startingMoves = plando_form_data["plando_starting_moves_selected"]
@@ -396,33 +393,14 @@ def populate_plando_options(form):
         plando_form_data["locations"].update(startingMoveDict)
 
     shops_map = {}
-    for shop_item in shop_item_objects:
-        # Extract the location name.
-        location_name = re.search("^plando_(.+)_shop_item$", shop_item.name)[1]
-        location = Locations[location_name]
-        item_value = PlandoItems.Randomize
-        if shop_item.value != "":
-            item_value = PlandoItems[shop_item.value]
-        # Create an object with both the item and the cost. The cost defaults
-        # to PlandoItems.Randomize (-1), but may be overwritten later.
-        shops_map[location] = {
-            "item": item_value,
-            "cost": PlandoItems.Randomize
-        }
     for shop_cost in shop_cost_objects:
         # Extract the location name.
         location_name = re.search("^plando_(.+)_shop_cost$", shop_cost.name)[1]
         location = Locations[location_name]
-        shop_object = shops_map[location]
         if shop_cost.value != "":
             item_cost = int(shop_cost.value)
-            # Update this shop item with the cost.
-            shop_object["cost"] = item_cost
-        # If this shop location has no specified item or price, drop it from
-        # the dictionary.
-        if shop_object["item"] == PlandoItems.Randomize and shop_object["cost"] == PlandoItems.Randomize:
-            shops_map.pop(location)
-    plando_form_data["shops"] = shops_map
+            shops_map[location] = item_cost
+    plando_form_data["prices"] = shops_map
 
     minigames_map = {}
     for minigame in minigame_objects:
@@ -464,13 +442,6 @@ def validate_plando_options(settings_dict):
             count_dict[item] += 1
         else:
             count_dict[item] = 1
-    for shop in plando_dict["shops"].values():
-        if shop["item"] == PlandoItems.Randomize:
-            continue
-        if shop["item"] in count_dict:
-            count_dict[shop["item"]] += 1
-        else:
-            count_dict[shop["item"]] = 1
     # If any items have exceeded their maximum amounts, add an error.
     for item, itemCount in count_dict.items():
         if item not in PlannableItemLimits:
@@ -486,13 +457,12 @@ def validate_plando_options(settings_dict):
             errList.append(errString)
 
     # Ensure that shop costs are within allowed limits.
-    for shopLocation, shop in plando_dict["shops"].items():
-        shopCost = shop["cost"]
-        if shopCost == PlandoItems.Randomize:
+    for shopLocation, price in plando_dict["prices"].items():
+        if price == PlandoItems.Randomize:
             continue
-        if shopCost < 0 or shopCost > 255:
+        if price < 0 or price > 255:
             shopName = LocationList[shopLocation].name
-            errString = f"Shop costs must be between 0 and 255 coins, but shop \"{shopName}\" has a cost of {shopCost} coins."
+            errString = f"Shop costs must be between 0 and 255 coins, but shop \"{shopName}\" has a cost of {price} coins."
             errList.append(errString)
 
     # Ensure that the number of chosen Kongs matches the "number of starting
