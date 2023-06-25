@@ -27,8 +27,8 @@ LogicRegions = {
         LocationLogic(Locations.GalleonBananaFairybyCranky, lambda l: l.camera and l.punch and l.chunky),
     ], [
         Event(Events.GalleonEntered, lambda l: True),
-        Event(Events.GalleonLankySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.lanky),
-        Event(Events.GalleonTinySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.tiny),
+        Event(Events.GalleonLankySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.lanky and (l.swim or l.settings.high_req)),
+        Event(Events.GalleonTinySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.tiny and (l.swim or l.settings.high_req)),
         Event(Events.LighthouseGateOpened, lambda l: l.coconut and l.donkey),
         # Gate to shipyard always open in rando
         Event(Events.ShipyardGateOpened, lambda l: True),
@@ -263,6 +263,8 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: True, Transitions.GalleonGuitarToShipyard),
+        TransitionFront(Regions.TriangleShip, lambda l: l.CanPhaseswim()),
+        TransitionFront(Regions.TromboneShip, lambda l: l.CanPhaseswim()),
     ]),
 
     Regions.TromboneShip: Region("Trombone Ship", "5 Door Ship", Levels.GloomyGalleon, False, None, [
@@ -270,6 +272,8 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: True, Transitions.GalleonTromboneToShipyard),
+        TransitionFront(Regions.GuitarShip, lambda l: l.CanPhaseswim()),
+        TransitionFront(Regions.TriangleShip, lambda l: l.CanPhaseswim()),
     ]),
 
     Regions.SaxophoneShip: Region("Saxophone Ship", "5 Door Ship", Levels.GloomyGalleon, False, None, [
@@ -278,6 +282,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: True, Transitions.GalleonSaxophoneToShipyard),
+        TransitionFront(Regions.BongosShip, lambda l: l.CanPhaseswim()),
     ]),
 
     Regions.TriangleShip: Region("Triangle Ship", "5 Door Ship", Levels.GloomyGalleon, False, None, [
@@ -286,6 +291,7 @@ LogicRegions = {
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.ShipyardUnderwater, lambda l: True, Transitions.GalleonTriangleToShipyard),
         TransitionFront(Regions.GuitarShip, lambda l: l.CanPhaseswim()),
+        TransitionFront(Regions.TromboneShip, lambda l: l.CanPhaseswim()),
     ]),
 
     Regions.GalleonBossLobby: Region("Galleon Boss Lobby", "Troff 'N' Scoff", Levels.GloomyGalleon, True, None, [], [], [

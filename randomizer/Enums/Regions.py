@@ -15,6 +15,7 @@ class Regions(IntEnum):
     IslesMain = auto()
     OuterIsles = auto()
     IslesMainUpper = auto()
+    IslesEar = auto()
     Prison = auto()
     BananaFairyRoom = auto()
     RarewareGBRoom = auto()

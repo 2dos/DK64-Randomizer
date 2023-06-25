@@ -103,7 +103,7 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Forest Thornvine Barn | DK's Barn | l.Slam and l.camera | 
+| Forest Thornvine Barn | DK's Barn | l.isdonkey and l.Slam and l.camera | 
 | Forest Rafters | Dark Attic | l.guitar and l.isdiddy and l.camera | 
 | Fungi Forest | Above Blue Tunnel | l.camera | 
 | Fungi Forest | Above the Clock | l.camera | 
