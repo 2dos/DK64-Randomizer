@@ -17,10 +17,10 @@ from randomizer.Patching.Patcher import ROM
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
-from ui.bindings import serialize_settings
 from ui.GenSpoiler import GenerateSpoiler
 from ui.GenTracker import generateTracker
 from ui.progress_bar import ProgressBar
+from ui.serialize_settings import serialize_settings
 
 
 class BooleanProperties:

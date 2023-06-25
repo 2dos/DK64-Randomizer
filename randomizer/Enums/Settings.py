@@ -595,7 +595,6 @@ class SettingsStringEnum(IntEnum):
 
     ALL SETTINGS NEED AN ENTRY HERE!
     """
-
     activate_all_bananaports = 1
     alter_switch_allocation = 2
     auto_keys = 3
@@ -728,6 +727,7 @@ class SettingsStringEnum(IntEnum):
     coin_rando = 130
     vanilla_door_rando = 131
     starting_moves_count = 132
+    enable_plandomizer = 133
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -793,6 +793,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
+    SettingsStringEnum.enable_plandomizer: SettingsStringDataType.bool,
     SettingsStringEnum.enable_shop_hints: SettingsStringDataType.bool,
     SettingsStringEnum.enable_tag_anywhere: SettingsStringDataType.bool,
     SettingsStringEnum.enemies_selected: SettingsStringDataType.list,

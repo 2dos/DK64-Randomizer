@@ -8,6 +8,7 @@ from ui.rando_options import (
     disable_helm_hurry,
     disable_move_shuffles,
     disable_music,
+    enable_plandomizer,
     hide_rgb,
     item_rando_list_changed,
     max_doorone_requirement,
@@ -65,3 +66,4 @@ item_rando_list_changed(None)
 toggle_key_settings(None)
 disable_helm_hurry(None)
 toggle_vanilla_door_rando(None)
+enable_plandomizer(None)
