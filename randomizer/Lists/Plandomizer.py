@@ -120,7 +120,10 @@ PlandomizerPanels = {
     },
     "HideoutHelm": {
         "name": "Hideout Helm",
-        "locations": createPlannableLocationObj()
+        "locations": {
+            "All Kongs": [],
+            "Medals": []
+        }
     },
     "Shops": {
         "name": "Shops",
@@ -130,7 +133,7 @@ PlandomizerPanels = {
     #    "name": "Blueprints",
     #    "locations": createPlannableLocationObj()
     #},
-    # Minigames are grouped by level, not by Kong.
+    # Minigames and hints are grouped by level, not by Kong.
     "Minigames": {
         "name": "Minigames",
         "levels": {
@@ -172,15 +175,37 @@ PlandomizerPanels = {
             }
         }
     },
-    # There are no "All Kongs" hints.
     "Hints": {
         "name": "Hints",
-        "locations": {
-            "Donkey": [],
-            "Diddy": [],
-            "Lanky": [],
-            "Tiny": [],
-            "Chunky": []
+        "levels": {
+            "JungleJapes": {
+                "name": "Jungle Japes",
+                "locations": []
+            },
+            "AngryAztec": {
+                "name": "Angry Aztec",
+                "locations": []
+            },
+            "FranticFactory": {
+                "name": "Frantic Factory",
+                "locations": []
+            },
+            "GloomyGalleon": {
+                "name": "Gloomy Galleon",
+                "locations": []
+            },
+            "FungiForest": {
+                "name": "Fungi Forest",
+                "locations": []
+            },
+            "CrystalCaves": {
+                "name": "Crystal Caves",
+                "locations": []
+            },
+            "CreepyCastle": {
+                "name": "Creepy Castle",
+                "locations": []
+            }
         }
     }
 }
@@ -201,14 +226,18 @@ for locationEnum, locationObj in LocationList.items():
         #PlandomizerPanels["Blueprints"]["locations"][kongString].append(locationJson)
         continue
     elif locationObj.type == Types.Hint:
-        PlandomizerPanels["Hints"]["locations"][kongString].append(locationJson)
+        levelName = locationObj.level.name
+        PlandomizerPanels["Hints"]["levels"][levelName]["locations"].append(locationJson)
         HintLocationList.append(locationEnum.name)
     elif locationObj.type == Types.Shop or locationObj.level == Levels.Shops:
         PlandomizerPanels["Shops"]["locations"][kongString].append(locationJson)
         ShopLocationList.append(locationEnum.name)
     else:
         levelName = locationObj.level.name
-        PlandomizerPanels[levelName]["locations"][kongString].append(locationJson)
+        if locationObj.level == Levels.HideoutHelm and locationObj.type == Types.Medal:
+            PlandomizerPanels[levelName]["locations"]["Medals"].append(locationJson)
+        else:
+            PlandomizerPanels[levelName]["locations"][kongString].append(locationJson)
         ItemLocationList.append(locationEnum.name)
 
         # If this is a minigame location, add it to the Minigames list.
