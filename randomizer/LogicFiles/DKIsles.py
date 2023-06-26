@@ -7,7 +7,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import MinigameBarrels
+from randomizer.Enums.Settings import DamageAmount, MinigameBarrels
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
@@ -210,13 +210,13 @@ LogicRegions = {
     ]),
 
     Regions.KremIsleBeyondLift: Region("Krem Isle Beyond Lift", "Krem Isle", Levels.DKIsles, False, None, [
-        LocationLogic(Locations.IslesDonkeyCagedBanana, lambda l: (l.coconut and l.isdonkey) or ((l.CanSkew(True) and l.CanSTS()) and (l.isdonkey or l.settings.free_trade_items))),
+        LocationLogic(Locations.IslesDonkeyCagedBanana, lambda l: (l.coconut and l.isdonkey) or ((l.CanSkew(True) and l.CanSTS() and l.settings.damage_amount != DamageAmount.ohko) and (l.isdonkey or l.settings.free_trade_items))),
     ], [
         Event(Events.IslesW4bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.KremIsle, lambda l: True),
         TransitionFront(Regions.IslesSnideRoom, lambda l: True, Transitions.IslesMainToSnideRoom),
-        TransitionFront(Regions.FranticFactoryLobby, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or (l.CanSkew(True) and l.CanSTS()), Transitions.IslesMainToFactoryLobby),
+        TransitionFront(Regions.FranticFactoryLobby, lambda l: l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or (l.CanSkew(True) and l.CanSTS() and l.settings.damage_amount != DamageAmount.ohko), Transitions.IslesMainToFactoryLobby),
     ]),
 
     Regions.KremIsleTopLevel: Region("Krem Isle Top Level", "Krem Isle", Levels.DKIsles, False, None, [
