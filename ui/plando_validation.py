@@ -12,50 +12,6 @@ from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
 
-# A full list of locations for starting moves to be placed.
-startingMoveLocations = [
-    Locations.IslesVinesTrainingBarrel,
-    Locations.IslesSwimTrainingBarrel,
-    Locations.IslesOrangesTrainingBarrel,
-    Locations.IslesBarrelsTrainingBarrel,
-    Locations.PreGiven_Location00,
-    Locations.PreGiven_Location01,
-    Locations.PreGiven_Location02,
-    Locations.PreGiven_Location03,
-    Locations.PreGiven_Location04,
-    Locations.PreGiven_Location05,
-    Locations.PreGiven_Location06,
-    Locations.PreGiven_Location07,
-    Locations.PreGiven_Location08,
-    Locations.PreGiven_Location09,
-    Locations.PreGiven_Location10,
-    Locations.PreGiven_Location11,
-    Locations.PreGiven_Location12,
-    Locations.PreGiven_Location13,
-    Locations.PreGiven_Location14,
-    Locations.PreGiven_Location15,
-    Locations.PreGiven_Location16,
-    Locations.PreGiven_Location17,
-    Locations.PreGiven_Location18,
-    Locations.PreGiven_Location19,
-    Locations.PreGiven_Location20,
-    Locations.PreGiven_Location21,
-    Locations.PreGiven_Location22,
-    Locations.PreGiven_Location23,
-    Locations.PreGiven_Location24,
-    Locations.PreGiven_Location25,
-    Locations.PreGiven_Location26,
-    Locations.PreGiven_Location27,
-    Locations.PreGiven_Location28,
-    Locations.PreGiven_Location29,
-    Locations.PreGiven_Location30,
-    Locations.PreGiven_Location31,
-    Locations.PreGiven_Location32,
-    Locations.PreGiven_Location33,
-    Locations.PreGiven_Location34,
-    Locations.PreGiven_Location35
-]
-
 def invalidate_option(element, tooltip):
     """Add a Bootstrap tooltip to the given element, and mark it as invalid."""
     element.setAttribute("data-bs-original-title", tooltip)
@@ -163,22 +119,6 @@ def validate_starting_kong_count(evt):
         invalidate_option(startingKongs, errString)
     else:
         validate_option(startingKongs)
-
-
-@bind("change", "starting_moves_count")
-@bind("change", "plando_starting_moves_selected")
-def validate_starting_move_count(evt):
-    """Raise an error if the starting moves don't match the selected count."""
-    startingMoves = js.document.getElementById("plando_starting_moves_selected")
-    selectedMoves = {x.value for x in startingMoves.selectedOptions}
-    numStartingMoves = int(js.document.getElementById("starting_moves_count").value)
-    if len(selectedMoves) > numStartingMoves or (len(selectedMoves) < numStartingMoves and "" not in selectedMoves):
-        maybePluralMoveText = "move was selected as a starting move" if len(selectedMoves) == 1 else "moves were selected as starting moves"
-        errSuffix = "." if len(selectedMoves) > numStartingMoves else ", and \"Random Move(s)\" was not chosen."
-        errString = f"The number of starting moves was set to {numStartingMoves}, but {len(selectedMoves)} {maybePluralMoveText}{errSuffix}"
-        invalidate_option(startingMoves, errString)
-    else:
-        validate_option(startingMoves)
 
 
 @bind("change", "plando_level_order_", 7)
@@ -377,21 +317,6 @@ def populate_plando_options(form):
         locations_map[blueprint.id] = PlandoItems.GoldenBanana
     plando_form_data["locations"] = locations_map
 
-    # The starting moves require some extra processing. Instead of passing them
-    # as a list, we will use them to fill in the locations for starting moves.
-    # (The list stays part of the data object until validation, when it gets
-    # removed.)
-    if "plando_starting_moves_selected" in plando_form_data:
-        startingMoveDict = dict()
-        startingMoves = plando_form_data["plando_starting_moves_selected"]
-        if startingMoves[0] == PlandoItems.Randomize:
-            startingMoves = startingMoves[1:]
-        for i in range(len(startingMoves)):
-            move = startingMoves[i]
-            location = startingMoveLocations[i]
-            startingMoveDict[location] = move
-        plando_form_data["locations"].update(startingMoveDict)
-
     shops_map = {}
     for shop_cost in shop_cost_objects:
         # Extract the location name.
@@ -474,17 +399,6 @@ def validate_plando_options(settings_dict):
         maybePluralKongText = "Kong was selected as a starting Kong" if len(chosenKongs) == 1 else "Kongs were selected as starting Kongs"
         errSuffix = "." if len(chosenKongs) > numStartingKongs else ", and \"Random Kong(s)\" was not chosen."
         errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(chosenKongs)} {maybePluralKongText}{errSuffix}"
-        errList.append(errString)
-    
-    # Ensure that the number of chosen moves matches the "number of starting
-    # moves" setting, or that "Random Move(s)" has been chosen. If too many
-    # moves have been selected, that is always an error.
-    chosenMoves = plando_dict.pop("plando_starting_moves_selected")
-    numStartingMoves = int(settings_dict["starting_moves_count"])
-    if len(chosenMoves) > numStartingMoves or (len(chosenMoves) < numStartingMoves and PlandoItems.Randomize not in chosenMoves):
-        maybePluralMoveText = "move was selected as a starting move" if len(chosenMoves) == 1 else "moves were selected as starting moves"
-        errSuffix = "." if len(chosenMoves) > numStartingMoves else ", and \"Random Move(s)\" was not chosen."
-        errString = f"The number of starting moves was set to {numStartingMoves}, but {len(chosenMoves)} {maybePluralMoveText}{errSuffix}"
         errList.append(errString)
 
     # Ensure that no level was selected more than once in the level order.
