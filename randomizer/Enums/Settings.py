@@ -457,6 +457,19 @@ class ShockwaveStatus(IntEnum):
     start_with = 3
 
 
+class ShopIndicator(IntEnum):
+    """Determines the amount of information the shop indicators display.
+
+    vanilla: No additional information is displayed
+    kong_only: Displays the kong only
+    standard: Displays the kong and items
+    """
+
+    vanilla = 0
+    kong_only = 1
+    standard = 2
+
+
 class ShuffleLoadingZones(IntEnum):
     """Determines how loading zones are shuffled.
 
@@ -572,6 +585,7 @@ SettingsMap = {
     "rambi_colors": CharacterColors,
     "random_prices": RandomPrices,
     "shockwave_status": ShockwaveStatus,
+    "shop_indicator": ShopIndicator,
     "shuffle_loading_zones": ShuffleLoadingZones,
     "sound_type": SoundType,
     "starting_keys_list_selected": Items,
@@ -872,7 +886,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.rareware_gb_fairies: SettingsStringDataType.var_int,
     SettingsStringEnum.select_keys: SettingsStringDataType.bool,
     SettingsStringEnum.shockwave_status: ShockwaveStatus,
-    SettingsStringEnum.shop_indicator: SettingsStringDataType.bool,
+    SettingsStringEnum.shop_indicator: ShopIndicator,
     SettingsStringEnum.shorten_boss: SettingsStringDataType.bool,
     SettingsStringEnum.shuffle_items: SettingsStringDataType.bool,
     SettingsStringEnum.shuffle_shops: SettingsStringDataType.bool,

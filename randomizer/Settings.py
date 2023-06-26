@@ -413,7 +413,7 @@ class Settings:
         self.rareware_gb_fairies = 20
         self.bananaport_rando = BananaportRando.off
         self.activate_all_bananaports = ActivateAllBananaports.off
-        self.shop_indicator = False
+        self.shop_indicator = ShopIndicator.vanilla
         self.randomize_cb_required_amounts = False
         self.randomize_blocker_required_amounts = False
         self.maximize_helm_blocker = False

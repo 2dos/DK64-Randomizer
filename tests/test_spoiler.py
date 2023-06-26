@@ -14,8 +14,9 @@ from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando,
                                        LevelRandomization, LogicType,
                                        MicrohintsEnabled, MoveRando,
                                        RandomPrices, SettingsMap,
-                                       ShockwaveStatus, TrainingBarrels,
-                                       WinCondition, WrinklyHints)
+                                       ShockwaveStatus, ShopIndicator,
+                                       TrainingBarrels, WinCondition,
+                                       WrinklyHints)
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
 from randomizer.SettingStrings import decrypt_settings_string_enum
@@ -165,7 +166,6 @@ def generate_lo_rando_race_settings():
     data["shorten_boss"] = True
     data["enable_tag_anywhere"] = True
     data["enable_shop_hints"] = True
-    data["shop_indicator"] = True
     data["wrinkly_available"] = False
     data["warp_to_isles"] = True
     data["fast_warps"] = True
@@ -174,6 +174,7 @@ def generate_lo_rando_race_settings():
     data["wrinkly_hints"] = WrinklyHints.standard
     data["helm_setting"] = HelmSetting.skip_start
     data["microhints_enabled"] = MicrohintsEnabled.base  # off/base/all
+    data["shop_indicator"] = ShopIndicator.standard
 
     # Other
     data["fps_display"] = False

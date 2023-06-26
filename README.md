@@ -78,6 +78,7 @@ Current Features:
       - Start with Simian Slam
       - Spawn in DK Isles
       - Japes Lobby entrance open
+      - Shop indicators to show kong, item & kong, or nothing
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
