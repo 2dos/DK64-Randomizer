@@ -472,7 +472,9 @@ def compileHints(spoiler: Spoiler):
                     path_length -= len(useless_locations[Kongs.diddy]) + len(useless_locations[Kongs.lanky]) + len(useless_locations[Kongs.tiny]) + len(useless_locations[Kongs.chunky])
                     if hint_distribution[HintType.RequiredWinConditionHint] != 0:
                         # Guarantee you have a decent number of hints, even if you have very few, very buried moves required
-                        if path_length <= 1:  # 2 (should never be 1 here)
+                        if path_length == 0:
+                            hint_distribution[HintType.RequiredWinConditionHint] = 0
+                        elif path_length <= 1:  # 2 (should never be 1 here)
                             hint_distribution[HintType.RequiredWinConditionHint] = max(hint_distribution[HintType.RequiredWinConditionHint], 1)
                         elif path_length <= 3:  # 3-4
                             hint_distribution[HintType.RequiredWinConditionHint] = max(hint_distribution[HintType.RequiredWinConditionHint], 2)
@@ -501,7 +503,9 @@ def compileHints(spoiler: Spoiler):
                         valid_types.append(HintType.RequiredWinConditionHint)
                         # Same rules as key path amounts
                         path_length = len(spoiler.woth_paths[camera_location_id]) - 1  # Don't include the camera itself in the path length
-                        if path_length <= 1:  # 1-2
+                        if path_length < 0:  # 0 (I'm not sure this is possible but I don't want to error)
+                            hint_distribution[HintType.RequiredWinConditionHint] = 0
+                        elif path_length <= 1:  # 1-2
                             hint_distribution[HintType.RequiredWinConditionHint] = 1
                         elif path_length <= 5:  # 3-6
                             hint_distribution[HintType.RequiredWinConditionHint] = 2
@@ -561,8 +565,10 @@ def compileHints(spoiler: Spoiler):
                             for loc in spoiler.woth_paths[key_location_ids[key_id]]
                             if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and LocationList[loc].item in [Items.GorillaGone, Items.Monkeyport, Items.Vines]
                         ]
-                        path_length -= len(useless_locations[Items.HideoutHelmKey])
-                    if path_length <= 1:  # 1-2
+                        path_length -= len(useless_locations[Items.HideoutHelmKey])  # this might lead to path_length of -1?
+                    if path_length <= 0:  # 0-1 (if the 1 is it being locked in Helm)
+                        key_hint_dict[key_id] = 0
+                    elif path_length <= 1:  # 1-2
                         key_hint_dict[key_id] = 1
                     elif path_length <= 5:  # 3-6
                         key_hint_dict[key_id] = 2
@@ -1189,52 +1195,6 @@ def compileHints(spoiler: Spoiler):
     #         hint_location.hint_type = HintType.FoolishMove
     #         UpdateHint(hint_location, message)
 
-    # Foolish Region hints state that a hint region is foolish. Useful in item rando.
-    # Foolish regions contain no major items that would block any amount of progression, even non-required progression
-    if hint_distribution[HintType.FoolishRegion] > 0:
-        # Determine how many locations are contained in the foolish regions
-        total_foolish_location_score = 0
-        foolish_region_location_score = {}
-        for foolish_name in spoiler.foolish_region_names:
-            foolish_location_score = 0
-            shops_in_region = 0
-            regions_in_region = [region for region in RegionList.values() if region.hint_name == foolish_name]
-            for region in regions_in_region:
-                foolish_location_score += len([loc for loc in region.locations if not LocationList[loc.id].inaccessible and LocationList[loc.id].type in spoiler.settings.shuffled_location_types])
-                if region.level == Levels.Shops:
-                    shops_in_region += 1
-            if "Medal Rewards" in foolish_name:  # "Medal Rewards" regions are cb foolish hints, which are just generally more valuable to hint foolish
-                foolish_location_score += 3
-            elif shops_in_region > 0:  # Shops are generally overvalued (4/6 locations per shop) with this method due to having mutually exclusive locations
-                foolish_location_score -= 1 * shops_in_region  # With smaller shops, this reduces the location count to 3 locations per shop
-            foolish_location_score = foolish_location_score**1.25  # Exponentiation of this score puts additional emphasis (but not too much) on larger regions
-            total_foolish_location_score += foolish_location_score
-            foolish_region_location_score[foolish_name] = foolish_location_score
-        random.shuffle(spoiler.foolish_region_names)
-        for i in range(hint_distribution[HintType.FoolishRegion]):
-            # If you run out of foolish regions (maybe in an all medals run?) - this *should* be covered by the distribution earlier but this is a good failsafe
-            if len(spoiler.foolish_region_names) == 0 or sum(foolish_region_location_score.values()) == 0:  # You can either expend the whole list or run out of eligible regions
-                # Replace remaining move hints with WotH location hints, sounds like you'll need them
-                hint_distribution[HintType.FoolishRegion] -= 1
-                hint_distribution[HintType.WothLocation] += 1
-                continue
-            hinted_region_name = random.choices(list(foolish_region_location_score.keys()), foolish_region_location_score.values())[0]  # Weighted random choice from list of foolish region names
-            spoiler.foolish_region_names.remove(hinted_region_name)
-            del foolish_region_location_score[hinted_region_name]
-            hint_location = getRandomHintLocation()
-            level_color = "\x05"
-            for region_id in Regions:
-                if RegionList[region_id].hint_name == hinted_region_name:
-                    level_color = level_colors[RegionList[region_id].level]
-                    break
-            if "Medal Rewards" in hinted_region_name:
-                cutoff = hinted_region_name.index(" Medal Rewards")
-                message = f"It would be \x05foolish\x05 to collect {level_color}colored bananas in {hinted_region_name[0:cutoff]}{level_color}."
-            else:
-                message = f"It would be \x05foolish\x05 to explore the {level_color}{hinted_region_name}{level_color}."
-            hint_location.hint_type = HintType.FoolishRegion
-            UpdateHint(hint_location, message)
-
     # WotH Location hints list a location that is Way of the Hoard. Most applicable in item rando.
     if hint_distribution[HintType.WothLocation] > 0:
         hintable_location_ids = []
@@ -1250,10 +1210,11 @@ def compileHints(spoiler: Spoiler):
         random.shuffle(hintable_location_ids)
         placed_woth_hints = 0
         while placed_woth_hints < hint_distribution[HintType.WothLocation]:
-            # If you run out of hintable woth locations, just pile on joke hints - this should only happen if there's very few late woth locations
+            # If you run out of hintable woth locations, throw in a foolish for their troubles - this should only happen if there's very few late woth locations.
+            # In (increasingly) obscenely rare circumstances, this might affect the Fixed distribution. I think this is too subtle to actually matter.
             if len(hintable_location_ids) == 0:
                 hint_distribution[HintType.WothLocation] -= 1
-                hint_distribution[HintType.Joke] += 1
+                hint_distribution[HintType.FoolishRegion] += 1
                 continue
             hinted_loc_id = random.choice(hintable_location_ids)
             # Soft reroll duplicate hints based on hint reroll parameters
@@ -1277,6 +1238,52 @@ def compileHints(spoiler: Spoiler):
             hint_location.hint_type = HintType.WothLocation
             UpdateHint(hint_location, message)
             placed_woth_hints += 1
+
+    # Foolish Region hints state that a hint region is foolish. Useful in item rando.
+    # Foolish regions contain no major items that would block any amount of progression, even non-required progression
+    if hint_distribution[HintType.FoolishRegion] > 0:
+        # Determine how many locations are contained in the foolish regions
+        total_foolish_location_score = 0
+        foolish_region_location_score = {}
+        for foolish_name in spoiler.foolish_region_names:
+            foolish_location_score = 0
+            shops_in_region = 0
+            regions_in_region = [region for region in RegionList.values() if region.hint_name == foolish_name]
+            for region in regions_in_region:
+                foolish_location_score += len([loc for loc in region.locations if not LocationList[loc.id].inaccessible and LocationList[loc.id].type in spoiler.settings.shuffled_location_types])
+                if region.level == Levels.Shops and region.hint_name != "Jetpac Game":  # Jetpac isn't a "real" shop, it's in the Shops level for convenience
+                    shops_in_region += 1
+            if "Medal Rewards" in foolish_name:  # "Medal Rewards" regions are cb foolish hints, which are just generally more valuable to hint foolish
+                foolish_location_score += 3
+            elif shops_in_region > 0:  # Shops are generally overvalued (4/6 locations per shop) with this method due to having mutually exclusive locations
+                foolish_location_score -= 1 * shops_in_region  # With smaller shops, this reduces the location count to 3 locations per shop
+            foolish_location_score = foolish_location_score**1.25  # Exponentiation of this score puts additional emphasis (but not too much) on larger regions
+            total_foolish_location_score += foolish_location_score
+            foolish_region_location_score[foolish_name] = foolish_location_score
+        random.shuffle(spoiler.foolish_region_names)
+        for i in range(hint_distribution[HintType.FoolishRegion]):
+            # If you run out of foolish regions (maybe in an all medals run?) - this *should* be covered by the distribution earlier but this is a good failsafe
+            if len(spoiler.foolish_region_names) == 0 or sum(foolish_region_location_score.values()) == 0:  # You can either expend the whole list or run out of eligible regions
+                # Replace remaining move hints with joke hints, because I'm pretty sure this is impossible to occur
+                hint_distribution[HintType.FoolishRegion] -= 1
+                hint_distribution[HintType.Joke] += 1
+                continue
+            hinted_region_name = random.choices(list(foolish_region_location_score.keys()), foolish_region_location_score.values())[0]  # Weighted random choice from list of foolish region names
+            spoiler.foolish_region_names.remove(hinted_region_name)
+            del foolish_region_location_score[hinted_region_name]
+            hint_location = getRandomHintLocation()
+            level_color = "\x05"
+            for region_id in Regions:
+                if RegionList[region_id].hint_name == hinted_region_name:
+                    level_color = level_colors[RegionList[region_id].level]
+                    break
+            if "Medal Rewards" in hinted_region_name:
+                cutoff = hinted_region_name.index(" Medal Rewards")
+                message = f"It would be \x05foolish\x05 to collect {level_color}colored bananas in {hinted_region_name[0:cutoff]}{level_color}."
+            else:
+                message = f"It would be \x05foolish\x05 to explore the {level_color}{hinted_region_name}{level_color}."
+            hint_location.hint_type = HintType.FoolishRegion
+            UpdateHint(hint_location, message)
 
     # Entrance hints are tricky, there's some requirements we must hit:
     # We must hint each of Japes, Aztec, and Factory at least once
