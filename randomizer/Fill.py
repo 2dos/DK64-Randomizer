@@ -2427,6 +2427,8 @@ def Generate_Spoiler(spoiler):
     global LogicVariables
     LogicVariables = None
     LogicVariables = LogicVarHolder(spoiler.settings)
+    if spoiler.settings.wrinkly_hints == WrinklyHints.fixed_racing:
+        ValidateFixedHints(spoiler.settings)
     # Reset LocationList for a new fill
     ResetLocationList()
     # Initiate kasplat map with default
@@ -2524,3 +2526,9 @@ def ShuffleMisc(spoiler):
     # Item Rando
     spoiler.human_item_assignment = {}
     spoiler.settings.update_valid_locations()
+
+
+def ValidateFixedHints(settings):
+    """Check for some known incompatibilities with the Fixed hint system ASAP so we don't waste time genning this seed."""
+    if settings.win_condition != WinCondition.beat_krool:
+        raise Ex.SettingsIncompatibleException("Alternate win conditions will not work with Fixed hints.")
