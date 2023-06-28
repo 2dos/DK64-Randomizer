@@ -64,3 +64,4 @@ extern void FixInvisibleText_0(void);
 extern void FixInvisibleText_1(void);
 extern void CrankyCoconutDonation(void);
 extern void AlwaysCandyInstrument(void);
+extern void fixTilePosition(void);

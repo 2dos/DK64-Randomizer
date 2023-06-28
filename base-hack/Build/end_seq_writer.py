@@ -4,22 +4,6 @@ import sys
 
 import requests as rs
 
-is_v2_release = False
-csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTjqxasaI40I2zf3RG9_7Vv-H1grc2JMhy_C08SZkW9MFApNaZ8ARnUDRfA0QrgCi874s9efWxhy6mW/pub?gid=1075755893&single=true&output=csv"
-basher_names = []
-if is_v2_release:
-    try:
-        res = rs.get(url=csv_url)
-        txt = res.content.decode("ascii")
-        bigbugbashers = txt.split("\r\n")[1:]
-        basher_names = []
-        for b in bigbugbashers:
-            if len(b.split(",")[1]) > 0:
-                basher_names.append(b.split(",")[1])
-    except rs.exceptions.HTTPError as err:
-        raise SystemExit(err)
-
-
 header_length = 0x78
 names_length = 0xA0
 general_buffer = 0x9A
@@ -76,12 +60,11 @@ assistant_devs = [
 # Wex_AZ
 # Zorulda
 
-bbb_contest = [CreditItem("top", "header", ["Big Bug Bashers"]), CreditItem("right", "normal", basher_names)]
-
 additional_thanks = [
     CreditItem("top", "header", ["Additional Thanks"]),
     CreditItem("left", "normal", ["Game Developers", " ", "Rareware Ltd", "Nintendo"]),
     CreditItem("bottom", "normal", ["Crankys Lab Developer", "Isotarge"]),
+    CreditItem("top", "normal", ["Widescreen Hack Developer", "gamemasterplc"]),
     CreditItem("right", "normal", ["SpikeVegeta", "KeiperDontCare"]),
     CreditItem("left", "normal", ["Beta Testers", "Dev Branch Testers"]),
 ]
@@ -92,8 +75,6 @@ end_sequence_cards = []
 end_sequence_cards.extend(main_devs)
 end_sequence_cards.extend(assistant_devs)
 
-if len(basher_names) > 0 and is_v2_release:
-    end_sequence_cards.extend(bbb_contest)
 end_sequence_cards.extend(additional_thanks)
 end_sequence_cards.extend(links)
 

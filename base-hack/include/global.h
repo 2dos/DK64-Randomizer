@@ -25,6 +25,7 @@ extern int inBossMap(maps map, int include_regular, int include_krool, int inclu
 extern int inMinigame(maps map);
 extern int isGamemode(gamemodes target_mode, int force_both);
 extern int has_key(int index);
+extern overlays getOverlayFromMap(maps map);
 
 extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);
@@ -243,6 +244,7 @@ extern void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, in
 extern void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
 extern void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
 extern void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
+extern void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1, int p2);
 extern void spawnRewardAtActor(int object, int flag);
 extern void spawnMinecartReward(int object, int flag);
 extern int checkFlagDuplicate(short flag, flagtypes type);
@@ -263,6 +265,7 @@ extern int getCrownItem(maps map);
 extern int getKeyItem(int old_flag);
 extern int getFairyModel(int flag);
 extern int getRainbowCoinItem(int old_flag);
+extern int getCrateItem(int old_flag);
 extern int* controlKeyText(int* dl);
 extern void keyGrabHook(int song, int vol);
 extern int itemGrabHook(int collectable_type, int obj_type, int is_homing);
@@ -315,12 +318,15 @@ extern void initIceTrap(void);
 extern void queueIceTrap(void);
 extern void callIceTrap(void);
 extern int getPatchWorld(int index);
+extern int getCrateWorld(int index);
+extern int getCrateFlag(int id);
 
 extern void initItemRando(void);
 extern void initFiles(void);
 extern void initQoL(void);
 extern void initCosmetic(void);
 extern void populatePatchItem(int id, int map, int index, int world);
+extern void populateCrateItem(int id, int map, int index, int world);
 extern int isObjectTangible_detailed(int id);
 
 extern void insertROMMessages(void);
@@ -362,6 +368,8 @@ extern int ReadExtraData(extra_global_data data_type, int sub_index);
 extern void SaveExtraData(extra_global_data data_type, int sub_index, int value);
 extern void ResetExtraData(extra_global_data data_type, int sub_index);
 extern void setKrushaAmmoColor(void);
+
+extern void loadWidescreen(overlays loaded_overlay);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];

@@ -159,4 +159,5 @@ typedef struct varspace {
 	/* 0x1AF */ char pppanic_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
 	/* 0x1B0 */ char sseek_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
 	/* 0x1B1 */ unsigned char wrinkly_rgb[3];
+	/* 0x1B4 */ char true_widescreen; // Port of the widescreen hack from gamemasterplc
 } varspace;

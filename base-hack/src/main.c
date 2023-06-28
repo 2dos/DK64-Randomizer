@@ -10,8 +10,14 @@ static float current_avg_lag = 0;
 static char has_loaded = 0;
 static char new_picture = 0;
 int hint_pointers[35] = {};
+static char delayed_load = 0;
+
 
 void cFuncLoop(void) {
+	if (!delayed_load) {
+		// loadWidescreen(OVERLAY_BOOT);
+		delayed_load = 1;
+	}
 	DataIsCompressed[18] = 0;
 	unlockKongs();
 	tagAnywhere();
@@ -68,7 +74,7 @@ void cFuncLoop(void) {
 			if ((CutsceneActive) && (TransitionSpeed == 0.0f)) { // Playing a cutscene that's part of intro story
 				if ((NewlyPressedControllerInput.Buttons.a) || (NewlyPressedControllerInput.Buttons.start)) {
 					setIntroStoryPlaying(0);
-					initiateTransition(0xB0, 1);
+					initiateTransition(MAP_TRAININGGROUNDS, 1);
 				}
 			}
 		}

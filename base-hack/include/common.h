@@ -18,5 +18,6 @@
 #include "archipelago.h"
 #include "music.h"
 #include "macros.h"
+#include "widescreen.h"
 
 #endif

@@ -124,3 +124,8 @@ setFlag_ItemRando:
     addiu $a3, $zero, 1
     j 0x80731300
     nop
+
+fixTilePosition:
+    addiu $a1, $a1, (((424/2)-160)*4) ;Move Tiles
+    j 0x8070F310 ;Return to Game
+    sw $a1, 0x5C($sp) ;Run Replaced Instruction

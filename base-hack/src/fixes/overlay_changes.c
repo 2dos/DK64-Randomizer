@@ -423,6 +423,7 @@ void overlay_changes(void) {
 			*(short*)(0x800359A6) = 3; // Fix cutscene bug
 		}
 	}
+	loadWidescreen(getOverlayFromMap(CurrentMap));
 	if (Rando.misc_cosmetic_on) {
 		if ((CurrentMap >= MAP_PPPANIC_VEASY) && (CurrentMap <= MAP_PPPANIC_HARD)) {
 			// PPPanic

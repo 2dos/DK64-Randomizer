@@ -14,7 +14,7 @@ import model_fix
 import model_port
 
 # Patcher functions for the extracted files
-import patch_text
+from patch_text import writeNoExpPakMessages
 import portal_instance_script
 import shop_instance_script
 from adjust_exits import adjustExits
@@ -1298,6 +1298,10 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FF10E0)
     for x in range(16):
         fh.write((0x8C).to_bytes(2, "big"))
+    # Melon Crates
+    fh.seek(0x1FF0E80)
+    for x in range(16):
+        fh.write((0x2F).to_bytes(2, "big"))
     # Shop Hints
     fh.seek(0x1FED020 + 0x14B)
     fh.write((1).to_bytes(1, "big"))
@@ -1494,6 +1498,7 @@ with open(newROMName, "r+b") as fh:
     # pth = "assets/displays/soldout_bismuth.rgba32"
     # if os.path.exists(pth):
     #     os.remove(pth)
+    writeNoExpPakMessages(fh)
 
 # Get BPS Data
 with open(newROMName, "r+b") as fh:

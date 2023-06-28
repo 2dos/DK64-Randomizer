@@ -21,14 +21,22 @@ typedef struct patch_db_item {
 	/* 0x003 */ unsigned char world;
 } patch_db_item;
 
+typedef struct meloncrate_db_item {
+    /* 0x000 */ short id;
+    /* 0x002 */ unsigned char map;
+    /* 0x003 */ unsigned char world;
+} meloncrate_db_item;
+
 static unsigned short bp_item_table[40] = {}; // Kasplat Rewards
 static unsigned char medal_item_table[40] = {}; // Medal Rewards
 static unsigned short crown_item_table[10] = {}; // Crown Rewards
 static unsigned short key_item_table[8] = {}; // Boss Rewards
 static short fairy_item_table[20] = {}; // Fairy Rewards
 static unsigned short rcoin_item_table[16] = {}; // Dirt Patch Rewards
+static unsigned short crate_item_table[16] = {}; // Crate Rewards
 static patch_db_item patch_flags[16] = {}; // Flag table for dirt patches to differentiate it from balloons
 bonus_barrel_info bonus_data[95] = {}; // Bonus Barrel Rewards
+static meloncrate_db_item crate_flags[16] = {}; // Melon crate table
 
 int getBPItem(int index) {
     /**
@@ -110,6 +118,17 @@ int getRainbowCoinItem(int old_flag) {
 	return getActorIndex(rcoin_item_table[old_flag - FLAG_RAINBOWCOIN_0]);
 }
 
+int getCrateItem(int old_flag) {
+	/**
+	 * @brief Get Crate reward from the old flag
+     * 
+     * @param old_flag Original flag of the crate
+	 * 
+     * @return Actor Index of the reward
+	 */
+	return getActorIndex(crate_item_table[old_flag - FLAG_MELONCRATE_0]);
+}
+
 int getPatchFlag(int id) {
     /**
      * @brief Get Patch flag from the ID of the patch
@@ -139,6 +158,35 @@ int getPatchWorld(int index) {
 	return patch_flags[index].world;
 }
 
+int getCrateFlag(int id) {
+    /**
+     * @brief Get Melon Crate flag from the ID of the Melon Crate
+     * 
+     * @param id Melon Crate ID inside the map
+     * 
+     * @return flag index of the crate
+     */
+	for (int i = 0; i < 16; i++) {
+		if (CurrentMap == crate_flags[i].map) {
+			if (id == crate_flags[i].id) {
+				return FLAG_MELONCRATE_0 + i;
+			}
+		}
+	}
+	return 0;
+}
+
+int getCrateWorld(int index) {
+    /**
+     * @brief Gets the world which the melon crate is in
+     * 
+     * @param index Crate Index inside the flag table
+     * 
+     * @return World index of the crate
+     */
+	return crate_flags[index].world;
+}
+
 void populatePatchItem(int id, int map, int index, int world) {
     /**
      * @brief Populate the patch table with a dirt patch
@@ -151,6 +199,20 @@ void populatePatchItem(int id, int map, int index, int world) {
     patch_flags[index].id = id;
     patch_flags[index].map = map;
     patch_flags[index].world = world;
+}
+
+void populateCrateItem(int id, int map, int index, int world) {
+    /**
+     * @brief Populate the Crate table with a Melon Crate
+     * 
+     * @param id Crate ID
+     * @param map Crate Map
+     * @param index Index inside the Crate table
+     * @param world World where the Crate is
+     */
+    crate_flags[index].id = id;
+    crate_flags[index].map = map;
+    crate_flags[index].world = world;
 }
 
 int getBonusFlag(int index) {
@@ -264,6 +326,8 @@ void initItemRando(void) {
             // Barrel Aesthetic
             initBarrelChange();
         }
+        // Melon Crate
+        *(int*)(0x80747EB0) = (int)&melonCrateItemHandler;
         // Mill GB
         writeFunction(0x806F633C, &isObjectTangible_detailed); // Change object tangibility check function
         
@@ -326,6 +390,15 @@ void initItemRando(void) {
     copyFromROM(0x1FF10E0,rainbow_write,&rainbow_file_size,0,0,0,0);
     for (int i = 0; i < rainbow_size; i++) {
         rcoin_item_table[i] = rainbow_write[i];
+    }
+    // Melon Crate Table
+    int crate_size = 0x10;
+    unsigned short* crate_write = dk_malloc(crate_size << 1);
+    int* crate_file_size;
+    *(int*)(&crate_file_size) = crate_size << 1;
+    copyFromROM(0x1FF0E80,crate_write,&crate_file_size,0,0,0,0);
+    for (int i = 0; i < crate_size; i++) {
+        crate_item_table[i] = crate_write[i];
     }
     // Reward Table
     for (int i = 0; i < 40; i++) {

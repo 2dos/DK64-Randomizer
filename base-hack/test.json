@@ -25,6 +25,7 @@
    "fast_start_helm":1,
    "crown_door_open":1,
    "coin_door_open":1,
+   "true_widescreen":1,
    "quality_of_life":{
       "reduce_lag":true,
       "remove_cutscenes":true,
@@ -173,7 +174,7 @@
    "remove_high_requirements":1,
    "open_level_sections":1,
    "auto_keys":0,
-   "starting_map":207,
+   "starting_map":34,
    "starting_exit":0,
    "disco_chunky":1,
    "krusha_slot":2,

@@ -485,6 +485,7 @@ void initHack(int source) {
 				writeFunction(0x806F6CB4, &tagAnywhereInit);
 				*(int*)(0x806F53AC) = 0; // Prevent LZ case
 
+				*(short*)(0x806C7088) = 0x1000; // Mech fish dying
 				// initTagAnywhere();
 			}
 			// DK Face Puzzle

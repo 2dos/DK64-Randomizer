@@ -179,6 +179,7 @@ void bootSpeedup(void) {
 			coloredBananaCounts[j] = 0;
 		}
 		int patch_index = 0;
+        int crate_index = 0;
 		for (int i = 0; i < 221; i++) {
 			balloonPatchCounts[i] = balloon_patch_count;
 			int* setup = getMapData(TABLE_MAP_SETUPS,i,1,1);
@@ -191,16 +192,16 @@ void bootSpeedup(void) {
 				int actor_count = *(int*)(actor_setup);
 				char* focused_actor = (char*)(actor_setup + 4);
 				char* focused_model2 = (char*)(modeltwo_setup + 4);
+                int subworld = 7;
+                if (!isLobby(i)) {
+                    subworld = levelIndexMapping[i];
+                }
 				if (actor_count > 0) {
 					for (int j = 0; j < actor_count; j++) {
 						int actor = *(short*)((int)focused_actor + 0x32) + 0x10;
 						balloon_patch_count += isBalloonOrPatch(actor);
 						if (actor == 139) {
-                            int world = 7;
-                            if (!isLobby(i)) {
-								world = levelIndexMapping[i];
-							}
-                            populatePatchItem(*(short*)((int)focused_actor + 0x34), i, patch_index, world);
+                            populatePatchItem(*(short*)((int)focused_actor + 0x34), i, patch_index, subworld);
 							patch_index += 1;
 						}
 						focused_actor += 0x38;
@@ -208,7 +209,12 @@ void bootSpeedup(void) {
 				}
 				if (model2_count > 0) {
 					for (int j = 0; j < model2_count; j++) {
-						coloredBananaCounts[world] += isSingleOrBunch(*(unsigned short*)(focused_model2 + 0x28));
+                        unsigned short m2_obj_type = *(unsigned short*)(focused_model2 + 0x28);
+						coloredBananaCounts[world] += isSingleOrBunch(m2_obj_type);
+                        if (m2_obj_type == 181) {
+                            populateCrateItem(*(short*)((int)focused_model2 + 0x2A), i, crate_index, subworld);
+                            crate_index += 1;
+                        }
 						focused_model2 += 0x30;
 					}
 				}
