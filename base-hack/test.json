@@ -135,7 +135,7 @@
    "remove_blockers":127,
    "resolve_bonus":0,
    "disable_drops":0,
-   "shop_indicator_on":2,
+   "shop_indicator":2,
    "warp_to_isles_enabled":1,
    "lobbies_open_bitfield":255,
    "perma_lose_kongs":0,

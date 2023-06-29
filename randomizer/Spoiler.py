@@ -169,6 +169,7 @@ class Spoiler:
         settings["Smaller Shops"] = self.settings.smaller_shops
         settings["Shuffle Shop Locations"] = self.settings.shuffle_shops
         settings["Shuffle Kasplats"] = self.settings.kasplat_rando_setting.name
+        settings["Shop Indicator Display"] = self.settings.shop_indicator.name
 
         settings["Key 8 Required"] = self.settings.krool_access
         settings["Key 8 in Helm"] = self.settings.key_8_helm
