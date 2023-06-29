@@ -556,7 +556,7 @@ def compileHints(spoiler: Spoiler):
                     key_hint_dict[key_id] = 1
                 # Late or complex keys get a number of hints based on the length of the path to them
                 else:
-                    path_length = len(spoiler.woth_paths[key_location_ids[key_id]]) - 1  # Don't include the key itself in the path length
+                    path_length = len(spoiler.woth_paths[key_location_ids[key_id]])
                     # If key 8 is in Helm, your training in several moves is utterly useless to hint
                     if key_id == Items.HideoutHelmKey and spoiler.settings.key_8_helm:
                         # Your training in Gorilla Gone, Monkeyport, and Vines are always pointless hints if Key 8 is in Helm, so let's not
@@ -565,14 +565,15 @@ def compileHints(spoiler: Spoiler):
                             for loc in spoiler.woth_paths[key_location_ids[key_id]]
                             if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and LocationList[loc].item in [Items.GorillaGone, Items.Monkeyport, Items.Vines]
                         ]
+                        useless_locations[Items.HideoutHelmKey].append(Locations.HelmKey)  # Also don't count the known location of the key itself
                         path_length -= len(useless_locations[Items.HideoutHelmKey])  # this might lead to path_length of -1?
-                    if path_length <= 0:  # 0-1 (if the 1 is it being locked in Helm)
+                    if path_length <= 0:  # 0
                         key_hint_dict[key_id] = 0
-                    elif path_length <= 1:  # 1-2
+                    elif path_length <= 2:  # 1-2
                         key_hint_dict[key_id] = 1
-                    elif path_length <= 5:  # 3-6
+                    elif path_length <= 6:  # 3-6
                         key_hint_dict[key_id] = 2
-                    elif path_length <= 9:  # 7-10
+                    elif path_length <= 10:  # 7-10
                         key_hint_dict[key_id] = 3
                     else:  # 11+
                         key_hint_dict[key_id] = 4
