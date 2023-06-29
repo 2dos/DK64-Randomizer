@@ -86,7 +86,7 @@ def validate_item_limits(evt):
 def validate_hint_text(evt):
     """Raise an error if any hint contains invalid characters."""
     hintString = evt.target.value
-    if re.search("[^A-Za-z0-9 ,.-?!]", hintString) is not None:
+    if re.search("[^A-Za-z0-9 \,\.\-\?!]", hintString) is not None:
         invalidate_option(evt.target, "Only letters, numbers, spaces, and the characters ,.-?! are allowed in hints.")
     else:
         validate_option(evt.target)
@@ -448,7 +448,7 @@ def validate_plando_options(settings_dict):
         if len(hint) > 900:
             errString = f"The hint for location \"{hintLocationName}\" is longer than the limit of 900 characters."
             errList.append(errString)
-        if re.search("[^A-Za-z0-9 ,.-?!]", hint) is not None:
+        if re.search("[^A-Za-z0-9 \,\.\-\?!]", hint) is not None:
             errString = f"The hint for location \"{hintLocationName}\" contains invalid characters. Only letters, numbers, spaces, and the characters ,.-?! are valid."
             if "'" in hint:
                 errString += " (Apostrophes are not allowed.)"
