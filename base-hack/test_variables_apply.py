@@ -204,6 +204,22 @@ with open("include/variable_space_structs.h", "r") as varspace:
                 writeToROMNoOffset(BOOT_OFFSET + 0xF8A8, (SCREEN_WD*2), 4, "MPAL VI Field 1 Framebuffer Offset")
                 writeToROMNoOffset(BOOT_OFFSET + 0xF8BC, (SCREEN_WD*2), 4, "MPAL VI Field 2 Framebuffer Offset")
 
+                writeToROMNoOffset(BOOT_OFFSET + 0xDB0 + 2, (SCREEN_WD / 2) - 139, 2, "X Position of N64 Expansion Pak Text")
+                writeToROMNoOffset(BOOT_OFFSET + 0xDC8 + 2, (SCREEN_WD / 2) - 139, 2, "X Position of Not Installed Text")
+                writeToROMNoOffset(BOOT_OFFSET + 0xDE0 + 2, (SCREEN_WD / 2) - 139, 2, "X Position of The N64 Expansion Pak Accessory Text")
+                writeToROMNoOffset(BOOT_OFFSET + 0xDF8 + 2, (SCREEN_WD / 2) - 139, 2, "X Position of Must be Installed in the N64  Text")
+                writeToROMNoOffset(BOOT_OFFSET + 0xE10 + 2, (SCREEN_WD / 2) - 139, 2, "X Position of This Game. See the N64 Expansion Text")
+                writeToROMNoOffset(BOOT_OFFSET + 0xE28 + 2, (SCREEN_WD / 2) - 139, 2, "X Position of Pak Instruction Booklet Text")
+
+                writeToROMNoOffset(BOOT_OFFSET + 0xBC4 + 2, SCREEN_WD*2, 2, "Row Offset of No Expansion Pak Image")
+                writeToROMNoOffset(BOOT_OFFSET + 0xBC8 + 2, SCREEN_WD * 240 * 2, 2, "Invalidation Size for Framebuffer 1")
+
+                writeToROMNoOffset(BOOT_OFFSET + 0xE08, 0x24180000 | SCREEN_WD, 4, "Row Pitch for No Expansion Pak Screen Text")
+                writeToROMNoOffset(BOOT_OFFSET + 0xE0C, 0x03060019, 4, "Calculate Row Pixel Number for No Expansion Pak Screen Text")
+                writeToROMNoOffset(BOOT_OFFSET + 0xE10, 0x0000C012, 4, "Get Row Pixel Number for No Expansion Pak Screen Text")
+
+                writeToROMNoOffset(BOOT_OFFSET + 0x1020 + 2, (SCREEN_WD - 8) * 2, 2, "Text Framebuffer Pitch")
+
             for y in struct_data2:
                 if x == y[2]:
                     if type(set_variables[x]) is int:

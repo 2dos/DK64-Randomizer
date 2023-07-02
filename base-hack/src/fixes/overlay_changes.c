@@ -299,7 +299,11 @@ void overlay_changes(void) {
 		*(int*)(0x80029818) = 0; // Hide A
 		*(int*)(0x80029840) = 0; // Hide B
 		// *(int*)(0x80029874) = 0; // Hide GB
-		*(short*)(0x8002986E) = 0xD0; // Move GB to right
+		int gb_x = 208;
+		if (Rando.true_widescreen) {
+			gb_x = (SCREEN_WD >> 1) + 48; 
+		}
+		*(short*)(0x8002986E) = gb_x; // Move GB to right
 		*(short*)(0x80029872) = 0x9A; // Move GB down
 		*(short*)(0x8002985A) = 0; // Change sprite mode for GB
 		*(float*)(0x80033CA8) = 0.4f; // Change GB Scale
@@ -409,6 +413,12 @@ void overlay_changes(void) {
 			for (int i = 0; i < 5; i++) {
 				ToeSet1[(4 * i) + 2] = Rando.k_rool_toes[i];
 				ToeSet2[(4 * i) + 2] = Rando.k_rool_toes[5 + i];
+			}
+		}
+		if (Rando.quality_of_life.vanilla_fixes) {
+			if ((MovesBase[3].special_moves & MOVECHECK_MINI) == 0) {
+				*(int*)(0x8002FFE0) = 0; // Control State patch
+				*(int*)(0x8002FFE8) = 0; // Control State progress patch
 			}
 		}
 	} else if (CurrentMap == MAP_FUNGISPIDER) {

@@ -27,6 +27,9 @@ START:
 		LUI a2, hi(codeEnd - itemdatasize)
 		JAL dmaFileTransfer
 		ADDIU a2, a2, lo(codeEnd - itemdatasize)
+		// Very Early WS Boot Stuff
+		JAL loadWidescreen
+		ADDIU a0, r0, 0
 		//
 		LUI v0, 0x8001
 		ADDIU v0, v0, 0xDCC4

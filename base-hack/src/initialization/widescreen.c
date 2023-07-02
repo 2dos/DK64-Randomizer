@@ -10,17 +10,6 @@
  */
 #include "../../include/common.h"
 
-void ws_boot(void) {
-
-}
-
-#define GFX_START 0x807FF100
-void ws_Gfx(void) {
-    *(short*)(GFX_START + 0x00) = (SCREEN_WD*2); //2D Viewport Width
-    *(short*)(GFX_START + 0x08) = (SCREEN_WD*2); //2D Viewport X Position
-    *(int*)(GFX_START + 0x9C) = ((SCREEN_WD << 14)|(240 << 2)); //Default Scissor for 2D
-}
-
 static double pos_center_4x = SCREEN_WD_FLOAT * 2;
 static double pos_center = SCREEN_WD_FLOAT / 2;
 #define ZIPPER_COLOR_VALUE 0xFFFF
@@ -34,18 +23,49 @@ void ws_fillzipperwhite(void* write_ptr, void* framebuffer) {
     }
 }
 
-void ws_static(void) {
-    *(short*)(0x805FB982) = 1; // Disable High Resolution for MAP_NINTENDOLOGO
-    *(int*)(0x805FB9F8) = 0x24190000 | (SCREEN_WD-1); //Scissor Width for Jetpac and DK Arcade
-    *(int*)(0x805FBB04) = 0x24090000 | (SCREEN_WD-11); //Scissor Right Edge for Game
-    *(int*)(0x805FBBF4) = 0x24180000 | SCREEN_WD; //Screen Width for Framebuffer
-    *(int*)(0x805FBC24) = 0x24040000; //Remove Black Bars
+#define NINTENDO_LOGO_WIDTH 256
+
+void ws_ninPos(void) {
+    *(short*)(0x805FB8A6) = getUpper(SCREEN_WD*240*2);
+    *(int*)(0x805FB8A8) = 0x08000000 | ((((int)(&fixNintendoLogoPosition)) & 0xFFFFFF) >> 2);
+    *(short*)(0x805FB8AE) = getLower(SCREEN_WD*240*2);
+}
+
+void ws_boot(void) {
     int framebuffer_clear = SCREEN_WD * 240;
     int framebuffer_size = framebuffer_clear << 2;
     *(int*)(0x80610378) = 0x3C0F0000 | ((framebuffer_size >> 16) & 0xFFFF); //Load Size of Framebuffer 
     *(int*)(0x8061037C) = 0x35EF0000 | (framebuffer_size & 0xFFFF); //Load Size of Framebuffer
     *(short*)(0x80610956) = (framebuffer_clear >> 16) & 0xFFFF; //Upper Half of Framebuffer Clear Length
     *(short*)(0x80610962) = framebuffer_clear & 0xFFFF; //Lower Half of Framebuffer Clear Length
+    // Nintendo Logo
+    *(short*)(0x805FB902) = (SCREEN_WD - NINTENDO_LOGO_WIDTH) * 2; //Line Pixel Advance for Nintendo Logo
+    ws_ninPos();
+}
+
+void ws_hud(void) {
+    *(short*)(0x806F8536) = SCREEN_WD - 30; //X Position of HUD (CBs)
+    *(short*)(0x806F85CA) = (SCREEN_WD / 2)+34; //X Position of HUD (Blueprints)
+    *(short*)(0x806F8606) = (SCREEN_WD / 2)-78; //X Position of HUD (Medal - Multibunch)
+    *(short*)(0x806F8642) = (SCREEN_WD / 2)-38; //X Position of Counter 4
+    *(short*)(0x806F868E) = SCREEN_WD - 30; //X Position of HUD (Crystals)
+    *(short*)(0x806F86C6) = SCREEN_WD - 30; //X Position of HUD (Standard Ammo)
+    *(short*)(0x806F873A) = SCREEN_WD - 30; //X Position of HUD (Homing Ammo)
+    *(short*)(0x806F87A6) = SCREEN_WD - 30; //X Position of HUD (Oranges)
+    *(short*)(0x806F8812) = SCREEN_WD - 30; //X Position of HUD (Film)
+    *(short*)(0x806F8852) = SCREEN_WD - 30; //X Position of HUD (Race Coin)
+    *(short*)(0x806F88CA) = SCREEN_WD - 30; //X Position of HUD (Banana Coins)
+    *(short*)(0x806F893A) = SCREEN_WD - 30; //X Position of HUD (Instrument)
+}
+
+void ws_static(void) {
+    ws_hud();
+    *(short*)(0x805FB982) = 1; // Disable High Resolution for MAP_NINTENDOLOGO
+    *(int*)(0x805FB9F8) = 0x24190000 | (SCREEN_WD-1); //Scissor Width for Jetpac and DK Arcade
+    *(int*)(0x805FBB04) = 0x24090000 | (SCREEN_WD-11); //Scissor Right Edge for Game
+    *(int*)(0x805FBBF4) = 0x24180000 | SCREEN_WD; //Screen Width for Framebuffer
+    *(int*)(0x805FBC24) = 0x24040000; //Remove Black Bars
+    
     *(short*)(0x80629292) = SCREEN_WD - 10; //X Position of Transition from Right
     *(short*)(0x806292A2) = SCREEN_WD / 2; //X Position of Double Transition
     *(short*)(0x80629626) = SCREEN_WD; // Pause Menu Texture Width
@@ -81,7 +101,6 @@ void ws_static(void) {
 
     temp = SCREEN_WD << 1;
     *(short*)(0x8069FF5E) = *(short*)(&temp); // X Position of Round Number
-    
     *(short*)(0x806ACB4E) = (SCREEN_WD * 2) - 280; //X Position of Try Again Text
     *(short*)(0x806ACB9E) = (SCREEN_WD * 2) - 120; //X Position of Yes Text
     *(short*)(0x806ACBE2) = (SCREEN_WD * 2) - 120; //X Position of No Text
@@ -89,7 +108,14 @@ void ws_static(void) {
     *(short*)(0x806ACFDE) = SCREEN_WD << 1; //X Position of Multiplayer Pause Menu Quit Game
     *(int*)(0x806FD4C4) = 0x25D00000 | (((SCREEN_WD / 2) - 160) & 0xFFFF); // X Offset of Text
     *(short*)(0x806FF0F2) = SCREEN_WD / 2; //X Position of Cannon Cursor
+    
     *(int*)(0x807095F4) = 0x24030140; //Force Zipper Transition Width
+    // Try to make zipper widescreen (wip)
+    // *(short*)(0x8070BC52) = SCREEN_WD >> 2;
+    // *(short*)(0x8070B0A6) = SCREEN_WD >> 2;
+    // *(short*)(0x8070B1CA) = SCREEN_WD << 1;
+    // *(short*)(0x8070B2FE) = SCREEN_WD << 3;
+
     *(int*)(0x806AC3E4) = 0x3C010000 | getHi(&pos_center_4x); //Load High Half of pos_center_4x
     *(int*)(0x806AC3E8) = 0xD4280000 | getLo(&pos_center_4x); //Load pos_center_4x
     *(int*)(0x806AC3EC) = 0x46020102; //Run Replaced Instruction
@@ -102,38 +128,19 @@ void ws_static(void) {
     *(short*)(0x807036B2) = noise_scissor_gfx & 0xFFFF; //Lower Part of Noise Rectangle
 
     *(short*)(0x806A94AE) = SCREEN_WD; //Max X Position of UI Elements
-    /*
-        .org 0x806FF3A8
-        addiu t3, r0, ((SCREEN_WD/2)-80) //X Position of Upper-Left of Capture Marker
 
-        .org 0x806FF3EC
-        addiu t7, r0, ((SCREEN_WD/2)+80) //X Position of Upper-Right of Capture Marker
+    *(short*)(0x806FF3AA) = (SCREEN_WD / 2) - 80; //X Position of Upper-Left of Capture Marker
+    *(short*)(0x806FF3EE) = (SCREEN_WD / 2) + 80; //X Position of Upper-Right of Capture Marker
+    *(short*)(0x806FF436) = (SCREEN_WD / 2) + 80; //X Position of Lower-Right of Capture Marker
+    *(short*)(0x806FF47E) = (SCREEN_WD / 2) - 80; //X Position of Lower-Left of Capture Marker
+    *(short*)(0x806FF4CE) = SCREEN_WD / 2; //X Position of Capture Center
+    *(short*)(0x806FF566) = SCREEN_WD - 40; //X Position of Sad Face
+    *(short*)(0x806FF5D2) = SCREEN_WD - 40; //X Position of Happy Face
+    *(short*)(0x806FF692) = SCREEN_WD / 2; //X Position of Picture X Sign
+    *(short*)(0x806FF70A) = SCREEN_WD / 2; //X Position of Picture Check Sign
+    *(short*)(0x806FFAD6) = SCREEN_WD / 2; //X Position of Scope Cursor
 
-        .org 0x806FF434
-        addiu t2, r0, ((SCREEN_WD/2)+80) //X Position of Lower-Right of Capture Marker
-
-        .org 0x806FF47C
-        addiu t7, r0, ((SCREEN_WD/2)-80) //X Position of Lower-Left of Capture Marker
-
-        .org 0x806FF4CC
-        addiu t2, r0, (SCREEN_WD/2) //X Position of Capture Center
-
-        .org 0x806FF564
-        addiu t2, r0, (SCREEN_WD-40) //X Position of Sad Face
-
-        .org 0x806FF5D0
-        addiu t8, r0, (SCREEN_WD-40) //X Position of Happy Face
-
-        .org 0x806FF690
-        addiu t2, r0, (SCREEN_WD/2) //X Position of Picture X Sign
-
-        .org 0x806FF708
-        addiu t8, r0, (SCREEN_WD/2) //X Position of Picture Check Sign
-
-        .org 0x806FFAD4
-        addiu t0, r0, (SCREEN_WD/2) //X Position of Scope Cursor
-    */
-    temp = SCREEN_WD_FLOAT / 63;
+    temp = SCREEN_WD_FLOAT / 63.0f;
     *(short*)(0x806FFBA6) = *(short*)(&temp); //Fix Camera Transition
     *(short*)(0x806FFBBA) = SCREEN_WD / 2; //X Position of Circle Transition
     *(int*)(0x8070F308) = 0x08000000 | ((((int)(fixTilePosition)) & 0xFFFFFF) >> 2);
@@ -179,7 +186,7 @@ void ws_static(void) {
     *(int*)(0x80728E88) = 0x3C0F0000 | *(short*)(&d_x); //X Position of Round Text
     *(int*)(0x80728EA0) = 0xADCF007C; //Write X Position of Round Text
 
-    *(short*)(0x8062A8C8) = 0x1000; // Disable Anamorphic Widescreen
+    *(short*)(0x8062A8C8) = 0x1000; // Disable Anamorphic Widescreens
 
     *(short*)(0x806A965A) = (SCREEN_WD*2); //X Position of Melons
     *(short*)(0x806A9836) = (SCREEN_WD*2); //X Position of Are You Sure Text
@@ -341,6 +348,7 @@ void ws_jetpac(void) {
 }
 
 void ws_menu(void) {
+    // Snide Menu
     *(short*)(0x80024632) = (SCREEN_WD*2); //X Position of Blueprint Names
     *(short*)(0x800246AA) = ((SCREEN_WD*2)-290); //X Position of Blueprints Text
     *(short*)(0x800246F2) = ((SCREEN_WD*2)-290); //X Position of Exit Text
@@ -351,6 +359,9 @@ void ws_menu(void) {
     *(short*)(0x80025CEA) = ((SCREEN_WD*2)-140); //X Position of No Text for DK Arcade
     float x = SCREEN_WD_FLOAT / 2;
     *(short*)(0x80028726) = getUpper(*(int*)(&x)); //X Position of Mode Name Text
+    // Fix option text position
+    *(int*)(0x8002FA28) = 0x3C010000 | getHi(&pos_center);
+    *(int*)(0x8002FA2C) = 0xD42A0000 | getLo(&pos_center);
     // BARREL SCREEN
     *(short*)(0x800288C6) = SCREEN_WD / 2; //X Position of Analog Stick
     *(short*)(0x80028B1E) = SCREEN_WD - 30; //X Position of A Button
@@ -359,6 +370,11 @@ void ws_menu(void) {
     *(short*)(0x80028DA2) = getUpper(*(int*)(&x)); //X Position of File Names
     *(short*)(0x80028EEE) = SCREEN_WD / 2; //X Position of Analog Stick
     *(short*)(0x80029026) = SCREEN_WD - 30; //X Position of A Button
+    // FILE PROGRESS
+    x = SCREEN_WD_FLOAT / 2;
+    *(short*)(0x800296D2) = *(short*)(&x); // X Position of Game 1 Text
+    x = (SCREEN_WD_FLOAT / 2) - 94.0f;
+    *(short*)(0x800291D6) = *(short*)(&x); // X Position of File Head Icons
     // SELECT DELETE FILE
     x = SCREEN_WD_FLOAT / 2;
     *(short*)(0x80029C02) = getUpper(*(int*)(&x)); //X Position of Erase Text
@@ -490,7 +506,7 @@ void loadWidescreen(overlays loaded_overlay) {
         if (loaded_overlay == OVERLAY_BOOT) {
             ws_static();
             ws_staticdata();
-            //ws_boot(); // Nothing here
+            ws_boot();
         } else if (loaded_overlay == OVERLAY_ARCADE) {
             ws_arcade();
         } else if (loaded_overlay == OVERLAY_JETPAC) {
@@ -505,17 +521,6 @@ void loadWidescreen(overlays loaded_overlay) {
 
 /*
     maybe not needed
-    .org 0x805FB7F8
-    li a3, (SCREEN_WD*240*2) //Size of Framebuffer for Nintendo Logo Clear
-
-    .org 0x805FB8A4
-    lui a3, hi(SCREEN_WD*240*2) //Upper Half of Clear Size
-    j fix_nintendo_logo_pos //Fix Position of Nintendo Logo
-    addiu a3, a3, lo(SCREEN_WD*240*2) //Lower Half of Clear Write Size
-
-    .org 0x805FB900
-    addiu v1, v1, ((SCREEN_WD-192)*2) //Line Pixel Advance for Nintendo Logo
-
     .org 0x80000BD4
     lui a0, hi(NOEXP_CFB1_ADDR) //Address for Framebuffer 1 Cache Invalidation
 
@@ -525,24 +530,6 @@ void loadWidescreen(overlays loaded_overlay) {
 
     .org 0x80000D74
     lui a0, hi(NOEXP_CFB1_ADDR) //Address of Framebuffer for No Expansion Pak Screen Text
-
-    .org 0x80000DB0
-    addiu a1, r0, ((SCREEN_WD/2)-139) //X Position of N64 Expansion Pak Text
-
-    .org 0x80000DC8
-    addiu a1, r0, ((SCREEN_WD/2)-139) //X Position of Not Installed Text
-
-    .org 0x80000DE0
-    addiu a1, r0, ((SCREEN_WD/2)-139) //X Position of The N64 Expansion Pak Accessory Text
-
-    .org 0x80000DF8
-    addiu a1, r0, ((SCREEN_WD/2)-139) //X Position of Must be Installed in the N64  Text
-
-    .org 0x80000E10
-    addiu a1, r0, ((SCREEN_WD/2)-139) //X Position of This Game. See the N64 Expansion Text
-
-    .org 0x80000E28
-    addiu a1, r0, ((SCREEN_WD/2)-139) //X Position of Pak Instruction Booklet Text
 
     .org 0x80000B38
     li a0, NOEXP_CFB1_ADDR+(SCREEN_WD*240*2) //End Address of First Framebuffer for No Expansion Pak Screen
@@ -556,22 +543,11 @@ void loadWidescreen(overlays loaded_overlay) {
     .org 0x80000BB4
     sh t2, (((SCREEN_WD/2)-33)*2)(v1) //Write Offset for No Expansion Pak Image
 
-    .org 0x80000BC4
-    addiu a2, a2, (SCREEN_WD*2) //Row Offset of No Expansion Pak Image
-    li a1, (SCREEN_WD*240*2) //Invalidation Size for Framebuffer 1
-
-    .org 0x80000F08
-    addiu t8, r0, SCREEN_WD //Row Pitch for No Expansion Pak Screen Text
-    multu t8, a2 //Calculate Row Pixel Number for No Expansion Pak Screen Text
-    mflo t8 //Get Row Pixel Number for No Expansion Pak Screen Text
-
     *(int*)(0x8000ED10) = NOEXP_CFB1_ADDR; //Address of Framebuffer for No Expansion Pak Screen
 
     .org 0x80000EBC
     li a1, (SCREEN_WD*240*2) //Invalidation Size for Text Framebuffer
 
-    .org 0x80001020
-    addiu a0, a0, ((SCREEN_WD-8)*2) //Text Framebuffer Pitch
 
     .org 0x806FF7AC
     jal 0x806FF140 //Call Border Render Function
@@ -617,8 +593,6 @@ void loadWidescreen(overlays loaded_overlay) {
     needs adjustment
     .org 0x806A2A18
     j fix_timer_pos //Fix Timer X Position
-
-    
 
     .org 0x8074685C
         .area 0x1B0
@@ -710,9 +684,6 @@ void loadWidescreen(overlays loaded_overlay) {
     .org 0x806F8938
     addiu t2, r0, (SCREEN_WD-30) //X Position of Counter 12
 
-    .org 0x80027A40
-    li.u a1, (SCREEN_WD_FLOAT*2) //X Position of New Move Title
-
     .org 0x800293AC
     addiu a2, r0, (SCREEN_WD*2) //X Position of Percentage
 
@@ -728,8 +699,6 @@ void loadWidescreen(overlays loaded_overlay) {
     .org 0x80029584
     li.u at, ((SCREEN_WD_FLOAT*2)-300) //X Position of Clock Hands
 
-    .org 0x800296D0
-    li.u a1, (SCREEN_WD_FLOAT/2) //X Position of Game 1 Text
 
     .org 0x8002980C
     addiu a2, r0, (SCREEN_WD-30) //X Position of File Confirm A Button
@@ -737,6 +706,5 @@ void loadWidescreen(overlays loaded_overlay) {
     .org 0x8002986C
     addiu a2, r0, ((SCREEN_WD/2)-42) //X Position of File Confirm Banana
 
-    .org 0x800291D4
-    li.u at, ((SCREEN_WD_FLOAT/2)-94) //X Position of File Icons
+    
 */

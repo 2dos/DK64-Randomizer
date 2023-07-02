@@ -125,7 +125,14 @@ setFlag_ItemRando:
     j 0x80731300
     nop
 
+.definelabel hud_screen_wd, 424
+
 fixTilePosition:
-    addiu $a1, $a1, (((424/2)-160)*4) ;Move Tiles
+    addiu $a1, $a1, (((hud_screen_wd/2)-160)*4) ;Move Tiles
     j 0x8070F310 ;Return to Game
     sw $a1, 0x5C($sp) ;Run Replaced Instruction
+
+fixNintendoLogoPosition:
+    lui $at, hi(((hud_screen_wd*96)+((hud_screen_wd/2)-96))*2) ;Upper Half of Nintendo Logo Write Position
+    j 0x805FB8B0 ; Return to Game
+    addiu $at, $at, lo(((hud_screen_wd*96)+((hud_screen_wd/2)-96))*2) ;Lower Half of Nintendo Logo Write Position

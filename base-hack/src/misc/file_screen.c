@@ -494,7 +494,11 @@ int* display_file_images(int* dl, int y_offset) {
 	 * 
 	 * @return New Display List Address
 	 */
-	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, 160, y_offset + 150,1.0f, 1.0f,0xFF);
+	int tracker_x = 160;
+	if (Rando.true_widescreen) {
+		tracker_x = SCREEN_WD >> 1;
+	}
+	dl = drawImage(dl, IMAGE_TRACKER, RGBA16, TRACKER_WIDTH, TRACKER_HEIGHT, tracker_x, y_offset + 150,1.0f, 1.0f,0xFF);
 	modifyTrackerImage(y_offset);
 	return dl;
 }
@@ -516,14 +520,18 @@ int* display_text(int* dl) {
 	int hm = IGT / 60;
 	int minutes = hm % 60;
 	int hours = hm / 60;
+	float stat_x = 410;
+	if (Rando.true_widescreen) {
+		stat_x = SCREEN_WD + 90.0f;
+	}
 	dk_strFormat((char*)balanced_igt, "%03d:%02d:%02d",hours,minutes,secs);
-	dl = drawText(dl, 1, 410, y + 80, (char*)balanced_igt, 0xFF, 0xFF, 0xFF, 0xFF);
+	dl = drawText(dl, 1, stat_x, y + 80, (char*)balanced_igt, 0xFF, 0xFF, 0xFF, 0xFF);
 	// Percentage Counter
 	dk_strFormat((char*)perc_str, "%d%%", FilePercentage);
-	dl = drawText(dl, 1, 410, y + 50, (char*)perc_str, 0xFF, 0xFF, 0xFF, 0xFF);
+	dl = drawText(dl, 1, stat_x, y + 50, (char*)perc_str, 0xFF, 0xFF, 0xFF, 0xFF);
 	// GB Count
 	dk_strFormat((char*)gb_str, "%03d", *(int*)(0x8003380C));
-	dl = drawText(dl, 1, 435, y + 20, (char*)gb_str, 0xFF, 0xFF, 0xFF, 0xFF);
+	dl = drawText(dl, 1, stat_x + 25.0f, y + 20, (char*)gb_str, 0xFF, 0xFF, 0xFF, 0xFF);
 	dl = display_file_images(dl, FileScreenDLOffset - 720);
 	return dl;
 }
@@ -540,7 +548,11 @@ int* displayHash(int* dl, int y_offset) {
 	 */
 	for (int i = 0; i < 5; i++) {
 		int hash_index = Rando.hash[i] % 10;
-		dl = drawImage(dl, hash_textures[hash_index], RGBA16, 32, 32, 440 + (100 * i), 920 - y_offset, 3.0f, 3.0f, 0xFF);
+		int starting_x = 440;
+		if (Rando.true_widescreen) {
+			starting_x = 640;
+		}
+		dl = drawImage(dl, hash_textures[hash_index], RGBA16, 32, 32, starting_x + (100 * i), 920 - y_offset, 3.0f, 3.0f, 0xFF);
 	}
 	return dl;
 }

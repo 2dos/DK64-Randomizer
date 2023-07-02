@@ -458,7 +458,11 @@ int* displayListModifiers(int* dl) {
 				}
 				int fps_int = fps;
 				dk_strFormat((char *)fpsStr, "FPS %d", fps_int);
-				dl = drawPixelTextContainer(dl, 250, 210, fpsStr, 0xFF, 0xFF, 0xFF, 0xFF, 1);
+				int fps_x = 250;
+				if (Rando.true_widescreen) {
+					fps_x = SCREEN_WD - 120;
+				}
+				dl = drawPixelTextContainer(dl, fps_x, 210, fpsStr, 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			}
 			dl = drawDPad(dl);
 			if (ammo_hud_timer) {
