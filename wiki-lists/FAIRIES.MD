@@ -78,7 +78,7 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Gloomy Galleon | In a chest | l.camera and l.punch and l.chunky | 
+| Gloomy Galleon | In Punch Chest | l.camera and l.punch and l.chunky | 
 | Galleon5DShip DKTiny | Inside Tiny 5-Door Ship | l.camera | 
 | Gloomy Galleon | Tiny Slam Button | l.camera | 
 | Gloomy Galleon | Tunnel Intersection | l.camera | 
@@ -103,8 +103,8 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Forest Thornvine Barn | DK's Barn | l.isdonkey and l.Slam and l.camera | 
-| Forest Rafters | Dark Attic | l.guitar and l.isdiddy and l.camera | 
+| Forest Thornvine Barn | Thornvine Barn | l.isdonkey and l.Slam and l.camera | 
+| Forest Rafters | Dark Rafters | l.guitar and l.isdiddy and l.camera | 
 | Fungi Forest | Above Blue Tunnel | l.camera | 
 | Fungi Forest | Above the Clock | l.camera | 
 | Fungi Forest | Above the Well | l.camera and l.vines | 

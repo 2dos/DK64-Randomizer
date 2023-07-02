@@ -215,6 +215,8 @@ def isBanned(new_enemy_id: Enemies, cont_map_id: Maps, spawner: Spawner, no_grou
         return True
     if cont_map_id == Maps.ForestGiantMushroom and spawner.index in (3, 4):
         return True
+    if new_enemy_id == Enemies.Guard and cont_map_id == Maps.JapesMountain and spawner.index == 15:
+        return True
     if new_enemy_id == Enemies.Guard and cont_map_id == Maps.FranticFactory:
         if spawner.index in (59, 62, 63, 73, 87, 88):  # Various enemies that are in tight hallways that are difficult to navigate around
             return True
