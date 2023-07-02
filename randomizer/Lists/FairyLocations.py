@@ -445,7 +445,7 @@ fairy_locations = {
     ],
     Levels.GloomyGalleon: [
         FairyData(
-            name="In a chest",
+            name="In Punch Chest",
             map=Maps.GloomyGalleon,
             region=Regions.GloomyGalleonStart,
             is_vanilla=True,
@@ -562,7 +562,7 @@ fairy_locations = {
     ],
     Levels.FungiForest: [
         FairyData(
-            name="DK's Barn",
+            name="Thornvine Barn",
             map=Maps.ForestThornvineBarn,
             region=Regions.ThornvineBarn,
             is_vanilla=True,
@@ -571,7 +571,7 @@ fairy_locations = {
             natural_index=1,
         ),
         FairyData(
-            name="Dark Attic",
+            name="Dark Rafters",
             map=Maps.ForestRafters,
             region=Regions.MillRafters,
             is_vanilla=True,
