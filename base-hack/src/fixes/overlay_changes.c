@@ -411,6 +411,12 @@ void overlay_changes(void) {
 				ToeSet2[(4 * i) + 2] = Rando.k_rool_toes[5 + i];
 			}
 		}
+		if (Rando.quality_of_life.vanilla_fixes) {
+			if (!(MovesBase[3].weapon_bitfield & 1)) {
+				*(int*)(0x8002FFE0) = 0; // Control State patch
+				*(int*)(0x8002FFE8) = 0; // Control State progress patch
+			}
+		}
 	} else if (CurrentMap == MAP_FUNGISPIDER) {
 		writeFunction(0x8002D20C, &SpiderBossExtraCode); // Handle preventing spider boss being re-fightable
 	}
