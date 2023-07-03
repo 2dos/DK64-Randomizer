@@ -120,17 +120,53 @@ PlandomizerPanels = {
     },
     "HideoutHelm": {
         "name": "Hideout Helm",
-        "locations": createPlannableLocationObj()
+        "locations": {
+            "All Kongs": [],
+            "Medals": []
+        }
     },
+    # Shops, minigames and hints are grouped by level, not by Kong.
     "Shops": {
         "name": "Shops",
-        "locations": createPlannableLocationObj()
+        "levels": {
+            "DKIsles": {
+                "name": "D.K. Isles",
+                "locations": []
+            },
+            "JungleJapes": {
+                "name": "Jungle Japes",
+                "locations": []
+            },
+            "AngryAztec": {
+                "name": "Angry Aztec",
+                "locations": []
+            },
+            "FranticFactory": {
+                "name": "Frantic Factory",
+                "locations": []
+            },
+            "GloomyGalleon": {
+                "name": "Gloomy Galleon",
+                "locations": []
+            },
+            "FungiForest": {
+                "name": "Fungi Forest",
+                "locations": []
+            },
+            "CrystalCaves": {
+                "name": "Crystal Caves",
+                "locations": []
+            },
+            "CreepyCastle": {
+                "name": "Creepy Castle",
+                "locations": []
+            }
+        }
     },
     #"Blueprints": {
     #    "name": "Blueprints",
     #    "locations": createPlannableLocationObj()
     #},
-    # Minigames are grouped by level, not by Kong.
     "Minigames": {
         "name": "Minigames",
         "levels": {
@@ -172,15 +208,37 @@ PlandomizerPanels = {
             }
         }
     },
-    # There are no "All Kongs" hints.
     "Hints": {
         "name": "Hints",
-        "locations": {
-            "Donkey": [],
-            "Diddy": [],
-            "Lanky": [],
-            "Tiny": [],
-            "Chunky": []
+        "levels": {
+            "JungleJapes": {
+                "name": "Jungle Japes",
+                "locations": []
+            },
+            "AngryAztec": {
+                "name": "Angry Aztec",
+                "locations": []
+            },
+            "FranticFactory": {
+                "name": "Frantic Factory",
+                "locations": []
+            },
+            "GloomyGalleon": {
+                "name": "Gloomy Galleon",
+                "locations": []
+            },
+            "FungiForest": {
+                "name": "Fungi Forest",
+                "locations": []
+            },
+            "CrystalCaves": {
+                "name": "Crystal Caves",
+                "locations": []
+            },
+            "CreepyCastle": {
+                "name": "Creepy Castle",
+                "locations": []
+            }
         }
     }
 }
@@ -201,14 +259,23 @@ for locationEnum, locationObj in LocationList.items():
         #PlandomizerPanels["Blueprints"]["locations"][kongString].append(locationJson)
         continue
     elif locationObj.type == Types.Hint:
-        PlandomizerPanels["Hints"]["locations"][kongString].append(locationJson)
+        levelName = locationObj.level.name
+        PlandomizerPanels["Hints"]["levels"][levelName]["locations"].append(locationJson)
         HintLocationList.append(locationEnum.name)
-    elif locationObj.type == Types.Shop or locationObj.level == Levels.Shops:
-        PlandomizerPanels["Shops"]["locations"][kongString].append(locationJson)
+    elif locationObj.type == Types.Shop:
+        levelName = locationObj.level.name
+        PlandomizerPanels["Shops"]["levels"][levelName]["locations"].append(locationJson)
+        ShopLocationList.append(locationEnum.name)
+    elif locationObj.level == Levels.Shops:
+        # This is the Rareware coin.
+        PlandomizerPanels["Shops"]["levels"]["DKIsles"]["locations"].append(locationJson)
         ShopLocationList.append(locationEnum.name)
     else:
         levelName = locationObj.level.name
-        PlandomizerPanels[levelName]["locations"][kongString].append(locationJson)
+        if locationObj.level == Levels.HideoutHelm and locationObj.type == Types.Medal:
+            PlandomizerPanels[levelName]["locations"]["Medals"].append(locationJson)
+        else:
+            PlandomizerPanels[levelName]["locations"][kongString].append(locationJson)
         ItemLocationList.append(locationEnum.name)
 
         # If this is a minigame location, add it to the Minigames list.
@@ -278,58 +345,6 @@ PlandomizerPanels["Minigames"]["levels"]["HideoutHelm"]["locations"] = [
 # ITEMS #
 #########
 
-# These moves can be specified as starting moves.
-startingMoves = {
-    PlandoItems.BaboonBlast,
-    PlandoItems.StrongKong,
-    PlandoItems.GorillaGrab,
-    PlandoItems.ChimpyCharge,
-    PlandoItems.RocketbarrelBoost,
-    PlandoItems.SimianSpring,
-    PlandoItems.Orangstand,
-    PlandoItems.BaboonBalloon,
-    PlandoItems.OrangstandSprint,
-    PlandoItems.MiniMonkey,
-    PlandoItems.PonyTailTwirl,
-    PlandoItems.Monkeyport,
-    PlandoItems.HunkyChunky,
-    PlandoItems.PrimatePunch,
-    PlandoItems.GorillaGone,
-    PlandoItems.ProgressiveSlam,
-    PlandoItems.ProgressiveSlam,
-    PlandoItems.ProgressiveSlam,
-    PlandoItems.Coconut,
-    PlandoItems.Peanut,
-    PlandoItems.Grape,
-    PlandoItems.Feather,
-    PlandoItems.Pineapple,
-    PlandoItems.Bongos,
-    PlandoItems.Guitar,
-    PlandoItems.Trombone,
-    PlandoItems.Saxophone,
-    PlandoItems.Triangle,
-    PlandoItems.ProgressiveAmmoBelt,
-    PlandoItems.ProgressiveAmmoBelt,
-    PlandoItems.HomingAmmo,
-    PlandoItems.SniperSight,
-    PlandoItems.ProgressiveInstrumentUpgrade,
-    PlandoItems.ProgressiveInstrumentUpgrade,
-    PlandoItems.ProgressiveInstrumentUpgrade,
-    PlandoItems.Swim,
-    PlandoItems.Oranges,
-    PlandoItems.Barrels,
-    PlandoItems.Vines,
-    PlandoItems.Camera,
-    PlandoItems.Shockwave,
-}
-
-# The below moves may be added multiple times as starting moves.
-multipleStartingMoves = {
-    PlandoItems.ProgressiveSlam: 2,
-    PlandoItems.ProgressiveAmmoBelt: 2,
-    PlandoItems.ProgressiveInstrumentUpgrade: 3,
-}
-
 # These PlandoItems enums have multiple Items enums that map to each of them,
 # and so they should not be automatically added to the list of PlannableItems.
 # Handle these manually.
@@ -343,7 +358,6 @@ doNotAutoAddItemSet = {
 }
 
 PlannableItems = []  # Used to select rewards for locations.
-PlannableStartingMoves = []  # Used to select starting moves.
 
 for itemEnum, itemObj in ItemList.items():
     # Only include items that have a matching item in the plando map.
@@ -360,20 +374,6 @@ for itemEnum, itemObj in ItemList.items():
         "value": plandoItemEnum.name
     }
     PlannableItems.append(itemJson)
-
-    # Add this item to the list of possible starting items, if valid.
-    if plandoItemEnum not in startingMoves:
-        continue
-    if plandoItemEnum in multipleStartingMoves:
-        itemCount = multipleStartingMoves[plandoItemEnum]
-        for i in range(1, itemCount+1):
-            multipleItemJson = {
-                "name": itemObj.name,
-                "value": plandoItemEnum.name
-            }
-            PlannableStartingMoves.append(multipleItemJson)
-    else:
-        PlannableStartingMoves.append(itemJson)
 
 PlannableItems.append({
     "name": "Blueprint (Donkey)",

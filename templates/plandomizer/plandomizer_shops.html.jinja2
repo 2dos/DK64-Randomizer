@@ -14,16 +14,16 @@
      role="tabpanel"
      aria-labelledby="nav-plando-{{panelName}}-tab">
     <h2 class="title">{{panel["name"]}}</h2>
-    {% for kong, locations in panel["locations"].items() %}
-        <h3 class="title">{{kong}}</h3>
+    {% for _, levelObj in panel["levels"].items() %}
+        <h3 class="title">{{levelObj["name"]}}</h3>
         <div class="flex-container flex-center">
-            {% for location in locations|plando_shop_sort %}
+            {% for location in levelObj["locations"]|plando_shop_sort %}
                 <div class="location-picker">
-                    <label for="plando_{{location["value"]}}_shop_item" class="location-label">
+                    <label for="plando_{{location["value"]}}_item" class="location-label">
                         {{location["name"]}}
                     </label>
-                    <select id="plando_{{location["value"]}}_shop_item"
-                            name="plando_{{location["value"]}}_shop_item"
+                    <select id="plando_{{location["value"]}}_item"
+                            name="plando_{{location["value"]}}_item"
                             data-toggle="tooltip"
                             title
                             class="form-select plando-item-select">
@@ -35,19 +35,21 @@
                             </option>
                         {% endfor %}
                     </select>
-                    <label class="shop-cost-picker flex-container flex-center">
-                        Item Cost:
-                        <input type="number"
-                                min="0"
-                                max="255"
-                                step="1"
-                                data-toggle="tooltip"
-                                title
-                                id="plando_{{location["value"]}}_shop_cost"
-                                name="plando_{{location["value"]}}_shop_cost"
-                                class="form-control shop-cost-input">
-                        Coins
-                    </label>
+                    {% if location["value"] != "RarewareCoin" %}
+                        <label class="shop-cost-picker flex-container flex-center">
+                            Item Cost:
+                            <input type="number"
+                                    min="0"
+                                    max="255"
+                                    step="1"
+                                    data-toggle="tooltip"
+                                    title
+                                    id="plando_{{location["value"]}}_shop_cost"
+                                    name="plando_{{location["value"]}}_shop_cost"
+                                    class="form-control shop-cost-input">
+                            Coins
+                        </label>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
