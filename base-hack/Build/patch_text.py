@@ -888,10 +888,11 @@ writeText("misc_squawks_text.bin", squawks_text)
 misc_char_table = {
     "6": "h",
     "4": "f",
-    "t": "{", # Trademark
+    "t": "{",  # Trademark
     ".": "[",
-    "r": "~", # R symbol
+    "r": "~",  # R symbol
 }
+
 
 class ExpansionMessageInfo:
     """Class to store information regarding the expansion pak messages."""
@@ -925,22 +926,23 @@ class ExpansionMessageInfo:
     def writeMessage(self, fh: BinaryIO):
         """Writes message to ROM."""
         self.convertNewMessage()
-        if self.limit >= (len(self.new_message) - 1): # Message is short enough
+        if self.limit >= (len(self.new_message) - 1):  # Message is short enough
             fh.seek(self.address)
             fh.write((self.new_message).encode("ascii"))
             # diff = self.limit - len(self.new_message)
             # for d in range(diff):
             #     fh.write((0).to_bytes(1, "big"))
 
+
 def writeNoExpPakMessages(fh: BinaryIO):
     """Write no expansion pak messages to ROM."""
     noexp_msg = [
-        ExpansionMessageInfo(25, 0xF924, "N64 EXPANSION PAKt","NO EXPANSION PAK FOUND."),
-        ExpansionMessageInfo(23, 0xF940, "NOT INSTALLED.","THIS IS LIKELY DUE TO"),
-        ExpansionMessageInfo(31, 0xF958, "THE N64 EXPANSION PAK ACCESSORY","AN INCORRECTLY SET UP EMULATOR"),
-        ExpansionMessageInfo(33, 0xF978, "MUST BE INSTALLED IN THE N64r FOR","OR CONSOLE. PLEASE CONTACT THE"),
-        ExpansionMessageInfo(32, 0xF99C, "THIS GAME. SEE THE N64 EXPANSION","DISCORD FOR HELP."),
-        ExpansionMessageInfo(27, 0xF9C0, "PAK INSTRUCTION BOOKLET.","DISCORD.DK64RANDOMIZER.COM")
+        ExpansionMessageInfo(25, 0xF924, "N64 EXPANSION PAKt", "NO EXPANSION PAK FOUND."),
+        ExpansionMessageInfo(23, 0xF940, "NOT INSTALLED.", "THIS IS LIKELY DUE TO"),
+        ExpansionMessageInfo(31, 0xF958, "THE N64 EXPANSION PAK ACCESSORY", "AN INCORRECTLY SET UP EMULATOR"),
+        ExpansionMessageInfo(33, 0xF978, "MUST BE INSTALLED IN THE N64r FOR", "OR CONSOLE. PLEASE CONTACT THE"),
+        ExpansionMessageInfo(32, 0xF99C, "THIS GAME. SEE THE N64 EXPANSION", "DISCORD FOR HELP."),
+        ExpansionMessageInfo(27, 0xF9C0, "PAK INSTRUCTION BOOKLET.", "DISCORD.DK64RANDOMIZER.COM"),
     ]
     for m in noexp_msg:
         m.writeMessage(fh)

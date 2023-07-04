@@ -416,7 +416,7 @@ void overlay_changes(void) {
 			}
 		}
 		if (Rando.quality_of_life.vanilla_fixes) {
-			if ((MovesBase[3].special_moves & MOVECHECK_MINI) == 0) {
+			if (!(MovesBase[KONG_TINY].weapon_bitfield & 1)) {
 				*(int*)(0x8002FFE0) = 0; // Control State patch
 				*(int*)(0x8002FFE8) = 0; // Control State progress patch
 			}
@@ -474,7 +474,14 @@ void overlay_changes(void) {
 		// *(float*)(0x80036C4C) = 3.0f;
 		// *(float*)(0x80036C50) = 3.0f;
 	}
-
+	if (getOverlayFromMap(CurrentMap) == OVERLAY_BONUS) {
+		if (Rando.pppanic_fairy_model) {
+			*(short*)(0x8002a656) = Rando.pppanic_fairy_model;
+		}
+		if (Rando.tttrouble_turtle_model) {
+			*(short*)(0x80028776) = Rando.tttrouble_turtle_model;
+		}
+	}
 	if (Rando.fast_gbs) {
 		if (CurrentMap == MAP_FACTORYCARRACE) { // Factory Car Race
 			*(short*)(0x8002D03A) = 0x0001; // 1 Lap

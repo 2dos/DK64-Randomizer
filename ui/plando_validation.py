@@ -53,18 +53,21 @@ startingMoveLocations = [
     Locations.PreGiven_Location32,
     Locations.PreGiven_Location33,
     Locations.PreGiven_Location34,
-    Locations.PreGiven_Location35
+    Locations.PreGiven_Location35,
 ]
+
 
 def invalidate_option(element, tooltip):
     """Add a Bootstrap tooltip to the given element, and mark it as invalid."""
     element.setAttribute("data-bs-original-title", tooltip)
     element.classList.add("invalid")
 
+
 def validate_option(element):
     """Remove a Bootstrap tooltip from the given element, and mark it as valid."""
     element.setAttribute("data-bs-original-title", "")
     element.classList.remove("invalid")
+
 
 def count_items():
     """Count all currently placed items to ensure limits aren't exceeded.
@@ -115,7 +118,7 @@ def validate_item_limits(evt):
         itemMax = PlannableItemLimits[item]
         if itemCount > itemMax:
             maybePluralTimes = "time" if itemMax == 1 else "times"
-            errString = f"Item \"{GetNameFromPlandoItem(item)}\" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times."
+            errString = f'Item "{GetNameFromPlandoItem(item)}" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times.'
             if item == PlandoItems.GoldenBanana:
                 errString += " (40 Golden Bananas are always allocated to blueprint rewards.)"
             for loc in locations:
@@ -158,7 +161,7 @@ def validate_starting_kong_count(evt):
     numStartingKongs = int(js.document.getElementById("starting_kongs_count").value)
     if len(selectedKongs) > numStartingKongs or (len(selectedKongs) < numStartingKongs and "" not in selectedKongs):
         maybePluralKongText = "Kong was selected as a starting Kong" if len(selectedKongs) == 1 else "Kongs were selected as starting Kongs"
-        errSuffix = "." if len(selectedKongs) > numStartingKongs else ", and \"Random Kong(s)\" was not chosen."
+        errSuffix = "." if len(selectedKongs) > numStartingKongs else ', and "Random Kong(s)" was not chosen.'
         errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(selectedKongs)} {maybePluralKongText}{errSuffix}"
         invalidate_option(startingKongs, errString)
     else:
@@ -174,7 +177,7 @@ def validate_starting_move_count(evt):
     numStartingMoves = int(js.document.getElementById("starting_moves_count").value)
     if len(selectedMoves) > numStartingMoves or (len(selectedMoves) < numStartingMoves and "" not in selectedMoves):
         maybePluralMoveText = "move was selected as a starting move" if len(selectedMoves) == 1 else "moves were selected as starting moves"
-        errSuffix = "." if len(selectedMoves) > numStartingMoves else ", and \"Random Move(s)\" was not chosen."
+        errSuffix = "." if len(selectedMoves) > numStartingMoves else ', and "Random Move(s)" was not chosen.'
         errString = f"The number of starting moves was set to {numStartingMoves}, but {len(selectedMoves)} {maybePluralMoveText}{errSuffix}"
         invalidate_option(startingMoves, errString)
     else:
@@ -260,6 +263,7 @@ def validate_level_order_no_duplicates(evt):
 def validate_on_nav(evt):
     """A fallback for errors with Bootstrap sliders."""
     validate_starting_kong_count(evt)
+
 
 ######################
 # SETTINGS FUNCTIONS #
@@ -405,10 +409,7 @@ def populate_plando_options(form):
             item_value = PlandoItems[shop_item.value]
         # Create an object with both the item and the cost. The cost defaults
         # to PlandoItems.Randomize (-1), but may be overwritten later.
-        shops_map[location] = {
-            "item": item_value,
-            "cost": PlandoItems.Randomize
-        }
+        shops_map[location] = {"item": item_value, "cost": PlandoItems.Randomize}
     for shop_cost in shop_cost_objects:
         # Extract the location name.
         location_name = re.search("^plando_(.+)_shop_cost$", shop_cost.name)[1]
@@ -444,6 +445,7 @@ def populate_plando_options(form):
 
     return plando_form_data
 
+
 def validate_plando_options(settings_dict):
     """Validate the plando options against a set of rules.
 
@@ -478,7 +480,7 @@ def validate_plando_options(settings_dict):
         itemMax = PlannableItemLimits[item]
         if itemCount > itemMax:
             maybePluralTimes = "time" if itemMax == 1 else "times"
-            errString = f"Item \"{GetNameFromPlandoItem(item)}\" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times."
+            errString = f'Item "{GetNameFromPlandoItem(item)}" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times.'
             if item in plando_dict["plando_starting_moves_selected"]:
                 errString += " (This includes starting moves.)"
             if item == PlandoItems.GoldenBanana:
@@ -492,7 +494,7 @@ def validate_plando_options(settings_dict):
             continue
         if shopCost < 0 or shopCost > 255:
             shopName = LocationList[shopLocation].name
-            errString = f"Shop costs must be between 0 and 255 coins, but shop \"{shopName}\" has a cost of {shopCost} coins."
+            errString = f'Shop costs must be between 0 and 255 coins, but shop "{shopName}" has a cost of {shopCost} coins.'
             errList.append(errString)
 
     # Ensure that the number of chosen Kongs matches the "number of starting
@@ -502,10 +504,10 @@ def validate_plando_options(settings_dict):
     numStartingKongs = int(settings_dict["starting_kongs_count"])
     if len(chosenKongs) > numStartingKongs or (len(chosenKongs) < numStartingKongs and PlandoItems.Randomize not in chosenKongs):
         maybePluralKongText = "Kong was selected as a starting Kong" if len(chosenKongs) == 1 else "Kongs were selected as starting Kongs"
-        errSuffix = "." if len(chosenKongs) > numStartingKongs else ", and \"Random Kong(s)\" was not chosen."
+        errSuffix = "." if len(chosenKongs) > numStartingKongs else ', and "Random Kong(s)" was not chosen.'
         errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(chosenKongs)} {maybePluralKongText}{errSuffix}"
         errList.append(errString)
-    
+
     # Ensure that the number of chosen moves matches the "number of starting
     # moves" setting, or that "Random Move(s)" has been chosen. If too many
     # moves have been selected, that is always an error.
@@ -513,7 +515,7 @@ def validate_plando_options(settings_dict):
     numStartingMoves = int(settings_dict["starting_moves_count"])
     if len(chosenMoves) > numStartingMoves or (len(chosenMoves) < numStartingMoves and PlandoItems.Randomize not in chosenMoves):
         maybePluralMoveText = "move was selected as a starting move" if len(chosenMoves) == 1 else "moves were selected as starting moves"
-        errSuffix = "." if len(chosenMoves) > numStartingMoves else ", and \"Random Move(s)\" was not chosen."
+        errSuffix = "." if len(chosenMoves) > numStartingMoves else ', and "Random Move(s)" was not chosen.'
         errString = f"The number of starting moves was set to {numStartingMoves}, but {len(chosenMoves)} {maybePluralMoveText}{errSuffix}"
         errList.append(errString)
 
@@ -562,10 +564,10 @@ def validate_plando_options(settings_dict):
             continue
         hintLocationName = LocationList[hintLocation].name
         if len(hint) > 900:
-            errString = f"The hint for location \"{hintLocationName}\" is longer than the limit of 900 characters."
+            errString = f'The hint for location "{hintLocationName}" is longer than the limit of 900 characters.'
             errList.append(errString)
         if re.search("[^A-Za-z0-9 ,.-?!]", hint) is not None:
-            errString = f"The hint for location \"{hintLocationName}\" contains invalid characters. Only letters, numbers, spaces, and the characters ,.-?! are valid."
+            errString = f'The hint for location "{hintLocationName}" contains invalid characters. Only letters, numbers, spaces, and the characters ,.-?! are valid.'
             if "'" in hint:
                 errString += " (Apostrophes are not allowed.)"
             errList.append(errString)

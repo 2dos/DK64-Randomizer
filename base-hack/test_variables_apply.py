@@ -48,6 +48,7 @@ def writeToROM(offset, value, size, name):
         rom.seek(0x1FED020 + offset)
         rom.write(bytearray(valtolst(value, size)))
 
+
 GFX_START = 0x101A40
 SCREEN_WD = 424
 BOOT_OFFSET = 0xFB20 - 0xEF20
@@ -188,21 +189,21 @@ with open("include/variable_space_structs.h", "r") as varspace:
                 writeToROMNoOffset(GFX_START + 0x08, SCREEN_WD * 2, 2, "2D Viewport X Position")
                 writeToROMNoOffset(GFX_START + 0x9C, (SCREEN_WD << 14) | (240 << 2), 4, "Default Scissor for 2D")
                 writeToROMNoOffset(BOOT_OFFSET + 0xEF28, SCREEN_WD, 4, "NTSC VI Width")
-                writeToROMNoOffset(BOOT_OFFSET + 0xEF40, int((SCREEN_WD*512)/320), 4, "NTSC VI X Scale")
-                writeToROMNoOffset(BOOT_OFFSET + 0xEF48, (SCREEN_WD*2), 4, "NTSC VI Field 1 Framebuffer Offset")
-                writeToROMNoOffset(BOOT_OFFSET + 0xEF5C, (SCREEN_WD*2), 4, "NTSC VI Field 2 Framebuffer Offset")
+                writeToROMNoOffset(BOOT_OFFSET + 0xEF40, int((SCREEN_WD * 512) / 320), 4, "NTSC VI X Scale")
+                writeToROMNoOffset(BOOT_OFFSET + 0xEF48, (SCREEN_WD * 2), 4, "NTSC VI Field 1 Framebuffer Offset")
+                writeToROMNoOffset(BOOT_OFFSET + 0xEF5C, (SCREEN_WD * 2), 4, "NTSC VI Field 2 Framebuffer Offset")
                 writeToROMNoOffset(BOOT_OFFSET + 0xEFC8, SCREEN_WD, 4, "NTSC VI Width")
-                writeToROMNoOffset(BOOT_OFFSET + 0xEFE0, int((SCREEN_WD*512)/320), 4, "NTSC VI X Scale")
-                writeToROMNoOffset(BOOT_OFFSET + 0xEFE8, (SCREEN_WD*2), 4, "NTSC VI Field 1 Framebuffer Offset")
-                writeToROMNoOffset(BOOT_OFFSET + 0xEFFC, (SCREEN_WD*2), 4, "NTSC VI Field 2 Framebuffer Offset")
+                writeToROMNoOffset(BOOT_OFFSET + 0xEFE0, int((SCREEN_WD * 512) / 320), 4, "NTSC VI X Scale")
+                writeToROMNoOffset(BOOT_OFFSET + 0xEFE8, (SCREEN_WD * 2), 4, "NTSC VI Field 1 Framebuffer Offset")
+                writeToROMNoOffset(BOOT_OFFSET + 0xEFFC, (SCREEN_WD * 2), 4, "NTSC VI Field 2 Framebuffer Offset")
                 writeToROMNoOffset(BOOT_OFFSET + 0xF7E8, SCREEN_WD, 4, "MPAL VI Width")
-                writeToROMNoOffset(BOOT_OFFSET + 0xF800, int((SCREEN_WD*512)/320), 4, "MPAL VI X Scale")
-                writeToROMNoOffset(BOOT_OFFSET + 0xF808, (SCREEN_WD*2), 4, "MPAL VI Field 1 Framebuffer Offset")
-                writeToROMNoOffset(BOOT_OFFSET + 0xF81C, (SCREEN_WD*2), 4, "MPAL VI Field 2 Framebuffer Offset")
+                writeToROMNoOffset(BOOT_OFFSET + 0xF800, int((SCREEN_WD * 512) / 320), 4, "MPAL VI X Scale")
+                writeToROMNoOffset(BOOT_OFFSET + 0xF808, (SCREEN_WD * 2), 4, "MPAL VI Field 1 Framebuffer Offset")
+                writeToROMNoOffset(BOOT_OFFSET + 0xF81C, (SCREEN_WD * 2), 4, "MPAL VI Field 2 Framebuffer Offset")
                 writeToROMNoOffset(BOOT_OFFSET + 0xF888, SCREEN_WD, 4, "MPAL VI Width")
-                writeToROMNoOffset(BOOT_OFFSET + 0xF8A0, int((SCREEN_WD*512)/320), 4, "MPAL VI X Scale")
-                writeToROMNoOffset(BOOT_OFFSET + 0xF8A8, (SCREEN_WD*2), 4, "MPAL VI Field 1 Framebuffer Offset")
-                writeToROMNoOffset(BOOT_OFFSET + 0xF8BC, (SCREEN_WD*2), 4, "MPAL VI Field 2 Framebuffer Offset")
+                writeToROMNoOffset(BOOT_OFFSET + 0xF8A0, int((SCREEN_WD * 512) / 320), 4, "MPAL VI X Scale")
+                writeToROMNoOffset(BOOT_OFFSET + 0xF8A8, (SCREEN_WD * 2), 4, "MPAL VI Field 1 Framebuffer Offset")
+                writeToROMNoOffset(BOOT_OFFSET + 0xF8BC, (SCREEN_WD * 2), 4, "MPAL VI Field 2 Framebuffer Offset")
 
                 writeToROMNoOffset(BOOT_OFFSET + 0xDB0 + 2, (SCREEN_WD / 2) - 139, 2, "X Position of N64 Expansion Pak Text")
                 writeToROMNoOffset(BOOT_OFFSET + 0xDC8 + 2, (SCREEN_WD / 2) - 139, 2, "X Position of Not Installed Text")
@@ -211,7 +212,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
                 writeToROMNoOffset(BOOT_OFFSET + 0xE10 + 2, (SCREEN_WD / 2) - 139, 2, "X Position of This Game. See the N64 Expansion Text")
                 writeToROMNoOffset(BOOT_OFFSET + 0xE28 + 2, (SCREEN_WD / 2) - 139, 2, "X Position of Pak Instruction Booklet Text")
 
-                writeToROMNoOffset(BOOT_OFFSET + 0xBC4 + 2, SCREEN_WD*2, 2, "Row Offset of No Expansion Pak Image")
+                writeToROMNoOffset(BOOT_OFFSET + 0xBC4 + 2, SCREEN_WD * 2, 2, "Row Offset of No Expansion Pak Image")
                 writeToROMNoOffset(BOOT_OFFSET + 0xBC8 + 2, SCREEN_WD * 240 * 2, 2, "Invalidation Size for Framebuffer 1")
 
                 writeToROMNoOffset(BOOT_OFFSET + 0xE08, 0x24180000 | SCREEN_WD, 4, "Row Pitch for No Expansion Pak Screen Text")

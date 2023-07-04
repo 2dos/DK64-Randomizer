@@ -603,7 +603,7 @@ def disable_helm_phases(evt):
 @bind("change", "krool_phase_count")
 def plando_hide_krool_options(evt):
     """Hide the plando options to select Kongs for certain K. Rool phases if
-       those phases are disabled."""
+    those phases are disabled."""
     krool_phase_count = int(js.document.getElementById("krool_phase_count").value)
     krool_random = js.document.getElementById("krool_random").checked
     for i in range(0, 5):
@@ -622,7 +622,7 @@ def plando_hide_krool_options(evt):
 @bind("change", "helm_phase_count")
 def plando_hide_helm_options(evt):
     """Hide the plando options to select Kongs for certain Helm phases if those
-       phases are disabled."""
+    phases are disabled."""
     helm_phase_count = int(js.document.getElementById("helm_phase_count").value)
     helm_random = js.document.getElementById("helm_random").checked
     for i in range(0, 5):
@@ -1111,18 +1111,9 @@ def toggle_key_settings(event):
 @bind("click", "starting_keys_list_selected")
 def plando_disable_keys(evt):
     """Disable keys from being selected for locations in the plandomizer,
-       depending on the current settings."""
+    depending on the current settings."""
     # This dict will map our key strings to enum values.
-    keyDict = {
-        1: "JungleJapesKey",
-        2: "AngryAztecKey",
-        3: "FranticFactoryKey",
-        4: "GloomyGalleonKey",
-        5: "FungiForestKey",
-        6: "CrystalCavesKey",
-        7: "CreepyCastleKey",
-        8: "HideoutHelmKey"
-    }
+    keyDict = {1: "JungleJapesKey", 2: "AngryAztecKey", 3: "FranticFactoryKey", 4: "GloomyGalleonKey", 5: "FungiForestKey", 6: "CrystalCavesKey", 7: "CreepyCastleKey", 8: "HideoutHelmKey"}
     # Determine which keys are enabled and which are disabled.
     disabled_keys = set()
     if js.document.getElementById("select_keys").checked:
@@ -1155,10 +1146,10 @@ def plando_disable_keys(evt):
 @bind("click", "key_8_helm")
 def plando_lock_key_8_in_helm(evt):
     """If key 8 is locked in Helm, force that location to hold key 8 in the
-       plandomizer."""
+    plandomizer."""
     key_8_locked_in_helm = js.document.getElementById("key_8_helm").checked
     end_of_helm_dropdown = js.document.getElementById("plando_HelmKey_item")
-    if (key_8_locked_in_helm):
+    if key_8_locked_in_helm:
         # Forcibly select Key 8 for the End of Helm dropdown and disable it.
         end_of_helm_dropdown.value = "HideoutHelmKey"
         end_of_helm_dropdown.setAttribute("disabled", "disabled")

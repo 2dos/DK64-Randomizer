@@ -595,6 +595,7 @@ class SettingsStringEnum(IntEnum):
 
     ALL SETTINGS NEED AN ENTRY HERE!
     """
+
     activate_all_bananaports = 1
     alter_switch_allocation = 2
     auto_keys = 3

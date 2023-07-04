@@ -103,6 +103,7 @@ class PlandoItems(IntEnum):
     TinyBlueprint = auto()
     ChunkyBlueprint = auto()
 
+
 ItemToPlandoItemMap = {
     Items.NoItem: PlandoItems.NoItem,
     Items.Donkey: PlandoItems.Donkey,
@@ -210,7 +211,7 @@ ItemToPlandoItemMap = {
     Items.DKIslesDiddyBlueprint: PlandoItems.DiddyBlueprint,
     Items.DKIslesLankyBlueprint: PlandoItems.LankyBlueprint,
     Items.DKIslesTinyBlueprint: PlandoItems.TinyBlueprint,
-    Items.DKIslesChunkyBlueprint: PlandoItems.ChunkyBlueprint
+    Items.DKIslesChunkyBlueprint: PlandoItems.ChunkyBlueprint,
 }
 
 PlandoItemToItemMap = {
@@ -273,17 +274,11 @@ PlandoItemToItemMap = {
     PlandoItems.Bean: Items.Bean,
     PlandoItems.Pearl: Items.Pearl,
     PlandoItems.RainbowCoin: Items.RainbowCoin,
-    PlandoItems.FakeItem: Items.FakeItem
+    PlandoItems.FakeItem: Items.FakeItem,
 }
 
 PlandoItemToItemListMap = {
-    PlandoItems.JunkItem: [
-        Items.JunkCrystal,
-        Items.JunkMelon,
-        Items.JunkAmmo,
-        Items.JunkFilm,
-        Items.JunkOrange
-    ],
+    PlandoItems.JunkItem: [Items.JunkCrystal, Items.JunkMelon, Items.JunkAmmo, Items.JunkFilm, Items.JunkOrange],
     PlandoItems.DonkeyBlueprint: [
         Items.JungleJapesDonkeyBlueprint,
         Items.AngryAztecDonkeyBlueprint,
@@ -292,7 +287,7 @@ PlandoItemToItemListMap = {
         Items.FungiForestDonkeyBlueprint,
         Items.CrystalCavesDonkeyBlueprint,
         Items.CreepyCastleDonkeyBlueprint,
-        Items.DKIslesDonkeyBlueprint
+        Items.DKIslesDonkeyBlueprint,
     ],
     PlandoItems.DiddyBlueprint: [
         Items.JungleJapesDiddyBlueprint,
@@ -302,7 +297,7 @@ PlandoItemToItemListMap = {
         Items.FungiForestDiddyBlueprint,
         Items.CrystalCavesDiddyBlueprint,
         Items.CreepyCastleDiddyBlueprint,
-        Items.DKIslesDiddyBlueprint
+        Items.DKIslesDiddyBlueprint,
     ],
     PlandoItems.LankyBlueprint: [
         Items.JungleJapesLankyBlueprint,
@@ -312,7 +307,7 @@ PlandoItemToItemListMap = {
         Items.FungiForestLankyBlueprint,
         Items.CrystalCavesLankyBlueprint,
         Items.CreepyCastleLankyBlueprint,
-        Items.DKIslesLankyBlueprint
+        Items.DKIslesLankyBlueprint,
     ],
     PlandoItems.TinyBlueprint: [
         Items.JungleJapesTinyBlueprint,
@@ -322,7 +317,7 @@ PlandoItemToItemListMap = {
         Items.FungiForestTinyBlueprint,
         Items.CrystalCavesTinyBlueprint,
         Items.CreepyCastleTinyBlueprint,
-        Items.DKIslesTinyBlueprint
+        Items.DKIslesTinyBlueprint,
     ],
     PlandoItems.ChunkyBlueprint: [
         Items.JungleJapesChunkyBlueprint,
@@ -332,9 +327,10 @@ PlandoItemToItemListMap = {
         Items.FungiForestChunkyBlueprint,
         Items.CrystalCavesChunkyBlueprint,
         Items.CreepyCastleChunkyBlueprint,
-        Items.DKIslesChunkyBlueprint
-    ]
+        Items.DKIslesChunkyBlueprint,
+    ],
 }
+
 
 def GetItemsFromPlandoItem(plandoItemEnum):
     if plandoItemEnum in PlandoItemToItemMap:

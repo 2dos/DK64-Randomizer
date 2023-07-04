@@ -389,7 +389,7 @@ class Settings:
         self.camera_is_follow = False
         self.sfx_volume = 100
         self.music_volume = 100
-        self.camera_is_widescreen = False
+        self.true_widescreen = False
         self.camera_is_not_inverted = False
         self.sound_type = SoundType.stereo
 

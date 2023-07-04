@@ -126,6 +126,11 @@ setFlag_ItemRando:
     nop
 
 .definelabel hud_screen_wd, 424
+.definelabel nin_logo_width, 256 ; Normally 192
+.definelabel nin_logo_height, 132 ; Normally 48
+.definelabel nin_logo_y_pix_requirement, nin_logo_height >> 1
+.definelabel nin_logo_x_pix_requirement, nin_logo_width >> 1
+.definelabel nin_write_position, ((hud_screen_wd*nin_logo_y_pix_requirement)+((hud_screen_wd/2)-nin_logo_x_pix_requirement))*2
 
 fixTilePosition:
     addiu $a1, $a1, (((hud_screen_wd/2)-160)*4) ;Move Tiles
@@ -133,6 +138,6 @@ fixTilePosition:
     sw $a1, 0x5C($sp) ;Run Replaced Instruction
 
 fixNintendoLogoPosition:
-    lui $at, hi(((hud_screen_wd*96)+((hud_screen_wd/2)-96))*2) ;Upper Half of Nintendo Logo Write Position
+    lui $at, hi(nin_write_position) ;Upper Half of Nintendo Logo Write Position
     j 0x805FB8B0 ; Return to Game
-    addiu $at, $at, lo(((hud_screen_wd*96)+((hud_screen_wd/2)-96))*2) ;Lower Half of Nintendo Logo Write Position
+    addiu $at, $at, lo(nin_write_position) ;Lower Half of Nintendo Logo Write Position

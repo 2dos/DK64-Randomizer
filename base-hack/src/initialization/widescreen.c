@@ -58,6 +58,8 @@ void ws_hud(void) {
     *(short*)(0x806F893A) = SCREEN_WD - 30; //X Position of HUD (Instrument)
 }
 
+#define ZIPPER_IS_WIDESCREEN 1
+
 void ws_static(void) {
     ws_hud();
     *(short*)(0x805FB982) = 1; // Disable High Resolution for MAP_NINTENDOLOGO
@@ -109,7 +111,6 @@ void ws_static(void) {
     *(int*)(0x806FD4C4) = 0x25D00000 | (((SCREEN_WD / 2) - 160) & 0xFFFF); // X Offset of Text
     *(short*)(0x806FF0F2) = SCREEN_WD / 2; //X Position of Cannon Cursor
     
-    *(int*)(0x807095F4) = 0x24030140; //Force Zipper Transition Width
     // Try to make zipper widescreen (wip)
     // *(short*)(0x8070BC52) = SCREEN_WD >> 2;
     // *(short*)(0x8070B0A6) = SCREEN_WD >> 2;
@@ -157,11 +158,23 @@ void ws_static(void) {
     *(short*)(0x8070ADC6) = (zipper_aspect_ratio_int >> 16) & 0xFFFF;
     *(short*)(0x8070ADCA) = zipper_aspect_ratio_int & 0xFFFF;
 
-    int zipper_scissor = ((SCREEN_WD - 11) << 14) | (229 << 2);
-    *(short*)(0x8070AE02) = (zipper_scissor >> 16) & 0xFFFF; //Upper Part of Zipper Transition Scissor
-    *(short*)(0x8070AE0E) = zipper_scissor & 0xFFFF; //Lower Part of Zipper Transition Scissor
-    *(short*)(0x8070BFA6) = 0xE400 | ((SCREEN_WD / 8) + 2); //Zipper Right Edge X Position
-    *(short*)(0x8070C07E) = (SCREEN_WD/8)-2; //Zipper Left Edge X Position
+    int zipper_scissor = 0;
+    int framebuffer_upperleft = (SCREEN_WD / 8) - 2;
+    int framebuffer_lowerright = (SCREEN_WD / 8) + 2;
+    if (ZIPPER_IS_WIDESCREEN) {
+        int interpolation_mode = 0;
+        int zipper_lower_right = ((SCREEN_WD - 11) << 2);
+        zipper_scissor = (interpolation_mode << 0x18) | (zipper_lower_right << 12) | 0x394;
+        *(int*)(0x807095F4) = 0x24030140; //Force Zipper Transition Width
+    } else {
+        zipper_scissor = ((SCREEN_WD - 11) << 14) | (229 << 2);
+        *(int*)(0x807095F4) = 0x24030140; //Force Zipper Transition Width
+    }
+    *(short*)(0x8070BFA6) = 0xE400 | framebuffer_lowerright; //Zipper Right Edge X Position
+    *(short*)(0x8070C07E) = framebuffer_upperleft; //Zipper Left Edge X Position
+    *(short*)(0x8070AE02) = getUpper(zipper_scissor); //Upper Part of Zipper Transition Scissor
+    *(short*)(0x8070AE0E) = getLower(zipper_scissor); //Lower Part of Zipper Transition Scissor
+
     *(short*)(0x8070FCA6) = SCREEN_WD; //Max X Position of Reset Banana in Storm
     *(short*)(0x80712112) = SCREEN_WD; //Screen Range of Banana Storm
     int transition_scissor = ((SCREEN_WD - 11) << 14) | (229 << 2);
