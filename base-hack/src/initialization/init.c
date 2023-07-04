@@ -176,7 +176,7 @@ void initHack(int source) {
 			*(short*)(0x806C9CDE) = 7; // GiveEverything, write to bitfield. Seems to be unused but might as well
 			*(int*)(0x8076BF38) = (int)&music_storage[0]; // Increase music storage
 			DamageMultiplier = Rando.damage_multiplier;
-			WarpToIslesEnabled = Rando.warp_to_isles_enabled;
+			WidescreenEnabled = Rando.true_widescreen;
 			permaLossMode = Rando.perma_lose_kongs;
 			preventTagSpawn = Rando.prevent_tag_spawn;
 			bonusAutocomplete = Rando.resolve_bonus;

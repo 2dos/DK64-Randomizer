@@ -506,7 +506,11 @@ int* displayListModifiers(int* dl) {
 					dk_strFormat((char *)bpStr, "%dl%d", bp_numerator, bp_denominator);
 					float opacity = 255 * hud_timer;
 					opacity /= 12;
-					dl = drawText(dl, 1, 355.0f, 480.f + ((12 - hud_timer) * 4), bpStr, 0xFF, 0xFF, 0xFF, opacity);
+					float bp_x = 355.0f;
+					if (Rando.true_widescreen) {
+						bp_x = SCREEN_WD_FLOAT + 35.0f;
+					}
+					dl = drawText(dl, 1, bp_x, 480.f + ((12 - hud_timer) * 4), bpStr, 0xFF, 0xFF, 0xFF, opacity);
 				} else {
 					hud_timer = 0;
 				}

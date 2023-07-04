@@ -46,7 +46,7 @@ void ws_boot(void) {
 void ws_hud(void) {
     *(short*)(0x806F8536) = SCREEN_WD - 30; //X Position of HUD (CBs)
     *(short*)(0x806F85CA) = (SCREEN_WD / 2)+34; //X Position of HUD (Blueprints)
-    *(short*)(0x806F8606) = (SCREEN_WD / 2)-78; //X Position of HUD (Medal - Multibunch)
+    *(short*)(0x806F8606) = SCREEN_WD - 30; //X Position of HUD (Medal - Multibunch)
     *(short*)(0x806F8642) = (SCREEN_WD / 2)-38; //X Position of Counter 4
     *(short*)(0x806F868E) = SCREEN_WD - 30; //X Position of HUD (Crystals)
     *(short*)(0x806F86C6) = SCREEN_WD - 30; //X Position of HUD (Standard Ammo)
@@ -56,12 +56,43 @@ void ws_hud(void) {
     *(short*)(0x806F8852) = SCREEN_WD - 30; //X Position of HUD (Race Coin)
     *(short*)(0x806F88CA) = SCREEN_WD - 30; //X Position of HUD (Banana Coins)
     *(short*)(0x806F893A) = SCREEN_WD - 30; //X Position of HUD (Instrument)
+    float medal_x = SCREEN_WD_FLOAT / 2;
+    *(short*)(0x80687CAA) = *(short*)(&medal_x); // Medal Reward
+}
+
+void ws_crashdebugger(void) {
+    // *(int*)(0x80731C04) = 0x24190000 | 160; // Force crash debugger width
+    // *(int*)(0x80731CE0) = 0x240F0000 | 160; // Force crash debugger width
+}
+
+void ws_enterFile(int map, int exit) {
+    setNextTransitionType(3); // Box Zoom
+    initiateTransition(map, exit);
+}
+
+void ws_timer(int* x_write) {
+    spawnActor(0xB0, 0);
+    int x = *x_write & 0x7FFF;
+    if (x >= 0x78) {
+        if (x < 0xC8) {
+            *x_write = *x_write + ((SCREEN_WD / 2) - 160);
+        } else {
+            *x_write = *x_write + (SCREEN_WD - 320);
+        }
+    }
 }
 
 #define ZIPPER_IS_WIDESCREEN 1
 
 void ws_static(void) {
     ws_hud();
+    ws_crashdebugger();
+
+    *(int*)(0x8071456C) = 0x0C000000 | ((((int)(&ws_enterFile)) & 0xFFFFFF) >> 2); // Zipper
+
+    *(int*)(0x806A2A34) = 0x0C000000 | ((((int)(&ws_timer)) & 0xFFFFFF) >> 2); // Timer Reposition
+    *(int*)(0x806A2A2C) = 0x27A40018;
+
     *(short*)(0x805FB982) = 1; // Disable High Resolution for MAP_NINTENDOLOGO
     *(int*)(0x805FB9F8) = 0x24190000 | (SCREEN_WD-1); //Scissor Width for Jetpac and DK Arcade
     *(int*)(0x805FBB04) = 0x24090000 | (SCREEN_WD-11); //Scissor Right Edge for Game
@@ -144,6 +175,10 @@ void ws_static(void) {
     temp = SCREEN_WD_FLOAT / 63.0f;
     *(short*)(0x806FFBA6) = *(short*)(&temp); //Fix Camera Transition
     *(short*)(0x806FFBBA) = SCREEN_WD / 2; //X Position of Circle Transition
+
+    *(short*)(0x806FEFBA) = *(short*)(&temp); //Fix cannon game reticle
+    *(short*)(0x806FEFD2) = SCREEN_WD / 2; //X Position of cannon game reticle
+    
     *(int*)(0x8070F308) = 0x08000000 | ((((int)(fixTilePosition)) & 0xFFFFFF) >> 2);
     // writeFunction(0x8070AFD0, ws_fillzipperwhite);
     *(short*)(0x807075EE) = (SCREEN_WD / 128) + 2; //Number of Tiles Rendered in Main Menu Background
@@ -242,11 +277,12 @@ void ws_staticdata(void) {
     *(double*)(0x8075ACD0) = (SCREEN_WD_FLOAT * 2) - 40; //X Position of Up C Button
     *(double*)(0x8075ACD8) = (SCREEN_WD_FLOAT * 2) + 40; //X Position of Down C Button
     *(double*)(0x8075C408) = SCREEN_WD_FLOAT + 70; //X Offset of Player Names for Credits Right
-    *(int*)(0x80747B30) = SCREEN_WD; //Blurring Process Pitch
+    //*(int*)(0x80747B30) = SCREEN_WD; //Blurring Process Pitch // Causes crashes?
     *(short*)(0x80750240) = SCREEN_WD; //Sand Effect Vertex 2 X
     *(short*)(0x80750248) = ((SCREEN_WD*2016)/320); //Sand Effect Vertex 2 X Texcoord
     *(short*)(0x80750250) = SCREEN_WD; //Sand Effect Vertex 3 X
     *(short*)(0x80750258) = ((SCREEN_WD*2016)/320); //Sand Effect Vertex 3 X Texcoord
+    
     *(short*)(0x80750848) = (SCREEN_WD-1); //Right Edge of Blackness in Border 1
     *(short*)(0x8075085C) = (SCREEN_WD-11); //Left Edge of Blackness in Border 3
     *(short*)(0x80750860) = (SCREEN_WD-1); //Right Edge of Blackness in Border 3
@@ -660,42 +696,6 @@ void loadWidescreen(overlays loaded_overlay) {
         jr ra //Return to Game
         nop //Delay Slot
         .endarea
-
-    .org 0x806F8534
-    addiu t1, r0, (SCREEN_WD-30) //X Position of Counter 1
-
-    .org 0x806F85C8
-    addiu t2, r0, ((SCREEN_WD/2)+34) //X Position of Counter 2
-
-    .org 0x806F8604
-    addiu t3, r0, ((SCREEN_WD/2)-78) //X Position of Counter 3
-
-    .org 0x806F8640
-    addiu t8, r0, ((SCREEN_WD/2)-38) //X Position of Counter 4
-
-    .org 0x806F868C
-    addiu t2, r0, (SCREEN_WD-30) //X Position of Counter 5
-
-    .org 0x806F86C4
-    addiu t3, r0, (SCREEN_WD-30) //X Position of Counter 6
-
-    .org 0x806F8738
-    addiu t0, r0, (SCREEN_WD-30) //X Position of Counter 7
-
-    .org 0x806F87A4
-    addiu t5, r0, (SCREEN_WD-30) //X Position of Counter 8
-
-    .org 0x806F8810
-    addiu t8, r0, (SCREEN_WD-30) //X Position of Counter 9
-
-    .org 0x806F8850
-    addiu t1, r0, (SCREEN_WD-30) //X Position of Counter 10
-
-    .org 0x806F88C8
-    addiu t7, r0, (SCREEN_WD-30) //X Position of Coin Counter
-
-    .org 0x806F8938
-    addiu t2, r0, (SCREEN_WD-30) //X Position of Counter 12
 
     .org 0x800293AC
     addiu a2, r0, (SCREEN_WD*2) //X Position of Percentage

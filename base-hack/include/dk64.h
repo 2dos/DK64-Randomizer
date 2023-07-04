@@ -672,7 +672,7 @@ extern purchase_struct FunkyMoves_New[5][8];
 extern purchase_struct TrainingMoves_New[4];
 extern purchase_struct BFIMove_New;
 extern settingsData StoredSettings;
-extern char WarpToIslesEnabled;
+extern char WidescreenEnabled;
 extern char permaLossMode;
 extern char preventTagSpawn;
 extern char bonusAutocomplete;

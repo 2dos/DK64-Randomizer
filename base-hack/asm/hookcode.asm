@@ -1,4 +1,5 @@
 START_HOOK:
+.definelabel hud_screen_wd, 424
 .include "asm/hookcode/actor.asm"
 .include "asm/hookcode/bonus.asm"
 .include "asm/hookcode/boss.asm"

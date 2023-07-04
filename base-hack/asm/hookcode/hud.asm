@@ -16,8 +16,16 @@ CoinHUDReposition:
         addiu $t8, $zero, 0x4C
 
     CoinHUDReposition_Finish:
+        lui $t7, hi(WidescreenEnabled)
+        lbu $t7, lo(WidescreenEnabled) ($t7)
+        bnez $t7, CoinHUDReposition_Widescreen
+        nop
         j 0x806F88D0
         addiu $t7, $zero, 0x122
+
+    CoinHUDReposition_Widescreen:
+        j 0x806F88D0
+        addiu $t7, $zero, hud_screen_wd - 30
 
 GiveItemPointerToMulti:
     lui $t8, hi(MultiBunchCount)

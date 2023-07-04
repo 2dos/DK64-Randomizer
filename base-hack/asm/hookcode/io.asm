@@ -125,7 +125,6 @@ setFlag_ItemRando:
     j 0x80731300
     nop
 
-.definelabel hud_screen_wd, 424
 .definelabel nin_logo_width, 256 ; Normally 192
 .definelabel nin_logo_height, 132 ; Normally 48
 .definelabel nin_logo_y_pix_requirement, nin_logo_height >> 1
