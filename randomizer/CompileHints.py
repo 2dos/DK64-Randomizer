@@ -1258,6 +1258,8 @@ def compileHints(spoiler: Spoiler):
                 foolish_location_score += 3
             elif shops_in_region > 0:  # Shops are generally overvalued (4/6 locations per shop) with this method due to having mutually exclusive locations
                 foolish_location_score -= 1 * shops_in_region  # With smaller shops, this reduces the location count to 3 locations per shop
+                if foolish_location_score < 0:  # Prevent negative scores
+                    foolish_location_score = 0
             foolish_location_score = foolish_location_score**1.25  # Exponentiation of this score puts additional emphasis (but not too much) on larger regions
             total_foolish_location_score += foolish_location_score
             foolish_region_location_score[foolish_name] = foolish_location_score

@@ -999,7 +999,7 @@ fairy_locations = {
         FairyData(
             name="Small Island",
             map=Maps.Isles,
-            region=Regions.IslesMain,
+            region=Regions.OuterIsles,
             is_vanilla=True,
             spawn_xyz=[1057, 634, 1456],
             natural_index=2,
