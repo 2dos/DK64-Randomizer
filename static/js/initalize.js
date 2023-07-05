@@ -1,3 +1,42 @@
+if (typeof window.RufflePlayer !== 'undefined') {
+  // Ruffle extension is loaded
+  var modal = document.createElement('div');
+  modal.style.position = 'fixed';
+  modal.style.top = '0';
+  modal.style.left = '0';
+  modal.style.width = '100%';
+  modal.style.height = '100%';
+  modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+  modal.style.display = 'flex';
+  modal.style.justifyContent = 'center';
+  modal.style.alignItems = 'center';
+  modal.style.zIndex = '9999';
+
+  var modalContent = document.createElement('div');
+  modalContent.style.backgroundColor = '#333';
+  modalContent.style.padding = '20px';
+  modalContent.style.borderRadius = '5px';
+  modalContent.style.textAlign = 'center';
+
+  var message = document.createElement('p');
+  message.textContent = "The Ruffle extension causes issues with this site (and we're not really sure why). Please disable it for this site.";
+  message.style.color = '#fff';
+  message.style.fontFamily = 'Arial, sans-serif';
+  message.style.fontSize = '16px';
+
+  modalContent.appendChild(message);
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
+
+  // Prevent scrolling while the modal is open
+  document.body.style.overflow = 'hidden';
+
+  console.log('Ruffle extension is loaded');
+} else {
+  // Ruffle extension is not loaded
+  console.log('Ruffle extension is not loaded');
+}
+
 // This is a wrapper script to just load the UI python scripts and call python as needed.
 async function run_python_file(file) {
   await pyodide.runPythonAsync(await (await fetch(file)).text());
