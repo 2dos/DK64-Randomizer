@@ -170,9 +170,9 @@ valid_maps = [
 ]
 crown_maps = [Maps.JapesCrown, Maps.AztecCrown, Maps.FactoryCrown, Maps.GalleonCrown, Maps.ForestCrown, Maps.CavesCrown, Maps.CastleCrown, Maps.HelmCrown, Maps.SnidesCrown, Maps.LobbyCrown]
 minigame_maps_easy = [
-    Maps.BusyBarrelBarrageEasy,
-    Maps.BusyBarrelBarrageHard,
-    Maps.BusyBarrelBarrageNormal,
+    # Maps.BusyBarrelBarrageEasy,
+    # Maps.BusyBarrelBarrageHard,
+    # Maps.BusyBarrelBarrageNormal,
     # Maps.HelmBarrelDiddyKremling, # Only kremlings activate the switch
     Maps.HelmBarrelChunkyHidden,
     Maps.HelmBarrelChunkyShooting,
@@ -197,6 +197,7 @@ banned_enemy_maps = {
     Enemies.Kosha: [Maps.CavesDiddyLowerCabin, Maps.CavesTinyCabin],
     Enemies.Guard: [Maps.CavesDiddyLowerCabin, Maps.CavesTinyIgloo, Maps.CavesTinyCabin],
 }
+ENABLE_BBBARRAGE_ENEMY_RANDO = False
 
 
 def isBanned(new_enemy_id: Enemies, cont_map_id: Maps, spawner: Spawner, no_ground_simple_selected: bool) -> bool:
@@ -455,7 +456,7 @@ def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawne
                 LocalROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
         LocalROM().seek(cont_map_spawner_address + spawner.offset + 0xF)
         pre_size = int.from_bytes(LocalROM().readBytes(1), "big")
-        if pre_size < EnemyMetaData[new_enemy_id].bbbarrage_min_scale and cont_map_id in bbbarrage_maps:
+        if pre_size < EnemyMetaData[new_enemy_id].bbbarrage_min_scale and cont_map_id in bbbarrage_maps and ENABLE_BBBARRAGE_ENEMY_RANDO:
             LocalROM().seek(cont_map_spawner_address + spawner.offset + 0xF)
             LocalROM().writeMultipleBytes(EnemyMetaData[new_enemy_id].bbbarrage_min_scale, 1)
         # Speed Adjustment
@@ -469,7 +470,7 @@ def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawne
                     LocalROM().writeMultipleBytes(agg_speed, 1)
                     LocalROM().seek(cont_map_spawner_address + spawner.offset + 0xC)
                     LocalROM().writeMultipleBytes(random.randint(min_speed, agg_speed), 1)
-        if cont_map_id in bbbarrage_maps:
+        if cont_map_id in bbbarrage_maps and ENABLE_BBBARRAGE_ENEMY_RANDO:
             # Reduce Speeds
             LocalROM().seek(cont_map_spawner_address + spawner.offset + 0xC)
             speeds = []
@@ -628,7 +629,7 @@ def randomize_enemies(spoiler):
                 tied_enemy_list = []
                 if cont_map_id in minigame_maps_easy:
                     tied_enemy_list = minigame_enemies_simple.copy()
-                    if cont_map_id in bbbarrage_maps:
+                    if cont_map_id in bbbarrage_maps and ENABLE_BBBARRAGE_ENEMY_RANDO:
                         if Enemies.KlaptrapGreen in tied_enemy_list:
                             tied_enemy_list.remove(Enemies.KlaptrapGreen)  # Remove Green Klaptrap out of BBBarrage pool
                 elif cont_map_id in minigame_maps_beatable:
