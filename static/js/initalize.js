@@ -108,6 +108,21 @@ function getFile(file) {
     async: false,
   }).responseText;
 }
+
+function createMusicLoadPromise(jszip, filename) {
+  return new Promise((resolve, reject) => {
+    jszip
+      .file(filename)
+      .async("Uint8Array")
+      .then(function (content) {
+        resolve({
+          name: filename.slice(0, -4),
+          file: content
+        })
+      })
+  });
+}
+
 var cosmetics;
 var cosmetic_names;
 document
@@ -125,57 +140,13 @@ document
 
         for (var filename of Object.keys(new_zip.files)) {
           if (filename.includes("bgm/") && filename.slice(-4) == ".bin") {
-            bgm_promises.push(new Promise((resolve, reject) => {
-              var current_filename = filename;
-              new_zip
-                .file(current_filename)
-                .async("Uint8Array")
-                .then(function (content) {
-                  resolve({
-                    name: current_filename.slice(0, -4),
-                    file: content
-                  })
-                });
-            }));
+            bgm_promises.push(createMusicLoadPromise(new_zip, filename));
           } else if (filename.includes("majoritems/") && filename.slice(-4) == ".bin") {
-            majoritem_promises.push(new Promise((resolve, reject) => {
-              var current_filename = filename;
-              new_zip
-                .file(current_filename)
-                .async("Uint8Array")
-                .then(function (content) {
-                  resolve({
-                    name: current_filename.slice(0, -4),
-                    file: content
-                  })
-                });
-            }));
+            majoritem_promises.push(createMusicLoadPromise(new_zip, filename));
           } else if (filename.includes("minoritems/") && filename.slice(-4) == ".bin") {
-            minoritem_promises.push(new Promise((resolve, reject) => {
-              var current_filename = filename;
-              new_zip
-                .file(current_filename)
-                .async("Uint8Array")
-                .then(function (content) {
-                  resolve({
-                    name: current_filename.slice(0, -4),
-                    file: content
-                  })
-                });
-            }));
+            minoritem_promises.push(createMusicLoadPromise(new_zip, filename));
           } else if (filename.includes("events/") && filename.slice(-4) == ".bin") {
-            event_promises.push(new Promise((resolve, reject) => {
-              var current_filename = filename;
-              new_zip
-                .file(current_filename)
-                .async("Uint8Array")
-                .then(function (content) {
-                  resolve({
-                    name: current_filename.slice(0, -4),
-                    file: content
-                  })
-                });
-            }));
+            event_promises.push(createMusicLoadPromise(new_zip, filename));
           }
         }
 
