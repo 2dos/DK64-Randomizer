@@ -163,6 +163,42 @@ class EnemyLocations(IntEnum):
 
     # Galleon
     # Fungi
+    # Main
+    FungiMain_HollowTree0 = auto() # Klump, 5
+    FungiMain_HollowTree1 = auto() # Klump, 30
+
+    FungiMain_HollowTreeEntrance = auto() # Zinger (0x1C), 34
+
+    FungiMain_TreeMelonCrate0 = auto() # Zinger (0x1C), 31
+    FungiMain_TreeMelonCrate1 = auto() # Zinger (0x1C), 32
+    FungiMain_TreeMelonCrate2 = auto() # Zinger (0x1C), 33
+
+    FungiMain_AppleGauntlet0 = auto() # Tomato, 9
+    FungiMain_AppleGauntlet1 = auto() # Tomato, 10
+    FungiMain_AppleGauntlet2 = auto() # Tomato, 11
+    FungiMain_AppleGauntlet3 = auto() # Tomato, 12
+
+    FungiMain_NearWarp5 = auto() # Mushroom, 23
+    FungiMain_NearPinkTunnelBounceTag = auto() # Mushroom, 24
+    FungiMain_NearGMRocketbarrel = auto() # Mushroom, 25
+    FungiMain_BetweenRBAndYellowTunnel = auto() # Zinger (0x1C), 26
+    FungiMain_NearCranky = auto() # Zinger (0x1C), 27
+    FungiMain_NearPinkTunnel = auto() # Zinger (0x1C), 28
+    FungiMain_GMRearTag = auto() # Zinger (0x1C), 29
+
+    FungiMain_YellowTunnel0 = auto() # Mushroom, 22
+    FungiMain_YellowTunnel1 = auto() # Zinger (0x1C), 41
+    FungiMain_YellowTunnel2 = auto() # Zinger (0x1C), 42
+    FungiMain_YellowTunnel3 = auto() # Klump, 43
+
+    FungiMain_NearSnide = auto() # Mushroom, 35
+    FungiMain_NearIsoCoin = auto() # Zinger (0x1C), 38
+    FungiMain_NearBBlast = auto() # Zinger (0x1C), 39
+    FungiMain_NearDarkAttic = auto() # Klump, 44
+    FungiMain_NearWellExit = auto() # Zinger (0x1C), 47
+
+    FungiMain_Thornvine0 = auto() # Klump, 45
+    FungiMain_Thornvine1 = auto() # Klump, 46
 
     # Caves
     # Main

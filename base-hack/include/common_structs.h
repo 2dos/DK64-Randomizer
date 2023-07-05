@@ -1536,3 +1536,14 @@ typedef struct Controller {
 	/* 0x002 */ char stickX;
 	/* 0x003 */ char stickY;
 } Controller;
+
+typedef struct Border {
+	/* 0x000 */ char player_count;
+	/* 0x001 */ char unk1;
+	/* 0x002 */ char unk2;
+	/* 0x003 */ char unk3;
+	/* 0x004 */ short blackness_left;
+	/* 0x006 */ short blackness_top;
+	/* 0x008 */ short blackness_right;
+	/* 0x00A */ short blackness_bottom;
+} Border;

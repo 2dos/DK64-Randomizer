@@ -650,6 +650,8 @@ extern rgb BlueprintLargeImageColors[16];
 extern char SFXVolume;
 extern char MusicVolume;
 
+extern Border BorderInformation[22];
+
 //hack data
 extern int TestVariable;
 extern char LoadedHooks;

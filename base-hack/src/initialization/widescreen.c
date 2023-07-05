@@ -15,7 +15,7 @@ static double pos_center = SCREEN_WD_FLOAT / 2;
 #define ZIPPER_COLOR_VALUE 0xFFFF
 
 void ws_fillzipperwhite(void* write_ptr, void* framebuffer) {
-    int px_clear = SCREEN_WD * 240;
+    int px_clear = SCREEN_WD * SCREEN_HD;
     int write = (int)write_ptr;
     for (int i = 0; i < px_clear; i++) {
         *(short*)(write) = ZIPPER_COLOR_VALUE;
@@ -26,13 +26,13 @@ void ws_fillzipperwhite(void* write_ptr, void* framebuffer) {
 #define NINTENDO_LOGO_WIDTH 256
 
 void ws_ninPos(void) {
-    *(short*)(0x805FB8A6) = getUpper(SCREEN_WD*240*2);
+    *(short*)(0x805FB8A6) = getUpper(SCREEN_WD*SCREEN_HD*2);
     *(int*)(0x805FB8A8) = 0x08000000 | ((((int)(&fixNintendoLogoPosition)) & 0xFFFFFF) >> 2);
-    *(short*)(0x805FB8AE) = getLower(SCREEN_WD*240*2);
+    *(short*)(0x805FB8AE) = getLower(SCREEN_WD*SCREEN_HD*2);
 }
 
 void ws_boot(void) {
-    int framebuffer_clear = SCREEN_WD * 240;
+    int framebuffer_clear = SCREEN_WD * SCREEN_HD;
     int framebuffer_size = framebuffer_clear << 2;
     *(int*)(0x80610378) = 0x3C0F0000 | ((framebuffer_size >> 16) & 0xFFFF); //Load Size of Framebuffer 
     *(int*)(0x8061037C) = 0x35EF0000 | (framebuffer_size & 0xFFFF); //Load Size of Framebuffer
@@ -58,6 +58,37 @@ void ws_hud(void) {
     *(short*)(0x806F893A) = SCREEN_WD - 30; //X Position of HUD (Instrument)
     float medal_x = SCREEN_WD_FLOAT / 2;
     *(short*)(0x80687CAA) = *(short*)(&medal_x); // Medal Reward
+    // Converted Stuff
+    *(short*)(0x806FF0F2) = SCREEN_WD / 2; // X Position of Cannon Cursor
+    *(short*)(0x806FF0F6) = SCREEN_HD / 2; // Y Position of Cannon Cursor
+    *(short*)(0x806FF3AA) = (SCREEN_WD / 2) - 80; // X Position of Upper-Left of Capture Marker
+    *(short*)(0x806FF3AE) = (SCREEN_HD / 2) - 80; // Y Position of Upper-Left of Capture Marker
+    *(short*)(0x806FF3EE) = (SCREEN_WD / 2) + 80; //X Position of Upper-Right of Capture Marker
+    *(short*)(0x806FF3F2) = (SCREEN_HD / 2) - 80; // Y Position of Upper-Right of Capture Marker
+    *(short*)(0x806FF436) = (SCREEN_WD / 2) + 80; //X Position of Lower-Right of Capture Marker
+    *(short*)(0x806FF43A) = (SCREEN_HD / 2) + 80; // Y Position of Lower-Right of Capture Marker
+    *(short*)(0x806FF47E) = (SCREEN_WD / 2) - 80; //X Position of Lower-Left of Capture Marker
+    *(short*)(0x806FF482) = (SCREEN_HD / 2) + 80; // Y Position of Lower-Left of Capture Marker
+
+    *(short*)(0x806FF4CE) = SCREEN_WD / 2; // X Position of Capture Center
+    *(short*)(0x806FF4D2) = SCREEN_HD / 2; // Y Position of Capture Center
+    *(short*)(0x806FF566) = SCREEN_WD - 40; // X Position of Sad Face
+    *(short*)(0x806FF5D2) = SCREEN_WD - 40; // X Position of Happy Face
+    *(short*)(0x806FF692) = SCREEN_WD / 2; // X Position of Picture X Sign
+    *(short*)(0x806FF696) = SCREEN_HD / 2; // Y Position of Picture X Sign
+    *(short*)(0x806FF70A) = SCREEN_WD / 2; // X Position of Picture Check Sign
+    *(short*)(0x806FF70E) = SCREEN_HD / 2; // Y Position of Picture Check Sign
+    *(short*)(0x806FFAD6) = SCREEN_WD / 2; // X Position of Scope Cursor
+    *(short*)(0x806FFADA) = SCREEN_HD / 2; // Y Position of Scope Cursor
+
+    float circle_scale = SCREEN_WD_FLOAT / 63.0f;
+    *(short*)(0x806FFBA6) = *(short*)(&circle_scale); // Fix Camera Transition
+    *(short*)(0x806FFBBA) = SCREEN_WD / 2; // X Position of Circle Transition
+    *(short*)(0x806FFBBE) = SCREEN_HD / 2; // Y Position of Circle Transition
+    *(short*)(0x806FEFBA) = *(short*)(&circle_scale); // Fix cannon game reticle
+    *(short*)(0x806FEFD2) = SCREEN_WD / 2; // X Position of cannon game reticle
+    *(short*)(0x806FEFD6) = SCREEN_HD / 2; // Y Position of cannon game reticle
+    *(short*)(0x80708906) = SCREEN_WD << 1; //X Position of Melons in UI
 }
 
 void ws_crashdebugger(void) {
@@ -84,114 +115,28 @@ void ws_timer(int* x_write) {
 
 #define ZIPPER_IS_WIDESCREEN 1
 
-void ws_static(void) {
-    ws_hud();
-    ws_crashdebugger();
-
-    *(int*)(0x8071456C) = 0x0C000000 | ((((int)(&ws_enterFile)) & 0xFFFFFF) >> 2); // Zipper
-
-    *(int*)(0x806A2A34) = 0x0C000000 | ((((int)(&ws_timer)) & 0xFFFFFF) >> 2); // Timer Reposition
-    *(int*)(0x806A2A2C) = 0x27A40018;
-
-    *(short*)(0x805FB982) = 1; // Disable High Resolution for MAP_NINTENDOLOGO
-    *(int*)(0x805FB9F8) = 0x24190000 | (SCREEN_WD-1); //Scissor Width for Jetpac and DK Arcade
-    *(int*)(0x805FBB04) = 0x24090000 | (SCREEN_WD-11); //Scissor Right Edge for Game
-    *(int*)(0x805FBBF4) = 0x24180000 | SCREEN_WD; //Screen Width for Framebuffer
-    *(int*)(0x805FBC24) = 0x24040000; //Remove Black Bars
-    
+void ws_transitions(void) {
     *(short*)(0x80629292) = SCREEN_WD - 10; //X Position of Transition from Right
     *(short*)(0x806292A2) = SCREEN_WD / 2; //X Position of Double Transition
-    *(short*)(0x80629626) = SCREEN_WD; // Pause Menu Texture Width
-    *(short*)(0x806296F6) = SCREEN_WD; // Pause Menu Texture Width 2
-    *(short*)(0x806297E6) = SCREEN_WD; // Pause Menu Texture Width 3
-    *(short*)(0x806298BA) = SCREEN_WD; // Pause Menu Texture Width 4
     *(short*)(0x80629902) = SCREEN_WD - 9; // Maximum X Position of Transitions
-    *(short*)(0x8062999E) = SCREEN_WD; // Pause Menu Texture Width 5
     *(short*)(0x806299EE) = SCREEN_WD - 15; // Maximum X Position of Transitions 2
-    *(short*)(0x80629A5A) = SCREEN_WD; // Pause Menu Texture Width 6
-    *(short*)(0x80629B4A) = SCREEN_WD; // Pause Menu Texture Width 7
-    *(short*)(0x80629BAA) = SCREEN_WD; // Pause Menu Texture Width 8
-    *(short*)(0x80629C6A) = SCREEN_WD; // Pause Menu Texture Width 9
     *(short*)(0x80629C9E) = SCREEN_WD - 15; // Maximum X Position of Transitions 3
-    *(short*)(0x80629D06) = SCREEN_WD; // Pause Menu Texture Width 10
     *(short*)(0x80629D5E) = SCREEN_WD - 9; // Maximum X Position of Transitions 4
-    *(short*)(0x80629E46) = SCREEN_WD; // Pause Menu Texture Width 10
-    *(short*)(0x80629F6E) = SCREEN_WD; // Pause Menu Texture Width 11
-    *(short*)(0x8062A07E) = SCREEN_WD; // Pause Menu Texture Width 12
-    
+
     float temp = SCREEN_WD;
     *(short*)(0x80629E26) = *(short*)(&temp); // Width of Transitions 5
     *(short*)(0x80629F4E) = *(short*)(&temp); // Width of Transitions 6
     *(short*)(0x8062A00E) = *(short*)(&temp); // Width of Transitions 7
+    temp = SCREEN_HD - 1;
+    *(short*)(0x80629E2E) = *(short*)(&temp); // Height of Transitions 5
+    *(short*)(0x80629F56) = *(short*)(&temp); // Height of Transitions 6
+    *(short*)(0x8062A01E) = *(short*)(&temp); // Height of Transitions 7
 
-    *(short*)(0x8068D98E) = SCREEN_WD - 40; //X Position of Camera Icon
-    *(short*)(0x8069FCAA) = SCREEN_WD; //Screen Width for Large Words
-    temp = SCREEN_WD >> 1;
-    *(short*)(0x8069D9F6) = *(short*)(&temp); // X Position of Bending Text
-    *(short*)(0x8069DA2A) = *(short*)(&temp); // X Position of Bending Text 2
-    *(short*)(0x806C7852) = *(short*)(&temp); //X Position of Top Credits
-    *(short*)(0x806C7882) = *(short*)(&temp); //X Position of Bottom Credits
-
-    temp = SCREEN_WD << 1;
-    *(short*)(0x8069FF5E) = *(short*)(&temp); // X Position of Round Number
-    *(short*)(0x806ACB4E) = (SCREEN_WD * 2) - 280; //X Position of Try Again Text
-    *(short*)(0x806ACB9E) = (SCREEN_WD * 2) - 120; //X Position of Yes Text
-    *(short*)(0x806ACBE2) = (SCREEN_WD * 2) - 120; //X Position of No Text
-    *(short*)(0x806ACF76) = SCREEN_WD << 1; //X Position of Multiplayer Pause Menu Return
-    *(short*)(0x806ACFDE) = SCREEN_WD << 1; //X Position of Multiplayer Pause Menu Quit Game
-    *(int*)(0x806FD4C4) = 0x25D00000 | (((SCREEN_WD / 2) - 160) & 0xFFFF); // X Offset of Text
-    *(short*)(0x806FF0F2) = SCREEN_WD / 2; //X Position of Cannon Cursor
-    
-    // Try to make zipper widescreen (wip)
-    // *(short*)(0x8070BC52) = SCREEN_WD >> 2;
-    // *(short*)(0x8070B0A6) = SCREEN_WD >> 2;
-    // *(short*)(0x8070B1CA) = SCREEN_WD << 1;
-    // *(short*)(0x8070B2FE) = SCREEN_WD << 3;
-
-    *(int*)(0x806AC3E4) = 0x3C010000 | getHi(&pos_center_4x); //Load High Half of pos_center_4x
-    *(int*)(0x806AC3E8) = 0xD4280000 | getLo(&pos_center_4x); //Load pos_center_4x
-    *(int*)(0x806AC3EC) = 0x46020102; //Run Replaced Instruction
-
-    int noise_scissor = ((SCREEN_WD - 11) << 14) | (229 << 2);
-    *(short*)(0x8070368A) = (noise_scissor >> 16) & 0xFFFF; //Upper Part of Noise Scissor
-    *(short*)(0x8070369A) = noise_scissor & 0xFFFF; //Lower Part of Noise Scissor
-    int noise_scissor_gfx = 0xF6000000 | ((SCREEN_WD - 11) << 14);
-    *(short*)(0x807036AE) = (noise_scissor_gfx >> 16) & 0xFFFF; //Upper Part of Noise Rectangle
-    *(short*)(0x807036B2) = noise_scissor_gfx & 0xFFFF; //Lower Part of Noise Rectangle
-
-    *(short*)(0x806A94AE) = SCREEN_WD; //Max X Position of UI Elements
-
-    *(short*)(0x806FF3AA) = (SCREEN_WD / 2) - 80; //X Position of Upper-Left of Capture Marker
-    *(short*)(0x806FF3EE) = (SCREEN_WD / 2) + 80; //X Position of Upper-Right of Capture Marker
-    *(short*)(0x806FF436) = (SCREEN_WD / 2) + 80; //X Position of Lower-Right of Capture Marker
-    *(short*)(0x806FF47E) = (SCREEN_WD / 2) - 80; //X Position of Lower-Left of Capture Marker
-    *(short*)(0x806FF4CE) = SCREEN_WD / 2; //X Position of Capture Center
-    *(short*)(0x806FF566) = SCREEN_WD - 40; //X Position of Sad Face
-    *(short*)(0x806FF5D2) = SCREEN_WD - 40; //X Position of Happy Face
-    *(short*)(0x806FF692) = SCREEN_WD / 2; //X Position of Picture X Sign
-    *(short*)(0x806FF70A) = SCREEN_WD / 2; //X Position of Picture Check Sign
-    *(short*)(0x806FFAD6) = SCREEN_WD / 2; //X Position of Scope Cursor
-
-    temp = SCREEN_WD_FLOAT / 63.0f;
-    *(short*)(0x806FFBA6) = *(short*)(&temp); //Fix Camera Transition
-    *(short*)(0x806FFBBA) = SCREEN_WD / 2; //X Position of Circle Transition
-
-    *(short*)(0x806FEFBA) = *(short*)(&temp); //Fix cannon game reticle
-    *(short*)(0x806FEFD2) = SCREEN_WD / 2; //X Position of cannon game reticle
-    
-    *(int*)(0x8070F308) = 0x08000000 | ((((int)(fixTilePosition)) & 0xFFFFFF) >> 2);
-    // writeFunction(0x8070AFD0, ws_fillzipperwhite);
-    *(short*)(0x807075EE) = (SCREEN_WD / 128) + 2; //Number of Tiles Rendered in Main Menu Background
-    *(short*)(0x80708906) = SCREEN_WD << 1; //X Position of Melons in UI
-    *(short*)(0x807098D2) = 0xE08; //Double a Structure Size for Zipper
-    *(short*)(0x80709F5E) = SCREEN_WD - 1; //Width of Zipper Fade Texture
-    *(short*)(0x80700012) = ((SCREEN_WD / 2) - 80) * 2; //Source Offset for Camera Picture Copy
-    float width = (SCREEN_WD_FLOAT * 460) / 320;
-    *(short*)(0x80706D26) = *(short*)(&width); //Background Width in Snide Race
-    float zipper_aspect_ratio = SCREEN_WD_FLOAT / 240;
+    float zipper_aspect_ratio = SCREEN_WD_FLOAT / SCREEN_HD_FLOAT;
     int zipper_aspect_ratio_int = *(int*)(&zipper_aspect_ratio);
     *(short*)(0x8070ADC6) = (zipper_aspect_ratio_int >> 16) & 0xFFFF;
     *(short*)(0x8070ADCA) = zipper_aspect_ratio_int & 0xFFFF;
+    // writeFunction(0x8070AFD0, ws_fillzipperwhite);
 
     int zipper_scissor = 0;
     int framebuffer_upperleft = (SCREEN_WD / 8) - 2;
@@ -199,16 +144,121 @@ void ws_static(void) {
     if (ZIPPER_IS_WIDESCREEN) {
         int interpolation_mode = 0;
         int zipper_lower_right = ((SCREEN_WD - 11) << 2);
-        zipper_scissor = (interpolation_mode << 0x18) | (zipper_lower_right << 12) | 0x394;
+        int zipper_lower_right_h = ((SCREEN_HD - 11) << 2);
+        zipper_scissor = (interpolation_mode << 0x18) | (zipper_lower_right << 12) | zipper_lower_right_h;
         *(int*)(0x807095F4) = 0x24030140; //Force Zipper Transition Width
     } else {
-        zipper_scissor = ((SCREEN_WD - 11) << 14) | (229 << 2);
+        zipper_scissor = ((SCREEN_WD - 11) << 14) | ((SCREEN_HD - 11) << 2);
         *(int*)(0x807095F4) = 0x24030140; //Force Zipper Transition Width
     }
     *(short*)(0x8070BFA6) = 0xE400 | framebuffer_lowerright; //Zipper Right Edge X Position
     *(short*)(0x8070C07E) = framebuffer_upperleft; //Zipper Left Edge X Position
     *(short*)(0x8070AE02) = getUpper(zipper_scissor); //Upper Part of Zipper Transition Scissor
     *(short*)(0x8070AE0E) = getLower(zipper_scissor); //Lower Part of Zipper Transition Scissor
+}
+
+void ws_pause(void) {
+    *(short*)(0x80629626) = SCREEN_WD; // Pause Menu Texture Width
+    *(short*)(0x8062960A) = SCREEN_HD; // Pause Menu Texture Height
+    *(short*)(0x806296F6) = SCREEN_WD; // Pause Menu Texture Width 2
+    *(short*)(0x806296D6) = SCREEN_HD; // Pause Menu Texture Height 2
+    *(short*)(0x806297E6) = SCREEN_WD; // Pause Menu Texture Width 3
+    *(short*)(0x806297C2) = SCREEN_HD; // Pause Menu Texture Height 3
+    *(short*)(0x806298BA) = SCREEN_WD; // Pause Menu Texture Width 4
+    *(short*)(0x80629872) = SCREEN_HD; // Pause Menu Texture Height 4
+    *(short*)(0x8062999E) = SCREEN_WD; // Pause Menu Texture Width 5
+    *(short*)(0x8062997E) = SCREEN_HD; // Pause Menu Texture Height 5
+    *(short*)(0x80629A5A) = SCREEN_WD; // Pause Menu Texture Width 6
+    *(short*)(0x80629A12) = SCREEN_HD; // Pause Menu Texture Height 6
+    *(short*)(0x80629B4A) = SCREEN_WD; // Pause Menu Texture Width 7
+    *(short*)(0x80629B26) = SCREEN_HD; // Pause Menu Texture Height 7
+    *(short*)(0x80629BAA) = SCREEN_WD; // Pause Menu Texture Width 8
+    *(short*)(0x80629B82) = SCREEN_HD; // Pause Menu Texture Height 8
+    *(short*)(0x80629C6A) = SCREEN_WD; // Pause Menu Texture Width 9
+    *(short*)(0x80629C22) = SCREEN_HD; // Pause Menu Texture Height 9
+    *(short*)(0x80629D06) = SCREEN_WD; // Pause Menu Texture Width 10
+    *(short*)(0x80629CC2) = SCREEN_HD; // Pause Menu Texture Height 10
+    *(short*)(0x80629E46) = SCREEN_WD; // Pause Menu Texture Width 10
+    *(short*)(0x80629DEA) = SCREEN_HD; // Pause Menu Texture Height 10
+    *(short*)(0x80629F6E) = SCREEN_WD; // Pause Menu Texture Width 11
+    *(short*)(0x80629F12) = SCREEN_HD; // Pause Menu Texture Height 11
+    *(short*)(0x8062A07E) = SCREEN_WD; // Pause Menu Texture Width 12
+    *(short*)(0x8062A03E) = SCREEN_HD; // Pause Menu Texture Height 12
+}
+
+void left_to_yconvert(void) {
+    *(short*)(0x8068D98E) = SCREEN_WD - 40; //X Position of Camera Icon
+    *(short*)(0x806ACB4E) = (SCREEN_WD * 2) - 280; //X Position of Try Again Text
+    *(short*)(0x806ACB9E) = (SCREEN_WD * 2) - 120; //X Position of Yes Text
+    *(short*)(0x806ACBE2) = (SCREEN_WD * 2) - 120; //X Position of No Text
+    *(short*)(0x806ACF76) = SCREEN_WD << 1; //X Position of Multiplayer Pause Menu Return
+    *(short*)(0x806ACFDE) = SCREEN_WD << 1; //X Position of Multiplayer Pause Menu Quit Game
+    float temp = SCREEN_WD << 1;
+    *(short*)(0x8069FF5E) = *(short*)(&temp); // X Position of Round Number
+    *(int*)(0x806FD4C4) = 0x25D00000 | (((SCREEN_WD / 2) - 160) & 0xFFFF); // X Offset of Text
+    *(short*)(0x806A94AE) = SCREEN_WD; //Max X Position of UI Elements
+    *(int*)(0x8070F308) = 0x08000000 | ((((int)(fixTilePosition)) & 0xFFFFFF) >> 2);
+    *(short*)(0x807098D2) = 0xE08; //Double a Structure Size for Zipper
+    *(short*)(0x80709F5E) = SCREEN_WD - 1; //Width of Zipper Fade Texture
+    *(short*)(0x80700012) = ((SCREEN_WD / 2) - 80) * 2; //Source Offset for Camera Picture Copy
+}
+
+void ws_text(void) {
+    *(short*)(0x8069FCAA) = SCREEN_WD; //Screen Width for Large Words
+    float temp = SCREEN_WD >> 1;
+    *(short*)(0x8069D9F6) = *(short*)(&temp); // X Position of Bending Text
+    *(short*)(0x8069DA2A) = *(short*)(&temp); // X Position of Bending Text 2
+    *(short*)(0x806C7852) = *(short*)(&temp); //X Position of Top Credits
+    *(short*)(0x806C7882) = *(short*)(&temp); //X Position of Bottom Credits
+    temp = SCREEN_HD >> 1;
+    *(short*)(0x806C78CA) = *(short*)(&temp); //Y Position of Left Credits
+    *(short*)(0x806C7912) = *(short*)(&temp); //Y Position of Right Credits
+}
+
+void ws_scissor(void) {
+    *(int*)(0x805FB9F8) = 0x24190000 | (SCREEN_WD - 1); // Scissor Width for Jetpac and DK Arcade
+    *(int*)(0x805FBA0C) = 0x24090000 | (SCREEN_HD - 1); // Scissor Height for Jetpac and Arcade
+    *(int*)(0x805FBB04) = 0x24090000 | (SCREEN_WD - 11); //Scissor Right Edge for Game
+    *(int*)(0x805FBB18) = 0x240B0000 | (SCREEN_HD - 11); //Scissor Bottom Edge for Game
+    *(int*)(0x805FBBF4) = 0x24180000 | SCREEN_WD; //Screen Width for Framebuffer
+    *(int*)(0x805FBC0C) = 0x240F0000 | SCREEN_HD; //Screen Height for Framebuffer
+    *(int*)(0x805FBC24) = 0x24040000; //Remove Black Bars
+
+    int noise_scissor = ((SCREEN_WD - 11) << 14) | ((SCREEN_HD - 11) << 2);
+    *(short*)(0x8070368A) = (noise_scissor >> 16) & 0xFFFF; //Upper Part of Noise Scissor
+    *(short*)(0x8070369A) = noise_scissor & 0xFFFF; //Lower Part of Noise Scissor
+    int noise_scissor_gfx = 0xF6000000 | ((SCREEN_WD - 11) << 14);
+    *(short*)(0x807036AE) = (noise_scissor_gfx >> 16) & 0xFFFF; //Upper Part of Noise Rectangle
+    *(short*)(0x807036B2) = noise_scissor_gfx & 0xFFFF; //Lower Part of Noise Rectangle
+}
+
+void ws_static(void) {
+    ws_hud();
+    ws_crashdebugger();
+
+    // *(int*)(0x8071456C) = 0x0C000000 | ((((int)(&ws_enterFile)) & 0xFFFFFF) >> 2); // Zipper
+
+    *(int*)(0x806A2A34) = 0x0C000000 | ((((int)(&ws_timer)) & 0xFFFFFF) >> 2); // Timer Reposition
+    *(int*)(0x806A2A2C) = 0x27A40018;
+
+    *(short*)(0x805FB982) = 1; // Disable High Resolution for MAP_NINTENDOLOGO
+    
+    *(short*)(0x807075EE) = (SCREEN_WD / 128) + 2; //Number of Tiles Rendered in Main Menu Background
+
+    ws_transitions();
+    ws_pause();
+    left_to_yconvert();
+    ws_text();
+    ws_scissor();
+
+    *(int*)(0x806AC3E4) = 0x3C010000 | getHi(&pos_center_4x); //Load High Half of pos_center_4x
+    *(int*)(0x806AC3E8) = 0xD4280000 | getLo(&pos_center_4x); //Load pos_center_4x
+    *(int*)(0x806AC3EC) = 0x46020102; //Run Replaced Instruction
+
+    float width = (SCREEN_WD_FLOAT * 460) / 320;
+    *(short*)(0x80706D26) = *(short*)(&width); // Background Width in Snide Race
+    float height = (SCREEN_HD_FLOAT * 380) / 240;
+    *(short*)(0x80706D3E) = *(short*)(&height); // Background Height in Snide Race
 
     *(short*)(0x8070FCA6) = SCREEN_WD; //Max X Position of Reset Banana in Storm
     *(short*)(0x80712112) = SCREEN_WD; //Screen Range of Banana Storm
@@ -273,20 +323,31 @@ void ws_static(void) {
 }
 
 void ws_staticdata(void) {
-    *(float*)(0x807444BC) = SCREEN_WD_FLOAT / 240; //Aspect Ratio of Help Text
+    *(float*)(0x807444BC) = SCREEN_WD_FLOAT / SCREEN_HD_FLOAT; //Aspect Ratio of Help Text
     *(double*)(0x8075ACD0) = (SCREEN_WD_FLOAT * 2) - 40; //X Position of Up C Button
     *(double*)(0x8075ACD8) = (SCREEN_WD_FLOAT * 2) + 40; //X Position of Down C Button
+    *(double*)(0x8075C3F8) = SCREEN_HD_FLOAT + 55; //Y Offset of Player Names for Credits Bottom
     *(double*)(0x8075C408) = SCREEN_WD_FLOAT + 70; //X Offset of Player Names for Credits Right
     //*(int*)(0x80747B30) = SCREEN_WD; //Blurring Process Pitch // Causes crashes?
     *(short*)(0x80750240) = SCREEN_WD; //Sand Effect Vertex 2 X
     *(short*)(0x80750248) = ((SCREEN_WD*2016)/320); //Sand Effect Vertex 2 X Texcoord
     *(short*)(0x80750250) = SCREEN_WD; //Sand Effect Vertex 3 X
+    *(short*)(0x80750252) = SCREEN_HD; //Sand Effect Vertex 3 Y
     *(short*)(0x80750258) = ((SCREEN_WD*2016)/320); //Sand Effect Vertex 3 X Texcoord
+    *(short*)(0x8075025A) = ((SCREEN_HD*2016)/240); //Sand Effect Vertex 3 Y Texcoord
+    *(short*)(0x80750262) = SCREEN_HD; //Sand Effect Vertex 4 Y
+    *(short*)(0x8075026A) = ((SCREEN_HD*2016)/240); //Sand Effect Vertex 3 4 Texcoord
     
     *(short*)(0x80750848) = (SCREEN_WD-1); //Right Edge of Blackness in Border 1
+    *(short*)(0x80750856) = (SCREEN_HD-1); //Bottom Edge of Blackness in Border 2
     *(short*)(0x8075085C) = (SCREEN_WD-11); //Left Edge of Blackness in Border 3
     *(short*)(0x80750860) = (SCREEN_WD-1); //Right Edge of Blackness in Border 3
+    *(short*)(0x80750862) = (SCREEN_HD-1); //Bottom Edge of Blackness in Border 3
+    *(short*)(0x8075086A) = (SCREEN_HD-11); //Top Edge of Blackness in Border 4
     *(short*)(0x8075086C) = (SCREEN_WD-11); //Right Edge of Blackness in Border 4
+    *(short*)(0x8075086E) = (SCREEN_HD-1); //Bottom Edge of Blackness in Border 4
+    /*
+    Not needed for Rando (Multiplayer)
     *(short*)(0x80750878) = (SCREEN_WD-1); //Right Edge of Blackness in Border 5
     *(short*)(0x8075088C) = (SCREEN_WD-13); //Left Edge of Blackness in Border 7
     *(short*)(0x80750890) = (SCREEN_WD-1); //Right Edge of Blackness in Border 7
@@ -312,9 +373,14 @@ void ws_staticdata(void) {
     *(short*)(0x8075092C) = (SCREEN_WD-14); //Left Edge of Blackness in Border 21
     *(short*)(0x80750934) = ((SCREEN_WD/2)-1); //Left Edge of Blackness in Border 22
     *(short*)(0x80750938) = ((SCREEN_WD/2)+1); //Right Edge of Blackness in Border 22
+    */
 
     *(short*)(0x80750950) = (SCREEN_WD-11); //Right Edge of Viewport Setup 1
+    *(short*)(0x80750952) = (SCREEN_HD-11); //Bottom Edge of Viewport Setup 1
     *(short*)(0x8075095C) = (SCREEN_WD-11); //Right Edge of Viewport Setup 2
+    *(short*)(0x8075095E) = (SCREEN_HD-11); //Bottom Edge of Viewport Setup 1
+    /*
+    Not needed for Rando (multiplayer)
     *(short*)(0x80750968) = (SCREEN_WD-13); //Right Edge of Viewport Setup 3
     *(short*)(0x80750974) = (SCREEN_WD-13); //Right Edge of Viewport Setup 4
     *(short*)(0x80750980) = ((SCREEN_WD/2)-1); //Right Edge of Viewport Setup 5
@@ -368,6 +434,7 @@ void ws_staticdata(void) {
     *(float*)(0x80758144) = SCREEN_WD - 1.0f; // X Size of Pause Menu Background Texture 1
     *(float*)(0x80758148) = SCREEN_WD - 1.0f; // X Size of Pause Menu Background Texture 1
     *(float*)(0x8075814C) = SCREEN_WD - 1.0f; // X Size of Pause Menu Background Texture 1
+    */
 }
 
 void ws_minigame(void) {
@@ -382,7 +449,7 @@ void ws_arcade(void) {
     int scissor = ((SCREEN_WD - 48) << 14)|(232 << 2);
     *(short*)(0x80025B16) = getUpper(scissor); // Scissor Higher Half for DK Arcade
     *(short*)(0x80025B22) = getLower(scissor); //Scissor Lower Half for DK Arcade
-    int scissor_rect = (SCREEN_WD << 14) | (240 << 2); // Scissor Rectangle for DK Arcade
+    int scissor_rect = (SCREEN_WD << 14) | (SCREEN_HD << 2); // Scissor Rectangle for DK Arcade
     *(short*)(0x800319E6) = getUpper(scissor_rect);
     *(short*)(0x800319EA) = getLower(scissor_rect);
 }
