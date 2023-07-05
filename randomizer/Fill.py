@@ -1830,6 +1830,9 @@ def FillKongsAndMoves(spoiler, placedTypes):
         if spoiler.settings.shockwave_status in (ShockwaveStatus.shuffled, ShockwaveStatus.shuffled_decoupled):
             possibleStartingMoves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
         shuffle(possibleStartingMoves)
+        if spoiler.settings.start_with_a_slam:  # Force a slam to be the first item chosen from the random list of moves
+            possibleStartingMoves.remove(Items.ProgressiveSlam)
+            possibleStartingMoves.append(Items.ProgressiveSlam)
         # For each location needing a move, put in a random valid move
         for locationId in locationsNeedingMoves:
             startingMove = possibleStartingMoves.pop()

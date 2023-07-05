@@ -234,6 +234,7 @@ class Settings:
         self.kasplat_rando_setting = None
         self.puzzle_rando = None
         self.shuffle_shops = None
+        self.start_with_a_slam = False
 
         # The major setting for item randomization
         self.shuffle_items = True
