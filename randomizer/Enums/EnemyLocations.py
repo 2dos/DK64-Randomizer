@@ -6,6 +6,60 @@ class EnemyLocations(IntEnum):
     """Enemy Locations enum."""
 
     # Japes
+    # Main
+    JapesMain_Start = auto() # Beaver, 2
+    JapesMain_DiddyCavern = auto() # Beaver, 4
+    JapesMain_Tunnel0 = auto() # Beaver, 5
+    JapesMain_Tunnel1 = auto() # Beaver, 6
+    JapesMain_Storm0 = auto() # Beaver, 15
+    JapesMain_Storm1 = auto() # Beaver, 18
+    JapesMain_Storm2 = auto() # Beaver, 20
+    JapesMain_Hive0 = auto() # Zinger (0x1C), 28
+    JapesMain_Hive1 = auto() # Zinger (0x1C), 29
+    JapesMain_Hive2 = auto() # Zinger (0x1C), 30
+    JapesMain_Hive3 = auto() # Kremling, 36
+    JapesMain_Hive4 = auto() # Kremling, 37
+    JapesMain_KilledInDemo = auto() # Beaver, 33
+    JapesMain_NearUnderground = auto() # Zinger (0x5), 49
+    JapesMain_NearPainting0 = auto() # Beaver, 34
+    JapesMain_NearPainting1 = auto() # Beaver, 35
+    JapesMain_NearPainting2 = auto() # Zinger (0x5), 48
+    JapesMain_Mountain = auto() # Zinger (0x5), 50
+    JapesMain_FeatherTunnel = auto() # Zinger (0x1C), 52
+    JapesMain_MiddleTunnel = auto() # Beaver, 54
+
+    # Lobby
+    JapesLobby_Enemy0 = auto() # Beaver, 1
+    JapesLobby_Enemy1 = auto() # Beaver, 2
+
+    # Painting
+    JapesPainting_Gauntlet0 = auto() # Zinger (0x5), 2
+    JapesPainting_Gauntlet1 = auto() # Zinger (0x5), 3
+    JapesPainting_Gauntlet2 = auto() # Zinger (0x5), 4
+    JapesPainting_Gauntlet3 = auto() # Zinger (0x5), 5
+    JapesPainting_Gauntlet4 = auto() # Zinger (0x5), 6
+
+    # Mountain
+    JapesMountain_Start0 = auto() # Beaver, 1
+    JapesMountain_Start1 = auto() # Beaver, 2
+    JapesMountain_Start2 = auto() # Beaver, 6
+    JapesMountain_Start3 = auto() # Zinger (0x5), 8
+    JapesMountain_Start4 = auto() # Zinger (0x5), 9
+    JapesMountain_NearGateSwitch0 = auto() # Zinger (0x1C), 13
+    JapesMountain_NearGateSwitch1 = auto() # Zinger (0x1C), 14
+    JapesMountain_HiLo = auto() # Klump, 15
+    JapesMountain_Conveyor0 = auto() # Klump, 16
+    JapesMountain_Conveyor1 = auto() # Klump, 17
+
+    # Shellhive
+    JapesShellhive_FirstRoom = auto() # P Klaptrap, 7
+    JapesShellhive_SecondRoom0 = auto() # P Klaptrap, 8
+    JapesShellhive_SecondRoom1 = auto() # P Klaptrap, 9
+    JapesShellhive_ThirdRoom0 = auto() # P Klaptrap, 10
+    JapesShellhive_ThirdRoom1 = auto() # P Klaptrap, 11
+    JapesShellhive_ThirdRoom2 = auto() # Zinger (0x5), 12
+    JapesShellhive_ThirdRoom3 = auto() # Zinger (0x5), 13
+    JapesShellhive_MainRoom = auto() # Zinger (0x5), 14
 
     # Angry Aztec
     # Main
@@ -162,43 +216,126 @@ class EnemyLocations(IntEnum):
     FactoryLobby_Enemy0 = auto() # Robo-Zinger, 1
 
     # Galleon
+    # Main
+    GalleonMain_ChestRoom0 = auto() # Klobber, 12
+    GalleonMain_ChestRoom1 = auto() # Kaboom, 18
+    GalleonMain_NearVineCannon = auto() # Kaboom, 16
+    GalleonMain_CrankyCannon = auto() # Kaboom, 17
+    GalleonMain_Submarine = auto() # Pufftup, 14
+    GalleonMain_5DS0 = auto() # Shuri, 19
+    GalleonMain_5DS1 = auto() # Shuri, 20
+    GalleonMain_PeanutTunnel = auto() # Kosha, 26
+    GalleonMain_CoconutTunnel = auto() # Kremling, 27
+
+    # Lighthouse
+    GalleonLighthouse_Enemy0 = auto() # Klump, 1
+    GalleonLighthouse_Enemy1 = auto() # Klump, 2
+
+    # 5DS Diddy, Lanky, Chunky
+    Galleon5DSDLC_Diddy = auto() # Pufftup, 4
+    Galleon5DSDLC_Chunky = auto() # Pufftup, 5
+    Galleon5DSDLC_Lanky = auto() # Pufftup, 6
+
+    # 5DS DK, Tiny
+    Galleon5DSDT_DK0 = auto() # Shuri, 4
+    Galleon5DSDT_DK1 = auto() # Shuri, 5
+    Galleon5DSDT_DK2 = auto() # Shuri, 6
+    Galleon5DSDT_TinyCage = auto() # Shuri, 9
+    Galleon5DSDT_TinyBed = auto() # Shuri, 10
+
+    # 2DS
+    Galleon2DS_Tiny0 = auto() # Gimpfish, 3
+    Galleon2DS_Tiny1 = auto() # Gimpfish, 4
+
+    # Submarine
+    GalleonSub_Enemy0 = auto() # Pufftup, 1
+    GalleonSub_Enemy1 = auto() # Pufftup, 3
+    GalleonSub_Enemy2 = auto() # Pufftup, 4
+    GalleonSub_Enemy3 = auto() # Pufftup, 6
+
     # Fungi
     # Main
     FungiMain_HollowTree0 = auto() # Klump, 5
     FungiMain_HollowTree1 = auto() # Klump, 30
-
     FungiMain_HollowTreeEntrance = auto() # Zinger (0x1C), 34
-
     FungiMain_TreeMelonCrate0 = auto() # Zinger (0x1C), 31
     FungiMain_TreeMelonCrate1 = auto() # Zinger (0x1C), 32
     FungiMain_TreeMelonCrate2 = auto() # Zinger (0x1C), 33
-
     FungiMain_AppleGauntlet0 = auto() # Tomato, 9
     FungiMain_AppleGauntlet1 = auto() # Tomato, 10
     FungiMain_AppleGauntlet2 = auto() # Tomato, 11
     FungiMain_AppleGauntlet3 = auto() # Tomato, 12
-
-    FungiMain_NearWarp5 = auto() # Mushroom, 23
+    FungiMain_NearBeanstalk0 = auto() # Klump, 55
+    FungiMain_NearBeanstalk1 = auto() # Klump, 56
+    FungiMain_GreenTunnel = auto() # Zinger (0x1C), 57
+    FungiMain_NearLowWarp5 = auto() # Mushroom, 23
     FungiMain_NearPinkTunnelBounceTag = auto() # Mushroom, 24
     FungiMain_NearGMRocketbarrel = auto() # Mushroom, 25
     FungiMain_BetweenRBAndYellowTunnel = auto() # Zinger (0x1C), 26
     FungiMain_NearCranky = auto() # Zinger (0x1C), 27
-    FungiMain_NearPinkTunnel = auto() # Zinger (0x1C), 28
+    FungiMain_NearPinkTunnelGM = auto() # Zinger (0x1C), 28
     FungiMain_GMRearTag = auto() # Zinger (0x1C), 29
-
+    FungiMain_NearFacePuzzle = auto() # Zinger (0x1C), 51
+    FungiMain_NearCrown = auto() # Zinger (0x1C), 52
+    FungiMain_NearHighWarp5 = auto() # Zinger (0x1C), 53
+    FungiMain_TopOfMushroom = auto() # Klump, 54
+    FungiMain_NearAppleDropoff = auto() # Zinger (0x1C), 48
+    FungiMain_NearDKPortal = auto() # Zinger (0x1C), 49
+    FungiMain_NearWellTag = auto() # Zinger (0x1C), 50
     FungiMain_YellowTunnel0 = auto() # Mushroom, 22
     FungiMain_YellowTunnel1 = auto() # Zinger (0x1C), 41
     FungiMain_YellowTunnel2 = auto() # Zinger (0x1C), 42
     FungiMain_YellowTunnel3 = auto() # Klump, 43
-
     FungiMain_NearSnide = auto() # Mushroom, 35
     FungiMain_NearIsoCoin = auto() # Zinger (0x1C), 38
     FungiMain_NearBBlast = auto() # Zinger (0x1C), 39
     FungiMain_NearDarkAttic = auto() # Klump, 44
     FungiMain_NearWellExit = auto() # Zinger (0x1C), 47
-
+    FungiMain_NearBlueTunnel = auto() # Klump, 59
     FungiMain_Thornvine0 = auto() # Klump, 45
     FungiMain_Thornvine1 = auto() # Klump, 46
+    FungiMain_Thornvine2 = auto() # Zinger (0x1C), 60
+    FungiMain_ThornvineEntrance = auto() # Klump, 58
+
+    # Anthill
+    FungiAnthill_Gauntlet0 = auto() # P Klaptrap, 1
+    FungiAnthill_Gauntlet1 = auto() # P Klaptrap, 2
+    FungiAnthill_Gauntlet2 = auto() # P Klaptrap, 3
+    FungiAnthill_Gauntlet3 = auto() # P Klaptrap, 4
+
+    # Winch Room
+    FungiWinch_Enemy = auto() # Bat, 1
+
+    # Thornvine Barn
+    FungiThornBarn_Enemy = auto() # Kosha, 1
+
+    # Mill Front
+    FungiMillFront_Enemy = auto() # Zinger (0x1C), 1
+
+    # Mill Rear
+    FungiMillRear_Enemy = auto() # Zinger (0x1C), 1
+
+    # Giant Mushroom
+    FungiGM_AboveNightDoor = auto() # Klump, 2
+    FungiGM_Path0 = auto() # Zinger (0x1C), 3
+    FungiGM_Path1 = auto() # Zinger (0x1C), 4
+
+    # Lanky Attic
+    FungiLankyAttic_Gauntlet0 = auto() # Bat, 1
+    FungiLankyAttic_Gauntlet1 = auto() # Bat, 2
+    FungiLankyAttic_Gauntlet2 = auto() # Bat, 3
+
+    # Mush Leap
+    FungiLeap_Enemy0 = auto() # Zinger (0x1C), 1
+    FungiLeap_Enemy1 = auto() # Zinger (0x1C), 2
+
+    # Face Puzzle
+    FungiFacePuzzle_Enemy = auto() # Zinger (0x1C), 1
+
+    # Spider Boss
+    FungiSpider_Gauntlet0 = auto() # Small Spider, 2
+    FungiSpider_Gauntlet1 = auto() # Small Spider, 3
+    FungiSpider_Gauntlet2 = auto() # Small Spider, 4
 
     # Caves
     # Main
