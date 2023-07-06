@@ -190,6 +190,7 @@ def randomize_setup(spoiler):
     ]
 
     if enabled:
+        ROM_COPY = LocalROM()
         diddy_5di_pads = pickRandomPositionsMult(287.94, 312.119, 0, 140, 6, 40)
         lanky_fungi_mush = pickRandomPositionsMult(274.9, 316.505, 40, 160, 5, 40)
         chunky_5dc_pads = pickChunkyCabinPadPositions()
@@ -198,8 +199,8 @@ def randomize_setup(spoiler):
         raise_patch = (MiscChangesSelected.raise_fungi_dirt_patch in spoiler.settings.misc_changes_selected) or (len(spoiler.settings.misc_changes_selected) == 0)
         for cont_map_id in range(216):
             cont_map_setup_address = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
-            LocalROM().seek(cont_map_setup_address)
-            model2_count = int.from_bytes(LocalROM().readBytes(4), "big")
+            ROM_COPY.seek(cont_map_setup_address)
+            model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             # Puzzle Stuff
             offsets = []
             positions = []
@@ -207,29 +208,29 @@ def randomize_setup(spoiler):
                 number_replacement_data = {"corner": {"offsets": [], "positions": []}, "edge": {"offsets": [], "positions": []}, "center": {"offsets": [], "positions": []}}
             for model2_item in range(model2_count):
                 item_start = cont_map_setup_address + 4 + (model2_item * 0x30)
-                LocalROM().seek(item_start + 0x28)
-                item_type = int.from_bytes(LocalROM().readBytes(2), "big")
+                ROM_COPY.seek(item_start + 0x28)
+                item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
                 is_swap = False
                 for swap in swap_list:
                     if swap["map"] == cont_map_id and item_type in swap["item_list"]:
                         is_swap = True
                 if item_type == 0x196 and spoiler.settings.fast_gbs and cont_map_id == Maps.FactoryBaboonBlast:
-                    LocalROM().seek(item_start + 0x28)
-                    LocalROM().writeMultipleBytes(0x74, 2)
-                    LocalROM().seek(item_start + 0xC)
-                    LocalROM().writeMultipleBytes(0x3F000000, 4)  # Scale: 0.5
+                    ROM_COPY.seek(item_start + 0x28)
+                    ROM_COPY.writeMultipleBytes(0x74, 2)
+                    ROM_COPY.seek(item_start + 0xC)
+                    ROM_COPY.writeMultipleBytes(0x3F000000, 4)  # Scale: 0.5
                 elif item_type in pickup_list and spoiler.settings.randomize_pickups:
-                    LocalROM().seek(item_start + 0x28)
-                    LocalROM().writeMultipleBytes(random.choice(pickup_list), 2)
+                    ROM_COPY.seek(item_start + 0x28)
+                    ROM_COPY.writeMultipleBytes(random.choice(pickup_list), 2)
                 elif is_swap:
                     if spoiler.settings.puzzle_rando:
                         offsets.append(item_start)
-                        LocalROM().seek(item_start)
-                        x = int.from_bytes(LocalROM().readBytes(4), "big")
-                        y = int.from_bytes(LocalROM().readBytes(4), "big")
-                        z = int.from_bytes(LocalROM().readBytes(4), "big")
-                        LocalROM().seek(item_start + 0x1C)
-                        ry = int.from_bytes(LocalROM().readBytes(4), "big")
+                        ROM_COPY.seek(item_start)
+                        x = int.from_bytes(ROM_COPY.readBytes(4), "big")
+                        y = int.from_bytes(ROM_COPY.readBytes(4), "big")
+                        z = int.from_bytes(ROM_COPY.readBytes(4), "big")
+                        ROM_COPY.seek(item_start + 0x1C)
+                        ry = int.from_bytes(ROM_COPY.readBytes(4), "big")
                         positions.append([x, y, z, ry])
                 elif item_type == 0x235 and ((cont_map_id == Maps.GalleonBoss and spoiler.settings.hard_bosses) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando)):
                     if cont_map_id == Maps.HideoutHelm:
@@ -250,69 +251,69 @@ def randomize_setup(spoiler):
                         star_a = 0
                     star_x = star_pos[0]
                     star_z = star_pos[1]
-                    LocalROM().seek(item_start)
-                    LocalROM().writeMultipleBytes(int(float_to_hex(star_x), 16), 4)
-                    LocalROM().seek(item_start + 8)
-                    LocalROM().writeMultipleBytes(int(float_to_hex(star_z), 16), 4)
-                    LocalROM().seek(item_start + 0x1C)
-                    LocalROM().writeMultipleBytes(int(float_to_hex(star_a), 16), 4)
+                    ROM_COPY.seek(item_start)
+                    ROM_COPY.writeMultipleBytes(int(float_to_hex(star_x), 16), 4)
+                    ROM_COPY.seek(item_start + 8)
+                    ROM_COPY.writeMultipleBytes(int(float_to_hex(star_z), 16), 4)
+                    ROM_COPY.seek(item_start + 0x1C)
+                    ROM_COPY.writeMultipleBytes(int(float_to_hex(star_a), 16), 4)
                     if len(star_height_boundaries) > 0:
                         star_y = random.uniform(star_height_boundaries[0], star_height_boundaries[1])
-                        LocalROM().seek(item_start + 4)
-                        LocalROM().writeMultipleBytes(int(float_to_hex(star_y), 16), 4)
+                        ROM_COPY.seek(item_start + 4)
+                        ROM_COPY.writeMultipleBytes(int(float_to_hex(star_y), 16), 4)
                 elif item_type == 0x74 and cont_map_id == Maps.GalleonLighthouse and spoiler.settings.high_req:
                     new_gb_coords = [407.107, 720, 501.02]
                     for coord_i, coord in enumerate(new_gb_coords):
-                        LocalROM().seek(item_start + (coord_i * 4))
-                        LocalROM().writeMultipleBytes(int(float_to_hex(coord), 16), 4)
+                        ROM_COPY.seek(item_start + (coord_i * 4))
+                        ROM_COPY.writeMultipleBytes(int(float_to_hex(coord), 16), 4)
                 elif cont_map_id == Maps.FranticFactory and spoiler.settings.puzzle_rando and item_type >= 0xF4 and item_type <= 0x103:
                     for subtype_item in number_gb_data:
                         for num_item in subtype_item["numbers"]:
                             if num_item["number"] == (item_type - 0xF3):
                                 subtype_name = subtype_item["subtype"]
-                                LocalROM().seek(item_start)
-                                x = int.from_bytes(LocalROM().readBytes(4), "big")
-                                y = int.from_bytes(LocalROM().readBytes(4), "big")
-                                z = int.from_bytes(LocalROM().readBytes(4), "big")
+                                ROM_COPY.seek(item_start)
+                                x = int.from_bytes(ROM_COPY.readBytes(4), "big")
+                                y = int.from_bytes(ROM_COPY.readBytes(4), "big")
+                                z = int.from_bytes(ROM_COPY.readBytes(4), "big")
                                 number_replacement_data[subtype_name]["offsets"].append({"offset": item_start, "rotation": num_item["rot"], "number": item_type - 0xF3})
                                 number_replacement_data[subtype_name]["positions"].append({"coords": [x, y, z], "rotation": num_item["rot"]})
                 elif cont_map_id == Maps.ForestLankyMushroomsRoom and spoiler.settings.puzzle_rando:
                     if item_type >= 0x1BA and item_type <= 0x1BE:  # Mushrooms
                         spawner_pos = lanky_fungi_mush["picked"][lanky_fungi_mush["index"]]
-                        LocalROM().seek(item_start)
-                        LocalROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
-                        LocalROM().seek(item_start + 8)
-                        LocalROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
+                        ROM_COPY.seek(item_start)
+                        ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
+                        ROM_COPY.seek(item_start + 8)
+                        ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
                         lanky_fungi_mush["index"] += 1
                     elif item_type == 0x205:  # Lanky Bunch
                         spawner_pos = lanky_fungi_mush["picked"][0]
-                        LocalROM().seek(item_start)
-                        LocalROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
-                        LocalROM().seek(item_start + 8)
-                        LocalROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
+                        ROM_COPY.seek(item_start)
+                        ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
+                        ROM_COPY.seek(item_start + 8)
+                        ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
                 elif cont_map_id == Maps.AngryAztec and spoiler.settings.puzzle_rando and (item_type == 0x121 or (item_type >= 0x226 and item_type <= 0x228)):
                     # Is Vase Pad
-                    LocalROM().seek(item_start)
+                    ROM_COPY.seek(item_start)
                     for coord in range(3):
-                        LocalROM().writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
+                        ROM_COPY.writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
                     vase_puzzle_rando_progress += 1
                 elif cont_map_id == Maps.CavesChunkyCabin and spoiler.settings.puzzle_rando and item_type == 0x203:
                     spawner_pos = chunky_5dc_pads["picked"][chunky_5dc_pads["index"]]
-                    LocalROM().seek(item_start)
-                    LocalROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
-                    LocalROM().seek(item_start + 8)
-                    LocalROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
+                    ROM_COPY.seek(item_start)
+                    ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
+                    ROM_COPY.seek(item_start + 8)
+                    ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
                     chunky_5dc_pads["index"] += 1
 
             if spoiler.settings.puzzle_rando:
                 if len(positions) > 0 and len(offsets) > 0:
                     random.shuffle(positions)
                     for index, offset in enumerate(offsets):
-                        LocalROM().seek(offset)
+                        ROM_COPY.seek(offset)
                         for coord in range(3):
-                            LocalROM().writeMultipleBytes(positions[index][coord], 4)
-                        LocalROM().seek(offset + 0x1C)
-                        LocalROM().writeMultipleBytes(positions[index][3], 4)
+                            ROM_COPY.writeMultipleBytes(positions[index][coord], 4)
+                        ROM_COPY.seek(offset + 0x1C)
+                        ROM_COPY.writeMultipleBytes(positions[index][3], 4)
                 if cont_map_id == Maps.FranticFactory:
                     rotation_hexes = ["0x00000000", "0x42B40000", "0x43340000", "0x43870000"]  # 0  # 90  # 180  # 270
                     for subtype in number_replacement_data:
@@ -320,40 +321,40 @@ def randomize_setup(spoiler):
                         subtype = number_replacement_data[subtype]
                         random.shuffle(subtype["positions"])
                         for index, offset in enumerate(subtype["offsets"]):
-                            LocalROM().seek(offset["offset"])
+                            ROM_COPY.seek(offset["offset"])
                             base_rot = offset["rotation"]
                             for coord in range(3):
                                 coord_val = subtype["positions"][index]["coords"][coord]
                                 if coord == 1:
                                     coord_val = int(float_to_hex(1002), 16)
-                                LocalROM().writeMultipleBytes(coord_val, 4)
+                                ROM_COPY.writeMultipleBytes(coord_val, 4)
                             new_rot = subtype["positions"][index]["rotation"]
                             rot_diff = ((base_rot - new_rot) + 4) % 4
                             if subtype_name == "center":
                                 rot_diff = random.randint(0, 3)
-                            LocalROM().seek(offset["offset"] + 0x1C)
+                            ROM_COPY.seek(offset["offset"] + 0x1C)
                             new_rot = (2 + rot_diff) % 4
-                            LocalROM().writeMultipleBytes(int(rotation_hexes[new_rot], 16), 4)
+                            ROM_COPY.writeMultipleBytes(int(rotation_hexes[new_rot], 16), 4)
 
-            LocalROM().seek(cont_map_setup_address + 4 + (model2_count * 0x30))
-            mystery_count = int.from_bytes(LocalROM().readBytes(4), "big")
+            ROM_COPY.seek(cont_map_setup_address + 4 + (model2_count * 0x30))
+            mystery_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             actor_block_start = cont_map_setup_address + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24)
-            LocalROM().seek(cont_map_setup_address + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24))
-            actor_count = int.from_bytes(LocalROM().readBytes(4), "big")
+            ROM_COPY.seek(cont_map_setup_address + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24))
+            actor_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             actor_bytes = []
             used_actor_ids = []
             for actor_item in range(actor_count):
                 actor_start = actor_block_start + 4 + (actor_item * 0x38)
-                LocalROM().seek(actor_start + 0x32)
-                actor_type = int.from_bytes(LocalROM().readBytes(2), "big") + 0x10
+                ROM_COPY.seek(actor_start + 0x32)
+                actor_type = int.from_bytes(ROM_COPY.readBytes(2), "big") + 0x10
                 if spoiler.settings.random_patches:
                     if not actor_type == 139:
                         byte_list = []
-                        LocalROM().seek(actor_start + 0x34)
-                        used_actor_ids.append(int.from_bytes(LocalROM().readBytes(2), "big"))
-                        LocalROM().seek(actor_start)
+                        ROM_COPY.seek(actor_start + 0x34)
+                        used_actor_ids.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+                        ROM_COPY.seek(actor_start)
                         for x in range(int(0x38 / 4)):
-                            byte_list.append(int.from_bytes(LocalROM().readBytes(4), "big"))
+                            byte_list.append(int.from_bytes(ROM_COPY.readBytes(4), "big"))
                         actor_bytes.append(byte_list.copy())
             if spoiler.settings.random_patches:
                 new_actor_id = 0x20
@@ -380,43 +381,44 @@ def randomize_setup(spoiler):
                             new_actor_id += 1
                             dirt_bytes.append(int(id_something_hex, 16))
                             actor_bytes.append(dirt_bytes)
-                    LocalROM().seek(actor_block_start)
-                    LocalROM().writeMultipleBytes(len(actor_bytes), 4)
+                    ROM_COPY.seek(actor_block_start)
+                    ROM_COPY.writeMultipleBytes(len(actor_bytes), 4)
                     for actor in actor_bytes:
                         for byte_list in actor:
-                            LocalROM().writeMultipleBytes(byte_list, 4)
+                            ROM_COPY.writeMultipleBytes(byte_list, 4)
             # Re-run through actor stuff for changes
-            LocalROM().seek(cont_map_setup_address + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24))
-            actor_count = int.from_bytes(LocalROM().readBytes(4), "big")
+            ROM_COPY.seek(cont_map_setup_address + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24))
+            actor_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             diddy_5di_pos = []
             for actor_item in range(actor_count):
                 actor_start = actor_block_start + 4 + (actor_item * 0x38)
-                LocalROM().seek(actor_start + 0x32)
-                actor_type = int.from_bytes(LocalROM().readBytes(2), "big") + 0x10
-                LocalROM().seek(actor_start + 0x34)
-                actor_id = int.from_bytes(LocalROM().readBytes(2), "big")
+                ROM_COPY.seek(actor_start + 0x32)
+                actor_type = int.from_bytes(ROM_COPY.readBytes(2), "big") + 0x10
+                ROM_COPY.seek(actor_start + 0x34)
+                actor_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
                 if actor_type >= 100 and actor_type <= 105 and spoiler.settings.puzzle_rando and cont_map_id == Maps.CavesDiddyIgloo:  # 5DI Spawner
                     spawner_pos = diddy_5di_pads["picked"][diddy_5di_pads["index"]]
-                    LocalROM().seek(actor_start)
-                    LocalROM().writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
-                    LocalROM().seek(actor_start + 8)
-                    LocalROM().writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
+                    ROM_COPY.seek(actor_start)
+                    ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[0]), 16), 4)
+                    ROM_COPY.seek(actor_start + 8)
+                    ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
                     diddy_5di_pads["index"] += 1
                 elif actor_type >= 64 and actor_type <= 66 and spoiler.settings.puzzle_rando and cont_map_id == Maps.AngryAztec:  # Exclude O Vase to force it to be vanilla
                     # Vase
-                    LocalROM().seek(actor_start)
+                    ROM_COPY.seek(actor_start)
                     for coord in range(3):
-                        LocalROM().writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
+                        ROM_COPY.writeMultipleBytes(int(float_to_hex(vase_puzzle_positions[vase_puzzle_rando_progress][coord]), 16), 4)
                     vase_puzzle_rando_progress += 1
                 elif actor_type == 139 and raise_patch and not spoiler.settings.random_patches:
                     if cont_map_id == Maps.FungiForest and actor_id == 47:
-                        LocalROM().seek(actor_start + 4)
-                        LocalROM().writeMultipleBytes(int(float_to_hex(155), 16), 4)
+                        ROM_COPY.seek(actor_start + 4)
+                        ROM_COPY.writeMultipleBytes(int(float_to_hex(155), 16), 4)
 
 
 def updateRandomSwitches(spoiler):
     """Update setup to account for random switch placement."""
     if spoiler.settings.alter_switch_allocation:
+        ROM_COPY = LocalROM()
         switches = {
             Kongs.donkey: [0x94, 0x16C, 0x167],
             Kongs.diddy: [0x93, 0x16B, 0x166],
@@ -437,14 +439,14 @@ def updateRandomSwitches(spoiler):
                     acceptable_maps.append(Maps.GloomyGalleonLobby)  # Galleon lobby internally in the game is galleon, but isn't in rando files. Quick fix for this
                 for map in acceptable_maps:
                     file_start = js.pointer_addresses[9]["entries"][map]["pointing_to"]
-                    LocalROM().seek(file_start)
-                    model2_count = int.from_bytes(LocalROM().readBytes(4), "big")
+                    ROM_COPY.seek(file_start)
+                    model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
                     for model2_item in range(model2_count):
                         item_start = file_start + 4 + (model2_item * 0x30)
-                        LocalROM().seek(item_start + 0x28)
-                        item_type = int.from_bytes(LocalROM().readBytes(2), "big")
+                        ROM_COPY.seek(item_start + 0x28)
+                        item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
                         if item_type in all_switches:
                             for kong in switches:
                                 if item_type in switches[kong]:
-                                    LocalROM().seek(item_start + 0x28)
-                                    LocalROM().writeMultipleBytes(switches[kong][switch_level], 2)
+                                    ROM_COPY.seek(item_start + 0x28)
+                                    ROM_COPY.writeMultipleBytes(switches[kong][switch_level], 2)
