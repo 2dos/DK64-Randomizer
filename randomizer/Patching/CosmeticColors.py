@@ -1357,11 +1357,12 @@ ORANGE_SCALING = 0.7
 
 def applyKrushaKong(settings):
     """Apply Krusha Kong setting."""
-    LocalROM().seek(settings.rom_data + 0x11C)
+    ROM_COPY = LocalROM()
+    ROM_COPY.seek(settings.rom_data + 0x11C)
     if settings.krusha_kong is None:
-        LocalROM().write(255)
+        ROM_COPY.write(255)
     elif settings.krusha_kong < 5:
-        LocalROM().write(settings.krusha_kong)
+        ROM_COPY.write(settings.krusha_kong)
         placeKrushaHead(settings.krusha_kong)
         changeKrushaModel(settings.krusha_kong)
         if settings.krusha_kong == Kongs.donkey:
@@ -1411,10 +1412,11 @@ def changeKrushaModel(krusha_kong: int):
     krusha_model_start = js.pointer_addresses[5]["entries"][0xDA]["pointing_to"]
     krusha_model_finish = js.pointer_addresses[5]["entries"][0xDB]["pointing_to"]
     krusha_model_size = krusha_model_finish - krusha_model_start
-    LocalROM().seek(krusha_model_start)
-    indicator = int.from_bytes(LocalROM().readBytes(2), "big")
-    LocalROM().seek(krusha_model_start)
-    data = LocalROM().readBytes(krusha_model_size)
+    ROM_COPY = LocalROM()
+    ROM_COPY.seek(krusha_model_start)
+    indicator = int.from_bytes(ROM_COPY.readBytes(2), "big")
+    ROM_COPY.seek(krusha_model_start)
+    data = ROM_COPY.readBytes(krusha_model_size)
     if indicator == 0x1F8B:
         data = zlib.decompress(data, (15 + 32))
     num_data = []  # data, but represented as nums rather than b strings
@@ -1456,36 +1458,38 @@ def changeKrushaModel(krusha_kong: int):
 def fixBaboonBlasts():
     """Fix various baboon blasts to work for Krusha."""
     # Fungi Baboon Blast
+    ROM_COPY = LocalROM()
     for id in (2, 5):
         item_start = getObjectAddress(0xBC, id, "actor")
         if item_start is not None:
-            LocalROM().seek(item_start + 0x14)
-            LocalROM().writeMultipleBytes(0xFFFFFFEC, 4)
-            LocalROM().seek(item_start + 0x1B)
-            LocalROM().writeMultipleBytes(0, 1)
+            ROM_COPY.seek(item_start + 0x14)
+            ROM_COPY.writeMultipleBytes(0xFFFFFFEC, 4)
+            ROM_COPY.seek(item_start + 0x1B)
+            ROM_COPY.writeMultipleBytes(0, 1)
     # Caves Baboon Blast
     item_start = getObjectAddress(0xBA, 4, "actor")
     if item_start is not None:
-        LocalROM().seek(item_start + 0x4)
-        LocalROM().writeMultipleBytes(int(float_to_hex(510), 16), 4)
+        ROM_COPY.seek(item_start + 0x4)
+        ROM_COPY.writeMultipleBytes(int(float_to_hex(510), 16), 4)
     item_start = getObjectAddress(0xBA, 12, "actor")
     if item_start is not None:
-        LocalROM().seek(item_start + 0x4)
-        LocalROM().writeMultipleBytes(int(float_to_hex(333), 16), 4)
+        ROM_COPY.seek(item_start + 0x4)
+        ROM_COPY.writeMultipleBytes(int(float_to_hex(333), 16), 4)
     # Castle Baboon Blast
     item_start = getObjectAddress(0xBB, 4, "actor")
     if item_start is not None:
-        LocalROM().seek(item_start + 0x0)
-        LocalROM().writeMultipleBytes(int(float_to_hex(2472), 16), 4)
-        LocalROM().seek(item_start + 0x8)
-        LocalROM().writeMultipleBytes(int(float_to_hex(1980), 16), 4)
+        ROM_COPY.seek(item_start + 0x0)
+        ROM_COPY.writeMultipleBytes(int(float_to_hex(2472), 16), 4)
+        ROM_COPY.seek(item_start + 0x8)
+        ROM_COPY.writeMultipleBytes(int(float_to_hex(1980), 16), 4)
 
 
 def placeKrushaHead(slot):
     """Replace a kong's face with the Krusha face."""
     kong_face_textures = [[0x27C, 0x27B], [0x279, 0x27A], [0x277, 0x278], [0x276, 0x275], [0x273, 0x274]]
     unc_face_textures = [[579, 586], [580, 587], [581, 588], [582, 589], [577, 578]]
-    LocalROM().seek(0x1FF6000)
+    ROM_COPY = LocalROM()
+    ROM_COPY.seek(0x1FF6000)
     left = []
     right = []
     img32 = []
@@ -1496,8 +1500,8 @@ def placeKrushaHead(slot):
         x32 = []
         x32_rgba32 = []
         for x in range(64):
-            data_hi = int.from_bytes(LocalROM().readBytes(1), "big")
-            data_lo = int.from_bytes(LocalROM().readBytes(1), "big")
+            data_hi = int.from_bytes(ROM_COPY.readBytes(1), "big")
+            data_lo = int.from_bytes(ROM_COPY.readBytes(1), "big")
             val = (data_hi << 8) | data_lo
             val_r = ((val >> 11) & 0x1F) << 3
             val_g = ((val >> 6) & 0x1F) << 3
@@ -1529,18 +1533,18 @@ def placeKrushaHead(slot):
         texture_addr = js.pointer_addresses[25]["entries"][texture_index]["pointing_to"]
         unc_addr = js.pointer_addresses[7]["entries"][unc_index]["pointing_to"]
         data = gzip.compress(bytearray(img_data), compresslevel=9)
-        LocalROM().seek(texture_addr)
-        LocalROM().writeBytes(data)
-        LocalROM().seek(unc_addr)
-        LocalROM().writeBytes(bytearray(img_data))
+        ROM_COPY.seek(texture_addr)
+        ROM_COPY.writeBytes(data)
+        ROM_COPY.seek(unc_addr)
+        ROM_COPY.writeBytes(bytearray(img_data))
     rgba32_addr32 = js.pointer_addresses[14]["entries"][196 + slot]["pointing_to"]
     rgba16_addr32 = js.pointer_addresses[14]["entries"][190 + slot]["pointing_to"]
     data32 = gzip.compress(bytearray(img32), compresslevel=9)
     data32_rgba32 = gzip.compress(bytearray(img32_rgba32), compresslevel=9)
-    LocalROM().seek(rgba32_addr32)
-    LocalROM().writeBytes(bytearray(data32_rgba32))
-    LocalROM().seek(rgba16_addr32)
-    LocalROM().writeBytes(bytearray(data32))
+    ROM_COPY.seek(rgba32_addr32)
+    ROM_COPY.writeBytes(bytearray(data32_rgba32))
+    ROM_COPY.seek(rgba16_addr32)
+    ROM_COPY.writeBytes(bytearray(data32))
 
 
 def writeMiscCosmeticChanges(settings):
@@ -1873,7 +1877,8 @@ boot_phrases = (
 
 def writeBootMessages():
     """Write boot messages into ROM."""
+    ROM_COPY = LocalROM()
     placed_messages = random.sample(boot_phrases, 4)
     for message_index, message in enumerate(placed_messages):
-        LocalROM().seek(0x1FFD000 + (0x40 * message_index))
-        LocalROM().writeBytes(message.upper().encode("ascii"))
+        ROM_COPY.seek(0x1FFD000 + (0x40 * message_index))
+        ROM_COPY.writeBytes(message.upper().encode("ascii"))
