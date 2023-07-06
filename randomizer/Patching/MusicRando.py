@@ -35,6 +35,7 @@ def insertUploaded(uploaded_songs: list, uploaded_song_names: list, target_type:
     if swap_amount > len(all_target_songs):
         swap_amount = len(all_target_songs)
     songs_to_be_replaced = random.sample(all_target_songs, swap_amount)
+    ROM_COPY = ROM()
     for index, song in enumerate(songs_to_be_replaced):
         selected_bank = None
         selected_cap = 0xFFFFFF
@@ -60,9 +61,9 @@ def insertUploaded(uploaded_songs: list, uploaded_song_names: list, target_type:
             # Write Song
             song_data[song_idx].output_name = added_songs[index][1]
             entry_data = js.pointer_addresses[0]["entries"][song_idx]
-            ROM().seek(entry_data["pointing_to"])
+            ROM_COPY.seek(entry_data["pointing_to"])
             zipped_data = gzip.compress(new_song_data, compresslevel=9)
-            ROM().writeBytes(zipped_data)
+            ROM_COPY.writeBytes(zipped_data)
 
 
 ENABLE_CHAOS = False  # Enable DK Rap everywhere
@@ -95,18 +96,19 @@ def randomize_music(settings: Settings):
             settings.music_majoritems_randomized = True
             settings.music_minoritems_randomized = True
             settings.music_events_randomized = True
+    ROM_COPY = ROM()
     if settings.music_bgm_randomized or settings.music_events_randomized or settings.music_majoritems_randomized or settings.music_minoritems_randomized:
         sav = settings.rom_data
-        ROM().seek(sav + 0x12E)
-        ROM().write(1)
+        ROM_COPY.seek(sav + 0x12E)
+        ROM_COPY.write(1)
 
     for index, song in enumerate(song_data):
         song.Reset()
-        ROM().seek(TYPE_ARRAY + index)
+        ROM_COPY.seek(TYPE_ARRAY + index)
         if song.type in TYPE_VALUES:
-            ROM().write(TYPE_VALUES.index(song.type))
+            ROM_COPY.write(TYPE_VALUES.index(song.type))
         else:
-            ROM().write(255)
+            ROM_COPY.write(255)
     # Check if we have anything beyond default set for BGM
     if settings.music_bgm_randomized:
         # If the user selected standard rando
@@ -139,21 +141,21 @@ def randomize_music(settings: Settings):
                     song_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
 
             # Load the DK Rap song data
-            ROM().seek(rap["pointing_to"])
-            stored_data = ROM().readBytes(rap["compressed_size"])
+            ROM_COPY.seek(rap["pointing_to"])
+            stored_data = ROM_COPY.readBytes(rap["compressed_size"])
             uncompressed_data_table = js.pointer_addresses[26]["entries"][0]
             # Replace all songs as the DK rap
             for song in song_list:
-                ROM().seek(song["pointing_to"])
-                ROM().writeBytes(stored_data)
+                ROM_COPY.seek(song["pointing_to"])
+                ROM_COPY.writeBytes(stored_data)
                 # Update the uncompressed data table to have our new size.
-                ROM().seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(song)))
-                new_bytes = ROM().readBytes(4)
-                ROM().seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(rap)))
-                ROM().writeBytes(new_bytes)
+                ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(song)))
+                new_bytes = ROM_COPY.readBytes(4)
+                ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(rap)))
+                ROM_COPY.writeBytes(new_bytes)
                 # Update data
-                ROM().seek(0x1FFF000 + (song["index"] * 2))
-                ROM().writeMultipleBytes(song_data[rap["index"]].memory, 2)
+                ROM_COPY.seek(0x1FFF000 + (song["index"] * 2))
+                ROM_COPY.writeMultipleBytes(song_data[rap["index"]].memory, 2)
     # If the user wants to randomize major items
     if settings.music_majoritems_randomized:
         if js.cosmetics is not None and js.cosmetic_names is not None:
@@ -215,29 +217,30 @@ def shuffle_music(music_data, pool_to_shuffle, shuffled_list):
     stored_song_sizes = {}
     # For each song in the shuffled list, randomize it into the pool using the shuffled list as a base
     # First loop over all songs to read data from ROM
+    ROM_COPY = ROM()
     for song in pool_to_shuffle:
-        ROM().seek(song["pointing_to"])
-        stored_data = ROM().readBytes(song["compressed_size"])
+        ROM_COPY.seek(song["pointing_to"])
+        stored_data = ROM_COPY.readBytes(song["compressed_size"])
         stored_song_data[song["index"]] = stored_data
         # Update the uncompressed data table to have our new size.
-        ROM().seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
-        new_bytes = ROM().readBytes(4)
+        ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
+        new_bytes = ROM_COPY.readBytes(4)
         stored_song_sizes[song["index"]] = new_bytes
 
     for song in pool_to_shuffle:
         shuffled_song = shuffled_list[pool_to_shuffle.index(song)]
         songs = stored_song_data[shuffled_song["index"]]
-        ROM().seek(song["pointing_to"])
-        ROM().writeBytes(songs)
+        ROM_COPY.seek(song["pointing_to"])
+        ROM_COPY.writeBytes(songs)
         # Update the uncompressed data table to have our new size.
         song_size = stored_song_sizes[shuffled_song["index"]]
-        ROM().seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
-        ROM().writeBytes(song_size)
+        ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
+        ROM_COPY.writeBytes(song_size)
         originalIndex = song["index"]
         shuffledIndex = shuffled_song["index"]
         memory = song_data[shuffledIndex].memory
-        ROM().seek(0x1FFF000 + 2 * originalIndex)
-        ROM().writeMultipleBytes(memory, 2)
+        ROM_COPY.seek(0x1FFF000 + 2 * originalIndex)
+        ROM_COPY.writeMultipleBytes(memory, 2)
         if song_data[originalIndex].type == SongType.BGM:
             music_data["music_bgm_data"][song_data[originalIndex].name] = song_data[shuffledIndex].output_name
         elif song_data[originalIndex].type == SongType.MajorItem:

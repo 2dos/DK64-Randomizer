@@ -228,14 +228,15 @@ def int_to_list(num: int, size: int):
 
 def getNextFreeID(cont_map_id: int, ignore=[]):
     """Get next available Model 2 ID."""
+    ROM_COPY = LocalROM()
     setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
-    LocalROM().seek(setup_table)
-    model2_count = int.from_bytes(LocalROM().readBytes(4), "big")
+    ROM_COPY.seek(setup_table)
+    model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
     vacant_ids = list(range(0, 600))
     for item in range(model2_count):
         item_start = setup_table + 4 + (item * 0x30)
-        LocalROM().seek(item_start + 0x2A)
-        item_id = int.from_bytes(LocalROM().readBytes(2), "big")
+        ROM_COPY.seek(item_start + 0x2A)
+        item_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
         if item_id in vacant_ids:
             vacant_ids.remove(item_id)
     for id in range(0x220, 0x225):
@@ -251,31 +252,32 @@ def getNextFreeID(cont_map_id: int, ignore=[]):
 
 def addNewScript(cont_map_id: int, item_ids: list, type: ScriptTypes):
     """Append a new script to the script database. Has to be just 1 execution and 1 endblock."""
+    ROM_COPY = LocalROM()
     script_table = js.pointer_addresses[10]["entries"][cont_map_id]["pointing_to"]
-    LocalROM().seek(script_table)
-    script_count = int.from_bytes(LocalROM().readBytes(2), "big")
+    ROM_COPY.seek(script_table)
+    script_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
     good_scripts = []
     # Construct good pre-existing scripts
     file_offset = 2
     for script_item in range(script_count):
-        LocalROM().seek(script_table + file_offset)
+        ROM_COPY.seek(script_table + file_offset)
         script_start = script_table + file_offset
-        script_id = int.from_bytes(LocalROM().readBytes(2), "big")
-        block_count = int.from_bytes(LocalROM().readBytes(2), "big")
+        script_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        block_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
         file_offset += 6
         for block_item in range(block_count):
-            LocalROM().seek(script_table + file_offset)
-            cond_count = int.from_bytes(LocalROM().readBytes(2), "big")
+            ROM_COPY.seek(script_table + file_offset)
+            cond_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             file_offset += 2 + (8 * cond_count)
-            LocalROM().seek(script_table + file_offset)
-            exec_count = int.from_bytes(LocalROM().readBytes(2), "big")
+            ROM_COPY.seek(script_table + file_offset)
+            exec_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             file_offset += 2 + (8 * exec_count)
         script_end = script_table + file_offset
         if script_id not in item_ids:
             script_data = []
-            LocalROM().seek(script_start)
+            ROM_COPY.seek(script_start)
             for x in range(int((script_end - script_start) / 2)):
-                script_data.append(int.from_bytes(LocalROM().readBytes(2), "big"))
+                script_data.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
             good_scripts.append(script_data)
     # Get new script data
     subscript_type = -100
@@ -305,70 +307,71 @@ def addNewScript(cont_map_id: int, item_ids: list, type: ScriptTypes):
         ]
         good_scripts.append(script_arr)
     # Reconstruct File
-    LocalROM().seek(script_table)
-    LocalROM().writeMultipleBytes(len(good_scripts), 2)
+    ROM_COPY.seek(script_table)
+    ROM_COPY.writeMultipleBytes(len(good_scripts), 2)
     for script in good_scripts:
         for x in script:
-            LocalROM().writeMultipleBytes(x, 2)
+            ROM_COPY.writeMultipleBytes(x, 2)
 
 
 def grabText(file_index: int) -> list:
     """Pull text from ROM with a particular file index."""
+    ROM_COPY = LocalROM()
     file_start = js.pointer_addresses[12]["entries"][file_index]["pointing_to"]
-    LocalROM().seek(file_start + 0)
-    count = int.from_bytes(LocalROM().readBytes(1), "big")
+    ROM_COPY.seek(file_start + 0)
+    count = int.from_bytes(ROM_COPY.readBytes(1), "big")
     text = []
     text_data = []
     text_start = (count * 0xF) + 3
     data_start = 1
     for i in range(count):
-        LocalROM().seek(file_start + data_start)
-        section_1_count = int.from_bytes(LocalROM().readBytes(1), "big")
-        section_2_count = int.from_bytes(LocalROM().readBytes(1), "big")
-        section_3_count = int.from_bytes(LocalROM().readBytes(1), "big")
-        LocalROM().seek(file_start + data_start + 5)
-        start = int.from_bytes(LocalROM().readBytes(2), "big")
-        size = int.from_bytes(LocalROM().readBytes(2), "big")
+        ROM_COPY.seek(file_start + data_start)
+        section_1_count = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        section_2_count = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        section_3_count = int.from_bytes(ROM_COPY.readBytes(1), "big")
+        ROM_COPY.seek(file_start + data_start + 5)
+        start = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        size = int.from_bytes(ROM_COPY.readBytes(2), "big")
         block_start = 1
         blocks = []
         for k in range(section_1_count):
-            LocalROM().seek(file_start + data_start + block_start)
-            sec2ct = int.from_bytes(LocalROM().readBytes(1), "big")
+            ROM_COPY.seek(file_start + data_start + block_start)
+            sec2ct = int.from_bytes(ROM_COPY.readBytes(1), "big")
             offset = 0
             if (sec2ct & 4) != 0:
                 offset += 4
             text_blocks = []
             if (sec2ct & 1) == 0:
                 if (sec2ct & 2) != 0:
-                    LocalROM().seek(file_start + data_start + block_start + offset + 1)
-                    sec3ct = int.from_bytes(LocalROM().readBytes(1), "big")
+                    ROM_COPY.seek(file_start + data_start + block_start + offset + 1)
+                    sec3ct = int.from_bytes(ROM_COPY.readBytes(1), "big")
                     for j in range(sec3ct):
                         _block = block_start + 2 + offset + (4 * j) - 1
-                        LocalROM().seek(file_start + data_start + _block)
-                        _pos = int.from_bytes(LocalROM().readBytes(2), "big")
-                        LocalROM().seek(file_start + data_start + _block)
-                        _dat = int.from_bytes(LocalROM().readBytes(4), "big")
+                        ROM_COPY.seek(file_start + data_start + _block)
+                        _pos = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                        ROM_COPY.seek(file_start + data_start + _block)
+                        _dat = int.from_bytes(ROM_COPY.readBytes(4), "big")
                         text_blocks.append({"type": "sprite", "position": _pos, "data": hex(_dat), "sprite": icon_db[(_dat >> 8) & 0xFF]})
                     added = block_start + 2 + offset + (4 * sec3ct) + 4
             else:
-                LocalROM().seek(file_start + data_start + block_start + offset + 1)
-                sec3ct = int.from_bytes(LocalROM().readBytes(1), "big")
+                ROM_COPY.seek(file_start + data_start + block_start + offset + 1)
+                sec3ct = int.from_bytes(ROM_COPY.readBytes(1), "big")
                 for j in range(sec3ct):
                     _block = block_start + 2 + offset + (8 * j) - 1
-                    LocalROM().seek(file_start + data_start + _block + 3)
-                    _start = int.from_bytes(LocalROM().readBytes(2), "big")
-                    LocalROM().seek(file_start + data_start + _block + 5)
-                    _size = int.from_bytes(LocalROM().readBytes(2), "big")
+                    ROM_COPY.seek(file_start + data_start + _block + 3)
+                    _start = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                    ROM_COPY.seek(file_start + data_start + _block + 5)
+                    _size = int.from_bytes(ROM_COPY.readBytes(2), "big")
                     text_blocks.append({"type": "normal", "start": _start, "size": _size})
                 added = block_start + 2 + offset + (8 * sec3ct) + 4
             # print(f"File {file_index}, Textbox {i}, section {k}")
             blocks.append({"block_start": hex(block_start + data_start), "section2count": sec2ct, "section3count": sec3ct, "offset": offset, "text": text_blocks})
             block_start = added
-        LocalROM().seek(file_start + data_start)
+        ROM_COPY.seek(file_start + data_start)
         if added < data_start:
             info = b""
         else:
-            info = LocalROM().readBytes(added - data_start)
+            info = ROM_COPY.readBytes(added - data_start)
         text_data.append({"arr": info, "text": blocks, "section1count": section_1_count, "section2count": section_2_count, "section3count": section_3_count, "data_start": hex(data_start)})
         text_start += added - data_start
         data_start += block_start
@@ -383,8 +386,8 @@ def grabText(file_index: int) -> list:
                     start = item3["start"] + data_start + 2
                     # print(hex(start))
                     end = start + item3["size"]
-                    LocalROM().seek(file_start + start)
-                    temp.append(LocalROM().readBytes(item3["size"]).decode())
+                    ROM_COPY.seek(file_start + start)
+                    temp.append(ROM_COPY.readBytes(item3["size"]).decode())
                 elif item3["type"] == "sprite":
                     temp.append(item3["sprite"])
                     # print(fh.read(item3["size"]))
@@ -402,11 +405,12 @@ def grabText(file_index: int) -> list:
 def writeText(file_index: int, text: list):
     """Write the text to ROM."""
     text_start = js.pointer_addresses[12]["entries"][file_index]["pointing_to"]
-    LocalROM().seek(text_start)
-    LocalROM().writeBytes(bytearray([len(text)]))
+    ROM_COPY = LocalROM()
+    ROM_COPY.seek(text_start)
+    ROM_COPY.writeBytes(bytearray([len(text)]))
     position = 0
     for textbox in text:
-        LocalROM().writeBytes(len(textbox).to_bytes(1, "big"))
+        ROM_COPY.writeBytes(len(textbox).to_bytes(1, "big"))
         for block in textbox:
             # Get Icon State
             icon_id = -1
@@ -416,21 +420,21 @@ def writeText(file_index: int, text: list):
                         if icon_db[icon] == string:
                             icon_id = icon
             if icon_id > -1:
-                LocalROM().writeBytes(bytearray([2, 1]))
-                LocalROM().writeBytes(icon_id.to_bytes(2, "big"))
-                LocalROM().writeBytes(bytearray([0, 0]))
+                ROM_COPY.writeBytes(bytearray([2, 1]))
+                ROM_COPY.writeBytes(icon_id.to_bytes(2, "big"))
+                ROM_COPY.writeBytes(bytearray([0, 0]))
             else:
-                LocalROM().writeBytes(bytearray([1, len(block["text"])]))
+                ROM_COPY.writeBytes(bytearray([1, len(block["text"])]))
                 for string in block["text"]:
-                    LocalROM().writeBytes(position.to_bytes(4, "big"))
-                    LocalROM().writeBytes(len(string).to_bytes(2, "big"))
-                    LocalROM().writeBytes(bytearray([0, 0]))
+                    ROM_COPY.writeBytes(position.to_bytes(4, "big"))
+                    ROM_COPY.writeBytes(len(string).to_bytes(2, "big"))
+                    ROM_COPY.writeBytes(bytearray([0, 0]))
                     position += len(string)
             unk0 = 0
             if "unk0" in block:
                 unk0 = block["unk0"]
-            LocalROM().writeBytes(int(float_to_hex(unk0), 16).to_bytes(4, "big"))
-    LocalROM().writeBytes(bytearray(position.to_bytes(2, "big")))
+            ROM_COPY.writeBytes(int(float_to_hex(unk0), 16).to_bytes(4, "big"))
+    ROM_COPY.writeBytes(bytearray(position.to_bytes(2, "big")))
     for textbox in text:
         for block in textbox:
             is_icon = False
@@ -439,31 +443,32 @@ def writeText(file_index: int, text: list):
                     is_icon = True
             if not is_icon:
                 for string in block["text"]:
-                    LocalROM().writeBytes(string.encode("ascii"))
+                    ROM_COPY.writeBytes(string.encode("ascii"))
 
 
 def getObjectAddress(map: int, id: int, object_type: str) -> int:
     """Get address of object in setup."""
     setup_start = js.pointer_addresses[9]["entries"][map]["pointing_to"]
-    LocalROM().seek(setup_start)
-    model_2_count = int.from_bytes(LocalROM().readBytes(4), "big")
+    ROM_COPY = LocalROM()
+    ROM_COPY.seek(setup_start)
+    model_2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
     if object_type == "modeltwo":
         for item in range(model_2_count):
             item_start = setup_start + 4 + (item * 0x30)
-            LocalROM().seek(item_start + 0x2A)
-            if int.from_bytes(LocalROM().readBytes(2), "big") == id:
+            ROM_COPY.seek(item_start + 0x2A)
+            if int.from_bytes(ROM_COPY.readBytes(2), "big") == id:
                 return item_start
     mystery_start = setup_start + 4 + (0x30 * model_2_count)
-    LocalROM().seek(mystery_start)
-    mystery_count = int.from_bytes(LocalROM().readBytes(4), "big")
+    ROM_COPY.seek(mystery_start)
+    mystery_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
     actor_start = mystery_start + 4 + (0x24 * mystery_count)
-    LocalROM().seek(actor_start)
-    actor_count = int.from_bytes(LocalROM().readBytes(4), "big")
+    ROM_COPY.seek(actor_start)
+    actor_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
     if object_type == "actor":
         for item in range(actor_count):
             item_start = actor_start + 4 + (item * 0x38)
-            LocalROM().seek(item_start + 0x34)
-            if int.from_bytes(LocalROM().readBytes(2), "big") == id:
+            ROM_COPY.seek(item_start + 0x34)
+            if int.from_bytes(ROM_COPY.readBytes(2), "big") == id:
                 return item_start
     return None
 

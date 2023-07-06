@@ -31,11 +31,12 @@ def randomize_kasplat_locations(spoiler):
         Maps.GloomyGalleonLobby,
     ]
     if spoiler.settings.kasplat_rando:
+        ROM_COPY = LocalROM()
         selected_kasplat_names = [name for name in spoiler.shuffled_kasplat_map.keys()]
         for cont_map_id in range(216):
             cont_map_spawner_address = js.pointer_addresses[16]["entries"][cont_map_id]["pointing_to"]
-            LocalROM().seek(cont_map_spawner_address)
-            fence_count = int.from_bytes(LocalROM().readBytes(2), "big")
+            ROM_COPY.seek(cont_map_spawner_address)
+            fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             offset = 2
             fence_bytes = []
             used_fence_ids = []
@@ -43,43 +44,43 @@ def randomize_kasplat_locations(spoiler):
                 for x in range(fence_count):
                     fence = []
                     fence_start = cont_map_spawner_address + offset
-                    LocalROM().seek(cont_map_spawner_address + offset)
-                    point_count = int.from_bytes(LocalROM().readBytes(2), "big")
+                    ROM_COPY.seek(cont_map_spawner_address + offset)
+                    point_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
                     offset += (point_count * 6) + 2
-                    LocalROM().seek(cont_map_spawner_address + offset)
-                    point0_count = int.from_bytes(LocalROM().readBytes(2), "big")
+                    ROM_COPY.seek(cont_map_spawner_address + offset)
+                    point0_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
                     offset += (point0_count * 10) + 6
                     fence_finish = cont_map_spawner_address + offset
                     fence_size = fence_finish - fence_start
-                    LocalROM().seek(fence_finish - 4)
-                    used_fence_ids.append(int.from_bytes(LocalROM().readBytes(2), "big"))
-                    LocalROM().seek(fence_start)
+                    ROM_COPY.seek(fence_finish - 4)
+                    used_fence_ids.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+                    ROM_COPY.seek(fence_start)
                     for y in range(int(fence_size / 2)):
-                        fence.append(int.from_bytes(LocalROM().readBytes(2), "big"))
+                        fence.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
                     fence_bytes.append(fence)
-                    LocalROM().seek(fence_finish)
+                    ROM_COPY.seek(fence_finish)
             spawner_count_location = cont_map_spawner_address + offset
-            LocalROM().seek(spawner_count_location)
-            spawner_count = int.from_bytes(LocalROM().readBytes(2), "big")
+            ROM_COPY.seek(spawner_count_location)
+            spawner_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
             offset += 2
             spawner_bytes = []
             used_enemy_indexes = []
             for x in range(spawner_count):
-                LocalROM().seek(cont_map_spawner_address + offset)
-                enemy_id = int.from_bytes(LocalROM().readBytes(1), "big")
-                LocalROM().seek(cont_map_spawner_address + offset + 0x4)
+                ROM_COPY.seek(cont_map_spawner_address + offset)
+                enemy_id = int.from_bytes(ROM_COPY.readBytes(1), "big")
+                ROM_COPY.seek(cont_map_spawner_address + offset + 0x4)
                 enemy_coords = []
                 for y in range(3):
-                    coord = int.from_bytes(LocalROM().readBytes(2), "big")
+                    coord = int.from_bytes(ROM_COPY.readBytes(2), "big")
                     if coord > 32767:
                         coord -= 65536
                     enemy_coords.append(coord)
-                LocalROM().seek(cont_map_spawner_address + offset + 0x13)
-                enemy_index = int.from_bytes(LocalROM().readBytes(1), "big")
+                ROM_COPY.seek(cont_map_spawner_address + offset + 0x13)
+                enemy_index = int.from_bytes(ROM_COPY.readBytes(1), "big")
                 used_enemy_indexes.append(enemy_index)
                 init_offset = offset
-                LocalROM().seek(cont_map_spawner_address + offset + 0x11)
-                extra_count = int.from_bytes(LocalROM().readBytes(1), "big")
+                ROM_COPY.seek(cont_map_spawner_address + offset + 0x11)
+                extra_count = int.from_bytes(ROM_COPY.readBytes(1), "big")
                 offset += 0x16 + (extra_count * 2)
                 end_offset = offset
                 is_vanilla = False
@@ -100,13 +101,13 @@ def randomize_kasplat_locations(spoiler):
                 if enemy_id not in kasplat_types or is_vanilla or cont_map_id not in vanilla_kasplat_maps:
                     data_bytes = []
                     spawner_size = end_offset - init_offset
-                    LocalROM().seek(cont_map_spawner_address + init_offset)
+                    ROM_COPY.seek(cont_map_spawner_address + init_offset)
                     for x in range(spawner_size):
                         if x == 0 and is_vanilla:
                             data_bytes.append(new_id)
-                            LocalROM().seek(cont_map_spawner_address + init_offset + 1)
+                            ROM_COPY.seek(cont_map_spawner_address + init_offset + 1)
                         else:
-                            data_bytes.append(int.from_bytes(LocalROM().readBytes(1), "big"))
+                            data_bytes.append(int.from_bytes(ROM_COPY.readBytes(1), "big"))
                     spawner_bytes.append(data_bytes)
             spawn_index = 1
             fence_index = 1
@@ -173,12 +174,12 @@ def randomize_kasplat_locations(spoiler):
                         new_fence_bytes.append(fence_index)
                         new_fence_bytes.append(1)
                         fence_bytes.append(new_fence_bytes)
-            LocalROM().seek(cont_map_spawner_address)
-            LocalROM().writeMultipleBytes(len(fence_bytes), 2)
+            ROM_COPY.seek(cont_map_spawner_address)
+            ROM_COPY.writeMultipleBytes(len(fence_bytes), 2)
             for x in fence_bytes:
                 for y in x:
-                    LocalROM().writeMultipleBytes(y, 2)
-            LocalROM().writeMultipleBytes(len(spawner_bytes), 2)
+                    ROM_COPY.writeMultipleBytes(y, 2)
+            ROM_COPY.writeMultipleBytes(len(spawner_bytes), 2)
             for x in spawner_bytes:
                 for y in x:
-                    LocalROM().writeMultipleBytes(y, 1)
+                    ROM_COPY.writeMultipleBytes(y, 1)
