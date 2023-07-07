@@ -179,7 +179,6 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.hard_enemies, 0x116),  # Hard Enemies
         BooleanProperties(spoiler.settings.wrinkly_available, 0x52),  # Remove Wrinkly Kong Checks
         BooleanProperties(spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled), 0x47),  # Parent Map Filter
-        BooleanProperties(spoiler.settings.shop_indicator, 0x134, 2),  # Shop Indicator
         BooleanProperties(spoiler.settings.open_lobbies, 0x14C, 0xFF),  # Open Lobbies
         BooleanProperties(not spoiler.settings.enable_shop_hints, 0x14B, 0),  # Disable Shop Hints
         BooleanProperties(spoiler.settings.coin_door_item == HelmDoorItem.opened, 0x33),  # Coin Door Open
@@ -272,6 +271,10 @@ def patching_response(spoiler):
         LocalROM().seek(sav + 0x0B0)
         for byte_data in write_data:
             LocalROM().writeMultipleBytes(byte_data, 1)
+
+    # Shop indicator
+    LocalROM().seek(sav + 0x134)
+    LocalROM().write(int(spoiler.settings.shop_indicator))
 
     # Damage amount
     damage_multipliers = {
