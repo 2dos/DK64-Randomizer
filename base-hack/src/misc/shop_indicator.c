@@ -438,7 +438,7 @@ void newCounterCode(void) {
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
 		// Init Code
 		if (CurrentMap != MAP_HELM) {
-				if (Rando.shop_indicator_on) {
+			if (Rando.shop_indicator_on) {
 				if (Rando.shop_indicator_on == 2) {
 					paad->use_item_display = 1;
 				} else {
@@ -546,4 +546,3 @@ void newCounterCode(void) {
 	}
 	renderActor(CurrentActorPointer_0,0);
 }
-
