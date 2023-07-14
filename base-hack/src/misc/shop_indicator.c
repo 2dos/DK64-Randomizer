@@ -318,10 +318,10 @@ void updateCounterDisplay(void) {
 		if ((item_image < 0) || (item_image > 0x14)) {
 			item_image = 0;
 		}
-		if (paad->use_item_display == 2) {
+		if (paad->use_item_display) {
 			paad->image_slots[0] = loadFontTexture_Counter(paad->image_slots[0], kong_image, 0);
 			paad->image_slots[2] = loadFontTexture_Counter(paad->image_slots[2], item_image, 2);
-		} else if (paad->use_item_display == 1) {
+		} else {
 			paad->image_slots[1] = loadFontTexture_Counter(paad->image_slots[1], kong_image, 1);
 		}
 	}
@@ -438,15 +438,7 @@ void newCounterCode(void) {
 	if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
 		// Init Code
 		if (CurrentMap != MAP_HELM) {
-			if (Rando.shop_indicator) {
-                if (Rando.shop_indicator == 2) {
-                    paad->use_item_display = 2;
-                } else if (Rando.shop_indicator == 1){
-                    paad->use_item_display = 1;
-                } else {
-                    paad->use_item_display = 0;
-                }
-                // Initialize slots
+				// Initialize slots
 				for (int i = 0; i < 3; i++) {
 					paad->image_slots[i] = loadFontTexture_Counter(paad->image_slots[i], 0, i);
 				}
