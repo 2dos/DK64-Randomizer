@@ -13,17 +13,11 @@
 #include "../../include/common.h"
 
 static char music_storage[MUSIC_SIZE];
+char music_types[SONG_COUNT];
 
 typedef struct musicInfo {
 	/* 0x000 */ short data[0xB0];
 } musicInfo;
-
-typedef enum song_types {
-	/* 0x000 */ SONGTYPE_BGM,
-	/* 0x001 */ SONGTYPE_EVENT,
-	/* 0x002 */ SONGTYPE_MAJORITEM,
-	/* 0x003 */ SONGTYPE_MINORITEM,
-} song_types;
 
 void fixMusicRando(void) {
 	/**
@@ -52,6 +46,7 @@ void fixMusicRando(void) {
 			songData[i] |= (channel & 0xF) << 3;
 
 			// Handle Type Index
+			music_types[i] = write_space_0[i];
 			if (write_space_0[i] > -1) {
 				song_types type = write_space_0[i];
 				int volume = 0;
@@ -177,7 +172,7 @@ void initHack(int source) {
 			*(int*)(0x8076BF38) = (int)&music_storage[0]; // Increase music storage
 			DamageMultiplier = Rando.damage_multiplier;
 			WidescreenEnabled = Rando.true_widescreen;
-			permaLossMode = Rando.perma_lose_kongs;
+			grab_lock_timer = -1;
 			preventTagSpawn = Rando.prevent_tag_spawn;
 			bonusAutocomplete = Rando.resolve_bonus;
 			TextHoldOn = Rando.quality_of_life.textbox_hold;
@@ -486,7 +481,54 @@ void initHack(int source) {
 				*(int*)(0x806F53AC) = 0; // Prevent LZ case
 
 				*(short*)(0x806C7088) = 0x1000; // Mech fish dying
+				// writeFunction(0x806C9020, &malloc_wipe);
+				// writeFunction(0x806C9044, &malloc_wipe);
+				// writeFunction(0x806C906C, &malloc_wipe);
 				// initTagAnywhere();
+			}
+			writeFunction(0x8072F1E8, &handleGrabbingLock);
+			writeFunction(0x8072F458, &handleActionSet); // Actor grabbables
+			writeFunction(0x8072F46C, &handleActionSet); // Model 2 grabbables
+			writeFunction(0x806CFC64, &handleActionSet); // Ledge Grabbing
+			if ((Rando.diddy_rnd_codes[0] != 0) || (Rando.diddy_rnd_codes[1] != 0) || (Rando.diddy_rnd_codes[2] != 0)) {
+				// Alter diddy R&D
+				short* diddy_rnd_code_writes[12] = {
+					// Code 0: 4231
+					(short*)0x8064E06A,
+					(short*)0x8064E066,
+					(short*)0x8064E062,
+					(short*)0x8064E05E,
+					// Code 1: 3124
+					(short*)0x8064E046,
+					(short*)0x8064E042,
+					(short*)0x8064E03E,
+					(short*)0x8064E00E,
+					// Code 2: 1342
+					(short*)0x8064E026,
+					(short*)0x8064E022,
+					(short*)0x8064E01E,
+					(short*)0x8064E01A,
+				};
+				for (int i = 0; i < 3; i++) {
+					for (int j = 0; j < 4; j++) {
+						*diddy_rnd_code_writes[(4 * i) + j] = (Rando.diddy_rnd_codes[i] >> ((3 - j) << 2)) & 0xF;
+					}
+				}
+			}
+			if (Rando.disabled_music.pause) {
+				*(int*)(0x805FC890) = 0; // Pause theme
+				*(int*)(0x805FC89C) = 0; // Pause Start theme
+			}
+			if (Rando.disabled_music.wrinkly) {
+				*(int*)(0x8064F180) = 0; // Wrinkly Theme
+			}
+			if (Rando.disabled_music.transform) {
+				*(int*)(0x8067E9E4) = 0; // Transform Theme
+				*(int*)(0x8067F7C0) = 0; // Transform Theme
+			}
+			if ((Rando.disabled_music.events) || (Rando.disabled_music.shops)) {
+				*(int*)(0x80602AAC) = 0x27A40018; // addiu $a0, $sp, 0x18
+				writeFunction(0x80602AB0, &filterSong);
 			}
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0

@@ -11,6 +11,8 @@ static char has_loaded = 0;
 static char new_picture = 0;
 int hint_pointers[35] = {};
 static char delayed_load = 0;
+char grab_lock_timer = -1;
+char tag_locked = 0;
 
 
 void cFuncLoop(void) {
@@ -49,6 +51,15 @@ void cFuncLoop(void) {
 			}
 		}
 		handleKRoolSaveProgress();
+	}
+	if (grab_lock_timer >= 0) {
+		grab_lock_timer += 1;
+		if (grab_lock_timer > 10) {
+			grab_lock_timer = -1;
+		}
+	}
+	if (tag_locked) {
+		tag_locked = 0;
 	}
 	if (Rando.item_rando) {
 		if (TransitionSpeed > 0) {

@@ -366,6 +366,12 @@ extern void alterSFXVolume(int channel, int volume);
 extern void alterMusicVolume(int channel);
 extern void adjustSFXType_Internal(int subtype);
 
+extern void runAnimFrame(actorData* actor, int anim, int unk0, float unk1);
+extern int getTrackChannel(int song);
+extern void handleTextScrolling(void* menu_aad, float x1, float y1, float* x2, float* y2, int unk0, int unk1, float unk2);
+
+extern void handlePoleGrabbing(void* actor, int player_index, int allow_vines);
+
 //vanilla data
 extern float TransitionSpeed;
 extern char CutsceneWillPlay;
@@ -651,6 +657,7 @@ extern char SFXVolume;
 extern char MusicVolume;
 
 extern Border BorderInformation[22];
+extern void* JetpacEnemyFunctions[8];
 
 //hack data
 extern int TestVariable;
@@ -675,7 +682,6 @@ extern purchase_struct TrainingMoves_New[4];
 extern purchase_struct BFIMove_New;
 extern settingsData StoredSettings;
 extern char WidescreenEnabled;
-extern char permaLossMode;
 extern char preventTagSpawn;
 extern char bonusAutocomplete;
 extern void* StoredCounterTextures[7];
