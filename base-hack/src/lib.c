@@ -866,7 +866,7 @@ void giveOrange(void) {
 }
 
 void giveMelon(void) {
-	applyDamage(0, 1);
+	applyDamageMask(0, 1);
 }
 
 void giveCrystal(void) {
@@ -996,4 +996,49 @@ int has_key(int index) {
 		}
 	}
 	return checkFlagDuplicate(normal_key_flags[index], FLAGTYPE_PERMANENT);
+}
+
+void* malloc_wipe(int size) {
+	void* ptr = dk_malloc(size);
+	wipeMemory(ptr, size);
+	return ptr;
+}
+
+int filterSong(int* song_write) {
+	int song = *song_write;
+	if (Rando.disabled_music.events) {
+		if (music_types[song] == SONGTYPE_EVENT) {
+			*song_write = 0;
+		}
+	}
+	if (Rando.disabled_music.shops) {
+		if (
+			((song == 2) && (CurrentMap == MAP_CRANKY)) || // Cranky
+			((song == 6) && (CurrentMap == MAP_FUNKY)) || // Funky
+			((song == 31) && (CurrentMap == MAP_CANDY)) || // Candy
+			((song == 29) && (CurrentMap == MAP_SNIDE)) // Snide
+		) {
+			*song_write = 0;
+		}
+	}
+	return getTrackChannel(song);
+}
+
+int applyDamageMask(int player_index, int damage) {
+	int applied_multiplier = Rando.damage_multiplier;
+	if (damage > 0) {
+		return applyDamage(player_index, damage);
+	}
+	if ((CurrentMap == MAP_CASTLEKUTOUT) && (CutsceneActive == 1) && (CutsceneIndex == 4)) {
+		// King Kut out death cutscene, force to 1
+		applied_multiplier = 1;
+	}
+	return applyDamage(player_index, damage * applied_multiplier);
+}
+
+void* replaceWaterTexture(int table, int file, int unk0, int unk1) {
+	if (file == 0xCF) {
+		return getMapData(7, 0x3BA, unk0, unk1);
+	}
+	return getMapData(table, file, unk0, unk1);
 }

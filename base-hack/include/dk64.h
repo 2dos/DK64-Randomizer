@@ -658,6 +658,7 @@ extern char MusicVolume;
 
 extern Border BorderInformation[22];
 extern void* JetpacEnemyFunctions[8];
+extern SurfaceInfo SurfaceTypeInformation[9];
 
 //hack data
 extern int TestVariable;

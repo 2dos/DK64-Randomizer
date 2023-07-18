@@ -722,6 +722,13 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 				} else {
 					playSFX(Wrong);
 				}
+			} else if (buttons & 0x80) { // CD
+				// Go to filename editing
+				if (ENABLE_FILENAME) {
+					playSFX(0x2C9);
+					paad->prevent_action = 0;
+					paad->next_screen = 7;
+				}
 			}
 		}
 		initMenuBackground(paad,4);

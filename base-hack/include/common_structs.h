@@ -1547,3 +1547,33 @@ typedef struct Border {
 	/* 0x008 */ short blackness_right;
 	/* 0x00A */ short blackness_bottom;
 } Border;
+
+typedef struct DisabledMusicStruct {
+	unsigned char wrinkly : 1; // 0x80
+	unsigned char shops : 1; // 0x40
+	unsigned char events : 1; // 0x20
+	unsigned char transform : 1; // 0x10
+	unsigned char pause : 1; // 0x08
+	unsigned char unk5 : 1; // 0x04
+	unsigned char unk6 : 1; // 0x02
+	unsigned char unk7 : 1; // 0x01
+} DisabledMusicStruct;
+
+typedef struct SeedOfDeathSettings {
+	unsigned char easy_fall : 1; // 0x80
+	unsigned char lava_water : 1; // 0x40
+	unsigned char bosses : 1; // 0x20
+	unsigned char enemies : 1; // 0x10
+	unsigned char unk4 : 1; // 0x08
+	unsigned char unk5 : 1; // 0x04
+	unsigned char unk6 : 1; // 0x02
+	unsigned char unk7 : 1; // 0x01
+} SeedOfDeathSettings;
+
+typedef struct SurfaceInfo {
+	/* 0x000 */ void* texture_loader;
+	/* 0x004 */ void* dl_writer;
+	/* 0x008 */ void* ripple_handler;
+	/* 0x00C */ void* textures[2];
+	/* 0x014 */ unsigned char unk14[4];
+} SurfaceInfo;

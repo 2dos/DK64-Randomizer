@@ -25,7 +25,7 @@
    "fast_start_helm":1,
    "crown_door_open":1,
    "coin_door_open":1,
-   "true_widescreen":1,
+   "true_widescreen":0,
    "pppanic_fairy_model":73,
    "tttrouble_turtle_model":60,
    "quality_of_life":{
@@ -92,6 +92,29 @@
       "camera":true,
       "shockwave":true
    },
+   "disabled_music": {
+      "wrinkly":true,
+      "shops":true,
+      "events":true,
+      "transform":true,
+      "pause":true
+   },
+   "hard_mode": {
+      "easy_fall":true,
+      "lava_water":true,
+      "bosses":true,
+      "enemies":true
+   },
+   "jetpac_enemy_order": [
+      5,
+      7,
+      1,
+      0,
+      2,
+      2,
+      5,
+      4
+   ],
    "price_rando_on":1,
    "k_rool_order":[
       1,
@@ -176,8 +199,8 @@
    "remove_high_requirements":1,
    "open_level_sections":1,
    "auto_keys":0,
-   "starting_map":26,
-   "starting_exit":15,
+   "starting_map":34,
+   "starting_exit":0,
    "disco_chunky":1,
    "krusha_slot":2,
    "starting_kong":0,
@@ -213,7 +236,6 @@
    "vulture_item":47,
    "japes_rock_item":76,
    "medal_cb_req":5,
-   "hard_enemies":1,
    "remove_oscillation_effects":1,
    "rareware_gb_fairies":1,
    "call_parent_filter":0,

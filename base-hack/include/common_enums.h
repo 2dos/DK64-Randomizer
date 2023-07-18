@@ -693,3 +693,10 @@ typedef enum overlays {
 	/* 0x00A */ OVERLAY_NONE,
 	/* 0x00B */ OVERLAY_JETPAC,
 } overlays;
+
+typedef enum song_types {
+	/* 0x000 */ SONGTYPE_BGM,
+	/* 0x001 */ SONGTYPE_EVENT,
+	/* 0x002 */ SONGTYPE_MAJORITEM,
+	/* 0x003 */ SONGTYPE_MINORITEM,
+} song_types;

@@ -104,7 +104,6 @@ void loadHooks(void) {
 	loadSingularHook(0x806F8610, &GiveItemPointerToMulti);
 	loadSingularHook(0x806F88C8, &CoinHUDReposition);
 	loadSingularHook(0x8060005C, &getLobbyExit);
-	loadSingularHook(0x806C9A7C, &damageMultiplerCode);
 	loadSingularHook(0x8060DEF4, &SaveHelmHurryCheck);
 	if (Rando.warp_to_isles_enabled) {
 		loadSingularHook(0x806A995C, &PauseExtraSlotCode);
@@ -405,7 +404,7 @@ void initHack(int source) {
 			initPauseMenu(); // Changes to enable more items
 			// Spider Projectile
 			*(int*)(0x806CBD78) = 0x18400005; // BLEZ $v0, 0x5 - Decrease in health occurs if trap bubble active
-			if (Rando.hard_enemies) {
+			if (Rando.hard_mode.enemies) {
 				// writeFunction(0x806ADDC0, &handleSpiderTrapCode);
 				*(short*)(0x806B12DA) = 0x3A9; // Kasplat Shockwave Chance
 				*(short*)(0x806B12FE) = 0x3B3; // Kasplat Shockwave Chance
@@ -435,6 +434,16 @@ void initHack(int source) {
 				writeFunction(0x80660994, &getOscillationDelta);
 				writeFunction(0x806609BC, &getOscillationDelta);
 			}
+			// Damage mask
+			writeFunction(0x806A6EA8, &applyDamageMask);
+			writeFunction(0x806EE138, &applyDamageMask);
+			writeFunction(0x806EE330, &applyDamageMask);
+			writeFunction(0x806EE480, &applyDamageMask);
+			writeFunction(0x806EEA20, &applyDamageMask);
+			writeFunction(0x806EEEA4, &applyDamageMask);
+			writeFunction(0x806EF910, &applyDamageMask);
+			writeFunction(0x806EF9D0, &applyDamageMask);
+			writeFunction(0x806F5860, &applyDamageMask);
 			// Slow Turn Fix
 			writeFunction(0x806D2FC0, &fixRBSlowTurn);
 			// CB Bunch
@@ -529,6 +538,24 @@ void initHack(int source) {
 			if ((Rando.disabled_music.events) || (Rando.disabled_music.shops)) {
 				*(int*)(0x80602AAC) = 0x27A40018; // addiu $a0, $sp, 0x18
 				writeFunction(0x80602AB0, &filterSong);
+			}
+			if (Rando.hard_mode.easy_fall) {
+				float fall_threshold = 90.0f;
+				*(short*)(0x806D3682) = *(short*)(&fall_threshold); // Change fall too far threshold
+			}
+			if (Rando.hard_mode.lava_water) {
+				*(int*)(0x806677C4) = 0; // Dynamic Surfaces
+				// Static Surfaces
+				*(short*)(0x80667ED2) = 0x81;
+				*(short*)(0x80667EDA) = 0x81;
+				*(short*)(0x80667EEE) = 0x81;
+				*(short*)(0x80667EFA) = 0x81;
+				writeFunction(0x8062F3F0, &replaceWaterTexture); // Static water textures
+				// Dynamic Textures
+				SurfaceTypeInformation[0].texture_loader = SurfaceTypeInformation[7].texture_loader;
+				SurfaceTypeInformation[0].dl_writer = SurfaceTypeInformation[7].dl_writer;
+				SurfaceTypeInformation[3].texture_loader = SurfaceTypeInformation[7].texture_loader;
+				SurfaceTypeInformation[3].dl_writer = SurfaceTypeInformation[7].dl_writer;
 			}
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0

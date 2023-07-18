@@ -237,6 +237,22 @@ void initJetpac(void) {
 	if (Rando.fast_gbs) {
 		*(short*)(0x80027DCA) = 2500; // Jetpac score requirement
 	}
+	// Jetpac Enemy Rando
+	int enable_jetpac_enemy_rando = 0;
+	for (int i = 0; i < 8; i++) {
+		if (Rando.jetpac_enemy_order[i] != 0) {
+			enable_jetpac_enemy_rando = 1;
+		}
+	}
+	if (enable_jetpac_enemy_rando) {
+		void* jetpac_functions[8] = {};
+		for (int i = 0; i < 8; i++) {
+			jetpac_functions[i] = JetpacEnemyFunctions[i];
+		}
+		for (int i = 0; i < 8; i++) {
+			JetpacEnemyFunctions[i] = jetpac_functions[Rando.jetpac_enemy_order[i]];
+		}
+	}
 }
 
 int give_all_blueprints(int flag, int level, int kong_p) {
@@ -324,6 +340,9 @@ void overlay_changes(void) {
 		// Disable Multiplayer
 		*(int*)(0x800280B0) = 0; // Disable access
 		*(int*)(0x80028A8C) = 0; // Lower Sprite Opacity
+		if (ENABLE_FILENAME) {
+			initFilename();
+		}
 	} else if (CurrentMap == MAP_SNIDE) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
@@ -363,12 +382,14 @@ void overlay_changes(void) {
 		if ((Rando.microhints != MICROHINTS_NONE) && (MovesBase[0].simian_slam < 2)) {
 			*(short*)(0x800359A8) = 14; // Microhint Cutscene
 		}
+		writeFunction(0x80031524, &applyDamageMask);
 	}
 	if (inBattleCrown(CurrentMap)) {
 		// Change crown spawn
 		if (Rando.item_rando) {
 			writeFunction(0x8002501C, &spawnCrownReward); // Crown Spawn
 		}
+		writeFunction(0x80025058, &applyDamageMask);
 	}
 	// Change Dillo Health based on map
 	if (Rando.short_bosses) {
@@ -468,11 +489,15 @@ void overlay_changes(void) {
 		*(short*)(0x80033B26) = 0x4220; // Jumping Around
 		*(short*)(0x800331AA) = 0x4220; // Random Square
 		*(short*)(0x800339EE) = 0x4220; // Stationary
-		// *(float*)(0x80036C40) = 3.0f; // Phase 1 Jump speed
-		// *(float*)(0x80036C44) = 3.0f; // Phase 2
-		// *(float*)(0x80036C48) = 3.0f; // ...
-		// *(float*)(0x80036C4C) = 3.0f;
-		// *(float*)(0x80036C50) = 3.0f;
+		if (Rando.hard_mode.bosses) {
+			float targ_speed = 3.0f;
+			*(float*)(0x80036C40) = targ_speed; // Phase 1 Jump speed
+			*(float*)(0x80036C44) = targ_speed; // Phase 2
+			*(float*)(0x80036C48) = targ_speed; // ...
+			*(float*)(0x80036C4C) = targ_speed;
+			*(float*)(0x80036C50) = targ_speed;
+			*(short*)(0x8003343A) = 0x224; // Force fast jumps
+		}
 	}
 	if (getOverlayFromMap(CurrentMap) == OVERLAY_BONUS) {
 		if (Rando.pppanic_fairy_model) {

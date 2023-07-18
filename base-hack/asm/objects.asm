@@ -37,6 +37,7 @@
 .importobj "obj/src_misc_cutscene_remove.o"
 .importobj "obj/src_misc_dpad_menu.o"
 .importobj "obj/src_misc_enemy_drop_table.o"
+.importobj "obj/src_misc_filename.o"
 .importobj "obj/src_misc_file_screen.o"
 .importobj "obj/src_misc_helm_hurry.o"
 .importobj "obj/src_misc_instances.o"

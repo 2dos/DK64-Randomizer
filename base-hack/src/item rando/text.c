@@ -47,13 +47,13 @@ void handleDynamicItemText(char* location, char* format, int character) {
         dk_strFormat(location, format, character);
     }
 }
-static char filename[9] = "";
+char filename[FILENAME_LENGTH + 1] = "";
 
 void handleFilename(char* location, char* format, char* new_name) {
     if (ENABLE_FILENAME) {
-        filename[8] = 0;
+        filename[FILENAME_LENGTH] = 0;
         int has_hit_limit = 0;
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < (FILENAME_LENGTH); i++) {
             int val = ReadExtraData(EGD_FILENAME, i);
             if ((val == 0) || (has_hit_limit)) {
                 filename[i] = 0;

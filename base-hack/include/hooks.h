@@ -21,7 +21,6 @@ extern void displayListCode(void);
 extern void GiveItemPointerToMulti(void);
 extern void CoinHUDReposition(void);
 extern void getLobbyExit(void);
-extern void damageMultiplerCode(void);
 extern void SaveHelmHurryCheck(void);
 extern void PauseExtraSlotCode(void);
 extern void PauseExtraHeight(void);
@@ -53,6 +52,7 @@ extern void PauseControl_Sprite(void);
 extern void brightenMMMEnemies(void);
 extern void FixKrushaAmmoHUDColor(void);
 extern void FixKrushaAmmoHUDSize(void);
+extern void staticWaterDamage(void);
 
 extern void CrankyDecouple(void);
 extern void ForceToBuyMoveInOneLevel(void);

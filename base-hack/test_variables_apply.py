@@ -102,7 +102,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
                 if lz_type == 9 and lz_map == 0xB0 and lz_exit == 0:
                     writeToROMNoOffset(isles_list + (0x38 * lz_index) + 0x12, set_variables[x][0], 2, "Isles -> TGrounds Zone Map")
                     writeToROMNoOffset(isles_list + (0x38 * lz_index) + 0x14, set_variables[x][1], 2, "Isles -> TGrounds Zone Exit")
-        elif x in ("quality_of_life", "moves_pregiven"):
+        elif x in ("quality_of_life", "moves_pregiven","disabled_music","hard_mode"):
             if x == "quality_of_life":
                 order = [
                     "reduce_lag",
@@ -173,6 +173,30 @@ with open("include/variable_space_structs.h", "r") as varspace:
                     "shockwave",
                 ]
                 bitfield_offset = 0xD5
+            elif x == "disabled_music":
+                order = [
+                    "wrinkly",
+                    "shops",
+                    "events",
+                    "transform",
+                    "pause",
+                    "unk5",
+                    "unk6",
+                    "unk7",
+                ]
+                bitfield_offset = 0x1B7
+            elif x == "hard_mode":
+                order = [
+                    "easy_fall",
+                    "lava_water",
+                    "bosses",
+                    "enemies",
+                    "unk4",
+                    "unk5",
+                    "unk6",
+                    "unk7",
+                ]
+                bitfield_offset = 0xC6
             for y in set_variables[x]:
                 if set_variables[x][y]:
                     index = order.index(y)

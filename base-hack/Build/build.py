@@ -11,7 +11,8 @@ import create_helm_geo
 import generate_disco_models
 import generate_watch_file
 import model_fix
-import model_port
+from pull_guns_and_instruments import pullHandModels
+from model_port import loadNewModels
 
 # Patcher functions for the extracted files
 from patch_text import writeNoExpPakMessages
@@ -44,6 +45,8 @@ if os.path.exists(newROMName):
     os.remove(newROMName)
 shutil.copyfile(ROMName, newROMName)
 
+# pullHandModels()
+loadNewModels()
 BuildInstanceScripts()
 
 portal_images = []
@@ -851,6 +854,7 @@ model_changes = [
     ModelChange(0xFB, "shrink_fairy.bin"),
     ModelChange(0x10E, "fake_item_actor.bin"),
     ModelChange(0xA3, "counter.bin"),
+    # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 for bi, b in enumerate(barrel_skins):
     model_changes.append(ModelChange(0xFC + bi, f"barrel_skin_{b}.bin"))
