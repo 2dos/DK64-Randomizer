@@ -1030,7 +1030,14 @@ int applyDamageMask(int player_index, int damage) {
 		return applyDamage(player_index, damage);
 	}
 	if ((CurrentMap == MAP_CASTLEKUTOUT) && (CutsceneActive == 1) && (CutsceneIndex == 4)) {
-		// King Kut out death cutscene, force to 1
+		// King Kut out death cutscene, force to 0
+		applied_multiplier = 0;
+	}
+	if ((Rando.hard_mode.lava_water) && (
+	(CurrentMap == MAP_GALLEON) ||
+	(CurrentMap == MAP_GALLEON2DS) ||
+	(CurrentMap == MAP_GALLEON5DSDKTINY) ||
+	(CurrentMap == MAP_GALLEON5DSDIDDYLANKYCHUNKY))) {
 		applied_multiplier = 1;
 	}
 	return applyDamage(player_index, damage * applied_multiplier);

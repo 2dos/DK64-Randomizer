@@ -24,6 +24,45 @@ void fixMusicRando(void) {
 	 * @brief Initialize Music Rando so that the data for each song is correct.
 	 * Without this, the game will crash from incorrect properties to what the song is expecting.
 	 */
+	if (Rando.music_rando_on) {
+		// Type bitfields
+		int size = SONG_COUNT << 1;
+		musicInfo* write_space = dk_malloc(size);
+		int* file_size;
+		*(int*)(&file_size) = size;
+		copyFromROM(0x1FFF000,write_space,&file_size,0,0,0,0);
+		// Type indexes
+		size = SONG_COUNT;
+		char* write_space_0 = dk_malloc(size);
+		*(int*)(&file_size) = size;
+		copyFromROM(0x1FEE200,write_space_0,&file_size,0,0,0,0);
+		for (int i = 0; i < SONG_COUNT; i++) {
+			// Handle Bitfield
+			int subchannel = (write_space->data[i] & 6) >> 1;
+			int channel = (write_space->data[i] & 0x78) >> 3;
+			songData[i] &= 0xFF81;
+			songData[i] |= (subchannel & 3) << 1;
+			songData[i] |= (channel & 0xF) << 3;
+
+			// Handle Type Index
+			if (write_space_0[i] > -1) {
+				song_types type = write_space_0[i];
+				int volume = 0;
+				if (type == SONGTYPE_BGM) {
+					volume = 23000;
+				} else if (type == SONGTYPE_MAJORITEM) {
+					volume = 27000;
+				} else {
+					// Event or Minor Item
+					volume = 25000;
+				}
+				songVolumes[i] = volume;
+			}
+		}
+		complex_free(write_space);
+		complex_free(write_space_0);
+	}
+	/*
 	// Music
 	if (Rando.music_rando_on) {
 		// Type bitfields
@@ -65,6 +104,7 @@ void fixMusicRando(void) {
 		complex_free(write_space_0);
 
 	}
+	*/
 }
 
 void writeEndSequence(void) {
