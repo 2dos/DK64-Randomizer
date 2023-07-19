@@ -496,6 +496,7 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render) {
     float width = 640.0f;
     if (Rando.true_widescreen) {
         width = SCREEN_WD_FLOAT * 2;
+        sprite->y = SCREEN_HD_FLOAT * 2;
     }
     float right_bound = width * 1.5f;
     float left_bound = width * 0.5f;

@@ -127,9 +127,10 @@ setFlag_ItemRando:
 
 .definelabel nin_logo_width, 256 ; Normally 192
 .definelabel nin_logo_height, 132 ; Normally 48
-.definelabel nin_logo_y_pix_requirement, nin_logo_height >> 1
-.definelabel nin_logo_x_pix_requirement, nin_logo_width >> 1
-.definelabel nin_write_position, ((hud_screen_wd*nin_logo_y_pix_requirement)+((hud_screen_wd/2)-nin_logo_x_pix_requirement))*2
+.definelabel nin_logo_x_offset, (hud_screen_wd - nin_logo_width) / 2
+.definelabel nin_logo_y_offset, (hud_screen_hd - nin_logo_height) / 2
+.definelabel nin_logo_x_offset_alloc, nin_logo_y_offset * hud_screen_wd
+.definelabel nin_write_position, (nin_logo_x_offset_alloc + nin_logo_x_offset) * 2
 
 fixTilePosition:
     addiu $a1, $a1, (((hud_screen_wd/2)-160)*4) ;Move Tiles

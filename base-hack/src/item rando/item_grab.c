@@ -43,8 +43,10 @@ void banana_medal_acquisition(int flag) {
      */
     int item_type = getMedalItem(flag - FLAG_MEDAL_JAPES_DK);
     float reward_x = 160.f;
+    float reward_y = 120.0f;
     if (Rando.true_widescreen) {
         reward_x = SCREEN_WD_FLOAT / 2;
+        reward_y = SCREEN_HD_FLOAT / 2;
     }
     if (!checkFlag(flag, FLAGTYPE_PERMANENT)) {
         if (item_type != MEDALITEM_KEY) {
@@ -223,7 +225,7 @@ void banana_medal_acquisition(int flag) {
             unkSpriteRenderFunc_0();
             loadSpriteFunction(0x8071EFDC);
             
-            displaySpriteAtXYZ(sprite, 0x3F800000, reward_x, 120.0f, -10.0f);
+            displaySpriteAtXYZ(sprite, 0x3F800000, reward_x, reward_y, -10.0f);
         }
         if (hh_item != HHITEM_NOTHING) {
             addHelmTime(hh_item, 1);
@@ -233,7 +235,7 @@ void banana_medal_acquisition(int flag) {
         unkSpriteRenderFunc(200);
         unkSpriteRenderFunc_0();
         loadSpriteFunction(0x8071EFDC);
-        displaySpriteAtXYZ(sprite_table[0x8E], 0x3F800000, reward_x, 120.0f, -10.0f);
+        displaySpriteAtXYZ(sprite_table[0x8E], 0x3F800000, reward_x, reward_y, -10.0f);
     }
 }
 

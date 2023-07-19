@@ -264,3 +264,20 @@ FixKrushaAmmoHUDSize:
     FixKrushaAmmoHUDSize_Finish:
         j 0x806f97f0
         nop
+
+arcadeYRescale:
+    sw $a1, 0x6C ($sp)
+    addiu $a1, $zero, hud_screen_hd
+    addiu $a0, $zero, 240
+    mtc1 $a1, $f8
+    mtc1 $a0, $f20
+    cvt.s.w $f8, $f8
+    cvt.s.w $f20, $f20
+    div.s $f8, $f8, $f20
+    mtc1 $a2, $f20
+    cvt.s.w $f20, $f20
+    mul.s $f8, $f8, $f20
+    cvt.w.s $f8, $f8
+    mfc1 $a2, $f8
+    j 0x80025c6c
+    sw $a2, 0x70 ($sp)

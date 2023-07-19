@@ -337,7 +337,11 @@ void initSpawn(void) {
         *(short*)(0x806A880E) = 4; // Yes/No Prompt
         //*(short*)(0x806A8766) = 4;
         *(short*)(0x806A986A) = 4; // Yes/No Prompt
-        *(int*)(0x806A9990) = 0x2A210270; // SLTI $at, $s1, 0x2A8
+        int y_cap = 0x270;
+        if (Rando.true_widescreen) {
+            y_cap = ((SCREEN_HD_FLOAT * 2) - 72 - 4) + (0x44 * 3);
+        }
+        *(int*)(0x806A9990) = 0x2A210000 | y_cap; // SLTI $at, $s1, 0x2A8
         if (!starting_map_rando_on) {
             PauseSlot3TextPointer = (char*)&exittoisles;
         } else {
@@ -385,6 +389,9 @@ void initQoL_HUD(void) {
     */
     int y_spacing = 22;
     int y_bottom = 0xD0;
+    if (Rando.true_widescreen) {
+        y_bottom = SCREEN_HD - 32;
+    }
     *(short*)(0x806F893E) = y_bottom - (1 * y_spacing); // Instrument
     *(short*)(0x806F8692) = y_bottom - (2 * y_spacing); // Crystals
     *(short*)(0x806F87AA) = y_bottom - (3 * y_spacing); // Oranges
