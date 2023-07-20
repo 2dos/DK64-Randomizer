@@ -324,11 +324,12 @@ void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1,
     int flag = getCrateFlag(id);
     int spawn_count = 1;
     int object = getCrateItem(flag);
-    int cutscene = 0;
-    if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
+    int cutscene = 1;
+    if (checkFlag(flag, FLAGTYPE_PERMANENT) || (object == (CUSTOM_ACTORS_START + NEWACTOR_NULL))) {
         spawn_count = 4;
         flag = -1;
         object = 0x2F;
+        cutscene = 0;
     } else {
         for (int i = 0; i < (int)(sizeof(bounce_objects)/2); i++) {
             if (object == bounce_objects[i]) {

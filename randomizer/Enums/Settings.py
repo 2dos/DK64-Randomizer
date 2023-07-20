@@ -241,6 +241,7 @@ class ItemRandoListSelected(IntEnum):
     beanpearl = 12
     fakeitem = 13
     junkitem = 14
+    crateitem = 15
 
 
 class KasplatRandoSetting(IntEnum):

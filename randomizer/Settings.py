@@ -587,6 +587,7 @@ class Settings:
                     Types.RainbowCoin,
                     Types.FakeItem,
                     Types.JunkItem,
+                    Types.CrateItem,
                 ]
             else:
                 for item in self.item_rando_list_selected:

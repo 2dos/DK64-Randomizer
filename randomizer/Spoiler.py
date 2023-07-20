@@ -106,6 +106,7 @@ class Spoiler:
             Types.RainbowCoin: "Rainbow Coins",
             Types.FakeItem: "Ice Traps",
             Types.JunkItem: "Junk Items",
+            Types.CrateItem: "Melon Crates",
         }
         if item_type in type_dict:
             return type_dict[item_type]
@@ -262,6 +263,7 @@ class Spoiler:
             "Rainbow Coins": {},
             "Ice Traps": {},
             "Junk Items": {},
+            "Melon Crates": {},
             "Empty": {},
             "Unknown": {},
         }
