@@ -22,6 +22,11 @@ static double pos_center = SCREEN_WD_FLOAT / 2;
     - Loading bar
     - fix various hud items
     - fix jetpac and arcade
+    - Krazy KK/PPP Melon HUD
+    - BP screen
+    - BBBandit A Button
+    - Can take damage in tag barrel in hot water
+    - are you sure quit
 */
 
 void ws_fillzipperwhite(void* write_ptr, void* framebuffer) {
