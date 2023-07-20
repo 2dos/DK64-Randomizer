@@ -179,6 +179,7 @@ void bootSpeedup(void) {
 			coloredBananaCounts[j] = 0;
 		}
 		int patch_index = 0;
+        int crate_index = 0;
 		for (int i = 0; i < 221; i++) {
 			balloonPatchCounts[i] = balloon_patch_count;
 			int* setup = getMapData(TABLE_MAP_SETUPS,i,1,1);
@@ -191,16 +192,16 @@ void bootSpeedup(void) {
 				int actor_count = *(int*)(actor_setup);
 				char* focused_actor = (char*)(actor_setup + 4);
 				char* focused_model2 = (char*)(modeltwo_setup + 4);
+                int subworld = 7;
+                if (!isLobby(i)) {
+                    subworld = levelIndexMapping[i];
+                }
 				if (actor_count > 0) {
 					for (int j = 0; j < actor_count; j++) {
 						int actor = *(short*)((int)focused_actor + 0x32) + 0x10;
 						balloon_patch_count += isBalloonOrPatch(actor);
 						if (actor == 139) {
-                            int world = 7;
-                            if (!isLobby(i)) {
-								world = levelIndexMapping[i];
-							}
-                            populatePatchItem(*(short*)((int)focused_actor + 0x34), i, patch_index, world);
+                            populatePatchItem(*(short*)((int)focused_actor + 0x34), i, patch_index, subworld);
 							patch_index += 1;
 						}
 						focused_actor += 0x38;
@@ -208,7 +209,12 @@ void bootSpeedup(void) {
 				}
 				if (model2_count > 0) {
 					for (int j = 0; j < model2_count; j++) {
-						coloredBananaCounts[world] += isSingleOrBunch(*(unsigned short*)(focused_model2 + 0x28));
+                        unsigned short m2_obj_type = *(unsigned short*)(focused_model2 + 0x28);
+						coloredBananaCounts[world] += isSingleOrBunch(m2_obj_type);
+                        if (m2_obj_type == 181) {
+                            populateCrateItem(*(short*)((int)focused_model2 + 0x2A), i, crate_index, subworld);
+                            crate_index += 1;
+                        }
 						focused_model2 += 0x30;
 					}
 				}
@@ -331,7 +337,11 @@ void initSpawn(void) {
         *(short*)(0x806A880E) = 4; // Yes/No Prompt
         //*(short*)(0x806A8766) = 4;
         *(short*)(0x806A986A) = 4; // Yes/No Prompt
-        *(int*)(0x806A9990) = 0x2A210270; // SLTI $at, $s1, 0x2A8
+        int y_cap = 0x270;
+        if (Rando.true_widescreen) {
+            y_cap = ((SCREEN_HD_FLOAT * 2) - 72 - 4) + (0x44 * 3);
+        }
+        *(int*)(0x806A9990) = 0x2A210000 | y_cap; // SLTI $at, $s1, 0x2A8
         if (!starting_map_rando_on) {
             PauseSlot3TextPointer = (char*)&exittoisles;
         } else {
@@ -379,6 +389,9 @@ void initQoL_HUD(void) {
     */
     int y_spacing = 22;
     int y_bottom = 0xD0;
+    if (Rando.true_widescreen) {
+        y_bottom = SCREEN_HD - 32;
+    }
     *(short*)(0x806F893E) = y_bottom - (1 * y_spacing); // Instrument
     *(short*)(0x806F8692) = y_bottom - (2 * y_spacing); // Crystals
     *(short*)(0x806F87AA) = y_bottom - (3 * y_spacing); // Oranges
@@ -389,7 +402,11 @@ void initQoL_HUD(void) {
         *(short*)(0x806F860A) = y_bottom - (5 * y_spacing); // Multi CB
         writeFunction(0x806F97D8, &getHUDSprite_HUD); // Change Sprite
         writeFunction(0x806F6BF0, &preventMedalHUD); // Prevent Model Two Medals showing HUD
-        *(short*)(0x806F8606) = 0x122; // Position X
+        int multibunch_hud_x = 0x122;
+        if (Rando.true_widescreen) {
+            multibunch_hud_x = SCREEN_WD - 30;
+        }
+        *(short*)(0x806F8606) = multibunch_hud_x; // Position X
         *(int*)(0x806F862C) = 0x4600F306; // MOV.S $f12, $f30
         *(int*)(0x806F8634) = 0x4600A386; // MOV.S $f14, $f20
         writeFunction(0x806F98E4, &initHUDDirection); // HUD Direction

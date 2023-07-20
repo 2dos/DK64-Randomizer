@@ -3,6 +3,7 @@ import js
 from randomizer.Enums.Settings import SettingsMap
 from ui.plando_validation import populate_plando_options
 
+
 def serialize_settings():
     """Serialize form settings into an enum-focused JSON string.
 
@@ -39,7 +40,7 @@ def serialize_settings():
             return True
         except ValueError:
             pass
-    
+
     def is_plando_input(inputName):
         """Determine if an input is a plando input."""
         return inputName is not None and inputName.startswith("plando_")

@@ -11,38 +11,39 @@ from randomizer.Patching.Patcher import ROM, LocalROM
 
 def writeWrinklyHints(file_start_offset, text):
     """Write the text to ROM."""
-    LocalROM().seek(file_start_offset)
-    LocalROM().writeMultipleBytes(len(text), 1)
+    ROM_COPY = LocalROM()
+    ROM_COPY.seek(file_start_offset)
+    ROM_COPY.writeMultipleBytes(len(text), 1)
     position = 0
     offset = 1
     for textbox in text:
-        LocalROM().seek(file_start_offset + offset)
-        LocalROM().writeMultipleBytes(1, 1)
-        LocalROM().seek(file_start_offset + offset + 1)
-        LocalROM().writeMultipleBytes(1, 1)
-        LocalROM().seek(file_start_offset + offset + 2)
-        LocalROM().writeMultipleBytes(len(textbox), 1)
+        ROM_COPY.seek(file_start_offset + offset)
+        ROM_COPY.writeMultipleBytes(1, 1)
+        ROM_COPY.seek(file_start_offset + offset + 1)
+        ROM_COPY.writeMultipleBytes(1, 1)
+        ROM_COPY.seek(file_start_offset + offset + 2)
+        ROM_COPY.writeMultipleBytes(len(textbox), 1)
         offset += 3
         for string in textbox:
-            LocalROM().seek(file_start_offset + offset)
-            LocalROM().writeMultipleBytes(position, 4)
-            LocalROM().seek(file_start_offset + offset + 4)
-            LocalROM().writeMultipleBytes(len(string), 2)
-            LocalROM().seek(file_start_offset + offset + 6)
-            LocalROM().writeMultipleBytes(0, 2)
+            ROM_COPY.seek(file_start_offset + offset)
+            ROM_COPY.writeMultipleBytes(position, 4)
+            ROM_COPY.seek(file_start_offset + offset + 4)
+            ROM_COPY.writeMultipleBytes(len(string), 2)
+            ROM_COPY.seek(file_start_offset + offset + 6)
+            ROM_COPY.writeMultipleBytes(0, 2)
             offset += 8
             position += len(string)
-        LocalROM().seek(file_start_offset + offset)
-        LocalROM().writeMultipleBytes(0, 4)
+        ROM_COPY.seek(file_start_offset + offset)
+        ROM_COPY.writeMultipleBytes(0, 4)
         offset += 4
-    LocalROM().seek(file_start_offset + offset)
-    LocalROM().writeMultipleBytes(position, 2)
+    ROM_COPY.seek(file_start_offset + offset)
+    ROM_COPY.writeMultipleBytes(position, 2)
     offset += 2
     for textbox in text:
         for string in textbox:
             for x in range(len(string)):
-                LocalROM().seek(file_start_offset + offset + x)
-                LocalROM().writeMultipleBytes(int.from_bytes(string[x].encode("ascii"), "big"), 1)
+                ROM_COPY.seek(file_start_offset + offset + x)
+                ROM_COPY.writeMultipleBytes(int.from_bytes(string[x].encode("ascii"), "big"), 1)
             offset += len(string)
 
 

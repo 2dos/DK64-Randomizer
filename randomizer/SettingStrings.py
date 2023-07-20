@@ -174,7 +174,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "camera_is_follow",
         "sfx_volume",
         "music_volume",
-        "camera_is_widescreen",
+        "true_widescreen",
         "camera_is_not_inverted",
         "sound_type",
     ]:

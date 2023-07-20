@@ -12,15 +12,18 @@ from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
 
+
 def invalidate_option(element, tooltip):
     """Add a Bootstrap tooltip to the given element, and mark it as invalid."""
     element.setAttribute("data-bs-original-title", tooltip)
     element.classList.add("invalid")
 
+
 def validate_option(element):
     """Remove a Bootstrap tooltip from the given element, and mark it as valid."""
     element.setAttribute("data-bs-original-title", "")
     element.classList.remove("invalid")
+
 
 def count_items():
     """Count all currently placed items to ensure limits aren't exceeded.
@@ -71,7 +74,7 @@ def validate_item_limits(evt):
         itemMax = PlannableItemLimits[item]
         if itemCount > itemMax:
             maybePluralTimes = "time" if itemMax == 1 else "times"
-            errString = f"Item \"{GetNameFromPlandoItem(item)}\" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times."
+            errString = f'Item "{GetNameFromPlandoItem(item)}" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times.'
             if item == PlandoItems.GoldenBanana:
                 errString += " (40 Golden Bananas are always allocated to blueprint rewards.)"
             for loc in locations:
@@ -114,7 +117,7 @@ def validate_starting_kong_count(evt):
     numStartingKongs = int(js.document.getElementById("starting_kongs_count").value)
     if len(selectedKongs) > numStartingKongs or (len(selectedKongs) < numStartingKongs and "" not in selectedKongs):
         maybePluralKongText = "Kong was selected as a starting Kong" if len(selectedKongs) == 1 else "Kongs were selected as starting Kongs"
-        errSuffix = "." if len(selectedKongs) > numStartingKongs else ", and \"Random Kong(s)\" was not chosen."
+        errSuffix = "." if len(selectedKongs) > numStartingKongs else ', and "Random Kong(s)" was not chosen.'
         errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(selectedKongs)} {maybePluralKongText}{errSuffix}"
         invalidate_option(startingKongs, errString)
     else:
@@ -200,6 +203,7 @@ def validate_level_order_no_duplicates(evt):
 def validate_on_nav(evt):
     """A fallback for errors with Bootstrap sliders."""
     validate_starting_kong_count(evt)
+
 
 ######################
 # SETTINGS FUNCTIONS #
@@ -347,6 +351,7 @@ def populate_plando_options(form):
 
     return plando_form_data
 
+
 def validate_plando_options(settings_dict):
     """Validate the plando options against a set of rules.
 
@@ -374,7 +379,7 @@ def validate_plando_options(settings_dict):
         itemMax = PlannableItemLimits[item]
         if itemCount > itemMax:
             maybePluralTimes = "time" if itemMax == 1 else "times"
-            errString = f"Item \"{GetNameFromPlandoItem(item)}\" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times."
+            errString = f'Item "{GetNameFromPlandoItem(item)}" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times.'
             if item in plando_dict["plando_starting_moves_selected"]:
                 errString += " (This includes starting moves.)"
             if item == PlandoItems.GoldenBanana:
@@ -397,9 +402,10 @@ def validate_plando_options(settings_dict):
     numStartingKongs = int(settings_dict["starting_kongs_count"])
     if len(chosenKongs) > numStartingKongs or (len(chosenKongs) < numStartingKongs and PlandoItems.Randomize not in chosenKongs):
         maybePluralKongText = "Kong was selected as a starting Kong" if len(chosenKongs) == 1 else "Kongs were selected as starting Kongs"
-        errSuffix = "." if len(chosenKongs) > numStartingKongs else ", and \"Random Kong(s)\" was not chosen."
+        errSuffix = "." if len(chosenKongs) > numStartingKongs else ', and "Random Kong(s)" was not chosen.'
         errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(chosenKongs)} {maybePluralKongText}{errSuffix}"
         errList.append(errString)
+
 
     # Ensure that no level was selected more than once in the level order.
     levelOrderSet = set()
@@ -446,7 +452,7 @@ def validate_plando_options(settings_dict):
             continue
         hintLocationName = LocationList[hintLocation].name
         if len(hint) > 900:
-            errString = f"The hint for location \"{hintLocationName}\" is longer than the limit of 900 characters."
+            errString = f'The hint for location "{hintLocationName}" is longer than the limit of 900 characters.'
             errList.append(errString)
         if re.search("[^A-Za-z0-9 \,\.\-\?!]", hint) is not None:
             errString = f"The hint for location \"{hintLocationName}\" contains invalid characters. Only letters, numbers, spaces, and the characters ,.-?! are valid."

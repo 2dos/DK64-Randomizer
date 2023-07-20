@@ -11,9 +11,7 @@ from BuildNames import maps
 # The address of the next available byte of free space in ROM
 # used when appending files to the end of the ROM
 
-available_writes = [
-    [0x2000000 + heap_size, 0x3FFFFFF]
-]
+available_writes = [[0x2000000 + heap_size, 0x3FFFFFF]]
 
 # These will be indexed by pointer table index then by SHA1 hash of the data
 pointer_table_files = []
@@ -244,6 +242,7 @@ def shouldRelocatePointerTable(index: int):
 
     return getPointerTableCompressedSize(index) > pointer_tables[index].original_compressed_size
 
+
 def allocateSpace(size: int) -> int:
     """Allocate space for pointer table in ROM. Aim for location with least slack."""
 
@@ -258,12 +257,13 @@ def allocateSpace(size: int) -> int:
                 free_location = index
     return free_location
 
+
 def writeModifiedPointerTablesToROM(fh: BinaryIO):
     """Write the modified pointer tables to the rom file."""
     global available_writes
 
     # Reserve pointer table space and write new data
-    for x in pointer_tables[::-1]: # Enumerate backwards since ptr 25 is the biggest table. Makes for smaller ROM. TODO: Calculate order dynamically
+    for x in pointer_tables[::-1]:  # Enumerate backwards since ptr 25 is the biggest table. Makes for smaller ROM. TODO: Calculate order dynamically
         if not shouldWritePointerTable(x.index):
             continue
 

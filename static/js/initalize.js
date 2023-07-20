@@ -1,3 +1,42 @@
+if (typeof window.RufflePlayer !== 'undefined') {
+  // Ruffle extension is loaded
+  var modal = document.createElement('div');
+  modal.style.position = 'fixed';
+  modal.style.top = '0';
+  modal.style.left = '0';
+  modal.style.width = '100%';
+  modal.style.height = '100%';
+  modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+  modal.style.display = 'flex';
+  modal.style.justifyContent = 'center';
+  modal.style.alignItems = 'center';
+  modal.style.zIndex = '9999';
+
+  var modalContent = document.createElement('div');
+  modalContent.style.backgroundColor = '#333';
+  modalContent.style.padding = '20px';
+  modalContent.style.borderRadius = '5px';
+  modalContent.style.textAlign = 'center';
+
+  var message = document.createElement('p');
+  message.textContent = "The Ruffle extension causes issues with this site (and we're not really sure why). Please disable it for this site.";
+  message.style.color = '#fff';
+  message.style.fontFamily = 'Arial, sans-serif';
+  message.style.fontSize = '16px';
+
+  modalContent.appendChild(message);
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
+
+  // Prevent scrolling while the modal is open
+  document.body.style.overflow = 'hidden';
+
+  console.log('Ruffle extension is loaded');
+} else {
+  // Ruffle extension is not loaded
+  console.log('Ruffle extension is not loaded');
+}
+
 // This is a wrapper script to just load the UI python scripts and call python as needed.
 async function run_python_file(file) {
   await pyodide.runPythonAsync(await (await fetch(file)).text());
@@ -69,6 +108,21 @@ function getFile(file) {
     async: false,
   }).responseText;
 }
+
+function createMusicLoadPromise(jszip, filename) {
+  return new Promise((resolve, reject) => {
+    jszip
+      .file(filename)
+      .async("Uint8Array")
+      .then(function (content) {
+        resolve({
+          name: filename.slice(0, -4),
+          file: content
+        })
+      })
+  });
+}
+
 var cosmetics;
 var cosmetic_names;
 document
@@ -86,57 +140,13 @@ document
 
         for (var filename of Object.keys(new_zip.files)) {
           if (filename.includes("bgm/") && filename.slice(-4) == ".bin") {
-            bgm_promises.push(new Promise((resolve, reject) => {
-              var current_filename = filename;
-              new_zip
-                .file(current_filename)
-                .async("Uint8Array")
-                .then(function (content) {
-                  resolve({
-                    name: current_filename.slice(0, -4),
-                    file: content
-                  })
-                });
-            }));
+            bgm_promises.push(createMusicLoadPromise(new_zip, filename));
           } else if (filename.includes("majoritems/") && filename.slice(-4) == ".bin") {
-            majoritem_promises.push(new Promise((resolve, reject) => {
-              var current_filename = filename;
-              new_zip
-                .file(current_filename)
-                .async("Uint8Array")
-                .then(function (content) {
-                  resolve({
-                    name: current_filename.slice(0, -4),
-                    file: content
-                  })
-                });
-            }));
+            majoritem_promises.push(createMusicLoadPromise(new_zip, filename));
           } else if (filename.includes("minoritems/") && filename.slice(-4) == ".bin") {
-            minoritem_promises.push(new Promise((resolve, reject) => {
-              var current_filename = filename;
-              new_zip
-                .file(current_filename)
-                .async("Uint8Array")
-                .then(function (content) {
-                  resolve({
-                    name: current_filename.slice(0, -4),
-                    file: content
-                  })
-                });
-            }));
+            minoritem_promises.push(createMusicLoadPromise(new_zip, filename));
           } else if (filename.includes("events/") && filename.slice(-4) == ".bin") {
-            event_promises.push(new Promise((resolve, reject) => {
-              var current_filename = filename;
-              new_zip
-                .file(current_filename)
-                .async("Uint8Array")
-                .then(function (content) {
-                  resolve({
-                    name: current_filename.slice(0, -4),
-                    file: content
-                  })
-                });
-            }));
+            event_promises.push(createMusicLoadPromise(new_zip, filename));
           }
         }
 

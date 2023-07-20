@@ -91,19 +91,20 @@ def pushItemMicrohints(spoiler, move_dict: dict, level: int, kong: int, slot: in
 
 def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler, kong_slot: int, kongs: list, level_override=None):
     """Write move data to ROM."""
+    ROM_COPY = LocalROM()
     for xi, x in enumerate(arr):
         if x["move_type"] == "flag":
             flag_dict = {"dive": 0x182, "orange": 0x184, "barrel": 0x185, "vine": 0x183, "camera": 0x2FD, "shockwave": 0x179, "camera_shockwave": 0xFFFE}
             flag_index = 0xFFFF
             if x["flag"] in flag_dict:
                 flag_index = flag_dict[x["flag"]]
-            LocalROM().writeMultipleBytes(5 << 5, 1)
-            LocalROM().writeMultipleBytes(x["price"], 1)
-            LocalROM().writeMultipleBytes(flag_index, 2)
+            ROM_COPY.writeMultipleBytes(5 << 5, 1)
+            ROM_COPY.writeMultipleBytes(x["price"], 1)
+            ROM_COPY.writeMultipleBytes(flag_index, 2)
         elif x["move_type"] is None:
-            LocalROM().writeMultipleBytes(7 << 5, 1)
-            LocalROM().writeMultipleBytes(0, 1)
-            LocalROM().writeMultipleBytes(0xFFFF, 2)
+            ROM_COPY.writeMultipleBytes(7 << 5, 1)
+            ROM_COPY.writeMultipleBytes(0, 1)
+            ROM_COPY.writeMultipleBytes(0xFFFF, 2)
         else:
             move_types = ["special", "slam", "gun", "ammo_belt", "instrument"]
             data = move_types.index(x["move_type"]) << 5 | (x["move_lvl"] << 3) | x["move_kong"]
@@ -112,9 +113,9 @@ def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler, kong_slot: int, k
                 price_var = 0
             else:
                 price_var = x["price"]
-            LocalROM().writeMultipleBytes(data, 1)
-            LocalROM().writeMultipleBytes(price_var, 1)
-            LocalROM().writeMultipleBytes(0xFFFF, 2)
+            ROM_COPY.writeMultipleBytes(data, 1)
+            ROM_COPY.writeMultipleBytes(price_var, 1)
+            ROM_COPY.writeMultipleBytes(0xFFFF, 2)
         if enable_hints:
             if level_override is not None:
                 pushItemMicrohints(spoiler, x, level_override, kongs[xi], kong_slot)
@@ -186,10 +187,10 @@ def randomize_moves(spoiler):
                     if is_shared:
                         applied_kong = Kongs.any
                     kong_lists[shop][kong][level] = applied_kong
-
-        LocalROM().seek(varspaceOffset + moveRandoOffset)
-        LocalROM().write(0x1)
-        LocalROM().seek(movespaceOffset)
+        ROM_COPY = LocalROM()
+        ROM_COPY.seek(varspaceOffset + moveRandoOffset)
+        ROM_COPY.write(0x1)
+        ROM_COPY.seek(movespaceOffset)
         writeMoveDataToROM(dk_crankymoves, hint_enabled, spoiler, 0, kong_lists[0][0])
         writeMoveDataToROM(diddy_crankymoves, hint_enabled, spoiler, 1, kong_lists[0][1])
         writeMoveDataToROM(lanky_crankymoves, hint_enabled, spoiler, 2, kong_lists[0][2])
@@ -220,11 +221,12 @@ def getNextSlot(spoiler, item: Items) -> int:
         slots = [0x10, 0x11]  # 0xF excluded as slam 1 is pre-given
     if len(slots) == 0:
         return None
+    ROM_COPY = LocalROM()
     for slot in slots:
         offset = int(slot >> 3)
         check = int(slot % 8)
-        LocalROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
-        val = int.from_bytes(LocalROM().readBytes(1), "big")
+        ROM_COPY.seek(spoiler.settings.rom_data + 0xD5 + offset)
+        val = int.from_bytes(ROM_COPY.readBytes(1), "big")
         if (val & (0x80 >> check)) == 0:
             return slot
     return None
@@ -275,6 +277,7 @@ def place_pregiven_moves(spoiler):
         Items.Camera,
         Items.Shockwave,
     ]
+    ROM_COPY = LocalROM()
     for item in spoiler.pregiven_items:
         # print(item)
         if item is not None and item != Items.NoItem:
@@ -288,16 +291,16 @@ def place_pregiven_moves(spoiler):
                 for index in [item_order.index(Items.Camera), item_order.index(Items.Shockwave)]:
                     offset = int(index >> 3)
                     check = int(index % 8)
-                    LocalROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
-                    val = int.from_bytes(LocalROM().readBytes(1), "big")
+                    ROM_COPY.seek(spoiler.settings.rom_data + 0xD5 + offset)
+                    val = int.from_bytes(ROM_COPY.readBytes(1), "big")
                     val |= 0x80 >> check
-                    LocalROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
-                    LocalROM().writeMultipleBytes(val, 1)
+                    ROM_COPY.seek(spoiler.settings.rom_data + 0xD5 + offset)
+                    ROM_COPY.writeMultipleBytes(val, 1)
             if new_slot is not None:
                 offset = int(new_slot >> 3)
                 check = int(new_slot % 8)
-                LocalROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
-                val = int.from_bytes(LocalROM().readBytes(1), "big")
+                ROM_COPY.seek(spoiler.settings.rom_data + 0xD5 + offset)
+                val = int.from_bytes(ROM_COPY.readBytes(1), "big")
                 val |= 0x80 >> check
-                LocalROM().seek(spoiler.settings.rom_data + 0xD5 + offset)
-                LocalROM().writeMultipleBytes(val, 1)
+                ROM_COPY.seek(spoiler.settings.rom_data + 0xD5 + offset)
+                ROM_COPY.writeMultipleBytes(val, 1)

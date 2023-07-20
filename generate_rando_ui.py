@@ -74,9 +74,7 @@ async def initialize():
     templateEnv.filters["plando_shop_sort"] = PlandoShopSortFilter
     template = templateEnv.get_template("base.html.jinja2")
     # Add custom Jinja2 functions.
-    template.globals.update({
-        "plando_option_class_annotation": PlandoOptionClassAnnotation
-    })
+    template.globals.update({"plando_option_class_annotation": PlandoOptionClassAnnotation})
     rendered = await template.render(
         minigames=MinigameSelector,
         misc_changes=QoLSelector,
@@ -89,7 +87,7 @@ async def initialize():
         plando_items=PlannableItems,
         plando_minigames=PlannableMinigames,
         plando_panels=PlandomizerPanels,
-        plando_spawns=PlannableSpawns
+        plando_spawns=PlannableSpawns,
     )
     js.document.documentElement.innerHTML = ""
     js.document.open()

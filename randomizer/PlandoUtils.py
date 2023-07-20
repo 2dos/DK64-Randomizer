@@ -77,6 +77,8 @@ plandoItemNameDict = {
     PlandoItems.ChunkyBlueprint: "Blueprint (Chunky)",
     PlandoItems.JunkItem: "Junk Item",
 }
+
+
 def GetNameFromPlandoItem(plandoItem):
     """Obtain a display name for a given PlandoItem enum."""
     if plandoItem in plandoItemNameDict:
@@ -84,22 +86,17 @@ def GetNameFromPlandoItem(plandoItem):
     mappedItem = PlandoItemToItemMap[plandoItem]
     return ItemList[mappedItem].name
 
+
 # A master dictionary of all possible item locations, mapped to a set of which
 # items may not appear in that location. This will be used to filter all the
 # dropdowns used in the plandomizer.
-ItemRestrictionsPerLocation = {location.name:set() for location in LocationList.keys()}
+ItemRestrictionsPerLocation = {location.name: set() for location in LocationList.keys()}
 
 # Each blueprint item should only appear in locations specific to the Kong who
 # can pick up that blueprint. Any "All Kongs" locations may not have any
 # blueprints assigned to them. Additionally, any location only accessible by
 # one Kong may not have that Kong placed in that location.
-blueprintItemSet = {
-    PlandoItems.DonkeyBlueprint.name,
-    PlandoItems.DiddyBlueprint.name,
-    PlandoItems.LankyBlueprint.name,
-    PlandoItems.TinyBlueprint.name,
-    PlandoItems.ChunkyBlueprint.name
-}
+blueprintItemSet = {PlandoItems.DonkeyBlueprint.name, PlandoItems.DiddyBlueprint.name, PlandoItems.LankyBlueprint.name, PlandoItems.TinyBlueprint.name, PlandoItems.ChunkyBlueprint.name}
 for locEnum, locObj in LocationList.items():
     if locObj.kong == Kongs.donkey:
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.Donkey.name)
@@ -163,7 +160,7 @@ bananaFairyRestrictedItems = {
     PlandoItems.DiddyBlueprint.name,
     PlandoItems.LankyBlueprint.name,
     PlandoItems.TinyBlueprint.name,
-    PlandoItems.ChunkyBlueprint.name
+    PlandoItems.ChunkyBlueprint.name,
 }
 
 # For every location in LocationList, if the default reward is a Banana Fairy,
@@ -233,15 +230,10 @@ kongRestrictedItemSet = {
     PlandoItems.DiddyBlueprint.name,
     PlandoItems.LankyBlueprint.name,
     PlandoItems.TinyBlueprint.name,
-    PlandoItems.ChunkyBlueprint.name
+    PlandoItems.ChunkyBlueprint.name,
 }
 
-kongLocationList = [
-    Locations.DiddyKong.name,
-    Locations.TinyKong.name,
-    Locations.LankyKong.name,
-    Locations.ChunkyKong.name
-]
+kongLocationList = [Locations.DiddyKong.name, Locations.TinyKong.name, Locations.LankyKong.name, Locations.ChunkyKong.name]
 
 for locationName in kongLocationList:
     ItemRestrictionsPerLocation[locationName].update(kongRestrictedItemSet)
@@ -282,29 +274,20 @@ kongSpecificMoveItemSet = {
     PlandoItems.Guitar.name,
     PlandoItems.Trombone.name,
     PlandoItems.Saxophone.name,
-    PlandoItems.Triangle.name
+    PlandoItems.Triangle.name,
 }
 
 for shop in sharedShopsSet:
     ItemRestrictionsPerLocation[shop].update(kongSpecificMoveItemSet)
 
 # Kong-specific shops have a handful of banned items.
-kongSpecificShopRestrictedItemSet = {
-    PlandoItems.Vines.name,
-    PlandoItems.Swim.name,
-    PlandoItems.Oranges.name,
-    PlandoItems.Barrels.name,
-    PlandoItems.Shockwave.name
-}
+kongSpecificShopRestrictedItemSet = {PlandoItems.Vines.name, PlandoItems.Swim.name, PlandoItems.Oranges.name, PlandoItems.Barrels.name, PlandoItems.Shockwave.name}
 
 for shop in kongSpecificShopSet:
     ItemRestrictionsPerLocation[shop].update(kongSpecificShopRestrictedItemSet)
 
 # General shops have few restrictions.
-shopRestrictedItemSet = {
-    PlandoItems.RainbowCoin.name,
-    PlandoItems.JunkItem.name
-}
+shopRestrictedItemSet = {PlandoItems.RainbowCoin.name, PlandoItems.JunkItem.name}
 
 # Add the restricted items for each shop location. (This will also cover the
 # blueprint redemptions, which is fine.)
@@ -314,13 +297,7 @@ for shop in kongSpecificShopSet:
     ItemRestrictionsPerLocation[shop].update(shopRestrictedItemSet)
 
 # Crowns are not allowed on Helm Medal locations.
-helmMedalLocationList = [
-    Locations.HelmDonkeyMedal.name,
-    Locations.HelmDiddyMedal.name,
-    Locations.HelmLankyMedal.name,
-    Locations.HelmTinyMedal.name,
-    Locations.HelmChunkyMedal.name
-]
+helmMedalLocationList = [Locations.HelmDonkeyMedal.name, Locations.HelmDiddyMedal.name, Locations.HelmLankyMedal.name, Locations.HelmTinyMedal.name, Locations.HelmChunkyMedal.name]
 for locationName in helmMedalLocationList:
     ItemRestrictionsPerLocation[locationName].add(PlandoItems.BattleCrown.name)
 
@@ -374,7 +351,7 @@ badFakeItemLocationList = [
     Locations.HelmBananaFairy2.name,
     # Miscellaneous issues
     Locations.NintendoCoin.name,
-    Locations.RarewareCoin.name
+    Locations.RarewareCoin.name,
 ]
 for locationName in badFakeItemLocationList:
     ItemRestrictionsPerLocation[locationName].add(PlandoItems.FakeItem.name)
@@ -399,7 +376,7 @@ dirtPatchLocationList = [
     Locations.RainbowCoin_Location12.name,
     Locations.RainbowCoin_Location13.name,
     Locations.RainbowCoin_Location14.name,
-    Locations.RainbowCoin_Location15.name
+    Locations.RainbowCoin_Location15.name,
 ]
 for locationName in dirtPatchLocationList:
     ItemRestrictionsPerLocation[locationName].update(blueprintItemSet)
@@ -411,38 +388,31 @@ badBlueprintLocationList = [
     Locations.JapesDonkeyFreeDiddy.name,
     Locations.AztecDiddyFreeTiny.name,
     Locations.AztecDonkeyFreeLanky.name,
-    Locations.FactoryLankyFreeChunky.name
+    Locations.FactoryLankyFreeChunky.name,
 ]
 for locationName in badBlueprintLocationList:
     ItemRestrictionsPerLocation[locationName].update(blueprintItemSet)
 
+
 def PlandoItemFilter(itemList, location):
     """A Jinja filter that returns a filtered list of plando items that are
-       permitted at the given location.
-       
-       Args:
-           itemList (dict[]): The list of possible plando items. Each item
-               contains "name" and "value" string fields.
-           location (str): The location where we are trying to place items.
-               Equal to the string name of the Location enum.
+    permitted at the given location.
+
+    Args:
+        itemList (dict[]): The list of possible plando items. Each item
+            contains "name" and "value" string fields.
+        location (str): The location where we are trying to place items.
+            Equal to the string name of the Location enum.
     """
 
     # Filter out every item that appears in the restricted set for this location.
     return [item for item in itemList if item["value"] not in ItemRestrictionsPerLocation[location["value"]]]
 
+
 # A dictionary indicating which mini-games are unavailable to certain Kongs.
 kongMinigameRestrictions = {
-    "Donkey": {
-        Minigames.DiddyRocketbarrel.name,
-        Minigames.TinyPonyTailTwirl.name,
-        Minigames.ChunkyHiddenKremling.name
-    },
-    "Diddy": {
-        Minigames.SpeedySwingSortieNormal.name,
-        Minigames.DonkeyTarget.name,
-        Minigames.TinyPonyTailTwirl.name,
-        Minigames.ChunkyHiddenKremling.name
-    },
+    "Donkey": {Minigames.DiddyRocketbarrel.name, Minigames.TinyPonyTailTwirl.name, Minigames.ChunkyHiddenKremling.name},
+    "Diddy": {Minigames.SpeedySwingSortieNormal.name, Minigames.DonkeyTarget.name, Minigames.TinyPonyTailTwirl.name, Minigames.ChunkyHiddenKremling.name},
     "Lanky": {
         Minigames.BusyBarrelBarrageEasy.name,
         Minigames.BusyBarrelBarrageNormal.name,
@@ -450,31 +420,26 @@ kongMinigameRestrictions = {
         Minigames.SpeedySwingSortieNormal.name,
         Minigames.DonkeyTarget.name,
         Minigames.TinyPonyTailTwirl.name,
-        Minigames.ChunkyHiddenKremling.name
+        Minigames.ChunkyHiddenKremling.name,
     },
-    "Tiny": {
-        Minigames.DonkeyTarget.name,
-        Minigames.ChunkyHiddenKremling.name
-    },
-    "Chunky": {
-        Minigames.SpeedySwingSortieNormal.name,
-        Minigames.DonkeyTarget.name,
-        Minigames.TinyPonyTailTwirl.name
-    }
+    "Tiny": {Minigames.DonkeyTarget.name, Minigames.ChunkyHiddenKremling.name},
+    "Chunky": {Minigames.SpeedySwingSortieNormal.name, Minigames.DonkeyTarget.name, Minigames.TinyPonyTailTwirl.name},
 }
+
 
 def PlandoMinigameFilter(minigameList, kong):
     """A Jinja filter that returns a filtered list of minigames that can be
-       played by each Kong. This will prevent the user from placing impossible
-       minigames in locations that only certain Kongs can access.
-       
-       Args:
-           minigameList (str[]): The list of possible minigames.
-           kong (str): The Kong who will be playing the minigame.
+    played by each Kong. This will prevent the user from placing impossible
+    minigames in locations that only certain Kongs can access.
+
+    Args:
+        minigameList (str[]): The list of possible minigames.
+        kong (str): The Kong who will be playing the minigame.
     """
     if kong == "All Kongs":
         return minigameList
     return [game for game in minigameList if game["value"] not in kongMinigameRestrictions[kong]]
+
 
 # This dictionary allows us to efficiently sort the shop locations. Shops are
 # sorted first by level, then by vendor, then by Kong. This sorting is easier
@@ -489,7 +454,6 @@ shopLocationOrderingDict = {
     Locations.LankyIslesPotion.name: 4,  # DK Isles Cranky Lanky
     Locations.TinyIslesPotion.name: 5,  # DK Isles Cranky Tiny
     Locations.ChunkyIslesPotion.name: 6,  # DK Isles Cranky Chunky
-
     Locations.SharedJapesPotion.name: 7,  # Japes Cranky Shared
     Locations.BaboonBlast.name: 8,  # Japes Cranky Donkey
     Locations.ChimpyCharge.name: 9,  # Japes Cranky Diddy
@@ -502,7 +466,6 @@ shopLocationOrderingDict = {
     Locations.GrapeGun.name: 16,  # Japes Funky Lanky
     Locations.FeatherGun.name: 17,  # Japes Funky Tiny
     Locations.PineappleGun.name: 18,  # Japes Funky Chunky
-
     Locations.SharedAztecPotion.name: 19,  # Aztec Cranky Shared
     Locations.StrongKong.name: 20,  # Aztec Cranky Donkey
     Locations.RocketbarrelBoost.name: 21,  # Aztec Cranky Diddy
@@ -521,7 +484,6 @@ shopLocationOrderingDict = {
     Locations.Trombone.name: 34,  # Aztec Candy Lanky
     Locations.Saxophone.name: 35,  # Aztec Candy Tiny
     Locations.Triangle.name: 36,  # Aztec Candy Chunky
-
     Locations.SharedFactoryPotion.name: 37,  # Factory Cranky Shared
     Locations.GorillaGrab.name: 38,  # Factory Cranky Donkey
     Locations.SimianSpring.name: 39,  # Factory Cranky Diddy
@@ -540,7 +502,6 @@ shopLocationOrderingDict = {
     Locations.LankyFactoryInstrument.name: 52,  # Factory Candy Lanky
     Locations.TinyFactoryInstrument.name: 53,  # Factory Candy Tiny
     Locations.ChunkyFactoryInstrument.name: 54,  # Factory Candy Chunky
-
     Locations.SharedGalleonPotion.name: 55,  # Galleon Cranky Shared
     Locations.DonkeyGalleonPotion.name: 56,  # Galleon Cranky Donkey
     Locations.DiddyGalleonPotion.name: 57,  # Galleon Cranky Diddy
@@ -559,7 +520,6 @@ shopLocationOrderingDict = {
     Locations.LankyGalleonInstrument.name: 70,  # Galleon Candy Lanky
     Locations.TinyGalleonInstrument.name: 71,  # Galleon Candy Tiny
     Locations.ChunkyGalleonInstrument.name: 72,  # Galleon Candy Chunky
-
     Locations.SuperSimianSlam.name: 73,  # Forest Cranky Shared
     Locations.DonkeyForestPotion.name: 74,  # Forest Cranky Donkey
     Locations.DiddyForestPotion.name: 75,  # Forest Cranky Diddy
@@ -572,7 +532,6 @@ shopLocationOrderingDict = {
     Locations.LankyForestGun.name: 82,  # Forest Funky Lanky
     Locations.TinyForestGun.name: 83,  # Forest Funky Tiny
     Locations.ChunkyForestGun.name: 84,  # Forest Funky Chunky
-
     Locations.SharedCavesPotion.name: 85,  # Caves Cranky Shared
     Locations.DonkeyCavesPotion.name: 86,  # Caves Cranky Donkey
     Locations.DiddyCavesPotion.name: 87,  # Caves Cranky Diddy
@@ -591,7 +550,6 @@ shopLocationOrderingDict = {
     Locations.LankyCavesInstrument.name: 100,  # Caves Candy Lanky
     Locations.TinyCavesInstrument.name: 101,  # Caves Candy Tiny
     Locations.ChunkyCavesInstrument.name: 102,  # Caves Candy Chunky
-
     Locations.SuperDuperSimianSlam.name: 103,  # Castle Cranky Shared
     Locations.DonkeyCastlePotion.name: 104,  # Castle Cranky Donkey
     Locations.DiddyCastlePotion.name: 105,  # Castle Cranky Diddy
@@ -610,26 +568,28 @@ shopLocationOrderingDict = {
     Locations.LankyCastleInstrument.name: 118,  # Castle Candy Lanky
     Locations.TinyCastleInstrument.name: 119,  # Castle Candy Tiny
     Locations.ChunkyCastleInstrument.name: 120,  # Castle Candy Chunky
-
-    Locations.RarewareCoin.name: 121  # Jetpac
+    Locations.RarewareCoin.name: 121,  # Jetpac
 }
+
 
 def PlandoShopSortFilter(shopLocationList):
     """A Jinja filter that returns a sorted list of shop locations. These are
-       sorted by level, then by vendor, then by Kong. This makes the full list
-       easier to browse.
-       
-       Args:
-           shopLocationList (str[]): The list of all shop locations.
+    sorted by level, then by vendor, then by Kong. This makes the full list
+    easier to browse.
+
+    Args:
+        shopLocationList (str[]): The list of all shop locations.
     """
+
     def shopKey(shopLocation):
         return shopLocationOrderingDict[shopLocation["value"]]
-    
+
     return sorted(shopLocationList, key=shopKey)
+
 
 def PlandoOptionClassAnnotation(panel, kong, location, item):
     """A Jinja function that will apply certain CSS classes to dropdown menu
-       options, in order to enable various option interactions."""
+    options, in order to enable various option interactions."""
     classSet = set()
 
     # Each key gets its own class.
@@ -643,7 +603,7 @@ def PlandoOptionClassAnnotation(panel, kong, location, item):
     # Each move gets the same class.
     if item in MoveSet:
         classSet.add("plando-move-option")
-    
+
     # Camera and Shockwave get their own class.
     if item in {PlandoItems.Camera.name, PlandoItems.Shockwave.name}:
         classSet.add("plando-camera-shockwave-option")
@@ -653,6 +613,7 @@ def PlandoOptionClassAnnotation(panel, kong, location, item):
         return f"class=\"{' '.join(list(classSet))}\""
     else:
         return ""
+
 
 # A dictionary that maps plando options to enum classes. The key for each enum
 # must exactly match that of the associated HTML input.

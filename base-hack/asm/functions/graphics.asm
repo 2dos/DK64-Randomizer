@@ -22,3 +22,4 @@
 .definelabel writeImageSlotToActor, 0x80688320
 .definelabel getCenterOffset, 0x806FBD5C
 .definelabel printDebugText, 0x80731D20
+.definelabel handleTextScrolling, 0x800317E8

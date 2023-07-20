@@ -249,3 +249,4 @@
 
 .definelabel SFXVolume, 0x8074583C
 .definelabel MusicVolume, 0x80745840
+.definelabel BorderInformation, 0x80750840

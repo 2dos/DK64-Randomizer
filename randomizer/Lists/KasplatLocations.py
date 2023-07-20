@@ -1447,7 +1447,7 @@ KasplatLocationList = {
             xmax=4560,
             zmin=1520,
             zmax=1780,
-            region=Regions.IslesMain,
+            region=Regions.OuterIsles,
             additional_logic=lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.hunkyChunky and l.Slam and l.chunky,
         ),
         KasplatLocation(
@@ -1470,7 +1470,7 @@ KasplatLocationList = {
             xmax=1685,
             zmin=330,
             zmax=565,
-            region=Regions.IslesMain,
+            region=Regions.OuterIsles,
         ),
         KasplatLocation(
             name="Isles Kasplat: Back of Cabin Isle",

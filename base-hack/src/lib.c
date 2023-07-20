@@ -274,6 +274,228 @@ static const map_bitfield minigame_maps_btf = {
     .k_rools_shoe = 0,
     .k_rools_arena = 0,
 };
+static const char overlay_indexes[] = {
+	OVERLAY_NONE, // Test Map
+	OVERLAY_MENU, // Funky's Store
+	OVERLAY_ARCADE, // DK Arcade
+	OVERLAY_BONUS, // K. Rool Barrel: Lanky's Maze
+	OVERLAY_MINECART, // Jungle Japes: Mountain
+	OVERLAY_MENU, // Cranky's Lab
+	OVERLAY_MINECART, // Jungle Japes: Minecart
+	OVERLAY_CRITTER, // Jungle Japes
+	OVERLAY_BOSS, // Jungle Japes: Army Dillo
+	OVERLAY_JETPAC, // Jetpac
+	OVERLAY_BONUS, // Kremling Kosh! (very easy)
+	OVERLAY_BONUS, // Stealthy Snoop! (normal, no logo)
+	OVERLAY_NONE, // Jungle Japes: Shell
+	OVERLAY_NONE, // Jungle Japes: Lanky's Cave
+	OVERLAY_RACE, // Angry Aztec: Beetle Race
+	OVERLAY_MENU, // Snide's H.Q.
+	OVERLAY_CRITTER, // Angry Aztec: Tiny's Temple
+	OVERLAY_NONE, // Hideout Helm
+	OVERLAY_BONUS, // Teetering Turtle Trouble! (very easy)
+	OVERLAY_NONE, // Angry Aztec: Five Door Temple (DK)
+	OVERLAY_NONE, // Angry Aztec: Llama Temple
+	OVERLAY_NONE, // Angry Aztec: Five Door Temple (Diddy)
+	OVERLAY_NONE, // Angry Aztec: Five Door Temple (Tiny)
+	OVERLAY_NONE, // Angry Aztec: Five Door Temple (Lanky)
+	OVERLAY_NONE, // Angry Aztec: Five Door Temple (Chunky)
+	OVERLAY_MENU, // Candy's Music Shop
+	OVERLAY_NONE, // Frantic Factory
+	OVERLAY_RACE, // Frantic Factory: Car Race
+	OVERLAY_BOSS, // Hideout Helm (Level Intros, Game Over)
+	OVERLAY_NONE, // Frantic Factory: Power Shed
+	OVERLAY_CRITTER, // Gloomy Galleon
+	OVERLAY_NONE, // Gloomy Galleon: K. Rool's Ship
+	OVERLAY_BONUS, // Batty Barrel Bandit! (easy)
+	OVERLAY_CRITTER, // Jungle Japes: Chunky's Cave
+	OVERLAY_CRITTER, // DK Isles Overworld
+	OVERLAY_BONUS, // K. Rool Barrel: DK's Target Game
+	OVERLAY_NONE, // Frantic Factory: Crusher Room
+	OVERLAY_NONE, // Jungle Japes: Barrel Blast
+	OVERLAY_NONE, // Angry Aztec
+	OVERLAY_RACE, // Gloomy Galleon: Seal Race
+	OVERLAY_MENU, // Nintendo Logo
+	OVERLAY_NONE, // Angry Aztec: Barrel Blast
+	OVERLAY_CRITTER, // Troff 'n' Scoff
+	OVERLAY_CRITTER, // Gloomy Galleon: Shipwreck (Diddy, Lanky, Chunky)
+	OVERLAY_CRITTER, // Gloomy Galleon: Treasure Chest
+	OVERLAY_CRITTER, // Gloomy Galleon: Mermaid
+	OVERLAY_CRITTER, // Gloomy Galleon: Shipwreck (DK, Tiny)
+	OVERLAY_CRITTER, // Gloomy Galleon: Shipwreck (Lanky, Tiny)
+	OVERLAY_NONE, // Fungi Forest
+	OVERLAY_NONE, // Gloomy Galleon: Lighthouse
+	OVERLAY_BONUS, // K. Rool Barrel: Tiny's Mushroom Game
+	OVERLAY_NONE, // Gloomy Galleon: Mechanical Fish
+	OVERLAY_NONE, // Fungi Forest: Ant Hill
+	OVERLAY_BONUS, // Battle Arena: Beaver Brawl!
+	OVERLAY_NONE, // Gloomy Galleon: Barrel Blast
+	OVERLAY_MINECART, // Fungi Forest: Minecart
+	OVERLAY_CRITTER, // Fungi Forest: Diddy's Barn
+	OVERLAY_NONE, // Fungi Forest: Diddy's Attic
+	OVERLAY_NONE, // Fungi Forest: Lanky's Attic
+	OVERLAY_NONE, // Fungi Forest: DK's Barn
+	OVERLAY_BOSS, // Fungi Forest: Spider
+	OVERLAY_NONE, // Fungi Forest: Front Part of Mill
+	OVERLAY_NONE, // Fungi Forest: Rear Part of Mill
+	OVERLAY_NONE, // Fungi Forest: Mushroom Puzzle
+	OVERLAY_NONE, // Fungi Forest: Giant Mushroom
+	OVERLAY_BONUS, // Stealthy Snoop! (normal)
+	OVERLAY_BONUS, // Mad Maze Maul! (hard)
+	OVERLAY_BONUS, // Stash Snatch! (normal)
+	OVERLAY_BONUS, // Mad Maze Maul! (easy)
+	OVERLAY_BONUS, // Mad Maze Maul! (normal)
+	OVERLAY_NONE, // Fungi Forest: Mushroom Leap
+	OVERLAY_NONE, // Fungi Forest: Shooting Game
+	OVERLAY_CRITTER, // Crystal Caves
+	OVERLAY_BONUS, // Battle Arena: Kritter Karnage!
+	OVERLAY_BONUS, // Stash Snatch! (easy)
+	OVERLAY_BONUS, // Stash Snatch! (hard)
+	OVERLAY_CRITTER, // DK Rap
+	OVERLAY_MINECART, // Minecart Mayhem! (easy)
+	OVERLAY_BONUS, // Busy Barrel Barrage! (easy)
+	OVERLAY_BONUS, // Busy Barrel Barrage! (normal)
+	OVERLAY_MENU, // Main Menu
+	OVERLAY_NONE, // Title Screen (Not For Resale Version)
+	OVERLAY_RACE, // Crystal Caves: Beetle Race
+	OVERLAY_BOSS, // Fungi Forest: Dogadon
+	OVERLAY_NONE, // Crystal Caves: Igloo (Tiny)
+	OVERLAY_NONE, // Crystal Caves: Igloo (Lanky)
+	OVERLAY_NONE, // Crystal Caves: Igloo (DK)
+	OVERLAY_NONE, // Creepy Castle
+	OVERLAY_NONE, // Creepy Castle: Ballroom
+	OVERLAY_NONE, // Crystal Caves: Rotating Room
+	OVERLAY_NONE, // Crystal Caves: Shack (Chunky)
+	OVERLAY_NONE, // Crystal Caves: Shack (DK)
+	OVERLAY_NONE, // Crystal Caves: Shack (Diddy, middle part)
+	OVERLAY_NONE, // Crystal Caves: Shack (Tiny)
+	OVERLAY_NONE, // Crystal Caves: Lanky's Hut
+	OVERLAY_NONE, // Crystal Caves: Igloo (Chunky)
+	OVERLAY_BONUS, // Splish-Splash Salvage! (normal)
+	OVERLAY_NONE, // K. Lumsy
+	OVERLAY_NONE, // Crystal Caves: Ice Castle
+	OVERLAY_BONUS, // Speedy Swing Sortie! (easy)
+	OVERLAY_NONE, // Crystal Caves: Igloo (Diddy)
+	OVERLAY_BONUS, // Krazy Kong Klamour! (easy)
+	OVERLAY_BONUS, // Big Bug Bash! (very easy)
+	OVERLAY_BONUS, // Searchlight Seek! (very easy)
+	OVERLAY_BONUS, // Beaver Bother! (easy)
+	OVERLAY_NONE, // Creepy Castle: Tower
+	OVERLAY_MINECART, // Creepy Castle: Minecart
+	OVERLAY_MULTI, // Kong Battle: Battle Arena
+	OVERLAY_NONE, // Creepy Castle: Crypt (Lanky, Tiny)
+	OVERLAY_MULTI, // Kong Battle: Arena 1
+	OVERLAY_NONE, // Frantic Factory: Barrel Blast
+	OVERLAY_BOSS, // Gloomy Galleon: Pufftoss
+	OVERLAY_NONE, // Creepy Castle: Crypt (DK, Diddy, Chunky)
+	OVERLAY_NONE, // Creepy Castle: Museum
+	OVERLAY_NONE, // Creepy Castle: Library
+	OVERLAY_BONUS, // Kremling Kosh! (easy)
+	OVERLAY_BONUS, // Kremling Kosh! (normal)
+	OVERLAY_BONUS, // Kremling Kosh! (hard)
+	OVERLAY_BONUS, // Teetering Turtle Trouble! (easy)
+	OVERLAY_BONUS, // Teetering Turtle Trouble! (normal)
+	OVERLAY_BONUS, // Teetering Turtle Trouble! (hard)
+	OVERLAY_BONUS, // Batty Barrel Bandit! (easy)
+	OVERLAY_BONUS, // Batty Barrel Bandit! (normal)
+	OVERLAY_BONUS, // Batty Barrel Bandit! (hard)
+	OVERLAY_BONUS, // Mad Maze Maul! (insane)
+	OVERLAY_BONUS, // Stash Snatch! (insane)
+	OVERLAY_BONUS, // Stealthy Snoop! (very easy)
+	OVERLAY_BONUS, // Stealthy Snoop! (easy)
+	OVERLAY_BONUS, // Stealthy Snoop! (hard)
+	OVERLAY_MINECART, // Minecart Mayhem! (normal)
+	OVERLAY_MINECART, // Minecart Mayhem! (hard)
+	OVERLAY_BONUS, // Busy Barrel Barrage! (hard)
+	OVERLAY_BONUS, // Splish-Splash Salvage! (hard)
+	OVERLAY_BONUS, // Splish-Splash Salvage! (easy)
+	OVERLAY_BONUS, // Speedy Swing Sortie! (normal)
+	OVERLAY_BONUS, // Speedy Swing Sortie! (hard)
+	OVERLAY_BONUS, // Beaver Bother! (normal)
+	OVERLAY_BONUS, // Beaver Bother! (hard)
+	OVERLAY_BONUS, // Searchlight Seek! (easy)
+	OVERLAY_BONUS, // Searchlight Seek! (normal)
+	OVERLAY_BONUS, // Searchlight Seek! (hard)
+	OVERLAY_BONUS, // Krazy Kong Klamour! (normal)
+	OVERLAY_BONUS, // Krazy Kong Klamour! (hard)
+	OVERLAY_BONUS, // Krazy Kong Klamour! (insane)
+	OVERLAY_BONUS, // Peril Path Panic! (very easy)
+	OVERLAY_BONUS, // Peril Path Panic! (easy)
+	OVERLAY_BONUS, // Peril Path Panic! (normal)
+	OVERLAY_BONUS, // Peril Path Panic! (hard)
+	OVERLAY_BONUS, // Big Bug Bash! (easy)
+	OVERLAY_BONUS, // Big Bug Bash! (normal)
+	OVERLAY_BONUS, // Big Bug Bash! (hard)
+	OVERLAY_NONE, // Creepy Castle: Dungeon
+	OVERLAY_NONE, // Hideout Helm (Intro Story)
+	OVERLAY_NONE, // DK Isles (DK Theatre)
+	OVERLAY_BOSS, // Frantic Factory: Mad Jack
+	OVERLAY_BONUS, // Battle Arena: Arena Ambush!
+	OVERLAY_BONUS, // Battle Arena: More Kritter Karnage!
+	OVERLAY_BONUS, // Battle Arena: Forest Fracas!
+	OVERLAY_BONUS, // Battle Arena: Bish Bash Brawl!
+	OVERLAY_BONUS, // Battle Arena: Kamikaze Kremlings!
+	OVERLAY_BONUS, // Battle Arena: Plinth Panic!
+	OVERLAY_BONUS, // Battle Arena: Pinnacle Palaver!
+	OVERLAY_BONUS, // Battle Arena: Shockwave Showdown!
+	OVERLAY_NONE, // Creepy Castle: Basement
+	OVERLAY_NONE, // Creepy Castle: Tree
+	OVERLAY_BONUS, // K. Rool Barrel: Diddy's Kremling Game
+	OVERLAY_NONE, // Creepy Castle: Chunky's Toolshed
+	OVERLAY_NONE, // Creepy Castle: Trash Can
+	OVERLAY_NONE, // Creepy Castle: Greenhouse
+	OVERLAY_CRITTER, // Jungle Japes Lobby
+	OVERLAY_CRITTER, // Hideout Helm Lobby
+	OVERLAY_NONE, // DK's House
+	OVERLAY_NONE, // Rock (Intro Story)
+	OVERLAY_CRITTER, // Angry Aztec Lobby
+	OVERLAY_CRITTER, // Gloomy Galleon Lobby
+	OVERLAY_CRITTER, // Frantic Factory Lobby
+	OVERLAY_CRITTER, // Training Grounds
+	OVERLAY_CRITTER, // Dive Barrel
+	OVERLAY_CRITTER, // Fungi Forest Lobby
+	OVERLAY_NONE, // Gloomy Galleon: Submarine
+	OVERLAY_CRITTER, // Orange Barrel
+	OVERLAY_CRITTER, // Barrel Barrel
+	OVERLAY_CRITTER, // Vine Barrel
+	OVERLAY_NONE, // Creepy Castle: Crypt
+	OVERLAY_BONUS, // Enguarde Arena
+	OVERLAY_RACE, // Creepy Castle: Car Race
+	OVERLAY_NONE, // Crystal Caves: Barrel Blast
+	OVERLAY_NONE, // Creepy Castle: Barrel Blast
+	OVERLAY_NONE, // Fungi Forest: Barrel Blast
+	OVERLAY_CRITTER, // Fairy Island
+	OVERLAY_MULTI, // Kong Battle: Arena 2
+	OVERLAY_BONUS, // Rambi Arena
+	OVERLAY_MULTI, // Kong Battle: Arena 3
+	OVERLAY_CRITTER, // Creepy Castle Lobby
+	OVERLAY_CRITTER, // Crystal Caves Lobby
+	OVERLAY_CRITTER, // DK Isles: Snide's Room
+	OVERLAY_BOSS, // Crystal Caves: Army Dillo
+	OVERLAY_BOSS, // Angry Aztec: Dogadon
+	OVERLAY_NONE, // Training Grounds (End Sequence)
+	OVERLAY_BOSS, // Creepy Castle: King Kut Out
+	OVERLAY_NONE, // Crystal Caves: Shack (Diddy, upper part)
+	OVERLAY_BONUS, // K. Rool Barrel: Diddy's Rocketbarrel Game
+	OVERLAY_BONUS, // K. Rool Barrel: Lanky's Shooting Game
+	OVERLAY_BOSS, // K. Rool Fight: DK Phase
+	OVERLAY_BOSS, // K. Rool Fight: Diddy Phase
+	OVERLAY_BOSS, // K. Rool Fight: Lanky Phase
+	OVERLAY_BOSS, // K. Rool Fight: Tiny Phase
+	OVERLAY_BOSS, // K. Rool Fight: Chunky Phase
+	OVERLAY_NONE, // Bloopers Ending
+	OVERLAY_BONUS, // K. Rool Barrel: Chunky's Hidden Kremling Game
+	OVERLAY_BONUS, // K. Rool Barrel: Tiny's Pony Tail Twirl Game
+	OVERLAY_BONUS, // K. Rool Barrel: Chunky's Shooting Game
+	OVERLAY_BONUS, // K. Rool Barrel: DK's Rambi Game
+	OVERLAY_NONE, // K. Lumsy Ending
+	OVERLAY_BOSS, // K. Rool's Shoe
+	OVERLAY_NONE, // K. Rool's Arena
+};
+
+overlays getOverlayFromMap(maps map) {
+	return overlay_indexes[map];
+}
 
 int inMinigame(maps map) {
 	int offset = map >> 3;
@@ -644,7 +866,7 @@ void giveOrange(void) {
 }
 
 void giveMelon(void) {
-	applyDamage(0, 1);
+	applyDamageMask(0, 1);
 }
 
 void giveCrystal(void) {
@@ -774,4 +996,56 @@ int has_key(int index) {
 		}
 	}
 	return checkFlagDuplicate(normal_key_flags[index], FLAGTYPE_PERMANENT);
+}
+
+void* malloc_wipe(int size) {
+	void* ptr = dk_malloc(size);
+	wipeMemory(ptr, size);
+	return ptr;
+}
+
+int filterSong(int* song_write) {
+	int song = *song_write;
+	if (Rando.disabled_music.events) {
+		if (music_types[song] == SONGTYPE_EVENT) {
+			*song_write = 0;
+		}
+	}
+	if (Rando.disabled_music.shops) {
+		if (
+			((song == 2) && (CurrentMap == MAP_CRANKY)) || // Cranky
+			((song == 6) && (CurrentMap == MAP_FUNKY)) || // Funky
+			((song == 31) && (CurrentMap == MAP_CANDY)) || // Candy
+			((song == 29) && (CurrentMap == MAP_SNIDE)) // Snide
+		) {
+			*song_write = 0;
+		}
+	}
+	return getTrackChannel(song);
+}
+
+int applyDamageMask(int player_index, int damage) {
+	int applied_multiplier = Rando.damage_multiplier;
+	if (damage > 0) {
+		return applyDamage(player_index, damage);
+	}
+	if ((CurrentMap == MAP_CASTLEKUTOUT) && (CutsceneActive == 1) && (CutsceneIndex == 4)) {
+		// King Kut out death cutscene, force to 0
+		applied_multiplier = 0;
+	}
+	if ((Rando.hard_mode.lava_water) && (
+	(CurrentMap == MAP_GALLEON) ||
+	(CurrentMap == MAP_GALLEON2DS) ||
+	(CurrentMap == MAP_GALLEON5DSDKTINY) ||
+	(CurrentMap == MAP_GALLEON5DSDIDDYLANKYCHUNKY))) {
+		applied_multiplier = 1;
+	}
+	return applyDamage(player_index, damage * applied_multiplier);
+}
+
+void* replaceWaterTexture(int table, int file, int unk0, int unk1) {
+	if (file == 0xCF) {
+		return getMapData(7, 0x3BA, unk0, unk1);
+	}
+	return getMapData(table, file, unk0, unk1);
 }

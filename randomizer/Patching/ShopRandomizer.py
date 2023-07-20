@@ -20,6 +20,7 @@ def ApplyShopRandomizer(spoiler):
             for shop in shop_array:
                 if shop.map not in shop_placement_maps:
                     shop_placement_maps.append(shop.map)
+        ROM_COPY = LocalROM()
         for map in shop_placement_maps:
             setup_address = js.pointer_addresses[9]["entries"][map]["pointing_to"]
             lz_address = js.pointer_addresses[18]["entries"][map]["pointing_to"]
@@ -94,25 +95,25 @@ def ApplyShopRandomizer(spoiler):
                 if new_model > -1 and new_lz > -1 and search_model > -1 and search_lz > -1:
                     model_index = -1
                     zone_index = -1
-                    LocalROM().seek(setup_address)
-                    model2_count = int.from_bytes(LocalROM().readBytes(4), "big")
+                    ROM_COPY.seek(setup_address)
+                    model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
                     for model2_index in range(model2_count):
                         if model_index == -1:
                             obj_start = setup_address + 4 + (model2_index * 0x30)
-                            LocalROM().seek(obj_start + 0x28)
-                            obj_type = int.from_bytes(LocalROM().readBytes(2), "big")
+                            ROM_COPY.seek(obj_start + 0x28)
+                            obj_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
                             if obj_type == search_model:
                                 model_index = model2_index
-                    LocalROM().seek(lz_address)
-                    lz_count = int.from_bytes(LocalROM().readBytes(2), "big")
+                    ROM_COPY.seek(lz_address)
+                    lz_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
                     for lz_index in range(lz_count):
                         if zone_index == -1:
                             lz_start = lz_address + 2 + (lz_index * 0x38)
-                            LocalROM().seek(lz_start + 0x10)
-                            lz_type = int.from_bytes(LocalROM().readBytes(2), "big")
+                            ROM_COPY.seek(lz_start + 0x10)
+                            lz_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
                             if lz_type == 16:
-                                LocalROM().seek(lz_start + 0x12)
-                                lz_map = int.from_bytes(LocalROM().readBytes(2), "big")
+                                ROM_COPY.seek(lz_start + 0x12)
+                                lz_map = int.from_bytes(ROM_COPY.readBytes(2), "big")
                                 if lz_map == search_lz:
                                     zone_index = lz_index
                     if model_index > -1 and zone_index > -1:
@@ -132,30 +133,30 @@ def ApplyShopRandomizer(spoiler):
                 setup_item = setup_address + 4 + (placement["model_index"] * 0x30)
                 zone_item = lz_address + 2 + (placement["zone_index"] * 0x38)
                 # Type
-                LocalROM().seek(setup_item + 0x28)
-                LocalROM().writeMultipleBytes(placement["replace_model"], 2)
+                ROM_COPY.seek(setup_item + 0x28)
+                ROM_COPY.writeMultipleBytes(placement["replace_model"], 2)
                 # Angle
                 if placement["angle_change"] != 0:
-                    LocalROM().seek(setup_item + 0x1C)
-                    original_angle = intf_to_float(int.from_bytes(LocalROM().readBytes(4), "big"))
+                    ROM_COPY.seek(setup_item + 0x1C)
+                    original_angle = intf_to_float(int.from_bytes(ROM_COPY.readBytes(4), "big"))
                     new_angle = original_angle + placement["angle_change"]
                     if new_angle < 0:
                         new_angle += 360
                     elif new_angle >= 360:
                         new_angle -= 360
-                    LocalROM().seek(setup_item + 0x1C)
-                    LocalROM().writeMultipleBytes(int(float_to_hex(new_angle), 16), 4)
+                    ROM_COPY.seek(setup_item + 0x1C)
+                    ROM_COPY.writeMultipleBytes(int(float_to_hex(new_angle), 16), 4)
                 # Scale
-                LocalROM().seek(setup_item + 0xC)
-                original_scale = intf_to_float(int.from_bytes(LocalROM().readBytes(4), "big"))
+                ROM_COPY.seek(setup_item + 0xC)
+                original_scale = intf_to_float(int.from_bytes(ROM_COPY.readBytes(4), "big"))
                 new_scale = original_scale * placement["scale_factor"]
-                LocalROM().seek(setup_item + 0xC)
-                LocalROM().writeMultipleBytes(int(float_to_hex(new_scale), 16), 4)
+                ROM_COPY.seek(setup_item + 0xC)
+                ROM_COPY.writeMultipleBytes(int(float_to_hex(new_scale), 16), 4)
                 # Get Model X and Z
-                LocalROM().seek(setup_item)
-                model_x = intf_to_float(int.from_bytes(LocalROM().readBytes(4), "big"))
-                LocalROM().seek(setup_item + 0x8)
-                model_z = intf_to_float(int.from_bytes(LocalROM().readBytes(4), "big"))
+                ROM_COPY.seek(setup_item)
+                model_x = intf_to_float(int.from_bytes(ROM_COPY.readBytes(4), "big"))
+                ROM_COPY.seek(setup_item + 0x8)
+                model_z = intf_to_float(int.from_bytes(ROM_COPY.readBytes(4), "big"))
                 # Get Base Zone X and Z
                 if model_x < 0:
                     model_x = int(model_x) + 65536
@@ -165,10 +166,10 @@ def ApplyShopRandomizer(spoiler):
                     model_z = int(model_z) + 65536
                 else:
                     model_z = int(model_z)
-                LocalROM().seek(zone_item)
-                LocalROM().writeMultipleBytes(model_x, 2)
-                LocalROM().seek(zone_item + 0x4)
-                LocalROM().writeMultipleBytes(model_z, 2)
+                ROM_COPY.seek(zone_item)
+                ROM_COPY.writeMultipleBytes(model_x, 2)
+                ROM_COPY.seek(zone_item + 0x4)
+                ROM_COPY.writeMultipleBytes(model_z, 2)
                 # Overwrite new radius
                 base_model_scale = 88
                 if placement["replace_model"] == 0x73:
@@ -183,8 +184,8 @@ def ApplyShopRandomizer(spoiler):
                 elif placement["replace_model"] == 0x79:
                     # Snide
                     base_model_scale = 87.5
-                LocalROM().seek(zone_item + 0x6)
-                LocalROM().writeMultipleBytes(int(base_model_scale * new_scale), 2)
+                ROM_COPY.seek(zone_item + 0x6)
+                ROM_COPY.writeMultipleBytes(int(base_model_scale * new_scale), 2)
                 # Loading Zone
-                LocalROM().seek(zone_item + 0x12)
-                LocalROM().writeMultipleBytes(placement["replace_zone"], 2)
+                ROM_COPY.seek(zone_item + 0x12)
+                ROM_COPY.writeMultipleBytes(placement["replace_zone"], 2)

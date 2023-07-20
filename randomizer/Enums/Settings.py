@@ -241,6 +241,7 @@ class ItemRandoListSelected(IntEnum):
     beanpearl = 12
     fakeitem = 13
     junkitem = 14
+    crateitem = 15
 
 
 class KasplatRandoSetting(IntEnum):
@@ -595,6 +596,7 @@ class SettingsStringEnum(IntEnum):
 
     ALL SETTINGS NEED AN ENTRY HERE!
     """
+
     activate_all_bananaports = 1
     alter_switch_allocation = 2
     auto_keys = 3

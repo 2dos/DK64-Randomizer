@@ -90,7 +90,11 @@ int* drawScreenRect(int* dl, int x1, int y1, int x2, int y2, int red, int green,
 	*(unsigned int*)(dl++) = 0xF7000000;
 	*(unsigned int*)(dl++) = ((red & 0x1F) << 11) | ((green & 0x1F) << 6) | ((blue & 0x1F) << 1) | (alpha & 0x1);
 	*(unsigned int*)(dl++) = 0xED000000 | (((0xA * 4) & 0xFFF) << 12) | ((4 * 0xA) & 0xFFF);
-	*(unsigned int*)(dl++) = (((4 * 0x135) & 0xFFF) << 12) | ((4 * 0xE5) & 0xFFF);
+	if (Rando.true_widescreen) {
+		*(unsigned int*)(dl++) = (((4 * (SCREEN_WD - 11)) & 0xFFF) << 12) | ((4 * (SCREEN_HD - 11)) & 0xFFF);
+	} else {
+		*(unsigned int*)(dl++) = (((4 * 0x135) & 0xFFF) << 12) | ((4 * 0xE5) & 0xFFF);
+	}
 	*(unsigned int*)(dl++) = 0xF6000000 | ((x2 & 0x3FF) << 12) | (y2 & 0x3FF);
 	*(unsigned int*)(dl++) = ((x1 & 0x3FF) << 12) | (y1 & 0x3FF);
 	return dl;

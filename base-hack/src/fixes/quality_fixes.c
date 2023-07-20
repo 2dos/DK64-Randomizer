@@ -26,6 +26,7 @@ void qualityOfLife_fixes(void) {
 		// Set some flags in-game
 		setPermFlag(FLAG_FTT_CRANKY); // Cranky FTT
 		fixkey8();
+		*(short*)(0x8060D60A) = 0; // Enable poll input during saving
 		// Prevent a bug where detransforming from Rambi shortly before getting hit will keep you locked as Rambi
 		if (CurrentMap == MAP_JAPES) {
 			if (Player) {
@@ -329,7 +330,7 @@ void exitTrapBubbleController(void) {
 static const char test_file_name[] = "BALLAAM";
 
 void writeDefaultFilename(void) {
-	for (int i = 0; i < 8; i++) {
+	for (int i = 0; i < FILENAME_LENGTH; i++) {
 		SaveExtraData(EGD_FILENAME, i, test_file_name[i]);
 	}
 }

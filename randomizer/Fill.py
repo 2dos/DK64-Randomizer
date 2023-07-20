@@ -638,7 +638,7 @@ def PareWoth(spoiler, PlaythroughLocations):
             loc
             for loc in sphere.locations  # If Keys are constant, we may still want path hints for them.
             if (not LocationList[loc].constant or ItemList[LocationList[loc].item].type == Types.Key)
-            and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint, Types.RainbowCoin)
+            and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint, Types.RainbowCoin, Types.CrateItem)
         ]:
             WothLocations.append(loc)
     WothLocations.append(Locations.BananaHoard)  # The Banana Hoard is the endpoint of the Way of the Hoard
@@ -1442,6 +1442,9 @@ def Fill(spoiler):
         Reset()
         junkUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, ItemPool.JunkItems(), [])
         # Don't raise exception if unplaced junk items
+    if Types.CrateItem in spoiler.settings.shuffled_location_types:
+        placed_types.append(Types.CrateItem)
+        # Crates hold nothing, so leave this one empty
 
     # Some locations require special care to make logic work correctly
     # This is the only location that cares about None vs NoItem - it needs to be None so it fills correctly but NoItem for logic to generate progression correctly
@@ -1830,6 +1833,9 @@ def FillKongsAndMoves(spoiler, placedTypes):
         if spoiler.settings.shockwave_status in (ShockwaveStatus.shuffled, ShockwaveStatus.shuffled_decoupled):
             possibleStartingMoves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
         shuffle(possibleStartingMoves)
+        if spoiler.settings.start_with_a_slam:  # Force a slam to be the first item chosen from the random list of moves
+            possibleStartingMoves.remove(Items.ProgressiveSlam)
+            possibleStartingMoves.append(Items.ProgressiveSlam)
         # For each location needing a move, put in a random valid move
         for locationId in locationsNeedingMoves:
             startingMove = possibleStartingMoves.pop()
@@ -2427,6 +2433,8 @@ def Generate_Spoiler(spoiler):
     global LogicVariables
     LogicVariables = None
     LogicVariables = LogicVarHolder(spoiler.settings)
+    if spoiler.settings.wrinkly_hints == WrinklyHints.fixed_racing:
+        ValidateFixedHints(spoiler.settings)
     # Reset LocationList for a new fill
     ResetLocationList()
     # Initiate kasplat map with default
@@ -2524,3 +2532,9 @@ def ShuffleMisc(spoiler):
     # Item Rando
     spoiler.human_item_assignment = {}
     spoiler.settings.update_valid_locations()
+
+
+def ValidateFixedHints(settings):
+    """Check for some known incompatibilities with the Fixed hint system ASAP so we don't waste time genning this seed."""
+    if settings.win_condition != WinCondition.beat_krool:
+        raise Ex.SettingsIncompatibleException("Alternate win conditions will not work with Fixed hints.")
