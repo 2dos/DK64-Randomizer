@@ -26,7 +26,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions as RegionEnum
-from randomizer.Enums.Settings import ActivateAllBananaports, GlitchesSelected, HelmDoorItem, LogicType, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
+from randomizer.Enums.Settings import ActivateAllBananaports, DamageAmount, GlitchesSelected, HelmDoorItem, LogicType, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
@@ -443,7 +443,7 @@ class LogicVarHolder:
         """Determine whether the player can skew."""
         if swim:
             return self.skew and self.swim and self.HasGun(kong_req) and self.CanPhaseswim()
-        return self.skew
+        return self.skew and self.oranges and self.settings.damage_amount != DamageAmount.ohko
 
     def AddEvent(self, event):
         """Add an event to events list so it can be checked for logically."""
