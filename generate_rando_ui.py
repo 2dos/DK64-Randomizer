@@ -46,7 +46,7 @@ async def initialize():
 
     # Module of lists and utils used for plandomizer
     from randomizer.PlandoUtils import PlandoItemFilter, PlandoMinigameFilter, PlandoOptionClassAnnotation, PlandoShopSortFilter
-    from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableItems, PlannableMinigames, PlannableSpawns, PlannableStartingMoves
+    from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableItems, PlannableMinigames, PlannableSpawns
 
     js.listeners = []
     js.progression_presets = []
@@ -86,7 +86,6 @@ async def initialize():
         vanilla_warps=VanillaBananaportSelector,
         plando_items=PlannableItems,
         plando_minigames=PlannableMinigames,
-        plando_moves=PlannableStartingMoves,
         plando_panels=PlandomizerPanels,
         plando_spawns=PlannableSpawns,
     )

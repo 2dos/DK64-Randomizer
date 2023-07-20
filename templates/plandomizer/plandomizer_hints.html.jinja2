@@ -13,10 +13,10 @@
         Hints can be a maximum of 900 characters. The only permitted characters
         are letters, numbers, spaces, and the characters ,.-?!
     </div>
-    {% for kong, locations in panel["locations"].items() %}
-        <h3 class="title">{{kong}}</h3>
+    {% for _, levelObj in panel["levels"].items() %}
+        <h3 class="title">{{levelObj["name"]}}</h3>
         <div class="flex-container flex-center">
-            {% for location in locations %}
+            {% for location in levelObj["locations"] %}
                 <div class="location-picker">
                     <label for="plando_{{location["value"]}}_hint" class="location-label">
                         {{location["name"]}}

@@ -138,28 +138,6 @@
                     </label>
                 {% endfor %}
             </div>
-            <div class="flex-container">
-                <div class="item-multiselect wide-select">
-                    <p class="select-title">Starting Moves</p>
-                    <select name="plando_starting_moves_selected"
-                            id="plando_starting_moves_selected"
-                            data-toggle="tooltip"
-                            title
-                            class="form-select multi-select"
-                            aria-label="Starting Moves"
-                            multiple
-                            size="10">
-                        <option selected value="">
-                            Random Move(s)
-                        </option>
-                        {% for move in plando_moves %}
-                            <option value="{{move["value"]}}">
-                                {{move["name"]}}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
         </div>
         <div class="col panel"
              style="border-left: 1px solid #e3e3e3;">

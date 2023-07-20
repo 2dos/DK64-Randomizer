@@ -12,50 +12,6 @@ from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
 
-# A full list of locations for starting moves to be placed.
-startingMoveLocations = [
-    Locations.IslesVinesTrainingBarrel,
-    Locations.IslesSwimTrainingBarrel,
-    Locations.IslesOrangesTrainingBarrel,
-    Locations.IslesBarrelsTrainingBarrel,
-    Locations.PreGiven_Location00,
-    Locations.PreGiven_Location01,
-    Locations.PreGiven_Location02,
-    Locations.PreGiven_Location03,
-    Locations.PreGiven_Location04,
-    Locations.PreGiven_Location05,
-    Locations.PreGiven_Location06,
-    Locations.PreGiven_Location07,
-    Locations.PreGiven_Location08,
-    Locations.PreGiven_Location09,
-    Locations.PreGiven_Location10,
-    Locations.PreGiven_Location11,
-    Locations.PreGiven_Location12,
-    Locations.PreGiven_Location13,
-    Locations.PreGiven_Location14,
-    Locations.PreGiven_Location15,
-    Locations.PreGiven_Location16,
-    Locations.PreGiven_Location17,
-    Locations.PreGiven_Location18,
-    Locations.PreGiven_Location19,
-    Locations.PreGiven_Location20,
-    Locations.PreGiven_Location21,
-    Locations.PreGiven_Location22,
-    Locations.PreGiven_Location23,
-    Locations.PreGiven_Location24,
-    Locations.PreGiven_Location25,
-    Locations.PreGiven_Location26,
-    Locations.PreGiven_Location27,
-    Locations.PreGiven_Location28,
-    Locations.PreGiven_Location29,
-    Locations.PreGiven_Location30,
-    Locations.PreGiven_Location31,
-    Locations.PreGiven_Location32,
-    Locations.PreGiven_Location33,
-    Locations.PreGiven_Location34,
-    Locations.PreGiven_Location35,
-]
-
 
 def invalidate_option(element, tooltip):
     """Add a Bootstrap tooltip to the given element, and mark it as invalid."""
@@ -92,7 +48,7 @@ def count_items():
                 count_dict[plandoItemEnum] = [elemName]
 
     add_all_items(ItemLocationList, "_item")
-    add_all_items(ShopLocationList, "_shop_item")
+    add_all_items(ShopLocationList, "_item")
     return count_dict
 
 
@@ -102,7 +58,7 @@ def count_items():
 
 
 @bindList("change", ItemLocationList, prefix="plando_", suffix="_item")
-@bindList("change", ShopLocationList, prefix="plando_", suffix="_shop_item")
+@bindList("change", ShopLocationList, prefix="plando_", suffix="_item")
 def validate_item_limits(evt):
     """Raise an error if any item has been placed too many times."""
     count_dict = count_items()
@@ -133,7 +89,7 @@ def validate_item_limits(evt):
 def validate_hint_text(evt):
     """Raise an error if any hint contains invalid characters."""
     hintString = evt.target.value
-    if re.search("[^A-Za-z0-9 ,.-?!]", hintString) is not None:
+    if re.search("[^A-Za-z0-9 \,\.\-\?!]", hintString) is not None:
         invalidate_option(evt.target, "Only letters, numbers, spaces, and the characters ,.-?! are allowed in hints.")
     else:
         validate_option(evt.target)
@@ -166,22 +122,6 @@ def validate_starting_kong_count(evt):
         invalidate_option(startingKongs, errString)
     else:
         validate_option(startingKongs)
-
-
-@bind("change", "starting_moves_count")
-@bind("change", "plando_starting_moves_selected")
-def validate_starting_move_count(evt):
-    """Raise an error if the starting moves don't match the selected count."""
-    startingMoves = js.document.getElementById("plando_starting_moves_selected")
-    selectedMoves = {x.value for x in startingMoves.selectedOptions}
-    numStartingMoves = int(js.document.getElementById("starting_moves_count").value)
-    if len(selectedMoves) > numStartingMoves or (len(selectedMoves) < numStartingMoves and "" not in selectedMoves):
-        maybePluralMoveText = "move was selected as a starting move" if len(selectedMoves) == 1 else "moves were selected as starting moves"
-        errSuffix = "." if len(selectedMoves) > numStartingMoves else ', and "Random Move(s)" was not chosen.'
-        errString = f"The number of starting moves was set to {numStartingMoves}, but {len(selectedMoves)} {maybePluralMoveText}{errSuffix}"
-        invalidate_option(startingMoves, errString)
-    else:
-        validate_option(startingMoves)
 
 
 @bind("change", "plando_level_order_", 7)
@@ -288,7 +228,6 @@ def populate_plando_options(form):
 
     plando_form_data = {}
     item_objects = []
-    shop_item_objects = []
     shop_cost_objects = []
     minigame_objects = []
     hint_objects = []
@@ -326,10 +265,7 @@ def populate_plando_options(form):
         if not is_plando_input(obj.name):
             continue
         # Sort the selects into their appropriate lists.
-        if obj.name.endswith("_shop_item"):
-            shop_item_objects.append(obj)
-            continue
-        elif obj.name.endswith("_shop_cost"):
+        if obj.name.endswith("_shop_cost"):
             shop_cost_objects.append(obj)
             continue
         elif obj.name.endswith("_item"):
@@ -385,45 +321,15 @@ def populate_plando_options(form):
         locations_map[blueprint.id] = PlandoItems.GoldenBanana
     plando_form_data["locations"] = locations_map
 
-    # The starting moves require some extra processing. Instead of passing them
-    # as a list, we will use them to fill in the locations for starting moves.
-    # (The list actually gets removed during validation.)
-    if "plando_starting_moves_selected" in plando_form_data:
-        startingMoveDict = dict()
-        startingMoves = plando_form_data["plando_starting_moves_selected"]
-        if startingMoves[0] == PlandoItems.Randomize:
-            startingMoves = startingMoves[1:]
-        for i in range(len(startingMoves)):
-            move = startingMoves[i]
-            location = startingMoveLocations[i]
-            startingMoveDict[location] = move
-        plando_form_data["locations"].update(startingMoveDict)
-
     shops_map = {}
-    for shop_item in shop_item_objects:
-        # Extract the location name.
-        location_name = re.search("^plando_(.+)_shop_item$", shop_item.name)[1]
-        location = Locations[location_name]
-        item_value = PlandoItems.Randomize
-        if shop_item.value != "":
-            item_value = PlandoItems[shop_item.value]
-        # Create an object with both the item and the cost. The cost defaults
-        # to PlandoItems.Randomize (-1), but may be overwritten later.
-        shops_map[location] = {"item": item_value, "cost": PlandoItems.Randomize}
     for shop_cost in shop_cost_objects:
         # Extract the location name.
         location_name = re.search("^plando_(.+)_shop_cost$", shop_cost.name)[1]
         location = Locations[location_name]
-        shop_object = shops_map[location]
         if shop_cost.value != "":
             item_cost = int(shop_cost.value)
-            # Update this shop item with the cost.
-            shop_object["cost"] = item_cost
-        # If this shop location has no specified item or price, drop it from
-        # the dictionary.
-        if shop_object["item"] == PlandoItems.Randomize and shop_object["cost"] == PlandoItems.Randomize:
-            shops_map.pop(location)
-    plando_form_data["shops"] = shops_map
+            shops_map[location] = item_cost
+    plando_form_data["prices"] = shops_map
 
     minigames_map = {}
     for minigame in minigame_objects:
@@ -466,13 +372,6 @@ def validate_plando_options(settings_dict):
             count_dict[item] += 1
         else:
             count_dict[item] = 1
-    for shop in plando_dict["shops"].values():
-        if shop["item"] == PlandoItems.Randomize:
-            continue
-        if shop["item"] in count_dict:
-            count_dict[shop["item"]] += 1
-        else:
-            count_dict[shop["item"]] = 1
     # If any items have exceeded their maximum amounts, add an error.
     for item, itemCount in count_dict.items():
         if item not in PlannableItemLimits:
@@ -488,13 +387,12 @@ def validate_plando_options(settings_dict):
             errList.append(errString)
 
     # Ensure that shop costs are within allowed limits.
-    for shopLocation, shop in plando_dict["shops"].items():
-        shopCost = shop["cost"]
-        if shopCost == PlandoItems.Randomize:
+    for shopLocation, price in plando_dict["prices"].items():
+        if price == PlandoItems.Randomize:
             continue
-        if shopCost < 0 or shopCost > 255:
+        if price < 0 or price > 255:
             shopName = LocationList[shopLocation].name
-            errString = f'Shop costs must be between 0 and 255 coins, but shop "{shopName}" has a cost of {shopCost} coins.'
+            errString = f"Shop costs must be between 0 and 255 coins, but shop \"{shopName}\" has a cost of {price} coins."
             errList.append(errString)
 
     # Ensure that the number of chosen Kongs matches the "number of starting
@@ -508,16 +406,6 @@ def validate_plando_options(settings_dict):
         errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(chosenKongs)} {maybePluralKongText}{errSuffix}"
         errList.append(errString)
 
-    # Ensure that the number of chosen moves matches the "number of starting
-    # moves" setting, or that "Random Move(s)" has been chosen. If too many
-    # moves have been selected, that is always an error.
-    chosenMoves = plando_dict.pop("plando_starting_moves_selected")
-    numStartingMoves = int(settings_dict["starting_moves_count"])
-    if len(chosenMoves) > numStartingMoves or (len(chosenMoves) < numStartingMoves and PlandoItems.Randomize not in chosenMoves):
-        maybePluralMoveText = "move was selected as a starting move" if len(chosenMoves) == 1 else "moves were selected as starting moves"
-        errSuffix = "." if len(chosenMoves) > numStartingMoves else ', and "Random Move(s)" was not chosen.'
-        errString = f"The number of starting moves was set to {numStartingMoves}, but {len(chosenMoves)} {maybePluralMoveText}{errSuffix}"
-        errList.append(errString)
 
     # Ensure that no level was selected more than once in the level order.
     levelOrderSet = set()
@@ -566,8 +454,8 @@ def validate_plando_options(settings_dict):
         if len(hint) > 900:
             errString = f'The hint for location "{hintLocationName}" is longer than the limit of 900 characters.'
             errList.append(errString)
-        if re.search("[^A-Za-z0-9 ,.-?!]", hint) is not None:
-            errString = f'The hint for location "{hintLocationName}" contains invalid characters. Only letters, numbers, spaces, and the characters ,.-?! are valid.'
+        if re.search("[^A-Za-z0-9 \,\.\-\?!]", hint) is not None:
+            errString = f"The hint for location \"{hintLocationName}\" contains invalid characters. Only letters, numbers, spaces, and the characters ,.-?! are valid."
             if "'" in hint:
                 errString += " (Apostrophes are not allowed.)"
             errList.append(errString)
