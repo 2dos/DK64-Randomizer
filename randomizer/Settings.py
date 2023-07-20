@@ -1106,6 +1106,7 @@ class Settings:
                     Locations.HelmLankyMedal,
                     Locations.HelmTinyMedal,
                     Locations.HelmChunkyMedal,
+                    Locations.HelmKey,
                 )
                 self.valid_locations[Types.Crown] = [location for location in shuffledNonMoveLocations if location not in banned_crown_locations]
             if Types.Key in self.shuffled_location_types:
