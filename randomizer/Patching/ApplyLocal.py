@@ -6,7 +6,6 @@ import io
 import json
 import math
 import random
-import time
 import zipfile
 
 import js
@@ -35,6 +34,9 @@ class BooleanProperties:
 
 async def patching_response(data, from_patch_gen=False):
     """Apply the patch data to the ROM in the BROWSER not the server."""
+    from datetime import datetime
+    import time
+
     # Unzip the data_passed
     loop = asyncio.get_event_loop()
     # Base64 decode the data
@@ -74,7 +76,9 @@ async def patching_response(data, from_patch_gen=False):
         js.load_old_seeds()
 
     sav = settings.rom_data
-    random.seed(None)
+    datetime = datetime.utcnow()
+    unix = time.mktime(datetime.timetuple())
+    random.seed(int(unix))
     apply_cosmetic_colors(settings)
 
     if settings.override_cosmetics:
@@ -139,7 +143,7 @@ async def patching_response(data, from_patch_gen=False):
 
         music_data = randomize_music(settings)
 
-        spoiler = updateJSONCosmetics(spoiler, settings, music_data)
+        spoiler = updateJSONCosmetics(spoiler, settings, music_data, int(unix))
 
     loaded_settings = spoiler["Settings"]
     tables = {}
@@ -185,9 +189,10 @@ def FormatSpoiler(value):
     return result
 
 
-def updateJSONCosmetics(spoiler, settings, music_data):
+def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
     """Update spoiler JSON with cosmetic settings."""
     humanspoiler = spoiler
+    humanspoiler["Settings"]["Cosmetic Seed"] = cosmetic_seed
     if settings.colors != {} or settings.klaptrap_model_index:
         humanspoiler["Cosmetics"]["Colors and Models"] = {}
         for color_item in settings.colors:
