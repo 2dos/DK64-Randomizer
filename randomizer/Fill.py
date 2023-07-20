@@ -638,7 +638,7 @@ def PareWoth(spoiler, PlaythroughLocations):
             loc
             for loc in sphere.locations  # If Keys are constant, we may still want path hints for them.
             if (not LocationList[loc].constant or ItemList[LocationList[loc].item].type == Types.Key)
-            and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint, Types.RainbowCoin)
+            and ItemList[LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint, Types.RainbowCoin, Types.CrateItem)
         ]:
             WothLocations.append(loc)
     WothLocations.append(Locations.BananaHoard)  # The Banana Hoard is the endpoint of the Way of the Hoard
@@ -1442,6 +1442,9 @@ def Fill(spoiler):
         Reset()
         junkUnplaced = PlaceItems(spoiler.settings, FillAlgorithm.random, ItemPool.JunkItems(), [])
         # Don't raise exception if unplaced junk items
+    if Types.CrateItem in spoiler.settings.shuffled_location_types:
+        placed_types.append(Types.CrateItem)
+        # Crates hold nothing, so leave this one empty
 
     # Some locations require special care to make logic work correctly
     # This is the only location that cares about None vs NoItem - it needs to be None so it fills correctly but NoItem for logic to generate progression correctly

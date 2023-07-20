@@ -93,8 +93,8 @@ static char* float_causes[] = {
 
 void CrashHandler(crash_handler_info* info) {
     StackTraceSize = 2; // Pixel Size
-    *(short*)(0x807FEF84) = -1;
-    *(short*)(0x807FEF86) = 1;
+    *(short*)(0x807FEF84) = -1; // Letter Color
+    *(short*)(0x807FEF86) = 1; // Background Color
     int x = 0;
     int y = 0;
     StackTraceX = x;
@@ -156,7 +156,7 @@ void CrashHandler(crash_handler_info* info) {
     printDebugText("%X\n", (int)info->pc, 0, 0, 0);
     printDebugText("%X\n", (int)info->general_registers[27][1], 0, 0, 0);
     if (*(int*)(0x807563B8) > 3) {
-        for (int i = 0; i < *(int*)(0x807FF018); i++) { // Stack Depth
+        for (int i = 1; i < *(int*)(0x807FF018); i++) { // Stack Depth
             printDebugText("%X\n", (int)StackTraceAddresses[i].address, 0, 0, 0);
         }
     }

@@ -4,7 +4,7 @@ import random
 import js
 from randomizer.Enums.EnemySubtypes import EnemySubtype
 from randomizer.Enums.Settings import CrownEnemyRando, DamageAmount
-from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData
+from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData, enemy_location_list
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import ROM, LocalROM
 
@@ -489,6 +489,12 @@ def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawne
                     new_speed = 255
                 ROM_COPY.seek(cont_map_spawner_address + spawner.offset + speed_offset)
                 ROM_COPY.writeMultipleBytes(new_speed, 1)
+
+
+def randomize_enemies_0(spoiler):
+    """Determine randomized enemies."""
+    for loc in enemy_location_list:
+        enemy_location_list[loc].placeNewEnemy(spoiler.settings.enemies_selected)
 
 
 def randomize_enemies(spoiler):

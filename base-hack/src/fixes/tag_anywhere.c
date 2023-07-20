@@ -430,6 +430,9 @@ int canTagAnywhere(void) {
     if (ModelTwoTouchCount > 0) {
         return 0;
     }
+    if (tag_locked) {
+        return 0;
+    }
     if (CurrentMap == MAP_TROFFNSCOFF) {
         if (MapState & 0x10) {
             return 0;
@@ -682,6 +685,7 @@ void tagAnywhere(void) {
                         }
                         // Perform the tag
                         int old_control_state = Player->control_state;
+                        grab_lock_timer = 0; // Restart countdown
                         tagKong(next_character + 2);
 						clearTagSlide(Player);
                         if (old_control_state == 0x4F) {
@@ -807,6 +811,18 @@ void tagAnywhereBunch(int player, int obj, int player_index) {
     }
     populateSFXCache(Banana,64,5,3,id,0);
 }
+
+void handleGrabbingLock(void* player, int player_index, int allow_vines) {
+    if ((grab_lock_timer >= 0) && (grab_lock_timer < 2)) {
+        return;
+    }
+    handlePoleGrabbing(player, player_index, allow_vines);
+}
+
+void handleActionSet(int action, void* actor, int player_index) {
+    tag_locked = 1;
+    setAction(action, actor, player_index);
+}
 /*
     int updatePosition_New(actorData* actor, int bone_index, float* x, float* y, float* z) {
         if (actor->bone_data) {
@@ -890,5 +906,6 @@ void tagAnywhereBunch(int player, int obj, int player_index) {
         writeFunction(0x807302C8, &updatePosition_New);
         writeFunction(0x80730328, &updatePosition_New);
         writeFunction(0x807303E8, &updatePosition_New);
+        writeFunction(0x80613500, &malloc_wipe);
     }
 */

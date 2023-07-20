@@ -11,10 +11,11 @@ import create_helm_geo
 import generate_disco_models
 import generate_watch_file
 import model_fix
-import model_port
+from pull_guns_and_instruments import pullHandModels
+from model_port import loadNewModels
 
 # Patcher functions for the extracted files
-import patch_text
+from patch_text import writeNoExpPakMessages
 import portal_instance_script
 import shop_instance_script
 from adjust_exits import adjustExits
@@ -44,6 +45,8 @@ if os.path.exists(newROMName):
     os.remove(newROMName)
 shutil.copyfile(ROMName, newROMName)
 
+# pullHandModels()
+loadNewModels()
 BuildInstanceScripts()
 
 portal_images = []
@@ -851,6 +854,7 @@ model_changes = [
     ModelChange(0xFB, "shrink_fairy.bin"),
     ModelChange(0x10E, "fake_item_actor.bin"),
     ModelChange(0xA3, "counter.bin"),
+    # ModelChange(0xC0, "guitar_om1.bin"),
 ]
 for bi, b in enumerate(barrel_skins):
     model_changes.append(ModelChange(0xFC + bi, f"barrel_skin_{b}.bin"))
@@ -1298,6 +1302,10 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FF10E0)
     for x in range(16):
         fh.write((0x8C).to_bytes(2, "big"))
+    # Melon Crates
+    fh.seek(0x1FF0E80)
+    for x in range(16):
+        fh.write((0x2F).to_bytes(2, "big"))
     # Shop Hints
     fh.seek(0x1FED020 + 0x14B)
     fh.write((1).to_bytes(1, "big"))
@@ -1494,6 +1502,7 @@ with open(newROMName, "r+b") as fh:
     # pth = "assets/displays/soldout_bismuth.rgba32"
     # if os.path.exists(pth):
     #     os.remove(pth)
+    writeNoExpPakMessages(fh)
 
 # Get BPS Data
 with open(newROMName, "r+b") as fh:

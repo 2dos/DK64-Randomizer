@@ -159,6 +159,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestDiddyOwlRace, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Night) and l.jetpack and l.guitar and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.ForestLankyRabbitRace, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Day) and l.trombone and l.sprint and l.lanky),
         LocationLogic(Locations.ForestKasplatOwlTree, lambda l: not l.settings.kasplat_rando),
+        LocationLogic(Locations.MelonCrate_Location08, lambda l: True),
     ], [
         Event(Events.ForestW4bTagged, lambda l: True),
     ], [
@@ -180,6 +181,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestDonkeyMill, lambda l: (l.TimeAccess(Regions.MillArea, Time.Night) or l.phasewalk or l.CanPhaseswim() or l.ledgeclip) and Events.ConveyorActivated in l.Events and l.donkey),
         LocationLogic(Locations.ForestDiddyCagedBanana, lambda l: (l.TimeAccess(Regions.MillArea, Time.Night) and Events.WinchRaised in l.Events and l.guitar and l.diddy) or ((l.CanPhaseswim() or l.ledgeclip) and (l.isdiddy or l.settings.free_trade_items))),
         LocationLogic(Locations.RainbowCoin_Location07, lambda l: l.shockwave),
+        LocationLogic(Locations.MelonCrate_Location10, lambda l: True),
     ], [
         Event(Events.ForestW1bTagged, lambda l: True),
     ], [
@@ -250,6 +252,7 @@ LogicRegions = {
 
     Regions.ThornvineArea: Region("Thornvine Area", "Forest Mills", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestKasplatNearBarn, lambda l: not l.settings.kasplat_rando),
+        LocationLogic(Locations.MelonCrate_Location09, lambda l: True),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MillArea, lambda l: True, time=Time.Night),
@@ -260,6 +263,7 @@ LogicRegions = {
     Regions.ThornvineBarn: Region("Thornvine Barn", "Forest Mills", Levels.FungiForest, False, -1, [
         LocationLogic(Locations.ForestDonkeyBarn, lambda l: l.CanSlamSwitch(Levels.FungiForest, 1) and l.isdonkey and (l.vines or l.advanced_platforming), MinigameType.BonusBarrel),  # Krusha can make it by jumping onto the beam first.
         LocationLogic(Locations.ForestBananaFairyThornvines, lambda l: l.isdonkey and l.Slam and l.camera),
+        LocationLogic(Locations.MelonCrate_Location11, lambda l: True),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.ThornvineArea, lambda l: True, Transitions.ForestBarnToMain),

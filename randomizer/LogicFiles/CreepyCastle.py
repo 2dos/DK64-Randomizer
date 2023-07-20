@@ -157,6 +157,7 @@ LogicRegions = {
 
     Regions.LowerCave: Region("Lower Cave", "Castle Underground", Levels.CreepyCastle, True, -1, [
         LocationLogic(Locations.CastleKasplatCrypt, lambda l: not l.settings.kasplat_rando),
+        LocationLogic(Locations.MelonCrate_Location12, lambda l: True),
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleLowerToMain),

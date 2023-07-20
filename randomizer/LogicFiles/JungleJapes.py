@@ -49,7 +49,8 @@ LogicRegions = {
         LocationLogic(Locations.JapesTinyCagedBanana, lambda l: ((Events.JapesTinySwitch in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False)) and l.tiny) or ((l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False)) and l.settings.free_trade_items)),
         LocationLogic(Locations.JapesChunkyCagedBanana, lambda l: ((Events.JapesChunkySwitch in l.Events or l.phasewalk or ((not l.settings.shuffle_shops) and (l.CanSkew(True) or l.CanSkew(False)))) and l.chunky) or ((l.phasewalk or ((not l.settings.shuffle_shops) and (l.CanSkew(True) or l.CanSkew(False)))) and l.settings.free_trade_items)),
         LocationLogic(Locations.JapesBattleArena, lambda l: not l.settings.crown_placement_rando),
-        LocationLogic(Locations.RainbowCoin_Location00, lambda l: l.shockwave and ((l.handstand and l.islanky) or (l.twirl and l.istiny) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy))))
+        LocationLogic(Locations.RainbowCoin_Location00, lambda l: l.shockwave and ((l.handstand and l.islanky) or (l.twirl and l.istiny) or l.CanMoonkick() or ((l.phasewalk or l.generalclips) and (l.istiny or l.isdiddy)))),
+        LocationLogic(Locations.MelonCrate_Location00, lambda l: True),
     ], [
         Event(Events.JapesFreeKongOpenGates, lambda l: l.CanOpenJapesGates()),
         Event(Events.JapesW2bTagged, lambda l: True),
@@ -144,6 +145,7 @@ LogicRegions = {
 
     Regions.BeyondRambiGate: Region("Beyond Rambi Gate", "Japes Stormy Tunnel Area", Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesBananaFairyRambiCave, lambda l: l.camera),
+        LocationLogic(Locations.MelonCrate_Location01, lambda l: True),
     ], [
         Event(Events.JapesChunkySwitch, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and l.ischunky and l.barrels),
     ], [
