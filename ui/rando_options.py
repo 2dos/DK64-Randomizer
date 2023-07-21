@@ -716,6 +716,23 @@ def toggle_item_rando(evt):
         pass
 
 
+def toggle_item_rando_modal(evt):
+    """Enable and disable settings based on Item Rando being on/off."""
+    disabled = True
+    selector = js.document.getElementById("item_rando_list_modal")
+    if js.document.getElementById("shuffle_items").checked:
+        disabled = False
+    try:
+        if disabled:
+            # Disable item rando modal
+            selector.setAttribute("disabled", "disabled")
+        else:
+            # Enable item rando modal
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
 @bind("click", "item_rando_list_select_all")
 @bind("click", "item_rando_list_reset")
 @bind("click", "item_rando_list_selected")
@@ -1008,3 +1025,22 @@ def toggle_vanilla_door_rando(evt):
     else:
         wrinkly_rando.removeAttribute("disabled")
         tns_rando.removeAttribute("disabled")
+
+
+@bind("click", "nav-tab")
+def toggle_modals(evt):
+    """Force the Cogwheels to be enabled when the corresponding setting is enabled/selected."""
+    # Item Rando cogwheel
+    toggle_item_rando_modal(None)
+    # Enemy Rando cogwheel
+    disable_enemy_modal(None)
+    # Bonus Barrel Rando cogwheel
+    disable_barrel_modal(None)
+    # Bananaport Rando cogwheel
+    toggle_bananaport_selector(None)
+    # Helm Hurry cogwheel
+    disable_helm_hurry(None)
+    # Glitch Selector cogwheel
+    toggle_logic_type(None)
+    # Starting Keys Selector cogwheel
+    toggle_key_settings(None)
