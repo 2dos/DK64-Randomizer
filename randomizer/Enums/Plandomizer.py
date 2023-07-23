@@ -334,6 +334,7 @@ PlandoItemToItemListMap = {
 
 
 def GetItemsFromPlandoItem(plandoItemEnum):
+    """Get items from the plando enum."""
     if plandoItemEnum in PlandoItemToItemMap:
         return [PlandoItemToItemMap[plandoItemEnum]]
     if plandoItemEnum in PlandoItemToItemListMap:

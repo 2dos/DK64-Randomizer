@@ -263,11 +263,11 @@ def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, in
     return settings.prices[location_id]
 
 
-def KongCanBuy(location_id, logic, kong):
+def KongCanBuy(location_id, logic, kong, buy_empty=False):
     """Check if given kong can logically purchase the specified location."""
     location = LocationList[location_id]
     # If nothing is sold here, return true
-    if location.item is None or location.item == Items.NoItem:
+    if not buy_empty and location.item is None or location.item == Items.NoItem:
         return True
     price = GetPriceAtLocation(logic.settings, location_id, location, logic.Slam, logic.AmmoBelts, logic.InstUpgrades)
 
@@ -281,9 +281,9 @@ def KongCanBuy(location_id, logic, kong):
         return False
 
 
-def AnyKongCanBuy(location, logic):
-    """Check if any kong can logically purchase this location."""
-    return any(KongCanBuy(location, logic, kong) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
+def AnyKongCanBuy(location, logic, buy_empty=False):
+    """Check if any owned kong can logically purchase this location."""
+    return any(KongCanBuy(location, logic, kong, buy_empty) for kong in logic.GetKongs())
 
 
 def EveryKongCanBuy(location, logic):
@@ -291,7 +291,7 @@ def EveryKongCanBuy(location, logic):
     return all(KongCanBuy(location, logic, kong) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
 
 
-def CanBuy(location, logic):
+def CanBuy(location, logic, buy_empty=False):
     """Check if an appropriate kong can logically purchase this location."""
     # If we're assuming infinite coins, we can always acquire the item
     if logic.assumeInfiniteCoins:
@@ -301,15 +301,15 @@ def CanBuy(location, logic):
         return True
     # If this is a shared location, check if the current Kong can buy the location
     if location in SharedMoveLocations:
-        return KongCanBuy(location, logic, logic.kong)
+        return KongCanBuy(location, logic, logic.kong, buy_empty)
     # Else a specific kong is required to buy it, so check that kong has enough coins
     elif location in DonkeyMoveLocations:
-        return KongCanBuy(location, logic, Kongs.donkey)
+        return KongCanBuy(location, logic, Kongs.donkey, buy_empty)
     elif location in DiddyMoveLocations:
-        return KongCanBuy(location, logic, Kongs.diddy)
+        return KongCanBuy(location, logic, Kongs.diddy, buy_empty)
     elif location in LankyMoveLocations:
-        return KongCanBuy(location, logic, Kongs.lanky)
+        return KongCanBuy(location, logic, Kongs.lanky, buy_empty)
     elif location in TinyMoveLocations:
-        return KongCanBuy(location, logic, Kongs.tiny)
+        return KongCanBuy(location, logic, Kongs.tiny, buy_empty)
     elif location in ChunkyMoveLocations:
-        return KongCanBuy(location, logic, Kongs.chunky)
+        return KongCanBuy(location, logic, Kongs.chunky, buy_empty)

@@ -102,7 +102,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
                 if lz_type == 9 and lz_map == 0xB0 and lz_exit == 0:
                     writeToROMNoOffset(isles_list + (0x38 * lz_index) + 0x12, set_variables[x][0], 2, "Isles -> TGrounds Zone Map")
                     writeToROMNoOffset(isles_list + (0x38 * lz_index) + 0x14, set_variables[x][1], 2, "Isles -> TGrounds Zone Exit")
-        elif x in ("quality_of_life", "moves_pregiven","disabled_music","hard_mode"):
+        elif x in ("quality_of_life", "moves_pregiven", "disabled_music", "hard_mode"):
             if x == "quality_of_life":
                 order = [
                     "reduce_lag",

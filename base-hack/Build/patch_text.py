@@ -906,7 +906,7 @@ class ExpansionMessageInfo:
         self.old_message_padding = len(old_message) - limit
 
     def convertNewMessage(self):
-        """Convert new message to filter out any bad characters,"""
+        """Convert new message to filter out any bad characters."""
         new_str = ""
         for x in self.new_message:
             if x in list(misc_char_table.keys()):
@@ -924,7 +924,7 @@ class ExpansionMessageInfo:
         self.new_message = padding_str + new_str + "\0"
 
     def writeMessage(self, fh: BinaryIO):
-        """Writes message to ROM."""
+        """Write message to ROM."""
         self.convertNewMessage()
         if self.limit >= (len(self.new_message) - 1):  # Message is short enough
             fh.seek(self.address)

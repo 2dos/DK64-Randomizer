@@ -330,7 +330,9 @@ def createSpriteModelTwo(new_image: int, scaling: float, output_file: str):
                     fh.seek((v * 0x10) + (c * 2))
                     fh.write(val.to_bytes(2, "big"))
 
+
 def loadNewModels():
+    """Load new models."""
     # Coins
     portalModel_M2(f"{MODEL_DIRECTORY}coin.vtx", f"{MODEL_DIRECTORY}nin_coin.dl", f"{MODEL_DIRECTORY}coin_overlay.dl", "nintendo_coin", 0x90)
     portalModel_M2(f"{MODEL_DIRECTORY}coin.vtx", f"{MODEL_DIRECTORY}rw_coin.dl", f"{MODEL_DIRECTORY}coin_overlay.dl", "rareware_coin", 0x90)

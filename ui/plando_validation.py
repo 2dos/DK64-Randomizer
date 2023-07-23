@@ -201,7 +201,7 @@ def validate_level_order_no_duplicates(evt):
 
 @bind("click", "nav-plando-tab")
 def validate_on_nav(evt):
-    """A fallback for errors with Bootstrap sliders."""
+    """Fallback for errors with Bootstrap sliders."""
     validate_starting_kong_count(evt)
 
 
@@ -392,7 +392,7 @@ def validate_plando_options(settings_dict):
             continue
         if price < 0 or price > 255:
             shopName = LocationList[shopLocation].name
-            errString = f"Shop costs must be between 0 and 255 coins, but shop \"{shopName}\" has a cost of {price} coins."
+            errString = f'Shop costs must be between 0 and 255 coins, but shop "{shopName}" has a cost of {price} coins.'
             errList.append(errString)
 
     # Ensure that the number of chosen Kongs matches the "number of starting
@@ -405,7 +405,6 @@ def validate_plando_options(settings_dict):
         errSuffix = "." if len(chosenKongs) > numStartingKongs else ', and "Random Kong(s)" was not chosen.'
         errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(chosenKongs)} {maybePluralKongText}{errSuffix}"
         errList.append(errString)
-
 
     # Ensure that no level was selected more than once in the level order.
     levelOrderSet = set()
@@ -455,7 +454,7 @@ def validate_plando_options(settings_dict):
             errString = f'The hint for location "{hintLocationName}" is longer than the limit of 900 characters.'
             errList.append(errString)
         if re.search("[^A-Za-z0-9 \,\.\-\?!]", hint) is not None:
-            errString = f"The hint for location \"{hintLocationName}\" contains invalid characters. Only letters, numbers, spaces, and the characters ,.-?! are valid."
+            errString = f'The hint for location "{hintLocationName}" contains invalid characters. Only letters, numbers, spaces, and the characters ,.-?! are valid.'
             if "'" in hint:
                 errString += " (Apostrophes are not allowed.)"
             errList.append(errString)

@@ -139,44 +139,44 @@ async def patching_response(data, from_patch_gen=False):
             BOOT_OFFSET = 0xFB20 - 0xEF20
 
             ROM().seek(GFX_START + 0x00)
-            ROM().writeMultipleBytes(SCREEN_WD * 2, 2) # 2D Viewport Width
+            ROM().writeMultipleBytes(SCREEN_WD * 2, 2)  # 2D Viewport Width
             ROM().seek(GFX_START + 0x02)
-            ROM().writeMultipleBytes(SCREEN_HD * 2, 2) # 2D Viewport Height
+            ROM().writeMultipleBytes(SCREEN_HD * 2, 2)  # 2D Viewport Height
             ROM().seek(GFX_START + 0x08)
-            ROM().writeMultipleBytes(SCREEN_WD * 2, 2) # 2D Viewport X Position
+            ROM().writeMultipleBytes(SCREEN_WD * 2, 2)  # 2D Viewport X Position
             ROM().seek(GFX_START + 0x0A)
-            ROM().writeMultipleBytes(SCREEN_HD * 2, 2) # 2D Viewport Y Position
+            ROM().writeMultipleBytes(SCREEN_HD * 2, 2)  # 2D Viewport Y Position
             ROM().seek(GFX_START + 0x9C)
-            ROM().writeMultipleBytes((SCREEN_WD << 14) | (SCREEN_HD << 2), 4) # Default Scissor for 2D
+            ROM().writeMultipleBytes((SCREEN_WD << 14) | (SCREEN_HD << 2), 4)  # Default Scissor for 2D
             data_offsets = [0xEF20, 0xF7E0]
             internal_size = 0x50
             internal_offsets = [0, 2]
             for tv_offset in data_offsets:
                 for int_offset in internal_offsets:
                     ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x08)
-                    ROM().writeMultipleBytes(SCREEN_WD, 4) # VI Width
+                    ROM().writeMultipleBytes(SCREEN_WD, 4)  # VI Width
                     ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x20)
-                    ROM().writeMultipleBytes(int((SCREEN_WD * 512) / 320), 4) # VI X Scale
+                    ROM().writeMultipleBytes(int((SCREEN_WD * 512) / 320), 4)  # VI X Scale
                     ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x28)
-                    ROM().writeMultipleBytes((SCREEN_WD * 2), 4) # VI Field 1 Framebuffer Offset
+                    ROM().writeMultipleBytes((SCREEN_WD * 2), 4)  # VI Field 1 Framebuffer Offset
                     ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x3C)
-                    ROM().writeMultipleBytes((SCREEN_WD * 2), 4) # VI Field 2 Framebuffer Offset
+                    ROM().writeMultipleBytes((SCREEN_WD * 2), 4)  # VI Field 2 Framebuffer Offset
                     ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x2C)
-                    ROM().writeMultipleBytes(int((SCREEN_HD * 1024) / 240), 4) # VI Field 1 Y Scale
+                    ROM().writeMultipleBytes(int((SCREEN_HD * 1024) / 240), 4)  # VI Field 1 Y Scale
                     ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x40)
-                    ROM().writeMultipleBytes(int((SCREEN_HD * 1024) / 240), 4) # VI Field 2 Y Scale
+                    ROM().writeMultipleBytes(int((SCREEN_HD * 1024) / 240), 4)  # VI Field 2 Y Scale
             ROM().seek(BOOT_OFFSET + 0xBC4 + 2)
-            ROM().writeMultipleBytes(SCREEN_WD * 2, 2) # Row Offset of No Expansion Pak Image
+            ROM().writeMultipleBytes(SCREEN_WD * 2, 2)  # Row Offset of No Expansion Pak Image
             ROM().seek(BOOT_OFFSET + 0xBC8 + 2)
-            ROM().writeMultipleBytes(SCREEN_WD * SCREEN_HD * 2, 2) # Invalidation Size for Framebuffer 1
+            ROM().writeMultipleBytes(SCREEN_WD * SCREEN_HD * 2, 2)  # Invalidation Size for Framebuffer 1
             ROM().seek(BOOT_OFFSET + 0xE08)
-            ROM().writeMultipleBytes(0x24180000 | SCREEN_WD, 4) # Row Pitch for No Expansion Pak Screen Text
+            ROM().writeMultipleBytes(0x24180000 | SCREEN_WD, 4)  # Row Pitch for No Expansion Pak Screen Text
             ROM().seek(BOOT_OFFSET + 0xE0C)
-            ROM().writeMultipleBytes(0x03060019, 4) # Calculate Row Pixel Number for No Expansion Pak Screen Text
+            ROM().writeMultipleBytes(0x03060019, 4)  # Calculate Row Pixel Number for No Expansion Pak Screen Text
             ROM().seek(BOOT_OFFSET + 0xE10)
-            ROM().writeMultipleBytes(0x0000C012, 4) # Get Row Pixel Number for No Expansion Pak Screen Text
+            ROM().writeMultipleBytes(0x0000C012, 4)  # Get Row Pixel Number for No Expansion Pak Screen Text
             ROM().seek(BOOT_OFFSET + 0x1020 + 2)
-            ROM().writeMultipleBytes((SCREEN_WD - 8) * 2, 2) # Text Framebuffer Pitch
+            ROM().writeMultipleBytes((SCREEN_WD - 8) * 2, 2)  # Text Framebuffer Pitch
 
         # Apply Hash
         order = 0

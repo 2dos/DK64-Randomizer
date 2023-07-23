@@ -120,8 +120,8 @@ class InteractionMethods:
         kill_melee=True,  # Killing can be done with regular attacks
         kill_orange=True,  # Killing can be done with oranges
         kill_gun=True,  # Killing can be done with a gun
-        kill_shockwave=True, # Killing can be done with a shockwave attack
-        can_kill=True, # Master control of all kill variables
+        kill_shockwave=True,  # Killing can be done with a shockwave attack
+        can_kill=True,  # Master control of all kill variables
         can_bypass=True,  # Enemy can be bypassed without any additional tricks
     ):
         """Initialize with given data."""
@@ -130,6 +130,7 @@ class InteractionMethods:
         self.kill_gun = kill_gun and can_kill
         self.kill_shockwave = kill_shockwave and can_kill
         self.can_bypass = can_bypass
+
 
 class EnemyData:
     """Information about the enemy."""
@@ -178,8 +179,9 @@ class EnemyData:
         if air:
             self.minigame_enabled = False
 
+
 class EnemyLoc:
-    """Information about an enemy"""
+    """Information about an enemy."""
 
     def __init__(self, map: Maps, default_enemy: Enemies, id: int, banned_enemies: list, enable_randomization: bool):
         """Initialize with given parameters."""
@@ -199,7 +201,7 @@ class EnemyLoc:
             self.allowed_enemies = [enemy for enemy in EnemyMetaData if EnemyMetaData[enemy].e_type == self.default_type and enemy not in banned_enemies]
 
     def placeNewEnemy(self, enabled_enemies: list, enable_speed: bool) -> Enemies:
-        """Places new enemy in slot."""
+        """Place new enemy in slot."""
         if self.enable_randomization:
             permitted = [enemy for enemy in self.allowed_enemies if enemy in enabled_enemies]
             if len(permitted) > 0:
@@ -210,16 +212,17 @@ class EnemyLoc:
         return self.enemy
 
     def canKill(self) -> bool:
-        """Determines if the enemy can be killed"""
+        """Determine if the enemy can be killed."""
         if self.enemy in EnemyMetaData:
             interaction: InteractionMethods = EnemyMetaData[self.enemy].interaction
             if interaction is not None:
                 if interaction.kill_melee:
                     return True
-                return True # TODO: Handle logic with the different killing methods
+                return True  # TODO: Handle logic with the different killing methods
         return False
-    
+
     def canBypass(self) -> bool:
+        """Determine if the enemy can be bypassed."""
         if self.enemy in EnemyMetaData:
             interaction: InteractionMethods = EnemyMetaData[self.enemy].interaction
             if interaction is not None:
@@ -252,7 +255,7 @@ EnemyMetaData = {
         air=True,
         crown_weight=7,
         disruptive=1,
-        interaction=InteractionMethods(kill_melee=False,kill_orange=False,kill_shockwave=False),
+        interaction=InteractionMethods(kill_melee=False, kill_orange=False, kill_shockwave=False),
     ),  #
     Enemies.Klobber: EnemyData(
         name="Klobber",
@@ -261,7 +264,7 @@ EnemyMetaData = {
         crown_weight=2,
         killable=False,
         disruptive=2,
-        interaction=InteractionMethods(kill_gun=False,kill_melee=False),
+        interaction=InteractionMethods(kill_gun=False, kill_melee=False),
     ),
     Enemies.Klump: EnemyData(
         name="Klump",
@@ -269,7 +272,7 @@ EnemyMetaData = {
         crown_weight=1,
         killable=False,
         disruptive=1,
-        interaction=InteractionMethods(kill_gun=False,kill_melee=False),
+        interaction=InteractionMethods(kill_gun=False, kill_melee=False),
     ),  #
     Enemies.Kaboom: EnemyData(
         name="Kaboom",
@@ -278,7 +281,7 @@ EnemyMetaData = {
         crown_weight=2,
         killable=False,
         disruptive=2,
-        interaction=InteractionMethods(kill_gun=False,kill_melee=False),
+        interaction=InteractionMethods(kill_gun=False, kill_melee=False),
     ),
     Enemies.KlaptrapGreen: EnemyData(
         name="Klaptrap (Green)",
@@ -294,7 +297,7 @@ EnemyMetaData = {
         air=True,
         crown_weight=5,
         disruptive=1,
-        interaction=InteractionMethods(kill_orange=False,kill_melee=False,kill_shockwave=False),
+        interaction=InteractionMethods(kill_orange=False, kill_melee=False, kill_shockwave=False),
     ),  #
     Enemies.KlaptrapPurple: EnemyData(
         name="Klaptrap (Purple)",
@@ -302,7 +305,7 @@ EnemyMetaData = {
         crown_weight=2,
         killable=False,
         disruptive=1,
-        interaction=InteractionMethods(kill_gun=False,kill_melee=False,kill_shockwave=False),
+        interaction=InteractionMethods(kill_gun=False, kill_melee=False, kill_shockwave=False),
     ),  #
     Enemies.KlaptrapRed: EnemyData(
         name="Klaptrap (Red)",
@@ -310,7 +313,7 @@ EnemyMetaData = {
         crown_weight=2,
         killable=False,
         disruptive=1,
-        interaction=InteractionMethods(kill_melee=False,kill_shockwave=False),
+        interaction=InteractionMethods(kill_melee=False, kill_shockwave=False),
     ),  #
     Enemies.BeaverGold: EnemyData(
         name="Beaver (Gold)",
@@ -345,7 +348,7 @@ EnemyMetaData = {
         crown_weight=2,
         killable=False,
         disruptive=1,
-        interaction=InteractionMethods(kill_melee=False,kill_gun=False),
+        interaction=InteractionMethods(kill_melee=False, kill_gun=False),
     ),  #
     Enemies.Kremling: EnemyData(
         name="Kremling",
@@ -391,7 +394,7 @@ EnemyMetaData = {
         air=True,
         crown_weight=5,
         disruptive=1,
-        interaction=InteractionMethods(kill_melee=False,kill_orange=False,kill_shockwave=False),
+        interaction=InteractionMethods(kill_melee=False, kill_orange=False, kill_shockwave=False),
     ),  #
     Enemies.Krossbones: EnemyData(
         name="Krossbones",
@@ -448,7 +451,7 @@ EnemyMetaData = {
         max_speed=255,
         crown_weight=10,
         killable=False,
-        interaction=InteractionMethods(kill_gun=False,kill_orange=False),
+        interaction=InteractionMethods(kill_gun=False, kill_orange=False),
     ),  # 29 for if you want them to respond to the rabbit
     Enemies.SpiderSmall: EnemyData(
         name="Spider",
@@ -465,7 +468,7 @@ EnemyMetaData = {
         crown_weight=5,
         minigame_enabled=False,
         disruptive=1,
-        interaction=InteractionMethods(kill_melee=False,kill_orange=False,kill_shockwave=False),
+        interaction=InteractionMethods(kill_melee=False, kill_orange=False, kill_shockwave=False),
     ),  #
     Enemies.EvilTomato: EnemyData(
         name="Evil Tomato",
@@ -473,7 +476,7 @@ EnemyMetaData = {
         crown_enabled=False,
         minigame_enabled=False,
         selector_enabled=False,
-        interaction=InteractionMethods(can_kill=False), # Can be killed with Hunky
+        interaction=InteractionMethods(can_kill=False),  # Can be killed with Hunky
     ),
     Enemies.Ghost: EnemyData(
         name="Ghost",
@@ -489,7 +492,7 @@ EnemyMetaData = {
         crown_enabled=False,
         size_cap=40,
         minigame_enabled=False,
-        interaction=InteractionMethods(kill_gun=False,kill_orange=False,kill_shockwave=False),
+        interaction=InteractionMethods(kill_gun=False, kill_orange=False, kill_shockwave=False),
     ),  #
     Enemies.Kosha: EnemyData(
         name="Kosha",
@@ -497,7 +500,7 @@ EnemyMetaData = {
         crown_weight=1,
         killable=False,
         disruptive=2,
-        interaction=InteractionMethods(kill_gun=False,kill_melee=False),
+        interaction=InteractionMethods(kill_gun=False, kill_melee=False),
     ),  #
     Enemies.GetOut: EnemyData(
         name="Get Out Guy",
@@ -513,7 +516,7 @@ EnemyMetaData = {
         aggro=1,
         crown_enabled=False,
         minigame_enabled=False,
-        interaction=InteractionMethods(kill_melee=False, can_bypass=False), # Can be meleed with distraction mechanic, but we'll ignore that for now
+        interaction=InteractionMethods(kill_melee=False, can_bypass=False),  # Can be meleed with distraction mechanic, but we'll ignore that for now
     ),
     # Enemies.Bug: EnemyData(aggro=0x40,crown_enabled=False,),
 }
@@ -543,18 +546,15 @@ enemy_location_list = {
     EnemyLocations.JapesMain_Mountain: EnemyLoc(Maps.JungleJapes, Enemies.ZingerCharger, 50, [], True),
     EnemyLocations.JapesMain_FeatherTunnel: EnemyLoc(Maps.JungleJapes, Enemies.ZingerLime, 52, [], True),
     EnemyLocations.JapesMain_MiddleTunnel: EnemyLoc(Maps.JungleJapes, Enemies.BeaverBlue, 54, [], True),
-
     # Lobby
     EnemyLocations.JapesLobby_Enemy0: EnemyLoc(Maps.JungleJapesLobby, Enemies.BeaverBlue, 1, [], True),
     EnemyLocations.JapesLobby_Enemy1: EnemyLoc(Maps.JungleJapesLobby, Enemies.BeaverBlue, 2, [], True),
-
     # Painting
     EnemyLocations.JapesPainting_Gauntlet0: EnemyLoc(Maps.JapesLankyCave, Enemies.ZingerCharger, 2, enemies_nokill_gun, True),
     EnemyLocations.JapesPainting_Gauntlet1: EnemyLoc(Maps.JapesLankyCave, Enemies.ZingerCharger, 3, enemies_nokill_gun, True),
     EnemyLocations.JapesPainting_Gauntlet2: EnemyLoc(Maps.JapesLankyCave, Enemies.ZingerCharger, 4, enemies_nokill_gun, True),
     EnemyLocations.JapesPainting_Gauntlet3: EnemyLoc(Maps.JapesLankyCave, Enemies.ZingerCharger, 5, enemies_nokill_gun, True),
     EnemyLocations.JapesPainting_Gauntlet4: EnemyLoc(Maps.JapesLankyCave, Enemies.ZingerCharger, 6, enemies_nokill_gun, True),
-
     # Mountain
     EnemyLocations.JapesMountain_Start0: EnemyLoc(Maps.JapesMountain, Enemies.BeaverBlue, 1, [], True),
     EnemyLocations.JapesMountain_Start1: EnemyLoc(Maps.JapesMountain, Enemies.BeaverBlue, 2, [], True),
@@ -566,7 +566,6 @@ enemy_location_list = {
     EnemyLocations.JapesMountain_HiLo: EnemyLoc(Maps.JapesMountain, Enemies.Klump, 15, [], True),
     EnemyLocations.JapesMountain_Conveyor0: EnemyLoc(Maps.JapesMountain, Enemies.Klump, 16, [], True),
     EnemyLocations.JapesMountain_Conveyor1: EnemyLoc(Maps.JapesMountain, Enemies.Klump, 17, [], True),
-
     # Shellhive
     EnemyLocations.JapesShellhive_FirstRoom: EnemyLoc(Maps.JapesTinyHive, Enemies.KlaptrapPurple, 7, [], True),
     EnemyLocations.JapesShellhive_SecondRoom0: EnemyLoc(Maps.JapesTinyHive, Enemies.KlaptrapPurple, 8, [], True),
@@ -576,7 +575,6 @@ enemy_location_list = {
     EnemyLocations.JapesShellhive_ThirdRoom2: EnemyLoc(Maps.JapesTinyHive, Enemies.ZingerCharger, 12, [], True),
     EnemyLocations.JapesShellhive_ThirdRoom3: EnemyLoc(Maps.JapesTinyHive, Enemies.ZingerCharger, 13, [], True),
     EnemyLocations.JapesShellhive_MainRoom: EnemyLoc(Maps.JapesTinyHive, Enemies.ZingerCharger, 14, [], True),
-
     # Angry Aztec
     # Main
     EnemyLocations.AztecMain_VaseRoom0: EnemyLoc(Maps.AngryAztec, Enemies.ZingerLime, 2, [], True),
@@ -598,11 +596,9 @@ enemy_location_list = {
     EnemyLocations.AztecMain_StartingTunnel3: EnemyLoc(Maps.AngryAztec, Enemies.ZingerCharger, 39, [], True),
     EnemyLocations.AztecMain_Outside5DT: EnemyLoc(Maps.AngryAztec, Enemies.ZingerLime, 41, [], True),
     EnemyLocations.AztecMain_NearSnoopTunnel: EnemyLoc(Maps.AngryAztec, Enemies.Kremling, 42, [], True),
-
     # Lobby
     EnemyLocations.AztecLobby_Pad0: EnemyLoc(Maps.AngryAztecLobby, Enemies.ZingerCharger, 2, [], True),
     EnemyLocations.AztecLobby_Pad1: EnemyLoc(Maps.AngryAztecLobby, Enemies.ZingerCharger, 3, [], True),
-
     # DK 5DT
     EnemyLocations.AztecDK5DT_StartTrap0: EnemyLoc(Maps.AztecDonkey5DTemple, Enemies.Kaboom, 5, [], True),
     EnemyLocations.AztecDK5DT_StartTrap1: EnemyLoc(Maps.AztecDonkey5DTemple, Enemies.Kaboom, 6, [], True),
@@ -613,7 +609,6 @@ enemy_location_list = {
     EnemyLocations.AztecDK5DT_EndPath0: EnemyLoc(Maps.AztecDonkey5DTemple, Enemies.KlaptrapPurple, 13, [], True),
     EnemyLocations.AztecDK5DT_EndPath1: EnemyLoc(Maps.AztecDonkey5DTemple, Enemies.KlaptrapPurple, 14, [], True),
     EnemyLocations.AztecDK5DT_StartPath: EnemyLoc(Maps.AztecDonkey5DTemple, Enemies.KlaptrapPurple, 15, [], True),
-
     # Diddy 5DT
     EnemyLocations.AztecDiddy5DT_EndTrap0: EnemyLoc(Maps.AztecDiddy5DTemple, Enemies.Klobber, 4, [], True),
     EnemyLocations.AztecDiddy5DT_EndTrap1: EnemyLoc(Maps.AztecDiddy5DTemple, Enemies.Klobber, 5, [], True),
@@ -622,12 +617,10 @@ enemy_location_list = {
     EnemyLocations.AztecDiddy5DT_StartLeft1: EnemyLoc(Maps.AztecDiddy5DTemple, Enemies.Kremling, 10, [], True),
     EnemyLocations.AztecDiddy5DT_Reward: EnemyLoc(Maps.AztecDiddy5DTemple, Enemies.Klump, 11, [], True),
     EnemyLocations.AztecDiddy5DT_SecondSwitch: EnemyLoc(Maps.AztecDiddy5DTemple, Enemies.Kremling, 12, [], True),
-
     # Lanky 5DT
     EnemyLocations.AztecLanky5DT_JoiningPaths: EnemyLoc(Maps.AztecLanky5DTemple, Enemies.Klump, 2, [], True),
     EnemyLocations.AztecLanky5DT_EndTrap: EnemyLoc(Maps.AztecLanky5DTemple, Enemies.Klump, 3, [], True),
     EnemyLocations.AztecLanky5DT_Reward: EnemyLoc(Maps.AztecLanky5DTemple, Enemies.Klump, 4, [], True),
-
     # Tiny 5DT
     EnemyLocations.AztecTiny5DT_StartRightFront: EnemyLoc(Maps.AztecTiny5DTemple, Enemies.ZingerLime, 2, [], True),
     EnemyLocations.AztecTiny5DT_StartLeftBack: EnemyLoc(Maps.AztecTiny5DTemple, Enemies.ZingerLime, 4, [], True),
@@ -637,14 +630,12 @@ enemy_location_list = {
     EnemyLocations.AztecTiny5DT_Reward1: EnemyLoc(Maps.AztecTiny5DTemple, Enemies.ZingerLime, 8, [], True),
     EnemyLocations.AztecTiny5DT_DeadEnd0: EnemyLoc(Maps.AztecTiny5DTemple, Enemies.ZingerLime, 9, [], True),
     EnemyLocations.AztecTiny5DT_DeadEnd1: EnemyLoc(Maps.AztecTiny5DTemple, Enemies.ZingerLime, 10, [], True),
-
     # Chunky 5DT
     EnemyLocations.AztecChunky5DT_StartRight: EnemyLoc(Maps.AztecChunky5DTemple, Enemies.Klobber, 2, [], True),
     EnemyLocations.AztecChunky5DT_StartLeft: EnemyLoc(Maps.AztecChunky5DTemple, Enemies.Klobber, 3, [], True),
     EnemyLocations.AztecChunky5DT_SecondRight: EnemyLoc(Maps.AztecChunky5DTemple, Enemies.Klobber, 5, [], True),
     EnemyLocations.AztecChunky5DT_SecondLeft: EnemyLoc(Maps.AztecChunky5DTemple, Enemies.Klobber, 6, [], True),
     EnemyLocations.AztecChunky5DT_Reward: EnemyLoc(Maps.AztecChunky5DTemple, Enemies.ZingerLime, 7, [], True),
-
     # Llama Temple
     EnemyLocations.AztecLlama_KongFreeInstrument: EnemyLoc(Maps.AztecLlamaTemple, Enemies.KlaptrapPurple, 5, [], True),
     EnemyLocations.AztecLlama_DinoInstrument: EnemyLoc(Maps.AztecLlamaTemple, Enemies.KlaptrapPurple, 6, [], True),
@@ -654,7 +645,6 @@ enemy_location_list = {
     EnemyLocations.AztecLlama_Left: EnemyLoc(Maps.AztecLlamaTemple, Enemies.Kremling, 15, [], True),
     EnemyLocations.AztecLlama_MelonCrate: EnemyLoc(Maps.AztecLlamaTemple, Enemies.KlaptrapPurple, 16, [], True),
     EnemyLocations.AztecLlama_SlamSwitch: EnemyLoc(Maps.AztecLlamaTemple, Enemies.KlaptrapPurple, 17, [], True),
-
     # Tiny Temple
     EnemyLocations.AztecTemple_Rotating00: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 1, enemies_nokill_gun, True),
     EnemyLocations.AztecTemple_Rotating01: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 2, enemies_nokill_gun, True),
@@ -687,7 +677,6 @@ enemy_location_list = {
     EnemyLocations.AztecTemple_KongRoom3: EnemyLoc(Maps.AztecTinyTemple, Enemies.Kremling, 33, [], True),
     EnemyLocations.AztecTemple_KongRoom4: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 34, [], True),
     EnemyLocations.AztecTemple_Underwater: EnemyLoc(Maps.AztecTinyTemple, Enemies.Shuri, 37, [], True),
-
     # Factory
     # Main
     EnemyLocations.FactoryMain_CandyCranky0: EnemyLoc(Maps.FranticFactory, Enemies.Kremling, 33, [], True),
@@ -727,10 +716,8 @@ enemy_location_list = {
     EnemyLocations.FactoryMain_3124Gauntlet2: EnemyLoc(Maps.FranticFactory, Enemies.MrDice1, 54, [], True),
     EnemyLocations.FactoryMain_4231Gauntlet0: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 55, [], True),
     EnemyLocations.FactoryMain_4231Gauntlet1: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 56, [], True),
-
     # Lobby
     EnemyLocations.FactoryLobby_Enemy0: EnemyLoc(Maps.FranticFactoryLobby, Enemies.ZingerRobo, 1, [], True),
-
     # Galleon
     # Main
     EnemyLocations.GalleonMain_ChestRoom0: EnemyLoc(Maps.GloomyGalleon, Enemies.Klobber, 12, [], True),
@@ -742,33 +729,27 @@ enemy_location_list = {
     EnemyLocations.GalleonMain_5DS1: EnemyLoc(Maps.GloomyGalleon, Enemies.Shuri, 20, [], True),
     EnemyLocations.GalleonMain_PeanutTunnel: EnemyLoc(Maps.GloomyGalleon, Enemies.Kosha, 26, [], True),
     EnemyLocations.GalleonMain_CoconutTunnel: EnemyLoc(Maps.GloomyGalleon, Enemies.Kremling, 27, [], True),
-
     # Lighthouse
     EnemyLocations.GalleonLighthouse_Enemy0: EnemyLoc(Maps.GalleonLighthouse, Enemies.Klump, 1, [], True),
     EnemyLocations.GalleonLighthouse_Enemy1: EnemyLoc(Maps.GalleonLighthouse, Enemies.Klump, 2, [], True),
-
     # 5DS Diddy, Lanky, Chunky
     EnemyLocations.Galleon5DSDLC_Diddy: EnemyLoc(Maps.Galleon5DShipDiddyLankyChunky, Enemies.Pufftup, 4, [], True),
     EnemyLocations.Galleon5DSDLC_Chunky: EnemyLoc(Maps.Galleon5DShipDiddyLankyChunky, Enemies.Pufftup, 5, [], True),
     EnemyLocations.Galleon5DSDLC_Lanky: EnemyLoc(Maps.Galleon5DShipDiddyLankyChunky, Enemies.Pufftup, 6, [], True),
-
     # 5DS DK, Tiny
     EnemyLocations.Galleon5DSDT_DK0: EnemyLoc(Maps.Galleon5DShipDKTiny, Enemies.Shuri, 4, [], True),
     EnemyLocations.Galleon5DSDT_DK1: EnemyLoc(Maps.Galleon5DShipDKTiny, Enemies.Shuri, 5, [], True),
     EnemyLocations.Galleon5DSDT_DK2: EnemyLoc(Maps.Galleon5DShipDKTiny, Enemies.Shuri, 6, [], True),
     EnemyLocations.Galleon5DSDT_TinyCage: EnemyLoc(Maps.Galleon5DShipDKTiny, Enemies.Shuri, 9, [], True),
     EnemyLocations.Galleon5DSDT_TinyBed: EnemyLoc(Maps.Galleon5DShipDKTiny, Enemies.Shuri, 10, [], True),
-
     # 2DS
     EnemyLocations.Galleon2DS_Tiny0: EnemyLoc(Maps.Galleon2DShip, Enemies.Gimpfish, 3, [], True),
     EnemyLocations.Galleon2DS_Tiny1: EnemyLoc(Maps.Galleon2DShip, Enemies.Gimpfish, 4, [], True),
-
     # Submarine
     EnemyLocations.GalleonSub_Enemy0: EnemyLoc(Maps.GalleonSubmarine, Enemies.Pufftup, 1, [], True),
     EnemyLocations.GalleonSub_Enemy1: EnemyLoc(Maps.GalleonSubmarine, Enemies.Pufftup, 3, [], True),
     EnemyLocations.GalleonSub_Enemy2: EnemyLoc(Maps.GalleonSubmarine, Enemies.Pufftup, 4, [], True),
     EnemyLocations.GalleonSub_Enemy3: EnemyLoc(Maps.GalleonSubmarine, Enemies.Pufftup, 6, [], True),
-
     # Fungi
     # Main
     EnemyLocations.FungiMain_HollowTree0: EnemyLoc(Maps.FungiForest, Enemies.Klump, 5, [], True),
@@ -812,47 +793,36 @@ enemy_location_list = {
     EnemyLocations.FungiMain_Thornvine1: EnemyLoc(Maps.FungiForest, Enemies.Klump, 46, [], True),
     EnemyLocations.FungiMain_Thornvine2: EnemyLoc(Maps.FungiForest, Enemies.ZingerLime, 60, [], True),
     EnemyLocations.FungiMain_ThornvineEntrance: EnemyLoc(Maps.FungiForest, Enemies.Klump, 58, [], True),
-
     # Anthill
     EnemyLocations.FungiAnthill_Gauntlet0: EnemyLoc(Maps.ForestAnthill, Enemies.KlaptrapPurple, 1, [], True),
     EnemyLocations.FungiAnthill_Gauntlet1: EnemyLoc(Maps.ForestAnthill, Enemies.KlaptrapPurple, 2, [], True),
     EnemyLocations.FungiAnthill_Gauntlet2: EnemyLoc(Maps.ForestAnthill, Enemies.KlaptrapPurple, 3, [], True),
     EnemyLocations.FungiAnthill_Gauntlet3: EnemyLoc(Maps.ForestAnthill, Enemies.KlaptrapPurple, 4, [], True),
-
     # Winch Room
     EnemyLocations.FungiWinch_Enemy: EnemyLoc(Maps.ForestWinchRoom, Enemies.Bat, 1, [], True),
-
     # Thornvine Barn
     EnemyLocations.FungiThornBarn_Enemy: EnemyLoc(Maps.ForestThornvineBarn, Enemies.Kosha, 1, [], True),
-
     # Mill Front
     EnemyLocations.FungiMillFront_Enemy: EnemyLoc(Maps.ForestMillFront, Enemies.ZingerLime, 1, [], True),
-
     # Mill Rear
     EnemyLocations.FungiMillRear_Enemy: EnemyLoc(Maps.ForestMillBack, Enemies.ZingerLime, 1, [], True),
-
     # Giant Mushroom
     EnemyLocations.FungiGM_AboveNightDoor: EnemyLoc(Maps.ForestGiantMushroom, Enemies.Klump, 2, [], True),
     EnemyLocations.FungiGM_Path0: EnemyLoc(Maps.ForestGiantMushroom, Enemies.ZingerLime, 3, [], False),
     EnemyLocations.FungiGM_Path1: EnemyLoc(Maps.ForestGiantMushroom, Enemies.ZingerLime, 4, [], False),
-
     # Lanky Attic
     EnemyLocations.FungiLankyAttic_Gauntlet0: EnemyLoc(Maps.ForestMillAttic, Enemies.Bat, 1, enemies_nokill_gun, True),
     EnemyLocations.FungiLankyAttic_Gauntlet1: EnemyLoc(Maps.ForestMillAttic, Enemies.Bat, 2, enemies_nokill_gun, True),
     EnemyLocations.FungiLankyAttic_Gauntlet2: EnemyLoc(Maps.ForestMillAttic, Enemies.Bat, 3, enemies_nokill_gun, True),
-
     # Mush Leap
     EnemyLocations.FungiLeap_Enemy0: EnemyLoc(Maps.ForestLankyZingersRoom, Enemies.ZingerLime, 1, [], True),
     EnemyLocations.FungiLeap_Enemy1: EnemyLoc(Maps.ForestLankyZingersRoom, Enemies.ZingerLime, 2, [], True),
-
     # Face Puzzle
     EnemyLocations.FungiFacePuzzle_Enemy: EnemyLoc(Maps.ForestChunkyFaceRoom, Enemies.ZingerLime, 1, [], True),
-
     # Spider Boss
     EnemyLocations.FungiSpider_Gauntlet0: EnemyLoc(Maps.ForestSpider, Enemies.SpiderSmall, 2, [Enemies.Klobber, Enemies.Kaboom, Enemies.MushroomMan], False),
     EnemyLocations.FungiSpider_Gauntlet1: EnemyLoc(Maps.ForestSpider, Enemies.SpiderSmall, 3, [Enemies.Klobber, Enemies.Kaboom, Enemies.MushroomMan], False),
     EnemyLocations.FungiSpider_Gauntlet2: EnemyLoc(Maps.ForestSpider, Enemies.SpiderSmall, 4, [Enemies.Klobber, Enemies.Kaboom, Enemies.MushroomMan], False),
-
     # Caves
     # Main
     EnemyLocations.CavesMain_Start: EnemyLoc(Maps.CrystalCaves, Enemies.Kremling, 10, [], True),
@@ -864,32 +834,26 @@ enemy_location_list = {
     EnemyLocations.CavesMain_NearBonusRoom: EnemyLoc(Maps.CrystalCaves, Enemies.Kosha, 28, [], True),
     EnemyLocations.CavesMain_1DCHeadphones: EnemyLoc(Maps.CrystalCaves, Enemies.Kosha, 29, [], True),
     EnemyLocations.CavesMain_GiantKosha: EnemyLoc(Maps.CrystalCaves, Enemies.Kosha, 31, [], True),
-
     # DK 5DI
     EnemyLocations.Caves5DIDK_Right: EnemyLoc(Maps.CavesDonkeyIgloo, Enemies.Kosha, 1, [], True),
     EnemyLocations.Caves5DIDK_Left: EnemyLoc(Maps.CavesDonkeyIgloo, Enemies.Kosha, 3, [], True),
-
     # Lanky 5DI
     EnemyLocations.Caves5DILanky_First0: EnemyLoc(Maps.CavesLankyIgloo, Enemies.BeaverBlue, 1, [], True),
     EnemyLocations.Caves5DILanky_First1: EnemyLoc(Maps.CavesLankyIgloo, Enemies.BeaverBlue, 2, [], True),
     EnemyLocations.Caves5DILanky_Second0: EnemyLoc(Maps.CavesLankyIgloo, Enemies.Kremling, 3, [], True),
     EnemyLocations.Caves5DILanky_Second1: EnemyLoc(Maps.CavesLankyIgloo, Enemies.Kremling, 4, [], True),
     EnemyLocations.Caves5DILanky_Second2: EnemyLoc(Maps.CavesLankyIgloo, Enemies.Kremling, 5, [], True),
-
     # Tiny 5DI
     EnemyLocations.Caves5DITiny_BigEnemy: EnemyLoc(Maps.CavesTinyIgloo, Enemies.Kosha, 2, [Enemies.Guard], True),
-
     # Chunky 5DI
     EnemyLocations.Caves5DIChunky_Gauntlet00: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 2, [], False),
     EnemyLocations.Caves5DIChunky_Gauntlet01: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 3, [], False),
     EnemyLocations.Caves5DIChunky_Gauntlet02: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 4, [], False),
     EnemyLocations.Caves5DIChunky_Gauntlet03: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 5, [], False),
     EnemyLocations.Caves5DIChunky_Gauntlet04: EnemyLoc(Maps.CavesChunkyIgloo, Enemies.FireballGlasses, 6, [], False),
-
     # Lanky 1DC
     EnemyLocations.Caves1DC_Near: EnemyLoc(Maps.CavesLankyCabin, Enemies.Kosha, 2, [], True),
     EnemyLocations.Caves1DC_Far: EnemyLoc(Maps.CavesLankyCabin, Enemies.Kosha, 1, [], True),
-
     # DK 5DC
     EnemyLocations.Caves5DCDK_Gauntlet0: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 1, enemies_nokill_gun, True),
     EnemyLocations.Caves5DCDK_Gauntlet1: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 2, enemies_nokill_gun, True),
@@ -897,7 +861,6 @@ enemy_location_list = {
     EnemyLocations.Caves5DCDK_Gauntlet3: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 4, enemies_nokill_gun, True),
     EnemyLocations.Caves5DCDK_Gauntlet4: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 5, enemies_nokill_gun, True),
     EnemyLocations.Caves5DCDK_Gauntlet5: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 6, enemies_nokill_gun, True),
-
     # Diddy Enemies 5DC
     EnemyLocations.Caves5DCDiddyLow_CloseRight: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klump, 1, [Enemies.Kosha, Enemies.Guard], True),
     EnemyLocations.Caves5DCDiddyLow_FarRight: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Kremling, 2, [Enemies.Kosha, Enemies.Guard], True),
@@ -907,18 +870,15 @@ enemy_location_list = {
     EnemyLocations.Caves5DCDiddyLow_Center1: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 6, [Enemies.Kosha, Enemies.Guard], True),
     EnemyLocations.Caves5DCDiddyLow_Center2: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 7, [Enemies.Kosha, Enemies.Guard], True),
     EnemyLocations.Caves5DCDiddyLow_Center3: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 8, [Enemies.Kosha, Enemies.Guard], True),
-
     # Diddy Candle 5DC
     EnemyLocations.Caves5DCDiddyUpper_Enemy0: EnemyLoc(Maps.CavesDiddyUpperCabin, Enemies.Kosha, 1, [], True),
     EnemyLocations.Caves5DCDiddyUpper_Enemy1: EnemyLoc(Maps.CavesDiddyUpperCabin, Enemies.Kosha, 2, [], True),
-
     # Tiny 5DC
     EnemyLocations.Caves5DCTiny_Gauntlet0: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 1, [Enemies.Kosha, Enemies.Guard], True),
     EnemyLocations.Caves5DCTiny_Gauntlet1: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 2, [Enemies.Kosha, Enemies.Guard], True),
     EnemyLocations.Caves5DCTiny_Gauntlet2: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 3, [Enemies.Kosha, Enemies.Guard], True),
     EnemyLocations.Caves5DCTiny_Gauntlet3: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 4, [Enemies.Kosha, Enemies.Guard], True),
     EnemyLocations.Caves5DCTiny_Gauntlet4: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 5, [Enemies.Kosha, Enemies.Guard], True),
-
     # Castle
     # Main
     EnemyLocations.CastleMain_NearBridge0: EnemyLoc(Maps.CreepyCastle, Enemies.Krossbones, 4, [], True),
@@ -934,12 +894,10 @@ enemy_location_list = {
     EnemyLocations.CastleMain_LowTnS: EnemyLoc(Maps.CreepyCastle, Enemies.Krossbones, 14, [], True),
     EnemyLocations.CastleMain_PathToDungeon: EnemyLoc(Maps.CreepyCastle, Enemies.Krossbones, 15, [], True),
     EnemyLocations.CastleMain_NearHeadphones: EnemyLoc(Maps.CreepyCastle, Enemies.Krossbones, 16, [], True),
-
     # Lobby
     EnemyLocations.CastleLobby_Left: EnemyLoc(Maps.CreepyCastleLobby, Enemies.Kosha, 2, [], True),
     EnemyLocations.CastleLobby_FarRight: EnemyLoc(Maps.CreepyCastleLobby, Enemies.Kosha, 3, [], True),
     EnemyLocations.CastleLobby_NearRight: EnemyLoc(Maps.CreepyCastleLobby, Enemies.Kosha, 4, [], True),
-
     # Ballroom
     EnemyLocations.CastleBallroom_Board00: EnemyLoc(Maps.CastleBallroom, Enemies.Krossbones, 1, [], True),
     EnemyLocations.CastleBallroom_Board01: EnemyLoc(Maps.CastleBallroom, Enemies.Ghost, 2, [], True),
@@ -947,19 +905,16 @@ enemy_location_list = {
     EnemyLocations.CastleBallroom_Board03: EnemyLoc(Maps.CastleBallroom, Enemies.Ghost, 4, [], True),
     EnemyLocations.CastleBallroom_Board04: EnemyLoc(Maps.CastleBallroom, Enemies.Krossbones, 5, [], True),
     EnemyLocations.CastleBallroom_Start: EnemyLoc(Maps.CastleBallroom, Enemies.Kosha, 6, [], True),
-
     # Dungeon
     EnemyLocations.CastleDungeon_FaceRoom: EnemyLoc(Maps.CastleDungeon, Enemies.Krossbones, 1, [], True),
     EnemyLocations.CastleDungeon_ChairRoom: EnemyLoc(Maps.CastleDungeon, Enemies.Kosha, 2, [], True),
     EnemyLocations.CastleDungeon_OutsideLankyRoom: EnemyLoc(Maps.CastleDungeon, Enemies.Kosha, 3, [], True),
-
     # Shed
     EnemyLocations.CastleShed_Gauntlet00: EnemyLoc(Maps.CastleShed, Enemies.Bat, 1, enemies_nokill_gun, True),
     EnemyLocations.CastleShed_Gauntlet01: EnemyLoc(Maps.CastleShed, Enemies.Bat, 2, enemies_nokill_gun, True),
     EnemyLocations.CastleShed_Gauntlet02: EnemyLoc(Maps.CastleShed, Enemies.Bat, 3, enemies_nokill_gun, True),
     EnemyLocations.CastleShed_Gauntlet03: EnemyLoc(Maps.CastleShed, Enemies.Bat, 4, enemies_nokill_gun, True),
     EnemyLocations.CastleShed_Gauntlet04: EnemyLoc(Maps.CastleShed, Enemies.Bat, 5, enemies_nokill_gun, True),
-
     # Lower Cave
     EnemyLocations.CastleLowCave_NearCrypt: EnemyLoc(Maps.CastleLowerCave, Enemies.Kosha, 3, [], True),
     EnemyLocations.CastleLowCave_StairRight: EnemyLoc(Maps.CastleLowerCave, Enemies.Kosha, 4, [], True),
@@ -967,7 +922,6 @@ enemy_location_list = {
     EnemyLocations.CastleLowCave_NearMausoleum: EnemyLoc(Maps.CastleLowerCave, Enemies.Bat, 6, [], True),
     EnemyLocations.CastleLowCave_NearFunky: EnemyLoc(Maps.CastleLowerCave, Enemies.Bat, 7, [], True),
     EnemyLocations.CastleLowCave_NearTag: EnemyLoc(Maps.CastleLowerCave, Enemies.Bat, 8, [], True),
-
     # Crypt
     EnemyLocations.CastleCrypt_DiddyCoffin0: EnemyLoc(Maps.CastleCrypt, Enemies.Ghost, 1, [], True),
     EnemyLocations.CastleCrypt_DiddyCoffin1: EnemyLoc(Maps.CastleCrypt, Enemies.Ghost, 2, [], True),
@@ -981,25 +935,21 @@ enemy_location_list = {
     EnemyLocations.CastleCrypt_Fork: EnemyLoc(Maps.CastleCrypt, Enemies.Krossbones, 10, [], True),
     EnemyLocations.CastleCrypt_NearDiddy: EnemyLoc(Maps.CastleCrypt, Enemies.Krossbones, 11, [], True),
     EnemyLocations.CastleCrypt_NearChunky: EnemyLoc(Maps.CastleCrypt, Enemies.Krossbones, 12, [], True),
-
     # Mausoleum
     EnemyLocations.CastleMausoleum_TinyPath: EnemyLoc(Maps.CastleMausoleum, Enemies.Krossbones, 1, [], True),
     EnemyLocations.CastleMausoleum_LankyPath0: EnemyLoc(Maps.CastleMausoleum, Enemies.Krossbones, 2, [], True),
     EnemyLocations.CastleMausoleum_LankyPath1: EnemyLoc(Maps.CastleMausoleum, Enemies.Krossbones, 3, [], True),
-
     # Upper Cave
     EnemyLocations.CastleUpperCave_NearDungeon: EnemyLoc(Maps.CastleUpperCave, Enemies.Bat, 3, [], True),
     EnemyLocations.CastleUpperCave_Pit: EnemyLoc(Maps.CastleUpperCave, Enemies.Bat, 4, [], True),
     EnemyLocations.CastleUpperCave_NearPit: EnemyLoc(Maps.CastleUpperCave, Enemies.Bat, 5, [], True),
     EnemyLocations.CastleUpperCave_NearEntrance: EnemyLoc(Maps.CastleUpperCave, Enemies.Krossbones, 6, [], True),
-
     # Kut Out
     EnemyLocations.CastleKKO_CenterEnemy: EnemyLoc(Maps.CastleBoss, Enemies.Ghost, 7, [], True),
     EnemyLocations.CastleKKO_WaterEnemy00: EnemyLoc(Maps.CastleBoss, Enemies.Pufftup, 8, [], True),
     EnemyLocations.CastleKKO_WaterEnemy01: EnemyLoc(Maps.CastleBoss, Enemies.Pufftup, 9, [], True),
     EnemyLocations.CastleKKO_WaterEnemy02: EnemyLoc(Maps.CastleBoss, Enemies.Pufftup, 10, [], True),
     EnemyLocations.CastleKKO_WaterEnemy03: EnemyLoc(Maps.CastleBoss, Enemies.Pufftup, 11, [], True),
-
     # Library
     EnemyLocations.CastleLibrary_Gauntlet00: EnemyLoc(Maps.CastleLibrary, Enemies.Krossbones, 1, [], True),
     EnemyLocations.CastleLibrary_Gauntlet01: EnemyLoc(Maps.CastleLibrary, Enemies.Ghost, 2, [], True),
@@ -1015,32 +965,27 @@ enemy_location_list = {
     EnemyLocations.CastleLibrary_ForkLeft1: EnemyLoc(Maps.CastleLibrary, Enemies.Bat, 15, [], True),
     EnemyLocations.CastleLibrary_ForkCenter: EnemyLoc(Maps.CastleLibrary, Enemies.Bat, 13, [], True),
     EnemyLocations.CastleLibrary_ForkRight: EnemyLoc(Maps.CastleLibrary, Enemies.Bat, 14, [], True),
-
     # Museum
     EnemyLocations.CastleMuseum_MainFloor0: EnemyLoc(Maps.CastleMuseum, Enemies.Ghost, 1, [], True),
     EnemyLocations.CastleMuseum_MainFloor1: EnemyLoc(Maps.CastleMuseum, Enemies.Ghost, 2, [], True),
     EnemyLocations.CastleMuseum_MainFloor2: EnemyLoc(Maps.CastleMuseum, Enemies.Ghost, 3, [], True),
     EnemyLocations.CastleMuseum_MainFloor3: EnemyLoc(Maps.CastleMuseum, Enemies.Ghost, 4, [], True),
     EnemyLocations.CastleMuseum_Start: EnemyLoc(Maps.CastleMuseum, Enemies.Kosha, 6, [], True),
-
     # Tower
     EnemyLocations.CastleTower_Gauntlet0: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 1, [], True),
     EnemyLocations.CastleTower_Gauntlet1: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 2, [], True),
     EnemyLocations.CastleTower_Gauntlet2: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 3, [], True),
     EnemyLocations.CastleTower_Gauntlet3: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 4, [], True),
     EnemyLocations.CastleTower_Gauntlet4: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 5, [], True),
-
     # Trash Can
     EnemyLocations.CastleTrash_Gauntlet0: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 1, [], True),
     EnemyLocations.CastleTrash_Gauntlet1: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 2, [], True),
     EnemyLocations.CastleTrash_Gauntlet2: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 3, [], True),
     EnemyLocations.CastleTrash_Gauntlet3: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 4, [], True),
     EnemyLocations.CastleTrash_Gauntlet4: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 5, [], True),
-
     # Tree
     EnemyLocations.CastleTree_StartRoom0: EnemyLoc(Maps.CastleTree, Enemies.Bat, 3, [], True),
     EnemyLocations.CastleTree_StartRoom1: EnemyLoc(Maps.CastleTree, Enemies.Bat, 5, [], True),
-
     # Helm
     # Main
     EnemyLocations.HelmMain_Start0: EnemyLoc(Maps.HideoutHelm, Enemies.KlaptrapGreen, 2, [], True),
@@ -1062,7 +1007,6 @@ enemy_location_list = {
     EnemyLocations.HelmMain_DiddyRoom1: EnemyLoc(Maps.HideoutHelm, Enemies.KlaptrapGreen, 22, [], True),
     EnemyLocations.HelmMain_NavRight: EnemyLoc(Maps.HideoutHelm, Enemies.Kremling, 23, [], True),
     EnemyLocations.HelmMain_NavLeft: EnemyLoc(Maps.HideoutHelm, Enemies.KlaptrapGreen, 24, [], True),
-
     # Isles
     # Main
     EnemyLocations.IslesMain_PineappleCage0: EnemyLoc(Maps.Isles, Enemies.BeaverBlue, 1, [], True),
