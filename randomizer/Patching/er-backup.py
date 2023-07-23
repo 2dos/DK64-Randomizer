@@ -2,7 +2,10 @@
 import random
 
 import js
-import time, cProfile, pstats, io
+import time
+import cProfile
+import pstats
+import io
 from pstats import SortKey
 from randomizer.Enums.EnemySubtypes import EnemySubtype
 from randomizer.Enums.Settings import CrownEnemyRando, DamageAmount
@@ -524,11 +527,7 @@ def ShuffleEnemies(spoiler) -> dict:
         if enemy_location_list[loc].enable_randomization:
             if data.map not in placement_data:
                 placement_data[data.map] = {}
-            placement_data[data.map][loc] = {
-                "id": data.id,
-                "speeds": [data.idle_speed, data.aggro_speed],
-                "new_enemy": new_enemy
-            }
+            placement_data[data.map][loc] = {"id": data.id, "speeds": [data.idle_speed, data.aggro_speed], "new_enemy": new_enemy}
     # Set Kasplats for Pkmn Snap since they'll always be included
     setPkmnSnapEnemy(Enemies.KasplatDK)
     setPkmnSnapEnemy(Enemies.KasplatDiddy)
@@ -540,8 +539,11 @@ def ShuffleEnemies(spoiler) -> dict:
         "placement": placement_data,
     }
 
+
 def getcurrentmillitime():
+    """Get current time in milliseconds."""
     return round(time.time_ns())
+
 
 def randomize_enemies(spoiler):
     """Write replaced enemies to ROM."""

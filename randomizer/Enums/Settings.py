@@ -125,11 +125,13 @@ class FillAlgorithm(IntEnum):
         those locations will be valid. More likely to place items deeper into
         a seed.
     random: Places items with no regard for logic.
+    careful_random: Places items with no regard for anything except coin logic. Probably.
     """
 
     forward = auto()
     assumed = auto()
     random = auto()
+    careful_random = auto()
 
 
 class FreeTradeSetting(IntEnum):

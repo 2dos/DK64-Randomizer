@@ -20,6 +20,7 @@ from randomizer.LogicFiles.JungleJapes import LogicRegions as JungleJapesRegions
 
 
 def getKongString(kongEnum):
+    """Get the string name of the kong from the enum."""
     if kongEnum == Kongs.donkey:
         return "Donkey"
     elif kongEnum == Kongs.diddy:
@@ -35,6 +36,7 @@ def getKongString(kongEnum):
 
 
 def getLevelString(levelEnum):
+    """Get the string name of a level from the enum."""
     if levelEnum == Levels.DKIsles:
         return "D.K. Isles"
     elif levelEnum == Levels.JungleJapes:
@@ -76,95 +78,43 @@ HintLocationList = []
 
 
 def createPlannableLocationObj():
+    """Initialize the plannable location object."""
     return {"All Kongs": [], "Donkey": [], "Diddy": [], "Lanky": [], "Tiny": [], "Chunky": []}
 
 
 def isMinigameLocation(locationEnum):
+    """Determine if this location is a minigame location."""
     return locationEnum in BarrelMetaData
 
 
 PlandomizerPanels = {
-    "DKIsles": {
-        "name": "D.K. Isles",
-        "locations": createPlannableLocationObj()
-    },
-    "JungleJapes": {
-        "name": "Jungle Japes",
-        "locations": createPlannableLocationObj()
-    },
-    "AngryAztec": {
-        "name": "Angry Aztec",
-        "locations": createPlannableLocationObj()
-    },
-    "FranticFactory": {
-        "name": "Frantic Factory",
-        "locations": createPlannableLocationObj()
-    },
-    "GloomyGalleon": {
-        "name": "Gloomy Galleon",
-        "locations": createPlannableLocationObj()
-    },
-    "FungiForest": {
-        "name": "Fungi Forest",
-        "locations": createPlannableLocationObj()
-    },
-    "CrystalCaves": {
-        "name": "Crystal Caves",
-        "locations": createPlannableLocationObj()
-    },
-    "CreepyCastle": {
-        "name": "Creepy Castle",
-        "locations": createPlannableLocationObj()
-    },
-    "HideoutHelm": {
-        "name": "Hideout Helm",
-        "locations": {
-            "All Kongs": [],
-            "Medals": []
-        }
-    },
+    "DKIsles": {"name": "D.K. Isles", "locations": createPlannableLocationObj()},
+    "JungleJapes": {"name": "Jungle Japes", "locations": createPlannableLocationObj()},
+    "AngryAztec": {"name": "Angry Aztec", "locations": createPlannableLocationObj()},
+    "FranticFactory": {"name": "Frantic Factory", "locations": createPlannableLocationObj()},
+    "GloomyGalleon": {"name": "Gloomy Galleon", "locations": createPlannableLocationObj()},
+    "FungiForest": {"name": "Fungi Forest", "locations": createPlannableLocationObj()},
+    "CrystalCaves": {"name": "Crystal Caves", "locations": createPlannableLocationObj()},
+    "CreepyCastle": {"name": "Creepy Castle", "locations": createPlannableLocationObj()},
+    "HideoutHelm": {"name": "Hideout Helm", "locations": {"All Kongs": [], "Medals": []}},
     # Shops, minigames and hints are grouped by level, not by Kong.
     "Shops": {
         "name": "Shops",
         "levels": {
-            "DKIsles": {
-                "name": "D.K. Isles",
-                "locations": []
-            },
-            "JungleJapes": {
-                "name": "Jungle Japes",
-                "locations": []
-            },
-            "AngryAztec": {
-                "name": "Angry Aztec",
-                "locations": []
-            },
-            "FranticFactory": {
-                "name": "Frantic Factory",
-                "locations": []
-            },
-            "GloomyGalleon": {
-                "name": "Gloomy Galleon",
-                "locations": []
-            },
-            "FungiForest": {
-                "name": "Fungi Forest",
-                "locations": []
-            },
-            "CrystalCaves": {
-                "name": "Crystal Caves",
-                "locations": []
-            },
-            "CreepyCastle": {
-                "name": "Creepy Castle",
-                "locations": []
-            }
-        }
+            "DKIsles": {"name": "D.K. Isles", "locations": []},
+            "JungleJapes": {"name": "Jungle Japes", "locations": []},
+            "AngryAztec": {"name": "Angry Aztec", "locations": []},
+            "FranticFactory": {"name": "Frantic Factory", "locations": []},
+            "GloomyGalleon": {"name": "Gloomy Galleon", "locations": []},
+            "FungiForest": {"name": "Fungi Forest", "locations": []},
+            "CrystalCaves": {"name": "Crystal Caves", "locations": []},
+            "CreepyCastle": {"name": "Creepy Castle", "locations": []},
+        },
     },
-    #"Blueprints": {
+    # "Blueprints": {
     #    "name": "Blueprints",
     #    "locations": createPlannableLocationObj()
-    #},
+    # },
     "Minigames": {
         "name": "Minigames",
         "levels": {
@@ -182,36 +132,15 @@ PlandomizerPanels = {
     "Hints": {
         "name": "Hints",
         "levels": {
-            "JungleJapes": {
-                "name": "Jungle Japes",
-                "locations": []
-            },
-            "AngryAztec": {
-                "name": "Angry Aztec",
-                "locations": []
-            },
-            "FranticFactory": {
-                "name": "Frantic Factory",
-                "locations": []
-            },
-            "GloomyGalleon": {
-                "name": "Gloomy Galleon",
-                "locations": []
-            },
-            "FungiForest": {
-                "name": "Fungi Forest",
-                "locations": []
-            },
-            "CrystalCaves": {
-                "name": "Crystal Caves",
-                "locations": []
-            },
-            "CreepyCastle": {
-                "name": "Creepy Castle",
-                "locations": []
-            }
-        }
-    }
+            "JungleJapes": {"name": "Jungle Japes", "locations": []},
+            "AngryAztec": {"name": "Angry Aztec", "locations": []},
+            "FranticFactory": {"name": "Frantic Factory", "locations": []},
+            "GloomyGalleon": {"name": "Gloomy Galleon", "locations": []},
+            "FungiForest": {"name": "Fungi Forest", "locations": []},
+            "CrystalCaves": {"name": "Crystal Caves", "locations": []},
+            "CreepyCastle": {"name": "Creepy Castle", "locations": []},
+        },
+    },
 }
 for locationEnum, locationObj in LocationList.items():
     # Do not randomize constant rewards.
@@ -289,30 +218,12 @@ for itemEnum, itemObj in ItemList.items():
     itemJson = {"name": itemObj.name, "value": plandoItemEnum.name}
     PlannableItems.append(itemJson)
 
-PlannableItems.append({
-    "name": "Blueprint (Donkey)",
-    "value": "DonkeyBlueprint"
-})
-PlannableItems.append({
-    "name": "Blueprint (Diddy)",
-    "value": "DiddyBlueprint"
-})
-PlannableItems.append({
-    "name": "Blueprint (Lanky)",
-    "value": "LankyBlueprint"
-})
-PlannableItems.append({
-    "name": "Blueprint (Tiny)",
-    "value": "TinyBlueprint"
-})
-PlannableItems.append({
-    "name": "Blueprint (Chunky)",
-    "value": "ChunkyBlueprint"
-})
-PlannableItems.append({
-    "name": "Junk Item",
-    "value": "JunkItem"
-})
+PlannableItems.append({"name": "Blueprint (Donkey)", "value": "DonkeyBlueprint"})
+PlannableItems.append({"name": "Blueprint (Diddy)", "value": "DiddyBlueprint"})
+PlannableItems.append({"name": "Blueprint (Lanky)", "value": "LankyBlueprint"})
+PlannableItems.append({"name": "Blueprint (Tiny)", "value": "TinyBlueprint"})
+PlannableItems.append({"name": "Blueprint (Chunky)", "value": "ChunkyBlueprint"})
+PlannableItems.append({"name": "Junk Item", "value": "JunkItem"})
 
 # The maximum amount of each item that the user is allowed to place.
 # If a plando item is not here, that item has no limit.
@@ -433,6 +344,7 @@ for level in allSpawnableLevels:
 
     # Sort by hint name, for better readability.
     def spawnKey(loc):
+        """Do something."""
         _, regionObj = loc
         return hintNameSortDict[regionObj.level][regionObj.hint_name]
 

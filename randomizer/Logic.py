@@ -34,7 +34,7 @@ from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Prices import CanBuy, GetPriceAtLocation
+from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
 
 STARTING_SLAM = 1  # Currently we're assuming you always start with 1 slam
 
@@ -734,9 +734,13 @@ class LogicVarHolder:
             return self.chunky and (location.kong == Kongs.chunky or (self.donkey and self.grab))
         return self.HasKong(location.kong)
 
-    def CanBuy(self, location):
+    def CanBuy(self, location, buy_empty=False):
         """Check if there are enough coins to purchase this location."""
-        return CanBuy(location, self)
+        return CanBuy(location, self, buy_empty)
+
+    def AnyKongCanBuy(self, location, buy_empty=False):
+        """Check if there are enough coins for any owned kong to purchase this location."""
+        return AnyKongCanBuy(location, self, buy_empty)
 
     def CanAccessKRool(self):
         """Make sure that each required key has been turned in."""

@@ -210,7 +210,7 @@ crankys_cryptic = ["a location out of this world", "a location 5000 points deep"
 item_type_names = {
     Types.Blueprint: "\x06a kasplat\x06",
     Types.Fairy: "\x06a fairy\x06",
-    Types.Crown: "\x06a battle arena\x06", 
+    Types.Crown: "\x06a battle arena\x06",
     Types.RainbowCoin: "\x06a dirt patch\x06",
     Types.CrateItem: "\x06a melon crate\x06",
 }

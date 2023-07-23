@@ -395,8 +395,7 @@ for locationName in badBlueprintLocationList:
 
 
 def PlandoItemFilter(itemList, location):
-    """A Jinja filter that returns a filtered list of plando items that are
-    permitted at the given location.
+    """Return a filtered list of plando items that are permitted at the given location.
 
     Args:
         itemList (dict[]): The list of possible plando items. Each item
@@ -404,7 +403,6 @@ def PlandoItemFilter(itemList, location):
         location (str): The location where we are trying to place items.
             Equal to the string name of the Location enum.
     """
-
     # Filter out every item that appears in the restricted set for this location.
     return [item for item in itemList if item["value"] not in ItemRestrictionsPerLocation[location["value"]]]
 
@@ -428,9 +426,7 @@ kongMinigameRestrictions = {
 
 
 def PlandoMinigameFilter(minigameList, kong):
-    """A Jinja filter that returns a filtered list of minigames that can be
-    played by each Kong. This will prevent the user from placing impossible
-    minigames in locations that only certain Kongs can access.
+    """Return a filtered list of minigames that can be played by each Kong. This will prevent the user from placing impossible minigames in locations that only certain Kongs can access.
 
     Args:
         minigameList (str[]): The list of possible minigames.
@@ -573,9 +569,7 @@ shopLocationOrderingDict = {
 
 
 def PlandoShopSortFilter(shopLocationList):
-    """A Jinja filter that returns a sorted list of shop locations. These are
-    sorted by level, then by vendor, then by Kong. This makes the full list
-    easier to browse.
+    """Return a sorted list of shop locations. These are sorted by level, then by vendor, then by Kong. This makes the full list easier to browse.
 
     Args:
         shopLocationList (str[]): The list of all shop locations.
@@ -588,8 +582,7 @@ def PlandoShopSortFilter(shopLocationList):
 
 
 def PlandoOptionClassAnnotation(panel, kong, location, item):
-    """A Jinja function that will apply certain CSS classes to dropdown menu
-    options, in order to enable various option interactions."""
+    """Apply certain CSS classes to dropdown menu options in order to enable various option interactions."""
     classSet = set()
 
     # Each key gets its own class.

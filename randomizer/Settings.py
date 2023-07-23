@@ -235,6 +235,7 @@ class Settings:
         self.puzzle_rando = None
         self.shuffle_shops = None
         self.start_with_a_slam = False
+        self.extreme_debugging = False  # Use when you want to know VERY specifically where things fail in the fill - unnecessarily slows seed generation!
 
         # The major setting for item randomization
         self.shuffle_items = True

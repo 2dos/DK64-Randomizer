@@ -245,7 +245,6 @@ def shouldRelocatePointerTable(index: int):
 
 def allocateSpace(size: int) -> int:
     """Allocate space for pointer table in ROM. Aim for location with least slack."""
-
     free_location = None
     slack = 0x4000000
     for index, location in enumerate(available_writes):
