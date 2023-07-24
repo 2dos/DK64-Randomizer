@@ -298,6 +298,7 @@ extern void calculateScreenPosition(float x, float y, float z, float* x_store, f
 extern int getNewSaveTime(void);
 extern void unkBonusFunction(actorData* actor);
 extern void internalKasplatCode(int has_bp);
+extern void drawRetroSprite(void* unk0, int x, int y);
 
 extern void spriteActorGenericCode(float unk0);
 extern void assignGIFToActor(void* paad, void* sprite, int scale_f);

@@ -97,7 +97,8 @@
       "shops":true,
       "events":true,
       "transform":true,
-      "pause":true
+      "pause":true,
+      "chunk_songs":true
    },
    "hard_mode": {
       "easy_fall":true,

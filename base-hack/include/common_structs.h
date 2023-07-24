@@ -1554,7 +1554,7 @@ typedef struct DisabledMusicStruct {
 	unsigned char events : 1; // 0x20
 	unsigned char transform : 1; // 0x10
 	unsigned char pause : 1; // 0x08
-	unsigned char unk5 : 1; // 0x04
+	unsigned char chunk_songs : 1; // 0x04
 	unsigned char unk6 : 1; // 0x02
 	unsigned char unk7 : 1; // 0x01
 } DisabledMusicStruct;

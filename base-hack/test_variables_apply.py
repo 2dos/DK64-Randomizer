@@ -180,7 +180,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
                     "events",
                     "transform",
                     "pause",
-                    "unk5",
+                    "chunk_songs",
                     "unk6",
                     "unk7",
                 ]

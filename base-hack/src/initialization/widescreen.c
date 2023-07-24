@@ -25,7 +25,6 @@ static double pos_center = SCREEN_WD_FLOAT / 2;
     - Krazy KK/PPP Melon HUD
     - BP screen
     - BBBandit A Button
-    - Can take damage in tag barrel in hot water
     - are you sure quit
 */
 
@@ -39,6 +38,15 @@ void ws_fillzipperwhite(void* write_ptr, void* framebuffer) {
 }
 
 #define NINTENDO_LOGO_WIDTH 256
+
+void ws_2d(void) {
+    // loadSingularHook(0x8070F308, &arcadeRepositionY);
+    float base_x = 0.25f;
+    float base_y = 0.25f;
+    base_y *= (SCREEN_HD_FLOAT / 240.0f);
+    *(short*)(0x8070F322) = *(short*)(&base_x);
+    *(short*)(0x8070F366) = *(short*)(&base_y);
+}
 
 void ws_ninPos(void) {
     *(short*)(0x805FB8A6) = getUpper(SCREEN_WD*SCREEN_HD*2);
@@ -130,11 +138,6 @@ void ws_hud(void) {
 void ws_crashdebugger(void) {
     // *(int*)(0x80731C04) = 0x24190000 | 160; // Force crash debugger width
     // *(int*)(0x80731CE0) = 0x240F0000 | 160; // Force crash debugger width
-}
-
-void ws_enterFile(int map, int exit) {
-    setNextTransitionType(3); // Box Zoom
-    initiateTransition(map, exit);
 }
 
 void ws_timer(int* x_write) {
@@ -316,8 +319,6 @@ void ws_static(void) {
     ws_hud();
     ws_crashdebugger();
 
-    // *(int*)(0x8071456C) = 0x0C000000 | ((((int)(&ws_enterFile)) & 0xFFFFFF) >> 2); // Zipper
-
     *(int*)(0x806A2A34) = 0x0C000000 | ((((int)(&ws_timer)) & 0xFFFFFF) >> 2); // Timer Reposition
     *(int*)(0x806A2A2C) = 0x27A40018;
 
@@ -330,6 +331,7 @@ void ws_static(void) {
     left_to_yconvert();
     ws_text();
     ws_scissor();
+    ws_2d();
 
     *(int*)(0x806AC3E4) = 0x3C010000 | getHi(&pos_center_4x); //Load High Half of pos_center_4x
     *(int*)(0x806AC3E8) = 0xD4280000 | getLo(&pos_center_4x); //Load pos_center_4x
@@ -591,6 +593,18 @@ void ws_minigame(void) {
     *(short*)(0x8002D1B2) = SCREEN_WD << 1; // X Position of HIT and Combo Text
 }
 
+int* ws_textDraw(int* dl, int style, int x, int y, char* str) {
+    float y_f = y;
+    y_f *= (SCREEN_HD_FLOAT / 240.0f);
+    return textDraw(dl, style, x, y_f, str);
+}
+
+// void ws_sprite(void* unk0, int x, int y) {
+//     float y_f = y;
+//     y_f *= (SCREEN_HD_FLOAT / 240.0f);
+//     drawRetroSprite(unk0, x, y_f);
+// }
+
 void ws_arcade(void) {
     int clear_rect_instruction = 0xF6000000 | ((SCREEN_WD-1) << 14) | ((SCREEN_HD-1) << 2); // Clear Rectangle for DK Arcade
     *(short*)(0x800242E6) = (clear_rect_instruction >> 16) & 0xFFFF;
@@ -601,7 +615,11 @@ void ws_arcade(void) {
     int scissor_rect = (SCREEN_WD << 14) | (SCREEN_HD << 2); // Scissor Rectangle for DK Arcade
     *(short*)(0x800319E6) = getUpper(scissor_rect);
     *(short*)(0x800319EA) = getLower(scissor_rect);
+    //
+    writeFunction(0x80024620, &ws_textDraw);
     // loadSingularHook(0x80025C64, &arcadeYRescale);
+    // *(short*)(0x80025B1A) = 0x10; // Expand DL
+    // loadSingularHook(0x80025b2c, &arcadeRescale);
 }
 
 void ws_jetpac(void) {
@@ -611,6 +629,8 @@ void ws_jetpac(void) {
     int scissor = ((SCREEN_WD - 32) << 14) | ((SCREEN_HD - 24) << 2);
     *(short*)(0x800255F2) = (scissor >> 16) & 0xFFFF; // Scissor Higher Half for Jetpac
     *(short*)(0x800255FE) = scissor & 0xFFFF; //Scissor Lower Half for Jetpac
+    //
+    writeFunction(0x8002B06C, &ws_textDraw);
 }
 
 void ws_menu(void) {

@@ -66,5 +66,3 @@ extern void CrankyCoconutDonation(void);
 extern void AlwaysCandyInstrument(void);
 extern void fixTilePosition(void);
 extern void fixNintendoLogoPosition(void);
-
-extern void arcadeYRescale(void);
