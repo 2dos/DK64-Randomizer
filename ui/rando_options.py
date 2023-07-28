@@ -708,7 +708,8 @@ def disable_enemy_modal(evt):
     except AttributeError:
         pass
 
-@bind("click","hard_mode")
+
+@bind("click", "hard_mode")
 def disable_hard_mode_modal(evt):
     """Disable Hard Mode Selector when Hard Mode is off."""
     disabled = True
@@ -723,7 +724,8 @@ def disable_hard_mode_modal(evt):
     except AttributeError:
         pass
 
-@bind("click","songs_excluded")
+
+@bind("click", "songs_excluded")
 def disable_excluded_songs_modal(evt):
     """Disable Excluded Song Selector when Excluded Songs is off."""
     disabled = True

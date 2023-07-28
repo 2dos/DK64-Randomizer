@@ -113,6 +113,7 @@ class DPadDisplays(IntEnum):
     on = 1
     minimal = 2
 
+
 class ExcludedSongs(IntEnum):
     """Determines the types of songs excluded."""
 

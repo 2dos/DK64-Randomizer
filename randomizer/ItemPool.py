@@ -111,7 +111,7 @@ def AllItems(settings):
         allItems.extend(ImportantSharedMoves)
         if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava):
             allItems.extend(JunkSharedMoves)
-        
+
         if settings.training_barrels == TrainingBarrels.shuffled:
             allItems.extend(TrainingBarrelAbilities().copy())
         if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:

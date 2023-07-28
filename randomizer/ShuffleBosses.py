@@ -27,6 +27,7 @@ def HardBossesEnabled(settings) -> bool:
     """Return whether the hard bosses setting is on."""
     return IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.hard_bosses)
 
+
 def ShuffleBossKongs(settings):
     """Shuffle the kongs required for the bosses."""
     vanillaBossKongs = {
