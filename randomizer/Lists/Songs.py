@@ -221,7 +221,7 @@ ExclSongsItems = [
     SongExclusionItem("Wrinkly", 0, "Removes Wrinkly doors from playing her theme."),
     SongExclusionItem("Transformation", 3, "The game will no longer play the transformation sound effect."),
     SongExclusionItem("Pause Music", 4, "The pause menu music will no longer play."),
-    SongExclusionItem("Sub Areas", 6, "Sub-Areas will no longer play their song, meaning that there's 1 piece of music for the entire level."),
+    SongExclusionItem("Sub Areas", 5, "Sub-Areas will no longer play their song, meaning that there's 1 piece of music for the entire level."),
     # SongExclusionItem("Shops", 1, "COMING SOON: Makes shops inherit the previous song."), # TODO: Fix this
     # SongExclusionItem("Events", 2, "COMING SOON: Events will no longer play a song."), # TODO: Fix this
 

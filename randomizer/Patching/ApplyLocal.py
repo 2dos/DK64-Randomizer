@@ -134,12 +134,9 @@ async def patching_response(data, from_patch_gen=False):
         # Excluded Songs
         if settings.songs_excluded:
             disabled_songs = settings.excluded_songs_selected.copy()
-            if len(disabled_songs) == 0:
-                for item in ExcludedSongsSelector:
-                    disabled_songs.append(ExcludedSongs[item["value"]])
             write_data = [0]
             for item in ExcludedSongsSelector:
-                if ExcludedSongs[item["value"]] in disabled_songs and item["shift"] >= 0:
+                if (item["value"] in disabled_songs and item["shift"] >= 0) or len(disabled_songs) == 0:
                     offset = int(item["shift"] >> 3)
                     check = int(item["shift"] % 8)
                     write_data[offset] |= 0x80 >> check
