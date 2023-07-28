@@ -123,6 +123,19 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType, purchaseLis
     playthroughLocations = []
     unpurchasedEmptyShopLocationIds = []
     eventAdded = True
+    UnderwaterRegions = {
+        Regions.LighthouseUnderwater,
+        Regions.ShipyardUnderwater,
+        Regions.MermaidRoom,
+        Regions.Submarine,
+        Regions.LankyShip,
+        Regions.TinyShip,
+        Regions.BongosShip,
+        Regions.GuitarShip,
+        Regions.TromboneShip,
+        Regions.SaxophoneShip,
+        Regions.TriangleShip,
+    }
     # Continue doing searches until nothing new is found
     while len(newLocations) > 0 or eventAdded:
         # Add items and events from the last search iteration
@@ -274,6 +287,10 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType, purchaseLis
                             continue
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
                     if destination not in addedRegions and exit.logic(LogicVariables):
+                        # If water is lava, don't consider underwater locations in Galleon before having 3rd melon
+                        if LogicVariables.IsLavaWater() and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
+                            if destination in UnderwaterRegions and LogicVariables.Melons < 3:
+                                continue
                         # Check time of day
                         timeAccess = True
                         if exit.time == Time.Night and not region.nightAccess:

@@ -26,6 +26,7 @@ class Song:
         self.output_name = self.name
         self.memory = self.default_memory
 
+
 class SongExclusionItem:
     """Song Exclusion multiselector information."""
 
@@ -224,7 +225,6 @@ ExclSongsItems = [
     SongExclusionItem("Sub Areas", 5, "Sub-Areas will no longer play their song, meaning that there's 1 piece of music for the entire level."),
     # SongExclusionItem("Shops", 1, "COMING SOON: Makes shops inherit the previous song."), # TODO: Fix this
     # SongExclusionItem("Events", 2, "COMING SOON: Events will no longer play a song."), # TODO: Fix this
-
 ]
 for item in ExclSongsItems:
     if item.name != "No Group":
