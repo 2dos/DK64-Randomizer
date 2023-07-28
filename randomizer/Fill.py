@@ -126,6 +126,7 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType, purchaseLis
     UnderwaterRegions = {
         Regions.LighthouseUnderwater,
         Regions.ShipyardUnderwater,
+        Regions.TreasureRoom,
         Regions.MermaidRoom,
         Regions.Submarine,
         Regions.LankyShip,
@@ -290,7 +291,11 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType, purchaseLis
                         # If water is lava, don't consider underwater locations in Galleon before having 3rd melon
                         if LogicVariables.IsLavaWater() and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
                             if destination in UnderwaterRegions and LogicVariables.Melons < 3:
+                                print("SEAGULL GOOD")
                                 continue
+                        if LogicVariables.IsLavaWater() and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
+                            if destination in UnderwaterRegions and LogicVariables.Melons < 3:
+                                print("SEAGULL BAD")
                         # Check time of day
                         timeAccess = True
                         if exit.time == Time.Night and not region.nightAccess:
