@@ -17,6 +17,8 @@ from ui.rando_options import (
     disable_barrel_modal,
     disable_colors,
     disable_enemy_modal,
+    disable_hard_mode_modal,
+    disable_excluded_songs_modal,
     disable_helm_hurry,
     disable_helm_phases,
     disable_krool_phases,
@@ -123,6 +125,8 @@ def import_settings_string(event):
     item_rando_list_changed(None)
     toggle_item_rando(None)
     disable_enemy_modal(None)
+    disable_excluded_songs_modal(None)
+    disable_hard_mode_modal(None)
     toggle_bananaport_selector(None)
     disable_helm_hurry(None)
     toggle_logic_type(None)

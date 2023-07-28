@@ -178,6 +178,8 @@ def encrypt_settings_string_enum(dict_data: dict):
         "true_widescreen",
         "camera_is_not_inverted",
         "sound_type",
+        "songs_excluded",
+        "excluded_songs_selected",
     ]:
         if pop in dict_data:
             dict_data.pop(pop)

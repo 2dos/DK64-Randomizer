@@ -38,6 +38,148 @@ class HelmDoorImages:
         self.format = format
 
 
+turtle_models = [
+    1,  # Diddy
+    4,  # DK
+    6,  # Lanky
+    9,  # Tiny
+    0xC,  # Regular Chunky
+    0xE,  # Disco Chunky
+    0x11,  # Cranky
+    0x12,  # Funky
+    0x13,  # Candy
+    0x17,  # Seal
+    0x18,  # Enguarde
+    0x19,  # Beaver
+    0x1D,  # Squawks
+    0x21,  # Klaptrap Green
+    0x22,  # Klaptrap Purple
+    0x23,  # Klaptrap Red
+    0x24,  # Klaptrap Teeth
+    0x29,  # Sir Domino
+    0x2A,  # Mr Dice
+    0x2E,  # Beetle
+    0x30,  # N64 Logo
+    0x34,  # Mech Fish
+    0x35,  # Toy Car
+    0x3D,  # Fairy
+    0x43,  # Starfish
+    0x44,  # Gimpfish
+    0x46,  # Spider
+    0x47,  # Rabbit
+    0x49,  # K Rool
+    0x4B,  # Skeleton Head
+    0x4D,  # Vulture
+    0x4E,  # Racing Vulture
+    0x51,  # Tomato
+    0x53,  # Fly
+    0x59,  # Spotlight Fish
+    0x5A,  # Pufftup
+    0x60,  # Cuckoo Bird
+    0x62,  # Ice Tomato
+    0x64,  # Boombox
+    0x68,  # K Rool (Boxing)
+    0x70,  # Microbuffer
+    0x71,  # K Rool's Desk
+    0x72,  # Bell
+    0x76,  # Bonus Barrel
+    0x77,  # HC Barrel
+    0x78,  # MM Barrel
+    0x7D,  # TNT Barrel
+    0x89,  # RB Barrel
+    0x8A,  # SK Barrel
+    0x8B,  # OSS Barrel
+    0x90,  # BBB Slot
+    0x95,  # Tiny Car
+    0x99,  # Boulder
+    0x9F,  # Boat
+    0xB9,  # Potion
+    0xBA,  # AD Missile
+    0xC1,  # Tag Barrel
+    0xD2,  # Question Mark
+    0xDB,  # Krusha
+    0xE5,  # Banana Peel
+    0xE9,  # Butterfly
+    0xEB,  # Funky's Gun
+]
+
+panic_models = [
+    1,  # Diddy
+    4,  # DK
+    6,  # Lanky
+    9,  # Tiny
+    0xC,  # Regular Chunky
+    0xE,  # Disco Chunky
+    0x11,  # Cranky
+    0x12,  # Funky
+    0x13,  # Candy
+    0x17,  # Seal
+    0x18,  # Enguarde
+    0x19,  # Beaver
+    0x1D,  # Squawks
+    0x21,  # Klaptrap Green
+    0x22,  # Klaptrap Purple
+    0x23,  # Klaptrap Red
+    0x25,  # Mad Jack
+    0x27,  # Troff
+    0x29,  # Sir Domino
+    0x2A,  # Mr Dice
+    0x2C,  # Robo Kremling
+    0x2D,  # Scoff
+    0x2E,  # Beetle
+    0x30,  # N64 Logo
+    0x34,  # Mech Fish
+    0x35,  # Toy Car
+    0x3A,  # Klump
+    0x3C,  # Dogadon
+    0x3D,  # Fairy
+    0x3F,  # Guard
+    0x43,  # Starfish
+    0x44,  # Gimpfish
+    0x45,  # K Lumsy
+    0x46,  # Spider
+    0x47,  # Rabbit
+    0x48,  # Beanstalk
+    0x49,  # K Rool
+    0x4B,  # Skeleton Head
+    0x4D,  # Vulture
+    0x4E,  # Racing Vulture
+    0x52,  # Ghost
+    0x53,  # Fly
+    0x54,  # Fly Swatter
+    0x56,  # Owl
+    0x57,  # Book
+    0x59,  # Spotlight Fish
+    0x5A,  # Pufftup
+    0x5B,  # Mermaid
+    0x5C,  # Mushroom Man
+    0x5F,  # Worm
+    0x66,  # Escape Ship
+    0x68,  # K Rool (Boxing)
+    0x70,  # Microbuffer
+    0x76,  # Bonus Barrel
+    0x77,  # HC Barrel
+    0x78,  # MM Barrel
+    0x7D,  # TNT Barrel
+    0x89,  # RB Barrel
+    0x8A,  # SK Barrel
+    0x8B,  # OSS Barrel
+    0x95,  # Tiny Car
+    0x99,  # Boulder
+    0x9A,  # Vase
+    0x9B,  # Vase
+    0x9C,  # Vase
+    0x9D,  # Vase
+    0xBA,  # AD Missile
+    0xC1,  # Tag Barrel
+    0xD2,  # Question Mark
+    0xDB,  # Krusha
+    0xE3,  # Light
+    0xE5,  # Banana Peel
+    0xEB,  # Funky's Gun
+]
+
+
 def apply_cosmetic_colors(settings):
     """Apply cosmetic skins to kongs."""
     model_index = 0
@@ -102,6 +244,12 @@ def apply_cosmetic_colors(settings):
         ROM().seek(sav + 0x1B1)
         for channel in range(3):
             ROM().writeMultipleBytes(random.randint(0, 255), 1)
+        # TTT Model
+        ROM().seek(sav + 0x1B6)
+        ROM().writeMultipleBytes(random.choice(turtle_models), 1)
+        # PPP Model
+        ROM().seek(sav + 0x1B5)
+        ROM().writeMultipleBytes(random.choice(panic_models), 1)
     ROM().seek(sav + 0x136)
     ROM().writeMultipleBytes(model_index, 1)
     color_palettes = []

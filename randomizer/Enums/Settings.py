@@ -582,6 +582,7 @@ SettingsMap = {
     "dpad_display": DPadDisplays,
     "enemies_selected": Enemies,
     "enguarde_colors": CharacterColors,
+    "excluded_songs_selected": ExcludedSongs,
     "free_trade_setting": FreeTradeSetting,
     "glitches_selected": GlitchesSelected,
     "hard_mode_selected": HardModeSelected,
