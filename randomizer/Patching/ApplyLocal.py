@@ -132,8 +132,8 @@ async def patching_response(data, from_patch_gen=False):
                 ROM().write(prop.target)
 
         # Excluded Songs
-        if spoiler.settings.songs_excluded:
-            disabled_songs = spoiler.settings.excluded_songs_selected.copy()
+        if settings.songs_excluded:
+            disabled_songs = settings.excluded_songs_selected.copy()
             if len(disabled_songs) == 0:
                 for item in ExcludedSongsSelector:
                     disabled_songs.append(ExcludedSongs[item["value"]])

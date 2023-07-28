@@ -178,7 +178,6 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.cb_rando, 0x10B),  # Remove Rock Bunch
         BooleanProperties(spoiler.settings.wrinkly_location_rando or spoiler.settings.remove_wrinkly_puzzles, 0x11F),  # Wrinkly Rando
         BooleanProperties(spoiler.settings.helm_hurry, 0xAE),  # Helm Hurry
-        BooleanProperties(spoiler.settings.hard_enemies, 0x116),  # Hard Enemies
         BooleanProperties(spoiler.settings.wrinkly_available, 0x52),  # Remove Wrinkly Kong Checks
         BooleanProperties(spoiler.settings.bananaport_rando in (BananaportRando.crossmap_coupled, BananaportRando.crossmap_decoupled), 0x47),  # Parent Map Filter
         BooleanProperties(spoiler.settings.shop_indicator, 0x134, 2),  # Shop Indicator

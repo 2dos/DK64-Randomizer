@@ -7,12 +7,13 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels
+from randomizer.Enums.Settings import MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, HardModeSelected
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong
 from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, LocationList, SharedMoveLocations, TinyMoveLocations, TrainingBarrelLocations
 from randomizer.Lists.ShufflableExit import ShufflableExits
+from randomizer.Patching.Lib import IsItemSelected
 
 
 def PlaceConstants(settings):
@@ -108,6 +109,9 @@ def AllItems(settings):
         allItems.extend(TinyMoves)
         allItems.extend(ChunkyMoves)
         allItems.extend(ImportantSharedMoves)
+        if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava):
+            allItems.extend(JunkSharedMoves)
+        
         if settings.training_barrels == TrainingBarrels.shuffled:
             allItems.extend(TrainingBarrelAbilities().copy())
         if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
