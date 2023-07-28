@@ -42,6 +42,7 @@ async def initialize():
     from randomizer.Lists.Logic import GlitchSelector
     from randomizer.Lists.Minigame import MinigameSelector
     from randomizer.Lists.QoL import QoLSelector
+    from randomizer.Lists.HardMode import HardSelector
     from randomizer.Lists.Warps import VanillaBananaportSelector
 
     # Module of lists and utils used for plandomizer
@@ -78,6 +79,7 @@ async def initialize():
     rendered = await template.render(
         minigames=MinigameSelector,
         misc_changes=QoLSelector,
+        hard_mode=HardSelector,
         enemies=EnemySelector,
         itemRando=ItemRandoSelector,
         keys=KeySelector,

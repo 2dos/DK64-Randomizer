@@ -96,13 +96,12 @@ def generate_lo_rando_race_settings():
     data["no_healing"] = False
     data["no_melons"] = False
     data["hard_shooting"] = False
-    data["hard_bosses"] = False
     data["perma_death"] = False
     data["disable_tag_barrels"] = False
     data["hard_blockers"] = False  # likely to be False
     data["hard_troff_n_scoff"] = False  # likely to be False
     data["hard_level_progression"] = False  # likely to be False
-    data["hard_enemies"] = False
+    data["hard_mode"] = False
 
     data["damage_amount"] = DamageAmount.default
     data["crown_enemy_rando"] = CrownEnemyRando.easy

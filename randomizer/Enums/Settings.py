@@ -221,6 +221,20 @@ class HelmSetting(IntEnum):
     skip_all = 2
 
 
+class HardModeSelected(IntEnum):
+    """Various hard mode changes that can be applied.
+
+    These values are tied to the HardSelector in randomizer.Lists.HardMode. More
+    details on each can be found in that file.
+    """
+
+    hard_bosses = 1
+    extra_hard_bosses = 2
+    hard_enemies = 3
+    water_is_lava = 4
+    reduced_fall_damage_threshold = 5
+
+
 # TODO: merge this with the Types enum.
 class ItemRandoListSelected(IntEnum):
     """Item categories that may be randomized.
@@ -559,6 +573,7 @@ SettingsMap = {
     "enguarde_colors": CharacterColors,
     "free_trade_setting": FreeTradeSetting,
     "glitches_selected": GlitchesSelected,
+    "hard_mode_selected": HardModeSelected,
     "helm_barrels": MinigameBarrels,
     "helm_setting": HelmSetting,
     "item_rando_list_selected": ItemRandoListSelected,
@@ -732,6 +747,8 @@ class SettingsStringEnum(IntEnum):
     vanilla_door_rando = 131
     starting_moves_count = 132
     enable_plandomizer = 133
+    hard_mode_selected = 134
+    hard_mode = 135
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -739,6 +756,8 @@ class SettingsStringEnum(IntEnum):
 DeprecatedSettings = {
     # Example
     # SettingsStringEnum.cb_rando,
+    SettingsStringEnum.hard_bosses,
+    SettingsStringEnum.hard_enemies,
 }
 
 
@@ -810,6 +829,8 @@ SettingsStringTypeMap = {
     SettingsStringEnum.free_trade_setting: FreeTradeSetting,
     SettingsStringEnum.generate_spoilerlog: SettingsStringDataType.bool,
     SettingsStringEnum.glitches_selected: SettingsStringDataType.list,
+    SettingsStringEnum.hard_mode: SettingsStringDataType.bool,
+    SettingsStringEnum.hard_mode_selected: HardModeSelected,
     SettingsStringEnum.hard_blockers: SettingsStringDataType.bool,
     SettingsStringEnum.hard_bosses: SettingsStringDataType.bool,
     SettingsStringEnum.hard_enemies: SettingsStringDataType.bool,
@@ -915,6 +936,7 @@ SettingsStringListTypeMap = {
     SettingsStringEnum.misc_changes_selected: MiscChangesSelected,
     SettingsStringEnum.starting_keys_list_selected: Items,
     SettingsStringEnum.warp_level_list_selected: Maps,
+    SettingsStringEnum.hard_mode_selected: HardModeSelected,
 }
 
 # This map specifies the minimum and maximum values for numeric settings.

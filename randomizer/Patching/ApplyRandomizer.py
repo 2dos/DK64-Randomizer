@@ -3,11 +3,12 @@ import json
 import os
 import time
 from tempfile import mktemp
-from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, HelmDoorItem, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
+from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, HelmDoorItem, HardModeSelected, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.EnemyTypes import Enemies, EnemySelector
 from randomizer.Lists.QoL import QoLSelector
+from randomizer.Lists.HardMode import HardSelector
 from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
@@ -274,6 +275,21 @@ def patching_response(spoiler):
         for byte_data in write_data:
             ROM_COPY.writeMultipleBytes(byte_data, 1)
 
+    # Hard Mode
+    if spoiler.settings.hard_mode:
+        enabled_hard = spoiler.settings.hard_mode_selected.copy()
+        if len(enabled_hard) == 0:
+            for item in HardSelector:
+                enabled_hard.append(HardModeSelected[item["value"]])
+        write_data = [0]
+        for item in HardSelector:
+            if HardModeSelected[item["value"]] in enabled_hard and item["shift"] >= 0:
+                offset = int(item["shift"] >> 3)
+                check = int(item["shift"] % 8)
+                write_data[offset] |= 0x80 >> check
+        ROM_COPY.seek(sav + 0x0C6)
+        ROM_COPY.writeMultipleBytes(write_data[0], 1)
+
     # Damage amount
     damage_multipliers = {
         DamageAmount.default: 1,
@@ -328,7 +344,7 @@ def patching_response(spoiler):
         else:
             spoiler.text_changes[8] = [data]
 
-    if spoiler.settings.hard_bosses:
+    if HardModeSelected.hard_bosses in spoiler.settings.hard_mode_selected:
         # KKO Phase Order
         for phase_slot in range(3):
             ROM_COPY.seek(sav + 0x17B + phase_slot)

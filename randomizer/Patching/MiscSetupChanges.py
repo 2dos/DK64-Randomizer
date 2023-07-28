@@ -5,7 +5,7 @@ import random
 import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Settings import DamageAmount, MiscChangesSelected
+from randomizer.Enums.Settings import DamageAmount, MiscChangesSelected, HardModeSelected
 from randomizer.Lists.MapsAndExits import LevelMapTable, Maps
 from randomizer.Lists.Patches import DirtPatchLocations
 from randomizer.Patching.Lib import float_to_hex
@@ -146,7 +146,8 @@ def randomize_setup(spoiler):
         spoiler.settings.randomize_pickups,
         spoiler.settings.random_patches,
         spoiler.settings.puzzle_rando,
-        spoiler.settings.hard_bosses,
+        HardModeSelected.extra_hard_bosses in spoiler.settings.hard_mode_selected,  # Pufftoss Stars Raised
+        HardModeSelected.hard_bosses in spoiler.settings.hard_mode_selected,  # Pufftoss Stars Shuffled
         spoiler.settings.high_req,
         MiscChangesSelected.raise_fungi_dirt_patch in spoiler.settings.misc_changes_selected,
     ]
@@ -232,7 +233,9 @@ def randomize_setup(spoiler):
                         ROM_COPY.seek(item_start + 0x1C)
                         ry = int.from_bytes(ROM_COPY.readBytes(4), "big")
                         positions.append([x, y, z, ry])
-                elif item_type == 0x235 and ((cont_map_id == Maps.GalleonBoss and spoiler.settings.hard_bosses) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando)):
+                elif item_type == 0x235 and (
+                    (cont_map_id == Maps.GalleonBoss and HardModeSelected.hard_bosses in spoiler.settings.hard_mode_selected) or (cont_map_id == Maps.HideoutHelm and spoiler.settings.puzzle_rando)
+                ):
                     if cont_map_id == Maps.HideoutHelm:
                         y_position = random.uniform(-131, 500)
                         star_donut_center = [1055.704, 3446.966]
@@ -304,6 +307,10 @@ def randomize_setup(spoiler):
                     ROM_COPY.seek(item_start + 8)
                     ROM_COPY.writeMultipleBytes(int(float_to_hex(spawner_pos[1]), 16), 4)
                     chunky_5dc_pads["index"] += 1
+                # Regular if because it can be combined with regular hard bosses
+                if item_type == 0x235 and cont_map_id == Maps.GalleonBoss and HardModeSelected.extra_hard_bosses in spoiler.settings.hard_mode_selected:
+                    ROM_COPY.seek(item_start + 4)
+                    ROM_COPY.writeMultipleBytes(int(float_to_hex(345), 16), 4)
 
             if spoiler.settings.puzzle_rando:
                 if len(positions) > 0 and len(offsets) > 0:

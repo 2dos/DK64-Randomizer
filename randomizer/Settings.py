@@ -317,8 +317,8 @@ class Settings:
         # hard_shooting: bool
         self.hard_shooting = False
 
-        # hard_bosses: bool
-        self.hard_bosses = False
+        # hard_mode: bool
+        self.hard_mode = None
 
         # damage multiplier: DamageAmount
         self.damage_amount = DamageAmount.default
@@ -445,13 +445,13 @@ class Settings:
         self.hard_level_progression = False
         self.hard_blockers = False
         self.hard_troff_n_scoff = False
-        self.hard_enemies = False
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
         self.vanilla_door_rando = False
         self.minigames_list_selected = []
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
+        self.hard_mode_selected = []
         self.enemies_selected = []
         self.glitches_selected = []
         self.starting_keys_list_selected = []

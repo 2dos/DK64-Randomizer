@@ -26,7 +26,18 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions as RegionEnum
-from randomizer.Enums.Settings import ActivateAllBananaports, DamageAmount, GlitchesSelected, HelmDoorItem, LogicType, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
+from randomizer.Enums.Settings import (
+    ActivateAllBananaports,
+    DamageAmount,
+    GlitchesSelected,
+    HardModeSelected,
+    HelmDoorItem,
+    LogicType,
+    ShockwaveStatus,
+    ShuffleLoadingZones,
+    TrainingBarrels,
+    WinCondition,
+)
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
@@ -173,6 +184,7 @@ class LogicVarHolder:
         self.Slam = STARTING_SLAM
         self.AmmoBelts = 0
         self.InstUpgrades = 0
+        self.Melons = 0
 
         self.GoldenBananas = 0
         self.BananaFairies = 0
@@ -369,6 +381,11 @@ class LogicVarHolder:
             self.Slam = STARTING_SLAM
         self.AmmoBelts = sum(1 for x in ownedItems if x == Items.ProgressiveAmmoBelt)
         self.InstUpgrades = sum(1 for x in ownedItems if x == Items.ProgressiveInstrumentUpgrade)
+        self.Melons = 1
+        if self.bongos or self.guitar or self.trombone or self.saxophone or self.triangle or self.InstUpgrades > 0:
+            self.Melons = 2
+        if self.InstUpgrades >= 2:
+            self.Melons = 3
 
         self.GoldenBananas = sum(1 for x in ownedItems if x == Items.GoldenBanana)
         self.BananaFairies = sum(1 for x in ownedItems if x == Items.BananaFairy)
@@ -414,6 +431,10 @@ class LogicVarHolder:
         elif slam_req == 3:
             return self.superDuperSlam
         return self.Slam
+
+    def IsLavaWater(self) -> bool:
+        """Determine whether the water is lava water or not."""
+        return HardModeSelected.water_is_lava in self.settings.hard_mode_selected
 
     def CanPhaseswim(self):
         """Determine whether the player can perform phase swim."""
@@ -775,12 +796,14 @@ class LogicVarHolder:
         bossFight = self.settings.boss_maps[level]
         # Ensure we have the required moves for the boss fight itself
         hasRequiredMoves = True
-        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not (self.settings.hard_bosses and self.settings.krusha_kong != Kongs.tiny):
+        if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not (HardModeSelected.hard_bosses in self.settings.hard_mode_selected and self.settings.krusha_kong != Kongs.tiny):
             hasRequiredMoves = self.twirl
         elif bossFight == Maps.FungiBoss:
             hasRequiredMoves = self.hunkyChunky and self.barrels
         elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
             hasRequiredMoves = self.barrels
+        elif bossFight == Maps.CastleBoss and self.IsLavaWater():
+            hasRequiredMoves = self.Melons >= 3
         # In simple level order, there are a couple very specific cases we have to account for in order to prevent boss fill failures
         level_order_matters = not self.settings.hard_level_progression and self.settings.shuffle_loading_zones in (ShuffleLoadingZones.none, ShuffleLoadingZones.levels)
         if level_order_matters and not self.assumeFillSuccess:  # These conditions only matter on fill, not on playthrough
@@ -790,7 +813,9 @@ class LogicVarHolder:
                     order_of_level = level_order
             if order_of_level == 4 and not self.barrels:  # Prevent Barrels on boss 3
                 return False
-            if order_of_level == 7 and (not self.hunkyChunky or (not self.twirl and not self.settings.hard_bosses)):  # Prevent Hunky on boss 7, and also Twirl on non-hard bosses
+            if order_of_level == 7 and (
+                not self.hunkyChunky or (not self.twirl and HardModeSelected.hard_bosses not in self.settings.hard_mode_selected)
+            ):  # Prevent Hunky on boss 7, and also Twirl on non-hard bosses
                 return False
         return self.IsKong(requiredKong) and hasRequiredMoves
 
@@ -821,10 +846,10 @@ class LogicVarHolder:
                 if not self.swim or not self.barrels or not self.vines:
                     return False
                 # Require one of twirl or hunky chunky by level 7 to prevent non-hard-boss fill failures
-                if not self.settings.hard_bosses and order_of_level >= 7 and not (self.twirl or self.hunkyChunky):
+                if HardModeSelected.hard_bosses not in self.settings.hard_mode_selected and order_of_level >= 7 and not (self.twirl or self.hunkyChunky):
                     return False
                 # Require both hunky chunky and twirl (or hard bosses) before Helm to prevent boss fill failures
-                if order_of_level > 7 and not (self.hunkyChunky and (self.twirl or self.settings.hard_bosses)):
+                if order_of_level > 7 and not (self.hunkyChunky and (self.twirl or HardModeSelected.hard_bosses in self.settings.hard_mode_selected)):
                     return False
             # Make sure we have access to all prior required keys before entering the next level - this prevents keys from being placed in levels beyond what they unlock
             if order_of_level > 1 and not self.JapesKey:

@@ -12,7 +12,19 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import BananaportRando, GlitchesSelected, HelmDoorItem, LogicType, MinigameBarrels, RandomPrices, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, WinCondition
+from randomizer.Enums.Settings import (
+    BananaportRando,
+    GlitchesSelected,
+    HardModeSelected,
+    HelmDoorItem,
+    LogicType,
+    MinigameBarrels,
+    RandomPrices,
+    ShockwaveStatus,
+    ShuffleLoadingZones,
+    TrainingBarrels,
+    WinCondition,
+)
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
@@ -150,7 +162,6 @@ class Spoiler:
         settings["Auto Complete Bonus Barrels"] = self.settings.bonus_barrel_auto_complete
         settings["Complex Level Order"] = self.settings.hard_level_progression
         settings["Progressive Switch Strength"] = self.settings.alter_switch_allocation
-        settings["Hard Bosses"] = self.settings.hard_bosses
         settings["Hard Shooting"] = self.settings.hard_shooting
         settings["Free Trade Agreement"] = self.settings.free_trade_setting.name
         settings["Randomize Pickups"] = self.settings.randomize_pickups
@@ -471,7 +482,7 @@ class Spoiler:
                 kutout_order = kutout_order + Kongs(kong).name.capitalize() + ", "
             humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Kong Order"] = kutout_order
 
-        if self.settings.hard_bosses:
+        if HardModeSelected.hard_bosses in self.settings.hard_mode_selected:
             phase_names = []
             for phase in self.settings.kko_phase_order:
                 phase_names.append(f"Phase {phase+1}")

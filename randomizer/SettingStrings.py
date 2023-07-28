@@ -108,6 +108,7 @@ settingsExclusionMap = {
     "logic_type": {LogicType.glitchless: ["glitches_selected"], LogicType.nologic: ["glitches_selected"]},
     "select_keys": {False: ["starting_keys_list_selected"], True: ["krool_key_count"]},
     "quality_of_life": {False: ["misc_changes_selected"]},
+    "hard_mode": {False: ["hard_mode_selected"]}
 }
 
 
