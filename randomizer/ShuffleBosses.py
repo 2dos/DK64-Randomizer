@@ -10,6 +10,7 @@ from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillExcepti
 from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Settings import HardModeSelected
+from randomizer.Patching.Lib import IsItemSelected
 
 BossMapList = [Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss]
 
@@ -21,6 +22,10 @@ def ShuffleBosses(boss_location_rando: bool):
         random.shuffle(boss_maps)
     return boss_maps
 
+
+def HardBossesEnabled(settings) -> bool:
+    """Return whether the hard bosses setting is on."""
+    return IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.hard_bosses)
 
 def ShuffleBossKongs(settings):
     """Shuffle the kongs required for the bosses."""
@@ -38,7 +43,7 @@ def ShuffleBossKongs(settings):
     for level in range(7):
         boss_map = settings.boss_maps[level]
         if settings.boss_kong_rando:
-            kong = SelectRandomKongForBoss(boss_map, HardModeSelected.hard_bosses in settings.hard_mode_selected)
+            kong = SelectRandomKongForBoss(boss_map, HardBossesEnabled(settings))
         else:
             kong = vanillaBossKongs[boss_map]
         boss_kongs.append(kong)
@@ -108,7 +113,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         # Then find levels we can place Mad jack (next most restrictive)
         # Then find levels we can place Mad jack (next most restrictive)
         factoryBossOptions = [x for x in bossLevelOptions if Kongs.tiny in ownedKongs[x] and Items.PonyTailTwirl in ownedMoves[x]]
-        if HardModeSelected.hard_bosses in settings.hard_mode_selected:
+        if HardBossesEnabled(settings):
             if settings.krusha_kong != Kongs.donkey:
                 factoryBossOptions.extend([x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x]])
             if settings.krusha_kong != Kongs.chunky:
@@ -125,7 +130,7 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
                 factoryBossOptions.remove(forestBossIndex)
         # Otherwise place Factory first
         bossTryingToBePlaced = "Mad Jack"
-        if HardModeSelected.hard_bosses in settings.hard_mode_selected:
+        if HardBossesEnabled(settings):
             factoryBossIndex = random.choice(factoryBossOptions)
             factoryBossKongOptions = set(ownedKongs[factoryBossIndex]).intersection({Kongs.donkey, Kongs.chunky})
             if Kongs.tiny in ownedKongs[factoryBossIndex] and Items.PonyTailTwirl in ownedMoves[factoryBossIndex]:

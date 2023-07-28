@@ -44,6 +44,7 @@ async def initialize():
     from randomizer.Lists.QoL import QoLSelector
     from randomizer.Lists.HardMode import HardSelector
     from randomizer.Lists.Warps import VanillaBananaportSelector
+    from randomizer.Lists.Songs import ExcludedSongsSelector
 
     # Module of lists and utils used for plandomizer
     from randomizer.PlandoUtils import PlandoItemFilter, PlandoMinigameFilter, PlandoOptionClassAnnotation, PlandoShopSortFilter
@@ -81,6 +82,7 @@ async def initialize():
         misc_changes=QoLSelector,
         hard_mode=HardSelector,
         enemies=EnemySelector,
+        excluded_songs=ExcludedSongsSelector,
         itemRando=ItemRandoSelector,
         keys=KeySelector,
         glitches=GlitchSelector,

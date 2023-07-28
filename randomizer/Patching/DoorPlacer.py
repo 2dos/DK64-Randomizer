@@ -6,7 +6,7 @@ from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Enums.Settings import MiscChangesSelected
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Patching.Lib import addNewScript, float_to_hex, getNextFreeID
+from randomizer.Patching.Lib import addNewScript, float_to_hex, getNextFreeID, IsItemSelected
 from randomizer.Patching.Patcher import ROM, LocalROM
 
 
@@ -118,7 +118,7 @@ def place_door_locations(spoiler):
                     if door.map == cont_map_id:
                         if door_type == "wrinkly" and (
                             spoiler.settings.wrinkly_location_rando
-                            or (MiscChangesSelected.remove_wrinkly_puzzles in spoiler.settings.misc_changes_selected or len(spoiler.settings.misc_changes_selected) == 0)
+                            or IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles)
                         ):
                             kong = data[2]
                             item_data = []

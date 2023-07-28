@@ -113,6 +113,16 @@ class DPadDisplays(IntEnum):
     on = 1
     minimal = 2
 
+class ExcludedSongs(IntEnum):
+    """Determines the types of songs excluded."""
+
+    wrinkly = 1
+    transformation = 2
+    pause_music = 3
+    sub_areas = 4
+    # shops = 5
+    # events = 6
+
 
 class FillAlgorithm(IntEnum):
     """The algorithm used for placing items.

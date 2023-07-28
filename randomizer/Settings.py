@@ -43,6 +43,7 @@ from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import LocationLogic
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
+from randomizer.Patching.Lib import IsItemSelected
 from version import whl_hash
 
 
@@ -452,6 +453,8 @@ class Settings:
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
         self.hard_mode_selected = []
+        self.songs_excluded = False
+        self.excluded_songs_selected = []
         self.enemies_selected = []
         self.glitches_selected = []
         self.starting_keys_list_selected = []
@@ -965,7 +968,7 @@ class Settings:
         self.free_trade_items = self.free_trade_setting != FreeTradeSetting.none
         self.free_trade_blueprints = self.free_trade_setting == FreeTradeSetting.major_collectibles
 
-        if MiscChangesSelected.remove_wrinkly_puzzles in self.misc_changes_selected or len(self.misc_changes_selected) == 0:
+        if IsItemSelected(self.quality_of_life, self.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles):
             self.remove_wrinkly_puzzles = True
 
         if self.fast_gbs:

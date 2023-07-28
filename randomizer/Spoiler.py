@@ -35,6 +35,7 @@ from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, Min
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
 from randomizer.ShuffleExits import ShufflableExits
+from randomizer.ShuffleBosses import HardBossesEnabled
 
 
 class Spoiler:
@@ -482,7 +483,7 @@ class Spoiler:
                 kutout_order = kutout_order + Kongs(kong).name.capitalize() + ", "
             humanspoiler["Bosses"]["King Kut Out Properties"]["Shuffled Kutout Kong Order"] = kutout_order
 
-        if HardModeSelected.hard_bosses in self.settings.hard_mode_selected:
+        if HardBossesEnabled(self.settings):
             phase_names = []
             for phase in self.settings.kko_phase_order:
                 phase_names.append(f"Phase {phase+1}")

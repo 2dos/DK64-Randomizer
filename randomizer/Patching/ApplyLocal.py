@@ -14,6 +14,8 @@ from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolid
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
+from randomizer.Enums.Settings import ExcludedSongs
+from randomizer.Lists.Songs import ExcludedSongsSelector
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -128,6 +130,21 @@ async def patching_response(data, from_patch_gen=False):
             if prop.check:
                 ROM().seek(sav + prop.offset)
                 ROM().write(prop.target)
+
+        # Excluded Songs
+        if spoiler.settings.songs_excluded:
+            disabled_songs = spoiler.settings.excluded_songs_selected.copy()
+            if len(disabled_songs) == 0:
+                for item in ExcludedSongsSelector:
+                    disabled_songs.append(ExcludedSongs[item["value"]])
+            write_data = [0]
+            for item in ExcludedSongsSelector:
+                if ExcludedSongs[item["value"]] in disabled_songs and item["shift"] >= 0:
+                    offset = int(item["shift"] >> 3)
+                    check = int(item["shift"] % 8)
+                    write_data[offset] |= 0x80 >> check
+            ROM().seek(sav + 0x1B7)
+            ROM().writeMultipleBytes(write_data[0], 1)
 
         if settings.true_widescreen:
             ROM().seek(sav + 0x1B4)
