@@ -21,7 +21,7 @@ def background(body):
             branch = "master"
             url = "https://generate.dk64rando.com/generate"
         else:
-            url = "https://generate.dk64rando.com/generate"
+            url = "https://dev-generate.dk64rando.com/generate"
     else:
         url = "http://" + str(js.window.location.hostname) + ":5000/generate"
         branch = "dev"
