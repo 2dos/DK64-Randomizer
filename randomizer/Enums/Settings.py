@@ -842,7 +842,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.generate_spoilerlog: SettingsStringDataType.bool,
     SettingsStringEnum.glitches_selected: SettingsStringDataType.list,
     SettingsStringEnum.hard_mode: SettingsStringDataType.bool,
-    SettingsStringEnum.hard_mode_selected: HardModeSelected,
+    SettingsStringEnum.hard_mode_selected: SettingsStringDataType.list,
     SettingsStringEnum.hard_blockers: SettingsStringDataType.bool,
     SettingsStringEnum.hard_bosses: SettingsStringDataType.bool,
     SettingsStringEnum.hard_enemies: SettingsStringDataType.bool,
