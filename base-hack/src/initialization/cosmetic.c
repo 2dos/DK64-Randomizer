@@ -175,7 +175,14 @@ void initSkyboxRando(void) {
      * @brief Initialize the skybox cosmetic randomization
      * 
      */
-    if (Rando.misc_cosmetic_on) {
+    if (Rando.colorblind_mode != COLORBLIND_OFF) {
+        for (int i = 0; i < 8; i++) {
+            Rando.skybox_colors[i].red = 0x31;
+            Rando.skybox_colors[i].green = 0x33;
+            Rando.skybox_colors[i].blue = 0x38;
+        }
+    }
+    if ((Rando.misc_cosmetic_on) || (Rando.colorblind_mode != COLORBLIND_OFF)) {
         for (int i = 0; i < 8; i++) {
             SkyboxBlends[i].top.red = Rando.skybox_colors[i].red;
             SkyboxBlends[i].top.green = Rando.skybox_colors[i].green;
