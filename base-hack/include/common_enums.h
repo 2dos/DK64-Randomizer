@@ -700,3 +700,9 @@ typedef enum song_types {
 	/* 0x002 */ SONGTYPE_MAJORITEM,
 	/* 0x003 */ SONGTYPE_MINORITEM,
 } song_types;
+
+typedef enum cs_skip_types {
+	/* 0x000 */ CSSKIP_OFF,
+	/* 0x001 */ CSSKIP_PRESS,
+	/* 0x002 */ CSSKIP_AUTO,
+} cs_skip_types;

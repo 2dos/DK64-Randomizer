@@ -125,6 +125,22 @@ class ExcludedSongs(IntEnum):
     # events = 6
 
 
+class ExtraCutsceneSkips(IntEnum):
+    """Controls how extra cutscenes are handled.
+
+    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
+    change these enum values or seed generation will break.
+
+    off: Extra Cutscenes can't be skipped.
+    press: Cutscenes can be skipped by pressing start.
+    auto: Cutscenes are skipped automatically.
+    """
+
+    off = 0
+    press = 1
+    auto = 2
+
+
 class FillAlgorithm(IntEnum):
     """The algorithm used for placing items.
 
@@ -598,6 +614,7 @@ SettingsMap = {
     "microhints_enabled": MicrohintsEnabled,
     "minigames_list_selected": MinigamesListSelected,
     "misc_changes_selected": MiscChangesSelected,
+    "more_cutscene_skips": ExtraCutsceneSkips,
     "move_rando": MoveRando,
     "rambi_colors": CharacterColors,
     "random_prices": RandomPrices,
@@ -761,6 +778,7 @@ class SettingsStringEnum(IntEnum):
     enable_plandomizer = 133
     hard_mode_selected = 134
     hard_mode = 135
+    more_cutscene_skips = 136
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -890,6 +908,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.microhints_enabled: MicrohintsEnabled,
     SettingsStringEnum.minigames_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.misc_changes_selected: SettingsStringDataType.list,
+    SettingsStringEnum.more_cutscene_skips: ExtraCutsceneSkips,
     SettingsStringEnum.move_rando: MoveRando,
     SettingsStringEnum.no_healing: SettingsStringDataType.bool,
     SettingsStringEnum.no_melons: SettingsStringDataType.bool,

@@ -52,19 +52,12 @@ void initQoL_Cutscenes(void) {
      * - Removing the 30s cutscene for freeing the Vulture in Angry Aztec
      * - Adding cutscenes for Item Rando back in if deemed important enough
      */
-    if (Rando.quality_of_life.remove_cutscenes) {
-        // K. Lumsy
-        *(short*)(0x80750680) = MAP_ISLES;
-        *(short*)(0x80750682) = 0x1;
-        *(int*)(0x806BDC24) = 0x0C17FCDE; // Change takeoff warp func
-        *(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
-        *(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
-        // Fast Vulture
-        writeFunction(0x806C50BC, &clearVultureCutscene); // Modify Function Call
-        // General
-        writeFunction(0x80628508, &renderScreenTransitionCheck); // Remove transition effects if skipped cutscene
-        // Speedy T&S Turn-Ins
-        *(int*)(0x806BE3E0) = 0; // NOP
+    if (Rando.cutscene_skip_setting == CSSKIP_OFF) {
+        // Clear the cutscene skip database
+        for (int i = 0; i < 432; i++) {
+            cs_skip_db[i] = 0;
+        }
+    } else {
         if (Rando.item_rando) {
             int cs_unskip[] = {
                 MAP_FACTORY, 2,
@@ -88,11 +81,22 @@ void initQoL_Cutscenes(void) {
                 cs_skip_db[(2 * cs_map) + cs_offset] &= comp;
             }
         }
-    } else {
-        // Clear the cutscene skip database
-        for (int i = 0; i < 432; i++) {
-            cs_skip_db[i] = 0;
+        writeFunction(0x80628508, &renderScreenTransitionCheck); // Remove transition effects if skipped cutscene
+        if (Rando.cutscene_skip_setting == CSSKIP_PRESS) {
+            writeFunction(0x8061DD80, &pressSkipHandler); // Handler for press start to skip
         }
+    }
+    if (Rando.quality_of_life.remove_cutscenes) {
+        // K. Lumsy
+        *(short*)(0x80750680) = MAP_ISLES;
+        *(short*)(0x80750682) = 0x1;
+        *(int*)(0x806BDC24) = 0x0C17FCDE; // Change takeoff warp func
+        *(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
+        *(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
+        // Fast Vulture
+        writeFunction(0x806C50BC, &clearVultureCutscene); // Modify Function Call
+        // Speedy T&S Turn-Ins
+        *(int*)(0x806BE3E0) = 0; // NOP
     }
 }
 

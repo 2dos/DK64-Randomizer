@@ -99,6 +99,10 @@ HomingHUDHandle:
         or $a1, $zero, $zero
 
 SkipCutscenePans:
+    lui $t1, hi(enable_skip_check)
+    lbu $t1, lo(enable_skip_check) ($t1)
+    beqz $t1, SkipCutscenePans_Persist
+    nop
     lui $t1, hi(CutsceneActive)
     addiu v0, $zero, 1
     lbu $t1, lo(CutsceneActive) ($t1)
@@ -157,6 +161,10 @@ SkipCutscenePans:
         nop
 
 PlayCutsceneVelocity:
+    lui $t1, hi(enable_skip_check)
+    lbu $t1, lo(enable_skip_check) ($t1)
+    beqz $t1, PlayCutsceneVelocity_Finish
+    nop
     lui $t9, hi(CutsceneStateBitfield)
     lhu $t9, lo(CutsceneStateBitfield) ($t9)
     andi $t9, $t9, 4

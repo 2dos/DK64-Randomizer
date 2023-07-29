@@ -372,6 +372,7 @@ extern int getTrackChannel(int song);
 extern void handleTextScrolling(void* menu_aad, float x1, float y1, float* x2, float* y2, int unk0, int unk1, float unk2);
 
 extern void handlePoleGrabbing(void* actor, int player_index, int allow_vines);
+extern void unkCutsceneFunction(void* actor);
 
 //vanilla data
 extern float TransitionSpeed;

@@ -15,7 +15,7 @@ from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando,
                                        MicrohintsEnabled, MoveRando,
                                        RandomPrices, SettingsMap,
                                        ShockwaveStatus, TrainingBarrels,
-                                       WinCondition, WrinklyHints)
+                                       WinCondition, WrinklyHints, ExtraCutsceneSkips)
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
 from randomizer.SettingStrings import decrypt_settings_string_enum
@@ -173,6 +173,7 @@ def generate_lo_rando_race_settings():
     data["wrinkly_hints"] = WrinklyHints.standard
     data["helm_setting"] = HelmSetting.skip_start
     data["microhints_enabled"] = MicrohintsEnabled.base  # off/base/all
+    data["more_cutscene_skips"] = ExtraCutsceneSkips.auto
 
     # Other
     data["fps_display"] = False

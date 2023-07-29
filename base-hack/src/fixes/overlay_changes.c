@@ -531,7 +531,7 @@ void parseCutsceneData(void) {
 		int phase = CurrentMap - MAP_KROOLDK;
 		initKRool(phase);
 	}
-	if (Rando.quality_of_life.remove_cutscenes) {
+	if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 		updateSkippableCutscenes();
 	}
 	if (Rando.quality_of_life.fast_hints) {

@@ -93,7 +93,7 @@ typedef struct varspace {
 	/* 0x113 */ unsigned char any_kong_items; // Bitfield 0000 00ba. a = All items except blueprints disabling kong check. b = Blueprints disable kong check.
 	/* 0x114 */ unsigned char unk114;
 	/* 0x115 */ unsigned char unk115;
-	/* 0x116 */ char unk116;
+	/* 0x116 */ char cutscene_skip_setting; // 0 = Off, 1 = On Button Press, 2 = Automatic
 	/* 0x117 */ unsigned char enabled_pkmnsnap_enemies[5]; // Bitfield
 	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
 	/* 0x11D */ unsigned char win_condition; // See vars.h for enum

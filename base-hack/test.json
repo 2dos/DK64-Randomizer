@@ -28,6 +28,7 @@
    "true_widescreen":1,
    "pppanic_fairy_model":73,
    "tttrouble_turtle_model":60,
+   "cutscene_skip_setting":1,
    "quality_of_life":{
       "reduce_lag":true,
       "remove_cutscenes":true,

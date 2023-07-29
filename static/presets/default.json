@@ -86,6 +86,7 @@
     "microhints_enabled": "all",
     "minigames_list_selected": [],
     "misc_changes_selected": [],
+    "more_cutscene_skips": "auto",
     "move_rando": "on",
     "no_healing": false,
     "no_melons": false,

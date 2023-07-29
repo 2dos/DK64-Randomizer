@@ -304,6 +304,11 @@ def patching_response(spoiler):
     # The MicrohintsEnabled enum is indexed to allow this.
     ROM_COPY.write(int(spoiler.settings.microhints_enabled))
 
+    # Cutscene Skip Setting
+    ROM_COPY.seek(sav + 0x116)
+    # The MicrohintsEnabled enum is indexed to allow this.
+    ROM_COPY.write(int(spoiler.settings.more_cutscene_skips))
+
     # Helm Hurry
 
     helm_hurry_bonuses = [

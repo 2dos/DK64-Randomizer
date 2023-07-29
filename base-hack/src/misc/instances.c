@@ -1908,7 +1908,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						}
 
 						//play grape switch cutscene
-						if(!Rando.quality_of_life.remove_cutscenes){
+						if (!Rando.quality_of_life.remove_cutscenes) {
 							PlayCutsceneFromModelTwoScript(behaviour_pointer, 0, 1, 0);
 							behaviour_pointer->timer = 110;
 						}

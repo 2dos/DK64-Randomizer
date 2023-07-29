@@ -59,6 +59,7 @@ void fixMusicRando(void) {
 				songVolumes[i] = volume;
 			}
 		}
+		*(short*)(0x806CA97E) = 0x560 | ((songData[0x6B] >> 1) & 3); // Baboon Balloon
 		complex_free(write_space);
 		complex_free(write_space_0);
 	}

@@ -61,6 +61,10 @@ void cFuncLoop(void) {
 	if (tag_locked) {
 		tag_locked = 0;
 	}
+	if (Rando.cutscene_skip_setting == CSSKIP_PRESS) {
+		clearSkipCache();
+	}
+	updateSkipCheck();
 	if (Rando.item_rando) {
 		if (TransitionSpeed > 0) {
 			if (LZFadeoutProgress == 30.0f) {

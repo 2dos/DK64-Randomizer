@@ -474,6 +474,7 @@ class Settings:
         self.switch_allocation = [1, 1, 1, 1, 2, 2, 3]
         self.item_reward_previews = False
         self.microhints_enabled = MicrohintsEnabled.off
+        self.more_cutscene_skips = ExtraCutsceneSkips.off
         self.portal_numbers = False
         # Helm Hurry
         self.helmhurry_list_starting_time = 1200
