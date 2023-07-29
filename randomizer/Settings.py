@@ -426,6 +426,7 @@ class Settings:
         self.kong_rando = False
         self.kongs_for_progression = False
         self.wrinkly_hints = WrinklyHints.off
+        self.full_level_hints = False
         self.fast_warps = False
         self.dpad_display = DPadDisplays.off
         self.high_req = False
