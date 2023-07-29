@@ -200,6 +200,7 @@ banned_enemy_maps = {
 }
 ENABLE_BBBARRAGE_ENEMY_RANDO = False
 
+
 def resetPkmnSnap():
     """Reset Pokemon Snap Listing."""
     for enemy in pkmn_snap_enemies:
@@ -461,16 +462,14 @@ def randomize_enemies_0(spoiler):
         map = enemy_location_list[loc].map
         if map not in data:
             data[map] = []
-        data[map].append({
-            "enemy": new_enemy,
-            "speeds": [enemy_location_list[loc].idle_speed, enemy_location_list[loc].aggro_speed],
-            "id": enemy_location_list[loc].id,
-            "location": EnemyLocations(loc).name
-        })
+        data[map].append(
+            {"enemy": new_enemy, "speeds": [enemy_location_list[loc].idle_speed, enemy_location_list[loc].aggro_speed], "id": enemy_location_list[loc].id, "location": EnemyLocations(loc).name}
+        )
     spoiler.enemy_rando_data = data
     for enemy in pkmn_snap_enemies:
         pkmn.append(enemy.spawned)
     spoiler.pkmn_snap_data = pkmn
+
 
 def randomize_enemies(spoiler):
     """Write replaced enemies to ROM."""
@@ -569,7 +568,7 @@ def randomize_enemies(spoiler):
                             referenced_spawner = spawner
                             break
                     if referenced_spawner is not None:
-                        writeEnemy(spoiler, cont_map_spawner_address, enemy["enemy"], referenced_spawner, cont_map_id, 0)                                   
+                        writeEnemy(spoiler, cont_map_spawner_address, enemy["enemy"], referenced_spawner, cont_map_id, 0)
             if spoiler.settings.enemy_rando and cont_map_id in minigame_maps_total:
                 tied_enemy_list = []
                 if cont_map_id in minigame_maps_easy:
