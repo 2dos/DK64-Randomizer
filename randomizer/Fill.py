@@ -2632,6 +2632,7 @@ def ShuffleMisc(spoiler):
     spoiler.UpdateKasplats(LogicVariables.kasplat_map)
     # Enemy Rando
     spoiler.enemy_rando_data = {}
+    spoiler.pkmn_snap_data = []
     if spoiler.settings.enemy_rando:
         randomize_enemies_0(spoiler)
     # Handle bonus barrels

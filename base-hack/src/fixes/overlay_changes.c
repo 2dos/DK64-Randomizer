@@ -384,14 +384,18 @@ void overlay_changes(void) {
 		if ((Rando.microhints != MICROHINTS_NONE) && (MovesBase[0].simian_slam < 2)) {
 			*(short*)(0x800359A8) = 14; // Microhint Cutscene
 		}
-		writeFunction(0x80031524, &applyDamageMask);
+		if (DAMAGE_MASKING) {
+			writeFunction(0x80031524, &applyDamageMask);
+		}
 	}
 	if (inBattleCrown(CurrentMap)) {
 		// Change crown spawn
 		if (Rando.item_rando) {
 			writeFunction(0x8002501C, &spawnCrownReward); // Crown Spawn
 		}
-		writeFunction(0x80025058, &applyDamageMask);
+		if (DAMAGE_MASKING) {
+			writeFunction(0x80025058, &applyDamageMask);
+		}
 	}
 	// Change Dillo Health based on map
 	if (Rando.short_bosses) {

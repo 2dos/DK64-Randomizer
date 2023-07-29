@@ -477,16 +477,18 @@ void initHack(int source) {
 				writeFunction(0x80660994, &getOscillationDelta);
 				writeFunction(0x806609BC, &getOscillationDelta);
 			}
-			// Damage mask
-			writeFunction(0x806A6EA8, &applyDamageMask);
-			writeFunction(0x806EE138, &applyDamageMask);
-			writeFunction(0x806EE330, &applyDamageMask);
-			writeFunction(0x806EE480, &applyDamageMask);
-			writeFunction(0x806EEA20, &applyDamageMask);
-			writeFunction(0x806EEEA4, &applyDamageMask);
-			writeFunction(0x806EF910, &applyDamageMask);
-			writeFunction(0x806EF9D0, &applyDamageMask);
-			writeFunction(0x806F5860, &applyDamageMask);
+			if (DAMAGE_MASKING) {
+				// Damage mask
+				writeFunction(0x806A6EA8, &applyDamageMask);
+				writeFunction(0x806EE138, &applyDamageMask);
+				writeFunction(0x806EE330, &applyDamageMask);
+				writeFunction(0x806EE480, &applyDamageMask);
+				writeFunction(0x806EEA20, &applyDamageMask);
+				writeFunction(0x806EEEA4, &applyDamageMask);
+				writeFunction(0x806EF910, &applyDamageMask);
+				writeFunction(0x806EF9D0, &applyDamageMask);
+				writeFunction(0x806F5860, &applyDamageMask);
+			}
 			// Slow Turn Fix
 			writeFunction(0x806D2FC0, &fixRBSlowTurn);
 			// CB Bunch
@@ -538,10 +540,12 @@ void initHack(int source) {
 				// writeFunction(0x806C906C, &malloc_wipe);
 				// initTagAnywhere();
 			}
-			writeFunction(0x8072F1E8, &handleGrabbingLock);
-			writeFunction(0x8072F458, &handleActionSet); // Actor grabbables
-			writeFunction(0x8072F46C, &handleActionSet); // Model 2 grabbables
-			writeFunction(0x806CFC64, &handleActionSet); // Ledge Grabbing
+			if (ENABLE_ORIGIN_WARP_FIX) {
+				writeFunction(0x8072F1E8, &handleGrabbingLock);
+				writeFunction(0x8072F458, &handleActionSet); // Actor grabbables
+				writeFunction(0x8072F46C, &handleActionSet); // Model 2 grabbables
+				writeFunction(0x806CFC64, &handleActionSet); // Ledge Grabbing
+			}
 			if ((Rando.diddy_rnd_codes[0] != 0) || (Rando.diddy_rnd_codes[1] != 0) || (Rando.diddy_rnd_codes[2] != 0)) {
 				// Alter diddy R&D
 				short* diddy_rnd_code_writes[12] = {

@@ -2,7 +2,7 @@
 import js
 
 stable_version = "2.0"
-dev_version = "2.0"
+dev_version = "2.1"
 
 try:
     url = js.location.hostname.lower().replace("/", "").replace("http:", "").replace("https:", "")

@@ -26,7 +26,9 @@ void qualityOfLife_fixes(void) {
 		// Set some flags in-game
 		setPermFlag(FLAG_FTT_CRANKY); // Cranky FTT
 		fixkey8();
-		*(short*)(0x8060D60A) = 0; // Enable poll input during saving
+		if (ENABLE_SAVE_LOCK_REMOVAL) {
+			*(short*)(0x8060D60A) = 0; // Enable poll input during saving
+		}
 		// Prevent a bug where detransforming from Rambi shortly before getting hit will keep you locked as Rambi
 		if (CurrentMap == MAP_JAPES) {
 			if (Player) {
