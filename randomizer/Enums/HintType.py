@@ -23,3 +23,4 @@ class HintType(IntEnum):
     WothLocation = auto()
     FoolishMove = auto()
     FoolishRegion = auto()
+    Multipath = auto()
