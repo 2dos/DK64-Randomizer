@@ -203,7 +203,7 @@ class EnemyLoc:
     def placeNewEnemy(self, enabled_enemies: list, enable_speed: bool) -> Enemies:
         """Place new enemy in slot."""
         if self.enable_randomization:
-            permitted = [enemy for enemy in self.allowed_enemies if enemy in enabled_enemies]
+            permitted = [enemy for enemy in self.allowed_enemies if enemy in enabled_enemies or len(enabled_enemies) == 0]
             if len(permitted) > 0:
                 self.enemy = random.choice(permitted)
             if enable_speed and self.enemy in EnemyMetaData:

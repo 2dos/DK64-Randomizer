@@ -5,6 +5,7 @@ import js
 from randomizer.Enums.EnemySubtypes import EnemySubtype
 from randomizer.Enums.Settings import CrownEnemyRando, DamageAmount
 from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData, enemy_location_list
+from randomizer.Enums.EnemyLocations import EnemyLocations
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import ROM, LocalROM
 
@@ -493,9 +494,19 @@ def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawne
 
 def randomize_enemies_0(spoiler):
     """Determine randomized enemies."""
+    data = {}
     for loc in enemy_location_list:
-        enemy_location_list[loc].placeNewEnemy(spoiler.settings.enemies_selected)
-
+        new_enemy = enemy_location_list[loc].placeNewEnemy(spoiler.settings.enemies_selected, True)
+        map = enemy_location_list[loc].map
+        if map not in data:
+            data[map] = []
+        data[map].append({
+            "enemy": new_enemy,
+            "speeds": [enemy_location_list[loc].idle_speed, enemy_location_list[loc].aggro_speed],
+            "id": enemy_location_list[loc].id,
+            "location": EnemyLocations(loc).name
+        })
+    spoiler.enemy_rando_data = data
 
 def randomize_enemies(spoiler):
     """Write replaced enemies to ROM."""
@@ -621,18 +632,15 @@ def randomize_enemies(spoiler):
                 extra_count = int.from_bytes(ROM_COPY.readBytes(1), "big")
                 offset += 0x16 + (extra_count * 2)
                 vanilla_spawners.append(Spawner(enemy_id, init_offset, enemy_index))
-            if spoiler.settings.enemy_rando and cont_map_id in valid_maps:
-                for enemy_class in enemy_swaps:
-                    arr = enemy_swaps[enemy_class]
-                    class_types = enemy_classes[enemy_class]
-                    sub_index = 0
+            if spoiler.settings.enemy_rando and cont_map_id in spoiler.enemy_rando_data:
+                referenced_spawner = None
+                for enemy in spoiler.enemy_rando_data[cont_map_id]:
                     for spawner in vanilla_spawners:
-                        if spawner.enemy_id in class_types:
-                            if cont_map_id != Maps.FranticFactory or spawner.index < 35 or spawner.index > 44:
-                                new_enemy_id = arr[sub_index]
-                                sub_index += 1
-                                if not isBanned(new_enemy_id, cont_map_id, spawner, no_ground_simple_selected):
-                                    writeEnemy(spoiler, cont_map_spawner_address, new_enemy_id, spawner, cont_map_id, 0)
+                        if spawner.index == enemy["id"]:
+                            referenced_spawner = spawner
+                            break
+                    if referenced_spawner is not None:
+                        writeEnemy(spoiler, cont_map_spawner_address, enemy["enemy"], referenced_spawner, cont_map_id, 0)                                   
             if spoiler.settings.enemy_rando and cont_map_id in minigame_maps_total:
                 tied_enemy_list = []
                 if cont_map_id in minigame_maps_easy:

@@ -27,6 +27,7 @@ from randomizer.Enums.Settings import (
 )
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
+from randomizer.Lists.EnemyTypes import EnemyMetaData
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
 from randomizer.Lists.Location import LocationList, PreGivenLocations
 from randomizer.Lists.Logic import GlitchLogicItems
@@ -458,6 +459,15 @@ class Spoiler:
                 "Crystal Caves": self.settings.switch_allocation[Levels.CrystalCaves],
                 "Creepy Castle": self.settings.switch_allocation[Levels.CreepyCastle],
             }
+        if self.settings.enemy_rando:
+            placement_dict = {}
+            for map_id in self.enemy_rando_data:
+                map_name = Maps(map_id).name
+                map_dict = {}
+                for enemy in self.enemy_rando_data[map_id]:
+                    map_dict[enemy["location"]] = EnemyMetaData[enemy["enemy"]].name
+                placement_dict[map_name] = map_dict
+            humanspoiler["Enemy Placement"] = placement_dict
         humanspoiler["Bosses"] = {}
         if self.settings.boss_location_rando:
             shuffled_bosses = OrderedDict()
