@@ -306,6 +306,7 @@ RegionMapList = {
     Regions.MermaidRoom: Maps.GalleonMermaidRoom,
     Regions.SickBay: Maps.GalleonSickBay,
     Regions.Shipyard: Maps.GloomyGalleon,
+    Regions.ShipyardUnderwater: Maps.GloomyGalleon,
     Regions.SealRace: Maps.GalleonSealRace,
     Regions.TreasureRoom: Maps.GloomyGalleon,
     Regions.TinyChest: Maps.GalleonTreasureChest,

@@ -27,6 +27,16 @@ class Song:
         self.memory = self.default_memory
 
 
+class SongExclusionItem:
+    """Song Exclusion multiselector information."""
+
+    def __init__(self, name, shift, tooltip=""):
+        """Initialize with given data."""
+        self.name = name
+        self.shift = shift
+        self.tooltip = tooltip
+
+
 song_data = [
     Song("Silence", type=SongType.System, memory=0x00),
     Song("Jungle Japes (Starting Area)", type=SongType.BGM, memory=0x101),
@@ -204,3 +214,18 @@ song_data = [
     Song("K Rool's Defeat", type=SongType.Protected, memory=0x18),
     Song("Nintendo Logo", type=SongType.BGM, memory=0x108),
 ]
+
+ExcludedSongsSelector = []
+# If you make changes to this list, make sure to change the corresponding
+# MiscChangesSelected enum in randomizer.Enums.Settings.
+ExclSongsItems = [
+    SongExclusionItem("Wrinkly", 0, "Removes Wrinkly doors from playing her theme."),
+    SongExclusionItem("Transformation", 3, "The game will no longer play the transformation sound effect."),
+    SongExclusionItem("Pause Music", 4, "The pause menu music will no longer play."),
+    SongExclusionItem("Sub Areas", 5, "Sub-Areas will no longer play their song, meaning that there's 1 piece of music for the entire level."),
+    # SongExclusionItem("Shops", 1, "COMING SOON: Makes shops inherit the previous song."), # TODO: Fix this
+    # SongExclusionItem("Events", 2, "COMING SOON: Events will no longer play a song."), # TODO: Fix this
+]
+for item in ExclSongsItems:
+    if item.name != "No Group":
+        ExcludedSongsSelector.append({"name": item.name, "value": item.name.lower().replace(" ", "_"), "tooltip": item.tooltip, "shift": item.shift})

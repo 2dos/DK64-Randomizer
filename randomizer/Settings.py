@@ -43,6 +43,7 @@ from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.LogicClasses import LocationLogic
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
+from randomizer.Patching.Lib import IsItemSelected
 from version import whl_hash
 
 
@@ -235,6 +236,7 @@ class Settings:
         self.puzzle_rando = None
         self.shuffle_shops = None
         self.start_with_a_slam = False
+        self.extreme_debugging = False  # Use when you want to know VERY specifically where things fail in the fill - unnecessarily slows seed generation!
 
         # The major setting for item randomization
         self.shuffle_items = True
@@ -316,8 +318,8 @@ class Settings:
         # hard_shooting: bool
         self.hard_shooting = False
 
-        # hard_bosses: bool
-        self.hard_bosses = False
+        # hard_mode: bool
+        self.hard_mode = None
 
         # damage multiplier: DamageAmount
         self.damage_amount = DamageAmount.default
@@ -390,7 +392,7 @@ class Settings:
         self.camera_is_follow = False
         self.sfx_volume = 100
         self.music_volume = 100
-        self.camera_is_widescreen = False
+        self.true_widescreen = False
         self.camera_is_not_inverted = False
         self.sound_type = SoundType.stereo
 
@@ -424,6 +426,7 @@ class Settings:
         self.kong_rando = False
         self.kongs_for_progression = False
         self.wrinkly_hints = WrinklyHints.off
+        self.full_level_hints = False
         self.fast_warps = False
         self.dpad_display = DPadDisplays.off
         self.high_req = False
@@ -444,13 +447,15 @@ class Settings:
         self.hard_level_progression = False
         self.hard_blockers = False
         self.hard_troff_n_scoff = False
-        self.hard_enemies = False
         self.wrinkly_location_rando = False
         self.tns_location_rando = False
         self.vanilla_door_rando = False
         self.minigames_list_selected = []
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
+        self.hard_mode_selected = []
+        self.songs_excluded = False
+        self.excluded_songs_selected = []
         self.enemies_selected = []
         self.glitches_selected = []
         self.starting_keys_list_selected = []
@@ -469,6 +474,7 @@ class Settings:
         self.switch_allocation = [1, 1, 1, 1, 2, 2, 3]
         self.item_reward_previews = False
         self.microhints_enabled = MicrohintsEnabled.off
+        self.more_cutscene_skips = ExtraCutsceneSkips.off
         self.portal_numbers = False
         # Helm Hurry
         self.helmhurry_list_starting_time = 1200
@@ -588,6 +594,7 @@ class Settings:
                     Types.RainbowCoin,
                     Types.FakeItem,
                     Types.JunkItem,
+                    Types.CrateItem,
                 ]
             else:
                 for item in self.item_rando_list_selected:
@@ -963,7 +970,7 @@ class Settings:
         self.free_trade_items = self.free_trade_setting != FreeTradeSetting.none
         self.free_trade_blueprints = self.free_trade_setting == FreeTradeSetting.major_collectibles
 
-        if MiscChangesSelected.remove_wrinkly_puzzles in self.misc_changes_selected or len(self.misc_changes_selected) == 0:
+        if IsItemSelected(self.quality_of_life, self.misc_changes_selected, MiscChangesSelected.remove_wrinkly_puzzles):
             self.remove_wrinkly_puzzles = True
 
         if self.fast_gbs:

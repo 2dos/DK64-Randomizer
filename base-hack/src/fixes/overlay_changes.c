@@ -237,6 +237,22 @@ void initJetpac(void) {
 	if (Rando.fast_gbs) {
 		*(short*)(0x80027DCA) = 2500; // Jetpac score requirement
 	}
+	// Jetpac Enemy Rando
+	int enable_jetpac_enemy_rando = 0;
+	for (int i = 0; i < 8; i++) {
+		if (Rando.jetpac_enemy_order[i] != 0) {
+			enable_jetpac_enemy_rando = 1;
+		}
+	}
+	if (enable_jetpac_enemy_rando) {
+		void* jetpac_functions[8] = {};
+		for (int i = 0; i < 8; i++) {
+			jetpac_functions[i] = JetpacEnemyFunctions[i];
+		}
+		for (int i = 0; i < 8; i++) {
+			JetpacEnemyFunctions[i] = jetpac_functions[Rando.jetpac_enemy_order[i]];
+		}
+	}
 }
 
 int give_all_blueprints(int flag, int level, int kong_p) {
@@ -299,8 +315,14 @@ void overlay_changes(void) {
 		*(int*)(0x80029818) = 0; // Hide A
 		*(int*)(0x80029840) = 0; // Hide B
 		// *(int*)(0x80029874) = 0; // Hide GB
-		*(short*)(0x8002986E) = 0xD0; // Move GB to right
-		*(short*)(0x80029872) = 0x9A; // Move GB down
+		int gb_x = 208;
+		int gh_y = 0x9A;
+		if (Rando.true_widescreen) {
+			gb_x = (SCREEN_WD >> 1) + 48; 
+			gh_y -= (DEFAULT_TRACKER_Y_OFFSET - getTrackerYOffset());
+		}
+		*(short*)(0x8002986E) = gb_x; // Move GB to right
+		*(short*)(0x80029872) = gh_y; // Move GB down
 		*(short*)(0x8002985A) = 0; // Change sprite mode for GB
 		*(float*)(0x80033CA8) = 0.4f; // Change GB Scale
 
@@ -320,6 +342,9 @@ void overlay_changes(void) {
 		// Disable Multiplayer
 		*(int*)(0x800280B0) = 0; // Disable access
 		*(int*)(0x80028A8C) = 0; // Lower Sprite Opacity
+		if (ENABLE_FILENAME) {
+			initFilename();
+		}
 	} else if (CurrentMap == MAP_SNIDE) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
@@ -359,12 +384,14 @@ void overlay_changes(void) {
 		if ((Rando.microhints != MICROHINTS_NONE) && (MovesBase[0].simian_slam < 2)) {
 			*(short*)(0x800359A8) = 14; // Microhint Cutscene
 		}
+		writeFunction(0x80031524, &applyDamageMask);
 	}
 	if (inBattleCrown(CurrentMap)) {
 		// Change crown spawn
 		if (Rando.item_rando) {
 			writeFunction(0x8002501C, &spawnCrownReward); // Crown Spawn
 		}
+		writeFunction(0x80025058, &applyDamageMask);
 	}
 	// Change Dillo Health based on map
 	if (Rando.short_bosses) {
@@ -412,7 +439,7 @@ void overlay_changes(void) {
 			}
 		}
 		if (Rando.quality_of_life.vanilla_fixes) {
-			if (!(MovesBase[3].weapon_bitfield & 1)) {
+			if (!(MovesBase[KONG_TINY].weapon_bitfield & 1)) {
 				*(int*)(0x8002FFE0) = 0; // Control State patch
 				*(int*)(0x8002FFE8) = 0; // Control State progress patch
 			}
@@ -429,6 +456,7 @@ void overlay_changes(void) {
 			*(short*)(0x800359A6) = 3; // Fix cutscene bug
 		}
 	}
+	loadWidescreen(getOverlayFromMap(CurrentMap));
 	if (Rando.misc_cosmetic_on) {
 		if ((CurrentMap >= MAP_PPPANIC_VEASY) && (CurrentMap <= MAP_PPPANIC_HARD)) {
 			// PPPanic
@@ -463,13 +491,24 @@ void overlay_changes(void) {
 		*(short*)(0x80033B26) = 0x4220; // Jumping Around
 		*(short*)(0x800331AA) = 0x4220; // Random Square
 		*(short*)(0x800339EE) = 0x4220; // Stationary
-		// *(float*)(0x80036C40) = 3.0f; // Phase 1 Jump speed
-		// *(float*)(0x80036C44) = 3.0f; // Phase 2
-		// *(float*)(0x80036C48) = 3.0f; // ...
-		// *(float*)(0x80036C4C) = 3.0f;
-		// *(float*)(0x80036C50) = 3.0f;
+		if (Rando.hard_mode.bosses) {
+			float targ_speed = 3.0f;
+			*(float*)(0x80036C40) = targ_speed; // Phase 1 Jump speed
+			*(float*)(0x80036C44) = targ_speed; // Phase 2
+			*(float*)(0x80036C48) = targ_speed; // ...
+			*(float*)(0x80036C4C) = targ_speed;
+			*(float*)(0x80036C50) = targ_speed;
+			*(short*)(0x8003343A) = 0x224; // Force fast jumps
+		}
 	}
-
+	if (getOverlayFromMap(CurrentMap) == OVERLAY_BONUS) {
+		if (Rando.pppanic_fairy_model) {
+			*(short*)(0x8002a656) = Rando.pppanic_fairy_model;
+		}
+		if (Rando.tttrouble_turtle_model) {
+			*(short*)(0x80028776) = Rando.tttrouble_turtle_model;
+		}
+	}
 	if (Rando.fast_gbs) {
 		if (CurrentMap == MAP_FACTORYCARRACE) { // Factory Car Race
 			*(short*)(0x8002D03A) = 0x0001; // 1 Lap
@@ -492,7 +531,7 @@ void parseCutsceneData(void) {
 		int phase = CurrentMap - MAP_KROOLDK;
 		initKRool(phase);
 	}
-	if (Rando.quality_of_life.remove_cutscenes) {
+	if (Rando.cutscene_skip_setting == CSSKIP_AUTO) {
 		updateSkippableCutscenes();
 	}
 	if (Rando.quality_of_life.fast_hints) {

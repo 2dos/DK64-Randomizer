@@ -1,0 +1,82 @@
+<style>
+    .plando-pane {
+        padding-bottom: 24px;
+    }
+
+    .plando-pills {
+        padding: 24px 0;
+    }
+
+    .plando-pill {
+        flex: 0 0 14%;
+    }
+
+    .location-picker {
+        margin: 0 16px 32px;
+        width: 30%;
+    }
+
+    .location-label {
+        margin-bottom: 4px;
+    }
+</style>
+{# TODO LIST #}
+{# Implement a "reset to default" button. #}
+{# Double-check mobile styling. #}
+{# Allow the backend to pass tooltip errors back to the frontend. #}
+{# Add clickable icons next to error messages to take users directly to the incorrect setting. #}
+{# Create a "Getting Started" panel with warnings and information. #}
+{# Fix h2 to h5 on the Getting Started page. #}
+{# Enforce word length limit on hint text (exact length TBD). #}
+{# Import and export plando settings. #}
+<div class="container border" style="margin-top: 20px;">
+    <!-- The navigation panel. -->
+    <div class="nav nav-pills flex-container flex-center plando-pills" id="plando-nav-tab" role="tablist">
+        <button class="nav-link active nav-item plando-pill"
+                id="nav-plando-general-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#nav-plando-general"
+                type="button"
+                role="tab"
+                aria-controls="nav-plando-general"
+                aria-selected="true">
+            <p class="select-title">General</p>
+        </button>
+        {% for panelName, panel in plando_panels.items() %}
+            <button class="nav-link nav-item plando-pill"
+                    id="nav-plando-{{panelName}}-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#nav-plando-{{panelName}}"
+                    type="button"
+                    role="tab"
+                    aria-controls="nav-plando-{{panelName}}"
+                    aria-selected="false">
+                <p class="select-title">{{panel["name"]}}</p>
+            </button>
+        {% endfor %}
+    </div>
+</div>
+<div class="container border">
+    {# The individual level tabs are populated here. Only one will show at a time. #}
+    <div class="tab-content" id="nav-tabContent">
+        {% include 'plandomizer/plandomizer_general.html.jinja2' %}
+        {% for panelName, panel in plando_panels.items() %}
+            {% if panelName == "Shops" %}
+                {% include 'plandomizer/plandomizer_shops.html.jinja2' %}
+            {% elif panelName == "Minigames" %}
+                {% include 'plandomizer/plandomizer_minigames.html.jinja2' %}
+            {% elif panelName == "Hints" %}
+                {% include 'plandomizer/plandomizer_hints.html.jinja2' %}
+            {% else %}
+                {% include 'plandomizer/plandomizer_levels.html.jinja2' %}
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+<script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover'
+        })
+    })
+</script>

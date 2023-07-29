@@ -261,7 +261,11 @@ int* drawHintText(int* dl, char* str, int x, int y) {
     _guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
     float position = y;
     int pos_f = *(int*)&position;
-    _guTranslateF(&mtx1, 0x44200000, pos_f, 0x0);
+    float hint_x = 640.0f;
+    if (Rando.true_widescreen) {
+        hint_x = SCREEN_WD_FLOAT * 2;
+    }
+    _guTranslateF(&mtx1, *(int*)(&hint_x), pos_f, 0x0);
     _guMtxCatF(&mtx0, &mtx1, &mtx0);
     _guTranslateF(&mtx1, 0, 0x42400000, 0);
     _guMtxCatF(&mtx0, &mtx1, &mtx0);
@@ -341,23 +345,27 @@ int* pauseScreen3And4Header(int* dl) {
      */
     pause_paad* paad = CurrentActorPointer_0->paad;
     display_billboard_fix = 0;
+    int level_x = 0x280;
+    if (Rando.true_widescreen) {
+        level_x = SCREEN_WD * 2;
+    }
     if (paad->screen == PAUSESCREEN_TOTALS) {
-        return printText(dl, 0x280, 0x3C, 0.65f, "TOTALS");
+        return printText(dl, level_x, 0x3C, 0.65f, "TOTALS");
     } else if (paad->screen == PAUSESCREEN_CHECKS) {
-        dl = printText(dl, 0x280, 0x3C, 0.65f, "CHECKS");
+        dl = printText(dl, level_x, 0x3C, 0.65f, "CHECKS");
         dk_strFormat((char*)level_check_text, "w %s e", levels[(int)check_level]);
-        return printText(dl, 0x280, 160, 0.5f, level_check_text);
+        return printText(dl, level_x, 160, 0.5f, level_check_text);
     } else if (paad->screen == PAUSESCREEN_MOVES) {
         dl = display_file_images(dl, -50);
         int igt_h = stored_igt / 3600;
         int igt_s = stored_igt % 60;
         int igt_m = (stored_igt / 60) % 60;
         dk_strFormat((char*)igt_text, "%03d:%02d:%02d", igt_h, igt_m, igt_s);
-        dl = printText(dl, 0x280, 675, 0.5f, igt_text);
-        return printText(dl, 0x280, 0x3C, 0.65f, "MOVES");
+        dl = printText(dl, level_x, 675, 0.5f, igt_text);
+        return printText(dl, level_x, 0x3C, 0.65f, "MOVES");
     } else if (paad->screen == PAUSESCREEN_HINTS) {
         display_billboard_fix = 1;
-        dl = printText(dl, 0x280, 0x3C, 0.65f, "HINTS");
+        dl = printText(dl, level_x, 0x3C, 0.65f, "HINTS");
         // Handle Controls
         int hint_level_cap = 7;
         if (NewlyPressedControllerInput.Buttons.c_left) {
@@ -373,17 +381,21 @@ int* pauseScreen3And4Header(int* dl) {
         }
         // Display level
         dk_strFormat((char*)level_hint_text, "w %s e", levels[(int)hint_level + 1]);
-        dl = printText(dl, 0x280, 120, 0.5f, level_hint_text);
+        dl = printText(dl, level_x, 120, 0.5f, level_hint_text);
         // Display Hints
         *(unsigned int*)(dl++) = 0xFA000000;
         *(unsigned int*)(dl++) = 0xFFFFFF96;
-        dl = displayImage(dl, 107, 0, RGBA16, 48, 32, 625, 465, 24.0f, 20.0f, 0, 0.0f);
+        int bubble_x = 625;
+        if (Rando.true_widescreen) {
+            bubble_x = (2 * SCREEN_WD) - 15;
+        }
+        dl = displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, 465, 24.0f, 20.0f, 0, 0.0f);
         mtx_counter = 0;
         for (int i = 0; i < 5; i++) {
             if (checkFlag(FLAG_WRINKLYVIEWED + (5 * hint_level) + i, FLAGTYPE_PERMANENT)) {
-                dl = drawSplitString(dl, (char*)hint_pointers[(5 * hint_level) + i], 640, 140 + (120 * i), 40);
+                dl = drawSplitString(dl, (char*)hint_pointers[(5 * hint_level) + i], level_x, 140 + (120 * i), 40);
             } else {
-                dl = drawSplitString(dl, "???", 640, 140 + (120 * i), 40);
+                dl = drawSplitString(dl, "???", level_x, 140 + (120 * i), 40);
             }
             
         }
@@ -480,6 +492,18 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render) {
     //     opacity_scale = test_opacity;
     // }
     // sprite->alpha = opacity_scale * 255.0f;
+    // Width information
+    float width = 640.0f;
+    if (Rando.true_widescreen) {
+        width = SCREEN_WD_FLOAT * 2;
+        sprite->y = SCREEN_HD_FLOAT * 2;
+    }
+    float right_bound = width * 1.5f;
+    float left_bound = width * 0.5f;
+    float quarter_width = width / 4.0f;
+    float width_diff = width / 8.0f;
+    int width_diff_int = width_diff;
+
     int index = sprite->unk384[2] / 4;
     int viewed_item = ((float)(pause_control->control) / ROTATION_SPLIT);
     int diff = index - viewed_item;
@@ -498,36 +522,38 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render) {
     } else  if (pos_diff < 0) {
         pos_diff -= 1;
     }
-    float diff_increment = ((pause_control->control - (ROTATION_SPLIT * viewed_item)) * 80 * PAUSE_ITEM_COUNT) >> 12;
+    float diff_increment = ((pause_control->control - (ROTATION_SPLIT * viewed_item)) * width_diff_int * PAUSE_ITEM_COUNT) >> 12;
     if ((pos_diff >= 3) || (pos_diff <= -2)) {
         diff_increment /= 2;
     }
-    sprite->x = (0xA0 + (pos_diff * 0x28) - diff_increment) * 4;
+    
+
+    sprite->x = (quarter_width + (pos_diff * (width_diff / 2.0f)) - diff_increment) * 4;
     float scale = 0.0f;
-    if (sprite->x > 640.0f) {
+    if (sprite->x > width) {
         // Right of center
-        if (sprite->x < 960.0f) {
+        if (sprite->x < right_bound) {
             // 8-4
-            float x_diff = 640.f - sprite->x;
-            scale = 8.0f + (x_diff / 80.0f);
+            float x_diff = width - sprite->x;
+            scale = 8.0f + (x_diff / width_diff);
         } else {
             // 4-2-0
-            float x_diff = 960.0f - sprite->x;
-            scale = 4.0f + (x_diff / 80.0f);
+            float x_diff = right_bound - sprite->x;
+            scale = 4.0f + (x_diff / width_diff);
             if (scale < 0.0f) {
                 scale = 0.0f;
             }
         }
-    } else if (sprite->x < 640.0f) {
+    } else if (sprite->x < width) {
         // Left of center
-        if (sprite->x > 320.0f) {
+        if (sprite->x > left_bound) {
             // 4-8
-            float x_diff = 640.0f - sprite->x;
-            scale = 8.0f - (x_diff / 80.0f);
+            float x_diff = width - sprite->x;
+            scale = 8.0f - (x_diff / width_diff);
         } else {
             // 0-2-4
-            float x_diff = 320.0f - sprite->x;
-            scale = 4.0f - (x_diff / 80.0f);
+            float x_diff = left_bound - sprite->x;
+            scale = 4.0f - (x_diff / width_diff);
             if (scale < 0.0f) {
                 scale = 0.0f;
             }

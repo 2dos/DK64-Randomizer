@@ -678,3 +678,31 @@ typedef enum tracker_types {
 	/* 48 */ TRACKER_TYPE_BELT_1,
 	/* 49 */ TRACKER_TYPE_BELT_2,
 } tracker_types;
+
+typedef enum overlays {
+	/* 0x000 */ OVERLAY_BOOT,
+	/* 0x001 */ OVERLAY_STATIC,
+	/* 0x002 */ OVERLAY_MENU,
+	/* 0x003 */ OVERLAY_MULTI,
+	/* 0x004 */ OVERLAY_MINECART,
+	/* 0x005 */ OVERLAY_RACE,
+	/* 0x006 */ OVERLAY_CRITTER,
+	/* 0x007 */ OVERLAY_BOSS,
+	/* 0x008 */ OVERLAY_BONUS,
+	/* 0x009 */ OVERLAY_ARCADE,
+	/* 0x00A */ OVERLAY_NONE,
+	/* 0x00B */ OVERLAY_JETPAC,
+} overlays;
+
+typedef enum song_types {
+	/* 0x000 */ SONGTYPE_BGM,
+	/* 0x001 */ SONGTYPE_EVENT,
+	/* 0x002 */ SONGTYPE_MAJORITEM,
+	/* 0x003 */ SONGTYPE_MINORITEM,
+} song_types;
+
+typedef enum cs_skip_types {
+	/* 0x000 */ CSSKIP_OFF,
+	/* 0x001 */ CSSKIP_PRESS,
+	/* 0x002 */ CSSKIP_AUTO,
+} cs_skip_types;

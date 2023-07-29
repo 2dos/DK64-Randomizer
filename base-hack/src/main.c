@@ -10,8 +10,16 @@ static float current_avg_lag = 0;
 static char has_loaded = 0;
 static char new_picture = 0;
 int hint_pointers[35] = {};
+static char delayed_load = 0;
+char grab_lock_timer = -1;
+char tag_locked = 0;
+
 
 void cFuncLoop(void) {
+	if (!delayed_load) {
+		// loadWidescreen(OVERLAY_BOOT);
+		delayed_load = 1;
+	}
 	DataIsCompressed[18] = 0;
 	unlockKongs();
 	tagAnywhere();
@@ -44,6 +52,19 @@ void cFuncLoop(void) {
 		}
 		handleKRoolSaveProgress();
 	}
+	if (grab_lock_timer >= 0) {
+		grab_lock_timer += 1;
+		if (grab_lock_timer > 10) {
+			grab_lock_timer = -1;
+		}
+	}
+	if (tag_locked) {
+		tag_locked = 0;
+	}
+	if (Rando.cutscene_skip_setting == CSSKIP_PRESS) {
+		clearSkipCache();
+	}
+	updateSkipCheck();
 	if (Rando.item_rando) {
 		if (TransitionSpeed > 0) {
 			if (LZFadeoutProgress == 30.0f) {
@@ -68,7 +89,7 @@ void cFuncLoop(void) {
 			if ((CutsceneActive) && (TransitionSpeed == 0.0f)) { // Playing a cutscene that's part of intro story
 				if ((NewlyPressedControllerInput.Buttons.a) || (NewlyPressedControllerInput.Buttons.start)) {
 					setIntroStoryPlaying(0);
-					initiateTransition(0xB0, 1);
+					initiateTransition(MAP_TRAININGGROUNDS, 1);
 				}
 			}
 		}
@@ -378,8 +399,8 @@ int* displayListModifiers(int* dl) {
 			float left_f = (((LOADBAR_FINISH - LOADBAR_START) + LOADBAR_MAXWIDTH) / LOADBAR_DIVISOR) * wait_progress_timer;
 			left_f += LOADBAR_START;
 			left_f -= LOADBAR_MAXWIDTH;
-			int left = left_f;
-			int right = left + LOADBAR_MAXWIDTH;
+			float left = left_f;
+			float right = left + LOADBAR_MAXWIDTH;
 			if (left < LOADBAR_START) {
 				left = LOADBAR_START;
 			}
@@ -392,13 +413,27 @@ int* displayListModifiers(int* dl) {
 			if (right < LOADBAR_START) {
 				right = LOADBAR_START;
 			}
-			dl = drawScreenRect(dl, left, 475, right, 485, *(unsigned char*)(address + 0), *(unsigned char*)(address + 1), *(unsigned char*)(address + 2), *(unsigned char*)(address + 3));
+			left *= (SCREEN_WD_FLOAT / 320);
+			right *= (SCREEN_WD_FLOAT / 320);
+			if (left > 1023.0f) {
+				left = 1023.0f;
+			}
+			if (right > 1023.0f) {
+				right = 1023.0f;
+			}
+			int bar_y = 475;
+			int bar_text_y = 130;
+			if (Rando.true_widescreen) {
+				bar_y = (2 * SCREEN_HD) - 5;
+				bar_text_y = (SCREEN_HD >> 1) + 10;
+			}
+			dl = drawScreenRect(dl, left, bar_y, right, bar_y + 10, *(unsigned char*)(address + 0), *(unsigned char*)(address + 1), *(unsigned char*)(address + 2), *(unsigned char*)(address + 3));
 			int wait_x_offset = 55;
 			if (wait_progress_master > 0) {
 				wait_x_offset = 160 - (wait_text_lengths[wait_progress_master - 1] << 2);
 			}
-			dl = drawPixelTextContainer(dl, wait_x_offset, 130, (char*)wait_texts[(int)wait_progress_master], 0xFF, 0xFF, 0xFF, 0xFF, 1);
-			dl = drawPixelTextContainer(dl, 110, 150, "PLEASE WAIT", 0xFF, 0xFF, 0xFF, 0xFF, 1);
+			dl = drawPixelTextContainer(dl, wait_x_offset, bar_text_y, (char*)wait_texts[(int)wait_progress_master], 0xFF, 0xFF, 0xFF, 0xFF, 1);
+			dl = drawPixelTextContainer(dl, 110, bar_text_y + 20, "PLEASE WAIT", 0xFF, 0xFF, 0xFF, 0xFF, 1);
 		} else if (CurrentMap == MAP_MAINMENU) {
 			if (EEPROMType != 2) {
 				int i = 0;
@@ -452,7 +487,13 @@ int* displayListModifiers(int* dl) {
 				}
 				int fps_int = fps;
 				dk_strFormat((char *)fpsStr, "FPS %d", fps_int);
-				dl = drawPixelTextContainer(dl, 250, 210, fpsStr, 0xFF, 0xFF, 0xFF, 0xFF, 1);
+				int fps_x = 250;
+				int fps_y = 210;
+				if (Rando.true_widescreen) {
+					fps_x = SCREEN_WD - 90;
+					fps_y = SCREEN_HD - 30;
+				}
+				dl = drawPixelTextContainer(dl, fps_x, fps_y, fpsStr, 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			}
 			dl = drawDPad(dl);
 			if (ammo_hud_timer) {
@@ -496,7 +537,13 @@ int* displayListModifiers(int* dl) {
 					dk_strFormat((char *)bpStr, "%dl%d", bp_numerator, bp_denominator);
 					float opacity = 255 * hud_timer;
 					opacity /= 12;
-					dl = drawText(dl, 1, 355.0f, 480.f + ((12 - hud_timer) * 4), bpStr, 0xFF, 0xFF, 0xFF, opacity);
+					float bp_x = 355.0f;
+					float bp_y_start = 480.0f;
+					if (Rando.true_widescreen) {
+						bp_x = SCREEN_WD_FLOAT + 35.0f;
+						bp_y_start = SCREEN_HD_FLOAT * 2;
+					}
+					dl = drawText(dl, 1, bp_x, bp_y_start + ((12 - hud_timer) * 4), bpStr, 0xFF, 0xFF, 0xFF, opacity);
 				} else {
 					hud_timer = 0;
 				}

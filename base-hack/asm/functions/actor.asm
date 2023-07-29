@@ -104,3 +104,6 @@
 .definelabel unkProjectileCode_3, 0x80665564
 .definelabel unkProjectileCode_4, 0x80608528
 .definelabel updateModel, 0x806C8F8C
+.definelabel runAnimFrame, 0x80613CA8
+.definelabel handlePoleGrabbing, 0x8072F230
+.definelabel unkCutsceneFunction, 0x8061D1FC

@@ -52,19 +52,12 @@ void initQoL_Cutscenes(void) {
      * - Removing the 30s cutscene for freeing the Vulture in Angry Aztec
      * - Adding cutscenes for Item Rando back in if deemed important enough
      */
-    if (Rando.quality_of_life.remove_cutscenes) {
-        // K. Lumsy
-        *(short*)(0x80750680) = MAP_ISLES;
-        *(short*)(0x80750682) = 0x1;
-        *(int*)(0x806BDC24) = 0x0C17FCDE; // Change takeoff warp func
-        *(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
-        *(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
-        // Fast Vulture
-        writeFunction(0x806C50BC, &clearVultureCutscene); // Modify Function Call
-        // General
-        writeFunction(0x80628508, &renderScreenTransitionCheck); // Remove transition effects if skipped cutscene
-        // Speedy T&S Turn-Ins
-        *(int*)(0x806BE3E0) = 0; // NOP
+    if (Rando.cutscene_skip_setting == CSSKIP_OFF) {
+        // Clear the cutscene skip database
+        for (int i = 0; i < 432; i++) {
+            cs_skip_db[i] = 0;
+        }
+    } else {
         if (Rando.item_rando) {
             int cs_unskip[] = {
                 MAP_FACTORY, 2,
@@ -88,11 +81,22 @@ void initQoL_Cutscenes(void) {
                 cs_skip_db[(2 * cs_map) + cs_offset] &= comp;
             }
         }
-    } else {
-        // Clear the cutscene skip database
-        for (int i = 0; i < 432; i++) {
-            cs_skip_db[i] = 0;
+        writeFunction(0x80628508, &renderScreenTransitionCheck); // Remove transition effects if skipped cutscene
+        if (Rando.cutscene_skip_setting == CSSKIP_PRESS) {
+            writeFunction(0x8061DD80, &pressSkipHandler); // Handler for press start to skip
         }
+    }
+    if (Rando.quality_of_life.remove_cutscenes) {
+        // K. Lumsy
+        *(short*)(0x80750680) = MAP_ISLES;
+        *(short*)(0x80750682) = 0x1;
+        *(int*)(0x806BDC24) = 0x0C17FCDE; // Change takeoff warp func
+        *(short*)(0x806BDC8C) = 0x1000; // Apply no cutscene to all keys
+        *(short*)(0x806BDC3C) = 0x1000; // Apply shorter timer to all keys
+        // Fast Vulture
+        writeFunction(0x806C50BC, &clearVultureCutscene); // Modify Function Call
+        // Speedy T&S Turn-Ins
+        *(int*)(0x806BE3E0) = 0; // NOP
     }
 }
 
@@ -179,6 +183,7 @@ void bootSpeedup(void) {
 			coloredBananaCounts[j] = 0;
 		}
 		int patch_index = 0;
+        int crate_index = 0;
 		for (int i = 0; i < 221; i++) {
 			balloonPatchCounts[i] = balloon_patch_count;
 			int* setup = getMapData(TABLE_MAP_SETUPS,i,1,1);
@@ -191,16 +196,16 @@ void bootSpeedup(void) {
 				int actor_count = *(int*)(actor_setup);
 				char* focused_actor = (char*)(actor_setup + 4);
 				char* focused_model2 = (char*)(modeltwo_setup + 4);
+                int subworld = 7;
+                if (!isLobby(i)) {
+                    subworld = levelIndexMapping[i];
+                }
 				if (actor_count > 0) {
 					for (int j = 0; j < actor_count; j++) {
 						int actor = *(short*)((int)focused_actor + 0x32) + 0x10;
 						balloon_patch_count += isBalloonOrPatch(actor);
 						if (actor == 139) {
-                            int world = 7;
-                            if (!isLobby(i)) {
-								world = levelIndexMapping[i];
-							}
-                            populatePatchItem(*(short*)((int)focused_actor + 0x34), i, patch_index, world);
+                            populatePatchItem(*(short*)((int)focused_actor + 0x34), i, patch_index, subworld);
 							patch_index += 1;
 						}
 						focused_actor += 0x38;
@@ -208,7 +213,12 @@ void bootSpeedup(void) {
 				}
 				if (model2_count > 0) {
 					for (int j = 0; j < model2_count; j++) {
-						coloredBananaCounts[world] += isSingleOrBunch(*(unsigned short*)(focused_model2 + 0x28));
+                        unsigned short m2_obj_type = *(unsigned short*)(focused_model2 + 0x28);
+						coloredBananaCounts[world] += isSingleOrBunch(m2_obj_type);
+                        if (m2_obj_type == 181) {
+                            populateCrateItem(*(short*)((int)focused_model2 + 0x2A), i, crate_index, subworld);
+                            crate_index += 1;
+                        }
 						focused_model2 += 0x30;
 					}
 				}
@@ -300,7 +310,9 @@ void initQoL_FastWarp(void) {
         // Replace vanilla warp animation (0x52) with monkeyport animation (0x53)
         *(short*)(0x806EE692) = 0x54;
         writeFunction(0x806DC2AC, &fastWarp); // Modify Function Call
-        writeFunction(0x806DC318, &fastWarp_playMusic); // Modify Function Call
+        if (!Rando.disabled_music.chunk_songs) {
+            writeFunction(0x806DC318, &fastWarp_playMusic); // Modify Function Call
+        }
     }
 }
 
@@ -331,7 +343,11 @@ void initSpawn(void) {
         *(short*)(0x806A880E) = 4; // Yes/No Prompt
         //*(short*)(0x806A8766) = 4;
         *(short*)(0x806A986A) = 4; // Yes/No Prompt
-        *(int*)(0x806A9990) = 0x2A210270; // SLTI $at, $s1, 0x2A8
+        int y_cap = 0x270;
+        if (Rando.true_widescreen) {
+            y_cap = ((SCREEN_HD_FLOAT * 2) - 72 - 4) + (0x44 * 3);
+        }
+        *(int*)(0x806A9990) = 0x2A210000 | y_cap; // SLTI $at, $s1, 0x2A8
         if (!starting_map_rando_on) {
             PauseSlot3TextPointer = (char*)&exittoisles;
         } else {
@@ -379,6 +395,9 @@ void initQoL_HUD(void) {
     */
     int y_spacing = 22;
     int y_bottom = 0xD0;
+    if (Rando.true_widescreen) {
+        y_bottom = SCREEN_HD - 32;
+    }
     *(short*)(0x806F893E) = y_bottom - (1 * y_spacing); // Instrument
     *(short*)(0x806F8692) = y_bottom - (2 * y_spacing); // Crystals
     *(short*)(0x806F87AA) = y_bottom - (3 * y_spacing); // Oranges
@@ -389,7 +408,11 @@ void initQoL_HUD(void) {
         *(short*)(0x806F860A) = y_bottom - (5 * y_spacing); // Multi CB
         writeFunction(0x806F97D8, &getHUDSprite_HUD); // Change Sprite
         writeFunction(0x806F6BF0, &preventMedalHUD); // Prevent Model Two Medals showing HUD
-        *(short*)(0x806F8606) = 0x122; // Position X
+        int multibunch_hud_x = 0x122;
+        if (Rando.true_widescreen) {
+            multibunch_hud_x = SCREEN_WD - 30;
+        }
+        *(short*)(0x806F8606) = multibunch_hud_x; // Position X
         *(int*)(0x806F862C) = 0x4600F306; // MOV.S $f12, $f30
         *(int*)(0x806F8634) = 0x4600A386; // MOV.S $f14, $f20
         writeFunction(0x806F98E4, &initHUDDirection); // HUD Direction

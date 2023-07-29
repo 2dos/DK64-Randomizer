@@ -105,6 +105,7 @@ class Items(IntEnum):
     JunkAmmo = auto()
     JunkFilm = auto()
     JunkOrange = auto()
+    CrateMelon = auto()  # Separate from junk melon due to separate settings
 
     BananaHoard = auto()
 

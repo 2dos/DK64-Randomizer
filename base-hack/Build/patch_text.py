@@ -5,6 +5,7 @@ import shutil
 from BuildEnums import Icons
 from text_decoder import grabText
 from text_encoder import writeText
+from typing import BinaryIO
 
 move_hints = [
     {
@@ -883,3 +884,65 @@ squawks_text.append(
     ]
 )
 writeText("misc_squawks_text.bin", squawks_text)
+
+misc_char_table = {
+    "6": "h",
+    "4": "f",
+    "t": "{",  # Trademark
+    ".": "[",
+    "r": "~",  # R symbol
+}
+
+
+class ExpansionMessageInfo:
+    """Class to store information regarding the expansion pak messages."""
+
+    def __init__(self, limit: int, address: int, old_message: str, new_message: str):
+        """Initialize with given parameters."""
+        self.limit = limit
+        self.address = address
+        self.old_message = old_message
+        self.new_message = new_message
+        self.old_message_padding = len(old_message) - limit
+
+    def convertNewMessage(self):
+        """Convert new message to filter out any bad characters."""
+        new_str = ""
+        for x in self.new_message:
+            if x in list(misc_char_table.keys()):
+                new_str += misc_char_table[x]
+            else:
+                new_str += x
+        total_length = len(self.old_message) + (2 * self.old_message_padding)
+        new_padding = int((total_length - len(self.new_message)) / 2)
+        max_padding = self.limit - len(self.new_message)
+        new_padding = min(new_padding, max_padding)
+        padding_str = ""
+        if new_padding > 0:
+            for x in range(new_padding):
+                padding_str += " "
+        self.new_message = padding_str + new_str + "\0"
+
+    def writeMessage(self, fh: BinaryIO):
+        """Write message to ROM."""
+        self.convertNewMessage()
+        if self.limit >= (len(self.new_message) - 1):  # Message is short enough
+            fh.seek(self.address)
+            fh.write((self.new_message).encode("ascii"))
+            # diff = self.limit - len(self.new_message)
+            # for d in range(diff):
+            #     fh.write((0).to_bytes(1, "big"))
+
+
+def writeNoExpPakMessages(fh: BinaryIO):
+    """Write no expansion pak messages to ROM."""
+    noexp_msg = [
+        ExpansionMessageInfo(25, 0xF924, "N64 EXPANSION PAKt", "NO EXPANSION PAK FOUND."),
+        ExpansionMessageInfo(23, 0xF940, "NOT INSTALLED.", "THIS IS LIKELY DUE TO"),
+        ExpansionMessageInfo(31, 0xF958, "THE N64 EXPANSION PAK ACCESSORY", "AN INCORRECTLY SET UP EMULATOR"),
+        ExpansionMessageInfo(33, 0xF978, "MUST BE INSTALLED IN THE N64r FOR", "OR CONSOLE. PLEASE CONTACT THE"),
+        ExpansionMessageInfo(32, 0xF99C, "THIS GAME. SEE THE N64 EXPANSION", "DISCORD FOR HELP."),
+        ExpansionMessageInfo(27, 0xF9C0, "PAK INSTRUCTION BOOKLET.", "DISCORD.DK64RANDOMIZER.COM"),
+    ]
+    for m in noexp_msg:
+        m.writeMessage(fh)

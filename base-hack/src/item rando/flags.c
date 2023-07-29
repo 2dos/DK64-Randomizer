@@ -182,8 +182,11 @@ int clampFlag(int flag) {
     if ((flag >= FLAG_RAINBOWCOIN_0) && (flag < (FLAG_RAINBOWCOIN_0 + 16))) {
         return 1; // Rainbow Coins
     }
-    if (flag == 0x300) {
+    if (flag == FLAG_COLLECTABLE_BEAN) {
         return 1; // Fungi Bean
+    }
+    if ((flag >= FLAG_MELONCRATE_0) && (flag < (FLAG_MELONCRATE_0 + 16))) {
+        return 1; // Melon Crates
     }
     return 0;
 }

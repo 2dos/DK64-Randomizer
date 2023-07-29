@@ -147,6 +147,12 @@ body {
   min-width: 100px !important;
 }
 
+select.invalid,
+input[type="text"].invalid,
+input[type="number"].invalid {
+  border-color: #dc3545;
+}
+
 .form-title-select {
   line-height: 48px;
   margin-right: 5px;
@@ -246,6 +252,17 @@ footer {
 
 .nav-item {
   flex: 1 0 10%;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  background-color: #048243;
+  border: 1px solid #ced4da;
+  color: #e3e3e3;
+}
+
+.nav-pills > .nav-item:not(.active):hover {
+  color: #048243;
 }
 
 div {
@@ -380,6 +397,11 @@ i {
 .flex-container {
   display: flex;
   flex-flow: row wrap;
+}
+
+.flex-center {
+  align-items: center;
+  justify-content: center;
 }
 
 .item-switch {
@@ -622,4 +644,9 @@ td.directional_divider {
 .dice_checkbox:disabled + label {
   opacity: 25%;
   cursor: default;
+}
+
+.settings-errors {
+  margin: 0 1rem 1rem;
+  text-align: left;
 }

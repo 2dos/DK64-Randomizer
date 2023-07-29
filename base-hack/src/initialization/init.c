@@ -13,24 +13,17 @@
 #include "../../include/common.h"
 
 static char music_storage[MUSIC_SIZE];
+char music_types[SONG_COUNT];
 
 typedef struct musicInfo {
 	/* 0x000 */ short data[0xB0];
 } musicInfo;
-
-typedef enum song_types {
-	/* 0x000 */ SONGTYPE_BGM,
-	/* 0x001 */ SONGTYPE_EVENT,
-	/* 0x002 */ SONGTYPE_MAJORITEM,
-	/* 0x003 */ SONGTYPE_MINORITEM,
-} song_types;
 
 void fixMusicRando(void) {
 	/**
 	 * @brief Initialize Music Rando so that the data for each song is correct.
 	 * Without this, the game will crash from incorrect properties to what the song is expecting.
 	 */
-	// Music
 	if (Rando.music_rando_on) {
 		// Type bitfields
 		int size = SONG_COUNT << 1;
@@ -66,10 +59,53 @@ void fixMusicRando(void) {
 				songVolumes[i] = volume;
 			}
 		}
+		*(short*)(0x806CA97E) = 0x560 | ((songData[0x6B] >> 1) & 3); // Baboon Balloon
+		complex_free(write_space);
+		complex_free(write_space_0);
+	}
+	/*
+	// Music
+	if (Rando.music_rando_on) {
+		// Type bitfields
+		int size = SONG_COUNT << 1;
+		musicInfo* write_space = dk_malloc(size);
+		int* file_size;
+		*(int*)(&file_size) = size;
+		copyFromROM(0x1FFF000,write_space,&file_size,0,0,0,0);
+		// Type indexes
+		size = SONG_COUNT;
+		char* write_space_0 = dk_malloc(size);
+		*(int*)(&file_size) = size;
+		copyFromROM(0x1FEE200,write_space_0,&file_size,0,0,0,0);
+		for (int i = 0; i < SONG_COUNT; i++) {
+			// Handle Bitfield
+			int subchannel = (write_space->data[i] & 6) >> 1;
+			int channel = (write_space->data[i] & 0x78) >> 3;
+			songData[i] &= 0xFF81;
+			songData[i] |= (subchannel & 3) << 1;
+			songData[i] |= (channel & 0xF) << 3;
+
+			// Handle Type Index
+			music_types[i] = write_space_0[i];
+			if (write_space_0[i] > -1) {
+				song_types type = write_space_0[i];
+				int volume = 0;
+				if (type == SONGTYPE_BGM) {
+					volume = 23000;
+				} else if (type == SONGTYPE_MAJORITEM) {
+					volume = 27000;
+				} else {
+					// Event or Minor Item
+					volume = 25000;
+				}
+				songVolumes[i] = volume;
+			}
+		}
 		complex_free(write_space);
 		complex_free(write_space_0);
 
 	}
+	*/
 }
 
 void writeEndSequence(void) {
@@ -109,7 +145,6 @@ void loadHooks(void) {
 	loadSingularHook(0x806F8610, &GiveItemPointerToMulti);
 	loadSingularHook(0x806F88C8, &CoinHUDReposition);
 	loadSingularHook(0x8060005C, &getLobbyExit);
-	loadSingularHook(0x806C9A7C, &damageMultiplerCode);
 	loadSingularHook(0x8060DEF4, &SaveHelmHurryCheck);
 	if (Rando.warp_to_isles_enabled) {
 		loadSingularHook(0x806A995C, &PauseExtraSlotCode);
@@ -118,6 +153,8 @@ void loadHooks(void) {
 		loadSingularHook(0x806A8760, &PauseExtraSlotClamp1);
 		loadSingularHook(0x806A8804, &PauseExtraSlotCustomCode);
 		loadSingularHook(0x806A9898, &PauseCounterCap);
+	} else if (Rando.true_widescreen) {
+		*(short*)(0x806A981A) = (SCREEN_HD_FLOAT * 2) - 72;
 	}
 	loadSingularHook(0x806F3E74, &AutowalkFix);
 	loadSingularHook(0x80610948, &DynamicCodeFixes);
@@ -176,8 +213,8 @@ void initHack(int source) {
 			*(short*)(0x806C9CDE) = 7; // GiveEverything, write to bitfield. Seems to be unused but might as well
 			*(int*)(0x8076BF38) = (int)&music_storage[0]; // Increase music storage
 			DamageMultiplier = Rando.damage_multiplier;
-			WarpToIslesEnabled = Rando.warp_to_isles_enabled;
-			permaLossMode = Rando.perma_lose_kongs;
+			WidescreenEnabled = Rando.true_widescreen;
+			grab_lock_timer = -1;
 			preventTagSpawn = Rando.prevent_tag_spawn;
 			bonusAutocomplete = Rando.resolve_bonus;
 			TextHoldOn = Rando.quality_of_life.textbox_hold;
@@ -410,7 +447,7 @@ void initHack(int source) {
 			initPauseMenu(); // Changes to enable more items
 			// Spider Projectile
 			*(int*)(0x806CBD78) = 0x18400005; // BLEZ $v0, 0x5 - Decrease in health occurs if trap bubble active
-			if (Rando.hard_enemies) {
+			if (Rando.hard_mode.enemies) {
 				// writeFunction(0x806ADDC0, &handleSpiderTrapCode);
 				*(short*)(0x806B12DA) = 0x3A9; // Kasplat Shockwave Chance
 				*(short*)(0x806B12FE) = 0x3B3; // Kasplat Shockwave Chance
@@ -440,6 +477,16 @@ void initHack(int source) {
 				writeFunction(0x80660994, &getOscillationDelta);
 				writeFunction(0x806609BC, &getOscillationDelta);
 			}
+			// Damage mask
+			writeFunction(0x806A6EA8, &applyDamageMask);
+			writeFunction(0x806EE138, &applyDamageMask);
+			writeFunction(0x806EE330, &applyDamageMask);
+			writeFunction(0x806EE480, &applyDamageMask);
+			writeFunction(0x806EEA20, &applyDamageMask);
+			writeFunction(0x806EEEA4, &applyDamageMask);
+			writeFunction(0x806EF910, &applyDamageMask);
+			writeFunction(0x806EF9D0, &applyDamageMask);
+			writeFunction(0x806F5860, &applyDamageMask);
 			// Slow Turn Fix
 			writeFunction(0x806D2FC0, &fixRBSlowTurn);
 			// CB Bunch
@@ -485,7 +532,89 @@ void initHack(int source) {
 				writeFunction(0x806F6CB4, &tagAnywhereInit);
 				*(int*)(0x806F53AC) = 0; // Prevent LZ case
 
+				*(short*)(0x806C7088) = 0x1000; // Mech fish dying
+				// writeFunction(0x806C9020, &malloc_wipe);
+				// writeFunction(0x806C9044, &malloc_wipe);
+				// writeFunction(0x806C906C, &malloc_wipe);
 				// initTagAnywhere();
+			}
+			writeFunction(0x8072F1E8, &handleGrabbingLock);
+			writeFunction(0x8072F458, &handleActionSet); // Actor grabbables
+			writeFunction(0x8072F46C, &handleActionSet); // Model 2 grabbables
+			writeFunction(0x806CFC64, &handleActionSet); // Ledge Grabbing
+			if ((Rando.diddy_rnd_codes[0] != 0) || (Rando.diddy_rnd_codes[1] != 0) || (Rando.diddy_rnd_codes[2] != 0)) {
+				// Alter diddy R&D
+				short* diddy_rnd_code_writes[12] = {
+					// Code 0: 4231
+					(short*)0x8064E06A,
+					(short*)0x8064E066,
+					(short*)0x8064E062,
+					(short*)0x8064E05E,
+					// Code 1: 3124
+					(short*)0x8064E046,
+					(short*)0x8064E042,
+					(short*)0x8064E03E,
+					(short*)0x8064E00E,
+					// Code 2: 1342
+					(short*)0x8064E026,
+					(short*)0x8064E022,
+					(short*)0x8064E01E,
+					(short*)0x8064E01A,
+				};
+				for (int i = 0; i < 3; i++) {
+					for (int j = 0; j < 4; j++) {
+						*diddy_rnd_code_writes[(4 * i) + j] = (Rando.diddy_rnd_codes[i] >> ((3 - j) << 2)) & 0xF;
+					}
+				}
+			}
+			if (Rando.disabled_music.pause) {
+				*(int*)(0x805FC890) = 0; // Pause theme
+				*(int*)(0x805FC89C) = 0; // Pause Start theme
+			}
+			if (Rando.disabled_music.wrinkly) {
+				*(int*)(0x8064F180) = 0; // Wrinkly Theme
+			}
+			if (Rando.disabled_music.transform) {
+				*(int*)(0x8067E9E4) = 0; // Transform Theme
+				*(int*)(0x8067F7C0) = 0; // Transform Theme
+			}
+			if ((Rando.disabled_music.events) || (Rando.disabled_music.shops)) {
+				*(int*)(0x80602AAC) = 0x27A40018; // addiu $a0, $sp, 0x18
+				writeFunction(0x80602AB0, &filterSong);
+			}
+			if (Rando.disabled_music.chunk_songs) {
+				// *(int*)(0x806025BC) = 0; // Disable `playLevelMusic` - Map Load
+				*(int*)(0x8061DF74) = 0; // Disable `playLevelMusic`
+				*(int*)(0x806DB98C) = 0; // Disable `playLevelMusic`
+				*(short*)(0x806034F2) = 0; // Set Japes count to 0
+				*(short*)(0x80603556) = 0; // Set Az Beetle count to 0
+				*(short*)(0x80603542) = 0; // Set Factory count to 0
+				*(short*)(0x8060356A) = 0; // Set Factory Car count to 0
+				*(short*)(0x8060351A) = 0; // Set Galleon count to 0
+				*(short*)(0x80603592) = 0; // Set Isles count to 0
+				*(short*)(0x80603506) = 0; // Set Aztec count to 0
+				*(short*)(0x8060352E) = 0; // Set Galleon Seal count to 0
+				*(short*)(0x806035C6) = 0; // Set Fungi count to 0
+				*(short*)(0x8060357E) = 0; // Set Fungi Cart count to 0
+				*(short*)(0x806035BA) = 0; // Set TGrounds count to 0
+			}
+			if (Rando.hard_mode.easy_fall) {
+				float fall_threshold = 90.0f;
+				*(short*)(0x806D3682) = *(short*)(&fall_threshold); // Change fall too far threshold
+			}
+			if (Rando.hard_mode.lava_water) {
+				*(int*)(0x806677C4) = 0; // Dynamic Surfaces
+				// Static Surfaces
+				*(short*)(0x80667ED2) = 0x81;
+				*(short*)(0x80667EDA) = 0x81;
+				*(short*)(0x80667EEE) = 0x81;
+				*(short*)(0x80667EFA) = 0x81;
+				writeFunction(0x8062F3F0, &replaceWaterTexture); // Static water textures
+				// Dynamic Textures
+				SurfaceTypeInformation[0].texture_loader = SurfaceTypeInformation[7].texture_loader;
+				SurfaceTypeInformation[0].dl_writer = SurfaceTypeInformation[7].dl_writer;
+				SurfaceTypeInformation[3].texture_loader = SurfaceTypeInformation[7].texture_loader;
+				SurfaceTypeInformation[3].dl_writer = SurfaceTypeInformation[7].dl_writer;
 			}
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0

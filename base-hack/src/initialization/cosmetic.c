@@ -317,4 +317,5 @@ void initCosmetic(void) {
     initWrinklyColoring();
     initSeasonalChanges();
     initColorblindChanges();
+    //loadWidescreen(OVERLAY_BOOT);
 }

@@ -25,6 +25,10 @@ extern int inBossMap(maps map, int include_regular, int include_krool, int inclu
 extern int inMinigame(maps map);
 extern int isGamemode(gamemodes target_mode, int force_both);
 extern int has_key(int index);
+extern overlays getOverlayFromMap(maps map);
+extern void* malloc_wipe(int size);
+extern int applyDamageMask(int player_index, int damage);
+extern void* replaceWaterTexture(int table, int file, int unk0, int unk1);
 
 extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);
@@ -141,7 +145,7 @@ extern void activateBananaports(void);
 extern int getTagAnywhereKong(int direction);
 extern int getTAState(void);
 extern void toggleStandardAmmo(void);
-// extern void initTagAnywhere(void);
+extern void initTagAnywhere(void);
 extern void initStackTrace(void);
 extern void initItemDropTable(void);
 extern void initCollectableCollision(void);
@@ -167,6 +171,7 @@ extern void fastWarpShockwaveFix(void);
 extern int fixDilloTNTPads(void* actor);
 extern int canPlayJetpac(void);
 extern void setPrevSaveMap(void);
+extern int filterSong(int* song_write);
 
 extern move_block* getMoveBlock(void);
 extern void setLocationStatus(location_list location_index);
@@ -232,7 +237,9 @@ extern void enterFileProgress(int sfx);
 extern void pokemonSnapMode(void);
 extern int isSnapEnemyInRange(void);
 extern int getPkmnSnapData(int* frames, int* current, int* total);
-extern void updateSkippableCutscenes(void);
+extern void pressSkipHandler(void* actor);
+extern void clearSkipCache(void);
+extern void updateSkipCheck(void);
 extern void renderScreenTransitionCheck(int applied_transition);
 extern int updateLevelIGT(void);
 extern int* printLevelIGT(int* dl, int x, int y, float scale, char* str);
@@ -243,6 +250,7 @@ extern void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, in
 extern void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
 extern void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
 extern void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
+extern void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1, int p2);
 extern void spawnRewardAtActor(int object, int flag);
 extern void spawnMinecartReward(int object, int flag);
 extern int checkFlagDuplicate(short flag, flagtypes type);
@@ -263,6 +271,7 @@ extern int getCrownItem(maps map);
 extern int getKeyItem(int old_flag);
 extern int getFairyModel(int flag);
 extern int getRainbowCoinItem(int old_flag);
+extern int getCrateItem(int old_flag);
 extern int* controlKeyText(int* dl);
 extern void keyGrabHook(int song, int vol);
 extern int itemGrabHook(int collectable_type, int obj_type, int is_homing);
@@ -315,12 +324,15 @@ extern void initIceTrap(void);
 extern void queueIceTrap(void);
 extern void callIceTrap(void);
 extern int getPatchWorld(int index);
+extern int getCrateWorld(int index);
+extern int getCrateFlag(int id);
 
 extern void initItemRando(void);
 extern void initFiles(void);
 extern void initQoL(void);
 extern void initCosmetic(void);
 extern void populatePatchItem(int id, int map, int index, int world);
+extern void populateCrateItem(int id, int map, int index, int world);
 extern int isObjectTangible_detailed(int id);
 
 extern void insertROMMessages(void);
@@ -363,6 +375,13 @@ extern void SaveExtraData(extra_global_data data_type, int sub_index, int value)
 extern void ResetExtraData(extra_global_data data_type, int sub_index);
 extern void setKrushaAmmoColor(void);
 
+extern void loadWidescreen(overlays loaded_overlay);
+extern void initFilename(void);
+
+extern void handleGrabbingLock(void* player, int player_index, int allow_vines);
+extern void handleActionSet(int action, void* actor, int player_index);
+extern int getTrackerYOffset(void);
+
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
 extern const short kong_flags[5];
@@ -389,3 +408,8 @@ extern collision_info object_collisions[COLLISION_LIMIT];
 
 extern mtx_item static_mtx[20];
 extern int hint_pointers[35];
+extern char music_types[SONG_COUNT];
+extern char filename[FILENAME_LENGTH + 1];
+extern char grab_lock_timer;
+extern char tag_locked;
+extern char enable_skip_check;

@@ -108,6 +108,7 @@ settingsExclusionMap = {
     "logic_type": {LogicType.glitchless: ["glitches_selected"], LogicType.nologic: ["glitches_selected"]},
     "select_keys": {False: ["starting_keys_list_selected"], True: ["krool_key_count"]},
     "quality_of_life": {False: ["misc_changes_selected"]},
+    "hard_mode": {False: ["hard_mode_selected"]},
 }
 
 
@@ -174,9 +175,11 @@ def encrypt_settings_string_enum(dict_data: dict):
         "camera_is_follow",
         "sfx_volume",
         "music_volume",
-        "camera_is_widescreen",
+        "true_widescreen",
         "camera_is_not_inverted",
         "sound_type",
+        "songs_excluded",
+        "excluded_songs_selected",
     ]:
         if pop in dict_data:
             dict_data.pop(pop)

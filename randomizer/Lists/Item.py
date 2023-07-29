@@ -172,6 +172,7 @@ ItemList = {
     Items.JunkAmmo: Item("Junk Item (Ammo Crate)", False, Types.JunkItem, Kongs.any),
     Items.JunkFilm: Item("Junk Item (Film)", False, Types.JunkItem, Kongs.any),
     Items.JunkOrange: Item("Junk Item (Orange)", False, Types.JunkItem, Kongs.any),
+    Items.CrateMelon: Item("Crate Melon", False, Types.CrateItem, Kongs.any),
     Items.DKIslesDonkeyBlueprint: Item("DK Isles Donkey Blueprint", False, Types.Blueprint, Kongs.donkey),
     Items.DKIslesDiddyBlueprint: Item("DK Isles Diddy Blueprint", False, Types.Blueprint, Kongs.diddy),
     Items.DKIslesLankyBlueprint: Item("DK Isles Lanky Blueprint", False, Types.Blueprint, Kongs.lanky),

@@ -72,7 +72,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.GloomyGalleonStart, lambda l: l.settings.open_levels or Events.LighthouseGateOpened in l.Events),
-        TransitionFront(Regions.LighthouseUnderwater, lambda l: l.swim),
+        TransitionFront(Regions.LighthouseUnderwater, lambda l: l.swim and (not l.IsLavaWater() or l.Melons >= 3)),
         TransitionFront(Regions.LighthousePlatform, lambda l: Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))),
         TransitionFront(Regions.LighthouseSnideAlcove, lambda l: Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))),
         TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: l.CanPhaseswim()),
@@ -147,6 +147,7 @@ LogicRegions = {
     Regions.Shipyard: Region("Shipyard", "Shipyard Outskirts", Levels.GloomyGalleon, True, None, [
         LocationLogic(Locations.GalleonDonkeyFreetheSeal, lambda l: Events.SealReleased in l.Events and (l.isdonkey or l.settings.free_trade_items)),
         LocationLogic(Locations.GalleonKasplatNearSub, lambda l: not l.settings.kasplat_rando),
+        LocationLogic(Locations.MelonCrate_Location05, lambda l: True),
     ], [
         Event(Events.ShipyardTreasureRoomOpened, lambda l: Events.ShipyardEnguarde in l.Events and (Events.WaterSwitch in l.Events or l.advanced_platforming)),
         Event(Events.GalleonDonkeyPad, lambda l: l.bongos and l.isdonkey and (l.swim or l.settings.high_req)),
@@ -159,7 +160,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.GloomyGalleonStart, lambda l: l.settings.shuffle_loading_zones == ShuffleLoadingZones.all or Events.ShipyardGateOpened in l.Events),
-        TransitionFront(Regions.ShipyardUnderwater, lambda l: l.swim),
+        TransitionFront(Regions.ShipyardUnderwater, lambda l: l.swim and (not l.IsLavaWater() or l.Melons >= 3)),
         TransitionFront(Regions.SealRace, lambda l: (Events.SealReleased in l.Events and Events.WaterSwitch in l.Events and l.isdonkey) or l.CanPhaseswim(), Transitions.GalleonShipyardToSeal),
         TransitionFront(Regions.CandyGalleon, lambda l: True),
         TransitionFront(Regions.FunkyGalleon, lambda l: True),

@@ -503,6 +503,13 @@ def place_randomized_items(spoiler):
                             ROM_COPY.writeMultipleBytes(actor_index, 2)
                         else:
                             print("Dirt Patch Item Placement Error")
+                    elif item.location >= Locations.MelonCrate_Location00 and item.location <= Locations.MelonCrate_Location12:
+                        index = item.location - Locations.MelonCrate_Location00
+                        if index < 13:
+                            LocalROM().seek(0x1FF0E80 + (index * 2))
+                            LocalROM().writeMultipleBytes(actor_index, 2)
+                        else:
+                            print("Melon Crate Item Placement Error")
                     elif item.old_item == Types.Medal:
                         # Write to Medal Table
                         # Just need offset of subtype:

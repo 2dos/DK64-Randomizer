@@ -9,6 +9,7 @@ finalROM = "rom/dk64-randomizer-base-dev.z64"
 music_size = 0x8000
 heap_size = 0x34000 + music_size
 flut_size = 0x640
+MODEL_DIRECTORY = "assets/models/"
 
 
 def intf_to_float(intf):

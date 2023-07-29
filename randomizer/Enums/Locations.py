@@ -632,3 +632,18 @@ class Locations(IntEnum):
     RainbowCoin_Location13 = auto()
     RainbowCoin_Location14 = auto()
     RainbowCoin_Location15 = auto()  # ID: 594
+
+    # Melon Crate Locations
+    MelonCrate_Location00 = auto()
+    MelonCrate_Location01 = auto()
+    MelonCrate_Location02 = auto()
+    MelonCrate_Location03 = auto()
+    MelonCrate_Location04 = auto()
+    MelonCrate_Location05 = auto()
+    MelonCrate_Location06 = auto()
+    MelonCrate_Location07 = auto()
+    MelonCrate_Location08 = auto()
+    MelonCrate_Location09 = auto()
+    MelonCrate_Location10 = auto()
+    MelonCrate_Location11 = auto()
+    MelonCrate_Location12 = auto()

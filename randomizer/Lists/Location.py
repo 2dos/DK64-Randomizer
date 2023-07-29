@@ -70,7 +70,7 @@ class Location:
             if self.level in (Levels.DKIsles, Levels.HideoutHelm):
                 level_index = 7
             self.map_id_list = [MapIDCombo(0, -1, 549 + self.kong + (5 * level_index), self.kong)]
-        elif self.type in (Types.Banana, Types.ToughBanana, Types.Key, Types.Coin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin):
+        elif self.type in (Types.Banana, Types.ToughBanana, Types.Key, Types.Coin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem):
             if data is None:
                 self.map_id_list = []
             else:
@@ -717,6 +717,20 @@ LocationList = {
     Locations.RainbowCoin_Location13: Location(Levels.DKIsles, "Isles Dirt: Training Grounds Rear Tunnel", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2AB)]),  # Back of TG
     Locations.RainbowCoin_Location14: Location(Levels.DKIsles, "Isles Dirt: Banana Hoard", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.TrainingGrounds, -1, 0x2AC)]),  # Banana Hoard
     Locations.RainbowCoin_Location15: Location(Levels.DKIsles, "Isles Dirt: Castle Lobby", Items.RainbowCoin, Types.RainbowCoin, Kongs.any, [MapIDCombo(Maps.CreepyCastleLobby, -1, 0x2AD)]),  # Castle Lobby
+
+    Locations.MelonCrate_Location00: Location(Levels.JungleJapes, "Japes Crate: Behind the Mountain", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3AC)]),  # Japes behind mountain
+    Locations.MelonCrate_Location01: Location(Levels.JungleJapes, "Japes Crate: In the Rambi Cave", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.JungleJapes, -1, 0x3AD)]),  # Japes near cb boulder
+    Locations.MelonCrate_Location02: Location(Levels.AngryAztec, "Aztec Crate: Llama Temple Entrance", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.AztecLlamaTemple, -1, 0x3AE)]),  # Llama Temple
+    Locations.MelonCrate_Location03: Location(Levels.FranticFactory, "Factory Crate: Near Funky", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x3AF)]),  # Factory near funky
+    Locations.MelonCrate_Location04: Location(Levels.FranticFactory, "Factory Crate: Near Candy", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x3B0)]),  # Factory near candy/cranky
+    Locations.MelonCrate_Location05: Location(Levels.GloomyGalleon, "Galleon Crate: Near Cactus", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.GloomyGalleon, -1, 0x3B1)]),  # Galleon near cactus
+    Locations.MelonCrate_Location06: Location(Levels.AngryAztec, "Aztec Crate: On Llama Temple", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3B2)]),  # Aztec on Llama
+    Locations.MelonCrate_Location07: Location(Levels.AngryAztec, "Aztec Crate: Near Gong Tower", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3B3)]),  # Aztec near gong tower
+    Locations.MelonCrate_Location08: Location(Levels.FungiForest, "Forest Crate: Near Owl Tree", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x3B4)]),  # Fungi near owl tree
+    Locations.MelonCrate_Location09: Location(Levels.FungiForest, "Forest Crate: Near Thornvine Barn", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x3B5)]),  # Fungi near DK barn
+    Locations.MelonCrate_Location10: Location(Levels.FungiForest, "Forest Crate: Behind Dark Attic", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.FungiForest, -1, 0x3B6)]),  # Fungi behind dark attic
+    Locations.MelonCrate_Location11: Location(Levels.FungiForest, "Forest Crate: In Thornvine Barn", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.ForestThornvineBarn, -1, 0x3B7)]),  # Fungi in DK Barn
+    Locations.MelonCrate_Location12: Location(Levels.CreepyCastle, "Castle Crate: Behind Mausoleum Entrance", Items.CrateMelon, Types.CrateItem, Kongs.any, [MapIDCombo(Maps.CastleLowerCave, -1, 0x3B8)]),  # Crypt behind Mausoleum entrance
 }
 
 TrainingBarrelLocations = {

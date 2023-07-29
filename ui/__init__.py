@@ -5,9 +5,12 @@ from ui.rando_options import (
     disable_boss_rando,
     disable_colors,
     disable_enemy_modal,
+    disable_hard_mode_modal,
+    disable_excluded_songs_modal,
     disable_helm_hurry,
     disable_move_shuffles,
     disable_music,
+    enable_plandomizer,
     hide_rgb,
     item_rando_list_changed,
     max_doorone_requirement,
@@ -49,6 +52,8 @@ max_music(None)
 max_sfx(None)
 disable_barrel_modal(None)
 disable_enemy_modal(None)
+disable_excluded_songs_modal(None)
+disable_hard_mode_modal(None)
 toggle_item_rando(None)
 disable_boss_rando(None)
 hide_rgb(None)
@@ -65,3 +70,4 @@ item_rando_list_changed(None)
 toggle_key_settings(None)
 disable_helm_hurry(None)
 toggle_vanilla_door_rando(None)
+enable_plandomizer(None)

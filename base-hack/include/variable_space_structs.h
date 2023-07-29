@@ -60,7 +60,8 @@ typedef struct varspace {
 	/* 0x0AE */ char helm_hurry_mode; // 0 = Off, 1 = On: Starting a new file summons the helm timer, each BP adds 2 minutes to the clock, timing out disables saving.
 	/* 0x0AF */ char archipelago; // DK64R is being run through Archipelago
 	/* 0x0B0 */ quality_options quality_of_life; // Size: 3
-	/* 0x0B3 */ char unk_B0[0xC7 - 0xB3];
+	/* 0x0B3 */ char unk_B0[0xC6 - 0xB3];
+	/* 0x0C6 */ SeedOfDeathSettings hard_mode; // Colloquially known as "Seed of Death"
 	/* 0x0C7 */ unsigned char default_sound_type; // 0 = Stereo, 1 = Surround, 2 = Mono
 	/* 0x0C8 */ unsigned char default_sfx_volume; // 0 - 40
 	/* 0x0C9 */ unsigned char default_music_volume; // 0 - 40
@@ -92,7 +93,7 @@ typedef struct varspace {
 	/* 0x113 */ unsigned char any_kong_items; // Bitfield 0000 00ba. a = All items except blueprints disabling kong check. b = Blueprints disable kong check.
 	/* 0x114 */ unsigned char unk114;
 	/* 0x115 */ unsigned char unk115;
-	/* 0x116 */ char hard_enemies; // 0 = Off, 1 = On
+	/* 0x116 */ char cutscene_skip_setting; // 0 = Off, 1 = On Button Press, 2 = Automatic
 	/* 0x117 */ unsigned char enabled_pkmnsnap_enemies[5]; // Bitfield
 	/* 0x11C */ char krusha_slot; // -1 = Not replacing a kong. 0-4 = Replaces kong of relevant index. Takes priority over disco chunky
 	/* 0x11D */ unsigned char win_condition; // See vars.h for enum
@@ -159,4 +160,10 @@ typedef struct varspace {
 	/* 0x1AF */ char pppanic_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
 	/* 0x1B0 */ char sseek_klaptrap_color; // 0 = Green, 1 = Purple, 2 = Red
 	/* 0x1B1 */ unsigned char wrinkly_rgb[3];
+	/* 0x1B4 */ char true_widescreen; // Port of the widescreen hack from gamemasterplc
+	/* 0x1B5 */ unsigned char pppanic_fairy_model; // 0 = Vanilla
+	/* 0x1B6 */ unsigned char tttrouble_turtle_model; // 0 = Vanilla
+	/* 0x1B7 */ DisabledMusicStruct disabled_music;
+	/* 0x1B8 */ unsigned short diddy_rnd_codes[3]; // 4 bits assigned for each part of the combination
+	/* 0x1BE */ unsigned char jetpac_enemy_order[8]; // Indexes 0-7 to represent enemy difficulty
 } varspace;

@@ -1,19 +1,3 @@
-damageMultiplerCode:
-    bgez $a3, damageMultiplerCode_Finish
-    lb $t9, 0x2FD (v0)
-    subu $t2, $zero, $a3
-    slti $t2, $t2, 12
-    beqz $t2, damageMultiplerCode_Finish
-    nop
-    lui $t2, hi(DamageMultiplier)
-    lbu $t2, lo(DamageMultiplier) ($t2)
-    multu $a3, $t2
-    mflo $a3
-
-    damageMultiplerCode_Finish:
-        j 0x806C9A84
-        addu $t0, $t9, $a3
-
 tagPreventCode:
     lui $a1, hi(preventTagSpawn)
     lbu $a1, lo(preventTagSpawn) ($a1)
@@ -356,3 +340,9 @@ brightenMMMEnemies:
     brightenMMMEnemies_finish:
         j 0x80631388
         sw $t4, 0x4 ($v0)
+
+staticWaterDamage:
+    lui $at, 0x8080
+    sb $s4, 0x94B0 ($at)
+    j 0x80668420
+    sb $s4, 0x9484 ($at)

@@ -10,17 +10,21 @@ from randomizer.Enums.Settings import SettingsMap
 from randomizer.Patching.ApplyLocal import patching_response
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Worker import background
-from ui.bindings import bind, serialize_settings
+from ui.bindings import bind
+from ui.plando_validation import validate_plando_options
 from ui.progress_bar import ProgressBar
 from ui.rando_options import (
     disable_barrel_modal,
     disable_colors,
     disable_enemy_modal,
+    disable_hard_mode_modal,
+    disable_excluded_songs_modal,
     disable_helm_hurry,
     disable_helm_phases,
     disable_krool_phases,
     disable_move_shuffles,
     disable_music,
+    enable_plandomizer,
     item_rando_list_changed,
     max_music,
     max_randomized_blocker,
@@ -39,6 +43,7 @@ from ui.rando_options import (
     updateDoorTwoCountText,
     updateDoorTwoNumAccess,
 )
+from ui.serialize_settings import serialize_settings
 
 
 @bind("click", "export_settings")
@@ -120,6 +125,8 @@ def import_settings_string(event):
     item_rando_list_changed(None)
     toggle_item_rando(None)
     disable_enemy_modal(None)
+    disable_excluded_songs_modal(None)
+    disable_hard_mode_modal(None)
     toggle_bananaport_selector(None)
     disable_helm_hurry(None)
     toggle_logic_type(None)
@@ -127,6 +134,7 @@ def import_settings_string(event):
     disable_krool_phases(None)
     disable_helm_phases(None)
     max_starting_moves_count(None)
+    enable_plandomizer(None)
 
 
 @bind("change", "patchfileloader")
@@ -196,16 +204,32 @@ def generate_seed(event):
     Args:
         event (event): Javascript click event.
     """
+    # Hide the div for settings errors.
+    settings_errors_element = js.document.getElementById("settings_errors")
+    settings_errors_element.style.display = "none"
     # Check if the rom filebox has a file loaded in it.
     if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
         js.document.getElementById("rom").select()
         if "is-invalid" not in list(js.document.getElementById("rom").classList):
             js.document.getElementById("rom").classList.add("is-invalid")
     else:
+        # The data is serialized outside of the loop, because validation occurs
+        # here and we might stop before attempting to generate a seed.
+        form_data = serialize_settings()
+        plando_errors = validate_plando_options(form_data)
+        # If errors are returned, the plandomizer options are invalid.
+        # Do not attempt to generate a seed.
+        if len(plando_errors) > 0:
+            joined_errors = "<br>".join(plando_errors)
+            error_html = f"ERROR:<br>{joined_errors}"
+            # Show and populate the div for settings errors.
+            settings_errors_element.innerHTML = error_html
+            settings_errors_element.style = ""
+            return
+
         # Start the progressbar
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ProgressBar().update_progress(0, "Initalizing"))
-        form_data = serialize_settings()
         if not form_data.get("seed"):
             form_data["seed"] = str(random.randint(100000, 999999))
         js.apply_conversion()

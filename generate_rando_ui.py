@@ -42,7 +42,13 @@ async def initialize():
     from randomizer.Lists.Logic import GlitchSelector
     from randomizer.Lists.Minigame import MinigameSelector
     from randomizer.Lists.QoL import QoLSelector
+    from randomizer.Lists.HardMode import HardSelector
     from randomizer.Lists.Warps import VanillaBananaportSelector
+    from randomizer.Lists.Songs import ExcludedSongsSelector
+
+    # Module of lists and utils used for plandomizer
+    from randomizer.PlandoUtils import PlandoItemFilter, PlandoMinigameFilter, PlandoOptionClassAnnotation, PlandoShopSortFilter
+    from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableItems, PlannableMinigames, PlannableSpawns
 
     js.listeners = []
     js.progression_presets = []
@@ -64,16 +70,28 @@ async def initialize():
     js.pointer_addresses = json.loads(js.getFile("./static/patches/pointer_addresses.json"))
 
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
+    # Add custom Jinja2 filter functions.
+    templateEnv.filters["plando_item_restrict"] = PlandoItemFilter
+    templateEnv.filters["plando_minigame_restrict"] = PlandoMinigameFilter
+    templateEnv.filters["plando_shop_sort"] = PlandoShopSortFilter
     template = templateEnv.get_template("base.html.jinja2")
+    # Add custom Jinja2 functions.
+    template.globals.update({"plando_option_class_annotation": PlandoOptionClassAnnotation})
     rendered = await template.render(
         minigames=MinigameSelector,
         misc_changes=QoLSelector,
+        hard_mode=HardSelector,
         enemies=EnemySelector,
+        excluded_songs=ExcludedSongsSelector,
         itemRando=ItemRandoSelector,
         keys=KeySelector,
         glitches=GlitchSelector,
         helm_hurry_items=HHItemSelector,
         vanilla_warps=VanillaBananaportSelector,
+        plando_items=PlannableItems,
+        plando_minigames=PlannableMinigames,
+        plando_panels=PlandomizerPanels,
+        plando_spawns=PlannableSpawns,
     )
     js.document.documentElement.innerHTML = ""
     js.document.open()

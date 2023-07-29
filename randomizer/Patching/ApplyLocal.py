@@ -13,13 +13,15 @@ from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolid
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
+from randomizer.Enums.Settings import ExcludedSongs
+from randomizer.Lists.Songs import ExcludedSongsSelector
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
-from ui.bindings import serialize_settings
 from ui.GenSpoiler import GenerateSpoiler
 from ui.GenTracker import generateTracker
 from ui.progress_bar import ProgressBar
+from ui.serialize_settings import serialize_settings
 
 
 class BooleanProperties:
@@ -125,7 +127,6 @@ async def patching_response(data, from_patch_gen=False):
             BooleanProperties(settings.remove_water_oscillation, 0x10F),  # Remove Water Oscillation
             BooleanProperties(settings.dark_mode_textboxes, 0x44),  # Dark Mode Text bubble
             BooleanProperties(settings.camera_is_follow, 0xCB),  # Free/Follow Cam
-            BooleanProperties(settings.camera_is_widescreen, 0xCA),  # Normal/Widescreen
             BooleanProperties(settings.camera_is_not_inverted, 0xCC),  # Inverted/Non-Inverted Camera
         ]
 
@@ -133,6 +134,67 @@ async def patching_response(data, from_patch_gen=False):
             if prop.check:
                 ROM().seek(sav + prop.offset)
                 ROM().write(prop.target)
+
+        # Excluded Songs
+        if settings.songs_excluded:
+            disabled_songs = settings.excluded_songs_selected.copy()
+            write_data = [0]
+            for item in ExcludedSongsSelector:
+                if (item["value"] in disabled_songs and item["shift"] >= 0) or len(disabled_songs) == 0:
+                    offset = int(item["shift"] >> 3)
+                    check = int(item["shift"] % 8)
+                    write_data[offset] |= 0x80 >> check
+            ROM().seek(sav + 0x1B7)
+            ROM().writeMultipleBytes(write_data[0], 1)
+
+        if settings.true_widescreen:
+            ROM().seek(sav + 0x1B4)
+            ROM().write(1)
+
+            GFX_START = 0x101A40
+            SCREEN_WD = 366
+            SCREEN_HD = 208
+            BOOT_OFFSET = 0xFB20 - 0xEF20
+
+            ROM().seek(GFX_START + 0x00)
+            ROM().writeMultipleBytes(SCREEN_WD * 2, 2)  # 2D Viewport Width
+            ROM().seek(GFX_START + 0x02)
+            ROM().writeMultipleBytes(SCREEN_HD * 2, 2)  # 2D Viewport Height
+            ROM().seek(GFX_START + 0x08)
+            ROM().writeMultipleBytes(SCREEN_WD * 2, 2)  # 2D Viewport X Position
+            ROM().seek(GFX_START + 0x0A)
+            ROM().writeMultipleBytes(SCREEN_HD * 2, 2)  # 2D Viewport Y Position
+            ROM().seek(GFX_START + 0x9C)
+            ROM().writeMultipleBytes((SCREEN_WD << 14) | (SCREEN_HD << 2), 4)  # Default Scissor for 2D
+            data_offsets = [0xEF20, 0xF7E0]
+            internal_size = 0x50
+            internal_offsets = [0, 2]
+            for tv_offset in data_offsets:
+                for int_offset in internal_offsets:
+                    ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x08)
+                    ROM().writeMultipleBytes(SCREEN_WD, 4)  # VI Width
+                    ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x20)
+                    ROM().writeMultipleBytes(int((SCREEN_WD * 512) / 320), 4)  # VI X Scale
+                    ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x28)
+                    ROM().writeMultipleBytes((SCREEN_WD * 2), 4)  # VI Field 1 Framebuffer Offset
+                    ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x3C)
+                    ROM().writeMultipleBytes((SCREEN_WD * 2), 4)  # VI Field 2 Framebuffer Offset
+                    ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x2C)
+                    ROM().writeMultipleBytes(int((SCREEN_HD * 1024) / 240), 4)  # VI Field 1 Y Scale
+                    ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x40)
+                    ROM().writeMultipleBytes(int((SCREEN_HD * 1024) / 240), 4)  # VI Field 2 Y Scale
+            ROM().seek(BOOT_OFFSET + 0xBC4 + 2)
+            ROM().writeMultipleBytes(SCREEN_WD * 2, 2)  # Row Offset of No Expansion Pak Image
+            ROM().seek(BOOT_OFFSET + 0xBC8 + 2)
+            ROM().writeMultipleBytes(SCREEN_WD * SCREEN_HD * 2, 2)  # Invalidation Size for Framebuffer 1
+            ROM().seek(BOOT_OFFSET + 0xE08)
+            ROM().writeMultipleBytes(0x24180000 | SCREEN_WD, 4)  # Row Pitch for No Expansion Pak Screen Text
+            ROM().seek(BOOT_OFFSET + 0xE0C)
+            ROM().writeMultipleBytes(0x03060019, 4)  # Calculate Row Pixel Number for No Expansion Pak Screen Text
+            ROM().seek(BOOT_OFFSET + 0xE10)
+            ROM().writeMultipleBytes(0x0000C012, 4)  # Get Row Pixel Number for No Expansion Pak Screen Text
+            ROM().seek(BOOT_OFFSET + 0x1020 + 2)
+            ROM().writeMultipleBytes((SCREEN_WD - 8) * 2, 2)  # Text Framebuffer Pitch
 
         # Apply Hash
         order = 0

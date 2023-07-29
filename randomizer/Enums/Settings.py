@@ -114,6 +114,33 @@ class DPadDisplays(IntEnum):
     minimal = 2
 
 
+class ExcludedSongs(IntEnum):
+    """Determines the types of songs excluded."""
+
+    wrinkly = 1
+    transformation = 2
+    pause_music = 3
+    sub_areas = 4
+    # shops = 5
+    # events = 6
+
+
+class ExtraCutsceneSkips(IntEnum):
+    """Controls how extra cutscenes are handled.
+
+    This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
+    change these enum values or seed generation will break.
+
+    off: Extra Cutscenes can't be skipped.
+    press: Cutscenes can be skipped by pressing start.
+    auto: Cutscenes are skipped automatically.
+    """
+
+    off = 0
+    press = 1
+    auto = 2
+
+
 class FillAlgorithm(IntEnum):
     """The algorithm used for placing items.
 
@@ -125,11 +152,13 @@ class FillAlgorithm(IntEnum):
         those locations will be valid. More likely to place items deeper into
         a seed.
     random: Places items with no regard for logic.
+    careful_random: Places items with no regard for anything except coin logic. Probably.
     """
 
     forward = auto()
     assumed = auto()
     random = auto()
+    careful_random = auto()
 
 
 class FreeTradeSetting(IntEnum):
@@ -219,6 +248,20 @@ class HelmSetting(IntEnum):
     skip_all = 2
 
 
+class HardModeSelected(IntEnum):
+    """Various hard mode changes that can be applied.
+
+    These values are tied to the HardSelector in randomizer.Lists.HardMode. More
+    details on each can be found in that file.
+    """
+
+    hard_bosses = 1
+    extra_hard_bosses = 2
+    hard_enemies = 3
+    water_is_lava = 4
+    reduced_fall_damage_threshold = 5
+
+
 # TODO: merge this with the Types enum.
 class ItemRandoListSelected(IntEnum):
     """Item categories that may be randomized.
@@ -241,6 +284,7 @@ class ItemRandoListSelected(IntEnum):
     beanpearl = 12
     fakeitem = 13
     junkitem = 14
+    crateitem = 15
 
 
 class KasplatRandoSetting(IntEnum):
@@ -554,8 +598,10 @@ SettingsMap = {
     "dpad_display": DPadDisplays,
     "enemies_selected": Enemies,
     "enguarde_colors": CharacterColors,
+    "excluded_songs_selected": ExcludedSongs,
     "free_trade_setting": FreeTradeSetting,
     "glitches_selected": GlitchesSelected,
+    "hard_mode_selected": HardModeSelected,
     "helm_barrels": MinigameBarrels,
     "helm_setting": HelmSetting,
     "item_rando_list_selected": ItemRandoListSelected,
@@ -568,6 +614,7 @@ SettingsMap = {
     "microhints_enabled": MicrohintsEnabled,
     "minigames_list_selected": MinigamesListSelected,
     "misc_changes_selected": MiscChangesSelected,
+    "more_cutscene_skips": ExtraCutsceneSkips,
     "move_rando": MoveRando,
     "rambi_colors": CharacterColors,
     "random_prices": RandomPrices,
@@ -728,6 +775,10 @@ class SettingsStringEnum(IntEnum):
     coin_rando = 130
     vanilla_door_rando = 131
     starting_moves_count = 132
+    enable_plandomizer = 133
+    hard_mode_selected = 134
+    hard_mode = 135
+    more_cutscene_skips = 136
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -735,6 +786,8 @@ class SettingsStringEnum(IntEnum):
 DeprecatedSettings = {
     # Example
     # SettingsStringEnum.cb_rando,
+    SettingsStringEnum.hard_bosses,
+    SettingsStringEnum.hard_enemies,
 }
 
 
@@ -793,6 +846,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
+    SettingsStringEnum.enable_plandomizer: SettingsStringDataType.bool,
     SettingsStringEnum.enable_shop_hints: SettingsStringDataType.bool,
     SettingsStringEnum.enable_tag_anywhere: SettingsStringDataType.bool,
     SettingsStringEnum.enemies_selected: SettingsStringDataType.list,
@@ -805,6 +859,8 @@ SettingsStringTypeMap = {
     SettingsStringEnum.free_trade_setting: FreeTradeSetting,
     SettingsStringEnum.generate_spoilerlog: SettingsStringDataType.bool,
     SettingsStringEnum.glitches_selected: SettingsStringDataType.list,
+    SettingsStringEnum.hard_mode: SettingsStringDataType.bool,
+    SettingsStringEnum.hard_mode_selected: SettingsStringDataType.list,
     SettingsStringEnum.hard_blockers: SettingsStringDataType.bool,
     SettingsStringEnum.hard_bosses: SettingsStringDataType.bool,
     SettingsStringEnum.hard_enemies: SettingsStringDataType.bool,
@@ -852,6 +908,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.microhints_enabled: MicrohintsEnabled,
     SettingsStringEnum.minigames_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.misc_changes_selected: SettingsStringDataType.list,
+    SettingsStringEnum.more_cutscene_skips: ExtraCutsceneSkips,
     SettingsStringEnum.move_rando: MoveRando,
     SettingsStringEnum.no_healing: SettingsStringDataType.bool,
     SettingsStringEnum.no_melons: SettingsStringDataType.bool,
@@ -910,6 +967,7 @@ SettingsStringListTypeMap = {
     SettingsStringEnum.misc_changes_selected: MiscChangesSelected,
     SettingsStringEnum.starting_keys_list_selected: Items,
     SettingsStringEnum.warp_level_list_selected: Maps,
+    SettingsStringEnum.hard_mode_selected: HardModeSelected,
 }
 
 # This map specifies the minimum and maximum values for numeric settings.

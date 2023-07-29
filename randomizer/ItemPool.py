@@ -7,12 +7,13 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Settings import MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels
+from randomizer.Enums.Settings import MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, HardModeSelected
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong
 from randomizer.Lists.LevelInfo import LevelInfoList
 from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, LocationList, SharedMoveLocations, TinyMoveLocations, TrainingBarrelLocations
 from randomizer.Lists.ShufflableExit import ShufflableExits
+from randomizer.Patching.Lib import IsItemSelected
 
 
 def PlaceConstants(settings):
@@ -95,6 +96,8 @@ def AllItems(settings):
         allItems.extend(FairyItems())
     if Types.RainbowCoin in settings.shuffled_location_types:
         allItems.extend(RainbowCoinItems())
+    if Types.CrateItem in settings.shuffled_location_types:
+        allItems.extend(MelonCrateItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems())
     if Types.JunkItem in settings.shuffled_location_types:
@@ -106,6 +109,9 @@ def AllItems(settings):
         allItems.extend(TinyMoves)
         allItems.extend(ChunkyMoves)
         allItems.extend(ImportantSharedMoves)
+        if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava):
+            allItems.extend(JunkSharedMoves)
+
         if settings.training_barrels == TrainingBarrels.shuffled:
             allItems.extend(TrainingBarrelAbilities().copy())
         if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
@@ -141,6 +147,8 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(FairyItems())
     if Types.RainbowCoin in settings.shuffled_location_types:
         allItems.extend(RainbowCoinItems())
+    if Types.CrateItem in settings.shuffled_location_types:
+        allItems.extend(MelonCrateItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems())
     if Types.JunkItem in settings.shuffled_location_types:
@@ -388,6 +396,11 @@ def RainbowCoinItems():
     return itemPool
 
 
+def MelonCrateItems():
+    """Return a list of No Items to be placed."""
+    return []
+
+
 def FairyItems():
     """Return a list of Fairies to be placed."""
     itemPool = []
@@ -446,6 +459,8 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(MiscItemRandoItems())  # Covers Bean and Pearls
     if Types.RainbowCoin in unplacedTypes:
         itemPool.extend(RainbowCoinItems())
+    if Types.CrateItem in unplacedTypes:
+        itemPool.extend(MelonCrateItems())
     if Types.ToughBanana in unplacedTypes:
         itemPool.extend(ToughGoldenBananaItems())
     # Never logic-affecting items

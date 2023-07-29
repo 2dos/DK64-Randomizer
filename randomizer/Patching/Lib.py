@@ -499,6 +499,15 @@ def getObjectAddressBrowser(map: int, id: int, object_type: str) -> int:
     return None
 
 
+def IsItemSelected(bool_setting: bool, multiselector_setting: list, check: int):
+    """Determine whether a multiselector setting is enabled."""
+    if not bool_setting:
+        return False
+    if len(multiselector_setting) == 0:
+        return True
+    return check in multiselector_setting
+
+
 class TextureFormat(IntEnum):
     """Texture Format Enum."""
 

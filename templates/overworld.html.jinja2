@@ -248,14 +248,16 @@
                 </div>
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
-                           title="Enables potentially harder versions of boss fights:&#10;- Mad Jack: if Boss Kong Shuffle is on, you may be required to fight the boss as Donkey or Chunky.&#10;- Pufftoss: Stars are placed randomly in random orientations.&#10;- King Kut Out: Phases are shuffled, including the unused Phase 4.">
+                           title="This option enables various harder gameplay features.">
                         <input class="form-check-input"
                                type="checkbox"
-                               name="hard_bosses"
+                               name="hard_mode"
+                               id="hard_mode"
                                value="True"/>
-                        Hard Bosses
+                        Hard Mode
                     </label>
-                </div>
+                    {{ list_selector(hard_mode, "hard_mode", "HARD MODE", "This will open a popup that will let you customize what hard mode Options are active.&#10;This defaults to All options.", 5) }}
+                    {# Remove end </div> as it's included in the macro for formatting #}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
                            title="When a kong dies you can no longer use the kong excluding for boss fights, you can enter any boss arena with any kong and it will force you to the required kong, if a kong is dead all moves will be granted.&#10;WARNING: Seeds might become unbeatable.">
@@ -313,18 +315,7 @@
                         Complex Level Progression
                     </label>
                 </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                           title="Makes certain enemies tougher:&#10;- Kasplats have a 6% higher chance to shockwave.&#10;- Guards have a higher health."
-                           style="text-align: left">
-                        <input class="form-check-input"
-                               type="checkbox"
-                               name="hard_enemies"
-                               id="hard_enemies"
-                               value="True"/>
-                        Hard Enemies
-                    </label>
-                </div>
+                <div class="spacer"></div>
             </div>
             <div class = "flex-container">
                 <div class="item-select">
