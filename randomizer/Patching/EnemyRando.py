@@ -457,14 +457,15 @@ def randomize_enemies_0(spoiler):
     pkmn = []
     resetPkmnSnap()
     for loc in enemy_location_list:
-        new_enemy = enemy_location_list[loc].placeNewEnemy(spoiler.settings.enemies_selected, True)
-        setPkmnSnapEnemy(new_enemy)
-        map = enemy_location_list[loc].map
-        if map not in data:
-            data[map] = []
-        data[map].append(
-            {"enemy": new_enemy, "speeds": [enemy_location_list[loc].idle_speed, enemy_location_list[loc].aggro_speed], "id": enemy_location_list[loc].id, "location": EnemyLocations(loc).name}
-        )
+        if enemy_location_list[loc].enable_randomization:
+            new_enemy = enemy_location_list[loc].placeNewEnemy(spoiler.settings.enemies_selected, True)
+            setPkmnSnapEnemy(new_enemy)
+            map = enemy_location_list[loc].map
+            if map not in data:
+                data[map] = []
+            data[map].append(
+                {"enemy": new_enemy, "speeds": [enemy_location_list[loc].idle_speed, enemy_location_list[loc].aggro_speed], "id": enemy_location_list[loc].id, "location": EnemyLocations(loc).name}
+            )
     spoiler.enemy_rando_data = data
     for enemy in pkmn_snap_enemies:
         pkmn.append(enemy.spawned)

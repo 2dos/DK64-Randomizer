@@ -979,11 +979,11 @@ enemy_location_list = {
     EnemyLocations.CastleTower_Gauntlet3: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 4, [], True),
     EnemyLocations.CastleTower_Gauntlet4: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 5, [], True),
     # Trash Can
-    EnemyLocations.CastleTrash_Gauntlet0: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 1, [], True),
-    EnemyLocations.CastleTrash_Gauntlet1: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 2, [], True),
-    EnemyLocations.CastleTrash_Gauntlet2: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 3, [], True),
-    EnemyLocations.CastleTrash_Gauntlet3: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 4, [], True),
-    EnemyLocations.CastleTrash_Gauntlet4: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 5, [], True),
+    EnemyLocations.CastleTrash_Gauntlet0: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 1, [], False),
+    EnemyLocations.CastleTrash_Gauntlet1: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 2, [], False),
+    EnemyLocations.CastleTrash_Gauntlet2: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 3, [], False),
+    EnemyLocations.CastleTrash_Gauntlet3: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 4, [], False),
+    EnemyLocations.CastleTrash_Gauntlet4: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 5, [], False),
     # Tree
     EnemyLocations.CastleTree_StartRoom0: EnemyLoc(Maps.CastleTree, Enemies.Bat, 3, [], True),
     EnemyLocations.CastleTree_StartRoom1: EnemyLoc(Maps.CastleTree, Enemies.Bat, 5, [], True),
