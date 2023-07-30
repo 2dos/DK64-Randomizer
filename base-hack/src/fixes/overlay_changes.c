@@ -393,9 +393,6 @@ void overlay_changes(void) {
 		if (Rando.item_rando) {
 			writeFunction(0x8002501C, &spawnCrownReward); // Crown Spawn
 		}
-		if (DAMAGE_MASKING) {
-			writeFunction(0x80025058, &applyDamageMask);
-		}
 	}
 	// Change Dillo Health based on map
 	if (Rando.short_bosses) {

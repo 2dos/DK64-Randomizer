@@ -156,6 +156,7 @@ class EnemyData:
         bbbarrage_min_scale=50,
         selector_enabled=True,
         interaction: InteractionMethods = None,
+        placeable=True,
     ):
         """Initialize with given parameters."""
         self.name = name
@@ -176,6 +177,7 @@ class EnemyData:
         self.bbbarrage_min_scale = bbbarrage_min_scale
         self.selector_enabled = selector_enabled
         self.interaction = interaction
+        self.placeable = placeable
         if air:
             self.minigame_enabled = False
 
@@ -199,7 +201,7 @@ class EnemyLoc:
         if enable_randomization:
             if default_enemy in EnemyMetaData:
                 self.default_type = EnemyMetaData[default_enemy].e_type
-            self.allowed_enemies = [enemy for enemy in EnemyMetaData if EnemyMetaData[enemy].e_type == self.default_type and enemy not in banned_enemies]
+            self.allowed_enemies = [enemy for enemy in EnemyMetaData if EnemyMetaData[enemy].e_type == self.default_type and enemy not in banned_enemies and EnemyMetaData[enemy].placeable]
 
     def placeNewEnemy(self, enabled_enemies: list, enable_speed: bool) -> Enemies:
         """Place new enemy in slot."""
@@ -249,6 +251,7 @@ EnemyMetaData = {
         minigame_enabled=False,
         selector_enabled=False,
         interaction=InteractionMethods(can_kill=False),
+        placeable=False,
     ),
     Enemies.ZingerCharger: EnemyData(
         name="Zinger (Charger)",
@@ -364,30 +367,35 @@ EnemyMetaData = {
         crown_weight=6,
         kasplat=True,
         interaction=InteractionMethods(),
+        placeable=False,
     ),  #
     Enemies.KasplatDiddy: EnemyData(
         name="Kasplat (Diddy)",
         crown_weight=6,
         kasplat=True,
         interaction=InteractionMethods(),
+        placeable=False,
     ),  #
     Enemies.KasplatLanky: EnemyData(
         name="Kasplat (Lanky)",
         crown_weight=6,
         kasplat=True,
         interaction=InteractionMethods(),
+        placeable=False,
     ),  #
     Enemies.KasplatTiny: EnemyData(
         name="Kasplat (Tiny)",
         crown_weight=6,
         kasplat=True,
         interaction=InteractionMethods(),
+        placeable=False,
     ),  #
     Enemies.KasplatChunky: EnemyData(
         name="Kasplat (Chunky)",
         crown_weight=6,
         kasplat=True,
         interaction=InteractionMethods(),
+        placeable=False,
     ),  #
     Enemies.ZingerRobo: EnemyData(
         name="Robo-Zingers",
@@ -478,6 +486,7 @@ EnemyMetaData = {
         minigame_enabled=False,
         selector_enabled=False,
         interaction=InteractionMethods(can_kill=False),  # Can be killed with Hunky
+        placeable=False,
     ),
     Enemies.Ghost: EnemyData(
         name="Ghost",
@@ -510,6 +519,7 @@ EnemyMetaData = {
         minigame_enabled=False,
         disruptive=1,
         interaction=InteractionMethods(can_kill=False),
+        placeable=False,
     ),
     Enemies.Guard: EnemyData(
         name="Kop",
@@ -979,11 +989,11 @@ enemy_location_list = {
     EnemyLocations.CastleTower_Gauntlet3: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 4, [], True),
     EnemyLocations.CastleTower_Gauntlet4: EnemyLoc(Maps.CastleTower, Enemies.Ghost, 5, [], True),
     # Trash Can
-    EnemyLocations.CastleTrash_Gauntlet0: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 1, [], False),
-    EnemyLocations.CastleTrash_Gauntlet1: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 2, [], False),
-    EnemyLocations.CastleTrash_Gauntlet2: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 3, [], False),
-    EnemyLocations.CastleTrash_Gauntlet3: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 4, [], False),
-    EnemyLocations.CastleTrash_Gauntlet4: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 5, [], False),
+    EnemyLocations.CastleTrash_Gauntlet0: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 1, [], False, False),
+    EnemyLocations.CastleTrash_Gauntlet1: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 2, [], False, False),
+    EnemyLocations.CastleTrash_Gauntlet2: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 3, [], False, False),
+    EnemyLocations.CastleTrash_Gauntlet3: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 4, [], False, False),
+    EnemyLocations.CastleTrash_Gauntlet4: EnemyLoc(Maps.CastleTrashCan, Enemies.Bug, 5, [], False, False),
     # Tree
     EnemyLocations.CastleTree_StartRoom0: EnemyLoc(Maps.CastleTree, Enemies.Bat, 3, [], True),
     EnemyLocations.CastleTree_StartRoom1: EnemyLoc(Maps.CastleTree, Enemies.Bat, 5, [], True),

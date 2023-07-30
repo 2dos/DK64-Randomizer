@@ -478,9 +478,10 @@ def randomize_enemies(spoiler):
     enemy_classes = {}
     for enemy in EnemyMetaData:
         data = EnemyMetaData[enemy]
-        if data.e_type not in enemy_classes:
-            enemy_classes[data.e_type] = []
-        enemy_classes[data.e_type].append(enemy)
+        if data.e_type != EnemySubtype.NoType and data.placeable:
+            if data.e_type not in enemy_classes:
+                enemy_classes[data.e_type] = []
+            enemy_classes[data.e_type].append(enemy)
 
     # Define Enemies that can be placed in those classes
     enemy_placement_classes = {}
