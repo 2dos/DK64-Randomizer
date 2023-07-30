@@ -14,7 +14,7 @@ def sampleValue(tag: str, value):
     """Sample the value."""
     if tag not in valueSamples:
         valueSamples[tag] = {"min": math.inf, "max": -math.inf, "all": {}}
-    if type(value) == int or type(value) == float:
+    if isinstance(value, int) or isinstance(value, float):
         valueSamples[tag]["min"] = min(value, valueSamples[tag]["min"])
         valueSamples[tag]["max"] = max(value, valueSamples[tag]["max"])
     if value not in valueSamples[tag]["all"]:
@@ -103,7 +103,7 @@ def readStruct(byte_read: bytes, offset: int, struct_fields: list):
                 decoded_struct[field["name"] + "_name"] = "Unknown " + hex(decoded_struct[field["name"]] + index_offset)
 
         if "sample" in field:
-            sampleName = field["sample"] if type(field["sample"]) == str else field["name"]
+            sampleName = field["sample"] if isinstance(field["sample"], str) else field["name"]
             sampleValue(sampleName, decoded_struct[field["name"]])
 
         read_head += field["size"]

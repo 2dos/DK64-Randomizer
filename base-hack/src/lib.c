@@ -866,7 +866,11 @@ void giveOrange(void) {
 }
 
 void giveMelon(void) {
-	applyDamageMask(0, 1);
+	if (DAMAGE_MASKING) {
+		applyDamageMask(0, 1);
+	} else {
+		applyDamage(0, 1);
+	}
 }
 
 void giveCrystal(void) {

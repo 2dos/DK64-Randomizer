@@ -48,6 +48,11 @@ void ws_2d(void) {
     *(short*)(0x8070F366) = *(short*)(&base_y);
 }
 
+void ws_fileentry(int map, int exit) {
+    setNextTransitionType(2);
+    initiateTransition(map, exit);
+}
+
 void ws_ninPos(void) {
     *(short*)(0x805FB8A6) = getUpper(SCREEN_WD*SCREEN_HD*2);
     *(int*)(0x805FB8A8) = 0x08000000 | ((((int)(&fixNintendoLogoPosition)) & 0xFFFFFF) >> 2);
@@ -155,6 +160,9 @@ void ws_timer(int* x_write) {
 #define ZIPPER_IS_WIDESCREEN 1
 
 void ws_transitions(void) {
+    if (WS_REMOVE_ZIPPER) {
+        writeFunction(0x8071456C, &ws_fileentry);
+    }
     *(short*)(0x80629292) = SCREEN_WD - 10; //X Position of Transition from Right
     *(short*)(0x806292A2) = SCREEN_WD / 2; //X Position of Double Transition
     *(short*)(0x80629902) = SCREEN_WD - 9; // Maximum X Position of Transition 0

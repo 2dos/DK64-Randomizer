@@ -61,6 +61,7 @@ from randomizer.ShuffleKasplats import InitKasplatMap, KasplatShuffle
 from randomizer.ShufflePatches import ShufflePatches
 from randomizer.ShuffleShopLocations import ShuffleShopLocations
 from randomizer.ShuffleWarps import LinkWarps, ShuffleWarps, ShuffleWarpsCrossMap
+from randomizer.Patching.EnemyRando import randomize_enemies_0
 
 
 def GetExitLevelExit(region):
@@ -2629,6 +2630,11 @@ def ShuffleMisc(spoiler):
     KasplatShuffle(spoiler, LogicVariables)
     spoiler.human_kasplats = {}
     spoiler.UpdateKasplats(LogicVariables.kasplat_map)
+    # Enemy Rando
+    spoiler.enemy_rando_data = {}
+    spoiler.pkmn_snap_data = []
+    if spoiler.settings.enemy_rando:
+        randomize_enemies_0(spoiler)
     # Handle bonus barrels
     if spoiler.settings.bonus_barrels in (MinigameBarrels.random, MinigameBarrels.selected) or spoiler.settings.helm_barrels == MinigameBarrels.random:
         BarrelShuffle(spoiler.settings)

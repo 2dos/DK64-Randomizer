@@ -183,7 +183,7 @@ class EnemyData:
 class EnemyLoc:
     """Information about an enemy."""
 
-    def __init__(self, map: Maps, default_enemy: Enemies, id: int, banned_enemies: list, enable_randomization: bool):
+    def __init__(self, map: Maps, default_enemy: Enemies, id: int, banned_enemies: list, enable_randomization: bool, respawns: bool = True):
         """Initialize with given parameters."""
         self.map = map
         self.default_enemy = default_enemy
@@ -195,6 +195,7 @@ class EnemyLoc:
         self.allowed_enemies = []
         self.idle_speed: int = None
         self.aggro_speed: int = None
+        self.respawns = respawns
         if enable_randomization:
             if default_enemy in EnemyMetaData:
                 self.default_type = EnemyMetaData[default_enemy].e_type
@@ -203,7 +204,7 @@ class EnemyLoc:
     def placeNewEnemy(self, enabled_enemies: list, enable_speed: bool) -> Enemies:
         """Place new enemy in slot."""
         if self.enable_randomization:
-            permitted = [enemy for enemy in self.allowed_enemies if enemy in enabled_enemies]
+            permitted = [enemy for enemy in self.allowed_enemies if enemy in enabled_enemies or len(enabled_enemies) == 0]
             if len(permitted) > 0:
                 self.enemy = random.choice(permitted)
             if enable_speed and self.enemy in EnemyMetaData:
@@ -646,26 +647,26 @@ enemy_location_list = {
     EnemyLocations.AztecLlama_MelonCrate: EnemyLoc(Maps.AztecLlamaTemple, Enemies.KlaptrapPurple, 16, [], True),
     EnemyLocations.AztecLlama_SlamSwitch: EnemyLoc(Maps.AztecLlamaTemple, Enemies.KlaptrapPurple, 17, [], True),
     # Tiny Temple
-    EnemyLocations.AztecTemple_Rotating00: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 1, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_Rotating01: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 2, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_Rotating02: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 3, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_Rotating03: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 4, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_Rotating04: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 5, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_Rotating05: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 6, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_Rotating06: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 7, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_Rotating07: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 8, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_Rotating08: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 9, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_Rotating09: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 10, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_Rotating10: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 11, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_Rotating11: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 12, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_Rotating12: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 13, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_Rotating13: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 14, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_Rotating14: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 15, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_Rotating15: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 16, enemies_nokill_gun, True),
-    EnemyLocations.AztecTemple_MiniRoom00: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 20, [Enemies.Guard], True),
-    EnemyLocations.AztecTemple_MiniRoom01: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 21, [Enemies.Guard], True),
-    EnemyLocations.AztecTemple_MiniRoom02: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 22, [Enemies.Guard], True),
-    EnemyLocations.AztecTemple_MiniRoom03: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 23, [Enemies.Guard], True),
+    EnemyLocations.AztecTemple_Rotating00: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 1, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_Rotating01: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 2, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_Rotating02: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 3, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_Rotating03: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 4, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_Rotating04: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 5, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_Rotating05: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 6, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_Rotating06: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 7, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_Rotating07: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 8, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_Rotating08: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 9, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_Rotating09: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 10, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_Rotating10: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 11, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_Rotating11: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 12, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_Rotating12: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 13, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_Rotating13: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 14, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_Rotating14: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 15, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_Rotating15: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 16, enemies_nokill_gun, True, False),
+    EnemyLocations.AztecTemple_MiniRoom00: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 20, [Enemies.Guard], True, False),
+    EnemyLocations.AztecTemple_MiniRoom01: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 21, [Enemies.Guard], True, False),
+    EnemyLocations.AztecTemple_MiniRoom02: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 22, [Enemies.Guard], True, False),
+    EnemyLocations.AztecTemple_MiniRoom03: EnemyLoc(Maps.AztecTinyTemple, Enemies.KlaptrapGreen, 23, [Enemies.Guard], True, False),
     EnemyLocations.AztecTemple_GuardRotating0: EnemyLoc(Maps.AztecTinyTemple, Enemies.Klobber, 24, [], True),
     EnemyLocations.AztecTemple_GuardRotating1: EnemyLoc(Maps.AztecTinyTemple, Enemies.Klobber, 36, [], True),
     EnemyLocations.AztecTemple_MainRoom0: EnemyLoc(Maps.AztecTinyTemple, Enemies.Kremling, 26, [], True),
@@ -698,16 +699,16 @@ enemy_location_list = {
     EnemyLocations.FactoryMain_ToBlockTowerTunnel: EnemyLoc(Maps.FranticFactory, Enemies.ZingerRobo, 62, [Enemies.Guard], True),
     EnemyLocations.FactoryMain_DarkRoom0: EnemyLoc(Maps.FranticFactory, Enemies.ZingerRobo, 70, [], True),
     EnemyLocations.FactoryMain_DarkRoom1: EnemyLoc(Maps.FranticFactory, Enemies.ZingerRobo, 71, [], True),
-    EnemyLocations.FactoryMain_BHDM0: EnemyLoc(Maps.FranticFactory, Enemies.MrDice0, 35, [], False),
-    EnemyLocations.FactoryMain_BHDM1: EnemyLoc(Maps.FranticFactory, Enemies.SirDomino, 36, [], False),
-    EnemyLocations.FactoryMain_BHDM2: EnemyLoc(Maps.FranticFactory, Enemies.SirDomino, 37, [], False),
-    EnemyLocations.FactoryMain_BHDM3: EnemyLoc(Maps.FranticFactory, Enemies.MrDice0, 38, [], False),
-    EnemyLocations.FactoryMain_BHDM4: EnemyLoc(Maps.FranticFactory, Enemies.MrDice0, 39, [], False),
-    EnemyLocations.FactoryMain_BHDM5: EnemyLoc(Maps.FranticFactory, Enemies.Ruler, 40, [], False),
-    EnemyLocations.FactoryMain_BHDM6: EnemyLoc(Maps.FranticFactory, Enemies.Ruler, 41, [], False),
-    EnemyLocations.FactoryMain_BHDM7: EnemyLoc(Maps.FranticFactory, Enemies.MrDice1, 42, [], False),
-    EnemyLocations.FactoryMain_BHDM8: EnemyLoc(Maps.FranticFactory, Enemies.SirDomino, 43, [], False),
-    EnemyLocations.FactoryMain_BHDM9: EnemyLoc(Maps.FranticFactory, Enemies.SirDomino, 44, [], False),
+    EnemyLocations.FactoryMain_BHDM0: EnemyLoc(Maps.FranticFactory, Enemies.MrDice0, 35, [], False, False),
+    EnemyLocations.FactoryMain_BHDM1: EnemyLoc(Maps.FranticFactory, Enemies.SirDomino, 36, [], False, False),
+    EnemyLocations.FactoryMain_BHDM2: EnemyLoc(Maps.FranticFactory, Enemies.SirDomino, 37, [], False, False),
+    EnemyLocations.FactoryMain_BHDM3: EnemyLoc(Maps.FranticFactory, Enemies.MrDice0, 38, [], False, False),
+    EnemyLocations.FactoryMain_BHDM4: EnemyLoc(Maps.FranticFactory, Enemies.MrDice0, 39, [], False, False),
+    EnemyLocations.FactoryMain_BHDM5: EnemyLoc(Maps.FranticFactory, Enemies.Ruler, 40, [], False, False),
+    EnemyLocations.FactoryMain_BHDM6: EnemyLoc(Maps.FranticFactory, Enemies.Ruler, 41, [], False, False),
+    EnemyLocations.FactoryMain_BHDM7: EnemyLoc(Maps.FranticFactory, Enemies.MrDice1, 42, [], False, False),
+    EnemyLocations.FactoryMain_BHDM8: EnemyLoc(Maps.FranticFactory, Enemies.SirDomino, 43, [], False, False),
+    EnemyLocations.FactoryMain_BHDM9: EnemyLoc(Maps.FranticFactory, Enemies.SirDomino, 44, [], False, False),
     EnemyLocations.FactoryMain_1342Gauntlet0: EnemyLoc(Maps.FranticFactory, Enemies.ZingerRobo, 49, [], True),
     EnemyLocations.FactoryMain_1342Gauntlet1: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 50, [], True),
     EnemyLocations.FactoryMain_1342Gauntlet2: EnemyLoc(Maps.FranticFactory, Enemies.RoboKremling, 51, [], True),
@@ -820,9 +821,9 @@ enemy_location_list = {
     # Face Puzzle
     EnemyLocations.FungiFacePuzzle_Enemy: EnemyLoc(Maps.ForestChunkyFaceRoom, Enemies.ZingerLime, 1, [], True),
     # Spider Boss
-    EnemyLocations.FungiSpider_Gauntlet0: EnemyLoc(Maps.ForestSpider, Enemies.SpiderSmall, 2, [Enemies.Klobber, Enemies.Kaboom, Enemies.MushroomMan], False),
-    EnemyLocations.FungiSpider_Gauntlet1: EnemyLoc(Maps.ForestSpider, Enemies.SpiderSmall, 3, [Enemies.Klobber, Enemies.Kaboom, Enemies.MushroomMan], False),
-    EnemyLocations.FungiSpider_Gauntlet2: EnemyLoc(Maps.ForestSpider, Enemies.SpiderSmall, 4, [Enemies.Klobber, Enemies.Kaboom, Enemies.MushroomMan], False),
+    EnemyLocations.FungiSpider_Gauntlet0: EnemyLoc(Maps.ForestSpider, Enemies.SpiderSmall, 2, [Enemies.Klobber, Enemies.Kaboom, Enemies.MushroomMan], False, False),
+    EnemyLocations.FungiSpider_Gauntlet1: EnemyLoc(Maps.ForestSpider, Enemies.SpiderSmall, 3, [Enemies.Klobber, Enemies.Kaboom, Enemies.MushroomMan], False, False),
+    EnemyLocations.FungiSpider_Gauntlet2: EnemyLoc(Maps.ForestSpider, Enemies.SpiderSmall, 4, [Enemies.Klobber, Enemies.Kaboom, Enemies.MushroomMan], False, False),
     # Caves
     # Main
     EnemyLocations.CavesMain_Start: EnemyLoc(Maps.CrystalCaves, Enemies.Kremling, 10, [], True),
@@ -862,23 +863,23 @@ enemy_location_list = {
     EnemyLocations.Caves5DCDK_Gauntlet4: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 5, enemies_nokill_gun, True),
     EnemyLocations.Caves5DCDK_Gauntlet5: EnemyLoc(Maps.CavesDonkeyCabin, Enemies.ZingerLime, 6, enemies_nokill_gun, True),
     # Diddy Enemies 5DC
-    EnemyLocations.Caves5DCDiddyLow_CloseRight: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klump, 1, [Enemies.Kosha, Enemies.Guard], True),
-    EnemyLocations.Caves5DCDiddyLow_FarRight: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Kremling, 2, [Enemies.Kosha, Enemies.Guard], True),
-    EnemyLocations.Caves5DCDiddyLow_CloseLeft: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klump, 3, [Enemies.Kosha, Enemies.Guard], True),
-    EnemyLocations.Caves5DCDiddyLow_FarLeft: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Kremling, 4, [Enemies.Kosha, Enemies.Guard], True),
-    EnemyLocations.Caves5DCDiddyLow_Center0: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 5, [Enemies.Kosha, Enemies.Guard], True),
-    EnemyLocations.Caves5DCDiddyLow_Center1: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 6, [Enemies.Kosha, Enemies.Guard], True),
-    EnemyLocations.Caves5DCDiddyLow_Center2: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 7, [Enemies.Kosha, Enemies.Guard], True),
-    EnemyLocations.Caves5DCDiddyLow_Center3: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 8, [Enemies.Kosha, Enemies.Guard], True),
+    EnemyLocations.Caves5DCDiddyLow_CloseRight: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klump, 1, [Enemies.Kosha, Enemies.Guard], True, False),
+    EnemyLocations.Caves5DCDiddyLow_FarRight: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Kremling, 2, [Enemies.Kosha, Enemies.Guard], True, False),
+    EnemyLocations.Caves5DCDiddyLow_CloseLeft: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klump, 3, [Enemies.Kosha, Enemies.Guard], True, False),
+    EnemyLocations.Caves5DCDiddyLow_FarLeft: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Kremling, 4, [Enemies.Kosha, Enemies.Guard], True, False),
+    EnemyLocations.Caves5DCDiddyLow_Center0: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 5, [Enemies.Kosha, Enemies.Guard], True, False),
+    EnemyLocations.Caves5DCDiddyLow_Center1: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 6, [Enemies.Kosha, Enemies.Guard], True, False),
+    EnemyLocations.Caves5DCDiddyLow_Center2: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 7, [Enemies.Kosha, Enemies.Guard], True, False),
+    EnemyLocations.Caves5DCDiddyLow_Center3: EnemyLoc(Maps.CavesDiddyLowerCabin, Enemies.Klobber, 8, [Enemies.Kosha, Enemies.Guard], True, False),
     # Diddy Candle 5DC
     EnemyLocations.Caves5DCDiddyUpper_Enemy0: EnemyLoc(Maps.CavesDiddyUpperCabin, Enemies.Kosha, 1, [], True),
     EnemyLocations.Caves5DCDiddyUpper_Enemy1: EnemyLoc(Maps.CavesDiddyUpperCabin, Enemies.Kosha, 2, [], True),
     # Tiny 5DC
-    EnemyLocations.Caves5DCTiny_Gauntlet0: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 1, [Enemies.Kosha, Enemies.Guard], True),
-    EnemyLocations.Caves5DCTiny_Gauntlet1: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 2, [Enemies.Kosha, Enemies.Guard], True),
-    EnemyLocations.Caves5DCTiny_Gauntlet2: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 3, [Enemies.Kosha, Enemies.Guard], True),
-    EnemyLocations.Caves5DCTiny_Gauntlet3: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 4, [Enemies.Kosha, Enemies.Guard], True),
-    EnemyLocations.Caves5DCTiny_Gauntlet4: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 5, [Enemies.Kosha, Enemies.Guard], True),
+    EnemyLocations.Caves5DCTiny_Gauntlet0: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 1, [Enemies.Kosha, Enemies.Guard], True, False),
+    EnemyLocations.Caves5DCTiny_Gauntlet1: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 2, [Enemies.Kosha, Enemies.Guard], True, False),
+    EnemyLocations.Caves5DCTiny_Gauntlet2: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 3, [Enemies.Kosha, Enemies.Guard], True, False),
+    EnemyLocations.Caves5DCTiny_Gauntlet3: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 4, [Enemies.Kosha, Enemies.Guard], True, False),
+    EnemyLocations.Caves5DCTiny_Gauntlet4: EnemyLoc(Maps.CavesTinyCabin, Enemies.KlaptrapPurple, 5, [Enemies.Kosha, Enemies.Guard], True, False),
     # Castle
     # Main
     EnemyLocations.CastleMain_NearBridge0: EnemyLoc(Maps.CreepyCastle, Enemies.Krossbones, 4, [], True),
@@ -899,11 +900,11 @@ enemy_location_list = {
     EnemyLocations.CastleLobby_FarRight: EnemyLoc(Maps.CreepyCastleLobby, Enemies.Kosha, 3, [], True),
     EnemyLocations.CastleLobby_NearRight: EnemyLoc(Maps.CreepyCastleLobby, Enemies.Kosha, 4, [], True),
     # Ballroom
-    EnemyLocations.CastleBallroom_Board00: EnemyLoc(Maps.CastleBallroom, Enemies.Krossbones, 1, [], True),
-    EnemyLocations.CastleBallroom_Board01: EnemyLoc(Maps.CastleBallroom, Enemies.Ghost, 2, [], True),
-    EnemyLocations.CastleBallroom_Board02: EnemyLoc(Maps.CastleBallroom, Enemies.Ghost, 3, [], True),
-    EnemyLocations.CastleBallroom_Board03: EnemyLoc(Maps.CastleBallroom, Enemies.Ghost, 4, [], True),
-    EnemyLocations.CastleBallroom_Board04: EnemyLoc(Maps.CastleBallroom, Enemies.Krossbones, 5, [], True),
+    EnemyLocations.CastleBallroom_Board00: EnemyLoc(Maps.CastleBallroom, Enemies.Krossbones, 1, [], True, False),
+    EnemyLocations.CastleBallroom_Board01: EnemyLoc(Maps.CastleBallroom, Enemies.Ghost, 2, [], True, False),
+    EnemyLocations.CastleBallroom_Board02: EnemyLoc(Maps.CastleBallroom, Enemies.Ghost, 3, [], True, False),
+    EnemyLocations.CastleBallroom_Board03: EnemyLoc(Maps.CastleBallroom, Enemies.Ghost, 4, [], True, False),
+    EnemyLocations.CastleBallroom_Board04: EnemyLoc(Maps.CastleBallroom, Enemies.Krossbones, 5, [], True, False),
     EnemyLocations.CastleBallroom_Start: EnemyLoc(Maps.CastleBallroom, Enemies.Kosha, 6, [], True),
     # Dungeon
     EnemyLocations.CastleDungeon_FaceRoom: EnemyLoc(Maps.CastleDungeon, Enemies.Krossbones, 1, [], True),
@@ -945,16 +946,16 @@ enemy_location_list = {
     EnemyLocations.CastleUpperCave_NearPit: EnemyLoc(Maps.CastleUpperCave, Enemies.Bat, 5, [], True),
     EnemyLocations.CastleUpperCave_NearEntrance: EnemyLoc(Maps.CastleUpperCave, Enemies.Krossbones, 6, [], True),
     # Kut Out
-    EnemyLocations.CastleKKO_CenterEnemy: EnemyLoc(Maps.CastleBoss, Enemies.Ghost, 7, [], True),
-    EnemyLocations.CastleKKO_WaterEnemy00: EnemyLoc(Maps.CastleBoss, Enemies.Pufftup, 8, [], True),
-    EnemyLocations.CastleKKO_WaterEnemy01: EnemyLoc(Maps.CastleBoss, Enemies.Pufftup, 9, [], True),
-    EnemyLocations.CastleKKO_WaterEnemy02: EnemyLoc(Maps.CastleBoss, Enemies.Pufftup, 10, [], True),
-    EnemyLocations.CastleKKO_WaterEnemy03: EnemyLoc(Maps.CastleBoss, Enemies.Pufftup, 11, [], True),
+    EnemyLocations.CastleKKO_CenterEnemy: EnemyLoc(Maps.CastleBoss, Enemies.Ghost, 7, [], True, False),
+    EnemyLocations.CastleKKO_WaterEnemy00: EnemyLoc(Maps.CastleBoss, Enemies.Pufftup, 8, [], True, False),
+    EnemyLocations.CastleKKO_WaterEnemy01: EnemyLoc(Maps.CastleBoss, Enemies.Pufftup, 9, [], True, False),
+    EnemyLocations.CastleKKO_WaterEnemy02: EnemyLoc(Maps.CastleBoss, Enemies.Pufftup, 10, [], True, False),
+    EnemyLocations.CastleKKO_WaterEnemy03: EnemyLoc(Maps.CastleBoss, Enemies.Pufftup, 11, [], True, False),
     # Library
-    EnemyLocations.CastleLibrary_Gauntlet00: EnemyLoc(Maps.CastleLibrary, Enemies.Krossbones, 1, [], True),
-    EnemyLocations.CastleLibrary_Gauntlet01: EnemyLoc(Maps.CastleLibrary, Enemies.Ghost, 2, [], True),
-    EnemyLocations.CastleLibrary_Gauntlet02: EnemyLoc(Maps.CastleLibrary, Enemies.Ghost, 3, [], True),
-    EnemyLocations.CastleLibrary_Gauntlet03: EnemyLoc(Maps.CastleLibrary, Enemies.Krossbones, 4, [], True),
+    EnemyLocations.CastleLibrary_Gauntlet00: EnemyLoc(Maps.CastleLibrary, Enemies.Krossbones, 1, [], True, False),
+    EnemyLocations.CastleLibrary_Gauntlet01: EnemyLoc(Maps.CastleLibrary, Enemies.Ghost, 2, [], True, False),
+    EnemyLocations.CastleLibrary_Gauntlet02: EnemyLoc(Maps.CastleLibrary, Enemies.Ghost, 3, [], True, False),
+    EnemyLocations.CastleLibrary_Gauntlet03: EnemyLoc(Maps.CastleLibrary, Enemies.Krossbones, 4, [], True, False),
     EnemyLocations.CastleLibrary_Corridor00: EnemyLoc(Maps.CastleLibrary, Enemies.Book, 5, [], True),
     EnemyLocations.CastleLibrary_Corridor01: EnemyLoc(Maps.CastleLibrary, Enemies.Book, 7, [], True),
     EnemyLocations.CastleLibrary_Corridor02: EnemyLoc(Maps.CastleLibrary, Enemies.Book, 8, [], True),

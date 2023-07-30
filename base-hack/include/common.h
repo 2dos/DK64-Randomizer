@@ -2,7 +2,12 @@
 #define _COMMON_H_
 
 #define F3DEX_GBI_2
-#define ENABLE_FILENAME 1
+
+#define ENABLE_FILENAME 0
+#define ENABLE_ORIGIN_WARP_FIX 1
+#define DAMAGE_MASKING 1
+#define ENABLE_SAVE_LOCK_REMOVAL 0 // Crashes on Wii U
+
 #define FILENAME_LENGTH 8
 #define SONG_COUNT 176
 #include "ultra64.h"
