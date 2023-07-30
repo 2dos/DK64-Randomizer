@@ -212,7 +212,6 @@ void initHack(int source) {
 			*(short*)(0x8060DDAA) = 0; // Writes readfile data to moves
 			*(short*)(0x806C9CDE) = 7; // GiveEverything, write to bitfield. Seems to be unused but might as well
 			*(int*)(0x8076BF38) = (int)&music_storage[0]; // Increase music storage
-			DamageMultiplier = Rando.damage_multiplier;
 			WidescreenEnabled = Rando.true_widescreen;
 			grab_lock_timer = -1;
 			preventTagSpawn = Rando.prevent_tag_spawn;
@@ -479,7 +478,7 @@ void initHack(int source) {
 			}
 			if (DAMAGE_MASKING) {
 				// Damage mask
-				writeFunction(0x806A6EA8, &applyDamageMask);
+				// writeFunction(0x806A6EA8, &applyDamageMask);
 				writeFunction(0x806EE138, &applyDamageMask);
 				writeFunction(0x806EE330, &applyDamageMask);
 				writeFunction(0x806EE480, &applyDamageMask);
@@ -487,7 +486,7 @@ void initHack(int source) {
 				writeFunction(0x806EEEA4, &applyDamageMask);
 				writeFunction(0x806EF910, &applyDamageMask);
 				writeFunction(0x806EF9D0, &applyDamageMask);
-				writeFunction(0x806F5860, &applyDamageMask);
+				writeFunction(0x806F5860, &applyDamageMask); // Watermelon
 			}
 			// Slow Turn Fix
 			writeFunction(0x806D2FC0, &fixRBSlowTurn);
