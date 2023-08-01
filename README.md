@@ -106,16 +106,16 @@ For the cases you want to build the app locally and run as a dev environment
    7. `cd ./base-hack`
    8. Run ```build.bat```
 3.  Run Local Webserver
-   1. Put ```dk64.z64``` (SHA1: CF806FF2603640A748FCA5026DED28802F1F4A50) in the main directory
-   2. Run: 
+  1. Put ```dk64.z64``` (SHA1: CF806FF2603640A748FCA5026DED28802F1F4A50) in the main directory
+  2. Run: 
    ```sh
    python3 -m pip install -r ./requirements-dev.txt
    ```
-   3. Run:
+  3. Run:
    ```sh
    python3 ./NoCacheHTTPServer.py
    ```
-   4. Open your internet browser and navigate to ```localhost:8000```. You should now be looking at a locally hosted dk64randomizer site.
+  4. Open your internet browser and navigate to ```localhost:8000```. You should now be looking at a locally hosted dk64randomizer site.
    
 <p align="right">(<a href="#top">back to top</a>)</p>
 
