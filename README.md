@@ -106,6 +106,8 @@ For the cases you want to build the app locally and run as a dev environment
    7. `cd ./base-hack`
    8. Run ```build.bat```
 3.  Run Local Webserver
+   1. Put ```dk64.z64``` (SHA1: CF806FF2603640A748FCA5026DED28802F1F4A50) in the main directory
+   2. Run 
    ```sh
    python3 ./tools/NoCacheHTTPServer.py
    ```
