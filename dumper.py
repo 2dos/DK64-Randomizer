@@ -221,7 +221,7 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                         elif dumper == Dumpers.Doors:
                             fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y['door_type'].title()} | {y.get('logic', '')} | \n")
                         elif dumper == Dumpers.Patches:
-                            fh.write(f"| {getMapNameFromIndex(y['map_id'])} | {y['name']} | {y.get('logic', '')} | \n")
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y.get('logic', '')} | \n")
                     for group in groupings:
                         if dumper in (Dumpers.ColoredBananas, Dumpers.Coins):
                             fh.write("<details>\n")

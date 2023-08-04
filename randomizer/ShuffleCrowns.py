@@ -5,7 +5,7 @@ import random
 import randomizer.Logic as Logic
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Lists.CrownLocations import CrownLocations
+from randomizer.Lists.CrownLocations import CrownLocations, LocationTypes
 from randomizer.Lists.Location import LocationList
 from randomizer.LogicClasses import LocationLogic
 
@@ -40,7 +40,7 @@ def ShuffleCrowns(crown_selection, human_crowns):
         region.locations = [loclogic for loclogic in region.locations if loclogic.id not in crown_locations]
     global_crown_idx = 0
     for level in CrownLocations:
-        level_lst = CrownLocations[level]
+        level_lst = [x for x in CrownLocations[level] if x.vanilla_crown or not x.selected and LocationTypes.CrownPad not in x.banned_types]
         index_lst = list(range(len(level_lst)))
         pick_count = 1
         if level == Levels.DKIsles:
@@ -54,11 +54,11 @@ def ShuffleCrowns(crown_selection, human_crowns):
             for crown_index in crowns:
                 crown = level_lst[crown_index]
                 crown.placement_subindex = crown.default_index
-                if crown.is_vanilla:
+                if crown.vanilla_crown:
                     isles_placed[crown.placement_subindex] = True
             for crown_index in crowns:
                 crown = level_lst[crown_index]
-                if not crown.is_vanilla:
+                if not crown.vanilla_crown:
                     if isles_placed[0]:
                         crown.placement_subindex = 1
                         crown_data[crown_index] = 1
@@ -80,6 +80,7 @@ def ShuffleCrowns(crown_selection, human_crowns):
                 crown_number_string = f" {2 - level_lst[crown].placement_subindex}"
             human_crowns[crown_name] = level_lst[crown].name
             crown_obj = level_lst[crown]
+            crown_obj.setCustomLocation(True)
             LocationList[crown_locations[global_crown_idx]].name = f"{level_to_name[level]} Battle Arena{crown_number_string} ({level_lst[crown].name})"
             crownRegion = Logic.Regions[crown_obj.region]
             # Add crowns to their updated logic region

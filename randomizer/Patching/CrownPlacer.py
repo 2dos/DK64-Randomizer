@@ -77,6 +77,7 @@ def randomize_crown_pads(spoiler):
                 for crown in placements:
                     if crown.map == cont_map_id and not crown.vanilla:
                         # Place new crown
+                        crown_scale = crown.max_size / 160
                         selected_id = getNextFreeID(cont_map_id, crown_ids)
                         crown_ids.append(selected_id)
                         persisted_m2.append(
@@ -84,7 +85,7 @@ def randomize_crown_pads(spoiler):
                                 int(float_to_hex(crown.coords[0]), 16),
                                 int(float_to_hex(crown.coords[1]), 16),
                                 int(float_to_hex(crown.coords[2]), 16),
-                                int(float_to_hex(crown.scale), 16),
+                                int(float_to_hex(crown_scale), 16),
                                 0x6B0BEE32,
                                 0x9B4D326F,
                                 0,

@@ -30,8 +30,8 @@
 | Japes Mountain | Mountain: Near Entrance (Ground) |  | 
 | Japes Mountain | Mountain: Near Entrance (High) |  | 
 | Japes Mountain | Mountain: On Barrel |  | 
-| Japes Mountain | Mountain: Near HiLo Machine | (l.charge or l.phasewalk) and l.diddy) | 
-| Japes Mountain | Mountain: Under Conveyor | (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.diddy | 
+| Japes Mountain | Mountain: Near HiLo Machine | (l.charge and l.isdiddy) or l.phasewalk, group=5 | 
+| Japes Mountain | Mountain: Under Conveyor | (l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy) or l.phasewalk | 
 | Japes Tiny Hive | Shell: Main Room |  | 
 | Japes Tiny Hive | Shell: 1st Room |  | 
 | Japes Tiny Hive | Shell: 3rd Room | (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.tiny | 
@@ -50,26 +50,26 @@
 | Angry Aztec | Blueprint Room | l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))) | 
 | Angry Aztec | Oasis |  | 
 | Angry Aztec | Behind Tiny Temple |  | 
-| Angry Aztec | On Tiny Temple | (l.jetpack and l.diddy) or l.CanMoonkick()) | 
+| Angry Aztec | On Tiny Temple | (l.jetpack and l.diddy) or l.CanMoonkick(), group=1 | 
 | Angry Aztec | Near Oasis Shop |  | 
 | Angry Aztec | Near Hunky Chunky Barrel |  | 
 | Angry Aztec | Next to Chunky Cage (1) |  | 
 | Angry Aztec | Next to Chunky Cage (2) |  | 
 | Angry Aztec | Near Llama Temple (Left) |  | 
 | Angry Aztec | Near Llama Temple (Right) |  | 
-| Angry Aztec | On Llama Temple | (l.jetpack and l.diddy) or l.CanMoonkick()) | 
+| Angry Aztec | On Llama Temple | (l.jetpack and l.diddy) or l.CanMoonkick(), group=3 | 
 | Angry Aztec | Near Sealed Quicksand Tunnel Shop |  | 
-| Angry Aztec | On 5-Door Temple | (l.jetpack and l.diddy) or l.CanMoonkick()) | 
+| Angry Aztec | On 5-Door Temple | (l.jetpack and l.diddy) or l.CanMoonkick(), group=3 | 
 | Angry Aztec | Near Sealed Quicksand Tunnel Exterior Warp |  | 
-| Angry Aztec | Near Vulture Cage | l.vines or (l.jetpack and l.diddy)) | 
+| Angry Aztec | Near Vulture Cage | l.vines or (l.jetpack and l.diddy), group=3 | 
 | Angry Aztec | Under Vulture Cage |  | 
 | Angry Aztec | Near Gong Tower |  | 
 | Angry Aztec | Sealed Quicksand Tunnel |  | 
-| Aztec Donkey5DTemple | DK 5DT: Dead End | (l.coconut and l.isdonkey) or l.phasewalk) | 
-| Aztec Diddy5DTemple | Diddy 5DT: Dead End | (l.peanut and l.isdiddy) or l.phasewalk) | 
-| Aztec Lanky5DTemple | Lanky 5DT: Dead End | (l.grape and l.islanky) or l.phasewalk) | 
+| Aztec Donkey5DTemple | DK 5DT: Dead End | (l.coconut and l.isdonkey) or l.phasewalk, group=7 | 
+| Aztec Diddy5DTemple | Diddy 5DT: Dead End | (l.peanut and l.isdiddy) or l.phasewalk | 
+| Aztec Lanky5DTemple | Lanky 5DT: Dead End | (l.grape and l.islanky) or l.phasewalk, group=7 | 
 | Aztec Lanky5DTemple | Lanky 5DT: Near Vanilla Balloon | (l.grape and l.islanky) or l.phasewalk | 
-| Aztec Tiny5DTemple | Tiny 5DT: Dead End | (l.feather and l.istiny) or l.phasewalk) | 
+| Aztec Tiny5DTemple | Tiny 5DT: Dead End | (l.feather and l.istiny) or l.phasewalk, group=7 | 
 | Aztec Chunky5DTemple | Chunky 5DT: Path Split (1) | (l.pineapple and l.ischunky) or l.phasewalk | 
 | Aztec Chunky5DTemple | Chunky 5DT: Path Split (2) | (l.pineapple and l.ischunky) or l.phasewalk | 
 | Aztec Llama Temple | Llama Temple: Llama Right |  | 
@@ -93,11 +93,11 @@
 | Frantic Factory | Hatch Pole Bottom |  | 
 | Frantic Factory | Production Room Lower Section |  | 
 | Frantic Factory | Under High Conveyors |  | 
-| Frantic Factory | Past Tiny Production Bonus | l.twirl and l.tiny) | 
+| Frantic Factory | Past Tiny Production Bonus | l.twirl and l.tiny, group=1) | 
 | Frantic Factory | On Production outside box |  | 
 | Frantic Factory | Storage Room Corner |  | 
 | Frantic Factory | Cranky/Candy Room |  | 
-| Frantic Factory | Dark Room | (l.punch and l.chunky) or l.phasewalk) | 
+| Frantic Factory | Dark Room | (l.punch and l.chunky) or l.phasewalk, group=4) | 
 | Frantic Factory | Arcade Room Bench |  | 
 | Frantic Factory | Snide's Room |  | 
 | Frantic Factory | Right Corridor |  | 
@@ -106,6 +106,9 @@
 | Frantic Factory | Block Tower Lower Bonus |  | 
 | Frantic Factory | Funky's Room |  | 
 | Frantic Factory | Near Funky's |  | 
+| Frantic Factory | Piano Room | l.trombone and l.lanky | 
+| Frantic Factory | Diddy R and D | l.guitar and l.diddy | 
+| Frantic Factory | Chunky R and D | l.triangle and l.chunky and l.punch | 
 | Frantic Factory | Near Car Race | (l.mini and l.istiny) or l.phasewalk) | 
 | Frantic Factory | Under R and D Grate (2) | (l.grab and l.donkey) or l.phasewalk or l.generalclips | 
 | Factory Crusher | Crusher: Central Safehaven | (l.strongKong and l.isdonkey) or l.phasewalk or l.generalclips | 
@@ -216,7 +219,7 @@
 | Crystal Caves | Near Snide's HQ |  | 
 | Crystal Caves | Under Small Boulder |  | 
 | Crystal Caves | Near Gorilla Gone Room |  | 
-| Crystal Caves | In Gorilla Gone Room | l.punch and l.chunky) | 
+| Crystal Caves | In Gorilla Gone Room | l.punch and l.chunky, group=4) | 
 | Crystal Caves | Near Kasplat Spire |  | 
 | Crystal Caves | Near Funky's |  | 
 | Crystal Caves | Hidden Kasplat Room |  | 
@@ -228,10 +231,12 @@
 | Crystal Caves | Near Tiny 5DC |  | 
 | Crystal Caves | Near Diddy Upper 5DC |  | 
 | Caves Rotating Cabin | Rotating Room: Left Portion | l.Slam and l.isdonkey | 
+| Caves Diddy Igloo | Diddy 5DI: Center |  | 
 | Caves Donkey Igloo | DK 5DI: Behind Maze |  | 
-| Caves Lanky Igloo | Lanky 5DI: High Platform | l.balloon and l.islanky) | 
+| Caves Lanky Igloo | Lanky 5DI: High Platform | l.balloon and l.islanky, group=3) | 
 | Caves Tiny Igloo | Tiny 5DI: Opposite Entrance |  | 
 | Caves Lanky Cabin | Lanky 1DC: Carpet |  | 
+| Caves Chunky Cabin | Chunky 5DC: Back Left Corner |  | 
 | Caves Diddy Upper Cabin | Diddy Upper 5DC: Right |  | 
 | Caves Donkey Cabin | DK 5DC: Opposite Entrance |  | 
 | Caves Tiny Cabin | Tiny Cabin: Interior |  | 
@@ -263,7 +268,7 @@
 | Creepy Castle | Near Shed |  | 
 | Creepy Castle | Near Wind Tower (1) |  | 
 | Creepy Castle | Near Snide's HQ |  | 
-| Creepy Castle | On Wind Tower | l.jetpack and l.isdiddy) | 
+| Creepy Castle | On Wind Tower | l.jetpack and l.isdiddy, group=5) | 
 | Castle Ballroom | Ballroom: Near Left Candle |  | 
 | Castle Ballroom | Ballroom: Near Right Candle |  | 
 | Castle Dungeon | Dungeon: Near Diddy Room Entrance |  | 
@@ -272,11 +277,12 @@
 | Castle Lower Cave | Crypt Hub: Lower Portion |  | 
 | Castle Lower Cave | Crypt Hub: Behind Lanky Crypt |  | 
 | Castle Lower Cave | Crypt Hub: Near Funky's |  | 
-| Castle Crypt | Chunky Crypt: Near Coffin | (l.pineapple and l.ischunky) or l.phasewalk) | 
-| Castle Crypt | Diddy Crypt: Near Coffin | (l.peanut and l.isdiddy) or l.phasewalk) | 
+| Castle Crypt | Chunky Crypt: Near Coffin | (l.pineapple and l.ischunky) or l.phasewalk, group=3 | 
+| Castle Crypt | Diddy Crypt: Near Coffin | (l.peanut and l.isdiddy) or l.phasewalk, group=3 | 
 | Castle Mausoleum | Lanky Crypt: Lanky Tunnel |  | 
 | Castle Upper Cave | Tunnel: Near Pit |  | 
 | Castle Upper Cave | Tunnel: Near Candy's |  | 
+| Castle Library | Library: Enemy Gauntlet Room |  | 
 | Castle Library | Library: Flying Book Room | (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey and l.strongKong) or l.phasewalk | 
 | Castle Museum | Museum: Near Race |  | 
 | Castle Museum | Museum: Behind Pillar | (l.monkeyport and l.istiny) or l.phasewalk | 
@@ -293,47 +299,78 @@
 | --- | ---- | ----- |
 | Isles Snide Room | Snide's Room: Under Rock | l.chunky and l.barrels | 
 | Fungi Forest Lobby | Fungi Lobby: Gorilla Gone Box | ((l.coconut and l.peanut and l.grape and l.feather and l.pineapple and l.donkey and l.diddy and l.lanky and l.tiny) or l.phasewalk) and l.chunky and l.gorillaGone | 
+| Isles | Front of Fungi Building |  | 
+| Isles | On Aztec Building |  | 
+| Isles | Under Caves Lobby Entrance |  | 
+| Creepy Castle Lobby | Castle Lobby: Center | ((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and l.settings.krusha_kong != Kongs.tiny)) | 
+| Training Grounds | Banana Hoard | (l.vines or l.CanMoonkick()) | 
+| Training Grounds | Training Grounds Rear Tunnel |  | 
+| KLumsy | Back of Prison |  | 
+| Isles | Behind Fungi Building |  | 
 | Isles | Fungi Platform |  | 
 | Isles | Waterfall Platform |  | 
 | Isles | Near Caves Lobby Tree (1) |  | 
 | Isles | Near K. Rool |  | 
 | Isles | Near Fungi Cannon |  | 
+| Isles | In Fungi Boulder | (l.settings.open_lobbies or Events.GalleonKeyTurnedIn in l.Events or l.phasewalk) | 
 | Isles | Near Caves Lobby Tree (2) |  | 
+| Isles | Isles Boulders |  | 
 | Isles | Front of Aztec Building |  | 
+| Isles | Behind Aztec Building |  | 
 | Isles | Outside K. Lumsy |  | 
 | Isles | Near Monkeyport (1) |  | 
 | Isles | Near Monkeyport (2) |  | 
 | Isles | Under DK Caged GB |  | 
+| Isles | Back of Kroc Isle (Lower) |  | 
+| Isles | Back of Kroc Isle (Middle) |  | 
 | Isles | Behind Factory Lobby Entrance |  | 
 | Isles | Right of Factory Lobby Entrance |  | 
 | Isles | Behind Helm Lobby Entrance |  | 
-| Isles | Left Kroc Isle Arm |  | 
+| Isles | Left Kroc Isle Arm (1) |  | 
+| Isles | Left Kroc Isle Arm (2) |  | 
 | Isles | Right Kroc Isle Arm |  | 
 | Isles | Fairy Isle |  | 
+| Isles | Behind BFI |  | 
 | Isles | Small Island |  | 
+| Jungle Japes Lobby | Jungle Japes Lobby: Near Tag Barrel |  | 
 | Jungle Japes Lobby | Japes Lobby: Near Portal |  | 
 | Angry Aztec Lobby | Aztec Lobby: In Front of Feather Door |  | 
-| Angry Aztec Lobby | Aztec Lobby: Behind Feather Door | (l.feather and l.tiny) or l.phasewalk | 
+| Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (1) | (l.feather and l.tiny) or l.phasewalk | 
+| Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (2) | (l.feather and l.tiny) or l.phasewalk | 
 | Frantic Factory Lobby | Factory Lobby: Near Lever |  | 
+| Frantic Factory Lobby | Factory Lobby: High Platform | ((l.grab and l.isdonkey) or l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))) | 
 | Frantic Factory Lobby | Factory Lobby: Above Portal | ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))) | 
 | Gloomy Galleon Lobby | Galleon Lobby: Right of Portal |  | 
 | Gloomy Galleon Lobby | Galleon Lobby: Left of Portal |  | 
+| Gloomy Galleon Lobby | Galleon Lobby: Behind Mini Monkey Gate | ((l.mini and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.istiny and l.chunky and l.swim) or l.CanPhaseswim()) | 
+| Fungi Forest Lobby | Forest Lobby: On Tag Crate |  | 
+| Crystal Caves Lobby | Caves Lobby: On the Lava | ((l.punch and l.strongKong and l.isdonkey) or l.phasewalk or l.ledgeclip) | 
 | Crystal Caves Lobby | Caves Lobby: Right of Portal |  | 
 | Crystal Caves Lobby | Caves Lobby: High Platform | (l.jetpack and l.isdiddy) or l.CanMoonkick() | 
 | Crystal Caves Lobby | Caves Lobby: Blueprint Room | (l.punch and l.chunky) or l.phasewalk or l.ledgeclip | 
+| Creepy Castle Lobby | Castle Lobby: Behind the entrance |  | 
 | Creepy Castle Lobby | Castle Lobby: Right of Entrance |  | 
 | Creepy Castle Lobby | Castle Lobby: Left of Portal |  | 
+| Hideout Helm Lobby | Helm Lobby: Next to Tag Barrel |  | 
 | Hideout Helm Lobby | Helm Lobby: Bonus Platform | (l.vines and l.gorillaGone and l.ischunky) or (l.advanced_platforming and l.istiny and l.twirl) | 
+| Hideout Helm Lobby | Helm Lobby: Blueprint Platform | ((l.coconut and l.scope) or (l.twirl and l.istiny and l.advanced_platforming)) | 
 | Training Grounds | Training Grounds: Far Mountain |  | 
+| Training Grounds | Training Grounds: On the rear hill |  | 
+| Training Grounds | Training Grounds: On the entrance hill | ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey)) | 
 | Training Grounds | Training Grounds: Near Mountain | (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey) | 
 | Training Grounds | Training Grounds: Rear Cave |  | 
-| Training Grounds | Training Grounds: Banana Hoard | l.vines or l.CanMoonkick()) | 
+| Training Grounds | Training Grounds: Banana Hoard | l.vines or l.CanMoonkick() | 
 | Training Grounds | Training Grounds: Near Pool |  | 
+| Treehouse | Back of the treehouse |  | 
 | Banana Fairy Room | Fairy Island: Right of Queen |  | 
 | Banana Fairy Room | Fairy Island: Behind Queen |  | 
+| Banana Fairy Room | Banana Fairy Room: Behind Fairy Chair |  | 
+| Banana Fairy Room | Behind the Rareware Door |  | 
 | Banana Fairy Room | Fairy Island: Rareware Room |  | 
+| Isles Snide Room | Next to Snides |  | 
 | KLumsy | K. Lumsy: Back Right |  | 
 | KLumsy | K. Lumsy: Near Left |  | 
+| KLumsy | Under K. Lumsy | (l.CanAccessKRool() or l.phasewalk) | 
 </details>
 
 ## Hideout Helm

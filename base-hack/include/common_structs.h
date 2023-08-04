@@ -95,7 +95,8 @@ typedef struct actorData {
 	/* 0x0C4 */ float yAccel;
 	/* 0x0C8 */ char unk_C8[0xCC-0xC8];
 	/* 0x0CC */ char unk_CC;
-	/* 0x0CD */ char unk_CD[0xE6-0xCD];
+	/* 0x0CD */ char unk_CD[0xE4-0xCD];
+	/* 0x0E4 */ short rot_x;
 	/* 0x0E6 */ short rot_y;
 	/* 0x0E8 */ short rot_z;
 	/* 0x0EA */ char unk_EA[0x4];
