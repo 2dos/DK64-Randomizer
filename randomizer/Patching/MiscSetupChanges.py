@@ -6,7 +6,7 @@ import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Settings import DamageAmount, MiscChangesSelected, HardModeSelected
-from randomizer.Lists.CrownLocations import CrownLocations
+from randomizer.Lists.CrownLocations import CustomLocations
 from randomizer.Lists.MapsAndExits import LevelMapTable, Maps
 from randomizer.Patching.Lib import float_to_hex, IsItemSelected
 from randomizer.Patching.Patcher import ROM, LocalROM
@@ -366,7 +366,7 @@ def randomize_setup(spoiler):
             if spoiler.settings.random_patches:
                 new_actor_id = 0x20
                 for dirt_item in spoiler.dirt_patch_placement:
-                    for patch in CrownLocations[dirt_item["level"]]:
+                    for patch in CustomLocations[dirt_item["level"]]:
                         if patch.map == cont_map_id and patch.name == dirt_item["name"]:
                             patch_scale = min(patch.max_size / 64, 64)
                             if new_actor_id in used_actor_ids:

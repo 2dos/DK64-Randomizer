@@ -1,7 +1,7 @@
 """Crown Randomizer Placement Code."""
 import js
 from randomizer.Enums.ScriptTypes import ScriptTypes
-from randomizer.Lists.CrownLocations import CrownLocations
+from randomizer.Lists.CrownLocations import CustomLocations
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Lib import addNewScript, float_to_hex, getNextFreeID
 from randomizer.Patching.Patcher import ROM, LocalROM
@@ -40,7 +40,7 @@ def randomize_crown_pads(spoiler):
         ROM_COPY = LocalROM()
         for level in spoiler.crown_locations:
             for crown in spoiler.crown_locations[level]:
-                crown_data = CrownLocations[level][crown]
+                crown_data = CustomLocations[level][crown]
                 idx = spoiler.crown_locations[level][crown]
                 placements.append(CrownPlacementShortData(crown_data.map, crown_data.coords, crown_data.scale, idx, crown_data.is_vanilla))
                 if crown_data.is_vanilla:

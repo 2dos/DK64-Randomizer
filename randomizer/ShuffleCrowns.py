@@ -5,7 +5,7 @@ import random
 import randomizer.Logic as Logic
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Lists.CrownLocations import CrownLocations, LocationTypes
+from randomizer.Lists.CrownLocations import CustomLocations, LocationTypes
 from randomizer.Lists.Location import LocationList
 from randomizer.LogicClasses import LocationLogic
 
@@ -39,8 +39,8 @@ def ShuffleCrowns(crown_selection, human_crowns):
     for id, region in Logic.Regions.items():
         region.locations = [loclogic for loclogic in region.locations if loclogic.id not in crown_locations]
     global_crown_idx = 0
-    for level in CrownLocations:
-        level_lst = [x for x in CrownLocations[level] if x.vanilla_crown or not x.selected and LocationTypes.CrownPad not in x.banned_types]
+    for level in CustomLocations:
+        level_lst = [x for x in CustomLocations[level] if x.vanilla_crown or not x.selected and LocationTypes.CrownPad not in x.banned_types]
         index_lst = list(range(len(level_lst)))
         pick_count = 1
         if level == Levels.DKIsles:
@@ -70,7 +70,7 @@ def ShuffleCrowns(crown_selection, human_crowns):
         crown_selection[level] = crown_data
         # In the event that the second crown on the list is IslesBattleArena2, reverse the list
         # because after this, the first crown on the list will get the logic for IslesBattleArena2
-        if len(crowns) == 2 and CrownLocations[level][crowns[1]].placement_subindex == 0:
+        if len(crowns) == 2 and CustomLocations[level][crowns[1]].placement_subindex == 0:
             crowns.reverse()
         for crown_index, crown in enumerate(crowns):
             crown_name = level.name

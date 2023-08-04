@@ -61,8 +61,8 @@ class CrownLocation:
 
 def resetCustomLocations():
     """Reset all locations to their default selection-state."""
-    for key in CrownLocations.keys():
-        for location in CrownLocations[key]:
+    for key in CustomLocations.keys():
+        for location in CustomLocations[key]:
             location.selected = location.vanilla_crown or location.vanilla_patch
 
 
@@ -74,7 +74,7 @@ class LocationTypes(IntEnum):
     MelonCrate = auto()
 
 
-CrownLocations = {
+CustomLocations = {
     Levels.JungleJapes: [
         CrownLocation(map=Maps.JungleJapes, name="Near Funky", x=1989.7, y=520, z=2086.71, max_size=72, logic_region=Regions.JungleJapesMain, vanilla_crown=True, group=4),
         CrownLocation(

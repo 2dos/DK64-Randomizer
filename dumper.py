@@ -15,7 +15,7 @@ import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
 import randomizer.Lists.CBLocations.JungleJapesCBLocations
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.BananaCoinLocations import BananaCoinGroupList
-from randomizer.Lists.CrownLocations import CrownLocations
+from randomizer.Lists.CrownLocations import CustomLocations
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Lists.FairyLocations import fairy_locations
 from randomizer.Lists.KasplatLocations import KasplatLocationList
@@ -305,9 +305,9 @@ def getCrownZ(item: dict):
 def dump_crown(format: str):
     """Dump crown pad locations."""
     dumps = {}
-    for level in CrownLocations:
+    for level in CustomLocations:
         crown_data = []
-        for crown in CrownLocations[level]:
+        for crown in CustomLocations[level]:
             crown_data.append(dump_to_dict(crown, ["is_vanilla", "is_rotating_room", "default_index", "placement_subindex"], ["map"], ["region"], "logic", getCrownX, getCrownY, getCrownZ))
         if format == "md":
             dumps[level] = crown_data

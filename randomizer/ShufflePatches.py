@@ -14,7 +14,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Location import LocationList
-from randomizer.Lists.CrownLocations import CrownLocations, LocationTypes, CrownLocation
+from randomizer.Lists.CrownLocations import CustomLocations, LocationTypes, CrownLocation
 from randomizer.LogicClasses import LocationLogic
 from randomizer.Spoiler import Spoiler
 
@@ -82,7 +82,7 @@ def ShufflePatches(spoiler: Spoiler, human_spoiler):
     }
 
     for key in total_dirt_patch_list.keys():
-        for SingleDirtPatchLocation in CrownLocations[key]:
+        for SingleDirtPatchLocation in CustomLocations[key]:
             if (SingleDirtPatchLocation.vanilla_patch or not SingleDirtPatchLocation.selected) and LocationTypes.DirtPatch not in SingleDirtPatchLocation.banned_types:
                 SingleDirtPatchLocation.setCustomLocation(False)
                 total_dirt_patch_list[SingleDirtPatchLocation.level_name].append(SingleDirtPatchLocation)
@@ -112,7 +112,7 @@ def select_random_dirt_from_area(area_dirt, amount, level, spoiler: Spoiler, hum
     """Select <amount> random dirt patches from <area_dirt>, which is a list of dirt patches. Makes sure max 1 dirt patch per group is selected."""
     for iterations in range(amount):
         selected_patch = random.choice(area_dirt)  # selects a random patch from the list
-        for patch in CrownLocations[level]:  # enables the selected patch
+        for patch in CustomLocations[level]:  # enables the selected patch
             if patch.name == selected_patch.name:
                 patch.setCustomLocation(True)
                 human_spoiler.append(patch.name)
