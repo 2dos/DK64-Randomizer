@@ -37,7 +37,7 @@ from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Warps import Warps
-from randomizer.Lists.CrownLocations import resetCustomLocations
+from randomizer.Lists.CustomLocations import resetCustomLocations
 from randomizer.Lists.Item import ItemList, KongFromItem
 from randomizer.Lists.Location import LocationList, ResetLocationList, SharedMoveLocations, SharedShopLocations
 from randomizer.Lists.MapsAndExits import Maps

@@ -14,12 +14,12 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Location import LocationList
-from randomizer.Lists.CrownLocations import CustomLocations, LocationTypes, CrownLocation
+from randomizer.Lists.CustomLocations import CustomLocations, LocationTypes, CustomLocation
 from randomizer.LogicClasses import LocationLogic
 from randomizer.Spoiler import Spoiler
 
 
-def addPatch(patch: CrownLocation, enum_val: int, name: str):
+def addPatch(patch: CustomLocation, enum_val: int, name: str):
     """Add patch to relevant Logic Region."""
     level_to_enum = {
         Levels.DKIsles: randomizer.LogicFiles.DKIsles.LogicRegions,
