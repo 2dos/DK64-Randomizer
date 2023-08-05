@@ -6,8 +6,8 @@ import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Settings import DamageAmount, MiscChangesSelected, HardModeSelected
+from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Lists.MapsAndExits import LevelMapTable, Maps
-from randomizer.Lists.Patches import DirtPatchLocations
 from randomizer.Patching.Lib import float_to_hex, IsItemSelected
 from randomizer.Patching.Patcher import ROM, LocalROM
 
@@ -366,22 +366,23 @@ def randomize_setup(spoiler):
             if spoiler.settings.random_patches:
                 new_actor_id = 0x20
                 for dirt_item in spoiler.dirt_patch_placement:
-                    for patch in DirtPatchLocations:
-                        if patch.map_id == cont_map_id and patch.name == dirt_item["name"]:
+                    for patch in CustomLocations[dirt_item["level"]]:
+                        if patch.map == cont_map_id and patch.name == dirt_item["name"]:
+                            patch_scale = min(patch.max_size / 64, 64)
                             if new_actor_id in used_actor_ids:
                                 while new_actor_id in used_actor_ids:
                                     new_actor_id += 1
                             dirt_bytes = []
-                            dirt_bytes.append(int(float_to_hex(patch.x), 16))
+                            dirt_bytes.append(int(float_to_hex(patch.coords[0]), 16))
                             if patch.is_fungi_hidden_patch and raise_patch:
                                 dirt_bytes.append(int(float_to_hex(155), 16))
                             else:
-                                dirt_bytes.append(int(float_to_hex(patch.y), 16))
-                            dirt_bytes.append(int(float_to_hex(patch.z), 16))
-                            dirt_bytes.append(int(float_to_hex(patch.scale), 16))
+                                dirt_bytes.append(int(float_to_hex(patch.coords[1]), 16))
+                            dirt_bytes.append(int(float_to_hex(patch.coords[2]), 16))
+                            dirt_bytes.append(int(float_to_hex(patch_scale), 16))
                             for x in range(8):
                                 dirt_bytes.append(0)
-                            rot_type_hex = hex(patch.rotation) + "007B"
+                            rot_type_hex = hex(patch.rot_y) + "007B"
                             dirt_bytes.append(int(rot_type_hex, 16))
                             id_something_hex = hex(new_actor_id) + "46D0"
                             used_actor_ids.append(new_actor_id)
@@ -396,7 +397,6 @@ def randomize_setup(spoiler):
             # Re-run through actor stuff for changes
             ROM_COPY.seek(cont_map_setup_address + 4 + (model2_count * 0x30) + 4 + (mystery_count * 0x24))
             actor_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
-            diddy_5di_pos = []
             for actor_item in range(actor_count):
                 actor_start = actor_block_start + 4 + (actor_item * 0x38)
                 ROM_COPY.seek(actor_start + 0x32)

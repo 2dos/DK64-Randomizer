@@ -76,8 +76,8 @@ LogicRegions = {
         LocationLogic(Locations.IslesSwimTrainingBarrel, lambda l: True),
         LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: True),
         LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: True),
-        LocationLogic(Locations.RainbowCoin_Location13, lambda l: l.shockwave),
-        LocationLogic(Locations.RainbowCoin_Location14, lambda l: l.shockwave and (l.vines or l.CanMoonkick())),  # Banana Hoard patch
+        LocationLogic(Locations.RainbowCoin_Location13, lambda l: True),
+        LocationLogic(Locations.RainbowCoin_Location14, lambda l: l.vines or l.CanMoonkick()),  # Banana Hoard patch
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True, Transitions.IslesStartToMain),
         TransitionFront(Regions.Treehouse, lambda l: True, Transitions.IslesStartToTreehouse),
@@ -89,7 +89,7 @@ LogicRegions = {
         # the starting kong, so for logic we assume any kong can grab it since that's practically true.
         LocationLogic(Locations.IslesDonkeyJapesRock, lambda l: (l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events)),
         LocationLogic(Locations.IslesChunkyCagedBanana, lambda l: (l.pineapple and l.chunky) or ((l.CanSTS() or l.phasewalk) and (l.ischunky or l.settings.free_trade_items))),
-        LocationLogic(Locations.RainbowCoin_Location04, lambda l: l.shockwave),
+        LocationLogic(Locations.RainbowCoin_Location04, lambda l: True),
     ], [
         Event(Events.IslesW1aTagged, lambda l: True),
         Event(Events.IslesW1bTagged, lambda l: True),
@@ -142,7 +142,7 @@ LogicRegions = {
 
     Regions.Prison: Region("Prison", "Krem Isle", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesLankyPrisonOrangsprint, lambda l: (l.sprint and l.islanky) or (l.phasewalk and (l.islanky or l.settings.free_trade_items))),
-        LocationLogic(Locations.RainbowCoin_Location12, lambda l: l.shockwave),
+        LocationLogic(Locations.RainbowCoin_Location12, lambda l: True),
     ], [
         Event(Events.KLumsyTalkedTo, lambda l: True),
         Event(Events.JapesKeyTurnedIn, lambda l: l.JapesKey and l.HasFillRequirementsForLevel(l.settings.level_order[2])),  # To be able to turn a key in, you must have the *fill moves* required to enter the next level
@@ -274,7 +274,7 @@ LogicRegions = {
     ]),
 
     Regions.CabinIsle: Region("Cabin Isle", "Outer Isles", Levels.DKIsles, False, None, [
-        LocationLogic(Locations.RainbowCoin_Location03, lambda l: l.shockwave),
+        LocationLogic(Locations.RainbowCoin_Location03, lambda l: True),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.IslesMainUpper, lambda l: l.twirl and l.istiny and l.advanced_platforming),
@@ -304,7 +304,7 @@ LogicRegions = {
     ]),
 
     Regions.AztecLobbyRoof: Region("Aztec Lobby Roof", "Main Isle", Levels.DKIsles, False, None, [
-        LocationLogic(Locations.RainbowCoin_Location05, lambda l: l.shockwave),
+        LocationLogic(Locations.RainbowCoin_Location05, lambda l: True),
     ], [], [
         TransitionFront(Regions.IslesMainUpper, lambda l: True),
         TransitionFront(Regions.IslesAboveWaterfall, lambda l: l.CanMoonkick())
@@ -350,7 +350,7 @@ LogicRegions = {
         LocationLogic(Locations.CastleLankyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.CastleTinyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.CastleChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
-        LocationLogic(Locations.RainbowCoin_Location15, lambda l: l.shockwave and ((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and l.settings.krusha_kong != Kongs.tiny))),
+        LocationLogic(Locations.RainbowCoin_Location15, lambda l: (l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and l.settings.krusha_kong != Kongs.tiny)),
     ], [
         Event(Events.CastleLobbyAccessed, lambda l: True),
     ], [

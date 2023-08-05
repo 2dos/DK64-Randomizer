@@ -138,7 +138,7 @@ LogicRegions = {
     ]),
 
     Regions.GiantKosha: Region("Giant Kosha", "Igloo Area", Levels.CrystalCaves, False, -1, [
-        LocationLogic(Locations.RainbowCoin_Location10, lambda l: l.shockwave),
+        LocationLogic(Locations.RainbowCoin_Location10, lambda l: True),
     ], [
         Event(Events.GiantKoshaDefeated, lambda l: l.shockwave or l.HasInstrument(Kongs.any)),
     ], [

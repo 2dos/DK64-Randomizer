@@ -50,7 +50,7 @@ LogicRegions = {
     Regions.AngryAztecOasis: Region("Angry Aztec Oasis", "Aztec Oasis and Totem Area", Levels.AngryAztec, True, -1, [
         LocationLogic(Locations.AztecDonkeyFreeLlama, lambda l: Events.LlamaFreed in l.Events),
         LocationLogic(Locations.AztecKasplatOnTinyTemple, lambda l: not l.settings.kasplat_rando and l.jetpack and l.isdiddy),
-        LocationLogic(Locations.RainbowCoin_Location06, lambda l: l.shockwave),
+        LocationLogic(Locations.RainbowCoin_Location06, lambda l: True),
     ], [
         Event(Events.AztecW1bTagged, lambda l: True),
         Event(Events.AztecW2aTagged, lambda l: True),
@@ -173,7 +173,7 @@ LogicRegions = {
     Regions.ChunkyTemple: Region("Chunky Temple", "5 Door Temple", Levels.AngryAztec, False, TransitionFront(Regions.AngryAztecStart, lambda l: (l.pineapple and l.ischunky) or l.phasewalk), [
         LocationLogic(Locations.AztecChunky5DoorTemple, lambda l: (l.pineapple or l.phasewalk) and (l.ischunky or l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.AztecKasplatChunky5DT, lambda l: not l.settings.kasplat_rando and ((l.pineapple and l.ischunky) or l.phasewalk)),
-        LocationLogic(Locations.RainbowCoin_Location01, lambda l: l.shockwave and ((l.pineapple and l.ischunky) or l.phasewalk)),
+        LocationLogic(Locations.RainbowCoin_Location01, lambda l: (l.pineapple and l.ischunky) or l.phasewalk),
     ], [], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
         TransitionFront(Regions.AngryAztecMain, lambda l: True, Transitions.AztecChunkyToMain),

@@ -15,18 +15,16 @@ import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
 import randomizer.Lists.CBLocations.JungleJapesCBLocations
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.BananaCoinLocations import BananaCoinGroupList
-from randomizer.Lists.CrownLocations import CrownLocations
+from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Lists.FairyLocations import fairy_locations
 from randomizer.Lists.KasplatLocations import KasplatLocationList
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Lists.Patches import DirtPatchLocations
 
 # USAGE OF FILE
 # - python ./dumper.py {format} {desired-files}
-# Eg: python ./dumper.py json cb crown fairy
+# Eg: python ./dumper.py json cb door fairy
 # Valid formats: "csv", "json", "md"
-# Valid files: "all", "cb", "coin", "crown", "door", "fairy", "kasplat", "patch"
 
 
 class Dumpers(IntEnum):
@@ -34,11 +32,10 @@ class Dumpers(IntEnum):
 
     ColoredBananas = auto()
     Coins = auto()
-    Crowns = auto()
+    CustomLocations = auto()
     Doors = auto()
     Fairies = auto()
     Kasplats = auto()
-    Patches = auto()
 
 
 def dump_to_dict(class_instance, deleted=[], enum_value=[], enum_name=[], logic_var=None, x_func=None, y_func=None, z_func=None) -> dict:
@@ -183,17 +180,16 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                     headers = {
                         Dumpers.ColoredBananas: "Colored Banana Locations",
                         Dumpers.Coins: "Coin Locations",
-                        Dumpers.Crowns: "Crown Pad Locations",
+                        Dumpers.CustomLocations: "Crown Pad/ Dirt Patch Locations",
                         Dumpers.Doors: "Door Locations",
                         Dumpers.Fairies: "Fairy Locations",
-                        Dumpers.Patches: "Dirt Patch Locations",
                         Dumpers.Kasplats: "Kasplat Locations",
                     }
                     dumper_header = "Click me"
                     if dumper in headers:
                         dumper_header = headers[dumper]
                     fh.write(f"<details>\n<summary>{dumper_header}</summary>\n\n")
-                    if dumper in (Dumpers.Crowns, Dumpers.Fairies, Dumpers.Kasplats, Dumpers.Patches):
+                    if dumper in (Dumpers.CustomLocations, Dumpers.Fairies, Dumpers.Kasplats):
                         fh.write("| Map | Name | Logic |\n")
                         fh.write("| --- | ---- | ----- |\n")
                     elif dumper == Dumpers.Doors:
@@ -214,14 +210,12 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                                 if y["map"] not in groupings:
                                     groupings[y["map"]] = []
                                 groupings[y["map"]].append(f"| {y['name']} | Balloon | {y.get('logic', '')} | \n")
-                        elif dumper in (Dumpers.Crowns, Dumpers.Fairies):
+                        elif dumper in (Dumpers.CustomLocations, Dumpers.Fairies):
                             fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y.get('logic', '')} | \n")
                         elif dumper == Dumpers.Kasplats:
                             fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y.get('additional_logic', '')} | \n")
                         elif dumper == Dumpers.Doors:
                             fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y['door_type'].title()} | {y.get('logic', '')} | \n")
-                        elif dumper == Dumpers.Patches:
-                            fh.write(f"| {getMapNameFromIndex(y['map_id'])} | {y['name']} | {y.get('logic', '')} | \n")
                     for group in groupings:
                         if dumper in (Dumpers.ColoredBananas, Dumpers.Coins):
                             fh.write("<details>\n")
@@ -287,34 +281,36 @@ def dump_cb(format: str):
         dump_to_file("colored_bananas", dumps, format, Dumpers.ColoredBananas)
 
 
-def getCrownX(item: dict):
-    """Get Crown X Position."""
+def getCustomX(item: dict):
+    """Get Custom Location X Position."""
     return item["coords"][0]
 
 
-def getCrownY(item: dict):
-    """Get Crown Y Position."""
+def getCustomY(item: dict):
+    """Get Custom Location Y Position."""
     return item["coords"][1]
 
 
-def getCrownZ(item: dict):
-    """Get Crown Z Position."""
+def getCustomZ(item: dict):
+    """Get Custom Location Z Position."""
     return item["coords"][2]
 
 
-def dump_crown(format: str):
-    """Dump crown pad locations."""
+def dump_custom_location(format: str):
+    """Dump custom locations."""
     dumps = {}
-    for level in CrownLocations:
-        crown_data = []
-        for crown in CrownLocations[level]:
-            crown_data.append(dump_to_dict(crown, ["is_vanilla", "is_rotating_room", "default_index", "placement_subindex"], ["map"], ["region"], "logic", getCrownX, getCrownY, getCrownZ))
+    for level in CustomLocations:
+        custom_location_data = []
+        for custom_location in CustomLocations[level]:
+            custom_location_data.append(
+                dump_to_dict(custom_location, ["is_vanilla", "is_rotating_room", "default_index", "placement_subindex"], ["map"], ["region"], "logic", getCustomX, getCustomY, getCustomZ)
+            )
         if format == "md":
-            dumps[level] = crown_data
+            dumps[level] = custom_location_data
         else:
-            dump_to_file(f"crowns_{level.name}", crown_data, format, Dumpers.Crowns)
+            dump_to_file(f"custom_locations_{level.name}", custom_location_data, format, Dumpers.CustomLocations)
     if format == "md":
-        dump_to_file("crowns", dumps, format, Dumpers.Crowns)
+        dump_to_file("custom_locations", dumps, format, Dumpers.CustomLocations)
 
 
 def getDoorX(item: dict):
@@ -409,22 +405,6 @@ def dump_kasplat(format: str):
         dump_to_file("kasplats", dumps, format, Dumpers.Kasplats)
 
 
-def dump_patch(format: str):
-    """Dump dirt patch locations."""
-    dumps = {}
-    for patch in DirtPatchLocations:
-        level = patch.level_name
-        as_dict = dump_to_dict(patch, ["vanilla", "selected", "group", "level_name"], ["map_id"], ["logicregion"], "logic")
-        if level not in dumps:
-            dumps[level] = []
-        dumps[level].append(as_dict)
-    if format == "md":
-        dump_to_file("patches", dumps, format, Dumpers.Patches)
-    else:
-        for level in dumps:
-            dump_to_file(f"patches_{level.name}", dumps[level], format, Dumpers.Patches)
-
-
 def dump_coin(format: str):
     """Dump coin locations."""
     dumps = {}
@@ -441,7 +421,7 @@ def dump_coin(format: str):
             dump_to_file(f"coins_{level.name}", dumps[level], format, Dumpers.Coins)
 
 
-all_args = ["cb", "coin", "crown", "door", "fairy", "kasplat", "patch"]
+all_args = ["cb", "coin", "custom_location", "door", "fairy", "kasplat"]
 valid_args = all_args + ["all"]
 args = sys.argv[2:]
 if "all" in args:

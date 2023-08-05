@@ -37,6 +37,7 @@ from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Warps import Warps
+from randomizer.Lists.CustomLocations import resetCustomLocations
 from randomizer.Lists.Item import ItemList, KongFromItem
 from randomizer.Lists.Location import LocationList, ResetLocationList, SharedMoveLocations, SharedShopLocations
 from randomizer.Lists.MapsAndExits import Maps
@@ -257,6 +258,9 @@ def GetAccessibleLocations(settings, startingOwnedItems, searchType, purchaseLis
                             # Empty locations are accessible, but we need to note them down and possibly purchase them later depending on the search type
                             elif shopIsEmpty:
                                 unpurchasedEmptyShopLocationIds.append(location.id)
+                        # If this location is a dirt patch, make sure we have shockwave
+                        elif location_obj.type == Types.RainbowCoin and not LogicVariables.shockwave:
+                            continue
                         elif location.id == Locations.NintendoCoin:
                             # Spend Two Coins for arcade lever
                             LogicVariables.Coins[Kongs.donkey] -= 2
@@ -2600,6 +2604,7 @@ def Generate_Spoiler(spoiler):
 
 def ShuffleMisc(spoiler):
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
+    resetCustomLocations()
     # T&S and Wrinkly Door Shuffle
     if spoiler.settings.vanilla_door_rando:
         ShuffleVanillaDoors(spoiler)
