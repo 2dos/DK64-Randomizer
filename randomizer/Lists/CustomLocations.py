@@ -10,7 +10,7 @@ from randomizer.Lists.MapsAndExits import Maps
 
 
 class CustomLocation:
-    """Class to store information pertaining to a crown location."""
+    """Class to store information pertaining to a custom location for objects, such as crown pads, dirt patches and melon crates."""
 
     def __init__(
         self,
@@ -36,7 +36,7 @@ class CustomLocation:
         self.map = map
         self.name = name
         self.coords = [x, y, z]
-        self.rot_y = (rot_y,)
+        self.rot_y = rot_y
         self.max_size = max_size
         self.logic = logic
         self.logic_region = logic_region
@@ -1015,7 +1015,7 @@ CustomLocations = {
             group=3,
         ),
         CustomLocation(map=Maps.GloomyGalleon, name="Near Chest Cannon (1)", x=3072, y=1790, z=3501, max_size=48, logic_region=Regions.GloomyGalleonStart, group=3),
-        CustomLocation(map=Maps.GloomyGalleon, name="Near Chest Cannon (2)", x=3072, y=1790, z=3360, max_size=72, logic_region=Regions.GloomyGalleonStart, group=3),
+        CustomLocation(map=Maps.GloomyGalleon, name="Near Chest Cannon (2)", x=3072, y=1790, z=3360, rot_y=2048, max_size=72, logic_region=Regions.GloomyGalleonStart, group=3),
         CustomLocation(map=Maps.GloomyGalleon, name="Near Chest GB Tunnel", x=3048, y=1670, z=3832, max_size=64, logic_region=Regions.GloomyGalleonStart, group=3),
         CustomLocation(map=Maps.GloomyGalleon, name="Behind Punch GB Chest (1)", x=3506, y=1670, z=3802, max_size=88, logic_region=Regions.GloomyGalleonStart, group=3),
         CustomLocation(
@@ -1041,17 +1041,17 @@ CustomLocations = {
             group=3,
         ),
         CustomLocation(map=Maps.GloomyGalleon, name="Left of Cranky", x=3175, y=1670, z=2527, max_size=56, logic_region=Regions.GloomyGalleonStart, group=3),
-        CustomLocation(
-            name="On the ship near Cranky",
-            map=Maps.GloomyGalleon,
-            x=3068.0,
-            y=1790.0,
-            z=3386.0,
-            rot_y=2048,
-            max_size=64,
-            logic_region=Regions.GloomyGalleonStart,
-            group=3,
-        ),
+        # CustomLocation(
+        #     name="On the ship near Cranky",
+        #     map=Maps.GloomyGalleon,
+        #     x=3068.0,
+        #     y=1790.0,
+        #     z=3386.0,
+        #     rot_y=2048,
+        #     max_size=64,
+        #     logic_region=Regions.GloomyGalleonStart,
+        #     group=3,
+        # ),
         # CrownLocation(
         #     map=Maps.GloomyGalleon,
         #     name="Front of Cranky",
@@ -1745,7 +1745,7 @@ CustomLocations = {
             logic_region=Regions.FrozenCastle,
             group=2,
         ),
-        CustomLocation(map=Maps.CavesTinyCabin, name="Tiny Cabin: Interior", x=179, y=0, z=255, max_size=56, logic_region=Regions.TinyCabin, group=1),
+        CustomLocation(map=Maps.CavesTinyCabin, name="Tiny Cabin: Interior", x=179, y=0, z=255, max_size=56, logic_region=Regions.TinyCabin, logic=lambda l: l.oranges, group=1),
     ],
     Levels.CreepyCastle: [
         CustomLocation(

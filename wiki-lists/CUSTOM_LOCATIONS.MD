@@ -2,7 +2,7 @@
 
 ## Jungle Japes
 <details>
-<summary>Crown Pad Locations</summary>
+<summary>Crown Pad/ Dirt Patch Locations</summary>
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
@@ -53,7 +53,7 @@
 
 ## Angry Aztec
 <details>
-<summary>Crown Pad Locations</summary>
+<summary>Crown Pad/ Dirt Patch Locations</summary>
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
@@ -109,7 +109,7 @@
 
 ## Frantic Factory
 <details>
-<summary>Crown Pad Locations</summary>
+<summary>Crown Pad/ Dirt Patch Locations</summary>
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
@@ -158,7 +158,7 @@
 
 ## Gloomy Galleon
 <details>
-<summary>Crown Pad Locations</summary>
+<summary>Crown Pad/ Dirt Patch Locations</summary>
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
@@ -175,7 +175,6 @@
 | Gloomy Galleon | Behind Punch GB Chest (2) |  | 
 | Gloomy Galleon | Behind the ship you shoot onto with the cannon |  | 
 | Gloomy Galleon | Left of Cranky |  | 
-| Gloomy Galleon | On the ship near Cranky |  | 
 | Gloomy Galleon | In front of Cranky |  | 
 | Gloomy Galleon | Near Bridge Warp 3 |  | 
 | Gloomy Galleon | On Lighthouse Platform (Rocketbarrel) |  | 
@@ -199,7 +198,7 @@
 
 ## Fungi Forest
 <details>
-<summary>Crown Pad Locations</summary>
+<summary>Crown Pad/ Dirt Patch Locations</summary>
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
@@ -272,7 +271,7 @@
 
 ## Crystal Caves
 <details>
-<summary>Crown Pad Locations</summary>
+<summary>Crown Pad/ Dirt Patch Locations</summary>
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
@@ -325,12 +324,12 @@
 | Caves Donkey Cabin | DK 5DC: Opposite Entrance |  | 
 | Caves Frozen Castle | Frozen Castle: Next to Slam Puzzle - left |  | 
 | Caves Frozen Castle | Frozen Castle: Next to Slam Puzzle - right |  | 
-| Caves Tiny Cabin | Tiny Cabin: Interior |  | 
+| Caves Tiny Cabin | Tiny Cabin: Interior | l.oranges, group=1) | 
 </details>
 
 ## Creepy Castle
 <details>
-<summary>Crown Pad Locations</summary>
+<summary>Crown Pad/ Dirt Patch Locations</summary>
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
@@ -395,7 +394,7 @@
 
 ## DK Isles
 <details>
-<summary>Crown Pad Locations</summary>
+<summary>Crown Pad/ Dirt Patch Locations</summary>
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
@@ -477,7 +476,7 @@
 
 ## Hideout Helm
 <details>
-<summary>Crown Pad Locations</summary>
+<summary>Crown Pad/ Dirt Patch Locations</summary>
 
 | Map | Name | Logic |
 | --- | ---- | ----- |

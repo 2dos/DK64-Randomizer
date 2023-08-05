@@ -23,7 +23,7 @@ from randomizer.Lists.MapsAndExits import Maps
 
 # USAGE OF FILE
 # - python ./dumper.py {format} {desired-files}
-# Eg: python ./dumper.py json cb crown fairy
+# Eg: python ./dumper.py json cb door fairy
 # Valid formats: "csv", "json", "md"
 
 
@@ -180,7 +180,7 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                     headers = {
                         Dumpers.ColoredBananas: "Colored Banana Locations",
                         Dumpers.Coins: "Coin Locations",
-                        Dumpers.CustomLocations: "Crown Pad Locations",
+                        Dumpers.CustomLocations: "Crown Pad/ Dirt Patch Locations",
                         Dumpers.Doors: "Door Locations",
                         Dumpers.Fairies: "Fairy Locations",
                         Dumpers.Kasplats: "Kasplat Locations",
@@ -282,31 +282,33 @@ def dump_cb(format: str):
 
 
 def getCustomX(item: dict):
-    """Get Crown X Position."""
+    """Get Custom Location X Position."""
     return item["coords"][0]
 
 
 def getCustomY(item: dict):
-    """Get Crown Y Position."""
+    """Get Custom Location Y Position."""
     return item["coords"][1]
 
 
 def getCustomZ(item: dict):
-    """Get Crown Z Position."""
+    """Get Custom Location Z Position."""
     return item["coords"][2]
 
 
 def dump_custom_location(format: str):
-    """Dump crown pad locations."""
+    """Dump custom locations."""
     dumps = {}
     for level in CustomLocations:
-        crown_data = []
-        for crown in CustomLocations[level]:
-            crown_data.append(dump_to_dict(crown, ["is_vanilla", "is_rotating_room", "default_index", "placement_subindex"], ["map"], ["region"], "logic", getCustomX, getCustomY, getCustomZ))
+        custom_location_data = []
+        for custom_location in CustomLocations[level]:
+            custom_location_data.append(
+                dump_to_dict(custom_location, ["is_vanilla", "is_rotating_room", "default_index", "placement_subindex"], ["map"], ["region"], "logic", getCustomX, getCustomY, getCustomZ)
+            )
         if format == "md":
-            dumps[level] = crown_data
+            dumps[level] = custom_location_data
         else:
-            dump_to_file(f"custom_locations_{level.name}", crown_data, format, Dumpers.CustomLocations)
+            dump_to_file(f"custom_locations_{level.name}", custom_location_data, format, Dumpers.CustomLocations)
     if format == "md":
         dump_to_file("custom_locations", dumps, format, Dumpers.CustomLocations)
 

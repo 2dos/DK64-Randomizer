@@ -19,7 +19,7 @@ from randomizer.LogicClasses import LocationLogic
 from randomizer.Spoiler import Spoiler
 
 
-def addPatch(patch: CustomLocation, enum_val: int, name: str):
+def addPatch(patch: CustomLocation, enum_val: int, name: str, level: Levels):
     """Add patch to relevant Logic Region."""
     level_to_enum = {
         Levels.DKIsles: randomizer.LogicFiles.DKIsles.LogicRegions,
@@ -41,11 +41,11 @@ def addPatch(patch: CustomLocation, enum_val: int, name: str):
         Levels.CrystalCaves: "Caves",
         Levels.CreepyCastle: "Castle",
     }
-    level_data = level_to_enum[patch.level_name]
+    level_data = level_to_enum[level]
     level_data[patch.logic_region].locations.append(LocationLogic(enum_val, patch.logic))
-    LocationList[enum_val].name = f"{level_to_name[patch.level_name]} Dirt: {name}"
+    LocationList[enum_val].name = f"{level_to_name[level]} Dirt: {name}"
     LocationList[enum_val].default_mapid_data[0].map = patch.map
-    LocationList[enum_val].level = patch.level_name
+    LocationList[enum_val].level = level
 
 
 def removePatches():
@@ -85,7 +85,7 @@ def ShufflePatches(spoiler: Spoiler, human_spoiler):
         for SingleDirtPatchLocation in CustomLocations[key]:
             if (SingleDirtPatchLocation.vanilla_patch or not SingleDirtPatchLocation.selected) and LocationTypes.DirtPatch not in SingleDirtPatchLocation.banned_types:
                 SingleDirtPatchLocation.setCustomLocation(False)
-                total_dirt_patch_list[SingleDirtPatchLocation.level_name].append(SingleDirtPatchLocation)
+                total_dirt_patch_list[key].append(SingleDirtPatchLocation)
     select_random_dirt_from_area(total_dirt_patch_list[Levels.DKIsles], 4, Levels.DKIsles, spoiler, human_spoiler)
     del total_dirt_patch_list[Levels.DKIsles]
 
@@ -103,7 +103,7 @@ def ShufflePatches(spoiler: Spoiler, human_spoiler):
     sorted_patches = sorted(sorted_patches, key=lambda d: d["score"])
     for patch_index, patch in enumerate(sorted_patches):
         patch["enum"] = Locations.RainbowCoin_Location00 + patch_index
-        addPatch(patch["patch"], patch["enum"], patch["name"])
+        addPatch(patch["patch"], patch["enum"], patch["name"], patch["level"])
         patch["patch"] = None
     return human_spoiler.copy()
 

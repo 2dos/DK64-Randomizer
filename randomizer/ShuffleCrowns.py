@@ -40,8 +40,9 @@ def ShuffleCrowns(crown_selection, human_crowns):
         region.locations = [loclogic for loclogic in region.locations if loclogic.id not in crown_locations]
     global_crown_idx = 0
     for level in CustomLocations:
-        level_lst = [x for x in CustomLocations[level] if x.vanilla_crown or not x.selected and LocationTypes.CrownPad not in x.banned_types]
+        level_lst = CustomLocations[level]
         index_lst = list(range(len(level_lst)))
+        index_lst = [x for x in index_lst if level_lst[x].vanilla_crown or (not level_lst[x].selected and LocationTypes.CrownPad not in level_lst[x].banned_types)]
         pick_count = 1
         if level == Levels.DKIsles:
             pick_count = 2
@@ -82,7 +83,7 @@ def ShuffleCrowns(crown_selection, human_crowns):
             crown_obj = level_lst[crown]
             crown_obj.setCustomLocation(True)
             LocationList[crown_locations[global_crown_idx]].name = f"{level_to_name[level]} Battle Arena{crown_number_string} ({level_lst[crown].name})"
-            crownRegion = Logic.Regions[crown_obj.region]
+            crownRegion = Logic.Regions[crown_obj.logic_region]
             # Add crowns to their updated logic region
             crownRegion.locations.append(LocationLogic(crown_locations[global_crown_idx], crown_obj.logic))
             global_crown_idx += 1
