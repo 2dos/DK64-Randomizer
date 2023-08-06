@@ -572,12 +572,27 @@ class WrinklyHints(IntEnum):
     standard: Normal randomizer hints are provided.
     cryptic: Cryptic randomizer hints are provided.
     fixed_racing: Fixed distribution - this one is for the S2 racing preset.
+    item_hinting: All Kongs, Keys, and as many moves as possible are hinted, prioritizing WotH moves.
     """
 
     off = 0
     standard = 1
     cryptic = 2
     fixed_racing = 3
+    item_hinting = 4
+
+
+class SpoilerHints(IntEnum):
+    """Whether or not spoiler-style hints are generated within the spoiler log for external trackers to use.
+
+    off: No hints are generated.
+    vial_colors: The keys, kongs, and non-junk vials with their color will be hinted for each level. Includes K. Rool and Helm order.
+    points: Assign a number of points to each level based on the items that level contains. Point values per item can be specified. Includes K. Rool and Helm order.
+    """
+
+    off = 0
+    vial_colors = 1
+    points = 2
 
 
 # ALL SELECT-BASED SETTINGS NEED AN ENTRY HERE!
@@ -627,6 +642,7 @@ SettingsMap = {
     "warp_level_list_selected": Maps,
     "win_condition": WinCondition,
     "wrinkly_hints": WrinklyHints,
+    "spoiler_hints": SpoilerHints,
 }
 
 
@@ -779,6 +795,8 @@ class SettingsStringEnum(IntEnum):
     hard_mode_selected = 134
     hard_mode = 135
     more_cutscene_skips = 136
+    spoiler_hints = 137
+    spoiler_include_woth_count = 138
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -955,6 +973,8 @@ SettingsStringTypeMap = {
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,
     SettingsStringEnum.wrinkly_location_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.spoiler_hints: SpoilerHints,
+    SettingsStringEnum.spoiler_include_woth_count: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

@@ -74,6 +74,7 @@ class Settings:
         self.set_seed()
         self.seed_hash = [random.randint(0, 9) for i in range(5)]
         self.krool_keys_required = []
+        self.starting_key_list = []
         # Settings which are not yet implemented on the web page
 
         # B Locker and T&S max values
@@ -426,7 +427,8 @@ class Settings:
         self.kong_rando = False
         self.kongs_for_progression = False
         self.wrinkly_hints = WrinklyHints.off
-        self.full_level_hints = False
+        self.spoiler_hints = SpoilerHints.off
+        self.spoiler_include_woth_count = False
         self.fast_warps = False
         self.dpad_display = DPadDisplays.off
         self.high_req = False
@@ -765,6 +767,7 @@ class Settings:
                 self.helm_chunky = True
                 orderedRooms.append(1)
         self.helm_order = orderedRooms
+        self.kong_helm_order = rooms
 
         # Start Region
         if self.random_starting_region:
@@ -837,22 +840,31 @@ class Settings:
             random.shuffle(key_list)
             for x in range(required_key_count):
                 self.krool_keys_required.append(key_list[x])
+        self.starting_key_list = []
         if Events.JapesKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.JungleJapesKey].playthrough = False
+            self.starting_key_list.append(Items.JungleJapesKey)
         if Events.AztecKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.AngryAztecKey].playthrough = False
+            self.starting_key_list.append(Items.AngryAztecKey)
         if Events.FactoryKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.FranticFactoryKey].playthrough = False
+            self.starting_key_list.append(Items.FranticFactoryKey)
         if Events.GalleonKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.GloomyGalleonKey].playthrough = False
+            self.starting_key_list.append(Items.GloomyGalleonKey)
         if Events.ForestKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.FungiForestKey].playthrough = False
+            self.starting_key_list.append(Items.FungiForestKey)
         if Events.CavesKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.CrystalCavesKey].playthrough = False
+            self.starting_key_list.append(Items.CrystalCavesKey)
         if Events.CastleKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.CreepyCastleKey].playthrough = False
+            self.starting_key_list.append(Items.CreepyCastleKey)
         if Events.HelmKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.HideoutHelmKey].playthrough = False
+            self.starting_key_list.append(Items.HideoutHelmKey)
 
         # Banana medals
         if self.random_medal_requirement:

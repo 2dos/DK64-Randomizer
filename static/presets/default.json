@@ -113,6 +113,8 @@
     "shuffle_shops": true,
     "smaller_shops": false,
     "songs_excluded": false,
+    "spoiler_hints": "off",
+    "spoiler_include_woth_count": false,
     "starting_keys_list_selected": [],
     "starting_kongs_count": 3,
     "starting_moves_count": 4,
