@@ -11,3 +11,4 @@ class ScriptTypes(IntEnum):
     TnsIndicator = auto()
     CrownMain = auto()
     CrownIsles2 = auto()
+    MelonCrate = auto()

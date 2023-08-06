@@ -65,7 +65,7 @@ def randomize_crown_pads(spoiler):
                     item_start = setup_table + 4 + (model2_item * 0x30)
                     ROM_COPY.seek(item_start + 0x28)
                     item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
-                    if cont_map_id in vanilla_crown_maps and cont_map_id not in new_vanilla_crowns and item_type == 0x1C6:
+                    if cont_map_id in vanilla_crown_maps and cont_map_id not in new_vanilla_crowns and item_type == 0x1C6 or item_type == 0xB5:
                         accept = False  # Crown is being removed
                     if accept:
                         ROM_COPY.seek(item_start)
@@ -92,7 +92,7 @@ def randomize_crown_pads(spoiler):
                                 0,
                                 0,
                                 0,
-                                (0x1C6 << 16) | selected_id,
+                                (0xB5 << 16) | selected_id,
                                 1 << 16,
                             ]
                         )

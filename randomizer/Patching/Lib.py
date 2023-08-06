@@ -293,6 +293,8 @@ def addNewScript(cont_map_id: int, item_ids: list, type: ScriptTypes):
         subscript_type = -5
     elif type == ScriptTypes.CrownIsles2:
         subscript_type = -6
+    elif type == ScriptTypes.MelonCrate:
+        subscript_type = -13
     for item_id in item_ids:
         script_arr = [
             item_id,
