@@ -72,3 +72,20 @@ def ClearHintMessages():
     for hint in hints:
         if hint.name != "First Time Talk":
             hint.hint = ""
+
+
+PointSpreadSelector = []
+PointSpreadBase = [
+    ("Kongs", 9),
+    ("Keys", 9),
+    ("Guns", 7),
+    ("Instruments", 7),
+    ("Training Moves", 5),
+    ("Important Shared", 5),
+    ("Pad Moves", 3),
+    ("Barrel Moves", 3),
+    ("Active Moves", 3),
+    ("Bean", 3),
+]
+for item in PointSpreadBase:
+    PointSpreadSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_"), "tooltip": "", "default": item[1]})

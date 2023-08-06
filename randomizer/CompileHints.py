@@ -1958,7 +1958,27 @@ def CategorizeItem(item):
 
 def PointValueOfItem(settings, item_id):
     """Determine the point value of this item."""
-    return 1
+    if item_id in [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]:
+        return settings.points_list_kongs
+    elif item_id in ItemPool.Keys():
+        return settings.points_list_keys
+    elif item_id in [Items.Coconut, Items.Peanut, Items.Grape, Items.Feather, Items.Pineapple]:
+        return settings.points_list_guns
+    elif item_id in [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle]:
+        return settings.points_list_instruments
+    elif item_id in [Items.GorillaGrab, Items.ChimpyCharge, Items.Orangstand, Items.PonyTailTwirl, Items.PrimatePunch]:
+        return settings.points_list_active_moves
+    elif item_id in [Items.BaboonBlast, Items.SimianSpring, Items.BaboonBalloon, Items.Monkeyport, Items.GorillaGone]:
+        return settings.points_list_pad_moves
+    elif item_id in [Items.StrongKong, Items.RocketbarrelBoost, Items.OrangstandSprint, Items.MiniMonkey, Items.HunkyChunky]:
+        return settings.points_list_barrel_moves
+    elif item_id in ItemPool.TrainingBarrelAbilities():
+        return settings.points_list_training_moves
+    elif item_id in ItemPool.ImportantSharedMoves:
+        return settings.points_list_important_shared_moves
+    elif item_id == Items.Bean:
+        return settings.points_list_bean
+    return 0
 
 
 def TryCreatingLoadingZoneHint(spoiler: Spoiler, transition, disallowedRegions: list = None):

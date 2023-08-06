@@ -494,6 +494,17 @@ class Settings:
         self.helmhurry_list_fairies = 50
         self.helmhurry_list_colored_bananas = 3
         self.helmhurry_list_ice_traps = -40
+        # Point spread
+        self.points_list_kongs = 9
+        self.points_list_keys = 9
+        self.points_list_guns = 7
+        self.points_list_instruments = 7
+        self.points_list_training_moves = 5
+        self.points_list_important_shared_moves = 5
+        self.points_list_pad_moves = 3
+        self.points_list_barrel_moves = 3
+        self.points_list_active_moves = 3
+        self.points_list_bean = 3
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""

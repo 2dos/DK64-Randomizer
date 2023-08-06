@@ -797,6 +797,16 @@ class SettingsStringEnum(IntEnum):
     more_cutscene_skips = 136
     spoiler_hints = 137
     spoiler_include_woth_count = 138
+    points_list_kongs = 139
+    points_list_keys = 140
+    points_list_guns = 141
+    points_list_instruments = 142
+    points_list_training_moves = 143
+    points_list_important_shared_moves = 144
+    points_list_pad_moves = 145
+    points_list_barrel_moves = 146
+    points_list_active_moves = 147
+    points_list_bean = 148
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -975,6 +985,16 @@ SettingsStringTypeMap = {
     SettingsStringEnum.wrinkly_location_rando: SettingsStringDataType.bool,
     SettingsStringEnum.spoiler_hints: SpoilerHints,
     SettingsStringEnum.spoiler_include_woth_count: SettingsStringDataType.bool,
+    SettingsStringEnum.points_list_kongs: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_keys: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_guns: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_instruments: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_training_moves: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_important_shared_moves: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_pad_moves: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_barrel_moves: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_active_moves: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_bean: SettingsStringDataType.int16,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

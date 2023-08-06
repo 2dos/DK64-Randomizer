@@ -1,4 +1,4 @@
-{% from 'macros.html.jinja2' import list_selector %}
+{% from 'macros.html.jinja2' import list_selector, properties_selector %}
 <div class="container" style="margin-top: 20px;">
     <div class="row">
         <div class="col border panel">
@@ -170,6 +170,10 @@
                             Off
                         </option>
                     </select>
+                    <div>
+                    Customize Points
+                    {{ properties_selector(points_spread, "points_list", "POINTS SPREAD", "This will open a popup that will let you customize your points spread.") }}
+                    {# Remove end </div> as it's included in the macro for formatting #}
                     <div class="form-check form-switch" style="padding-top:10px;">
                         <label data-toggle="tooltip"
                                 title="Spoiler hints will includes the count of spoiler-hinted WotH (strictly required) items in each level.">
