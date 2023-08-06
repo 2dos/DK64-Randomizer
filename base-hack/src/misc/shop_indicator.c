@@ -477,9 +477,9 @@ void newCounterCode(void) {
 						y_factor = 40.0f;
 					}
 					float scale = getShopScale(closest_shop);
-					float x_r = getXRatioMovement(CurrentActorPointer_0->rot_y);
+					float x_r = determineXRatioMovement(CurrentActorPointer_0->rot_y);
 					float x_d = scale * h_factor * x_r;
-					float z_d = scale * h_factor * getZRatioMovement(CurrentActorPointer_0->rot_y);
+					float z_d = scale * h_factor * determineZRatioMovement(CurrentActorPointer_0->rot_y);
 					float y_d = scale * y_factor;
 					CurrentActorPointer_0->xPos += x_d;
 					CurrentActorPointer_0->yPos += y_d;

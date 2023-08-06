@@ -107,3 +107,4 @@
 .definelabel runAnimFrame, 0x80613CA8
 .definelabel handlePoleGrabbing, 0x8072F230
 .definelabel unkCutsceneFunction, 0x8061D1FC
+.definelabel genericKongCode, 0x806F3190

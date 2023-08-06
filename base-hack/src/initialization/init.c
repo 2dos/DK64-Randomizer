@@ -619,6 +619,22 @@ void initHack(int source) {
 				SurfaceTypeInformation[3].texture_loader = SurfaceTypeInformation[7].texture_loader;
 				SurfaceTypeInformation[3].dl_writer = SurfaceTypeInformation[7].dl_writer;
 			}
+			if (Rando.hard_mode.dark_world) {
+				writeFunction(0x8062F230, &alterChunkLighting);
+				writeFunction(0x8065121C, &alterChunkLighting);
+				writeFunction(0x8062F2CC, &alterChunkData);
+				writeFunction(0x806C9DF8, &shineLight);
+				writeFunction(0x806C9E28, &shineLight);
+				writeFunction(0x806C9E58, &shineLight);
+				writeFunction(0x806C9E88, &shineLight);
+				writeFunction(0x806C9EB8, &shineLight);
+				writeFunction(0x806C9EE8, &shineLight);
+				writeFunction(0x806C9F2C, &shineLight);
+				writeFunction(0x806C9F5C, &shineLight);
+			}
+			if (Rando.hard_mode.no_geo) {
+				*(int*)(0x80651598) = 0xA1E00002;
+			}
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0
 			*(unsigned char*)(0x8064AD01) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[2]];
