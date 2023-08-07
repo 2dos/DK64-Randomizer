@@ -14,7 +14,7 @@ from randomizer.Enums.Settings import (ActivateAllBananaports, BananaportRando,
                                        LevelRandomization, LogicType,
                                        MicrohintsEnabled, MoveRando,
                                        RandomPrices, SettingsMap,
-                                       ShockwaveStatus, TrainingBarrels,
+                                       ShockwaveStatus, SpoilerHints, TrainingBarrels,
                                        WinCondition, WrinklyHints, ExtraCutsceneSkips)
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Settings import Settings
@@ -217,14 +217,16 @@ def test_with_settings_string_1():
     """Confirm that settings strings decryption is working and generate a spoiler log with it."""
     # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
     # This top one is always the S2 Preset (probably up to date, if it isn't go steal it from the season2.json)
-    settings_string = "bKEFiRorPN5ysnPCBogPQ+qBoRDIhKlsa58B+I0eu0uXxCnLE2nBACoMgt1PX4EkAyaBkF1kssFAXQAgwE6gIHA3YBhAI7gQJBXgChQM8gYLB3oDhgQoQ08e2QpHqKhnKlMubRbwM0NjlFuCFRFgMTEUDF61xyN2q/32RQPAZiqcuUOS2EJIIvoE5IMMGY2mMHFosi0rlgVigthoTiwVCkwEwYEYkHERh0AVQA"
+    settings_string = "bKEFiRorPN5ysnPCBogPQ+qBoRDIhKlsa58B+I0eu0uXxCnLE2nBACoMgt1PX4EkAyaBkF1kssFAXQAgwE6gIHA3YBhAI7gQJBXgChQM8gYLB3oDhgQoQ08e2QpHqKhnKlMubRbwM0NjlFuCFRFgETEUAV61xyN2q/32RQPAMxYkiJTlyhyXCmEJIIvoE5IMMGY2mMHFosi0rlgVocthoTiwVGAmDAjEg4ooRh0AVQA"
     # This one is for ease of testing, go wild with it
     # nasty lzr settings_string = "bKEHCRorPE1ebysnPCAMMSwVfwNywcYokPR0ixgENxBlrEIL18/gGzx8MJo53dSvZWZnFNnVsXwpwPqggEQyFMdCVLY1z4D8Ro9dpcviFmttjp0xRpgSfAoHJhQaHjBIV3AiT1+BIAImhXlMZRcZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEBrw95BgqR6jLZ6JVLqkw4EVIWARMhQBXqqGiGQpkqWxrp2HLVfZFgExFOI65Q5LDi0WQEQRALTcWBWKC2GhOLBUUCYMCMaCKSDiaw2fwG"
     # nasty no lzr settings_string = "bKEHCRorPE1ebysnPCAMMSwVfwNywcYokPR0ixgENxBlrEIL18/gGzx8MJo53dSvZWZnFNnVsXwpwPqggEQyFMdCVLY1z4D8Ro9dpcviFmttjpyxRpgSfAoHJhQaHjBIV3AiT1+BIAImhXlMZRcZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEBrw95BgqR6jLZ6JVLqkw4EVIWARMhQBXqqGiGQpkqWxrp2HLVfZFgExFOI65Q5LDi0WQEQRALTcWBWKC2GhOLBUUCYMCMaCKSDiaw2fwG"
+    # settings_string = "bKsnPCAMMSwVfwNywcYokPR0Wx3EGWsQgvXz+AePhhNHPmcUwpwPqgMIZTISPxGj12ly+IWa22OnbFGmBECkFPX5kgAiaFesSvDxqTyyM4vsllgoC6DwGBXU8A4e7MgIHnd9BJk8SwKQXmvBag9ZAMZFCGyz3kFJ5RoM9Eql1SKTDgRUhYEEyFAJetccjdqvsigeAjEU6IlyhyXCg4tFkgi03FsVGAmDAjGginE/iMhAD4AQwAqgA"
 
     settings_dict = decrypt_settings_string_enum(settings_string)
     settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
     settings = Settings(settings_dict)
+    settings.wrinkly_hints = WrinklyHints.item_hinting
     # settings.extreme_debugging = True  # Greatly slows seed gen, use with caution
     spoiler = Spoiler(settings)
     Generate_Spoiler(spoiler)

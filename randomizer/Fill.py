@@ -9,7 +9,7 @@ import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
 import randomizer.LogicFiles.DKIsles as IslesLogic
 import randomizer.ShuffleExits as ShuffleExits
-from randomizer.CompileHints import compileFullLevelHints, compileHints, compileMicrohints
+from randomizer.CompileHints import compileHints, compileMicrohints, compileSpoilerHints
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
@@ -29,6 +29,7 @@ from randomizer.Enums.Settings import (
     RandomPrices,
     ShockwaveStatus,
     ShuffleLoadingZones,
+    SpoilerHints,
     TrainingBarrels,
     WinCondition,
     WrinklyHints,
@@ -2589,8 +2590,8 @@ def Generate_Spoiler(spoiler):
     GeneratePlaythrough(spoiler)
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         compileHints(spoiler)
-    if spoiler.settings.full_level_hints:
-        compileFullLevelHints(spoiler)
+    if spoiler.settings.spoiler_hints != SpoilerHints.off:
+        compileSpoilerHints(spoiler)
     compileMicrohints(spoiler)
     Reset()
     ShuffleExits.Reset()
