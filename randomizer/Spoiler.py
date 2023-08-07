@@ -205,8 +205,11 @@ class Spoiler:
         humanspoiler["Cosmetics"] = {}
         if self.settings.spoiler_hints != SpoilerHints.off:
             humanspoiler["Spoiler Hints Data"] = {}
-            for level in self.level_spoiler.keys():
-                humanspoiler["Spoiler Hints Data"][level] = self.level_spoiler[level].toJSON()
+            for key in self.level_spoiler.keys():
+                if key == "point_spread":
+                    humanspoiler["Spoiler Hints Data"][key] = json.dumps(self.level_spoiler[key])
+                else:
+                    humanspoiler["Spoiler Hints Data"][key] = self.level_spoiler[key].toJSON()
             humanspoiler["Spoiler Hints"] = self.level_spoiler_human_readable
         humanspoiler["Requirements"] = {}
         if self.settings.random_starting_region:

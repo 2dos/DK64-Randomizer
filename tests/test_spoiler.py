@@ -226,7 +226,6 @@ def test_with_settings_string_1():
     settings_dict = decrypt_settings_string_enum(settings_string)
     settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
     settings = Settings(settings_dict)
-    settings.wrinkly_hints = WrinklyHints.item_hinting
     # settings.extreme_debugging = True  # Greatly slows seed gen, use with caution
     spoiler = Spoiler(settings)
     Generate_Spoiler(spoiler)
