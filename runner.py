@@ -24,6 +24,7 @@ from vidua import bps
 
 app = Flask(__name__)
 app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 2)
+app.config["EXECUTOR_TYPE"] = os.environ.get("EXECUTOR_TYPE", "process")
 executor = Executor(app)
 CORS(app)
 TIMEOUT = 300
