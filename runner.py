@@ -162,7 +162,17 @@ def lambda_function():
             if str(gen_key) in current_job:
                 response = make_response(json.dumps({"status": executor.futures._state(gen_key)}), 203)
             else:
-                response = make_response(json.dumps({"status": executor.futures._state(gen_key)}), 202)
+                # Create an ordered dict of the existing future that are not done.
+                ordered_futures = {}
+                for key in executor.futures._futures:
+                    if not executor.futures.done(key):
+                        ordered_futures[key] = executor.futures._futures[key]
+                
+                try:
+                    job_index = list(ordered_futures).index(gen_key)
+                except Exception:
+                    job_index = -1
+                response = make_response(json.dumps({"status": executor.futures._state(gen_key), "position": job_index}), 202)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
             return response
