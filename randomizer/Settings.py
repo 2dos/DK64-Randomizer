@@ -500,7 +500,7 @@ class Settings:
         self.points_list_guns = 7
         self.points_list_instruments = 7
         self.points_list_training_moves = 5
-        self.points_list_important_shared_moves = 5
+        self.points_list_important_shared = 5
         self.points_list_pad_moves = 3
         self.points_list_barrel_moves = 3
         self.points_list_active_moves = 3
