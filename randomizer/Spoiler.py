@@ -22,6 +22,7 @@ from randomizer.Enums.Settings import (
     RandomPrices,
     ShockwaveStatus,
     ShuffleLoadingZones,
+    SpoilerHints,
     TrainingBarrels,
     WinCondition,
 )
@@ -202,8 +203,11 @@ class Spoiler:
             settings["Game Mode"] = "Helm Hurry"
         humanspoiler["Settings"] = settings
         humanspoiler["Cosmetics"] = {}
-        if self.settings.full_level_hints:
-            humanspoiler["Full Level Hints"] = self.level_spoiler_human_readable
+        if self.settings.spoiler_hints != SpoilerHints.off:
+            humanspoiler["Spoiler Hints Data"] = {}
+            for level in self.level_spoiler.keys():
+                humanspoiler["Spoiler Hints Data"][level] = self.level_spoiler[level].toJSON()
+            humanspoiler["Spoiler Hints"] = self.level_spoiler_human_readable
         humanspoiler["Requirements"] = {}
         if self.settings.random_starting_region:
             humanspoiler["Game Start"] = {}
