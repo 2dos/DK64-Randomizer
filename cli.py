@@ -39,7 +39,7 @@ def generate(generate_settings, file_name):
                 "spoiler_log": str(json.dumps(spoiler_log)),
             }
         )
-    sections_to_retain = ["Settings", "Cosmetics"]
+    sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Human Readable"]
     if spoiler.settings.generate_spoilerlog is False:
         spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
 

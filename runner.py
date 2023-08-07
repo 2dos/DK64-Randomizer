@@ -24,6 +24,7 @@ from vidua import bps
 
 app = Flask(__name__)
 app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 2)
+app.config["EXECUTOR_TYPE"] = os.environ.get("EXECUTOR_TYPE", "process")
 executor = Executor(app)
 CORS(app)
 TIMEOUT = 300
@@ -162,7 +163,17 @@ def lambda_function():
             if str(gen_key) in current_job:
                 response = make_response(json.dumps({"status": executor.futures._state(gen_key)}), 203)
             else:
-                response = make_response(json.dumps({"status": executor.futures._state(gen_key)}), 202)
+                # Create an ordered dict of the existing future that are not done.
+                ordered_futures = {}
+                for key in executor.futures._futures:
+                    if not executor.futures.done(key):
+                        ordered_futures[key] = executor.futures._futures[key]
+
+                try:
+                    job_index = list(ordered_futures).index(gen_key)
+                except Exception:
+                    job_index = -1
+                response = make_response(json.dumps({"status": executor.futures._state(gen_key), "position": job_index}), 202)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
             return response
@@ -185,7 +196,7 @@ def lambda_function():
                         "spoiler_log": str(json.dumps(spoiler_log)),
                     }
                 )
-            sections_to_retain = ["Settings", "Cosmetics"]
+            sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Human Readable"]
             if resp_data[1].settings.generate_spoilerlog is False:
                 spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
 
