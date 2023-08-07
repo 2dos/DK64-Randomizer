@@ -81,7 +81,7 @@ PointSpreadBase = [
     ("Guns", 7),
     ("Instruments", 7),
     ("Training Moves", 5),
-    ("Important Shared Moves", 5),
+    ("Important Shared", 5),
     ("Pad Moves", 3),
     ("Barrel Moves", 3),
     ("Active Moves", 3),
