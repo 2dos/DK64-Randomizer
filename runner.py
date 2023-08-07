@@ -167,7 +167,7 @@ def lambda_function():
                 for key in executor.futures._futures:
                     if not executor.futures.done(key):
                         ordered_futures[key] = executor.futures._futures[key]
-                
+
                 try:
                     job_index = list(ordered_futures).index(gen_key)
                 except Exception:
