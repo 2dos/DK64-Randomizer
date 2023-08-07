@@ -109,10 +109,9 @@ class StartingSpoiler:
 class LevelSpoiler:
     """Spoiler for a given level in spoiler-style hints."""
 
-    def __init__(self, level_name, level_order=-1):
+    def __init__(self, level_name):
         """Create level spoiler object info."""
         self.level_name = level_name
-        self.level_order = level_order
         self.vial_colors = []
         self.points = 0
         self.woth_count = 0
@@ -1883,12 +1882,10 @@ def compileSpoilerHints(spoiler):
         Levels.FungiForest: LevelSpoiler(level_list[Levels.FungiForest]),
         Levels.CrystalCaves: LevelSpoiler(level_list[Levels.CrystalCaves]),
         Levels.CreepyCastle: LevelSpoiler(level_list[Levels.CreepyCastle]),
-        Levels.HideoutHelm: LevelSpoiler(level_list[Levels.HideoutHelm], 8),
-        Levels.DKIsles: LevelSpoiler(level_list[Levels.DKIsles], 0),
-        Levels.Shops: LevelSpoiler(level_list[Levels.Shops], 9),
+        Levels.HideoutHelm: LevelSpoiler(level_list[Levels.HideoutHelm]),
+        Levels.DKIsles: LevelSpoiler(level_list[Levels.DKIsles]),
+        Levels.Shops: LevelSpoiler(level_list[Levels.Shops]),
     }
-    for order in spoiler.settings.level_order:
-        spoiler.level_spoiler[spoiler.settings.level_order[order]].level_order = order
     # Sort the items by level they're found in
     important_items = ItemPool.Keys() + ItemPool.Kongs(spoiler.settings) + ItemPool.AllKongMoves() + ItemPool.ShockwaveTypeItems(spoiler.settings) + ItemPool.TrainingBarrelAbilities()
     for location_id in LocationList.keys():
@@ -1934,6 +1931,41 @@ def compileSpoilerHints(spoiler):
     spoiler.level_spoiler_human_readable["Starting Info"] += " | Starting Keys: " + ", ".join(starting_info.starting_keys)
     spoiler.level_spoiler_human_readable["Starting Info"] += " | Helm Order: " + ", ".join([colorless_kong_list[kong] for kong in starting_info.helm_order])
     spoiler.level_spoiler_human_readable["Starting Info"] += " | K. Rool Order: " + ", ".join([colorless_kong_list[kong] for kong in starting_info.krool_order])
+    if spoiler.settings.spoiler_hints == SpoilerHints.points:
+        spoiler.level_spoiler["point_spread"] = {
+            "kongs": spoiler.settings.points_list_kongs,
+            "keys": spoiler.settings.points_list_keys,
+            "guns": spoiler.settings.points_list_guns,
+            "instruments": spoiler.settings.points_list_instruments,
+            "active_moves": spoiler.settings.points_list_active_moves,
+            "pad_moves": spoiler.settings.points_list_pad_moves,
+            "barrel_moves": spoiler.settings.points_list_barrel_moves,
+            "training_moves": spoiler.settings.points_list_training_moves,
+            "important_shared_moves": spoiler.settings.points_list_important_shared,
+            "bean": spoiler.settings.points_list_bean,
+        }
+        spoiler.level_spoiler_human_readable["Point Spread"] = (
+            "Kongs: "
+            + str(spoiler.settings.points_list_kongs)
+            + " | Keys: "
+            + str(spoiler.settings.points_list_keys)
+            + " | Guns: "
+            + str(spoiler.settings.points_list_guns)
+            + " | Instruments: "
+            + str(spoiler.settings.points_list_instruments)
+            + " | Active Moves: "
+            + str(spoiler.settings.points_list_active_moves)
+            + " | Pad Moves: "
+            + str(spoiler.settings.points_list_pad_moves)
+            + " | Barrel Moves: "
+            + str(spoiler.settings.points_list_barrel_moves)
+            + " | Training Moves: "
+            + str(spoiler.settings.points_list_training_moves)
+            + " | Shared Moves: "
+            + str(spoiler.settings.points_list_important_shared)
+            + " | Bean: "
+            + str(spoiler.settings.points_list_bean)
+        )
 
 
 def CategorizeItem(item):
@@ -1975,7 +2007,7 @@ def PointValueOfItem(settings, item_id):
     elif item_id in ItemPool.TrainingBarrelAbilities():
         return settings.points_list_training_moves
     elif item_id in ItemPool.ImportantSharedMoves:
-        return settings.points_list_important_shared_moves
+        return settings.points_list_important_shared
     elif item_id == Items.Bean:
         return settings.points_list_bean
     return 0
