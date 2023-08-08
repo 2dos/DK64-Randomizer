@@ -470,7 +470,7 @@
 | Near dartboard entry | 5 |  | 
 | In Dartboard Mini Tunnel | 2 | (l.istiny and l.mini) or l.phasewalk | 
 | In Dartboard Room | 4 | (l.istiny and l.mini) or l.phasewalk | 
-| On the archway to R&D | 3 |  | 
+| On the archway to R&D | 3 | (l.balloon or l.advanced_platforming) and l.islanky | 
 | On the number game board | 4 |  | 
 | Behind some elevator blocks (2) | 3 |  | 
 | Around a light in R&D | 3 |  | 

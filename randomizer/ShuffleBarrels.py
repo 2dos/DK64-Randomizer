@@ -20,8 +20,8 @@ def Reset(barrelLocations):
 def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
     """Shuffle minigames to different barrels."""
     random.shuffle(barrelLocations)
-    random.shuffle(minigamePool)
     while len(barrelLocations) > 0:
+        random.shuffle(minigamePool)
         location = barrelLocations.pop()
         # Don't bother shuffling or validating barrel locations which are skipped
         if BarrelMetaData[location].map == Maps.HideoutHelm and settings.helm_barrels == MinigameBarrels.skip:
@@ -44,17 +44,6 @@ def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
                 continue
             # Place the minigame
             BarrelMetaData[location].minigame = minigame
-            # Remove the minigame from the pool
-            minigamePool.remove(minigame)
-            # It is a random chance that the minigame will return to the pool
-            replacement_index = random.randint(int(len(minigamePool) / 2), len(minigamePool))
-            if settings.bonus_barrels != MinigameBarrels.selected and (settings.helm_barrels == MinigameBarrels.skip or not settings.minigames_list_selected):
-                replacement_index = random.randint(20, len(minigamePool))
-            if MinigameRequirements[minigame].repeat:
-                if replacement_index >= len(minigamePool):
-                    minigamePool.append(minigame)
-                else:
-                    minigamePool.insert(replacement_index, minigame)
             success = True
         if not success:
             raise Ex.BarrelOutOfMinigames
@@ -100,25 +89,12 @@ def BarrelShuffle(settings: Settings):
             ],
         }
         minigamePool = []
-    else:
-        minigamePool = [x for x in MinigameRequirements.keys() if x != Minigames.NoGame]
-    if settings.bonus_barrels == MinigameBarrels.selected or (settings.helm_barrels == MinigameBarrels.random and settings.minigames_list_selected):
         for name, value in minigame_dict.items():
             if name in settings.minigames_list_selected:
                 minigamePool.extend([x for x in MinigameRequirements.keys() if x in value])
-    retries = 0
-    while True:
-        try:
-            # Shuffle barrels
-            Reset(barrelLocations)
-            ShuffleBarrels(settings, barrelLocations.copy(), minigamePool.copy())
-            # Verify world by assuring all locations are still reachable
-            if not Fill.VerifyWorld(settings):
-                raise Ex.BarrelPlacementException
-            return
-        except Ex.BarrelPlacementException:
-            if retries == 5:
-                js.postMessage("Minigame placement failed, out of retries.")
-                raise Ex.BarrelAttemptCountExceeded
-            retries += 1
-            js.postMessage("Minigame placement failed. Retrying. Tries: " + str(retries))
+    else:
+        minigamePool = [x for x in MinigameRequirements.keys() if x != Minigames.NoGame]
+    # Shuffle barrels
+    Reset(barrelLocations)
+    ShuffleBarrels(settings, barrelLocations.copy(), minigamePool.copy())
+    return
