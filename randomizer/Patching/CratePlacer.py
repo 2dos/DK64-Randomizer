@@ -67,7 +67,7 @@ def randomize_melon_crate(spoiler):
                             int(float_to_hex(crate.coords[1]), 16),
                             int(float_to_hex(crate.coords[2]), 16),
                             int(float_to_hex(crate_scale), 16),
-                            0x027B00002,
+                            0x027B0002,
                             0x05800640,
                             0,
                             0,

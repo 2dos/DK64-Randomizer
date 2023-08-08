@@ -9,6 +9,7 @@ import randomizer.LogicFiles.FranticFactory
 import randomizer.LogicFiles.FungiForest
 import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.JungleJapes
+import randomizer.LogicFiles.HideoutHelm
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -30,6 +31,7 @@ def addCrate(MelonCrate: CustomLocation, enum_val: int, name: str, level: Levels
         Levels.FungiForest: randomizer.LogicFiles.FungiForest.LogicRegions,
         Levels.CrystalCaves: randomizer.LogicFiles.CrystalCaves.LogicRegions,
         Levels.CreepyCastle: randomizer.LogicFiles.CreepyCastle.LogicRegions,
+        Levels.HideoutHelm: randomizer.LogicFiles.HideoutHelm.LogicRegions,
     }
     level_to_name = {
         Levels.DKIsles: "Isles",
@@ -40,6 +42,7 @@ def addCrate(MelonCrate: CustomLocation, enum_val: int, name: str, level: Levels
         Levels.FungiForest: "Fungi",
         Levels.CrystalCaves: "Caves",
         Levels.CreepyCastle: "Castle",
+        Levels.HideoutHelm: "Helm",
     }
     level_data = level_to_enum[level]
     level_data[MelonCrate.logic_region].locations.append(LocationLogic(enum_val, MelonCrate.logic))
@@ -63,7 +66,7 @@ def removeMelonCrate():
     for level in level_logic_regions:
         for region in level:
             region_data = level[region]
-            region_data.locations = [x for x in region_data.locations if x.id < Locations.RainbowCoin_Location00 or x.id > Locations.RainbowCoin_Location15]
+            region_data.locations = [x for x in region_data.locations if x.id < Locations.MelonCrate_Location00 or x.id > Locations.MelonCrate_Location12]
 
 
 def ShuffleMelonCrates(spoiler: Spoiler, human_spoiler):
@@ -86,10 +89,8 @@ def ShuffleMelonCrates(spoiler: Spoiler, human_spoiler):
             if (SingleMelonCrateLocation.vanilla_crate or not SingleMelonCrateLocation.selected) and LocationTypes.MelonCrate not in SingleMelonCrateLocation.banned_types:
                 SingleMelonCrateLocation.setCustomLocation(False)
                 total_MelonCrate_list[key].append(SingleMelonCrateLocation)
-    select_random_meloncrate_from_area(total_MelonCrate_list[Levels.DKIsles], 4, Levels.DKIsles, spoiler, human_spoiler)
-    del total_MelonCrate_list[Levels.DKIsles]
 
-    for SingleMelonCrateLocation in range(5):
+    for SingleMelonCrateLocation in range(4):
         area_key = random.choice(list(total_MelonCrate_list.keys()))
         area_meloncrate = total_MelonCrate_list[area_key]
         select_random_meloncrate_from_area(area_meloncrate, 2, area_key, spoiler, human_spoiler)
@@ -102,7 +103,7 @@ def ShuffleMelonCrates(spoiler: Spoiler, human_spoiler):
     sorted_MelonCrates = spoiler.meloncrate_placement.copy()
     sorted_MelonCrates = sorted(sorted_MelonCrates, key=lambda d: d["score"])
     for MelonCrate_index, MelonCrate in enumerate(sorted_MelonCrates):
-        MelonCrate["enum"] = Locations.RainbowCoin_Location00 + MelonCrate_index
+        MelonCrate["enum"] = Locations.MelonCrate_Location00 + MelonCrate_index
         addCrate(MelonCrate["MelonCrate"], MelonCrate["enum"], MelonCrate["name"], MelonCrate["level"])
         MelonCrate["Crate"] = None
     return human_spoiler.copy()
