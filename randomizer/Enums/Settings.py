@@ -779,7 +779,6 @@ class SettingsStringEnum(IntEnum):
     hard_mode_selected = 134
     hard_mode = 135
     more_cutscene_skips = 136
-    crate_placement_rando = 137
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
