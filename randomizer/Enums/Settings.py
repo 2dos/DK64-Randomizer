@@ -779,6 +779,7 @@ class SettingsStringEnum(IntEnum):
     hard_mode_selected = 134
     hard_mode = 135
     more_cutscene_skips = 136
+    crate_placement_rando = 137
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -839,6 +840,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.cb_rando: SettingsStringDataType.bool,
     SettingsStringEnum.coin_door_item: HelmDoorItem,
     SettingsStringEnum.coin_door_item_count: SettingsStringDataType.var_int,
+    SettingsStringEnum.crown_placement_rando: SettingsStringDataType.bool,
     SettingsStringEnum.crown_door_item: HelmDoorItem,
     SettingsStringEnum.crown_door_item_count: SettingsStringDataType.var_int,
     SettingsStringEnum.crown_enemy_rando: CrownEnemyRando,

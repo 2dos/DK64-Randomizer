@@ -46,7 +46,7 @@ def addCrate(MelonCrate: CustomLocation, enum_val: int, name: str, level: Levels
     }
     level_data = level_to_enum[level]
     level_data[MelonCrate.logic_region].locations.append(LocationLogic(enum_val, MelonCrate.logic))
-    LocationList[enum_val].name = f"{level_to_name[level]} Dirt: {name}"
+    LocationList[enum_val].name = f"{level_to_name[level]} MelonCrate: {name}"
     LocationList[enum_val].default_mapid_data[0].map = MelonCrate.map
     LocationList[enum_val].level = level
 
@@ -62,6 +62,7 @@ def removeMelonCrate():
         randomizer.LogicFiles.FungiForest.LogicRegions,
         randomizer.LogicFiles.CrystalCaves.LogicRegions,
         randomizer.LogicFiles.CreepyCastle.LogicRegions,
+        randomizer.LogicFiles.HideoutHelm.LogicRegions,
     ]
     for level in level_logic_regions:
         for region in level:
@@ -82,6 +83,7 @@ def ShuffleMelonCrates(spoiler: Spoiler, human_spoiler):
         Levels.FungiForest: [],
         Levels.CrystalCaves: [],
         Levels.CreepyCastle: [],
+        Levels.HideoutHelm: [],
     }
 
     for key in total_MelonCrate_list.keys():
@@ -105,7 +107,7 @@ def ShuffleMelonCrates(spoiler: Spoiler, human_spoiler):
     for MelonCrate_index, MelonCrate in enumerate(sorted_MelonCrates):
         MelonCrate["enum"] = Locations.MelonCrate_Location00 + MelonCrate_index
         addCrate(MelonCrate["MelonCrate"], MelonCrate["enum"], MelonCrate["name"], MelonCrate["level"])
-        MelonCrate["Crate"] = None
+        MelonCrate["MelonCrate"] = None
     return human_spoiler.copy()
 
 
@@ -118,13 +120,7 @@ def select_random_meloncrate_from_area(area_meloncrate, amount, level, spoiler: 
                 meloncrate.setCustomLocation(True)
                 human_spoiler.append(meloncrate.name)
                 local_map_index = len([x for x in spoiler.meloncrate_placement if x["map"] == meloncrate.map])
-                spoiler.meloncrate_placement.append(
-                    {"name": meloncrate.name,
-                     "map": meloncrate.map,
-                     "MelonCrate": meloncrate,
-                     "level": level,
-                     "score": (meloncrate.map * 100) + local_map_index},
-                     ),
+                spoiler.meloncrate_placement.append({"name": meloncrate.name, "map": meloncrate.map, "MelonCrate": meloncrate, "level": level, "score": (meloncrate.map * 100) + local_map_index},)
                 area_meloncrate.remove(selected_crate)
                 break
         if amount > 1:  # if multiple crates are picked, remove crates from the same group, prevent them from being picked

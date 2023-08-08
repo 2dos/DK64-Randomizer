@@ -2660,6 +2660,7 @@ def ShuffleMisc(spoiler):
     if spoiler.settings.shuffle_shops:
         ShuffleShopLocations(spoiler)
     # Crate Shuffle
+    spoiler.human_crates =[]
     if spoiler.settings.random_crates:
         human_crates = []
         spoiler.human_crates = ShuffleMelonCrates(spoiler, human_crates).copy()
