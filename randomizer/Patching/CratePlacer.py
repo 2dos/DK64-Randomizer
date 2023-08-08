@@ -1,4 +1,4 @@
-"Melon crate Randomizer Code "
+"""Melon crate Randomizer Code"""
 import js
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Lists.CustomLocations import CustomLocations
@@ -10,41 +10,30 @@ from randomizer.Patching.Patcher import ROM, LocalROM
 class MelonCrateShortData:
     """Class to store small parts of information relevant to the placement algorithm."""
 
-    def __init__(self, map, coords, max_size, default, vanilla):
+    def __init__(self, map, coords, max_size, rot_y, is_galleon_floating_crate):
         """Initialize with provided data."""
         self.map = map
         self.coords = coords
         self.max_size = max_size
-        self.default = default
-        self.vanilla = vanilla
+        self.rot_y = rot_y
+        self.is_galleon_floating_crate = is_galleon_floating_crate
 
 def randomize_melon_crate(spoiler):
-      if spoiler.settings.melon_crate_rando:
+      if spoiler.settings.random_crates:
         placements = []
-        vanilla_melon_crate_maps = [
-             Maps.JungleJapes,
-             Maps.AngryAztec,
-             Maps.AztecLlamaTemple,
-             Maps.FranticFactory,
-             Maps.GloomyGalleon,
-             Maps.FungiForest,
-             Maps.ForestThornvineBarn,
-             Maps.CastleCrypt,
-             
-        ]
-        new_vanilla_crates = []
-        action_maps = vanilla_melon_crate_maps.copy()
+       
+        action_maps = []
+        keep_galleon_crate = False
         ROM_COPY = LocalROM()
-        for level in spoiler.crate_locations:
-            for crate in spoiler.crate_locations[level]:
-                crate_data = CustomLocations[level][crate]
-                idx = spoiler.crate_locations[level][crate]
-                placements.append(MelonCrateShortData(crate_data.map, crate_data.coords, crate_data.max_size, idx, crate_data.vanilla_crate))
-                if crate_data.vanilla_crate:
-                    new_vanilla_crates.append(crate_data.map)
-                if not crate_data.vanilla_crate:
-                    if crate_data.map not in action_maps:
-                        action_maps.append(crate_data.map)
+        for crate_item in spoiler.meloncrate_placement:
+            for crate in CustomLocations[crate_item["level"]]:
+                if crate.map == action_maps and crate.name == crate["name"]:
+                    placements.append(MelonCrateShortData(crate.map, crate.coords, crate.max_size, crate.rot_y, crate.is_galleon_floating_crate))
+            if crate.map not in action_maps:
+                action_maps.append(crate.map)
+            if crate.is_galleon_floating_crate:
+                keep_galleon_crate = True
+        
         for cont_map_id in action_maps:
             
             setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
@@ -56,7 +45,7 @@ def randomize_melon_crate(spoiler):
                 item_start = setup_table + 4 + (model2_item * 0x30)
                 ROM_COPY.seek(item_start + 0x28)
                 item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
-                if cont_map_id in vanilla_melon_crate_maps and cont_map_id not in new_vanilla_crates and item_type == 0xB5:
+                if cont_map_id != Maps.GloomyGalleon and not keep_galleon_crate and item_type == 0xB5:
                     accept = False  # crate is being removed
                 if accept:
                     ROM_COPY.seek(item_start)
@@ -66,9 +55,10 @@ def randomize_melon_crate(spoiler):
                     persisted_m2.append(data)
             crate_ids = []
             for crate in placements:
-                if crate.map == cont_map_id and not crate.vanilla:
+                if crate.map == cont_map_id and not crate.is_galleon_floating_crate:
                     # Place new crate
-                    crate_scale = crate.max_size / 160
+                    crate_scale = min(crate.max_size / 33, 1)
+                    rotation = (crate.rot_y * 360)/4096
                     selected_id = getNextFreeID(cont_map_id, crate_ids)
                     crate_ids.append(selected_id)
                     persisted_m2.append(
@@ -77,8 +67,8 @@ def randomize_melon_crate(spoiler):
                             int(float_to_hex(crate.coords[1]), 16),
                             int(float_to_hex(crate.coords[2]), 16),
                             int(float_to_hex(crate_scale), 16),
-                            0x6B0BEE32,
-                            0x9B4D326F,
+                            0x027B00002,
+                            0x05800640,
                             0,
                             0,
                             0,
@@ -87,7 +77,7 @@ def randomize_melon_crate(spoiler):
                             1 << 16,
                         ]
                     )
-            addNewScript(cont_map_id, [selected_id], ScriptTypes.MelonCrate)
+                addNewScript(cont_map_id, [selected_id], ScriptTypes.MelonCrate)
             ROM_COPY.seek(setup_table + 4 + (model2_count * 0x30))
             mystery_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
             extra_data = [mystery_count]
