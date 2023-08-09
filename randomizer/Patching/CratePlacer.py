@@ -22,7 +22,6 @@ def randomize_melon_crate(spoiler):
       if spoiler.settings.random_crates:
         placements = []
        
-        spoiler.meloncrate_placement = []
         action_maps = []
         keep_galleon_crate = False
         ROM_COPY = LocalROM()
