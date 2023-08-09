@@ -368,7 +368,7 @@ def randomize_setup(spoiler):
                 for dirt_item in spoiler.dirt_patch_placement:
                     for patch in CustomLocations[dirt_item["level"]]:
                         if patch.map == cont_map_id and patch.name == dirt_item["name"]:
-                            patch_scale = min(patch.max_size / 64, 64)
+                            patch_scale = min(patch.max_size / 64, 1)
                             if new_actor_id in used_actor_ids:
                                 while new_actor_id in used_actor_ids:
                                     new_actor_id += 1

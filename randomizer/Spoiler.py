@@ -22,6 +22,7 @@ from randomizer.Enums.Settings import (
     RandomPrices,
     ShockwaveStatus,
     ShuffleLoadingZones,
+    SpoilerHints,
     TrainingBarrels,
     WinCondition,
 )
@@ -168,6 +169,7 @@ class Spoiler:
         settings["Free Trade Agreement"] = self.settings.free_trade_setting.name
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
+        settings["Randomize Crates"] = self.settings.random_crates
         settings["Randomize CB Locations"] = self.settings.cb_rando
         settings["Randomize Coin Locations"] = self.settings.coin_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
@@ -202,8 +204,14 @@ class Spoiler:
             settings["Game Mode"] = "Helm Hurry"
         humanspoiler["Settings"] = settings
         humanspoiler["Cosmetics"] = {}
-        if self.settings.full_level_hints:
-            humanspoiler["Full Level Hints"] = self.level_spoiler_human_readable
+        if self.settings.spoiler_hints != SpoilerHints.off:
+            humanspoiler["Spoiler Hints Data"] = {}
+            for key in self.level_spoiler.keys():
+                if key == "point_spread":
+                    humanspoiler["Spoiler Hints Data"][key] = json.dumps(self.level_spoiler[key])
+                else:
+                    humanspoiler["Spoiler Hints Data"][key] = self.level_spoiler[key].toJSON()
+            humanspoiler["Spoiler Hints"] = self.level_spoiler_human_readable
         humanspoiler["Requirements"] = {}
         if self.settings.random_starting_region:
             humanspoiler["Game Start"] = {}
@@ -523,6 +531,8 @@ class Spoiler:
             humanspoiler["Shuffled Banana Fairies"] = self.fairy_locations_human
         if self.settings.random_patches:
             humanspoiler["Shuffled Dirt Patches"] = self.human_patches
+        if self.settings.random_crates:
+            humanspoiler["Shuffled Melon Crates"] = self.human_crates
         if self.settings.bananaport_rando != BananaportRando.off:
             shuffled_warp_levels = [x.name for x in self.settings.warp_level_list_selected]
             humanspoiler["Shuffled Bananaport Levels"] = shuffled_warp_levels

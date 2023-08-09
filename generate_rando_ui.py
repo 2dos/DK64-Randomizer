@@ -35,7 +35,7 @@ async def initialize():
     except Exception:
         pass
 
-    # Module of Lists used for list_selector macro
+    # Module of Lists used for list_selector macros
     from randomizer.Enums.Types import ItemRandoSelector, KeySelector
     from randomizer.Lists.EnemyTypes import EnemySelector
     from randomizer.Lists.Item import HHItemSelector
@@ -45,6 +45,7 @@ async def initialize():
     from randomizer.Lists.HardMode import HardSelector
     from randomizer.Lists.Warps import VanillaBananaportSelector
     from randomizer.Lists.Songs import ExcludedSongsSelector
+    from randomizer.Lists.WrinklyHints import PointSpreadSelector
 
     # Module of lists and utils used for plandomizer
     from randomizer.PlandoUtils import PlandoItemFilter, PlandoMinigameFilter, PlandoOptionClassAnnotation, PlandoShopSortFilter
@@ -92,6 +93,7 @@ async def initialize():
         plando_minigames=PlannableMinigames,
         plando_panels=PlandomizerPanels,
         plando_spawns=PlannableSpawns,
+        points_spread=PointSpreadSelector,
     )
     js.document.documentElement.innerHTML = ""
     js.document.open()

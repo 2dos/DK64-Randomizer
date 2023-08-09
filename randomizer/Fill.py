@@ -9,7 +9,7 @@ import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
 import randomizer.LogicFiles.DKIsles as IslesLogic
 import randomizer.ShuffleExits as ShuffleExits
-from randomizer.CompileHints import compileFullLevelHints, compileHints, compileMicrohints
+from randomizer.CompileHints import compileHints, compileMicrohints, compileSpoilerHints
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
@@ -29,6 +29,7 @@ from randomizer.Enums.Settings import (
     RandomPrices,
     ShockwaveStatus,
     ShuffleLoadingZones,
+    SpoilerHints,
     TrainingBarrels,
     WinCondition,
     WrinklyHints,
@@ -54,6 +55,7 @@ from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleBosses import CorrectBossKongLocations, ShuffleBossesBasedOnOwnedItems
 from randomizer.ShuffleCBs import ShuffleCBs
 from randomizer.ShuffleCoins import ShuffleCoins
+from randomizer.ShuffleCrates import ShuffleMelonCrates
 from randomizer.ShuffleCrowns import ShuffleCrowns
 from randomizer.ShuffleDoors import ShuffleDoors, ShuffleVanillaDoors
 from randomizer.ShuffleFairies import ShuffleFairyLocations
@@ -2589,8 +2591,8 @@ def Generate_Spoiler(spoiler):
     GeneratePlaythrough(spoiler)
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         compileHints(spoiler)
-    if spoiler.settings.full_level_hints:
-        compileFullLevelHints(spoiler)
+    if spoiler.settings.spoiler_hints != SpoilerHints.off:
+        compileSpoilerHints(spoiler)
     compileMicrohints(spoiler)
     Reset()
     ShuffleExits.Reset()
@@ -2658,6 +2660,10 @@ def ShuffleMisc(spoiler):
         ShuffleFairyLocations(spoiler)
     if spoiler.settings.shuffle_shops:
         ShuffleShopLocations(spoiler)
+    # Crate Shuffle
+    if spoiler.settings.random_crates:
+        human_crates = []
+        spoiler.human_crates = ShuffleMelonCrates(spoiler, human_crates).copy()
     # Item Rando
     spoiler.human_item_assignment = {}
     spoiler.settings.update_valid_locations()

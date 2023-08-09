@@ -1,6 +1,6 @@
 <div>
     {% for item in spoiler %}
-        {% if spoiler[item] != {} and item != "Settings" and item != "Paths" %}
+        {% if spoiler[item] != {} and item != "Settings" and item != "Paths" and item != "Spoiler Hints Data"%}
             <div>
                 <div class="spoiler-head collapsed"
                      id="spoilerhead-{{ item.lower().replace(' ','_').replace('(','').replace(')','') }}"
