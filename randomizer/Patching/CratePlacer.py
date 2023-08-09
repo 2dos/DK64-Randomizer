@@ -27,7 +27,7 @@ def randomize_melon_crate(spoiler):
         ROM_COPY = LocalROM()
         for crate_item in spoiler.meloncrate_placement:
             for crate in CustomLocations[crate_item["level"]]:
-                 if crate_item == crate_item["name"]:
+                 if crate.name == crate_item["name"]:
                     placements.append(MelonCrateShortData(crate.map, crate.coords, crate.max_size, crate.rot_y, crate.is_galleon_floating_crate))
                     if crate.map not in action_maps:
                         action_maps.append(crate.map)
@@ -45,7 +45,7 @@ def randomize_melon_crate(spoiler):
                 item_start = setup_table + 4 + (model2_item * 0x30)
                 ROM_COPY.seek(item_start + 0x28)
                 item_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
-                if cont_map_id != Maps.GloomyGalleon and not keep_galleon_crate and item_type == 0xB5:
+                if (not (cont_map_id == Maps.GloomyGalleon and keep_galleon_crate)) and item_type == 0xB5:
                     accept = False  # crate is being removed
                 if accept:
                     ROM_COPY.seek(item_start)
@@ -70,7 +70,7 @@ def randomize_melon_crate(spoiler):
                             0x027B0002,
                             0x05800640,
                             0,
-                            0,
+                            int(float_to_hex(rotation), 16),
                             0,
                             0,
                             (0xB5 << 16) | selected_id,

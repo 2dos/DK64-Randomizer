@@ -807,7 +807,7 @@ class SettingsStringEnum(IntEnum):
     points_list_barrel_moves = 146
     points_list_active_moves = 147
     points_list_bean = 148
-    crate_placement_rando = 149
+    random_crates = 149
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -868,7 +868,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.cb_rando: SettingsStringDataType.bool,
     SettingsStringEnum.coin_door_item: HelmDoorItem,
     SettingsStringEnum.coin_door_item_count: SettingsStringDataType.var_int,
-    SettingsStringEnum.crate_placement_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.random_crates: SettingsStringDataType.bool,
     SettingsStringEnum.crown_placement_rando: SettingsStringDataType.bool,
     SettingsStringEnum.crown_door_item: HelmDoorItem,
     SettingsStringEnum.crown_door_item_count: SettingsStringDataType.var_int,

@@ -1180,6 +1180,7 @@ CustomLocations = {
             max_size=160,
             logic_region=Regions.LighthouseUnderwater,
             group=6,
+            logic=lambda l: l.islanky,
         ),
         CustomLocation(map=Maps.GloomyGalleon, name="On Rocketbarrel platform", x=1336, y=1660, z=4071, rot_y=910, max_size=32, logic_region=Regions.LighthousePlatform, group=1),
         # CrownLocation(
@@ -1213,6 +1214,7 @@ CustomLocations = {
             max_size=160,
             logic_region=Regions.ShipyardUnderwater,
             group=6,
+            logic=lambda l: Events.ShipyardEnguarde in l.Events
         ),
         CustomLocation(
             map=Maps.GloomyGalleon,
@@ -1222,6 +1224,7 @@ CustomLocations = {
             z=2386,
             logic_region=Regions.ShipyardUnderwater,
             group=6,
+            logic=lambda l: Events.ShipyardEnguarde in l.Events
         ),
         CustomLocation(
             map=Maps.GloomyGalleon,
@@ -1243,6 +1246,7 @@ CustomLocations = {
             max_size=160,
             logic_region=Regions.TreasureRoom,
             group=6,
+            logic=lambda l: Events.ShipyardEnguarde and Events.ShipyardTreasureRoomOpened in Events
         ),
         CustomLocation(map=Maps.GalleonSickBay, name="Seasick Ship: Left of Cannon", x=718, y=20, z=129, max_size=56, logic_region=Regions.SickBay, group=2),
         CustomLocation(
