@@ -169,7 +169,7 @@ class Spoiler:
         settings["Free Trade Agreement"] = self.settings.free_trade_setting.name
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
-        settings["Randomize Crates"] =self.settings.random_crates
+        settings["Randomize Crates"] = self.settings.random_crates
         settings["Randomize CB Locations"] = self.settings.cb_rando
         settings["Randomize Coin Locations"] = self.settings.coin_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando

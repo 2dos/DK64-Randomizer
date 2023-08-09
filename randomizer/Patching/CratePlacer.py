@@ -1,4 +1,4 @@
-"""Melon crate Randomizer Code"""
+"""Melon crate Randomizer Code."""
 import js
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Lists.CustomLocations import CustomLocations
@@ -18,24 +18,25 @@ class MelonCrateShortData:
         self.rot_y = rot_y
         self.is_galleon_floating_crate = is_galleon_floating_crate
 
+
 def randomize_melon_crate(spoiler):
-      if spoiler.settings.random_crates:
+    """Place Melon Crates."""
+    if spoiler.settings.random_crates:
         placements = []
-       
+
         action_maps = []
         keep_galleon_crate = False
         ROM_COPY = LocalROM()
         for crate_item in spoiler.meloncrate_placement:
             for crate in CustomLocations[crate_item["level"]]:
-                 if crate.name == crate_item["name"]:
+                if crate.name == crate_item["name"]:
                     placements.append(MelonCrateShortData(crate.map, crate.coords, crate.max_size, crate.rot_y, crate.is_galleon_floating_crate))
                     if crate.map not in action_maps:
                         action_maps.append(crate.map)
                     if crate.is_galleon_floating_crate:
                         keep_galleon_crate = True
-        
+
         for cont_map_id in action_maps:
-            
             setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
             ROM_COPY.seek(setup_table)
             model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
@@ -58,7 +59,7 @@ def randomize_melon_crate(spoiler):
                 if crate.map == cont_map_id and not crate.is_galleon_floating_crate:
                     # Place new crate
                     crate_scale = min(crate.max_size / 33, 1)
-                    rotation = (crate.rot_y * 360)/4096
+                    rotation = (crate.rot_y * 360) / 4096
                     selected_id = getNextFreeID(cont_map_id, crate_ids)
                     crate_ids.append(selected_id)
                     persisted_m2.append(

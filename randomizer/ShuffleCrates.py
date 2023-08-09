@@ -120,7 +120,9 @@ def select_random_meloncrate_from_area(area_meloncrate, amount, level, spoiler: 
                 meloncrate.setCustomLocation(True)
                 human_spoiler.append(meloncrate.name)
                 local_map_index = len([x for x in spoiler.meloncrate_placement if x["map"] == meloncrate.map])
-                spoiler.meloncrate_placement.append({"name": meloncrate.name, "map": meloncrate.map, "MelonCrate": meloncrate, "level": level, "score": (meloncrate.map * 100) + local_map_index},)
+                spoiler.meloncrate_placement.append(
+                    {"name": meloncrate.name, "map": meloncrate.map, "MelonCrate": meloncrate, "level": level, "score": (meloncrate.map * 100) + local_map_index},
+                )
                 area_meloncrate.remove(selected_crate)
                 break
         if amount > 1:  # if multiple crates are picked, remove crates from the same group, prevent them from being picked
