@@ -954,7 +954,7 @@ void MelonCrateGenericCode(behaviour_data* behaviour, int index, int id) {
 		}
 		if (Player->control_state == 28) {
 			if (Player->touching_object == 1) {
-				if (id == Player->standing_on_index) {
+				if (index == Player->standing_on_index) {
 					behaviour->next_state = 2;
 				}
 			}

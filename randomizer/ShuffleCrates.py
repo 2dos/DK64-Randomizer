@@ -39,7 +39,7 @@ def addCrate(MelonCrate: CustomLocation, enum_val: int, name: str, level: Levels
         Levels.AngryAztec: "Aztec",
         Levels.FranticFactory: "Factory",
         Levels.GloomyGalleon: "Galleon",
-        Levels.FungiForest: "Fungi",
+        Levels.FungiForest: "Forest",
         Levels.CrystalCaves: "Caves",
         Levels.CreepyCastle: "Castle",
         Levels.HideoutHelm: "Helm",
