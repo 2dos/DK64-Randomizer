@@ -2654,7 +2654,7 @@ def ShuffleMisc(spoiler):
         ShuffleCoins(spoiler)
     # Random Patches
     if spoiler.settings.random_patches:
-        human_patches = []
+        human_patches = {}
         spoiler.human_patches = ShufflePatches(spoiler, human_patches).copy()
     if spoiler.settings.random_fairies:
         ShuffleFairyLocations(spoiler)
@@ -2662,7 +2662,7 @@ def ShuffleMisc(spoiler):
         ShuffleShopLocations(spoiler)
     # Crate Shuffle
     if spoiler.settings.random_crates:
-        human_crates = []
+        human_crates = {}
         spoiler.human_crates = ShuffleMelonCrates(spoiler, human_crates).copy()
     # Item Rando
     spoiler.human_item_assignment = {}
