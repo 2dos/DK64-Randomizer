@@ -67,7 +67,7 @@ def resetCustomLocations():
     """Reset all locations to their default selection-state."""
     for key in CustomLocations.keys():
         for location in CustomLocations[key]:
-            location.selected = location.vanilla_crown or location.vanilla_patch
+            location.selected = location.vanilla_crown or location.vanilla_crate or location.vanilla_patch
 
 
 class LocationTypes(IntEnum):

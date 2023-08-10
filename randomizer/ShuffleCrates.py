@@ -113,12 +113,13 @@ def ShuffleMelonCrates(spoiler: Spoiler, human_spoiler):
 
 def select_random_meloncrate_from_area(area_meloncrate, amount, level, spoiler: Spoiler, human_spoiler):
     """Select <amount> random melon crates from <area_meloncrate>, which is a list of melon crates. Makes sure max 1 melon crate per group is selected."""
+    human_spoiler[level.name] = []
     for iterations in range(amount):
         selected_crate = random.choice(area_meloncrate)  # selects a random crate from the list
         for meloncrate in CustomLocations[level]:  # enables the selected crate
             if meloncrate.name == selected_crate.name:
                 meloncrate.setCustomLocation(True)
-                human_spoiler.append(meloncrate.name)
+                human_spoiler[level.name].append(meloncrate.name)
                 local_map_index = len([x for x in spoiler.meloncrate_placement if x["map"] == meloncrate.map])
                 spoiler.meloncrate_placement.append(
                     {"name": meloncrate.name, "map": meloncrate.map, "MelonCrate": meloncrate, "level": level, "score": (meloncrate.map * 100) + local_map_index},
