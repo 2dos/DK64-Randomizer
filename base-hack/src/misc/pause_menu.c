@@ -442,21 +442,38 @@ void changePauseScreen(void) {
         resetTracker();
     }
     playSFX(0x2C9);
+    ViewedPauseItem = 0;
 }
 
-void updatePauseScreenWheel(void* write_location, void* sprite, int x, int y, float scale, int local_index, int index) {
+void updatePauseScreenWheel(pause_paad* write_location, void* sprite, int x, int y, float scale, int local_index, int index) {
     /**
      * @brief Update the pause screen wheel to be a carousel instead.
      */
-    displaySprite(write_location, sprite, local_index, 0x78, 1.0f, 2, 16);
+    int control = 16;
+    ItemsInWheel = CHECK_TERMINATOR - ROTATION_TOTALS_REDUCTION;
+    if (write_location->screen == PAUSESCREEN_CHECKS) {
+        control = 17;
+        ItemsInWheel = CHECK_TERMINATOR;
+    }
+    if (local_index >= ItemsInWheel) {
+        return;
+    }
+    displaySprite(write_location, sprite, local_index, 0x78, 1.0f, 2, control);
 }
 
-void newPauseSpriteCode(sprite_struct* sprite, char* render) {
+void newPauseSpriteCode(sprite_struct* sprite, char* render, int is_totals) {
     /**
      * @brief Sprite code for the carousel pause screen effect
      */
     spriteControlCode(sprite, render);
     pause_paad* pause_control = (pause_paad*)sprite->control;
+    // Define Rotaion Parameters
+    int rotation = ROTATION_SPLIT;
+    int item_cap = CHECK_TERMINATOR;
+    if (is_totals) {
+        rotation = ROTATION_SPLIT_TOTALS;
+        // item_cap = CHECK_TERMINATOR - ROTATION_TOTALS_REDUCTION;
+    }
     // Width information
     float width = 640.0f;
     if (Rando.true_widescreen) {
@@ -470,15 +487,15 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render) {
     int width_diff_int = width_diff;
 
     int index = sprite->unk384[2] / 4;
-    int viewed_item = ((float)(pause_control->control) / ROTATION_SPLIT);
+    int viewed_item = ((float)(pause_control->control) / rotation);
     int diff = index - viewed_item;
-    if (diff == (CHECK_TERMINATOR - 1)) {
+    if (diff == (item_cap - 1)) {
         diff = -1;
-    } else if (diff == (CHECK_TERMINATOR - 2)) {
+    } else if (diff == (item_cap - 2)) {
         diff = -2;
-    } else if (diff == (1 - CHECK_TERMINATOR)) {
+    } else if (diff == (1 - item_cap)) {
         diff = 1;
-    } else if (diff == (2 - CHECK_TERMINATOR)) {
+    } else if (diff == (2 - item_cap)) {
         diff = 2;
     }
     int pos_diff = diff;
@@ -487,7 +504,7 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render) {
     } else  if (pos_diff < 0) {
         pos_diff -= 1;
     }
-    float diff_increment = ((pause_control->control - (ROTATION_SPLIT * viewed_item)) * width_diff_int * CHECK_TERMINATOR) >> 12;
+    float diff_increment = ((pause_control->control - (rotation * viewed_item)) * width_diff_int * item_cap) >> 12;
     if ((pos_diff >= 3) || (pos_diff <= -2)) {
         diff_increment /= 2;
     }
@@ -537,6 +554,14 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render) {
     sprite->blue = brightness;
 }
 
+void totalsSprite(sprite_struct* sprite, char* render) {
+    newPauseSpriteCode(sprite, render, 1);
+}
+
+void checksSprite(sprite_struct* sprite, char* render) {
+    newPauseSpriteCode(sprite, render, 0);
+}
+
 void handleSpriteCode(int control_type) {
     /**
      * @brief Changes sprite code to be the carousel effect if the index is greater than 16
@@ -545,8 +570,10 @@ void handleSpriteCode(int control_type) {
      */
     if (control_type < 16) {
         loadSpriteFunction(0x806AC07C);
-    } else {
-        loadSpriteFunction((int)&newPauseSpriteCode);
+    } else if (control_type == 16) {
+        loadSpriteFunction((int)&totalsSprite);
+    } else if (control_type == 17) {
+        loadSpriteFunction((int)&checksSprite);
     }
 }
 

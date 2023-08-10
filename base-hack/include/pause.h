@@ -19,5 +19,5 @@ typedef enum check_types {
     Please don't change the `ROTATION_SPLIT` line. Explanation on why is in `build/adjust_pause_rotation.py`
 */
 #define ROTATION_SPLIT 315
-#define ROTATION_SPLIT_TOTALS 341
+#define ROTATION_SPLIT_TOTALS 315
 #define ROTATION_TOTALS_REDUCTION 1

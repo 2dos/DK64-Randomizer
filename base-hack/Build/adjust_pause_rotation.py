@@ -36,7 +36,7 @@ for line in lines:
     if DEFINITION_TEXT in raw_line:
         raw_line = f"{DEFINITION_TEXT}{int(ROTATION_TOTAL / check_count)}"
     if DEFINITION_TEXT_TOTALS in raw_line:
-        raw_line = f"{DEFINITION_TEXT_TOTALS}{int(ROTATION_TOTAL / check_count_totals)}"
+        raw_line = f"{DEFINITION_TEXT_TOTALS}{int(ROTATION_TOTAL / check_count)}"
     if DEFINITION_TEXT_REDUCTION in raw_line:
         raw_line = f"{DEFINITION_TEXT_REDUCTION}{REDUCED_COUNT}"
     new_lines.append(raw_line)
