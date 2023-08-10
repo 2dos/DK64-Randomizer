@@ -40,17 +40,6 @@ int* printLevelIGT(int* dl, int x, int y, float scale, char* str) {
     return dl;
 }
 
-/*
-        0 = GB
-        1 = Crown
-        2 = Keys
-        3 = Medals
-        4 = RW Coin
-        5 = Fairies
-        6 = N Coin
-        7 = Blueprints
-    */
-
 static char* levels[] = {
     "ALL",
     "JUNGLE JAPES",
@@ -76,6 +65,7 @@ static char* items[] = {
     "ANTHILL SECOND REWARD",
     "TREASURE CHEST CLAMS",
     "DIRT PATCHES",
+    "MELON CRATES",
 };
 static char* raw_items[] = {
     "GOLDEN BANANAS",
@@ -90,6 +80,7 @@ static char* raw_items[] = {
     "BEAN",
     "PEARLS",
     "RAINBOW COINS",
+    "JUNK ITEMS",
 };
 
 static char check_level = 0;
@@ -97,23 +88,7 @@ static char hint_level = 0;
 static char level_check_text[0x18] = "";
 static char level_hint_text[0x18] = "";
 
-#define CHECK_GB 0
-#define CHECK_CROWN 1
-#define CHECK_KEY 2
-#define CHECK_MEDAL 3
-#define CHECK_RWCOIN 4
-#define CHECK_FAIRY 5
-#define CHECK_NINCOIN 6
-#define CHECK_BP 7
-#define CHECK_KONG 8
-#define CHECK_BEAN 9
-#define CHECK_PEARLS 10
-#define CHECK_RAINBOW 11
-
-#define PAUSE_ITEM_COUNT 12
-#define ROTATION_SPLIT 341 // 0x1000 / PAUSE_ITEM_COUNT
-
-static unsigned char check_data[2][9][PAUSE_ITEM_COUNT] = {}; // 8 items, 9 levels, numerator + denominator
+static unsigned char check_data[2][9][CHECK_TERMINATOR] = {}; // 8 items, 9 levels, numerator + denominator
 
 static char hints_initialized = 0;
 
@@ -149,7 +124,7 @@ void checkItemDB(void) {
             stored_igt = IGT;
         }
     }
-    for (int i = 0; i < PAUSE_ITEM_COUNT; i++) {
+    for (int i = 0; i < CHECK_TERMINATOR; i++) {
         // Wipe data upon every search
         for (int j = 0; j < 9; j++) {
             check_data[0][j][i] = 0;
@@ -173,31 +148,32 @@ void checkItemDB(void) {
         }
         // Get Denominator
         for (int j = 0; j < 9; j++) {
+            int denominator = 0;
             switch (i) {
                 case CHECK_GB:
                     if (j < 8) {
                         if (j == 7) {
-                            check_data[1][j][CHECK_GB] = 21;
+                            denominator = 21;
                         } else {
-                            check_data[1][j][CHECK_GB] = 20;
+                            denominator = 20;
                         }
                     }
                     break;
                 case CHECK_CROWN:
                     if (j == 7) {
-                        check_data[1][j][CHECK_CROWN] = 2;
+                        denominator = 2;
                     } else {
-                        check_data[1][j][CHECK_CROWN] = 1;
+                        denominator = 1;
                     }
                     break;
                 case CHECK_KEY:
                     if (j != 7) {
-                        check_data[1][j][CHECK_KEY] = 1;
+                        denominator = 1;
                     }
                     break;
                 case CHECK_MEDAL:
                     if (j != 7) {
-                        check_data[1][j][CHECK_MEDAL] = 5;
+                        denominator = 5;
                     }
                     break;
                 case CHECK_RWCOIN:
@@ -206,14 +182,14 @@ void checkItemDB(void) {
                     break;
                 case CHECK_FAIRY:
                     if (j == 7) {
-                        check_data[1][j][CHECK_FAIRY] = 4;
+                        denominator = 4;
                     } else {
-                        check_data[1][j][CHECK_FAIRY] = 2;
+                        denominator = 2;
                     }
                     break;
                 case CHECK_BP:
                     if (j < 8) {
-                        check_data[1][j][CHECK_BP] = 5;
+                        denominator = 5;
                     }
                     break;
                 case CHECK_KONG:
@@ -221,32 +197,30 @@ void checkItemDB(void) {
                     break;
                 case CHECK_BEAN:
                     if (j == 4) {
-                        check_data[1][j][CHECK_BEAN] = 1;
+                        denominator = 1;
                     }
                     break;
                 case CHECK_PEARLS:
                     if (j == 3) {
-                        check_data[1][j][CHECK_PEARLS] = 5;
+                        denominator = 5;
                     }
                     break;
                 case CHECK_RAINBOW:
-                    if (!Rando.item_rando) {
-                        if (j == 7) {
-                            check_data[1][j][CHECK_RAINBOW] = 7;
-                        } else if ((j == 1) || (j == 4)) {
-                            check_data[1][j][CHECK_RAINBOW] = 2;
-                        } else {
-                            check_data[1][j][CHECK_RAINBOW] = 1;
+                    for (int k = 0; k < 16; k++) {
+                        if (getPatchWorld(k) == j) {
+                            denominator += 1;
                         }
-                    } else {
-                        for (int k = 0; k < 16; k++) {
-                            if ((getPatchWorld(k) == j) && (j < 8)) {
-                                check_data[1][j][CHECK_RAINBOW] += 1;
-                            }
+                    }
+                    break;
+                case CHECK_CRATE:
+                    for (int k = 0; k < 13; k++) {
+                        if (getCrateWorld(k) == j) {
+                            denominator += 1;
                         }
                     }
                 break;
             }
+            check_data[1][j][i] = denominator;
         }
     }
 }
@@ -483,15 +457,6 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render) {
      */
     spriteControlCode(sprite, render);
     pause_paad* pause_control = (pause_paad*)sprite->control;
-    // float opacity_scale = 1.0f;
-    // float test_opacity = (pause_control->unkC[(int)sprite->unk384[1]] * 4) - pause_control->unk0;
-    // if (test_opacity < 0.0f) {
-    //     test_opacity = 0.0f;
-    // }
-    // if (test_opacity <= 1.0f) {
-    //     opacity_scale = test_opacity;
-    // }
-    // sprite->alpha = opacity_scale * 255.0f;
     // Width information
     float width = 640.0f;
     if (Rando.true_widescreen) {
@@ -507,13 +472,13 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render) {
     int index = sprite->unk384[2] / 4;
     int viewed_item = ((float)(pause_control->control) / ROTATION_SPLIT);
     int diff = index - viewed_item;
-    if (diff == (PAUSE_ITEM_COUNT - 1)) {
+    if (diff == (CHECK_TERMINATOR - 1)) {
         diff = -1;
-    } else if (diff == (PAUSE_ITEM_COUNT - 2)) {
+    } else if (diff == (CHECK_TERMINATOR - 2)) {
         diff = -2;
-    } else if (diff == (1 - PAUSE_ITEM_COUNT)) {
+    } else if (diff == (1 - CHECK_TERMINATOR)) {
         diff = 1;
-    } else if (diff == (2 - PAUSE_ITEM_COUNT)) {
+    } else if (diff == (2 - CHECK_TERMINATOR)) {
         diff = 2;
     }
     int pos_diff = diff;
@@ -522,7 +487,7 @@ void newPauseSpriteCode(sprite_struct* sprite, char* render) {
     } else  if (pos_diff < 0) {
         pos_diff -= 1;
     }
-    float diff_increment = ((pause_control->control - (ROTATION_SPLIT * viewed_item)) * width_diff_int * PAUSE_ITEM_COUNT) >> 12;
+    float diff_increment = ((pause_control->control - (ROTATION_SPLIT * viewed_item)) * width_diff_int * CHECK_TERMINATOR) >> 12;
     if ((pos_diff >= 3) || (pos_diff <= -2)) {
         diff_increment /= 2;
     }
@@ -611,7 +576,7 @@ static short file_items[16] = {
     0, 0, 0, 0, // GBs, Crowns, Keys, Medals
     0, 0, 0, 0, // RW, Fairy, Nintendo, BP
     0, 0, 0, 0, // Kongs, Beans, Pearls, Rainbow
-    0, 0, 0, 0,
+    0, 0, 0, 0, // Crates
 };
 
 static int file_sprites[17] = {
@@ -627,14 +592,15 @@ static int file_sprites[17] = {
     (int)&bean_sprite, // Bean
     (int)&pearl_sprite, // Pearls
     0x80721378, // Rainbow Coins
-    0, 0, 0, 0,
+    0x80720710, // Crate
+    0, 0, 0,
     0, // Null Item, Leave Empty
 };
 static short file_item_caps[16] = {
     201, 10, 8, 40,
     1, 20, 1, 40,
     5, 1, 5, 16,
-    0, 0, 0, 0,
+    13, 0, 0, 0,
 };
 
 void updateFileVariables(void) {
@@ -683,9 +649,9 @@ void initPauseMenu(void) {
     *(short*)(0x806AA036) = getLo(&file_items[0]);
     *(short*)(0x806AA00E) = getHi(&file_item_caps[0]);
     *(short*)(0x806AA032) = getLo(&file_item_caps[0]);
-    *(short*)(0x806AB2CE) = getHi(&file_items[PAUSE_ITEM_COUNT]);
-    *(short*)(0x806AB2D6) = getLo(&file_items[PAUSE_ITEM_COUNT]);
-    *(short*)(0x806AB3F6) = PAUSE_ITEM_COUNT;
+    *(short*)(0x806AB2CE) = getHi(&file_items[CHECK_TERMINATOR]);
+    *(short*)(0x806AB2D6) = getLo(&file_items[CHECK_TERMINATOR]);
+    *(short*)(0x806AB3F6) = CHECK_TERMINATOR;
     if (Rando.item_rando) {
         writeFunction(0x806A9D50, &handleOutOfCounters); // Print out of counter, depending on item rando state
         writeFunction(0x806A9EFC, &handleOutOfCounters); // Print out of counter, depending on item rando state
