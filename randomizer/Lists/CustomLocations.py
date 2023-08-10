@@ -456,7 +456,7 @@ CustomLocations = {
             logic=lambda l: l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
             group=1,
         ),
-        CustomLocation(map=Maps.AngryAztec, name="Oasis", x=2151, y=120, z=983, max_size=56, logic_region=Regions.AngryAztecOasis, group=1),
+        CustomLocation(map=Maps.AngryAztec, name="Near Oasis Sand", x=2151, y=120, z=983, max_size=56, logic_region=Regions.AngryAztecOasis, group=1),
         CustomLocation(map=Maps.AngryAztec, name="Behind Tiny Temple", x=3345, y=153, z=507, max_size=48, logic_region=Regions.AngryAztecOasis, group=1),
         CustomLocation(
             name="Next to Tiny Temple - left",
@@ -794,7 +794,7 @@ CustomLocations = {
         CustomLocation(
             map=Maps.FranticFactory, name="Near Candy", x=319.03137207031, y=165.5, z=596.36285400391, rot_y=359, max_size=64, logic_region=Regions.BeyondHatch, vanilla_crate=True, group=4
         ),
-        CustomLocation(map=Maps.FranticFactory, name="Dark Room", x=1850, y=6, z=525, max_size=72, logic_region=Regions.BeyondHatch, logic=lambda l: (l.punch and l.chunky) or l.phasewalk, group=4),
+        CustomLocation(map=Maps.FranticFactory, name="Dark Room Corner", x=1850, y=6, z=525, max_size=72, logic_region=Regions.BeyondHatch, logic=lambda l: (l.punch and l.chunky) or l.phasewalk, group=4),
         CustomLocation(map=Maps.FranticFactory, name="Arcade Room Bench", x=1922, y=1143, z=1515, max_size=40, logic_region=Regions.BeyondHatch, group=4),
         CustomLocation(
             name="Next to DK Arcade",
