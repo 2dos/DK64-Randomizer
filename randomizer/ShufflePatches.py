@@ -81,7 +81,7 @@ def ShufflePatches(spoiler: Spoiler, human_spoiler):
         Levels.CreepyCastle: [],
     }
     for key in total_dirt_patch_list:
-        human_spoiler[key.name] = [] # Ensure order
+        human_spoiler[key.name] = []  # Ensure order
 
     for key in total_dirt_patch_list.keys():
         for SingleDirtPatchLocation in CustomLocations[key]:

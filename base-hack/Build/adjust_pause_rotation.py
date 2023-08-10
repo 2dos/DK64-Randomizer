@@ -22,12 +22,12 @@ REDUCED_COUNT = 0
 
 new_lines = []
 for line in lines:
-    raw_line = line.replace("\n","")
+    raw_line = line.replace("\n", "")
     if initated_check_enumeration:
         if "check_types;" in raw_line:
             initated_check_enumeration = False
-            check_count -= 1 # Reduce by 1 because terminator
-            check_count_totals -= (1 + REDUCED_COUNT) # Reduce by 2 because terminator and melon crates
+            check_count -= 1  # Reduce by 1 because terminator
+            check_count_totals -= 1 + REDUCED_COUNT  # Reduce by 2 because terminator and melon crates
         else:
             check_count += 1
             check_count_totals += 1

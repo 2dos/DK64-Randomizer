@@ -86,7 +86,7 @@ def ShuffleMelonCrates(spoiler: Spoiler, human_spoiler):
         Levels.HideoutHelm: [],
     }
     for key in total_MelonCrate_list:
-        human_spoiler[key.name] = [] # Ensure order
+        human_spoiler[key.name] = []  # Ensure order
 
     for key in total_MelonCrate_list.keys():
         for SingleMelonCrateLocation in CustomLocations[key]:

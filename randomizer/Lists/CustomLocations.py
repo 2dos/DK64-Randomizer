@@ -794,7 +794,9 @@ CustomLocations = {
         CustomLocation(
             map=Maps.FranticFactory, name="Near Candy", x=319.03137207031, y=165.5, z=596.36285400391, rot_y=359, max_size=64, logic_region=Regions.BeyondHatch, vanilla_crate=True, group=4
         ),
-        CustomLocation(map=Maps.FranticFactory, name="Dark Room Corner", x=1850, y=6, z=525, max_size=72, logic_region=Regions.BeyondHatch, logic=lambda l: (l.punch and l.chunky) or l.phasewalk, group=4),
+        CustomLocation(
+            map=Maps.FranticFactory, name="Dark Room Corner", x=1850, y=6, z=525, max_size=72, logic_region=Regions.BeyondHatch, logic=lambda l: (l.punch and l.chunky) or l.phasewalk, group=4
+        ),
         CustomLocation(map=Maps.FranticFactory, name="Arcade Room Bench", x=1922, y=1143, z=1515, max_size=40, logic_region=Regions.BeyondHatch, group=4),
         CustomLocation(
             name="Next to DK Arcade",

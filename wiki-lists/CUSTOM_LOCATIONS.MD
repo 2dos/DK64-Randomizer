@@ -69,7 +69,7 @@
 | Aztec Tiny Temple | Tiny Temple: Next to Tiny cage |  | 
 | Angry Aztec | Entrance tunnel - near DK door |  | 
 | Angry Aztec | Blueprint Room | l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))) | 
-| Angry Aztec | Oasis |  | 
+| Angry Aztec | Near Oasis Sand |  | 
 | Angry Aztec | Behind Tiny Temple |  | 
 | Angry Aztec | Next to Tiny Temple - left |  | 
 | Angry Aztec | Next to Tiny Temple - right |  | 
@@ -135,7 +135,7 @@
 | Frantic Factory | Storage Room Corner |  | 
 | Frantic Factory | Cranky/Candy Room |  | 
 | Frantic Factory | Near Candy |  | 
-| Frantic Factory | Dark Room | (l.punch and l.chunky) or l.phasewalk, group=4) | 
+| Frantic Factory | Dark Room Corner | (l.punch and l.chunky) or l.phasewalk, group=4) | 
 | Frantic Factory | Arcade Room Bench |  | 
 | Frantic Factory | Next to DK Arcade |  | 
 | Frantic Factory | Near Snide (1) |  | 
