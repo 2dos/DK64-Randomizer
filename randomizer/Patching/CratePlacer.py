@@ -24,7 +24,17 @@ def randomize_melon_crate(spoiler):
     if spoiler.settings.random_crates:
         placements = []
 
-        action_maps = []
+        action_maps = [
+            # Start with vanilla crate maps
+            Maps.JungleJapes, # Two crates in Japes Main
+            Maps.AztecLlamaTemple, # One in Llama Temple
+            Maps.AngryAztec, # Two in Aztec Main
+            Maps.FranticFactory, # Two in Factory Main
+            Maps.GloomyGalleon, # One in Galleon
+            Maps.FungiForest, # Three in Fungi Main
+            Maps.ForestThornvineBarn, # One inside Thornvine Barn
+            Maps.CastleLowerCave, # One in Crypt Hub
+        ]
         keep_galleon_crate = False
         ROM_COPY = LocalROM()
         for crate_item in spoiler.meloncrate_placement:
