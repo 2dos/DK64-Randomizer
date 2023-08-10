@@ -333,7 +333,7 @@ void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1,
         spawn_count = 4;
         flag = -1;
         object = 0x2F;
-        cutscene = 0;
+        cutscene = 1;
     } else {
         for (int i = 0; i < (int)(sizeof(bounce_objects)/2); i++) {
             if (object == bounce_objects[i]) {

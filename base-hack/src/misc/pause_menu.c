@@ -145,6 +145,12 @@ void checkItemDB(void) {
                 int lvl = getPatchWorld(k);
                 check_data[0][lvl][i] += checkFlag(search_flag, FLAGTYPE_PERMANENT);
             }
+        } else if (i == CHECK_CRATE) {
+            for (int k = 0; k < 13; k++) {
+                int search_flag = FLAG_MELONCRATE_0 + k;
+                int lvl = getCrateWorld(k);
+                check_data[0][lvl][i] += checkFlag(search_flag, FLAGTYPE_PERMANENT);
+            }
         }
         // Get Denominator
         for (int j = 0; j < 9; j++) {
@@ -442,7 +448,6 @@ void changePauseScreen(void) {
         resetTracker();
     }
     playSFX(0x2C9);
-    ViewedPauseItem = 0;
 }
 
 void updatePauseScreenWheel(pause_paad* write_location, void* sprite, int x, int y, float scale, int local_index, int index) {
@@ -627,7 +632,7 @@ static short file_item_caps[16] = {
     201, 10, 8, 40,
     1, 20, 1, 40,
     5, 1, 5, 16,
-    13, 0, 0, 0,
+    0, 0, 0, 0, // First here is Junk Items
 };
 
 void updateFileVariables(void) {
@@ -642,12 +647,16 @@ void updateFileVariables(void) {
     file_items[CHECK_BEAN] = checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
     file_items[CHECK_PEARLS] = 0;
     file_items[CHECK_RAINBOW] = 0;
+    file_items[CHECK_CRATE] = 0;
     for (int i = 0; i < 5; i++) {
         file_items[CHECK_KONG] += checkFlagDuplicate(kong_flags[i], FLAGTYPE_PERMANENT);
         file_items[CHECK_PEARLS] += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
     }
     for (int i = 0; i < 16; i++) {
         file_items[CHECK_RAINBOW] += checkFlagDuplicate(FLAG_RAINBOWCOIN_0 + i, FLAGTYPE_PERMANENT);
+    }
+    for (int i = 0; i < 100; i++) {
+        file_items[CHECK_CRATE] += checkFlagDuplicate(FLAG_JUNKITEM + i, FLAGTYPE_PERMANENT);
     }
 }
 
