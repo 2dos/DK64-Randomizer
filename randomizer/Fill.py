@@ -1990,7 +1990,9 @@ def FillKongsAndMoves(spoiler, placedTypes):
         if spoiler.settings.shockwave_status in (ShockwaveStatus.shuffled, ShockwaveStatus.shuffled_decoupled):
             possibleStartingMoves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
         shuffle(possibleStartingMoves)
-        startingMovePool = [move for move in spoiler.settings.starting_move_list_selected if move in possibleStartingMoves]  # Moves in the selector must be eligible items - this is to filter out training moves if they are not shuffled
+        startingMovePool = [
+            move for move in spoiler.settings.starting_move_list_selected if move in possibleStartingMoves
+        ]  # Moves in the selector must be eligible items - this is to filter out training moves if they are not shuffled
         shuffle(startingMovePool)
         # For each location needing a move, put in a random valid move
         for locationId in locationsNeedingMoves:
