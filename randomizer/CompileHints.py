@@ -2118,6 +2118,7 @@ def GenerateMultipathDict(spoiler, useless_locations):
         # Join the Key and K. Rool text together into what will be the core of the hint text
         hint_text_components = []
         if len(path_to_keys) > 0:
+            path_to_keys.sort()
             key_text = "\x04Keys "
             if len(path_to_keys) == 1:
                 key_text = "\x04Key "

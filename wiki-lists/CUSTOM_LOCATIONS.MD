@@ -135,7 +135,7 @@
 | Frantic Factory | Storage Room Corner |  | 
 | Frantic Factory | Cranky/Candy Room |  | 
 | Frantic Factory | Near Candy |  | 
-| Frantic Factory | Dark Room Corner | (l.punch and l.chunky) or l.phasewalk, group=4) | 
+| Frantic Factory | Dark Room Corner | (l.punch and l.chunky) or l.phasewalk, group=4 | 
 | Frantic Factory | Arcade Room Bench |  | 
 | Frantic Factory | Next to DK Arcade |  | 
 | Frantic Factory | Near Snide (1) |  | 

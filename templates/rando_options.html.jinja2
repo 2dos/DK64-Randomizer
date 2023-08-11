@@ -70,6 +70,19 @@
                             default="0"
                             placeholder="0"/>
                 </div>
+                <div class="item-select">
+                    <div class="form-check form-switch">
+                        <label data-toggle="tooltip" title="Items are shuffled amongst each other.">
+                            <input class="form-check-input"
+                                    type="checkbox"
+                                    name="choose_starting_moves"
+                                    id="choose_starting_moves"
+                                    value="True"/>
+                            Choose Starting Moves
+                        </label>
+                        {{ list_selector(starting_moves, "starting_move_list", "CHOOSE STARTING MOVES", "This will open a popup that will let you pick the moves that are eligible to be starting moves.", 38) }}
+                        {# Remove end </div> as it's included in the macro for formatting #}
+                </div>
             </div>
             <hr>
             <h2 class="title">SHUFFLED LOCATIONS</h2>

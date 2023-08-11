@@ -637,6 +637,7 @@ SettingsMap = {
     "shuffle_loading_zones": ShuffleLoadingZones,
     "sound_type": SoundType,
     "starting_keys_list_selected": Items,
+    "starting_move_list_selected": Items,
     "tiny_colors": CharacterColors,
     "training_barrels": TrainingBarrels,
     "warp_level_list_selected": Maps,
@@ -808,6 +809,8 @@ class SettingsStringEnum(IntEnum):
     points_list_active_moves = 147
     points_list_bean = 148
     random_crates = 149
+    choose_starting_moves = 150
+    starting_move_list_selected = 151
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -998,6 +1001,8 @@ SettingsStringTypeMap = {
     SettingsStringEnum.points_list_barrel_moves: SettingsStringDataType.int16,
     SettingsStringEnum.points_list_active_moves: SettingsStringDataType.int16,
     SettingsStringEnum.points_list_bean: SettingsStringDataType.int16,
+    SettingsStringEnum.choose_starting_moves: SettingsStringDataType.bool,
+    SettingsStringEnum.starting_move_list_selected: SettingsStringDataType.list,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!
@@ -1011,6 +1016,7 @@ SettingsStringListTypeMap = {
     SettingsStringEnum.starting_keys_list_selected: Items,
     SettingsStringEnum.warp_level_list_selected: Maps,
     SettingsStringEnum.hard_mode_selected: HardModeSelected,
+    SettingsStringEnum.starting_move_list_selected: Items,
 }
 
 # This map specifies the minimum and maximum values for numeric settings.

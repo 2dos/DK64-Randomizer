@@ -271,3 +271,48 @@ HHItems = [
 ]
 for item in HHItems:
     HHItemSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_"), "tooltip": "", "default": item[1]})
+
+StartingMoveSelector = []
+StartingMoveOptions = [
+    Items.Vines,
+    Items.Swim,
+    Items.Oranges,
+    Items.Barrels,
+    Items.Coconut,
+    Items.Bongos,
+    Items.BaboonBlast,
+    Items.StrongKong,
+    Items.GorillaGrab,
+    Items.Peanut,
+    Items.Guitar,
+    Items.ChimpyCharge,
+    Items.RocketbarrelBoost,
+    Items.SimianSpring,
+    Items.Grape,
+    Items.Trombone,
+    Items.Orangstand,
+    Items.BaboonBalloon,
+    Items.OrangstandSprint,
+    Items.Feather,
+    Items.Saxophone,
+    Items.MiniMonkey,
+    Items.PonyTailTwirl,
+    Items.Monkeyport,
+    Items.Pineapple,
+    Items.Triangle,
+    Items.HunkyChunky,
+    Items.PrimatePunch,
+    Items.GorillaGone,
+    Items.HomingAmmo,
+    Items.SniperSight,
+    Items.ProgressiveSlam,
+    Items.ProgressiveSlam,
+    Items.ProgressiveAmmoBelt,
+    Items.ProgressiveAmmoBelt,
+    Items.ProgressiveInstrumentUpgrade,
+    Items.ProgressiveInstrumentUpgrade,
+    Items.ProgressiveInstrumentUpgrade,
+]
+
+for item in StartingMoveOptions:
+    StartingMoveSelector.append({"name": ItemList[item].name, "value": item.name, "tooltip": ""})
