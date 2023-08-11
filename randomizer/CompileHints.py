@@ -1887,7 +1887,7 @@ def compileSpoilerHints(spoiler):
         Levels.Shops: LevelSpoiler(level_list[Levels.Shops]),
     }
     # Sort the items by level they're found in
-    important_items = ItemPool.Keys() + ItemPool.Kongs(spoiler.settings) + ItemPool.AllKongMoves() + ItemPool.ShockwaveTypeItems(spoiler.settings) + ItemPool.TrainingBarrelAbilities()
+    important_items = ItemPool.Keys() + ItemPool.Kongs(spoiler.settings) + ItemPool.AllKongMoves() + ItemPool.ShockwaveTypeItems(spoiler.settings) + ItemPool.TrainingBarrelAbilities() + [Items.Bean]
     for location_id in LocationList.keys():
         location = LocationList[location_id]
         if location.item in important_items:
@@ -1974,6 +1974,8 @@ def CategorizeItem(item):
         return "Kong"
     elif item.type == Types.Key:
         return "Key"
+    elif item.name == Types.Bean:
+        return "Bean"
     elif item.kong == Kongs.donkey:
         return "Yellow Vial"
     elif item.kong == Kongs.diddy:
@@ -2118,6 +2120,7 @@ def GenerateMultipathDict(spoiler, useless_locations):
         # Join the Key and K. Rool text together into what will be the core of the hint text
         hint_text_components = []
         if len(path_to_keys) > 0:
+            path_to_keys.sort()
             key_text = "\x04Keys "
             if len(path_to_keys) == 1:
                 key_text = "\x04Key "

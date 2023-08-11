@@ -103,6 +103,7 @@ settingsExclusionMap = {
         ]
     },
     "shuffle_items": {False: ["item_rando_list_selected"]},
+    "choose_starting_moves": {False: ["starting_move_list_selected"]},
     "enemy_rando": {False: ["enemies_selected"]},
     "bonus_barrel_rando": {False: ["minigames_list_selected"]},
     "bananaport_rando": {BananaportRando.off: ["warp_level_list_selected"]},
