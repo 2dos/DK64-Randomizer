@@ -456,6 +456,9 @@ def compileHints(spoiler: Spoiler):
 
     multipath_dict_hints, multipath_dict_goals = GenerateMultipathDict(spoiler, useless_locations)
 
+    locked_hint_types = [HintType.RequiredKongHint, HintType.RequiredKeyHint, HintType.RequiredWinConditionHint, HintType.RequiredHelmDoorHint]  # Some hint types cannot have their value changed
+    maxed_hint_types = []  # Some hint types cannot have additional hints placed
+    minned_hint_types = []  # Some hint types cannot have all their hints removed
     # If we're using the racing hints preset, we use the predetermined distribution with no exceptions
     if spoiler.settings.wrinkly_hints == WrinklyHints.fixed_racing:
         hint_distribution = race_hint_distribution.copy()
@@ -566,9 +569,6 @@ def compileHints(spoiler: Spoiler):
             hint_count += 1
     # Otherwise we dynamically generate the hint distribution
     else:
-        locked_hint_types = [HintType.RequiredKongHint, HintType.RequiredKeyHint, HintType.RequiredWinConditionHint, HintType.RequiredHelmDoorHint]  # Some hint types cannot have their value changed
-        maxed_hint_types = []  # Some hint types cannot have additional hints placed
-        minned_hint_types = []  # Some hint types cannot have all their hints removed
         # In level order (or vanilla) progression, there are hints that we want to be in the player's path
         # Determine what hint types are valid for these settings
         valid_types = [HintType.Joke]
