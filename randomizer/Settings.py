@@ -74,6 +74,7 @@ class Settings:
         self.set_seed()
         self.seed_hash = [random.randint(0, 9) for i in range(5)]
         self.krool_keys_required = []
+        self.starting_key_list = []
         # Settings which are not yet implemented on the web page
 
         # B Locker and T&S max values
@@ -228,6 +229,7 @@ class Settings:
         self.loading_zone_coupled = None
         self.move_rando = MoveRando.off
         self.random_patches = None
+        self.random_crates = None
         self.random_fairies = None
         self.random_prices = None
         self.boss_location_rando = None
@@ -235,7 +237,6 @@ class Settings:
         self.kasplat_rando_setting = None
         self.puzzle_rando = None
         self.shuffle_shops = None
-        self.start_with_a_slam = False
         self.extreme_debugging = False  # Use when you want to know VERY specifically where things fail in the fill - unnecessarily slows seed generation!
 
         # The major setting for item randomization
@@ -426,7 +427,8 @@ class Settings:
         self.kong_rando = False
         self.kongs_for_progression = False
         self.wrinkly_hints = WrinklyHints.off
-        self.full_level_hints = False
+        self.spoiler_hints = SpoilerHints.off
+        self.spoiler_include_woth_count = False
         self.fast_warps = False
         self.dpad_display = DPadDisplays.off
         self.high_req = False
@@ -458,6 +460,7 @@ class Settings:
         self.excluded_songs_selected = []
         self.enemies_selected = []
         self.glitches_selected = []
+        self.starting_move_list_selected = []
         self.starting_keys_list_selected = []
         self.warp_level_list_selected = []
         self.select_keys = False
@@ -492,6 +495,17 @@ class Settings:
         self.helmhurry_list_fairies = 50
         self.helmhurry_list_colored_bananas = 3
         self.helmhurry_list_ice_traps = -40
+        # Point spread
+        self.points_list_kongs = 9
+        self.points_list_keys = 9
+        self.points_list_guns = 7
+        self.points_list_instruments = 7
+        self.points_list_training_moves = 5
+        self.points_list_important_shared = 5
+        self.points_list_pad_moves = 3
+        self.points_list_barrel_moves = 3
+        self.points_list_active_moves = 3
+        self.points_list_bean = 3
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -501,6 +515,19 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
+        # Correct the invalid items in the starting move selector
+        copy_of_starting_move_list_selected = self.starting_move_list_selected.copy()
+        for item in copy_of_starting_move_list_selected:
+            if item == Items.ProgressiveSlam2:
+                self.starting_move_list_selected.remove(item)
+                self.starting_move_list_selected.append(Items.ProgressiveSlam)
+            if item == Items.ProgressiveAmmoBelt2:
+                self.starting_move_list_selected.remove(item)
+                self.starting_move_list_selected.append(Items.ProgressiveAmmoBelt)
+            elif item in (Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3):
+                self.starting_move_list_selected.remove(item)
+                self.starting_move_list_selected.append(Items.ProgressiveInstrumentUpgrade)
+
         # If we're using the vanilla door shuffle, turn both wrinkly and tns rando on
         if self.vanilla_door_rando:
             self.wrinkly_location_rando = True
@@ -765,6 +792,7 @@ class Settings:
                 self.helm_chunky = True
                 orderedRooms.append(1)
         self.helm_order = orderedRooms
+        self.kong_helm_order = rooms
 
         # Start Region
         if self.random_starting_region:
@@ -837,22 +865,31 @@ class Settings:
             random.shuffle(key_list)
             for x in range(required_key_count):
                 self.krool_keys_required.append(key_list[x])
+        self.starting_key_list = []
         if Events.JapesKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.JungleJapesKey].playthrough = False
+            self.starting_key_list.append(Items.JungleJapesKey)
         if Events.AztecKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.AngryAztecKey].playthrough = False
+            self.starting_key_list.append(Items.AngryAztecKey)
         if Events.FactoryKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.FranticFactoryKey].playthrough = False
+            self.starting_key_list.append(Items.FranticFactoryKey)
         if Events.GalleonKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.GloomyGalleonKey].playthrough = False
+            self.starting_key_list.append(Items.GloomyGalleonKey)
         if Events.ForestKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.FungiForestKey].playthrough = False
+            self.starting_key_list.append(Items.FungiForestKey)
         if Events.CavesKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.CrystalCavesKey].playthrough = False
+            self.starting_key_list.append(Items.CrystalCavesKey)
         if Events.CastleKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.CreepyCastleKey].playthrough = False
+            self.starting_key_list.append(Items.CreepyCastleKey)
         if Events.HelmKeyTurnedIn not in self.krool_keys_required:
             ItemList[Items.HideoutHelmKey].playthrough = False
+            self.starting_key_list.append(Items.HideoutHelmKey)
 
         # Banana medals
         if self.random_medal_requirement:

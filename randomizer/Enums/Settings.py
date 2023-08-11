@@ -572,12 +572,27 @@ class WrinklyHints(IntEnum):
     standard: Normal randomizer hints are provided.
     cryptic: Cryptic randomizer hints are provided.
     fixed_racing: Fixed distribution - this one is for the S2 racing preset.
+    item_hinting: All Kongs, Keys, and as many moves as possible are hinted, prioritizing WotH moves.
     """
 
     off = 0
     standard = 1
     cryptic = 2
     fixed_racing = 3
+    item_hinting = 4
+
+
+class SpoilerHints(IntEnum):
+    """Whether or not spoiler-style hints are generated within the spoiler log for external trackers to use.
+
+    off: No hints are generated.
+    vial_colors: The keys, kongs, and non-junk vials with their color will be hinted for each level. Includes K. Rool and Helm order.
+    points: Assign a number of points to each level based on the items that level contains. Point values per item can be specified. Includes K. Rool and Helm order.
+    """
+
+    off = 0
+    vial_colors = 1
+    points = 2
 
 
 # ALL SELECT-BASED SETTINGS NEED AN ENTRY HERE!
@@ -622,11 +637,13 @@ SettingsMap = {
     "shuffle_loading_zones": ShuffleLoadingZones,
     "sound_type": SoundType,
     "starting_keys_list_selected": Items,
+    "starting_move_list_selected": Items,
     "tiny_colors": CharacterColors,
     "training_barrels": TrainingBarrels,
     "warp_level_list_selected": Maps,
     "win_condition": WinCondition,
     "wrinkly_hints": WrinklyHints,
+    "spoiler_hints": SpoilerHints,
 }
 
 
@@ -779,6 +796,21 @@ class SettingsStringEnum(IntEnum):
     hard_mode_selected = 134
     hard_mode = 135
     more_cutscene_skips = 136
+    spoiler_hints = 137
+    spoiler_include_woth_count = 138
+    points_list_kongs = 139
+    points_list_keys = 140
+    points_list_guns = 141
+    points_list_instruments = 142
+    points_list_training_moves = 143
+    points_list_important_shared = 144
+    points_list_pad_moves = 145
+    points_list_barrel_moves = 146
+    points_list_active_moves = 147
+    points_list_bean = 148
+    random_crates = 149
+    choose_starting_moves = 150
+    starting_move_list_selected = 151
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -839,6 +871,8 @@ SettingsStringTypeMap = {
     SettingsStringEnum.cb_rando: SettingsStringDataType.bool,
     SettingsStringEnum.coin_door_item: HelmDoorItem,
     SettingsStringEnum.coin_door_item_count: SettingsStringDataType.var_int,
+    SettingsStringEnum.random_crates: SettingsStringDataType.bool,
+    SettingsStringEnum.crown_placement_rando: SettingsStringDataType.bool,
     SettingsStringEnum.crown_door_item: HelmDoorItem,
     SettingsStringEnum.crown_door_item_count: SettingsStringDataType.var_int,
     SettingsStringEnum.crown_enemy_rando: CrownEnemyRando,
@@ -955,6 +989,20 @@ SettingsStringTypeMap = {
     SettingsStringEnum.wrinkly_available: SettingsStringDataType.bool,
     SettingsStringEnum.wrinkly_hints: WrinklyHints,
     SettingsStringEnum.wrinkly_location_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.spoiler_hints: SpoilerHints,
+    SettingsStringEnum.spoiler_include_woth_count: SettingsStringDataType.bool,
+    SettingsStringEnum.points_list_kongs: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_keys: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_guns: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_instruments: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_training_moves: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_important_shared: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_pad_moves: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_barrel_moves: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_active_moves: SettingsStringDataType.int16,
+    SettingsStringEnum.points_list_bean: SettingsStringDataType.int16,
+    SettingsStringEnum.choose_starting_moves: SettingsStringDataType.bool,
+    SettingsStringEnum.starting_move_list_selected: SettingsStringDataType.list,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!
@@ -968,6 +1016,7 @@ SettingsStringListTypeMap = {
     SettingsStringEnum.starting_keys_list_selected: Items,
     SettingsStringEnum.warp_level_list_selected: Maps,
     SettingsStringEnum.hard_mode_selected: HardModeSelected,
+    SettingsStringEnum.starting_move_list_selected: Items,
 }
 
 # This map specifies the minimum and maximum values for numeric settings.

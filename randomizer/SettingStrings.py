@@ -14,6 +14,7 @@ from randomizer.Enums.Settings import (
     SettingsStringIntRangeMap,
     SettingsStringListTypeMap,
     SettingsStringTypeMap,
+    SpoilerHints,
 )
 
 letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
@@ -102,6 +103,7 @@ settingsExclusionMap = {
         ]
     },
     "shuffle_items": {False: ["item_rando_list_selected"]},
+    "choose_starting_moves": {False: ["starting_move_list_selected"]},
     "enemy_rando": {False: ["enemies_selected"]},
     "bonus_barrel_rando": {False: ["minigames_list_selected"]},
     "bananaport_rando": {BananaportRando.off: ["warp_level_list_selected"]},
@@ -109,6 +111,32 @@ settingsExclusionMap = {
     "select_keys": {False: ["starting_keys_list_selected"], True: ["krool_key_count"]},
     "quality_of_life": {False: ["misc_changes_selected"]},
     "hard_mode": {False: ["hard_mode_selected"]},
+    "spoiler_hints": {
+        SpoilerHints.off: [
+            "points_list_kongs"
+            "points_list_keys"
+            "points_list_guns"
+            "points_list_instruments"
+            "points_list_training_moves"
+            "points_list_important_shared"
+            "points_list_pad_moves"
+            "points_list_barrel_moves"
+            "points_list_active_moves"
+            "points_list_bean"
+        ],
+        SpoilerHints.vial_colors: [
+            "points_list_kongs"
+            "points_list_keys"
+            "points_list_guns"
+            "points_list_instruments"
+            "points_list_training_moves"
+            "points_list_important_shared"
+            "points_list_pad_moves"
+            "points_list_barrel_moves"
+            "points_list_active_moves"
+            "points_list_bean"
+        ],
+    },
 }
 
 

@@ -33,6 +33,7 @@ from ui.rando_options import (
     max_starting_moves_count,
     toggle_b_locker_boxes,
     toggle_bananaport_selector,
+    toggle_choose_starting_items,
     toggle_counts_boxes,
     toggle_item_rando,
     toggle_key_settings,
@@ -135,6 +136,7 @@ def import_settings_string(event):
     disable_helm_phases(None)
     max_starting_moves_count(None)
     enable_plandomizer(None)
+    toggle_choose_starting_items(None)
 
 
 @bind("change", "patchfileloader")

@@ -651,6 +651,7 @@ def disable_move_shuffles(evt):
     training_barrels = js.document.getElementById("training_barrels")
     shockwave_status = js.document.getElementById("shockwave_status")
     starting_moves_count = js.document.getElementById("starting_moves_count")
+    choose_starting_moves = js.document.getElementById("choose_starting_moves")
     try:
         if moves.value == "start_with":
             prices.setAttribute("disabled", "disabled")
@@ -660,6 +661,8 @@ def disable_move_shuffles(evt):
             shockwave_status.setAttribute("disabled", "disabled")
             starting_moves_count.value = 40
             starting_moves_count.setAttribute("disabled", "disabled")
+            choose_starting_moves.checked = False
+            choose_starting_moves.setAttribute("disabled", "disabled")
         elif moves.value == "off":
             prices.removeAttribute("disabled")
             training_barrels.value = "normal"
@@ -668,11 +671,14 @@ def disable_move_shuffles(evt):
             shockwave_status.setAttribute("disabled", "disabled")
             starting_moves_count.value = 40
             starting_moves_count.setAttribute("disabled", "disabled")
+            choose_starting_moves.checked = False
+            choose_starting_moves.setAttribute("disabled", "disabled")
         else:
             prices.removeAttribute("disabled")
             training_barrels.removeAttribute("disabled")
             shockwave_status.removeAttribute("disabled")
             starting_moves_count.removeAttribute("disabled")
+            choose_starting_moves.removeAttribute("disabled")
     except AttributeError:
         pass
 
@@ -938,6 +944,7 @@ def preset_select_changed(event):
     toggle_logic_type(None)
     toggle_key_settings(None)
     max_starting_moves_count(None)
+    toggle_choose_starting_items(None)
 
 
 @bind("click", "enable_plandomizer")
@@ -1215,3 +1222,19 @@ def toggle_vanilla_door_rando(evt):
     else:
         wrinkly_rando.removeAttribute("disabled")
         tns_rando.removeAttribute("disabled")
+
+
+@bind("click", "choose_starting_moves")
+def toggle_choose_starting_items(evt):
+    """Enable or disable the starting item selector modal."""
+    disabled = True
+    selector = js.document.getElementById("starting_move_list_modal")
+    if js.document.getElementById("choose_starting_moves").checked:
+        disabled = False
+    try:
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
+        else:
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass

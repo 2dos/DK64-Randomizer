@@ -3444,8 +3444,9 @@ BananaCoinGroupList = {
             group=36,
             map_id=Maps.FranticFactory,
             name="On the archway to R&D",
-            konglist=[Kongs.diddy, Kongs.lanky, Kongs.tiny],
+            konglist=[Kongs.lanky],
             region=Regions.Testing,
+            logic=lambda l: (l.balloon or l.advanced_platforming) and l.islanky,
             locations=[
                 [1.0, 2786, 1119, 1091],
                 [1.0, 2787, 1136, 1135],

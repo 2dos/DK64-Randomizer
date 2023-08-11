@@ -2020,6 +2020,7 @@ boot_phrases = (
     "Crediting Grant Kirkhope",
     "Dropping Crayons",
     "Saying Hello when others wont",
+    "Mangling Music",
 )
 
 

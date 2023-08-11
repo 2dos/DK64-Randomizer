@@ -20,6 +20,7 @@ class Items(IntEnum):
     Barrels = auto()
 
     ProgressiveSlam = auto()
+    ProgressiveSlam2 = auto()
 
     ProgressiveDonkeyPotion = auto()
     BaboonBlast = auto()
@@ -54,6 +55,7 @@ class Items(IntEnum):
     HomingAmmo = auto()
     SniperSight = auto()
     ProgressiveAmmoBelt = auto()
+    ProgressiveAmmoBelt2 = auto()
 
     Bongos = auto()
     Guitar = auto()
@@ -61,6 +63,8 @@ class Items(IntEnum):
     Saxophone = auto()
     Triangle = auto()
     ProgressiveInstrumentUpgrade = auto()
+    ProgressiveInstrumentUpgrade2 = auto()
+    ProgressiveInstrumentUpgrade3 = auto()
 
     Camera = auto()
     Shockwave = auto()

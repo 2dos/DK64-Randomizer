@@ -9,7 +9,7 @@ import randomizer.Lists.Exceptions as Ex
 import randomizer.Logic as Logic
 import randomizer.LogicFiles.DKIsles as IslesLogic
 import randomizer.ShuffleExits as ShuffleExits
-from randomizer.CompileHints import compileFullLevelHints, compileHints, compileMicrohints
+from randomizer.CompileHints import compileHints, compileMicrohints, compileSpoilerHints
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
@@ -29,6 +29,7 @@ from randomizer.Enums.Settings import (
     RandomPrices,
     ShockwaveStatus,
     ShuffleLoadingZones,
+    SpoilerHints,
     TrainingBarrels,
     WinCondition,
     WrinklyHints,
@@ -54,6 +55,7 @@ from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleBosses import CorrectBossKongLocations, ShuffleBossesBasedOnOwnedItems
 from randomizer.ShuffleCBs import ShuffleCBs
 from randomizer.ShuffleCoins import ShuffleCoins
+from randomizer.ShuffleCrates import ShuffleMelonCrates
 from randomizer.ShuffleCrowns import ShuffleCrowns
 from randomizer.ShuffleDoors import ShuffleDoors, ShuffleVanillaDoors
 from randomizer.ShuffleFairies import ShuffleFairyLocations
@@ -1444,12 +1446,14 @@ def Fill(spoiler):
     FillKongsAndMoves(spoiler, placed_types)
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler.settings, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "all moves")
+
     # Then place Keys
     if Types.Key in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Key)
         FillShuffledKeys(spoiler, placed_types)
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler.settings, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "Keys")
+
     # Then place misc progression items
     if Types.Bean in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Bean)
@@ -1963,15 +1967,12 @@ def FillKongsAndMoves(spoiler, placedTypes):
     placedMoves = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]  # Kongs are now placed, either in the above method or by default
 
     # First place our starting moves randomly
-    startingMoves = []
     locationsNeedingMoves = []
     # We can expect that all locations in this region are starting move locations or Training Barrels
     for locationLogic in RegionList[Regions.GameStart].locations:
         location = LocationList[locationLogic.id]
         if location.item is None and not location.inaccessible:
             locationsNeedingMoves.append(locationLogic.id)
-        elif location.item not in (None, Items.NoItem):
-            startingMoves.append(location.item)
     # Fill the empty starting locations
     if any(locationsNeedingMoves):
         newlyPlacedItems = []
@@ -1989,12 +1990,20 @@ def FillKongsAndMoves(spoiler, placedTypes):
         if spoiler.settings.shockwave_status in (ShockwaveStatus.shuffled, ShockwaveStatus.shuffled_decoupled):
             possibleStartingMoves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
         shuffle(possibleStartingMoves)
-        if spoiler.settings.start_with_a_slam:  # Force a slam to be the first item chosen from the random list of moves
-            possibleStartingMoves.remove(Items.ProgressiveSlam)
-            possibleStartingMoves.append(Items.ProgressiveSlam)
+        startingMovePool = [
+            move for move in spoiler.settings.starting_move_list_selected if move in possibleStartingMoves
+        ]  # Moves in the selector must be eligible items - this is to filter out training moves if they are not shuffled
+        shuffle(startingMovePool)
         # For each location needing a move, put in a random valid move
         for locationId in locationsNeedingMoves:
-            startingMove = possibleStartingMoves.pop()
+            # If there are moves in the starting move pool, always pick from there first
+            if len(startingMovePool) > 0:
+                startingMove = startingMovePool.pop()
+                if startingMove in possibleStartingMoves:  # Make sure to ward off issues of duplication
+                    possibleStartingMoves.remove(startingMove)
+            # Otherwise, pick from any random eligible move
+            else:
+                startingMove = possibleStartingMoves.pop()
             # If we picked a move to place that we already placed, we have to go Unplace it later
             if startingMove in placedMoves:
                 toBeUnplaced.append(startingMove)
@@ -2589,8 +2598,8 @@ def Generate_Spoiler(spoiler):
     GeneratePlaythrough(spoiler)
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         compileHints(spoiler)
-    if spoiler.settings.full_level_hints:
-        compileFullLevelHints(spoiler)
+    if spoiler.settings.spoiler_hints != SpoilerHints.off:
+        compileSpoilerHints(spoiler)
     compileMicrohints(spoiler)
     Reset()
     ShuffleExits.Reset()
@@ -2652,12 +2661,16 @@ def ShuffleMisc(spoiler):
         ShuffleCoins(spoiler)
     # Random Patches
     if spoiler.settings.random_patches:
-        human_patches = []
+        human_patches = {}
         spoiler.human_patches = ShufflePatches(spoiler, human_patches).copy()
     if spoiler.settings.random_fairies:
         ShuffleFairyLocations(spoiler)
     if spoiler.settings.shuffle_shops:
         ShuffleShopLocations(spoiler)
+    # Crate Shuffle
+    if spoiler.settings.random_crates:
+        human_crates = {}
+        spoiler.human_crates = ShuffleMelonCrates(spoiler, human_crates).copy()
     # Item Rando
     spoiler.human_item_assignment = {}
     spoiler.settings.update_valid_locations()

@@ -100,6 +100,7 @@ ItemList = {
     Items.Oranges: Item("Oranges", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "orange", 388]),
     Items.Barrels: Item("Barrels", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "barrel", 389]),
     Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop, Kongs.any, [MoveTypes.Slam, 2, -1]),
+    Items.ProgressiveSlam2: Item("Progressive Slam ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.ProgressiveDonkeyPotion: Item("Progressive Donkey Potion", True, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 1, -1]),
     Items.BaboonBlast: Item("Baboon Blast", True, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 1, 0x8001]),
     Items.StrongKong: Item("Strong Kong", True, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 2, 0x8002]),
@@ -128,12 +129,15 @@ ItemList = {
     Items.HomingAmmo: Item("Homing Ammo", True, Types.Shop, Kongs.any, [MoveTypes.Guns, 2, 0xD202]),
     Items.SniperSight: Item("Sniper Sight", True, Types.Shop, Kongs.any, [MoveTypes.Guns, 3, 0xD203]),
     Items.ProgressiveAmmoBelt: Item("Progressive Ammo Belt", False, Types.Shop, Kongs.any, [MoveTypes.AmmoBelt, 1, -1]),
+    Items.ProgressiveAmmoBelt2: Item("Progressive Ammo Belt ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.Bongos: Item("Bongos", True, Types.Shop, Kongs.donkey, [MoveTypes.Instruments, 1, 0x8401]),
     Items.Guitar: Item("Guitar", True, Types.Shop, Kongs.diddy, [MoveTypes.Instruments, 1, 0x9401]),
     Items.Trombone: Item("Trombone", True, Types.Shop, Kongs.lanky, [MoveTypes.Instruments, 1, 0xA401]),
     Items.Saxophone: Item("Saxophone", True, Types.Shop, Kongs.tiny, [MoveTypes.Instruments, 1, 0xB401]),
     Items.Triangle: Item("Triangle", True, Types.Shop, Kongs.chunky, [MoveTypes.Instruments, 1, 0xC401]),
     Items.ProgressiveInstrumentUpgrade: Item("Progressive Instrument Upgrade", False, Types.Shop, Kongs.any, [MoveTypes.Instruments, 2, -1]),
+    Items.ProgressiveInstrumentUpgrade2: Item("Progressive Instrument Upgrade ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
+    Items.ProgressiveInstrumentUpgrade3: Item("Progressive Instrument Upgrade  ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.Camera: Item("Fairy Camera", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "camera", 0x2FD]),
     Items.Shockwave: Item("Shockwave", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "shockwave", 377]),
     Items.CameraAndShockwave: Item(
@@ -271,3 +275,48 @@ HHItems = [
 ]
 for item in HHItems:
     HHItemSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_"), "tooltip": "", "default": item[1]})
+
+StartingMoveSelector = []
+StartingMoveOptions = [
+    Items.Vines,
+    Items.Swim,
+    Items.Oranges,
+    Items.Barrels,
+    Items.Coconut,
+    Items.Bongos,
+    Items.BaboonBlast,
+    Items.StrongKong,
+    Items.GorillaGrab,
+    Items.Peanut,
+    Items.Guitar,
+    Items.ChimpyCharge,
+    Items.RocketbarrelBoost,
+    Items.SimianSpring,
+    Items.Grape,
+    Items.Trombone,
+    Items.Orangstand,
+    Items.BaboonBalloon,
+    Items.OrangstandSprint,
+    Items.Feather,
+    Items.Saxophone,
+    Items.MiniMonkey,
+    Items.PonyTailTwirl,
+    Items.Monkeyport,
+    Items.Pineapple,
+    Items.Triangle,
+    Items.HunkyChunky,
+    Items.PrimatePunch,
+    Items.GorillaGone,
+    Items.HomingAmmo,
+    Items.SniperSight,
+    Items.ProgressiveSlam,
+    Items.ProgressiveSlam2,
+    Items.ProgressiveAmmoBelt,
+    Items.ProgressiveAmmoBelt2,
+    Items.ProgressiveInstrumentUpgrade,
+    Items.ProgressiveInstrumentUpgrade2,
+    Items.ProgressiveInstrumentUpgrade3,
+]
+
+for item in StartingMoveOptions:
+    StartingMoveSelector.append({"name": ItemList[item].name, "value": item.name, "tooltip": ""})

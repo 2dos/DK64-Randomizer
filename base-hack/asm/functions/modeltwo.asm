@@ -14,6 +14,7 @@
 .definelabel unkObjFunction13, 0x80604BE8
 .definelabel unkObjFunction14, 0x80605380
 .definelabel unkObjFunction15, 0x8072ECFC
+.definelabel unkObjFunction16, 0x80650D8C
 .definelabel touchingModel2Object, 0x806F70A8
 .definelabel loadObjectForScripting, 0x8063B4C0
 .definelabel updateObjectScript, 0x8063E078
