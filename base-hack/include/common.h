@@ -25,5 +25,6 @@
 #include "music.h"
 #include "macros.h"
 #include "widescreen.h"
+#include "pause.h"
 
 #endif

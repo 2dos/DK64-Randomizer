@@ -16,6 +16,7 @@ from randomizer.Patching.BossRando import randomize_bosses
 from randomizer.Patching.CoinPlacer import randomize_coins
 from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, applyKrushaKong, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
+from randomizer.Patching.CratePlacer import randomize_melon_crate
 from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import enableSpiderText, filterEntranceType, randomize_entrances
@@ -451,6 +452,7 @@ def patching_response(spoiler):
     remove_existing_indicators(spoiler)
     place_door_locations(spoiler)
     randomize_crown_pads(spoiler)
+    randomize_melon_crate(spoiler)
     PlaceFairies(spoiler)
     filterEntranceType()
     replaceIngameText(spoiler)

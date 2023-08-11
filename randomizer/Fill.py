@@ -55,6 +55,7 @@ from randomizer.ShuffleBarrels import BarrelShuffle
 from randomizer.ShuffleBosses import CorrectBossKongLocations, ShuffleBossesBasedOnOwnedItems
 from randomizer.ShuffleCBs import ShuffleCBs
 from randomizer.ShuffleCoins import ShuffleCoins
+from randomizer.ShuffleCrates import ShuffleMelonCrates
 from randomizer.ShuffleCrowns import ShuffleCrowns
 from randomizer.ShuffleDoors import ShuffleDoors, ShuffleVanillaDoors
 from randomizer.ShuffleFairies import ShuffleFairyLocations
@@ -2653,12 +2654,16 @@ def ShuffleMisc(spoiler):
         ShuffleCoins(spoiler)
     # Random Patches
     if spoiler.settings.random_patches:
-        human_patches = []
+        human_patches = {}
         spoiler.human_patches = ShufflePatches(spoiler, human_patches).copy()
     if spoiler.settings.random_fairies:
         ShuffleFairyLocations(spoiler)
     if spoiler.settings.shuffle_shops:
         ShuffleShopLocations(spoiler)
+    # Crate Shuffle
+    if spoiler.settings.random_crates:
+        human_crates = {}
+        spoiler.human_crates = ShuffleMelonCrates(spoiler, human_crates).copy()
     # Item Rando
     spoiler.human_item_assignment = {}
     spoiler.settings.update_valid_locations()

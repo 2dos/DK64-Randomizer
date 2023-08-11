@@ -23,6 +23,7 @@
 | Jungle Japes | Lanky Alcove Hill | (l.handstand and l.lanky) or (l.phasewalk and (l.isdiddy or l.istiny)) | 
 | Jungle Japes | On the useless Lanky ramp | (l.handstand and l.islanky) | 
 | Jungle Japes | Cranky-tunnel Crossing |  | 
+| Jungle Japes | In the Rambi Cave |  | 
 | Jungle Japes | Fairy Pool |  | 
 | Jungle Japes | Behind Lanky Hut |  | 
 | Jungle Japes | Behind DK Hut (1) |  | 
@@ -34,6 +35,7 @@
 | Jungle Japes | Behind Diddy's Mountain |  | 
 | Jungle Japes | Near Kong Cage |  | 
 | Jungle Japes | Near Cannon to Diddy-freeing cage |  | 
+| Jungle Japes | Behind the Mountain |  | 
 | Jungle Japes | Near Cannon Platform |  | 
 | Jungle Japes | In Troff 'n' Scoff Alcove |  | 
 | Jungle Japes | Lower River |  | 
@@ -67,7 +69,7 @@
 | Aztec Tiny Temple | Tiny Temple: Next to Tiny cage |  | 
 | Angry Aztec | Entrance tunnel - near DK door |  | 
 | Angry Aztec | Blueprint Room | l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))) | 
-| Angry Aztec | Oasis |  | 
+| Angry Aztec | Near Oasis Sand |  | 
 | Angry Aztec | Behind Tiny Temple |  | 
 | Angry Aztec | Next to Tiny Temple - left |  | 
 | Angry Aztec | Next to Tiny Temple - right |  | 
@@ -82,6 +84,7 @@
 | Angry Aztec | Near Llama Temple (Right) |  | 
 | Angry Aztec | Next to Llama Temple |  | 
 | Angry Aztec | On Llama Temple | (l.jetpack and l.diddy) or l.CanMoonkick(), group=3 | 
+| Angry Aztec | On Llama Temple (1) | (l.jetpack and l.diddy) or l.CanMoonkick() | 
 | Angry Aztec | Near Sealed Quicksand Tunnel Shop |  | 
 | Angry Aztec | On 5-Door Temple | (l.jetpack and l.diddy) or l.CanMoonkick(), group=3 | 
 | Angry Aztec | Near Sealed Quicksand Tunnel Exterior Warp |  | 
@@ -90,6 +93,7 @@
 | Angry Aztec | Next to Snide |  | 
 | Angry Aztec | Behind Gong-tower |  | 
 | Angry Aztec | Left of Gong-tower |  | 
+| Angry Aztec | Near Gong Tower |  | 
 | Angry Aztec | Sealed Quicksand Tunnel |  | 
 | Aztec Donkey5DTemple | DK 5DT: Dead End | (l.coconut and l.isdonkey) or l.phasewalk, group=7 | 
 | Aztec Diddy5DTemple | Diddy 5DT: Dead End | (l.peanut and l.isdiddy) or l.phasewalk | 
@@ -99,6 +103,7 @@
 | Aztec Chunky5DTemple | Chunky 5DT: Path Split (1) | (l.pineapple and l.ischunky) or l.phasewalk | 
 | Aztec Chunky5DTemple | Chunky 5DT: Path Split (2) | (l.pineapple and l.ischunky) or l.phasewalk | 
 | Aztec Llama Temple | Llama Temple: Llama Right |  | 
+| Aztec Llama Temple | Llama Temple Entrance |  | 
 | Aztec Llama Temple | Llama Temple: Next to Llama Right |  | 
 | Aztec Llama Temple | Llama Temple: Next to Llama Left |  | 
 | Aztec Llama Temple | Llama Temple: Llama Left |  | 
@@ -129,7 +134,8 @@
 | Frantic Factory | On Production outside box |  | 
 | Frantic Factory | Storage Room Corner |  | 
 | Frantic Factory | Cranky/Candy Room |  | 
-| Frantic Factory | Dark Room | (l.punch and l.chunky) or l.phasewalk, group=4) | 
+| Frantic Factory | Near Candy |  | 
+| Frantic Factory | Dark Room Corner | (l.punch and l.chunky) or l.phasewalk, group=4) | 
 | Frantic Factory | Arcade Room Bench |  | 
 | Frantic Factory | Next to DK Arcade |  | 
 | Frantic Factory | Near Snide (1) |  | 
@@ -142,6 +148,7 @@
 | Frantic Factory | Funky Room (1) |  | 
 | Frantic Factory | Funky Room (2) |  | 
 | Frantic Factory | Funky Room (3) |  | 
+| Frantic Factory | Near Funky |  | 
 | Frantic Factory | Piano Room | l.trombone and l.lanky | 
 | Frantic Factory | In Lanky's Piano Room | ((l.trombone and l.islanky) or l.CanAccessRNDRoom()) | 
 | Frantic Factory | Diddy R and D | l.guitar and l.diddy | 
@@ -164,6 +171,7 @@
 | --- | ---- | ----- |
 | Gloomy Galleon | Under Cranky | (l.punch and l.chunky) or l.phasewalk or l.CanSkew(False) | 
 | Galleon Lighthouse | Lighthouse: Interior Rear |  | 
+| Gloomy Galleon | Near Cactus |  | 
 | Gloomy Galleon | Next to Cannonball - in front | l.CanGetOnCannonGamePlatform() | 
 | Gloomy Galleon | Next to Cannonball - behind | l.CanGetOnCannonGamePlatform() | 
 | Gloomy Galleon | Next to cannon in cannonball room | l.CanGetOnCannonGamePlatform() | 
@@ -174,16 +182,21 @@
 | Gloomy Galleon | Behind Punch GB Chest (1) |  | 
 | Gloomy Galleon | Behind Punch GB Chest (2) |  | 
 | Gloomy Galleon | Behind the ship you shoot onto with the cannon |  | 
+| Galleon2DShip | Galleon Lanky 2DS Inside Chest |  | 
 | Gloomy Galleon | Left of Cranky |  | 
 | Gloomy Galleon | In front of Cranky |  | 
 | Gloomy Galleon | Near Bridge Warp 3 |  | 
 | Gloomy Galleon | On Lighthouse Platform (Rocketbarrel) |  | 
 | Gloomy Galleon | On Lighthouse Platform (Baboon Blast) |  | 
 | Gloomy Galleon | Next to Lighthouse ladder |  | 
+| Gloomy Galleon | Lighthouse: Under Enguarde Box | Events.LighthouseEnguarde in l.Events | 
 | Gloomy Galleon | On Rocketbarrel platform |  | 
 | Gloomy Galleon | Blueprint Alcove |  | 
 | Gloomy Galleon | Behind Snide's |  | 
+| Gloomy Galleon | Shipyard: On top of Tiny Submarine | Events.ShipyardEnguarde in l.Events | 
+| Gloomy Galleon | In the Shipwreck with Replenishables | Events.ShipyardEnguarde in l.Events | 
 | Gloomy Galleon | On Gold Tower | (l.balloon and l.islanky and Events.WaterSwitch in l.Events) or l.CanMoonkick() | 
+| Gloomy Galleon | Galleon Treasure Chest UnderWater | Events.ShipyardTreasureRoomOpened in l.Events | 
 | Galleon Sick Bay | Seasick Ship: Left of Cannon |  | 
 | Galleon Sick Bay | Sick Bay: Chunky ship entrance |  | 
 | Galleon Sick Bay | Seasick Ship: Right of Cannon |  | 
@@ -213,6 +226,7 @@
 | Fungi Forest | Behind Diddy Barn |  | 
 | Fungi Forest | Left of Diddy Barn |  | 
 | Fungi Forest | Next to Diddy Pad |  | 
+| Fungi Forest | Behind Dark Attic |  | 
 | Fungi Forest | Near Mill Tag |  | 
 | Fungi Forest | Near Well Exit |  | 
 | Fungi Forest | Near Winch |  | 
@@ -241,15 +255,18 @@
 | Fungi Forest | Next to Rabbit's house |  | 
 | Fungi Forest | Under Owl Tree |  | 
 | Fungi Forest | Under the Owl Tree |  | 
+| Fungi Forest | Near Owl Tree |  | 
 | Fungi Forest | Near Owl Rocketbarrel (1) |  | 
 | Fungi Forest | Near Owl Rocketbarrel (2) |  | 
 | Fungi Forest | Top of Owl Tree | ((l.jetpack and l.isdiddy) or l.CanMoonkick()) | 
 | Fungi Forest | On Mill |  | 
 | Forest Anthill | Anthill: Orange Platform |  | 
 | Forest Winch Room | Winch Room: Opposite Entrance |  | 
+| Fungi Forest | Near Thornvine Barn |  | 
 | Forest Thornvine Barn | DK Barn: Near Entrance |  | 
 | Forest Thornvine Barn | DK Barn: Near Ladder |  | 
 | Forest Thornvine Barn | Thornvine Barn: Next to ladder |  | 
+| Forest Thornvine Barn | In Thornvine Barn |  | 
 | Forest Mill Front | Mill Front: Near Conveyor |  | 
 | Forest Mill Front | Mill Front: Near Mini Monkey |  | 
 | Forest Mill Front | near DK's levers |  | 
@@ -373,6 +390,7 @@
 | Castle Lower Cave | Crypt Hub: Lower Portion |  | 
 | Castle Lower Cave | Crypt Hub: Behind Lanky Crypt |  | 
 | Castle Lower Cave | Crypt Hub: Near Funky's |  | 
+| Castle Lower Cave | Behind Mausoleum Entrance |  | 
 | Castle Crypt | 3Kong crypt entrance |  | 
 | Castle Crypt | Chunky Crypt: Near Coffin | (l.pineapple and l.ischunky) or l.phasewalk, group=3 | 
 | Castle Crypt | Diddy Crypt: Near Coffin | (l.peanut and l.isdiddy) or l.phasewalk, group=3 | 

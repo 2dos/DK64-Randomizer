@@ -9,3 +9,5 @@
 .definelabel LatestCollectedObject, 0x807FD734
 .definelabel ModelTwoHitboxPointer, 0x80754244
 .definelabel MiscHitboxPointer, 0x807FD72C
+.definelabel unkSoundIndex, 0x807F6938
+.definelabel unkSoundArray, 0x807F6918

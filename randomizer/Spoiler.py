@@ -169,6 +169,7 @@ class Spoiler:
         settings["Free Trade Agreement"] = self.settings.free_trade_setting.name
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
+        settings["Randomize Crates"] = self.settings.random_crates
         settings["Randomize CB Locations"] = self.settings.cb_rando
         settings["Randomize Coin Locations"] = self.settings.coin_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
@@ -530,6 +531,8 @@ class Spoiler:
             humanspoiler["Shuffled Banana Fairies"] = self.fairy_locations_human
         if self.settings.random_patches:
             humanspoiler["Shuffled Dirt Patches"] = self.human_patches
+        if self.settings.random_crates:
+            humanspoiler["Shuffled Melon Crates"] = self.human_crates
         if self.settings.bananaport_rando != BananaportRando.off:
             shuffled_warp_levels = [x.name for x in self.settings.warp_level_list_selected]
             humanspoiler["Shuffled Bananaport Levels"] = shuffled_warp_levels

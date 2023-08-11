@@ -229,6 +229,7 @@ class Settings:
         self.loading_zone_coupled = None
         self.move_rando = MoveRando.off
         self.random_patches = None
+        self.random_crates = None
         self.random_fairies = None
         self.random_prices = None
         self.boss_location_rando = None

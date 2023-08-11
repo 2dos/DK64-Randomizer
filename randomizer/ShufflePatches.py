@@ -37,7 +37,7 @@ def addPatch(patch: CustomLocation, enum_val: int, name: str, level: Levels):
         Levels.AngryAztec: "Aztec",
         Levels.FranticFactory: "Factory",
         Levels.GloomyGalleon: "Galleon",
-        Levels.FungiForest: "Fungi",
+        Levels.FungiForest: "Forest",
         Levels.CrystalCaves: "Caves",
         Levels.CreepyCastle: "Castle",
     }
@@ -80,6 +80,8 @@ def ShufflePatches(spoiler: Spoiler, human_spoiler):
         Levels.CrystalCaves: [],
         Levels.CreepyCastle: [],
     }
+    for key in total_dirt_patch_list:
+        human_spoiler[key.name] = []  # Ensure order
 
     for key in total_dirt_patch_list.keys():
         for SingleDirtPatchLocation in CustomLocations[key]:
@@ -110,12 +112,13 @@ def ShufflePatches(spoiler: Spoiler, human_spoiler):
 
 def select_random_dirt_from_area(area_dirt, amount, level, spoiler: Spoiler, human_spoiler):
     """Select <amount> random dirt patches from <area_dirt>, which is a list of dirt patches. Makes sure max 1 dirt patch per group is selected."""
+    human_spoiler[level.name] = []
     for iterations in range(amount):
         selected_patch = random.choice(area_dirt)  # selects a random patch from the list
         for patch in CustomLocations[level]:  # enables the selected patch
             if patch.name == selected_patch.name:
                 patch.setCustomLocation(True)
-                human_spoiler.append(patch.name)
+                human_spoiler[level.name].append(patch.name)
                 local_map_index = len([x for x in spoiler.dirt_patch_placement if x["map"] == patch.map])
                 spoiler.dirt_patch_placement.append({"name": patch.name, "map": patch.map, "patch": patch, "level": level, "score": (patch.map * 100) + local_map_index})
                 area_dirt.remove(selected_patch)

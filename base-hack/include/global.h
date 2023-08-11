@@ -289,7 +289,6 @@ extern void refreshPads(pad_refresh_signals signal);
 
 extern int* pauseScreen3And4Header(int* dl);
 extern int* pauseScreen3And4Counter(int x, int y, int top, int bottom, int* dl, int unk0, int scale);
-extern void updatePauseScreenWheel(void* write_location, void* sprite, int x, int y, float scale, int local_index, int index);
 extern int* pauseScreen3And4ItemName(int* dl, int x, int y, float scale, char* text);
 extern void handleSpriteCode(int control_type);
 extern int changeSelectedLevel(int unk0, int unk1);

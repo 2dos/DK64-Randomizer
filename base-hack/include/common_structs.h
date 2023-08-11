@@ -215,7 +215,9 @@ typedef struct playerData {
 	/* 0x128 */ short strong_kong_value;
 	/* 0x12A */ char unk_12A[2];
 	/* 0x12C */ short chunk;
-	/* 0x12E */ char unk_12E[0x13C - 0x12E];
+	/* 0x12E */ char unk_12E[0x132 - 0x12E];
+	/* 0x132 */ short unk_132;
+	/* 0x134 */ char unk_134[0x13C - 0x134];
 	/* 0x13C */ int* collision_queue_pointer;
 	/* 0x140 */ bonedata* bone_data;
 	/* 0x144 */ char noclip;
