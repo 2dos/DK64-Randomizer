@@ -36,7 +36,7 @@ assistant_devs = [
     CreditItem("top", "header", ["Assistant Developers"]),
     CreditItem("right", "normal", ["Aljex", "GloriousLiar", "JXJacob"]),
     CreditItem("left", "normal", ["Mittenz", "Naramgamjan", "OnlySpaghettiCode"]),
-    CreditItem("right", "normal", ["Plessy", "Rain", "The Sound Defense"]),
+    CreditItem("right", "normal", ["Plessy", "Rain", "The Sound Defense", "UmedMuzl"]),
 ]
 
 # BETA TESTERS
