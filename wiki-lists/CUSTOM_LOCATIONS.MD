@@ -196,7 +196,7 @@
 | Gloomy Galleon | Shipyard: On top of Tiny Submarine | Events.ShipyardEnguarde in l.Events | 
 | Gloomy Galleon | In the Shipwreck with Replenishables | Events.ShipyardEnguarde in l.Events | 
 | Gloomy Galleon | On Gold Tower | (l.balloon and l.islanky and Events.WaterSwitch in l.Events) or l.CanMoonkick() | 
-| Gloomy Galleon | Galleon Treasure Chest UnderWater | Events.ShipyardTreasureRoomOpened in l.Events | 
+| Gloomy Galleon | Galleon Treasure Room UnderWater | Events.ShipyardTreasureRoomOpened in l.Events | 
 | Galleon Sick Bay | Seasick Ship: Left of Cannon |  | 
 | Galleon Sick Bay | Sick Bay: Chunky ship entrance |  | 
 | Galleon Sick Bay | Seasick Ship: Right of Cannon |  | 
