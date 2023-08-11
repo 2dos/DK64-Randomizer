@@ -515,6 +515,19 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
+        # Correct the invalid items in the starting move selector
+        copy_of_starting_move_list_selected = self.starting_move_list_selected.copy()
+        for item in copy_of_starting_move_list_selected:
+            if item == Items.ProgressiveSlam2:
+                self.starting_move_list_selected.remove(item)
+                self.starting_move_list_selected.append(Items.ProgressiveSlam)
+            if item == Items.ProgressiveAmmoBelt2:
+                self.starting_move_list_selected.remove(item)
+                self.starting_move_list_selected.append(Items.ProgressiveAmmoBelt)
+            elif item in (Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3):
+                self.starting_move_list_selected.remove(item)
+                self.starting_move_list_selected.append(Items.ProgressiveInstrumentUpgrade)
+
         # If we're using the vanilla door shuffle, turn both wrinkly and tns rando on
         if self.vanilla_door_rando:
             self.wrinkly_location_rando = True
