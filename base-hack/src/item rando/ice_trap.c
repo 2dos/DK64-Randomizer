@@ -406,8 +406,7 @@ void trapPlayer_New(void) {
         Player->control_state_progress = 0;
         playActorAnimation(Player, 0x13);
         spawnActor(0x117, 0xC5);
-        actorData* trapBubble = (actorData*)CurrentActorPointer;
-        trapBubble->parent = Player;
+        LastSpawnedActor->parent = Player;
         Player->noclip = 0x3C;
     }
 }

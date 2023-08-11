@@ -132,5 +132,7 @@ void renderScreenTransitionCheck(int applied_transition) {
 			}
 		}
 	}
-    renderScreenTransition(applied_transition);
+	if ((!Rando.true_widescreen) || (!WS_REMOVE_TRANSITIONS)) {
+    	renderScreenTransition(applied_transition);
+	}
 }

@@ -2251,7 +2251,7 @@ int spawnCannonWrapper(void) {
 	 * @return Cannon is being spawned
 	 */
 	if (CurrentMap == MAP_ISLES) {
-		int spawner_id = getActorSpawnerIDFromTiedActor(CurrentActorPointer);
+		int spawner_id = getActorSpawnerIDFromTiedActor(LastSpawnedActor);
 		if (spawner_id == 8) { // Castle Cannon
 			if (Rando.lobbies_open_bitfield & 0x40) {
 				return 1;

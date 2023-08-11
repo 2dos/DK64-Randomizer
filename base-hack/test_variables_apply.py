@@ -191,8 +191,8 @@ with open("include/variable_space_structs.h", "r") as varspace:
                     "lava_water",
                     "bosses",
                     "enemies",
-                    "unk4",
-                    "unk5",
+                    "dark_world",
+                    "no_geo",
                     "unk6",
                     "unk7",
                 ]
