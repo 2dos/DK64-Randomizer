@@ -218,7 +218,7 @@ def getNextSlot(spoiler, item: Items) -> int:
     elif item == Items.ProgressiveInstrumentUpgrade:
         slots = [0x20, 0x21, 0x22]
     elif item == Items.ProgressiveSlam:
-        slots = [0x10, 0x11]  # 0xF excluded as slam 1 is pre-given
+        slots = [0xF, 0x10, 0x11]
     if len(slots) == 0:
         return None
     ROM_COPY = LocalROM()
