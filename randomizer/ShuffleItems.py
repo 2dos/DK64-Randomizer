@@ -100,7 +100,7 @@ move_list = {
     Items.PrimatePunch: MoveData(0, Kongs.chunky, 2),
     Items.ProgressiveAmmoBelt: MoveData(3, Kongs.any, 1, True, 2),
     Items.ProgressiveInstrumentUpgrade: MoveData(4, Kongs.any, 2, True, 3),
-    Items.ProgressiveSlam: MoveData(1, Kongs.any, 2, True, 2),
+    Items.ProgressiveSlam: MoveData(1, Kongs.any, 1, True, 3),
     Items.HomingAmmo: MoveData(2, Kongs.any, 2, True, 1),
     Items.OrangstandSprint: MoveData(0, Kongs.lanky, 3),
     Items.Monkeyport: MoveData(0, Kongs.tiny, 3),
@@ -112,7 +112,7 @@ move_list = {
 def ShuffleItems(spoiler: Spoiler):
     """Shuffle items into assortment."""
     progressive_move_flag_dict = {
-        Items.ProgressiveSlam: [0x290, 0x291],
+        Items.ProgressiveSlam: [0x3BC, 0x3BD, 0x3BE],
         Items.ProgressiveAmmoBelt: [0x292, 0x293],
         Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
         Items.FakeItem: list(range(0x2AE, 0x2BE)),

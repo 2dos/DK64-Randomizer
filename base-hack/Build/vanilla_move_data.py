@@ -65,7 +65,7 @@ training = {"dive": MoveType("flag", 0x182), "orange": MoveType("flag", 0x184), 
 
 bfi = {"bfi": MoveType("flag", -2)}
 
-first_move = {"base_slam": MoveType("slam", DEFAULT_SLAM_PURCHASE)}
+first_move = {"base_slam": MoveType("nothing")}
 
 
 def convertItem(item: dict, kong: int) -> int:

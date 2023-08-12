@@ -12,7 +12,8 @@ class Locations(IntEnum):
     IslesBarrelsTrainingBarrel = auto()
 
     # Pre-given move locations (36 locations) - the integer value of these matter for starting move count
-    PreGiven_Location00 = auto()  # ID: 5
+    IslesFirstMove = auto() # ID: 5
+    PreGiven_Location00 = auto()
     PreGiven_Location01 = auto()
     PreGiven_Location02 = auto()
     PreGiven_Location03 = auto()
@@ -50,7 +51,7 @@ class Locations(IntEnum):
     PreGiven_Location35 = auto()
 
     # DK Isles locations
-    IslesDonkeyJapesRock = auto()  # ID: 41
+    IslesDonkeyJapesRock = auto()  # ID: 42
     IslesTinyCagedBanana = auto()
     IslesTinyInstrumentPad = auto()
     IslesLankyCagedBanana = auto()
@@ -84,7 +85,7 @@ class Locations(IntEnum):
     BananaHoard = auto()
 
     # Jungle Japes location
-    JapesDonkeyMedal = auto()  # ID: 73
+    JapesDonkeyMedal = auto()  # ID: 74
     JapesDiddyMedal = auto()
     JapesLankyMedal = auto()
     JapesTinyMedal = auto()
@@ -120,7 +121,7 @@ class Locations(IntEnum):
     JapesKey = auto()
 
     # Angry Aztec
-    AztecDonkeyMedal = auto()  # ID: 107
+    AztecDonkeyMedal = auto()  # ID: 108
     AztecDiddyMedal = auto()
     AztecLankyMedal = auto()
     AztecTinyMedal = auto()
@@ -194,7 +195,7 @@ class Locations(IntEnum):
     FactoryKey = auto()
 
     # Gloomy Galleon locations
-    GalleonDonkeyMedal = auto()  # ID: 177
+    GalleonDonkeyMedal = auto()  # ID: 178
     GalleonDiddyMedal = auto()
     GalleonLankyMedal = auto()
     GalleonTinyMedal = auto()
@@ -234,7 +235,7 @@ class Locations(IntEnum):
     GalleonKey = auto()
 
     # Fungi Forest locations
-    ForestDonkeyMedal = auto()  # ID: 215
+    ForestDonkeyMedal = auto()  # ID: 216
     ForestDiddyMedal = auto()
     ForestLankyMedal = auto()
     ForestTinyMedal = auto()
@@ -270,7 +271,7 @@ class Locations(IntEnum):
     ForestKey = auto()
 
     # Crystal Caves locations
-    CavesDonkeyMedal = auto()  # ID: 249
+    CavesDonkeyMedal = auto()  # ID: 250
     CavesDiddyMedal = auto()
     CavesLankyMedal = auto()
     CavesTinyMedal = auto()
@@ -305,7 +306,7 @@ class Locations(IntEnum):
     CavesKey = auto()
 
     # Creepy Castle locations
-    CastleDonkeyMedal = auto()  # ID: 282
+    CastleDonkeyMedal = auto()  # ID: 283
     CastleDiddyMedal = auto()
     CastleLankyMedal = auto()
     CastleTinyMedal = auto()
@@ -340,7 +341,7 @@ class Locations(IntEnum):
     CastleKey = auto()
 
     # Hideout Helm locations
-    HelmDonkey1 = auto()  # ID: 315
+    HelmDonkey1 = auto()  # ID: 316
     HelmDonkey2 = auto()
     HelmDiddy1 = auto()
     HelmDiddy2 = auto()
@@ -360,7 +361,7 @@ class Locations(IntEnum):
     HelmKey = auto()
 
     # Shop locations
-    CoconutGun = auto()  # ID: 333
+    CoconutGun = auto()  # ID: 334
     PeanutGun = auto()
     GrapeGun = auto()
     FeatherGun = auto()
@@ -397,7 +398,7 @@ class Locations(IntEnum):
     GorillaGone = auto()
     RarewareCoin = auto()
     # These act as placeholders for shuffled move locations. In Vanilla game there is no move here
-    DonkeyGalleonPotion = auto()  # ID: 369
+    DonkeyGalleonPotion = auto()  # ID: 370
     DonkeyForestPotion = auto()
     DonkeyCavesPotion = auto()
     DonkeyCastlePotion = auto()
@@ -460,7 +461,7 @@ class Locations(IntEnum):
     SharedJapesGun = auto()
     SharedAztecGun = auto()
     SharedGalleonGun = auto()
-    DonkeyFactoryInstrument = auto()  # ID: 432
+    DonkeyFactoryInstrument = auto()  # ID: 433
     DonkeyGalleonInstrument = auto()
     DonkeyCavesInstrument = auto()
     DonkeyCastleInstrument = auto()
@@ -483,7 +484,7 @@ class Locations(IntEnum):
     SharedAztecInstrument = auto()
     SharedFactoryInstrument = auto()
 
-    TurnInDKIslesDonkeyBlueprint = auto()  # ID: 454
+    TurnInDKIslesDonkeyBlueprint = auto()  # ID: 455
     TurnInDKIslesDiddyBlueprint = auto()
     TurnInDKIslesLankyBlueprint = auto()
     TurnInDKIslesTinyBlueprint = auto()
@@ -522,10 +523,10 @@ class Locations(IntEnum):
     TurnInCreepyCastleDiddyBlueprint = auto()
     TurnInCreepyCastleLankyBlueprint = auto()
     TurnInCreepyCastleTinyBlueprint = auto()
-    TurnInCreepyCastleChunkyBlueprint = auto()  # ID: 493
+    TurnInCreepyCastleChunkyBlueprint = auto()  # ID: 494
 
     # Door locations must remain grouped together in this specific order for hint door location logic
-    JapesDonkeyDoor = auto()  # ID: 494
+    JapesDonkeyDoor = auto()  # ID: 495
     JapesDiddyDoor = auto()
     JapesLankyDoor = auto()
     JapesTinyDoor = auto()
@@ -559,10 +560,10 @@ class Locations(IntEnum):
     CastleDiddyDoor = auto()
     CastleLankyDoor = auto()
     CastleTinyDoor = auto()
-    CastleChunkyDoor = auto()  # ID: 528
+    CastleChunkyDoor = auto()  # ID: 529
 
     # Crown locations must stay grouped in this order
-    JapesBattleArena = auto()  # ID: 529
+    JapesBattleArena = auto()  # ID: 530
     AztecBattleArena = auto()
     FactoryBattleArena = auto()
     GalleonBattleArena = auto()
@@ -571,10 +572,10 @@ class Locations(IntEnum):
     CastleBattleArena = auto()
     IslesBattleArena1 = auto()
     IslesBattleArena2 = auto()
-    HelmBattleArena = auto()  # ID: 538
+    HelmBattleArena = auto()  # ID: 539
 
     # These locations are only utilized in kasplat rando and must stay grouped in this order
-    JapesDonkeyKasplatRando = auto()  # ID: 539
+    JapesDonkeyKasplatRando = auto()  # ID: 540
     JapesDiddyKasplatRando = auto()
     JapesLankyKasplatRando = auto()
     JapesTinyKasplatRando = auto()
@@ -613,10 +614,10 @@ class Locations(IntEnum):
     IslesDiddyKasplatRando = auto()
     IslesLankyKasplatRando = auto()
     IslesTinyKasplatRando = auto()
-    IslesChunkyKasplatRando = auto()  # ID: 578
+    IslesChunkyKasplatRando = auto()  # ID: 579
 
     # Rainbow Coin Locations used for dirt patch rando and item rando. Must remain in this order
-    RainbowCoin_Location00 = auto()  # ID: 579
+    RainbowCoin_Location00 = auto()  # ID: 580
     RainbowCoin_Location01 = auto()
     RainbowCoin_Location02 = auto()
     RainbowCoin_Location03 = auto()
@@ -631,7 +632,7 @@ class Locations(IntEnum):
     RainbowCoin_Location12 = auto()
     RainbowCoin_Location13 = auto()
     RainbowCoin_Location14 = auto()
-    RainbowCoin_Location15 = auto()  # ID: 594
+    RainbowCoin_Location15 = auto()  # ID: 595
 
     # Melon Crate Locations
     MelonCrate_Location00 = auto()

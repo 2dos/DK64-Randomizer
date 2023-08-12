@@ -20,6 +20,7 @@ LogicRegions = {
         LocationLogic(Locations.IslesOrangesTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
         LocationLogic(Locations.IslesBarrelsTrainingBarrel, lambda l: l.settings.fast_start_beginning_of_game),
         # Starting Moves
+        LocationLogic(Locations.IslesFirstMove, lambda l: l.settings.fast_start_beginning_of_game),
         LocationLogic(Locations.PreGiven_Location00, lambda l: True),
         LocationLogic(Locations.PreGiven_Location01, lambda l: True),
         LocationLogic(Locations.PreGiven_Location02, lambda l: True),
