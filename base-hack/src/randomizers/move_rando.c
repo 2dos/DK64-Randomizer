@@ -139,6 +139,9 @@ void moveTransplant(void) {
 		BFIMove_New.purchase_type = getMoveType(move_data->bfi_move.move_master_data);
 		BFIMove_New.move_kong = getMoveKong(move_data->bfi_move.move_master_data);
 		BFIMove_New.purchase_value = getMoveIndex((move_rom_item *)&move_data->bfi_move);
+		FirstMove_New.purchase_type = getMoveType(move_data->first_move.move_master_data);
+		FirstMove_New.move_kong = getMoveKong(move_data->first_move.move_master_data);
+		FirstMove_New.purchase_value = getMoveIndex((move_rom_item *)&move_data->first_move);
 	}
 	complex_free(move_data);
 }
@@ -604,6 +607,9 @@ void setLocationStatus(location_list location_index) {
 	} else if (location_index == LOCATION_BFI) {
 		// BFI
 		setLocation((purchase_struct*)&BFIMove_New);
+	} else if (location_index == LOCATION_FIRSTMOVE) {
+		// First Move (Normally Slam 1)
+		setLocation((purchase_struct*)&FirstMove_New);
 	}
 }
 
@@ -611,10 +617,13 @@ int getLocationStatus(location_list location_index) {
 	int location_int = (int)location_index;
 	if (location_int < 4) {
 		// TBarrels
-		return getLocation((purchase_struct*)&TrainingMoves_New[location_int]);
+		return getLocation(&TrainingMoves_New[location_int]);
 	} else if (location_index == LOCATION_BFI) {
 		// BFI
-		return getLocation((purchase_struct*)&BFIMove_New);
+		return getLocation(&BFIMove_New);
+	} else if (location_index == LOCATION_FIRSTMOVE) {
+		// First Move (Normally Slam 1)
+		return getLocation(&FirstMove_New);
 	}
 	return 0;
 }

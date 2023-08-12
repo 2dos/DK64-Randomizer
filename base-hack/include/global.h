@@ -54,7 +54,6 @@ extern void displayNumberOnTns(void);
 extern void moveTransplant(void);
 extern void priceTransplant(void);
 extern void squawks_with_spotlight_actor_code(void);
-extern void shine_light_at_kong(unsigned short height_variance, unsigned short min_follow_distance, unsigned short param_3);
 
 extern void changeCharSpawnerFlag(maps map, int spawner_id, int new_flag);
 extern void changeHelmLZ(void);
@@ -312,6 +311,10 @@ extern void giveCrystal(void);
 extern int CrownDoorCheck(void);
 extern int CoinDoorCheck(void);
 
+extern void alterChunkLighting(int chunk);
+extern void alterChunkData(void* data);
+extern void shineLight(actorData* actor, int kongType);
+
 extern int fairyQueenCutsceneInit(int start, int count, flagtypes type);
 extern void fairyQueenCutsceneCheck(void);
 extern void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner);
@@ -385,7 +388,7 @@ extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];
-extern const unsigned short slam_flags[4];
+extern const unsigned short slam_flags[6];
 extern const unsigned short belt_flags[4];
 extern const unsigned short instrument_flags[6];
 extern const rgb colorblind_colors[15];

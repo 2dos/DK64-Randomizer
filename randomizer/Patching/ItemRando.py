@@ -563,7 +563,7 @@ def place_randomized_items(spoiler):
                         ROM_COPY.seek(0x1FF1080 + offset)
                         if item.new_item == Types.Shop:
                             medal_index = 6
-                            if item.new_flag in (0x290, 0x291):
+                            if item.new_flag in (0x3BC, 0x3BD, 0x3BE):
                                 medal_index = 6
                             elif item.new_flag in (0x292, 0x293):
                                 medal_index = 7

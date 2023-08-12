@@ -48,7 +48,7 @@ from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
 from randomizer.Patching.Lib import IsItemSelected
 
-STARTING_SLAM = 1  # Currently we're assuming you always start with 1 slam
+STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
 
 
 def IsGlitchEnabled(settings, glitch_enum):

@@ -64,7 +64,7 @@
 .definelabel ChimpyCam, 0x80744530
 .definelabel ScreenRatio, 0x807444C0
 .definelabel SoundType, 0x80745844
-.definelabel CurrentActorPointer, 0x807FBB44
+.definelabel LastSpawnedActor, 0x807FBB44
 .definelabel CurrentActorPointer_0, 0x807FBB40
 .definelabel LoadedActorCount, 0x807FBB35
 .definelabel LoadedActorArray, 0x807FB930
@@ -201,8 +201,6 @@
 .definelabel currentCharSpawner, 0x807FDC9C
 .definelabel EnemiesKilledCounter, 0x80744508
 
-.definelabel getXRatioMovement, 0x80612794
-.definelabel getZRatioMovement, 0x80612790
 .definelabel MelonArray, 0x800334DC
 .definelabel IGT, 0x80750AB0
 .definelabel LevelStateBitfield, 0x807FBB60
@@ -244,6 +242,12 @@
 .definelabel StackTraceY, 0x807FEF74
 .definelabel StackTraceSize, 0x807FEF78
 .definelabel StackTraceStartX, 0x807FEF7C
+
+.definelabel ChunkLighting_Red, 0x8076A0B4
+.definelabel ChunkLighting_Green, 0x8076A0B8
+.definelabel ChunkLighting_Blue, 0x8076A0BC
+.definelabel chunk_count, 0x807F6C28
+.definelabel chunkArray, 0x807F6C18
 
 .definelabel BlueprintLargeImageColors, 0x80033228
 

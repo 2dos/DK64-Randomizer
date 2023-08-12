@@ -102,8 +102,8 @@ void handleSpiderTrapCode(void) {
 			rng = getRNGLower31();
 			int rng_target_diff = ((getRNGLower31() >> 0xF) % 2000);
 			float target_diff = (rng_target_diff / 1000) + 10.0f;
-			float diff_x = getXRatioMovement(PlayerPointer_0->rot_y) * target_diff;
-			float diff_z = getZRatioMovement(PlayerPointer_0->rot_y) * target_diff;
+			float diff_x = determineXRatioMovement(PlayerPointer_0->rot_y) * target_diff;
+			float diff_z = determineZRatioMovement(PlayerPointer_0->rot_y) * target_diff;
 			float target_x = PlayerPointer_0->xPos + diff_x;
 			float target_y = PlayerPointer_0->yPos + PlayerPointer_0->height_offset;
 			float target_z = PlayerPointer_0->zPos + diff_z;

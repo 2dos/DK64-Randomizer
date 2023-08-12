@@ -71,6 +71,8 @@ def PlaceConstants(settings):
         LocationList[Locations.ChunkyKong].PlaceConstantItem(Items.NoItem)
     if settings.shockwave_status == ShockwaveStatus.start_with:
         LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
+    if settings.start_with_slam:
+        LocationList[Locations.IslesFirstMove].PlaceConstantItem(Items.ProgressiveSlam)
 
 
 def AllItems(settings):
@@ -119,6 +121,8 @@ def AllItems(settings):
             allItems.append(Items.Shockwave)
         else:
             allItems.append(Items.CameraAndShockwave)
+        if not settings.start_with_slam:
+            allItems.append(Items.ProgressiveSlam)
     if settings.kong_rando or Types.Kong in settings.shuffled_location_types:
         allItems.extend(Kongs(settings))
     return allItems
@@ -291,7 +295,10 @@ def Upgrades(settings):
     if settings.training_barrels == TrainingBarrels.shuffled:
         upgrades.extend(TrainingBarrelAbilities())
     # Add either progressive upgrade items or individual ones depending on settings
-    upgrades.extend(itertools.repeat(Items.ProgressiveSlam, 3 - 1))  # -1 for starting slam
+    slam_count = 3
+    if settings.start_with_slam:
+        slam_count = 2
+    upgrades.extend(itertools.repeat(Items.ProgressiveSlam, slam_count))
     if settings.progressive_upgrades:
         upgrades.extend(itertools.repeat(Items.ProgressiveDonkeyPotion, 3))
         upgrades.extend(itertools.repeat(Items.ProgressiveDiddyPotion, 3))

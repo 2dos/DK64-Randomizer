@@ -115,7 +115,9 @@ void checkItemDB(void) {
     /**
      * @brief Check item database for variables, and change check screen totals to accommodate
      */
-    renderScreenTransition(7);
+    if ((!Rando.true_widescreen) || (!WS_REMOVE_TRANSITIONS)) {
+        renderScreenTransition(7);
+    }
     initTracker();
     initHints();
     stored_igt = getNewSaveTime();
