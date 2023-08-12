@@ -268,7 +268,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
         int item_index = 0;
         int item_kong = 0;
         if ((source == 1) && (!checkFlagDuplicate(flag_index, FLAGTYPE_PERMANENT)) && (Gamemode == GAMEMODE_ADVENTURE)) {
-            if ((flag_index == FLAG_ITEM_SLAM_0) || (flag_index == FLAG_ITEM_SLAM_1)) {
+            if ((flag_index >= FLAG_ITEM_SLAM_0) && (flag_index <= FLAG_ITEM_SLAM_2) ) {
                 // Slam
                 item_index = giveSlamLevel();
                 spawn_overlay = 1;

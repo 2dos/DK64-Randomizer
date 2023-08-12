@@ -827,6 +827,7 @@ typedef struct move_block {
 	/* 0x140 */ move_rom_item candy_moves[5][8];
 	/* 0x1E0 */ move_rom_item training_moves[4];
 	/* 0x1F0 */ move_rom_item bfi_move;
+	/* 0x1F4 */ move_rom_item first_move;
 } move_block;
 
 

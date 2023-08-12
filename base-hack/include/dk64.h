@@ -695,6 +695,7 @@ extern purchase_struct CandyMoves_New[5][8];
 extern purchase_struct FunkyMoves_New[5][8];
 extern purchase_struct TrainingMoves_New[4];
 extern purchase_struct BFIMove_New;
+extern purchase_struct FirstMove_New;
 extern settingsData StoredSettings;
 extern char WidescreenEnabled;
 extern char preventTagSpawn;

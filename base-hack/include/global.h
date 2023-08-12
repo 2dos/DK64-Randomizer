@@ -388,7 +388,7 @@ extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];
 extern const short kong_flags[5];
 extern const short normal_key_flags[8];
-extern const unsigned short slam_flags[4];
+extern const unsigned short slam_flags[6];
 extern const unsigned short belt_flags[4];
 extern const unsigned short instrument_flags[6];
 extern const rgb colorblind_colors[15];

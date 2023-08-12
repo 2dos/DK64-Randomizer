@@ -83,15 +83,13 @@
 #define FLAG_COLLECTABLE_BEAN 0x300
 #define FLAG_PKMNSNAP_PICTURES 0x26B // 0x26B -> 0x28D (inc.) (35 flags)
 
-#define FLAG_ITEM_SLAM_0 0x290
-#define FLAG_ITEM_SLAM_1 0x291
+// Unused 0x290, 0x291
 #define FLAG_ITEM_BELT_0 0x292
 #define FLAG_ITEM_BELT_1 0x293
 #define FLAG_ITEM_INS_0 0x294
 #define FLAG_ITEM_INS_1 0x295
 #define FLAG_ITEM_INS_2 0x296
-#define FLAG_SHOPMOVE_SLAM_0 0x297
-#define FLAG_SHOPMOVE_SLAM_1 0x298
+// Unused 0x297, 0x298
 #define FLAG_SHOPMOVE_BELT_0 0x299
 #define FLAG_SHOPMOVE_BELT_1 0x29A
 #define FLAG_SHOPMOVE_INS_0 0x29B
@@ -102,7 +100,13 @@
 #define FLAG_JUNKITEM 0x320 // 0x320 -> 0x383 (inc.) (100 flags)
 #define FLAG_WRINKLYVIEWED 0x384 // 0x384 -> 0x3A6 (inc.) (35 flags)
 #define FLAG_KROOL_ENTERED 0x3A7 // 0x3A7 = DK, 0x3A8 = Diddy, 0x3A9 = Lanky, 0x3AA = Tiny, 0x3AB = Chunky
-#define FLAG_MELONCRATE_0 0x3AC // 0x2AC -> 0x2BB (inc.) (16 flags)
+#define FLAG_MELONCRATE_0 0x3AC // 0x3AC -> 0x3BB (inc.) (16 flags)
+#define FLAG_ITEM_SLAM_0 0x3BC
+#define FLAG_ITEM_SLAM_1 0x3BD
+#define FLAG_ITEM_SLAM_2 0x3BE
+#define FLAG_SHOPMOVE_SLAM_0 0x3BF
+#define FLAG_SHOPMOVE_SLAM_1 0x3C0
+#define FLAG_SHOPMOVE_SLAM_2 0x3C1
 
 #define IMAGE_DPAD 187
 #define IMAGE_AMMO_START 188

@@ -1404,6 +1404,10 @@ with open(newROMName, "r+b") as fh:
         "melon_surface",
         "melon_resized",
         "text_bubble_dark",
+        "warp_left",
+        "warp_right",
+        "warp_rim_0",
+        "warp_rim_1",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])
