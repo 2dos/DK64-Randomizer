@@ -858,6 +858,8 @@ def CalculateFoolish(spoiler, WothLocations):
     if spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
         majorItems.append(Items.Shockwave)
         majorItems.append(Items.Camera)
+    if not spoiler.settings.start_with_slam:
+        majorItems.append(Items.ProgressiveSlam)
     majorItems.extend(ItemPool.Keys())
     majorItems.extend(ItemPool.Kongs(spoiler.settings))
     requires_rareware = spoiler.settings.coin_door_item == HelmDoorItem.vanilla
@@ -1256,6 +1258,9 @@ def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=
     # Often moves require training barrels as prerequisites
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         moveList.extend(ItemPool.TrainingBarrelAbilities())
+    # Add a progressive slam
+    if not spoiler.settings.start_with_slam:
+        moveList.append(Items.ProgressiveSlam)
     # We only want *unplaced* prerequisites, cull all placed moves from the move list
     for move in placedMoves:
         if move in moveList:
@@ -1646,6 +1651,8 @@ def ShuffleSharedMoves(spoiler, placedMoves, placedTypes):
             raise Ex.ItemPlacementException("Failed to place training barrel moves.")
         placedMoves.extend(ItemPool.TrainingBarrelAbilities())
     importantSharedToPlace = ItemPool.ImportantSharedMoves.copy()
+    if not spoiler.settings.start_with_slam:
+        importantSharedToPlace.append(Items.ProgressiveSlam)
     # Next place any fairy moves that need placing, settings dependent
     if spoiler.settings.shockwave_status == ShockwaveStatus.shuffled and Items.CameraAndShockwave not in placedMoves:
         importantSharedToPlace.append(Items.CameraAndShockwave)

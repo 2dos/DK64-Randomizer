@@ -228,6 +228,7 @@ class Settings:
         self.bonus_barrel_rando = None
         self.loading_zone_coupled = None
         self.move_rando = MoveRando.off
+        self.start_with_slam = None
         self.random_patches = None
         self.random_crates = None
         self.random_fairies = None
