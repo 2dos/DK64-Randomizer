@@ -53,6 +53,15 @@ void ws_fileentry(int map, int exit) {
     initiateTransition(map, exit);
 }
 
+void ws_transitioncancel(void) {
+    *(int*)(0x80628508) = 0;
+    *(int*)(0x80683A2C) = 0;
+    *(int*)(0x806A84F8) = 0;
+    *(int*)(0x806AD090) = 0;
+    *(int*)(0x806DB540) = 0;
+    *(int*)(0x806DB92C) = 0;
+}
+
 void ws_ninPos(void) {
     *(short*)(0x805FB8A6) = getUpper(SCREEN_WD*SCREEN_HD*2);
     *(int*)(0x805FB8A8) = 0x08000000 | ((((int)(&fixNintendoLogoPosition)) & 0xFFFFFF) >> 2);
@@ -162,6 +171,9 @@ void ws_timer(int* x_write) {
 void ws_transitions(void) {
     if (WS_REMOVE_ZIPPER) {
         writeFunction(0x8071456C, &ws_fileentry);
+    }
+    if (WS_REMOVE_TRANSITIONS) {
+        ws_transitioncancel();
     }
     *(short*)(0x80629292) = SCREEN_WD - 10; //X Position of Transition from Right
     *(short*)(0x806292A2) = SCREEN_WD / 2; //X Position of Double Transition

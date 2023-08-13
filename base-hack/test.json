@@ -25,7 +25,7 @@
    "fast_start_helm":1,
    "crown_door_open":1,
    "coin_door_open":1,
-   "true_widescreen":1,
+   "true_widescreen":0,
    "pppanic_fairy_model":73,
    "tttrouble_turtle_model":60,
    "cutscene_skip_setting":1,
@@ -67,7 +67,7 @@
       "punch":true,
       "gone":true,
       "slam_upgrade_0":false,
-      "slam_upgrade_1":true,
+      "slam_upgrade_1":false,
       "slam_upgrade_2":false,
       "coconut":true,
       "peanut":false,
@@ -94,18 +94,20 @@
       "shockwave":true
    },
    "disabled_music": {
-      "wrinkly":true,
-      "shops":true,
-      "events":true,
-      "transform":true,
-      "pause":true,
-      "chunk_songs":true
+      "wrinkly":false,
+      "shops":false,
+      "events":false,
+      "transform":false,
+      "pause":false,
+      "chunk_songs":false
    },
    "hard_mode": {
       "easy_fall":true,
       "lava_water":true,
       "bosses":true,
-      "enemies":true
+      "enemies":true,
+      "dark_world":false,
+      "no_geo":false
    },
    "jetpac_enemy_order": [
       5,

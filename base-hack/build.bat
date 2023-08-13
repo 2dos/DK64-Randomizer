@@ -31,6 +31,7 @@ call :runscript "Modifying images from ROM", "build\createComplexImages.py"
 call :runscript "Building Cutscene Database", "build\build_cutscene_dict.py"
 call :runscript "Building Item Database", "build\item_dictionaries.py"
 call :runscript "Adjusting Pause Menu Variables", "build\adjust_pause_rotation.py"
+call :runscript "Building Hint Regions", "build\build_hint_regions.py"
 call :runscript "Compile C Code", "build\compile.py"
 
 <nul set /p=Running ARMIPS (Jumplist)!CR!

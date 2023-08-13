@@ -75,44 +75,10 @@ class MoveData:
         self.count = count
 
 
-move_list = {
-    Items.BaboonBlast: MoveData(0, Kongs.donkey, 1),
-    Items.ChimpyCharge: MoveData(0, Kongs.diddy, 1),
-    Items.Orangstand: MoveData(0, Kongs.lanky, 1),
-    Items.MiniMonkey: MoveData(0, Kongs.tiny, 1),
-    Items.HunkyChunky: MoveData(0, Kongs.chunky, 1),
-    Items.Coconut: MoveData(2, Kongs.donkey, 1),
-    Items.Peanut: MoveData(2, Kongs.diddy, 1),
-    Items.Grape: MoveData(2, Kongs.lanky, 1),
-    Items.Feather: MoveData(2, Kongs.tiny, 1),
-    Items.Pineapple: MoveData(2, Kongs.chunky, 1),
-    Items.StrongKong: MoveData(0, Kongs.donkey, 2),
-    Items.RocketbarrelBoost: MoveData(0, Kongs.diddy, 2),
-    Items.Bongos: MoveData(4, Kongs.donkey, 1),
-    Items.Guitar: MoveData(4, Kongs.diddy, 1),
-    Items.Trombone: MoveData(4, Kongs.lanky, 1),
-    Items.Saxophone: MoveData(4, Kongs.tiny, 1),
-    Items.Triangle: MoveData(4, Kongs.chunky, 1),
-    Items.GorillaGrab: MoveData(0, Kongs.donkey, 3),
-    Items.SimianSpring: MoveData(0, Kongs.diddy, 3),
-    Items.BaboonBalloon: MoveData(0, Kongs.lanky, 2),
-    Items.PonyTailTwirl: MoveData(0, Kongs.tiny, 2),
-    Items.PrimatePunch: MoveData(0, Kongs.chunky, 2),
-    Items.ProgressiveAmmoBelt: MoveData(3, Kongs.any, 1, True, 2),
-    Items.ProgressiveInstrumentUpgrade: MoveData(4, Kongs.any, 2, True, 3),
-    Items.ProgressiveSlam: MoveData(1, Kongs.any, 2, True, 2),
-    Items.HomingAmmo: MoveData(2, Kongs.any, 2, True, 1),
-    Items.OrangstandSprint: MoveData(0, Kongs.lanky, 3),
-    Items.Monkeyport: MoveData(0, Kongs.tiny, 3),
-    Items.GorillaGone: MoveData(0, Kongs.chunky, 3),
-    Items.SniperSight: MoveData(2, Kongs.any, 3, True, 1),
-}
-
-
 def ShuffleItems(spoiler: Spoiler):
     """Shuffle items into assortment."""
     progressive_move_flag_dict = {
-        Items.ProgressiveSlam: [0x290, 0x291],
+        Items.ProgressiveSlam: [0x3BC, 0x3BD, 0x3BE],
         Items.ProgressiveAmmoBelt: [0x292, 0x293],
         Items.ProgressiveInstrumentUpgrade: [0x294, 0x295, 0x296],
         Items.FakeItem: list(range(0x2AE, 0x2BE)),

@@ -39,6 +39,7 @@
 .importobj "obj/src_misc_enemy_drop_table.o"
 .importobj "obj/src_misc_filename.o"
 .importobj "obj/src_misc_file_screen.o"
+.importobj "obj/src_misc_hard_mode.o"
 .importobj "obj/src_misc_helm_hurry.o"
 .importobj "obj/src_misc_instances.o"
 .importobj "obj/src_misc_item_db.o"

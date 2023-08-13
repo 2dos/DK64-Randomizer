@@ -467,3 +467,20 @@ class Icons(IntEnum):
     FaceChunky = 0xAD
     FairyTick = 0xAE
     Wrinkly = 0xAF
+
+
+class CreditsDirection(IntEnum):
+    """Credits Direction Enum."""
+
+    top = 0
+    left = 1
+    bottom = 2
+    right = 3
+
+
+class CreditsType(IntEnum):
+    """Credits Type Enum."""
+
+    normal = auto()
+    header = auto()
+    longheader = auto()

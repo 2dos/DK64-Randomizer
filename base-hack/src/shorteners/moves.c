@@ -2,10 +2,14 @@
 
 int initFile_checkTraining(int type_check, int kong_check, int value_check) {
 	if (Rando.fast_start_beginning) {
-		for (int i = 0; i < 4; i++) {
-			if (TrainingMoves_New[i].purchase_type == type_check) {
-				if ((kong_check == -1) || (TrainingMoves_New[i].move_kong == kong_check)) {
-					if (TrainingMoves_New[i].purchase_value == value_check) {
+		for (int i = 0; i < 5; i++) {
+			purchase_struct* handler = &FirstMove_New;
+			if (i < 4) {
+				handler = &TrainingMoves_New[i];
+			}
+			if (handler->purchase_type == type_check) {
+				if ((kong_check == -1) || (handler->move_kong == kong_check)) {
+					if (handler->purchase_value == value_check) {
 						return 1;
 					}
 				}
@@ -63,7 +67,7 @@ int initFile_getInsUpgradeLevel(int inc_training) {
 	return instrument_upgrade_level;
 }
 
-#define DEFAULT_SLAM_LEVEL 1
+#define DEFAULT_SLAM_LEVEL 0
 int initFile_getSlamLevel(int inc_training) {
 	int slams[] = {Rando.moves_pregiven.slam_upgrade_0, Rando.moves_pregiven.slam_upgrade_1, Rando.moves_pregiven.slam_upgrade_2};
 	int slam_level = DEFAULT_SLAM_LEVEL;
@@ -73,11 +77,10 @@ int initFile_getSlamLevel(int inc_training) {
 	for (int i = DEFAULT_SLAM_LEVEL; i < 3; i++) {
 		if (slams[i]) {
 			slam_level += 1;
-			// setFlagDuplicate(FLAG_ITEM_SLAM_0 + i, 1, FLAGTYPE_PERMANENT);
 		}
 	}
 	if (inc_training) {
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 6; i++) {
 			if (initFile_checkTraining(PURCHASE_FLAG, -1, slam_flags[i])) {
 				slam_level += 1;
 			}

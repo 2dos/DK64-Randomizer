@@ -23,3 +23,5 @@
 .definelabel getCenterOffset, 0x806FBD5C
 .definelabel printDebugText, 0x80731D20
 .definelabel handleTextScrolling, 0x800317E8
+.definelabel loadMapChunkLighting, 0x8065996C
+.definelabel renderLight, 0x8065A708

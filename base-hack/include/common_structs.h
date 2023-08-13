@@ -827,6 +827,7 @@ typedef struct move_block {
 	/* 0x140 */ move_rom_item candy_moves[5][8];
 	/* 0x1E0 */ move_rom_item training_moves[4];
 	/* 0x1F0 */ move_rom_item bfi_move;
+	/* 0x1F4 */ move_rom_item first_move;
 } move_block;
 
 
@@ -1567,8 +1568,8 @@ typedef struct SeedOfDeathSettings {
 	unsigned char lava_water : 1; // 0x40
 	unsigned char bosses : 1; // 0x20
 	unsigned char enemies : 1; // 0x10
-	unsigned char unk4 : 1; // 0x08
-	unsigned char unk5 : 1; // 0x04
+	unsigned char dark_world : 1; // 0x08
+	unsigned char no_geo : 1; // 0x04
 	unsigned char unk6 : 1; // 0x02
 	unsigned char unk7 : 1; // 0x01
 } SeedOfDeathSettings;
@@ -1580,3 +1581,21 @@ typedef struct SurfaceInfo {
 	/* 0x00C */ void* textures[2];
 	/* 0x014 */ unsigned char unk14[4];
 } SurfaceInfo;
+
+typedef struct ChunkColorData {
+	/* 0x000 */ char unk0[0xC];
+	/* 0x00C */ rgb color;
+} ChunkColorData;
+
+typedef struct ChunkSub {
+	/* 0x000 */ char unk0[0x14];
+	/* 0X014 */ ChunkColorData* colors[4];
+} ChunkSub;
+
+typedef struct Chunk {
+	/* 0x000 */ char unk0[3];
+	/* 0x003 */ char reference_dynamic_lighting;
+	/* 0x004 */ char unk4[0x4C-0x4];
+	/* 0x04C */ ChunkSub* color_pointer;
+	/* 0x050 */ char unk50[0x1C8-0x50];
+} Chunk;

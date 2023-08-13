@@ -71,6 +71,8 @@ def PlaceConstants(settings):
         LocationList[Locations.ChunkyKong].PlaceConstantItem(Items.NoItem)
     if settings.shockwave_status == ShockwaveStatus.start_with:
         LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
+    if settings.start_with_slam:
+        LocationList[Locations.IslesFirstMove].PlaceConstantItem(Items.ProgressiveSlam)
 
 
 def AllItems(settings):
@@ -291,7 +293,10 @@ def Upgrades(settings):
     if settings.training_barrels == TrainingBarrels.shuffled:
         upgrades.extend(TrainingBarrelAbilities())
     # Add either progressive upgrade items or individual ones depending on settings
-    upgrades.extend(itertools.repeat(Items.ProgressiveSlam, 3 - 1))  # -1 for starting slam
+    slam_count = 3
+    if settings.start_with_slam:
+        slam_count = 2
+    upgrades.extend(itertools.repeat(Items.ProgressiveSlam, slam_count))
     if settings.progressive_upgrades:
         upgrades.extend(itertools.repeat(Items.ProgressiveDonkeyPotion, 3))
         upgrades.extend(itertools.repeat(Items.ProgressiveDiddyPotion, 3))
@@ -490,6 +495,6 @@ DiddyMoves = [Items.Peanut, Items.Guitar, Items.ChimpyCharge, Items.Rocketbarrel
 LankyMoves = [Items.Grape, Items.Trombone, Items.Orangstand, Items.BaboonBalloon, Items.OrangstandSprint]
 TinyMoves = [Items.Feather, Items.Saxophone, Items.MiniMonkey, Items.PonyTailTwirl, Items.Monkeyport]
 ChunkyMoves = [Items.Pineapple, Items.Triangle, Items.HunkyChunky, Items.PrimatePunch, Items.GorillaGone]
-ImportantSharedMoves = [Items.ProgressiveSlam, Items.ProgressiveSlam, Items.SniperSight, Items.HomingAmmo]
+ImportantSharedMoves = [Items.ProgressiveSlam, Items.ProgressiveSlam, Items.ProgressiveSlam, Items.SniperSight, Items.HomingAmmo]
 JunkSharedMoves = [Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade]
 ProgressiveSharedMovesSet = {Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam}

@@ -190,3 +190,6 @@ class Items(IntEnum):
     DKIslesLankyBlueprint = auto()
     DKIslesTinyBlueprint = auto()
     DKIslesChunkyBlueprint = auto()
+
+    # Adding new items to the end of the list preserves existing item selectors
+    ProgressiveSlam3 = auto()

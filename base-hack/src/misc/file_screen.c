@@ -70,6 +70,7 @@ static tracker_struct tracker_info[] = {
 	{.min_x = 138, .max_x = 146, .min_y = 60, .max_y = 63, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
 	{.min_x = 146, .max_x = 152, .min_y = 54, .max_y = 63, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
 	{.min_x = 144, .max_x = 146, .min_y = 52, .max_y = 55, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM}, // Slam
+	{.min_x = 132, .max_x = 152, .min_y = 46, .max_y = 64, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SLAM_HAS}, // Slam Has
 	{.min_x = 134, .max_x = 149, .min_y = 66, .max_y = 79, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_HOMING}, // Homing
 	{.min_x = 132, .max_x = 152, .min_y = 92, .max_y = 104, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_SNIPER}, // Sniper
 	{.min_x = 0, .max_x = 20, .min_y = 108, .max_y = 128, .enabled = TRACKER_ENABLED_DEFAULT, .type = TRACKER_TYPE_DIVE}, // Dive
@@ -159,6 +160,7 @@ int isMovePregiven(int index) {
 		case TRACKER_TYPE_SHOCKWAVE:
 			return Rando.moves_pregiven.shockwave || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_SHOCKWAVE) || initFile_checkTraining(PURCHASE_FLAG, -1, -2);
 		case TRACKER_TYPE_SLAM:
+		case TRACKER_TYPE_SLAM_HAS:
 			return initFile_getSlamLevel(1);
 		case TRACKER_TYPE_HOMING:
 			return Rando.moves_pregiven.homing || initFile_checkTraining(PURCHASE_GUN, -1, 2);
@@ -288,6 +290,7 @@ int getEnabledState(int index) {
 		case TRACKER_TYPE_SHOCKWAVE:
 			return checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_SLAM:
+		case TRACKER_TYPE_SLAM_HAS:
 			return MovesBase[KONG_DK].simian_slam;
 		case TRACKER_TYPE_HOMING:
 			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_HOMING;
@@ -359,17 +362,27 @@ void updateEnabledStates(void) {
 	slam_screen_level = 0;
 	belt_screen_level = 0;
 	ins_screen_level = 0;
-	for (int i = 0; i < 4; i++) {
-		if (TrainingMoves_New[i].purchase_type == PURCHASE_FLAG) {
-			int subtype = getMoveProgressiveFlagType(TrainingMoves_New[i].purchase_value);
-			if (subtype == 0) {
-				slam_screen_level += 1;
-			} else if (subtype == 1) {
-				belt_screen_level += 1;
-			} else if (subtype == 2) {
-				ins_screen_level += 1;
+	for (int i = 0; i < 5; i++) {
+		int subtype = -1;
+		if (i < 4) {
+			// Training Moves
+			if (TrainingMoves_New[i].purchase_type == PURCHASE_FLAG) {
+				subtype = getMoveProgressiveFlagType(TrainingMoves_New[i].purchase_value);
+			}
+		} else if (i == 4) {
+			// First Move
+			if (FirstMove_New.purchase_type == PURCHASE_FLAG) {
+				subtype = getMoveProgressiveFlagType(FirstMove_New.purchase_value);
 			}
 		}
+		if (subtype == 0) {
+			slam_screen_level += 1;
+		} else if (subtype == 1) {
+			belt_screen_level += 1;
+		} else if (subtype == 2) {
+			ins_screen_level += 1;
+		}
+		
 	}
 	for (int i = 0; i < (int)(sizeof(tracker_info) / sizeof(tracker_struct)); i++) {
 		tracker_info[i].enabled = getEnabledState(tracker_info[i].type);
@@ -394,6 +407,8 @@ void resetTracker(void) {
 	updated_tracker = 0;
 	WipeImageCache();
 }
+
+#define TRACKER_FADE 0.3f
 
 void modifyTrackerImage(int dl_offset) {
 	/**
@@ -425,10 +440,7 @@ void modifyTrackerImage(int dl_offset) {
 						unsigned short new_rgba = 1;
 						int update = 0;
 						if (tracker_info[i].type == TRACKER_TYPE_SLAM) {
-							if (!enabled) {
-								new_rgba = 0;
-								update = 1;
-							} else {
+							if (enabled) {
 								int subdue[] = {0,0,0};
 								if (enabled == 1) {
 									subdue[0] = 1; // B
@@ -469,7 +481,7 @@ void modifyTrackerImage(int dl_offset) {
 								for (int c = 0; c < 3; c++) {
 									int shift = (5 * c) + 1;
 									float channel = (init_rgba >> shift) & 31;
-									channel *= 0.3f; // Depreciation
+									channel *= TRACKER_FADE; // Depreciation
 									new_rgba |= (((int)(channel) & 31) << shift);
 								}
 								update = 1;

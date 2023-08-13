@@ -9,6 +9,8 @@ gun_upg_prices = [5, 7]
 ammo_belt_prices = [3, 5]
 ins_upg_prices = [5, 7, 9]
 
+DEFAULT_SLAM_PURCHASE = 1
+
 
 class MoveType:
     """Class which stores info about move types."""
@@ -25,9 +27,9 @@ cranky_0 = [
     MoveType("special", 2, 5),
     MoveType("special", 3, 7),
     MoveType("nothing"),
-    MoveType("slam", 2, 5),
+    MoveType("slam", DEFAULT_SLAM_PURCHASE, 5),
     MoveType("nothing"),
-    MoveType("slam", 2, 7),
+    MoveType("slam", DEFAULT_SLAM_PURCHASE, 7),
     MoveType("nothing"),
 ]
 cranky_1 = [
@@ -35,9 +37,9 @@ cranky_1 = [
     MoveType("nothing"),
     MoveType("special", 2, 5),
     MoveType("nothing"),
-    MoveType("slam", 2, 5),
+    MoveType("slam", DEFAULT_SLAM_PURCHASE, 5),
     MoveType("special", 3, 7),
-    MoveType("slam", 2, 7),
+    MoveType("slam", DEFAULT_SLAM_PURCHASE, 7),
     MoveType("nothing"),
 ]
 
@@ -63,6 +65,8 @@ candy_moves = {"dk": candy.copy(), "diddy": candy.copy(), "lanky": candy.copy(),
 training = {"dive": MoveType("flag", 0x182), "orange": MoveType("flag", 0x184), "barrel": MoveType("flag", 0x185), "vine": MoveType("flag", 0x183)}
 
 bfi = {"bfi": MoveType("flag", -2)}
+
+first_move = {"base_slam": MoveType("nothing")}
 
 
 def convertItem(item: dict, kong: int) -> int:
@@ -135,3 +139,4 @@ def writeVanillaMoveData(fh):
         training_item = training[training_barrel]
         fh.write(convertItem(training_item, 0).to_bytes(4, "big"))
     fh.write(convertItem(bfi["bfi"], 0).to_bytes(4, "big"))
+    fh.write(convertItem(first_move["base_slam"], 0).to_bytes(4, "big"))

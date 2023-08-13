@@ -83,6 +83,7 @@ extern int __osDisableInt();
 extern void __osRestoreInt(int mask);
 extern int __osEepromProbe(void* unk0);
 extern void __osViSwapContext(void);
+extern void* __osVirtualToPhysical(void* data);
 extern int cstring_strlen(char* str);
 extern void copyFunc(int rom_offset, int size, void* write_location);
 extern void* getMapData(data_indexes data_idx, int _index, char compressbyte0, char compressbyte1);
@@ -224,8 +225,6 @@ extern void DisplayExplosionSprite(void);
 extern void displayWarpSparkles(behaviour_data* behaviour, int index, int unk0, int unk1);
 extern void setObjectScriptState(int id, int state, int offset);
 
-extern float getXRatioMovement(int dk64u_angle);
-extern float getZRatioMovement(int dk64u_angle);
 extern void updateActorProjectileInfo(void* actor, int unk0);
 extern void spawnProjectile(short object, short subtype, int speed, float x, float y, float z, float unk0, void* actor);
 extern void controlStateControl(int unk0);
@@ -305,6 +304,7 @@ extern void spriteActorGenericCode(float unk0);
 extern void assignGIFToActor(void* paad, void* sprite, int scale_f);
 extern int loadSetupNew(int map);
 extern int getParentIndex(int map);
+extern void getParentMap(int* map, int* exit);
 extern void updateCollisionDimensions(int player, int x_f, int y_f, int z_f, float scale);
 extern void parseCheats(int unk0);
 
@@ -374,6 +374,10 @@ extern void handleTextScrolling(void* menu_aad, float x1, float y1, float* x2, f
 
 extern void handlePoleGrabbing(void* actor, int player_index, int allow_vines);
 extern void unkCutsceneFunction(void* actor);
+extern void loadMapChunkLighting(int chunk_index);
+extern void loadChunks(void* data);
+extern void genericKongCode(void* actor, int kongType);
+extern void renderLight(float x, float y, float z, float src_x, float src_y, float src_z, float radius, int unk0, int red, int green, int blue);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -423,7 +427,7 @@ extern unsigned short PositionFacingAngle;
 extern char ChimpyCam;
 extern char ScreenRatio;
 extern char SoundType;
-extern int* CurrentActorPointer;
+extern actorData* LastSpawnedActor;
 extern char LoadedActorCount;
 extern loadedActorArr LoadedActorArray[64];
 extern SpawnerMasterInfo SpawnerMasterData;
@@ -663,6 +667,11 @@ extern Border BorderInformation[22];
 extern void* JetpacEnemyFunctions[8];
 extern SurfaceInfo SurfaceTypeInformation[9];
 
+extern float* ChunkLighting_Red;
+extern float* ChunkLighting_Green;
+extern float* ChunkLighting_Blue;
+extern int chunk_count;
+extern Chunk* chunkArray;
 extern unsigned char unkSoundIndex;
 extern short unkSoundArray[0x10];
 
@@ -687,6 +696,7 @@ extern purchase_struct CandyMoves_New[5][8];
 extern purchase_struct FunkyMoves_New[5][8];
 extern purchase_struct TrainingMoves_New[4];
 extern purchase_struct BFIMove_New;
+extern purchase_struct FirstMove_New;
 extern settingsData StoredSettings;
 extern char WidescreenEnabled;
 extern char preventTagSpawn;

@@ -11,7 +11,7 @@ const short normal_key_flags[] = {
 	FLAG_KEYHAVE_KEY7,
 	FLAG_KEYHAVE_KEY8
 };
-const unsigned short slam_flags[] = {FLAG_ITEM_SLAM_0, FLAG_ITEM_SLAM_1, FLAG_SHOPMOVE_SLAM_0, FLAG_SHOPMOVE_SLAM_1};
+const unsigned short slam_flags[] = {FLAG_ITEM_SLAM_0, FLAG_ITEM_SLAM_1, FLAG_ITEM_SLAM_2, FLAG_SHOPMOVE_SLAM_0, FLAG_SHOPMOVE_SLAM_1, FLAG_SHOPMOVE_SLAM_2};
 const unsigned short belt_flags[] = {FLAG_ITEM_BELT_0, FLAG_ITEM_BELT_1, FLAG_SHOPMOVE_BELT_0, FLAG_SHOPMOVE_BELT_1};
 const unsigned short instrument_flags[] = {FLAG_ITEM_INS_0, FLAG_ITEM_INS_1, FLAG_ITEM_INS_2, FLAG_SHOPMOVE_INS_0, FLAG_SHOPMOVE_INS_1, FLAG_SHOPMOVE_INS_2};
 const rgb colorblind_colors[15] = {
@@ -926,7 +926,7 @@ int giveSlamLevel(void) {
 }
 
 int isSlamFlag(int flag) {
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 6; i++) {
 		if (flag == slam_flags[i]) {
 			return 1;
 		}
@@ -950,6 +950,21 @@ int isInstrumentUpgradeFlag(int flag) {
 		}
 	}
 	return 0;
+}
+
+int inShop(maps map, int include_snide) {
+	if (map == MAP_CRANKY) {
+		return 1;
+	}
+	if (map == MAP_CANDY) {
+		return 1;
+	}
+	if (include_snide) {
+		if (map == MAP_SNIDE) {
+			return 1;
+		}
+	}
+	return map == MAP_FUNKY;
 }
 
 int inBattleCrown(maps map) {

@@ -1,8 +1,6 @@
 """Write new end sequence text credits."""
 import os
-import sys
-
-import requests as rs
+from BuildEnums import CreditsDirection, CreditsType
 
 header_length = 0x78
 names_length = 0xA0
@@ -13,30 +11,30 @@ end_buffer = 0xCC
 class CreditItem:
     """Credit Squish Item."""
 
-    def __init__(self, squish_from, subtype, text):
+    def __init__(self, squish_from: CreditsDirection, subtype: CreditsType, text: list):
         """Initialize with given data."""
         self.squish_from = squish_from
         self.duration = names_length
         self.cooldown = general_buffer
-        if subtype == "header":
+        if subtype == CreditsType.header:
             self.duration = header_length
-        elif subtype == "longheader":
+        elif subtype == CreditsType.longheader:
             self.duration = names_length * 2
         self.text = text
 
 
 main_devs = [
-    CreditItem("top", "header", ["Randomizer Developers"]),
-    CreditItem("left", "normal", ["2dos", "AlmostSeagull", "Ballaam"]),
-    CreditItem("right", "normal", ["Bismuth", "Cfox", "KillKlli"]),
-    CreditItem("left", "normal", ["Lrauq", "ShadowShine57", "Znernicus"]),
+    CreditItem(CreditsDirection.top, CreditsType.header, ["Randomizer Developers"]),
+    CreditItem(CreditsDirection.left, CreditsType.normal, ["2dos", "AlmostSeagull", "Ballaam"]),
+    CreditItem(CreditsDirection.right, CreditsType.normal, ["Bismuth", "Cfox", "KillKlli"]),
+    CreditItem(CreditsDirection.left, CreditsType.normal, ["Lrauq", "ShadowShine57", "Znernicus"]),
 ]
 
 assistant_devs = [
-    CreditItem("top", "header", ["Assistant Developers"]),
-    CreditItem("right", "normal", ["Aljex", "GloriousLiar", "JXJacob"]),
-    CreditItem("left", "normal", ["Mittenz", "Naramgamjan", "OnlySpaghettiCode"]),
-    CreditItem("right", "normal", ["Plessy", "Rain", "The Sound Defense"]),
+    CreditItem(CreditsDirection.top, CreditsType.header, ["Assistant Developers"]),
+    CreditItem(CreditsDirection.right, CreditsType.normal, ["Aljex", "GloriousLiar", "JXJacob"]),
+    CreditItem(CreditsDirection.left, CreditsType.normal, ["Mittenz", "Naramgamjan", "OnlySpaghettiCode"]),
+    CreditItem(CreditsDirection.right, CreditsType.normal, ["Plessy", "Rain", "The Sound Defense", "UmedMuzl"]),
 ]
 
 # BETA TESTERS
@@ -61,15 +59,18 @@ assistant_devs = [
 # Zorulda
 
 additional_thanks = [
-    CreditItem("top", "header", ["Additional Thanks"]),
-    CreditItem("left", "normal", ["Game Developers", " ", "Rareware Ltd", "Nintendo"]),
-    CreditItem("bottom", "normal", ["Crankys Lab Developer", "Isotarge"]),
-    CreditItem("top", "normal", ["Widescreen Hack Developer", "gamemasterplc"]),
-    CreditItem("right", "normal", ["SpikeVegeta", "KeiperDontCare"]),
-    CreditItem("left", "normal", ["Beta Testers", "Dev Branch Testers"]),
+    CreditItem(CreditsDirection.top, CreditsType.header, ["Additional Thanks"]),
+    CreditItem(CreditsDirection.left, CreditsType.normal, ["Game Developers", " ", "Rareware Ltd", "Nintendo"]),
+    CreditItem(CreditsDirection.bottom, CreditsType.normal, ["Crankys Lab Developer", "Isotarge"]),
+    CreditItem(CreditsDirection.top, CreditsType.normal, ["Widescreen Hack Developer", "gamemasterplc"]),
+    CreditItem(CreditsDirection.right, CreditsType.normal, ["SpikeVegeta", "KeiperDontCare"]),
+    CreditItem(CreditsDirection.left, CreditsType.normal, ["Beta Testers", "Dev Branch Testers"]),
 ]
 
-links = [CreditItem("top", "longheader", ["You have been playing", "DK64 Randomizer", "dk64randomizer.com"]), CreditItem("bottom", "longheader", ["Discord", " ", "discord.dk64randomizer.com"])]
+links = [
+    CreditItem(CreditsDirection.top, CreditsType.longheader, ["You have been playing", "DK64 Randomizer", "dk64randomizer.com"]),
+    CreditItem(CreditsDirection.bottom, CreditsType.longheader, ["Discord", " ", "discord.dk64randomizer.com"]),
+]
 
 end_sequence_cards = []
 end_sequence_cards.extend(main_devs)
@@ -79,13 +80,17 @@ end_sequence_cards.extend(additional_thanks)
 end_sequence_cards.extend(links)
 
 
+def checkSequenceValidity():
+    """Check if the end sequence credits are valid."""
+    if len(end_sequence_cards) > 21:
+        raise Exception("Too many cards")
+
+
 def createTextFile(directory):
     """Create the text file associated with end sequence."""
     if not os.path.exists(directory):
         os.mkdir(directory)
-    if len(end_sequence_cards) > 21:
-        print("ERROR: Too many cards")
-        sys.exit()
+    checkSequenceValidity()
     with open(f"{directory}/credits.bin", "wb") as fh:
         for card in end_sequence_cards:
             for item in card.text:
@@ -97,18 +102,12 @@ def createTextFile(directory):
 
 def createSquishFile(directory):
     """Create the squish data associated with end sequence."""
-    if len(end_sequence_cards) > 21:
-        print("ERROR: Too many cards")
-        sys.exit()
-    directions = ["top", "left", "bottom", "right"]
+    checkSequenceValidity()
     with open(f"{directory}/squish.bin", "wb") as fh:
         for card in end_sequence_cards:
-            direction_index = 0
-            if card.squish_from in directions:
-                direction_index = directions.index(card.squish_from)
             fh.write(card.duration.to_bytes(2, "big"))
             fh.write(card.cooldown.to_bytes(2, "big"))
-            fh.write(direction_index.to_bytes(1, "big"))
+            fh.write(int(card.squish_from).to_bytes(1, "big"))
             fh.write(len(card.text).to_bytes(1, "big"))
         term = []
         for x in range(6):

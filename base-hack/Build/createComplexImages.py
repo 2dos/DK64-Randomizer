@@ -4,6 +4,7 @@ import os
 
 import PIL
 from PIL import Image, ImageDraw, ImageEnhance
+from BuildLib import hueShift
 
 pre = "../"
 cwd = os.getcwd()
@@ -17,27 +18,6 @@ if last_part.upper() == "BUILD":
 def getDir(directory):
     """Convert directory into the right format based on where the script is run."""
     return f"{pre}{directory}"
-
-
-def hueShift(im, amount):
-    """Apply a hue shift on an image."""
-    hsv_im = im.convert("HSV")
-    im_px = im.load()
-    w, h = hsv_im.size
-    hsv_px = hsv_im.load()
-    for y in range(h):
-        for x in range(w):
-            old = list(hsv_px[x, y]).copy()
-            old[0] = (old[0] + amount) % 360
-            hsv_px[x, y] = (old[0], old[1], old[2])
-    rgb_im = hsv_im.convert("RGB")
-    rgb_px = rgb_im.load()
-    for y in range(h):
-        for x in range(w):
-            new = list(rgb_px[x, y])
-            new.append(list(im_px[x, y])[3])
-            im_px[x, y] = (new[0], new[1], new[2], new[3])
-    return im
 
 
 def maskImage(im_f, min_y, rgb: list):
@@ -558,6 +538,47 @@ for y in range(h):
         bubble_px[x, y] = (0, 0, 0, base[3])
 bubble_im.save(f"{disp_dir}text_bubble_dark.png")
 
+# Warp pad stuff
+warp_top_im_total = Image.new(mode="RGBA", size=(64, 64))
+rim_ims = []
+for x in range(2):
+    warp_top_im = Image.open(f"{hash_dir}warp_top_{x}.png")
+    warp_top_im_total.paste(warp_top_im, (32 * x, 0), warp_top_im)
+    rim_ims.append(Image.open(f"{hash_dir}warp_rim_{x}.png"))
+overlay = Image.new(mode="RGBA", size=(64, 64), color="black")
+draw = ImageDraw.Draw(overlay)
+overlay_edge = 4
+tl = overlay_edge
+br = 62 - overlay_edge
+draw.ellipse((tl, tl, br, br), fill="white")
+overlay_px = overlay.load()
+base_px = warp_top_im_total.load()
+warp_top_edge = Image.new(mode="RGBA", size=(64, 64))
+warp_top_center = Image.new(mode="RGBA", size=(64, 64))
+edge_px = warp_top_edge.load()
+center_px = warp_top_center.load()
+for y in range(64):
+    for x in range(64):
+        o_r, o_g, o_b, o_a = overlay_px[x, y]
+        if o_r == 0 and o_g == 0 and o_b == 0:
+            # Is Rim
+            edge_px[x, y] = base_px[x, y]
+        else:
+            # Is Center
+            center_px[x, y] = base_px[x, y]
+warp_hue_shift = 240
+hueShift(warp_top_edge, warp_hue_shift)
+hueShift(warp_top_center, warp_hue_shift)
+hueShift(rim_ims[0], warp_hue_shift)
+hueShift(rim_ims[1], warp_hue_shift)
+warp_top_edge.paste(warp_top_center, (0, 0), warp_top_center)
+warp_left = warp_top_edge.crop((0, 0, 32, 64))
+warp_right = warp_top_edge.crop((32, 0, 64, 64))
+warp_left.save(f"{disp_dir}warp_left.png")
+warp_right.save(f"{disp_dir}warp_right.png")
+for x in range(2):
+    rim_ims[x].save(f"{disp_dir}warp_rim_{x}.png")
+
 
 rmve = [
     "01234.png",
@@ -586,6 +607,10 @@ rmve = [
     "gb_shine.png",
     "rainbow_coin_noflip.png",
     "text_bubble.png",
+    "warp_rim_0.png",
+    "warp_rim_1.png",
+    "warp_top_0.png",
+    "warp_top_1.png",
 ]
 for kong in kongs:
     for x in range(2):

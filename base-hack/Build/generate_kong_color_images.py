@@ -6,7 +6,7 @@ import zlib
 
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames
-from BuildLib import finalROM, main_pointer_table_offset
+from BuildLib import finalROM, main_pointer_table_offset, hueShift
 from PIL import Image, ImageEnhance
 
 color_palettes = [
@@ -215,27 +215,6 @@ def convertColors():
                 fh.seek(texture_f.start)
                 comp = gzip.compress(bytearray(bytes_array), compresslevel=9)
                 fh.write(comp)
-
-
-def hueShift(im, amount):
-    """Apply a hue shift on an image."""
-    hsv_im = im.convert("HSV")
-    im_px = im.load()
-    w, h = hsv_im.size
-    hsv_px = hsv_im.load()
-    for y in range(h):
-        for x in range(w):
-            old = list(hsv_px[x, y]).copy()
-            old[0] = (old[0] + amount) % 360
-            hsv_px[x, y] = (old[0], old[1], old[2])
-    rgb_im = hsv_im.convert("RGB")
-    rgb_px = rgb_im.load()
-    for y in range(h):
-        for x in range(w):
-            new = list(rgb_px[x, y])
-            new.append(list(im_px[x, y])[3])
-            im_px[x, y] = (new[0], new[1], new[2], new[3])
-    return im
 
 
 def applyMelonMask(shift: int):

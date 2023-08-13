@@ -782,7 +782,7 @@ def CalculateWothPaths(spoiler, WothLocations):
             if not inAnotherPath:
                 # Never pare out these moves - the assumptions might overlook their need to enter levels with
                 # This is a bit of a compromise, as you *might* see these moves WotH purely for coins/GBs but they won't be on paths
-                if location.item in (Items.Swim, Items.Vines, Items.PonyTailTwirl):
+                if location.item in (Items.Swim, Items.Vines):
                     continue
                 # Keys that make it here are also always WotH
                 if location.item in ItemPool.Keys():
@@ -1965,7 +1965,9 @@ def FillKongsAndMoves(spoiler, placedTypes):
     if spoiler.settings.kong_rando:
         FillKongs(spoiler, placedTypes)
     placedMoves = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]  # Kongs are now placed, either in the above method or by default
-
+    # If we start with a slam as the training grounds reward, it counts as placed for fill purposes
+    if spoiler.settings.start_with_slam:
+        placedMoves.append(Items.ProgressiveSlam)
     # First place our starting moves randomly
     locationsNeedingMoves = []
     # We can expect that all locations in this region are starting move locations or Training Barrels
@@ -1993,6 +1995,9 @@ def FillKongsAndMoves(spoiler, placedTypes):
         startingMovePool = [
             move for move in spoiler.settings.starting_move_list_selected if move in possibleStartingMoves
         ]  # Moves in the selector must be eligible items - this is to filter out training moves if they are not shuffled
+        # If we intend on starting with a slam but we know the training grounds reward is a slam, that counts for our purposes
+        if spoiler.settings.start_with_slam and Items.ProgressiveSlam in startingMovePool:
+            startingMovePool.remove(Items.ProgressiveSlam)
         shuffle(startingMovePool)
         # For each location needing a move, put in a random valid move
         for locationId in locationsNeedingMoves:

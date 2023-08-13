@@ -964,6 +964,7 @@ text_files = (
     TextChange("Fairy Queen Rareware Door", 0, "fairy_rw_text.bin"),
     TextChange("Wrinkly", 0x2800, ""),
     TextChange("Snide's Bonus Games", 0, ""),
+    TextChange("Hint Regions", 0, "hint_region_text.bin"),
 )
 
 for index, text in enumerate(text_files):
@@ -1404,6 +1405,10 @@ with open(newROMName, "r+b") as fh:
         "melon_surface",
         "melon_resized",
         "text_bubble_dark",
+        "warp_left",
+        "warp_right",
+        "warp_rim_0",
+        "warp_rim_1",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])

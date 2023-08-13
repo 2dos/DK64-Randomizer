@@ -26,5 +26,6 @@
 #include "macros.h"
 #include "widescreen.h"
 #include "pause.h"
+#include "hint_regions.h"
 
 #endif

@@ -11,9 +11,9 @@ from randomizer.Settings import Settings
 
 storage_banks = {
     0: 0x8000,
-    1: 0x11C0,
-    2: 0x07C0,
-    3: 0x0160,
+    1: 0x11B6,
+    2: 0x07B6,
+    3: 0x0156,
 }
 
 

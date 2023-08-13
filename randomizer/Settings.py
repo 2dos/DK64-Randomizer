@@ -228,6 +228,7 @@ class Settings:
         self.bonus_barrel_rando = None
         self.loading_zone_coupled = None
         self.move_rando = MoveRando.off
+        self.start_with_slam = True
         self.random_patches = None
         self.random_crates = None
         self.random_fairies = None
@@ -518,7 +519,7 @@ class Settings:
         # Correct the invalid items in the starting move selector
         copy_of_starting_move_list_selected = self.starting_move_list_selected.copy()
         for item in copy_of_starting_move_list_selected:
-            if item == Items.ProgressiveSlam2:
+            if item in (Items.ProgressiveSlam2, Items.ProgressiveSlam3):
                 self.starting_move_list_selected.remove(item)
                 self.starting_move_list_selected.append(Items.ProgressiveSlam)
             if item == Items.ProgressiveAmmoBelt2:
@@ -661,10 +662,13 @@ class Settings:
             locations_to_add -= 4
         if locations_to_add > location_cap:
             locations_to_add = location_cap
-        first_empty_location = Locations.PreGiven_Location00 + locations_to_add
+        first_pregiven_location = Locations.PreGiven_Location00
+        if not self.start_with_slam:
+            first_pregiven_location -= 1
+        first_empty_location = first_pregiven_location + locations_to_add
         # If we have fewer starting items than training barrels, then we have to prevent some training barrels from having items
         if locations_to_add < 0:
-            first_empty_location = Locations.PreGiven_Location00
+            first_empty_location = first_pregiven_location
             invalid_training_barrels = [Locations.IslesVinesTrainingBarrel, Locations.IslesSwimTrainingBarrel, Locations.IslesOrangesTrainingBarrel, Locations.IslesBarrelsTrainingBarrel][
                 self.starting_moves_count :
             ]

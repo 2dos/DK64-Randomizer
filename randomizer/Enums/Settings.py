@@ -811,6 +811,7 @@ class SettingsStringEnum(IntEnum):
     random_crates = 149
     choose_starting_moves = 150
     starting_move_list_selected = 151
+    start_with_slam = 152
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1003,6 +1004,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.points_list_bean: SettingsStringDataType.int16,
     SettingsStringEnum.choose_starting_moves: SettingsStringDataType.bool,
     SettingsStringEnum.starting_move_list_selected: SettingsStringDataType.list,
+    SettingsStringEnum.start_with_slam: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

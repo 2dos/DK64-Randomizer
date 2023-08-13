@@ -1854,8 +1854,9 @@ def compileMicrohints(spoiler: Spoiler):
                 level_color = level_colors[location.level]
                 if location.item == Items.ProgressiveSlam:
                     # Chunky Phase slam hint
-                    if location.level not in slam_levels:
-                        slam_levels.append(location.level)
+                    if id not in PreGivenLocations and id not in TrainingBarrelLocations:  # Ignore anything pre-given
+                        if location.level not in slam_levels:
+                            slam_levels.append(location.level)
                 else:
                     if location.type in item_type_names.keys():
                         hint_text = f"You would be better off looking for {item_type_names[location.type]} in {level_color}{level_list[location.level]}{level_color} for this.".upper()
