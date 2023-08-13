@@ -3,6 +3,7 @@
 import shutil
 
 from BuildEnums import Icons
+from BuildClasses import hint_region_list
 from text_decoder import grabText
 from text_encoder import writeText
 from typing import BinaryIO
@@ -884,6 +885,11 @@ squawks_text.append(
     ]
 )
 writeText("misc_squawks_text.bin", squawks_text)
+
+hint_region_text = []
+for region in hint_region_list:
+    hint_region_text.append([{"text": [region.region_name.upper()]}])
+writeText("hint_region_text.bin", hint_region_text)
 
 misc_char_table = {
     "6": "h",

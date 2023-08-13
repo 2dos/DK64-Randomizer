@@ -107,7 +107,7 @@
       "bosses":true,
       "enemies":true,
       "dark_world":false,
-      "no_geo":true
+      "no_geo":false
    },
    "jetpac_enemy_order": [
       5,

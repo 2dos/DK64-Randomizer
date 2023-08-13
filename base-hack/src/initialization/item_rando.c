@@ -282,6 +282,7 @@ void initItemRando(void) {
     writeFunction(0x806A86BC, &changePauseScreen); // Change screen hook
     writeFunction(0x806A8D20, &changeSelectedLevel); // Change selected level on checks screen
     writeFunction(0x806A84F8, &checkItemDB); // Populate Item Databases
+    writeFunction(0x806A9978, &displayHintRegion); // Display hint region
     if (Rando.item_rando) {
         *(short*)(0x806B4E1A) = getActorIndex(Rando.vulture_item);
         *(short*)(0x8069C266) = getActorIndex(Rando.japes_rock_item);

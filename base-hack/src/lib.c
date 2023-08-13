@@ -952,6 +952,21 @@ int isInstrumentUpgradeFlag(int flag) {
 	return 0;
 }
 
+int inShop(maps map, int include_snide) {
+	if (map == MAP_CRANKY) {
+		return 1;
+	}
+	if (map == MAP_CANDY) {
+		return 1;
+	}
+	if (include_snide) {
+		if (map == MAP_SNIDE) {
+			return 1;
+		}
+	}
+	return map == MAP_FUNKY;
+}
+
 int inBattleCrown(maps map) {
 	if (map == MAP_BATTLEARENA_BEAVERBRAWL) {
 		return 1;

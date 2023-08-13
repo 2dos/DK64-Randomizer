@@ -18,3 +18,4 @@
 .definelabel unkMultiplayerWarpFunction, 0x8061EB04
 .definelabel loadDKTVData, 0x80712B80
 .definelabel getParentDataIndex, 0x80688D64
+.definelabel getParentMap, 0x805FF800

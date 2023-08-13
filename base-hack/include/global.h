@@ -21,6 +21,7 @@ extern int isSlamFlag(int flag);
 extern int isBeltFlag(int flag);
 extern int isInstrumentUpgradeFlag(int flag);
 extern int inBattleCrown(maps map);
+extern int inShop(maps map, int include_snide);
 extern int inBossMap(maps map, int include_regular, int include_krool, int include_shoe);
 extern int inMinigame(maps map);
 extern int isGamemode(gamemodes target_mode, int force_both);
@@ -294,6 +295,7 @@ extern int changeSelectedLevel(int unk0, int unk1);
 extern void checkItemDB(void);
 extern void initPauseMenu(void);
 extern void changePauseScreen(void);
+extern int* displayHintRegion(int* dl, int x, int y, float scale, char* text);
 
 extern void handleDynamicItemText(char* location, char* format, int character);
 extern void handleFilename(char* location, char* format, char* new_name);

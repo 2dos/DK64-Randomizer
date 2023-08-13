@@ -964,6 +964,7 @@ text_files = (
     TextChange("Fairy Queen Rareware Door", 0, "fairy_rw_text.bin"),
     TextChange("Wrinkly", 0x2800, ""),
     TextChange("Snide's Bonus Games", 0, ""),
+    TextChange("Hint Regions", 0, "hint_region_text.bin"),
 )
 
 for index, text in enumerate(text_files):
