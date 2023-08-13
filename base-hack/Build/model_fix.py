@@ -330,13 +330,13 @@ with open(ROMName, "rb") as rom:
         data = zlib.decompress(data, (15 + 32))
     with open("temp.bin", "wb") as fh:
         fh.write(data)
-    # Base tex: 
-    # 
+    # Base tex:
+    #
     # Top
     # 0xEC (0xDF9), 0x164 (0xDFA)
-    # 
+    #
     # Rim
     # 0x1CE (0xBB2), 0x274 (0xBB3)
-    # 
+    #
     # Number
     # 0x374 (0xDFB)

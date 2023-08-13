@@ -11,6 +11,7 @@ ins_upg_prices = [5, 7, 9]
 
 DEFAULT_SLAM_PURCHASE = 1
 
+
 class MoveType:
     """Class which stores info about move types."""
 

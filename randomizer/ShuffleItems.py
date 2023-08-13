@@ -74,6 +74,7 @@ class MoveData:
         self.shared = shared
         self.count = count
 
+
 def ShuffleItems(spoiler: Spoiler):
     """Shuffle items into assortment."""
     progressive_move_flag_dict = {

@@ -19,6 +19,7 @@ def getDir(directory):
     """Convert directory into the right format based on where the script is run."""
     return f"{pre}{directory}"
 
+
 def maskImage(im_f, min_y, rgb: list):
     """Apply RGB mask to image."""
     w, h = im_f.size

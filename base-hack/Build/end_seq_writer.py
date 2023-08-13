@@ -68,7 +68,7 @@ additional_thanks = [
 ]
 
 links = [
-    CreditItem(CreditsDirection.top, CreditsType.longheader, ["You have been playing", "DK64 Randomizer", "dk64randomizer.com"]), 
+    CreditItem(CreditsDirection.top, CreditsType.longheader, ["You have been playing", "DK64 Randomizer", "dk64randomizer.com"]),
     CreditItem(CreditsDirection.bottom, CreditsType.longheader, ["Discord", " ", "discord.dk64randomizer.com"]),
 ]
 
@@ -79,10 +79,12 @@ end_sequence_cards.extend(assistant_devs)
 end_sequence_cards.extend(additional_thanks)
 end_sequence_cards.extend(links)
 
+
 def checkSequenceValidity():
     """Check if the end sequence credits are valid."""
     if len(end_sequence_cards) > 21:
         raise Exception("Too many cards")
+
 
 def createTextFile(directory):
     """Create the text file associated with end sequence."""

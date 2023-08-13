@@ -12,7 +12,7 @@ class Locations(IntEnum):
     IslesBarrelsTrainingBarrel = auto()
 
     # Pre-given move locations (36 locations) - the integer value of these matter for starting move count
-    IslesFirstMove = auto() # ID: 5
+    IslesFirstMove = auto()  # ID: 5
     PreGiven_Location00 = auto()
     PreGiven_Location01 = auto()
     PreGiven_Location02 = auto()

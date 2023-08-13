@@ -27,6 +27,7 @@ def float_to_hex(f):
         return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
 
+
 def hueShift(im: Image, amount: int):
     """Apply a hue shift on an image."""
     hsv_im = im.convert("HSV")

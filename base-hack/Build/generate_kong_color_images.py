@@ -216,6 +216,7 @@ def convertColors():
                 comp = gzip.compress(bytearray(bytes_array), compresslevel=9)
                 fh.write(comp)
 
+
 def applyMelonMask(shift: int):
     """Apply a mask to the melon sprites."""
     with open(finalROM, "r+b") as fh:

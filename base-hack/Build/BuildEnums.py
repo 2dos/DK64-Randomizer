@@ -468,6 +468,7 @@ class Icons(IntEnum):
     FairyTick = 0xAE
     Wrinkly = 0xAF
 
+
 class CreditsDirection(IntEnum):
     """Credits Direction Enum."""
 
@@ -475,6 +476,7 @@ class CreditsDirection(IntEnum):
     left = 1
     bottom = 2
     right = 3
+
 
 class CreditsType(IntEnum):
     """Credits Type Enum."""

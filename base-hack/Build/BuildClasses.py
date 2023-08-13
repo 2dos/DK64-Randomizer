@@ -479,6 +479,7 @@ class ROMPointerFile:
         rom.seek(self.start)
         self.compressed = int.from_bytes(rom.read(2), "big") == 0x1F8B
 
+
 class HintRegion:
     """Class to store information regarding a hint region."""
 
@@ -486,6 +487,7 @@ class HintRegion:
         """Initialize with given data."""
         self.region_name = region_name
         self.enum_name = enum_name
+
 
 hint_region_list = [
     # Shops
@@ -497,15 +499,15 @@ hint_region_list = [
     HintRegion("Forest Shops", "ShopFungi"),
     HintRegion("Caves Shops", "ShopCaves"),
     HintRegion("Castle Shops", "ShopCastle"),
-    HintRegion("Jetpac Game", "Jetpac"), # Shouldn't really be accessible
+    HintRegion("Jetpac Game", "Jetpac"),  # Shouldn't really be accessible
     # Medals
-    HintRegion("Japes Medal Rewards", "MedalsJapes"), # Shouldn't be accessible
-    HintRegion("Aztec Medal Rewards", "MedalsAztec"), # Shouldn't be accessible
-    HintRegion("Factory Medal Rewards", "MedalsFactory"), # Shouldn't be accessible
-    HintRegion("Galleon Medal Rewards", "MedalsGalleon"), # Shouldn't be accessible
-    HintRegion("Forest Medal Rewards", "MedalsFungi"), # Shouldn't be accessible
-    HintRegion("Caves Medal Rewards", "MedalsCaves"), # Shouldn't be accessible
-    HintRegion("Castle Medal Rewards", "MedalsCastle"), # Shouldn't be accessible
+    HintRegion("Japes Medal Rewards", "MedalsJapes"),  # Shouldn't be accessible
+    HintRegion("Aztec Medal Rewards", "MedalsAztec"),  # Shouldn't be accessible
+    HintRegion("Factory Medal Rewards", "MedalsFactory"),  # Shouldn't be accessible
+    HintRegion("Galleon Medal Rewards", "MedalsGalleon"),  # Shouldn't be accessible
+    HintRegion("Forest Medal Rewards", "MedalsFungi"),  # Shouldn't be accessible
+    HintRegion("Caves Medal Rewards", "MedalsCaves"),  # Shouldn't be accessible
+    HintRegion("Castle Medal Rewards", "MedalsCastle"),  # Shouldn't be accessible
     # Isles
     HintRegion("Main Isle", "IslesMain"),
     HintRegion("Outer Isles", "IslesOuter"),
@@ -513,7 +515,7 @@ hint_region_list = [
     HintRegion("Rareware Banana Room", "IslesRareware"),
     HintRegion("Japes - Forest Lobbies", "IslesLobbies0"),
     HintRegion("Caves - Helm Lobbies", "IslesLobbies1"),
-    HintRegion("K Rool Arena", "IslesKRool"), # No checks here right now
+    HintRegion("K Rool Arena", "IslesKRool"),  # No checks here right now
     # Japes
     HintRegion("Japes Lowlands", "JapesLow"),
     HintRegion("Japes Hillside", "JapesHigh"),
