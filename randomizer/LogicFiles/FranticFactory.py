@@ -25,7 +25,7 @@ LogicRegions = {
 
     Regions.FranticFactoryStart: Region("Frantic Factory Start", "Frantic Factory Start", Levels.FranticFactory, False, None, [], [
         Event(Events.FactoryEntered, lambda l: True),
-        Event(Events.HatchOpened, lambda l: l.Slam),
+        Event(Events.HatchOpened, lambda l: True),  # Always starts open in the randomizer
         Event(Events.FactoryW1aTagged, lambda l: True),
         Event(Events.FactoryW2aTagged, lambda l: True),
         Event(Events.FactoryW3aTagged, lambda l: True),
@@ -33,8 +33,7 @@ LogicRegions = {
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Transitions.FactoryToIsles),
         TransitionFront(Regions.Testing, lambda l: l.settings.open_levels or Events.TestingGateOpened in l.Events or l.phasewalk or l.generalclips),
-        # Hatch opened already in rando if loading zones randomized
-        TransitionFront(Regions.BeyondHatch, lambda l: l.settings.shuffle_loading_zones == ShuffleLoadingZones.all or Events.HatchOpened in l.Events or l.phasewalk),
+        TransitionFront(Regions.BeyondHatch, lambda l: Events.HatchOpened in l.Events or l.phasewalk),
     ]),
 
     Regions.Testing: Region("Testing", "Testing Area", Levels.FranticFactory, True, -1, [

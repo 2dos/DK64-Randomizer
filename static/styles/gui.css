@@ -399,6 +399,11 @@ i {
   flex-flow: row wrap;
 }
 
+.flex-column-container {
+  display: flex;
+  flex-flow: column;
+}
+
 .flex-center {
   align-items: center;
   justify-content: center;
