@@ -160,6 +160,7 @@ int isMovePregiven(int index) {
 		case TRACKER_TYPE_SHOCKWAVE:
 			return Rando.moves_pregiven.shockwave || initFile_checkTraining(PURCHASE_FLAG, -1, FLAG_ABILITY_SHOCKWAVE) || initFile_checkTraining(PURCHASE_FLAG, -1, -2);
 		case TRACKER_TYPE_SLAM:
+		case TRACKER_TYPE_SLAM_HAS:
 			return initFile_getSlamLevel(1);
 		case TRACKER_TYPE_HOMING:
 			return Rando.moves_pregiven.homing || initFile_checkTraining(PURCHASE_GUN, -1, 2);
@@ -289,6 +290,7 @@ int getEnabledState(int index) {
 		case TRACKER_TYPE_SHOCKWAVE:
 			return checkFlagDuplicate(FLAG_ABILITY_SHOCKWAVE, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_SLAM:
+		case TRACKER_TYPE_SLAM_HAS:
 			return MovesBase[KONG_DK].simian_slam;
 		case TRACKER_TYPE_HOMING:
 			return MovesBase[KONG_DK].weapon_bitfield & MOVECHECK_HOMING;

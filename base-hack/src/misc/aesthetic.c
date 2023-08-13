@@ -63,13 +63,3 @@ void colorMenuSky(void) {
 		}
 	}
 }
-
-void KasplatIndicator(int has_bp) {
-	internalKasplatCode(has_bp);
-	if (has_bp) {
-		int kasplat_type = CurrentActorPointer_0->actorType - 241;
-		*(char*)(0x807FDB18) = 1; // Adjust Z-Indexing
-		*(short*)(0x807FDB36) = 4; // Fix rendering
-		displaySpriteAtXYZ(sprite_table[kasplat_type + 0xA9], 0x3F000000, CurrentActorPointer_0->xPos, CurrentActorPointer_0->yPos + 50, CurrentActorPointer_0->zPos);
-	}
-}

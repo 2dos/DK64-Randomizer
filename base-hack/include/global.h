@@ -245,7 +245,6 @@ extern int updateLevelIGT(void);
 extern int* printLevelIGT(int* dl, int x, int y, float scale, char* str);
 extern void RabbitRaceInfiniteCode(void);
 extern void completeBonus(actorData* actor);
-extern void KasplatIndicator(int has_bp);
 extern void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
 extern void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
 extern void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
