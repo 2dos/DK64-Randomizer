@@ -2082,7 +2082,7 @@ CustomLocations = {
         CustomLocation(map=Maps.CastleLowerCave, name="Crypt Hub: Behind Lanky Crypt", x=1848, y=320, z=1186, max_size=64, logic_region=Regions.LowerCave, group=3),
         CustomLocation(map=Maps.CastleLowerCave, name="Crypt Hub: Near Funky's", x=1359, y=200, z=433, max_size=64, logic_region=Regions.LowerCave, group=3),
         CustomLocation(
-            map=Maps.CastleLowerCave, name="Behind Mausoleum Entrance", x=1889.9437255859, y=320, z=1260.7548828125, rot_y=0, max_size=64, logic_region=Regions, vanilla_crate=True, group=3
+            map=Maps.CastleLowerCave, name="Behind Mausoleum Entrance", x=1889.9437255859, y=320, z=1260.7548828125, rot_y=0, max_size=64, logic_region=Regions.LowerCave, vanilla_crate=True, group=3
         ),
         CustomLocation(
             name="3Kong crypt entrance",
