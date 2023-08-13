@@ -121,8 +121,6 @@ def AllItems(settings):
             allItems.append(Items.Shockwave)
         else:
             allItems.append(Items.CameraAndShockwave)
-        if not settings.start_with_slam:
-            allItems.append(Items.ProgressiveSlam)
     if settings.kong_rando or Types.Kong in settings.shuffled_location_types:
         allItems.extend(Kongs(settings))
     return allItems
@@ -497,6 +495,6 @@ DiddyMoves = [Items.Peanut, Items.Guitar, Items.ChimpyCharge, Items.Rocketbarrel
 LankyMoves = [Items.Grape, Items.Trombone, Items.Orangstand, Items.BaboonBalloon, Items.OrangstandSprint]
 TinyMoves = [Items.Feather, Items.Saxophone, Items.MiniMonkey, Items.PonyTailTwirl, Items.Monkeyport]
 ChunkyMoves = [Items.Pineapple, Items.Triangle, Items.HunkyChunky, Items.PrimatePunch, Items.GorillaGone]
-ImportantSharedMoves = [Items.ProgressiveSlam, Items.ProgressiveSlam, Items.SniperSight, Items.HomingAmmo]
+ImportantSharedMoves = [Items.ProgressiveSlam, Items.ProgressiveSlam, Items.ProgressiveSlam, Items.SniperSight, Items.HomingAmmo]
 JunkSharedMoves = [Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade]
 ProgressiveSharedMovesSet = {Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam}
