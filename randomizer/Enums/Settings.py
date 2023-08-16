@@ -812,6 +812,7 @@ class SettingsStringEnum(IntEnum):
     choose_starting_moves = 150
     starting_move_list_selected = 151
     start_with_slam = 152
+    spoiler_include_level_order = 153
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1005,6 +1006,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.choose_starting_moves: SettingsStringDataType.bool,
     SettingsStringEnum.starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.start_with_slam: SettingsStringDataType.bool,
+    SettingsStringEnum.spoiler_include_level_order: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

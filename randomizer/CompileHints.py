@@ -100,6 +100,16 @@ class StartingSpoiler:
         self.helm_order = settings.kong_helm_order.copy()
         self.starting_kongs = settings.starting_kong_list.copy()
         self.starting_keys = [ItemList[key].name for key in settings.starting_key_list]
+        if settings.spoiler_include_level_order:
+            self.level_order = [
+                settings.level_order[1],
+                settings.level_order[2],
+                settings.level_order[3],
+                settings.level_order[4],
+                settings.level_order[5],
+                settings.level_order[6],
+                settings.level_order[7],
+            ]
 
     def toJSON(self):
         """Convert this object to JSON for the purposes of the spoiler log."""
@@ -510,10 +520,10 @@ def compileHints(spoiler: Spoiler):
             valid_types.append(HintType.RequiredHelmDoorHint)
             if spoiler.settings.crown_door_random:
                 hint_distribution[HintType.RequiredHelmDoorHint] += 1
-            hint_distribution[HintType.ItemRegion] -= 1
+                hint_distribution[HintType.ItemRegion] -= 1
             if spoiler.settings.coin_door_random:
                 hint_distribution[HintType.RequiredHelmDoorHint] += 1
-            hint_distribution[HintType.ItemRegion] -= 1
+                hint_distribution[HintType.ItemRegion] -= 1
         if spoiler.settings.randomize_blocker_required_amounts and spoiler.settings.blocker_max > 1:
             valid_types.append(HintType.BLocker)
         if (
@@ -544,7 +554,8 @@ def compileHints(spoiler: Spoiler):
                     item_region_locations_to_hint.insert(0, id)
                 elif location.item in all_hintable_moves:
                     item_region_locations_to_hint.append(id)
-            elif location.item in all_hintable_moves:
+            # To be hintable, it can't be a starting move
+            elif location.item in all_hintable_moves and location.type not in (Types.TrainingBarrel, Types.PreGivenMove):
                 optional_hintable_locations.append(id)
         # Fill with other random move locations as best as we can
         random.shuffle(optional_hintable_locations)
@@ -1932,6 +1943,8 @@ def compileSpoilerHints(spoiler):
     spoiler.level_spoiler_human_readable["Starting Info"] += " | Starting Keys: " + ", ".join(starting_info.starting_keys)
     spoiler.level_spoiler_human_readable["Starting Info"] += " | Helm Order: " + ", ".join([colorless_kong_list[kong] for kong in starting_info.helm_order])
     spoiler.level_spoiler_human_readable["Starting Info"] += " | K. Rool Order: " + ", ".join([colorless_kong_list[kong] for kong in starting_info.krool_order])
+    if spoiler.settings.spoiler_include_level_order:
+        spoiler.level_spoiler_human_readable["Starting Info"] += " | Level Order: " + ", ".join([level_list[level] for level in starting_info.level_order])
     if spoiler.settings.spoiler_hints == SpoilerHints.points:
         spoiler.level_spoiler["point_spread"] = {
             "kongs": spoiler.settings.points_list_kongs,
@@ -1975,7 +1988,7 @@ def CategorizeItem(item):
         return "Kong"
     elif item.type == Types.Key:
         return "Key"
-    elif item.name == Types.Bean:
+    elif item.type == Types.Bean:
         return "Bean"
     elif item.kong == Kongs.donkey:
         return "Yellow Vial"

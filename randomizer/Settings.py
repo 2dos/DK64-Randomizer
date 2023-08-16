@@ -430,6 +430,7 @@ class Settings:
         self.wrinkly_hints = WrinklyHints.off
         self.spoiler_hints = SpoilerHints.off
         self.spoiler_include_woth_count = False
+        self.spoiler_include_level_order = False
         self.fast_warps = False
         self.dpad_display = DPadDisplays.off
         self.high_req = False
