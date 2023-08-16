@@ -196,7 +196,7 @@ def lambda_function():
                         "spoiler_log": str(json.dumps(spoiler_log)),
                     }
                 )
-            sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Human Readable"]
+            sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Data"]
             if resp_data[1].settings.generate_spoilerlog is False:
                 spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
 
