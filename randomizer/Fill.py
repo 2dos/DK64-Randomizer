@@ -2009,12 +2009,7 @@ def FillKongsAndMoves(spoiler, placedTypes):
             # Otherwise, pick from any random eligible move
             else:
                 startingMove = possibleStartingMoves.pop()
-            # If we picked a move to place that we already placed, we have to go Unplace it later
-            if startingMove in placedMoves:
-                toBeUnplaced.append(startingMove)
-            # Else it's a newly placed move, note it down as being placed
-            else:
-                newlyPlacedItems.append(startingMove)
+            newlyPlacedItems.append(startingMove)  # This line of code now assumes we place starting moves first!!
             LocationList[locationId].PlaceItem(startingMove)
             # Helpful debug code to keep track of where all major items are placed - do not rely on this variable anywhere
             if locationId in spoiler.settings.debug_fill.keys():
@@ -2061,9 +2056,6 @@ def FillKongsAndMoves(spoiler, placedTypes):
                 if locationId in SharedMoveLocations:
                     emptySharedShops.append(location)
         raise Ex.ItemPlacementException(str(unplaced) + " unplaced items.")
-
-    if placedMoves.count(Items.ProgressiveSlam) > 2:
-        raise Ex.FillException("Somehow managed to place 3 slams? This shouldn't happen.")
 
 
 def FillKongsAndMovesForLevelOrder(spoiler):

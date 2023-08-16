@@ -124,6 +124,7 @@
     "smaller_shops": false,
     "songs_excluded": false,
     "spoiler_hints": "off",
+    "spoiler_include_level_order": false,
     "spoiler_include_woth_count": false,
     "start_with_slam": true,
     "starting_keys_list_selected": [],
