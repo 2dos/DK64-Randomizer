@@ -26,5 +26,11 @@ If applicable, add screenshots to help explain your problem.
 **Platform**
 Please list the platform you were using. For example, N64, Wii U VC, Emulator. If you were using an emulator, please state the emulator and the version if possible. If your bug report is to do with the site, ignore this.
 
+**Files**
+Please include as many of the following files as you can:
+- Spoiler log (.json file)
+- Patch file (.lanky file)
+- A BPS file to your ROM (.bps file, created with https://dk64randomizer.com/bps_maker)
+
 **Additional context**
 Add any other context about the problem here.
