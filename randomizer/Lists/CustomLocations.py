@@ -1192,7 +1192,7 @@ CustomLocations = {
             max_size=160,
             logic_region=Regions.LighthouseUnderwater,
             group=7,
-            logic=lambda l:Events.LighthouseEnguarde in l.Events,
+            logic=lambda l: Events.LighthouseEnguarde in l.Events,
             banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
         ),
         CustomLocation(map=Maps.GloomyGalleon, name="On Rocketbarrel platform", x=1336, y=1660, z=4071, rot_y=910, max_size=32, logic_region=Regions.LighthousePlatform, group=1),

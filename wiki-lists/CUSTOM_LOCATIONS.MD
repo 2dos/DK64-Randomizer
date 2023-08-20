@@ -190,11 +190,15 @@
 | Gloomy Galleon | On Lighthouse Platform (Baboon Blast) |  | 
 | Gloomy Galleon | Next to Lighthouse ladder |  | 
 | Gloomy Galleon | Lighthouse: Under Enguarde Box | Events.LighthouseEnguarde in l.Events | 
+| Gloomy Galleon | In Enguarde Alcove | Events.LighthouseEnguarde in l.Events | 
+| Gloomy Galleon | In Front of Mermaid Palace | logic=lambda l:Events.LighthouseEnguarde in l.Events | 
 | Gloomy Galleon | On Rocketbarrel platform |  | 
 | Gloomy Galleon | Blueprint Alcove |  | 
 | Gloomy Galleon | Behind Snide's |  | 
 | Gloomy Galleon | Shipyard: On top of Tiny Submarine | Events.ShipyardEnguarde in l.Events | 
 | Gloomy Galleon | In the Shipwreck with Replenishables | Events.ShipyardEnguarde in l.Events | 
+| Gloomy Galleon | Behind Musical Cactus | Events.ShipyardEnguarde in l.Events | 
+| Gloomy Galleon | On Top of Mechfish Grate | Events.ShipyardEnguarde in l.Events | 
 | Gloomy Galleon | On Gold Tower | (l.balloon and l.islanky and Events.WaterSwitch in l.Events) or l.CanMoonkick() | 
 | Gloomy Galleon | Galleon Treasure Room UnderWater | Events.ShipyardTreasureRoomOpened in l.Events | 
 | Galleon Sick Bay | Seasick Ship: Left of Cannon |  | 
