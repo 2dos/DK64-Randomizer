@@ -91,7 +91,7 @@ typedef struct varspace {
 	/* 0x111 */ unsigned char jetpac_reward; // Reward Index for Jetpac 5000 Pts
 	/* 0x112 */ unsigned char medal_cb_req; // 0 = default (75). int (1-100)
 	/* 0x113 */ unsigned char any_kong_items; // Bitfield 0000 00ba. a = All items except blueprints disabling kong check. b = Blueprints disable kong check.
-	/* 0x114 */ unsigned char unk114;
+	/* 0x114 */ unsigned char increase_tns_boss_lighting; // Increases lighting when awaiting to enter boss to make it easier to see item reward preview
 	/* 0x115 */ unsigned char unk115;
 	/* 0x116 */ char cutscene_skip_setting; // 0 = Off, 1 = On Button Press, 2 = Automatic
 	/* 0x117 */ unsigned char enabled_pkmnsnap_enemies[5]; // Bitfield

@@ -370,6 +370,9 @@ void initHack(int source) {
 				*(int*)(0x807125CC) = 0; // Prevent Helm Timer Overwrite
 				*(short*)(0x807095BE) = 0x2D4; // Change Zipper with K. Rool Laugh
 			}
+			if (Rando.increase_tns_boss_lighting) {
+				*(float*)(0x8075B8B0) = 1.0f;
+			}
 			if (Rando.version == 0) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
