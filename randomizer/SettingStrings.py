@@ -185,7 +185,7 @@ def encrypt_settings_string_enum(dict_data: dict):
     for key in dict_data:
         value = dict_data[key]
         # At this time, all strings represent ints, so just convert.
-        if type(value) == str:
+        if isinstance(value, str):
             value = int(value)
         key_enum = SettingsStringEnum[key]
         key_data_type = SettingsStringTypeMap[key_enum]
@@ -206,7 +206,7 @@ def encrypt_settings_string_enum(dict_data: dict):
             bitstring += f"{len(value):08b}"
             key_list_data_type = SettingsStringListTypeMap[key_enum]
             for item in value:
-                if type(item) == str:
+                if isinstance(item, str):
                     item = int(item)
                 if key_list_data_type == SettingsStringDataType.bool:
                     bitstring += "1" if item else "0"

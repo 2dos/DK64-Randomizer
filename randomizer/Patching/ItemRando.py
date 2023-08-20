@@ -357,7 +357,7 @@ def place_randomized_items(spoiler):
                             if item.new_item == Types.Banana:
                                 subtype = 6
                             price_var = 0
-                            if type(item.price) == list:
+                            if isinstance(item.price, list):
                                 price_var = 0
                             else:
                                 price_var = item.price
