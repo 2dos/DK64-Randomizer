@@ -551,7 +551,7 @@
 | Piano game right side | Balloon | l.trombone | 
 | In window by car race Mini Monkey | Balloon |  | 
 | Tunnel to car race | Balloon |  | 
-| Chunky R&D room | Balloon |  | 
+| Chunky R&D room | Balloon | l.punch and l.triangle | 
 | Cranky/Candy room | Balloon |  | 
 | Chunky room above blue switch | Balloon |  | 
 | Chunky room above dark room entrance | Balloon |  | 

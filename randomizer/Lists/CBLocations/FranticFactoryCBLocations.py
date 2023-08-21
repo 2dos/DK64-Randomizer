@@ -1553,6 +1553,7 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.chunky],
         region=Regions.RandD,
+        logic=lambda l: l.punch and l.triangle,
         points=[[5086, 1580, 1562], [4830, 1560, 1948]],
     ),
     Balloon(

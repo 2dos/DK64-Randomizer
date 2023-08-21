@@ -191,7 +191,7 @@
 | Gloomy Galleon | Next to Lighthouse ladder |  | 
 | Gloomy Galleon | Lighthouse: Under Enguarde Box | Events.LighthouseEnguarde in l.Events | 
 | Gloomy Galleon | In Enguarde Alcove | Events.LighthouseEnguarde in l.Events | 
-| Gloomy Galleon | In Front of Mermaid Palace | logic=lambda l:Events.LighthouseEnguarde in l.Events | 
+| Gloomy Galleon | In Front of Mermaid Palace | Events.LighthouseEnguarde in l.Events | 
 | Gloomy Galleon | On Rocketbarrel platform |  | 
 | Gloomy Galleon | Blueprint Alcove |  | 
 | Gloomy Galleon | Behind Snide's |  | 
