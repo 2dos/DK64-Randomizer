@@ -652,6 +652,7 @@ def disable_move_shuffles(evt):
     shockwave_status = js.document.getElementById("shockwave_status")
     starting_moves_count = js.document.getElementById("starting_moves_count")
     choose_starting_moves = js.document.getElementById("choose_starting_moves")
+    start_with_slam = js.document.getElementById("start_with_slam")
     try:
         if moves.value == "start_with":
             prices.setAttribute("disabled", "disabled")
@@ -663,6 +664,8 @@ def disable_move_shuffles(evt):
             starting_moves_count.setAttribute("disabled", "disabled")
             choose_starting_moves.checked = False
             choose_starting_moves.setAttribute("disabled", "disabled")
+            start_with_slam.checked = True
+            start_with_slam.setAttribute("disabled", "disabled")
         elif moves.value == "off":
             prices.removeAttribute("disabled")
             training_barrels.value = "normal"
@@ -673,12 +676,15 @@ def disable_move_shuffles(evt):
             starting_moves_count.setAttribute("disabled", "disabled")
             choose_starting_moves.checked = False
             choose_starting_moves.setAttribute("disabled", "disabled")
+            start_with_slam.checked = True
+            start_with_slam.setAttribute("disabled", "disabled")
         else:
             prices.removeAttribute("disabled")
             training_barrels.removeAttribute("disabled")
             shockwave_status.removeAttribute("disabled")
             starting_moves_count.removeAttribute("disabled")
             choose_starting_moves.removeAttribute("disabled")
+            start_with_slam.removeAttribute("disabled")
     except AttributeError:
         pass
 
