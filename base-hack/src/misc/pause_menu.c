@@ -350,12 +350,7 @@ int showHint(int level, int kong) {
     int slot = (5 * level) + kong;
     if (Rando.progressive_hint_gb_cap > 0) {
         int req = getHintGBRequirement(level, kong);
-        int gb_count = 0;
-        for (int k = 0; k < 5; k++) {
-            for (int l = 0; l < 8; l++) {
-                gb_count += MovesBase[k].gb_count[l];
-            }
-        }
+        int gb_count = getTotalGBs();
         return gb_count >= req;
     }
     // Not progressive hints

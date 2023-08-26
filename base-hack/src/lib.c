@@ -841,13 +841,6 @@ sprite_data_struct krool_sprite = {
 void giveGB(int kong, int level) {
 	changeCollectableCount(8, 0, 1);
 	displayItemOnHUD(8, 0, 0);
-	// MovesBase[kong].gb_count[level] += 1;
-	// if (HUD) {
-	// 	short* counter = (short*)&HUD->item[8].item_count_pointer;
-	// 	if (counter) {
-	// 		*counter = *counter + 1;
-	// 	}
-	// }
 }
 
 void giveRainbowCoin(void) {

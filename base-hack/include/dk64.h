@@ -378,6 +378,7 @@ extern void loadMapChunkLighting(int chunk_index);
 extern void loadChunks(void* data);
 extern void genericKongCode(void* actor, int kongType);
 extern void renderLight(float x, float y, float z, float src_x, float src_y, float src_z, float radius, int unk0, int red, int green, int blue);
+extern int getTotalGBs(void);
 
 //vanilla data
 extern float TransitionSpeed;

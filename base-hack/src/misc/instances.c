@@ -1310,12 +1310,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return !Rando.tag_anywhere;
 				} else if (param2 == ISLES_LOWMONKEYPORT) {
 					if (index == 0) {
-						int gb_count = 0;
-						for (int kong = 0; kong < 5; kong++) {
-							for (int level = 0; level < 8; level++) {
-								gb_count += MovesBase[kong].gb_count[level];
-							}
-						}
+						int gb_count = getTotalGBs();
 						int max_gbs = 0;
 						for (int level = 0; level < 7; level++) {
 							if (BLockerDefaultArray[level] > max_gbs) {
