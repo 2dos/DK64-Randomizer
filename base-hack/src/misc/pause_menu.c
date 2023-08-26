@@ -318,6 +318,58 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
     return dl;
 }
 
+#define GAME_HINT_COUNT 35
+
+int getHintGBRequirement(int level, int kong) {
+    int cap = Rando.progressive_hint_gb_cap;
+    int slot = (5 * level) + kong;
+    float req = 1;
+    req /= GAME_HINT_COUNT;
+    req *= (slot + 1);
+    req += 3.0f;
+    req *= 1.570796f; // 0.5pi
+    req = dk_sin(req) * cap;
+    req += cap;
+    int req_i = req;
+    if (req_i <= 0) {
+        req_i = 1; // Ensure no hints are free
+    } else if (slot == (GAME_HINT_COUNT - 1)) {
+        req_i = cap; // Ensure last hint is always at cap
+    }
+    return req_i;
+}
+
+int getPluralCharacter(int amount) {
+    if (amount != 1) {
+        return 0x53; // "S"
+    }
+    return 0;
+}
+
+int showHint(int level, int kong) {
+    int slot = (5 * level) + kong;
+    if (Rando.progressive_hint_gb_cap > 0) {
+        int req = getHintGBRequirement(level, kong);
+        int gb_count = 0;
+        for (int k = 0; k < 5; k++) {
+            for (int l = 0; l < 8; l++) {
+                gb_count += MovesBase[k].gb_count[l];
+            }
+        }
+        return gb_count >= req;
+    }
+    // Not progressive hints
+    return checkFlag(FLAG_WRINKLYVIEWED + slot, FLAGTYPE_PERMANENT);
+}
+
+static char* unknown_hints[] = {
+    "??? - 000 GOLDEN BANANAS",
+    "??? - 001 GOLDEN BANANAS",
+    "??? - 002 GOLDEN BANANAS",
+    "??? - 003 GOLDEN BANANAS",
+    "??? - 004 GOLDEN BANANAS",
+};
+
 int* pauseScreen3And4Header(int* dl) {
     /**
      * @brief Alter pause screen totals header to display the checks screen
@@ -374,11 +426,18 @@ int* pauseScreen3And4Header(int* dl) {
         }
         dl = displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, 465, 24.0f, 20.0f, 0, 0.0f);
         mtx_counter = 0;
+        TestVariable = getHintGBRequirement(6, 4);
         for (int i = 0; i < 5; i++) {
-            if (checkFlag(FLAG_WRINKLYVIEWED + (5 * hint_level) + i, FLAGTYPE_PERMANENT)) {
+            if (showHint(hint_level, i)) {
                 dl = drawSplitString(dl, (char*)hint_pointers[(5 * hint_level) + i], level_x, 140 + (120 * i), 40);
             } else {
-                dl = drawSplitString(dl, "???", level_x, 140 + (120 * i), 40);
+                if (Rando.progressive_hint_gb_cap == 0) {
+                    unknown_hints[i] = "???";
+                } else {
+                    int requirement = getHintGBRequirement(hint_level, i);
+                    dk_strFormat(unknown_hints[i], "??? - %d GOLDEN BANANA%c", requirement, getPluralCharacter(requirement));
+                }
+                dl = drawSplitString(dl, unknown_hints[i], level_x, 140 + (120 * i), 40);
             }
             
         }

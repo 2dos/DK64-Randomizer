@@ -176,6 +176,7 @@
    "short_bosses":1,
    "fast_warp":1,
    "activate_all_bananaports":1,
+   "progressive_hint_gb_cap":60,
    "arcade_order":[
       2,
       3,

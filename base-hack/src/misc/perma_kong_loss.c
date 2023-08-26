@@ -50,46 +50,54 @@ int isDeathState(int control_state) {
 }
 
 void kong_has_died(void) {
-	if (Rando.perma_lose_kongs) {
-		if (getWorld(CurrentMap,0) != 8) { // Not in Helm
-			if (!curseRemoved()) {
-				if (Player) {
-					int control_state = Player->control_state;
-					if (isDeathState(control_state)) {
-						if (TransitionSpeed > 0.0f) {
-							if (LZFadeoutProgress == 30.0f) {
-								int init_kong = Character;
-								setPermFlag(KONG_LOCKED_START + init_kong);
-								int new_kong = (init_kong + 1) % 5;
-								int pass = 1;
-								int counter = 0;
-								while (pass) {
-									int kong_locked = checkFlag(KONG_LOCKED_START + new_kong, FLAGTYPE_PERMANENT);
-									int unlock_flag = GetKongUnlockedFlag(Player->characterID,new_kong);
-									int kong_freed = checkFlagDuplicate(unlock_flag, FLAGTYPE_PERMANENT);
-									if ((!kong_freed) || (kong_locked)) {
-										new_kong = (new_kong + 1) % 5;
-										counter += 1;
-										if (counter >= 5) {
-											setFlag(KONG_LOCKED_START + init_kong,0,FLAGTYPE_PERMANENT);
-											pass = 0;
-											resetMap(); // Resets parent chain to prevent SirSmack causing memes
-											Gamemode = GAMEMODE_LOADGAMEOVER; // Loading Game Over
-											Mode = 7;
-											return;
-										}
-									} else {
-										pass = 0;
-										Character = new_kong;
-										giveKongMoves(init_kong);
-										return;
-									}
-								}
-							}
-						}
-					}
-				}
+	if (!Rando.perma_lose_kongs) {
+		return;
+	}
+	if (getWorld(CurrentMap, 0) == 8) {
+		// In Helm
+		return;	
+	}
+	if (curseRemoved()) {
+		return;
+	}
+	if (!Player) {
+		return;
+	}
+	int control_state = Player->control_state;
+	if (!isDeathState(control_state)) {
+		return;
+	}
+	if (TransitionSpeed <= 0.0f) {
+		return;
+	}
+	if (LZFadeoutProgress != 30.0f) {
+		return;
+	}
+	int init_kong = Character;
+	setPermFlag(KONG_LOCKED_START + init_kong);
+	int new_kong = (init_kong + 1) % 5;
+	int pass = 1;
+	int counter = 0;
+	while (pass) {
+		int kong_locked = checkFlag(KONG_LOCKED_START + new_kong, FLAGTYPE_PERMANENT);
+		int unlock_flag = GetKongUnlockedFlag(Player->characterID,new_kong);
+		int kong_freed = checkFlagDuplicate(unlock_flag, FLAGTYPE_PERMANENT);
+		if ((!kong_freed) || (kong_locked)) {
+			new_kong = (new_kong + 1) % 5;
+			counter += 1;
+			if (counter >= 5) {
+				setFlag(KONG_LOCKED_START + init_kong,0,FLAGTYPE_PERMANENT);
+				pass = 0;
+				resetMap(); // Resets parent chain to prevent SirSmack causing memes
+				Gamemode = GAMEMODE_LOADGAMEOVER; // Loading Game Over
+				Mode = 7;
+				return;
 			}
+		} else {
+			pass = 0;
+			Character = new_kong;
+			giveKongMoves(init_kong);
+			return;
 		}
 	}
 }
@@ -138,26 +146,30 @@ void transitionKong(void) {
 }
 
 void fixGraceCheese(void) {
-	if (Rando.perma_lose_kongs) {
-		if (TransitionSpeed > 0.0f) {
-			if (LZFadeoutProgress == 30.0f) {
-				if (!hasPermaLossGrace(DestMap)) {
-					if (CurrentMap == MAP_TROFFNSCOFF) {
-						int transitioning_to_boss = 0;
-						for (int i = 0; i < 7; i++) {
-							if (BossMapArray[i] == DestMap) {
-								transitioning_to_boss = 1;
-							}
-						}
-						if (transitioning_to_boss) {
-							return;
-						}
-					}
-					transitionKong();
-				}
+	if (!Rando.perma_lose_kongs) {
+		return;
+	}
+	if (TransitionSpeed <= 0.0f) {
+		return;
+	}
+	if (LZFadeoutProgress != 30.0f) {
+		return;
+	}
+	if (hasPermaLossGrace(DestMap)) {
+		return;
+	}
+	if (CurrentMap == MAP_TROFFNSCOFF) {
+		int transitioning_to_boss = 0;
+		for (int i = 0; i < 7; i++) {
+			if (BossMapArray[i] == DestMap) {
+				transitioning_to_boss = 1;
 			}
 		}
+		if (transitioning_to_boss) {
+			return;
+		}
 	}
+	transitionKong();
 }
 
 void changeKongOnTransition_Permaloss(void) {
