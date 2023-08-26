@@ -187,7 +187,7 @@ text_rewards = {
     Types.Pearl: ("\x04PEARL\x04", "\x04BLACK PEARL\x04"),
     Types.RainbowCoin: ("\x04RAINBOW COIN\x04", "\x04COLORFUL COIN HIDDEN FOR 17 YEARS\x04"),
     Types.FakeItem: ("\x04GLODEN BANANE\x04", "\x04BANANA OF FOOLS GOLD\x04"),
-    Types.JunkItem: ("\x04JUNK ITEM\x04", "\x04SOME HEAP OF JUNK\x04"),
+    Types.JunkItem: ("\x04JUNK ITEM\x04", "\x04HEAP OF JUNK\x04"),
     Types.NoItem: ("\x04NOTHING\x04", "\x04DIDDLY SQUAT\x04"),
 }
 

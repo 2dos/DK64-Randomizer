@@ -84,3 +84,10 @@ void shineLight(actorData* actor, int kongType) {
         renderLight(shine_x, actor->yPos + 10, shine_z, shine_x, actor->yPos + 10, shine_z, SHINE_RADIUS, 0, LIGHT_BRIGHTNESS, LIGHT_BRIGHTNESS, LIGHT_BRIGHTNESS);
     }
 }
+
+void fallDamageWrapper(int action, void* actor, int player_index) {
+    if (ObjectModel2Timer < 100) {
+        return;
+    }
+    setAction(action, actor, player_index);
+}

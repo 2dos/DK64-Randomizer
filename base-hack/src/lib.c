@@ -1038,7 +1038,8 @@ int filterSong(int* song_write) {
 
 int applyDamageMask(int player_index, int damage) {
 	int applied_multiplier = Rando.damage_multiplier;
-	if (damage > 0) {
+	if ((damage > 0) || (damage <= -12)) {
+		// Health or death-dealing damage
 		return applyDamage(player_index, damage);
 	}
 	if ((CurrentMap == MAP_CASTLEKUTOUT) && (CutsceneActive == 1) && (CutsceneIndex == 4)) {
@@ -1046,11 +1047,16 @@ int applyDamageMask(int player_index, int damage) {
 		applied_multiplier = 0;
 	}
 	if ((Rando.hard_mode.lava_water) && (
+	(CurrentMap == MAP_ISLES) ||
+	(CurrentMap == MAP_GALLEONLOBBY) ||
 	(CurrentMap == MAP_GALLEON) ||
 	(CurrentMap == MAP_GALLEON2DS) ||
 	(CurrentMap == MAP_GALLEON5DSDKTINY) ||
 	(CurrentMap == MAP_GALLEON5DSDIDDYLANKYCHUNKY))) {
-		applied_multiplier = 1;
+		if (Player->grounded_bitfield & 6) {
+			// Underwater
+			applied_multiplier = 1;
+		}
 	}
 	return applyDamage(player_index, damage * applied_multiplier);
 }

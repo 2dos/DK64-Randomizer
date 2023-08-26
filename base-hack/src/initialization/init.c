@@ -607,6 +607,7 @@ void initHack(int source) {
 			if (Rando.hard_mode.easy_fall) {
 				float fall_threshold = 90.0f;
 				*(short*)(0x806D3682) = *(short*)(&fall_threshold); // Change fall too far threshold
+				writeFunction(0x806D36B4, &fallDamageWrapper);
 			}
 			if (Rando.hard_mode.lava_water) {
 				*(int*)(0x806677C4) = 0; // Dynamic Surfaces

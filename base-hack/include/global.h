@@ -315,6 +315,7 @@ extern int CoinDoorCheck(void);
 extern void alterChunkLighting(int chunk);
 extern void alterChunkData(void* data);
 extern void shineLight(actorData* actor, int kongType);
+extern void fallDamageWrapper(int action, void* actor, int player_index);
 
 extern int fairyQueenCutsceneInit(int start, int count, flagtypes type);
 extern void fairyQueenCutsceneCheck(void);
