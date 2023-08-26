@@ -208,6 +208,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "sound_type",
         "songs_excluded",
         "excluded_songs_selected",
+        "troff_brighten",
     ]:
         if pop in dict_data:
             dict_data.pop(pop)

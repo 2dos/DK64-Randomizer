@@ -395,6 +395,7 @@ class Settings:
         self.sfx_volume = 100
         self.music_volume = 100
         self.true_widescreen = False
+        self.troff_brighten = False
         self.camera_is_not_inverted = False
         self.sound_type = SoundType.stereo
 

@@ -72,7 +72,7 @@ def randomize_melon_crate(spoiler):
                     rotation = (crate.rot_y * 360) / 4096
                     ignore_ids = crate_ids.copy()
                     if crate.map == Maps.CastleGreenhouse:
-                        ignore_ids.append(9) # Ban crate being placed on ID 9 in Greenhouse
+                        ignore_ids.append(9)  # Ban crate being placed on ID 9 in Greenhouse
                     selected_id = getNextFreeID(cont_map_id, ignore_ids)
                     crate_ids.append(selected_id)
                     persisted_m2.append(
