@@ -147,6 +147,9 @@
 #define HELM_PAD_GUITAR 0x30
 #define HELM_COIN_DOOR 0x3
 
+#define FUNGI_SWITCH_NIGHT 0x4
+#define FUNGI_SWITCH_DAY 0x5
+
 #define JAPES_CAVE_GATE 0x2B
 #define JAPES_PEANUT_MOUNTAIN 0x58
 #define JAPES_COCONUT_RAMBI 0x123
@@ -1239,6 +1242,10 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == FUNGI_BEANCONTROLLER) {
 					return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
+				} else if ((param2 == FUNGI_SWITCH_DAY) || (param2 == FUNGI_SWITCH_NIGHT)) {
+					if (!Rando.quality_of_life.vanilla_fixes) {
+						behaviour_pointer->timer = 70;
+					}
 				}
 				break;
 			case MAP_CASTLEBALLROOM:

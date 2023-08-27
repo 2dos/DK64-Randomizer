@@ -136,6 +136,7 @@ void initQoL_Fixes(void) {
         writeFunction(0x806A89C4, &helmTime_exitLevel); // Modify Function Call
         writeFunction(0x806A89B4, &helmTime_exitBoss); // Modify Function Call
         writeFunction(0x806A8988, &helmTime_exitKRool); // Modify Function Call
+        *(float*)(0x807482A4) = 0.1f; // Increase Fungi lighting transition rate
     }
 }
 
