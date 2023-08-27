@@ -57,12 +57,12 @@ VanillaPrices = {
     Items.Trombone: 3,
     Items.Saxophone: 3,
     Items.Triangle: 3,
-    Items.ProgressiveSlam: [5, 7],
+    Items.ProgressiveSlam: [0, 5, 7],
     Items.ProgressiveAmmoBelt: [3, 5],
     Items.ProgressiveInstrumentUpgrade: [5, 7, 9],
 }
 
-ProgressiveMoves = {Items.ProgressiveSlam: 2, Items.ProgressiveAmmoBelt: 2, Items.ProgressiveInstrumentUpgrade: 3}
+ProgressiveMoves = {Items.ProgressiveSlam: 3, Items.ProgressiveAmmoBelt: 2, Items.ProgressiveInstrumentUpgrade: 3}
 
 
 def CompleteVanillaPrices():
