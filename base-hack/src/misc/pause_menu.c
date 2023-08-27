@@ -323,6 +323,23 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
 int getHintGBRequirement(int level, int kong) {
     int cap = Rando.progressive_hint_gb_cap;
     int slot = (5 * level) + kong;
+    if (slot < 34) {
+        /*
+            Little bit of chunking to reduce amount of times checking the pause menu
+            You'll get:
+                1  2  3  4  - Price of hint 1
+                5  6  7  8  - Price of hint 5
+                9  10 11 12 - Price of hint 9
+                13 14 15 16 - Price of hint 13
+                17 18 19 20 - Price of hint 17
+                21 22 23 24 - Price of hint 21
+                25 26 27 28 - Price of hint 25
+                29 30 31 32 - Price of hint 29
+                33 34       - Price of hint 33
+                35          - Price of hint 35
+        */
+        slot &= 0xFC;
+    }
     float req = 1;
     req /= GAME_HINT_COUNT;
     req *= (slot + 1);
