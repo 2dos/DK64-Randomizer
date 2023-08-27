@@ -233,7 +233,7 @@ MinigameRequirements = {
         map_id=Maps.EnguardeArena,
         can_repeat=True,
         logic=lambda l: l.swim,
-    )
+    ),
 }
 
 # If you make changes to this list, make sure to change the corresponding

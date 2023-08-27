@@ -37,6 +37,7 @@ def on_input(event):
     elif "blocker" in event.target.id:
         min_max(event, 0, 200)
 
+
 @bind("focusout", "progressive_hint_text")
 def handle_progressive_hint_text(event):
     """Validate blocker input on loss of focus."""
@@ -47,6 +48,7 @@ def handle_progressive_hint_text(event):
         progressive_hint_text.value = 1
     elif int(progressive_hint_text.value) > 201:
         progressive_hint_text.value = 201
+
 
 @bind("focusout", "blocker_text")
 def max_randomized_blocker(event):
@@ -427,6 +429,7 @@ def toggle_b_locker_boxes(event):
                 blocker.setAttribute("disabled", "disabled")
         except AttributeError:
             pass
+
 
 @bind("click", "randomize_cb_required_amounts")
 def toggle_counts_boxes(event):
