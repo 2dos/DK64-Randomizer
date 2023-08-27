@@ -138,7 +138,11 @@ void unlockMoves(void) {
 		MovesBase[i].ammo_belt = belt_level;
 		MovesBase[i].instrument_bitfield = base_ins_bitfield | (has_kong_instrument != 0);
 		if (has_kong_instrument) {
-			MovesBase[i].instrument_energy = 12;
+			if (Rando.quality_of_life.global_instrument) {
+				CollectableBase.InstrumentEnergy = 12;
+			} else {
+				MovesBase[i].instrument_energy = 12;
+			}
 			has_instrument = 1;
 		}
 		if (has_kong_gun) {

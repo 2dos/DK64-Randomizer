@@ -308,6 +308,8 @@ typedef struct InventoryBase {
 	/* 0x00A */ char unk0A;
 	/* 0x00B */ char Health;
 	/* 0x00C */ char Melons;
+	/* 0x00D */ char StoredDamage;
+	/* 0x00E */ short InstrumentEnergy;
 } InventoryBase;
 
 typedef struct AutowalkData {
@@ -1222,6 +1224,7 @@ typedef struct quality_options {
 	unsigned char blueprint_compression : 1;
 	unsigned char fast_hints : 1; // 19
 	unsigned char brighten_mmm_enemies : 1;
+	unsigned char global_instrument : 1; // 21
 } quality_options;
 
 typedef struct image_cache_struct {

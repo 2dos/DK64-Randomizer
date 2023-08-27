@@ -379,6 +379,8 @@ extern void loadChunks(void* data);
 extern void genericKongCode(void* actor, int kongType);
 extern void renderLight(float x, float y, float z, float src_x, float src_y, float src_z, float radius, int unk0, int red, int green, int blue);
 extern int getTotalGBs(void);
+extern void displayPauseSpriteNumber(void* handler, int x, int y, int unk0, int unk1, int count, int unk2, int unk3);
+extern void headphonesCode(int unused, int enable); // Note: Only has parameters for *if* we're passing in an enabled state for the headphones fix qol change
 
 //vanilla data
 extern float TransitionSpeed;

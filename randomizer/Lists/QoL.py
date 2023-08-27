@@ -37,6 +37,7 @@ QoLItems = [
     QoLItem("Fast Hints", 19, "Wrinkly will appear faster out of her door. Additionally, pressing A during any text bubble growth will skip to it's fully grown state."),
     QoLItem("Brighten Mad Maze Maul Enemies", 20, "Enemies in Mad Maze Maul will be at full brightness, making them easier to see in dark areas."),
     QoLItem("Raise Fungi Dirt Patch", -1, "The Fungi Dirt Patch near the mill that was discovered in 2017 is slightly raised to make it visible."),
+    QoLItem("Global Instrument", 21, "Instrument Energy has been changed to be made global, to align it with the behavior of Ammo, Oranges and other consumables."),
 ]
 for item in QoLItems:
     if item.name != "No Group":

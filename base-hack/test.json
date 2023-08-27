@@ -48,7 +48,8 @@
       "homing_balloons":true,
       "save_krool_progress":true,
       "fast_hints":true,
-      "brighten_mmm_enemies":true
+      "brighten_mmm_enemies":true,
+      "global_instrument":true
    },
    "moves_pregiven":{
       "blast":true,
