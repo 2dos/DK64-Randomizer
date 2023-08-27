@@ -814,6 +814,8 @@ class SettingsStringEnum(IntEnum):
     starting_move_list_selected = 151
     start_with_slam = 152
     spoiler_include_level_order = 153
+    enable_progressive_hints = 154
+    progressive_hint_text = 155
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1008,6 +1010,8 @@ SettingsStringTypeMap = {
     SettingsStringEnum.starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.start_with_slam: SettingsStringDataType.bool,
     SettingsStringEnum.spoiler_include_level_order: SettingsStringDataType.bool,
+    SettingsStringEnum.enable_progressive_hints: SettingsStringDataType.bool,
+    SettingsStringEnum.progressive_hint_text: SettingsStringDataType.var_int,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!
@@ -1062,3 +1066,4 @@ addSettingIntRange(SettingsStringEnum.troff_4, 500)
 addSettingIntRange(SettingsStringEnum.troff_5, 500)
 addSettingIntRange(SettingsStringEnum.troff_6, 500)
 addSettingIntRange(SettingsStringEnum.troff_text, 500)
+addSettingIntRange(SettingsStringEnum.progressive_hint_text, 201)

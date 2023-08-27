@@ -37,6 +37,16 @@ def on_input(event):
     elif "blocker" in event.target.id:
         min_max(event, 0, 200)
 
+@bind("focusout", "progressive_hint_text")
+def handle_progressive_hint_text(event):
+    """Validate blocker input on loss of focus."""
+    progressive_hint_text = js.document.getElementById("progressive_hint_text")
+    if not progressive_hint_text.value:
+        progressive_hint_text.value = 60
+    elif int(progressive_hint_text.value) < 1:
+        progressive_hint_text.value = 1
+    elif int(progressive_hint_text.value) > 201:
+        progressive_hint_text.value = 201
 
 @bind("focusout", "blocker_text")
 def max_randomized_blocker(event):
@@ -417,7 +427,6 @@ def toggle_b_locker_boxes(event):
                 blocker.setAttribute("disabled", "disabled")
         except AttributeError:
             pass
-
 
 @bind("click", "randomize_cb_required_amounts")
 def toggle_counts_boxes(event):
@@ -930,6 +939,7 @@ def preset_select_changed(event):
     disable_music(None)
     disable_move_shuffles(None)
     max_randomized_blocker(None)
+    handle_progressive_hint_text(None)
     max_randomized_troff(None)
     max_music(None)
     max_sfx(None)

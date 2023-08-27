@@ -509,6 +509,9 @@ class Settings:
         self.points_list_barrel_moves = 3
         self.points_list_active_moves = 3
         self.points_list_bean = 3
+        # Progressive hints
+        self.enable_progressive_hints = False
+        self.progressive_hint_text = 0
 
     def shuffle_prices(self):
         """Price randomization. Reuseable if we need to reshuffle prices."""
@@ -1042,6 +1045,10 @@ class Settings:
             self.max_shared_shops = math.floor(30 - self.location_item_balance / -2)
         self.max_shared_shops -= 1  # Subtract 1 shared shop for a little buffer. If we manage to solve the empty Helm fill issue then we can probably remove this line.
         self.placed_shared_shops = 0
+
+        if self.progressive_hint_text == 0:
+            # Disable progressive hints if hint text is 0
+            self.enable_progressive_hints = False
 
     def isBadIceTrapLocation(self, location: Locations):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""

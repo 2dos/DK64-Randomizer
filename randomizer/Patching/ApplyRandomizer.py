@@ -300,6 +300,13 @@ def patching_response(spoiler):
     ROM_COPY.seek(sav + 0x0A5)
     ROM_COPY.write(damage_multipliers[spoiler.settings.damage_amount])
 
+    # Progressive Hints
+    ROM_COPY.seek(sav + 0x115)
+    count = 0
+    if spoiler.settings.enable_progressive_hints:
+        count = spoiler.settings.progressive_hint_text
+    ROM_COPY.writeMultipleBytes(count, 1)
+
     # Microhints
     ROM_COPY.seek(sav + 0x102)
     # The MicrohintsEnabled enum is indexed to allow this.
