@@ -71,3 +71,5 @@ class Minigames(IntEnum):
     TinyPonyTailTwirl = auto()
     ChunkyHiddenKremling = auto()
     ChunkyShooting = auto()
+    RambiArena = auto()
+    EnguardeArena = auto()

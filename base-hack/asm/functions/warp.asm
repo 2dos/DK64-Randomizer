@@ -19,3 +19,7 @@
 .definelabel loadDKTVData, 0x80712B80
 .definelabel getParentDataIndex, 0x80688D64
 .definelabel getParentMap, 0x805FF800
+.definelabel getSpawnerIndexOfResolvedBonus, 0x80600340
+.definelabel resolveBonus, 0x80688D20
+.definelabel failBonus, 0x800265C0
+.definelabel winBonus, 0x800264E0

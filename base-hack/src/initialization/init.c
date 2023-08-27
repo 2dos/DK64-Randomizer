@@ -548,6 +548,8 @@ void initHack(int source) {
 				writeFunction(0x8072F46C, &handleActionSet); // Model 2 grabbables
 				writeFunction(0x806CFC64, &handleActionSet); // Ledge Grabbing
 			}
+			*(int*)(0x805FEA14) = 0; // Prevent Enguarde arena setting kong as Enguarde
+			*(int*)(0x805FEA08) = 0; // Prevent Rambi arena setting kong as Rambi
 			if ((Rando.diddy_rnd_codes[0] != 0) || (Rando.diddy_rnd_codes[1] != 0) || (Rando.diddy_rnd_codes[2] != 0)) {
 				// Alter diddy R&D
 				short* diddy_rnd_code_writes[12] = {

@@ -412,6 +412,7 @@ class MinigamesListSelected(IntEnum):
     kremling_kosh = 14
     peril_path_panic = 15
     helm_minigames = 16
+    arenas = 17
 
 
 class MiscChangesSelected(IntEnum):

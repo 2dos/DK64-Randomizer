@@ -33,6 +33,7 @@
 .importobj "obj/src_item rando_text.o"
 .importobj "obj/src_misc_aesthetic.o"
 .importobj "obj/src_misc_beaver.o"
+.importobj "obj/src_misc_bonus.o"
 .importobj "obj/src_misc_cutscene_database.o"
 .importobj "obj/src_misc_cutscene_remove.o"
 .importobj "obj/src_misc_dpad_menu.o"

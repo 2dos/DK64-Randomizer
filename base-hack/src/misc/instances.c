@@ -982,6 +982,8 @@ int isBonus(int map) {
 	 */
 	if (map == 0x50) {
 		return 0;
+	} else if (inBattleCrown(map)) {
+		return 0;
 	}
 	int level = levelIndexMapping[map];
 	return (level == 9) || (level == 0xD);

@@ -169,6 +169,7 @@
 .definelabel scriptsLoaded, 0x807F60A8
 .definelabel scriptLoadsAttempted, 0x807F7140
 .definelabel BonusBarrelData, 0x80755F4C
+.definelabel ArenaScore, 0x80744518
 
 .definelabel KongUnlockedMenuArray, 0x80033804
 .definelabel FilePercentage, 0x80033F51
@@ -254,3 +255,7 @@
 .definelabel SFXVolume, 0x8074583C
 .definelabel MusicVolume, 0x80745840
 .definelabel BorderInformation, 0x80750840
+
+.definelabel RambiArenaComboTimer, 0x8002D930
+.definelabel RambiArenaComboSize, 0x8002D92C
+.definelabel RambiArenaComboChain, 0x8002DEF0
