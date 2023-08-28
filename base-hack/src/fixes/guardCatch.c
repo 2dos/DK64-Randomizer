@@ -118,7 +118,7 @@ void catchWarpHandle(void) {
 
 int inRabbitRace(void) {
     if (CurrentMap == MAP_FUNGI) {
-        return *(int*)(0x807FBB64) | 4; // In Rabbit Race
+        return *(int*)(0x807FBB64) & 4; // In Rabbit Race
     }
     return 0;
 }
