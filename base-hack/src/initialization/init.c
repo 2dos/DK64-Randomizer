@@ -370,6 +370,9 @@ void initHack(int source) {
 				*(int*)(0x807125CC) = 0; // Prevent Helm Timer Overwrite
 				*(short*)(0x807095BE) = 0x2D4; // Change Zipper with K. Rool Laugh
 			}
+			if (Rando.increase_tns_boss_lighting) {
+				*(float*)(0x8075B8B0) = 1.0f;
+			}
 			if (Rando.version == 0) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
@@ -545,6 +548,8 @@ void initHack(int source) {
 				writeFunction(0x8072F46C, &handleActionSet); // Model 2 grabbables
 				writeFunction(0x806CFC64, &handleActionSet); // Ledge Grabbing
 			}
+			*(int*)(0x805FEA14) = 0; // Prevent Enguarde arena setting kong as Enguarde
+			*(int*)(0x805FEA08) = 0; // Prevent Rambi arena setting kong as Rambi
 			if ((Rando.diddy_rnd_codes[0] != 0) || (Rando.diddy_rnd_codes[1] != 0) || (Rando.diddy_rnd_codes[2] != 0)) {
 				// Alter diddy R&D
 				short* diddy_rnd_code_writes[12] = {
@@ -604,6 +609,7 @@ void initHack(int source) {
 			if (Rando.hard_mode.easy_fall) {
 				float fall_threshold = 90.0f;
 				*(short*)(0x806D3682) = *(short*)(&fall_threshold); // Change fall too far threshold
+				writeFunction(0x806D36B4, &fallDamageWrapper);
 			}
 			if (Rando.hard_mode.lava_water) {
 				*(int*)(0x806677C4) = 0; // Dynamic Surfaces

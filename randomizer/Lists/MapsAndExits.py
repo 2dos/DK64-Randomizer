@@ -205,6 +205,8 @@ class Maps(IntEnum):
     HelmBarrelTinyMush = 50
     HelmBarrelChunkyHidden = 209
     HelmBarrelChunkyShooting = 211
+    RambiArena = 191
+    EnguardeArena = 184
 
     # Crowns
     JapesCrown = 53

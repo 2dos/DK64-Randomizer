@@ -644,8 +644,12 @@ void giveCollectables(void) {
 		}
 	}
 	int energy = max/2;
-	for (int instrument_kong = 0; instrument_kong < 5; instrument_kong++) {
-		MovesBase[instrument_kong].instrument_energy = energy;
+	if (Rando.quality_of_life.global_instrument) {
+		CollectableBase.InstrumentEnergy = energy;
+	} else {
+		for (int instrument_kong = 0; instrument_kong < 5; instrument_kong++) {
+			MovesBase[instrument_kong].instrument_energy = energy;
+		}
 	}
 	CollectableBase.Health = CollectableBase.Melons * 4;
 	CollectableBase.StandardAmmo = 25 * (1 << MovesBase[0].ammo_belt);

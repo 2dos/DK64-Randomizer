@@ -841,13 +841,6 @@ sprite_data_struct krool_sprite = {
 void giveGB(int kong, int level) {
 	changeCollectableCount(8, 0, 1);
 	displayItemOnHUD(8, 0, 0);
-	// MovesBase[kong].gb_count[level] += 1;
-	// if (HUD) {
-	// 	short* counter = (short*)&HUD->item[8].item_count_pointer;
-	// 	if (counter) {
-	// 		*counter = *counter + 1;
-	// 	}
-	// }
 }
 
 void giveRainbowCoin(void) {
@@ -1045,7 +1038,8 @@ int filterSong(int* song_write) {
 
 int applyDamageMask(int player_index, int damage) {
 	int applied_multiplier = Rando.damage_multiplier;
-	if (damage > 0) {
+	if ((damage > 0) || (damage <= -12)) {
+		// Health or death-dealing damage
 		return applyDamage(player_index, damage);
 	}
 	if ((CurrentMap == MAP_CASTLEKUTOUT) && (CutsceneActive == 1) && (CutsceneIndex == 4)) {
@@ -1053,11 +1047,16 @@ int applyDamageMask(int player_index, int damage) {
 		applied_multiplier = 0;
 	}
 	if ((Rando.hard_mode.lava_water) && (
+	(CurrentMap == MAP_ISLES) ||
+	(CurrentMap == MAP_GALLEONLOBBY) ||
 	(CurrentMap == MAP_GALLEON) ||
 	(CurrentMap == MAP_GALLEON2DS) ||
 	(CurrentMap == MAP_GALLEON5DSDKTINY) ||
 	(CurrentMap == MAP_GALLEON5DSDIDDYLANKYCHUNKY))) {
-		applied_multiplier = 1;
+		if (Player->grounded_bitfield & 6) {
+			// Underwater
+			applied_multiplier = 1;
+		}
 	}
 	return applyDamage(player_index, damage * applied_multiplier);
 }

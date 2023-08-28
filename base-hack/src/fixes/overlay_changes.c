@@ -447,6 +447,14 @@ void overlay_changes(void) {
 		}
 	} else if (CurrentMap == MAP_FUNGISPIDER) {
 		writeFunction(0x8002D20C, &SpiderBossExtraCode); // Handle preventing spider boss being re-fightable
+	} else if ((CurrentMap == MAP_RAMBIARENA) || (CurrentMap == MAP_ENGUARDEARENA)) {
+		writeFunction(0x8002D6A8, &warpOutOfArenas); // Enable the two arenas to be minigames
+		writeFunction(0x8002D31C, &ArenaTagKongCode); // Tag Rambi/Enguarde Instantly
+		writeFunction(0x8002D6DC, &ArenaEarlyCompletionCheck); // Check completion
+		if (!isGamemode(GAMEMODE_DKBONUS, 0)) {
+			*(int*)(0x8002D628) = 0x016FC022; // sub $t8, $t3, $t7 - Rambi Arena
+			*(int*)(0x8002D658) = 0x03224822; // sub $t1, $t9, $v0 - Enguarde Arena
+		}
 	}
 	if (inBossMap(CurrentMap, 1, 1, 1)) {
 		if (Rando.item_rando) {

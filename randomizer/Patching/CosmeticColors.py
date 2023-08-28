@@ -2021,6 +2021,7 @@ boot_phrases = (
     "Dropping Crayons",
     "Saying Hello when others wont",
     "Mangling Music",
+    "Killing Speedrunning",
 )
 
 

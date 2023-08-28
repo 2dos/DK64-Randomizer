@@ -28,6 +28,7 @@ from ui.rando_options import (
     item_rando_list_changed,
     max_music,
     max_randomized_blocker,
+    handle_progressive_hint_text,
     max_randomized_troff,
     max_sfx,
     max_starting_moves_count,
@@ -117,6 +118,7 @@ def import_settings_string(event):
     disable_music(None)
     disable_move_shuffles(None)
     max_randomized_blocker(None)
+    handle_progressive_hint_text(None)
     max_randomized_troff(None)
     max_music(None)
     max_sfx(None)

@@ -216,8 +216,6 @@ song_data = [
 ]
 
 ExcludedSongsSelector = []
-# If you make changes to this list, make sure to change the corresponding
-# MiscChangesSelected enum in randomizer.Enums.Settings.
 ExclSongsItems = [
     SongExclusionItem("Wrinkly", 0, "Removes Wrinkly doors from playing her theme."),
     SongExclusionItem("Transformation", 3, "The game will no longer play the transformation sound effect."),

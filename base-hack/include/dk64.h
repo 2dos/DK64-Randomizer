@@ -378,6 +378,14 @@ extern void loadMapChunkLighting(int chunk_index);
 extern void loadChunks(void* data);
 extern void genericKongCode(void* actor, int kongType);
 extern void renderLight(float x, float y, float z, float src_x, float src_y, float src_z, float radius, int unk0, int red, int green, int blue);
+extern int getTotalGBs(void);
+extern void displayPauseSpriteNumber(void* handler, int x, int y, int unk0, int unk1, int count, int unk2, int unk3);
+extern void headphonesCode(int unused, int enable); // Note: Only has parameters for *if* we're passing in an enabled state for the headphones fix qol change
+
+extern int getSpawnerIndexOfResolvedBonus(short* unk0, int unk1, int* map_storage);
+extern void resolveBonus(short unk0, int unk1, int unk2, float unk3);
+extern void failBonus(int unk0, int unk1);
+extern void winBonus(int unk0, int unk1);
 
 //vanilla data
 extern float TransitionSpeed;
@@ -516,6 +524,7 @@ extern float unkGravity[7];
 extern float GroundAttackSpeedThreshold[7];
 
 extern bonus_vanilla_info BonusBarrelData[54];
+extern short ArenaScore;
 
 extern short screenCenterX;
 extern short screenCenterY;
@@ -674,6 +683,10 @@ extern int chunk_count;
 extern Chunk* chunkArray;
 extern unsigned char unkSoundIndex;
 extern short unkSoundArray[0x10];
+
+extern char RambiArenaComboTimer;
+extern char RambiArenaComboSize;
+extern char RambiArenaComboChain[16];
 
 //hack data
 extern int TestVariable;

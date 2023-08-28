@@ -131,6 +131,31 @@
                         </option>
                     </select>
                 </div>
+                <div class="item-group">
+                    <p class="select-title">Progressive Hints:</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend"
+                             data-toggle="tooltip"
+                             title="Check box to enable progressive hints, where hints are given on the pause menu for collecting Golden Bananas rather than visiting Wrinkly.">
+                            <div class="input-group-text">
+                                <input type="checkbox"
+                                       value="True"
+                                       id="enable_progressive_hints"
+                                       name="enable_progressive_hints">
+                            </div>
+                        </div>
+                        <input class="form-control"
+                               min="0"
+                               max="201"
+                               name="progressive_hint_text"
+                               id="progressive_hint_text"
+                               type="number"
+                               data-toggle="tooltip"
+                               title="Hint 35 Cost"
+                               default="60"
+                               placeholder="60"/>
+                    </div>
+                </div>
                 <div class="item-select">
                     <p class="select-title">Helm Start Location</p>
                     <select name="helm_setting"

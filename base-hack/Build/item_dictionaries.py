@@ -31,6 +31,60 @@ class InGameItem:
         self.is_null = is_null
 
 
+class CollectableTypes(IntEnum):
+    """Collectable Types Enum."""
+
+    AmmoBox = -2
+    Null = -1
+    ColoredBanana = 0
+    Coin = 1
+    AmmoPellet = 2
+    Orange = 4
+    Crystal = 5
+    Film = 6
+    GoldenBanana = 8
+    Medal = 10
+    RaceCoin = 11
+    Blueprint = 12
+
+
+class Kong(IntEnum):
+    """Kong Enum."""
+
+    DK = 0
+    Diddy = auto()
+    Lanky = auto()
+    Tiny = auto()
+    Chunky = auto()
+
+
+class Hitbox:
+    """Class to store information regarding item hitboxes."""
+
+    def __init__(self, y: int, radius: int, height: int):
+        """Initialize with given parameters."""
+        self.y = y
+        self.radius = radius
+        self.height = height
+
+
+class ItemRandoDef:
+    """Class to store information regarding item collision and spawning."""
+
+    def __init__(self, object_id: int, item_type: CollectableTypes, kong: Kong = None, actor_equivalent: int = 0, hitbox: Hitbox = None, custom_actor: bool = False):
+        """Initialize with given parameters."""
+        self.object_id = object_id
+        self.item_type = item_type
+        self.kong = 0
+        if kong is not None:
+            self.kong = int(kong) + 2
+        self.actor_equivalent = actor_equivalent
+        self.hitbox = hitbox
+        self.custom_actor = custom_actor
+        if hitbox is None:
+            self.hitbox = Hitbox(0, 0, 0)
+
+
 class CustomActors(IntEnum):
     """Custom Actors Enum."""
 
@@ -98,6 +152,79 @@ db = [
     InGameItem(name="Junk Item (Ammo)", actor=0x33, model_two=0x8F, will_dance=False, force_dance=False, scale=1),
 ]
 
+db2 = [
+    # Colored Bananas
+    ItemRandoDef(0x000D, CollectableTypes.ColoredBanana, Kong.DK),
+    ItemRandoDef(0x000A, CollectableTypes.ColoredBanana, Kong.Diddy),
+    ItemRandoDef(0x001F, CollectableTypes.ColoredBanana, Kong.Chunky),
+    ItemRandoDef(0x001E, CollectableTypes.ColoredBanana, Kong.Lanky),
+    ItemRandoDef(0x0016, CollectableTypes.ColoredBanana, Kong.Tiny),
+    # Coins
+    ItemRandoDef(0x0024, CollectableTypes.Coin, Kong.Diddy),
+    ItemRandoDef(0x0023, CollectableTypes.Coin, Kong.Lanky, 0x35),
+    ItemRandoDef(0x0027, CollectableTypes.Coin, Kong.Chunky),
+    ItemRandoDef(0x001C, CollectableTypes.Coin, Kong.Tiny),
+    ItemRandoDef(0x001D, CollectableTypes.Coin, Kong.DK),
+    # Bunch
+    ItemRandoDef(0x002B, CollectableTypes.ColoredBanana, Kong.DK),
+    ItemRandoDef(0x0208, CollectableTypes.ColoredBanana, Kong.Diddy),
+    ItemRandoDef(0x0206, CollectableTypes.ColoredBanana, Kong.Chunky, 0x6E),
+    ItemRandoDef(0x0205, CollectableTypes.ColoredBanana, Kong.Lanky),
+    ItemRandoDef(0x0207, CollectableTypes.ColoredBanana, Kong.Tiny),
+    # Pellets
+    ItemRandoDef(0x0091, CollectableTypes.AmmoPellet),  # Peanut
+    ItemRandoDef(0x015D, CollectableTypes.AmmoPellet),  # Feather
+    ItemRandoDef(0x015E, CollectableTypes.AmmoPellet),  # Grape
+    ItemRandoDef(0x015F, CollectableTypes.AmmoPellet),  # Pineapple
+    ItemRandoDef(0x0160, CollectableTypes.AmmoPellet),  # Coconut
+    # Blueprint
+    ItemRandoDef(0x00DE, CollectableTypes.Blueprint, Kong.DK, 0x4E, Hitbox(8, 4, 13)),
+    ItemRandoDef(0x00E0, CollectableTypes.Blueprint, Kong.Diddy, 0x4B, Hitbox(8, 4, 13)),
+    ItemRandoDef(0x00E1, CollectableTypes.Blueprint, Kong.Lanky, 0x4D, Hitbox(8, 4, 13)),
+    ItemRandoDef(0x00DD, CollectableTypes.Blueprint, Kong.Tiny, 0x4F, Hitbox(8, 4, 13)),
+    ItemRandoDef(0x00DF, CollectableTypes.Blueprint, Kong.Chunky, 0x4C, Hitbox(8, 4, 13)),
+    # Multiplayer
+    ItemRandoDef(0x01CF, CollectableTypes.Null, None, 0x78),  # Yellow CB Powerup
+    ItemRandoDef(0x01D0, CollectableTypes.Null, None, 0x77),  # Blue CB Powerup
+    ItemRandoDef(0x01D1, CollectableTypes.Null, None, 0x76),  # Coin Powerup
+    ItemRandoDef(0x01D2, CollectableTypes.Coin, None, 0x7A),  # Coin Multiplayer
+    # Potions
+    ItemRandoDef(0x005B, CollectableTypes.Null, None, CustomActors.PotionDK, Hitbox(8, 4, 13), True),  # Potion DK
+    ItemRandoDef(0x01F2, CollectableTypes.Null, None, CustomActors.PotionDiddy, Hitbox(8, 4, 13), True),  # Potion Diddy
+    ItemRandoDef(0x0059, CollectableTypes.Null, None, CustomActors.PotionLanky, Hitbox(8, 4, 13), True),  # Potion Lanky
+    ItemRandoDef(0x01F3, CollectableTypes.Null, None, CustomActors.PotionTiny, Hitbox(8, 4, 13), True),  # Potion Tiny
+    ItemRandoDef(0x01F5, CollectableTypes.Null, None, CustomActors.PotionChunky, Hitbox(8, 4, 13), True),  # Potion Chunky
+    ItemRandoDef(0x01F6, CollectableTypes.Null, None, CustomActors.PotionAny, Hitbox(8, 4, 13), True),  # Potion Any
+    # Kongs
+    ItemRandoDef(0x0257, CollectableTypes.Null, None, CustomActors.KongDK, Hitbox(8, 4, 13), True),  # DK
+    ItemRandoDef(0x0258, CollectableTypes.Null, None, CustomActors.KongDiddy, Hitbox(8, 4, 13), True),  # Diddy
+    ItemRandoDef(0x0259, CollectableTypes.Null, None, CustomActors.KongLanky, Hitbox(8, 4, 13), True),  # Lanky
+    ItemRandoDef(0x025A, CollectableTypes.Null, None, CustomActors.KongTiny, Hitbox(8, 4, 13), True),  # Tiny
+    ItemRandoDef(0x025B, CollectableTypes.Null, None, CustomActors.KongChunky, Hitbox(8, 4, 13), True),  # Chunky
+    # Misc
+    ItemRandoDef(0x00B7, CollectableTypes.Coin, None, 0x8C, Hitbox(8, 4, 13)),  # Rainbow Coin
+    # Others
+    ItemRandoDef(0x0074, CollectableTypes.GoldenBanana, None, 0x2D, Hitbox(8, 4, 13)),  # Golden Banana
+    ItemRandoDef(0x0056, CollectableTypes.Orange, None, 0x34),  # Orange
+    ItemRandoDef(0x008F, CollectableTypes.AmmoBox, None, 0x33),  # Ammo Crate
+    ItemRandoDef(0x0011, CollectableTypes.AmmoBox),  # Homing Ammo Crate
+    ItemRandoDef(0x008E, CollectableTypes.Crystal, None, 0x79),  # Crystal
+    ItemRandoDef(0x0057, CollectableTypes.Null, None, 0x2F),  # Watermelon
+    ItemRandoDef(0x025E, CollectableTypes.Null, None, 0, Hitbox(8, 4, 13)),  # Watermelon - Duplicate
+    ItemRandoDef(0x0098, CollectableTypes.Film),  # Film
+    ItemRandoDef(0x0090, CollectableTypes.Medal, None, CustomActors.Medal, Hitbox(8, 4, 13), True),  # Medal
+    ItemRandoDef(0x00EC, CollectableTypes.RaceCoin, None, 0x36),  # Race Coin
+    ItemRandoDef(0x013C, CollectableTypes.Null, None, 0x48, Hitbox(8, 4, 13)),  # Boss Key
+    ItemRandoDef(0x018D, CollectableTypes.Null, None, 0x56, Hitbox(8, 4, 13)),  # Battle Crown
+    ItemRandoDef(0x0288, CollectableTypes.GoldenBanana, None, 0x2D, Hitbox(8, 4, 13)),  # Rareware GB
+    ItemRandoDef(0x0048, CollectableTypes.Null, None, CustomActors.NintendoCoin, Hitbox(8, 4, 13), True),  # Nintendo Coin
+    ItemRandoDef(0x028F, CollectableTypes.Null, None, CustomActors.RarewareCoin, Hitbox(8, 4, 13), True),  # Rareware Coin
+    ItemRandoDef(0x0198, CollectableTypes.Null, None, CustomActors.Bean, Hitbox(8, 4, 13), True),  # Bean
+    ItemRandoDef(0x01B4, CollectableTypes.Null, None, CustomActors.Pearl, Hitbox(8, 4, 13), True),  # Pearl
+    ItemRandoDef(0x025C, CollectableTypes.Null, None, CustomActors.Fairy, Hitbox(8, 4, 13), True),  # Fairy
+    ItemRandoDef(0x025D, CollectableTypes.Null, None, CustomActors.FakeItem, Hitbox(8, 4, 13), True),  # Fake Item
+]
+
 dance_acceptable_items = [x for x in db if x.force_dance]
 boss_enabled_items = [x for x in db if x.boss_enabled]
 bounce_items = [x for x in db if x.bounce]
@@ -134,3 +261,13 @@ with open("src/lib_items.c", "w") as fh:
     fh.write("\nconst unsigned short actor_drops[] = {" + ",".join([str(x.actor) for x in actor_drops]) + "};")
     fh.write("\nconst unsigned short danceless_items[] = {" + ",".join([str(x.actor) for x in danceless_items]) + "};")
     fh.write("\nconst item_scale_info item_scales[] = {\n\t" + ",\n\t".join([f"{{.type={x.model_two}, .scale={x.scale:.2f}f}}" for x in db]) + "\n};")
+    fh.write(
+        "\ncollision_info object_collisions[] = {\n\t"
+        + ",\n\t".join(
+            [
+                f"{{.type={x.object_id}, .collectable_type={x.item_type}, .unk4=0.08f, .unk8=0.95f, .intended_actor={x.kong}, .actor_equivalent={f'{x.actor_equivalent} + CUSTOM_ACTORS_START' if x.custom_actor else x.actor_equivalent}, .hitbox_y_center={x.hitbox.y}, .hitbox_radius={x.hitbox.radius}, .hitbox_height={x.hitbox.height}}}"
+                for x in db2
+            ]
+        )
+        + "\n};"
+    )

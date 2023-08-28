@@ -185,15 +185,7 @@ int checkDoorItem(int index, int count) {
 		case DOORITEM_DEFAULT:
 			return 1;
 		case DOORITEM_GB:
-			{
-				int gb_count = 0;
-				for (int level = 0; level < 8; level++) {
-					for (int kong = 0; kong < 5; kong++) {
-						gb_count += MovesBase[kong].gb_count[level];
-					}
-				}
-				return gb_count >= count;
-			}
+			return getTotalGBs() >= count;
 		case DOORITEM_BP:
 			return countFlagsDuplicate(FLAG_BP_JAPES_DK_HAS, 40, FLAGTYPE_PERMANENT) >= count;
 		case DOORITEM_BEAN:

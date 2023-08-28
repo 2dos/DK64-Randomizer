@@ -220,6 +220,20 @@ MinigameRequirements = {
         logic=lambda l: (l.scope or l.homing or l.settings.hard_shooting)
         and ((l.isdonkey and l.coconut) or (l.isdiddy and l.peanut) or (l.islanky and l.grape) or (l.istiny and l.feather) or (l.ischunky and l.pineapple)),
     ),
+    Minigames.RambiArena: Minigame(
+        name="Rambi Arena",
+        group="Arenas",
+        map_id=Maps.RambiArena,
+        can_repeat=True,
+        logic=lambda l: True,
+    ),
+    Minigames.EnguardeArena: Minigame(
+        name="Enguarde Arena",
+        group="Arenas",
+        map_id=Maps.EnguardeArena,
+        can_repeat=True,
+        logic=lambda l: l.swim,
+    ),
 }
 
 # If you make changes to this list, make sure to change the corresponding

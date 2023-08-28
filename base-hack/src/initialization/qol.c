@@ -136,6 +136,7 @@ void initQoL_Fixes(void) {
         writeFunction(0x806A89C4, &helmTime_exitLevel); // Modify Function Call
         writeFunction(0x806A89B4, &helmTime_exitBoss); // Modify Function Call
         writeFunction(0x806A8988, &helmTime_exitKRool); // Modify Function Call
+        *(float*)(0x807482A4) = 0.1f; // Increase Fungi lighting transition rate
     }
 }
 
@@ -533,6 +534,46 @@ void initNonControllableFixes(void) {
     *(int*)(0x80752ADC) = (int)&exitTrapBubbleController;
 }
 
+void QoL_DisplayInstrument(void* handler, int x, int y, int unk0, int unk1, int count, int unk2, int unk3) {
+    displayPauseSpriteNumber(handler, x, y, unk0, unk1, CollectableBase.InstrumentEnergy, unk2, unk3);
+}
+
+void HeadphonesCodeContainer(void) {
+    int has_headphones = 0;
+    for (int kong = 0; kong < 5; kong++) {
+        if (MovesBase[kong].instrument_bitfield & 1) {
+            has_headphones = 1;
+        }
+    }
+    headphonesCode(0, has_headphones);
+}
+
+int newInstrumentRefill(int item, int player_index) {
+    int refill_count = getRefillCount(item, player_index);
+    if (refill_count > 0) {
+        CollectableBase.InstrumentEnergy = refill_count >> 1;
+    }
+    return refill_count;
+}
+
+void initQoL_InstrumentFix(void) {
+    /**
+     * @brief Makes instrument energy a global variable used by all kongs, like ammo and oranges
+     * 
+     */
+    if (Rando.quality_of_life.global_instrument) {
+        *(int*)(0x8060DC04) = 0; // nop out
+        writeFunction(0x8060DB50, &newInstrumentRefill); // New code to set the instrument refill count
+        writeFunction(0x806AA728, &QoL_DisplayInstrument); // display number on pause menu
+        *(int*)(0x806F891C) = 0x27D502FE; // addiu $s5, $s8, 0x2FE - Infinite Instrument Energy
+        *(int*)(0x806F8934) = 0xA7C202FE; // sh $v0, 0x2FE ($fp) - Store item count pointer
+
+        // Make it so all kongs can refill headphones *if* a kong has music
+        actor_functions[128] = &HeadphonesCodeContainer;
+        *(int*)(0x806A7C04) = 0x00A0C025; // or $t8, $a1, $zero
+    }
+}
+
 void initQoL(void) {
     /**
      * @brief Initialize all quality of life functionality
@@ -548,5 +589,6 @@ void initQoL(void) {
     initQoL_HomingBalloons();
     initQoL_HUD();
     initQoL_FastWarp();
+    initQoL_InstrumentFix();
     initNonControllableFixes();
 }
