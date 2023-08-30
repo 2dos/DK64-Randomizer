@@ -37,11 +37,12 @@ void initCollectableCollision(void) {
     /**
      * @brief Initialize all collectable collisions
      */
-    // Single
-    for (int i = 0; i < COLLISION_LIMIT; i++) {
-        if (object_collisions[i].collectable_type == COLLECTABLE_BP) {
-            // Blueprints
-            object_collisions[i].intended_actor = 0;
+    if (Rando.any_kong_items & 2) {
+        for (int i = 0; i < COLLISION_LIMIT; i++) {
+            if (object_collisions[i].collectable_type == COLLECTABLE_BP) {
+                // Blueprints
+                object_collisions[i].intended_actor = 0;
+            }
         }
     }
 

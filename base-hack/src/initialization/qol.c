@@ -556,6 +556,29 @@ int newInstrumentRefill(int item, int player_index) {
     return refill_count;
 }
 
+int getInstrumentRefillCount(void) {
+    for (int i = 0; i < 5; i++) {
+        int btf = MovesBase[i].instrument_bitfield;
+        if (btf & 1) {
+            int refill_mult = 1;
+            while (btf != 0) {
+                btf >>= 1;
+                refill_mult += 1;
+            }
+            return refill_mult * 5;
+        }
+    }
+    return 0;
+}
+
+int correctRefillCap(int index, int player) {
+    if (index == 7) {
+        // Instrument
+        return getInstrumentRefillCount();
+    }
+    return getRefillCount(index, player);
+}
+
 void initQoL_InstrumentFix(void) {
     /**
      * @brief Makes instrument energy a global variable used by all kongs, like ammo and oranges
@@ -567,6 +590,8 @@ void initQoL_InstrumentFix(void) {
         writeFunction(0x806AA728, &QoL_DisplayInstrument); // display number on pause menu
         *(int*)(0x806F891C) = 0x27D502FE; // addiu $s5, $s8, 0x2FE - Infinite Instrument Energy
         *(int*)(0x806F8934) = 0xA7C202FE; // sh $v0, 0x2FE ($fp) - Store item count pointer
+        writeFunction(0x806A7DD4, &getInstrumentRefillCount); // Correct refill instruction - Headphones
+        writeFunction(0x806F92B8, &correctRefillCap); // Correct refill instruction - changeCollectable
 
         // Make it so all kongs can refill headphones *if* a kong has music
         actor_functions[128] = &HeadphonesCodeContainer;
