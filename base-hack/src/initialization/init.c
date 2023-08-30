@@ -607,7 +607,7 @@ void initHack(int source) {
 				*(short*)(0x806035BA) = 0; // Set TGrounds count to 0
 			}
 			if (Rando.hard_mode.easy_fall) {
-				float fall_threshold = 90.0f;
+				float fall_threshold = 100.0f;
 				*(short*)(0x806D3682) = *(short*)(&fall_threshold); // Change fall too far threshold
 				writeFunction(0x806D36B4, &fallDamageWrapper);
 			}
