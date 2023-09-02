@@ -711,6 +711,7 @@ CustomLocations = {
             logic=lambda l: (l.grab and l.donkey) or l.CanAccessRNDRoom(),
             vanilla_crown=True,
             group=3,
+            banned_types=[LocationTypes.MelonCrate],
         ),
         CustomLocation(
             name="Dark Room",
@@ -974,6 +975,7 @@ CustomLocations = {
             logic_region=Regions.RandD,
             logic=lambda l: (l.grab and l.donkey) or l.phasewalk or l.generalclips,
             group=3,
+            banned_types=[LocationTypes.MelonCrate],
         ),
         CustomLocation(
             map=Maps.FactoryCrusher,
