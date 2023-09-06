@@ -1,5 +1,6 @@
 """Function to obtain all settings and convert them to a dictionary."""
 import js
+from randomizer.Enums.Items import Items
 from randomizer.Enums.Settings import SettingsMap
 from ui.plando_validation import populate_plando_options
 
@@ -45,6 +46,10 @@ def serialize_settings():
         """Determine if an input is a plando input."""
         return inputName is not None and inputName.startswith("plando_")
 
+    def is_starting_move_radio_button(inputName):
+        """Determine if an input is a starting move checkbox."""
+        return inputName is not None and inputName.startswith("starting_move_box_")
+
     def get_enum_or_string_value(valueString, settingName):
         """Obtain the enum or string value for the provided setting.
 
@@ -57,8 +62,13 @@ def serialize_settings():
         else:
             return valueString
 
+    required_starting_moves = []
+    random_starting_moves = []
+
     for obj in form:
         if is_plando_input(obj.name):
+            continue
+        if is_starting_move_radio_button(obj.name):
             continue
         # Verify each object if its value is a string convert it to a bool
         if obj.value.lower() in ["true", "false"]:
@@ -71,6 +81,12 @@ def serialize_settings():
     # find all input boxes and verify their checked status
     for element in js.document.getElementsByTagName("input"):
         if is_plando_input(element.name):
+            continue
+        if is_starting_move_radio_button(element.name) and element.checked:
+            if element.id.startswith("start"):
+                required_starting_moves.append(Items(int(element.name[18:])))
+            elif element.id.startswith("random"):
+                random_starting_moves.append(Items(int(element.name[18:])))
             continue
         if element.type == "checkbox" and not element.checked:
             if not form_data.get(element.name):
@@ -89,4 +105,6 @@ def serialize_settings():
                 if element.options.item(i).selected:
                     values.append(get_enum_or_string_value(element.options.item(i).value, element.getAttribute("name")))
             form_data[element.getAttribute("name")] = values
+    form_data["starting_move_list_selected"] = required_starting_moves
+    form_data["random_starting_move_list_selected"] = random_starting_moves
     return form_data

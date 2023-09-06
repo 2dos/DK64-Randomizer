@@ -4,95 +4,69 @@
         <div class="col border panel">
             <h2 class="title">MAJOR ITEMS</h2>
             <div class="flex-container">
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip" title="Items are shuffled amongst each other.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="shuffle_items"
-                                id="shuffle_items"
-                                value="True"/>
-                        Item Randomizer
-                    </label>
-                    {{ list_selector(itemRando, "item_rando_list", "ITEM RANDO SELECTOR", "This will open a popup that will let you customize what items are shuffled in the pool.&#10;This defaults to All options.", 14) }}
-                    {# Remove end </div> as it's included in the macro for formatting #}
-                <div class="spacer"></div>
-            </div>
-            <div class="flex-container">
-                <div class="item-select">
-                    <p class="select-title">Move Randomizer</p>
-                    <select name="move_rando"
-                            id="move_rando"
-                            class="form-select"
-                            aria-label="Randomization type"
-                            data-toggle="tooltip"
-                            title="Determines if and how moves are randomized.&#10;-Vanilla: Moves are in their vanilla locations and can only be bought by their normal kongs.&#10;-Shuffle: Moves can be randomized to different shops, but must still be bought by their normal kong. Shared moves can be bought by any kong.&#10;-Cross Kong Purchases: Kongs can now purchase another kongs moves. Shop Indicator will still show which kong buys the move.">
-                        <option id="move_off"
-                                selected
-                                value="off"
-                                title="Moves are in their vanilla locations and can only be bought by their normal kongs.">
-                            Vanilla
-                        </option>
-                        <option id="move_on" value="on">
-                            Shuffle
-                        </option>
-                        <option id="move_on_cross_purchase" value="cross_purchase">
-                            Cross Kong Purchases
-                        </option>
-                    </select>
-                </div>
-                <div class="item-select">
-                    <p class="select-title">Training Barrels</p>
-                    <select name="training_barrels"
-                            id="training_barrels"
-                            class="form-select"
-                            aria-label="Randomization type"
-                            data-toggle="tooltip"
-                            title="Determines if and how training barrel moves are randomized.&#10;-Vanilla: Training barrel moves are learned from the training barrels.&#10;-Shuffle: Training barrel moves are shuffled with other moves, giving you 4 random starting moves.">
-                        <option id="training_barrels_normal" value="normal">
-                            Vanilla
-                        </option>
-                        <option id="training_barrels_shuffled" value="shuffled">
-                            Shuffle
-                        </option>
-                    </select>
-                </div>
-                <div class="flex-column-container">
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                                title="Simian Slam is your reward for completing the Training Grounds. If unchecked, a starting move will be placed there instead and Simian Slam will be shuffled into the world.">
-                            <input class="form-check-input"
-                                    type="checkbox"
-                                    name="start_with_slam"
-                                    id="start_with_slam"
-                                    value="True"/>
-                            Start with Simian Slam
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
+                <div class="flex-column-container"  style="margin-bottom: 10px;">
+                    <div class="form-check form-switch item-switch" style="max-height: 24px;">
                         <label data-toggle="tooltip" title="Items are shuffled amongst each other.">
                             <input class="form-check-input"
                                     type="checkbox"
-                                    name="choose_starting_moves"
-                                    id="choose_starting_moves"
+                                    name="shuffle_items"
+                                    id="shuffle_items"
                                     value="True"/>
-                            Choose Starting Moves
+                            Item Randomizer
                         </label>
-                        {{ list_selector(starting_moves, "starting_move_list", "CHOOSE STARTING MOVES", "This will open a popup that will let you pick the moves that are eligible to be starting moves.", 38) }}
-                        {# Remove end </div> as it's included in the macro for formatting #}
+                        {{ list_selector(itemRando, "item_rando_list", "ITEM RANDO SELECTOR", "This will open a popup that will let you customize what items are shuffled in the pool.&#10;This defaults to All options.", 14) }}
+                    {# Remove end </div> as it's included in the macro for formatting #}
+                    <div class="item-select">
+                        <p class="select-title">Move Randomizer</p>
+                        <select name="move_rando"
+                                id="move_rando"
+                                class="form-select"
+                                aria-label="Randomization type"
+                                data-toggle="tooltip"
+                                title="Determines if and how moves are randomized.&#10;-Vanilla: Moves are in their vanilla locations and can only be bought by their normal kongs.&#10;-Shuffle: Moves can be randomized to different shops, but must still be bought by their normal kong. Shared moves can be bought by any kong.&#10;-Cross Kong Purchases: Kongs can now purchase another kongs moves. Shop Indicator will still show which kong buys the move.">
+                            <option id="move_off"
+                                    selected
+                                    value="off"
+                                    title="Moves are in their vanilla locations and can only be bought by their normal kongs.">
+                                Vanilla
+                            </option>
+                            <option id="move_on" value="on">
+                                Shuffle
+                            </option>
+                            <option id="move_on_cross_purchase" value="cross_purchase">
+                                Cross Kong Purchases
+                            </option>
+                        </select>
+                    </div>
                 </div>
-                <div class="item-select">
-                    <p class="select-title">Starting Moves Count</p>
-                    <input min="0"
-                            max="40"
-                            name="starting_moves_count"
-                            id="starting_moves_count"
-                            style="width: 15%"
-                            class="form-control center-div"
-                            type="number"
+                <div class="flex-column-container" style="flex-grow: 1">
+                    <div class="item-select" style="margin-top: 0; max-height: 34px;">
+                        <button
+                            class="btn btn-primary"
+                            type="button"
+                            href="#"
+                            id="starting_moves_modal"
+                            data-bs-toggle="modal"
+                            data-bs-target="#starting_moves_Modal"
                             data-toggle="tooltip"
-                            title="Amount of moves given at the start of a new seed that would be otherwise randomized."
-                            default="0"
-                            placeholder="0"/>
+                            title="Choose your starting moves and your pool of moves you can randomly start with.">
+                            Customize Starting Moves
+                        </button>
+                    </div>
+                    <div class="item-select">
+                        <p class="select-title">Random Starting Move Count</p>
+                        <input min="0"
+                                max="40"
+                                name="starting_moves_count"
+                                id="starting_moves_count"
+                                style="width: 15%; display: inline-block; margin-top: 0;"
+                                class="form-control center-div"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Amount of moves given at the start of a new seed chosen randomly."
+                                default="0"
+                                placeholder="0"/>
+                    </div>
                 </div>
             </div>
             <hr>
@@ -231,7 +205,7 @@
                         Shuffle Enemies
                     </label>
                     {{ list_selector(enemies, "enemies", "ENEMIES", "This will open a popup that will let you customize what enemies appear in the game.&#10;This defaults to All options.", 16) }}
-                    {# Remove end </div> as it's included in the macro for formatting #}
+                {# Remove end </div> as it's included in the macro for formatting #}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
                            title="Bonus Barrels are randomly chosen from the pool of available Bonus Barrels.">
@@ -243,7 +217,7 @@
                         Shuffle Bonus Barrels
                     </label>
                     {{ list_selector(minigames, "minigames_list", "MINIGAME SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.", 16) }}
-                    {# Remove end </div> as it's included in the macro for formatting #}
+                {# Remove end </div> as it's included in the macro for formatting #}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip" title="Enemy speeds are randomized.">
                         <input class="form-check-input"
@@ -450,13 +424,52 @@
                     </select>
                     <div style="padding: 5px;">
                         {{ list_selector(vanilla_warps, "warp_level_list", "LEVEL SELECTOR", "This will open a popup that will let you customize what levels' warps are in the pool. Any level not selected will have its vanilla warp locations.&#10;This defaults to All levels.", 10) }}
-                        {# Remove end </div> as it's included in the macro for formatting #}
-                    </div>
-                </div> 
+                    {# Remove end </div> as it's included in the macro for formatting #}
+                </div>
+            </div> 
+        </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade"
+     id="starting_moves_Modal"
+     tabindex="-1"
+     aria-labelledby="starting_moves_ModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-content-tall">
+            <div class="modal-header">
+                <h3 class="modal-title title" id="starting_moves_ModalLabel">CUSTOMIZE STARTING MOVES</h3>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+                <div class="flex-column-container" id="starting_moves_box">
+                    {% for item in custom_starting_moves %}
+                        <div class="flex-container starting-move-row px-auto justify-content-center">
+                            <div class="my-auto" style="width: 185px;">
+                                {{ item.name }}
+                            </div>
+                            <input class="btn-check" name="starting_move_box_{{ item.value }}" id="none-{{ item.value }}" type="radio" autocomplete="off">
+                            <label class="btn-always-empty my-auto ms-1" for="none-{{ item.value }}">Reset</label>
+                            <input class="btn-check" name="starting_move_box_{{ item.value }}" id="start-{{ item.value }}" type="radio" autocomplete="off">
+                            <label class="btn btn-sm btn-outline-primary my-auto ms-1" for="start-{{ item.value }}">Start With</label>
+                            <input class="btn-check" name="starting_move_box_{{ item.value }}" id="random-{{ item.value }}" type="radio" autocomplete="off">
+                            <label class="btn btn-sm btn-outline-primary my-auto ms-1" for="random-{{ item.value }}">Random</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="starting_moves_reset">Reset</button>
+                <button type="button" class="btn btn-primary" id="starting_moves_start_all">Start With All</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
 <script>
     $(function() {
         $('[data-toggle="tooltip"]').tooltip({

@@ -640,6 +640,7 @@ SettingsMap = {
     "sound_type": SoundType,
     "starting_keys_list_selected": Items,
     "starting_move_list_selected": Items,
+    "random_starting_move_list_selected": Items,
     "tiny_colors": CharacterColors,
     "training_barrels": TrainingBarrels,
     "warp_level_list_selected": Maps,
@@ -817,6 +818,7 @@ class SettingsStringEnum(IntEnum):
     spoiler_include_level_order = 153
     enable_progressive_hints = 154
     progressive_hint_text = 155
+    random_starting_move_list_selected = 156
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -826,6 +828,7 @@ DeprecatedSettings = {
     # SettingsStringEnum.cb_rando,
     SettingsStringEnum.hard_bosses,
     SettingsStringEnum.hard_enemies,
+    SettingsStringEnum.choose_starting_moves,
 }
 
 
@@ -1013,6 +1016,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.spoiler_include_level_order: SettingsStringDataType.bool,
     SettingsStringEnum.enable_progressive_hints: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_text: SettingsStringDataType.var_int,
+    SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!
@@ -1027,6 +1031,7 @@ SettingsStringListTypeMap = {
     SettingsStringEnum.warp_level_list_selected: Maps,
     SettingsStringEnum.hard_mode_selected: HardModeSelected,
     SettingsStringEnum.starting_move_list_selected: Items,
+    SettingsStringEnum.random_starting_move_list_selected: Items,
 }
 
 # This map specifies the minimum and maximum values for numeric settings.

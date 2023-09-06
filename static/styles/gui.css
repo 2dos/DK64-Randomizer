@@ -551,6 +551,10 @@ i {
   border: none;
 }
 
+.modal-content.modal-content-tall {
+  transform: translateY(5%);
+}
+
 .btn-close {
   background-color: grey;
 }
@@ -654,4 +658,25 @@ td.directional_divider {
 .settings-errors {
   margin: 0 1rem 1rem;
   text-align: left;
+}
+
+.starting-move-row {
+  padding: 5px 10px;
+}
+
+.starting-move-row:nth-child(odd) {
+  background-color: #1f1e1e;
+}
+
+.btn-always-empty {
+  padding: 4px 8px;
+  border: 1px solid #6c757d;
+  border-radius: 4px;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.btn-always-empty:hover {
+  color: white;
+  background-color: #6c757d
 }

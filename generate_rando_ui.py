@@ -38,7 +38,7 @@ async def initialize():
     # Module of Lists used for list_selector macros
     from randomizer.Enums.Types import ItemRandoSelector, KeySelector
     from randomizer.Lists.EnemyTypes import EnemySelector
-    from randomizer.Lists.Item import HHItemSelector, StartingMoveSelector
+    from randomizer.Lists.Item import HHItemSelector, CustomStartingMoveSelector
     from randomizer.Lists.Logic import GlitchSelector
     from randomizer.Lists.Minigame import MinigameSelector
     from randomizer.Lists.QoL import QoLSelector
@@ -94,7 +94,7 @@ async def initialize():
         plando_panels=PlandomizerPanels,
         plando_spawns=PlannableSpawns,
         points_spread=PointSpreadSelector,
-        starting_moves=StartingMoveSelector,
+        custom_starting_moves=CustomStartingMoveSelector,
     )
     js.document.documentElement.innerHTML = ""
     js.document.open()

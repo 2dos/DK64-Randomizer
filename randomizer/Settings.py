@@ -464,6 +464,7 @@ class Settings:
         self.enemies_selected = []
         self.glitches_selected = []
         self.starting_move_list_selected = []
+        self.random_starting_move_list_selected = []
         self.starting_keys_list_selected = []
         self.warp_level_list_selected = []
         self.select_keys = False
@@ -521,7 +522,7 @@ class Settings:
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""
-        # Correct the invalid items in the starting move selector
+        # Correct the invalid items in the starting move lists
         copy_of_starting_move_list_selected = self.starting_move_list_selected.copy()
         for item in copy_of_starting_move_list_selected:
             if item in (Items.ProgressiveSlam2, Items.ProgressiveSlam3):
@@ -533,6 +534,37 @@ class Settings:
             elif item in (Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3):
                 self.starting_move_list_selected.remove(item)
                 self.starting_move_list_selected.append(Items.ProgressiveInstrumentUpgrade)
+        copy_of_random_starting_move_list_selected = self.random_starting_move_list_selected.copy()
+        for item in copy_of_random_starting_move_list_selected:
+            if item in (Items.ProgressiveSlam2, Items.ProgressiveSlam3):
+                self.random_starting_move_list_selected.remove(item)
+                self.random_starting_move_list_selected.append(Items.ProgressiveSlam)
+            if item == Items.ProgressiveAmmoBelt2:
+                self.random_starting_move_list_selected.remove(item)
+                self.random_starting_move_list_selected.append(Items.ProgressiveAmmoBelt)
+            elif item in (Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3):
+                self.random_starting_move_list_selected.remove(item)
+                self.random_starting_move_list_selected.append(Items.ProgressiveInstrumentUpgrade)
+        # Some settings have to be derived from the guaranteed starting moves - this needs to be done early in this method
+        # If we are *guaranteed* to start with a slam, place it in the training grounds reward slot and don't make it hintable, as before
+        if Items.ProgressiveSlam in self.starting_move_list_selected:
+            self.start_with_slam = True
+            self.starting_move_list_selected.remove(Items.ProgressiveSlam)
+        # If we are *guaranteed* to start with ALL training moves, put them in their vanilla locations and don't make them hintable, as before
+        if (
+            Items.Vines in self.starting_move_list_selected
+            and Items.Barrels in self.starting_move_list_selected
+            and Items.Oranges in self.starting_move_list_selected
+            and Items.Swim in self.starting_move_list_selected
+        ):
+            self.training_barrels = TrainingBarrels.normal
+            self.starting_move_list_selected.remove(Items.Vines)
+            self.starting_move_list_selected.remove(Items.Barrels)
+            self.starting_move_list_selected.remove(Items.Oranges)
+            self.starting_move_list_selected.remove(Items.Swim)
+        else:
+            self.training_barrels = TrainingBarrels.shuffled
+        self.starting_moves_count = self.starting_moves_count + len(self.starting_move_list_selected)
 
         # If we're using the vanilla door shuffle, turn both wrinkly and tns rando on
         if self.vanilla_door_rando:
@@ -662,7 +694,7 @@ class Settings:
         if self.shockwave_status == ShockwaveStatus.shuffled:
             location_cap -= 1
         locations_to_add = self.starting_moves_count
-        # If the training barrels are shuffled in, we may have to remove the training barrel locations because of the above comment
+        # If the training barrels are shuffled in, we may have to remove the training barrel locations if we don't have enough starting moves to place
         if self.training_barrels == TrainingBarrels.shuffled:
             locations_to_add -= 4
         if locations_to_add > location_cap:
