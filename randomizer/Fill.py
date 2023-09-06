@@ -1978,7 +1978,7 @@ def FillKongsAndMoves(spoiler, placedTypes):
     # Fill the empty starting locations
     if any(locationsNeedingMoves):
         newlyPlacedItems = []
-        toBeUnplaced = []
+        # Identify all possible items that can be starting moves if we need to randomly pick some
         possibleStartingMoves = ItemPool.AllKongMoves().copy()
         if len(locationsNeedingMoves) < 10:
             # Generally only include one copy of the useless progressive moves to bias against picking them when you only have a few starting moves
@@ -1992,13 +1992,10 @@ def FillKongsAndMoves(spoiler, placedTypes):
         if spoiler.settings.shockwave_status in (ShockwaveStatus.shuffled, ShockwaveStatus.shuffled_decoupled):
             possibleStartingMoves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
         shuffle(possibleStartingMoves)
-        startingMovePool = [
-            move for move in spoiler.settings.starting_move_list_selected if move in possibleStartingMoves
-        ]  # Moves in the selector must be eligible items - this is to filter out training moves if they are not shuffled
-        # If we intend on starting with a slam but we know the training grounds reward is a slam, that counts for our purposes
-        if spoiler.settings.start_with_slam and Items.ProgressiveSlam in startingMovePool:
-            startingMovePool.remove(Items.ProgressiveSlam)
+        # Assemble the starting move pool
+        startingMovePool = [move for move in spoiler.settings.random_starting_move_list_selected]  # These are the user-chosen moves eligible to be random starting moves
         shuffle(startingMovePool)
+        startingMovePool.extend(spoiler.settings.starting_move_list_selected)  # Append the guaranteed starting moves at the end so they're always picked first
         # For each location needing a move, put in a random valid move
         for locationId in locationsNeedingMoves:
             # If there are moves in the starting move pool, always pick from there first
@@ -2015,12 +2012,13 @@ def FillKongsAndMoves(spoiler, placedTypes):
             if locationId in spoiler.settings.debug_fill.keys():
                 del spoiler.settings.debug_fill[LocationList[locationId].name]
             spoiler.settings.debug_fill[LocationList[locationId].name] = startingMove
-        # For any move that we've now placed twice, Unplace it from the non-starting-move location
-        if any(toBeUnplaced):
-            for location in LocationList.values():
-                if location.item in (toBeUnplaced) and location.type not in (Types.TrainingBarrel, Types.PreGivenMove):
-                    toBeUnplaced.remove(location.item)
-                    location.UnplaceItem()
+        # If we ever decide to place starting moves after other moves, we may find ourselves having placed moves twice.
+        # I don't foresee a reason to do this ever, just something to consider if things change.
+        # if any(toBeUnplaced):
+        #     for location in LocationList.values():
+        #         if location.item in (toBeUnplaced) and location.type not in (Types.TrainingBarrel, Types.PreGivenMove):
+        #             toBeUnplaced.remove(location.item)
+        #             location.UnplaceItem()
         # Compile all the moves we now know are placed
         placedMoves.extend(newlyPlacedItems)
 
