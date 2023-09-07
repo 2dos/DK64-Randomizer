@@ -6,7 +6,6 @@ from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import RegionMapList
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.LogicFiles.AngryAztec import LogicRegions as AngryAztecRegions

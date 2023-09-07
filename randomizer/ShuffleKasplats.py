@@ -239,7 +239,7 @@ def KasplatShuffle(spoiler, LogicVariables):
                     ShuffleKasplatsInVanillaLocations(spoiler, LogicVariables)
                 # Verify world by assuring all locations are still reachable
                 Fill.Reset()
-                if not Fill.VerifyWorld(spoiler.settings):
+                if not Fill.VerifyWorld(spoiler):
                     if retries < 10:
                         raise Ex.KasplatPlacementException
                     else:
@@ -254,9 +254,4 @@ def KasplatShuffle(spoiler, LogicVariables):
                 js.postMessage("Kasplat placement failed. Retrying. Tries: " + str(retries))
 
 
-def InitKasplatMap(LogicVariables):
-    """Initialize kasplat_map in logic variables with default values."""
-    # Just use default kasplat associations.
-    LogicVariables.kasplat_map = {}
-    LogicVariables.kasplat_map.update(shufflable)
-    LogicVariables.kasplat_map.update(constants)
+

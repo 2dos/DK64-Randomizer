@@ -41,7 +41,6 @@ from randomizer.Enums.Settings import (
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Lists.Warps import BananaportVanilla
@@ -1059,48 +1058,30 @@ class LogicVarHolder:
         )
 
 
-LogicVariables = LogicVarHolder()
-
 # Import regions from logic files
-Regions = {}
-Regions.update(randomizer.LogicFiles.DKIsles.LogicRegions)
-Regions.update(randomizer.LogicFiles.JungleJapes.LogicRegions)
-Regions.update(randomizer.LogicFiles.AngryAztec.LogicRegions)
-Regions.update(randomizer.LogicFiles.FranticFactory.LogicRegions)
-Regions.update(randomizer.LogicFiles.GloomyGalleon.LogicRegions)
-Regions.update(randomizer.LogicFiles.FungiForest.LogicRegions)
-Regions.update(randomizer.LogicFiles.CrystalCaves.LogicRegions)
-Regions.update(randomizer.LogicFiles.CreepyCastle.LogicRegions)
-Regions.update(randomizer.LogicFiles.HideoutHelm.LogicRegions)
-Regions.update(randomizer.LogicFiles.Shops.LogicRegions)
+RegionsOriginal = {
+    **randomizer.LogicFiles.DKIsles.LogicRegions,
+    **randomizer.LogicFiles.JungleJapes.LogicRegions,
+    **randomizer.LogicFiles.AngryAztec.LogicRegions,
+    **randomizer.LogicFiles.FranticFactory.LogicRegions,
+    **randomizer.LogicFiles.GloomyGalleon.LogicRegions,
+    **randomizer.LogicFiles.FungiForest.LogicRegions,
+    **randomizer.LogicFiles.CrystalCaves.LogicRegions,
+    **randomizer.LogicFiles.CreepyCastle.LogicRegions,
+    **randomizer.LogicFiles.HideoutHelm.LogicRegions,
+    **randomizer.LogicFiles.Shops.LogicRegions
+}
 
 # Auxillary regions for colored bananas and banana coins
-CollectibleRegions = {}
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.DKIsles.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.JungleJapes.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.AngryAztec.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.FranticFactory.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.GloomyGalleon.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.FungiForest.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.CrystalCaves.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions)
+CollectibleRegionsOriginal = {
+    **randomizer.CollectibleLogicFiles.DKIsles.LogicRegions,
+    **randomizer.CollectibleLogicFiles.JungleJapes.LogicRegions,
+    **randomizer.CollectibleLogicFiles.AngryAztec.LogicRegions,
+    **randomizer.CollectibleLogicFiles.FranticFactory.LogicRegions,
+    **randomizer.CollectibleLogicFiles.GloomyGalleon.LogicRegions,
+    **randomizer.CollectibleLogicFiles.FungiForest.LogicRegions,
+    **randomizer.CollectibleLogicFiles.CrystalCaves.LogicRegions,
+    **randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions
+}
 
 
-def ResetRegionAccess():
-    """Reset kong access for all regions."""
-    for region in Regions.values():
-        region.ResetAccess()
-
-
-def ResetCollectibleRegions():
-    """Reset if each collectible has been added."""
-    for region in CollectibleRegions.values():
-        for collectible in region:
-            collectible.added = False
-            # collectible.enabled = collectible.vanilla
-
-
-def ClearAllLocations():
-    """Clear item from every location."""
-    for location in LocationList.values():
-        location.item = None

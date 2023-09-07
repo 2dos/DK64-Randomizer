@@ -58,9 +58,10 @@ def Reset():
         RemoveRootExit(exit)
 
 
-def AttemptConnect(settings, frontExit, frontId, backExit, backId):
+def AttemptConnect(spoiler, frontExit, frontId, backExit, backId):
     """Attempt to connect two exits, checking if the world is valid if they are connected."""
     # Remove connections to world root
+    settings = spoiler.settings
     frontReverse = None
     if not settings.decoupled_loading_zones:
         # Prevents an error if trying to assign an entrance back to itself
@@ -78,7 +79,7 @@ def AttemptConnect(settings, frontExit, frontId, backExit, backId):
         backReverse.shuffled = True
         backReverse.shuffledId = frontExit.back.reverse
     # Attempt to verify world
-    valid = Fill.VerifyWorld(settings)
+    valid = Fill.VerifyWorld(spoiler)
     # If world is not valid, restore root connections and undo new connections
     if not valid:
         AddRootExit(backRootExit)
@@ -91,8 +92,9 @@ def AttemptConnect(settings, frontExit, frontId, backExit, backId):
     return valid
 
 
-def ShuffleExitsInPool(settings, frontpool, backpool):
+def ShuffleExitsInPool(spoiler, frontpool, backpool):
     """Shuffle exits within a specific pool."""
+    settings = spoiler.settings
     NonTagRegions = [x for x in backpool if not Logic.Regions[ShufflableExits[x].back.regionId].tagbarrel]
     NonTagLeaves = [x for x in NonTagRegions if len(Logic.Regions[ShufflableExits[x].back.regionId].exits) == 1]
     random.shuffle(NonTagLeaves)
@@ -154,7 +156,7 @@ def ShuffleExitsInPool(settings, frontpool, backpool):
         # Select a random origin
         for frontId in origins:
             frontExit = ShufflableExits[frontId]
-            if AttemptConnect(settings, frontExit, frontId, backExit, backId):
+            if AttemptConnect(spoiler, frontExit, frontId, backExit, backId):
                 # print("Assigned " + frontExit.name + " --> " + backExit.name)
                 frontpool.remove(frontId)
                 if not settings.decoupled_loading_zones:
@@ -191,10 +193,11 @@ def AssumeExits(settings, frontpool, backpool, newpool):
         AddRootExit(newExit)
 
 
-def ShuffleExits(settings: Settings):
+def ShuffleExits(spoiler):
     """Shuffle exit pools depending on settings."""
     # Set up front and back entrance pools for each setting
     # Assume all shuffled exits reachable by default
+    settings = spoiler.settings
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
         # If we are restricted on kong locations, we need to carefully place levels in order to meet the kongs-by-level requirement
         if settings.kongs_for_progression and not (settings.shuffle_items and Types.Kong in settings.shuffled_location_types):
@@ -210,21 +213,21 @@ def ShuffleExits(settings: Settings):
         backpool = []
         AssumeExits(settings, frontpool, backpool, list(ShufflableExits.keys()))
         # Shuffle each entrance pool
-        ShuffleExitsInPool(settings, frontpool, backpool)
+        ShuffleExitsInPool(spoiler, frontpool, backpool)
     # If levels rando is on, need to update Blocker and T&S requirements to match
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
         UpdateLevelProgression(settings)
 
 
-def ExitShuffle(settings):
+def ExitShuffle(spoiler):
     """Facilitate shuffling of exits."""
     retries = 0
     while True:
         try:
             # Shuffle entrances based on settings
-            ShuffleExits(settings)
+            ShuffleExits(spoiler.settings)
             # Verify world by assuring all locations are still reachable
-            if not Fill.VerifyWorld(settings):
+            if not Fill.VerifyWorld(spoiler):
                 raise Ex.EntrancePlacementException
             return
         except Ex.EntrancePlacementException:

@@ -25,7 +25,7 @@ class MapIDCombo:
 class Location:
     """A shufflable location at which a random item can be placed."""
 
-    def __init__(self, level, name, default, location_type, kong=Kongs.any, data=None, logically_relevant=False):
+    def __init__(self, level, name, default, location_type, LocationList, kong=Kongs.any, data=None, logically_relevant=False):
         """Initialize with given parameters."""
         if data is None:
             data = []
@@ -38,6 +38,7 @@ class Location:
         self.is_reward = False
         self.map_id_list = None
         self.level = level
+        self.LocationList = LocationList
         self.kong = kong
         self.logically_relevant = logically_relevant  # This is True if this location is needed to derive the logic for another location
         self.placement_index = None
@@ -86,14 +87,14 @@ class Location:
         # If we're placing a real move here, lock out mutually exclusive shop locations
         if item != Items.NoItem and self.type == Types.Shop:
             for location in ShopLocationReference[self.level][self.vendor]:
-                if LocationList[location].smallerShopsInaccessible:
+                if self.LocationList[location].smallerShopsInaccessible:
                     continue
                 # If this is a shared spot, lock out kong-specific locations in this shop
-                if self.kong == Kongs.any and LocationList[location].kong != Kongs.any:
-                    LocationList[location].inaccessible = True
+                if self.kong == Kongs.any and self.LocationList[location].kong != Kongs.any:
+                    self.LocationList[location].inaccessible = True
                 # If this is a kong-specific spot, lock out the shared location in this shop
-                if self.kong != Kongs.any and LocationList[location].kong == Kongs.any:
-                    LocationList[location].inaccessible = True
+                if self.kong != Kongs.any and self.LocationList[location].kong == Kongs.any:
+                    self.LocationList[location].inaccessible = True
                     break  # There's only one shared spot to block
 
     def PlaceConstantItem(self, item):
@@ -122,19 +123,19 @@ class Location:
         if self.type == Types.Shop:
             # Check other locations in this shop
             for location_id in ShopLocationReference[self.level][self.vendor]:
-                if LocationList[location_id].smallerShopsInaccessible:
+                if self.LocationList[location_id].smallerShopsInaccessible:
                     continue
-                if LocationList[location_id].kong == Kongs.any and LocationList[location_id].inaccessible:
+                if self.LocationList[location_id].kong == Kongs.any and self.LocationList[location_id].inaccessible:
                     # If there are no other items remaining in this shop, then we can unlock the shared location
-                    itemsInThisShop = len([location for location in ShopLocationReference[self.level][self.vendor] if LocationList[location].item not in (None, Items.NoItem)])
+                    itemsInThisShop = len([location for location in ShopLocationReference[self.level][self.vendor] if self.LocationList[location].item not in (None, Items.NoItem)])
                     if itemsInThisShop == 0:
-                        LocationList[location_id].inaccessible = False
+                        self.LocationList[location_id].inaccessible = False
                 # Locations are only inaccessible due to lockouts. If any exist, they're because this location caused them to be locked out.
-                elif LocationList[location_id].inaccessible:
-                    LocationList[location_id].inaccessible = False
+                elif self.LocationList[location_id].inaccessible:
+                    self.LocationList[location_id].inaccessible = False
 
 
-LocationList = {
+LocationListOriginal = {
     # Training Barrel locations
     Locations.IslesVinesTrainingBarrel: Location(Levels.DKIsles, "Isles Vines Training Barrel", Items.Vines, Types.TrainingBarrel, Kongs.any, [123]),
     Locations.IslesSwimTrainingBarrel: Location(Levels.DKIsles, "Isles Dive Training Barrel", Items.Swim, Types.TrainingBarrel, Kongs.any, [120]),
@@ -1105,8 +1106,3 @@ ShopLocationReference[Levels.DKIsles] = {}
 ShopLocationReference[Levels.DKIsles][VendorType.Cranky] = [Locations.DonkeyIslesPotion, Locations.DiddyIslesPotion, Locations.LankyIslesPotion, Locations.TinyIslesPotion, Locations.ChunkyIslesPotion, Locations.SimianSlam]
 
 
-def ResetLocationList():
-    """Reset the LocationList to values conducive to a new fill."""
-    for location in LocationList.values():
-        location.PlaceDefaultItem()
-    # Known to be incomplete - it should also confirm the correct locations of Fairies, Dirt, and Crowns

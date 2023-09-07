@@ -15,9 +15,7 @@ from randomizer.Lists.Location import (
     DiddyMoveLocations,
     DonkeyMoveLocations,
     LankyMoveLocations,
-    LocationList,
     SharedMoveLocations,
-    SharedShopLocations,
     TinyMoveLocations,
     TrainingBarrelLocations,
 )
@@ -128,9 +126,10 @@ def GenerateRandomPrice(weight, avg, stddev, upperLimit):
     return newPrice
 
 
-def GetMaxForKong(settings, kong):
+def GetMaxForKong(spoiler, kong):
     """Get the maximum amount of coins the given kong can spend."""
     # Track shared moves specifically because their prices are stored specially
+    settings = spoiler.settings
     found_slams = 0
     found_instrument_upgrades = 0
     found_ammo_belts = 0
@@ -138,7 +137,7 @@ def GetMaxForKong(settings, kong):
     # Look for moves placed in shared move locations that have prices
     paidSharedMoveLocations = SharedMoveLocations - TrainingBarrelLocations - {Locations.CameraAndShockwave}
     for location in paidSharedMoveLocations:
-        item_id = LocationList[location].item
+        item_id = spoiler.LocationList[location].item
         if item_id is not None and item_id != Items.NoItem:
             if item_id == Items.ProgressiveSlam:
                 total_price += settings.prices[item_id][found_slams]
@@ -168,9 +167,9 @@ def GetMaxForKong(settings, kong):
         kongMoveLocations = ChunkyMoveLocations.copy()
 
     for location in kongMoveLocations:
-        if LocationList[location].inaccessible:  # Ignore any shop locations that don't even exist anymore
+        if spoiler.LocationList[location].inaccessible:  # Ignore any shop locations that don't even exist anymore
             continue
-        item_id = LocationList[location].item
+        item_id = spoiler.LocationList[location].item
         if item_id is not None and item_id != Items.NoItem:
             if item_id == Items.ProgressiveSlam:
                 total_price += settings.prices[item_id][found_slams]
