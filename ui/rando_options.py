@@ -133,7 +133,6 @@ def max_randomized_fairies(event):
 
 
 @bind("click", "shuffle_items")
-@bind("change", "training_barrels")
 @bind("change", "move_rando")
 @bind("focusout", "starting_moves_count")
 def max_starting_moves_count(event):
@@ -141,13 +140,9 @@ def max_starting_moves_count(event):
     move_count = js.document.getElementById("starting_moves_count")
     moves = js.document.getElementById("move_rando")
     item_rando = js.document.getElementById("shuffle_items")
-    training_barrels = js.document.getElementById("training_barrels")
     max_starting_moves = 40
     if not item_rando.checked and moves.value != "off":
-        if training_barrels.value == "normal":
-            max_starting_moves = 0
-        else:
-            max_starting_moves = 4
+        max_starting_moves = 4
     if not move_count.value:
         move_count.value = 4
     elif 0 > int(move_count.value):
@@ -663,7 +658,6 @@ def disable_move_shuffles(evt):
     training_barrels = js.document.getElementById("training_barrels")
     shockwave_status = js.document.getElementById("shockwave_status")
     starting_moves_count = js.document.getElementById("starting_moves_count")
-    choose_starting_moves = js.document.getElementById("choose_starting_moves")
     start_with_slam = js.document.getElementById("start_with_slam")
     try:
         if moves.value == "start_with":
@@ -674,8 +668,6 @@ def disable_move_shuffles(evt):
             shockwave_status.setAttribute("disabled", "disabled")
             starting_moves_count.value = 40
             starting_moves_count.setAttribute("disabled", "disabled")
-            choose_starting_moves.checked = False
-            choose_starting_moves.setAttribute("disabled", "disabled")
             start_with_slam.checked = True
             start_with_slam.setAttribute("disabled", "disabled")
         elif moves.value == "off":
@@ -686,8 +678,6 @@ def disable_move_shuffles(evt):
             shockwave_status.setAttribute("disabled", "disabled")
             starting_moves_count.value = 40
             starting_moves_count.setAttribute("disabled", "disabled")
-            choose_starting_moves.checked = False
-            choose_starting_moves.setAttribute("disabled", "disabled")
             start_with_slam.checked = True
             start_with_slam.setAttribute("disabled", "disabled")
         else:
@@ -695,7 +685,6 @@ def disable_move_shuffles(evt):
             training_barrels.removeAttribute("disabled")
             shockwave_status.removeAttribute("disabled")
             starting_moves_count.removeAttribute("disabled")
-            choose_starting_moves.removeAttribute("disabled")
             start_with_slam.removeAttribute("disabled")
     except AttributeError:
         pass
@@ -852,7 +841,6 @@ def item_rando_list_changed(evt):
         move_rando.setAttribute("disabled", "disabled")
         smaller_shops.removeAttribute("disabled")
         # Prevent UI breaking if Vanilla/Unlock All moves was selected before selection Shops in Item Rando
-        js.document.getElementById("training_barrels").removeAttribute("disabled")
         js.document.getElementById("shockwave_status").removeAttribute("disabled")
         js.document.getElementById("random_prices").removeAttribute("disabled")
     else:
@@ -878,6 +866,9 @@ def preset_select_changed(event):
         for select in js.document.getElementsByTagName("select"):
             if js.document.querySelector("#nav-cosmetics").contains(select) is False:
                 select.selectedIndex = -1
+        # Uncheck all starting move radio buttons for the import to then set them correctly
+        for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
+            starting_move_button.checked = False
         js.document.getElementById("presets").selectedIndex = 0
         for key in settings:
             try:
@@ -890,6 +881,16 @@ def preset_select_changed(event):
                         js.document.getElementsByName(key)[0].checked = True
                     js.jq(f"#{key}").removeAttr("disabled")
                 elif type(settings[key]) is list:
+                    if key in ("starting_move_list_selected", "random_starting_move_list_selected"):
+                        for item in settings[key]:
+                            radio_buttons = js.document.getElementsByName("starting_move_box_" + str(int(item)))
+                            if key == "starting_move_list_selected":
+                                start_button = [button for button in radio_buttons if button.id.startswith("start")][0]
+                                start_button.checked = True
+                            else:
+                                random_button = [button for button in radio_buttons if button.id.startswith("random")][0]
+                                random_button.checked = True
+                        continue
                     selector = js.document.getElementById(key)
                     if selector.tagName == "SELECT":
                         for item in settings[key]:
@@ -963,7 +964,6 @@ def preset_select_changed(event):
     toggle_logic_type(None)
     toggle_key_settings(None)
     max_starting_moves_count(None)
-    toggle_choose_starting_items(None)
 
 
 @bind("click", "enable_plandomizer")
@@ -1243,17 +1243,15 @@ def toggle_vanilla_door_rando(evt):
         tns_rando.removeAttribute("disabled")
 
 
-@bind("click", "choose_starting_moves")
-def toggle_choose_starting_items(evt):
-    """Enable or disable the starting item selector modal."""
-    disabled = True
-    selector = js.document.getElementById("starting_move_list_modal")
-    if js.document.getElementById("choose_starting_moves").checked:
-        disabled = False
-    try:
-        if disabled:
-            selector.setAttribute("disabled", "disabled")
-        else:
-            selector.removeAttribute("disabled")
-    except AttributeError:
-        pass
+@bind("click", "starting_moves_reset")
+def reset_starting_moves(evt):
+    """Reset the starting move selector to have nothing selected."""
+    for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
+        starting_move_button.checked = starting_move_button.id.startswith("none")
+
+
+@bind("click", "starting_moves_start_all")
+def start_all_starting_moves(evt):
+    """Update the starting move selector to start with all items."""
+    for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
+        starting_move_button.checked = starting_move_button.id.startswith("start")

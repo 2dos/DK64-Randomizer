@@ -34,7 +34,6 @@ from ui.rando_options import (
     max_starting_moves_count,
     toggle_b_locker_boxes,
     toggle_bananaport_selector,
-    toggle_choose_starting_items,
     toggle_counts_boxes,
     toggle_item_rando,
     toggle_key_settings,
@@ -73,6 +72,9 @@ def import_settings_string(event):
     for select in js.document.getElementsByTagName("select"):
         if js.document.querySelector("#nav-cosmetics").contains(select) is False:
             select.selectedIndex = -1
+    # Uncheck all starting move radio buttons for the import to then set them correctly
+    for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
+        starting_move_button.checked = False
     js.document.getElementById("presets").selectedIndex = 0
     for key in settings:
         try:
@@ -85,6 +87,16 @@ def import_settings_string(event):
                     js.document.getElementsByName(key)[0].checked = True
                 js.jq(f"#{key}").removeAttr("disabled")
             elif type(settings[key]) is list:
+                if key in ("starting_move_list_selected", "random_starting_move_list_selected"):
+                    for item in settings[key]:
+                        radio_buttons = js.document.getElementsByName("starting_move_box_" + str(int(item)))
+                        if key == "starting_move_list_selected":
+                            start_button = [button for button in radio_buttons if button.id.startswith("start")][0]
+                            start_button.checked = True
+                        else:
+                            random_button = [button for button in radio_buttons if button.id.startswith("random")][0]
+                            random_button.checked = True
+                    continue
                 selector = js.document.getElementById(key)
                 if selector.tagName == "SELECT":
                     for item in settings[key]:
@@ -138,7 +150,6 @@ def import_settings_string(event):
     disable_helm_phases(None)
     max_starting_moves_count(None)
     enable_plandomizer(None)
-    toggle_choose_starting_items(None)
 
 
 @bind("change", "patchfileloader")

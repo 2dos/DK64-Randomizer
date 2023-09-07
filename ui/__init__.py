@@ -26,7 +26,6 @@ from ui.rando_options import (
     max_starting_moves_count,
     set_preset_options,
     toggle_b_locker_boxes,
-    toggle_choose_starting_items,
     toggle_counts_boxes,
     toggle_item_rando,
     toggle_key_settings,
@@ -74,4 +73,3 @@ toggle_key_settings(None)
 disable_helm_hurry(None)
 toggle_vanilla_door_rando(None)
 enable_plandomizer(None)
-toggle_choose_starting_items(None)
