@@ -1066,7 +1066,7 @@ RegionsOriginal = {
     **randomizer.LogicFiles.CrystalCaves.LogicRegions,
     **randomizer.LogicFiles.CreepyCastle.LogicRegions,
     **randomizer.LogicFiles.HideoutHelm.LogicRegions,
-    **randomizer.LogicFiles.Shops.LogicRegions
+    **randomizer.LogicFiles.Shops.LogicRegions,
 }
 
 # Auxillary regions for colored bananas and banana coins
@@ -1078,7 +1078,5 @@ CollectibleRegionsOriginal = {
     **randomizer.CollectibleLogicFiles.GloomyGalleon.LogicRegions,
     **randomizer.CollectibleLogicFiles.FungiForest.LogicRegions,
     **randomizer.CollectibleLogicFiles.CrystalCaves.LogicRegions,
-    **randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions
+    **randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions,
 }
-
-

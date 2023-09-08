@@ -106,19 +106,16 @@ class Spoiler:
         self.hint_list = {}
         self.settings.update_valid_locations(self)
 
-
     def Reset(self):
         """Reset logic variables and region info that should be reset before a search."""
         self.LogicVariables.Reset()
         self.ResetRegionAccess()
         self.ResetCollectibleRegions()
 
-
     def ResetRegionAccess(self):
         """Reset kong access for all regions."""
         for region in self.RegionList.values():
             region.ResetAccess()
-
 
     def ResetCollectibleRegions(self):
         """Reset if each collectible has been added."""
@@ -126,7 +123,6 @@ class Spoiler:
             for collectible in region:
                 collectible.added = False
                 # collectible.enabled = collectible.vanilla
-
 
     def ClearAllLocations(self):
         """Clear item from every location."""

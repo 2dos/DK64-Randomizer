@@ -252,6 +252,3 @@ def KasplatShuffle(spoiler, LogicVariables):
             except Ex.KasplatPlacementException:
                 retries += 1
                 js.postMessage("Kasplat placement failed. Retrying. Tries: " + str(retries))
-
-
-

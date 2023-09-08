@@ -426,7 +426,9 @@ def compileHints(spoiler: Spoiler):
         Items.CreepyCastleKey: 0,
         Items.HideoutHelmKey: 0,
     }
-    woth_key_ids = [spoiler.LocationList[woth_loc].item for woth_loc in spoiler.woth_locations if ItemList[spoiler.LocationList[woth_loc].item].type == Types.Key and woth_loc in spoiler.woth_paths.keys()]
+    woth_key_ids = [
+        spoiler.LocationList[woth_loc].item for woth_loc in spoiler.woth_locations if ItemList[spoiler.LocationList[woth_loc].item].type == Types.Key and woth_loc in spoiler.woth_paths.keys()
+    ]
     # Precalculate the locations of the Keys - this info is used by distribution generation and hint generation
     key_location_ids = {}
     for location_id, location in spoiler.LocationList.items():
@@ -446,7 +448,9 @@ def compileHints(spoiler: Spoiler):
     # Your training in moves which you know are always needed beat K. Rool are pointless to hint
     if Kongs.diddy in spoiler.settings.krool_order and Kongs.diddy in spoiler.krool_paths.keys():
         useless_locations[Kongs.diddy] = [
-            loc for loc in spoiler.krool_paths[Kongs.diddy] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.Peanut, Items.RocketbarrelBoost]
+            loc
+            for loc in spoiler.krool_paths[Kongs.diddy]
+            if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.Peanut, Items.RocketbarrelBoost]
         ]
     if Kongs.lanky in spoiler.settings.krool_order and Kongs.lanky in spoiler.krool_paths.keys():
         useless_locations[Kongs.lanky] = [
@@ -1521,7 +1525,9 @@ def compileHints(spoiler: Spoiler):
             shops_in_region = 0
             regions_in_region = [region for region in spoiler.RegionList.values() if region.hint_name == foolish_name]
             for region in regions_in_region:
-                foolish_location_score += len([loc for loc in region.locations if not spoiler.LocationList[loc.id].inaccessible and spoiler.LocationList[loc.id].type in spoiler.settings.shuffled_location_types])
+                foolish_location_score += len(
+                    [loc for loc in region.locations if not spoiler.LocationList[loc.id].inaccessible and spoiler.LocationList[loc.id].type in spoiler.settings.shuffled_location_types]
+                )
                 if region.level == Levels.Shops and region.hint_name != "Jetpac Game":  # Jetpac isn't a "real" shop, it's in the Shops level for convenience
                     shops_in_region += 1
             if "Medal Rewards" in foolish_name:  # "Medal Rewards" regions are cb foolish hints, which are just generally more valuable to hint foolish

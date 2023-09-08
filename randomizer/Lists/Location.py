@@ -1103,5 +1103,3 @@ ShopLocationReference[Levels.CreepyCastle][VendorType.Funky] = [
 ]
 ShopLocationReference[Levels.DKIsles] = {}
 ShopLocationReference[Levels.DKIsles][VendorType.Cranky] = [Locations.DonkeyIslesPotion, Locations.DiddyIslesPotion, Locations.LankyIslesPotion, Locations.TinyIslesPotion, Locations.ChunkyIslesPotion, Locations.SimianSlam]
-
-

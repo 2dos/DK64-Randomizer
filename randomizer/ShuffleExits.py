@@ -36,12 +36,12 @@ def GetRootExit(spoiler, exitId):
     return [x for x in spoiler.RegionList[root].exits if x.assumed and x.exitShuffleId is not None and x.exitShuffleId == exitId][0]
 
 
-def RemoveRootExit(spoiler,exit):
+def RemoveRootExit(spoiler, exit):
     """Remove an exit from the world root."""
     spoiler.RegionList[root].exits.remove(exit)
 
 
-def AddRootExit(spoiler,exit):
+def AddRootExit(spoiler, exit):
     """Add an exit to the world root."""
     spoiler.RegionList[root].exits.append(exit)
 

@@ -456,7 +456,11 @@ def VerifyWorldWithWorstCoinUsage(spoiler):
         newReachableShops = [
             x
             for x in reachable
-            if spoiler.LocationList[x].type == Types.Shop and spoiler.LocationList[x].item is not None and spoiler.LocationList[x].item != Items.NoItem and x not in locationsToPurchase and spoiler.LogicVariables.CanBuy(x)
+            if spoiler.LocationList[x].type == Types.Shop
+            and spoiler.LocationList[x].item is not None
+            and spoiler.LocationList[x].item != Items.NoItem
+            and x not in locationsToPurchase
+            and spoiler.LogicVariables.CanBuy(x)
         ]
         shopDifferentials = {}
         shopUnlocksItems = {}
@@ -1369,7 +1373,9 @@ def FillHelmLocations(spoiler, placed_types):
     placed_in_helm = []
     # Get all the empty Helm locations
     empty_helm_locations = [
-        loc_id for loc_id in spoiler.LocationList.keys() if spoiler.LocationList[loc_id].level == Levels.HideoutHelm and spoiler.LocationList[loc_id].type != Types.Constant and spoiler.LocationList[loc_id].item is None
+        loc_id
+        for loc_id in spoiler.LocationList.keys()
+        if spoiler.LocationList[loc_id].level == Levels.HideoutHelm and spoiler.LocationList[loc_id].type != Types.Constant and spoiler.LocationList[loc_id].item is None
     ]
     # Rig the valid_locations for all relevant items to only be able to place things in Helm
     for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # Shops whould already be placed
@@ -1490,9 +1496,7 @@ def Fill(spoiler):
             if item in blueprintsToPlace:
                 blueprintsToPlace.remove(item)
         # Blueprints can be placed largely randomly - there's no location (yet) that can cause blueprints to lock themselves
-        blueprintsUnplaced = PlaceItems(
-            spoiler, FillAlgorithm.careful_random, blueprintsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=placed_in_helm)
-        )
+        blueprintsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, blueprintsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=placed_in_helm))
         if blueprintsUnplaced > 0:
             raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
     if spoiler.settings.extreme_debugging:
@@ -1669,9 +1673,7 @@ def ShuffleSharedMoves(spoiler, placedMoves, placedTypes):
     for item in placedMoves:
         if item in junkSharedToPlace:
             junkSharedToPlace.remove(item)
-    junkSharedUnplaced = PlaceItems(
-        spoiler, FillAlgorithm.random, junkSharedToPlace, [x for x in ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes) if x not in junkSharedToPlace]
-    )
+    junkSharedUnplaced = PlaceItems(spoiler, FillAlgorithm.random, junkSharedToPlace, [x for x in ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes) if x not in junkSharedToPlace])
     if junkSharedUnplaced > 0:
         raise Ex.ItemPlacementException(str(junkSharedUnplaced) + " unplaced shared junk items.")
 
@@ -2186,7 +2188,9 @@ def SetNewProgressionRequirements(spoiler):
         accessibleMoves = [
             spoiler.LocationList[x].item
             for x in accessible
-            if spoiler.LocationList[x].item != Items.NoItem and spoiler.LocationList[x].item is not None and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
+            if spoiler.LocationList[x].item != Items.NoItem
+            and spoiler.LocationList[x].item is not None
+            and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
         ]
         ownedMoves[thisLevel] = accessibleMoves
     # Cap the B. Locker amounts based on a random fraction of accessible bananas & GBs
@@ -2391,7 +2395,9 @@ def SetNewProgressionRequirementsUnordered(spoiler):
                     accessibleMoves = [
                         spoiler.LocationList[x].item
                         for x in accessible
-                        if spoiler.LocationList[x].item != Items.NoItem and spoiler.LocationList[x].item is not None and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
+                        if spoiler.LocationList[x].item != Items.NoItem
+                        and spoiler.LocationList[x].item is not None
+                        and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
                     ]
                     if priorityBossLocation.item in accessibleMoves:
                         accessibleMoves.remove(priorityBossLocation.item)
@@ -2447,13 +2453,17 @@ def SetNewProgressionRequirementsUnordered(spoiler):
                 accessibleMoves = [
                     spoiler.LocationList[x].item
                     for x in accessible
-                    if spoiler.LocationList[x].item != Items.NoItem and spoiler.LocationList[x].item is not None and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
+                    if spoiler.LocationList[x].item != Items.NoItem
+                    and spoiler.LocationList[x].item is not None
+                    and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
                 ]
                 ownedMoves[bossCompletedLevel] = accessibleMoves
 
     # For any boss location behind a T&S we didn't lower...
     bossLocations = [
-        location for id, location in spoiler.LocationList.items() if location.type == Types.Key and location.level in levelsProgressed and settings.BossBananas[location.level] >= initialTNS[location.level]
+        location
+        for id, location in spoiler.LocationList.items()
+        if location.type == Types.Key and location.level in levelsProgressed and settings.BossBananas[location.level] >= initialTNS[location.level]
     ]
     for bossLocation in bossLocations:
         # For any level we explicitly blocked, undo the blocking
@@ -2485,7 +2495,9 @@ def SetNewProgressionRequirementsUnordered(spoiler):
                 accessibleMoves = [
                     spoiler.LocationList[x].item
                     for x in accessible
-                    if spoiler.LocationList[x].item != Items.NoItem and spoiler.LocationList[x].item is not None and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
+                    if spoiler.LocationList[x].item != Items.NoItem
+                    and spoiler.LocationList[x].item is not None
+                    and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
                 ]
                 ownedMoves[bossLocation.level] = accessibleMoves
                 ownedKongs[bossLocation.level] = spoiler.LogicVariables.GetKongs()

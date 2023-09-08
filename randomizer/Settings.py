@@ -926,8 +926,6 @@ class Settings:
             if Kongs.chunky in self.starting_kong_list:
                 self.kong_locations.remove(Locations.ChunkyKong)
 
-
-
         # Kongs needed for level progression
         if self.starting_kongs_count < 5 and self.shuffle_loading_zones in (ShuffleLoadingZones.levels, ShuffleLoadingZones.none) and self.logic_type != LogicType.nologic:
             self.kongs_for_progression = True
@@ -1042,7 +1040,6 @@ class Settings:
         for location_id in PreGivenLocations:
             spoiler.LocationList[location_id].inaccessible = location_id >= first_empty_location
 
-
         # Smaller shop setting blocks 2 Kong-specific locations from each shop randomly but is only valid if item rando is on and includes shops
         if self.smaller_shops and self.shuffle_items and Types.Shop in self.shuffled_location_types:
             # To evenly distribute the locations blocked, we can use the fact there are 20 shops to our advantage
@@ -1138,7 +1135,9 @@ class Settings:
 
         if self.shuffle_items and any(self.shuffled_location_types):
             # All shuffled locations are valid except for Kong locations (the Kong inside the cage, not the GB) - those can only be Kongs
-            shuffledLocations = [location for location in spoiler.LocationList if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type != Types.Kong]
+            shuffledLocations = [
+                location for location in spoiler.LocationList if spoiler.LocationList[location].type in self.shuffled_location_types and spoiler.LocationList[location].type != Types.Kong
+            ]
             shuffledNonMoveLocations = [location for location in shuffledLocations if spoiler.LocationList[location].type != Types.PreGivenMove]
             fairyBannedLocations = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].type != Types.Fairy]
             if Types.Shop in self.shuffled_location_types:
@@ -1210,7 +1209,9 @@ class Settings:
             if Types.Fairy in self.shuffled_location_types:
                 self.valid_locations[Types.Fairy] = shuffledNonMoveLocations
             if Types.RainbowCoin in self.shuffled_location_types:
-                self.valid_locations[Types.RainbowCoin] = [x for x in fairyBannedLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove)]
+                self.valid_locations[Types.RainbowCoin] = [
+                    x for x in fairyBannedLocations if spoiler.LocationList[x].type not in (Types.Shop, Types.TrainingBarrel, Types.Shockwave, Types.PreGivenMove)
+                ]
             if Types.FakeItem in self.shuffled_location_types:
                 bad_fake_locations = (
                     # Caves Beetle Race causes issues with a blueprint potentially being there
@@ -1238,7 +1239,8 @@ class Settings:
                 self.valid_locations[Types.JunkItem] = [
                     x
                     for x in fairyBannedLocations
-                    if spoiler.LocationList[x].type not in (Types.Shop, Types.Crown, Types.PreGivenMove) and (spoiler.LocationList[x].type != Types.Key or spoiler.LocationList[x].level == Levels.HideoutHelm)
+                    if spoiler.LocationList[x].type not in (Types.Shop, Types.Crown, Types.PreGivenMove)
+                    and (spoiler.LocationList[x].type != Types.Key or spoiler.LocationList[x].level == Levels.HideoutHelm)
                 ]
             if Types.Kong in self.shuffled_location_types:
                 # Banned because it defeats the purpose of starting with X Kongs
