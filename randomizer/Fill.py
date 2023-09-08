@@ -351,8 +351,8 @@ def GetAccessibleLocations(spoiler, startingOwnedItems, searchType, purchaseList
         # For each location...
         for location_id in unpurchasedEmptyShopLocationIds:
             # If we can, "buy" the empty location. This will affect our ability to buy future locations. It's not a guarantee we'll be able to buy all of these locations.
-            if (location_id in SharedShopLocations and spoiler.LogicVariables.AnyKongCanBuy(location_id, buy_empty=True)) or (
-                location_id not in SharedShopLocations and spoiler.LogicVariables.CanBuy(location_id, buy_empty=True)
+            if (location_id in SharedShopLocations and spoiler.LogicVariables.AnyKongCanBuy(spoiler, location_id, buy_empty=True)) or (
+                location_id not in SharedShopLocations and spoiler.LogicVariables.CanBuy(spoiler, location_id, buy_empty=True)
             ):
                 spoiler.LogicVariables.PurchaseShopItem(location_id)
             # If we can't, treat the location as inaccessible
@@ -456,7 +456,7 @@ def VerifyWorldWithWorstCoinUsage(spoiler):
         newReachableShops = [
             x
             for x in reachable
-            if spoiler.LocationList[x].type == Types.Shop and spoiler.LocationList[x].item is not None and spoiler.LocationList[x].item != Items.NoItem and x not in locationsToPurchase and spoiler.LogicVariables.CanBuy(x)
+            if spoiler.LocationList[x].type == Types.Shop and spoiler.LocationList[x].item is not None and spoiler.LocationList[x].item != Items.NoItem and x not in locationsToPurchase and spoiler.LogicVariables.CanBuy(spoiler, x)
         ]
         shopDifferentials = {}
         shopUnlocksItems = {}
@@ -1704,7 +1704,7 @@ def FillKongsAndMovesGeneric(spoiler):
                 #     ShuffleExits.Reset()
                 #     ShuffleExits.ExitShuffle(spoiler)
                 #     spoiler.UpdateExits()
-                spoiler.settings.shuffle_prices()
+                spoiler.settings.shuffle_prices(spoiler)
                 if spoiler.settings.random_starting_region:
                     spoiler.settings.RandomizeStartingLocation()
             else:
@@ -2012,8 +2012,8 @@ def FillKongsAndMoves(spoiler, placedTypes):
             spoiler.LocationList[locationId].PlaceItem(startingMove)
             # Helpful debug code to keep track of where all major items are placed - do not rely on this variable anywhere
             if locationId in spoiler.settings.debug_fill.keys():
-                del spoiler.settings.debug_fill[LocationList[locationId].name]
-            spoiler.settings.debug_fill[LocationList[locationId].name] = startingMove
+                del spoiler.settings.debug_fill[spoiler.LocationList[locationId].name]
+            spoiler.settings.debug_fill[spoiler.LocationList[locationId].name] = startingMove
         # If we ever decide to place starting moves after other moves, we may find ourselves having placed moves twice.
         # I don't foresee a reason to do this ever, just something to consider if things change.
         # if any(toBeUnplaced):
@@ -2113,7 +2113,7 @@ def FillKongsAndMovesForLevelOrder(spoiler):
             # Every 5th fill, retry more aggressively by reshuffling level order, move prices, and starting location as applicable
             if retries % 5 == 0:
                 js.postMessage("Retrying fill really hard. Tries: " + str(retries))
-                spoiler.settings.shuffle_prices()
+                spoiler.settings.shuffle_prices(spoiler)
                 if spoiler.settings.random_starting_region:
                     spoiler.settings.RandomizeStartingLocation()
                 if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:

@@ -65,7 +65,7 @@ class Spoiler:
         self.music_event_data = {}
         self.location_data = {}
         self.enemy_replacements = []
-        self.LogicVariables = LogicVarHolder(self.settings)
+        self.LogicVariables = LogicVarHolder(self)
         self.RegionList = copy.deepcopy(RegionsOriginal)
         self.CollectibleRegions = copy.deepcopy(CollectibleRegionsOriginal)
         self.LocationList = copy.deepcopy(LocationListOriginal)

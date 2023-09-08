@@ -31,7 +31,6 @@ from randomizer.Lists.Location import (
     DiddyMoveLocations,
     DonkeyMoveLocations,
     LankyMoveLocations,
-    LocationList,
     PreGivenLocations,
     SharedShopLocations,
     ShopLocationReference,
@@ -514,11 +513,11 @@ class Settings:
         self.enable_progressive_hints = False
         self.progressive_hint_text = 0
 
-    def shuffle_prices(self):
+    def shuffle_prices(self, spoiler):
         """Price randomization. Reuseable if we need to reshuffle prices."""
         # Price Rando
         if self.random_prices != RandomPrices.vanilla:
-            self.prices = RandomizePrices(self.random_prices)
+            self.prices = RandomizePrices(spoiler, self.random_prices)
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""

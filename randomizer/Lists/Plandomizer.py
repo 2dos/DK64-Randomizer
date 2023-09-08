@@ -16,6 +16,7 @@ from randomizer.LogicFiles.FranticFactory import LogicRegions as FranticFactoryR
 from randomizer.LogicFiles.FungiForest import LogicRegions as FungiForestRegions
 from randomizer.LogicFiles.GloomyGalleon import LogicRegions as GloomyGalleonRegions
 from randomizer.LogicFiles.JungleJapes import LogicRegions as JungleJapesRegions
+from randomizer.Lists.Location import LocationListOriginal as LocationList
 
 
 def getKongString(kongEnum):

@@ -5,6 +5,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.LogicClasses import TransitionFront
+from randomizer.Logic import RegionsOriginal as RegionList
 
 
 class DoorData:
