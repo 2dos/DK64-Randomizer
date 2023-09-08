@@ -104,6 +104,8 @@ class Spoiler:
             self.move_data.append(master_moves)
 
         self.hint_list = {}
+        self.settings.update_valid_locations(self)
+
 
     def Reset(self):
         """Reset logic variables and region info that should be reset before a search."""
