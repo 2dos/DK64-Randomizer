@@ -31,31 +31,31 @@ LobbyEntrancePool = [
 root = Regions.GameStart
 
 
-def GetRootExit(exitId):
+def GetRootExit(spoiler, exitId):
     """Query the world root to return an exit with a matching exit id."""
-    return [x for x in Logic.Regions[root].exits if x.assumed and x.exitShuffleId is not None and x.exitShuffleId == exitId][0]
+    return [x for x in spoiler.RegionList[root].exits if x.assumed and x.exitShuffleId is not None and x.exitShuffleId == exitId][0]
 
 
-def RemoveRootExit(exit):
+def RemoveRootExit(spoiler,exit):
     """Remove an exit from the world root."""
-    Logic.Regions[root].exits.remove(exit)
+    spoiler.RegionList[root].exits.remove(exit)
 
 
-def AddRootExit(exit):
+def AddRootExit(spoiler,exit):
     """Add an exit to the world root."""
-    Logic.Regions[root].exits.append(exit)
+    spoiler.RegionList[root].exits.append(exit)
 
 
-def Reset():
+def Reset(spoiler):
     """Reset shufflable exit properties set during shuffling."""
     for exit in ShufflableExits.values():
         exit.shuffledId = None
         exit.shuffled = False
     assumedExits = []
-    for exit in [x for x in Logic.Regions[root].exits if x.assumed]:
+    for exit in [x for x in spoiler.RegionList[root].exits if x.assumed]:
         assumedExits.append(exit)
     for exit in assumedExits:
-        RemoveRootExit(exit)
+        RemoveRootExit(spoiler, exit)
 
 
 def AttemptConnect(spoiler, frontExit, frontId, backExit, backId):
@@ -67,10 +67,10 @@ def AttemptConnect(spoiler, frontExit, frontId, backExit, backId):
         # Prevents an error if trying to assign an entrance back to itself
         if frontExit.back.reverse == backId:
             return False
-        frontReverse = GetRootExit(frontExit.back.reverse)
-        RemoveRootExit(frontReverse)
-    backRootExit = GetRootExit(backId)
-    RemoveRootExit(backRootExit)
+        frontReverse = GetRootExit(spoiler, frontExit.back.reverse)
+        RemoveRootExit(spoiler, frontReverse)
+    backRootExit = GetRootExit(spoiler, backId)
+    RemoveRootExit(spoiler, backRootExit)
     # Add connection between selected exits
     frontExit.shuffled = True
     frontExit.shuffledId = backId
@@ -82,11 +82,11 @@ def AttemptConnect(spoiler, frontExit, frontId, backExit, backId):
     valid = Fill.VerifyWorld(spoiler)
     # If world is not valid, restore root connections and undo new connections
     if not valid:
-        AddRootExit(backRootExit)
+        AddRootExit(spoiler, backRootExit)
         frontExit.shuffled = False
         frontExit.shuffledId = None
         if not settings.decoupled_loading_zones:
-            AddRootExit(frontReverse)
+            AddRootExit(spoiler, frontReverse)
             backReverse.shuffled = False
             backReverse.shuffledId = None
     return valid
@@ -95,14 +95,14 @@ def AttemptConnect(spoiler, frontExit, frontId, backExit, backId):
 def ShuffleExitsInPool(spoiler, frontpool, backpool):
     """Shuffle exits within a specific pool."""
     settings = spoiler.settings
-    NonTagRegions = [x for x in backpool if not Logic.Regions[ShufflableExits[x].back.regionId].tagbarrel]
-    NonTagLeaves = [x for x in NonTagRegions if len(Logic.Regions[ShufflableExits[x].back.regionId].exits) == 1]
+    NonTagRegions = [x for x in backpool if not spoiler.RegionList[ShufflableExits[x].back.regionId].tagbarrel]
+    NonTagLeaves = [x for x in NonTagRegions if len(spoiler.RegionList[ShufflableExits[x].back.regionId].exits) == 1]
     random.shuffle(NonTagLeaves)
     NonTagNonLeaves = [x for x in NonTagRegions if x not in NonTagLeaves]
     random.shuffle(NonTagNonLeaves)
 
     TagRegions = [x for x in backpool if x not in NonTagRegions]
-    TagLeaves = [x for x in TagRegions if len(Logic.Regions[ShufflableExits[x].back.regionId].exits) == 1]
+    TagLeaves = [x for x in TagRegions if len(spoiler.RegionList[ShufflableExits[x].back.regionId].exits) == 1]
     random.shuffle(TagLeaves)
     TagNonLeaves = [x for x in TagRegions if x not in TagLeaves]
     random.shuffle(TagNonLeaves)
@@ -114,14 +114,14 @@ def ShuffleExitsInPool(spoiler, frontpool, backpool):
 
     # Coupled is more restrictive and need to also order the front pool to lower rate of failures
     if not settings.decoupled_loading_zones:
-        NonTagRegions = [x for x in frontpool if not Logic.Regions[ShufflableExits[x].back.regionId].tagbarrel]
-        NonTagLeaves = [x for x in NonTagRegions if len(Logic.Regions[ShufflableExits[x].back.regionId].exits) == 1]
+        NonTagRegions = [x for x in frontpool if not spoiler.RegionList[ShufflableExits[x].back.regionId].tagbarrel]
+        NonTagLeaves = [x for x in NonTagRegions if len(spoiler.RegionList[ShufflableExits[x].back.regionId].exits) == 1]
         random.shuffle(NonTagLeaves)
         NonTagNonLeaves = [x for x in NonTagRegions if x not in NonTagLeaves]
         random.shuffle(NonTagNonLeaves)
 
         TagRegions = [x for x in frontpool if x not in NonTagRegions]
-        TagLeaves = [x for x in TagRegions if len(Logic.Regions[ShufflableExits[x].back.regionId].exits) == 1]
+        TagLeaves = [x for x in TagRegions if len(spoiler.RegionList[ShufflableExits[x].back.regionId].exits) == 1]
         random.shuffle(TagLeaves)
         TagNonLeaves = [x for x in TagRegions if x not in TagLeaves]
         random.shuffle(TagNonLeaves)
@@ -173,13 +173,13 @@ def ShuffleExitsInPool(spoiler, frontpool, backpool):
             raise Ex.EntranceOutOfDestinations
 
 
-def AssumeExits(settings, frontpool, backpool, newpool):
+def AssumeExits(spoiler, frontpool, backpool, newpool):
     """Split exit pool into front and back pools, and assumes exits reachable from root."""
     for i in range(len(newpool)):
         exitId = newpool[i]
         exit = ShufflableExits[exitId]
         # When coupled, only transitions which have a reverse path can be included in the pools
-        if not settings.decoupled_loading_zones and exit.back.reverse is None:
+        if not spoiler.settings.decoupled_loading_zones and exit.back.reverse is None:
             continue
         # "front" is the entrance you go into, "back" is the exit you come out of
         frontpool.append(exitId)
@@ -190,7 +190,7 @@ def AssumeExits(settings, frontpool, backpool, newpool):
         exit.toBeShuffled = True
         # 2) Attach to root of world (DK Isles)
         newExit = TransitionFront(exit.back.regionId, lambda l: True, exitId, True)
-        AddRootExit(newExit)
+        AddRootExit(spoiler, newExit)
 
 
 def ShuffleExits(spoiler):
@@ -211,7 +211,7 @@ def ShuffleExits(spoiler):
     elif settings.shuffle_loading_zones == ShuffleLoadingZones.all:
         frontpool = []
         backpool = []
-        AssumeExits(settings, frontpool, backpool, list(ShufflableExits.keys()))
+        AssumeExits(spoiler, frontpool, backpool, list(ShufflableExits.keys()))
         # Shuffle each entrance pool
         ShuffleExitsInPool(spoiler, frontpool, backpool)
     # If levels rando is on, need to update Blocker and T&S requirements to match
@@ -225,7 +225,7 @@ def ExitShuffle(spoiler):
     while True:
         try:
             # Shuffle entrances based on settings
-            ShuffleExits(spoiler.settings)
+            ShuffleExits(spoiler)
             # Verify world by assuring all locations are still reachable
             if not Fill.VerifyWorld(spoiler):
                 raise Ex.EntrancePlacementException

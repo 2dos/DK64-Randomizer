@@ -25,7 +25,7 @@ class MapIDCombo:
 class Location:
     """A shufflable location at which a random item can be placed."""
 
-    def __init__(self, level, name, default, location_type, LocationList, kong=Kongs.any, data=None, logically_relevant=False):
+    def __init__(self, level, name, default, location_type, kong=Kongs.any, data=None, logically_relevant=False):
         """Initialize with given parameters."""
         if data is None:
             data = []
@@ -38,7 +38,6 @@ class Location:
         self.is_reward = False
         self.map_id_list = None
         self.level = level
-        self.LocationList = LocationList
         self.kong = kong
         self.logically_relevant = logically_relevant  # This is True if this location is needed to derive the logic for another location
         self.placement_index = None
@@ -81,58 +80,58 @@ class Location:
         if self.default_mapid_data is not None and len(self.default_mapid_data) > 0 and type(self.default_mapid_data[0]) is MapIDCombo and self.default_mapid_data[0].id == -1 and self.type != Types.Kong:
             self.is_reward = True
 
-    def PlaceItem(self, item):
+    def PlaceItem(self, spoiler, item):
         """Place item at this location."""
         self.item = item
         # If we're placing a real move here, lock out mutually exclusive shop locations
         if item != Items.NoItem and self.type == Types.Shop:
             for location in ShopLocationReference[self.level][self.vendor]:
-                if self.LocationList[location].smallerShopsInaccessible:
+                if spoiler.LocationList[location].smallerShopsInaccessible:
                     continue
                 # If this is a shared spot, lock out kong-specific locations in this shop
-                if self.kong == Kongs.any and self.LocationList[location].kong != Kongs.any:
-                    self.LocationList[location].inaccessible = True
+                if self.kong == Kongs.any and spoiler.LocationList[location].kong != Kongs.any:
+                    spoiler.LocationList[location].inaccessible = True
                 # If this is a kong-specific spot, lock out the shared location in this shop
-                if self.kong != Kongs.any and self.LocationList[location].kong == Kongs.any:
-                    self.LocationList[location].inaccessible = True
+                if self.kong != Kongs.any and spoiler.LocationList[location].kong == Kongs.any:
+                    spoiler.LocationList[location].inaccessible = True
                     break  # There's only one shared spot to block
 
-    def PlaceConstantItem(self, item):
+    def PlaceConstantItem(self, spoiler, item):
         """Place item at this location, and set constant so it's ignored in the spoiler."""
-        self.PlaceItem(item)
+        self.PlaceItem(spoiler, item)
         self.constant = True
 
     def SetDelayedItem(self, item):
         """Set an item to be added back later."""
         self.delayedItem = item
 
-    def PlaceDelayedItem(self):
+    def PlaceDelayedItem(self, spoiler):
         """Place the delayed item at this location."""
-        self.PlaceItem(self.delayedItem)
+        self.PlaceItem(spoiler, self.delayedItem)
         self.delayedItem = None
 
-    def PlaceDefaultItem(self):
+    def PlaceDefaultItem(self, spoiler):
         """Place whatever this location's default (vanilla) item is at it."""
-        self.PlaceItem(self.default)
+        self.PlaceItem(spoiler, self.default)
         self.constant = True
 
-    def UnplaceItem(self):
+    def UnplaceItem(self, spoiler):
         """Unplace an item here, which may affect the placement of other items."""
         self.item = None
         # If this is a shop location, we may have locked out a location we now need to undo
         if self.type == Types.Shop:
             # Check other locations in this shop
             for location_id in ShopLocationReference[self.level][self.vendor]:
-                if self.LocationList[location_id].smallerShopsInaccessible:
+                if spoiler.LocationList[location_id].smallerShopsInaccessible:
                     continue
-                if self.LocationList[location_id].kong == Kongs.any and self.LocationList[location_id].inaccessible:
+                if spoiler.LocationList[location_id].kong == Kongs.any and spoiler.LocationList[location_id].inaccessible:
                     # If there are no other items remaining in this shop, then we can unlock the shared location
-                    itemsInThisShop = len([location for location in ShopLocationReference[self.level][self.vendor] if self.LocationList[location].item not in (None, Items.NoItem)])
+                    itemsInThisShop = len([location for location in ShopLocationReference[self.level][self.vendor] if spoiler.LocationList[location].item not in (None, Items.NoItem)])
                     if itemsInThisShop == 0:
-                        self.LocationList[location_id].inaccessible = False
+                        spoiler.LocationList[location_id].inaccessible = False
                 # Locations are only inaccessible due to lockouts. If any exist, they're because this location caused them to be locked out.
-                elif self.LocationList[location_id].inaccessible:
-                    self.LocationList[location_id].inaccessible = False
+                elif spoiler.LocationList[location_id].inaccessible:
+                    spoiler.LocationList[location_id].inaccessible = False
 
 
 LocationListOriginal = {

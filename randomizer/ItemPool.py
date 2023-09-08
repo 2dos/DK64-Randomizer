@@ -37,7 +37,7 @@ def PlaceConstants(spoiler):
     # Place the default item at every location of a type we're not shuffling
     for location in spoiler.LocationList:
         if spoiler.LocationList[location].type in typesOfItemsNotShuffled:
-            spoiler.LocationList[location].PlaceDefaultItem()
+            spoiler.LocationList[location].PlaceDefaultItem(spoiler)
         else:
             spoiler.LocationList[location].constant = False
             spoiler.LocationList[location].item = None
@@ -46,7 +46,7 @@ def PlaceConstants(spoiler):
             spoiler.LocationList[location].inaccessible = spoiler.LocationList[location].smallerShopsInaccessible
     # Make extra sure the Helm Key is right
     if settings.key_8_helm:
-        spoiler.LocationList[Locations.HelmKey].PlaceItem(Items.HideoutHelmKey)
+        spoiler.LocationList[Locations.HelmKey].PlaceItem(spoiler, Items.HideoutHelmKey)
     # Handle key placements
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels and Types.Key not in settings.shuffled_location_types:
         # Place keys in the lobbies they normally belong in
@@ -54,25 +54,25 @@ def PlaceConstants(spoiler):
         for level in LevelInfoList.values():
             # If level exit isn't shuffled, use vanilla key
             if not ShufflableExits[level.TransitionTo].shuffled:
-                spoiler.LocationList[level.KeyLocation].PlaceConstantItem(level.KeyItem)
+                spoiler.LocationList[level.KeyLocation].PlaceConstantItem(spoiler, level.KeyItem)
             else:
                 # Find the transition this exit is attached to, and use that to get the proper location to place this key
                 dest = ShufflableExits[level.TransitionTo].shuffledId
                 shuffledTo = [x for x in LevelInfoList.values() if x.TransitionTo == dest][0]
-                spoiler.LocationList[shuffledTo.KeyLocation].PlaceConstantItem(level.KeyItem)
+                spoiler.LocationList[shuffledTo.KeyLocation].PlaceConstantItem(spoiler, level.KeyItem)
         # The key in Helm is always Key 8 in these settings
-        spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(Items.HideoutHelmKey)
+        spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, Items.HideoutHelmKey)
 
     # Empty out some locations based on the settings
     if settings.starting_kongs_count == 5:
-        spoiler.LocationList[Locations.DiddyKong].PlaceConstantItem(Items.NoItem)
-        spoiler.LocationList[Locations.LankyKong].PlaceConstantItem(Items.NoItem)
-        spoiler.LocationList[Locations.TinyKong].PlaceConstantItem(Items.NoItem)
-        spoiler.LocationList[Locations.ChunkyKong].PlaceConstantItem(Items.NoItem)
+        spoiler.LocationList[Locations.DiddyKong].PlaceConstantItem(spoiler, Items.NoItem)
+        spoiler.LocationList[Locations.LankyKong].PlaceConstantItem(spoiler, Items.NoItem)
+        spoiler.LocationList[Locations.TinyKong].PlaceConstantItem(spoiler, Items.NoItem)
+        spoiler.LocationList[Locations.ChunkyKong].PlaceConstantItem(spoiler, Items.NoItem)
     if settings.shockwave_status == ShockwaveStatus.start_with:
-        spoiler.LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
+        spoiler.LocationList[Locations.CameraAndShockwave].PlaceConstantItem(spoiler, Items.NoItem)
     if settings.start_with_slam:
-        spoiler.LocationList[Locations.IslesFirstMove].PlaceConstantItem(Items.ProgressiveSlam)
+        spoiler.LocationList[Locations.IslesFirstMove].PlaceConstantItem(spoiler, Items.ProgressiveSlam)
 
 
 def AllItems(settings):

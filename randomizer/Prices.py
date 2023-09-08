@@ -282,12 +282,12 @@ def KongCanBuy(spoiler, location_id, logic, kong, buy_empty=False):
 
 def AnyKongCanBuy(spoiler, location, logic, buy_empty=False):
     """Check if any owned kong can logically purchase this location."""
-    return any(KongCanBuy(location, logic, kong, buy_empty) for kong in logic.GetKongs())
+    return any(KongCanBuy(spoiler, location, logic, kong, buy_empty) for kong in logic.GetKongs())
 
 
 def EveryKongCanBuy(spoiler, location, logic):
     """Check if any kong can logically purchase this location."""
-    return all(KongCanBuy(location, logic, kong) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
+    return all(KongCanBuy(spoiler, location, logic, kong) for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky])
 
 
 def CanBuy(spoiler, location, logic, buy_empty=False):

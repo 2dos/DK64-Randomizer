@@ -674,7 +674,6 @@ class Settings:
                 if self.training_barrels != TrainingBarrels.normal:
                     self.shuffled_location_types.append(Types.TrainingBarrel)
                 self.shuffled_location_types.append(Types.PreGivenMove)
-        self.shuffle_prices()
         kongs = GetKongs()
 
         # B Locker and Troff n Scoff amounts Rando
@@ -1003,7 +1002,7 @@ class Settings:
 
     def update_valid_locations(self, spoiler):
         """Calculate (or recalculate) valid locations for items by type."""
-        kongs = GetKongs()
+        self.shuffle_prices(spoiler)
 
         # Starting Move Location handling
         # Undo any damage that might leak between seeds

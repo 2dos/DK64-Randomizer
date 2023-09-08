@@ -136,7 +136,7 @@ class Spoiler:
     def ResetLocationList(self):
         """Reset the LocationList to values conducive to a new fill."""
         for location in self.LocationList.values():
-            location.PlaceDefaultItem()
+            location.PlaceDefaultItem(self)
         # Known to be incomplete - it should also confirm the correct locations of Fairies, Dirt, and Crowns
 
     def InitKasplatMap(self):
