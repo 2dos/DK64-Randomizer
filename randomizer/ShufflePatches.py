@@ -13,12 +13,13 @@ from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Lists.Location import LocationList
 from randomizer.Lists.CustomLocations import CustomLocations, LocationTypes, CustomLocation
 from randomizer.LogicClasses import LocationLogic
 from randomizer.Spoiler import Spoiler
 
 
-def addPatch(spoiler: Spoiler, patch: CustomLocation, enum_val: int, name: str, level: Levels):
+def addPatch(patch: CustomLocation, enum_val: int, name: str, level: Levels):
     """Add patch to relevant Logic Region."""
     level_to_enum = {
         Levels.DKIsles: randomizer.LogicFiles.DKIsles.LogicRegions,
@@ -42,9 +43,9 @@ def addPatch(spoiler: Spoiler, patch: CustomLocation, enum_val: int, name: str, 
     }
     level_data = level_to_enum[level]
     level_data[patch.logic_region].locations.append(LocationLogic(enum_val, patch.logic))
-    spoiler.LocationList[enum_val].name = f"{level_to_name[level]} Dirt: {name}"
-    spoiler.LocationList[enum_val].default_mapid_data[0].map = patch.map
-    spoiler.LocationList[enum_val].level = level
+    LocationList[enum_val].name = f"{level_to_name[level]} Dirt: {name}"
+    LocationList[enum_val].default_mapid_data[0].map = patch.map
+    LocationList[enum_val].level = level
 
 
 def removePatches():
@@ -104,7 +105,7 @@ def ShufflePatches(spoiler: Spoiler, human_spoiler):
     sorted_patches = sorted(sorted_patches, key=lambda d: d["score"])
     for patch_index, patch in enumerate(sorted_patches):
         patch["enum"] = Locations.RainbowCoin_Location00 + patch_index
-        addPatch(spoiler, patch["patch"], patch["enum"], patch["name"], patch["level"])
+        addPatch(patch["patch"], patch["enum"], patch["name"], patch["level"])
         patch["patch"] = None
     return human_spoiler.copy()
 

@@ -80,61 +80,61 @@ class Location:
         if self.default_mapid_data is not None and len(self.default_mapid_data) > 0 and type(self.default_mapid_data[0]) is MapIDCombo and self.default_mapid_data[0].id == -1 and self.type != Types.Kong:
             self.is_reward = True
 
-    def PlaceItem(self, spoiler, item):
+    def PlaceItem(self, item):
         """Place item at this location."""
         self.item = item
         # If we're placing a real move here, lock out mutually exclusive shop locations
         if item != Items.NoItem and self.type == Types.Shop:
             for location in ShopLocationReference[self.level][self.vendor]:
-                if spoiler.LocationList[location].smallerShopsInaccessible:
+                if LocationList[location].smallerShopsInaccessible:
                     continue
                 # If this is a shared spot, lock out kong-specific locations in this shop
-                if self.kong == Kongs.any and spoiler.LocationList[location].kong != Kongs.any:
-                    spoiler.LocationList[location].inaccessible = True
+                if self.kong == Kongs.any and LocationList[location].kong != Kongs.any:
+                    LocationList[location].inaccessible = True
                 # If this is a kong-specific spot, lock out the shared location in this shop
-                if self.kong != Kongs.any and spoiler.LocationList[location].kong == Kongs.any:
-                    spoiler.LocationList[location].inaccessible = True
+                if self.kong != Kongs.any and LocationList[location].kong == Kongs.any:
+                    LocationList[location].inaccessible = True
                     break  # There's only one shared spot to block
 
-    def PlaceConstantItem(self, spoiler, item):
+    def PlaceConstantItem(self, item):
         """Place item at this location, and set constant so it's ignored in the spoiler."""
-        self.PlaceItem(spoiler, item)
+        self.PlaceItem(item)
         self.constant = True
 
     def SetDelayedItem(self, item):
         """Set an item to be added back later."""
         self.delayedItem = item
 
-    def PlaceDelayedItem(self, spoiler):
+    def PlaceDelayedItem(self):
         """Place the delayed item at this location."""
-        self.PlaceItem(spoiler, self.delayedItem)
+        self.PlaceItem(self.delayedItem)
         self.delayedItem = None
 
-    def PlaceDefaultItem(self, spoiler):
+    def PlaceDefaultItem(self):
         """Place whatever this location's default (vanilla) item is at it."""
-        self.PlaceItem(spoiler, self.default)
+        self.PlaceItem(self.default)
         self.constant = True
 
-    def UnplaceItem(self, spoiler):
+    def UnplaceItem(self):
         """Unplace an item here, which may affect the placement of other items."""
         self.item = None
         # If this is a shop location, we may have locked out a location we now need to undo
         if self.type == Types.Shop:
             # Check other locations in this shop
             for location_id in ShopLocationReference[self.level][self.vendor]:
-                if spoiler.LocationList[location_id].smallerShopsInaccessible:
+                if LocationList[location_id].smallerShopsInaccessible:
                     continue
-                if spoiler.LocationList[location_id].kong == Kongs.any and spoiler.LocationList[location_id].inaccessible:
+                if LocationList[location_id].kong == Kongs.any and LocationList[location_id].inaccessible:
                     # If there are no other items remaining in this shop, then we can unlock the shared location
-                    itemsInThisShop = len([location for location in ShopLocationReference[self.level][self.vendor] if spoiler.LocationList[location].item not in (None, Items.NoItem)])
+                    itemsInThisShop = len([location for location in ShopLocationReference[self.level][self.vendor] if LocationList[location].item not in (None, Items.NoItem)])
                     if itemsInThisShop == 0:
-                        spoiler.LocationList[location_id].inaccessible = False
+                        LocationList[location_id].inaccessible = False
                 # Locations are only inaccessible due to lockouts. If any exist, they're because this location caused them to be locked out.
-                elif spoiler.LocationList[location_id].inaccessible:
-                    spoiler.LocationList[location_id].inaccessible = False
+                elif LocationList[location_id].inaccessible:
+                    LocationList[location_id].inaccessible = False
 
 
-LocationListOriginal = {
+LocationList = {
     # Training Barrel locations
     Locations.IslesVinesTrainingBarrel: Location(Levels.DKIsles, "Isles Vines Training Barrel", Items.Vines, Types.TrainingBarrel, Kongs.any, [123]),
     Locations.IslesSwimTrainingBarrel: Location(Levels.DKIsles, "Isles Dive Training Barrel", Items.Swim, Types.TrainingBarrel, Kongs.any, [120]),
@@ -1103,3 +1103,10 @@ ShopLocationReference[Levels.CreepyCastle][VendorType.Funky] = [
 ]
 ShopLocationReference[Levels.DKIsles] = {}
 ShopLocationReference[Levels.DKIsles][VendorType.Cranky] = [Locations.DonkeyIslesPotion, Locations.DiddyIslesPotion, Locations.LankyIslesPotion, Locations.TinyIslesPotion, Locations.ChunkyIslesPotion, Locations.SimianSlam]
+
+
+def ResetLocationList():
+    """Reset the LocationList to values conducive to a new fill."""
+    for location in LocationList.values():
+        location.PlaceDefaultItem()
+    # Known to be incomplete - it should also confirm the correct locations of Fairies, Dirt, and Crowns

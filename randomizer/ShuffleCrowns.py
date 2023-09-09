@@ -6,10 +6,11 @@ import randomizer.Logic as Logic
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.CustomLocations import CustomLocations, LocationTypes
+from randomizer.Lists.Location import LocationList
 from randomizer.LogicClasses import LocationLogic
 
 
-def ShuffleCrowns(spoiler, crown_selection, human_crowns):
+def ShuffleCrowns(crown_selection, human_crowns):
     """Generate Crown Placement Assortment."""
     crown_locations = (
         Locations.JapesBattleArena,
@@ -35,7 +36,7 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
         Levels.HideoutHelm: "Helm",
     }
     # Remove crowns from their original logic region
-    for id, region in spoiler.RegionList.items():
+    for id, region in Logic.Regions.items():
         region.locations = [loclogic for loclogic in region.locations if loclogic.id not in crown_locations]
     global_crown_idx = 0
     for level in CustomLocations:
@@ -81,8 +82,8 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
             human_crowns[crown_name] = level_lst[crown].name
             crown_obj = level_lst[crown]
             crown_obj.setCustomLocation(True)
-            spoiler.LocationList[crown_locations[global_crown_idx]].name = f"{level_to_name[level]} Battle Arena{crown_number_string} ({level_lst[crown].name})"
-            crownRegion = spoiler.RegionList[crown_obj.logic_region]
+            LocationList[crown_locations[global_crown_idx]].name = f"{level_to_name[level]} Battle Arena{crown_number_string} ({level_lst[crown].name})"
+            crownRegion = Logic.Regions[crown_obj.logic_region]
             # Add crowns to their updated logic region
             crownRegion.locations.append(LocationLogic(crown_locations[global_crown_idx], crown_obj.logic))
             global_crown_idx += 1
