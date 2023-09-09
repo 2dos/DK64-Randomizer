@@ -47,7 +47,7 @@ def generate(default_rom, generate_settings, queue, post_body):
         settings = Settings(generate_settings)
         spoiler = Spoiler(settings)
         patch, spoiler = Generate_Spoiler(spoiler)
-        spoiler.FlushAllExcessSpoilerData()
+        print("Returning")
         return_dict = {}
         return_dict["patch"] = patch
         return_dict["spoiler"] = spoiler
