@@ -1694,7 +1694,7 @@ def FillKongsAndMovesGeneric(spoiler):
         except Ex.FillException as ex:
             error_log.append(ex)
             spoiler.Reset()
-            Logic.ClearAllLocations()
+            spoiler.ClearAllLocations()
             if retries == 20:
                 js.postMessage("Fill failed, out of retries.")
                 raise ex
