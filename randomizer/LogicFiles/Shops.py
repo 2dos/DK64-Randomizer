@@ -6,6 +6,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
+from randomizer.Lists.Location import Location
 from randomizer.LogicClasses import LocationLogic, Region, TransitionFront
 
 LogicRegions = {
