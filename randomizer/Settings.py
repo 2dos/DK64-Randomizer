@@ -228,7 +228,7 @@ class Settings:
         self.bonus_barrel_rando = None
         self.loading_zone_coupled = None
         self.move_rando = MoveRando.off
-        self.start_with_slam = True
+        self.start_with_slam = False
         self.random_patches = None
         self.random_crates = None
         self.random_fairies = None
@@ -550,6 +550,8 @@ class Settings:
         if Items.ProgressiveSlam in self.starting_move_list_selected:
             self.start_with_slam = True
             self.starting_move_list_selected.remove(Items.ProgressiveSlam)
+        else:
+            self.start_with_slam = False
         # If we are *guaranteed* to start with ALL training moves, put them in their vanilla locations and don't make them hintable, as before
         if (
             Items.Vines in self.starting_move_list_selected
