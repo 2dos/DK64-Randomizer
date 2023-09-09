@@ -8,7 +8,7 @@ from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems, PlandoItemToItemMap
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import LocationList
+from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.LogicClasses import Regions
 
 # Some common item sets that may be used in multiple places.
