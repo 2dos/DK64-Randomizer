@@ -41,7 +41,6 @@ from randomizer.Enums.Settings import (
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Lists.Warps import BananaportVanilla
@@ -59,12 +58,11 @@ def IsGlitchEnabled(settings, glitch_enum):
 class LogicVarHolder:
     """Used to store variables when checking logic conditions."""
 
-    def __init__(self, settings=None):
+    def __init__(self, spoiler):
         """Initialize with given parameters."""
-        if settings is None:
-            return
+        settings = spoiler.settings
         self.settings = settings
-
+        self.spoiler = spoiler
         # Some restrictions are added to the item placement fill for the sake of reducing indirect errors. We can overlook these restrictions once we know the fill is valid.
         self.assumeFillSuccess = False
         # See CalculateWothPaths method for details on these assumptions
@@ -600,11 +598,11 @@ class LogicVarHolder:
 
     def CanFreeDiddy(self):
         """Check if the cage locking Diddy's vanilla location can be opened."""
-        return LocationList[Locations.DiddyKong].item == Items.NoItem or self.HasGun(self.settings.diddy_freeing_kong)
+        return self.spoiler.LocationList[Locations.DiddyKong].item == Items.NoItem or self.HasGun(self.settings.diddy_freeing_kong)
 
     def CanOpenJapesGates(self):
         """Check if we can pick up the item inside Diddy's cage, thus opening the gates in Japes."""
-        caged_item_id = LocationList[Locations.JapesDonkeyFreeDiddy].item
+        caged_item_id = self.spoiler.LocationList[Locations.JapesDonkeyFreeDiddy].item
         # If it's NoItem, then the gates are already open
         if caged_item_id == Items.NoItem:
             return True
@@ -630,7 +628,7 @@ class LogicVarHolder:
 
     def CanFreeTiny(self):
         """Check if kong at Tiny location can be freed, requires either chimpy charge or primate punch."""
-        if LocationList[Locations.TinyKong].item == Items.NoItem:
+        if self.spoiler.LocationList[Locations.TinyKong].item == Items.NoItem:
             return self.IsKong(self.settings.tiny_freeing_kong) or self.settings.free_trade_items
         elif self.settings.tiny_freeing_kong == Kongs.diddy:
             return self.charge and self.isdiddy
@@ -646,14 +644,14 @@ class LogicVarHolder:
 
     def CanFreeLanky(self):
         """Check if kong at Lanky location can be freed, requires freeing kong to have its gun and instrument."""
-        return (self.HasGun(self.settings.lanky_freeing_kong) or LocationList[Locations.LankyKong].item == Items.NoItem) and (
+        return (self.HasGun(self.settings.lanky_freeing_kong) or self.spoiler.LocationList[Locations.LankyKong].item == Items.NoItem) and (
             (self.swim and self.HasInstrument(self.settings.lanky_freeing_kong)) or self.phasewalk or self.CanPhaseswim()
         )
 
     def CanFreeChunky(self):
         """Check if kong at Chunky location can be freed."""
         # If the cage is empty, the item is just lying on the ground
-        if LocationList[Locations.ChunkyKong].item == Items.NoItem:
+        if self.spoiler.LocationList[Locations.ChunkyKong].item == Items.NoItem:
             return self.IsKong(self.settings.chunky_freeing_kong) or self.settings.free_trade_items
         # Otherwise you need the right slam level (usually 1)
         else:
@@ -710,7 +708,7 @@ class LogicVarHolder:
 
     def PurchaseShopItem(self, location_id):
         """Purchase from this location and subtract price from logical coin counts."""
-        location = LocationList[location_id]
+        location = self.spoiler.LocationList[location_id]
         price = GetPriceAtLocation(self.settings, location_id, location, self.Slam, self.AmmoBelts, self.InstUpgrades)
         if price is None:  # This shouldn't happen but it's probably harmless
             return  # TODO: solve this
@@ -726,24 +724,22 @@ class LogicVarHolder:
             self.SpentCoins[location.kong] += price
             return
 
-    @staticmethod
-    def HasAccess(region, kong):
+    def HasAccess(self, region, kong):
         """Check if a certain kong has access to a certain region.
 
         Usually the region's own HasAccess function is used, but this is necessary for checking access for other regions in logic files.
         """
-        return Regions[region].HasAccess(kong)
+        return self.spoiler.RegionList[region].HasAccess(kong)
 
-    @staticmethod
-    def TimeAccess(region, time):
+    def TimeAccess(self, region, time):
         """Check if a certain region has the given time of day access."""
         if time == Time.Day:
-            return Regions[region].dayAccess
+            return self.spoiler.RegionList[region].dayAccess
         elif time == Time.Night:
-            return Regions[region].nightAccess
+            return self.spoiler.RegionList[region].nightAccess
         # Not sure when this'd be used
         else:  # if time == Time.Both
-            return Regions[region].dayAccess or Regions[region].nightAccess
+            return self.spoiler.RegionList[region].dayAccess or self.spoiler.RegionList[region].nightAccess
 
     def BlueprintAccess(self, item):
         """Check if we are the correct kong for this blueprint item."""
@@ -762,11 +758,11 @@ class LogicVarHolder:
 
     def CanBuy(self, location, buy_empty=False):
         """Check if there are enough coins to purchase this location."""
-        return CanBuy(location, self, buy_empty)
+        return CanBuy(self.spoiler, location, self, buy_empty)
 
     def AnyKongCanBuy(self, location, buy_empty=False):
         """Check if there are enough coins for any owned kong to purchase this location."""
-        return AnyKongCanBuy(location, self, buy_empty)
+        return AnyKongCanBuy(self.spoiler, location, self, buy_empty)
 
     def CanAccessKRool(self):
         """Make sure that each required key has been turned in."""
@@ -1059,48 +1055,28 @@ class LogicVarHolder:
         )
 
 
-LogicVariables = LogicVarHolder()
-
 # Import regions from logic files
-Regions = {}
-Regions.update(randomizer.LogicFiles.DKIsles.LogicRegions)
-Regions.update(randomizer.LogicFiles.JungleJapes.LogicRegions)
-Regions.update(randomizer.LogicFiles.AngryAztec.LogicRegions)
-Regions.update(randomizer.LogicFiles.FranticFactory.LogicRegions)
-Regions.update(randomizer.LogicFiles.GloomyGalleon.LogicRegions)
-Regions.update(randomizer.LogicFiles.FungiForest.LogicRegions)
-Regions.update(randomizer.LogicFiles.CrystalCaves.LogicRegions)
-Regions.update(randomizer.LogicFiles.CreepyCastle.LogicRegions)
-Regions.update(randomizer.LogicFiles.HideoutHelm.LogicRegions)
-Regions.update(randomizer.LogicFiles.Shops.LogicRegions)
+RegionsOriginal = {
+    **randomizer.LogicFiles.DKIsles.LogicRegions,
+    **randomizer.LogicFiles.JungleJapes.LogicRegions,
+    **randomizer.LogicFiles.AngryAztec.LogicRegions,
+    **randomizer.LogicFiles.FranticFactory.LogicRegions,
+    **randomizer.LogicFiles.GloomyGalleon.LogicRegions,
+    **randomizer.LogicFiles.FungiForest.LogicRegions,
+    **randomizer.LogicFiles.CrystalCaves.LogicRegions,
+    **randomizer.LogicFiles.CreepyCastle.LogicRegions,
+    **randomizer.LogicFiles.HideoutHelm.LogicRegions,
+    **randomizer.LogicFiles.Shops.LogicRegions,
+}
 
 # Auxillary regions for colored bananas and banana coins
-CollectibleRegions = {}
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.DKIsles.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.JungleJapes.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.AngryAztec.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.FranticFactory.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.GloomyGalleon.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.FungiForest.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.CrystalCaves.LogicRegions)
-CollectibleRegions.update(randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions)
-
-
-def ResetRegionAccess():
-    """Reset kong access for all regions."""
-    for region in Regions.values():
-        region.ResetAccess()
-
-
-def ResetCollectibleRegions():
-    """Reset if each collectible has been added."""
-    for region in CollectibleRegions.values():
-        for collectible in region:
-            collectible.added = False
-            # collectible.enabled = collectible.vanilla
-
-
-def ClearAllLocations():
-    """Clear item from every location."""
-    for location in LocationList.values():
-        location.item = None
+CollectibleRegionsOriginal = {
+    **randomizer.CollectibleLogicFiles.DKIsles.LogicRegions,
+    **randomizer.CollectibleLogicFiles.JungleJapes.LogicRegions,
+    **randomizer.CollectibleLogicFiles.AngryAztec.LogicRegions,
+    **randomizer.CollectibleLogicFiles.FranticFactory.LogicRegions,
+    **randomizer.CollectibleLogicFiles.GloomyGalleon.LogicRegions,
+    **randomizer.CollectibleLogicFiles.FungiForest.LogicRegions,
+    **randomizer.CollectibleLogicFiles.CrystalCaves.LogicRegions,
+    **randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions,
+}
