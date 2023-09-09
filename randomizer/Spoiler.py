@@ -106,6 +106,12 @@ class Spoiler:
         self.hint_list = {}
         self.settings.update_valid_locations(self)
 
+    def FlushAllExcessSpoilerData(self):
+        del self.LocationList
+        del self.RegionList
+        del self.CollectibleRegions
+        del self.LogicVariables
+
     def Reset(self):
         """Reset logic variables and region info that should be reset before a search."""
         self.LogicVariables.Reset()
