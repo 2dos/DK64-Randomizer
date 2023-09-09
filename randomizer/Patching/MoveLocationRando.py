@@ -1,13 +1,10 @@
 """Randomize Move Locations."""
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import LocationList
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Patching.Patcher import LocalROM
 
 # /* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.
 # /* 0x0A8 */ unsigned char dk_crankymoves[7]; // First 4 bits indicates the moves type, 0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 0xF = No Upgrade. Last 4 bits indicate move level (eg. 1 = Baboon Blast, 2 = Strong Kong, 3 = Gorilla Grab). Each item in the array indicates the level it is given (eg. 1st slot is purchased in Japes, 2nd for Aztec etc.)
