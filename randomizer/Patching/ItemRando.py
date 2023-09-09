@@ -9,6 +9,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import MicrohintsEnabled
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
+from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Lib import float_to_hex, intf_to_float
 from randomizer.Patching.Patcher import ROM, LocalROM

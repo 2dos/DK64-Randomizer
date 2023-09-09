@@ -26,16 +26,11 @@ from randomizer.Enums.Settings import (
     TrainingBarrels,
     WinCondition,
 )
-import copy
-from randomizer.Logic import LogicVarHolder
-from randomizer.Logic import RegionsOriginal
-from randomizer.Logic import CollectibleRegionsOriginal
-from randomizer.ShuffleKasplats import constants, shufflable
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.EnemyTypes import EnemyMetaData
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
-from randomizer.Lists.Location import PreGivenLocations, LocationListOriginal
+from randomizer.Lists.Location import LocationList, PreGivenLocations
 from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
@@ -65,10 +60,7 @@ class Spoiler:
         self.music_event_data = {}
         self.location_data = {}
         self.enemy_replacements = []
-        self.LogicVariables = LogicVarHolder(self)
-        self.RegionList = copy.deepcopy(RegionsOriginal)
-        self.CollectibleRegions = copy.deepcopy(CollectibleRegionsOriginal)
-        self.LocationList = copy.deepcopy(LocationListOriginal)
+
         self.debug_human_item_assignment = None  # Kill this as soon as the spoiler is better
 
         self.move_data = []
@@ -104,50 +96,6 @@ class Spoiler:
             self.move_data.append(master_moves)
 
         self.hint_list = {}
-        self.settings.update_valid_locations(self)
-
-    def FlushAllExcessSpoilerData(self):
-        """Flush all spoiler data that is not needed for the final result."""
-        del self.LocationList
-        del self.RegionList
-        del self.CollectibleRegions
-        del self.LogicVariables
-
-    def Reset(self):
-        """Reset logic variables and region info that should be reset before a search."""
-        self.LogicVariables.Reset()
-        self.ResetRegionAccess()
-        self.ResetCollectibleRegions()
-
-    def ResetRegionAccess(self):
-        """Reset kong access for all regions."""
-        for region in self.RegionList.values():
-            region.ResetAccess()
-
-    def ResetCollectibleRegions(self):
-        """Reset if each collectible has been added."""
-        for region in self.CollectibleRegions.values():
-            for collectible in region:
-                collectible.added = False
-                # collectible.enabled = collectible.vanilla
-
-    def ClearAllLocations(self):
-        """Clear item from every location."""
-        for location in self.LocationList.values():
-            location.item = None
-
-    def ResetLocationList(self):
-        """Reset the LocationList to values conducive to a new fill."""
-        for location in self.LocationList.values():
-            location.PlaceDefaultItem(self)
-        # Known to be incomplete - it should also confirm the correct locations of Fairies, Dirt, and Crowns
-
-    def InitKasplatMap(self):
-        """Initialize kasplat_map in logic variables with default values."""
-        # Just use default kasplat associations.
-        self.LogicVariables.kasplat_map = {}
-        self.LogicVariables.kasplat_map.update(shufflable)
-        self.LogicVariables.kasplat_map.update(constants)
 
     def getItemGroup(self, item):
         """Get item group from item."""
@@ -352,14 +300,14 @@ class Spoiler:
         humanspoiler["Paths"] = {}
         wothSlams = 0
         for loc, path in self.woth_paths.items():
-            destination_item = ItemList[self.LocationList[loc].item]
+            destination_item = ItemList[LocationList[loc].item]
             path_dict = {}
             for path_loc_id in path:
-                path_location = self.LocationList[path_loc_id]
+                path_location = LocationList[path_loc_id]
                 path_item = ItemList[path_location.item]
                 path_dict[path_location.name] = path_item.name
             extra = ""
-            if self.LocationList[loc].item == Items.ProgressiveSlam:
+            if LocationList[loc].item == Items.ProgressiveSlam:
                 wothSlams += 1
                 extra = " " + str(wothSlams)
             humanspoiler["Paths"][destination_item.name + extra] = path_dict
@@ -367,7 +315,7 @@ class Spoiler:
         for kong, path in self.krool_paths.items():
             path_dict = {}
             for path_loc_id in path:
-                path_location = self.LocationList[path_loc_id]
+                path_location = LocationList[path_loc_id]
                 path_item = ItemList[path_location.item]
                 path_dict[path_location.name] = path_item.name
             phase_name = "K. Rool Donkey Phase"
@@ -382,7 +330,7 @@ class Spoiler:
             humanspoiler["Paths"][phase_name] = path_dict
 
         self.pregiven_items = []
-        for location_id, location in self.LocationList.items():
+        for location_id, location in LocationList.items():
             # No need to spoiler constants or hints
             if location.type == Types.Constant or location.type == Types.Hint or location.inaccessible:
                 continue
@@ -573,7 +521,7 @@ class Spoiler:
                     continue
                 if location not in HelmMinigameLocations and self.settings.bonus_barrels == MinigameBarrels.skip:
                     continue
-                shuffled_barrels[self.LocationList[location].name] = MinigameRequirements[minigame].name
+                shuffled_barrels[LocationList[location].name] = MinigameRequirements[minigame].name
             if len(shuffled_barrels) > 0:
                 humanspoiler["Shuffled Bonus Barrels"] = shuffled_barrels
 
@@ -708,7 +656,7 @@ class Spoiler:
         """Update kasplat data."""
         for kasplat, kong in kasplat_map.items():
             # Get kasplat info
-            location = self.LocationList[kasplat]
+            location = LocationList[kasplat]
             mapId = location.map
             original = location.kong
             self.human_kasplats[location.name] = NameFromKong(kong)
