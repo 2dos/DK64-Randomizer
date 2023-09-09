@@ -101,9 +101,9 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
     spoiler.shuffled_kasplat_map = {}
     LogicVariables.kasplat_map = {}
     for location in shufflable:
-        Logic.LocationList[location].inaccessible = True
+        spoiler.LocationList[location].inaccessible = True
     for location in constants:
-        Logic.LocationList[location].inaccessible = True
+        spoiler.LocationList[location].inaccessible = True
     # Fill kasplats level by level
     for level in KasplatLocationList:
         kasplats = KasplatLocationList[level]
@@ -126,7 +126,7 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
                     location_id = GetBlueprintLocationForKongAndLevel(level, kong)
                     # Assemble the Location object
                     location = Location(level, kasplat.name, item_id, Types.Blueprint, kong, [kasplat.map])
-                    Logic.LocationList[location_id] = location
+                    spoiler.LocationList[location_id] = location
                     # Insert the Location into the Region
                     kasplatRegion = spoiler.RegionList[kasplat.region_id]
                     kasplatRegion.locations.append(LocationLogic(location_id, kasplat.additional_logic))
@@ -141,9 +141,9 @@ def ShuffleKasplatsInVanillaLocations(spoiler, LogicVariables):
     spoiler.shuffled_kasplat_map = {}
     LogicVariables.kasplat_map = {}
     for location in shufflable:
-        Logic.LocationList[location].inaccessible = True
+        spoiler.LocationList[location].inaccessible = True
     for location in constants:
-        Logic.LocationList[location].inaccessible = True
+        spoiler.LocationList[location].inaccessible = True
     # Place by level
     for level in KasplatLocationList:
         availableKongs = GetKongs().copy()
@@ -157,7 +157,7 @@ def ShuffleKasplatsInVanillaLocations(spoiler, LogicVariables):
             rando_location_id = GetBlueprintLocationForKongAndLevel(level, chosenKong)
             # Assemble the Location object
             location = Location(level, kasplat.name, item_id, Types.Blueprint, chosenKong, [kasplat.map])
-            Logic.LocationList[rando_location_id] = location
+            spoiler.LocationList[rando_location_id] = location
             # Insert the rando Location into the Region
             kasplatRegion = spoiler.RegionList[kasplat.region_id]
             kasplatRegion.locations.append(LocationLogic(rando_location_id, kasplat.additional_logic))
