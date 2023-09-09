@@ -524,6 +524,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
         locations=[[5, 1.0, 3604, 1620, 1883], [5, 1.0, 3555, 1620, 1933]],
+        logic=lambda l: Events.WaterSwitch in l.Events,
     ),
     ColoredBananaGroup(
         group=47,
@@ -532,6 +533,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
         locations=[[5, 1.0, 3930, 1620, 1486], [5, 1.0, 3867, 1620, 1325]],
+        logic=lambda l: Events.WaterSwitch in l.Events,
     ),
     ColoredBananaGroup(
         group=48,

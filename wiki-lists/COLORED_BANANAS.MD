@@ -658,8 +658,8 @@
 | On ship part by Candy's store | 10 |  | 
 | By submarine entrance | 5 |  | 
 | On seafloor from 5DS to submarine area | 10 |  | 
-| On floating plank with 4 DK coins | 10 |  | 
-| Plank in front of Funky (Melon crate) | 10 |  | 
+| On floating plank with 4 DK coins | 10 | Events.WaterSwitch in l.Events | 
+| Plank in front of Funky (Melon crate) | 10 | Events.WaterSwitch in l.Events | 
 | On stalactite between 5DS and mech fish | 5 |  | 
 | Around Funky's store | 20 |  | 
 | Cactus on guitar pad | 5 |  | 

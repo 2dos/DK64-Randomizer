@@ -129,7 +129,7 @@
     "spoiler_hints": "off",
     "spoiler_include_level_order": false,
     "spoiler_include_woth_count": false,
-    "start_with_slam": true,
+    "start_with_slam": false,
     "starting_keys_list_selected": [],
     "starting_move_list_selected": [],
     "starting_kongs_count": 3,
