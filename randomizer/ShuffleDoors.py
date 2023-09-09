@@ -63,7 +63,7 @@ def ShuffleDoors(spoiler):
                     door.placed = "none"
     # Hint doors have Locations tied to them. If we're about to add new ones, then we must remove the old ones.
     if spoiler.settings.wrinkly_location_rando:
-        ClearHintDoorLogic()
+        ClearHintDoorLogic(spoiler)
     # Assign Wrinkly Doors & T&S Portals
     for level in door_locations:
         # Get all door locations that can be given a door
@@ -117,7 +117,7 @@ def ShuffleDoors(spoiler):
                     shuffled_door_data[level].append((selected_door_index, "wrinkly", (kong % 5)))
                     # Add logic for the new door location
                     doorLocation = GetDoorLocationForKongAndLevel(kong, level)
-                    region = Logic.Regions[selected_door.logicregion]
+                    region = spoiler.RegionList[selected_door.logicregion]
                     region.locations.append(LocationLogic(doorLocation, selected_door.logic))
         elif spoiler.settings.remove_wrinkly_puzzles:
             # place vanilla wrinkly doors
@@ -142,7 +142,7 @@ def ShuffleDoors(spoiler):
 
 def ShuffleVanillaDoors(spoiler):
     """Shuffle T&S and Wrinkly doors amongst the vanilla locations."""
-    ClearHintDoorLogic()
+    ClearHintDoorLogic(spoiler)
     for level in door_locations:
         # Reset the data structures for door shuffling information sharing
         shuffled_door_data[level] = []
@@ -175,7 +175,7 @@ def ShuffleVanillaDoors(spoiler):
             shuffled_door_data[level].append((selected_door_index, "wrinkly", int(assignee)))
             # Add this hint door's location back to the logic
             doorLocation = GetDoorLocationForKongAndLevel(kong, level)
-            region = Logic.Regions[selected_door.logicregion]
+            region = spoiler.RegionList[selected_door.logicregion]
             region.locations.append(LocationLogic(doorLocation, selected_door.logic))
         # Any remaining vanilla door that isn't occupied and is a T&S door will get a T&S - the number of doors here will vary based on how many hints were placed in lobby vs level
         placed_tns_count = 1
@@ -196,7 +196,7 @@ def ShuffleVanillaDoors(spoiler):
         spoiler.human_portal_doors = human_portal_doors
 
 
-def ClearHintDoorLogic():
+def ClearHintDoorLogic(spoiler):
     """Remove existing hint door locations from the logic in preparation for custom door locations to be added."""
-    for id, region in Logic.Regions.items():
+    for id, region in spoiler.RegionList.items():
         region.locations = [loclogic for loclogic in region.locations if loclogic.id < Locations.JapesDonkeyDoor or loclogic.id > Locations.CastleChunkyDoor]
