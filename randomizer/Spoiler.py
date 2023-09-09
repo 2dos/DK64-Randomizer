@@ -107,6 +107,7 @@ class Spoiler:
         self.settings.update_valid_locations(self)
 
     def FlushAllExcessSpoilerData(self):
+        """Flush all spoiler data that is not needed for the final result."""
         del self.LocationList
         del self.RegionList
         del self.CollectibleRegions
