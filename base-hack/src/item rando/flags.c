@@ -188,6 +188,9 @@ int clampFlag(int flag) {
     if ((flag >= FLAG_MELONCRATE_0) && (flag < (FLAG_MELONCRATE_0 + 16))) {
         return 1; // Melon Crates
     }
+    if ((flag >= FLAG_ENEMY_KILLED_0) && (flag < (FLAG_ENEMY_KILLED_0 + ENEMIES_TOTAL))) {
+        return 1; // Enemies
+    }
     return 0;
 }
 

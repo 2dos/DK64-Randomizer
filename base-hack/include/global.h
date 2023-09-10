@@ -30,6 +30,12 @@ extern overlays getOverlayFromMap(maps map);
 extern void* malloc_wipe(int size);
 extern int applyDamageMask(int player_index, int damage);
 extern void* replaceWaterTexture(int table, int file, int unk0, int unk1);
+extern int isBounceObject(int object);
+
+extern int getEnemyItem(int id);
+extern int getEnemyFlag(int id);
+extern void setEnemyDBPopulation(int value);
+extern void populateEnemyMapData(void);
 
 extern int getWrinklyLevelIndex(void);
 extern void initOptionScreen(void);
@@ -412,6 +418,7 @@ extern unsigned char actor_master_types[ACTOR_LIMIT];
 extern short* actor_extra_data_sizes[ACTOR_LIMIT];
 extern collision_data_struct actor_collisions[ACTOR_LIMIT];
 extern collision_info object_collisions[COLLISION_LIMIT];
+extern drop_item drops[DROP_COUNT];
 
 extern mtx_item static_mtx[20];
 extern int hint_pointers[35];

@@ -10,6 +10,8 @@
 
 #define FILENAME_LENGTH 8
 #define SONG_COUNT 176
+#define DROP_COUNT 29
+#define ENEMIES_TOTAL 426
 #include "ultra64.h"
 #include "common_enums.h"
 #include "common_structs.h"

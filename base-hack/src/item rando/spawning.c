@@ -151,10 +151,8 @@ void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int c
         object = new_obj;
     }
     if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
-        for (int i = 0; i < (int)(sizeof(bounce_objects)/2); i++) {
-            if (object == bounce_objects[i]) {
-                cutscene = 2;
-            }
+        if (isBounceObject(object)) {
+            cutscene = 2;
         }
         spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
     }
@@ -334,12 +332,8 @@ void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1,
         flag = -1;
         object = 0x2F;
         cutscene = 1;
-    } else {
-        for (int i = 0; i < (int)(sizeof(bounce_objects)/2); i++) {
-            if (object == bounce_objects[i]) {
-                cutscene = 2;
-            }
-        }
+    } else if (isBounceObject(object)) {
+        cutscene = 2;
     }
     float x = collisionPos[0];
     float y = collisionPos[1] + 15.0f;

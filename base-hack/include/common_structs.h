@@ -1602,3 +1602,26 @@ typedef struct Chunk {
 	/* 0x04C */ ChunkSub* color_pointer;
 	/* 0x050 */ char unk50[0x1C8-0x50];
 } Chunk;
+
+typedef struct enemy_item_memory_item {
+	/* 0x000 */ unsigned short actor;
+	/* 0x002 */ unsigned short flag;
+} enemy_item_memory_item;
+
+typedef struct enemy_item_rom_item {
+	/* 0x000 */ unsigned char map;
+	/* 0x001 */ unsigned char char_spawner_id;
+	/* 0x002 */ enemy_item_memory_item spawn_data;
+} enemy_item_rom_item;
+
+typedef struct enemy_item_db_item {
+	/* 0x000 */ enemy_item_memory_item spawn;
+	/* 0x004 */ unsigned short global_index;
+} enemy_item_db_item;
+
+typedef struct drop_item {
+    /* 0x000 */ short source_object;
+    /* 0x002 */ short dropped_object;
+    /* 0x004 */ unsigned char drop_music;
+    /* 0x005 */ unsigned char drop_count;
+} drop_item;
