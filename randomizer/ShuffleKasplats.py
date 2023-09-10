@@ -4,7 +4,6 @@ import random
 import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
-import randomizer.Logic as Logic
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
@@ -12,7 +11,6 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
 from randomizer.Lists.KasplatLocations import KasplatLocationList
 from randomizer.Lists.Location import Location
-from randomizer.Lists.MapsAndExits import Maps
 from randomizer.LogicClasses import LocationLogic
 
 shufflable = {

@@ -2,7 +2,7 @@
 import js
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.EntranceRando import intToArr
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Patching.Patcher import LocalROM
 
 
 def randomize_krool(spoiler):

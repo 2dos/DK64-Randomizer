@@ -1,7 +1,6 @@
 """Shuffles the locations of shops."""
 import random
 
-import randomizer.Logic as Logic
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import ShuffleLoadingZones

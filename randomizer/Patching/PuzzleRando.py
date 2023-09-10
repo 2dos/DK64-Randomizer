@@ -3,7 +3,7 @@ import random
 
 import js
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Patching.Patcher import LocalROM
 
 
 def chooseSFX():
@@ -64,7 +64,7 @@ def shortenCastleMinecart(spoiler):
             offset += (point_count * 6) + 2
             ROM_COPY.seek(cont_map_spawner_address + offset)
             point0_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
-            point_A_offset = offset + 2
+            offset + 2
             offset += (point0_count * 10) + 6
             fence_finish = cont_map_spawner_address + offset
             fence_size = fence_finish - fence_start

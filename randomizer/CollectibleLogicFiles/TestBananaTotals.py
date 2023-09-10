@@ -9,7 +9,6 @@ import randomizer.CollectibleLogicFiles.JungleJapes as JungleJapes
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.LogicClasses import Collectible
 
 
 def __CountBananasForLevel(bananaTotals, collectibles, level):

@@ -13,7 +13,6 @@ from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolid
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
-from randomizer.Enums.Settings import ExcludedSongs
 from randomizer.Lists.Songs import ExcludedSongsSelector
 
 # from randomizer.Spoiler import Spoiler

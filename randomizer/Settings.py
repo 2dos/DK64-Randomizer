@@ -1,12 +1,9 @@
 """Settings class and functions."""
-import hashlib
-import inspect
 import json
 import math
 import random
 from random import randint
 
-import js
 import randomizer.ItemPool as ItemPool
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
@@ -39,7 +36,6 @@ from randomizer.Lists.Location import (
 )
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.LogicClasses import LocationLogic
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
 from randomizer.Patching.Lib import IsItemSelected

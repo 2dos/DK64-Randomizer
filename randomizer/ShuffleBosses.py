@@ -4,7 +4,6 @@ from array import array
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
 from randomizer.Lists.MapsAndExits import Maps

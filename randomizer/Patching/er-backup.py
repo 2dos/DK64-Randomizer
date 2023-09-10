@@ -11,7 +11,7 @@ from randomizer.Enums.EnemySubtypes import EnemySubtype
 from randomizer.Enums.Settings import CrownEnemyRando, DamageAmount
 from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData, enemy_location_list
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Patching.Patcher import LocalROM
 
 
 class PkmnSnapEnemy:
@@ -588,14 +588,13 @@ def randomize_enemies(spoiler):
     # Define Enemies that can be placed in those classes
     enemy_placement_classes = {}
     banned_classes = []
-    no_ground_simple_selected = False
     for enemy_class in enemy_classes:
         class_list = []
         for enemy in enemy_classes[enemy_class]:
             if enemy in spoiler.settings.enemies_selected:
                 class_list.append(enemy)
         if enemy_class == EnemySubtype.GroundSimple and len(class_list) == 0:
-            no_ground_simple_selected = True
+            pass
         if len(class_list) == 0:
             # Nothing present, use backup
             for repl_type in replacement_priority[enemy_class]:

@@ -1,10 +1,8 @@
 """Spoiler class and functions."""
 
 import json
-from email.policy import default
 from typing import OrderedDict
 
-import randomizer.ItemPool as ItemPool
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -15,7 +13,6 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import (
     BananaportRando,
     GlitchesSelected,
-    HardModeSelected,
     HelmDoorItem,
     LogicType,
     MinigameBarrels,

@@ -1,11 +1,8 @@
 """Contains functions related to setting up the pool of shuffled items."""
 import itertools
-from random import shuffle
 
 import randomizer.Enums.Kongs as KongObject
-from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
-from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, HardModeSelected
 from randomizer.Enums.Types import Types

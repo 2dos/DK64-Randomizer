@@ -5,7 +5,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
-from randomizer.Enums.Settings import DamageAmount, HelmSetting
+from randomizer.Enums.Settings import HelmSetting
 from randomizer.Lists.MapsAndExits import Maps
 
 

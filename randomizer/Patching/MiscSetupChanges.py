@@ -9,7 +9,7 @@ from randomizer.Enums.Settings import DamageAmount, MiscChangesSelected, HardMod
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Lists.MapsAndExits import LevelMapTable, Maps
 from randomizer.Patching.Lib import float_to_hex, IsItemSelected
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Patching.Patcher import LocalROM
 
 
 def pickRandomPositionCircle(center_x, center_z, min_radius, max_radius):

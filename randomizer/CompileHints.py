@@ -11,14 +11,13 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import HelmDoorItem, HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, SpoilerHints, WinCondition, WrinklyHints
-from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
-from randomizer.Lists.Item import ItemList, NameFromKong
+from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import PreGivenLocations, SharedShopLocations, TrainingBarrelLocations
 from randomizer.Lists.MapsAndExits import GetMapId
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import ClearHintMessages, hints
-from randomizer.Patching.UpdateHints import UpdateHint, updateRandomHint
+from randomizer.Patching.UpdateHints import UpdateHint
 from randomizer.Spoiler import Spoiler
 
 

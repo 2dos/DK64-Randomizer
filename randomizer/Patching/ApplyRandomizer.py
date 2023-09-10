@@ -21,7 +21,6 @@ from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import enableSpiderText, filterEntranceType, randomize_entrances
 from randomizer.Patching.FairyPlacer import PlaceFairies
-from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
@@ -35,7 +34,6 @@ from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints
 
 # from randomizer.Spoiler import Spoiler
-from randomizer.Settings import Settings
 
 
 class BooleanProperties:
@@ -486,7 +484,7 @@ def patching_response(spoiler):
         order += 1
 
     # Create a dummy time to attach to the end of the file name non decimal
-    current_time = str(time.time()).replace(".", "")
+    str(time.time()).replace(".", "")
 
     created_tempfile = mktemp()
     delta_tempfile = mktemp()

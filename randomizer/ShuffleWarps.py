@@ -1,9 +1,6 @@
 """Randomizes Bananaports."""
 import random
 
-import js
-import randomizer.Logic as Logic
-from randomizer.Enums.Warps import Warps
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Warps import BananaportVanilla, VanillaBananaportSelector
 from randomizer.LogicClasses import TransitionFront

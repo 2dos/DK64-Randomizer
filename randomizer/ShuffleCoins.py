@@ -16,8 +16,6 @@ import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Collectibles import Collectibles
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
-from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Time import Time
 from randomizer.Lists.BananaCoinLocations import BananaCoinGroupList
 from randomizer.LogicClasses import Collectible
 from randomizer.Spoiler import Spoiler

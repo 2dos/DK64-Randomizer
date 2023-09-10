@@ -4,7 +4,6 @@ import random
 import js
 import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
-import randomizer.Logic as Logic
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations

@@ -9,8 +9,6 @@ import randomizer.LogicFiles.FranticFactory
 import randomizer.LogicFiles.FungiForest
 import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.JungleJapes
-from randomizer.Enums.Collectibles import Collectibles
-from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.CustomLocations import CustomLocations, LocationTypes, CustomLocation
