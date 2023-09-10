@@ -380,7 +380,8 @@ class LogicVarHolder:
         self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems or Items.Shockwave in ownedItems
 
         self.scope = self.scope or Items.SniperSight in ownedItems
-        self.homing = self.homing or Items.HomingAmmo in ownedItems
+        # Having the homing ammo ability also requires having reliable access to homing ammo. This is not a perfect fix, but should cover 99.9% of cases and won't show up in hint paths.
+        self.homing = self.homing or (Items.HomingAmmo in ownedItems and (Events.ForestEntered in self.Events or Events.CastleEntered in self.Events or self.assumeFillSuccess))
 
         self.superSlam = self.Slam >= 2
         self.superDuperSlam = self.Slam >= 3
