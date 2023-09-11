@@ -97,6 +97,15 @@ int canSpawnEnemyReward(void) {
     return !checkFlag(flag, FLAGTYPE_PERMANENT);
 }
 
+float getRNGWithinRange(float min, float max) {
+    // return 0.0f;
+    int bytes = getRNGLower31() & 0xFF;
+    float ratio = bytes;
+    ratio /= 255;
+    float offset = (max - min) * ratio;
+    return min + offset;
+}
+
 void indicateCollectionStatus(void) {
     *(char*)(0x807F94AE) = 0;
     *(char*)(0x807F94AF) = 0;
@@ -105,27 +114,27 @@ void indicateCollectionStatus(void) {
     if (!Rando.enemy_item_rando) {
         return;
     }
-    if (canSpawnEnemyReward()) {
-        return;
-    }
     int spawn_id = TiedCharacterSpawner->spawn_trigger;
     int timer = ObjectModel2Timer + (spawn_id * 5);
-    if (timer % 7) {
+    if (timer % 30) {
         return;
     }
-    *(char*)(0x807FDB1C) = 3;
-    int channel = 0xF0;
-    changeActorColor(channel, channel, channel, 0xFF);
-    *(char*)(0x807FDB18) = 1;
-    // CurrentActorPointer_0, 1, 0, 0, 0, 0, -0x50
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
-    if (CurrentActorPointer_0) {
-        updatePosition(CurrentActorPointer_0, 1, &x, &y, &z);
+    if (!canSpawnEnemyReward()) {
+        return;
     }
-    loadSpriteFunction(0x80718080);
-    *(int*)(0x807FDB2C) = -0x50;
-    sprite_struct* sprite = displaySpriteAtXYZ((void*)(0x8071FFA0), 1.0f, x, y + 5.0f, z);
-    sprite->actor = CurrentActorPointer_0;
+    *(char*)(0x807FDB18) = 1; // Adjust Z-Indexing
+    *(short*)(0x807FDB36) = 4; // Fix rendering
+    float x_offset = getRNGWithinRange(-20.f, 20.0f);
+    float y_offset = getRNGWithinRange(5.0f, 25.0f);
+    float z_offset = getRNGWithinRange(-20.f, 20.0f);
+    int sprite = 0x5E;
+    if (getRNGLower31() & 1) {
+        sprite = 0x69;
+    }
+    displaySpriteAtXYZ(
+        sprite_table[sprite],
+        0x3F19999A,
+        CurrentActorPointer_0->xPos + x_offset,
+        CurrentActorPointer_0->yPos + y_offset,
+        CurrentActorPointer_0->zPos + z_offset);
 }

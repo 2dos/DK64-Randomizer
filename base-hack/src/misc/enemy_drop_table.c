@@ -74,7 +74,9 @@ void spawnEnemyDrops(actorData* actor) {
     }
     int song = drops[entry_index].drop_music;
     if (song > 0) {
-        playSong(song, 0x3F800000);
+        if (!Rando.enemy_item_rando) {
+            playSong(song, 0x3F800000);
+        }
     }
     int drop_count = drops[entry_index].drop_count;
     int drop_type = drops[entry_index].dropped_object;
@@ -107,10 +109,10 @@ void spawnEnemyDrops(actorData* actor) {
             flag = getEnemyFlag(spawner_id);
             if ((canSpawnEnemyReward()) && (Rando.item_rando)) {
                 int proposition = getEnemyItem(spawner_id);
-                if (proposition != -1) {
+                if ((proposition != -1) && (proposition != (CUSTOM_ACTORS_START + NEWACTOR_NULL))) {
                     drop_type = proposition;
+                    drop_count = 1;
                 }
-                drop_count = 1;
                 if (isBounceObject(drop_type)) {
                     drop_arg = 2;
                 }
@@ -118,9 +120,9 @@ void spawnEnemyDrops(actorData* actor) {
             }
         }
     }
+    float drop_rotation_divisor = 0xFFF;
+    drop_rotation_divisor /= drop_count;
     for (int i = 0; i < drop_count; i++) {
-        float drop_rotation_divisor = 0xFFF;
-        drop_rotation_divisor /= drop_count;
         int drop_rotation = i * drop_rotation_divisor;
         spawnActorWithFlag(drop_type, *(int*)(&actor->xPos), *(int*)(&actor->yPos), *(int*)(&actor->zPos), drop_rotation, drop_arg, flag, 0);
     }

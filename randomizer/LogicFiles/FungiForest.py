@@ -21,7 +21,12 @@ LogicRegions = {
         LocationLogic(Locations.ForestChunkyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.chunky] >= l.settings.medal_cb_req),
     ], [], [], restart=-1),
 
-    Regions.FungiForestStart: Region("Fungi Forest Start", "Forest Center and Beanstalk", Levels.FungiForest, True, None, [], [
+    Regions.FungiForestStart: Region("Fungi Forest Start", "Forest Center and Beanstalk", Levels.FungiForest, True, None, [
+        LocationLogic(Locations.ForestMainEnemy_NearAppleDropoff, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearDKPortal, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearWellTag, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_GreenTunnel, lambda l: l.pineapple and l.chunky),
+    ], [
         Event(Events.ForestEntered, lambda l: True),
         Event(Events.Night, lambda l: l.HasGun(Kongs.any)),
         Event(Events.WormGatesOpened, lambda l: l.settings.open_levels or (l.feather and l.tiny and l.pineapple and l.chunky)),
@@ -48,6 +53,17 @@ LogicRegions = {
     Regions.GiantMushroomArea: Region("Giant Mushroom Area", "Giant Mushroom Exterior", Levels.FungiForest, True, None, [
         LocationLogic(Locations.ForestDiddyTopofMushroom, lambda l: l.jetpack and l.isdiddy, MinigameType.BonusBarrel),
         LocationLogic(Locations.ForestLankyRabbitRace, lambda l: (l.CanOStandTBSNoclip() and l.spawn_snags), isAuxiliary=True),
+        LocationLogic(Locations.ForestMainEnemy_YellowTunnel0, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_YellowTunnel1, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_YellowTunnel2, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_YellowTunnel3, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearLowWarp5, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearPinkTunnelBounceTag, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearGMRocketbarrel, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_BetweenRBAndYellowTunnel, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearCranky, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearPinkTunnelGM, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_GMRearTag, lambda l: True),
     ], [
         Event(Events.HollowTreeGateOpened, lambda l: l.grape and l.lanky),
         Event(Events.ForestW3bTagged, lambda l: True),
@@ -88,6 +104,7 @@ LogicRegions = {
 
     Regions.ForestBaboonBlast: Region("Forest Baboon Blast", "Giant Mushroom Exterior", Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestDonkeyBaboonBlast, lambda l: l.isdonkey, MinigameType.BonusBarrel),
+        LocationLogic(Locations.ForestMainEnemy_NearBBlast, lambda l: True),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MushroomLowerExterior, lambda l: True)
@@ -121,6 +138,10 @@ LogicRegions = {
 
     Regions.MushroomUpperExterior: Region("Mushroom Upper Exterior", "Giant Mushroom Exterior", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestBattleArena, lambda l: not l.settings.crown_placement_rando),
+        LocationLogic(Locations.ForestMainEnemy_NearFacePuzzle, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearCrown, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearHighWarp5, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_TopOfMushroom, lambda l: (l.jetpack and l.isdiddy) or (l.handstand and l.islanky)),
     ], [
         Event(Events.ForestW5aTagged, lambda l: True),
     ], [
@@ -160,6 +181,12 @@ LogicRegions = {
         LocationLogic(Locations.ForestLankyRabbitRace, lambda l: l.TimeAccess(Regions.HollowTreeArea, Time.Day) and l.trombone and l.sprint and l.lanky),
         LocationLogic(Locations.ForestKasplatOwlTree, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.MelonCrate_Location08, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_HollowTree0, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_HollowTree1, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_HollowTreeEntrance, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_TreeMelonCrate0, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_TreeMelonCrate1, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_TreeMelonCrate2, lambda l: True),
     ], [
         Event(Events.ForestW4bTagged, lambda l: True),
     ], [
@@ -182,6 +209,11 @@ LogicRegions = {
         LocationLogic(Locations.ForestDiddyCagedBanana, lambda l: (l.TimeAccess(Regions.MillArea, Time.Night) and Events.WinchRaised in l.Events and l.guitar and l.diddy) or ((l.CanPhaseswim() or l.ledgeclip) and (l.isdiddy or l.settings.free_trade_items))),
         LocationLogic(Locations.RainbowCoin_Location07, lambda l: True),
         LocationLogic(Locations.MelonCrate_Location10, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearSnide, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearIsoCoin, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearDarkAttic, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearWellExit, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearBlueTunnel, lambda l: True),
     ], [
         Event(Events.ForestW1bTagged, lambda l: True),
     ], [
@@ -253,6 +285,10 @@ LogicRegions = {
     Regions.ThornvineArea: Region("Thornvine Area", "Forest Mills", Levels.FungiForest, True, -1, [
         LocationLogic(Locations.ForestKasplatNearBarn, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.MelonCrate_Location09, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_Thornvine0, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_Thornvine1, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_Thornvine2, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_ThornvineEntrance, lambda l: True),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MillArea, lambda l: True, time=Time.Night),
@@ -273,6 +309,8 @@ LogicRegions = {
         LocationLogic(Locations.ForestTinyBeanstalk, lambda l: l.saxophone and l.mini and l.istiny and l.Beans >= 1),
         LocationLogic(Locations.ForestChunkyApple, lambda l: Events.WormGatesOpened in l.Events and l.hunkyChunky and l.ischunky and l.barrels),
         LocationLogic(Locations.RainbowCoin_Location08, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearBeanstalk0, lambda l: True),
+        LocationLogic(Locations.ForestMainEnemy_NearBeanstalk1, lambda l: True),
     ], [
         Event(Events.ForestW2aTagged, lambda l: True),
         Event(Events.WormGatesOpened, lambda l: l.settings.open_levels),

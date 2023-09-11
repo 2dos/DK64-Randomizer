@@ -643,6 +643,7 @@ void initHack(int source) {
 			}
 			if (Rando.enemy_item_rando) {
 				writeFunction(0x80729E54, &indicateCollectionStatus);
+				*(unsigned short*)(0x807278CA) = 0xFFF; // Disable enemy switching in Fungi
 			}
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0
