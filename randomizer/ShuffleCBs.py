@@ -181,7 +181,7 @@ def ShuffleCBs(spoiler: Spoiler):
             if total_bunches + total_singles > 1127:
                 print(f"WARNING: {total_bunches + total_singles} banana objects placed, exceeding cap of 1127")
                 raise Ex.CBFillFailureException
-            Fill.Reset()
+            spoiler.Reset()
             if not Fill.VerifyWorld(spoiler):
                 raise Ex.CBFillFailureException
             spoiler.cb_placements = cb_data

@@ -97,7 +97,7 @@ def ShuffleCoins(spoiler: Spoiler):
 
                 # Placement is valid
                 coin_data.extend(level_placement.copy())
-            Fill.Reset()
+            spoiler.Reset()
             if not Fill.VerifyWorld(spoiler):
                 raise Ex.CoinFillFailureException
             spoiler.coin_placements = coin_data

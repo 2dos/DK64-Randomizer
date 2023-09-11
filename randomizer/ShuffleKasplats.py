@@ -236,7 +236,7 @@ def KasplatShuffle(spoiler, LogicVariables):
                 else:
                     ShuffleKasplatsInVanillaLocations(spoiler, LogicVariables)
                 # Verify world by assuring all locations are still reachable
-                Fill.Reset()
+                spoiler.Reset()
                 if not Fill.VerifyWorld(spoiler):
                     if retries < 10:
                         raise Ex.KasplatPlacementException
