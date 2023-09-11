@@ -59,17 +59,6 @@ def ShuffleFairyLocations(spoiler: Spoiler):
     spoiler.fairy_locations = {}
     spoiler.fairy_locations_human = {}
     spoiler.fairy_data_table = [None] * 20
-    level_to_enum = {
-        Levels.DKIsles: randomizer.LogicFiles.DKIsles.LogicRegions,
-        Levels.JungleJapes: randomizer.LogicFiles.JungleJapes.LogicRegions,
-        Levels.AngryAztec: randomizer.LogicFiles.AngryAztec.LogicRegions,
-        Levels.FranticFactory: randomizer.LogicFiles.FranticFactory.LogicRegions,
-        Levels.GloomyGalleon: randomizer.LogicFiles.GloomyGalleon.LogicRegions,
-        Levels.FungiForest: randomizer.LogicFiles.FungiForest.LogicRegions,
-        Levels.CrystalCaves: randomizer.LogicFiles.CrystalCaves.LogicRegions,
-        Levels.CreepyCastle: randomizer.LogicFiles.CreepyCastle.LogicRegions,
-        Levels.HideoutHelm: randomizer.LogicFiles.HideoutHelm.LogicRegions,
-    }
     level_to_name = {
         Levels.DKIsles: "Isles",
         Levels.JungleJapes: "Japes",
@@ -136,13 +125,9 @@ def ShuffleFairyLocations(spoiler: Spoiler):
                             "id": -1 if not is_vanilla else data.id,
                             "shift": -1 if not is_vanilla else data.shift,
                         }
-                        # Logic
-                        # Remove old from logic
-                        for logic_region in level_to_enum[level]:
-                            level_to_enum[level][logic_region].locations = [loc for loc in level_to_enum[level][logic_region].locations if loc.id != data.location]
-                        # Re-insert into logic
+                        # Insert into logic
                         new_region = fairy_locations[level][x].region
-                        level_to_enum[level][new_region].locations.append(LocationLogic(data.location, fairy_locations[level][x].logic))
+                        spoiler.RegionList[new_region].locations.append(LocationLogic(data.location, fairy_locations[level][x].logic))
                         spoiler.LocationList[data.location].name = f"{level_to_name[level]} Fairy ({fairy_locations[level][x].name})"
 
 

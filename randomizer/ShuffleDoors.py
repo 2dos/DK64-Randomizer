@@ -86,7 +86,7 @@ def ShuffleDoors(spoiler):
                         available_portals = [door for door in available_portals if door_locations[level][door].group != selected_portal.group]
                         # update available_doors separately as wrinkly doors should not be affected by the T&S grouping
                         available_doors.remove(selected_door_index)
-                        selected_portal.assignPortal()
+                        selected_portal.assignPortal(spoiler)
                         human_portal_doors[level_list[level]]["T&S #" + str(new_portal + 1)] = selected_portal.name
                         shuffled_door_data[level].append((selected_door_index, "tns"))
                     else:
@@ -97,7 +97,7 @@ def ShuffleDoors(spoiler):
                         available_portals = [door for door in available_portals if door_locations[level][door].group != selected_portal.group]
                         # update available_doors separately as wrinkly doors should not be affected by the T&S grouping
                         available_doors.remove(selected_door_index)
-                        selected_portal.assignPortal()
+                        selected_portal.assignPortal(spoiler)
                         human_portal_doors[level_list[level]]["T&S #" + str(new_portal + 1)] = selected_portal.name
                         shuffled_door_data[level].append((selected_door_index, "tns"))
         if spoiler.settings.wrinkly_location_rando:
@@ -158,7 +158,7 @@ def ShuffleVanillaDoors(spoiler):
         locked_tns_options = [idx for idx in vanilla_door_indexes if door_locations[level][idx].default_placed == "tns" and door_locations[level][idx].door_type != "wrinkly"]
         locked_tns_index = random.choice(locked_tns_options)
         locked_tns = door_locations[level][locked_tns_index]
-        locked_tns.assignPortal()
+        locked_tns.assignPortal(spoiler)
         human_portal_doors[level_list[level]]["T&S #1"] = locked_tns.name
         shuffled_door_data[level].append((locked_tns_index, "tns"))
         vanilla_door_indexes.remove(locked_tns_index)
@@ -182,7 +182,7 @@ def ShuffleVanillaDoors(spoiler):
             vanilla_door = door_locations[level][door_index]
             if vanilla_door.placed == "none" and vanilla_door.default_placed == "tns" and vanilla_door.door_type != "wrinkly":
                 placed_tns_count += 1
-                vanilla_door.assignPortal()
+                vanilla_door.assignPortal(spoiler)
                 human_portal_doors[level_list[level]]["T&S #" + str(placed_tns_count)] = vanilla_door.name
                 shuffled_door_data[level].append((door_index, "tns"))
 
