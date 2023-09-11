@@ -1,24 +1,21 @@
 """Contains functions related to setting up the pool of shuffled items."""
 import itertools
-from random import shuffle
 
 import randomizer.Enums.Kongs as KongObject
-from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
-from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels, HardModeSelected
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong
 from randomizer.Lists.LevelInfo import LevelInfoList
-from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, LocationList, SharedMoveLocations, TinyMoveLocations, TrainingBarrelLocations
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Patching.Lib import IsItemSelected
 
 
-def PlaceConstants(settings):
+def PlaceConstants(spoiler):
     """Place items which are to be put in a hard-coded location."""
     # Settings-dependent locations
+    settings = spoiler.settings
     # Determine what types of locations are being shuffled
     typesOfItemsShuffled = []
     if settings.kong_rando:
@@ -35,18 +32,18 @@ def PlaceConstants(settings):
     # Invert this list because I think it'll be faster
     typesOfItemsNotShuffled = [typ for typ in Types if typ not in typesOfItemsShuffled]
     # Place the default item at every location of a type we're not shuffling
-    for location in LocationList:
-        if LocationList[location].type in typesOfItemsNotShuffled:
-            LocationList[location].PlaceDefaultItem()
+    for location in spoiler.LocationList:
+        if spoiler.LocationList[location].type in typesOfItemsNotShuffled:
+            spoiler.LocationList[location].PlaceDefaultItem(spoiler)
         else:
-            LocationList[location].constant = False
-            LocationList[location].item = None
+            spoiler.LocationList[location].constant = False
+            spoiler.LocationList[location].item = None
         # While we're looping here, also reset shops that became inaccessible due to fill lockouts
-        if LocationList[location].type == Types.Shop:
-            LocationList[location].inaccessible = LocationList[location].smallerShopsInaccessible
+        if spoiler.LocationList[location].type == Types.Shop:
+            spoiler.LocationList[location].inaccessible = spoiler.LocationList[location].smallerShopsInaccessible
     # Make extra sure the Helm Key is right
     if settings.key_8_helm:
-        LocationList[Locations.HelmKey].PlaceItem(Items.HideoutHelmKey)
+        spoiler.LocationList[Locations.HelmKey].PlaceItem(spoiler, Items.HideoutHelmKey)
     # Handle key placements
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels and Types.Key not in settings.shuffled_location_types:
         # Place keys in the lobbies they normally belong in
@@ -54,25 +51,25 @@ def PlaceConstants(settings):
         for level in LevelInfoList.values():
             # If level exit isn't shuffled, use vanilla key
             if not ShufflableExits[level.TransitionTo].shuffled:
-                LocationList[level.KeyLocation].PlaceConstantItem(level.KeyItem)
+                spoiler.LocationList[level.KeyLocation].PlaceConstantItem(spoiler, level.KeyItem)
             else:
                 # Find the transition this exit is attached to, and use that to get the proper location to place this key
                 dest = ShufflableExits[level.TransitionTo].shuffledId
                 shuffledTo = [x for x in LevelInfoList.values() if x.TransitionTo == dest][0]
-                LocationList[shuffledTo.KeyLocation].PlaceConstantItem(level.KeyItem)
+                spoiler.LocationList[shuffledTo.KeyLocation].PlaceConstantItem(spoiler, level.KeyItem)
         # The key in Helm is always Key 8 in these settings
-        LocationList[Locations.HelmKey].PlaceConstantItem(Items.HideoutHelmKey)
+        spoiler.LocationList[Locations.HelmKey].PlaceConstantItem(spoiler, Items.HideoutHelmKey)
 
     # Empty out some locations based on the settings
     if settings.starting_kongs_count == 5:
-        LocationList[Locations.DiddyKong].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.LankyKong].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.TinyKong].PlaceConstantItem(Items.NoItem)
-        LocationList[Locations.ChunkyKong].PlaceConstantItem(Items.NoItem)
+        spoiler.LocationList[Locations.DiddyKong].PlaceConstantItem(spoiler, Items.NoItem)
+        spoiler.LocationList[Locations.LankyKong].PlaceConstantItem(spoiler, Items.NoItem)
+        spoiler.LocationList[Locations.TinyKong].PlaceConstantItem(spoiler, Items.NoItem)
+        spoiler.LocationList[Locations.ChunkyKong].PlaceConstantItem(spoiler, Items.NoItem)
     if settings.shockwave_status == ShockwaveStatus.start_with:
-        LocationList[Locations.CameraAndShockwave].PlaceConstantItem(Items.NoItem)
+        spoiler.LocationList[Locations.CameraAndShockwave].PlaceConstantItem(spoiler, Items.NoItem)
     if settings.start_with_slam:
-        LocationList[Locations.IslesFirstMove].PlaceConstantItem(Items.ProgressiveSlam)
+        spoiler.LocationList[Locations.IslesFirstMove].PlaceConstantItem(spoiler, Items.ProgressiveSlam)
 
 
 def AllItems(settings):

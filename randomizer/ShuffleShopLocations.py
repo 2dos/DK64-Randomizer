@@ -1,7 +1,6 @@
 """Shuffles the locations of shops."""
 import random
 
-import randomizer.Logic as Logic
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import ShuffleLoadingZones
@@ -98,7 +97,7 @@ def ShuffleShopLocations(spoiler: Spoiler):
                 # This is a valid shop to shuffle, so we need to remove all preexisting logical access, wherever it is
                 possible_containing_region_ids = [shop_location.containing_region for shop_location in shop_array]
                 for region_id in possible_containing_region_ids:
-                    old_region = Logic.Regions[region_id]
+                    old_region = spoiler.RegionList[region_id]
                     old_region.exits = [exit for exit in old_region.exits if exit.dest != shop.shop_exit]
                 shops_in_levels.append(shop)
         random.shuffle(shops_in_levels)
@@ -111,7 +110,7 @@ def ShuffleShopLocations(spoiler: Spoiler):
                 assortment_in_level[shop.shop] = shop.new_shop
                 placement_index += 1
                 # Add exit to new containing region for logical access
-                region = Logic.Regions[shop.containing_region]
+                region = spoiler.RegionList[shop.containing_region]
                 region.exits.append(TransitionFront(shop.new_shop_exit, lambda l: True))
         assortment[level] = assortment_in_level
     # Write Assortment to spoiler

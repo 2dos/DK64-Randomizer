@@ -8,7 +8,6 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList, NameFromKong
-from randomizer.Lists.Location import LocationList
 from randomizer.Spoiler import Spoiler
 
 
@@ -89,8 +88,8 @@ def ShuffleItems(spoiler: Spoiler):
     locations_not_needing_flags = []
     locations_needing_flags = []
 
-    for location_enum in LocationList:
-        item_location = LocationList[location_enum]
+    for location_enum in spoiler.LocationList:
+        item_location = spoiler.LocationList[location_enum]
         # If location is a shuffled one...
         if (
             (
@@ -189,13 +188,13 @@ def ShuffleItems(spoiler: Spoiler):
     for location in locations_needing_flags:
         if location.new_flag is None:
             if location.new_item == Types.Blueprint:
-                location.new_flag = blueprint_flag_dict[LocationList[location.location].item]
+                location.new_flag = blueprint_flag_dict[spoiler.LocationList[location.location].item]
             else:
                 location.new_flag = flag_dict[location.new_item].pop()
 
     # If we failed to give any location a flag, something is very wrong
     if any([data for data in locations_needing_flags if data.new_flag is None]):
-        debug_flags = [data for data in locations_needing_flags if data.new_flag is None]
+        [data for data in locations_needing_flags if data.new_flag is None]
         raise Ex.FillException("ERROR: Failed to create a valid flag assignment for this fill!")
     spoiler.item_assignment = locations_needing_flags + locations_not_needing_flags
     # Generate human-readable version for debugging purposes
@@ -203,7 +202,7 @@ def ShuffleItems(spoiler: Spoiler):
     for loc in spoiler.item_assignment:
         name = "Nothing"
         if loc.new_item is not None:
-            name = ItemList[LocationList[loc.location].item].name
+            name = ItemList[spoiler.LocationList[loc.location].item].name
         location_name = loc.name
         if "Kasplat" in location_name:
             location_name = f"{location_name.split('Kasplat')[0]} {NameFromKong(loc.old_kong)} Kasplat"

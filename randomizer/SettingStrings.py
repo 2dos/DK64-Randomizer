@@ -1,10 +1,5 @@
 """Encryption and Decryption of settings strings."""
-import base64
-import collections
-import json
-from itertools import groupby
 
-import js
 from randomizer.Enums.Settings import (
     BananaportRando,
     DeprecatedSettings,

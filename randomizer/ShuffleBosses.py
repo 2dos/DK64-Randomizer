@@ -4,10 +4,8 @@ from array import array
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
-from randomizer.Lists.Location import LocationList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.Settings import HardModeSelected
 from randomizer.Patching.Lib import IsItemSelected
@@ -271,10 +269,10 @@ def ShuffleTinyPhaseToes():
 
 def CorrectBossKongLocations(spoiler):
     """Correct the Kong assigned to each boss Location for more accurate hints."""
-    LocationList[Locations.JapesKey].kong = spoiler.settings.boss_kongs[0]
-    LocationList[Locations.AztecKey].kong = spoiler.settings.boss_kongs[1]
-    LocationList[Locations.FactoryKey].kong = spoiler.settings.boss_kongs[2]
-    LocationList[Locations.GalleonKey].kong = spoiler.settings.boss_kongs[3]
-    LocationList[Locations.ForestKey].kong = spoiler.settings.boss_kongs[4]
-    LocationList[Locations.CavesKey].kong = spoiler.settings.boss_kongs[5]
-    LocationList[Locations.CastleKey].kong = spoiler.settings.boss_kongs[6]
+    spoiler.LocationList[Locations.JapesKey].kong = spoiler.settings.boss_kongs[0]
+    spoiler.LocationList[Locations.AztecKey].kong = spoiler.settings.boss_kongs[1]
+    spoiler.LocationList[Locations.FactoryKey].kong = spoiler.settings.boss_kongs[2]
+    spoiler.LocationList[Locations.GalleonKey].kong = spoiler.settings.boss_kongs[3]
+    spoiler.LocationList[Locations.ForestKey].kong = spoiler.settings.boss_kongs[4]
+    spoiler.LocationList[Locations.CavesKey].kong = spoiler.settings.boss_kongs[5]
+    spoiler.LocationList[Locations.CastleKey].kong = spoiler.settings.boss_kongs[6]

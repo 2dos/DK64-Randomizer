@@ -3,9 +3,8 @@ import gzip
 import random
 
 import js
-import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.SongType import SongType
-from randomizer.Lists.Songs import Song, song_data
+from randomizer.Lists.Songs import song_data
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
 

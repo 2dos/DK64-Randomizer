@@ -10,17 +10,14 @@ import randomizer.LogicFiles.FungiForest
 import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.JungleJapes
 import randomizer.LogicFiles.HideoutHelm
-from randomizer.Enums.Collectibles import Collectibles
-from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Lists.Location import LocationList
 from randomizer.Lists.CustomLocations import CustomLocations, LocationTypes, CustomLocation
 from randomizer.LogicClasses import LocationLogic
 from randomizer.Spoiler import Spoiler
 
 
-def addCrate(MelonCrate: CustomLocation, enum_val: int, name: str, level: Levels):
+def addCrate(spoiler, MelonCrate: CustomLocation, enum_val: int, name: str, level: Levels):
     """Add crate to relevant Logic Region."""
     level_to_enum = {
         Levels.DKIsles: randomizer.LogicFiles.DKIsles.LogicRegions,
@@ -46,9 +43,9 @@ def addCrate(MelonCrate: CustomLocation, enum_val: int, name: str, level: Levels
     }
     level_data = level_to_enum[level]
     level_data[MelonCrate.logic_region].locations.append(LocationLogic(enum_val, MelonCrate.logic))
-    LocationList[enum_val].name = f"{level_to_name[level]} MelonCrate: {name}"
-    LocationList[enum_val].default_mapid_data[0].map = MelonCrate.map
-    LocationList[enum_val].level = level
+    spoiler.LocationList[enum_val].name = f"{level_to_name[level]} MelonCrate: {name}"
+    spoiler.LocationList[enum_val].default_mapid_data[0].map = MelonCrate.map
+    spoiler.LocationList[enum_val].level = level
 
 
 def removeMelonCrate():
@@ -108,7 +105,7 @@ def ShuffleMelonCrates(spoiler: Spoiler, human_spoiler):
     sorted_MelonCrates = sorted(sorted_MelonCrates, key=lambda d: d["score"])
     for MelonCrate_index, MelonCrate in enumerate(sorted_MelonCrates):
         MelonCrate["enum"] = Locations.MelonCrate_Location00 + MelonCrate_index
-        addCrate(MelonCrate["MelonCrate"], MelonCrate["enum"], MelonCrate["name"], MelonCrate["level"])
+        addCrate(spoiler, MelonCrate["MelonCrate"], MelonCrate["enum"], MelonCrate["name"], MelonCrate["level"])
         MelonCrate["MelonCrate"] = None
     return human_spoiler.copy()
 

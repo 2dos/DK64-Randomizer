@@ -333,7 +333,7 @@ def grabText(file_index: int) -> list:
         section_3_count = int.from_bytes(ROM_COPY.readBytes(1), "big")
         ROM_COPY.seek(file_start + data_start + 5)
         start = int.from_bytes(ROM_COPY.readBytes(2), "big")
-        size = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        int.from_bytes(ROM_COPY.readBytes(2), "big")
         block_start = 1
         blocks = []
         for k in range(section_1_count):
@@ -387,7 +387,7 @@ def grabText(file_index: int) -> list:
                 if item3["type"] == "normal":
                     start = item3["start"] + data_start + 2
                     # print(hex(start))
-                    end = start + item3["size"]
+                    start + item3["size"]
                     ROM_COPY.seek(file_start + start)
                     temp.append(ROM_COPY.readBytes(item3["size"]).decode())
                 elif item3["type"] == "sprite":

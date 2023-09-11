@@ -1,6 +1,5 @@
 """List of enemies with in-game index."""
 from enum import IntEnum
-from os import kill
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.EnemyLocations import EnemyLocations
 from randomizer.Enums.EnemySubtypes import EnemySubtype
