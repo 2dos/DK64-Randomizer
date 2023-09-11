@@ -179,7 +179,8 @@ LogicRegions = {
         LocationLogic(Locations.JapesLankyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.JapesTinyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.JapesChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
-
+        LocationLogic(Locations.JapesLobbyEnemy_Enemy0, lambda l: True),
+        LocationLogic(Locations.JapesLobbyEnemy_Enemy1, lambda l: True),
     ], [
         Event(Events.JapesLobbyAccessed, lambda l: True),
     ], [

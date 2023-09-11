@@ -39,10 +39,12 @@ void buildItemDrops(void) {
     /**
      * @brief Build the item drops table to handle randomizer information
      */
-    for (int i = 0; i < DROP_COUNT; i++) {
-        if (drops[i].source_object != 0) {
-            if (isReplenishableDrop(drops[i].dropped_object)) {
-                drops[i].source_object = 3;
+    if ((Rando.disable_drops) && (!Rando.enemy_item_rando)) {
+        for (int i = 0; i < DROP_COUNT; i++) {
+            if (drops[i].source_object != 0) {
+                if (isReplenishableDrop(drops[i].dropped_object)) {
+                    drops[i].source_object = 3;
+                }
             }
         }
     }
@@ -82,6 +84,7 @@ void spawnEnemyDrops(actorData* actor) {
     int flag = -1;
     int drop_arg = 1;
     if ((actor_index >= 241) && (actor_index <= 245)) {
+        // Is Kasplat
         int world = getWorld(CurrentMap, 1);
         flag = 469 + (5 * world) + (actor_index - 241);
         if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
@@ -99,18 +102,18 @@ void spawnEnemyDrops(actorData* actor) {
             KasplatSpawnBitfield |= (1 << (actor_index - 241));
         }
     } else if (Rando.enemy_item_rando) {
-        int spawner_id = TiedCharacterSpawner->spawn_trigger;
-        flag = getEnemyFlag(spawner_id);
-        if (checkFlag(flag, FLAGTYPE_PERMANENT)) {
-            return;
-        } else if (Rando.item_rando) {
-            int proposition = getEnemyItem(spawner_id);
-            if (proposition != -1) {
-                drop_type = proposition;
-            }
-            drop_count = 1;
-            if (isBounceObject(drop_type)) {
-                drop_arg = 2;
+        if (TiedCharacterSpawner) {
+            int spawner_id = TiedCharacterSpawner->spawn_trigger;
+            flag = getEnemyFlag(spawner_id);
+            if ((!checkFlag(flag, FLAGTYPE_PERMANENT)) && (Rando.item_rando)) {
+                int proposition = getEnemyItem(spawner_id);
+                if (proposition != -1) {
+                    drop_type = proposition;
+                }
+                drop_count = 1;
+                if (isBounceObject(drop_type)) {
+                    drop_arg = 2;
+                }
             }
         }
     }

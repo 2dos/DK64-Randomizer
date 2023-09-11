@@ -662,6 +662,7 @@ class Settings:
                     Types.FakeItem,
                     Types.JunkItem,
                     Types.CrateItem,
+                    Types.Enemies,
                 ]
             else:
                 for item in self.item_rando_list_selected:

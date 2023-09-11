@@ -1310,7 +1310,7 @@ with open(newROMName, "r+b") as fh:
     # Enemies
     fh.seek(0x1FF9000)
     for x in range(426):
-        fh.write((0).to_bytes(6, "big"))
+        fh.write((0).to_bytes(4, "big"))
     # Shop Hints
     fh.seek(0x1FED020 + 0x14B)
     fh.write((1).to_bytes(1, "big"))

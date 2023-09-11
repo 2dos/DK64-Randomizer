@@ -24,19 +24,18 @@ void populateEnemyMapData(void) {
         return;
     }
     for (int i = 0; i < ENEMY_ITEM_MAP_CAP; i++) {
-        current_map_items[i].spawn.flag = 0; // Wipe Cache
+        current_map_items[i].spawn.actor = 0; // Wipe Cache
     }
     // Pull table from ROM
     int table_size = ENEMIES_TOTAL * sizeof(enemy_item_rom_item);
     enemy_item_rom_item* enemy_write = dk_malloc(table_size);
     int* table_file_size;
     *(int*)(&table_file_size) = table_size;
-    copyFromROM(0x1FF1000,enemy_write,&table_file_size,0,0,0,0);
+    copyFromROM(0x1FF9000,enemy_write,&table_file_size,0,0,0,0);
     for (int i = 0; i < ENEMIES_TOTAL; i++) {
         if (enemy_write[i].map == CurrentMap) {
             int spawn_id = enemy_write[i].char_spawner_id;
-            current_map_items[spawn_id].spawn.actor = enemy_write[i].spawn_data.actor;
-            current_map_items[spawn_id].spawn.flag = enemy_write[i].spawn_data.flag;
+            current_map_items[spawn_id].spawn.actor = enemy_write[i].actor;
             current_map_items[spawn_id].global_index = i;
         }
     }
@@ -44,19 +43,15 @@ void populateEnemyMapData(void) {
 }
 
 int getEnemyItem(int id) {
-    if (current_map_items[id].spawn.flag != 0) {
-        if (current_map_items[id].spawn.actor != 0) {
-            return current_map_items[id].spawn.actor;
-        }
+    if (current_map_items[id].spawn.actor != 0) {
+        return getActorIndex(current_map_items[id].spawn.actor);
     }
     return -1;
 }
 
 int getEnemyFlag(int id) {
-    if (current_map_items[id].spawn.flag != 0) {
-        if (current_map_items[id].spawn.actor != 0) {
-            return FLAG_ENEMY_KILLED_0 + current_map_items[id].global_index;
-        }
+    if (current_map_items[id].spawn.actor != 0) {
+        return FLAG_ENEMY_KILLED_0 + current_map_items[id].global_index;
     }
     return 0;
 }

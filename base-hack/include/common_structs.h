@@ -1611,7 +1611,7 @@ typedef struct enemy_item_memory_item {
 typedef struct enemy_item_rom_item {
 	/* 0x000 */ unsigned char map;
 	/* 0x001 */ unsigned char char_spawner_id;
-	/* 0x002 */ enemy_item_memory_item spawn_data;
+	/* 0x002 */ unsigned short actor;
 } enemy_item_rom_item;
 
 typedef struct enemy_item_db_item {
