@@ -292,6 +292,12 @@ extern void CheckKasplatSpawnBitfield(void);
 extern void initActor(int actor_index, int is_custom, void* func, int master_type, int health, int damage_given, int initial_interactions, int base);
 extern void refreshPads(pad_refresh_signals signal);
 
+extern void indicateCollectionStatus(void);
+extern int canSpawnEnemyReward(void);
+extern void wipeEnemySpawnBitfield(void);
+extern void setSpawnBitfield(int id);
+extern void setSpawnBitfieldFromFlag(int flag);
+
 extern int* pauseScreen3And4Header(int* dl);
 extern int* pauseScreen3And4Counter(int x, int y, int top, int bottom, int* dl, int unk0, int scale);
 extern int* pauseScreen3And4ItemName(int* dl, int x, int y, float scale, char* text);
@@ -419,6 +425,7 @@ extern short* actor_extra_data_sizes[ACTOR_LIMIT];
 extern collision_data_struct actor_collisions[ACTOR_LIMIT];
 extern collision_info object_collisions[COLLISION_LIMIT];
 extern drop_item drops[DROP_COUNT];
+extern unsigned char enemy_rewards_spawned[8];
 
 extern mtx_item static_mtx[20];
 extern int hint_pointers[35];

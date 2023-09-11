@@ -215,6 +215,7 @@ void fairyQueenCutsceneCheck(void) {
 #define STORED_COUNT 18
 static int stored_maps[STORED_COUNT] = {};
 static unsigned char stored_kasplat[STORED_COUNT] = {};
+static unsigned char stored_enemies[8][STORED_COUNT] = {};
 
 int setupHook(int map) {
     /**
@@ -237,6 +238,9 @@ int setupHook(int map) {
         if (stored_maps[i] == PreviousMap) {
             place_new = 0;
             stored_kasplat[i] = KasplatSpawnBitfield;
+            for (int j = 0; j < 8; j++) {
+                stored_enemies[j][i] = enemy_rewards_spawned[j];
+            }
         }
     }
     if (place_new) {
@@ -244,6 +248,9 @@ int setupHook(int map) {
             if (place_new) {
                 if (stored_maps[i] == -1) {
                     stored_kasplat[i] = KasplatSpawnBitfield;
+                    for (int j = 0; j < 8; j++) {
+                        stored_enemies[j][i] = enemy_rewards_spawned[j];
+                    }
                     stored_maps[i] = PreviousMap;
                     place_new = 0;
                 }
@@ -260,10 +267,16 @@ int setupHook(int map) {
                 stored_kasplat[i] = 0;
             }
             KasplatSpawnBitfield = stored_kasplat[i];
+            for (int j = 0; j < 8; j++) {
+                enemy_rewards_spawned[j] = stored_enemies[j][i];
+            }
         }
     }
     if (!in_chain) {
         KasplatSpawnBitfield = 0;
+        for (int j = 0; j < 8; j++) {
+            enemy_rewards_spawned[j] = 0;
+        }
     }
     return index;
 }
@@ -293,6 +306,9 @@ void CheckKasplatSpawnBitfield(void) {
                         int kong = (flag - FLAG_BP_JAPES_DK_HAS) % 5;
                         int shift = 1 << kong;
                         KasplatSpawnBitfield &= (0xFF - shift);
+                    } else if (isFlagInRange(flag, FLAG_ENEMY_KILLED_0, ENEMIES_TOTAL)) {
+                        // Is Enemy Drop
+                        setSpawnBitfieldFromFlag(flag);
                     }
                 }
                 // Get Next Spawner

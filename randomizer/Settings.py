@@ -1242,7 +1242,7 @@ class Settings:
                 self.valid_locations[Types.JunkItem] = [
                     x
                     for x in fairyBannedLocations
-                    if LocationList[x].type not in (Types.Shop, Types.Crown, Types.PreGivenMove) and (LocationList[x].type != Types.Key or LocationList[x].level == Levels.HideoutHelm)
+                    if LocationList[x].type not in (Types.Shop, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies) and (LocationList[x].type != Types.Key or LocationList[x].level == Levels.HideoutHelm)
                 ]
             if Types.Kong in self.shuffled_location_types:
                 # Banned because it defeats the purpose of starting with X Kongs

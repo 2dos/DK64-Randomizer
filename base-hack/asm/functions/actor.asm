@@ -109,3 +109,4 @@
 .definelabel unkCutsceneFunction, 0x8061D1FC
 .definelabel genericKongCode, 0x806F3190
 .definelabel headphonesCode, 0x806A7BDC
+.definelabel updatePosition, 0x80671C0C

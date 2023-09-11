@@ -105,7 +105,7 @@ void spawnEnemyDrops(actorData* actor) {
         if (TiedCharacterSpawner) {
             int spawner_id = TiedCharacterSpawner->spawn_trigger;
             flag = getEnemyFlag(spawner_id);
-            if ((!checkFlag(flag, FLAGTYPE_PERMANENT)) && (Rando.item_rando)) {
+            if ((canSpawnEnemyReward()) && (Rando.item_rando)) {
                 int proposition = getEnemyItem(spawner_id);
                 if (proposition != -1) {
                     drop_type = proposition;
@@ -114,6 +114,7 @@ void spawnEnemyDrops(actorData* actor) {
                 if (isBounceObject(drop_type)) {
                     drop_arg = 2;
                 }
+                setSpawnBitfield(spawner_id);
             }
         }
     }

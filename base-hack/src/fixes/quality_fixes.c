@@ -99,19 +99,6 @@ static const short tnsportal_flags[] = {
 	FLAG_PORTAL_CASTLE,
 };
 
-typedef struct sprite_info {
-	/* 0x000 */ char unk_00[0x358];
-	/* 0x358 */ int timer;
-	/* 0x35C */ char unk_35C[0x360-0x35C];
-	/* 0x360 */ float scale_x;
-	/* 0x364 */ float scale_z;
-	/* 0x368 */ char unk_368[0x36A-0x368];
-	/* 0x36A */ unsigned char red;
-	/* 0x36B */ unsigned char green;
-	/* 0x36C */ unsigned char blue;
-	/* 0x36D */ unsigned char alpha;
-} sprite_info;
-
 #define SPRITE_ALPHA_IN 8
 #define SPRITE_ALPHA_OUT 44
 #define SPRITE_ALPHA_END 52
