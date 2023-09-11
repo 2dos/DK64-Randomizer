@@ -996,10 +996,9 @@ class Settings:
             is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm) or location.type == Types.Shockwave
         return is_bad
 
-    def update_valid_locations(self, spoiler):
-        """Calculate (or recalculate) valid locations for items by type."""
+    def finalize_world_settings(self, spoiler):
+        """Finalize the world state after settings initialization."""
         self.shuffle_prices(spoiler)
-
         # Starting Move Location handling
         # Undo any damage that might leak between seeds
         spoiler.LocationList[Locations.IslesVinesTrainingBarrel].default = Items.Vines
@@ -1086,6 +1085,9 @@ class Settings:
         if self.fast_gbs:
             # On Fast GBs, this location refers to the blast course, not the arcade
             spoiler.LocationList[Locations.FactoryDonkeyDKArcade].name = "Factory Donkey Blast Course"
+
+    def update_valid_locations(self, spoiler):
+        """Calculate (or recalculate) valid locations for items by type."""
         self.valid_locations = {}
         self.valid_locations[Types.Kong] = self.kong_locations.copy()
         # If shops are not shuffled into the larger pool, calculate shop locations for shop-bound moves
