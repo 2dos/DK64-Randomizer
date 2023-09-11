@@ -1160,14 +1160,6 @@ fairy_locations = {
             logic=lambda l: l.camera and (l.handstand and l.lanky),
         ),
         FairyData(
-            name="Under Grate",
-            map=Maps.HideoutHelm,
-            region=Regions.HideoutHelmAfterBoM,  # Not HideoutHelmStart because you could start in BoM room, requiring you to beat Helm in order to access this
-            fence=Fence(1108, 2206, 1162, 2321),
-            spawn_y=-164,
-            logic=lambda l: l.camera and (l.handstand and l.lanky) and (l.chunky and l.pineapple and l.vines),
-        ),
-        FairyData(
             name="Under Chunky Room Stairs",
             map=Maps.HideoutHelm,
             region=Regions.HideoutHelmMain,
