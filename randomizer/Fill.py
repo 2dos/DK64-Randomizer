@@ -362,16 +362,17 @@ def GetAccessibleLocations(spoiler, startingOwnedItems, searchType, purchaseList
     elif searchType == SearchMode.CheckAllReachable:
         expected_accessible_locations = [x for x in spoiler.LocationList if not spoiler.LocationList[x].inaccessible]
         if settings.extreme_debugging:
-            [x for x in accessible if x not in expected_accessible_locations]
-            [x for x in expected_accessible_locations if x not in accessible]
-            [x for x in spoiler.LocationList if spoiler.LocationList[x].inaccessible]
+            # Debugging variables: they are unaccessed but certainly useful. Do not touch!
+            incorrectly_accessible = [x for x in accessible if x not in expected_accessible_locations]
+            incorrectly_inaccessible = [x for x in expected_accessible_locations if x not in accessible]
+            always_inaccessible_locations = [x for x in spoiler.LocationList if spoiler.LocationList[x].inaccessible]
             settings.debug_accessible = accessible
             settings.debug_accessible_not = [location for location in spoiler.LocationList if location not in accessible]
             settings.debug_enormous_pain_1 = [spoiler.LocationList[location] for location in settings.debug_accessible]
             settings.debug_enormous_pain_3 = [spoiler.LocationList[location] for location in settings.debug_accessible_not]
             if len(accessible) != len(expected_accessible_locations):
                 return False
-        return True
+            return True
         return len(accessible) == len(expected_accessible_locations)
     elif searchType == SearchMode.GetUnreachable:
         return [x for x in spoiler.LocationList if x not in accessible and not spoiler.LocationList[x].inaccessible]
@@ -422,7 +423,6 @@ def VerifyWorldWithWorstCoinUsage(spoiler):
         spoiler.Reset()
         reachable = GetAccessibleLocations(spoiler, [], SearchMode.GetReachableWithControlledPurchases, locationsToPurchase)
         # Subtract the price of the chosen location from maxCoinsNeeded
-        [spoiler.LocationList[x].item for x in locationsToPurchase]
         coinsSpent = GetMaxCoinsSpent(spoiler, locationsToPurchase)
         coinsNeeded = [maxCoins[kong] - coinsSpent[kong] for kong in range(0, 5)]
         spoiler.LogicVariables.UpdateCoins()
@@ -942,9 +942,10 @@ def RandomFill(spoiler, itemsToPlace, inOrder=False):
         itemEmpty = [x for x in empty if x in validLocations and spoiler.LocationList[x].item is None and not spoiler.LocationList[x].inaccessible]
         if len(itemEmpty) == 0:
             if settings.extreme_debugging:
-                [x for x in itemEmpty if x not in validLocations]
+                # Debugging variables: they are unaccessed but certainly useful. Do not touch!
+                invalid_empty_reachable = [x for x in itemEmpty if x not in validLocations]
                 empty_locations = [x for x in spoiler.LocationList.values() if x.item is None]
-                [x for x in empty_locations if not x.inaccessible]
+                accessible_empty_locations = [x for x in empty_locations if not x.inaccessible]
                 noitem_locations = [x for x in spoiler.LocationList.values() if x.type != Types.Shop and x.item is Items.NoItem]
             return len(itemsToPlace) + 1
         shuffle(itemEmpty)
@@ -980,9 +981,10 @@ def CarefulRandomFill(spoiler, itemsToPlace, ownedItems=None):
         itemEmpty = [x for x in reachable if x in validLocations and spoiler.LocationList[x].item is None and not spoiler.LocationList[x].inaccessible]
         if len(itemEmpty) == 0:
             if settings.extreme_debugging:
-                [x for x in itemEmpty if x not in validLocations]
+                # Debugging variables: they are unaccessed but certainly useful. Do not touch!
+                invalid_empty_reachable = [x for x in itemEmpty if x not in validLocations]
                 empty_locations = [x for x in spoiler.LocationList.values() if x.item is None]
-                [x for x in empty_locations if not x.inaccessible]
+                accessible_empty_locations = [x for x in empty_locations if not x.inaccessible]
                 noitem_locations = [x for x in spoiler.LocationList.values() if x.type != Types.Shop and x.item is Items.NoItem]
             return len(itemsToPlace) + 1
         shuffle(itemEmpty)
@@ -1019,7 +1021,9 @@ def CarefulRandomFill(spoiler, itemsToPlace, ownedItems=None):
                 reached_all = GetAccessibleLocations(spoiler, owned, SearchMode.CheckAllReachable)
                 if not reached_all:
                     print("red alert - this item placement lost 101% somehow?")
-                spoiler.LocationList[locationId]
+                # Debugging variables
+                item_placed_before_this_one = item
+                location_placed_before_this_one = spoiler.LocationList[locationId]
     return 0
 
 
@@ -1044,8 +1048,8 @@ def ForwardFill(spoiler, itemsToPlace, ownedItems=None, inOrder=False, doubleTim
         validReachable = [x for x in reachable if spoiler.LocationList[x].item is None and x in validLocations]
         if len(validReachable) == 0:  # If there are no empty reachable locations, reached a dead end
             if settings.extreme_debugging:
-                [x for x in reachable if spoiler.LocationList[x].item is None and x not in validLocations]
-                [x for x in spoiler.LocationList.keys() if spoiler.LocationList[x].item is None and x in validLocations]
+                invalid_empty_reachable = [x for x in reachable if spoiler.LocationList[x].item is None and x not in validLocations]
+                valid_empty = [x for x in spoiler.LocationList.keys() if spoiler.LocationList[x].item is None and x in validLocations]
             return len(itemsToPlace) + 1
         shuffle(validReachable)
         locationId = validReachable.pop()
@@ -1086,7 +1090,8 @@ def ForwardFill(spoiler, itemsToPlace, ownedItems=None, inOrder=False, doubleTim
             reached_all = GetAccessibleLocations(spoiler, assumedItems, SearchMode.CheckAllReachable)
             if not reached_all:
                 print("red alert - this item placement lost 101% somehow?")
-            spoiler.LocationList[locationId]
+            item_placed_before_this_one = item
+            location_placed_before_this_one = spoiler.LocationList[locationId]
     return 0
 
 
@@ -1183,6 +1188,7 @@ def AssumedFill(spoiler, itemsToPlace, ownedItems=None, inOrder=False):
             reached_all = GetAccessibleLocations(spoiler, owned, SearchMode.CheckAllReachable)
             if not reached_all:
                 print("red alert - this item placement lost 101% somehow?")
+            item_placed_before_this_one = item
     return 0
 
 
@@ -1775,7 +1781,6 @@ def PlacePriorityItems(spoiler, itemsToPlace, beforePlacedItems, placedTypes, le
     ownedKongs = spoiler.LogicVariables.GetKongs()
     # The items we just placed can now be treated as such
     placedItems.extend(priorityItemsToPlace)
-    placedItems.count(Items.ProgressiveSlam)
     unplacedDependencies = []
     for item in priorityItemsToPlace:
         # Find what items are needed to get this item
@@ -1895,7 +1900,7 @@ def PlaceKongsInKongLocations(spoiler, kongItems, kongLocations):
     spoiler.LocationList[Locations.AztecDonkeyFreeLanky].kong = spoiler.settings.lanky_freeing_kong
     spoiler.LocationList[Locations.AztecDiddyFreeTiny].kong = spoiler.settings.tiny_freeing_kong
     spoiler.LocationList[Locations.FactoryLankyFreeChunky].kong = spoiler.settings.chunky_freeing_kong
-    spoiler.settings.update_valid_locations()
+    spoiler.settings.update_valid_locations(spoiler)
 
 
 def FillKongs(spoiler, placedTypes):

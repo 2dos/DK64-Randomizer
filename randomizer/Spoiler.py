@@ -101,6 +101,7 @@ class Spoiler:
             self.move_data.append(master_moves)
 
         self.hint_list = {}
+        self.settings.finalize_world_settings(self)
         self.settings.update_valid_locations(self)
 
     def FlushAllExcessSpoilerData(self):
