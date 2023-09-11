@@ -19,17 +19,6 @@ from randomizer.Spoiler import Spoiler
 
 def addCrate(spoiler, MelonCrate: CustomLocation, enum_val: int, name: str, level: Levels):
     """Add crate to relevant Logic Region."""
-    level_to_enum = {
-        Levels.DKIsles: randomizer.LogicFiles.DKIsles.LogicRegions,
-        Levels.JungleJapes: randomizer.LogicFiles.JungleJapes.LogicRegions,
-        Levels.AngryAztec: randomizer.LogicFiles.AngryAztec.LogicRegions,
-        Levels.FranticFactory: randomizer.LogicFiles.FranticFactory.LogicRegions,
-        Levels.GloomyGalleon: randomizer.LogicFiles.GloomyGalleon.LogicRegions,
-        Levels.FungiForest: randomizer.LogicFiles.FungiForest.LogicRegions,
-        Levels.CrystalCaves: randomizer.LogicFiles.CrystalCaves.LogicRegions,
-        Levels.CreepyCastle: randomizer.LogicFiles.CreepyCastle.LogicRegions,
-        Levels.HideoutHelm: randomizer.LogicFiles.HideoutHelm.LogicRegions,
-    }
     level_to_name = {
         Levels.DKIsles: "Isles",
         Levels.JungleJapes: "Japes",
@@ -41,8 +30,7 @@ def addCrate(spoiler, MelonCrate: CustomLocation, enum_val: int, name: str, leve
         Levels.CreepyCastle: "Castle",
         Levels.HideoutHelm: "Helm",
     }
-    level_data = level_to_enum[level]
-    level_data[MelonCrate.logic_region].locations.append(LocationLogic(enum_val, MelonCrate.logic))
+    spoiler.RegionList[MelonCrate.logic_region].locations.append(LocationLogic(enum_val, MelonCrate.logic))
     spoiler.LocationList[enum_val].name = f"{level_to_name[level]} MelonCrate: {name}"
     spoiler.LocationList[enum_val].default_mapid_data[0].map = MelonCrate.map
     spoiler.LocationList[enum_val].level = level

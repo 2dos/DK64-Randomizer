@@ -235,7 +235,7 @@ def ExitShuffle(spoiler):
                 raise Ex.EntranceAttemptCountExceeded
             retries += 1
             js.postMessage("Entrance placement failed. Retrying. Tries: " + str(retries))
-            Reset()
+            Reset(spoiler)
 
 
 def UpdateLevelProgression(settings: Settings):
