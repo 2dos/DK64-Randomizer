@@ -1183,7 +1183,7 @@ class Settings:
                 self.valid_locations[Types.Blueprint][Kongs.lanky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.lanky]
                 self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.tiny]
                 self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.chunky]
-            if Types.Banana in self.shuffled_location_types:
+            if Types.Banana in self.shuffled_location_types or Types.ToughBanana in self.shuffled_location_types:
                 self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].level != Levels.HideoutHelm]
             if Types.Crown in self.shuffled_location_types:
                 # Banned for technical reasons

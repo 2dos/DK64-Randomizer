@@ -131,7 +131,7 @@ KasplatLocationList = {
             region=Regions.JungleJapesStart,
         ),
         KasplatLocation(
-            name="Japes Kasplat: Diddy Cave",
+            name="Japes Kasplat: Diddy Peanut Cave",
             map_id=Maps.JungleJapes,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[2461, 280, 548],

@@ -296,7 +296,7 @@
 
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| In front of Chunky vase room door | 4 |  | 
+| In front of Chunky vase room door | 3 |  | 
 | In front of Donkey kasplat room door | 3 |  | 
 | Left side across the sand from Candy's store | 3 |  | 
 | Right side of Candy's store | 3 |  | 

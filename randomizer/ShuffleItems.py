@@ -173,7 +173,10 @@ def ShuffleItems(spoiler: Spoiler):
             # Add this location's flag to the lists of available flags by location
             # Initialize relevant list if it doesn't exist
             if item_location.type not in flag_dict.keys() and item_location.type != Types.Blueprint:
-                flag_dict[item_location.type] = []
+                if item_location.type == Types.ToughBanana and Types.Banana not in flag_dict.keys():
+                    flag_dict[Types.Banana] = []
+                else:
+                    flag_dict[item_location.type] = []
             # Add this location's vanilla flag as a valid flag for this type of item/kong pairing
             vanilla_item_type = ItemList[item_location.default].type
             if item_location.type == Types.Shop:  # Except for shop locations - many of these are non-vanilla locations and won't have a valid vanilla item
