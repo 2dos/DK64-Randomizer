@@ -9,7 +9,7 @@ import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
 import randomizer.Lists.CBLocations.JungleJapesCBLocations
 from randomizer.Enums.Levels import Levels
 from randomizer.Patching.Lib import float_to_hex, short_to_ushort
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Patching.Patcher import LocalROM
 
 level_data = {
     Levels.JungleJapes: {"cb": randomizer.Lists.CBLocations.JungleJapesCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.JungleJapesCBLocations.BalloonList},

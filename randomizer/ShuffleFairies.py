@@ -14,9 +14,7 @@ import randomizer.LogicFiles.JungleJapes
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.FairyLocations import fairy_locations
-from randomizer.Lists.Location import LocationList
 from randomizer.LogicClasses import LocationLogic
-from randomizer.Logic import Regions as RegionList
 from randomizer.Spoiler import Spoiler
 
 
@@ -61,17 +59,6 @@ def ShuffleFairyLocations(spoiler: Spoiler):
     spoiler.fairy_locations = {}
     spoiler.fairy_locations_human = {}
     spoiler.fairy_data_table = [None] * 20
-    level_to_enum = {
-        Levels.DKIsles: randomizer.LogicFiles.DKIsles.LogicRegions,
-        Levels.JungleJapes: randomizer.LogicFiles.JungleJapes.LogicRegions,
-        Levels.AngryAztec: randomizer.LogicFiles.AngryAztec.LogicRegions,
-        Levels.FranticFactory: randomizer.LogicFiles.FranticFactory.LogicRegions,
-        Levels.GloomyGalleon: randomizer.LogicFiles.GloomyGalleon.LogicRegions,
-        Levels.FungiForest: randomizer.LogicFiles.FungiForest.LogicRegions,
-        Levels.CrystalCaves: randomizer.LogicFiles.CrystalCaves.LogicRegions,
-        Levels.CreepyCastle: randomizer.LogicFiles.CreepyCastle.LogicRegions,
-        Levels.HideoutHelm: randomizer.LogicFiles.HideoutHelm.LogicRegions,
-    }
     level_to_name = {
         Levels.DKIsles: "Isles",
         Levels.JungleJapes: "Japes",
@@ -84,7 +71,7 @@ def ShuffleFairyLocations(spoiler: Spoiler):
         Levels.HideoutHelm: "Helm",
     }
     if spoiler.settings.random_fairies:
-        ClearFairyLogic()
+        ClearFairyLogic(spoiler)
         fairy_data_table = [
             # HAS to remain in this order. DO NOT REORDER
             FairyPlacementInfo(Locations.JapesBananaFairyRambiCave, Levels.JungleJapes, 0, 51),
@@ -134,21 +121,17 @@ def ShuffleFairyLocations(spoiler: Spoiler):
                         spoiler.fairy_data_table[index] = {
                             "fairy_index": x,
                             "level": level,
-                            "flag": LocationList[data.location].default_mapid_data[0].flag,
+                            "flag": spoiler.LocationList[data.location].default_mapid_data[0].flag,
                             "id": -1 if not is_vanilla else data.id,
                             "shift": -1 if not is_vanilla else data.shift,
                         }
-                        # Logic
-                        # Remove old from logic
-                        for logic_region in level_to_enum[level]:
-                            level_to_enum[level][logic_region].locations = [loc for loc in level_to_enum[level][logic_region].locations if loc.id != data.location]
-                        # Re-insert into logic
+                        # Insert into logic
                         new_region = fairy_locations[level][x].region
-                        level_to_enum[level][new_region].locations.append(LocationLogic(data.location, fairy_locations[level][x].logic))
-                        LocationList[data.location].name = f"{level_to_name[level]} Fairy ({fairy_locations[level][x].name})"
+                        spoiler.RegionList[new_region].locations.append(LocationLogic(data.location, fairy_locations[level][x].logic))
+                        spoiler.LocationList[data.location].name = f"{level_to_name[level]} Fairy ({fairy_locations[level][x].name})"
 
 
-def ClearFairyLogic():
+def ClearFairyLogic(spoiler: Spoiler):
     """Clear out any fairy locations in preparation for filling custom ones."""
-    for id, region in RegionList.items():
+    for id, region in spoiler.RegionList.items():
         region.locations = [loc for loc in region.locations if loc.id not in all_fairy_locations]

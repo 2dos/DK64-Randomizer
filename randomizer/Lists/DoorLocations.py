@@ -4,8 +4,8 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
-from randomizer.Logic import Regions as RegionList
 from randomizer.LogicClasses import TransitionFront
+from randomizer.Logic import RegionsOriginal as RegionList
 
 
 class DoorData:
@@ -55,10 +55,10 @@ class DoorData:
         self.placed = "wrinkly"
         self.assigned_kong = kong
 
-    def assignPortal(self):
+    def assignPortal(self, spoiler):
         """Assign T&S Portal to slot."""
         self.placed = "tns"
-        portal_region = RegionList[self.logicregion]
+        portal_region = spoiler.RegionList[self.logicregion]
         boss_region_id = GetBossLobbyRegionIdForRegion(self.logicregion, portal_region)
         portal_region.exits.append(TransitionFront(boss_region_id, lambda l: self.logic))
 

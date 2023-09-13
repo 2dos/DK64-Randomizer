@@ -1,7 +1,6 @@
 """Shuffle Wrinkly and T&S Doors based on settings."""
 import random
 
-import randomizer.Logic as Logic
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
@@ -63,7 +62,7 @@ def ShuffleDoors(spoiler):
                     door.placed = "none"
     # Hint doors have Locations tied to them. If we're about to add new ones, then we must remove the old ones.
     if spoiler.settings.wrinkly_location_rando:
-        ClearHintDoorLogic()
+        ClearHintDoorLogic(spoiler)
     # Assign Wrinkly Doors & T&S Portals
     for level in door_locations:
         # Get all door locations that can be given a door
@@ -87,7 +86,7 @@ def ShuffleDoors(spoiler):
                         available_portals = [door for door in available_portals if door_locations[level][door].group != selected_portal.group]
                         # update available_doors separately as wrinkly doors should not be affected by the T&S grouping
                         available_doors.remove(selected_door_index)
-                        selected_portal.assignPortal()
+                        selected_portal.assignPortal(spoiler)
                         human_portal_doors[level_list[level]]["T&S #" + str(new_portal + 1)] = selected_portal.name
                         shuffled_door_data[level].append((selected_door_index, "tns"))
                     else:
@@ -98,7 +97,7 @@ def ShuffleDoors(spoiler):
                         available_portals = [door for door in available_portals if door_locations[level][door].group != selected_portal.group]
                         # update available_doors separately as wrinkly doors should not be affected by the T&S grouping
                         available_doors.remove(selected_door_index)
-                        selected_portal.assignPortal()
+                        selected_portal.assignPortal(spoiler)
                         human_portal_doors[level_list[level]]["T&S #" + str(new_portal + 1)] = selected_portal.name
                         shuffled_door_data[level].append((selected_door_index, "tns"))
         if spoiler.settings.wrinkly_location_rando:
@@ -117,7 +116,7 @@ def ShuffleDoors(spoiler):
                     shuffled_door_data[level].append((selected_door_index, "wrinkly", (kong % 5)))
                     # Add logic for the new door location
                     doorLocation = GetDoorLocationForKongAndLevel(kong, level)
-                    region = Logic.Regions[selected_door.logicregion]
+                    region = spoiler.RegionList[selected_door.logicregion]
                     region.locations.append(LocationLogic(doorLocation, selected_door.logic))
         elif spoiler.settings.remove_wrinkly_puzzles:
             # place vanilla wrinkly doors
@@ -142,7 +141,7 @@ def ShuffleDoors(spoiler):
 
 def ShuffleVanillaDoors(spoiler):
     """Shuffle T&S and Wrinkly doors amongst the vanilla locations."""
-    ClearHintDoorLogic()
+    ClearHintDoorLogic(spoiler)
     for level in door_locations:
         # Reset the data structures for door shuffling information sharing
         shuffled_door_data[level] = []
@@ -159,7 +158,7 @@ def ShuffleVanillaDoors(spoiler):
         locked_tns_options = [idx for idx in vanilla_door_indexes if door_locations[level][idx].default_placed == "tns" and door_locations[level][idx].door_type != "wrinkly"]
         locked_tns_index = random.choice(locked_tns_options)
         locked_tns = door_locations[level][locked_tns_index]
-        locked_tns.assignPortal()
+        locked_tns.assignPortal(spoiler)
         human_portal_doors[level_list[level]]["T&S #1"] = locked_tns.name
         shuffled_door_data[level].append((locked_tns_index, "tns"))
         vanilla_door_indexes.remove(locked_tns_index)
@@ -175,7 +174,7 @@ def ShuffleVanillaDoors(spoiler):
             shuffled_door_data[level].append((selected_door_index, "wrinkly", int(assignee)))
             # Add this hint door's location back to the logic
             doorLocation = GetDoorLocationForKongAndLevel(kong, level)
-            region = Logic.Regions[selected_door.logicregion]
+            region = spoiler.RegionList[selected_door.logicregion]
             region.locations.append(LocationLogic(doorLocation, selected_door.logic))
         # Any remaining vanilla door that isn't occupied and is a T&S door will get a T&S - the number of doors here will vary based on how many hints were placed in lobby vs level
         placed_tns_count = 1
@@ -183,7 +182,7 @@ def ShuffleVanillaDoors(spoiler):
             vanilla_door = door_locations[level][door_index]
             if vanilla_door.placed == "none" and vanilla_door.default_placed == "tns" and vanilla_door.door_type != "wrinkly":
                 placed_tns_count += 1
-                vanilla_door.assignPortal()
+                vanilla_door.assignPortal(spoiler)
                 human_portal_doors[level_list[level]]["T&S #" + str(placed_tns_count)] = vanilla_door.name
                 shuffled_door_data[level].append((door_index, "tns"))
 
@@ -196,7 +195,7 @@ def ShuffleVanillaDoors(spoiler):
         spoiler.human_portal_doors = human_portal_doors
 
 
-def ClearHintDoorLogic():
+def ClearHintDoorLogic(spoiler):
     """Remove existing hint door locations from the logic in preparation for custom door locations to be added."""
-    for id, region in Logic.Regions.items():
+    for id, region in spoiler.RegionList.items():
         region.locations = [loclogic for loclogic in region.locations if loclogic.id < Locations.JapesDonkeyDoor or loclogic.id > Locations.CastleChunkyDoor]

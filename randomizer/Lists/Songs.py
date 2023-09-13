@@ -1,5 +1,4 @@
 """Data of the song breakdowns in ROM."""
-from randomizer.Enums.SongGroups import SongGroup
 from randomizer.Enums.SongType import SongType
 
 

@@ -4,7 +4,7 @@ from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, MapExitTable
-from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Patching.Patcher import LocalROM
 
 valid_lz_types = [9, 12, 13, 16]
 

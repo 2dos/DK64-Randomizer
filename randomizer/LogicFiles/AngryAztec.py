@@ -7,7 +7,6 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import DamageAmount
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
