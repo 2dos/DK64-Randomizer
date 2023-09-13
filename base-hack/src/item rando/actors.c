@@ -229,6 +229,9 @@ int setupHook(int map) {
             if (getParentIndex(stored_maps[i]) == -1) {
                 stored_maps[i] = -1;
                 stored_kasplat[i] = -1;
+                for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
+                    stored_enemies[j][i] = -1;
+                }
             }
         }
     }
@@ -311,7 +314,7 @@ void CheckKasplatSpawnBitfield(void) {
                         KasplatSpawnBitfield &= (0xFF - shift);
                     } else if (isFlagInRange(flag, FLAG_ENEMY_KILLED_0, ENEMIES_TOTAL)) {
                         // Is Enemy Drop
-                        setSpawnBitfieldFromFlag(flag);
+                        setSpawnBitfieldFromFlag(flag, 0);
                     }
                 }
                 // Get Next Spawner

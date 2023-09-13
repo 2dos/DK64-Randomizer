@@ -16,7 +16,7 @@ class LocationLogic:
         self.logic = logic  # Lambda function for accessibility
         if id >= Locations.JapesMainEnemy_Start and id <= Locations.IslesMainEnemy_LowerFactoryPath1:
             # Handle enemy logic
-            enemy_logic = lambda l: enemy_location_list[id].canKill(l)
+            enemy_logic = lambda l: enemy_location_list[id].canDropItem(l)
             self.logic = lambda l: logic(l) and enemy_logic(l)
         self.bonusBarrel = bonusBarrel  # Uses MinigameType enum
         self.isAuxiliaryLocation = isAuxiliary  # For when the Location needs to be in a region but not count as in the region (only used for rabbit race glitched as of now)

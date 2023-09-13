@@ -64,20 +64,24 @@ void wipeEnemySpawnBitfield(void) {
     }
 }
 
-void setSpawnBitfield(int id) {
+void setSpawnBitfield(int id, int state) {
     int offset = id >> 3;
     int shift = id & 7;
-    enemy_rewards_spawned[offset] |= (1 << shift);
+    if (state > 0) {
+        enemy_rewards_spawned[offset] |= (1 << shift);
+    } else {
+        enemy_rewards_spawned[offset] &= (0xFF - (1 << shift));
+    }
 }
 
-void setSpawnBitfieldFromFlag(int flag) {
+void setSpawnBitfieldFromFlag(int flag, int state) {
     if (flag == 0) {
         return;
     }
     for (int i = 0; i < ENEMY_ITEM_MAP_CAP; i++) {
         int proposed_flag = current_map_items[i].global_index + FLAG_ENEMY_KILLED_0;
         if (proposed_flag == flag) {
-            setSpawnBitfield(i);
+            setSpawnBitfield(i, state);
             return;
         }
     }
@@ -137,4 +141,10 @@ void indicateCollectionStatus(void) {
         CurrentActorPointer_0->xPos + x_offset,
         CurrentActorPointer_0->yPos + y_offset,
         CurrentActorPointer_0->zPos + z_offset);
+}
+
+
+void fireballEnemyDeath(float x, float y, float z, float scale, char unk0, char unk1) {
+    spawnFireballExplosion(x, y, z, scale, unk0, unk1);
+    spawnEnemyDrops(CurrentActorPointer_0);
 }

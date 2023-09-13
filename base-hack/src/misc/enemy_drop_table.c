@@ -116,7 +116,7 @@ void spawnEnemyDrops(actorData* actor) {
                 if (isBounceObject(drop_type)) {
                     drop_arg = 2;
                 }
-                setSpawnBitfield(spawner_id);
+                setSpawnBitfield(spawner_id, 1);
             }
         }
     }
