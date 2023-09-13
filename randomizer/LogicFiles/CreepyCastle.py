@@ -209,7 +209,7 @@ LogicRegions = {
         LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin1, lambda l: (l.pineapple or l.phasewalk or l.generalclips) and l.ischunky and l.Slam),
         LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin2, lambda l: (l.pineapple or l.phasewalk or l.generalclips) and l.ischunky and l.Slam),
         LocationLogic(Locations.CastleCryptEnemy_ChunkyCoffin3, lambda l: (l.pineapple or l.phasewalk or l.generalclips) and l.ischunky and l.Slam),
-        LocationLogic(Locations.CastleCryptEnemy_MinecartEntry, lambda l: (l.coconut and l.isdonkey) or l.phaswewalk or l.generalclips),
+        LocationLogic(Locations.CastleCryptEnemy_MinecartEntry, lambda l: (l.coconut and l.isdonkey) or l.phasewalk or l.generalclips),
         LocationLogic(Locations.CastleCryptEnemy_Fork, lambda l: True),
         LocationLogic(Locations.CastleCryptEnemy_NearDiddy, lambda l: True),
         LocationLogic(Locations.CastleCryptEnemy_NearChunky, lambda l: True),

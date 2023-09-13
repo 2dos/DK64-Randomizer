@@ -32,7 +32,8 @@ from randomizer.Lists.EnemyTypes import EnemyMetaData
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
 from randomizer.Lists.Location import LocationList, PreGivenLocations
 from randomizer.Lists.Logic import GlitchLogicItems
-from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
+from randomizer.Enums.Maps import Maps
+from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings

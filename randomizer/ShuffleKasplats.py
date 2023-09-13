@@ -12,7 +12,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
 from randomizer.Lists.KasplatLocations import KasplatLocationList
 from randomizer.Lists.Location import Location
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 from randomizer.LogicClasses import LocationLogic
 
 shufflable = {

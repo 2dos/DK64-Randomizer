@@ -1,9 +1,10 @@
 """List of enemies with in-game index."""
 from enum import IntEnum
 from os import kill
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 from randomizer.Enums.EnemyLocations import EnemyLocations
 from randomizer.Enums.EnemySubtypes import EnemySubtype
+from randomizer.Enums.Kongs import Kongs
 import random
 
 
@@ -214,15 +215,24 @@ class EnemyLoc:
                 self.aggro_speed = random.randint(enemy_data.min_speed, enemy_data.max_speed)
         return self.enemy
 
-    def canKill(self) -> bool:
+    def canKill(self, logic_variable) -> bool:
         """Determine if the enemy can be killed."""
         if self.enemy in EnemyMetaData:
             interaction: InteractionMethods = EnemyMetaData[self.enemy].interaction
             if interaction is not None:
                 if interaction.kill_melee:
                     return True
-                return True  # TODO: Handle logic with the different killing methods
+                if interaction.kill_orange and logic_variable.oranges:
+                    return True
+                if interaction.kill_gun and logic_variable.HasGun(Kongs.any):
+                    return True
+                if interaction.kill_shockwave and logic_variable.shockwave:
+                    return True
         return False
+    
+    def canDropItem(self, logic_variable):
+        """Determine if the enemy can drop an item."""
+        return self.canKill(logic_variable) and self.enemy not in [Enemies.SpiderSmall, Enemies.Book, Enemies.EvilTomato, Enemies.FireballGlasses]
 
     def canBypass(self) -> bool:
         """Determine if the enemy can be bypassed."""

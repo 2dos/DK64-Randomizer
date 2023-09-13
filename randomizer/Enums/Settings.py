@@ -3,7 +3,7 @@ from enum import IntEnum, auto
 
 from randomizer.Enums.Items import Items
 from randomizer.Lists.EnemyTypes import Enemies
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 
 # Each select-based setting should have its own associated enum class. The enum
 # values should exactly match the input values in the HTML (not the IDs).
