@@ -37,6 +37,7 @@ from randomizer.Enums.Settings import (
     ShuffleLoadingZones,
     TrainingBarrels,
     WinCondition,
+    HelmSetting,
 )
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Types import Types
@@ -597,6 +598,20 @@ class LogicVarHolder:
         elif self.settings.coin_door_item == HelmDoorItem.vanilla:
             return self.DoorItemCheck(HelmDoorItem.req_companycoins, self.settings.coin_door_item_count)
         return self.DoorItemCheck(self.settings.coin_door_item, self.settings.coin_door_item_count)
+    
+    def CanAccessHelmStart(self):
+        """Check if you can access the start of helm."""
+        if self.settings.helm_setting != HelmSetting.skip_start:
+            # Either starts at the start, or can warp immediately to start
+            return True
+        room_events = [
+            Events.HelmDonkeyDone,
+            Events.HelmChunkyDone,
+            Events.HelmTinyDone,
+            Events.HelmLankyDone,
+            Events.HelmDiddyDone,
+        ]
+        return sum([1 for x in room_events if x in self.Events]) == len(room_events)
 
     def CanFreeDiddy(self):
         """Check if the cage locking Diddy's vanilla location can be opened."""
