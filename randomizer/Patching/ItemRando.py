@@ -11,7 +11,6 @@ from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import float_to_hex, intf_to_float
-from randomizer.Enums.EnemyLocations import EnemyLocations
 from randomizer.Lists.EnemyTypes import enemy_location_list
 from randomizer.Patching.Lib import float_to_hex, intf_to_float
 from randomizer.Patching.Patcher import LocalROM
@@ -514,10 +513,9 @@ def place_randomized_items(spoiler):
                             print("Melon Crate Item Placement Error")
                     elif item.location >= Locations.JapesMainEnemy_Start and item.location <= Locations.IslesMainEnemy_LowerFactoryPath1:
                         index = item.location - Locations.JapesMainEnemy_Start
-                        offset = EnemyLocations.JapesMain_Start
                         ROM_COPY.seek(0x1FF9000 + (index * 4))
-                        ROM_COPY.writeMultipleBytes(enemy_location_list[index + offset].map, 1)
-                        ROM_COPY.writeMultipleBytes(enemy_location_list[index + offset].id, 1)
+                        ROM_COPY.writeMultipleBytes(enemy_location_list[item.location].map, 1)
+                        ROM_COPY.writeMultipleBytes(enemy_location_list[item.location].id, 1)
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.Medal:
                         # Write to Medal Table

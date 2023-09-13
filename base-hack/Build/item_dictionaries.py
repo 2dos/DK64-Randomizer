@@ -253,6 +253,8 @@ item_drops = [
     EnemyDropDef(0xB6, 0x2F, Song.MelonSliceDrop, 1), # Klobber
     EnemyDropDef(0xAF, 0x2F, Song.MelonSliceDrop, 1), # Kaboom
     EnemyDropDef(0x103, 0x79, Song.Silence, 1), # Guard
+    EnemyDropDef(276, 0x34, Song.Silence, 2), # Spiderling
+    EnemyDropDef(273, 0x34, Song.Silence, 1), # Fireball with Glasses
 ]
 
 dance_acceptable_items = [x for x in db if x.force_dance]
@@ -281,6 +283,7 @@ with open("include/item_data.h", "w") as fh:
         fh.write(f"\t/* 0x{'{:03X}'.format(e.value)} */ NEWACTOR_{e.name.upper()}, \n")
     fh.write("\t/* ----- */ NEWACTOR_TERMINATOR, \n")
     fh.write("} new_custom_actors;\n")
+    fh.write(f"#define DROP_COUNT {len(item_drops) + 1}")
 
 with open("src/lib_items.c", "w") as fh:
     fh.write('#include "../include/common.h"\n\n')

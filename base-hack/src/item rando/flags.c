@@ -402,7 +402,7 @@ void getFLUTSize(void) {
     /**
      * @brief Determine amount of flags in the FLUT
      */
-    for (int i = 0; i < 400; i++) {
+    for (int i = 0; i < 0xD00; i++) {
         if (ItemRando_FLUT[2 * i] == -1) {
             flut_size = i;
             return;

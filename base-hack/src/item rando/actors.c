@@ -215,7 +215,7 @@ void fairyQueenCutsceneCheck(void) {
 #define STORED_COUNT 18
 static int stored_maps[STORED_COUNT] = {};
 static unsigned char stored_kasplat[STORED_COUNT] = {};
-static unsigned char stored_enemies[8][STORED_COUNT] = {};
+static unsigned char stored_enemies[ENEMY_REWARD_CACHE_SIZE][STORED_COUNT] = {};
 
 int setupHook(int map) {
     /**
@@ -238,7 +238,7 @@ int setupHook(int map) {
         if (stored_maps[i] == PreviousMap) {
             place_new = 0;
             stored_kasplat[i] = KasplatSpawnBitfield;
-            for (int j = 0; j < 8; j++) {
+            for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                 stored_enemies[j][i] = enemy_rewards_spawned[j];
             }
         }
@@ -248,7 +248,7 @@ int setupHook(int map) {
             if (place_new) {
                 if (stored_maps[i] == -1) {
                     stored_kasplat[i] = KasplatSpawnBitfield;
-                    for (int j = 0; j < 8; j++) {
+                    for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                         stored_enemies[j][i] = enemy_rewards_spawned[j];
                     }
                     stored_maps[i] = PreviousMap;
@@ -265,16 +265,19 @@ int setupHook(int map) {
             if (index == -1) {
                 // Setup refreshed
                 stored_kasplat[i] = 0;
+                for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
+                    enemy_rewards_spawned[j] = 0;
+                }
             }
             KasplatSpawnBitfield = stored_kasplat[i];
-            for (int j = 0; j < 8; j++) {
+            for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
                 enemy_rewards_spawned[j] = stored_enemies[j][i];
             }
         }
     }
     if (!in_chain) {
         KasplatSpawnBitfield = 0;
-        for (int j = 0; j < 8; j++) {
+        for (int j = 0; j < ENEMY_REWARD_CACHE_SIZE; j++) {
             enemy_rewards_spawned[j] = 0;
         }
     }

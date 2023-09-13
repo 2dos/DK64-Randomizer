@@ -425,7 +425,7 @@ extern short* actor_extra_data_sizes[ACTOR_LIMIT];
 extern collision_data_struct actor_collisions[ACTOR_LIMIT];
 extern collision_info object_collisions[COLLISION_LIMIT];
 extern drop_item drops[DROP_COUNT];
-extern unsigned char enemy_rewards_spawned[8];
+extern unsigned char enemy_rewards_spawned[ENEMY_REWARD_CACHE_SIZE];
 
 extern mtx_item static_mtx[20];
 extern int hint_pointers[35];

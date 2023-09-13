@@ -10,10 +10,10 @@
  */
 #include "../../include/common.h"
 
-#define ENEMY_ITEM_MAP_CAP 64
+#define ENEMY_ITEM_MAP_CAP 128
 
 static enemy_item_db_item current_map_items[ENEMY_ITEM_MAP_CAP] = {};
-unsigned char enemy_rewards_spawned[8] = {};
+unsigned char enemy_rewards_spawned[ENEMY_REWARD_CACHE_SIZE] = {};
 static char enemy_db_populated = 0;
 
 void setEnemyDBPopulation(int value) {
@@ -59,7 +59,7 @@ int getEnemyFlag(int id) {
 }
 
 void wipeEnemySpawnBitfield(void) {
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < ENEMY_REWARD_CACHE_SIZE; i++) {
         enemy_rewards_spawned[i] = 0;
     }
 }

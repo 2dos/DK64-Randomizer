@@ -1,7 +1,7 @@
 """Place fairies into the world."""
 
 import js
-from randomizer.Lists.EnemyTypes import Enemies
+from randomizer.Enums.Enemies import Enemies
 from randomizer.Lists.FairyLocations import fairy_locations, relocated_5ds_fairy
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
