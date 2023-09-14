@@ -1992,7 +1992,6 @@ BananaCoinGroupList = {
             region=Regions.BetweenVinesByPortal,
             locations=[
                 [1.0, 651, 120, 903],
-                [1.0, 652, 120, 902],
                 [1.0, 652, 120, 846],
                 [1.0, 650, 120, 793],
             ],
