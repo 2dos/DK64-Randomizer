@@ -219,6 +219,7 @@ class Settings:
         """Set Default items on main page."""
         self.seed = None
         self.download_patch_file = None
+        self.load_patch_file = None
         self.bonus_barrel_rando = None
         self.loading_zone_coupled = None
         self.move_rando = MoveRando.off
