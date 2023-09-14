@@ -16,7 +16,7 @@
 | Jungle Japes | Japes Kasplat: Near Painting Room |  | 
 | Jungle Japes | Japes Kasplat: Inside Tiny's Cage | ((Events.JapesTinySwitch in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny) | 
 | Jungle Japes | Japes Kasplat: Starting Area |  | 
-| Jungle Japes | Japes Kasplat: Diddy Cave |  | 
+| Jungle Japes | Japes Kasplat: Diddy Peanut Cave |  | 
 | Jungle Japes | Japes Kasplat: In the river | l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)) | 
 | Jungle Japes | Japes Kasplat: Rambi Water Pool | l.swim and (l.oranges or l.HasGun(Kongs.any) or l.HasInstrument(Kongs.any)) | 
 | Jungle Japes | Japes Kasplat: Near Cranky's |  | 
