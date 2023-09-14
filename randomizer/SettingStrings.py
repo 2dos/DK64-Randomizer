@@ -161,6 +161,7 @@ def encrypt_settings_string_enum(dict_data: dict):
     """
     for pop in [
         "download_patch_file",
+        "load_patch_file",
         "seed",
         "settings_string",
         "chunky_colors",

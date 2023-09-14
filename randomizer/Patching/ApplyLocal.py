@@ -33,7 +33,7 @@ class BooleanProperties:
         self.target = target
 
 
-async def patching_response(data, from_patch_gen=False):
+async def patching_response(data, from_patch_gen=False, lanky_from_history=False):
     """Apply the patch data to the ROM in the BROWSER not the server."""
     from datetime import datetime
     import time
@@ -62,8 +62,12 @@ async def patching_response(data, from_patch_gen=False):
     settings = Settings(serialize_settings())
     seed_id = str(extracted_variables["seed_id"].decode("utf-8"))
     spoiler = json.loads(extracted_variables["spoiler_log"])
-    # Make sure we re-load the seed id
-    if settings.download_patch_file and from_patch_gen is False:
+    # Make sure we re-load the seed id for patch file creation
+    if lanky_from_history:
+        js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
+        loop.run_until_complete(ProgressBar().reset())
+        return
+    elif settings.download_patch_file and from_patch_gen is False:
         js.write_seed_history(seed_id, str(data), json.dumps(settings.seed_hash))
         js.load_old_seeds()
         js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")

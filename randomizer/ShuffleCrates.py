@@ -31,7 +31,7 @@ def addCrate(spoiler, MelonCrate: CustomLocation, enum_val: int, name: str, leve
         Levels.HideoutHelm: "Helm",
     }
     spoiler.RegionList[MelonCrate.logic_region].locations.append(LocationLogic(enum_val, MelonCrate.logic))
-    spoiler.LocationList[enum_val].name = f"{level_to_name[level]} MelonCrate: {name}"
+    spoiler.LocationList[enum_val].name = f"{level_to_name[level]} Melon Crate: {name}"
     spoiler.LocationList[enum_val].default_mapid_data[0].map = MelonCrate.map
     spoiler.LocationList[enum_val].level = level
 

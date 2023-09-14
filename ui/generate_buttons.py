@@ -192,7 +192,8 @@ async def generate_previous_seed(event):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ProgressBar().update_progress(0, "Loading Previous seed and applying data."))
         js.apply_conversion()
-        await patching_response(str(js.get_previous_seed_data()), True)
+        lanky_from_history = js.document.getElementById("load_patch_file").checked
+        await patching_response(str(js.get_previous_seed_data()), True, lanky_from_history)
 
 
 @bind("click", "generate_lanky_seed")
@@ -263,3 +264,17 @@ def update_seed_text(event):
         js.document.getElementById("generate_seed").value = "Generate Patch File"
     else:
         js.document.getElementById("generate_seed").value = "Generate Seed"
+
+
+@bind("click", "load_patch_file")
+def update_seed_text(event):
+    """Set historical seed text based on the load_patch_file click event.
+
+    Args:
+        event (DOMEvent): Javascript dom click event.
+    """
+    # When we click the download json event just change the button text
+    if js.document.getElementById("load_patch_file").checked:
+        js.document.getElementById("generate_pastgen_seed").value = "Generate Patch File from History"
+    else:
+        js.document.getElementById("generate_pastgen_seed").value = "Generate Seed from History"
