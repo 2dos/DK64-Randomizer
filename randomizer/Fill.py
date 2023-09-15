@@ -2453,6 +2453,10 @@ def SetNewProgressionRequirementsUnordered(spoiler):
                     and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
                 ]
                 ownedMoves[bossCompletedLevel] = accessibleMoves
+                # After unblocking this level's T&S, the next loop needs the logic variables to know new lobbies are accessible
+                # We've now made the key on this boss accessible, so this iteration should be identical plus 1 key
+                spoiler.Reset()
+                GetAccessibleLocations(spoiler, [], SearchMode.GetReachable)
 
     # For any boss location behind a T&S we didn't lower...
     bossLocations = [
