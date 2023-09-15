@@ -31,7 +31,7 @@ class HelmDoorSetting:
 class HelmDoorImages:
     """Class to store information regarding helm door item images."""
 
-    def __init__(self, setting: HelmDoorItem, image_indexes: list, flip: bool=False, table: int=25, dimensions: Tuple[int, int]=(44, 44), format: TextureFormat=TextureFormat.RGBA5551) -> None:
+    def __init__(self, setting: HelmDoorItem, image_indexes: list, flip: bool = False, table: int = 25, dimensions: Tuple[int, int] = (44, 44), format: TextureFormat = TextureFormat.RGBA5551) -> None:
         """Initialize with given parameters."""
         self.setting = setting
         self.image_indexes = image_indexes

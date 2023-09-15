@@ -108,7 +108,9 @@ def GetLobbyOfRegion(region):
         return None
 
 
-def GetAccessibleLocations(spoiler: Spoiler, startingOwnedItems: List[Union[Items, Any]], searchType: SearchMode, purchaseList: Optional[List[Locations]]=None, targetItemId: None=None) -> Union[Set[Locations], List[Sphere], bool]:
+def GetAccessibleLocations(
+    spoiler: Spoiler, startingOwnedItems: List[Union[Items, Any]], searchType: SearchMode, purchaseList: Optional[List[Locations]] = None, targetItemId: None = None
+) -> Union[Set[Locations], List[Sphere], bool]:
     """Search to find all reachable locations given owned items."""
     settings = spoiler.settings
     # No logic? Calls to this method that are checking things just return True
@@ -927,7 +929,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Locations]) -> None:
     spoiler.foolish_region_names = list(set([region.hint_name for id, region in spoiler.RegionList.items() if any(region.locations) and region.hint_name not in nonHintableNames]))
 
 
-def RandomFill(spoiler: Spoiler, itemsToPlace: List[Items], inOrder: bool=False) -> int:
+def RandomFill(spoiler: Spoiler, itemsToPlace: List[Items], inOrder: bool = False) -> int:
     """Randomly place given items in any location disregarding logic."""
     settings = spoiler.settings
     if not inOrder:
@@ -966,7 +968,7 @@ def RandomFill(spoiler: Spoiler, itemsToPlace: List[Items], inOrder: bool=False)
     return 0
 
 
-def CarefulRandomFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optional[List[Union[Items, Any]]]=None) -> int:
+def CarefulRandomFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optional[List[Union[Items, Any]]] = None) -> int:
     """Randomly place items, but try to keep shops in mind. Expected to be faster than forward fill for large quantities of items but slower than random fill."""
     spoiler.Reset()
     settings = spoiler.settings
@@ -1029,7 +1031,7 @@ def CarefulRandomFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: O
     return 0
 
 
-def ForwardFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optional[List[Items]]=None, inOrder: bool=False, doubleTime: bool=False) -> int:
+def ForwardFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optional[List[Items]] = None, inOrder: bool = False, doubleTime: bool = False) -> int:
     """Forward fill algorithm for item placement."""
     settings = spoiler.settings
     if ownedItems is None:
@@ -1111,7 +1113,7 @@ def GetItemValidLocations(spoiler, validLocations, item):
     return itemValidLocations
 
 
-def AssumedFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optional[List[Items]]=None, inOrder: bool=False) -> int:
+def AssumedFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optional[List[Items]] = None, inOrder: bool = False) -> int:
     """Assumed fill algorithm for item placement."""
     settings = spoiler.settings
     if ownedItems is None:
@@ -1305,7 +1307,7 @@ def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=
     return requiredMoves
 
 
-def PlaceItems(spoiler: Spoiler, algorithm: FillAlgorithm, itemsToPlace: List[Items], ownedItems: Optional[List[Union[Items, Any]]]=None, inOrder: bool=False, doubleTime: bool=False) -> int:
+def PlaceItems(spoiler: Spoiler, algorithm: FillAlgorithm, itemsToPlace: List[Items], ownedItems: Optional[List[Union[Items, Any]]] = None, inOrder: bool = False, doubleTime: bool = False) -> int:
     """Places items using given algorithm."""
     if ownedItems is None:
         ownedItems = []

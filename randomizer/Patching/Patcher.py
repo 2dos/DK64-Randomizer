@@ -117,7 +117,7 @@ class ROM:
 
 
 # Try except for when the browser is trying to load this file
-def load_base_rom(default_file: None=None) -> None:
+def load_base_rom(default_file: None = None) -> None:
     """Load the base ROM file for patching."""
     try:
         global patchedRom

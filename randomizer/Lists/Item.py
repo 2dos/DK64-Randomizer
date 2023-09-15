@@ -11,7 +11,9 @@ from typing import List, Optional, Union
 class Item:
     """Stores information about an item."""
 
-    def __init__(self, name: str, playthrough: bool, type: Types, kong: Kongs, data: Optional[Union[List[Levels], List[Union[MoveTypes, int]], List[Union[MoveTypes, str, int]], List[int]]]=None) -> None:
+    def __init__(
+        self, name: str, playthrough: bool, type: Types, kong: Kongs, data: Optional[Union[List[Levels], List[Union[MoveTypes, int]], List[Union[MoveTypes, str, int]], List[int]]] = None
+    ) -> None:
         """Initialize with given parameters."""
         if data is None:
             data = []

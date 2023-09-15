@@ -227,7 +227,7 @@ def int_to_list(num: int, size: int):
     return arr
 
 
-def getNextFreeID(cont_map_id: int, ignore: List[Union[Any, int]]=[]) -> int:
+def getNextFreeID(cont_map_id: int, ignore: List[Union[Any, int]] = []) -> int:
     """Get next available Model 2 ID."""
     ROM_COPY = LocalROM()
     setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
