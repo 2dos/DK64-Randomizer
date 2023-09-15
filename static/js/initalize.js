@@ -48,10 +48,12 @@ if (window.location.protocol != "https:") {
   }
 }
 
-// if the domain is not the main domain, hide spoiler_warning_2 and spoiler_warning_1
+// if the domain is not the main domain, hide dev site warnings
 if (location.hostname == "dk64randomizer.com") {
-  document.getElementById("spoiler_warning_2").style.display = "none";
   document.getElementById("spoiler_warning_1").style.display = "none";
+  document.getElementById("spoiler_warning_2").style.display = "none";
+  document.getElementById("spoiler_warning_3").style.background = "";
+  document.getElementById("spoiler_warning_4").style.display = "none";
 }
 
 run_python_file("ui/__init__.py");
