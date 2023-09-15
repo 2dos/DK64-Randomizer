@@ -11,6 +11,7 @@ from randomizer.Enums.Settings import (
     SettingsStringTypeMap,
     SpoilerHints,
 )
+from typing import Any, Dict, Tuple
 
 letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 index_to_letter = {i: letters[i] for i in range(64)}
@@ -25,7 +26,7 @@ def int_to_bin_string(num, bytesize):
     return format(num if num >= 0 else (1 << bytesize) + num, f"0{bytesize}b").zfill(bytesize)
 
 
-def bin_string_to_int(bin_str, bytesize):
+def bin_string_to_int(bin_str: str, bytesize: int) -> int:
     """Convert a binary string to an integer.
 
     This function is needed to handle negative numbers.
@@ -36,7 +37,7 @@ def bin_string_to_int(bin_str, bytesize):
         return int(bin_str, 2)
 
 
-def get_var_int_encode_details(settingEnum):
+def get_var_int_encode_details(settingEnum: SettingsStringEnum) -> Tuple[int, bool]:
     """Return key information needed to encode/decode a given var_int setting.
 
     Returns:
@@ -66,7 +67,7 @@ def encode_var_int(settingEnum, num):
     return int_to_bin_string(num, bit_len)
 
 
-def decode_var_int(settingEnum, bin_str):
+def decode_var_int(settingEnum: SettingsStringEnum, bin_str: str) -> int:
     """Convert a binary string to a variable-size integer."""
     bit_len, negatives_possible = get_var_int_encode_details(settingEnum)
     if negatives_possible:
@@ -270,7 +271,7 @@ def encrypt_settings_string_enum(dict_data: dict):
     return letter_string
 
 
-def decrypt_settings_string_enum(encrypted_string: str):
+def decrypt_settings_string_enum(encrypted_string: str) -> Dict[str, Any]:
     """Take an enum-based encrypted string and return a dictionary.
 
     Args:

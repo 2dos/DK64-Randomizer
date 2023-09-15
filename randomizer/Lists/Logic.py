@@ -4,7 +4,7 @@
 class GlitchLogicItem:
     """Glitch Logic multiselector information."""
 
-    def __init__(self, name, tooltip=""):
+    def __init__(self, name: str, tooltip: str="") -> None:
         """Initialize with given data."""
         self.name = name
         self.shorthand = name.lower().replace(" ", "_")

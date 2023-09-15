@@ -7,15 +7,17 @@ from randomizer.Enums.Settings import MinigameBarrels, MinigamesListSelected
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Settings import Settings
+from randomizer.Enums.Locations import Locations
+from typing import List
 
 
-def Reset(barrelLocations):
+def Reset(barrelLocations: List[Locations]) -> None:
     """Reset bonus barrel associations."""
     for key in barrelLocations:
         BarrelMetaData[key].minigame = Minigames.NoGame
 
 
-def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
+def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigamePool: List[Minigames]) -> None:
     """Shuffle minigames to different barrels."""
     random.shuffle(barrelLocations)
     while len(barrelLocations) > 0:
@@ -47,7 +49,7 @@ def ShuffleBarrels(settings: Settings, barrelLocations, minigamePool):
             raise Ex.BarrelOutOfMinigames
 
 
-def BarrelShuffle(settings: Settings):
+def BarrelShuffle(settings: Settings) -> None:
     """Facilitate shuffling of barrels."""
     # First make master copies of locations and minigames
     barrelLocations = list(BarrelMetaData.keys())
