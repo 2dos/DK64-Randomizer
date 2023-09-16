@@ -5,6 +5,7 @@ from enum import IntEnum, auto
 import js
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Patching.Patcher import ROM, LocalROM
+from typing import Any, List, Union
 
 icon_db = {
     0x0: "waterfall_tall",
@@ -186,21 +187,21 @@ icon_db = {
 }
 
 
-def float_to_hex(f):
+def float_to_hex(f: Union[float, int]) -> str:
     """Convert float to hex."""
     if f == 0:
         return "0x00000000"
     return hex(struct.unpack("<I", struct.pack("<f", f))[0])
 
 
-def short_to_ushort(short):
+def short_to_ushort(short: int) -> int:
     """Convert short to unsigned short format."""
     if short < 0:
         return short + 65536
     return short
 
 
-def intf_to_float(intf):
+def intf_to_float(intf: int) -> float:
     """Convert float as int format to float."""
     if intf == 0:
         return 0
@@ -226,7 +227,7 @@ def int_to_list(num: int, size: int):
     return arr
 
 
-def getNextFreeID(cont_map_id: int, ignore=[]):
+def getNextFreeID(cont_map_id: int, ignore: List[Union[Any, int]] = []) -> int:
     """Get next available Model 2 ID."""
     ROM_COPY = LocalROM()
     setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
@@ -250,7 +251,7 @@ def getNextFreeID(cont_map_id: int, ignore=[]):
     return 0  # Shouldn't ever hit this. This is a case if there's no vacant IDs in range [0,599]
 
 
-def addNewScript(cont_map_id: int, item_ids: list, type: ScriptTypes):
+def addNewScript(cont_map_id: int, item_ids: list, type: ScriptTypes) -> None:
     """Append a new script to the script database. Has to be just 1 execution and 1 endblock."""
     ROM_COPY = LocalROM()
     script_table = js.pointer_addresses[10]["entries"][cont_map_id]["pointing_to"]
@@ -404,7 +405,7 @@ def grabText(file_index: int) -> list:
     return formatted_text
 
 
-def writeText(file_index: int, text: list):
+def writeText(file_index: int, text: list) -> None:
     """Write the text to ROM."""
     text_start = js.pointer_addresses[12]["entries"][file_index]["pointing_to"]
     ROM_COPY = LocalROM()
@@ -501,7 +502,7 @@ def getObjectAddressBrowser(map: int, id: int, object_type: str) -> int:
     return None
 
 
-def IsItemSelected(bool_setting: bool, multiselector_setting: list, check: int):
+def IsItemSelected(bool_setting: bool, multiselector_setting: list, check: int) -> bool:
     """Determine whether a multiselector setting is enabled."""
     if not bool_setting:
         return False

@@ -9,7 +9,7 @@ from randomizer.Enums.Transitions import Transitions
 class LevelInfo:
     """Class which stores some information about levels."""
 
-    def __init__(self, TransitionTo, TransitionFrom, KeyLocation, KeyItem):
+    def __init__(self, TransitionTo: Transitions, TransitionFrom: Transitions, KeyLocation: Locations, KeyItem: Items) -> None:
         """Initialize with given parameters."""
         self.TransitionTo = TransitionTo
         self.TransitionsFrom = TransitionFrom

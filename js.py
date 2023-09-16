@@ -2,7 +2,7 @@
 import json
 
 
-def postMessage(message):
+def postMessage(message: str) -> None:
     """Fake function for printing messages with JS."""
     print(message)
 
