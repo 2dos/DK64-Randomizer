@@ -2,10 +2,10 @@
 import random
 
 import js
+from randomizer.Enums.EnemyLocations import EnemyLocations
 from randomizer.Enums.EnemySubtypes import EnemySubtype
 from randomizer.Enums.Settings import CrownEnemyRando, DamageAmount
 from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData, enemy_location_list
-from randomizer.Enums.EnemyLocations import EnemyLocations
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Patching.Patcher import LocalROM
 

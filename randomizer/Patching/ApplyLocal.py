@@ -9,11 +9,11 @@ import random
 import zipfile
 
 import js
+from randomizer.Lists.Songs import ExcludedSongsSelector
 from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolidayMode, overwrite_object_colors, writeMiscCosmeticChanges
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
-from randomizer.Lists.Songs import ExcludedSongsSelector
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -35,8 +35,8 @@ class BooleanProperties:
 
 async def patching_response(data, from_patch_gen=False, lanky_from_history=False):
     """Apply the patch data to the ROM in the BROWSER not the server."""
-    from datetime import datetime
     import time
+    from datetime import datetime
 
     # Unzip the data_passed
     loop = asyncio.get_event_loop()

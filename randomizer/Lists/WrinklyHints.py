@@ -1,8 +1,11 @@
 """Hint location data for Wrinkly hints."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, List, Union
+
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.WrinklyKong import WrinklyLocation
-from typing import Any, List, Union
 
 
 class HintLocation:

@@ -5,9 +5,9 @@ from array import array
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Settings import HardModeSelected
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
 from randomizer.Lists.MapsAndExits import Maps
-from randomizer.Enums.Settings import HardModeSelected
 from randomizer.Patching.Lib import IsItemSelected
 
 BossMapList = [Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss]

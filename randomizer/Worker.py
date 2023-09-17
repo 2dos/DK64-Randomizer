@@ -1,8 +1,9 @@
 """Task file to run functions in the background via webworkers."""
 import json
-import uuid
-import js
 import time
+import uuid
+
+import js
 
 
 def background(body):
