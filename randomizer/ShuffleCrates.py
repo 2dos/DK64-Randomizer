@@ -8,13 +8,12 @@ import randomizer.LogicFiles.DKIsles
 import randomizer.LogicFiles.FranticFactory
 import randomizer.LogicFiles.FungiForest
 import randomizer.LogicFiles.GloomyGalleon
-import randomizer.LogicFiles.JungleJapes
 import randomizer.LogicFiles.HideoutHelm
+import randomizer.LogicFiles.JungleJapes
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Lists.CustomLocations import CustomLocations, LocationTypes, CustomLocation
+from randomizer.Lists.CustomLocations import CustomLocation, CustomLocations, LocationTypes
 from randomizer.LogicClasses import LocationLogic
-from randomizer.Spoiler import Spoiler
 
 
 def addCrate(spoiler, MelonCrate: CustomLocation, enum_val: int, name: str, level: Levels):
@@ -55,7 +54,7 @@ def removeMelonCrate(spoiler):
             region_data.locations = [x for x in region_data.locations if x.id < Locations.MelonCrate_Location00 or x.id > Locations.MelonCrate_Location12]
 
 
-def ShuffleMelonCrates(spoiler: Spoiler, human_spoiler):
+def ShuffleMelonCrates(spoiler, human_spoiler):
     """Shuffle Melon Crate Locations."""
     removeMelonCrate(spoiler)
     spoiler.meloncrate_placement = []
@@ -98,7 +97,7 @@ def ShuffleMelonCrates(spoiler: Spoiler, human_spoiler):
     return human_spoiler.copy()
 
 
-def select_random_meloncrate_from_area(area_meloncrate, amount, level, spoiler: Spoiler, human_spoiler):
+def select_random_meloncrate_from_area(area_meloncrate, amount, level, spoiler, human_spoiler):
     """Select <amount> random melon crates from <area_meloncrate>, which is a list of melon crates. Makes sure max 1 melon crate per group is selected."""
     human_spoiler[level.name] = []
     for iterations in range(amount):
