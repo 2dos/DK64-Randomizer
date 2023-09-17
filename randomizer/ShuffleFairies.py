@@ -15,6 +15,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.FairyLocations import fairy_locations
 from randomizer.LogicClasses import LocationLogic
+from randomizer.Spoiler import Spoiler
 
 
 class FairyPlacementInfo:
@@ -53,7 +54,7 @@ all_fairy_locations = [
 ]
 
 
-def ShuffleFairyLocations(spoiler):
+def ShuffleFairyLocations(spoiler: Spoiler):
     """Pick 20 locations from various levels and place them into the correct logic areas and dictionaries."""
     spoiler.fairy_locations = {}
     spoiler.fairy_locations_human = {}
@@ -130,7 +131,7 @@ def ShuffleFairyLocations(spoiler):
                         spoiler.LocationList[data.location].name = f"{level_to_name[level]} Fairy ({fairy_locations[level][x].name})"
 
 
-def ClearFairyLogic(spoiler):
+def ClearFairyLogic(spoiler: Spoiler):
     """Clear out any fairy locations in preparation for filling custom ones."""
     for id, region in spoiler.RegionList.items():
         region.locations = [loc for loc in region.locations if loc.id not in all_fairy_locations]

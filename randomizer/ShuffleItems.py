@@ -8,6 +8,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList, NameFromKong
+from randomizer.Spoiler import Spoiler
 
 
 class LocationSelection:
@@ -73,7 +74,7 @@ class MoveData:
         self.count = count
 
 
-def ShuffleItems(spoiler):
+def ShuffleItems(spoiler: Spoiler):
     """Shuffle items into assortment."""
     progressive_move_flag_dict = {
         Items.ProgressiveSlam: [0x3BC, 0x3BD, 0x3BE],

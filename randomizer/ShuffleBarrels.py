@@ -1,15 +1,14 @@
 """Module used to handle setting and randomizing bonus barrels."""
-
 import random
-from typing import TYPE_CHECKING, List
 
 import randomizer.Lists.Exceptions as Ex
-from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Settings import MinigameBarrels, MinigamesListSelected
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Settings import Settings
+from randomizer.Enums.Locations import Locations
+from typing import List
 
 
 def Reset(barrelLocations: List[Locations]) -> None:

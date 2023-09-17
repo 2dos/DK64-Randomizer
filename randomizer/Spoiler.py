@@ -1,9 +1,7 @@
 """Spoiler class and functions."""
 
-
-import copy
 import json
-from typing import TYPE_CHECKING, Dict, List, Optional, OrderedDict, Union
+from typing import OrderedDict
 
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Items import Items
@@ -25,30 +23,29 @@ from randomizer.Enums.Settings import (
     TrainingBarrels,
     WinCondition,
 )
+import copy
+from randomizer.Logic import LogicVarHolder
+from randomizer.Logic import RegionsOriginal
+from randomizer.Logic import CollectibleRegionsOriginal
+from randomizer.ShuffleKasplats import constants, shufflable
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.EnemyTypes import EnemyMetaData
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
-from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations
+from randomizer.Lists.Location import PreGivenLocations, LocationListOriginal
 from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
-from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
-from randomizer.ShuffleBosses import HardBossesEnabled
 from randomizer.ShuffleExits import ShufflableExits
-from randomizer.ShuffleKasplats import constants, shufflable
-
-if TYPE_CHECKING:
-    from randomizer.Lists.Location import Location
-    from randomizer.LogicClasses import Sphere
+from randomizer.ShuffleBosses import HardBossesEnabled
 
 
 class Spoiler:
     """Class which contains all spoiler data passed into and out of randomizer."""
 
-    def __init__(self, settings: Settings) -> None:
+    def __init__(self, settings):
         """Initialize spoiler just with settings."""
         self.settings: Settings = settings
         self.playthrough = {}
@@ -114,43 +111,43 @@ class Spoiler:
         del self.CollectibleRegions
         del self.LogicVariables
 
-    def Reset(self) -> None:
+    def Reset(self):
         """Reset logic variables and region info that should be reset before a search."""
         self.LogicVariables.Reset()
         self.ResetRegionAccess()
         self.ResetCollectibleRegions()
 
-    def ResetRegionAccess(self) -> None:
+    def ResetRegionAccess(self):
         """Reset kong access for all regions."""
         for region in self.RegionList.values():
             region.ResetAccess()
 
-    def ResetCollectibleRegions(self) -> None:
+    def ResetCollectibleRegions(self):
         """Reset if each collectible has been added."""
         for region in self.CollectibleRegions.values():
             for collectible in region:
                 collectible.added = False
                 # collectible.enabled = collectible.vanilla
 
-    def ClearAllLocations(self) -> None:
+    def ClearAllLocations(self):
         """Clear item from every location."""
         for location in self.LocationList.values():
             location.item = None
 
-    def ResetLocationList(self) -> None:
+    def ResetLocationList(self):
         """Reset the LocationList to values conducive to a new fill."""
         for location in self.LocationList.values():
             location.PlaceDefaultItem(self)
         # Known to be incomplete - it should also confirm the correct locations of Fairies, Dirt, and Crowns
 
-    def InitKasplatMap(self) -> None:
+    def InitKasplatMap(self):
         """Initialize kasplat_map in logic variables with default values."""
         # Just use default kasplat associations.
         self.LogicVariables.kasplat_map = {}
         self.LogicVariables.kasplat_map.update(shufflable)
         self.LogicVariables.kasplat_map.update(constants)
 
-    def getItemGroup(self, item: Optional[Items]) -> str:
+    def getItemGroup(self, item):
         """Get item group from item."""
         if item is None:
             item = Items.NoItem
@@ -180,7 +177,7 @@ class Spoiler:
             return type_dict[item_type]
         return "Unknown"
 
-    def createJson(self) -> None:
+    def createJson(self):
         """Convert spoiler to JSON and save it."""
         # Verify we match our hash
         self.settings.verify_hash()
@@ -705,7 +702,7 @@ class Spoiler:
 
         self.json = json.dumps(humanspoiler, indent=4)
 
-    def UpdateKasplats(self, kasplat_map: Dict[Locations, Kongs]) -> None:
+    def UpdateKasplats(self, kasplat_map):
         """Update kasplat data."""
         for kasplat, kong in kasplat_map.items():
             # Get kasplat info
@@ -730,13 +727,13 @@ class Spoiler:
             swap = {"vanilla_location": original, "replace_with": kong}
             map["kasplat_swaps"].append(swap)
 
-    def UpdateBarrels(self) -> None:
+    def UpdateBarrels(self):
         """Update list of shuffled barrel minigames."""
         self.shuffled_barrel_data = {}
         for location, minigame in [(key, value.minigame) for (key, value) in BarrelMetaData.items()]:
             self.shuffled_barrel_data[location] = minigame
 
-    def UpdateExits(self) -> None:
+    def UpdateExits(self):
         """Update list of shuffled exits."""
         self.shuffled_exit_data = {}
         containerMaps = {}
@@ -761,7 +758,7 @@ class Spoiler:
         for key, containerMap in containerMaps.items():
             self.shuffled_exit_instructions.append(containerMap)
 
-    def UpdateLocations(self, locations: Dict[Locations, Location]) -> None:
+    def UpdateLocations(self, locations):
         """Update location list for what was produced by the fill."""
         self.location_data = {}
         self.shuffled_kong_placement = {}
@@ -879,7 +876,7 @@ class Spoiler:
             # else:
             #     self.location_data[id] = Items.NoItem
 
-    def WriteKongPlacement(self, locationId: Locations, item: Items) -> None:
+    def WriteKongPlacement(self, locationId, item):
         """Write kong placement information for the given kong cage location."""
         locationName = "Jungle Japes"
         unlockKong = self.settings.diddy_freeing_kong
@@ -907,7 +904,7 @@ class Spoiler:
         kongLocation = {"locked": lockedkong, "puzzle": puzzlekong}
         self.shuffled_kong_placement[locationName] = kongLocation
 
-    def UpdatePlaythrough(self, locations: Dict[Locations, Location], playthroughLocations: List[Sphere]) -> None:
+    def UpdatePlaythrough(self, locations, playthroughLocations):
         """Write playthrough as a list of dicts of location/item pairs."""
         self.playthrough = {}
         i = 0
@@ -921,7 +918,7 @@ class Spoiler:
             self.playthrough[i] = newSphere
             i += 1
 
-    def UpdateWoth(self, locations: Dict[Locations, Location], wothLocations: List[Union[Locations, int]]) -> None:
+    def UpdateWoth(self, locations, wothLocations):
         """Write woth locations as a dict of location/item pairs."""
         self.woth = {}
         self.woth_locations = wothLocations
@@ -929,7 +926,7 @@ class Spoiler:
             location = locations[locationId]
             self.woth[location.name] = ItemList[location.item].name
 
-    def ScoreLocations(self, location: Location) -> int:
+    def ScoreLocations(self, location):
         """Score a location with the given settings for sorting the Playthrough."""
         # The Banana Hoard is likely in its own sphere but if it's not put it last
         if location == Locations.BananaHoard:
@@ -958,7 +955,7 @@ class Spoiler:
             return 3
 
     @staticmethod
-    def GetKroolKeysRequired(keyEvents: List[Events]) -> List[str]:
+    def GetKroolKeysRequired(keyEvents):
         """Get key names from required key events to print in the spoiler."""
         keys = []
         if Events.JapesKeyTurnedIn in keyEvents:

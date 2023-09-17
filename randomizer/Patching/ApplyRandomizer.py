@@ -3,21 +3,20 @@ import json
 import os
 import time
 from tempfile import mktemp
-
-from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, HardModeSelected, HelmDoorItem, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
+from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, HelmDoorItem, HardModeSelected, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.EnemyTypes import Enemies, EnemySelector
-from randomizer.Lists.HardMode import HardSelector
 from randomizer.Lists.QoL import QoLSelector
+from randomizer.Lists.HardMode import HardSelector
 from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
 from randomizer.Patching.CoinPlacer import randomize_coins
 from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, applyKrushaKong, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages
-from randomizer.Patching.CratePlacer import randomize_melon_crate
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
+from randomizer.Patching.CratePlacer import randomize_melon_crate
 from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
 from randomizer.Patching.EnemyRando import randomize_enemies
 from randomizer.Patching.EntranceRando import enableSpiderText, filterEntranceType, randomize_entrances

@@ -1,7 +1,4 @@
 """Logic information for glitch logic."""
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
 
 
 class GlitchLogicItem:

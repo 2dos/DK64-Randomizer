@@ -1,25 +1,14 @@
 """Contains classes used in the logic system."""
-
-from typing import TYPE_CHECKING, Any, Callable, List, Optional, Union
-
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
 
-if TYPE_CHECKING:
-    from randomizer.Enums.Collectibles import Collectibles
-    from randomizer.Enums.Events import Events
-    from randomizer.Enums.Locations import Locations
-    from randomizer.Enums.MinigameType import MinigameType
-    from randomizer.Enums.Transitions import Transitions
-    from randomizer.Logic import LogicVarHolder
-
 
 class LocationLogic:
     """Logic for a location."""
 
-    def __init__(self, id: Union[int, Locations], logic: Callable, bonusBarrel: Optional[MinigameType] = None, isAuxiliary: bool = False) -> None:
+    def __init__(self, id, logic, bonusBarrel=None, isAuxiliary=False):
         """Initialize with given parameters."""
         self.id = id
         self.logic = logic  # Lambda function for accessibility
@@ -35,7 +24,7 @@ class Event:
     that can be represented as a button press event in region x which is checked for in region y.
     """
 
-    def __init__(self, name: Events, logic: Callable) -> None:
+    def __init__(self, name, logic):
         """Initialize with given parameters."""
         self.name = name
         self.logic = logic  # Lambda function for accessibility
@@ -44,9 +33,7 @@ class Event:
 class Collectible:
     """Class used for colored bananas and banana coins."""
 
-    def __init__(
-        self, type: Collectibles, kong: Kongs, logic: Callable, coords: None, amount: int = 1, enabled: bool = True, vanilla: bool = True, name: str = "vanilla", locked: bool = False
-    ) -> None:
+    def __init__(self, type, kong, logic, coords, amount=1, enabled=True, vanilla=True, name="vanilla", locked=False):
         """Initialize with given parameters."""
         self.type = type
         self.kong = kong
@@ -63,18 +50,7 @@ class Collectible:
 class Region:
     """Region contains shufflable locations, events, and transitions to other regions."""
 
-    def __init__(
-        self,
-        name: str,
-        hint_name: str,
-        level: Levels,
-        tagbarrel: bool,
-        deathwarp: Optional[Union[int, TransitionFront, Regions]],
-        locations: List[Union[LocationLogic, Any]],
-        events: List[Union[Event, Any]],
-        transitionFronts: List[Union[TransitionFront, Any]],
-        restart: Optional[Union[Transitions, int]] = None,
-    ) -> None:
+    def __init__(self, name, hint_name, level, tagbarrel, deathwarp, locations, events, transitionFronts, restart=None):
         """Initialize with given parameters."""
         self.name = name
         self.hint_name = hint_name
@@ -105,7 +81,7 @@ class Region:
         # Initially assume no access from any kong
         self.ResetAccess()
 
-    def UpdateAccess(self, kong: Kongs, logicVariables: LogicVarHolder) -> None:
+    def UpdateAccess(self, kong, logicVariables):
         """Set that given kong has access to this region."""
         # If this region contains a tag barrel, all owned kongs also have access
         if self.tagbarrel:
@@ -134,7 +110,7 @@ class Region:
         self.tinyAccess = self.tinyAccess or region.tinyAccess
         self.chunkyAccess = self.chunkyAccess or region.chunkyAccess
 
-    def HasAccess(self, kong: Kongs) -> bool:
+    def HasAccess(self, kong):
         """Check if given kong has access through this area.
 
         Used if a kong has access through a tag barrel only.
@@ -152,7 +128,7 @@ class Region:
         else:  # kongs == Kongs.any, just need to check if any kong has access
             return self.donkeyAccess or self.diddyAccess or self.lankyAccess or self.tinyAccess or self.chunkyAccess
 
-    def ResetAccess(self) -> None:
+    def ResetAccess(self):
         """Clear access variables set during search."""
         # Kong access
         self.donkeyAccess = False
@@ -164,7 +140,7 @@ class Region:
         self.dayAccess = False
         self.nightAccess = False
 
-    def GetDefaultDeathwarp(self) -> Regions:
+    def GetDefaultDeathwarp(self):
         """Get the default deathwarp depending on the region's level."""
         if self.level == Levels.DKIsles:
             return Regions.IslesMain
@@ -189,7 +165,7 @@ class Region:
 class TransitionBack:
     """The exited side of a transition between regions."""
 
-    def __init__(self, regionId: Regions, exitName: str, spoilerName: str, reverse: Optional[Transitions] = None) -> None:
+    def __init__(self, regionId, exitName, spoilerName, reverse=None):
         """Initialize with given parameters."""
         self.regionId = regionId  # Destination region
         self.name = exitName
@@ -200,16 +176,7 @@ class TransitionBack:
 class TransitionFront:
     """The entered side of a transition between regions."""
 
-    def __init__(
-        self,
-        dest: Regions,
-        logic: Callable,
-        exitShuffleId: Optional[Transitions] = None,
-        assumed: bool = False,
-        time: Time = Time.Both,
-        isGlitchTransition: bool = False,
-        isBananaportTransition: bool = False,
-    ) -> None:
+    def __init__(self, dest, logic, exitShuffleId=None, assumed=False, time=Time.Both, isGlitchTransition=False, isBananaportTransition=False):
         """Initialize with given parameters."""
         self.dest = dest  # Planning to remove this
         self.logic = logic  # Lambda function for accessibility
@@ -230,7 +197,7 @@ class Sphere:
     and sphere 1 items, and so on.
     """
 
-    def __init__(self) -> None:
+    def __init__(self):
         """Initialize with given parameters."""
         self.seedBeaten = False
         self.availableGBs = 0
@@ -240,7 +207,7 @@ class Sphere:
 class ColoredBananaGroup:
     """Stores data for each group of colored bananas."""
 
-    def __init__(self, *, group=0, name="No Location", map_id=0, konglist=[], region=None, logic=None, vanilla=False, locations=[]) -> None:
+    def __init__(self, *, group=0, name="No Location", map_id=0, konglist=[], region=None, logic=None, vanilla=False, locations=[]):
         """Initialize with given parameters."""
         self.group = group
         self.name = name
@@ -258,7 +225,7 @@ class ColoredBananaGroup:
 class Balloon:
     """Stores data for each balloon."""
 
-    def __init__(self, *, id=0, name="No Location", map_id=0, speed=0, konglist=[], region=None, logic=None, vanilla=False, points=[]) -> None:
+    def __init__(self, *, id=0, name="No Location", map_id=0, speed=0, konglist=[], region=None, logic=None, vanilla=False, points=[]):
         """Initialize with given parameters."""
         self.id = id
         self.name = name
@@ -274,7 +241,7 @@ class Balloon:
         self.spawnPoint = self.setSpawnPoint(points)
         self.selected = False
 
-    def setSpawnPoint(self, points: List[List[int]] = []) -> List[int]:
+    def setSpawnPoint(self, points=[]):
         """Set the spawn point of a balloon based on its path."""
         spawnX = 0
         spawnY = 0

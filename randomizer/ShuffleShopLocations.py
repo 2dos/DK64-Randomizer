@@ -6,6 +6,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.LogicClasses import TransitionFront
+from randomizer.Spoiler import Spoiler
 
 
 class ShopLocation:
@@ -75,7 +76,7 @@ available_shops = {
 }
 
 
-def ShuffleShopLocations(spoiler):
+def ShuffleShopLocations(spoiler: Spoiler):
     """Shuffle Shop locations within their own pool inside the level."""
     # Reset
     for level in available_shops:

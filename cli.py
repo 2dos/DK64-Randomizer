@@ -3,21 +3,20 @@ import argparse
 import codecs
 import json
 import os
+import time
 import random
 import sys
-import time
-import traceback
 import zipfile
-from io import BytesIO
-
 import boto3
+from io import BytesIO
+import traceback
 
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Fill import Generate_Spoiler
-from randomizer.Patching.Patcher import load_base_rom
 from randomizer.Settings import Settings
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from randomizer.Spoiler import Spoiler
+from randomizer.Patching.Patcher import load_base_rom
 
 load_base_rom()
 dynamodb = boto3.resource("dynamodb", aws_access_key_id=os.environ.get("AWS_ID"), aws_secret_access_key=os.environ.get("AWS_KEY"), region_name="us-west-2")

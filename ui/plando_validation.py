@@ -1,7 +1,7 @@
 """Code to collect and validate the selected plando options."""
+import js
 import re
 
-import js
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems
