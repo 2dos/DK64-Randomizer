@@ -1,6 +1,9 @@
 # fmt: off
 """Shufflable exit class and list file."""
 
+
+from typing import TYPE_CHECKING, Optional, Set
+
 from randomizer.Enums.ExitCategories import ExitCategories
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Regions import Regions
@@ -12,7 +15,7 @@ from randomizer.LogicClasses import TransitionBack
 class ShufflableExit:
     """Class that stores data about an exit to be shuffled."""
 
-    def __init__(self, name, region, back, category=None, entryKongs=None, regionKongs=None, move=False):
+    def __init__(self, name: str, region: Regions, back: TransitionBack, category: Optional[ExitCategories] = None, entryKongs: Optional[Set[Kongs]] = None, regionKongs: Optional[Set[Kongs]] = None, move: bool = False) -> None:
         """Initialize with given parameters."""
         if entryKongs is None:
             entryKongs = {Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky}

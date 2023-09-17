@@ -8,15 +8,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import (
-    ChunkyMoveLocations,
-    DiddyMoveLocations,
-    DonkeyMoveLocations,
-    LankyMoveLocations,
-    SharedMoveLocations,
-    TinyMoveLocations,
-    TrainingBarrelLocations,
-)
+from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, SharedMoveLocations, TinyMoveLocations, TrainingBarrelLocations
 
 VanillaPrices = {
     Items.Vines: 0,

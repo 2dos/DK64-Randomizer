@@ -38,18 +38,18 @@ async def initialize():
     # Module of Lists used for list_selector macros
     from randomizer.Enums.Types import ItemRandoSelector, KeySelector
     from randomizer.Lists.EnemyTypes import EnemySelector
-    from randomizer.Lists.Item import HHItemSelector, CustomStartingMoveSelector
+    from randomizer.Lists.HardMode import HardSelector
+    from randomizer.Lists.Item import CustomStartingMoveSelector, HHItemSelector
     from randomizer.Lists.Logic import GlitchSelector
     from randomizer.Lists.Minigame import MinigameSelector
+    from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableItems, PlannableMinigames, PlannableSpawns
     from randomizer.Lists.QoL import QoLSelector
-    from randomizer.Lists.HardMode import HardSelector
-    from randomizer.Lists.Warps import VanillaBananaportSelector
     from randomizer.Lists.Songs import ExcludedSongsSelector
+    from randomizer.Lists.Warps import VanillaBananaportSelector
     from randomizer.Lists.WrinklyHints import PointSpreadSelector
 
     # Module of lists and utils used for plandomizer
     from randomizer.PlandoUtils import PlandoItemFilter, PlandoMinigameFilter, PlandoOptionClassAnnotation, PlandoShopSortFilter
-    from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableItems, PlannableMinigames, PlannableSpawns
 
     js.listeners = []
     js.progression_presets = []

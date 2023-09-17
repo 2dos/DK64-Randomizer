@@ -1,6 +1,7 @@
 """Kong enum."""
+
 from enum import IntEnum, auto
-from typing import List
+from typing import TYPE_CHECKING, List
 
 
 class Kongs(IntEnum):

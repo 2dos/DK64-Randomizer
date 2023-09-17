@@ -1,5 +1,8 @@
 """Encryption and Decryption of settings strings."""
 
+
+from typing import TYPE_CHECKING, Any, Dict, Tuple
+
 from randomizer.Enums.Settings import (
     BananaportRando,
     DeprecatedSettings,
@@ -11,7 +14,6 @@ from randomizer.Enums.Settings import (
     SettingsStringTypeMap,
     SpoilerHints,
 )
-from typing import Any, Dict, Tuple
 
 letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 index_to_letter = {i: letters[i] for i in range(64)}

@@ -1,5 +1,8 @@
 """Stores the data for the locations of banana coins."""
 
+
+from typing import TYPE_CHECKING
+
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -14,7 +17,7 @@ CAVES_WATER_HEIGHT = 20
 class BananaCoinGroup:
     """Stores data for each group of coins."""
 
-    def __init__(self, *, group=0, name="No Location", map_id=0, konglist=[], region=None, logic=None, vanilla=False, locations=[]):
+    def __init__(self, *, group=0, name="No Location", map_id=0, konglist=[], region=None, logic=None, vanilla=False, locations=[]) -> None:
         """Initialize with given parameters."""
         self.group = group
         self.name = name
