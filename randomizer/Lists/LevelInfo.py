@@ -1,4 +1,7 @@
 """Stores information about levels, currently specifically used for assigning keys."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Levels import Levels

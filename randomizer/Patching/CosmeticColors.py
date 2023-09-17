@@ -1,8 +1,11 @@
 """Apply cosmetic skins to kongs."""
+from __future__ import annotations
+
 import gzip
 import random
 import zlib
 from random import randint
+from typing import TYPE_CHECKING, List, Tuple
 
 from PIL import Image, ImageDraw, ImageEnhance
 
@@ -12,9 +15,10 @@ from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorI
 from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Lib import TextureFormat, float_to_hex, getObjectAddress, int_to_list, intf_to_float
 from randomizer.Patching.Patcher import ROM, LocalROM
-import PIL.Image
 from randomizer.Settings import Settings
-from typing import Tuple
+
+if TYPE_CHECKING:
+    from PIL.Image import Image
 
 
 class HelmDoorSetting:
@@ -31,7 +35,9 @@ class HelmDoorSetting:
 class HelmDoorImages:
     """Class to store information regarding helm door item images."""
 
-    def __init__(self, setting: HelmDoorItem, image_indexes: list, flip: bool = False, table: int = 25, dimensions: Tuple[int, int] = (44, 44), format: TextureFormat = TextureFormat.RGBA5551) -> None:
+    def __init__(
+        self, setting: HelmDoorItem, image_indexes: List[int], flip: bool = False, table: int = 25, dimensions: Tuple[int, int] = (44, 44), format: TextureFormat = TextureFormat.RGBA5551
+    ) -> None:
         """Initialize with given parameters."""
         self.setting = setting
         self.image_indexes = image_indexes
@@ -404,7 +410,7 @@ color_bases = []
 balloon_single_frames = [(4, 38), (5, 38), (5, 38), (5, 38), (5, 38), (5, 38), (4, 38), (4, 38)]
 
 
-def getFile(table_index: int, file_index: int, compressed: bool, width: int, height: int, format: str) -> PIL.Image.Image:
+def getFile(table_index: int, file_index: int, compressed: bool, width: int, height: int, format: TextureFormat) -> PIL.Image.Image:
     """Grab image from file."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
@@ -695,7 +701,7 @@ def maskImageWithOutline(im_f, base_index, min_y, colorblind_mode, type=""):
     return im_f
 
 
-def writeColorImageToROM(im_f: PIL.Image.Image, table_index: int, file_index: int, width: int, height: int, transparent_border: bool, format: str) -> None:
+def writeColorImageToROM(im_f: PIL.Image.Image, table_index: int, file_index: int, width: int, height: int, transparent_border: bool, format: TextureFormat) -> None:
     """Write texture to ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
@@ -1742,7 +1748,7 @@ def getNumberImage(number: int) -> PIL.Image.Image:
     return getFile(14, 16, True, 76, 24, TextureFormat.RGBA5551).crop((num_1_bounds[x], 0, num_1_bounds[x + 1], 24))
 
 
-def numberToImage(number: int, dim: tuple):
+def numberToImage(number: int, dim: Tuple[int, int]) -> PIL.Image.Image:
     """Convert multi-digit number to image."""
     digits = 1
     if number < 10:

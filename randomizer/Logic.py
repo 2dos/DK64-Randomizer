@@ -44,8 +44,8 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
 from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
 

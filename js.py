@@ -1,5 +1,8 @@
 """This is a dummy module that only exists to override the built in pyodide module."""
+from __future__ import annotations
+
 import json
+from typing import TYPE_CHECKING
 
 
 def postMessage(message: str) -> None:

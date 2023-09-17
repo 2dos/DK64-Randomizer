@@ -1,11 +1,15 @@
 """Crown Location List."""
+from __future__ import annotations
+
 from enum import IntEnum, auto
+from typing import TYPE_CHECKING
+
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Time import Time
 from randomizer.Enums.Settings import HelmSetting
+from randomizer.Enums.Time import Time
 from randomizer.Lists.MapsAndExits import Maps
 
 
@@ -32,8 +36,8 @@ class CustomLocation:
         is_fungi_hidden_patch=False,
         is_galleon_floating_crate=False,
         banned_types: list = [],
-        default_index=0
-    ):
+        default_index=0,
+    ) -> None:
         """Initialize with given data."""
         self.map = map
         self.name = name
@@ -58,12 +62,12 @@ class CustomLocation:
         else:
             self.logic = logic
 
-    def setCustomLocation(self, value: bool):
+    def setCustomLocation(self, value: bool) -> None:
         """Set location's state regarding rando."""
         self.selected = value
 
 
-def resetCustomLocations():
+def resetCustomLocations() -> None:
     """Reset all locations to their default selection-state."""
     for key in CustomLocations.keys():
         for location in CustomLocations[key]:

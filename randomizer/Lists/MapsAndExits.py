@@ -1,8 +1,14 @@
 """List of maps with in-game index."""
+from __future__ import annotations
+
 from enum import IntEnum
+from typing import TYPE_CHECKING
 
 from randomizer.Enums.Levels import Levels
 from randomizer.LogicClasses import Regions, TransitionBack
+
+if TYPE_CHECKING:
+    from randomizer.Enums.Regions import Regions
 
 
 class Maps(IntEnum):
@@ -724,12 +730,12 @@ MapExitTable = {
 }
 
 
-def GetMapId(regionId):
+def GetMapId(regionId) -> Maps:
     """Get the map id of a transition."""
     return RegionMapList[regionId]
 
 
-def GetExitId(back: TransitionBack):
+def GetExitId(back: TransitionBack) -> int:
     """Get exit id of a transition."""
     mapId = GetMapId(back.regionId)
     if mapId in MapExitTable:

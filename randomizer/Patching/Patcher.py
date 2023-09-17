@@ -1,9 +1,18 @@
 """Patcher class and Functions for modifying ROM files."""
+from __future__ import annotations
+
 import copy
 import os
 from io import BytesIO
+from typing import TYPE_CHECKING, Union
 
 import js
+
+if TYPE_CHECKING:
+    from randomizer.Enums.Kongs import Kongs
+    from randomizer.Lists.EnemyTypes import Enemies
+    from randomizer.Lists.MapsAndExits import Maps
+    from randomizer.Patching.ItemRando import CustomActors
 
 patchedRom = None
 og_patched_rom = None
@@ -159,7 +168,7 @@ class LocalROM:
             load_base_rom()
         self.rom = patchedRom
 
-    def write(self, val: int) -> None:
+    def write(self, val: Union[Maps, int]) -> None:
         """Write value to current position.
 
         Starts at 0x0 as the inital position without seeking.
@@ -169,7 +178,7 @@ class LocalROM:
         """
         self.rom.write((val).to_bytes(1, byteorder="big", signed=False))
 
-    def writeBytes(self, byte_data: bytes) -> None:
+    def writeBytes(self, byte_data: Union[bytearray, bytes]) -> None:
         """Write an array a bytes to the current position.
 
         Starts at 0x0 as the inital position without seeking.
@@ -179,7 +188,7 @@ class LocalROM:
         """
         self.rom.write(bytes(byte_data))
 
-    def writeMultipleBytes(self, value: int, size: int) -> None:
+    def writeMultipleBytes(self, value: Union[int, Enemies, Maps, Kongs, CustomActors], size: int) -> None:
         """Write multiple bytes of a size to the current position.
 
         Starts at 0x0 as the inital position without seeking.
