@@ -1,16 +1,11 @@
 """Library functions for patching."""
-
 import struct
 from enum import IntEnum, auto
-from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union
 
 import js
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Patching.Patcher import ROM, LocalROM
-
-if TYPE_CHECKING:
-    from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected
-    from randomizer.Lists.MapsAndExits import Maps
+from typing import Any, List, Union
 
 icon_db = {
     0x0: "waterfall_tall",
@@ -232,7 +227,7 @@ def int_to_list(num: int, size: int):
     return arr
 
 
-def getNextFreeID(cont_map_id: Union[Maps, int], ignore: List[Union[Any, int]] = []) -> int:
+def getNextFreeID(cont_map_id: int, ignore: List[Union[Any, int]] = []) -> int:
     """Get next available Model 2 ID."""
     ROM_COPY = LocalROM()
     setup_table = js.pointer_addresses[9]["entries"][cont_map_id]["pointing_to"]
@@ -256,7 +251,7 @@ def getNextFreeID(cont_map_id: Union[Maps, int], ignore: List[Union[Any, int]] =
     return 0  # Shouldn't ever hit this. This is a case if there's no vacant IDs in range [0,599]
 
 
-def addNewScript(cont_map_id: Union[Maps, int], item_ids: List[int], type: ScriptTypes) -> None:
+def addNewScript(cont_map_id: int, item_ids: list, type: ScriptTypes) -> None:
     """Append a new script to the script database. Has to be just 1 execution and 1 endblock."""
     ROM_COPY = LocalROM()
     script_table = js.pointer_addresses[10]["entries"][cont_map_id]["pointing_to"]
@@ -322,7 +317,7 @@ def addNewScript(cont_map_id: Union[Maps, int], item_ids: List[int], type: Scrip
             ROM_COPY.writeMultipleBytes(x, 2)
 
 
-def grabText(file_index: int) -> List[List[Dict[str, List[str]]]]:
+def grabText(file_index: int) -> list:
     """Pull text from ROM with a particular file index."""
     ROM_COPY = LocalROM()
     file_start = js.pointer_addresses[12]["entries"][file_index]["pointing_to"]
@@ -410,7 +405,7 @@ def grabText(file_index: int) -> List[List[Dict[str, List[str]]]]:
     return formatted_text
 
 
-def writeText(file_index: int, text: List[Union[List[Dict[str, List[str]]], Tuple[Dict[str, List[str]]]]]) -> None:
+def writeText(file_index: int, text: list) -> None:
     """Write the text to ROM."""
     text_start = js.pointer_addresses[12]["entries"][file_index]["pointing_to"]
     ROM_COPY = LocalROM()
@@ -507,7 +502,7 @@ def getObjectAddressBrowser(map: int, id: int, object_type: str) -> int:
     return None
 
 
-def IsItemSelected(bool_setting: bool, multiselector_setting: List[Union[MiscChangesSelected, Any]], check: Union[HardModeSelected, MiscChangesSelected]) -> bool:
+def IsItemSelected(bool_setting: bool, multiselector_setting: list, check: int) -> bool:
     """Determine whether a multiselector setting is enabled."""
     if not bool_setting:
         return False

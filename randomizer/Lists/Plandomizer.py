@@ -6,7 +6,6 @@ from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.MapsAndExits import RegionMapList
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.LogicFiles.AngryAztec import LogicRegions as AngryAztecRegions
@@ -17,6 +16,7 @@ from randomizer.LogicFiles.FranticFactory import LogicRegions as FranticFactoryR
 from randomizer.LogicFiles.FungiForest import LogicRegions as FungiForestRegions
 from randomizer.LogicFiles.GloomyGalleon import LogicRegions as GloomyGalleonRegions
 from randomizer.LogicFiles.JungleJapes import LogicRegions as JungleJapesRegions
+from randomizer.Lists.Location import LocationListOriginal as LocationList
 
 
 def getKongString(kongEnum):

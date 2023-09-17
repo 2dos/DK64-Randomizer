@@ -1,20 +1,18 @@
 """Stores the item class and a list of each item with its attributes."""
-from __future__ import annotations
-
-from typing import TYPE_CHECKING, List, Optional, Union
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Types import Types
+from typing import List, Optional, Union
 
 
 class Item:
     """Stores information about an item."""
 
     def __init__(
-        self, name: str, playthrough: bool, type: Types, kong: Kongs, data: Optional[Union[List[Union[MoveTypes, int]], List[Union[MoveTypes, str, int]], List[Levels], List[int]]] = None
+        self, name: str, playthrough: bool, type: Types, kong: Kongs, data: Optional[Union[List[Levels], List[Union[MoveTypes, int]], List[Union[MoveTypes, str, int]], List[int]]] = None
     ) -> None:
         """Initialize with given parameters."""
         if data is None:

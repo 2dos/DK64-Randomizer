@@ -1,14 +1,11 @@
 """Crown Location List."""
-
 from enum import IntEnum, auto
-from typing import TYPE_CHECKING
-
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import HelmSetting
 from randomizer.Enums.Time import Time
+from randomizer.Enums.Settings import HelmSetting
 from randomizer.Lists.MapsAndExits import Maps
 
 
@@ -36,7 +33,7 @@ class CustomLocation:
         is_galleon_floating_crate=False,
         banned_types: list = [],
         default_index=0
-    ) -> None:
+    ):
         """Initialize with given data."""
         self.map = map
         self.name = name
@@ -61,12 +58,12 @@ class CustomLocation:
         else:
             self.logic = logic
 
-    def setCustomLocation(self, value: bool) -> None:
+    def setCustomLocation(self, value: bool):
         """Set location's state regarding rando."""
         self.selected = value
 
 
-def resetCustomLocations() -> None:
+def resetCustomLocations():
     """Reset all locations to their default selection-state."""
     for key in CustomLocations.keys():
         for location in CustomLocations[key]:

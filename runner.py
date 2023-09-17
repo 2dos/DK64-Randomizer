@@ -7,20 +7,20 @@ import time
 import traceback
 import zipfile
 from io import BytesIO
-from multiprocessing import Process, Queue
-from queue import Empty
-
-from flask import Flask, make_response, request
-from flask_cors import CORS
-from flask_executor import Executor
-from vidua import bps
-
-from randomizer.Enums.Settings import SettingsMap
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Patching.Patcher import load_base_rom
 from randomizer.Settings import Settings
-from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.Spoiler import Spoiler
+from flask import Flask, make_response, request
+from randomizer.SettingStrings import encrypt_settings_string_enum
+
+from flask_cors import CORS
+from flask_executor import Executor
+from multiprocessing import Process, Queue
+from randomizer.Enums.Settings import SettingsMap
+from queue import Empty
+from vidua import bps
+
 
 app = Flask(__name__)
 app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 2)

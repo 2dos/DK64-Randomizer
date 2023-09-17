@@ -1,8 +1,6 @@
 """Designates Bananaport properties."""
 
-
 from re import sub
-from typing import TYPE_CHECKING
 
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Regions import Regions
@@ -13,7 +11,7 @@ from randomizer.Lists.MapsAndExits import Maps
 class BananaportData:
     """Information about the bananaport."""
 
-    def __init__(self, *, name="", map_id=0, region_id=0, obj_id_vanilla=0, locked=False, vanilla_warp=0, swap_index=None, event=None, restricted=False) -> None:
+    def __init__(self, *, name="", map_id=0, region_id=0, obj_id_vanilla=0, locked=False, vanilla_warp=0, swap_index=None, event=None, restricted=False):
         """Initialize with given parameters."""
         self.name = name
         self.map_id = map_id
@@ -34,7 +32,7 @@ class BananaportData:
         else:
             self.tied_index = swap_index - 1
 
-    def setNewWarp(self, new_warp: int) -> None:
+    def setNewWarp(self, new_warp):
         """Set new warp type."""
         self.new_warp = new_warp
 

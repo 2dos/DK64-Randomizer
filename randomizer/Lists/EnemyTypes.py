@@ -1,12 +1,9 @@
 """List of enemies with in-game index."""
-
-import random
 from enum import IntEnum
-from typing import TYPE_CHECKING, Any, List, Union
-
+from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Enums.EnemyLocations import EnemyLocations
 from randomizer.Enums.EnemySubtypes import EnemySubtype
-from randomizer.Lists.MapsAndExits import Maps
+import random
 
 
 class Enemies(IntEnum):
@@ -125,7 +122,7 @@ class InteractionMethods:
         kill_shockwave=True,  # Killing can be done with a shockwave attack
         can_kill=True,  # Master control of all kill variables
         can_bypass=True,  # Enemy can be bypassed without any additional tricks
-    ) -> None:
+    ):
         """Initialize with given data."""
         self.kill_melee = kill_melee and can_kill
         self.kill_orange = kill_orange and can_kill
@@ -159,7 +156,7 @@ class EnemyData:
         selector_enabled=True,
         interaction: InteractionMethods = None,
         placeable=True,
-    ) -> None:
+    ):
         """Initialize with given parameters."""
         self.name = name
         self.e_type = e_type
@@ -187,7 +184,7 @@ class EnemyData:
 class EnemyLoc:
     """Information about an enemy."""
 
-    def __init__(self, map: Maps, default_enemy: Enemies, id: int, banned_enemies: List[Union[Any, Enemies]], enable_randomization: bool, respawns: bool = True) -> None:
+    def __init__(self, map: Maps, default_enemy: Enemies, id: int, banned_enemies: list, enable_randomization: bool, respawns: bool = True):
         """Initialize with given parameters."""
         self.map = map
         self.default_enemy = default_enemy
@@ -205,7 +202,7 @@ class EnemyLoc:
                 self.default_type = EnemyMetaData[default_enemy].e_type
             self.allowed_enemies = [enemy for enemy in EnemyMetaData if EnemyMetaData[enemy].e_type == self.default_type and enemy not in banned_enemies and EnemyMetaData[enemy].placeable]
 
-    def placeNewEnemy(self, enabled_enemies: List[Any], enable_speed: bool) -> Enemies:
+    def placeNewEnemy(self, enabled_enemies: list, enable_speed: bool) -> Enemies:
         """Place new enemy in slot."""
         if self.enable_randomization:
             permitted = [enemy for enemy in self.allowed_enemies if enemy in enabled_enemies or len(enabled_enemies) == 0]

@@ -21,6 +21,7 @@ import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.LogicClasses import Collectible
+from randomizer.Spoiler import Spoiler
 
 from .Enums.Collectibles import Collectibles
 
@@ -60,7 +61,7 @@ level_data = {
 }
 
 
-def ShuffleCBs(spoiler):
+def ShuffleCBs(spoiler: Spoiler):
     """Shuffle CBs selected from location files."""
     retries = 0
     while True:

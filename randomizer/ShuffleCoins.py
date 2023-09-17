@@ -18,6 +18,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Lists.BananaCoinLocations import BananaCoinGroupList
 from randomizer.LogicClasses import Collectible
+from randomizer.Spoiler import Spoiler
 
 KONG_COIN_REQUIREMENT = 100
 KONG_COIN_CAP = 125  # Can never exceed 175 due to overflow if you collect over 255 coins
@@ -40,7 +41,7 @@ def getCoinRequirement() -> int:
     return int(random.randint(KONG_COIN_REQUIREMENT, KONG_COIN_CAP) / 8)
 
 
-def ShuffleCoins(spoiler):
+def ShuffleCoins(spoiler: Spoiler):
     """Shuffle Coins selected from location files."""
     retries = 0
     while True:

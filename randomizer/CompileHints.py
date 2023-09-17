@@ -1,10 +1,8 @@
 """Compile a list of hints based on the settings."""
-
 import json
 import random
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Tuple, Union
-
 import randomizer.ItemPool as ItemPool
+
 from randomizer.Enums.Events import Events
 from randomizer.Enums.HintType import HintType
 from randomizer.Enums.Items import Items
@@ -20,12 +18,7 @@ from randomizer.Lists.MapsAndExits import GetMapId
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.WrinklyHints import ClearHintMessages, hints
 from randomizer.Patching.UpdateHints import UpdateHint
-
-if TYPE_CHECKING:
-    from randomizer.Enums.Transitions import Transitions
-    from randomizer.Lists.WrinklyHints import HintLocation
-    from randomizer.LogicClasses import Region
-    from randomizer.Spoiler import Spoiler
+from randomizer.Spoiler import Spoiler
 
 
 class Hint:
@@ -45,7 +38,7 @@ class Hint:
         subtype="joke",
         joke=False,
         joke_defined=False,
-    ) -> None:
+    ):
         """Create wrinkly hint text object."""
         self.kongs = kongs.copy()
         self.hint = hint
@@ -81,7 +74,7 @@ class Hint:
 class MoveInfo:
     """Move Info for Wrinkly hint text."""
 
-    def __init__(self, *, name="", kong="", move_type="", move_level=0, important=False) -> None:
+    def __init__(self, *, name="", kong="", move_type="", move_level=0, important=False):
         """Create move info object."""
         self.name = name
         self.kong = kong
@@ -415,7 +408,7 @@ hint_reroll_chance = 1.0  # What % of the time do you reroll in conditions that 
 globally_hinted_location_ids = []
 
 
-def compileHints(spoiler: Spoiler) -> bool:
+def compileHints(spoiler: Spoiler):
     """Create a hint distribution, generate buff hints, and place them in locations."""
     ClearHintMessages()
     hint_distribution = hint_distribution_default.copy()
@@ -1810,7 +1803,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     return True
 
 
-def getRandomHintLocation(location_list: None = None, kongs: None = None, levels: None = None, move_name: None = None) -> HintLocation:
+def getRandomHintLocation(location_list=None, kongs=None, levels=None, move_name=None):
     """Return an unoccupied hint location. The parameters can be used to specify location requirements."""
     valid_unoccupied_hint_locations = [
         hint
@@ -1832,7 +1825,7 @@ def getRandomHintLocation(location_list: None = None, kongs: None = None, levels
     return None
 
 
-def getHintLocationsForAccessibleHintItems(hint_item_ids: Union[Set[Items], List[Items]]) -> List[Union[HintLocation, Any]]:
+def getHintLocationsForAccessibleHintItems(hint_item_ids):
     """Given a list of hint item ids, return unoccupied HintLocation objects they correspond to, possibly returning an empty list."""
     accessible_hints = []
     for item_id in hint_item_ids:
@@ -1859,7 +1852,7 @@ def resetHintList():
             hint.priority = hint.original_priority
 
 
-def compileMicrohints(spoiler: Spoiler) -> None:
+def compileMicrohints(spoiler: Spoiler):
     """Create guaranteed level + kong hints for various items."""
     spoiler.microhints = {}
     if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
@@ -2040,7 +2033,7 @@ def PointValueOfItem(settings, item_id):
     return 0
 
 
-def TryCreatingLoadingZoneHint(spoiler: Spoiler, transition: Transitions, disallowedRegions: Optional[List[Regions]] = None) -> str:
+def TryCreatingLoadingZoneHint(spoiler: Spoiler, transition, disallowedRegions: list = None):
     """Try to create a hint message for the given transition. If this hint is determined to be bad, it will return false and not place the hint."""
     if disallowedRegions is None:
         disallowedRegions = []
@@ -2073,13 +2066,13 @@ def TryCreatingLoadingZoneHint(spoiler: Spoiler, transition: Transitions, disall
     return f"If you're looking for \x04{destinationName}\x04, follow the path \x08from {entranceName}\x08."
 
 
-def UpdateSpoilerHintList(spoiler: Spoiler) -> None:
+def UpdateSpoilerHintList(spoiler: Spoiler):
     """Write hints to spoiler object."""
     for hint in hints:
         spoiler.hint_list[hint.name] = hint.hint
 
 
-def GetRegionOfLocation(spoiler: Spoiler, location_id: Locations) -> Region:
+def GetRegionOfLocation(spoiler, location_id):
     """Given the id of a Location, return the Region it belongs to."""
     location = spoiler.LocationList[location_id]
     # Shop locations are tied to the level, not the shop regions
@@ -2095,9 +2088,7 @@ def GetRegionOfLocation(spoiler: Spoiler, location_id: Locations) -> Region:
     raise Exception("Unable to find Region for Location")  # This should never trigger!
 
 
-def GenerateMultipathDict(
-    spoiler: Spoiler, useless_locations: Dict[Union[Items, Kongs], List[Any]]
-) -> Tuple[Dict[Union[Locations, int], str], Dict[Union[Locations, int], List[Union[Locations, int]]]]:
+def GenerateMultipathDict(spoiler, useless_locations):
     """Create multipath hint text and identify relevant goal locations for each eligible woth location.
 
     Returns two dicts.
@@ -2162,7 +2153,7 @@ def GenerateMultipathDict(
     return multipath_dict_hints, multipath_dict_goals
 
 
-def join_words(words: List[str]) -> str:
+def join_words(words):
     """Join a list of words with an 'and' for grammatical perfection."""
     if len(words) > 2:
         return "%s, and %s" % (", ".join(words[:-1]), words[-1])

@@ -2,6 +2,7 @@
 import random
 
 import js
+import randomizer.Fill as Fill
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
@@ -214,3 +215,38 @@ def ShuffleKasplats(spoiler):
             break
         if not success:
             raise Ex.KasplatOutOfKongs
+
+
+def KasplatShuffle(spoiler, LogicVariables):
+    """Facilitate the shuffling of kasplat types."""
+    # If these were ever set at any prior point (likely only relevant running locally) then reset them - the upcoming methods will handle this TODO: maybe do this on other shufflers
+    for location in shufflable:
+        spoiler.LocationList[location].inaccessible = False
+    for location in constants:
+        spoiler.LocationList[location].inaccessible = False
+    if spoiler.settings.kasplat_rando:
+        retries = 0
+        while True:
+            try:
+                # Clear any existing logic
+                ResetShuffledKasplatLocations(spoiler)
+                # Shuffle kasplats
+                if spoiler.settings.kasplat_location_rando:
+                    ShuffleKasplatsAndLocations(spoiler, LogicVariables)
+                else:
+                    ShuffleKasplatsInVanillaLocations(spoiler, LogicVariables)
+                # Verify world by assuring all locations are still reachable
+                spoiler.Reset()
+                if not Fill.VerifyWorld(spoiler):
+                    if retries < 10:
+                        raise Ex.KasplatPlacementException
+                    else:
+                        # This is the first VerifyWorld check, and serves as the canary in the coal mine
+                        # If we get to this point in the code, the world itself is likely unstable from some combination of settings or bugs
+                        js.postMessage("Settings combination is likely unstable.")
+                        ResetShuffledKasplatLocations(spoiler)
+                        raise Ex.SettingsIncompatibleException
+                return
+            except Ex.KasplatPlacementException:
+                retries += 1
+                js.postMessage("Kasplat placement failed. Retrying. Tries: " + str(retries))

@@ -1,12 +1,12 @@
 """Apply Boss Locations."""
-import cProfile
-import io
-import pstats
 import random
-import time
-from pstats import SortKey
 
 import js
+import time
+import cProfile
+import pstats
+import io
+from pstats import SortKey
 from randomizer.Enums.EnemySubtypes import EnemySubtype
 from randomizer.Enums.Settings import CrownEnemyRando, DamageAmount
 from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData, enemy_location_list
