@@ -1,5 +1,6 @@
 """Encryption and Decryption of settings strings."""
 
+from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Dict, Tuple
 

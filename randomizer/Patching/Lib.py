@@ -1,4 +1,5 @@
 """Library functions for patching."""
+from __future__ import annotations
 
 import struct
 from enum import IntEnum, auto

@@ -1,4 +1,5 @@
 """Crown Location List."""
+from __future__ import annotations
 
 from enum import IntEnum, auto
 from typing import TYPE_CHECKING
@@ -35,7 +36,7 @@ class CustomLocation:
         is_fungi_hidden_patch=False,
         is_galleon_floating_crate=False,
         banned_types: list = [],
-        default_index=0
+        default_index=0,
     ) -> None:
         """Initialize with given data."""
         self.map = map

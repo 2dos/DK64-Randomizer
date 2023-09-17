@@ -1,5 +1,6 @@
 """Designates Bananaport properties."""
 
+from __future__ import annotations
 
 from re import sub
 from typing import TYPE_CHECKING

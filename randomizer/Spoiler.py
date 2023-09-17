@@ -1,5 +1,6 @@
 """Spoiler class and functions."""
 
+from __future__ import annotations
 
 import copy
 import json

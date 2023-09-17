@@ -1,4 +1,5 @@
 """Module used to distribute items randomly."""
+from __future__ import annotations
 
 from random import choice, randint, shuffle, uniform
 from typing import TYPE_CHECKING, Any, List, Optional, Set, Tuple, Union
@@ -61,7 +62,7 @@ from randomizer.ShuffleShopLocations import ShuffleShopLocations
 from randomizer.ShuffleWarps import LinkWarps, ShuffleWarps, ShuffleWarpsCrossMap
 
 if TYPE_CHECKING:
-    from randomizer.LogicClasses import Region, LogicVarHolder
+    from randomizer.LogicClasses import LogicVarHolder, Region
     from randomizer.Spoiler import Spoiler
 
 
@@ -147,8 +148,8 @@ def GetLobbyOfRegion(region):
 
 
 def GetAccessibleLocations(
-    spoiler: Spoiler, startingOwnedItems: List[Union[Items, Any]], searchType: SearchMode, purchaseList: Optional[List[Locations]] = None, targetItemId: None = None
-) -> Union[List[Locations], bool, List[Sphere], Set[Union[Locations, int]]]:
+    spoiler: Spoiler, startingOwnedItems: List[Union[Any, Items]], searchType: SearchMode, purchaseList: Optional[List[Locations]] = None, targetItemId: None = None
+) -> Union[List[Sphere], List[Locations], bool, Set[Union[Locations, int]]]:
     """Search to find all reachable locations given owned items."""
     settings = spoiler.settings
     # No logic? Calls to this method that are checking things just return True
@@ -1006,7 +1007,7 @@ def RandomFill(spoiler: Spoiler, itemsToPlace: List[Items], inOrder: bool = Fals
     return 0
 
 
-def CarefulRandomFill(spoiler: Spoiler, itemsToPlace: List[Union[Items, Any]], ownedItems: Optional[List[Union[Items, Any]]] = None) -> int:
+def CarefulRandomFill(spoiler: Spoiler, itemsToPlace: List[Union[Any, Items]], ownedItems: Optional[List[Union[Any, Items]]] = None) -> int:
     """Randomly place items, but try to keep shops in mind. Expected to be faster than forward fill for large quantities of items but slower than random fill."""
     spoiler.Reset()
     settings = spoiler.settings
@@ -1346,7 +1347,7 @@ def GetUnplacedItemPrerequisites(spoiler: Spoiler, targetItemId, placedMoves, ow
 
 
 def PlaceItems(
-    spoiler: Spoiler, algorithm: FillAlgorithm, itemsToPlace: List[Union[Items, Any]], ownedItems: Optional[List[Union[Items, Any]]] = None, inOrder: bool = False, doubleTime: bool = False
+    spoiler: Spoiler, algorithm: FillAlgorithm, itemsToPlace: List[Union[Any, Items]], ownedItems: Optional[List[Union[Any, Items]]] = None, inOrder: bool = False, doubleTime: bool = False
 ) -> int:
     """Places items using given algorithm."""
     if ownedItems is None:

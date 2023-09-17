@@ -1,5 +1,6 @@
 """Stores the data for the locations of banana coins."""
 
+from __future__ import annotations
 
 from typing import TYPE_CHECKING
 

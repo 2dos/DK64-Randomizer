@@ -1,4 +1,5 @@
 """Compile a list of hints based on the settings."""
+from __future__ import annotations
 
 import json
 import random
