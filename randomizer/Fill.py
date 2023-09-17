@@ -61,11 +61,11 @@ from randomizer.ShuffleShopLocations import ShuffleShopLocations
 from randomizer.ShuffleWarps import LinkWarps, ShuffleWarps, ShuffleWarpsCrossMap
 
 if TYPE_CHECKING:
-    from randomizer.LogicClasses import Region
+    from randomizer.LogicClasses import Region, LogicVarHolder
     from randomizer.Spoiler import Spoiler
 
 
-def KasplatShuffle(spoiler, LogicVariables):
+def KasplatShuffle(spoiler: Spoiler, LogicVariables: LogicVarHolder) -> None:
     """Facilitate the shuffling of kasplat types."""
     # If these were ever set at any prior point (likely only relevant running locally) then reset them - the upcoming methods will handle this TODO: maybe do this on other shufflers
     for location in shufflable:
@@ -1137,7 +1137,7 @@ def ForwardFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optiona
     return 0
 
 
-def GetItemValidLocations(spoiler, validLocations, item):
+def GetItemValidLocations(spoiler: Spoiler, validLocations, item):
     """Get the list of valid locations for this item."""
     # If validLocations is a dictionary, check for this item's value
     itemValidLocations = validLocations
@@ -1234,7 +1234,7 @@ def AssumedFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optiona
     return 0
 
 
-def BanAllRemainingSharedShops(spoiler):
+def BanAllRemainingSharedShops(spoiler: Spoiler):
     """Fill all empty shared shops with a NoItem."""
     for location in SharedShopLocations:
         if not spoiler.LocationList[location].inaccessible and spoiler.LocationList[location].item is None:
@@ -1273,7 +1273,7 @@ def GetMaxCoinsSpent(spoiler: Spoiler, purchasedShops: List[Union[Any, Locations
 
 
 # @pp.profile_by_line()
-def GetUnplacedItemPrerequisites(spoiler, targetItemId, placedMoves, ownedKongs=[]):
+def GetUnplacedItemPrerequisites(spoiler: Spoiler, targetItemId, placedMoves, ownedKongs=[]):
     """Given the target item and the current world state, find a valid, minimal, unplaced set of items required to reach the location it is in."""
     # Settings-required moves are always owned in order to complete this method based on the settings
     settingsRequiredMoves = ItemPool.AllItemsForMovePlacement(spoiler.settings)
@@ -1771,7 +1771,7 @@ def GeneratePlaythrough(spoiler: Spoiler) -> None:
     spoiler.UpdateWoth(spoiler.LocationList, WothLocations)
 
 
-def GetLogicallyAccessibleKongLocations(spoiler, kongLocations, ownedKongs, latestLevel):
+def GetLogicallyAccessibleKongLocations(spoiler: Spoiler, kongLocations, ownedKongs, latestLevel):
     """Find the logically accessible Kong Locations given the current state of Kong unlocking."""
     logicallyAccessibleKongLocations = []
     for level in range(1, latestLevel + 1):
@@ -1792,7 +1792,7 @@ def GetLogicallyAccessibleKongLocations(spoiler, kongLocations, ownedKongs, late
     return logicallyAccessibleKongLocations
 
 
-def PlacePriorityItems(spoiler, itemsToPlace, beforePlacedItems, placedTypes, levelBlock=None):
+def PlacePriorityItems(spoiler: Spoiler, itemsToPlace, beforePlacedItems, placedTypes, levelBlock=None):
     """Place the given items with priority, also placing all dependencies depending on where they got placed. Returns a list of all items newly placed by this function."""
     if itemsToPlace == []:  # Base case of recursion - when priority items no longer have dependencies, they'll hit this method placing zero items
         return []
@@ -1839,7 +1839,7 @@ def PlacePriorityItems(spoiler, itemsToPlace, beforePlacedItems, placedTypes, le
     return priorityItemsToPlace
 
 
-def PlaceKongsInKongLocations(spoiler, kongItems, kongLocations):
+def PlaceKongsInKongLocations(spoiler: Spoiler, kongItems, kongLocations):
     """For these settings, Kongs to place, and locations to place them in, place the Kongs in such a way the generation will never error here."""
     ownedKongs = [kong for kong in spoiler.settings.starting_kong_list]
     # In entrance randomizer, it's too complicated to quickly determine kong accessibility.
@@ -2277,7 +2277,7 @@ def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
     settings.owned_moves_by_level = ownedMoves
 
 
-def SetNewProgressionRequirementsUnordered(spoiler):
+def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
     """Set level progression requirements based on a random path of accessible levels."""
     settings = spoiler.settings
     isKeyItemRando = settings.shuffle_items and Types.Key in settings.shuffled_location_types
@@ -2563,7 +2563,7 @@ def SetNewProgressionRequirementsUnordered(spoiler):
         raise Ex.GameNotBeatableException("Complex progression generation prevented 101%.")
 
 
-def GetAccessibleOpenLevels(spoiler):
+def GetAccessibleOpenLevels(spoiler: Spoiler) -> List[int]:
     """Return the list of levels (not lobbies) you have access to after running GetAccessibleLocations()."""
     lobbyAccessEvents = [event for event in spoiler.LogicVariables.Events if event >= Events.JapesLobbyAccessed and event <= Events.CastleLobbyAccessed]
     accessibleOpenLevels = []
@@ -2733,7 +2733,7 @@ def ValidateFixedHints(settings: Settings) -> None:
         raise Ex.SettingsIncompatibleException("Alternate win conditions will not work with Fixed hints.")
 
 
-def DebugCheckAllReachable(spoiler, owned, what_just_got_placed):
+def DebugCheckAllReachable(spoiler: Spoiler, owned, what_just_got_placed):
     """Immediately check if the world is 101%-able. Only used with extreme_debugging."""
     spoiler.Reset()
     reached_all = GetAccessibleLocations(spoiler, owned, SearchMode.CheckAllReachable)
