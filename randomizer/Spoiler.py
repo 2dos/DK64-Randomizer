@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import copy
 import json
 from typing import TYPE_CHECKING, Dict, List, Optional, OrderedDict, Union
 
@@ -67,9 +66,9 @@ class Spoiler:
         self.location_data = {}
         self.enemy_replacements = []
         self.LogicVariables = LogicVarHolder(self)
-        self.RegionList = copy.deepcopy(RegionsOriginal)
-        self.CollectibleRegions = copy.deepcopy(CollectibleRegionsOriginal)
-        self.LocationList = copy.deepcopy(LocationListOriginal)
+        self.RegionList = RegionsOriginal.copy()
+        self.CollectibleRegions = CollectibleRegionsOriginal.copy()
+        self.LocationList = LocationListOriginal.copy()
         self.debug_human_item_assignment = None  # Kill this as soon as the spoiler is better
 
         self.move_data = []

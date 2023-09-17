@@ -1,7 +1,7 @@
 """Contains classes used in the logic system."""
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple, Union
 
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -46,14 +46,23 @@ class Collectible:
     """Class used for colored bananas and banana coins."""
 
     def __init__(
-        self, type: Collectibles, kong: Kongs, logic: Callable, coords: None, amount: int = 1, enabled: bool = True, vanilla: bool = True, name: str = "vanilla", locked: bool = False
+        self,
+        type: Collectibles,
+        kong: Kongs,
+        logic: Callable,
+        coords: Optional[Tuple[float, float, float]] = None,
+        amount: int = 1,
+        enabled: bool = True,
+        vanilla: bool = True,
+        name: str = "vanilla",
+        locked: bool = False,
     ) -> None:
         """Initialize with given parameters."""
         self.type = type
         self.kong = kong
         self.logic = logic
         self.amount = amount
-        self.coords = coords  # Null for vanilla collectibles for now. For custom, use (x,y,z) format
+        self.coords = coords  # None for vanilla collectibles for now. For custom, use (x,y,z) format
         self.added = False
         self.enabled = enabled
         self.vanilla = vanilla
@@ -101,9 +110,12 @@ class Region:
                 # If deathwarp is -1, indicates to use the default value for it, which is the starting area of the level
                 if deathwarp == -1:
                     deathwarp = self.GetDefaultDeathwarp()
-                self.deathwarp = TransitionFront(deathwarp, lambda l: True)
+                if deathwarp is not None:
+                    if isinstance(deathwarp, Regions):
+                        self.deathwarp = TransitionFront(deathwarp, lambda l: True)
+                    else:
+                        self.deathwarp = TransitionFront(Regions(deathwarp), lambda l: True)
 
-        # Initially assume no access from any kong
         self.ResetAccess()
 
     def UpdateAccess(self, kong: Kongs, logicVariables: LogicVarHolder) -> None:
@@ -185,6 +197,7 @@ class Region:
             return Regions.CreepyCastleMain
         elif self.level == Levels.HideoutHelm:
             return Regions.HideoutHelmStart
+        return Regions.GameStart
 
 
 class TransitionBack:
@@ -235,7 +248,7 @@ class Sphere:
         """Initialize with given parameters."""
         self.seedBeaten = False
         self.availableGBs = 0
-        self.locations = []
+        self.locations: List[Union[LocationLogic, Any]] = []
 
 
 class ColoredBananaGroup:
@@ -277,15 +290,15 @@ class Balloon:
 
     def setSpawnPoint(self, points: List[List[int]] = []) -> List[int]:
         """Set the spawn point of a balloon based on its path."""
-        spawnX = 0
-        spawnY = 0
-        spawnZ = 0
+        spawnX = 0.0
+        spawnY = 0.0
+        spawnZ = 0.0
         for p in points:
             spawnX += p[0]
             spawnY += p[1]
             spawnZ += p[2]
         spawnX /= len(points)
         spawnY /= len(points)
-        spawnY -= 100  # Most balloons are at least 100 units off the ground
+        spawnY -= 100.0  # Most balloons are at least 100 units off the ground
         spawnZ /= len(points)
         return [int(spawnX), int(spawnY), int(spawnZ)]
