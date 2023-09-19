@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 from typing import TYPE_CHECKING, Dict, List, Optional, OrderedDict, Union
 
 from randomizer.Enums.Events import Events
@@ -66,9 +67,9 @@ class Spoiler:
         self.location_data = {}
         self.enemy_replacements = []
         self.LogicVariables = LogicVarHolder(self)
-        self.RegionList = RegionsOriginal.copy()
-        self.CollectibleRegions = CollectibleRegionsOriginal.copy()
-        self.LocationList = LocationListOriginal.copy()
+        self.RegionList = deepcopy(RegionsOriginal)
+        self.CollectibleRegions = deepcopy(CollectibleRegionsOriginal)
+        self.LocationList = deepcopy(LocationListOriginal)
         self.debug_human_item_assignment = None  # Kill this as soon as the spoiler is better
 
         self.move_data = []

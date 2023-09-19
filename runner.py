@@ -40,28 +40,6 @@ if os.environ.get("HOSTED_SERVER") is not None:
     dynamodb = boto3.resource("dynamodb", region_name="us-west-2")
 
 
-def generate(default_rom, generate_settings, queue, post_body):
-    """Gen a seed and write the file to an output file."""
-    try:
-        load_base_rom(default_file=default_rom)
-        settings = Settings(generate_settings)
-        spoiler = Spoiler(settings)
-        patch, spoiler = Generate_Spoiler(spoiler)
-        spoiler.FlushAllExcessSpoilerData()
-        return_dict = {}
-        return_dict["patch"] = patch
-        return_dict["spoiler"] = spoiler
-        queue.put(return_dict)
-
-    except Exception as e:
-        if os.environ.get("HOSTED_SERVER") is not None:
-            write_error(traceback.format_exc(), post_body)
-        print(traceback.format_exc())
-        # Return the error and the type of error.
-        error = str(type(e).__name__) + ": " + str(e)
-        queue.put(error)
-
-
 def start_gen(gen_key, post_body):
     """Start the generation process."""
     print("starting generation")
@@ -91,41 +69,20 @@ def start_gen(gen_key, post_body):
                 except Exception:
                     pass
     try:
-        queue = Queue()
-        p = Process(
-            target=generate,
-            args=(
-                og_patched_rom,
-                setting_data,
-                queue,
-                post_body,
-            ),
-        )
-        p.start()
-        try:
-            return_data = queue.get(timeout=TIMEOUT)
-        # raise an exception if we timeout
-        except Empty:
-            try:
-                p.kill()
-            except Exception:
-                pass
-            return "Seed Generation Timed Out"
-        p.join(0)
-        if type(return_data) is str:
-            return return_data
-        else:
-            patch = return_data["patch"]
-            spoiler = return_data["spoiler"]
-            current_job.remove(gen_key)
-            return patch, spoiler
-
+        load_base_rom(default_file=og_patched_rom)
+        settings = Settings(setting_data)
+        spoiler = Spoiler(settings)
+        patch, spoiler = Generate_Spoiler(spoiler)
+        spoiler.FlushAllExcessSpoilerData()
+        current_job.remove(gen_key)
+        return patch, spoiler
     except Exception as e:
         if os.environ.get("HOSTED_SERVER") is not None:
             write_error(traceback.format_exc(), post_body)
-        current_job.remove(gen_key)
         print(traceback.format_exc())
+        # Return the error and the type of error.
         error = str(type(e).__name__) + ": " + str(e)
+        current_job.remove(gen_key)
         return error
 
 
