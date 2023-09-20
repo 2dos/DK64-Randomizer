@@ -21,6 +21,9 @@ from randomizer.Patching.Patcher import load_base_rom
 from randomizer.Settings import Settings
 from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.Spoiler import Spoiler
+import signal
+from contextlib import contextmanager
+
 
 app = Flask(__name__)
 app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 2)
@@ -38,6 +41,26 @@ if os.environ.get("HOSTED_SERVER") is not None:
     import boto3
 
     dynamodb = boto3.resource("dynamodb", region_name="us-west-2")
+
+
+class TimeoutException(Exception):
+    pass
+
+
+@contextmanager
+def time_limit(seconds):
+    def signal_handler(signum, frame):
+        raise TimeoutException("Timed out!")
+
+    if os.name != "nt":
+        signal.signal(signal.SIGALRM, signal_handler)
+        signal.alarm(seconds)
+        try:
+            yield
+        finally:
+            signal.alarm(0)
+    else:
+        yield
 
 
 def start_gen(gen_key, post_body):
@@ -72,7 +95,8 @@ def start_gen(gen_key, post_body):
         load_base_rom(default_file=og_patched_rom)
         settings = Settings(setting_data)
         spoiler = Spoiler(settings)
-        patch, spoiler = Generate_Spoiler(spoiler)
+        with time_limit(TIMEOUT):
+            patch, spoiler = Generate_Spoiler(spoiler)
         spoiler.FlushAllExcessSpoilerData()
         current_job.remove(gen_key)
         return patch, spoiler
