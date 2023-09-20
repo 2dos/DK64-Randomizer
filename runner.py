@@ -44,12 +44,15 @@ if os.environ.get("HOSTED_SERVER") is not None:
 
 
 class TimeoutException(Exception):
+    """Timeout exception."""
     pass
 
 
 @contextmanager
 def time_limit(seconds):
+    """Time limit context manager."""
     def signal_handler(signum, frame):
+        """Signal handler."""
         raise TimeoutException("Timed out!")
 
     if os.name != "nt":
