@@ -8,7 +8,10 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Transitions import Transitions
 
+from mypy_extensions import mypyc_attr
 
+
+@mypyc_attr(allow_interpreted_subclasses=True)
 class LevelInfo:
     """Class which stores some information about levels."""
 

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from mypy_extensions import mypyc_attr
 
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
@@ -10,6 +11,7 @@ from randomizer.Enums.Minigames import Minigames
 from randomizer.Lists.MapsAndExits import Maps
 
 
+@mypyc_attr(allow_interpreted_subclasses=True)
 class Minigame:
     """Class which stores name and logic for a minigame."""
 

@@ -1,6 +1,9 @@
 """Hard Mode information."""
 
+from mypy_extensions import mypyc_attr
 
+
+@mypyc_attr(allow_interpreted_subclasses=True)
 class HardModeItem:
     """Hard Mode multiselector information."""
 

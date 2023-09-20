@@ -1,4 +1,6 @@
 """Settings class and functions."""
+from __future__ import annotations
+
 import json
 import math
 import random
@@ -20,7 +22,39 @@ from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import *
+from randomizer.Enums.Settings import (
+    ActivateAllBananaports,
+    BananaportRando,
+    CrownEnemyRando,
+    DamageAmount,
+    FillAlgorithm,
+    SoundType,
+    CharacterColors,
+    DPadDisplays,
+    ColorblindMode,
+    ItemRandoListSelected,
+    FreeTradeSetting,
+    HelmDoorItem,
+    HelmSetting,
+    KasplatRandoSetting,
+    ShuffleLoadingZones,
+    KrushaUi,
+    LevelRandomization,
+    LogicType,
+    MicrohintsEnabled,
+    MinigameBarrels,
+    MoveRando,
+    RandomPrices,
+    SettingsMap,
+    ShockwaveStatus,
+    SpoilerHints,
+    KlaptrapModel,
+    MiscChangesSelected,
+    TrainingBarrels,
+    WinCondition,
+    WrinklyHints,
+    ExtraCutsceneSkips,
+)
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import (
@@ -36,12 +70,17 @@ from randomizer.Lists.Location import (
 )
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
+from randomizer.Lists.Location import Location
 from randomizer.Patching.Lib import IsItemSelected
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
 from version import whl_hash
+from mypy_extensions import mypyc_attr
+from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple, Union, List
 
-
+if TYPE_CHECKING:
+    from randomizer.Spoiler import Spoiler
+@mypyc_attr(allow_interpreted_subclasses=True)
 class Settings:
     """Class used to store settings for seed generation."""
 
@@ -54,22 +93,23 @@ class Settings:
         self.__hash = self.__get_hash()
         self.public_hash = self.__get_hash()
         self.algorithm = FillAlgorithm.forward
+        self.seed: str = ""
         self.generate_main()
         self.generate_progression()
         self.generate_misc()
         self.rom_data = 0x1FED020
         self.move_location_data = 0x1FEF000
         self.form_data = form_data
-
+        
         self.apply_form_data(form_data)
         self.seed_id = str(self.seed)
         if self.generate_spoilerlog is None:
-            self.generate_spoilerlog = False
+            self.generate_spoilerlog: bool = False
         self.seed = str(self.seed) + self.__hash + str(json.dumps(form_data))
         self.set_seed()
         self.seed_hash = [random.randint(0, 9) for i in range(5)]
-        self.krool_keys_required = []
-        self.starting_key_list = []
+        self.krool_keys_required: List[int] = []
+        self.starting_key_list: List[int] = []
         # Settings which are not yet implemented on the web page
 
         # B Locker and T&S max values
@@ -124,20 +164,21 @@ class Settings:
 
         self.resolve_settings()
 
-    def apply_form_data(self, form_data):
-        """Convert and apply the provided form data to this class."""
 
-        def get_enum_value(keyString, valueString):
-            """Take in a key and value, and return an enum."""
+    def get_enum_value(self, keyString, valueString):
+        """Take in a key and value, and return an enum."""
+        try:
+            return SettingsMap[keyString](valueString)
+        except ValueError:
+            # We may have been given a string representing an enum name.
+            # Failsafe in case enum conversion didn't happen elsewhere.
             try:
-                return SettingsMap[keyString](valueString)
+                return SettingsMap[keyString][valueString]
             except ValueError:
-                # We may have been given a string representing an enum name.
-                # Failsafe in case enum conversion didn't happen elsewhere.
-                try:
-                    return SettingsMap[keyString][valueString]
-                except ValueError:
-                    raise ValueError(f"Value '{valueString}' is invalid for setting '{keyString}'.")
+                raise ValueError(f"Value '{valueString}' is invalid for setting '{keyString}'.")
+
+    def apply_form_data(self, form_data: dict):
+        """Convert and apply the provided form data to this class."""
 
         for k, v in form_data.items():
             # If this setting key is associated with an enum, convert the
@@ -146,14 +187,15 @@ class Settings:
                 if type(v) is list:
                     settingValue = []
                     for val in v:
-                        settingValue.append(get_enum_value(k, val))
+                        settingValue.append(self.get_enum_value(k, val))
                     setattr(self, k, settingValue)
                 else:
-                    settingValue = get_enum_value(k, v)
+                    settingValue = self.get_enum_value(k, v)
                     setattr(self, k, settingValue)
             else:
                 # The value is a basic type, so assign it directly.
-                setattr(self, k, v)
+                if v and k:
+                    setattr(self, k, v)
 
     def update_progression_totals(self):
         """Update the troff and blocker totals if we're randomly setting them."""
@@ -217,7 +259,6 @@ class Settings:
 
     def generate_main(self):
         """Set Default items on main page."""
-        self.seed = None
         self.download_patch_file = None
         self.load_patch_file = None
         self.bonus_barrel_rando = None
@@ -251,23 +292,23 @@ class Settings:
 
     def generate_progression(self):
         """Set default items on progression page."""
-        self.blocker_0 = None
-        self.blocker_1 = None
-        self.blocker_2 = None
-        self.blocker_3 = None
-        self.blocker_4 = None
-        self.blocker_5 = None
-        self.blocker_6 = None
-        self.blocker_7 = None
-        self.troff_0 = None
-        self.troff_1 = None
-        self.troff_2 = None
-        self.troff_3 = None
-        self.troff_4 = None
-        self.troff_5 = None
-        self.troff_6 = None
-        self.troff_min = None
-        self.troff_max = None
+        self.blocker_0 = 0
+        self.blocker_1 = 0
+        self.blocker_2 = 0
+        self.blocker_3 = 0
+        self.blocker_4 = 0
+        self.blocker_5 = 0
+        self.blocker_6 = 0
+        self.blocker_7 = 0
+        self.troff_0 = 0
+        self.troff_1 = 0
+        self.troff_2 = 0
+        self.troff_3 = 0
+        self.troff_4 = 0
+        self.troff_5 = 0
+        self.troff_6 = 0
+        self.troff_min = 0
+        self.troff_max = 0
         self.blocker_text = ""
         self.troff_text = ""
 
@@ -395,7 +436,7 @@ class Settings:
         self.sound_type = SoundType.stereo
 
         #  Misc
-        self.generate_spoilerlog = None
+        self.generate_spoilerlog = False
         self.fast_start_beginning_of_game = True
         self.helm_setting = None
         self.quality_of_life = None
@@ -509,7 +550,7 @@ class Settings:
         self.enable_progressive_hints = False
         self.progressive_hint_text = 0
 
-    def shuffle_prices(self, spoiler):
+    def shuffle_prices(self, spoiler: Spoiler):
         """Price randomization. Reuseable if we need to reshuffle prices."""
         # Price Rando
         if self.random_prices != RandomPrices.vanilla:
@@ -989,7 +1030,7 @@ class Settings:
             # Disable progressive hints if hint text is 0
             self.enable_progressive_hints = False
 
-    def isBadIceTrapLocation(self, location: Locations):
+    def isBadIceTrapLocation(self, location: Location):
         """Determine whether an ice trap is safe to house an ice trap outside of individual cases."""
         bad_fake_types = [Types.TrainingBarrel, Types.PreGivenMove]
         is_bad = location.type in bad_fake_types
@@ -997,7 +1038,7 @@ class Settings:
             is_bad = location.type in bad_fake_types or (location.type == Types.Medal and location.level != Levels.HideoutHelm) or location.type == Types.Shockwave
         return is_bad
 
-    def finalize_world_settings(self, spoiler):
+    def finalize_world_settings(self, spoiler: Spoiler):
         """Finalize the world state after settings initialization."""
         self.shuffle_prices(spoiler)
         # Starting Move Location handling
@@ -1021,7 +1062,7 @@ class Settings:
             locations_to_add -= 4
         if locations_to_add > location_cap:
             locations_to_add = location_cap
-        first_pregiven_location = Locations.PreGiven_Location00
+        first_pregiven_location = Locations.PreGiven_Location00.value
         if not self.start_with_slam:
             first_pregiven_location -= 1
         first_empty_location = first_pregiven_location + locations_to_add
@@ -1087,7 +1128,7 @@ class Settings:
             # On Fast GBs, this location refers to the blast course, not the arcade
             spoiler.LocationList[Locations.FactoryDonkeyDKArcade].name = "Factory Donkey Blast Course"
 
-    def update_valid_locations(self, spoiler):
+    def update_valid_locations(self, spoiler: Spoiler):
         """Calculate (or recalculate) valid locations for items by type."""
         self.valid_locations = {}
         self.valid_locations[Types.Kong] = self.kong_locations.copy()
@@ -1256,7 +1297,7 @@ class Settings:
                     [loc for loc in shuffledNonMoveLocations if loc not in banned_kong_locations]
                 )  # No items can be in Kong cages but Kongs can be in all other locations
 
-    def GetValidLocationsForItem(self, item_id):
+    def GetValidLocationsForItem(self, item_id: Items):
         """Return the valid locations the input item id can be placed in."""
         item_obj = ItemList[item_id]
         valid_locations = []
@@ -1343,7 +1384,7 @@ class Settings:
         """Get the hash value of all of the source code loaded."""
         return whl_hash
 
-    def compare_hash(self, hash):
+    def compare_hash(self, hash: str):
         """Compare our hash with a passed hash value."""
         if self.__hash != hash:
             raise Exception("Error: Comparison failed, Hashes do not match.")
@@ -1358,12 +1399,12 @@ class Settings:
         except Exception:
             return False
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name: str, value: str):
         """Set an attributes value but only after verifying our hash."""
         self.verify_hash()
         super().__setattr__(name, value)
 
-    def __delattr__(self, name):
+    def __delattr__(self, name: str):
         """Delete an attribute if its not our settings hash or if the code has been modified."""
         self.verify_hash()
         if name == "_Settings__hash":

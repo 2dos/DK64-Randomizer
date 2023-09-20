@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-from copy import deepcopy
 from typing import TYPE_CHECKING, Dict, List, Optional, OrderedDict, Union
 
 from randomizer.Enums.Events import Events
@@ -30,16 +29,15 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.EnemyTypes import EnemyMetaData
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
-from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations
+from randomizer.Lists.Location import LocationListData, PreGivenLocations
 from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
-from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
+from randomizer.Logic import CollectibleData, LogicVarHolder, RegionsData
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
 from randomizer.ShuffleBosses import HardBossesEnabled
 from randomizer.ShuffleExits import ShufflableExits
-from randomizer.ShuffleKasplats import constants, shufflable
 
 if TYPE_CHECKING:
     from randomizer.Lists.Location import Location
@@ -67,9 +65,9 @@ class Spoiler:
         self.location_data = {}
         self.enemy_replacements = []
         self.LogicVariables = LogicVarHolder(self)
-        self.RegionList = deepcopy(RegionsOriginal)
-        self.CollectibleRegions = deepcopy(CollectibleRegionsOriginal)
-        self.LocationList = deepcopy(LocationListOriginal)
+        self.RegionList = RegionsData().Regions
+        self.CollectibleRegions = CollectibleData().CollectibleRegions
+        self.LocationList = LocationListData().LocationList
         self.debug_human_item_assignment = None  # Kill this as soon as the spoiler is better
 
         self.move_data = []
@@ -143,13 +141,6 @@ class Spoiler:
         for location in self.LocationList.values():
             location.PlaceDefaultItem(self)
         # Known to be incomplete - it should also confirm the correct locations of Fairies, Dirt, and Crowns
-
-    def InitKasplatMap(self) -> None:
-        """Initialize kasplat_map in logic variables with default values."""
-        # Just use default kasplat associations.
-        self.LogicVariables.kasplat_map = {}
-        self.LogicVariables.kasplat_map.update(shufflable)
-        self.LogicVariables.kasplat_map.update(constants)
 
     def getItemGroup(self, item: Optional[Items]) -> str:
         """Get item group from item."""

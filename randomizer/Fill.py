@@ -2619,8 +2619,6 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
         ValidateFixedHints(spoiler.settings)
     # Reset LocationList for a new fill
     spoiler.ResetLocationList()
-    # Initiate kasplat map with default
-    spoiler.InitKasplatMap()
     # Handle misc randomizations
     ShuffleMisc(spoiler)
     # Level order rando may have to affect the progression to be fillable - no logic doesn't care about your silly progression, however

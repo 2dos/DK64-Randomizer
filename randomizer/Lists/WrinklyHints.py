@@ -2,12 +2,14 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, List, Union
+from mypy_extensions import mypyc_attr
 
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.WrinklyKong import WrinklyLocation
 
 
+@mypyc_attr(allow_interpreted_subclasses=True)
 class HintLocation:
     """Hint object for Wrinkly hint data locations."""
 
