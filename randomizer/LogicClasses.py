@@ -97,7 +97,7 @@ class Region:
         self.events = events
         self.exits = transitionFronts  # In the context of a region, exits are how you leave the region
         self.restart = restart
-
+        self.id = Regions.GameStart
         self.dayAccess = False
         self.nightAccess = False
 

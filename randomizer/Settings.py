@@ -165,32 +165,31 @@ class Settings:
         self.resolve_settings()
 
 
-    def get_enum_value(self, keyString, valueString):
-        """Take in a key and value, and return an enum."""
-        try:
-            return SettingsMap[keyString](valueString)
-        except ValueError:
-            # We may have been given a string representing an enum name.
-            # Failsafe in case enum conversion didn't happen elsewhere.
-            try:
-                return SettingsMap[keyString][valueString]
-            except ValueError:
-                raise ValueError(f"Value '{valueString}' is invalid for setting '{keyString}'.")
+
 
     def apply_form_data(self, form_data: dict):
         """Convert and apply the provided form data to this class."""
-
+        def get_enum_value(keyString:str, valueString: Union[str, int]) -> Any:
+            """Take in a key and value, and return an enum."""
+            try:
+                if isinstance(valueString, int):
+                    return SettingsMap[keyString](valueString)
+                else:
+                    return SettingsMap[keyString][valueString]
+            except Exception:
+                raise ValueError(f"Value '{valueString}' is invalid for setting '{keyString}'.")
         for k, v in form_data.items():
             # If this setting key is associated with an enum, convert the
             # value(s) to that enum.
             if k in SettingsMap:
-                if type(v) is list:
-                    settingValue = []
+                if isinstance(v, list):
+                    list_value = []
                     for val in v:
-                        settingValue.append(self.get_enum_value(k, val))
-                    setattr(self, k, settingValue)
+                        list_value.append(get_enum_value(k, val))
+                    setattr(self, k, list_value)
                 else:
-                    settingValue = self.get_enum_value(k, v)
+                    # Check if its an enum if it is get the enum value
+                    settingValue = get_enum_value(k, v)
                     setattr(self, k, settingValue)
             else:
                 # The value is a basic type, so assign it directly.
@@ -339,7 +338,15 @@ class Settings:
         # starting_kongs_count: int, [1-5]
         self.starting_kongs_count = 5
         self.starting_random = False
-
+        
+        self.enable_shop_hints = False
+        self.warp_to_isles = False
+        self.debug_fill = False
+        self.debug_prerequisites = False
+        self.debug_fill_blueprints = False
+        self.fps_display = False
+        self.no_healing = False
+        self.no_melons = False
         # bonus_barrels: MinigameBarrels
         # skip (auto-completed)
         # normal
