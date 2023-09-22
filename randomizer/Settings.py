@@ -338,7 +338,10 @@ class Settings:
         # starting_kongs_count: int, [1-5]
         self.starting_kongs_count = 5
         self.starting_random = False
-        
+        self.debug_accessible = set()
+        self.debug_accessible_not = set()
+        self.debug_enormous_pain_1 = set()
+        self.debug_enormous_pain_3 = set()
         self.enable_shop_hints = False
         self.warp_to_isles = False
         self.debug_fill = False

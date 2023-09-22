@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Set
+from typing import TYPE_CHECKING, Optional, Set, Union
 
 from randomizer.Enums.ExitCategories import ExitCategories
 from randomizer.Enums.Kongs import Kongs
@@ -31,7 +31,7 @@ class ShufflableExit:
         self.move = move  # Indicates this transition needs a kong-specific move to access, so it's even more restrictive
         # shuffledId is pointing to the shuffled destination exit within ShufflableExits
         # Initialized as none until it gets shuffled
-        self.shuffledId = None
+        self.shuffledId: Transitions = None
         self.shuffled = False
         self.toBeShuffled = False
 

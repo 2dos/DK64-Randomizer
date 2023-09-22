@@ -69,8 +69,18 @@ class Spoiler:
         self.CollectibleRegions = CollectibleData().CollectibleRegions
         self.LocationList = LocationListData().LocationList
         self.debug_human_item_assignment = None  # Kill this as soon as the spoiler is better
-
-        self.move_data = []
+        self.crown_locations = {}
+        self.human_crowns = {}
+        self.human_replacements = {}
+        self.bananaport_replacements = []
+        self.human_warp_locations = {}
+        self.human_kasplats = {}
+        self.enemy_rando_data = {}
+        self.move_data = {}
+        self.pkmn_snap_data = []
+        self.human_crates = {}
+        self.human_patches = {}
+        self.human_item_assignment = {}
         # 0: Cranky, 1: Funky, 2: Candy
         for move_master_type in range(3):
             master_moves = []
