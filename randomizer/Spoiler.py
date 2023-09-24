@@ -343,6 +343,7 @@ class Spoiler:
             "Ice Traps": {},
             "Junk Items": {},
             "Melon Crates": {},
+            "Enemy Drops": {},
             "Empty": {},
             "Unknown": {},
         }
