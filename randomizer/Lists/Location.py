@@ -778,7 +778,7 @@ LocationListOriginal = {
     Locations.JapesShellhiveEnemy_ThirdRoom2: Location(Levels.JungleJapes, "Japes Tiny Hive Enemy: Third Room2", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesTinyHive, -1, 0x3ec)]),
     Locations.JapesShellhiveEnemy_ThirdRoom3: Location(Levels.JungleJapes, "Japes Tiny Hive Enemy: Third Room3", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesTinyHive, -1, 0x3ed)]),
     Locations.JapesShellhiveEnemy_MainRoom: Location(Levels.JungleJapes, "Japes Tiny Hive Enemy: Main Room", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.JapesTinyHive, -1, 0x3ee)]),
-    
+
     Locations.AztecMainEnemy_VaseRoom0: Location(Levels.AngryAztec, "Angry Aztec Enemy: Vase Room0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3ef)]),
     Locations.AztecMainEnemy_VaseRoom1: Location(Levels.AngryAztec, "Angry Aztec Enemy: Vase Room1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3f0)]),
     Locations.AztecMainEnemy_TunnelPad0: Location(Levels.AngryAztec, "Angry Aztec Enemy: Tunnel Pad0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AngryAztec, -1, 0x3f1)]),
@@ -871,7 +871,7 @@ LocationListOriginal = {
     Locations.AztecTempleEnemy_KongRoom3: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Kong Room3", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x448)]),
     Locations.AztecTempleEnemy_KongRoom4: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Kong Room4", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x449)]),
     # Locations.AztecTempleEnemy_Underwater: Location(Levels.AngryAztec, "Aztec Tiny Temple Enemy: Underwater", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.AztecTinyTemple, -1, 0x44a)]),
-    
+
     Locations.FactoryMainEnemy_CandyCranky0: Location(Levels.FranticFactory, "Frantic Factory Enemy: Candy Cranky0", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x44b)]),
     Locations.FactoryMainEnemy_CandyCranky1: Location(Levels.FranticFactory, "Frantic Factory Enemy: Candy Cranky1", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x44c)]),
     Locations.FactoryMainEnemy_LobbyLeft: Location(Levels.FranticFactory, "Frantic Factory Enemy: Lobby Left", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.FranticFactory, -1, 0x44d)]),
