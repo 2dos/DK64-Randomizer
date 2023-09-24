@@ -822,7 +822,7 @@ static const char map_hint_regions[] = {
     REGION_ISLESKREM, // k_lumsy
     REGION_CAVESMAIN, // crystal_caves_ice_castle
     REFERENCE_PARENT, // speedy_swing_sortie_easy
-    REFERENCE_PARENT, // crystal_caves_igloo_diddy
+    REGION_CAVESIGLOO, // crystal_caves_igloo_diddy
     REFERENCE_PARENT, // krazy_kong_klamour_easy
     REFERENCE_PARENT, // big_bug_bash_very_easy
     REFERENCE_PARENT, // searchlight_seek_very_easy
