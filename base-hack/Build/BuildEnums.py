@@ -485,6 +485,7 @@ class CreditsType(IntEnum):
     header = auto()
     longheader = auto()
 
+
 class Enemies(IntEnum):
     """List of Enemies with in-game index."""
 
@@ -588,6 +589,7 @@ class Enemies(IntEnum):
     FairyQueen = 111
     IceTomato = 112
 
+
 class Kong(IntEnum):
     """Kong Enum."""
 
@@ -596,6 +598,7 @@ class Kong(IntEnum):
     Lanky = auto()
     Tiny = auto()
     Chunky = auto()
+
 
 class Song(IntEnum):
     """Song Enum."""

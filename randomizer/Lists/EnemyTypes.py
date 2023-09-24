@@ -129,7 +129,7 @@ class EnemyLoc:
                 if interaction.kill_shockwave and logic_variable.shockwave:
                     return True
         return False
-    
+
     def canDropItem(self, logic_variable):
         """Determine if the enemy can drop an item."""
         return self.canKill(logic_variable) and self.enemy not in [Enemies.Book, Enemies.EvilTomato]

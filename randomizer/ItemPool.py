@@ -406,6 +406,7 @@ def MelonCrateItems():
     """Return a list of No Items to be placed."""
     return []
 
+
 def EnemyItems():
     """Return a list of No Items to be placed."""
     return []

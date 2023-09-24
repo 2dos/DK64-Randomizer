@@ -1,6 +1,7 @@
 """Maps enum."""
 from enum import IntEnum
 
+
 class Maps(IntEnum):
     """List of Maps with in-game index."""
 

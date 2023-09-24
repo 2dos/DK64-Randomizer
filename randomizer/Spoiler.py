@@ -177,7 +177,7 @@ class Spoiler:
             Types.FakeItem: "Ice Traps",
             Types.JunkItem: "Junk Items",
             Types.CrateItem: "Melon Crates",
-            Types.Enemies: "Enemy Drops"
+            Types.Enemies: "Enemy Drops",
         }
         if item_type in type_dict:
             return type_dict[item_type]

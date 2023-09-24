@@ -283,7 +283,7 @@ item_type_names_cryptic = {
     Types.Crown: ["a contest of endurance", "a crowning achievement", "the visage of K. Rool"],
     Types.RainbowCoin: ["the initials of DK", "a muddy mess", "buried treasure"],
     Types.CrateItem: ["a bouncing box", "a breakable cube", "a crate of goodies"],
-    Types.Enemies: ["a minor discouragement", "an obstacle along the way", "something found in mad maze maul"]
+    Types.Enemies: ["a minor discouragement", "an obstacle along the way", "something found in mad maze maul"],
 }
 
 moves_data = [

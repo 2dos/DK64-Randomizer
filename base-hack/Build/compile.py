@@ -28,7 +28,7 @@ strict_aliasing_avoids = [
     "src/randomizers/every_lz_rando.c",
     "src/randomizers/move_rando.c",
 ]
-strict_aliasing_avoids_backslash = [x.replace("/","\\") for x in strict_aliasing_avoids]
+strict_aliasing_avoids_backslash = [x.replace("/", "\\") for x in strict_aliasing_avoids]
 print(strict_aliasing_avoids_backslash)
 
 with open(".avoid", "r") as avoid_file:

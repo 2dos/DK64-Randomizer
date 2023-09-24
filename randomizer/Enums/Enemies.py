@@ -1,6 +1,7 @@
 """Enemies enum."""
 from enum import IntEnum
 
+
 class Enemies(IntEnum):
     """List of Enemies with in-game index."""
 
