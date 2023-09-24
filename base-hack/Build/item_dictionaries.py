@@ -1,6 +1,7 @@
 """Database of items, which will create some C code to reduce code maintainence issues when adding new item types to item rando."""
 
 from enum import IntEnum, auto
+from BuildEnums import Kong, Song
 
 
 class InGameItem:
@@ -48,16 +49,6 @@ class CollectableTypes(IntEnum):
     Blueprint = 12
 
 
-class Kong(IntEnum):
-    """Kong Enum."""
-
-    DK = 0
-    Diddy = auto()
-    Lanky = auto()
-    Tiny = auto()
-    Chunky = auto()
-
-
 class Hitbox:
     """Class to store information regarding item hitboxes."""
 
@@ -83,6 +74,17 @@ class ItemRandoDef:
         self.custom_actor = custom_actor
         if hitbox is None:
             self.hitbox = Hitbox(0, 0, 0)
+
+
+class EnemyDropDef:
+    """Class to store information regarding the drops an enemy makes."""
+
+    def __init__(self, source_object: int, dropped_object: int, drop_music: Song, drop_count: int):
+        """Initialize with given parameters."""
+        self.source_object = source_object
+        self.dropped_object = dropped_object
+        self.drop_music = drop_music
+        self.drop_count = drop_count
 
 
 class CustomActors(IntEnum):
@@ -225,6 +227,39 @@ db2 = [
     ItemRandoDef(0x025D, CollectableTypes.Null, None, CustomActors.FakeItem, Hitbox(8, 4, 13), True),  # Fake Item
 ]
 
+item_drops = [
+    EnemyDropDef(0xB2, 0x2F, Song.MelonSliceDrop, 1),  # Beaver (Blue)
+    EnemyDropDef(0xD4, 0x2F, Song.MelonSliceDrop, 2),  # Beaver (Gold)
+    EnemyDropDef(0xCD, 0x2F, Song.MelonSliceDrop, 1),  # Green Klaptrap
+    EnemyDropDef(0xD0, 0x34, Song.Silence, 3),  # Purple Klaptrap
+    EnemyDropDef(0xD1, 0x33, Song.Silence, 1),  # Red Klaptrap
+    EnemyDropDef(0x03, 0x35, Song.Silence, 3),  # Diddy
+    EnemyDropDef(0xF1, 0x4E, Song.BlueprintDrop, 1),  # Kasplat (DK)
+    EnemyDropDef(0xF2, 0x4B, Song.BlueprintDrop, 1),  # Kasplat (Diddy)
+    EnemyDropDef(0xF3, 0x4D, Song.BlueprintDrop, 1),  # Kasplat (Lanky)
+    EnemyDropDef(0xF4, 0x4F, Song.BlueprintDrop, 1),  # Kasplat (Tiny)
+    EnemyDropDef(0xF5, 0x4C, Song.BlueprintDrop, 1),  # Kasplat (Chunky)
+    EnemyDropDef(0xBB, 0x34, Song.Silence, 3),  # Klump
+    EnemyDropDef(0xEE, 0x2F, Song.MelonSliceDrop, 1),  # Kremling
+    EnemyDropDef(0xEB, 0x2F, Song.MelonSliceDrop, 2),  # Robo Kremling
+    EnemyDropDef(0x123, 0x2F, Song.MelonSliceDrop, 2),  # Kosha
+    EnemyDropDef(0xB7, 0x2F, Song.MelonSliceDrop, 1),  # Zinger
+    EnemyDropDef(0xCE, 0x2F, Song.MelonSliceDrop, 1),  # Zinger
+    EnemyDropDef(0x105, 0x2F, Song.MelonSliceDrop, 1),  # Robo-Zinger
+    EnemyDropDef(0x11D, 0x2F, Song.MelonSliceDrop, 1),  # Bat
+    EnemyDropDef(0x10F, 0x2F, Song.MelonSliceDrop, 1),  # Mr. Dice
+    EnemyDropDef(0x10E, 0x2F, Song.MelonSliceDrop, 1),  # Sir Domino
+    EnemyDropDef(0x10D, 0x2F, Song.MelonSliceDrop, 1),  # Mr. Dice
+    EnemyDropDef(0xE0, 0x2F, Song.MelonSliceDrop, 1),  # Mushroom Man
+    EnemyDropDef(0x106, 0x2F, Song.MelonSliceDrop, 1),  # Krossbones
+    EnemyDropDef(0x121, 0x2F, Song.MelonSliceDrop, 1),  # Ghost
+    EnemyDropDef(0xB6, 0x2F, Song.MelonSliceDrop, 1),  # Klobber
+    EnemyDropDef(0xAF, 0x2F, Song.MelonSliceDrop, 1),  # Kaboom
+    EnemyDropDef(0x103, 0x79, Song.Silence, 1),  # Guard
+    EnemyDropDef(276, 0x34, Song.Silence, 2),  # Spiderling
+    EnemyDropDef(273, 0x34, Song.Silence, 1),  # Fireball with Glasses
+]
+
 dance_acceptable_items = [x for x in db if x.force_dance]
 boss_enabled_items = [x for x in db if x.boss_enabled]
 bounce_items = [x for x in db if x.bounce]
@@ -251,6 +286,7 @@ with open("include/item_data.h", "w") as fh:
         fh.write(f"\t/* 0x{'{:03X}'.format(e.value)} */ NEWACTOR_{e.name.upper()}, \n")
     fh.write("\t/* ----- */ NEWACTOR_TERMINATOR, \n")
     fh.write("} new_custom_actors;\n")
+    fh.write(f"#define DROP_COUNT {len(item_drops) + 1}")
 
 with open("src/lib_items.c", "w") as fh:
     fh.write('#include "../include/common.h"\n\n')
@@ -270,4 +306,9 @@ with open("src/lib_items.c", "w") as fh:
             ]
         )
         + "\n};"
+    )
+    fh.write(
+        "\ndrop_item drops[] = {\n\t"
+        + ",\n\t".join([f"{{.source_object={x.source_object}, .dropped_object={x.dropped_object}, .drop_music={x.drop_music}, .drop_count={x.drop_count}}}" for x in item_drops])
+        + ",\n\t{.source_object=0, .dropped_object=0, .drop_music=0, .drop_count=0}, // Terminator\n};"
     )

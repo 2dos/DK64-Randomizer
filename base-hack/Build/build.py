@@ -126,6 +126,7 @@ file_dict = [
     File(name="Potion (Tiny) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=499, source_file="potion_tiny_om2.bin", do_not_delete_source=True, bloat_compression=True),
     File(name="Potion (Chunky) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=501, source_file="potion_chunky_om2.bin", do_not_delete_source=True, bloat_compression=True),
     File(name="Potion (Any) Model", pointer_table_index=TableNames.ModelTwoGeometry, file_index=502, source_file="potion_any_om2.bin", do_not_delete_source=True, bloat_compression=True),
+    # File(name="K. Rool (Cutscenes) Model", pointer_table_index=TableNames.ActorGeometry, file_index=0x48, source_file="k_rool_cutscenes_om1.bin", do_not_delete_source=True),
     File(
         name="Krusha Head",
         subtype=ChangeType.FixedLocation,
@@ -1307,6 +1308,10 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FF0E80)
     for x in range(16):
         fh.write((0x2F).to_bytes(2, "big"))
+    # Enemies
+    fh.seek(0x1FF9000)
+    for x in range(426):
+        fh.write((0).to_bytes(4, "big"))
     # Shop Hints
     fh.seek(0x1FED020 + 0x14B)
     fh.write((1).to_bytes(1, "big"))

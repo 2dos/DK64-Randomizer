@@ -2,7 +2,7 @@
 import js
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Lists.CustomLocations import CustomLocations
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import addNewScript, float_to_hex, getNextFreeID
 from randomizer.Patching.Patcher import LocalROM
 

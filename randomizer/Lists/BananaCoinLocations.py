@@ -10,7 +10,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import DamageAmount
 from randomizer.Enums.Time import Time
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 
 CAVES_WATER_HEIGHT = 20
 

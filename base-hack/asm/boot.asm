@@ -3,7 +3,7 @@
 .definelabel musicInfo, 0x01FFF000
 .definelabel itemROM, 0x01FF2000
 .definelabel codeEnd, 0x805FAE00
-.definelabel itemdatasize, 0x640
+.definelabel itemdatasize, 0xD00
 
 START:
 	displacedBootCode:
@@ -24,9 +24,10 @@ START:
 		LUI a1, hi(itemROM + itemdatasize)
 		ADDIU a1, a1, lo(itemROM + itemdatasize)
 		ADDIU a0, a0, lo(itemROM)
-		LUI a2, hi(codeEnd - itemdatasize)
+		LUI a2, hi(ItemRando_FLUT)
 		JAL dmaFileTransfer
-		ADDIU a2, a2, lo(codeEnd - itemdatasize)
+		ADDIU a2, a2, lo(ItemRando_FLUT)
+
 		// Very Early WS Boot Stuff
 		JAL loadWidescreen
 		ADDIU a0, r0, 0
@@ -38,6 +39,7 @@ START:
 		SH t3, 0xDA2 (v0)
 		ADDIU t3, r0, 0x70 ; Virtual Voice Count
 		SH t3, 0xDA6 (v0)
+    
 		//
 		LUI v0, 0x8001
 		ADDIU v0, v0, 0xDCC4

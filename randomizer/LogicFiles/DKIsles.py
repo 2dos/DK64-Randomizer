@@ -91,6 +91,11 @@ LogicRegions = {
         LocationLogic(Locations.IslesDonkeyJapesRock, lambda l: (l.settings.open_lobbies or Events.KLumsyTalkedTo in l.Events)),
         LocationLogic(Locations.IslesChunkyCagedBanana, lambda l: (l.pineapple and l.chunky) or ((l.CanSTS() or l.phasewalk) and (l.ischunky or l.settings.free_trade_items))),
         LocationLogic(Locations.RainbowCoin_Location04, lambda l: True),
+        LocationLogic(Locations.IslesMainEnemy_PineappleCage0, lambda l: True),
+        LocationLogic(Locations.IslesMainEnemy_FungiCannon0, lambda l: True),
+        LocationLogic(Locations.IslesMainEnemy_JapesEntrance, lambda l: True),
+        LocationLogic(Locations.IslesMainEnemy_FungiCannon1, lambda l: True),
+        LocationLogic(Locations.IslesMainEnemy_PineappleCage1, lambda l: True),
     ], [
         Event(Events.IslesW1aTagged, lambda l: True),
         Event(Events.IslesW1bTagged, lambda l: True),
@@ -125,6 +130,7 @@ LogicRegions = {
 
     Regions.IslesMainUpper: Region("Isles Main Upper", "Main Isle", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesChunkyInstrumentPad, lambda l: l.triangle and l.chunky and l.barrels),
+        LocationLogic(Locations.IslesMainEnemy_NearAztec, lambda l: True),
     ], [
         Event(Events.IslesDiddyBarrelSpawn, lambda l: l.chunky and l.trombone and l.lanky and l.barrels),
         Event(Events.IslesW2bTagged, lambda l: True),
@@ -179,7 +185,8 @@ LogicRegions = {
         LocationLogic(Locations.JapesLankyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.JapesTinyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.JapesChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
-
+        LocationLogic(Locations.JapesLobbyEnemy_Enemy0, lambda l: True),
+        LocationLogic(Locations.JapesLobbyEnemy_Enemy1, lambda l: True),
     ], [
         Event(Events.JapesLobbyAccessed, lambda l: True),
     ], [
@@ -203,6 +210,7 @@ LogicRegions = {
 
     Regions.KremIsle: Region("Krem Isle Base", "Krem Isle", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesLankyCagedBanana, lambda l: ((l.grape or l.CanPhaseswim() or l.phasewalk) and l.lanky) or (l.phasewalk and l.settings.free_trade_items)),
+        LocationLogic(Locations.IslesMainEnemy_MonkeyportPad, lambda l: True),
     ], [], [
         TransitionFront(Regions.IslesMain, lambda l: True),
         TransitionFront(Regions.GloomyGalleonLobbyEntrance, lambda l: (l.settings.open_lobbies or Events.AztecKeyTurnedIn in l.Events or l.CanPhaseswim()) and (l.swim or l.assumeLevel4Entry), Transitions.IslesMainToGalleonLobby),
@@ -212,6 +220,9 @@ LogicRegions = {
 
     Regions.KremIsleBeyondLift: Region("Krem Isle Beyond Lift", "Krem Isle", Levels.DKIsles, False, None, [
         LocationLogic(Locations.IslesDonkeyCagedBanana, lambda l: (l.coconut and l.isdonkey)),
+        LocationLogic(Locations.IslesMainEnemy_UpperFactoryPath, lambda l: True),
+        LocationLogic(Locations.IslesMainEnemy_LowerFactoryPath0, lambda l: True),
+        LocationLogic(Locations.IslesMainEnemy_LowerFactoryPath1, lambda l: True),
     ], [
         Event(Events.IslesW4bTagged, lambda l: True),
     ], [
@@ -247,6 +258,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryLankyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)))),
         LocationLogic(Locations.FactoryTinyDoor, lambda l: not l.settings.wrinkly_location_rando and ((l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)))),
         LocationLogic(Locations.FactoryChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
+        LocationLogic(Locations.FactoryLobbyEnemy_Enemy0, lambda l: True),
     ], [
         Event(Events.FactoryLobbyAccessed, lambda l: True),
     ], [
@@ -352,6 +364,9 @@ LogicRegions = {
         LocationLogic(Locations.CastleTinyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.CastleChunkyDoor, lambda l: not l.settings.wrinkly_location_rando),
         LocationLogic(Locations.RainbowCoin_Location15, lambda l: (l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and l.settings.krusha_kong != Kongs.tiny)),
+        LocationLogic(Locations.CastleLobbyEnemy_Left, lambda l: True),
+        LocationLogic(Locations.CastleLobbyEnemy_FarRight, lambda l: True),
+        LocationLogic(Locations.CastleLobbyEnemy_NearRight, lambda l: True),
     ], [
         Event(Events.CastleLobbyAccessed, lambda l: True),
     ], [

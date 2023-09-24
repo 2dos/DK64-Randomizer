@@ -53,12 +53,12 @@
 #define FileStateSize 0x340
 #define flagMenuScreenCount 11
 #define pointer_table_offset 0x101C50
-#define static_expansion_size 0x100
+#define static_expansion_size 0x100 + ENEMIES_TOTAL
 
 #define ACTOR_VANILLA_LIMIT 345
 #define COLLISION_LIMIT 60
 #define DEFS_LIMIT 147
-#define ACTOR_LIMIT 345 + NEWACTOR_TERMINATOR
+#define ACTOR_LIMIT (345 + NEWACTOR_TERMINATOR)
 #define CUSTOM_ACTORS_START 345
 
 #define KONG_LOCKED_START 0x2E8
@@ -107,6 +107,7 @@
 #define FLAG_SHOPMOVE_SLAM_0 0x3BF
 #define FLAG_SHOPMOVE_SLAM_1 0x3C0
 #define FLAG_SHOPMOVE_SLAM_2 0x3C1
+#define FLAG_ENEMY_KILLED_0 0x3C2 // 0x3C2 -> 0x56B (inc.) (426 flags)
 
 #define IMAGE_DPAD 187
 #define IMAGE_AMMO_START 188

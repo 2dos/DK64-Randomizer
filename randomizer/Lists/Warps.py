@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Warps import Warps
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 
 
 class BananaportData:

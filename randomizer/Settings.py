@@ -657,6 +657,7 @@ class Settings:
                     Types.FakeItem,
                     Types.JunkItem,
                     Types.CrateItem,
+                    Types.Enemies,
                 ]
             else:
                 for item in self.item_rando_list_selected:
@@ -1240,7 +1241,7 @@ class Settings:
                 self.valid_locations[Types.JunkItem] = [
                     x
                     for x in fairyBannedLocations
-                    if spoiler.LocationList[x].type not in (Types.Shop, Types.Crown, Types.PreGivenMove)
+                    if spoiler.LocationList[x].type not in (Types.Shop, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies)
                     and (spoiler.LocationList[x].type != Types.Key or spoiler.LocationList[x].level == Levels.HideoutHelm)
                 ]
             if Types.Kong in self.shuffled_location_types:

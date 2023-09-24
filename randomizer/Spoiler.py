@@ -32,7 +32,8 @@ from randomizer.Lists.EnemyTypes import EnemyMetaData
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
 from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations
 from randomizer.Lists.Logic import GlitchLogicItems
-from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, Maps
+from randomizer.Enums.Maps import Maps
+from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
 from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
 from randomizer.Prices import ProgressiveMoves
@@ -176,6 +177,7 @@ class Spoiler:
             Types.FakeItem: "Ice Traps",
             Types.JunkItem: "Junk Items",
             Types.CrateItem: "Melon Crates",
+            Types.Enemies: "Enemy Drops",
         }
         if item_type in type_dict:
             return type_dict[item_type]
@@ -341,6 +343,7 @@ class Spoiler:
             "Ice Traps": {},
             "Junk Items": {},
             "Melon Crates": {},
+            "Enemy Drops": {},
             "Empty": {},
             "Unknown": {},
         }

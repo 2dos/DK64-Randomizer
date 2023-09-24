@@ -331,6 +331,57 @@ def createSpriteModelTwo(new_image: int, scaling: float, output_file: str):
                     fh.write(val.to_bytes(2, "big"))
 
 
+def ripCollision(collision_source_model: int, output_model: int, output_file: str):
+    """Rips collision from one file (collision_source_model), transplanting it onto a base of another model (output_model) which can be written to an output file."""
+    with open(ROMName, "rb") as rom:
+        source = ROMPointerFile(rom, TableNames.ActorGeometry, collision_source_model)
+        base = ROMPointerFile(rom, TableNames.ActorGeometry, output_model)
+        rom.seek(source.start)
+        source_data = rom.read(source.size)
+        if source.compressed:
+            source_data = zlib.decompress(source_data, (15 + 32))
+        rom.seek(base.start)
+        base_data = rom.read(base.size)
+        if base.compressed:
+            base_data = zlib.decompress(base_data, (15 + 32))
+        with open(f"{output_file}_om1.bin", "wb") as fh:
+            fh.write(base_data)
+        col_data = None
+        col_size = None
+        with open(f"{output_file}_om1.bin", "rb") as fh:
+            ptr_start = int.from_bytes(fh.read(4), "big")
+            fh.seek(0xC)
+            col_start = (int.from_bytes(fh.read(4), "big") - ptr_start) + 0x28
+            col_end = (int.from_bytes(fh.read(4), "big") - ptr_start) + 0x28
+            col_size = col_end - col_start
+            fh.seek(col_start)
+            col_data = fh.read(col_size)
+        with open(f"{output_file}_om1.bin", "wb") as fh:
+            fh.write(source_data)
+        head_data = None
+        foot_data = None
+        increase = None
+        with open(f"{output_file}_om1.bin", "rb") as fh:
+            ptr_start = int.from_bytes(fh.read(4), "big")
+            fh.seek(0xC)
+            col_start = (int.from_bytes(fh.read(4), "big") - ptr_start) + 0x28
+            col_end = (int.from_bytes(fh.read(4), "big") - ptr_start) + 0x28
+            fh.seek(0)
+            head_data = fh.read(col_start)
+            fh.seek(col_end)
+            foot_data = fh.read()
+            increase = col_size - (col_end - col_start)
+        with open(f"{output_file}_om1.bin", "wb") as fh:
+            fh.write(head_data)
+            fh.write(col_data)
+            fh.write(foot_data)
+        with open(f"{output_file}_om1.bin", "r+b") as fh:
+            fh.seek(0x10)
+            old = int.from_bytes(fh.read(4), "big")
+            fh.seek(0x10)
+            fh.write((old + increase).to_bytes(4, "big"))
+
+
 def loadNewModels():
     """Load new models."""
     # Coins
@@ -353,3 +404,4 @@ def loadNewModels():
     portActorToModelTwo(8, "tiny_base.bin", "kong_tiny", 0x90, True, 0.5)
     portActorToModelTwo(0xB, "", "kong_chunky", 0x90, True, 0.5)
     # portalModel_M2(f"{MODEL_DIRECTORY}dk_head.vtx", f"{MODEL_DIRECTORY}dk_head.dl", 0, "kong_dk", 0x90)
+    ripCollision(0x48, 0x67, "k_rool_cutscenes")

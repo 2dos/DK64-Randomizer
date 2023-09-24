@@ -8,6 +8,28 @@ import requests
 
 # Compile C Code
 avoids = []
+strict_aliasing_avoids = [
+    "src/main.c",
+    "src/fixes/overlay_changes.c",
+    "src/initialization/init.c",
+    "src/initialization/item_rando.c",
+    "src/initialization/stack_trace.c",
+    "src/initialization/text.c",
+    "src/initialization/widescreen.c",
+    # Should be able to fix the below
+    "src/item rando/actors.c",
+    "src/item rando/enemy_items.c",
+    "src/item rando/item_grab.c",
+    "src/item rando/spawning.c",
+    "src/misc/enemy_drop_table.c",
+    "src/misc/instances.c",
+    "src/misc/krusha.c",
+    "src/misc/pause_menu.c",
+    "src/randomizers/every_lz_rando.c",
+    "src/randomizers/move_rando.c",
+]
+strict_aliasing_avoids_backslash = [x.replace("/", "\\") for x in strict_aliasing_avoids]
+print(strict_aliasing_avoids_backslash)
 
 with open(".avoid", "r") as avoid_file:
     for x in avoid_file.readlines():
@@ -35,8 +57,17 @@ with open("asm/objects.asm", "w") as obj_asm:
             if file.endswith(".c") and file[:-2] not in avoids:
                 # print whole path of files
                 _o = os.path.join(root, file).replace("/", "_").replace("\\", "_").replace(".c", ".o")
-                print(os.path.join(root, file))
+                pth = os.path.join(root, file)
+                print(pth)
                 obj_asm.write('.importobj "obj/' + _o + '"\n')
-                cmd = [f"{cwd}\\n64chain\\tools\\bin\\mips64-elf-gcc", "-Wall", "-O1", "-mtune=vr4300", "-march=vr4300", "-mabi=32", "-fomit-frame-pointer", "-G0", "-c", os.path.join(root, file)]
+                reduced_optimization = False
+                if "\\" in pth:
+                    if pth in strict_aliasing_avoids_backslash:
+                        reduced_optimization = True
+                else:
+                    if pth in strict_aliasing_avoids:
+                        reduced_optimization = True
+                o_level = "-O1" if reduced_optimization else "-O2"
+                cmd = [f"{cwd}\\n64chain\\tools\\bin\\mips64-elf-gcc", "-Wall", o_level, "-mtune=vr4300", "-march=vr4300", "-mabi=32", "-fomit-frame-pointer", "-G0", "-c", pth]
                 subprocess.Popen(cmd).wait()
                 shutil.move("./" + file.replace(".c", ".o"), "./obj/" + _o)

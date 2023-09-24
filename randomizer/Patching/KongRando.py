@@ -5,7 +5,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Types import Types
-from randomizer.Lists.EnemyTypes import Enemies
+from randomizer.Enums.Enemies import Enemies
 from randomizer.Patching.Patcher import LocalROM
 
 

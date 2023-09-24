@@ -162,6 +162,7 @@
       2,
       3
    ],
+   "enemy_item_rando": 1,
    "move_rando_on":1,
    "remove_blockers":127,
    "resolve_bonus":0,

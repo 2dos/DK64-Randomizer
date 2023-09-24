@@ -97,6 +97,8 @@ def AllItems(settings):
         allItems.extend(RainbowCoinItems())
     if Types.CrateItem in settings.shuffled_location_types:
         allItems.extend(MelonCrateItems())
+    if Types.Enemies in settings.shuffled_location_types:
+        allItems.extend(EnemyItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems())
     if Types.JunkItem in settings.shuffled_location_types:
@@ -148,6 +150,8 @@ def AllItemsForMovePlacement(settings):
         allItems.extend(RainbowCoinItems())
     if Types.CrateItem in settings.shuffled_location_types:
         allItems.extend(MelonCrateItems())
+    if Types.Enemies in settings.shuffled_location_types:
+        allItems.extend(EnemyItems())
     if Types.FakeItem in settings.shuffled_location_types:
         allItems.extend(FakeItems())
     if Types.JunkItem in settings.shuffled_location_types:
@@ -403,6 +407,11 @@ def MelonCrateItems():
     return []
 
 
+def EnemyItems():
+    """Return a list of No Items to be placed."""
+    return []
+
+
 def FairyItems():
     """Return a list of Fairies to be placed."""
     itemPool = []
@@ -463,6 +472,8 @@ def GetItemsNeedingToBeAssumed(settings, placed_types, placed_items=[]):
         itemPool.extend(RainbowCoinItems())
     if Types.CrateItem in unplacedTypes:
         itemPool.extend(MelonCrateItems())
+    if Types.Enemies in unplacedTypes:
+        itemPool.extend(EnemyItems())
     if Types.ToughBanana in unplacedTypes:
         itemPool.extend(ToughGoldenBananaItems())
     # Never logic-affecting items

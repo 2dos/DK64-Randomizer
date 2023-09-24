@@ -188,6 +188,9 @@ int clampFlag(int flag) {
     if ((flag >= FLAG_MELONCRATE_0) && (flag < (FLAG_MELONCRATE_0 + 16))) {
         return 1; // Melon Crates
     }
+    if ((flag >= FLAG_ENEMY_KILLED_0) && (flag < (FLAG_ENEMY_KILLED_0 + ENEMIES_TOTAL))) {
+        return 1; // Enemies
+    }
     return 0;
 }
 
@@ -399,7 +402,7 @@ void getFLUTSize(void) {
     /**
      * @brief Determine amount of flags in the FLUT
      */
-    for (int i = 0; i < 400; i++) {
+    for (int i = 0; i < 0xD00; i++) {
         if (ItemRando_FLUT[2 * i] == -1) {
             flut_size = i;
             return;

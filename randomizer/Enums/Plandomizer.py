@@ -89,6 +89,7 @@ class PlandoItems(IntEnum):
     RainbowCoin = auto()
     FakeItem = auto()
     CrateItem = auto()
+    EnemyItem = auto()
 
     # A generic junk item to represent all specific junk items.
     JunkItem = auto()

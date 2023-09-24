@@ -37,9 +37,9 @@ from randomizer.Enums.Time import Time
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.CustomLocations import resetCustomLocations
+from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import SharedMoveLocations, SharedShopLocations
-from randomizer.Lists.MapsAndExits import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex
 from randomizer.LogicClasses import Sphere, TransitionFront
@@ -703,7 +703,7 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
             loc
             for loc in sphere.locations  # If Keys are constant, we may still want path hints for them.
             if (not spoiler.LocationList[loc].constant or ItemList[spoiler.LocationList[loc].item].type == Types.Key)
-            and ItemList[spoiler.LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint, Types.RainbowCoin, Types.CrateItem)
+            and ItemList[spoiler.LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint, Types.RainbowCoin, Types.CrateItem, Types.Enemies)
         ]:
             WothLocations.append(loc)
     WothLocations.append(Locations.BananaHoard)  # The Banana Hoard is the endpoint of the Way of the Hoard
@@ -1646,6 +1646,9 @@ def Fill(spoiler: Spoiler) -> None:
     if Types.CrateItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.CrateItem)
         # Crates hold nothing, so leave this one empty
+    if Types.Enemies in spoiler.settings.shuffled_location_types:
+        placed_types.append(Types.Enemies)
+        # Enemies hold nothing, so leave this one empty
 
     # Some locations require special care to make logic work correctly
     # This is the only location that cares about None vs NoItem - it needs to be None so it fills correctly but NoItem for logic to generate progression correctly

@@ -7,6 +7,8 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
+from randomizer.Enums.Locations import Locations
+from randomizer.Lists.EnemyTypes import enemy_location_list
 
 if TYPE_CHECKING:
     from randomizer.Enums.Collectibles import Collectibles
@@ -24,6 +26,9 @@ class LocationLogic:
         """Initialize with given parameters."""
         self.id = id
         self.logic = logic  # Lambda function for accessibility
+        if id >= Locations.JapesMainEnemy_Start and id <= Locations.IslesMainEnemy_LowerFactoryPath1:
+            # Handle enemy logic
+            self.logic = lambda l: logic(l) and enemy_location_list[id].canDropItem(l)
         self.bonusBarrel = bonusBarrel  # Uses MinigameType enum
         self.isAuxiliaryLocation = isAuxiliary  # For when the Location needs to be in a region but not count as in the region (only used for rabbit race glitched as of now)
 

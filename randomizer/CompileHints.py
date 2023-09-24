@@ -275,6 +275,7 @@ item_type_names = {
     Types.Crown: "\x06a battle arena\x06",
     Types.RainbowCoin: "\x06a dirt patch\x06",
     Types.CrateItem: "\x06a melon crate\x06",
+    Types.Enemies: "\x06an enemy\x06",
 }
 item_type_names_cryptic = {
     Types.Blueprint: ["a minion of K. Rool", "a shockwaving foe", "a colorfully haired henchman"],
@@ -282,6 +283,7 @@ item_type_names_cryptic = {
     Types.Crown: ["a contest of endurance", "a crowning achievement", "the visage of K. Rool"],
     Types.RainbowCoin: ["the initials of DK", "a muddy mess", "buried treasure"],
     Types.CrateItem: ["a bouncing box", "a breakable cube", "a crate of goodies"],
+    Types.Enemies: ["a minor discouragement", "an obstacle along the way", "something found in mad maze maul"],
 }
 
 moves_data = [

@@ -22,7 +22,11 @@ LogicRegions = {
         LocationLogic(Locations.FactoryChunkyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.chunky] >= l.settings.medal_cb_req),
     ], [], [], restart=-1),
 
-    Regions.FranticFactoryStart: Region("Frantic Factory Start", "Frantic Factory Start", Levels.FranticFactory, False, None, [], [
+    Regions.FranticFactoryStart: Region("Frantic Factory Start", "Frantic Factory Start", Levels.FranticFactory, False, None, [
+        LocationLogic(Locations.FactoryMainEnemy_LobbyLeft, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_LobbyRight, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_TunnelToHatch, lambda l: True),
+    ], [
         Event(Events.FactoryEntered, lambda l: True),
         Event(Events.HatchOpened, lambda l: True),  # Always starts open in the randomizer
         Event(Events.FactoryW1aTagged, lambda l: True),
@@ -44,6 +48,11 @@ LogicRegions = {
         LocationLogic(Locations.FactoryBananaFairybyCounting, lambda l: l.camera),
         LocationLogic(Locations.FactoryBananaFairybyFunky, lambda l: l.camera and Events.DartsPlayed in l.Events),
         LocationLogic(Locations.MelonCrate_Location03, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_BlockTower0, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_BlockTower1, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_BlockTower2, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_TunnelToBlockTower, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_ToBlockTowerTunnel, lambda l: True),
     ], [
         Event(Events.DartsPlayed, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and (l.mini or l.phasewalk) and l.feather and l.istiny),
         Event(Events.FactoryW3bTagged, lambda l: True),
@@ -63,6 +72,8 @@ LogicRegions = {
         LocationLogic(Locations.FactoryChunkyRandD, lambda l: (l.triangle or l.CanAccessRNDRoom()) and l.punch and l.hunkyChunky and l.ischunky),
         LocationLogic(Locations.FactoryKasplatRandD, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.FactoryBattleArena, lambda l: not l.settings.crown_placement_rando and ((l.grab and l.donkey) or l.CanAccessRNDRoom())),
+        LocationLogic(Locations.FactoryMainEnemy_TunnelToRace0, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_TunnelToRace1, lambda l: True),
     ], [
         Event(Events.FactoryW2bTagged, lambda l: True),
     ], [
@@ -115,6 +126,15 @@ LogicRegions = {
         LocationLogic(Locations.FactoryChunkybyArcade, lambda l: ((l.punch or l.phasewalk) and l.ischunky) or (l.phasewalk and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.FactoryKasplatStorage, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.MelonCrate_Location04, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_CandyCranky0, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_CandyCranky1, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_TunnelToProd0, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_TunnelToProd1, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_DarkRoom0, lambda l: (l.punch and l.chunky) or l.phasewalk),
+        LocationLogic(Locations.FactoryMainEnemy_DarkRoom1, lambda l: (l.punch and l.chunky) or l.phasewalk),
+        LocationLogic(Locations.FactoryMainEnemy_StorageRoom, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_LowWarp4, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_DiddySwitch, lambda l: True),
     ], [
         Event(Events.TestingGateOpened, lambda l: l.Slam),
         Event(Events.FactoryW1bTagged, lambda l: True),
