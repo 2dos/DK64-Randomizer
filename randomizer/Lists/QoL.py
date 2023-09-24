@@ -1,10 +1,13 @@
 """Quality of life information."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 
 class QoLItem:
     """Quality of life multiselector information."""
 
-    def __init__(self, name, shift, tooltip=""):
+    def __init__(self, name: str, shift: int, tooltip: str = "") -> None:
         """Initialize with given data."""
         self.name = name
         self.shift = shift

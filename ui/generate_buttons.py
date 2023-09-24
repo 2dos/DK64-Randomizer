@@ -17,18 +17,18 @@ from ui.rando_options import (
     disable_barrel_modal,
     disable_colors,
     disable_enemy_modal,
-    disable_hard_mode_modal,
     disable_excluded_songs_modal,
+    disable_hard_mode_modal,
     disable_helm_hurry,
     disable_helm_phases,
     disable_krool_phases,
     disable_move_shuffles,
     disable_music,
     enable_plandomizer,
+    handle_progressive_hint_text,
     item_rando_list_changed,
     max_music,
     max_randomized_blocker,
-    handle_progressive_hint_text,
     max_randomized_troff,
     max_sfx,
     max_starting_moves_count,
@@ -192,7 +192,8 @@ async def generate_previous_seed(event):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ProgressBar().update_progress(0, "Loading Previous seed and applying data."))
         js.apply_conversion()
-        await patching_response(str(js.get_previous_seed_data()), True)
+        lanky_from_history = js.document.getElementById("load_patch_file").checked
+        await patching_response(str(js.get_previous_seed_data()), True, lanky_from_history)
 
 
 @bind("click", "generate_lanky_seed")
@@ -263,3 +264,17 @@ def update_seed_text(event):
         js.document.getElementById("generate_seed").value = "Generate Patch File"
     else:
         js.document.getElementById("generate_seed").value = "Generate Seed"
+
+
+@bind("click", "load_patch_file")
+def update_seed_text(event):
+    """Set historical seed text based on the load_patch_file click event.
+
+    Args:
+        event (DOMEvent): Javascript dom click event.
+    """
+    # When we click the download json event just change the button text
+    if js.document.getElementById("load_patch_file").checked:
+        js.document.getElementById("generate_pastgen_seed").value = "Generate Patch File from History"
+    else:
+        js.document.getElementById("generate_pastgen_seed").value = "Generate Seed from History"

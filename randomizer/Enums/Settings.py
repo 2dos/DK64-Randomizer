@@ -1,5 +1,8 @@
 """File containing enums to represent all settings."""
+from __future__ import annotations
+
 from enum import IntEnum, auto
+from typing import TYPE_CHECKING
 
 from randomizer.Enums.Items import Items
 from randomizer.Lists.EnemyTypes import Enemies
@@ -1039,7 +1042,7 @@ SettingsStringListTypeMap = {
 SettingsStringIntRangeMap = {}
 
 
-def addSettingIntRange(settingEnum, maxVal, minVal=0):
+def addSettingIntRange(settingEnum: SettingsStringEnum, maxVal: int, minVal: int = 0) -> None:
     """Add an entry to the SettingsStringIntRangeMap."""
     SettingsStringIntRangeMap[settingEnum] = {"max": maxVal, "min": minVal}
 

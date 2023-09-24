@@ -8,13 +8,12 @@ import randomizer.LogicFiles.DKIsles
 import randomizer.LogicFiles.FranticFactory
 import randomizer.LogicFiles.FungiForest
 import randomizer.LogicFiles.GloomyGalleon
-import randomizer.LogicFiles.JungleJapes
 import randomizer.LogicFiles.HideoutHelm
+import randomizer.LogicFiles.JungleJapes
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Lists.CustomLocations import CustomLocations, LocationTypes, CustomLocation
+from randomizer.Lists.CustomLocations import CustomLocation, CustomLocations, LocationTypes
 from randomizer.LogicClasses import LocationLogic
-from randomizer.Spoiler import Spoiler
 
 
 def addCrate(spoiler, MelonCrate: CustomLocation, enum_val: int, name: str, level: Levels):
@@ -31,12 +30,12 @@ def addCrate(spoiler, MelonCrate: CustomLocation, enum_val: int, name: str, leve
         Levels.HideoutHelm: "Helm",
     }
     spoiler.RegionList[MelonCrate.logic_region].locations.append(LocationLogic(enum_val, MelonCrate.logic))
-    spoiler.LocationList[enum_val].name = f"{level_to_name[level]} MelonCrate: {name}"
+    spoiler.LocationList[enum_val].name = f"{level_to_name[level]} Melon Crate: {name}"
     spoiler.LocationList[enum_val].default_mapid_data[0].map = MelonCrate.map
     spoiler.LocationList[enum_val].level = level
 
 
-def removeMelonCrate():
+def removeMelonCrate(spoiler):
     """Remove all crates from Logic regions."""
     level_logic_regions = [
         randomizer.LogicFiles.DKIsles.LogicRegions,
@@ -51,13 +50,13 @@ def removeMelonCrate():
     ]
     for level in level_logic_regions:
         for region in level:
-            region_data = level[region]
+            region_data = spoiler.RegionList[region]
             region_data.locations = [x for x in region_data.locations if x.id < Locations.MelonCrate_Location00 or x.id > Locations.MelonCrate_Location12]
 
 
-def ShuffleMelonCrates(spoiler: Spoiler, human_spoiler):
+def ShuffleMelonCrates(spoiler, human_spoiler):
     """Shuffle Melon Crate Locations."""
-    removeMelonCrate()
+    removeMelonCrate(spoiler)
     spoiler.meloncrate_placement = []
     total_MelonCrate_list = {
         Levels.DKIsles: [],
@@ -98,7 +97,7 @@ def ShuffleMelonCrates(spoiler: Spoiler, human_spoiler):
     return human_spoiler.copy()
 
 
-def select_random_meloncrate_from_area(area_meloncrate, amount, level, spoiler: Spoiler, human_spoiler):
+def select_random_meloncrate_from_area(area_meloncrate, amount, level, spoiler, human_spoiler):
     """Select <amount> random melon crates from <area_meloncrate>, which is a list of melon crates. Makes sure max 1 melon crate per group is selected."""
     human_spoiler[level.name] = []
     for iterations in range(amount):

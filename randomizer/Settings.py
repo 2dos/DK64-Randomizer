@@ -36,9 +36,9 @@ from randomizer.Lists.Location import (
 )
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
+from randomizer.Patching.Lib import IsItemSelected
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
-from randomizer.Patching.Lib import IsItemSelected
 from version import whl_hash
 
 
@@ -219,6 +219,7 @@ class Settings:
         """Set Default items on main page."""
         self.seed = None
         self.download_patch_file = None
+        self.load_patch_file = None
         self.bonus_barrel_rando = None
         self.loading_zone_coupled = None
         self.move_rando = MoveRando.off
@@ -1184,7 +1185,7 @@ class Settings:
                 self.valid_locations[Types.Blueprint][Kongs.lanky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.lanky]
                 self.valid_locations[Types.Blueprint][Kongs.tiny] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.tiny]
                 self.valid_locations[Types.Blueprint][Kongs.chunky] = [location for location in blueprintLocations if spoiler.LocationList[location].kong == Kongs.chunky]
-            if Types.Banana in self.shuffled_location_types:
+            if Types.Banana in self.shuffled_location_types or Types.ToughBanana in self.shuffled_location_types:
                 self.valid_locations[Types.Banana] = [location for location in shuffledNonMoveLocations if spoiler.LocationList[location].level != Levels.HideoutHelm]
             if Types.Crown in self.shuffled_location_types:
                 # Banned for technical reasons

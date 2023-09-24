@@ -45,8 +45,8 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Lists.Warps import BananaportVanilla
-from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
 from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
 
@@ -397,7 +397,8 @@ class LogicVarHolder:
         self.shockwave = self.shockwave or Items.CameraAndShockwave in ownedItems or Items.Shockwave in ownedItems
 
         self.scope = self.scope or Items.SniperSight in ownedItems
-        self.homing = self.homing or Items.HomingAmmo in ownedItems
+        # Having the homing ammo ability also requires having reliable access to homing ammo. This is not a perfect fix, but should cover 99.9% of cases and won't show up in hint paths.
+        self.homing = self.homing or (Items.HomingAmmo in ownedItems and (Events.ForestEntered in self.Events or Events.CastleEntered in self.Events or self.assumeFillSuccess))
 
         self.superSlam = self.Slam >= 2
         self.superDuperSlam = self.Slam >= 3

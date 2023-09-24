@@ -11,12 +11,11 @@ import randomizer.LogicFiles.GloomyGalleon
 import randomizer.LogicFiles.JungleJapes
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Lists.CustomLocations import CustomLocations, LocationTypes, CustomLocation
+from randomizer.Lists.CustomLocations import CustomLocation, CustomLocations, LocationTypes
 from randomizer.LogicClasses import LocationLogic
-from randomizer.Spoiler import Spoiler
 
 
-def addPatch(spoiler: Spoiler, patch: CustomLocation, enum_val: int, name: str, level: Levels):
+def addPatch(spoiler, patch: CustomLocation, enum_val: int, name: str, level: Levels):
     """Add patch to relevant Logic Region."""
     level_to_name = {
         Levels.DKIsles: "Isles",
@@ -52,7 +51,7 @@ def removePatches(spoiler):
             region_data.locations = [x for x in region_data.locations if x.id < Locations.RainbowCoin_Location00 or x.id > Locations.RainbowCoin_Location15]
 
 
-def ShufflePatches(spoiler: Spoiler, human_spoiler):
+def ShufflePatches(spoiler, human_spoiler):
     """Shuffle Dirt Patch Locations."""
     removePatches(spoiler)
     spoiler.dirt_patch_placement = []
@@ -96,7 +95,7 @@ def ShufflePatches(spoiler: Spoiler, human_spoiler):
     return human_spoiler.copy()
 
 
-def select_random_dirt_from_area(area_dirt, amount, level, spoiler: Spoiler, human_spoiler):
+def select_random_dirt_from_area(area_dirt, amount, level, spoiler, human_spoiler):
     """Select <amount> random dirt patches from <area_dirt>, which is a list of dirt patches. Makes sure max 1 dirt patch per group is selected."""
     human_spoiler[level.name] = []
     for iterations in range(amount):

@@ -1,8 +1,11 @@
 """Apply cosmetic skins to kongs."""
+from __future__ import annotations
+
 import gzip
 import random
 import zlib
 from random import randint
+from typing import TYPE_CHECKING, List, Tuple
 
 from PIL import Image, ImageDraw, ImageEnhance
 
@@ -12,12 +15,16 @@ from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorI
 from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Lib import TextureFormat, float_to_hex, getObjectAddress, int_to_list, intf_to_float
 from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Settings import Settings
+
+if TYPE_CHECKING:
+    from PIL.Image import Image
 
 
 class HelmDoorSetting:
     """Class to store information regarding helm doors."""
 
-    def __init__(self, item_setting: HelmDoorItem, count: int, item_image: int, number_image: int):
+    def __init__(self, item_setting: HelmDoorItem, count: int, item_image: int, number_image: int) -> None:
         """Initialize with given parameters."""
         self.item_setting = item_setting
         self.count = count
@@ -28,7 +35,9 @@ class HelmDoorSetting:
 class HelmDoorImages:
     """Class to store information regarding helm door item images."""
 
-    def __init__(self, setting: HelmDoorItem, image_indexes: list, flip=False, table=25, dimensions=(44, 44), format=TextureFormat.RGBA5551):
+    def __init__(
+        self, setting: HelmDoorItem, image_indexes: List[int], flip: bool = False, table: int = 25, dimensions: Tuple[int, int] = (44, 44), format: TextureFormat = TextureFormat.RGBA5551
+    ) -> None:
         """Initialize with given parameters."""
         self.setting = setting
         self.image_indexes = image_indexes
@@ -401,7 +410,7 @@ color_bases = []
 balloon_single_frames = [(4, 38), (5, 38), (5, 38), (5, 38), (5, 38), (5, 38), (4, 38), (4, 38)]
 
 
-def getFile(table_index: int, file_index: int, compressed: bool, width: int, height: int, format: str):
+def getFile(table_index: int, file_index: int, compressed: bool, width: int, height: int, format: TextureFormat) -> PIL.Image.Image:
     """Grab image from file."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
@@ -692,7 +701,7 @@ def maskImageWithOutline(im_f, base_index, min_y, colorblind_mode, type=""):
     return im_f
 
 
-def writeColorImageToROM(im_f, table_index, file_index, width, height, transparent_border: bool, format: str):
+def writeColorImageToROM(im_f: PIL.Image.Image, table_index: int, file_index: int, width: int, height: int, transparent_border: bool, format: TextureFormat) -> None:
     """Write texture to ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
@@ -1503,7 +1512,7 @@ def overwrite_object_colors(settings):
 ORANGE_SCALING = 0.7
 
 
-def applyKrushaKong(settings):
+def applyKrushaKong(settings: Settings) -> None:
     """Apply Krusha Kong setting."""
     ROM_COPY = LocalROM()
     ROM_COPY.seek(settings.rom_data + 0x11C)
@@ -1728,7 +1737,7 @@ def writeMiscCosmeticChanges(settings):
                 ROM().writeBytes(px_data)
 
 
-def getNumberImage(number: int):
+def getNumberImage(number: int) -> PIL.Image.Image:
     """Get Number Image from number."""
     if number < 5:
         num_0_bounds = [0, 20, 30, 45, 58, 76]
@@ -1739,7 +1748,7 @@ def getNumberImage(number: int):
     return getFile(14, 16, True, 76, 24, TextureFormat.RGBA5551).crop((num_1_bounds[x], 0, num_1_bounds[x + 1], 24))
 
 
-def numberToImage(number: int, dim: tuple):
+def numberToImage(number: int, dim: Tuple[int, int]) -> PIL.Image.Image:
     """Convert multi-digit number to image."""
     digits = 1
     if number < 10:
@@ -1786,7 +1795,7 @@ def numberToImage(number: int, dim: tuple):
     return output
 
 
-def applyHelmDoorCosmetics(settings):
+def applyHelmDoorCosmetics(settings: Settings) -> None:
     """Apply Helm Door Cosmetic Changes."""
     crown_door_required_item = settings.crown_door_item
     if crown_door_required_item == HelmDoorItem.vanilla and settings.crown_door_item_count != 4:
@@ -1884,7 +1893,7 @@ def applyHolidayMode(settings):
             ROM().writeBytes(byte_data)
 
 
-def updateMillLeverTexture(settings):
+def updateMillLeverTexture(settings: Settings) -> None:
     """Update the 21132 texture."""
     if settings.mill_levers[0] > 0:
         # Get Number bounds
@@ -1925,7 +1934,7 @@ def updateMillLeverTexture(settings):
         writeColorImageToROM(modified_tex, 25, 0x7CA, 64, 32, False, TextureFormat.RGBA5551)
 
 
-def updateCryptLeverTexture(settings):
+def updateCryptLeverTexture(settings: Settings) -> None:
     """Update the two textures for Donkey Minecart entry."""
     if settings.crypt_levers[0] > 0:
         # Get a blank texture
@@ -2025,7 +2034,7 @@ boot_phrases = (
 )
 
 
-def writeBootMessages():
+def writeBootMessages() -> None:
     """Write boot messages into ROM."""
     ROM_COPY = LocalROM()
     placed_messages = random.sample(boot_phrases, 4)
