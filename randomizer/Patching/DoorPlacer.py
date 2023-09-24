@@ -4,7 +4,7 @@ import js
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Enums.Settings import MiscChangesSelected
 from randomizer.Lists.DoorLocations import door_locations
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import IsItemSelected, addNewScript, float_to_hex, getNextFreeID
 from randomizer.Patching.Patcher import LocalROM
 

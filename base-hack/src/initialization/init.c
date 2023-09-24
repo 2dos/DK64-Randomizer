@@ -641,6 +641,11 @@ void initHack(int source) {
 			if (Rando.hard_mode.no_geo) {
 				*(int*)(0x80651598) = 0xA1E00002;
 			}
+			if (Rando.enemy_item_rando) {
+				writeFunction(0x80729E54, &indicateCollectionStatus);
+				*(unsigned short*)(0x807278CA) = 0xFFF; // Disable enemy switching in Fungi
+				writeFunction(0x806B26A0, &fireballEnemyDeath);
+			}
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0
 			*(unsigned char*)(0x8064AD01) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[2]];

@@ -25,6 +25,12 @@ LogicRegions = {
         LocationLogic(Locations.GalleonChunkyChest, lambda l: l.punch and l.chunky),
         LocationLogic(Locations.GalleonBattleArena, lambda l: (not l.settings.crown_placement_rando and ((l.punch and l.chunky) or l.phasewalk or l.CanSkew(False)))),
         LocationLogic(Locations.GalleonBananaFairybyCranky, lambda l: l.camera and l.punch and l.chunky),
+        LocationLogic(Locations.GalleonMainEnemy_ChestRoom0, lambda l: True),
+        LocationLogic(Locations.GalleonMainEnemy_ChestRoom1, lambda l: True),
+        LocationLogic(Locations.GalleonMainEnemy_NearVineCannon, lambda l: True),
+        LocationLogic(Locations.GalleonMainEnemy_CrankyCannon, lambda l: True),
+        LocationLogic(Locations.GalleonMainEnemy_PeanutTunnel, lambda l: True),
+        LocationLogic(Locations.GalleonMainEnemy_CoconutTunnel, lambda l: True),
     ], [
         Event(Events.GalleonEntered, lambda l: True),
         Event(Events.GalleonLankySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.lanky and (l.swim or l.settings.high_req)),
@@ -123,6 +129,8 @@ LogicRegions = {
     Regions.Lighthouse: Region("Lighthouse", "Lighthouse Area", Levels.GloomyGalleon, False, -1, [
         LocationLogic(Locations.GalleonDonkeyLighthouse, lambda l: Events.ActivatedLighthouse in l.Events and (l.isdonkey or l.settings.free_trade_items)),
         LocationLogic(Locations.RainbowCoin_Location09, lambda l: True),
+        LocationLogic(Locations.GalleonLighthouseEnemy_Enemy0, lambda l: True),
+        LocationLogic(Locations.GalleonLighthouseEnemy_Enemy1, lambda l: True),
     ], [
         Event(Events.ActivatedLighthouse, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.grab and l.isdonkey),
     ], [

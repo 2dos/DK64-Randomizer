@@ -1,6 +1,6 @@
 //DMA our custom code from ROM to RAM, run code we overwrote with hook, then run our custom code on boot
 .definelabel bootStart, 0x02000000
-.definelabel itemdata, 0x640
+.definelabel itemdata, 0
 
 .headersize 0x7FFFF400
 .org 0x80000764

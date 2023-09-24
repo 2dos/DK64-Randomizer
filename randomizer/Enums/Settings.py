@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 from randomizer.Enums.Items import Items
 from randomizer.Lists.EnemyTypes import Enemies
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 
 # Each select-based setting should have its own associated enum class. The enum
 # values should exactly match the input values in the HTML (not the IDs).
@@ -288,6 +288,7 @@ class ItemRandoListSelected(IntEnum):
     fakeitem = 13
     junkitem = 14
     crateitem = 15
+    enemies = 16
 
 
 class KasplatRandoSetting(IntEnum):

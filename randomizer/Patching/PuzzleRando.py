@@ -2,7 +2,7 @@
 import random
 
 import js
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
 
 

@@ -3,7 +3,7 @@
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 
 
 class Fence:

@@ -1332,7 +1332,9 @@ typedef struct pause_paad {
 } pause_paad;
 
 typedef struct sprite_struct {
-	/* 0x000 */ char unk0[0x340];
+	/* 0x000 */ char unk0[0x338];
+	/* 0x338 */ void* actor;
+	/* 0x33C */ char unk33C[0x340-0x33C];
 	/* 0x340 */ float x;
 	/* 0x344 */ float y;
 	/* 0x348 */ float z;
@@ -1602,3 +1604,39 @@ typedef struct Chunk {
 	/* 0x04C */ ChunkSub* color_pointer;
 	/* 0x050 */ char unk50[0x1C8-0x50];
 } Chunk;
+
+typedef struct enemy_item_memory_item {
+	/* 0x000 */ unsigned short actor;
+	/* 0x002 */ unsigned short flag;
+} enemy_item_memory_item;
+
+typedef struct enemy_item_rom_item {
+	/* 0x000 */ unsigned char map;
+	/* 0x001 */ unsigned char char_spawner_id;
+	/* 0x002 */ unsigned short actor;
+} enemy_item_rom_item;
+
+typedef struct enemy_item_db_item {
+	/* 0x000 */ enemy_item_memory_item spawn;
+	/* 0x004 */ unsigned short global_index;
+} enemy_item_db_item;
+
+typedef struct drop_item {
+    /* 0x000 */ short source_object;
+    /* 0x002 */ short dropped_object;
+    /* 0x004 */ unsigned char drop_music;
+    /* 0x005 */ unsigned char drop_count;
+} drop_item;
+
+typedef struct sprite_info {
+	/* 0x000 */ char unk_00[0x358];
+	/* 0x358 */ int timer;
+	/* 0x35C */ char unk_35C[0x360-0x35C];
+	/* 0x360 */ float scale_x;
+	/* 0x364 */ float scale_z;
+	/* 0x368 */ char unk_368[0x36A-0x368];
+	/* 0x36A */ unsigned char red;
+	/* 0x36B */ unsigned char green;
+	/* 0x36C */ unsigned char blue;
+	/* 0x36D */ unsigned char alpha;
+} sprite_info;

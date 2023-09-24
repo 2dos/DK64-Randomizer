@@ -44,7 +44,7 @@ call :runscript "Running Cranky's Lab", "build\build.py"
 
 <nul set /p=Building Symbols File!CR!
 call :setstart
-build\armips.exe asm/main.asm -sym rom\dk64-randomizer-base-dev.sym
+build\armips.exe asm/main.asm -sym rom\dev-symbols.sym
 call :setfinish runtime
 echo Building Symbols File [32mDONE[0m (%runtime%)
 
@@ -84,7 +84,7 @@ del rom\dk64-randomizer-base-temp.z64
 del rom\dk64-randomizer-base.z64
 del rom\dk64-randomizer-base-dev.z64
 del rom\dk64-randomizer-base.wch
-del rom\dk64-randomizer-base-dev.sym
+del rom\dev-symbols.sym
 del rom\patch.bps
 
 :finish

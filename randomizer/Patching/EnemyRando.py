@@ -2,11 +2,12 @@
 import random
 
 import js
-from randomizer.Enums.EnemyLocations import EnemyLocations
 from randomizer.Enums.EnemySubtypes import EnemySubtype
 from randomizer.Enums.Settings import CrownEnemyRando, DamageAmount
-from randomizer.Lists.EnemyTypes import Enemies, EnemyMetaData, enemy_location_list
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Lists.EnemyTypes import EnemyMetaData, enemy_location_list
+from randomizer.Enums.Enemies import Enemies
+from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
 
 
@@ -464,7 +465,7 @@ def randomize_enemies_0(spoiler):
             if map not in data:
                 data[map] = []
             data[map].append(
-                {"enemy": new_enemy, "speeds": [enemy_location_list[loc].idle_speed, enemy_location_list[loc].aggro_speed], "id": enemy_location_list[loc].id, "location": EnemyLocations(loc).name}
+                {"enemy": new_enemy, "speeds": [enemy_location_list[loc].idle_speed, enemy_location_list[loc].aggro_speed], "id": enemy_location_list[loc].id, "location": Locations(loc).name}
             )
     spoiler.enemy_rando_data = data
     for enemy in pkmn_snap_enemies:

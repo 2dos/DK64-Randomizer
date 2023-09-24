@@ -306,7 +306,7 @@ int getEnabledState(int index) {
 			return checkFlagDuplicate(FLAG_TBARREL_VINE, FLAGTYPE_PERMANENT);
 		case TRACKER_TYPE_MELON_2:
 			for (int i = 0; i < 5; i++) {
-				if (MovesBase[i].instrument_bitfield & 1) {
+				if (MovesBase[i].instrument_bitfield != 0) {
 					return 1;
 				}
 			}

@@ -4,7 +4,7 @@ import random
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import ShuffleLoadingZones
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 from randomizer.LogicClasses import TransitionFront
 
 

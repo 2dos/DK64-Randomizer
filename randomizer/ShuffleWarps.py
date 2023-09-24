@@ -1,7 +1,7 @@
 """Randomizes Bananaports."""
 import random
 
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Warps import BananaportVanilla, VanillaBananaportSelector
 from randomizer.LogicClasses import TransitionFront
 

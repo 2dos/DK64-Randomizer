@@ -1,8 +1,8 @@
 """Apply Kasplat Locations."""
 import js
-from randomizer.Lists.EnemyTypes import Enemies
+from randomizer.Enums.Enemies import Enemies
 from randomizer.Lists.KasplatLocations import KasplatLocationList
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
 
 

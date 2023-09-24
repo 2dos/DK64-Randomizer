@@ -276,7 +276,7 @@ extern void unkSpriteRenderFunc_1(int unk0);
 extern void unkSpriteRenderFunc_2(int unk0);
 extern void unkSpriteRenderFunc_3(int unk0);
 extern void loadSpriteFunction(int func);
-extern void displaySpriteAtXYZ(void* sprite, int scale, float x, float y, float z);
+extern sprite_struct* displaySpriteAtXYZ(void* sprite, int scale, float x, float y, float z);
 extern void* getHUDSprite(int item);
 extern void updateMenuController(void* actor, void* paad, int unk0);
 extern void lockInput(int unk0);
@@ -386,6 +386,8 @@ extern int getSpawnerIndexOfResolvedBonus(short* unk0, int unk1, int* map_storag
 extern void resolveBonus(short unk0, int unk1, int unk2, float unk3);
 extern void failBonus(int unk0, int unk1);
 extern void winBonus(int unk0, int unk1);
+extern void updatePosition(void* actor, int bone, float* x, float* y, float* z);
+extern void spawnFireballExplosion(float x, float y, float z, float scale, char unk0, char unk1);
 
 //vanilla data
 extern float TransitionSpeed;

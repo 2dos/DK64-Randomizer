@@ -30,6 +30,7 @@ class Types(IntEnum):
     Hint = auto()
     PreGivenMove = auto()
     CrateItem = auto()
+    Enemies = auto()
 
 
 # If you make change to this selector, make sure to change the corresponding
@@ -54,6 +55,7 @@ ItemRandoSelector = [
     {"name": "Ice Traps", "value": "fakeitem", "tooltip": "If you pick up a fake item it'll hurt and freeze you."},
     {"name": "Junk Items", "value": "junkitem", "tooltip": "Pointless items will fill no-item slots."},
     {"name": "Melon Crates", "value": "crateitem", "tooltip": "Melon Crates become possible locations for items."},
+    {"name": "Enemies", "value": "enemies", "tooltip": "Enemies will now potentially drop major items."},
 ]
 
 KeySelector = [

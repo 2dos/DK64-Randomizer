@@ -19,7 +19,7 @@ from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.Lists.FairyLocations import fairy_locations
 from randomizer.Lists.KasplatLocations import KasplatLocationList
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 
 # USAGE OF FILE
 # - python ./dumper.py {format} {desired-files}

@@ -234,7 +234,7 @@ void checkItemDB(void) {
     }
 }
 
-#define STRING_MAX_SIZE 256
+#define STRING_MAX_SIZE 128
 static char string_copy[STRING_MAX_SIZE] = "";
 static char mtx_counter = 0;
 
@@ -273,12 +273,26 @@ int* drawHintText(int* dl, char* str, int x, int y) {
     return dl;
 }
 
+#define ELLIPSIS_CUTOFF 123
+
 int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
     int curr_y = y;
     int string_length = cstring_strlen(str);
+    int trigger_ellipsis = 0;
+    if ((unsigned int)(string_length) > ELLIPSIS_CUTOFF) {
+        string_length = ELLIPSIS_CUTOFF;
+        trigger_ellipsis = 1;
+    }
     int string_copy_ref = (int)string_copy;
     wipeMemory(string_copy, STRING_MAX_SIZE);
     dk_memcpy(string_copy, str, string_length);
+    if (trigger_ellipsis) {
+        string_copy[ELLIPSIS_CUTOFF] = 0x2E;
+        string_copy[ELLIPSIS_CUTOFF + 1] = 0x2E;
+        string_copy[ELLIPSIS_CUTOFF + 2] = 0x2E;
+    }
+    string_copy[126] = 0;
+    string_copy[127] = 0;
     int header = 0;
     int last_safe = 0;
     int line_count = 0;
@@ -438,7 +452,6 @@ int* pauseScreen3And4Header(int* dl) {
         }
         dl = displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, 465, 24.0f, 20.0f, 0, 0.0f);
         mtx_counter = 0;
-        TestVariable = getHintGBRequirement(6, 4);
         for (int i = 0; i < 5; i++) {
             if (showHint(hint_level, i)) {
                 dl = drawSplitString(dl, (char*)hint_pointers[(5 * hint_level) + i], level_x, 140 + (120 * i), 40);
@@ -822,7 +835,7 @@ static const char map_hint_regions[] = {
     REGION_ISLESKREM, // k_lumsy
     REGION_CAVESMAIN, // crystal_caves_ice_castle
     REFERENCE_PARENT, // speedy_swing_sortie_easy
-    REFERENCE_PARENT, // crystal_caves_igloo_diddy
+    REGION_CAVESIGLOO, // crystal_caves_igloo_diddy
     REFERENCE_PARENT, // krazy_kong_klamour_easy
     REFERENCE_PARENT, // big_bug_bash_very_easy
     REFERENCE_PARENT, // searchlight_seek_very_easy

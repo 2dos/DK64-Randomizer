@@ -9,7 +9,7 @@ from mypy_extensions import mypyc_attr
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Warps import Warps
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 
 
 @mypyc_attr(allow_interpreted_subclasses=True)

@@ -8,7 +8,7 @@ import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Settings import MinigameBarrels, MinigamesListSelected
-from randomizer.Lists.MapsAndExits import Maps
+from randomizer.Enums.Maps import Maps
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.Settings import Settings
 

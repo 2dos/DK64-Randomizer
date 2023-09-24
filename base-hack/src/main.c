@@ -31,6 +31,7 @@ void cFuncLoop(void) {
 	replace_zones(0);
 	alter_boss_key_flags();
 	if (ObjectModel2Timer <= 2) {
+		
 		setFlag(0x78, 0, FLAGTYPE_TEMPORARY); // Clear K. Lumsy temp flag
 		setFlag(0x79, 0, FLAGTYPE_TEMPORARY); // Clear BFI Reward Cutscene temp flag
 		if ((!Rando.tns_portal_rando_on) && (Rando.tns_indicator)) {
@@ -51,6 +52,9 @@ void cFuncLoop(void) {
 			}
 		}
 		handleKRoolSaveProgress();
+		populateEnemyMapData();
+	} else {
+		setEnemyDBPopulation(0);
 	}
 	if (grab_lock_timer >= 0) {
 		grab_lock_timer += 1;

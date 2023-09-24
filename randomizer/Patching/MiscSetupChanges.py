@@ -7,7 +7,8 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Settings import DamageAmount, HardModeSelected, MiscChangesSelected
 from randomizer.Lists.CustomLocations import CustomLocations
-from randomizer.Lists.MapsAndExits import LevelMapTable, Maps
+from randomizer.Enums.Maps import Maps
+from randomizer.Lists.MapsAndExits import LevelMapTable
 from randomizer.Patching.Lib import IsItemSelected, float_to_hex
 from randomizer.Patching.Patcher import LocalROM
 
