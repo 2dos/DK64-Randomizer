@@ -82,6 +82,8 @@ class Spoiler:
         self.human_crates = {}
         self.human_patches = {}
         self.human_item_assignment = {}
+        self.accessible_hints_for_location = {}
+        self.foolish_region_names = []
         # 0: Cranky, 1: Funky, 2: Candy
         for move_master_type in range(3):
             master_moves = []

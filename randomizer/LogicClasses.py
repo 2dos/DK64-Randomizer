@@ -23,7 +23,7 @@ from mypy_extensions import mypyc_attr
 class LocationLogic:
     """Logic for a location."""
 
-    def __init__(self, id: Union[int, Locations], logic: Callable, bonusBarrel: Optional[MinigameType] = None, isAuxiliary: bool = False) -> None:
+    def __init__(self, id: Locations, logic: Callable, bonusBarrel: Optional[MinigameType] = None, isAuxiliary: bool = False) -> None:
         """Initialize with given parameters."""
         self.id = id
         self.logic = logic  # Lambda function for accessibility

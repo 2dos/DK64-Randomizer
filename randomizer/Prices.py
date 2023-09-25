@@ -8,6 +8,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
+from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple, Union
 from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, SharedMoveLocations, TinyMoveLocations, TrainingBarrelLocations
 
 VanillaPrices = {
@@ -87,11 +88,11 @@ def GetPriceWeights(weight):
     return (avg, stddev, upperLimit)
 
 
-def RandomizePrices(spoiler, weight):
+def RandomizePrices(spoiler, weight) -> Union[dict[Items, List[int]], dict[Locations, int]]:
     """Generate randomized prices for each shop location."""
     prices = {}
     parameters = GetPriceWeights(weight)
-    shopLocations = [location_id for location_id, location in spoiler.LocationList.items() if location.type == Types.Shop]
+    shopLocations: List[Locations] = [location_id for location_id, location in spoiler.LocationList.items() if location.type == Types.Shop]
     for location in shopLocations:
         prices[location] = GenerateRandomPrice(weight, parameters[0], parameters[1], parameters[2])
     # Progressive items get their own price pool
@@ -102,7 +103,7 @@ def RandomizePrices(spoiler, weight):
     return prices
 
 
-def GenerateRandomPrice(weight, avg, stddev, upperLimit):
+def GenerateRandomPrice(weight, avg, stddev, upperLimit) -> int:
     """Generate a random price to assign."""
     lowerLimit = 1
     if weight == RandomPrices.free:

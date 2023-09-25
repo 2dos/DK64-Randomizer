@@ -454,7 +454,7 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
     if settings.logic_type == LogicType.nologic:
         return True  # Don't verify world in no logic
     locationsToPurchase: List[Locations] = []
-    reachable = []
+    reachable: List[Locations] = []
     maxCoins = [
         GetMaxForKong(spoiler, Kongs.donkey),
         GetMaxForKong(spoiler, Kongs.diddy),
@@ -607,7 +607,7 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
                 tempLocationsToPurchase = locationsToPurchase.copy()
                 tempLocationsToPurchase.append(shopLocation)
                 spoiler.Reset()
-                reachableAfter: list = GetAccessibleLocations(spoiler, [], SearchMode.GetReachableWithControlledPurchases, tempLocationsToPurchase)
+                reachableAfter = GetAccessibleLocations(spoiler, [], SearchMode.GetReachableWithControlledPurchases, tempLocationsToPurchase)
                 spoiler.LogicVariables.UpdateCoins()
                 coinsAfter = spoiler.LogicVariables.Coins.copy()
                 # Calculate the coin differential
@@ -616,8 +616,9 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
                     coinDifferential[kong] = coinsAfter[kong] - coinsBefore[kong]
                 # print("Coin differential: " + str(coinDifferential))
                 shopDifferentials[shopLocation] = coinDifferential
-                shopUnlocksItems[shopLocation] = [spoiler.LocationList[x].item for x in reachableAfter if x not in reachable and spoiler.LocationList[x].item is not None]
-                # Determine if this is the new worst move
+                if hasattr(reachableAfter, '__iter__'):
+                    shopUnlocksItems[shopLocation] = [spoiler.LocationList[x].item for x in reachableAfter if x not in reachable and spoiler.LocationList[x].item is not None]
+                    # Determine if this is the new worst move
                 if locationToBuy is None:
                     locationToBuy = shopLocation
                     continue
@@ -697,7 +698,7 @@ def ParePlaythrough(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> Non
         spoiler.LocationList[locationId].PlaceDelayedItem(spoiler)
 
 
-def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union[Locations, int]]:
+def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union[Locations, int, Any]]:
     """Pare playthrough to locations which are Way of the Hoard (hard required by logic)."""
     # The functionality is similar to ParePlaythrough, but we want to see if individual locations are
     # hard required, so items are added back after checking regardless of the outcome.
@@ -1013,12 +1014,12 @@ def RandomFill(spoiler: Spoiler, itemsToPlace: List[Items], inOrder: bool = Fals
     return 0
 
 
-def CarefulRandomFill(spoiler: Spoiler, itemsToPlace: List[Union[Any, Items]], ownedItems: Optional[List[Union[Any, Items]]] = None) -> int:
+def CarefulRandomFill(spoiler: Spoiler, itemsToPlace: List[Union[Any, Items]], ownedItems: Optional[List[Union[Any, Items]]] = []) -> int:
     """Randomly place items, but try to keep shops in mind. Expected to be faster than forward fill for large quantities of items but slower than random fill."""
     spoiler.Reset()
     settings = spoiler.settings
     # This method assumes you know that whatever you're trying to place can be placed nearly entirely randomly.
-    owned = ownedItems.copy()
+    owned = ownedItems.copy() if ownedItems is not None else []
     # That means you can assume you own all the things you're about to place with no consequence
     owned.extend(itemsToPlace)
     reachable = GetAccessibleLocations(spoiler, owned, SearchMode.GetReachableForFilling)
@@ -1027,15 +1028,16 @@ def CarefulRandomFill(spoiler: Spoiler, itemsToPlace: List[Union[Any, Items]], o
     while len(itemsToPlace) > 0:
         item = itemsToPlace.pop()
         validLocations = settings.GetValidLocationsForItem(item)
-        itemEmpty = [x for x in reachable if x in validLocations and spoiler.LocationList[x].item is None and not spoiler.LocationList[x].inaccessible]
-        if len(itemEmpty) == 0:
-            if settings.extreme_debugging:
-                # Debugging variables: they are unaccessed but certainly useful. Do not touch!
-                invalid_empty_reachable = [x for x in itemEmpty if x not in validLocations]
-                empty_locations = [x for x in spoiler.LocationList.values() if x.item is None]
-                accessible_empty_locations = [x for x in empty_locations if not x.inaccessible]
-                noitem_locations = [x for x in spoiler.LocationList.values() if x.type != Types.Shop and x.item is Items.NoItem]
-            return len(itemsToPlace) + 1
+        if hasattr(reachable, "__iter__"):
+            itemEmpty = [x for x in reachable if x in validLocations and spoiler.LocationList[x].item is None and not spoiler.LocationList[x].inaccessible]
+            if len(itemEmpty) == 0:
+                if settings.extreme_debugging:
+                    # Debugging variables: they are unaccessed but certainly useful. Do not touch!
+                    invalid_empty_reachable = [x for x in itemEmpty if x not in validLocations]
+                    empty_locations = [x for x in spoiler.LocationList.values() if x.item is None]
+                    accessible_empty_locations = [x for x in empty_locations if not x.inaccessible]
+                    noitem_locations = [x for x in spoiler.LocationList.values() if x.type != Types.Shop and x.item is Items.NoItem]
+                return len(itemsToPlace) + 1
         shuffle(itemEmpty)
         shuffle(itemEmpty)
         locationId = itemEmpty.pop()
@@ -1044,7 +1046,7 @@ def CarefulRandomFill(spoiler: Spoiler, itemsToPlace: List[Union[Any, Items]], o
         if spoiler.LocationList[locationId].type == Types.Shop:
             # Recalculate assumed items for what we've placed so far
             spoiler.Reset()
-            owned = ownedItems.copy()
+            owned = ownedItems.copy() if ownedItems is not None else []
             owned.extend(itemsToPlace)
             # In higher price settings, we have to be extra careful with putting things in shops - adding a new item to a shop can disturb a fragile required purchase order
             if settings.random_prices in (RandomPrices.high, RandomPrices.extreme):
@@ -1094,14 +1096,18 @@ def ForwardFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optiona
             spoiler.Reset()
             reachable = GetAccessibleLocations(spoiler, ownedItems.copy(), SearchMode.GetReachableForFilling)
         validLocations = settings.GetValidLocationsForItem(item)
-        validReachable = [x for x in reachable if spoiler.LocationList[x].item is None and x in validLocations]
-        if len(validReachable) == 0:  # If there are no empty reachable locations, reached a dead end
-            if settings.extreme_debugging:
-                invalid_empty_reachable = [x for x in reachable if spoiler.LocationList[x].item is None and x not in validLocations]
-                valid_empty = [x for x in spoiler.LocationList.keys() if spoiler.LocationList[x].item is None and x in validLocations]
-            return len(itemsToPlace) + 1
-        shuffle(validReachable)
-        locationId = validReachable.pop()
+        if hasattr(reachable, "__iter__"):
+            validReachable = [x for x in reachable if spoiler.LocationList[x].item is None and x in validLocations]
+            if len(validReachable) == 0:  # If there are no empty reachable locations, reached a dead end
+                if settings.extreme_debugging:
+                    if hasattr(reachable, "__iter__"):
+                        invalid_empty_reachable = [x for x in reachable if spoiler.LocationList[x].item is None and x not in validLocations]
+                        valid_empty = [x for x in spoiler.LocationList.keys() if spoiler.LocationList[x].item is None and x in validLocations]
+                return len(itemsToPlace) + 1
+            shuffle(validReachable)
+            locationId = validReachable.pop()
+        else:
+            locationId = None
         # Place the item
         spoiler.LocationList[locationId].PlaceItem(spoiler, item)
         # Debug code utility for very important items
@@ -1252,7 +1258,7 @@ def BanAllRemainingSharedShops(spoiler: Spoiler):
             spoiler.LocationList[location].PlaceItem(spoiler, Items.NoItem)
 
 
-def GetMaxCoinsSpent(spoiler: Spoiler, purchasedShops: Union[List[Any, Locations]]) -> List[int]:
+def GetMaxCoinsSpent(spoiler: Spoiler, purchasedShops: List[Union[Any, Locations]]) -> List[int]:
     """Calculate the max number of coins each kong could have spent given the ownedItems and the price settings."""
     settings = spoiler.settings
     MaxCoinsSpent = [0, 0, 0, 0, 0, 0]
@@ -1422,7 +1428,7 @@ def FillShuffledKeys(spoiler: Spoiler, placed_types: List[Types]) -> None:
 
 def FillHelmLocations(spoiler: Spoiler, placed_types: List[Types]) -> List[Items]:
     """Fill all currently empty Helm locations with eligible non-logic-critical items."""
-    placed_in_helm = []
+    placed_in_helm: List[Items] = []
     # Get all the empty Helm locations
     empty_helm_locations = [
         loc_id
