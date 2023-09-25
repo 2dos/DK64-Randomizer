@@ -128,8 +128,6 @@ LogicRegions = {
         LocationLogic(Locations.MelonCrate_Location04, lambda l: True),
         LocationLogic(Locations.FactoryMainEnemy_CandyCranky0, lambda l: True),
         LocationLogic(Locations.FactoryMainEnemy_CandyCranky1, lambda l: True),
-        LocationLogic(Locations.FactoryMainEnemy_TunnelToProd0, lambda l: True),
-        LocationLogic(Locations.FactoryMainEnemy_TunnelToProd1, lambda l: True),
         LocationLogic(Locations.FactoryMainEnemy_DarkRoom0, lambda l: (l.punch and l.chunky) or l.phasewalk),
         LocationLogic(Locations.FactoryMainEnemy_DarkRoom1, lambda l: (l.punch and l.chunky) or l.phasewalk),
         LocationLogic(Locations.FactoryMainEnemy_StorageRoom, lambda l: True),
@@ -161,6 +159,8 @@ LogicRegions = {
         LocationLogic(Locations.FactoryKasplatProductionBottom, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.FactoryMainEnemy_LowWarp4, lambda l: True),
         LocationLogic(Locations.FactoryMainEnemy_DiddySwitch, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_TunnelToProd0, lambda l: True),
+        LocationLogic(Locations.FactoryMainEnemy_TunnelToProd1, lambda l: True),
     ], [
         Event(Events.MainCoreActivated, lambda l: l.settings.high_req),
         Event(Events.DiddyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.diddy),
