@@ -454,7 +454,6 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
     if settings.logic_type == LogicType.nologic:
         return True  # Don't verify world in no logic
     locationsToPurchase: List[Locations] = []
-    reachable: List[Locations] = []
     maxCoins = [
         GetMaxForKong(spoiler, Kongs.donkey),
         GetMaxForKong(spoiler, Kongs.diddy),
@@ -471,6 +470,9 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
     while 1:
         spoiler.Reset()
         reachable = GetAccessibleLocations(spoiler, [], SearchMode.GetReachableWithControlledPurchases, locationsToPurchase)
+        # Check if reachable is not the type of List[Locations] if its not fail I want to directly check that the contents are a list of locations
+        if not isinstance(reachable, list):
+            return False
         # Subtract the price of the chosen location from maxCoinsNeeded
         coinsSpent = GetMaxCoinsSpent(spoiler, locationsToPurchase)
         coinsNeeded = [maxCoins[kong] - coinsSpent[kong] for kong in range(0, 5)]
@@ -1222,7 +1224,10 @@ def AssumedFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optiona
                         js.postMessage("Failed placing item " + ItemList[item].name + " in location " + spoiler.LocationList[locationId].name + ", due to too few remaining locations in play")
                         valid = False
                         break
-                    reachable.remove(validReachable[0])  # Remove one so same location can't be "used" twice
+                    
+                    if len(validReachable) > 1:
+                        # Remove one so same location can't be "used" twice
+                        validReachable.remove(validReachable[0])
                 # If world is not valid, undo item placement and try next location
                 if not valid:
                     spoiler.LocationList[locationId].UnplaceItem(spoiler)
