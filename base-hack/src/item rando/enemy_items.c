@@ -148,3 +148,12 @@ void fireballEnemyDeath(float x, float y, float z, float scale, char unk0, char 
     spawnFireballExplosion(x, y, z, scale, unk0, unk1);
     spawnEnemyDrops(CurrentActorPointer_0);
 }
+
+void rulerEnemyDeath(void) {
+    if (CurrentActorPointer_0->control_state == 0x37) {
+        if (CurrentActorPointer_0->control_state_progress == 3) {
+            spawnEnemyDrops(CurrentActorPointer_0);
+        }
+    }
+    renderActor(CurrentActorPointer_0, 1);
+}
