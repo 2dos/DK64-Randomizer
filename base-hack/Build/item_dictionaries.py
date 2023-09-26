@@ -258,6 +258,7 @@ item_drops = [
     EnemyDropDef(0x103, 0x79, Song.Silence, 1),  # Guard
     EnemyDropDef(276, 0x34, Song.Silence, 2),  # Spiderling
     EnemyDropDef(273, 0x34, Song.Silence, 1),  # Fireball with Glasses
+    EnemyDropDef(230, 0x2F, Song.MelonSliceDrop, 1),  # Ruler
 ]
 
 dance_acceptable_items = [x for x in db if x.force_dance]

@@ -172,5 +172,6 @@ drop_item drops[] = {
 	{.source_object=259, .dropped_object=121, .drop_music=0, .drop_count=1},
 	{.source_object=276, .dropped_object=52, .drop_music=0, .drop_count=2},
 	{.source_object=273, .dropped_object=52, .drop_music=0, .drop_count=1},
+	{.source_object=230, .dropped_object=47, .drop_music=47, .drop_count=1},
 	{.source_object=0, .dropped_object=0, .drop_music=0, .drop_count=0}, // Terminator
 };
