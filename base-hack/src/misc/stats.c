@@ -52,7 +52,7 @@ void SaveExtraData(extra_global_data data_type, int sub_index, int value) {
 }
 
 void ResetExtraData(extra_global_data data_type, int sub_index) {
-    ExtraSaveData[getExtraDataIndex(data_type, sub_index)] = 0;
+    SaveExtraData(data_type, sub_index, 0);
 }
 
 static int igt_running_lasttag = 0;
