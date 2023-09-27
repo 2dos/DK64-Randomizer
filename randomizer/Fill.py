@@ -65,10 +65,6 @@ from randomizer.ShuffleWarps import LinkWarps, ShuffleWarps, ShuffleWarpsCrossMa
 if TYPE_CHECKING:
     from randomizer.LogicClasses import LogicVarHolder, Region
     from randomizer.Spoiler import Spoiler
-import gc
-
-# Spend less time in gc; do this before significant computation
-gc.set_threshold(150000)
 
 def KasplatShuffle(spoiler: Spoiler, LogicVariables: LogicVarHolder) -> None:
     """Facilitate the shuffling of kasplat types."""
@@ -152,7 +148,7 @@ def GetLobbyOfRegion(region):
 
 
 def GetAccessibleLocations(
-    spoiler: Spoiler, startingOwnedItems: List[Union[Any, Items]], searchType: SearchMode, purchaseList: Optional[List[Locations]] = None, targetItemId: None = None
+    spoiler: Spoiler, startingOwnedItems: List[Union[Any, Items]], searchType: SearchMode, purchaseList: Optional[List[Locations]] = None, targetItemId: Optional[Items] = None
 ) -> Union[List[Sphere], List[Locations], bool, Set[Union[Locations, int]], Set[Region]]:
     """Search to find all reachable locations given owned items."""
     settings = spoiler.settings

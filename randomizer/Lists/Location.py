@@ -16,7 +16,6 @@ from typing import TYPE_CHECKING, List, Optional, Union
 if TYPE_CHECKING:
     from randomizer.Spoiler import Spoiler
     # Import Items
-    from randomizer.Enums.Items import Items
 @mypyc_attr(allow_interpreted_subclasses=True)
 class MapIDCombo:
     """A combination of a map and an associated item ID. If id == -1 and map == 0, has no model 2 item, ignore those."""

@@ -4,9 +4,10 @@ from __future__ import annotations
 import copy
 import os
 from io import BytesIO
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Union, Optional
 
 import js
+from mypy_extensions import mypyc_attr
 
 if TYPE_CHECKING:
     from randomizer.Enums.Kongs import Kongs
@@ -18,6 +19,7 @@ patchedRom = None
 og_patched_rom = None
 
 
+@mypyc_attr(allow_interpreted_subclasses=True)
 class ROM:
     """Patcher for ROM files loaded via Rompatcherjs."""
 
@@ -126,7 +128,7 @@ class ROM:
 
 
 # Try except for when the browser is trying to load this file
-def load_base_rom(default_file: None = None) -> None:
+def load_base_rom(default_file: Optional[BytesIO] = None) -> None:
     """Load the base ROM file for patching."""
     try:
         global patchedRom
@@ -148,7 +150,7 @@ def load_base_rom(default_file: None = None) -> None:
     except Exception as e:
         pass
 
-
+@mypyc_attr(allow_interpreted_subclasses=True)
 class LocalROM:
     """Patcher for ROM files loaded via Rompatcherjs."""
 
@@ -176,7 +178,8 @@ class LocalROM:
         Args:
             val (int): Int value to write.
         """
-        self.rom.write((val).to_bytes(1, byteorder="big", signed=False))
+        if isinstance(self.rom, BytesIO):
+            self.rom.write((val).to_bytes(1, byteorder="big", signed=False))
 
     def writeBytes(self, byte_data: Union[bytearray, bytes]) -> None:
         """Write an array a bytes to the current position.
@@ -186,7 +189,8 @@ class LocalROM:
         Args:
             byte_data (bytes): Bytes object to write to current position.
         """
-        self.rom.write(bytes(byte_data))
+        if isinstance(self.rom, BytesIO):
+            self.rom.write(bytes(byte_data))
 
     def writeMultipleBytes(self, value: Union[int, Enemies, Maps, Kongs, CustomActors], size: int) -> None:
         """Write multiple bytes of a size to the current position.
@@ -221,7 +225,8 @@ class LocalROM:
         Args:
             val (int): Position to seek to.
         """
-        self.rom.seek(val)
+        if isinstance(self.rom, BytesIO):
+            self.rom.seek(val)
 
     def readBytes(self, len: int) -> bytes:
         """Read bytes from current position.
@@ -234,4 +239,6 @@ class LocalROM:
         Returns:
             bytes: List of bytes read from current position.
         """
-        return bytes(self.rom.read(len))
+        if isinstance(self.rom, BytesIO):
+            return bytes(self.rom.read(len))
+        return bytes()
