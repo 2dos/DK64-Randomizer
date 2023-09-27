@@ -77,7 +77,7 @@ class Spoiler:
         self.human_warp_locations = {}
         self.human_kasplats = {}
         self.enemy_rando_data = {}
-        self.move_data = {}
+        self.move_data = []
         self.pkmn_snap_data = []
         self.human_crates = {}
         self.human_patches = {}
@@ -417,14 +417,14 @@ class Spoiler:
                 price = ""
                 if location.item in ProgressiveMoves.keys():
                     if location.item == Items.ProgressiveSlam:
-                        price = f"{self.settings.prices[Items.ProgressiveSlam][0]}->{self.settings.prices[Items.ProgressiveSlam][1]}"
+                        price = f"{self.settings.progressive_prices[Items.ProgressiveSlam][0]}->{self.settings.progressive_prices[Items.ProgressiveSlam][1]}"
                     elif location.item == Items.ProgressiveAmmoBelt:
-                        price = f"{self.settings.prices[Items.ProgressiveAmmoBelt][0]}->{self.settings.prices[Items.ProgressiveAmmoBelt][1]}"
+                        price = f"{self.settings.progressive_prices[Items.ProgressiveAmmoBelt][0]}->{self.settings.progressive_prices[Items.ProgressiveAmmoBelt][1]}"
                     elif location.item == Items.ProgressiveInstrumentUpgrade:
-                        price = f"{self.settings.prices[Items.ProgressiveInstrumentUpgrade][0]}->{self.settings.prices[Items.ProgressiveInstrumentUpgrade][1]}->{self.settings.prices[Items.ProgressiveInstrumentUpgrade][2]}"
+                        price = f"{self.settings.progressive_prices[Items.ProgressiveInstrumentUpgrade][0]}->{self.settings.progressive_prices[Items.ProgressiveInstrumentUpgrade][1]}->{self.settings.progressive_prices[Items.ProgressiveInstrumentUpgrade][2]}"
                 # Vanilla prices are by item, not by location
                 elif self.settings.random_prices == RandomPrices.vanilla:
-                    price = str(self.settings.prices[location.item])
+                    price = str(self.settings.vanilla_prices[location.item])
                 else:
                     price = str(self.settings.prices[location_id])
                 humanspoiler["Items"]["Shops"][location.name] = item.name + f" ({price})"
@@ -809,7 +809,7 @@ class Spoiler:
                         price = self.settings.prices[id]
                     # Vanilla prices are by item, not by location
                     if self.settings.random_prices == RandomPrices.vanilla:
-                        price = self.settings.prices[location.item]
+                        price = self.settings.vanilla_prices[location.item]
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
                         for kong_index in kong_indices:

@@ -217,7 +217,7 @@ def test_with_settings_string_1():
     """Confirm that settings strings decryption is working and generate a spoiler log with it."""
     # INPUT YOUR SETTINGS STRING OF CHOICE HERE:
     # This top one is always the S2 Preset (probably up to date, if it isn't go steal it from the season2.json)
-    settings_string = "bKEFiRorPN5ysoQNEB6H1QNCIZEJUtjXPgPxGj12ly+IU5Ym04IAVBkFup6/AkgGTQMgusllgoC6AEGAnUBA4G7AMIBHcCBIK8AUKBnkDBYO9AcMCFCGnj2yFI9RUM5UplzaLeBnB0eotwQqIsAiYigCvWuORu1X++yKB4BzagYsSRYAExgAExoADxwADx4ACyAACyIAByQAByYABygABxEpy5Q5LhTCEkEX0CckGGEqZjaYwcWiyLSuWBWhy2GhOLBUYCYMCMSDimkUmRGHQBVAJcBDJwA"
+    settings_string = "bKEFhEMhTHStjlZQgaID0dIsYBDcQZaxCC9fP4Bs8fDCaOd3Ur2VmZxTZ1bF8KcD6oGhEMiEqWxrnwH4jR67S5fEKcsTacEAKgyC3U9fgSQDJoGQXWSywUBdACDATqAgcDdgGEAjuBAkFeAKFAzyBgsHegOGBChDTx7ZCkeoqGcqUy5tFvAzg6PUW4IVEWDxMRQEXqqLhEMhTHQlS2Nc+EZTpW12uORu1X++yKB4BzZ4YsSRYAExgAExoADxwADx4ACyAACyIAByQAByYABygABxEpy5Q5LhTCEkEX0CckGGEqZjaYwcWiyLSuWBWhy2GhOLBUYCYMCMSDimkUmRGlwCcAA"
     # This one is for ease of testing, go wild with it
     # nasty lzr settings_string = "bKEHCRorPE1ebysnPCAMMSwVfwNywcYokPR0ixgENxBlrEIL18/gGzx8MJo53dSvZWZnFNnVsXwpwPqggEQyFMdCVLY1z4D8Ro9dpcviFmttjp0xRpgSfAoHJhQaHjBIV3AiT1+BIAImhXlMZRcZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEBrw95BgqR6jLZ6JVLqkw4EVIWARMhQBXqqGiGQpkqWxrp2HLVfZFgExFOI65Q5LDi0WQEQRALTcWBWKC2GhOLBUUCYMCMaCKSDiaw2fwG"
     # nasty no lzr settings_string = "bKEHCRorPE1ebysnPCAMMSwVfwNywcYokPR0ixgENxBlrEIL18/gGzx8MJo53dSvZWZnFNnVsXwpwPqggEQyFMdCVLY1z4D8Ro9dpcviFmttjpyxRpgSfAoHJhQaHjBIV3AiT1+BIAImhXlMZRcZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEBrw95BgqR6jLZ6JVLqkw4EVIWARMhQBXqqGiGQpkqWxrp2HLVfZFgExFOI65Q5LDi0WQEQRALTcWBWKC2GhOLBUUCYMCMaCKSDiaw2fwG"
@@ -371,12 +371,12 @@ def test_with_settings_string_8():
     print("test 8 done")
 
 
-def printHintDistribution(spoiler: Spoiler):
-    """Print the hint distribution for the given spoiler log."""
-    types = ""
-    values = ""
-    for key, value in spoiler.hint_distribution.items():
-        types += (key.name + ", ")
-        values += (str(value) + ", ")
-    print(types)
-    print(values)
+# def printHintDistribution(spoiler: Spoiler):
+#     """Print the hint distribution for the given spoiler log."""
+#     types = ""
+#     values = ""
+#     for key, value in spoiler.hint_distribution.items():
+#         types += (key.name + ", ")
+#         values += (str(value) + ", ")
+#     print(types)
+#     print(values)

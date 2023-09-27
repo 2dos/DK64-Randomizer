@@ -120,8 +120,8 @@ def ShuffleItems(spoiler):
                 # Vanilla prices are based on item, not location
                 if spoiler.settings.random_prices == RandomPrices.vanilla:
                     # If it's not in the prices dictionary, the item is free
-                    if item_location.item in spoiler.settings.prices.keys():
-                        price = spoiler.settings.prices[item_location.item]
+                    if item_location.item in spoiler.settings.vanilla_prices.keys():
+                        price = spoiler.settings.vanilla_prices[item_location.item]
                 else:
                     price = spoiler.settings.prices[location_enum]
             location_selection = LocationSelection(

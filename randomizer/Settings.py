@@ -72,7 +72,7 @@ from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.Location import Location
 from randomizer.Patching.Lib import IsItemSelected
-from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
+from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, RandomizeProgressivePrices, VanillaPrices, VanillaProgressivePrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
 from version import whl_hash
 from mypy_extensions import mypyc_attr
@@ -138,7 +138,8 @@ class Settings:
         self.progressive_upgrades = False
 
         CompleteVanillaPrices()
-        self.prices = VanillaPrices.copy()
+        self.vanilla_prices = VanillaPrices.copy()
+        self.progressive_prices = VanillaProgressivePrices.copy()
         self.level_order = {1: Levels.JungleJapes, 2: Levels.AngryAztec, 3: Levels.FranticFactory, 4: Levels.GloomyGalleon, 5: Levels.FungiForest, 6: Levels.CrystalCaves, 7: Levels.CreepyCastle}
 
         # Used by hints in level order rando
@@ -565,6 +566,7 @@ class Settings:
         # Price Rando
         if self.random_prices != RandomPrices.vanilla:
             self.prices = RandomizePrices(spoiler, self.random_prices)
+            self.progressive_prices = RandomizeProgressivePrices(spoiler, self.random_prices)
 
     def resolve_settings(self):
         """Resolve settings which are not directly set through the UI."""

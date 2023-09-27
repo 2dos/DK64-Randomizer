@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from random import choice, randint, shuffle, uniform
 from typing import TYPE_CHECKING, Any, List, Optional, Set, Tuple, Union, Dict
+import typing
 
 import js
 import randomizer.ItemPool as ItemPool
@@ -469,10 +470,7 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
         pearlThreshold = 1
     while 1:
         spoiler.Reset()
-        reachable = GetAccessibleLocations(spoiler, [], SearchMode.GetReachableWithControlledPurchases, locationsToPurchase)
-        # Check if reachable is not the type of List[Locations] if its not fail I want to directly check that the contents are a list of locations
-        if not isinstance(reachable, list):
-            return False
+        reachable: List[Locations] = typing.cast(List[Locations], GetAccessibleLocations(spoiler, [], SearchMode.GetReachableWithControlledPurchases, locationsToPurchase))
         # Subtract the price of the chosen location from maxCoinsNeeded
         coinsSpent = GetMaxCoinsSpent(spoiler, locationsToPurchase)
         coinsNeeded = [maxCoins[kong] - coinsSpent[kong] for kong in range(0, 5)]
@@ -704,7 +702,7 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
     """Pare playthrough to locations which are Way of the Hoard (hard required by logic)."""
     # The functionality is similar to ParePlaythrough, but we want to see if individual locations are
     # hard required, so items are added back after checking regardless of the outcome.
-    WothLocations = []
+    WothLocations: List[Locations | Any] = []
     AccessibleHintsForLocation = {}
     for sphere in PlaythroughLocations:
         # Don't want constant locations in woth and we can filter out some types of items as not being essential to the woth
@@ -786,7 +784,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
         assumedItems = ItemPool.Kongs(spoiler.settings)
         # Find all accessible locations without this item placed
         spoiler.Reset()
-        accessible = GetAccessibleLocations(spoiler, assumedItems, SearchMode.GetReachable)
+        accessible: List[Locations] = typing.cast(List[Locations], GetAccessibleLocations(spoiler, assumedItems, SearchMode.GetReachable))
         # Then check every other WotH location for accessibility
         for other_location in WothLocations:
             # If it is no longer accessible, then this location is on the path of that other location
@@ -1273,16 +1271,16 @@ def GetMaxCoinsSpent(spoiler: Spoiler, purchasedShops: List[Union[Any, Locations
     for location_id in purchasedShops:
         location = spoiler.LocationList[location_id]
         if location.item == Items.ProgressiveSlam:
-            movePrice = settings.prices[location.item][slamLevel]
+            movePrice = settings.progressive_prices[location.item][slamLevel]
             slamLevel += 1
         elif location.item == Items.ProgressiveAmmoBelt:
-            movePrice = settings.prices[location.item][ammoBelts]
+            movePrice = settings.progressive_prices[location.item][ammoBelts]
             ammoBelts += 1
         elif location.item == Items.ProgressiveInstrumentUpgrade:
-            movePrice = settings.prices[location.item][instUpgrades]
+            movePrice = settings.progressive_prices[location.item][instUpgrades]
             instUpgrades += 1
         elif settings.random_prices == RandomPrices.vanilla:
-            movePrice = settings.prices[location.item]
+            movePrice = settings.vanilla_prices[Items(location.item)]
         else:
             movePrice = settings.prices[location_id]
         if movePrice is not None:
@@ -1785,7 +1783,7 @@ def GeneratePlaythrough(spoiler: Spoiler) -> None:
     spoiler.LogicVariables.assumeFillSuccess = True  # Now that we know the seed is valid, we can assume fill success for the sake of generating the playthrough and WotH
     # Generate and display the playthrough
     spoiler.Reset()
-    PlaythroughLocations = GetAccessibleLocations(spoiler, [], SearchMode.GeneratePlaythrough)  # identify in the spheres where the win condition is met
+    PlaythroughLocations: List[Sphere] = typing.cast(List[Sphere], GetAccessibleLocations(spoiler, [], SearchMode.GeneratePlaythrough))  # identify in the spheres where the win condition is met
     if isinstance(PlaythroughLocations, list) and len(PlaythroughLocations) > 0 and isinstance(PlaythroughLocations[0], Sphere):
         ParePlaythrough(spoiler, PlaythroughLocations)
         # Generate and display woth
