@@ -27,7 +27,7 @@ def addPatch(spoiler, patch: CustomLocation, enum_val: int, name: str, level: Le
         Levels.CrystalCaves: "Caves",
         Levels.CreepyCastle: "Castle",
     }
-    spoiler.RegionList[patch.logic_region].locations.append(LocationLogic(enum_val, patch.logic))
+    spoiler.RegionList[patch.logic_region].locations.append(LocationLogic(Locations(enum_val), patch.logic))
     spoiler.LocationList[enum_val].name = f"{level_to_name[level]} Dirt: {name}"
     spoiler.LocationList[enum_val].default_mapid_data[0].map = patch.map
     spoiler.LocationList[enum_val].level = level

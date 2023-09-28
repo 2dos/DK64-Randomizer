@@ -17,6 +17,7 @@ from randomizer.LogicFiles.FranticFactory import LogicRegions as FranticFactoryR
 from randomizer.LogicFiles.FungiForest import LogicRegions as FungiForestRegions
 from randomizer.LogicFiles.GloomyGalleon import LogicRegions as GloomyGalleonRegions
 from randomizer.LogicFiles.JungleJapes import LogicRegions as JungleJapesRegions
+from typing import Dict
 
 
 def getKongString(kongEnum):
@@ -317,7 +318,7 @@ PlannableSpawns = []
 # A dictionary for sorting locations by hint_name. This is filled in
 # programmatically, because hint regions may change and we don't want to adjust
 # this dictionary every time hint regions change.
-hintNameSortDict = {
+hintNameSortDict: Dict[Levels, dict] = {
     Levels.DKIsles: dict(),
     Levels.JungleJapes: dict(),
     Levels.AngryAztec: dict(),
