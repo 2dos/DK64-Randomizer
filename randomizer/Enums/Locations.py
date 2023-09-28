@@ -2,6 +2,14 @@
 from enum import IntEnum, auto
 
 
+class LocationTypes(IntEnum):
+    """Location type Enum."""
+
+    CrownPad = auto()
+    DirtPatch = auto()
+    MelonCrate = auto()
+
+
 class Locations(IntEnum):
     """Location enum."""
 
