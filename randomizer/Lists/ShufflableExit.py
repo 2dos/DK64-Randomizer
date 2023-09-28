@@ -21,7 +21,7 @@ class ShufflableExit:
         if entryKongs is None:
             entryKongs = {Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky}
         if regionKongs is None:
-            regionKongs = {}
+            regionKongs = set()
         self.name = name
         self.region = region
         self.back = back
@@ -31,7 +31,7 @@ class ShufflableExit:
         self.move = move  # Indicates this transition needs a kong-specific move to access, so it's even more restrictive
         # shuffledId is pointing to the shuffled destination exit within ShufflableExits
         # Initialized as none until it gets shuffled
-        self.shuffledId: Transitions = None
+        self.shuffledId = Transitions(0)
         self.shuffled = False
         self.toBeShuffled = False
 
