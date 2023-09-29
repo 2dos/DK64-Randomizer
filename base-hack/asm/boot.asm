@@ -27,6 +27,16 @@ START:
 		LUI a2, hi(codeEnd - itemdatasize)
 		JAL dmaFileTransfer
 		ADDIU a2, a2, lo(codeEnd - itemdatasize)
+
+		LUI v0, 0x8074
+		ADDIU t3, r0, 0xD00 ; New size of bank 0
+		SW t3, 0x52B0 (v0)
+		LUI v0, 0x8060
+		ADDIU t3, r0, 0x38 ; Phys Voice Count
+		SH t3, 0xDA2 (v0)
+		ADDIU t3, r0, 0x70 ; Virtual Voice Count
+		SH t3, 0xDA6 (v0)
+
 		//
 		LUI v0, 0x8001
 		ADDIU v0, v0, 0xDCC4
