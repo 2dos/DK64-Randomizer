@@ -101,13 +101,13 @@ def KasplatShuffle(spoiler: Spoiler, LogicVariables: LogicVarHolder) -> None:
                 js.postMessage("Kasplat placement failed. Retrying. Tries: " + str(retries))
 
 
-def GetExitLevelExit(region: Region) -> Optional[Transitions]:
+def GetExitLevelExit(region: Region) -> Transitions:
     """Get the exit that using the "Exit Level" button will take you to."""
     level = region.level
 
     # If you have option to restart, means there is no Exit Level option
     if region.restart is not None:
-        return None
+        return Transitions.Empty
     # For now, restarts will not be randomized
     # if settings.shuffle_loading_zones == ShuffleLoadingZones.all and region.restart is not None:
     #     return ShuffleExits.ShufflableExits[region.restart].shuffledId
@@ -125,7 +125,7 @@ def GetExitLevelExit(region: Region) -> Optional[Transitions]:
         return ShuffleExits.ShufflableExits[Transitions.CavesToIsles].shuffledId
     elif level == Levels.CreepyCastle:
         return ShuffleExits.ShufflableExits[Transitions.CastleToIsles].shuffledId
-    return None
+    return Transitions.Empty
 
 def GetLobbyOfRegion(region):
     """Get the lobby region for the parameter's region."""
@@ -311,7 +311,7 @@ def GetAccessibleLocations(
                 if settings.shuffle_loading_zones == ShuffleLoadingZones.all and region.level != Levels.DKIsles and region.level != Levels.Shops:
                     levelExit = GetExitLevelExit(region)
                     # When shuffling levels, unplaced level entrances will have no destination yet
-                    if levelExit is not None:
+                    if levelExit is not Transitions.Empty:
                         dest = ShuffleExits.ShufflableExits[levelExit].back.regionId
                         exits.append(TransitionFront(dest, lambda l: True))
                 # If loading zones are not shuffled but you have a random starting location, you may need to exit level to escape some regions

@@ -1,7 +1,7 @@
 """Stores the item class and a list of each item with its attributes."""
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Optional, Union
+from typing import TYPE_CHECKING, List, Optional, Union, Any, cast
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -14,11 +14,9 @@ class Item:
     """Stores information about an item."""
 
     def __init__(
-        self, name: str, playthrough: bool, type: Types, kong: Kongs, data: Optional[Union[List[Union[MoveTypes, int]], List[Union[MoveTypes, str, int]], List[Levels], List[int]]] = None
+        self, name: str, playthrough: bool, type: Types, kong: Kongs, data: Union[List[Union[MoveTypes, int]], List[Union[MoveTypes, str, int]], List[Levels], List[int]] = [-1]
     ) -> None:
         """Initialize with given parameters."""
-        if data is None:
-            data = []
         self.name = name
         self.playthrough = playthrough
         self.type = type
@@ -100,10 +98,10 @@ ItemList = {
     Items.Lanky: Item("Lanky", True, Types.Kong, Kongs.any, [70]),
     Items.Tiny: Item("Tiny", True, Types.Kong, Kongs.any, [66]),
     Items.Chunky: Item("Chunky", True, Types.Kong, Kongs.any, [117]),
-    Items.Vines: Item("Vines", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "vine", 387]),
-    Items.Swim: Item("Diving", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "dive", 386]),
-    Items.Oranges: Item("Oranges", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "orange", 388]),
-    Items.Barrels: Item("Barrels", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "barrel", 389]),
+    Items.Vines: Item("Vines", True, Types.TrainingBarrel, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Flag, "vine", 387])),
+    Items.Swim: Item("Diving", True, Types.TrainingBarrel, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Flag, "dive", 386])),
+    Items.Oranges: Item("Oranges", True, Types.TrainingBarrel, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Flag, "orange", 388])),
+    Items.Barrels: Item("Barrels", True, Types.TrainingBarrel, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Flag, "barrel", 389])),
     Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop, Kongs.any, [MoveTypes.Slam, 2, -1]),
     Items.ProgressiveSlam2: Item("Progressive Slam ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.ProgressiveSlam3: Item("Progressive Slam  ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
@@ -144,10 +142,10 @@ ItemList = {
     Items.ProgressiveInstrumentUpgrade: Item("Progressive Instrument Upgrade", False, Types.Shop, Kongs.any, [MoveTypes.Instruments, 2, -1]),
     Items.ProgressiveInstrumentUpgrade2: Item("Progressive Instrument Upgrade ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.ProgressiveInstrumentUpgrade3: Item("Progressive Instrument Upgrade  ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
-    Items.Camera: Item("Fairy Camera", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "camera", 0x2FD]),
-    Items.Shockwave: Item("Shockwave", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "shockwave", 377]),
+    Items.Camera: Item("Fairy Camera", True, Types.Shockwave, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Flag, "camera", 0x2FD])),
+    Items.Shockwave: Item("Shockwave", True, Types.Shockwave, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Flag, "shockwave", 377])),
     Items.CameraAndShockwave: Item(
-        "Camera and Shockwave", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "camera_shockwave", -2]
+        "Camera and Shockwave", True, Types.Shockwave, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Flag, "camera_shockwave", -2])
     ),  # -2 means do not use this rando_flag outside of full item rando
     Items.NintendoCoin: Item("Nintendo Coin", True, Types.Coin, Kongs.any, [132]),
     Items.RarewareCoin: Item("Rareware Coin", True, Types.Coin, Kongs.any, [379]),
@@ -283,7 +281,6 @@ HHItems = [
 for item in HHItems:
     HHItemSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_"), "tooltip": "", "default": item[1]})
 
-CustomStartingMoveSelector = []
 StartingMoveOptions = [
     Items.Vines,
     Items.Swim,
@@ -326,5 +323,4 @@ StartingMoveOptions = [
     Items.ProgressiveInstrumentUpgrade3,
 ]
 
-for item in StartingMoveOptions:
-    CustomStartingMoveSelector.append({"name": ItemList[item].name, "value": item.value, "tooltip": "", "state": 0})
+CustomStartingMoveSelector: List[Any] = [{"name": ItemList[item].name, "value": item.value, "tooltip": "", "state": 0} for item in StartingMoveOptions]

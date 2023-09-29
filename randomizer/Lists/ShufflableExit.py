@@ -30,13 +30,14 @@ class ShufflableExit:
         self.regionKongs = regionKongs  # Indicates need to be a certain kong or kongs on the back side of the transition. Should only apply if the destination region doesn't have a tag barrel
         self.move = move  # Indicates this transition needs a kong-specific move to access, so it's even more restrictive
         # shuffledId is pointing to the shuffled destination exit within ShufflableExits
-        # Initialized as none until it gets shuffled
-        self.shuffledId = Transitions(0)
+        # Initialized as arbitrary value until it gets shuffled
+        self.shuffledId = Transitions.Empty
         self.shuffled = False
         self.toBeShuffled = False
 
 
 ShufflableExits = {
+    # Transitions.Empty is not declared in here cause it should never be looked up
     # Level Exits
     Transitions.IslesToJapes: ShufflableExit("Japes Lobby to Jungle Japes", Regions.JungleJapesLobby, TransitionBack(Regions.JungleJapesStart, "From Japes Lobby", "Jungle Japes from Japes Lobby", Transitions.JapesToIsles), ExitCategories.JapesLobby),
     Transitions.JapesToIsles: ShufflableExit("Jungle Japes to Japes Lobby", Regions.JungleJapesStart, TransitionBack(Regions.JungleJapesLobby, "From Japes", "Japes Lobby from Jungle Japes", Transitions.IslesToJapes), ExitCategories.JapesExterior),

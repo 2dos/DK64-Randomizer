@@ -5,6 +5,9 @@ from enum import IntEnum, auto
 class Transitions(IntEnum):
     """Transition enum, specifically for shufflable transitions."""
 
+    # Placeholder entrance for marking something as temporarily unassigned or invalid
+    Empty = auto()
+
     # Level entrances
     IslesToJapes = auto()
     JapesToIsles = auto()

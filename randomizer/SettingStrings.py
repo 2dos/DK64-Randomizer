@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Dict, Tuple
+from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Type, cast
 
 from randomizer.Enums.Settings import (
     BananaportRando,
@@ -141,11 +141,11 @@ settingsExclusionMap = {
 
 def prune_settings(settings_dict: dict):
     """Remove certain settings based on the values of other settings."""
-    settings_to_remove = []
+    settings_to_remove: List[str] = []
     # Remove settings based on the exclusion map above.
     for keySetting, exclusions in settingsExclusionMap.items():
-        if settings_dict[keySetting] in exclusions:
-            settings_to_remove.extend(exclusions[settings_dict[keySetting]])
+        if settings_dict[keySetting] in cast(List[Any], exclusions):
+            settings_to_remove.extend(cast(List[Any], exclusions)[settings_dict[keySetting]])
     # Remove any deprecated settings.
     settings_to_remove.extend(setting.name for setting in DeprecatedSettings)
     for pop in settings_to_remove:
@@ -256,7 +256,7 @@ def encrypt_settings_string_enum(dict_data: dict):
                     bitstring += format(item.value, f"0{max_value.bit_length()}b")
         else:
             # The value is an enum.
-            max_value = max([member.value for member in key_data_type])
+            max_value = max([member.value for member in cast(Type, key_data_type)])
             bitstring += format(value.value, f"0{max_value.bit_length()}b")
 
     # Pad the bitstring with zeroes until the length is divisible by 6.
@@ -303,8 +303,7 @@ def decrypt_settings_string_enum(encrypted_string: str) -> Dict[str, Any]:
         bit_index += key_size
         key_enum = SettingsStringEnum(key)
         key_name = key_enum.name
-        key_data_type = SettingsStringTypeMap[key_enum]
-        val = None
+        key_data_type = cast(Type, SettingsStringTypeMap[key_enum])
         if key_data_type == SettingsStringDataType.bool:
             val = True if bitstring[bit_index] == "1" else False
             bit_index += 1
