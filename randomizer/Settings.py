@@ -75,12 +75,10 @@ from randomizer.Patching.Lib import IsItemSelected
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, RandomizeProgressivePrices, VanillaPrices, VanillaProgressivePrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
 from version import whl_hash
-from mypy_extensions import mypyc_attr
 from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple, Union, List
 
 if TYPE_CHECKING:
     from randomizer.Spoiler import Spoiler
-@mypyc_attr(allow_interpreted_subclasses=True)
 class Settings:
     """Class used to store settings for seed generation."""
 

@@ -6,10 +6,8 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
 
-from mypy_extensions import mypyc_attr
 
 
-@mypyc_attr(allow_interpreted_subclasses=True)
 class KasplatLocation:
     """Class which stores name and logic for a kasplat location."""
 

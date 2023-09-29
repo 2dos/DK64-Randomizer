@@ -1,11 +1,9 @@
 """Quality of life information."""
 from __future__ import annotations
-from mypy_extensions import mypyc_attr
 
 from typing import TYPE_CHECKING
 
 
-@mypyc_attr(allow_interpreted_subclasses=True)
 class QoLItem:
     """Quality of life multiselector information."""
 

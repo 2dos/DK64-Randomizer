@@ -7,7 +7,6 @@ from io import BytesIO
 from typing import TYPE_CHECKING, Union, Optional
 
 import js
-from mypy_extensions import mypyc_attr
 
 if TYPE_CHECKING:
     from randomizer.Enums.Kongs import Kongs
@@ -19,7 +18,6 @@ patchedRom = None
 og_patched_rom = None
 
 
-@mypyc_attr(allow_interpreted_subclasses=True)
 class ROM:
     """Patcher for ROM files loaded via Rompatcherjs."""
 
@@ -150,7 +148,6 @@ def load_base_rom(default_file: Optional[BytesIO] = None) -> None:
     except Exception as e:
         pass
 
-@mypyc_attr(allow_interpreted_subclasses=True)
 class LocalROM:
     """Patcher for ROM files loaded via Rompatcherjs."""
 

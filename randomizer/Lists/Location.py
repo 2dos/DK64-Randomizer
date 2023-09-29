@@ -9,14 +9,12 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Types import Types
 from randomizer.Enums.VendorType import VendorType
-from mypy_extensions import mypyc_attr
 from randomizer.Enums.Maps import Maps
 
 from typing import TYPE_CHECKING, List, Optional, Union
 if TYPE_CHECKING:
     from randomizer.Spoiler import Spoiler
     # Import Items
-@mypyc_attr(allow_interpreted_subclasses=True)
 class MapIDCombo:
     """A combination of a map and an associated item ID. If id == -1 and map == 0, has no model 2 item, ignore those."""
 
@@ -27,7 +25,6 @@ class MapIDCombo:
         self.flag = flag
         self.kong = kong
 
-@mypyc_attr(allow_interpreted_subclasses=True)
 class Location:
     """A shufflable location at which a random item can be placed."""
 
@@ -139,7 +136,6 @@ class Location:
                 elif spoiler.LocationList[location_id].inaccessible:
                     spoiler.LocationList[location_id].inaccessible = False
 
-@mypyc_attr(allow_interpreted_subclasses=True)
 class LocationListData:
     def __init__(self):
         self.LocationList = {

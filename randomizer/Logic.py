@@ -50,7 +50,6 @@ from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
 from randomizer.ShuffleKasplats import constants, shufflable
 from randomizer.Enums.Regions import Regions
 
-from mypy_extensions import mypyc_attr
 
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
@@ -61,7 +60,6 @@ def IsGlitchEnabled(settings, glitch_enum):
     return len(settings.glitches_selected) == 0 or glitch_enum in settings.glitches_selected
 
 
-@mypyc_attr(allow_interpreted_subclasses=True)
 class LogicVarHolder:
     """Used to store variables when checking logic conditions."""
 
@@ -1079,7 +1077,6 @@ class LogicVarHolder:
 
 
 # Import regions from logic files
-@mypyc_attr(allow_interpreted_subclasses=True)
 class RegionsData:
     def __init__(self):
         self.Regions = {
@@ -1097,7 +1094,6 @@ class RegionsData:
 
 
 # Auxillary regions for colored bananas and banana coins
-@mypyc_attr(allow_interpreted_subclasses=True)
 class CollectibleData:
     def __init__(self):
         self.CollectibleRegions = {

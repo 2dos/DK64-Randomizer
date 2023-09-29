@@ -17,9 +17,7 @@ if TYPE_CHECKING:
     from randomizer.Enums.MinigameType import MinigameType
     from randomizer.Enums.Transitions import Transitions
     from randomizer.Logic import LogicVarHolder
-from mypy_extensions import mypyc_attr
 
-@mypyc_attr(allow_interpreted_subclasses=True)
 class LocationLogic:
     """Logic for a location."""
 
@@ -33,7 +31,7 @@ class LocationLogic:
         self.bonusBarrel = bonusBarrel  # Uses MinigameType enum
         self.isAuxiliaryLocation = isAuxiliary  # For when the Location needs to be in a region but not count as in the region (only used for rabbit race glitched as of now)
 
-@mypyc_attr(allow_interpreted_subclasses=True)
+
 class Event:
     """Event within a region.
 
@@ -47,7 +45,7 @@ class Event:
         self.name = name
         self.logic = logic  # Lambda function for accessibility
 
-@mypyc_attr(allow_interpreted_subclasses=True)
+
 class Collectible:
     """Class used for colored bananas and banana coins."""
 
@@ -76,7 +74,7 @@ class Collectible:
         self.locked = locked
 
 
-@mypyc_attr(allow_interpreted_subclasses=True)
+
 class Region:
     """Region contains shufflable locations, events, and transitions to other regions."""
 
@@ -206,7 +204,7 @@ class Region:
             return Regions.HideoutHelmStart
         return Regions.GameStart
 
-@mypyc_attr(allow_interpreted_subclasses=True)
+
 class TransitionBack:
     """The exited side of a transition between regions."""
 
@@ -217,7 +215,7 @@ class TransitionBack:
         self.spoilerName = spoilerName
         self.reverse = reverse  # Indicates a reverse direction transition, if one exists
 
-@mypyc_attr(allow_interpreted_subclasses=True)
+
 class TransitionFront:
     """The entered side of a transition between regions."""
 
@@ -240,7 +238,7 @@ class TransitionFront:
         self.isGlitchTransition = isGlitchTransition  # Indicates if this is a glitch-logic transition for this entrance
         self.isBananaportTransition = isBananaportTransition  # Indicates if this transition is due to a Bananaport
 
-@mypyc_attr(allow_interpreted_subclasses=True)
+
 class Sphere:
     """A randomizer concept often used in spoiler logs.
 
@@ -257,7 +255,7 @@ class Sphere:
         self.availableGBs = 0
         self.locations: List[Union[LocationLogic, Any]] = []
 
-@mypyc_attr(allow_interpreted_subclasses=True)
+
 class ColoredBananaGroup:
     """Stores data for each group of colored bananas."""
 
@@ -275,7 +273,7 @@ class ColoredBananaGroup:
             self.logic = logic
         self.selected = False
 
-@mypyc_attr(allow_interpreted_subclasses=True)
+
 class Balloon:
     """Stores data for each balloon."""
 

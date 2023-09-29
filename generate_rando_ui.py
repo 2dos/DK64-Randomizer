@@ -13,7 +13,6 @@ async def initialize():
     """Shifted code into an async function so we can properly lint await calls."""
     # await micropip.install("pyodide-importer")
     url = js.window.location.origin
-    await micropip.install("mypy-extensions")
 
     await micropip.install(
         [
