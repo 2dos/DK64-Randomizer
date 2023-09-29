@@ -23,7 +23,7 @@ int canSaveHelmHurry(void) {
         return 0;
     }
     if (Rando.helm_hurry_mode) {
-        if (ReadExtraData(EGD_HELMHURRYIGT, 0) & (1 << 31)) {
+        if (ReadExtraData(EGD_HELMHURRYDISABLE, 0)) {
             return 0;
         }
     }
@@ -71,8 +71,7 @@ void checkTotalCache(void) {
 
 void finishHelmHurry(void) {
     save(); // Save all stats
-    int old = ReadExtraData(EGD_HELMHURRYIGT, 0);
-    SaveExtraData(EGD_HELMHURRYIGT, 0, old | (1 << 31)); // disable saving
+    SaveExtraData(EGD_HELMHURRYDISABLE, 0, 1); // disable saving
     SaveToGlobal();
     LoadGameOver();
 }
@@ -100,7 +99,6 @@ void saveHelmHurryTime(void) {
         if (save_value > 65535) {
             save_value = 65535; // Allows for 18h12m15s of time
         }
-        int old = ReadExtraData(EGD_HELMHURRYIGT, 0) & (1 << 31);
-        SaveExtraData(EGD_HELMHURRYIGT, 0, old | save_value);
+        SaveExtraData(EGD_HELMHURRYIGT, 0, save_value);
     }
 }
