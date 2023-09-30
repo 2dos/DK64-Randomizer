@@ -547,6 +547,7 @@ class TableNames(IntEnum):
     Unknown30 = auto()
     Unknown31 = auto()
 
+
 def recalculatePointerJSON(ROM_COPY: ROM):
     """Recalculates the pointer tables."""
     TABLE_COUNT = 32
