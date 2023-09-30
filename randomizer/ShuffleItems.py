@@ -209,4 +209,3 @@ def ShuffleItems(spoiler):
         if "Kasplat" in location_name:
             location_name = f"{location_name.split('Kasplat')[0]} {NameFromKong(loc.old_kong)} Kasplat"
         human_item_data[location_name] = name
-    spoiler.debug_human_item_assignment = human_item_data

@@ -253,7 +253,7 @@ class Sphere:
         """Initialize with given parameters."""
         self.seedBeaten = False
         self.availableGBs = 0
-        self.locations: List[Union[LocationLogic, Any]] = []
+        self.locations: List[Locations] = []
 
 
 class ColoredBananaGroup:

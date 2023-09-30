@@ -1,5 +1,6 @@
 """Includes utility functions for plandomizer support."""
 
+from typing import Dict
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -90,7 +91,7 @@ def GetNameFromPlandoItem(plandoItem):
 # A master dictionary of all possible item locations, mapped to a set of which
 # items may not appear in that location. This will be used to filter all the
 # dropdowns used in the plandomizer.
-ItemRestrictionsPerLocation = {location.name: set() for location in LocationListData().LocationList.keys()}
+ItemRestrictionsPerLocation: Dict[str, set] = {location.name: set() for location in LocationListData().LocationList.keys()}
 
 # Each blueprint item should only appear in locations specific to the Kong who
 # can pick up that blueprint. Any "All Kongs" locations may not have any

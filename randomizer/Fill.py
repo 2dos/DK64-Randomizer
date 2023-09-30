@@ -149,7 +149,7 @@ def GetLobbyOfRegion(region):
 
 def GetAccessibleLocations(
     spoiler: Spoiler, startingOwnedItems: List[Union[Any, Items]], searchType: SearchMode, purchaseList: Optional[List[Locations]] = None, targetItemId: Optional[Items] = None
-) -> Union[List[Sphere], List[Locations], bool, Set[Union[Locations, int]], Set[Region]]:
+) -> Union[List[Sphere], List[Locations], bool, Set[Union[Locations, int]], Set[Locations]]:
     """Search to find all reachable locations given owned items."""
     settings = spoiler.settings
     # No logic? Calls to this method that are checking things just return True
@@ -158,7 +158,7 @@ def GetAccessibleLocations(
     if purchaseList is None:
         purchaseList = []
     accessible = set()
-    newLocations: Set[Region] = set()
+    newLocations: Set[Locations] = set()
     ownedItems = startingOwnedItems.copy()
     newItems = []  # debug code utility
     playthroughLocations: List[Sphere] = []
@@ -694,12 +694,12 @@ def ParePlaythrough(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> Non
         spoiler.LocationList[locationId].PlaceDelayedItem(spoiler)
 
 
-def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union[Locations, int, Any]]:
+def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Locations]:
     """Pare playthrough to locations which are Way of the Hoard (hard required by logic)."""
     # The functionality is similar to ParePlaythrough, but we want to see if individual locations are
     # hard required, so items are added back after checking regardless of the outcome.
-    WothLocations: List[Locations | Any] = []
-    AccessibleHintsForLocation = {}
+    WothLocations: List[Locations] = []
+    AccessibleHintsForLocation: Dict[Locations, List[Items]] = {}
     for sphere in PlaythroughLocations:
         # Don't want constant locations in woth and we can filter out some types of items as not being essential to the woth
         for loc in [
@@ -729,7 +729,7 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
     # Only need to build paths for item rando
     if spoiler.settings.shuffle_items:
         CalculateWothPaths(spoiler, WothLocations)
-        CalculateFoolish(spoiler, WothLocations)
+        CalculateFoolish(spoiler)
     spoiler.accessible_hints_for_location = AccessibleHintsForLocation
     # We kept Keys around to generate paths better, but we don't need them in the spoiler log or being hinted (except for the Helm Key if it's there and also keep the Banana Hoard path)
     WothLocations = [loc for loc in WothLocations if not spoiler.LocationList[loc].constant or loc == Locations.HelmKey or loc == Locations.BananaHoard]
@@ -741,7 +741,7 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
     return WothLocations
 
 
-def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, int]]) -> None:
+def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Locations]) -> None:
     """Calculate the Paths (dependencies) for each Way of the Hoard item."""
     # Helps get more accurate paths by removing important obstacles to level entry
     # Removes the following:
@@ -842,7 +842,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
     spoiler.settings.open_lobbies = old_open_lobbies_temp  # Undo the open lobbies setting change as needed
 
 
-def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]]) -> None:
+def CalculateFoolish(spoiler: Spoiler) -> None:
     """Calculate the items and regions that are foolish (blocking no major items)."""
     # FOOLISH MOVES - unable to verify the accuracy of foolish moves, so these have to go :(
     # The problem that needs to be solved: How do you guarantee neither part of a required either/or is foolish?
@@ -2741,7 +2741,6 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     if spoiler.settings.random_crates:
         spoiler.human_crates = ShuffleMelonCrates(spoiler, {}).copy()
     # Item Rando
-    spoiler.human_item_assignment = {}
     spoiler.settings.update_valid_locations(spoiler)
 
 
