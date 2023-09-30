@@ -13,6 +13,7 @@ from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolid
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
+from randomizer.Patching.Lib import recalculatePointerJSON
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings
@@ -79,6 +80,8 @@ async def patching_response(data, from_patch_gen=False):
     datetime = datetime.utcnow()
     unix = time.mktime(datetime.timetuple())
     random.seed(int(unix))
+    if from_patch_gen:
+        recalculatePointerJSON(ROM())
     apply_cosmetic_colors(settings)
 
     if settings.override_cosmetics:

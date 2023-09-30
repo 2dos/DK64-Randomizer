@@ -546,3 +546,27 @@ class TableNames(IntEnum):
     Unknown29 = auto()
     Unknown30 = auto()
     Unknown31 = auto()
+
+
+def recalculatePointerJSON(ROM_COPY: ROM):
+    """Recalculates the pointer tables."""
+    TABLE_COUNT = 32
+    POINTER_OFFSET = 0x101C50
+    new_data = [None] * TABLE_COUNT
+    for x in range(TABLE_COUNT):
+        ROM_COPY.seek(POINTER_OFFSET + ((TABLE_COUNT + x) << 2))
+        table_data = {"entries": []}
+        count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+        ROM_COPY.seek(POINTER_OFFSET + (x << 2))
+        head = POINTER_OFFSET + int.from_bytes(ROM_COPY.readBytes(4), "big")
+        for y in range(count):
+            ROM_COPY.seek(head + (y << 2))
+            local_data = {
+                "index": y,
+                "pointing_to": POINTER_OFFSET + int.from_bytes(ROM_COPY.readBytes(4), "big"),
+            }
+            next_file = POINTER_OFFSET + int.from_bytes(ROM_COPY.readBytes(4), "big")
+            local_data["compressed_size"] = next_file - local_data["pointing_to"]
+            table_data["entries"].append(local_data)
+        new_data[x] = table_data
+    js.pointer_addresses = new_data
