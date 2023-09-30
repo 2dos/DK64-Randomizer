@@ -288,7 +288,6 @@ class ItemRandoListSelected(IntEnum):
     fakeitem = 13
     junkitem = 14
     crateitem = 15
-    enemies = 16
 
 
 class KasplatRandoSetting(IntEnum):
@@ -823,6 +822,7 @@ class SettingsStringEnum(IntEnum):
     enable_progressive_hints = 154
     progressive_hint_text = 155
     random_starting_move_list_selected = 156
+    enemy_drop_rando = 157
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -889,7 +889,6 @@ SettingsStringTypeMap = {
     SettingsStringEnum.crown_door_item: HelmDoorItem,
     SettingsStringEnum.crown_door_item_count: SettingsStringDataType.var_int,
     SettingsStringEnum.crown_enemy_rando: CrownEnemyRando,
-    SettingsStringEnum.crown_placement_rando: SettingsStringDataType.bool,
     SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
@@ -1021,6 +1020,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.enable_progressive_hints: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_text: SettingsStringDataType.var_int,
     SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
+    SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!
