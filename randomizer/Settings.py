@@ -237,6 +237,7 @@ class Settings:
 
         # The major setting for item randomization
         self.shuffle_items = True
+        self.enemy_drop_rando = False
 
         # In item rando, can any Kong collect any item?
         # free_trade_setting: FreeTradeSetting
@@ -657,7 +658,6 @@ class Settings:
                     Types.FakeItem,
                     Types.JunkItem,
                     Types.CrateItem,
-                    Types.Enemies,
                 ]
             else:
                 for item in self.item_rando_list_selected:
@@ -666,6 +666,8 @@ class Settings:
                             self.shuffled_location_types.append(type)
                         if type in (Types.Bean, Types.Pearl) and item == ItemRandoListSelected.beanpearl:
                             self.shuffled_location_types.extend([Types.Bean, Types.Pearl])
+            if self.enemy_drop_rando:  # Enemy location type handled separately for UI/UX reasons
+                self.shuffled_location_types.append(Types.Enemies)
             if Types.Shop in self.shuffled_location_types:
                 self.move_rando = MoveRando.item_shuffle
                 if self.shockwave_status not in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with):

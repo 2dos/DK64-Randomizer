@@ -2735,6 +2735,8 @@ def ValidateFixedHints(settings: Settings) -> None:
     """Check for some known incompatibilities with the Fixed hint system ASAP so we don't waste time genning this seed."""
     if settings.win_condition != WinCondition.beat_krool:
         raise Ex.SettingsIncompatibleException("Alternate win conditions will not work with Fixed hints.")
+    if len(settings.starting_kong_list) != 2:
+        raise Ex.SettingsIncompatibleException("Fixed hints require starting with exactly 2 Kongs.")
 
 
 def DebugCheckAllReachable(spoiler: Spoiler, owned, what_just_got_placed):
