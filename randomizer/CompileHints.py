@@ -19,12 +19,11 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import PreGivenLocations, SharedShopLocations, TrainingBarrelLocations
 from randomizer.Lists.MapsAndExits import GetMapId
 from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.Lists.WrinklyHints import ClearHintMessages, hints
+from randomizer.Lists.WrinklyHints import ClearHintMessages, hints, HintLocation
 from randomizer.Patching.UpdateHints import UpdateHint
 
 if TYPE_CHECKING:
     from randomizer.Enums.Transitions import Transitions
-    from randomizer.Lists.WrinklyHints import HintLocation
     from randomizer.LogicClasses import Region
     from randomizer.Spoiler import Spoiler
 

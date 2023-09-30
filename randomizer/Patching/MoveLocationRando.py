@@ -5,6 +5,7 @@ from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Patcher import LocalROM
+from typing import List, Tuple
 
 # /* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.
 # /* 0x0A8 */ unsigned char dk_crankymoves[7]; // First 4 bits indicates the moves type, 0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 0xF = No Upgrade. Last 4 bits indicate move level (eg. 1 = Baboon Blast, 2 = Strong Kong, 3 = Gorilla Grab). Each item in the array indicates the level it is given (eg. 1st slot is purchased in Japes, 2nd for Aztec etc.)
@@ -25,21 +26,21 @@ from randomizer.Patching.Patcher import LocalROM
 
 moveRandoOffset = 0x0A7
 
-dk_crankymoves = []
-diddy_crankymoves = []
-lanky_crankymoves = []
-tiny_crankymoves = []
-chunky_crankymoves = []
-dk_funkymoves = []
-diddy_funkymoves = []
-lanky_funkymoves = []
-tiny_funkymoves = []
-chunky_funkymoves = []
-dk_candymoves = []
-diddy_candymoves = []
-lanky_candymoves = []
-tiny_candymoves = []
-chunky_candymoves = []
+dk_crankymoves: List[dict] = []
+diddy_crankymoves: List[dict]  = []
+lanky_crankymoves: List[dict]  = []
+tiny_crankymoves: List[dict]  = []
+chunky_crankymoves: List[dict]  = []
+dk_funkymoves: List[dict]  = []
+diddy_funkymoves: List[dict]  = []
+lanky_funkymoves: List[dict]  = []
+tiny_funkymoves: List[dict]  = []
+chunky_funkymoves: List[dict]  = []
+dk_candymoves: List[dict]  = []
+diddy_candymoves: List[dict]  = []
+lanky_candymoves: List[dict]  = []
+tiny_candymoves: List[dict]  = []
+chunky_candymoves: List[dict]  = []
 
 level_names = [
     "Jungle Japes",
