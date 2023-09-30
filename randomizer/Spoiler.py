@@ -128,10 +128,10 @@ class Spoiler:
 
     def FlushAllExcessSpoilerData(self):
         """Flush all spoiler data that is not needed for the final result."""
-        del self.LocationList
-        del self.RegionList
-        del self.CollectibleRegions
-        del self.LogicVariables
+        self.LocationList = None
+        self.RegionList = None
+        self.CollectibleRegions = None
+        self.LogicVariables = None
 
     def Reset(self) -> None:
         """Reset logic variables and region info that should be reset before a search."""

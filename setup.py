@@ -81,6 +81,8 @@ paths = [
 "randomizer/ShufflePatches.py",
 "randomizer/Patching/ApplyLocal.py",
 "randomizer/Patching/generate_kong_color_images.py",
+"randomizer/Spoiler.py",
+"randomizer/Worker.py",
 # "randomizer/Enums/Collectibles.py",
 # "randomizer/Enums/Enemies.py",
 # "randomizer/Enums/EnemySubtypes.py",

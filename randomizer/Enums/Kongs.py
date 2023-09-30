@@ -1,8 +1,6 @@
 """Kong enum."""
-from __future__ import annotations
-
 from enum import IntEnum, auto
-from typing import TYPE_CHECKING, List
+from typing import List
 
 
 class Kongs(IntEnum):

@@ -1,8 +1,6 @@
 """File containing enums to represent all settings."""
-from __future__ import annotations
 
 from enum import IntEnum, auto
-from typing import TYPE_CHECKING
 
 from randomizer.Enums.Items import Items
 from randomizer.Lists.EnemyTypes import Enemies
