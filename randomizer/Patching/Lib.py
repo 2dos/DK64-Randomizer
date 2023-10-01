@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import struct
-from enum import IntEnum, auto
+from enum import Enum, auto
 from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union
 
 import js
@@ -522,7 +522,7 @@ def IsItemSelected(bool_setting: bool, multiselector_setting: List[Union[MiscCha
     return check in multiselector_setting
 
 
-class TextureFormat(IntEnum):
+class TextureFormat(Enum):
     """Texture Format Enum."""
 
     Null = auto()
@@ -534,7 +534,7 @@ class TextureFormat(IntEnum):
     IA4 = auto()
 
 
-class TableNames(IntEnum):
+class TableNames(Enum):
     """Pointer Table Enum."""
 
     MusicMIDI = 0

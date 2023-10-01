@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import random
-from enum import IntEnum
+from enum import Enum
 from typing import TYPE_CHECKING, Any, List, Union, Optional
 
 from randomizer.Enums.Locations import Locations

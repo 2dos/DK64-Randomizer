@@ -1,5 +1,5 @@
 """Apply item rando changes."""
-from enum import IntEnum, auto
+from enum import Enum, auto
 
 import js
 from randomizer.Enums.Items import Items
@@ -16,7 +16,7 @@ from randomizer.Patching.Lib import float_to_hex, intf_to_float
 from randomizer.Patching.Patcher import LocalROM
 
 
-class CustomActors(IntEnum):
+class CustomActors(Enum):
     """Custom Actors Enum."""
 
     NintendoCoin = 0x8000  # Starts at 0x8000
@@ -41,7 +41,48 @@ class CustomActors(IntEnum):
     FakeItem = auto()
     Medal = auto()
     JetpacItemOverlay = auto()
+    def __eq__(self, other):
+        if isinstance(other, type(self)):
+            return self is other
+        elif isinstance(other, int):
+            return self.value == other
+        return NotImplemented
 
+    def __ne__(self, other):
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return result
+        return not result
+
+    def __mod__(self, other):
+        if isinstance(other, int):
+            return self.value % other
+        raise TypeError("Unsupported operand types for % ({} and {})".format(type(self).__name__, type(other).__name__))
+
+    def __to_bytes(self, length, byteorder, signed):
+        return self.value.to_bytes(length, byteorder, signed=signed)
+
+    def to_bytes(self, length, byteorder='big', signed=False):
+        return self.__to_bytes(length, byteorder, signed)
+
+    def __sub__(self, other):
+        if isinstance(other, int):
+            return self.value - other
+        raise TypeError("Unsupported operand types for - ({} and {})".format(type(self).__name__, type(other).__name__))
+
+    def __ge__(self, other):
+        if isinstance(other, type(self)):
+            return self.value >= other.value
+        elif isinstance(other, int):
+            return self.value >= other
+        return NotImplemented
+
+    def __le__(self, other):
+        if isinstance(other, type(self)):
+            return self.value <= other.value
+        elif isinstance(other, int):
+            return self.value <= other
+        return NotImplemented
 
 model_two_indexes = {
     Types.Banana: 0x74,

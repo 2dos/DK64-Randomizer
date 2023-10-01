@@ -1,10 +1,10 @@
 """Plandomizer enums and associated maps."""
-from enum import IntEnum, auto
+from enum import Enum, auto
 
 from randomizer.Enums.Items import Items
 
 
-class PlandoItems(IntEnum):
+class PlandoItems(Enum):
     """Enum of items that are selectable in the plandomizer."""
 
     # Indicates that the given slot should be randomized.

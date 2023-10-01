@@ -1,6 +1,6 @@
 """File containing enums to represent all settings."""
 
-from enum import IntEnum, auto
+from enum import Enum, auto
 
 from randomizer.Enums.Items import Items
 from randomizer.Lists.EnemyTypes import Enemies
@@ -12,7 +12,7 @@ from randomizer.Enums.Maps import Maps
 # break.
 
 
-class ActivateAllBananaports(IntEnum):
+class ActivateAllBananaports(Enum):
     """Whether bananaports should start as activated, and where.
 
     This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
@@ -28,7 +28,7 @@ class ActivateAllBananaports(IntEnum):
     isles = 2
 
 
-class BananaportRando(IntEnum):
+class BananaportRando(Enum):
     """Determines how bananaports are shuffled.
 
     off: Bananaports have their vanilla locations.
@@ -45,7 +45,7 @@ class BananaportRando(IntEnum):
     crossmap_decoupled = 3
 
 
-class CharacterColors(IntEnum):
+class CharacterColors(Enum):
     """Determines the colors for the Kongs, Rambi and Enguarde.
 
     vanilla: The character uses vanilla colors.
@@ -58,7 +58,7 @@ class CharacterColors(IntEnum):
     custom = auto()
 
 
-class ColorblindMode(IntEnum):
+class ColorblindMode(Enum):
     """Determines which colorblind mode setting is used.
 
     This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
@@ -78,7 +78,7 @@ class ColorblindMode(IntEnum):
     trit = 3
 
 
-class CrownEnemyRando(IntEnum):
+class CrownEnemyRando(Enum):
     """Determines the difficulty of enemies in Battle Arenas."""
 
     off = 0
@@ -87,7 +87,7 @@ class CrownEnemyRando(IntEnum):
     hard = 3
 
 
-class DamageAmount(IntEnum):
+class DamageAmount(Enum):
     """The damage multipler.
 
     default: Normal damage.
@@ -102,7 +102,7 @@ class DamageAmount(IntEnum):
     ohko = 3
 
 
-class DPadDisplays(IntEnum):
+class DPadDisplays(Enum):
     """Varying methods of displaying the dpad.
 
     off: display isn't rendered.
@@ -115,7 +115,7 @@ class DPadDisplays(IntEnum):
     minimal = 2
 
 
-class ExcludedSongs(IntEnum):
+class ExcludedSongs(Enum):
     """Determines the types of songs excluded."""
 
     wrinkly = 1
@@ -126,7 +126,7 @@ class ExcludedSongs(IntEnum):
     # events = 6
 
 
-class ExtraCutsceneSkips(IntEnum):
+class ExtraCutsceneSkips(Enum):
     """Controls how extra cutscenes are handled.
 
     This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
@@ -142,7 +142,7 @@ class ExtraCutsceneSkips(IntEnum):
     auto = 2
 
 
-class FillAlgorithm(IntEnum):
+class FillAlgorithm(Enum):
     """The algorithm used for placing items.
 
     This enum does not correspond to any website setting.
@@ -162,7 +162,7 @@ class FillAlgorithm(IntEnum):
     careful_random = auto()
 
 
-class FreeTradeSetting(IntEnum):
+class FreeTradeSetting(Enum):
     """Determines if Kongs can collect items assigned to other Kongs.
 
     none: Items can only be collected by their original assigned Kong.
@@ -176,7 +176,7 @@ class FreeTradeSetting(IntEnum):
     major_collectibles = 2
 
 
-class GlitchesSelected(IntEnum):
+class GlitchesSelected(Enum):
     """Glitch categories that can be selected for the seed logic.
 
     These values are tied to the GlitchSelector in randomizer.Lists.Logic. More
@@ -198,7 +198,7 @@ class GlitchesSelected(IntEnum):
     troff_n_scoff_skips = 13
 
 
-class HelmDoorItem(IntEnum):
+class HelmDoorItem(Enum):
     """Items that are required to open the crown/coin doors in Helm.
 
     vanilla: The originally required item (crowns for door 1, company coins for
@@ -232,7 +232,7 @@ class HelmDoorItem(IntEnum):
     req_pearl = 12
 
 
-class HelmSetting(IntEnum):
+class HelmSetting(Enum):
     """Determines where the player starts when entering Hideout Helm.
 
     This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
@@ -249,7 +249,7 @@ class HelmSetting(IntEnum):
     skip_all = 2
 
 
-class HardModeSelected(IntEnum):
+class HardModeSelected(Enum):
     """Various hard mode changes that can be applied.
 
     These values are tied to the HardSelector in randomizer.Lists.HardMode. More
@@ -264,7 +264,7 @@ class HardModeSelected(IntEnum):
 
 
 # TODO: merge this with the Types enum.
-class ItemRandoListSelected(IntEnum):
+class ItemRandoListSelected(Enum):
     """Item categories that may be randomized.
 
     These values are tied to the ItemRandoSelector in randomizer.Enums.Types.
@@ -289,7 +289,7 @@ class ItemRandoListSelected(IntEnum):
     enemies = 16
 
 
-class KasplatRandoSetting(IntEnum):
+class KasplatRandoSetting(Enum):
     """Determines if and how Kasplats are randomized.
 
     off: Kasplats are in their original locations with original blueprints.
@@ -304,7 +304,7 @@ class KasplatRandoSetting(IntEnum):
     location_shuffle = 2
 
 
-class KlaptrapModel(IntEnum):
+class KlaptrapModel(Enum):
     """Determines which model is used for Klaptrap in Beaver Bother."""
 
     green = auto()
@@ -314,7 +314,7 @@ class KlaptrapModel(IntEnum):
     random_model = auto()
 
 
-class KrushaUi(IntEnum):
+class KrushaUi(Enum):
     """Which Kong model will be replaced with Krusha."""
 
     no_slot = 0
@@ -326,7 +326,7 @@ class KrushaUi(IntEnum):
     random = 6
 
 
-class LevelRandomization(IntEnum):
+class LevelRandomization(Enum):
     """Determines how entrances are randomized and placed.
 
     vanilla: All entrances are the same as the base game.
@@ -343,7 +343,7 @@ class LevelRandomization(IntEnum):
     loadingzonesdecoupled = 3
 
 
-class LogicType(IntEnum):
+class LogicType(Enum):
     """The logic use to place items in the seed.
 
     glitchless: No glitches will be required.
@@ -356,7 +356,7 @@ class LogicType(IntEnum):
     nologic = 3
 
 
-class MicrohintsEnabled(IntEnum):
+class MicrohintsEnabled(Enum):
     """Adds some additional hints for late-game-required items.
 
     This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
@@ -374,7 +374,7 @@ class MicrohintsEnabled(IntEnum):
     all = 2
 
 
-class MinigameBarrels(IntEnum):
+class MinigameBarrels(Enum):
     """Determines how the minigames are shuffled between barrels.
 
     This enum does not correspond to any website setting.
@@ -391,7 +391,7 @@ class MinigameBarrels(IntEnum):
     selected = auto()
 
 
-class MinigamesListSelected(IntEnum):
+class MinigamesListSelected(Enum):
     """Minigame categories used for the web selector.
 
     These values are tied to the MinigameSelector in randomizer.Lists.Minigame.
@@ -417,7 +417,7 @@ class MinigamesListSelected(IntEnum):
     arenas = 17
 
 
-class MiscChangesSelected(IntEnum):
+class MiscChangesSelected(Enum):
     """Various quality of life fixes that can be applied.
 
     These values are tied to the QoLSelector in randomizer.Lists.QoL. More
@@ -449,7 +449,7 @@ class MiscChangesSelected(IntEnum):
     global_instrument = 23
 
 
-class MoveRando(IntEnum):
+class MoveRando(Enum):
     """Determines if and how moves are randomized.
 
     off: Moves are in their vanilla locations.
@@ -469,7 +469,7 @@ class MoveRando(IntEnum):
     item_shuffle = 4
 
 
-class RandomPrices(IntEnum):
+class RandomPrices(Enum):
     """Determines how and if shop prices are randomized.
 
     vanilla: Shop prices are the same as the vanilla game.
@@ -488,7 +488,7 @@ class RandomPrices(IntEnum):
     extreme = 5
 
 
-class ShockwaveStatus(IntEnum):
+class ShockwaveStatus(Enum):
     """Determines how Banana Fairy Isle is handled.
 
     vanilla: Camera and Shockwave are given.
@@ -505,7 +505,7 @@ class ShockwaveStatus(IntEnum):
     start_with = 3
 
 
-class ShuffleLoadingZones(IntEnum):
+class ShuffleLoadingZones(Enum):
     """Determines how loading zones are shuffled.
 
     This enum does not correspond to any website setting.
@@ -520,7 +520,7 @@ class ShuffleLoadingZones(IntEnum):
     all = auto()
 
 
-class SoundType(IntEnum):
+class SoundType(Enum):
     """Determines the default sound mode.
 
     stereo: Default.
@@ -533,7 +533,7 @@ class SoundType(IntEnum):
     surround = 2
 
 
-class TrainingBarrels(IntEnum):
+class TrainingBarrels(Enum):
     """Determines if and how training barrels are randomized.
 
     normal: Training barrels give the vanilla moves.
@@ -545,7 +545,7 @@ class TrainingBarrels(IntEnum):
     shuffled = 1
 
 
-class WinCondition(IntEnum):
+class WinCondition(Enum):
     """The condition needed to complete the game.
 
     This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
@@ -569,7 +569,7 @@ class WinCondition(IntEnum):
     all_keys = 6
 
 
-class WrinklyHints(IntEnum):
+class WrinklyHints(Enum):
     """Whether or not Wrinkly hints are replaced with useful randomizer hints.
 
     off: Hints are the same as the vanilla game.
@@ -586,7 +586,7 @@ class WrinklyHints(IntEnum):
     item_hinting = 4
 
 
-class SpoilerHints(IntEnum):
+class SpoilerHints(Enum):
     """Whether or not spoiler-style hints are generated within the spoiler log for external trackers to use.
 
     off: No hints are generated.
@@ -652,7 +652,7 @@ SettingsMap = {
 }
 
 
-class SettingsStringEnum(IntEnum):
+class SettingsStringEnum(Enum):
     """Maps setting names to key values, for use in the settings string.
 
     Changing any of the existing values will cause generated settings strings
@@ -834,7 +834,7 @@ DeprecatedSettings = {
 }
 
 
-class SettingsStringDataType(IntEnum):
+class SettingsStringDataType(Enum):
     """Enum for mapping settings to data types for encryption/decryption."""
 
     bool = auto()

@@ -1,7 +1,7 @@
 """Crown Location List."""
 from __future__ import annotations
 
-from enum import IntEnum, auto
+from enum import Enum, auto
 from typing import TYPE_CHECKING
 
 from randomizer.Enums.Events import Events
