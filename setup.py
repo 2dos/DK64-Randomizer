@@ -80,9 +80,13 @@ paths = [
 "randomizer/ShuffleDoors.py",
 "randomizer/ShufflePatches.py",
 "randomizer/Patching/ApplyLocal.py",
+"randomizer/Patching/ApplyRandomizer.py"
 "randomizer/Patching/generate_kong_color_images.py",
 "randomizer/Spoiler.py",
 "randomizer/Worker.py",
+"randomizer/Patching/EnemyRando.py",
+"randomizer/Patching/CosmeticColors.py",
+"randomizer/Patching/Hash.py",
 # "randomizer/Enums/Collectibles.py",
 # "randomizer/Enums/Enemies.py",
 # "randomizer/Enums/EnemySubtypes.py",
