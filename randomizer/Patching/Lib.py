@@ -442,6 +442,11 @@ def writeText(file_index: int, text: List[Union[List[Dict[str, List[str]]], Tupl
                     ROM_COPY.writeBytes(bytearray([0, 0]))
                     position += len(string)
             unk0 = 0
+            if "unk0" in block:
+                if isinstance(block["unk0"], list):
+                    unk0 = int(block["unk0"][0])
+                else:
+                    unk0 = int(block["unk0"])
             ROM_COPY.writeBytes(int(float_to_hex(unk0), 16).to_bytes(4, "big"))
     ROM_COPY.writeBytes(bytearray(position.to_bytes(2, "big")))
     for textbox in text:
