@@ -387,20 +387,22 @@ def grabText(file_index: int) -> List[List[Dict[str, List[str]]]]:
     for item in text_data:
         text_block = []
         # print(item)
-        for item2 in item["text"]:
-            # print(item2)
-            temp = []
-            for item3 in item2["text"]:
-                if item3["type"] == "normal":
-                    start = item3["start"] + data_start + 2
-                    # print(hex(start))
-                    start + item3["size"]
-                    ROM_COPY.seek(file_start + start)
-                    temp.append(ROM_COPY.readBytes(item3["size"]).decode())
-                elif item3["type"] == "sprite":
-                    temp.append(item3["sprite"])
-                    # print(fh.read(item3["size"]))
-            text_block.append(temp)
+        if hasattr(item["text"], "__iter__"):
+            for item2 in item["text"]:
+                # print(item2)
+                temp = []
+                if hasattr(item2["text"], "__iter__"):
+                    for item3 in item2["text"]:
+                        if item3["type"] == "normal":
+                            start = item3["start"] + data_start + 2
+                            # print(hex(start))
+                            start + item3["size"]
+                            ROM_COPY.seek(file_start + start)
+                            temp.append(ROM_COPY.readBytes(item3["size"]).decode())
+                        elif item3["type"] == "sprite":
+                            temp.append(item3["sprite"])
+                            # print(fh.read(item3["size"]))
+                    text_block.append(temp)
         text.append(text_block)
     formatted_text = []
     for t in text:
@@ -440,8 +442,6 @@ def writeText(file_index: int, text: List[Union[List[Dict[str, List[str]]], Tupl
                     ROM_COPY.writeBytes(bytearray([0, 0]))
                     position += len(string)
             unk0 = 0
-            if "unk0" in block:
-                unk0 = block["unk0"]
             ROM_COPY.writeBytes(int(float_to_hex(unk0), 16).to_bytes(4, "big"))
     ROM_COPY.writeBytes(bytearray(position.to_bytes(2, "big")))
     for textbox in text:
@@ -479,7 +479,7 @@ def getObjectAddress(map: int, id: int, object_type: str) -> int:
             ROM_COPY.seek(item_start + 0x34)
             if int.from_bytes(ROM_COPY.readBytes(2), "big") == id:
                 return item_start
-    return None
+    return 0
 
 
 def getObjectAddressBrowser(map: int, id: int, object_type: str) -> int:
@@ -505,7 +505,7 @@ def getObjectAddressBrowser(map: int, id: int, object_type: str) -> int:
             ROM().seek(item_start + 0x34)
             if int.from_bytes(ROM().readBytes(2), "big") == id:
                 return item_start
-    return None
+    return 0
 
 
 def IsItemSelected(bool_setting: bool, multiselector_setting: List[Union[MiscChangesSelected, Any]], check: Union[HardModeSelected, MiscChangesSelected]) -> bool:
