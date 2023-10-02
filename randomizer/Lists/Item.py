@@ -14,7 +14,7 @@ class Item:
     """Stores information about an item."""
 
     def __init__(
-        self, name: str, playthrough: bool, type: Types, kong: Kongs, data: Union[List[Union[MoveTypes, int]], List[Union[MoveTypes, str, int]], List[Levels], List[int]] = [-1]
+        self, name: str, playthrough: bool, type: Types, kong: Kongs, data: Union[List[Union[MoveTypes, int, object]], List[Union[MoveTypes, str, int]], List[Levels], List[int]] = [-1]
     ) -> None:
         """Initialize with given parameters."""
         self.name = name

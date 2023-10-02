@@ -935,7 +935,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 kong_name = "an empty cage"
             message = f"{freeing_kong_name} {unlock_verb} {kong_name} in {level_name}."
             hinted_kongs.append(kong_index)
-            hint_location.hint_type = HintType.KongLocation
+            hint_location.hint_type = int(HintType.KongLocation)
             UpdateHint(hint_location, message)
             placed_kong_hints += 1
 
@@ -1201,7 +1201,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     # This rarely happens when you're on a fixed hint distribution - some specific fills can have fewer items on the path to K. Rool than you have dedicated hints for
                     # It could also happen if you start with a ton of moves
                     hint_location = cast(HintLocation, getRandomHintLocation())
-                    hint_location.hint_type = HintType.RequiredWinConditionHint
+                    hint_location.hint_type = int(HintType.RequiredWinConditionHint)
                     message = "\x05Very little\x05 is on the path to \x0ddefeating K. Rool.\x0d"  # So we'll hint exactly that - there's very little on the path to K. Rool
                     UpdateHint(hint_location, message)
                     chosen_krool_path_location_cap -= 1  # This is a K. Rool hint, but isn't a location so we have to lower the cap on the loop
@@ -1388,7 +1388,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         shop_name = shop_owners[spoiler.LocationList[woth_item_location].vendor]
         message = f"On the Way of the Hoard, \x05{ItemList[woth_item].name}\x05 is bought from {shop_name} in {shop_level}."
         moves_hinted_and_lobbies[woth_item].append(hint_location.level)
-        hint_location.hint_type = HintType.MoveLocation
+        hint_location.hint_type = int(HintType.MoveLocation)
         UpdateHint(hint_location, message)
         placed_move_hints += 1
 
@@ -1569,7 +1569,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 message = f"It would be \x05foolish\x05 to collect {level_color}colored bananas in {hinted_region_name[0:cutoff]}{level_color}."
             else:
                 message = f"It would be \x05foolish\x05 to explore the {level_color}{hinted_region_name}{level_color}."
-            hint_location.hint_type = HintType.FoolishRegion
+            hint_location.hint_type = int(HintType.FoolishRegion)
             UpdateHint(hint_location, message)
 
     # Entrance hints are tricky, there's some requirements we must hit:
@@ -1662,7 +1662,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_distribution[HintType.Joke] += 1
                 continue
             hint_location = cast(HintLocation, getRandomHintLocation())
-            hint_location.hint_type = HintType.Entrance
+            hint_location.hint_type = int(HintType.Entrance)
             UpdateHint(hint_location, message)
             placed_entrance_hints += 1
 
@@ -1689,7 +1689,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     item_name = item_name + "s"
             hint_location = cast(HintLocation, getRandomHintLocation())
             message = f"There lies a \x05gate in Hideout Helm\x05 that requires \x04{spoiler.settings.crown_door_item_count} {item_name}\x04."
-            hint_location.hint_type = HintType.RequiredHelmDoorHint
+            hint_location.hint_type = int(HintType.RequiredHelmDoorHint)
             UpdateHint(hint_location, message)
         if spoiler.settings.coin_door_random:
             item_name = helmdoor_vars[spoiler.settings.coin_door_item]
@@ -1700,7 +1700,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     item_name = item_name + "s"
             hint_location = cast(HintLocation, getRandomHintLocation())
             message = f"There lies a \x05gate in Hideout Helm\x05 that requires \x04{spoiler.settings.coin_door_item_count} {item_name}\x04."
-            hint_location.hint_type = HintType.RequiredHelmDoorHint
+            hint_location.hint_type = int(HintType.RequiredHelmDoorHint)
             UpdateHint(hint_location, message)
 
     # Full Shop With Items hints are essentially a rework of shop dump hints but with the ability to list any item instead of just moves.
@@ -1741,7 +1741,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             level_name = "\x08" + random.choice(level_cryptic_helm_isles[shop_info.level]) + "\x08"
         hint_location = cast(HintLocation, getRandomHintLocation())
         message = f"{shop_vendor}'s in {level_name} contains {move_series}."
-        hint_location.hint_type = HintType.FullShopWithItems
+        hint_location.hint_type = int(HintType.FullShopWithItems)
         UpdateHint(hint_location, message)
 
     # At least one Helm Order hint should be placed, but they can be placed randomly. If the player needs the info, they can seek it out.
@@ -1752,7 +1752,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         kong_helm_order = [kong_list[x] for x in helm_order]
         kong_helm_text = ", then ".join(kong_helm_order)
         associated_hint = f"The \x05Blast-O-Matic\x05 can be disabled by using {kong_helm_text}."
-        hint_location.hint_type = HintType.HelmOrder
+        hint_location.hint_type = int(HintType.HelmOrder)
         UpdateHint(hint_location, associated_hint)
 
     # No need to do anything fancy here - there's often already a K. Rool hint on the player's path (the wall in Helm)
@@ -1761,7 +1761,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         kong_krool_order = [kong_list[kong] for kong in spoiler.settings.krool_order]
         kong_krool_text = ", then ".join(kong_krool_order)
         associated_hint = f"\x08King K. Rool\x08 will face off in the ring against {kong_krool_text}."
-        hint_location.hint_type = HintType.KRoolOrder
+        hint_location.hint_type = int(HintType.KRoolOrder)
         UpdateHint(hint_location, associated_hint)
 
     # Dirt patch hints are already garbage anyway - no restrictions here
@@ -1798,7 +1798,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 bean_region = GetRegionOfLocation(spoiler, bean_location_id)
                 hinted_location_text = bean_region.hint_name
                 message = f"The {hinted_location_text} is on the Way of the Bean."
-        hint_location.hint_type = HintType.Joke
+        hint_location.hint_type = int(HintType.Joke)
         UpdateHint(hint_location, message)
 
     UpdateSpoilerHintList(spoiler)

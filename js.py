@@ -18,3 +18,20 @@ def getFile(filename):
 
 with open("./static/patches/pointer_addresses.json", "rb") as file:
     pointer_addresses = json.loads(file.read())
+
+class jsdoc:
+    def __init__(self, title="", content="", language=""):
+        self.title = title
+        self.content = content
+        self.language = language
+        self.elements = {}
+        self.majoritems = {}
+        self.minoritems = {}
+        self.events = {}
+
+    def getElementById(self, element_id):
+        return self.elements.get(element_id, None)
+
+document = jsdoc()
+cosmetics = document
+cosmetic_names = document
