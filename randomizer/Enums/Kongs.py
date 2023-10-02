@@ -52,6 +52,8 @@ class Kongs(Enum):
         elif isinstance(other, int):
             return self.value <= other
         return NotImplemented
+    def __index__(self):
+        return self.value
 
 def GetKongs() -> List[Kongs]:
     """Return list of kongs without any."""

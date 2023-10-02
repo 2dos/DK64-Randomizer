@@ -73,6 +73,8 @@ class Types(Enum):
         elif isinstance(other, int):
             return self.value <= other
         return NotImplemented
+    def __index__(self):
+        return self.value
 
 # If you make change to this selector, make sure to change the corresponding
 # ItemRandoListSelected enum in randomizer.Enums.Settings.

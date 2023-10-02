@@ -2383,7 +2383,7 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
             if settings.randomize_blocker_required_amounts and runningGBTotal > settings.blocker_max and settings.EntryGBs[nextLevelToBeat] < minimumBLockerGBs:
                 settings.EntryGBs[nextLevelToBeat] = randint(minimumBLockerGBs, settings.blocker_max)
         minimumBLockerGBs = settings.EntryGBs[nextLevelToBeat]  # This B. Locker is now the minimum for the next one
-        levelsProgressed.append(nextLevelToBeat)
+        levelsProgressed.append(int(nextLevelToBeat))
 
         # Determine the Kong, GB, and Move accessibility from this level
         # If we get keys (and thus level progression) from the boss...

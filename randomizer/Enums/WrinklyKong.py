@@ -85,3 +85,5 @@ class WrinklyLocation(Enum):
         elif isinstance(other, int):
             return self.value <= other
         return NotImplemented
+    def __index__(self):
+        return self.value
