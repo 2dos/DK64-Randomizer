@@ -29,6 +29,7 @@ class jsdoc:
         self.majoritems = {}
         self.minoritems = {}
         self.events = {}
+        self.bgm = {}
 
     def getElementById(self, element_id):
         return self.elements.get(element_id, None)
