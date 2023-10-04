@@ -1874,7 +1874,17 @@ CustomLocations = {
         #     logic_region=Regions.CabinArea,
         #     group=1,
         # ),
-        CustomLocation(map=Maps.CrystalCaves, name="High Cabin Kasplat Platform", x=2984, y=373, z=1848, max_size=64, logic_region=Regions.CabinArea, group=1),
+        CustomLocation(
+            map=Maps.CrystalCaves,
+            name="High Cabin Kasplat Platform",
+            x=2984,
+            y=373,
+            z=1848,
+            max_size=64,
+            logic_region=Regions.CabinArea,
+            group=1,
+            banned_types=[LocationTypes.DirtPatch, LocationTypes.MelonCrate],
+        ),
         CustomLocation(map=Maps.CrystalCaves, name="Near Rotating Room Rocketbarrel", x=2465, y=206.8, z=2530, max_size=40, logic_region=Regions.CabinArea, group=1),
         CustomLocation(map=Maps.CrystalCaves, name="Near Tiny 5DC", x=3551, y=260, z=1900, max_size=48, logic_region=Regions.CabinArea, group=1),
         CustomLocation(

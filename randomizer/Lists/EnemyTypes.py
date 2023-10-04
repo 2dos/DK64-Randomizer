@@ -759,11 +759,11 @@ enemy_location_list = {
     Locations.Caves5DIDKEnemy_Right: EnemyLoc(Maps.CavesDonkeyIgloo, Enemies.Kosha, 1, [], True),
     Locations.Caves5DIDKEnemy_Left: EnemyLoc(Maps.CavesDonkeyIgloo, Enemies.Kosha, 3, [], True),
     # Lanky 5DI
-    Locations.Caves5DILankyEnemy_First0: EnemyLoc(Maps.CavesLankyIgloo, Enemies.BeaverBlue, 1, [], True),
-    Locations.Caves5DILankyEnemy_First1: EnemyLoc(Maps.CavesLankyIgloo, Enemies.BeaverBlue, 2, [], True),
-    Locations.Caves5DILankyEnemy_Second0: EnemyLoc(Maps.CavesLankyIgloo, Enemies.Kremling, 3, [], True),
-    Locations.Caves5DILankyEnemy_Second1: EnemyLoc(Maps.CavesLankyIgloo, Enemies.Kremling, 4, [], True),
-    Locations.Caves5DILankyEnemy_Second2: EnemyLoc(Maps.CavesLankyIgloo, Enemies.Kremling, 5, [], True),
+    Locations.Caves5DILankyEnemy_First0: EnemyLoc(Maps.CavesLankyIgloo, Enemies.BeaverBlue, 1, [], False),
+    Locations.Caves5DILankyEnemy_First1: EnemyLoc(Maps.CavesLankyIgloo, Enemies.BeaverBlue, 2, [], False),
+    Locations.Caves5DILankyEnemy_Second0: EnemyLoc(Maps.CavesLankyIgloo, Enemies.Kremling, 3, [], False),
+    Locations.Caves5DILankyEnemy_Second1: EnemyLoc(Maps.CavesLankyIgloo, Enemies.Kremling, 4, [], False),
+    Locations.Caves5DILankyEnemy_Second2: EnemyLoc(Maps.CavesLankyIgloo, Enemies.Kremling, 5, [], False),
     # Tiny 5DI
     Locations.Caves5DITinyEnemy_BigEnemy: EnemyLoc(Maps.CavesTinyIgloo, Enemies.Kosha, 2, [Enemies.Guard], True),
     # Chunky 5DI
