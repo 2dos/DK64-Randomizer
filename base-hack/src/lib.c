@@ -1076,6 +1076,13 @@ void* replaceWaterTexture(int table, int file, int unk0, int unk1) {
 	return getMapData(table, file, unk0, unk1);
 }
 
+void* replaceWaterTexture_spooky(int table, int file, int unk0, int unk1) {
+	if (file == 0xCF) {
+		return getMapData(7, 0x3D2, unk0, unk1);
+	}
+	return getMapData(table, file, unk0, unk1);
+}
+
 int isBounceObject(int object) {
 	for (int i = 0; i < (int)(sizeof(bounce_objects)/2); i++) {
 		if (object == bounce_objects[i]) {

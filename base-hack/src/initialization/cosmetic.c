@@ -181,8 +181,14 @@ void initSkyboxRando(void) {
             Rando.skybox_colors[i].green = 0x33;
             Rando.skybox_colors[i].blue = 0x38;
         }
+    } else if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
+        for (int i = 0; i < 8; i++) {
+            Rando.skybox_colors[i].red = 0;
+            Rando.skybox_colors[i].green = 0;
+            Rando.skybox_colors[i].blue = 0;
+        }
     }
-    if ((Rando.misc_cosmetic_on) || (Rando.colorblind_mode != COLORBLIND_OFF)) {
+    if ((Rando.misc_cosmetic_on) || (Rando.colorblind_mode != COLORBLIND_OFF) || (Rando.seasonal_changes == SEASON_HALLOWEEN)) {
         for (int i = 0; i < 8; i++) {
             SkyboxBlends[i].top.red = Rando.skybox_colors[i].red;
             SkyboxBlends[i].top.green = Rando.skybox_colors[i].green;
@@ -255,6 +261,21 @@ void initWrinklyColoring(void) {
 void initSeasonalChanges(void) {
     if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
         *(int*)(0x8075E0B8) = 0x807080E0; // Makes isles reference Castle skybox data
+
+        // Make moon the one from MM
+        *(short*)(0x8070637E) = 115; // MM Moon Image
+        *(short*)(0x80706362) = 32; // MM Moon Size
+        *(short*)(0x80706366) = 32; // MM Moon Size
+        *(short*)(0x80706382) = 0; // MM Moon - Non Greyscale
+        *(short*)(0x80706386) = RGBA16; // MM Moon Codec
+        *(short*)(0x8070634A) = 0x4100; // Size
+
+        // Chains
+        *(short*)(0x8069901A) = 0xE; // Vine param
+        *(short*)(0x8069903A) = 0xE; // Vine param
+        *(int*)(0x80698754) = 0; // Cancel branch
+        *(int*)(0x80698B6C) = 0; // Cancel branch
+        *(short*)(0x80698B74) = 0x1000; // Force branch
     } else if (Rando.seasonal_changes == SEASON_CHRISTMAS) {
         for (int i = 0; i < 6; i++) {
             *WeatherData[i].texture_pointer = 0x173B;

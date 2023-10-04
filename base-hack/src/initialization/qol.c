@@ -44,6 +44,11 @@ void initQoL_Lag(void) {
     }
 }
 
+typedef struct skipped_cutscene {
+    /* 0x000 */ unsigned char map;
+    /* 0x001 */ unsigned char cutscene;
+} skipped_cutscene;
+
 void initQoL_Cutscenes(void) {
     /**
      * @brief Initialize any quality of life features which aim to reduce the amount of cutscenes inside DK64
@@ -59,20 +64,20 @@ void initQoL_Cutscenes(void) {
         }
     } else {
         if (Rando.item_rando) {
-            int cs_unskip[] = {
-                MAP_FACTORY, 2,
-                MAP_FACTORY, 3,
-                MAP_FACTORY, 4,
-                MAP_FACTORY, 5,
-                MAP_AZTEC, 14,
-                MAP_FUNGIGIANTMUSHROOM, 0,
-                MAP_FUNGIGIANTMUSHROOM, 1,
-                MAP_CASTLEGREENHOUSE, 0,
+            skipped_cutscene cs_unskip[] = {
+                {.map=MAP_FACTORY, .cutscene=2}, // Diddy Prod Spawn
+                {.map=MAP_FACTORY, .cutscene=3}, // Tiny Prod Peek
+                {.map=MAP_FACTORY, .cutscene=4}, // Lanky Prod Peek
+                {.map=MAP_FACTORY, .cutscene=5}, // Chunky Prod Spawn
+                {.map=MAP_AZTEC, .cutscene=14}, // Free Llama
+                {.map=MAP_FUNGIGIANTMUSHROOM, .cutscene=0}, // Tiny Barrel Spawn
+                {.map=MAP_FUNGIGIANTMUSHROOM, .cutscene=1}, // Cannon GB Spawn
+                {.map=MAP_CASTLEGREENHOUSE, .cutscene=0}, // Greenhouse Intro
             };
-            for (int i = 0; i < (sizeof(cs_unskip) / 8); i++) {
+            for (int i = 0; i < (sizeof(cs_unskip) / sizeof(skipped_cutscene)); i++) {
                 int cs_offset = 0;
-                int cs_val = cs_unskip[(2 * i) + 1];
-                int cs_map = cs_unskip[(2 * i)];
+                int cs_val = cs_unskip[i].cutscene;
+                int cs_map = cs_unskip[i].map;
                 int shift = cs_val % 31;
                 if (cs_val > 31) {
                     cs_offset = 1;

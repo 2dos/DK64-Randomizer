@@ -74,7 +74,7 @@ file_dict = [
     File(name="Thumb Image", pointer_table_index=TableNames.TexturesHUD, file_index=94, source_file="assets/Nintendo Logo/Nintendo5.png", texture_format=TextureFormat.RGBA5551),
     File(name="DKTV Image", pointer_table_index=TableNames.TexturesHUD, file_index=44, source_file="assets/DKTV/logo3.png", texture_format=TextureFormat.RGBA5551),
     File(name="Spin Transition Image", pointer_table_index=TableNames.TexturesHUD, file_index=95, source_file="assets/transition/transition-body.png", texture_format=TextureFormat.IA4),
-    File(name="Moves Image", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/file_screen/moves.png", texture_format=TextureFormat.RGBA5551),
+    # File(name="Moves Image", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/file_screen/moves.png", texture_format=TextureFormat.RGBA5551),
     File(name="Medal Image", pointer_table_index=TableNames.TexturesHUD, file_index=116, source_file="assets/displays/medal.png", texture_format=TextureFormat.RGBA5551),
     File(name="Tag Barrel Shell Texture", pointer_table_index=TableNames.TexturesGeometry, file_index=4938, source_file="assets/tagbarrel/shell.png", texture_format=TextureFormat.RGBA5551),
     File(name="Gong Geometry", pointer_table_index=TableNames.ModelTwoGeometry, file_index=195, source_file="assets/Gong/gong_geometry.bin", bps_file="assets/Gong/gong_geometry.bps"),
@@ -205,6 +205,7 @@ file_dict = [
     File(name="21132 Sign", pointer_table_index=TableNames.TexturesGeometry, file_index=0x7CA, source_file="21132_tex.bin", target_size=2 * 64 * 32),
     File(name="Crypt Lever Sign 1", pointer_table_index=TableNames.TexturesGeometry, file_index=0x999, source_file="cryptlev1_tex.bin", target_size=2 * 64 * 32),
     File(name="Crypt Lever Sign 2", pointer_table_index=TableNames.TexturesGeometry, file_index=0x99A, source_file="cryptlev2_tex.bin", target_size=2 * 64 * 32),
+    File(name="Majoras Mask Moon", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/displays/mm_moon32.png", texture_format=TextureFormat.RGBA5551),
 ]
 
 file_dict = file_dict + buildScripts()
@@ -774,7 +775,7 @@ for x in kong_palettes:
 for tex in range(0x273, 0x27D):
     file_dict.append(File(name=f"Head Expansion ({hex(tex)})", pointer_table_index=TableNames.TexturesGeometry, file_index=tex, source_file=f"head_{tex}.bin", target_compressed_size=32 * 64 * 2))
 
-colorblind_changes = [[4120, 4124, 32, 44], [5819, 5858, 32, 64]]
+colorblind_changes = [[4120, 4124, 32, 44], [5819, 5858, 32, 64], [0xBB2, 0xBB3, 32, 16]]
 for change in colorblind_changes:
     for file_index in range(change[0], change[1] + 1):
         file_dict.append(

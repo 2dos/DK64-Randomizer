@@ -624,6 +624,12 @@ void initHack(int source) {
 				SurfaceTypeInformation[0].dl_writer = SurfaceTypeInformation[7].dl_writer;
 				SurfaceTypeInformation[3].texture_loader = SurfaceTypeInformation[7].texture_loader;
 				SurfaceTypeInformation[3].dl_writer = SurfaceTypeInformation[7].dl_writer;
+			} else if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
+				writeFunction(0x8062F3F0, &replaceWaterTexture_spooky); // Static water textures
+				SurfaceTypeInformation[0].texture_loader = SurfaceTypeInformation[6].texture_loader;
+				SurfaceTypeInformation[0].dl_writer = SurfaceTypeInformation[7].dl_writer; // Use lava water renderer instead of acid one to have translucency
+				SurfaceTypeInformation[3].texture_loader = SurfaceTypeInformation[6].texture_loader;
+				SurfaceTypeInformation[3].dl_writer = SurfaceTypeInformation[7].dl_writer; // Use lava water renderer instead of acid one to have translucency
 			}
 			if (Rando.hard_mode.dark_world) {
 				writeFunction(0x8062F230, &alterChunkLighting);
