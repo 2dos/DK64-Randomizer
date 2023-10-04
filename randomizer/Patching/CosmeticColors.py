@@ -1861,7 +1861,7 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
 
 def applyHolidayMode(settings):
     """Change grass texture to snow."""
-    HOLIDAY = "halloween" # Or "christmas"
+    HOLIDAY = "halloween"  # Or "christmas"
     if settings.holiday_setting:
         if HOLIDAY == "christmas":
             ROM().seek(0x1FF8000)
@@ -1913,7 +1913,6 @@ def applyHolidayMode(settings):
                 px_data = gzip.compress(px_data, compresslevel=9)
                 ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
                 ROM().writeBytes(px_data)
-                
 
 
 def updateMillLeverTexture(settings: Settings) -> None:
