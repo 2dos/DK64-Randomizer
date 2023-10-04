@@ -65,7 +65,8 @@ class ExitCategories(Enum):
         elif isinstance(other, int):
             return self.value >= other
         return NotImplemented
-
+    def __hash__(self):
+        return hash(self.value)
     def __le__(self, other):
         if isinstance(other, type(self)):
             return self.value <= other.value

@@ -28,7 +28,8 @@ class Levels(Enum):
         if result is NotImplemented:
             return result
         return not result
-
+    def __hash__(self):
+        return hash(self.value)
     def __mod__(self, other):
         if isinstance(other, int):
             return self.value % other

@@ -54,11 +54,11 @@ class Location:
             if lvl_index == Levels.DKIsles:
                 lvl_index = 7
             lst = []
-            if self.kong < 5:
-                lst.append((self.vendor * 40) + (self.kong * 8) + lvl_index)
+            if int(self.kong) < 5:
+                lst.append((int(self.vendor) * 40) + (int(self.kong) * 8) + int(lvl_index))
             else:
                 for kong_index in range(5):
-                    lst.append((self.vendor * 40) + (kong_index * 8) + lvl_index)
+                    lst.append((int(self.vendor) * 40) + (kong_index * 8) + int(lvl_index))
             self.placement_index = lst
         elif self.type in (Types.TrainingBarrel, Types.Shockwave):
             self.placement_index = [data[0]]
@@ -67,12 +67,12 @@ class Location:
             level_index = int(self.level)
             if self.level in (Levels.DKIsles, Levels.HideoutHelm):
                 level_index = 7
-            self.map_id_list = [MapIDCombo(0, -1, 469 + self.kong + (5 * level_index), self.kong)]
+            self.map_id_list = [MapIDCombo(0, -1, 469 + int(self.kong) + (5 * level_index), int(self.kong))]
         elif self.type == Types.Medal and self.level != Levels.HideoutHelm:
             level_index = int(self.level)
             if self.level in (Levels.DKIsles, Levels.HideoutHelm):
                 level_index = 7
-            self.map_id_list = [MapIDCombo(0, -1, 549 + self.kong + (5 * level_index), self.kong)]
+            self.map_id_list = [MapIDCombo(0, -1, 549 + int(self.kong) + (5 * level_index), int(self.kong))]
         elif self.type in (Types.Banana, Types.ToughBanana, Types.Key, Types.Coin, Types.Crown, Types.Medal, Types.Bean, Types.Pearl, Types.Kong, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.Enemies):
             if data is None:
                 self.map_id_list = []

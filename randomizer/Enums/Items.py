@@ -201,7 +201,8 @@ class Items(Enum):
         elif isinstance(other, int):
             return self.value == other
         return NotImplemented
-
+    def __hash__(self):
+        return hash(self.value)
     def __ne__(self, other):
         result = self.__eq__(other)
         if result is NotImplemented:

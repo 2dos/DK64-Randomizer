@@ -1271,3 +1271,5 @@ class Locations(Enum):
 
     def __index__(self):
         return self.value
+    def __hash__(self):
+        return hash(self.value)
