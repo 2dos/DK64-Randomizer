@@ -15,6 +15,7 @@ class WrinklyKong(Enum):
     tiny = auto()
     lanky = auto()
     chunky = auto()
+
     def __eq__(self, other):
         if isinstance(other, type(self)):
             return self is other
@@ -27,6 +28,7 @@ class WrinklyKong(Enum):
         if result is NotImplemented:
             return result
         return not result
+
 
 class WrinklyLocation(Enum):
     """Lobby location of the wrinkly hint.
@@ -43,6 +45,7 @@ class WrinklyLocation(Enum):
     fungi = auto()
     caves = auto()
     castle = auto()
+
     def __eq__(self, other):
         if isinstance(other, type(self)):
             return self is other
@@ -64,7 +67,7 @@ class WrinklyLocation(Enum):
     def __to_bytes(self, length, byteorder, signed):
         return self.value.to_bytes(length, byteorder, signed=signed)
 
-    def to_bytes(self, length, byteorder='big', signed=False):
+    def to_bytes(self, length, byteorder="big", signed=False):
         return self.__to_bytes(length, byteorder, signed)
 
     def __sub__(self, other):
@@ -85,5 +88,6 @@ class WrinklyLocation(Enum):
         elif isinstance(other, int):
             return self.value <= other
         return NotImplemented
+
     def __index__(self):
         return self.value

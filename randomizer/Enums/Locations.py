@@ -8,6 +8,7 @@ class LocationTypes(Enum):
     CrownPad = auto()
     DirtPatch = auto()
     MelonCrate = auto()
+
     def __eq__(self, other):
         if isinstance(other, type(self)):
             return self is other
@@ -20,6 +21,7 @@ class LocationTypes(Enum):
         if result is NotImplemented:
             return result
         return not result
+
 
 class Locations(Enum):
     """Location enum."""
@@ -1223,6 +1225,7 @@ class Locations(Enum):
     IslesMainEnemy_PineappleCage1 = auto()  # Zinger (0x5), 10
     IslesMainEnemy_LowerFactoryPath0 = auto()  # Zinger (0x1C), 11
     IslesMainEnemy_LowerFactoryPath1 = auto()  # Zinger (0x1C), 12
+
     def __eq__(self, other):
         if isinstance(other, type(self)):
             return self is other
@@ -1244,7 +1247,7 @@ class Locations(Enum):
     def __to_bytes(self, length, byteorder, signed):
         return self.value.to_bytes(length, byteorder, signed=signed)
 
-    def to_bytes(self, length, byteorder='big', signed=False):
+    def to_bytes(self, length, byteorder="big", signed=False):
         return self.__to_bytes(length, byteorder, signed)
 
     def __sub__(self, other):
@@ -1265,5 +1268,6 @@ class Locations(Enum):
         elif isinstance(other, int):
             return self.value <= other
         return NotImplemented
+
     def __index__(self):
         return self.value

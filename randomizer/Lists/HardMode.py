@@ -1,7 +1,6 @@
 """Hard Mode information."""
 
 
-
 class HardModeItem:
     """Hard Mode multiselector information."""
 

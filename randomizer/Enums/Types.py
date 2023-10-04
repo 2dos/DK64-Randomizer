@@ -31,6 +31,7 @@ class Types(Enum):
     PreGivenMove = auto()
     CrateItem = auto()
     Enemies = auto()
+
     def __eq__(self, other):
         if isinstance(other, type(self)):
             return self is other
@@ -52,7 +53,7 @@ class Types(Enum):
     def __to_bytes(self, length, byteorder, signed):
         return self.value.to_bytes(length, byteorder, signed=signed)
 
-    def to_bytes(self, length, byteorder='big', signed=False):
+    def to_bytes(self, length, byteorder="big", signed=False):
         return self.__to_bytes(length, byteorder, signed)
 
     def __sub__(self, other):
@@ -73,8 +74,10 @@ class Types(Enum):
         elif isinstance(other, int):
             return self.value <= other
         return NotImplemented
+
     def __index__(self):
         return self.value
+
 
 # If you make change to this selector, make sure to change the corresponding
 # ItemRandoListSelected enum in randomizer.Enums.Settings.

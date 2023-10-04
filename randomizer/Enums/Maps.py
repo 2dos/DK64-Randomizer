@@ -222,6 +222,7 @@ class Maps(Enum):
     Candy = 25
     Funky = 1
     Snide = 15
+
     def __eq__(self, other):
         if isinstance(other, type(self)):
             return self is other
@@ -243,7 +244,7 @@ class Maps(Enum):
     def __to_bytes(self, length, byteorder, signed):
         return self.value.to_bytes(length, byteorder, signed=signed)
 
-    def to_bytes(self, length, byteorder='big', signed=False):
+    def to_bytes(self, length, byteorder="big", signed=False):
         return self.__to_bytes(length, byteorder, signed)
 
     def __sub__(self, other):
@@ -264,5 +265,6 @@ class Maps(Enum):
         elif isinstance(other, int):
             return self.value <= other
         return NotImplemented
+
     def __index__(self):
         return self.value

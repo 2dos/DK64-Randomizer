@@ -12,7 +12,7 @@ class Kongs(Enum):
     tiny = auto()
     chunky = auto()
     any = auto()
- 
+
     def __eq__(self, other):
         if isinstance(other, type(self)):
             return self is other
@@ -31,7 +31,7 @@ class Kongs(Enum):
             return self.value % other
         raise TypeError("Unsupported operand types for % ({} and {})".format(type(self).__name__, type(other).__name__))
 
-    def to_bytes(self, length, byteorder='big', signed=False):
+    def to_bytes(self, length, byteorder="big", signed=False):
         return self.value.to_bytes(length, byteorder, signed=signed)
 
     def __sub__(self, other):
@@ -52,8 +52,10 @@ class Kongs(Enum):
         elif isinstance(other, int):
             return self.value <= other
         return NotImplemented
+
     def __index__(self):
         return self.value
+
 
 def GetKongs() -> List[Kongs]:
     """Return list of kongs without any."""

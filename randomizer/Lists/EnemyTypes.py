@@ -56,7 +56,7 @@ class EnemyData:
         disruptive=0,
         bbbarrage_min_scale=50,
         selector_enabled=True,
-        interaction = InteractionMethods(kill_gun=False, kill_melee=False, kill_orange=False, kill_shockwave=False, can_bypass=False, can_kill=False),
+        interaction=InteractionMethods(kill_gun=False, kill_melee=False, kill_orange=False, kill_shockwave=False, can_bypass=False, can_kill=False),
         placeable=True,
     ) -> None:
         """Initialize with given parameters."""
@@ -97,7 +97,7 @@ class EnemyLoc:
         self.default_type = EnemySubtype.GroundSimple
         self.allowed_enemies = []
         self.idle_speed: Union[int, None] = None
-        self.aggro_speed:  Union[int, None]  = None
+        self.aggro_speed: Union[int, None] = None
         self.respawns = respawns
         if enable_randomization:
             if default_enemy in EnemyMetaData:

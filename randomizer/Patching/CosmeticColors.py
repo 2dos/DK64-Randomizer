@@ -768,7 +768,7 @@ def writeKasplatHairColorToROM(color, table_index, file_index, format: str):
         bytes_array.extend(null_color)
     for i in range(3):
         bytes_array.extend(color_lst)
-    data: Union[bytes, bytearray]  = bytearray(bytes_array)
+    data: Union[bytes, bytearray] = bytearray(bytes_array)
     if table_index == 25:
         data = gzip.compress(data, compresslevel=9)
     ROM().seek(file_start)
@@ -811,7 +811,7 @@ def writeWhiteKasplatHairColorToROM(color1, color2, table_index, file_index, for
         bytes_array.extend(null_color)
     for i in range(3):
         bytes_array.extend(color_lst_0)
-    data: Union[bytes, bytearray]  = bytearray(bytes_array)
+    data: Union[bytes, bytearray] = bytearray(bytes_array)
     if table_index == 25:
         data = gzip.compress(data, compresslevel=9)
     ROM().seek(file_start)
@@ -841,7 +841,7 @@ def writeKlaptrapSkinColorToROM(color_index, table_index, file_index, format: st
     for i in range(3):
         color_lst = calculateKlaptrapPixel(list(pix[(22 + i), 42]), format)
         bytes_array.extend(color_lst)
-    data: Union[bytes, bytearray]  = bytearray(bytes_array)
+    data: Union[bytes, bytearray] = bytearray(bytes_array)
     if table_index == 25:
         data = gzip.compress(data, compresslevel=9)
     ROM().seek(file_start)
@@ -886,7 +886,7 @@ def writeSpecialKlaptrapTextureToROM(color_index, table_index, file_index, forma
         else:
             color_lst = calculateKlaptrapPixel(list(pixels_original[(22 + i)][42]), format)
         bytes_array.extend(color_lst)
-    data: Union[bytes, bytearray]  = bytearray(bytes_array)
+    data: Union[bytes, bytearray] = bytearray(bytes_array)
     if table_index == 25:
         data = gzip.compress(data, compresslevel=9)
     ROM().seek(file_start)

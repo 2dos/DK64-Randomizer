@@ -66,6 +66,7 @@ if TYPE_CHECKING:
     from randomizer.LogicClasses import LogicVarHolder, Region
     from randomizer.Spoiler import Spoiler
 
+
 def KasplatShuffle(spoiler: Spoiler, LogicVariables: LogicVarHolder) -> None:
     """Facilitate the shuffling of kasplat types."""
     # If these were ever set at any prior point (likely only relevant running locally) then reset them - the upcoming methods will handle this TODO: maybe do this on other shufflers
@@ -126,6 +127,7 @@ def GetExitLevelExit(region: Region) -> Transitions:
     elif level == Levels.CreepyCastle:
         return ShuffleExits.ShufflableExits[Transitions.CastleToIsles].shuffledId
     return Transitions.Empty
+
 
 def GetLobbyOfRegion(region):
     """Get the lobby region for the parameter's region."""
@@ -421,6 +423,7 @@ def GetAccessibleLocations(
         return [x for x in spoiler.LocationList if x not in accessible and not spoiler.LocationList[x].inaccessible]
     return False
 
+
 def VerifyWorld(spoiler: Spoiler) -> bool:
     """Make sure all item locations are reachable on current world graph with constant items placed and all other items owned."""
     settings = spoiler.settings
@@ -612,7 +615,7 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
                     coinDifferential[kong] = coinsAfter[kong] - coinsBefore[kong]
                 # print("Coin differential: " + str(coinDifferential))
                 shopDifferentials[shopLocation] = coinDifferential
-                if hasattr(reachableAfter, '__iter__'):
+                if hasattr(reachableAfter, "__iter__"):
                     shopUnlocksItems[shopLocation] = [spoiler.LocationList[x].item for x in reachableAfter if x not in reachable and spoiler.LocationList[x].item is not None]
                     # Determine if this is the new worst move
                 if locationToBuy is None:
@@ -1218,7 +1221,7 @@ def AssumedFill(spoiler: Spoiler, itemsToPlace: List[Items], ownedItems: Optiona
                         js.postMessage("Failed placing item " + ItemList[item].name + " in location " + spoiler.LocationList[locationId].name + ", due to too few remaining locations in play")
                         valid = False
                         break
-                    
+
                     if len(validReachable) > 1:
                         # Remove one so same location can't be "used" twice
                         validReachable.remove(validReachable[0])

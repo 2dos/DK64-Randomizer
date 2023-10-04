@@ -7,7 +7,6 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
 
 
-
 class KasplatLocation:
     """Class which stores name and logic for a kasplat location."""
 

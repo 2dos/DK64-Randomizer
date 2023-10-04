@@ -79,6 +79,8 @@ from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple, Union, L
 
 if TYPE_CHECKING:
     from randomizer.Spoiler import Spoiler
+
+
 class Settings:
     """Class used to store settings for seed generation."""
 
@@ -98,7 +100,7 @@ class Settings:
         self.rom_data = 0x1FED020
         self.move_location_data = 0x1FEF000
         self.form_data = form_data
-        
+
         self.apply_form_data(form_data)
         self.seed_id = str(self.seed)
         if self.generate_spoilerlog is None:
@@ -163,12 +165,10 @@ class Settings:
 
         self.resolve_settings()
 
-
-
-
     def apply_form_data(self, form_data: dict):
         """Convert and apply the provided form data to this class."""
-        def get_enum_value(keyString:str, valueString: Union[str, int]) -> Any:
+
+        def get_enum_value(keyString: str, valueString: Union[str, int]) -> Any:
             """Take in a key and value, and return an enum."""
             try:
                 if isinstance(valueString, int):
@@ -177,6 +177,7 @@ class Settings:
                     return SettingsMap[keyString][valueString]
             except Exception:
                 raise ValueError(f"Value '{valueString}' is invalid for setting '{keyString}'.")
+
         for k, v in form_data.items():
             # If this setting key is associated with an enum, convert the
             # value(s) to that enum.

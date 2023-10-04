@@ -19,6 +19,7 @@ def getFile(filename):
 with open("./static/patches/pointer_addresses.json", "rb") as file:
     pointer_addresses = json.loads(file.read())
 
+
 class jsdoc:
     def __init__(self, title="", content="", language=""):
         self.title = title
@@ -31,6 +32,7 @@ class jsdoc:
 
     def getElementById(self, element_id):
         return self.elements.get(element_id, None)
+
 
 document = jsdoc()
 cosmetics = document

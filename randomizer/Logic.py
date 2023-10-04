@@ -51,7 +51,6 @@ from randomizer.ShuffleKasplats import constants, shufflable
 from randomizer.Enums.Regions import Regions
 
 
-
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
 
 

@@ -73,6 +73,7 @@ class Minigames(Enum):
     ChunkyShooting = auto()
     RambiArena = auto()
     EnguardeArena = auto()
+
     def __eq__(self, other):
         if isinstance(other, type(self)):
             return self is other
@@ -94,7 +95,7 @@ class Minigames(Enum):
     def __to_bytes(self, length, byteorder, signed):
         return self.value.to_bytes(length, byteorder, signed=signed)
 
-    def to_bytes(self, length, byteorder='big', signed=False):
+    def to_bytes(self, length, byteorder="big", signed=False):
         return self.__to_bytes(length, byteorder, signed)
 
     def __sub__(self, other):
@@ -115,5 +116,6 @@ class Minigames(Enum):
         elif isinstance(other, int):
             return self.value <= other
         return NotImplemented
+
     def __index__(self):
         return self.value

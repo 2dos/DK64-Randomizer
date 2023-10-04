@@ -148,6 +148,7 @@ def load_base_rom(default_file: Optional[BytesIO] = None) -> None:
     except Exception as e:
         pass
 
+
 class LocalROM:
     """Patcher for ROM files loaded via Rompatcherjs."""
 

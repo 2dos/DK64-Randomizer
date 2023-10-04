@@ -223,7 +223,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         key_data_type = SettingsStringTypeMap[key_enum]
         # Encode the key.
         key_size = max([member.value for member in SettingsStringEnum]).bit_length()
-        bitstring += bin(key_enum)[2:].zfill(key_size)
+        bitstring += bin(int(key_enum))[2:].zfill(key_size)
         if key_data_type == SettingsStringDataType.bool:
             bitstring += "1" if value else "0"
         elif key_data_type == SettingsStringDataType.int4:

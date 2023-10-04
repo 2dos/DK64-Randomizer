@@ -194,6 +194,7 @@ class Items(Enum):
 
     # Adding new items to the end of the list preserves existing item selectors
     ProgressiveSlam3 = auto()
+
     def __eq__(self, other):
         if isinstance(other, type(self)):
             return self is other
@@ -215,7 +216,7 @@ class Items(Enum):
     def __to_bytes(self, length, byteorder, signed):
         return self.value.to_bytes(length, byteorder, signed=signed)
 
-    def to_bytes(self, length, byteorder='big', signed=False):
+    def to_bytes(self, length, byteorder="big", signed=False):
         return self.__to_bytes(length, byteorder, signed)
 
     def __sub__(self, other):
@@ -236,5 +237,6 @@ class Items(Enum):
         elif isinstance(other, int):
             return self.value <= other
         return NotImplemented
+
     def __index__(self):
         return self.value

@@ -18,6 +18,7 @@ if TYPE_CHECKING:
     from randomizer.Enums.Transitions import Transitions
     from randomizer.Logic import LogicVarHolder
 
+
 class LocationLogic:
     """Logic for a location."""
 
@@ -72,7 +73,6 @@ class Collectible:
         self.vanilla = vanilla
         self.name = name
         self.locked = locked
-
 
 
 class Region:

@@ -18,7 +18,7 @@ human_hint_doors: Dict[str, dict] = {
     "Crystal Caves": {},
     "Creepy Castle": {},
 }
-human_portal_doors: Dict[str, dict]  = {
+human_portal_doors: Dict[str, dict] = {
     "Jungle Japes": {},
     "Angry Aztec": {},
     "Frantic Factory": {},
@@ -27,7 +27,7 @@ human_portal_doors: Dict[str, dict]  = {
     "Crystal Caves": {},
     "Creepy Castle": {},
 }
-shuffled_door_data: Dict[Levels, list]  = {
+shuffled_door_data: Dict[Levels, list] = {
     Levels.JungleJapes: [],
     Levels.AngryAztec: [],
     Levels.FranticFactory: [],

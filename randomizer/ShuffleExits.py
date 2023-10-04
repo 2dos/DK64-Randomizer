@@ -305,7 +305,7 @@ def ShuffleLevelExits(settings: Settings, newLevelOrder: dict):
         backReverse.shuffled = True
         backReverse.shuffledId = cast(Transitions, frontExit.back.reverse)
 
-        shuffledLevelOrder[lobby_entrance_map[frontId] + 1] = lobby_entrance_map[backId]
+        shuffledLevelOrder[int(lobby_entrance_map[frontId]) + 1] = lobby_entrance_map[backId]
     settings.level_order = shuffledLevelOrder
 
 

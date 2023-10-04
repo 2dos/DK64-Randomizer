@@ -1812,7 +1812,9 @@ def compileHints(spoiler: Spoiler) -> bool:
     return True
 
 
-def getRandomHintLocation(location_list: List[HintLocation] | None = None, kongs: Optional[List[Kongs]] = None, levels: List[Levels] | None = None, move_name: str | None = None) -> HintLocation | None:
+def getRandomHintLocation(
+    location_list: List[HintLocation] | None = None, kongs: Optional[List[Kongs]] = None, levels: List[Levels] | None = None, move_name: str | None = None
+) -> HintLocation | None:
     """Return an unoccupied hint location. The parameters can be used to specify location requirements."""
     valid_unoccupied_hint_locations = [
         hint
@@ -2097,8 +2099,7 @@ def GetRegionOfLocation(spoiler: Spoiler, location_id: Locations) -> Region:
     raise Exception("Unable to find Region for Location")  # This should never trigger!
 
 
-def GenerateMultipathDict(
-    spoiler: Spoiler, useless_locations: Dict[Union[Items, Kongs], List[Any]]) -> Tuple[Dict[Locations, str], Dict[Locations, List[Locations]]]:
+def GenerateMultipathDict(spoiler: Spoiler, useless_locations: Dict[Union[Items, Kongs], List[Any]]) -> Tuple[Dict[Locations, str], Dict[Locations, List[Locations]]]:
     """Create multipath hint text and identify relevant goal locations for each eligible woth location.
 
     Returns two dicts.

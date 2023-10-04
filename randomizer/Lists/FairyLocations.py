@@ -6,6 +6,7 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
 from typing import Optional
 
+
 class Fence:
     """Stores information about a fence."""
 
