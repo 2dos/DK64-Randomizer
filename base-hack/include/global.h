@@ -30,6 +30,7 @@ extern overlays getOverlayFromMap(maps map);
 extern void* malloc_wipe(int size);
 extern int applyDamageMask(int player_index, int damage);
 extern void* replaceWaterTexture(int table, int file, int unk0, int unk1);
+extern void* replaceWaterTexture_spooky(int table, int file, int unk0, int unk1);
 extern int isBounceObject(int object);
 
 extern int getEnemyItem(int id);

@@ -1861,36 +1861,58 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
 
 def applyHolidayMode(settings):
     """Change grass texture to snow."""
+    HOLIDAY = "halloween"  # Or "christmas"
     if settings.holiday_setting:
-        ROM().seek(0x1FF8000)
-        snow_im = Image.new(mode="RGBA", size=((32, 32)))
-        snow_px = snow_im.load()
-        snow_by = []
-        for y in range(32):
-            for x in range(32):
-                rgba_px = int.from_bytes(ROM().readBytes(2), "big")
-                red = ((rgba_px >> 11) & 31) << 3
-                green = ((rgba_px >> 6) & 31) << 3
-                blue = ((rgba_px >> 1) & 31) << 3
-                alpha = (rgba_px & 1) * 255
-                snow_px[x, y] = (red, green, blue, alpha)
-        for dim in (32, 16, 8, 4):
-            snow_im = snow_im.resize((dim, dim))
-            px = snow_im.load()
-            for y in range(dim):
-                for x in range(dim):
-                    rgba_data = list(px[x, y])
-                    data = 0
-                    for c in range(3):
-                        data |= (rgba_data[c] >> 3) << (1 + (5 * c))
-                    if rgba_data[3] != 0:
-                        data |= 1
-                    snow_by.extend([(data >> 8), (data & 0xFF)])
-        byte_data = gzip.compress(bytearray(snow_by), compresslevel=9)
-        for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 0xF8, 0x136):
-            start = js.pointer_addresses[25]["entries"][img]["pointing_to"]
-            ROM().seek(start)
-            ROM().writeBytes(byte_data)
+        if HOLIDAY == "christmas":
+            ROM().seek(0x1FF8000)
+            snow_im = Image.new(mode="RGBA", size=((32, 32)))
+            snow_px = snow_im.load()
+            snow_by = []
+            for y in range(32):
+                for x in range(32):
+                    rgba_px = int.from_bytes(ROM().readBytes(2), "big")
+                    red = ((rgba_px >> 11) & 31) << 3
+                    green = ((rgba_px >> 6) & 31) << 3
+                    blue = ((rgba_px >> 1) & 31) << 3
+                    alpha = (rgba_px & 1) * 255
+                    snow_px[x, y] = (red, green, blue, alpha)
+            for dim in (32, 16, 8, 4):
+                snow_im = snow_im.resize((dim, dim))
+                px = snow_im.load()
+                for y in range(dim):
+                    for x in range(dim):
+                        rgba_data = list(px[x, y])
+                        data = 0
+                        for c in range(3):
+                            data |= (rgba_data[c] >> 3) << (1 + (5 * c))
+                        if rgba_data[3] != 0:
+                            data |= 1
+                        snow_by.extend([(data >> 8), (data & 0xFF)])
+            byte_data = gzip.compress(bytearray(snow_by), compresslevel=9)
+            for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 0xF8, 0x136):
+                start = js.pointer_addresses[25]["entries"][img]["pointing_to"]
+                ROM().seek(start)
+                ROM().writeBytes(byte_data)
+        elif HOLIDAY == "halloween":
+            ROM().seek(settings.rom_data + 0xDB)
+            ROM().writeMultipleBytes(1, 1)
+            for img in (0xBB2, 0xBB3):
+                side_im = getFile(25, img, True, 32, 16, TextureFormat.RGBA5551)
+                hueShift(side_im, -12)
+                side_by = []
+                side_px = side_im.load()
+                for y in range(16):
+                    for x in range(32):
+                        red_short = (side_px[x, y][0] >> 3) & 31
+                        green_short = (side_px[x, y][1] >> 3) & 31
+                        blue_short = (side_px[x, y][2] >> 3) & 31
+                        alpha_short = 1 if side_px[x, y][3] > 128 else 0
+                        value = (red_short << 11) | (green_short << 6) | (blue_short << 1) | alpha_short
+                        side_by.extend([(value >> 8) & 0xFF, value & 0xFF])
+                px_data = bytearray(side_by)
+                px_data = gzip.compress(px_data, compresslevel=9)
+                ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
+                ROM().writeBytes(px_data)
 
 
 def updateMillLeverTexture(settings: Settings) -> None:

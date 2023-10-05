@@ -16,6 +16,16 @@
                         </label>
                         {{ list_selector(itemRando, "item_rando_list", "ITEM RANDO SELECTOR", "This will open a popup that will let you customize what items are shuffled in the pool.&#10;This defaults to All options.", 15) }}
                     {# Remove end </div> as it's included in the macro for formatting #}
+                    <div class="form-check form-switch item-switch" style="max-height: 24px;">
+                        <label data-toggle="tooltip" title="Sparkling enemies can drop major items. Highly chaotic, adding lots of checks all over the world.">
+                            <input class="form-check-input"
+                                    type="checkbox"
+                                    name="enemy_drop_rando"
+                                    id="enemy_drop_rando"
+                                    value="True"/>
+                            Dropsanity
+                        </label>
+                    </div>
                     <div class="item-select">
                         <p class="select-title">Move Randomizer</p>
                         <select name="move_rando"

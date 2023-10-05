@@ -112,10 +112,16 @@ int addActorDef(int index, int actor, int model, unsigned int func_0, unsigned i
     return index + 1;
 }
 
+#define MODEL_CHAIN 0x80
+
 void initActorDefs(void) {
     /**
      * @brief Initialize actor definitions table
      */
+    if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
+        ActorBehaviourTable[12].model = MODEL_CHAIN;
+        ActorBehaviourTable[49].model = MODEL_CHAIN;
+    }
     dk_memcpy(&actor_defs[0], &ActorBehaviourTable[0], 128*sizeof(actor_behaviour_def));
     int index = addActorDef(128, NEWACTOR_NINTENDOCOIN, 0, 0x80689F80, 0x8068A10C, 0, 1); // Nintendo Coin
     index = addActorDef(index, NEWACTOR_RAREWARECOIN, 0, 0x80689F80, 0x8068A10C, 0, 1); // Rareware Coin

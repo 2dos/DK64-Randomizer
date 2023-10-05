@@ -31,6 +31,7 @@
     "enable_progressive_hints": false,
     "enable_tag_anywhere": true,
     "enemies_selected": [],
+    "enemy_drop_rando": false,
     "enemy_rando": true,
     "enemy_speed_rando": true,
     "excluded_songs_selected": [],

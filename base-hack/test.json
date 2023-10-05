@@ -249,8 +249,8 @@
    "location_visuals":7,
    "microhints":2,
    "misc_cosmetic_on":1,
-   "seasonal_changes":0,
-   "colorblind_mode":3,
+   "seasonal_changes":1,
+   "colorblind_mode":0,
    "wrinkly_rgb":[
       0,
       0,
