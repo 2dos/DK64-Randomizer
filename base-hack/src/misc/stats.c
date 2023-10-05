@@ -74,7 +74,6 @@ int getBitSize(extra_global_data data_type, int sub_index) {
 }
 
 int ReadExtraData(extra_global_data data_type, int sub_index) {
-    return 0;
     int bit_offset = getBitOffset(data_type, sub_index);
     unsigned char* start = getBonusBlockStart() + (bit_offset >> 3);
     bit_offset &= 7;
@@ -94,7 +93,6 @@ int ReadExtraData(extra_global_data data_type, int sub_index) {
 }
 
 void SaveExtraData(extra_global_data data_type, int sub_index, int value) {
-    return;
     int bit_offset = getBitOffset(data_type, sub_index);
     unsigned char* start = getBonusBlockStart() + (bit_offset >> 3);
     bit_offset &= 7;
