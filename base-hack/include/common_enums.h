@@ -592,6 +592,7 @@ typedef enum file_data_indexes {
 typedef enum extra_global_data {
 	EGD_LEVELIGT,
 	EGD_HELMHURRYIGT,
+	EGD_HELMHURRYDISABLE,
 	EGD_BONUSSTAT,
 	EGD_KONGIGT,
 	EGD_FILENAME,

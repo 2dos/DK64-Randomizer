@@ -83,7 +83,7 @@ void initFiles(void) {
 	 * 
 	 */
     // Save File Expansion
-    int balloon_patch_count = 300; // Normally 121
+    int balloon_patch_count = 150; // Normally 121
 	int static_expansion = static_expansion_size;
 	if (Rando.enemy_item_rando) {
 		static_expansion += ENEMIES_TOTAL;
