@@ -91,7 +91,7 @@ class Spoiler:
         self.cb_placements: List[Any] = []
         self.coin_placements: List[Any] = []
         self.hint_distribution: Dict[HintType, int] = {}
-        self.text_changes: Dict[Union[str, int], object] = {}
+        self.text_changes: Dict[Union[str, int], List] = {}
         # 0: Cranky, 1: Funky, 2: Candy
         for move_master_type in range(3):
             master_moves: List[Any] = []

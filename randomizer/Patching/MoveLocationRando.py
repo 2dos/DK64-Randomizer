@@ -6,7 +6,7 @@ from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Spoiler import Spoiler
-from typing import List, Tuple, Union
+from typing import Dict, List, Tuple, Union
 
 # /* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.
 # /* 0x0A8 */ unsigned char dk_crankymoves[7]; // First 4 bits indicates the moves type, 0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 0xF = No Upgrade. Last 4 bits indicate move level (eg. 1 = Baboon Blast, 2 = Strong Kong, 3 = Gorilla Grab). Each item in the array indicates the level it is given (eg. 1st slot is purchased in Japes, 2nd for Aztec etc.)
@@ -62,26 +62,27 @@ def pushItemMicrohints(spoiler: Spoiler, move_dict: dict, level: int, kong: int,
     if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
         if kong != Kongs.any or slot == 0:
             move = None  # Using no item for the purpose of a default
-            hinted_items = {
+            hinted_items: Dict[Items, List[List]] = {
                 # Key = Item, Value = Textbox index in text file 19
-                Items.Monkeyport: [("special", 2, Kongs.tiny), 26, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
-                Items.GorillaGone: [("special", 2, Kongs.chunky), 25, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
-                Items.Bongos: [("instrument", 0, Kongs.donkey), 27, [MicrohintsEnabled.all]],
-                Items.Triangle: [("instrument", 0, Kongs.chunky), 28, [MicrohintsEnabled.all]],
-                Items.Saxophone: [("instrument", 0, Kongs.tiny), 29, [MicrohintsEnabled.all]],
-                Items.Trombone: [("instrument", 0, Kongs.lanky), 30, [MicrohintsEnabled.all]],
-                Items.Guitar: [("instrument", 0, Kongs.diddy), 31, [MicrohintsEnabled.all]],
-                Items.ProgressiveSlam: [("slam", 1, Kongs.any), 33, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
+                Items.Monkeyport: [["special", 2, Kongs.tiny], [26], [MicrohintsEnabled.base, MicrohintsEnabled.all]],
+                Items.GorillaGone: [["special", 2, Kongs.chunky], [25], [MicrohintsEnabled.base, MicrohintsEnabled.all]],
+                Items.Bongos: [["instrument", 0, Kongs.donkey], [27], [MicrohintsEnabled.all]],
+                Items.Triangle: [["instrument", 0, Kongs.chunky], [28], [MicrohintsEnabled.all]],
+                Items.Saxophone: [["instrument", 0, Kongs.tiny], [29], [MicrohintsEnabled.all]],
+                Items.Trombone: [["instrument", 0, Kongs.lanky], [30], [MicrohintsEnabled.all]],
+                Items.Guitar: [["instrument", 0, Kongs.diddy], [31], [MicrohintsEnabled.all]],
+                Items.ProgressiveSlam: [["slam", 1, Kongs.any], [33], [MicrohintsEnabled.base, MicrohintsEnabled.all]],
             }
             for item_hint in hinted_items:
                 move_data = hinted_items[item_hint][0]
-                if (move_dict["move_type"] == move_data[0] and move_dict["move_lvl"] == move_data[1] and move_dict["move_kong"] == move_data[2]) or (
+                if (move_dict["move_type"] == move_data[0] and move_dict["move_lvl"] == move_data[1][0] and move_dict["move_kong"] == move_data[2]) or (
                     move_dict["move_type"] == move_data[0] and move_data[0] == "slam"
                 ):
                     if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][2]):
                         move = item_hint
+
             if move is not None:
-                data = {"textbox_index": hinted_items[move][1], "mode": "replace_whole", "target": spoiler.microhints[ItemList[move].name]}
+                data = {"textbox_index": hinted_items[move][1][0], "mode": "replace_whole", "target": spoiler.microhints[ItemList[move].name]}
                 if 19 in spoiler.text_changes:
                     spoiler.text_changes[19].append(data)
                 else:
@@ -167,7 +168,7 @@ def randomize_moves(spoiler: Spoiler):
         for shop in range(3):
             shop_lst = []
             for kong in range(5):
-                kong_lst = []
+                kong_lst: List = []
                 for level in range(8):
                     kong_lst.append([])
                 shop_lst.append(kong_lst)
@@ -175,10 +176,8 @@ def randomize_moves(spoiler: Spoiler):
         for shop in range(3):
             for level in range(8):
                 is_shared = True
-                default = 0
+                default = move_arrays[0][shop][0][level]
                 for kong in range(5):
-                    if kong == 0:
-                        default = move_arrays[0][shop][kong][level]
                     if not dictEqual(default, move_arrays[0][shop][kong][level]):
                         is_shared = False
                 for kong in range(5):
