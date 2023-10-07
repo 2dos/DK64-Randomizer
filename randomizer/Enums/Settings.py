@@ -821,6 +821,7 @@ class SettingsStringEnum(Enum):
     enable_progressive_hints = 154
     progressive_hint_text = 155
     random_starting_move_list_selected = 156
+
     def __eq__(self, other):
         if isinstance(other, type(self)):
             return self is other
@@ -838,8 +839,10 @@ class SettingsStringEnum(Enum):
         if isinstance(other, int):
             return self.value % other
         raise TypeError("Unsupported operand types for % ({} and {})".format(type(self).__name__, type(other).__name__))
+
     def __hash__(self):
         return hash(self.value)
+
     def __to_bytes(self, length, byteorder, signed):
         return self.value.to_bytes(length, byteorder, signed=signed)
 

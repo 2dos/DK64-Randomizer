@@ -46,8 +46,10 @@ class EnemySubtype(Enum):
         elif isinstance(other, int):
             return self.value >= other
         return NotImplemented
+
     def __hash__(self):
         return hash(self.value)
+
     def __le__(self, other):
         if isinstance(other, type(self)):
             return self.value <= other.value
@@ -57,3 +59,15 @@ class EnemySubtype(Enum):
 
     def __index__(self):
         return self.value
+
+    def __lt__(self, other):
+        if isinstance(other, int):
+            return self.value < other
+        return NotImplemented
+
+    def __gt__(self, other):
+        if isinstance(other, type(self)):
+            return self.value > other.value
+        elif isinstance(other, int):
+            return self.value > other
+        return NotImplemented

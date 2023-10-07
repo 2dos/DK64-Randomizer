@@ -5,7 +5,8 @@ import json
 import math
 import random
 from random import randint
-
+from enum import Enum
+from randomizer.Enums.EnumEncoder import EnumEncoder
 import randomizer.ItemPool as ItemPool
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
@@ -105,7 +106,7 @@ class Settings:
         self.seed_id = str(self.seed)
         if self.generate_spoilerlog is None:
             self.generate_spoilerlog: bool = False
-        self.seed = str(self.seed) + self.__hash + str(json.dumps(form_data))
+        self.seed = str(self.seed) + self.__hash + str(json.dumps(form_data, cls=EnumEncoder))
         self.set_seed()
         self.seed_hash = [random.randint(0, 9) for i in range(5)]
         self.krool_keys_required: List[int] = []
@@ -173,6 +174,9 @@ class Settings:
             try:
                 if isinstance(valueString, int):
                     return SettingsMap[keyString](valueString)
+                # Else if its an Enum convert it to an int
+                elif isinstance(valueString, Enum):
+                    return SettingsMap[keyString](valueString.value)
                 else:
                     return SettingsMap[keyString][valueString]
             except Exception:

@@ -17,7 +17,7 @@ MACROS = [
     ("NOT_MAIN", "1"),
 ]
 
-if os.name == 'nt':
+if os.name == "nt":
     MACROS.append(("XD3_WIN32", "1"))
     MACROS.append(("XD3_STDIO", "0"))
     MACROS.append(("XD3_POSIX", "0"))
@@ -33,20 +33,23 @@ else:
 INCLUDES = ["xdelta/xdelta3"]
 SOURCES = ["pyxdelta.c"]
 
+
 def main():
-    setup(name="pyxdelta",
-          version="0.1.2",
-          author="Illidan",
-          description="Python interface for xdelta.",
-          long_description=long_description,
-          long_description_content_type="text/markdown",
-          url="https://github.com/Illidanz/pyxdelta",
-          classifiers=[
-              "Programming Language :: Python :: 3",
-              "License :: OSI Approved :: MIT License",
-          ],
-          ext_modules=[Extension("pyxdelta", SOURCES, include_dirs=INCLUDES, define_macros=MACROS, extra_compile_args=EXTRA_COMPILE_ARGS)]
-        )
+    setup(
+        name="pyxdelta",
+        version="0.1.2",
+        author="Illidan",
+        description="Python interface for xdelta.",
+        long_description=long_description,
+        long_description_content_type="text/markdown",
+        url="https://github.com/Illidanz/pyxdelta",
+        classifiers=[
+            "Programming Language :: Python :: 3",
+            "License :: OSI Approved :: MIT License",
+        ],
+        ext_modules=[Extension("pyxdelta", SOURCES, include_dirs=INCLUDES, define_macros=MACROS, extra_compile_args=EXTRA_COMPILE_ARGS)],
+    )
+
 
 if __name__ == "__main__":
     main()

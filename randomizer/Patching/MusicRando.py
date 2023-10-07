@@ -8,6 +8,7 @@ from randomizer.Lists.Songs import song_data, Song
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
 from typing import Dict, List, Any
+
 storage_banks = {
     0: 0x8000,
     1: 0x11B6,
