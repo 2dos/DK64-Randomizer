@@ -327,19 +327,19 @@ def decrypt_settings_string_enum(encrypted_string: str) -> Dict[str, Any]:
             key_list_data_type = SettingsStringListTypeMap[key_enum]
             for _ in range(list_length):
                 list_val = None
-                if key_list_data_type == SettingsStringDataType.bool:
+                if key_list_data_type == SettingsStringDataType["bool"]:
                     list_val = True if bitstring[bit_index] == "1" else False
                     bit_index += 1
-                elif key_list_data_type == SettingsStringDataType.int4:
+                elif key_list_data_type == SettingsStringDataType["int4"]:
                     list_val = bin_string_to_int(bitstring[bit_index : bit_index + 4], 4)
                     bit_index += 4
-                elif key_list_data_type == SettingsStringDataType.int8:
+                elif key_list_data_type == SettingsStringDataType["int8"]:
                     list_val = bin_string_to_int(bitstring[bit_index : bit_index + 8], 8)
                     bit_index += 8
-                elif key_list_data_type == SettingsStringDataType.int16:
+                elif key_list_data_type == SettingsStringDataType["int16"]:
                     list_val = bin_string_to_int(bitstring[bit_index : bit_index + 16], 16)
                     bit_index += 16
-                elif key_data_type == SettingsStringDataType.var_int:
+                elif key_data_type == SettingsStringDataType["var_int"]:
                     bit_len, _ = get_var_int_encode_details(key_enum)
                     list_val = decode_var_int(key_enum, bitstring[bit_index : bit_index + bit_len])
                     bit_index += bit_len
