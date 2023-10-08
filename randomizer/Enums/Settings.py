@@ -27,6 +27,9 @@ class ActivateAllBananaports(Enum):
     all = 1
     isles = 2
 
+    def __int__(self):
+        return self.value
+
 
 class BananaportRando(Enum):
     """Determines how bananaports are shuffled.
@@ -44,6 +47,9 @@ class BananaportRando(Enum):
     crossmap_coupled = 2
     crossmap_decoupled = 3
 
+    def __int__(self):
+        return self.value
+
 
 class CharacterColors(Enum):
     """Determines the colors for the Kongs, Rambi and Enguarde.
@@ -56,6 +62,9 @@ class CharacterColors(Enum):
     vanilla = auto()
     randomized = auto()
     custom = auto()
+
+    def __int__(self):
+        return self.value
 
 
 class ColorblindMode(Enum):
@@ -77,6 +86,9 @@ class ColorblindMode(Enum):
     deut = 2
     trit = 3
 
+    def __int__(self):
+        return self.value
+
 
 class CrownEnemyRando(Enum):
     """Determines the difficulty of enemies in Battle Arenas."""
@@ -85,6 +97,9 @@ class CrownEnemyRando(Enum):
     easy = 1
     medium = 2
     hard = 3
+
+    def __int__(self):
+        return self.value
 
 
 class DamageAmount(Enum):
@@ -101,6 +116,9 @@ class DamageAmount(Enum):
     quad = 2
     ohko = 3
 
+    def __int__(self):
+        return self.value
+
 
 class DPadDisplays(Enum):
     """Varying methods of displaying the dpad.
@@ -114,6 +132,9 @@ class DPadDisplays(Enum):
     on = 1
     minimal = 2
 
+    def __int__(self):
+        return self.value
+
 
 class ExcludedSongs(Enum):
     """Determines the types of songs excluded."""
@@ -122,8 +143,11 @@ class ExcludedSongs(Enum):
     transformation = 2
     pause_music = 3
     sub_areas = 4
+
     # shops = 5
     # events = 6
+    def __int__(self):
+        return self.value
 
 
 class ExtraCutsceneSkips(Enum):
@@ -140,6 +164,9 @@ class ExtraCutsceneSkips(Enum):
     off = 0
     press = 1
     auto = 2
+
+    def __int__(self):
+        return self.value
 
 
 class FillAlgorithm(Enum):
@@ -161,6 +188,9 @@ class FillAlgorithm(Enum):
     random = auto()
     careful_random = auto()
 
+    def __int__(self):
+        return self.value
+
 
 class FreeTradeSetting(Enum):
     """Determines if Kongs can collect items assigned to other Kongs.
@@ -174,6 +204,9 @@ class FreeTradeSetting(Enum):
     none = 0
     not_blueprints = 1
     major_collectibles = 2
+
+    def __int__(self):
+        return self.value
 
 
 class GlitchesSelected(Enum):
@@ -196,6 +229,9 @@ class GlitchesSelected(Enum):
     swim_through_shores = 11
     tag_barrel_storage = 12
     troff_n_scoff_skips = 13
+
+    def __int__(self):
+        return self.value
 
 
 class HelmDoorItem(Enum):
@@ -231,6 +267,9 @@ class HelmDoorItem(Enum):
     req_bean = 11
     req_pearl = 12
 
+    def __int__(self):
+        return self.value
+
 
 class HelmSetting(Enum):
     """Determines where the player starts when entering Hideout Helm.
@@ -248,6 +287,9 @@ class HelmSetting(Enum):
     skip_start = 1
     skip_all = 2
 
+    def __int__(self):
+        return self.value
+
 
 class HardModeSelected(Enum):
     """Various hard mode changes that can be applied.
@@ -261,6 +303,9 @@ class HardModeSelected(Enum):
     hard_enemies = 3
     water_is_lava = 4
     reduced_fall_damage_threshold = 5
+
+    def __int__(self):
+        return self.value
 
 
 # TODO: merge this with the Types enum.
@@ -288,6 +333,9 @@ class ItemRandoListSelected(Enum):
     crateitem = 15
     enemies = 16
 
+    def __int__(self):
+        return self.value
+
 
 class KasplatRandoSetting(Enum):
     """Determines if and how Kasplats are randomized.
@@ -303,6 +351,9 @@ class KasplatRandoSetting(Enum):
     vanilla_locations = 1
     location_shuffle = 2
 
+    def __int__(self):
+        return self.value
+
 
 class KlaptrapModel(Enum):
     """Determines which model is used for Klaptrap in Beaver Bother."""
@@ -312,6 +363,9 @@ class KlaptrapModel(Enum):
     red = auto()
     random_klap = auto()
     random_model = auto()
+
+    def __int__(self):
+        return self.value
 
 
 class KrushaUi(Enum):
@@ -324,6 +378,9 @@ class KrushaUi(Enum):
     tiny = 4
     chunky = 5
     random = 6
+
+    def __int__(self):
+        return self.value
 
 
 class LevelRandomization(Enum):
@@ -342,6 +399,9 @@ class LevelRandomization(Enum):
     loadingzone = 2
     loadingzonesdecoupled = 3
 
+    def __int__(self):
+        return self.value
+
 
 class LogicType(Enum):
     """The logic use to place items in the seed.
@@ -354,6 +414,9 @@ class LogicType(Enum):
     glitchless = 1
     glitch = 2
     nologic = 3
+
+    def __int__(self):
+        return self.value
 
 
 class MicrohintsEnabled(Enum):
@@ -373,6 +436,9 @@ class MicrohintsEnabled(Enum):
     base = 1
     all = 2
 
+    def __int__(self):
+        return self.value
+
 
 class MinigameBarrels(Enum):
     """Determines how the minigames are shuffled between barrels.
@@ -389,6 +455,9 @@ class MinigameBarrels(Enum):
     skip = auto()
     random = auto()
     selected = auto()
+
+    def __int__(self):
+        return self.value
 
 
 class MinigamesListSelected(Enum):
@@ -415,6 +484,9 @@ class MinigamesListSelected(Enum):
     peril_path_panic = 15
     helm_minigames = 16
     arenas = 17
+
+    def __int__(self):
+        return self.value
 
 
 class MiscChangesSelected(Enum):
@@ -448,6 +520,9 @@ class MiscChangesSelected(Enum):
     raise_fungi_dirt_patch = 22
     global_instrument = 23
 
+    def __int__(self):
+        return self.value
+
 
 class MoveRando(Enum):
     """Determines if and how moves are randomized.
@@ -468,6 +543,9 @@ class MoveRando(Enum):
     start_with = 3
     item_shuffle = 4
 
+    def __int__(self):
+        return self.value
+
 
 class RandomPrices(Enum):
     """Determines how and if shop prices are randomized.
@@ -487,6 +565,9 @@ class RandomPrices(Enum):
     high = 4
     extreme = 5
 
+    def __int__(self):
+        return self.value
+
 
 class ShockwaveStatus(Enum):
     """Determines how Banana Fairy Isle is handled.
@@ -504,6 +585,9 @@ class ShockwaveStatus(Enum):
     shuffled_decoupled = 2
     start_with = 3
 
+    def __int__(self):
+        return self.value
+
 
 class ShuffleLoadingZones(Enum):
     """Determines how loading zones are shuffled.
@@ -519,6 +603,9 @@ class ShuffleLoadingZones(Enum):
     levels = auto()
     all = auto()
 
+    def __int__(self):
+        return self.value
+
 
 class SoundType(Enum):
     """Determines the default sound mode.
@@ -532,6 +619,9 @@ class SoundType(Enum):
     mono = 1
     surround = 2
 
+    def __int__(self):
+        return self.value
+
 
 class TrainingBarrels(Enum):
     """Determines if and how training barrels are randomized.
@@ -543,6 +633,9 @@ class TrainingBarrels(Enum):
 
     normal = 0
     shuffled = 1
+
+    def __int__(self):
+        return self.value
 
 
 class WinCondition(Enum):
@@ -568,6 +661,9 @@ class WinCondition(Enum):
     poke_snap = 5
     all_keys = 6
 
+    def __int__(self):
+        return self.value
+
 
 class WrinklyHints(Enum):
     """Whether or not Wrinkly hints are replaced with useful randomizer hints.
@@ -585,6 +681,9 @@ class WrinklyHints(Enum):
     fixed_racing = 3
     item_hinting = 4
 
+    def __int__(self):
+        return self.value
+
 
 class SpoilerHints(Enum):
     """Whether or not spoiler-style hints are generated within the spoiler log for external trackers to use.
@@ -597,6 +696,9 @@ class SpoilerHints(Enum):
     off = 0
     vial_colors = 1
     points = 2
+
+    def __int__(self):
+        return self.value
 
 
 # ALL SELECT-BASED SETTINGS NEED AN ENTRY HERE!

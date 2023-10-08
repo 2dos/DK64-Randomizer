@@ -541,21 +541,21 @@ def place_randomized_items(spoiler):
                         ROM_COPY.seek(0x1FF1000 + (key_flags.index(item.old_flag) * 2))
                         ROM_COPY.writeMultipleBytes(actor_index, 2)
                     elif item.old_item == Types.RainbowCoin:
-                        index = item.location - Locations.RainbowCoin_Location00
+                        index = item.location - int(Locations.RainbowCoin_Location00)
                         if index < 16:
                             ROM_COPY.seek(0x1FF10E0 + (index * 2))
                             ROM_COPY.writeMultipleBytes(actor_index, 2)
                         else:
                             print("Dirt Patch Item Placement Error")
                     elif item.location >= Locations.MelonCrate_Location00 and item.location <= Locations.MelonCrate_Location12:
-                        index = item.location - Locations.MelonCrate_Location00
+                        index = item.location - int(Locations.MelonCrate_Location00)
                         if index < 13:
                             ROM_COPY.seek(0x1FF0E80 + (index * 2))
                             ROM_COPY.writeMultipleBytes(actor_index, 2)
                         else:
                             print("Melon Crate Item Placement Error")
                     elif item.location >= Locations.JapesMainEnemy_Start and item.location <= Locations.IslesMainEnemy_LowerFactoryPath1:
-                        index = item.location - Locations.JapesMainEnemy_Start
+                        index = item.location - int(Locations.JapesMainEnemy_Start)
                         ROM_COPY.seek(0x1FF9000 + (index * 4))
                         ROM_COPY.writeMultipleBytes(enemy_location_list[item.location].map, 1)
                         ROM_COPY.writeMultipleBytes(enemy_location_list[item.location].id, 1)

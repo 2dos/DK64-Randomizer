@@ -189,11 +189,17 @@ class Settings:
                 if isinstance(v, list):
                     list_value = []
                     for val in v:
-                        list_value.append(get_enum_value(k, val))
+                        if isinstance(val, Enum):
+                            list_value.append(get_enum_value(k, val.value))
+                        else:
+                            list_value.append(get_enum_value(k, val))
                     setattr(self, k, list_value)
                 else:
                     # Check if its an enum if it is get the enum value
-                    settingValue = get_enum_value(k, v)
+                    if isinstance(v, Enum):
+                        settingValue = get_enum_value(k, v.value)
+                    else:
+                        settingValue = get_enum_value(k, v)
                     setattr(self, k, settingValue)
             else:
                 # The value is a basic type, so assign it directly.
