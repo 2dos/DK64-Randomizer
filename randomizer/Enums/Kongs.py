@@ -71,6 +71,18 @@ class Kongs(Enum):
             return self.value > other
         return NotImplemented
 
+    def __lshift__(self, other):
+        if isinstance(other, int):
+            return self.value << other
+        raise TypeError("Unsupported operand types for << ({} and {})".format(type(self).__name__, type(other).__name__))
+
+    def __add__(self, other):
+        if isinstance(other, int):
+            return self.value + other
+        elif isinstance(other, Kongs):
+            return self.value + other.value
+        raise TypeError("Unsupported operand types for + ({} and {})".format(type(self).__name__, type(other).__name__))
+
 
 def GetKongs() -> List[Kongs]:
     """Return list of kongs without any."""

@@ -93,7 +93,9 @@ def ShuffleCBs(spoiler):
                 singles_lower = max(int(singles_left / (7 - level_index)) - 10, 0)
                 if global_divisor == 0:
                     bunches_upper = bunches_left
-                    singles_upper = min(singles_left, int((5 * (1127 - total_bunches - total_singles) - sum(kong_specific_left)) / 4))  # Places a hard cap of 1127 total singles+bunches
+                    singles_upper = min(
+                        singles_left, int((5 * (1127 - total_bunches - total_singles) - sum(kong_specific_left[k] for k in kong_specific_left if isinstance(kong_specific_left[k], int))) / 4)
+                    )  # Places a hard cap of 1127 total singles+bunches
                 else:
                     bunches_upper = min(int(bunches_left / (7 - level_index)) + 15, int(bunches_left / global_divisor))
                     singles_upper = min(int(singles_left / (7 - level_index)) + 10, int(singles_left / global_divisor))
