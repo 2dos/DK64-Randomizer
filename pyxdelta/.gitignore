@@ -1,0 +1,10 @@
+__pycache__
+.DS_Store
+build
+dist
+*.pyd
+*.so
+*.whl
+*.egg-info
+notes.md
+.vscode

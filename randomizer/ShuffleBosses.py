@@ -9,6 +9,7 @@ from randomizer.Enums.Settings import HardModeSelected
 from randomizer.Lists.Exceptions import BossOutOfLocationsException, FillException, ItemPlacementException
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import IsItemSelected
+from typing import List
 
 BossMapList = [Maps.JapesBoss, Maps.AztecBoss, Maps.FactoryBoss, Maps.GalleonBoss, Maps.FungiBoss, Maps.CavesBoss, Maps.CastleBoss]
 
@@ -73,7 +74,7 @@ def SelectRandomKongForBoss(boss_map: Maps, hard_bosses: bool):
     return random.choice(possibleKongs)
 
 
-def ShuffleKutoutKongs(boss_maps: array, boss_kongs: array, boss_kong_rando: bool):
+def ShuffleKutoutKongs(boss_maps: List[Maps], boss_kongs: array, boss_kong_rando: bool):
     """Shuffle the Kutout kong order."""
     vanillaKutoutKongs = [Kongs.lanky, Kongs.tiny, Kongs.chunky, Kongs.donkey, Kongs.diddy]
     kutout_kongs = []

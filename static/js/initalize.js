@@ -416,9 +416,15 @@ function generate_seed(url, json, git_branch) {
         console.log("seed gen waiting in queue")
         // Get the position in the queue
         position = data["position"]
-        $("#progress-text").text(
-          "Position in Queue: " + position
-        );
+        if (position == 0) {
+          $("#progress-text").text("Seed Gen Started");
+          $("#patchprogress").width("50%");
+        }
+        else{
+          $("#progress-text").text(
+            "Position in Queue: " + position
+          );
+        }
         $("#patchprogress").width("40%");
         setTimeout(function () {
           generate_seed(url, json, git_branch);

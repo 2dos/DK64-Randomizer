@@ -1,7 +1,7 @@
 """Stores the item class and a list of each item with its attributes."""
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Optional, Union
+from typing import TYPE_CHECKING, List, Optional, Union, Any, cast
 
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
@@ -13,12 +13,8 @@ from randomizer.Enums.Types import Types
 class Item:
     """Stores information about an item."""
 
-    def __init__(
-        self, name: str, playthrough: bool, type: Types, kong: Kongs, data: Optional[Union[List[Union[MoveTypes, int]], List[Union[MoveTypes, str, int]], List[Levels], List[int]]] = None
-    ) -> None:
+    def __init__(self, name: str, playthrough: bool, type: Types, kong: Kongs, data: Union[List[Union[MoveTypes, int]], List[Union[MoveTypes, str, int]], List[Levels], List[int]] = [-1]) -> None:
         """Initialize with given parameters."""
-        if data is None:
-            data = []
         self.name = name
         self.playthrough = playthrough
         self.type = type
@@ -100,54 +96,54 @@ ItemList = {
     Items.Lanky: Item("Lanky", True, Types.Kong, Kongs.any, [70]),
     Items.Tiny: Item("Tiny", True, Types.Kong, Kongs.any, [66]),
     Items.Chunky: Item("Chunky", True, Types.Kong, Kongs.any, [117]),
-    Items.Vines: Item("Vines", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "vine", 387]),
-    Items.Swim: Item("Diving", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "dive", 386]),
-    Items.Oranges: Item("Oranges", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "orange", 388]),
-    Items.Barrels: Item("Barrels", True, Types.TrainingBarrel, Kongs.any, [MoveTypes.Flag, "barrel", 389]),
-    Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop, Kongs.any, [MoveTypes.Slam, 2, -1]),
+    Items.Vines: Item("Vines", True, Types.TrainingBarrel, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Flag, "vine", 387])),
+    Items.Swim: Item("Diving", True, Types.TrainingBarrel, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Flag, "dive", 386])),
+    Items.Oranges: Item("Oranges", True, Types.TrainingBarrel, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Flag, "orange", 388])),
+    Items.Barrels: Item("Barrels", True, Types.TrainingBarrel, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Flag, "barrel", 389])),
+    Items.ProgressiveSlam: Item("Progressive Slam", True, Types.Shop, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Slam, 2, -1])),
     Items.ProgressiveSlam2: Item("Progressive Slam ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.ProgressiveSlam3: Item("Progressive Slam  ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
-    Items.ProgressiveDonkeyPotion: Item("Progressive Donkey Potion", True, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 1, -1]),
-    Items.BaboonBlast: Item("Baboon Blast", True, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 1, 0x8001]),
-    Items.StrongKong: Item("Strong Kong", True, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 2, 0x8002]),
-    Items.GorillaGrab: Item("Gorilla Grab", True, Types.Shop, Kongs.donkey, [MoveTypes.Moves, 3, 0x8003]),
-    Items.ProgressiveDiddyPotion: Item("Progressive Diddy Potion", True, Types.Shop, Kongs.diddy, [MoveTypes.Moves, 1, -1]),
-    Items.ChimpyCharge: Item("Chimpy Charge", True, Types.Shop, Kongs.diddy, [MoveTypes.Moves, 1, 0x9001]),
-    Items.RocketbarrelBoost: Item("Rocketbarrel Boost", True, Types.Shop, Kongs.diddy, [MoveTypes.Moves, 2, 0x9002]),
-    Items.SimianSpring: Item("Simian Spring", True, Types.Shop, Kongs.diddy, [MoveTypes.Moves, 3, 0x9003]),
-    Items.ProgressiveLankyPotion: Item("Progressive Lanky Potion", True, Types.Shop, Kongs.lanky, [MoveTypes.Moves, 1, -1]),
-    Items.Orangstand: Item("Orangstand", True, Types.Shop, Kongs.lanky, [MoveTypes.Moves, 1, 0xA001]),
-    Items.BaboonBalloon: Item("Baboon Balloon", True, Types.Shop, Kongs.lanky, [MoveTypes.Moves, 2, 0xA002]),
-    Items.OrangstandSprint: Item("Orangstand Sprint", True, Types.Shop, Kongs.lanky, [MoveTypes.Moves, 3, 0xA003]),
-    Items.ProgressiveTinyPotion: Item("Progressive Tiny Potion", True, Types.Shop, Kongs.tiny, [MoveTypes.Moves, 1, -1]),
-    Items.MiniMonkey: Item("Mini Monkey", True, Types.Shop, Kongs.tiny, [MoveTypes.Moves, 1, 0xB001]),
-    Items.PonyTailTwirl: Item("Pony Tail Twirl", True, Types.Shop, Kongs.tiny, [MoveTypes.Moves, 2, 0xB002]),
-    Items.Monkeyport: Item("Monkeyport", True, Types.Shop, Kongs.tiny, [MoveTypes.Moves, 3, 0xB003]),
-    Items.ProgressiveChunkyPotion: Item("Progressive Chunky Potion", True, Types.Shop, Kongs.chunky, [MoveTypes.Moves, 1, -1]),
-    Items.HunkyChunky: Item("Hunky Chunky", True, Types.Shop, Kongs.chunky, [MoveTypes.Moves, 1, 0xC001]),
-    Items.PrimatePunch: Item("Primate Punch", True, Types.Shop, Kongs.chunky, [MoveTypes.Moves, 2, 0xC002]),
-    Items.GorillaGone: Item("Gorilla Gone", True, Types.Shop, Kongs.chunky, [MoveTypes.Moves, 3, 0xC003]),
-    Items.Coconut: Item("Coconut", True, Types.Shop, Kongs.donkey, [MoveTypes.Guns, 1, 0x8201]),
-    Items.Peanut: Item("Peanut", True, Types.Shop, Kongs.diddy, [MoveTypes.Guns, 1, 0x9201]),
-    Items.Grape: Item("Grape", True, Types.Shop, Kongs.lanky, [MoveTypes.Guns, 1, 0xA201]),
-    Items.Feather: Item("Feather", True, Types.Shop, Kongs.tiny, [MoveTypes.Guns, 1, 0xB201]),
-    Items.Pineapple: Item("Pineapple", True, Types.Shop, Kongs.chunky, [MoveTypes.Guns, 1, 0xC201]),
-    Items.HomingAmmo: Item("Homing Ammo", True, Types.Shop, Kongs.any, [MoveTypes.Guns, 2, 0xD202]),
-    Items.SniperSight: Item("Sniper Sight", True, Types.Shop, Kongs.any, [MoveTypes.Guns, 3, 0xD203]),
-    Items.ProgressiveAmmoBelt: Item("Progressive Ammo Belt", False, Types.Shop, Kongs.any, [MoveTypes.AmmoBelt, 1, -1]),
+    Items.ProgressiveDonkeyPotion: Item("Progressive Donkey Potion", True, Types.Shop, Kongs.donkey, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 1, -1])),
+    Items.BaboonBlast: Item("Baboon Blast", True, Types.Shop, Kongs.donkey, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 1, 0x8001])),
+    Items.StrongKong: Item("Strong Kong", True, Types.Shop, Kongs.donkey, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 2, 0x8002])),
+    Items.GorillaGrab: Item("Gorilla Grab", True, Types.Shop, Kongs.donkey, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 3, 0x8003])),
+    Items.ProgressiveDiddyPotion: Item("Progressive Diddy Potion", True, Types.Shop, Kongs.diddy, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 1, -1])),
+    Items.ChimpyCharge: Item("Chimpy Charge", True, Types.Shop, Kongs.diddy, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 1, 0x9001])),
+    Items.RocketbarrelBoost: Item("Rocketbarrel Boost", True, Types.Shop, Kongs.diddy, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 2, 0x9002])),
+    Items.SimianSpring: Item("Simian Spring", True, Types.Shop, Kongs.diddy, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 3, 0x9003])),
+    Items.ProgressiveLankyPotion: Item("Progressive Lanky Potion", True, Types.Shop, Kongs.lanky, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 1, -1])),
+    Items.Orangstand: Item("Orangstand", True, Types.Shop, Kongs.lanky, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 1, 0xA001])),
+    Items.BaboonBalloon: Item("Baboon Balloon", True, Types.Shop, Kongs.lanky, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 2, 0xA002])),
+    Items.OrangstandSprint: Item("Orangstand Sprint", True, Types.Shop, Kongs.lanky, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 3, 0xA003])),
+    Items.ProgressiveTinyPotion: Item("Progressive Tiny Potion", True, Types.Shop, Kongs.tiny, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 1, -1])),
+    Items.MiniMonkey: Item("Mini Monkey", True, Types.Shop, Kongs.tiny, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 1, 0xB001])),
+    Items.PonyTailTwirl: Item("Pony Tail Twirl", True, Types.Shop, Kongs.tiny, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 2, 0xB002])),
+    Items.Monkeyport: Item("Monkeyport", True, Types.Shop, Kongs.tiny, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 3, 0xB003])),
+    Items.ProgressiveChunkyPotion: Item("Progressive Chunky Potion", True, Types.Shop, Kongs.chunky, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 1, -1])),
+    Items.HunkyChunky: Item("Hunky Chunky", True, Types.Shop, Kongs.chunky, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 1, 0xC001])),
+    Items.PrimatePunch: Item("Primate Punch", True, Types.Shop, Kongs.chunky, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 2, 0xC002])),
+    Items.GorillaGone: Item("Gorilla Gone", True, Types.Shop, Kongs.chunky, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Moves, 3, 0xC003])),
+    Items.Coconut: Item("Coconut", True, Types.Shop, Kongs.donkey, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Guns, 1, 0x8201])),
+    Items.Peanut: Item("Peanut", True, Types.Shop, Kongs.diddy, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Guns, 1, 0x9201])),
+    Items.Grape: Item("Grape", True, Types.Shop, Kongs.lanky, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Guns, 1, 0xA201])),
+    Items.Feather: Item("Feather", True, Types.Shop, Kongs.tiny, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Guns, 1, 0xB201])),
+    Items.Pineapple: Item("Pineapple", True, Types.Shop, Kongs.chunky, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Guns, 1, 0xC201])),
+    Items.HomingAmmo: Item("Homing Ammo", True, Types.Shop, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Guns, 2, 0xD202])),
+    Items.SniperSight: Item("Sniper Sight", True, Types.Shop, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Guns, 3, 0xD203])),
+    Items.ProgressiveAmmoBelt: Item("Progressive Ammo Belt", False, Types.Shop, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.AmmoBelt, 1, -1])),
     Items.ProgressiveAmmoBelt2: Item("Progressive Ammo Belt ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
-    Items.Bongos: Item("Bongos", True, Types.Shop, Kongs.donkey, [MoveTypes.Instruments, 1, 0x8401]),
-    Items.Guitar: Item("Guitar", True, Types.Shop, Kongs.diddy, [MoveTypes.Instruments, 1, 0x9401]),
-    Items.Trombone: Item("Trombone", True, Types.Shop, Kongs.lanky, [MoveTypes.Instruments, 1, 0xA401]),
-    Items.Saxophone: Item("Saxophone", True, Types.Shop, Kongs.tiny, [MoveTypes.Instruments, 1, 0xB401]),
-    Items.Triangle: Item("Triangle", True, Types.Shop, Kongs.chunky, [MoveTypes.Instruments, 1, 0xC401]),
-    Items.ProgressiveInstrumentUpgrade: Item("Progressive Instrument Upgrade", False, Types.Shop, Kongs.any, [MoveTypes.Instruments, 2, -1]),
+    Items.Bongos: Item("Bongos", True, Types.Shop, Kongs.donkey, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Instruments, 1, 0x8401])),
+    Items.Guitar: Item("Guitar", True, Types.Shop, Kongs.diddy, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Instruments, 1, 0x9401])),
+    Items.Trombone: Item("Trombone", True, Types.Shop, Kongs.lanky, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Instruments, 1, 0xA401])),
+    Items.Saxophone: Item("Saxophone", True, Types.Shop, Kongs.tiny, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Instruments, 1, 0xB401])),
+    Items.Triangle: Item("Triangle", True, Types.Shop, Kongs.chunky, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Instruments, 1, 0xC401])),
+    Items.ProgressiveInstrumentUpgrade: Item("Progressive Instrument Upgrade", False, Types.Shop, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Instruments, 2, -1])),
     Items.ProgressiveInstrumentUpgrade2: Item("Progressive Instrument Upgrade ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
     Items.ProgressiveInstrumentUpgrade3: Item("Progressive Instrument Upgrade  ", False, Types.Constant, Kongs.any),  # Only used for the starting move list selector modal
-    Items.Camera: Item("Fairy Camera", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "camera", 0x2FD]),
-    Items.Shockwave: Item("Shockwave", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "shockwave", 377]),
+    Items.Camera: Item("Fairy Camera", True, Types.Shockwave, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Flag, "camera", 0x2FD])),
+    Items.Shockwave: Item("Shockwave", True, Types.Shockwave, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Flag, "shockwave", 377])),
     Items.CameraAndShockwave: Item(
-        "Camera and Shockwave", True, Types.Shockwave, Kongs.any, [MoveTypes.Flag, "camera_shockwave", -2]
+        "Camera and Shockwave", True, Types.Shockwave, Kongs.any, cast(List[Union[MoveTypes, str, int]], [MoveTypes.Flag, "camera_shockwave", -2])
     ),  # -2 means do not use this rando_flag outside of full item rando
     Items.NintendoCoin: Item("Nintendo Coin", True, Types.Coin, Kongs.any, [132]),
     Items.RarewareCoin: Item("Rareware Coin", True, Types.Coin, Kongs.any, [379]),
@@ -283,7 +279,6 @@ HHItems = [
 for item in HHItems:
     HHItemSelector.append({"name": item[0], "value": item[0].lower().replace(" ", "_"), "tooltip": "", "default": item[1]})
 
-CustomStartingMoveSelector = []
 StartingMoveOptions = [
     Items.Vines,
     Items.Swim,
@@ -326,5 +321,4 @@ StartingMoveOptions = [
     Items.ProgressiveInstrumentUpgrade3,
 ]
 
-for item in StartingMoveOptions:
-    CustomStartingMoveSelector.append({"name": ItemList[item].name, "value": item.value, "tooltip": "", "state": 0})
+CustomStartingMoveSelector: List[Any] = [{"name": ItemList[item].name, "value": item.value, "tooltip": "", "state": 0} for item in StartingMoveOptions]

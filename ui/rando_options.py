@@ -1120,7 +1120,7 @@ def toggle_bananaport_selector(event):
 
 
 @bind("click", "nav-patch-tab")
-def toggle_patch_ui(event):
+def toggle_patch_ui_disable(event):
     """Disable non-cosmetic tabs if using patch file."""
     for tab in ["nav-started-tab", "nav-random-tab", "nav-overworld-tab", "nav-progression-tab", "nav-qol-tab"]:
         document.getElementById(tab).setAttribute("disabled", "disabled")

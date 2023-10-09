@@ -5,7 +5,7 @@ import gzip
 import random
 import zlib
 from random import randint
-from typing import TYPE_CHECKING, List, Tuple
+from typing import TYPE_CHECKING, List, Tuple, Union
 
 from PIL import Image, ImageDraw, ImageEnhance
 
@@ -16,9 +16,6 @@ from randomizer.Patching.generate_kong_color_images import convertColors
 from randomizer.Patching.Lib import TextureFormat, float_to_hex, getObjectAddress, int_to_list, intf_to_float
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
-
-if TYPE_CHECKING:
-    from PIL.Image import Image
 
 
 class HelmDoorSetting:
@@ -317,15 +314,15 @@ def apply_cosmetic_colors(settings):
             settings.rambi_custom_color = js.document.getElementById("rambi_custom_color").value
             settings.enguarde_colors = CharacterColors[js.document.getElementById("enguarde_colors").value]
             settings.enguarde_custom_color = js.document.getElementById("enguarde_custom_color").value
-    else:
-        if settings.random_colors:
-            settings.dk_colors = CharacterColors.randomized
-            settings.diddy_colors = CharacterColors.randomized
-            settings.lanky_colors = CharacterColors.randomized
-            settings.tiny_colors = CharacterColors.randomized
-            settings.chunky_colors = CharacterColors.randomized
-            settings.rambi_colors = CharacterColors.randomized
-            settings.enguarde_colors = CharacterColors.randomized
+    # else:
+    #     if settings.random_colors:
+    #         settings.dk_colors = CharacterColors.randomized
+    #         settings.diddy_colors = CharacterColors.randomized
+    #         settings.lanky_colors = CharacterColors.randomized
+    #         settings.tiny_colors = CharacterColors.randomized
+    #         settings.chunky_colors = CharacterColors.randomized
+    #         settings.rambi_colors = CharacterColors.randomized
+    #         settings.enguarde_colors = CharacterColors.randomized
 
     colors_dict = {
         "dk_colors": settings.dk_colors,
@@ -406,11 +403,11 @@ def apply_cosmetic_colors(settings):
         convertColors(color_palettes)
 
 
-color_bases = []
+color_bases: List[int] = []
 balloon_single_frames = [(4, 38), (5, 38), (5, 38), (5, 38), (5, 38), (5, 38), (4, 38), (4, 38)]
 
 
-def getFile(table_index: int, file_index: int, compressed: bool, width: int, height: int, format: TextureFormat) -> PIL.Image.Image:
+def getFile(table_index: int, file_index: int, compressed: bool, width: int, height: int, format: Union[TextureFormat, str]) -> Image.Image:
     """Grab image from file."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
@@ -453,7 +450,7 @@ def getRGBFromHash(hash: str):
     return [red, green, blue]
 
 
-def maskImageWithColor(im_f: Image, mask: tuple):
+def maskImageWithColor(im_f: Image.Image, mask: tuple):
     """Apply rgb mask to image using a rgb color tuple."""
     w, h = im_f.size
     converter = ImageEnhance.Color(im_f)
@@ -701,7 +698,7 @@ def maskImageWithOutline(im_f, base_index, min_y, colorblind_mode, type=""):
     return im_f
 
 
-def writeColorImageToROM(im_f: PIL.Image.Image, table_index: int, file_index: int, width: int, height: int, transparent_border: bool, format: TextureFormat) -> None:
+def writeColorImageToROM(im_f: Image.Image, table_index: int, file_index: int, width: int, height: int, transparent_border: bool, format: TextureFormat) -> None:
     """Write texture to ROM."""
     file_start = js.pointer_addresses[table_index]["entries"][file_index]["pointing_to"]
     file_end = js.pointer_addresses[table_index]["entries"][file_index + 1]["pointing_to"]
@@ -730,7 +727,7 @@ def writeColorImageToROM(im_f: PIL.Image.Image, table_index: int, file_index: in
                 alpha = int(pix_data[3] != 0)
                 value = red | green | blue | alpha
                 bytes_array.extend([(value >> 8) & 0xFF, value & 0xFF])
-    data = bytearray(bytes_array)
+    data: Union[bytes, bytearray] = bytearray(bytes_array)
     bytes_per_px = 2
     if format == TextureFormat.RGBA32:
         bytes_per_px = 4
@@ -771,7 +768,7 @@ def writeKasplatHairColorToROM(color, table_index, file_index, format: str):
         bytes_array.extend(null_color)
     for i in range(3):
         bytes_array.extend(color_lst)
-    data = bytearray(bytes_array)
+    data: Union[bytes, bytearray] = bytearray(bytes_array)
     if table_index == 25:
         data = gzip.compress(data, compresslevel=9)
     ROM().seek(file_start)
@@ -814,7 +811,7 @@ def writeWhiteKasplatHairColorToROM(color1, color2, table_index, file_index, for
         bytes_array.extend(null_color)
     for i in range(3):
         bytes_array.extend(color_lst_0)
-    data = bytearray(bytes_array)
+    data: Union[bytes, bytearray] = bytearray(bytes_array)
     if table_index == 25:
         data = gzip.compress(data, compresslevel=9)
     ROM().seek(file_start)
@@ -844,7 +841,7 @@ def writeKlaptrapSkinColorToROM(color_index, table_index, file_index, format: st
     for i in range(3):
         color_lst = calculateKlaptrapPixel(list(pix[(22 + i), 42]), format)
         bytes_array.extend(color_lst)
-    data = bytearray(bytes_array)
+    data: Union[bytes, bytearray] = bytearray(bytes_array)
     if table_index == 25:
         data = gzip.compress(data, compresslevel=9)
     ROM().seek(file_start)
@@ -855,7 +852,7 @@ def writeSpecialKlaptrapTextureToROM(color_index, table_index, file_index, forma
     """Write color to ROM for klaptraps special texture(s)."""
     im_f = getFile(table_index, file_index, True, 32, 43, format)
     pix_original = im_f.load()
-    pixels_original = []
+    pixels_original: List[list] = []
     for x in range(32):
         pixels_original.append([])
         for y in range(43):
@@ -889,7 +886,7 @@ def writeSpecialKlaptrapTextureToROM(color_index, table_index, file_index, forma
         else:
             color_lst = calculateKlaptrapPixel(list(pixels_original[(22 + i)][42]), format)
         bytes_array.extend(color_lst)
-    data = bytearray(bytes_array)
+    data: Union[bytes, bytearray] = bytearray(bytes_array)
     if table_index == 25:
         data = gzip.compress(data, compresslevel=9)
     ROM().seek(file_start)
@@ -1737,7 +1734,7 @@ def writeMiscCosmeticChanges(settings):
                 ROM().writeBytes(px_data)
 
 
-def getNumberImage(number: int) -> PIL.Image.Image:
+def getNumberImage(number: int) -> Image.Image:
     """Get Number Image from number."""
     if number < 5:
         num_0_bounds = [0, 20, 30, 45, 58, 76]
@@ -1748,7 +1745,7 @@ def getNumberImage(number: int) -> PIL.Image.Image:
     return getFile(14, 16, True, 76, 24, TextureFormat.RGBA5551).crop((num_1_bounds[x], 0, num_1_bounds[x + 1], 24))
 
 
-def numberToImage(number: int, dim: Tuple[int, int]) -> PIL.Image.Image:
+def numberToImage(number: int, dim: Tuple[int, int]) -> Image.Image:
     """Convert multi-digit number to image."""
     digits = 1
     if number < 10:
@@ -1920,7 +1917,7 @@ def updateMillLeverTexture(settings: Settings) -> None:
     if settings.mill_levers[0] > 0:
         # Get Number bounds
         base_num_texture = getFile(table_index=25, file_index=0x7CA, compressed=True, width=64, height=32, format=TextureFormat.RGBA5551)
-        number_textures = [None, None, None]
+        number_textures: list = [None, None, None]
         number_x_bounds = (
             (18, 25),
             (5, 16),

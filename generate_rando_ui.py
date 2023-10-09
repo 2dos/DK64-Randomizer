@@ -13,6 +13,7 @@ async def initialize():
     """Shifted code into an async function so we can properly lint await calls."""
     # await micropip.install("pyodide-importer")
     url = js.window.location.origin
+
     await micropip.install(
         [
             f"{url}/static/py_libraries/charset_normalizer-2.1.0-py3-none-any.whl",
@@ -25,6 +26,7 @@ async def initialize():
         ],
         deps=False,
     )
+
     if js.location.hostname in ["dev.dk64randomizer.com", "dk64randomizer.com"]:
         await micropip.install(f"{url}/static/py_libraries/dk64rando-1.0.0-py3-none-any.whl")
     # Against normal logic we have to import the hook register because we install it as we load the page

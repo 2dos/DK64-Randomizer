@@ -370,7 +370,7 @@ def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawne
     # Enemy fixes
     if new_enemy_id in EnemyMetaData.keys():
         ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0x10)
-        ROM_COPY.writeMultipleBytes(EnemyMetaData[new_enemy_id].aggro, 1)
+        ROM_COPY.writeMultipleBytes(EnemyMetaData[Enemies(new_enemy_id)].aggro, 1)
         if new_enemy_id == Enemies.RoboKremling:
             ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xB)
             ROM_COPY.writeMultipleBytes(0xC8, 1)
@@ -390,7 +390,7 @@ def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawne
             ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0x14)
             ROM_COPY.writeMultipleBytes(0, 1)
 
-        if (cont_map_id in crown_maps or cont_map_id in minigame_maps_total) and EnemyMetaData[new_enemy_id].air:
+        if (cont_map_id in crown_maps or cont_map_id in minigame_maps_total) and EnemyMetaData[Enemies(new_enemy_id)].air:
             height = 300
             if cont_map_id in crown_maps:
                 height = int(random.uniform(250, 300))
@@ -412,20 +412,20 @@ def writeEnemy(spoiler, cont_map_spawner_address: int, new_enemy_id: int, spawne
         # Scale Adjustment
         ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xF)
         default_scale = int.from_bytes(ROM_COPY.readBytes(1), "big")
-        if EnemyMetaData[new_enemy_id].size_cap > 0:
-            if default_scale > EnemyMetaData[new_enemy_id].size_cap:
+        if EnemyMetaData[Enemies(new_enemy_id)].size_cap > 0:
+            if default_scale > EnemyMetaData[Enemies(new_enemy_id)].size_cap:
                 ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xF)
-                ROM_COPY.writeMultipleBytes(EnemyMetaData[new_enemy_id].size_cap, 1)
+                ROM_COPY.writeMultipleBytes(EnemyMetaData[Enemies(new_enemy_id)].size_cap, 1)
         ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xF)
         pre_size = int.from_bytes(ROM_COPY.readBytes(1), "big")
-        if pre_size < EnemyMetaData[new_enemy_id].bbbarrage_min_scale and cont_map_id in bbbarrage_maps and ENABLE_BBBARRAGE_ENEMY_RANDO:
+        if pre_size < EnemyMetaData[Enemies(new_enemy_id)].bbbarrage_min_scale and cont_map_id in bbbarrage_maps and ENABLE_BBBARRAGE_ENEMY_RANDO:
             ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xF)
-            ROM_COPY.writeMultipleBytes(EnemyMetaData[new_enemy_id].bbbarrage_min_scale, 1)
+            ROM_COPY.writeMultipleBytes(EnemyMetaData[Enemies(new_enemy_id)].bbbarrage_min_scale, 1)
         # Speed Adjustment
         if spoiler.settings.enemy_speed_rando:
             if cont_map_id not in banned_speed_maps:
-                min_speed = EnemyMetaData[new_enemy_id].min_speed
-                max_speed = EnemyMetaData[new_enemy_id].max_speed
+                min_speed = EnemyMetaData[Enemies(new_enemy_id)].min_speed
+                max_speed = EnemyMetaData[Enemies(new_enemy_id)].max_speed
                 if min_speed > 0 and max_speed > 0:
                     ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xD)
                     agg_speed = random.randint(min_speed, max_speed)

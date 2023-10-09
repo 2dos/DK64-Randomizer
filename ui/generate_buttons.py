@@ -253,7 +253,7 @@ def generate_seed(event):
 
 
 @bind("click", "download_patch_file")
-def update_seed_text(event):
+def update_seed_text_download(event):
     """Set seed text based on the download_patch_file click event.
 
     Args:
@@ -267,7 +267,7 @@ def update_seed_text(event):
 
 
 @bind("click", "load_patch_file")
-def update_seed_text(event):
+def update_seed_text_load(event):
     """Set historical seed text based on the load_patch_file click event.
 
     Args:

@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import random
-from enum import IntEnum
-from typing import TYPE_CHECKING, Any, List, Union
+from enum import Enum
+from typing import TYPE_CHECKING, Any, List, Union, Optional
 
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.EnemySubtypes import EnemySubtype
@@ -56,7 +56,7 @@ class EnemyData:
         disruptive=0,
         bbbarrage_min_scale=50,
         selector_enabled=True,
-        interaction: InteractionMethods = None,
+        interaction=InteractionMethods(kill_gun=False, kill_melee=False, kill_orange=False, kill_shockwave=False, can_bypass=False, can_kill=False),
         placeable=True,
     ) -> None:
         """Initialize with given parameters."""
@@ -96,8 +96,8 @@ class EnemyLoc:
         self.enable_randomization = enable_randomization
         self.default_type = EnemySubtype.GroundSimple
         self.allowed_enemies = []
-        self.idle_speed: int = None
-        self.aggro_speed: int = None
+        self.idle_speed: Union[int, None] = None
+        self.aggro_speed: Union[int, None] = None
         self.respawns = respawns
         if enable_randomization:
             if default_enemy in EnemyMetaData:
@@ -130,7 +130,7 @@ class EnemyLoc:
                     return True
         return False
 
-    def canDropItem(self, logic_variable):
+    def canDropItem(self, logic_variable) -> bool:
         """Determine if the enemy can drop an item."""
         return self.canKill(logic_variable) and self.enemy not in [Enemies.Book, Enemies.EvilTomato]
 
@@ -442,8 +442,11 @@ EnemyMetaData = {
     # Enemies.Bug: EnemyData(aggro=0x40,crown_enabled=False,),
 }
 
-enemies_nokill_gun = [enemy for enemy in EnemyMetaData if ((not EnemyMetaData[enemy].interaction.kill_gun) and (not EnemyMetaData[enemy].interaction.kill_melee)) or enemy == Enemies.Guard]
-
+enemies_nokill_gun = []
+for enemy in EnemyMetaData:
+    if isinstance(EnemyMetaData[enemy].interaction, InteractionMethods):
+        if ((not EnemyMetaData[enemy].interaction.kill_gun) and (not EnemyMetaData[enemy].interaction.kill_melee)) or enemy == Enemies.Guard:
+            enemies_nokill_gun.append(enemy)
 enemy_location_list = {
     # Japes
     # Main
@@ -943,7 +946,7 @@ enemy_location_list = {
 }
 
 EnemySelector = []
-for enemyEnum, enemy in EnemyMetaData.items():
-    if enemy.selector_enabled:
-        EnemySelector.append({"name": enemy.name, "value": enemyEnum.name, "tooltip": ""})
+for enemyEnum, enemydat in EnemyMetaData.items():
+    if enemydat.selector_enabled:
+        EnemySelector.append({"name": enemydat.name, "value": enemyEnum.name, "tooltip": ""})
 EnemySelector = sorted(EnemySelector.copy(), key=lambda d: d["name"])
