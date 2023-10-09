@@ -2,5 +2,5 @@
 
 
 def create_proxy():
-    """Creates a proxy object for Pyodide."""
+    """Create a proxy object for Pyodide."""
     pass
