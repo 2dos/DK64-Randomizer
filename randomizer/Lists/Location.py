@@ -1157,7 +1157,7 @@ class LocationListData:
             Locations.IslesMainEnemy_PineappleCage1: Location(Levels.DKIsles, "Isles Enemy: Pineapple Cage (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x569)]),
             Locations.IslesMainEnemy_LowerFactoryPath0: Location(Levels.DKIsles, "Isles Enemy: Lower Factory Path (0)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x56a)]),
             Locations.IslesMainEnemy_LowerFactoryPath1: Location(Levels.DKIsles, "Isles Enemy: Lower Factory Path (1)", Items.EnemyItem, Types.Enemies, Kongs.any, [MapIDCombo(Maps.Isles, -1, 0x56b)]),
-      }
+        }
 
 
 TrainingBarrelLocations = {
