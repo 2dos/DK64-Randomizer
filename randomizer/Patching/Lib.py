@@ -575,10 +575,10 @@ def recalculatePointerJSON(ROM_COPY: ROM):
     """Recalculates the pointer tables."""
     TABLE_COUNT = 32
     POINTER_OFFSET = 0x101C50
-    new_data = [None] * TABLE_COUNT
+    new_data: List[Any] = [None] * TABLE_COUNT
     for x in range(TABLE_COUNT):
         ROM_COPY.seek(POINTER_OFFSET + ((TABLE_COUNT + x) << 2))
-        table_data = {"entries": []}
+        table_data: Dict[str, List] = {"entries": []}
         count = int.from_bytes(ROM_COPY.readBytes(4), "big")
         ROM_COPY.seek(POINTER_OFFSET + (x << 2))
         head = POINTER_OFFSET + int.from_bytes(ROM_COPY.readBytes(4), "big")
