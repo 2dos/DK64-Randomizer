@@ -1,4 +1,8 @@
-"""This is a dummy module that only exists to override the built in pyodide module."""
+"""This module provides fake functions for printing messages and loading files with Javascript.
+
+This module also defines a class `jsdoc` that represents a Javascript document, with methods for getting elements by ID and evaluating input.
+"""
+
 from __future__ import annotations
 
 import json
@@ -21,7 +25,10 @@ with open("./static/patches/pointer_addresses.json", "rb") as file:
 
 
 class jsdoc:
+    """Represents a Javascript document, with methods for getting elements by ID and evaluating input."""
+
     def __init__(self, title="", content="", language=""):
+        """Generate dummy vars for the document."""
         self.title = title
         self.content = content
         self.language = language
@@ -33,6 +40,7 @@ class jsdoc:
         self.hostname = "localhost"
 
     def getElementById(self, element_id):
+        """Get an element by its ID."""
         return self.elements.get(element_id, None)
 
 
@@ -43,4 +51,5 @@ location = document
 
 
 def eval(input):
+    """Evaluate input."""
     pass
