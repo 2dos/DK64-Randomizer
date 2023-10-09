@@ -764,6 +764,7 @@ def toggle_item_rando(evt):
     shockwave = document.getElementById("shockwave_status_shuffled")
     move_vanilla = document.getElementById("move_off")
     move_rando = document.getElementById("move_on")
+    enemy_drop_rando = document.getElementById("enemy_drop_rando")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -779,16 +780,19 @@ def toggle_item_rando(evt):
         disabled = False
     try:
         if disabled:
-            # Prevent item rando modal from opening and smaller shop setting
+            # Prevent item rando modal from opening, smaller shop setting, and dropsanity setting
             selector.setAttribute("disabled", "disabled")
             smaller_shops.setAttribute("disabled", "disabled")
             smaller_shops.checked = False
             shockwave.removeAttribute("disabled")
             move_vanilla.removeAttribute("disabled")
             move_rando.removeAttribute("disabled")
+            enemy_drop_rando.setAttribute("disabled", "disabled")
+            enemy_drop_rando.checked = False
         else:
-            # Enable item rando modal, prevent shockwave/camera coupling, and enable smaller shops if it's in the pool
+            # Enable item rando modal, prevent shockwave/camera coupling, enable dropsanity, and enable smaller shops if it's in the pool
             selector.removeAttribute("disabled")
+            enemy_drop_rando.removeAttribute("disabled")
             if shops_in_pool:
                 if shockwave.selected is True:
                     document.getElementById("shockwave_status_shuffled_decoupled").selected = True

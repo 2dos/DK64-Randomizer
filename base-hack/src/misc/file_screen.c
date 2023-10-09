@@ -673,6 +673,7 @@ void wipeFileStats(void) {
 		ResetExtraData(EGD_FILENAME, i);
 	}
 	ResetExtraData(EGD_HELMHURRYIGT, 0);
+	ResetExtraData(EGD_HELMHURRYDISABLE, 0);
 }
 
 void file_progress_screen_code(actorData* actor, int buttons) {

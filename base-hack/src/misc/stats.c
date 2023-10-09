@@ -25,34 +25,93 @@ int getStat(bonus_stat statistic) {
     return ReadExtraData(EGD_BONUSSTAT, statistic);
 }
 
-static unsigned char sub_counts[] = {
-    EGD_LEVELIGT, 9,
-    EGD_HELMHURRYIGT, 1,
-    EGD_BONUSSTAT, STAT_TERMINATOR,
-    EGD_KONGIGT, 5,
-    EGD_FILENAME, 8,
-};
+typedef struct bonus_stat_info {
+    /* 0x000 */ unsigned char index;
+    /* 0x001 */ unsigned char count;
+    /* 0x002 */ unsigned char required_bits;
+} bonus_stat_info;
 
-int getExtraDataIndex(extra_global_data data_type, int sub_index) {
-    int index = 0;
-    for (int i = 0; i < (sizeof(sub_counts) >> 1); i++) {
-        if (sub_counts[2 * i] < data_type) {
-            index += sub_counts[(2 * i) + 1];
+static bonus_stat_info sub_counts[] = {
+    {.index = EGD_LEVELIGT, .count=9, .required_bits=19},
+    {.index = EGD_HELMHURRYIGT, .count=1, .required_bits=22},
+    {.index = EGD_HELMHURRYDISABLE, .count=1, .required_bits=1},
+    {.index = EGD_BONUSSTAT, .count=STAT_TERMINATOR, .required_bits=16},
+    {.index = EGD_KONGIGT, .count=5, .required_bits=20},
+    {.index = EGD_FILENAME, .count=8, .required_bits=8},
+};
+#define BONUS_COUNT 6
+
+unsigned char* getBonusBlockStart(void) {
+    int bits_total = 0;
+    for (int i = 0; i < BONUS_COUNT; i++) {
+        bits_total += (sub_counts[i].count * sub_counts[i].required_bits);
+    }
+    int head = 0x807ED6A8 - ((bits_total >> 3) + 1);
+    head &= 0xFFFFFFFC;
+    return (unsigned char*)head;
+}
+
+int getBitOffset(extra_global_data data_type, int sub_index) {
+    int bits_total = 0;
+    for (int i = 0; i < BONUS_COUNT; i++) {
+        if (sub_counts[i].index == data_type) {
+            bits_total += (sub_index * sub_counts[i].required_bits);
+            return bits_total;
+        } else {
+            bits_total += (sub_counts[i].count * sub_counts[i].required_bits);
         }
     }
-    return index + sub_index;
+    return bits_total;
+}
+
+int getBitSize(extra_global_data data_type, int sub_index) {
+    for (int i = 0; i < BONUS_COUNT; i++) {
+        if (sub_counts[i].index == data_type) {
+            return sub_counts[i].required_bits;
+        }
+    }
+    return 0;
 }
 
 int ReadExtraData(extra_global_data data_type, int sub_index) {
-    return ExtraSaveData[getExtraDataIndex(data_type, sub_index)];
+    int bit_offset = getBitOffset(data_type, sub_index);
+    unsigned char* start = getBonusBlockStart() + (bit_offset >> 3);
+    bit_offset &= 7;
+    int size = getBitSize(data_type, sub_index);
+    int value = 0;
+    for (int i = 0; i < size; i++) {
+        int local_value = ((*start) >> bit_offset) & 1;
+        value <<= 1;
+        value |= local_value;
+        bit_offset += 1;
+        if (bit_offset >= 8) {
+            bit_offset = 0;
+            start += 1;
+        }
+    }
+    return value;
 }
 
 void SaveExtraData(extra_global_data data_type, int sub_index, int value) {
-    ExtraSaveData[getExtraDataIndex(data_type, sub_index)] = value;
+    int bit_offset = getBitOffset(data_type, sub_index);
+    unsigned char* start = getBonusBlockStart() + (bit_offset >> 3);
+    bit_offset &= 7;
+    int size = getBitSize(data_type, sub_index);
+    for (int i = 0; i < size; i++) {
+        int bit = (value >> ((size - 1) - i)) & 1;
+        unsigned char and_comparator = 0xFF - (1 << bit_offset);
+        *start = *start & and_comparator; // clear bit
+        *start = *start | (bit << bit_offset); // Set bit
+        bit_offset += 1;
+        if (bit_offset >= 8) {
+            bit_offset = 0;
+            start += 1;
+        }
+    }
 }
 
 void ResetExtraData(extra_global_data data_type, int sub_index) {
-    ExtraSaveData[getExtraDataIndex(data_type, sub_index)] = 0;
+    SaveExtraData(data_type, sub_index, 0);
 }
 
 static int igt_running_lasttag = 0;

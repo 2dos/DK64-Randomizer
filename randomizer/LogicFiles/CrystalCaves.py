@@ -169,11 +169,6 @@ LogicRegions = {
 
     Regions.LankyIgloo: Region("Lanky Igloo", "Igloo Area", Levels.CrystalCaves, False, TransitionFront(Regions.CrystalCavesMain, lambda l: ((l.balloon or l.advanced_platforming) and l.islanky) or (l.settings.free_trade_items and l.advanced_platforming and (l.isdiddy or l.istiny))), [
         LocationLogic(Locations.CavesLanky5DoorIgloo, lambda l: ((l.balloon or l.advanced_platforming) and l.islanky) or (l.settings.free_trade_items and l.advanced_platforming and (l.isdiddy or l.istiny))),
-        LocationLogic(Locations.Caves5DILankyEnemy_First0, lambda l: True),
-        LocationLogic(Locations.Caves5DILankyEnemy_First1, lambda l: True),
-        LocationLogic(Locations.Caves5DILankyEnemy_Second0, lambda l: True),
-        LocationLogic(Locations.Caves5DILankyEnemy_Second1, lambda l: True),
-        LocationLogic(Locations.Caves5DILankyEnemy_Second2, lambda l: True),
     ], [], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
         TransitionFront(Regions.IglooArea, lambda l: True, Transitions.CavesLankyToIgloo),
@@ -245,8 +240,8 @@ LogicRegions = {
     Regions.DiddyUpperCabin: Region("Diddy Upper Cabin", "Cabins Area", Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesDiddy5DoorCabinUpper, lambda l: (l.guitar or l.oranges) and l.spring and l.jetpack and l.isdiddy),
         LocationLogic(Locations.CavesBananaFairyCabin, lambda l: l.camera and (l.guitar or l.oranges) and l.spring and l.jetpack and l.isdiddy),
-        LocationLogic(Locations.Caves5DCDiddyUpperEnemy_Enemy0, lambda l: True),
-        LocationLogic(Locations.Caves5DCDiddyUpperEnemy_Enemy1, lambda l: True),
+        # LocationLogic(Locations.Caves5DCDiddyUpperEnemy_Enemy0, lambda l: True),
+        # LocationLogic(Locations.Caves5DCDiddyUpperEnemy_Enemy1, lambda l: True),
     ], [], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
         TransitionFront(Regions.CabinArea, lambda l: True, Transitions.CavesDiddyUpperToCabin),

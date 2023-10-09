@@ -346,7 +346,6 @@ class ItemRandoListSelected(Enum):
     fakeitem = 13
     junkitem = 14
     crateitem = 15
-    enemies = 16
 
     def __int__(self):
         """Return the integer value of the enum."""
@@ -957,6 +956,7 @@ class SettingsStringEnum(Enum):
     enable_progressive_hints = 154
     progressive_hint_text = 155
     random_starting_move_list_selected = 156
+    enemy_drop_rando = 157
 
     def __eq__(self, other):
         """Return True if self is equal to other."""
@@ -1105,7 +1105,6 @@ SettingsStringTypeMap = {
     SettingsStringEnum.crown_door_item: HelmDoorItem,
     SettingsStringEnum.crown_door_item_count: SettingsStringDataType.var_int,
     SettingsStringEnum.crown_enemy_rando: CrownEnemyRando,
-    SettingsStringEnum.crown_placement_rando: SettingsStringDataType.bool,
     SettingsStringEnum.coin_rando: SettingsStringDataType.bool,
     SettingsStringEnum.damage_amount: DamageAmount,
     SettingsStringEnum.disable_tag_barrels: SettingsStringDataType.bool,
@@ -1237,6 +1236,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.enable_progressive_hints: SettingsStringDataType.bool,
     SettingsStringEnum.progressive_hint_text: SettingsStringDataType.var_int,
     SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
+    SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

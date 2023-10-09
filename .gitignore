@@ -145,6 +145,10 @@ cython_debug/
 # Jekyll
 _site/
 
+# Base Hack C# Build
+base-hack/build-cs/bin
+base-hack/build-cs/obj
+
 # Randomizer specific
 spoilerlog*.txt
 settings*.asm

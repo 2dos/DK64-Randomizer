@@ -1081,8 +1081,10 @@ int setHintRegion(void) {
                     }
                     return REGION_FACTORYSTART;
                 }
-                if ((chunk == 9) || (chunk == 11)) {
-                    // 9 = Lobby with warps, 11 = Lobby with switch
+                if ((chunk == 8) || (chunk == 9) || (chunk == 11)) {
+                    // 8 = Tunnel to left
+                    // 9 = Lobby with warps
+                    // 11 = Lobby with switch
                     return REGION_FACTORYSTART;
                 } else if ((chunk == 10) || ((chunk >= 13) && (chunk <= 19))) {
                     // 10 = Snide Area

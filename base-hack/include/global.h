@@ -30,6 +30,7 @@ extern overlays getOverlayFromMap(maps map);
 extern void* malloc_wipe(int size);
 extern int applyDamageMask(int player_index, int damage);
 extern void* replaceWaterTexture(int table, int file, int unk0, int unk1);
+extern void* replaceWaterTexture_spooky(int table, int file, int unk0, int unk1);
 extern int isBounceObject(int object);
 
 extern int getEnemyItem(int id);
@@ -294,6 +295,7 @@ extern void refreshPads(pad_refresh_signals signal);
 
 extern void indicateCollectionStatus(void);
 extern void fireballEnemyDeath(float x, float y, float z, float scale, char unk0, char unk1);
+extern void rulerEnemyDeath(void);
 extern int canSpawnEnemyReward(void);
 extern void wipeEnemySpawnBitfield(void);
 extern void setSpawnBitfield(int id, int state);
