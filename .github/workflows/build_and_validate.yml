@@ -30,6 +30,9 @@ jobs:
         - name: Run pydocstyle
           run: pydocstyle .
 
+        - name: Run Mypy
+          run: mypy --explicit-package-bases --scripts-are-modules --install-types --non-interactive --incremental --package randomizer
+
 
   analyze:
     name: Analyze

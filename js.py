@@ -30,6 +30,7 @@ class jsdoc:
         self.minoritems = {}
         self.events = {}
         self.bgm = {}
+        self.hostname = "localhost"
 
     def getElementById(self, element_id):
         return self.elements.get(element_id, None)
@@ -38,3 +39,8 @@ class jsdoc:
 document = jsdoc()
 cosmetics = document
 cosmetic_names = document
+location = document
+
+
+def eval(input):
+    pass

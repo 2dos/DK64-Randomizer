@@ -1077,7 +1077,10 @@ class LogicVarHolder:
 
 # Import regions from logic files
 class RegionsData:
+    """Region storage location."""
+
     def __init__(self):
+        """Compile all the regions into one var."""
         self.Regions = {
             **randomizer.LogicFiles.DKIsles.LogicRegions,
             **randomizer.LogicFiles.JungleJapes.LogicRegions,
@@ -1094,7 +1097,10 @@ class RegionsData:
 
 # Auxillary regions for colored bananas and banana coins
 class CollectibleData:
+    """Collectable Storage Location."""
+
     def __init__(self):
+        """Compile all the regions into one var."""
         self.CollectibleRegions = {
             **randomizer.CollectibleLogicFiles.DKIsles.LogicRegions,
             **randomizer.CollectibleLogicFiles.JungleJapes.LogicRegions,

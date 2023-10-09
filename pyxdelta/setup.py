@@ -1,3 +1,4 @@
+"""Pyxdelta setup script."""
 import os
 import sys
 from setuptools import setup, Extension
@@ -35,6 +36,7 @@ SOURCES = ["pyxdelta.c"]
 
 
 def main():
+    """Func for setup."""
     setup(
         name="pyxdelta",
         version="0.1.2",

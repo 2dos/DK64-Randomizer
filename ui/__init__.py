@@ -1,5 +1,5 @@
 """Import functions within the UI folder to have them run on load of the UI."""
-from ui.generate_buttons import update_seed_text
+from ui.generate_buttons import update_seed_text_load
 from ui.rando_options import (
     disable_barrel_modal,
     disable_boss_rando,
@@ -37,7 +37,7 @@ from ui.rando_options import (
 )
 
 # Call the generate_buttons function just to force loading of the file
-update_seed_text(None)
+update_seed_text_load(None)
 
 # Update Rando Options
 set_preset_options()

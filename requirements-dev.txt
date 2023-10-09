@@ -22,3 +22,5 @@ vidua
 pillow
 boto3
 types-Pillow
+types-jinja2
+mypy

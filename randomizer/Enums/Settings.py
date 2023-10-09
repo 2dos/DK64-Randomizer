@@ -28,6 +28,7 @@ class ActivateAllBananaports(Enum):
     isles = 2
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -48,6 +49,7 @@ class BananaportRando(Enum):
     crossmap_decoupled = 3
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -64,6 +66,7 @@ class CharacterColors(Enum):
     custom = auto()
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -87,6 +90,7 @@ class ColorblindMode(Enum):
     trit = 3
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -99,6 +103,7 @@ class CrownEnemyRando(Enum):
     hard = 3
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -117,6 +122,7 @@ class DamageAmount(Enum):
     ohko = 3
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -133,6 +139,7 @@ class DPadDisplays(Enum):
     minimal = 2
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -147,6 +154,7 @@ class ExcludedSongs(Enum):
     # shops = 5
     # events = 6
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -166,6 +174,7 @@ class ExtraCutsceneSkips(Enum):
     auto = 2
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -189,6 +198,7 @@ class FillAlgorithm(Enum):
     careful_random = auto()
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -206,6 +216,7 @@ class FreeTradeSetting(Enum):
     major_collectibles = 2
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -231,6 +242,7 @@ class GlitchesSelected(Enum):
     troff_n_scoff_skips = 13
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -268,6 +280,7 @@ class HelmDoorItem(Enum):
     req_pearl = 12
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -288,6 +301,7 @@ class HelmSetting(Enum):
     skip_all = 2
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -305,6 +319,7 @@ class HardModeSelected(Enum):
     reduced_fall_damage_threshold = 5
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -334,6 +349,7 @@ class ItemRandoListSelected(Enum):
     enemies = 16
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -352,6 +368,7 @@ class KasplatRandoSetting(Enum):
     location_shuffle = 2
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -365,6 +382,7 @@ class KlaptrapModel(Enum):
     random_model = auto()
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -380,6 +398,7 @@ class KrushaUi(Enum):
     random = 6
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -400,6 +419,7 @@ class LevelRandomization(Enum):
     loadingzonesdecoupled = 3
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -416,6 +436,7 @@ class LogicType(Enum):
     nologic = 3
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -437,6 +458,7 @@ class MicrohintsEnabled(Enum):
     all = 2
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -457,6 +479,7 @@ class MinigameBarrels(Enum):
     selected = auto()
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -486,6 +509,7 @@ class MinigamesListSelected(Enum):
     arenas = 17
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -521,6 +545,7 @@ class MiscChangesSelected(Enum):
     global_instrument = 23
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -544,6 +569,7 @@ class MoveRando(Enum):
     item_shuffle = 4
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -566,6 +592,7 @@ class RandomPrices(Enum):
     extreme = 5
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -586,6 +613,7 @@ class ShockwaveStatus(Enum):
     start_with = 3
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -604,6 +632,7 @@ class ShuffleLoadingZones(Enum):
     all = auto()
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -620,6 +649,7 @@ class SoundType(Enum):
     surround = 2
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -635,6 +665,7 @@ class TrainingBarrels(Enum):
     shuffled = 1
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -662,6 +693,7 @@ class WinCondition(Enum):
     all_keys = 6
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -682,6 +714,7 @@ class WrinklyHints(Enum):
     item_hinting = 4
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -698,6 +731,7 @@ class SpoilerHints(Enum):
     points = 2
 
     def __int__(self):
+        """Return the integer value of the enum."""
         return self.value
 
 
@@ -925,6 +959,7 @@ class SettingsStringEnum(Enum):
     random_starting_move_list_selected = 156
 
     def __eq__(self, other):
+        """Return True if self is equal to other."""
         if isinstance(other, type(self)):
             return self is other
         elif isinstance(other, int):
@@ -932,31 +967,30 @@ class SettingsStringEnum(Enum):
         return NotImplemented
 
     def __ne__(self, other):
+        """Return True if self is not equal to other."""
         result = self.__eq__(other)
         if result is NotImplemented:
             return result
         return not result
 
     def __mod__(self, other):
+        """Return the modulo of self and other."""
         if isinstance(other, int):
             return self.value % other
         raise TypeError("Unsupported operand types for % ({} and {})".format(type(self).__name__, type(other).__name__))
 
-    def __hash__(self):
-        return hash(self.value)
-
-    def __to_bytes(self, length, byteorder, signed):
+    def to_bytes(self, length, byteorder="big", signed=False):
+        """Return the bytes representation of self."""
         return self.value.to_bytes(length, byteorder, signed=signed)
 
-    def to_bytes(self, length, byteorder="big", signed=False):
-        return self.__to_bytes(length, byteorder, signed)
-
     def __sub__(self, other):
+        """Return the subtraction of self and other."""
         if isinstance(other, int):
             return self.value - other
         raise TypeError("Unsupported operand types for - ({} and {})".format(type(self).__name__, type(other).__name__))
 
     def __ge__(self, other):
+        """Return True if self is greater than or equal to other."""
         if isinstance(other, type(self)):
             return self.value >= other.value
         elif isinstance(other, int):
@@ -964,14 +998,47 @@ class SettingsStringEnum(Enum):
         return NotImplemented
 
     def __le__(self, other):
+        """Return True if self is less than or equal to other."""
         if isinstance(other, type(self)):
             return self.value <= other.value
         elif isinstance(other, int):
             return self.value <= other
         return NotImplemented
 
+    def __hash__(self):
+        """Return the hash value of self."""
+        return hash(self.value)
+
     def __index__(self):
+        """Return the index of self."""
         return self.value
+
+    def __lt__(self, other):
+        """Return True if self is less than other."""
+        if isinstance(other, int):
+            return self.value < other
+        return NotImplemented
+
+    def __gt__(self, other):
+        """Return True if self is greater than other."""
+        if isinstance(other, type(self)):
+            return self.value > other.value
+        elif isinstance(other, int):
+            return self.value > other
+        return NotImplemented
+
+    def __lshift__(self, other):
+        """Return the left shift of self and other."""
+        if isinstance(other, int):
+            return self.value << other
+        raise TypeError("Unsupported operand types for << ({} and {})".format(type(self).__name__, type(other).__name__))
+
+    def __add__(self, other):
+        """Return the addition of self and other."""
+        if isinstance(other, int):
+            return self.value + other
+
+        raise TypeError("Unsupported operand types for + ({} and {})".format(type(self).__name__, type(other).__name__))
 
 
 # If a setting needs to be removed, add it to this set instead of removing it

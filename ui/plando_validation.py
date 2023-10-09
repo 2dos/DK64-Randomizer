@@ -125,7 +125,7 @@ def validate_starting_kong_count(evt):
 
 
 @bind("change", "plando_level_order_", 7)
-def validate_level_order_no_duplicates(evt):
+def validate_level_order_no_duplicates_level(evt):
     """Raise an error if the same level is chosen twice in the level order."""
     levelDict = {}
     # Count the instances of each level.
@@ -150,7 +150,7 @@ def validate_level_order_no_duplicates(evt):
 
 
 @bind("change", "plando_krool_order_", 5)
-def validate_level_order_no_duplicates(evt):
+def validate_level_order_no_duplicates_krool(evt):
     """Raise an error if the same Kong is chosen twice in the K. Rool order."""
     kongDict = {}
     # Count the instances of each Kong.
@@ -175,7 +175,7 @@ def validate_level_order_no_duplicates(evt):
 
 
 @bind("change", "plando_helm_order_", 5)
-def validate_level_order_no_duplicates(evt):
+def validate_level_order_no_duplicates_helm(evt):
     """Raise an error if the same Kong is chosen twice in the Helm order."""
     kongDict = {}
     # Count the instances of each Kong.
