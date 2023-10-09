@@ -10,13 +10,13 @@ import randomizer.CollectibleLogicFiles.FungiForest
 import randomizer.CollectibleLogicFiles.GloomyGalleon
 import randomizer.CollectibleLogicFiles.JungleJapes
 import randomizer.Fill as Fill
-import randomizer.Lists.CBLocations.AngryAztecCBLocations
-import randomizer.Lists.CBLocations.CreepyCastleCBLocations
-import randomizer.Lists.CBLocations.CrystalCavesCBLocations
-import randomizer.Lists.CBLocations.FranticFactoryCBLocations
-import randomizer.Lists.CBLocations.FungiForestCBLocations
-import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
-import randomizer.Lists.CBLocations.JungleJapesCBLocations
+from randomizer.Lists.CBLocations.AngryAztecCBLocations import ColoredBananaGroupList as AngryAztecCBList, BalloonList as AngryAztecBalloonList
+from randomizer.Lists.CBLocations.CreepyCastleCBLocations import ColoredBananaGroupList as CreepyCastleCBList, BalloonList as CreepyCastleBalloonList
+from randomizer.Lists.CBLocations.CrystalCavesCBLocations import ColoredBananaGroupList as CrystalCavesCBList, BalloonList as CrystalCavesBalloonList
+from randomizer.Lists.CBLocations.FranticFactoryCBLocations import ColoredBananaGroupList as FranticFactoryCBList, BalloonList as FranticFactoryBalloonList
+from randomizer.Lists.CBLocations.FungiForestCBLocations import ColoredBananaGroupList as FungiForestCBList, BalloonList as FungiForestBalloonList
+from randomizer.Lists.CBLocations.GloomyGalleonCBLocations import ColoredBananaGroupList as GloomyGalleonCBList, BalloonList as GloomyGalleonBalloonList
+from randomizer.Lists.CBLocations.JungleJapesCBLocations import ColoredBananaGroupList as JungleJapesCBList, BalloonList as JungleJapesBalloonList
 import randomizer.Lists.Exceptions as Ex
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -29,34 +29,13 @@ max_singles = 780  # 793 Singles in Vanilla, under-representing this to help wit
 max_bunches = 790 - max_balloons * 2 - round(max_singles / 5)  # 334 bunches in vanilla, biasing this for now to help with calculation formula
 
 level_data = {
-    Levels.JungleJapes: {
-        "cb": randomizer.Lists.CBLocations.JungleJapesCBLocations.ColoredBananaGroupList,
-        "balloons": randomizer.Lists.CBLocations.JungleJapesCBLocations.BalloonList,
-    },
-    Levels.AngryAztec: {
-        "cb": randomizer.Lists.CBLocations.AngryAztecCBLocations.ColoredBananaGroupList,
-        "balloons": randomizer.Lists.CBLocations.AngryAztecCBLocations.BalloonList,
-    },
-    Levels.FranticFactory: {
-        "cb": randomizer.Lists.CBLocations.FranticFactoryCBLocations.ColoredBananaGroupList,
-        "balloons": randomizer.Lists.CBLocations.FranticFactoryCBLocations.BalloonList,
-    },
-    Levels.GloomyGalleon: {
-        "cb": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.ColoredBananaGroupList,
-        "balloons": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.BalloonList,
-    },
-    Levels.FungiForest: {
-        "cb": randomizer.Lists.CBLocations.FungiForestCBLocations.ColoredBananaGroupList,
-        "balloons": randomizer.Lists.CBLocations.FungiForestCBLocations.BalloonList,
-    },
-    Levels.CrystalCaves: {
-        "cb": randomizer.Lists.CBLocations.CrystalCavesCBLocations.ColoredBananaGroupList,
-        "balloons": randomizer.Lists.CBLocations.CrystalCavesCBLocations.BalloonList,
-    },
-    Levels.CreepyCastle: {
-        "cb": randomizer.Lists.CBLocations.CreepyCastleCBLocations.ColoredBananaGroupList,
-        "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList,
-    },
+    Levels.JungleJapes: {"cb": JungleJapesCBList, "balloons": JungleJapesBalloonList},
+    Levels.AngryAztec: {"cb": AngryAztecCBList, "balloons": AngryAztecBalloonList},
+    Levels.FranticFactory: {"cb": FranticFactoryCBList, "balloons": FranticFactoryBalloonList},
+    Levels.GloomyGalleon: {"cb": GloomyGalleonCBList, "balloons": GloomyGalleonBalloonList},
+    Levels.FungiForest: {"cb": FungiForestCBList, "balloons": FungiForestBalloonList},
+    Levels.CrystalCaves: {"cb": CrystalCavesCBList, "balloons": CrystalCavesBalloonList},
+    Levels.CreepyCastle: {"cb": CreepyCastleCBList, "balloons": CreepyCastleBalloonList},
 }
 
 
@@ -114,7 +93,9 @@ def ShuffleCBs(spoiler):
                 singles_lower = max(int(singles_left / (7 - level_index)) - 10, 0)
                 if global_divisor == 0:
                     bunches_upper = bunches_left
-                    singles_upper = min(singles_left, int((5 * (1127 - total_bunches - total_singles) - sum(kong_specific_left)) / 4))  # Places a hard cap of 1127 total singles+bunches
+                    singles_upper = min(
+                        singles_left, int((5 * (1127 - total_bunches - total_singles) - sum(kong_specific_left[k] for k in kong_specific_left if isinstance(kong_specific_left[k], int))) / 4)
+                    )  # Places a hard cap of 1127 total singles+bunches
                 else:
                     bunches_upper = min(int(bunches_left / (7 - level_index)) + 15, int(bunches_left / global_divisor))
                     singles_upper = min(int(singles_left / (7 - level_index)) + 10, int(singles_left / global_divisor))

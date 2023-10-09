@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import struct
-from enum import IntEnum, auto
+from enum import Enum, auto
 from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union
 
 import js
@@ -387,20 +387,22 @@ def grabText(file_index: int) -> List[List[Dict[str, List[str]]]]:
     for item in text_data:
         text_block = []
         # print(item)
-        for item2 in item["text"]:
-            # print(item2)
-            temp = []
-            for item3 in item2["text"]:
-                if item3["type"] == "normal":
-                    start = item3["start"] + data_start + 2
-                    # print(hex(start))
-                    start + item3["size"]
-                    ROM_COPY.seek(file_start + start)
-                    temp.append(ROM_COPY.readBytes(item3["size"]).decode())
-                elif item3["type"] == "sprite":
-                    temp.append(item3["sprite"])
-                    # print(fh.read(item3["size"]))
-            text_block.append(temp)
+        if hasattr(item["text"], "__iter__"):
+            for item2 in item["text"]:
+                # print(item2)
+                temp = []
+                if hasattr(item2["text"], "__iter__"):
+                    for item3 in item2["text"]:
+                        if item3["type"] == "normal":
+                            start = item3["start"] + data_start + 2
+                            # print(hex(start))
+                            start + item3["size"]
+                            ROM_COPY.seek(file_start + start)
+                            temp.append(ROM_COPY.readBytes(item3["size"]).decode())
+                        elif item3["type"] == "sprite":
+                            temp.append(item3["sprite"])
+                            # print(fh.read(item3["size"]))
+                    text_block.append(temp)
         text.append(text_block)
     formatted_text = []
     for t in text:
@@ -441,7 +443,10 @@ def writeText(file_index: int, text: List[Union[List[Dict[str, List[str]]], Tupl
                     position += len(string)
             unk0 = 0
             if "unk0" in block:
-                unk0 = block["unk0"]
+                if isinstance(block["unk0"], list):
+                    unk0 = int(block["unk0"][0])
+                else:
+                    unk0 = int(block["unk0"])
             ROM_COPY.writeBytes(int(float_to_hex(unk0), 16).to_bytes(4, "big"))
     ROM_COPY.writeBytes(bytearray(position.to_bytes(2, "big")))
     for textbox in text:
@@ -479,7 +484,7 @@ def getObjectAddress(map: int, id: int, object_type: str) -> int:
             ROM_COPY.seek(item_start + 0x34)
             if int.from_bytes(ROM_COPY.readBytes(2), "big") == id:
                 return item_start
-    return None
+    return 0
 
 
 def getObjectAddressBrowser(map: int, id: int, object_type: str) -> int:
@@ -505,7 +510,7 @@ def getObjectAddressBrowser(map: int, id: int, object_type: str) -> int:
             ROM().seek(item_start + 0x34)
             if int.from_bytes(ROM().readBytes(2), "big") == id:
                 return item_start
-    return None
+    return 0
 
 
 def IsItemSelected(bool_setting: bool, multiselector_setting: List[Union[MiscChangesSelected, Any]], check: Union[HardModeSelected, MiscChangesSelected]) -> bool:
@@ -517,7 +522,7 @@ def IsItemSelected(bool_setting: bool, multiselector_setting: List[Union[MiscCha
     return check in multiselector_setting
 
 
-class TextureFormat(IntEnum):
+class TextureFormat(Enum):
     """Texture Format Enum."""
 
     Null = auto()
@@ -529,7 +534,7 @@ class TextureFormat(IntEnum):
     IA4 = auto()
 
 
-class TableNames(IntEnum):
+class TableNames(Enum):
     """Pointer Table Enum."""
 
     MusicMIDI = 0
@@ -570,10 +575,10 @@ def recalculatePointerJSON(ROM_COPY: ROM):
     """Recalculates the pointer tables."""
     TABLE_COUNT = 32
     POINTER_OFFSET = 0x101C50
-    new_data = [None] * TABLE_COUNT
+    new_data: List[Any] = [None] * TABLE_COUNT
     for x in range(TABLE_COUNT):
         ROM_COPY.seek(POINTER_OFFSET + ((TABLE_COUNT + x) << 2))
-        table_data = {"entries": []}
+        table_data: Dict[str, List] = {"entries": []}
         count = int.from_bytes(ROM_COPY.readBytes(4), "big")
         ROM_COPY.seek(POINTER_OFFSET + (x << 2))
         head = POINTER_OFFSET + int.from_bytes(ROM_COPY.readBytes(4), "big")

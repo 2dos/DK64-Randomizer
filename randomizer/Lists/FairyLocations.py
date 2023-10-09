@@ -4,6 +4,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from typing import Optional
 
 
 class Fence:
@@ -28,11 +29,11 @@ class FairyData:
         name: str = "",
         map: Maps = Maps.Isles,
         region: Regions = Regions.GameStart,
-        fence: Fence = None,
+        fence: Optional[Fence] = None,
         spawn_y: int = 0,
         logic=None,
         is_vanilla: bool = False,
-        spawn_xyz: list = None,
+        spawn_xyz: Optional[list] = None,
         natural_index: int = -1,
         is_5ds_fairy: bool = False,
     ):
@@ -52,11 +53,12 @@ class FairyData:
             if spawn_xyz is not None:
                 self.spawn_xyz = spawn_xyz.copy()
             else:
-                self.spawn_xyz = [
-                    self.fence.center_x,
-                    self.spawn_y,
-                    self.fence.center_z,
-                ]
+                if self.fence is not None:
+                    self.spawn_xyz = [
+                        self.fence.center_x,
+                        self.spawn_y,
+                        self.fence.center_z,
+                    ]
         self.natural_index = natural_index
 
 

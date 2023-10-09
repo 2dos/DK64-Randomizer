@@ -152,7 +152,7 @@ def patching_response(spoiler):
     else:
         bin_value = 0
         for x in spoiler.settings.starting_kong_list:
-            bin_value |= 1 << x
+            bin_value |= 1 << int(x)
         ROM_COPY.seek(sav + 0x02C)
         ROM_COPY.write(bin_value)
 

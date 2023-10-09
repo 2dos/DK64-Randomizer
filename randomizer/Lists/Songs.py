@@ -5,7 +5,7 @@ from randomizer.Enums.SongType import SongType
 class Song:
     """Class used for managing song objects."""
 
-    def __init__(self, name, type=SongType.System, memory=None, groups=[]):
+    def __init__(self, name, type=SongType.System, memory=0, groups=[]):
         """Init SONG objects.
 
         Args:

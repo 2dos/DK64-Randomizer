@@ -19,6 +19,8 @@ flask-cors
 waitress
 flask-executor
 vidua
-pyxdelta
 pillow
 boto3
+types-Pillow
+types-jinja2
+mypy

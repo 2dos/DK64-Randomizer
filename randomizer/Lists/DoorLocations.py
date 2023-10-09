@@ -4,7 +4,6 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
-from randomizer.Logic import RegionsOriginal as RegionList
 from randomizer.LogicClasses import TransitionFront
 
 
@@ -1349,7 +1348,7 @@ door_locations = {
             location=[645.832, 1460.0, 4960.476, 133.0],
             group=5,
             moveless=False,
-            logic=lambda l: lambda l: Events.LighthouseEnguarde in l.Events,
+            logic=lambda l: Events.LighthouseEnguarde in l.Events,
             placed="tns",
         ),  # T&S Door behind Enguarde Door
         DoorData(

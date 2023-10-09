@@ -5,6 +5,8 @@ from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Patcher import LocalROM
+from randomizer.Spoiler import Spoiler
+from typing import Dict, List, Tuple, Union
 
 # /* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.
 # /* 0x0A8 */ unsigned char dk_crankymoves[7]; // First 4 bits indicates the moves type, 0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 0xF = No Upgrade. Last 4 bits indicate move level (eg. 1 = Baboon Blast, 2 = Strong Kong, 3 = Gorilla Grab). Each item in the array indicates the level it is given (eg. 1st slot is purchased in Japes, 2nd for Aztec etc.)
@@ -25,21 +27,21 @@ from randomizer.Patching.Patcher import LocalROM
 
 moveRandoOffset = 0x0A7
 
-dk_crankymoves = []
-diddy_crankymoves = []
-lanky_crankymoves = []
-tiny_crankymoves = []
-chunky_crankymoves = []
-dk_funkymoves = []
-diddy_funkymoves = []
-lanky_funkymoves = []
-tiny_funkymoves = []
-chunky_funkymoves = []
-dk_candymoves = []
-diddy_candymoves = []
-lanky_candymoves = []
-tiny_candymoves = []
-chunky_candymoves = []
+dk_crankymoves: List[dict] = []
+diddy_crankymoves: List[dict] = []
+lanky_crankymoves: List[dict] = []
+tiny_crankymoves: List[dict] = []
+chunky_crankymoves: List[dict] = []
+dk_funkymoves: List[dict] = []
+diddy_funkymoves: List[dict] = []
+lanky_funkymoves: List[dict] = []
+tiny_funkymoves: List[dict] = []
+chunky_funkymoves: List[dict] = []
+dk_candymoves: List[dict] = []
+diddy_candymoves: List[dict] = []
+lanky_candymoves: List[dict] = []
+tiny_candymoves: List[dict] = []
+chunky_candymoves: List[dict] = []
 
 level_names = [
     "Jungle Japes",
@@ -55,38 +57,39 @@ level_names = [
 kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky", Kongs.any: "Any Kong"}
 
 
-def pushItemMicrohints(spoiler, move_dict: dict, level: int, kong: int, slot: int):
+def pushItemMicrohints(spoiler: Spoiler, move_dict: dict, level: int, kong: int, slot: int):
     """Push hint for the micro-hints system."""
     if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
         if kong != Kongs.any or slot == 0:
             move = None  # Using no item for the purpose of a default
-            hinted_items = {
+            hinted_items: Dict[Items, List[List]] = {
                 # Key = Item, Value = Textbox index in text file 19
-                Items.Monkeyport: [("special", 2, Kongs.tiny), 26, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
-                Items.GorillaGone: [("special", 2, Kongs.chunky), 25, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
-                Items.Bongos: [("instrument", 0, Kongs.donkey), 27, [MicrohintsEnabled.all]],
-                Items.Triangle: [("instrument", 0, Kongs.chunky), 28, [MicrohintsEnabled.all]],
-                Items.Saxophone: [("instrument", 0, Kongs.tiny), 29, [MicrohintsEnabled.all]],
-                Items.Trombone: [("instrument", 0, Kongs.lanky), 30, [MicrohintsEnabled.all]],
-                Items.Guitar: [("instrument", 0, Kongs.diddy), 31, [MicrohintsEnabled.all]],
-                Items.ProgressiveSlam: [("slam", 1, Kongs.any), 33, [MicrohintsEnabled.base, MicrohintsEnabled.all]],
+                Items.Monkeyport: [["special", 2, Kongs.tiny], [26], [MicrohintsEnabled.base, MicrohintsEnabled.all]],
+                Items.GorillaGone: [["special", 2, Kongs.chunky], [25], [MicrohintsEnabled.base, MicrohintsEnabled.all]],
+                Items.Bongos: [["instrument", 0, Kongs.donkey], [27], [MicrohintsEnabled.all]],
+                Items.Triangle: [["instrument", 0, Kongs.chunky], [28], [MicrohintsEnabled.all]],
+                Items.Saxophone: [["instrument", 0, Kongs.tiny], [29], [MicrohintsEnabled.all]],
+                Items.Trombone: [["instrument", 0, Kongs.lanky], [30], [MicrohintsEnabled.all]],
+                Items.Guitar: [["instrument", 0, Kongs.diddy], [31], [MicrohintsEnabled.all]],
+                Items.ProgressiveSlam: [["slam", 1, Kongs.any], [33], [MicrohintsEnabled.base, MicrohintsEnabled.all]],
             }
             for item_hint in hinted_items:
                 move_data = hinted_items[item_hint][0]
-                if (move_dict["move_type"] == move_data[0] and move_dict["move_lvl"] == move_data[1] and move_dict["move_kong"] == move_data[2]) or (
+                if (move_dict["move_type"] == move_data[0] and move_dict["move_lvl"] == move_data[1][0] and move_dict["move_kong"] == move_data[2]) or (
                     move_dict["move_type"] == move_data[0] and move_data[0] == "slam"
                 ):
                     if spoiler.settings.microhints_enabled in list(hinted_items[item_hint][2]):
                         move = item_hint
+
             if move is not None:
-                data = {"textbox_index": hinted_items[move][1], "mode": "replace_whole", "target": spoiler.microhints[ItemList[move].name]}
+                data = {"textbox_index": hinted_items[move][1][0], "mode": "replace_whole", "target": spoiler.microhints[ItemList[move].name]}
                 if 19 in spoiler.text_changes:
                     spoiler.text_changes[19].append(data)
                 else:
                     spoiler.text_changes[19] = [data]
 
 
-def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler, kong_slot: int, kongs: list, level_override=None):
+def writeMoveDataToROM(arr: list, enable_hints: bool, spoiler: Spoiler, kong_slot: int, kongs: list, level_override=None):
     """Write move data to ROM."""
     ROM_COPY = LocalROM()
     for xi, x in enumerate(arr):
@@ -131,7 +134,7 @@ def dictEqual(dict1: dict, dict2: dict) -> bool:
     return True
 
 
-def randomize_moves(spoiler):
+def randomize_moves(spoiler: Spoiler):
     """Randomize Move locations based on move_data from spoiler."""
     varspaceOffset = spoiler.settings.rom_data
     movespaceOffset = spoiler.settings.move_location_data
@@ -165,7 +168,7 @@ def randomize_moves(spoiler):
         for shop in range(3):
             shop_lst = []
             for kong in range(5):
-                kong_lst = []
+                kong_lst: List = []
                 for level in range(8):
                     kong_lst.append([])
                 shop_lst.append(kong_lst)
@@ -173,16 +176,14 @@ def randomize_moves(spoiler):
         for shop in range(3):
             for level in range(8):
                 is_shared = True
-                default = 0
+                default = move_arrays[0][shop][0][level]
                 for kong in range(5):
-                    if kong == 0:
-                        default = move_arrays[0][shop][kong][level]
                     if not dictEqual(default, move_arrays[0][shop][kong][level]):
                         is_shared = False
                 for kong in range(5):
                     applied_kong = kong
                     if is_shared:
-                        applied_kong = Kongs.any
+                        applied_kong = int(Kongs.any)
                     kong_lists[shop][kong][level] = applied_kong
         ROM_COPY = LocalROM()
         ROM_COPY.seek(varspaceOffset + moveRandoOffset)
@@ -207,7 +208,7 @@ def randomize_moves(spoiler):
         writeMoveDataToROM(bfi_move, hint_enabled, spoiler, 0, [Kongs.tiny], 7)
 
 
-def getNextSlot(spoiler, item: Items) -> int:
+def getNextSlot(spoiler: Spoiler, item: Items) -> Union[int, None]:
     """Get slot for progressive item with pre-given moves."""
     slots = []
     if item == Items.ProgressiveAmmoBelt:
@@ -229,7 +230,7 @@ def getNextSlot(spoiler, item: Items) -> int:
     return None
 
 
-def place_pregiven_moves(spoiler):
+def place_pregiven_moves(spoiler: Spoiler):
     """Place pre-given moves."""
     item_order = [
         Items.BaboonBlast,
