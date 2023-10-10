@@ -508,6 +508,47 @@ void handleCShifting(char* value, char limit) {
 
 static char* unk_string = "???";
 
+int getTiedShopmoveFlag(int flag) {
+    if (flag == FLAG_ITEM_SLAM_0) {
+        return FLAG_SHOPMOVE_SLAM_0;
+    } else if (flag == FLAG_ITEM_INS_0) {
+        return FLAG_SHOPMOVE_INS_0;
+    } else if (flag == FLAG_ITEM_BELT_0) {
+        return FLAG_SHOPMOVE_BELT_0;
+    }
+    return 0;
+}
+
+void getItemSpecificity(char** str, int step, int flag) {
+    int tied_flag = getTiedShopmoveFlag(flag);
+    if (tied_flag == 0) {
+        return;
+    }
+    int base_set = checkFlagDuplicate(flag + step, FLAGTYPE_PERMANENT) || checkFlagDuplicate(tied_flag + step, FLAGTYPE_PERMANENT);
+    if (base_set) {
+        return;
+    }
+    if (flag == FLAG_ITEM_SLAM_0) {
+        int slams[] = {Rando.moves_pregiven.slam_upgrade_0, Rando.moves_pregiven.slam_upgrade_1, Rando.moves_pregiven.slam_upgrade_2};
+        if (slams[step]) {
+            return;
+        }
+    } else if (flag == FLAG_ITEM_BELT_0) {
+        int belts[] = {Rando.moves_pregiven.belt_upgrade_0, Rando.moves_pregiven.belt_upgrade_1};
+        if (belts[step]) {
+            return;
+        }
+    } else if (flag == FLAG_ITEM_INS_0) {
+        int instrument_upgrades[] = {Rando.moves_pregiven.ins_upgrade_0, Rando.moves_pregiven.ins_upgrade_1, Rando.moves_pregiven.ins_upgrade_2};
+        if (instrument_upgrades[step]) {
+            return;
+        }
+    } else {
+        return;
+    }
+    *str = unk_string;
+}
+
 int* pauseScreen3And4Header(int* dl) {
     /**
      * @brief Alter pause screen totals header to display the checks screen
@@ -599,30 +640,8 @@ int* pauseScreen3And4Header(int* dl) {
                 char* str = itemloc_pointers[head + 1 + j];
                 short base_flag = itemloc_textnames[(int)item_subgroup].flags[i];
                 short flag = base_flag + j;
-                if (base_flag == FLAG_ITEM_BELT_0) {
-                    if (j >= initFile_getBeltLevel(0)) {
-                        if (!checkFlagDuplicate(flag, FLAGTYPE_PERMANENT)) {
-                            if (!checkFlagDuplicate(FLAG_SHOPMOVE_BELT_0 + j, FLAGTYPE_PERMANENT)) {
-                                str = unk_string;
-                            }
-                        }
-                    }
-                } else if (base_flag == FLAG_ITEM_INS_0) {
-                    if (j >= initFile_getInsUpgradeLevel(0)) {
-                        if (!checkFlagDuplicate(flag, FLAGTYPE_PERMANENT)) {
-                            if (!checkFlagDuplicate(FLAG_SHOPMOVE_INS_0 + j, FLAGTYPE_PERMANENT)) {
-                                str = unk_string;
-                            }
-                        }
-                    }
-                } else if (base_flag == FLAG_ITEM_SLAM_0) {
-                    if (j >= initFile_getSlamLevel(0)) {
-                        if (!checkFlagDuplicate(flag, FLAGTYPE_PERMANENT)) {
-                            if (!checkFlagDuplicate(FLAG_SHOPMOVE_SLAM_0 + j, FLAGTYPE_PERMANENT)) {
-                                str = unk_string;
-                            }
-                        }
-                    }
+                if ((base_flag == FLAG_ITEM_BELT_0) || (base_flag == FLAG_ITEM_INS_0) || (base_flag == FLAG_ITEM_SLAM_0)) {
+                    getItemSpecificity(&str, j, base_flag);
                 } else {
                     if (!hasMove(flag)) {
                         str = unk_string;
