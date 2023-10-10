@@ -1,7 +1,7 @@
 """Crown Location List."""
 from __future__ import annotations
 
-from enum import Enum, auto
+from enum import IntEnum, auto
 from typing import TYPE_CHECKING
 
 from randomizer.Enums.Events import Events
@@ -11,7 +11,6 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import HelmSetting
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Maps import Maps
-from randomizer.Enums.Locations import LocationTypes
 
 
 class CustomLocation:
@@ -73,6 +72,14 @@ def resetCustomLocations() -> None:
     for key in CustomLocations.keys():
         for location in CustomLocations[key]:
             location.selected = location.vanilla_crown or location.vanilla_crate or location.vanilla_patch
+
+
+class LocationTypes(IntEnum):
+    """Location type Enum."""
+
+    CrownPad = auto()
+    DirtPatch = auto()
+    MelonCrate = auto()
 
 
 CustomLocations = {

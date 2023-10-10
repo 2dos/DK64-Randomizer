@@ -47,9 +47,6 @@ from randomizer.Lists.ShufflableExit import GetShuffledLevelIndex
 from randomizer.Lists.Warps import BananaportVanilla
 from randomizer.Patching.Lib import IsItemSelected
 from randomizer.Prices import AnyKongCanBuy, CanBuy, GetPriceAtLocation
-from randomizer.ShuffleKasplats import constants, shufflable
-from randomizer.Enums.Regions import Regions
-
 
 STARTING_SLAM = 0  # Currently we're assuming you always start with 1 slam
 
@@ -76,7 +73,7 @@ class LogicVarHolder:
         self.assumeLevel4Entry = False
         self.assumeUpperIslesAccess = False
         self.assumeKRoolAccess = False
-        self.id = Regions.GameStart
+
         self.startkong = self.settings.starting_kong
         # Glitch Logic
         enable_glitch_logic = self.settings.logic_type == LogicType.glitch
@@ -94,7 +91,6 @@ class LogicVarHolder:
         self.swim_through_shores = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.swim_through_shores)
         self.boulder_clip = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.boulder_clips) and False  # Temporarily disabled
         self.skew = enable_glitch_logic and IsGlitchEnabled(settings, GlitchesSelected.skew)
-        self.kasplat_map = {**shufflable, **constants}
         # Reset
         self.Reset()
 
@@ -1076,38 +1072,27 @@ class LogicVarHolder:
 
 
 # Import regions from logic files
-class RegionsData:
-    """Region storage location."""
-
-    def __init__(self):
-        """Compile all the regions into one var."""
-        self.Regions = {
-            **randomizer.LogicFiles.DKIsles.LogicRegions,
-            **randomizer.LogicFiles.JungleJapes.LogicRegions,
-            **randomizer.LogicFiles.AngryAztec.LogicRegions,
-            **randomizer.LogicFiles.FranticFactory.LogicRegions,
-            **randomizer.LogicFiles.GloomyGalleon.LogicRegions,
-            **randomizer.LogicFiles.FungiForest.LogicRegions,
-            **randomizer.LogicFiles.CrystalCaves.LogicRegions,
-            **randomizer.LogicFiles.CreepyCastle.LogicRegions,
-            **randomizer.LogicFiles.HideoutHelm.LogicRegions,
-            **randomizer.LogicFiles.Shops.LogicRegions,
-        }
-
+RegionsOriginal = {
+    **randomizer.LogicFiles.DKIsles.LogicRegions,
+    **randomizer.LogicFiles.JungleJapes.LogicRegions,
+    **randomizer.LogicFiles.AngryAztec.LogicRegions,
+    **randomizer.LogicFiles.FranticFactory.LogicRegions,
+    **randomizer.LogicFiles.GloomyGalleon.LogicRegions,
+    **randomizer.LogicFiles.FungiForest.LogicRegions,
+    **randomizer.LogicFiles.CrystalCaves.LogicRegions,
+    **randomizer.LogicFiles.CreepyCastle.LogicRegions,
+    **randomizer.LogicFiles.HideoutHelm.LogicRegions,
+    **randomizer.LogicFiles.Shops.LogicRegions,
+}
 
 # Auxillary regions for colored bananas and banana coins
-class CollectibleData:
-    """Collectable Storage Location."""
-
-    def __init__(self):
-        """Compile all the regions into one var."""
-        self.CollectibleRegions = {
-            **randomizer.CollectibleLogicFiles.DKIsles.LogicRegions,
-            **randomizer.CollectibleLogicFiles.JungleJapes.LogicRegions,
-            **randomizer.CollectibleLogicFiles.AngryAztec.LogicRegions,
-            **randomizer.CollectibleLogicFiles.FranticFactory.LogicRegions,
-            **randomizer.CollectibleLogicFiles.GloomyGalleon.LogicRegions,
-            **randomizer.CollectibleLogicFiles.FungiForest.LogicRegions,
-            **randomizer.CollectibleLogicFiles.CrystalCaves.LogicRegions,
-            **randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions,
-        }
+CollectibleRegionsOriginal = {
+    **randomizer.CollectibleLogicFiles.DKIsles.LogicRegions,
+    **randomizer.CollectibleLogicFiles.JungleJapes.LogicRegions,
+    **randomizer.CollectibleLogicFiles.AngryAztec.LogicRegions,
+    **randomizer.CollectibleLogicFiles.FranticFactory.LogicRegions,
+    **randomizer.CollectibleLogicFiles.GloomyGalleon.LogicRegions,
+    **randomizer.CollectibleLogicFiles.FungiForest.LogicRegions,
+    **randomizer.CollectibleLogicFiles.CrystalCaves.LogicRegions,
+    **randomizer.CollectibleLogicFiles.CreepyCastle.LogicRegions,
+}

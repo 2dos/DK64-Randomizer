@@ -17,20 +17,20 @@ def randomize_prices(spoiler):
             ROM_COPY.write(0)
         progressive_items = {Items.ProgressiveAmmoBelt: 2, Items.ProgressiveInstrumentUpgrade: 3, Items.ProgressiveSlam: 2}
         for item in progressive_items:
-            if item not in spoiler.settings.progressive_prices:
-                spoiler.settings.progressive_prices[item] = []
+            if item not in spoiler.settings.prices:
+                spoiler.settings.prices[item] = []
             length = progressive_items[item]
-            if len(spoiler.settings.progressive_prices[item]) < length:
-                diff = length - len(spoiler.settings.progressive_prices[item])
+            if len(spoiler.settings.prices[item]) < length:
+                diff = length - len(spoiler.settings.prices[item])
                 for d in range(diff):
-                    spoiler.settings.progressive_prices[item].append(0)
+                    spoiler.settings.prices[item].append(0)
         ROM_COPY.seek(varspaceOffset + 0x45)
-        ROM_COPY.write(spoiler.settings.progressive_prices[Items.ProgressiveSlam][0])
-        ROM_COPY.write(spoiler.settings.progressive_prices[Items.ProgressiveSlam][1])
+        ROM_COPY.write(spoiler.settings.prices[Items.ProgressiveSlam][0])
+        ROM_COPY.write(spoiler.settings.prices[Items.ProgressiveSlam][1])
 
         ROM_COPY.seek(varspaceOffset + 0x53)
-        ROM_COPY.write(spoiler.settings.progressive_prices[Items.ProgressiveAmmoBelt][0])
-        ROM_COPY.write(spoiler.settings.progressive_prices[Items.ProgressiveAmmoBelt][1])
-        ROM_COPY.write(spoiler.settings.progressive_prices[Items.ProgressiveInstrumentUpgrade][0])
-        ROM_COPY.write(spoiler.settings.progressive_prices[Items.ProgressiveInstrumentUpgrade][1])
-        ROM_COPY.write(spoiler.settings.progressive_prices[Items.ProgressiveInstrumentUpgrade][2])
+        ROM_COPY.write(spoiler.settings.prices[Items.ProgressiveAmmoBelt][0])
+        ROM_COPY.write(spoiler.settings.prices[Items.ProgressiveAmmoBelt][1])
+        ROM_COPY.write(spoiler.settings.prices[Items.ProgressiveInstrumentUpgrade][0])
+        ROM_COPY.write(spoiler.settings.prices[Items.ProgressiveInstrumentUpgrade][1])
+        ROM_COPY.write(spoiler.settings.prices[Items.ProgressiveInstrumentUpgrade][2])

@@ -6,10 +6,9 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.LogicClasses import LocationLogic
-from typing import Dict
 
 level_list = ["Jungle Japes", "Angry Aztec", "Frantic Factory", "Gloomy Galleon", "Fungi Forest", "Crystal Caves", "Creepy Castle"]
-human_hint_doors: Dict[str, dict] = {
+human_hint_doors = {
     "Jungle Japes": {},
     "Angry Aztec": {},
     "Frantic Factory": {},
@@ -18,7 +17,7 @@ human_hint_doors: Dict[str, dict] = {
     "Crystal Caves": {},
     "Creepy Castle": {},
 }
-human_portal_doors: Dict[str, dict] = {
+human_portal_doors = {
     "Jungle Japes": {},
     "Angry Aztec": {},
     "Frantic Factory": {},
@@ -27,7 +26,7 @@ human_portal_doors: Dict[str, dict] = {
     "Crystal Caves": {},
     "Creepy Castle": {},
 }
-shuffled_door_data: Dict[Levels, list] = {
+shuffled_door_data = {
     Levels.JungleJapes: [],
     Levels.AngryAztec: [],
     Levels.FranticFactory: [],

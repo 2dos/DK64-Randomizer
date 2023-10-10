@@ -6,7 +6,7 @@ from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import LocationListData
+from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.MapsAndExits import RegionMapList
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
 from randomizer.LogicFiles.AngryAztec import LogicRegions as AngryAztecRegions
@@ -17,7 +17,6 @@ from randomizer.LogicFiles.FranticFactory import LogicRegions as FranticFactoryR
 from randomizer.LogicFiles.FungiForest import LogicRegions as FungiForestRegions
 from randomizer.LogicFiles.GloomyGalleon import LogicRegions as GloomyGalleonRegions
 from randomizer.LogicFiles.JungleJapes import LogicRegions as JungleJapesRegions
-from typing import Dict
 
 
 def getKongString(kongEnum):
@@ -143,7 +142,7 @@ PlandomizerPanels = {
         },
     },
 }
-for locationEnum, locationObj in LocationListData().LocationList.items():
+for locationEnum, locationObj in LocationList.items():
     # Do not randomize constant rewards.
     if locationObj.type == Types.Constant:
         continue
@@ -318,7 +317,7 @@ PlannableSpawns = []
 # A dictionary for sorting locations by hint_name. This is filled in
 # programmatically, because hint regions may change and we don't want to adjust
 # this dictionary every time hint regions change.
-hintNameSortDict: Dict[Levels, dict] = {
+hintNameSortDict = {
     Levels.DKIsles: dict(),
     Levels.JungleJapes: dict(),
     Levels.AngryAztec: dict(),

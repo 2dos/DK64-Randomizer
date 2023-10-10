@@ -4,10 +4,9 @@ import random
 
 import js
 from randomizer.Enums.SongType import SongType
-from randomizer.Lists.Songs import song_data, Song
+from randomizer.Lists.Songs import song_data
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
-from typing import Dict, List, Any
 
 storage_banks = {
     0: 0x8000,
@@ -37,7 +36,7 @@ def insertUploaded(uploaded_songs: list, uploaded_song_names: list, target_type:
     songs_to_be_replaced = random.sample(all_target_songs, swap_amount)
     ROM_COPY = ROM()
     for index, song in enumerate(songs_to_be_replaced):
-        selected_bank = 999999
+        selected_bank = None
         selected_cap = 0xFFFFFF
         new_song_data = bytes(added_songs[index][0])
         for bank in storage_banks:
@@ -45,7 +44,7 @@ def insertUploaded(uploaded_songs: list, uploaded_song_names: list, target_type:
                 if selected_cap > storage_banks[bank]:  # Bank size is new lowest that fits
                     selected_bank = bank
                     selected_cap = storage_banks[bank]
-        if selected_bank != 999999:
+        if selected_bank is not None:
             song_idx = song_data.index(song)
             old_bank = (song_data[song_idx].memory >> 1) & 3
             if old_bank < selected_bank:
@@ -77,7 +76,7 @@ def randomize_music(settings: Settings):
     Args:
         settings (Settings): Settings object from the windows form.
     """
-    music_data: Dict[str, Dict] = {"music_bgm_data": {}, "music_majoritem_data": {}, "music_minoritem_data": {}, "music_event_data": {}}
+    music_data = {"music_bgm_data": {}, "music_majoritem_data": {}, "music_minoritem_data": {}, "music_event_data": {}}
     if js.document.getElementById("override_cosmetics").checked or True:
         if js.document.getElementById("random_music").checked:
             settings.music_bgm_randomized = True
@@ -117,7 +116,7 @@ def randomize_music(settings: Settings):
                 # If uploaded, replace some songs with the uploaded songs
                 insertUploaded(list(js.cosmetics.bgm), list(js.cosmetic_names.bgm), SongType.BGM)
             # Generate the list of BGM songs
-            song_list: List[Any] = []
+            song_list = []
             for channel_index in range(12):
                 song_list.append([])
             for song in song_data:
@@ -133,7 +132,7 @@ def randomize_music(settings: Settings):
         # If the user was a poor sap and selected chaos put DK rap for everything
         else:
             # Find the DK rap in the list
-            rap = js.pointer_addresses[0]["entries"][song_data.index(next((x for x in song_data if x.name == "DK Rap"), Song("DK Rap")))]
+            rap = js.pointer_addresses[0]["entries"][song_data.index(next((x for x in song_data if x.name == "DK Rap"), None))]
             # Find all BGM songs
             song_list = []
             for song in song_data:
@@ -145,16 +144,16 @@ def randomize_music(settings: Settings):
             stored_data = ROM_COPY.readBytes(rap["compressed_size"])
             uncompressed_data_table = js.pointer_addresses[26]["entries"][0]
             # Replace all songs as the DK rap
-            for song_point in song_list:
-                ROM_COPY.seek(song_point["pointing_to"])
+            for song in song_list:
+                ROM_COPY.seek(song["pointing_to"])
                 ROM_COPY.writeBytes(stored_data)
                 # Update the uncompressed data table to have our new size.
-                ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(song_point)))
+                ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(song)))
                 new_bytes = ROM_COPY.readBytes(4)
                 ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song_list.index(rap)))
                 ROM_COPY.writeBytes(new_bytes)
                 # Update data
-                ROM_COPY.seek(0x1FFF000 + (song_point["index"] * 2))
+                ROM_COPY.seek(0x1FFF000 + (song["index"] * 2))
                 ROM_COPY.writeMultipleBytes(song_data[rap["index"]].memory, 2)
     # If the user wants to randomize major items
     if settings.music_majoritems_randomized:
