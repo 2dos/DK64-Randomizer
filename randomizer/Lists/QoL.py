@@ -41,6 +41,7 @@ QoLItems = [
     QoLItem("Brighten Mad Maze Maul Enemies", 20, "Enemies in Mad Maze Maul will be at full brightness, making them easier to see in dark areas."),
     QoLItem("Raise Fungi Dirt Patch", -1, "The Fungi Dirt Patch near the mill that was discovered in 2017 is slightly raised to make it visible."),
     QoLItem("Global Instrument", 21, "Instrument Energy has been changed to be made global, to align it with the behavior of Ammo, Oranges and other consumables."),
+    QoLItem("Fast Pause Transitions", 22, "Pause Menu transitions are greatly sped up."),
 ]
 for item in QoLItems:
     if item.name != "No Group":

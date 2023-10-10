@@ -310,6 +310,7 @@ extern void checkItemDB(void);
 extern void initPauseMenu(void);
 extern void changePauseScreen(void);
 extern int* displayHintRegion(int* dl, int x, int y, float scale, char* text);
+extern void storeHintRegion(void);
 
 extern void handleDynamicItemText(char* location, char* format, int character);
 extern void handleFilename(char* location, char* format, char* new_name);
@@ -432,6 +433,7 @@ extern unsigned char enemy_rewards_spawned[ENEMY_REWARD_CACHE_SIZE];
 
 extern mtx_item static_mtx[20];
 extern int hint_pointers[35];
+extern char* itemloc_pointers[LOCATION_ITEM_COUNT];
 extern char music_types[SONG_COUNT];
 extern char filename[FILENAME_LENGTH + 1];
 extern char grab_lock_timer;

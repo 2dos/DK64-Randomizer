@@ -86,8 +86,10 @@ static char* raw_items[] = {
 
 static char check_level = 0;
 static char hint_level = 0;
+static char item_subgroup = 0;
 static char level_check_text[0x18] = "";
 static char level_hint_text[0x18] = "";
+static char item_loc_text[0x18] = "";
 
 static unsigned char check_data[2][9][CHECK_TERMINATOR] = {}; // 8 items, 9 levels, numerator + denominator
 
@@ -100,6 +102,9 @@ void initHints(void) {
         for (int i = 0; i < 35; i++) {
             hint_pointers[i] = (int)getTextPointer(41, 1+i, 0);
         }
+        for (int i = 0; i < LOCATION_ITEM_COUNT; i++) {
+            itemloc_pointers[i] = getTextPointer(44, i, 0);
+        }
         hints_initialized = 1;
     }
     display_billboard_fix = 0;
@@ -108,6 +113,9 @@ void initHints(void) {
 void wipeHintCache(void) {
     for (int i = 0; i < 35; i++) {
         hint_pointers[i] = 0;
+    }
+    for (int i = 0; i < LOCATION_ITEM_COUNT; i++) {
+        itemloc_pointers[i] = (char*)0;
     }
     hints_initialized = 0;
 }
@@ -238,15 +246,18 @@ void checkItemDB(void) {
 static char string_copy[STRING_MAX_SIZE] = "";
 static char mtx_counter = 0;
 
-int* drawHintText(int* dl, char* str, int x, int y) {
+int* drawHintText(int* dl, char* str, int x, int y, int dim, int center) {
     mtx_item mtx0;
     mtx_item mtx1;
     _guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
     float position = y;
     int pos_f = *(int*)&position;
-    float hint_x = 640.0f;
-    if (Rando.true_widescreen) {
-        hint_x = SCREEN_WD_FLOAT * 2;
+    float hint_x = x;
+    if (center) {
+        hint_x = 640.0f;
+        if (Rando.true_widescreen) {
+            hint_x = SCREEN_WD_FLOAT * 2;
+        }
     }
     _guTranslateF(&mtx1, *(int*)(&hint_x), pos_f, 0x0);
     _guMtxCatF(&mtx0, &mtx1, &mtx0);
@@ -263,10 +274,18 @@ int* drawHintText(int* dl, char* str, int x, int y) {
 	*(unsigned int*)(dl++) = 0xFCFF97FF;
 	*(unsigned int*)(dl++) = 0xFF2CFE7F;
 	*(unsigned int*)(dl++) = 0xFA000000;
-    *(unsigned int*)(dl++) = 0xFFFFFFFF;
+    if (dim) {
+        *(unsigned int*)(dl++) = 0xFFFFFFC0;
+    } else {
+        *(unsigned int*)(dl++) = 0xFFFFFFFF;
+    }
     *(unsigned int*)(dl++) = 0xDA380002;
     *(unsigned int*)(dl++) = (int)&static_mtx[(int)mtx_counter];
-    dl = displayText((int*)dl,6,0,0,str,0x80);
+    int data = 0x80;
+    if (!center) {
+        data = 0;
+    }
+    dl = displayText((int*)dl,6,0,0,str,data);
     mtx_counter += 1;
     *(unsigned int*)(dl++) = 0xD8380002;
     *(unsigned int*)(dl++) = 0x00000040;
@@ -301,7 +320,7 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
         int is_control = 0;
         if (referenced_character == 0) {
             // Terminator
-            return drawHintText(dl, (char*)(string_copy_ref), x, curr_y);
+            return drawHintText(dl, (char*)(string_copy_ref), x, curr_y, 0, 1);
         } else if (referenced_character == 0x20) {
             // Space
             last_safe = header;
@@ -315,7 +334,7 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
         if (!is_control) {
             if (header > 50) {
                 *(char*)(string_copy_ref + last_safe) = 0; // Stick terminator in last safe
-                dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y);
+                dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y, 0, 1);
                 line_count += 1;
                 if (line_count == 3) {
                     return dl;
@@ -396,6 +415,73 @@ static char* unknown_hints[] = {
     "??? - 004 GOLDEN BANANAS",
 };
 
+typedef enum itemloc_subgroups {
+    ITEMLOC_DKMOVES,
+    ITEMLOC_DIDDYMOVES,
+    ITEMLOC_LANKYMOVES,
+    ITEMLOC_TINYMOVES,
+    ITEMLOC_CHUNKYMOVES,
+    ITEMLOC_GUNUPGRADES,
+    ITEMLOC_BFITRAINING,
+    ITEMLOC_INSUPG,
+    ITEMLOC_KONGS,
+    ITEMLOC_TERMINATOR,
+} itemloc_subgroups;
+
+typedef struct itemloc_data {
+    /* 0x000 */ char* header;
+    /* 0x004 */ unsigned short flags[6];
+    /* 0x010 */ char lengths[6];
+} itemloc_data;
+
+static itemloc_data itemloc_textnames[] = {
+    {
+        .header="DONKEY MOVES", 
+        .flags={0x8001, 0x8002, 0x8003, 0x8201, 0x8401, 0}, 
+        .lengths={1, 1, 1, 1, 1, -1}
+    }, // 5
+    {
+        .header="DIDDY MOVES", 
+        .flags={0x9001, 0x9002, 0x9003, 0x9201, 0x9401, 0}, 
+        .lengths={1, 1, 1, 1, 1, -1}
+    }, // 5
+    {
+        .header="LANKY MOVES", 
+        .flags={0xA001, 0xA002, 0xA003, 0xA201, 0xA401, 0}, 
+        .lengths={1, 1, 1, 1, 1, -1}
+    }, // 5
+    {
+        .header="TINY MOVES", 
+        .flags={0xB001, 0xB002, 0xB003, 0xB201, 0xB401, 0}, 
+        .lengths={1, 1, 1, 1, 1, -1}
+    }, // 5
+    {
+        .header="CHUNKY MOVES", 
+        .flags={0xC001, 0xC002, 0xC003, 0xC201, 0xC401, 0}, 
+        .lengths={1, 1, 1, 1, 1, -1}
+    }, // 5
+    {
+        .header="GUN UPGRADES", 
+        .flags={0xD202, 0xD203, FLAG_ITEM_BELT_0, 0, 0, 0}, 
+        .lengths={1, 1, 2, -1, -1, -1}
+    }, // 4
+    {
+        .header="BASIC MOVES", 
+        .flags={FLAG_TBARREL_DIVE, FLAG_TBARREL_ORANGE, FLAG_TBARREL_BARREL, FLAG_TBARREL_VINE, FLAG_ABILITY_CAMERA, FLAG_ABILITY_SHOCKWAVE}, 
+        .lengths={1, 1, 1, 1, 1, 1}
+    }, // 6
+    {
+        .header="INSTRUMENT UPGRADES AND SLAMS", 
+        .flags={FLAG_ITEM_INS_0, FLAG_ITEM_SLAM_0, 0, 0, 0, 0}, 
+        .lengths={3, 3, -1, -1, -1, -1}
+    }, // 6
+    {
+        .header="KONGS", 
+        .flags={FLAG_KONG_DK, FLAG_KONG_DIDDY, FLAG_KONG_LANKY, FLAG_KONG_TINY, FLAG_KONG_CHUNKY, 0}, 
+        .lengths={1, 1, 1, 1, 1, -1}
+    }, // 5
+};
+
 int* pauseScreen3And4Header(int* dl) {
     /**
      * @brief Alter pause screen totals header to display the checks screen
@@ -467,6 +553,61 @@ int* pauseScreen3And4Header(int* dl) {
             
         }
         return dl;
+    } else if (paad->screen == PAUSESCREEN_ITEMLOCATIONS) {
+        display_billboard_fix = 1;
+        dl = printText(dl, level_x, 0x3C, 0.65f, "ITEM LOCATIONS");
+        // Handle Controls
+        if (NewlyPressedControllerInput.Buttons.c_left) {
+            item_subgroup -= 1;
+            if (item_subgroup < 0) {
+                item_subgroup = ITEMLOC_TERMINATOR - 1;
+            }
+        } else if (NewlyPressedControllerInput.Buttons.c_right) {
+            item_subgroup += 1;
+            if (item_subgroup >= ITEMLOC_TERMINATOR) {
+                item_subgroup = 0;
+            }
+        }
+        // Display subgroup
+        dk_strFormat((char*)item_loc_text, "w %s e", itemloc_textnames[(int)item_subgroup].header);
+        dl = printText(dl, level_x, 120, 0.5f, item_loc_text);
+        // Display Hints
+        *(unsigned int*)(dl++) = 0xFA000000;
+        *(unsigned int*)(dl++) = 0xFFFFFF96;
+        int bubble_x = 625;
+        int item_loc_x = 200;
+        if (Rando.true_widescreen) {
+            bubble_x = (2 * SCREEN_WD) - 15;
+            item_loc_x = SCREEN_WD - 120;
+        }
+        dl = displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, 465, 24.0f, 20.0f, 0, 0.0f);
+        mtx_counter = 0;
+        int head = 0;
+        int k = 0;
+        while (k < item_subgroup) {
+            for (int l = 0; l < 6; l++) {
+                head += itemloc_textnames[k].lengths[l];
+                head += 1;
+            }
+            k++;
+        }
+        int i = 0;
+        int y = 140;
+        while (i < 6) {
+            int size = itemloc_textnames[(int)item_subgroup].lengths[i];
+            if (size == -1) {
+                break;
+            }
+            dl = drawHintText(dl, itemloc_pointers[head], item_loc_x, y, 0, 0);
+            for (int j = 0; j < size; j++) {
+                y += 40;
+                dl = drawHintText(dl, itemloc_pointers[head + 1 + j], item_loc_x, y, 1, 0);
+            }
+            head += 1 + size;
+            y += 60;
+            i++;
+        }
+        return dl;
     }
     return dl;
 }
@@ -534,7 +675,11 @@ void changePauseScreen(void) {
     if ((paad->screen != PAUSESCREEN_MOVES) && (paad->next_screen == PAUSESCREEN_MOVES)) {
         resetTracker();
     }
-    playSFX(0x2C9);
+    if (Rando.quality_of_life.fast_pause_transitions) {
+        playSound(0xE9, 0xFFF, 0x427C0000, 0x3F800000, 0, 0);
+    } else {
+        playSFX(0x2C9);
+    }
 }
 
 void updatePauseScreenWheel(pause_paad* write_location, void* sprite, int x, int y, float scale, int local_index, int index) {
@@ -725,6 +870,7 @@ static short file_item_caps[16] = {
 #define REFERENCE_PARENT -3
 #define NO_HINT_REGION -2
 #define INCONSISTENT_HINT_REGION -1
+static char last_safe_parent = -1;
 
 static const char map_hint_regions[] = {
     /*
@@ -976,6 +1122,8 @@ int setHintRegion(void) {
                 current_region = map_hint_regions[parent_map];
                 if (current_region >= 0) {
                     return current_region;
+                } else if (last_safe_parent >= 0) {
+                    return last_safe_parent;
                 }
             }
         }
@@ -1164,6 +1312,17 @@ int setHintRegion(void) {
     return -1;
 }
 
+void storeHintRegion(void) {
+    int current_region = map_hint_regions[CurrentMap];
+    if (current_region >= 0) {
+        last_safe_parent = current_region;
+    } else if (current_region == INCONSISTENT_HINT_REGION) {
+        last_safe_parent = setHintRegion();
+    } else {
+        last_safe_parent = -1;
+    }
+}
+
 void getHintRegionText() {
     int index = setHintRegion();
     if (index < 0) {
@@ -1257,6 +1416,9 @@ void initPauseMenu(void) {
         // *(int*)(0x806AA860) = 0x31EF0007; // ANDI $t7, $t7, 7 - Show GB (Kong Specific)
         // *(int*)(0x806AADC4) = 0x33390007; // ANDI $t9, $t9, 7 - Show GB (All Kongs)
         // *(int*)(0x806AADC8) = 0xAFB90058; // SW $t9, 0x58 ($sp) - Show GB (All Kongs)
+    }
+    if (Rando.quality_of_life.fast_pause_transitions) {
+        *(float*)(0x8075AC00) = 1.3f; // Pause Menu Progression Rate
     }
     // Prevent GBs being required to view extra screens
     *(int*)(0x806A8624) = 0; // GBs doesn't lock other pause screens

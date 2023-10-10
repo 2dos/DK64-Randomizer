@@ -10,6 +10,7 @@ static float current_avg_lag = 0;
 static char has_loaded = 0;
 static char new_picture = 0;
 int hint_pointers[35] = {};
+char* itemloc_pointers[LOCATION_ITEM_COUNT] = {};
 static char delayed_load = 0;
 char grab_lock_timer = -1;
 char tag_locked = 0;
@@ -69,6 +70,11 @@ void cFuncLoop(void) {
 		clearSkipCache();
 	}
 	updateSkipCheck();
+	if (TransitionSpeed > 0) {
+		if (LZFadeoutProgress == 30.0f) {
+			storeHintRegion();
+		}
+	}
 	if (Rando.item_rando) {
 		if (TransitionSpeed > 0) {
 			if (LZFadeoutProgress == 30.0f) {
