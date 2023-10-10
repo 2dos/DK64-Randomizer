@@ -266,6 +266,9 @@ extern void spawnEnemyDrops(actorData* actor);
 extern int countFlagsForKongFLUT(int startFlag, int start, int cap, int kong);
 extern int countFlagsDuplicate(int start, int count, flagtypes type);
 extern int getKongFromBonusFlag(int flag);
+extern void* checkMove(short* flag, void* fba, int source, int vanilla_flag);
+extern int hasMove(int flag);
+
 extern void banana_medal_acquisition(int flag);
 extern void finalizeBeatGame(void);
 extern void exitTrapBubbleController(void);

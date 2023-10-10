@@ -482,6 +482,32 @@ static itemloc_data itemloc_textnames[] = {
     }, // 5
 };
 
+int* displayBubble(int* dl) {
+    *(unsigned int*)(dl++) = 0xFA000000;
+    *(unsigned int*)(dl++) = 0xFFFFFF96;
+    int bubble_x = 625;
+    if (Rando.true_widescreen) {
+        bubble_x = (2 * SCREEN_WD) - 15;
+    }
+    return displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, 465, 24.0f, 20.0f, 0, 0.0f);
+}
+
+void handleCShifting(char* value, char limit) {
+    if (NewlyPressedControllerInput.Buttons.c_left) {
+        *value -= 1;
+        if (*value < 0) {
+            *value = limit - 1;
+        }
+    } else if (NewlyPressedControllerInput.Buttons.c_right) {
+        *value += 1;
+        if (*value >= limit) {
+            *value = 0;
+        }
+    }
+}
+
+static char* unk_string = "???";
+
 int* pauseScreen3And4Header(int* dl) {
     /**
      * @brief Alter pause screen totals header to display the checks screen
@@ -514,29 +540,12 @@ int* pauseScreen3And4Header(int* dl) {
         display_billboard_fix = 1;
         dl = printText(dl, level_x, 0x3C, 0.65f, "HINTS");
         // Handle Controls
-        int hint_level_cap = 7;
-        if (NewlyPressedControllerInput.Buttons.c_left) {
-            hint_level -= 1;
-            if (hint_level < 0) {
-                hint_level = hint_level_cap - 1;
-            }
-        } else if (NewlyPressedControllerInput.Buttons.c_right) {
-            hint_level += 1;
-            if (hint_level >= hint_level_cap) {
-                hint_level = 0;
-            }
-        }
+        handleCShifting(&hint_level, 7);
         // Display level
         dk_strFormat((char*)level_hint_text, "w %s e", levels[(int)hint_level + 1]);
         dl = printText(dl, level_x, 120, 0.5f, level_hint_text);
         // Display Hints
-        *(unsigned int*)(dl++) = 0xFA000000;
-        *(unsigned int*)(dl++) = 0xFFFFFF96;
-        int bubble_x = 625;
-        if (Rando.true_widescreen) {
-            bubble_x = (2 * SCREEN_WD) - 15;
-        }
-        dl = displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, 465, 24.0f, 20.0f, 0, 0.0f);
+        dl = displayBubble(dl);
         mtx_counter = 0;
         for (int i = 0; i < 5; i++) {
             if (showHint(hint_level, i)) {
@@ -557,30 +566,16 @@ int* pauseScreen3And4Header(int* dl) {
         display_billboard_fix = 1;
         dl = printText(dl, level_x, 0x3C, 0.65f, "ITEM LOCATIONS");
         // Handle Controls
-        if (NewlyPressedControllerInput.Buttons.c_left) {
-            item_subgroup -= 1;
-            if (item_subgroup < 0) {
-                item_subgroup = ITEMLOC_TERMINATOR - 1;
-            }
-        } else if (NewlyPressedControllerInput.Buttons.c_right) {
-            item_subgroup += 1;
-            if (item_subgroup >= ITEMLOC_TERMINATOR) {
-                item_subgroup = 0;
-            }
-        }
+        handleCShifting(&item_subgroup, ITEMLOC_TERMINATOR);
         // Display subgroup
         dk_strFormat((char*)item_loc_text, "w %s e", itemloc_textnames[(int)item_subgroup].header);
         dl = printText(dl, level_x, 120, 0.5f, item_loc_text);
         // Display Hints
-        *(unsigned int*)(dl++) = 0xFA000000;
-        *(unsigned int*)(dl++) = 0xFFFFFF96;
-        int bubble_x = 625;
+        dl = displayBubble(dl);
         int item_loc_x = 200;
         if (Rando.true_widescreen) {
-            bubble_x = (2 * SCREEN_WD) - 15;
             item_loc_x = SCREEN_WD - 120;
         }
-        dl = displayImage(dl, 107, 0, RGBA16, 48, 32, bubble_x, 465, 24.0f, 20.0f, 0, 0.0f);
         mtx_counter = 0;
         int head = 0;
         int k = 0;
@@ -601,7 +596,40 @@ int* pauseScreen3And4Header(int* dl) {
             dl = drawHintText(dl, itemloc_pointers[head], item_loc_x, y, 0, 0);
             for (int j = 0; j < size; j++) {
                 y += 40;
-                dl = drawHintText(dl, itemloc_pointers[head + 1 + j], item_loc_x, y, 1, 0);
+                char* str = itemloc_pointers[head + 1 + j];
+                short base_flag = itemloc_textnames[(int)item_subgroup].flags[i];
+                short flag = base_flag + j;
+                if (base_flag == FLAG_ITEM_BELT_0) {
+                    if (j >= initFile_getBeltLevel(0)) {
+                        if (!checkFlagDuplicate(flag, FLAGTYPE_PERMANENT)) {
+                            if (!checkFlagDuplicate(FLAG_SHOPMOVE_BELT_0 + j, FLAGTYPE_PERMANENT)) {
+                                str = unk_string;
+                            }
+                        }
+                    }
+                } else if (base_flag == FLAG_ITEM_INS_0) {
+                    if (j >= initFile_getInsUpgradeLevel(0)) {
+                        if (!checkFlagDuplicate(flag, FLAGTYPE_PERMANENT)) {
+                            if (!checkFlagDuplicate(FLAG_SHOPMOVE_INS_0 + j, FLAGTYPE_PERMANENT)) {
+                                str = unk_string;
+                            }
+                        }
+                    }
+                } else if (base_flag == FLAG_ITEM_SLAM_0) {
+                    if (j >= initFile_getSlamLevel(0)) {
+                        if (!checkFlagDuplicate(flag, FLAGTYPE_PERMANENT)) {
+                            if (!checkFlagDuplicate(FLAG_SHOPMOVE_SLAM_0 + j, FLAGTYPE_PERMANENT)) {
+                                str = unk_string;
+                            }
+                        }
+                    }
+                } else {
+                    if (!hasMove(flag)) {
+                        str = unk_string;
+                    }
+                }
+                
+                dl = drawHintText(dl, str, item_loc_x, y, 1, 0);
             }
             head += 1 + size;
             y += 60;
@@ -676,7 +704,7 @@ void changePauseScreen(void) {
         resetTracker();
     }
     if (Rando.quality_of_life.fast_pause_transitions) {
-        playSound(0xE9, 0xFFF, 0x427C0000, 0x3F800000, 0, 0);
+        playSound(0xE9, 0x7FF, 0x427C0000, 0x3F800000, 0, 0);
     } else {
         playSFX(0x2C9);
     }
@@ -821,17 +849,7 @@ int changeSelectedLevel(int unk0, int unk1) {
     pause_paad* paad = CurrentActorPointer_0->paad;
     if (paad->screen == PAUSESCREEN_CHECKS) {
         // Checks Screen
-        if (NewlyPressedControllerInput.Buttons.c_left) {
-            check_level -= 1;
-            if (check_level < 0) {
-                check_level = (sizeof(levels) / 4) - 1;
-            }
-        } else if (NewlyPressedControllerInput.Buttons.c_right) {
-            check_level += 1;
-            if (check_level >= (sizeof(levels) / 4)) {
-                check_level = 0;
-            }
-        }
+        handleCShifting(&check_level, sizeof(levels) / 4);
     }
     return getPauseWheelRotationProgress(unk0, unk1);
 }
@@ -1419,6 +1437,7 @@ void initPauseMenu(void) {
     }
     if (Rando.quality_of_life.fast_pause_transitions) {
         *(float*)(0x8075AC00) = 1.3f; // Pause Menu Progression Rate
+        *(int*)(0x806A901C) = 0; // NOP - Remove thud
     }
     // Prevent GBs being required to view extra screens
     *(int*)(0x806A8624) = 0; // GBs doesn't lock other pause screens
