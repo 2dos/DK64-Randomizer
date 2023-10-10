@@ -1,2 +1,0 @@
-include xdelta/xdelta3/*.h
-include xdelta/xdelta3/cpp-btree/*.h

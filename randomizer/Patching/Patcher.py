@@ -4,7 +4,7 @@ from __future__ import annotations
 import copy
 import os
 from io import BytesIO
-from typing import TYPE_CHECKING, Union, Optional
+from typing import TYPE_CHECKING, Union
 
 import js
 
@@ -126,7 +126,7 @@ class ROM:
 
 
 # Try except for when the browser is trying to load this file
-def load_base_rom(default_file: Optional[BytesIO] = None) -> None:
+def load_base_rom(default_file: None = None) -> None:
     """Load the base ROM file for patching."""
     try:
         global patchedRom
@@ -176,8 +176,7 @@ class LocalROM:
         Args:
             val (int): Int value to write.
         """
-        if isinstance(self.rom, BytesIO):
-            self.rom.write((val).to_bytes(1, byteorder="big", signed=False))
+        self.rom.write((val).to_bytes(1, byteorder="big", signed=False))
 
     def writeBytes(self, byte_data: Union[bytearray, bytes]) -> None:
         """Write an array a bytes to the current position.
@@ -187,8 +186,7 @@ class LocalROM:
         Args:
             byte_data (bytes): Bytes object to write to current position.
         """
-        if isinstance(self.rom, BytesIO):
-            self.rom.write(bytes(byte_data))
+        self.rom.write(bytes(byte_data))
 
     def writeMultipleBytes(self, value: Union[int, Enemies, Maps, Kongs, CustomActors], size: int) -> None:
         """Write multiple bytes of a size to the current position.
@@ -223,8 +221,7 @@ class LocalROM:
         Args:
             val (int): Position to seek to.
         """
-        if isinstance(self.rom, BytesIO):
-            self.rom.seek(val)
+        self.rom.seek(val)
 
     def readBytes(self, len: int) -> bytes:
         """Read bytes from current position.
@@ -237,6 +234,4 @@ class LocalROM:
         Returns:
             bytes: List of bytes read from current position.
         """
-        if isinstance(self.rom, BytesIO):
-            return bytes(self.rom.read(len))
-        return bytes()
+        return bytes(self.rom.read(len))

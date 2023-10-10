@@ -1,6 +1,8 @@
 """File containing enums to represent all settings."""
+from __future__ import annotations
 
-from enum import Enum, auto
+from enum import IntEnum, auto
+from typing import TYPE_CHECKING
 
 from randomizer.Enums.Items import Items
 from randomizer.Lists.EnemyTypes import Enemies
@@ -12,7 +14,7 @@ from randomizer.Enums.Maps import Maps
 # break.
 
 
-class ActivateAllBananaports(Enum):
+class ActivateAllBananaports(IntEnum):
     """Whether bananaports should start as activated, and where.
 
     This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
@@ -27,12 +29,8 @@ class ActivateAllBananaports(Enum):
     all = 1
     isles = 2
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class BananaportRando(Enum):
+class BananaportRando(IntEnum):
     """Determines how bananaports are shuffled.
 
     off: Bananaports have their vanilla locations.
@@ -48,12 +46,8 @@ class BananaportRando(Enum):
     crossmap_coupled = 2
     crossmap_decoupled = 3
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class CharacterColors(Enum):
+class CharacterColors(IntEnum):
     """Determines the colors for the Kongs, Rambi and Enguarde.
 
     vanilla: The character uses vanilla colors.
@@ -65,12 +59,8 @@ class CharacterColors(Enum):
     randomized = auto()
     custom = auto()
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class ColorblindMode(Enum):
+class ColorblindMode(IntEnum):
     """Determines which colorblind mode setting is used.
 
     This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
@@ -89,12 +79,8 @@ class ColorblindMode(Enum):
     deut = 2
     trit = 3
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class CrownEnemyRando(Enum):
+class CrownEnemyRando(IntEnum):
     """Determines the difficulty of enemies in Battle Arenas."""
 
     off = 0
@@ -102,12 +88,8 @@ class CrownEnemyRando(Enum):
     medium = 2
     hard = 3
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class DamageAmount(Enum):
+class DamageAmount(IntEnum):
     """The damage multipler.
 
     default: Normal damage.
@@ -121,12 +103,8 @@ class DamageAmount(Enum):
     quad = 2
     ohko = 3
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class DPadDisplays(Enum):
+class DPadDisplays(IntEnum):
     """Varying methods of displaying the dpad.
 
     off: display isn't rendered.
@@ -138,27 +116,19 @@ class DPadDisplays(Enum):
     on = 1
     minimal = 2
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class ExcludedSongs(Enum):
+class ExcludedSongs(IntEnum):
     """Determines the types of songs excluded."""
 
     wrinkly = 1
     transformation = 2
     pause_music = 3
     sub_areas = 4
-
     # shops = 5
     # events = 6
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
 
-class ExtraCutsceneSkips(Enum):
+class ExtraCutsceneSkips(IntEnum):
     """Controls how extra cutscenes are handled.
 
     This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
@@ -173,12 +143,8 @@ class ExtraCutsceneSkips(Enum):
     press = 1
     auto = 2
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class FillAlgorithm(Enum):
+class FillAlgorithm(IntEnum):
     """The algorithm used for placing items.
 
     This enum does not correspond to any website setting.
@@ -197,12 +163,8 @@ class FillAlgorithm(Enum):
     random = auto()
     careful_random = auto()
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class FreeTradeSetting(Enum):
+class FreeTradeSetting(IntEnum):
     """Determines if Kongs can collect items assigned to other Kongs.
 
     none: Items can only be collected by their original assigned Kong.
@@ -215,12 +177,8 @@ class FreeTradeSetting(Enum):
     not_blueprints = 1
     major_collectibles = 2
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class GlitchesSelected(Enum):
+class GlitchesSelected(IntEnum):
     """Glitch categories that can be selected for the seed logic.
 
     These values are tied to the GlitchSelector in randomizer.Lists.Logic. More
@@ -241,12 +199,8 @@ class GlitchesSelected(Enum):
     tag_barrel_storage = 12
     troff_n_scoff_skips = 13
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class HelmDoorItem(Enum):
+class HelmDoorItem(IntEnum):
     """Items that are required to open the crown/coin doors in Helm.
 
     vanilla: The originally required item (crowns for door 1, company coins for
@@ -279,12 +233,8 @@ class HelmDoorItem(Enum):
     req_bean = 11
     req_pearl = 12
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class HelmSetting(Enum):
+class HelmSetting(IntEnum):
     """Determines where the player starts when entering Hideout Helm.
 
     This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
@@ -300,12 +250,8 @@ class HelmSetting(Enum):
     skip_start = 1
     skip_all = 2
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class HardModeSelected(Enum):
+class HardModeSelected(IntEnum):
     """Various hard mode changes that can be applied.
 
     These values are tied to the HardSelector in randomizer.Lists.HardMode. More
@@ -318,13 +264,9 @@ class HardModeSelected(Enum):
     water_is_lava = 4
     reduced_fall_damage_threshold = 5
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
-
 
 # TODO: merge this with the Types enum.
-class ItemRandoListSelected(Enum):
+class ItemRandoListSelected(IntEnum):
     """Item categories that may be randomized.
 
     These values are tied to the ItemRandoSelector in randomizer.Enums.Types.
@@ -347,12 +289,8 @@ class ItemRandoListSelected(Enum):
     junkitem = 14
     crateitem = 15
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class KasplatRandoSetting(Enum):
+class KasplatRandoSetting(IntEnum):
     """Determines if and how Kasplats are randomized.
 
     off: Kasplats are in their original locations with original blueprints.
@@ -366,12 +304,8 @@ class KasplatRandoSetting(Enum):
     vanilla_locations = 1
     location_shuffle = 2
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class KlaptrapModel(Enum):
+class KlaptrapModel(IntEnum):
     """Determines which model is used for Klaptrap in Beaver Bother."""
 
     green = auto()
@@ -380,12 +314,8 @@ class KlaptrapModel(Enum):
     random_klap = auto()
     random_model = auto()
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class KrushaUi(Enum):
+class KrushaUi(IntEnum):
     """Which Kong model will be replaced with Krusha."""
 
     no_slot = 0
@@ -396,12 +326,8 @@ class KrushaUi(Enum):
     chunky = 5
     random = 6
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class LevelRandomization(Enum):
+class LevelRandomization(IntEnum):
     """Determines how entrances are randomized and placed.
 
     vanilla: All entrances are the same as the base game.
@@ -417,12 +343,8 @@ class LevelRandomization(Enum):
     loadingzone = 2
     loadingzonesdecoupled = 3
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class LogicType(Enum):
+class LogicType(IntEnum):
     """The logic use to place items in the seed.
 
     glitchless: No glitches will be required.
@@ -434,12 +356,8 @@ class LogicType(Enum):
     glitch = 2
     nologic = 3
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class MicrohintsEnabled(Enum):
+class MicrohintsEnabled(IntEnum):
     """Adds some additional hints for late-game-required items.
 
     This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
@@ -456,12 +374,8 @@ class MicrohintsEnabled(Enum):
     base = 1
     all = 2
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class MinigameBarrels(Enum):
+class MinigameBarrels(IntEnum):
     """Determines how the minigames are shuffled between barrels.
 
     This enum does not correspond to any website setting.
@@ -477,12 +391,8 @@ class MinigameBarrels(Enum):
     random = auto()
     selected = auto()
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class MinigamesListSelected(Enum):
+class MinigamesListSelected(IntEnum):
     """Minigame categories used for the web selector.
 
     These values are tied to the MinigameSelector in randomizer.Lists.Minigame.
@@ -507,12 +417,8 @@ class MinigamesListSelected(Enum):
     helm_minigames = 16
     arenas = 17
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class MiscChangesSelected(Enum):
+class MiscChangesSelected(IntEnum):
     """Various quality of life fixes that can be applied.
 
     These values are tied to the QoLSelector in randomizer.Lists.QoL. More
@@ -543,12 +449,8 @@ class MiscChangesSelected(Enum):
     raise_fungi_dirt_patch = 22
     global_instrument = 23
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class MoveRando(Enum):
+class MoveRando(IntEnum):
     """Determines if and how moves are randomized.
 
     off: Moves are in their vanilla locations.
@@ -567,12 +469,8 @@ class MoveRando(Enum):
     start_with = 3
     item_shuffle = 4
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class RandomPrices(Enum):
+class RandomPrices(IntEnum):
     """Determines how and if shop prices are randomized.
 
     vanilla: Shop prices are the same as the vanilla game.
@@ -590,12 +488,8 @@ class RandomPrices(Enum):
     high = 4
     extreme = 5
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class ShockwaveStatus(Enum):
+class ShockwaveStatus(IntEnum):
     """Determines how Banana Fairy Isle is handled.
 
     vanilla: Camera and Shockwave are given.
@@ -611,12 +505,8 @@ class ShockwaveStatus(Enum):
     shuffled_decoupled = 2
     start_with = 3
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class ShuffleLoadingZones(Enum):
+class ShuffleLoadingZones(IntEnum):
     """Determines how loading zones are shuffled.
 
     This enum does not correspond to any website setting.
@@ -630,12 +520,8 @@ class ShuffleLoadingZones(Enum):
     levels = auto()
     all = auto()
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class SoundType(Enum):
+class SoundType(IntEnum):
     """Determines the default sound mode.
 
     stereo: Default.
@@ -647,12 +533,8 @@ class SoundType(Enum):
     mono = 1
     surround = 2
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class TrainingBarrels(Enum):
+class TrainingBarrels(IntEnum):
     """Determines if and how training barrels are randomized.
 
     normal: Training barrels give the vanilla moves.
@@ -663,12 +545,8 @@ class TrainingBarrels(Enum):
     normal = 0
     shuffled = 1
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class WinCondition(Enum):
+class WinCondition(IntEnum):
     """The condition needed to complete the game.
 
     This enum is explicitly indexed for use in ApplyRandomizer.py. Do not
@@ -691,12 +569,8 @@ class WinCondition(Enum):
     poke_snap = 5
     all_keys = 6
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class WrinklyHints(Enum):
+class WrinklyHints(IntEnum):
     """Whether or not Wrinkly hints are replaced with useful randomizer hints.
 
     off: Hints are the same as the vanilla game.
@@ -712,12 +586,8 @@ class WrinklyHints(Enum):
     fixed_racing = 3
     item_hinting = 4
 
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
-
-class SpoilerHints(Enum):
+class SpoilerHints(IntEnum):
     """Whether or not spoiler-style hints are generated within the spoiler log for external trackers to use.
 
     off: No hints are generated.
@@ -728,10 +598,6 @@ class SpoilerHints(Enum):
     off = 0
     vial_colors = 1
     points = 2
-
-    def __int__(self):
-        """Return the integer value of the enum."""
-        return self.value
 
 
 # ALL SELECT-BASED SETTINGS NEED AN ENTRY HERE!
@@ -787,7 +653,7 @@ SettingsMap = {
 }
 
 
-class SettingsStringEnum(Enum):
+class SettingsStringEnum(IntEnum):
     """Maps setting names to key values, for use in the settings string.
 
     Changing any of the existing values will cause generated settings strings
@@ -958,88 +824,6 @@ class SettingsStringEnum(Enum):
     random_starting_move_list_selected = 156
     enemy_drop_rando = 157
 
-    def __eq__(self, other):
-        """Return True if self is equal to other."""
-        if isinstance(other, type(self)):
-            return self is other
-        elif isinstance(other, int):
-            return self.value == other
-        return NotImplemented
-
-    def __ne__(self, other):
-        """Return True if self is not equal to other."""
-        result = self.__eq__(other)
-        if result is NotImplemented:
-            return result
-        return not result
-
-    def __mod__(self, other):
-        """Return the modulo of self and other."""
-        if isinstance(other, int):
-            return self.value % other
-        raise TypeError("Unsupported operand types for % ({} and {})".format(type(self).__name__, type(other).__name__))
-
-    def to_bytes(self, length, byteorder="big", signed=False):
-        """Return the bytes representation of self."""
-        return self.value.to_bytes(length, byteorder, signed=signed)
-
-    def __sub__(self, other):
-        """Return the subtraction of self and other."""
-        if isinstance(other, int):
-            return self.value - other
-        raise TypeError("Unsupported operand types for - ({} and {})".format(type(self).__name__, type(other).__name__))
-
-    def __ge__(self, other):
-        """Return True if self is greater than or equal to other."""
-        if isinstance(other, type(self)):
-            return self.value >= other.value
-        elif isinstance(other, int):
-            return self.value >= other
-        return NotImplemented
-
-    def __le__(self, other):
-        """Return True if self is less than or equal to other."""
-        if isinstance(other, type(self)):
-            return self.value <= other.value
-        elif isinstance(other, int):
-            return self.value <= other
-        return NotImplemented
-
-    def __hash__(self):
-        """Return the hash value of self."""
-        return hash(self.value)
-
-    def __index__(self):
-        """Return the index of self."""
-        return self.value
-
-    def __lt__(self, other):
-        """Return True if self is less than other."""
-        if isinstance(other, int):
-            return self.value < other
-        return NotImplemented
-
-    def __gt__(self, other):
-        """Return True if self is greater than other."""
-        if isinstance(other, type(self)):
-            return self.value > other.value
-        elif isinstance(other, int):
-            return self.value > other
-        return NotImplemented
-
-    def __lshift__(self, other):
-        """Return the left shift of self and other."""
-        if isinstance(other, int):
-            return self.value << other
-        raise TypeError("Unsupported operand types for << ({} and {})".format(type(self).__name__, type(other).__name__))
-
-    def __add__(self, other):
-        """Return the addition of self and other."""
-        if isinstance(other, int):
-            return self.value + other
-
-        raise TypeError("Unsupported operand types for + ({} and {})".format(type(self).__name__, type(other).__name__))
-
 
 # If a setting needs to be removed, add it to this set instead of removing it
 # from the enum above.
@@ -1052,7 +836,7 @@ DeprecatedSettings = {
 }
 
 
-class SettingsStringDataType(Enum):
+class SettingsStringDataType(IntEnum):
     """Enum for mapping settings to data types for encryption/decryption."""
 
     bool = auto()

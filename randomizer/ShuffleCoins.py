@@ -63,9 +63,7 @@ def ShuffleCoins(spoiler):
                 coins_left = (KONG_COIN_CAP * 5) - total_coins
                 coins_lower = max(int(coins_left / (8 - level_index)) - 10, 0)
                 if global_divisor == 0:
-                    coins_upper = min(
-                        coins_left, int((5 * ((5 * KONG_COIN_CAP) - total_coins) - sum(kong_specific_left[k] for k in kong_specific_left if isinstance(kong_specific_left[k], int))) / 4)
-                    )  # Places a hard cap of 1127 total singles+bunches
+                    coins_upper = min(coins_left, int((5 * ((5 * KONG_COIN_CAP) - total_coins) - sum(kong_specific_left)) / 4))  # Places a hard cap of 1127 total singles+bunches
                 else:
                     coins_upper = min(int(coins_left / (8 - level_index)) + 10, int(coins_left / global_divisor))
                 groupIds = list(range(1, len(BananaCoinGroupList[level]) + 1))

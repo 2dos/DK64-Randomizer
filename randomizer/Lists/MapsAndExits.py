@@ -1,7 +1,7 @@
 """List of maps with in-game index."""
 from __future__ import annotations
 
-from enum import Enum
+from enum import IntEnum
 from typing import TYPE_CHECKING
 
 from randomizer.Enums.Levels import Levels

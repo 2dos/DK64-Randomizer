@@ -28,12 +28,6 @@
       "problemMatcher": []
     },
     {
-      "label": "Validate Mypy",
-      "type": "shell",
-      "command": "${command:python.interpreterPath} -m mypy ${workspaceFolder}/randomizer",
-      "problemMatcher": []
-    },
-    {
       "label": "Validate Jinja2",
       "type": "shell",
       "command": "${command:python.interpreterPath} -m djlint ./templates/* --profile=jinja --reformat --format-css --format-js",
@@ -57,7 +51,6 @@
         "Format Repo",
         "Validate Styles",
         "Validate Docstrings",
-        "Validate Mypy",
         //"Validate Jinja2",
         "Validate C",
         "Update Custom Location Lists"

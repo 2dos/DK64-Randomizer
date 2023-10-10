@@ -1,6 +1,5 @@
 """Includes utility functions for plandomizer support."""
 
-from typing import Dict
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -9,7 +8,7 @@ from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems, PlandoItemToItemMap
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
-from randomizer.Lists.Location import LocationListData
+from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.LogicClasses import Regions
 
 # Some common item sets that may be used in multiple places.
@@ -91,14 +90,14 @@ def GetNameFromPlandoItem(plandoItem):
 # A master dictionary of all possible item locations, mapped to a set of which
 # items may not appear in that location. This will be used to filter all the
 # dropdowns used in the plandomizer.
-ItemRestrictionsPerLocation: Dict[str, set] = {location.name: set() for location in LocationListData().LocationList.keys()}
+ItemRestrictionsPerLocation = {location.name: set() for location in LocationList.keys()}
 
 # Each blueprint item should only appear in locations specific to the Kong who
 # can pick up that blueprint. Any "All Kongs" locations may not have any
 # blueprints assigned to them. Additionally, any location only accessible by
 # one Kong may not have that Kong placed in that location.
 blueprintItemSet = {PlandoItems.DonkeyBlueprint.name, PlandoItems.DiddyBlueprint.name, PlandoItems.LankyBlueprint.name, PlandoItems.TinyBlueprint.name, PlandoItems.ChunkyBlueprint.name}
-for locEnum, locObj in LocationListData().LocationList.items():
+for locEnum, locObj in LocationList.items():
     if locObj.kong == Kongs.donkey:
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.Donkey.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.DiddyBlueprint.name)
@@ -166,7 +165,7 @@ bananaFairyRestrictedItems = {
 
 # For every location in LocationList, if the default reward is a Banana Fairy,
 # add all of the restricted items to the restricted set.
-for locEnum, locObj in LocationListData().LocationList.items():
+for locEnum, locObj in LocationList.items():
     if locObj.default == Items.BananaFairy:
         ItemRestrictionsPerLocation[locEnum.name].update(bananaFairyRestrictedItems)
 
@@ -242,7 +241,7 @@ for locationName in kongLocationList:
 # We need to separate the shops into Kong-specific and shared.
 sharedShopsSet = set()
 kongSpecificShopSet = set()
-for locEnum, locObj in LocationListData().LocationList.items():
+for locEnum, locObj in LocationList.items():
     if locObj.type == Types.Shop or (locObj.level == Levels.Shops and locObj.type == Types.Coin):
         if locObj.kong == Kongs.any:
             sharedShopsSet.add(locEnum.name)
@@ -317,14 +316,14 @@ for locationName in bossFightLocationList:
     ItemRestrictionsPerLocation[locationName].update(blueprintItemSet)
 
 # Battle arenas cannot have junk item or blueprint rewards.
-for locEnum, locObj in LocationListData().LocationList.items():
+for locEnum, locObj in LocationList.items():
     if locObj.type == Types.Crown:
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
         ItemRestrictionsPerLocation[locEnum.name].update(blueprintItemSet)
 
 # Junk items cannot be placed anywhere in Hideout Helm. Due to technical
 # limitations, neither can Golden Bananas.
-for locEnum, locObj in LocationListData().LocationList.items():
+for locEnum, locObj in LocationList.items():
     if locObj.level == Levels.HideoutHelm:
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.GoldenBanana.name)

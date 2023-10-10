@@ -1,24 +1,24 @@
 """Apply CB Rando changes."""
 import js
-from randomizer.Lists.CBLocations.AngryAztecCBLocations import ColoredBananaGroupList as AngryAztecCBList, BalloonList as AngryAztecBalloonList
-from randomizer.Lists.CBLocations.CreepyCastleCBLocations import ColoredBananaGroupList as CreepyCastleCBList, BalloonList as CreepyCastleBalloonList
-from randomizer.Lists.CBLocations.CrystalCavesCBLocations import ColoredBananaGroupList as CrystalCavesCBList, BalloonList as CrystalCavesBalloonList
-from randomizer.Lists.CBLocations.FranticFactoryCBLocations import ColoredBananaGroupList as FranticFactoryCBList, BalloonList as FranticFactoryBalloonList
-from randomizer.Lists.CBLocations.FungiForestCBLocations import ColoredBananaGroupList as FungiForestCBList, BalloonList as FungiForestBalloonList
-from randomizer.Lists.CBLocations.GloomyGalleonCBLocations import ColoredBananaGroupList as GloomyGalleonCBList, BalloonList as GloomyGalleonBalloonList
-from randomizer.Lists.CBLocations.JungleJapesCBLocations import ColoredBananaGroupList as JungleJapesCBList, BalloonList as JungleJapesBalloonList
+import randomizer.Lists.CBLocations.AngryAztecCBLocations
+import randomizer.Lists.CBLocations.CreepyCastleCBLocations
+import randomizer.Lists.CBLocations.CrystalCavesCBLocations
+import randomizer.Lists.CBLocations.FranticFactoryCBLocations
+import randomizer.Lists.CBLocations.FungiForestCBLocations
+import randomizer.Lists.CBLocations.GloomyGalleonCBLocations
+import randomizer.Lists.CBLocations.JungleJapesCBLocations
 from randomizer.Enums.Levels import Levels
 from randomizer.Patching.Lib import float_to_hex, short_to_ushort
 from randomizer.Patching.Patcher import LocalROM
 
 level_data = {
-    Levels.JungleJapes: {"cb": JungleJapesCBList, "balloons": JungleJapesBalloonList},
-    Levels.AngryAztec: {"cb": AngryAztecCBList, "balloons": AngryAztecBalloonList},
-    Levels.FranticFactory: {"cb": FranticFactoryCBList, "balloons": FranticFactoryBalloonList},
-    Levels.GloomyGalleon: {"cb": GloomyGalleonCBList, "balloons": GloomyGalleonBalloonList},
-    Levels.FungiForest: {"cb": FungiForestCBList, "balloons": FungiForestBalloonList},
-    Levels.CrystalCaves: {"cb": CrystalCavesCBList, "balloons": CrystalCavesBalloonList},
-    Levels.CreepyCastle: {"cb": CreepyCastleCBList, "balloons": CreepyCastleBalloonList},
+    Levels.JungleJapes: {"cb": randomizer.Lists.CBLocations.JungleJapesCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.JungleJapesCBLocations.BalloonList},
+    Levels.AngryAztec: {"cb": randomizer.Lists.CBLocations.AngryAztecCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.AngryAztecCBLocations.BalloonList},
+    Levels.FranticFactory: {"cb": randomizer.Lists.CBLocations.FranticFactoryCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.FranticFactoryCBLocations.BalloonList},
+    Levels.GloomyGalleon: {"cb": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.GloomyGalleonCBLocations.BalloonList},
+    Levels.FungiForest: {"cb": randomizer.Lists.CBLocations.FungiForestCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.FungiForestCBLocations.BalloonList},
+    Levels.CrystalCaves: {"cb": randomizer.Lists.CBLocations.CrystalCavesCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.CrystalCavesCBLocations.BalloonList},
+    Levels.CreepyCastle: {"cb": randomizer.Lists.CBLocations.CreepyCastleCBLocations.ColoredBananaGroupList, "balloons": randomizer.Lists.CBLocations.CreepyCastleCBLocations.BalloonList},
 }
 
 PATH_CAP = 64
