@@ -1,6 +1,5 @@
 """File that shuffles loading zone exits."""
 import random
-from typing import cast
 
 import js
 import randomizer.Fill as Fill
@@ -186,7 +185,7 @@ def AssumeExits(spoiler, frontpool, backpool, newpool):
         backpool.append(exitId)
         # Set up assumed connection
         # 1) Break connection
-        exit.shuffledId = Transitions.Empty
+        exit.shuffledId = None
         exit.toBeShuffled = True
         # 2) Attach to root of world (DK Isles)
         newExit = TransitionFront(exit.back.regionId, lambda l: True, exitId, True)
@@ -203,7 +202,7 @@ def ShuffleExits(spoiler):
         if settings.kongs_for_progression and not (settings.shuffle_items and Types.Kong in settings.shuffled_location_types):
             ShuffleLevelOrderWithRestrictions(settings)
         else:
-            ShuffleLevelExits(settings, None)
+            ShuffleLevelExits(settings)
         if settings.alter_switch_allocation:
             allocation = [1, 1, 1, 1, 2, 2, 3]
             for x in range(7):
@@ -265,11 +264,11 @@ def UpdateLevelProgression(settings: Settings):
     settings.BossBananas = newBossBananas
 
 
-def ShuffleLevelExits(settings: Settings, newLevelOrder: dict):
+def ShuffleLevelExits(settings: Settings, newLevelOrder: dict = None):
     """Shuffle level exits according to new level order if provided, otherwise shuffle randomly."""
     frontpool = LobbyEntrancePool.copy()
     backpool = LobbyEntrancePool.copy()
-    # If you didn't pass in exactly None, use that level order
+
     if newLevelOrder is not None:
         for index, level in newLevelOrder.items():
             backpool[index - 1] = LobbyEntrancePool[level]
@@ -286,7 +285,7 @@ def ShuffleLevelExits(settings: Settings, newLevelOrder: dict):
         Transitions.IslesMainToCavesLobby: Levels.CrystalCaves,
         Transitions.IslesMainToCastleLobby: Levels.CreepyCastle,
     }
-    shuffledLevelOrder = {1: Levels.DKIsles, 2: Levels.DKIsles, 3: Levels.DKIsles, 4: Levels.DKIsles, 5: Levels.DKIsles, 6: Levels.DKIsles, 7: Levels.DKIsles}
+    shuffledLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
 
     # For each back exit, select a random valid front entrance to attach to it
     # Assuming there are no inherently invalid level orders, but if there are, validation will check after this
@@ -301,11 +300,11 @@ def ShuffleLevelExits(settings: Settings, newLevelOrder: dict):
         frontExit.shuffledId = backId
         # print("Assigned " + frontExit.name + " --> " + backExit.name)
         # Add reverse connection
-        backReverse = ShufflableExits[cast(Transitions, backExit.back.reverse)]
+        backReverse = ShufflableExits[backExit.back.reverse]
         backReverse.shuffled = True
-        backReverse.shuffledId = cast(Transitions, frontExit.back.reverse)
+        backReverse.shuffledId = frontExit.back.reverse
 
-        shuffledLevelOrder[int(lobby_entrance_map[frontId]) + 1] = lobby_entrance_map[backId]
+        shuffledLevelOrder[lobby_entrance_map[frontId] + 1] = lobby_entrance_map[backId]
     settings.level_order = shuffledLevelOrder
 
 
@@ -417,7 +416,7 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
     """Determine level order given starting with 2 to 4 kongs and the need to find more kongs along the way."""
     levelIndicesToFill = {1, 2, 3, 4, 5, 6, 7}
     # Initialize level order
-    newLevelOrder = {1: Levels.DKIsles, 2: Levels.DKIsles, 3: Levels.DKIsles, 4: Levels.DKIsles, 5: Levels.DKIsles, 6: Levels.DKIsles, 7: Levels.DKIsles}
+    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
     # Sort levels by most to least kongs
     kongsInLevels = {
         Levels.JungleJapes: 1 if Locations.DiddyKong in settings.kong_locations else 0,
@@ -469,7 +468,7 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
                         break
             levelsReachable.append(level)
             # Check if a level has been assigned here
-            if newLevelOrder[level] is not Levels.DKIsles:
+            if newLevelOrder[level] is not None:
                 # Update kongsOwned & kongsAssumed with kongs freeable in current level
                 kongsOwned = kongsOwned + kongsInLevels[newLevelOrder[level]]
                 kongsAssumed = kongsAssumed + kongsInLevels[newLevelOrder[level]]

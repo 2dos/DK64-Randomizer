@@ -3,16 +3,14 @@
 from __future__ import annotations
 
 import json
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, OrderedDict, Union, cast
-from randomizer.CompileHints import LevelSpoiler
+from copy import deepcopy
+from typing import TYPE_CHECKING, Dict, List, Optional, OrderedDict, Union
 
 from randomizer.Enums.Events import Events
-from randomizer.Enums.HintType import HintType
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
-from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import (
@@ -32,17 +30,17 @@ from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Lists.EnemyTypes import EnemyMetaData
 from randomizer.Lists.Item import ItemFromKong, ItemList, KongFromItem, NameFromKong
-from randomizer.Lists.Location import LocationListData, PreGivenLocations
+from randomizer.Lists.Location import LocationListOriginal, PreGivenLocations
 from randomizer.Lists.Logic import GlitchLogicItems
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId
 from randomizer.Lists.Minigame import BarrelMetaData, HelmMinigameLocations, MinigameRequirements
-from randomizer.Logic import CollectibleData, LogicVarHolder, RegionsData
-from randomizer.LogicClasses import TransitionBack
+from randomizer.Logic import CollectibleRegionsOriginal, LogicVarHolder, RegionsOriginal
 from randomizer.Prices import ProgressiveMoves
 from randomizer.Settings import Settings
 from randomizer.ShuffleBosses import HardBossesEnabled
 from randomizer.ShuffleExits import ShufflableExits
+from randomizer.ShuffleKasplats import constants, shufflable
 
 if TYPE_CHECKING:
     from randomizer.Lists.Location import Location
@@ -55,46 +53,30 @@ class Spoiler:
     def __init__(self, settings: Settings) -> None:
         """Initialize spoiler just with settings."""
         self.settings: Settings = settings
-        self.playthrough: Dict[int, Dict[str, str]] = {}
-        self.woth: Dict[str, str] = {}
-        self.woth_locations: List[Locations] = []
-        self.woth_paths: Dict[Locations, List[Locations]] = {}
-        self.krool_paths: Dict[Kongs, List[Locations]] = {}
-        self.shuffled_barrel_data: Dict[Locations, Minigames] = {}
-        self.shuffled_exit_data: Dict[Transitions, TransitionBack] = {}
-        self.shuffled_exit_instructions: List[Any] = []
-        self.location_data: Dict[Locations, Items] = {}
-        self.enemy_replacements: List[Dict[str, Any]] = []
+        self.playthrough = {}
+        self.woth = {}
+        self.woth_locations = {}
+        self.woth_paths = {}
+        self.krool_paths = {}
+        self.shuffled_barrel_data = {}
+        self.shuffled_exit_data = {}
+        self.shuffled_exit_instructions = []
+        self.music_bgm_data = {}
+        self.music_majoritem_data = {}
+        self.music_minoritem_data = {}
+        self.music_event_data = {}
+        self.location_data = {}
+        self.enemy_replacements = []
         self.LogicVariables = LogicVarHolder(self)
-        self.RegionList = RegionsData().Regions
-        self.CollectibleRegions = CollectibleData().CollectibleRegions
-        self.LocationList = LocationListData().LocationList
-        self.crown_locations: Dict[Levels, Dict] = {}
-        self.human_crowns: Dict[str, str] = {}
-        self.bananaport_replacements: List[Dict] = []
-        self.human_warp_locations: Dict[str, str] = {}
-        self.human_kasplats: Dict[str, str] = {}
-        self.enemy_rando_data: Dict[Maps, Any] = {}
+        self.RegionList = deepcopy(RegionsOriginal)
+        self.CollectibleRegions = deepcopy(CollectibleRegionsOriginal)
+        self.LocationList = deepcopy(LocationListOriginal)
+        self.debug_human_item_assignment = None  # Kill this as soon as the spoiler is better
+
         self.move_data = []
-        self.pkmn_snap_data: List = []
-        self.human_crates: Dict[str, List[str]] = {}
-        self.human_patches: Dict[str, List[str]] = {}
-        self.fairy_locations_human: Dict[str, List[str]] = {}
-        self.human_hint_doors: Dict[str, Dict] = {}
-        self.human_portal_doors: Dict[str, Dict] = {}
-        self.accessible_hints_for_location: Dict[Locations, List[Items]] = {}
-        self.foolish_region_names: List[str] = []
-        self.level_spoiler: Dict[Levels, LevelSpoiler] = {}
-        self.level_spoiler_human_readable: Dict[str, str] = {}
-        self.microhints: Dict[str, str] = {}
-        self.shuffled_shop_locations: Dict[Levels, Dict] = {}
-        self.cb_placements: List[Any] = []
-        self.coin_placements: List[Any] = []
-        self.hint_distribution: Dict[HintType, int] = {}
-        self.text_changes: Dict[Union[str, int], List] = {}
         # 0: Cranky, 1: Funky, 2: Candy
         for move_master_type in range(3):
-            master_moves: List[Any] = []
+            master_moves = []
             if move_master_type == 0:
                 # Shop
                 for shop_index in range(3):
@@ -123,16 +105,16 @@ class Spoiler:
                     master_moves = [{"move_type": None}]
             self.move_data.append(master_moves)
 
-        self.hint_list: Dict[str, str] = {}
+        self.hint_list = {}
         self.settings.finalize_world_settings(self)
         self.settings.update_valid_locations(self)
 
     def FlushAllExcessSpoilerData(self):
         """Flush all spoiler data that is not needed for the final result."""
-        self.LocationList = None
-        self.RegionList = None
-        self.CollectibleRegions = None
-        self.LogicVariables = None
+        del self.LocationList
+        del self.RegionList
+        del self.CollectibleRegions
+        del self.LogicVariables
 
     def Reset(self) -> None:
         """Reset logic variables and region info that should be reset before a search."""
@@ -162,6 +144,13 @@ class Spoiler:
         for location in self.LocationList.values():
             location.PlaceDefaultItem(self)
         # Known to be incomplete - it should also confirm the correct locations of Fairies, Dirt, and Crowns
+
+    def InitKasplatMap(self) -> None:
+        """Initialize kasplat_map in logic variables with default values."""
+        # Just use default kasplat associations.
+        self.LogicVariables.kasplat_map = {}
+        self.LogicVariables.kasplat_map.update(shufflable)
+        self.LogicVariables.kasplat_map.update(constants)
 
     def getItemGroup(self, item: Optional[Items]) -> str:
         """Get item group from item."""
@@ -199,7 +188,7 @@ class Spoiler:
         # Verify we match our hash
         self.settings.verify_hash()
         # We want to convert raw spoiler data into the important bits and in human-readable formats.
-        humanspoiler = OrderedDict[str, Any]()
+        humanspoiler = OrderedDict()
 
         # Settings data
         settings = OrderedDict()
@@ -406,7 +395,7 @@ class Spoiler:
                 self.pregiven_items.append(location.item)
             # Prevent weird null issues but get the item at the location
             if location.item is None:
-                item = ItemList[Items.NoItem]
+                item = Items.NoItem
             else:
                 item = ItemList[location.item]
             # Empty PreGiven locations don't really exist and shouldn't show up in the spoiler log
@@ -425,40 +414,40 @@ class Spoiler:
                 price = ""
                 if location.item in ProgressiveMoves.keys():
                     if location.item == Items.ProgressiveSlam:
-                        price = f"{self.settings.progressive_prices[Items.ProgressiveSlam][0]}->{self.settings.progressive_prices[Items.ProgressiveSlam][1]}"
+                        price = f"{self.settings.prices[Items.ProgressiveSlam][0]}->{self.settings.prices[Items.ProgressiveSlam][1]}"
                     elif location.item == Items.ProgressiveAmmoBelt:
-                        price = f"{self.settings.progressive_prices[Items.ProgressiveAmmoBelt][0]}->{self.settings.progressive_prices[Items.ProgressiveAmmoBelt][1]}"
+                        price = f"{self.settings.prices[Items.ProgressiveAmmoBelt][0]}->{self.settings.prices[Items.ProgressiveAmmoBelt][1]}"
                     elif location.item == Items.ProgressiveInstrumentUpgrade:
-                        price = f"{self.settings.progressive_prices[Items.ProgressiveInstrumentUpgrade][0]}->{self.settings.progressive_prices[Items.ProgressiveInstrumentUpgrade][1]}->{self.settings.progressive_prices[Items.ProgressiveInstrumentUpgrade][2]}"
+                        price = f"{self.settings.prices[Items.ProgressiveInstrumentUpgrade][0]}->{self.settings.prices[Items.ProgressiveInstrumentUpgrade][1]}->{self.settings.prices[Items.ProgressiveInstrumentUpgrade][2]}"
                 # Vanilla prices are by item, not by location
                 elif self.settings.random_prices == RandomPrices.vanilla:
-                    price = str(self.settings.vanilla_prices[location.item])
+                    price = str(self.settings.prices[location.item])
                 else:
                     price = str(self.settings.prices[location_id])
                 humanspoiler["Items"]["Shops"][location.name] = item.name + f" ({price})"
                 humanspoiler[sorted_item_name][self.getItemGroup(location.item)][location.name] = item.name
             # Filter everything else by level - each location conveniently contains a level-identifying bit in their name
             else:
-                levelstr = "Special"
+                level = "Special"
                 if "Isles" in location.name or location.type == Types.PreGivenMove:
-                    levelstr = "DK Isles"
+                    level = "DK Isles"
                 elif "Japes" in location.name:
-                    levelstr = "Jungle Japes"
+                    level = "Jungle Japes"
                 elif "Aztec" in location.name:
-                    levelstr = "Angry Aztec"
+                    level = "Angry Aztec"
                 elif "Factory" in location.name:
-                    levelstr = "Frantic Factory"
+                    level = "Frantic Factory"
                 elif "Galleon" in location.name:
-                    levelstr = "Gloomy Galleon"
+                    level = "Gloomy Galleon"
                 elif "Forest" in location.name:
-                    levelstr = "Fungi Forest"
+                    level = "Fungi Forest"
                 elif "Caves" in location.name:
-                    levelstr = "Crystal Caves"
+                    level = "Crystal Caves"
                 elif "Castle" in location.name:
-                    levelstr = "Creepy Castle"
+                    level = "Creepy Castle"
                 elif "Helm" in location.name:
-                    levelstr = "Hideout Helm"
-                humanspoiler["Items"][levelstr][location.name] = item.name
+                    level = "Hideout Helm"
+                humanspoiler["Items"][level][location.name] = item.name
                 humanspoiler[sorted_item_name][self.getItemGroup(location.item)][location.name] = item.name
 
         if self.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
@@ -483,7 +472,7 @@ class Spoiler:
                 Transitions.IslesCastleLobbyToMain: Levels.CreepyCastle,
             }
             for transition, vanilla_level in lobby_entrance_order.items():
-                shuffled_level = lobby_exit_order[cast(Transitions, self.shuffled_exit_data[transition].reverse)]
+                shuffled_level = lobby_exit_order[self.shuffled_exit_data[transition].reverse]
                 shuffled_exits[vanilla_level.name] = shuffled_level.name
             humanspoiler["Shuffled Level Order"] = shuffled_exits
         elif self.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
@@ -512,15 +501,15 @@ class Spoiler:
                 "Crystal Caves": ["Crystal Caves"],
                 "Creepy Castle": ["Creepy Castle"],
             }
-            level_data: Dict[str, Dict] = {"Other": {}}
-            for levelstr in level_starts:
-                level_data[levelstr] = {}
+            level_data = {"Other": {}}
+            for level in level_starts:
+                level_data[level] = {}
             for exit, dest in self.shuffled_exit_data.items():
                 level_name = "Other"
-                for levelstr in level_starts:
-                    for search_name in level_starts[levelstr]:
+                for level in level_starts:
+                    for search_name in level_starts[level]:
                         if dest.spoilerName.find(search_name) == 0:
-                            level_name = levelstr
+                            level_name = level
                 shuffled_exits[ShufflableExits[exit].name] = dest.spoilerName
                 level_data[level_name][ShufflableExits[exit].name] = dest.spoilerName
             humanspoiler["Shuffled Exits"] = shuffled_exits
@@ -754,7 +743,7 @@ class Spoiler:
     def UpdateExits(self) -> None:
         """Update list of shuffled exits."""
         self.shuffled_exit_data = {}
-        containerMaps: Dict[Maps, Any] = {}
+        containerMaps = {}
         for key, exit in ShufflableExits.items():
             if exit.shuffled:
                 try:
@@ -764,7 +753,7 @@ class Spoiler:
                     containerMapId = GetMapId(exit.region)
                     if containerMapId not in containerMaps:
                         containerMaps[containerMapId] = {"container_map": containerMapId, "zones": []}  # DK Isles
-                    loading_zone_mapping: Dict[str, Union[Maps, int]] = {}
+                    loading_zone_mapping = {}
                     loading_zone_mapping["vanilla_map"] = GetMapId(vanillaBack.regionId)
                     loading_zone_mapping["vanilla_exit"] = GetExitId(vanillaBack)
                     loading_zone_mapping["new_map"] = GetMapId(shuffledBack.regionId)
@@ -773,7 +762,7 @@ class Spoiler:
                 except Exception as ex:
                     print("Exit Update Error with:")
                     print(ex)
-        for transit, containerMap in containerMaps.items():
+        for key, containerMap in containerMaps.items():
             self.shuffled_exit_instructions.append(containerMap)
 
     def UpdateLocations(self, locations: Dict[Locations, Location]) -> None:
@@ -810,21 +799,21 @@ class Spoiler:
                         level_index = 7
                     # Use the item to find the data to write
                     updated_item = ItemList[location.item]
-                    move_type = cast(MoveTypes, updated_item.movetype)
+                    move_type = updated_item.movetype
                     # Determine Price
                     price = 0
                     if id in self.settings.prices:
                         price = self.settings.prices[id]
                     # Vanilla prices are by item, not by location
                     if self.settings.random_prices == RandomPrices.vanilla:
-                        price = self.settings.vanilla_prices[location.item]
+                        price = self.settings.prices[location.item]
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
                     if move_type == MoveTypes.Flag:
                         for kong_index in kong_indices:
                             self.move_data[0][shop_index][kong_index][level_index] = {"move_type": "flag", "flag": updated_item.flag, "price": price}
                     # This is for every other move typically purchased in a shop
                     else:
-                        move_level = int(updated_item.index) - 1
+                        move_level = updated_item.index - 1
                         move_kong = updated_item.kong
                         for kong_index in kong_indices:
                             # print(f"Shop {shop_index}, Kong {kong_index}, Level {level_index} | Move: {move_type} lvl {move_level} for kong {move_kong}")
@@ -846,7 +835,7 @@ class Spoiler:
                 elif location.type == Types.TrainingBarrel and self.settings.training_barrels != TrainingBarrels.normal:
                     # Use the item to find the data to write
                     updated_item = ItemList[location.item]
-                    move_type = cast(MoveTypes, updated_item.movetype)
+                    move_type = updated_item.movetype
                     # Determine Price to be zero because this is a training barrel
                     price = 0
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
@@ -854,7 +843,7 @@ class Spoiler:
                         self.move_data[1].append({"move_type": "flag", "flag": updated_item.flag, "price": price})
                     # This is for every other move typically purchased in a shop
                     else:
-                        move_level = int(updated_item.index) - 1
+                        move_level = updated_item.index - 1
                         move_kong = updated_item.kong
                         self.move_data[1].append(
                             {
@@ -872,7 +861,7 @@ class Spoiler:
                 elif location.type == Types.Shockwave and self.settings.shockwave_status != ShockwaveStatus.vanilla:
                     # Use the item to find the data to write
                     updated_item = ItemList[location.item]
-                    move_type = cast(MoveTypes, updated_item.movetype)
+                    move_type = updated_item.movetype
                     # Determine Price to be zero because BFI is free
                     price = 0
                     # Moves that are set with a single flag (e.g. training barrels, shockwave) are handled differently
@@ -880,7 +869,7 @@ class Spoiler:
                         self.move_data[2] = [{"move_type": "flag", "flag": updated_item.flag, "price": price}]
                     # This is for every other move typically purchased in a shop
                     else:
-                        move_level = int(updated_item.index) - 1
+                        move_level = updated_item.index - 1
                         move_kong = updated_item.kong
                         self.move_data[2] = [
                             {
@@ -915,7 +904,7 @@ class Spoiler:
             unlockKong = self.settings.chunky_freeing_kong
             lockedwrite = 0x158
             puzzlewrite = 0x159
-        lockedkong: Dict[str, Any] = {}
+        lockedkong = {}
         lockedkong["kong"] = KongFromItem(item)
         lockedkong["write"] = lockedwrite
         puzzlekong = {"kong": unlockKong, "write": puzzlewrite}
@@ -928,7 +917,7 @@ class Spoiler:
         i = 0
         for sphere in playthroughLocations:
             newSphere = {}
-            newSphere["Available GBs"] = str(sphere.availableGBs)
+            newSphere["Available GBs"] = sphere.availableGBs
             sphereLocations = list(map(lambda l: locations[l], sphere.locations))
             sphereLocations.sort(key=self.ScoreLocations)
             for location in sphereLocations:
@@ -936,12 +925,12 @@ class Spoiler:
             self.playthrough[i] = newSphere
             i += 1
 
-    def UpdateWoth(self, locations: Dict[Locations, Location], wothLocations: List[Locations]) -> None:
+    def UpdateWoth(self, locations: Dict[Locations, Location], wothLocations: List[Union[Locations, int]]) -> None:
         """Write woth locations as a dict of location/item pairs."""
         self.woth = {}
         self.woth_locations = wothLocations
         for locationId in wothLocations:
-            location = locations[cast(Locations, locationId)]
+            location = locations[locationId]
             self.woth[location.name] = ItemList[location.item].name
 
     def ScoreLocations(self, location: Location) -> int:
@@ -973,7 +962,7 @@ class Spoiler:
             return 3
 
     @staticmethod
-    def GetKroolKeysRequired(keyEvents: List[int]) -> List[str]:
+    def GetKroolKeysRequired(keyEvents: List[Events]) -> List[str]:
         """Get key names from required key events to print in the spoiler."""
         keys = []
         if Events.JapesKeyTurnedIn in keyEvents:

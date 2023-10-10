@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 class LocationLogic:
     """Logic for a location."""
 
-    def __init__(self, id: Locations, logic: Callable, bonusBarrel: Optional[MinigameType] = None, isAuxiliary: bool = False) -> None:
+    def __init__(self, id: Union[int, Locations], logic: Callable, bonusBarrel: Optional[MinigameType] = None, isAuxiliary: bool = False) -> None:
         """Initialize with given parameters."""
         self.id = id
         self.logic = logic  # Lambda function for accessibility
@@ -100,7 +100,7 @@ class Region:
         self.events = events
         self.exits = transitionFronts  # In the context of a region, exits are how you leave the region
         self.restart = restart
-        self.id = Regions.GameStart
+
         self.dayAccess = False
         self.nightAccess = False
 
@@ -253,7 +253,7 @@ class Sphere:
         """Initialize with given parameters."""
         self.seedBeaten = False
         self.availableGBs = 0
-        self.locations: List[Locations] = []
+        self.locations: List[Union[LocationLogic, Any]] = []
 
 
 class ColoredBananaGroup:
