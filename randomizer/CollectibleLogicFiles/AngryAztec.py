@@ -128,9 +128,9 @@ LogicRegions = {
     Regions.LlamaTemple: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 15),
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 6),
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: lambda l: True, None, 1),  # Warp 1
-        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: lambda l: (((Events.AztecLlamaSpit in l.Events or l.CanPhaseswim()) and l.swim) or l.phasewalk) and l.grape, None, 2),
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: lambda l: (l.grape or l.phasewalk) and l.vines, None, 1),  # Matching game
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Warp 1
+        Collectible(Collectibles.balloon, Kongs.lanky, lambda l: (((Events.AztecLlamaSpit in l.Events or l.CanPhaseswim()) and l.swim) or l.phasewalk) and l.grape, None, 2),
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (l.grape or l.phasewalk) and l.vines, None, 1),  # Matching game
 
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 3),

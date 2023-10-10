@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Set
+from typing import TYPE_CHECKING, Optional, Set, Union
 
 from randomizer.Enums.ExitCategories import ExitCategories
 from randomizer.Enums.Kongs import Kongs
@@ -21,7 +21,7 @@ class ShufflableExit:
         if entryKongs is None:
             entryKongs = {Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky}
         if regionKongs is None:
-            regionKongs = {}
+            regionKongs = set()
         self.name = name
         self.region = region
         self.back = back
@@ -30,13 +30,14 @@ class ShufflableExit:
         self.regionKongs = regionKongs  # Indicates need to be a certain kong or kongs on the back side of the transition. Should only apply if the destination region doesn't have a tag barrel
         self.move = move  # Indicates this transition needs a kong-specific move to access, so it's even more restrictive
         # shuffledId is pointing to the shuffled destination exit within ShufflableExits
-        # Initialized as none until it gets shuffled
-        self.shuffledId = None
+        # Initialized as arbitrary value until it gets shuffled
+        self.shuffledId = Transitions.Empty
         self.shuffled = False
         self.toBeShuffled = False
 
 
 ShufflableExits = {
+    # Transitions.Empty is not declared in here cause it should never be looked up
     # Level Exits
     Transitions.IslesToJapes: ShufflableExit("Japes Lobby to Jungle Japes", Regions.JungleJapesLobby, TransitionBack(Regions.JungleJapesStart, "From Japes Lobby", "Jungle Japes from Japes Lobby", Transitions.JapesToIsles), ExitCategories.JapesLobby),
     Transitions.JapesToIsles: ShufflableExit("Jungle Japes to Japes Lobby", Regions.JungleJapesStart, TransitionBack(Regions.JungleJapesLobby, "From Japes", "Japes Lobby from Jungle Japes", Transitions.IslesToJapes), ExitCategories.JapesExterior),

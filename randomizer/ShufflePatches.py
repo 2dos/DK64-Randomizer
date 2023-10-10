@@ -27,7 +27,7 @@ def addPatch(spoiler, patch: CustomLocation, enum_val: int, name: str, level: Le
         Levels.CrystalCaves: "Caves",
         Levels.CreepyCastle: "Castle",
     }
-    spoiler.RegionList[patch.logic_region].locations.append(LocationLogic(enum_val, patch.logic))
+    spoiler.RegionList[patch.logic_region].locations.append(LocationLogic(Locations(enum_val), patch.logic))
     spoiler.LocationList[enum_val].name = f"{level_to_name[level]} Dirt: {name}"
     spoiler.LocationList[enum_val].default_mapid_data[0].map = patch.map
     spoiler.LocationList[enum_val].level = level
@@ -89,7 +89,7 @@ def ShufflePatches(spoiler, human_spoiler):
     sorted_patches = spoiler.dirt_patch_placement.copy()
     sorted_patches = sorted(sorted_patches, key=lambda d: d["score"])
     for patch_index, patch in enumerate(sorted_patches):
-        patch["enum"] = Locations.RainbowCoin_Location00 + patch_index
+        patch["enum"] = int(Locations.RainbowCoin_Location00) + patch_index
         addPatch(spoiler, patch["patch"], patch["enum"], patch["name"], patch["level"])
         patch["patch"] = None
     return human_spoiler.copy()
@@ -98,14 +98,14 @@ def ShufflePatches(spoiler, human_spoiler):
 def select_random_dirt_from_area(area_dirt, amount, level, spoiler, human_spoiler):
     """Select <amount> random dirt patches from <area_dirt>, which is a list of dirt patches. Makes sure max 1 dirt patch per group is selected."""
     human_spoiler[level.name] = []
-    for iterations in range(amount):
+    for _ in range(amount):
         selected_patch = random.choice(area_dirt)  # selects a random patch from the list
         for patch in CustomLocations[level]:  # enables the selected patch
             if patch.name == selected_patch.name:
                 patch.setCustomLocation(True)
                 human_spoiler[level.name].append(patch.name)
                 local_map_index = len([x for x in spoiler.dirt_patch_placement if x["map"] == patch.map])
-                spoiler.dirt_patch_placement.append({"name": patch.name, "map": patch.map, "patch": patch, "level": level, "score": (patch.map * 100) + local_map_index})
+                spoiler.dirt_patch_placement.append({"name": patch.name, "map": patch.map, "patch": patch, "level": level, "score": (patch.map.value * 100) + local_map_index})
                 area_dirt.remove(selected_patch)
                 break
         if amount > 1:  # if multiple patches are picked, remove patches from the same group, prevent them from being picked

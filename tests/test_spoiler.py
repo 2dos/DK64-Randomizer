@@ -369,12 +369,12 @@ def test_with_settings_string_8():
     print("test 8 done")
 
 
-def printHintDistribution(spoiler: Spoiler):
-    """Print the hint distribution for the given spoiler log."""
-    types = ""
-    values = ""
-    for key, value in spoiler.hint_distribution.items():
-        types += (key.name + ", ")
-        values += (str(value) + ", ")
-    print(types)
-    print(values)
+# def printHintDistribution(spoiler: Spoiler):
+#     """Print the hint distribution for the given spoiler log."""
+#     types = ""
+#     values = ""
+#     for key, value in spoiler.hint_distribution.items():
+#         types += (key.name + ", ")
+#         values += (str(value) + ", ")
+#     print(types)
+#     print(values)

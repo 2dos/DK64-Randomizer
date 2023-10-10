@@ -8,6 +8,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
+from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple, Union
 from randomizer.Lists.Location import ChunkyMoveLocations, DiddyMoveLocations, DonkeyMoveLocations, LankyMoveLocations, SharedMoveLocations, TinyMoveLocations, TrainingBarrelLocations
 
 VanillaPrices = {
@@ -45,6 +46,8 @@ VanillaPrices = {
     Items.Trombone: 3,
     Items.Saxophone: 3,
     Items.Triangle: 3,
+}
+VanillaProgressivePrices = {
     Items.ProgressiveSlam: [0, 5, 7],
     Items.ProgressiveAmmoBelt: [3, 5],
     Items.ProgressiveInstrumentUpgrade: [5, 7, 9],
@@ -87,13 +90,21 @@ def GetPriceWeights(weight):
     return (avg, stddev, upperLimit)
 
 
-def RandomizePrices(spoiler, weight):
+def RandomizePrices(spoiler, weight) -> dict[Locations, int]:
     """Generate randomized prices for each shop location."""
     prices = {}
     parameters = GetPriceWeights(weight)
-    shopLocations = [location_id for location_id, location in spoiler.LocationList.items() if location.type == Types.Shop]
+    # Prices are usually determined by location
+    shopLocations: List[Locations] = [location_id for location_id, location in spoiler.LocationList.items() if location.type == Types.Shop]
     for location in shopLocations:
         prices[location] = GenerateRandomPrice(weight, parameters[0], parameters[1], parameters[2])
+    return prices
+
+
+def RandomizeProgressivePrices(spoiler, weight) -> dict[Items, List[int]]:
+    """Generate randomized prices for each progressive move."""
+    prices: dict[Items, List[int]] = {}
+    parameters = GetPriceWeights(weight)
     # Progressive items get their own price pool
     for item in ProgressiveMoves.keys():
         prices[item] = []
@@ -102,7 +113,7 @@ def RandomizePrices(spoiler, weight):
     return prices
 
 
-def GenerateRandomPrice(weight, avg, stddev, upperLimit):
+def GenerateRandomPrice(weight, avg, stddev, upperLimit) -> int:
     """Generate a random price to assign."""
     lowerLimit = 1
     if weight == RandomPrices.free:
@@ -130,17 +141,17 @@ def GetMaxForKong(spoiler, kong):
         item_id = spoiler.LocationList[location].item
         if item_id is not None and item_id != Items.NoItem:
             if item_id == Items.ProgressiveSlam:
-                total_price += settings.prices[item_id][found_slams]
+                total_price += settings.progressive_prices[item_id][found_slams]
                 found_slams += 1
             elif item_id == Items.ProgressiveInstrumentUpgrade:
-                total_price += settings.prices[item_id][found_instrument_upgrades]
+                total_price += settings.progressive_prices[item_id][found_instrument_upgrades]
                 found_instrument_upgrades += 1
             elif item_id == Items.ProgressiveAmmoBelt:
-                total_price += settings.prices[item_id][found_ammo_belts]
+                total_price += settings.progressive_prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
             # Vanilla prices are by item, not by location
             elif settings.random_prices == RandomPrices.vanilla:
-                total_price += settings.prices[item_id]
+                total_price += settings.vanilla_prices[item_id]
             else:
                 total_price += settings.prices[location]
 
@@ -162,17 +173,17 @@ def GetMaxForKong(spoiler, kong):
         item_id = spoiler.LocationList[location].item
         if item_id is not None and item_id != Items.NoItem:
             if item_id == Items.ProgressiveSlam:
-                total_price += settings.prices[item_id][found_slams]
+                total_price += settings.progressive_prices[item_id][found_slams]
                 found_slams += 1
             elif item_id == Items.ProgressiveInstrumentUpgrade:
-                total_price += settings.prices[item_id][found_instrument_upgrades]
+                total_price += settings.progressive_prices[item_id][found_instrument_upgrades]
                 found_instrument_upgrades += 1
             elif item_id == Items.ProgressiveAmmoBelt:
-                total_price += settings.prices[item_id][found_ammo_belts]
+                total_price += settings.progressive_prices[item_id][found_ammo_belts]
                 found_ammo_belts += 1
             # Vanilla prices are by item, not by location
             elif settings.random_prices == RandomPrices.vanilla:
-                total_price += settings.prices[item_id]
+                total_price += settings.vanilla_prices[item_id]
             else:
                 total_price += settings.prices[location]
     return total_price
@@ -226,19 +237,19 @@ def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, in
     # Progressive items have their prices managed separately
     if item == Items.ProgressiveSlam:
         if slamLevel in [1, 2]:
-            return settings.prices[item][slamLevel - 1]
+            return settings.progressive_prices[item][slamLevel - 1]
         else:
             # If already have max slam, there's no move to buy (this is fine only if it's in VerifyWorld)
             return 0
     elif item == Items.ProgressiveAmmoBelt:
         if ammoBelts in [0, 1]:
-            return settings.prices[item][ammoBelts]
+            return settings.progressive_prices[item][ammoBelts]
         else:
             # If already have max ammo belt, there's no move to buy (this shouldn't happen?)
             return 0
     elif item == Items.ProgressiveInstrumentUpgrade:
         if instUpgrades in [0, 1, 2]:
-            return settings.prices[item][instUpgrades]
+            return settings.progressive_prices[item][instUpgrades]
         else:
             # If already have max instrument upgrade, there's no move to buy (this shouldn't happen?)
             return 0
@@ -247,7 +258,7 @@ def GetPriceAtLocation(settings, location_id, location, slamLevel, ammoBelts, in
         # Treat the location as free if it's empty
         if item is None or item == Items.NoItem:
             return 0
-        return settings.prices[item]
+        return settings.vanilla_prices[item]
     # In all other cases, the price is determined solely by the location
     return settings.prices[location_id]
 

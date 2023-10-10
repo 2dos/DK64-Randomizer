@@ -6,7 +6,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Enums.Regions import Regions
-from randomizer.Lists.Location import LocationListOriginal as LocationList
+from randomizer.Lists.Location import LocationListData
 from randomizer.Lists.Plandomizer import HintLocationList, ItemLocationList, PlannableItemLimits, ShopLocationList
 from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
@@ -125,7 +125,7 @@ def validate_starting_kong_count(evt):
 
 
 @bind("change", "plando_level_order_", 7)
-def validate_level_order_no_duplicates(evt):
+def validate_level_order_no_duplicates_level(evt):
     """Raise an error if the same level is chosen twice in the level order."""
     levelDict = {}
     # Count the instances of each level.
@@ -150,7 +150,7 @@ def validate_level_order_no_duplicates(evt):
 
 
 @bind("change", "plando_krool_order_", 5)
-def validate_level_order_no_duplicates(evt):
+def validate_level_order_no_duplicates_krool(evt):
     """Raise an error if the same Kong is chosen twice in the K. Rool order."""
     kongDict = {}
     # Count the instances of each Kong.
@@ -175,7 +175,7 @@ def validate_level_order_no_duplicates(evt):
 
 
 @bind("change", "plando_helm_order_", 5)
-def validate_level_order_no_duplicates(evt):
+def validate_level_order_no_duplicates_helm(evt):
     """Raise an error if the same Kong is chosen twice in the Helm order."""
     kongDict = {}
     # Count the instances of each Kong.
@@ -391,7 +391,7 @@ def validate_plando_options(settings_dict):
         if price == PlandoItems.Randomize:
             continue
         if price < 0 or price > 255:
-            shopName = LocationList[shopLocation].name
+            shopName = LocationListData().LocationList[shopLocation].name
             errString = f'Shop costs must be between 0 and 255 coins, but shop "{shopName}" has a cost of {price} coins.'
             errList.append(errString)
 
@@ -449,7 +449,7 @@ def validate_plando_options(settings_dict):
     for hintLocation, hint in plando_dict["hints"].items():
         if hint == PlandoItems.Randomize:
             continue
-        hintLocationName = LocationList[hintLocation].name
+        hintLocationName = LocationListData().LocationList[hintLocation].name
         if len(hint) > 900:
             errString = f'The hint for location "{hintLocationName}" is longer than the limit of 900 characters.'
             errList.append(errString)
