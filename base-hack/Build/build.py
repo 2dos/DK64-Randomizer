@@ -1322,6 +1322,11 @@ with open(newROMName, "r+b") as fh:
     for x in range(64):
         fh.write((0).to_bytes(4, "big"))
 
+    # Hint Flags
+    fh.seek(0x1FFE000)
+    for x in range(35):
+        fh.write((0xFFFF).to_bytes(2, "big"))
+
     piano_vanilla = [2, 1, 2, 3, 4, 2, 0]
     for piano_index, piano_key in enumerate(piano_vanilla):
         fh.seek(0x1FED020 + 0x16C + piano_index)

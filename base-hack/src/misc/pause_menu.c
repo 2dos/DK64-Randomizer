@@ -545,6 +545,20 @@ void getItemSpecificity(char** str, int step, int flag) {
     *str = unk_string;
 }
 
+static short hint_clear_flags[35] = {};
+
+void initHintFlags(void) {
+    unsigned short* hint_clear_write = dk_malloc(GAME_HINT_COUNT << 1);
+    int* hint_flag_file_size;
+    *(int*)(&hint_flag_file_size) = GAME_HINT_COUNT << 1;
+    copyFromROM(0x1FFE000,hint_clear_write,&hint_flag_file_size,0,0,0,0);
+    for (int i = 0; i < GAME_HINT_COUNT; i++) {
+        hint_clear_flags[i] = hint_clear_write[i];
+    }
+}
+
+#define HINT_SOLVED_OPACITY 0x80
+
 int* pauseScreen3And4Header(int* dl) {
     /**
      * @brief Alter pause screen totals header to display the checks screen
@@ -1480,4 +1494,5 @@ void initPauseMenu(void) {
     *(int*)(0x806AB2E8) = 0;
     *(int*)(0x806AB360) = 0;
     *(short*)(0x806ABFCE) = FLAG_BP_JAPES_DK_HAS; // Change BP trigger to being collecting BP rather than turning it in
+    initHintFlags();
 }
