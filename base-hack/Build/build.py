@@ -775,7 +775,7 @@ for x in kong_palettes:
 for tex in range(0x273, 0x27D):
     file_dict.append(File(name=f"Head Expansion ({hex(tex)})", pointer_table_index=TableNames.TexturesGeometry, file_index=tex, source_file=f"head_{tex}.bin", target_compressed_size=32 * 64 * 2))
 
-colorblind_changes = [[4120, 4124, 32, 44], [5819, 5858, 32, 64], [0xBB2, 0xBB3, 32, 16]]
+colorblind_changes = [[4120, 4124, 32, 44], [5819, 5858, 32, 64], [0xBB2, 0xBB3, 32, 16], [0xCE0, 0xCEB, 48, 42]]
 for change in colorblind_changes:
     for file_index in range(change[0], change[1] + 1):
         file_dict.append(

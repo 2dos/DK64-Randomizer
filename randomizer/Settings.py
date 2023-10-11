@@ -437,6 +437,7 @@ class Settings:
         self.toe_order = [0] * 10
         self.mill_levers = [0] * 5
         self.crypt_levers = [1, 4, 3]
+        self.diddy_rnd_doors = [[0] * 4, [0] * 4, [0] * 4]
         self.enemy_rando = False
         self.crown_enemy_rando = CrownEnemyRando.off
         self.enemy_speed_rando = False
@@ -773,9 +774,22 @@ class Settings:
             for slot in range(mill_lever_cap):
                 self.mill_levers[slot] = random.randint(1, 3)
 
-        # Crypt Levers
         if self.puzzle_rando:
+            # Crypt Levers
             self.crypt_levers = random.sample([x + 1 for x in range(6)], 3)
+            # Diddy R&D Doors
+            self.diddy_rnd_doors = []
+            for _ in range(3):
+                code = []
+                selected_all_zeros = True
+                for subindex in range(4):
+                    perm = random.randint(0, 3)
+                    if subindex == 3 and selected_all_zeros:
+                        perm = random.randint(1, 3)
+                    if perm != 0:
+                        selected_all_zeros = False
+                    code.append(perm)
+                self.diddy_rnd_doors.append(code)
 
         # Set keys required for KRool
         KeyEvents = [

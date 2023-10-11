@@ -102,6 +102,9 @@ void initQoL_Cutscenes(void) {
         writeFunction(0x806C50BC, &clearVultureCutscene); // Modify Function Call
         // Speedy T&S Turn-Ins
         *(int*)(0x806BE3E0) = 0; // NOP
+        // Remove final mermaid text
+        *(int*)(0x806C3E10) = 0;
+        *(int*)(0x806C3E20) = 0;
     }
 }
 
