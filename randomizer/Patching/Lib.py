@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union
 import js
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Patching.Patcher import ROM, LocalROM
+from randomizer.Enums.Items import Items
 
 if TYPE_CHECKING:
     from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected
@@ -588,3 +589,9 @@ def recalculatePointerJSON(ROM_COPY: ROM):
             table_data["entries"].append(local_data)
         new_data[x] = table_data
     js.pointer_addresses = new_data
+
+def setItemReferenceName(spoiler, item: Items, index: int, new_name: str):
+    """Set new name for a location of an item."""
+    for loc in spoiler.location_references:
+        if loc.item == item:
+            loc.setLocation(index, new_name)

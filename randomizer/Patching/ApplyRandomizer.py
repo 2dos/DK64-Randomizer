@@ -7,6 +7,7 @@ from tempfile import mktemp
 from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, HardModeSelected, HelmDoorItem, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
+from randomizer.Enums.Items import Items
 from randomizer.Lists.EnemyTypes import Enemies, EnemySelector
 from randomizer.Lists.HardMode import HardSelector
 from randomizer.Lists.QoL import QoLSelector
@@ -25,6 +26,7 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
+from randomizer.Patching.Lib import setItemReferenceName
 from randomizer.Patching.MiscSetupChanges import randomize_setup, updateRandomSwitches
 from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves
 from randomizer.Patching.Patcher import LocalROM
@@ -32,7 +34,7 @@ from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
-from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints
+from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints, PushItemLocations
 
 # from randomizer.Spoiler import Spoiler
 
@@ -146,15 +148,21 @@ def patching_response(spoiler):
         order += 1
 
     # Unlock All Kongs
+    kong_items = (Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky)
+    starting_kongs = []
     if spoiler.settings.starting_kongs_count == 5:
         ROM_COPY.seek(sav + 0x02C)
         ROM_COPY.write(0x1F)
+        starting_kongs = kong_items.copy()
     else:
         bin_value = 0
         for x in spoiler.settings.starting_kong_list:
             bin_value |= 1 << x
+            starting_kongs.append(kong_items[x])
         ROM_COPY.seek(sav + 0x02C)
         ROM_COPY.write(bin_value)
+    for kong in starting_kongs:
+        setItemReferenceName(spoiler, kong, 0, "Starting Kong")
 
     boolean_props = [
         BooleanProperties(True, 0x2E),  # Fast Start Game
@@ -466,6 +474,7 @@ def patching_response(spoiler):
     filterEntranceType()
     replaceIngameText(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
+    PushItemLocations(spoiler)
 
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         wipeHints()

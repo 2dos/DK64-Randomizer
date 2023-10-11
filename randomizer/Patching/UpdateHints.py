@@ -94,13 +94,20 @@ def PushHints(spoiler):
     writeWrinklyHints(js.pointer_addresses[12]["entries"][41]["pointing_to"], hint_arr)
     spoiler.hint_list.pop("First Time Talk")  # The FTT needs to be written to the ROM but should not be found in the spoiler log
 
-
 def wipeHints():
     """Wipe the hint block."""
     for x in range(len(hints)):
         if hints[x].kong != Kongs.any:
             hints[x].hint = ""
 
+def PushItemLocations(spoiler):
+    """Push item hints to ROM."""
+    text_arr = []
+    for loc in spoiler.location_references:
+        text_arr.append([loc.item_name.upper()])
+        for subloc in loc.locations:
+            text_arr.append([subloc.upper()])
+    writeWrinklyHints(js.pointer_addresses[12]["entries"][44]["pointing_to"], text_arr)
 
 def replaceIngameText(spoiler):
     """Replace text in-game with defined modifications."""
