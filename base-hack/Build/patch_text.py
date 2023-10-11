@@ -746,6 +746,7 @@ text_enum = [
     "ITEMTEXT_FAKEITEM",  # 0x058
 ]
 
+
 # Item Locations
 class ItemReference:
     """Class to store information regarding an item's location."""
