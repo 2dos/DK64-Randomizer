@@ -311,6 +311,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                 for (int i = 1; i < 5; i++) {
                     MovesBase[i].ammo_belt = item_index;
                 }
+                CollectableBase.StandardAmmo = 50 * (1 << item_index);
                 spawn_overlay = 1;
                 item_type = 3;
             } else if ((flag_index >= FLAG_ITEM_INS_0) && (flag_index <= FLAG_ITEM_INS_2)) {
