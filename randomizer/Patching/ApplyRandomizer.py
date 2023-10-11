@@ -246,6 +246,7 @@ def patching_response(spoiler):
     given_moves = []
     if spoiler.settings.shockwave_status == ShockwaveStatus.start_with:
         given_moves.extend([39, 40])  # 39 = Camera, 40 = Shockwave
+        setItemReferenceName(spoiler, Items.CameraAndShockwave, 0, "Extra Training")
     move_bitfields = [0] * 6
     for move in given_moves:
         offset = int(move >> 3)

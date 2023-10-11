@@ -304,10 +304,7 @@ def place_pregiven_moves(spoiler):
                 val |= 0x80 >> check
                 ROM_COPY.seek(spoiler.settings.rom_data + 0xD5 + offset)
                 ROM_COPY.writeMultipleBytes(val, 1)
-        if item == Items.CameraAndShockwave:
-            setItemReferenceName(spoiler, Items.Camera, 0, name_str)
-            setItemReferenceName(spoiler, Items.Shockwave, 0, name_str)
-        elif item == Items.ProgressiveAmmoBelt:
+        if item == Items.ProgressiveAmmoBelt:
             setItemReferenceName(spoiler, item, new_slot - 0x1C, name_str)
         elif item == Items.ProgressiveInstrumentUpgrade:
             setItemReferenceName(spoiler, item, new_slot - 0x20, name_str)
