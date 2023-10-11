@@ -246,7 +246,7 @@ void checkItemDB(void) {
 static char string_copy[STRING_MAX_SIZE] = "";
 static char mtx_counter = 0;
 
-int* drawHintText(int* dl, char* str, int x, int y, int dim, int center) {
+int* drawHintText(int* dl, char* str, int x, int y, int opacity, int center) {
     mtx_item mtx0;
     mtx_item mtx1;
     _guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
@@ -274,11 +274,7 @@ int* drawHintText(int* dl, char* str, int x, int y, int dim, int center) {
 	*(unsigned int*)(dl++) = 0xFCFF97FF;
 	*(unsigned int*)(dl++) = 0xFF2CFE7F;
 	*(unsigned int*)(dl++) = 0xFA000000;
-    if (dim) {
-        *(unsigned int*)(dl++) = 0xFFFFFFC0;
-    } else {
-        *(unsigned int*)(dl++) = 0xFFFFFFFF;
-    }
+    *(unsigned int*)(dl++) = 0xFFFFFF00 | opacity;
     *(unsigned int*)(dl++) = 0xDA380002;
     *(unsigned int*)(dl++) = (int)&static_mtx[(int)mtx_counter];
     int data = 0x80;
@@ -320,7 +316,7 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
         int is_control = 0;
         if (referenced_character == 0) {
             // Terminator
-            return drawHintText(dl, (char*)(string_copy_ref), x, curr_y, 0, 1);
+            return drawHintText(dl, (char*)(string_copy_ref), x, curr_y, 0xFF, 1);
         } else if (referenced_character == 0x20) {
             // Space
             last_safe = header;
@@ -334,7 +330,7 @@ int* drawSplitString(int* dl, char* str, int x, int y, int y_sep) {
         if (!is_control) {
             if (header > 50) {
                 *(char*)(string_copy_ref + last_safe) = 0; // Stick terminator in last safe
-                dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y, 0, 1);
+                dl = drawHintText(dl, (char*)(string_copy_ref), x, curr_y, 0xFF, 1);
                 line_count += 1;
                 if (line_count == 3) {
                     return dl;
@@ -634,7 +630,7 @@ int* pauseScreen3And4Header(int* dl) {
             if (size == -1) {
                 break;
             }
-            dl = drawHintText(dl, itemloc_pointers[head], item_loc_x, y, 0, 0);
+            dl = drawHintText(dl, itemloc_pointers[head], item_loc_x, y, 0xFF, 0);
             for (int j = 0; j < size; j++) {
                 y += 40;
                 char* str = itemloc_pointers[head + 1 + j];
@@ -648,7 +644,7 @@ int* pauseScreen3And4Header(int* dl) {
                     }
                 }
                 
-                dl = drawHintText(dl, str, item_loc_x, y, 1, 0);
+                dl = drawHintText(dl, str, item_loc_x, y, 0xC0, 0);
             }
             head += 1 + size;
             y += 60;

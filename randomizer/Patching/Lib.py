@@ -590,11 +590,12 @@ def recalculatePointerJSON(ROM_COPY: ROM):
         new_data[x] = table_data
     js.pointer_addresses = new_data
 
+
 def setItemReferenceName(spoiler, item: Items, index: int, new_name: str):
     """Set new name for a location of an item."""
     if item == Items.CameraAndShockwave:
-        setItemReferenceName(spoiler, Items.Camera, index, new_name)        
-        setItemReferenceName(spoiler, Items.Shockwave, index, new_name)        
+        setItemReferenceName(spoiler, Items.Camera, index, new_name)
+        setItemReferenceName(spoiler, Items.Shockwave, index, new_name)
     else:
         for loc in spoiler.location_references:
             if loc.item == item:

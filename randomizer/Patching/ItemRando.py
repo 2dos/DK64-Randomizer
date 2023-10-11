@@ -15,6 +15,7 @@ from randomizer.Lists.EnemyTypes import enemy_location_list
 from randomizer.Patching.Lib import float_to_hex, intf_to_float, setItemReferenceName
 from randomizer.Patching.Patcher import LocalROM
 
+
 class CustomActors(IntEnum):
     """Custom Actors Enum."""
 

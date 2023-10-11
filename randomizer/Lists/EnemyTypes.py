@@ -23,7 +23,7 @@ class InteractionMethods:
         kill_gun=True,  # Killing can be done with a gun
         kill_shockwave=True,  # Killing can be done with a shockwave attack
         kill_instrument=True,  # Killing can be done with an instrument play
-        kill_punch = False,  # Killing can be done by primate punching the enemy (when melee attacks don't work)
+        kill_punch=False,  # Killing can be done by primate punching the enemy (when melee attacks don't work)
         can_kill=True,  # Master control of all kill variables
         can_bypass=True,  # Enemy can be bypassed without any additional tricks
     ) -> None:

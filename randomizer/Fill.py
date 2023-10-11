@@ -2665,6 +2665,7 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     patch_data = ApplyRandomizer.patching_response(spoiler)
     return patch_data, spoiler
 
+
 class ItemReference:
     """Class to store information regarding an item's location."""
 
@@ -2672,11 +2673,12 @@ class ItemReference:
         """Initialize with given parameters."""
         self.item = item
         self.item_name = item_name
-        self.locations = [locations] if type(locations) == str else locations
+        self.locations = [locations] if isinstance(locations, str) else locations
 
     def setLocation(self, index: int, new_name: str):
         """Set new name for location."""
         self.locations[index] = new_name
+
 
 def ShuffleMisc(spoiler: Spoiler) -> None:
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""

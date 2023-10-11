@@ -753,7 +753,8 @@ class ItemReference:
     def __init__(self, item: str, locations):
         """Initialize with given parameters."""
         self.item = item
-        self.locations = [locations] if type(locations) == str else locations
+        self.locations = [locations] if isinstance(locations, str) else locations
+
 
 location_references = [
     # DK Moves
@@ -819,7 +820,7 @@ with open("src/randomizers/move_text.c", "w") as fh:
 
         loc_count = 0
         for ref in location_references:
-            loc_count += (1 + len(ref.locations))
+            loc_count += 1 + len(ref.locations)
         fg.write(f"#define LOCATION_ITEM_COUNT {loc_count}\n")
         fg.write("typedef struct name_latin_struct {\n")
         fg.write("\t/* 0x000 */ unsigned char name;\n")
@@ -847,7 +848,7 @@ location_items_arr = []
 for ref in location_references:
     location_items_arr.append([{"text": [ref.item.upper()]}])
     for loc in ref.locations:
-       location_items_arr.append([{"text": [loc.upper()]}]) 
+        location_items_arr.append([{"text": [loc.upper()]}])
 
 writeText("move_names.bin", move_names_arr)
 writeText("item_locations.bin", location_items_arr)
@@ -962,7 +963,6 @@ hint_region_text = []
 for region in hint_region_list:
     hint_region_text.append([{"text": [region.region_name.upper()]}])
 writeText("hint_region_text.bin", hint_region_text)
-
 
 
 misc_char_table = {
