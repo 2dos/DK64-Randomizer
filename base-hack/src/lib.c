@@ -492,6 +492,18 @@ static const char overlay_indexes[] = {
 	OVERLAY_BOSS, // K. Rool's Shoe
 	OVERLAY_NONE, // K. Rool's Arena
 };
+char* levels[] = {
+    "ALL",
+    "JUNGLE JAPES",
+    "ANGRY AZTEC",
+    "FRANTIC FACTORY",
+    "GLOOMY GALLEON",
+    "FUNGI FOREST",
+    "CRYSTAL CAVES",
+    "CREEPY CASTLE",
+    "DK ISLES",
+    "HIDEOUT HELM",
+};
 
 overlays getOverlayFromMap(maps map) {
 	return overlay_indexes[map];

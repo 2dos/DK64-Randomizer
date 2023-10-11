@@ -314,6 +314,14 @@ extern void initPauseMenu(void);
 extern void changePauseScreen(void);
 extern int* displayHintRegion(int* dl, int x, int y, float scale, char* text);
 extern void storeHintRegion(void);
+extern void getHintRegionText(void);
+extern void initCarousel_onPause(void);
+extern void initCarousel_onBoot(void);
+extern int* drawHintScreen(int* dl, int level_x);
+extern int* drawItemLocationScreen(int* dl, int level_x);
+extern void handleCShifting(char* value, char limit);
+extern void initHints(void);
+extern void initHintFlags(void);
 
 extern void handleDynamicItemText(char* location, char* format, int character);
 extern void handleFilename(char* location, char* format, char* new_name);
@@ -419,6 +427,7 @@ extern const rgb colorblind_colors[15];
 extern const check_struct item_db[292];
 extern const unsigned char crown_maps[10];
 extern const unsigned char regular_boss_maps[7];
+extern char* levels[10];
 
 extern sprite_data_struct bean_sprite;
 extern sprite_data_struct pearl_sprite;

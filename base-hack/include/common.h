@@ -29,5 +29,6 @@
 #include "widescreen.h"
 #include "pause.h"
 #include "hint_regions.h"
+#include "../src/pause/pause.h"
 
 #endif
