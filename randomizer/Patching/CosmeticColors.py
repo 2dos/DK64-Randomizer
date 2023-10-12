@@ -717,8 +717,11 @@ def writeColorImageToROM(im_f: PIL.Image.Image, table_index: int, file_index: in
     right_border = 3
     for y in range(height):
         for x in range(width):
-            if transparent_border and ((x < border) or (y < border) or (x >= (width - border)) or (y >= (height - border))) or (x == (width - right_border)):
-                pix_data = [0, 0, 0, 0]
+            if transparent_border:
+                if ((x < border) or (y < border) or (x >= (width - border)) or (y >= (height - border))) or (x == (width - right_border)):
+                    pix_data = [0, 0, 0, 0]
+                else:
+                    pix_data = list(pix[x, y])
             else:
                 pix_data = list(pix[x, y])
             if format == TextureFormat.RGBA32:

@@ -779,10 +779,12 @@ class Settings:
             self.crypt_levers = random.sample([x + 1 for x in range(6)], 3)
             # Diddy R&D Doors
             self.diddy_rnd_doors = []
-            for _ in range(3):
-                code = []
-                selected_all_zeros = True
-                for subindex in range(4):
+            start = list(range(4))
+            random.shuffle(start)
+            for id in range(3):
+                code = [start[id]]
+                selected_all_zeros = start[id] == 0
+                for subindex in range(1,4):
                     perm = random.randint(0, 3)
                     if subindex == 3 and selected_all_zeros:
                         perm = random.randint(1, 3)
