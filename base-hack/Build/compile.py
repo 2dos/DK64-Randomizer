@@ -24,7 +24,7 @@ strict_aliasing_avoids = [
     "src/misc/enemy_drop_table.c",
     "src/misc/instances.c",
     "src/misc/krusha.c",
-    "src/misc/pause_menu.c",
+    "src/pause/hints.c",
     "src/randomizers/every_lz_rando.c",
     "src/randomizers/move_rando.c",
 ]

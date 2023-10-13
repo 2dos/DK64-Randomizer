@@ -102,6 +102,9 @@ void initQoL_Cutscenes(void) {
         writeFunction(0x806C50BC, &clearVultureCutscene); // Modify Function Call
         // Speedy T&S Turn-Ins
         *(int*)(0x806BE3E0) = 0; // NOP
+        // Remove final mermaid text
+        *(int*)(0x806C3E10) = 0;
+        *(int*)(0x806C3E20) = 0;
     }
 }
 
@@ -490,6 +493,11 @@ void initNonControllableFixes(void) {
     *(short*)(0x806D299C) = 0x1020; // BEQ $at, $r0
     // EEPROM Patch
     *(int*)(0x8060D588) = 0; // NOP
+    // TEMPORARY FIX FOR SAVE BUG
+    *(int*)(0x8060D790) = 0; // NOP
+
+
+
     // Cancel Tamper
     *(int*)(0x8060AEFC) = 0; // NOP
     *(int*)(0x80611788) = 0; // NOP

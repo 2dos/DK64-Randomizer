@@ -12,7 +12,7 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Lib import float_to_hex, intf_to_float
 from randomizer.Lists.EnemyTypes import enemy_location_list
-from randomizer.Patching.Lib import float_to_hex, intf_to_float
+from randomizer.Patching.Lib import float_to_hex, intf_to_float, setItemReferenceName
 from randomizer.Patching.Patcher import LocalROM
 
 
@@ -628,6 +628,14 @@ def place_randomized_items(spoiler):
                 else:
                     data.append(item.new_flag)
                 flut_items.append(data)
+            ref_index = 0
+            if item.new_subitem == Items.ProgressiveAmmoBelt:
+                ref_index = item.new_flag - 0x292
+            elif item.new_subitem == Items.ProgressiveInstrumentUpgrade:
+                ref_index = item.new_flag - 0x294
+            elif item.new_subitem == Items.ProgressiveSlam:
+                ref_index = item.new_flag - 0x3BC
+            setItemReferenceName(spoiler, item.new_subitem, ref_index, spoiler.LocationList[item.location].name)
         # Text stuff
         if spoiler.settings.item_reward_previews:
             for textbox in textboxes:

@@ -102,6 +102,16 @@ def wipeHints():
             hints[x].hint = ""
 
 
+def PushItemLocations(spoiler):
+    """Push item hints to ROM."""
+    text_arr = []
+    for loc in spoiler.location_references:
+        text_arr.append([loc.item_name.upper()])
+        for subloc in loc.locations:
+            text_arr.append([subloc.upper()])
+    writeWrinklyHints(js.pointer_addresses[12]["entries"][44]["pointing_to"], text_arr)
+
+
 def replaceIngameText(spoiler):
     """Replace text in-game with defined modifications."""
     for file_index in spoiler.text_changes:

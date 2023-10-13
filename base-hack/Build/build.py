@@ -775,7 +775,7 @@ for x in kong_palettes:
 for tex in range(0x273, 0x27D):
     file_dict.append(File(name=f"Head Expansion ({hex(tex)})", pointer_table_index=TableNames.TexturesGeometry, file_index=tex, source_file=f"head_{tex}.bin", target_compressed_size=32 * 64 * 2))
 
-colorblind_changes = [[4120, 4124, 32, 44], [5819, 5858, 32, 64], [0xBB2, 0xBB3, 32, 16]]
+colorblind_changes = [[4120, 4124, 32, 44], [5819, 5858, 32, 64], [0xBB2, 0xBB3, 32, 16], [0xCE0, 0xCEB, 48, 42]]
 for change in colorblind_changes:
     for file_index in range(change[0], change[1] + 1):
         file_dict.append(
@@ -967,6 +967,7 @@ text_files = (
     TextChange("Wrinkly", 0x2800, ""),
     TextChange("Snide's Bonus Games", 0, ""),
     TextChange("Hint Regions", 0, "hint_region_text.bin"),
+    TextChange("Item Locations", 0x2800, "item_locations.bin"),
 )
 
 for index, text in enumerate(text_files):
@@ -1320,6 +1321,11 @@ with open(newROMName, "r+b") as fh:
     fh.seek(0x1FFD000)
     for x in range(64):
         fh.write((0).to_bytes(4, "big"))
+
+    # Hint Flags
+    fh.seek(0x1FFE000)
+    for x in range(35):
+        fh.write((0xFFFF).to_bytes(2, "big"))
 
     piano_vanilla = [2, 1, 2, 3, 4, 2, 0]
     for piano_index, piano_key in enumerate(piano_vanilla):

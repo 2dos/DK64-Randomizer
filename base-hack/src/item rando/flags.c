@@ -227,6 +227,34 @@ void displayKeyText(int flag) {
     }
 }
 
+int hasMove(int flag) {
+    if (flag == 0) {
+        return 1;
+    }
+    if (flag & 0x8000) {
+        int item_kong = (flag >> 12) & 7;
+        if (item_kong > 4) {
+            item_kong = 0;
+        }
+        int item_type = (flag >> 8) & 15;
+        int item_index = flag & 0xFF;
+        if (item_type == 7) {
+            return 0;
+        } else {
+            char* temp_fba = (char*)&MovesBase[item_kong];
+            int shift = 0;
+            if (item_index != 0) {
+                shift = item_index - 1;
+            }
+            int init_val = *(char*)(temp_fba + item_type);
+            return init_val & (1 << shift);
+        }
+    } else {
+        return checkFlagDuplicate(flag, FLAGTYPE_PERMANENT);
+    }
+    return 0;
+}
+
 void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
     /**
      * @brief Check whether a flag is a move, alter the flag block address, and perform any additional functions required.
@@ -283,6 +311,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                 for (int i = 1; i < 5; i++) {
                     MovesBase[i].ammo_belt = item_index;
                 }
+                CollectableBase.StandardAmmo = 50 * (1 << item_index);
                 spawn_overlay = 1;
                 item_type = 3;
             } else if ((flag_index >= FLAG_ITEM_INS_0) && (flag_index <= FLAG_ITEM_INS_2)) {

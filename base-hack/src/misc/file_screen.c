@@ -441,6 +441,11 @@ void modifyTrackerImage(int dl_offset) {
 						int update = 0;
 						if (tracker_info[i].type == TRACKER_TYPE_SLAM) {
 							if (enabled) {
+								/*
+									If slam is illuminated, but white, that means that
+									the calculated slam count is higher than slam 3.
+									As a result, should be fixed
+								*/
 								int subdue[] = {0,0,0};
 								if (enabled == 1) {
 									subdue[0] = 1; // B

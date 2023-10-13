@@ -7,6 +7,7 @@ from tempfile import mktemp
 from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, HardModeSelected, HelmDoorItem, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
+from randomizer.Enums.Items import Items
 from randomizer.Lists.EnemyTypes import Enemies, EnemySelector
 from randomizer.Lists.HardMode import HardSelector
 from randomizer.Lists.QoL import QoLSelector
@@ -15,7 +16,7 @@ from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
 from randomizer.Patching.BossRando import randomize_bosses
 from randomizer.Patching.CoinPlacer import randomize_coins
-from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, applyKrushaKong, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages
+from randomizer.Patching.CosmeticColors import applyHelmDoorCosmetics, applyKrushaKong, updateCryptLeverTexture, updateMillLeverTexture, writeBootMessages, updateDiddyDoors
 from randomizer.Patching.CratePlacer import randomize_melon_crate
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
 from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
@@ -25,6 +26,7 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
+from randomizer.Patching.Lib import setItemReferenceName
 from randomizer.Patching.MiscSetupChanges import randomize_setup, updateRandomSwitches
 from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves
 from randomizer.Patching.Patcher import LocalROM
@@ -32,7 +34,7 @@ from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
-from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints
+from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints, PushItemLocations
 
 # from randomizer.Spoiler import Spoiler
 
@@ -146,15 +148,21 @@ def patching_response(spoiler):
         order += 1
 
     # Unlock All Kongs
+    kong_items = (Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky)
+    starting_kongs = []
     if spoiler.settings.starting_kongs_count == 5:
         ROM_COPY.seek(sav + 0x02C)
         ROM_COPY.write(0x1F)
+        starting_kongs = kong_items.copy()
     else:
         bin_value = 0
         for x in spoiler.settings.starting_kong_list:
             bin_value |= 1 << x
+            starting_kongs.append(kong_items[x])
         ROM_COPY.seek(sav + 0x02C)
         ROM_COPY.write(bin_value)
+    for kong in starting_kongs:
+        setItemReferenceName(spoiler, kong, 0, "Starting Kong")
 
     boolean_props = [
         BooleanProperties(True, 0x2E),  # Fast Start Game
@@ -238,6 +246,7 @@ def patching_response(spoiler):
     given_moves = []
     if spoiler.settings.shockwave_status == ShockwaveStatus.start_with:
         given_moves.extend([39, 40])  # 39 = Camera, 40 = Shockwave
+        setItemReferenceName(spoiler, Items.CameraAndShockwave, 0, "Extra Training")
     move_bitfields = [0] * 6
     for move in given_moves:
         offset = int(move >> 3)
@@ -399,6 +408,23 @@ def patching_response(spoiler):
             ROM_COPY.seek(sav + 0xCD + xi)
             ROM_COPY.write(x)
 
+    # Diddy R&D Codes
+    enable_code = False
+    encoded_codes = []
+    for code in spoiler.settings.diddy_rnd_doors:
+        value = 0
+        if sum(code) > 0:  # Has a non-zero element
+            enable_code = True
+        for subindex in range(4):
+            shift = 12 - (subindex << 2)
+            shifted = (code[subindex] & 3) << shift
+            value |= shifted
+        encoded_codes.append(value)
+    if enable_code:
+        ROM_COPY.seek(sav + 0x1B8)
+        for code in encoded_codes:
+            ROM_COPY.writeMultipleBytes(code, 2)
+
     keys_turned_in = [0, 1, 2, 3, 4, 5, 6, 7]
     if len(spoiler.settings.krool_keys_required) > 0:
         for key in spoiler.settings.krool_keys_required:
@@ -466,6 +492,7 @@ def patching_response(spoiler):
     filterEntranceType()
     replaceIngameText(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
+    PushItemLocations(spoiler)
 
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         wipeHints()
@@ -477,6 +504,7 @@ def patching_response(spoiler):
 
     updateMillLeverTexture(spoiler.settings)
     updateCryptLeverTexture(spoiler.settings)
+    updateDiddyDoors(spoiler.settings)
     applyHelmDoorCosmetics(spoiler.settings)
     applyKrushaKong(spoiler.settings)
 

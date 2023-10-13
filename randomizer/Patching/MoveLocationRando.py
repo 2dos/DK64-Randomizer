@@ -5,6 +5,7 @@ from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemList
 from randomizer.Patching.Patcher import LocalROM
+from randomizer.Patching.Lib import setItemReferenceName
 
 # /* 0x0A7 */ char move_rando_on; // O = No Move Randomization. 1 = On.
 # /* 0x0A8 */ unsigned char dk_crankymoves[7]; // First 4 bits indicates the moves type, 0 = Moves, 1 = Slam, 2 = Guns, 3 = Ammo Belt, 4 = Instrument, 0xF = No Upgrade. Last 4 bits indicate move level (eg. 1 = Baboon Blast, 2 = Strong Kong, 3 = Gorilla Grab). Each item in the array indicates the level it is given (eg. 1st slot is purchased in Japes, 2nd for Aztec etc.)
@@ -275,11 +276,13 @@ def place_pregiven_moves(spoiler):
         Items.Shockwave,
     ]
     ROM_COPY = LocalROM()
+    progressives = (Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam)
+    name_str = "Extra Training"
     for item in spoiler.pregiven_items:
         # print(item)
         if item is not None and item != Items.NoItem:
             new_slot = None
-            if item in (Items.ProgressiveAmmoBelt, Items.ProgressiveInstrumentUpgrade, Items.ProgressiveSlam):
+            if item in progressives:
                 new_slot = getNextSlot(spoiler, item)
             elif item in item_order:
                 new_slot = item_order.index(item)
@@ -301,3 +304,11 @@ def place_pregiven_moves(spoiler):
                 val |= 0x80 >> check
                 ROM_COPY.seek(spoiler.settings.rom_data + 0xD5 + offset)
                 ROM_COPY.writeMultipleBytes(val, 1)
+        if item == Items.ProgressiveAmmoBelt:
+            setItemReferenceName(spoiler, item, new_slot - 0x1C, name_str)
+        elif item == Items.ProgressiveInstrumentUpgrade:
+            setItemReferenceName(spoiler, item, new_slot - 0x20, name_str)
+        elif item == Items.ProgressiveSlam:
+            setItemReferenceName(spoiler, item, new_slot - 0xF, name_str)
+        else:
+            setItemReferenceName(spoiler, item, 0, name_str)

@@ -22,6 +22,8 @@ class InteractionMethods:
         kill_orange=True,  # Killing can be done with oranges
         kill_gun=True,  # Killing can be done with a gun
         kill_shockwave=True,  # Killing can be done with a shockwave attack
+        kill_instrument=True,  # Killing can be done with an instrument play
+        kill_punch=False,  # Killing can be done by primate punching the enemy (when melee attacks don't work)
         can_kill=True,  # Master control of all kill variables
         can_bypass=True,  # Enemy can be bypassed without any additional tricks
     ) -> None:
@@ -30,6 +32,8 @@ class InteractionMethods:
         self.kill_orange = kill_orange and can_kill
         self.kill_gun = kill_gun and can_kill
         self.kill_shockwave = kill_shockwave and can_kill
+        self.kill_instrument = kill_instrument and can_kill
+        self.kill_punch = kill_punch and can_kill
         self.can_bypass = can_bypass
 
 
@@ -127,6 +131,10 @@ class EnemyLoc:
                 if interaction.kill_gun and logic_variable.HasGun(Kongs.any):
                     return True
                 if interaction.kill_shockwave and logic_variable.shockwave:
+                    return True
+                if interaction.kill_instrument and logic_variable.HasInstrument(Kongs.any):
+                    return True
+                if interaction.kill_punch and logic_variable.punch:
                     return True
         return False
 
@@ -262,7 +270,7 @@ EnemyMetaData = {
         crown_weight=2,
         killable=False,
         disruptive=1,
-        interaction=InteractionMethods(kill_melee=False, kill_gun=False),
+        interaction=InteractionMethods(kill_melee=False, kill_gun=False, kill_punch=True),
     ),  #
     Enemies.Kremling: EnemyData(
         name="Kremling",

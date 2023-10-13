@@ -266,6 +266,9 @@ extern void spawnEnemyDrops(actorData* actor);
 extern int countFlagsForKongFLUT(int startFlag, int start, int cap, int kong);
 extern int countFlagsDuplicate(int start, int count, flagtypes type);
 extern int getKongFromBonusFlag(int flag);
+extern void* checkMove(short* flag, void* fba, int source, int vanilla_flag);
+extern int hasMove(int flag);
+
 extern void banana_medal_acquisition(int flag);
 extern void finalizeBeatGame(void);
 extern void exitTrapBubbleController(void);
@@ -310,6 +313,15 @@ extern void checkItemDB(void);
 extern void initPauseMenu(void);
 extern void changePauseScreen(void);
 extern int* displayHintRegion(int* dl, int x, int y, float scale, char* text);
+extern void storeHintRegion(void);
+extern void getHintRegionText(void);
+extern void initCarousel_onPause(void);
+extern void initCarousel_onBoot(void);
+extern int* drawHintScreen(int* dl, int level_x);
+extern int* drawItemLocationScreen(int* dl, int level_x);
+extern void handleCShifting(char* value, char limit);
+extern void initHints(void);
+extern void initHintFlags(void);
 
 extern void handleDynamicItemText(char* location, char* format, int character);
 extern void handleFilename(char* location, char* format, char* new_name);
@@ -415,6 +427,7 @@ extern const rgb colorblind_colors[15];
 extern const check_struct item_db[292];
 extern const unsigned char crown_maps[10];
 extern const unsigned char regular_boss_maps[7];
+extern char* levels[10];
 
 extern sprite_data_struct bean_sprite;
 extern sprite_data_struct pearl_sprite;
@@ -432,6 +445,7 @@ extern unsigned char enemy_rewards_spawned[ENEMY_REWARD_CACHE_SIZE];
 
 extern mtx_item static_mtx[20];
 extern int hint_pointers[35];
+extern char* itemloc_pointers[LOCATION_ITEM_COUNT];
 extern char music_types[SONG_COUNT];
 extern char filename[FILENAME_LENGTH + 1];
 extern char grab_lock_timer;

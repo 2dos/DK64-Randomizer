@@ -571,7 +571,7 @@ void initHack(int source) {
 				};
 				for (int i = 0; i < 3; i++) {
 					for (int j = 0; j < 4; j++) {
-						*diddy_rnd_code_writes[(4 * i) + j] = (Rando.diddy_rnd_codes[i] >> ((3 - j) << 2)) & 0xF;
+						*diddy_rnd_code_writes[(4 * i) + j] = ((Rando.diddy_rnd_codes[i] >> ((3 - j) << 2)) & 0xF) + 1;
 					}
 				}
 			}

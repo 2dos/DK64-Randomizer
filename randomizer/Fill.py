@@ -2666,6 +2666,20 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     return patch_data, spoiler
 
 
+class ItemReference:
+    """Class to store information regarding an item's location."""
+
+    def __init__(self, item: Items, item_name: str, locations):
+        """Initialize with given parameters."""
+        self.item = item
+        self.item_name = item_name
+        self.locations = [locations] if isinstance(locations, str) else locations
+
+    def setLocation(self, index: int, new_name: str):
+        """Set new name for location."""
+        self.locations[index] = new_name
+
+
 def ShuffleMisc(spoiler: Spoiler) -> None:
     """Shuffle miscellaneous objects outside of main fill algorithm, including Kasplats, Bonus barrels, and bananaport warps."""
     resetCustomLocations()
@@ -2726,6 +2740,59 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
     if spoiler.settings.random_crates:
         human_crates = {}
         spoiler.human_crates = ShuffleMelonCrates(spoiler, human_crates).copy()
+    # Populate location references
+    spoiler.location_references = [
+        # DK Moves
+        ItemReference(Items.BaboonBlast, "Baboon Blast", "DK Japes Cranky"),
+        ItemReference(Items.StrongKong, "Strong Kong", "DK Aztec Cranky"),
+        ItemReference(Items.GorillaGrab, "Gorilla Grab", "DK Factory Cranky"),
+        ItemReference(Items.Coconut, "Coconut Gun", "DK Japes Funky"),
+        ItemReference(Items.Bongos, "Bongo Blast", "DK Aztec Candy"),
+        # Diddy Moves
+        ItemReference(Items.ChimpyCharge, "Chimpy Charge", "Diddy Japes Cranky"),
+        ItemReference(Items.RocketbarrelBoost, "Rocketbarrel Boost", "Diddy Aztec Cranky"),
+        ItemReference(Items.SimianSpring, "Simian Spring", "Diddy Factory Cranky"),
+        ItemReference(Items.Peanut, "Peanut Popguns", "Diddy Japes Funky"),
+        ItemReference(Items.Guitar, "Guitar Gazump", "Diddy Aztec Candy"),
+        # Lanky Moves
+        ItemReference(Items.Orangstand, "Orangstand", "Lanky Japes Cranky"),
+        ItemReference(Items.BaboonBalloon, "Baboon Balloon", "Lanky Factory Cranky"),
+        ItemReference(Items.OrangstandSprint, "Orangstand Sprint", "Lanky Caves Cranky"),
+        ItemReference(Items.Grape, "Grape Shooter", "Lanky Japes Funky"),
+        ItemReference(Items.Trombone, "Trombone Tremor", "Lanky Aztec Candy"),
+        # Tiny Moves
+        ItemReference(Items.MiniMonkey, "Mini Monkey", "Tiny Japes Cranky"),
+        ItemReference(Items.PonyTailTwirl, "Pony Tail Twirl", "Tiny Factory Cranky"),
+        ItemReference(Items.Monkeyport, "Monkeyport", "Tiny Caves Cranky"),
+        ItemReference(Items.Feather, "Feather Bow", "Tiny Japes Funky"),
+        ItemReference(Items.Saxophone, "Saxophone Slam", "Tiny Aztec Candy"),
+        # Chunky Moves
+        ItemReference(Items.HunkyChunky, "Hunky Chunky", "Chunky Japes Cranky"),
+        ItemReference(Items.PrimatePunch, "Primate Punch", "Chunky Factory Cranky"),
+        ItemReference(Items.GorillaGone, "Gorilla Gone", "Chunky Caves Cranky"),
+        ItemReference(Items.Pineapple, "Pineapple Launcher", "Chunky Japes Funky"),
+        ItemReference(Items.Triangle, "Triangle Trample", "Chunky Aztec Candy"),
+        # Gun Upgrades
+        ItemReference(Items.HomingAmmo, "Homing Ammo", "Shared Forest Funky"),
+        ItemReference(Items.SniperSight, "Sniper Scope", "Shared Castle Funky"),
+        ItemReference(Items.ProgressiveAmmoBelt, "Progressive Ammo Belt", ["Shared Factory Funky", "Shared Caves Funky"]),
+        # Basic Moves
+        ItemReference(Items.Swim, "Diving", "Dive Barrel"),
+        ItemReference(Items.Oranges, "Orange Throwing", "Orange Barrel"),
+        ItemReference(Items.Barrels, "Barrel Throwing", "Barrel Barrel"),
+        ItemReference(Items.Vines, "Vine Swinging", "Vine Barrel"),
+        ItemReference(Items.Camera, "Fairy Camera", "Banana Fairy Gift"),
+        ItemReference(Items.Shockwave, "Shockwave", "Banana Fairy Gift"),
+        # Instrument Upgrades & Slams
+        ItemReference(Items.ProgressiveInstrumentUpgrade, "Progressive Instrument Upgrade", ["Shared Galleon Candy", "Shared Caves Candy", "Shared Castle Candy"]),
+        ItemReference(Items.ProgressiveSlam, "Progressive Slam", ["Shared Isles Cranky", "Shared Forest Cranky", "Shared Castle Cranky"]),
+        # Kongs
+        ItemReference(Items.Donkey, "Donkey Kong", "Starting Kong"),
+        ItemReference(Items.Diddy, "Diddy Kong", "Japes Diddy Cage"),
+        ItemReference(Items.Lanky, "Lanky Kong", "Llama Lanky Cage"),
+        ItemReference(Items.Tiny, "Tiny Kong", "Aztec Tiny Cage"),
+        ItemReference(Items.Chunky, "Chunky Kong", "Factory Chunky Cage"),
+    ]
     # Item Rando
     spoiler.human_item_assignment = {}
     spoiler.settings.update_valid_locations(spoiler)

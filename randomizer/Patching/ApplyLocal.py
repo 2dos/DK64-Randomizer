@@ -17,7 +17,7 @@ from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Lib import recalculatePointerJSON
 
 # from randomizer.Spoiler import Spoiler
-from randomizer.Settings import Settings
+from randomizer.Settings import Settings, ExcludedSongs
 from ui.GenSpoiler import GenerateSpoiler
 from ui.GenTracker import generateTracker
 from ui.progress_bar import ProgressBar
@@ -146,7 +146,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             disabled_songs = settings.excluded_songs_selected.copy()
             write_data = [0]
             for item in ExcludedSongsSelector:
-                if (item["value"] in disabled_songs and item["shift"] >= 0) or len(disabled_songs) == 0:
+                if (ExcludedSongs[item["value"]] in disabled_songs and item["shift"] >= 0) or len(disabled_songs) == 0:
                     offset = int(item["shift"] >> 3)
                     check = int(item["shift"] % 8)
                     write_data[offset] |= 0x80 >> check

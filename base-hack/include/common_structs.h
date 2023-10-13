@@ -1225,6 +1225,7 @@ typedef struct quality_options {
 	unsigned char fast_hints : 1; // 19
 	unsigned char brighten_mmm_enemies : 1;
 	unsigned char global_instrument : 1; // 21
+	unsigned char fast_pause_transitions : 1;
 } quality_options;
 
 typedef struct image_cache_struct {

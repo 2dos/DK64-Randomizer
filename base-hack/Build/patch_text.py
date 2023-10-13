@@ -747,6 +747,69 @@ text_enum = [
 ]
 
 
+# Item Locations
+class ItemReference:
+    """Class to store information regarding an item's location."""
+
+    def __init__(self, item: str, locations):
+        """Initialize with given parameters."""
+        self.item = item
+        self.locations = [locations] if isinstance(locations, str) else locations
+
+
+location_references = [
+    # DK Moves
+    ItemReference("Baboon Blast", "DK Japes Cranky"),
+    ItemReference("Strong Kong", "DK Aztec Cranky"),
+    ItemReference("Gorilla Grab", "DK Factory Cranky"),
+    ItemReference("Coconut Gun", "DK Japes Funky"),
+    ItemReference("Bongo Blast", "DK Aztec Candy"),
+    # Diddy Moves
+    ItemReference("Chimpy Charge", "Diddy Japes Cranky"),
+    ItemReference("Rocketbarrel Boost", "Diddy Aztec Cranky"),
+    ItemReference("Simian Spring", "Diddy Factory Cranky"),
+    ItemReference("Peanut Popguns", "Diddy Japes Funky"),
+    ItemReference("Guitar Gazump", "Diddy Aztec Candy"),
+    # Lanky Moves
+    ItemReference("Orangstand", "Lanky Japes Cranky"),
+    ItemReference("Baboon Balloon", "Lanky Factory Cranky"),
+    ItemReference("Orangstand Sprint", "Lanky Caves Cranky"),
+    ItemReference("Grape Shooter", "Lanky Japes Funky"),
+    ItemReference("Trombone Tremor", "Lanky Aztec Candy"),
+    # Tiny Moves
+    ItemReference("Mini Monkey", "Tiny Japes Cranky"),
+    ItemReference("Pony Tail Twirl", "Tiny Factory Cranky"),
+    ItemReference("Monkeyport", "Tiny Caves Cranky"),
+    ItemReference("Feather Bow", "Tiny Japes Funky"),
+    ItemReference("Saxophone Slam", "Tiny Aztec Candy"),
+    # Chunky Moves
+    ItemReference("Hunky Chunky", "Chunky Japes Cranky"),
+    ItemReference("Primate Punch", "Chunky Factory Cranky"),
+    ItemReference("Gorilla Gone", "Chunky Caves Cranky"),
+    ItemReference("Pineapple Launcher", "Chunky Japes Funky"),
+    ItemReference("Triangle Trample", "Chunky Aztec Candy"),
+    # Gun Upgrades
+    ItemReference("Homing Ammo", "Shared Forest Funky"),
+    ItemReference("Sniper Scope", "Shared Castle Funky"),
+    ItemReference("Progressive Ammo Belt", ["Shared Factory Funky", "Shared Caves Funky"]),
+    # Basic Moves
+    ItemReference("Diving", "Dive Barrel"),
+    ItemReference("Orange Throwing", "Orange Barrel"),
+    ItemReference("Barrel Throwing", "Barrel Barrel"),
+    ItemReference("Vine Swinging", "Vine Barrel"),
+    ItemReference("Fairy Camera", "Banana Fairy Gift"),
+    ItemReference("Shockwave", "Banana Fairy Gift"),
+    # Instrument Upgrades & Slams
+    ItemReference("Progressive Instrument Upgrade", ["Shared Galleon Candy", "Shared Caves Candy", "Shared Castle Candy"]),
+    ItemReference("Progressive Slam", ["Shared Isles Cranky", "Shared Forest Cranky", "Shared Castle Cranky"]),
+    # Kongs
+    ItemReference("Donkey Kong", "Starting Kong"),
+    ItemReference("Diddy Kong", "Japes Diddy Cage"),
+    ItemReference("Lanky Kong", "Llama Lanky Cage"),
+    ItemReference("Tiny Kong", "Aztec Tiny Cage"),
+    ItemReference("Chunky Kong", "Factory Chunky Cage"),
+]
+
 with open("src/randomizers/move_text.c", "w") as fh:
     with open("include/text_items.h", "w") as fg:
         fh.write('#include "../../include/common.h"\n\n')
@@ -756,6 +819,10 @@ with open("src/randomizers/move_text.c", "w") as fh:
             fh.write(line)
             fg.write(line)
 
+        loc_count = 0
+        for ref in location_references:
+            loc_count += 1 + len(ref.locations)
+        fg.write(f"#define LOCATION_ITEM_COUNT {loc_count}\n")
         fg.write("typedef struct name_latin_struct {\n")
         fg.write("\t/* 0x000 */ unsigned char name;\n")
         fg.write("\t/* 0x001 */ unsigned char latin;\n")
@@ -778,7 +845,14 @@ with open("src/randomizers/move_text.c", "w") as fh:
                     fh.write(f"\t{text_enum[index_data[move_type]['indexes'][divisor * item_index]]},\n")
             fh.write("};\n\n")
 
+location_items_arr = []
+for ref in location_references:
+    location_items_arr.append([{"text": [ref.item.upper()]}])
+    for loc in ref.locations:
+        location_items_arr.append([{"text": [loc.upper()]}])
+
 writeText("move_names.bin", move_names_arr)
+writeText("item_locations.bin", location_items_arr)
 
 move_explanations = [
     {
@@ -890,6 +964,7 @@ hint_region_text = []
 for region in hint_region_list:
     hint_region_text.append([{"text": [region.region_name.upper()]}])
 writeText("hint_region_text.bin", hint_region_text)
+
 
 misc_char_table = {
     "6": "h",

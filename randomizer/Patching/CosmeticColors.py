@@ -717,8 +717,11 @@ def writeColorImageToROM(im_f: PIL.Image.Image, table_index: int, file_index: in
     right_border = 3
     for y in range(height):
         for x in range(width):
-            if transparent_border and ((x < border) or (y < border) or (x >= (width - border)) or (y >= (height - border))) or (x == (width - right_border)):
-                pix_data = [0, 0, 0, 0]
+            if transparent_border:
+                if ((x < border) or (y < border) or (x >= (width - border)) or (y >= (height - border))) or (x == (width - right_border)):
+                    pix_data = [0, 0, 0, 0]
+                else:
+                    pix_data = list(pix[x, y])
             else:
                 pix_data = list(pix[x, y])
             if format == TextureFormat.RGBA32:
@@ -1954,6 +1957,52 @@ def updateMillLeverTexture(settings: Settings) -> None:
         x_offset = int((58 - x_size) / 2)
         modified_tex.paste(new_num_texture, (3 + x_offset, 3), new_num_texture)
         writeColorImageToROM(modified_tex, 25, 0x7CA, 64, 32, False, TextureFormat.RGBA5551)
+
+
+def updateDiddyDoors(settings: Settings):
+    """Update the textures for the doors."""
+    enable_code = False
+    for code in settings.diddy_rnd_doors:
+        if sum(code) > 0:  # Has a non-zero element
+            enable_code = True
+    SEG_WIDTH = 48
+    SEG_HEIGHT = 42
+    NUMBERS_START = (27, 33)
+    if enable_code:
+        # Order: 4231, 3124, 1342
+        starts = (0xCE8, 0xCE4, 0xCE0)
+        for index, code in enumerate(settings.diddy_rnd_doors):
+            start = starts[index]
+            total = Image.new(mode="RGBA", size=(SEG_WIDTH * 2, SEG_HEIGHT * 2))
+            for img_index in range(4):
+                img = getFile(25, start + img_index, True, SEG_WIDTH, SEG_HEIGHT, TextureFormat.RGBA5551)
+                x_offset = SEG_WIDTH * (img_index & 1)
+                y_offset = SEG_HEIGHT * ((img_index & 2) >> 1)
+                total.paste(img, (x_offset, y_offset), img)
+            total = total.transpose(Image.FLIP_TOP_BOTTOM)
+            # Overlay color
+            cover = Image.new(mode="RGBA", size=(42, 20), color=(115, 98, 65))
+            total.paste(cover, NUMBERS_START, cover)
+            # Paste numbers
+            number_images = []
+            number_offsets = []
+            total_length = 0
+            for num in code:
+                num_img = getNumberImage(num + 1)
+                w, h = num_img.size
+                number_offsets.append(total_length)
+                total_length += w
+                number_images.append(num_img)
+            total_numbers = Image.new(mode="RGBA", size=(total_length, 24))
+            for img_index, img in enumerate(number_images):
+                total_numbers.paste(img, (number_offsets[img_index], 0), img)
+            total.paste(total_numbers, (SEG_WIDTH - int(total_length / 2), SEG_HEIGHT - 12), total_numbers)
+            total = total.transpose(Image.FLIP_TOP_BOTTOM)
+            for img_index in range(4):
+                x_offset = SEG_WIDTH * (img_index & 1)
+                y_offset = SEG_HEIGHT * ((img_index & 2) >> 1)
+                sub_img = total.crop((x_offset, y_offset, x_offset + SEG_WIDTH, y_offset + SEG_HEIGHT))
+                writeColorImageToROM(sub_img, 25, start + img_index, SEG_WIDTH, SEG_HEIGHT, False, TextureFormat.RGBA5551)
 
 
 def updateCryptLeverTexture(settings: Settings) -> None:

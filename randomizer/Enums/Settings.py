@@ -448,6 +448,7 @@ class MiscChangesSelected(IntEnum):
     brighten_mad_maze_maul_enemies = 21
     raise_fungi_dirt_patch = 22
     global_instrument = 23
+    fast_pause_transitions = 24
 
 
 class MoveRando(IntEnum):
