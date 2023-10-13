@@ -493,6 +493,11 @@ void initNonControllableFixes(void) {
     *(short*)(0x806D299C) = 0x1020; // BEQ $at, $r0
     // EEPROM Patch
     *(int*)(0x8060D588) = 0; // NOP
+    // TEMPORARY FIX FOR SAVE BUG
+    *(int*)(0x8060D790) = 0; // NOP
+
+
+
     // Cancel Tamper
     *(int*)(0x8060AEFC) = 0; // NOP
     *(int*)(0x80611788) = 0; // NOP
