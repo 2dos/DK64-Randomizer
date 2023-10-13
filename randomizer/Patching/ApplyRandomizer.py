@@ -413,7 +413,7 @@ def patching_response(spoiler):
     encoded_codes = []
     for code in spoiler.settings.diddy_rnd_doors:
         value = 0
-        if sum(code) > 0: # Has a non-zero element
+        if sum(code) > 0:  # Has a non-zero element
             enable_code = True
         for subindex in range(4):
             shift = 12 - (subindex << 2)

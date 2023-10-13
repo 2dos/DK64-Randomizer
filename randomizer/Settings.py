@@ -784,7 +784,7 @@ class Settings:
             for id in range(3):
                 code = [start[id]]
                 selected_all_zeros = start[id] == 0
-                for subindex in range(1,4):
+                for subindex in range(1, 4):
                     perm = random.randint(0, 3)
                     if subindex == 3 and selected_all_zeros:
                         perm = random.randint(1, 3)

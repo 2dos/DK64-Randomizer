@@ -1958,11 +1958,12 @@ def updateMillLeverTexture(settings: Settings) -> None:
         modified_tex.paste(new_num_texture, (3 + x_offset, 3), new_num_texture)
         writeColorImageToROM(modified_tex, 25, 0x7CA, 64, 32, False, TextureFormat.RGBA5551)
 
+
 def updateDiddyDoors(settings: Settings):
     """Update the textures for the doors."""
     enable_code = False
     for code in settings.diddy_rnd_doors:
-        if sum(code) > 0: # Has a non-zero element
+        if sum(code) > 0:  # Has a non-zero element
             enable_code = True
     SEG_WIDTH = 48
     SEG_HEIGHT = 42
@@ -1992,7 +1993,7 @@ def updateDiddyDoors(settings: Settings):
                 number_offsets.append(total_length)
                 total_length += w
                 number_images.append(num_img)
-            total_numbers = Image.new(mode="RGBA", size = (total_length, 24))
+            total_numbers = Image.new(mode="RGBA", size=(total_length, 24))
             for img_index, img in enumerate(number_images):
                 total_numbers.paste(img, (number_offsets[img_index], 0), img)
             total.paste(total_numbers, (SEG_WIDTH - int(total_length / 2), SEG_HEIGHT - 12), total_numbers)
@@ -2002,7 +2003,8 @@ def updateDiddyDoors(settings: Settings):
                 y_offset = SEG_HEIGHT * ((img_index & 2) >> 1)
                 sub_img = total.crop((x_offset, y_offset, x_offset + SEG_WIDTH, y_offset + SEG_HEIGHT))
                 writeColorImageToROM(sub_img, 25, start + img_index, SEG_WIDTH, SEG_HEIGHT, False, TextureFormat.RGBA5551)
-            
+
+
 def updateCryptLeverTexture(settings: Settings) -> None:
     """Update the two textures for Donkey Minecart entry."""
     if settings.crypt_levers[0] > 0:
