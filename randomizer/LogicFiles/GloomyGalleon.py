@@ -13,7 +13,7 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
 LogicRegions = {
-    Regions.GloomyGalleonMedals: Region("Gloomy Galleon Medals", "Gloomy Galleon Medal Rewards", Levels.GloomyGalleon, False, None, [
+    Regions.GloomyGalleonMedals: Region("Gloomy Galleon Medals", "Galleon Medal Rewards", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonDonkeyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.donkey] >= l.settings.medal_cb_req),
         LocationLogic(Locations.GalleonDiddyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.diddy] >= l.settings.medal_cb_req),
         LocationLogic(Locations.GalleonLankyMedal, lambda l: l.ColoredBananas[Levels.GloomyGalleon][Kongs.lanky] >= l.settings.medal_cb_req),

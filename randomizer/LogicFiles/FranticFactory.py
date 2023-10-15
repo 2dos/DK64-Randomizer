@@ -14,7 +14,7 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
 LogicRegions = {
-    Regions.FranticFactoryMedals: Region("Frantic Factory Medals", "Frantic Factory Medal Rewards", Levels.FranticFactory, False, None, [
+    Regions.FranticFactoryMedals: Region("Frantic Factory Medals", "Factory Medal Rewards", Levels.FranticFactory, False, None, [
         LocationLogic(Locations.FactoryDonkeyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.donkey] >= l.settings.medal_cb_req),
         LocationLogic(Locations.FactoryDiddyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.diddy] >= l.settings.medal_cb_req),
         LocationLogic(Locations.FactoryLankyMedal, lambda l: l.ColoredBananas[Levels.FranticFactory][Kongs.lanky] >= l.settings.medal_cb_req),

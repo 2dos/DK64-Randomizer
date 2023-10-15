@@ -24,9 +24,12 @@ class HintLocation:
         self.kong = kong
         self.location = location
         self.hint = hint
+        self.short_hint = None
         self.hint_type = -1
         self.banned_keywords = banned_keywords.copy()
         self.level = level
+        self.related_location = None
+        self.related_flag = None
 
 
 hints = [

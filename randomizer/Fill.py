@@ -1410,13 +1410,13 @@ def FillShuffledKeys(spoiler: Spoiler, placed_types: List[Types]) -> None:
 
 
 def FillHelmLocations(spoiler: Spoiler, placed_types: List[Types]) -> List[Items]:
-    """Fill all currently empty Helm locations with eligible non-logic-critical items."""
+    """Fill all currently empty (non-enemy!) Helm locations with eligible non-logic-critical items."""
     placed_in_helm = []
     # Get all the empty Helm locations
     empty_helm_locations = [
         loc_id
         for loc_id in spoiler.LocationList.keys()
-        if spoiler.LocationList[loc_id].level == Levels.HideoutHelm and spoiler.LocationList[loc_id].type != Types.Constant and spoiler.LocationList[loc_id].item is None
+        if spoiler.LocationList[loc_id].level == Levels.HideoutHelm and spoiler.LocationList[loc_id].type not in (Types.Constant, Types.Enemies) and spoiler.LocationList[loc_id].item is None
     ]
     # Rig the valid_locations for all relevant items to only be able to place things in Helm
     for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # Shops whould already be placed
@@ -1473,9 +1473,6 @@ def Fill(spoiler: Spoiler) -> None:
     spoiler.settings.debug_prerequisites = {}
     spoiler.settings.debug_fill_blueprints = {}
     spoiler.settings.placed_shared_shops = 0
-    # To aid in finding these locations, treat Rareware Coin and Rareware GB as being ~15-20% more expensive for fill purposes (unless it's already very expensive)
-    spoiler.settings.medal_requirement = spoiler.settings.logical_medal_requirement
-    spoiler.settings.rareware_gb_fairies = spoiler.settings.logical_fairy_requirement
     # First place constant items - these will never vary and need to be in place for all other fills to know that
     ItemPool.PlaceConstants(spoiler)
 
@@ -1660,9 +1657,6 @@ def Fill(spoiler: Spoiler) -> None:
         print("Failed 101% check")
         raise Ex.GameNotBeatableException("Game not able to complete 101% after placing all items.")
     # We have successfully filled the seed by this point. All that is left is to confirm there are no purchase order locks
-    # Reset the adjustments made for fill purposes
-    spoiler.settings.medal_requirement = spoiler.settings.original_medal_requirement
-    spoiler.settings.rareware_gb_fairies = spoiler.settings.original_fairy_requirement
     return
 
 
@@ -1728,8 +1722,14 @@ def FillKongsAndMovesGeneric(spoiler: Spoiler) -> None:
     error_log = []
     while 1:
         try:
+            # To aid in finding these locations, treat Rareware Coin and Rareware GB as being ~15-20% more expensive for fill purposes (unless it's already very expensive)
+            spoiler.settings.medal_requirement = spoiler.settings.logical_medal_requirement
+            spoiler.settings.rareware_gb_fairies = spoiler.settings.logical_fairy_requirement
             # TODO: Reconsider B. Locker values in LZR
             Fill(spoiler)
+            # Reset the adjustments made for fill purposes
+            spoiler.settings.medal_requirement = spoiler.settings.original_medal_requirement
+            spoiler.settings.rareware_gb_fairies = spoiler.settings.original_fairy_requirement
             # Check if game is beatable
             spoiler.Reset()
             if not VerifyWorldWithWorstCoinUsage(spoiler):
@@ -2129,6 +2129,9 @@ def FillKongsAndMovesForLevelOrder(spoiler: Spoiler) -> None:
             # Assume we can progress through the levels so long as we have enough kongs
             WipeProgressionRequirements(spoiler.settings)
             spoiler.settings.kongs_for_progression = True
+            # To aid in finding these locations, treat Rareware Coin and Rareware GB as being ~15-20% more expensive for fill purposes (unless it's already very expensive)
+            spoiler.settings.medal_requirement = spoiler.settings.logical_medal_requirement
+            spoiler.settings.rareware_gb_fairies = spoiler.settings.logical_fairy_requirement
             # Fill locations
             Fill(spoiler)
             # Update progression requirements based on what is now accessible after all shuffles are done
@@ -2143,6 +2146,9 @@ def FillKongsAndMovesForLevelOrder(spoiler: Spoiler) -> None:
                 raise Ex.GameNotBeatableException("Game not able to complete 101% after setting progression.")
             # Once progression requirements updated, no longer assume we need kongs freed for level progression
             spoiler.settings.kongs_for_progression = False
+            # Reset the adjustments made for fill purposes
+            spoiler.settings.medal_requirement = spoiler.settings.original_medal_requirement
+            spoiler.settings.rareware_gb_fairies = spoiler.settings.original_fairy_requirement
             # Check if game is beatable
             if not VerifyWorldWithWorstCoinUsage(spoiler):
                 raise Ex.GameNotBeatableException("Game potentially unbeatable after placing all items.")
@@ -2800,6 +2806,8 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
 
 def ValidateFixedHints(settings: Settings) -> None:
     """Check for some known incompatibilities with the Fixed hint system ASAP so we don't waste time genning this seed."""
+    if not settings.shuffle_items:
+        raise Ex.SettingsIncompatibleException("Item Randomizer must be enabled with Fixed hints.")
     if settings.win_condition != WinCondition.beat_krool:
         raise Ex.SettingsIncompatibleException("Alternate win conditions will not work with Fixed hints.")
     if len(settings.starting_kong_list) != 2:
