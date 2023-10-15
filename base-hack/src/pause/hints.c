@@ -104,7 +104,7 @@ static itemloc_data itemloc_textnames[] = {
 void initHints(void) {
     if (!hints_initialized) {
         for (int i = 0; i < 35; i++) {
-            hint_pointers[i] = (int)getTextPointer(41, 1+i, 0);
+            hint_pointers[i] = (int)getTextPointer(45, 1+i, 0); // 41 if you want to read from the regular wrinkly hint file
         }
         for (int i = 0; i < LOCATION_ITEM_COUNT; i++) {
             itemloc_pointers[i] = getTextPointer(44, i, 0);
@@ -354,7 +354,7 @@ int* drawHintScreen(int* dl, int level_x) {
             int opacity = 0xFF;
             int assoc_flag = hint_clear_flags[(5 * hint_level) + i];
             if (assoc_flag != -1) {
-                if (checkFlagDuplicate(assoc_flag, FLAGTYPE_PERMANENT)) {
+                if (hasMove(assoc_flag)) {
                     opacity = HINT_SOLVED_OPACITY;
                 }
             }

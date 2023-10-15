@@ -824,6 +824,7 @@ class SettingsStringEnum(IntEnum):
     progressive_hint_text = 155
     random_starting_move_list_selected = 156
     enemy_drop_rando = 157
+    dim_solved_hints = 158
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1022,6 +1023,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.progressive_hint_text: SettingsStringDataType.var_int,
     SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
+    SettingsStringEnum.dim_solved_hints: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

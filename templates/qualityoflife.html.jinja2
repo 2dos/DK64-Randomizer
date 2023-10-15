@@ -104,7 +104,48 @@
                     </label>
                 </div>
                 <div class="spacer"></div>
+                <div class="item-select">
+                    <p class="select-title">Helm Start Location</p>
+                    <select name="helm_setting"
+                            id="helm_setting"
+                            class="form-select center-div"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="This option will shorten the time it takes to beat Hideout Helm.&#10;Skip Start adds the following changes:&#10;- You will spawn in the Blast o Matic room.&#10;- Opens the roman numeral doors to each Kong's room.&#10;- The gates in front of the music pads are gone.&#10;Skip All: Spawns you at the crown door.">
+                        <option selected value="default">
+                            Vanilla
+                        </option>
+                        <option value="skip_start">
+                            Skip Start
+                        </option>
+                        <option value="skip_all">
+                            Skip All
+                        </option>
+                    </select>
+                </div>
+                <div class="item-select">
+                    <p class="select-title">Cutscene Skips</p>
+                    <select name="more_cutscene_skips"
+                            id="more_cutscene_skips"
+                            class="form-select"
+                            aria-label="Randomization type"
+                            data-toggle="tooltip"
+                            title="More cutscenes will be skipped. Selecting 'Press Start to Skip' will skip those cutscenes by pressing Start. Selecting Automatic will skip those cutscenes automatically.">
+                        <option value="off">
+                            Off
+                        </option>
+                        <option value="press">
+                            Press Start to Skip
+                        </option>
+                        <option value="auto" selected>
+                            Automatic
+                        </option>
+                    </select>
+                </div>
             </div>
+        </div>
+        <div class="col border panel">
+            <h2 class="title">HINTS</h2>
             <div class="flex-container">
                 <div class="item-select">
                     <p class="select-title">Wrinkly Hints</p>
@@ -155,117 +196,91 @@
                                default="60"
                                placeholder="60"/>
                     </div>
+                </div> 
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Hints are dimmed on the pause menu when a hint has been solved.">
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="dim_solved_hints"
+                                value="True"
+                                />
+                        Dim solved hints
+                    </label>
                 </div>
-                <div class="item-select">
-                    <p class="select-title">Helm Start Location</p>
-                    <select name="helm_setting"
-                            id="helm_setting"
-                            class="form-select center-div"
-                            aria-label="Randomization type"
-                            data-toggle="tooltip"
-                            title="This option will shorten the time it takes to beat Hideout Helm.&#10;Skip Start adds the following changes:&#10;- You will spawn in the Blast o Matic room.&#10;- Opens the roman numeral doors to each Kong's room.&#10;- The gates in front of the music pads are gone.&#10;Skip All: Spawns you at the crown door.">
-                        <option selected value="default">
-                            Vanilla
-                        </option>
-                        <option value="skip_start">
-                            Skip Start
-                        </option>
-                        <option value="skip_all">
-                            Skip All
-                        </option>
-                    </select>
-                </div>
+                <div class="spacer"></div>
             </div>
             <div class="flex-container">
+                <div class="flex-column-container" style="flex: 1 0;">
+                    <div class="item-select">
+                        <p class="select-title">Spoiler Hints</p>
+                        <select name="spoiler_hints"
+                                id="spoiler_hints"
+                                class="form-select"
+                                aria-label="Randomization type"
+                                data-toggle="tooltip"
+                                title="Adds hints to the spoiler log that reveals specific information about the seed.&#10;Vials - Kongs, Keys, and vials will be revealed for each level.&#10;Points - Each level has a number of points assigned to it based on the items the level contains. The point values for each item can be customized with the gear [TBD].">
+                            <option value="vial_colors">
+                                Vials
+                            </option>
+                            <option selected value="points">
+                                Points
+                            </option>
+                            <option selected value="off">
+                                Off
+                            </option>
+                        </select>
+                        <div>
+                        Customize Points
+                        {{ properties_selector(points_spread, "points_list", "POINTS SPREAD", "This will open a popup that will let you customize your points spread.") }}
+                        {# Remove end </div> as it's included in the macro for formatting #}
+                        <div class="form-check form-switch" style="padding-top:10px;">
+                            <label data-toggle="tooltip"
+                                    style="font-size:14px;"
+                                    title="Spoiler hints will includes the count of spoiler-hinted WotH (strictly required) items in each level.">
+                                <input class="form-check-input"
+                                        type="checkbox"
+                                        name="spoiler_include_woth_count"
+                                        value="False"/>
+                                Include WotH Counts
+                            </label>
+                        </div>
+                        <div class="form-check form-switch" style="padding-top:10px;">
+                            <label data-toggle="tooltip"
+                                    style="font-size:14px;"
+                                    title="Spoiler hints will includes the level order.">
+                                <input class="form-check-input"
+                                        type="checkbox"
+                                        name="spoiler_include_level_order"
+                                        value="False"/>
+                                Include Level Order
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <div class="item-select">
-                    <p class="select-title">Spoiler Hints</p>
-                    <select name="spoiler_hints"
-                            id="spoiler_hints"
+                    <p class="select-title">Extra Hints</p>
+                    <select name="microhints_enabled"
+                            id="microhints_enabled"
                             class="form-select"
                             aria-label="Randomization type"
                             data-toggle="tooltip"
-                            title="Adds hints to the spoiler log that reveals specific information about the seed.&#10;Vials - Kongs, Keys, and vials will be revealed for each level.&#10;Points - Each level has a number of points assigned to it based on the items the level contains. The point values for each item can be customized with the gear [TBD].">
-                        <option value="vial_colors">
-                            Vials
+                            title="Extra hints are placed in late-game to provide extra information if you are stuck on where an item is.&#10;- Monkeyport will be hinted upon touching the lower Monkeyport pad in Isles with enough GBs to enter all of the first 7 levels.&#10;- Gorilla Gone will be hinted upon touching the pad inside Helm Lobby.&#10;- Instruments will be hinted upon touching their pad in Helm.&#10;'Some' will have Monkeyport and Gorilla Gone hints, while 'All' also includes Instrument hints.">
+                        <option value="all"
+                                title="Includes hints in Hideout Helm for the 5 instruments">
+                            All
                         </option>
-                        <option selected value="points">
-                            Points
+                        <option selected value="base">
+                            Some
                         </option>
-                        <option selected value="off">
+                        <option value="off">
                             Off
                         </option>
                     </select>
-                    <div>
-                    Customize Points
-                    {{ properties_selector(points_spread, "points_list", "POINTS SPREAD", "This will open a popup that will let you customize your points spread.") }}
-                    {# Remove end </div> as it's included in the macro for formatting #}
-                    <div class="form-check form-switch" style="padding-top:10px;">
-                        <label data-toggle="tooltip"
-                                style="font-size:14px;"
-                                title="Spoiler hints will includes the count of spoiler-hinted WotH (strictly required) items in each level.">
-                            <input class="form-check-input"
-                                    type="checkbox"
-                                    name="spoiler_include_woth_count"
-                                    value="False"/>
-                            Include WotH Counts
-                        </label>
-                    </div>
-                    <div class="form-check form-switch" style="padding-top:10px;">
-                        <label data-toggle="tooltip"
-                                style="font-size:14px;"
-                                title="Spoiler hints will includes the level order.">
-                            <input class="form-check-input"
-                                    type="checkbox"
-                                    name="spoiler_include_level_order"
-                                    value="False"/>
-                            Include Level Order
-                        </label>
-                    </div>
-                </div>
-                <div class="flex-column-container" style="flex: 1 0;">
-                    <div class="item-select">
-                        <p class="select-title">Cutscene Skips</p>
-                        <select name="more_cutscene_skips"
-                                id="more_cutscene_skips"
-                                class="form-select"
-                                aria-label="Randomization type"
-                                data-toggle="tooltip"
-                                title="More cutscenes will be skipped. Selecting 'Press Start to Skip' will skip those cutscenes by pressing Start. Selecting Automatic will skip those cutscenes automatically.">
-                            <option value="off">
-                                Off
-                            </option>
-                            <option value="press">
-                                Press Start to Skip
-                            </option>
-                            <option value="auto" selected>
-                                Automatic
-                            </option>
-                        </select>
-                    </div>
-                    <div class="item-select">
-                        <p class="select-title">Extra Hints</p>
-                        <select name="microhints_enabled"
-                                id="microhints_enabled"
-                                class="form-select"
-                                aria-label="Randomization type"
-                                data-toggle="tooltip"
-                                title="Extra hints are placed in late-game to provide extra information if you are stuck on where an item is.&#10;- Monkeyport will be hinted upon touching the lower Monkeyport pad in Isles with enough GBs to enter all of the first 7 levels.&#10;- Gorilla Gone will be hinted upon touching the pad inside Helm Lobby.&#10;- Instruments will be hinted upon touching their pad in Helm.&#10;'Some' will have Monkeyport and Gorilla Gone hints, while 'All' also includes Instrument hints.">
-                            <option value="all"
-                                    title="Includes hints in Hideout Helm for the 5 instruments">
-                                All
-                            </option>
-                            <option selected value="base">
-                                Some
-                            </option>
-                            <option value="off">
-                                Off
-                            </option>
-                        </select>
-                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col border panel">
+            
+            <hr />
             <h2 class="title">OTHER</h2>
             <div class="flex-container">
                 <div class="form-check form-switch item-switch">
