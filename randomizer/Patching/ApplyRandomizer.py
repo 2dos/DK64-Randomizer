@@ -148,7 +148,7 @@ def patching_response(spoiler):
         order += 1
 
     # Unlock All Kongs
-    kong_items = (Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky)
+    kong_items = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]
     starting_kongs = []
     if spoiler.settings.starting_kongs_count == 5:
         ROM_COPY.seek(sav + 0x02C)
