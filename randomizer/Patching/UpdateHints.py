@@ -139,6 +139,7 @@ def replaceIngameText(spoiler):
                 old_text[mod["textbox_index"]] = ({"text": [mod["target"]]},)
         writeText(file_index, old_text)
 
+
 def PushHelpfulHints(spoiler, ROM_COPY: LocalROM):
     """Push the flags to ROM which control the dim_solved_hints setting."""
     for index, flag in enumerate(spoiler.tied_hint_flags.values()):

@@ -2114,6 +2114,7 @@ def UpdateSpoilerHintList(spoiler: Spoiler) -> None:
         spoiler.hint_list[hint.name] = hint.hint
         spoiler.short_hint_list[hint.name] = hint.short_hint if hint.short_hint is not None else hint.hint
 
+
 def GetRegionOfLocation(spoiler: Spoiler, location_id: Locations) -> Region:
     """Given the id of a Location, return the Region it belongs to."""
     location = spoiler.LocationList[location_id]
