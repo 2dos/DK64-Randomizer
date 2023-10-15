@@ -13,7 +13,7 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
 LogicRegions = {
-    Regions.FungiForestMedals: Region("Fungi Forest Medals", "Fungi Forest Medal Rewards", Levels.FungiForest, False, None, [
+    Regions.FungiForestMedals: Region("Fungi Forest Medals", "Forest Medal Rewards", Levels.FungiForest, False, None, [
         LocationLogic(Locations.ForestDonkeyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.donkey] >= l.settings.medal_cb_req),
         LocationLogic(Locations.ForestDiddyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.diddy] >= l.settings.medal_cb_req),
         LocationLogic(Locations.ForestLankyMedal, lambda l: l.ColoredBananas[Levels.FungiForest][Kongs.lanky] >= l.settings.medal_cb_req),

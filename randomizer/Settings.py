@@ -426,6 +426,7 @@ class Settings:
         self.kongs_for_progression = False
         self.wrinkly_hints = WrinklyHints.off
         self.spoiler_hints = SpoilerHints.off
+        self.helpful_hints = False
         self.spoiler_include_woth_count = False
         self.spoiler_include_level_order = False
         self.fast_warps = False
@@ -564,6 +565,21 @@ class Settings:
         else:
             self.training_barrels = TrainingBarrels.shuffled
         self.starting_moves_count = self.starting_moves_count + len(self.starting_move_list_selected)
+
+        # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
+        if self.hard_mode and HardModeSelected.water_is_lava in self.hard_mode_selected:
+            ItemList[Items.ProgressiveInstrumentUpgrade].playthrough = True
+            ItemPool.ImportantSharedMoves = [
+                Items.ProgressiveSlam,
+                Items.ProgressiveSlam,
+                Items.ProgressiveSlam,
+                Items.SniperSight,
+                Items.HomingAmmo,
+                Items.ProgressiveInstrumentUpgrade,
+                Items.ProgressiveInstrumentUpgrade,
+                Items.ProgressiveInstrumentUpgrade,
+            ]
+            ItemPool.JunkSharedMoves = [Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt]
 
         # If we're using the vanilla door shuffle, turn both wrinkly and tns rando on
         if self.vanilla_door_rando:

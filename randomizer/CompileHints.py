@@ -207,7 +207,7 @@ hint_list = [
     Hint(hint="Great news! Your seed just got \x0810 percent better!\x08", important=False, base=True),
     Hint(hint="This is not a joke hint.", important=False, base=True),
     Hint(hint="I'll get back to you after this colossal dump of blueprints.", important=False, base=True),
-    Hint(hint="An item in the \x0dHalt! The remainder of this hint has been confiscated by the top Kop on the force.\x0d", important=False, base=True),
+    Hint(hint="Something in the \x0dHalt! The remainder of this hint has been confiscated by the top Kop on the force.\x0d", important=False, base=True),
 ]
 
 kong_list = ["\x04Donkey\x04", "\x05Diddy\x05", "\x06Lanky\x06", "\x07Tiny\x07", "\x08Chunky\x08", "\x04Any kong\x04"]
@@ -580,6 +580,19 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_count += hint_distribution[type]
             else:
                 hint_distribution[type] = 0
+        # If there's so many WotH things we can't hint them all, some WotH things will go unhinted. Unlucky.
+        if len(item_region_locations_to_hint) > hint_distribution[HintType.ItemRegion]:
+            too_many_count = len(item_region_locations_to_hint) - hint_distribution[HintType.ItemRegion]
+            # That said, whatever goes unhinted probably shouldn't be something important
+            less_important_location_ids = []
+            for loc_id in item_region_locations_to_hint:
+                # Don't remove hints to Kongs or Keys - the rest is fair game
+                if ItemList[spoiler.LocationList[loc_id].item].type not in (Types.Kong, Types.Key):
+                    less_important_location_ids.append(loc_id)
+            # Randomly remove some of them so we don't bias towards early/late items - if you miss it, unlucky
+            random.shuffle(less_important_location_ids)
+            for i in range(too_many_count):
+                item_region_locations_to_hint.remove(less_important_location_ids[i])
         # We'll never be over the cap here, but in some cases we may be under the cap - fill extra hints if we need them
         while hint_count < HINT_CAP:
             filler_type = random.choice(valid_types)
@@ -852,15 +865,19 @@ def compileHints(spoiler: Spoiler) -> bool:
         kong_location_ids = [id for id, location in spoiler.LocationList.items() if location.item in (Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky)]
         for kong_location_id in kong_location_ids:
             kong_location = spoiler.LocationList[kong_location_id]
-            hint_options = []
-            # Attempt to find a door that will be accessible before the Kong
-            if kong_location_id in spoiler.accessible_hints_for_location.keys():  # This will fail if the Kong is not WotH
-                hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[kong_location_id])  # This will return [] if there are no hint doors available
-            if len(hint_options) > 0:
-                hint_location = random.choice(hint_options)
-            # If there are no doors available early (very rare) or the Kong is not WotH (obscenely rare) then just get a random one. Tough luck.
+            # In item hinting hints, guarantee your Kongs are hinted by the time you have 20 hints
+            if spoiler.settings.enable_progressive_hints:
+                hint_location = getRandomHintLocation(levels=[Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon])
             else:
-                hint_location = getRandomHintLocation()
+                hint_options = []
+                # Attempt to find a door that will be accessible before the Kong
+                if kong_location_id in spoiler.accessible_hints_for_location.keys():  # This will fail if the Kong is not WotH
+                    hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[kong_location_id])  # This will return [] if there are no hint doors available
+                if len(hint_options) > 0:
+                    hint_location = random.choice(hint_options)
+                # If there are no doors available early (very rare) or the Kong is not WotH (obscenely rare) then just get a random one. Tough luck.
+                else:
+                    hint_location = getRandomHintLocation()
             freeing_kong_name = kong_list[kong_location.kong]
             if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
                 if kong_location.level == Levels.Shops:  # Exactly Jetpac
@@ -885,9 +902,10 @@ def compileHints(spoiler: Spoiler) -> bool:
                 grammar = "himself"
                 if kong_location.kong == Kongs.tiny:
                     grammar = "herself"
-                message = f"{freeing_kong_name} can find {grammar} in {level_name}? How odd..."
+                message = f"{freeing_kong_name} can be found by {grammar} in {level_name}? How odd..."
             else:
-                message = f"{freeing_kong_name} can find {freed_kong} in {level_name}."
+                message = f"{freed_kong} can be found by {freeing_kong_name} in {level_name}."
+            hint_location.related_location = kong_location_id
             hint_location.hint_type = HintType.KongLocation
             UpdateHint(hint_location, message)
     # In non-item rando, Kongs should be hinted before they're available and should only be hinted to free Kongs, making them very restrictive
@@ -1013,6 +1031,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     message += f" Seek shops in {level_color}{level_list[location.level]}{level_color}."
                 else:
                     message += f" Try looking in {level_color}{level_list[location.level]}{level_color} with {kong_list[location.kong]}."
+            hint_location.related_location = loc_id
             hint_location.hint_type = HintType.ItemRegion
             UpdateHint(hint_location, message)
 
@@ -1100,9 +1119,13 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hinted_item_name = ItemList[spoiler.LocationList[loc].item].name
                 message = f"Your \x0btraining with {hinted_item_name}\x0b is on the path to {multipath_dict_hints[loc]}."
             else:
-                message = f"One item in the {hinted_location_text} is on the path to {multipath_dict_hints[loc]}."
+                message = f"Something in the {hinted_location_text} is on the path to {multipath_dict_hints[loc]}."
+            hint_location.related_location = loc
             hint_location.hint_type = HintType.Multipath
             UpdateHint(hint_location, message)
+            if len(message) > 123:
+                # In an attempt to avoid the dreaded '...' in the pause menu, remove more of the fluff for short_hint
+                hint_location.short_hint = f"{hinted_location_text}: Path to {multipath_dict_hints[loc]}"
 
     # Key location hints should be placed at or before the level they are for (e.g. Key 4 shows up in level 4 lobby or earlier)
     if hint_distribution[HintType.RequiredKeyHint] > 0:
@@ -1143,6 +1166,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     message = f"\x04{key_item.name}\x04 can be bought in {level_name}."
                 else:
                     message = f"\x04{key_item.name}\x04 can be acquired with {kong_name} in {level_name}."
+                hint_location.related_location = key_location_ids[key_id]
                 hint_location.hint_type = HintType.RequiredKeyHint
                 UpdateHint(hint_location, message)
             # For later or complex Keys, place hints that hint the "path" to the key
@@ -1185,7 +1209,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                         hinted_item_name = ItemList[spoiler.LocationList[path_location_id].item].name
                         message = f"Your \x0btraining with {hinted_item_name}\x0b is on the path to \x04{key_item.name}\x04."
                     else:
-                        message = f"An item in the {hinted_location_text} is on the path to \x04{key_item.name}\x04."
+                        message = f"Something in the {hinted_location_text} is on the path to \x04{key_item.name}\x04."
+                    hint_location.related_location = path_location_id
                     hint_location.hint_type = HintType.RequiredKeyHint
                     UpdateHint(hint_location, message)
 
@@ -1254,9 +1279,10 @@ def compileHints(spoiler: Spoiler) -> bool:
                 if path_location_id in TrainingBarrelLocations or path_location_id in PreGivenLocations:
                     # Starting moves could be a lot of things - instead of being super vague we'll hint the specific item directly.
                     hinted_item_name = ItemList[hinted_item_id].name
-                    message = f"Your \x0btraining with {hinted_item_name}\x0b is on the path to {kong_color}aiding {colorless_kong_list[hinted_kong]}'s fight against K. Rool.{kong_color}"
+                    message = f"Your \x0btraining with {hinted_item_name}\x0b is on the path to {kong_color} {colorless_kong_list[hinted_kong]}'s K. Rool fight.{kong_color}"
                 else:
-                    message = f"An item in the {hinted_location_text} is on the path to {kong_color}aiding {colorless_kong_list[hinted_kong]}'s fight against K. Rool.{kong_color}"
+                    message = f"Something in the {hinted_location_text} is on the path to {kong_color} {colorless_kong_list[hinted_kong]}'s K. Rool fight.{kong_color}"
+                hint_location.related_location = path_location_id
                 hint_location.hint_type = HintType.RequiredWinConditionHint
                 UpdateHint(hint_location, message)
         # All fairies seeds get 2 path hints for the camera
@@ -1297,7 +1323,8 @@ def compileHints(spoiler: Spoiler) -> bool:
                     hinted_item_name = ItemList[spoiler.LocationList[path_location_id].item].name
                     message = f"Your \x0btraining with {hinted_item_name}\x0b is on the path to \x07taking photos\x07."
                 else:
-                    message = f"An item in the {hinted_location_text} is on the path to \x07taking photos\x07."
+                    message = f"Something in the {hinted_location_text} is on the path to \x07taking photos\x07."
+                hint_location.related_location = path_location_id
                 hint_location.hint_type = HintType.RequiredWinConditionHint
                 UpdateHint(hint_location, message)
 
@@ -1389,6 +1416,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         shop_name = shop_owners[spoiler.LocationList[woth_item_location].vendor]
         message = f"On the Way of the Hoard, \x05{ItemList[woth_item].name}\x05 is bought from {shop_name} in {shop_level}."
         moves_hinted_and_lobbies[woth_item].append(hint_location.level)
+        hint_location.related_location = woth_item_location
         hint_location.hint_type = HintType.MoveLocation
         UpdateHint(hint_location, message)
         placed_move_hints += 1
@@ -1519,6 +1547,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 continue
             hint_color = level_colors[spoiler.LocationList[hinted_loc_id].level]
             message = f"{hint_color}{spoiler.LocationList[hinted_loc_id].name}{hint_color} is on the \x04Way of the Hoard\x04."
+            hint_location.related_location = hinted_loc_id
             hint_location.hint_type = HintType.WothLocation
             UpdateHint(hint_location, message)
             placed_woth_hints += 1
@@ -1805,6 +1834,9 @@ def compileHints(spoiler: Spoiler) -> bool:
     UpdateSpoilerHintList(spoiler)
     spoiler.hint_distribution = hint_distribution
 
+    if spoiler.settings.helpful_hints:
+        AssociateHintsWithFlags(spoiler)
+
     # # DEBUG CODE to alert when a hint is empty
     # for hint in hints:
     #     if hint.hint == "":
@@ -1813,7 +1845,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     return True
 
 
-def getRandomHintLocation(location_list: None = None, kongs: None = None, levels: None = None, move_name: None = None) -> HintLocation:
+def getRandomHintLocation(location_list=None, kongs=None, levels=None, move_name=None) -> HintLocation:
     """Return an unoccupied hint location. The parameters can be used to specify location requirements."""
     valid_unoccupied_hint_locations = [
         hint
@@ -2156,7 +2188,7 @@ def GenerateMultipathDict(
                 key_text = "\x04Key "
             hint_text_components.append(key_text + join_words(path_to_keys) + "\x04")
         if len(path_to_krool_phases) > 0:
-            hint_text_components.append("\x0dK. Rool's fight against\x0d " + join_words(path_to_krool_phases))
+            hint_text_components.append("\x0dK. Rool vs.\x0d " + join_words(path_to_krool_phases))
         if len(path_to_camera) > 0:
             hint_text_components.append(path_to_camera[0])
         if len(path_to_keys) + len(path_to_krool_phases) + len(path_to_camera) > 0:
@@ -2171,3 +2203,13 @@ def join_words(words: List[str]) -> str:
         return "%s, and %s" % (", ".join(words[:-1]), words[-1])
     else:
         return " and ".join(words)
+
+
+def AssociateHintsWithFlags(spoiler):
+    """Associate hints with the related flag at their related location as applicable."""
+    for hint in hints:
+        if hint.related_location is not None:
+            for location_selection in spoiler.item_assignment:
+                if location_selection.location == hint.related_location:
+                    hint.related_flag = location_selection.new_flag
+                    break

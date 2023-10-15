@@ -12,7 +12,7 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
 LogicRegions = {
-    Regions.JungleJapesMedals: Region("Jungle Japes Medals", "Jungle Japes Medal Rewards", Levels.JungleJapes, False, None, [
+    Regions.JungleJapesMedals: Region("Jungle Japes Medals", "Japes Medal Rewards", Levels.JungleJapes, False, None, [
         LocationLogic(Locations.JapesDonkeyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.donkey] >= l.settings.medal_cb_req),
         LocationLogic(Locations.JapesDiddyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.diddy] >= l.settings.medal_cb_req),
         LocationLogic(Locations.JapesLankyMedal, lambda l: l.ColoredBananas[Levels.JungleJapes][Kongs.lanky] >= l.settings.medal_cb_req),

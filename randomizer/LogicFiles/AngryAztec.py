@@ -12,7 +12,7 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
 LogicRegions = {
-    Regions.AngryAztecMedals: Region("Angry Aztec Medals", "Angry Aztec Medal Rewards", Levels.AngryAztec, False, None, [
+    Regions.AngryAztecMedals: Region("Angry Aztec Medals", "Aztec Medal Rewards", Levels.AngryAztec, False, None, [
         LocationLogic(Locations.AztecDonkeyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.donkey] >= l.settings.medal_cb_req),
         LocationLogic(Locations.AztecDiddyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.diddy] >= l.settings.medal_cb_req),
         LocationLogic(Locations.AztecLankyMedal, lambda l: l.ColoredBananas[Levels.AngryAztec][Kongs.lanky] >= l.settings.medal_cb_req),

@@ -12,7 +12,7 @@ from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
 LogicRegions = {
-    Regions.CrystalCavesMedals: Region("Crystal Caves Medals", "Crystal Caves Medal Rewards", Levels.CrystalCaves, False, None, [
+    Regions.CrystalCavesMedals: Region("Crystal Caves Medals", "Caves Medal Rewards", Levels.CrystalCaves, False, None, [
         LocationLogic(Locations.CavesDonkeyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.donkey] >= l.settings.medal_cb_req),
         LocationLogic(Locations.CavesDiddyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.diddy] >= l.settings.medal_cb_req),
         LocationLogic(Locations.CavesLankyMedal, lambda l: l.ColoredBananas[Levels.CrystalCaves][Kongs.lanky] >= l.settings.medal_cb_req),
