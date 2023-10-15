@@ -34,7 +34,7 @@ from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
 from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
-from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints, PushItemLocations
+from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints, PushItemLocations, PushHelpfulHints
 
 # from randomizer.Spoiler import Spoiler
 
@@ -497,6 +497,8 @@ def patching_response(spoiler):
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         wipeHints()
         PushHints(spoiler)
+        if spoiler.settings.dim_solved_hints:
+            PushHelpfulHints(spoiler, ROM_COPY)
 
     writeBootMessages()
     enableSpiderText(spoiler)

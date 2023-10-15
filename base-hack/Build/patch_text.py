@@ -964,6 +964,7 @@ hint_region_text = []
 for region in hint_region_list:
     hint_region_text.append([{"text": [region.region_name.upper()]}])
 writeText("hint_region_text.bin", hint_region_text)
+writeText("short_wrinkly.bin", grabText(41))
 
 
 misc_char_table = {

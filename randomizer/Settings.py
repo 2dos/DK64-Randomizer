@@ -426,7 +426,7 @@ class Settings:
         self.kongs_for_progression = False
         self.wrinkly_hints = WrinklyHints.off
         self.spoiler_hints = SpoilerHints.off
-        self.helpful_hints = False
+        self.dim_solved_hints = False
         self.spoiler_include_woth_count = False
         self.spoiler_include_level_order = False
         self.fast_warps = False

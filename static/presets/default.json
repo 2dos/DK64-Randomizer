@@ -64,6 +64,7 @@
     "helmhurry_list_fairies": 0,
     "helmhurry_list_colored_bananas": 0,
     "helmhurry_list_ice_traps": 0,
+    "dim_solved_hints":false,
     "high_req": true,
     "item_rando_list_selected": [],
     "item_reward_previews": true,

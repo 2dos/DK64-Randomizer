@@ -968,6 +968,7 @@ text_files = (
     TextChange("Snide's Bonus Games", 0, ""),
     TextChange("Hint Regions", 0, "hint_region_text.bin"),
     TextChange("Item Locations", 0x2800, "item_locations.bin"),
+    TextChange("Wrinkly Short", 0x2800, "short_wrinkly.bin"),
 )
 
 for index, text in enumerate(text_files):

@@ -1834,7 +1834,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     UpdateSpoilerHintList(spoiler)
     spoiler.hint_distribution = hint_distribution
 
-    if spoiler.settings.helpful_hints:
+    if spoiler.settings.dim_solved_hints:
         AssociateHintsWithFlags(spoiler)
 
     # # DEBUG CODE to alert when a hint is empty
@@ -2112,6 +2112,7 @@ def UpdateSpoilerHintList(spoiler: Spoiler) -> None:
     """Write hints to spoiler object."""
     for hint in hints:
         spoiler.hint_list[hint.name] = hint.hint
+        spoiler.short_hint_list[hint.name] = hint.short_hint if hint.short_hint is not None else hint.hint
 
 
 def GetRegionOfLocation(spoiler: Spoiler, location_id: Locations) -> Region:
@@ -2213,3 +2214,5 @@ def AssociateHintsWithFlags(spoiler):
                 if location_selection.location == hint.related_location:
                     hint.related_flag = location_selection.new_flag
                     break
+        if hint.name != "First Time Talk":
+            spoiler.tied_hint_flags[hint.name] = hint.related_flag if hint.related_flag is not None else 0xFFFF
