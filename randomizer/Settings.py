@@ -297,6 +297,7 @@ class Settings:
         self.krool_key_count = 8
         self.keys_random = False
         # starting_kongs_count: int, [1-5]
+        self.starting_kong = Kongs.any
         self.starting_kongs_count = 5
         self.starting_random = False
 
@@ -928,8 +929,16 @@ class Settings:
         if self.starting_kongs_count == 5:
             self.kong_rando = False
         if self.kong_rando:
-            self.starting_kong_list = random.sample(kongs, self.starting_kongs_count)
-            self.starting_kong = random.choice(self.starting_kong_list)
+            # Randomly pick starting kong list and starting kong
+            if self.starting_kong == Kongs.any:
+                self.starting_kong_list = random.sample(kongs, self.starting_kongs_count)
+                self.starting_kong = random.choice(self.starting_kong_list)
+            # Randomly pick starting kongs but include chosen starting kong
+            else:
+                possible_kong_list = kongs.copy()
+                possible_kong_list.remove(self.starting_kong)
+                self.starting_kong_list = random.sample(possible_kong_list, self.starting_kongs_count - 1)
+                self.starting_kong_list.append(self.starting_kong)
             # Kong freers are decided in the fill, set as any kong for now
             self.diddy_freeing_kong = Kongs.any
             self.lanky_freeing_kong = Kongs.any
@@ -940,9 +949,9 @@ class Settings:
             else:
                 self.kong_locations = self.SelectKongLocations()
         else:
-            self.possible_kong_list = kongs.copy()
-            self.possible_kong_list.remove(0)
-            self.starting_kong_list = random.sample(self.possible_kong_list, self.starting_kongs_count - 1)
+            possible_kong_list = kongs.copy()
+            possible_kong_list.remove(0)
+            self.starting_kong_list = random.sample(possible_kong_list, self.starting_kongs_count - 1)
             self.starting_kong_list.append(Kongs.donkey)
             self.starting_kong = Kongs.donkey
             self.diddy_freeing_kong = Kongs.donkey

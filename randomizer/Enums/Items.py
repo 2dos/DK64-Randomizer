@@ -150,7 +150,7 @@ class Items(IntEnum):
     CastleTinyHint = auto()
     CastleChunkyHint = auto()
 
-    # Blueprint items are intentionally grouped together in this specific order for Kasplat location logic.
+    # Blueprint items are intentionally grouped together in this specific order for various fill purposes. If you want specifics, ctrl-f for the first one.
     JungleJapesDonkeyBlueprint = auto()
     JungleJapesDiddyBlueprint = auto()
     JungleJapesLankyBlueprint = auto()

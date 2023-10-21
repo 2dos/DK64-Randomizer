@@ -865,17 +865,19 @@ def compileHints(spoiler: Spoiler) -> bool:
         kong_location_ids = [id for id, location in spoiler.LocationList.items() if location.item in (Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky)]
         for kong_location_id in kong_location_ids:
             kong_location = spoiler.LocationList[kong_location_id]
-            # In item hinting hints, guarantee your Kongs are hinted by the time you have 20 hints
+            hint_options = []
+            # Attempt to find a door that will be accessible before the Kong
+            if kong_location_id in spoiler.accessible_hints_for_location.keys():  # This will fail if the Kong is not WotH
+                hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[kong_location_id])  # This will return [] if there are no hint doors available
+            # Additionally, if progressive hints are on, make sure that all your kongs are hinted by the 20th hint (Galleon Chunky)
             if spoiler.settings.enable_progressive_hints:
-                hint_location = getRandomHintLocation(levels=[Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon])
+                hint_options = [hint for hint in hint_options if hint.level in (Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon)]
+            if len(hint_options) > 0:
+                hint_location = random.choice(hint_options)
+            # If there are no doors available early (very rare) or the Kong is not WotH (obscenely rare) then just get a random one. Tough luck.
             else:
-                hint_options = []
-                # Attempt to find a door that will be accessible before the Kong
-                if kong_location_id in spoiler.accessible_hints_for_location.keys():  # This will fail if the Kong is not WotH
-                    hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[kong_location_id])  # This will return [] if there are no hint doors available
-                if len(hint_options) > 0:
-                    hint_location = random.choice(hint_options)
-                # If there are no doors available early (very rare) or the Kong is not WotH (obscenely rare) then just get a random one. Tough luck.
+                if spoiler.settings.enable_progressive_hints:  # In progressive hints we'll still stick the hint in the first 20 hints
+                    hint_location = getRandomHintLocation(levels=[Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon])
                 else:
                     hint_location = getRandomHintLocation()
             freeing_kong_name = kong_list[kong_location.kong]
@@ -1828,6 +1830,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 bean_region = GetRegionOfLocation(spoiler, bean_location_id)
                 hinted_location_text = bean_region.hint_name
                 message = f"The {hinted_location_text} is on the Way of the Bean."
+                hint_location.related_location = bean_location_id
         hint_location.hint_type = HintType.Joke
         UpdateHint(hint_location, message)
 

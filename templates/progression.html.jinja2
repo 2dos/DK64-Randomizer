@@ -290,18 +290,49 @@
                                 onchange="toggle_clicks()"
                                 value="True"/>
                         <label for="starting_random"></label>
-                    </label></h5>
+                    </label>
+                </h5>
                 <input type="text"
-                        name="starting_kongs_count"
-                        id="starting_kongs_count"
-                        data-provide="slider"
-                        data-slider-ticks="[1, 2, 3, 4, 5]"
-                        data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
-                        data-slider-min="1"
-                        data-slider-max="5"
-                        data-slider-step="1"
-                        data-slider-value="5"
-                        style="width: 80%">
+                    name="starting_kongs_count"
+                    id="starting_kongs_count"
+                    data-provide="slider"
+                    data-slider-ticks="[1, 2, 3, 4, 5]"
+                    data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
+                    data-slider-min="1"
+                    data-slider-max="5"
+                    data-slider-step="1"
+                    data-slider-value="5"
+                    style="width: 80%">
+                <div class="flex-container" style="justify-content: center;">
+                    <div class="item-select">
+                        <p class="select-title">Select Starting Kong</p>
+                        <select name="starting_kong"
+                                id="starting_kong"
+                                class="form-select center-div"
+                                aria-label="Door 1 Requirements"
+                                data-toggle="tooltip"
+                                title="Specify your starting Kong. This kong will always be included in your starting set. Leave as Any to remain random.">
+                            <option selected id="any" value="any">
+                                Any
+                            </option>
+                            <option id="donkey" value="donkey">
+                                Donkey
+                            </option>
+                            <option id="diddy" value="diddy">
+                                Diddy
+                            </option>
+                            <option id="lanky" value="lanky">
+                                Lanky
+                            </option>
+                            <option id="tiny" value="tiny">
+                                Tiny
+                            </option>
+                            <option id="chunky" value="chunky">
+                                Chunky
+                            </option>
+                        </select>
+                    </div>
+                </div>
                 <hr>
                 <h5 class="select-title">Helm Door Requirements</h5>
                 <div class="flex-container">
