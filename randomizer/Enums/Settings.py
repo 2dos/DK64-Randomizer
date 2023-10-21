@@ -4,6 +4,7 @@ from __future__ import annotations
 from enum import IntEnum, auto
 from typing import TYPE_CHECKING
 
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Items import Items
 from randomizer.Lists.EnemyTypes import Enemies
 from randomizer.Enums.Maps import Maps
@@ -651,6 +652,7 @@ SettingsMap = {
     "win_condition": WinCondition,
     "wrinkly_hints": WrinklyHints,
     "spoiler_hints": SpoilerHints,
+    "starting_kong": Kongs,
 }
 
 
@@ -825,6 +827,7 @@ class SettingsStringEnum(IntEnum):
     random_starting_move_list_selected = 156
     enemy_drop_rando = 157
     dim_solved_hints = 158
+    starting_kong = 159
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1024,6 +1027,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.random_starting_move_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
     SettingsStringEnum.dim_solved_hints: SettingsStringDataType.bool,
+    SettingsStringEnum.starting_kong: Kongs,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

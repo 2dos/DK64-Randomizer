@@ -1,9 +1,11 @@
 """Shuffle Wrinkly and T&S Doors based on settings."""
 import random
+import math
 
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Regions import Regions
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.LogicClasses import LocationLogic
 
@@ -199,3 +201,58 @@ def ClearHintDoorLogic(spoiler):
     """Remove existing hint door locations from the logic in preparation for custom door locations to be added."""
     for id, region in spoiler.RegionList.items():
         region.locations = [loclogic for loclogic in region.locations if loclogic.id < Locations.JapesDonkeyDoor or loclogic.id > Locations.CastleChunkyDoor]
+
+
+def SetProgressiveHintDoorLogic(spoiler):
+    """Set up hint door location logic for progressive hints to unlock them with GB amounts."""
+    # Clear out old hint logic, including any custom logic that may have been placed. Don't need any of it.
+    ClearHintDoorLogic(spoiler)
+    hint_count = 35
+    hint_costs = []
+    for i in range(hint_count):
+        door_location = Locations.JapesDonkeyDoor + i  # Hint door locations are ordered in their unlocking
+        hint_slot = i  # This is to determine what pack of hints this door belongs to
+        if i < 34:
+            hint_slot = i & 0xFC
+        required_gb_count = int(spoiler.settings.progressive_hint_text + spoiler.settings.progressive_hint_text * math.sin(math.pi * 0.5 * ((1 / hint_count) * (hint_slot + 1) + 3)))
+        if required_gb_count == 0:
+            required_gb_count = 1
+        if i == 34:
+            required_gb_count = spoiler.settings.progressive_hint_text
+        hint_costs.append(required_gb_count)
+    # I probably hate this more than you do but lambda functions in python REALLY like to mutate apparently
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.JapesDonkeyDoor, lambda l: l.GoldenBananas >= hint_costs[0]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.JapesDiddyDoor, lambda l: l.GoldenBananas >= hint_costs[1]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.JapesLankyDoor, lambda l: l.GoldenBananas >= hint_costs[2]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.JapesTinyDoor, lambda l: l.GoldenBananas >= hint_costs[3]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.JapesChunkyDoor, lambda l: l.GoldenBananas >= hint_costs[4]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.AztecDonkeyDoor, lambda l: l.GoldenBananas >= hint_costs[5]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.AztecDiddyDoor, lambda l: l.GoldenBananas >= hint_costs[6]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.AztecLankyDoor, lambda l: l.GoldenBananas >= hint_costs[7]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.AztecTinyDoor, lambda l: l.GoldenBananas >= hint_costs[8]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.AztecChunkyDoor, lambda l: l.GoldenBananas >= hint_costs[9]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.FactoryDonkeyDoor, lambda l: l.GoldenBananas >= hint_costs[10]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.FactoryDiddyDoor, lambda l: l.GoldenBananas >= hint_costs[11]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.FactoryLankyDoor, lambda l: l.GoldenBananas >= hint_costs[12]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.FactoryTinyDoor, lambda l: l.GoldenBananas >= hint_costs[13]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.FactoryChunkyDoor, lambda l: l.GoldenBananas >= hint_costs[14]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.GalleonDonkeyDoor, lambda l: l.GoldenBananas >= hint_costs[15]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.GalleonDiddyDoor, lambda l: l.GoldenBananas >= hint_costs[16]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.GalleonLankyDoor, lambda l: l.GoldenBananas >= hint_costs[17]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.GalleonTinyDoor, lambda l: l.GoldenBananas >= hint_costs[18]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.GalleonChunkyDoor, lambda l: l.GoldenBananas >= hint_costs[19]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ForestDonkeyDoor, lambda l: l.GoldenBananas >= hint_costs[20]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ForestDiddyDoor, lambda l: l.GoldenBananas >= hint_costs[21]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ForestLankyDoor, lambda l: l.GoldenBananas >= hint_costs[22]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ForestTinyDoor, lambda l: l.GoldenBananas >= hint_costs[23]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.ForestChunkyDoor, lambda l: l.GoldenBananas >= hint_costs[24]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CavesDonkeyDoor, lambda l: l.GoldenBananas >= hint_costs[25]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CavesDiddyDoor, lambda l: l.GoldenBananas >= hint_costs[26]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CavesLankyDoor, lambda l: l.GoldenBananas >= hint_costs[27]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CavesTinyDoor, lambda l: l.GoldenBananas >= hint_costs[28]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CavesChunkyDoor, lambda l: l.GoldenBananas >= hint_costs[29]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CastleDonkeyDoor, lambda l: l.GoldenBananas >= hint_costs[30]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CastleDiddyDoor, lambda l: l.GoldenBananas >= hint_costs[31]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CastleLankyDoor, lambda l: l.GoldenBananas >= hint_costs[32]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CastleTinyDoor, lambda l: l.GoldenBananas >= hint_costs[33]))
+    spoiler.RegionList[Regions.GameStart].locations.append(LocationLogic(Locations.CastleChunkyDoor, lambda l: l.GoldenBananas >= hint_costs[34]))

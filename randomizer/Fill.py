@@ -53,7 +53,7 @@ from randomizer.ShuffleCBs import ShuffleCBs
 from randomizer.ShuffleCoins import ShuffleCoins
 from randomizer.ShuffleCrates import ShuffleMelonCrates
 from randomizer.ShuffleCrowns import ShuffleCrowns
-from randomizer.ShuffleDoors import ShuffleDoors, ShuffleVanillaDoors
+from randomizer.ShuffleDoors import SetProgressiveHintDoorLogic, ShuffleDoors, ShuffleVanillaDoors
 from randomizer.ShuffleFairies import ShuffleFairyLocations
 from randomizer.ShuffleItems import ShuffleItems
 from randomizer.ShuffleKasplats import ResetShuffledKasplatLocations, ShuffleKasplatsAndLocations, ShuffleKasplatsInVanillaLocations, constants, shufflable
@@ -1409,8 +1409,8 @@ def FillShuffledKeys(spoiler: Spoiler, placed_types: List[Types]) -> None:
             raise Ex.ItemPlacementException(str(keysUnplaced) + " unplaced keys.")
 
 
-def FillHelmLocations(spoiler: Spoiler, placed_types: List[Types]) -> List[Items]:
-    """Fill all currently empty (non-enemy!) Helm locations with eligible non-logic-critical items."""
+def FillHelmLocations(spoiler: Spoiler, placed_types: List[Types], placed_items: List[Items]) -> List[Items]:
+    """Fill all currently empty (non-enemy!) Helm locations with eligible unplaced items."""
     placed_in_helm = []
     # Get all the empty Helm locations
     empty_helm_locations = [
@@ -1419,7 +1419,7 @@ def FillHelmLocations(spoiler: Spoiler, placed_types: List[Types]) -> List[Items
         if spoiler.LocationList[loc_id].level == Levels.HideoutHelm and spoiler.LocationList[loc_id].type not in (Types.Constant, Types.Enemies) and spoiler.LocationList[loc_id].item is None
     ]
     # Rig the valid_locations for all relevant items to only be able to place things in Helm
-    for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # Shops whould already be placed
+    for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # Shops would already be placed
         # Company Coins and Medals cannot be on the fairy locations
         if typ in [Types.Coin, Types.Medal]:
             spoiler.settings.valid_locations[typ] = [loc for loc in empty_helm_locations if spoiler.LocationList[loc].type != Types.Fairy]
@@ -1440,6 +1440,9 @@ def FillHelmLocations(spoiler: Spoiler, placed_types: List[Types]) -> List[Items
             spoiler.settings.valid_locations[typ] = empty_helm_locations
     # Now we get the full list of items we could place here
     unplaced_items = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types)
+    for item in placed_items:
+        if item in unplaced_items:
+            unplaced_items.remove(item)
     debug_failed_to_place_items = []
     possible_items = [item for item in unplaced_items if item != Items.GoldenBanana]  # To save some time, we know GBs can't be in Helm
     shuffle(possible_items)
@@ -1464,6 +1467,53 @@ def FillHelmLocations(spoiler: Spoiler, placed_types: List[Types]) -> List[Items
     spoiler.settings.update_valid_locations(spoiler)
     # Return all items we placed, all future methods must consider these when placing (and assuming) items
     return placed_in_helm
+
+
+def FillBossLocations(spoiler: Spoiler, placed_types: List[Types], placed_items: List[Items]) -> List[Items]:
+    """Fill all currently empty Boss locations with eligible unplaced items."""
+    placed_on_bosses = []
+    # Get all the empty boss locations
+    empty_boss_locations = [
+        loc_id
+        for loc_id in spoiler.LocationList.keys()
+        if spoiler.LocationList[loc_id].level != Levels.HideoutHelm and spoiler.LocationList[loc_id].type == Types.Key and spoiler.LocationList[loc_id].item is None
+    ]
+    # Rig the valid_locations for all relevant items to only be able to place things on bosses
+    for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # Shops would already be placed
+        # Any item eligible to be on a boss can be on any boss
+        spoiler.settings.valid_locations[typ] = empty_boss_locations
+    # Now we get the full list of items we could place here
+    unplaced_items = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types)
+    # Fake items can be on bosses, but we need shops in the pool in order to have room to do this reliably
+    if Types.Shop in spoiler.settings.shuffled_location_types and Types.FakeItem in spoiler.settings.shuffled_location_types:
+        unplaced_items.extend(ItemPool.FakeItems())
+    for item in placed_items:
+        if item in unplaced_items:
+            unplaced_items.remove(item)
+    debug_failed_to_place_items = []
+    possible_items = [item for item in unplaced_items if item < Items.JungleJapesDonkeyBlueprint or item > Items.DKIslesChunkyBlueprint]  # To save some time, we know blueprints can't be on bosses
+    shuffle(possible_items)
+    # Until we have placed enough items...
+    while len(placed_on_bosses) < len(empty_boss_locations):
+        if len(possible_items) == 0:
+            spoiler.settings.update_valid_locations(spoiler)
+            raise Ex.FillException("Unable to fill Bosses.")
+        # Grab the next one from the pile and attempt to place it
+        item_to_attempt_placement = possible_items.pop()
+        unplaced_items.remove(item_to_attempt_placement)
+        spoiler.Reset()
+        unplaced = PlaceItems(spoiler, FillAlgorithm.forward, [item_to_attempt_placement], unplaced_items)
+        # If we succeed, mark this item as being placed in Helm
+        if unplaced == 0:
+            placed_on_bosses.append(item_to_attempt_placement)
+        # If we failed, go again. This would be really surprising to ever happen, as boss accessibility is only calculated post-fill. Maybe in plando?
+        else:
+            debug_failed_to_place_items.append(item_to_attempt_placement)  # Apparently the item we failed to place is important earlier, so we need to assume it going forward
+            unplaced_items.append(item_to_attempt_placement)
+    # Very important - we have to reset valid_locations to the correct state after this
+    spoiler.settings.update_valid_locations(spoiler)
+    # Return all items we placed, all future methods must consider these when placing (and assuming) items
+    return placed_on_bosses
 
 
 def Fill(spoiler: Spoiler) -> None:
@@ -1512,7 +1562,7 @@ def Fill(spoiler: Spoiler) -> None:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "Miscellaneous Items")
 
     # Now we place the (generally) filler items
-    placed_in_helm = []
+    preplaced_items = []
     # If Helm is having locations shuffled and we're shuffling GBs, we have to fill Helm now.
     # This is because GBs can't be in Helm, so we might run out of locations to place them if these spots aren't filled
     if Types.Banana in spoiler.settings.shuffled_location_types and (
@@ -1521,20 +1571,27 @@ def Fill(spoiler: Spoiler) -> None:
         or Types.Fairy in spoiler.settings.shuffled_location_types
         or Types.Key in spoiler.settings.shuffled_location_types
     ):
-        placed_in_helm = FillHelmLocations(spoiler, placed_types)
+        preplaced_items.extend(FillHelmLocations(spoiler, placed_types, preplaced_items))
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "things in Helm")
+
+    # If keys are shuffled in the pool we want to ensure an item is on every boss
+    # This is to support broader settings that rely on boss kills and to enable reads on the boss fill algorithm
+    if Types.Key in spoiler.settings.shuffled_location_types:
+        preplaced_items.extend(FillBossLocations(spoiler, placed_types, preplaced_items))
+    if spoiler.settings.extreme_debugging:
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "things on Bosses")
 
     # Then place Blueprints - these are moderately restrictive in their placement
     if Types.Blueprint in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Blueprint)
         spoiler.Reset()
         blueprintsToPlace = ItemPool.Blueprints().copy()
-        for item in placed_in_helm:
+        for item in preplaced_items:
             if item in blueprintsToPlace:
                 blueprintsToPlace.remove(item)
         # Blueprints can be placed largely randomly - there's no location (yet) that can cause blueprints to lock themselves
-        blueprintsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, blueprintsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=placed_in_helm))
+        blueprintsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, blueprintsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
         if blueprintsUnplaced > 0:
             raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
     if spoiler.settings.extreme_debugging:
@@ -1544,10 +1601,10 @@ def Fill(spoiler: Spoiler) -> None:
         placed_types.append(Types.Coin)
         spoiler.Reset()
         coinsToPlace = ItemPool.CompanyCoinItems()
-        for item in placed_in_helm:
+        for item in preplaced_items:
             if item in coinsToPlace:
                 coinsToPlace.remove(item)
-        coinsUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, coinsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=placed_in_helm))
+        coinsUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, coinsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
         if coinsUnplaced > 0:
             raise Ex.ItemPlacementException(str(coinsUnplaced) + " unplaced company coins.")
     if spoiler.settings.extreme_debugging:
@@ -1557,14 +1614,14 @@ def Fill(spoiler: Spoiler) -> None:
         placed_types.append(Types.Crown)
         spoiler.Reset()
         crownsToPlace = ItemPool.BattleCrownItems()
-        for item in placed_in_helm:
+        for item in preplaced_items:
             if item in crownsToPlace:
                 crownsToPlace.remove(item)
         # Crowns can be placed randomly, but only if the helm doors don't need any
         algo = FillAlgorithm.careful_random
         if spoiler.settings.coin_door_item == HelmDoorItem.req_crown or spoiler.settings.crown_door_item in (HelmDoorItem.vanilla, HelmDoorItem.req_crown):
             algo = spoiler.settings.algorithm
-        crownsUnplaced = PlaceItems(spoiler, algo, crownsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=placed_in_helm), doubleTime=True)
+        crownsUnplaced = PlaceItems(spoiler, algo, crownsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), doubleTime=True)
         if crownsUnplaced > 0:
             raise Ex.ItemPlacementException(str(crownsUnplaced) + " unplaced crowns.")
     if spoiler.settings.extreme_debugging:
@@ -1574,10 +1631,10 @@ def Fill(spoiler: Spoiler) -> None:
         placed_types.append(Types.Medal)
         spoiler.Reset()
         medalsToBePlaced = ItemPool.BananaMedalItems()
-        for item in placed_in_helm:
+        for item in preplaced_items:
             if item in medalsToBePlaced:
                 medalsToBePlaced.remove(item)
-        medalAssumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=placed_in_helm)
+        medalAssumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items)
         # Medals up to the logical Jetpac requirement must be placed carefully
         jetpacRequiredMedals = medalsToBePlaced[: spoiler.settings.logical_medal_requirement]
         medalsUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, jetpacRequiredMedals, medalAssumedItems)
@@ -1594,10 +1651,10 @@ def Fill(spoiler: Spoiler) -> None:
         placed_types.append(Types.Fairy)
         spoiler.Reset()
         fairiesToBePlaced = ItemPool.FairyItems()
-        for item in placed_in_helm:
+        for item in preplaced_items:
             if item in fairiesToBePlaced:
                 fairiesToBePlaced.remove(item)
-        fairyAssumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=placed_in_helm)
+        fairyAssumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items)
         # Fairies up to the logical Rareware GB requirement must be placed carefully
         rarewareRequiredFairies = fairiesToBePlaced[: spoiler.settings.logical_fairy_requirement]
         fairyUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, rarewareRequiredFairies, fairyAssumedItems)
@@ -1610,10 +1667,21 @@ def Fill(spoiler: Spoiler) -> None:
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "Fairies")
     # Then fill remaining locations with GBs
+    preplaced_gbs_accounted_for = []  # Because GBs are placed in two parts, we may have to account for preplaced GBs in either section
     if Types.Banana in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Banana)
         spoiler.Reset()
-        gbsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, ItemPool.GoldenBananaItems(), [])
+        gbsToBePlaced = ItemPool.GoldenBananaItems()
+        for item in preplaced_items:
+            if item in gbsToBePlaced:
+                gbsToBePlaced.remove(item)
+                # Mark this preplaced GB as accounted for
+                preplaced_gbs_accounted_for.append(item)
+        # After checking all preplaced items, we can treat the accounted for GBs as no longer preplaced
+        # This way the upcoming ToughBanana GB fill will not double-account for them
+        for item in preplaced_gbs_accounted_for:
+            preplaced_items.remove(item)
+        gbsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, gbsToBePlaced, [])
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced GBs.")
     if spoiler.settings.extreme_debugging:
@@ -1621,7 +1689,11 @@ def Fill(spoiler: Spoiler) -> None:
     if Types.ToughBanana in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.ToughBanana)
         spoiler.Reset()
-        gbsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, ItemPool.ToughGoldenBananaItems(), [])
+        toughGbsToBePlaced = ItemPool.ToughGoldenBananaItems()
+        for item in preplaced_items:
+            if item in toughGbsToBePlaced:
+                toughGbsToBePlaced.remove(item)
+        gbsUnplaced = PlaceItems(spoiler, FillAlgorithm.careful_random, toughGbsToBePlaced, [])
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced tough GBs.")
     if spoiler.settings.extreme_debugging:
@@ -1630,7 +1702,11 @@ def Fill(spoiler: Spoiler) -> None:
     if Types.FakeItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.FakeItem)
         spoiler.Reset()
-        PlaceItems(spoiler, FillAlgorithm.careful_random, ItemPool.FakeItems(), [])
+        fakeItemsToBePlaced = ItemPool.FakeItems()
+        for item in preplaced_items:
+            if item in fakeItemsToBePlaced:
+                fakeItemsToBePlaced.remove(item)
+        PlaceItems(spoiler, FillAlgorithm.careful_random, fakeItemsToBePlaced, [])
         # Don't raise exception if unplaced fake items
     if spoiler.settings.extreme_debugging:
         DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "Fake Items")
@@ -2694,6 +2770,8 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         ShuffleVanillaDoors(spoiler)
     elif spoiler.settings.wrinkly_location_rando or spoiler.settings.tns_location_rando or spoiler.settings.remove_wrinkly_puzzles:
         ShuffleDoors(spoiler)
+    if spoiler.settings.enable_progressive_hints:
+        SetProgressiveHintDoorLogic(spoiler)
     # Handle Crown Placement
     if spoiler.settings.crown_placement_rando:
         crown_replacements = {}

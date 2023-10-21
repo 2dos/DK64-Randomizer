@@ -134,6 +134,7 @@
     "start_with_slam": false,
     "starting_keys_list_selected": [],
     "starting_move_list_selected": [],
+    "starting_kong": "any",
     "starting_kongs_count": 3,
     "starting_moves_count": 4,
     "starting_random": false,
