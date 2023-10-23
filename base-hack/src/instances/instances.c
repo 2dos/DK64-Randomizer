@@ -226,8 +226,6 @@ void setCrusher(void) {
 	}
 }
 
-static const kongs monkeyport_kongs[] = {KONG_TINY, KONG_DK, KONG_LANKY, KONG_TINY, KONG_TINY}; // Kongs used for the switchsanity setting for lower monkeyport in Isles
-
 int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2) {
 	/**
 	 * @brief Perform object script instructions. Can be called either through
@@ -436,47 +434,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				} else if ((param2 == ISLES_SWITCH_COCONUT) || (param2 == ISLES_SWITCH_PEANUT) || (param2 == ISLES_SWITCH_GRAPE) || (param2 == ISLES_SWITCH_FEATHER) || (param2 == ISLES_SWITCH_PINEAPPLE)) {
 					return !Rando.tag_anywhere;
 				} else if (param2 == ISLES_LOWMONKEYPORT) {
-					if (index == 0) {
-						int gb_count = getTotalGBs();
-						int max_gbs = 0;
-						for (int level = 0; level < 7; level++) {
-							if (BLockerDefaultArray[level] > max_gbs) {
-								max_gbs = BLockerDefaultArray[level];
-							}
-						}
-						return (gb_count >= max_gbs) && (Rando.microhints != MICROHINTS_NONE); 
-					} else if (index == 1) {
-						if (Player) {
-							if ((Player->obj_props_bitfield & 0x2000) == 0) {
-								if (Player->touching_object == 1) {
-									if (Player->standing_on_index == id) {
-										int mport_kong = Rando.switchsanity.isles.monkeyport;
-										if (mport_kong == 0) {
-											// Set Monkeyport thing
-											return (Player->characterID == 5) || (Rando.perma_lose_kongs);
-										} else {
-											if ((Player->characterID == monkeyport_kongs[mport_kong] + 2) || (Rando.perma_lose_kongs)) {
-												if (mport_kong == 1) {
-													// Blast
-													// fun_80608528 - sfx player
-													Player->control_state = 0x18;
-													Player->control_state_progress = 0;
-													Player->noclip = 1;
-													Player->blast_y_velocity = 200.0f;
-													Player->ostand_value = 0x28;
-													playAnimation(Player, 0x22);
-												} else if (mport_kong == 2) {
-													// Balloon
-													createCollisionObjInstance(COLLISION_BABOON_BALLOON, 80, 200);	
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-						return 0;
-					}
+					IslesMonkeyportCode(behaviour_pointer, id);
 				} else {
 					// TestVariable = (int)behaviour_pointer;
 					// *(int*)(0x807FF700) = id;
@@ -639,21 +597,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_HELMLOBBY:
 				if (param2 == HELMLOBBY_GGONE) {
-					if (index == 0) {
-						return isBonus(PreviousMap);
-					} else if (index == 1) {
-						int gb_count = 0;
-						int max_gbs = 0;
-						for (int level = 0; level < 8; level++) {
-							for (int kong = 0; kong < 5; kong++) {
-								gb_count += MovesBase[kong].gb_count[level];
-							}
-							if (BLockerDefaultArray[level] > max_gbs) {
-								max_gbs = BLockerDefaultArray[level];
-							}
-						}
-						return (gb_count >= max_gbs) && (Rando.microhints != MICROHINTS_NONE); 
-					}
+					HelmLobbyGoneCode(behaviour_pointer, id);
 				}
 				break;
 			case MAP_JAPES:

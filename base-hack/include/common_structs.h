@@ -266,7 +266,8 @@ typedef struct playerData {
 	/* 0x32C */ actorData* held_actor;
 	/* 0x330 */ char unk_330[0x340 - 0x330];
 	/* 0x340 */ float scale[6];
-	/* 0x358 */ char unk_358[0x36C - 0x358];
+	/* 0x358 */ char unk_358[0x368 - 0x358];
+	/* 0x368 */ unsigned int state_bitfield;
 	/* 0x36C */ char fairy_state;
 	/* 0x36D */ char unk_36D[0x36F - 0x36D];
 	/* 0x36F */ char new_kong;
@@ -508,7 +509,9 @@ typedef struct actorSpawnerData {
 	/* 0x000 */ unsigned short actor_type; // Offset by 0x10
 	/* 0x002 */ char unk_02[2];
 	/* 0x004 */ floatPos positions;
-	/* 0x010 */ char unk_10[0x2C-0x10];
+	/* 0x010 */ char unk_10[0x24-0x10];
+	/* 0x024 */ int can_hide_vine;
+	/* 0x028 */ char unk_28[0x2C-0x28];
 	/* 0x02C */ float flag; // What?????
 	/* 0x030 */ char unk_30[0x40-0x30];
 	/* 0x040 */ float barrel_resolved;

@@ -28,6 +28,7 @@
 .importobj "obj/src_instances_instances.o"
 .importobj "obj/src_instances_instance_lib.o"
 .importobj "obj/src_instances_melon_crate.o"
+.importobj "obj/src_instances_misc_pads.o"
 .importobj "obj/src_instances_shops.o"
 .importobj "obj/src_instances_switches.o"
 .importobj "obj/src_item rando_actors.o"

@@ -600,7 +600,7 @@ class Settings:
             for slot in self.switchsanity_data:
                 if slot == Switches.IslesMonkeyport:
                     # Monkeyport is restricted to things which can help get the kong up high enough
-                    self.switchsanity_data[slot].kong = random.choice([Kongs.lanky, Kongs.tiny])
+                    self.switchsanity_data[slot].kong = random.choice([Kongs.lanky])
                 else:
                     bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
                     slot_choices_kong = [x for x in kongs if x not in bad_kongs]
