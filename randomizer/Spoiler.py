@@ -639,33 +639,33 @@ class Spoiler:
             ss_name_data = {
                 Kongs.donkey: {
                     SwitchType.SlamSwitch: "Donkey Slam Switch",
-                    SwitchType.GunSwitch: "Coconut",
-                    SwitchType.InstrumentPad: "Bongos",
-                    SwitchType.PadMove: "Baboon Blast"
+                    SwitchType.GunSwitch: "Coconut Switch",
+                    SwitchType.InstrumentPad: "Bongos Pad",
+                    SwitchType.PadMove: "Baboon Blast Pad"
                 },
                 Kongs.diddy: {
                     SwitchType.SlamSwitch: "Diddy Slam Switch",
-                    SwitchType.GunSwitch: "Peanut",
-                    SwitchType.InstrumentPad: "Guitar",
-                    SwitchType.PadMove: "Simian Spring"
+                    SwitchType.GunSwitch: "Peanut Switch",
+                    SwitchType.InstrumentPad: "Guitar Pad",
+                    SwitchType.PadMove: "Simian Spring Pad"
                 },
                 Kongs.lanky: {
                     SwitchType.SlamSwitch: "Lanky Slam Switch",
-                    SwitchType.GunSwitch: "Grape",
-                    SwitchType.InstrumentPad: "Trombone",
-                    SwitchType.PadMove: "Baboon Balloon"
+                    SwitchType.GunSwitch: "Grape Switch",
+                    SwitchType.InstrumentPad: "Trombone Pad",
+                    SwitchType.PadMove: "Baboon Balloon Pad"
                 },
                 Kongs.tiny: {
                     SwitchType.SlamSwitch: "Tiny Slam Switch",
-                    SwitchType.GunSwitch: "Feather",
-                    SwitchType.InstrumentPad: "Saxaphone",
-                    SwitchType.PadMove: "Monkeyport"
+                    SwitchType.GunSwitch: "Feather Switch",
+                    SwitchType.InstrumentPad: "Saxophone Pad",
+                    SwitchType.PadMove: "Monkeyport Pad"
                 },
                 Kongs.chunky: {
                     SwitchType.SlamSwitch: "Chunky Slam Switch",
-                    SwitchType.GunSwitch: "Pineapple",
-                    SwitchType.InstrumentPad: "Triangle",
-                    SwitchType.PadMove: "Gorilla Gone"
+                    SwitchType.GunSwitch: "Pineapple Switch",
+                    SwitchType.InstrumentPad: "Triangle Pad",
+                    SwitchType.PadMove: "Gorilla Gone Pad"
                 },
             }
             for slot in self.settings.switchsanity_data.values():
