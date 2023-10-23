@@ -828,6 +828,7 @@ class SettingsStringEnum(IntEnum):
     enemy_drop_rando = 157
     dim_solved_hints = 158
     starting_kong = 159
+    switchsanity = 160
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1028,6 +1029,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.enemy_drop_rando: SettingsStringDataType.bool,
     SettingsStringEnum.dim_solved_hints: SettingsStringDataType.bool,
     SettingsStringEnum.starting_kong: Kongs,
+    SettingsStringEnum.switchsanity: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

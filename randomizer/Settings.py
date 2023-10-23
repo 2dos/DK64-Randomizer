@@ -235,7 +235,7 @@ class Settings:
         self.kasplat_rando_setting = None
         self.puzzle_rando = None
         self.shuffle_shops = None
-        self.switchsanity = True # TODO: Change this
+        self.switchsanity = None
         self.switchsanity_data = {}
         self.extreme_debugging = False  # Use when you want to know VERY specifically where things fail in the fill - unnecessarily slows seed generation!
 
@@ -600,7 +600,7 @@ class Settings:
             for slot in self.switchsanity_data:
                 if slot == Switches.IslesMonkeyport:
                     # Monkeyport is restricted to things which can help get the kong up high enough
-                    self.switchsanity_data[slot].kong = random.choice([Kongs.lanky])
+                    self.switchsanity_data[slot].kong = random.choice([Kongs.lanky, Kongs.tiny])
                 else:
                     bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
                     slot_choices_kong = [x for x in kongs if x not in bad_kongs]

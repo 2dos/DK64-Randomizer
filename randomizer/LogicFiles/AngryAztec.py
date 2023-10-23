@@ -8,6 +8,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Transitions import Transitions
+from randomizer.Enums.Switches import Switches
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
 
@@ -44,7 +45,7 @@ LogicRegions = {
     ]),
 
     Regions.AztecTunnelBeforeOasis: Region("Angry Aztec Tunnel Before Oasis", "Various Aztec Tunnels", Levels.AngryAztec, False, -1, [
-        LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: not l.settings.kasplat_rando and (l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))))),
+        LocationLogic(Locations.AztecKasplatSandyBridge, lambda l: not l.settings.kasplat_rando and (l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))))),
         LocationLogic(Locations.AztecMainEnemy_StartingTunnel3, lambda l: True),
     ], [], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
@@ -66,7 +67,7 @@ LogicRegions = {
         TransitionFront(Regions.AztecTunnelBeforeOasis, lambda l: True),
         TransitionFront(Regions.TempleStart, lambda l: ((l.peanut and l.isdiddy) or (l.grape and l.islanky)
                         or (l.feather and l.istiny) or (l.pineapple and l.ischunky)) or l.phasewalk),
-        TransitionFront(Regions.AngryAztecConnectorTunnel, lambda l: l.settings.open_levels or (((l.vines or l.jetpack or l.advanced_platforming) and l.guitar and l.diddy) or l.phasewalk or l.generalclips)),
+        TransitionFront(Regions.AngryAztecConnectorTunnel, lambda l: l.settings.open_levels or (((l.vines or l.jetpack or l.advanced_platforming) and l.hasMoveSwitchsanity(Switches.AztecGuitar, False)) or l.phasewalk or l.generalclips)),
         TransitionFront(Regions.CandyAztec, lambda l: True),
         TransitionFront(Regions.AztecBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
@@ -144,7 +145,7 @@ LogicRegions = {
         TransitionFront(Regions.TinyTemple, lambda l: (Events.FedTotem in l.Events and l.feather and l.istiny) or l.phasewalk, Transitions.AztecMainToTiny),
         TransitionFront(Regions.ChunkyTemple, lambda l: (Events.FedTotem in l.Events and l.pineapple and l.ischunky) or l.phasewalk or (l.generalclips and l.ischunky and l.hunkyChunky), Transitions.AztecMainToChunky),
         TransitionFront(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, Transitions.AztecMainToRace),
-        TransitionFront(Regions.LlamaTemple, lambda l: (l.coconut and l.isdonkey) or (l.grape and l.islanky) or (l.feather and l.istiny) or l.phasewalk or l.generalclips),  # Decision to pre-spawn switches
+        TransitionFront(Regions.LlamaTemple, lambda l: l.hasMoveSwitchsanity(Switches.AztecLlamaCoconut) or l.hasMoveSwitchsanity(Switches.AztecLlamaGrape) or l.hasMoveSwitchsanity(Switches.AztecLlamaFeather) or l.phasewalk or l.generalclips),  # Decision to pre-spawn switches
         TransitionFront(Regions.AztecBaboonBlast, lambda l: l.blast and l.isdonkey),  # , Transitions.AztecMainToBBlast),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.FunkyAztec, lambda l: True),
@@ -260,7 +261,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecLlamaEnemy_MelonCrate, lambda l: True),
         LocationLogic(Locations.AztecLlamaEnemy_SlamSwitch, lambda l: True),
     ], [
-        Event(Events.AztecDonkeySwitch, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.donkey),
+        Event(Events.AztecDonkeySwitch, lambda l: l.hasMoveSwitchsanity(Switches.AztecQuicksandSwitch, False, Levels.AngryAztec, 1)),
         Event(Events.AztecLlamaSpit, lambda l: l.CanLlamaSpit()),
         Event(Events.LlamaW1aTagged, lambda l: True),
         Event(Events.LlamaW1bTagged, lambda l: True),

@@ -8,6 +8,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Time import Time
+from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
@@ -29,7 +30,7 @@ LogicRegions = {
     ], [
         Event(Events.ForestEntered, lambda l: True),
         Event(Events.Night, lambda l: l.HasGun(Kongs.any)),
-        Event(Events.WormGatesOpened, lambda l: l.settings.open_levels or (l.feather and l.tiny and l.pineapple and l.chunky)),
+        Event(Events.WormGatesOpened, lambda l: l.settings.open_levels or (l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) and l.hasMoveSwitchsanity(Switches.FungiGreenPineapple, False))),
         Event(Events.ForestW1aTagged, lambda l: True),
         Event(Events.ForestW2aTagged, lambda l: True),
         Event(Events.ForestW3aTagged, lambda l: True),
@@ -64,7 +65,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_NearPinkTunnelGM, lambda l: True),
         LocationLogic(Locations.ForestMainEnemy_GMRearTag, lambda l: True),
     ], [
-        Event(Events.HollowTreeGateOpened, lambda l: l.grape and l.lanky),
+        Event(Events.HollowTreeGateOpened, lambda l: l.hasMoveSwitchsanity(Switches.FungiYellow, False)),
         Event(Events.ForestW3bTagged, lambda l: True),
         Event(Events.ForestW5bTagged, lambda l: True),
     ], [

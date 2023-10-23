@@ -138,6 +138,7 @@
     "starting_kongs_count": 3,
     "starting_moves_count": 4,
     "starting_random": false,
+    "switchsanity":false,
     "tns_location_rando": false,
     "training_barrels": "normal",
     "troff_0": 1,
