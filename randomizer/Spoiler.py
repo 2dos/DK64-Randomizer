@@ -13,6 +13,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MoveTypes import MoveTypes
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     BananaportRando,
     GlitchesSelected,
@@ -633,6 +634,43 @@ class Spoiler:
             humanspoiler["T&S Portal Locations"] = self.human_portal_doors
         if self.settings.crown_placement_rando:
             humanspoiler["Battle Arena Locations"] = self.human_crowns
+        if self.settings.switchsanity:
+            ss_data = {}
+            ss_name_data = {
+                Kongs.donkey: {
+                    SwitchType.SlamSwitch: "Donkey Slam Switch",
+                    SwitchType.GunSwitch: "Coconut",
+                    SwitchType.InstrumentPad: "Bongos",
+                    SwitchType.PadMove: "Baboon Blast"
+                },
+                Kongs.diddy: {
+                    SwitchType.SlamSwitch: "Diddy Slam Switch",
+                    SwitchType.GunSwitch: "Peanut",
+                    SwitchType.InstrumentPad: "Guitar",
+                    SwitchType.PadMove: "Simian Spring"
+                },
+                Kongs.lanky: {
+                    SwitchType.SlamSwitch: "Lanky Slam Switch",
+                    SwitchType.GunSwitch: "Grape",
+                    SwitchType.InstrumentPad: "Trombone",
+                    SwitchType.PadMove: "Baboon Balloon"
+                },
+                Kongs.tiny: {
+                    SwitchType.SlamSwitch: "Tiny Slam Switch",
+                    SwitchType.GunSwitch: "Feather",
+                    SwitchType.InstrumentPad: "Saxaphone",
+                    SwitchType.PadMove: "Monkeyport"
+                },
+                Kongs.chunky: {
+                    SwitchType.SlamSwitch: "Chunky Slam Switch",
+                    SwitchType.GunSwitch: "Pineapple",
+                    SwitchType.InstrumentPad: "Triangle",
+                    SwitchType.PadMove: "Gorilla Gone"
+                },
+            }
+            for slot in self.settings.switchsanity_data.values():
+                ss_data[slot.name] = ss_name_data[slot.kong][slot.switch_type]
+            humanspoiler["Switchsanity"] = ss_data
         level_dict = {
             Levels.DKIsles: "DK Isles",
             Levels.JungleJapes: "Jungle Japes",

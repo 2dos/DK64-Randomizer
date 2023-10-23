@@ -240,7 +240,9 @@ typedef struct playerData {
 	/* 0x1CC */ short old_tag_state;
 	/* 0x1CE */ char unk_1CE[0x1D0-0x1CE];
 	/* 0x1D0 */ short ostand_value;
-	/* 0x1D2 */ char unk_1D2[0x1E8-0x1D2];
+	/* 0x1D2 */ char unk_1D2[0x1D4-0x1D2];
+	/* 0x1D4 */ float blast_y_velocity;
+	/* 0x1D8 */ char unk_1D8[0x1E8-0x1D8];
 	/* 0x1E8 */ float unk_1E8;
 	/* 0x1EC */ char unk_1EC[0x208-0x1EC];
 	/* 0x208 */ void* vehicle_actor_pointer;
@@ -1641,3 +1643,46 @@ typedef struct sprite_info {
 	/* 0x36C */ unsigned char blue;
 	/* 0x36D */ unsigned char alpha;
 } sprite_info;
+
+typedef struct RandomSwitchesIsles {
+	/* 0x000 */ unsigned char monkeyport; // 0 = monkeyport, 1 = blast, 2 = balloon
+	/* 0x001 */ unsigned char gone; // 0 = gone, 1-5 = instrument
+	/* 0x002 */ unsigned char aztec_lobby_feather;
+	/* 0x003 */ unsigned char fungi_lobby_feather;
+	/* 0x004 */ unsigned char spawn_rocketbarrel;
+} RandomSwitchesIsles;
+
+typedef struct RandomSwitchesJapes {
+	/* 0x000 */ unsigned char feather;
+	/* 0x001 */ unsigned char rambi;
+	/* 0x002 */ unsigned char painting;
+	/* 0x003 */ unsigned char diddy_cave;
+} RandomSwitchesJapes;
+
+typedef struct RandomSwitchesAztec {
+	/* 0x000 */ unsigned char bp_door;
+	/* 0x001 */ unsigned char llama_switches[3];
+	/* 0x004 */ unsigned char snoop_switch;
+	/* 0x005 */ unsigned char guitar;
+} RandomSwitchesAztec;
+
+typedef struct RandomSwitchesGalleon {
+	/* 0x000 */ unsigned char lighthouse;
+	/* 0x001 */ unsigned char shipwreck;
+	/* 0x002 */ unsigned char cannongame;
+} RandomSwitchesGalleon;
+
+typedef struct RandomSwitchesFungi {
+	/* 0x000 */ unsigned char yellow;
+	/* 0x001 */ unsigned char green_feather;
+	/* 0x002 */ unsigned char green_pineapple;
+} RandomSwitchesFungi;
+
+// Any 0s are treated as default
+typedef struct RandomSwitchesSetting {
+	/* 0x000 */ RandomSwitchesIsles isles;
+	/* 0x005 */ RandomSwitchesJapes japes;
+	/* 0x009 */ RandomSwitchesAztec aztec;
+	/* 0x00F */ RandomSwitchesGalleon galleon;
+	/* 0x012 */ RandomSwitchesFungi fungi;
+} RandomSwitchesSetting;

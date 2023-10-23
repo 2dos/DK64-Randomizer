@@ -210,7 +210,7 @@
    "starting_map":34,
    "starting_exit":0,
    "disco_chunky":1,
-   "krusha_slot":2,
+   "krusha_slot":255,
    "starting_kong":0,
    "test_zone":[
       174,

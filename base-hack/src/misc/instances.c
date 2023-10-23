@@ -1020,6 +1020,47 @@ int getPressedSwitch(behaviour_data* behaviour_pointer, int bullet_type, int ID)
 	return 0;
 }
 
+int getPressedRandoSwitch(behaviour_data* behaviour_pointer, int setting, int vanilla_bullet_type, int ID) {
+	int bullet = vanilla_bullet_type;
+	if (setting != 0) {
+		bullet = kong_pellets[setting - 1];
+	}
+	return getPressedSwitch(behaviour_pointer, bullet, ID);
+};
+
+typedef struct SwitchInfo {
+	/* 0x000 */ unsigned char* setting_address;
+	/* 0x004 */ kongs vanilla_kong;
+} SwitchInfo;
+
+static const SwitchInfo switch_data[] = {
+	{.setting_address = &Rando.switchsanity.isles.aztec_lobby_feather, .vanilla_kong=KONG_TINY},
+	{.setting_address = &Rando.switchsanity.isles.fungi_lobby_feather, .vanilla_kong=KONG_TINY},
+	{.setting_address = &Rando.switchsanity.japes.feather, .vanilla_kong=KONG_TINY},
+	{.setting_address = &Rando.switchsanity.japes.rambi, .vanilla_kong=KONG_DK},
+	{.setting_address = &Rando.switchsanity.japes.diddy_cave, .vanilla_kong=KONG_DIDDY},
+	{.setting_address = &Rando.switchsanity.japes.painting, .vanilla_kong=KONG_DIDDY},
+	{.setting_address = &Rando.switchsanity.aztec.bp_door, .vanilla_kong=KONG_DK},
+	{.setting_address = &Rando.switchsanity.aztec.llama_switches[0], .vanilla_kong=KONG_DK},
+	{.setting_address = &Rando.switchsanity.aztec.llama_switches[1], .vanilla_kong=KONG_LANKY},
+	{.setting_address = &Rando.switchsanity.aztec.llama_switches[2], .vanilla_kong=KONG_TINY},
+	{.setting_address = &Rando.switchsanity.galleon.lighthouse, .vanilla_kong=KONG_DK},
+	{.setting_address = &Rando.switchsanity.galleon.shipwreck, .vanilla_kong=KONG_DIDDY},
+	{.setting_address = &Rando.switchsanity.galleon.cannongame, .vanilla_kong=KONG_CHUNKY},
+	{.setting_address = &Rando.switchsanity.fungi.yellow, .vanilla_kong=KONG_LANKY},
+	{.setting_address = &Rando.switchsanity.fungi.green_feather, .vanilla_kong=KONG_TINY},
+	{.setting_address = &Rando.switchsanity.fungi.green_pineapple, .vanilla_kong=KONG_CHUNKY},
+};
+
+int randomGunSwitchGenericCode(behaviour_data* behaviour_pointer, int index, int switch_index) {
+	int vanilla_kong = switch_data[switch_index].vanilla_kong;
+	int setting = 0;
+	if (switch_data[switch_index].setting_address) {
+		setting = *switch_data[switch_index].setting_address;
+	}
+	return getPressedRandoSwitch(behaviour_pointer, setting, kong_pellets[vanilla_kong], index);
+}
+
 void setCrusher(void) {
 	/**
 	 * @brief Set the Crusher in the Fungi Mill to be the correct object state
@@ -1109,6 +1150,8 @@ void playSFXContainer(int id, int vanilla_sfx, int new_sfx) {
 	}
 	playSFXFromObject(index,sfx_played,-1,127,0,0,0.3f);
 }
+
+static const kongs monkeyport_kongs[] = {KONG_TINY, KONG_DK, KONG_LANKY, KONG_TINY, KONG_TINY}; // Kongs used for the switchsanity setting for lower monkeyport in Isles
 
 int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2) {
 	/**
@@ -1332,7 +1375,27 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							if ((Player->obj_props_bitfield & 0x2000) == 0) {
 								if (Player->touching_object == 1) {
 									if (Player->standing_on_index == id) {
-										return (Player->characterID == 5) || (Rando.perma_lose_kongs);
+										int mport_kong = Rando.switchsanity.isles.monkeyport;
+										if (mport_kong == 0) {
+											// Set Monkeyport thing
+											return (Player->characterID == 5) || (Rando.perma_lose_kongs);
+										} else {
+											if ((Player->characterID == monkeyport_kongs[mport_kong] + 2) || (Rando.perma_lose_kongs)) {
+												if (mport_kong == 1) {
+													// Blast
+													// fun_80608528 - sfx player
+													Player->control_state = 0x18;
+													Player->control_state_progress = 0;
+													Player->noclip = 1;
+													Player->blast_y_velocity = 200.0f;
+													Player->ostand_value = 0x28;
+													playAnimation(Player, 0x22);
+												} else if (mport_kong == 2) {
+													// Balloon
+													createCollisionObjInstance(COLLISION_BABOON_BALLOON, 80, 200);	
+												}
+											}
+										}
 									}
 								}
 							}
@@ -2229,6 +2292,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		shopGenericCode(behaviour_pointer, id, param2, SHOP_SNIDE);
 	} else if (index == -13) {
 		MelonCrateGenericCode(behaviour_pointer, id, param2);
+	} else if (index == -14) {
+		return randomGunSwitchGenericCode(behaviour_pointer, id, param2);
 	}
 	InstanceScriptParams[1] = id;
 	InstanceScriptParams[2] = index;
