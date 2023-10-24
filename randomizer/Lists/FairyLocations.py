@@ -4,6 +4,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Switches import Switches
 
 
 class Fence:
@@ -1027,7 +1028,7 @@ fairy_locations = {
             region=Regions.FungiForestLobby,
             is_vanilla=True,
             spawn_xyz=[472, 163, 612],
-            logic=lambda l: l.camera and l.feather and l.tiny,
+            logic=lambda l: l.camera and l.hasMoveSwitchsanity(Switches.IslesFungiLobbyFeather, False),
             natural_index=1,
         ),
         FairyData(
@@ -1086,7 +1087,7 @@ fairy_locations = {
             region=Regions.AngryAztecLobby,
             fence=Fence(945, 487, 1090, 746),
             spawn_y=72,
-            logic=lambda l: l.camera and ((l.feather and l.tiny) or l.phasewalk),
+            logic=lambda l: l.camera and (l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk),
         ),
         FairyData(
             name="Creepy Castle Lobby",

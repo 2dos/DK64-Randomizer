@@ -5,6 +5,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Switches import Switches
 from randomizer.LogicClasses import Balloon, ColoredBananaGroup
 
 ColoredBananaGroupList = [
@@ -52,7 +53,7 @@ ColoredBananaGroupList = [
         name="On DK BP archway",
         konglist=[Kongs.donkey],
         region=Regions.AngryAztecOasis,
-        logic=lambda l: l.coconut and l.strongKong,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and l.strongKong,
         locations=[
             [1, 1.0, 1527, 120, 738],
             [1, 1.0, 1487, 126, 740],
@@ -1383,7 +1384,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.AngryAztecOasis,
         vanilla=True,
-        logic=lambda l: l.coconut and l.strongKong,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and l.strongKong,
         locations=[[5, 1.0, 1464.7799072265625, 132.91937255859375, 610.3526000976562], [5, 1.0, 1294.2562255859375, 132.93927001953125, 609.1015014648438]],
     ),
     ColoredBananaGroup(
@@ -1506,7 +1507,7 @@ BalloonList = [
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecOasis,
-        logic=lambda l: l.coconut,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False),
         points=[[1380, 190, 735], [1380, 160, 800], [1380, 130, 735], [1380, 160, 670]],
     ),
     Balloon(

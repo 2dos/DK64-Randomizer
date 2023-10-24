@@ -37,7 +37,7 @@
 | Angry Aztec | Aztec Kasplat: On the Oasis |  | 
 | Angry Aztec | Aztec Kasplat: On Llama Cage | l.vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy)) or l.CanMoonkick() | 
 | Angry Aztec | Aztec Kasplat: Near giant boulder |  | 
-| Angry Aztec | Aztec Kasplat: Behind DK Stone Door | l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))) | 
+| Angry Aztec | Aztec Kasplat: Behind DK Stone Door | l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))) | 
 | Aztec Llama Temple | Aztec Kasplat: Llama Temple Lava |  | 
 | Angry Aztec | Aztec Kasplat: Hunky Chunky Barrel |  | 
 | Angry Aztec | Aztec Kasplat: On Tiny Temple | l.jetpack | 
@@ -203,7 +203,7 @@
 | Isles | Isles Kasplat: Big X Platform |  | 
 | Isles | Isles Kasplat: Back of Cabin Isle |  | 
 | Crystal Caves Lobby | Isles Kasplat: Caves Lobby Platform | l.jetpack | 
-| Angry Aztec Lobby | Isles Kasplat: Aztec Lobby Feather Gate | l.feather or l.phasewalk | 
+| Angry Aztec Lobby | Isles Kasplat: Aztec Lobby Feather Gate | l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk | 
 | KLumsy | Isles Kasplat: Prison Sprint Cage | (l.sprint and l.lanky) or l.phasewalk | 
 | Jungle Japes Lobby | Isles Kasplat: Japes Lobby |  | 
 | Isles | Isles Kasplat: Upper Monkeyport |  | 

@@ -189,7 +189,7 @@
 | Isles | Small Island | l.camera | 
 | Isles | Upper Krem Isles | l.camera | 
 | Frantic Factory Lobby | Factory Lobby | l.camera and l.punch and l.chunky | 
-| Fungi Forest Lobby | Fungi Lobby | l.camera and l.feather and l.tiny | 
+| Fungi Forest Lobby | Fungi Lobby | l.camera and l.hasMoveSwitchsanity(Switches.IslesFungiLobbyFeather, False) | 
 | Isles | Aztec Roof | l.camera | 
 | Isles | Behind Fungi Building | l.camera | 
 | Isles | On Banana Fairy Island | l.camera and l.jetpack and l.isdiddy and Events.IslesDiddyBarrelSpawn in l.Events | 
@@ -197,7 +197,7 @@
 | Isles | On K. Lumsy | l.camera | 
 | Isles | In Front of Krem Isles | l.camera | 
 | Banana Fairy Room | Inside Fairy Island | l.camera | 
-| Angry Aztec Lobby | Angry Aztec Lobby | l.camera and ((l.feather and l.tiny) or l.phasewalk) | 
+| Angry Aztec Lobby | Angry Aztec Lobby | l.camera and (l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk) | 
 | Creepy Castle Lobby | Creepy Castle Lobby | l.camera | 
 | Crystal Caves Lobby | Crystal Caves Lobby | l.camera and ((l.punch and l.chunky) or l.phasewalk or l.ledgeclip) | 
 | Isles Snide Room | Snide Room | l.camera | 
