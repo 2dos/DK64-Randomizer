@@ -195,10 +195,11 @@ icon_db = {
     0xAF: "wrinkly",
 }
 
+
 class SwitchInfo:
     """Store information regarding a switch."""
 
-    def __init__(self, name:str, kong: Kongs, switch_type: SwitchType, rom_offset: int, map_id:int, ids: list, tied_settings: list = []):
+    def __init__(self, name: str, kong: Kongs, switch_type: SwitchType, rom_offset: int, map_id: int, ids: list, tied_settings: list = []):
         """Initialize with given parameters."""
         self.name = name
         self.kong = kong

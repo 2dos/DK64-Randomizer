@@ -579,7 +579,7 @@ class Settings:
             Switches.IslesFungiLobbyFeather: SwitchInfo("Forest Lobby Feather Switch", Kongs.tiny, SwitchType.GunSwitch, 0x1C9, Maps.FungiForestLobby, [5]),
             Switches.IslesSpawnRocketbarrel: SwitchInfo("Isles Main Trombone Pad", Kongs.lanky, SwitchType.InstrumentPad, 0x1CA, Maps.Isles, [0x31]),
             Switches.JapesFeather: SwitchInfo("Japes Hive Area Switches", Kongs.tiny, SwitchType.GunSwitch, 0x1CB, Maps.JungleJapes, [0x34, 0x35]),
-            Switches.JapesRambi: SwitchInfo("Japes Switch to Rambi", Kongs.donkey, SwitchType.GunSwitch, 0x1CC, Maps.JungleJapes, [0X123]),
+            Switches.JapesRambi: SwitchInfo("Japes Switch to Rambi", Kongs.donkey, SwitchType.GunSwitch, 0x1CC, Maps.JungleJapes, [0x123]),
             Switches.JapesPainting: SwitchInfo("Japes Switch to Painting", Kongs.diddy, SwitchType.GunSwitch, 0x1CD, Maps.JungleJapes, [40]),
             Switches.JapesDiddyCave: SwitchInfo("Japes Diddy Cave Switches", Kongs.diddy, SwitchType.GunSwitch, 0x1CE, Maps.JungleJapes, [0x29, 0x2A]),
             Switches.AztecBlueprintDoor: SwitchInfo("Aztec Blueprint Door Switches", Kongs.donkey, SwitchType.GunSwitch, 0x1CF, Maps.AngryAztec, [0x9D, 0x9E]),
@@ -606,15 +606,14 @@ class Settings:
                     slot_choices_kong = [x for x in kongs if x not in bad_kongs]
                     self.switchsanity_data[slot].kong = random.choice(slot_choices_kong)
                     if slot == Switches.IslesHelmLobbyGone:
-                        self.switchsanity_data[slot].kong = Kongs.donkey # Test Code
+                        self.switchsanity_data[slot].kong = Kongs.donkey  # Test Code
                         if self.switchsanity_data[slot].kong == Kongs.chunky:
-                            self.switchsanity_data[slot].switch_type = random.choice([SwitchType.PadMove, SwitchType.InstrumentPad]) # Choose between gone and triangle
+                            self.switchsanity_data[slot].switch_type = random.choice([SwitchType.PadMove, SwitchType.InstrumentPad])  # Choose between gone and triangle
                         elif self.switchsanity_data[slot].kong in (Kongs.donkey, Kongs.diddy):
-                            self.switchsanity_data[slot].switch_type = random.choice([SwitchType.MiscActivator, SwitchType.InstrumentPad]) # Choose between grab and bongos
-                            self.switchsanity_data[slot].switch_type = SwitchType.MiscActivator # Test Code
+                            self.switchsanity_data[slot].switch_type = random.choice([SwitchType.MiscActivator, SwitchType.InstrumentPad])  # Choose between grab and bongos
+                            self.switchsanity_data[slot].switch_type = SwitchType.MiscActivator  # Test Code
                         else:
                             self.switchsanity_data[slot].switch_type = SwitchType.InstrumentPad
-
 
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
         if self.hard_mode and HardModeSelected.water_is_lava in self.hard_mode_selected:

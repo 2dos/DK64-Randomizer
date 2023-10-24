@@ -461,17 +461,28 @@ def updateRandomSwitches(spoiler):
                                     ROM_COPY.seek(item_start + 0x28)
                                     ROM_COPY.writeMultipleBytes(switches[kong][switch_level], 2)
 
+
 def updateSwitchsanity(spoiler):
     """Update setup to account for switchsanity."""
     if spoiler.settings.switchsanity:
         ROM_COPY = LocalROM()
         switches = {
             SwitchType.SlamSwitch: [
-                0x94, 0x16C, 0x167, # DK
-                0x93, 0x16B, 0x166, # Diddy
-                0x95, 0x16D, 0x168, # Lanky
-                0x96, 0x16E, 0x169, # Tiny
-                0xB8, 0x16A, 0x165, # Chunky
+                0x94,
+                0x16C,
+                0x167,  # DK
+                0x93,
+                0x16B,
+                0x166,  # Diddy
+                0x95,
+                0x16D,
+                0x168,  # Lanky
+                0x96,
+                0x16E,
+                0x169,  # Tiny
+                0xB8,
+                0x16A,
+                0x165,  # Chunky
             ],
             SwitchType.GunSwitch: [0x129, 0x126, 0x128, 0x127, 0x125],
             SwitchType.InstrumentPad: [0xA8, 0xA9, 0xAC, 0xAA, 0xAB],

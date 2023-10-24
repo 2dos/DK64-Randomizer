@@ -443,7 +443,7 @@ class LogicVarHolder:
         """Determine whether the hard bosses feature is enabled or not."""
         return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.hard_bosses)
 
-    def hasMoveSwitchsanity(self, switchsanity_setting: Switches, kong_needs_current: bool=True, level: Levels = Levels.JungleJapes, default_slam_level: int = 0) -> bool:
+    def hasMoveSwitchsanity(self, switchsanity_setting: Switches, kong_needs_current: bool = True, level: Levels = Levels.JungleJapes, default_slam_level: int = 0) -> bool:
         """Determine whether the kong has the necessary moves based on the switchsanity data."""
         data = self.settings.switchsanity_data[switchsanity_setting]
         kong_data = self.IsKong(data.kong)
@@ -464,7 +464,6 @@ class LogicVarHolder:
         elif data.switch_type == SwitchType.SlamSwitch:
             return kong_data and self.CanSlamSwitch(level, default_slam_level)
         return False
-
 
     def CanPhaseswim(self):
         """Determine whether the player can perform phase swim."""

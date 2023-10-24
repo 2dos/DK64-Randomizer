@@ -454,9 +454,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         if not spoiler.settings.switchsanity:
             useless_moves.extend([Items.Monkeyoprt, Items.GorillaGone])
         useless_locations[Items.HideoutHelmKey] = [
-            loc
-            for loc in spoiler.woth_paths[Locations.HelmKey]
-            if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in useless_moves
+            loc for loc in spoiler.woth_paths[Locations.HelmKey] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in useless_moves
         ]
         useless_locations[Items.HideoutHelmKey].append(Locations.HelmKey)  # Also don't count the known location of the key itself
     # Your training in moves which you know are always needed beat K. Rool are pointless to hint
@@ -1901,7 +1899,9 @@ def resetHintList():
             hint.repeats = hint.original_repeats
             hint.priority = hint.original_priority
 
+
 def getHelmProgItems(spoiler: Spoiler) -> list:
+    """Get the items needed to progress to helm."""
     base_list = [Items.Monkeyport, Items.GorillaGone]
     if spoiler.settings.switchsanity:
         switch_item_data = {
@@ -1914,6 +1914,7 @@ def getHelmProgItems(spoiler: Spoiler) -> list:
             data = spoiler.settings.switchsanity_data[switch]
             base_list[switch_index] = switch_item_data[data.switch_type][data.kong]
     return base_list
+
 
 def compileMicrohints(spoiler: Spoiler) -> None:
     """Create guaranteed level + kong hints for various items."""

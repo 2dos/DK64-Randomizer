@@ -56,6 +56,7 @@ level_names = [
 
 kong_names = {Kongs.donkey: "Donkey Kong", Kongs.diddy: "Diddy", Kongs.lanky: "Lanky", Kongs.tiny: "Tiny", Kongs.chunky: "Chunky", Kongs.any: "Any Kong"}
 
+
 class MoveMicrohintItemData:
     """Information about the microhint move."""
 
@@ -64,6 +65,7 @@ class MoveMicrohintItemData:
         self.subtype = subtype
         self.index = index
         self.kong = kong
+
 
 move_info_data = {
     Items.BaboonBlast: MoveMicrohintItemData("special", 0, Kongs.donkey),
@@ -93,6 +95,7 @@ move_info_data = {
     Items.Feather: MoveMicrohintItemData("gun", 0, Kongs.tiny),
     Items.Pineapple: MoveMicrohintItemData("gun", 0, Kongs.chunky),
 }
+
 
 class MoveMicrohints:
     """Information about microhints."""

@@ -194,7 +194,7 @@ def adjustExits(fh):
                         exit_coords.append(coords.copy())
                 if map_index == 0x22:
                     # Isles
-                    exit_coords.append([2524, 1724, 3841]) # Top of Krem Isles
+                    exit_coords.append([2524, 1724, 3841])  # Top of Krem Isles
             if os.path.exists(temp_file):
                 os.remove(temp_file)
         exit_additions.append(exit_coords.copy())

@@ -651,24 +651,9 @@ class Spoiler:
                     SwitchType.PadMove: "Simian Spring Pad",
                     SwitchType.MiscActivator: "Gong",
                 },
-                Kongs.lanky: {
-                    SwitchType.SlamSwitch: "Lanky Slam Switch",
-                    SwitchType.GunSwitch: "Grape Switch",
-                    SwitchType.InstrumentPad: "Trombone Pad",
-                    SwitchType.PadMove: "Baboon Balloon Pad"
-                },
-                Kongs.tiny: {
-                    SwitchType.SlamSwitch: "Tiny Slam Switch",
-                    SwitchType.GunSwitch: "Feather Switch",
-                    SwitchType.InstrumentPad: "Saxophone Pad",
-                    SwitchType.PadMove: "Monkeyport Pad"
-                },
-                Kongs.chunky: {
-                    SwitchType.SlamSwitch: "Chunky Slam Switch",
-                    SwitchType.GunSwitch: "Pineapple Switch",
-                    SwitchType.InstrumentPad: "Triangle Pad",
-                    SwitchType.PadMove: "Gorilla Gone Pad"
-                },
+                Kongs.lanky: {SwitchType.SlamSwitch: "Lanky Slam Switch", SwitchType.GunSwitch: "Grape Switch", SwitchType.InstrumentPad: "Trombone Pad", SwitchType.PadMove: "Baboon Balloon Pad"},
+                Kongs.tiny: {SwitchType.SlamSwitch: "Tiny Slam Switch", SwitchType.GunSwitch: "Feather Switch", SwitchType.InstrumentPad: "Saxophone Pad", SwitchType.PadMove: "Monkeyport Pad"},
+                Kongs.chunky: {SwitchType.SlamSwitch: "Chunky Slam Switch", SwitchType.GunSwitch: "Pineapple Switch", SwitchType.InstrumentPad: "Triangle Pad", SwitchType.PadMove: "Gorilla Gone Pad"},
             }
             for slot in self.settings.switchsanity_data.values():
                 ss_data[slot.name] = ss_name_data[slot.kong][slot.switch_type]

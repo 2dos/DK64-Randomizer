@@ -38,7 +38,7 @@ LogicRegions = {
         Event(Events.GalleonTinySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.tiny and (l.swim or l.settings.high_req)),
         Event(Events.LighthouseGateOpened, lambda l: l.hasMoveSwitchsanity(Switches.GalleonLighthouse, False)),
         # Gate to shipyard always open in rando
-        Event(Events.ShipyardGateOpened, lambda l: True), # l.hasMoveSwitchsanity(Switches.GalleonShipwreck, False)
+        Event(Events.ShipyardGateOpened, lambda l: True),  # l.hasMoveSwitchsanity(Switches.GalleonShipwreck, False)
         Event(Events.GalleonCannonRoomOpened, lambda l: l.hasMoveSwitchsanity(Switches.GalleonCannonGame, False)),
         Event(Events.GalleonW1aTagged, lambda l: True),
         Event(Events.GalleonW2aTagged, lambda l: True),
