@@ -100,6 +100,7 @@
 #define ISLES_HELMJAW 0x1C
 #define ISLES_FACTORYDOORCOLLISION 0x100
 
+#define ISLES_HIGHMONKEYPORT 0x37
 #define ISLES_LOWMONKEYPORT 0x38
 
 #define CHUNKY5DC_GGONE 0x6
@@ -435,6 +436,12 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					return !Rando.tag_anywhere;
 				} else if (param2 == ISLES_LOWMONKEYPORT) {
 					IslesMonkeyportCode(behaviour_pointer, id);
+				} else if (param2 == ISLES_HIGHMONKEYPORT) {
+					if (Rando.switchsanity.isles.monkeyport != 0) {
+						hideObject(behaviour_pointer);
+						behaviour_pointer->current_state = 21;
+						behaviour_pointer->next_state = 21;
+					}
 				} else {
 					// TestVariable = (int)behaviour_pointer;
 					// *(int*)(0x807FF700) = id;
