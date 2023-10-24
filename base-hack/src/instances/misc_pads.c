@@ -116,11 +116,9 @@ void IslesMonkeyportCode(behaviour_data* behaviour_pointer, int index) {
             }
         }
     } else if (current_state == 6) {
-        if (Player->touching_object == 1) {
-            if (Player->standing_on_index == index) {
-                if (CutsceneActive != 1) {
-                    behaviour_pointer->next_state = 5;
-                }
+        if ((Player->touching_object != 1) || (Player->standing_on_index != index)) {
+            if (CutsceneActive != 1) {
+                behaviour_pointer->next_state = 5;
             }
         }
     } else if (current_state == 20) {
@@ -217,11 +215,9 @@ void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
             }
         }
     } else if (current_state == 6) {
-        if (Player->touching_object == 1) {
-            if (Player->standing_on_index == index) {
-                if (CutsceneActive != 1) {
-                    behaviour_pointer->next_state = 5;
-                }
+        if ((Player->touching_object != 1) || (Player->standing_on_index != index)) {
+            if (CutsceneActive != 1) {
+                behaviour_pointer->next_state = 5;
             }
         }
     } else if (current_state == 7) {
