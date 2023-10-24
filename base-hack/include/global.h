@@ -433,7 +433,7 @@ extern int getPressedSwitch(behaviour_data* behaviour_pointer, int bullet_type, 
 extern void getModelTwoItemFromActor(int actor, short* item, float* scale);
 extern void IslesMonkeyportCode(behaviour_data* behaviour_pointer, int index);
 extern void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index);
-extern void initHelmLobbyBonusChange(void);
+extern void initSwitchsanityChanges(void);
 
 extern unsigned int cs_skip_db[432];
 extern bonus_barrel_info bonus_data[95];

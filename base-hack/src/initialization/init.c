@@ -654,7 +654,7 @@ void initHack(int source) {
 				writeFunction(0x806BB310, &rulerEnemyDeath);
 			}
 
-			initHelmLobbyBonusChange();
+			initSwitchsanityChanges();
 
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0

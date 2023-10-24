@@ -253,6 +253,8 @@ def patching_response(spoiler):
             if slot == Switches.IslesMonkeyport:
                 if pad_kong == Kongs.lanky:
                     ROM_COPY.writeMultipleBytes(2, 1)
+                elif pad_kong == Kongs.donkey:
+                    ROM_COPY.writeMultipleBytes(1, 1)
             elif slot == Switches.IslesHelmLobbyGone:
                 if pad_type != SwitchType.PadMove:
                     ROM_COPY.writeMultipleBytes(int(pad_kong) + 1, 1)

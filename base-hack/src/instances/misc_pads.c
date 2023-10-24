@@ -23,6 +23,8 @@ int hasHelmProgMove(helm_prog_enum sub_id) {
     if (sub_id == 0) {
         if (Rando.switchsanity.isles.monkeyport == 0) {
             return MovesBase[KONG_TINY].special_moves & MOVECHECK_MONKEYPORT;
+        } else if (Rando.switchsanity.isles.monkeyport == 1) {
+            return MovesBase[KONG_DK].special_moves & MOVECHECK_BLAST;
         } else if (Rando.switchsanity.isles.monkeyport == 2) {
             return MovesBase[KONG_LANKY].special_moves & MOVECHECK_BALLOON;
         }
@@ -60,13 +62,7 @@ int ableToUseMonkeyport(int id) {
                         if ((Player->characterID == monkeyport_kongs[mport_kong] + 2) || (Rando.perma_lose_kongs)) {
                             if (mport_kong == 1) {
                                 // Blast
-                                // fun_80608528 - sfx player
-                                Player->control_state = 0x18;
-                                Player->control_state_progress = 0;
-                                Player->noclip = 1;
-                                Player->blast_y_velocity = 200.0f;
-                                Player->ostand_value = 0x28;
-                                playAnimation(Player, 0x22);
+                                createCollisionObjInstance(COLLISION_BBLAST, MAP_ISLES, 0);
                             } else if (mport_kong == 2) {
                                 // Balloon
                                 createCollisionObjInstance(COLLISION_BABOON_BALLOON, 80, 200);	
@@ -136,6 +132,18 @@ int getHelmLobbyGoneReqKong(void) {
 }
 
 static char bonus_shown = 0;
+
+void blastWarpContainer(maps map, int wrongCSEnabled) {
+    int exit = 0;
+    if (map == MAP_ISLES) {
+        exit = 23;
+    }
+    if (wrongCSEnabled) {
+        setIntroStoryPlaying(2);
+        setNextTransitionType(0);
+    }
+    initiateTransition_0(map, exit, 0, 0);
+}
 
 void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
     int current_state = behaviour_pointer->current_state;
@@ -243,11 +251,15 @@ void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
     }
 }
 
-void initHelmLobbyBonusChange(void) {
+void initSwitchsanityChanges(void) {
     if (Rando.switchsanity.isles.gone != 0) {
         *(short*)(0x80680E3A) = getHi(&bonus_shown);
         *(int*)(0x80680E3C) = 0x91EF0000 | getLo(&bonus_shown); // lbu $t7, lo(bonus_shown) ($t7)
         *(int*)(0x80680E48) = 0; // nop
         *(int*)(0x80680E54) = 0x51E00009; // beql $t7, $zero, 0x9
+    }
+    if (Rando.switchsanity.isles.monkeyport == 1) {
+        *(short*)(0x806E5A4A) = getHi(&blastWarpContainer);
+        *(short*)(0x806E5A4E) = getLo(&blastWarpContainer);
     }
 }
