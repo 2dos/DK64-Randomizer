@@ -2483,7 +2483,7 @@ CustomLocations = {
             z=637,
             max_size=64,
             logic_region=Regions.AngryAztecLobby,
-            logic=lambda l: (l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False)) or l.phasewalk,
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk,
             group=9,
         ),
         CustomLocation(

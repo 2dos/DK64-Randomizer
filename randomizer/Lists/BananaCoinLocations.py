@@ -2993,7 +2993,7 @@ BananaCoinGroupList = {
             name="Blueprint Cavern",
             konglist=[Kongs.donkey, Kongs.tiny],
             region=Regions.AngryAztecOasis,
-            logic=lambda l: ((l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False)) or l.phasewalk) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)),
+            logic=lambda l: (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) or l.phasewalk) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)),
             locations=[
                 [1.0, 1240.0001220703125, 120.0, 747.2548217773438],
                 [1.0, 1219.4495849609375, 120.0, 730.4656372070312],

@@ -340,7 +340,7 @@
 | Under Oasis Tag | 4 |  | 
 | Around Totem W5 | 5 |  | 
 | Around Tiny Temple | 4 |  | 
-| Blueprint Cavern | 3 | ((l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False)) or l.phasewalk) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)) | 
+| Blueprint Cavern | 3 | (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) or l.phasewalk) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)) | 
 </details>
 <details>
 <summary>Aztec Baboon Blast</summary>

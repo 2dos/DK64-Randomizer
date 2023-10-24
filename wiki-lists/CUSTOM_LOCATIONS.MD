@@ -458,7 +458,7 @@
 | Jungle Japes Lobby | Jungle Japes Lobby: Near Tag Barrel |  | 
 | Jungle Japes Lobby | Japes Lobby: Near Portal |  | 
 | Angry Aztec Lobby | Aztec Lobby: In Front of Feather Door |  | 
-| Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (1) | (l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False)) or l.phasewalk | 
+| Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (1) | l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk | 
 | Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (2) | l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk | 
 | Frantic Factory Lobby | Factory Lobby: Near Lever |  | 
 | Frantic Factory Lobby | Factory Lobby: High Platform | ((l.grab and l.isdonkey) or l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))) | 
