@@ -606,9 +606,12 @@ class Settings:
                     slot_choices_kong = [x for x in kongs if x not in bad_kongs]
                     self.switchsanity_data[slot].kong = random.choice(slot_choices_kong)
                     if slot == Switches.IslesHelmLobbyGone:
+                        self.switchsanity_data[slot].kong = Kongs.donkey # Test Code
                         if self.switchsanity_data[slot].kong == Kongs.chunky:
-                            # Helm Lobby gone is restricted to 5 instruments + gone
                             self.switchsanity_data[slot].switch_type = random.choice([SwitchType.PadMove, SwitchType.InstrumentPad]) # Choose between gone and triangle
+                        elif self.switchsanity_data[slot].kong == Kongs.donkey:
+                            self.switchsanity_data[slot].switch_type = random.choice([SwitchType.MiscActivator, SwitchType.InstrumentPad]) # Choose between grab and bongos
+                            self.switchsanity_data[slot].switch_type = SwitchType.MiscActivator # Test Code
                         else:
                             self.switchsanity_data[slot].switch_type = SwitchType.InstrumentPad
 

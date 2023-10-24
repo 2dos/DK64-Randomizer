@@ -277,7 +277,11 @@ typedef struct playerData {
 	/* 0x37D */ unsigned char rambi_enabled;
 	/* 0x37E */ char unk_37E[0x380 - 0x37E];
 	/* 0x380 */ short trap_bubble_timer;
-	/* 0x382 */ char unk_382[0x3BC - 0x382];
+	/* 0x382 */ char unk_382[0x3AC - 0x382];
+	/* 0x3AC */ float grab_x;
+	/* 0x3B0 */ float grab_y;
+	/* 0x3B4 */ float grab_z;
+	/* 0x3B8 */ char unk_3B8[0x3BC - 0x3A8];
 	/* 0x3BC */ unsigned short try_again_timer;
 	/* 0x3BE */ unsigned char detransform_timer;
 } playerData; //size 0x630
@@ -755,7 +759,8 @@ typedef struct behaviour_data {
 	/* 0x068 */ unsigned short unk_68;
 	/* 0x06A */ unsigned short unk_6A;
 	/* 0x06C */ unsigned short unk_6C;
-	/* 0x06E */ char unk_6E[0x70-0x6E];
+	/* 0x06E */ char unk_6E;
+	/* 0x06F */ char unk_6F;
 	/* 0x070 */ char unk_70;
 	/* 0x071 */ char unk_71;
 	/* 0x072 */ char unk_72[0x94-0x72];

@@ -20,7 +20,7 @@ static const kongs monkeyport_kongs[] = {KONG_TINY, KONG_DK, KONG_LANKY, KONG_TI
 
 int hasHelmProgMove(helm_prog_enum sub_id) {
     // 0 = Monkeyport pad, 1 = Gone Pad
-    if (sub_id == 0) {
+    if (sub_id == HELMPROG_MONKEYPORT) {
         if (Rando.switchsanity.isles.monkeyport == 0) {
             return MovesBase[KONG_TINY].special_moves & MOVECHECK_MONKEYPORT;
         } else if (Rando.switchsanity.isles.monkeyport == 1) {
@@ -28,9 +28,11 @@ int hasHelmProgMove(helm_prog_enum sub_id) {
         } else if (Rando.switchsanity.isles.monkeyport == 2) {
             return MovesBase[KONG_LANKY].special_moves & MOVECHECK_BALLOON;
         }
-    } else if (sub_id == 1) {
+    } else if (sub_id == HELMPROG_GONE) {
         if (Rando.switchsanity.isles.gone == 0) {
             return MovesBase[KONG_CHUNKY].special_moves & MOVECHECK_GONE;
+        } else if (Rando.switchsanity.isles.gone == 6) {
+            return MovesBase[KONG_DK].special_moves & MOVECHECK_GRAB;
         } else {
             return MovesBase[Rando.switchsanity.isles.gone - 1].instrument_bitfield & 1;
         }
@@ -52,21 +54,19 @@ int hasEnoughGBsMicrohint(int level_cap) {
 int ableToUseMonkeyport(int id) {
     if (Player) {
         if ((Player->obj_props_bitfield & 0x2000) == 0) {
-            if (Player->touching_object == 1) {
-                if (Player->standing_on_index == id) {
-                    int mport_kong = Rando.switchsanity.isles.monkeyport;
-                    if (mport_kong == 0) {
-                        // Set Monkeyport thing
-                        return (Player->characterID == 5) || (Rando.perma_lose_kongs);
-                    } else {
-                        if ((Player->characterID == monkeyport_kongs[mport_kong] + 2) || (Rando.perma_lose_kongs)) {
-                            if (mport_kong == 1) {
-                                // Blast
-                                createCollisionObjInstance(COLLISION_BBLAST, MAP_ISLES, 0);
-                            } else if (mport_kong == 2) {
-                                // Balloon
-                                createCollisionObjInstance(COLLISION_BABOON_BALLOON, 80, 200);	
-                            }
+            if (standingOnM2Object(id)) {
+                int mport_kong = Rando.switchsanity.isles.monkeyport;
+                if (mport_kong == 0) {
+                    // Set Monkeyport thing
+                    return (Player->characterID == 5) || (Rando.perma_lose_kongs);
+                } else {
+                    if ((Player->characterID == monkeyport_kongs[mport_kong] + 2) || (Rando.perma_lose_kongs)) {
+                        if (mport_kong == 1) {
+                            // Blast
+                            createCollisionObjInstance(COLLISION_BBLAST, MAP_ISLES, 0);
+                        } else if (mport_kong == 2) {
+                            // Balloon
+                            createCollisionObjInstance(COLLISION_BABOON_BALLOON, 80, 200);	
                         }
                     }
                 }
@@ -80,9 +80,7 @@ void IslesMonkeyportCode(behaviour_data* behaviour_pointer, int index) {
     int current_state = behaviour_pointer->current_state;
     if (current_state == 0) {
         if (!hasHelmProgMove(HELMPROG_MONKEYPORT)) {
-            behaviour_pointer->unk_60 = 1;
-            behaviour_pointer->unk_62 = 70;
-            behaviour_pointer->unk_66 = 255;
+            setObjectOpacity(behaviour_pointer, 70);
             behaviour_pointer->next_state = 5;
         } else {
             setScriptRunState(behaviour_pointer, 3, 300);
@@ -103,16 +101,20 @@ void IslesMonkeyportCode(behaviour_data* behaviour_pointer, int index) {
             }
         }
     } else if (current_state == 5) {
-        if (hasEnoughGBsMicrohint(7)) {
-            if (Player->touching_object == 1) {
-                if (Player->standing_on_index == index) {
+        if (hasHelmProgMove(HELMPROG_MONKEYPORT)) {
+            setObjectOpacity(behaviour_pointer, 255);
+            setScriptRunState(behaviour_pointer, 3, 300);
+            behaviour_pointer->next_state = 1;
+        } else {
+            if (hasEnoughGBsMicrohint(7)) {
+                if (standingOnM2Object(index)) {
                     PlayCutsceneFromModelTwoScript(behaviour_pointer, 24, 1, 0);
                     behaviour_pointer->next_state = 6;
                 }
             }
         }
     } else if (current_state == 6) {
-        if ((Player->touching_object != 1) || (Player->standing_on_index != index)) {
+        if (!standingOnM2Object(index)) {
             if (CutsceneActive != 1) {
                 behaviour_pointer->next_state = 5;
             }
@@ -145,9 +147,141 @@ void blastWarpContainer(maps map, int wrongCSEnabled) {
     initiateTransition_0(map, exit, 0, 0);
 }
 
-void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
+void activateGonePad(void) {
+    actorSpawnerData* spawner = ActorSpawnerPointer;
+    if (spawner) {
+        while (spawner) {
+            if (spawner->id < 9) { // Vine
+                spawner->can_hide_vine = 0;
+            }
+            spawner = spawner->next_spawner;
+            if (!spawner) {
+                break;
+            }
+        }
+    }
+    bonus_shown = 1;
+}
+
+#define GRAB_STATE 120
+
+void HelmLobbyGoneLeverCode(behaviour_data* behaviour_pointer, int index) {
     int current_state = behaviour_pointer->current_state;
+    if (current_state == 0) {
+        bonus_shown = 0;
+        behaviour_pointer->next_state = 1;
+    } else if (current_state == 1) {
+        unkObjFunction1(index, 1, 85);
+        unkObjFunction0(index, 1, 1);
+        setScriptRunState(behaviour_pointer, 3, 300);
+        behaviour_pointer->next_state = 2;
+        behaviour_pointer->unk_6F = 0;
+        unkObjFunction9(index, 1, 1);
+        displayImageOnObject(index, 1, 0, 0);
+        unkObjFunction7(index, 1, 0);
+    } else if (current_state == 2) {
+        if ((Player->obj_props_bitfield & 0x2000) == 0) {
+            if (Player->characterID == 2) {
+                if (standingOnM2Object(index)) {
+                    if (Player->standing_on_subposition == 2) {
+                        if (MovesBase[KONG_DK].special_moves & MOVECHECK_GRAB) {
+                            if (checkLeverAngle()) {
+                                float x = 0;
+                                float y = 0;
+                                float z = 0;
+                                getObjectPosition(index, 1, 1, &x, &y, &z);
+                                Player->grab_x = x;
+                                Player->grab_y = y;
+                                Player->grab_z = z;
+                                createCollision(0, Player, COLLISION_GRAB, 0, 0, *(int*)(0x807F621C),*(int*)(0x807F6220),*(int*)(0x807F6224));
+                                behaviour_pointer->counter_next = 1;
+                                behaviour_pointer->timer = 5;
+                            }
+                        } else {
+                            // Microhints
+                            behaviour_pointer->next_state = 7;
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (behaviour_pointer->counter == 1) {
+        if (behaviour_pointer->timer == 0) {
+            behaviour_pointer->counter_next = 0;
+        } else {
+            if (Player->control_state == GRAB_STATE) {
+                setScriptRunState(behaviour_pointer, 1, 0);
+                behaviour_pointer->next_state = 3;
+                behaviour_pointer->counter_next = 0;
+            }
+        }
+    }
+    if (current_state == 3) {
+        if (getAnimationTimer(Player) > 114) {
+            displayImageOnObject(index, 1, 1, 0);
+            unkObjFunction2(index, 1, 1);
+            playSFXFromObject(index, 459, 255, 127, 0, 0, 0.3f);
+            behaviour_pointer->next_state = 4;
+        }
+    } else if (current_state == 4) {
+        if (getAnimationTimer(Player) > 155) {
+            activateGonePad();
+            playSFXFromObject(index, 459, 255, 127, 0, 0, 0.3f);
+            unkObjFunction2(index, 1, 1);
+            behaviour_pointer->next_state = 5;
+        }
+    } else if (current_state == 5) {
+        if (!unkObjFunction8(index, 1)) {
+            displayImageOnObject(index, 1, 0, 0);
+            behaviour_pointer->next_state = 6;
+        }
+    } else if (current_state == 6) {
+        if (Player->control_state != GRAB_STATE) {
+            behaviour_pointer->next_state = 11;
+        }
+    } else if (current_state == 7) {
+        if (hasHelmProgMove(HELMPROG_GONE)) {
+            setObjectOpacity(behaviour_pointer, 255);
+            behaviour_pointer->next_state = 1;
+        } else {
+            if (hasEnoughGBsMicrohint(8)) {
+                if ((standingOnM2Object(index)) && (Player->standing_on_subposition == 2)) {
+                    PlayCutsceneFromModelTwoScript(behaviour_pointer, 3, 1, 0);
+                    behaviour_pointer->next_state = 8;
+                }
+            }
+        }
+    } else if (current_state == 8) {
+        if ((!standingOnM2Object(index)) || ((Player->standing_on_subposition != 2))) {
+            if (CutsceneActive != 1) {
+                behaviour_pointer->next_state = 7;
+            }
+        }
+    }
+    if ((current_state >= 2) && (current_state < 5)) {
+        if (Player->control_state != GRAB_STATE) {
+            displayImageOnObject(index, 1, 0, 0);
+            unkObjFunction10(index, 1, 0, 0);
+            unkObjFunction17(index, 1, 0);
+            unkObjFunction1(index, 1, 0);
+            unkObjFunction2(index, 1, 1);
+            behaviour_pointer->next_state = 10;
+        }
+    } else if (current_state == 10) {
+        unkObjFunction11(index, 1);
+        behaviour_pointer->next_state = 1;
+    }
+}
+
+void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
     int sub_type = Rando.switchsanity.isles.gone;
+    if (sub_type == 6) {
+        HelmLobbyGoneLeverCode(behaviour_pointer, index);
+        return;
+    }
+    int current_state = behaviour_pointer->current_state;
     if (current_state == 0) {
         if (sub_type == 0) { // Is Gone
             if (isBonus(PreviousMap)) {
@@ -160,9 +294,7 @@ void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
         }
         bonus_shown = 0;
         if (!hasHelmProgMove(HELMPROG_GONE)) {
-            behaviour_pointer->unk_60 = 1;
-            behaviour_pointer->unk_62 = 70;
-            behaviour_pointer->unk_66 = 255;
+            setObjectOpacity(70);
             behaviour_pointer->next_state = 5;
         } else {
             setScriptRunState(behaviour_pointer, 3, 300);
@@ -171,17 +303,15 @@ void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
     }
     if (current_state == 1) {
         if (Player->characterID == getHelmLobbyGoneReqKong()) {
-            if (Player->touching_object == 1) {
-                if (Player->standing_on_index == index) {
-                    if (hasHelmProgMove(HELMPROG_GONE)) {
-                        if (sub_type == 0) {
-                            createCollisionObjInstance(COLLISION_GORILLA_GONE, -1, 0);
-                        } else if (Player->control_state == 103) {
-                            setScriptRunState(behaviour_pointer, 1, 0);
-                            behaviour_pointer->next_state = 7;
-                        }
-                        
+            if (standingOnM2Object(index)) {
+                if (hasHelmProgMove(HELMPROG_GONE)) {
+                    if (sub_type == 0) {
+                        createCollisionObjInstance(COLLISION_GORILLA_GONE, -1, 0);
+                    } else if (Player->control_state == 103) {
+                        setScriptRunState(behaviour_pointer, 1, 0);
+                        behaviour_pointer->next_state = 7;
                     }
+                    
                 }
             }
         }
@@ -214,16 +344,20 @@ void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
             }
         }
     } else if (current_state == 5) {
-        if (hasEnoughGBsMicrohint(8)) {
-            if (Player->touching_object == 1) {
-                if (Player->standing_on_index == index) {
+        if (hasHelmProgMove(HELMPROG_GONE)) {
+            setObjectOpacity(behaviour_pointer, 255);
+            setScriptRunState(behaviour_pointer, 3, 300);
+            behaviour_pointer->next_state = 1;
+        } else {
+            if (hasEnoughGBsMicrohint(8)) {
+                if (standingOnM2Object(index)) {
                     PlayCutsceneFromModelTwoScript(behaviour_pointer, 3, 1, 0);
                     behaviour_pointer->next_state = 6;
                 }
             }
         }
     } else if (current_state == 6) {
-        if ((Player->touching_object != 1) || (Player->standing_on_index != index)) {
+        if (!standingOnM2Object(index)) {
             if (CutsceneActive != 1) {
                 behaviour_pointer->next_state = 5;
             }
@@ -232,19 +366,7 @@ void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
         // Instrument specific stuff
         if (CutsceneActive != 1) {
             // Show Vines
-            actorSpawnerData* spawner = ActorSpawnerPointer;
-            if (spawner) {
-                while (spawner) {
-                    if (spawner->id < 9) { // Vine
-                        spawner->can_hide_vine = 0;
-                    }
-                    spawner = spawner->next_spawner;
-                    if (!spawner) {
-                        break;
-                    }
-                }
-            }
-            bonus_shown = 1;
+            activateGonePad();
             behaviour_pointer->timer = 15;
             behaviour_pointer->next_state = 2;
         }

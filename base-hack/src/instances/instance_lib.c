@@ -11,15 +11,19 @@
 
 #include "../../include/common.h"
 
+void setObjectOpacity(behaviour_data* behaviour_pointer, int opacity) {
+	behaviour_pointer->unk_60 = 1;
+	behaviour_pointer->unk_62 = opacity;
+	behaviour_pointer->unk_66 = 255;
+}
+
 void hideObject(behaviour_data* behaviour_pointer) {
 	/**
 	 * @brief Hide object model 2 item and make it intangible
 	 * 
 	 * @param behaviour_pointer Behaviour Pointer of Object
 	 */
-	behaviour_pointer->unk_60 = 1;
-	behaviour_pointer->unk_62 = 0;
-	behaviour_pointer->unk_66 = 255;
+	setObjectOpacity(behaviour_pointer, 0);
 	behaviour_pointer->unk_70 = 0;
 	behaviour_pointer->unk_71 = 0;
 	setScriptRunState(behaviour_pointer,2,0);
@@ -83,6 +87,10 @@ int checkControlState(int target_control_state) {
 	return 0;
 }
 
+int standingOnM2Object(int index) {
+	return (Player->touching_object == 1) && (Player->standing_on_index == index);
+}
+
 int checkSlamLocation(int kong, int key, int id) {
 	/**
 	 * @brief Check slam location
@@ -94,11 +102,9 @@ int checkSlamLocation(int kong, int key, int id) {
 	if (Character == kong) {
 		if (Player) {
 			if ((Player->obj_props_bitfield & 0x2000) == 0) {
-				if (Player->touching_object == 1) {
-					if (id == Player->standing_on_index) {
-						if (Player->standing_on_subposition == key) {
-							return 1;
-						}
+				if (standingOnM2Object(id)) {
+					if (Player->standing_on_subposition == key) {
+						return 1;
 					}
 				}
 			}

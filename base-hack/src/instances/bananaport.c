@@ -112,47 +112,45 @@ void bananaportGenericCode(behaviour_data* behaviour, int index, int id) {
 		}
 	} else if (behaviour->current_state == 1) {
 		if (Player) {
-			if (Player->touching_object == 1) {
-				if (Player->standing_on_index == index) {
-					if (Player->standing_on_subposition == 2) {
-						if (checkFlag(selected_warp->active_flag, FLAGTYPE_PERMANENT) == 0) {
-							// Play Warp Tagging Effect
-							if (Character < 5) {
-								// Sparkles
-								playSFXFromObject(index, 612, 255, 127, 0, 40, 0.3f);
-								behaviour->unk_60 = 0;
-								behaviour->unk_62 = 0;
-								behaviour->unk_66 = 5;
-								setPermFlag(selected_warp->active_flag);
-								displayWarpSparkles(behaviour, index, 0, 0);
-								// Cutscene
-								if (checkFlag(FLAG_FTT_BANANAPORT, FLAGTYPE_PERMANENT) == 0) {
-									*(char*)(0x807F693F) = 1;
-									PlayCutsceneFromModelTwoScript(behaviour,16,1,0);
-									if (float_index == -1) {
-										*(char*)(0x807F6902) = 1;
-										behaviour->counter_next = 1;
-									}
-									setPermFlag(FLAG_FTT_BANANAPORT);
+			if (standingOnM2Object(index)) {
+				if (Player->standing_on_subposition == 2) {
+					if (checkFlag(selected_warp->active_flag, FLAGTYPE_PERMANENT) == 0) {
+						// Play Warp Tagging Effect
+						if (Character < 5) {
+							// Sparkles
+							playSFXFromObject(index, 612, 255, 127, 0, 40, 0.3f);
+							behaviour->unk_60 = 0;
+							behaviour->unk_62 = 0;
+							behaviour->unk_66 = 5;
+							setPermFlag(selected_warp->active_flag);
+							displayWarpSparkles(behaviour, index, 0, 0);
+							// Cutscene
+							if (checkFlag(FLAG_FTT_BANANAPORT, FLAGTYPE_PERMANENT) == 0) {
+								*(char*)(0x807F693F) = 1;
+								PlayCutsceneFromModelTwoScript(behaviour,16,1,0);
+								if (float_index == -1) {
+									*(char*)(0x807F6902) = 1;
+									behaviour->counter_next = 1;
 								}
+								setPermFlag(FLAG_FTT_BANANAPORT);
 							}
-						} else {
-							if (checkFlag(tied_warp->active_flag, FLAGTYPE_PERMANENT)) {
-								// Execute Warp
-								if (Character < 5) {
-									if (selected_warp->warp_map == tied_warp->warp_map) {
-										setObjectScriptState(tied_warp->id, 20, 0);
-										int tied_index = convertIDToIndex(tied_warp->id);
-										if (tied_index > -1) {
-											ModelTwoData* tied_object = getObjectArrayAddr(m2location,0x90,tied_index);
-											behaviour_data* tied_behaviour = (behaviour_data*)tied_object->behaviour_pointer;
-											if (tied_behaviour) {
-												setScriptRunState(tied_behaviour,1,0);
-											}
+						}
+					} else {
+						if (checkFlag(tied_warp->active_flag, FLAGTYPE_PERMANENT)) {
+							// Execute Warp
+							if (Character < 5) {
+								if (selected_warp->warp_map == tied_warp->warp_map) {
+									setObjectScriptState(tied_warp->id, 20, 0);
+									int tied_index = convertIDToIndex(tied_warp->id);
+									if (tied_index > -1) {
+										ModelTwoData* tied_object = getObjectArrayAddr(m2location,0x90,tied_index);
+										behaviour_data* tied_behaviour = (behaviour_data*)tied_object->behaviour_pointer;
+										if (tied_behaviour) {
+											setScriptRunState(tied_behaviour,1,0);
 										}
-									} else {
-										createCollision(0,Player,COLLISION_MAPWARP,tied_warp->warp_map,tied_warp->tied_exit,0,0,0);
 									}
+								} else {
+									createCollision(0,Player,COLLISION_MAPWARP,tied_warp->warp_map,tied_warp->tied_exit,0,0,0);
 								}
 							}
 						}

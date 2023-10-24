@@ -641,7 +641,8 @@ class Spoiler:
                     SwitchType.SlamSwitch: "Donkey Slam Switch",
                     SwitchType.GunSwitch: "Coconut Switch",
                     SwitchType.InstrumentPad: "Bongos Pad",
-                    SwitchType.PadMove: "Baboon Blast Pad"
+                    SwitchType.PadMove: "Baboon Blast Pad",
+                    SwitchType.MiscActivator: "Gorilla Grab Lever",
                 },
                 Kongs.diddy: {
                     SwitchType.SlamSwitch: "Diddy Slam Switch",

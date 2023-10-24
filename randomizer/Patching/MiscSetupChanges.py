@@ -6,11 +6,12 @@ import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.SwitchTypes import SwitchType
+from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Settings import DamageAmount, HardModeSelected, MiscChangesSelected
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import LevelMapTable
-from randomizer.Patching.Lib import IsItemSelected, float_to_hex
+from randomizer.Patching.Lib import IsItemSelected, float_to_hex, intf_to_float
 from randomizer.Patching.Patcher import LocalROM
 
 
@@ -475,6 +476,7 @@ def updateSwitchsanity(spoiler):
             SwitchType.GunSwitch: [0x129, 0x126, 0x128, 0x127, 0x125],
             SwitchType.InstrumentPad: [0xA8, 0xA9, 0xAC, 0xAA, 0xAB],
             SwitchType.PadMove: [0x97, 0xD4, 0x10C, 0x10B, 0x10A],
+            SwitchType.MiscActivator: [0x28]
         }
         switchsanity_maps = []
         # Get list of maps which contain a switch affected by switchsanity, to reduce references to pointer table
@@ -516,3 +518,9 @@ def updateSwitchsanity(spoiler):
                         new_obj = switches[switch_type][switch_offset]
                         ROM_COPY.seek(item_start + 0x28)
                         ROM_COPY.writeMultipleBytes(new_obj, 2)
+                        # if slot == Switches.IslesHelmLobbyGone and switch_type == SwitchType.MiscActivator:
+                        #     # Rotate Grab Lever
+                        #     ROM_COPY.seek(item_start + 0x18)
+                        #     ROM_COPY.writeMultipleBytes(0, 4)
+                        #     ROM_COPY.writeMultipleBytes(0, 4)
+                        #     ROM_COPY.writeMultipleBytes(0, 4)

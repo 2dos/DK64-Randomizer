@@ -57,18 +57,16 @@ void CrownPadGenericCode(behaviour_data* behaviour, int index, int id, int crown
 	if (Player) {
 		if ((Player->obj_props_bitfield & 0x2000) == 0) {
 			if ((Player->characterID >= 2) && (Player->characterID <= 6)) {
-				if (Player->touching_object == 1) {
-					if (index == Player->standing_on_index) {
-						if (!checkFlag(FLAG_FTT_CROWNPAD, FLAGTYPE_PERMANENT)) {
-							setPermFlag(FLAG_FTT_CROWNPAD);
-							*(char*)(0x807F693F) = 1;
-							PlayCutsceneFromModelTwoScript(behaviour, 24, 1, 0);
-							behaviour->next_state = 2;
-						}
-						if (Player->standing_on_subposition == 2) {
-							if (behaviour->current_state >= 0) {
-								createCollision(0, Player, COLLISION_BATTLE_CROWN, crown_maps_flags[crown_offset], 2, collisionPos[0], collisionPos[1], collisionPos[2]);
-							}
+				if (standingOnM2Object(index)) {
+					if (!checkFlag(FLAG_FTT_CROWNPAD, FLAGTYPE_PERMANENT)) {
+						setPermFlag(FLAG_FTT_CROWNPAD);
+						*(char*)(0x807F693F) = 1;
+						PlayCutsceneFromModelTwoScript(behaviour, 24, 1, 0);
+						behaviour->next_state = 2;
+					}
+					if (Player->standing_on_subposition == 2) {
+						if (behaviour->current_state >= 0) {
+							createCollision(0, Player, COLLISION_BATTLE_CROWN, crown_maps_flags[crown_offset], 2, collisionPos[0], collisionPos[1], collisionPos[2]);
 						}
 					}
 				}
