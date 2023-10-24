@@ -1,6 +1,6 @@
 <div>
     {% for item in spoiler %}
-        {% if spoiler[item] != {} and item != "Settings" and item != "Paths" and item != "Spoiler Hints Data"%}
+        {% if spoiler[item] != {} and item != "Settings" and item != "Spoiler Hints Data"%}
             <div>
                 <div class="spoiler-head collapsed"
                      id="spoilerhead-{{ item.lower().replace(' ','_').replace('(','').replace(')','') }}"
@@ -62,7 +62,7 @@
                                     </table>
                                 </div>
                             {% endfor %}
-                        {% elif item in ("Cosmetics","Requirements","Bosses","Items","Items (Sorted by Item)","Shuffled Exits (Sorted by destination)","Colored Banana Locations","Wrinkly Door Locations","T&S Portal Locations","Enemy Placement") %}
+                        {% elif item in ("Cosmetics","Requirements","Bosses","Items","Items (Sorted by Item)","Shuffled Exits (Sorted by destination)","Colored Banana Locations","Wrinkly Door Locations","T&S Portal Locations","Enemy Placement","Paths") %}
                             {# Attributes with sub-dicts #}
                             {% for sub_group in spoiler[item] %}
                                 {% if spoiler[item][sub_group] != {} %}

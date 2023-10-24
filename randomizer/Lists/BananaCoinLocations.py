@@ -9,6 +9,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import DamageAmount
+from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Maps import Maps
 
@@ -228,7 +229,7 @@ BananaCoinGroupList = {
             name="On top of K. Lumsy's prison",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.KremIsle,
-            logic=lambda l: (l.monkeyport and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko)))
+            logic=lambda l: (l.hasMoveSwitchsanity(Switches.IslesMonkeyport) and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko)))
             or (l.GalleonKey and Events.IslesDiddyBarrelSpawn in l.Events and l.isdiddy and l.jetpack),
             locations=[
                 [1.0, 3343, 712, 3376],
@@ -508,7 +509,7 @@ BananaCoinGroupList = {
             name="In the back room (left)",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.AngryAztecLobby,
-            logic=lambda l: l.feather,
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False),
             locations=[
                 [1.0, 1148, 0, 624],
                 [1.0, 1126, 0, 632],
@@ -521,7 +522,7 @@ BananaCoinGroupList = {
             name="In the back room (right)",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.AngryAztecLobby,
-            logic=lambda l: l.feather,
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False),
             locations=[
                 [1.0, 895, 0, 640],
                 [1.0, 920, 0, 658],
@@ -1755,7 +1756,7 @@ BananaCoinGroupList = {
             name="Near Rambi Box",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.JapesBeyondCoconutGate2,
-            logic=lambda l: l.coconut or l.phasewalk,
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.phasewalk,
             locations=[
                 [1.0, 1703.703125, 280.0, 4452.66162109375],
                 [1.0, 1654.2239990234375, 280.0, 4448.4892578125],
@@ -2992,7 +2993,7 @@ BananaCoinGroupList = {
             name="Blueprint Cavern",
             konglist=[Kongs.donkey, Kongs.tiny],
             region=Regions.AngryAztecOasis,
-            logic=lambda l: ((l.coconut and l.donkey) or l.phasewalk) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)),
+            logic=lambda l: (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) or l.phasewalk) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)),
             locations=[
                 [1.0, 1240.0001220703125, 120.0, 747.2548217773438],
                 [1.0, 1219.4495849609375, 120.0, 730.4656372070312],

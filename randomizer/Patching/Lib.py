@@ -7,6 +7,8 @@ from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union
 
 import js
 from randomizer.Enums.ScriptTypes import ScriptTypes
+from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Items import Items
 
@@ -192,6 +194,20 @@ icon_db = {
     0xAE: "fairy_tick",
     0xAF: "wrinkly",
 }
+
+
+class SwitchInfo:
+    """Store information regarding a switch."""
+
+    def __init__(self, name: str, kong: Kongs, switch_type: SwitchType, rom_offset: int, map_id: int, ids: list, tied_settings: list = []):
+        """Initialize with given parameters."""
+        self.name = name
+        self.kong = kong
+        self.switch_type = switch_type
+        self.rom_offset = rom_offset
+        self.map_id = map_id
+        self.ids = ids
+        self.tied_settings = tied_settings
 
 
 def float_to_hex(f: Union[float, int]) -> str:

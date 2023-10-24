@@ -14,6 +14,7 @@ const short normal_key_flags[] = {
 const unsigned short slam_flags[] = {FLAG_ITEM_SLAM_0, FLAG_ITEM_SLAM_1, FLAG_ITEM_SLAM_2, FLAG_SHOPMOVE_SLAM_0, FLAG_SHOPMOVE_SLAM_1, FLAG_SHOPMOVE_SLAM_2};
 const unsigned short belt_flags[] = {FLAG_ITEM_BELT_0, FLAG_ITEM_BELT_1, FLAG_SHOPMOVE_BELT_0, FLAG_SHOPMOVE_BELT_1};
 const unsigned short instrument_flags[] = {FLAG_ITEM_INS_0, FLAG_ITEM_INS_1, FLAG_ITEM_INS_2, FLAG_SHOPMOVE_INS_0, FLAG_SHOPMOVE_INS_1, FLAG_SHOPMOVE_INS_2};
+const unsigned char kong_pellets[] = {48,36,42,43,38};
 const rgb colorblind_colors[15] = {
     // Protan
     {.red=0x27, .green=0x27, .blue=0x27}, // DK

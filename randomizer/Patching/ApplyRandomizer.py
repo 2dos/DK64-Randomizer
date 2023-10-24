@@ -8,6 +8,9 @@ from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAm
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Switches import Switches
+from randomizer.Enums.SwitchTypes import SwitchType
+from randomizer.Enums.Kongs import Kongs
 from randomizer.Lists.EnemyTypes import Enemies, EnemySelector
 from randomizer.Lists.HardMode import HardSelector
 from randomizer.Lists.QoL import QoLSelector
@@ -27,7 +30,7 @@ from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.Lib import setItemReferenceName
-from randomizer.Patching.MiscSetupChanges import randomize_setup, updateRandomSwitches
+from randomizer.Patching.MiscSetupChanges import randomize_setup, updateRandomSwitches, updateSwitchsanity
 from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
@@ -241,6 +244,27 @@ def patching_response(spoiler):
         ROM_COPY.write(door_checks[spoiler.settings.coin_door_item])
         ROM_COPY.seek(sav + 0x4F)
         ROM_COPY.write(spoiler.settings.coin_door_item_count)
+
+    if spoiler.settings.switchsanity:
+        for slot in spoiler.settings.switchsanity_data:
+            ROM_COPY.seek(sav + spoiler.settings.switchsanity_data[slot].rom_offset)
+            pad_kong = spoiler.settings.switchsanity_data[slot].kong
+            pad_type = spoiler.settings.switchsanity_data[slot].switch_type
+            if slot == Switches.IslesMonkeyport:
+                if pad_kong == Kongs.lanky:
+                    ROM_COPY.writeMultipleBytes(2, 1)
+                elif pad_kong == Kongs.donkey:
+                    ROM_COPY.writeMultipleBytes(1, 1)
+            elif slot == Switches.IslesHelmLobbyGone:
+                if pad_type == SwitchType.MiscActivator:
+                    if pad_kong == Kongs.donkey:
+                        ROM_COPY.writeMultipleBytes(6, 1)
+                    elif pad_kong == Kongs.diddy:
+                        ROM_COPY.writeMultipleBytes(7, 1)
+                elif pad_type != SwitchType.PadMove:
+                    ROM_COPY.writeMultipleBytes(int(pad_kong) + 1, 1)
+            else:
+                ROM_COPY.writeMultipleBytes(int(pad_kong) + 1, 1)
 
     # Camera unlocked
     given_moves = []
@@ -491,6 +515,7 @@ def patching_response(spoiler):
     PlaceFairies(spoiler)
     filterEntranceType()
     replaceIngameText(spoiler)
+    updateSwitchsanity(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
     PushItemLocations(spoiler)
 

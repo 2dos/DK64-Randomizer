@@ -15,6 +15,8 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import HelmDoorItem, HelmSetting, LogicType, MicrohintsEnabled, MoveRando, ShockwaveStatus, ShuffleLoadingZones, SpoilerHints, WinCondition, WrinklyHints
 from randomizer.Enums.Types import Types
+from randomizer.Enums.Switches import Switches
+from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import PreGivenLocations, SharedShopLocations, TrainingBarrelLocations
 from randomizer.Lists.MapsAndExits import GetMapId
@@ -448,10 +450,11 @@ def compileHints(spoiler: Spoiler) -> bool:
     useless_locations = {Items.HideoutHelmKey: [], Kongs.diddy: [], Kongs.lanky: [], Kongs.tiny: [], Kongs.chunky: []}
     # Your training in Gorilla Gone, Monkeyport, and Vines are always pointless hints if Key 8 is in Helm, so let's not
     if spoiler.settings.key_8_helm and Locations.HelmKey in spoiler.woth_paths.keys():
+        useless_moves = [Items.Vines]
+        if not spoiler.settings.switchsanity:
+            useless_moves.extend([Items.Monkeyoprt, Items.GorillaGone])
         useless_locations[Items.HideoutHelmKey] = [
-            loc
-            for loc in spoiler.woth_paths[Locations.HelmKey]
-            if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in [Items.GorillaGone, Items.Monkeyport, Items.Vines]
+            loc for loc in spoiler.woth_paths[Locations.HelmKey] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in useless_moves
         ]
         useless_locations[Items.HideoutHelmKey].append(Locations.HelmKey)  # Also don't count the known location of the key itself
     # Your training in moves which you know are always needed beat K. Rool are pointless to hint
@@ -1897,14 +1900,31 @@ def resetHintList():
             hint.priority = hint.original_priority
 
 
+def getHelmProgItems(spoiler: Spoiler) -> list:
+    """Get the items needed to progress to helm."""
+    base_list = [Items.Monkeyport, Items.GorillaGone]
+    if spoiler.settings.switchsanity:
+        switch_item_data = {
+            SwitchType.PadMove: [Items.BaboonBlast, Items.SimianSpring, Items.BaboonBalloon, Items.Monkeyport, Items.GorillaGone],
+            SwitchType.InstrumentPad: [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle],
+            SwitchType.MiscActivator: [Items.GorillaGrab, Items.ChimpyCharge],
+        }
+        switches = [Switches.IslesMonkeyport, Switches.IslesHelmLobbyGone]
+        for switch_index, switch in enumerate(switches):
+            data = spoiler.settings.switchsanity_data[switch]
+            base_list[switch_index] = switch_item_data[data.switch_type][data.kong]
+    return base_list
+
+
 def compileMicrohints(spoiler: Spoiler) -> None:
     """Create guaranteed level + kong hints for various items."""
     spoiler.microhints = {}
     if spoiler.settings.microhints_enabled != MicrohintsEnabled.off:
         slam_levels = []
+        helm_prog_items = getHelmProgItems(spoiler)
         microhint_categories = {
-            MicrohintsEnabled.base: [Items.Monkeyport, Items.GorillaGone, Items.ProgressiveSlam],
-            MicrohintsEnabled.all: [Items.Monkeyport, Items.GorillaGone, Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle, Items.ProgressiveSlam],
+            MicrohintsEnabled.base: helm_prog_items.copy() + [Items.ProgressiveSlam],
+            MicrohintsEnabled.all: helm_prog_items.copy() + [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle, Items.ProgressiveSlam],
         }
         items_needing_microhints = microhint_categories[spoiler.settings.microhints_enabled].copy()
         # Loop through locations looking for the items that need a microhint

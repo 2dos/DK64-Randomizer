@@ -37,7 +37,7 @@
 | At the bottom of Aztec steps | 5 |  | 
 | In little alcove in DK's ear in front of Aztec lobby | 3 |  | 
 | On top of Aztec lobby | 4 |  | 
-| On top of K. Lumsy's prison | 4 | (l.monkeyport and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko))) | 
+| On top of K. Lumsy's prison | 4 | (l.hasMoveSwitchsanity(Switches.IslesMonkeyport) and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko))) | 
 | On top of Fungi lobby | 3 |  | 
 | Hanging off the edge behind Fungi lobby | 3 |  | 
 | Around palm tree on lone fairy island | 5 |  | 
@@ -89,8 +89,8 @@
 | Around the front pillar | 4 |  | 
 | Around the back pillar | 4 |  | 
 | On the left stairs | 3 |  | 
-| In the back room (left) | 3 | l.feather | 
-| In the back room (right) | 3 | l.feather | 
+| In the back room (left) | 3 | l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) | 
+| In the back room (right) | 3 | l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) | 
 </details>
 <details>
 <summary>Frantic Factory Lobby</summary>
@@ -223,7 +223,7 @@
 | Start of first tunnel | 3 |  | 
 | Diddy Cavern (1) | 3 |  | 
 | Fairy Pool | 5 | l.swim | 
-| Near Rambi Box | 3 | l.coconut or l.phasewalk | 
+| Near Rambi Box | 3 | l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.phasewalk | 
 | Diddy Cavern (2) | 3 |  | 
 | Near Diddy Kasplat | 3 |  | 
 | Near Tiny Kasplat | 3 |  | 
@@ -340,7 +340,7 @@
 | Under Oasis Tag | 4 |  | 
 | Around Totem W5 | 5 |  | 
 | Around Tiny Temple | 4 |  | 
-| Blueprint Cavern | 3 | ((l.coconut and l.donkey) or l.phasewalk) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)) | 
+| Blueprint Cavern | 3 | (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) or l.phasewalk) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny)) | 
 </details>
 <details>
 <summary>Aztec Baboon Blast</summary>

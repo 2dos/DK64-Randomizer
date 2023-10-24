@@ -5,6 +5,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Switches import Switches
 from randomizer.LogicClasses import Balloon, ColoredBananaGroup
 
 ColoredBananaGroupList = [
@@ -1154,7 +1155,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.JapesBeyondCoconutGate2,
         vanilla=True,
-        logic=lambda l: l.coconut,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.JapesRambi, False),
         locations=[[5, 1.0, 1703.5697021484375, 280.0, 4392.17626953125]],
     ),
     ColoredBananaGroup(

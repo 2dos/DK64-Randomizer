@@ -8,6 +8,7 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import ShuffleLoadingZones
+from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
@@ -35,10 +36,10 @@ LogicRegions = {
         Event(Events.GalleonEntered, lambda l: True),
         Event(Events.GalleonLankySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.lanky and (l.swim or l.settings.high_req)),
         Event(Events.GalleonTinySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.tiny and (l.swim or l.settings.high_req)),
-        Event(Events.LighthouseGateOpened, lambda l: l.coconut and l.donkey),
+        Event(Events.LighthouseGateOpened, lambda l: l.hasMoveSwitchsanity(Switches.GalleonLighthouse, False)),
         # Gate to shipyard always open in rando
-        Event(Events.ShipyardGateOpened, lambda l: True),
-        Event(Events.GalleonCannonRoomOpened, lambda l: l.pineapple and l.ischunky),
+        Event(Events.ShipyardGateOpened, lambda l: True),  # l.hasMoveSwitchsanity(Switches.GalleonShipwreck, False)
+        Event(Events.GalleonCannonRoomOpened, lambda l: l.hasMoveSwitchsanity(Switches.GalleonCannonGame, False)),
         Event(Events.GalleonW1aTagged, lambda l: True),
         Event(Events.GalleonW2aTagged, lambda l: True),
     ], [

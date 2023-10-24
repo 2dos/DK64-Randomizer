@@ -653,6 +653,9 @@ void initHack(int source) {
 				writeFunction(0x806B26A0, &fireballEnemyDeath);
 				writeFunction(0x806BB310, &rulerEnemyDeath);
 			}
+
+			initSwitchsanityChanges();
+
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0
 			*(unsigned char*)(0x8064AD01) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[2]];

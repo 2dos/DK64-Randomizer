@@ -139,6 +139,8 @@ extern void unkObjFunction13(int unk0, int unk1, int unk2);
 extern void unkObjFunction14(int unk0);
 extern void unkObjFunction15(int unk0, int x, int y, int z);
 extern void unkObjFunction16(int unk0, int unk1, short* unk2, float* unk3, char* unk4);
+extern void unkObjFunction17(int id, int unk0, int unk1);
+extern int checkLeverAngle(void);
 
 extern int touchingModel2Object(int id);
 extern int GetKongUnlockedFlag(int actor_type, int kong_index);

@@ -6,6 +6,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Switches import Switches
 from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
@@ -16,7 +17,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: l.pineapple or l.phasewalk, None, 4),
     ],
     Regions.AngryAztecOasis: [
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: (l.coconut or l.phasewalk) and l.strongKong, None, 2),
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) or l.phasewalk) and l.strongKong, None, 2),
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 3),
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 3),
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),

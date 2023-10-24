@@ -5,11 +5,13 @@ import random
 import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.SwitchTypes import SwitchType
+from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Settings import DamageAmount, HardModeSelected, MiscChangesSelected
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import LevelMapTable
-from randomizer.Patching.Lib import IsItemSelected, float_to_hex
+from randomizer.Patching.Lib import IsItemSelected, float_to_hex, intf_to_float
 from randomizer.Patching.Patcher import LocalROM
 
 
@@ -458,3 +460,81 @@ def updateRandomSwitches(spoiler):
                                 if item_type in switches[kong]:
                                     ROM_COPY.seek(item_start + 0x28)
                                     ROM_COPY.writeMultipleBytes(switches[kong][switch_level], 2)
+
+
+def updateSwitchsanity(spoiler):
+    """Update setup to account for switchsanity."""
+    if spoiler.settings.switchsanity:
+        ROM_COPY = LocalROM()
+        switches = {
+            SwitchType.SlamSwitch: [
+                0x94,
+                0x16C,
+                0x167,  # DK
+                0x93,
+                0x16B,
+                0x166,  # Diddy
+                0x95,
+                0x16D,
+                0x168,  # Lanky
+                0x96,
+                0x16E,
+                0x169,  # Tiny
+                0xB8,
+                0x16A,
+                0x165,  # Chunky
+            ],
+            SwitchType.GunSwitch: [0x129, 0x126, 0x128, 0x127, 0x125],
+            SwitchType.InstrumentPad: [0xA8, 0xA9, 0xAC, 0xAA, 0xAB],
+            SwitchType.PadMove: [0x97, 0xD4, 0x10C, 0x10B, 0x10A],
+            SwitchType.MiscActivator: [0x28, 0xC3],
+        }
+        switchsanity_maps = []
+        # Get list of maps which contain a switch affected by switchsanity, to reduce references to pointer table
+        for slot in spoiler.settings.switchsanity_data:
+            map_id = spoiler.settings.switchsanity_data[slot].map_id
+            if map_id not in switchsanity_maps:
+                switchsanity_maps.append(map_id)
+        for map_id in switchsanity_maps:
+            # Get list of ids of objects in map which are affected by switchsanity
+            ids_in_map = []
+            for slot in spoiler.settings.switchsanity_data:
+                if map_id == spoiler.settings.switchsanity_data[slot].map_id:
+                    obj_ids = spoiler.settings.switchsanity_data[slot].ids
+                    ids_in_map.extend(obj_ids)
+            # Handle setup
+            file_start = js.pointer_addresses[9]["entries"][map_id]["pointing_to"]
+            ROM_COPY.seek(file_start)
+            model2_count = int.from_bytes(ROM_COPY.readBytes(4), "big")
+            for model2_item in range(model2_count):
+                item_start = file_start + 4 + (model2_item * 0x30)
+                ROM_COPY.seek(item_start + 0x2A)
+                item_id = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                if item_id in ids_in_map:
+                    switch_kong = None
+                    switch_type = None
+                    switch_offset = None
+                    switch_slot = None
+                    for slot in spoiler.settings.switchsanity_data:
+                        if map_id == spoiler.settings.switchsanity_data[slot].map_id:
+                            if item_id in spoiler.settings.switchsanity_data[slot].ids:
+                                switch_kong = spoiler.settings.switchsanity_data[slot].kong
+                                switch_type = spoiler.settings.switchsanity_data[slot].switch_type
+                                switch_offset = int(switch_kong)
+                                switch_slot = slot
+                                if switch_type == SwitchType.SlamSwitch:
+                                    ROM_COPY.seek(item_start + 0x28)
+                                    old_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                                    old_level = switches[SwitchType.SlamSwitch].index(old_type) % 3
+                                    switch_offset = (3 * int(switch_kong)) + old_level
+                    if switch_kong is not None and switch_type is not None and switch_offset is not None:
+                        new_obj = switches[switch_type][switch_offset]
+                        ROM_COPY.seek(item_start + 0x28)
+                        ROM_COPY.writeMultipleBytes(new_obj, 2)
+                        if switch_slot == Switches.IslesHelmLobbyGone and switch_type == SwitchType.MiscActivator:
+                            if switch_kong == Kongs.diddy:
+                                ROM_COPY.seek(item_start + 0xC)
+                                ROM_COPY.writeMultipleBytes(0x3F400000, 4)
+                            # elif switch_kong == Kongs.donkey:
+                            #     ROM_COPY.seek(item_start + 0x1C)
+                            #     ROM_COPY.writeMultipleBytes(0, 4)

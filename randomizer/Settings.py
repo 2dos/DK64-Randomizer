@@ -22,6 +22,8 @@ from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import *
 from randomizer.Enums.Types import Types
+from randomizer.Enums.Switches import Switches
+from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import (
     ChunkyMoveLocations,
@@ -36,7 +38,7 @@ from randomizer.Lists.Location import (
 )
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
-from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Patching.Lib import IsItemSelected, SwitchInfo
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
 from version import whl_hash
@@ -233,6 +235,8 @@ class Settings:
         self.kasplat_rando_setting = None
         self.puzzle_rando = None
         self.shuffle_shops = None
+        self.switchsanity = None
+        self.switchsanity_data = {}
         self.extreme_debugging = False  # Use when you want to know VERY specifically where things fail in the fill - unnecessarily slows seed generation!
 
         # The major setting for item randomization
@@ -566,6 +570,48 @@ class Settings:
         else:
             self.training_barrels = TrainingBarrels.shuffled
         self.starting_moves_count = self.starting_moves_count + len(self.starting_move_list_selected)
+
+        # Switchsanity handling
+        self.switchsanity_data = {
+            Switches.IslesMonkeyport: SwitchInfo("Isles Monkeyport Pad", Kongs.tiny, SwitchType.PadMove, 0x1C6, Maps.Isles, [0x38]),
+            Switches.IslesHelmLobbyGone: SwitchInfo("Helm Lobby Gone Pad", Kongs.chunky, SwitchType.PadMove, 0x1C7, Maps.HideoutHelmLobby, [3]),
+            Switches.IslesAztecLobbyFeather: SwitchInfo("Aztec Lobby Feather Switch", Kongs.tiny, SwitchType.GunSwitch, 0x1C8, Maps.AngryAztecLobby, [16]),
+            Switches.IslesFungiLobbyFeather: SwitchInfo("Forest Lobby Feather Switch", Kongs.tiny, SwitchType.GunSwitch, 0x1C9, Maps.FungiForestLobby, [5]),
+            Switches.IslesSpawnRocketbarrel: SwitchInfo("Isles Main Trombone Pad", Kongs.lanky, SwitchType.InstrumentPad, 0x1CA, Maps.Isles, [0x31]),
+            Switches.JapesFeather: SwitchInfo("Japes Hive Area Switches", Kongs.tiny, SwitchType.GunSwitch, 0x1CB, Maps.JungleJapes, [0x34, 0x35]),
+            Switches.JapesRambi: SwitchInfo("Japes Switch to Rambi", Kongs.donkey, SwitchType.GunSwitch, 0x1CC, Maps.JungleJapes, [0x123]),
+            Switches.JapesPainting: SwitchInfo("Japes Switch to Painting", Kongs.diddy, SwitchType.GunSwitch, 0x1CD, Maps.JungleJapes, [40]),
+            Switches.JapesDiddyCave: SwitchInfo("Japes Diddy Cave Switches", Kongs.diddy, SwitchType.GunSwitch, 0x1CE, Maps.JungleJapes, [0x29, 0x2A]),
+            Switches.AztecBlueprintDoor: SwitchInfo("Aztec Blueprint Door Switches", Kongs.donkey, SwitchType.GunSwitch, 0x1CF, Maps.AngryAztec, [0x9D, 0x9E]),
+            Switches.AztecLlamaCoconut: SwitchInfo("Aztec Llama Switch (1)", Kongs.donkey, SwitchType.GunSwitch, 0x1D0, Maps.AngryAztec, [13]),
+            Switches.AztecLlamaGrape: SwitchInfo("Aztec Llama Switch (2)", Kongs.lanky, SwitchType.GunSwitch, 0x1D1, Maps.AngryAztec, [14], [Switches.AztecLlamaCoconut]),
+            Switches.AztecLlamaFeather: SwitchInfo("Aztec Llama Switch (3)", Kongs.tiny, SwitchType.GunSwitch, 0x1D2, Maps.AngryAztec, [15], [Switches.AztecLlamaCoconut, Switches.AztecLlamaGrape]),
+            Switches.AztecQuicksandSwitch: SwitchInfo("Aztec Quicksand Tunnel Switch", Kongs.donkey, SwitchType.SlamSwitch, 0x1D3, Maps.AztecLlamaTemple, [0x69]),
+            Switches.AztecGuitar: SwitchInfo("Aztec Guitar Pad", Kongs.diddy, SwitchType.InstrumentPad, 0x1D4, Maps.AngryAztec, [0x44]),
+            Switches.GalleonLighthouse: SwitchInfo("Galleon Lighthouse Switches", Kongs.donkey, SwitchType.GunSwitch, 0x1D5, Maps.GloomyGalleon, [0xA, 0xB]),
+            Switches.GalleonShipwreck: SwitchInfo("Galleon Shipwreck Switches", Kongs.diddy, SwitchType.GunSwitch, 0x1D6, Maps.GloomyGalleon, [8, 9]),
+            Switches.GalleonCannonGame: SwitchInfo("Galleon Cannon Game Switches", Kongs.chunky, SwitchType.GunSwitch, 0x1D7, Maps.GloomyGalleon, [6, 7]),
+            Switches.FungiYellow: SwitchInfo("Forest Yellow Tunnel Switch", Kongs.lanky, SwitchType.GunSwitch, 0x1D8, Maps.FungiForest, [30]),
+            Switches.FungiGreenFeather: SwitchInfo("Forest Green Tunnel Switches (1)", Kongs.tiny, SwitchType.GunSwitch, 0x1D9, Maps.FungiForest, [0x18, 0x19]),
+            Switches.FungiGreenPineapple: SwitchInfo("Forest Green Tunnel Switches (2)", Kongs.chunky, SwitchType.GunSwitch, 0x1DA, Maps.FungiForest, [0x1A, 0x1B], [Switches.FungiGreenFeather]),
+        }
+        if self.switchsanity:
+            kongs = GetKongs()
+            for slot in self.switchsanity_data:
+                if slot == Switches.IslesMonkeyport:
+                    # Monkeyport is restricted to things which can help get the kong up high enough
+                    self.switchsanity_data[slot].kong = random.choice([Kongs.donkey, Kongs.lanky, Kongs.tiny])
+                else:
+                    bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
+                    slot_choices_kong = [x for x in kongs if x not in bad_kongs]
+                    self.switchsanity_data[slot].kong = random.choice(slot_choices_kong)
+                    if slot == Switches.IslesHelmLobbyGone:
+                        if self.switchsanity_data[slot].kong == Kongs.chunky:
+                            self.switchsanity_data[slot].switch_type = random.choice([SwitchType.PadMove, SwitchType.InstrumentPad])  # Choose between gone and triangle
+                        elif self.switchsanity_data[slot].kong in (Kongs.donkey, Kongs.diddy):
+                            self.switchsanity_data[slot].switch_type = random.choice([SwitchType.MiscActivator, SwitchType.InstrumentPad])  # Choose between grab and bongos
+                        else:
+                            self.switchsanity_data[slot].switch_type = SwitchType.InstrumentPad
 
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
         if self.hard_mode and HardModeSelected.water_is_lava in self.hard_mode_selected:

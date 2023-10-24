@@ -26,6 +26,8 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions as RegionEnum
+from randomizer.Enums.Switches import Switches
+from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     DamageAmount,
@@ -440,6 +442,28 @@ class LogicVarHolder:
     def HardBossesEnabled(self) -> bool:
         """Determine whether the hard bosses feature is enabled or not."""
         return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.hard_bosses)
+
+    def hasMoveSwitchsanity(self, switchsanity_setting: Switches, kong_needs_current: bool = True, level: Levels = Levels.JungleJapes, default_slam_level: int = 0) -> bool:
+        """Determine whether the kong has the necessary moves based on the switchsanity data."""
+        data = self.settings.switchsanity_data[switchsanity_setting]
+        kong_data = self.IsKong(data.kong)
+        if not kong_needs_current:
+            kong_data = self.HasKong(data.kong)
+        if data.switch_type == SwitchType.PadMove:
+            pad_abilities = [self.blast, self.spring, self.balloon, self.monkeyport, self.gorillaGone]
+            return kong_data and pad_abilities[data.kong]
+        elif data.switch_type == SwitchType.MiscActivator:
+            misc_abilities = [self.grab, self.charge, False, False, False]
+            return kong_data and misc_abilities[data.kong]
+        elif data.switch_type == SwitchType.GunSwitch:
+            gun_abilities = [self.coconut, self.peanut, self.grape, self.feather, self.pineapple]
+            return kong_data and gun_abilities[data.kong]
+        elif data.switch_type == SwitchType.InstrumentPad:
+            instrument_abilities = [self.bongos, self.guitar, self.trombone, self.saxophone, self.triangle]
+            return kong_data and instrument_abilities[data.kong]
+        elif data.switch_type == SwitchType.SlamSwitch:
+            return kong_data and self.CanSlamSwitch(level, default_slam_level)
+        return False
 
     def CanPhaseswim(self):
         """Determine whether the player can perform phase swim."""

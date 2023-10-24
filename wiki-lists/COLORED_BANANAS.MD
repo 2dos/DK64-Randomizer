@@ -81,7 +81,7 @@
 | In Rambi hut (Diddy) | 5 | Events.Rambi in l.Events | 
 | In Rambi hut (Tiny) | 5 | Events.Rambi in l.Events | 
 | On treetops (Tag barrel side) (Diddy) | 10 |  | 
-| Inside cage with Rambi Box (Donkey) | 5 | l.coconut | 
+| Inside cage with Rambi Box (Donkey) | 5 | l.hasMoveSwitchsanity(Switches.JapesRambi, False) | 
 | On 4 trees in Beehive area (Chunky) | 20 | l.hunkyChunky | 
 | On treetop by Funky (Donkey) | 5 |  | 
 | On treetop by cannon (Donkey) | 5 |  | 
@@ -217,7 +217,7 @@
 | At DK Portal before W1 | 5 | l.vines | 
 | First tunnel (5 custom, 5 Chunky) | 9 |  | 
 | First tunnel (5 custom, 5 Chunky) | 1 | l.vines | 
-| On DK BP archway | 10 | l.coconut and l.strongKong | 
+| On DK BP archway | 10 | l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and l.strongKong | 
 | First tunnel (5 custom, 5 Lanky) | 10 |  | 
 | Singles all around oasis (17 custom, 3 Donkey) | 20 |  | 
 | Singles on vines and bunch on guitar pad | 10 | l.vines | 
@@ -273,7 +273,7 @@
 | Under Mini Monkey Barrel by Beetle Race Tower (Tiny) | 5 |  | 
 | On oasis treetops (Donkey) | 15 |  | 
 | DK Sealed Quicksand Tunnel (Donkey) | 20 | Events.AztecDonkeySwitch in l.Events and l.strongKong | 
-| DK Blueprint cave (Donkey) | 10 | l.coconut and l.strongKong | 
+| DK Blueprint cave (Donkey) | 10 | l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and l.strongKong | 
 | On Melon crate on Llama Temple roof (Diddy) | 5 | l.jetpack | 
 | In sun (Diddy) | 5 | l.jetpack | 
 | On trees around Beetle race tower (Diddy) | 15 |  | 
@@ -284,7 +284,7 @@
 | Vase room (Chunky) | 20 | l.pineapple | 
 | Chunky vase room back wall | Balloon | l.pineapple | 
 | Chunky vase room right wall | Balloon | l.pineapple | 
-| DK BP room over/under bridge | Balloon | l.coconut | 
+| DK BP room over/under bridge | Balloon | l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) | 
 | Oasis | Balloon |  | 
 | In front of Candy | Balloon |  | 
 | Behind Tiny Temple | Balloon |  | 
@@ -961,7 +961,7 @@
 | On Giant mushroom top switch (Lanky) | 5 | (l.jetpack and l.isdiddy) or (l.handstand and l.islanky) | 
 | On Rabbit Race instrument pad (Lanky) | 5 |  | 
 | Green tunnel (Tiny) | 1 |  | 
-| Green tunnel (Tiny) | 4 | l.feather and l.tiny | 
+| Green tunnel (Tiny) | 4 | l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) and l.tiny | 
 | On riverbed around mill (3 custom, 17 Tiny) | 20 | l.swim | 
 | On mushrooms in beanstalk area (Tiny) | 15 |  | 
 | On anthill (Tiny) | 5 | (l.jetpack and l.isdiddy) or (l.mini and l.saxophone and l.istiny) | 

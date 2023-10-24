@@ -68,7 +68,7 @@
 | Aztec Tiny Temple | Tiny Temple: Kong Free Room |  | 
 | Aztec Tiny Temple | Tiny Temple: Next to Tiny cage |  | 
 | Angry Aztec | Entrance tunnel - near DK door |  | 
-| Angry Aztec | Blueprint Room | l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))) | 
+| Angry Aztec | Blueprint Room | l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))) | 
 | Angry Aztec | Near Oasis Sand |  | 
 | Angry Aztec | Behind Tiny Temple |  | 
 | Angry Aztec | Next to Tiny Temple - left |  | 
@@ -458,8 +458,8 @@
 | Jungle Japes Lobby | Jungle Japes Lobby: Near Tag Barrel |  | 
 | Jungle Japes Lobby | Japes Lobby: Near Portal |  | 
 | Angry Aztec Lobby | Aztec Lobby: In Front of Feather Door |  | 
-| Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (1) | (l.feather and l.tiny) or l.phasewalk | 
-| Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (2) | (l.feather and l.tiny) or l.phasewalk | 
+| Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (1) | l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk | 
+| Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (2) | l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk | 
 | Frantic Factory Lobby | Factory Lobby: Near Lever |  | 
 | Frantic Factory Lobby | Factory Lobby: High Platform | ((l.grab and l.isdonkey) or l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))) | 
 | Frantic Factory Lobby | Factory Lobby: Above Portal | ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))) | 

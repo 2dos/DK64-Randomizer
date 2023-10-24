@@ -240,7 +240,9 @@ typedef struct playerData {
 	/* 0x1CC */ short old_tag_state;
 	/* 0x1CE */ char unk_1CE[0x1D0-0x1CE];
 	/* 0x1D0 */ short ostand_value;
-	/* 0x1D2 */ char unk_1D2[0x1E8-0x1D2];
+	/* 0x1D2 */ char unk_1D2[0x1D4-0x1D2];
+	/* 0x1D4 */ float blast_y_velocity;
+	/* 0x1D8 */ char unk_1D8[0x1E8-0x1D8];
 	/* 0x1E8 */ float unk_1E8;
 	/* 0x1EC */ char unk_1EC[0x208-0x1EC];
 	/* 0x208 */ void* vehicle_actor_pointer;
@@ -264,7 +266,8 @@ typedef struct playerData {
 	/* 0x32C */ actorData* held_actor;
 	/* 0x330 */ char unk_330[0x340 - 0x330];
 	/* 0x340 */ float scale[6];
-	/* 0x358 */ char unk_358[0x36C - 0x358];
+	/* 0x358 */ char unk_358[0x368 - 0x358];
+	/* 0x368 */ unsigned int state_bitfield;
 	/* 0x36C */ char fairy_state;
 	/* 0x36D */ char unk_36D[0x36F - 0x36D];
 	/* 0x36F */ char new_kong;
@@ -274,7 +277,11 @@ typedef struct playerData {
 	/* 0x37D */ unsigned char rambi_enabled;
 	/* 0x37E */ char unk_37E[0x380 - 0x37E];
 	/* 0x380 */ short trap_bubble_timer;
-	/* 0x382 */ char unk_382[0x3BC - 0x382];
+	/* 0x382 */ char unk_382[0x3AC - 0x382];
+	/* 0x3AC */ float grab_x;
+	/* 0x3B0 */ float grab_y;
+	/* 0x3B4 */ float grab_z;
+	/* 0x3B8 */ char unk_3B8[0x3BC - 0x3A8];
 	/* 0x3BC */ unsigned short try_again_timer;
 	/* 0x3BE */ unsigned char detransform_timer;
 } playerData; //size 0x630
@@ -506,7 +513,9 @@ typedef struct actorSpawnerData {
 	/* 0x000 */ unsigned short actor_type; // Offset by 0x10
 	/* 0x002 */ char unk_02[2];
 	/* 0x004 */ floatPos positions;
-	/* 0x010 */ char unk_10[0x2C-0x10];
+	/* 0x010 */ char unk_10[0x24-0x10];
+	/* 0x024 */ int can_hide_vine;
+	/* 0x028 */ char unk_28[0x2C-0x28];
 	/* 0x02C */ float flag; // What?????
 	/* 0x030 */ char unk_30[0x40-0x30];
 	/* 0x040 */ float barrel_resolved;
@@ -750,7 +759,8 @@ typedef struct behaviour_data {
 	/* 0x068 */ unsigned short unk_68;
 	/* 0x06A */ unsigned short unk_6A;
 	/* 0x06C */ unsigned short unk_6C;
-	/* 0x06E */ char unk_6E[0x70-0x6E];
+	/* 0x06E */ char unk_6E;
+	/* 0x06F */ char unk_6F;
 	/* 0x070 */ char unk_70;
 	/* 0x071 */ char unk_71;
 	/* 0x072 */ char unk_72[0x94-0x72];
@@ -1641,3 +1651,46 @@ typedef struct sprite_info {
 	/* 0x36C */ unsigned char blue;
 	/* 0x36D */ unsigned char alpha;
 } sprite_info;
+
+typedef struct RandomSwitchesIsles {
+	/* 0x000 */ unsigned char monkeyport; // 0 = monkeyport, 1 = blast, 2 = balloon
+	/* 0x001 */ unsigned char gone; // 0 = gone, 1-5 = instrument
+	/* 0x002 */ unsigned char aztec_lobby_feather;
+	/* 0x003 */ unsigned char fungi_lobby_feather;
+	/* 0x004 */ unsigned char spawn_rocketbarrel;
+} RandomSwitchesIsles;
+
+typedef struct RandomSwitchesJapes {
+	/* 0x000 */ unsigned char feather;
+	/* 0x001 */ unsigned char rambi;
+	/* 0x002 */ unsigned char painting;
+	/* 0x003 */ unsigned char diddy_cave;
+} RandomSwitchesJapes;
+
+typedef struct RandomSwitchesAztec {
+	/* 0x000 */ unsigned char bp_door;
+	/* 0x001 */ unsigned char llama_switches[3];
+	/* 0x004 */ unsigned char snoop_switch;
+	/* 0x005 */ unsigned char guitar;
+} RandomSwitchesAztec;
+
+typedef struct RandomSwitchesGalleon {
+	/* 0x000 */ unsigned char lighthouse;
+	/* 0x001 */ unsigned char shipwreck;
+	/* 0x002 */ unsigned char cannongame;
+} RandomSwitchesGalleon;
+
+typedef struct RandomSwitchesFungi {
+	/* 0x000 */ unsigned char yellow;
+	/* 0x001 */ unsigned char green_feather;
+	/* 0x002 */ unsigned char green_pineapple;
+} RandomSwitchesFungi;
+
+// Any 0s are treated as default
+typedef struct RandomSwitchesSetting {
+	/* 0x000 */ RandomSwitchesIsles isles;
+	/* 0x005 */ RandomSwitchesJapes japes;
+	/* 0x009 */ RandomSwitchesAztec aztec;
+	/* 0x00F */ RandomSwitchesGalleon galleon;
+	/* 0x012 */ RandomSwitchesFungi fungi;
+} RandomSwitchesSetting;

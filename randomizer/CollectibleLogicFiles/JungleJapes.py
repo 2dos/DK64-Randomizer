@@ -6,6 +6,7 @@ from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Switches import Switches
 from randomizer.LogicClasses import Collectible
 
 LogicRegions = {
@@ -61,7 +62,7 @@ LogicRegions = {
     ],
     Regions.JapesBeyondCoconutGate2: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 9),  # Path to Cranky
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.coconut or l.phasewalk, None, 1),  # Under Rambi box
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.phasewalk, None, 1),  # Under Rambi box
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: Events.Rambi in l.Events or l.phasewalk, None, 1),  # In breakable hut
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # In front of Cranky's
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 3),  # By Diddy BP
@@ -79,7 +80,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # On Cranky's Lab
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 1),  # Between vines
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.coconut or l.phasewalk, None, 3),  # In rambi box cage
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.phasewalk, None, 3),  # In rambi box cage
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 3),  # By Diddy BP
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # By Lanky BP
     ],

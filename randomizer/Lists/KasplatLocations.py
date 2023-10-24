@@ -5,6 +5,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Switches import Switches
 
 
 class KasplatLocation:
@@ -269,7 +270,7 @@ KasplatLocationList = {
             kong_lst=[Kongs.donkey, Kongs.tiny],
             coords=[1363, 162, 738],
             region=Regions.AztecTunnelBeforeOasis,
-            additional_logic=lambda l: l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
+            additional_logic=lambda l: l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
             vanilla=True,
         ),
         KasplatLocation(
@@ -1518,7 +1519,7 @@ KasplatLocationList = {
             zmin=653,
             zmax=708,
             region=Regions.AngryAztecLobby,
-            additional_logic=lambda l: l.feather or l.phasewalk,
+            additional_logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk,
         ),
         # Problematic - Can't tag anywhere in here in LZR which makes it super feels bad.
         # KasplatLocation(

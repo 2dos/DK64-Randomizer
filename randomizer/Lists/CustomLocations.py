@@ -9,6 +9,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import HelmSetting
+from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Maps import Maps
 
@@ -456,8 +457,8 @@ CustomLocations = {
             y=120,
             z=740,
             max_size=40,
-            logic_region=Regions.AngryAztecOasis,
-            logic=lambda l: l.phasewalk or (l.coconut and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
+            logic_region=Regions.AztecTunnelBeforeOasis,
+            logic=lambda l: l.phasewalk or (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) and ((l.strongKong and l.isdonkey) or (l.twirl and l.istiny))),
             group=1,
         ),
         CustomLocation(map=Maps.AngryAztec, name="Near Oasis Sand", x=2151, y=120, z=983, max_size=56, logic_region=Regions.AngryAztecOasis, group=1),
@@ -2482,7 +2483,7 @@ CustomLocations = {
             z=637,
             max_size=64,
             logic_region=Regions.AngryAztecLobby,
-            logic=lambda l: (l.feather and l.tiny) or l.phasewalk,
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk,
             group=9,
         ),
         CustomLocation(
@@ -2494,7 +2495,7 @@ CustomLocations = {
             rot_y=694,
             max_size=64,
             logic_region=Regions.AngryAztecLobby,
-            logic=lambda l: (l.feather and l.tiny) or l.phasewalk,
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk,
             group=9,
         ),
         CustomLocation(map=Maps.FranticFactoryLobby, name="Factory Lobby: Near Lever", x=280, y=0, z=292, max_size=64, logic_region=Regions.FranticFactoryLobby, group=10),
