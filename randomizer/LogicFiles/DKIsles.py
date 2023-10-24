@@ -233,10 +233,10 @@ LogicRegions = {
     ]),
 
     Regions.KremIsleTopLevel: Region("Krem Isle Top Level", "Krem Isle", Levels.DKIsles, False, None, [
-        LocationLogic(Locations.IslesTinyInstrumentPad, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.tiny),
+        LocationLogic(Locations.IslesTinyInstrumentPad, lambda l: Events.IslesChunkyBarrelSpawn in l.Events and l.istiny),
         LocationLogic(Locations.IslesBananaFairyCrocodisleIsle, lambda l: l.camera),
     ], [
-        Event(Events.IslesChunkyBarrelSpawn, lambda l: l.saxophone and l.tiny),
+        Event(Events.IslesChunkyBarrelSpawn, lambda l: l.saxophone and l.istiny),
     ], [
         TransitionFront(Regions.HideoutHelmLobby, lambda l: (l.settings.open_lobbies or (Events.CavesKeyTurnedIn in l.Events and Events.CastleKeyTurnedIn in l.Events) or (l.generalclips and l.twirl)) or l.tbs),
         TransitionFront(Regions.KremIsleBeyondLift, lambda l: True),
