@@ -648,7 +648,8 @@ class Spoiler:
                     SwitchType.SlamSwitch: "Diddy Slam Switch",
                     SwitchType.GunSwitch: "Peanut Switch",
                     SwitchType.InstrumentPad: "Guitar Pad",
-                    SwitchType.PadMove: "Simian Spring Pad"
+                    SwitchType.PadMove: "Simian Spring Pad",
+                    SwitchType.MiscActivator: "Gong",
                 },
                 Kongs.lanky: {
                     SwitchType.SlamSwitch: "Lanky Slam Switch",

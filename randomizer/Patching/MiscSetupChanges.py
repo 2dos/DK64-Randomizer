@@ -476,7 +476,7 @@ def updateSwitchsanity(spoiler):
             SwitchType.GunSwitch: [0x129, 0x126, 0x128, 0x127, 0x125],
             SwitchType.InstrumentPad: [0xA8, 0xA9, 0xAC, 0xAA, 0xAB],
             SwitchType.PadMove: [0x97, 0xD4, 0x10C, 0x10B, 0x10A],
-            SwitchType.MiscActivator: [0x28]
+            SwitchType.MiscActivator: [0x28, 0xC3],
         }
         switchsanity_maps = []
         # Get list of maps which contain a switch affected by switchsanity, to reduce references to pointer table
@@ -503,12 +503,14 @@ def updateSwitchsanity(spoiler):
                     switch_kong = None
                     switch_type = None
                     switch_offset = None
+                    switch_slot = None
                     for slot in spoiler.settings.switchsanity_data:
                         if map_id == spoiler.settings.switchsanity_data[slot].map_id:
                             if item_id in spoiler.settings.switchsanity_data[slot].ids:
                                 switch_kong = spoiler.settings.switchsanity_data[slot].kong
                                 switch_type = spoiler.settings.switchsanity_data[slot].switch_type
                                 switch_offset = int(switch_kong)
+                                switch_slot = slot
                                 if switch_type == SwitchType.SlamSwitch:
                                     ROM_COPY.seek(item_start + 0x28)
                                     old_type = int.from_bytes(ROM_COPY.readBytes(2), "big")
@@ -518,9 +520,10 @@ def updateSwitchsanity(spoiler):
                         new_obj = switches[switch_type][switch_offset]
                         ROM_COPY.seek(item_start + 0x28)
                         ROM_COPY.writeMultipleBytes(new_obj, 2)
-                        # if slot == Switches.IslesHelmLobbyGone and switch_type == SwitchType.MiscActivator:
-                        #     # Rotate Grab Lever
-                        #     ROM_COPY.seek(item_start + 0x18)
-                        #     ROM_COPY.writeMultipleBytes(0, 4)
-                        #     ROM_COPY.writeMultipleBytes(0, 4)
-                        #     ROM_COPY.writeMultipleBytes(0, 4)
+                        if switch_slot == Switches.IslesHelmLobbyGone and switch_type == SwitchType.MiscActivator:
+                            if switch_kong == Kongs.diddy:
+                                ROM_COPY.seek(item_start + 0xC)
+                                ROM_COPY.writeMultipleBytes(0x3F400000, 4)
+                            # elif switch_kong == Kongs.donkey:
+                            #     ROM_COPY.seek(item_start + 0x1C)
+                            #     ROM_COPY.writeMultipleBytes(0, 4)

@@ -376,7 +376,7 @@ void overlay_changes(void) {
 	} else if (CurrentMap == MAP_HELM) {
 		// Initialize Helm
 		HelmInit(0);
-	} else if ((CurrentMap == MAP_HELMLOBBY) && (Rando.perma_lose_kongs)) {
+	} else if (CurrentMap == MAP_HELMLOBBY) {
 		// Prevent Helm Lobby B. Locker requiring Chunky
 		*(short*)(0x80027970) = 0x1000;
 	} else if (CurrentMap == MAP_KROOLCHUNKY) {

@@ -33,6 +33,8 @@ int hasHelmProgMove(helm_prog_enum sub_id) {
             return MovesBase[KONG_CHUNKY].special_moves & MOVECHECK_GONE;
         } else if (Rando.switchsanity.isles.gone == 6) {
             return MovesBase[KONG_DK].special_moves & MOVECHECK_GRAB;
+        } else if (Rando.switchsanity.isles.gone == 7) {
+            return MovesBase[KONG_DIDDY].special_moves & MOVECHECK_CHARGE;
         } else {
             return MovesBase[Rando.switchsanity.isles.gone - 1].instrument_bitfield & 1;
         }
@@ -275,10 +277,115 @@ void HelmLobbyGoneLeverCode(behaviour_data* behaviour_pointer, int index) {
     }
 }
 
+int inRangeOfGong(void) {
+    int dx = Player->xPos - 451;
+    int dz = Player->zPos - 334;
+    int dxz2 = (dx * dx) + (dz * dz);
+    if (dxz2 < 400) {
+        return 1;
+    }
+    return 0;
+}
+
+void HelmLobbyGoneGongCode(behaviour_data* behaviour_pointer, int index) {
+    int current_state = behaviour_pointer->current_state;
+    if (current_state == 0) {
+        behaviour_pointer->unk_6F = 1;
+        setScriptRunState(behaviour_pointer, 3, 400);
+        for (int i = 0; i < 4; i++) {
+            unkObjFunction7(index, i + 1, 0);
+        }
+        behaviour_pointer->next_state = 10;
+        behaviour_pointer->current_state = 10;
+        bonus_shown = 0;
+    } else if (current_state == 5) {
+        if (hasHelmProgMove(HELMPROG_GONE)) {
+            behaviour_pointer->next_state = 10;
+            behaviour_pointer->current_state = 10;
+            return;
+        }
+        if (inRangeOfGong()) {
+            if (hasEnoughGBsMicrohint(8)) {
+                PlayCutsceneFromModelTwoScript(behaviour_pointer, 3, 1, 0);
+                behaviour_pointer->next_state = 6;
+                behaviour_pointer->current_state = 6;
+            }
+            return;
+        }
+    } else if (current_state == 6) {
+        if (CutsceneActive != 1) {
+            if (inRangeOfGong() == 0) {
+                behaviour_pointer->next_state = 5;
+                behaviour_pointer->current_state = 5;
+                return;
+            }
+        }
+    } else if (current_state == 10) {
+        if (!hasHelmProgMove(HELMPROG_GONE)) {
+            behaviour_pointer->next_state = 5;
+            behaviour_pointer->current_state = 5;
+            return;
+        }
+        if (behaviour_pointer->switch_pressed == 1) {
+            if (behaviour_pointer->contact_actor_type == 3) {
+                if (canHitSwitch()) {
+                    setSomeTimer(0xC3);
+                    if (Player->control_state == 46) {
+                        if (Player->control_state_progress == 1) {
+                            // Player->unk_fairycam_bitfield |= 0x20;
+                            unkObjFunction1(index, 1, 200);
+                            unkObjFunction10(index, 1, 0, 0);
+                            unkObjFunction2(index, 1, 1);
+                            behaviour_pointer->timer = 50;
+                            for (int i = 0; i < 4; i++) {
+                                unkObjFunction7(index, i + 1, 0);
+                            }
+                            unkObjFunction0(index, 1, 0);
+                            playSFXFromObject(index, 165, 255, 95, 5, 60, 0.3f);
+                            setScriptRunState(behaviour_pointer, 1, 0);
+                            behaviour_pointer->next_state = 11;
+                        }
+                    }
+                }
+            }
+        }
+    } else if (current_state == 11) {
+        if (behaviour_pointer->timer == 10) {
+            if (behaviour_pointer->unk_10 < 0) {
+                behaviour_pointer->unk_10 = unkObjFunction12(index, 282, 0, 0, 100, 1, 0);
+            }
+            unkObjFunction1(index, 2, 3);
+            unkObjFunction2(index, 2, 1);
+        } else if (behaviour_pointer->timer == 0) {
+            for (int i = 0; i < 4; i++) {
+                unkObjFunction7(index, i + 1, 0);
+            }
+            // Player->unk_fairycam_bitfield &= ~0x20;
+            activateGonePad();
+            behaviour_pointer->next_state = 12;
+        }
+    } else if (current_state == 12) {
+        if (unkObjFunction8(index, 2) == 0) {
+            if (behaviour_pointer->unk_10 > -1) {
+                unkObjFunction14(behaviour_pointer->unk_10);
+                behaviour_pointer->unk_10 = -1;
+            }
+            behaviour_pointer->unk_60 = 1;
+            behaviour_pointer->unk_62 = 0;
+            behaviour_pointer->unk_66 = 255;
+            behaviour_pointer->unk_70 = 0;
+            setScriptRunState(behaviour_pointer, 2, 0);
+        }
+    }
+}
+
 void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
     int sub_type = Rando.switchsanity.isles.gone;
     if (sub_type == 6) {
         HelmLobbyGoneLeverCode(behaviour_pointer, index);
+        return;
+    } else if (sub_type == 7) {
+        HelmLobbyGoneGongCode(behaviour_pointer, index);
         return;
     }
     int current_state = behaviour_pointer->current_state;
@@ -294,7 +401,7 @@ void HelmLobbyGoneCode(behaviour_data* behaviour_pointer, int index) {
         }
         bonus_shown = 0;
         if (!hasHelmProgMove(HELMPROG_GONE)) {
-            setObjectOpacity(70);
+            setObjectOpacity(behaviour_pointer, 70);
             behaviour_pointer->next_state = 5;
         } else {
             setScriptRunState(behaviour_pointer, 3, 300);

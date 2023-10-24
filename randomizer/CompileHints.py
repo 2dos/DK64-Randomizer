@@ -1907,7 +1907,7 @@ def getHelmProgItems(spoiler: Spoiler) -> list:
         switch_item_data = {
             SwitchType.PadMove: [Items.BaboonBlast, Items.SimianSpring, Items.BaboonBalloon, Items.Monkeyport, Items.GorillaGone],
             SwitchType.InstrumentPad: [Items.Bongos, Items.Guitar, Items.Trombone, Items.Saxophone, Items.Triangle],
-            SwitchType.MiscActivator: [Items.GorillaGrab],
+            SwitchType.MiscActivator: [Items.GorillaGrab, Items.ChimpyCharge],
         }
         switches = [Switches.IslesMonkeyport, Switches.IslesHelmLobbyGone]
         for switch_index, switch in enumerate(switches):

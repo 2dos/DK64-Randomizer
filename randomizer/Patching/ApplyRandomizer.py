@@ -257,7 +257,10 @@ def patching_response(spoiler):
                     ROM_COPY.writeMultipleBytes(1, 1)
             elif slot == Switches.IslesHelmLobbyGone:
                 if pad_type == SwitchType.MiscActivator:
-                    ROM_COPY.writeMultipleBytes(6, 1)
+                    if pad_kong == Kongs.donkey:
+                        ROM_COPY.writeMultipleBytes(6, 1)
+                    elif pad_kong == Kongs.diddy:
+                        ROM_COPY.writeMultipleBytes(7, 1)
                 elif pad_type != SwitchType.PadMove:
                     ROM_COPY.writeMultipleBytes(int(pad_kong) + 1, 1)
             else:

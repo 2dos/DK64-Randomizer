@@ -609,7 +609,7 @@ class Settings:
                         self.switchsanity_data[slot].kong = Kongs.donkey # Test Code
                         if self.switchsanity_data[slot].kong == Kongs.chunky:
                             self.switchsanity_data[slot].switch_type = random.choice([SwitchType.PadMove, SwitchType.InstrumentPad]) # Choose between gone and triangle
-                        elif self.switchsanity_data[slot].kong == Kongs.donkey:
+                        elif self.switchsanity_data[slot].kong in (Kongs.donkey, Kongs.diddy):
                             self.switchsanity_data[slot].switch_type = random.choice([SwitchType.MiscActivator, SwitchType.InstrumentPad]) # Choose between grab and bongos
                             self.switchsanity_data[slot].switch_type = SwitchType.MiscActivator # Test Code
                         else:

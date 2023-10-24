@@ -453,7 +453,7 @@ class LogicVarHolder:
             pad_abilities = [self.blast, self.spring, self.balloon, self.monkeyport, self.gorillaGone]
             return kong_data and pad_abilities[data.kong]
         elif data.switch_type == SwitchType.MiscActivator:
-            misc_abilities = [self.grab, False, False, False, False]
+            misc_abilities = [self.grab, self.charge, False, False, False]
             return kong_data and misc_abilities[data.kong]
         elif data.switch_type == SwitchType.GunSwitch:
             gun_abilities = [self.coconut, self.peanut, self.grape, self.feather, self.pineapple]
