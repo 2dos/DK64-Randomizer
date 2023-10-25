@@ -210,6 +210,7 @@ hint_list = [
     Hint(hint="This is not a joke hint.", important=False, base=True),
     Hint(hint="I'll get back to you after this colossal dump of blueprints.", important=False, base=True),
     Hint(hint="Something in the \x0dHalt! The remainder of this hint has been confiscated by the top Kop on the force.\x0d", important=False, base=True),
+    Hint(hint="When I finish Pizza Tower, this hint will update.", important=False, base=True),
 ]
 
 kong_list = ["\x04Donkey\x04", "\x05Diddy\x05", "\x06Lanky\x06", "\x07Tiny\x07", "\x08Chunky\x08", "\x04Any kong\x04"]
@@ -1004,11 +1005,18 @@ def compileHints(spoiler: Spoiler) -> bool:
             # If this hint does have hint door restrictions, attempt to abide by them. Items placed earlier are more likely to have restrictions, hence the rough order of hint placement.
             if loc_id in spoiler.accessible_hints_for_location.keys():
                 hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[loc_id])
+                # Additionally, if progressive hints are on and this is a Kong hint, make sure that all your Kongs are hinted by the 20th hint (Galleon Chunky)
+                if ItemList[spoiler.LocationList[loc_id]].type == Types.Kong and spoiler.settings.enable_progressive_hints:
+                    hint_options = [hint for hint in hint_options if hint.level in (Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon)]
                 if len(hint_options) > 0:
                     hint_location = random.choice(hint_options)
             # If this location's goals do not restrict hint door location OR all the restricted hint door options are taken (staggeringly unlikely), get a random hint door
             if len(hint_options) == 0 or hint_location is None:
-                hint_location = getRandomHintLocation()
+                level_limit = None
+                # Limit our level options to the first 4 if we're on progressive hints and this is a Kong
+                if ItemList[spoiler.LocationList[loc_id]].type == Types.Kong and spoiler.settings.enable_progressive_hints:
+                    level_limit = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon]
+                hint_location = getRandomHintLocation(levels=level_limit)
             location = spoiler.LocationList[loc_id]
             item = ItemList[location.item]
             item_color = kong_colors[item.kong]  # Color based on the Kong of the item

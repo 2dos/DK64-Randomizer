@@ -550,23 +550,28 @@ class Settings:
                 self.random_starting_move_list_selected.append(Items.ProgressiveInstrumentUpgrade)
         # Some settings have to be derived from the guaranteed starting moves - this needs to be done early in this method
         # If we are *guaranteed* to start with a slam, place it in the training grounds reward slot and don't make it hintable, as before
-        if Items.ProgressiveSlam in self.starting_move_list_selected:
+        if Items.ProgressiveSlam in self.starting_move_list_selected or not self.shuffle_items:  # Non item rando must have this set to true
             self.start_with_slam = True
-            self.starting_move_list_selected.remove(Items.ProgressiveSlam)
+            if Items.ProgressiveSlam in self.starting_move_list_selected:
+                self.starting_move_list_selected.remove(Items.ProgressiveSlam)
         else:
             self.start_with_slam = False
         # If we are *guaranteed* to start with ALL training moves, put them in their vanilla locations and don't make them hintable, as before
-        if (
+        if not self.shuffle_items or (  # Non item rando must start with training moves
             Items.Vines in self.starting_move_list_selected
             and Items.Barrels in self.starting_move_list_selected
             and Items.Oranges in self.starting_move_list_selected
             and Items.Swim in self.starting_move_list_selected
         ):
             self.training_barrels = TrainingBarrels.normal
-            self.starting_move_list_selected.remove(Items.Vines)
-            self.starting_move_list_selected.remove(Items.Barrels)
-            self.starting_move_list_selected.remove(Items.Oranges)
-            self.starting_move_list_selected.remove(Items.Swim)
+            if Items.Vines in self.starting_move_list_selected:
+                self.starting_move_list_selected.remove(Items.Vines)
+            if Items.Barrels in self.starting_move_list_selected:
+                self.starting_move_list_selected.remove(Items.Barrels)
+            if Items.Oranges in self.starting_move_list_selected:
+                self.starting_move_list_selected.remove(Items.Oranges)
+            if Items.Swim in self.starting_move_list_selected:
+                self.starting_move_list_selected.remove(Items.Swim)
         else:
             self.training_barrels = TrainingBarrels.shuffled
         self.starting_moves_count = self.starting_moves_count + len(self.starting_move_list_selected)

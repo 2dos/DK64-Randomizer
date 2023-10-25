@@ -827,7 +827,7 @@ CustomLocations = {
             logic_region=Regions.Testing,
             group=5,
         ),
-        CustomLocation(map=Maps.FranticFactory, name="Right Corridor", x=1710, y=837, z=2328, max_size=48, logic_region=Regions.Testing, group=5),
+        CustomLocation(map=Maps.FranticFactory, name="Right Corridor", x=1710, y=837, z=2328, max_size=48, logic_region=Regions.FranticFactoryStart, group=5),
         CustomLocation(map=Maps.FranticFactory, name="Number Game", x=2666, y=1002, z=1952, max_size=48, logic_region=Regions.Testing, group=5),
         CustomLocation(map=Maps.FranticFactory, name="Under Block Tower Stairs", x=2014, y=1027, z=1348, rot_y=3026, max_size=72, logic_region=Regions.Testing, group=5),
         # CrownLocation(
@@ -2459,9 +2459,9 @@ CustomLocations = {
             group=6,
         ),
         CustomLocation(map=Maps.Isles, name="Right Kroc Isle Arm", x=2700, y=1620, z=3315, max_size=80, logic_region=Regions.KremIsleTopLevel, group=6),
-        CustomLocation(map=Maps.Isles, name="Fairy Isle", x=885, y=500, z=2307, max_size=64, logic_region=Regions.IslesMain, group=4),
-        CustomLocation(name="Behind BFI", map=Maps.Isles, x=754.0, y=500.0, z=2386.0, rot_y=807, max_size=64, group=4, logic_region=Regions.IslesMain, logic=lambda l: True),
-        CustomLocation(map=Maps.Isles, name="Small Island", x=965, y=500, z=1410, max_size=80, logic_region=Regions.IslesMain, group=4),
+        CustomLocation(map=Maps.Isles, name="Fairy Isle", x=885, y=500, z=2307, max_size=64, logic_region=Regions.OuterIsles, group=4),
+        CustomLocation(name="Behind BFI", map=Maps.Isles, x=754.0, y=500.0, z=2386.0, rot_y=807, max_size=64, group=4, logic_region=Regions.OuterIsles, logic=lambda l: True),
+        CustomLocation(map=Maps.Isles, name="Small Island", x=965, y=500, z=1410, max_size=80, logic_region=Regions.OuterIsles, group=4),
         CustomLocation(
             name="Jungle Japes Lobby: Near Tag Barrel",
             map=Maps.JungleJapesLobby,

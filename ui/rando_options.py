@@ -765,6 +765,7 @@ def toggle_item_rando(evt):
     move_vanilla = document.getElementById("move_off")
     move_rando = document.getElementById("move_on")
     enemy_drop_rando = document.getElementById("enemy_drop_rando")
+    non_item_rando_warning = document.getElementById("non_item_rando_warning")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -789,10 +790,12 @@ def toggle_item_rando(evt):
             move_rando.removeAttribute("disabled")
             enemy_drop_rando.setAttribute("disabled", "disabled")
             enemy_drop_rando.checked = False
+            non_item_rando_warning.removeAttribute("hidden")
         else:
             # Enable item rando modal, prevent shockwave/camera coupling, enable dropsanity, and enable smaller shops if it's in the pool
             selector.removeAttribute("disabled")
             enemy_drop_rando.removeAttribute("disabled")
+            non_item_rando_warning.setAttribute("hidden", "hidden")
             if shops_in_pool:
                 if shockwave.selected is True:
                     document.getElementById("shockwave_status_shuffled_decoupled").selected = True
@@ -968,6 +971,7 @@ def preset_select_changed(event):
     toggle_logic_type(None)
     toggle_key_settings(None)
     max_starting_moves_count(None)
+    js.savesettings()
 
 
 @bind("click", "enable_plandomizer")
