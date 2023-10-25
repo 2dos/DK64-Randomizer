@@ -452,7 +452,7 @@ def compileHints(spoiler: Spoiler) -> bool:
     if spoiler.settings.key_8_helm and Locations.HelmKey in spoiler.woth_paths.keys():
         useless_moves = [Items.Vines]
         if not spoiler.settings.switchsanity:
-            useless_moves.extend([Items.Monkeyoprt, Items.GorillaGone])
+            useless_moves.extend([Items.Monkeyport, Items.GorillaGone])
         useless_locations[Items.HideoutHelmKey] = [
             loc for loc in spoiler.woth_paths[Locations.HelmKey] if (loc in TrainingBarrelLocations or loc in PreGivenLocations) and spoiler.LocationList[loc].item in useless_moves
         ]
