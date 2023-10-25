@@ -176,8 +176,7 @@ document
 
 jq = $;
 
-$("#form input").on("input change", function (e) {
-  //This would be called if any of the input element has got a change inside the form
+function savesettings() {
   var disabled = $("form").find(":input:disabled").removeAttr("disabled");
   data = new FormData(document.querySelector("form"));
   disabled.attr("disabled", "disabled");
@@ -195,26 +194,17 @@ $("#form input").on("input change", function (e) {
     }
   }
   saveDataToIndexedDB("saved_settings", JSON.stringify(json));
+}
+
+$("#form input").on("input change", function (e) {
+  //This would be called if any of the input elements receive a change inside the form
+  console.log("input cache! 2");
+  savesettings();
 });
 $("#form select").on("change", function (e) {
-  //This would be called if any of the input element has got a change inside the form
-  var disabled = $("form").find(":input:disabled").removeAttr("disabled");
-  data = new FormData(document.querySelector("form"));
-  disabled.attr("disabled", "disabled");
-  json = Object.fromEntries(data.entries());
-  for (element of document.getElementsByTagName("select")) {
-    if (element.className.includes("selected")) {
-      length = element.options.length;
-      values = [];
-      for (let i = 0; i < length; i++) {
-        if (element.options.item(i).selected) {
-          values.push(element.options.item(i).value);
-        }
-      }
-      json[element.name] = values;
-    }
-  }
-  saveDataToIndexedDB("saved_settings", JSON.stringify(json));
+  //This would be called if any of the select elements receive a change inside the form
+  console.log("select cache! 2");
+  savesettings();
 });
 
 async function load_presets() {
@@ -576,7 +566,7 @@ function load_data() {
               try {
                 element.value = json[key];
                 if (element.hasAttribute("data-slider-value")) {
-                  element.setAttribute("data-slider-value", json[key]);
+                  $("#" + key).slider("setValue", json[key])
                 }
                 if (element.className.includes("selected")) {
                   for (var i = 0; i < element.options.length; i++) {
@@ -587,6 +577,7 @@ function load_data() {
               } catch {}
             }
           }
+          savesettings();
         } else {
           load_presets();
         }

@@ -14,6 +14,11 @@
                                     value="True"/>
                             Item Randomizer
                         </label>
+                        <span id="non_item_rando_warning" data-toggle="tooltip" title="With item rando disabled, you cannot start without items you get from the Training Grounds in vanilla.">
+                            <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" class="warning-icon" stroke="#ffff00" fill="#ffff00">
+                                <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
+                            </svg>
+                        </span>
                         {{ list_selector(itemRando, "item_rando_list", "ITEM RANDO SELECTOR", "This will open a popup that will let you customize what items are shuffled in the pool.&#10;This defaults to All options.", 15) }}
                     {# Remove end </div> as it's included in the macro for formatting #}
                     <div class="form-check form-switch item-switch" style="max-height: 24px;">

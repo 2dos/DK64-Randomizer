@@ -422,12 +422,11 @@ def GetAccessibleLocations(
 
 
 def VerifyWorld(spoiler: Spoiler) -> bool:
-    """Make sure all item locations are reachable on current world graph with constant items placed and all other items owned."""
+    """Make sure all item locations are reachable on current world graph with no items placed and all items owned."""
     settings = spoiler.settings
     if settings.logic_type == LogicType.nologic:
-        return True  # Don't verify world in no logic
-    ItemPool.PlaceConstants(spoiler)
-    unreachables = GetAccessibleLocations(spoiler, ItemPool.AllItems(settings), SearchMode.GetUnreachable)
+        return True  # Don't need to verify world in no logic
+    unreachables = GetAccessibleLocations(spoiler, ItemPool.AllItemsUnrestricted(settings), SearchMode.GetUnreachable)
     allLocationsReached = len(unreachables) == 0
     allCBsFound = True
     for level_index in range(7):

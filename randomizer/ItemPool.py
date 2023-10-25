@@ -72,6 +72,40 @@ def PlaceConstants(spoiler):
         spoiler.LocationList[Locations.IslesFirstMove].PlaceConstantItem(spoiler, Items.ProgressiveSlam)
 
 
+def AllItemsUnrestricted(settings):
+    """Return all placeable items regardless of shuffle status."""
+    allItems = []
+    allItems.extend(Blueprints())
+    allItems.extend(GoldenBananaItems())
+    allItems.extend(ToughGoldenBananaItems())
+    allItems.extend(CompanyCoinItems())
+    allItems.extend(BattleCrownItems())
+    allItems.extend(Keys())
+    allItems.extend(BananaMedalItems())
+    allItems.extend(MiscItemRandoItems())
+    allItems.extend(FairyItems())
+    allItems.extend(RainbowCoinItems())
+    allItems.extend(MelonCrateItems())
+    allItems.extend(EnemyItems())
+    allItems.extend(FakeItems())
+    allItems.extend(JunkItems())
+    allItems.extend(DonkeyMoves)
+    allItems.extend(DiddyMoves)
+    allItems.extend(LankyMoves)
+    allItems.extend(TinyMoves)
+    allItems.extend(ChunkyMoves)
+    allItems.extend(ImportantSharedMoves)
+    allItems.extend(JunkSharedMoves)
+    allItems.extend(TrainingBarrelAbilities().copy())
+    if settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
+        allItems.append(Items.Camera)
+        allItems.append(Items.Shockwave)
+    else:
+        allItems.append(Items.CameraAndShockwave)
+    allItems.extend(Kongs(settings))
+    return allItems
+
+
 def AllItems(settings):
     """Return all shuffled items."""
     allItems = []
@@ -110,8 +144,6 @@ def AllItems(settings):
         allItems.extend(TinyMoves)
         allItems.extend(ChunkyMoves)
         allItems.extend(ImportantSharedMoves)
-        if IsItemSelected(settings.hard_mode, settings.hard_mode_selected, HardModeSelected.water_is_lava):
-            allItems.extend(JunkSharedMoves)
 
         if settings.training_barrels == TrainingBarrels.shuffled:
             allItems.extend(TrainingBarrelAbilities().copy())
