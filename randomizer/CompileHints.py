@@ -1006,7 +1006,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             if loc_id in spoiler.accessible_hints_for_location.keys():
                 hint_options = getHintLocationsForAccessibleHintItems(spoiler.accessible_hints_for_location[loc_id])
                 # Additionally, if progressive hints are on and this is a Kong hint, make sure that all your Kongs are hinted by the 20th hint (Galleon Chunky)
-                if ItemList[spoiler.LocationList[loc_id]].type == Types.Kong and spoiler.settings.enable_progressive_hints:
+                if spoiler.settings.enable_progressive_hints and ItemList[spoiler.LocationList[loc_id].item].type == Types.Kong:
                     hint_options = [hint for hint in hint_options if hint.level in (Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon)]
                 if len(hint_options) > 0:
                     hint_location = random.choice(hint_options)
