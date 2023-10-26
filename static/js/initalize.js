@@ -198,12 +198,10 @@ function savesettings() {
 
 $("#form input").on("input change", function (e) {
   //This would be called if any of the input elements receive a change inside the form
-  console.log("input cache! 2");
   savesettings();
 });
 $("#form select").on("change", function (e) {
   //This would be called if any of the select elements receive a change inside the form
-  console.log("select cache! 2");
   savesettings();
 });
 
