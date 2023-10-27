@@ -5,6 +5,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Types import Types
+from randomizer.Enums.VendorType import VendorType
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.MapsAndExits import RegionMapList
@@ -72,6 +73,37 @@ ShopLocationList = []
 # A list of all hint locations.
 HintLocationList = []
 
+
+def createShopLocationKongMapObj():
+    """Initialize an entry in the ShopLocationKongMap."""
+    return {
+        VendorType.Candy.name: {
+            "shared": None,
+            "individual": []
+        },
+        VendorType.Cranky.name: {
+            "shared": None,
+            "individual": []
+        },
+        VendorType.Funky.name: {
+            "shared": None,
+            "individual": []
+        }
+    }
+
+
+# A map of shop locations, grouped by level and broken into shared/individual.
+ShopLocationKongMap = {
+    "DKIsles": createShopLocationKongMapObj(),
+    "JungleJapes": createShopLocationKongMapObj(),
+    "AngryAztec": createShopLocationKongMapObj(),
+    "FranticFactory": createShopLocationKongMapObj(),
+    "GloomyGalleon": createShopLocationKongMapObj(),
+    "FungiForest": createShopLocationKongMapObj(),
+    "CrystalCaves": createShopLocationKongMapObj(),
+    "CreepyCastle": createShopLocationKongMapObj(),
+}
+
 ##########
 # PANELS #
 ##########
@@ -79,7 +111,14 @@ HintLocationList = []
 
 def createPlannableLocationObj():
     """Initialize the plannable location object."""
-    return {"All Kongs": [], "Donkey": [], "Diddy": [], "Lanky": [], "Tiny": [], "Chunky": []}
+    return {
+        "All Kongs": [],
+        "Donkey": [],
+        "Diddy": [],
+        "Lanky": [],
+        "Tiny": [],
+        "Chunky": [],
+        "Enemies": []}
 
 
 def isMinigameLocation(locationEnum):
@@ -96,7 +135,11 @@ PlandomizerPanels = {
     "FungiForest": {"name": "Fungi Forest", "locations": createPlannableLocationObj()},
     "CrystalCaves": {"name": "Crystal Caves", "locations": createPlannableLocationObj()},
     "CreepyCastle": {"name": "Creepy Castle", "locations": createPlannableLocationObj()},
-    "HideoutHelm": {"name": "Hideout Helm", "locations": {"All Kongs": [], "Medals": []}},
+    "HideoutHelm": {"name": "Hideout Helm", "locations": {
+        "All Kongs": [],
+        "Medals": [],
+        "Enemies": []
+    }},
     # Shops, minigames and hints are grouped by level, not by Kong.
     "Shops": {
         "name": "Shops",
@@ -163,6 +206,18 @@ for locationEnum, locationObj in LocationList.items():
         levelName = locationObj.level.name
         PlandomizerPanels["Shops"]["levels"][levelName]["locations"].append(locationJson)
         ShopLocationList.append(locationEnum.name)
+        # Add this to the ShopLocationKongMap, which will be used for validation.
+        vendor = locationObj.vendor.name
+        if locationObj.kong == Kongs.any:
+            ShopLocationKongMap[levelName][vendor]["shared"] = {
+                "name": locationEnum.name,
+                "value": locationObj
+            }
+        else:
+            ShopLocationKongMap[levelName][vendor]["individual"].append({
+                "name": locationEnum.name,
+                "value": locationObj
+            })
     elif locationObj.level == Levels.Shops:
         # This is the Rareware coin.
         PlandomizerPanels["Shops"]["levels"]["DKIsles"]["locations"].append(locationJson)
@@ -171,6 +226,8 @@ for locationEnum, locationObj in LocationList.items():
         levelName = locationObj.level.name
         if locationObj.level == Levels.HideoutHelm and locationObj.type == Types.Medal:
             PlandomizerPanels[levelName]["locations"]["Medals"].append(locationJson)
+        elif locationObj.type == Types.Enemies:
+            PlandomizerPanels[levelName]["locations"]["Enemies"].append(locationJson)
         else:
             PlandomizerPanels[levelName]["locations"][kongString].append(locationJson)
         ItemLocationList.append(locationEnum.name)

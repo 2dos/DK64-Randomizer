@@ -7,7 +7,7 @@ from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Enums.Regions import Regions
 from randomizer.Lists.Location import LocationListOriginal as LocationList
-from randomizer.Lists.Plandomizer import HintLocationList, ItemLocationList, PlannableItemLimits, ShopLocationList
+from randomizer.Lists.Plandomizer import HintLocationList, ItemLocationList, PlannableItemLimits, ShopLocationKongMap, ShopLocationList
 from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
@@ -52,6 +52,16 @@ def count_items():
     return count_dict
 
 
+def get_shop_location_element(locName):
+    """Get the element corresponding to the dropdown for this location."""
+    return js.document.getElementById(f"plando_{locName}_item")
+
+
+def shop_has_assigned_item(shopElement):
+    """Returns true if the given shop has an item assigned to it."""
+    return shopElement.value and shopElement.value != "NoItem"
+
+
 ############
 # BINDINGS #
 ############
@@ -82,6 +92,39 @@ def validate_item_limits(evt):
         else:
             for loc in locations:
                 validate_option(js.document.getElementById(loc))
+
+
+@bindList("change", ShopLocationList, prefix="plando_", suffix="_item")
+def validate_shop_kongs(evt):
+    """Raise an error if a level's shops has rewards assigned for both
+       individual Kongs and shared Kongs.
+    """
+    errString = "Shop vendors cannot have both shared rewards and Kong rewards assigned in the same level."
+    for _, vendors in ShopLocationKongMap.items():
+        for _, vendor_locations in vendors.items():
+            # Check the shared location for this vendor.
+            if not vendor_locations["shared"]:
+                # This vendor is not in this level.
+                continue
+            vendor_shared_element = get_shop_location_element(vendor_locations["shared"]["name"])
+            if not shop_has_assigned_item(vendor_shared_element):
+                # This vendor has nothing assigned for its shared location.
+                continue
+            # Check each of the individual locations.
+            shared_location_valid = True
+            for location in vendor_locations["individual"]:
+                vendor_element = get_shop_location_element(location["name"])
+                if shop_has_assigned_item(vendor_element):
+                    # An individual shop has an assigned item.
+                    # This is always a conflict at this point.
+                    shared_location_valid = False
+                    invalidate_option(vendor_element, errString)
+                else:
+                    validate_option(vendor_element)
+            if shared_location_valid:
+                validate_option(vendor_shared_element)
+            else:
+                invalidate_option(vendor_shared_element, errString)
 
 
 @bindList("change", HintLocationList, prefix="plando_", suffix="_hint")
@@ -385,6 +428,30 @@ def validate_plando_options(settings_dict):
             if item == PlandoItems.GoldenBanana:
                 errString += " (40 Golden Bananas are always allocated to blueprint rewards.)"
             errList.append(errString)
+
+    # Ensure that no shop has both a shared reward and an individual reward.
+    errString = "Shop vendors cannot have both shared rewards and Kong rewards assigned in the same level."
+    for _, vendors in ShopLocationKongMap.items():
+        for _, vendor_locations in vendors.items():
+            # Check the shared location for this vendor.
+            vendor_shared = vendor_locations["shared"]
+            if not vendor_shared:
+                # This vendor is not in this level.
+                continue
+            vendor_shared_element = get_shop_location_element(vendor_shared["name"])
+            if not shop_has_assigned_item(vendor_shared_element):
+                # This vendor has nothing assigned for its shared location.
+                continue
+            # Check each of the individual locations.
+            for ind_location in vendor_locations["individual"]:
+                vendor_element = get_shop_location_element(ind_location["name"])
+                if shop_has_assigned_item(vendor_element):
+                    # An individual shop has an assigned item.
+                    # This is always a conflict at this point.
+                    shared_shop_name = vendor_shared["value"].name
+                    ind_shop_name = ind_location["value"].name
+                    errString = f'Shop locations "{shared_shop_name}" and "{ind_shop_name}" both have rewards assigned, which is invalid.'
+                    errList.append(errString)
 
     # Ensure that shop costs are within allowed limits.
     for shopLocation, price in plando_dict["prices"].items():
