@@ -1014,7 +1014,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             if len(hint_options) == 0 or hint_location is None:
                 level_limit = None
                 # Limit our level options to the first 4 if we're on progressive hints and this is a Kong
-                if ItemList[spoiler.LocationList[loc_id]].type == Types.Kong and spoiler.settings.enable_progressive_hints:
+                if ItemList[spoiler.LocationList[loc_id].item].type == Types.Kong and spoiler.settings.enable_progressive_hints:
                     level_limit = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon]
                 hint_location = getRandomHintLocation(levels=level_limit)
             location = spoiler.LocationList[loc_id]
