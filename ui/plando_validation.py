@@ -357,7 +357,7 @@ def validate_plando_location(location_name):
     try:
         _ = Locations[location_name]
     except KeyError:
-        errString = f'The plandomize file is invalid: "{location_name}" is not a valid location.'
+        errString = f'The plandomizer file is invalid: "{location_name}" is not a valid location.'
         raise_plando_validation_error(errString)
 
 
@@ -442,11 +442,7 @@ def reset_plando_options_no_prompt():
     # Reset general settings.
     js.document.getElementById("plando_spawn_location").value = ""
     js.document.getElementById("plando_101").value = False
-    for option in level_options:
-        option_element = js.document.getElementById(option)
-        option_element.value = ""
-        mark_option_valid(option_element)
-    for option in kong_options:
+    for option in level_options + kong_options:
         option_element = js.document.getElementById(option)
         option_element.value = ""
         mark_option_valid(option_element)
@@ -461,13 +457,12 @@ def reset_plando_options_no_prompt():
         location_element.value = ""
         mark_option_valid(location_element)
     for shop in ShopLocationList:
-        try:
-            price_element = js.document.getElementById(f"plando_{shop}_shop_cost")
-            price_element.value = ""
-            mark_option_valid(price_element)
-        except AttributeError:
-            # We've found the Rareware Coin shop location. Ignore this.
+        # Skip the Rareware Coin location, which has no price.
+        if shop == "RarewareCoin":
             continue
+        price_element = js.document.getElementById(f"plando_{shop}_shop_cost")
+        price_element.value = ""
+        mark_option_valid(price_element)
     for minigame in MinigameLocationList:
         minigame_element = js.document.getElementById(f"plando_{minigame}_minigame")
         minigame_element.value = ""
@@ -517,7 +512,7 @@ def populate_plando_options(form, for_plando_file=False):
 
     def get_plando_value(enum_val):
         """Return either the value of a given enum or the display name."""
-        return enum_val if not for_plando_file else enum_val.name
+        return enum_val.name if for_plando_file else enum_val
 
     def get_enum_or_string_value(valueString, settingName):
         """Obtain the enum or string value for the provided setting.
