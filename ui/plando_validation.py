@@ -276,7 +276,6 @@ async def import_plando_options(file):
             for i in range(6):
                 starting_option = kongs_element.options.item(i)
                 starting_option.selected = starting_option.value in starting_kongs
-
         # Process all other options.
         else:
             final_value = "" if value == "Randomize" else value
