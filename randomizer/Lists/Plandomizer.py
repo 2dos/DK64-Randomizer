@@ -69,6 +69,8 @@ def getLevelString(levelEnum):
 ItemLocationList = []
 # A list of all shop locations.
 ShopLocationList = []
+# A list of all minigame locations.
+MinigameLocationList = []
 # A list of all hint locations.
 HintLocationList = []
 
@@ -178,6 +180,7 @@ for locationEnum, locationObj in LocationList.items():
         # If this is a minigame location, add it to the Minigames list.
         if isMinigameLocation(locationEnum):
             PlandomizerPanels["Minigames"]["levels"][levelName]["locations"].append({"name": locationObj.name, "value": locationEnum.name, "kong": kongString})
+            MinigameLocationList.append(locationEnum.name)
 
 # Hideout Helm minigame locations get manually added here, as they're not
 # locations where rewards can be placed, so they don't get naturally added.
@@ -193,6 +196,7 @@ PlandomizerPanels["Minigames"]["levels"]["HideoutHelm"]["locations"] = [
     {"name": "Helm Chunky 1", "value": "HelmChunky1", "kong": "Chunky"},
     {"name": "Helm Chunky 2", "value": "HelmChunky2", "kong": "Chunky"},
 ]
+MinigameLocationList += ["HelmDonkey1", "HelmDonkey2", "HelmDiddy1", "HelmDiddy2", "HelmLanky1", "HelmLanky2", "HelmTiny1", "HelmTiny2", "HelmChunky1", "HelmChunky2"]
 
 #########
 # ITEMS #

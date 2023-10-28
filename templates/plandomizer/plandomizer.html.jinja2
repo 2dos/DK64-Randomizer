@@ -1,4 +1,17 @@
 <style>
+    .import-export-container {
+        padding: 16px 0;
+    }
+
+    .plando-settings-button {
+        margin: 0 8px;
+        min-width: 125px;
+    }
+
+    .plando-import-errors {
+        margin: 0 1rem 1rem;
+    }
+
     .plando-pane {
         padding-bottom: 24px;
     }
@@ -30,6 +43,27 @@
 {# Enforce word length limit on hint text (exact length TBD). #}
 {# Import and export plando settings. #}
 <div class="container border" style="margin-top: 20px;">
+    <!-- The import/export/reset panel. -->
+    <div class="flex-container flex-center import-export-container">
+        <input id="import_plando_settings"
+               class="btn btn-primary plando-settings-button"
+               type="button"
+               value="Import Settings"/>
+        <input id="export_plando_settings"
+               class="btn btn-primary plando-settings-button"
+               type="button"
+               value="Export Settings"/>
+        <input id="reset_plando_settings"
+               class="btn btn-primary plando-settings-button"
+               type="button"
+               value="Reset Settings"/>
+    </div>
+    <div class="plando-import-errors"
+         id="plando_import_errors"
+         style="display: none;">
+    </div>
+</div>
+<div class="container border">
     <!-- The navigation panel. -->
     <div class="nav nav-pills flex-container flex-center plando-pills" id="plando-nav-tab" role="tablist">
         <button class="nav-link active nav-item plando-pill"
