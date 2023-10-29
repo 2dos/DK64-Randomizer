@@ -6,3 +6,4 @@ flask-cors
 pillow
 boto3
 waitress
+GitPython
