@@ -21,7 +21,10 @@ from randomizer.Patching.Patcher import load_base_rom
 from randomizer.Settings import Settings
 from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.Spoiler import Spoiler
+from git import Repo
 
+local_repo = Repo(path="./")
+local_branch = local_repo.active_branch.name
 
 app = Flask(__name__)
 app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 2)
@@ -134,13 +137,7 @@ def write_error(error, settings_string):
     """Write an error to the error table."""
     converted_settings_string = encrypt_settings_string_enum(settings_string)
     error_table = dynamodb.Table("dk64_error_db")
-    error_table.put_item(
-        Item={
-            "time": str(time.time()),
-            "error_data": str(error),
-            "settings": str(converted_settings_string),
-        }
-    )
+    error_table.put_item(Item={"time": str(time.time()), "error_data": str(error), "settings": str(converted_settings_string), "branch": local_branch})
 
 
 @app.route("/generate", methods=["GET", "POST"])
