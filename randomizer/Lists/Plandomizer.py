@@ -345,6 +345,7 @@ PlannableItemLimits = {
     PlandoItems.Bean: 1,
     PlandoItems.Pearl: 5,
     PlandoItems.FakeItem: 16,
+    PlandoItems.JunkItem: 100,
     PlandoItems.RainbowCoin: 16,
     PlandoItems.DonkeyBlueprint: 8,
     PlandoItems.DiddyBlueprint: 8,
