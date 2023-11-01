@@ -337,6 +337,9 @@ void overlay_changes(void) {
 		writeFunction(0x80028D10, &changeFileSelectAction_0); // File select change action
 		*(int*)(0x80028DB8) = 0x1040000A; // BEQ $v0, $r0, 0xA - Change text signal
 		*(short*)(0x80028CA6) = 5; // Change selecting orange to delete confirm screen
+
+		*(int*)(0x80028EF8) = 0; // Joystick
+
 		// Options
 		initOptionScreen();
 		// Disable Multiplayer
