@@ -120,7 +120,7 @@ void indicateCollectionStatus(void) {
     }
     int spawn_id = TiedCharacterSpawner->spawn_trigger;
     int timer = ObjectModel2Timer + (spawn_id * 5);
-    if (timer % 30) {
+    if (timer % 10) {
         return;
     }
     if (!canSpawnEnemyReward()) {
