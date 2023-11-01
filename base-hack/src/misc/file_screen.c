@@ -565,6 +565,8 @@ int* display_text(int* dl) {
 }
 
 static unsigned char hash_textures[] = {48,49,50,51,55,62,63,64,65,76};
+#define INFO_Y_DIFF 50
+
 int* displayHash(int* dl, int y_offset) {
 	/**
 	 * @brief Display seed hash on the file screen
@@ -583,6 +585,15 @@ int* displayHash(int* dl, int y_offset) {
 			hash_y = (4 * SCREEN_HD) - 40;
 		}
 		dl = drawImage(dl, hash_textures[hash_index], RGBA16, 32, 32, starting_x + (100 * i), hash_y - y_offset, 3.0f, 3.0f, 0xFF);
+	}
+	int info_y = 480 - y_offset;
+	if (Rando.rom_flags.plando) {
+		dl = displayCenteredText(dl, info_y / 4, "PLANDOMIZER", 1);
+		info_y += INFO_Y_DIFF;
+	}
+	if (Rando.rom_flags.spoiler) {
+		dl = displayCenteredText(dl, info_y / 4, "SPOILER GENNED", 1);
+		info_y += INFO_Y_DIFF;
 	}
 	return dl;
 }
