@@ -139,26 +139,36 @@ def validate_shop_kongs(evt):
 
 @bindList("change", HintLocationList, prefix="plando_", suffix="_hint")
 @bindList("keyup", HintLocationList, prefix="plando_", suffix="_hint")
-def validate_hint_text(evt):
-    """Raise an error if any hint contains invalid characters."""
-    hintString = evt.target.value
+def validate_hint_text_binding(evt):
+    """Raise an error if this target's hint contains invalid characters."""
+    validate_hint_text(evt.target)
+
+
+def validate_hint_text(element) -> None:
+    """Raise an error if the element's hint contains invalid characters."""
+    hintString = element.value
     if re.search("[^A-Za-z0-9 \,\.\-\?!]", hintString) is not None:
-        mark_option_invalid(evt.target, "Only letters, numbers, spaces, and the characters ,.-?! are allowed in hints.")
+        mark_option_invalid(element, "Only letters, numbers, spaces, and the characters ,.-?! are allowed in hints.")
     else:
-        mark_option_valid(evt.target)
+        mark_option_valid(element)
 
 
 @bindList("change", ShopLocationList, prefix="plando_", suffix="_shop_cost")
 @bindList("keyup", ShopLocationList, prefix="plando_", suffix="_shop_cost")
-def validate_shop_costs(evt):
-    """Raise an error if any shops have an invalid cost."""
-    shopCost = evt.target.value
+def validate_shop_costs_binding(evt):
+    """Raise an error if this target's shop has an invalid cost."""
+    validate_shop_costs(evt.target)
+
+
+def validate_shop_costs(element) -> None:
+    """Raise an error if this element's shop has an invalid cost."""
+    shopCost = element.value
     if shopCost == "":
-        mark_option_valid(evt.target)
+        mark_option_valid(element)
     elif shopCost.isdigit() and int(shopCost) >= 0 and int(shopCost) <= 255:
-        mark_option_valid(evt.target)
+        mark_option_valid(element)
     else:
-        mark_option_invalid(evt.target, "Shop costs must be a whole number between 0 and 255.")
+        mark_option_invalid(element, "Shop costs must be a whole number between 0 and 255.")
 
 
 @bind("change", "starting_kongs_count")
@@ -290,6 +300,10 @@ async def import_plando_options(file):
     # Reset all of the plando options to their defaults.
     reset_plando_options_no_prompt()
 
+    # We need to record all hints and shop costs so we can validate them later.
+    hintList = []
+    shopCostList = []
+
     # Set all of the options specified in the plando file.
     for option, value in fileContents.items():
         # Process item locations.
@@ -299,7 +313,9 @@ async def import_plando_options(file):
         # Process shop costs.
         elif option == "prices":
             for location, price in value.items():
-                js.document.getElementById(f"plando_{location}_shop_cost").value = price
+                shopElem = js.document.getElementById(f"plando_{location}_shop_cost")
+                shopCostList.append(shopElem)
+                shopElem.value = price
         # Process minigame selections.
         elif option == "minigames":
             for location, minigame in value.items():
@@ -307,7 +323,9 @@ async def import_plando_options(file):
         # Process hints.
         elif option == "hints":
             for location, hint in value.items():
-                js.document.getElementById(f"plando_{location}_hint").value = hint
+                hintElem = js.document.getElementById(f"plando_{location}_hint")
+                hintList.append(hintElem)
+                hintElem.value = hint
         # Process this one multi-select.
         elif option == "plando_starting_kongs_selected":
             starting_kongs = set()
@@ -323,6 +341,10 @@ async def import_plando_options(file):
             js.document.getElementById(option).value = final_value
 
     # Run validation functions.
+    for hintLocation in hintList:
+        validate_hint_text(hintLocation)
+    for shopLocation in shopCostList:
+        validate_shop_costs(shopLocation)
     plando_disable_camera_shockwave(None)
     plando_disable_keys(None)
     plando_disable_kong_items(None)
@@ -331,8 +353,6 @@ async def import_plando_options(file):
     plando_hide_krool_options(None)
     plando_lock_key_8_in_helm(None)
     validate_item_limits(None)
-    validate_hint_text(None)
-    validate_shop_costs(None)
     validate_starting_kong_count(None)
     validate_level_order_no_duplicates(None)
     validate_krool_order_no_duplicates(None)
