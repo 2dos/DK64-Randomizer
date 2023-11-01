@@ -2102,6 +2102,7 @@ boot_phrases = (
     "Saying Hello when others wont",
     "Mangling Music",
     "Killing Speedrunning",
+    "Enhancing Cfox Luck Voice Linesmizers",
 )
 
 

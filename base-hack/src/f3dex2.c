@@ -78,6 +78,15 @@ int* drawPixelTextContainer(int* dl, int x, int y, char* str, int red, int green
 	return dl;
 }
 
+int* displayCenteredText(int* dl, int y, char* str, int offset) {
+	int center_x = 160;
+	if (Rando.true_widescreen) {
+		center_x = SCREEN_WD << 1;
+	}
+	int length = cstring_strlen(str);
+	return drawPixelTextContainer(dl, center_x - (length << 2), y, str, 0xFF, 0xFF, 0xFF, 0xFF, offset);
+}
+
 int* drawScreenRect(int* dl, int x1, int y1, int x2, int y2, int red, int green, int blue, int alpha) {
 	*(unsigned int*)(dl++) = 0xE7000000;
 	*(unsigned int*)(dl++) = 0x00000000;

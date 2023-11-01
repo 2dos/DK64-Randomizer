@@ -212,6 +212,10 @@
    "disco_chunky":1,
    "krusha_slot":255,
    "starting_kong":0,
+   "rom_flags":{
+      "plando":true,
+      "spoiler":true
+   },
    "test_zone":[
       174,
       1

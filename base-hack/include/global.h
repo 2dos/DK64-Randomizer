@@ -126,6 +126,7 @@ extern int* drawImageWithFilter(int* dl, int text_index, codecs codec_index, int
 extern void correctKongFaces(void);
 extern int* display_file_images(int* dl, int y_offset);
 extern int* drawTextPointers(int* dl);
+extern int* displayCenteredText(int* dl, int y, char* str, int offset);
 
 extern int getLo(void* addr);
 extern int getHi(void* addr);
@@ -222,6 +223,7 @@ extern void checkVictory_flaghook(int flag);
 extern void FileProgressInitSub(int file, int shuffle);
 extern void changeFileSelectAction(menu_controller_paad* paad, int cap, int buttons);
 extern void changeFileSelectAction_0(menu_controller_paad* paad, int cap);
+extern void handleFileSelectSprites(void* paad, void* sprite, int x, int y, float scale, int unk0, int control);
 extern void checkSkippableCutscene(void);
 extern void updateSkippableCutscenes(void);
 extern void parseCutsceneData(void);
