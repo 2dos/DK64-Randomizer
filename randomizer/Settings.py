@@ -95,10 +95,6 @@ class Settings:
         if self.hard_level_progression:
             self.troff_min = [self.troff_min[-1] for x in self.troff_min]
 
-        # Pointless with just move rando, maybe have it once full rando
-        # progressive_upgrades: bool
-        self.progressive_upgrades = False
-
         CompleteVanillaPrices()
         self.prices = VanillaPrices.copy()
         self.level_order = {1: Levels.JungleJapes, 2: Levels.AngryAztec, 3: Levels.FranticFactory, 4: Levels.GloomyGalleon, 5: Levels.FungiForest, 6: Levels.CrystalCaves, 7: Levels.CreepyCastle}
@@ -123,6 +119,9 @@ class Settings:
             Levels.CrystalCaves: ItemPool.AllKongMoves().copy(),
             Levels.CreepyCastle: ItemPool.AllKongMoves().copy(),
         }
+
+        if self.enable_plandomizer:
+            self.ApplyPlandomizerSettings()
 
         self.resolve_settings()
 
@@ -279,6 +278,7 @@ class Settings:
     def generate_misc(self):
         """Set default items on misc page."""
         #  Settings which affect logic
+        self.enable_plandomizer = False
         # crown_door_random: bool
         # crown_door_item: HelmDoorItem
         # crown_door_item_count: int
@@ -766,6 +766,22 @@ class Settings:
             self.krool_phase_count = 5
         if self.krool_phase_count < 5:
             phases = random.sample(phases, self.krool_phase_count)
+        # Plandomized K. Rool algorithm
+        if self.enable_plandomizer:
+            planned_phases = []
+            # Place planned phases and clear out others
+            for i in range(len(phases)):
+                if self.plandomizer_dict["plando_krool_order_" + str(i)] != -1:  # Note that input validation guarantees this key exists in this dict
+                    phases[i] = Kongs(self.plandomizer_dict["plando_krool_order_" + str(i)])
+                    planned_phases.append(Kongs(self.plandomizer_dict["plando_krool_order_" + str(i)]))
+                else:
+                    phases[i] = Kongs.any
+            # Fill cleared out phases with available phases
+            for i in range(len(phases)):
+                if phases[i] == Kongs.any:
+                    available_phases = [kong for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky] if kong not in planned_phases]
+                    phases[i] = random.choice(available_phases)
+                    planned_phases.append(phases[i])
         orderedPhases = []
         for kong in phases:
             if kong == Kongs.donkey:
@@ -801,6 +817,22 @@ class Settings:
             self.helm_phase_count = 5
         if self.helm_phase_count < 5:
             rooms = random.sample(rooms, self.helm_phase_count)
+        # Plandomized Helm room algorithm
+        if self.enable_plandomizer:
+            planned_rooms = []
+            # Place planned rooms and clear out others
+            for i in range(len(rooms)):
+                if self.plandomizer_dict["plando_helm_order_" + str(i)] != -1:  # Note that input validation guarantees this key exists in this dict
+                    rooms[i] = Kongs(self.plandomizer_dict["plando_helm_order_" + str(i)])
+                    planned_rooms.append(Kongs(self.plandomizer_dict["plando_helm_order_" + str(i)]))
+                else:
+                    rooms[i] = Kongs.any
+            # Fill cleared out rooms with available rooms
+            for i in range(len(rooms)):
+                if rooms[i] == Kongs.any:
+                    available_rooms = [kong for kong in [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky] if kong not in planned_rooms]
+                    rooms[i] = random.choice(available_rooms)
+                    planned_rooms.append(rooms[i])
         orderedRooms = []
         for kong in rooms:
             if kong == Kongs.donkey:
@@ -980,16 +1012,34 @@ class Settings:
         if self.starting_kongs_count == 5:
             self.kong_rando = False
         if self.kong_rando:
-            # Randomly pick starting kong list and starting kong
-            if self.starting_kong == Kongs.any:
-                self.starting_kong_list = random.sample(kongs, self.starting_kongs_count)
-                self.starting_kong = random.choice(self.starting_kong_list)
-            # Randomly pick starting kongs but include chosen starting kong
+            if self.enable_plandomizer:
+                # Filter out -1 from the plando dict (if it's there)
+                self.starting_kong_list = [Kongs(kong) for kong in self.plandomizer_dict["plando_starting_kongs_selected"] if kong != -1]
+                # If we chose to start with a random number of Kongs, we might have too many selected, remove any that aren't the starting Kong
+                while len(self.starting_kong_list) > self.starting_kongs_count:
+                    eligible_kongs_to_be_removed = [kong for kong in self.starting_kong_list if kong != self.starting_kong]
+                    self.starting_kong_list.remove(random.choice(eligible_kongs_to_be_removed))
+                # If we don't have enough Kongs selected by now, the plando validation means we'll always have "Random" as an option so we can fill with anything
+                # That said, prioritize putting the chosen starting Kong
+                if len(self.starting_kong_list) < self.starting_kongs_count and self.starting_kong != Kongs.any and self.starting_kong not in self.starting_kong_list:
+                    self.starting_kong_list.append(self.starting_kong)
+                # Otherwise fill with randoms until we have enough
+                while len(self.starting_kong_list) < self.starting_kongs_count:
+                    self.starting_kong_list.append(random.choice([kong for kong in kongs.copy() if kong not in self.starting_kong_list]))
+                # If we don't care who is the starting Kong or if the starting Kong choice was invalid, pick a random starting Kong
+                if self.starting_kong == Kongs.any or self.starting_kong not in self.starting_kong_list:
+                    self.starting_kong = random.choice(self.starting_kong_list)
             else:
-                possible_kong_list = kongs.copy()
-                possible_kong_list.remove(self.starting_kong)
-                self.starting_kong_list = random.sample(possible_kong_list, self.starting_kongs_count - 1)
-                self.starting_kong_list.append(self.starting_kong)
+                # Randomly pick starting kong list and starting kong
+                if self.starting_kong == Kongs.any:
+                    self.starting_kong_list = random.sample(kongs, self.starting_kongs_count)
+                    self.starting_kong = random.choice(self.starting_kong_list)
+                # Randomly pick starting kongs but include chosen starting kong
+                else:
+                    possible_kong_list = kongs.copy()
+                    possible_kong_list.remove(self.starting_kong)
+                    self.starting_kong_list = random.sample(possible_kong_list, self.starting_kongs_count - 1)
+                    self.starting_kong_list.append(self.starting_kong)
             # Kong freers are decided in the fill, set as any kong for now
             self.diddy_freeing_kong = Kongs.any
             self.lanky_freeing_kong = Kongs.any
@@ -1424,6 +1474,11 @@ class Settings:
         self.starting_region = random.choice(valid_starting_regions)
         for x in range(2):
             randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
+
+    def ApplyPlandomizerSettings(self):
+        """Apply settings specified by the plandomizer."""
+        self.plandomizer_dict = json.loads(self.plandomizer_data)
+        # Leaving space here to handle things as needed, might be unnecessary
 
     def __repr__(self):
         """Return printable version of the object as json.

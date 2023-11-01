@@ -117,20 +117,21 @@ PlandomizerPanels = {
     #    "name": "Blueprints",
     #    "locations": createPlannableLocationObj()
     # },
-    "Minigames": {
-        "name": "Minigames",
-        "levels": {
-            "DKIsles": {"name": "D.K. Isles", "locations": []},
-            "JungleJapes": {"name": "Jungle Japes", "locations": []},
-            "AngryAztec": {"name": "Angry Aztec", "locations": []},
-            "FranticFactory": {"name": "Frantic Factory", "locations": []},
-            "GloomyGalleon": {"name": "Gloomy Galleon", "locations": []},
-            "FungiForest": {"name": "Fungi Forest", "locations": []},
-            "CrystalCaves": {"name": "Crystal Caves", "locations": []},
-            "CreepyCastle": {"name": "Creepy Castle", "locations": []},
-            "HideoutHelm": {"name": "Hideout Helm", "locations": []},
-        },
-    },
+    # Minigames to come soon
+    # "Minigames": {
+    #     "name": "Minigames",
+    #     "levels": {
+    #         "DKIsles": {"name": "D.K. Isles", "locations": []},
+    #         "JungleJapes": {"name": "Jungle Japes", "locations": []},
+    #         "AngryAztec": {"name": "Angry Aztec", "locations": []},
+    #         "FranticFactory": {"name": "Frantic Factory", "locations": []},
+    #         "GloomyGalleon": {"name": "Gloomy Galleon", "locations": []},
+    #         "FungiForest": {"name": "Fungi Forest", "locations": []},
+    #         "CrystalCaves": {"name": "Crystal Caves", "locations": []},
+    #         "CreepyCastle": {"name": "Creepy Castle", "locations": []},
+    #         "HideoutHelm": {"name": "Hideout Helm", "locations": []},
+    #     },
+    # },
     "Hints": {
         "name": "Hints",
         "levels": {

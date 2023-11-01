@@ -101,8 +101,8 @@ def validate_item_limits(evt):
 def validate_hint_text(evt):
     """Raise an error if any hint contains invalid characters."""
     hintString = evt.target.value
-    if re.search("[^A-Za-z0-9 \,\.\-\?!]", hintString) is not None:
-        mark_option_invalid(evt.target, "Only letters, numbers, spaces, and the characters ,.-?! are allowed in hints.")
+    if re.search("[^A-Za-z0-9 '\,\.\-\?!]", hintString) is not None:
+        mark_option_invalid(evt.target, "Only letters, numbers, spaces, and the characters ',.-?! are allowed in hints.")
     else:
         mark_option_valid(evt.target)
 
@@ -127,7 +127,11 @@ def validate_starting_kong_count(evt):
     startingKongs = js.document.getElementById("plando_starting_kongs_selected")
     selectedKongs = {x.value for x in startingKongs.selectedOptions}
     numStartingKongs = int(js.document.getElementById("starting_kongs_count").value)
-    if len(selectedKongs) > numStartingKongs or (len(selectedKongs) < numStartingKongs and "" not in selectedKongs):
+    isRandomStartingKongCount = js.document.getElementById("starting_random").checked
+    if isRandomStartingKongCount:
+        # With a random starting Kong count, everything is fair game in this box and it'll try to meet expectations as best as it can
+        mark_option_valid(startingKongs)
+    elif len(selectedKongs) > numStartingKongs or (len(selectedKongs) < numStartingKongs and "" not in selectedKongs):
         maybePluralKongText = "Kong was selected as a starting Kong" if len(selectedKongs) == 1 else "Kongs were selected as starting Kongs"
         errSuffix = "." if len(selectedKongs) > numStartingKongs else ', and "Random Kong(s)" was not chosen.'
         errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(selectedKongs)} {maybePluralKongText}{errSuffix}"
@@ -215,6 +219,18 @@ def validate_helm_order_no_duplicates(evt):
 def validate_on_nav(evt):
     """Fallback for errors with Bootstrap sliders."""
     validate_starting_kong_count(evt)
+
+
+@bind("click", "export_plando_settings")
+def export_plando_settings(evt):
+    """Generate the plando json string for sharing."""
+    # Serialize the form into json
+    form = js.jquery("#form").serializeArray()
+    form_data = {}
+
+    # Plandomizer data is processed separately.
+    plando_form_data = populate_plando_options(form)
+    js.plando_string.value = json.dumps(plando_form_data)
 
 
 ######################
@@ -538,6 +554,8 @@ def populate_plando_options(form, for_plando_file=False):
     for obj in form:
         if not is_plando_input(obj.name):
             continue
+        if obj.name == "plando_string":  # Don't export the plando string, it causes headaches
+            continue
         # Sort the selects into their appropriate lists.
         if obj.name.endswith("_shop_cost"):
             shop_cost_objects.append(obj)
@@ -590,11 +608,11 @@ def populate_plando_options(form, for_plando_file=False):
         location = get_plando_value(Locations[location_name])
         if item.value != "":
             locations_map[location] = get_plando_value(PlandoItems[item.value])
-    # Place Golden Bananas on all of the blueprint rewards. Don't bother
-    # adding this for plando files.
-    if not for_plando_file:
-        for blueprint in LogicRegions[Regions.Snide].locations:
-            locations_map[blueprint.id] = PlandoItems.GoldenBanana
+    # Revisit all of this when BPs aren't always on blueprint rewards
+    # Place Golden Bananas on all of the blueprint rewards. Don't bother adding this for plando files.
+    # if not for_plando_file:
+        # for blueprint in LogicRegions[Regions.Snide].locations:
+        #     locations_map[blueprint.id] = PlandoItems.GoldenBanana
     plando_form_data["locations"] = locations_map
 
     shops_map = {}
@@ -607,14 +625,15 @@ def populate_plando_options(form, for_plando_file=False):
             shops_map[location] = item_cost
     plando_form_data["prices"] = shops_map
 
-    minigames_map = {}
-    for minigame in minigame_objects:
-        # Extract the barrel location name.
-        location_name = re.search("^plando_(.+)_minigame$", minigame.name)[1]
-        location = get_plando_value(Locations[location_name])
-        if minigame.value != "":
-            minigames_map[location] = get_plando_value(Minigames[minigame.value])
-    plando_form_data["minigames"] = minigames_map
+    # Minigame picking coming in future version
+    # minigames_map = {}
+    # for minigame in minigame_objects:
+    #     # Extract the barrel location name.
+    #     location_name = re.search("^plando_(.+)_minigame$", minigame.name)[1]
+    #     location = get_plando_value(Locations[location_name])
+    #     if minigame.value != "":
+    #         minigames_map[location] = get_plando_value(Minigames[minigame.value])
+    # plando_form_data["minigames"] = minigames_map
 
     hints_map = {}
     for hint in hint_objects:
@@ -634,10 +653,10 @@ def validate_plando_options(settings_dict):
     Args:
         settings_dict (str) - The dictionary containing the full settings.
     """
-    if "plandomizer" not in settings_dict:
+    if "plandomizer_data" not in settings_dict:
         return []
 
-    plando_dict = settings_dict["plandomizer"]
+    plando_dict = json.loads(settings_dict["plandomizer_data"])
     errList = []
     # Count all of the items to ensure none have been over-placed.
     count_dict = {}
@@ -676,7 +695,8 @@ def validate_plando_options(settings_dict):
     # Kongs have been selected, that is always an error.
     chosenKongs = plando_dict["plando_starting_kongs_selected"]
     numStartingKongs = int(settings_dict["starting_kongs_count"])
-    if len(chosenKongs) > numStartingKongs or (len(chosenKongs) < numStartingKongs and PlandoItems.Randomize not in chosenKongs):
+    isRandomStartingKongCount = js.document.getElementById("starting_random").checked
+    if not isRandomStartingKongCount and (len(chosenKongs) > numStartingKongs or (len(chosenKongs) < numStartingKongs and PlandoItems.Randomize not in chosenKongs)):
         maybePluralKongText = "Kong was selected as a starting Kong" if len(chosenKongs) == 1 else "Kongs were selected as starting Kongs"
         errSuffix = "." if len(chosenKongs) > numStartingKongs else ', and "Random Kong(s)" was not chosen.'
         errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(chosenKongs)} {maybePluralKongText}{errSuffix}"
@@ -725,14 +745,13 @@ def validate_plando_options(settings_dict):
     for hintLocation, hint in plando_dict["hints"].items():
         if hint == PlandoItems.Randomize:
             continue
-        hintLocationName = LocationList[hintLocation].name
-        if len(hint) > 900:
-            errString = f'The hint for location "{hintLocationName}" is longer than the limit of 900 characters.'
+        hintLocationName = LocationList[int(hintLocation)].name
+        if len(hint) > 123:
+            errString = f'The hint for location "{hintLocationName}" is longer than the limit of 123 characters.'
             errList.append(errString)
-        if re.search("[^A-Za-z0-9 \,\.\-\?!]", hint) is not None:
-            errString = f'The hint for location "{hintLocationName}" contains invalid characters. Only letters, numbers, spaces, and the characters ,.-?! are valid.'
-            if "'" in hint:
-                errString += " (Apostrophes are not allowed.)"
+        if re.search("[^A-Za-z0-9 '\,\.\-\?!]", hint) is not None:
+            errString = f'The hint for location "{hintLocationName}" contains invalid characters. Only letters, numbers, spaces, and the characters \',.-?! are valid.'
             errList.append(errString)
 
+    print(errList)
     return errList
