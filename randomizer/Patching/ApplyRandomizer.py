@@ -410,8 +410,8 @@ def patching_response(spoiler):
 
     # ROM Flags
     rom_flags = 0
-    rom_flags |= (0x80 if spoiler.settings.enable_plandomizer else 0)
-    rom_flags |= (0x40 if spoiler.settings.generate_spoilerlog else 0)
+    rom_flags |= 0x80 if spoiler.settings.enable_plandomizer else 0
+    rom_flags |= 0x40 if spoiler.settings.generate_spoilerlog else 0
     ROM_COPY.seek(sav + 0xC4)
     ROM_COPY.writeMultipleBytes(rom_flags, 1)
 
