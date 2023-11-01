@@ -1865,7 +1865,7 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
 def applyHolidayMode(settings):
     """Change grass texture to snow."""
     HOLIDAY = "halloween"  # Or "christmas"
-    if settings.holiday_setting:
+    if settings.holiday_setting and False:
         if HOLIDAY == "christmas":
             ROM().seek(0x1FF8000)
             snow_im = Image.new(mode="RGBA", size=((32, 32)))
