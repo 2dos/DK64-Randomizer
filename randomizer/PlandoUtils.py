@@ -588,7 +588,7 @@ def PlandoShopSortFilter(shopLocationList: list[str]) -> list[str]:
 
 def PlandoOptionClassAnnotation(panel: str, kong: str, location: str, item: str) -> str:
     """Apply certain CSS classes to dropdown menu options.
-    
+
     This allows for the frontend to quickly disable or enable options if they
     conflict with the existing settings.
     """

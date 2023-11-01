@@ -70,7 +70,7 @@ def get_shop_location_element(locName: str):
 
 
 def shop_has_assigned_item(shopElement) -> bool:
-    """Returns true if the given shop has an item assigned to it."""
+    """Return true if the given shop has an item assigned to it."""
     return shopElement.value and shopElement.value != "NoItem"
 
 
@@ -108,9 +108,7 @@ def validate_item_limits(evt):
 
 @bindList("change", ShopLocationList, prefix="plando_", suffix="_item")
 def validate_shop_kongs(evt):
-    """Raise an error if a level's shops has rewards assigned for both
-       individual Kongs and shared Kongs.
-    """
+    """Raise an error if a shop has both individual and shared rewards."""
     errString = "Shop vendors cannot have both shared rewards and Kong rewards assigned in the same level."
     for _, vendors in ShopLocationKongMap.items():
         for _, vendor_locations in vendors.items():
