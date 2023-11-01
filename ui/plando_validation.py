@@ -13,19 +13,19 @@ from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
 
 
-def invalidate_option(element, tooltip):
+def invalidate_option(element, tooltip: str) -> None:
     """Add a Bootstrap tooltip to the given element, and mark it as invalid."""
     element.setAttribute("data-bs-original-title", tooltip)
     element.classList.add("invalid")
 
 
-def validate_option(element):
+def validate_option(element) -> None:
     """Remove a Bootstrap tooltip from the given element, and mark it as valid."""
     element.setAttribute("data-bs-original-title", "")
     element.classList.remove("invalid")
 
 
-def count_items():
+def count_items() -> dict:
     """Count all currently placed items to ensure limits aren't exceeded.
 
     The result will be a dictionary, where each item is linked to all of the
@@ -33,7 +33,7 @@ def count_items():
     """
     count_dict = {}
 
-    def add_all_items(locList, suffix):
+    def add_all_items(locList: list[str], suffix: str):
         """Add all items from the location list into the dict."""
         for itemLocation in locList:
             elemName = f"plando_{itemLocation}{suffix}"
@@ -52,12 +52,12 @@ def count_items():
     return count_dict
 
 
-def get_shop_location_element(locName):
+def get_shop_location_element(locName: str):
     """Get the element corresponding to the dropdown for this location."""
     return js.document.getElementById(f"plando_{locName}_item")
 
 
-def shop_has_assigned_item(shopElement):
+def shop_has_assigned_item(shopElement) -> bool:
     """Returns true if the given shop has an item assigned to it."""
     return shopElement.value and shopElement.value != "NoItem"
 
@@ -253,7 +253,7 @@ def validate_on_nav(evt):
 ######################
 
 
-def populate_plando_options(form):
+def populate_plando_options(form: dict) -> dict:
     """Collect all of the plandomizer options into one object.
 
     Args:
@@ -261,8 +261,6 @@ def populate_plando_options(form):
     Returns:
         plando_form_data (dict) - The collected plando data. May be None if
             plandomizer is disabled, or the selections are invalid.
-        err (str[]) - A list of error strings to be displayed to the user.
-            Will be an empty list if there are no errors.
     """
     # If the plandomizer is disabled, return nothing.
     enable_plandomizer = js.document.getElementById("enable_plandomizer")
@@ -275,7 +273,7 @@ def populate_plando_options(form):
     minigame_objects = []
     hint_objects = []
 
-    def is_number(s):
+    def is_number(s) -> bool:
         """Check if a string is a number or not."""
         try:
             int(s)
@@ -283,7 +281,7 @@ def populate_plando_options(form):
         except ValueError:
             return False
 
-    def get_enum_or_string_value(valueString, settingName):
+    def get_enum_or_string_value(valueString: str, settingName: str):
         """Obtain the enum or string value for the provided setting.
 
         Args:
@@ -299,7 +297,7 @@ def populate_plando_options(form):
         else:
             return valueString
 
-    def is_plando_input(inputName):
+    def is_plando_input(inputName: str) -> bool:
         """Determine if an input is a plando input."""
         return inputName is not None and inputName.startswith("plando_")
 
@@ -395,11 +393,14 @@ def populate_plando_options(form):
     return plando_form_data
 
 
-def validate_plando_options(settings_dict):
+def validate_plando_options(settings_dict: dict) -> list[str]:
     """Validate the plando options against a set of rules.
 
     Args:
-        settings_dict (str) - The dictionary containing the full settings.
+        settings_dict (dict) - The dictionary containing the full settings.
+    Returns:
+        err (str[]) - A list of error strings to be displayed to the user.
+            Will be an empty list if there are no errors.
     """
     if "plandomizer" not in settings_dict:
         return []

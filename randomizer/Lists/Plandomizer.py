@@ -2,6 +2,7 @@
 
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Types import Types
@@ -20,7 +21,7 @@ from randomizer.LogicFiles.GloomyGalleon import LogicRegions as GloomyGalleonReg
 from randomizer.LogicFiles.JungleJapes import LogicRegions as JungleJapesRegions
 
 
-def getKongString(kongEnum):
+def getKongString(kongEnum: Kongs) -> str:
     """Get the string name of the kong from the enum."""
     if kongEnum == Kongs.donkey:
         return "Donkey"
@@ -36,7 +37,7 @@ def getKongString(kongEnum):
         return "All Kongs"
 
 
-def getLevelString(levelEnum):
+def getLevelString(levelEnum: Levels) -> str:
     """Get the string name of a level from the enum."""
     if levelEnum == Levels.DKIsles:
         return "D.K. Isles"
@@ -74,7 +75,7 @@ ShopLocationList = []
 HintLocationList = []
 
 
-def createShopLocationKongMapObj():
+def createShopLocationKongMapObj() -> dict:
     """Initialize an entry in the ShopLocationKongMap."""
     return {
         VendorType.Candy.name: {
@@ -109,7 +110,7 @@ ShopLocationKongMap = {
 ##########
 
 
-def createPlannableLocationObj():
+def createPlannableLocationObj() -> dict:
     """Initialize the plannable location object."""
     return {
         "All Kongs": [],
@@ -121,7 +122,7 @@ def createPlannableLocationObj():
         "Enemies": []}
 
 
-def isMinigameLocation(locationEnum):
+def isMinigameLocation(locationEnum: Locations) -> bool:
     """Determine if this location is a minigame location."""
     return locationEnum in BarrelMetaData
 

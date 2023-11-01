@@ -5,8 +5,8 @@ from randomizer.Enums.Settings import SettingsMap
 from ui.plando_validation import populate_plando_options
 
 
-def serialize_settings():
-    """Serialize form settings into an enum-focused JSON string.
+def serialize_settings() -> dict:
+    """Serialize form settings into an enum-focused JSON object.
 
     Returns:
         dict: Dictionary of form settings.
@@ -34,7 +34,7 @@ def serialize_settings():
     if plando_form_data is not None:
         form_data["plandomizer"] = plando_form_data
 
-    def is_number(s):
+    def is_number(s) -> bool:
         """Check if a string is a number or not."""
         try:
             int(s)
@@ -42,15 +42,15 @@ def serialize_settings():
         except ValueError:
             pass
 
-    def is_plando_input(inputName):
+    def is_plando_input(inputName: str) -> bool:
         """Determine if an input is a plando input."""
         return inputName is not None and inputName.startswith("plando_")
 
-    def is_starting_move_radio_button(inputName):
+    def is_starting_move_radio_button(inputName: str) -> bool:
         """Determine if an input is a starting move checkbox."""
         return inputName is not None and inputName.startswith("starting_move_box_")
 
-    def get_enum_or_string_value(valueString, settingName):
+    def get_enum_or_string_value(valueString: str, settingName: str):
         """Obtain the enum or string value for the provided setting.
 
         Args:

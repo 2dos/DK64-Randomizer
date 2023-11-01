@@ -79,7 +79,7 @@ plandoItemNameDict = {
 }
 
 
-def GetNameFromPlandoItem(plandoItem):
+def GetNameFromPlandoItem(plandoItem: PlandoItems) -> str:
     """Obtain a display name for a given PlandoItem enum."""
     if plandoItem in plandoItemNameDict:
         return plandoItemNameDict[plandoItem]
@@ -315,6 +315,11 @@ for locationName in bossFightLocationList:
     ItemRestrictionsPerLocation[locationName].add(PlandoItems.JunkItem.name)
     ItemRestrictionsPerLocation[locationName].update(blueprintItemSet)
 
+# Enemies and crates should not have junk item rewards.
+for locEnum, locObj in LocationList.items():
+    if locObj.type == Types.CrateItem or locObj.type == Types.Enemies:
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
+
 # Battle arenas cannot have junk item or blueprint rewards.
 for locEnum, locObj in LocationList.items():
     if locObj.type == Types.Crown:
@@ -394,7 +399,7 @@ for locationName in badBlueprintLocationList:
     ItemRestrictionsPerLocation[locationName].update(blueprintItemSet)
 
 
-def PlandoItemFilter(itemList, location):
+def PlandoItemFilter(itemList: list[dict], location: str) -> list[dict]:
     """Return a filtered list of plando items that are permitted at the given location.
 
     Args:
@@ -425,7 +430,7 @@ kongMinigameRestrictions = {
 }
 
 
-def PlandoMinigameFilter(minigameList, kong):
+def PlandoMinigameFilter(minigameList: list[str], kong: str) -> list[str]:
     """Return a filtered list of minigames that can be played by each Kong. This will prevent the user from placing impossible minigames in locations that only certain Kongs can access.
 
     Args:
@@ -568,7 +573,7 @@ shopLocationOrderingDict = {
 }
 
 
-def PlandoShopSortFilter(shopLocationList):
+def PlandoShopSortFilter(shopLocationList: list[str]) -> list[str]:
     """Return a sorted list of shop locations. These are sorted by level, then by vendor, then by Kong. This makes the full list easier to browse.
 
     Args:
@@ -581,8 +586,12 @@ def PlandoShopSortFilter(shopLocationList):
     return sorted(shopLocationList, key=shopKey)
 
 
-def PlandoOptionClassAnnotation(panel, kong, location, item):
-    """Apply certain CSS classes to dropdown menu options in order to enable various option interactions."""
+def PlandoOptionClassAnnotation(panel: str, kong: str, location: str, item: str) -> str:
+    """Apply certain CSS classes to dropdown menu options.
+    
+    This allows for the frontend to quickly disable or enable options if they
+    conflict with the existing settings.
+    """
     classSet = set()
 
     # Each key gets its own class.
