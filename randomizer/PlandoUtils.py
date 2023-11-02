@@ -70,6 +70,9 @@ MoveSet = {
 
 # This dict only contains names for plando items that don't map 1:1 to Item.
 plandoItemNameDict = {
+    PlandoItems.ProgressiveSlam: "Progressive Slam",
+    PlandoItems.ProgressiveAmmoBelt: "Progressive Ammo Belt",
+    PlandoItems.ProgressiveInstrumentUpgrade: "Progressive Instrument Upgrade",
     PlandoItems.DonkeyBlueprint: "Blueprint (Donkey)",
     PlandoItems.DiddyBlueprint: "Blueprint (Diddy)",
     PlandoItems.LankyBlueprint: "Blueprint (Lanky)",
@@ -593,9 +596,9 @@ def PlandoOptionClassAnnotation(panel, kong, location, item):
     if item in KongSet:
         classSet.add(f"plando-{item}-option")
 
-    # Each move gets the same class.
+    # Each move gets its own class.
     if item in MoveSet:
-        classSet.add("plando-move-option")
+        classSet.add(f"plando-{item}-option")
 
     # Camera and Shockwave get their own class.
     if item in {PlandoItems.Camera.name, PlandoItems.Shockwave.name}:

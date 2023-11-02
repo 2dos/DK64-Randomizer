@@ -7,8 +7,9 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Minigames import Minigames
-from randomizer.Enums.Plandomizer import PlandoItems
+from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Regions import Regions
+from randomizer.Lists.Item import StartingMoveOptions
 from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.Plandomizer import HintLocationList, ItemLocationList, MinigameLocationList, PlannableItemLimits, ShopLocationList
 from randomizer.LogicFiles.Shops import LogicRegions
@@ -648,6 +649,17 @@ def validate_plando_options(settings_dict):
             count_dict[item] += 1
         else:
             count_dict[item] = 1
+    # Add in starting moves, which also count toward the totals.
+    startingMoveSet = set()
+    for startingMove in StartingMoveOptions:
+        startingMoveElem = js.document.getElementById(f"start-{str(startingMove.value)}")
+        if startingMoveElem.checked:
+            plandoMove = ItemToPlandoItemMap[startingMove]
+            startingMoveSet.add(plandoMove)
+            if plandoMove in count_dict:
+                count_dict[plandoMove] += 1
+            else:
+                count_dict[plandoMove] = 1
     # If any items have exceeded their maximum amounts, add an error.
     for item, itemCount in count_dict.items():
         if item not in PlannableItemLimits:
@@ -656,7 +668,7 @@ def validate_plando_options(settings_dict):
         if itemCount > itemMax:
             maybePluralTimes = "time" if itemMax == 1 else "times"
             errString = f'Item "{GetNameFromPlandoItem(item)}" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times.'
-            if item in plando_dict["plando_starting_moves_selected"]:
+            if item in startingMoveSet:
                 errString += " (This includes starting moves.)"
             if item == PlandoItems.GoldenBanana:
                 errString += " (40 Golden Bananas are always allocated to blueprint rewards.)"
