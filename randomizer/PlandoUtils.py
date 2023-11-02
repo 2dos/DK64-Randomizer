@@ -277,14 +277,8 @@ kongSpecificMoveItemSet = {
     PlandoItems.Triangle.name,
 }
 
-for shop in sharedShopsSet:
-    ItemRestrictionsPerLocation[shop].update(kongSpecificMoveItemSet)
-
 # Kong-specific shops have a handful of banned items.
 kongSpecificShopRestrictedItemSet = {PlandoItems.Vines.name, PlandoItems.Swim.name, PlandoItems.Oranges.name, PlandoItems.Barrels.name, PlandoItems.Shockwave.name}
-
-for shop in kongSpecificShopSet:
-    ItemRestrictionsPerLocation[shop].update(kongSpecificShopRestrictedItemSet)
 
 # General shops have few restrictions.
 shopRestrictedItemSet = {PlandoItems.RainbowCoin.name, PlandoItems.JunkItem.name}
@@ -292,8 +286,11 @@ shopRestrictedItemSet = {PlandoItems.RainbowCoin.name, PlandoItems.JunkItem.name
 # Add the restricted items for each shop location. (This will also cover the
 # blueprint redemptions, which is fine.)
 for shop in sharedShopsSet:
+    ItemRestrictionsPerLocation[shop].update(kongSpecificMoveItemSet)
     ItemRestrictionsPerLocation[shop].update(shopRestrictedItemSet)
+
 for shop in kongSpecificShopSet:
+    ItemRestrictionsPerLocation[shop].update(kongSpecificShopRestrictedItemSet)
     ItemRestrictionsPerLocation[shop].update(shopRestrictedItemSet)
 
 # Crowns are not allowed on Helm Medal locations.
@@ -315,20 +312,16 @@ for locationName in bossFightLocationList:
     ItemRestrictionsPerLocation[locationName].add(PlandoItems.JunkItem.name)
     ItemRestrictionsPerLocation[locationName].update(blueprintItemSet)
 
-# Enemies and crates should not have junk item rewards.
 for locEnum, locObj in LocationList.items():
+    # Enemies and crates should not have junk item rewards.
     if locObj.type == Types.CrateItem or locObj.type == Types.Enemies:
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
-
-# Battle arenas cannot have junk item or blueprint rewards.
-for locEnum, locObj in LocationList.items():
+    # Battle arenas cannot have junk item or blueprint rewards.
     if locObj.type == Types.Crown:
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
         ItemRestrictionsPerLocation[locEnum.name].update(blueprintItemSet)
-
-# Junk items cannot be placed anywhere in Hideout Helm. Due to technical
-# limitations, neither can Golden Bananas.
-for locEnum, locObj in LocationList.items():
+    # Junk items cannot be placed anywhere in Hideout Helm. Due to technical
+    # limitations, neither can Golden Bananas.
     if locObj.level == Levels.HideoutHelm:
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.GoldenBanana.name)
