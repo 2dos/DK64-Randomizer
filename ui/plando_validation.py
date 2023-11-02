@@ -69,16 +69,37 @@ def count_items():
 # BINDINGS #
 ############
 
+startingMoveValues = [str(item.value) for item in StartingMoveOptions]
 
+
+@bindList("click", startingMoveValues, prefix="none-")
+@bindList("click", startingMoveValues, prefix="start-")
+@bindList("click", startingMoveValues, prefix="random-")
 @bindList("change", ItemLocationList, prefix="plando_", suffix="_item")
 @bindList("change", ShopLocationList, prefix="plando_", suffix="_item")
+@bind("click", "starting_moves_reset")
+@bind("click", "starting_moves_start_all")
 def validate_item_limits(evt):
     """Raise an error if any item has been placed too many times."""
     count_dict = count_items()
+    # Add in starting moves, which also count toward the totals.
+    startingMoveSet = set()
+    for startingMove in StartingMoveOptions:
+        startingMoveElem = js.document.getElementById(f"start-{str(startingMove.value)}")
+        if startingMoveElem.checked:
+            plandoMove = ItemToPlandoItemMap[startingMove]
+            startingMoveSet.add(plandoMove)
+            if plandoMove in count_dict:
+                # Add in None, so we don't attempt to mark a nonexistent
+                # element.
+                count_dict[plandoMove].append(None)
+            else:
+                count_dict[plandoMove] = [None]
     for item, locations in count_dict.items():
         if item not in PlannableItemLimits:
             for loc in locations:
-                mark_option_valid(js.document.getElementById(loc))
+                if loc is not None:
+                    mark_option_valid(js.document.getElementById(loc))
             continue
         itemCount = len(locations)
         if item == PlandoItems.GoldenBanana:
@@ -87,14 +108,17 @@ def validate_item_limits(evt):
         itemMax = PlannableItemLimits[item]
         if itemCount > itemMax:
             maybePluralTimes = "time" if itemMax == 1 else "times"
-            errString = f'Item "{GetNameFromPlandoItem(item)}" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times.'
+            maybeStartingMoves = " (This includes starting moves.)" if None in locations else ""
+            errString = f'Item "{GetNameFromPlandoItem(item)}" can be placed at most {itemMax} {maybePluralTimes}, but has been placed {itemCount} times.{maybeStartingMoves}'
             if item == PlandoItems.GoldenBanana:
                 errString += " (40 Golden Bananas are always allocated to blueprint rewards.)"
             for loc in locations:
-                mark_option_invalid(js.document.getElementById(loc), errString)
+                if loc is not None:
+                    mark_option_invalid(js.document.getElementById(loc), errString)
         else:
             for loc in locations:
-                mark_option_valid(js.document.getElementById(loc))
+                if loc is not None:
+                    mark_option_valid(js.document.getElementById(loc))
 
 
 @bindList("change", HintLocationList, prefix="plando_", suffix="_hint")
