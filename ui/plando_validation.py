@@ -128,13 +128,13 @@ def validate_shop_kongs(evt):
                     # An individual shop has an assigned item.
                     # This is always a conflict at this point.
                     shared_location_valid = False
-                    invalidate_option(vendor_element, errString)
+                    mark_option_invalid(vendor_element, errString)
                 else:
-                    validate_option(vendor_element)
+                    mark_option_valid(vendor_element)
             if shared_location_valid:
-                validate_option(vendor_shared_element)
+                mark_option_valid(vendor_shared_element)
             else:
-                invalidate_option(vendor_shared_element, errString)
+                mark_option_invalid(vendor_shared_element, errString)
 
 
 @bindList("change", HintLocationList, prefix="plando_", suffix="_hint")

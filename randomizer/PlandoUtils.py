@@ -424,7 +424,10 @@ kongMinigameRestrictions = {
 
 
 def PlandoMinigameFilter(minigameList: list[str], kong: str) -> list[str]:
-    """Return a filtered list of minigames that can be played by each Kong. This will prevent the user from placing impossible minigames in locations that only certain Kongs can access.
+    """Return a filtered list of minigames that can be played by each Kong.
+
+    This will prevent the user from placing impossible minigames in locations
+    that only certain Kongs can access.
 
     Args:
         minigameList (str[]): The list of possible minigames.
