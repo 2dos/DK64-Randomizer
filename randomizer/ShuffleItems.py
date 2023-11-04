@@ -200,13 +200,13 @@ def ShuffleItems(spoiler):
         raise Ex.FillException("ERROR: Failed to create a valid flag assignment for this fill!")
     spoiler.item_assignment = locations_needing_flags + locations_not_needing_flags
     # Generate human-readable version for debugging purposes
-    human_item_data = {}
-    for loc in spoiler.item_assignment:
-        name = "Nothing"
-        if loc.new_item is not None:
-            name = ItemList[spoiler.LocationList[loc.location].item].name
-        location_name = loc.name
-        if "Kasplat" in location_name:
-            location_name = f"{location_name.split('Kasplat')[0]} {NameFromKong(loc.old_kong)} Kasplat"
-        human_item_data[location_name] = name
-    spoiler.debug_human_item_assignment = human_item_data
+    # human_item_data = {}
+    # for loc in spoiler.item_assignment:
+    #     name = "Nothing"
+    #     if loc.new_item is not None:
+    #         name = ItemList[spoiler.LocationList[loc.location].item].name
+    #     location_name = loc.name
+    #     if "Kasplat" in location_name:
+    #         location_name = f"{location_name.split('Kasplat')[0]} {NameFromKong(loc.old_kong)} Kasplat"
+    #     human_item_data[location_name] = name
+    # spoiler.debug_human_item_assignment = human_item_data

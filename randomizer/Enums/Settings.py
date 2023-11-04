@@ -839,6 +839,7 @@ DeprecatedSettings = {
     SettingsStringEnum.hard_bosses,
     SettingsStringEnum.hard_enemies,
     SettingsStringEnum.choose_starting_moves,
+    SettingsStringEnum.enable_plandomizer,  # May integrate plando strings later
 }
 
 

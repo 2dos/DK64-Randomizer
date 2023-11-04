@@ -70,7 +70,7 @@ def import_settings_string(event):
     settings = decrypt_settings_string_enum(settings_string)
     # Clear all select boxes on the page so as long as its not in the nav-cosmetics div
     for select in js.document.getElementsByTagName("select"):
-        if js.document.querySelector("#nav-cosmetics").contains(select) is False:
+        if js.document.querySelector("#nav-cosmetics").contains(select) is False and not select.name.startswith("plando_"):
             select.selectedIndex = -1
     # Uncheck all starting move radio buttons for the import to then set them correctly
     for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
@@ -231,17 +231,20 @@ def generate_seed(event):
     else:
         # The data is serialized outside of the loop, because validation occurs
         # here and we might stop before attempting to generate a seed.
-        form_data = serialize_settings()
-        plando_errors = validate_plando_options(form_data)
-        # If errors are returned, the plandomizer options are invalid.
-        # Do not attempt to generate a seed.
-        if len(plando_errors) > 0:
-            joined_errors = "<br>".join(plando_errors)
-            error_html = f"ERROR:<br>{joined_errors}"
-            # Show and populate the div for settings errors.
-            settings_errors_element.innerHTML = error_html
-            settings_errors_element.style = ""
-            return
+        plando_enabled = js.document.getElementById("enable_plandomizer").checked
+        form_data = serialize_settings(include_plando=plando_enabled)
+
+        if form_data["enable_plandomizer"]:
+            plando_errors = validate_plando_options(form_data)
+            # If errors are returned, the plandomizer options are invalid.
+            # Do not attempt to generate a seed.
+            if len(plando_errors) > 0:
+                joined_errors = "<br>".join(plando_errors)
+                error_html = f"ERROR:<br>{joined_errors}"
+                # Show and populate the div for settings errors.
+                settings_errors_element.innerHTML = error_html
+                settings_errors_element.style = ""
+                return
 
         # Start the progressbar
         loop = asyncio.get_event_loop()

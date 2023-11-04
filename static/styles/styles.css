@@ -11388,3 +11388,8 @@ header.masthead .bg-circle-4 {
     font-size: 4rem;
   }
 }
+
+.settings-errors {
+  background: darkred; 
+  padding: 15px;
+}

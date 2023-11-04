@@ -1364,7 +1364,7 @@ def PlaceItems(
         return CarefulRandomFill(spoiler, itemsToPlace, ownedItems)
 
 
-def FillShuffledKeys(spoiler: Spoiler, placed_types: List[Types]) -> None:
+def FillShuffledKeys(spoiler: Spoiler, placed_types: List[Types], placed_items: List[Items]) -> None:
     """Fill Keys in shuffled locations based on the settings."""
     keysToPlace = []
     for keyEvent in spoiler.settings.krool_keys_required:
@@ -1386,6 +1386,10 @@ def FillShuffledKeys(spoiler: Spoiler, placed_types: List[Types]) -> None:
             keysToPlace.append(Items.HideoutHelmKey)
     if spoiler.settings.key_8_helm and Items.HideoutHelmKey in keysToPlace:
         keysToPlace.remove(Items.HideoutHelmKey)
+    # Don't double-place keys
+    for item in placed_items:
+        if item in keysToPlace:
+            keysToPlace.remove(item)
     # Level-agnostic key placement settings include...
     # - No logic (totally random)
     # - Loading Zone randomizer (key unlocks are typically of lesser importance)
@@ -1524,44 +1528,52 @@ def Fill(spoiler: Spoiler) -> None:
     spoiler.settings.placed_shared_shops = 0
     # First place constant items - these will never vary and need to be in place for all other fills to know that
     ItemPool.PlaceConstants(spoiler)
+    preplaced_items = spoiler.settings.plandomizer_items_placed
 
     # Place rainbow coins before all randomly placed items so that we have coins set in stone for the other fills
     # It's possible that shops could overload if we continue assuming rainbow coins for too many fills
     if Types.RainbowCoin in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.RainbowCoin)
         spoiler.Reset()
-        rcoinUnplaced = PlaceItems(spoiler, FillAlgorithm.random, ItemPool.RainbowCoinItems(), ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types))
+        rainbowCoinsToPlace = ItemPool.RainbowCoinItems().copy()
+        for item in preplaced_items:
+            if item in rainbowCoinsToPlace:
+                rainbowCoinsToPlace.remove(item)
+        rcoinUnplaced = PlaceItems(spoiler, FillAlgorithm.random, rainbowCoinsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
         if rcoinUnplaced > 0:
             raise Ex.ItemPlacementException(str(rcoinUnplaced) + " unplaced Rainbow Coins.")
     if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "Rainbow Coins")
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Rainbow Coins")
 
     # Now we place all logically-relevant low-quantity items
     # Then fill Kongs and Moves - this should be a very early fill type for hopefully obvious reasons
-    FillKongsAndMoves(spoiler, placed_types)
+    FillKongsAndMoves(spoiler, placed_types, preplaced_items)
     if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "all moves")
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "all moves")
 
     # Then place Keys
     if Types.Key in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Key)
-        FillShuffledKeys(spoiler, placed_types)
+        FillShuffledKeys(spoiler, placed_types, preplaced_items)
     if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "Keys")
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Keys")
 
     # Then place misc progression items
     if Types.Bean in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Bean)
         placed_types.append(Types.Pearl)
         spoiler.Reset()
-        miscUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, ItemPool.MiscItemRandoItems(), ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types))
+        miscItemsToPlace = ItemPool.MiscItemRandoItems().copy()
+        for item in preplaced_items:
+            if item in miscItemsToPlace:
+                miscItemsToPlace.remove(item)
+        miscUnplaced = PlaceItems(spoiler, spoiler.settings.algorithm, miscItemsToPlace, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items))
         if miscUnplaced > 0:
             raise Ex.ItemPlacementException(str(miscUnplaced) + " unplaced Miscellaneous Items.")
     if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "Miscellaneous Items")
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Miscellaneous Items")
 
     # Now we place the (generally) filler items
-    preplaced_items = []
     # If Helm is having locations shuffled and we're shuffling GBs, we have to fill Helm now.
     # This is because GBs can't be in Helm, so we might run out of locations to place them if these spots aren't filled
     if Types.Banana in spoiler.settings.shuffled_location_types and (
@@ -1572,14 +1584,14 @@ def Fill(spoiler: Spoiler) -> None:
     ):
         preplaced_items.extend(FillHelmLocations(spoiler, placed_types, preplaced_items))
     if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "things in Helm")
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "things in Helm")
 
     # If keys are shuffled in the pool we want to ensure an item is on every boss
     # This is to support broader settings that rely on boss kills and to enable reads on the boss fill algorithm
     if Types.Key in spoiler.settings.shuffled_location_types:
         preplaced_items.extend(FillBossLocations(spoiler, placed_types, preplaced_items))
     if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "things on Bosses")
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "things on Bosses")
 
     # Then place Blueprints - these are moderately restrictive in their placement
     if Types.Blueprint in spoiler.settings.shuffled_location_types:
@@ -1594,7 +1606,7 @@ def Fill(spoiler: Spoiler) -> None:
         if blueprintsUnplaced > 0:
             raise Ex.ItemPlacementException(str(blueprintsUnplaced) + " unplaced blueprints.")
     if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "Blueprints")
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Blueprints")
     # Then place Nintendo & Rareware Coins
     if Types.Coin in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Coin)
@@ -1607,7 +1619,7 @@ def Fill(spoiler: Spoiler) -> None:
         if coinsUnplaced > 0:
             raise Ex.ItemPlacementException(str(coinsUnplaced) + " unplaced company coins.")
     if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "Company Coins")
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Company Coins")
     # Then place Battle Crowns
     if Types.Crown in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Crown)
@@ -1624,7 +1636,7 @@ def Fill(spoiler: Spoiler) -> None:
         if crownsUnplaced > 0:
             raise Ex.ItemPlacementException(str(crownsUnplaced) + " unplaced crowns.")
     if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "Crowns")
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Crowns")
     # Then place Banana Medals
     if Types.Medal in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Medal)
@@ -1644,7 +1656,7 @@ def Fill(spoiler: Spoiler) -> None:
         if medalsUnplaced > 0:
             raise Ex.ItemPlacementException(str(medalsUnplaced) + " unplaced random medals.")
     if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "Banana Medals")
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Banana Medals")
     # Then place Fairies
     if Types.Fairy in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.Fairy)
@@ -1664,7 +1676,7 @@ def Fill(spoiler: Spoiler) -> None:
         if fairyUnplaced > 0:
             raise Ex.ItemPlacementException(str(fairyUnplaced) + " unplaced random Fairies.")
     if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "Fairies")
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Fairies")
     # Then fill remaining locations with GBs
     preplaced_gbs_accounted_for = []  # Because GBs are placed in two parts, we may have to account for preplaced GBs in either section
     if Types.Banana in spoiler.settings.shuffled_location_types:
@@ -1684,7 +1696,7 @@ def Fill(spoiler: Spoiler) -> None:
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced GBs.")
     if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "GBs")
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "GBs")
     if Types.ToughBanana in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.ToughBanana)
         spoiler.Reset()
@@ -1696,7 +1708,7 @@ def Fill(spoiler: Spoiler) -> None:
         if gbsUnplaced > 0:
             raise Ex.ItemPlacementException(str(gbsUnplaced) + " unplaced tough GBs.")
     if spoiler.settings.extreme_debugging:
-        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types), "Tough GBs")
+        DebugCheckAllReachable(spoiler, ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types, placed_items=preplaced_items), "Tough GBs")
     # Fill in fake items
     if Types.FakeItem in spoiler.settings.shuffled_location_types:
         placed_types.append(Types.FakeItem)
@@ -1789,47 +1801,6 @@ def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: 
     junkSharedUnplaced = PlaceItems(spoiler, FillAlgorithm.random, junkSharedToPlace, [x for x in ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes) if x not in junkSharedToPlace])
     if junkSharedUnplaced > 0:
         raise Ex.ItemPlacementException(str(junkSharedUnplaced) + " unplaced shared junk items.")
-
-
-def FillKongsAndMovesGeneric(spoiler: Spoiler) -> None:
-    """Facilitate shuffling individual pools of items in lieu of full item rando."""
-    retries = 0
-    error_log = []
-    while 1:
-        try:
-            # To aid in finding these locations, treat Rareware Coin and Rareware GB as being ~15-20% more expensive for fill purposes (unless it's already very expensive)
-            spoiler.settings.medal_requirement = spoiler.settings.logical_medal_requirement
-            spoiler.settings.rareware_gb_fairies = spoiler.settings.logical_fairy_requirement
-            # TODO: Reconsider B. Locker values in LZR
-            Fill(spoiler)
-            # Reset the adjustments made for fill purposes
-            spoiler.settings.medal_requirement = spoiler.settings.original_medal_requirement
-            spoiler.settings.rareware_gb_fairies = spoiler.settings.original_fairy_requirement
-            # Check if game is beatable
-            spoiler.Reset()
-            if not VerifyWorldWithWorstCoinUsage(spoiler):
-                raise Ex.GameNotBeatableException("Game potentially unbeatable after placing all items.")
-            return
-        except Ex.FillException as ex:
-            error_log.append(ex)
-            spoiler.Reset()
-            spoiler.ClearAllLocations()
-            if retries == 20:
-                js.postMessage("Fill failed, out of retries.")
-                raise ex
-            retries += 1
-            if retries % 5 == 0:
-                js.postMessage("Retrying fill really hard. Tries: " + str(retries))
-                # TODO: Handle Loading Zones - does not work right now but is something I want here eventually
-                # if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
-                #     ShuffleExits.Reset()
-                #     ShuffleExits.ExitShuffle(spoiler)
-                #     spoiler.UpdateExits()
-                spoiler.settings.shuffle_prices(spoiler)
-                if spoiler.settings.random_starting_region:
-                    spoiler.settings.RandomizeStartingLocation()
-            else:
-                js.postMessage("Retrying fill. Tries: " + str(retries))
 
 
 def GeneratePlaythrough(spoiler: Spoiler) -> None:
@@ -2026,12 +1997,12 @@ def PlaceKongsInKongLocations(spoiler: Spoiler, kongItems, kongLocations):
     spoiler.settings.update_valid_locations(spoiler)
 
 
-def FillKongs(spoiler: Spoiler, placedTypes: List[Types]) -> None:
+def FillKongs(spoiler: Spoiler, placedTypes: List[Types], placedItems: List[Items]) -> None:
     """Place Kongs in valid locations."""
     placedTypes.append(Types.Kong)
     # Determine what kong items need to be placed
     startingKongItems = [ItemPool.ItemFromKong(kong) for kong in spoiler.settings.starting_kong_list]
-    kongItems = [item for item in ItemPool.Kongs(spoiler.settings) if item not in startingKongItems]
+    kongItems = [item for item in ItemPool.Kongs(spoiler.settings) if item not in startingKongItems and item not in placedItems]
     # If Kongs can be placed anywhere, we don't need anything special
     if spoiler.settings.shuffle_items and Types.Kong in spoiler.settings.shuffled_location_types:
         # First, randomly pick who opens what cage - this prevents cases where a Kong locks themselves
@@ -2039,6 +2010,15 @@ def FillKongs(spoiler: Spoiler, placedTypes: List[Types]) -> None:
         spoiler.settings.lanky_freeing_kong = choice(GetKongs())
         spoiler.settings.tiny_freeing_kong = choice([Kongs.diddy, Kongs.chunky])
         spoiler.settings.chunky_freeing_kong = choice(GetKongs())
+        if spoiler.settings.enable_plandomizer:
+            if spoiler.settings.plandomizer_dict["plando_kong_rescue_diddy"] != -1:
+                spoiler.settings.diddy_freeing_kong = Kongs(spoiler.settings.plandomizer_dict["plando_kong_rescue_diddy"])
+            if spoiler.settings.plandomizer_dict["plando_kong_rescue_lanky"] != -1:
+                spoiler.settings.lanky_freeing_kong = Kongs(spoiler.settings.plandomizer_dict["plando_kong_rescue_lanky"])
+            if spoiler.settings.plandomizer_dict["plando_kong_rescue_tiny"] != -1:
+                spoiler.settings.tiny_freeing_kong = Kongs(spoiler.settings.plandomizer_dict["plando_kong_rescue_tiny"])
+            if spoiler.settings.plandomizer_dict["plando_kong_rescue_chunky"] != -1:
+                spoiler.settings.chunky_freeing_kong = Kongs(spoiler.settings.plandomizer_dict["plando_kong_rescue_chunky"])
         # Update the locations' assigned kong with the set freeing kong list
         spoiler.LocationList[Locations.JapesDonkeyFrontofCage].kong = spoiler.settings.diddy_freeing_kong
         spoiler.LocationList[Locations.JapesDonkeyFreeDiddy].kong = spoiler.settings.diddy_freeing_kong
@@ -2046,6 +2026,9 @@ def FillKongs(spoiler: Spoiler, placedTypes: List[Types]) -> None:
         spoiler.LocationList[Locations.AztecDiddyFreeTiny].kong = spoiler.settings.tiny_freeing_kong
         spoiler.LocationList[Locations.FactoryLankyFreeChunky].kong = spoiler.settings.chunky_freeing_kong
         assumedItems = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placedTypes)
+        for item in placedItems:
+            if item in assumedItems:
+                assumedItems.remove(item)
         spoiler.Reset()
         PlaceItems(spoiler, FillAlgorithm.assumed, kongItems, assumedItems)
         # If we didn't put an item in a kong location, then it gets a NoItem
@@ -2069,6 +2052,16 @@ def FillKongs(spoiler: Spoiler, placedTypes: List[Types]) -> None:
         spoiler.settings.update_valid_locations(spoiler)
     # If kongs must be in Kong cages, we need to be more careful
     else:
+        # Plando causes problems here. Let's just not.
+        if any([item for item in placedItems if ItemList[item].type == Types.Kong]):
+            raise Ex.PlandoIncompatibleException("Cannot plando Kong placement if Kongs are not in the pool.")
+        if spoiler.settings.enable_plandomizer and (
+            spoiler.settings.plandomizer_dict["plando_kong_rescue_diddy"] != -1
+            or spoiler.settings.plandomizer_dict["plando_kong_rescue_lanky"] != -1
+            or spoiler.settings.plandomizer_dict["plando_kong_rescue_tiny"] != -1
+            or spoiler.settings.plandomizer_dict["plando_kong_rescue_chunky"] != -1
+        ):
+            raise Ex.PlandoIncompatibleException("Cannot plando Kong cage openers if Kongs are not in the pool.")
         # Determine what locations the kong items need to be placed in
         if any(spoiler.settings.kong_locations):
             emptyKongLocations = [location for location in [Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong] if location not in spoiler.settings.kong_locations]
@@ -2079,14 +2072,15 @@ def FillKongs(spoiler: Spoiler, placedTypes: List[Types]) -> None:
         PlaceKongsInKongLocations(spoiler, kongItems, spoiler.settings.kong_locations.copy())
 
 
-def FillKongsAndMoves(spoiler: Spoiler, placedTypes: List[Types]) -> None:
+def FillKongsAndMoves(spoiler: Spoiler, placedTypes: List[Types], placedItems: List[Items]) -> None:
     """Fill kongs, then progression moves, then shared moves, then rest of moves."""
     itemsToPlace = []
 
     # Handle kong rando first so we know what moves are most important to place
     if spoiler.settings.kong_rando:
-        FillKongs(spoiler, placedTypes)
+        FillKongs(spoiler, placedTypes, placedItems)
     placedMoves = [Items.Donkey, Items.Diddy, Items.Lanky, Items.Tiny, Items.Chunky]  # Kongs are now placed, either in the above method or by default
+    placedMoves.extend(placedItems)
     # If we start with a slam as the training grounds reward, it counts as placed for fill purposes
     if spoiler.settings.start_with_slam:
         placedMoves.append(Items.ProgressiveSlam)
@@ -2113,6 +2107,10 @@ def FillKongsAndMoves(spoiler: Spoiler, placedTypes: List[Types]) -> None:
             possibleStartingMoves.extend(ItemPool.TrainingBarrelAbilities())
         if spoiler.settings.shockwave_status in (ShockwaveStatus.shuffled, ShockwaveStatus.shuffled_decoupled):
             possibleStartingMoves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
+        # Any placed items placed before this method can't be random starting items
+        for item in placedItems:
+            if item in possibleStartingMoves:
+                possibleStartingMoves.remove(item)
         shuffle(possibleStartingMoves)
         # Assemble the starting move pool
         startingMovePool = [move for move in spoiler.settings.random_starting_move_list_selected]  # These are the user-chosen moves eligible to be random starting moves
@@ -2178,49 +2176,36 @@ def FillKongsAndMoves(spoiler: Spoiler, placedTypes: List[Types]) -> None:
         raise Ex.ItemPlacementException(str(unplaced) + " unplaced items.")
 
 
-def FillKongsAndMovesForLevelOrder(spoiler: Spoiler) -> None:
-    """Shuffle Kongs and Moves accounting for level order restrictions."""
-    # All methods here follow this Kongs vs level progression rule:
-    # Must be able to have 2 kongs no later than level 2
-    # Must be able to have 3 kongs no later than level 3
-    # Must be able to have 4 kongs no later than level 4
-    # Must be able to have 5 kongs no later than level 5
-    # Valid Example:
-    #   1. Caves - No kongs found
-    #   2. Aztec - Can free 2nd kong here, other kong is move locked
-    #   3. Japes - Can free 3rd kong here
-    #   4. Galleon - Find move to free other kong from aztec
-    #   5. Factory - Find last kong
-    #   6. Castle
-    #   7. Fungi
-    # ALGORITHM START
-    # print("Starting Kongs: " + str([kong.name + " " for kong in spoiler.settings.starting_kong_list]))
+def FillWorld(spoiler: Spoiler) -> None:
+    """Fill all locations with Kongs, moves, items, and etc."""
+    # Level order rando may have to affect the progression to be fillable - no logic doesn't care about your silly progression, however
+    wipe_progression = spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all and spoiler.settings.logic_type != LogicType.nologic
     retries = 0
     error_log = []
     while 1:
         try:
-            # Need to place constants to update boss key items after shuffling levels
-            ItemPool.PlaceConstants(spoiler)
-            # Assume we can progress through the levels so long as we have enough kongs
-            WipeProgressionRequirements(spoiler.settings)
-            spoiler.settings.kongs_for_progression = True
+            if wipe_progression:
+                # Assume we can progress through the levels so long as we have enough kongs
+                WipeProgressionRequirements(spoiler.settings)
+                spoiler.settings.kongs_for_progression = True
             # To aid in finding these locations, treat Rareware Coin and Rareware GB as being ~15-20% more expensive for fill purposes (unless it's already very expensive)
             spoiler.settings.medal_requirement = spoiler.settings.logical_medal_requirement
             spoiler.settings.rareware_gb_fairies = spoiler.settings.logical_fairy_requirement
             # Fill locations
             Fill(spoiler)
-            # Update progression requirements based on what is now accessible after all shuffles are done
-            if spoiler.settings.hard_level_progression:
-                SetNewProgressionRequirementsUnordered(spoiler)
-            else:
-                SetNewProgressionRequirements(spoiler)
-            # After setting B. Lockers and bosses, make sure the game is still 101%-able
-            spoiler.Reset()
-            if not GetAccessibleLocations(spoiler, [], SearchMode.CheckAllReachable):
-                print("Failed post-progression 101% check?")
-                raise Ex.GameNotBeatableException("Game not able to complete 101% after setting progression.")
-            # Once progression requirements updated, no longer assume we need kongs freed for level progression
-            spoiler.settings.kongs_for_progression = False
+            if wipe_progression:
+                # Update progression requirements based on what is now accessible after all shuffles are done
+                if spoiler.settings.hard_level_progression:
+                    SetNewProgressionRequirementsUnordered(spoiler)
+                else:
+                    SetNewProgressionRequirements(spoiler)
+                # After setting B. Lockers and bosses, make sure the game is still 101%-able
+                spoiler.Reset()
+                if not GetAccessibleLocations(spoiler, [], SearchMode.CheckAllReachable):
+                    print("Failed post-progression 101% check?")
+                    raise Ex.GameNotBeatableException("Game not able to complete 101% after setting progression.")
+                # Once progression requirements updated, no longer assume we need kongs freed for level progression
+                spoiler.settings.kongs_for_progression = False
             # Reset the adjustments made for fill purposes
             spoiler.settings.medal_requirement = spoiler.settings.original_medal_requirement
             spoiler.settings.rareware_gb_fairies = spoiler.settings.original_fairy_requirement
@@ -2242,7 +2227,7 @@ def FillKongsAndMovesForLevelOrder(spoiler: Spoiler) -> None:
                 spoiler.settings.shuffle_prices(spoiler)
                 if spoiler.settings.random_starting_region:
                     spoiler.settings.RandomizeStartingLocation()
-                if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+                if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:  # TODO: Reshuffling LZR doesn't work yet, but it might be nice? Not sure how necessary it is
                     ShuffleExits.ShuffleExits(spoiler)
                     spoiler.UpdateExits()
             else:
@@ -2707,29 +2692,18 @@ def Generate_Spoiler(spoiler: Spoiler) -> Tuple[bytes, Spoiler]:
     spoiler.InitKasplatMap()
     # Handle misc randomizations
     ShuffleMisc(spoiler)
-    # Level order rando may have to affect the progression to be fillable - no logic doesn't care about your silly progression, however
-    if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all and spoiler.settings.logic_type != LogicType.nologic:
-        # Handle Level Order if randomized
-        if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
-            ShuffleExits.ExitShuffle(spoiler)
-            spoiler.UpdateExits()
-        # Assume we can progress through the levels, since these will be adjusted within FillKongsAndMovesForLevelOrder
-        WipeProgressionRequirements(spoiler.settings)
-        # Handle Item Fill
-        FillKongsAndMovesForLevelOrder(spoiler)
-    else:  # TODO: Unify this if/else, it doesn't need to be separate
-        # Handle Loading Zones
-        if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
-            ShuffleExits.ExitShuffle(spoiler)
-            spoiler.UpdateExits()
-        # Handle Item Fill
-        if spoiler.settings.move_rando != MoveRando.off or spoiler.settings.kong_rando or any(spoiler.settings.shuffled_location_types):
-            FillKongsAndMovesGeneric(spoiler)
-        else:
-            # Just check if normal item locations are beatable with given settings
-            ItemPool.PlaceConstants(spoiler)
-            if not GetAccessibleLocations(spoiler, [], SearchMode.CheckBeatable):
-                raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
+    # Handle Loading Zones - this will handle LO and LZR appropriately
+    if spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
+        ShuffleExits.ExitShuffle(spoiler)
+        spoiler.UpdateExits()
+    # Handle Item Fill
+    if spoiler.settings.move_rando != MoveRando.off or spoiler.settings.kong_rando or any(spoiler.settings.shuffled_location_types):
+        FillWorld(spoiler)
+    else:
+        # Just check if normal item locations are beatable with given settings
+        ItemPool.PlaceConstants(spoiler)
+        if not GetAccessibleLocations(spoiler, [], SearchMode.CheckBeatable):
+            raise Ex.VanillaItemsGameNotBeatableException("Game unbeatable.")
     CorrectBossKongLocations(spoiler)
     GeneratePlaythrough(spoiler)
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
@@ -2889,6 +2863,8 @@ def ValidateFixedHints(settings: Settings) -> None:
         raise Ex.SettingsIncompatibleException("Alternate win conditions will not work with Fixed hints.")
     if len(settings.starting_kong_list) != 2:
         raise Ex.SettingsIncompatibleException("Fixed hints require starting with exactly 2 Kongs.")
+    if settings.enable_plandomizer and len(settings.plandomizer_dict["hints"]) > 5:
+        raise Ex.SettingsIncompatibleException("Fixed hints are incompatible with more than 5 plandomized hints.")
 
 
 def DebugCheckAllReachable(spoiler: Spoiler, owned, what_just_got_placed):
