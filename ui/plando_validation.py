@@ -152,6 +152,30 @@ def validate_hint_text(element) -> None:
         mark_option_valid(element)
 
 
+@bindList("change", HintLocationList, prefix="plando_", suffix="_hint")
+@bindList("keyup", HintLocationList, prefix="plando_", suffix="_hint")
+@bind("change", "wrinkly_hints")
+def validate_hint_count(evt):
+    """Raise an error if there are too many hints for the current settings."""
+    # Mark all hints as valid, since we don't know which ones were recently
+    # removed, and take note of all the plando'd hints.
+    plandoHintList = []
+    for hint in HintLocationList:
+        hintElem = js.document.getElementById(f'plando_{hint}_hint')
+        mark_option_valid(hintElem)
+        if hintElem.value != "":
+            plandoHintList.append(hintElem)
+    # If we're not using fixed hints, return here after we've marked all the
+    # hints as valid.
+    if js.document.getElementById("wrinkly_hints").value != "fixed_racing":
+        return
+    # If there are more than five hints, and we are using fixed hints, this is
+    # an error.
+    if len(plandoHintList) > 5:
+        for hintElem in plandoHintList:
+            mark_option_invalid(hintElem, "Fixed hints are incompatible with more than 5 plandomized hints.")
+
+
 @bindList("change", ShopLocationList, prefix="plando_", suffix="_shop_cost")
 @bindList("keyup", ShopLocationList, prefix="plando_", suffix="_shop_cost")
 def validate_shop_costs_binding(evt):
@@ -366,6 +390,7 @@ async def import_plando_options(file):
     plando_hide_krool_options(None)
     plando_lock_key_8_in_helm(None)
     validate_item_limits(None)
+    validate_hint_count(None)
     validate_starting_kong_count(None)
     validate_level_order_no_duplicates(None)
     validate_krool_order_no_duplicates(None)
@@ -837,6 +862,20 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
             errList.append(errString)
         if re.search("[^A-Za-z0-9 '\,\.\-\?!]", hint) is not None:
             errString = f'The hint for location "{hintLocationName}" contains invalid characters. Only letters, numbers, spaces, and the characters \',.-?! are valid.'
+            errList.append(errString)
+
+    # Ensure there aren't too many hints for the current settings.
+    if js.document.getElementById("wrinkly_hints").value == "fixed_racing":
+        # Take note of all the plando'd hints.
+        plandoHintCount = 0
+        for hint in HintLocationList:
+            hintElem = js.document.getElementById(f'plando_{hint}_hint')
+            if hintElem.value != "":
+                plandoHintCount += 1
+        # If there are more than five hints, and we are using fixed hints, this is
+        # an error.
+        if plandoHintCount > 5:
+            errString = "Fixed hints are incompatible with more than 5 plandomized hints."
             errList.append(errString)
 
     print(errList)
