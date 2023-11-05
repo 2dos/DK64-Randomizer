@@ -55,6 +55,9 @@ if (location.hostname == "dk64randomizer.com") {
   document.getElementById("spoiler_warning_3").style.background = "";
   document.getElementById("spoiler_warning_4").style.display = "none";
 }
+if (location.hostname != "localhost") {
+  document.getElementById("plando_string_section").style.display = "none";
+}
 
 run_python_file("ui/__init__.py");
 // Sleep function to run functions after X seconds

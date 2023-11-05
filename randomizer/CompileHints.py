@@ -365,6 +365,7 @@ hint_distribution_default = {
     HintType.FoolishRegion: 8,
     HintType.Multipath: 0,
     HintType.ItemRegion: 0,
+    HintType.Plando: 0,
 }
 HINT_CAP = 35  # There are this many total slots for hints
 
@@ -390,6 +391,7 @@ race_hint_distribution = {
     HintType.FoolishRegion: 9,
     HintType.Multipath: 13,
     HintType.ItemRegion: 0,
+    HintType.Plando: 0,
 }
 
 # The item-hinting distribution has a K. Rool hint, a Helm hint, and then every other hint will point to a move.
@@ -414,6 +416,7 @@ item_hint_distribution = {
     HintType.FoolishRegion: 0,
     HintType.Multipath: 0,
     HintType.ItemRegion: 35,
+    HintType.Plando: 0,
 }
 
 hint_reroll_cap = 1  # How many times are you willing to reroll a hinted location?
@@ -425,6 +428,10 @@ def compileHints(spoiler: Spoiler) -> bool:
     """Create a hint distribution, generate buff hints, and place them in locations."""
     ClearHintMessages()
     hint_distribution = hint_distribution_default.copy()
+    plando_hints_placed = 0
+    if spoiler.settings.enable_plandomizer:
+        plando_hints_placed = ApplyPlandoHints(spoiler)
+        hint_distribution[HintType.Plando] = plando_hints_placed
     level_order_matters = spoiler.settings.logic_type != LogicType.nologic and spoiler.settings.shuffle_loading_zones != ShuffleLoadingZones.all
     globally_hinted_location_ids = []
     # Stores the number of hints each key will get
@@ -488,6 +495,10 @@ def compileHints(spoiler: Spoiler) -> bool:
     # If we're using the racing hints preset, we use the predetermined distribution with no exceptions
     if spoiler.settings.wrinkly_hints == WrinklyHints.fixed_racing:
         hint_distribution = race_hint_distribution.copy()
+        # Extract plando hints from foolish hints - gotta pick something and I think these are the least impactful
+        if spoiler.settings.enable_plandomizer:
+            hint_distribution[HintType.Plando] = plando_hints_placed
+            hint_distribution[HintType.FoolishRegion] -= plando_hints_placed
         # We know how many key path hints will be placed, now we need to distribute them reasonably
         key_difficulty_score = {}
         # Every woth key is guaranteed one
@@ -519,6 +530,10 @@ def compileHints(spoiler: Spoiler) -> bool:
     # If we're doing the item-hinting system, use that distribution
     elif spoiler.settings.wrinkly_hints == WrinklyHints.item_hinting:
         hint_distribution = item_hint_distribution.copy()
+        hint_distribution[HintType.ItemRegion] = HINT_CAP
+        if spoiler.settings.enable_plandomizer:
+            hint_distribution[HintType.Plando] = plando_hints_placed
+            hint_distribution[HintType.ItemRegion] -= plando_hints_placed
         valid_types = [HintType.ItemRegion, HintType.Joke]
         # Build the list of valid hint types
         # If K. Rool is live it is guaranteed a hint in this distribution
@@ -580,7 +595,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         # Make sure we have exactly 35 hints planned
         hint_count = 0
         for type in hint_distribution:
-            if type in valid_types:
+            if type in valid_types or type == HintType.Plando:
                 hint_count += hint_distribution[type]
             else:
                 hint_distribution[type] = 0
@@ -768,7 +783,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         # Make sure we have exactly 35 hints placed
         hint_count = 0
         for type in hint_distribution:
-            if type in valid_types:
+            if type in valid_types or type == HintType.Plando:
                 hint_count += hint_distribution[type]
             else:
                 hint_distribution[type] = 0
@@ -2247,3 +2262,16 @@ def AssociateHintsWithFlags(spoiler):
                     break
         if hint.name != "First Time Talk":
             spoiler.tied_hint_flags[hint.name] = hint.related_flag if hint.related_flag is not None else 0xFFFF
+
+
+def ApplyPlandoHints(spoiler):
+    """Apply plandomizer hint messages, returning the number of hints placed."""
+    plando_hints_placed = 0
+    for loc_id, message in spoiler.settings.plandomizer_dict["hints"].items():
+        if message != "":
+            location = spoiler.LocationList[int(loc_id)]
+            hint_location = [hint_loc for hint_loc in hints if hint_loc.level == location.level and hint_loc.kong == location.kong][0]  # Matches exactly one hint
+            UpdateHint(hint_location, message)
+            hint_location.hint_type = HintType.Plando
+            plando_hints_placed += 1
+    return plando_hints_placed

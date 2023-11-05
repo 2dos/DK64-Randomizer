@@ -1,9 +1,11 @@
 """Contains functions related to setting up the pool of shuffled items."""
 import itertools
+import random
 
 import randomizer.Enums.Kongs as KongObject
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Plandomizer import GetItemsFromPlandoItem
 from randomizer.Enums.Settings import HardModeSelected, MoveRando, ShockwaveStatus, ShuffleLoadingZones, TrainingBarrels
 from randomizer.Enums.Types import Types
 from randomizer.Lists.Item import ItemFromKong
@@ -70,6 +72,14 @@ def PlaceConstants(spoiler):
         spoiler.LocationList[Locations.CameraAndShockwave].PlaceConstantItem(spoiler, Items.NoItem)
     if settings.start_with_slam:
         spoiler.LocationList[Locations.IslesFirstMove].PlaceConstantItem(spoiler, Items.ProgressiveSlam)
+
+    # Plando items are placed with constants but should not change locations to Constant type
+    settings.plandomizer_items_placed = []
+    if settings.enable_plandomizer:
+        for location_id, plando_item in settings.plandomizer_dict["locations"].items():
+            item = random.choice(GetItemsFromPlandoItem(plando_item))
+            spoiler.LocationList[int(location_id)].PlaceItem(spoiler, item)
+            settings.plandomizer_items_placed.append(item)
 
 
 def AllItemsUnrestricted(settings):
@@ -330,32 +340,25 @@ def Upgrades(settings):
     if settings.start_with_slam:
         slam_count = 2
     upgrades.extend(itertools.repeat(Items.ProgressiveSlam, slam_count))
-    if settings.progressive_upgrades:
-        upgrades.extend(itertools.repeat(Items.ProgressiveDonkeyPotion, 3))
-        upgrades.extend(itertools.repeat(Items.ProgressiveDiddyPotion, 3))
-        upgrades.extend(itertools.repeat(Items.ProgressiveLankyPotion, 3))
-        upgrades.extend(itertools.repeat(Items.ProgressiveTinyPotion, 3))
-        upgrades.extend(itertools.repeat(Items.ProgressiveChunkyPotion, 3))
-    else:
-        upgrades.extend(
-            [
-                Items.BaboonBlast,
-                Items.StrongKong,
-                Items.GorillaGrab,
-                Items.ChimpyCharge,
-                Items.RocketbarrelBoost,
-                Items.SimianSpring,
-                Items.Orangstand,
-                Items.BaboonBalloon,
-                Items.OrangstandSprint,
-                Items.MiniMonkey,
-                Items.PonyTailTwirl,
-                Items.Monkeyport,
-                Items.HunkyChunky,
-                Items.PrimatePunch,
-                Items.GorillaGone,
-            ]
-        )
+    upgrades.extend(
+        [
+            Items.BaboonBlast,
+            Items.StrongKong,
+            Items.GorillaGrab,
+            Items.ChimpyCharge,
+            Items.RocketbarrelBoost,
+            Items.SimianSpring,
+            Items.Orangstand,
+            Items.BaboonBalloon,
+            Items.OrangstandSprint,
+            Items.MiniMonkey,
+            Items.PonyTailTwirl,
+            Items.Monkeyport,
+            Items.HunkyChunky,
+            Items.PrimatePunch,
+            Items.GorillaGone,
+        ]
+    )
     upgrades.append(Items.HomingAmmo)
     upgrades.append(Items.SniperSight)
     upgrades.extend(itertools.repeat(Items.ProgressiveAmmoBelt, 2))

@@ -1,7 +1,7 @@
 <style>
     .item-select.wide-select,
     .item-multiselect.wide-select {
-        max-width: 350px;
+        max-width: 400px;
     }
 
     .disabled-select {
@@ -23,7 +23,8 @@
     }
 
     .rescue-label {
-        width: 150px;
+        width: 170px;
+        text-align: right;
     }
 </style>
 <div class="tab-pane fade show active"
@@ -34,7 +35,7 @@
         <div class="col panel"
              style="border-right: 1px solid #e3e3e3;">
             <h2 class="title">World</h2>
-            <div class="flex-container">
+            {# <div class="flex-container">
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
                            title="Ensure the seed can be completed 101%. If unchecked, the seed may be beatable only.">
@@ -46,8 +47,8 @@
                         101% Completable
                     </label>
                 </div>
-            </div>
-            <div class="item-select wide-select">
+            </div> #}
+            {# <div class="item-select wide-select">
                 <p class="select-title">Spawn Location</p>
                 <select name="plando_spawn_location"
                         id="plando_spawn_location"
@@ -64,10 +65,13 @@
                         </option>
                     {% endfor %}
                 </select>
-            </div>
+            </div> #}
             <div class="flex-container">
                 <div class="item-multiselect wide-select">
                     <p class="select-title">Starting Kongs</p>
+                    <div style="font-style: italic;">
+                        If incompatible, what is chosen here will override your chosen starting Kong in the Progression tab!
+                    </div>
                     <select name="plando_starting_kongs_selected"
                             id="plando_starting_kongs_selected"
                             data-toggle="tooltip"
@@ -98,28 +102,26 @@
                 </div>
             </div>
             <div class="item-select wide-select">
-                <p class="select-title">Kong Rescuers</p>
-                {% for kong in ["donkey", "diddy", "lanky", "tiny", "chunky"] %}
+                <p class="select-title">Kong Cage Openers</p>
+                {% for kong in ["diddy", "lanky", "tiny", "chunky"] %}
                     <label id="plando_kong_rescue_div_{{kong}}"
                         class="flex-container select-order">
-                        <span class="rescue-label">{{kong.capitalize()}} rescued by </span>
+                        <span class="rescue-label">{{kong.capitalize()}} cage opener:&nbsp;</span>
                         <select id="plando_kong_rescue_{{kong}}"
                                 name="plando_kong_rescue_{{kong}}"
                                 class="form-select order-select">
                             <option value="" selected">
                                 -- Randomize --
                             </option>
-                            {% if kong != "donkey" %}
+                            {% if kong != "tiny" %}
                                 <option value="donkey">
                                     Donkey
                                 </option>
                             {% endif %}
-                            {% if kong != "diddy" %}
                                 <option value="diddy">
                                     Diddy
                                 </option>
-                            {% endif %}
-                            {% if kong != "lanky" %}
+                            {% if kong != "tiny" %}
                                 <option value="lanky">
                                     Lanky
                                 </option>
@@ -129,14 +131,15 @@
                                     Tiny
                                 </option>
                             {% endif %}
-                            {% if kong != "chunky" %}
                                 <option value="chunky">
                                     Chunky
                                 </option>
-                            {% endif %}
                         </select>
                     </label>
                 {% endfor %}
+            </div>
+            <div style="font-style: italic;">
+                More plando settings in the works!
             </div>
         </div>
         <div class="col panel"
@@ -144,6 +147,9 @@
             <h2 class="title">Ordering</h2>
             <div class="item-select wide-select">
                 <p class="select-title">Level Order</p>
+                <div style="font-style: italic;">
+                    This planned level order is ignored in non-complex level order shuffle if Kongs are not in the item pool!
+                </div>
                 {% for i in range(0, 7) %}
                     <label id="plando_level_order_div_{{i}}"
                         class="flex-container select-order">

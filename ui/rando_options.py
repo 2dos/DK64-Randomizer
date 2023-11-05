@@ -871,7 +871,7 @@ def preset_select_changed(event):
         # Pass in setting string
         settings = decrypt_settings_string_enum(presets["settings_string"])
         for select in js.document.getElementsByTagName("select"):
-            if js.document.querySelector("#nav-cosmetics").contains(select) is False:
+            if js.document.querySelector("#nav-cosmetics").contains(select) is False and not select.name.startswith("plando_"):
                 select.selectedIndex = -1
         # Uncheck all starting move radio buttons for the import to then set them correctly
         for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
@@ -988,23 +988,6 @@ def enable_plandomizer(evt):
             plando_tab.style = ""
     except AttributeError:
         pass
-
-
-@bind("change", "plando_starting_kongs_selected")
-def plando_disable_kong_rescues(evt):
-    """Disable Kong rescue options for starting Kongs."""
-    starting_kongs = js.document.getElementById("plando_starting_kongs_selected")
-    selected_kongs = {x.value for x in starting_kongs.selectedOptions}
-    for kong in ["donkey", "diddy", "lanky", "tiny", "chunky"]:
-        kong_rescuer_div = js.document.getElementById(f"plando_kong_rescue_div_{kong}")
-        kong_rescuer = js.document.getElementById(f"plando_kong_rescue_{kong}")
-        if kong in selected_kongs:
-            kong_rescuer_div.classList.add("disabled-select")
-            kong_rescuer.value = ""
-            kong_rescuer.setAttribute("disabled", "disabled")
-        else:
-            kong_rescuer_div.classList.remove("disabled-select")
-            kong_rescuer.removeAttribute("disabled")
 
 
 @bind("change", "plando_starting_kongs_selected")
