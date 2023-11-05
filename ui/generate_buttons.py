@@ -44,6 +44,7 @@ from ui.rando_options import (
     updateDoorTwoCountText,
     updateDoorTwoNumAccess,
 )
+from ui.randomize_settings import randomize_settings
 from ui.serialize_settings import serialize_settings
 
 
@@ -233,6 +234,11 @@ def generate_seed(event):
         # here and we might stop before attempting to generate a seed.
         plando_enabled = js.document.getElementById("enable_plandomizer").checked
         form_data = serialize_settings(include_plando=plando_enabled)
+
+        # Apply random settings on top of the existing settings, if applicable.
+        random_settings = js.document.getElementById("enable_random_settings").checked
+        if random_settings:
+            randomize_settings(form_data)
 
         if form_data["enable_plandomizer"]:
             plando_errors = validate_plando_options(form_data)
