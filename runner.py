@@ -135,10 +135,13 @@ def start_gen(gen_key, post_body):
 
 def write_error(error, settings_string):
     """Write an error to the error table."""
-    converted_settings_string = encrypt_settings_string_enum(settings_string)
+    try:
+        converted_settings_string = encrypt_settings_string_enum(settings_string)
+    except Exception:
+        converted_settings_string = "Settings String failed to convert"
     error_table = dynamodb.Table("dk64_error_db")
     error_table.put_item(
-        Item={"time": str(time.time()), "error_data": str(error), "settings": str(converted_settings_string), "branch": local_branch, "plando": settings_string.get("enable_plandomizer", False)}
+        Item={"time": str(time.time()), "error_data": str(error), "settings": str(converted_settings_string), "branch": local_branch, "plando": str(settings_string.get("enable_plandomizer", False))}
     )
 
 
