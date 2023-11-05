@@ -44,23 +44,48 @@
 {# Import and export plando settings. #}
 <div class="container border" style="margin-top: 20px;">
     <!-- The import/export/reset panel. -->
+    <label for="settings_string" class="select-title">
+            Plandomizer JSON
+    </label>
     <div class="flex-container flex-center import-export-container">
         <input id="import_plando_settings"
                class="btn btn-primary plando-settings-button"
                type="button"
-               value="Import Settings"/>
+               value="Import Settings from File"/>
         <input id="export_plando_settings"
                class="btn btn-primary plando-settings-button"
                type="button"
-               value="Export Settings"/>
+               value="Export Settings to File"/>
         <input id="reset_plando_settings"
                class="btn btn-primary plando-settings-button"
                type="button"
-               value="Reset Settings"/>
+               value="Reset Plando Settings"/>
     </div>
     <div class="plando-import-errors"
          id="plando_import_errors"
          style="display: none;">
+    </div>
+    <div id="plando_string_section" class="flex-container" style="justify-content: center;">
+        <div class="form-group item-select" style="min-width:300px;">
+            <span class="row settings-string-container">
+                <input name="plando_string"
+                        id="plando_string"
+                        placeholder="Click Export or Copy Settings to fill"/>
+                <img name="plando_string_copy"
+                        id="plando_string_copy"
+                        class="copy-icon"
+                        data-toggle="tooltip"
+                        title="Click to copy the plando json data string to your clipboard."
+                        src="./static/img/copy-to-clipboard.svg">
+            </span>
+        </div>
+        <div>
+            <input id="export_plando_string"
+                    class="btn btn-primary plando-settings-button"
+                    style="margin-top: 6px;"
+                    type="button"
+                    value="Export Plan String"/>
+        </div>
     </div>
 </div>
 <div class="container border">
@@ -112,5 +137,10 @@
         $('[data-toggle="tooltip"]').tooltip({
             trigger: 'hover'
         })
+    })
+    $("#plando_string_copy").on('click', function (event) {
+        var input = $("#plando_string");
+        input.select();
+        navigator.clipboard.writeText(input.val());
     })
 </script>
