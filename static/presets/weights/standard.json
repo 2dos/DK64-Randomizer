@@ -12,6 +12,11 @@
         "crossmap_coupled": 0.1,
         "crossmap_decoupled": 0.1
     },
+    "blocker_text": {
+        "min": 40,
+        "max": 100,
+        "mean": 60
+    },
     "bonus_barrel_auto_complete": 0.3,
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
@@ -22,11 +27,21 @@
         "opened": 0.2,
         "random": 0.6
     },
+    "coin_door_item_count": {
+        "min": 1,
+        "max": 10,
+        "mean": 4
+    },
     "coin_rando": 0.5,
     "crown_door_item": {
         "vanilla": 0.2,
         "opened": 0.2,
         "random": 0.6
+    },
+    "crown_door_item_count": {
+        "min": 1,
+        "max": 2,
+        "mean": 1
     },
     "crown_enemy_rando": {
         "off": 0.1,
@@ -304,6 +319,11 @@
     "training_barrels": {
         "normal": 0.3,
         "shuffled": 0.7
+    },
+    "troff_text": {
+        "min": 150,
+        "max": 400,
+        "mean": 300
     },
     "vanilla_door_rando": 0.4,
     "warp_to_isles": 0.9,
