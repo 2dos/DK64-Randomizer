@@ -75,3 +75,7 @@ class CoinFillFailureException(FillException):
 
 class SettingsIncompatibleException(FillException):
     """Exception triggered when conditions arise that are most likely a settings incompatibility."""
+
+
+class PlandoIncompatibleException(FillException):
+    """Exception triggered when plando settings conflict with base settings."""

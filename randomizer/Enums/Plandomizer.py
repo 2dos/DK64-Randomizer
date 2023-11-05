@@ -280,7 +280,7 @@ PlandoItemToItemMap = {
 }
 
 PlandoItemToItemListMap = {
-    PlandoItems.JunkItem: [Items.JunkCrystal, Items.JunkMelon, Items.JunkAmmo, Items.JunkFilm, Items.JunkOrange],
+    PlandoItems.JunkItem: [Items.JunkMelon],  # More junk items someday [Items.JunkCrystal, Items.JunkMelon, Items.JunkAmmo, Items.JunkFilm, Items.JunkOrange],
     PlandoItems.DonkeyBlueprint: [
         Items.JungleJapesDonkeyBlueprint,
         Items.AngryAztecDonkeyBlueprint,

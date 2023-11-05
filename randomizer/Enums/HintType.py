@@ -25,3 +25,4 @@ class HintType(IntEnum):
     FoolishRegion = auto()
     Multipath = auto()
     ItemRegion = auto()
+    Plando = auto()

@@ -841,7 +841,7 @@ class LogicVarHolder:
         # Ensure we have the required moves for the boss fight itself
         hasRequiredMoves = True
         if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not (self.HardBossesEnabled() and self.settings.krusha_kong != Kongs.tiny):
-            hasRequiredMoves = self.twirl
+            hasRequiredMoves = self.twirl and self.Slam
         elif bossFight == Maps.FungiBoss:
             hasRequiredMoves = self.hunkyChunky and self.barrels
         elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:

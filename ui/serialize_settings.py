@@ -1,11 +1,12 @@
 """Function to obtain all settings and convert them to a dictionary."""
+import json
 import js
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Settings import SettingsMap
 from ui.plando_validation import populate_plando_options
 
 
-def serialize_settings() -> dict:
+def serialize_settings(include_plando=False) -> dict:
     """Serialize form settings into an enum-focused JSON object.
 
     Returns:
@@ -29,10 +30,11 @@ def serialize_settings() -> dict:
     form = js.jquery("#form").serializeArray()
     form_data = {}
 
-    # Plandomizer data is processed separately.
-    plando_form_data = populate_plando_options(form)
-    if plando_form_data is not None:
-        form_data["plandomizer"] = plando_form_data
+    # Plandomizer data is processed separately and uses a separate setting string, so it needs to be optionally serializable
+    if include_plando:
+        plando_form_data = populate_plando_options(form)
+        if plando_form_data is not None:
+            form_data["plandomizer_data"] = json.dumps(plando_form_data)
 
     def is_number(s) -> bool:
         """Check if a string is a number or not."""

@@ -198,11 +198,13 @@ def ShuffleExits(spoiler):
     # Assume all shuffled exits reachable by default
     settings = spoiler.settings
     if settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+        new_level_order = None
         # If we are restricted on kong locations, we need to carefully place levels in order to meet the kongs-by-level requirement
         if settings.kongs_for_progression and not (settings.shuffle_items and Types.Kong in settings.shuffled_location_types):
-            ShuffleLevelOrderWithRestrictions(settings)
+            new_level_order = GenerateLevelOrderWithRestrictions(settings)
         else:
-            ShuffleLevelExits(settings)
+            new_level_order = GenerateLevelOrderUnrestricted(settings)
+        ShuffleLevelExits(settings, newLevelOrder=new_level_order)
         if settings.alter_switch_allocation:
             allocation = [1, 1, 1, 1, 2, 2, 3]
             for x in range(7):
@@ -308,31 +310,50 @@ def ShuffleLevelExits(settings: Settings, newLevelOrder: dict = None):
     settings.level_order = shuffledLevelOrder
 
 
-def ShuffleLevelOrderWithRestrictions(settings: Settings):
-    """Determine level order given starting kong and the need to find more kongs along the way."""
-    if settings.hard_level_progression:
-        newLevelOrder = ShuffleLevelOrderUnrestricted(settings)
+def GenerateLevelOrderWithRestrictions(settings: Settings):
+    """Generate a level order given starting kong and the need to find more kongs along the way."""
+    # All methods here follow this Kongs vs level progression rule:
+    # Must be able to have 2 kongs no later than level 2
+    # Must be able to have 3 kongs no later than level 3
+    # Must be able to have 4 kongs no later than level 4
+    # Must be able to have 5 kongs no later than level 5
+    # Valid Example:
+    #   1. Caves - No kongs found
+    #   2. Aztec - Can free 2nd kong here, other kong is move locked
+    #   3. Japes - Can free 3rd kong here
+    #   4. Galleon - Find move to free other kong from aztec
+    #   5. Factory - Find last kong
+    #   6. Castle
+    #   7. Fungi
+    if settings.hard_level_progression:  # Unless you're CLO - you get no such restrictions
+        newLevelOrder = GenerateLevelOrderUnrestricted(settings)
     elif settings.starting_kongs_count == 1:
-        newLevelOrder = ShuffleLevelOrderForOneStartingKong(settings)
+        newLevelOrder = GenerateLevelOrderForOneStartingKong(settings)
     else:
-        newLevelOrder = ShuffleLevelOrderForMultipleStartingKongs(settings)
+        newLevelOrder = GenerateLevelOrderForMultipleStartingKongs(settings)
     if None in newLevelOrder.values():
         raise Ex.EntrancePlacementException("Invalid level order with fewer than the 7 required main levels.")
-    ShuffleLevelExits(settings, newLevelOrder)
-
-
-def ShuffleLevelOrderUnrestricted(settings):
-    """Shuffle the level order without Kong placement restrictions."""
-    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
-    allLevels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
-    random.shuffle(allLevels)
-    for i in range(len(allLevels)):
-        newLevelOrder[i + 1] = allLevels[i]
     return newLevelOrder
 
 
-def ShuffleLevelOrderForOneStartingKong(settings):
-    """Determine level order given only starting with one kong and the need to find more kongs along the way."""
+def GenerateLevelOrderUnrestricted(settings):
+    """Generate a level order without Kong placement restrictions."""
+    newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
+    unplacedLevels = [Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon, Levels.FungiForest, Levels.CrystalCaves, Levels.CreepyCastle]
+    if settings.enable_plandomizer:
+        for i in range(len(newLevelOrder.keys())):
+            if settings.plandomizer_dict["plando_level_order_" + str(i)] != -1:
+                newLevelOrder[i + 1] = Levels(settings.plandomizer_dict["plando_level_order_" + str(i)])
+                unplacedLevels.remove(newLevelOrder[i + 1])
+    for i in range(len(newLevelOrder.keys())):
+        if newLevelOrder[i + 1] is None:
+            newLevelOrder[i + 1] = random.choice(unplacedLevels)
+            unplacedLevels.remove(newLevelOrder[i + 1])
+    return newLevelOrder
+
+
+def GenerateLevelOrderForOneStartingKong(settings):
+    """Generate a level order given only starting with one kong and the need to find more kongs along the way."""
     levelIndexChoices = {1, 2, 3, 4, 5, 6, 7}
     # Decide where Aztec will go
     # Diddy can reasonably make progress if Aztec is first level
@@ -412,8 +433,8 @@ def ShuffleLevelOrderForOneStartingKong(settings):
     return newLevelOrder
 
 
-def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
-    """Determine level order given starting with 2 to 4 kongs and the need to find more kongs along the way."""
+def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
+    """Generate a level order given starting with 2 to 4 kongs and the need to find more kongs along the way."""
     levelIndicesToFill = {1, 2, 3, 4, 5, 6, 7}
     # Initialize level order
     newLevelOrder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
@@ -478,7 +499,7 @@ def ShuffleLevelOrderForMultipleStartingKongs(settings: Settings):
         # If this happens, we got unlucky (settings dependending) and restart this process or else we crash
         # The most common instance of this is when Aztec is level 1 and you don't start with Diddy
         if levelIndexOptions == []:
-            return ShuffleLevelOrderForMultipleStartingKongs(settings)
+            return GenerateLevelOrderForMultipleStartingKongs(settings)
         # Place level in newLevelOrder and remove from list of remaining slots
         shuffledLevelIndex = random.choice(levelIndexOptions)
         levelIndicesToFill.remove(shuffledLevelIndex)

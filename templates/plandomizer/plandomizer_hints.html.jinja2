@@ -10,8 +10,9 @@
      aria-labelledby="nav-plando-{{panelName}}-tab">
     <h2 class="title">{{panel["name"]}}</h2>
     <div class="hint-info">
-        Hints can be a maximum of 900 characters. The only permitted characters
-        are letters, numbers, spaces, and the characters ,.-?!
+        Hints can be a maximum of 123 characters. The only permitted characters
+        are letters, numbers, spaces, and the characters ',.-?! 
+        Any blank hints will be filled by the selected hint algorithm.
     </div>
     {% for _, levelObj in panel["levels"].items() %}
         <h3 class="title">{{levelObj["name"]}}</h3>
@@ -27,7 +28,7 @@
                                name="plando_{{location["value"]}}_hint"
                                data-toggle="tooltip"
                                title
-                               placeholder="Enter hint text."
+                               placeholder="Enter hint text or leave blank for a random hint..."
                                maxlength="900"
                             class="form-control">
                     </div>
