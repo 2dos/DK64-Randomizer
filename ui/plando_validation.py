@@ -161,7 +161,7 @@ def validate_hint_count(evt):
     # removed, and take note of all the plando'd hints.
     plandoHintList = []
     for hint in HintLocationList:
-        hintElem = js.document.getElementById(f'plando_{hint}_hint')
+        hintElem = js.document.getElementById(f"plando_{hint}_hint")
         mark_option_valid(hintElem)
         if hintElem.value != "":
             plandoHintList.append(hintElem)
@@ -869,7 +869,7 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
         # Take note of all the plando'd hints.
         plandoHintCount = 0
         for hint in HintLocationList:
-            hintElem = js.document.getElementById(f'plando_{hint}_hint')
+            hintElem = js.document.getElementById(f"plando_{hint}_hint")
             if hintElem.value != "":
                 plandoHintCount += 1
         # If there are more than five hints, and we are using fixed hints, this is
