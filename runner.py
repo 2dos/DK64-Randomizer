@@ -137,7 +137,9 @@ def write_error(error, settings_string):
     """Write an error to the error table."""
     converted_settings_string = encrypt_settings_string_enum(settings_string)
     error_table = dynamodb.Table("dk64_error_db")
-    error_table.put_item(Item={"time": str(time.time()), "error_data": str(error), "settings": str(converted_settings_string), "branch": local_branch})
+    error_table.put_item(
+        Item={"time": str(time.time()), "error_data": str(error), "settings": str(converted_settings_string), "branch": local_branch, "plando": settings_string.get("enable_plandomizer", False)}
+    )
 
 
 @app.route("/generate", methods=["GET", "POST"])
