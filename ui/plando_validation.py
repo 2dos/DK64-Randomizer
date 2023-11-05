@@ -357,8 +357,8 @@ async def import_plando_options(file):
     # Run validation functions.
     for hintLocation in hintList:
         validate_hint_text(hintLocation)
-    for shopLocation in shopCostList:
-        validate_shop_costs(shopLocation)
+    # for shopLocation in shopCostList:
+    #     validate_shop_costs(shopLocation)
     plando_disable_camera_shockwave(None)
     plando_disable_keys(None)
     plando_disable_kong_items(None)
