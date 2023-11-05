@@ -1,0 +1,45 @@
+{
+    "activate_all_bananaports": {
+        "off": 0.4,
+        "all": 0.4,
+        "isles": 0.2
+    },
+    "alter_switch_allocation": 0.5,
+    "auto_keys": 0.8,
+    "bananaport_rando": {
+        "off": 0.5,
+        "in_level": 0.3,
+        "crossmap_coupled": 0.1,
+        "crossmap_decoupled": 0.1
+    },
+    "bonus_barrel_auto_complete": 0.3,
+    "bonus_barrel_rando": 0.7,
+    "boss_kong_rando": 0.5,
+    "boss_location_rando": 0.8,
+    "cb_rando": 0.5,
+    "coin_door_item": {
+        "vanilla": 0.2,
+        "opened": 0.2,
+        "random": 0.6
+    },
+    "coin_rando": 0.5,
+    "crown_door_item": {
+        "vanilla": 0.2,
+        "opened": 0.2,
+        "random": 0.6
+    },
+    "crown_enemy_rando": {
+        "off": 0.1,
+        "easy": 0.3,
+        "medium": 0.4,
+        "hard": 0.2
+    },
+    "crown_placement_rando": 0.3,
+    "damage_amount": {
+        "default": 0.5,
+        "double": 0.3,
+        "quad": 0.15,
+        "ohko": 0.05
+    },
+    "random_crates": 0.5
+}
