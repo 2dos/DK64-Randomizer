@@ -99,7 +99,7 @@ def validate_item_limits(evt):
 @bind("change", "smaller_shops")
 def validate_smaller_shops_no_conflict(evt):
     """Raise an error if we have a conflict with Smaller Shops.
-    
+
     If the user is using the Smaller Shops setting, they cannot place anything
     in the shops. This causes fill issues.
     """
@@ -704,7 +704,7 @@ def validate_plando_options(settings_dict):
             if item == PlandoItems.GoldenBanana:
                 errString += " (40 Golden Bananas are always allocated to blueprint rewards.)"
             errList.append(errString)
-    
+
     # Ensure that no shops are assigned if "Smaller Shops" is used.
     useSmallerShops = js.document.getElementById("smaller_shops").checked
     if useSmallerShops:
