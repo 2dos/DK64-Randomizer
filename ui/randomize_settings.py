@@ -72,36 +72,17 @@ def random_numeric_setting(weights: dict) -> int:
     # Obtain a normally-distributed random number.
     randNum = get_random_normal_value(mean, sdev)
 
-    if minBased:
-        # If our number fell on the lower side of the mean, make sure our
-        # number isn't below our actual minimum. If it is, return the actual
-        # minimum. (This should only happen 0.15% of the time.)
-        if randNum <= mean:
-            if randNum < min:
-                randNum = min
-        else:
-            # If our number fell on the higher side of the mean, we need to
-            # adjust the number so it fits into the different scale of the max
-            # side.
-            randNum = ((randNum - mean) * oppositeScale) + mean
-            # Then trim the number by the actual max.
-            if randNum > max:
-                randNum = max
-    else:
-        # If our number fell on the higher side of the mean, make sure our
-        # number isn't above our actual maximum. If it is, return the actual
-        # maximum. (This should only happen 0.15% of the time.)
-        if randNum >= mean:
-            if randNum > max:
-                randNum = max
-        else:
-            # If our number fell on the lower side of the mean, we need to
-            # adjust the number so it fits into the different scale of the min
-            # side.
-            randNum = ((randNum - mean) * oppositeScale) + mean
-            # Then trim the number by the actual min.
-            if randNum < min:
-                randNum = min
+    # If we're min-based and our number is larger than the mean, or if we're
+    # max-based and our number is smaller than the mean, we need to adjust the
+    # number so it fits into the different scale of the opposite side.
+    if (minBased and randNum > mean) or (not minBased and randNum < mean):
+        randNum = ((randNum - mean) * oppositeScale) + mean
+    
+    # Trim the number so it falls within our bounds.
+    if randNum < min:
+        randNum = min
+    elif randNum > max:
+        randNum = max
 
     # Round to the nearest integer.
     return round(randNum)
