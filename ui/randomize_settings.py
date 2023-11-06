@@ -77,7 +77,7 @@ def random_numeric_setting(weights: dict) -> int:
     # number so it fits into the different scale of the opposite side.
     if (minBased and randNum > mean) or (not minBased and randNum < mean):
         randNum = ((randNum - mean) * oppositeScale) + mean
-    
+
     # Trim the number so it falls within our bounds.
     if randNum < min:
         randNum = min
