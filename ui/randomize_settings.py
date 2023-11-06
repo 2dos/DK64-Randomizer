@@ -58,7 +58,7 @@ def random_numeric_setting(weights: dict) -> int:
         return round(random.uniform(min, max))
 
     mean = weights["mean"]
-    
+
     # Determine the standard deviation. This will be 1/3 of the difference
     # between the mean and the min, or the mean and the max, whichever is
     # larger.
@@ -103,7 +103,7 @@ def random_numeric_setting(weights: dict) -> int:
             # Then trim the number by the actual min.
             if randNum < min:
                 randNum = min
-    
+
     # Round to the nearest integer.
     return round(randNum)
 
@@ -168,7 +168,7 @@ def randomize_settings():
         else:
             randomValue = random_enum_setting(weights, settingEnum)
             randSettings[settingName] = randomValue
-    
+
     # If logic isn't glitched logic, remove selected glitches.
     if randSettings["logic_type"] != LogicType.glitch:
         randSettings["glitches_selected"] = []
