@@ -62,17 +62,32 @@
     "enable_progressive_hints": 0.25,
     "enable_shop_hints": 0.5,
     "enable_tag_anywhere": 0.9,
+    "enemies_selected": {},
     "enemy_drop_rando": 0.25,
     "enemy_rando": 0.5,
     "enemy_speed_rando": 0.5,
     "fast_gbs": 0.7,
-    "fast_start_beginning_of_game": 0.9,
     "fast_warps": 0.8,
     "fps_display": 0.5,
     "free_trade_setting": {
         "none": 0.1,
         "not_blueprints": 0.3,
         "major_collectibles": 0.6
+    },
+    "glitches_selected": {
+        "advanced_platforming": 0.5,
+        "b_locker_skips": 0.25,
+        "boulder_clips": 0,
+        "general_clips": 0.25,
+        "ledge_clips": 0.1,
+        "moonkicks": 0.5,
+        "phase_swimming": 0.5,
+        "phase_walking": 0.05,
+        "skew": 0.5,
+        "spawn_snags": 0.05,
+        "swim_through_shores": 0.5,
+        "tag_barrel_storage": 0.05,
+        "troff_n_scoff_skips": 0.25
     },
     "hard_blockers": 0.2,
     "hard_level_progression": 0.4,
@@ -224,6 +239,7 @@
         "base": 0.35,
         "all": 0.35
     },
+    "minigames_list_selected": {},
     "misc_changes_selected": {
         "auto_dance_skip": 0.8,
         "fast_boot": 0.75,
@@ -285,6 +301,7 @@
         "high": 0.25,
         "extreme": 0.05
     },
+    "random_starting_move_list_selected": {},
     "random_starting_region": 0.3,
     "randomize_blocker_required_amounts": 1,
     "randomize_cb_required_amounts": 1,
@@ -305,9 +322,11 @@
     "shuffle_items": 1,
     "shuffle_shops": 0.3,
     "smaller_shops": 0.5,
+    "starting_keys_list_selected": {},
     "starting_kong": {
         "any": 1
     },
+    "starting_move_list_selected": {},
     "starting_moves_count": {
         "min": 0,
         "max": 10,
@@ -316,16 +335,13 @@
     "starting_random": 1,
     "switchsanity": 0.15,
     "tns_location_rando": 0.3,
-    "training_barrels": {
-        "normal": 0.3,
-        "shuffled": 0.7
-    },
     "troff_text": {
         "min": 150,
         "max": 400,
         "mean": 300
     },
     "vanilla_door_rando": 0.4,
+    "warp_level_list_selected": {},
     "warp_to_isles": 0.9,
     "win_condition": {
         "beat_krool": 0.45,

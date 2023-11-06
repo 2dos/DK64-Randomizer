@@ -7,6 +7,7 @@ from randomizer.Enums.Settings import SettingsMap
 from randomizer.PlandoUtils import MoveSet
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from ui.bindings import bind
+from ui.randomize_settings import randomize_settings
 
 
 def randomseed(evt):
@@ -1246,3 +1247,34 @@ def start_all_starting_moves(evt):
     """Update the starting move selector to start with all items."""
     for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
         starting_move_button.checked = starting_move_button.id.startswith("start")
+
+
+@bind("click", "randomize_settings")
+def shuffle_settings(evt):
+    """Randomize all non-cosmetic settings."""
+    randomize_settings()
+
+    # Run additional functions to ensure there are no conflicts.
+    updateDoorOneNumAccess(None)
+    updateDoorOneCountText(None)
+    updateDoorTwoNumAccess(None)
+    updateDoorTwoCountText(None)
+    toggle_b_locker_boxes(None)
+    toggle_counts_boxes(None)
+    update_boss_required(None)
+    disable_tag_spawn(None)
+    disable_krool_phases(None)
+    disable_helm_phases(None)
+    disable_move_shuffles(None)
+    disable_barrel_modal(None)
+    disable_enemy_modal(None)
+    disable_hard_mode_modal(None)
+    item_rando_list_changed(None)
+    enable_plandomizer(None)
+    toggle_medals_box(None)
+    toggle_extreme_prices_option(None)
+    toggle_logic_type(None)
+    toggle_bananaport_selector(None)
+    toggle_key_settings(None)
+    disable_helm_hurry(None)
+    toggle_vanilla_door_rando(None)
