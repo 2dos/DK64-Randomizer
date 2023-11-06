@@ -102,6 +102,7 @@
     "hard_shooting": 0.5,
     "hard_troff_n_scoff": 0.2,
     "helm_hurry": 0.05,
+    "helm_phase_order_rando": 0.8,
     "helm_random": 1,
     "helm_setting": {
         "default": 0.2,
@@ -311,6 +312,7 @@
         "max": 20,
         "mean": 20
     },
+    "select_keys": 0,
     "shockwave_status": {
         "vanilla": 0.2,
         "shuffled": 0.2,
@@ -320,7 +322,7 @@
     "shop_indicator": 0.5,
     "shorten_boss": 0.8,
     "shuffle_items": 1,
-    "shuffle_shops": 0.3,
+    "shuffle_shops": 0.5,
     "smaller_shops": 0.5,
     "starting_keys_list_selected": {},
     "starting_kong": {
