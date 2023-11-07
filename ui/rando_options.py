@@ -10,6 +10,7 @@ from randomizer.Lists.Item import StartingMoveOptions
 from randomizer.PlandoUtils import MoveSet
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from ui.bindings import bind, bindList
+from ui.randomize_settings import randomize_settings
 
 
 def randomseed(evt):
@@ -1305,3 +1306,34 @@ def start_all_starting_moves(evt):
         starting_move_button.checked = starting_move_button.id.startswith("start")
     # Update the plandomizer dropdowns.
     plando_disable_starting_moves(evt)
+
+
+@bind("click", "randomize_settings")
+def shuffle_settings(evt):
+    """Randomize all non-cosmetic settings."""
+    randomize_settings()
+
+    # Run additional functions to ensure there are no conflicts.
+    updateDoorOneNumAccess(None)
+    updateDoorOneCountText(None)
+    updateDoorTwoNumAccess(None)
+    updateDoorTwoCountText(None)
+    toggle_b_locker_boxes(None)
+    toggle_counts_boxes(None)
+    update_boss_required(None)
+    disable_tag_spawn(None)
+    disable_krool_phases(None)
+    disable_helm_phases(None)
+    disable_move_shuffles(None)
+    disable_barrel_modal(None)
+    disable_enemy_modal(None)
+    disable_hard_mode_modal(None)
+    item_rando_list_changed(None)
+    enable_plandomizer(None)
+    toggle_medals_box(None)
+    toggle_extreme_prices_option(None)
+    toggle_logic_type(None)
+    toggle_bananaport_selector(None)
+    toggle_key_settings(None)
+    disable_helm_hurry(None)
+    toggle_vanilla_door_rando(None)
