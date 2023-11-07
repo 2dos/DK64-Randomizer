@@ -218,8 +218,8 @@
     "level_randomization": {
         "vanilla": 0.3,
         "level_order": 0.4,
-        "loadingzone": 0.25,
-        "loadingzonesdecoupled": 0.05
+        "loadingzone": 0.2,
+        "loadingzonesdecoupled": 0.1
     },
     "logic_type": {
         "glitchless": 0.8,
@@ -294,8 +294,8 @@
         "vanilla": 0.1,
         "low": 0.2,
         "medium": 0.4,
-        "high": 0.25,
-        "extreme": 0.05
+        "high": 0.2,
+        "extreme": 0.1
     },
     "random_starting_move_list_selected": {},
     "random_starting_region": 0.6,
