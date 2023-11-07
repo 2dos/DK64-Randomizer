@@ -222,7 +222,7 @@
         "vanilla": 0.2,
         "level_order": 0.5,
         "loadingzone": 0.25,
-        "loadingzonesdecoupled": 0.5
+        "loadingzonesdecoupled": 0.05
     },
     "logic_type": {
         "glitchless": 0.8,
