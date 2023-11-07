@@ -4,7 +4,18 @@ import os
 import time
 from tempfile import mktemp
 
-from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, FungiTimeSetting, HardModeSelected, HelmDoorItem, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
+from randomizer.Enums.Settings import (
+    BananaportRando,
+    CrownEnemyRando,
+    DamageAmount,
+    FungiTimeSetting,
+    HardModeSelected,
+    HelmDoorItem,
+    MiscChangesSelected,
+    ShockwaveStatus,
+    ShuffleLoadingZones,
+    WrinklyHints,
+)
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Items import Items
@@ -412,29 +423,29 @@ def patching_response(spoiler):
 
     # Fungi Time of Day
     fungi_times = (FungiTimeSetting.day, FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)
-    progressive_removals = [5, 4] # Day Switch, Night Switch
+    progressive_removals = [5, 4]  # Day Switch, Night Switch
     dusk_removals = {
         Maps.FungiForest: [
-            5, # Day Switch
-            4, # Night Switch
-            0xC, # Day Gate - Mill Front Entry
-            0xE, # Day Gate - Punch Door
-            0x12, # Day Gate - Snide Area
-            8, # Night Gate - Mill Lanky Attic
-            0xB, # Night Gate - Mill Winch Attic
-            0xD, # Night Gate - Dark Attic
-            0x11, # Night Gate - Thornvine Area
-            0x2A, # Night Gate - Mill GB
-            0x53, # Night Gate - Owl Tree Diddy Coins
-            0x48, # Night Gate - Beanstalk T&S
-            0x1F1, # Night Gate - Mushroom Night Door
+            5,  # Day Switch
+            4,  # Night Switch
+            0xC,  # Day Gate - Mill Front Entry
+            0xE,  # Day Gate - Punch Door
+            0x12,  # Day Gate - Snide Area
+            8,  # Night Gate - Mill Lanky Attic
+            0xB,  # Night Gate - Mill Winch Attic
+            0xD,  # Night Gate - Dark Attic
+            0x11,  # Night Gate - Thornvine Area
+            0x2A,  # Night Gate - Mill GB
+            0x53,  # Night Gate - Owl Tree Diddy Coins
+            0x48,  # Night Gate - Beanstalk T&S
+            0x1F1,  # Night Gate - Mushroom Night Door
         ],
-        Maps.ForestGiantMushroom: [0x11], # Night Gate - GMush Interior
-        Maps.ForestMillFront: [0xB], # Night Gate - Mill Front
+        Maps.ForestGiantMushroom: [0x11],  # Night Gate - GMush Interior
+        Maps.ForestMillFront: [0xB],  # Night Gate - Mill Front
         Maps.ForestMillBack: [
-            0xF, # Night Gate - Mill Rear
-            0x2, # Night Gate - Spider Web
-        ]
+            0xF,  # Night Gate - Mill Rear
+            0x2,  # Night Gate - Spider Web
+        ],
     }
     time_val = spoiler.settings.fungi_time_internal
     if time_val in fungi_times:
