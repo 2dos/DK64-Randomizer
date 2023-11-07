@@ -136,6 +136,27 @@ def validate_shop_kongs(evt):
                 mark_option_invalid(vendor_shared_element, errString)
 
 
+@bindList("change", ShopLocationList, prefix="plando_", suffix="_item")
+@bind("change", "smaller_shops")
+def validate_smaller_shops_no_conflict(evt):
+    """Raise an error if we have a conflict with Smaller Shops.
+
+    If the user is using the Smaller Shops setting, they cannot place anything
+    in the shops. This causes fill issues.
+    """
+    assignedShops = []
+    for locationName in ShopLocationList:
+        shopElem = js.document.getElementById(f"plando_{locationName}_item")
+        mark_option_valid(shopElem)
+        if shopElem.value != "":
+            assignedShops.append(shopElem)
+    useSmallerShops = js.document.getElementById("smaller_shops").checked
+    if not useSmallerShops:
+        return
+    for assignedShop in assignedShops:
+        mark_option_invalid(assignedShop, 'Shop locations cannot be assigned if "Smaller Shops" is selected.')
+
+
 @bindList("change", HintLocationList, prefix="plando_", suffix="_hint")
 @bindList("keyup", HintLocationList, prefix="plando_", suffix="_hint")
 def validate_hint_text_binding(evt):
@@ -391,6 +412,7 @@ async def import_plando_options(file):
     plando_lock_key_8_in_helm(None)
     validate_item_limits(None)
     validate_hint_count(None)
+    validate_smaller_shops_no_conflict(None)
     validate_starting_kong_count(None)
     validate_level_order_no_duplicates(None)
     validate_krool_order_no_duplicates(None)
@@ -791,6 +813,17 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
                     ind_shop_name = ind_location["value"].name
                     errString = f'Shop locations "{shared_shop_name}" and "{ind_shop_name}" both have rewards assigned, which is invalid.'
                     errList.append(errString)
+
+    # Ensure that no shops are assigned if "Smaller Shops" is used.
+    useSmallerShops = js.document.getElementById("smaller_shops").checked
+    if useSmallerShops:
+        for locationName in ShopLocationList:
+            locationEnum = Locations[locationName]
+            locEnumStr = str(locationEnum.value)
+            if locEnumStr in plando_dict["locations"] and plando_dict["locations"][locEnumStr] != PlandoItems.Randomize:
+                shopName = LocationList[locationEnum].name
+                errString = f'Shop locations cannot be assigned if "Smaller Shops" is selected, but shop "{shopName}" has an assigned value.'
+                errList.append(errString)
 
     # Ensure that shop costs are within allowed limits.
     for shopLocation, price in plando_dict["prices"].items():
