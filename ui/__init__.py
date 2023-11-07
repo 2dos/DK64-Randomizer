@@ -17,6 +17,7 @@ from ui.rando_options import (
     max_doorone_requirement,
     max_doortwo_requirement,
     max_music,
+    max_music_proportion,
     max_randomized_blocker,
     max_randomized_fairies,
     max_randomized_medal_cb_req,
@@ -51,6 +52,7 @@ max_randomized_blocker(None)
 handle_progressive_hint_text(None)
 max_randomized_troff(None)
 max_music(None)
+max_music_proportion(None)
 max_sfx(None)
 disable_barrel_modal(None)
 disable_enemy_modal(None)

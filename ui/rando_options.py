@@ -87,6 +87,17 @@ def max_music(event):
     elif int(music_text.value) < 0:
         music_text.value = 0
 
+@bind("focusout", "custom_music_proportion")
+def max_music_proportion(event):
+    """Validate music input on loss of focus."""
+    music_text = js.document.getElementById("custom_music_proportion")
+    if not music_text.value:
+        music_text.value = 100
+    elif int(music_text.value) > 100:
+        music_text.value = 100
+    elif int(music_text.value) < 0:
+        music_text.value = 0
+
 
 @bind("focusout", "sfx_volume")
 def max_sfx(event):
@@ -963,6 +974,7 @@ def preset_select_changed(event):
     handle_progressive_hint_text(None)
     max_randomized_troff(None)
     max_music(None)
+    max_music_proportion(None)
     max_sfx(None)
     disable_barrel_modal(None)
     item_rando_list_changed(None)

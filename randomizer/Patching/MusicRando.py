@@ -3,6 +3,7 @@ import gzip
 import random
 
 import js
+import math
 from randomizer.Enums.SongType import SongType
 from randomizer.Lists.Songs import song_data
 from randomizer.Patching.Patcher import ROM
@@ -25,14 +26,32 @@ def doesSongLoop(data: bytes) -> bool:
     return False
 
 
-def insertUploaded(uploaded_songs: list, uploaded_song_names: list, target_type: SongType):
+def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names: list, target_type: SongType):
     """Insert uploaded songs into ROM."""
+    # Initial Variables
     added_songs = list(zip(uploaded_songs, uploaded_song_names))
-    random.shuffle(added_songs)
     all_target_songs = [song for song in song_data if song.type == target_type]
+    # Calculate Proportion, add songs if necessary
+    proportion = settings.custom_music_proportion / 100
+    if proportion < 0:
+        proportion = 0
+    elif proportion > 1:
+        proportion = 1
+    if settings.fill_with_custom_music:
+        if len(added_songs) > 0 and len(all_target_songs) > 0:
+            duplication_count = math.ceil((len(all_target_songs) * proportion) / len(added_songs))
+            if duplication_count > 1: # Not enough songs to fill all slots
+                initial_songs = added_songs.copy()
+                for _ in range(duplication_count - 1):
+                    added_songs.extend(initial_songs)
+    # Shuffle
+    random.shuffle(added_songs)
     swap_amount = len(added_songs)
-    if swap_amount > len(all_target_songs):
-        swap_amount = len(all_target_songs)
+    # Calculate Cap
+    cap = int(len(all_target_songs) * proportion)
+    if swap_amount > cap:
+        swap_amount = cap
+    # Place Songs
     songs_to_be_replaced = random.sample(all_target_songs, swap_amount)
     ROM_COPY = ROM()
     for index, song in enumerate(songs_to_be_replaced):
@@ -114,7 +133,7 @@ def randomize_music(settings: Settings):
         if not ENABLE_CHAOS:
             if js.cosmetics is not None and js.cosmetic_names is not None:
                 # If uploaded, replace some songs with the uploaded songs
-                insertUploaded(list(js.cosmetics.bgm), list(js.cosmetic_names.bgm), SongType.BGM)
+                insertUploaded(settings, list(js.cosmetics.bgm), list(js.cosmetic_names.bgm), SongType.BGM)
             # Generate the list of BGM songs
             song_list = []
             for channel_index in range(12):
@@ -159,7 +178,7 @@ def randomize_music(settings: Settings):
     if settings.music_majoritems_randomized:
         if js.cosmetics is not None and js.cosmetic_names is not None:
             # If uploaded, replace some songs with the uploaded songs
-            insertUploaded(list(js.cosmetics.majoritems), list(js.cosmetic_names.majoritems), SongType.MajorItem)
+            insertUploaded(settings, list(js.cosmetics.majoritems), list(js.cosmetic_names.majoritems), SongType.MajorItem)
         # Load the list of majoritems
         majoritem_list = []
         for song in song_data:
@@ -174,7 +193,7 @@ def randomize_music(settings: Settings):
     if settings.music_minoritems_randomized:
         if js.cosmetics is not None and js.cosmetic_names is not None:
             # If uploaded, replace some songs with the uploaded songs
-            insertUploaded(list(js.cosmetics.minoritems), list(js.cosmetic_names.minoritems), SongType.MinorItem)
+            insertUploaded(settings, list(js.cosmetics.minoritems), list(js.cosmetic_names.minoritems), SongType.MinorItem)
         # Load the list of minoritems
         minoritem_list = []
         for song in song_data:
@@ -190,7 +209,7 @@ def randomize_music(settings: Settings):
     if settings.music_events_randomized:
         if js.cosmetics is not None and js.cosmetic_names is not None:
             # If uploaded, replace some songs with the uploaded songs
-            insertUploaded(list(js.cosmetics.events), list(js.cosmetic_names.events), SongType.Event)
+            insertUploaded(settings, list(js.cosmetics.events), list(js.cosmetic_names.events), SongType.Event)
         # Load the list of events
         event_list = []
         for song in song_data:

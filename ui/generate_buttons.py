@@ -28,6 +28,7 @@ from ui.rando_options import (
     handle_progressive_hint_text,
     item_rando_list_changed,
     max_music,
+    max_music_proportion,
     max_randomized_blocker,
     max_randomized_troff,
     max_sfx,
@@ -133,6 +134,7 @@ def import_settings_string(event):
     handle_progressive_hint_text(None)
     max_randomized_troff(None)
     max_music(None)
+    max_music_proportion(None)
     max_sfx(None)
     disable_barrel_modal(None)
     updateDoorOneCountText(None)

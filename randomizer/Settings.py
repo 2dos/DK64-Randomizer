@@ -399,6 +399,8 @@ class Settings:
         self.troff_brighten = False
         self.camera_is_not_inverted = False
         self.sound_type = SoundType.stereo
+        self.custom_music_proportion = 100
+        self.fill_with_custom_music = False
 
         #  Misc
         self.generate_spoilerlog = None

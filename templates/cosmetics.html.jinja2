@@ -84,6 +84,32 @@
                     </label>
                     {{ list_selector(excluded_songs, "excluded_songs", "Disabled Songs", "This will open a popup that will let you customize what songs are disabled.&#10;This defaults to All options.", 4) }}
                     {# Remove end </div> as it's included in the macro for formatting #}
+                <div class="form-check form-switch item-switch">
+                    <label data-toggle="tooltip"
+                            title="Will fill each song slot available with a custom track, even if the amount of songs in that pack doesn't exceed the amount of song slots.">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="fill_with_custom_music"
+                            id="fill_with_custom_music"
+                            value="True"/>
+                        Fill game with provided songs
+                    </label>
+                </div>
+            </div>
+            <div class="flex-container">
+                <div class="item-group">
+                    <p class="select-title">Custom Music Fill (%)</p>
+                    <input class="form-control"
+                        min="0"
+                        max="100"
+                        name="custom_music_proportion"
+                        id="custom_music_proportion"
+                        type="number"
+                        data-toggle="tooltip"
+                        title="Proportion of songs that will be filled with custom music."
+                        default="100"
+                        placeholder="100"/>
+                </div>
                 <div class="spacer"></div>
             </div>
             <hr />
