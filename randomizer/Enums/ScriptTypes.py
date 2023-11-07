@@ -12,3 +12,4 @@ class ScriptTypes(IntEnum):
     CrownMain = auto()
     CrownIsles2 = auto()
     MelonCrate = auto()
+    DeleteItem = auto()

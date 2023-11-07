@@ -319,6 +319,8 @@ def addNewScript(cont_map_id: Union[Maps, int], item_ids: List[int], type: Scrip
         subscript_type = -6
     elif type == ScriptTypes.MelonCrate:
         subscript_type = -13
+    elif type == ScriptTypes.DeleteItem:
+        subscript_type = -16
     for item_id in item_ids:
         script_arr = [
             item_id,

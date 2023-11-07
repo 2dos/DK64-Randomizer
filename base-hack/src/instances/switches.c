@@ -17,7 +17,7 @@ int getPressedRandoSwitch(behaviour_data* behaviour_pointer, int setting, int va
 		bullet = kong_pellets[setting - 1];
 	}
 	return getPressedSwitch(behaviour_pointer, bullet, ID);
-};
+}
 
 typedef struct SwitchInfo {
 	/* 0x000 */ unsigned char* setting_address;
