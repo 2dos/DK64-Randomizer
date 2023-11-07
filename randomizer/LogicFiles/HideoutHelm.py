@@ -50,11 +50,11 @@ LogicRegions = {
         Event(Events.HelmLankyDone, lambda l: ((l.isPriorHelmComplete(Kongs.lanky) or l.settings.helm_setting == HelmSetting.skip_all) and l.HelmLanky1 and l.HelmLanky2) or not l.settings.helm_lanky),
         Event(Events.HelmDiddyDone, lambda l: ((l.isPriorHelmComplete(Kongs.diddy) or l.settings.helm_setting == HelmSetting.skip_all) and l.HelmDiddy1 and l.HelmDiddy2) or not l.settings.helm_diddy),
     ], [
-        TransitionFront(Regions.HideoutHelmDonkeyRoom, lambda l: (l.bongos and l.isdonkey and Events.HelmDoorsOpened in l.Events) or l.phasewalk),
-        TransitionFront(Regions.HideoutHelmChunkyRoom, lambda l: (l.triangle and l.ischunky and Events.HelmDoorsOpened in l.Events) or l.phasewalk),
-        TransitionFront(Regions.HideoutHelmTinyRoom, lambda l: (l.saxophone and l.istiny and Events.HelmDoorsOpened in l.Events) or l.phasewalk),
-        TransitionFront(Regions.HideoutHelmLankyRoom, lambda l: (l.trombone and l.islanky and Events.HelmDoorsOpened in l.Events) or l.phasewalk),
-        TransitionFront(Regions.HideoutHelmDiddyRoom, lambda l: l.isdiddy and l.jetpack and ((Events.HelmDoorsOpened in l.Events and l.guitar) or l.phasewalk)),
+        TransitionFront(Regions.HideoutHelmDonkeyRoom, lambda l: (l.bongos and l.isdonkey and (l.isPriorHelmComplete(Kongs.donkey) or l.settings.helm_setting == HelmSetting.skip_all) and Events.HelmDoorsOpened in l.Events) or l.phasewalk),
+        TransitionFront(Regions.HideoutHelmChunkyRoom, lambda l: (l.triangle and l.ischunky and (l.isPriorHelmComplete(Kongs.chunky) or l.settings.helm_setting == HelmSetting.skip_all) and Events.HelmDoorsOpened in l.Events) or l.phasewalk),
+        TransitionFront(Regions.HideoutHelmTinyRoom, lambda l: (l.saxophone and l.istiny and (l.isPriorHelmComplete(Kongs.tiny) or l.settings.helm_setting == HelmSetting.skip_all) and Events.HelmDoorsOpened in l.Events) or l.phasewalk),
+        TransitionFront(Regions.HideoutHelmLankyRoom, lambda l: (l.trombone and l.islanky and (l.isPriorHelmComplete(Kongs.lanky) or l.settings.helm_setting == HelmSetting.skip_all) and Events.HelmDoorsOpened in l.Events) or l.phasewalk),
+        TransitionFront(Regions.HideoutHelmDiddyRoom, lambda l: l.isdiddy and l.jetpack and ((Events.HelmDoorsOpened in l.Events and l.guitar and (l.isPriorHelmComplete(Kongs.diddy) or l.settings.helm_setting == HelmSetting.skip_all)) or l.phasewalk)),
         TransitionFront(Regions.HideoutHelmAfterBoM, lambda l: l.settings.helm_setting == HelmSetting.skip_all or (Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events)),
     ]),
 

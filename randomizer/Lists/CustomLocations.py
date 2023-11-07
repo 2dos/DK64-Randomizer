@@ -447,7 +447,7 @@ CustomLocations = {
             z=1125.0,
             rot_y=4084,
             max_size=64,
-            logic_region=Regions.AngryAztecOasis,
+            logic_region=Regions.AztecTunnelBeforeOasis,
             group=1,
         ),
         CustomLocation(

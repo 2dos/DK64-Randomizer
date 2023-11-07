@@ -53,6 +53,7 @@ extern void brightenMMMEnemies(void);
 extern void FixKrushaAmmoHUDColor(void);
 extern void FixKrushaAmmoHUDSize(void);
 extern void staticWaterDamage(void);
+extern void checkBeforeApplyingQuicksand(void);
 
 extern void CrankyDecouple(void);
 extern void ForceToBuyMoveInOneLevel(void);
