@@ -309,9 +309,11 @@ class Spoiler:
         humanspoiler["End Game"]["Helm Rooms"] = helm_new_order
         if self.settings.crown_door_item != HelmDoorItem.opened:
             humanspoiler["End Game"]["Crown Door Item"] = self.settings.crown_door_item.name
+            humanspoiler["End Game"]["Crown Door Item Randomized"] = self.settings.crown_door_random
             humanspoiler["End Game"]["Crown Door Item Amount"] = self.settings.crown_door_item_count
         if self.settings.coin_door_item != HelmDoorItem.opened:
             humanspoiler["End Game"]["Coin Door Item"] = self.settings.coin_door_item.name
+            humanspoiler["End Game"]["Coin Door Item Randomized"] = self.settings.coin_door_random
             humanspoiler["End Game"]["Coin Door Item Amount"] = self.settings.coin_door_item_count
         if self.settings.shuffle_items:
             humanspoiler["Item Pool"] = list(set([enum.name for enum in self.settings.shuffled_location_types]))
