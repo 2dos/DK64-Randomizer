@@ -1,31 +1,31 @@
 {
-    "name": "Standard",
+    "name": "Difficult",
     "activate_all_bananaports": {
-        "off": 0.4,
-        "all": 0.4,
+        "off": 0.6,
+        "all": 0.2,
         "isles": 0.2
     },
-    "alter_switch_allocation": 0.5,
+    "alter_switch_allocation": 0.8,
     "auto_keys": 0.5,
     "bananaport_rando": {
         "off": 0.5,
         "in_level": 0.3,
-        "crossmap_coupled": 0.2
+        "crossmap_coupled": 0.1,
+        "crossmap_decoupled": 0.1
     },
     "blocker_text": {
         "min": 40,
-        "max": 100,
-        "mean": 60
+        "max": 140,
+        "mean": 70
     },
-    "bonus_barrel_auto_complete": 0.3,
+    "bonus_barrel_auto_complete": 0.1,
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
     "cb_rando": 0.5,
     "coin_door_item": {
-        "vanilla": 0.2,
-        "opened": 0.2,
-        "random": 0.6
+        "vanilla": 0.3,
+        "random": 0.7
     },
     "coin_door_item_count": {
         "min": 1,
@@ -34,9 +34,8 @@
     },
     "coin_rando": 0.5,
     "crown_door_item": {
-        "vanilla": 0.2,
-        "opened": 0.2,
-        "random": 0.6
+        "vanilla": 0.3,
+        "random": 0.7
     },
     "crown_door_item_count": {
         "min": 1,
@@ -44,49 +43,68 @@
         "mean": 1
     },
     "crown_enemy_rando": {
-        "off": 0.1,
-        "easy": 0.3,
-        "medium": 0.4,
-        "hard": 0.2
+        "easy": 0.2,
+        "medium": 0.5,
+        "hard": 0.3
     },
-    "crown_placement_rando": 0.3,
+    "crown_placement_rando": 0.7,
     "damage_amount": {
-        "default": 0.5,
-        "double": 0.35,
-        "quad": 0.15
+        "default": 0.4,
+        "double": 0.3,
+        "quad": 0.2,
+        "ohko": 0.1
     },
-    "dim_solved_hints": 0.7,
+    "dim_solved_hints": 0.5,
     "disable_tag_barrels": 0.5,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.25,
     "enable_shop_hints": 0.5,
     "enable_tag_anywhere": 0.9,
     "enemies_selected": {},
-    "enemy_drop_rando": 0.25,
-    "enemy_rando": 0.5,
-    "enemy_speed_rando": 0.5,
+    "enemy_drop_rando": 0.6,
+    "enemy_rando": 0.7,
+    "enemy_speed_rando": 0.7,
     "fast_gbs": 0.7,
     "fast_warps": 0.8,
     "fps_display": 0.5,
     "free_trade_setting": {
-        "none": 0.1,
+        "none": 0.2,
         "not_blueprints": 0.3,
-        "major_collectibles": 0.6
+        "major_collectibles": 0.5
     },
-    "glitches_selected": {},
-    "hard_blockers": 0.2,
-    "hard_level_progression": 0.4,
-    "hard_mode": 0,
-    "hard_mode_selected": {},
+    "glitches_selected": {
+        "advanced_platforming": 0.5,
+        "b_locker_skips": 0.25,
+        "boulder_clips": 0,
+        "general_clips": 0.25,
+        "ledge_clips": 0.1,
+        "moonkicks": 0.5,
+        "phase_swimming": 0.5,
+        "phase_walking": 0.05,
+        "skew": 0.5,
+        "spawn_snags": 0.05,
+        "swim_through_shores": 0.5,
+        "tag_barrel_storage": 0.05,
+        "troff_n_scoff_skips": 0.25
+    },
+    "hard_blockers": 0.6,
+    "hard_level_progression": 0.6,
+    "hard_mode": 0.1,
+    "hard_mode_selected": {
+        "hard_bosses": 0.6,
+        "extra_hard_bosses": 0.25,
+        "hard_enemies": 0.6,
+        "water_is_lava": 0.3,
+        "reduced_fall_damage_threshold": 0.5
+    },
     "hard_shooting": 0.5,
-    "hard_troff_n_scoff": 0.2,
-    "helm_hurry": 0,
+    "hard_troff_n_scoff": 0.5,
+    "helm_hurry": 0.05,
     "helm_phase_order_rando": 0.8,
     "helm_random": 1,
     "helm_setting": {
-        "default": 0.2,
-        "skip_start": 0.6,
-        "skip_all": 0.2
+        "default": 0.3,
+        "skip_start": 0.7
     },
     "helmhurry_list_banana_medal": {
         "min": 30,
@@ -167,7 +185,7 @@
     "item_rando_list_selected": {
         "shop": 0.95,
         "banana": 0.95,
-        "toughbanana": 0.5,
+        "toughbanana": 0.95,
         "crown": 0.7,
         "blueprint": 0.7,
         "key": 0.85,
@@ -177,9 +195,9 @@
         "fairy": 0.7,
         "rainbowcoin": 0.7,
         "beanpearl": 0.7,
-        "fakeitem": 0.5,
-        "junkitem": 0.5,
-        "crateitem": 0.5
+        "fakeitem": 0.7,
+        "junkitem": 0.7,
+        "crateitem": 0.7
     },
     "item_reward_previews": 0.75,
     "kasplat_rando_setting": {
@@ -198,18 +216,21 @@
         "random": 0.5
     },
     "level_randomization": {
-        "vanilla": 0.2,
-        "level_order": 0.65,
-        "loadingzone": 0.15
+        "vanilla": 0.3,
+        "level_order": 0.4,
+        "loadingzone": 0.25,
+        "loadingzonesdecoupled": 0.05
     },
     "logic_type": {
-        "glitchless": 1
+        "glitchless": 0.8,
+        "glitch": 0.15,
+        "nologic": 0.05
     },
-    "maximize_helm_blocker": 0.15,
+    "maximize_helm_blocker": 0.5,
     "medal_cb_req": {
-        "min": 15,
+        "min": 35,
         "max": 90,
-        "mean": 40
+        "mean": 60
     },
     "microhints_enabled": {
         "off": 0.3,
@@ -249,12 +270,11 @@
         "auto": 0.5
     },
     "move_rando": {
-        "off": 0.1,
         "on": 0.3,
-        "cross_purchase": 0.6
+        "cross_purchase": 0.7
     },
     "no_healing": 0.5,
-    "no_melons": 0.2,
+    "no_melons": 0.5,
     "open_levels": 0.75,
     "open_lobbies": 0.9,
     "perma_death": 0.05,
@@ -262,24 +282,23 @@
     "progressive_hint_text": {
         "min": 30,
         "max": 100,
-        "mean": 60
+        "mean": 70
     },
     "puzzle_rando": 0.5,
     "quality_of_life": 1,
-    "random_crates": 0.3,
-    "random_fairies": 0.2,
+    "random_crates": 0.6,
+    "random_fairies": 0.6,
     "random_medal_requirement": 1,
-    "random_patches": 0.2,
+    "random_patches": 0.6,
     "random_prices": {
         "vanilla": 0.1,
-        "free": 0.1,
         "low": 0.2,
-        "medium": 0.3,
+        "medium": 0.4,
         "high": 0.25,
         "extreme": 0.05
     },
     "random_starting_move_list_selected": {},
-    "random_starting_region": 0.3,
+    "random_starting_region": 0.6,
     "randomize_blocker_required_amounts": 1,
     "randomize_cb_required_amounts": 1,
     "randomize_pickups": 0.6,
@@ -291,14 +310,14 @@
     "select_keys": 0,
     "shockwave_status": {
         "vanilla": 0.2,
-        "shuffled": 0.2,
-        "shuffled_decoupled": 0.2,
-        "start_with": 0.4
+        "shuffled": 0.3,
+        "shuffled_decoupled": 0.3,
+        "start_with": 0.2
     },
     "shop_indicator": 0.5,
     "shorten_boss": 0.8,
     "shuffle_items": 1,
-    "shuffle_shops": 0.5,
+    "shuffle_shops": 0.7,
     "smaller_shops": 0.5,
     "starting_keys_list_selected": {},
     "starting_kong": {
@@ -308,17 +327,17 @@
     "starting_moves_count": {
         "min": 0,
         "max": 10,
-        "mean": 4
+        "mean": 3
     },
     "starting_random": 1,
-    "switchsanity": 0.15,
-    "tns_location_rando": 0.3,
+    "switchsanity": 0.5,
+    "tns_location_rando": 0.5,
     "troff_text": {
         "min": 150,
-        "max": 400,
+        "max": 450,
         "mean": 300
     },
-    "vanilla_door_rando": 0.4,
+    "vanilla_door_rando": 0.6,
     "warp_level_list_selected": {},
     "warp_to_isles": 0.9,
     "win_condition": {
@@ -337,5 +356,5 @@
         "cryptic": 0.2,
         "item_hinting": 0.3
     },
-    "wrinkly_location_rando": 0.3
+    "wrinkly_location_rando": 0.6
 }

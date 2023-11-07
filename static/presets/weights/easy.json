@@ -1,4 +1,5 @@
 {
+    "name": "Easy",
     "activate_all_bananaports": {
         "off": 0.2,
         "all": 0.6,
