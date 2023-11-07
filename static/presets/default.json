@@ -39,6 +39,7 @@
     "fast_warps": true,
     "fps_display": false,
     "free_trade_setting": "none",
+    "fungi_time": "day",
     "generate_spoilerlog": true,
     "glitches_selected":[],
     "hard_blockers": false,

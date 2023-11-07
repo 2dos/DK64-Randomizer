@@ -4,7 +4,7 @@ import os
 import time
 from tempfile import mktemp
 
-from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, HardModeSelected, HelmDoorItem, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
+from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, FungiTimeSetting, HardModeSelected, HelmDoorItem, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Items import Items
@@ -407,6 +407,12 @@ def patching_response(spoiler):
     ROM_COPY.seek(sav + 0x11D)
     # The WinCondition enum is indexed to allow this.
     ROM_COPY.write(int(spoiler.settings.win_condition))
+
+    # Fungi Time of Day
+    fungi_times = (FungiTimeSetting.day, FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)
+    if spoiler.settings.fungi_time_internal in fungi_times:
+        ROM_COPY.seek(sav + 0x1DB)
+        ROM_COPY.write(fungi_times.index(spoiler.settings.fungi_time_internal))
 
     # ROM Flags
     rom_flags = 0

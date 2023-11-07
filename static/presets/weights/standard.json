@@ -74,6 +74,13 @@
         "not_blueprints": 0.3,
         "major_collectibles": 0.6
     },
+    "fungi_time": {
+        "day": 0.2,
+        "night": 0.2,
+        "random": 0.3,
+        "dusk": 0.15,
+        "progressive": 0.15
+    },
     "glitches_selected": {
         "advanced_platforming": 0.5,
         "b_locker_skips": 0.25,

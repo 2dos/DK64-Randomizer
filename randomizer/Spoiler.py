@@ -258,6 +258,7 @@ class Spoiler:
         settings["Fast GBs"] = self.settings.fast_gbs
         settings["High Requirements"] = self.settings.high_req
         settings["Win Condition"] = self.settings.win_condition.name
+        settings["Fungi Time of Day"] = self.settings.fungi_time.name
         if self.settings.helm_hurry:
             settings["Game Mode"] = "Helm Hurry"
         humanspoiler["Settings"] = settings
