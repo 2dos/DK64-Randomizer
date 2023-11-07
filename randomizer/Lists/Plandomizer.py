@@ -1,10 +1,13 @@
 """Various lists to support the plandomizer."""
 
+from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
+from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Types import Types
+from randomizer.Enums.VendorType import VendorType
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.MapsAndExits import RegionMapList
@@ -19,7 +22,7 @@ from randomizer.LogicFiles.GloomyGalleon import LogicRegions as GloomyGalleonReg
 from randomizer.LogicFiles.JungleJapes import LogicRegions as JungleJapesRegions
 
 
-def getKongString(kongEnum):
+def getKongString(kongEnum: Kongs) -> str:
     """Get the string name of the kong from the enum."""
     if kongEnum == Kongs.donkey:
         return "Donkey"
@@ -35,7 +38,7 @@ def getKongString(kongEnum):
         return "All Kongs"
 
 
-def getLevelString(levelEnum):
+def getLevelString(levelEnum: Levels) -> str:
     """Get the string name of a level from the enum."""
     if levelEnum == Levels.DKIsles:
         return "D.K. Isles"
@@ -74,17 +77,35 @@ MinigameLocationList = []
 # A list of all hint locations.
 HintLocationList = []
 
+
+def createShopLocationKongMapObj() -> dict:
+    """Initialize an entry in the ShopLocationKongMap."""
+    return {VendorType.Candy.name: {"shared": None, "individual": []}, VendorType.Cranky.name: {"shared": None, "individual": []}, VendorType.Funky.name: {"shared": None, "individual": []}}
+
+
+# A map of shop locations, grouped by level and broken into shared/individual.
+ShopLocationKongMap = {
+    "DKIsles": createShopLocationKongMapObj(),
+    "JungleJapes": createShopLocationKongMapObj(),
+    "AngryAztec": createShopLocationKongMapObj(),
+    "FranticFactory": createShopLocationKongMapObj(),
+    "GloomyGalleon": createShopLocationKongMapObj(),
+    "FungiForest": createShopLocationKongMapObj(),
+    "CrystalCaves": createShopLocationKongMapObj(),
+    "CreepyCastle": createShopLocationKongMapObj(),
+}
+
 ##########
 # PANELS #
 ##########
 
 
-def createPlannableLocationObj():
+def createPlannableLocationObj() -> dict:
     """Initialize the plannable location object."""
-    return {"All Kongs": [], "Donkey": [], "Diddy": [], "Lanky": [], "Tiny": [], "Chunky": []}
+    return {"All Kongs": [], "Donkey": [], "Diddy": [], "Lanky": [], "Tiny": [], "Chunky": [], "Enemies": []}
 
 
-def isMinigameLocation(locationEnum):
+def isMinigameLocation(locationEnum: Locations) -> bool:
     """Determine if this location is a minigame location."""
     return locationEnum in BarrelMetaData
 
@@ -98,7 +119,7 @@ PlandomizerPanels = {
     "FungiForest": {"name": "Fungi Forest", "locations": createPlannableLocationObj()},
     "CrystalCaves": {"name": "Crystal Caves", "locations": createPlannableLocationObj()},
     "CreepyCastle": {"name": "Creepy Castle", "locations": createPlannableLocationObj()},
-    "HideoutHelm": {"name": "Hideout Helm", "locations": {"All Kongs": [], "Medals": []}},
+    "HideoutHelm": {"name": "Hideout Helm", "locations": {"All Kongs": [], "Medals": [], "Enemies": []}},
     # Shops, minigames and hints are grouped by level, not by Kong.
     "Shops": {
         "name": "Shops",
@@ -166,6 +187,12 @@ for locationEnum, locationObj in LocationList.items():
         levelName = locationObj.level.name
         PlandomizerPanels["Shops"]["levels"][levelName]["locations"].append(locationJson)
         ShopLocationList.append(locationEnum.name)
+        # Add this to the ShopLocationKongMap, which will be used for validation.
+        vendor = locationObj.vendor.name
+        if locationObj.kong == Kongs.any:
+            ShopLocationKongMap[levelName][vendor]["shared"] = {"name": locationEnum.name, "value": locationObj}
+        else:
+            ShopLocationKongMap[levelName][vendor]["individual"].append({"name": locationEnum.name, "value": locationObj})
     elif locationObj.level == Levels.Shops:
         # This is the Rareware coin.
         PlandomizerPanels["Shops"]["levels"]["DKIsles"]["locations"].append(locationJson)
@@ -174,6 +201,8 @@ for locationEnum, locationObj in LocationList.items():
         levelName = locationObj.level.name
         if locationObj.level == Levels.HideoutHelm and locationObj.type == Types.Medal:
             PlandomizerPanels[levelName]["locations"]["Medals"].append(locationJson)
+        elif locationObj.type == Types.Enemies:
+            PlandomizerPanels[levelName]["locations"]["Enemies"].append(locationJson)
         else:
             PlandomizerPanels[levelName]["locations"][kongString].append(locationJson)
         ItemLocationList.append(locationEnum.name)
@@ -206,7 +235,10 @@ for locationEnum, locationObj in LocationList.items():
 # These PlandoItems enums have multiple Items enums that map to each of them,
 # and so they should not be automatically added to the list of PlannableItems.
 # Handle these manually.
-doNotAutoAddItemSet = {PlandoItems.DonkeyBlueprint, PlandoItems.DiddyBlueprint, PlandoItems.LankyBlueprint, PlandoItems.TinyBlueprint, PlandoItems.ChunkyBlueprint, PlandoItems.JunkItem}
+doNotAutoAddPlandoItemSet = {PlandoItems.DonkeyBlueprint, PlandoItems.DiddyBlueprint, PlandoItems.LankyBlueprint, PlandoItems.TinyBlueprint, PlandoItems.ChunkyBlueprint, PlandoItems.JunkItem}
+# These items are extras that map to PlandoItems already covered by other
+# Items. Do not add these.
+doNotAutoAddItemSet = {Items.ProgressiveSlam2, Items.ProgressiveSlam3, Items.ProgressiveAmmoBelt2, Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3}
 
 PlannableItems = []  # Used to select rewards for locations.
 
@@ -214,11 +246,14 @@ for itemEnum, itemObj in ItemList.items():
     # Only include items that have a matching item in the plando map.
     if itemEnum not in ItemToPlandoItemMap:
         continue
+    # Do not include items in this set.
+    if itemEnum in doNotAutoAddItemSet:
+        continue
 
     plandoItemEnum = ItemToPlandoItemMap[itemEnum]
     # Do not add blueprints or junk items. These will be replaced with generic
     # items.
-    if plandoItemEnum in doNotAutoAddItemSet:
+    if plandoItemEnum in doNotAutoAddPlandoItemSet:
         continue
     itemJson = {"name": itemObj.name, "value": plandoItemEnum.name}
     PlannableItems.append(itemJson)
@@ -242,8 +277,7 @@ PlannableItemLimits = {
     PlandoItems.Swim: 1,
     PlandoItems.Oranges: 1,
     PlandoItems.Barrels: 1,
-    # The player will always start with one of the three slams.
-    PlandoItems.ProgressiveSlam: 2,
+    PlandoItems.ProgressiveSlam: 3,
     PlandoItems.BaboonBlast: 1,
     PlandoItems.StrongKong: 1,
     PlandoItems.GorillaGrab: 1,
@@ -293,6 +327,7 @@ PlannableItemLimits = {
     PlandoItems.Bean: 1,
     PlandoItems.Pearl: 5,
     PlandoItems.FakeItem: 16,
+    PlandoItems.JunkItem: 100,
     PlandoItems.RainbowCoin: 16,
     PlandoItems.DonkeyBlueprint: 8,
     PlandoItems.DiddyBlueprint: 8,

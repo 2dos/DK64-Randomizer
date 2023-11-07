@@ -481,6 +481,7 @@ i {
   margin-top: 10px;
   margin-bottom: 10px;
   letter-spacing: 3px;
+  text-transform: uppercase;
 }
 
 .select-title {
