@@ -1,5 +1,6 @@
 """Various lists to support the plandomizer."""
 
+from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
@@ -234,7 +235,10 @@ for locationEnum, locationObj in LocationList.items():
 # These PlandoItems enums have multiple Items enums that map to each of them,
 # and so they should not be automatically added to the list of PlannableItems.
 # Handle these manually.
-doNotAutoAddItemSet = {PlandoItems.DonkeyBlueprint, PlandoItems.DiddyBlueprint, PlandoItems.LankyBlueprint, PlandoItems.TinyBlueprint, PlandoItems.ChunkyBlueprint, PlandoItems.JunkItem}
+doNotAutoAddPlandoItemSet = {PlandoItems.DonkeyBlueprint, PlandoItems.DiddyBlueprint, PlandoItems.LankyBlueprint, PlandoItems.TinyBlueprint, PlandoItems.ChunkyBlueprint, PlandoItems.JunkItem}
+# These items are extras that map to PlandoItems already covered by other
+# Items. Do not add these.
+doNotAutoAddItemSet = {Items.ProgressiveSlam2, Items.ProgressiveSlam3, Items.ProgressiveAmmoBelt2, Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3}
 
 PlannableItems = []  # Used to select rewards for locations.
 
@@ -242,11 +246,14 @@ for itemEnum, itemObj in ItemList.items():
     # Only include items that have a matching item in the plando map.
     if itemEnum not in ItemToPlandoItemMap:
         continue
+    # Do not include items in this set.
+    if itemEnum in doNotAutoAddItemSet:
+        continue
 
     plandoItemEnum = ItemToPlandoItemMap[itemEnum]
     # Do not add blueprints or junk items. These will be replaced with generic
     # items.
-    if plandoItemEnum in doNotAutoAddItemSet:
+    if plandoItemEnum in doNotAutoAddPlandoItemSet:
         continue
     itemJson = {"name": itemObj.name, "value": plandoItemEnum.name}
     PlannableItems.append(itemJson)
@@ -270,8 +277,7 @@ PlannableItemLimits = {
     PlandoItems.Swim: 1,
     PlandoItems.Oranges: 1,
     PlandoItems.Barrels: 1,
-    # The player will always start with one of the three slams.
-    PlandoItems.ProgressiveSlam: 2,
+    PlandoItems.ProgressiveSlam: 3,
     PlandoItems.BaboonBlast: 1,
     PlandoItems.StrongKong: 1,
     PlandoItems.GorillaGrab: 1,
