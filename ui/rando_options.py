@@ -3,10 +3,13 @@ import random
 
 import js
 from js import document
+from randomizer.Enums.Items import Items
+from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Settings import SettingsMap
+from randomizer.Lists.Item import StartingMoveOptions
 from randomizer.PlandoUtils import MoveSet
 from randomizer.SettingStrings import decrypt_settings_string_enum
-from ui.bindings import bind
+from ui.bindings import bind, bindList
 from ui.randomize_settings import randomize_settings
 
 
@@ -1014,6 +1017,58 @@ def plando_disable_kong_items(evt):
                 option.removeAttribute("disabled")
 
 
+startingMoveValues = [str(item.value) for item in StartingMoveOptions]
+
+
+@bindList("click", startingMoveValues, prefix="none-")
+@bindList("click", startingMoveValues, prefix="start-")
+@bindList("click", startingMoveValues, prefix="random-")
+def plando_disable_starting_moves(evt):
+    """Do not allow starting moves to be placed as items."""
+    # Create a list of selected starting moves.
+    selectedStartingMoves = set()
+    for startingMove in startingMoveValues:
+        selectedElem = js.document.getElementById(f"start-{startingMove}")
+        if selectedElem.checked:
+            selectedStartingMoves.add(Items(int(startingMove)))
+
+    # Obtain the list of PlandoItems moves to disable.
+    progressiveMoves = [PlandoItems.ProgressiveAmmoBelt, PlandoItems.ProgressiveInstrumentUpgrade, PlandoItems.ProgressiveSlam]
+    selectedPlandoMoves = set([ItemToPlandoItemMap[move] for move in selectedStartingMoves if ItemToPlandoItemMap[move] not in progressiveMoves])
+    # Progressive moves are handled differently. Only disable these if all
+    # instances are included as starting moves.
+    if set([Items.ProgressiveSlam, Items.ProgressiveSlam2, Items.ProgressiveSlam3]).issubset(selectedStartingMoves):
+        selectedPlandoMoves.add(PlandoItems.ProgressiveSlam)
+    if set([Items.ProgressiveAmmoBelt, Items.ProgressiveAmmoBelt2]).issubset(selectedStartingMoves):
+        selectedPlandoMoves.add(PlandoItems.ProgressiveAmmoBelt)
+    if set([Items.ProgressiveInstrumentUpgrade, Items.ProgressiveInstrumentUpgrade2, Items.ProgressiveInstrumentUpgrade3]).issubset(selectedStartingMoves):
+        selectedPlandoMoves.add(PlandoItems.ProgressiveInstrumentUpgrade)
+
+    # Disable all the plando moves across the dropdowns.
+    for moveName in MoveSet:
+        moveEnum = PlandoItems[moveName]
+        # Ignore these moves.
+        if moveEnum in {PlandoItems.Camera, PlandoItems.Shockwave}:
+            continue
+        move_options = js.document.getElementsByClassName(f"plando-{moveName}-option")
+        if moveEnum in selectedPlandoMoves:
+            # Disable this move as a dropdown option.
+            for option in move_options:
+                option.setAttribute("disabled", "disabled")
+        else:
+            # Re-enable this move as a dropdown option.
+            for option in move_options:
+                option.removeAttribute("disabled")
+    # Deselect all the plando moves across the dropdowns.
+    item_dropdowns = js.document.getElementsByClassName("plando-item-select")
+    for dropdown in item_dropdowns:
+        if dropdown.value == "":
+            continue
+        move = PlandoItems[dropdown.value]
+        if move in selectedPlandoMoves:
+            dropdown.value = ""
+
+
 @bind("change", "dk_colors")
 @bind("change", "diddy_colors")
 @bind("change", "lanky_colors")
@@ -1240,6 +1295,8 @@ def reset_starting_moves(evt):
     """Reset the starting move selector to have nothing selected."""
     for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
         starting_move_button.checked = starting_move_button.id.startswith("none")
+    # Update the plandomizer dropdowns.
+    plando_disable_starting_moves(evt)
 
 
 @bind("click", "starting_moves_start_all")
@@ -1247,6 +1304,8 @@ def start_all_starting_moves(evt):
     """Update the starting move selector to start with all items."""
     for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
         starting_move_button.checked = starting_move_button.id.startswith("start")
+    # Update the plandomizer dropdowns.
+    plando_disable_starting_moves(evt)
 
 
 @bind("click", "randomize_settings")
