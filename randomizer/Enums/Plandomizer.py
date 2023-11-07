@@ -350,7 +350,7 @@ PlandoItemToItemListMap = {
 }
 
 
-def GetItemsFromPlandoItem(plandoItemEnum):
+def GetItemsFromPlandoItem(plandoItemEnum: PlandoItems) -> list[Items]:
     """Get items from the plando enum."""
     if plandoItemEnum in PlandoItemToItemMap:
         return [PlandoItemToItemMap[plandoItemEnum]]

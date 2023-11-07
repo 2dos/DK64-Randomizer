@@ -11,7 +11,7 @@ from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Regions import Regions
 from randomizer.Lists.Item import StartingMoveOptions
 from randomizer.Lists.Location import LocationListOriginal as LocationList
-from randomizer.Lists.Plandomizer import HintLocationList, ItemLocationList, MinigameLocationList, PlannableItemLimits, ShopLocationList
+from randomizer.Lists.Plandomizer import HintLocationList, ItemLocationList, MinigameLocationList, PlannableItemLimits, ShopLocationKongMap, ShopLocationList
 from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
@@ -25,19 +25,19 @@ from ui.rando_options import (
 )
 
 
-def mark_option_invalid(element, tooltip):
+def mark_option_invalid(element, tooltip: str) -> None:
     """Add a Bootstrap tooltip to the given element, and mark it as invalid."""
     element.setAttribute("data-bs-original-title", tooltip)
     element.classList.add("invalid")
 
 
-def mark_option_valid(element):
+def mark_option_valid(element) -> None:
     """Remove a Bootstrap tooltip from the given element, and mark it as valid."""
     element.setAttribute("data-bs-original-title", "")
     element.classList.remove("invalid")
 
 
-def count_items():
+def count_items() -> dict:
     """Count all currently placed items to ensure limits aren't exceeded.
 
     The result will be a dictionary, where each item is linked to all of the
@@ -45,7 +45,7 @@ def count_items():
     """
     count_dict = {}
 
-    def add_all_items(locList, suffix):
+    def add_all_items(locList: list[str], suffix: str):
         """Add all items from the location list into the dict."""
         for itemLocation in locList:
             elemName = f"plando_{itemLocation}{suffix}"
@@ -62,6 +62,16 @@ def count_items():
     add_all_items(ItemLocationList, "_item")
     add_all_items(ShopLocationList, "_item")
     return count_dict
+
+
+def get_shop_location_element(locName: str):
+    """Get the element corresponding to the dropdown for this location."""
+    return js.document.getElementById(f"plando_{locName}_item")
+
+
+def shop_has_assigned_item(shopElement) -> bool:
+    """Return true if the given shop has an item assigned to it."""
+    return shopElement.value and shopElement.value != "NoItem"
 
 
 ############
@@ -121,6 +131,37 @@ def validate_item_limits(evt):
 
 
 @bindList("change", ShopLocationList, prefix="plando_", suffix="_item")
+def validate_shop_kongs(evt):
+    """Raise an error if a shop has both individual and shared rewards."""
+    errString = "Shop vendors cannot have both shared rewards and Kong rewards assigned in the same level."
+    for _, vendors in ShopLocationKongMap.items():
+        for _, vendor_locations in vendors.items():
+            # Check the shared location for this vendor.
+            if not vendor_locations["shared"]:
+                # This vendor is not in this level.
+                continue
+            vendor_shared_element = get_shop_location_element(vendor_locations["shared"]["name"])
+            if not shop_has_assigned_item(vendor_shared_element):
+                # This vendor has nothing assigned for its shared location.
+                continue
+            # Check each of the individual locations.
+            shared_location_valid = True
+            for location in vendor_locations["individual"]:
+                vendor_element = get_shop_location_element(location["name"])
+                if shop_has_assigned_item(vendor_element):
+                    # An individual shop has an assigned item.
+                    # This is always a conflict at this point.
+                    shared_location_valid = False
+                    mark_option_invalid(vendor_element, errString)
+                else:
+                    mark_option_valid(vendor_element)
+            if shared_location_valid:
+                mark_option_valid(vendor_shared_element)
+            else:
+                mark_option_invalid(vendor_shared_element, errString)
+
+
+@bindList("change", ShopLocationList, prefix="plando_", suffix="_item")
 @bind("change", "smaller_shops")
 def validate_smaller_shops_no_conflict(evt):
     """Raise an error if we have a conflict with Smaller Shops.
@@ -143,28 +184,60 @@ def validate_smaller_shops_no_conflict(evt):
 
 @bindList("change", HintLocationList, prefix="plando_", suffix="_hint")
 @bindList("keyup", HintLocationList, prefix="plando_", suffix="_hint")
-def validate_hint_text(evt):
-    """Raise an error if any hint contains invalid characters."""
-    if evt is not None:
-        hintString = evt.target.value
-        if re.search("[^A-Za-z0-9 '\,\.\-\?!]", hintString) is not None:
-            mark_option_invalid(evt.target, "Only letters, numbers, spaces, and the characters ',.-?! are allowed in hints.")
-        else:
-            mark_option_valid(evt.target)
+def validate_hint_text_binding(evt):
+    """Raise an error if this target's hint contains invalid characters."""
+    validate_hint_text(evt.target)
+
+
+def validate_hint_text(element) -> None:
+    """Raise an error if the element's hint contains invalid characters."""
+    hintString = element.value
+    if re.search("[^A-Za-z0-9 \,\.\-\?!]", hintString) is not None:
+        mark_option_invalid(element, "Only letters, numbers, spaces, and the characters ',.-?! are allowed in hints.")
+    else:
+        mark_option_valid(element)
+
+
+@bindList("change", HintLocationList, prefix="plando_", suffix="_hint")
+@bindList("keyup", HintLocationList, prefix="plando_", suffix="_hint")
+@bind("change", "wrinkly_hints")
+def validate_hint_count(evt):
+    """Raise an error if there are too many hints for the current settings."""
+    # Mark all hints as valid, since we don't know which ones were recently
+    # removed, and take note of all the plando'd hints.
+    plandoHintList = []
+    for hint in HintLocationList:
+        hintElem = js.document.getElementById(f"plando_{hint}_hint")
+        mark_option_valid(hintElem)
+        if hintElem.value != "":
+            plandoHintList.append(hintElem)
+    # If we're not using fixed hints, return here after we've marked all the
+    # hints as valid.
+    if js.document.getElementById("wrinkly_hints").value != "fixed_racing":
+        return
+    # If there are more than five hints, and we are using fixed hints, this is
+    # an error.
+    if len(plandoHintList) > 5:
+        for hintElem in plandoHintList:
+            mark_option_invalid(hintElem, "Fixed hints are incompatible with more than 5 plandomized hints.")
 
 
 @bindList("change", ShopLocationList, prefix="plando_", suffix="_shop_cost")
 @bindList("keyup", ShopLocationList, prefix="plando_", suffix="_shop_cost")
-def validate_shop_costs(evt):
-    """Raise an error if any shops have an invalid cost."""
-    if evt is not None:
-        shopCost = evt.target.value
-        if shopCost == "":
-            mark_option_valid(evt.target)
-        elif shopCost.isdigit() and int(shopCost) >= 0 and int(shopCost) <= 255:
-            mark_option_valid(evt.target)
-        else:
-            mark_option_invalid(evt.target, "Shop costs must be a whole number between 0 and 255.")
+def validate_shop_costs_binding(evt):
+    """Raise an error if this target's shop has an invalid cost."""
+    validate_shop_costs(evt.target)
+
+
+def validate_shop_costs(element) -> None:
+    """Raise an error if this element's shop has an invalid cost."""
+    shopCost = element.value
+    if shopCost == "":
+        mark_option_valid(element)
+    elif shopCost.isdigit() and int(shopCost) >= 0 and int(shopCost) <= 255:
+        mark_option_valid(element)
+    else:
+        mark_option_invalid(element, "Shop costs must be a whole number between 0 and 255.")
 
 
 @bind("change", "starting_kongs_count")
@@ -311,6 +384,10 @@ async def import_plando_options(file):
     # Reset all of the plando options to their defaults.
     reset_plando_options_no_prompt()
 
+    # We need to record all hints and shop costs so we can validate them later.
+    hintList = []
+    shopCostList = []
+
     # Set all of the options specified in the plando file.
     for option, value in fileContents.items():
         # Process item locations.
@@ -320,7 +397,9 @@ async def import_plando_options(file):
         # Process shop costs.
         elif option == "prices":
             for location, price in value.items():
-                js.document.getElementById(f"plando_{location}_shop_cost").value = price
+                shopElem = js.document.getElementById(f"plando_{location}_shop_cost")
+                shopCostList.append(shopElem)
+                shopElem.value = price
         # Process minigame selections.
         elif option == "minigames":
             for location, minigame in value.items():
@@ -328,7 +407,9 @@ async def import_plando_options(file):
         # Process hints.
         elif option == "hints":
             for location, hint in value.items():
-                js.document.getElementById(f"plando_{location}_hint").value = hint
+                hintElem = js.document.getElementById(f"plando_{location}_hint")
+                hintList.append(hintElem)
+                hintElem.value = hint
         # Process this one multi-select.
         elif option == "plando_starting_kongs_selected":
             starting_kongs = set()
@@ -344,6 +425,10 @@ async def import_plando_options(file):
             js.document.getElementById(option).value = final_value
 
     # Run validation functions.
+    for hintLocation in hintList:
+        validate_hint_text(hintLocation)
+    # for shopLocation in shopCostList:
+    #     validate_shop_costs(shopLocation)
     plando_disable_camera_shockwave(None)
     plando_disable_keys(None)
     plando_disable_kong_items(None)
@@ -351,9 +436,8 @@ async def import_plando_options(file):
     plando_hide_krool_options(None)
     plando_lock_key_8_in_helm(None)
     validate_item_limits(None)
+    validate_hint_count(None)
     validate_smaller_shops_no_conflict(None)
-    validate_hint_text(None)
-    validate_shop_costs(None)
     validate_starting_kong_count(None)
     validate_level_order_no_duplicates(None)
     validate_krool_order_no_duplicates(None)
@@ -382,7 +466,7 @@ kong_options = [
 ]
 
 
-def raise_plando_validation_error(err_string):
+def raise_plando_validation_error(err_string: str) -> None:
     """Raise an error and display a message about an invalid plando file."""
     plando_errors_element = js.document.getElementById("plando_import_errors")
     plando_errors_element.innerText = err_string
@@ -390,7 +474,7 @@ def raise_plando_validation_error(err_string):
     raise ValueError(err_string)
 
 
-def validate_plando_option_value(file_obj, option, enum_type, field_type="option"):
+def validate_plando_option_value(file_obj: dict, option: str, enum_type: type, field_type: str = "option") -> None:
     """Evaluate a given plando option to see if its value is valid.
 
     Args:
@@ -414,7 +498,7 @@ def validate_plando_option_value(file_obj, option, enum_type, field_type="option
         raise_plando_validation_error(errString)
 
 
-def validate_plando_location(location_name):
+def validate_plando_location(location_name: str) -> None:
     """Validate that a given plando location is valid."""
     try:
         _ = Locations[location_name]
@@ -423,7 +507,7 @@ def validate_plando_location(location_name):
         raise_plando_validation_error(errString)
 
 
-def validate_plando_file(file_obj):
+def validate_plando_file(file_obj: dict) -> None:
     """Validate the contents of a given plando file."""
     # Hide the div for import errors.
     plando_errors_element = js.document.getElementById("plando_import_errors")
@@ -500,7 +584,7 @@ def reset_plando_options(evt):
         js.savesettings()
 
 
-def reset_plando_options_no_prompt():
+def reset_plando_options_no_prompt() -> None:
     """Return all plandomizer options to their default settings."""
     # Reset general settings.
 
@@ -542,7 +626,7 @@ def reset_plando_options_no_prompt():
     plando_disable_kong_items(None)
 
 
-def populate_plando_options(form, for_plando_file=False):
+def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
     """Collect all of the plandomizer options into one object.
 
     Args:
@@ -553,8 +637,6 @@ def populate_plando_options(form, for_plando_file=False):
     Returns:
         plando_form_data (dict) - The collected plando data. May be None if
             plandomizer is disabled, or the selections are invalid.
-        err (str[]) - A list of error strings to be displayed to the user.
-            Will be an empty list if there are no errors.
     """
     # If the plandomizer is disabled, return nothing.
     enable_plandomizer = js.document.getElementById("enable_plandomizer")
@@ -567,7 +649,7 @@ def populate_plando_options(form, for_plando_file=False):
     minigame_objects = []
     hint_objects = []
 
-    def is_number(s):
+    def is_number(s) -> bool:
         """Check if a string is a number or not."""
         try:
             int(s)
@@ -579,7 +661,7 @@ def populate_plando_options(form, for_plando_file=False):
         """Return either the value of a given enum or the display name."""
         return enum_val.name if for_plando_file else enum_val
 
-    def get_enum_or_string_value(valueString, settingName):
+    def get_enum_or_string_value(valueString: str, settingName: str):
         """Obtain the enum or string value for the provided setting.
 
         Args:
@@ -595,7 +677,7 @@ def populate_plando_options(form, for_plando_file=False):
         else:
             return valueString
 
-    def is_plando_input(inputName):
+    def is_plando_input(inputName: str) -> bool:
         """Determine if an input is a plando input."""
         return inputName is not None and inputName.startswith("plando_")
 
@@ -696,11 +778,14 @@ def populate_plando_options(form, for_plando_file=False):
     return plando_form_data
 
 
-def validate_plando_options(settings_dict):
+def validate_plando_options(settings_dict: dict) -> list[str]:
     """Validate the plando options against a set of rules.
 
     Args:
-        settings_dict (str) - The dictionary containing the full settings.
+        settings_dict (dict) - The dictionary containing the full settings.
+    Returns:
+        err (str[]) - A list of error strings to be displayed to the user.
+            Will be an empty list if there are no errors.
     """
     if "plandomizer_data" not in settings_dict:
         return []
@@ -740,6 +825,30 @@ def validate_plando_options(settings_dict):
             if item == PlandoItems.GoldenBanana:
                 errString += " (40 Golden Bananas are always allocated to blueprint rewards.)"
             errList.append(errString)
+
+    # Ensure that no shop has both a shared reward and an individual reward.
+    errString = "Shop vendors cannot have both shared rewards and Kong rewards assigned in the same level."
+    for _, vendors in ShopLocationKongMap.items():
+        for _, vendor_locations in vendors.items():
+            # Check the shared location for this vendor.
+            vendor_shared = vendor_locations["shared"]
+            if not vendor_shared:
+                # This vendor is not in this level.
+                continue
+            vendor_shared_element = get_shop_location_element(vendor_shared["name"])
+            if not shop_has_assigned_item(vendor_shared_element):
+                # This vendor has nothing assigned for its shared location.
+                continue
+            # Check each of the individual locations.
+            for ind_location in vendor_locations["individual"]:
+                vendor_element = get_shop_location_element(ind_location["name"])
+                if shop_has_assigned_item(vendor_element):
+                    # An individual shop has an assigned item.
+                    # This is always a conflict at this point.
+                    shared_shop_name = vendor_shared["value"].name
+                    ind_shop_name = ind_location["value"].name
+                    errString = f'Shop locations "{shared_shop_name}" and "{ind_shop_name}" both have rewards assigned, which is invalid.'
+                    errList.append(errString)
 
     # Ensure that no shops are assigned if "Smaller Shops" is used.
     useSmallerShops = js.document.getElementById("smaller_shops").checked
@@ -822,6 +931,20 @@ def validate_plando_options(settings_dict):
             errList.append(errString)
         if re.search("[^A-Za-z0-9 '\,\.\-\?!]", hint) is not None:
             errString = f'The hint for location "{hintLocationName}" contains invalid characters. Only letters, numbers, spaces, and the characters \',.-?! are valid.'
+            errList.append(errString)
+
+    # Ensure there aren't too many hints for the current settings.
+    if js.document.getElementById("wrinkly_hints").value == "fixed_racing":
+        # Take note of all the plando'd hints.
+        plandoHintCount = 0
+        for hint in HintLocationList:
+            hintElem = js.document.getElementById(f"plando_{hint}_hint")
+            if hintElem.value != "":
+                plandoHintCount += 1
+        # If there are more than five hints, and we are using fixed hints, this is
+        # an error.
+        if plandoHintCount > 5:
+            errString = "Fixed hints are incompatible with more than 5 plandomized hints."
             errList.append(errString)
 
     print(errList)
