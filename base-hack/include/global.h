@@ -80,6 +80,7 @@ extern void auto_turn_keys(void);
 extern void handle_WTI(void);
 extern void warpToIsles(void);
 extern void adjust_level_modifiers(void);
+extern void handleTimeOfDay(time_of_day_calls call);
 
 extern int canItemPersist(void);
 extern void initKongRando(void);

@@ -390,6 +390,7 @@ extern void failBonus(int unk0, int unk1);
 extern void winBonus(int unk0, int unk1);
 extern void updatePosition(void* actor, int bone, float* x, float* y, float* z);
 extern void spawnFireballExplosion(float x, float y, float z, float scale, char unk0, char unk1);
+extern void setChunkLighting(float red, float green, float blue, int chunk);
 
 //vanilla data
 extern float TransitionSpeed;

@@ -710,3 +710,15 @@ typedef enum cs_skip_types {
 	/* 0x001 */ CSSKIP_PRESS,
 	/* 0x002 */ CSSKIP_AUTO,
 } cs_skip_types;
+
+typedef enum fungi_time {
+	/* 0x000 */ TIME_DAY,
+	/* 0x001 */ TIME_NIGHT,
+	/* 0x002 */ TIME_DUSK,
+	/* 0x003 */ TIME_PROGRESSIVE,
+} fungi_time;
+
+typedef enum time_of_day_calls {
+	/* 0x000 */ TODCALL_INITFILE,
+	/* 0x001 */ TODCALL_FUNGIACTIVE,
+} time_of_day_calls;
