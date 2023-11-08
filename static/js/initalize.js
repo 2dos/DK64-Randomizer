@@ -114,6 +114,36 @@ function getFile(file) {
   }).responseText;
 }
 
+var valid_extensions = [".bin", ".candy"]
+
+function validFilename(filename, dir) {
+  if (filename.includes(dir)) {
+    for (let v = 0; v < valid_extensions.length; v++) {
+      var ext = valid_extensions[v];
+      if (filename.slice((0 - ext.length)) == ext) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function filterFilename(filename) {
+  for (let v = 0; v < valid_extensions.length; v++) {
+    var ext = valid_extensions[v];
+    if (filename.slice((0 - ext.length)) == ext) {
+      return {
+        "file": filename.slice(0, (0 - ext.length)),
+        "extension": ext
+      };
+    }
+  }
+  return {
+    "file": filename,
+    "extension": 0,
+  };
+}
+
 function createMusicLoadPromise(jszip, filename) {
   return new Promise((resolve, reject) => {
     jszip
@@ -121,8 +151,9 @@ function createMusicLoadPromise(jszip, filename) {
       .async("Uint8Array")
       .then(function (content) {
         resolve({
-          name: filename.slice(0, -4),
-          file: content
+          name: filterFilename(filename).file,
+          file: content,
+          extension: filterFilename(filename).extension,
         })
       })
   });
@@ -130,6 +161,8 @@ function createMusicLoadPromise(jszip, filename) {
 
 var cosmetics;
 var cosmetic_names;
+var cosmetic_extensions;
+
 document
   .getElementById("music_file")
   .addEventListener("change", function (evt) {
@@ -144,13 +177,13 @@ document
         let event_promises = [];
 
         for (var filename of Object.keys(new_zip.files)) {
-          if (filename.includes("bgm/") && filename.slice(-4) == ".bin") {
+          if (validFilename(filename, "bgm/")) {
             bgm_promises.push(createMusicLoadPromise(new_zip, filename));
-          } else if (filename.includes("majoritems/") && filename.slice(-4) == ".bin") {
+          } else if (validFilename(filename, "majoritems/")) {
             majoritem_promises.push(createMusicLoadPromise(new_zip, filename));
-          } else if (filename.includes("minoritems/") && filename.slice(-4) == ".bin") {
+          } else if (validFilename(filename, "minoritems/")) {
             minoritem_promises.push(createMusicLoadPromise(new_zip, filename));
-          } else if (filename.includes("events/") && filename.slice(-4) == ".bin") {
+          } else if (validFilename(filename, "events/")) {
             event_promises.push(createMusicLoadPromise(new_zip, filename));
           }
         }
@@ -160,17 +193,29 @@ document
         let minoritem_files = await Promise.all(minoritem_promises);
         let event_files = await Promise.all(event_promises);
 
+        // BGM
         let bgm = bgm_files.map(x => x.file);
         let bgm_names = bgm_files.map(x => x.name);
+        let bgm_ext = bgm_files.map(x => x.extension);
+
+        // Major Items
         let majoritems = majoritem_files.map(x => x.file);
         let majoritem_names = majoritem_files.map(x => x.name);
+        let majoritem_ext = majoritem_files.map(x => x.extension);
+
+        // Minor Items
         let minoritems = minoritem_files.map(x => x.file);
         let minoritem_names = minoritem_files.map(x => x.name);
+        let minoritem_ext = minoritem_files.map(x => x.extension);
+
+        // Events
         let events = event_files.map(x => x.file);
         let event_names = event_files.map(x => x.name);
+        let event_ext = event_files.map(x => x.extension);
 
         cosmetics = { bgm: bgm, majoritems: majoritems, minoritems: minoritems, events: events };
         cosmetic_names = {bgm: bgm_names, majoritems: majoritem_names, minoritems: minoritem_names, events: event_names };
+        cosmetic_extensions = {bgm: bgm_ext, majoritems: majoritem_ext, minoritems: minoritem_ext, events: event_ext };
       });
     };
 

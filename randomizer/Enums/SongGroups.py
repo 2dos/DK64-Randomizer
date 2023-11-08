@@ -9,6 +9,13 @@ class SongGroup(IntEnum):
             IntEnum (int): Enum of the song.
     """
 
+    Fight = auto()
+    LobbyShop = auto()
+    Interiors = auto()
+    Exteriors = auto()
+    Minigames = auto()
+    Happy = auto()
+    Gloomy = auto()
     Calm = auto()
-    Bouncy = auto()
-    Loud = auto()
+    Spawning = auto()
+    Collection = auto()

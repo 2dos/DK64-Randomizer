@@ -4,6 +4,8 @@ import random
 
 import js
 import math
+from io import BytesIO
+from zipfile import ZipFile
 from randomizer.Enums.SongType import SongType
 from randomizer.Lists.Songs import song_data
 from randomizer.Patching.Patcher import ROM
@@ -16,6 +18,16 @@ storage_banks = {
     3: 0x0156,
 }
 
+class GroupData:
+    """Class to store information regarding groups."""
+
+    def __init__(self, name: str, setting: bool, files: list, names: list, extensions: list, song_type: SongType):
+        self.name = name
+        self.setting = setting
+        self.files = files
+        self.names = names
+        self.extensions = extensions
+        self.song_type = song_type
 
 def doesSongLoop(data: bytes) -> bool:
     """Check if song loops."""
@@ -25,11 +37,35 @@ def doesSongLoop(data: bytes) -> bool:
             return True
     return False
 
+def isValidSong(data: bytes, extension: str) -> bool:
+    """Check if song is a valid bin."""
+    if extension == ".candy":
+        return True # TODO: Check from ZIP
+    byte_list = [x for xi, x in enumerate(data) if xi < 4]
+    return byte_list[0] == 0 and byte_list[1] == 0 and byte_list[2] == 0 and byte_list[3] == 0x44
 
-def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names: list, target_type: SongType):
+class UploadInfo:
+    """Class to store information regarding an uploaded song."""
+
+    def __init__(self, push_array: list):
+        """Initialize with given variables."""
+        self.raw_input = push_array[0]
+        self.name = push_array[1]
+        self.extension = push_array[2]
+        self.song_file = self.raw_input
+        self.zip_file = None
+        if self.extension == ".candy":
+            self.zip_file = ZipFile(BytesIO(bytes(self.raw_input)))
+            self.song_file = self.zip_file.open("song.bin").read()
+        self.tags = []
+        self.filter = self.extension == ".candy"
+        self.acceptable = isValidSong(self.song_file, self.extension)
+
+def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names: list, uploaded_song_extensions: list, target_type: SongType):
     """Insert uploaded songs into ROM."""
     # Initial Variables
-    added_songs = list(zip(uploaded_songs, uploaded_song_names))
+    temp_push = [UploadInfo(x) for x in list(zip(uploaded_songs, uploaded_song_names, uploaded_song_extensions))]
+    added_songs = [x for x in temp_push if x.acceptable]
     all_target_songs = [song for song in song_data if song.type == target_type]
     # Calculate Proportion, add songs if necessary
     proportion = settings.custom_music_proportion / 100
@@ -57,7 +93,7 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
     for index, song in enumerate(songs_to_be_replaced):
         selected_bank = None
         selected_cap = 0xFFFFFF
-        new_song_data = bytes(added_songs[index][0])
+        new_song_data = bytes(added_songs[index].song_file)
         for bank in storage_banks:
             if len(new_song_data) <= storage_banks[bank]:  # Song can fit in bank
                 if selected_cap > storage_banks[bank]:  # Bank size is new lowest that fits
@@ -77,7 +113,7 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
                 loop_val = 1
             song_data[song_idx].memory |= loop_val << 8
             # Write Song
-            song_data[song_idx].output_name = added_songs[index][1]
+            song_data[song_idx].output_name = added_songs[index].name
             entry_data = js.pointer_addresses[0]["entries"][song_idx]
             ROM_COPY.seek(entry_data["pointing_to"])
             zipped_data = gzip.compress(new_song_data, compresslevel=9)
@@ -87,7 +123,6 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
 ENABLE_CHAOS = False  # Enable DK Rap everywhere
 TYPE_ARRAY = 0x1FEE200
 TYPE_VALUES = [SongType.BGM, SongType.Event, SongType.MajorItem, SongType.MinorItem]
-
 
 def randomize_music(settings: Settings):
     """Randomize music passed from the misc music settings.
@@ -115,6 +150,26 @@ def randomize_music(settings: Settings):
             settings.music_minoritems_randomized = True
             settings.music_events_randomized = True
     ROM_COPY = ROM()
+
+    NON_BGM_DATA = [
+        # Minor Items
+            GroupData("Minor Items", settings.music_minoritems_randomized, None, None, None, SongType.MinorItem),
+            # Major Items
+            GroupData("Major Items", settings.music_majoritems_randomized, None, None, None, SongType.MajorItem),
+            # Events
+            GroupData("Events", settings.music_events_randomized, None, None, None, SongType.Event),
+    ]
+    if js.cosmetics is not None and js.cosmetic_names is not None and js.cosmetic_extensions is not None:
+        NON_BGM_DATA = [
+            # Minor Items
+            GroupData("Minor Items", settings.music_minoritems_randomized, js.cosmetics.minoritems, js.cosmetic_names.minoritems, js.cosmetic_extensions.minoritems, SongType.MinorItem),
+            # Major Items
+            GroupData("Major Items", settings.music_majoritems_randomized, js.cosmetics.majoritems, js.cosmetic_names.majoritems, js.cosmetic_extensions.majoritems, SongType.MajorItem),
+            # Events
+            GroupData("Events", settings.music_events_randomized, js.cosmetics.events, js.cosmetic_names.events, js.cosmetic_extensions.events, SongType.Event),
+        ]
+
+
     if settings.music_bgm_randomized or settings.music_events_randomized or settings.music_majoritems_randomized or settings.music_minoritems_randomized:
         sav = settings.rom_data
         ROM_COPY.seek(sav + 0x12E)
@@ -131,9 +186,9 @@ def randomize_music(settings: Settings):
     if settings.music_bgm_randomized:
         # If the user selected standard rando
         if not ENABLE_CHAOS:
-            if js.cosmetics is not None and js.cosmetic_names is not None:
+            if js.cosmetics is not None and js.cosmetic_names is not None and js.cosmetic_extensions is not None:
                 # If uploaded, replace some songs with the uploaded songs
-                insertUploaded(settings, list(js.cosmetics.bgm), list(js.cosmetic_names.bgm), SongType.BGM)
+                insertUploaded(settings, list(js.cosmetics.bgm), list(js.cosmetic_names.bgm), list(js.cosmetic_extensions.bgm), SongType.BGM)
             # Generate the list of BGM songs
             song_list = []
             for channel_index in range(12):
@@ -174,52 +229,22 @@ def randomize_music(settings: Settings):
                 # Update data
                 ROM_COPY.seek(0x1FFF000 + (song["index"] * 2))
                 ROM_COPY.writeMultipleBytes(song_data[rap["index"]].memory, 2)
-    # If the user wants to randomize major items
-    if settings.music_majoritems_randomized:
-        if js.cosmetics is not None and js.cosmetic_names is not None:
-            # If uploaded, replace some songs with the uploaded songs
-            insertUploaded(settings, list(js.cosmetics.majoritems), list(js.cosmetic_names.majoritems), SongType.MajorItem)
-        # Load the list of majoritems
-        majoritem_list = []
-        for song in song_data:
-            if song.type == SongType.MajorItem:
-                majoritem_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
-        # Shuffle the majoritem list
-        # ShuffleMusicWithSizeCheck(music_data, majoritem_list)
-        shuffled_music = majoritem_list.copy()
-        random.shuffle(shuffled_music)
-        shuffle_music(music_data, majoritem_list.copy(), shuffled_music)
-    # If the user wants to randomize minor items
-    if settings.music_minoritems_randomized:
-        if js.cosmetics is not None and js.cosmetic_names is not None:
-            # If uploaded, replace some songs with the uploaded songs
-            insertUploaded(settings, list(js.cosmetics.minoritems), list(js.cosmetic_names.minoritems), SongType.MinorItem)
-        # Load the list of minoritems
-        minoritem_list = []
-        for song in song_data:
-            if song.type == SongType.MinorItem:
-                minoritem_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
-        # Shuffle the minoritem list
-        # ShuffleMusicWithSizeCheck(music_data, minoritem_list)
-        shuffled_music = minoritem_list.copy()
-        random.shuffle(shuffled_music)
-        shuffle_music(music_data, minoritem_list.copy(), shuffled_music)
 
-    # If the user wants to randomize events
-    if settings.music_events_randomized:
-        if js.cosmetics is not None and js.cosmetic_names is not None:
-            # If uploaded, replace some songs with the uploaded songs
-            insertUploaded(settings, list(js.cosmetics.events), list(js.cosmetic_names.events), SongType.Event)
-        # Load the list of events
-        event_list = []
-        for song in song_data:
-            if song.type == SongType.Event:
-                event_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
-
-        # Shuffle the event list
-        duped_song_list = event_list.copy()
-        random.shuffle(duped_song_list)
-        shuffle_music(music_data, event_list.copy(), duped_song_list)
+    for type_data in NON_BGM_DATA:
+        if type_data.setting: # If the user wants to randomize the group
+            if js.cosmetics is not None and js.cosmetic_names is not None and js.cosmetic_extensions is not None:
+                # If uploaded, replace some songs with the uploaded songs
+                insertUploaded(settings, list(type_data.files), list(type_data.names), list(type_data.extensions), type_data.song_type)
+            # Load the list of items in that group
+            group_items = []
+            for song in song_data:
+                if song.type == type_data.song_type:
+                    group_items.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+            # Shuffle the group list
+            shuffled_music = group_items.copy()
+            random.shuffle(shuffled_music)
+            shuffle_music(music_data, group_items.copy(), shuffled_music)
+    
     return music_data
 
 
