@@ -2785,6 +2785,7 @@ CustomLocations = {
                 )
             ),
             group=1,
+            banned_types=[LocationTypes.MelonCrate],  # Temporarily disabled due to a bug causing a key to spawn on the ceiling
         ),
         CustomLocation(
             map=Maps.HideoutHelm,
@@ -2810,6 +2811,7 @@ CustomLocations = {
                 )
             ),
             group=1,
+            banned_types=[LocationTypes.MelonCrate],  # Temporarily disabled due to a bug causing a key to spawn on the ceiling
         ),
         CustomLocation(
             map=Maps.HideoutHelm,
@@ -2832,6 +2834,7 @@ CustomLocations = {
                 )
             ),
             group=1,
+            banned_types=[LocationTypes.MelonCrate],  # Temporarily disabled due to a bug causing a key to spawn on the ceiling
         ),
         CustomLocation(
             map=Maps.HideoutHelm,
@@ -2852,6 +2855,7 @@ CustomLocations = {
                 )
             ),
             group=1,
+            banned_types=[LocationTypes.MelonCrate],  # Temporarily disabled due to a bug causing a key to spawn on the ceiling
         ),
         CustomLocation(
             map=Maps.HideoutHelm,
