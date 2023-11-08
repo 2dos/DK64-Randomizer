@@ -192,6 +192,10 @@ void loadHooks(void) {
 		loadSingularHook(0x806F97B8, &FixKrushaAmmoHUDColor);
 		loadSingularHook(0x806F97E8, &FixKrushaAmmoHUDSize);
 	}
+	if (Rando.enemy_item_rando){
+		loadSingularHook(0x806680b4, checkBeforeApplyingQuicksand);
+		*(int*)(0x806680b8) = 0x8E2C0058; // LW $t4, 0x58 ($s1)
+	}
 }
 
 void initHack(int source) {

@@ -230,7 +230,8 @@ BananaCoinGroupList = {
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.KremIsle,
             logic=lambda l: (l.hasMoveSwitchsanity(Switches.IslesMonkeyport) and ((l.istiny and l.twirl) or (l.settings.damage_amount != DamageAmount.ohko)))
-            or (l.GalleonKey and Events.IslesDiddyBarrelSpawn in l.Events and l.isdiddy and l.jetpack),
+            or (l.GalleonKey and Events.IslesDiddyBarrelSpawn in l.Events and l.isdiddy and l.jetpack)
+            or (l.AztecKey and (l.isdonkey and l.settings.krusha_kong != Kongs.donkey and (l.settings.damage_amount != DamageAmount.ohko)) or (l.istiny and l.twirl)),
             locations=[
                 [1.0, 3343, 712, 3376],
                 [1.0, 3318, 710, 3427],

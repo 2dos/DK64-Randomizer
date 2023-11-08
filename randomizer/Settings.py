@@ -684,6 +684,8 @@ class Settings:
             HelmDoorItem.req_pearl,
             HelmDoorItem.req_rainbowcoin,
         ]
+        self.crown_door_random = False
+        self.coin_door_random = False
         if self.crown_door_item == HelmDoorItem.random and self.coin_door_item == HelmDoorItem.random:
             self.crown_door_random = True
             self.coin_door_random = True

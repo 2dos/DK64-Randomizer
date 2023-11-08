@@ -261,7 +261,7 @@ ColoredBananaGroupList = [
         name="Top of Minecart exit",
         konglist=[Kongs.donkey, Kongs.tiny],
         region=Regions.MillArea,
-        logic=lambda l: l.isdonkey or (l.istiny and l.twirl),
+        logic=lambda l: (l.isdonkey and l.settings.krusha_kong != Kongs.donkey) or (l.istiny and l.twirl),
         locations=[[5, 1.0, 5354, 395, 3644], [5, 1.0, 5331, 392, 3712]],
     ),
     ColoredBananaGroup(
