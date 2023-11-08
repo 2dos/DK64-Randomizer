@@ -1,5 +1,6 @@
 {
     "name": "Easy",
+    "description": "The generated settings will be of lesser difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will often be lower than their defaults. Many of the more difficult settings will never be set.",
     "activate_all_bananaports": {
         "off": 0.2,
         "all": 0.6,
@@ -55,7 +56,7 @@
     "dim_solved_hints": 0.8,
     "disable_tag_barrels": 0.5,
     "enable_plandomizer": 0,
-    "enable_progressive_hints": 0.1,
+    "enable_progressive_hints": 0,
     "enable_shop_hints": 0.5,
     "enable_tag_anywhere": 1,
     "enemies_selected": {},
@@ -70,12 +71,12 @@
         "major_collectibles": 0.7
     },
     "glitches_selected": {},
-    "hard_blockers": 0.1,
-    "hard_level_progression": 0.1,
+    "hard_blockers": 0,
+    "hard_level_progression": 0,
     "hard_mode": 0,
     "hard_mode_selected": {},
     "hard_shooting": 0,
-    "hard_troff_n_scoff": 0.1,
+    "hard_troff_n_scoff": 0,
     "helm_hurry": 0,
     "helm_phase_order_rando": 0.8,
     "helm_random": 1,
@@ -218,7 +219,7 @@
         "on": 0.3,
         "cross_purchase": 0.6
     },
-    "no_healing": 0.2,
+    "no_healing": 0,
     "no_melons": 0,
     "open_levels": 0.75,
     "open_lobbies": 0.9,

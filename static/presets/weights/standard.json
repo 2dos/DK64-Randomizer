@@ -1,5 +1,6 @@
 {
     "name": "Standard",
+    "description": "The generated settings will be of average difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will be roughly around their defaults. Some of the most difficult settings will never be set.",
     "activate_all_bananaports": {
         "off": 0.4,
         "all": 0.4,
@@ -217,32 +218,7 @@
         "all": 0.35
     },
     "minigames_list_selected": {},
-    "misc_changes_selected": {
-        "auto_dance_skip": 0.8,
-        "fast_boot": 0.75,
-        "calm_caves": 0.75,
-        "animal_buddies_grab_items": 0.8,
-        "reduced_lag": 0.9,
-        "remove_extraneous_cutscenes": 0.9,
-        "hint_textbox_hold": 0.9,
-        "remove_wrinkly_puzzles": 0.75,
-        "fast_picture_taking": 0.9,
-        "hud_hotkey": 0.9,
-        "ammo_swap": 0.9,
-        "homing_balloons": 0.75,
-        "fast_transform_animation": 0.8,
-        "troff_n_scoff_audio_indicator": 0.8,
-        "lowered_aztec_lobby_bonus": 0.75,
-        "quicker_galleon_star": 0.8,
-        "vanilla_bug_fixes": 0.95,
-        "save_k_rool_progress": 0.9,
-        "small_bananas_always_visible": 0.8,
-        "fast_hints": 0.9,
-        "brighten_mad_maze_maul_enemies": 0.8,
-        "raise_fungi_dirt_patch": 0.75,
-        "global_instrument": 0.85,
-        "fast_pause_transitions": 0.9
-    },
+    "misc_changes_selected": {},
     "more_cutscene_skips": {
         "off": 0.1,
         "press": 0.4,
@@ -306,7 +282,7 @@
     },
     "starting_move_list_selected": {},
     "starting_moves_count": {
-        "min": 0,
+        "min": 2,
         "max": 10,
         "mean": 4
     },

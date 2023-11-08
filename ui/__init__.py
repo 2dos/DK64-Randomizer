@@ -25,6 +25,7 @@ from ui.rando_options import (
     max_sfx,
     max_starting_moves_count,
     set_preset_options,
+    set_random_weights_options,
     toggle_b_locker_boxes,
     toggle_counts_boxes,
     toggle_item_rando,
@@ -40,6 +41,7 @@ from ui.rando_options import (
 update_seed_text(None)
 
 # Update Rando Options
+set_random_weights_options()
 set_preset_options()
 toggle_counts_boxes(None)
 toggle_b_locker_boxes(None)

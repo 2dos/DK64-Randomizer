@@ -1,5 +1,6 @@
 {
     "name": "Difficult",
+    "description": "The generated settings will be of greater difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will often be higher than their defaults. Quality of life options may be disabled. All settings have a chance to be set.",
     "activate_all_bananaports": {
         "off": 0.6,
         "all": 0.2,
@@ -14,9 +15,9 @@
         "crossmap_decoupled": 0.1
     },
     "blocker_text": {
-        "min": 40,
+        "min": 50,
         "max": 140,
-        "mean": 70
+        "mean": 80
     },
     "bonus_barrel_auto_complete": 0.1,
     "bonus_barrel_rando": 0.7,
@@ -30,7 +31,7 @@
     "coin_door_item_count": {
         "min": 1,
         "max": 10,
-        "mean": 4
+        "mean": 7
     },
     "coin_rando": 0.5,
     "crown_door_item": {
@@ -40,7 +41,7 @@
     "crown_door_item_count": {
         "min": 1,
         "max": 2,
-        "mean": 1
+        "mean": 2
     },
     "crown_enemy_rando": {
         "easy": 0.2,
@@ -89,12 +90,12 @@
     },
     "hard_blockers": 0.6,
     "hard_level_progression": 0.6,
-    "hard_mode": 0.1,
+    "hard_mode": 0.2,
     "hard_mode_selected": {
         "hard_bosses": 0.6,
         "extra_hard_bosses": 0.25,
         "hard_enemies": 0.6,
-        "water_is_lava": 0.3,
+        "water_is_lava": 0.25,
         "reduced_fall_damage_threshold": 0.5
     },
     "hard_shooting": 0.5,
@@ -241,27 +242,27 @@
     "misc_changes_selected": {
         "auto_dance_skip": 0.8,
         "fast_boot": 0.75,
-        "calm_caves": 0.75,
+        "calm_caves": 0.5,
         "animal_buddies_grab_items": 0.8,
-        "reduced_lag": 0.9,
+        "reduced_lag": 1,
         "remove_extraneous_cutscenes": 0.9,
         "hint_textbox_hold": 0.9,
-        "remove_wrinkly_puzzles": 0.75,
+        "remove_wrinkly_puzzles": 0.5,
         "fast_picture_taking": 0.9,
-        "hud_hotkey": 0.9,
-        "ammo_swap": 0.9,
-        "homing_balloons": 0.75,
+        "hud_hotkey": 1,
+        "ammo_swap": 1,
+        "homing_balloons": 0.5,
         "fast_transform_animation": 0.8,
-        "troff_n_scoff_audio_indicator": 0.8,
-        "lowered_aztec_lobby_bonus": 0.75,
+        "troff_n_scoff_audio_indicator": 0.5,
+        "lowered_aztec_lobby_bonus": 0.5,
         "quicker_galleon_star": 0.8,
-        "vanilla_bug_fixes": 0.95,
+        "vanilla_bug_fixes": 1,
         "save_k_rool_progress": 0.9,
-        "small_bananas_always_visible": 0.8,
+        "small_bananas_always_visible": 0.6,
         "fast_hints": 0.9,
-        "brighten_mad_maze_maul_enemies": 0.8,
+        "brighten_mad_maze_maul_enemies": 0.5,
         "raise_fungi_dirt_patch": 0.75,
-        "global_instrument": 0.85,
+        "global_instrument": 1,
         "fast_pause_transitions": 0.9
     },
     "more_cutscene_skips": {
