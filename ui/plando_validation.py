@@ -9,9 +9,10 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import KasplatRandoSetting
 from randomizer.Lists.Item import StartingMoveOptions
 from randomizer.Lists.Location import LocationListOriginal as LocationList
-from randomizer.Lists.Plandomizer import HintLocationList, ItemLocationList, MinigameLocationList, PlannableItemLimits, ShopLocationKongMap, ShopLocationList
+from randomizer.Lists.Plandomizer import HintLocationList, ItemLocationList, KasplatLocationList, MinigameLocationList, PlannableItemLimits, ShopLocationKongMap, ShopLocationList
 from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
@@ -335,9 +336,24 @@ def validate_helm_order_no_duplicates(evt):
                 mark_option_invalid(selectElem, "The same Kong cannot be used twice in the Helm order.")
 
 
+@bind("change", "kasplat_rando_setting")
+@bindList("change", KasplatLocationList, prefix="plando_", suffix="_item")
+def validate_no_kasplat_items_with_location_shuffle(evt):
+    """Prevent Kasplat items from being assigned with location shuffle."""
+    kasplatRandoElem = js.document.getElementById("kasplat_rando_setting")
+    disabled = kasplatRandoElem.value == KasplatRandoSetting.location_shuffle.name
+    for location in KasplatLocationList:
+        locElem = js.document.getElementById(f"plando_{location}_item")
+        if disabled and locElem.value != "":
+            mark_option_invalid(locElem, "Items cannot be assigned to Kasplats when Kasplat locations are shuffled.")
+        else:
+            mark_option_valid(locElem)
+
+
 @bind("click", "nav-plando-tab")
 def validate_on_nav(evt):
-    """Fallback for errors with Bootstrap sliders."""
+    """Apply certain changes when navigating to the plandomizer tab."""
+    # This is a fallback for errors with Bootstrap sliders.
     validate_starting_kong_count(evt)
 
 
@@ -946,6 +962,17 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
         if plandoHintCount > 5:
             errString = "Fixed hints are incompatible with more than 5 plandomized hints."
             errList.append(errString)
+
+    # Prevent Kasplat items from being assigned with location shuffle.
+    kasplatRandoElem = js.document.getElementById("kasplat_rando_setting")
+    if kasplatRandoElem.value == KasplatRandoSetting.location_shuffle.name:
+        for locationName in KasplatLocationList:
+            locationEnum = Locations[locationName]
+            locEnumStr = str(locationEnum.value)
+            if locEnumStr in plando_dict["locations"] and plando_dict["locations"][locEnumStr] != PlandoItems.Randomize:
+                kasplatName = LocationList[locationEnum].name
+                errString = f'Items cannot be assigned to Kasplats when Kasplat locations are shuffled, but "{kasplatName}" has an assigned value.'
+                errList.append(errString)
 
     print(errList)
     return errList

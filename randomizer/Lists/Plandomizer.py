@@ -70,6 +70,8 @@ def getLevelString(levelEnum: Levels) -> str:
 
 # A list of all locations where items can be placed.
 ItemLocationList = []
+# A list of all Kasplat locations.
+KasplatLocationList = []
 # A list of all shop locations.
 ShopLocationList = []
 # A list of all minigame locations.
@@ -206,6 +208,10 @@ for locationEnum, locationObj in LocationList.items():
         else:
             PlandomizerPanels[levelName]["locations"][kongString].append(locationJson)
         ItemLocationList.append(locationEnum.name)
+
+        # If this is a Kasplat location, add it to the Kasplat list.
+        if locationObj.type == Types.Blueprint:
+            KasplatLocationList.append(locationEnum.name)
 
         # If this is a minigame location, add it to the Minigames list.
         # if isMinigameLocation(locationEnum):
