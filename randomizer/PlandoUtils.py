@@ -245,7 +245,7 @@ for locationName in kongLocationList:
 sharedShopsSet = set()
 kongSpecificShopSet = set()
 for locEnum, locObj in LocationList.items():
-    if locObj.type == Types.Shop or (locObj.level == Levels.Shops and locObj.type == Types.Coin):
+    if locObj.type == Types.Shop:
         if locObj.kong == Kongs.any:
             sharedShopsSet.add(locEnum.name)
         else:
@@ -295,6 +295,9 @@ for shop in sharedShopsSet:
 for shop in kongSpecificShopSet:
     ItemRestrictionsPerLocation[shop].update(kongSpecificShopRestrictedItemSet)
     ItemRestrictionsPerLocation[shop].update(shopRestrictedItemSet)
+
+# The Jetpac game has few restrictions.
+ItemRestrictionsPerLocation[Locations.RarewareCoin.name].update(shopRestrictedItemSet)
 
 # Crowns are not allowed on Helm Medal locations.
 helmMedalLocationList = [Locations.HelmDonkeyMedal.name, Locations.HelmDiddyMedal.name, Locations.HelmLankyMedal.name, Locations.HelmTinyMedal.name, Locations.HelmChunkyMedal.name]
