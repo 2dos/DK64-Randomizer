@@ -74,19 +74,7 @@
         "major_collectibles": 0.5
     },
     "glitches_selected": {
-        "advanced_platforming": 0.5,
-        "b_locker_skips": 0.5,
-        "boulder_clips": 0.3,
-        "general_clips": 0.15,
-        "ledge_clips": 0.25,
-        "moonkicks": 0.25,
-        "phase_swimming": 0.5,
-        "phase_walking": 0.05,
-        "skew": 0.25,
-        "spawn_snags": 0.1,
-        "swim_through_shores": 0.3,
-        "tag_barrel_storage": 0.05,
-        "troff_n_scoff_skips": 0.3
+        "advanced_platforming": 1
     },
     "hard_blockers": 0.6,
     "hard_level_progression": 0.6,
@@ -224,8 +212,7 @@
     },
     "logic_type": {
         "glitchless": 0.8,
-        "glitch": 0.15,
-        "nologic": 0.05
+        "glitch": 0.2
     },
     "maximize_helm_blocker": 0.5,
     "medal_cb_req": {
