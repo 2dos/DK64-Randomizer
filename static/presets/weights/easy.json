@@ -9,8 +9,7 @@
     "alter_switch_allocation": 0,
     "auto_keys": 1,
     "bananaport_rando": {
-        "off": 0.7,
-        "in_level": 0.3
+        "off": 1
     },
     "blocker_text": {
         "min": 30,
@@ -57,7 +56,7 @@
     "disable_tag_barrels": 0.5,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
-    "enable_shop_hints": 0.5,
+    "enable_shop_hints": 1,
     "enable_tag_anywhere": 1,
     "enemies_selected": {},
     "enemy_drop_rando": 0,
@@ -159,7 +158,7 @@
         "max": 1800,
         "mean": 1200
     },
-    "high_req": 0.8,
+    "high_req": 1,
     "item_rando_list_selected": {
         "shop": 0.95,
         "banana": 0.95,
@@ -173,7 +172,7 @@
         "beanpearl": 0.5,
         "junkitem": 0.5
     },
-    "item_reward_previews": 0.75,
+    "item_reward_previews": 1,
     "kasplat_rando_setting": {
         "off": 0.3,
         "vanilla_locations": 0.7
@@ -189,9 +188,8 @@
         "random": 0.5
     },
     "level_randomization": {
-        "vanilla": 0.2,
-        "level_order": 0.7,
-        "loadingzone": 0.1
+        "vanilla": 0.5,
+        "level_order": 0.5
     },
     "logic_type": {
         "glitchless": 1
@@ -203,28 +201,24 @@
         "mean": 30
     },
     "microhints_enabled": {
-        "off": 0.1,
-        "base": 0.35,
-        "all": 0.55
+        "base": 0.25,
+        "all": 0.75
     },
     "minigames_list_selected": {},
     "misc_changes_selected": {},
     "more_cutscene_skips": {
-        "off": 0.1,
         "press": 0.4,
-        "auto": 0.5
+        "auto": 0.6
     },
     "move_rando": {
-        "off": 0.1,
-        "on": 0.3,
-        "cross_purchase": 0.6
+        "cross_purchase": 1
     },
     "no_healing": 0,
     "no_melons": 0,
     "open_levels": 0.75,
     "open_lobbies": 0.9,
     "perma_death": 0,
-    "portal_numbers": 0.8,
+    "portal_numbers": 1,
     "progressive_hint_text": {
         "min": 30,
         "max": 60,
@@ -258,7 +252,7 @@
         "shuffled": 0.2,
         "start_with": 0.5
     },
-    "shop_indicator": 0.5,
+    "shop_indicator": 1,
     "shorten_boss": 1,
     "shuffle_items": 1,
     "shuffle_shops": 0.5,

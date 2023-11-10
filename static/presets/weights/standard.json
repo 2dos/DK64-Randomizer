@@ -225,9 +225,8 @@
         "auto": 0.5
     },
     "move_rando": {
-        "off": 0.1,
         "on": 0.3,
-        "cross_purchase": 0.6
+        "cross_purchase": 0.7
     },
     "no_healing": 0.5,
     "no_melons": 0.2,
