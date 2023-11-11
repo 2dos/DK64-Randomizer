@@ -57,7 +57,7 @@ LogicRegions = {
         TransitionFront(Regions.CastleTree, lambda l: (Events.CastleTreeOpened in l.Events) or l.phasewalk or l.CanPhaseswim(), Transitions.CastleMainToTree),
         TransitionFront(Regions.Library, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey), Transitions.CastleMainToLibraryStart),
         # Special Case for back door - it's only open right when you leave
-        # TransitionFront(Regions.Library, lambda l: True, Transitions.CastleMainToLibraryEnd),
+        # TransitionFront(Regions.LibraryPastBooks, lambda l: True, Transitions.CastleMainToLibraryEnd),
         TransitionFront(Regions.Ballroom, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.diddy) or l.phasewalk or l.CanSkew(True), Transitions.CastleMainToBallroom),  # Stays open
         TransitionFront(Regions.Tower, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.islanky) or l.phasewalk or l.CanSkew(True), Transitions.CastleMainToTower),
         TransitionFront(Regions.Greenhouse, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.islanky) or l.phasewalk or l.ledgeclip or l.CanSkew(True), Transitions.CastleMainToGreenhouse),
@@ -101,7 +101,6 @@ LogicRegions = {
     ]),
 
     Regions.Library: Region("Library", "Castle Rooms", Levels.CreepyCastle, False, -1, [
-        LocationLogic(Locations.CastleDonkeyLibrary, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey and l.strongKong) or ((l.phasewalk or l.ledgeclip) and l.settings.free_trade_items)),
         LocationLogic(Locations.CastleLibraryEnemy_ForkLeft0, lambda l: True),
         LocationLogic(Locations.CastleLibraryEnemy_ForkLeft1, lambda l: True),
         LocationLogic(Locations.CastleLibraryEnemy_ForkCenter, lambda l: True),
@@ -109,7 +108,20 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleLibraryStartToMain),
-        TransitionFront(Regions.CreepyCastleMain, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey and l.coconut and l.strongKong) or ((l.phasewalk or l.ledgeclip) and l.settings.free_trade_items), Transitions.CastleLibraryEndToMain),
+        TransitionFront(Regions.LibraryPastSlam, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey) or l.phasewalk or l.ledgeclip),
+        TransitionFront(Regions.CreepyCastleMain, lambda l: l.phasewalk or l.ledgeclip, Transitions.CastleLibraryEndToMain, isGlitchTransition=True),  # Glitch straight to the exit
+    ]),
+
+    Regions.LibraryPastSlam: Region("Library Middle", "Castle Rooms", Levels.CreepyCastle, False, -1, [], [], [
+        TransitionFront(Regions.Library, lambda l: True),
+        TransitionFront(Regions.LibraryPastBooks, lambda l: (l.isdonkey and l.strongKong) or l.phasewalk or l.ledgeclip)
+    ]),
+
+    Regions.LibraryPastBooks: Region("Library Rear", "Castle Rooms", Levels.CreepyCastle, False, -1, [
+        LocationLogic(Locations.CastleDonkeyLibrary, lambda l: l.isdonkey or l.settings.free_trade_items),
+    ], [], [
+        TransitionFront(Regions.LibraryPastSlam, lambda l: (l.isdonkey and l.strongKong) or l.phasewalk),
+        TransitionFront(Regions.CreepyCastleMain, lambda l: l.isdonkey and l.coconut, Transitions.CastleLibraryEndToMain),
     ]),
 
     Regions.Ballroom: Region("Ballroom", "Castle Rooms", Levels.CreepyCastle, False, -1, [

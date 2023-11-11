@@ -7353,8 +7353,7 @@ BananaCoinGroupList = {
             map_id=Maps.CastleLibrary,
             name="Library Strong Kong Alcove",
             konglist=[Kongs.donkey],
-            region=Regions.Library,
-            logic=lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey,
+            region=Regions.LibraryPastSlam,
             locations=[
                 [1.0, 2040, 180, 207],
                 [1.0, 2118, 180, 209],

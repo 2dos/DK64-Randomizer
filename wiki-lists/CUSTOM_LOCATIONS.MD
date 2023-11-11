@@ -403,7 +403,7 @@
 | Castle Upper Cave | Tunnel: Near Pit |  | 
 | Castle Upper Cave | Tunnel: Near Candy's |  | 
 | Castle Library | Library: Enemy Gauntlet Room |  | 
-| Castle Library | Library: Flying Book Room | (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey and l.strongKong) or l.phasewalk | 
+| Castle Library | Library: Flying Book Room |  | 
 | Castle Museum | Museum: Near Race |  | 
 | Castle Museum | Museum - Pillar Front | ((l.monkeyport and l.istiny) or l.phasewalk) | 
 | Castle Museum | Museum - Pillar Back Right | ((l.monkeyport and l.istiny) or l.phasewalk) | 
