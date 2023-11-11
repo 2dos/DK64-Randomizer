@@ -2748,7 +2748,7 @@ door_locations = {
         DoorData(
             name="Creepy Castle: Library - Next to Exit - left",
             map=Maps.CastleLibrary,
-            logicregion=Regions.Library,
+            logicregion=Regions.LibraryPastBooks,
             location=[2817.0, 180.0, 201.0, 0.0],
             kong_lst=[Kongs.donkey],
             group=12,
@@ -2759,7 +2759,7 @@ door_locations = {
         DoorData(
             name="Creepy Castle: Library - Next to Exit - right",
             map=Maps.CastleLibrary,
-            logicregion=Regions.Library,
+            logicregion=Regions.LibraryPastBooks,
             location=[2826.0, 180.0, 549.0, 180.0],
             kong_lst=[Kongs.donkey],
             group=12,

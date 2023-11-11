@@ -1026,7 +1026,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 if len(hint_options) > 0:
                     hint_location = random.choice(hint_options)
             # If this location's goals do not restrict hint door location OR all the restricted hint door options are taken (staggeringly unlikely), get a random hint door
-            if len(hint_options) == 0 or hint_location is None:
+            if hint_location is None or len(hint_options) == 0:
                 level_limit = None
                 # Limit our level options to the first 4 if we're on progressive hints and this is a Kong
                 if ItemList[spoiler.LocationList[loc_id].item].type == Types.Kong and spoiler.settings.enable_progressive_hints:
@@ -1855,7 +1855,10 @@ def compileHints(spoiler: Spoiler) -> bool:
             else:
                 bean_region = GetRegionOfLocation(spoiler, bean_location_id)
                 hinted_location_text = bean_region.hint_name
-                message = f"The {hinted_location_text} is on the Way of the Bean."
+                be_verb = "is"
+                if hinted_location_text[-1] == "s":
+                    be_verb = "are"
+                message = f"The {hinted_location_text} {be_verb} on the Way of the Bean."
                 hint_location.related_location = bean_location_id
         hint_location.hint_type = HintType.Joke
         UpdateHint(hint_location, message)
