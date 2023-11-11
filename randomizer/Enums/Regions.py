@@ -195,6 +195,8 @@ class Regions(IntEnum):
     CastleWaterfall = auto()
     CastleTree = auto()
     Library = auto()
+    LibraryPastSlam = auto()
+    LibraryPastBooks = auto()
     Ballroom = auto()
     MuseumBehindGlass = auto()
     CastleTinyRace = auto()

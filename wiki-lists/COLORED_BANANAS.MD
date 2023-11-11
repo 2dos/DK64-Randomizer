@@ -1664,9 +1664,9 @@
 | On switch on books | 5 |  | 
 | Path from first room to book hallway | 15 |  | 
 | In big books room (Donkey) | 5 |  | 
-| In ghost book hallway (Donkey) | 10 | l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.strongKong | 
+| In ghost book hallway (Donkey) | 10 | l.strongKong | 
 | In switch room | Balloon |  | 
-| In GB room | Balloon | l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.strongKong | 
+| In GB room | Balloon |  | 
 </details>
 <details>
 <summary>Castle Museum</summary>
