@@ -75,7 +75,7 @@ USED_INDEXES = []
 def pushSongToUnplaced(song: UploadInfo, ref_index: int):
     """Pushes song to unplaced song to the UNPLACED_SONGS dictionary."""
     global UNPLACED_SONGS
-    
+
     song.referenced_index = ref_index
     for tag in song.location_tags:
         if tag not in list(UNPLACED_SONGS.keys()):
@@ -100,7 +100,7 @@ def requestNewSong(file_data_array: list, location_tags: list, location_length: 
             if tag in list(UNPLACED_SONGS.keys()):
                 if len(UNPLACED_SONGS[tag]) > 0:
                     found_song = UNPLACED_SONGS[tag].pop(0)
-                    found_song.used = True
+                    found_song.used = check_unused
                     USED_INDEXES.append(found_song.referenced_index)
                     return found_song
     else:
@@ -116,7 +116,7 @@ def requestNewSong(file_data_array: list, location_tags: list, location_length: 
                     perc_diff = abs(ratio - 1)
                     if perc_diff < MAX_LENGTH_DIFFERENCE:
                         found_song = UNPLACED_SONGS[tag].pop(si)
-                        found_song.used = True
+                        found_song.used = check_unused
                         USED_INDEXES.append(found_song.referenced_index)
                         return found_song
     # Otherwise, go through the list of ones we're yet to go through
@@ -176,6 +176,8 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
     swap_amount = len(file_data)
     # Calculate Cap
     cap = int(len(all_target_songs) * proportion)
+    if settings.fill_with_custom_music:
+        swap_amount = cap
     if swap_amount > cap:
         swap_amount = cap
     # Place Songs
