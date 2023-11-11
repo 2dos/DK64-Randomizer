@@ -255,6 +255,49 @@ int hasMove(int flag) {
     return 0;
 }
 
+static unsigned char arcade_hh_bonus[] = {
+    HHITEM_COMPANYCOIN, // # 0 - Nintendo Coin / No Item
+    HHITEM_BEAN, // "bean",  # 1 - Bean
+    HHITEM_BLUEPRINT, // "blueprint",  # 2 - Blueprint
+    HHITEM_CROWN, // "crown",  # 3 - Crown
+    HHITEM_FAIRY, // "fairy",  # 4 - Fairy
+    HHITEM_GB, // "gb",  # 5 - GB
+    HHITEM_KEY, // "key",  # 6 - Key
+    HHITEM_MEDAL, // "medal",  # 7 - Medal
+    HHITEM_PEARL, // "pearl",  # 8 - Pearl
+    HHITEM_MOVE, // "potion_dk",  # 9 - Potion (DK)
+    HHITEM_MOVE, // "potion_diddy",  # 10 - Potion (Diddy)
+    HHITEM_MOVE, // "potion_lanky",  # 11 - Potion (Lanky)
+    HHITEM_MOVE, // "potion_tiny",  # 12 - Potion (Tiny)
+    HHITEM_MOVE, // "potion_chunky",  # 13 - Potion (Chunky)
+    HHITEM_MOVE, // "potion_any",  # 14 - Potion (Any)
+    HHITEM_KONG, // "dk",  # 15 - DK
+    HHITEM_KONG, // "diddy",  # 16 - Diddy
+    HHITEM_KONG, // "lanky",  # 17 - Lanky
+    HHITEM_KONG, // "tiny",  # 18 - Tiny
+    HHITEM_KONG, // "chunky",  # 19 - Chunky
+    HHITEM_RAINBOWCOIN, // "rainbow",  # 20 - Rainbow Coin
+    HHITEM_COMPANYCOIN, // "rwcoin",  # 21 - RW Coin
+    HHITEM_NOTHING, // "melon",  # 22 - Melon Slice
+};
+
+static unsigned char jetpac_hh_bonus[] = {
+    HHITEM_COMPANYCOIN, // # 0 - Rareware Coin / No Item
+    HHITEM_BEAN, // "bean",  # 1 - Bean
+    HHITEM_BLUEPRINT, // "blueprint",  # 2 - Blueprint
+    HHITEM_CROWN, // "crown",  # 3 - Crown
+    HHITEM_FAIRY, // "fairy",  # 4 - Fairy
+    HHITEM_GB, // "gb",  # 5 - GB
+    HHITEM_KEY, // "key",  # 6 - Key
+    HHITEM_MEDAL, // "medal",  # 7 - Medal
+    HHITEM_PEARL, // "pearl",  # 8 - Pearl
+    HHITEM_MOVE, // "potion",  # 9 - Potion
+    HHITEM_KONG, // "kong",  # 10 - Kong
+    HHITEM_RAINBOWCOIN, // "rainbow",  # 11 - Rainbow Coin
+    HHITEM_COMPANYCOIN, // "nintendo",  # 12 - Nintendo Coin
+    HHITEM_NOTHING, // "melon",  # 13 - Melon
+};
+
 void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
     /**
      * @brief Check whether a flag is a move, alter the flag block address, and perform any additional functions required.
@@ -375,6 +418,12 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
             int give_rainbow = 0;
             int give_health = 0;
             if (vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
+                if (Rando.arcade_reward < sizeof(arcade_hh_bonus)) {
+                    helm_hurry_items hh_bonus = arcade_hh_bonus[(int)Rando.arcade_reward];
+                    if (hh_bonus != HHITEM_NOTHING) {
+                        addHelmTime(hh_bonus, 1);
+                    }
+                }
                 switch (Rando.arcade_reward) {
                     case 5:
                         give_gb = 1;
@@ -391,6 +440,12 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
                         break;
                 }
             } else if (vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) {
+                if (Rando.jetpac_reward < sizeof(jetpac_hh_bonus)) {
+                    helm_hurry_items hh_bonus = jetpac_hh_bonus[(int)Rando.jetpac_reward];
+                    if (hh_bonus != HHITEM_NOTHING) {
+                        addHelmTime(hh_bonus, 1);
+                    }
+                }
                 switch (Rando.jetpac_reward) {
                     case 5:
                         give_gb = 1;
