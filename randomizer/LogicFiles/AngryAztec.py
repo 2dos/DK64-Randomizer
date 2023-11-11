@@ -62,13 +62,12 @@ LogicRegions = {
     ], [
         Event(Events.AztecW1bTagged, lambda l: True),
         Event(Events.AztecW2aTagged, lambda l: True),
-        Event(Events.BackOfAztecOpened, lambda l: l.settings.open_levels or ((l.vines or (l.isdiddy and l.jetpack) or l.advanced_platforming) and l.hasMoveSwitchsanity(Switches.AztecGuitar, True))),
     ], [
         TransitionFront(Regions.AngryAztecMedals, lambda l: True),
         TransitionFront(Regions.AztecTunnelBeforeOasis, lambda l: True),
         TransitionFront(Regions.TempleStart, lambda l: ((l.peanut and l.isdiddy) or (l.grape and l.islanky)
                         or (l.feather and l.istiny) or (l.pineapple and l.ischunky)) or l.phasewalk),
-        TransitionFront(Regions.AngryAztecConnectorTunnel, lambda l: l.settings.open_levels or Events.BackOfAztecOpened in l.Events or (l.phasewalk or l.generalclips)),
+        TransitionFront(Regions.AngryAztecConnectorTunnel, lambda l: l.settings.open_levels or (((l.vines or l.jetpack or l.advanced_platforming) and l.hasMoveSwitchsanity(Switches.AztecGuitar, False)) or l.phasewalk or l.generalclips)),
         TransitionFront(Regions.CandyAztec, lambda l: True),
         TransitionFront(Regions.AztecBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),

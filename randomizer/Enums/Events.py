@@ -29,7 +29,6 @@ class Events(IntEnum):
     JapesDiddySwitch2 = auto()
 
     # Angry Aztec events
-    BackOfAztecOpened = auto()
     FedTotem = auto()
     LlamaFreed = auto()
     AztecDonkeySwitch = auto()
