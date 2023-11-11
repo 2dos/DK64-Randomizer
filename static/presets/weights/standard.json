@@ -64,7 +64,7 @@
     "enable_tag_anywhere": 0.9,
     "enemies_selected": {},
     "enemy_drop_rando": 0.25,
-    "enemy_rando": 0.5,
+    "enemy_rando": 0.95,
     "enemy_speed_rando": 0.5,
     "fast_gbs": 0.7,
     "fast_warps": 0.8,

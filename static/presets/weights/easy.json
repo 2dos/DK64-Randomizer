@@ -60,7 +60,7 @@
     "enable_tag_anywhere": 1,
     "enemies_selected": {},
     "enemy_drop_rando": 0,
-    "enemy_rando": 0.5,
+    "enemy_rando": 0.95,
     "enemy_speed_rando": 0.5,
     "fast_gbs": 0.8,
     "fast_warps": 0.8,
