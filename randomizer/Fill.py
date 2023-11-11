@@ -1749,19 +1749,20 @@ def Fill(spoiler: Spoiler) -> None:
 
 def ShuffleSharedMoves(spoiler: Spoiler, placedMoves: List[Items], placedTypes: List[Types]) -> None:
     """Shuffles shared kong moves into shops and then returns the remaining ones and their valid locations."""
-    # Confirm there are enough locations available for each remaining shared move
-    availableSharedShops = [location for location in SharedMoveLocations if spoiler.LocationList[location].item is None]
-    placedSharedMoves = [move for move in placedMoves if move in ItemPool.ImportantSharedMoves or move in ItemPool.JunkSharedMoves]
-    if len(availableSharedShops) < len(ItemPool.ImportantSharedMoves) + len(ItemPool.JunkSharedMoves) - len(placedSharedMoves):
-        raise Ex.ItemPlacementException(
-            "Too many kong moves placed before shared moves. Only "
-            + str(len(availableSharedShops))
-            + " available for "
-            + str(len(ItemPool.ImportantSharedMoves))
-            + str(len(ItemPool.JunkSharedMoves))
-            + str(len(placedSharedMoves))
-            + " remaining shared moves."
-        )
+    # If shared moves have to be in shared shops, confirm there are enough locations available for each remaining shared move
+    if not spoiler.settings.shuffle_items or Types.Shop not in spoiler.settings.shuffled_location_types:
+        availableSharedShops = [location for location in SharedMoveLocations if spoiler.LocationList[location].item is None]
+        placedSharedMoves = [move for move in placedMoves if move in ItemPool.ImportantSharedMoves or move in ItemPool.JunkSharedMoves]
+        if len(availableSharedShops) < len(ItemPool.ImportantSharedMoves) + len(ItemPool.JunkSharedMoves) - len(placedSharedMoves):
+            raise Ex.ItemPlacementException(
+                "Too many kong moves placed before shared moves. Only "
+                + str(len(availableSharedShops))
+                + " available for "
+                + str(len(ItemPool.ImportantSharedMoves))
+                + str(len(ItemPool.JunkSharedMoves))
+                + str(len(placedSharedMoves))
+                + " remaining shared moves."
+            )
 
     # When a shared move is assigned to a shop in any particular level, that shop cannot also hold any kong-specific moves.
     # To avoid conflicts, first determine which level shops will have shared moves then remove these shops from each kong's valid locations list
@@ -2218,13 +2219,13 @@ def FillWorld(spoiler: Spoiler) -> None:
             spoiler.Reset()
             spoiler.ClearAllLocations()
             retries += 1
-            if retries == 20:
+            if retries == 10:
                 js.postMessage("Fill failed, out of retries.")
                 raise ex
-            # Every 5th fill, retry more aggressively by reshuffling level order, move prices, and starting location as applicable
-            if retries % 5 == 0:
+            spoiler.settings.shuffle_prices(spoiler)
+            # Every 3rd fill, retry more aggressively by reshuffling level order, move prices, and starting location as applicable
+            if retries % 3 == 0:
                 js.postMessage("Retrying fill really hard. Tries: " + str(retries))
-                spoiler.settings.shuffle_prices(spoiler)
                 if spoiler.settings.random_starting_region:
                     spoiler.settings.RandomizeStartingLocation()
                 if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:  # TODO: Reshuffling LZR doesn't work yet, but it might be nice? Not sure how necessary it is
