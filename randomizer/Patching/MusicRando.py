@@ -4,9 +4,11 @@ import random
 
 import js
 import math
+from enum import IntEnum, auto
 from io import BytesIO
 from zipfile import ZipFile
 from randomizer.Enums.SongType import SongType
+from randomizer.Enums.SongGroups import SongGroup
 from randomizer.Lists.Songs import song_data
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
@@ -54,18 +56,116 @@ class UploadInfo:
         self.extension = push_array[2]
         self.song_file = self.raw_input
         self.zip_file = None
+        self.song_length = 0
+        self.referenced_index = None
+        self.location_tags = []
         if self.extension == ".candy":
             self.zip_file = ZipFile(BytesIO(bytes(self.raw_input)))
             self.song_file = self.zip_file.open("song.bin").read()
         self.tags = []
         self.filter = self.extension == ".candy"
         self.acceptable = isValidSong(self.song_file, self.extension)
+        self.used = False
+
+UNPLACED_SONGS = {}
+MAX_LENGTH_DIFFERENCE = 0.4
+GLOBAL_SEARCH_INDEX = 0
+USED_INDEXES = []
+
+def pushSongToUnplaced(song: UploadInfo, ref_index: int):
+    """Pushes song to unplaced song to the UNPLACED_SONGS dictionary."""
+    global UNPLACED_SONGS
+    
+    song.referenced_index = ref_index
+    for tag in song.location_tags:
+        if tag not in list(UNPLACED_SONGS.keys()):
+            UNPLACED_SONGS[tag] = []
+        UNPLACED_SONGS[tag].append(song)
+
+def requestNewSong(file_data_array: list, location_tags: list, location_length: int, song_type: SongType, check_unused: bool) -> UploadInfo:
+    """Request new song from list."""
+    global GLOBAL_SEARCH_INDEX, USED_INDEXES, UNPLACED_SONGS
+    
+    # First, filter through the unplaced songs dictionary and remove any used songs
+    for tag in UNPLACED_SONGS:
+        UNPLACED_SONGS[tag] = [x for x in UNPLACED_SONGS[tag] if not x.used]
+    check_tag = song_type == SongType.BGM
+    # Next, check songs that have already been gone through.
+    # If one of them satisfies the conditions, then we can just use that one and pop it from the list
+    if check_tag:
+        # Tag-Based Search
+        loc_tag_copy = location_tags.copy()
+        random.shuffle(loc_tag_copy)
+        for tag in loc_tag_copy:
+            if tag in list(UNPLACED_SONGS.keys()):
+                if len(UNPLACED_SONGS[tag]) > 0:
+                    found_song = UNPLACED_SONGS[tag].pop(0)
+                    found_song.used = True
+                    USED_INDEXES.append(found_song.referenced_index)
+                    return found_song
+    else:
+        # Length-Based Search
+        for tag in UNPLACED_SONGS:
+            songs_in_tag = UNPLACED_SONGS[tag]
+            if len(songs_in_tag) > 0:
+                for si, song in enumerate(songs_in_tag):
+                    length = song.song_length
+                    ratio = 1
+                    if length > 0:
+                        ratio = location_length / length
+                    perc_diff = abs(ratio - 1)
+                    if perc_diff < MAX_LENGTH_DIFFERENCE:
+                        found_song = UNPLACED_SONGS[tag].pop(si)
+                        found_song.used = True
+                        USED_INDEXES.append(found_song.referenced_index)
+                        return found_song
+    # Otherwise, go through the list of ones we're yet to go through
+    MAX_SEARCH_LENGTH = len(file_data_array)
+    start_index = GLOBAL_SEARCH_INDEX
+    for i in range(MAX_SEARCH_LENGTH):
+        GLOBAL_SEARCH_INDEX = (start_index + i) % MAX_SEARCH_LENGTH
+        referenced_index = GLOBAL_SEARCH_INDEX
+        item = UploadInfo(file_data_array[GLOBAL_SEARCH_INDEX])
+        GLOBAL_SEARCH_INDEX = (start_index + i + 1) % MAX_SEARCH_LENGTH # Advance 1 just in case we return from this
+        if referenced_index in USED_INDEXES and check_unused:
+            continue
+        if not item.filter:
+            if item.acceptable:
+                USED_INDEXES.append(referenced_index)
+                return item
+        elif not check_tag:
+            length = item.song_length
+            ratio = 1
+            if length > 0:
+                ratio = location_length / length
+            perc_diff = abs(ratio - 1)
+            if perc_diff < MAX_LENGTH_DIFFERENCE:
+                USED_INDEXES.append(referenced_index)
+                return item
+            # Not similar enough, push to dictionary
+            pushSongToUnplaced(item, referenced_index)
+        else:
+            loc_set = set(location_tags)
+            song_set = set(item.location_tags)
+            if loc_set & song_set: # Has a tag in common
+                USED_INDEXES.append(referenced_index)
+                return item
+            # No matches, push to dictionary
+            pushSongToUnplaced(item, referenced_index)
+    return None
+
+    
+    
 
 def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names: list, uploaded_song_extensions: list, target_type: SongType):
     """Insert uploaded songs into ROM."""
-    # Initial Variables
-    temp_push = [UploadInfo(x) for x in list(zip(uploaded_songs, uploaded_song_names, uploaded_song_extensions))]
-    added_songs = [x for x in temp_push if x.acceptable]
+    # Initial Global Variables
+    UNPLACED_SONGS = {}
+    GLOBAL_SEARCH_INDEX = 0
+    USED_INDEXES = []
+    file_data = list(zip(uploaded_songs, uploaded_song_names, uploaded_song_extensions))
+    random.shuffle(file_data)
+    # Initial temporary variables
     all_target_songs = [song for song in song_data if song.type == target_type]
     # Calculate Proportion, add songs if necessary
     proportion = settings.custom_music_proportion / 100
@@ -73,16 +173,7 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
         proportion = 0
     elif proportion > 1:
         proportion = 1
-    if settings.fill_with_custom_music:
-        if len(added_songs) > 0 and len(all_target_songs) > 0:
-            duplication_count = math.ceil((len(all_target_songs) * proportion) / len(added_songs))
-            if duplication_count > 1: # Not enough songs to fill all slots
-                initial_songs = added_songs.copy()
-                for _ in range(duplication_count - 1):
-                    added_songs.extend(initial_songs)
-    # Shuffle
-    random.shuffle(added_songs)
-    swap_amount = len(added_songs)
+    swap_amount = len(file_data)
     # Calculate Cap
     cap = int(len(all_target_songs) * proportion)
     if swap_amount > cap:
@@ -90,34 +181,36 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
     # Place Songs
     songs_to_be_replaced = random.sample(all_target_songs, swap_amount)
     ROM_COPY = ROM()
-    for index, song in enumerate(songs_to_be_replaced):
+    for song in songs_to_be_replaced:
         selected_bank = None
         selected_cap = 0xFFFFFF
-        new_song_data = bytes(added_songs[index].song_file)
-        for bank in storage_banks:
-            if len(new_song_data) <= storage_banks[bank]:  # Song can fit in bank
-                if selected_cap > storage_banks[bank]:  # Bank size is new lowest that fits
-                    selected_bank = bank
-                    selected_cap = storage_banks[bank]
-        if selected_bank is not None:
-            song_idx = song_data.index(song)
-            old_bank = (song_data[song_idx].memory >> 1) & 3
-            if old_bank < selected_bank:
-                selected_bank = old_bank  # If vanilla bank is bigger, use the vanilla bank
-            # Construct new memory data based on variables
-            song_data[song_idx].memory &= 0xFEF9
-            song_data[song_idx].memory |= (selected_bank & 3) << 1
-            loop = doesSongLoop(new_song_data)
-            loop_val = 0
-            if loop:
-                loop_val = 1
-            song_data[song_idx].memory |= loop_val << 8
-            # Write Song
-            song_data[song_idx].output_name = added_songs[index].name
-            entry_data = js.pointer_addresses[0]["entries"][song_idx]
-            ROM_COPY.seek(entry_data["pointing_to"])
-            zipped_data = gzip.compress(new_song_data, compresslevel=9)
-            ROM_COPY.writeBytes(zipped_data)
+        new_song = requestNewSong(file_data, song.location_tags, song.song_length, target_type, not settings.fill_with_custom_music)
+        if new_song is not None:
+            new_song_data = bytes(new_song.song_file)
+            for bank in storage_banks:
+                if len(new_song_data) <= storage_banks[bank]:  # Song can fit in bank
+                    if selected_cap > storage_banks[bank]:  # Bank size is new lowest that fits
+                        selected_bank = bank
+                        selected_cap = storage_banks[bank]
+            if selected_bank is not None:
+                song_idx = song_data.index(song)
+                old_bank = (song_data[song_idx].memory >> 1) & 3
+                if old_bank < selected_bank:
+                    selected_bank = old_bank  # If vanilla bank is bigger, use the vanilla bank
+                # Construct new memory data based on variables
+                song_data[song_idx].memory &= 0xFEF9
+                song_data[song_idx].memory |= (selected_bank & 3) << 1
+                loop = doesSongLoop(new_song_data)
+                loop_val = 0
+                if loop:
+                    loop_val = 1
+                song_data[song_idx].memory |= loop_val << 8
+                # Write Song
+                song_data[song_idx].output_name = new_song.name
+                entry_data = js.pointer_addresses[0]["entries"][song_idx]
+                ROM_COPY.seek(entry_data["pointing_to"])
+                zipped_data = gzip.compress(new_song_data, compresslevel=9)
+                ROM_COPY.writeBytes(zipped_data)
 
 
 ENABLE_CHAOS = False  # Enable DK Rap everywhere
