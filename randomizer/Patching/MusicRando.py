@@ -19,16 +19,19 @@ storage_banks = {
     3: 0x0156,
 }
 
+
 class GroupData:
     """Class to store information regarding groups."""
 
     def __init__(self, name: str, setting: bool, files: list, names: list, extensions: list, song_type: SongType):
+        """Initialize with given parameters."""
         self.name = name
         self.setting = setting
         self.files = files
         self.names = names
         self.extensions = extensions
         self.song_type = song_type
+
 
 def doesSongLoop(data: bytes) -> bool:
     """Check if song loops."""
@@ -38,12 +41,14 @@ def doesSongLoop(data: bytes) -> bool:
             return True
     return False
 
+
 def isValidSong(data: bytes, extension: str) -> bool:
     """Check if song is a valid bin."""
     if extension == ".candy":
-        return True # TODO: Check from ZIP
+        return True  # TODO: Check from ZIP
     byte_list = [x for xi, x in enumerate(data) if xi < 4]
     return byte_list[0] == 0 and byte_list[1] == 0 and byte_list[2] == 0 and byte_list[3] == 0x44
+
 
 TAG_CONVERSION_TABLE = {
     # Arg0 = group, Arg1 = is location
@@ -58,6 +63,7 @@ TAG_CONVERSION_TABLE = {
     "Interiors": [SongGroup.Interiors, True],
     "Exteriors": [SongGroup.Exteriors, True],
 }
+
 
 class UploadInfo:
     """Class to store information regarding an uploaded song."""
@@ -77,15 +83,15 @@ class UploadInfo:
             self.zip_file = ZipFile(BytesIO(bytes(self.raw_input)))
             self.song_file = self.zip_file.open("song.bin").read()
             data_json = json.loads(self.zip_file.open("data.json").read())
-            needed_keys = ["game","song","converter","length","tags"]
+            needed_keys = ["game", "song", "converter", "length", "tags"]
             enable_json_data = True
             for key in needed_keys:
                 if key not in list(data_json.keys()):
                     enable_json_data = False
             if enable_json_data:
                 self.name = f"{data_json['game']} \"{data_json['song']}\" converted by {data_json['converter']}"
-                self.song_length = data_json['length']
-                for tag in data_json['tags']:
+                self.song_length = data_json["length"]
+                for tag in data_json["tags"]:
                     if tag in list(TAG_CONVERSION_TABLE.keys()):
                         if TAG_CONVERSION_TABLE[tag][1]:
                             # Location Tag
@@ -107,10 +113,12 @@ class UploadInfo:
         self.acceptable = isValidSong(self.song_file, self.extension)
         self.used = False
 
+
 UNPLACED_SONGS = {}
 MAX_LENGTH_DIFFERENCE = 0.4
 GLOBAL_SEARCH_INDEX = 0
 USED_INDEXES = []
+
 
 def pushSongToUnplaced(song: UploadInfo, ref_index: int):
     """Pushes song to unplaced song to the UNPLACED_SONGS dictionary."""
@@ -122,10 +130,11 @@ def pushSongToUnplaced(song: UploadInfo, ref_index: int):
             UNPLACED_SONGS[tag] = []
         UNPLACED_SONGS[tag].append(song)
 
+
 def requestNewSong(file_data_array: list, location_tags: list, location_length: int, song_type: SongType, check_unused: bool) -> UploadInfo:
     """Request new song from list."""
     global GLOBAL_SEARCH_INDEX, USED_INDEXES, UNPLACED_SONGS
-    
+
     # First, filter through the unplaced songs dictionary and remove any used songs
     for tag in UNPLACED_SONGS:
         UNPLACED_SONGS[tag] = [x for x in UNPLACED_SONGS[tag] if not x.used]
@@ -166,7 +175,7 @@ def requestNewSong(file_data_array: list, location_tags: list, location_length: 
         GLOBAL_SEARCH_INDEX = (start_index + i) % MAX_SEARCH_LENGTH
         referenced_index = GLOBAL_SEARCH_INDEX
         item = UploadInfo(file_data_array[GLOBAL_SEARCH_INDEX])
-        GLOBAL_SEARCH_INDEX = (start_index + i + 1) % MAX_SEARCH_LENGTH # Advance 1 just in case we return from this
+        GLOBAL_SEARCH_INDEX = (start_index + i + 1) % MAX_SEARCH_LENGTH  # Advance 1 just in case we return from this
         if referenced_index in USED_INDEXES and check_unused:
             continue
         if not item.filter:
@@ -187,15 +196,13 @@ def requestNewSong(file_data_array: list, location_tags: list, location_length: 
         else:
             loc_set = set(location_tags)
             song_set = set(item.location_tags)
-            if loc_set & song_set: # Has a tag in common
+            if loc_set & song_set:  # Has a tag in common
                 USED_INDEXES.append(referenced_index)
                 return item
             # No matches, push to dictionary
             pushSongToUnplaced(item, referenced_index)
     return None
 
-    
-    
 
 def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names: list, uploaded_song_extensions: list, target_type: SongType):
     """Insert uploaded songs into ROM."""
@@ -262,6 +269,7 @@ ENABLE_CHAOS = False  # Enable DK Rap everywhere
 TYPE_ARRAY = 0x1FEE200
 TYPE_VALUES = [SongType.BGM, SongType.Event, SongType.MajorItem, SongType.MinorItem]
 
+
 def randomize_music(settings: Settings):
     """Randomize music passed from the misc music settings.
 
@@ -291,11 +299,11 @@ def randomize_music(settings: Settings):
 
     NON_BGM_DATA = [
         # Minor Items
-            GroupData("Minor Items", settings.music_minoritems_randomized, None, None, None, SongType.MinorItem),
-            # Major Items
-            GroupData("Major Items", settings.music_majoritems_randomized, None, None, None, SongType.MajorItem),
-            # Events
-            GroupData("Events", settings.music_events_randomized, None, None, None, SongType.Event),
+        GroupData("Minor Items", settings.music_minoritems_randomized, None, None, None, SongType.MinorItem),
+        # Major Items
+        GroupData("Major Items", settings.music_majoritems_randomized, None, None, None, SongType.MajorItem),
+        # Events
+        GroupData("Events", settings.music_events_randomized, None, None, None, SongType.Event),
     ]
     if js.cosmetics is not None and js.cosmetic_names is not None and js.cosmetic_extensions is not None:
         NON_BGM_DATA = [
@@ -306,7 +314,6 @@ def randomize_music(settings: Settings):
             # Events
             GroupData("Events", settings.music_events_randomized, js.cosmetics.events, js.cosmetic_names.events, js.cosmetic_extensions.events, SongType.Event),
         ]
-
 
     if settings.music_bgm_randomized or settings.music_events_randomized or settings.music_majoritems_randomized or settings.music_minoritems_randomized:
         sav = settings.rom_data
@@ -374,7 +381,7 @@ def randomize_music(settings: Settings):
                 ROM_COPY.writeMultipleBytes(song_data[rap["index"]].memory, 2)
 
     for type_data in NON_BGM_DATA:
-        if type_data.setting: # If the user wants to randomize the group
+        if type_data.setting:  # If the user wants to randomize the group
             if js.cosmetics is not None and js.cosmetic_names is not None and js.cosmetic_extensions is not None:
                 # If uploaded, replace some songs with the uploaded songs
                 insertUploaded(settings, list(type_data.files), list(type_data.names), list(type_data.extensions), type_data.song_type)
@@ -390,7 +397,7 @@ def randomize_music(settings: Settings):
             # Shuffle the group list
             shuffled_music = group_items.copy()
             random.shuffle(shuffled_music)
-            shuffle_music(music_data, group_items.copy() + shuffled_group_items.copy(), shuffled_music + shuffled_group_items.copy())    
+            shuffle_music(music_data, group_items.copy() + shuffled_group_items.copy(), shuffled_music + shuffled_group_items.copy())
     return music_data
 
 

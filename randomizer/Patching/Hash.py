@@ -8,10 +8,12 @@ from PIL import Image
 
 from randomizer.Patching.Patcher import ROM, LocalROM
 
+
 class ImageInfo:
     """Class to store parameters for an image in ROM."""
 
     def __init__(self, name: str, format: str, table: int, index: int, width: int, height: int, mode: str):
+        """Initialize with given parameters."""
         self.name = name
         self.format = format
         self.table = table
@@ -20,13 +22,16 @@ class ImageInfo:
         self.height = height
         self.mode = mode
 
+
 def genGIFFrame(im: Image, cap=128):
+    """Generate information necessary for a gif frame."""
     alpha = im.getchannel("A")
     im = im.convert("RGB").convert("P", palette=Image.Palette.ADAPTIVE, colors=255)
     mask = Image.eval(alpha, lambda a: 255 if a <= cap else 0)
     im.paste(255, mask)
     im.info["transparency"] = 255
     return im
+
 
 def get_hash_images(type="local", mode="hash"):
     """Get and return a list of hash images for the website UI."""

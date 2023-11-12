@@ -87,6 +87,7 @@ def max_music(event):
     elif int(music_text.value) < 0:
         music_text.value = 0
 
+
 @bind("focusout", "custom_music_proportion")
 def max_music_proportion(event):
     """Validate music input on loss of focus."""
