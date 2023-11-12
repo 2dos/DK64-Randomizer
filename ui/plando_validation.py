@@ -93,12 +93,12 @@ def write_current_tooltip(elementId) -> None:
     wrapper.setAttribute("data-bs-original-title", "\n".join(tooltips))
 
 
-def mark_option_invalid(element, errType: ValidationError, tooltip: str) -> None:
+def mark_option_invalid(element, errType: ValidationError, errMessage: str) -> None:
     """Mark the given option as invalid, and add an associated error."""
-    if tooltip == "":
+    if errMessage == "":
         raise ValueError("The error string passed to mark_option_invalid must be non-empty.")
     elemErrors = get_errors(element.id)
-    elemErrors["invalid"][errType] = tooltip
+    elemErrors["invalid"][errType] = errMessage
     element.classList.add("invalid")
     write_current_tooltip(element.id)
 
@@ -117,12 +117,12 @@ def mark_option_valid(element, errType: ValidationError) -> None:
     write_current_tooltip(element.id)
 
 
-def mark_option_disabled(element, errType: ValidationError, tooltip: str) -> None:
+def mark_option_disabled(element, errType: ValidationError, errMessage: str) -> None:
     """Disable the given option, and add an associated error."""
-    if tooltip == "":
+    if errMessage == "":
         raise ValueError("The error string passed to mark_option_disabled must be non-empty.")
     elemErrors = get_errors(element.id)
-    elemErrors["disabled"][errType] = tooltip
+    elemErrors["disabled"][errType] = errMessage
     element.value = ""
     element.setAttribute("disabled", "disabled")
     write_current_tooltip(element.id)
