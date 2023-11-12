@@ -45,6 +45,20 @@ def isValidSong(data: bytes, extension: str) -> bool:
     byte_list = [x for xi, x in enumerate(data) if xi < 4]
     return byte_list[0] == 0 and byte_list[1] == 0 and byte_list[2] == 0 and byte_list[3] == 0x44
 
+TAG_CONVERSION_TABLE = {
+    # Arg0 = group, Arg1 = is location
+    "Gloomy": [SongGroup.Gloomy, False],
+    "Lobbies and Shops": [SongGroup.LobbyShop, True],
+    "Minigames": [SongGroup.Minigames, True],
+    "Spawning": [SongGroup.Spawning, True],
+    "Fights": [SongGroup.Fight, True],
+    "Happy": [SongGroup.Happy, False],
+    "Collection": [SongGroup.Collection, True],
+    "Calm": [SongGroup.Calm, False],
+    "Interiors": [SongGroup.Interiors, True],
+    "Exteriors": [SongGroup.Exteriors, True],
+}
+
 class UploadInfo:
     """Class to store information regarding an uploaded song."""
 
@@ -58,18 +72,27 @@ class UploadInfo:
         self.song_length = 0
         self.referenced_index = None
         self.location_tags = []
+        self.mood_tags = []
         if self.extension == ".candy":
             self.zip_file = ZipFile(BytesIO(bytes(self.raw_input)))
             self.song_file = self.zip_file.open("song.bin").read()
             data_json = json.loads(self.zip_file.open("data.json").read())
-            needed_keys = ["game","song","converter","length"]
+            needed_keys = ["game","song","converter","length","tags"]
             enable_json_data = True
             for key in needed_keys:
                 if key not in list(data_json.keys()):
                     enable_json_data = False
             if enable_json_data:
-                self.name = f"{data_json['game']} {data_json['song']} converted by {data_json['converter']}"
+                self.name = f"{data_json['game']} \"{data_json['song']}\" converted by {data_json['converter']}"
                 self.song_length = data_json['length']
+                for tag in data_json['tags']:
+                    if tag in list(TAG_CONVERSION_TABLE.keys()):
+                        if TAG_CONVERSION_TABLE[tag][1]:
+                            # Location Tag
+                            self.location_tags.append(TAG_CONVERSION_TABLE[tag][0])
+                        else:
+                            # Mood Tag
+                            self.mood_tags.append(TAG_CONVERSION_TABLE[tag][0])
         if len(self.location_tags) == 0:
             self.location_tags = [
                 SongGroup.Fight,
@@ -77,13 +100,9 @@ class UploadInfo:
                 SongGroup.Interiors,
                 SongGroup.Exteriors,
                 SongGroup.Minigames,
-                SongGroup.Happy,
-                SongGroup.Gloomy,
-                SongGroup.Calm,
                 SongGroup.Spawning,
                 SongGroup.Collection,
             ]
-        self.tags = []
         self.filter = self.extension == ".candy"
         self.acceptable = isValidSong(self.song_file, self.extension)
         self.used = False
@@ -208,8 +227,8 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
     ROM_COPY = ROM()
     for song in songs_to_be_replaced:
         selected_bank = None
-        selected_cap = 0xFFFFFF
         new_song = requestNewSong(file_data, song.location_tags, song.song_length, target_type, not settings.fill_with_custom_music)
+        selected_cap = 0xFFFFFF
         if new_song is not None:
             new_song_data = bytes(new_song.song_file)
             for bank in storage_banks:
@@ -232,6 +251,7 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
                 song_data[song_idx].memory |= loop_val << 8
                 # Write Song
                 song_data[song_idx].output_name = new_song.name
+                song_data[song_idx].shuffled = True
                 entry_data = js.pointer_addresses[0]["entries"][song_idx]
                 ROM_COPY.seek(entry_data["pointing_to"])
                 zipped_data = gzip.compress(new_song_data, compresslevel=9)
@@ -309,18 +329,23 @@ def randomize_music(settings: Settings):
                 insertUploaded(settings, list(js.cosmetics.bgm), list(js.cosmetic_names.bgm), list(js.cosmetic_extensions.bgm), SongType.BGM)
             # Generate the list of BGM songs
             song_list = []
+            pre_shuffled_songs = []
             for channel_index in range(12):
                 song_list.append([])
+                pre_shuffled_songs.append([])
             for song in song_data:
                 if song.type == SongType.BGM:
                     # For testing, flip these two lines
                     # song_list.append(pointer_addresses[0]["entries"][song_data.index(song)])
-                    song_list[song.channel - 1].append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+                    if song.shuffled:
+                        pre_shuffled_songs[song.channel - 1].append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+                    else:
+                        song_list[song.channel - 1].append(js.pointer_addresses[0]["entries"][song_data.index(song)])
             # ShuffleMusicWithSizeCheck(music_data, song_list)
             for channel_index in range(12):
                 shuffled_music = song_list[channel_index].copy()
                 random.shuffle(shuffled_music)
-                shuffle_music(music_data, song_list[channel_index].copy(), shuffled_music)
+                shuffle_music(music_data, song_list[channel_index].copy() + pre_shuffled_songs[channel_index].copy(), shuffled_music + pre_shuffled_songs[channel_index].copy())
         # If the user was a poor sap and selected chaos put DK rap for everything
         else:
             # Find the DK rap in the list
@@ -355,14 +380,17 @@ def randomize_music(settings: Settings):
                 insertUploaded(settings, list(type_data.files), list(type_data.names), list(type_data.extensions), type_data.song_type)
             # Load the list of items in that group
             group_items = []
+            shuffled_group_items = []
             for song in song_data:
                 if song.type == type_data.song_type:
-                    group_items.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+                    if song.shuffled:
+                        shuffled_group_items.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+                    else:
+                        group_items.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
             # Shuffle the group list
             shuffled_music = group_items.copy()
             random.shuffle(shuffled_music)
-            shuffle_music(music_data, group_items.copy(), shuffled_music)
-    
+            shuffle_music(music_data, group_items.copy() + shuffled_group_items.copy(), shuffled_music + shuffled_group_items.copy())    
     return music_data
 
 

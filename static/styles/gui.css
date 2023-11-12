@@ -703,7 +703,7 @@ td.directional_divider {
   margin: 5px;
   padding: 5px;
   text-align: left;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 #close-modal {

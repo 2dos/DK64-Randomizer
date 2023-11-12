@@ -22,11 +22,13 @@ class Song:
         self.location_tags = location_tags.copy()
         self.mood_tags = mood_tags.copy()
         self.song_length = 0
+        self.shuffled = False
 
     def Reset(self):
         """Reset song object so that output_name is reset between generations."""
         self.output_name = self.name
         self.memory = self.default_memory
+        self.shuffled = False
 
 
 class SongExclusionItem:
