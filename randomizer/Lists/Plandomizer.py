@@ -70,14 +70,19 @@ def getLevelString(levelEnum: Levels) -> str:
 
 # A list of all locations where items can be placed.
 ItemLocationList = []
-# A list of all Kasplat locations.
-KasplatLocationList = []
 # A list of all shop locations.
 ShopLocationList = []
 # A list of all minigame locations.
 MinigameLocationList = []
 # A list of all hint locations.
 HintLocationList = []
+
+# Additional lists we need in order to disable certain locations.
+CrownLocationList = []
+DirtPatchLocationList = []
+FairyLocationList = []
+KasplatLocationList = []
+MelonCrateLocationList = []
 
 
 def createShopLocationKongMapObj() -> dict:
@@ -209,9 +214,18 @@ for locationEnum, locationObj in LocationList.items():
             PlandomizerPanels[levelName]["locations"][kongString].append(locationJson)
         ItemLocationList.append(locationEnum.name)
 
-        # If this is a Kasplat location, add it to the Kasplat list.
-        if locationObj.type == Types.Blueprint:
+        # We need to keep track of locations for dirt patches, fairies, arenas,
+        # melon crates, and Kasplats.
+        if locationObj.type == Types.Crown:
+            CrownLocationList.append(locationEnum.name)
+        elif locationObj.type == Types.RainbowCoin:
+            DirtPatchLocationList.append(locationEnum.name)
+        elif locationObj.type == Types.Fairy:
+            FairyLocationList.append(locationEnum.name)
+        elif locationObj.type == Types.Blueprint:
             KasplatLocationList.append(locationEnum.name)
+        elif locationObj.type == Types.CrateItem:
+            MelonCrateLocationList.append(locationEnum.name)
 
         # If this is a minigame location, add it to the Minigames list.
         # if isMinigameLocation(locationEnum):

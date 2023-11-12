@@ -327,10 +327,14 @@ for locEnum, locObj in LocationList.items():
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
         ItemRestrictionsPerLocation[locEnum.name].update(blueprintItemSet)
     # Junk items cannot be placed anywhere in Hideout Helm. Due to technical
-    # limitations, neither can Golden Bananas.
+    # limitations, neither can Golden Bananas. Due to logic-related reasons,
+    # neither can a handful of moves needed to fight bosses.
     if locObj.level == Levels.HideoutHelm:
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.GoldenBanana.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.HunkyChunky.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.PonyTailTwirl.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.Barrels.name)
 
 # This one rock can't have Kongs as a reward.
 ItemRestrictionsPerLocation[Locations.IslesDonkeyJapesRock.name].update(KongSet)
