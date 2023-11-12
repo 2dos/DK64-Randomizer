@@ -235,7 +235,7 @@ def GetAccessibleLocations(
             startRegion.id = Regions.GameStart
             startRegion.dayAccess = True
             startRegion.nightAccess = Events.Night in spoiler.LogicVariables.Events
-            regionPool = deepcopy(kongAccessibleRegions[kong])
+            regionPool = list(kongAccessibleRegions[kong])
 
             # Loop for each region until no more accessible regions found
             while len(regionPool) > 0:
@@ -344,7 +344,7 @@ def GetAccessibleLocations(
                             kongAccessibleRegions[kong].add(destination)
                             newRegion = spoiler.RegionList[destination]
                             newRegion.id = destination
-                            regionPool.add(destination)
+                            regionPool.append(destination)
                             kongAccessibleRegions[kong].add(destination)
                     # If it's accessible, update time of day access whether already added or not
                     # This way if a region has access from 2 different regions, one time-restricted and one not,
@@ -368,7 +368,7 @@ def GetAccessibleLocations(
                         kongAccessibleRegions[kong].add(destination)
                         newRegion = spoiler.RegionList[destination]
                         newRegion.id = destination
-                        regionPool.add(destination)
+                        regionPool.append(destination)
                         kongAccessibleRegions[kong].add(destination)
                         # If this region has day access, the deathwarp will occur on the same time of day
                         # Note that no deathwarps are dependent on time of day
