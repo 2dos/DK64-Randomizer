@@ -1041,17 +1041,6 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
                     errString = f'Shop locations "{shared_shop_name}" and "{ind_shop_name}" both have rewards assigned, which is invalid.'
                     errList.append(errString)
 
-    # Ensure that no shops are assigned if "Smaller Shops" is used.
-    useSmallerShops = js.document.getElementById("smaller_shops").checked
-    if useSmallerShops:
-        for locationName in ShopLocationList:
-            locationEnum = Locations[locationName]
-            locEnumStr = str(locationEnum.value)
-            if locEnumStr in plando_dict["locations"] and plando_dict["locations"][locEnumStr] != PlandoItems.Randomize:
-                shopName = LocationList[locationEnum].name
-                errString = f'Shop locations cannot be assigned if "Smaller Shops" is selected, but shop "{shopName}" has an assigned value.'
-                errList.append(errString)
-
     # Ensure that shop costs are within allowed limits.
     for shopLocation, price in plando_dict["prices"].items():
         if price == PlandoItems.Randomize:
@@ -1137,17 +1126,6 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
         if plandoHintCount > 5:
             errString = "Fixed hints are incompatible with more than 5 plandomized hints."
             errList.append(errString)
-
-    # Prevent Kasplat items from being assigned with location shuffle.
-    kasplatRandoElem = js.document.getElementById("kasplat_rando_setting")
-    if kasplatRandoElem.value == KasplatRandoSetting.location_shuffle.name:
-        for locationName in KasplatLocationList:
-            locationEnum = Locations[locationName]
-            locEnumStr = str(locationEnum.value)
-            if locEnumStr in plando_dict["locations"] and plando_dict["locations"][locEnumStr] != PlandoItems.Randomize:
-                kasplatName = LocationList[locationEnum].name
-                errString = f'Items cannot be assigned to Kasplats when Kasplat locations are shuffled, but "{kasplatName}" has an assigned value.'
-                errList.append(errString)
 
     print(errList)
     return errList
