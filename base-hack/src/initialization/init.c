@@ -60,6 +60,7 @@ void fixMusicRando(void) {
 			}
 		}
 		*(short*)(0x806CA97E) = 0x560 | ((songData[0x6B] >> 1) & 3); // Baboon Balloon
+		*(float*)(0x807565D8) = 1.0f; // Funky and Candy volumes
 		complex_free(write_space);
 		complex_free(write_space_0);
 	}
