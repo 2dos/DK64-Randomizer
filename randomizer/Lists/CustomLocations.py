@@ -2188,8 +2188,7 @@ CustomLocations = {
             y=180,
             z=500,
             max_size=64,
-            logic_region=Regions.Library,
-            logic=lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey and l.strongKong) or l.phasewalk,
+            logic_region=Regions.LibraryPastBooks,
             group=6,
         ),
         CustomLocation(map=Maps.CastleMuseum, name="Museum: Near Race", x=312, y=200, z=1784, max_size=64, logic_region=Regions.MuseumBehindGlass, group=2),
@@ -2785,6 +2784,7 @@ CustomLocations = {
                 )
             ),
             group=1,
+            banned_types=[LocationTypes.MelonCrate],  # Temporarily disabled due to a bug causing a key to spawn on the ceiling
         ),
         CustomLocation(
             map=Maps.HideoutHelm,
@@ -2810,6 +2810,7 @@ CustomLocations = {
                 )
             ),
             group=1,
+            banned_types=[LocationTypes.MelonCrate],  # Temporarily disabled due to a bug causing a key to spawn on the ceiling
         ),
         CustomLocation(
             map=Maps.HideoutHelm,
@@ -2832,6 +2833,7 @@ CustomLocations = {
                 )
             ),
             group=1,
+            banned_types=[LocationTypes.MelonCrate],  # Temporarily disabled due to a bug causing a key to spawn on the ceiling
         ),
         CustomLocation(
             map=Maps.HideoutHelm,
@@ -2852,6 +2854,7 @@ CustomLocations = {
                 )
             ),
             group=1,
+            banned_types=[LocationTypes.MelonCrate],  # Temporarily disabled due to a bug causing a key to spawn on the ceiling
         ),
         CustomLocation(
             map=Maps.HideoutHelm,

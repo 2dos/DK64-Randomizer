@@ -144,14 +144,6 @@ class Region:
             else:
                 self.chunkyAccess = True
 
-    def UpdateAccessFromRegion(self, region):
-        """Set access to region from another region."""
-        self.donkeyAccess = self.donkeyAccess or region.donkeyAccess
-        self.diddyAccess = self.diddyAccess or region.diddyAccess
-        self.lankyAccess = self.lankyAccess or region.lankyAccess
-        self.tinyAccess = self.tinyAccess or region.tinyAccess
-        self.chunkyAccess = self.chunkyAccess or region.chunkyAccess
-
     def HasAccess(self, kong: Kongs) -> bool:
         """Check if given kong has access through this area.
 

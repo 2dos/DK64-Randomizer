@@ -1127,7 +1127,7 @@
 | ---- | ------ | ----- |
 | Library Wall Torch | 3 |  | 
 | Library inside enemy gauntlet room | 4 |  | 
-| Library Strong Kong Alcove | 2 | l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.isdonkey | 
+| Library Strong Kong Alcove | 2 |  | 
 </details>
 <details>
 <summary>Castle Museum</summary>

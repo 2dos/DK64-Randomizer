@@ -41,9 +41,11 @@ LogicRegions = {
     ],
     Regions.Library: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # In switch room
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) and l.strongKong, None, 2),  # In haunted books corridor
-
     ],
+    Regions.LibraryPastSlam: [
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.strongKong, None, 2),  # In haunted books corridor
+    ],
+    Regions.LibraryPastBooks: [],
     Regions.Ballroom: [
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: l.jetpack, None, 3),  # On candles
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),  # By bonus barrel
