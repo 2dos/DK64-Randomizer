@@ -439,6 +439,75 @@ function base64ToArrayBuffer(base64) {
     }
     return bytes.buffer;
 }
+
+function to2Digit(value) {
+  if (value >= 10) {
+    return value;
+  }
+  return `0${value}`
+}
+
+gen_error_count = 0
+previous_queue_position = null
+
+function pushToHistory(message, emphasize=false) {
+  let prog_hist = document.getElementById("progress-history");
+  old_history = prog_hist.innerHTML;
+  dt = new Date();
+  emph_start = ""
+  emph_end = ""
+  if (emphasize) {
+    emph_start = "<span style='font-size:21px'>"
+    emph_end = "</span>"
+  }
+  new_history = `${old_history}${emph_start}[${to2Digit(dt.getHours())}:${to2Digit(dt.getMinutes())}:${to2Digit(dt.getSeconds())}] ${message}${emph_end}<br />`;
+  prog_hist.innerHTML = new_history;
+  prog_hist.scrollTop = prog_hist.scrollHeight;
+}
+
+function postToastMessage(message, is_warning, progress_ratio) {
+  // Write Toast
+  $("#progress-text").text(message);
+  pushToHistory(message);
+  // Handle Progress Bar
+  perc = Math.floor(100 * progress_ratio)
+  if (is_warning) {
+    document.getElementById("progress-fairy").style.display = "none";
+    img_data = document.getElementById("progress-dead").src;
+    document.getElementById("progress-dead").style.display = "";
+    document.getElementById("progress-dead").src = "";
+    document.getElementById("progress-dead").src = img_data;
+    setTimeout(() => {
+      document.getElementById("progress-dead").style.display = "none";
+    }, 1000);
+    gen_error_count += 1;
+    if (gen_error_count >= 3) {
+      pushToHistory(`You have failed generation ${gen_error_count} times. We would highly advise you report this as a bug to the developers at <a href='discord.dk64randomizer.com' class='no-decoration'>the discord</a> or <a href='https://github.com/2dos/DK64-Randomizer/issues/new' class='no-decoration'>GitHub</a>`,true)
+    }
+    document.getElementById("close-modal").style.display = "";
+    document.getElementById("close-modal-btn").addEventListener("click", () => {
+      hideModal();
+    })
+  } else {
+    document.getElementById("progress-fairy").style.display = "";
+    document.getElementById("progress-dead").style.display = "none";
+    $("#patchprogress").width(`${perc}%`);
+    document.getElementById("close-modal").style.display = "none";
+  }
+}
+
+function hideModal() {
+  $("#progressmodal").modal("hide");
+  postToastMessage("Initializing", false, 0);
+  document.getElementById("progress-history").innerHTML = "";
+  previous_queue_position = null;
+}
+
+function wipeToastHistory() {
+  document.getElementById("progress-history").innerHTML = "";
+  previous_queue_position = null;
+}
+
 function generate_seed(url, json, git_branch) {
   $.ajax(url, {
     data: JSON.stringify({
@@ -452,57 +521,41 @@ function generate_seed(url, json, git_branch) {
         console.log("seed gen waiting in queue")
         // Get the position in the queue
         position = data["position"]
-        $("#progress-text").text(
-          "Position in Queue: " + position
-        );
-        $("#patchprogress").width("40%");
+        if (position != previous_queue_position) {
+          postToastMessage("Position in Queue: " + position, false, 0.4);
+          if (position == 0) {
+            postToastMessage("Your seed is now generating.")
+          }
+        }
+        previous_queue_position = position
         setTimeout(function () {
           generate_seed(url, json, git_branch);
         }, 5000);
       } else if (xhr.status == 201) {
         console.log("seed gen queued")
-        $("#progress-text").text("Seed Gen Queued");
-        $("#patchprogress").width("30%");
+        postToastMessage("Seed Generation Queued", false, 0.3);
         setTimeout(function () {
           generate_seed(url, json, git_branch);
         }, 5000);
         
       } else if (xhr.status == 203) {
         console.log("seed gen started")
-        $("#progress-text").text("Seed Gen Started");
-        $("#patchprogress").width("50%");
+        postToastMessage("Seed Generation Started", false, 0.5);
         setTimeout(function () {
           generate_seed(url, json, git_branch);
         }, 5000);
         
       } else if (xhr.status == 208) {
         console.log(data)
-        $("#progress-text").text(data);
-        $("#patchprogress").addClass("bg-danger");
-        $("#patchprogress").width("100%");
-        setTimeout(function () {
-          $("#progressmodal").modal("hide");
-          $("#patchprogress").removeClass("bg-danger");
-          $("#patchprogress").width("0%");
-          $("#progress-text").text("");
-        }, 5000);
+        postToastMessage(data, true, 1);
         
       } else {
-        $("#progress-text").text("Seed Gen Complete");
-        $("#patchprogress").width("80%");    
-        apply_patch(data, true);       
+        postToastMessage("Seed Generation Complete, applying cosmetics", false, 0.8);
+        apply_patch(data, true);    
       }
     },
     error: function (data, textStatus, xhr) {
-      $("#patchprogress").addClass("bg-danger");
-      $("#progress-text").text("Something went wrong please try again");
-      $("#patchprogress").width("100%");
-      setTimeout(function () {
-        $("#progressmodal").modal("hide");
-        $("#patchprogress").removeClass("bg-danger");
-        $("#patchprogress").width("0%");
-        $("#progress-text").text("");
-      }, 1000);
+      postToastMessage("Something went wrong please try again", true, 1);
     },
   });
 }
