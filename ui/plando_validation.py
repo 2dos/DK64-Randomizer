@@ -94,7 +94,7 @@ def write_current_tooltip(elementId) -> None:
 
 
 def mark_option_invalid(element, errType: ValidationError, tooltip: str = "") -> None:
-    """Add a Bootstrap tooltip to the given element, and mark it as invalid."""
+    """Mark the given option as invalid, and add an associated error."""
     elemErrors = get_errors(element.id)
     elemErrors["invalid"][errType] = tooltip
     element.classList.add("invalid")
@@ -102,7 +102,7 @@ def mark_option_invalid(element, errType: ValidationError, tooltip: str = "") ->
 
 
 def mark_option_valid(element, errType: ValidationError) -> None:
-    """Remove a Bootstrap tooltip from the given element, and mark it as valid."""
+    """Remove an error from a given option, and maybe mark it as valid."""
     elemErrors = get_errors(element.id)
     elemErrors["invalid"][errType] = ""
     # If there are no more invalid-style errors, mark this as valid.
@@ -116,7 +116,7 @@ def mark_option_valid(element, errType: ValidationError) -> None:
 
 
 def mark_option_disabled(element, errType: ValidationError, tooltip: str = "") -> None:
-    """Add a Bootstrap tooltip to the given element, and disable it."""
+    """Disable the given option, and add an associated error."""
     elemErrors = get_errors(element.id)
     elemErrors["disabled"][errType] = tooltip
     element.value = ""
@@ -125,7 +125,7 @@ def mark_option_disabled(element, errType: ValidationError, tooltip: str = "") -
 
 
 def mark_option_enabled(element, errType: ValidationError) -> None:
-    """Remove a Bootstrap tooltip from the given element, and enable it."""
+    """Remove an error from a given option, and maybe enable it."""
     elemErrors = get_errors(element.id)
     elemErrors["disabled"][errType] = ""
     # If there are no more disabled-style errors, enable this.
