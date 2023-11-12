@@ -13,7 +13,19 @@ from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import KasplatRandoSetting
 from randomizer.Lists.Item import StartingMoveOptions
 from randomizer.Lists.Location import LocationListOriginal as LocationList
-from randomizer.Lists.Plandomizer import CrownLocationList, DirtPatchLocationList, FairyLocationList, HintLocationList, ItemLocationList, KasplatLocationList, MelonCrateLocationList, MinigameLocationList, PlannableItemLimits, ShopLocationKongMap, ShopLocationList
+from randomizer.Lists.Plandomizer import (
+    CrownLocationList,
+    DirtPatchLocationList,
+    FairyLocationList,
+    HintLocationList,
+    ItemLocationList,
+    KasplatLocationList,
+    MelonCrateLocationList,
+    MinigameLocationList,
+    PlannableItemLimits,
+    ShopLocationKongMap,
+    ShopLocationList,
+)
 from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
@@ -29,6 +41,7 @@ from ui.rando_options import (
 
 class ValidationError(IntEnum):
     """Specific validation failures associated with an element."""
+
     exceeds_item_limits = auto()
     shop_has_shared_and_solo_rewards = auto()
     smaller_shops_conflict = auto()
@@ -61,7 +74,7 @@ def get_errors(elementId: str) -> dict:
             # Each of these two dictionaries maps ValidationError enums to
             # error strings.
             "invalid": dict(),
-            "disabled": dict()
+            "disabled": dict(),
         }
     return element_error_dict[elementId]
 
@@ -281,7 +294,7 @@ def validate_shuffle_shops_no_conflict(evt):
             continue
         shopElem = js.document.getElementById(f"plando_{locationName}_item")
         if shuffleShops:
-            errString = 'Items cannot be assigned to shops when shop locations are shuffled.'
+            errString = "Items cannot be assigned to shops when shop locations are shuffled."
             mark_option_disabled(shopElem, ValidationError.assigned_shop_when_shuffled, errString)
         else:
             mark_option_enabled(shopElem, ValidationError.assigned_shop_when_shuffled)
