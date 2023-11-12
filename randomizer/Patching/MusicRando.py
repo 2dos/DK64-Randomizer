@@ -3,8 +3,7 @@ import gzip
 import random
 
 import js
-import math
-from enum import IntEnum, auto
+import json
 from io import BytesIO
 from zipfile import ZipFile
 from randomizer.Enums.SongType import SongType
@@ -62,6 +61,28 @@ class UploadInfo:
         if self.extension == ".candy":
             self.zip_file = ZipFile(BytesIO(bytes(self.raw_input)))
             self.song_file = self.zip_file.open("song.bin").read()
+            data_json = json.loads(self.zip_file.open("data.json").read())
+            needed_keys = ["game","song","converter","length"]
+            enable_json_data = True
+            for key in needed_keys:
+                if key not in list(data_json.keys()):
+                    enable_json_data = False
+            if enable_json_data:
+                self.name = f"{data_json['game']} {data_json['song']} converted by {data_json['converter']}"
+                self.song_length = data_json['length']
+        if len(self.location_tags) == 0:
+            self.location_tags = [
+                SongGroup.Fight,
+                SongGroup.LobbyShop,
+                SongGroup.Interiors,
+                SongGroup.Exteriors,
+                SongGroup.Minigames,
+                SongGroup.Happy,
+                SongGroup.Gloomy,
+                SongGroup.Calm,
+                SongGroup.Spawning,
+                SongGroup.Collection,
+            ]
         self.tags = []
         self.filter = self.extension == ".candy"
         self.acceptable = isValidSong(self.song_file, self.extension)
@@ -111,7 +132,7 @@ def requestNewSong(file_data_array: list, location_tags: list, location_length: 
                 for si, song in enumerate(songs_in_tag):
                     length = song.song_length
                     ratio = 1
-                    if length > 0:
+                    if length > 0 and location_length > 0:
                         ratio = location_length / length
                     perc_diff = abs(ratio - 1)
                     if perc_diff < MAX_LENGTH_DIFFERENCE:
@@ -136,7 +157,7 @@ def requestNewSong(file_data_array: list, location_tags: list, location_length: 
         elif not check_tag:
             length = item.song_length
             ratio = 1
-            if length > 0:
+            if length > 0 and location_length > 0:
                 ratio = location_length / length
             perc_diff = abs(ratio - 1)
             if perc_diff < MAX_LENGTH_DIFFERENCE:
@@ -159,6 +180,8 @@ def requestNewSong(file_data_array: list, location_tags: list, location_length: 
 
 def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names: list, uploaded_song_extensions: list, target_type: SongType):
     """Insert uploaded songs into ROM."""
+    global UNPLACED_SONGS, GLOBAL_SEARCH_INDEX, USED_INDEXES
+
     # Initial Global Variables
     UNPLACED_SONGS = {}
     GLOBAL_SEARCH_INDEX = 0
