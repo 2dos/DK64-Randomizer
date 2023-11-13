@@ -116,6 +116,7 @@ class UploadInfo:
 
 UNPLACED_SONGS = {}
 MAX_LENGTH_DIFFERENCE = 0.4
+MAX_LENGTH_OFFSET = 3
 GLOBAL_SEARCH_INDEX = 0
 USED_INDEXES = []
 
@@ -129,6 +130,17 @@ def pushSongToUnplaced(song: UploadInfo, ref_index: int):
         if tag not in list(UNPLACED_SONGS.keys()):
             UNPLACED_SONGS[tag] = []
         UNPLACED_SONGS[tag].append(song)
+
+
+def isSongWithInLengthRange(vanilla_length: int, proposed_length: int) -> bool:
+    """Determine whether song is within range of the vanilla length."""
+    if vanilla_length == 0 or proposed_length == 0:
+        return True
+    min_value = vanilla_length * (1 - MAX_LENGTH_DIFFERENCE)
+    max_value = ((1 + MAX_LENGTH_DIFFERENCE) * (vanilla_length + MAX_LENGTH_OFFSET)) - MAX_LENGTH_OFFSET
+    if proposed_length > min_value and proposed_length < max_value:
+        return True
+    return False
 
 
 def requestNewSong(file_data_array: list, location_tags: list, location_length: int, song_type: SongType, check_unused: bool) -> UploadInfo:
@@ -158,12 +170,7 @@ def requestNewSong(file_data_array: list, location_tags: list, location_length: 
             songs_in_tag = UNPLACED_SONGS[tag]
             if len(songs_in_tag) > 0:
                 for si, song in enumerate(songs_in_tag):
-                    length = song.song_length
-                    ratio = 1
-                    if length > 0 and location_length > 0:
-                        ratio = location_length / length
-                    perc_diff = abs(ratio - 1)
-                    if perc_diff < MAX_LENGTH_DIFFERENCE:
+                    if isSongWithInLengthRange(location_length, song.song_length):
                         found_song = UNPLACED_SONGS[tag].pop(si)
                         found_song.used = check_unused
                         USED_INDEXES.append(found_song.referenced_index)
@@ -183,12 +190,7 @@ def requestNewSong(file_data_array: list, location_tags: list, location_length: 
                 USED_INDEXES.append(referenced_index)
                 return item
         elif not check_tag:
-            length = item.song_length
-            ratio = 1
-            if length > 0 and location_length > 0:
-                ratio = location_length / length
-            perc_diff = abs(ratio - 1)
-            if perc_diff < MAX_LENGTH_DIFFERENCE:
+            if isSongWithInLengthRange(location_length, item.song_length):
                 USED_INDEXES.append(referenced_index)
                 return item
             # Not similar enough, push to dictionary
