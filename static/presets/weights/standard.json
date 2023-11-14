@@ -271,7 +271,7 @@
         "start_with": 0.4
     },
     "shop_indicator": 0.5,
-    "shorten_boss": 0.8,
+    "shorten_boss": 1,
     "shuffle_items": 1,
     "shuffle_shops": 0.5,
     "smaller_shops": 0.5,
