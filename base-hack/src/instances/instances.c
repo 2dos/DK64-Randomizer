@@ -1322,6 +1322,8 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		return randomGunSwitchGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -15) {
 		return randomInstrumentGenericCode(behaviour_pointer, id, param2);
+	} else if (index == -16) {
+		hideObject(behaviour_pointer);
 	}
 	InstanceScriptParams[1] = id;
 	InstanceScriptParams[2] = index;

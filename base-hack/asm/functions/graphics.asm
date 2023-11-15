@@ -26,3 +26,4 @@
 .definelabel loadMapChunkLighting, 0x8065996C
 .definelabel renderLight, 0x8065A708
 .definelabel spawnFireballExplosion, 0x8067DF44
+.definelabel setChunkLighting, 0x80659670

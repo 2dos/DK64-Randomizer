@@ -231,7 +231,7 @@ def GetAccessibleLocations(
 
             startRegion = spoiler.RegionList[Regions.GameStart]
             startRegion.id = Regions.GameStart
-            startRegion.dayAccess = True
+            startRegion.dayAccess = Events.Day in spoiler.LogicVariables.Events
             startRegion.nightAccess = Events.Night in spoiler.LogicVariables.Events
             regionPool = set()
             regionPool.add(startRegion)
@@ -257,6 +257,9 @@ def GetAccessibleLocations(
                     # lose night access from start to Forest main, then regain it here
                     if event.name == Events.Night and event.logic(spoiler.LogicVariables):
                         region.nightAccess = True
+                    # Same with day
+                    if event.name == Events.Day and event.logic(spoiler.LogicVariables):
+                        region.dayAccess = True
                 # Check accessibility for collectibles
                 if region.id in spoiler.CollectibleRegions.keys():
                     for collectible in spoiler.CollectibleRegions[region.id]:

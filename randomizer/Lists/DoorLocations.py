@@ -1754,7 +1754,13 @@ door_locations = {
             placed="tns",
         ),  # T&S Portal in Beanstalk Area
         DoorData(
-            name="Fungi Forest: Near Snide's", map=Maps.FungiForest, logicregion=Regions.MillArea, location=[3240.033, 268.5, 3718.017, 178.0], group=4, logic=lambda l: True, placed="tns"
+            name="Fungi Forest: Near Snide's",
+            map=Maps.FungiForest,
+            logicregion=Regions.MillArea,
+            location=[3240.033, 268.5, 3718.017, 178.0],
+            group=4,
+            logic=lambda l: Events.Day in l.Events,
+            placed="tns",
         ),  # T&S Portal near Snide's
         DoorData(
             name="Fungi Forest: Top of Giant Mushroom",
@@ -1776,14 +1782,63 @@ door_locations = {
             placed="tns",
         ),  # T&S Portal near Owl Race
         DoorData(
-            name="Fungi Forest: On top of Cage outside Conveyor Belt", map=Maps.FungiForest, logicregion=Regions.MillArea, location=[4312.0, 224.0, 3493.0, 134.82], group=4, logic=lambda l: True
+            name="Fungi Forest: On top of Cage outside Conveyor Belt",
+            map=Maps.FungiForest,
+            logicregion=Regions.MillArea,
+            location=[4312.0, 224.0, 3493.0, 134.82],
+            group=4,
+            logic=lambda l: True,
         ),
-        DoorData(name="Fungi Forest: Watermill - front - right", map=Maps.FungiForest, logicregion=Regions.MillArea, location=[4261.0, 162.0, 3804.0, 314.12], group=4, logic=lambda l: True),
-        DoorData(name="Fungi Forest: Watermill - right - left", map=Maps.FungiForest, logicregion=Regions.MillArea, location=[4367.0, 162.0, 3806.0, 44.0], group=4, logic=lambda l: True),
-        DoorData(name="Fungi Forest: Watermill - right - right", map=Maps.FungiForest, logicregion=Regions.MillArea, location=[4450.0, 162.0, 3724.0, 44.5], group=4, logic=lambda l: True),
-        DoorData(name="Fungi Forest: Watermill Roof - tower", map=Maps.FungiForest, logicregion=Regions.MillArea, location=[4444.0, 321.0, 3628.0, 316.0], rx=-4, group=4, logic=lambda l: True),
-        DoorData(name="Fungi Forest: Boxes outside of Diddy's Barn", map=Maps.FungiForest, logicregion=Regions.MillArea, location=[3469.0, 272.0, 4504.0, 122.5], group=4, logic=lambda l: True),
-        DoorData(name="Fungi Forest: Outside Diddy's Barn", map=Maps.FungiForest, logicregion=Regions.MillArea, location=[3434.0, 271.0, 4316.0, 123.25], rx=-4, group=4, logic=lambda l: True),
+        DoorData(
+            name="Fungi Forest: Watermill - front - right",
+            map=Maps.FungiForest,
+            logicregion=Regions.MillArea,
+            location=[4261.0, 162.0, 3804.0, 314.12],
+            group=4,
+            logic=lambda l: True,
+        ),
+        DoorData(
+            name="Fungi Forest: Watermill - right - left",
+            map=Maps.FungiForest,
+            logicregion=Regions.MillArea,
+            location=[4367.0, 162.0, 3806.0, 44.0],
+            group=4,
+            logic=lambda l: True,
+        ),
+        DoorData(
+            name="Fungi Forest: Watermill - right - right",
+            map=Maps.FungiForest,
+            logicregion=Regions.MillArea,
+            location=[4450.0, 162.0, 3724.0, 44.5],
+            group=4,
+            logic=lambda l: True,
+        ),
+        DoorData(
+            name="Fungi Forest: Watermill Roof - tower",
+            map=Maps.FungiForest,
+            logicregion=Regions.MillArea,
+            location=[4444.0, 321.0, 3628.0, 316.0],
+            rx=-4,
+            group=4,
+            logic=lambda l: True,
+        ),
+        DoorData(
+            name="Fungi Forest: Boxes outside of Diddy's Barn",
+            map=Maps.FungiForest,
+            logicregion=Regions.MillArea,
+            location=[3469.0, 272.0, 4504.0, 122.5],
+            group=4,
+            logic=lambda l: True,
+        ),
+        DoorData(
+            name="Fungi Forest: Outside Diddy's Barn",
+            map=Maps.FungiForest,
+            logicregion=Regions.MillArea,
+            location=[3434.0, 271.0, 4316.0, 123.25],
+            rx=-4,
+            group=4,
+            logic=lambda l: True,
+        ),
         DoorData(
             name="Fungi Forest: Immediately Inside the Thornvine Area - right",
             map=Maps.FungiForest,
@@ -1813,7 +1868,13 @@ door_locations = {
             logic=lambda l: True,
         ),
         DoorData(
-            name="Fungi Forest: Next to Rabbit's House", map=Maps.FungiForest, logicregion=Regions.HollowTreeArea, location=[2277.0, 167.3, 3500.6, 0.0], group=6, moveless=False, logic=lambda l: True
+            name="Fungi Forest: Next to Rabbit's House",
+            map=Maps.FungiForest,
+            logicregion=Regions.HollowTreeArea,
+            location=[2277.0, 167.3, 3500.6, 0.0],
+            group=6,
+            moveless=False,
+            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Owl Area - Near Rocketbarrel Barrel - far left",
@@ -1825,7 +1886,13 @@ door_locations = {
             logic=lambda l: True,
         ),
         DoorData(
-            name="Fungi Forest: Funky Area - Near Tiny Coins", map=Maps.FungiForest, logicregion=Regions.WormArea, location=[1939.0, 224.0, 261.0, 31.5], group=3, moveless=False, logic=lambda l: True
+            name="Fungi Forest: Funky Area - Near Tiny Coins",
+            map=Maps.FungiForest,
+            logicregion=Regions.WormArea,
+            location=[1939.0, 224.0, 261.0, 31.5],
+            group=3,
+            moveless=False,
+            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Mushroom Area - Next to Tag Barrel near Cranky's",
@@ -1854,7 +1921,12 @@ door_locations = {
             logic=lambda l: True,
         ),
         DoorData(
-            name="Fungi Forest: Mushroom Area - Next to Cranky", map=Maps.FungiForest, logicregion=Regions.GiantMushroomArea, location=[1451.0, 179.0, 504.6, 321.5], group=7, logic=lambda l: True
+            name="Fungi Forest: Mushroom Area - Next to Cranky",
+            map=Maps.FungiForest,
+            logicregion=Regions.GiantMushroomArea,
+            location=[1451.0, 179.0, 504.6, 321.5],
+            group=7,
+            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Clock Area - Next to Purple Tunnel - left",
@@ -2009,7 +2081,14 @@ door_locations = {
             moveless=False,
             logic=lambda l: True,
         ),
-        DoorData(name="Fungi Forest: Lanky's Attic", map=Maps.ForestMillAttic, logicregion=Regions.MillAttic, location=[125.0, 0.0, 453.3, 180.0], group=13, logic=lambda l: True),
+        DoorData(
+            name="Fungi Forest: Lanky's Attic",
+            map=Maps.ForestMillAttic,
+            logicregion=Regions.MillAttic,
+            location=[125.0, 0.0, 453.3, 180.0],
+            group=13,
+            logic=lambda l: True,
+        ),
         DoorData(
             name="Fungi Forest: DK's Barn - Between 2 Barrels near Switch",
             map=Maps.ForestThornvineBarn,

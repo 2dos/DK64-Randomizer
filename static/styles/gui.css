@@ -14,7 +14,7 @@ button:disabled {
   cursor: default;
 }
 
-a:link {
+a:link:not(.no-decoration) {
   color: #e3e3e3;
   text-decoration: none;
 }
@@ -680,4 +680,32 @@ td.directional_divider {
 .btn-always-empty:hover {
   color: white;
   background-color: #6c757d
+}
+
+#fairy-container {
+  text-align: left;
+  display: flex;
+}
+
+#patchprogress {
+  transition: 0.5s ease-in-out;
+}
+
+#progress-text {
+  padding: 5px;
+}
+
+#progress-history {
+  background-color: rgba(70, 70, 70, 0.5);
+  width:100%;
+  color:white;
+  height: 150px;
+  margin: 5px;
+  padding: 5px;
+  text-align: left;
+  overflow-y: auto;
+}
+
+#close-modal {
+  text-align: right;
 }

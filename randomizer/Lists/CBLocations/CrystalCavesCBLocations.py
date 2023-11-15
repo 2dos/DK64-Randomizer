@@ -1115,7 +1115,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy, Kongs.tiny],
         region=Regions.IglooArea,
         vanilla=True,
-        logic=lambda l: (l.jetpack and l.isdiddy) or (l.twirl and l.istiny),
+        logic=lambda l: (l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.settings.krusha_kong != Kongs.tiny),
         locations=[[5, 1.0, 327.7669372558594, 154.5, 1521.9307861328125]],
     ),
     ColoredBananaGroup(
