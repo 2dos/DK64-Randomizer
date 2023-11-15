@@ -7,7 +7,7 @@
         "isles": 0.2
     },
     "alter_switch_allocation": 0.5,
-    "auto_keys": 0.5,
+    "auto_keys": 0.9,
     "bananaport_rando": {
         "off": 0.5,
         "in_level": 0.3,
@@ -56,18 +56,18 @@
         "double": 0.35,
         "quad": 0.15
     },
-    "dim_solved_hints": 0.7,
+    "dim_solved_hints": 1,
     "disable_tag_barrels": 0.5,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
-    "enable_shop_hints": 0.5,
-    "enable_tag_anywhere": 0.9,
+    "enable_shop_hints": 0.9,
+    "enable_tag_anywhere": 1,
     "enemies_selected": {},
     "enemy_drop_rando": 0.25,
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.5,
     "fast_gbs": 0.7,
-    "fast_warps": 0.8,
+    "fast_warps": 0.9,
     "fps_display": 0.5,
     "free_trade_setting": {
         "none": 0.1,
@@ -305,7 +305,7 @@
         "poke_snap": 0.05,
         "all_keys": 0.1
     },
-    "wrinkly_available": 0.75,
+    "wrinkly_available": 0.9,
     "wrinkly_hints": {
         "off": 0.1,
         "standard": 0.4,
