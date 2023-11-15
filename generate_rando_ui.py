@@ -67,7 +67,9 @@ async def initialize():
     milliseconds = int(round(time.time() * 1000))
     for file in json.loads(ajax_call(f"static/presets/preset_files.json?currtime={milliseconds}")).get("progression"):
         js.progression_presets.append(json.loads(ajax_call("static/presets/" + file)))
-    js.random_settings_presets.append(json.loads(ajax_call("static/presets/weights/standard.json")))
+    milliseconds = int(round(time.time() * 1000))
+    for file in json.loads(ajax_call(f"static/presets/weights/weights_files.json?currtime={milliseconds}")).get("random_settings"):
+        js.random_settings_presets.append(json.loads(ajax_call("static/presets/weights/" + file)))
 
     # Load our pointer info from the JSON database
     js.pointer_addresses = json.loads(js.getFile("./static/patches/pointer_addresses.json"))

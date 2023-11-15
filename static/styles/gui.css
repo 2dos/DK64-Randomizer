@@ -101,6 +101,13 @@ input[type="number"]::-webkit-inner-spin-button{background-color:#252525;color:#
   text-align: center;
 }
 
+#randomize_settings {
+  min-width: 125px;
+  height: 40px;
+  margin-top: 43px;
+  text-align: center;
+}
+
 .settings_button {
   width: 20%;
   min-width: 125px;

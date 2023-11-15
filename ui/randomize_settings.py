@@ -118,13 +118,23 @@ def assign_list_setting(settingName: str, valueList: list[str]):
 
 def randomize_settings():
     """Assign random values to all of the non-cosmetic settings."""
-    # Generate random settings based on the given weights.
-    weightData = js.random_settings_presets[0]
+    # Generate random settings based on the selected weights.
+    weightsElem = js.document.getElementById("random-weights")
+    weightData = None
+    for val in js.random_settings_presets:
+        if val.get("name") == weightsElem.value:
+            weightData = val
+    # If we somehow have no selection, just return.
+    if weightData is None:
+        return
+
     numTypes = set([SettingsStringDataType.int16, SettingsStringDataType.int4, SettingsStringDataType.int8, SettingsStringDataType.var_int])
     randSettings = dict()
 
     # Start by generating random values and placing them in the dictionary.
     for settingName, weights in weightData.items():
+        if settingName == "name" or settingName == "description":
+            continue
         settingEnum = SettingsStringEnum[settingName]
         settingType = SettingsStringTypeMap[settingEnum]
 

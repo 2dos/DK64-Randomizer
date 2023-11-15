@@ -18,11 +18,18 @@
             <h5 class="select-title">
                 This option will randomize all non-cosmetic settings.
             </h5>
-            <input id="randomize_settings"
-               name="randomize_settings"
-               class="btn btn-primary center"
-               type="button"
-               value="Randomize Settings"/>
+            <div class="flex-container" style="justify-content: center;">
+                <div class="item-select">
+                    <label for="random_weights" class="select-title">Random Setting Presets</label>
+                    <select class="form-select" id="random-weights">
+                    </select>
+                </div>
+                <input id="randomize_settings"
+                       name="randomize_settings"
+                       class="btn btn-primary"
+                       type="button"
+                       value="Randomize Settings"/>
+            </div>
             <h2 class="title">PLANDOMIZER</h2>
             <h5 class="select-title">
                 This mode allows users to specify rewards, hints, and other settings. This is an advanced mode and is not recommended for beginners.
