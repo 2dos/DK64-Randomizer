@@ -212,6 +212,21 @@
                                 </option>
                             </select>
                         </div>
+                        <div class="item-select">
+                            <p class="select-title">Fungi Time</p>
+                            <select name="fungi_time"
+                                    id="fungi_time"
+                                    class="form-select center-div"
+                                    aria-label="Fungi Time"
+                                    data-toggle="tooltip"
+                                    title="Alter the time of day in Fungi.">
+                                <option selected id="day" value="day">Daytime Start</option>
+                                <option id="night" value="night">Nighttime Start</option>
+                                <option id="random" value="random">Random Start</option>
+                                <option id="dusk" value="dusk" title="All time-specific gates are closed.">Dusk</option>
+                                <option id="progressive" value="progressive" title="Time of day progressively changes.">Progressive</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="col border panel">

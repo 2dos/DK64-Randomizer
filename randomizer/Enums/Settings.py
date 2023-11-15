@@ -179,6 +179,23 @@ class FreeTradeSetting(IntEnum):
     major_collectibles = 2
 
 
+class FungiTimeSetting(IntEnum):
+    """Determines the starting time of day.
+
+    day: Start at daytime.
+    night: Start at nighttime.
+    random: Random starting time.
+    dusk: All time-specific gates are removed.
+    progressive: Time of day progresses naturally when in Fungi.
+    """
+
+    day = auto()
+    night = auto()
+    random = auto()
+    dusk = auto()
+    progressive = auto()
+
+
 class GlitchesSelected(IntEnum):
     """Glitch categories that can be selected for the seed logic.
 
@@ -622,6 +639,7 @@ SettingsMap = {
     "enguarde_colors": CharacterColors,
     "excluded_songs_selected": ExcludedSongs,
     "free_trade_setting": FreeTradeSetting,
+    "fungi_time": FungiTimeSetting,
     "glitches_selected": GlitchesSelected,
     "hard_mode_selected": HardModeSelected,
     "helm_barrels": MinigameBarrels,
@@ -829,6 +847,7 @@ class SettingsStringEnum(IntEnum):
     dim_solved_hints = 158
     starting_kong = 159
     switchsanity = 160
+    fungi_time = 161
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1031,6 +1050,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.dim_solved_hints: SettingsStringDataType.bool,
     SettingsStringEnum.starting_kong: Kongs,
     SettingsStringEnum.switchsanity: SettingsStringDataType.bool,
+    SettingsStringEnum.fungi_time: FungiTimeSetting,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

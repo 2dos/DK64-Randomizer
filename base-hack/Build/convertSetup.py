@@ -62,6 +62,7 @@ def modify(file_name, map_index):
         added_caves_tns = False
         added_helm_faces = False
         added_5di_strongkong = False
+        added_library_strongkong = False
         for x in range(model2_count):
             byte_stream = byte_read[read_location : read_location + 0x30]
             _type = int.from_bytes(byte_read[read_location + 0x28 : read_location + 0x2A], "big")
@@ -358,6 +359,22 @@ def modify(file_name, map_index):
                     }
                 )
                 added_5di_strongkong = True
+            elif map_index == 0x72 and not added_library_strongkong:
+                added_actor.append(
+                    {
+                        "base_byte_stream": byte_stream,
+                        "x": int(float_to_hex(2668), 16),
+                        "y": int(float_to_hex(216), 16),
+                        "z": int(float_to_hex(287), 16),
+                        "id": 0x20,
+                        "type": 0x39 - 16,
+                        "rx": 0,
+                        "ry": 1024,
+                        "rz": 0,
+                        "scale": int(float_to_hex(1), 16),
+                    }
+                )
+                added_library_strongkong = True
             # Vine Memes
             if len(vine_data["add"]) > 0:
                 for vine_add in vine_data["add"]:

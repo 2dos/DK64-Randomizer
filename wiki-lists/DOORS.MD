@@ -230,7 +230,7 @@
 | Fungi Forest Lobby | Fungi Forest: Lobby - Near Entrance | Wrinkly |  | 
 | Fungi Forest | Fungi Forest: Behind DK Barn | Both |  | 
 | Fungi Forest | Fungi Forest: Beanstalk Area | Both | Events.Night in l.Events | 
-| Fungi Forest | Fungi Forest: Near Snide's | Both |  | 
+| Fungi Forest | Fungi Forest: Near Snide's | Both | Events.Day in l.Events | 
 | Fungi Forest | Fungi Forest: Top of Giant Mushroom | Both |  | 
 | Fungi Forest | Fungi Forest: Owl Area | Both |  | 
 | Fungi Forest | Fungi Forest: On top of Cage outside Conveyor Belt | Both |  | 

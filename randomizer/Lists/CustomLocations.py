@@ -1416,7 +1416,17 @@ CustomLocations = {
         CustomLocation(map=Maps.FungiForest, name="Behind Clock", x=2300, y=603, z=2322, max_size=56, logic_region=Regions.FungiForestStart, group=1),
         CustomLocation(map=Maps.FungiForest, name="In front of Clock", x=2591, y=603, z=2237, max_size=64, logic_region=Regions.FungiForestStart, group=1),
         CustomLocation(map=Maps.FungiForest, name="Near Blue Tunnel", x=3210, y=167, z=2613, max_size=56, logic_region=Regions.FungiForestStart, group=1),
-        CustomLocation(map=Maps.FungiForest, name="Near Snide's HQ", x=3154, y=268, z=3682, max_size=56, logic_region=Regions.MillArea, group=2),
+        CustomLocation(
+            map=Maps.FungiForest,
+            name="Near Snide's HQ",
+            x=3154,
+            y=268,
+            z=3682,
+            max_size=56,
+            logic_region=Regions.MillArea,
+            group=2,
+            logic=lambda l: (l.TimeAccess(Regions.MillArea, Time.Day)),
+        ),
         CustomLocation(map=Maps.FungiForest, name="Behind Diddy Barn", x=3139, y=272, z=4343, max_size=64, logic_region=Regions.MillArea, group=2),
         CustomLocation(map=Maps.FungiForest, name="Left of Diddy Barn", x=3400, y=272, z=4652, max_size=64, logic_region=Regions.MillArea, group=2),
         CustomLocation(
