@@ -267,14 +267,6 @@ class LogicVarHolder:
         self.RainbowCoins = 0
         self.SpentCoins = [0] * 5
 
-        # These access variables based on current region
-        # Shouldn't be checked unless updated directly beforehand
-        self.donkeyAccess = False
-        self.diddyAccess = False
-        self.lankyAccess = False
-        self.tinyAccess = False
-        self.chunkyAccess = False
-
         self.kong = self.startkong
 
         self.bananaHoard = False
@@ -696,14 +688,6 @@ class LogicVarHolder:
         # Otherwise you need the right slam level (usually 1)
         else:
             return self.CanSlamSwitch(Levels.FranticFactory, 1) and self.IsKong(self.settings.chunky_freeing_kong)
-
-    def UpdateCurrentRegionAccess(self, region):
-        """Set access of current region."""
-        self.donkeyAccess = region.donkeyAccess
-        self.diddyAccess = region.diddyAccess
-        self.lankyAccess = region.lankyAccess
-        self.tinyAccess = region.tinyAccess
-        self.chunkyAccess = region.chunkyAccess
 
     def LevelEntered(self, level):
         """Check whether a level, or any level above it, has been entered."""

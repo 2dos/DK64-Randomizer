@@ -163,6 +163,7 @@ def GetAccessibleLocations(
     newItems = []  # debug code utility
     playthroughLocations = []
     unpurchasedEmptyShopLocationIds = []
+    kongAccessibleRegions = [{Regions.GameStart}, {Regions.GameStart}, {Regions.GameStart}, {Regions.GameStart}, {Regions.GameStart}]
     eventAdded = True
     UnderwaterRegions = {
         Regions.LighthouseUnderwater,
@@ -233,20 +234,16 @@ def GetAccessibleLocations(
             startRegion.id = Regions.GameStart
             startRegion.dayAccess = Events.Day in spoiler.LogicVariables.Events
             startRegion.nightAccess = Events.Night in spoiler.LogicVariables.Events
-            regionPool = set()
-            regionPool.add(startRegion)
-            addedRegions = set()
-            addedRegions.add(Regions.GameStart)
-
-            tagAccess = [(key, value) for (key, value) in spoiler.RegionList.items() if value.HasAccess(kong) and key not in addedRegions]
-            addedRegions.update([x[0] for x in tagAccess])  # first value is the region key
-            regionPool.update([x[1] for x in tagAccess])  # second value is the region itself
+            regionPool = list(kongAccessibleRegions[kong])
 
             # Loop for each region until no more accessible regions found
             while len(regionPool) > 0:
-                region = regionPool.pop()
-                region.UpdateAccess(kong, spoiler.LogicVariables)  # Set that this kong has access to this region
-                spoiler.LogicVariables.UpdateCurrentRegionAccess(region)  # Set in logic as well
+                regionId = regionPool.pop()
+                region = spoiler.RegionList[regionId]
+                # If this region has a tag barrel, everyone can access this region now
+                if region.tagbarrel:
+                    for i in range(5):
+                        kongAccessibleRegions[i].add(regionId)
                 # Check accessibility for each event in this region
                 for event in region.events:
                     if event.name not in spoiler.LogicVariables.Events and event.logic(spoiler.LogicVariables):
@@ -320,7 +317,7 @@ def GetAccessibleLocations(
                 # If loading zones are not shuffled but you have a random starting location, you may need to exit level to escape some regions
                 elif settings.random_starting_region and region.level != Levels.DKIsles and region.level != Levels.Shops:
                     levelLobby = GetLobbyOfRegion(region)
-                    if levelLobby is not None and levelLobby not in addedRegions:
+                    if levelLobby is not None and levelLobby not in kongAccessibleRegions[kong]:
                         exits.append(TransitionFront(levelLobby, lambda l: True))
                 for exit in exits:
                     destination = exit.dest
@@ -334,7 +331,7 @@ def GetAccessibleLocations(
                         elif shuffledExit.toBeShuffled and not exit.assumed:
                             continue
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
-                    if destination not in addedRegions and exit.logic(spoiler.LogicVariables):
+                    if destination not in kongAccessibleRegions[kong] and exit.logic(spoiler.LogicVariables):
                         # If water is lava, don't consider underwater locations in Galleon before having 3rd melon
                         if spoiler.LogicVariables.IsLavaWater() and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
                             if destination in UnderwaterRegions and spoiler.LogicVariables.Melons < 3:
@@ -346,10 +343,11 @@ def GetAccessibleLocations(
                         elif exit.time == Time.Day and not region.dayAccess:
                             timeAccess = False
                         if timeAccess:
-                            addedRegions.add(destination)
+                            kongAccessibleRegions[kong].add(destination)
                             newRegion = spoiler.RegionList[destination]
                             newRegion.id = destination
-                            regionPool.add(newRegion)
+                            regionPool.append(destination)
+                            kongAccessibleRegions[kong].add(destination)
                     # If it's accessible, update time of day access whether already added or not
                     # This way if a region has access from 2 different regions, one time-restricted and one not,
                     # it will be known that it can be accessed during either time of day
@@ -368,11 +366,12 @@ def GetAccessibleLocations(
                 if region.deathwarp is not None and settings.perma_death is False:
                     destination = region.deathwarp.dest
                     # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
-                    if destination not in addedRegions and region.deathwarp.logic(spoiler.LogicVariables):
-                        addedRegions.add(destination)
+                    if destination not in kongAccessibleRegions[kong] and region.deathwarp.logic(spoiler.LogicVariables):
+                        kongAccessibleRegions[kong].add(destination)
                         newRegion = spoiler.RegionList[destination]
                         newRegion.id = destination
-                        regionPool.add(newRegion)
+                        regionPool.append(destination)
+                        kongAccessibleRegions[kong].add(destination)
                         # If this region has day access, the deathwarp will occur on the same time of day
                         # Note that no deathwarps are dependent on time of day
                         if region.dayAccess:
