@@ -722,7 +722,7 @@
 | On the Green Tunnel Roof | 3 | l.twirl and l.istiny | 
 | On a mushroom in the Worm Area | 4 |  | 
 | On the waterwheel | 5 |  | 
-| In the Snide's area | 4 |  | 
+| In the Snide's area | 4 | (l.TimeAccess(Regions.MillArea, Time.Day)) | 
 | Near the entrance to the Dark Rafters | 4 |  | 
 | Hanging off the mill roof | 3 |  | 
 | In front of the mill in the air | 3 | l.balloon and l.islanky | 

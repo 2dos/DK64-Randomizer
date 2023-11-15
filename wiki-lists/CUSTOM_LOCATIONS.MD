@@ -226,7 +226,7 @@
 | Fungi Forest | Behind Clock |  | 
 | Fungi Forest | In front of Clock |  | 
 | Fungi Forest | Near Blue Tunnel |  | 
-| Fungi Forest | Near Snide's HQ |  | 
+| Fungi Forest | Near Snide's HQ | (l.TimeAccess(Regions.MillArea, Time.Day)) | 
 | Fungi Forest | Behind Diddy Barn |  | 
 | Fungi Forest | Left of Diddy Barn |  | 
 | Fungi Forest | Next to Diddy Pad |  | 

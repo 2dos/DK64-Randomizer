@@ -217,8 +217,8 @@
       "spoiler":true
    },
    "test_zone":[
-      174,
-      1
+      48,
+      0
    ],
    "klaptrap_color_bbother":150,
    "kut_out_phases":[
@@ -253,9 +253,10 @@
    "call_parent_filter":0,
    "location_visuals":7,
    "microhints":2,
-   "misc_cosmetic_on":1,
-   "seasonal_changes":1,
+   "misc_cosmetic_on":0,
+   "seasonal_changes":0,
    "colorblind_mode":0,
+   "fungi_time_of_day_setting": 3,
    "wrinkly_rgb":[
       0,
       0,

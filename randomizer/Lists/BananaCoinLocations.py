@@ -5338,6 +5338,7 @@ BananaCoinGroupList = {
                 [1.0, 3287, 235, 3462],
                 [1.0, 3251, 268, 3363],
             ],
+            logic=lambda l: (l.TimeAccess(Regions.MillArea, Time.Day)),
         ),
         BananaCoinGroup(
             group=32,

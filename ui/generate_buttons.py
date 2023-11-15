@@ -8,6 +8,7 @@ from pyodide import create_proxy
 import js
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Patching.ApplyLocal import patching_response
+from randomizer.Patching.Hash import get_hash_images
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Worker import background
 from ui.bindings import bind
@@ -28,6 +29,7 @@ from ui.rando_options import (
     handle_progressive_hint_text,
     item_rando_list_changed,
     max_music,
+    max_music_proportion,
     max_randomized_blocker,
     max_randomized_troff,
     max_sfx,
@@ -133,6 +135,7 @@ def import_settings_string(event):
     handle_progressive_hint_text(None)
     max_randomized_troff(None)
     max_music(None)
+    max_music_proportion(None)
     max_sfx(None)
     disable_barrel_modal(None)
     updateDoorOneCountText(None)
@@ -247,6 +250,11 @@ def generate_seed(event):
                 return
 
         # Start the progressbar
+        gif_fairy = get_hash_images("browser", "loading-fairy")
+        gif_dead = get_hash_images("browser", "loading-dead")
+        js.document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0]
+        js.document.getElementById("progress-dead").src = "data:image/jpeg;base64," + gif_dead[0]
+
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ProgressBar().update_progress(0, "Initalizing"))
         if not form_data.get("seed"):
