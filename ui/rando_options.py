@@ -1285,8 +1285,7 @@ def plando_lock_key_8_in_helm(evt):
         end_of_helm_dropdown.value = "HideoutHelmKey"
         end_of_helm_dropdown.setAttribute("disabled", "disabled")
     else:
-        # Forcibly de-select Key 8 for the End of Helm dropdown and enable it.
-        end_of_helm_dropdown.value = ""
+        # Enable the End of Helm dropdown.
         end_of_helm_dropdown.removeAttribute("disabled")
 
 
