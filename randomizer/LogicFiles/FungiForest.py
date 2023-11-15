@@ -12,6 +12,7 @@ from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
+from randomizer.Enums.Settings import FungiTimeSetting
 
 LogicRegions = {
     Regions.FungiForestMedals: Region("Fungi Forest Medals", "Forest Medal Rewards", Levels.FungiForest, False, None, [
@@ -29,7 +30,8 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_GreenTunnel, lambda l: l.pineapple and l.chunky),
     ], [
         Event(Events.ForestEntered, lambda l: True),
-        Event(Events.Night, lambda l: l.HasGun(Kongs.any)),
+        Event(Events.Night, lambda l: l.HasGun(Kongs.any) or l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
+        Event(Events.Day, lambda l: l.HasGun(Kongs.any) or l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
         Event(Events.WormGatesOpened, lambda l: l.settings.open_levels or (l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) and l.hasMoveSwitchsanity(Switches.FungiGreenPineapple, False))),
         Event(Events.ForestW1aTagged, lambda l: True),
         Event(Events.ForestW2aTagged, lambda l: True),

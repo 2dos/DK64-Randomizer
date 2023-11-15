@@ -207,7 +207,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
 
         # Apply Hash
         order = 0
-        loaded_hash = get_hash_images("browser")
+        loaded_hash = get_hash_images("browser", "hash")
         for count in json.loads(extracted_variables["hash"].decode("utf-8")):
             js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
             order += 1
