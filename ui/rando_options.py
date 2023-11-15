@@ -387,6 +387,25 @@ def key_down(event):
         pass
 
 
+def set_random_weights_options():
+    """Set the random settings presets on the page."""
+    element = document.getElementById("random-weights")
+    children = []
+    # Take note of the items currently in the dropdown.
+    for child in element.children:
+        children.append(child.value)
+    # Add all of the random weights presets.
+    for val in js.random_settings_presets:
+        if val.get("name") not in children:
+            opt = document.createElement("option")
+            opt.value = val.get("name")
+            opt.innerHTML = val.get("name")
+            opt.title = val.get("description")
+            element.appendChild(opt)
+            if val.get("name") == "Standard":
+                opt.selected = True
+
+
 def set_preset_options():
     """Set the Blocker presets on the page."""
     # Check what the selected dropdown item is
