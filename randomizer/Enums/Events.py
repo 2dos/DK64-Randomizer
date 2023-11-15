@@ -66,6 +66,7 @@ class Events(IntEnum):
     GalleonCannonRoomOpened = auto()
 
     # Fungi Forest events
+    Day = auto()
     Night = auto()
     WormGatesOpened = auto()
     HollowTreeGateOpened = auto()

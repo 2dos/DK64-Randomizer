@@ -66,21 +66,21 @@
          data-bs-keyboard="false"
          id="progressmodal">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content bg-dark">
+            <div class="modal-content bg-dark" style="transform:translateY(0%)">
                 <div class="modal-body center bg-dark" style="width: 100%;">
-                    <label for="progress">Patching Rom</label>
-                    <div class="progress position-relative" id="progress">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated"
-                             role="progressbar"
-                             aria-valuenow="0"
-                             aria-valuemin="0"
-                             aria-valuemax="100"
-                             id="patchprogress"
-                             style="width: 0%">
-                        </div>
-                        <small id="progress-text"
-                               style="color:black"
-                               class="justify-content-center d-flex position-absolute w-100">Initializing</small>
+                    <h2>Patching ROM</h2>
+                    <p>This may take some time. Please be patient.</p>
+                    <div id="fairy-container">
+                        <div id="patchprogress" style="height:44px"></div>
+                        <img id="progress-fairy" width="44px" height="44px" src="" />
+                        <img id="progress-dead" width="44px" height="44px" src="" style="display:none" />
+                    </div>
+                    <div id="progress-text" style="color:white" class="justify-content-center d-flex w-100">
+                        Initializing
+                    </div>
+                    <div id="progress-history"></div>
+                    <div id="close-modal" style="display:none">
+                        <button class="btn btn-primary" id="close-modal-btn">Close</button>
                     </div>
                 </div>
             </div>

@@ -4,13 +4,26 @@ import os
 import time
 from tempfile import mktemp
 
-from randomizer.Enums.Settings import BananaportRando, CrownEnemyRando, DamageAmount, HardModeSelected, HelmDoorItem, MiscChangesSelected, ShockwaveStatus, ShuffleLoadingZones, WrinklyHints
+from randomizer.Enums.Settings import (
+    BananaportRando,
+    CrownEnemyRando,
+    DamageAmount,
+    FungiTimeSetting,
+    HardModeSelected,
+    HelmDoorItem,
+    MiscChangesSelected,
+    ShockwaveStatus,
+    ShuffleLoadingZones,
+    WrinklyHints,
+)
 from randomizer.Enums.Transitions import Transitions
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Kongs import Kongs
+from randomizer.Enums.Maps import Maps
+from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Lists.EnemyTypes import Enemies, EnemySelector
 from randomizer.Lists.HardMode import HardSelector
 from randomizer.Lists.QoL import QoLSelector
@@ -29,7 +42,7 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.Lib import setItemReferenceName
+from randomizer.Patching.Lib import setItemReferenceName, addNewScript
 from randomizer.Patching.MiscSetupChanges import randomize_setup, updateRandomSwitches, updateSwitchsanity
 from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves
 from randomizer.Patching.Patcher import LocalROM
@@ -407,6 +420,42 @@ def patching_response(spoiler):
     ROM_COPY.seek(sav + 0x11D)
     # The WinCondition enum is indexed to allow this.
     ROM_COPY.write(int(spoiler.settings.win_condition))
+
+    # Fungi Time of Day
+    fungi_times = (FungiTimeSetting.day, FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)
+    progressive_removals = [5, 4]  # Day Switch, Night Switch
+    dusk_removals = {
+        Maps.FungiForest: [
+            5,  # Day Switch
+            4,  # Night Switch
+            0xC,  # Day Gate - Mill Front Entry
+            0xE,  # Day Gate - Punch Door
+            0x12,  # Day Gate - Snide Area
+            8,  # Night Gate - Mill Lanky Attic
+            0xB,  # Night Gate - Mill Winch Attic
+            0xD,  # Night Gate - Dark Attic
+            0x11,  # Night Gate - Thornvine Area
+            0x2A,  # Night Gate - Mill GB
+            0x53,  # Night Gate - Owl Tree Diddy Coins
+            0x48,  # Night Gate - Beanstalk T&S
+            0x1F1,  # Night Gate - Mushroom Night Door
+        ],
+        Maps.ForestGiantMushroom: [0x11],  # Night Gate - GMush Interior
+        Maps.ForestMillFront: [0xB],  # Night Gate - Mill Front
+        Maps.ForestMillBack: [
+            0xF,  # Night Gate - Mill Rear
+            0x2,  # Night Gate - Spider Web
+        ],
+    }
+    time_val = spoiler.settings.fungi_time_internal
+    if time_val in fungi_times:
+        ROM_COPY.seek(sav + 0x1DB)
+        ROM_COPY.write(fungi_times.index(time_val))
+        if time_val == FungiTimeSetting.progressive:
+            addNewScript(Maps.FungiForest, progressive_removals, ScriptTypes.DeleteItem)
+        elif time_val == FungiTimeSetting.dusk:
+            for map_val in dusk_removals:
+                addNewScript(map_val, dusk_removals[map_val], ScriptTypes.DeleteItem)
 
     # ROM Flags
     rom_flags = 0

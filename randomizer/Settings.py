@@ -399,6 +399,8 @@ class Settings:
         self.troff_brighten = False
         self.camera_is_not_inverted = False
         self.sound_type = SoundType.stereo
+        self.custom_music_proportion = 100
+        self.fill_with_custom_music = False
 
         #  Misc
         self.generate_spoilerlog = None
@@ -486,6 +488,8 @@ class Settings:
         self.microhints_enabled = MicrohintsEnabled.off
         self.more_cutscene_skips = ExtraCutsceneSkips.off
         self.portal_numbers = False
+        self.fungi_time = FungiTimeSetting.day
+        self.fungi_time_internal = FungiTimeSetting.day
         # Helm Hurry
         self.helmhurry_list_starting_time = 1200
         self.helmhurry_list_golden_banana = 20
@@ -660,6 +664,12 @@ class Settings:
             }
             if self.krusha_ui in krusha_conversion:
                 self.krusha_kong = krusha_conversion[self.krusha_ui]
+
+        # Fungi Time of Day
+        if self.fungi_time == FungiTimeSetting.random:
+            self.fungi_time_internal = random.choice([FungiTimeSetting.day, FungiTimeSetting.night])
+        else:
+            self.fungi_time_internal = self.fungi_time
 
         # Helm Doors
         helmdoor_items = {

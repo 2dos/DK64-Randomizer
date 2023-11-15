@@ -123,53 +123,8 @@ class Region:
 
         self.ResetAccess()
 
-    def UpdateAccess(self, kong: Kongs, logicVariables: LogicVarHolder) -> None:
-        """Set that given kong has access to this region."""
-        # If this region contains a tag barrel, all owned kongs also have access
-        if self.tagbarrel:
-            self.donkeyAccess = logicVariables.donkey
-            self.diddyAccess = logicVariables.diddy
-            self.lankyAccess = logicVariables.lanky
-            self.tinyAccess = logicVariables.tiny
-            self.chunkyAccess = logicVariables.chunky
-        else:
-            if kong == Kongs.donkey:
-                self.donkeyAccess = True
-            elif kong == Kongs.diddy:
-                self.diddyAccess = True
-            elif kong == Kongs.lanky:
-                self.lankyAccess = True
-            elif kong == Kongs.tiny:
-                self.tinyAccess = True
-            else:
-                self.chunkyAccess = True
-
-    def HasAccess(self, kong: Kongs) -> bool:
-        """Check if given kong has access through this area.
-
-        Used if a kong has access through a tag barrel only.
-        """
-        if kong == Kongs.donkey:
-            return self.donkeyAccess
-        elif kong == Kongs.diddy:
-            return self.diddyAccess
-        elif kong == Kongs.lanky:
-            return self.lankyAccess
-        elif kong == Kongs.tiny:
-            return self.tinyAccess
-        elif kong == Kongs.chunky:
-            return self.chunkyAccess
-        else:  # kongs == Kongs.any, just need to check if any kong has access
-            return self.donkeyAccess or self.diddyAccess or self.lankyAccess or self.tinyAccess or self.chunkyAccess
-
     def ResetAccess(self) -> None:
         """Clear access variables set during search."""
-        # Kong access
-        self.donkeyAccess = False
-        self.diddyAccess = False
-        self.lankyAccess = False
-        self.tinyAccess = False
-        self.chunkyAccess = False
         # Time access
         self.dayAccess = False
         self.nightAccess = False
