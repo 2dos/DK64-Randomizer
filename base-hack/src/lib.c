@@ -1069,6 +1069,7 @@ int applyDamageMask(int player_index, int damage) {
 				applied_multiplier = 1;
 			} else if (
 			(CurrentMap == MAP_ISLES) ||
+			(CurrentMap == MAP_TRAININGGROUNDS) ||
 			(CurrentMap == MAP_GALLEONLOBBY) ||
 			(CurrentMap == MAP_GALLEON) ||
 			(CurrentMap == MAP_GALLEON2DS) ||

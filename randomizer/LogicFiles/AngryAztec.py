@@ -67,7 +67,7 @@ LogicRegions = {
         TransitionFront(Regions.AztecTunnelBeforeOasis, lambda l: True),
         TransitionFront(Regions.TempleStart, lambda l: ((l.peanut and l.isdiddy) or (l.grape and l.islanky)
                         or (l.feather and l.istiny) or (l.pineapple and l.ischunky)) or l.phasewalk),
-        TransitionFront(Regions.AngryAztecConnectorTunnel, lambda l: l.settings.open_levels or (((l.vines or l.jetpack or l.advanced_platforming) and l.hasMoveSwitchsanity(Switches.AztecGuitar, False)) or l.phasewalk or l.generalclips)),
+        TransitionFront(Regions.AngryAztecConnectorTunnel, lambda l: l.settings.open_levels or (((l.vines or (l.jetpack and l.isdiddy) or (l.advanced_platforming and (l.istiny or l.isdiddy))) and l.hasMoveSwitchsanity(Switches.AztecGuitar, False)) or l.phasewalk or l.generalclips)),
         TransitionFront(Regions.CandyAztec, lambda l: True),
         TransitionFront(Regions.AztecBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),

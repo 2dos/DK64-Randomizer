@@ -885,7 +885,7 @@
 | Mushroom by Diddy's barn | 5 |  | 
 | Mushroom by back tag barrel | 5 |  | 
 | Mushroom by Minecart exit | 5 |  | 
-| Top of Minecart exit | 10 | l.isdonkey or (l.istiny and l.twirl) | 
+| Top of Minecart exit | 10 | (l.isdonkey and l.settings.krusha_kong != Kongs.donkey) or (l.istiny and l.twirl) | 
 | Top of Mill (8 custom, 7 Lanky) | 15 |  | 
 | Outside of conveyor belt (behind night gate) | 5 | Events.Night in l.Events | 
 | W1 (1 custom, 1 Lanky bunch) | 5 |  | 
@@ -1664,9 +1664,9 @@
 | On switch on books | 5 |  | 
 | Path from first room to book hallway | 15 |  | 
 | In big books room (Donkey) | 5 |  | 
-| In ghost book hallway (Donkey) | 10 | l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.strongKong | 
+| In ghost book hallway (Donkey) | 10 | l.strongKong | 
 | In switch room | Balloon |  | 
-| In GB room | Balloon | l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.strongKong | 
+| In GB room | Balloon |  | 
 </details>
 <details>
 <summary>Castle Museum</summary>

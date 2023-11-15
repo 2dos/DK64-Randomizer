@@ -158,6 +158,7 @@ RegionMapList = {
     Regions.CastleWaterfall: Maps.CreepyCastle,
     Regions.CastleTree: Maps.CastleTree,
     Regions.Library: Maps.CastleLibrary,
+    Regions.LibraryPastBooks: Maps.CastleLibrary,
     Regions.Ballroom: Maps.CastleBallroom,
     Regions.MuseumBehindGlass: Maps.CastleMuseum,
     Regions.CastleTinyRace: Maps.CastleTinyRace,

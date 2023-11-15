@@ -119,7 +119,7 @@ void spawnEnemyDrops(actorData* actor) {
                 setSpawnBitfield(spawner_id, 1);
             }
             if (!canSpawnEnemyReward()) {
-                if ((drop_type == 0x2F) && (Rando.no_health_refill)) {
+                if ((drop_type == 0x2F) && (Rando.disable_drops)) {
                     return;
                 }
             }

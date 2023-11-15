@@ -3,7 +3,7 @@ import random
 
 import js
 from randomizer.Enums.EnemySubtypes import EnemySubtype
-from randomizer.Enums.Settings import CrownEnemyRando, DamageAmount
+from randomizer.Enums.Settings import CrownEnemyRando, DamageAmount, WinCondition
 from randomizer.Lists.EnemyTypes import EnemyMetaData, enemy_location_list
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Locations import Locations
@@ -615,8 +615,50 @@ def randomize_enemies(spoiler):
                     elif spawner.enemy_id == Enemies.BattleCrownController:
                         ROM_COPY.seek(cont_map_spawner_address + spawner.offset + 0xB)
                         ROM_COPY.writeMultipleBytes(crown_timer, 1)  # Determine Crown length. DK64 caps at 255 seconds
+        if spoiler.settings.win_condition == WinCondition.poke_snap:
             # Pkmn snap handler
             values = [0, 0, 0, 0, 0]
+            # In some cases, the Pkmn Snap data hasn't yet been initialized (enemy rando disabled)
+            # so we use the default values
+            if len(spoiler.pkmn_snap_data) == 0:
+                # Pkmn Snap Default Enemies
+                spoiler.pkmn_snap_data = [
+                    True,  # Kaboom
+                    True,  # Blue Beaver
+                    True,  # Book
+                    True,  # Klobber
+                    True,  # Zinger (Charger)
+                    True,  # Klump
+                    True,  # Klaptrap (Green)
+                    True,  # Zinger (Bomber)
+                    True,  # Klaptrap (Purple)
+                    False,  # Klaptrap (Red)
+                    False,  # Gold Beaver
+                    True,  # Mushroom Man
+                    True,  # Ruler
+                    True,  # Robo-Kremling
+                    True,  # Kremling
+                    True,  # Kasplat (DK)
+                    True,  # Kasplat (Diddy)
+                    True,  # Kasplat (Lanky)
+                    True,  # Kasplat (Tiny)
+                    True,  # Kasplat (Chunky)
+                    False,  # Kop
+                    True,  # Robo-Zinger
+                    True,  # Krossbones
+                    True,  # Shuri
+                    True,  # Gimpfish
+                    True,  # Mr. Dice (Green)
+                    True,  # Sir Domino
+                    True,  # Mr. Dice (Red)
+                    True,  # Fireball w/ Glasses
+                    True,  # Small Spider
+                    True,  # Bat
+                    True,  # Tomato
+                    True,  # Ghost
+                    True,  # Pufftup
+                    True,  # Kosha
+                ]
             for enemy_index, spawned in enumerate(spoiler.pkmn_snap_data):
                 if spawned:
                     offset = enemy_index >> 3
