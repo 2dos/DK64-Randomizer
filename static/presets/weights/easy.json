@@ -47,7 +47,7 @@
         "easy": 0.5,
         "medium": 0.3
     },
-    "crown_placement_rando": 0.3,
+    "crown_placement_rando": 0,
     "damage_amount": {
         "default": 0.5,
         "double": 0.5
