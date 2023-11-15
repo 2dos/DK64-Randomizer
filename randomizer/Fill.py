@@ -1,7 +1,6 @@
 """Module used to distribute items randomly."""
 from __future__ import annotations
 
-from copy import deepcopy
 from random import choice, randint, shuffle, uniform
 from typing import TYPE_CHECKING, Any, List, Optional, Set, Tuple, Union
 
