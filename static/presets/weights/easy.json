@@ -1,43 +1,41 @@
 {
-    "name": "Standard",
-    "description": "The generated settings will be of average difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will be roughly around their defaults. Some of the most difficult settings will never be set.",
+    "name": "Easy",
+    "description": "The generated settings will be of lesser difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will often be lower than their defaults. Many of the more difficult settings will never be set.",
     "activate_all_bananaports": {
-        "off": 0.4,
-        "all": 0.4,
+        "off": 0.2,
+        "all": 0.6,
         "isles": 0.2
     },
-    "alter_switch_allocation": 0.5,
-    "auto_keys": 0.9,
+    "alter_switch_allocation": 0,
+    "auto_keys": 1,
     "bananaport_rando": {
-        "off": 0.5,
-        "in_level": 0.3,
-        "crossmap_coupled": 0.2
+        "off": 1
     },
     "blocker_text": {
-        "min": 40,
-        "max": 100,
-        "mean": 60
+        "min": 30,
+        "max": 70,
+        "mean": 50
     },
-    "bonus_barrel_auto_complete": 0.3,
+    "bonus_barrel_auto_complete": 0.5,
     "bonus_barrel_rando": 0.7,
     "boss_kong_rando": 0.5,
     "boss_location_rando": 0.8,
-    "cb_rando": 0.5,
+    "cb_rando": 0.3,
     "coin_door_item": {
         "vanilla": 0.2,
-        "opened": 0.2,
-        "random": 0.6
+        "opened": 0.6,
+        "random": 0.2
     },
     "coin_door_item_count": {
         "min": 1,
-        "max": 10,
+        "max": 6,
         "mean": 4
     },
     "coin_rando": 0.5,
     "crown_door_item": {
         "vanilla": 0.2,
-        "opened": 0.2,
-        "random": 0.6
+        "opened": 0.6,
+        "random": 0.2
     },
     "crown_door_item_count": {
         "min": 1,
@@ -45,34 +43,31 @@
         "mean": 1
     },
     "crown_enemy_rando": {
-        "off": 0.1,
-        "easy": 0.3,
-        "medium": 0.4,
-        "hard": 0.2
+        "off": 0.2,
+        "easy": 0.5,
+        "medium": 0.3
     },
     "crown_placement_rando": 0.3,
     "damage_amount": {
         "default": 0.5,
-        "double": 0.35,
-        "quad": 0.15
+        "double": 0.5
     },
-    "dim_solved_hints": 1,
+    "dim_solved_hints": 0.8,
     "disable_tag_barrels": 0.5,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
-    "enable_shop_hints": 0.9,
+    "enable_shop_hints": 1,
     "enable_tag_anywhere": 1,
     "enemies_selected": {},
-    "enemy_drop_rando": 0.25,
+    "enemy_drop_rando": 0,
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.5,
-    "fast_gbs": 0.7,
-    "fast_warps": 0.9,
+    "fast_gbs": 0.8,
+    "fast_warps": 0.8,
     "fps_display": 0.5,
     "free_trade_setting": {
-        "none": 0.1,
         "not_blueprints": 0.3,
-        "major_collectibles": 0.6
+        "major_collectibles": 0.7
     },
     "fungi_time": {
         "day": 0.2,
@@ -82,19 +77,18 @@
         "progressive": 0.15
     },
     "glitches_selected": {},
-    "hard_blockers": 0.2,
-    "hard_level_progression": 0.4,
+    "hard_blockers": 0,
+    "hard_level_progression": 0,
     "hard_mode": 0,
     "hard_mode_selected": {},
-    "hard_shooting": 0.5,
-    "hard_troff_n_scoff": 0.2,
+    "hard_shooting": 0,
+    "hard_troff_n_scoff": 0,
     "helm_hurry": 0,
     "helm_phase_order_rando": 0.8,
     "helm_random": 1,
     "helm_setting": {
-        "default": 0.2,
-        "skip_start": 0.6,
-        "skip_all": 0.2
+        "skip_start": 0.7,
+        "skip_all": 0.3
     },
     "helmhurry_list_banana_medal": {
         "min": 30,
@@ -171,29 +165,24 @@
         "max": 1800,
         "mean": 1200
     },
-    "high_req": 0.8,
+    "high_req": 1,
     "item_rando_list_selected": {
         "shop": 0.95,
         "banana": 0.95,
-        "toughbanana": 0.5,
         "crown": 0.7,
         "blueprint": 0.7,
         "key": 0.85,
         "medal": 0.7,
         "coin": 0.7,
         "kong": 0.85,
-        "fairy": 0.7,
-        "rainbowcoin": 0.7,
-        "beanpearl": 0.7,
-        "fakeitem": 0.5,
-        "junkitem": 0.5,
-        "crateitem": 0.5
+        "rainbowcoin": 0.5,
+        "beanpearl": 0.5,
+        "junkitem": 0.5
     },
-    "item_reward_previews": 0.75,
+    "item_reward_previews": 1,
     "kasplat_rando_setting": {
-        "off": 0.15,
-        "vanilla_locations": 0.55,
-        "location_shuffle": 0.3
+        "off": 0.3,
+        "vanilla_locations": 0.7
     },
     "key_8_helm": 0.5,
     "keys_random": 1,
@@ -206,9 +195,8 @@
         "random": 0.5
     },
     "level_randomization": {
-        "vanilla": 0.2,
-        "level_order": 0.65,
-        "loadingzone": 0.15
+        "vanilla": 0.5,
+        "level_order": 0.5
     },
     "logic_type": {
         "glitchless": 1
@@ -216,68 +204,62 @@
     "maximize_helm_blocker": 0.15,
     "medal_cb_req": {
         "min": 15,
-        "max": 90,
-        "mean": 40
+        "max": 60,
+        "mean": 30
     },
     "microhints_enabled": {
-        "off": 0.3,
-        "base": 0.35,
-        "all": 0.35
+        "base": 0.25,
+        "all": 0.75
     },
     "minigames_list_selected": {},
     "misc_changes_selected": {},
     "more_cutscene_skips": {
-        "off": 0.1,
         "press": 0.4,
-        "auto": 0.5
+        "auto": 0.6
     },
     "move_rando": {
-        "on": 0.3,
-        "cross_purchase": 0.7
+        "cross_purchase": 1
     },
-    "no_healing": 0.5,
-    "no_melons": 0.2,
+    "no_healing": 0,
+    "no_melons": 0,
     "open_levels": 0.75,
     "open_lobbies": 0.9,
-    "perma_death": 0.05,
-    "portal_numbers": 0.5,
+    "perma_death": 0,
+    "portal_numbers": 1,
     "progressive_hint_text": {
         "min": 30,
-        "max": 100,
-        "mean": 60
+        "max": 60,
+        "mean": 45
     },
     "puzzle_rando": 0.5,
     "quality_of_life": 1,
-    "random_crates": 0.3,
-    "random_fairies": 0.2,
+    "random_crates": 0,
+    "random_fairies": 0,
     "random_medal_requirement": 1,
-    "random_patches": 0.2,
+    "random_patches": 0,
     "random_prices": {
-        "vanilla": 0.1,
-        "free": 0.1,
-        "low": 0.2,
-        "medium": 0.3,
-        "high": 0.25,
-        "extreme": 0.05
+        "vanilla": 0.2,
+        "free": 0.2,
+        "low": 0.3,
+        "medium": 0.3
     },
     "random_starting_move_list_selected": {},
-    "random_starting_region": 0.3,
+    "random_starting_region": 0,
     "randomize_blocker_required_amounts": 1,
     "randomize_cb_required_amounts": 1,
     "randomize_pickups": 0.6,
     "rareware_gb_fairies": {
         "min": 1,
         "max": 20,
-        "mean": 20
+        "mean": 10
     },
     "select_keys": 0,
     "shockwave_status": {
-        "vanilla": 0.2,
+        "vanilla": 0.3,
         "shuffled": 0.2,
-        "shuffled_decoupled": 0.2,
-        "start_with": 0.4
+        "start_with": 0.5
     },
-    "shop_indicator": 0.5,
+    "shop_indicator": 1,
     "shorten_boss": 1,
     "shuffle_items": 1,
     "shuffle_shops": 0.5,
@@ -288,36 +270,28 @@
     },
     "starting_move_list_selected": {},
     "starting_moves_count": {
-        "min": 2,
+        "min": 4,
         "max": 10,
         "mean": 4
     },
     "starting_random": 1,
-    "switchsanity": 0.15,
-    "tns_location_rando": 0.3,
+    "switchsanity": 0,
+    "tns_location_rando": 0,
     "troff_text": {
-        "min": 150,
-        "max": 400,
-        "mean": 300
+        "min": 100,
+        "max": 300,
+        "mean": 200
     },
-    "vanilla_door_rando": 0.4,
+    "vanilla_door_rando": 0,
     "warp_level_list_selected": {},
-    "warp_to_isles": 0.9,
+    "warp_to_isles": 1,
     "win_condition": {
-        "beat_krool": 0.45,
-        "get_key8": 0.25,
-        "all_fairies": 0.05,
-        "all_blueprints": 0.05,
-        "all_medals": 0.05,
-        "poke_snap": 0.05,
-        "all_keys": 0.1
+        "beat_krool": 0.7,
+        "get_key8": 0.3
     },
-    "wrinkly_available": 0.9,
+    "wrinkly_available": 1,
     "wrinkly_hints": {
-        "off": 0.1,
-        "standard": 0.4,
-        "cryptic": 0.2,
-        "item_hinting": 0.3
+        "standard": 1
     },
-    "wrinkly_location_rando": 0.3
+    "wrinkly_location_rando": 0
 }
