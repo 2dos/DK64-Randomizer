@@ -22,12 +22,12 @@
                     <label for="plando_{{location["value"]}}_hint" class="location-label">
                         {{location["name"]}}
                     </label>
-                    <div>
+                    <div id="plando_{{location["value"]}}_hint_wrapper"
+                         data-toggle="tooltip"
+                         title>
                         <input type="text"
                                id="plando_{{location["value"]}}_hint"
                                name="plando_{{location["value"]}}_hint"
-                               data-toggle="tooltip"
-                               title
                                placeholder="Enter hint text or leave blank for a random hint..."
                                maxlength="900"
                             class="form-control">
