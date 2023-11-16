@@ -554,6 +554,7 @@ void initHack(int source) {
 			}
 			if (ENABLE_ORIGIN_WARP_FIX) {
 				writeFunction(0x8072F1E8, &handleGrabbingLock);
+				writeFunction(0x806CAB68, &handleLedgeLock);
 				writeFunction(0x8072F458, &handleActionSet); // Actor grabbables
 				writeFunction(0x8072F46C, &handleActionSet); // Model 2 grabbables
 				writeFunction(0x806CFC64, &handleActionSet); // Ledge Grabbing
