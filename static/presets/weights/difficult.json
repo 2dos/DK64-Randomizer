@@ -44,7 +44,7 @@
         "mean": 2
     },
     "crown_enemy_rando": {
-        "vanilla": 0.2,
+        "off": 0.2,
         "medium": 0.5,
         "hard": 0.3
     },
