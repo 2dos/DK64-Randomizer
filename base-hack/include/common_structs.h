@@ -228,7 +228,9 @@ typedef struct playerData {
 	/* 0x155 */ char control_state_progress;
 	/* 0x156 */ char unk_156[0x16A-0x156];
 	/* 0x16A */ unsigned char rgb_components[3];
-	/* 0x16D */ char unk_16D[0x18A-0x16D];
+	/* 0x16D */ char unk_16D;
+	/* 0x16E */ char unk_16E; // shadow width or something
+	/* 0x16F */ char unk_16F[0x18A-0x16F];
 	/* 0x18A */ short moving_angle;
 	/* 0x18C */ char unk_18C[0x1B0-0x18C];
 	/* 0x1B0 */ float unk_1B0;

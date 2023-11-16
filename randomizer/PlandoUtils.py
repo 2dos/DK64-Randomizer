@@ -245,7 +245,7 @@ for locationName in kongLocationList:
 sharedShopsSet = set()
 kongSpecificShopSet = set()
 for locEnum, locObj in LocationList.items():
-    if locObj.type == Types.Shop or (locObj.level == Levels.Shops and locObj.type == Types.Coin):
+    if locObj.type == Types.Shop:
         if locObj.kong == Kongs.any:
             sharedShopsSet.add(locEnum.name)
         else:
@@ -296,6 +296,9 @@ for shop in kongSpecificShopSet:
     ItemRestrictionsPerLocation[shop].update(kongSpecificShopRestrictedItemSet)
     ItemRestrictionsPerLocation[shop].update(shopRestrictedItemSet)
 
+# The Jetpac game has few restrictions.
+ItemRestrictionsPerLocation[Locations.RarewareCoin.name].update(shopRestrictedItemSet)
+
 # Crowns are not allowed on Helm Medal locations.
 helmMedalLocationList = [Locations.HelmDonkeyMedal.name, Locations.HelmDiddyMedal.name, Locations.HelmLankyMedal.name, Locations.HelmTinyMedal.name, Locations.HelmChunkyMedal.name]
 for locationName in helmMedalLocationList:
@@ -324,10 +327,14 @@ for locEnum, locObj in LocationList.items():
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
         ItemRestrictionsPerLocation[locEnum.name].update(blueprintItemSet)
     # Junk items cannot be placed anywhere in Hideout Helm. Due to technical
-    # limitations, neither can Golden Bananas.
+    # limitations, neither can Golden Bananas. Due to logic-related reasons,
+    # neither can a handful of moves needed to fight bosses.
     if locObj.level == Levels.HideoutHelm:
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.JunkItem.name)
         ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.GoldenBanana.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.HunkyChunky.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.PonyTailTwirl.name)
+        ItemRestrictionsPerLocation[locEnum.name].add(PlandoItems.Barrels.name)
 
 # This one rock can't have Kongs as a reward.
 ItemRestrictionsPerLocation[Locations.IslesDonkeyJapesRock.name].update(KongSet)

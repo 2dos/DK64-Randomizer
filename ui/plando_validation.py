@@ -1,4 +1,5 @@
 """Code to collect and validate the selected plando options."""
+from enum import IntEnum, auto
 import json
 import re
 
@@ -9,9 +10,22 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import KasplatRandoSetting
 from randomizer.Lists.Item import StartingMoveOptions
 from randomizer.Lists.Location import LocationListOriginal as LocationList
-from randomizer.Lists.Plandomizer import HintLocationList, ItemLocationList, MinigameLocationList, PlannableItemLimits, ShopLocationKongMap, ShopLocationList
+from randomizer.Lists.Plandomizer import (
+    CrownLocationList,
+    DirtPatchLocationList,
+    FairyLocationList,
+    HintLocationList,
+    ItemLocationList,
+    KasplatLocationList,
+    MelonCrateLocationList,
+    MinigameLocationList,
+    PlannableItemLimits,
+    ShopLocationKongMap,
+    ShopLocationList,
+)
 from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
@@ -25,16 +39,107 @@ from ui.rando_options import (
 )
 
 
-def mark_option_invalid(element, tooltip: str) -> None:
-    """Add a Bootstrap tooltip to the given element, and mark it as invalid."""
-    element.setAttribute("data-bs-original-title", tooltip)
+class ValidationError(IntEnum):
+    """Specific validation failures associated with an element."""
+
+    exceeds_item_limits = auto()
+    shop_has_shared_and_solo_rewards = auto()
+    smaller_shops_conflict = auto()
+    invalid_hint_text = auto()
+    too_many_hints_with_fixed_hints = auto()
+    invalid_shop_cost = auto()
+    invalid_starting_kong_count = auto()
+    level_order_duplicates = auto()
+    krool_order_duplicates = auto()
+    helm_order_duplicates = auto()
+    assigned_shop_when_shuffled = auto()
+    assigned_dirt_patch_when_shuffled = auto()
+    assigned_fairy_when_shuffled = auto()
+    assigned_crown_when_shuffled = auto()
+    assigned_crate_when_shuffled = auto()
+    assigned_kasplat_when_shuffled = auto()
+
+
+# This dictionary stores all elements that have either been disabled or marked
+# invalid. It stores the current errors that apply to each element. This will
+# prevent us from marking an element as enabled or valid if there is still an
+# error with it.
+element_error_dict = dict()
+
+
+def get_errors(elementId: str) -> dict:
+    """Get, or create, the dict of current errors for this element."""
+    if elementId not in element_error_dict:
+        element_error_dict[elementId] = {
+            # Each of these two dictionaries maps ValidationError enums to
+            # error strings.
+            "invalid": dict(),
+            "disabled": dict(),
+        }
+    return element_error_dict[elementId]
+
+
+def write_current_tooltip(elementId) -> None:
+    """Add a Bootstrap tooltip to the given element for its current errors."""
+    tooltips = []
+    elemErrors = get_errors(elementId)
+    for _, invalidError in elemErrors["invalid"].items():
+        if invalidError != "":
+            tooltips.append(invalidError)
+    for _, disabledError in elemErrors["disabled"].items():
+        if disabledError != "":
+            tooltips.append(disabledError)
+    wrapper = js.document.getElementById(f"{elementId}_wrapper")
+    wrapper.setAttribute("data-bs-original-title", "\n".join(tooltips))
+
+
+def mark_option_invalid(element, errType: ValidationError, errMessage: str) -> None:
+    """Mark the given option as invalid, and add an associated error."""
+    if errMessage == "":
+        raise ValueError("The error string passed to mark_option_invalid must be non-empty.")
+    elemErrors = get_errors(element.id)
+    elemErrors["invalid"][errType] = errMessage
     element.classList.add("invalid")
+    write_current_tooltip(element.id)
 
 
-def mark_option_valid(element) -> None:
-    """Remove a Bootstrap tooltip from the given element, and mark it as valid."""
-    element.setAttribute("data-bs-original-title", "")
-    element.classList.remove("invalid")
+def mark_option_valid(element, errType: ValidationError) -> None:
+    """Remove an error from a given option, and maybe mark it as valid."""
+    elemErrors = get_errors(element.id)
+    elemErrors["invalid"][errType] = ""
+    # If there are no more invalid-style errors, mark this as valid.
+    valid = True
+    for _, errString in elemErrors["invalid"].items():
+        if errString != "":
+            valid = False
+    if valid:
+        element.classList.remove("invalid")
+    write_current_tooltip(element.id)
+
+
+def mark_option_disabled(element, errType: ValidationError, errMessage: str) -> None:
+    """Disable the given option, and add an associated error."""
+    if errMessage == "":
+        raise ValueError("The error string passed to mark_option_disabled must be non-empty.")
+    elemErrors = get_errors(element.id)
+    elemErrors["disabled"][errType] = errMessage
+    element.value = ""
+    element.setAttribute("disabled", "disabled")
+    write_current_tooltip(element.id)
+
+
+def mark_option_enabled(element, errType: ValidationError) -> None:
+    """Remove an error from a given option, and maybe enable it."""
+    elemErrors = get_errors(element.id)
+    elemErrors["disabled"][errType] = ""
+    # If there are no more disabled-style errors, enable this.
+    enabled = True
+    for _, errString in elemErrors["disabled"].items():
+        if errString != "":
+            enabled = False
+    if enabled:
+        element.removeAttribute("disabled")
+    write_current_tooltip(element.id)
 
 
 def count_items() -> dict:
@@ -108,7 +213,7 @@ def validate_item_limits(evt):
         if item not in PlannableItemLimits:
             for loc in locations:
                 if loc is not None:
-                    mark_option_valid(js.document.getElementById(loc))
+                    mark_option_valid(js.document.getElementById(loc), ValidationError.exceeds_item_limits)
             continue
         itemCount = len(locations)
         if item == PlandoItems.GoldenBanana:
@@ -123,11 +228,11 @@ def validate_item_limits(evt):
                 errString += " (40 Golden Bananas are always allocated to blueprint rewards.)"
             for loc in locations:
                 if loc is not None:
-                    mark_option_invalid(js.document.getElementById(loc), errString)
+                    mark_option_invalid(js.document.getElementById(loc), ValidationError.exceeds_item_limits, errString)
         else:
             for loc in locations:
                 if loc is not None:
-                    mark_option_valid(js.document.getElementById(loc))
+                    mark_option_valid(js.document.getElementById(loc), ValidationError.exceeds_item_limits)
 
 
 @bindList("change", ShopLocationList, prefix="plando_", suffix="_item")
@@ -152,34 +257,51 @@ def validate_shop_kongs(evt):
                     # An individual shop has an assigned item.
                     # This is always a conflict at this point.
                     shared_location_valid = False
-                    mark_option_invalid(vendor_element, errString)
+                    mark_option_invalid(vendor_element, ValidationError.shop_has_shared_and_solo_rewards, errString)
                 else:
-                    mark_option_valid(vendor_element)
+                    mark_option_valid(vendor_element, ValidationError.shop_has_shared_and_solo_rewards)
             if shared_location_valid:
-                mark_option_valid(vendor_shared_element)
+                mark_option_valid(vendor_shared_element, ValidationError.shop_has_shared_and_solo_rewards)
             else:
-                mark_option_invalid(vendor_shared_element, errString)
+                mark_option_invalid(vendor_shared_element, ValidationError.shop_has_shared_and_solo_rewards, errString)
 
 
 @bindList("change", ShopLocationList, prefix="plando_", suffix="_item")
 @bind("change", "smaller_shops")
 def validate_smaller_shops_no_conflict(evt):
-    """Raise an error if we have a conflict with Smaller Shops.
+    """Disable shops if we have a conflict with Smaller Shops.
 
     If the user is using the Smaller Shops setting, they cannot place anything
     in the shops. This causes fill issues.
     """
-    assignedShops = []
-    for locationName in ShopLocationList:
-        shopElem = js.document.getElementById(f"plando_{locationName}_item")
-        mark_option_valid(shopElem)
-        if shopElem.value != "":
-            assignedShops.append(shopElem)
     useSmallerShops = js.document.getElementById("smaller_shops").checked
-    if not useSmallerShops:
-        return
-    for assignedShop in assignedShops:
-        mark_option_invalid(assignedShop, 'Shop locations cannot be assigned if "Smaller Shops" is selected.')
+    for locationName in ShopLocationList:
+        # This check does not apply to Jetpac.
+        if locationName == Locations.RarewareCoin.name:
+            continue
+        shopElem = js.document.getElementById(f"plando_{locationName}_item")
+        if useSmallerShops:
+            errString = 'Shop locations cannot be assigned if "Smaller Shops" is selected.'
+            mark_option_disabled(shopElem, ValidationError.smaller_shops_conflict, errString)
+        else:
+            mark_option_enabled(shopElem, ValidationError.smaller_shops_conflict)
+
+
+@bindList("change", ShopLocationList, prefix="plando_", suffix="_item")
+@bind("change", "shuffle_shops")
+def validate_shuffle_shops_no_conflict(evt):
+    """Disable shops if the user has shuffled shops."""
+    shuffleShops = js.document.getElementById("shuffle_shops").checked
+    for locationName in ShopLocationList:
+        # This check does not apply to Jetpac.
+        if locationName == Locations.RarewareCoin.name:
+            continue
+        shopElem = js.document.getElementById(f"plando_{locationName}_item")
+        if shuffleShops:
+            errString = "Items cannot be assigned to shops when shop locations are shuffled."
+            mark_option_disabled(shopElem, ValidationError.assigned_shop_when_shuffled, errString)
+        else:
+            mark_option_enabled(shopElem, ValidationError.assigned_shop_when_shuffled)
 
 
 @bindList("change", HintLocationList, prefix="plando_", suffix="_hint")
@@ -193,9 +315,10 @@ def validate_hint_text(element) -> None:
     """Raise an error if the element's hint contains invalid characters."""
     hintString = element.value
     if re.search("[^A-Za-z0-9 \,\.\-\?!]", hintString) is not None:
-        mark_option_invalid(element, "Only letters, numbers, spaces, and the characters ',.-?! are allowed in hints.")
+        errString = "Only letters, numbers, spaces, and the characters ',.-?! are allowed in hints."
+        mark_option_invalid(element, ValidationError.invalid_hint_text, errString)
     else:
-        mark_option_valid(element)
+        mark_option_valid(element, ValidationError.invalid_hint_text)
 
 
 @bindList("change", HintLocationList, prefix="plando_", suffix="_hint")
@@ -208,7 +331,7 @@ def validate_hint_count(evt):
     plandoHintList = []
     for hint in HintLocationList:
         hintElem = js.document.getElementById(f"plando_{hint}_hint")
-        mark_option_valid(hintElem)
+        mark_option_valid(hintElem, ValidationError.too_many_hints_with_fixed_hints)
         if hintElem.value != "":
             plandoHintList.append(hintElem)
     # If we're not using fixed hints, return here after we've marked all the
@@ -219,7 +342,8 @@ def validate_hint_count(evt):
     # an error.
     if len(plandoHintList) > 5:
         for hintElem in plandoHintList:
-            mark_option_invalid(hintElem, "Fixed hints are incompatible with more than 5 plandomized hints.")
+            errString = "Fixed hints are incompatible with more than 5 plandomized hints."
+            mark_option_invalid(hintElem, ValidationError.too_many_hints_with_fixed_hints, errString)
 
 
 @bindList("change", ShopLocationList, prefix="plando_", suffix="_shop_cost")
@@ -233,11 +357,12 @@ def validate_shop_costs(element) -> None:
     """Raise an error if this element's shop has an invalid cost."""
     shopCost = element.value
     if shopCost == "":
-        mark_option_valid(element)
+        mark_option_valid(element, ValidationError.invalid_shop_cost)
     elif shopCost.isdigit() and int(shopCost) >= 0 and int(shopCost) <= 255:
-        mark_option_valid(element)
+        mark_option_valid(element, ValidationError.invalid_shop_cost)
     else:
-        mark_option_invalid(element, "Shop costs must be a whole number between 0 and 255.")
+        errString = "Shop costs must be a whole number between 0 and 255."
+        mark_option_invalid(element, ValidationError.invalid_shop_cost, errString)
 
 
 @bind("change", "starting_kongs_count")
@@ -250,14 +375,14 @@ def validate_starting_kong_count(evt):
     isRandomStartingKongCount = js.document.getElementById("starting_random").checked
     if isRandomStartingKongCount:
         # With a random starting Kong count, everything is fair game in this box and it'll try to meet expectations as best as it can
-        mark_option_valid(startingKongs)
+        mark_option_valid(startingKongs, ValidationError.invalid_starting_kong_count)
     elif len(selectedKongs) > numStartingKongs or (len(selectedKongs) < numStartingKongs and "" not in selectedKongs):
         maybePluralKongText = "Kong was selected as a starting Kong" if len(selectedKongs) == 1 else "Kongs were selected as starting Kongs"
         errSuffix = "." if len(selectedKongs) > numStartingKongs else ', and "Random Kong(s)" was not chosen.'
         errString = f"The number of starting Kongs was set to {numStartingKongs}, but {len(selectedKongs)} {maybePluralKongText}{errSuffix}"
-        mark_option_invalid(startingKongs, errString)
+        mark_option_invalid(startingKongs, ValidationError.invalid_starting_kong_count, errString)
     else:
-        mark_option_valid(startingKongs)
+        mark_option_valid(startingKongs, ValidationError.invalid_starting_kong_count)
 
 
 @bind("change", "plando_level_order_", 7)
@@ -278,11 +403,12 @@ def validate_level_order_no_duplicates(evt):
         if level == "" or len(selects) == 1:
             for select in selects:
                 selectElem = js.document.getElementById(select)
-                mark_option_valid(selectElem)
+                mark_option_valid(selectElem, ValidationError.level_order_duplicates)
         else:
             for select in selects:
                 selectElem = js.document.getElementById(select)
-                mark_option_invalid(selectElem, "The same level cannot be used twice in the level order.")
+                errString = "The same level cannot be used twice in the level order."
+                mark_option_invalid(selectElem, ValidationError.level_order_duplicates, errString)
 
 
 @bind("change", "plando_krool_order_", 5)
@@ -303,11 +429,12 @@ def validate_krool_order_no_duplicates(evt):
         if kong == "" or len(selects) == 1:
             for select in selects:
                 selectElem = js.document.getElementById(select)
-                mark_option_valid(selectElem)
+                mark_option_valid(selectElem, ValidationError.krool_order_duplicates)
         else:
             for select in selects:
                 selectElem = js.document.getElementById(select)
-                mark_option_invalid(selectElem, "The same Kong cannot be used twice in the K. Rool order.")
+                errString = "The same Kong cannot be used twice in the K. Rool order."
+                mark_option_invalid(selectElem, ValidationError.krool_order_duplicates, errString)
 
 
 @bind("change", "plando_helm_order_", 5)
@@ -328,16 +455,91 @@ def validate_helm_order_no_duplicates(evt):
         if kong == "" or len(selects) == 1:
             for select in selects:
                 selectElem = js.document.getElementById(select)
-                mark_option_valid(selectElem)
+                mark_option_valid(selectElem, ValidationError.helm_order_duplicates)
         else:
             for select in selects:
                 selectElem = js.document.getElementById(select)
-                mark_option_invalid(selectElem, "The same Kong cannot be used twice in the Helm order.")
+                errString = "The same Kong cannot be used twice in the Helm order."
+                mark_option_invalid(selectElem, ValidationError.helm_order_duplicates, errString)
+
+
+@bind("change", "random_crates")
+def validate_no_crate_items_with_shuffled_crates(evt):
+    """Prevent crate items from being assigned with shuffled crates."""
+    randomCrates = js.document.getElementById("random_crates")
+    for location in MelonCrateLocationList:
+        locElem = js.document.getElementById(f"plando_{location}_item")
+        if randomCrates.checked:
+            errString = "Items cannot be assigned to melon crates when melon crate locations are shuffled."
+            mark_option_disabled(locElem, ValidationError.assigned_crate_when_shuffled, errString)
+        else:
+            mark_option_enabled(locElem, ValidationError.assigned_crate_when_shuffled)
+
+
+@bind("change", "crown_placement_rando")
+def validate_no_crown_items_with_shuffled_crowns(evt):
+    """Prevent crown items from being assigned with shuffled crowns."""
+    randomCrowns = js.document.getElementById("crown_placement_rando")
+    for location in CrownLocationList:
+        locElem = js.document.getElementById(f"plando_{location}_item")
+        if randomCrowns.checked:
+            errString = "Items cannot be assigned to battle arenas when battle arena locations are shuffled."
+            mark_option_disabled(locElem, ValidationError.assigned_crown_when_shuffled, errString)
+        else:
+            mark_option_enabled(locElem, ValidationError.assigned_crown_when_shuffled)
+
+
+@bind("change", "random_patches")
+def validate_no_dirt_items_with_shuffled_patches(evt):
+    """Prevent dirt patch items from being assigned with shuffled patches."""
+    randomPatches = js.document.getElementById("random_patches")
+    for location in DirtPatchLocationList:
+        locElem = js.document.getElementById(f"plando_{location}_item")
+        if randomPatches.checked:
+            errString = "Items cannot be assigned to dirt patches when dirt patch locations are shuffled."
+            mark_option_disabled(locElem, ValidationError.assigned_dirt_patch_when_shuffled, errString)
+        else:
+            mark_option_enabled(locElem, ValidationError.assigned_dirt_patch_when_shuffled)
+
+
+@bind("change", "random_fairies")
+def validate_no_fairy_items_with_shuffled_fairies(evt):
+    """Prevent fairy items from being assigned with shuffled fairies."""
+    randomFairies = js.document.getElementById("random_fairies")
+    for location in FairyLocationList:
+        locElem = js.document.getElementById(f"plando_{location}_item")
+        if randomFairies.checked:
+            errString = "Items cannot be assigned to fairies when fairies are shuffled."
+            mark_option_disabled(locElem, ValidationError.assigned_fairy_when_shuffled, errString)
+        else:
+            mark_option_enabled(locElem, ValidationError.assigned_fairy_when_shuffled)
+
+
+@bind("change", "kasplat_rando_setting")
+def validate_no_kasplat_items_with_location_shuffle(evt):
+    """Prevent Kasplat items from being assigned with location shuffle."""
+    kasplatRandoElem = js.document.getElementById("kasplat_rando_setting")
+    shuffled = kasplatRandoElem.value == KasplatRandoSetting.location_shuffle.name
+    for location in KasplatLocationList:
+        locElem = js.document.getElementById(f"plando_{location}_item")
+        if shuffled:
+            errString = "Items cannot be assigned to Kasplats when Kasplat locations are shuffled."
+            mark_option_disabled(locElem, ValidationError.assigned_kasplat_when_shuffled, errString)
+        else:
+            mark_option_enabled(locElem, ValidationError.assigned_kasplat_when_shuffled)
 
 
 @bind("click", "nav-plando-tab")
 def validate_on_nav(evt):
-    """Fallback for errors with Bootstrap sliders."""
+    """Apply certain changes when navigating to the plandomizer tab."""
+    validate_smaller_shops_no_conflict(evt)
+    validate_shuffle_shops_no_conflict(evt)
+    validate_no_crate_items_with_shuffled_crates(evt)
+    validate_no_crown_items_with_shuffled_crowns(evt)
+    validate_no_dirt_items_with_shuffled_patches(evt)
+    validate_no_fairy_items_with_shuffled_fairies(evt)
+    validate_no_kasplat_items_with_location_shuffle(evt)
+    # This is a fallback for errors with Bootstrap sliders.
     validate_starting_kong_count(evt)
 
 
@@ -438,10 +640,16 @@ async def import_plando_options(file):
     validate_item_limits(None)
     validate_hint_count(None)
     validate_smaller_shops_no_conflict(None)
+    validate_shuffle_shops_no_conflict(None)
     validate_starting_kong_count(None)
     validate_level_order_no_duplicates(None)
     validate_krool_order_no_duplicates(None)
     validate_helm_order_no_duplicates(None)
+    validate_no_crate_items_with_shuffled_crates(None)
+    validate_no_crown_items_with_shuffled_crowns(None)
+    validate_no_dirt_items_with_shuffled_patches(None)
+    validate_no_fairy_items_with_shuffled_fairies(None)
+    validate_no_kasplat_items_with_location_shuffle(None)
     js.savesettings()
 
 
@@ -849,17 +1057,6 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
                     ind_shop_name = ind_location["value"].name
                     errString = f'Shop locations "{shared_shop_name}" and "{ind_shop_name}" both have rewards assigned, which is invalid.'
                     errList.append(errString)
-
-    # Ensure that no shops are assigned if "Smaller Shops" is used.
-    useSmallerShops = js.document.getElementById("smaller_shops").checked
-    if useSmallerShops:
-        for locationName in ShopLocationList:
-            locationEnum = Locations[locationName]
-            locEnumStr = str(locationEnum.value)
-            if locEnumStr in plando_dict["locations"] and plando_dict["locations"][locEnumStr] != PlandoItems.Randomize:
-                shopName = LocationList[locationEnum].name
-                errString = f'Shop locations cannot be assigned if "Smaller Shops" is selected, but shop "{shopName}" has an assigned value.'
-                errList.append(errString)
 
     # Ensure that shop costs are within allowed limits.
     for shopLocation, price in plando_dict["prices"].items():

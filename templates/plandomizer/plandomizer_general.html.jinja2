@@ -72,33 +72,35 @@
                     <div style="font-style: italic;">
                         If incompatible, what is chosen here will override your chosen starting Kong in the Progression tab!
                     </div>
-                    <select name="plando_starting_kongs_selected"
-                            id="plando_starting_kongs_selected"
-                            data-toggle="tooltip"
-                            title
-                            class="form-select multi-select"
-                            aria-label="Starting Kongs"
-                            multiple
-                            size="6">
-                        <option selected value="">
-                            Random Kong(s)
-                        </option>
-                        <option value="donkey">
-                            Donkey
-                        </option>
-                        <option value="diddy">
-                            Diddy
-                        </option>
-                        <option value="lanky">
-                            Lanky
-                        </option>
-                        <option value="tiny">
-                            Tiny
-                        </option>
-                        <option value="chunky">
-                            Chunky
-                        </option>
-                    </select>
+                    <div id="plando_starting_kongs_selected_wrapper"
+                         data-toggle="tooltip"
+                         title>
+                        <select name="plando_starting_kongs_selected"
+                                id="plando_starting_kongs_selected"
+                                class="form-select multi-select"
+                                aria-label="Starting Kongs"
+                                multiple
+                                size="6">
+                            <option selected value="">
+                                Random Kong(s)
+                            </option>
+                            <option value="donkey">
+                                Donkey
+                            </option>
+                            <option value="diddy">
+                                Diddy
+                            </option>
+                            <option value="lanky">
+                                Lanky
+                            </option>
+                            <option value="tiny">
+                                Tiny
+                            </option>
+                            <option value="chunky">
+                                Chunky
+                            </option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="item-select wide-select">
@@ -154,36 +156,38 @@
                     <label id="plando_level_order_div_{{i}}"
                         class="flex-container select-order">
                         <span class="order-label">Level {{i+1}}:</span>
-                        <select id="plando_level_order_{{i}}"
-                                name="plando_level_order_{{i}}"
-                                data-toggle="tooltip"
-                                title
-                                class="form-select order-select">
-                            <option value="" selected">
-                                -- Randomize --
-                            </option>
-                            <option value="JungleJapes">
-                                Jungle Japes
-                            </option>
-                            <option value="AngryAztec">
-                                Angry Aztec
-                            </option>
-                            <option value="FranticFactory">
-                                Frantic Factory
-                            </option>
-                            <option value="GloomyGalleon">
-                                Gloomy Galleon
-                            </option>
-                            <option value="FungiForest">
-                                Fungi Forest
-                            </option>
-                            <option value="CrystalCaves">
-                                Crystal Caves
-                            </option>
-                            <option value="CreepyCastle">
-                                Creepy Castle
-                            </option>
-                        </select>
+                        <div id="plando_level_order_{{i}}_wrapper"
+                             data-toggle="tooltip"
+                             title>
+                            <select id="plando_level_order_{{i}}"
+                                    name="plando_level_order_{{i}}"
+                                    class="form-select order-select">
+                                <option value="" selected">
+                                    -- Randomize --
+                                </option>
+                                <option value="JungleJapes">
+                                    Jungle Japes
+                                </option>
+                                <option value="AngryAztec">
+                                    Angry Aztec
+                                </option>
+                                <option value="FranticFactory">
+                                    Frantic Factory
+                                </option>
+                                <option value="GloomyGalleon">
+                                    Gloomy Galleon
+                                </option>
+                                <option value="FungiForest">
+                                    Fungi Forest
+                                </option>
+                                <option value="CrystalCaves">
+                                    Crystal Caves
+                                </option>
+                                <option value="CreepyCastle">
+                                    Creepy Castle
+                                </option>
+                            </select>
+                        </div>
                     </label>
                 {% endfor %}
             </div>
@@ -193,30 +197,32 @@
                     <label id="plando_krool_order_div_{{i}}"
                         class="flex-container select-order">
                         <span class="order-label">Kong {{i+1}}:</span>
-                        <select id="plando_krool_order_{{i}}"
-                                name="plando_krool_order_{{i}}"
-                                data-toggle="tooltip"
-                                title
-                                class="form-select order-select">
-                            <option value="" selected">
-                                -- Randomize --
-                            </option>
-                            <option value="donkey">
-                                Donkey
-                            </option>
-                            <option value="diddy">
-                                Diddy
-                            </option>
-                            <option value="lanky">
-                                Lanky
-                            </option>
-                            <option value="tiny">
-                                Tiny
-                            </option>
-                            <option value="chunky">
-                                Chunky
-                            </option>
-                        </select>
+                        <div id="plando_krool_order_{{i}}_wrapper"
+                             data-toggle="tooltip"
+                             title>
+                            <select id="plando_krool_order_{{i}}"
+                                    name="plando_krool_order_{{i}}"
+                                    class="form-select order-select">
+                                <option value="" selected">
+                                    -- Randomize --
+                                </option>
+                                <option value="donkey">
+                                    Donkey
+                                </option>
+                                <option value="diddy">
+                                    Diddy
+                                </option>
+                                <option value="lanky">
+                                    Lanky
+                                </option>
+                                <option value="tiny">
+                                    Tiny
+                                </option>
+                                <option value="chunky">
+                                    Chunky
+                                </option>
+                            </select>
+                        </div>
                     </label>
                 {% endfor %}
             </div>
@@ -226,30 +232,32 @@
                     <label id="plando_helm_order_div_{{i}}"
                         class="flex-container select-order">
                         <span class="order-label">Kong {{i+1}}:</span>
-                        <select id="plando_helm_order_{{i}}"
-                                name="plando_helm_order_{{i}}"
-                                data-toggle="tooltip"
-                                title
-                                class="form-select order-select">
-                            <option value="" selected">
-                                -- Randomize --
-                            </option>
-                            <option value="donkey">
-                                Donkey
-                            </option>
-                            <option value="diddy">
-                                Diddy
-                            </option>
-                            <option value="lanky">
-                                Lanky
-                            </option>
-                            <option value="tiny">
-                                Tiny
-                            </option>
-                            <option value="chunky">
-                                Chunky
-                            </option>
-                        </select>
+                        <div id="plando_helm_order_{{i}}_wrapper"
+                             data-toggle="tooltip"
+                             title>
+                            <select id="plando_helm_order_{{i}}"
+                                    name="plando_helm_order_{{i}}"
+                                    class="form-select order-select">
+                                <option value="" selected">
+                                    -- Randomize --
+                                </option>
+                                <option value="donkey">
+                                    Donkey
+                                </option>
+                                <option value="diddy">
+                                    Diddy
+                                </option>
+                                <option value="lanky">
+                                    Lanky
+                                </option>
+                                <option value="tiny">
+                                    Tiny
+                                </option>
+                                <option value="chunky">
+                                    Chunky
+                                </option>
+                            </select>
+                        </div>
                     </label>
                 {% endfor %}
             </div>
