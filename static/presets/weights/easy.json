@@ -47,12 +47,12 @@
         "easy": 0.5,
         "medium": 0.3
     },
-    "crown_placement_rando": 0.3,
+    "crown_placement_rando": 0,
     "damage_amount": {
         "default": 0.5,
         "double": 0.5
     },
-    "dim_solved_hints": 0.8,
+    "dim_solved_hints": 1,
     "disable_tag_barrels": 0.5,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
@@ -62,8 +62,8 @@
     "enemy_drop_rando": 0,
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.5,
-    "fast_gbs": 0.8,
-    "fast_warps": 0.8,
+    "fast_gbs": 1,
+    "fast_warps": 0.9,
     "fps_display": 0.5,
     "free_trade_setting": {
         "not_blueprints": 0.3,
@@ -250,8 +250,8 @@
     "randomize_pickups": 0.6,
     "rareware_gb_fairies": {
         "min": 1,
-        "max": 20,
-        "mean": 10
+        "max": 10,
+        "mean": 5
     },
     "select_keys": 0,
     "shockwave_status": {

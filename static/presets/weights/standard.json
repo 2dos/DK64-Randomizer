@@ -239,7 +239,7 @@
     "no_melons": 0.2,
     "open_levels": 0.75,
     "open_lobbies": 0.9,
-    "perma_death": 0.05,
+    "perma_death": 0,
     "portal_numbers": 0.5,
     "progressive_hint_text": {
         "min": 30,
@@ -256,9 +256,8 @@
         "vanilla": 0.1,
         "free": 0.1,
         "low": 0.2,
-        "medium": 0.3,
-        "high": 0.25,
-        "extreme": 0.05
+        "medium": 0.35,
+        "high": 0.25
     },
     "random_starting_move_list_selected": {},
     "random_starting_region": 0.3,
@@ -268,7 +267,7 @@
     "rareware_gb_fairies": {
         "min": 1,
         "max": 20,
-        "mean": 20
+        "mean": 10
     },
     "select_keys": 0,
     "shockwave_status": {
@@ -304,13 +303,9 @@
     "warp_level_list_selected": {},
     "warp_to_isles": 0.9,
     "win_condition": {
-        "beat_krool": 0.45,
+        "beat_krool": 0.6,
         "get_key8": 0.25,
-        "all_fairies": 0.05,
-        "all_blueprints": 0.05,
-        "all_medals": 0.05,
-        "poke_snap": 0.05,
-        "all_keys": 0.1
+        "all_keys": 0.15
     },
     "wrinkly_available": 0.9,
     "wrinkly_hints": {

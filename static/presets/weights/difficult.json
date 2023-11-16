@@ -44,7 +44,7 @@
         "mean": 2
     },
     "crown_enemy_rando": {
-        "easy": 0.2,
+        "vanilla": 0.2,
         "medium": 0.5,
         "hard": 0.3
     },
@@ -212,9 +212,9 @@
         "random": 0.5
     },
     "level_randomization": {
-        "vanilla": 0.3,
+        "vanilla": 0.2,
         "level_order": 0.4,
-        "loadingzone": 0.2,
+        "loadingzone": 0.3,
         "loadingzonesdecoupled": 0.1
     },
     "logic_type": {
