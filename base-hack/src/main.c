@@ -301,6 +301,10 @@ void earlyFrame(void) {
 	if ((CurrentMap == MAP_MAINMENU) && (ObjectModel2Timer < 5)) {
 		FileScreenDLCode_Write();
 		initTracker();
+		if(Player){
+			// Remove DK's shadow in the main menu
+			Player->unk_16E = 0;
+		}
 	}
 	if (CurrentMap == MAP_NFRTITLESCREEN) {
 		if (ObjectModel2Timer == 5) {
