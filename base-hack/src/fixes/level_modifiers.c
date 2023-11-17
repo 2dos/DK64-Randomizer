@@ -94,9 +94,9 @@ void handleTimeOfDay(time_of_day_calls call) {
 				setFlag(FLAG_MODIFIER_FUNGINIGHT, is_night, FLAGTYPE_PERMANENT);
 				if (Player) {
 					if (is_night) {
-						Player->strong_kong_ostand_bitfield |= 0x100000;
+						Player->strong_kong_ostand_bitfield |= FUNGI_NIGHT_CHECK;
 					} else {
-						Player->strong_kong_ostand_bitfield &= ~0x100000;
+						Player->strong_kong_ostand_bitfield &= ~FUNGI_NIGHT_CHECK;
 					}
 				}
 			}

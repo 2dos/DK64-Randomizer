@@ -525,6 +525,11 @@ void initHack(int source) {
 				*(short*)(0x806F935A) = Rando.medal_cb_req; // Acquisition
 				*(short*)(0x806AA942) = Rando.medal_cb_req; // Pause Menu Tick
 			}
+			// Dusk
+			if (Rando.fungi_time_of_day_setting == TIME_DUSK) {
+				*(int*)(0x806C5614) = 0x50000006;
+				*(int*)(0x806BE8F8) = 0x50000008;
+			}
 			// Reduce TA Cooldown
 			if (Rando.tag_anywhere) {
 				// *(int*)(0x806F6D88) = 0; // Makes collectables not produce a flying model which delays collection. Instant change
@@ -549,6 +554,7 @@ void initHack(int source) {
 			}
 			if (ENABLE_ORIGIN_WARP_FIX) {
 				writeFunction(0x8072F1E8, &handleGrabbingLock);
+				writeFunction(0x806CAB68, &handleLedgeLock);
 				writeFunction(0x8072F458, &handleActionSet); // Actor grabbables
 				writeFunction(0x8072F46C, &handleActionSet); // Model 2 grabbables
 				writeFunction(0x806CFC64, &handleActionSet); // Ledge Grabbing

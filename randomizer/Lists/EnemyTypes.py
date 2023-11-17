@@ -11,6 +11,13 @@ from randomizer.Enums.Enemies import Enemies
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Maps import Maps
 
+ENEMY_REPLACEMENT_PRIORITY = {
+    EnemySubtype.GroundSimple: [EnemySubtype.GroundBeefy, EnemySubtype.Water, EnemySubtype.Air],
+    EnemySubtype.GroundBeefy: [EnemySubtype.GroundSimple, EnemySubtype.Water, EnemySubtype.Air],
+    EnemySubtype.Water: [EnemySubtype.Air, EnemySubtype.GroundSimple, EnemySubtype.GroundBeefy],
+    EnemySubtype.Air: [EnemySubtype.GroundSimple, EnemySubtype.GroundBeefy, EnemySubtype.Water],
+}
+
 
 class InteractionMethods:
     """Information about interactions with enemies."""
@@ -87,6 +94,11 @@ class EnemyData:
             self.minigame_enabled = False
 
 
+def getEnemyPermitted(enemy_type: EnemySubtype, banned_enemies: list):
+    """Get list of permitted enemies for a group."""
+    return [enemy for enemy in EnemyMetaData if EnemyMetaData[enemy].e_type == enemy_type and enemy not in banned_enemies and EnemyMetaData[enemy].placeable]
+
+
 class EnemyLoc:
     """Information about an enemy."""
 
@@ -99,19 +111,25 @@ class EnemyLoc:
         self.banned_enemies = banned_enemies.copy()
         self.enable_randomization = enable_randomization
         self.default_type = EnemySubtype.GroundSimple
-        self.allowed_enemies = []
+        self.allowed_enemies = [[], [], [], []]
         self.idle_speed: int = None
         self.aggro_speed: int = None
         self.respawns = respawns
         if enable_randomization:
             if default_enemy in EnemyMetaData:
                 self.default_type = EnemyMetaData[default_enemy].e_type
-            self.allowed_enemies = [enemy for enemy in EnemyMetaData if EnemyMetaData[enemy].e_type == self.default_type and enemy not in banned_enemies and EnemyMetaData[enemy].placeable]
+            self.allowed_enemies[0] = getEnemyPermitted(self.default_type, banned_enemies)
+            if self.default_type in list(ENEMY_REPLACEMENT_PRIORITY.keys()):
+                for xi, x in enumerate(ENEMY_REPLACEMENT_PRIORITY[self.default_type]):
+                    self.allowed_enemies[xi + 1] = getEnemyPermitted(x, banned_enemies)
 
     def placeNewEnemy(self, enabled_enemies: List[Any], enable_speed: bool) -> Enemies:
         """Place new enemy in slot."""
         if self.enable_randomization:
-            permitted = [enemy for enemy in self.allowed_enemies if enemy in enabled_enemies or len(enabled_enemies) == 0]
+            permitted = []
+            for x in range(4):
+                if len(permitted) == 0:
+                    permitted = [enemy for enemy in self.allowed_enemies[x] if enemy in enabled_enemies or len(enabled_enemies) == 0]
             if len(permitted) > 0:
                 self.enemy = random.choice(permitted)
             if enable_speed and self.enemy in EnemyMetaData:
@@ -336,7 +354,7 @@ EnemyMetaData = {
         e_type=EnemySubtype.Water,
         crown_enabled=False,
         minigame_enabled=False,
-        interaction=InteractionMethods(can_kill=False),
+        interaction=InteractionMethods(kill_melee=False),
     ),  #
     Enemies.Gimpfish: EnemyData(
         name="Gimpfish",
@@ -344,7 +362,7 @@ EnemyMetaData = {
         aggro=1,
         crown_enabled=False,
         minigame_enabled=False,
-        interaction=InteractionMethods(can_kill=False),
+        interaction=InteractionMethods(kill_melee=False),
     ),
     Enemies.MrDice0: EnemyData(
         name="Mr Dice (Green)",
