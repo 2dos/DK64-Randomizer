@@ -91,7 +91,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: l.vines, None, 4),  # Vines by Snide's
     ],
     Regions.AztecDonkeyQuicksandCave: [
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: Events.AztecDonkeySwitch in l.Events and l.strongKong, None, 4),
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: l.strongKong, None, 4),
 
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),
 
@@ -143,7 +143,7 @@ LogicRegions = {
     ],
     Regions.LlamaTempleBack: [
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 2),
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) or l.twirl or l.advanced_platforming, None, 2),  # Behind Mini tunnel
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl or l.advanced_platforming), None, 2),  # Behind Mini tunnel
     ],
     Regions.AngryAztecConnectorTunnel: [
     ],

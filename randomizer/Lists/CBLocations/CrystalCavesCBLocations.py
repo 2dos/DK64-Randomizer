@@ -43,7 +43,7 @@ ColoredBananaGroupList = [
         name="Gorilla Gone Tunnel (2 custom, 3 Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        logic=lambda l: l.punch and l.chunky,
+        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim(),
         locations=[
             [1, 1.0, 2494, 13, 188],
             [1, 1.0, 2570, 13, 244],
@@ -58,7 +58,7 @@ ColoredBananaGroupList = [
         name="Around Gorilla Gone room",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
-        logic=lambda l: l.punch and l.chunky,
+        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim(),
         locations=[
             [1, 1.0, 2502, 13, 390],
             [1, 1.0, 2465, 13, 445],
@@ -845,7 +845,7 @@ ColoredBananaGroupList = [
         name="In Boulder igloo (4 custom, 6 Chunky)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.BoulderCave,
-        logic=lambda l: l.chunky and l.barrels,
+        logic=lambda l: (l.chunky and l.barrels) or l.phasewalk,
         locations=[
             [1, 1.0, 1885, 280, 2537],
             [1, 1.0, 1941, 280, 2548],
@@ -1115,7 +1115,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy, Kongs.tiny],
         region=Regions.IglooArea,
         vanilla=True,
-        logic=lambda l: (l.jetpack and l.isdiddy) or (l.twirl and l.istiny),
+        logic=lambda l: (l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.settings.krusha_kong != Kongs.Tiny),
         locations=[[5, 1.0, 327.7669372558594, 154.5, 1521.9307861328125]],
     ),
     ColoredBananaGroup(
@@ -1825,7 +1825,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.CrystalCavesMain,
         vanilla=True,
-        logic=lambda l: l.punch and l.chunky,
+        logic=lambda l: (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim(),
         points=[[2698, 83, 501], [2519, 81, 572]],
     ),
     Balloon(
