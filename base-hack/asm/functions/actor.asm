@@ -106,6 +106,7 @@
 .definelabel updateModel, 0x806C8F8C
 .definelabel runAnimFrame, 0x80613CA8
 .definelabel handlePoleGrabbing, 0x8072F230
+.definelabel handleLedgeGrabbing, 0x806CF9CC
 .definelabel unkCutsceneFunction, 0x8061D1FC
 .definelabel genericKongCode, 0x806F3190
 .definelabel headphonesCode, 0x806A7BDC

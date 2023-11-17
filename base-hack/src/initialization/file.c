@@ -39,7 +39,7 @@ void expandSaveFile(int static_expansion, int actor_count) {
 	// int expansion = static_expansion;
 	int expansion = static_expansion + actor_count;
 	int flag_block_size = 0x320 + expansion;
-	int targ_gb_bits = 5; // Max 127
+	int targ_gb_bits = 7; // Max 127
 	int added_bits = (targ_gb_bits - 3) * 8;
 	int kong_var_size = 0xA1 + added_bits;
 	int file_info_location = flag_block_size + (5 * kong_var_size);
@@ -65,7 +65,7 @@ void expandSaveFile(int static_expansion, int actor_count) {
 	// Increase GB Storage Size
 	*(short*)(0x8060BE12) = targ_gb_bits; // Bit Size
 	*(short*)(0x8060BE06) = targ_gb_bits << 3; // Allocation for all levels
-	*(short*)(0x8060BE2A) = 0x4021; // SUBU -> ADDU
+	*(short*)(0x8060BE26) = 0x40C0; // SLL 2 -> SLL 3
 	*(int*)(0x8060BCC0) = 0x24090000 | kong_var_size; // ADDIU $t1, $r0, kong_var_size
 	*(int*)(0x8060BCC4) = 0x01C90019; // MULTU $t1, $t6
 	*(int*)(0x8060BCC8) = 0x00004812; // MFLO $t1
