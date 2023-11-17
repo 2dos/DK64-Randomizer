@@ -238,7 +238,7 @@
     "no_healing": 0.5,
     "no_melons": 0.2,
     "open_levels": 0.75,
-    "open_lobbies": 0.9,
+    "open_lobbies": 0.6,
     "perma_death": 0,
     "portal_numbers": 0.5,
     "progressive_hint_text": {
