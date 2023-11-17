@@ -79,7 +79,7 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 4),
     ],
     Regions.Museum: [
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (l.punch and l.barrels) or l.phasewalk, None, 1),  # In boulder
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (l.punch and l.barrels) or l.phasewalk, None, 1),  # Inside boulder (Chunky)
         Collectible(Collectibles.balloon, Kongs.chunky, lambda l: l.pineapple, None, 1),
 
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),
@@ -105,7 +105,7 @@ LogicRegions = {
     ],
     Regions.Mausoleum: [
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and (l.sprint or l.generalclips or l.phasewalk), None, 1),
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 1),
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.twirl or l.advanced_platforming, None, 1), # In Green Goo Gap
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.grape and l.sprint) or l.generalclips or l.phasewalk, None, 3),
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl or l.phasewalk, None, 2),
