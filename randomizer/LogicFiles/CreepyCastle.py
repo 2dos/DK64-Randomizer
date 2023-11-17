@@ -190,6 +190,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleMuseumToMain),
+        TransitionFront(Regions.MuseumBehindGlass, lambda l: l.phasewalk),
     ]),
 
     Regions.LowerCave: Region("Lower Cave", "Castle Underground", Levels.CreepyCastle, True, -1, [
@@ -211,8 +212,8 @@ LogicRegions = {
     ]),
 
     Regions.Crypt: Region("Crypt", "Castle Underground", Levels.CreepyCastle, False, -1, [
-        LocationLogic(Locations.CastleDiddyCrypt, lambda l: (l.peanut or l.phasewalk) and l.charge and l.isdiddy),
-        LocationLogic(Locations.CastleChunkyCrypt, lambda l: (((l.pineapple and l.punch) or l.phasewalk) and l.ischunky) or (l.phasewalk and l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.CastleDiddyCrypt, lambda l: (l.peanut or l.phasewalk or l.generalclips) and l.charge and l.isdiddy),
+        LocationLogic(Locations.CastleChunkyCrypt, lambda l: (((l.pineapple and l.punch) or l.phasewalk or l.generalclips) and l.ischunky) or ((l.phasewalk or l.generalclips) and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin0, lambda l: (l.peanut or l.phasewalk or l.generalclips) and l.isdiddy and l.charge),
         LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin1, lambda l: (l.peanut or l.phasewalk or l.generalclips) and l.isdiddy and l.charge),
         LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin2, lambda l: (l.peanut or l.phasewalk or l.generalclips) and l.isdiddy and l.charge),
@@ -257,7 +258,7 @@ LogicRegions = {
     ]),
 
     Regions.UpperCave: Region("Upper Cave", "Castle Underground", Levels.CreepyCastle, True, -1, [
-        LocationLogic(Locations.CastleTinyOverChasm, lambda l: l.twirl and l.istiny, MinigameType.BonusBarrel),
+        LocationLogic(Locations.CastleTinyOverChasm, lambda l: (l.twirl or l.phasewalk) and l.istiny, MinigameType.BonusBarrel),
         LocationLogic(Locations.CastleKasplatNearCandy, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.CastleUpperCaveEnemy_NearDungeon, lambda l: True),
         LocationLogic(Locations.CastleUpperCaveEnemy_NearPit, lambda l: True),

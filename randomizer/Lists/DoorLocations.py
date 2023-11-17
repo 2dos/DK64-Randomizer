@@ -4,6 +4,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Switches import Switches
 from randomizer.Logic import RegionsOriginal as RegionList
 from randomizer.LogicClasses import TransitionFront
 
@@ -536,7 +537,7 @@ door_locations = {
             location=[1070.018, 0.0, 738.609, 190.0],
             group=1,
             moveless=False,
-            logic=lambda l: (l.tiny and l.feather) or l.phasewalk,
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.chunky,
