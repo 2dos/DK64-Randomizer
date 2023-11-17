@@ -560,7 +560,15 @@ ColoredBananaGroupList = [
         logic=lambda l: l.swim,
         locations=[[5, 1.2, 1099, 165, 1496], [5, 1.2, 2307, 165, 1895]],
     ),
-    ColoredBananaGroup(group=40, map_id=Maps.JapesMountain, name="Bunch on Diddy's switch", konglist=[Kongs.diddy], region=Regions.Mine, logic=lambda l: l.peanut or l.advanced_platforming, locations=[[5, 1.0, 485, 144, 122]]),
+    ColoredBananaGroup(
+        group=40,
+        map_id=Maps.JapesMountain,
+        name="Bunch on Diddy's switch",
+        konglist=[Kongs.diddy],
+        region=Regions.Mine,
+        logic=lambda l: l.peanut or l.advanced_platforming,
+        locations=[[5, 1.0, 485, 144, 122]],
+    ),
     ColoredBananaGroup(
         group=41,
         map_id=Maps.JapesMountain,
@@ -904,7 +912,8 @@ ColoredBananaGroupList = [
         name="Tiny's caged GB",
         konglist=[Kongs.tiny],
         region=Regions.JungleJapesMain,
-        logic=lambda l: ((Events.JapesTinySwitch in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny) or ((l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.settings.free_trade_items),
+        logic=lambda l: ((Events.JapesTinySwitch in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.tiny)
+        or ((l.phasewalk or l.CanPhaseswim() or l.CanSkew(False)) and l.settings.free_trade_items),
         locations=[[5, 1.0, 1335, 285, 1974], [5, 1.0, 1300, 285, 1946]],
     ),
     ColoredBananaGroup(
@@ -992,7 +1001,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.Mine,
         vanilla=True,
-        Logic= lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.peanut,
+        logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.peanut,
         locations=[[5, 1.0, 508.2171936035156, 223.6666717529297, 1352.9554443359375]],
     ),
     ColoredBananaGroup(
@@ -1365,7 +1374,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.BeyondRambiGate,
         vanilla=True,
-        Logic=lambda l: l.barrels,
+        logic=lambda l: l.barrels,
         locations=[[5, 1.0, 823, 290, 3637]],
     ),
 ]

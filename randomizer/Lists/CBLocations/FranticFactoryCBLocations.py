@@ -429,7 +429,9 @@ ColoredBananaGroupList = [
         logic=lambda l: l.CanAccessRNDRoom() or l.trombone,
         locations=[[5, 1.0, 3330, 1311, 481], [5, 1.0, 3359, 1311, 444], [5, 1.0, 3386, 1311, 407]],
     ),
-    ColoredBananaGroup(group=41, map_id=Maps.FranticFactory, name="On F Key", konglist=[Kongs.lanky], region=Regions.RandD, logic=lambda l: l.CanAccessRNDRoom() or l.trombone, locations=[[5, 1.0, 3460, 1285, 424]]),
+    ColoredBananaGroup(
+        group=41, map_id=Maps.FranticFactory, name="On F Key", konglist=[Kongs.lanky], region=Regions.RandD, logic=lambda l: l.CanAccessRNDRoom() or l.trombone, locations=[[5, 1.0, 3460, 1285, 424]]
+    ),
     ColoredBananaGroup(
         group=42,
         map_id=Maps.FranticFactory,
@@ -1779,7 +1781,7 @@ BalloonList = [
         konglist=[Kongs.chunky],
         region=Regions.RandD,
         vanilla=True,
-        logic= lambda l: ((l.punch and l.triangle) or l.CanAccessRNDRoom()),
+        logic=lambda l: ((l.punch and l.triangle) or l.CanAccessRNDRoom()),
         points=[[4424, 1490, 1560], [4567, 1486, 1341]],
     ),
     Balloon(

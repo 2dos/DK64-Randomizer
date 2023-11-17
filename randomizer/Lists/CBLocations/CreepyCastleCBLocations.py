@@ -1026,7 +1026,9 @@ ColoredBananaGroupList = [
             [1, 1.0, 402, 0, 495],
         ],
     ),
-    ColoredBananaGroup(group=87, map_id=Maps.CastleShed, name="On Gorilla Gone pad", konglist=[Kongs.chunky], region=Regions.Shed, logic=lambda l: l.punch or l.phasewalk, locations=[[5, 1.0, 304, 12, 354]]),
+    ColoredBananaGroup(
+        group=87, map_id=Maps.CastleShed, name="On Gorilla Gone pad", konglist=[Kongs.chunky], region=Regions.Shed, logic=lambda l: l.punch or l.phasewalk, locations=[[5, 1.0, 304, 12, 354]]
+    ),
     ColoredBananaGroup(
         group=88,
         map_id=Maps.CastleLowerCave,
@@ -1955,7 +1957,14 @@ BalloonList = [
         id=27, map_id=Maps.CastleMausoleum, name="In and out of green goo pit", speed=11, konglist=[Kongs.lanky, Kongs.tiny], region=Regions.Mausoleum, points=[[1002, 220, 1731], [1002, 0, 1731]]
     ),
     Balloon(
-        id=28, map_id=Maps.CastleMausoleum, name="Above green goo room", speed=8, konglist=[Kongs.tiny], region=Regions.Mausoleum, logic=lambda l: l.twirl or l.advanced_platforming, points=[[1304, 240, 2150], [967, 230, 2140]]
+        id=28,
+        map_id=Maps.CastleMausoleum,
+        name="Above green goo room",
+        speed=8,
+        konglist=[Kongs.tiny],
+        region=Regions.Mausoleum,
+        logic=lambda l: l.twirl or l.advanced_platforming,
+        points=[[1304, 240, 2150], [967, 230, 2140]],
     ),
     Balloon(
         id=29,

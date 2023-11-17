@@ -105,7 +105,7 @@ LogicRegions = {
     ],
     Regions.Mausoleum: [
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and (l.sprint or l.generalclips or l.phasewalk), None, 1),
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.twirl or l.advanced_platforming, None, 1), # In Green Goo Gap
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.twirl or l.advanced_platforming, None, 1),  # In Green Goo Gap
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.grape and l.sprint) or l.generalclips or l.phasewalk, None, 3),
         Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl or l.phasewalk, None, 2),
