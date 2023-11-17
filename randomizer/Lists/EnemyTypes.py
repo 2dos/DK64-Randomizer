@@ -18,6 +18,7 @@ ENEMY_REPLACEMENT_PRIORITY = {
     EnemySubtype.Air: [EnemySubtype.GroundSimple, EnemySubtype.GroundBeefy, EnemySubtype.Water],
 }
 
+
 class InteractionMethods:
     """Information about interactions with enemies."""
 
@@ -92,9 +93,11 @@ class EnemyData:
         if air:
             self.minigame_enabled = False
 
+
 def getEnemyPermitted(enemy_type: EnemySubtype, banned_enemies: list):
     """Get list of permitted enemies for a group."""
     return [enemy for enemy in EnemyMetaData if EnemyMetaData[enemy].e_type == enemy_type and enemy not in banned_enemies and EnemyMetaData[enemy].placeable]
+
 
 class EnemyLoc:
     """Information about an enemy."""
