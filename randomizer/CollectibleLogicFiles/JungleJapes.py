@@ -22,7 +22,7 @@ LogicRegions = {
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 5),  # Around entrance to underground
 
         Collectible(Collectibles.coin, Kongs.donkey, lambda l: True, None, 3),  # In first tunnel
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.vines, None, 3),  # Around BBlast pad
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: l.vines or l.CanMoonkick(), None, 3),  # Around BBlast pad
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.swim, None, 3),  # In river
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: l.swim, None, 2),  # In river
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),  # By DK Portal
@@ -103,7 +103,7 @@ LogicRegions = {
     Regions.Mine: [
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 5),  # In stream
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # On mound by peanut switch
-        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) or l.advanced_platforming, None, 1),  # On box by conveyors
+        Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk), None, 1),  # On box by conveyors
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and (l.charge or l.advanced_platforming), None, 1),  # In minecart
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.peanut, None, 1),  # In conveyor room
 

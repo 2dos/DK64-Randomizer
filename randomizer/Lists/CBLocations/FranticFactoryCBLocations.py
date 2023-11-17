@@ -1065,7 +1065,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.lanky],
         region=Regions.UpperCore,
         vanilla=True,
-        logic=lambda l: l.handstand,
+        logic=lambda l: l.handstand or l.phasewalk,
         locations=[
             [5, 1.0, 948.8671875, 818.39599609375, 1477.1390380859375],
             [5, 1.0, 847.3552856445312, 770.4682006835938, 1490.0218505859375],
@@ -1218,7 +1218,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.Testing,
         vanilla=True,
-        logic=lambda l: l.mini,
+        logic=lambda l: l.mini or l.phasewalk,
         locations=[[5, 1.0, 2479.365234375, 1106.81640625, 850.234130859375]],
     ),
     ColoredBananaGroup(
@@ -1257,7 +1257,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.RandD,
         vanilla=True,
-        logic=lambda l: l.punch and l.triangle,
+        logic=lambda l: (l.punch and l.triangle) or l.CanAccessRNDRoom(),
         locations=[
             [1, 1.0, 4655.8388671875, 1339.0, 1240.5621337890625],
             [1, 1.0, 4767.98388671875, 1339.0, 1316.2774658203125],
@@ -1273,7 +1273,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.RandD,
         vanilla=True,
-        logic=lambda l: l.punch and l.triangle,
+        logic=lambda l: (l.punch and l.triangle) or l.CanAccessRNDRoom(),
         locations=[
             [1, 1.0, 4385.7177734375, 1339.0, 1695.80419921875],
             [1, 1.0, 4492.11083984375, 1339.0, 1768.3846435546875],
@@ -1665,7 +1665,7 @@ BalloonList = [
         konglist=[Kongs.lanky],
         region=Regions.RandD,
         vanilla=True,
-        logic=lambda l: l.trombone,
+        logic=lambda l: (l.trombone or l.CanAccessRNDRoom()),
         points=[[3594, 1380, 404], [3516, 1384, 520], [3423, 1386, 628]],
     ),
     Balloon(
@@ -1686,7 +1686,7 @@ BalloonList = [
         konglist=[Kongs.diddy],
         region=Regions.RandD,
         vanilla=True,
-        logic=lambda l: l.guitar,
+        logic=lambda l: l.guitar or l.CanAccessRNDRoom(),
         points=[[4539, 1484, 344], [4679, 1488, 571]],
     ),
     Balloon(
@@ -1697,7 +1697,7 @@ BalloonList = [
         konglist=[Kongs.diddy],
         region=Regions.RandD,
         vanilla=True,
-        logic=lambda l: l.guitar,
+        logic=lambda l: l.guitar or l.CanAccessRNDRoom(),
         points=[[4413, 1498, 709], [4336, 1510, 583], [4244, 1502, 450]],
     ),
     Balloon(
@@ -1738,7 +1738,7 @@ BalloonList = [
         konglist=[Kongs.diddy],
         region=Regions.RandD,
         vanilla=True,
-        logic=lambda l: l.guitar,
+        logic=lambda l: l.guitar or l.CanAccessRNDRoom(),
         points=[[4313, 1484, 446], [4521, 1486, 315]],
     ),
     Balloon(
@@ -1779,7 +1779,7 @@ BalloonList = [
         konglist=[Kongs.chunky],
         region=Regions.RandD,
         vanilla=True,
-        logic=lambda l: l.punch and l.triangle,
+        logic= lambda l: ((l.punch and l.triangle) or l.CanAccessRNDRoom()),
         points=[[4424, 1490, 1560], [4567, 1486, 1341]],
     ),
     Balloon(
