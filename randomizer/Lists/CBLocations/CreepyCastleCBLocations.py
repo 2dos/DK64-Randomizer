@@ -999,7 +999,7 @@ ColoredBananaGroupList = [
         name="On BB pads",
         konglist=[Kongs.lanky],
         region=Regions.Dungeon,
-        logic=lambda l: l.balloon and l.trombone and (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk),
+        logic=lambda l: (l.balloon and l.trombone and (l.CanSlamSwitch(Levels.CreepyCastle, 3)) or l.phasewalk),
         locations=[[5, 1.0, 542, 120, 1010], [5, 1.0, 462, 120, 769], [5, 1.0, 608, 120, 504]],
     ),
     ColoredBananaGroup(
@@ -2060,7 +2060,7 @@ BalloonList = [
         konglist=[Kongs.lanky],
         region=Regions.Mausoleum,
         vanilla=True,
-        logic=lambda l: l.grape and (l.sprint or l.generalclips or l.phasewalk),
+        logic=lambda l: l.sprint or l.generalclips or l.phasewalk,
         points=[[2366, 134, 465], [2399, 124, 652], [2270, 126, 563]],
     ),
     Balloon(

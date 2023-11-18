@@ -143,7 +143,7 @@ LogicRegions = {
     ],
     Regions.LlamaTempleBack: [
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 2),
-        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl or l.advanced_platforming), None, 2),  # Behind Mini tunnel
+        Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.advanced_platforming), None, 2),  # Behind Mini tunnel
     ],
     Regions.AngryAztecConnectorTunnel: [
     ],

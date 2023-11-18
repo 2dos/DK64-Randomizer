@@ -155,7 +155,7 @@
 
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| Bunch on Diddy's switch | 5 | l.peanut or l.advanced_platforming | 
+| Bunch on Diddy's switch | 5 |  | 
 | Singles on path to switch | 5 |  | 
 | Big upside down minecart | 5 |  | 
 | 2 bunches on big barrel (with ammo) | 10 |  | 
@@ -1557,7 +1557,7 @@
 | Path between Diddy and Lanky switches | 10 |  | 
 | In DK's room behind puzzle | 5 | l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk | 
 | In Diddy's room between chains | 10 | l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk | 
-| On BB pads | 15 | l.balloon and l.trombone and (l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk) | 
+| On BB pads | 15 | (l.balloon and l.trombone and (l.CanSlamSwitch(Levels.CreepyCastle, 3)) or l.phasewalk) | 
 | On face puzzle (Donkey) | 5 | l.CanSlamSwitch(Levels.CreepyCastle, 3) or l.phasewalk | 
 | In cages DK side (Diddy) | 10 | l.punch or l.phasewalk | 
 | In cages Lanky side (Diddy) | 10 | l.punch or l.phasewalk | 
@@ -1630,7 +1630,7 @@
 | In green goo gap (Tiny) | 5 | l.twirl or l.advanced_platforming | 
 | In and out of green goo pit | Balloon |  | 
 | Above green goo room | Balloon | l.twirl or l.advanced_platforming | 
-| In Lanky's green goo room (Lanky) | Balloon | l.grape and (l.sprint or l.generalclips or l.phasewalk) | 
+| In Lanky's green goo room (Lanky) | Balloon | l.sprint or l.generalclips or l.phasewalk | 
 </details>
 <details>
 <summary>Castle Upper Cave</summary>
