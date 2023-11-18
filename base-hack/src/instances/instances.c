@@ -1329,9 +1329,15 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			return 1;
 		} else {
 			if (param2 == 1) {
-				return Player->strong_kong_ostand_bitfield & FUNGI_NIGHT_CHECK;
+				if (Player->strong_kong_ostand_bitfield & FUNGI_NIGHT_CHECK) {
+					return 1;
+				}
+				return 0;
 			} else {
-				return !(Player->strong_kong_ostand_bitfield & FUNGI_NIGHT_CHECK);
+				if ((Player->strong_kong_ostand_bitfield & FUNGI_NIGHT_CHECK) == 0) {
+					return 1;
+				}
+				return 0;
 			}
 		}
 	}
