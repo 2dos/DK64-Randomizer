@@ -1001,7 +1001,6 @@ ColoredBananaGroupList = [
         region=Regions.Mine,
         vanilla=True,
         logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.peanut,
-
         locations=[[5, 1.0, 508.2171936035156, 223.6666717529297, 1352.9554443359375]],
     ),
     ColoredBananaGroup(
