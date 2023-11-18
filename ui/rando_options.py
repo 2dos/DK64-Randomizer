@@ -1026,6 +1026,23 @@ def enable_plandomizer(evt):
         pass
 
 
+@bind("click", "enable_plandomizer")
+def disable_switchsanity_with_plandomizer(evt):
+    """Disable Switchsanity if the Plandomizer is being used."""
+    disabled = False
+    switchsanity = js.document.getElementsByName("switchsanity")[0]
+    if js.document.getElementById("enable_plandomizer").checked:
+        disabled = True
+    try:
+        if disabled:
+            switchsanity.checked = False
+            switchsanity.setAttribute("disabled", "disabled")
+        else:
+            switchsanity.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
 @bind("change", "plando_starting_kongs_selected")
 def plando_disable_kong_items(evt):
     """Do not allow starting Kongs to be placed as items."""
@@ -1361,6 +1378,7 @@ def shuffle_settings(evt):
     disable_hard_mode_modal(None)
     item_rando_list_changed(None)
     enable_plandomizer(None)
+    disable_switchsanity_with_plandomizer(None)
     toggle_medals_box(None)
     toggle_extreme_prices_option(None)
     toggle_logic_type(None)
