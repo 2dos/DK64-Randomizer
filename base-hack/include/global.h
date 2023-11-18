@@ -416,6 +416,7 @@ extern void loadWidescreen(overlays loaded_overlay);
 extern void initFilename(void);
 
 extern void handleGrabbingLock(void* player, int player_index, int allow_vines);
+extern void handleLedgeLock(void);
 extern void handleActionSet(int action, void* actor, int player_index);
 extern int getTrackerYOffset(void);
 

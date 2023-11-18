@@ -439,6 +439,7 @@ def patching_response(spoiler):
             0x53,  # Night Gate - Owl Tree Diddy Coins
             0x48,  # Night Gate - Beanstalk T&S
             0x1F1,  # Night Gate - Mushroom Night Door
+            0x46,  # Night Gate - Crown Trapdoor
         ],
         Maps.ForestGiantMushroom: [0x11],  # Night Gate - GMush Interior
         Maps.ForestMillFront: [0xB],  # Night Gate - Mill Front
