@@ -64,7 +64,7 @@
 | Angry Aztec Lobby | Angry Aztec: Lobby - Lower Right | Wrinkly |  | 
 | Angry Aztec Lobby | Angry Aztec: Lobby - Left of Portal | Wrinkly |  | 
 | Angry Aztec Lobby | Angry Aztec: Lobby - Right of Portal | Wrinkly |  | 
-| Angry Aztec Lobby | Angry Aztec: Lobby - Behind Feather Door | Wrinkly | (l.tiny and l.feather) or l.phasewalk | 
+| Angry Aztec Lobby | Angry Aztec: Lobby - Behind Feather Door | Wrinkly | l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk | 
 | Angry Aztec | Angry Aztec: Near Funky's | Both |  | 
 | Angry Aztec | Angry Aztec: Near Cranky's | Both |  | 
 | Angry Aztec | Angry Aztec: Near Candy's | Both |  | 

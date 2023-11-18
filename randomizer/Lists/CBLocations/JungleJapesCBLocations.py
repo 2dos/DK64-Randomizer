@@ -191,7 +191,7 @@ ColoredBananaGroupList = [
         name="Leading up to and on BBlast pad",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.chunky],
         region=Regions.JungleJapesStart,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.vines or l.CanMoonKick(),
         locations=[[1, 1.0, 2308, 535, 1453], [1, 1.0, 2367, 550, 1330], [1, 1.0, 2422, 552, 1212], [1, 1.0, 2415, 530, 1123], [1, 1.0, 2511, 530, 1179], [5, 1.0, 2454, 544, 1152]],
     ),
     ColoredBananaGroup(
@@ -560,7 +560,14 @@ ColoredBananaGroupList = [
         logic=lambda l: l.swim,
         locations=[[5, 1.2, 1099, 165, 1496], [5, 1.2, 2307, 165, 1895]],
     ),
-    ColoredBananaGroup(group=40, map_id=Maps.JapesMountain, name="Bunch on Diddy's switch", konglist=[Kongs.diddy], region=Regions.Mine, logic=lambda l: l.peanut, locations=[[5, 1.0, 485, 144, 122]]),
+    ColoredBananaGroup(
+        group=40,
+        map_id=Maps.JapesMountain,
+        name="Bunch on Diddy's switch",
+        konglist=[Kongs.diddy],
+        region=Regions.Mine,
+        locations=[[5, 1.0, 485, 144, 122]],
+    ),
     ColoredBananaGroup(
         group=41,
         map_id=Maps.JapesMountain,
@@ -583,7 +590,7 @@ ColoredBananaGroupList = [
         name="Dynamite box in chimpy charge switch room",
         konglist=[Kongs.diddy],
         region=Regions.Mine,
-        logic=lambda l: l.charge,
+        logic=lambda l: l.charge or l.phasewalk,
         locations=[[5, 1.0, 325, 138, 1511]],
     ),
     ColoredBananaGroup(
@@ -592,7 +599,7 @@ ColoredBananaGroupList = [
         name="Bunches on staircase-shaped boxes",
         konglist=[Kongs.diddy],
         region=Regions.Mine,
-        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk,
         locations=[[5, 1.0, 93, 145, 962], [5, 1.0, 40, 225, 1057]],
     ),
     ColoredBananaGroup(
@@ -601,7 +608,7 @@ ColoredBananaGroupList = [
         name="Conveyors",
         konglist=[Kongs.diddy],
         region=Regions.Mine,
-        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk,
         locations=[
             [1, 1.0, 157, 208, 840],
             [1, 1.0, 125, 246, 898],
@@ -667,9 +674,9 @@ ColoredBananaGroupList = [
         group=51,
         map_id=Maps.JapesUnderGround,
         name="On blueprint platform",
-        konglist=[Kongs.tiny, Kongs.chunky],
+        konglist=[Kongs.chunky],
         region=Regions.JapesCatacomb,
-        logic=lambda l: ((l.pineapple and l.vines and l.ischunky) or (l.twirl and l.istiny)),
+        logic=lambda l: l.pineapple and l.vines and l.ischunky,
         locations=[[5, 1.0, 203, 5, 686]],
     ),
     ColoredBananaGroup(
@@ -678,7 +685,7 @@ ColoredBananaGroupList = [
         name="Paths to 1st & 2nd Switch",
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
-        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isTiny,
         locations=[
             [1, 2.0, 1203, 213, 1424],
             [1, 2.0, 1118, 178, 1423],
@@ -726,7 +733,7 @@ ColoredBananaGroupList = [
         name="Rings on steps (12 custom, 8 Tiny)",
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
-        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1),
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isTiny,
         locations=[
             [1, 2.0, 2138, 295, 1349],
             [1, 2.0, 2180, 295, 1285],
@@ -993,7 +1000,8 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.Mine,
         vanilla=True,
-        Logic= lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.peanut,
+        logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.peanut,
+
         locations=[[5, 1.0, 508.2171936035156, 223.6666717529297, 1352.9554443359375]],
     ),
     ColoredBananaGroup(
@@ -1366,7 +1374,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.BeyondRambiGate,
         vanilla=True,
-        Logic=lambda l: l.barrels,
+        logic=lambda l: l.barrels,
         locations=[[5, 1.0, 823, 290, 3637]],
     ),
 ]

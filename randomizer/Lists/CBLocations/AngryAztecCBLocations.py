@@ -743,7 +743,7 @@ ColoredBananaGroupList = [
         name="Inside giant boulder",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.AngryAztecMain,
-        logic=lambda l: l.chunky and l.hunkyChunky and l.barrels,
+        logic=lambda l: (l.chunky and l.hunkyChunky and l.barrels) or l.phasewalk,
         locations=[[5, 1.0, 3585, 118, 2406]],
     ),
     ColoredBananaGroup(
@@ -895,7 +895,7 @@ ColoredBananaGroupList = [
         name="First dead end",
         konglist=[Kongs.diddy],
         region=Regions.DiddyTemple,
-        logic=lambda l: l.peanut,
+        logic=lambda l: l.peanut or l.phasewalk,
         locations=[[5, 1.0, 1015, 25, 500], [5, 1.0, 1097, 25, 500]],
     ),
     ColoredBananaGroup(
@@ -1210,7 +1210,7 @@ ColoredBananaGroupList = [
         name="Right side Mini Monkey room (scale 0.6)",
         konglist=[Kongs.tiny],
         region=Regions.TinyTemple,
-        logic=lambda l: l.mini,
+        logic=lambda l: l.mini or l.phasewalk,
         locations=[
             [1, 0.6, 195, 48, 600],
             [1, 0.6, 145, 48, 600],
