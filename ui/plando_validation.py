@@ -4,6 +4,7 @@ import json
 import re
 
 import js
+from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Levels import Levels
@@ -35,7 +36,6 @@ from ui.rando_options import (
     plando_disable_kong_items,
     plando_hide_helm_options,
     plando_hide_krool_options,
-    plando_lock_key_8_in_helm,
 )
 
 
@@ -58,6 +58,7 @@ class ValidationError(IntEnum):
     assigned_crown_when_shuffled = auto()
     assigned_crate_when_shuffled = auto()
     assigned_kasplat_when_shuffled = auto()
+    key_8_locked_in_helm = auto()
 
 
 # This dictionary stores all elements that have either been disabled or marked
@@ -117,13 +118,13 @@ def mark_option_valid(element, errType: ValidationError) -> None:
     write_current_tooltip(element.id)
 
 
-def mark_option_disabled(element, errType: ValidationError, errMessage: str) -> None:
+def mark_option_disabled(element, errType: ValidationError, errMessage: str, optionValue: str = "") -> None:
     """Disable the given option, and add an associated error."""
     if errMessage == "":
         raise ValueError("The error string passed to mark_option_disabled must be non-empty.")
     elemErrors = get_errors(element.id)
     elemErrors["disabled"][errType] = errMessage
-    element.value = ""
+    element.value = optionValue
     element.setAttribute("disabled", "disabled")
     write_current_tooltip(element.id)
 
@@ -139,6 +140,16 @@ def mark_option_enabled(element, errType: ValidationError) -> None:
             enabled = False
     if enabled:
         element.removeAttribute("disabled")
+    write_current_tooltip(element.id)
+
+
+def remove_all_errors_from_option(element) -> None:
+    """Remove all errors from a given option, and mark it as valid/enabled."""
+    elemErrors = get_errors(element.id)
+    elemErrors["invalid"] = dict()
+    elemErrors["disabled"] = dict()
+    element.removeAttribute("disabled")
+    element.classList.remove("invalid")
     write_current_tooltip(element.id)
 
 
@@ -529,9 +540,32 @@ def validate_no_kasplat_items_with_location_shuffle(evt):
             mark_option_enabled(locElem, ValidationError.assigned_kasplat_when_shuffled)
 
 
+@bind("click", "key_8_helm")
+def lock_key_8_in_helm(evt):
+    """If key 8 is locked in Helm, force that location to hold key 8."""
+    key_8_locked_in_helm = js.document.getElementById("key_8_helm").checked
+    end_of_helm = js.document.getElementById("plando_HelmKey_item")
+    if key_8_locked_in_helm:
+        # Forcibly select Key 8 for the End of Helm dropdown and disable it.
+        errString = 'The "Lock Key 8 in Helm" setting has been chosen.'
+        mark_option_disabled(end_of_helm, ValidationError.key_8_locked_in_helm, errString, Items.HideoutHelmKey.name)
+    else:
+        # Enable the End of Helm dropdown. If Key 8 is currently placed there,
+        # remove it as the dropdown option.
+        if end_of_helm.value == Items.HideoutHelmKey.name:
+            end_of_helm.value = ""
+        mark_option_enabled(end_of_helm, ValidationError.key_8_locked_in_helm)
+
+
 @bind("click", "nav-plando-tab")
 def validate_on_nav(evt):
     """Apply certain changes when navigating to the plandomizer tab."""
+    perform_setting_conflict_validation(evt)
+
+
+def perform_setting_conflict_validation(evt):
+    """Perform checks that compare plando settings to other settings."""
+    lock_key_8_in_helm(evt)
     validate_smaller_shops_no_conflict(evt)
     validate_shuffle_shops_no_conflict(evt)
     validate_no_crate_items_with_shuffled_crates(evt)
@@ -636,7 +670,7 @@ async def import_plando_options(file):
     plando_disable_kong_items(None)
     plando_hide_helm_options(None)
     plando_hide_krool_options(None)
-    plando_lock_key_8_in_helm(None)
+    lock_key_8_in_helm(None)
     validate_item_limits(None)
     validate_hint_count(None)
     validate_smaller_shops_no_conflict(None)
@@ -803,35 +837,35 @@ def reset_plando_options_no_prompt() -> None:
     for option in level_options + kong_options:
         option_element = js.document.getElementById(option)
         option_element.value = ""
-        mark_option_valid(option_element)
+        remove_all_errors_from_option(option_element)
     kongs_element = js.document.getElementById("plando_starting_kongs_selected")
     kongs_element.options.item(0).selected = True
     for i in range(1, 6):
         kongs_element.options.item(i).selected = False
-    mark_option_valid(kongs_element)
+    remove_all_errors_from_option(kongs_element)
 
     for location in ItemLocationList + ShopLocationList:
         location_element = js.document.getElementById(f"plando_{location}_item")
         location_element.value = ""
-        mark_option_valid(location_element)
+        remove_all_errors_from_option(location_element)
     for shop in ShopLocationList:
         # Skip the Rareware Coin location, which has no price.
         if shop == "RarewareCoin":
             continue
         price_element = js.document.getElementById(f"plando_{shop}_shop_cost")
         price_element.value = ""
-        mark_option_valid(price_element)
+        remove_all_errors_from_option(price_element)
     for minigame in MinigameLocationList:
         minigame_element = js.document.getElementById(f"plando_{minigame}_minigame")
         minigame_element.value = ""
-        mark_option_valid(minigame_element)
+        remove_all_errors_from_option(minigame_element)
     for hint in HintLocationList:
         hint_element = js.document.getElementById(f"plando_{hint}_hint")
         hint_element.value = ""
-        mark_option_valid(hint_element)
+        remove_all_errors_from_option(hint_element)
 
-    # Fire off a few functions that should react to changes.
-    plando_disable_kong_items(None)
+    # Perform some additional checks that may disable dropdowns.
+    perform_setting_conflict_validation(None)
 
 
 def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
