@@ -724,7 +724,7 @@ ColoredBananaGroupList = [
         name="Behind 2nd hallway arch",
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
-        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isTiny,
+        logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) and l.isTiny,
         locations=[[5, 2.0, 1331, 228, 1143], [5, 2.0, 1425, 228, 1143]],
     ),
     ColoredBananaGroup(
@@ -733,7 +733,7 @@ ColoredBananaGroupList = [
         name="Rings on steps (12 custom, 8 Tiny)",
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
-        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isTiny,
+        logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) and l.isTiny,
         locations=[
             [1, 2.0, 2138, 295, 1349],
             [1, 2.0, 2180, 295, 1285],
@@ -763,7 +763,7 @@ ColoredBananaGroupList = [
         name="Around 2nd switch room",
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
-        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isTiny,
+        logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) and l.isTiny,
         locations=[
             [1, 2.0, 1263, 212, 677],
             [1, 2.0, 1185, 206, 579],
@@ -1000,7 +1000,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.Mine,
         vanilla=True,
-        logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.peanut,
+        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk,
         locations=[[5, 1.0, 508.2171936035156, 223.6666717529297, 1352.9554443359375]],
     ),
     ColoredBananaGroup(
@@ -1044,7 +1044,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JungleJapesStart,
         vanilla=True,
-        logic=lambda l: l.vines or (l.advanced_platforming and l.isdonkey),
+        logic=lambda l: l.vines or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey),
         locations=[
             [1, 1.0, 955.9228515625, 502.0, 701.2963256835938],
             [1, 1.0, 998.90185546875, 499.64178466796875, 587.4546508789062],
@@ -1159,7 +1159,7 @@ ColoredBananaGroupList = [
         group=90,
         map_id=Maps.JungleJapes,
         name="Inside cage with Rambi Box (Donkey)",
-        konglist=[Kongs.donkey],
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.JapesBeyondCoconutGate2,
         vanilla=True,
         logic=lambda l: l.hasMoveSwitchsanity(Switches.JapesRambi, False) or l.phasewalk,
@@ -1649,7 +1649,7 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.tiny],
         region=Regions.TinyHive,
-        logic=lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isTiny,
+        logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) and l.isTiny,
         points=[[2037, 450, 1415], [2205, 455, 1200], [2394, 460, 1200], [2515, 460, 1378], [2402, 455, 1571], [2191, 450, 1583]],
     ),
     Balloon(id=31, map_id=Maps.JapesMountain, name="First room above river", speed=3, konglist=[Kongs.diddy], region=Regions.Mine, points=[[688, 140, 331], [776, 150, 565], [884, 155, 782]]),

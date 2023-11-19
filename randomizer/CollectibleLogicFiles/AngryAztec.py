@@ -38,7 +38,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 5),
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 4),
 
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.peanut, None, 1),  # On Guitar pad
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut, None, 1),  # On Guitar pad
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),
         Collectible(Collectibles.coin, Kongs.chunky, lambda l: True, None, 3),
     ],
@@ -130,9 +130,9 @@ LogicRegions = {
     Regions.LlamaTemple: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: True, None, 15),
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 6),
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: lambda l: True, None, 1),  # Warp 1
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Warp 1
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: (((Events.AztecLlamaSpit in l.Events or (l.CanPhaseswim() and l.settings.damage_amount != DamageAmount.ohko) and l.swim)) or l.phasewalk) and l.grape, None, 2),
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: lambda l: (l.grape or l.phasewalk) and l.vines, None, 1),  # Matching game
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (l.grape or l.phasewalk) and l.vines, None, 1),  # Matching game
 
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
         Collectible(Collectibles.banana, Kongs.tiny, lambda l: True, None, 3),

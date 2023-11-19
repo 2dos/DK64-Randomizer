@@ -488,6 +488,7 @@ ColoredBananaGroupList = [
         name="On ship part by Candy's store",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
+        logic=lambda l: Events.WaterSwitch in l.Events,
         locations=[[5, 1.0, 3166, 1630, 666], [5, 1.0, 3219, 1630, 615]],
     ),
     ColoredBananaGroup(

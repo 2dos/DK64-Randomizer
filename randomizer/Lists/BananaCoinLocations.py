@@ -1936,7 +1936,7 @@ BananaCoinGroupList = {
             name="Behind Door 2",
             konglist=[Kongs.tiny],
             region=Regions.TinyHive,
-            logic=lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) and l.istiny) or l.phasewalk,
+            logic=lambda l: ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.phasewalk or l.generalclips) and l.istiny,
             locations=[
                 [1.7199993133544922, 1425.05810546875, 233.0, 923.6173706054688],
                 [1.7199993133544922, 1332.7794189453125, 233.0, 924.2100219726562],
@@ -1974,7 +1974,7 @@ BananaCoinGroupList = {
             name="Near Underground Reward",
             konglist=[Kongs.chunky],
             region=Regions.JapesCatacomb,
-            logic=lambda l: l.vines and l.pineapple and l.ischunky,
+            logic=lambda l: (l.vines and l.pineapple and l.ischunky) or l.phasewalk,
             locations=[
                 [1.0, 127.6156005859375, 20.0, 1017.9220581054688],
                 [1.0, 79.51215362548828, 20.0, 1009.2542114257812],
@@ -4626,7 +4626,7 @@ BananaCoinGroupList = {
             name="On Rafter near Funky's",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.Shipyard,
-            logic=lambda l: Events.WaterSwitch in l.Events,
+            logic=lambda l: Events.WaterSwitch in l.Events or l.CanMoonkick(),
             locations=[
                 [1.0, 3645.180419921875, 1648.24267578125, 1823.3914794921875],
                 [1.0, 3509.1142578125, 1637.95849609375, 1949.4278564453125],
@@ -5020,7 +5020,7 @@ BananaCoinGroupList = {
             name="On well roof edges",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.FungiForestStart,
-            logic=lambda l: l.vines or l.CanMoonkick(),
+            logic=lambda l: l.vines or l.CanMoonkick() or (l.jetpack and l.isdiddy),
             locations=[
                 [1.0, 2306, 268, 3133],
                 [1.0, 2248, 273, 3051],
@@ -5736,7 +5736,7 @@ BananaCoinGroupList = {
             name="On Well",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.FungiForestStart,
-            logic=lambda l: l.vines or l.CanMoonkick(),
+            logic=lambda l: l.vines or l.CanMoonkick() or (l.jetpack and l.isdiddy),
             locations=[
                 [1.0, 2146.2275390625, 295.5009460449219, 3232.423583984375],
                 [1.0, 2133.60595703125, 298.7270812988281, 3225.193115234375],
@@ -5750,7 +5750,7 @@ BananaCoinGroupList = {
             name="On Archway to Giant Mushroom Area",
             konglist=[Kongs.tiny],
             region=Regions.FungiForestStart,
-            logic=lambda l: l.twirl and l.istiny,
+            logic=lambda l: (l.twirl and l.istiny) or l.advanced_platforming,
             locations=[
                 [1.0, 1785.9215087890625, 334.2199401855469, 1997.81884765625],
                 [1.0, 1788.0960693359375, 329.2674865722656, 1982.1993408203125],
@@ -5990,7 +5990,7 @@ BananaCoinGroupList = {
             name="Ice Castle Battlements (1)",
             konglist=[Kongs.diddy, Kongs.lanky, Kongs.tiny],
             region=Regions.CrystalCavesMain,
-            logic=lambda l: l.isdiddy or (l.islanky and l.balloon) or l.istiny,
+            logic=lambda l: l.isdiddy or (l.islanky and (l.balloon or l.advanced_platforming)) or l.istiny,
             locations=[
                 [1.0, 2240, 353, 1029],
                 [1.0, 2266, 353, 935],
@@ -6004,7 +6004,7 @@ BananaCoinGroupList = {
             name="Ice Castle Battlements (2)",
             konglist=[Kongs.diddy, Kongs.lanky, Kongs.tiny],
             region=Regions.CrystalCavesMain,
-            logic=lambda l: l.isdiddy or (l.islanky and l.balloon) or l.istiny,
+            logic=lambda l: l.isdiddy or (l.islanky and (l.balloon or l.advanced_platforming)) or l.istiny,
             locations=[
                 [1.0, 2261, 353, 1007],
                 [1.0, 2231, 353, 912],
@@ -6572,7 +6572,7 @@ BananaCoinGroupList = {
             name="On Ice Castle",
             konglist=[Kongs.diddy, Kongs.lanky, Kongs.tiny],
             region=Regions.CrystalCavesMain,
-            logic=lambda l: (l.balloon and l.islanky) or l.isdiddy or l.istiny,
+            logic=lambda l: ((l.balloon or l.advanced_platforming) and l.islanky) or l.isdiddy or l.istiny,
             locations=[
                 [1.0, 2261.931884765625, 360.0, 970.6054077148438],
                 [1.0, 2202.62353515625, 360.0, 1030.2467041015625],
@@ -7651,7 +7651,7 @@ BananaCoinGroupList = {
             name="Around Tiny Slam Pad",
             konglist=[Kongs.tiny],
             region=Regions.Mausoleum,
-            logic=lambda l: l.twirl and l.istiny,
+            logic=lambda l: (l.twirl or l.advanced_platforming or l.phasewalk) and l.istiny,
             locations=[
                 [1.0, 1138.8143310546875, 160.0, 1953.1551513671875],
                 [1.0, 1201.6041259765625, 160.0, 1949.9952392578125],

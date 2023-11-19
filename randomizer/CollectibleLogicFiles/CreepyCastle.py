@@ -97,18 +97,18 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # On W2
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # In minecart room
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 1),  # On W1
-        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.charge or l.generalclips) and l.peanut, None, 1),  # In Diddy's room
-        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (l.punch and l.pineapple) or l.phasewalk, None, 2),  # In tombs in Chunky's room
+        Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.charge or l.generalclips or l.phasewalk) and l.peanut, None, 1),  # In Diddy's room
+        Collectible(Collectibles.bunch, Kongs.chunky, lambda l: (l.punch and l.pineapple) or l.generalclips or l.phasewalk, None, 2),  # In tombs in Chunky's room
 
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: (l.charge and l.peanut) or l.phasewalk, None, 3),  # In Diddy's room
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: (l.punch and l.pineapple) or l.phasewalk, None, 3),  # In tombs in Chunky's room
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: (l.charge and l.peanut) or l.phasewalk or l.generalclips, None, 3),  # In Diddy's room
+        Collectible(Collectibles.coin, Kongs.chunky, lambda l: (l.punch and l.pineapple) or l.phasewalk or l.generalclips, None, 3),  # In tombs in Chunky's room
     ],
     Regions.Mausoleum: [
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape and (l.sprint or l.generalclips or l.phasewalk), None, 1),
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.twirl or l.advanced_platforming, None, 1),  # In Green Goo Gap
 
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.grape and l.sprint) or l.generalclips or l.phasewalk, None, 3),
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl or l.phasewalk, None, 2),
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (l.grape and l.sprint) or l.generalclips or l.phasewalk and ((l.trombone and l.vines) or l.advanced_platforming), None, 3),
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: l.twirl or l.advanced_platforming or l.phasewalk, None, 2),
     ],
     Regions.UpperCave: [
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 30),

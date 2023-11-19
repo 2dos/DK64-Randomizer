@@ -1486,7 +1486,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.chunky],
         region=Regions.Crypt,
         vanilla=True,
-        logic=lambda l: (l.punch and l.pineapple) or l.phasewalk,
+        logic=lambda l: (l.punch and l.pineapple) or l.phasewalk or l.generalclips,
         locations=[[5, 1.0, 1405.1158447265625, 190.46810913085938, 2753.63671875], [5, 1.0, 1404.5225830078125, 190.34698486328125, 2951.347412109375]],
     ),
     ColoredBananaGroup(
@@ -2071,7 +2071,7 @@ BalloonList = [
         konglist=[Kongs.diddy],
         region=Regions.Crypt,
         vanilla=True,
-        logic=lambda l: (l.charge or l.generalclips),
+        logic=lambda l: (l.charge or l.generalclips or l.phasewalk),
         points=[[2044, 25, 59], [2061, 28, 56]],
     ),
     Balloon(id=42, map_id=Maps.CastleCrypt, name="In DK's room (Donkey)", speed=6, konglist=[Kongs.donkey], region=Regions.Crypt, vanilla=True, points=[[1628, 132, 2476], [1434, 128, 2452]]),
