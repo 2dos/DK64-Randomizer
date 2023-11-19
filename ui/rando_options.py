@@ -680,8 +680,9 @@ def plando_hide_helm_options(evt):
 @bind("click", "nav-plando-tab")
 def plando_propagate_options(evt):
     """Make changes to the plando tab based on other settings.
-    
-    This is partly a workaround for issues with the Bootstrap slider."""
+
+    This is partly a workaround for issues with the Bootstrap slider.
+    """
     plando_hide_krool_options(evt)
     plando_hide_helm_options(evt)
     plando_disable_camera_shockwave(evt)
