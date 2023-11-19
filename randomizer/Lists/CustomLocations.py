@@ -2542,7 +2542,7 @@ CustomLocations = {
             rot_y=978,
             max_size=64,
             logic_region=Regions.GloomyGalleonLobby,
-            logic=lambda l: ((l.mini and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.istiny and l.chunky and l.swim) or l.CanPhaseswim()),
+            logic=lambda l: ((l.mini and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.istiny and l.chunky and l.swim) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3),
             group=11,
             banned_types=[LocationTypes.CrownPad],  # Crown pad would need testing if it's possible to get up.
         ),
