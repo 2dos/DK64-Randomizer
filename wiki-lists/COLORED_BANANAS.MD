@@ -25,7 +25,7 @@
 | From Diddy BP to river side (7 custom, 3 Diddy) | 7 |  | 
 | Bunch in Minecart exit | 5 |  | 
 | Up the slope to painting room | 10 | (l.handstand and l.islanky) or (l.twirl and l.istiny) | 
-| Leading up to and on BBlast pad | 10 | l.vines or l.CanMoonKick() | 
+| Leading up to and on BBlast pad | 10 | l.vines or l.CanMoonkick() | 
 | Up the vine to Funky's and lining the edge of Funky's area | 15 |  | 
 | On the edge of cannon platform | 10 |  | 
 | Bunches on torches by DK and Tiny BPs | 10 |  | 
@@ -70,7 +70,7 @@
 | Above Melon Crate behind mountain | 5 |  | 
 | Above melon crate behind boulder | 5 |  | 
 | Inside Free Diddy cage | 5 | l.CanFreeDiddy() | 
-| Between starting vines (Donkey) | 5 | l.vines or (l.advanced_platforming and l.isdonkey) | 
+| Between starting vines (Donkey) | 5 | l.vines or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey) | 
 | On top of slippery slope in BP cave (Lanky) | 5 | l.handstand | 
 | W3 bunches (Donkey) | 10 |  | 
 | Starting area (Diddy) | 5 |  | 
@@ -164,7 +164,7 @@
 | Dynamite box in chimpy charge switch room | 5 | l.charge or l.phasewalk | 
 | Bunches on staircase-shaped boxes | 10 | l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk | 
 | Conveyors | 10 | l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk | 
-| On box in corner of conveyor room (Diddy) | 5 | (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.peanut | 
+| On box in corner of conveyor room (Diddy) | 5 | l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk | 
 | In river (Diddy) | 5 |  | 
 | On box by conveyors (Diddy) | 5 | l.CanSlamSwitch(Levels.JungleJapes, 1) | 
 | In front of peanut switch (Diddy) | 5 |  | 
@@ -189,10 +189,10 @@
 | ---- | ------ | ----- |
 | Paths to 1st & 2nd Switch | 10 | l.CanSlamSwitch(Levels.JungleJapes, 1) and l.istiny | 
 | Around first switch room | 10 |  | 
-| Behind 2nd hallway arch | 10 | l.CanSlamSwitch(Levels.JungleJapes, 1) and l.istiny | 
-| Rings on steps (12 custom, 8 Tiny) | 20 | l.CanSlamSwitch(Levels.JungleJapes, 1) and l.istiny | 
-| Around 2nd switch room | 10 | l.CanSlamSwitch(Levels.JungleJapes, 1) and l.istiny | 
-| Around final room | Balloon | l.CanSlamSwitch(Levels.JungleJapes, 1) and l.istiny | 
+| Behind 2nd hallway arch | 10 | (l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) and l.istiny | 
+| Rings on steps (12 custom, 8 Tiny) | 20 | (l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) and l.istiny | 
+| Around 2nd switch room | 10 | (l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) and l.istiny | 
+| Around final room | Balloon | (l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) and l.istiny | 
 | In first room (Tiny) | Balloon |  | 
 </details>
 <details>
@@ -655,7 +655,7 @@
 | On wooden box (lighthouse side) | 10 |  | 
 | Around Candy's Store | 20 |  | 
 | By Seal race | 10 |  | 
-| On ship part by Candy's store | 10 |  | 
+| On ship part by Candy's store | 10 | Events.WaterSwitch in l.Events | 
 | By submarine entrance | 5 |  | 
 | On seafloor from 5DS to submarine area | 10 |  | 
 | On floating plank with 4 DK coins | 10 | Events.WaterSwitch in l.Events | 
@@ -887,7 +887,7 @@
 | Mushroom by Minecart exit | 5 |  | 
 | Top of Minecart exit | 10 | (l.isdonkey and l.settings.krusha_kong != Kongs.donkey) or (l.istiny and l.twirl) | 
 | Top of Mill (8 custom, 7 Lanky) | 15 |  | 
-| Outside of conveyor belt (behind night gate) | 5 | l.Events.Night in l.Events or l.phasewalk or l.CanPhaseswim() or l.ledgeclip | 
+| Outside of conveyor belt (behind night gate) | 5 | Events.Night in l.Events or l.phasewalk or l.CanPhaseswim() or l.ledgeclip | 
 | W1 (1 custom, 1 Lanky bunch) | 5 |  | 
 | W1 (1 custom, 1 Lanky bunch) | 5 |  | 
 | Behind Diddy's Barn | 5 |  | 
@@ -964,7 +964,7 @@
 | Green tunnel (Tiny) | 4 | l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.phasewalk or l.CanPhaseswim() | 
 | On riverbed around mill (3 custom, 17 Tiny) | 20 | l.swim | 
 | On mushrooms in beanstalk area (Tiny) | 15 |  | 
-| On anthill (Tiny) | 5 | (l.jetpack and l.isdiddy) or (l.istiny and ((l.mini and l.saxophone) or l.advanced_platforming)) | 
+| On anthill (Tiny) | 5 | (l.jetpack and l.isdiddy) or (l.istiny and (l.mini and l.saxophone)) | 
 | W2 (Chunky) | 5 |  | 
 | W2 (Chunky) | 5 |  | 
 | On minecart entrance (Chunky) | 5 |  | 
@@ -1040,7 +1040,7 @@
 | Near melon crate in thornvine area | 5 |  | 
 | On boxes on upper level | 10 |  | 
 | On ladder | 5 |  | 
-| On switch (Donkey) | 5 | l.CanSlamSwitch(Levels.FungiForest, 2) or l.phasewalk | 
+| On switch (Donkey) | 5 | (l.Slam or l.phasewalk) and l.isdonkey | 
 </details>
 <details>
 <summary>Forest Mill Front</summary>
@@ -1049,7 +1049,7 @@
 | ---- | ------ | ----- |
 | On flour bag by Mini Monkey | 5 |  | 
 | On conveyor belt | 5 |  | 
-| On DK switch (Donkey) | 5 |  | 
+| On DK switch (Donkey) | 5 | l.Slam or l.phasewalk | 
 | Middle of the room | Balloon |  | 
 | In DK's lever room (Donkey) | Balloon | (l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.phasewalk) | 
 </details>
@@ -1109,7 +1109,7 @@
 | On boxes by Mini Monkey barrels | 10 |  | 
 | On boxes by spider room (Tiny) | 5 |  | 
 | By Mini Monkey entrance to front mill (Tiny) | 5 |  | 
-| Inside punchable box (Tiny) | 5 | l.punch and l.chunky or l.phasewalk | 
+| Inside punchable box (Tiny) | 5 | Events.MillBoxBroken in l.Events or l.phasewalk | 
 | On triangle pad (Chunky) | 5 | Events.MillBoxBroken in l.Events or l.phasewalk | 
 | Middle of room | Balloon |  | 
 </details>
@@ -1234,7 +1234,7 @@
 | Around baboon blast pad (Donkey) | 5 |  | 
 | W1 (Donkey) | 10 |  | 
 | On 5DC bongos pad (Donkey) | 5 |  | 
-| On pillar by 5DI tag (Diddy) | 5 | (l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.settings.krusha_kong != Kongs.Tiny) | 
+| On pillar by 5DI tag (Diddy) | 5 | (l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.settings.krusha_kong != Kongs.tiny) | 
 | Above baboon blast pad by Cranky (Lanky) | 15 | (l.jetpack and l.isdiddy) or (l.balloon and l.islanky) | 
 | Inside tower to beetle race (Lanky) | 5 | (l.balloon or l.advanced_platforming) and l.CanSlamSwitch(Levels.CrystalCaves, 2) | 
 | On trombone pad on Lanky cabin (Lanky) | 5 | (l.jetpack and l.isdiddy) or (l.balloon and l.islanky) | 
@@ -1611,11 +1611,11 @@
 | Crypt - Path to W3 | 10 |  | 
 | Back corners of DK's room | 10 | l.coconut or l.phasewalk | 
 | Bunch on coffin with pentagon of singles around it | 10 | l.peanut or l.phasewalk | 
-| In coffins (Chunky) | 10 | (l.punch and l.pineapple) or l.phasewalk | 
+| In coffins (Chunky) | 10 | (l.punch and l.pineapple) or l.phasewalk or l.generalclips | 
 | Above warps | Balloon |  | 
 | Around coffin in Chunky's room | Balloon |  | 
 | Around coffin in Diddy's room | Balloon |  | 
-| In coffin in Diddy's room (Diddy) | Balloon | (l.charge or l.generalclips) | 
+| In coffin in Diddy's room (Diddy) | Balloon | (l.charge or l.generalclips or l.phasewalk) | 
 | In DK's room (Donkey) | Balloon |  | 
 </details>
 <details>
