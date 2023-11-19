@@ -109,7 +109,7 @@
 | In water on left side | 3 | l.swim | 
 | On left side | 3 |  | 
 | On right side | 3 |  | 
-| Around golden banana | 3 | l.swim and ((l.mini and l.twirl and l.tiny and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.chunky) or l.CanPhaseswim()) | 
+| Around golden banana | 3 | l.swim and ((l.mini and l.twirl and l.tiny and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.chunky) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3) | 
 </details>
 <details>
 <summary>Fungi Forest Lobby</summary>

@@ -179,9 +179,7 @@ def GetAccessibleLocations(
         Regions.SaxophoneShip,
         Regions.TriangleShip,
     }
-    SurfaceWaterRegions = {
-        Regions.Shipyard
-    }
+    SurfaceWaterRegions = {Regions.Shipyard}
     # Continue doing searches until nothing new is found
     while len(newLocations) > 0 or eventAdded:
         # Add items and events from the last search iteration
