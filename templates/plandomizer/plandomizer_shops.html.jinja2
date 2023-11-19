@@ -41,15 +41,19 @@
                     {% if location["value"] != "RarewareCoin" %}
                         <label class="shop-cost-picker flex-container flex-center">
                             Item Cost:
-                            <input type="number"
-                                    min="0"
-                                    max="255"
-                                    step="1"
-                                    data-toggle="tooltip"
-                                    title
-                                    id="plando_{{location["value"]}}_shop_cost"
-                                    name="plando_{{location["value"]}}_shop_cost"
-                                    class="form-control shop-cost-input">
+                            <div id="plando_{{location["value"]}}_shop_cost_wrapper"
+                                 data-toggle="tooltip"
+                                 title>
+                                <input type="number"
+                                        min="0"
+                                        max="255"
+                                        step="1"
+                                        data-toggle="tooltip"
+                                        title
+                                        id="plando_{{location["value"]}}_shop_cost"
+                                        name="plando_{{location["value"]}}_shop_cost"
+                                        class="form-control shop-cost-input">
+                            </div>
                             Coins
                         </label>
                     {% endif %}
