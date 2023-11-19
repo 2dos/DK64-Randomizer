@@ -187,12 +187,12 @@
 
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| Paths to 1st & 2nd Switch | 10 | l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isTiny | 
+| Paths to 1st & 2nd Switch | 10 | l.CanSlamSwitch(Levels.JungleJapes, 1) and l.istiny | 
 | Around first switch room | 10 |  | 
-| Behind 2nd hallway arch | 10 | l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isTiny | 
-| Rings on steps (12 custom, 8 Tiny) | 20 | l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isTiny | 
-| Around 2nd switch room | 10 | l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isTiny | 
-| Around final room | Balloon | l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isTiny | 
+| Behind 2nd hallway arch | 10 | l.CanSlamSwitch(Levels.JungleJapes, 1) and l.istiny | 
+| Rings on steps (12 custom, 8 Tiny) | 20 | l.CanSlamSwitch(Levels.JungleJapes, 1) and l.istiny | 
+| Around 2nd switch room | 10 | l.CanSlamSwitch(Levels.JungleJapes, 1) and l.istiny | 
+| Around final room | Balloon | l.CanSlamSwitch(Levels.JungleJapes, 1) and l.istiny | 
 | In first room (Tiny) | Balloon |  | 
 </details>
 <details>
@@ -375,7 +375,7 @@
 | All around Llama Temple (Donkey) | 15 |  | 
 | To lava room (Tiny) | 3 |  | 
 | To lava room (Tiny) | 2 |  | 
-| On Tiny switches in lava room (Tiny) | 10 | l.CanSlamSwitch(Levels.AngryAztec, 1) or l.twirl or (l.advanced_platforming and l.isTiny) | 
+| On Tiny switches in lava room (Tiny) | 10 | l.CanSlamSwitch(Levels.AngryAztec, 1) or l.twirl or (l.advanced_platforming and l.istiny) | 
 | On vines in Matching game room (Lanky) | 5 | (l.grape or l.phasewalk) and l.vines | 
 | Matching game room right side | Balloon |  | 
 | Above Llama | Balloon |  | 

@@ -1332,7 +1332,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.LlamaTempleBack,
         vanilla=True,
-        logic=lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) or l.twirl or (l.advanced_platforming and l.isTiny),
+        logic=lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) or l.twirl or (l.advanced_platforming and l.istiny),
         locations=[[5, 1.0, 870.1953125, 475.3333435058594, 3735.6279296875], [5, 1.0, 1458.1766357421875, 475.3333435058594, 4069.542236328125]],
     ),
     ColoredBananaGroup(

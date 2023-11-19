@@ -294,7 +294,7 @@ ColoredBananaGroupList = [
         name="Outside of conveyor belt (behind night gate)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MillArea,
-        logic=lambda l: l.Events.Night in l.Events or l.phasewalk or l.CanPhaseswim() or l.ledgeclip,
+        logic=lambda l: Events.Night in l.Events or l.phasewalk or l.CanPhaseswim() or l.ledgeclip,
         locations=[[5, 1.0, 4331, 170, 3472]],
     ),
     ColoredBananaGroup(
