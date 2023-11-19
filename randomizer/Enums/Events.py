@@ -31,6 +31,7 @@ class Events(IntEnum):
     # Angry Aztec events
     FedTotem = auto()
     LlamaFreed = auto()
+    AztecGuitarPad = auto()
     AztecDonkeySwitch = auto()
     AztecLlamaSpit = auto()
 
