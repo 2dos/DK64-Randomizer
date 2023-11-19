@@ -611,7 +611,7 @@ BananaCoinGroupList = {
             name="Around golden banana",
             konglist=[Kongs.tiny],
             region=Regions.GloomyGalleonLobby,
-            logic=lambda l: l.swim and ((l.mini and l.twirl and l.tiny and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.chunky) or l.CanPhaseswim()),
+            logic=lambda l: l.swim and ((l.mini and l.twirl and l.tiny and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.chunky) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3),
             locations=[
                 [1.0, 832, 99, 202],
                 [1.0, 815, 99, 253],

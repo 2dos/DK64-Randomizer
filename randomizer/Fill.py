@@ -179,6 +179,7 @@ def GetAccessibleLocations(
         Regions.SaxophoneShip,
         Regions.TriangleShip,
     }
+    SurfaceWaterRegions = {Regions.Shipyard}
     # Continue doing searches until nothing new is found
     while len(newLocations) > 0 or eventAdded:
         # Add items and events from the last search iteration
@@ -335,6 +336,9 @@ def GetAccessibleLocations(
                         # If water is lava, don't consider underwater locations in Galleon before having 3rd melon
                         if spoiler.LogicVariables.IsLavaWater() and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
                             if destination in UnderwaterRegions and spoiler.LogicVariables.Melons < 3:
+                                continue
+                            # Mainly Seal Race exit. Situations where this matters are extremely rare.
+                            if destination in SurfaceWaterRegions and spoiler.LogicVariables.Melons < 2:
                                 continue
                         # Check time of day
                         timeAccess = True
