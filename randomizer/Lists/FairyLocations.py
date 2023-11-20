@@ -434,7 +434,7 @@ fairy_locations = {
             region=Regions.BeyondHatch,
             fence=Fence(1820, 526, 2079, 874),
             spawn_y=60,
-            logic=lambda l: l.camera and l.punch and l.chunky,
+            logic=lambda l: l.camera and ((l.punch and l.chunky) or l.phasewalk),
         ),
         FairyData(
             name="Crusher Room",
@@ -600,7 +600,7 @@ fairy_locations = {
             region=Regions.FungiForestStart,
             fence=Fence(2067, 3098, 2335, 3237),
             spawn_y=540,
-            logic=lambda l: l.camera and l.vines,
+            logic=lambda l: l.camera and (l.vines or l.CanMoonkick() or (l.jetpack and l.isdiddy)),
         ),
         FairyData(
             name="Above BBlast Entrance",

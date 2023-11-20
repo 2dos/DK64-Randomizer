@@ -190,6 +190,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleMuseumToMain),
+        TransitionFront(Regions.MuseumBehindGlass, lambda l: l.phasewalk),
     ]),
 
     Regions.LowerCave: Region("Lower Cave", "Castle Underground", Levels.CreepyCastle, True, -1, [
@@ -211,8 +212,8 @@ LogicRegions = {
     ]),
 
     Regions.Crypt: Region("Crypt", "Castle Underground", Levels.CreepyCastle, False, -1, [
-        LocationLogic(Locations.CastleDiddyCrypt, lambda l: (l.peanut or l.phasewalk) and l.charge and l.isdiddy),
-        LocationLogic(Locations.CastleChunkyCrypt, lambda l: (((l.pineapple and l.punch) or l.phasewalk) and l.ischunky) or (l.phasewalk and l.settings.free_trade_items), MinigameType.BonusBarrel),
+        LocationLogic(Locations.CastleDiddyCrypt, lambda l: (l.peanut or l.phasewalk or l.generalclips) and l.charge and l.isdiddy),
+        LocationLogic(Locations.CastleChunkyCrypt, lambda l: (((l.pineapple and l.punch) or l.phasewalk or l.generalclips) and l.ischunky) or ((l.phasewalk or l.generalclips) and l.settings.free_trade_items), MinigameType.BonusBarrel),
         LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin0, lambda l: (l.peanut or l.phasewalk or l.generalclips) and l.isdiddy and l.charge),
         LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin1, lambda l: (l.peanut or l.phasewalk or l.generalclips) and l.isdiddy and l.charge),
         LocationLogic(Locations.CastleCryptEnemy_DiddyCoffin2, lambda l: (l.peanut or l.phasewalk or l.generalclips) and l.isdiddy and l.charge),
@@ -247,7 +248,7 @@ LogicRegions = {
 
     Regions.Mausoleum: Region("Mausoleum", "Castle Underground", Levels.CreepyCastle, False, None, [
         LocationLogic(Locations.CastleLankyMausoleum, lambda l: (((l.grape and l.sprint) or l.generalclips or l.phasewalk) and ((l.trombone and l.vines) or (l.advanced_platforming and l.sprint)) and l.islanky) or (l.settings.free_trade_items and l.phasewalk)),
-        LocationLogic(Locations.CastleTinyMausoleum, lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.twirl and l.istiny),
+        LocationLogic(Locations.CastleTinyMausoleum, lambda l: l.CanSlamSwitch(Levels.CreepyCastle, 3) and (l.twirl or l.advanced_platforming or l.phasewalk) and l.istiny),
         LocationLogic(Locations.CastleMausoleumEnemy_TinyPath, lambda l: True),
         LocationLogic(Locations.CastleMausoleumEnemy_LankyPath0, lambda l: True),
         LocationLogic(Locations.CastleMausoleumEnemy_LankyPath1, lambda l: True),
@@ -257,7 +258,7 @@ LogicRegions = {
     ]),
 
     Regions.UpperCave: Region("Upper Cave", "Castle Underground", Levels.CreepyCastle, True, -1, [
-        LocationLogic(Locations.CastleTinyOverChasm, lambda l: l.twirl and l.istiny, MinigameType.BonusBarrel),
+        LocationLogic(Locations.CastleTinyOverChasm, lambda l: (l.twirl or l.phasewalk) and l.istiny, MinigameType.BonusBarrel),
         LocationLogic(Locations.CastleKasplatNearCandy, lambda l: not l.settings.kasplat_rando),
         LocationLogic(Locations.CastleUpperCaveEnemy_NearDungeon, lambda l: True),
         LocationLogic(Locations.CastleUpperCaveEnemy_NearPit, lambda l: True),
