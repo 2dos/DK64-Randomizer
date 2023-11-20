@@ -108,7 +108,7 @@
 | Aztec Llama Temple | Llama Temple: Next to Llama Left |  | 
 | Aztec Llama Temple | Llama Temple: Llama Left |  | 
 | Aztec Llama Temple | Llama Temple: Matching Room | (l.grape and l.lanky) or l.phasewalk | 
-| Aztec Llama Temple | In the Water | l.HasGun(Kongs.any) and (l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny) and l.swim and l.scope and Events.AztecLlamaSpit in l.Events | 
+| Aztec Llama Temple | In the Water | Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny)) | 
 | Aztec Llama Temple | Llama Temple: Snoop Switch |  | 
 | Aztec Llama Temple | Llama Temple: Lava Room |  | 
 </details>
@@ -304,7 +304,7 @@
 | Crystal Caves | On 5DI Pillar | (l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.settings.krusha_kong != Kongs.tiny) | 
 | Crystal Caves | On top of the Igloo |  | 
 | Crystal Caves | Under tag barrel near igloo |  | 
-| Crystal Caves | In front of Igloo | l.HasGun(Kongs.any) and (l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny) or l.Slam | 
+| Crystal Caves | In front of Igloo | (l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny))) or l.slam | 
 | Crystal Caves | In Hidden Bonus Room |  | 
 | Crystal Caves | Near Primate Punch wall opposite cranky |  | 
 | Crystal Caves | In Giant Boulder Room |  | 
@@ -339,7 +339,7 @@
 | Crystal Caves | Near Diddy top 5D Cabin door |  | 
 | Caves Diddy Igloo | Diddy 5DI: Center |  | 
 | Caves Donkey Igloo | DK 5DI: Behind Maze |  | 
-| Caves Lanky Igloo | Lanky 5DI: High Platform | l.isLanky and (l.balloon or l.advanced_platforming) | 
+| Caves Lanky Igloo | Lanky 5DI: High Platform | (l.islanky and (l.balloon or l.advanced_platforming)) or l.isdiddy or l.istiny | 
 | Caves Tiny Igloo | Tiny 5DI: Opposite Entrance |  | 
 | Caves Lanky Cabin | Lanky 1DC: Carpet |  | 
 | Caves Chunky Cabin | Chunky 5DC: Back Left Corner |  | 
@@ -485,8 +485,8 @@
 | Training Grounds | Training Grounds: Near Mountain | (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey) | 
 | Training Grounds | Training Grounds: Rear Cave |  | 
 | Training Grounds | Training Grounds: Banana Hoard | l.vines or l.CanMoonkick() or l.phasewalk | 
-| Training Grounds | Training Grounds: Under Water | l.HasGun(Kongs.any) and (l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny) and l.swim | 
-| Training Grounds | Training Grounds: Under Water in Corner | l.HasGun(Kongs.any) and (l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny) and l.swim and l.scope | 
+| Training Grounds | Training Grounds: Under Water | (l.HasGun(Kongs.any) and (l.istiny and l.settings.krusha_kong == Kongs.tiny) or not l.istiny) and l.swim and l.scope | 
+| Training Grounds | Training Grounds: Under Water in Corner | (l.HasGun(Kongs.any) and (l.istiny and l.settings.krusha_kong == Kongs.tiny) or not l.istiny) and l.swim and l.scope | 
 | Training Grounds | Training Grounds: Near Pool |  | 
 | Treehouse | Back of the treehouse |  | 
 | Banana Fairy Room | Fairy Island: Right of Queen |  | 
