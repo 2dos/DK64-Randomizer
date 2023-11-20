@@ -339,7 +339,7 @@
 | Crystal Caves | Near Diddy top 5D Cabin door |  | 
 | Caves Diddy Igloo | Diddy 5DI: Center |  | 
 | Caves Donkey Igloo | DK 5DI: Behind Maze |  | 
-| Caves Lanky Igloo | Lanky 5DI: High Platform | (l.islanky and (l.balloon or l.advanced_platforming)) or l.isdiddy or l.istiny | 
+| Caves Lanky Igloo | Lanky 5DI: High Platform | ((l.balloon or l.advanced_platforming) and l.islanky) or (l.advanced_platforming and (l.isdiddy or l.istiny)) | 
 | Caves Tiny Igloo | Tiny 5DI: Opposite Entrance |  | 
 | Caves Lanky Cabin | Lanky 1DC: Carpet |  | 
 | Caves Chunky Cabin | Chunky 5DC: Back Left Corner |  | 
@@ -485,8 +485,8 @@
 | Training Grounds | Training Grounds: Near Mountain | (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey) | 
 | Training Grounds | Training Grounds: Rear Cave |  | 
 | Training Grounds | Training Grounds: Banana Hoard | l.vines or l.CanMoonkick() or l.phasewalk | 
-| Training Grounds | Training Grounds: Under Water | (l.HasGun(Kongs.any) and (l.istiny and l.settings.krusha_kong == Kongs.tiny) or not l.istiny) and l.swim and l.scope | 
-| Training Grounds | Training Grounds: Under Water in Corner | (l.HasGun(Kongs.any) and (l.istiny and l.settings.krusha_kong == Kongs.tiny) or not l.istiny) and l.swim and l.scope | 
+| Training Grounds | Training Grounds: Under Water | l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny)) and l.swim and l.scope | 
+| Training Grounds | Training Grounds: Under Water in Corner | l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny)) and l.swim and l.scope | 
 | Training Grounds | Training Grounds: Near Pool |  | 
 | Treehouse | Back of the treehouse |  | 
 | Banana Fairy Room | Fairy Island: Right of Queen |  | 
