@@ -716,3 +716,20 @@ td.directional_divider {
 #close-modal {
   text-align: right;
 }
+
+.settings-toggle {
+  cursor: pointer;
+}
+
+.settings-expand-arrow {
+  height: 20px;
+  margin-left: 4px;
+}
+
+.settings-expand-arrow.flipped {
+  transform: rotate(180deg);
+}
+
+.settings-table-container.collapsed {
+  display: none;
+}

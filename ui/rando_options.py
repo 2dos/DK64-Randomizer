@@ -1386,3 +1386,12 @@ def shuffle_settings(evt):
     toggle_key_settings(None)
     disable_helm_hurry(None)
     toggle_vanilla_door_rando(None)
+
+
+@bind("click", "settings_table_toggle")
+def toggle_settings_table(evt):
+    """Open or close the settings table on the Seed Info tab."""
+    settingsTable = js.document.getElementById("settings_table")
+    settingsTable.classList.toggle("collapsed")
+    settingsArrow = js.document.getElementsByClassName("settings-expand-arrow").item(0)
+    settingsArrow.classList.toggle("flipped")
