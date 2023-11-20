@@ -276,7 +276,7 @@
 | Map | Name | Door types acceptable in location | Logic |
 | --- | ---- | --------------------------------- | ----- |
 | Crystal Caves Lobby | Crystal Caves: Lobby - Far Left | Wrinkly |  | 
-| Crystal Caves Lobby | Crystal Caves: Lobby - Top Ledge | Wrinkly | l.isdiddy and l.jetpack | 
+| Crystal Caves Lobby | Crystal Caves: Lobby - Top Ledge | Wrinkly | (l.isdiddy and l.jetpack) or l.CanMoonkick() | 
 | Crystal Caves Lobby | Crystal Caves: Lobby - Near Left | Wrinkly |  | 
 | Crystal Caves Lobby | Crystal Caves: Lobby - Far Right | Wrinkly |  | 
 | Crystal Caves Lobby | Crystal Caves: Lobby - Near Right | Wrinkly |  | 

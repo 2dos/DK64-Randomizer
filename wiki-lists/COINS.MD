@@ -246,7 +246,7 @@
 | Left side towards the end of the cave | 3 |  | 
 | Around center platform | 3 |  | 
 | Behind Entrance Cannon | 3 |  | 
-| Near Underground Reward | 3 | l.vines and l.pineapple and l.ischunky | 
+| Near Underground Reward | 3 | (l.vines and l.pineapple and l.ischunky) or l.phasewalk | 
 </details>
 <details>
 <summary>Japes Lanky Cave</summary>
@@ -276,7 +276,7 @@
 | ---- | ------ | ----- |
 | Behind Door 1 | 2 |  | 
 | Around final room | 4 | l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk or l.generalclips | 
-| Behind Door 2 | 2 | (l.CanSlamSwitch(Levels.JungleJapes, 1) and l.istiny) or l.phasewalk | 
+| Behind Door 2 | 2 | ((l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.saxophone or l.oranges)) or l.phasewalk or l.generalclips) and l.istiny | 
 </details>
 <details>
 <summary>Japes Baboon Blast</summary>
@@ -568,7 +568,7 @@
 | Mermaid Palace Roof | 2 |  | 
 | On Mermaid Palace Shells | 5 |  | 
 | Behind Enguarde Door | 3 | Events.LighthouseEnguarde in l.Events or l.CanPhaseswim() | 
-| On Rafter near Funky's | 4 | Events.WaterSwitch in l.Events | 
+| On Rafter near Funky's | 4 | Events.WaterSwitch in l.Events or l.CanMoonkick() | 
 | Around Cranky's Lab | 5 |  | 
 | Tunnel to Chests Area | 3 |  | 
 | Around Cactus | 4 |  | 
@@ -697,7 +697,7 @@
 | Around apple dropoff zone | 6 |  | 
 | Right of blue tunnel entry | 3 |  | 
 | Around well stump | 4 |  | 
-| On well roof edges | 3 | l.vines or l.CanMoonkick() | 
+| On well roof edges | 3 | l.vines or l.CanMoonkick() or (l.jetpack and l.isdiddy) | 
 | Mushroom Stem | 4 |  | 
 | On Clock Pendulum | 3 |  | 
 | On Clock Torches | 2 |  | 
@@ -737,8 +737,8 @@
 | On Mushroom near Dark Rafters Barn | 3 |  | 
 | Behind Giant Mushroom | 3 |  | 
 | Under Hollow Tree | 3 |  | 
-| On Well | 3 | l.vines or l.CanMoonkick() | 
-| On Archway to Giant Mushroom Area | 3 | l.twirl and l.istiny | 
+| On Well | 3 | l.vines or l.CanMoonkick() or (l.jetpack and l.isdiddy) | 
+| On Archway to Giant Mushroom Area | 3 | (l.twirl and l.istiny) or l.advanced_platforming | 
 | Inside Hollow Tree night fence | 4 | l.jetpack and l.isdiddy and l.TimeAccess(Regions.HollowTreeArea, Time.Night) | 
 | Near Beanstalk Mini Monkey Barrel | 3 |  | 
 | On Mushroom near Mill Well Exit | 3 |  | 
@@ -839,8 +839,8 @@
 | Behind the first ice wall | 2 | (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() | 
 | Around the lower thick pillar near Ice Castle | 5 |  | 
 | Around Ice Castle Tag | 6 |  | 
-| Ice Castle Battlements (1) | 4 | l.isdiddy or (l.islanky and l.balloon) or l.istiny | 
-| Ice Castle Battlements (2) | 4 | l.isdiddy or (l.islanky and l.balloon) or l.istiny | 
+| Ice Castle Battlements (1) | 4 | l.isdiddy or (l.islanky and (l.balloon or l.advanced_platforming)) or l.istiny | 
+| Ice Castle Battlements (2) | 4 | l.isdiddy or (l.islanky and (l.balloon or l.advanced_platforming)) or l.istiny | 
 | On stumps near Ice Castle | 3 |  | 
 | Near the small boulder | 4 |  | 
 | Under the bridge near the small boulder | 2 | l.jetpack and l.isdiddy | 
@@ -869,7 +869,7 @@
 | Giant Boulder Cavern | 3 |  | 
 | Giant Kosha Room | 3 |  | 
 | In Snide's Cavern | 3 |  | 
-| On Ice Castle | 4 | (l.balloon and l.islanky) or l.isdiddy or l.istiny | 
+| On Ice Castle | 4 | ((l.balloon or l.advanced_platforming) and l.islanky) or l.isdiddy or l.istiny | 
 | Near Cabin Waterfall | 3 |  | 
 | Behind Igloo Tag Barrel | 3 |  | 
 | On Slope to Cranky | 3 |  | 
@@ -1097,7 +1097,7 @@
 | ---- | ------ | ----- |
 | On Goo Hands | 6 | l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.istiny and l.twirl | 
 | Between Mausoleum Vines | 6 | ((l.grape and l.sprint) or l.generalclips or l.phasewalk) and l.islanky and l.trombone and l.vines | 
-| Around Tiny Slam Pad | 2 | l.twirl and l.istiny | 
+| Around Tiny Slam Pad | 2 | (l.twirl or l.advanced_platforming or l.phasewalk) and l.istiny | 
 | Around Lanky Reward | 3 | ((l.grape and l.sprint) or l.generalclips or l.phasewalk) and ((l.trombone and l.vines) or l.advanced_platforming) and l.islanky | 
 </details>
 <details>
