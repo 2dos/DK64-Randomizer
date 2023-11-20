@@ -68,7 +68,7 @@
 | Frantic Factory | Toy Monster Room | l.camera and ((l.triangle and l.punch and l.ischunky) or l.CanAccessRNDRoom()) | 
 | Frantic Factory | Diddy Research and Development Room | l.camera and ((l.guitar and l.isdiddy) or l.CanAccessRNDRoom()) | 
 | Frantic Factory | Chute to Storage Room | l.camera | 
-| Frantic Factory | Dark Room | l.camera and l.punch and l.chunky | 
+| Frantic Factory | Dark Room | l.camera and (l.punch and l.chunky) or l.phasewalk | 
 | Factory Crusher | Crusher Room | l.camera | 
 </details>
 

@@ -1237,7 +1237,7 @@
 | On pillar by 5DI tag (Diddy) | 5 | (l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.settings.krusha_kong != Kongs.tiny) | 
 | Above baboon blast pad by Cranky (Lanky) | 15 | (l.jetpack and l.isdiddy) or (l.balloon and l.islanky) | 
 | Inside tower to beetle race (Lanky) | 5 | (l.balloon or l.advanced_platforming) and l.CanSlamSwitch(Levels.CrystalCaves, 2) | 
-| On trombone pad on Lanky cabin (Lanky) | 5 | (l.jetpack and l.isdiddy) or (l.balloon and l.islanky) | 
+| On trombone pad on Lanky cabin (Lanky) | 5 | (l.jetpack and l.isdiddy) or (l.balloon and l.islanky) or l.phasewalk | 
 | First path to warps (Lanky) | 5 |  | 
 | Path from Funky to rocketbarrel (Diddy) | 5 |  | 
 | W4 (Diddy) | 5 |  | 

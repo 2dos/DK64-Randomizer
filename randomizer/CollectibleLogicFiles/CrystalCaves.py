@@ -128,7 +128,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: l.peanut, None, 1),
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 10),  # River
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.balloon, None, 1),  # Top of Lanky cabin
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.balloon or l.phasewalk, None, 1),  # Top of Lanky cabin
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),
         Collectible(Collectibles.balloon, Kongs.tiny, lambda l: l.feather, None, 1),
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 1),  # Warp 2
