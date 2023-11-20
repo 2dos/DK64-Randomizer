@@ -1390,7 +1390,7 @@ def shuffle_settings(evt):
 
 @bind("click", "settings_table_toggle")
 def toggle_settings_table(evt):
-    """Opens or closes the settings table on the Seed Info tab."""
+    """Open or close the settings table on the Seed Info tab."""
     settingsTable = js.document.getElementById("settings_table")
     settingsTable.classList.toggle("collapsed")
     settingsArrow = js.document.getElementsByClassName("settings-expand-arrow").item(0)
