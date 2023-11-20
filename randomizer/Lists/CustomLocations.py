@@ -1765,7 +1765,7 @@ CustomLocations = {
             max_size=64,
             logic_region=Regions.IglooArea,
             group=3,
-            logic=lambda l: (l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny))) or l.slam,
+            logic=lambda l: (l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny))) or l.Slam,
             banned_types=[LocationTypes.CrownPad, LocationTypes.DirtPatch],
         ),
         CustomLocation(map=Maps.CrystalCaves, name="In Hidden Bonus Room", x=453, y=180, z=2571, max_size=64, logic_region=Regions.CavesBonusCave, group=2),

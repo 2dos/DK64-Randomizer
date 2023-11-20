@@ -304,7 +304,7 @@
 | Crystal Caves | On 5DI Pillar | (l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.settings.krusha_kong != Kongs.tiny) | 
 | Crystal Caves | On top of the Igloo |  | 
 | Crystal Caves | Under tag barrel near igloo |  | 
-| Crystal Caves | In front of Igloo | (l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny))) or l.slam | 
+| Crystal Caves | In front of Igloo | (l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny))) or l.Slam | 
 | Crystal Caves | In Hidden Bonus Room |  | 
 | Crystal Caves | Near Primate Punch wall opposite cranky |  | 
 | Crystal Caves | In Giant Boulder Room |  | 

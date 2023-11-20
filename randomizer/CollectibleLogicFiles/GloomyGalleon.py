@@ -48,7 +48,7 @@ LogicRegions = {
     Regions.LighthouseUnderwater: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: (Events.LighthouseEnguarde in l.Events or l.CanPhaseswim()), None, 10),  # Behind Enguarde wall
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),  # Near Enguarde
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (Events.LighthouseEnguarde in l.Events or l.CanPhaseSwim()), None, 4),  # Enguarde chests
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (Events.LighthouseEnguarde in l.Events or l.CanPhaseswim()), None, 4),  # Enguarde chests
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 10),  # Underwater
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # Under enguarde box
