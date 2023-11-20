@@ -1149,7 +1149,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky],
         region=Regions.CabinArea,
         vanilla=True,
-        logic=lambda l: (l.jetpack and l.isdiddy) or (l.balloon and l.islanky),
+        logic=lambda l: (l.jetpack and l.isdiddy) or (l.balloon and l.islanky) or l.phasewalk,
         locations=[[5, 1.0, 2382.422119140625, 414.1666564941406, 1830.9127197265625]],
     ),
     ColoredBananaGroup(

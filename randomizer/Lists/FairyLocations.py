@@ -434,7 +434,7 @@ fairy_locations = {
             region=Regions.BeyondHatch,
             fence=Fence(1820, 526, 2079, 874),
             spawn_y=60,
-            logic=lambda l: l.camera and l.punch and l.chunky,
+            logic=lambda l: l.camera and ((l.punch and l.chunky) or l.phasewalk),
         ),
         FairyData(
             name="Crusher Room",
