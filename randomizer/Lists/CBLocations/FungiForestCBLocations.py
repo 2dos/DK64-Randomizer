@@ -73,7 +73,7 @@ ColoredBananaGroupList = [
         name="Around the roof of minecart",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
-        logic=lambda l: l.vines,
+        logic=lambda l: l.vines or l.CanMoonkick() or (l.jetpack and l.isdiddy),
         locations=[
             [1, 1.0, 2092, 280, 3251],
             [1, 1.0, 2050, 280, 3192],
@@ -294,7 +294,7 @@ ColoredBananaGroupList = [
         name="Outside of conveyor belt (behind night gate)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MillArea,
-        logic=lambda l: Events.Night in l.Events,
+        logic=lambda l: Events.Night in l.Events or l.phasewalk or l.CanPhaseswim() or l.ledgeclip,
         locations=[[5, 1.0, 4331, 170, 3472]],
     ),
     ColoredBananaGroup(
@@ -435,7 +435,7 @@ ColoredBananaGroupList = [
         name="Apple GB T&S behind night gate",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.WormArea,
-        logic=lambda l: Events.Night in l.Events,
+        logic=lambda l: Events.Night in l.Events or l.phasewalk,
         locations=[[5, 1.0, 3643, 192, 913]],
     ),
     ColoredBananaGroup(
@@ -1386,7 +1386,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.FungiForestStart,
         vanilla=True,
-        logic=lambda l: l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) and l.tiny,
+        logic=lambda l: l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) or l.phasewalk or l.CanPhaseswim(),
         locations=[
             [1, 1.0, 2745.662841796875, 201.1666717529297, 1544.6708984375],
             [1, 1.0, 2807.278076171875, 201.1666717529297, 1464.7086181640625],
@@ -1444,7 +1444,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy, Kongs.tiny],
         region=Regions.HollowTreeArea,
         vanilla=True,
-        logic=lambda l: (l.jetpack and l.isdiddy) or (l.mini and l.saxophone and l.istiny),
+        logic=lambda l: (l.jetpack and l.isdiddy) or (l.istiny and (l.mini and l.saxophone)),
         locations=[[5, 1.0, 1288.1484375, 434.0, 4735.201171875]],
     ),
     ColoredBananaGroup(
@@ -1510,7 +1510,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey],
         region=Regions.ThornvineBarn,
         vanilla=True,
-        logic=lambda l: l.CanSlamSwitch(Levels.FungiForest, 2),
+        logic=lambda l: (l.Slam or l.phasewalk) and l.isdonkey,
         locations=[[5, 1.0, 114.7787094116211, 17.76678466796875, 188.0786590576172]],
     ),
     ColoredBananaGroup(
@@ -1528,6 +1528,7 @@ ColoredBananaGroupList = [
         name="On DK switch (Donkey)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GrinderRoom,
+        logic=lambda l: l.Slam or l.phasewalk,
         vanilla=True,
         locations=[[5, 1.0, 48.73106002807617, 61.166255950927734, 188.2012481689453]],
     ),
@@ -1556,7 +1557,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny, Kongs.chunky],
         region=Regions.MillChunkyTinyArea,
         vanilla=True,
-        logic=lambda l: l.punch and l.chunky,
+        logic=lambda l: Events.MillBoxBroken in l.Events or l.phasewalk,
         locations=[[5, 1.0, 390.7475891113281, 0, 114.15646362304688]],
     ),
     ColoredBananaGroup(
@@ -1566,7 +1567,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny, Kongs.chunky],
         region=Regions.MillChunkyTinyArea,
         vanilla=True,
-        logic=lambda l: l.punch and l.chunky,
+        logic=lambda l: Events.MillBoxBroken in l.Events or l.phasewalk,
         locations=[[5, 1.0, 622.750732421875, 18.0, 167.2416534423828]],
     ),
     ColoredBananaGroup(
@@ -2103,7 +2104,7 @@ BalloonList = [
         konglist=[Kongs.donkey],
         region=Regions.GrinderRoom,
         vanilla=True,
-        logic=lambda l: l.CanSlamSwitch(Levels.FungiForest, 2),
+        logic=lambda l: (l.CanSlamSwitch(Levels.FungiForest, 2) or l.generalclips or l.phasewalk),
         points=[[399, 94, 117], [606, 90, 115]],
     ),
     Balloon(
