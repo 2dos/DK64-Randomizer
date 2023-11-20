@@ -679,7 +679,10 @@ def plando_hide_helm_options(evt):
 
 @bind("click", "nav-plando-tab")
 def plando_propagate_options(evt):
-    """Make changes to the plando tab based on other settings. This is partly a workaround for issues with the Bootstrap slider."""
+    """Make changes to the plando tab based on other settings.
+
+    This is partly a workaround for issues with the Bootstrap slider.
+    """
     plando_hide_krool_options(evt)
     plando_hide_helm_options(evt)
     plando_disable_camera_shockwave(evt)
@@ -1290,20 +1293,6 @@ def plando_disable_keys(evt):
             # Re-enable this key as a dropdown option.
             for option in key_options:
                 option.removeAttribute("disabled")
-
-
-@bind("click", "key_8_helm")
-def plando_lock_key_8_in_helm(evt):
-    """If key 8 is locked in Helm, force that location to hold key 8 in the plandomizer."""
-    key_8_locked_in_helm = js.document.getElementById("key_8_helm").checked
-    end_of_helm_dropdown = js.document.getElementById("plando_HelmKey_item")
-    if key_8_locked_in_helm:
-        # Forcibly select Key 8 for the End of Helm dropdown and disable it.
-        end_of_helm_dropdown.value = "HideoutHelmKey"
-        end_of_helm_dropdown.setAttribute("disabled", "disabled")
-    else:
-        # Enable the End of Helm dropdown.
-        end_of_helm_dropdown.removeAttribute("disabled")
 
 
 @bind("click", "helm_hurry")

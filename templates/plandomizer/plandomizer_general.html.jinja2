@@ -109,34 +109,38 @@
                     <label id="plando_kong_rescue_div_{{kong}}"
                         class="flex-container select-order">
                         <span class="rescue-label">{{kong.capitalize()}} cage opener:&nbsp;</span>
-                        <select id="plando_kong_rescue_{{kong}}"
-                                name="plando_kong_rescue_{{kong}}"
-                                class="form-select order-select">
-                            <option value="" selected">
-                                -- Randomize --
-                            </option>
-                            {% if kong != "tiny" %}
-                                <option value="donkey">
-                                    Donkey
+                        <div id="plando_kong_rescue_{{kong}}_wrapper"
+                             data-toggle="tooltip"
+                             title>
+                            <select id="plando_kong_rescue_{{kong}}"
+                                    name="plando_kong_rescue_{{kong}}"
+                                    class="form-select order-select">
+                                <option value="" selected">
+                                    -- Randomize --
                                 </option>
-                            {% endif %}
-                                <option value="diddy">
-                                    Diddy
-                                </option>
-                            {% if kong != "tiny" %}
-                                <option value="lanky">
-                                    Lanky
-                                </option>
-                            {% endif %}
-                            {% if kong != "tiny" %}
-                                <option value="tiny">
-                                    Tiny
-                                </option>
-                            {% endif %}
-                                <option value="chunky">
-                                    Chunky
-                                </option>
-                        </select>
+                                {% if kong != "tiny" %}
+                                    <option value="donkey">
+                                        Donkey
+                                    </option>
+                                {% endif %}
+                                    <option value="diddy">
+                                        Diddy
+                                    </option>
+                                {% if kong != "tiny" %}
+                                    <option value="lanky">
+                                        Lanky
+                                    </option>
+                                {% endif %}
+                                {% if kong != "tiny" %}
+                                    <option value="tiny">
+                                        Tiny
+                                    </option>
+                                {% endif %}
+                                    <option value="chunky">
+                                        Chunky
+                                    </option>
+                            </select>
+                        </div>
                     </label>
                 {% endfor %}
             </div>
