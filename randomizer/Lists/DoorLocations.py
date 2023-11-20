@@ -4,6 +4,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Maps import Maps
+from randomizer.Enums.Switches import Switches
 from randomizer.Logic import RegionsOriginal as RegionList
 from randomizer.LogicClasses import TransitionFront
 
@@ -91,7 +92,6 @@ door_locations = {
             logicregion=Regions.JungleJapesLobby,
             location=[169.075, 10.833, 594.613, 90.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.donkey,
@@ -102,7 +102,6 @@ door_locations = {
             logicregion=Regions.JungleJapesLobby,
             location=[647.565, 0.0, 791.912, 183.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.diddy,
@@ -113,7 +112,6 @@ door_locations = {
             logicregion=Regions.JungleJapesLobby,
             location=[156.565, 10.833, 494.73, 98.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.lanky,
@@ -124,7 +122,6 @@ door_locations = {
             logicregion=Regions.JungleJapesLobby,
             location=[252.558, 0.0, 760.733, 163.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.tiny,
@@ -135,7 +132,6 @@ door_locations = {
             logicregion=Regions.JungleJapesLobby,
             location=[821.85, 0.0, 615.167, 264.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.chunky,
@@ -147,7 +143,6 @@ door_locations = {
             location=[2489.96, 280.0, 736.892, 179.0],
             group=2,
             moveless=False,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Door in Diddy Cave
         DoorData(
@@ -160,10 +155,9 @@ door_locations = {
             location=[901.203, 279.0, 3795.889, 202.0],
             group=4,
             moveless=False,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Door in Fairy Cave
-        DoorData(name="Jungle Japes: Next to Diddy Cage - right", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[896.0, 852.0, 2427.0, 90.75], group=5, logic=lambda l: True),
+        DoorData(name="Jungle Japes: Next to Diddy Cage - right", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[896.0, 852.0, 2427.0, 90.75], group=5),
         DoorData(
             name="Jungle Japes: Alcove Above Diddy Tunnel - right",
             map=Maps.JungleJapes,
@@ -180,10 +174,8 @@ door_locations = {
             group=3,
             door_type="wrinkly",
         ),
-        DoorData(
-            name="Jungle Japes: Next to Minecart Exit -right", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[1029.0, 287.0, 2032.0, 251.5], rx=-10, group=3, logic=lambda l: True
-        ),
-        DoorData(name="Jungle Japes: Across From Minecart Exit", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[958.5, 288.0, 1616.0, 45.0], group=3, logic=lambda l: True),
+        DoorData(name="Jungle Japes: Next to Minecart Exit -right", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[1029.0, 287.0, 2032.0, 251.5], rx=-10, group=3),
+        DoorData(name="Jungle Japes: Across From Minecart Exit", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[958.5, 288.0, 1616.0, 45.0], group=3),
         DoorData(
             name="Jungle Japes: Main Area - Next to Tunnel to Tiny Gate",
             map=Maps.JungleJapes,
@@ -192,7 +184,6 @@ door_locations = {
             rx=-8,
             rz=9,
             group=5,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Beehive Area - Next to Beehive - far left",
@@ -201,7 +192,6 @@ door_locations = {
             location=[1904.5, 539.0, 3369.0, 134.25],
             group=6,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Beehive Area - Next to Beehive - left",
@@ -210,7 +200,6 @@ door_locations = {
             location=[1857.0, 539.0, 3196.0, 79.5],
             group=6,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Behind Rambi Door - watery room - left",
@@ -219,7 +208,6 @@ door_locations = {
             location=[611.0, 240.0, 3164.0, 201.75],
             group=4,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Behind Rambi Door - watery room - right",
@@ -228,7 +216,6 @@ door_locations = {
             location=[803.0, 240.0, 2957.0, 280.0],
             group=4,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Top of Lanky's Useless Slope - left",
@@ -239,7 +226,7 @@ door_locations = {
             group=7,
             moveless=False,
             door_type="wrinkly",
-            logic=lambda l: l.islanky and l.handstand,
+            logic=lambda l: (l.islanky and l.handstand) or l.phasewalk,
         ),
         DoorData(
             name="Jungle Japes: Top of Lanky's Useless Slope - right",
@@ -250,7 +237,7 @@ door_locations = {
             group=7,
             moveless=False,
             door_type="wrinkly",
-            logic=lambda l: l.islanky and l.handstand,
+            logic=lambda l: (l.islanky and l.handstand) or l.phasewalk,
         ),
         DoorData(
             name="Jungle Japes: Underwater by Warp 2",
@@ -270,7 +257,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.swim,
         ),
-        DoorData(name="Jungle Japes: Next to Funky - right", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[1928.0, 520.0, 2283.4, 140.0], group=5, logic=lambda l: True),
+        DoorData(name="Jungle Japes: Next to Funky - right", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[1928.0, 520.0, 2283.4, 140.0], group=5),
         DoorData(
             name="Jungle Japes: Next to Lanky's Painting Room - left",
             map=Maps.JungleJapes,
@@ -291,17 +278,14 @@ door_locations = {
             moveless=False,
             logic=lambda l: (l.handstand and l.islanky) or (l.twirl and l.istiny),
         ),
-        DoorData(name="Jungle Japes: Outside Diddy Cave Switch - left", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[2133.0, 280.0, 421.0, 1.0], group=2, logic=lambda l: True),
-        DoorData(
-            name="Jungle Japes: Outside Diddy Cave Switch - right", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[2119.0, 280.0, 599.0, 180.0], group=2, logic=lambda l: True
-        ),
+        DoorData(name="Jungle Japes: Outside Diddy Cave Switch - left", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[2133.0, 280.0, 421.0, 1.0], group=2),
+        DoorData(name="Jungle Japes: Outside Diddy Cave Switch - right", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[2119.0, 280.0, 599.0, 180.0], group=2),
         DoorData(
             name="Jungle Japes: Entrance Tunnel - Near Diddy Cave - back left",
             map=Maps.JungleJapes,
             logicregion=Regions.JungleJapesStart,
             location=[1891.0, 280.0, 879.0, 180.0],
             group=2,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Entrance Tunnel - Near Diddy Cave - front left",
@@ -309,7 +293,6 @@ door_locations = {
             logicregion=Regions.JungleJapesStart,
             location=[2022.0, 280.0, 357.0, 295.6],
             group=2,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Entrance Tunnel - Near Warppad 1 and 2",
@@ -317,7 +300,6 @@ door_locations = {
             logicregion=Regions.JungleJapesStart,
             location=[1432.8, 280.0, 1056.0, 89.2],
             group=2,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Diddy Tunnel - next to hole - river side",
@@ -326,7 +308,6 @@ door_locations = {
             location=[1329.0, 281.0, 2686.5, 183.5],
             group=2,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Diddy Tunnel - river side",
@@ -337,7 +318,6 @@ door_locations = {
             group=2,
             moveless=False,
             door_type="wrinkly",
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Near Warp 4 and Tunnel Threeway crossing",
@@ -346,7 +326,6 @@ door_locations = {
             location=[1570.0, 280.0, 2522.0, 242.0],
             group=7,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Cranky Tunnel - Crossroad",
@@ -356,7 +335,6 @@ door_locations = {
             group=7,
             moveless=False,
             door_type="wrinkly",
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Cranky Area - front-right",
@@ -365,7 +343,6 @@ door_locations = {
             location=[1414.0, 280.0, 3646.0, 55.0],
             group=7,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Cranky Area - front left",
@@ -374,7 +351,6 @@ door_locations = {
             location=[1955.5, 280.0, 3646.0, 314.5],
             group=7,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Cranky Area - center left",
@@ -383,7 +359,6 @@ door_locations = {
             location=[2126.5, 280.0, 4082.0, 253.0],
             group=7,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Cranky Area - center right",
@@ -392,7 +367,6 @@ door_locations = {
             location=[1278.0, 280.0, 4114.0, 106.0],
             group=7,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Cranky Area - back left",
@@ -401,7 +375,6 @@ door_locations = {
             location=[1930.0, 280.0, 4401.7, 147.8],
             group=7,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Cranky Area - back right",
@@ -410,7 +383,6 @@ door_locations = {
             location=[1405.0, 280.0, 4416.2, 175.5],
             group=7,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Beehive Room 2 - left",
@@ -448,7 +420,6 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=9,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Jungle Japes: Diddy Mountain - Next to Conveyor Controls",
@@ -458,7 +429,7 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=10,
             moveless=False,
-            logic=lambda l: l.charge and l.isdiddy,
+            logic=lambda l: (l.charge and l.isdiddy) or l.phasewalk,
             door_type="wrinkly",
         ),
         DoorData(
@@ -469,7 +440,6 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=10,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -480,7 +450,6 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=10,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
     ],
@@ -491,7 +460,6 @@ door_locations = {
             logicregion=Regions.AngryAztecLobby,
             location=[499.179, 0.0, 146.628, 0.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.donkey,
@@ -502,7 +470,6 @@ door_locations = {
             logicregion=Regions.AngryAztecLobby,
             location=[441.456, 0.0, 614.029, 180.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.diddy,
@@ -513,7 +480,6 @@ door_locations = {
             logicregion=Regions.AngryAztecLobby,
             location=[628.762, 80.0, 713.93, 177.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.lanky,
@@ -524,7 +490,6 @@ door_locations = {
             logicregion=Regions.AngryAztecLobby,
             location=[377.124, 80.0, 712.484, 179.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.tiny,
@@ -536,7 +501,7 @@ door_locations = {
             location=[1070.018, 0.0, 738.609, 190.0],
             group=1,
             moveless=False,
-            logic=lambda l: (l.tiny and l.feather) or l.phasewalk,
+            logic=lambda l: l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.chunky,
@@ -548,7 +513,6 @@ door_locations = {
             location=[2801.765, 121.333, 4439.293, 66.0],
             group=2,
             moveless=False,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Portal by Funky
         DoorData(
@@ -558,7 +522,6 @@ door_locations = {
             location=[2787.908, 120.0, 2674.299, 198.0],
             group=3,
             moveless=False,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Portal by Cranky
         DoorData(
@@ -567,7 +530,6 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[2268.343, 120.0, 448.669, 59.0],
             group=4,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Portal by Candy
         DoorData(
@@ -577,7 +539,6 @@ door_locations = {
             location=[3573.712, 120.0, 4456.399, 285.0],
             group=2,
             moveless=False,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Portal by Snide
         DoorData(
@@ -587,7 +548,6 @@ door_locations = {
             location=[1968.329, 180.0, 3457.189, 244.0],
             group=5,
             moveless=False,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Portal behind 5DT
         DoorData(
@@ -596,7 +556,6 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[2468.0, 120.0, 473.5, 298.75],
             group=4,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Under Diddy's Tiny Temple Switch",
@@ -604,7 +563,6 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[3053.0, 214.0, 605.5, 217.5],
             group=4,
-            logic=lambda l: True,
             door_type="tns",
         ),
         DoorData(
@@ -613,7 +571,6 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[3149.0, 212.0, 532.0, 217.5],
             group=4,
-            logic=lambda l: True,
             door_type="tns",
         ),
         DoorData(
@@ -622,7 +579,6 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[3183.0, 213.0, 773.0, 37.5],
             group=4,
-            logic=lambda l: True,
             door_type="tns",
         ),
         DoorData(
@@ -631,7 +587,6 @@ door_locations = {
             logicregion=Regions.AngryAztecOasis,
             location=[3282.0, 213.0, 697.0, 37.5],
             group=4,
-            logic=lambda l: True,
             door_type="tns",
         ),
         DoorData(
@@ -641,7 +596,6 @@ door_locations = {
             location=[4206.0, 80.0, 3367.0, 240.0],
             group=6,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Next to Tag Barrel near Snides",
@@ -650,11 +604,8 @@ door_locations = {
             location=[4067.0, 190.0, 4050.0, 263.0],
             group=2,
             moveless=False,
-            logic=lambda l: True,
         ),
-        DoorData(
-            name="Angry Aztec: Under the Vulture Cage", map=Maps.AngryAztec, logicregion=Regions.AngryAztecMain, location=[4005.0, 120.0, 4598.0, 155.0], group=2, moveless=False, logic=lambda l: True
-        ),
+        DoorData(name="Angry Aztec: Under the Vulture Cage", map=Maps.AngryAztec, logicregion=Regions.AngryAztecMain, location=[4005.0, 120.0, 4598.0, 155.0], group=2, moveless=False),
         DoorData(
             name="Angry Aztec: 5Door Temple's 6th Door",
             map=Maps.AngryAztec,
@@ -663,7 +614,6 @@ door_locations = {
             scale=1.47,
             group=5,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Cranky Tunnel - Near Chunky Barrel - left",
@@ -672,7 +622,6 @@ door_locations = {
             location=[3182.5, 120.0, 1440.0, 41.0],
             group=7,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Cranky Tunnel - Near Chunky Barrel - right",
@@ -681,7 +630,6 @@ door_locations = {
             location=[3358.0, 120.0, 1445.5, 318.5],
             group=7,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Cranky Tunnel - Near Road to Cranky - left",
@@ -690,7 +638,6 @@ door_locations = {
             location=[3366.8, 120.0, 2032.0, 241.43],
             group=7,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Cranky Tunnel - Near Road to Cranky - right",
@@ -699,7 +646,6 @@ door_locations = {
             location=[3166.25, 120.0, 2028.0, 118.5],
             group=7,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: 5Door Temple Staircase - front",
@@ -708,7 +654,6 @@ door_locations = {
             location=[2031.0, 180.0, 3826.0, 63.5],
             group=5,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: 5Door Temple Staircase - back",
@@ -717,18 +662,14 @@ door_locations = {
             location=[1921.0, 180.0, 3770.0, 244.0],
             group=5,
             moveless=False,
-            logic=lambda l: True,
         ),
-        DoorData(
-            name="Angry Aztec: Entrance Tunnel - next to Coconut Switch", map=Maps.AngryAztec, logicregion=Regions.AngryAztecOasis, location=[1514.0, 120.0, 1107.8, 4.8], group=8, logic=lambda l: True
-        ),
+        DoorData(name="Angry Aztec: Entrance Tunnel - next to Coconut Switch", map=Maps.AngryAztec, logicregion=Regions.AngryAztecOasis, location=[1514.0, 120.0, 1107.8, 4.8], group=8),
         DoorData(
             name="Angry Aztec: Entrance Tunnel - left (near the oasis end)",
             map=Maps.AngryAztec,
             logicregion=Regions.AngryAztecOasis,
             location=[1820.0, 120.0, 816.5, 19.0],
             group=8,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: in the sealed quicksand tunnel",
@@ -774,12 +715,10 @@ door_locations = {
             logic=lambda l: (l.islanky and l.grape) or l.phasewalk,
             door_type="wrinkly",
         ),
-        DoorData(name="Angry Aztec: Next to Tiny Temple - front left", map=Maps.AngryAztec, logicregion=Regions.AngryAztecOasis, location=[2893.0, 153.0, 478.0, 28.0], group=4, logic=lambda l: True),
-        DoorData(name="Angry Aztec: Next to Tiny Temple - back left", map=Maps.AngryAztec, logicregion=Regions.AngryAztecOasis, location=[3209.2, 153.0, 312.2, 307.0], group=4, logic=lambda l: True),
-        DoorData(
-            name="Angry Aztec: Oasis - Next to Tunnel - far left", map=Maps.AngryAztec, logicregion=Regions.AngryAztecOasis, location=[2923.0, 120.0, 1205.0, 243.5], group=4, logic=lambda l: True
-        ),
-        DoorData(name="Angry Aztec: Oasis - Next to Tunnel - left", map=Maps.AngryAztec, logicregion=Regions.AngryAztecOasis, location=[2836.0, 120.0, 1370.0, 237.5], group=4, logic=lambda l: True),
+        DoorData(name="Angry Aztec: Next to Tiny Temple - front left", map=Maps.AngryAztec, logicregion=Regions.AngryAztecOasis, location=[2893.0, 153.0, 478.0, 28.0], group=4),
+        DoorData(name="Angry Aztec: Next to Tiny Temple - back left", map=Maps.AngryAztec, logicregion=Regions.AngryAztecOasis, location=[3209.2, 153.0, 312.2, 307.0], group=4),
+        DoorData(name="Angry Aztec: Oasis - Next to Tunnel - far left", map=Maps.AngryAztec, logicregion=Regions.AngryAztecOasis, location=[2923.0, 120.0, 1205.0, 243.5], group=4),
+        DoorData(name="Angry Aztec: Oasis - Next to Tunnel - left", map=Maps.AngryAztec, logicregion=Regions.AngryAztecOasis, location=[2836.0, 120.0, 1370.0, 237.5], group=4),
         DoorData(
             name="Angry Aztec: Between Snides and Diddy Gong Tower",
             map=Maps.AngryAztec,
@@ -787,7 +726,6 @@ door_locations = {
             location=[4183.0, 120.0, 3830.0, 239.5],
             group=6,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Next to Llama Temple - left",
@@ -796,7 +734,6 @@ door_locations = {
             location=[2794.75, 120.0, 3566.0, 64.0],
             group=10,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Llama Temple's switchless side",
@@ -805,7 +742,6 @@ door_locations = {
             location=[2997.6, 250.0, 2906.0, 105.0],
             group=10,
             moveless=False,
-            logic=lambda l: True,
             door_type="tns",
         ),
         DoorData(
@@ -815,7 +751,6 @@ door_locations = {
             location=[1571.0, 289.0, 610.9, 0.0],
             group=11,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Tiny Temple - Main Room - back",
@@ -824,7 +759,6 @@ door_locations = {
             location=[1789.0, 287.0, 813.0, 270.0],
             group=11,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -834,7 +768,6 @@ door_locations = {
             location=[1672.5, 122.0, 1359.0, 270.0],
             group=11,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Tiny Temple - Across from Slope to Tiny Cage - right",
@@ -843,7 +776,6 @@ door_locations = {
             location=[1672.5, 122.0, 1571.0, 270.0],
             group=11,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Tiny Temple - Next to Opening to Underwater Room",
@@ -852,7 +784,6 @@ door_locations = {
             location=[1375.0, 145.0, 949.5, 180.0],
             group=11,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Tiny Temple - Across from Opening to Underwater Room",
@@ -861,7 +792,6 @@ door_locations = {
             location=[1450.0, 145.0, 751.1, 0.0],
             group=11,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Llama Temple Stairs - left",
@@ -871,7 +801,6 @@ door_locations = {
             scale=0.95,
             group=9,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Llama Temple Stairs - right",
@@ -881,7 +810,6 @@ door_locations = {
             scale=0.95,
             group=9,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Llama Temple - Entrance Staircase - left",
@@ -890,7 +818,6 @@ door_locations = {
             location=[2694.9, 371.0, 2310.0, 270.0],
             group=9,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Llama Temple - Entrance Staircase - right",
@@ -899,7 +826,6 @@ door_locations = {
             location=[2694.9, 371.0, 2546.0, 270.0],
             group=9,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Angry Aztec: Llama Temple - Across from the Spit Gate",
@@ -918,7 +844,6 @@ door_locations = {
             logicregion=Regions.FranticFactoryLobby,
             location=[544.362, 0.0, 660.802, 182.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.donkey,
@@ -965,19 +890,18 @@ door_locations = {
             logicregion=Regions.FranticFactoryLobby,
             location=[393.114, 0.0, 662.562, 182.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.chunky,
         ),  # Chunky Door
         DoorData(
-            name="Frantic Factory: Arcade Room", map=Maps.FranticFactory, logicregion=Regions.BeyondHatch, location=[1778.702, 1106.667, 1220.515, 357.0], group=2, logic=lambda l: True, placed="tns"
+            name="Frantic Factory: Arcade Room", map=Maps.FranticFactory, logicregion=Regions.BeyondHatch, location=[1778.702, 1106.667, 1220.515, 357.0], group=2, placed="tns"
         ),  # T&S Portal in Arcade Room
         DoorData(
-            name="Frantic Factory: Production Room", map=Maps.FranticFactory, logicregion=Regions.UpperCore, location=[381.573, 605.0, 1032.929, 45.0], group=3, logic=lambda l: True, placed="tns"
+            name="Frantic Factory: Production Room", map=Maps.FranticFactory, logicregion=Regions.UpperCore, location=[381.573, 605.0, 1032.929, 45.0], group=3, placed="tns"
         ),  # T&S Portal in Production Room
         DoorData(
-            name="Frantic Factory: R&D", map=Maps.FranticFactory, logicregion=Regions.RandD, location=[3827.127, 1264.0, 847.458, 222.0], group=4, moveless=False, logic=lambda l: True, placed="tns"
+            name="Frantic Factory: R&D", map=Maps.FranticFactory, logicregion=Regions.RandD, location=[3827.127, 1264.0, 847.458, 222.0], group=4, moveless=False, placed="tns"
         ),  # T&S Portal in R&D
         DoorData(
             name="Frantic Factory: Block Tower",
@@ -986,11 +910,10 @@ door_locations = {
             location=[2259.067, 1126.824, 1614.609, 182.0],
             group=5,
             moveless=False,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Portal in Block Tower Room
         DoorData(
-            name="Frantic Factory: Storage Room", map=Maps.FranticFactory, logicregion=Regions.BeyondHatch, location=[1176.912, 6.5, 472.114, 1.0], group=6, logic=lambda l: True, placed="tns"
+            name="Frantic Factory: Storage Room", map=Maps.FranticFactory, logicregion=Regions.BeyondHatch, location=[1176.912, 6.5, 472.114, 1.0], group=6, placed="tns"
         ),  # T&S Portal in Storage Room
         DoorData(
             name="Frantic Factory: Behind Chunky's Toy Box - big",
@@ -1010,7 +933,6 @@ door_locations = {
             logicregion=Regions.FranticFactoryStart,
             location=[489.5, 804.0, 1867.0, 49.0],
             group=7,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Frantic Factory: Next to Hatch with Tall Pole - right",
@@ -1018,22 +940,18 @@ door_locations = {
             logicregion=Regions.FranticFactoryStart,
             location=[800.0, 804.0, 1867.0, 310.0],
             group=7,
-            logic=lambda l: True,
         ),
-        DoorData(name="Frantic Factory: Bottom of the Tall Pole", map=Maps.FranticFactory, logicregion=Regions.BeyondHatch, location=[528.0, 167.0, 1770.8, 35.0], group=7, logic=lambda l: True),
+        DoorData(name="Frantic Factory: Bottom of the Tall Pole", map=Maps.FranticFactory, logicregion=Regions.BeyondHatch, location=[528.0, 167.0, 1770.8, 35.0], group=7),
         DoorData(
             name="Frantic Factory: Production Room - Under Tiny Conveyors",
             map=Maps.FranticFactory,
             logicregion=Regions.UpperCore,
             location=[860.0, 605.0, 1011.0, 314.5],
             group=3,
-            logic=lambda l: True,
         ),
-        DoorData(
-            name="Frantic Factory: Kong Cage Room - Behind Tag Barrel", map=Maps.FranticFactory, logicregion=Regions.BeyondHatch, location=[1633.0, 6.0, 845.0, 270.0], group=6, logic=lambda l: True
-        ),
-        DoorData(name="Frantic Factory: Under Cranky's Lab", map=Maps.FranticFactory, logicregion=Regions.BeyondHatch, location=[267.7, 165.0, 805.0, 90.0], group=6, logic=lambda l: True),
-        DoorData(name="Frantic Factory: Under Candy's Store", map=Maps.FranticFactory, logicregion=Regions.BeyondHatch, location=[267.0, 165.0, 649.0, 90.0], group=6, logic=lambda l: True),
+        DoorData(name="Frantic Factory: Kong Cage Room - Behind Tag Barrel", map=Maps.FranticFactory, logicregion=Regions.BeyondHatch, location=[1633.0, 6.0, 845.0, 270.0], group=6),
+        DoorData(name="Frantic Factory: Under Cranky's Lab", map=Maps.FranticFactory, logicregion=Regions.BeyondHatch, location=[267.7, 165.0, 805.0, 90.0], group=6),
+        DoorData(name="Frantic Factory: Under Candy's Store", map=Maps.FranticFactory, logicregion=Regions.BeyondHatch, location=[267.0, 165.0, 649.0, 90.0], group=6),
         DoorData(
             name="Frantic Factory: Next to DK's Count to 16 Puzzle",
             map=Maps.FranticFactory,
@@ -1041,7 +959,6 @@ door_locations = {
             location=[2526.0, 1002.0, 1990.6, 180.0],
             group=5,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Frantic Factory: R&D Room - Next to Tunnel to Car Race",
@@ -1050,7 +967,6 @@ door_locations = {
             location=[4006.7, 1264.0, 1454.0, 253.7],
             group=4,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Frantic Factory: Block Tower Room - Under Tunnel to Funky's",
@@ -1059,11 +975,8 @@ door_locations = {
             location=[2044.0, 1026.0, 978.0, 0.0],
             group=5,
             moveless=False,
-            logic=lambda l: True,
         ),
-        DoorData(
-            name="Frantic Factory: R&D Room - Dead End", map=Maps.FranticFactory, logicregion=Regions.RandD, location=[3824.0, 1264.0, 528.8, 340.5], group=4, moveless=False, logic=lambda l: True
-        ),
+        DoorData(name="Frantic Factory: R&D Room - Dead End", map=Maps.FranticFactory, logicregion=Regions.RandD, location=[3824.0, 1264.0, 528.8, 340.5], group=4, moveless=False),
         DoorData(
             name="Frantic Factory: R&D Room - Blind Corner Next to Tunnel to Car Race",
             map=Maps.FranticFactory,
@@ -1071,7 +984,6 @@ door_locations = {
             location=[3790.0, 1264.0, 1476.0, 52.5],
             group=4,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -1081,7 +993,6 @@ door_locations = {
             location=[1589.0, 1113.0, 816.2, 182.0],
             group=5,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Frantic Factory: Block Tower Room - Air Vent Under Arcade Window",
@@ -1090,7 +1001,6 @@ door_locations = {
             location=[2002.5, 1027.0, 1180.5, 90.0],
             group=5,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Frantic Factory: Block Tower Room - Under Arcade Window - left",
@@ -1099,7 +1009,6 @@ door_locations = {
             location=[1957.1, 1026.0, 1448.0, 90.0],
             group=5,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Frantic Factory: Block Tower Room - Behind Tag Barrel",
@@ -1108,7 +1017,6 @@ door_locations = {
             location=[2717.0, 1106.0, 838.0, 0.0],
             group=5,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Frantic Factory: R&D Room - Next to Diddy's Pincode Room",
@@ -1117,7 +1025,6 @@ door_locations = {
             location=[4046.0, 1336.0, 608.0, 340.0],
             group=4,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Frantic Factory: Tiny's Race Entry Area",
@@ -1127,12 +1034,9 @@ door_locations = {
             kong_lst=[Kongs.tiny],
             group=4,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
-        DoorData(
-            name="Frantic Factory: Kong Cage Room - Next to Tag Barrel", map=Maps.FranticFactory, logicregion=Regions.BeyondHatch, location=[1421.0, 6.0, 927.3, 180.0], group=6, logic=lambda l: True
-        ),
+        DoorData(name="Frantic Factory: Kong Cage Room - Next to Tag Barrel", map=Maps.FranticFactory, logicregion=Regions.BeyondHatch, location=[1421.0, 6.0, 927.3, 180.0], group=6),
         DoorData(
             name="Frantic Factory: Production Room - in Alcove Next to Tiny's Barrel",
             map=Maps.FranticFactory,
@@ -1151,7 +1055,6 @@ door_locations = {
             logicregion=Regions.BeyondHatch,
             location=[430.6, 0.0, 980.6, 45.0],
             group=3,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Frantic Factory: Arcade Room - in a corner",
@@ -1160,7 +1063,6 @@ door_locations = {
             location=[1652.5, 1106.0, 1253.75, 43.0],
             scale=0.8669,
             group=2,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Frantic Factory: Block Tower Room - Next to Tiny Barrel",
@@ -1169,7 +1071,6 @@ door_locations = {
             location=[2237.0, 1106.0, 943.0, 90.0],
             group=5,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Frantic Factory: Block Tower Room - at the Base of the Block Tower",
@@ -1178,7 +1079,6 @@ door_locations = {
             location=[2517.0, 1026.0, 1315.0, 90.0],
             group=5,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Frantic Factory: Clock Room - Under Clock",
@@ -1187,18 +1087,11 @@ door_locations = {
             location=[1262.0, 867.0, 2025.0, 0.0],
             scale=0.48,
             group=7,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
-        DoorData(
-            name="Frantic Factory: Clock Room - front left", map=Maps.FranticFactory, logicregion=Regions.FranticFactoryStart, location=[1044.65, 842.0, 2223.0, 90.0], group=7, logic=lambda l: True
-        ),
-        DoorData(
-            name="Frantic Factory: Clock Room - back left", map=Maps.FranticFactory, logicregion=Regions.FranticFactoryStart, location=[1044.65, 842.0, 2105.0, 90.0], group=7, logic=lambda l: True
-        ),
-        DoorData(
-            name="Frantic Factory: Clock Room - front right", map=Maps.FranticFactory, logicregion=Regions.FranticFactoryStart, location=[1447.0, 842.0, 2283.5, 180.0], group=7, logic=lambda l: True
-        ),
+        DoorData(name="Frantic Factory: Clock Room - front left", map=Maps.FranticFactory, logicregion=Regions.FranticFactoryStart, location=[1044.65, 842.0, 2223.0, 90.0], group=7),
+        DoorData(name="Frantic Factory: Clock Room - back left", map=Maps.FranticFactory, logicregion=Regions.FranticFactoryStart, location=[1044.65, 842.0, 2105.0, 90.0], group=7),
+        DoorData(name="Frantic Factory: Clock Room - front right", map=Maps.FranticFactory, logicregion=Regions.FranticFactoryStart, location=[1447.0, 842.0, 2283.5, 180.0], group=7),
         DoorData(
             name="Frantic Factory: Top of Pipe Near Kong-freeing Switch",
             map=Maps.FranticFactory,
@@ -1219,7 +1112,7 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=4,
             moveless=False,
-            logic=lambda l: l.isdiddy and (l.guitar or l.CanAccessRNDRoom()),
+            logic=lambda l: (l.isdiddy and l.guitar) or l.CanAccessRNDRoom(),
             door_type="wrinkly",
         ),
         DoorData(
@@ -1230,7 +1123,7 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=4,
             moveless=False,
-            logic=lambda l: l.islanky and (l.trombone or l.CanAccessRNDRoom()),
+            logic=lambda l: (l.islanky and l.trombone) or l.CanAccessRNDRoom(),
             door_type="wrinkly",
         ),
         DoorData(
@@ -1241,7 +1134,7 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=4,
             moveless=False,
-            logic=lambda l: l.islanky and (l.trombone or l.CanAccessRNDRoom()),
+            logic=lambda l: (l.islanky and l.trombone) or l.CanAccessRNDRoom(),
             door_type="wrinkly",
         ),
         DoorData(
@@ -1254,7 +1147,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: (l.chunky and l.punch) or l.phasewalk or l.generalclips,
         ),
-        DoorData(name="Frantic Factory: Crusher Room - start", map=Maps.FactoryCrusher, logicregion=Regions.InsideCore, location=[475.0, 0.0, 539.0, 180.0], group=3, logic=lambda l: True),
+        DoorData(name="Frantic Factory: Crusher Room - start", map=Maps.FactoryCrusher, logicregion=Regions.InsideCore, location=[475.0, 0.0, 539.0, 180.0], group=3),
     ],
     Levels.GloomyGalleon: [
         DoorData(
@@ -1263,7 +1156,6 @@ door_locations = {
             logicregion=Regions.GloomyGalleonLobby,
             location=[1022.133, 139.667, 846.41, 276.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.donkey,
@@ -1274,7 +1166,6 @@ door_locations = {
             logicregion=Regions.GloomyGalleonLobby,
             location=[345.039, 139.667, 884.162, 92.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.diddy,
@@ -1285,7 +1176,6 @@ door_locations = {
             logicregion=Regions.GloomyGalleonLobby,
             location=[464.68, 159.667, 1069.446, 161.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.lanky,
@@ -1296,7 +1186,6 @@ door_locations = {
             logicregion=Regions.GloomyGalleonLobby,
             location=[582.36, 159.667, 1088.258, 180.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.tiny,
@@ -1307,7 +1196,6 @@ door_locations = {
             logicregion=Regions.GloomyGalleonLobby,
             location=[876.388, 178.667, 1063.828, 192.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.chunky,
@@ -1319,7 +1207,6 @@ door_locations = {
             location=[3423.707, 1890.471, 3098.15, 243.0],
             group=2,
             moveless=False,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Door Near Cranky's
         DoorData(
@@ -1329,7 +1216,6 @@ door_locations = {
             location=[1975.898, 100.0, 4498.375, 256.0],
             group=3,
             moveless=False,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Door in meme hole
         DoorData(
@@ -1339,7 +1225,6 @@ door_locations = {
             location=[803.636, 1053.997, 1955.268, 92.0],
             group=4,
             moveless=False,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Door behind 2DS
         DoorData(
@@ -1349,7 +1234,7 @@ door_locations = {
             location=[645.832, 1460.0, 4960.476, 133.0],
             group=5,
             moveless=False,
-            logic=lambda l: lambda l: Events.LighthouseEnguarde in l.Events,
+            logic=lambda l: Events.LighthouseEnguarde in l.Events,
             placed="tns",
         ),  # T&S Door behind Enguarde Door
         DoorData(
@@ -1359,7 +1244,6 @@ door_locations = {
             location=[4517.923, 1290.0, 894.527, 308.0],
             group=6,
             moveless=False,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Door near Cactus
         DoorData(
@@ -1368,7 +1252,6 @@ door_locations = {
             logicregion=Regions.GloomyGalleonStart,
             location=[2205.0, 1620.0, 2700.0, 90.0],
             group=2,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: In hallway to Shipyard - Lanky switch",
@@ -1376,7 +1259,6 @@ door_locations = {
             logicregion=Regions.GloomyGalleonStart,
             location=[2615.0, 1620.0, 2844.0, 302.0],
             group=2,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: In hallway to Primate Punch Chests",
@@ -1384,7 +1266,6 @@ door_locations = {
             logicregion=Regions.GloomyGalleonStart,
             location=[3007.0, 1670.0, 3866.0, 135.42],
             group=2,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Under Baboon Blast pad",
@@ -1393,7 +1274,6 @@ door_locations = {
             location=[1674.5, 1610.0, 4042.5, 261.15],
             group=7,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Under RocketBarrel barrel",
@@ -1402,7 +1282,6 @@ door_locations = {
             location=[1360.0, 1609.0, 4048.0, 86.0],
             group=7,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Next to Cannonball game",
@@ -1413,18 +1292,15 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.CanGetOnCannonGamePlatform(),
         ),
-        DoorData(
-            name="Gloomy Galleon: Next to Coconut switch", map=Maps.GloomyGalleon, logicregion=Regions.GloomyGalleonStart, location=[2065.75, 1628.0, 3418.75, 28.0], group=2, logic=lambda l: True
-        ),
+        DoorData(name="Gloomy Galleon: Next to Coconut switch", map=Maps.GloomyGalleon, logicregion=Regions.GloomyGalleonStart, location=[2065.75, 1628.0, 3418.75, 28.0], group=2),
         DoorData(
             name="Gloomy Galleon: Entrance Tunnel - near entrance",
             map=Maps.GloomyGalleon,
             logicregion=Regions.GloomyGalleonStart,
             location=[2112.0, 1628.0, 3223.0, 135.0],
             group=2,
-            logic=lambda l: True,
         ),
-        DoorData(name="Gloomy Galleon: Next to Peanut switch", map=Maps.GloomyGalleon, logicregion=Regions.GloomyGalleonStart, location=[2462.0, 1619.0, 2688.0, 270.0], group=2, logic=lambda l: True),
+        DoorData(name="Gloomy Galleon: Next to Peanut switch", map=Maps.GloomyGalleon, logicregion=Regions.GloomyGalleonStart, location=[2462.0, 1619.0, 2688.0, 270.0], group=2),
         DoorData(
             name="Gloomy Galleon: Music Cactus - bottom back left",
             map=Maps.GloomyGalleon,
@@ -1432,7 +1308,6 @@ door_locations = {
             location=[4444.0, 1290.0, 803.0, 307.7],
             group=6,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Music Cactus - bottom front left",
@@ -1441,7 +1316,6 @@ door_locations = {
             location=[4239.0, 1289.0, 880.0, 38.31],
             group=6,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Music Cactus - bottom back right",
@@ -1450,7 +1324,6 @@ door_locations = {
             location=[4587.0, 1290.0, 972.0, 307.85],
             group=6,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Music Cactus - bottom front right",
@@ -1459,7 +1332,6 @@ door_locations = {
             location=[4524.0, 1290.0, 1145.0, 218.31],
             group=6,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: On top of Seal cage",
@@ -1479,7 +1351,6 @@ door_locations = {
             location=[1938.0, 1440.0, 524.0, 330.0],
             group=9,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Next to Warp 3 in Cranky's Area",
@@ -1488,7 +1359,6 @@ door_locations = {
             location=[3071.0, 1890.0, 2838.0, 0.0],
             group=2,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: In Primate Punch Chest Room - right",
@@ -1496,7 +1366,6 @@ door_locations = {
             logicregion=Regions.GloomyGalleonStart,
             location=[3460.0, 1670.0, 4001.0, 180.0],
             group=2,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Behind Chunky punch gate in Cranky Area",
@@ -1514,11 +1383,8 @@ door_locations = {
             logicregion=Regions.LighthouseSurface,
             location=[540.3, 1564.0, 4094.0, 110.0],
             group=7,
-            logic=lambda l: True,
         ),
-        DoorData(
-            name="Gloomy Galleon: Behind boxes in Cranky Area", map=Maps.GloomyGalleon, logicregion=Regions.GloomyGalleonStart, location=[2891.5, 1688.0, 3493.0, 124.0], group=2, logic=lambda l: True
-        ),
+        DoorData(name="Gloomy Galleon: Behind boxes in Cranky Area", map=Maps.GloomyGalleon, logicregion=Regions.GloomyGalleonStart, location=[2891.5, 1688.0, 3493.0, 124.0], group=2),
         DoorData(
             name="Gloomy Galleon: Mech Fish Gate - far left",
             map=Maps.GloomyGalleon,
@@ -1526,7 +1392,6 @@ door_locations = {
             location=[2651.0, 140.5, 503.0, 92.0],
             group=10,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Mech Fish Gate - left",
@@ -1536,7 +1401,6 @@ door_locations = {
             rz=7.3,
             group=10,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Mech Fish Gate - middle",
@@ -1546,7 +1410,6 @@ door_locations = {
             rz=-4.7,
             group=10,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Mech Fish Gate - right",
@@ -1557,7 +1420,6 @@ door_locations = {
             rz=-290,
             group=10,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -1569,7 +1431,6 @@ door_locations = {
             rz=-16,
             group=10,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -1589,7 +1450,6 @@ door_locations = {
             rz=-47,
             group=4,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Near Mermaid's Palace - right",
@@ -1598,7 +1458,6 @@ door_locations = {
             location=[1445.0, 141.0, 4859.0, 180.0],
             group=3,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Near Mermaid's Palace - left",
@@ -1608,7 +1467,6 @@ door_locations = {
             rz=3,
             group=3,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: Near Mermaid's Palace - Under Tag Barrel",
@@ -1619,7 +1477,6 @@ door_locations = {
             rz=3,
             group=3,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -1630,7 +1487,6 @@ door_locations = {
             kong_lst=[Kongs.donkey],
             group=11,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Gloomy Galleon: In Mermaid's Palace",
@@ -1640,7 +1496,6 @@ door_locations = {
             kong_lst=[Kongs.tiny],
             group=12,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -1651,7 +1506,6 @@ door_locations = {
             kong_lst=[Kongs.tiny],
             group=13,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -1662,7 +1516,6 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=14,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -1673,7 +1526,6 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=15,
             moveless=False,
-            logic=lambda l: True,
         ),
     ],
     Levels.FungiForest: [
@@ -1683,7 +1535,6 @@ door_locations = {
             logicregion=Regions.FungiForestLobby,
             location=[449.866, 45.922, 254.6, 270.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.donkey,
@@ -1694,7 +1545,6 @@ door_locations = {
             logicregion=Regions.FungiForestLobby,
             location=[136.842, 0.0, 669.81, 90.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.diddy,
@@ -1705,7 +1555,6 @@ door_locations = {
             logicregion=Regions.FungiForestLobby,
             location=[450.219, 0.0, 689.048, 270.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.lanky,
@@ -1717,7 +1566,6 @@ door_locations = {
             location=[293.0, 0.0, 154.197, 0.0],
             scale=1.2,
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.tiny,
@@ -1728,7 +1576,6 @@ door_locations = {
             logicregion=Regions.FungiForestLobby,
             location=[450.862, 0.0, 565.029, 270.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.chunky,
@@ -1740,7 +1587,6 @@ door_locations = {
             location=[3515.885, 115.009, 1248.55, 31.0],
             group=2,
             moveless=False,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Portal behind DK Barn
         DoorData(
@@ -1768,7 +1614,6 @@ door_locations = {
             logicregion=Regions.MushroomUpperExterior,
             location=[1171.791, 1250.0, 1236.572, 52.0],
             group=5,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Portal at Top of GMush
         DoorData(
@@ -1778,7 +1623,6 @@ door_locations = {
             location=[203.663, 199.333, 3844.253, 92.0],
             group=6,
             moveless=False,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Portal near Owl Race
         DoorData(
@@ -1787,7 +1631,6 @@ door_locations = {
             logicregion=Regions.MillArea,
             location=[4312.0, 224.0, 3493.0, 134.82],
             group=4,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Watermill - front - right",
@@ -1795,7 +1638,6 @@ door_locations = {
             logicregion=Regions.MillArea,
             location=[4261.0, 162.0, 3804.0, 314.12],
             group=4,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Watermill - right - left",
@@ -1803,7 +1645,6 @@ door_locations = {
             logicregion=Regions.MillArea,
             location=[4367.0, 162.0, 3806.0, 44.0],
             group=4,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Watermill - right - right",
@@ -1811,7 +1652,6 @@ door_locations = {
             logicregion=Regions.MillArea,
             location=[4450.0, 162.0, 3724.0, 44.5],
             group=4,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Watermill Roof - tower",
@@ -1820,7 +1660,6 @@ door_locations = {
             location=[4444.0, 321.0, 3628.0, 316.0],
             rx=-4,
             group=4,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Boxes outside of Diddy's Barn",
@@ -1828,7 +1667,6 @@ door_locations = {
             logicregion=Regions.MillArea,
             location=[3469.0, 272.0, 4504.0, 122.5],
             group=4,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Outside Diddy's Barn",
@@ -1837,7 +1675,6 @@ door_locations = {
             location=[3434.0, 271.0, 4316.0, 123.25],
             rx=-4,
             group=4,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Immediately Inside the Thornvine Area - right",
@@ -1846,7 +1683,6 @@ door_locations = {
             location=[4648.0, 205.0, 2836.0, 280.0],
             group=2,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Immediately Inside the Thornvine Area - left",
@@ -1855,7 +1691,6 @@ door_locations = {
             location=[4114.0, 202.0, 2654.5, 40.5],
             group=2,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Outside DK's Barn",
@@ -1865,7 +1700,6 @@ door_locations = {
             rx=-5,
             group=2,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Next to Rabbit's House",
@@ -1874,7 +1708,6 @@ door_locations = {
             location=[2277.0, 167.3, 3500.6, 0.0],
             group=6,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Owl Area - Near Rocketbarrel Barrel - far left",
@@ -1883,7 +1716,6 @@ door_locations = {
             location=[562.0, 199.0, 4147.25, 180.0],
             group=6,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Funky Area - Near Tiny Coins",
@@ -1892,7 +1724,6 @@ door_locations = {
             location=[1939.0, 224.0, 261.0, 31.5],
             group=3,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Mushroom Area - Next to Tag Barrel near Cranky's",
@@ -1901,7 +1732,6 @@ door_locations = {
             location=[1754.2, 234.0, 972.0, 270.0],
             rx=-10,
             group=7,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Mushroom Area - Next to Rocketbarrel Barrel - left",
@@ -1910,7 +1740,6 @@ door_locations = {
             location=[67.0, 250.0, 719.0, 89.5],
             rx=-10,
             group=7,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Mushroom Area - Next to Rocketbarrel Barrel - right",
@@ -1918,7 +1747,6 @@ door_locations = {
             logicregion=Regions.GiantMushroomArea,
             location=[254.0, 250.0, 386.0, 51.4],
             group=7,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Mushroom Area - Next to Cranky",
@@ -1926,7 +1754,6 @@ door_locations = {
             logicregion=Regions.GiantMushroomArea,
             location=[1451.0, 179.0, 504.6, 321.5],
             group=7,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Clock Area - Next to Purple Tunnel - left",
@@ -1934,7 +1761,6 @@ door_locations = {
             logicregion=Regions.FungiForestStart,
             location=[1795.7, 181.0, 2217.0, 117.6],
             group=8,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Clock Area - Next to Purple Tunnel - right",
@@ -1942,7 +1768,6 @@ door_locations = {
             logicregion=Regions.FungiForestStart,
             location=[1876.0, 185.0, 1823.0, 39.5],
             group=8,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Clock Area - Next to Clock - left",
@@ -1951,7 +1776,6 @@ door_locations = {
             location=[2431.0, 603.0, 2410.0, 0.0],
             rx=10,
             group=8,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -1961,7 +1785,6 @@ door_locations = {
             location=[2431.0, 603.0, 2238.0, 180.0],
             rx=10,
             group=8,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -1971,7 +1794,6 @@ door_locations = {
             location=[1830.0, 230.0, 822.0, 154.0],
             group=3,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Funky Area - Near Beanstalk - back",
@@ -1980,7 +1802,6 @@ door_locations = {
             location=[1766.1, 228.0, 637.0, 90.5],
             group=3,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Inside the Mushroom - All Kong Gun Switch - right",
@@ -1989,7 +1810,6 @@ door_locations = {
             location=[558.0, 74.0, 135.5, 353.0],
             rz=-5.5,
             group=5,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Inside the Mushroom - All Kong Gun Switch - left",
@@ -1998,7 +1818,6 @@ door_locations = {
             location=[340.0, 74.0, 135.5, 6.9],
             rz=5.5,
             group=5,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Inside the Mushroom - halfway along the Dead End",
@@ -2008,7 +1827,6 @@ door_locations = {
             rx=-3,
             rz=-3,
             group=5,
-            logic=lambda l: True,
         ),
         # DoorData(
         #     name="Fungi Forest: Inside the Mushroom - Along the Wall near Diddy's Kasplat",
@@ -2016,7 +1834,6 @@ door_locations = {
         #     logicregion=Regions.MushroomUpper,
         #     location=[396.0, 610.0, 929.0, 174.0],
         #     group=5,
-        #     logic=lambda l: True,
         # ),
         DoorData(
             name="Fungi Forest: Inside the Mushroom - Along the Wall near Klump and Oranges",
@@ -2024,7 +1841,6 @@ door_locations = {
             logicregion=Regions.MushroomUpper,
             location=[847.25, 1169.0, 575.0, 264.0],
             group=5,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Chunky's Face Puzzle",
@@ -2035,7 +1851,6 @@ door_locations = {
             kong_lst=[Kongs.chunky],
             group=9,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -2047,7 +1862,6 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=10,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: DK Lever puzzle Area",
@@ -2069,7 +1883,6 @@ door_locations = {
             kong_lst=[Kongs.tiny, Kongs.chunky],
             group=11,
             moveless=False,
-            logic=lambda l: True,
         ),  # might be accessible by all kongs post-punch?
         DoorData(
             name="Fungi Forest: Winch Room - on the Winch",
@@ -2079,7 +1892,6 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=12,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: Lanky's Attic",
@@ -2087,7 +1899,6 @@ door_locations = {
             logicregion=Regions.MillAttic,
             location=[125.0, 0.0, 453.3, 180.0],
             group=13,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Fungi Forest: DK's Barn - Between 2 Barrels near Switch",
@@ -2097,7 +1908,6 @@ door_locations = {
             kong_lst=[Kongs.donkey],
             group=14,
             moveless=False,
-            logic=lambda l: True,
         ),
     ],
     Levels.CrystalCaves: [
@@ -2108,7 +1918,6 @@ door_locations = {
             location=[1103.665, 146.5, 823.872, 194.0],
             group=1,
             moveless=False,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.donkey,
@@ -2121,7 +1930,7 @@ door_locations = {
             kong_lst=[Kongs.diddy],
             group=1,
             moveless=False,
-            logic=lambda l: l.isdiddy and l.jetpack,
+            logic=lambda l: (l.isdiddy and l.jetpack) or l.CanMoonkick(),
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.diddy,
@@ -2133,7 +1942,6 @@ door_locations = {
             location=[1046.523, 13.5, 476.611, 189.0],
             group=1,
             moveless=False,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.lanky,
@@ -2145,7 +1953,6 @@ door_locations = {
             location=[955.407, 146.664, 843.472, 187.0],
             group=1,
             moveless=False,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.tiny,
@@ -2157,7 +1964,6 @@ door_locations = {
             location=[881.545, 13.466, 508.666, 193.0],
             group=1,
             moveless=False,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.chunky,
@@ -2180,7 +1986,6 @@ door_locations = {
             location=[1101.019, 64.5, 467.76, 69.0],
             group=3,
             moveless=False,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Portal near Snide's
         DoorData(
@@ -2190,7 +1995,6 @@ door_locations = {
             location=[1993.556, 277.108, 2795.365, 193.0],
             group=4,
             moveless=False,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Portal in Giant Boulder Room
         DoorData(
@@ -2205,12 +2009,12 @@ door_locations = {
             placed="tns",
         ),  # T&S Portal on Sprint Cabin
         DoorData(
-            name="Crystal Caves: Near 5DI", map=Maps.CrystalCaves, logicregion=Regions.IglooArea, location=[120.997, 50.167, 1182.974, 75.146], group=5, logic=lambda l: True, placed="tns"
+            name="Crystal Caves: Near 5DI", map=Maps.CrystalCaves, logicregion=Regions.IglooArea, location=[120.997, 50.167, 1182.974, 75.146], group=5, placed="tns"
         ),  # T&S Portal near 5DI (Custom but treated as vanilla)
-        DoorData(name="Crystal Caves: Outside Lanky's Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[2400.0, 276.0, 1892.5, 21.75], group=2, logic=lambda l: True),
-        DoorData(name="Crystal Caves: Outside Chunky's Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[3515.65, 175.0, 1893.0, 273.7], group=2, logic=lambda l: True),
-        DoorData(name="Crystal Caves: Outside Diddy's Lower Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[3697.5, 260.0, 1505.0, 291.0], group=2, logic=lambda l: True),
-        DoorData(name="Crystal Caves: Outside Diddy's Upper Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[3666.7, 343.0, 1762.0, 273.8], group=2, logic=lambda l: True),
+        DoorData(name="Crystal Caves: Outside Lanky's Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[2400.0, 276.0, 1892.5, 21.75], group=2),
+        DoorData(name="Crystal Caves: Outside Chunky's Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[3515.65, 175.0, 1893.0, 273.7], group=2),
+        DoorData(name="Crystal Caves: Outside Diddy's Lower Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[3697.5, 260.0, 1505.0, 291.0], group=2),
+        DoorData(name="Crystal Caves: Outside Diddy's Upper Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[3666.7, 343.0, 1762.0, 273.8], group=2),
         DoorData(
             name="Crystal Caves: Under the Waterfall (Cabin Area)",
             map=Maps.CrystalCaves,
@@ -2228,7 +2032,6 @@ door_locations = {
             rx=9,
             rz=11,
             group=2,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -2238,7 +2041,6 @@ door_locations = {
             location=[585.0, 48.0, 1396.0, 5.0],
             scale=0.95,
             group=5,
-            logic=lambda l: True,
             door_type="tns",
         ),
         DoorData(
@@ -2248,7 +2050,6 @@ door_locations = {
             location=[684.9, 48.0, 1312.0, 75.0],
             scale=0.95,
             group=5,
-            logic=lambda l: True,
             door_type="tns",
         ),
         DoorData(
@@ -2258,7 +2059,6 @@ door_locations = {
             location=[635.0, 48.0, 1190.0, 148.0],
             scale=0.95,
             group=5,
-            logic=lambda l: True,
             door_type="tns",
         ),
         DoorData(
@@ -2268,7 +2068,6 @@ door_locations = {
             location=[504.5, 48.0, 1200.0, 220.3],
             scale=0.95,
             group=5,
-            logic=lambda l: True,
             door_type="tns",
         ),
         DoorData(
@@ -2278,7 +2077,6 @@ door_locations = {
             location=[473.1, 48.0, 1327.0, 292.7],
             scale=0.95,
             group=5,
-            logic=lambda l: True,
             door_type="tns",
         ),
         DoorData(
@@ -2338,7 +2136,6 @@ door_locations = {
             location=[1349.6, 330.0, 1079.0, 86.7],
             rx=4,
             group=6,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -2347,7 +2144,6 @@ door_locations = {
             logicregion=Regions.CrystalCavesMain,
             location=[2240.65, 65.8, 1185.0, 89.25],
             group=6,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Crystal Caves: Between Funky and Ice Castle - underwater",
@@ -2385,7 +2181,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.swim,
         ),
-        DoorData(name="Crystal Caves: Under Handstand Slope", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[1263.3, 93.0, 1291.0, 73.5], group=8, logic=lambda l: True),
+        DoorData(name="Crystal Caves: Under Handstand Slope", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[1263.3, 93.0, 1291.0, 73.5], group=8),
         DoorData(
             name="Crystal Caves: Mini Monkey Ledge",
             map=Maps.CrystalCaves,
@@ -2394,12 +2190,9 @@ door_locations = {
             rx=5,
             scale=0.4,
             group=6,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
-        DoorData(
-            name="Crystal Caves: Across from Snide", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[1818.5, 82.0, 1450.0, 218.5], rx=-14, rz=21, group=7, logic=lambda l: True
-        ),
+        DoorData(name="Crystal Caves: Across from Snide", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[1818.5, 82.0, 1450.0, 218.5], rx=-14, rz=21, group=7),
         DoorData(
             name="Crystal Caves: Slope to Cranky with Mini Monkey Hole",
             map=Maps.CrystalCaves,
@@ -2407,10 +2200,9 @@ door_locations = {
             location=[1047.0, 190.0, 2426.0, 175.0],
             rz=5.5,
             group=8,
-            logic=lambda l: True,
         ),
-        DoorData(name="Crystal Caves: Level Entrance - right", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[1827.0, -29.0, 342.0, 225.0], group=8, logic=lambda l: True),
-        DoorData(name="Crystal Caves: Level Entrance - left", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[1828.0, -29.0, 91.0, 315.5], group=8, logic=lambda l: True),
+        DoorData(name="Crystal Caves: Level Entrance - right", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[1827.0, -29.0, 342.0, 225.0], group=8),
+        DoorData(name="Crystal Caves: Level Entrance - left", map=Maps.CrystalCaves, logicregion=Regions.CrystalCavesMain, location=[1828.0, -29.0, 91.0, 315.5], group=8),
         # DoorData(
         #     name="Crystal Caves: Ice Castle - left",
         #     map=Maps.CrystalCaves,
@@ -2520,7 +2312,6 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=9,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -2532,7 +2323,6 @@ door_locations = {
             kong_lst=[Kongs.lanky],
             group=9,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -2543,21 +2333,17 @@ door_locations = {
             kong_lst=[Kongs.chunky],
             group=10,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
-        DoorData(name="Crystal Caves: Cabin Area - Near Candy - right", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[2907.0, 156.0, 2279.0, 171.0], group=2, logic=lambda l: True),
-        DoorData(
-            name="Crystal Caves: Cabin Area - Near Candy - far right", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[2813.0, 158.0, 2291.0, 200.0], group=2, logic=lambda l: True
-        ),
-        DoorData(name="Crystal Caves: Outside Tiny's Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[3553.0, 260.0, 1940.0, 188.0], group=2, logic=lambda l: True),
+        DoorData(name="Crystal Caves: Cabin Area - Near Candy - right", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[2907.0, 156.0, 2279.0, 171.0], group=2),
+        DoorData(name="Crystal Caves: Cabin Area - Near Candy - far right", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[2813.0, 158.0, 2291.0, 200.0], group=2),
+        DoorData(name="Crystal Caves: Outside Tiny's Cabin", map=Maps.CrystalCaves, logicregion=Regions.CabinArea, location=[3553.0, 260.0, 1940.0, 188.0], group=2),
         DoorData(
             name="Crystal Caves: Cabin Area - Next to Tag Barrel on 2nd Floor",
             map=Maps.CrystalCaves,
             logicregion=Regions.CabinArea,
             location=[3603.0, 260.0, 1457.0, 345.0],
             group=2,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Crystal Caves: Under Cranky Slope - small",
@@ -2566,7 +2352,6 @@ door_locations = {
             location=[1407.5, 95.0, 1519.0, 188.0],
             scale=0.43,
             group=8,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
     ],
@@ -2577,7 +2362,6 @@ door_locations = {
             logicregion=Regions.CreepyCastleLobby,
             location=[499.978, 71.833, 634.25, 240.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.donkey,
@@ -2588,7 +2372,6 @@ door_locations = {
             logicregion=Regions.CreepyCastleLobby,
             location=[499.545, 71.833, 725.653, 300.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.diddy,
@@ -2599,7 +2382,6 @@ door_locations = {
             logicregion=Regions.CreepyCastleLobby,
             location=[661.738, 71.833, 726.433, 60.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.lanky,
@@ -2610,7 +2392,6 @@ door_locations = {
             logicregion=Regions.CreepyCastleLobby,
             location=[660.732, 71.833, 635.288, 118.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.tiny,
@@ -2621,7 +2402,6 @@ door_locations = {
             logicregion=Regions.CreepyCastleLobby,
             location=[581.215, 71.833, 588.444, 182.0],
             group=1,
-            logic=lambda l: True,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.chunky,
@@ -2632,20 +2412,19 @@ door_locations = {
             logicregion=Regions.CreepyCastleMain,
             location=[1543.986, 1381.167, 1629.089, 3.0],
             group=2,
-            logic=lambda l: True,
             placed="tns",
         ),  # T&S Portal by Greenhouse
         DoorData(
-            name="Creepy Castle: Small Plateau", map=Maps.CreepyCastle, logicregion=Regions.CreepyCastleMain, location=[1759.241, 903.75, 1060.8, 138.0], group=3, logic=lambda l: True, placed="tns"
+            name="Creepy Castle: Small Plateau", map=Maps.CreepyCastle, logicregion=Regions.CreepyCastleMain, location=[1759.241, 903.75, 1060.8, 138.0], group=3, placed="tns"
         ),  # T&S Portal by W2
         DoorData(
-            name="Creepy Castle: Back of Castle", map=Maps.CreepyCastle, logicregion=Regions.CreepyCastleMain, location=[1704.55, 368.026, 1896.767, 4.0], group=4, logic=lambda l: True, placed="tns"
+            name="Creepy Castle: Back of Castle", map=Maps.CreepyCastle, logicregion=Regions.CreepyCastleMain, location=[1704.55, 368.026, 1896.767, 4.0], group=4, placed="tns"
         ),  # T&S Portal around back
         DoorData(
-            name="Creepy Castle: Near Funky's", map=Maps.CastleLowerCave, logicregion=Regions.LowerCave, location=[1619.429, 200.0, 313.484, 299.0], group=5, logic=lambda l: True, placed="tns"
+            name="Creepy Castle: Near Funky's", map=Maps.CastleLowerCave, logicregion=Regions.LowerCave, location=[1619.429, 200.0, 313.484, 299.0], group=5, placed="tns"
         ),  # T&S Portal in Crypt Hub
         DoorData(
-            name="Creepy Castle: Near Candy's", map=Maps.CastleUpperCave, logicregion=Regions.UpperCave, location=[1025.262, 300.0, 1960.308, 359.0], group=6, logic=lambda l: True, placed="tns"
+            name="Creepy Castle: Near Candy's", map=Maps.CastleUpperCave, logicregion=Regions.UpperCave, location=[1025.262, 300.0, 1960.308, 359.0], group=6, placed="tns"
         ),  # T&S Portal in Dungeon Tunnel
         DoorData(
             name="Creepy Castle: Next to Small Pool outside of the Big Tree",
@@ -2653,19 +2432,17 @@ door_locations = {
             logicregion=Regions.CreepyCastleMain,
             location=[1020.0, 391.0, 181.0, 270.0],
             group=7,
-            logic=lambda l: True,
             door_type="tns",
         ),
-        DoorData(name="Creepy Castle: Against the Big Tree", map=Maps.CreepyCastle, logicregion=Regions.CreepyCastleMain, location=[1200.0, 471.0, 254.0, 261.5], rx=-6, group=7, logic=lambda l: True),
+        DoorData(name="Creepy Castle: Against the Big Tree", map=Maps.CreepyCastle, logicregion=Regions.CreepyCastleMain, location=[1200.0, 471.0, 254.0, 261.5], rx=-6, group=7),
         DoorData(
             name="Creepy Castle: Next to Tag Barrel at the Warp Pad Hub",
             map=Maps.CreepyCastle,
             logicregion=Regions.CreepyCastleMain,
             location=[1545.0, 673.0, 944.0, 168.0],
             group=8,
-            logic=lambda l: True,
         ),
-        DoorData(name="Creepy Castle: Next to Cranky's", map=Maps.CreepyCastle, logicregion=Regions.CreepyCastleMain, location=[557.0, 1136.0, 1379.5, 273.0], group=9, logic=lambda l: True),
+        DoorData(name="Creepy Castle: Next to Cranky's", map=Maps.CreepyCastle, logicregion=Regions.CreepyCastleMain, location=[557.0, 1136.0, 1379.5, 273.0], group=9),
         DoorData(
             name="Creepy Castle: Outside Lanky's Greenhouse",
             map=Maps.CreepyCastle,
@@ -2673,7 +2450,6 @@ door_locations = {
             location=[1606.0, 1391.0, 1906.0, 205.0],
             scale=0.95,
             group=2,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -2683,7 +2459,6 @@ door_locations = {
             location=[1724.0, 728.0, 874.0, 203.46],
             scale=0.5,
             group=8,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -2692,7 +2467,6 @@ door_locations = {
             logicregion=Regions.CreepyCastleMain,
             location=[296.0, 548.0, 1014.5, 230.0],
             group=8,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Creepy Castle: Snide's Battlement - left",
@@ -2701,7 +2475,6 @@ door_locations = {
             location=[792.0, 1794.0, 1535.5, 224.7],
             scale=0.75,
             group=10,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Creepy Castle: Snide's Battlement - center",
@@ -2710,7 +2483,6 @@ door_locations = {
             location=[593.0, 1794.0, 1449.0, 118.0],
             scale=0.75,
             group=10,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Creepy Castle: Snide's Battlement - right",
@@ -2719,7 +2491,6 @@ door_locations = {
             location=[684.0, 1794.0, 1192.0, 28.5],
             scale=0.75,
             group=10,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Creepy Castle: Next to Stairs to Drawing Drawbridge",
@@ -2727,7 +2498,6 @@ door_locations = {
             logicregion=Regions.CreepyCastleMain,
             location=[738.25, 548.0, 549.0, 239.5],
             group=8,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Creepy Castle: Battlement with Rocketbarrel Barrel - left",
@@ -2735,7 +2505,6 @@ door_locations = {
             logicregion=Regions.CreepyCastleMain,
             location=[160.0, 548.0, 654.0, 325.0],
             group=8,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Creepy Castle: Battlement with Rocketbarrel Barrel - right",
@@ -2743,7 +2512,6 @@ door_locations = {
             logicregion=Regions.CreepyCastleMain,
             location=[280.0, 548.0, 460.0, 145.0],
             group=8,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Creepy Castle: Moat - Underwater by Diddy Barrel",
@@ -2799,9 +2567,7 @@ door_locations = {
             moveless=False,
             logic=lambda l: l.swim,
         ),
-        DoorData(
-            name="Creepy Castle: Inside the Tree", map=Maps.CastleTree, logicregion=Regions.CastleTree, location=[1124.0, 400.0, 963.0, 247.3], rx=-3, group=11, moveless=False, logic=lambda l: True
-        ),
+        DoorData(name="Creepy Castle: Inside the Tree", map=Maps.CastleTree, logicregion=Regions.CastleTree, location=[1124.0, 400.0, 963.0, 247.3], rx=-3, group=11, moveless=False),
         DoorData(
             name="Creepy Castle: Library - Room with Big Books - left",
             map=Maps.CastleLibrary,
@@ -2810,7 +2576,6 @@ door_locations = {
             kong_lst=[Kongs.donkey],
             group=12,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -2821,7 +2586,6 @@ door_locations = {
             kong_lst=[Kongs.donkey],
             group=12,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -2832,7 +2596,6 @@ door_locations = {
             kong_lst=[Kongs.donkey],
             group=12,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -2843,7 +2606,6 @@ door_locations = {
             kong_lst=[Kongs.donkey],
             group=12,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -2853,7 +2615,6 @@ door_locations = {
             location=[113.7, 40.0, 692.0, 90.0],
             group=13,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Creepy Castle: Ballroom - Left Candle - right",
@@ -2862,7 +2623,6 @@ door_locations = {
             location=[113.7, 40.0, 497.0, 90.0],
             group=13,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Creepy Castle: Ballroom - Back Candle - left",
@@ -2871,7 +2631,6 @@ door_locations = {
             location=[455.0, 40.0, 107.4, 0.0],
             group=13,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Creepy Castle: Ballroom - Back Candle - right",
@@ -2880,7 +2639,6 @@ door_locations = {
             location=[652.0, 40.0, 107.4, 0.0],
             group=13,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Creepy Castle: Ballroom - Right Candle - left",
@@ -2889,7 +2647,6 @@ door_locations = {
             location=[987.0, 40.0, 501.0, 270.0],
             group=13,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Creepy Castle: Ballroom - Right Candle - right",
@@ -2898,7 +2655,6 @@ door_locations = {
             location=[987.0, 40.0, 705.0, 270.0],
             group=13,
             moveless=False,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Creepy Castle: Trash Can - Cheese",
@@ -2908,7 +2664,6 @@ door_locations = {
             kong_lst=[Kongs.tiny],
             group=14,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         DoorData(
@@ -2919,19 +2674,15 @@ door_locations = {
             kong_lst=[Kongs.chunky],
             group=15,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
-        DoorData(
-            name="Creepy Castle: Lower Tunnel - Under Peanut Switch", map=Maps.CastleLowerCave, logicregion=Regions.LowerCave, location=[120.0, 90.0, 1375.0, 88.75], group=16, logic=lambda l: True
-        ),
+        DoorData(name="Creepy Castle: Lower Tunnel - Under Peanut Switch", map=Maps.CastleLowerCave, logicregion=Regions.LowerCave, location=[120.0, 90.0, 1375.0, 88.75], group=16),
         DoorData(
             name="Creepy Castle: Lower Tunnel - Under Coconut and Pineapple Switches",
             map=Maps.CastleLowerCave,
             logicregion=Regions.LowerCave,
             location=[119.5, 90.0, 1149.0, 88.75],
             group=16,
-            logic=lambda l: True,
         ),
         DoorData(
             name="Creepy Castle: Crypt - Under Lanky's Switch",
@@ -2942,7 +2693,6 @@ door_locations = {
             kong_lst=[Kongs.lanky, Kongs.tiny],
             group=17,
             moveless=False,
-            logic=lambda l: True,
             door_type="wrinkly",
         ),
         # DoorData(

@@ -48,7 +48,7 @@ LogicRegions = {
     Regions.LighthouseUnderwater: [
         Collectible(Collectibles.banana, Kongs.donkey, lambda l: (Events.LighthouseEnguarde in l.Events or l.CanPhaseswim()), None, 10),  # Behind Enguarde wall
         Collectible(Collectibles.banana, Kongs.lanky, lambda l: True, None, 5),  # Near Enguarde
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 4),  # Enguarde chests
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: (Events.LighthouseEnguarde in l.Events or l.CanPhaseswim()), None, 4),  # Enguarde chests
         Collectible(Collectibles.banana, Kongs.chunky, lambda l: True, None, 10),  # Underwater
 
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # Under enguarde box
@@ -99,12 +99,12 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # Enguarde
         Collectible(Collectibles.bunch, Kongs.chunky, lambda l: True, None, 3),  # Underwater in an overturned ship
 
-        Collectible(Collectibles.coin, Kongs.donkey, lambda l: Events.ShipyardEnguarde in l.Events, None, 3),  # In chest around 5DS
+        Collectible(Collectibles.coin, Kongs.donkey, lambda l: Events.ShipyardEnguarde in l.Events or l.CanPhaseswim(), None, 3),  # In chest around 5DS
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 4),  # Around cactus underwater
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: Events.ShipyardEnguarde in l.Events, None, 3),  # In chest near mech fish
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: Events.ShipyardEnguarde in l.Events, None, 3),  # In chest around 5DS
-        Collectible(Collectibles.coin, Kongs.tiny, lambda l: Events.ShipyardEnguarde in l.Events, None, 3),  # In chest around 5DS
-        Collectible(Collectibles.coin, Kongs.chunky, lambda l: Events.ShipyardEnguarde in l.Events, None, 3),  # In chest around 5DS
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: Events.ShipyardEnguarde in l.Events or l.CanPhaseswim(), None, 3),  # In chest near mech fish
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: Events.ShipyardEnguarde in l.Events or l.CanPhaseswim(), None, 3),  # In chest around 5DS
+        Collectible(Collectibles.coin, Kongs.tiny, lambda l: Events.ShipyardEnguarde in l.Events or l.CanPhaseswim(), None, 3),  # In chest around 5DS
+        # Collectible(Collectibles.coin, Kongs.chunky, lambda l: Events.ShipyardEnguarde in l.Events or l.CanPhaseswim(), None, 3),  # In chest around 5DS (Out of Bounds)
     ],
     Regions.SealRace: [
     ],

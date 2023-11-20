@@ -21,7 +21,7 @@
 | Jungle Japes | Near the Vine Pit |  | 
 | Jungle Japes | Vine Pit |  | 
 | Jungle Japes | Lanky Alcove Hill | (l.handstand and l.lanky) or (l.phasewalk and (l.isdiddy or l.istiny)) | 
-| Jungle Japes | On the useless Lanky ramp | (l.handstand and l.islanky) | 
+| Jungle Japes | On the useless Lanky ramp | (l.handstand and l.islanky) or l.phasewalk | 
 | Jungle Japes | Cranky-tunnel Crossing |  | 
 | Jungle Japes | In the Rambi Cave |  | 
 | Jungle Japes | Fairy Pool |  | 
@@ -88,7 +88,7 @@
 | Angry Aztec | Near Sealed Quicksand Tunnel Shop |  | 
 | Angry Aztec | On 5-Door Temple | (l.jetpack and l.diddy) or l.CanMoonkick(), group=3 | 
 | Angry Aztec | Near Sealed Quicksand Tunnel Exterior Warp |  | 
-| Angry Aztec | Near Vulture Cage | l.vines or (l.jetpack and l.diddy), group=3 | 
+| Angry Aztec | Near Vulture Cage | l.vines or (l.jetpack and l.diddy) or l.CanMoonkick() | 
 | Angry Aztec | Under Vulture Cage |  | 
 | Angry Aztec | Next to Snide |  | 
 | Angry Aztec | Behind Gong-tower |  | 
@@ -108,6 +108,7 @@
 | Aztec Llama Temple | Llama Temple: Next to Llama Left |  | 
 | Aztec Llama Temple | Llama Temple: Llama Left |  | 
 | Aztec Llama Temple | Llama Temple: Matching Room | (l.grape and l.lanky) or l.phasewalk | 
+| Aztec Llama Temple | In the Water | Events.AztecLlamaSpit in l.Events and l.HasGun(Kongs.any) and l.swim and l.scope and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny)) | 
 | Aztec Llama Temple | Llama Temple: Snoop Switch |  | 
 | Aztec Llama Temple | Llama Temple: Lava Room |  | 
 </details>
@@ -149,11 +150,11 @@
 | Frantic Factory | Funky Room (2) |  | 
 | Frantic Factory | Funky Room (3) |  | 
 | Frantic Factory | Near Funky |  | 
-| Frantic Factory | Piano Room | l.trombone and l.lanky | 
+| Frantic Factory | Piano Room | (l.trombone and l.lanky) or l.CanAccessRNDRoom() | 
 | Frantic Factory | In Lanky's Piano Room | ((l.trombone and l.islanky) or l.CanAccessRNDRoom()) | 
-| Frantic Factory | Diddy R and D | l.guitar and l.diddy | 
+| Frantic Factory | Diddy R and D | (l.guitar and l.diddy) or l.CanAccessRNDRoom() | 
 | Frantic Factory | In Diddy's Pincode enemies room | ((l.guitar and l.isdiddy) or l.CanAccessRNDRoom()) | 
-| Frantic Factory | Chunky R and D | l.triangle and l.chunky and l.punch | 
+| Frantic Factory | Chunky R and D | (l.triangle and l.chunky and l.punch) or l.CanAccessRNDRoom() | 
 | Frantic Factory | In front of Chunky's toy boss room | ((l.punch and l.ischunky) or l.CanAccessRNDRoom()) | 
 | Frantic Factory | Near Car Race | (l.mini and l.istiny) or l.phasewalk) | 
 | Frantic Factory | Tiny race entry area | ((l.mini and l.istiny) or l.phasewalk) | 
@@ -199,7 +200,7 @@
 | Gloomy Galleon | In the Shipwreck with Replenishables | Events.ShipyardEnguarde in l.Events | 
 | Gloomy Galleon | Behind Musical Cactus | Events.ShipyardEnguarde in l.Events | 
 | Gloomy Galleon | On Top of Mechfish Grate | Events.ShipyardEnguarde in l.Events | 
-| Gloomy Galleon | On Gold Tower | (l.balloon and l.islanky and Events.WaterSwitch in l.Events) or l.CanMoonkick() | 
+| Gloomy Galleon | On Gold Tower | ((l.balloon and l.islanky) and Events.WaterSwitch in l.Events or l.advanced_platforming) or l.CanMoonkick() | 
 | Gloomy Galleon | Galleon Treasure Room UnderWater | Events.ShipyardTreasureRoomOpened in l.Events | 
 | Galleon Sick Bay | Seasick Ship: Left of Cannon |  | 
 | Galleon Sick Bay | Sick Bay: Chunky ship entrance |  | 
@@ -242,7 +243,7 @@
 | Fungi Forest | Behind DK Barn |  | 
 | Fungi Forest | Far Left of DK Barn |  | 
 | Fungi Forest | Near DK Barn |  | 
-| Fungi Forest | Near Funky with the fenced in Chunky coins | (l.TimeAccess(Regions.WormArea, Time.Night)) | 
+| Fungi Forest | Near Funky with the fenced in Chunky coins | (l.TimeAccess(Regions.WormArea, Time.Night) or l.phasewalk) | 
 | Fungi Forest | On the Tomato Field |  | 
 | Fungi Forest | Near Funky's |  | 
 | Fungi Forest | Near Beanstalk Area Entrance |  | 
@@ -298,11 +299,12 @@
 | --- | ---- | ----- |
 | Caves Rotating Cabin | Rotating Room: Left Portion | l.Slam and l.isdonkey | 
 | Crystal Caves | Giant Kosha Room |  | 
-| Crystal Caves | In Tiny Ice Shield | (l.monkeyport and l.mini and l.twirl and l.tiny) or l.CanPhaseswim() | 
+| Crystal Caves | In Tiny Ice Shield | ((Events.CavesMonkeyportAccess in l.Events or l.CanPhaseswim())) | 
 | Crystal Caves | In Chunky Ice Shield | Events.CavesLargeBoulderButton in l.Events or l.CanPhaseswim() or l.generalclips | 
-| Crystal Caves | On 5DI Pillar | (l.jetpack and l.isdiddy) or (l.twirl and l.istiny) | 
+| Crystal Caves | On 5DI Pillar | (l.jetpack and l.isdiddy) or (l.twirl and l.istiny and l.settings.krusha_kong != Kongs.tiny) | 
 | Crystal Caves | On top of the Igloo |  | 
 | Crystal Caves | Under tag barrel near igloo |  | 
+| Crystal Caves | In front of Igloo | (l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny))) or l.Slam | 
 | Crystal Caves | In Hidden Bonus Room |  | 
 | Crystal Caves | Near Primate Punch wall opposite cranky |  | 
 | Crystal Caves | In Giant Boulder Room |  | 
@@ -318,7 +320,7 @@
 | Crystal Caves | Under Small Boulder |  | 
 | Crystal Caves | Near Primate Punch wall near entrance |  | 
 | Crystal Caves | Near Gorilla Gone Room |  | 
-| Crystal Caves | In Gorilla Gone Room | l.punch and l.chunky, group=4) | 
+| Crystal Caves | In Gorilla Gone Room | (l.punch and l.chunky) or l.phasewalk or l.CanPhaseswim() | 
 | Crystal Caves | Near Kasplat Spire |  | 
 | Crystal Caves | Near Funky's |  | 
 | Crystal Caves | Near Funky under Diddy's barrel |  | 
@@ -337,7 +339,7 @@
 | Crystal Caves | Near Diddy top 5D Cabin door |  | 
 | Caves Diddy Igloo | Diddy 5DI: Center |  | 
 | Caves Donkey Igloo | DK 5DI: Behind Maze |  | 
-| Caves Lanky Igloo | Lanky 5DI: High Platform | l.balloon and l.islanky, group=3 | 
+| Caves Lanky Igloo | Lanky 5DI: High Platform | ((l.balloon or l.advanced_platforming) and l.islanky) or (l.advanced_platforming and (l.isdiddy or l.istiny)) | 
 | Caves Tiny Igloo | Tiny 5DI: Opposite Entrance |  | 
 | Caves Lanky Cabin | Lanky 1DC: Carpet |  | 
 | Caves Chunky Cabin | Chunky 5DC: Back Left Corner |  | 
@@ -426,7 +428,7 @@
 | Isles | On Aztec Building |  | 
 | Isles | Under Caves Lobby Entrance |  | 
 | Creepy Castle Lobby | Castle Lobby: Center | ((l.chunky and l.balloon and l.islanky and l.barrels) or l.CanMoonkick() or (l.advanced_platforming and l.istiny and l.twirl and l.settings.krusha_kong != Kongs.tiny)) | 
-| Training Grounds | Banana Hoard | (l.vines or l.CanMoonkick()) | 
+| Training Grounds | Banana Hoard | (l.vines or l.CanMoonkick() or l.phasewalk) | 
 | Training Grounds | Training Grounds Rear Tunnel |  | 
 | KLumsy | Back of Prison |  | 
 | Isles | Behind Fungi Building |  | 
@@ -482,7 +484,9 @@
 | Training Grounds | Training Grounds: On the entrance hill | ((l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey)) | 
 | Training Grounds | Training Grounds: Near Mountain | (l.twirl and l.istiny) or (l.advanced_platforming and l.isdonkey and l.settings.krusha_kong != Kongs.donkey) | 
 | Training Grounds | Training Grounds: Rear Cave |  | 
-| Training Grounds | Training Grounds: Banana Hoard | l.vines or l.CanMoonkick() | 
+| Training Grounds | Training Grounds: Banana Hoard | l.vines or l.CanMoonkick() or l.phasewalk | 
+| Training Grounds | Training Grounds: Under Water | l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny)) and l.swim and l.scope | 
+| Training Grounds | Training Grounds: Under Water in Corner | l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny)) and l.swim and l.scope | 
 | Training Grounds | Training Grounds: Near Pool |  | 
 | Treehouse | Back of the treehouse |  | 
 | Banana Fairy Room | Fairy Island: Right of Queen |  | 
