@@ -386,6 +386,7 @@ void overlay_changes(void) {
 		// Add chunky phase microhint
 		if ((Rando.microhints != MICROHINTS_NONE) && (MovesBase[0].simian_slam < 2)) {
 			*(short*)(0x800359A8) = 14; // Microhint Cutscene
+			*(int*)(0x80028D54) = 0; // Delete flag set
 		}
 		if (DAMAGE_MASKING) {
 			writeFunction(0x80031524, &applyDamageMask);

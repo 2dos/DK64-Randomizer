@@ -530,6 +530,7 @@ void initHack(int source) {
 				*(int*)(0x806C5614) = 0x50000006;
 				*(int*)(0x806BE8F8) = 0x50000008;
 			}
+			*(short*)(0x8060036A) = 0xFF; // Fix game crash upon exiting a bonus with no parent
 			// Reduce TA Cooldown
 			if (Rando.tag_anywhere) {
 				// *(int*)(0x806F6D88) = 0; // Makes collectables not produce a flying model which delays collection. Instant change
