@@ -1,0 +1,36 @@
+{# Variables and classes not defined here are in plandomizer.html.jinja2 #}
+<div class="tab-pane plando-pane fade"
+     id="nav-plando-{{panelName}}"
+     role="tabpanel"
+     aria-labelledby="nav-plando-{{panelName}}-tab">
+    <h2 class="title">{{panel["name"]}}</h2>
+    <div>
+        {% for categoryType, category in panel["categories"].items() %}
+            <h3 class="title">{{category["name"]}}</h3>
+            <div class="flex-container flex-center">
+                {% for song in category["songs"] %}
+                    <div class="location-picker">
+                        <label for="plando_{{song["value"]}}_song" class="location-label">
+                            {{song["name"]}}
+                        </label>
+                        <div id="plando_{{song["value"]}}_song_wrapper"
+                             data-toggle="tooltip"
+                             title>
+                            <select id="plando_{{song["value"]}}_song"
+                                    name="plando_{{song["value"]}}_song"
+                                    class="form-select plando-item-select {{categoryType}}-select">
+                                <option value="">-- Randomize --</option>
+                                {% for song in category["songs"] %}
+                                    <option value="{{song["value"]}}"
+                                            class="original-song">
+                                        {{song["name"]}}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</div>

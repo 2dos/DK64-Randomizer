@@ -161,6 +161,7 @@ function createMusicLoadPromise(jszip, filename) {
 var cosmetics;
 var cosmetic_names;
 var cosmetic_extensions;
+var plando_music_updated = false;
 
 document
   .getElementById("music_file")
@@ -215,6 +216,8 @@ document
         cosmetics = { bgm: bgm, majoritems: majoritems, minoritems: minoritems, events: events };
         cosmetic_names = {bgm: bgm_names, majoritems: majoritem_names, minoritems: minoritem_names, events: event_names };
         cosmetic_extensions = {bgm: bgm_ext, majoritems: majoritem_ext, minoritems: minoritem_ext, events: event_ext };
+
+        plando_music_updated = true;
       });
     };
 

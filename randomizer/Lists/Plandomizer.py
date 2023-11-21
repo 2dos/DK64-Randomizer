@@ -6,12 +6,14 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
+from randomizer.Enums.SongType import SongType
 from randomizer.Enums.Types import Types
 from randomizer.Enums.VendorType import VendorType
 from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.MapsAndExits import RegionMapList
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
+from randomizer.Lists.Songs import song_data
 from randomizer.LogicFiles.AngryAztec import LogicRegions as AngryAztecRegions
 from randomizer.LogicFiles.CreepyCastle import LogicRegions as CreepyCastleRegions
 from randomizer.LogicFiles.CrystalCaves import LogicRegions as CrystalCavesRegions
@@ -172,6 +174,15 @@ PlandomizerPanels = {
             "CreepyCastle": {"name": "Creepy Castle", "locations": []},
         },
     },
+    "Music": {
+        "name": "Music",
+        "categories": {
+            "BGM": {"name": "BGM", "songs": []},
+            "MajorItem": {"name": "Major Items", "songs": []},
+            "MinorItem": {"name": "Minor Items", "songs": []},
+            "Event": {"name": "Event", "songs": []},
+        },
+    },
 }
 for locationEnum, locationObj in LocationList.items():
     # Do not randomize constant rewards.
@@ -247,6 +258,33 @@ for locationEnum, locationObj in LocationList.items():
 #     {"name": "Helm Chunky 2", "value": "HelmChunky2", "kong": "Chunky"},
 # ]
 # MinigameLocationList += ["HelmDonkey1", "HelmDonkey2", "HelmDiddy1", "HelmDiddy2", "HelmLanky1", "HelmLanky2", "HelmTiny1", "HelmTiny2", "HelmChunky1", "HelmChunky2"]
+
+#########
+# MUSIC #
+#########
+
+
+def GetTruncatedSongName(songName: str) -> str:
+    charsToRemove = " ()'/-&?"
+    truncatedSongName = songName
+    for invalidChar in charsToRemove:
+        truncatedSongName = truncatedSongName.replace(invalidChar, "")
+    return truncatedSongName
+
+
+# Process possible song locations.
+PlandoSongNameMap = dict()
+invalid_song_types = [SongType.Ambient, SongType.Protected, SongType.System]
+for song in song_data:
+    if song.type in invalid_song_types:
+        continue
+    truncatedSongName = GetTruncatedSongName(song.name)
+    songJson = {
+        "name": song.name,
+        "value": truncatedSongName,
+    }
+    PlandomizerPanels["Music"]["categories"][song.type.name]["songs"].append(songJson)
+    PlandoSongNameMap[truncatedSongName] = song.name
 
 #########
 # ITEMS #

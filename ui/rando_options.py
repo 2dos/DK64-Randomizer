@@ -7,6 +7,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Lists.Item import StartingMoveOptions
+from randomizer.Lists.Plandomizer import GetTruncatedSongName
 from randomizer.PlandoUtils import MoveSet
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from ui.bindings import bind, bindList
@@ -1384,3 +1385,39 @@ def toggle_settings_table(evt):
     settingsTable.classList.toggle("collapsed")
     settingsArrow = js.document.getElementsByClassName("settings-expand-arrow").item(0)
     settingsArrow.classList.toggle("flipped")
+
+@bind("click", "nav-plando-tab")
+def plando_update_custom_music(evt):
+    """Add custom music to the music plando UI."""
+    if not js.plando_music_updated:
+        return
+
+    customSongDict = {
+        "BGM": js.cosmetic_names.bgm,
+        "MajorItem": js.cosmetic_names.majoritems,
+        "MinorItem": js.cosmetic_names.minoritems,
+        "Event": js.cosmetic_names.events,
+    }
+    bgmDropdowns = js.document.getElementsByClassName("BGM-select")
+    # Remove any existing custom music options from the selects.
+    for dropdown in bgmDropdowns:
+        for i in reversed(range(0, len(dropdown.options))):
+            option = dropdown.options.item(i)
+            if option.classList.contains("custom-song"):
+                if dropdown.value == option.value:
+                    dropdown.value = ""
+                dropdown.remove(i)
+            else:
+                # We can safely break here, because all of the custom songs are
+                # guaranteed to be at the end of each dropdown. This speeds the
+                # process up considerably.
+                break
+    # Add new custom music to each select.
+    for dropdown in bgmDropdowns:
+        for song in customSongDict["BGM"]:
+            opt = document.createElement("option")
+            opt.value = GetTruncatedSongName(song)
+            opt.innerHTML = song
+            opt.classList.add("custom-song")
+            dropdown.appendChild(opt)
+    js.plando_music_updated = False
