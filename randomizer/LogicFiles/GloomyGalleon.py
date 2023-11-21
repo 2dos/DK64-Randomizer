@@ -42,8 +42,8 @@ LogicRegions = {
         Event(Events.GalleonCannonRoomOpened, lambda l: l.hasMoveSwitchsanity(Switches.GalleonCannonGame, False)),
         Event(Events.GalleonW1aTagged, lambda l: True),
         Event(Events.GalleonW2aTagged, lambda l: True),
-        Event(Events.WaterLowered, lambda l: l.settings.galleon_water == GalleonWaterSetting.lowered),
-        Event(Events.WaterRaised, lambda l: l.settings.galleon_water == GalleonWaterSetting.raised),
+        Event(Events.WaterLowered, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.lowered),
+        Event(Events.WaterRaised, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.raised),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.GloomyGalleonLobby, lambda l: True, Transitions.GalleonToIsles),
@@ -78,8 +78,8 @@ LogicRegions = {
     ], [
         Event(Events.GalleonChunkyPad, lambda l: (l.triangle and l.chunky) and (l.swim or l.settings.high_req) and Events.WaterLowered in l.Events),
         Event(Events.ActivatedLighthouse, lambda l: l.settings.high_req),
-        Event(Events.WaterLowered, lambda l: l.settings.galleon_water == GalleonWaterSetting.lowered),
-        Event(Events.WaterRaised, lambda l: l.settings.galleon_water == GalleonWaterSetting.raised),
+        Event(Events.WaterLowered, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.lowered),
+        Event(Events.WaterRaised, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.raised),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.GloomyGalleonStart, lambda l: l.settings.open_levels or Events.LighthouseGateOpened in l.Events),
@@ -171,8 +171,8 @@ LogicRegions = {
         Event(Events.GalleonW2bTagged, lambda l: True),
         Event(Events.GalleonW4bTagged, lambda l: True),
         Event(Events.GalleonW5bTagged, lambda l: True),
-        Event(Events.WaterLowered, lambda l: l.settings.galleon_water == GalleonWaterSetting.lowered),
-        Event(Events.WaterRaised, lambda l: l.settings.galleon_water == GalleonWaterSetting.raised),
+        Event(Events.WaterLowered, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.lowered),
+        Event(Events.WaterRaised, lambda l: l.settings.galleon_water_internal == GalleonWaterSetting.raised),
     ], [
         TransitionFront(Regions.GloomyGalleonMedals, lambda l: True),
         TransitionFront(Regions.GloomyGalleonStart, lambda l: l.settings.shuffle_loading_zones == ShuffleLoadingZones.all or Events.ShipyardGateOpened in l.Events),
