@@ -22,6 +22,8 @@
     lo, hi
 */
 
+static char version_string[] = "DK64R 2.1\n";
+
 typedef struct crash_handler_info {
     /* 0x000 */ char unk_000[0x28];
     /* 0x028 */ int general_registers[30][2];
@@ -152,6 +154,7 @@ void CrashHandler(crash_handler_info* info) {
     StackTraceX = stack_x;
     StackTraceStartX = stack_x;
     StackTraceSize = 2; // Pixel Size
+    printDebugText(version_string, 0, 0, 0, 0);
     printDebugText("STACK TRACE:\n",0,0,0,0);
     printDebugText("%X\n", (int)info->pc, 0, 0, 0);
     printDebugText("%X\n", (int)info->general_registers[27][1], 0, 0, 0);
