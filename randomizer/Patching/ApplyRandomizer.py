@@ -9,6 +9,7 @@ from randomizer.Enums.Settings import (
     CrownEnemyRando,
     DamageAmount,
     FungiTimeSetting,
+    GalleonWaterSetting,
     HardModeSelected,
     HelmDoorItem,
     MiscChangesSelected,
@@ -457,6 +458,11 @@ def patching_response(spoiler):
         elif time_val == FungiTimeSetting.dusk:
             for map_val in dusk_removals:
                 addNewScript(map_val, dusk_removals[map_val], ScriptTypes.DeleteItem)
+
+    # Galleon Water Level
+    if spoiler.settings.galleon_water_internal == GalleonWaterSetting.raised:
+        ROM_COPY.seek(sav + 0x1DC)
+        ROM_COPY.writeMultipleBytes(1, 1)
 
     # ROM Flags
     rom_flags = 0

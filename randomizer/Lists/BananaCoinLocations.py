@@ -4210,7 +4210,7 @@ BananaCoinGroupList = {
             name="Seal Race Entrance",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.Shipyard,
-            logic=lambda l: Events.WaterSwitch in l.Events,
+            logic=lambda l: Events.WaterRaised in l.Events,
             locations=[
                 [1.0, 3361, 1640, 81],
                 [1.0, 3407, 1640, 110],
@@ -4626,7 +4626,7 @@ BananaCoinGroupList = {
             name="On Rafter near Funky's",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             region=Regions.Shipyard,
-            logic=lambda l: Events.WaterSwitch in l.Events or l.CanMoonkick(),
+            logic=lambda l: Events.WaterRaised in l.Events or l.CanMoonkick(),
             locations=[
                 [1.0, 3645.180419921875, 1648.24267578125, 1823.3914794921875],
                 [1.0, 3509.1142578125, 1637.95849609375, 1949.4278564453125],
