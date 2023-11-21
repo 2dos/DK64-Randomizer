@@ -1061,23 +1061,7 @@ int applyDamageMask(int player_index, int damage) {
 	} else if (Rando.hard_mode.lava_water) {
 		if (Player->grounded_bitfield & 6) {
 			// Underwater
-			if (applied_multiplier == 12) {
-				// OHKO
-				applied_multiplier = 1;
-			} else if ((applied_multiplier == 4) && (CollectableBase.Melons == 1)) {
-				// Quad & 1 Melon
-				applied_multiplier = 1;
-			} else if (
-			(CurrentMap == MAP_ISLES) ||
-			(CurrentMap == MAP_TRAININGGROUNDS) ||
-			(CurrentMap == MAP_GALLEONLOBBY) ||
-			(CurrentMap == MAP_GALLEON) ||
-			(CurrentMap == MAP_GALLEON2DS) ||
-			(CurrentMap == MAP_GALLEON5DSDKTINY) ||
-			(CurrentMap == MAP_GALLEON5DSDIDDYLANKYCHUNKY)) {
-				// Galleon-Adjacent map
-				applied_multiplier = 1;
-			}
+			applied_multiplier = 1;
 		}
 	}
 	return applyDamage(player_index, damage * applied_multiplier);
