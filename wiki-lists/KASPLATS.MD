@@ -94,7 +94,7 @@
 | Gloomy Galleon | Galleon Kasplat: Next to Cranky's |  | 
 | Galleon Lighthouse | Galleon Kasplat: Atop Whomp's Lighthouse |  | 
 | Galleon Mechafish | Galleon Kasplat: In the Mechfish |  | 
-| Gloomy Galleon | Galleon Kasplat: Lanky Gold Tower | (Events.WaterSwitch in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) | 
+| Gloomy Galleon | Galleon Kasplat: Lanky Gold Tower | (Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming)) | 
 | Galleon Sick Bay | Galleon Kasplat: Sickbay |  | 
 | Gloomy Galleon | Galleon Kasplat: Middle Deck of Shipwreck |  | 
 | Gloomy Galleon | Galleon Kasplat: Starting Area |  | 

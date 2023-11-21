@@ -200,7 +200,7 @@
 | Gloomy Galleon | In the Shipwreck with Replenishables | Events.ShipyardEnguarde in l.Events | 
 | Gloomy Galleon | Behind Musical Cactus | Events.ShipyardEnguarde in l.Events | 
 | Gloomy Galleon | On Top of Mechfish Grate | Events.ShipyardEnguarde in l.Events | 
-| Gloomy Galleon | On Gold Tower | ((l.balloon and l.islanky) and Events.WaterSwitch in l.Events or l.advanced_platforming) or l.CanMoonkick() | 
+| Gloomy Galleon | On Gold Tower | ((l.balloon and l.islanky) and Events.WaterRaised in l.Events or l.advanced_platforming) or l.CanMoonkick() | 
 | Gloomy Galleon | Galleon Treasure Room UnderWater | Events.ShipyardTreasureRoomOpened in l.Events | 
 | Galleon Sick Bay | Seasick Ship: Left of Cannon |  | 
 | Galleon Sick Bay | Sick Bay: Chunky ship entrance |  | 

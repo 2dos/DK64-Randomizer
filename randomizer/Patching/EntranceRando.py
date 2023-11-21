@@ -215,6 +215,7 @@ def filterEntranceType():
                 ROM_COPY.seek(cont_map_lzs_address + start + 0x16)
                 ROM_COPY.writeMultipleBytes(0, 2)
 
+
 class ItemPreviewCutscene:
     """Class to store information regarding an item preview cutscene."""
 
@@ -224,10 +225,12 @@ class ItemPreviewCutscene:
         self.old_cutscene = old_cutscene
         self.new_cutscene = new_cutscene
 
+
 ITEM_PREVIEW_CUTSCENES = [
     ItemPreviewCutscene(Maps.ForestSpider, 3, 9),
     ItemPreviewCutscene(Maps.CavesChunkyIgloo, 0, 5),
 ]
+
 
 def enableTriggerText(spoiler):
     """Change the cutscene trigger in Spider Boss and Chunky Igloo to the specific item reward cutscene."""
