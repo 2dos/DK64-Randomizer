@@ -38,7 +38,7 @@ from randomizer.Patching.CratePlacer import randomize_melon_crate
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
 from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
 from randomizer.Patching.EnemyRando import randomize_enemies
-from randomizer.Patching.EntranceRando import enableSpiderText, filterEntranceType, randomize_entrances
+from randomizer.Patching.EntranceRando import enableTriggerText, filterEntranceType, randomize_entrances
 from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
@@ -589,7 +589,7 @@ def patching_response(spoiler):
             PushHelpfulHints(spoiler, ROM_COPY)
 
     writeBootMessages()
-    enableSpiderText(spoiler)
+    enableTriggerText(spoiler)
     shortenCastleMinecart(spoiler)
 
     updateMillLeverTexture(spoiler.settings)
