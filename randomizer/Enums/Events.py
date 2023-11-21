@@ -97,6 +97,7 @@ class Events(IntEnum):
     HelmLankyDone = auto()
     HelmDiddyDone = auto()
     HelmKeyAccess = auto()
+    HelmFinished = auto()
 
     # K Rool Phases
     KRoolDonkey = auto()
