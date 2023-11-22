@@ -616,7 +616,7 @@ class Song(IntEnum):
     Guitar = auto()
     Bongos = auto()
     Trombone = auto()
-    Saxaphone = auto()
+    Saxophone = auto()
     AztecMain = auto()
     Transformation = auto()
     MiniMonkey = auto()

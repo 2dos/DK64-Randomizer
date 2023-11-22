@@ -45,7 +45,7 @@ def get_hash_images(type="local", mode="hash"):
         ImageInfo("orange", "rgba16", 7, 309, 32, 32, "hash"),
         ImageInfo("rainbow_coin", "rgba16", 25, 5963, 48, 44, "hash"),
         ImageInfo("rw_coin", "rgba16", 25, 5905, 44, 44, "hash"),
-        ImageInfo("saxaphone", "rgba16", 25, 5549, 40, 40, "hash"),
+        ImageInfo("saxophone", "rgba16", 25, 5549, 40, 40, "hash"),
     ]
 
     for x in range(0x8):
