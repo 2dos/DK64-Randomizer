@@ -6,6 +6,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Minigames import Minigames
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
+from randomizer.Enums.Songs import Songs
 from randomizer.Enums.SongType import SongType
 from randomizer.Enums.Types import Types
 from randomizer.Enums.VendorType import VendorType
@@ -13,7 +14,7 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.MapsAndExits import RegionMapList
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
-from randomizer.Lists.Songs import song_data
+from randomizer.Lists.Songs import SongList
 from randomizer.LogicFiles.AngryAztec import LogicRegions as AngryAztecRegions
 from randomizer.LogicFiles.CreepyCastle import LogicRegions as CreepyCastleRegions
 from randomizer.LogicFiles.CrystalCaves import LogicRegions as CrystalCavesRegions
@@ -273,18 +274,14 @@ def GetTruncatedSongName(songName: str) -> str:
 
 
 # Process possible song locations.
-PlandoSongNameMap = dict()
-invalid_song_types = [SongType.Ambient, SongType.Protected, SongType.System]
-for song in song_data:
-    if song.type in invalid_song_types:
+for songEnum, song in SongList.items():
+    if song.type in [SongType.Ambient, SongType.Protected, SongType.System]:
         continue
-    truncatedSongName = GetTruncatedSongName(song.name)
     songJson = {
         "name": song.name,
-        "value": truncatedSongName,
+        "value": songEnum.name,
     }
     PlandomizerPanels["Music"]["categories"][song.type.name]["songs"].append(songJson)
-    PlandoSongNameMap[truncatedSongName] = song.name
 
 #########
 # ITEMS #
