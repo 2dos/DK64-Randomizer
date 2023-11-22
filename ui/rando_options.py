@@ -7,7 +7,6 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Lists.Item import StartingMoveOptions
-from randomizer.Lists.Plandomizer import GetTruncatedSongName
 from randomizer.PlandoUtils import MoveSet
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from ui.bindings import bind, bindList
@@ -1392,6 +1391,13 @@ def plando_update_custom_music(evt):
     if not js.plando_music_updated:
         return
     
+    def getTruncatedSongName(songName: str) -> str:
+        charsToRemove = " ()'/-&?"
+        truncatedSongName = songName
+        for invalidChar in charsToRemove:
+            truncatedSongName = truncatedSongName.replace(invalidChar, "")
+        return truncatedSongName
+    
     def getCustomSongDisplayName(songName: str) -> str:
         """Format the name of a custom song."""
         trimmedName = "/".join(songName.split("/")[2:])
@@ -1422,7 +1428,7 @@ def plando_update_custom_music(evt):
         for dropdown in dropdowns:
             for song in songs:
                 opt = document.createElement("option")
-                opt.value = GetTruncatedSongName(song)
+                opt.value = getTruncatedSongName(song)
                 opt.innerHTML = getCustomSongDisplayName(song)
                 opt.classList.add("custom-song")
                 dropdown.appendChild(opt)

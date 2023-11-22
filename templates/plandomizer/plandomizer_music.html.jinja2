@@ -5,7 +5,7 @@
      aria-labelledby="nav-plando-{{panelName}}-tab">
     <h2 class="title">{{panel["name"]}}</h2>
     <div>
-        {% for categoryType, category in panel["categories"].items() %}
+        {% for _, category in panel["categories"].items() %}
             <h3 class="title">{{category["name"]}}</h3>
             <div class="flex-container flex-center">
                 {% for song in category["songs"] %}
@@ -18,9 +18,9 @@
                              title>
                             <select id="plando_{{song["value"]}}_song"
                                     name="plando_{{song["value"]}}_song"
-                                    class="form-select plando-item-select {{categoryType}}-select">
+                                    class="form-select plando-item-select {{category["type"]}}-select">
                                 <option value="">-- Randomize --</option>
-                                {% for song in category["songs"] %}
+                                {% for song in plando_songs[category["type"]] %}
                                     <option value="{{song["value"]}}"
                                             class="original-song">
                                         {{song["name"]}}

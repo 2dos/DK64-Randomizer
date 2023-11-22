@@ -14,7 +14,7 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.MapsAndExits import RegionMapList
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
-from randomizer.Lists.Songs import SongList
+from randomizer.Lists.Songs import AngryAztecSongs, BattleSongs, CreepyCastleSongs, CrystalCavesSongs, DKIslesSongs, FranticFactorySongs, FungiForestSongs, GloomyGalleonSongs, HideoutHelmSongs, JungleJapesSongs, MenusAndStorySongs, MinigameSongs, MoveSongs, NPCSongs, SongList
 from randomizer.LogicFiles.AngryAztec import LogicRegions as AngryAztecRegions
 from randomizer.LogicFiles.CreepyCastle import LogicRegions as CreepyCastleRegions
 from randomizer.LogicFiles.CrystalCaves import LogicRegions as CrystalCavesRegions
@@ -178,10 +178,23 @@ PlandomizerPanels = {
     "Music": {
         "name": "Music",
         "categories": {
-            "BGM": {"name": "BGM", "songs": []},
-            "MajorItem": {"name": "Major Items", "songs": []},
-            "MinorItem": {"name": "Minor Items", "songs": []},
-            "Event": {"name": "Event", "songs": []},
+            "Isles": {"name": "DK Isles", "type": "BGM", "songs": []},
+            "Japes": {"name": "Jungle Japes", "type": "BGM", "songs": []},
+            "Aztec": {"name": "Angry Aztec", "type": "BGM", "songs": []},
+            "Factory": {"name": "Frantic Factory", "type": "BGM", "songs": []},
+            "Galleon": {"name": "Gloomy Galleon", "type": "BGM", "songs": []},
+            "Forest": {"name": "Fungi Forest", "type": "BGM", "songs": []},
+            "Caves": {"name": "Crystal Caves", "type": "BGM", "songs": []},
+            "Castle": {"name": "Creepy Castle", "type": "BGM", "songs": []},
+            "Helm": {"name": "Hideout Helm", "type": "BGM", "songs": []},
+            "NPC": {"name": "NPCs", "type": "BGM", "songs": []},
+            "Moves": {"name": "Moves and Animals", "type": "BGM", "songs": []},
+            "Battle": {"name": "Battles", "type": "BGM", "songs": []},
+            "Story": {"name": "Menus and Story", "type": "BGM", "songs": []},
+            "Minigame": {"name": "Minigames", "type": "BGM", "songs": []},
+            "MajorItem": {"name": "Major Items", "type": "MajorItem", "songs": []},
+            "MinorItem": {"name": "Minor Items", "type": "MinorItem", "songs": []},
+            "Event": {"name": "Events", "type": "Event", "songs": []},
         },
     },
 }
@@ -264,14 +277,29 @@ for locationEnum, locationObj in LocationList.items():
 # MUSIC #
 #########
 
+bgmCategoryMap = {
+    "Isles": DKIslesSongs,
+    "Japes": JungleJapesSongs,
+    "Aztec": AngryAztecSongs,
+    "Factory": FranticFactorySongs,
+    "Galleon": GloomyGalleonSongs,
+    "Forest": FungiForestSongs,
+    "Caves": CrystalCavesSongs,
+    "Castle": CreepyCastleSongs,
+    "Helm": HideoutHelmSongs,
+    "NPC": NPCSongs,
+    "Moves": MoveSongs,
+    "Battle": BattleSongs,
+    "Story": MenusAndStorySongs,
+    "Minigame": MinigameSongs,
+}
 
-def GetTruncatedSongName(songName: str) -> str:
-    charsToRemove = " ()'/-&?"
-    truncatedSongName = songName
-    for invalidChar in charsToRemove:
-        truncatedSongName = truncatedSongName.replace(invalidChar, "")
-    return truncatedSongName
-
+PlannableSongs = {
+    "BGM": [],
+    "MajorItem": [],
+    "MinorItem": [],
+    "Event": [],
+}
 
 # Process possible song locations.
 for songEnum, song in SongList.items():
@@ -281,7 +309,15 @@ for songEnum, song in SongList.items():
         "name": song.name,
         "value": songEnum.name,
     }
-    PlandomizerPanels["Music"]["categories"][song.type.name]["songs"].append(songJson)
+    if song.type == SongType.BGM:
+        PlannableSongs["BGM"].append(songJson)
+        # Find the category this song belongs to.
+        for category, songSet in bgmCategoryMap.items():
+            if songEnum in songSet:
+                PlandomizerPanels["Music"]["categories"][category]["songs"].append(songJson)
+    else:
+        PlannableSongs[song.type.name].append(songJson)
+        PlandomizerPanels["Music"]["categories"][song.type.name]["songs"].append(songJson)
 
 #########
 # ITEMS #

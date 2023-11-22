@@ -139,21 +139,31 @@ SongList = {
     Songs.HelmBoMOn: Song("Hideout Helm (Blast-O-Matic On)", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Gloomy]),
     Songs.HelmBoMOff: Song("Hideout Helm (Blast-O-Matic Off)", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
     Songs.HelmBonus: Song("Hideout Helm (Bonus Barrels)", type=SongType.BGM, memory=0x188, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
-    # Non-Level Location BGM
+    # NPC BGM
     Songs.Cranky: Song("Cranky's Lab", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.LobbyShop], mood_tags=[SongGroup.Gloomy]),
     Songs.Funky: Song("Funky's Hut", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.LobbyShop], mood_tags=[SongGroup.Happy]),
     Songs.Candy: Song("Candy's Music Shop", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.LobbyShop, SongGroup.Exteriors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
     Songs.Snide: Song("Snide's HQ", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.LobbyShop, SongGroup.Interiors], mood_tags=[SongGroup.Gloomy]),
     Songs.WrinklyKong: Song("Wrinkly Kong", type=SongType.BGM, memory=0x18A, location_tags=[SongGroup.LobbyShop], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
+    # Moves and Animals BGM
+    Songs.StrongKong: Song("Strong Kong", type=SongType.BGM, memory=0x19A, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
+    Songs.Rocketbarrel: Song("Rocketbarrel Boost", type=SongType.BGM, memory=0x192, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
+    Songs.Sprint: Song("Orangstand Sprint", type=SongType.BGM, memory=0x190, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
+    Songs.MiniMonkey: Song("Mini Monkey", type=SongType.BGM, memory=0x19A, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Happy]),
+    Songs.HunkyChunky: Song("Hunky Chunky", type=SongType.BGM, memory=0x19A, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Gloomy]),
+    Songs.GorillaGone: Song("Gorilla Gone", type=SongType.BGM, memory=0x190, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
+    Songs.Rambi: Song("Rambi", type=SongType.BGM, memory=0x198, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
+    Songs.Enguarde: Song("Enguarde", type=SongType.BGM, memory=0x198, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy, SongGroup.Calm]),
+    # Battle BGM
     Songs.BattleArena: Song("Battle Arena", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Fight, SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
     Songs.TroffNScoff: Song("Troff 'n' Scoff", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Happy, SongGroup.Calm]),
     Songs.AwaitingBossEntry: Song("Awaiting Entering the Boss", type=SongType.BGM, memory=0x190, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy]),
     Songs.BossIntroduction: Song("Boss Introduction", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Fight], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
     Songs.MiniBoss: Song("Mini Boss", type=SongType.BGM, memory=0x1AA, location_tags=[SongGroup.Fight], mood_tags=[SongGroup.Happy]),
     Songs.KRoolBattle: Song("K Rool's Battle", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Fight], mood_tags=[SongGroup.Happy]),
+    # Menu and Story BGM
     Songs.MainMenu: Song("Main Menu", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Happy, SongGroup.Calm]),
     Songs.PauseMenu: Song("Pause Menu", type=SongType.BGM, memory=0x1D4, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
-    # Story BGM
     Songs.NintendoLogo: Song("Nintendo Logo", type=SongType.BGM, memory=0x108, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Happy]),
     Songs.DKRap: Song("DK Rap", type=SongType.BGM, memory=0x900, location_tags=[SongGroup.Fight, SongGroup.LobbyShop, SongGroup.Interiors, SongGroup.Exteriors, SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
     Songs.IntroStory: Song("Intro Story Medley", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Happy, SongGroup.Calm]),
@@ -169,15 +179,6 @@ SongList = {
     Songs.StealthySnoop: Song("Stealthy Snoop", type=SongType.BGM, memory=0x188, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
     Songs.MinecartMayhem: Song("Minecart Mayhem", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
     Songs.MonkeySmash: Song("Monkey Smash", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
-    # Move BGM
-    Songs.StrongKong: Song("Strong Kong", type=SongType.BGM, memory=0x19A, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
-    Songs.Rocketbarrel: Song("Rocketbarrel Boost", type=SongType.BGM, memory=0x192, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
-    Songs.Sprint: Song("Orangstand Sprint", type=SongType.BGM, memory=0x190, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
-    Songs.MiniMonkey: Song("Mini Monkey", type=SongType.BGM, memory=0x19A, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Happy]),
-    Songs.HunkyChunky: Song("Hunky Chunky", type=SongType.BGM, memory=0x19A, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Gloomy]),
-    Songs.GorillaGone: Song("Gorilla Gone", type=SongType.BGM, memory=0x190, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
-    Songs.Rambi: Song("Rambi", type=SongType.BGM, memory=0x198, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
-    Songs.Enguarde: Song("Enguarde", type=SongType.BGM, memory=0x198, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy, SongGroup.Calm]),
     # Major Items
     Songs.OhBanana: Song("Oh Banana", type=SongType.MajorItem, memory=0xABD, location_tags=[SongGroup.Spawning], mood_tags=[SongGroup.Calm], song_length=3.25),
     Songs.GBGet: Song("GB/Key Get", type=SongType.MajorItem, memory=0x8C4, location_tags=[SongGroup.Collection], mood_tags=[SongGroup.Happy], song_length=3.86),
@@ -239,6 +240,156 @@ SongList = {
     Songs.NintendoLogoOld: Song("Nintendo Logo (Old?)", type=SongType.System, memory=0x102),
 }
 
+DKIslesSongs = {
+    Songs.TrainingGrounds,
+    Songs.Isles,
+    Songs.IslesKremIsle,
+    Songs.IslesKLumsy,
+    Songs.IslesBFI,
+    Songs.IslesSnideRoom,
+    Songs.JapesLobby,
+    Songs.AztecLobby,
+    Songs.FactoryLobby,
+    Songs.GalleonLobby,
+    Songs.ForestLobby,
+    Songs.CavesLobby,
+    Songs.CastleLobby,
+    Songs.HelmLobby,
+}
+JungleJapesSongs = {
+    Songs.JapesMain,
+    Songs.JapesStart,
+    Songs.JapesTunnels,
+    Songs.JapesStorm,
+    Songs.JapesCaves,
+    Songs.JapesBlast,
+    Songs.JapesCart,
+    Songs.JapesDillo,
+}
+AngryAztecSongs = {
+    Songs.AztecMain,
+    Songs.AztecTunnels,
+    Songs.AztecTemple,
+    Songs.Aztec5DT,
+    Songs.AztecBlast,
+    Songs.AztecBeetle,
+    Songs.AztecChunkyKlaptraps,
+    Songs.AztecDogadon,
+}
+FranticFactorySongs = {
+    Songs.FactoryMain,
+    Songs.FactoryProduction,
+    Songs.FactoryResearchAndDevelopment,
+    Songs.FactoryCrusher,
+    Songs.FactoryCarRace,
+    Songs.FactoryJack,
+}
+GloomyGalleonSongs = {
+    Songs.GalleonTunnels,
+    Songs.GalleonOutside,
+    Songs.GalleonLighthouse,
+    Songs.GalleonMechFish,
+    Songs.Galleon2DS,
+    Songs.Galleon5DS,
+    Songs.GalleonMermaid,
+    Songs.GalleonChest,
+    Songs.GalleonBlast,
+    Songs.GalleonSealRace,
+    Songs.GalleonPufftoss,
+}
+FungiForestSongs = {
+    Songs.ForestDay,
+    Songs.ForestNight,
+    Songs.ForestBarn,
+    Songs.ForestMill,
+    Songs.ForestAnthill,
+    Songs.ForestMushroom,
+    Songs.ForestMushroomRooms,
+    Songs.ForestWinch,
+    Songs.ForestSpider,
+    Songs.ForestBlast,
+    Songs.ForestRabbitRace,
+    Songs.ForestCart,
+    Songs.ForestDogadon,
+}
+CrystalCavesSongs = {
+    Songs.Caves,
+    Songs.CavesIgloos,
+    Songs.CavesCabins,
+    Songs.CavesRotatingRoom,
+    Songs.CavesTantrum,
+    Songs.CavesBlast,
+    Songs.CavesIceCastle,
+    Songs.CavesBeetleRace,
+    Songs.CavesDillo,
+}
+CreepyCastleSongs = {
+    Songs.Castle,
+    Songs.CastleTree,
+    Songs.CastleTunnels,
+    Songs.CastleCrypt,
+    Songs.CastleInnerCrypts,
+    Songs.CastleDungeon_Chains,
+    Songs.CastleDungeon_NoChains,
+    Songs.CastleBallroom,
+    Songs.CastleMuseum,
+    Songs.CastleGreenhouse,
+    Songs.CastleTrash,
+    Songs.CastleTower,
+    Songs.CastleBlast,
+    Songs.CastleCart,
+    Songs.CastleKutOut,
+}
+HideoutHelmSongs = {
+    Songs.HelmBoMOn,
+    Songs.HelmBoMOff,
+    Songs.HelmBonus,
+}
+NPCSongs = {
+    Songs.Cranky,
+    Songs.Funky,
+    Songs.Candy,
+    Songs.Snide,
+    Songs.WrinklyKong,
+}
+MoveSongs = {
+    Songs.StrongKong,
+    Songs.Rocketbarrel,
+    Songs.Sprint,
+    Songs.MiniMonkey,
+    Songs.HunkyChunky,
+    Songs.GorillaGone,
+    Songs.Rambi,
+    Songs.Enguarde,
+}
+BattleSongs = {
+    Songs.BattleArena,
+    Songs.MiniBoss,
+    Songs.TroffNScoff,
+    Songs.AwaitingBossEntry,
+    Songs.BossIntroduction,
+    Songs.KRoolBattle,
+}
+MenusAndStorySongs = {
+    Songs.NintendoLogo,
+    Songs.DKRap,
+    Songs.MainMenu,
+    Songs.PauseMenu,
+    Songs.IntroStory,
+    Songs.KRoolTheme,
+    Songs.KLumsyCelebration,
+    Songs.KRoolTakeoff,
+    Songs.KRoolEntrance,
+    Songs.KLumsyEnding,
+    Songs.EndSequence,
+}
+MinigameSongs = {
+    Songs.Minigames,
+    Songs.MadMazeMaul,
+    Songs.StealthySnoop,
+    Songs.MinecartMayhem,
+    Songs.MonkeySmash,
+}
 
 song_data = [
     SongList[Songs.Silence],
