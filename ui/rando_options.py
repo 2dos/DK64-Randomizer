@@ -1391,6 +1391,11 @@ def plando_update_custom_music(evt):
     """Add custom music to the music plando UI."""
     if not js.plando_music_updated:
         return
+    
+    def getCustomSongDisplayName(songName: str) -> str:
+        """Format the name of a custom song."""
+        trimmedName = "/".join(songName.split("/")[2:])
+        return f"Custom Song: {trimmedName}"
 
     customSongDict = {
         "BGM": js.cosmetic_names.bgm,
@@ -1398,26 +1403,27 @@ def plando_update_custom_music(evt):
         "MinorItem": js.cosmetic_names.minoritems,
         "Event": js.cosmetic_names.events,
     }
-    bgmDropdowns = js.document.getElementsByClassName("BGM-select")
-    # Remove any existing custom music options from the selects.
-    for dropdown in bgmDropdowns:
-        for i in reversed(range(0, len(dropdown.options))):
-            option = dropdown.options.item(i)
-            if option.classList.contains("custom-song"):
-                if dropdown.value == option.value:
-                    dropdown.value = ""
-                dropdown.remove(i)
-            else:
-                # We can safely break here, because all of the custom songs are
-                # guaranteed to be at the end of each dropdown. This speeds the
-                # process up considerably.
-                break
-    # Add new custom music to each select.
-    for dropdown in bgmDropdowns:
-        for song in customSongDict["BGM"]:
-            opt = document.createElement("option")
-            opt.value = GetTruncatedSongName(song)
-            opt.innerHTML = song
-            opt.classList.add("custom-song")
-            dropdown.appendChild(opt)
+    for category, songs in customSongDict.items():
+        dropdowns = js.document.getElementsByClassName(f"{category}-select")
+        # Remove any existing custom music options from the selects.
+        for dropdown in dropdowns:
+            for i in reversed(range(0, len(dropdown.options))):
+                option = dropdown.options.item(i)
+                if option.classList.contains("custom-song"):
+                    if dropdown.value == option.value:
+                        dropdown.value = ""
+                    dropdown.remove(i)
+                else:
+                    # We can safely break here, because all of the custom songs are
+                    # guaranteed to be at the end of each dropdown. This speeds the
+                    # process up considerably.
+                    break
+        # Add new custom music to each select.
+        for dropdown in dropdowns:
+            for song in songs:
+                opt = document.createElement("option")
+                opt.value = GetTruncatedSongName(song)
+                opt.innerHTML = getCustomSongDisplayName(song)
+                opt.classList.add("custom-song")
+                dropdown.appendChild(opt)
     js.plando_music_updated = False
