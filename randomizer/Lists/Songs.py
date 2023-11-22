@@ -165,7 +165,9 @@ SongList = {
     Songs.MainMenu: Song("Main Menu", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Happy, SongGroup.Calm]),
     Songs.PauseMenu: Song("Pause Menu", type=SongType.BGM, memory=0x1D4, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
     Songs.NintendoLogo: Song("Nintendo Logo", type=SongType.BGM, memory=0x108, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Happy]),
-    Songs.DKRap: Song("DK Rap", type=SongType.BGM, memory=0x900, location_tags=[SongGroup.Fight, SongGroup.LobbyShop, SongGroup.Interiors, SongGroup.Exteriors, SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
+    Songs.DKRap: Song(
+        "DK Rap", type=SongType.BGM, memory=0x900, location_tags=[SongGroup.Fight, SongGroup.LobbyShop, SongGroup.Interiors, SongGroup.Exteriors, SongGroup.Minigames], mood_tags=[SongGroup.Happy]
+    ),
     Songs.IntroStory: Song("Intro Story Medley", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Happy, SongGroup.Calm]),
     Songs.KRoolTheme: Song("K Rool's Theme", type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy]),
     Songs.KLumsyCelebration: Song("K-Lumsy Celebration", type=SongType.BGM, memory=0x110, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Happy]),
@@ -207,7 +209,9 @@ SongList = {
     Songs.Success: Song("Success", type=SongType.Event, memory=0x8CD, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy], song_length=2.13),
     Songs.Failure: Song("Failure", type=SongType.Event, memory=0x89D, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Gloomy], song_length=3.27),
     Songs.SuccessRaces: Song("Success (Races)", type=SongType.Event, memory=0x118, location_tags=[SongGroup.Minigames, SongGroup.Spawning], mood_tags=[SongGroup.Happy], song_length=23.75),
-    Songs.FailureRaces: Song("Failure (Races & Try Again)", type=SongType.Event, memory=0x118, location_tags=[SongGroup.Minigames, SongGroup.Spawning], mood_tags=[SongGroup.Gloomy], song_length=23.75),
+    Songs.FailureRaces: Song(
+        "Failure (Races & Try Again)", type=SongType.Event, memory=0x118, location_tags=[SongGroup.Minigames, SongGroup.Spawning], mood_tags=[SongGroup.Gloomy], song_length=23.75
+    ),
     Songs.BossUnlock: Song("Boss Unlock", type=SongType.Event, memory=0x98, location_tags=[SongGroup.Spawning], mood_tags=[SongGroup.Happy], song_length=12.27),
     Songs.BossDefeat: Song("Boss Defeat", type=SongType.Event, memory=0x89A, location_tags=[SongGroup.Spawning], mood_tags=[SongGroup.Happy], song_length=5.35),
     Songs.Bongos: Song("Bongo Blast", type=SongType.Event, memory=0x8C2, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Calm], song_length=3.42),
