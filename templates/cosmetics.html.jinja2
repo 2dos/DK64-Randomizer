@@ -115,12 +115,25 @@
             <hr />
             <h2 class="title">CUSTOM MUSIC</h2>
             <p class="select-title">Cosmetics ZIP (Check <a style="text-decoration:underline" target="_blank" href="https://github.com/2dos/DK64-Randomizer/wiki/Creating-Cosmetics-Data-packs">wiki</a> for format)</p>
-            <input accept=".zip"
-                   class="form-control"
-                   type="file"
-                   id="music_file"
-                   name="music_file"/>
+            <div class="input-group mb-3 file-select"
+                 style="margin: 0 auto">
+                <div class="input-group-text choose-file"
+                     style="background-color: #6c757d">
+                    <input class="btn btn-primary file-button"
+                           type="button"
+                           value="Choose File"
+                           onClick="music_filebox()"
+                           id="choose_music_file">
+                </div>
+                <input class="form-control"
+                       id="music_file_text"
+                       type="text"
+                       readonly
+                       onClick="music_filebox()"
+                       placeholder="No File Chosen"/>
+            </div>
             <hr />
+
             <div class="row">
                 <h2 class="title">MISCELLANEOUS</h2>
                 <div class="flex-container">

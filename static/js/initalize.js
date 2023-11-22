@@ -1,40 +1,41 @@
-if (typeof window.RufflePlayer !== 'undefined') {
+if (typeof window.RufflePlayer !== "undefined") {
   // Ruffle extension is loaded
-  var modal = document.createElement('div');
-  modal.style.position = 'fixed';
-  modal.style.top = '0';
-  modal.style.left = '0';
-  modal.style.width = '100%';
-  modal.style.height = '100%';
-  modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-  modal.style.display = 'flex';
-  modal.style.justifyContent = 'center';
-  modal.style.alignItems = 'center';
-  modal.style.zIndex = '9999';
+  var modal = document.createElement("div");
+  modal.style.position = "fixed";
+  modal.style.top = "0";
+  modal.style.left = "0";
+  modal.style.width = "100%";
+  modal.style.height = "100%";
+  modal.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+  modal.style.display = "flex";
+  modal.style.justifyContent = "center";
+  modal.style.alignItems = "center";
+  modal.style.zIndex = "9999";
 
-  var modalContent = document.createElement('div');
-  modalContent.style.backgroundColor = '#333';
-  modalContent.style.padding = '20px';
-  modalContent.style.borderRadius = '5px';
-  modalContent.style.textAlign = 'center';
+  var modalContent = document.createElement("div");
+  modalContent.style.backgroundColor = "#333";
+  modalContent.style.padding = "20px";
+  modalContent.style.borderRadius = "5px";
+  modalContent.style.textAlign = "center";
 
-  var message = document.createElement('p');
-  message.textContent = "The Ruffle extension causes issues with this site (and we're not really sure why). Please disable it for this site.";
-  message.style.color = '#fff';
-  message.style.fontFamily = 'Arial, sans-serif';
-  message.style.fontSize = '16px';
+  var message = document.createElement("p");
+  message.textContent =
+    "The Ruffle extension causes issues with this site (and we're not really sure why). Please disable it for this site.";
+  message.style.color = "#fff";
+  message.style.fontFamily = "Arial, sans-serif";
+  message.style.fontSize = "16px";
 
   modalContent.appendChild(message);
   modal.appendChild(modalContent);
   document.body.appendChild(modal);
 
   // Prevent scrolling while the modal is open
-  document.body.style.overflow = 'hidden';
+  document.body.style.overflow = "hidden";
 
-  console.log('Ruffle extension is loaded');
+  console.log("Ruffle extension is loaded");
 } else {
   // Ruffle extension is not loaded
-  console.log('Ruffle extension is not loaded');
+  console.log("Ruffle extension is not loaded");
 }
 
 // This is a wrapper script to just load the UI python scripts and call python as needed.
@@ -113,13 +114,13 @@ function getFile(file) {
   }).responseText;
 }
 
-var valid_extensions = [".bin", ".candy"]
+var valid_extensions = [".bin", ".candy"];
 
 function validFilename(filename, dir) {
   if (filename.includes(dir)) {
     for (let v = 0; v < valid_extensions.length; v++) {
       var ext = valid_extensions[v];
-      if (filename.slice((0 - ext.length)) == ext) {
+      if (filename.slice(0 - ext.length) == ext) {
         return true;
       }
     }
@@ -130,16 +131,16 @@ function validFilename(filename, dir) {
 function filterFilename(filename) {
   for (let v = 0; v < valid_extensions.length; v++) {
     var ext = valid_extensions[v];
-    if (filename.slice((0 - ext.length)) == ext) {
+    if (filename.slice(0 - ext.length) == ext) {
       return {
-        "file": filename.slice(0, (0 - ext.length)),
-        "extension": ext
+        file: filename.slice(0, 0 - ext.length),
+        extension: ext,
       };
     }
   }
   return {
-    "file": filename,
-    "extension": 0,
+    file: filename,
+    extension: 0,
   };
 }
 
@@ -153,8 +154,8 @@ function createMusicLoadPromise(jszip, filename) {
           name: filterFilename(filename).file,
           file: content,
           extension: filterFilename(filename).extension,
-        })
-      })
+        });
+      });
   });
 }
 
@@ -162,64 +163,129 @@ var cosmetics;
 var cosmetic_names;
 var cosmetic_extensions;
 
-document
-  .getElementById("music_file")
-  .addEventListener("change", function (evt) {
-    var fileToLoad = document.getElementById("music_file").files[0];
-    var fileReader = new FileReader();
-    fileReader.onload = function (fileLoadedEvent) {
-      var new_zip = new JSZip();
-      new_zip.loadAsync(fileLoadedEvent.target.result).then(async function () {
-        let bgm_promises = [];
-        let majoritem_promises = [];
-        let minoritem_promises = [];
-        let event_promises = [];
+function load_music_file_from_db() {
+  console.log("Trying to load file from DB");
+  try {
+    // If we actually have a file in the DB load it
+    var db = musicdatabase.result;
+    var tx = db.transaction("MusicStorage", "readwrite");
+    var store = tx.objectStore("MusicStorage");
 
-        for (var filename of Object.keys(new_zip.files)) {
-          if (validFilename(filename, "bgm/")) {
-            bgm_promises.push(createMusicLoadPromise(new_zip, filename));
-          } else if (validFilename(filename, "majoritems/")) {
-            majoritem_promises.push(createMusicLoadPromise(new_zip, filename));
-          } else if (validFilename(filename, "minoritems/")) {
-            minoritem_promises.push(createMusicLoadPromise(new_zip, filename));
-          } else if (validFilename(filename, "events/")) {
-            event_promises.push(createMusicLoadPromise(new_zip, filename));
-          }
-        }
-
-        let bgm_files = await Promise.all(bgm_promises);
-        let majoritem_files = await Promise.all(majoritem_promises);
-        let minoritem_files = await Promise.all(minoritem_promises);
-        let event_files = await Promise.all(event_promises);
-
-        // BGM
-        let bgm = bgm_files.map(x => x.file);
-        let bgm_names = bgm_files.map(x => x.name);
-        let bgm_ext = bgm_files.map(x => x.extension);
-
-        // Major Items
-        let majoritems = majoritem_files.map(x => x.file);
-        let majoritem_names = majoritem_files.map(x => x.name);
-        let majoritem_ext = majoritem_files.map(x => x.extension);
-
-        // Minor Items
-        let minoritems = minoritem_files.map(x => x.file);
-        let minoritem_names = minoritem_files.map(x => x.name);
-        let minoritem_ext = minoritem_files.map(x => x.extension);
-
-        // Events
-        let events = event_files.map(x => x.file);
-        let event_names = event_files.map(x => x.name);
-        let event_ext = event_files.map(x => x.extension);
-
-        cosmetics = { bgm: bgm, majoritems: majoritems, minoritems: minoritems, events: events };
-        cosmetic_names = {bgm: bgm_names, majoritems: majoritem_names, minoritems: minoritem_names, events: event_names };
-        cosmetic_extensions = {bgm: bgm_ext, majoritems: majoritem_ext, minoritems: minoritem_ext, events: event_ext };
-      });
+    // Get our music file
+    var getMusicFile = store.get("music");
+    getMusicFile.onsuccess = function () {
+      console.log("Successfully loaded file from DB");
+      // When we pull it from the DB load it in as a global var
+      try {
+        $("#music_file_text").attr("placeholder", "Using cached music file");
+        $("#music_file_text").val("Using cached music file");
+        cosmetic_pack_event(getMusicFile.result.value);
+      } catch (error) {
+        console.log("Error loading music file from the database:", error);
+      }
     };
+  } catch (error) {
+    console.log("Error accessing the music database:", error);
+  }
+}
 
-    fileReader.readAsArrayBuffer(fileToLoad);
-  });
+function music_filebox() {
+  var input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".zip";
+
+  input.onchange = (e) => {
+    var file = e.target.files[0];
+    $("#music_file_text").attr("placeholder", file.name);
+    $("#music_file_text").val(file.name);
+    // Get the original file
+    try {
+      var db = musicdatabase.result;
+      var tx = db.transaction("MusicStorage", "readwrite");
+      var store = tx.objectStore("MusicStorage");
+      // Store it in the database
+      store.put({ music: "music", value: file });
+      console.log("Successfully stored file in the database.");
+    } catch (error) {
+      console.log("Error storing file in the database:", error);
+    }
+    // Make sure we load the file into the rompatcher
+    cosmetic_pack_event(file);
+  };
+
+  input.click();
+}
+
+function cosmetic_pack_event(fileToLoad) {
+  var fileReader = new FileReader();
+  fileReader.onload = function (fileLoadedEvent) {
+    var new_zip = new JSZip();
+    new_zip.loadAsync(fileLoadedEvent.target.result).then(async function () {
+      let bgm_promises = [];
+      let majoritem_promises = [];
+      let minoritem_promises = [];
+      let event_promises = [];
+
+      for (var filename of Object.keys(new_zip.files)) {
+        if (validFilename(filename, "bgm/")) {
+          bgm_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "majoritems/")) {
+          majoritem_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "minoritems/")) {
+          minoritem_promises.push(createMusicLoadPromise(new_zip, filename));
+        } else if (validFilename(filename, "events/")) {
+          event_promises.push(createMusicLoadPromise(new_zip, filename));
+        }
+      }
+
+      let bgm_files = await Promise.all(bgm_promises);
+      let majoritem_files = await Promise.all(majoritem_promises);
+      let minoritem_files = await Promise.all(minoritem_promises);
+      let event_files = await Promise.all(event_promises);
+
+      // BGM
+      let bgm = bgm_files.map((x) => x.file);
+      let bgm_names = bgm_files.map((x) => x.name);
+      let bgm_ext = bgm_files.map((x) => x.extension);
+
+      // Major Items
+      let majoritems = majoritem_files.map((x) => x.file);
+      let majoritem_names = majoritem_files.map((x) => x.name);
+      let majoritem_ext = majoritem_files.map((x) => x.extension);
+
+      // Minor Items
+      let minoritems = minoritem_files.map((x) => x.file);
+      let minoritem_names = minoritem_files.map((x) => x.name);
+      let minoritem_ext = minoritem_files.map((x) => x.extension);
+
+      // Events
+      let events = event_files.map((x) => x.file);
+      let event_names = event_files.map((x) => x.name);
+      let event_ext = event_files.map((x) => x.extension);
+
+      cosmetics = {
+        bgm: bgm,
+        majoritems: majoritems,
+        minoritems: minoritems,
+        events: events,
+      };
+      cosmetic_names = {
+        bgm: bgm_names,
+        majoritems: majoritem_names,
+        minoritems: minoritem_names,
+        events: event_names,
+      };
+      cosmetic_extensions = {
+        bgm: bgm_ext,
+        majoritems: majoritem_ext,
+        minoritems: minoritem_ext,
+        events: event_ext,
+      };
+    });
+  };
+
+  fileReader.readAsArrayBuffer(fileToLoad);
+}
 
 jq = $;
 
@@ -271,14 +337,13 @@ function filebox() {
     $("#rom_3").val(file.name);
     $("#rom_3").attr("placeholder", file.name);
     // Get the original fiile
-    try{
+    try {
       var db = romdatabase.result;
       var tx = db.transaction("ROMStorage", "readwrite");
       var store = tx.objectStore("ROMStorage");
       // Store it in the database
       store.put({ ROM: "N64", value: file });
-    }
-    catch{}
+    } catch {}
     // Make sure we load the file into the rompatcher
     romFile = new MarcFile(file, _parseROM);
   };
@@ -298,11 +363,21 @@ var indexedDB =
 var romdatabase = indexedDB.open("ROMStorage", 1);
 var seeddatabase = indexedDB.open("SeedStorage", 1);
 var settingsdatabase = indexedDB.open("SettingsDB", 1);
+var musicdatabase = indexedDB.open("MusicStorage", 1);
+musicdatabase.onupgradeneeded = function () {
+  try {
+    var musicdb = musicdatabase.result;
+    musicdb.createObjectStore("MusicStorage", { keyPath: "music" });
+  } catch {}
+};
+musicdatabase.onsuccess = function () {
+  load_music_file_from_db();
+};
 settingsdatabase.onupgradeneeded = function () {
   try {
     var settingsdb = settingsdatabase.result;
     settingsdb.createObjectStore("saved_settings");
-  } catch{}
+  } catch {}
 };
 settingsdatabase.onsuccess = function () {
   load_data();
@@ -334,7 +409,7 @@ romdatabase.onsuccess = function () {
 
 function write_seed_history(seed_id, seed_data, seed_hash) {
   // Get the original fiile
-  try{
+  try {
     var seed_db = seeddatabase.result;
     var seed_tx = seed_db.transaction("SeedStorage", "readwrite");
     var seed_store = seed_tx.objectStore("SeedStorage");
@@ -347,8 +422,7 @@ function write_seed_history(seed_id, seed_data, seed_hash) {
       seed_id: seed_id,
       date: now,
     });
-  }
-  catch{}
+  } catch {}
 }
 
 function load_old_seeds() {
@@ -427,39 +501,42 @@ function load_file_from_db() {
 var w;
 var CurrentRomHash;
 
-243
-
+243;
 
 function base64ToArrayBuffer(base64) {
-    var binaryString = atob(base64);
-    var bytes = new Uint8Array(binaryString.length);
-    for (var i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-    }
-    return bytes.buffer;
+  var binaryString = atob(base64);
+  var bytes = new Uint8Array(binaryString.length);
+  for (var i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return bytes.buffer;
 }
 
 function to2Digit(value) {
   if (value >= 10) {
     return value;
   }
-  return `0${value}`
+  return `0${value}`;
 }
 
-gen_error_count = 0
-previous_queue_position = null
+gen_error_count = 0;
+previous_queue_position = null;
 
-function pushToHistory(message, emphasize=false) {
+function pushToHistory(message, emphasize = false) {
   let prog_hist = document.getElementById("progress-history");
   old_history = prog_hist.innerHTML;
   dt = new Date();
-  emph_start = ""
-  emph_end = ""
+  emph_start = "";
+  emph_end = "";
   if (emphasize) {
-    emph_start = "<span style='font-size:21px'>"
-    emph_end = "</span>"
+    emph_start = "<span style='font-size:21px'>";
+    emph_end = "</span>";
   }
-  new_history = `${old_history}${emph_start}[${to2Digit(dt.getHours())}:${to2Digit(dt.getMinutes())}:${to2Digit(dt.getSeconds())}] ${message}${emph_end}<br />`;
+  new_history = `${old_history}${emph_start}[${to2Digit(
+    dt.getHours()
+  )}:${to2Digit(dt.getMinutes())}:${to2Digit(
+    dt.getSeconds()
+  )}] ${message}${emph_end}<br />`;
   prog_hist.innerHTML = new_history;
   prog_hist.scrollTop = prog_hist.scrollHeight;
 }
@@ -469,7 +546,7 @@ function postToastMessage(message, is_warning, progress_ratio) {
   $("#progress-text").text(message);
   pushToHistory(message);
   // Handle Progress Bar
-  perc = Math.floor(100 * progress_ratio)
+  perc = Math.floor(100 * progress_ratio);
   if (is_warning) {
     document.getElementById("progress-fairy").style.display = "none";
     img_data = document.getElementById("progress-dead").src;
@@ -481,12 +558,15 @@ function postToastMessage(message, is_warning, progress_ratio) {
     }, 1000);
     gen_error_count += 1;
     if (gen_error_count >= 3) {
-      pushToHistory(`You have failed generation ${gen_error_count} times. We would highly advise you report this as a bug to the developers at <a href='discord.dk64randomizer.com' class='no-decoration'>the discord</a> or <a href='https://github.com/2dos/DK64-Randomizer/issues/new' class='no-decoration'>GitHub</a>`,true)
+      pushToHistory(
+        `You have failed generation ${gen_error_count} times. We would highly advise you report this as a bug to the developers at <a href='discord.dk64randomizer.com' class='no-decoration'>the discord</a> or <a href='https://github.com/2dos/DK64-Randomizer/issues/new' class='no-decoration'>GitHub</a>`,
+        true
+      );
     }
     document.getElementById("close-modal").style.display = "";
     document.getElementById("close-modal-btn").addEventListener("click", () => {
       hideModal();
-    })
+    });
   } else {
     document.getElementById("progress-fairy").style.display = "";
     document.getElementById("progress-dead").style.display = "none";
@@ -517,40 +597,41 @@ function generate_seed(url, json, git_branch) {
     type: "POST",
     success: function (data, textStatus, xhr) {
       if (xhr.status == 202) {
-        console.log("seed gen waiting in queue")
+        console.log("seed gen waiting in queue");
         // Get the position in the queue
-        position = data["position"]
+        position = data["position"];
         if (position != previous_queue_position) {
           postToastMessage("Position in Queue: " + position, false, 0.4);
           if (position == 0) {
-            postToastMessage("Your seed is now generating.")
+            postToastMessage("Your seed is now generating.");
           }
         }
-        previous_queue_position = position
+        previous_queue_position = position;
         setTimeout(function () {
           generate_seed(url, json, git_branch);
         }, 5000);
       } else if (xhr.status == 201) {
-        console.log("seed gen queued")
+        console.log("seed gen queued");
         postToastMessage("Seed Generation Queued", false, 0.3);
         setTimeout(function () {
           generate_seed(url, json, git_branch);
         }, 5000);
-        
       } else if (xhr.status == 203) {
-        console.log("seed gen started")
+        console.log("seed gen started");
         postToastMessage("Seed Generation Started", false, 0.5);
         setTimeout(function () {
           generate_seed(url, json, git_branch);
         }, 5000);
-        
       } else if (xhr.status == 208) {
-        console.log(data)
+        console.log(data);
         postToastMessage(data, true, 1);
-        
       } else {
-        postToastMessage("Seed Generation Complete, applying cosmetics", false, 0.8);
-        apply_patch(data, true);    
+        postToastMessage(
+          "Seed Generation Complete, applying cosmetics",
+          false,
+          0.8
+        );
+        apply_patch(data, true);
       }
     },
     error: function (data, textStatus, xhr) {
@@ -573,26 +654,28 @@ async function apply_patch(data, run_async) {
     const promises = [];
 
     // Iterate over each file in the zip
-    zip.forEach(function(relativePath, zipEntry) {
+    zip.forEach(function (relativePath, zipEntry) {
       if (!zipEntry.dir) {
         // Extract the file content as a string or other appropriate format
         // Store the file content in a variable with a name derived from the file name
-        fileName = zipEntry.name.replace(/[^a-zA-Z0-9]/g, '_');
+        fileName = zipEntry.name.replace(/[^a-zA-Z0-9]/g, "_");
         if (fileName == "patch") {
           // Create a promise for each async operation and add it to the array
-          const promise = zipEntry.async('uint8array').then(function(fileContent) {
-            console.log("Applying Xdelta Patch");
-            apply_xdelta(fileContent);
+          const promise = zipEntry
+            .async("uint8array")
+            .then(function (fileContent) {
+              console.log("Applying Xdelta Patch");
+              apply_xdelta(fileContent);
 
-            if (run_async == true) {
-              // Return the promise for pyodide.runPythonAsync
-              return pyodide.runPythonAsync(`
+              if (run_async == true) {
+                // Return the promise for pyodide.runPythonAsync
+                return pyodide.runPythonAsync(`
                 import js
                 from randomizer.Patching.ApplyLocal import patching_response
                 patching_response(str(js.event_response_data))
               `);
-            }
-          });
+              }
+            });
 
           promises.push(promise);
         }
@@ -602,23 +685,22 @@ async function apply_patch(data, run_async) {
     // Wait for all the promises to resolve
     await Promise.all(promises);
   } catch (error) {
-    console.error('Error unzipping the file:', error);
+    console.error("Error unzipping the file:", error);
   }
 }
 
 function saveDataToIndexedDB(key, value) {
-  try{
+  try {
     var settingsdb = settingsdatabase.result;
     transaction = settingsdb.transaction("saved_settings", "readwrite");
     objectStore = transaction.objectStore("saved_settings");
     objectStore.put(value, key);
-  }
-  catch{}
+  } catch {}
 }
 
 function loadDataFromIndexedDB(key) {
   return new Promise((resolve, reject) => {
-   try{
+    try {
       var settingsdb = settingsdatabase.result;
       transaction = settingsdb.transaction("saved_settings", "readonly");
       objectStore = transaction.objectStore("saved_settings");
@@ -629,28 +711,26 @@ function loadDataFromIndexedDB(key) {
 
       request.onsuccess = function (event) {
         value = event.target.result;
-        console.log(value)
+        console.log(value);
         resolve(value);
       };
+    } catch {
+      reject("Read Error");
     }
-    catch{reject("Read Error")}
   });
 }
 
-
 function load_data() {
-
-
-  try{
+  try {
     var settingsdb = settingsdatabase.result;
     transaction = settingsdb.transaction("saved_settings", "readonly");
     objectStore = transaction.objectStore("saved_settings");
     getRequest = objectStore.get("saved_settings");
-    getRequest.onerror = function(event) {
+    getRequest.onerror = function (event) {
       console.error("Failed to retrieve saved settings");
     };
-    getRequest.onsuccess = function(event) {
-      try{
+    getRequest.onsuccess = function (event) {
+      try {
         if (getRequest.result) {
           json = JSON.parse(getRequest.result);
           if (json !== null) {
@@ -664,7 +744,7 @@ function load_data() {
               try {
                 element.value = json[key];
                 if (element.hasAttribute("data-slider-value")) {
-                  $("#" + key).slider("setValue", json[key])
+                  $("#" + key).slider("setValue", json[key]);
                 }
                 if (element.className.includes("selected")) {
                   for (var i = 0; i < element.options.length; i++) {
@@ -679,13 +759,12 @@ function load_data() {
         } else {
           load_presets();
         }
+      } catch {
+        load_presets();
       }
-      catch{load_presets();}
     };
-  }
-  catch{
+  } catch {
     load_presets();
   }
-
 }
 load_data();
