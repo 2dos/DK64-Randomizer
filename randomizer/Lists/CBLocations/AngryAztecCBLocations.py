@@ -1377,7 +1377,7 @@ ColoredBananaGroupList = [
         vanilla=True,
         locations=[[5, 1.0, 2526.212890625, 295.5, 1032.5323486328125]],
     ),
-     ColoredBananaGroup(
+    ColoredBananaGroup(
         group=91,
         map_id=Maps.AngryAztec,
         name="On oasis treetops (Donkey)",
