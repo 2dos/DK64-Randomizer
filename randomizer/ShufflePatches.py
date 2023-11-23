@@ -65,8 +65,28 @@ def ShufflePatches(spoiler, human_spoiler):
         Levels.CrystalCaves: [],
         Levels.CreepyCastle: [],
     }
+    level_name_to_enum = {
+        "DK Isles": Levels.DKIsles,
+        "Jungle Japes": Levels.JungleJapes,
+        "Angry Aztec": Levels.AngryAztec,
+        "Frantic Factory": Levels.FranticFactory,
+        "Gloomy Galleon": Levels.GloomyGalleon,
+        "Fungi Forest": Levels.FungiForest,
+        "Crystal Caves": Levels.CrystalCaves,
+        "Creepy Castle": Levels.CreepyCastle,
+    }
     for key in total_dirt_patch_list:
         human_spoiler[key.name] = []  # Ensure order
+
+    dual_dirt_levels = 5
+    if spoiler.settings.enable_plandomizer and len(spoiler.settings.plandomizer_dict["plando_dirt_patches"]) > 0:
+        for level_name in spoiler.settings.plandomizer_dict["plando_dirt_patches"]:
+            level = level_name_to_enum[level_name]
+            if level != Levels.DKIsles and len(spoiler.settings.plandomizer_dict["plando_dirt_patches"][level_name]) > 1:
+                dual_dirt_levels -= 1
+                area_dirt = total_dirt_patch_list[level]
+                select_random_dirt_from_area(area_dirt, 2, level, spoiler, human_spoiler)
+                del total_dirt_patch_list[level]
 
     for key in total_dirt_patch_list.keys():
         for SingleDirtPatchLocation in CustomLocations[key]:
@@ -76,7 +96,7 @@ def ShufflePatches(spoiler, human_spoiler):
     select_random_dirt_from_area(total_dirt_patch_list[Levels.DKIsles], 4, Levels.DKIsles, spoiler, human_spoiler)
     del total_dirt_patch_list[Levels.DKIsles]
 
-    for SingleDirtPatchLocation in range(5):
+    for SingleDirtPatchLocation in range(dual_dirt_levels):
         area_key = random.choice(list(total_dirt_patch_list.keys()))
         area_dirt = total_dirt_patch_list[area_key]
         select_random_dirt_from_area(area_dirt, 2, area_key, spoiler, human_spoiler)
@@ -97,11 +117,24 @@ def ShufflePatches(spoiler, human_spoiler):
 
 def select_random_dirt_from_area(area_dirt, amount, level, spoiler, human_spoiler):
     """Select <amount> random dirt patches from <area_dirt>, which is a list of dirt patches. Makes sure max 1 dirt patch per group is selected."""
+    level_enum_to_name = {
+        Levels.DKIsles: "DK Isles",
+        Levels.JungleJapes: "Jungle Japes",
+        Levels.AngryAztec: "Angry Aztec",
+        Levels.FranticFactory: "Frantic Factory",
+        Levels.GloomyGalleon: "Gloomy Galleon",
+        Levels.FungiForest: "Fungi Forest",
+        Levels.CrystalCaves: "Crystal Caves",
+        Levels.CreepyCastle: "Creepy Castle",
+    }
     human_spoiler[level.name] = []
     for iterations in range(amount):
         selected_patch = random.choice(area_dirt)  # selects a random patch from the list
+        selected_patch_name = selected_patch.name
+        if spoiler.settings.enable_plandomizer and len(spoiler.settings.plandomizer_dict["plando_dirt_patches"][level_enum_to_name[level]]) > 0:
+            selected_patch_name = spoiler.settings.plandomizer_dict["plando_dirt_patches"][level_enum_to_name[level]].pop(0)
         for patch in CustomLocations[level]:  # enables the selected patch
-            if patch.name == selected_patch.name:
+            if patch.name == selected_patch_name:
                 patch.setCustomLocation(True)
                 human_spoiler[level.name].append(patch.name)
                 local_map_index = len([x for x in spoiler.dirt_patch_placement if x["map"] == patch.map])
