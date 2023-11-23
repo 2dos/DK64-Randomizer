@@ -22,9 +22,32 @@ def Reset(barrelLocations: List[Locations]) -> None:
 def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigamePool: List[Minigames]) -> None:
     """Shuffle minigames to different barrels."""
     random.shuffle(barrelLocations)
+    helm_minigame_available = False
+    for minigame in minigamePool:
+        # Check if any minigames can be placed in helm
+        if MinigameRequirements[minigame].helm_enabled:
+            helm_minigame_available = True
+    # Apply plandomized minigame placement
+    preplaced_minigame_locations = []
+    if settings.enable_plandomizer and len(settings.plandomizer_dict["plando_bonus_barrels"]) > 0:
+        for loc in barrelLocations:
+            minigame_placed = False
+            if loc.name in settings.plandomizer_dict["plando_bonus_barrels"].keys():
+                for plando_minigame in minigamePool:
+                    if plando_minigame.name == settings.plandomizer_dict["plando_bonus_barrels"][loc]:
+                        if validate_minigame(loc, plando_minigame, helm_minigame_available):
+                            BarrelMetaData[loc].minigame = plando_minigame
+                            minigame_placed = True
+                        else:
+                            raise Ex.PlandoIncompatibleException(f"Invalid minigame for {loc.name}: {plando_minigame.name}")
+                    if minigame_placed:
+                        preplaced_minigame_locations.append(loc)
+    for preplaced in preplaced_minigame_locations:
+        barrelLocations.remove(preplaced)
+    # Apply randomized minigame placement
     while len(barrelLocations) > 0:
-        random.shuffle(minigamePool)
         location = barrelLocations.pop()
+        random.shuffle(minigamePool)
         # Don't bother shuffling or validating barrel locations which are skipped
         if BarrelMetaData[location].map == Maps.HideoutHelm and settings.helm_barrels == MinigameBarrels.skip:
             continue
@@ -32,24 +55,24 @@ def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigam
             continue
         # Check each remaining minigame to see if placing it will produce a valid world
         success = False
-        helm_minigame_available = False
         for minigame in minigamePool:
-            # Check if any minigames can be placed in helm
-            if MinigameRequirements[minigame].helm_enabled:
-                helm_minigame_available = True
-        for minigame in minigamePool:
-            # If this minigame isn't a minigame for the kong of this location, don't use it
-            if BarrelMetaData[location].kong not in MinigameRequirements[minigame].kong_list:
-                continue
-            # If there is a minigame that can be placed in Helm, skip banned minigames, otherwise continue as normal
-            if not MinigameRequirements[minigame].helm_enabled and BarrelMetaData[location].map == Maps.HideoutHelm and helm_minigame_available is True:
-                continue
-            # Place the minigame
-            BarrelMetaData[location].minigame = minigame
-            success = True
+            # If this minigame isn't valid, don't use it
+            if validate_minigame(location, minigame, helm_minigame_available):
+                # Place the minigame
+                BarrelMetaData[location].minigame = minigame
+                success = True
         if not success:
             raise Ex.BarrelOutOfMinigames
 
+def validate_minigame(location: Locations, minigame: Minigames, helm_minigame_available: bool):
+    """Decide whether or not the given minigame is suitable for the given location."""
+    valid = False
+    # If this minigame isn't a minigame for the kong of this location, it's not valid
+    if BarrelMetaData[location].kong in MinigameRequirements[minigame].kong_list:
+        # If there is a minigame that can be placed in Helm, don't validate banned minigames, otherwise continue as normal
+        if (MinigameRequirements[minigame].helm_enabled or BarrelMetaData[location].map != Maps.HideoutHelm) or helm_minigame_available is False:
+            valid = True
+    return valid
 
 def BarrelShuffle(settings: Settings) -> None:
     """Facilitate shuffling of barrels."""
