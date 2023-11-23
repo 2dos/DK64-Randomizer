@@ -3,10 +3,11 @@ import json
 import js
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Settings import SettingsMap
+from ui.music_select import serialize_music_selections
 from ui.plando_validation import populate_plando_options
 
 
-def serialize_settings(include_plando=False) -> dict:
+def serialize_settings(include_plando: bool = False, include_song_select: bool = False) -> dict:
     """Serialize form settings into an enum-focused JSON object.
 
     Returns:
@@ -51,6 +52,10 @@ def serialize_settings(include_plando=False) -> dict:
     def is_starting_move_radio_button(inputName: str) -> bool:
         """Determine if an input is a starting move checkbox."""
         return inputName is not None and inputName.startswith("starting_move_box_")
+    
+    def is_music_select_input(inputName: str) -> bool:
+        """Determine if an input is a song selection input."""
+        return inputName is not None and inputName.startswith("music_select_")
 
     def get_enum_or_string_value(valueString: str, settingName: str):
         """Obtain the enum or string value for the provided setting.
@@ -71,6 +76,8 @@ def serialize_settings(include_plando=False) -> dict:
         if is_plando_input(obj.name):
             continue
         if is_starting_move_radio_button(obj.name):
+            continue
+        if is_music_select_input(obj.name):
             continue
         # Verify each object if its value is a string convert it to a bool
         if obj.value.lower() in ["true", "false"]:
@@ -109,4 +116,6 @@ def serialize_settings(include_plando=False) -> dict:
             form_data[element.getAttribute("name")] = values
     form_data["starting_move_list_selected"] = required_starting_moves
     form_data["random_starting_move_list_selected"] = random_starting_moves
+    if include_song_select:
+        form_data["music"] = serialize_music_selections(form)
     return form_data

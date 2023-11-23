@@ -581,3 +581,78 @@ ExclSongsItems = [
 for item in ExclSongsItems:
     if item.name != "No Group":
         ExcludedSongsSelector.append({"name": item.name, "value": item.name.lower().replace(" ", "_"), "tooltip": item.tooltip, "shift": item.shift})
+
+# This dict determines all of the dropdowns for selecting music, and how they
+# will be grouped together.
+MusicSelectionPanel = {
+    "Isles": {"name": "DK Isles", "type": "BGM", "songs": []},
+    "Japes": {"name": "Jungle Japes", "type": "BGM", "songs": []},
+    "Aztec": {"name": "Angry Aztec", "type": "BGM", "songs": []},
+    "Factory": {"name": "Frantic Factory", "type": "BGM", "songs": []},
+    "Galleon": {"name": "Gloomy Galleon", "type": "BGM", "songs": []},
+    "Forest": {"name": "Fungi Forest", "type": "BGM", "songs": []},
+    "Caves": {"name": "Crystal Caves", "type": "BGM", "songs": []},
+    "Castle": {"name": "Creepy Castle", "type": "BGM", "songs": []},
+    "Helm": {"name": "Hideout Helm", "type": "BGM", "songs": []},
+    "NPC": {"name": "NPCs", "type": "BGM", "songs": []},
+    "Moves": {"name": "Moves and Animals", "type": "BGM", "songs": []},
+    "Battle": {"name": "Battles", "type": "BGM", "songs": []},
+    "Story": {"name": "Menus and Story", "type": "BGM", "songs": []},
+    "Minigame": {"name": "Minigames", "type": "BGM", "songs": []},
+    "MajorItem": {"name": "Major Items", "type": "MajorItem", "songs": []},
+    "MinorItem": {"name": "Minor Items", "type": "MinorItem", "songs": []},
+    "Event": {"name": "Events", "type": "Event", "songs": []},
+}
+
+bgmCategoryMap = {
+    "Isles": DKIslesSongs,
+    "Japes": JungleJapesSongs,
+    "Aztec": AngryAztecSongs,
+    "Factory": FranticFactorySongs,
+    "Galleon": GloomyGalleonSongs,
+    "Forest": FungiForestSongs,
+    "Caves": CrystalCavesSongs,
+    "Castle": CreepyCastleSongs,
+    "Helm": HideoutHelmSongs,
+    "NPC": NPCSongs,
+    "Moves": MoveSongs,
+    "Battle": BattleSongs,
+    "Story": MenusAndStorySongs,
+    "Minigame": MinigameSongs,
+}
+
+# This dict groups songs together by type, to determine which songs can be
+# placed in which locations.
+PlannableSongs = {
+    "BGM": [],
+    "MajorItem": [],
+    "MinorItem": [],
+    "Event": [],
+}
+
+# This list is used when resetting all selected songs at once.
+SongLocationList = []
+
+# Process possible song locations.
+for songEnum, song in SongList.items():
+    if song.type in [SongType.Ambient, SongType.Protected, SongType.System]:
+        continue
+    songJson = {
+        "name": song.name,
+        "value": songEnum.name,
+    }
+    if song.type == SongType.BGM:
+        PlannableSongs["BGM"].append(songJson)
+        # Remove Monkey Smash as a location, but keep it as an option for other
+        # songs.
+        if songEnum == Songs.MonkeySmash:
+            continue
+        SongLocationList.append(songEnum.name)
+        # Find the category this song belongs to.
+        for category, songSet in bgmCategoryMap.items():
+            if songEnum in songSet:
+                MusicSelectionPanel[category]["songs"].append(songJson)
+    else:
+        PlannableSongs[song.type.name].append(songJson)
+        SongLocationList.append(songEnum.name)
+        MusicSelectionPanel[song.type.name]["songs"].append(songJson)

@@ -175,28 +175,6 @@ PlandomizerPanels = {
             "CreepyCastle": {"name": "Creepy Castle", "locations": []},
         },
     },
-    "Music": {
-        "name": "Music",
-        "categories": {
-            "Isles": {"name": "DK Isles", "type": "BGM", "songs": []},
-            "Japes": {"name": "Jungle Japes", "type": "BGM", "songs": []},
-            "Aztec": {"name": "Angry Aztec", "type": "BGM", "songs": []},
-            "Factory": {"name": "Frantic Factory", "type": "BGM", "songs": []},
-            "Galleon": {"name": "Gloomy Galleon", "type": "BGM", "songs": []},
-            "Forest": {"name": "Fungi Forest", "type": "BGM", "songs": []},
-            "Caves": {"name": "Crystal Caves", "type": "BGM", "songs": []},
-            "Castle": {"name": "Creepy Castle", "type": "BGM", "songs": []},
-            "Helm": {"name": "Hideout Helm", "type": "BGM", "songs": []},
-            "NPC": {"name": "NPCs", "type": "BGM", "songs": []},
-            "Moves": {"name": "Moves and Animals", "type": "BGM", "songs": []},
-            "Battle": {"name": "Battles", "type": "BGM", "songs": []},
-            "Story": {"name": "Menus and Story", "type": "BGM", "songs": []},
-            "Minigame": {"name": "Minigames", "type": "BGM", "songs": []},
-            "MajorItem": {"name": "Major Items", "type": "MajorItem", "songs": []},
-            "MinorItem": {"name": "Minor Items", "type": "MinorItem", "songs": []},
-            "Event": {"name": "Events", "type": "Event", "songs": []},
-        },
-    },
 }
 for locationEnum, locationObj in LocationList.items():
     # Do not randomize constant rewards.
@@ -272,52 +250,6 @@ for locationEnum, locationObj in LocationList.items():
 #     {"name": "Helm Chunky 2", "value": "HelmChunky2", "kong": "Chunky"},
 # ]
 # MinigameLocationList += ["HelmDonkey1", "HelmDonkey2", "HelmDiddy1", "HelmDiddy2", "HelmLanky1", "HelmLanky2", "HelmTiny1", "HelmTiny2", "HelmChunky1", "HelmChunky2"]
-
-#########
-# MUSIC #
-#########
-
-bgmCategoryMap = {
-    "Isles": DKIslesSongs,
-    "Japes": JungleJapesSongs,
-    "Aztec": AngryAztecSongs,
-    "Factory": FranticFactorySongs,
-    "Galleon": GloomyGalleonSongs,
-    "Forest": FungiForestSongs,
-    "Caves": CrystalCavesSongs,
-    "Castle": CreepyCastleSongs,
-    "Helm": HideoutHelmSongs,
-    "NPC": NPCSongs,
-    "Moves": MoveSongs,
-    "Battle": BattleSongs,
-    "Story": MenusAndStorySongs,
-    "Minigame": MinigameSongs,
-}
-
-PlannableSongs = {
-    "BGM": [],
-    "MajorItem": [],
-    "MinorItem": [],
-    "Event": [],
-}
-
-# Process possible song locations.
-for songEnum, song in SongList.items():
-    if song.type in [SongType.Ambient, SongType.Protected, SongType.System]:
-        continue
-    songJson = {
-        "name": song.name,
-        "value": songEnum.name,
-    }
-    if song.type == SongType.BGM:
-        PlannableSongs["BGM"].append(songJson)
-        # Find the category this song belongs to.
-        for category, songSet in bgmCategoryMap.items():
-            if songEnum in songSet:
-                PlandomizerPanels["Music"]["categories"][category]["songs"].append(songJson)
-    else:
-        PlannableSongs[song.type.name].append(songJson)
-        PlandomizerPanels["Music"]["categories"][song.type.name]["songs"].append(songJson)
 
 #########
 # ITEMS #

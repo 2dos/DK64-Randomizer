@@ -162,7 +162,12 @@ function createMusicLoadPromise(jszip, filename) {
 var cosmetics;
 var cosmetic_names;
 var cosmetic_extensions;
-var plando_music_updated = false;
+var cosmetic_truncated_names = {
+  bgm: [],
+  majoritems: [],
+  minoritems: [],
+  events: []
+}
 
 function load_music_file_from_db() {
   console.log("Trying to load file from DB");
@@ -283,11 +288,76 @@ function cosmetic_pack_event(fileToLoad) {
         events: event_ext,
       };
 
-      plando_music_updated = true;
+      update_plando_music_options();
     });
   };
 
   fileReader.readAsArrayBuffer(fileToLoad);
+}
+
+function get_truncated_song_name(songName) {
+  return songName.replaceAll(/[^A-Za-z0-9]/g, "");
+}
+
+function get_custom_song_display_name(songName) {
+  let trimmedName = songName.split("/").slice(2).join("/");
+  return `Custom Song: ${trimmedName}`;
+}
+
+function update_plando_music_options() {
+  customSongDict = {
+    "BGM": cosmetic_names.bgm,
+    "MajorItem": cosmetic_names.majoritems,
+    "MinorItem": cosmetic_names.minoritems,
+    "Event": cosmetic_names.events,
+  }
+  cosmetic_truncated_names = {
+    bgm: [],
+    majoritems: [],
+    minoritems: [],
+    events: []
+  };
+  for (const [category, songs] of Object.entries(customSongDict)) {
+    // Map each song's truncated name to its full string path.
+    for (const song of songs) {
+      if (category === "BGM") {
+        cosmetic_truncated_names.bgm.push(get_truncated_song_name(song));
+      } else if (category === "MajorItem") {
+        cosmetic_truncated_names.majoritems.push(get_truncated_song_name(song));
+      } else if (category === "MinorItem") {
+        cosmetic_truncated_names.minoritems.push(get_truncated_song_name(song));
+      } else {
+        cosmetic_truncated_names.events.push(get_truncated_song_name(song));
+      }
+    }
+
+    const dropdowns = document.getElementsByClassName(`${category}-select`);
+    for (const dropdown of dropdowns) {
+      // Remove any existing custom music options from this dropdown.
+      for (let i = dropdown.options.length - 1; i >= 0; i--) {
+        const option = dropdown.options.item(i);
+        if (option.classList.contains("custom-song")) {
+          if (dropdown.value == option.value) {
+            dropdown.value = "";
+          }
+          dropdown.remove(i);
+        } else {
+          // We can safely break here, because all of the custom songs are
+          // guaranteed to be at the end of each dropdown. This speeds the
+          // process up considerably.
+          break;
+        }
+      }
+      // Add new custom music options to this dropdown.
+      for (const song of songs) {
+        const opt = document.createElement("option");
+        opt.value = get_truncated_song_name(song);
+        opt.innerHTML = get_custom_song_display_name(song);
+        opt.classList.add("custom-song");
+        dropdown.appendChild(opt);
+      }
+    }
+  }
 }
 
 jq = $;

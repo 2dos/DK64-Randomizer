@@ -42,9 +42,9 @@ async def initialize():
     from randomizer.Lists.Item import CustomStartingMoveSelector, HHItemSelector
     from randomizer.Lists.Logic import GlitchSelector
     from randomizer.Lists.Minigame import MinigameSelector
-    from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableItems, PlannableMinigames, PlannableSongs, PlannableSpawns
+    from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableItems, PlannableMinigames, PlannableSpawns
     from randomizer.Lists.QoL import QoLSelector
-    from randomizer.Lists.Songs import ExcludedSongsSelector
+    from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectionPanel, PlannableSongs
     from randomizer.Lists.Warps import VanillaBananaportSelector
     from randomizer.Lists.WrinklyHints import PointSpreadSelector
 
@@ -96,10 +96,11 @@ async def initialize():
         plando_items=PlannableItems,
         plando_minigames=PlannableMinigames,
         plando_panels=PlandomizerPanels,
-        plando_songs=PlannableSongs,
         plando_spawns=PlannableSpawns,
         points_spread=PointSpreadSelector,
         custom_starting_moves=CustomStartingMoveSelector,
+        select_song_panel=MusicSelectionPanel,
+        select_songs=PlannableSongs,
     )
     js.document.documentElement.innerHTML = ""
     js.document.open()
