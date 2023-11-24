@@ -1,5 +1,6 @@
 """Shuffle Melon Crate Locations."""
 import random
+from randomizer.Lists import Exceptions
 
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
@@ -78,7 +79,15 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
                 SingleMelonCrateLocation.setCustomLocation(False)
                 total_MelonCrate_list[key].append(SingleMelonCrateLocation)
 
-    for SingleMelonCrateLocation in range(4):
+    dual_crate_levels = 4
+    if spoiler.settings.enable_plandomizer and len(spoiler.settings.plandomizer_dict["plando_melon_crates"]) > 0:
+        for level in spoiler.settings.plandomizer_dict["plando_melon_crates"]:
+            if len(spoiler.settings.plandomizer_dict["plando_melon_crates"][level]) > 1:
+                dual_crate_levels -= 1
+                area_meloncrate = total_MelonCrate_list[level]
+                select_random_meloncrate_from_area(area_meloncrate, 2, level, spoiler, human_spoiler)
+                del total_MelonCrate_list[level]
+    for SingleMelonCrateLocation in range(dual_crate_levels):
         area_key = random.choice(list(total_MelonCrate_list.keys()))
         area_meloncrate = total_MelonCrate_list[area_key]
         select_random_meloncrate_from_area(area_meloncrate, 2, area_key, spoiler, human_spoiler)
@@ -101,7 +110,14 @@ def select_random_meloncrate_from_area(area_meloncrate, amount, level, spoiler, 
     """Select <amount> random melon crates from <area_meloncrate>, which is a list of melon crates. Makes sure max 1 melon crate per group is selected."""
     human_spoiler[level.name] = []
     for iterations in range(amount):
+        allow_same_group_crate = False
         selected_crate = random.choice(area_meloncrate)  # selects a random crate from the list
+        if spoiler.settings.enable_plandomizer and len(spoiler.settings.plandomizer_dict["plando_melon_crates"][level]) > 0:
+            if len(spoiler.settings.plandomizer_dict["plando_melon_crates"][level]) > 1:
+                allow_same_group_crate = True
+            selected_crate = spoiler.settings.plandomizer_dict["plando_melon_crates"][level].pop(0)
+            if selected_crate not in area_meloncrate:
+                raise Exceptions.PlandoIncompatibleException(f"Melon crate \"{selected_crate}\" not found in {level}.")
         for meloncrate in CustomLocations[level]:  # enables the selected crate
             if meloncrate.name == selected_crate.name:
                 meloncrate.setCustomLocation(True)
@@ -112,5 +128,5 @@ def select_random_meloncrate_from_area(area_meloncrate, amount, level, spoiler, 
                 )
                 area_meloncrate.remove(selected_crate)
                 break
-        if amount > 1:  # if multiple crates are picked, remove crates from the same group, prevent them from being picked
+        if amount > 1 and not allow_same_group_crate:  # if multiple crates are picked, remove crates from the same group, prevent them from being picked
             area_meloncrate = [crate for crate in area_meloncrate if crate.group != selected_crate.group]
