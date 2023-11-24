@@ -18,6 +18,22 @@ def Reset(barrelLocations: List[Locations]) -> None:
     for key in barrelLocations:
         BarrelMetaData[key].minigame = Minigames.NoGame
 
+def PreplacePlandoMinigames(settings: Settings, barrelLocations: List[Locations], helm_minigame_available: bool):
+    """Apply plandomized minigame placement"""
+    preplaced_minigame_locations = []
+    for loc in barrelLocations:
+        minigame_placed = False
+        if loc.value in settings.plandomizer_dict["plando_bonus_barrels"].keys():
+            plando_minigame = getattr(Minigames, settings.plandomizer_dict["plando_bonus_barrels"][loc])
+            if validate_minigame(loc, plando_minigame, helm_minigame_available):
+                BarrelMetaData[loc].minigame = plando_minigame
+                minigame_placed = True
+            else:
+                raise Ex.PlandoIncompatibleException(f"Invalid minigame for {loc.name}: {plando_minigame.name}")
+        if minigame_placed:
+            preplaced_minigame_locations.append(loc)
+    for preplaced in preplaced_minigame_locations:
+        barrelLocations.remove(preplaced)
 
 def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigamePool: List[Minigames]) -> None:
     """Shuffle minigames to different barrels."""
@@ -28,22 +44,8 @@ def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigam
         if MinigameRequirements[minigame].helm_enabled:
             helm_minigame_available = True
     # Apply plandomized minigame placement
-    preplaced_minigame_locations = []
     if settings.enable_plandomizer and len(settings.plandomizer_dict["plando_bonus_barrels"]) > 0:
-        for loc in barrelLocations:
-            minigame_placed = False
-            if loc.name in settings.plandomizer_dict["plando_bonus_barrels"].keys():
-                for plando_minigame in minigamePool:
-                    if plando_minigame.name == settings.plandomizer_dict["plando_bonus_barrels"][loc]:
-                        if validate_minigame(loc, plando_minigame, helm_minigame_available):
-                            BarrelMetaData[loc].minigame = plando_minigame
-                            minigame_placed = True
-                        else:
-                            raise Ex.PlandoIncompatibleException(f"Invalid minigame for {loc.name}: {plando_minigame.name}")
-                    if minigame_placed:
-                        preplaced_minigame_locations.append(loc)
-    for preplaced in preplaced_minigame_locations:
-        barrelLocations.remove(preplaced)
+        PreplacePlandoMinigames(settings, barrelLocations, helm_minigame_available)
     # Apply randomized minigame placement
     while len(barrelLocations) > 0:
         location = barrelLocations.pop()
