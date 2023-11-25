@@ -37,6 +37,11 @@ def serialize_settings(include_plando: bool = False, include_song_select: bool =
         if plando_form_data is not None:
             form_data["plandomizer_data"] = json.dumps(plando_form_data)
 
+    # Custom music data is also processed separately.
+    if include_song_select:
+        music_selection_data = serialize_music_selections(form)
+        form_data["music_selections"] = json.dumps(music_selection_data)
+
     def is_number(s) -> bool:
         """Check if a string is a number or not."""
         try:
@@ -116,6 +121,5 @@ def serialize_settings(include_plando: bool = False, include_song_select: bool =
             form_data[element.getAttribute("name")] = values
     form_data["starting_move_list_selected"] = required_starting_moves
     form_data["random_starting_move_list_selected"] = random_starting_moves
-    if include_song_select:
-        form_data["music"] = serialize_music_selections(form)
+
     return form_data

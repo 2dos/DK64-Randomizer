@@ -14,7 +14,6 @@ from randomizer.Lists.Item import ItemList
 from randomizer.Lists.Location import LocationListOriginal as LocationList
 from randomizer.Lists.MapsAndExits import RegionMapList
 from randomizer.Lists.Minigame import BarrelMetaData, MinigameRequirements
-from randomizer.Lists.Songs import AngryAztecSongs, BattleSongs, CreepyCastleSongs, CrystalCavesSongs, DKIslesSongs, FranticFactorySongs, FungiForestSongs, GloomyGalleonSongs, HideoutHelmSongs, JungleJapesSongs, MenusAndStorySongs, MinigameSongs, MoveSongs, NPCSongs, SongList
 from randomizer.LogicFiles.AngryAztec import LogicRegions as AngryAztecRegions
 from randomizer.LogicFiles.CreepyCastle import LogicRegions as CreepyCastleRegions
 from randomizer.LogicFiles.CrystalCaves import LogicRegions as CrystalCavesRegions

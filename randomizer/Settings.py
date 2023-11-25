@@ -122,6 +122,8 @@ class Settings:
 
         if self.enable_plandomizer:
             self.ApplyPlandomizerSettings()
+        if self.song_select_enabled:
+            self.ApplyMusicSelections()
 
         self.resolve_settings()
 
@@ -361,6 +363,7 @@ class Settings:
         self.music_minoritems_randomized = False
         self.music_events_randomized = False
         self.random_music = False
+        self.song_select_enabled = False
 
         #  Unlock Moves - 0-40?
         self.starting_moves_count = 0
@@ -1491,6 +1494,10 @@ class Settings:
         """Apply settings specified by the plandomizer."""
         self.plandomizer_dict = json.loads(self.plandomizer_data)
         # Leaving space here to handle things as needed, might be unnecessary
+
+    def ApplyMusicSelections(self):
+        """Apply user-selected songs."""
+        self.music_selection_dict = json.loads(self.music_selections)
 
     def __repr__(self):
         """Return printable version of the object as json.

@@ -6,6 +6,7 @@ import js
 import json
 from io import BytesIO
 from zipfile import ZipFile
+from randomizer.Enums.Songs import Songs
 from randomizer.Enums.SongType import SongType
 from randomizer.Enums.SongGroups import SongGroup
 from randomizer.Lists.Songs import song_data
@@ -143,6 +144,23 @@ def isSongWithInLengthRange(vanilla_length: int, proposed_length: int) -> bool:
     return False
 
 
+def getAssignedCustomSong(file_data_array: list, song_name: str) -> UploadInfo:
+    """Request a specific custom song from the list."""
+    global USED_INDEXES
+
+    MAX_SEARCH_LENGTH = len(file_data_array)
+    # Because all of the user-assigned custom songs get moved to the back of
+    # the list, it's faster to search through the list backwards.
+    for i in reversed(range(MAX_SEARCH_LENGTH)):
+        item = file_data_array[i]
+        if song_name == item[1]:
+            USED_INDEXES.append(i)
+            return UploadInfo(item)
+    # The requested song was not found. (This should never happen due to client-side
+    # validation.)
+    raise ValueError(f'Requested non-existent custom song "{song_name}".')
+
+
 def requestNewSong(file_data_array: list, location_tags: list, location_length: int, song_type: SongType, check_unused: bool) -> UploadInfo:
     """Request new song from list."""
     global GLOBAL_SEARCH_INDEX, USED_INDEXES, UNPLACED_SONGS
@@ -217,7 +235,8 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
     file_data = list(zip(uploaded_songs, uploaded_song_names, uploaded_song_extensions))
     random.shuffle(file_data)
     # Initial temporary variables
-    all_target_songs = [song for song in song_data if song.type == target_type]
+    all_target_songs = [Songs(song_enum) for song_enum, song in song_data.items() if song.type == target_type]
+
     # Calculate Proportion, add songs if necessary
     proportion = settings.custom_music_proportion / 100
     if proportion < 0:
@@ -231,12 +250,52 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
         swap_amount = cap
     if swap_amount > cap:
         swap_amount = cap
+
+    # Process user-selected songs
+    custom_song_locations = []
+    custom_song_names = set()
+    vanilla_song_locations = []
+    for song_loc_enum, song_name in settings.music_selection_dict.items():
+        song_location = Songs(song_loc_enum)
+        if song_location not in all_target_songs:
+            continue
+        if isinstance(song_name, str):
+            custom_song_locations.append(song_location)
+            custom_song_names.add(song_name)
+        else:
+            vanilla_song_locations.append(song_location)
+    # Remove all assigned locations from the target songs.
+    available_target_songs = [x for x in all_target_songs if x not in custom_song_locations and x not in vanilla_song_locations]
+    swap_amount -= len(custom_song_locations)
+
+    # Move all user-assigned custom songs to the back of the list. This will
+    # mitigate the chances of these songs being assigned multiple times.
+    songs_to_relocate = [item for item in file_data if item[1] in custom_song_names]
+    file_data = [item for item in file_data if item[1] not in custom_song_names]
+    file_data.extend(songs_to_relocate)
+
+    # Assign random locations from unassigned songs.
+    songs_to_be_replaced = []
+    if swap_amount > 0:
+        try:
+            songs_to_be_replaced = random.sample(available_target_songs, swap_amount)
+        except ValueError:
+            # Too many vanilla songs have been placed to hit the requested
+            # proportion. Just fill all possible locations.
+            songs_to_be_replaced = available_target_songs
+    # Add assigned custom songs back as locations.
+    songs_to_be_replaced.extend(custom_song_locations)
+    
     # Place Songs
-    songs_to_be_replaced = random.sample(all_target_songs, swap_amount)
     ROM_COPY = ROM()
-    for song in songs_to_be_replaced:
+    for song_enum in songs_to_be_replaced:
+        song = song_data[song_enum]
         selected_bank = None
-        new_song = requestNewSong(file_data, song.location_tags, song.song_length, target_type, not settings.fill_with_custom_music)
+        if settings.song_select_enabled and song_enum in settings.music_selection_dict:
+            new_song_name = settings.music_selection_dict[song_enum]
+            new_song = getAssignedCustomSong(file_data, new_song_name)
+        else:
+            new_song = requestNewSong(file_data, song.location_tags, song.song_length, target_type, not settings.fill_with_custom_music)
         selected_cap = 0xFFFFFF
         if new_song is not None:
             new_song_data = bytes(new_song.song_file)
