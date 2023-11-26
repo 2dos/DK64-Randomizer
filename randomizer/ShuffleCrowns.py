@@ -45,6 +45,11 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
         if level == Levels.DKIsles:
             pick_count = 2
         crowns = random.sample(index_lst, pick_count)
+        # Give plandomizer an opportunity to have the final say
+        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_battle_arenas"][level] != -1:
+            for plando_crown_index in range(len(spoiler.settings.plandomizer_dict["plando_battle_arenas"][level])):
+                if plando_crown_index != -1:
+                    crowns[plando_crown_index] = spoiler.settings.plandomizer_dict["plando_battle_arenas"][level][plando_crown_index]
         crown_data = {}
         for crown_index in crowns:
             crown_data[crown_index] = 0
