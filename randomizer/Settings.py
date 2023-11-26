@@ -1390,6 +1390,7 @@ class Settings:
                     Locations.FactoryTinyDartboard,
                     Locations.JapesLankyFairyCave,
                     Locations.AztecLankyVulture,
+                    Locations.AztecDiddyRamGongs,
                     Locations.ForestDiddyRafters,
                     Locations.CavesTiny5DoorIgloo,
                     Locations.CavesDiddy5DoorCabinUpper,
