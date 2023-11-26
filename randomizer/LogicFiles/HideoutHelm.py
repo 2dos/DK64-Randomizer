@@ -63,6 +63,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmDonkey2, lambda l: True, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmDonkeyMedal, lambda l: Events.HelmDonkeyDone in l.Events and l.isdonkey),
         LocationLogic(Locations.HelmMainEnemy_DKRoom, lambda l: Events.HelmFinished in l.Events),
+    ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
     ]),
 
