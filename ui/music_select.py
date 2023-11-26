@@ -73,8 +73,10 @@ def serialize_music_selections(form: dict, for_file: bool = False) -> dict:
                 music_map = itertools.chain(bgm_map, major_map, minor_map, event_map)
                 for truncated_name, path_name in music_map:
                     if obj.value == truncated_name:
-                        new_path_name = update_custom_path_name(path_name, CUSTOM_PACK_NAME)
-                        songs_map[location] = new_path_name
+                        final_path_name = path_name
+                        if for_file:
+                            final_path_name = update_custom_path_name(path_name, CUSTOM_PACK_NAME)
+                        songs_map[location] = final_path_name
                         break
     return songs_map
 

@@ -258,7 +258,7 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
     custom_song_names = set()
     vanilla_song_locations = []
     for song_loc_enum, song_name in settings.music_selection_dict.items():
-        song_location = Songs(song_loc_enum)
+        song_location = Songs(int(song_loc_enum))
         if song_location not in all_target_songs:
             continue
         if isinstance(song_name, str):
@@ -407,13 +407,18 @@ def randomize_music(settings: Settings):
                 assigned_songs.append([])
                 assigned_locations.append([])
             # Assign all of the user-specified songs.
-            for song_location, song in song_data.items():
-                if song.type != SongType.BGM:
-                    continue
-                if song_location in settings.music_selection_dict:
-                    assigned_locations[song.channel - 1].append(js.pointer_addresses[0]["entries"][song.mem_idx])
-                    assigned_song = song_data[settings.music_selection_dict[song_location]]
-                    assigned_songs[assigned_song.channel - 1].append(js.pointer_addresses[0]["entries"][assigned_song.mem_idx])
+            if settings.song_select_enabled:
+                for song_location, song in song_data.items():
+                    if song.type != SongType.BGM:
+                        continue
+                    if song.shuffled:
+                        continue
+                    location_str = str(song_location.value)
+                    if location_str in settings.music_selection_dict:
+                        # The location is given the channel of the song replacing it.
+                        assigned_song = song_data[settings.music_selection_dict[location_str]]
+                        assigned_songs[assigned_song.channel - 1].append(js.pointer_addresses[0]["entries"][assigned_song.mem_idx])
+                        assigned_locations[assigned_song.channel - 1].append(js.pointer_addresses[0]["entries"][song.mem_idx])
             for song in song_data.values():
                 if song.type == SongType.BGM:
                     # For testing, flip these two lines
@@ -428,8 +433,10 @@ def randomize_music(settings: Settings):
                 random.shuffle(shuffled_music)
                 # Remove assigned locations.
                 open_locations = [x for x in song_list[channel_index] if x not in assigned_locations[channel_index]]
-                # Remove assigned songs, and shorten to match open_locations.
-                open_songs = [x for x in shuffled_music if x not in assigned_songs[channel_index]][:len(open_locations)]
+                # Move assigned songs to the back of the list, and shorten to match open_locations.
+                pre_assigned_songs = [x for x in shuffled_music if x in assigned_songs[channel_index]]
+                open_songs = [x for x in shuffled_music if x not in assigned_songs[channel_index]] + pre_assigned_songs
+                open_songs = open_songs[:len(open_locations)]
                 location_pool = open_locations + assigned_locations[channel_index] + pre_shuffled_songs[channel_index].copy()
                 song_pool = open_songs + assigned_songs[channel_index] + pre_shuffled_songs[channel_index].copy()
                 shuffle_music(music_data, location_pool, song_pool)
@@ -472,13 +479,14 @@ def randomize_music(settings: Settings):
             assigned_items = []
             assigned_item_locations = []
             # Assign all of the user-specified songs.
-            for song_location, song in song_data.items():
-                if song.type != type_data.song_type:
-                    continue
-                if song_location in settings.music_selection_dict:
-                    assigned_item_locations.append(js.pointer_addresses[0]["entries"][song.mem_idx])
-                    assigned_item = song_data[settings.music_selection_dict[song_location]]
-                    assigned_items.append(js.pointer_addresses[0]["entries"][assigned_item.mem_idx])
+            if settings.song_select_enabled:
+                for song_location, song in song_data.items():
+                    if song.type != type_data.song_type:
+                        continue
+                    if song_location in settings.music_selection_dict:
+                        assigned_item_locations.append(js.pointer_addresses[0]["entries"][song.mem_idx])
+                        assigned_item = song_data[settings.music_selection_dict[song_location]]
+                        assigned_items.append(js.pointer_addresses[0]["entries"][assigned_item.mem_idx])
             for song in song_data.values():
                 if song.type == type_data.song_type:
                     if song.shuffled:
