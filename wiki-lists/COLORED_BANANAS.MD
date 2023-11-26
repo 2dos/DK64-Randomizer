@@ -271,7 +271,9 @@
 | Singles up the stairs between Llama Temple and W2 | 10 |  | 
 | Around W5 near bonus barrel | 5 |  | 
 | Under Mini Monkey Barrel by Beetle Race Tower (Tiny) | 5 |  | 
-| On oasis treetops (Donkey) | 15 |  | 
+| On oasis treetops (Donkey) | 5 |  | 
+| On oasis treetops (Donkey) | 5 |  | 
+| On oasis treetops (Donkey) | 5 |  | 
 | DK Sealed Quicksand Tunnel (Donkey) | 20 | l.strongKong | 
 | DK Blueprint cave (Donkey) | 10 | (l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) or l.phasewalk) and l.strongKong | 
 | On Melon crate on Llama Temple roof (Diddy) | 5 | l.jetpack | 
@@ -281,6 +283,7 @@
 | Trees around back of 5DT (Tiny) | 10 |  | 
 | Trees around front of 5DT (Tiny) | 15 |  | 
 | Trees between Llama Temple and 5DT (Lanky) | 15 |  | 
+| Around the outside of Llama Temple | 15 |  | 
 | Vase room (Chunky) | 20 | l.pineapple or l.phasewalk | 
 | Chunky vase room back wall | Balloon | l.pineapple | 
 | Chunky vase room right wall | Balloon | l.pineapple | 
@@ -373,6 +376,7 @@
 | W1 (1 custom, 1 Lanky bunch) | 10 |  | 
 | Behind and above llama | 10 |  | 
 | All around Llama Temple (Donkey) | 15 |  | 
+| Llama Temple Water Corners | 20 | l.CanLlamaSpit() and l.swim | 
 | To lava room (Tiny) | 3 |  | 
 | To lava room (Tiny) | 2 |  | 
 | On Tiny switches in lava room (Tiny) | 10 | l.CanSlamSwitch(Levels.AngryAztec, 1) or l.twirl or (l.advanced_platforming and l.istiny) | 

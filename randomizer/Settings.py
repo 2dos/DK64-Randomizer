@@ -1389,6 +1389,7 @@ class Settings:
                     Locations.FactoryDonkeyDKArcade,
                     Locations.FactoryTinyDartboard,
                     Locations.JapesLankyFairyCave,
+                    Locations.AztecLankyVulture,
                     Locations.ForestDiddyRafters,
                     Locations.CavesTiny5DoorIgloo,
                     Locations.CavesDiddy5DoorCabinUpper,

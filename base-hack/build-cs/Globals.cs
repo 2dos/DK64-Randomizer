@@ -638,7 +638,7 @@ namespace DK64BuildRoutine {
             Guitar,
             Bongos,
             Trombone,
-            Saxaphone,
+            Saxophone,
             AztecMain,
             Transformation,
             MiniMonkey,
