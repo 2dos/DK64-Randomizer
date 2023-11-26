@@ -80,7 +80,9 @@
         "dusk": 0.15,
         "progressive": 0.15
     },
-    "galleon_water": 0.5,
+    "galleon_water": {
+        "random": 1
+    },
     "glitches_selected": {
         "advanced_platforming": 1
     },
