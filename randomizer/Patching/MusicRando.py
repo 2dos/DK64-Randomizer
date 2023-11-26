@@ -9,7 +9,7 @@ from zipfile import ZipFile
 from randomizer.Enums.Songs import Songs
 from randomizer.Enums.SongType import SongType
 from randomizer.Enums.SongGroups import SongGroup
-from randomizer.Lists.Songs import song_data
+from randomizer.Lists.Songs import song_data, song_idx_list
 from randomizer.Patching.Patcher import ROM
 from randomizer.Settings import Settings
 
@@ -305,22 +305,21 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
                         selected_bank = bank
                         selected_cap = storage_banks[bank]
             if selected_bank is not None:
-                song_idx = song_data.index(song)
-                old_bank = (song_data[song_idx].memory >> 1) & 3
+                old_bank = (song.memory >> 1) & 3
                 if old_bank < selected_bank:
                     selected_bank = old_bank  # If vanilla bank is bigger, use the vanilla bank
                 # Construct new memory data based on variables
-                song_data[song_idx].memory &= 0xFEF9
-                song_data[song_idx].memory |= (selected_bank & 3) << 1
+                song.memory &= 0xFEF9
+                song.memory |= (selected_bank & 3) << 1
                 loop = doesSongLoop(new_song_data)
                 loop_val = 0
                 if loop:
                     loop_val = 1
-                song_data[song_idx].memory |= loop_val << 8
+                song.memory |= loop_val << 8
                 # Write Song
-                song_data[song_idx].output_name = new_song.name
-                song_data[song_idx].shuffled = True
-                entry_data = js.pointer_addresses[0]["entries"][song_idx]
+                song.output_name = new_song.name
+                song.shuffled = True
+                entry_data = js.pointer_addresses[0]["entries"][song.mem_idx]
                 ROM_COPY.seek(entry_data["pointing_to"])
                 zipped_data = gzip.compress(new_song_data, compresslevel=9)
                 ROM_COPY.writeBytes(zipped_data)
@@ -381,9 +380,9 @@ def randomize_music(settings: Settings):
         ROM_COPY.seek(sav + 0x12E)
         ROM_COPY.write(1)
 
-    for index, song in enumerate(song_data):
+    for song in song_data.values():
         song.Reset()
-        ROM_COPY.seek(TYPE_ARRAY + index)
+        ROM_COPY.seek(TYPE_ARRAY + song.mem_idx)
         if song.type in TYPE_VALUES:
             ROM_COPY.write(TYPE_VALUES.index(song.type))
         else:
@@ -398,31 +397,50 @@ def randomize_music(settings: Settings):
             # Generate the list of BGM songs
             song_list = []
             pre_shuffled_songs = []
+            assigned_songs = []
+            assigned_locations = []
             for channel_index in range(12):
                 song_list.append([])
                 pre_shuffled_songs.append([])
-            for song in song_data:
+                assigned_songs.append([])
+                assigned_locations.append([])
+            # Assign all of the user-specified songs.
+            for song_location, song in song_data.items():
+                if song.type != SongType.BGM:
+                    continue
+                if song_location in settings.music_selection_dict:
+                    assigned_locations[song.channel - 1].append(js.pointer_addresses[0]["entries"][song.mem_idx])
+                    assigned_song = song_data[settings.music_selection_dict[song_location]]
+                    assigned_songs[assigned_song.channel - 1].append(js.pointer_addresses[0]["entries"][assigned_song.mem_idx])
+            for song in song_data.values():
                 if song.type == SongType.BGM:
                     # For testing, flip these two lines
-                    # song_list.append(pointer_addresses[0]["entries"][song_data.index(song)])
+                    # song_list.append(pointer_addresses[0]["entries"][song.mem_idx])
                     if song.shuffled:
-                        pre_shuffled_songs[song.channel - 1].append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+                        pre_shuffled_songs[song.channel - 1].append(js.pointer_addresses[0]["entries"][song.mem_idx])
                     else:
-                        song_list[song.channel - 1].append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+                        song_list[song.channel - 1].append(js.pointer_addresses[0]["entries"][song.mem_idx])
             # ShuffleMusicWithSizeCheck(music_data, song_list)
             for channel_index in range(12):
                 shuffled_music = song_list[channel_index].copy()
                 random.shuffle(shuffled_music)
-                shuffle_music(music_data, song_list[channel_index].copy() + pre_shuffled_songs[channel_index].copy(), shuffled_music + pre_shuffled_songs[channel_index].copy())
+                # Remove assigned locations.
+                open_locations = [x for x in song_list[channel_index] if x not in assigned_locations[channel_index]]
+                # Remove assigned songs, and shorten to match open_locations.
+                open_songs = [x for x in shuffled_music if x not in assigned_songs[channel_index]][:len(open_locations)]
+                location_pool = open_locations + assigned_locations[channel_index] + pre_shuffled_songs[channel_index].copy()
+                song_pool = open_songs + assigned_songs[channel_index] + pre_shuffled_songs[channel_index].copy()
+                shuffle_music(music_data, location_pool, song_pool)
         # If the user was a poor sap and selected chaos put DK rap for everything
         else:
             # Find the DK rap in the list
-            rap = js.pointer_addresses[0]["entries"][song_data.index(next((x for x in song_data if x.name == "DK Rap"), None))]
+            rap_song_data = song_data[Songs.DKRap]
+            rap = js.pointer_addresses[0]["entries"][rap_song_data.mem_idx]
             # Find all BGM songs
             song_list = []
-            for song in song_data:
+            for song in song_data.values():
                 if song.type == SongType.BGM:
-                    song_list.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+                    song_list.append(js.pointer_addresses[0]["entries"][song.mem_idx])
 
             # Load the DK Rap song data
             ROM_COPY.seek(rap["pointing_to"])
@@ -439,7 +457,7 @@ def randomize_music(settings: Settings):
                 ROM_COPY.writeBytes(new_bytes)
                 # Update data
                 ROM_COPY.seek(0x1FFF000 + (song["index"] * 2))
-                ROM_COPY.writeMultipleBytes(song_data[rap["index"]].memory, 2)
+                ROM_COPY.writeMultipleBytes(rap_song_data.memory, 2)
 
     for type_data in NON_BGM_DATA:
         if type_data.setting:  # If the user wants to randomize the group
@@ -449,16 +467,32 @@ def randomize_music(settings: Settings):
             # Load the list of items in that group
             group_items = []
             shuffled_group_items = []
-            for song in song_data:
+            assigned_items = []
+            assigned_item_locations = []
+            # Assign all of the user-specified songs.
+            for song_location, song in song_data.items():
+                if song.type != type_data.song_type:
+                    continue
+                if song_location in settings.music_selection_dict:
+                    assigned_item_locations.append(js.pointer_addresses[0]["entries"][song.mem_idx])
+                    assigned_item = song_data[settings.music_selection_dict[song_location]]
+                    assigned_items.append(js.pointer_addresses[0]["entries"][assigned_item.mem_idx])
+            for song in song_data.values():
                 if song.type == type_data.song_type:
                     if song.shuffled:
-                        shuffled_group_items.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+                        shuffled_group_items.append(js.pointer_addresses[0]["entries"][song.mem_idx])
                     else:
-                        group_items.append(js.pointer_addresses[0]["entries"][song_data.index(song)])
+                        group_items.append(js.pointer_addresses[0]["entries"][song.mem_idx])
             # Shuffle the group list
             shuffled_music = group_items.copy()
             random.shuffle(shuffled_music)
-            shuffle_music(music_data, group_items.copy() + shuffled_group_items.copy(), shuffled_music + shuffled_group_items.copy())
+            # Remove assigned locations.
+            open_locations = [x for x in group_items if x not in assigned_item_locations]
+            # Remove assigned songs, and shorten to match open_locations.
+            open_songs = [x for x in shuffled_music if x not in assigned_items][:len(open_locations)]
+            location_pool = open_locations + assigned_item_locations + shuffled_group_items.copy()
+            song_pool = open_songs + assigned_items + shuffled_group_items.copy()
+            shuffle_music(music_data, location_pool, song_pool)
     return music_data
 
 
@@ -495,14 +529,14 @@ def shuffle_music(music_data, pool_to_shuffle, shuffled_list):
         ROM_COPY.writeBytes(song_size)
         originalIndex = song["index"]
         shuffledIndex = shuffled_song["index"]
-        memory = song_data[shuffledIndex].memory
+        memory = song_idx_list[shuffledIndex].memory
         ROM_COPY.seek(0x1FFF000 + 2 * originalIndex)
         ROM_COPY.writeMultipleBytes(memory, 2)
-        if song_data[originalIndex].type == SongType.BGM:
-            music_data["music_bgm_data"][song_data[originalIndex].name] = song_data[shuffledIndex].output_name
-        elif song_data[originalIndex].type == SongType.MajorItem:
-            music_data["music_majoritem_data"][song_data[originalIndex].name] = song_data[shuffledIndex].output_name
-        elif song_data[originalIndex].type == SongType.MinorItem:
-            music_data["music_minoritem_data"][song_data[originalIndex].name] = song_data[shuffledIndex].output_name
-        elif song_data[originalIndex].type == SongType.Event:
-            music_data["music_event_data"][song_data[originalIndex].name] = song_data[shuffledIndex].output_name
+        if song_idx_list[originalIndex].type == SongType.BGM:
+            music_data["music_bgm_data"][song_idx_list[originalIndex].name] = song_idx_list[shuffledIndex].output_name
+        elif song_idx_list[originalIndex].type == SongType.MajorItem:
+            music_data["music_majoritem_data"][song_idx_list[originalIndex].name] = song_idx_list[shuffledIndex].output_name
+        elif song_idx_list[originalIndex].type == SongType.MinorItem:
+            music_data["music_minoritem_data"][song_idx_list[originalIndex].name] = song_idx_list[shuffledIndex].output_name
+        elif song_idx_list[originalIndex].type == SongType.Event:
+            music_data["music_event_data"][song_idx_list[originalIndex].name] = song_idx_list[shuffledIndex].output_name
