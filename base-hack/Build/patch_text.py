@@ -958,6 +958,7 @@ squawks_text.append(
         }
     ]
 )
+squawks_text.append([{"text": ["A \x04GOLDEN BANANA\x04 FOR YOU IF YOU SAVE ME FROM THESE FIREBALLS. HEE HEE."]}])
 writeText("misc_squawks_text.bin", squawks_text)
 
 hint_region_text = []

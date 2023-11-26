@@ -218,9 +218,8 @@ void updateMultibunchCount(void) {
 	int world = getWorld(CurrentMap,1);
 	int count = 0;
 	if (world < 7) {
-		count = CBTurnedInArray[world];
 		for (int kong = 0; kong < 5; kong++) {
-			count += MovesBase[kong].cb_count[world];
+			count += MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
 		}
 	}
 	MultiBunchCount = count;

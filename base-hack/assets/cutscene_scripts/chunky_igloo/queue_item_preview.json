@@ -1,0 +1,131 @@
+{
+    "index": 5,
+    "point_data": [
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                8,
+                132
+            ],
+            "detailed_command": {
+                "sub_command": 36,
+                "params": [
+                    6,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 100
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                8,
+                132
+            ],
+            "detailed_command": {
+                "sub_command": 36,
+                "params": [
+                    5,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 120
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                8,
+                132
+            ],
+            "detailed_command": {
+                "sub_command": 36,
+                "params": [
+                    4,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 140
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                8,
+                132
+            ],
+            "detailed_command": {
+                "sub_command": 36,
+                "params": [
+                    3,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 160
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                8,
+                132
+            ],
+            "detailed_command": {
+                "sub_command": 36,
+                "params": [
+                    2,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 180
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                8,
+                132
+            ],
+            "detailed_command": {
+                "sub_command": 14,
+                "params": [
+                    1,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 299
+        },
+        {
+            "unk0": 0,
+            "command": 13,
+            "head": [
+                16,
+                7
+            ],
+            "detailed_command": {
+                "sub_command": 8,
+                "params": [
+                    4,
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "duration": 0
+        }
+    ]
+}

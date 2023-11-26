@@ -740,7 +740,7 @@ KasplatLocationList = {
             zmin=481,
             zmax=498,
             region=Regions.TreasureRoom,
-            additional_logic=lambda l: (Events.WaterSwitch in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming))
+            additional_logic=lambda l: (Events.WaterRaised in l.Events or (Events.ShipyardEnguarde in l.Events and Events.ShipyardTreasureRoomOpened in l.Events and l.advanced_platforming))
             and l.balloon,
         ),
         KasplatLocation(name="Galleon Kasplat: Sickbay", map_id=Maps.GalleonSickBay, kong_lst=[Kongs.chunky], coords=[571, 21, 922], xmin=522, xmax=637, zmin=852, zmax=944, region=Regions.SickBay),

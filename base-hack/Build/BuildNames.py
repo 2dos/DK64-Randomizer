@@ -634,7 +634,7 @@ model2_names = [
     "KONG Letter (G)",
     "Bongo Pad",  # DK
     "Guitar Pad",  # Diddy
-    "Saxaphone Pad",  # Tiny
+    "Saxophone Pad",  # Tiny
     "Triangle Pad",  # Chunky
     "Trombone Pad",  # Lanky
     "Wood panel small",

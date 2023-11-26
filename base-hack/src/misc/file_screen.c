@@ -742,6 +742,9 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 						setPermFlag(FLAG_ARCADE_LEVER);
 					}
 					SaveToGlobal();
+					if (Rando.galleon_water_raised) {
+						setPermFlag(FLAG_MODIFIER_GALLEONWATER);
+					}
 					handleTimeOfDay(TODCALL_INITFILE);
 				} else {
 					// Dirty File

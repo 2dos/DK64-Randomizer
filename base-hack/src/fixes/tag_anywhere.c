@@ -815,6 +815,11 @@ void tagAnywhereBunch(int player, int obj, int player_index) {
 }
 
 void handleGrabbingLock(void* player, int player_index, int allow_vines) {
+    if (ENABLE_CLIMBING_FLAG) {
+        if (!checkFlag(FLAG_ABILITY_CLIMBING, FLAGTYPE_PERMANENT)) {
+            return;
+        }
+    }
     if ((grab_lock_timer >= 0) && (grab_lock_timer < 2)) {
         return;
     }
