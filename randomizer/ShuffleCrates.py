@@ -80,6 +80,7 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
                 total_MelonCrate_list[key].append(SingleMelonCrateLocation)
 
     dual_crate_levels = 4
+    # Make sure levels with multiple Melon Crates plandomized are handled first, before the shuffler runs out of dual levels
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"] != -1:
         for level in spoiler.settings.plandomizer_dict["plando_melon_crates"]:
             if spoiler.settings.plandomizer_dict["plando_melon_crates"][level] != -1:
@@ -113,7 +114,7 @@ def select_random_meloncrate_from_area(area_meloncrate, amount, level, spoiler, 
         allow_same_group_crate = False
         selected_crate = random.choice(area_meloncrate)  # selects a random crate from the list
         # Give plandomizer an opportunity to get the final say
-        if spoiler.settings.enable_plandomizer and len(spoiler.settings.plandomizer_dict["plando_melon_crates"][level]) > 0:
+        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"][level] != -1:
             if len(spoiler.settings.plandomizer_dict["plando_melon_crates"][level]) > 1:
                 allow_same_group_crate = True
             selected_crate = spoiler.settings.plandomizer_dict["plando_melon_crates"][level].pop(0)

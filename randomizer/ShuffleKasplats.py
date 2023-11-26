@@ -114,6 +114,12 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
                 if not kasplat.selected and kong in kasplat.kong_lst:
                     available_for_kong.append(kasplat.name)
             selected_kasplat = random.choice(available_for_kong)
+            if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_kasplats"][level] != -1:
+                plando_kasplat_selection = spoiler.settings.plandomizer_dict["plando_kasplats"][level][kong]
+                if plando_kasplat_selection != -1:
+                    selected_kasplat[plando_kasplat_selection] = spoiler.settings.plandomizer_dict["plando_kasplats"][level][plando_kasplat_selection]
+                if selected_kasplat[plando_kasplat_selection] not in available_for_kong:
+                    raise Ex.PlandoIncompatibleException(f"Kasplat \"{selected_kasplat[plando_kasplat_selection]}\" not found for {kong} in {level}.")
             # Loop through kasplats until we find the relevant one
             for kasplat in kasplats:
                 if kasplat.name == selected_kasplat:

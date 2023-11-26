@@ -78,6 +78,7 @@ def ShufflePatches(spoiler, human_spoiler):
     select_random_dirt_from_area(total_dirt_patch_list[Levels.DKIsles], 4, Levels.DKIsles, spoiler, human_spoiler)
     del total_dirt_patch_list[Levels.DKIsles]
     dual_dirt_levels = 5
+    # Make sure levels with multiple Dirt Patches plandomized are handled first, before the shuffler runs out of dual levels
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
         for level in spoiler.settings.plandomizer_dict["plando_dirt_patches"]:
             if spoiler.settings.plandomizer_dict["plando_dirt_patches"][level] != -1:
@@ -113,7 +114,7 @@ def select_random_dirt_from_area(area_dirt, amount, level, spoiler, human_spoile
         selected_patch = random.choice(area_dirt)  # selects a random patch from the list
         selected_patch_name = selected_patch.name
         # Give plandomizer an opportunity to get the final say
-        if spoiler.settings.enable_plandomizer and len(spoiler.settings.plandomizer_dict["plando_dirt_patches"][level]) > 0:
+        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"][level] != -1:
             if len(spoiler.settings.plandomizer_dict["plando_dirt_patches"][level]) > 1:
                 allow_same_group_dirt = True
             selected_patch_name = spoiler.settings.plandomizer_dict["plando_dirt_patches"][level].pop(0)

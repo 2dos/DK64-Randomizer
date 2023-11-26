@@ -1,6 +1,7 @@
 """File that shuffles fairies locations."""
 
 import random
+from randomizer.Lists import Exceptions
 
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
@@ -99,6 +100,13 @@ def ShuffleFairyLocations(spoiler):
             if level == Levels.DKIsles:
                 pick_size = 4
             selection = random.sample(list(range(len(fairy_locations[level]))), pick_size)
+            # Give plandomizer an opportunity to have the final say
+            if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_fairies"][level] != -1:
+                for plando_fairy_selection in range(len(spoiler.settings.plandomizer_dict["plando_fairies"][level])):
+                    if plando_fairy_selection != -1:
+                        selection[plando_fairy_selection] = spoiler.settings.plandomizer_dict["plando_fairies"][level][plando_fairy_selection]
+                    if selection[plando_fairy_selection] not in fairy_locations[level]:
+                        raise Exceptions.PlandoIncompatibleException(f"Fairy \"{selection[plando_fairy_selection]}\" not found in {level}.")
             human_selection = [fairy_locations[level][x].name for x in selection]
             spoiler.fairy_locations[level] = selection.copy()
             spoiler.fairy_locations_human[level.name] = human_selection
