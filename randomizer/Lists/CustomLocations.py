@@ -1298,7 +1298,7 @@ CustomLocations = {
             z=487,
             max_size=40,
             logic_region=Regions.TreasureRoom,
-            logic=lambda l: ((l.balloon and l.islanky) and Events.WaterSwitch in l.Events or l.advanced_platforming) or l.CanMoonkick(),
+            logic=lambda l: ((l.balloon and l.islanky) and Events.WaterRaised in l.Events or l.advanced_platforming) or l.CanMoonkick(),
             group=5,
         ),
         CustomLocation(

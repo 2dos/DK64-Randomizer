@@ -9,6 +9,7 @@ from randomizer.Enums.Settings import (
     CrownEnemyRando,
     DamageAmount,
     FungiTimeSetting,
+    GalleonWaterSetting,
     HardModeSelected,
     HelmDoorItem,
     MiscChangesSelected,
@@ -37,7 +38,7 @@ from randomizer.Patching.CratePlacer import randomize_melon_crate
 from randomizer.Patching.CrownPlacer import randomize_crown_pads
 from randomizer.Patching.DoorPlacer import place_door_locations, remove_existing_indicators
 from randomizer.Patching.EnemyRando import randomize_enemies
-from randomizer.Patching.EntranceRando import enableSpiderText, filterEntranceType, randomize_entrances
+from randomizer.Patching.EntranceRando import enableTriggerText, filterEntranceType, randomize_entrances
 from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
@@ -458,6 +459,11 @@ def patching_response(spoiler):
             for map_val in dusk_removals:
                 addNewScript(map_val, dusk_removals[map_val], ScriptTypes.DeleteItem)
 
+    # Galleon Water Level
+    if spoiler.settings.galleon_water_internal == GalleonWaterSetting.raised:
+        ROM_COPY.seek(sav + 0x1DC)
+        ROM_COPY.writeMultipleBytes(1, 1)
+
     # ROM Flags
     rom_flags = 0
     rom_flags |= 0x80 if spoiler.settings.enable_plandomizer else 0
@@ -583,7 +589,7 @@ def patching_response(spoiler):
             PushHelpfulHints(spoiler, ROM_COPY)
 
     writeBootMessages()
-    enableSpiderText(spoiler)
+    enableTriggerText(spoiler)
     shortenCastleMinecart(spoiler)
 
     updateMillLeverTexture(spoiler.settings)

@@ -196,6 +196,19 @@ class FungiTimeSetting(IntEnum):
     progressive = auto()
 
 
+class GalleonWaterSetting(IntEnum):
+    """Determines the starting water level.
+
+    lowered: Start lowered.
+    raised: Start raised.
+    random: Random level.
+    """
+
+    lowered = auto()
+    raised = auto()
+    random = auto()
+
+
 class GlitchesSelected(IntEnum):
     """Glitch categories that can be selected for the seed logic.
 
@@ -640,6 +653,7 @@ SettingsMap = {
     "excluded_songs_selected": ExcludedSongs,
     "free_trade_setting": FreeTradeSetting,
     "fungi_time": FungiTimeSetting,
+    "galleon_water": GalleonWaterSetting,
     "glitches_selected": GlitchesSelected,
     "hard_mode_selected": HardModeSelected,
     "helm_barrels": MinigameBarrels,
@@ -848,6 +862,7 @@ class SettingsStringEnum(IntEnum):
     starting_kong = 159
     switchsanity = 160
     fungi_time = 161
+    galleon_water = 162
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -1051,6 +1066,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.starting_kong: Kongs,
     SettingsStringEnum.switchsanity: SettingsStringDataType.bool,
     SettingsStringEnum.fungi_time: FungiTimeSetting,
+    SettingsStringEnum.galleon_water: GalleonWaterSetting,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

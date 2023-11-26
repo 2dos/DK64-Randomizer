@@ -490,6 +490,8 @@ class Settings:
         self.portal_numbers = False
         self.fungi_time = FungiTimeSetting.day
         self.fungi_time_internal = FungiTimeSetting.day
+        self.galleon_water = GalleonWaterSetting.lowered
+        self.galleon_water_internal = GalleonWaterSetting.lowered
         # Helm Hurry
         self.helmhurry_list_starting_time = 1200
         self.helmhurry_list_golden_banana = 20
@@ -670,6 +672,12 @@ class Settings:
             self.fungi_time_internal = random.choice([FungiTimeSetting.day, FungiTimeSetting.night])
         else:
             self.fungi_time_internal = self.fungi_time
+
+        # Galleon Water Level
+        if self.galleon_water == GalleonWaterSetting.random:
+            self.galleon_water_internal = random.choice([GalleonWaterSetting.lowered, GalleonWaterSetting.raised])
+        else:
+            self.galleon_water_internal = self.galleon_water
 
         # Helm Doors
         helmdoor_items = {
@@ -1382,6 +1390,7 @@ class Settings:
                     Locations.FactoryTinyDartboard,
                     Locations.JapesLankyFairyCave,
                     Locations.AztecLankyVulture,
+                    Locations.AztecDiddyRamGongs,
                     Locations.ForestDiddyRafters,
                     Locations.CavesTiny5DoorIgloo,
                     Locations.CavesDiddy5DoorCabinUpper,

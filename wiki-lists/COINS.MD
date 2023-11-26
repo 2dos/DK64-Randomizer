@@ -556,7 +556,7 @@
 | Above W4 Platform | 4 |  | 
 | Near the 2-Door Ship | 2 |  | 
 | Above Candy's Platform | 4 |  | 
-| Seal Race Entrance | 2 | Events.WaterSwitch in l.Events | 
+| Seal Race Entrance | 2 | Events.WaterRaised in l.Events | 
 | Mech Fish Grate | 4 |  | 
 | Near BBlast Pad | 4 |  | 
 | Around DK's slam switch | 4 |  | 
@@ -568,7 +568,7 @@
 | Mermaid Palace Roof | 2 |  | 
 | On Mermaid Palace Shells | 5 |  | 
 | Behind Enguarde Door | 3 | Events.LighthouseEnguarde in l.Events or l.CanPhaseswim() | 
-| On Rafter near Funky's | 4 | Events.WaterSwitch in l.Events or l.CanMoonkick() | 
+| On Rafter near Funky's | 4 | Events.WaterRaised in l.Events or l.CanMoonkick() | 
 | Around Cranky's Lab | 5 |  | 
 | Tunnel to Chests Area | 3 |  | 
 | Around Cactus | 4 |  | 

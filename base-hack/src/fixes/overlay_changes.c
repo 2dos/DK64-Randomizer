@@ -348,6 +348,24 @@ void overlay_changes(void) {
 		if (ENABLE_FILENAME) {
 			initFilename();
 		}
+
+		// Force enable cheats
+		*(short*)(0x800280DC) = 0x1000; // Force access to mystery menu
+		*(short*)(0x80028A40) = 0x1000; // Force opaqueness
+		*(short*)(0x8002EA7C) = 0x1000; // Disable Cutscene Menu
+		*(short*)(0x8002EAF8) = 0x1000; // Disable Minigames Menu
+		*(short*)(0x8002EB70) = 0x1000; // Disable Bosses Menu
+		*(int*)(0x8002EBE8) = 0; // Disable Krusha Menu
+		*(short*)(0x8002EC18) = 0x1000; // Enable Cheats Menu
+		*(int*)(0x8002E8D8) = 0x240E0004; // Force cheats menu to start on page 4
+		*(short*)(0x8002E8F4) = 0x1000; // Disable edge cases
+
+		*(int*)(0x8002E074) = 0xA06F0000; // overflow loop to 1
+		*(int*)(0x8002E0F0) = 0x5C400004; // underflow loop from 1
+		*(short*)(0x8002EA3A) = 0xFFFE; // Disable option 1 load
+		*(int*)(0x8002EA4C) = 0xA0600003; // Force Krusha to 0
+		*(int*)(0x8002EA64) = 0xA64B0008; // Disable option 1 write
+
 	} else if (CurrentMap == MAP_SNIDE) {
 		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
 		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
@@ -386,6 +404,7 @@ void overlay_changes(void) {
 		// Add chunky phase microhint
 		if ((Rando.microhints != MICROHINTS_NONE) && (MovesBase[0].simian_slam < 2)) {
 			*(short*)(0x800359A8) = 14; // Microhint Cutscene
+			*(int*)(0x80028D54) = 0; // Delete flag set
 		}
 		if (DAMAGE_MASKING) {
 			writeFunction(0x80031524, &applyDamageMask);

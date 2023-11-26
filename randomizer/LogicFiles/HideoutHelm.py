@@ -62,7 +62,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmDonkey1, lambda l: True, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmDonkey2, lambda l: True, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmDonkeyMedal, lambda l: Events.HelmDonkeyDone in l.Events and l.isdonkey),
-        LocationLogic(Locations.HelmMainEnemy_DKRoom, lambda l: True),
+        LocationLogic(Locations.HelmMainEnemy_DKRoom, lambda l: Events.HelmFinished in l.Events),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
     ]),
@@ -71,8 +71,8 @@ LogicRegions = {
         LocationLogic(Locations.HelmChunky1, lambda l: True, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmChunky2, lambda l: True, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmChunkyMedal, lambda l: Events.HelmChunkyDone in l.Events and l.ischunky),
-        LocationLogic(Locations.HelmMainEnemy_ChunkyRoom0, lambda l: True),
-        LocationLogic(Locations.HelmMainEnemy_ChunkyRoom1, lambda l: True),
+        LocationLogic(Locations.HelmMainEnemy_ChunkyRoom0, lambda l: Events.HelmFinished in l.Events),
+        LocationLogic(Locations.HelmMainEnemy_ChunkyRoom1, lambda l: Events.HelmFinished in l.Events),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
     ]),
@@ -80,7 +80,7 @@ LogicRegions = {
         LocationLogic(Locations.HelmTiny1, lambda l: True, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmTiny2, lambda l: True, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmTinyMedal, lambda l: Events.HelmTinyDone in l.Events and l.istiny),
-        LocationLogic(Locations.HelmMainEnemy_TinyRoom, lambda l: True),
+        LocationLogic(Locations.HelmMainEnemy_TinyRoom, lambda l: Events.HelmFinished in l.Events),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
     ]),
@@ -88,8 +88,8 @@ LogicRegions = {
         LocationLogic(Locations.HelmLanky1, lambda l: True, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmLanky2, lambda l: True, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmLankyMedal, lambda l: Events.HelmLankyDone in l.Events and l.islanky),
-        LocationLogic(Locations.HelmMainEnemy_LankyRoom0, lambda l: True),
-        LocationLogic(Locations.HelmMainEnemy_LankyRoom1, lambda l: True),
+        LocationLogic(Locations.HelmMainEnemy_LankyRoom0, lambda l: Events.HelmFinished in l.Events),
+        LocationLogic(Locations.HelmMainEnemy_LankyRoom1, lambda l: Events.HelmFinished in l.Events),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
     ]),
@@ -97,8 +97,8 @@ LogicRegions = {
         LocationLogic(Locations.HelmDiddy1, lambda l: True, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmDiddy2, lambda l: True, MinigameType.HelmBarrel),
         LocationLogic(Locations.HelmDiddyMedal, lambda l: Events.HelmDiddyDone in l.Events and l.isdiddy),
-        LocationLogic(Locations.HelmMainEnemy_DiddyRoom0, lambda l: True),
-        LocationLogic(Locations.HelmMainEnemy_DiddyRoom1, lambda l: True),
+        LocationLogic(Locations.HelmMainEnemy_DiddyRoom0, lambda l: Events.HelmFinished in l.Events),
+        LocationLogic(Locations.HelmMainEnemy_DiddyRoom1, lambda l: Events.HelmFinished in l.Events),
     ], [], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: True),
     ]),
@@ -106,10 +106,11 @@ LogicRegions = {
         LocationLogic(Locations.HelmKey, lambda l: Events.HelmKeyAccess in l.Events),
         LocationLogic(Locations.HelmBananaFairy1, lambda l: l.camera and Events.HelmKeyAccess in l.Events),
         LocationLogic(Locations.HelmBananaFairy2, lambda l: l.camera and Events.HelmKeyAccess in l.Events),
-        LocationLogic(Locations.HelmMainEnemy_NavRight, lambda l: True),
-        LocationLogic(Locations.HelmMainEnemy_NavLeft, lambda l: True),
+        LocationLogic(Locations.HelmMainEnemy_NavRight, lambda l: Events.HelmFinished in l.Events),
+        LocationLogic(Locations.HelmMainEnemy_NavLeft, lambda l: Events.HelmFinished in l.Events),
     ], [
         Event(Events.HelmKeyAccess, lambda l: (l.CrownDoorOpened() and l.CoinDoorOpened()) or l.generalclips),
+        Event(Events.HelmFinished, lambda l: True),
     ], [
         TransitionFront(Regions.HideoutHelmMain, lambda l: l.settings.helm_setting == HelmSetting.skip_all or (Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events) or (l.generalclips or l.phasewalk)),
         TransitionFront(Regions.HideoutHelmDonkeyRoom, lambda l: l.generalclips or l.phasewalk),

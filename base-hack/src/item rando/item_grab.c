@@ -618,29 +618,14 @@ void getItem(int object_type) {
         case 0x198:
             // Bean
             playSong(147, 0x3F800000);
-            hh_item = HHITEM_PEARL;
+            hh_item = HHITEM_BEAN;
             forceDance();
             break;
         case 0x1B4:
             // Pearl
-            {
-                playSong(128, 0x3F800000);
-                // if (CurrentMap == MAP_GALLEONTREASURECHEST) { // Treasure Chest
-                //     int requirement = 5;
-                //     if (Rando.fast_gbs) {
-                //         requirement = 1;
-                //     }
-                //     int count = 0;
-                //     for (int i = 0; i < 5; i++) {
-                //         count += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
-                //     }
-                //     if (count == (requirement - 1)) {
-                //         playCutscene((void*)0, 1, 0);
-                //     }
-                // }
-                hh_item = HHITEM_PEARL;
-                forceDance();
-            }
+            playSong(128, 0x3F800000);
+            hh_item = HHITEM_PEARL;
+            forceDance();
             break;
         case 0x1D1:
             // Coin Powerup

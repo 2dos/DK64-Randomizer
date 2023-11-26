@@ -51,7 +51,8 @@ class Events(IntEnum):
     GalleonTinySwitch = auto()
     LighthouseGateOpened = auto()
     ShipyardGateOpened = auto()
-    WaterSwitch = auto()
+    WaterRaised = auto()
+    WaterLowered = auto()
     LighthouseEnguarde = auto()
     SealReleased = auto()
     MechafishSummoned = auto()
@@ -96,6 +97,7 @@ class Events(IntEnum):
     HelmLankyDone = auto()
     HelmDiddyDone = auto()
     HelmKeyAccess = auto()
+    HelmFinished = auto()
 
     # K Rool Phases
     KRoolDonkey = auto()
