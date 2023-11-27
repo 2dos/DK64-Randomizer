@@ -114,12 +114,14 @@ def update_custom_song_names(fileContents: dict) -> dict:
     currentPackName = get_current_pack_name()
     if not currentPackName:
         return fileContents
-    musicData = {}
+    musicData = {
+        "vanilla": fileContents["vanilla"],
+        "custom": {},
+    }
     for location, song in fileContents["custom"].items():
-        pathName = song
         if song.startswith(CUSTOM_PACK_NAME):
             pathName = update_custom_path_name(song, currentPackName)
-        musicData[location] = pathName
+            musicData["custom"][location] = pathName
     return musicData
 
 
