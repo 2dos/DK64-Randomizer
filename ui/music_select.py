@@ -53,7 +53,10 @@ def serialize_music_selections(form: dict, for_file: bool = False) -> dict:
         """Determine if an input is a song selection input."""
         return inputName is not None and inputName.startswith("music_select_")
 
-    songs_map = {}
+    songs_map = {
+        "vanilla": {},
+        "custom": {},
+    }
     for obj in form:
         if not is_music_select_input(obj.name):
             continue
@@ -63,7 +66,7 @@ def serialize_music_selections(form: dict, for_file: bool = False) -> dict:
         if obj.value != "":
             # If this is an in-game song, use the enum value.
             try:
-                songs_map[location] = get_value(Songs[obj.value])
+                songs_map["vanilla"][location] = get_value(Songs[obj.value])
             except KeyError:
                 # If this is a custom song, find and use the full string path.
                 bgm_map = zip(js.cosmetic_truncated_names.bgm, js.cosmetic_names.bgm)
@@ -76,7 +79,7 @@ def serialize_music_selections(form: dict, for_file: bool = False) -> dict:
                         final_path_name = path_name
                         if for_file:
                             final_path_name = update_custom_path_name(path_name, CUSTOM_PACK_NAME)
-                        songs_map[location] = final_path_name
+                        songs_map["custom"][location] = final_path_name
                         break
     return songs_map
 
@@ -112,7 +115,7 @@ def update_custom_song_names(fileContents: dict) -> dict:
     if not currentPackName:
         return fileContents
     musicData = {}
-    for location, song in fileContents.items():
+    for location, song in fileContents["custom"].items():
         pathName = song
         if song.startswith(CUSTOM_PACK_NAME):
             pathName = update_custom_path_name(song, currentPackName)
@@ -182,13 +185,12 @@ def validate_music_file(fileContents: dict) -> None:
     musicErrorsElement = js.document.getElementById("music_import_errors")
     musicErrorsElement.style.display = "none"
 
-    for location, song in fileContents.items():
-        # Validate the location.
+    for location, song in fileContents["vanilla"].items():
         validate_music_location(location)
-        if "/" in song:
-            validate_custom_song(song)
-        else:
-            validate_vanilla_song(song)
+        validate_vanilla_song(song)
+    for location, song in fileContents["custom"].items():
+        validate_music_location(location)
+        validate_custom_song(song)
 
 
 @bind("click", "import_music_selections")
@@ -222,18 +224,18 @@ async def import_music_selections(file) -> None:
     reset_music_selections_no_prompt()
 
     # Set all of the options specified in the music file.
-    for location, songName in musicData.items():
+    for location, songName in musicData["vanilla"].items():
         locationElem = js.document.getElementById(f"music_select_{location}")
-        # If this is a custom song, find the matching select value.
-        if "/" in songName:
-            _, category, _ = songName.split("/")
-            customSongList = get_custom_song_map()[category]
-            for customSongName, customTruncatedName in customSongList:
-                if songName == customSongName:
-                    locationElem.value = customTruncatedName
-                    break
-        else:
-            locationElem.value = songName
+        locationElem.value = songName
+    for location, songName in musicData["custom"].items():
+        locationElem = js.document.getElementById(f"music_select_{location}")
+        # Find the matching select value.
+        _, category, _ = songName.split("/")
+        customSongList = get_custom_song_map()[category]
+        for customSongName, customTruncatedName in customSongList:
+            if songName == customSongName:
+                locationElem.value = customTruncatedName
+                break
 
     js.savesettings()
 

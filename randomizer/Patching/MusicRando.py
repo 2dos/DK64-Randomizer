@@ -53,6 +53,36 @@ def isValidSong(data: bytes, extension: str) -> bool:
     return byte_list[0] == 0 and byte_list[1] == 0 and byte_list[2] == 0 and byte_list[3] == 0x44
 
 
+def getAllAssignedVanillaSongs(settings: Settings):
+    """Return a dictionary of user-assigned vanilla songs."""
+    return settings.music_selection_dict["vanilla"] if settings.song_select_enabled else {}
+
+
+def getAllAssignedCustomSongs(settings: Settings):
+    """Return a dictionary of user-assigned custom songs."""
+    return settings.music_selection_dict["custom"] if settings.song_select_enabled else {}
+
+
+def getVanillaSongAssignedToLocation(settings: Settings, location: Songs):
+    """Return the vanilla song assigned to the given location."""
+    assigned_vanilla_songs = getAllAssignedVanillaSongs(settings)
+    loc_str = str(location.value)
+    if loc_str in assigned_vanilla_songs:
+        return assigned_vanilla_songs[loc_str]
+    else:
+        return None
+
+
+def getCustomSongAssignedToLocation(settings: Settings, location: Songs):
+    """Return the custom song assigned to the given location."""
+    assigned_custom_songs = getAllAssignedCustomSongs(settings)
+    loc_str = str(location.value)
+    if loc_str in assigned_custom_songs:
+        return assigned_custom_songs[loc_str]
+    else:
+        return None
+
+
 TAG_CONVERSION_TABLE = {
     # Arg0 = group, Arg1 = is location
     "Gloomy": [SongGroup.Gloomy, False],
@@ -237,7 +267,7 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
     file_data = list(zip(uploaded_songs, uploaded_song_names, uploaded_song_extensions))
     random.shuffle(file_data)
     # Initial temporary variables
-    all_target_songs = [Songs(song_enum) for song_enum, song in song_data.items() if song.type == target_type]
+    all_target_songs = [song_enum for song_enum, song in song_data.items() if song.type == target_type]
 
     # Calculate Proportion, add songs if necessary
     proportion = settings.custom_music_proportion / 100
@@ -257,16 +287,18 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
     custom_song_locations = []
     custom_song_names = set()
     vanilla_song_locations = []
-    for song_loc_enum, song_name in settings.music_selection_dict.items():
+    for song_loc_enum, song_name in getAllAssignedVanillaSongs(settings):
         song_location = Songs(int(song_loc_enum))
         if song_location not in all_target_songs:
             continue
-        if isinstance(song_name, str):
-            custom_song_locations.append(song_location)
-            custom_song_names.add(song_name)
-        else:
-            vanilla_song_locations.append(song_location)
-    # Remove all assigned locations from the target songs.
+        vanilla_song_locations.append(song_location)
+    for song_loc_enum, song_name in getAllAssignedCustomSongs(settings):
+        song_location = Songs(int(song_loc_enum))
+        if song_location not in all_target_songs:
+            continue
+        custom_song_locations.append(song_location)
+        custom_song_names.add(song_name)
+    # Remove all assigned locations from the target songs, if any.
     available_target_songs = [x for x in all_target_songs if x not in custom_song_locations and x not in vanilla_song_locations]
     swap_amount -= len(custom_song_locations)
 
@@ -293,9 +325,9 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
     for song_enum in songs_to_be_replaced:
         song = song_data[song_enum]
         selected_bank = None
-        if settings.song_select_enabled and song_enum in settings.music_selection_dict:
-            new_song_name = settings.music_selection_dict[song_enum]
-            new_song = getAssignedCustomSong(file_data, new_song_name)
+        assigned_song_name = getCustomSongAssignedToLocation(settings, song_enum)
+        if assigned_song_name is not None:
+            new_song = getAssignedCustomSong(file_data, assigned_song_name)
         else:
             new_song = requestNewSong(file_data, song.location_tags, song.song_length, target_type, not settings.fill_with_custom_music)
         selected_cap = 0xFFFFFF
@@ -409,14 +441,12 @@ def randomize_music(settings: Settings):
             # Assign all of the user-specified songs.
             if settings.song_select_enabled:
                 for song_location, song in song_data.items():
-                    if song.type != SongType.BGM:
+                    if song.type != SongType.BGM or song.shuffled:
                         continue
-                    if song.shuffled:
-                        continue
-                    location_str = str(song_location.value)
-                    if location_str in settings.music_selection_dict:
+                    assigned_song_enum = getVanillaSongAssignedToLocation(settings, song_location)
+                    if assigned_song_enum is not None:
                         # The location is given the channel of the song replacing it.
-                        assigned_song = song_data[settings.music_selection_dict[location_str]]
+                        assigned_song = song_data[assigned_song_enum]
                         assigned_songs[assigned_song.channel - 1].append(js.pointer_addresses[0]["entries"][assigned_song.mem_idx])
                         assigned_locations[assigned_song.channel - 1].append(js.pointer_addresses[0]["entries"][song.mem_idx])
             for song in song_data.values():
@@ -467,6 +497,32 @@ def randomize_music(settings: Settings):
                 # Update data
                 ROM_COPY.seek(0x1FFF000 + (song["index"] * 2))
                 ROM_COPY.writeMultipleBytes(rap_song_data.memory, 2)
+    elif settings.song_select_enabled:
+        # If songs have been assigned, but nothing is randomized, we will
+        # only insert assigned songs.
+        if js.cosmetics is not None and js.cosmetic_names is not None and js.cosmetic_extensions is not None:
+            assigned_songs = []
+            assigned_names = []
+            assigned_extensions = []
+            for song, name, extension in zip(js.cosmetics.bgm, js.cosmetic_names.bgm, js.cosmetic_extensions.bgm):
+                if name in settings.music_selection_dict.values():
+                    assigned_songs.append(song)
+                    assigned_names.append(name)
+                    assigned_extensions.append(extension)
+            insertUploaded(settings, assigned_songs, assigned_names, assigned_extensions, SongType.BGM)
+        # Because vanilla songs can only be shuffled within their channel,
+        # there is no need to separate them by channel here.
+        assigned_songs = []
+        assigned_locations = []
+        for song_location, song in song_data.items():
+            if song.type != SongType.BGM or song.shuffled:
+                continue
+            assigned_song_enum = getVanillaSongAssignedToLocation(settings, song_location)
+            if assigned_song_enum is not None:
+                assigned_song = song_data[assigned_song_enum]
+                assigned_songs.append(js.pointer_addresses[0]["entries"][assigned_song.mem_idx])
+                assigned_locations.append(js.pointer_addresses[0]["entries"][song.mem_idx])
+        shuffle_music(music_data, assigned_locations, assigned_songs)
 
     for type_data in NON_BGM_DATA:
         if type_data.setting:  # If the user wants to randomize the group
@@ -481,11 +537,12 @@ def randomize_music(settings: Settings):
             # Assign all of the user-specified songs.
             if settings.song_select_enabled:
                 for song_location, song in song_data.items():
-                    if song.type != type_data.song_type:
+                    if song.type != type_data.song_type or song.shuffled:
                         continue
-                    if song_location in settings.music_selection_dict:
+                    assigned_song_enum = getVanillaSongAssignedToLocation(settings, song_location)
+                    if assigned_song_enum is not None:
                         assigned_item_locations.append(js.pointer_addresses[0]["entries"][song.mem_idx])
-                        assigned_item = song_data[settings.music_selection_dict[song_location]]
+                        assigned_item = song_data[assigned_song_enum]
                         assigned_items.append(js.pointer_addresses[0]["entries"][assigned_item.mem_idx])
             for song in song_data.values():
                 if song.type == type_data.song_type:
@@ -503,6 +560,32 @@ def randomize_music(settings: Settings):
             location_pool = open_locations + assigned_item_locations + shuffled_group_items.copy()
             song_pool = open_songs + assigned_items + shuffled_group_items.copy()
             shuffle_music(music_data, location_pool, song_pool)
+        elif settings.song_select_enabled:
+            # If songs have been assigned, but nothing is randomized, we will
+            # only insert assigned songs.
+            if js.cosmetics is not None and js.cosmetic_names is not None and js.cosmetic_extensions is not None:
+                assigned_songs = []
+                assigned_names = []
+                assigned_extensions = []
+                for song, name, extension in zip(type_data.files, type_data.names, type_data.extensions):
+                    if name in settings.music_selection_dict.values():
+                        assigned_songs.append(song)
+                        assigned_names.append(name)
+                        assigned_extensions.append(extension)
+                insertUploaded(settings, assigned_songs, assigned_names, assigned_extensions, type_data.song_type)
+            # Because vanilla songs can only be shuffled within their channel,
+            # there is no need to separate them by channel here.
+            assigned_songs = []
+            assigned_locations = []
+            for song_location, song in song_data.items():
+                if song.type != type_data.song_type or song.shuffled:
+                    continue
+                assigned_song_enum = getVanillaSongAssignedToLocation(settings, song_location)
+                if assigned_song_enum is not None:
+                    assigned_song = song_data[assigned_song_enum]
+                    assigned_songs.append(js.pointer_addresses[0]["entries"][assigned_song.mem_idx])
+                    assigned_locations.append(js.pointer_addresses[0]["entries"][song.mem_idx])
+            shuffle_music(music_data, assigned_locations, assigned_songs)
     return music_data
 
 
