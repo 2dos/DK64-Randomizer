@@ -287,12 +287,12 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
     custom_song_locations = []
     custom_song_names = set()
     vanilla_song_locations = []
-    for song_loc_enum, song_name in getAllAssignedVanillaSongs(settings):
+    for song_loc_enum, song_name in getAllAssignedVanillaSongs(settings).items():
         song_location = Songs(int(song_loc_enum))
         if song_location not in all_target_songs:
             continue
         vanilla_song_locations.append(song_location)
-    for song_loc_enum, song_name in getAllAssignedCustomSongs(settings):
+    for song_loc_enum, song_name in getAllAssignedCustomSongs(settings).items():
         song_location = Songs(int(song_loc_enum))
         if song_location not in all_target_songs:
             continue
