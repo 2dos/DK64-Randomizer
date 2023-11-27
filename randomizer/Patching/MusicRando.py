@@ -422,12 +422,25 @@ def randomize_music(settings: Settings):
         else:
             ROM_COPY.write(255)
     # Check if we have anything beyond default set for BGM
-    if settings.music_bgm_randomized:
+    if settings.music_bgm_randomized or settings.song_select_enabled:
         # If the user selected standard rando
         if not ENABLE_CHAOS:
             if js.cosmetics is not None and js.cosmetic_names is not None and js.cosmetic_extensions is not None:
                 # If uploaded, replace some songs with the uploaded songs
-                insertUploaded(settings, list(js.cosmetics.bgm), list(js.cosmetic_names.bgm), list(js.cosmetic_extensions.bgm), SongType.BGM)
+                if settings.music_bgm_randomized:
+                    # Insert all of the custom songs.
+                    insertUploaded(settings, list(js.cosmetics.bgm), list(js.cosmetic_names.bgm), list(js.cosmetic_extensions.bgm), SongType.BGM)
+                else:
+                    # Only insert the assigned songs.
+                    assigned_songs = []
+                    assigned_names = []
+                    assigned_extensions = []
+                    for song, name, extension in zip(js.cosmetics.bgm, js.cosmetic_names.bgm, js.cosmetic_extensions.bgm):
+                        if name in getAllAssignedCustomSongs(settings).values():
+                            assigned_songs.append(song)
+                            assigned_names.append(name)
+                            assigned_extensions.append(extension)
+                    insertUploaded(settings, assigned_songs, assigned_names, assigned_extensions, SongType.BGM)
             # Generate the list of BGM songs
             song_list = []
             pre_shuffled_songs = []
@@ -460,13 +473,20 @@ def randomize_music(settings: Settings):
             # ShuffleMusicWithSizeCheck(music_data, song_list)
             for channel_index in range(12):
                 shuffled_music = song_list[channel_index].copy()
-                random.shuffle(shuffled_music)
+                if settings.music_bgm_randomized:
+                    random.shuffle(shuffled_music)
                 # Remove assigned locations.
                 open_locations = [x for x in song_list[channel_index] if x not in assigned_locations[channel_index]]
-                # Move assigned songs to the back of the list, and shorten to match open_locations.
-                pre_assigned_songs = [x for x in shuffled_music if x in assigned_songs[channel_index]]
-                open_songs = [x for x in shuffled_music if x not in assigned_songs[channel_index]] + pre_assigned_songs
-                open_songs = open_songs[:len(open_locations)]
+                if settings.music_bgm_randomized:
+                    # Move assigned songs to the back of the list, and shorten
+                    # to match open_locations.
+                    pre_assigned_songs = [x for x in shuffled_music if x in assigned_songs[channel_index]]
+                    open_songs = [x for x in shuffled_music if x not in assigned_songs[channel_index]] + pre_assigned_songs
+                    open_songs = open_songs[:len(open_locations)]
+                else:
+                    # We want all non-assigned, non-shuffled songs to be the
+                    # same as their locations.
+                    open_songs = open_locations.copy()
                 location_pool = open_locations + assigned_locations[channel_index] + pre_shuffled_songs[channel_index].copy()
                 song_pool = open_songs + assigned_songs[channel_index] + pre_shuffled_songs[channel_index].copy()
                 shuffle_music(music_data, location_pool, song_pool)
@@ -497,40 +517,25 @@ def randomize_music(settings: Settings):
                 # Update data
                 ROM_COPY.seek(0x1FFF000 + (song["index"] * 2))
                 ROM_COPY.writeMultipleBytes(rap_song_data.memory, 2)
-    elif settings.song_select_enabled:
-        # If songs have been assigned, but nothing is randomized, we will
-        # only insert assigned songs.
-        if js.cosmetics is not None and js.cosmetic_names is not None and js.cosmetic_extensions is not None:
-            assigned_songs = []
-            assigned_names = []
-            assigned_extensions = []
-            for song, name, extension in zip(js.cosmetics.bgm, js.cosmetic_names.bgm, js.cosmetic_extensions.bgm):
-                if name in getAllAssignedCustomSongs(settings).values():
-                    assigned_songs.append(song)
-                    assigned_names.append(name)
-                    assigned_extensions.append(extension)
-            insertUploaded(settings, assigned_songs, assigned_names, assigned_extensions, SongType.BGM)
-        # Because vanilla songs can only be shuffled within their channel,
-        # there is no need to separate them by channel here.
-        all_songs = []
-        all_locations = []
-        for song_location, song in song_data.items():
-            if song.type != SongType.BGM:
-                continue
-            assigned_song_enum = getVanillaSongAssignedToLocation(settings, song_location)
-            if assigned_song_enum is not None:
-                assigned_song = song_data[assigned_song_enum]
-                all_songs.append(js.pointer_addresses[0]["entries"][assigned_song.mem_idx])
-            else:
-                all_songs.append(js.pointer_addresses[0]["entries"][song.mem_idx])
-            all_locations.append(js.pointer_addresses[0]["entries"][song.mem_idx])
-        shuffle_music(music_data, all_locations, all_songs)
 
     for type_data in NON_BGM_DATA:
-        if type_data.setting:  # If the user wants to randomize the group
+        if type_data.setting or settings.song_select_enabled:  # If the user wants to randomize the group
             if js.cosmetics is not None and js.cosmetic_names is not None and js.cosmetic_extensions is not None:
                 # If uploaded, replace some songs with the uploaded songs
-                insertUploaded(settings, list(type_data.files), list(type_data.names), list(type_data.extensions), type_data.song_type)
+                if type_data.setting:
+                    # Insert all of the custom songs.
+                    insertUploaded(settings, list(type_data.files), list(type_data.names), list(type_data.extensions), type_data.song_type)
+                else:
+                    # Only insert the assigned songs.
+                    assigned_songs = []
+                    assigned_names = []
+                    assigned_extensions = []
+                    for song, name, extension in zip(list(type_data.files), list(type_data.names), list(type_data.extensions)):
+                        if name in getAllAssignedCustomSongs(settings).values():
+                            assigned_songs.append(song)
+                            assigned_names.append(name)
+                            assigned_extensions.append(extension)
+                    insertUploaded(settings, assigned_songs, assigned_names, assigned_extensions, type_data.song_type)
             # Load the list of items in that group
             group_items = []
             shuffled_group_items = []
@@ -554,42 +559,23 @@ def randomize_music(settings: Settings):
                         group_items.append(js.pointer_addresses[0]["entries"][song.mem_idx])
             # Shuffle the group list
             shuffled_music = group_items.copy()
-            random.shuffle(shuffled_music)
+            if type_data.setting:
+                random.shuffle(shuffled_music)
             # Remove assigned locations.
             open_locations = [x for x in group_items if x not in assigned_item_locations]
-            # Remove assigned songs, and shorten to match open_locations.
-            open_songs = [x for x in shuffled_music if x not in assigned_items][:len(open_locations)]
+            if type_data.setting:
+                # Move assigned songs to the back of the list, and shorten
+                # to match open_locations.
+                pre_assigned_songs = [x for x in shuffled_music if x in assigned_items]
+                open_songs = [x for x in shuffled_music if x not in assigned_items] + pre_assigned_songs
+                open_songs = open_songs[:len(open_locations)]
+            else:
+                # We want all non-assigned, non-shuffled songs to be the
+                # same as their locations.
+                open_songs = open_locations.copy()
             location_pool = open_locations + assigned_item_locations + shuffled_group_items.copy()
             song_pool = open_songs + assigned_items + shuffled_group_items.copy()
             shuffle_music(music_data, location_pool, song_pool)
-        elif settings.song_select_enabled:
-            # If songs have been assigned, but nothing is randomized, we will
-            # only insert assigned songs.
-            if js.cosmetics is not None and js.cosmetic_names is not None and js.cosmetic_extensions is not None:
-                assigned_songs = []
-                assigned_names = []
-                assigned_extensions = []
-                for song, name, extension in zip(type_data.files, type_data.names, type_data.extensions):
-                    if name in getAllAssignedCustomSongs(settings).values():
-                        assigned_songs.append(song)
-                        assigned_names.append(name)
-                        assigned_extensions.append(extension)
-                insertUploaded(settings, assigned_songs, assigned_names, assigned_extensions, type_data.song_type)
-            # Because vanilla songs can only be shuffled within their channel,
-            # there is no need to separate them by channel here.
-            all_songs = []
-            all_locations = []
-            for song_location, song in song_data.items():
-                if song.type != type_data.song_type:
-                    continue
-                assigned_song_enum = getVanillaSongAssignedToLocation(settings, song_location)
-                if assigned_song_enum is not None:
-                    assigned_song = song_data[assigned_song_enum]
-                    all_songs.append(js.pointer_addresses[0]["entries"][assigned_song.mem_idx])
-                else:
-                    all_songs.append(js.pointer_addresses[0]["entries"][song.mem_idx])
-                all_locations.append(js.pointer_addresses[0]["entries"][song.mem_idx])
-            shuffle_music(music_data, all_locations, all_songs)
     return music_data
 
 
