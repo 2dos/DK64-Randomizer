@@ -50,8 +50,12 @@ song_data = {
     Songs.TrainingGrounds: Song("Training Grounds", mem_idx=123, type=SongType.BGM, memory=0x101, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Calm]),
     Songs.Isles: Song("DK Isles", mem_idx=109, type=SongType.BGM, memory=0x101, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Happy, SongGroup.Calm]),
     Songs.IslesKremIsle: Song("DK Isles (K. Rool's Ship)", mem_idx=110, type=SongType.BGM, memory=0x109, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
-    Songs.IslesKLumsy: Song("DK Isles (K. Lumsy's Prison)", mem_idx=112, type=SongType.BGM, memory=0x101, location_tags=[SongGroup.Interiors, SongGroup.Exteriors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
-    Songs.IslesBFI: Song("DK Isles (Banana Fairy Island)", mem_idx=111, type=SongType.BGM, memory=0x101, location_tags=[SongGroup.Interiors, SongGroup.Exteriors], mood_tags=[SongGroup.Happy, SongGroup.Calm]),
+    Songs.IslesKLumsy: Song(
+        "DK Isles (K. Lumsy's Prison)", mem_idx=112, type=SongType.BGM, memory=0x101, location_tags=[SongGroup.Interiors, SongGroup.Exteriors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]
+    ),
+    Songs.IslesBFI: Song(
+        "DK Isles (Banana Fairy Island)", mem_idx=111, type=SongType.BGM, memory=0x101, location_tags=[SongGroup.Interiors, SongGroup.Exteriors], mood_tags=[SongGroup.Happy, SongGroup.Calm]
+    ),
     Songs.IslesSnideRoom: Song("DK Isles (Snide's Room)", mem_idx=166, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Happy, SongGroup.Gloomy]),
     Songs.JapesLobby: Song("Jungle Japes (Lobby)", mem_idx=131, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.LobbyShop], mood_tags=[SongGroup.Happy, SongGroup.Calm]),
     Songs.AztecLobby: Song("Angry Aztec (Lobby)", mem_idx=130, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.LobbyShop], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
@@ -105,7 +109,9 @@ song_data = {
     Songs.ForestMill: Song("Fungi Forest (Mill)", mem_idx=95, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
     Songs.ForestAnthill: Song("Fungi Forest (Anthill)", mem_idx=93, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
     Songs.ForestMushroom: Song("Fungi Forest (Giant Mushroom)", mem_idx=99, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
-    Songs.ForestMushroomRooms: Song("Fungi Forest (Mushroom Top Rooms)", mem_idx=98, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
+    Songs.ForestMushroomRooms: Song(
+        "Fungi Forest (Mushroom Top Rooms)", mem_idx=98, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]
+    ),
     Songs.ForestWinch: Song("Fungi Forest (Winch)", mem_idx=139, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy]),
     Songs.ForestSpider: Song("Fungi Forest (Spider)", mem_idx=97, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Fight], mood_tags=[SongGroup.Happy, SongGroup.Gloomy]),
     Songs.ForestBlast: Song("Fungi Forest (Baboon Blast)", mem_idx=164, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
@@ -128,8 +134,12 @@ song_data = {
     Songs.CastleTunnels: Song("Creepy Castle (Tunnels)", mem_idx=121, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
     Songs.CastleCrypt: Song("Creepy Castle (Crypt)", mem_idx=126, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
     Songs.CastleInnerCrypts: Song("Creepy Castle (Inner Crypts)", mem_idx=135, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy]),
-    Songs.CastleDungeon_Chains: Song("Creepy Castle (Dungeon w/ Chains)", mem_idx=129, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
-    Songs.CastleDungeon_NoChains: Song("Creepy Castle (Dungeon w/out Chains)", mem_idx=150, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
+    Songs.CastleDungeon_Chains: Song(
+        "Creepy Castle (Dungeon w/ Chains)", mem_idx=129, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]
+    ),
+    Songs.CastleDungeon_NoChains: Song(
+        "Creepy Castle (Dungeon w/out Chains)", mem_idx=150, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]
+    ),
     Songs.CastleBallroom: Song("Creepy Castle (Ballroom)", mem_idx=136, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy]),
     Songs.CastleMuseum: Song("Creepy Castle (Museum)", mem_idx=142, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy]),
     Songs.CastleGreenhouse: Song("Creepy Castle (Greenhouse)", mem_idx=137, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy]),
@@ -168,7 +178,14 @@ song_data = {
     Songs.MainMenu: Song("Main Menu", mem_idx=134, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Happy, SongGroup.Calm]),
     Songs.PauseMenu: Song("Pause Menu", mem_idx=34, type=SongType.BGM, memory=0x1D4, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy, SongGroup.Calm]),
     Songs.NintendoLogo: Song("Nintendo Logo", mem_idx=174, type=SongType.BGM, memory=0x108, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Happy]),
-    Songs.DKRap: Song("DK Rap", mem_idx=75, type=SongType.BGM, memory=0x900, location_tags=[SongGroup.Fight, SongGroup.LobbyShop, SongGroup.Interiors, SongGroup.Exteriors, SongGroup.Minigames], mood_tags=[SongGroup.Happy]),
+    Songs.DKRap: Song(
+        "DK Rap",
+        mem_idx=75,
+        type=SongType.BGM,
+        memory=0x900,
+        location_tags=[SongGroup.Fight, SongGroup.LobbyShop, SongGroup.Interiors, SongGroup.Exteriors, SongGroup.Minigames],
+        mood_tags=[SongGroup.Happy],
+    ),
     Songs.IntroStory: Song("Intro Story Medley", mem_idx=122, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Happy, SongGroup.Calm]),
     Songs.KRoolTheme: Song("K. Rool's Theme", mem_idx=138, type=SongType.BGM, memory=0x100, location_tags=[SongGroup.Interiors], mood_tags=[SongGroup.Gloomy]),
     Songs.KLumsyCelebration: Song("K. Lumsy Celebration", mem_idx=125, type=SongType.BGM, memory=0x110, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Happy]),
@@ -210,7 +227,9 @@ song_data = {
     Songs.Success: Song("Success", mem_idx=40, type=SongType.Event, memory=0x8CD, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Happy], song_length=2.13),
     Songs.Failure: Song("Failure", mem_idx=42, type=SongType.Event, memory=0x89D, location_tags=[SongGroup.Minigames], mood_tags=[SongGroup.Gloomy], song_length=3.27),
     Songs.SuccessRaces: Song("Success (Races)", mem_idx=86, type=SongType.Event, memory=0x118, location_tags=[SongGroup.Minigames, SongGroup.Spawning], mood_tags=[SongGroup.Happy], song_length=23.75),
-    Songs.FailureRaces: Song("Failure (Races & Try Again)", mem_idx=87, type=SongType.Event, memory=0x118, location_tags=[SongGroup.Minigames, SongGroup.Spawning], mood_tags=[SongGroup.Gloomy], song_length=23.75),
+    Songs.FailureRaces: Song(
+        "Failure (Races & Try Again)", mem_idx=87, type=SongType.Event, memory=0x118, location_tags=[SongGroup.Minigames, SongGroup.Spawning], mood_tags=[SongGroup.Gloomy], song_length=23.75
+    ),
     Songs.BossUnlock: Song("Boss Unlock", mem_idx=57, type=SongType.Event, memory=0x98, location_tags=[SongGroup.Spawning], mood_tags=[SongGroup.Happy], song_length=12.27),
     Songs.BossDefeat: Song("Boss Defeat", mem_idx=54, type=SongType.Event, memory=0x89A, location_tags=[SongGroup.Spawning], mood_tags=[SongGroup.Happy], song_length=5.35),
     Songs.Bongos: Song("Bongo Blast", mem_idx=11, type=SongType.Event, memory=0x8C2, location_tags=[SongGroup.Exteriors], mood_tags=[SongGroup.Calm], song_length=3.42),
@@ -664,7 +683,7 @@ for songEnum, song in song_data.items():
 
 def MusicSelectFilter(songList: list[dict], location: str) -> list[dict]:
     """Return a filtered list of songs that can be placed in this location.
-    
+
     Args:
         songList (dict[]): The list of possible songs. Each item contains
             "name" and "value" string fields.

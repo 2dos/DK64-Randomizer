@@ -319,7 +319,7 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
             songs_to_be_replaced = available_target_songs
     # Add assigned custom songs back as locations.
     songs_to_be_replaced.extend(custom_song_locations)
-    
+
     # Place Songs
     ROM_COPY = ROM()
     for song_enum in songs_to_be_replaced:
@@ -482,7 +482,7 @@ def randomize_music(settings: Settings):
                     # to match open_locations.
                     pre_assigned_songs = [x for x in shuffled_music if x in assigned_songs[channel_index]]
                     open_songs = [x for x in shuffled_music if x not in assigned_songs[channel_index]] + pre_assigned_songs
-                    open_songs = open_songs[:len(open_locations)]
+                    open_songs = open_songs[: len(open_locations)]
                 else:
                     # We want all non-assigned, non-shuffled songs to be the
                     # same as their locations.
@@ -491,6 +491,7 @@ def randomize_music(settings: Settings):
                 song_pool = open_songs + assigned_songs[channel_index] + pre_shuffled_songs[channel_index].copy()
                 shuffle_music(music_data, location_pool, song_pool)
         # If the user was a poor sap and selected chaos put DK rap for everything
+        # Don't assign songs, the user must learn from their mistake
         else:
             # Find the DK rap in the list
             rap_song_data = song_data[Songs.DKRap]
@@ -568,7 +569,7 @@ def randomize_music(settings: Settings):
                 # to match open_locations.
                 pre_assigned_songs = [x for x in shuffled_music if x in assigned_items]
                 open_songs = [x for x in shuffled_music if x not in assigned_items] + pre_assigned_songs
-                open_songs = open_songs[:len(open_locations)]
+                open_songs = open_songs[: len(open_locations)]
             else:
                 # We want all non-assigned, non-shuffled songs to be the
                 # same as their locations.

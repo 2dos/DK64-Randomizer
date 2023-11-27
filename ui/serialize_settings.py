@@ -57,7 +57,7 @@ def serialize_settings(include_plando: bool = False, include_song_select: bool =
     def is_starting_move_radio_button(inputName: str) -> bool:
         """Determine if an input is a starting move checkbox."""
         return inputName is not None and inputName.startswith("starting_move_box_")
-    
+
     def is_music_select_input(inputName: str) -> bool:
         """Determine if an input is a song selection input."""
         return inputName is not None and inputName.startswith("music_select_")

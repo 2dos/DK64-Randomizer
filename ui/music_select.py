@@ -29,7 +29,7 @@ def get_custom_song_map() -> dict:
 
 def update_custom_path_name(pathName: str, baseName: str) -> str:
     """Replace the first part of a custom path name with a new base name.
-    
+
     E.g. update_custom_path_name("foo/bgm/song", "bar") -> "bar/bgm/song"
     """
     return f'{baseName}/{"/".join(pathName.split("/")[1:])}'
@@ -45,10 +45,11 @@ def serialize_music_selections(form: dict, for_file: bool = False) -> dict:
     Returns:
         dict: Dictionary of form settings.
     """
+
     def get_value(enum_val):
         """Return either the value of a given enum or the display name."""
         return enum_val.name if for_file else enum_val
-    
+
     def is_music_select_input(inputName: str) -> bool:
         """Determine if an input is a song selection input."""
         return inputName is not None and inputName.startswith("music_select_")
@@ -85,8 +86,8 @@ def serialize_music_selections(form: dict, for_file: bool = False) -> dict:
 
 
 def get_current_pack_name() -> str:
-    """Gets the name of the currently loaded music pack, if there is one.
-    
+    """Get the name of the currently loaded music pack, if there is one.
+
     This will either return the first time one of our lists is non-empty, or it
     will return None at the very end. It's a silly way to write a function, but
     jsProxy objects are hard to work with.
@@ -105,7 +106,7 @@ def get_current_pack_name() -> str:
 
 def update_custom_song_names(fileContents: dict) -> dict:
     """Update custom music with the name of the newest music zip file.
-    
+
     This is to prevent an issue where the user uploads one music file, saves
     their selections to file, uploads a music pack with a new name, then tries
     to import the same file. So long as the songs are in the right place, with
@@ -156,9 +157,9 @@ def validate_custom_song(songPath: str) -> None:
         raise_music_validation_error(errString)
     # Check to see if any custom music has been loaded.
     if not is_custom_music_loaded():
-        errString = f'The music selection file contains custom songs, but no custom songs have been loaded.'
+        errString = f"The music selection file contains custom songs, but no custom songs have been loaded."
         raise_music_validation_error(errString)
-    
+
     # Search for the song in the currently loaded songs.
     customSongList = get_custom_song_map()[category]
     songFound = False
@@ -208,7 +209,7 @@ def music_filebox(evt):
 
 
 async def import_music_selections(file) -> None:
-    """Imports music selections from a JSON file."""
+    """Import music selections from a JSON file."""
     fileText = await file.text()
     fileContents = json.loads(fileText)
 
@@ -252,7 +253,7 @@ def export_music_selections(evt):
 
 @bind("click", "reset_music_selections")
 def reset_music_selections(evt):
-    """Resets all music selection options to their default settings.
+    """Reset all music selection options to their default settings.
 
     Issues a prompt first, warning the user.
     """
@@ -262,7 +263,7 @@ def reset_music_selections(evt):
 
 
 def reset_music_selections_no_prompt():
-    """Resets all music selection options to their default settings."""
+    """Reset all music selection options to their default settings."""
     for songLocation in SongLocationList:
         songElement = js.document.getElementById(f"music_select_{songLocation}")
         songElement.value = ""

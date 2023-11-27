@@ -4,8 +4,8 @@ import json
 
 
 def download_json_file(jsonData: dict, filename: str):
-    """Downloads the provided dictionary as a JSON file.
-    
+    """Download the provided dictionary as a JSON file.
+
     Args:
         jsonData (dict) - The dictionary containing the data to be downloaded.
         filename (str) - The name of the file to be downloaded.
