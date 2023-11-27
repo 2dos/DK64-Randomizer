@@ -580,7 +580,7 @@ def randomize_music(settings: Settings):
             all_songs = []
             all_locations = []
             for song_location, song in song_data.items():
-                if song.type != type_data.song_type or song.shuffled:
+                if song.type != type_data.song_type:
                     continue
                 assigned_song_enum = getVanillaSongAssignedToLocation(settings, song_location)
                 if assigned_song_enum is not None:
