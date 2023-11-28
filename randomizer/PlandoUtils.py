@@ -350,6 +350,8 @@ badFakeItemLocationList = [
     Locations.FactoryDonkeyDKArcade.name,
     Locations.FactoryTinyDartboard.name,
     Locations.JapesLankyFairyCave.name,
+    Locations.AztecLankyVulture.name,
+    Locations.AztecDiddyRamGongs.name,
     Locations.ForestDiddyRafters.name,
     Locations.CavesTiny5DoorIgloo.name,
     Locations.CavesDiddy5DoorCabinUpper.name,
