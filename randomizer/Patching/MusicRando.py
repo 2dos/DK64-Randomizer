@@ -55,7 +55,7 @@ def isValidSong(data: bytes, extension: str) -> bool:
 
 def getAllAssignedVanillaSongs(settings: Settings) -> dict:
     """Return a dictionary of user-assigned vanilla songs.
-    
+
     The keys and values are both of type Songs.
     """
     if not settings.song_select_enabled:
@@ -65,8 +65,9 @@ def getAllAssignedVanillaSongs(settings: Settings) -> dict:
 
 def getAllAssignedCustomSongs(settings: Settings) -> dict:
     """Return a dictionary of user-assigned custom songs.
-    
-    The keys are of type Songs, and the values are strings."""
+
+    The keys are of type Songs, and the values are strings.
+    """
     if not settings.song_select_enabled:
         return {}
     return {Songs(int(k)): v for k, v in settings.music_selection_dict["custom"].items()}
