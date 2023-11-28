@@ -53,43 +53,50 @@ def isValidSong(data: bytes, extension: str) -> bool:
     return byte_list[0] == 0 and byte_list[1] == 0 and byte_list[2] == 0 and byte_list[3] == 0x44
 
 
-def getAllAssignedVanillaSongs(settings: Settings):
-    """Return a dictionary of user-assigned vanilla songs."""
-    return settings.music_selection_dict["vanilla"] if settings.song_select_enabled else {}
+def getAllAssignedVanillaSongs(settings: Settings) -> dict:
+    """Return a dictionary of user-assigned vanilla songs.
+    
+    The keys and values are both of type Songs.
+    """
+    if not settings.song_select_enabled:
+        return {}
+    return {Songs(int(k)): Songs[v] for k, v in settings.music_selection_dict["vanilla"].items()}
 
 
-def getAllAssignedCustomSongs(settings: Settings):
-    """Return a dictionary of user-assigned custom songs."""
-    return settings.music_selection_dict["custom"] if settings.song_select_enabled else {}
+def getAllAssignedCustomSongs(settings: Settings) -> dict:
+    """Return a dictionary of user-assigned custom songs.
+    
+    The keys are of type Songs, and the values are strings."""
+    if not settings.song_select_enabled:
+        return {}
+    return {Songs(int(k)): v for k, v in settings.music_selection_dict["custom"].items()}
 
 
-def getVanillaSongAssignedToLocation(settings: Settings, location: Songs):
+def getVanillaSongAssignedToLocation(settings: Settings, location: Songs) -> Songs:
     """Return the vanilla song assigned to the given location."""
     assigned_vanilla_songs = getAllAssignedVanillaSongs(settings)
-    loc_str = str(location.value)
-    if loc_str in assigned_vanilla_songs:
-        return assigned_vanilla_songs[loc_str]
+    if location in assigned_vanilla_songs:
+        return assigned_vanilla_songs[location]
     else:
         return None
 
 
-def getCustomSongAssignedToLocation(settings: Settings, location: Songs):
+def getCustomSongAssignedToLocation(settings: Settings, location: Songs) -> str:
     """Return the custom song assigned to the given location."""
     assigned_custom_songs = getAllAssignedCustomSongs(settings)
-    loc_str = str(location.value)
-    if loc_str in assigned_custom_songs:
-        return assigned_custom_songs[loc_str]
+    if location in assigned_custom_songs:
+        return assigned_custom_songs[location]
     else:
         return None
 
 
 def categoriesHaveAssignedSongs(settings: Settings, categories: list[SongType]) -> bool:
-    """Return true if the provided category has assigned songs."""
+    """Return true if the provided categories have assigned songs."""
     vanilla_songs = getAllAssignedVanillaSongs(settings)
     custom_songs = getAllAssignedCustomSongs(settings)
     all_assigned_songs = list(vanilla_songs.keys()) + list(custom_songs.keys())
     for song_enum in all_assigned_songs.keys():
-        song = song_data[Songs(int(song_enum))]
+        song = song_data[song_enum]
         if song.type in categories:
             return True
     return False
@@ -188,7 +195,7 @@ def isSongWithInLengthRange(vanilla_length: int, proposed_length: int) -> bool:
     return False
 
 
-def getAssignedCustomSong(file_data_array: list, song_name: str) -> UploadInfo:
+def getAssignedCustomSongData(file_data_array: list, song_name: str) -> UploadInfo:
     """Request a specific custom song from the list."""
     global USED_INDEXES
 
@@ -299,13 +306,11 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
     custom_song_locations = []
     custom_song_names = set()
     vanilla_song_locations = []
-    for song_loc_enum, song_name in getAllAssignedVanillaSongs(settings).items():
-        song_location = Songs(int(song_loc_enum))
+    for song_location in getAllAssignedVanillaSongs(settings).keys():
         if song_location not in all_target_songs:
             continue
         vanilla_song_locations.append(song_location)
-    for song_loc_enum, song_name in getAllAssignedCustomSongs(settings).items():
-        song_location = Songs(int(song_loc_enum))
+    for song_location, song_name in getAllAssignedCustomSongs(settings).items():
         if song_location not in all_target_songs:
             continue
         custom_song_locations.append(song_location)
@@ -339,7 +344,7 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
         selected_bank = None
         assigned_song_name = getCustomSongAssignedToLocation(settings, song_enum)
         if assigned_song_name is not None:
-            new_song = getAssignedCustomSong(file_data, assigned_song_name)
+            new_song = getAssignedCustomSongData(file_data, assigned_song_name)
         else:
             new_song = requestNewSong(file_data, song.location_tags, song.song_length, target_type, not settings.fill_with_custom_music)
         selected_cap = 0xFFFFFF
@@ -469,7 +474,9 @@ def randomize_music(settings: Settings):
                         continue
                     assigned_song_enum = getVanillaSongAssignedToLocation(settings, song_location)
                     if assigned_song_enum is not None:
-                        # The location is given the channel of the song replacing it.
+                        # The location is given the channel of the song
+                        # replacing it. (At the moment, they should always be
+                        # the same.)
                         assigned_song = song_data[assigned_song_enum]
                         assigned_songs[assigned_song.channel - 1].append(js.pointer_addresses[0]["entries"][assigned_song.mem_idx])
                         assigned_locations[assigned_song.channel - 1].append(js.pointer_addresses[0]["entries"][song.mem_idx])
