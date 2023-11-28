@@ -228,7 +228,7 @@ class ItemPreviewCutscene:
 
 ITEM_PREVIEW_CUTSCENES = [
     ItemPreviewCutscene(Maps.ForestSpider, 3, 9),
-    ItemPreviewCutscene(Maps.CavesChunkyIgloo, 0, 5),
+    # ItemPreviewCutscene(Maps.CavesChunkyIgloo, 0, 5),
 ]
 
 
