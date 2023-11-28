@@ -83,6 +83,18 @@ def getCustomSongAssignedToLocation(settings: Settings, location: Songs):
         return None
 
 
+def categoriesHaveAssignedSongs(settings: Settings, categories: list[SongType]) -> bool:
+    """Return true if the provided category has assigned songs."""
+    vanilla_songs = getAllAssignedVanillaSongs(settings)
+    custom_songs = getAllAssignedCustomSongs(settings)
+    all_assigned_songs = list(vanilla_songs.keys()) + list(custom_songs.keys())
+    for song_enum in all_assigned_songs.keys():
+        song = song_data[Songs(int(song_enum))]
+        if song.type in categories:
+            return True
+    return False
+
+
 TAG_CONVERSION_TABLE = {
     # Arg0 = group, Arg1 = is location
     "Gloomy": [SongGroup.Gloomy, False],
@@ -380,7 +392,6 @@ def randomize_music(settings: Settings):
         else:
             settings.music_bgm_randomized = js.document.getElementById("music_bgm_randomized").checked
             settings.music_majoritems_randomized = js.document.getElementById("music_majoritems_randomized").checked
-            settings.music_majoritems_randomized = js.document.getElementById("music_majoritems_randomized").checked
             settings.music_minoritems_randomized = js.document.getElementById("music_minoritems_randomized").checked
             settings.music_events_randomized = js.document.getElementById("music_events_randomized").checked
     else:
@@ -409,7 +420,7 @@ def randomize_music(settings: Settings):
             GroupData("Events", settings.music_events_randomized, js.cosmetics.events, js.cosmetic_names.events, js.cosmetic_extensions.events, SongType.Event),
         ]
 
-    if settings.music_bgm_randomized or settings.music_events_randomized or settings.music_majoritems_randomized or settings.music_minoritems_randomized:
+    if settings.music_bgm_randomized or settings.music_events_randomized or settings.music_majoritems_randomized or settings.music_minoritems_randomized or categoriesHaveAssignedSongs[TYPE_VALUES]:
         sav = settings.rom_data
         ROM_COPY.seek(sav + 0x12E)
         ROM_COPY.write(1)
@@ -422,7 +433,7 @@ def randomize_music(settings: Settings):
         else:
             ROM_COPY.write(255)
     # Check if we have anything beyond default set for BGM
-    if settings.music_bgm_randomized or settings.song_select_enabled:
+    if settings.music_bgm_randomized or categoriesHaveAssignedSongs(settings, [SongType.BGM]):
         # If the user selected standard rando
         if not ENABLE_CHAOS:
             if js.cosmetics is not None and js.cosmetic_names is not None and js.cosmetic_extensions is not None:
@@ -520,7 +531,7 @@ def randomize_music(settings: Settings):
                 ROM_COPY.writeMultipleBytes(rap_song_data.memory, 2)
 
     for type_data in NON_BGM_DATA:
-        if type_data.setting or settings.song_select_enabled:  # If the user wants to randomize the group
+        if type_data.setting or categoriesHaveAssignedSongs(settings, [type_data.song_type]):  # If the user wants to randomize the group
             if js.cosmetics is not None and js.cosmetic_names is not None and js.cosmetic_extensions is not None:
                 # If uploaded, replace some songs with the uploaded songs
                 if type_data.setting:
