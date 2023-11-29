@@ -60,7 +60,7 @@ def getAllAssignedVanillaSongs(settings: Settings) -> dict:
     """
     if not settings.song_select_enabled:
         return {}
-    return {Songs(int(k)): Songs[v] for k, v in settings.music_selection_dict["vanilla"].items()}
+    return {Songs(int(k)): Songs(v) for k, v in settings.music_selection_dict["vanilla"].items()}
 
 
 def getAllAssignedCustomSongs(settings: Settings) -> dict:
@@ -96,7 +96,7 @@ def categoriesHaveAssignedSongs(settings: Settings, categories: list[SongType]) 
     vanilla_songs = getAllAssignedVanillaSongs(settings)
     custom_songs = getAllAssignedCustomSongs(settings)
     all_assigned_songs = list(vanilla_songs.keys()) + list(custom_songs.keys())
-    for song_enum in all_assigned_songs.keys():
+    for song_enum in all_assigned_songs:
         song = song_data[song_enum]
         if song.type in categories:
             return True
@@ -426,7 +426,7 @@ def randomize_music(settings: Settings):
             GroupData("Events", settings.music_events_randomized, js.cosmetics.events, js.cosmetic_names.events, js.cosmetic_extensions.events, SongType.Event),
         ]
 
-    if settings.music_bgm_randomized or settings.music_events_randomized or settings.music_majoritems_randomized or settings.music_minoritems_randomized or categoriesHaveAssignedSongs[TYPE_VALUES]:
+    if settings.music_bgm_randomized or settings.music_events_randomized or settings.music_majoritems_randomized or settings.music_minoritems_randomized or categoriesHaveAssignedSongs(settings, TYPE_VALUES):
         sav = settings.rom_data
         ROM_COPY.seek(sav + 0x12E)
         ROM_COPY.write(1)
