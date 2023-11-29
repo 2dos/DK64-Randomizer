@@ -426,7 +426,13 @@ def randomize_music(settings: Settings):
             GroupData("Events", settings.music_events_randomized, js.cosmetics.events, js.cosmetic_names.events, js.cosmetic_extensions.events, SongType.Event),
         ]
 
-    if settings.music_bgm_randomized or settings.music_events_randomized or settings.music_majoritems_randomized or settings.music_minoritems_randomized or categoriesHaveAssignedSongs(settings, TYPE_VALUES):
+    if (
+        settings.music_bgm_randomized
+        or settings.music_events_randomized
+        or settings.music_majoritems_randomized
+        or settings.music_minoritems_randomized
+        or categoriesHaveAssignedSongs(settings, TYPE_VALUES)
+    ):
         sav = settings.rom_data
         ROM_COPY.seek(sav + 0x12E)
         ROM_COPY.write(1)

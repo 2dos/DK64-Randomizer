@@ -1251,6 +1251,30 @@ def toggle_song_select(evt):
         selectSongsPanel.classList.add("hidden")
 
 
+@bind("click", "nav-cosmetics-tab")
+@bind("change", "music_bgm_randomized")
+@bind("change", "music_majoritems_randomized")
+@bind("change", "music_minoritems_randomized")
+@bind("change", "music_events_randomized")
+def rename_default_music_options(evt):
+    """Rename the default options for music selection."""
+    categoryDict = {
+        "bgm": "BGM",
+        "majoritems": "MajorItem",
+        "minoritems": "MinorItem",
+        "events": "Event",
+    }
+    for toggleType, optionType in categoryDict.items():
+        toggleElem = js.document.getElementById(f"music_{toggleType}_randomized")
+        defaultOptions = js.document.getElementsByClassName(f"{optionType}-default-option")
+        if toggleElem.checked:
+            for opt in defaultOptions:
+                opt.innerHTML = "-- Randomize --"
+        else:
+            for opt in defaultOptions:
+                opt.innerHTML = "-- Default --"
+
+
 @bind("click", "select_keys")
 def toggle_key_settings(event):
     """Disable other keys settings when selecting keys. Toggle Key Selector Modal."""
