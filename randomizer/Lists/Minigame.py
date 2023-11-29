@@ -238,6 +238,34 @@ MinigameRequirements = {
         can_repeat=True,
         logic=lambda l: l.swim,
     ),
+    Minigames.BarrelBarrel: Minigame(
+        name="Barrel Training",
+        group="Training Minigames",
+        map_id=Maps.BarrelBarrel,
+        can_repeat=True,
+        logic=lambda l: l.barrels,
+    ),
+    Minigames.OrangeBarrel: Minigame(
+        name="Orange Training",
+        group="Training Minigames",
+        map_id=Maps.OrangeBarrel,
+        can_repeat=True,
+        logic=lambda l: l.oranges,
+    ),
+    Minigames.VineBarrel: Minigame(
+        name="Vine Training",
+        group="Training Minigames",
+        map_id=Maps.VineBarrel,
+        can_repeat=True,
+        logic=lambda l: l.vines,
+    ),
+    Minigames.DiveBarrel: Minigame(
+        name="Dive Training",
+        group="Training Minigames",
+        map_id=Maps.DiveBarrel,
+        can_repeat=True,
+        logic=lambda l: l.swim,
+    ),
 }
 
 # If you make changes to this list, make sure to change the corresponding

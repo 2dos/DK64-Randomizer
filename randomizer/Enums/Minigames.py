@@ -73,3 +73,7 @@ class Minigames(IntEnum):
     ChunkyShooting = auto()
     RambiArena = auto()
     EnguardeArena = auto()
+    DiveBarrel = auto()
+    OrangeBarrel = auto()
+    BarrelBarrel = auto()
+    VineBarrel = auto()
