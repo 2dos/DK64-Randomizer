@@ -49,7 +49,10 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
         # Give plandomizer an opportunity to have the final say
         if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_battle_arenas"][level] != -1:
             for plando_crown_index in range(len(spoiler.settings.plandomizer_dict["plando_battle_arenas"][level])):
-                if plando_crown_index != -1:
+                if spoiler.settings.plandomizer_dict["plando_battle_arenas"][level][plando_crown_index] != -1:
+                    # If we selected a vanilla crown location that conflicts with our plando, replace the conflicting crown instead
+                    if level == Levels.DKIsles and level_lst[crowns[(plando_crown_index + 1) % 2]].placement_subindex == plando_crown_index:
+                        crowns.reverse()
                     crowns[plando_crown_index] = spoiler.settings.plandomizer_dict["plando_battle_arenas"][level][plando_crown_index]
                 if crowns[plando_crown_index] not in index_lst:
                     raise Exceptions.PlandoIncompatibleException(f"Battle arena \"{crowns[plando_crown_index]}\" not found in {level}.")
@@ -77,6 +80,7 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
         crown_selection[level] = crown_data
         # In the event that the second crown on the list is IslesBattleArena2, reverse the list
         # because after this, the first crown on the list will get the logic for IslesBattleArena2
+        # For plando, this should be prevented in the plando block above
         if len(crowns) == 2 and CustomLocations[level][crowns[1]].placement_subindex == 0:
             crowns.reverse()
         for crown_index, crown in enumerate(crowns):

@@ -80,8 +80,8 @@ def ShufflePatches(spoiler, human_spoiler):
     dual_dirt_levels = 5
     # Make sure levels with multiple Dirt Patches plandomized are handled first, before the shuffler runs out of dual levels
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
-        for level in spoiler.settings.plandomizer_dict["plando_dirt_patches"]:
-            if spoiler.settings.plandomizer_dict["plando_dirt_patches"][level] != -1:
+        for level in spoiler.settings.plandomizer_dict["plando_dirt_patches"]["placement"]:
+            if spoiler.settings.plandomizer_dict["plando_dirt_patches"]["placement"][level] != -1:
                 dual_dirt_levels -= 1
                 area_dirt = total_dirt_patch_list[level]
                 select_random_dirt_from_area(area_dirt, 2, level, spoiler, human_spoiler)
@@ -97,12 +97,19 @@ def ShufflePatches(spoiler, human_spoiler):
         area_dirt = total_dirt_patch_list[area_key]
         select_random_dirt_from_area(area_dirt, 1, area_key, spoiler, human_spoiler)
 
+    # Create the locations for dirt patches
     sorted_patches = spoiler.dirt_patch_placement.copy()
     sorted_patches = sorted(sorted_patches, key=lambda d: d["score"])
     for patch_index, patch in enumerate(sorted_patches):
         patch["enum"] = Locations.RainbowCoin_Location00 + patch_index
         addPatch(spoiler, patch["patch"], patch["enum"], patch["name"], patch["level"])
         patch["patch"] = None
+    # Resolve location-item combinations for plando
+    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
+        if "items" in spoiler.settings.plandomizer_dict["plando_dirt_patches"].keys():
+            for patch_index, patch in enumerate(sorted_patches):
+                if spoiler.settings.plandomizer_dict["plando_dirt_patches"]["items"][patch["name"]] != -1:
+                    spoiler.settings.plandomizer_dict["locations"][patch["enum"]] = spoiler.settings.plandomizer_dict["plando_dirt_patches"]["items"][patch["name"]]
     return human_spoiler.copy()
 
 
@@ -114,12 +121,13 @@ def select_random_dirt_from_area(area_dirt, amount, level, spoiler, human_spoile
         selected_patch = random.choice(area_dirt)  # selects a random patch from the list
         selected_patch_name = selected_patch.name
         # Give plandomizer an opportunity to get the final say
-        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"][level] != -1:
-            if len(spoiler.settings.plandomizer_dict["plando_dirt_patches"][level]) > 1:
+        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
+            if len(spoiler.settings.plandomizer_dict["plando_dirt_patches"]["placement"][level]) > 1:
                 allow_same_group_dirt = True
-            selected_patch_name = spoiler.settings.plandomizer_dict["plando_dirt_patches"][level].pop(0)
-            if selected_patch_name not in area_dirt:
-                raise Exceptions.PlandoIncompatibleException(f"Dirt patch \"{selected_patch_name}\" not found in {level}.")
+            if len(spoiler.settings.plandomizer_dict["plando_dirt_patches"]["placement"][level]) > iterations:
+                selected_patch_name = spoiler.settings.plandomizer_dict["plando_dirt_patches"]["placement"][level][iterations] 
+                if len([x for x in area_dirt if x.name == selected_patch_name]) == 0:
+                    raise Exceptions.PlandoIncompatibleException(f"Dirt patch \"{selected_patch_name}\" not found in {level}.")
         for patch in CustomLocations[level]:  # enables the selected patch
             if patch.name == selected_patch_name:
                 patch.setCustomLocation(True)

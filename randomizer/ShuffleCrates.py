@@ -81,9 +81,9 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
 
     dual_crate_levels = 4
     # Make sure levels with multiple Melon Crates plandomized are handled first, before the shuffler runs out of dual levels
-    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"] != -1:
-        for level in spoiler.settings.plandomizer_dict["plando_melon_crates"]:
-            if spoiler.settings.plandomizer_dict["plando_melon_crates"][level] != -1:
+    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"]["placement"] != -1:
+        for level in spoiler.settings.plandomizer_dict["plando_melon_crates"]["placement"]:
+            if spoiler.settings.plandomizer_dict["plando_melon_crates"]["placement"][level] != -1:
                 dual_crate_levels -= 1
                 area_meloncrate = total_MelonCrate_list[level]
                 select_random_meloncrate_from_area(area_meloncrate, 2, level, spoiler, human_spoiler)
@@ -98,12 +98,19 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
         area_meloncrate = total_MelonCrate_list[area_key]
         select_random_meloncrate_from_area(area_meloncrate, 1, area_key, spoiler, human_spoiler)
 
+    # Create the locations for the melon crates
     sorted_MelonCrates = spoiler.meloncrate_placement.copy()
     sorted_MelonCrates = sorted(sorted_MelonCrates, key=lambda d: d["score"])
     for MelonCrate_index, MelonCrate in enumerate(sorted_MelonCrates):
         MelonCrate["enum"] = Locations.MelonCrate_Location00 + MelonCrate_index
         addCrate(spoiler, MelonCrate["MelonCrate"], MelonCrate["enum"], MelonCrate["name"], MelonCrate["level"])
         MelonCrate["MelonCrate"] = None
+    # Resolve location-item combinations for plando
+    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"] != -1:
+        if "items" in spoiler.settings.plandomizer_dict["plando_melon_crates"].keys():
+            for MelonCrate_index, MelonCrate in enumerate(sorted_MelonCrates):
+                if spoiler.settings.plandomizer_dict["plando_melon_crates"]["items"][MelonCrate["name"]] != -1:
+                    spoiler.settings.plandomizer_dict["locations"][MelonCrate["enum"]] = spoiler.settings.plandomizer_dict["plando_melon_crates"]["items"][MelonCrate["name"]]
     return human_spoiler.copy()
 
 
@@ -113,15 +120,17 @@ def select_random_meloncrate_from_area(area_meloncrate, amount, level, spoiler, 
     for iterations in range(amount):
         allow_same_group_crate = False
         selected_crate = random.choice(area_meloncrate)  # selects a random crate from the list
+        selected_crate_name = selected_crate.name
         # Give plandomizer an opportunity to get the final say
-        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"][level] != -1:
-            if len(spoiler.settings.plandomizer_dict["plando_melon_crates"][level]) > 1:
+        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"] != -1:
+            if len(spoiler.settings.plandomizer_dict["plando_melon_crates"]["placement"][level]) > 1:
                 allow_same_group_crate = True
-            selected_crate = spoiler.settings.plandomizer_dict["plando_melon_crates"][level].pop(0)
-            if selected_crate not in area_meloncrate:
-                raise Exceptions.PlandoIncompatibleException(f"Melon crate \"{selected_crate}\" not found in {level}.")
+            if len(spoiler.settings.plandomizer_dict["plando_melon_crates"]["placement"][level]) > iterations:
+                selected_crate_name = spoiler.settings.plandomizer_dict["plando_melon_crates"]["placement"][level][iterations]
+                if len([x for x in area_meloncrate if x.name == selected_crate_name]) == 0:
+                    raise Exceptions.PlandoIncompatibleException(f"Melon crate \"{selected_crate_name}\" not found in {level}.")
         for meloncrate in CustomLocations[level]:  # enables the selected crate
-            if meloncrate.name == selected_crate.name:
+            if meloncrate.name == selected_crate_name:
                 meloncrate.setCustomLocation(True)
                 human_spoiler[level.name].append(meloncrate.name)
                 local_map_index = len([x for x in spoiler.meloncrate_placement if x["map"] == meloncrate.map])
