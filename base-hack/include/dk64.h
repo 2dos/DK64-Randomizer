@@ -47,6 +47,7 @@ extern void playSong(int songIndex, int volume);
 extern void playLevelMusic(void);
 extern void loadExtraHooks();
 extern void playCutscene(void* actor, int cutscene_index, int cutscene_type);
+extern void playBonusCutsceneWrapper(void* actor, int unk0, int cutscene_index, int unk1);
 extern int isCutsceneActive(void);
 extern void setHUDItemAsInfinite(int item_index, int player_index, char isInfinite);
 extern void resetCoconutHUD(void);

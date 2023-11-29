@@ -410,6 +410,13 @@ void overlay_changes(void) {
 			writeFunction(0x80031524, &applyDamageMask);
 		}
 	}
+	if (inTraining(CurrentMap)) {
+		*(int*)(0x80029610) = 0; // Disable set flag
+		writeFunction(0x80029638, &warpOutOfTraining);
+		*(int*)(0x80029644) = 0;
+		*(short*)(0x8002968E) = 1; // Set timer to 1
+		//*(int*)(0x80029314) = 0x2406000A; // Set ticking timer to 10s
+	}
 	if (inBattleCrown(CurrentMap)) {
 		// Change crown spawn
 		if (Rando.item_rando) {

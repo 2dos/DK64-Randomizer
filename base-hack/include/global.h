@@ -21,6 +21,7 @@ extern int isSlamFlag(int flag);
 extern int isBeltFlag(int flag);
 extern int isInstrumentUpgradeFlag(int flag);
 extern int inBattleCrown(maps map);
+extern int inTraining(maps map);
 extern int inShop(maps map, int include_snide);
 extern int inBossMap(maps map, int include_regular, int include_krool, int include_shoe);
 extern int inMinigame(maps map);
@@ -347,6 +348,7 @@ extern void alterChunkData(void* data);
 extern void shineLight(actorData* actor, int kongType);
 extern void fallDamageWrapper(int action, void* actor, int player_index);
 extern void warpOutOfArenas(void);
+extern void warpOutOfTraining(void);
 extern void ArenaTagKongCode(void);
 extern void ArenaEarlyCompletionCheck(void);
 
