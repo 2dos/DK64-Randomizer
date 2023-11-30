@@ -95,27 +95,40 @@ def ShuffleFairyLocations(spoiler):
             FairyPlacementInfo(Locations.HelmBananaFairy1, Levels.HideoutHelm, 0, 25),
             FairyPlacementInfo(Locations.HelmBananaFairy2, Levels.HideoutHelm, 1, 26),
         ]
+        plando_dict = {
+            Levels.JungleJapes: [],
+            Levels.AngryAztec: [],
+            Levels.FranticFactory: [],
+            Levels.GloomyGalleon: [],
+            Levels.FungiForest: [],
+            Levels.CrystalCaves: [],
+            Levels.CreepyCastle: [],
+            Levels.DKIsles: [],
+            Levels.HideoutHelm: [],
+        }
+        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_fairies"] != -1:
+            fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_fairies"].keys())
+
         for level in fairy_locations:
             pick_size = 2
             if level == Levels.DKIsles:
                 pick_size = 4
             selection = random.sample(list(range(len(fairy_locations[level]))), pick_size)
             # Give plandomizer an opportunity to have the final say
-            if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_fairies"]["placement"][level] != -1:
-                for plando_fairy_selection in range(len(spoiler.settings.plandomizer_dict["plando_fairies"]["placement"][level])):
-                    if plando_fairy_selection != -1:
-                        selection_name = spoiler.settings.plandomizer_dict["plando_fairies"]["placement"][level][plando_fairy_selection]
-                        selection_index_list = [fairy_locations[level].index(x) for x in fairy_locations[level] if x.name == selection_name]
-                        if len(selection_index_list == 0):
-                            raise Exceptions.PlandoIncompatibleException(f"Fairy \"{selection[plando_fairy_selection]}\" not found in {level}.")
-                        else:
-                            selection_index = selection_index_list[0]
-                        if not selection_index in selection:
-                            selection[plando_fairy_selection] = selection_index
-                        # Fix double occurrences
-                        else:
-                            double_index = selection.index(selection_index)
-                            selection[plando_fairy_selection], selection[double_index] = selection[double_index], selection[plando_fairy_selection] # swap list items
+            for plando_fairy_selection in range(len(plando_dict[level])):
+                if plando_dict[level][plando_fairy_selection] != -1:
+                    selection_name = plando_dict[level][plando_fairy_selection]
+                    selection_index_list = [fairy_locations[level].index(x) for x in fairy_locations[level] if x.name == selection_name]
+                    if len(selection_index_list == 0):
+                        raise Exceptions.PlandoIncompatibleException(f"Fairy \"{selection_name}\" not found in {level}.")
+                    else:
+                        selection_index = selection_index_list[0]
+                    # Fix double occurrences
+                    if not selection_index in selection:
+                        selection[plando_fairy_selection] = selection_index
+                    else:
+                        double_index = selection.index(selection_index)
+                        selection[plando_fairy_selection], selection[double_index] = selection[double_index], selection[plando_fairy_selection] # swap list items
             human_selection = [fairy_locations[level][x].name for x in selection]
             spoiler.fairy_locations[level] = selection.copy()
             spoiler.fairy_locations_human[level.name] = human_selection
@@ -146,13 +159,19 @@ def ShuffleFairyLocations(spoiler):
                         spoiler.RegionList[new_region].locations.append(LocationLogic(data.location, fairy_locations[level][x].logic))
                         spoiler.LocationList[data.location].name = f"{level_to_name[level]} Fairy ({fairy_locations[level][x].name})"
                         # Resolve location-item combinations for plando
-                        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_fairies"] != -1:
-                            if "items" in spoiler.settings.plandomizer_dict["plando_fairies"].keys():
-                                if spoiler.settings.plandomizer_dict["plando_fairies"]["items"][fairy_locations[level][x].name] != -1:
-                                    spoiler.settings.plandomizer_dict["locations"][data.location] = fairy_locations[level][x].name
+                        if len(plando_dict[level]) > 0:
+                            if plando_dict[level][fairy_locations[level][x].name] != -1:
+                                spoiler.settings.plandomizer_dict["locations"][data.location] = plando_dict[level][fairy_locations[level][x].name]
 
 
 def ClearFairyLogic(spoiler):
     """Clear out any fairy locations in preparation for filling custom ones."""
     for id, region in spoiler.RegionList.items():
         region.locations = [loc for loc in region.locations if loc.id not in all_fairy_locations]
+
+def fillPlandoDict(plando_dict: dict, plando_input):
+    """Fill the plando_dict variable, using input from the plandomizer_dict."""
+    for level in plando_dict.keys():
+        for fairy in fairy_locations[level]:
+            if fairy.name in plando_input:
+                plando_dict[level].append(fairy.name)
