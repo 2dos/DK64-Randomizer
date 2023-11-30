@@ -21,6 +21,7 @@ extern int isSlamFlag(int flag);
 extern int isBeltFlag(int flag);
 extern int isInstrumentUpgradeFlag(int flag);
 extern int inBattleCrown(maps map);
+extern int inTraining(maps map);
 extern int inShop(maps map, int include_snide);
 extern int inBossMap(maps map, int include_regular, int include_krool, int include_shoe);
 extern int inMinigame(maps map);
@@ -347,6 +348,7 @@ extern void alterChunkData(void* data);
 extern void shineLight(actorData* actor, int kongType);
 extern void fallDamageWrapper(int action, void* actor, int player_index);
 extern void warpOutOfArenas(void);
+extern void warpOutOfTraining(void);
 extern void ArenaTagKongCode(void);
 extern void ArenaEarlyCompletionCheck(void);
 
@@ -354,8 +356,6 @@ extern int fairyQueenCutsceneInit(int start, int count, flagtypes type);
 extern void fairyQueenCutsceneCheck(void);
 extern void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner);
 extern void giveFairyItem(int flag, int state, flagtypes type);
-extern void SpawnBarrel(spawnerPacket* packet);
-extern void initBarrelChange(void);
 
 extern void initIceTrap(void);
 extern void queueIceTrap(void);

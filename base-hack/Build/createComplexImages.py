@@ -431,6 +431,7 @@ for x in range(16):
 barrel_skin_0 = barrel_skin.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
 
 skins = {
+    "gb": ("gb", None, "displays"),
     "dk": ("dk_face_1", "dk_face_0", "hash"),
     "diddy": ("diddy_face_0", "diddy_face_1", "hash"),
     "lanky": ("lanky_face_0", "lanky_face_1", "hash"),
@@ -450,22 +451,44 @@ skins = {
     "fakegb": ("fake_gb", None, "displays"),
     "melon": ("melon_slice", None, "hash"),
 }
+BARREL_BASE_IS_HELM = True
+BASE_SIZE = 32
+if BARREL_BASE_IS_HELM:
+    BASE_SIZE = 64
+
 for skin_type in skins:
     skin_data = list(skins[skin_type])
     skin_dir = getDir(f"assets/{skin_data[2]}/")
-    if skin_data[1] is None:
-        whole = Image.open(f"{skin_dir}{skin_data[0]}.png").resize((32, 32))
-        left = whole.crop((0, 0, 16, 32))
-        right = whole.crop((16, 0, 32, 32))
+    if skin_data[1] is not None:
+        left = Image.open(f"{skin_dir}{skin_data[0]}.png").resize((BASE_SIZE >> 1, BASE_SIZE))
+        right = Image.open(f"{skin_dir}{skin_data[1]}.png").resize((BASE_SIZE >> 1, BASE_SIZE))
+        whole = Image.new(mode="RGBA", size=(BASE_SIZE, BASE_SIZE))
+        whole.paste(left, (0, 0), left)
+        whole.paste(right, (BASE_SIZE >> 1, 0), right)
     else:
-        left = Image.open(f"{skin_dir}{skin_data[0]}.png").resize((16, 32))
-        right = Image.open(f"{skin_dir}{skin_data[1]}.png").resize((16, 32))
-    left = left.transpose(Image.Transpose.FLIP_LEFT_RIGHT).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
-    right = right.transpose(Image.Transpose.FLIP_LEFT_RIGHT).transpose(Image.Transpose.FLIP_TOP_BOTTOM)
-    barrel_0 = barrel_skin.copy()
-    barrel_1 = barrel_skin_0.copy()
-    barrel_0.paste(left, (0, 16), left)
-    barrel_1.paste(right, (0, 16), right)
+        whole = Image.open(f"{skin_dir}{skin_data[0]}.png").resize((BASE_SIZE, BASE_SIZE))
+    if skin_type != "fakegb":
+        whole = whole.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    # Resize image to combat stretching
+    whole_0 = Image.new(mode="RGBA", size=(BASE_SIZE, BASE_SIZE))
+    whole = whole.resize((BASE_SIZE, int(BASE_SIZE * 0.8)))
+    whole_0.paste(whole, (0, int(BASE_SIZE * 0.1)), whole)
+    whole = whole_0
+    # Segment
+    left = whole.crop((0, 0, BASE_SIZE >> 1, BASE_SIZE))
+    right = whole.crop((BASE_SIZE >> 1, 0, BASE_SIZE, BASE_SIZE))
+    left = left.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    right = right.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    left = left.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    right = right.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+    if BARREL_BASE_IS_HELM:
+        barrel_0 = left
+        barrel_1 = right
+    else:
+        barrel_0 = barrel_skin.copy()
+        barrel_1 = barrel_skin_0.copy()
+        barrel_0.paste(left, (0, BASE_SIZE), left)
+        barrel_1.paste(right, (0, BASE_SIZE), right)
     barrel_0.save(f"{disp_dir}barrel_{skin_type}_0.png")
     barrel_1.save(f"{disp_dir}barrel_{skin_type}_1.png")
 

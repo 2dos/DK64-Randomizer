@@ -375,7 +375,7 @@ void giveFairyItem(int flag, int state, flagtypes type) {
                 key_bitfield |= (1 << i);
             }
         }
-    } else if (model == 0x10F) {
+    } else if (model == 0xFD) {
         // Fake Item
         queueIceTrap();
     }

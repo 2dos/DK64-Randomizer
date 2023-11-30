@@ -670,6 +670,13 @@ void initHack(int source) {
 
 			initSwitchsanityChanges();
 
+			if (DISABLE_TRAINING_PRECHECKS) {
+				*(int*)(0x8069838C) = 0x00006825; // Disable ability to use vines in vine barrel unless you have vines
+				*(int*)(0x806E426C) = 0; // Disable ability to pick up objects in barrel barrel unless you have barrels
+				*(short*)(0x806E7736) = 0; // Disable ability to dive in dive barrel unless you have dive
+				*(short*)(0x806E2D8A) = 0; // Disable ability to throw oranges in orange barrel unless you have oranges
+			}
+
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0
 			*(unsigned char*)(0x8064AD01) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[2]];

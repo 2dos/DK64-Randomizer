@@ -56,6 +56,12 @@ const unsigned char regular_boss_maps[] = {
     MAP_CAVESDILLO,
     MAP_CASTLEKUTOUT
 };
+static const unsigned char training_maps[] = {
+	MAP_TBARREL_VINE,
+	MAP_TBARREL_BARREL,
+	MAP_TBARREL_DIVE,
+	MAP_TBARREL_ORANGE,
+};
 static const map_bitfield minigame_maps_btf = {
     // Bitfield on whether a map is a minigame map
 	.test_map = 0,
@@ -980,6 +986,15 @@ int inBattleCrown(maps map) {
 		return 1;
 	}
 	return (map >= MAP_BATTLEARENA_ARENAAMBUSH) && (map <= MAP_BATTLEARENA_SHOCKWAVESHOWDOWN);
+}
+
+int inTraining(maps map) {
+	for (int i = 0; i < sizeof(training_maps); i++) {
+		if (map == training_maps[i]) {
+			return 1;
+		}
+	}
+	return 0;
 }
 
 int inBossMap(maps map, int include_regular, int include_krool, int include_shoe) {

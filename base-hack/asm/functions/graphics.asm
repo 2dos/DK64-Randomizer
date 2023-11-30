@@ -18,6 +18,9 @@
 .definelabel wipeTextureSlot, 0x8061134C
 .definelabel copyImage, 0x8069DC10
 .definelabel blink, 0x8068842C
+.definelabel unkPaletteFunc, 0x80688460
+.definelabel adjustColorPalette, 0x806883F4
+.definelabel retextureZone, 0x8068A350
 .definelabel applyImageToActor, 0x80688370
 .definelabel writeImageSlotToActor, 0x80688320
 .definelabel getCenterOffset, 0x806FBD5C

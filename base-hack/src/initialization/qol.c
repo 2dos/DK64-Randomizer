@@ -37,10 +37,8 @@ void initQoL_Lag(void) {
     if (Rando.quality_of_life.reduce_lag) {
         *(int*)(0x80748010) = 0x8064F2F0; // Cancel Sandstorm
         // No Rain
-        if (Rando.seasonal_changes != SEASON_CHRISTMAS) {
-            *(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0
-            *(int*)(0x8068AF90) = 0; // Disable weather
-        }
+        *(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0
+        *(int*)(0x8068AF90) = 0; // Disable weather
     }
 }
 

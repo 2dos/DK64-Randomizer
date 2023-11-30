@@ -1707,16 +1707,44 @@ def placeKrushaHead(slot):
     ROM_COPY.writeBytes(bytearray(data32))
 
 
+barrel_skins = (
+    "gb",
+    "dk",
+    "diddy",
+    "lanky",
+    "tiny",
+    "chunky",
+    "bp",
+    "nin_coin",
+    "rw_coin",
+    "key",
+    "crown",
+    "medal",
+    "potion",
+    "bean",
+    "pearl",
+    "fairy",
+    "rainbow",
+    "fakegb",
+    "melon",
+)
+
+
+def getBonusSkinOffset(offset: int):
+    """Get texture index after the barrel skins."""
+    return 6026 + (2 * len(barrel_skins)) + offset
+
+
 def writeMiscCosmeticChanges(settings):
     """Write miscellaneous changes to the cosmetic colors."""
     if settings.misc_cosmetics:
         # Melon HUD
-        data = {7: [0x13C, 0x147], 14: [0x5A, 0x5D], 25: [0x17B2, 0x17B2]}
+        data = {7: [0x13C, 0x147], 14: [0x5A, 0x5D], 25: [getBonusSkinOffset(4), getBonusSkinOffset(4)]}
         shift = random.randint(-359, 359)
         for table in data:
             table_data = data[table]
             for img in range(table_data[0], table_data[1] + 1):
-                if table == 25 and img == 0x17B2:
+                if table == 25 and img == getBonusSkinOffset(4):
                     dims = (32, 32)
                 else:
                     dims = (48, 42)
@@ -1864,9 +1892,13 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
 
 def applyHolidayMode(settings):
     """Change grass texture to snow."""
-    HOLIDAY = "halloween"  # Or "christmas"
-    if settings.holiday_setting and False:
+    HOLIDAY = "christmas"  # Or "" "halloween"
+    if settings.holiday_setting:
         if HOLIDAY == "christmas":
+            # Set season to Christmas
+            ROM().seek(settings.rom_data + 0xDB)
+            ROM().writeMultipleBytes(2, 1)
+            # Grab Snow texture, transplant it
             ROM().seek(0x1FF8000)
             snow_im = Image.new(mode="RGBA", size=((32, 32)))
             snow_px = snow_im.load()
@@ -1896,6 +1928,64 @@ def applyHolidayMode(settings):
                 start = js.pointer_addresses[25]["entries"][img]["pointing_to"]
                 ROM().seek(start)
                 ROM().writeBytes(byte_data)
+            # Alter CI4 Palettes
+            start = js.pointer_addresses[25]["entries"][2007]["pointing_to"]
+            mags = [140, 181, 156, 181, 222, 206, 173, 230, 255, 255, 255, 189, 206, 255, 181, 255]
+            new_ci4_palette = []
+            for mag in mags:
+                comp_mag = mag >> 3
+                data = (comp_mag << 11) | (comp_mag << 6) | (comp_mag << 1) | 1
+                new_ci4_palette.extend([(data >> 8), (data & 0xFF)])
+            byte_data = gzip.compress(bytearray(new_ci4_palette), compresslevel=9)
+            ROM().seek(start)
+            ROM().writeBytes(byte_data)
+            # Alter rims
+            bananas = [getFile(7, x, False, 44, 44, TextureFormat.RGBA5551).resize((14, 14)) for x in [0xD0, 0xE8, 0xA8, 0x98]]
+            banana_placement = [
+                # File, x, y
+                [0xBB3, 15, 1],  # 3
+                [0xBB2, 2, 1],  # 2
+                [0xBB3, 0, 1],  # 4
+                [0xBB2, 17, 1],  # 1
+            ]
+            for img in (0xBB2, 0xBB3):
+                side_im = getFile(25, img, True, 32, 16, TextureFormat.RGBA5551)
+                hueShift(side_im, 50)
+                for bi, banana in enumerate(bananas):
+                    if banana_placement[bi][0] == img:
+                        b_x = banana_placement[bi][1]
+                        b_y = banana_placement[bi][2]
+                        side_im.paste(banana, (b_x, b_y), banana)
+                side_by = []
+                side_px = side_im.load()
+                for y in range(16):
+                    for x in range(32):
+                        red_short = (side_px[x, y][0] >> 3) & 31
+                        green_short = (side_px[x, y][1] >> 3) & 31
+                        blue_short = (side_px[x, y][2] >> 3) & 31
+                        alpha_short = 1 if side_px[x, y][3] > 128 else 0
+                        value = (red_short << 11) | (green_short << 6) | (blue_short << 1) | alpha_short
+                        side_by.extend([(value >> 8) & 0xFF, value & 0xFF])
+                px_data = bytearray(side_by)
+                px_data = gzip.compress(px_data, compresslevel=9)
+                ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
+                ROM().writeBytes(px_data)
+            # Change DK's Tie and Tiny's Hair
+            tie_hang = [0xFF] * 0xAB8
+            tie_hang_data = gzip.compress(bytearray(tie_hang), compresslevel=9)
+            ROM().seek(js.pointer_addresses[25]["entries"][0xE8D]["pointing_to"])
+            ROM().writeBytes(tie_hang_data)
+            tie_loop = [0xFF] * (32 * 32 * 2)
+            tie_loop_data = gzip.compress(bytearray(tie_loop), compresslevel=9)
+            ROM().seek(js.pointer_addresses[25]["entries"][0x177D]["pointing_to"])
+            ROM().writeBytes(tie_loop_data)
+            tiny_hair = []
+            for x in range(32 * 32):
+                tiny_hair.extend([0xF8, 0x01])
+            tiny_hair_data = gzip.compress(bytearray(tiny_hair), compresslevel=9)
+            ROM().seek(js.pointer_addresses[25]["entries"][0xE68]["pointing_to"])
+            ROM().writeBytes(tiny_hair_data)
+
         elif HOLIDAY == "halloween":
             ROM().seek(settings.rom_data + 0xDB)
             ROM().writeMultipleBytes(1, 1)

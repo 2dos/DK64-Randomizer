@@ -53,6 +53,38 @@ void warpOutOfArenas(void) {
     ExitFromBonus();
 }
 
+void failTraining(int play_cutscene, int text_index) {
+    // actorData* parent = CurrentActorPointer_0->parent;
+    // parent->control_state = 0;
+    // char* str = getTextPointer(0x1A, text_index, 1);
+    // spawnOver
+    playSong(0x57, 0x3F800000);
+    setAction(0x43, (void*)0, 0);
+    // CurrentActorPointer_0->control_state += 1;
+    if (play_cutscene) {
+        playBonusCutsceneWrapper(Player, 5, 0x21, 5);
+    }
+}
+
+void warpOutOfTraining(void) {
+    if (isGamemode(GAMEMODE_DKBONUS, 0)) {
+        initiateTransition(MAP_MAINMENU, 0); // Warp back to main menu
+        return;
+    }
+    int beaten_training = *(unsigned char*)(0x80029FA8);
+    if (!beaten_training) {
+        failTraining(1, 1);
+        return;
+    }
+    if (!isGamemode(GAMEMODE_SNIDEGAMES, 0)) {
+        short a = *(short*)(0x80750FB0);
+        int b = 0;
+        int index = getSpawnerIndexOfResolvedBonus(&a, 3, &b);
+        resolveBonus(b, index, 7, 2.0f);
+    }
+    ExitFromBonus();
+}
+
 void ArenaTagKongCode(void) {
     playCutscene(0, 0, 1);
     arena_controller_paad* paad = CurrentActorPointer_0->paad;

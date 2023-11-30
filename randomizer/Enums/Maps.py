@@ -205,6 +205,12 @@ class Maps(IntEnum):
     RambiArena = 191
     EnguardeArena = 184
 
+    # Training Minigames
+    BarrelBarrel = 181
+    VineBarrel = 182
+    DiveBarrel = 177
+    OrangeBarrel = 180
+
     # Crowns
     JapesCrown = 53
     AztecCrown = 73
