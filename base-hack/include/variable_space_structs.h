@@ -170,4 +170,5 @@ typedef struct varspace {
 	/* 0x1BE */ unsigned char jetpac_enemy_order[8]; // Indexes 0-7 to represent enemy difficulty
 	/* 0x1C6 */ RandomSwitchesSetting switchsanity; // Size 0x15
 	/* 0x1DB */ unsigned char fungi_time_of_day_setting; // See fungi_time enum
+	/* 0x1DC */ unsigned char galleon_water_raised;
 } varspace;

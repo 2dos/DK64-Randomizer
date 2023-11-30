@@ -2103,6 +2103,7 @@ boot_phrases = (
     "Mangling Music",
     "Killing Speedrunning",
     "Enhancing Cfox Luck Voice Linesmizers",
+    "Enforcing the law of the Jungle",
 )
 
 

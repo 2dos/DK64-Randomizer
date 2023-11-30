@@ -479,7 +479,7 @@ class LogicVarHolder:
 
     def CanGetOnCannonGamePlatform(self):
         """Determine whether the player can get on the platform in Cannon Game Room in Gloomy Galleon."""
-        return Events.WaterSwitch in self.Events or (self.advanced_platforming and (self.ischunky or (self.islanky and self.settings.krusha_kong != Kongs.lanky)))
+        return Events.WaterRaised in self.Events or (self.advanced_platforming and (self.ischunky or (self.islanky and self.settings.krusha_kong != Kongs.lanky)))
 
     def CanSkew(self, swim, kong_req=Kongs.any):
         """Determine whether the player can skew."""

@@ -81,6 +81,9 @@
         "dusk": 0.15,
         "progressive": 0.15
     },
+    "galleon_water": {
+        "random": 1
+    },
     "glitches_selected": {},
     "hard_blockers": 0.2,
     "hard_level_progression": 0.4,

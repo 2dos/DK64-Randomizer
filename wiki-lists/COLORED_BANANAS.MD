@@ -635,8 +635,8 @@
 | On ship to chests room | 10 |  | 
 | To Tiny BP (2 custom, 3 Tiny) | 5 |  | 
 | Cranky's Room to T&S (2 custom, 3 Chunky) | 5 |  | 
-| Cannon GB room boulder side | 10 | Events.WaterSwitch in l.Events | 
-| Cannon GB room cannon side | 15 | Events.WaterSwitch in l.Events | 
+| Cannon GB room boulder side | 10 | Events.WaterRaised in l.Events | 
+| Cannon GB room cannon side | 15 | Events.WaterRaised in l.Events | 
 | Cannon game room underwater | 10 | l.swim | 
 | On top of stalactite near 2DS | 5 |  | 
 | Under ship tunnel by 5DS (with oranges) | 15 |  | 
@@ -651,19 +651,19 @@
 | Tunnel to gold tower room (4 custom, 6 Diddy) | 10 |  | 
 | Seafloor around Lanky gold tower | 10 |  | 
 | 4 corners of gold tower room | 20 |  | 
-| On Lanky Gold Tower (5 custom, 5 Lanky) | 9 | l.balloon and ((Events.WaterSwitch in l.Events) or (Events.ShipyardEnguarde in l.Events and l.advanced_platforming)) | 
-| On Lanky Gold Tower (5 custom, 5 Lanky) | 1 | l.balloon and ((Events.WaterSwitch in l.Events) or (Events.ShipyardEnguarde in l.Events and l.advanced_platforming)) | 
+| On Lanky Gold Tower (5 custom, 5 Lanky) | 9 | l.balloon and ((Events.WaterRaised in l.Events) or (Events.ShipyardEnguarde in l.Events and l.advanced_platforming)) | 
+| On Lanky Gold Tower (5 custom, 5 Lanky) | 1 | l.balloon and ((Events.WaterRaised in l.Events) or (Events.ShipyardEnguarde in l.Events and l.advanced_platforming)) | 
 | On Diddy gold tower | 15 |  | 
 | W4 | 5 |  | 
 | W4 | 5 |  | 
 | On wooden box (lighthouse side) | 10 |  | 
 | Around Candy's Store | 20 |  | 
 | By Seal race | 10 |  | 
-| On ship part by Candy's store | 10 | Events.WaterSwitch in l.Events | 
+| On ship part by Candy's store | 10 | Events.WaterRaised in l.Events | 
 | By submarine entrance | 5 |  | 
 | On seafloor from 5DS to submarine area | 10 |  | 
-| On floating plank with 4 DK coins | 10 | Events.WaterSwitch in l.Events | 
-| Plank in front of Funky (Melon crate) | 10 | Events.WaterSwitch in l.Events | 
+| On floating plank with 4 DK coins | 10 | Events.WaterRaised in l.Events | 
+| Plank in front of Funky (Melon crate) | 10 | Events.WaterRaised in l.Events | 
 | On stalactite between 5DS and mech fish | 5 |  | 
 | Around Funky's store | 20 |  | 
 | Cactus on guitar pad | 5 |  | 
@@ -673,7 +673,7 @@
 | Cactus on top between coins | 5 |  | 
 | Bottom around cactus | 15 |  | 
 | Bottom on stalactites around submarine | 20 |  | 
-| In corner behind cactus above the water surface | 10 | Events.WaterSwitch in l.Events | 
+| In corner behind cactus above the water surface | 10 | Events.WaterRaised in l.Events | 
 | Alcove behind Enguarde plank | 20 | Events.LighthouseEnguarde in l.Events or l.CanPhaseswim() | 
 | Around tag barrel near enguarde box (Lighthouse area) | 5 |  | 
 | Bottom of water around chest between tag barrel and mermaid area | 15 |  | 
@@ -716,12 +716,12 @@
 | W3 (Tiny) | 5 |  | 
 | W3 (Tiny) | 5 |  | 
 | In front of Tiny's treasure chest (Tiny) | 5 |  | 
-| In cannon game room over planks (Tiny) | 15 | (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky))) | 
+| In cannon game room over planks (Tiny) | 15 | (Events.WaterRaised in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky))) | 
 | On seafloor around lighthouse (Chunky) | 10 |  | 
-| W2 (Chunky) | 5 | Events.WaterSwitch in l.Events | 
+| W2 (Chunky) | 5 | Events.WaterRaised in l.Events | 
 | W2 (Chunky) | 5 |  | 
 | Under ship tunnel by 5DS (Chunky) | 15 |  | 
-| Cannon game room | Balloon | Events.WaterSwitch in l.Events | 
+| Cannon game room | Balloon | Events.WaterRaised in l.Events | 
 | Between W2 and Tiny BP | Balloon |  | 
 | Between left side of ship and T&S portal | Balloon |  | 
 | Around Cranky | Balloon |  | 
@@ -738,10 +738,10 @@
 | Around lighthouse (Donkey) | Balloon |  | 
 | In chests room (Donkey) | Balloon |  | 
 | In gold tower room (Diddy) | Balloon |  | 
-| By cannon in cannon game room (Chunky) | Balloon | (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))) | 
+| By cannon in cannon game room (Chunky) | Balloon | (Events.WaterRaised in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))) | 
 | Above 2DS (Chunky) | Balloon |  | 
 | Above 5DS (Lanky) | Balloon |  | 
-| In front of Snide (Tiny) | Balloon | Events.WaterSwitch in l.Events | 
+| In front of Snide (Tiny) | Balloon | Events.WaterRaised in l.Events | 
 | In gold tower room (Tiny) | Balloon |  | 
 </details>
 <details>

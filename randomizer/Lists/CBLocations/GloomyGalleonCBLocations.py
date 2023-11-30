@@ -270,7 +270,7 @@ ColoredBananaGroupList = [
         name="Cannon GB room boulder side",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
-        logic=lambda l: Events.WaterSwitch in l.Events,
+        logic=lambda l: Events.WaterRaised in l.Events,
         locations=[[5, 1.0, 1400, 1615, 2588], [5, 1.0, 1250, 1615, 2588]],
     ),
     ColoredBananaGroup(
@@ -279,7 +279,7 @@ ColoredBananaGroupList = [
         name="Cannon GB room cannon side",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
-        logic=lambda l: Events.WaterSwitch in l.Events,
+        logic=lambda l: Events.WaterRaised in l.Events,
         locations=[[5, 1.0, 1370, 1615, 3024], [5, 1.0, 1315, 1615, 3072], [5, 1.0, 1260, 1615, 3024]],
     ),
     ColoredBananaGroup(
@@ -417,7 +417,7 @@ ColoredBananaGroupList = [
         name="On Lanky Gold Tower (5 custom, 5 Lanky)",
         konglist=[Kongs.lanky],
         region=Regions.TreasureRoom,
-        logic=lambda l: l.balloon and ((Events.WaterSwitch in l.Events) or (Events.ShipyardEnguarde in l.Events and l.advanced_platforming)),
+        logic=lambda l: l.balloon and ((Events.WaterRaised in l.Events) or (Events.ShipyardEnguarde in l.Events and l.advanced_platforming)),
         locations=[
             [1, 1.0, 1620, 2000, 566],
             [1, 1.0, 1642, 1980, 529],
@@ -436,7 +436,7 @@ ColoredBananaGroupList = [
         name="On Lanky Gold Tower (5 custom, 5 Lanky)",
         konglist=[Kongs.lanky],
         region=Regions.TreasureRoom,
-        logic=lambda l: l.balloon and ((Events.WaterSwitch in l.Events) or (Events.ShipyardEnguarde in l.Events and l.advanced_platforming)),
+        logic=lambda l: l.balloon and ((Events.WaterRaised in l.Events) or (Events.ShipyardEnguarde in l.Events and l.advanced_platforming)),
         locations=[[1, 1.0, 1756.18212890625, 1620.0, 635.8522338867188]],
     ),
     ColoredBananaGroup(
@@ -488,7 +488,7 @@ ColoredBananaGroupList = [
         name="On ship part by Candy's store",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
-        logic=lambda l: Events.WaterSwitch in l.Events,
+        logic=lambda l: Events.WaterRaised in l.Events,
         locations=[[5, 1.0, 3166, 1630, 666], [5, 1.0, 3219, 1630, 615]],
     ),
     ColoredBananaGroup(
@@ -525,7 +525,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
         locations=[[5, 1.0, 3604, 1620, 1883], [5, 1.0, 3555, 1620, 1933]],
-        logic=lambda l: Events.WaterSwitch in l.Events,
+        logic=lambda l: Events.WaterRaised in l.Events,
     ),
     ColoredBananaGroup(
         group=47,
@@ -534,7 +534,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
         locations=[[5, 1.0, 3930, 1620, 1486], [5, 1.0, 3867, 1620, 1325]],
-        logic=lambda l: Events.WaterSwitch in l.Events,
+        logic=lambda l: Events.WaterRaised in l.Events,
     ),
     ColoredBananaGroup(
         group=48,
@@ -630,7 +630,7 @@ ColoredBananaGroupList = [
         name="In corner behind cactus above the water surface",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
-        logic=lambda l: Events.WaterSwitch in l.Events,
+        logic=lambda l: Events.WaterRaised in l.Events,
         locations=[[5, 1.0, 4389, 1600, 778], [5, 1.0, 4605, 1600, 1038]],
     ),
     ColoredBananaGroup(
@@ -1276,7 +1276,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
         vanilla=True,
-        logic=lambda l: (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky))),
+        logic=lambda l: (Events.WaterRaised in l.Events or (l.advanced_platforming and (l.ischunky or l.islanky))),
         locations=[[5, 1.0, 1312.0430908203125, 1615.0, 2905.87890625], [5, 1.0, 1314.042724609375, 1648.0, 2806.0751953125], [5, 1.0, 1311.7952880859375, 1615.0, 2679.703857421875]],
     ),
     ColoredBananaGroup(
@@ -1306,7 +1306,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.Shipyard,
         vanilla=True,
-        logic=lambda l: Events.WaterSwitch in l.Events,
+        logic=lambda l: Events.WaterRaised in l.Events,
         locations=[[5, 1.0, 1554.5889892578125, 1665.417724609375, 2014.8204345703125]],
     ),
     ColoredBananaGroup(
@@ -1512,7 +1512,7 @@ BalloonList = [
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
-        logic=lambda l: Events.WaterSwitch in l.Events,
+        logic=lambda l: Events.WaterRaised in l.Events,
         points=[[1206, 1680, 2714], [1187, 1685, 3072]],
     ),
     Balloon(
@@ -1689,7 +1689,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.GalleonBeyondPineappleGate,
         vanilla=True,
-        logic=lambda l: (Events.WaterSwitch in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))),
+        logic=lambda l: (Events.WaterRaised in l.Events or (l.advanced_platforming and (l.islanky or l.ischunky))),
         points=[[1421, 1597, 3255], [1257, 1624, 3198]],
     ),
     Balloon(
@@ -1720,7 +1720,7 @@ BalloonList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.LighthouseSnideAlcove,
         vanilla=True,
-        logic=lambda l: Events.WaterSwitch in l.Events,
+        logic=lambda l: Events.WaterRaised in l.Events,
         points=[[2070, 1678, 4623], [1979, 1672, 4713]],
     ),
     Balloon(

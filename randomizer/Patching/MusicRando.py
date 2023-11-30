@@ -46,6 +46,8 @@ def isValidSong(data: bytes, extension: str) -> bool:
     """Check if song is a valid bin."""
     if extension == ".candy":
         return True  # TODO: Check from ZIP
+    if len(data) < 0x44:
+        return False
     byte_list = [x for xi, x in enumerate(data) if xi < 4]
     return byte_list[0] == 0 and byte_list[1] == 0 and byte_list[2] == 0 and byte_list[3] == 0x44
 
