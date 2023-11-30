@@ -447,6 +447,7 @@ class MinigamesListSelected(IntEnum):
     peril_path_panic = 15
     helm_minigames = 16
     arenas = 17
+    training_minigames = 18
 
 
 class MiscChangesSelected(IntEnum):

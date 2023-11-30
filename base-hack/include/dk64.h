@@ -47,6 +47,7 @@ extern void playSong(int songIndex, int volume);
 extern void playLevelMusic(void);
 extern void loadExtraHooks();
 extern void playCutscene(void* actor, int cutscene_index, int cutscene_type);
+extern void playBonusCutsceneWrapper(void* actor, int unk0, int cutscene_index, int unk1);
 extern int isCutsceneActive(void);
 extern void setHUDItemAsInfinite(int item_index, int player_index, char isInfinite);
 extern void resetCoconutHUD(void);
@@ -313,7 +314,10 @@ extern void parseCheats(int unk0);
 extern void wipeTextureSlot(void* location);
 extern void copyImage(void* location, void* image, int width);
 extern void blink(void* actor, int unk0, int unk1);
+extern void unkPaletteFunc(void* actor, int unk0, int unk1);
 extern void applyImageToActor(void* actor, int unk0, int unk1);
+extern void adjustColorPalette(void* actor, int unk0, int palette, float unk1);
+extern void retextureZone(void* actor, int index, int palette);
 extern void writeImageSlotToActor(void* actor, int unk0, int unk1, void* location);
 extern void spriteControlCode(sprite_struct* sprite, char* render);
 extern int getPauseWheelRotationProgress(int unk0, int unk1);
@@ -321,6 +325,8 @@ extern void updateFilePercentage(void);
 extern int getKong(int player_index);
 extern int spawnModelTwo(int type, int x_f, int y_f, int z_f, float scale, int id);
 extern void refreshItemVisibility(void);
+
+extern void* getActorModel(void* actor, int model_index, int unk0);
 
 extern int isBalloonOrPatch(int actor_type);
 extern void getModel2AndActorInfo(void* setup, int** model2_write, int** actor_write);

@@ -22,7 +22,7 @@ from adjust_exits import adjustExits
 from adjust_zones import modifyTriggers
 from BuildClasses import File, HashIcon, ModelChange, ROMPointerFile, TextChange
 from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat
-from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName
+from BuildLib import BLOCK_COLOR_SIZE, ROMName, music_size, newROMName, barrel_skins, getBonusSkinOffset
 from convertPortalImage import convertPortalImage
 from convertSetup import convertSetup
 from cutscene_builder import buildScripts
@@ -186,7 +186,7 @@ file_dict = [
     File(
         name="Fake GB Shine",
         pointer_table_index=TableNames.TexturesGeometry,
-        file_index=6062,
+        file_index=getBonusSkinOffset(0),
         source_file="assets/displays/gb_shine.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
@@ -194,7 +194,7 @@ file_dict = [
     File(
         name="Melon Surface",
         pointer_table_index=TableNames.TexturesGeometry,
-        file_index=6066,
+        file_index=getBonusSkinOffset(4),
         source_file="assets/hash/melon_resized.png",
         texture_format=TextureFormat.RGBA5551,
         do_not_delete_source=True,
@@ -205,7 +205,16 @@ file_dict = [
     File(name="21132 Sign", pointer_table_index=TableNames.TexturesGeometry, file_index=0x7CA, source_file="21132_tex.bin", target_size=2 * 64 * 32),
     File(name="Crypt Lever Sign 1", pointer_table_index=TableNames.TexturesGeometry, file_index=0x999, source_file="cryptlev1_tex.bin", target_size=2 * 64 * 32),
     File(name="Crypt Lever Sign 2", pointer_table_index=TableNames.TexturesGeometry, file_index=0x99A, source_file="cryptlev2_tex.bin", target_size=2 * 64 * 32),
-    File(name="Majoras Mask Moon", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/displays/mm_moon32.png", texture_format=TextureFormat.RGBA5551),
+    File(name="Base Barrel Skin", pointer_table_index=TableNames.ActorGeometry, file_index=0x75, source_file="barrel_skin_base.bin", do_not_delete_source=True),
+    File(
+        name="Base Barrel Shell",
+        pointer_table_index=TableNames.TexturesGeometry,
+        file_index=getBonusSkinOffset(5),
+        source_file="assets/tagbarrel/plain_shell.png",
+        texture_format=TextureFormat.RGBA5551,
+        do_not_delete_source=True,
+    ),
+    File(name="Majoras Mask Moon", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/displays/moon_santa.png", texture_format=TextureFormat.IA8),
 ]
 
 file_dict = file_dict + buildScripts()
@@ -232,7 +241,7 @@ for klap_tex in [0xF31, 0xF32, 0xF33, 0xF35, 0xF37, 0xF38, 0xF39, 0xF3C, 0xF3D, 
         )
     )
 
-for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 0xF8, 0x136):
+for img in (0x4DD, 0x4E4, 0x6B, 0xF0, 0x8B2, 0x5C2, 0x66E, 0x66F, 0x685, 0x6A1, 0xF8, 0x136, 2007):
     file_dict.append(
         File(
             name=f"Snow Texture {hex(img)}",
@@ -279,7 +288,7 @@ for item in range(3):
         File(
             name=f"Rainbow Coin ({item})",
             pointer_table_index=TableNames.TexturesGeometry,
-            file_index=6063 + item,
+            file_index=getBonusSkinOffset(item + 1),
             source_file=f"assets/hash/rainbow_{item}.png",
             do_not_extract=True,
             texture_format=TextureFormat.RGBA5551,
@@ -787,26 +796,7 @@ for change in colorblind_changes:
                 target_size=2 * change[2] * change[3],
             )
         )
-barrel_skins = (
-    "dk",
-    "diddy",
-    "lanky",
-    "tiny",
-    "chunky",
-    "bp",
-    "nin_coin",
-    "rw_coin",
-    "key",
-    "crown",
-    "medal",
-    "potion",
-    "bean",
-    "pearl",
-    "fairy",
-    "rainbow",
-    "fakegb",
-    "melon",
-)
+
 for bi, b in enumerate(barrel_skins):
     for x in range(2):
         file_dict.append(
@@ -854,12 +844,10 @@ model_changes = [
     ModelChange(0xF9, "shrink_potion_chunky.bin", True),
     ModelChange(0xFA, "shrink_potion_any.bin", True),
     ModelChange(0xFB, "shrink_fairy.bin"),
-    ModelChange(0x10E, "fake_item_actor.bin"),
+    ModelChange(0xFC, "fake_item_actor.bin"),
     ModelChange(0xA3, "counter.bin"),
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
-for bi, b in enumerate(barrel_skins):
-    model_changes.append(ModelChange(0xFC + bi, f"barrel_skin_{b}.bin"))
 model_changes = sorted(model_changes, key=lambda d: d.model_index)
 
 for x in model_changes:
