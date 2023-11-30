@@ -47,15 +47,12 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
             pick_count = 2
         crowns = random.sample(index_lst, pick_count)
         # Give plandomizer an opportunity to have the final say
-        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_battle_arenas"][level] != -1:
-            for plando_crown_index in range(len(spoiler.settings.plandomizer_dict["plando_battle_arenas"][level])):
-                if spoiler.settings.plandomizer_dict["plando_battle_arenas"][level][plando_crown_index] != -1:
-                    # If we selected a vanilla crown location that conflicts with our plando, replace the conflicting crown instead
-                    if level == Levels.DKIsles and level_lst[crowns[(plando_crown_index + 1) % 2]].placement_subindex == plando_crown_index:
-                        crowns.reverse()
-                    crowns[plando_crown_index] = spoiler.settings.plandomizer_dict["plando_battle_arenas"][level][plando_crown_index]
-                if crowns[plando_crown_index] not in index_lst:
-                    raise Exceptions.PlandoIncompatibleException(f"Battle arena \"{crowns[plando_crown_index]}\" not found in {level}.")
+        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_battle_arenas"] != -1:
+            for i in range(pick_count):
+                if spoiler.settings.plandomizer_dict["plando_battle_arenas"][crown_locations[global_crown_idx + i]] != -1:
+                    crowns[i] = spoiler.settings.plandomizer_dict["plando_battle_arenas"][crown_locations[global_crown_idx + i]]
+                if crowns[global_crown_idx] not in index_lst:
+                    raise Exceptions.PlandoIncompatibleException(f"Battle arena \"{crowns[global_crown_idx + 1]}\" not found in {level}.")
         crown_data = {}
         for crown_index in crowns:
             crown_data[crown_index] = 0
