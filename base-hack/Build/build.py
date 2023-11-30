@@ -207,6 +207,7 @@ file_dict = [
     File(name="Crypt Lever Sign 2", pointer_table_index=TableNames.TexturesGeometry, file_index=0x99A, source_file="cryptlev2_tex.bin", target_size=2 * 64 * 32),
     File(name="Majoras Mask Moon", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/displays/mm_moon32.png", texture_format=TextureFormat.RGBA5551),
     File(name="Base Barrel Skin", pointer_table_index=TableNames.ActorGeometry, file_index=0x75, source_file="barrel_skin_base.bin", do_not_delete_source=True),
+    File(name="Base Barrel Shell", pointer_table_index=TableNames.TexturesGeometry, file_index=getBonusSkinOffset(5), source_file="assets/tagbarrel/plain_shell.png", texture_format=TextureFormat.RGBA5551, do_not_delete_source=True),
 ]
 
 file_dict = file_dict + buildScripts()

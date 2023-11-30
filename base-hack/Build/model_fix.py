@@ -2,6 +2,7 @@
 
 import os
 import zlib
+import math
 
 from BuildEnums import TableNames
 from BuildLib import ROMName, float_to_hex, intf_to_float, main_pointer_table_offset, barrel_skins, getBonusSkinOffset
@@ -278,6 +279,48 @@ with open(ROMName, "rb") as rom:
         if BARREL_BASE == 0xE3:
             fh.seek(0x1484)
         fh.write(((BASE_TEXTURE + 0) << 24).to_bytes(4, "big")) # 128A
+        if BARREL_BASE == 0xE3:
+            vert_count = int((0xFC8 - 0x28) / 0x10)
+            for i in range(vert_count):
+                fh.seek(0x28 + (0x10 * i) + 2)
+                y = int.from_bytes(fh.read(2), "big")
+                if y > 32767:
+                    y -= 65536
+                ymag = abs(y)
+                radius = 0
+                if ymag == 72:
+                    radius = 45
+                elif ymag < 24:
+                    radius = 60
+                else:
+                    diff = ymag - 24
+                    diff_range = 72 - 24
+                    radius_diff = int((diff / diff_range) * 15)
+                    radius = 60 - radius_diff
+                fh.seek(0x28 + (0x10 * i))
+                x = int.from_bytes(fh.read(2), "big")
+                fh.seek(0x28 + (0x10 * i) + 4)
+                z = int.from_bytes(fh.read(2), "big")
+                if x > 32767:
+                    x -= 65536
+                if z > 32767:
+                    z -= 65536
+                normal_radius = math.sqrt((x * x) + (z * z))
+                if normal_radius > 10:
+                    ratio = radius / normal_radius
+                    x = int(x * ratio)
+                    z = int(z * ratio)
+                    if x < 0:
+                        x += 65536
+                    if z < 0:
+                        z += 65536
+                    fh.seek(0x28 + (0x10 * i)) 
+                    fh.write(x.to_bytes(2, "big"))
+                    fh.seek(0x28 + (0x10 * i) + 4)
+                    fh.write(z.to_bytes(2, "big"))
+            fh.seek(0x114C)
+            fh.write(getBonusSkinOffset(5).to_bytes(4, "big"))
+
 
     # Fake Item - Model Two
     rom.seek(modeltwo_table + (0x74 << 2))
