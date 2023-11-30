@@ -469,6 +469,12 @@ for skin_type in skins:
         whole = Image.open(f"{skin_dir}{skin_data[0]}.png").resize((BASE_SIZE, BASE_SIZE))
     if skin_type != "fakegb":
         whole = whole.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    # Resize image to combat stretching
+    whole_0 = Image.new(mode="RGBA", size=(BASE_SIZE, BASE_SIZE))
+    whole = whole.resize((BASE_SIZE, int(BASE_SIZE * 0.8)))
+    whole_0.paste(whole, (0, int(BASE_SIZE * 0.1)), whole)
+    whole = whole_0
+    # Segment
     left = whole.crop((0, 0, BASE_SIZE >> 1, BASE_SIZE))
     right = whole.crop((BASE_SIZE >> 1, 0, BASE_SIZE, BASE_SIZE))
     left = left.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
