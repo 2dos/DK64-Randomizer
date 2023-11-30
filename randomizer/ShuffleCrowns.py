@@ -42,6 +42,7 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
         level_lst = CustomLocations[level]
         index_lst = list(range(len(level_lst)))
         index_lst = [x for x in index_lst if level_lst[x].vanilla_crown or (not level_lst[x].selected and LocationTypes.CrownPad not in level_lst[x].banned_types)]
+        index_lst = [x for x in index_lst if level_lst[x].name not in spoiler.settings.plandomizer_dict["reserved_custom_locations"][level]]
         pick_count = 1
         if level == Levels.DKIsles:
             pick_count = 2
@@ -52,8 +53,6 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
                 location_to_string = str(crown_locations[global_crown_idx + i].value)
                 if spoiler.settings.plandomizer_dict["plando_battle_arenas"][location_to_string] != -1:
                     crowns[i] = spoiler.settings.plandomizer_dict["plando_battle_arenas"][location_to_string]
-                if crowns[global_crown_idx] not in index_lst:
-                    raise Exceptions.PlandoIncompatibleException(f'Battle arena "{crowns[global_crown_idx + 1]}" not found in {level}.')
         crown_data = {}
         for crown_index in crowns:
             crown_data[crown_index] = 0

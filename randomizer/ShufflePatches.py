@@ -1,5 +1,6 @@
 """Shuffle Dirt Patch Locations."""
 import random
+from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Lists import Exceptions
 
 import randomizer.LogicFiles.AngryAztec
@@ -124,7 +125,8 @@ def ShufflePatches(spoiler, human_spoiler):
         for SingleDirtPatchLocation in CustomLocations[key]:
             if (SingleDirtPatchLocation.vanilla_patch or not SingleDirtPatchLocation.selected) and LocationTypes.DirtPatch not in SingleDirtPatchLocation.banned_types:
                 SingleDirtPatchLocation.setCustomLocation(False)
-                total_dirt_patch_list[key].append(SingleDirtPatchLocation)
+                if SingleDirtPatchLocation.name not in spoiler.settings.plandomizer_dict["reserved_custom_locations"][key]:
+                    total_dirt_patch_list[key].append(SingleDirtPatchLocation)
 
     # Make sure plandomized Dirt Patches are handled first
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
@@ -179,8 +181,6 @@ def select_random_dirt_from_area(area_dirt, amount, level, spoiler, human_spoile
                 allow_same_group_dirt = True
             if len(plando_input[level]) > iterations:
                 selected_patch_name = plando_input[level][iterations]
-                if len([x for x in area_dirt if x.name == selected_patch_name]) == 0:
-                    raise Exceptions.PlandoIncompatibleException(f'Dirt patch "{selected_patch_name}" not found in {level}.')
         for patch in CustomLocations[level]:  # enables the selected patch
             if patch.name == selected_patch_name:
                 patch.setCustomLocation(True)

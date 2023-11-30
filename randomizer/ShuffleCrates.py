@@ -126,7 +126,8 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
         for SingleMelonCrateLocation in CustomLocations[key]:
             if (SingleMelonCrateLocation.vanilla_crate or not SingleMelonCrateLocation.selected) and LocationTypes.MelonCrate not in SingleMelonCrateLocation.banned_types:
                 SingleMelonCrateLocation.setCustomLocation(False)
-                total_MelonCrate_list[key].append(SingleMelonCrateLocation)
+                if SingleMelonCrateLocation.name not in spoiler.settings.plandomizer_dict["reserved_custom_locations"][key]:
+                    total_MelonCrate_list[key].append(SingleMelonCrateLocation)
 
     # Make sure levels with multiple Melon Crates plandomized are handled first, before the shuffler runs out of dual levels
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"] != -1:
@@ -176,8 +177,6 @@ def select_random_meloncrate_from_area(area_meloncrate, amount, level, spoiler, 
             allow_same_group_crate = True
         if len(plando_input[level]) > iterations:
             selected_crate_name = plando_input[level][iterations]
-            if len([x for x in area_meloncrate if x.name == selected_crate_name]) == 0:
-                raise Exceptions.PlandoIncompatibleException(f'Melon crate "{selected_crate_name}" not found in {level}.')
         for meloncrate in CustomLocations[level]:  # enables the selected crate
             if meloncrate.name == selected_crate_name:
                 meloncrate.setCustomLocation(True)

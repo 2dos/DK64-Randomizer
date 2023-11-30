@@ -133,6 +133,22 @@ class Settings:
         self.plandomizer_dict["plando_wrinkly_doors"] = -1
         self.plandomizer_dict["plando_tns_portals"] = -1
         # ---------------------------------------------------
+        # Prevent custom locations selected for plandomizer from being used by a different randomizer
+        self.plandomizer_dict["reserved_custom_locations"] = {
+            Levels.DKIsles: [],
+            Levels.JungleJapes: [],
+            Levels.AngryAztec: [],
+            Levels.FranticFactory: [],
+            Levels.GloomyGalleon: [],
+            Levels.FungiForest: [],
+            Levels.CrystalCaves: [],
+            Levels.CreepyCastle: [],
+            Levels.HideoutHelm: [],
+        }
+        for key in ["plando_dirt_patches", "plando_melon_crates", "plando_battle_arenas"]:
+            if self.plandomizer_dict[key] != -1:
+                for customloc in self.plandomizer_dict[key]:
+                    self.plandomizer_dict["reserved_custom_locations"][customloc["level"]].append(customloc["name"])
 
         self.resolve_settings()
 
