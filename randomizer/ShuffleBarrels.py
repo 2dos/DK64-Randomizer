@@ -25,7 +25,7 @@ def PreplacePlandoMinigames(settings: Settings, barrelLocations: List[Locations]
     for loc in barrelLocations:
         minigame_placed = False
         if int(loc) in settings.plandomizer_dict["plando_bonus_barrels"].keys():
-            plando_minigame = getattr(Minigames, settings.plandomizer_dict["plando_bonus_barrels"][loc])
+            plando_minigame = getattr(Minigames, settings.plandomizer_dict["plando_bonus_barrels"][str(loc.value)])
             if validate_minigame(loc, plando_minigame, helm_minigame_available):
                 BarrelMetaData[loc].minigame = plando_minigame
                 minigame_placed = True
