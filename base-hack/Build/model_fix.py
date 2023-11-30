@@ -4,7 +4,7 @@ import os
 import zlib
 
 from BuildEnums import TableNames
-from BuildLib import ROMName, float_to_hex, intf_to_float, main_pointer_table_offset
+from BuildLib import ROMName, float_to_hex, intf_to_float, main_pointer_table_offset, barrel_skins, getBonusSkinOffset
 
 diddy_fix = """
     E7 00 00 00 00 00 00 00
@@ -142,6 +142,8 @@ if os.path.exists(krusha_file):
     with open(krusha_file, "r") as fh:
         krusha_kong = int(fh.read())
 
+BARREL_BASE = 0xE3 # 0x75
+
 with open(ROMName, "rb") as rom:
     rom.seek(main_pointer_table_offset + (TableNames.ActorGeometry * 4))
     actor_table = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
@@ -238,41 +240,45 @@ with open(ROMName, "rb") as rom:
                     bp_y += 65536
                 fh.seek(vtx_addr)
                 fh.write(bp_y.to_bytes(2, "big"))
-    barrel_skins = (
-        "dk",
-        "diddy",
-        "lanky",
-        "tiny",
-        "chunky",
-        "bp",
-        "nin_coin",
-        "rw_coin",
-        "key",
-        "crown",
-        "medal",
-        "potion",
-        "bean",
-        "pearl",
-        "fairy",
-        "rainbow",
-        "fakegb",
-        "melon",
-    )
-    rom.seek(actor_table + (0x75 << 2))
+    rom.seek(actor_table + (BARREL_BASE << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     model_size = model_end - model_start
-    for bi, b in enumerate(barrel_skins):
-        rom.seek(model_start)
-        with open(f"barrel_skin_{b}.bin", "wb") as fh:
-            compress = rom.read(model_size)
-            decompress = zlib.decompress(compress, (15 + 32))
-            fh.write(decompress)
-        with open(f"barrel_skin_{b}.bin", "r+b") as fh:
-            fh.seek(0x59C)
-            fh.write((6026 + (2 * bi) + 1).to_bytes(4, "big"))
-            fh.seek(0x63C)
-            fh.write((6026 + (2 * bi)).to_bytes(4, "big"))
+    BASE_TEXTURE = 0xC
+    rom.seek(model_start)
+    with open(f"barrel_skin_base.bin", "wb") as fh:
+        compress = rom.read(model_size)
+        decompress = zlib.decompress(compress, (15 + 32))
+        fh.write(decompress[:-4])
+        fh.write((2).to_bytes(2, "big"))
+        texture_count = len(barrel_skins)
+        if BARREL_BASE == 0x75:
+            texture_count += 1
+        second_count = 1
+        for x in range(2):
+            fh.write(texture_count.to_bytes(2, "big"))
+            fh.write((BASE_TEXTURE + x).to_bytes(2, "big"))
+            fh.write(second_count.to_bytes(2, "big"))
+            if BARREL_BASE == 0x75:
+                base_texture = 0x128A - x
+                fh.write(base_texture.to_bytes(2, "big"))
+            for bi in (range(len(barrel_skins))):
+                fh.write((6026 + (2 * bi) + x).to_bytes(2, "big"))
+        raw_size = fh.tell()
+        offset = raw_size & 3
+        if offset != 0:
+            for x in range(4 - offset):
+                fh.write((0).to_bytes(1, "big"))
+    with open(f"barrel_skin_base.bin", "r+b") as fh:
+        fh.seek(0x59C)
+        if BARREL_BASE == 0xE3:
+            fh.seek(0x13C4)
+        fh.write(((BASE_TEXTURE + 1) << 24).to_bytes(4, "big")) # 1289
+        fh.seek(0x63C)
+        if BARREL_BASE == 0xE3:
+            fh.seek(0x1484)
+        fh.write(((BASE_TEXTURE + 0) << 24).to_bytes(4, "big")) # 128A
+
     # Fake Item - Model Two
     rom.seek(modeltwo_table + (0x74 << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
@@ -288,7 +294,7 @@ with open(ROMName, "rb") as rom:
         fh.write(data)
     with open("temp.bin", "r+b") as fh:
         fh.seek(0xF4)
-        fh.write((6062).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(0).to_bytes(4, "big"))
         fh.seek(0)
         data = fh.read()
     if os.path.exists("temp.bin"):
@@ -310,7 +316,7 @@ with open(ROMName, "rb") as rom:
         fh.write(data)
     with open("temp.bin", "r+b") as fh:
         fh.seek(0xACC)
-        fh.write((6062).to_bytes(4, "big"))
+        fh.write(getBonusSkinOffset(0).to_bytes(4, "big"))
         fh.seek(0)
         data = fh.read()
     if os.path.exists("temp.bin"):

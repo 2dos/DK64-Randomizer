@@ -356,8 +356,6 @@ extern int fairyQueenCutsceneInit(int start, int count, flagtypes type);
 extern void fairyQueenCutsceneCheck(void);
 extern void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner);
 extern void giveFairyItem(int flag, int state, flagtypes type);
-extern void SpawnBarrel(spawnerPacket* packet);
-extern void initBarrelChange(void);
 
 extern void initIceTrap(void);
 extern void queueIceTrap(void);

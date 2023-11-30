@@ -229,6 +229,116 @@ int getBonusFlag(int index) {
     return bonus_data[index].flag;
 }
 
+typedef struct barrel_skin_tie {
+    /* 0x000 */ unsigned short actor;
+    /* 0x002 */ unsigned short skin;
+} barrel_skin_tie;
+
+typedef enum enum_bonus_skin {
+    /* 0x000 */ SKIN_GB,
+    /* 0x001 */ SKIN_KONG_DK,
+    /* 0x002 */ SKIN_KONG_DIDDY,
+    /* 0x003 */ SKIN_KONG_LANKY,
+    /* 0x004 */ SKIN_KONG_TINY,
+    /* 0x005 */ SKIN_KONG_CHUNKY,
+    /* 0x006 */ SKIN_BLUEPRINT,
+    /* 0x007 */ SKIN_NINTENDO_COIN,
+    /* 0x008 */ SKIN_RAREWARE_COIN,
+    /* 0x009 */ SKIN_KEY,
+    /* 0x00A */ SKIN_CROWN,
+    /* 0x00B */ SKIN_MEDAL,
+    /* 0x00C */ SKIN_POTION,
+    /* 0x00D */ SKIN_BEAN,
+    /* 0x00E */ SKIN_PEARL,
+    /* 0x00F */ SKIN_FAIRY,
+    /* 0x010 */ SKIN_RAINBOW_COIN,
+    /* 0x011 */ SKIN_FAKE_ITEM,
+    /* 0x012 */ SKIN_JUNK_ITEM,
+    /* ----- */ SKIN_TERMINATOR,
+} enum_bonus_skin;
+
+static const barrel_skin_tie bonus_skins[] = {
+    {.actor = 78, .skin=SKIN_BLUEPRINT},
+    {.actor = 75, .skin=SKIN_BLUEPRINT},
+    {.actor = 77, .skin=SKIN_BLUEPRINT},
+    {.actor = 79, .skin=SKIN_BLUEPRINT},
+    {.actor = 76, .skin=SKIN_BLUEPRINT},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_NINTENDOCOIN, .skin=SKIN_NINTENDO_COIN},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_RAREWARECOIN, .skin=SKIN_RAREWARE_COIN},
+    {.actor = 72, .skin=SKIN_KEY},
+    {.actor = 86, .skin=SKIN_CROWN},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_MEDAL, .skin=SKIN_MEDAL},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONDK, .skin=SKIN_POTION},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONDIDDY, .skin=SKIN_POTION},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONLANKY, .skin=SKIN_POTION},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONTINY, .skin=SKIN_POTION},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONCHUNKY, .skin=SKIN_POTION},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_POTIONANY, .skin=SKIN_POTION},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_KONGDK, .skin=SKIN_KONG_DK},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_KONGDIDDY, .skin=SKIN_KONG_DIDDY},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_KONGLANKY, .skin=SKIN_KONG_LANKY},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_KONGTINY, .skin=SKIN_KONG_TINY},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_KONGCHUNKY, .skin=SKIN_KONG_CHUNKY},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_BEAN, .skin=SKIN_BEAN},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_PEARL, .skin=SKIN_PEARL},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_FAIRY, .skin=SKIN_FAIRY},
+    {.actor = 140, .skin=SKIN_RAINBOW_COIN},
+    {.actor = CUSTOM_ACTORS_START + NEWACTOR_FAKEITEM, .skin=SKIN_FAKE_ITEM},
+    {.actor = 0x2F, .skin=SKIN_JUNK_ITEM},
+};
+
+enum_bonus_skin getBarrelSkinIndex(int actor) {
+    for (int i = 0; i < (sizeof(bonus_skins) / sizeof(barrel_skin_tie)); i++) {
+        if (bonus_skins[i].actor == actor) {
+            return bonus_skins[i].skin;
+        }
+    }
+    return SKIN_GB;
+}
+
+// #define BONUS_CACHE_SIZE SKIN_TERMINATOR * 2
+// static void* bonus_texture_data[BONUS_CACHE_SIZE] = {};
+// static unsigned char bonus_texture_load[BONUS_CACHE_SIZE] = {};
+
+// void* loadBonusTexture(int texture_offset) {
+// 	if (bonus_texture_load[texture_offset] == 0) {
+// 		bonus_texture_data[texture_offset] = getMapData(TABLE_TEXTURES, 6026 + texture_offset, 1, 1);
+// 	}
+// 	bonus_texture_load[texture_offset] = 3;
+// 	return bonus_texture_data[texture_offset];
+// }
+
+int alterBonusVisuals(int index) {
+    if (Rando.location_visuals & 1) {
+        if (index < 95) {
+            int actor = bonus_data[index].spawn_actor;
+            enum_bonus_skin skin = getBarrelSkinIndex(actor);
+            if (skin != SKIN_GB) {
+                for (int i = 0; i < 2; i++) {
+                    //retextureZone(CurrentActorPointer_0, i, skin);
+                    blink(CurrentActorPointer_0, i, 1);
+                    applyImageToActor(CurrentActorPointer_0, i, 0);
+                    adjustColorPalette(CurrentActorPointer_0, i, skin, 0.0f);
+                    unkPaletteFunc(CurrentActorPointer_0, i, 0);
+                }
+                // if (!CurrentActorPointer_0->model_file) {
+                //     CurrentActorPointer_0->model_file = getActorModel(CurrentActorPointer_0, 0x76, 0);
+                // }
+                // for (int i = 0; i < 2; i++) {
+                //     void* texture = loadBonusTexture((skin * 2) + i); // Load texture
+                //     int copy_size = 16 * 64 * 2;
+                //     void* location = dk_malloc(copy_size);
+                //     dk_memcpy(location, texture, copy_size);
+                //     blink(CurrentActorPointer_0, i, 0xFFFF);
+                //     applyImageToActor(CurrentActorPointer_0, i, 0);
+                //     writeImageSlotToActor(CurrentActorPointer_0, i, 0, location);
+                // }
+            }
+        }
+    }
+    return getBonusFlag(index);
+}
+
 void initItemRando(void) {
     /**
      * @brief Initialize Item Rando functionality
@@ -267,7 +377,7 @@ void initItemRando(void) {
     bonus_data[94].flag = 215;
     bonus_data[94].spawn_actor = 45;
     bonus_data[94].kong_actor = 6;
-    writeFunction(0x80680AE8, &getBonusFlag); // Get Bonus Flag Check
+    writeFunction(0x80680AE8, &alterBonusVisuals); // Get Bonus Flag Check
     writeFunction(0x80681854, &getBonusFlag); // Get Bonus Flag Check
     writeFunction(0x806C63A8, &getBonusFlag); // Get Bonus Flag Check
     writeFunction(0x806F78B8, &getKongFromBonusFlag); // Reward Table Kong Check
@@ -323,10 +433,6 @@ void initItemRando(void) {
         writeFunction(0x806C5F04, &giveFairyItem); // Fairy Flag Set
         // Rainbow Coins
         writeFunction(0x806A2268, &spawnDirtPatchReward); // Spawn Reward
-        if (Rando.location_visuals & 1) {
-            // Barrel Aesthetic
-            initBarrelChange();
-        }
         // Melon Crate
         *(int*)(0x80747EB0) = (int)&melonCrateItemHandler;
         // Mill GB

@@ -1706,17 +1706,42 @@ def placeKrushaHead(slot):
     ROM_COPY.seek(rgba16_addr32)
     ROM_COPY.writeBytes(bytearray(data32))
 
+barrel_skins = (
+    "gb",
+    "dk",
+    "diddy",
+    "lanky",
+    "tiny",
+    "chunky",
+    "bp",
+    "nin_coin",
+    "rw_coin",
+    "key",
+    "crown",
+    "medal",
+    "potion",
+    "bean",
+    "pearl",
+    "fairy",
+    "rainbow",
+    "fakegb",
+    "melon",
+)
+
+def getBonusSkinOffset(offset: int):
+    """Get texture index after the barrel skins."""
+    return 6026 + (2 * len(barrel_skins)) + offset
 
 def writeMiscCosmeticChanges(settings):
     """Write miscellaneous changes to the cosmetic colors."""
     if settings.misc_cosmetics:
         # Melon HUD
-        data = {7: [0x13C, 0x147], 14: [0x5A, 0x5D], 25: [0x17B2, 0x17B2]}
+        data = {7: [0x13C, 0x147], 14: [0x5A, 0x5D], 25: [getBonusSkinOffset(4), getBonusSkinOffset(4)]}
         shift = random.randint(-359, 359)
         for table in data:
             table_data = data[table]
             for img in range(table_data[0], table_data[1] + 1):
-                if table == 25 and img == 0x17B2:
+                if table == 25 and img == getBonusSkinOffset(4):
                     dims = (32, 32)
                 else:
                     dims = (48, 42)
