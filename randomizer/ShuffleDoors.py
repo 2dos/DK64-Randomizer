@@ -78,9 +78,7 @@ def ShuffleDoors(spoiler):
         # Prevent plandomized doors from being used as portals
         plando_indexes = []
         if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_wrinkly_doors"] != -1:
-            plando_indexes = [x for x in available_doors if door_locations[level][x].name in spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][level]]
-            if len(plando_indexes) != len([x for x in spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][level] if x != ""]):
-                raise Exceptions.PlandoIncompatibleException(f"Not every selected door is available in level {level}")
+            plando_indexes = [x for x in available_doors if door_locations[level][x].name in spoiler.settings.plandomizer_dict["plando_wrinkly_doors"]]
             for planned_door in plando_indexes:
                 available_doors.remove(planned_door)
         random.shuffle(available_doors)
@@ -120,9 +118,10 @@ def ShuffleDoors(spoiler):
                 if len(available_doors) > 0:  # Should only fail if we don't have enough door locations
                     # Give plandomizer an opportunity to get the final say
                     retry = True
-                    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_wrinkly_doors"] != -1:
-                        if spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][level][kong] != "":
-                            selected_door_index = [x for x in plando_indexes if door_locations[level][x].name == spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][level][kong]]
+                    location_var = GetDoorLocationForKongAndLevel(kong, level)
+                    if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_wrinkly_doors"] != -1 and location_var in spoiler.settings.plandomizer_dict["plando_wrinkly_doors"].keys():
+                        if spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][location_var] not in ("", -1):
+                            selected_door_index = [x for x in plando_indexes if door_locations[level][x].name == spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][location_var]]
                             retry = False
                         else:
                             selected_door_index = available_doors.pop()
@@ -134,7 +133,7 @@ def ShuffleDoors(spoiler):
                             available_doors.append(selected_door_index)
                             selected_door_index = available_doors.pop(0)
                         else: 
-                            name = spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][level][kong]
+                            name = spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][location_var]
                             raise Exceptions.PlandoIncompatibleException(f"Bad door location: {name}.")
                     selected_door = door_locations[level][selected_door_index]
                     selected_door.assignDoor(assignee)  # Clamp to within [0,4], preventing list index errors
