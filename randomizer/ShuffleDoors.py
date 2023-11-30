@@ -78,15 +78,16 @@ def ShuffleDoors(spoiler):
         # Prevent plandomized doors from being used as portals
         plando_indexes = []
         if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_wrinkly_doors"] != -1:
-            plando_indexes = [x for x in available_doors if door_locations[level][x].name in spoiler.settings.plandomizer_dict["plando_wrinkly_doors"]]
+            plando_indexes = [x for x in available_doors if door_locations[level][x].name in spoiler.settings.plandomizer_dict["plando_wrinkly_doors"].values()]
             for planned_door in plando_indexes:
                 available_doors.remove(planned_door)
         random.shuffle(available_doors)
         if spoiler.settings.tns_location_rando:
             plando_portal_indexes = []
             if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_tns_portals"] != -1:
-                plando_portal_indexes = [x for x in available_portals if door_locations[level][x].name in spoiler.settings.plandomizer_dict["plando_tns_portals"][level]]
-                if len(plando_portal_indexes) != len([x for x in spoiler.settings.plandomizer_dict["plando_tns_portals"][level]]):
+                level_to_string = str(level.value)
+                plando_portal_indexes = [x for x in available_portals if door_locations[level][x].name in spoiler.settings.plandomizer_dict["plando_tns_portals"][level_to_string]]
+                if len(plando_portal_indexes) != len([x for x in spoiler.settings.plandomizer_dict["plando_tns_portals"][level_to_string]]):
                     raise Exceptions.PlandoIncompatibleException(f"Not every selected portal is available in level {level}")
                 for planned_portal in plando_portal_indexes:
                     available_portals.remove(planned_portal)
@@ -118,7 +119,7 @@ def ShuffleDoors(spoiler):
                 if len(available_doors) > 0:  # Should only fail if we don't have enough door locations
                     # Give plandomizer an opportunity to get the final say
                     retry = True
-                    location_var = GetDoorLocationForKongAndLevel(kong, level)
+                    location_var = str(GetDoorLocationForKongAndLevel(kong, level).value)
                     if (
                         spoiler.settings.enable_plandomizer
                         and spoiler.settings.plandomizer_dict["plando_wrinkly_doors"] != -1

@@ -174,5 +174,5 @@ def fillPlandoDict(plando_dict: dict, plando_input):
     """Fill the plando_dict variable, using input from the plandomizer_dict."""
     for level in plando_dict.keys():
         for fairy in fairy_locations[level]:
-            if fairy.name in plando_input:
+            if fairy.name in plando_input.keys():
                 plando_dict[level].append(fairy.name)

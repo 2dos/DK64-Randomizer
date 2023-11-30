@@ -115,12 +115,12 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
                     available_for_kong.append(kasplat.name)
                 # Prevent double-assigning plandomized kasplats
                 if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_kasplats"] != -1:
-                    for name in spoiler.settings.plandomizer_dict["plando_kasplats"]:
+                    for name in spoiler.settings.plandomizer_dict["plando_kasplats"].values():
                         if name in available_for_kong:
                             available_for_kong.remove(name)
             selected_kasplat = random.choice(available_for_kong)
             if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_kasplats"] != -1:
-                location_var = GetBlueprintLocationForKongAndLevel(level, kong)
+                location_var = str(GetBlueprintLocationForKongAndLevel(level, kong).value)
                 plando_kasplat_selection = spoiler.settings.plandomizer_dict["plando_kasplats"][location_var]
                 if plando_kasplat_selection != -1:
                     selected_kasplat = plando_kasplat_selection

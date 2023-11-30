@@ -49,8 +49,9 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
         # Give plandomizer an opportunity to have the final say
         if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_battle_arenas"] != -1:
             for i in range(pick_count):
-                if spoiler.settings.plandomizer_dict["plando_battle_arenas"][crown_locations[global_crown_idx + i]] != -1:
-                    crowns[i] = spoiler.settings.plandomizer_dict["plando_battle_arenas"][crown_locations[global_crown_idx + i]]
+                location_to_string = str(crown_locations[global_crown_idx + i].value)
+                if spoiler.settings.plandomizer_dict["plando_battle_arenas"][location_to_string] != -1:
+                    crowns[i] = spoiler.settings.plandomizer_dict["plando_battle_arenas"][location_to_string]
                 if crowns[global_crown_idx] not in index_lst:
                     raise Exceptions.PlandoIncompatibleException(f'Battle arena "{crowns[global_crown_idx + 1]}" not found in {level}.')
         crown_data = {}

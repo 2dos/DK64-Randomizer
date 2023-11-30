@@ -56,7 +56,7 @@ def fillPlandoDict(plando_dict: dict, plando_input):
     """Fill the plando_dict variable, using input from the plandomizer_dict."""
     for level in plando_dict.keys():
         for patch in CustomLocations[level]:
-            if patch.name in plando_input:
+            if patch.name in plando_input.keys():
                 plando_dict[level].append(patch.name)
 
 

@@ -122,6 +122,17 @@ class Settings:
 
         if self.enable_plandomizer:
             self.ApplyPlandomizerSettings()
+        
+        # Remove these as plando features get implemented
+        self.plandomizer_dict["plando_bonus_barrels"] = -1
+        self.plandomizer_dict["plando_dirt_patches"] = -1
+        self.plandomizer_dict["plando_melon_crates"] = -1
+        self.plandomizer_dict["plando_battle_arenas"] = -1
+        self.plandomizer_dict["plando_fairies"] = -1
+        self.plandomizer_dict["plando_kasplats"] = -1
+        self.plandomizer_dict["plando_wrinkly_doors"] = -1
+        self.plandomizer_dict["plando_tns_portals"] = -1
+        # ---------------------------------------------------
 
         self.resolve_settings()
 
