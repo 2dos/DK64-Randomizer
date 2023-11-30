@@ -27,12 +27,17 @@ def get_custom_song_map() -> dict:
     }
 
 
-def update_custom_path_name(pathName: str, baseName: str) -> str:
-    """Replace the first part of a custom path name with a new base name.
+def update_custom_path_name(pathName: str, prefix: str) -> str:
+    """Replace the prefix of a custom path name with a new prefix.
 
     E.g. update_custom_path_name("foo/bgm/song", "bar") -> "bar/bgm/song"
     """
-    return f'{baseName}/{"/".join(pathName.split("/")[1:])}'
+    return f'{prefix}/{"/".join(pathName.split("/")[-2:])}'
+
+
+def get_serialized_custom_path_name(pathName: str) -> str:
+    """Obtain a path name for a custom song for writing to file."""
+    return "/".join(pathName.split("/")[-2:])
 
 
 def serialize_music_selections(form: dict, for_file: bool = False) -> dict:
@@ -79,27 +84,27 @@ def serialize_music_selections(form: dict, for_file: bool = False) -> dict:
                     if obj.value == truncated_name:
                         final_path_name = path_name
                         if for_file:
-                            final_path_name = update_custom_path_name(path_name, CUSTOM_PACK_NAME)
+                            final_path_name = get_serialized_custom_path_name(path_name)
                         songs_map["custom"][location] = final_path_name
                         break
     return songs_map
 
 
-def get_current_pack_name() -> str:
-    """Get the name of the currently loaded music pack, if there is one.
+def get_current_pack_prefix() -> str:
+    """Get the prefix of the currently loaded music pack, if there is one.
 
     This will either return the first time one of our lists is non-empty, or it
     will return None at the very end. It's a silly way to write a function, but
     jsProxy objects are hard to work with.
     """
     for song in js.cosmetic_names.bgm:
-        return song.split("/")[0]
+        return "/".join(song.split("/")[:-2])
     for song in js.cosmetic_names.majoritems:
-        return song.split("/")[0]
+        return "/".join(song.split("/")[:-2])
     for song in js.cosmetic_names.minoritems:
-        return song.split("/")[0]
+        return "/".join(song.split("/")[:-2])
     for song in js.cosmetic_names.events:
-        return song.split("/")[0]
+        return "/".join(song.split("/")[:-2])
     # No custom music has been loaded.
     return None
 
@@ -112,7 +117,7 @@ def update_custom_song_names(fileContents: dict) -> dict:
     to import the same file. So long as the songs are in the right place, with
     the right names, the name of the pack should be irrelevant.
     """
-    currentPackName = get_current_pack_name()
+    currentPackName = get_current_pack_prefix()
     if not currentPackName:
         return fileContents
     musicData = {
@@ -147,10 +152,10 @@ def validate_custom_song(songPath: str) -> None:
     """Ensure that a given song represents a currently loaded custom song."""
     # Check to see if the path is correctly formed.
     splitPath = songPath.split("/")
-    if len(splitPath) != 3:
+    if len(splitPath) != 2:
         errString = f'The music selection file is invalid: song name "{songPath}" is malformed.'
         raise_music_validation_error(errString)
-    _, category, songName = splitPath
+    category, songName = splitPath
     # Check to see if the path has a valid category.
     if category not in ["bgm", "majoritems", "minoritems", "events"]:
         errString = f'The music selection file is invalid: song name "{songPath}" has an invalid category "{category}".'
@@ -164,7 +169,7 @@ def validate_custom_song(songPath: str) -> None:
     customSongList = get_custom_song_map()[category]
     songFound = False
     for loadedSong, _ in customSongList:
-        _, _, loadedSongName = loadedSong.split("/")
+        loadedSongName = loadedSong.split("/")[-1]
         if songName == loadedSongName:
             songFound = True
             break
@@ -233,7 +238,7 @@ async def import_music_selections(file) -> None:
     for location, songName in musicData["custom"].items():
         locationElem = js.document.getElementById(f"music_select_{location}")
         # Find the matching select value.
-        _, category, _ = songName.split("/")
+        category = songName.split("/")[0]
         customSongList = get_custom_song_map()[category]
         for customSongName, customTruncatedName in customSongList:
             if songName == customSongName:

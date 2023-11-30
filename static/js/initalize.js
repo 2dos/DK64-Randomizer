@@ -159,6 +159,20 @@ function createMusicLoadPromise(jszip, filename) {
   });
 }
 
+function sortLoadedMusic(musicList) {
+  musicList.sort((a, b) => {
+    aName = a.name.toUpperCase();
+    bName = b.name.toUpperCase();
+    if (aName < bName) {
+      return -1;
+    } else if (aName > bName) {
+      return 1;
+    } else {
+      return 0;
+    }
+  })
+}
+
 var cosmetics;
 var cosmetic_names;
 var cosmetic_extensions;
@@ -245,9 +259,13 @@ function cosmetic_pack_event(fileToLoad) {
       }
 
       let bgm_files = await Promise.all(bgm_promises);
+      sortLoadedMusic(bgm_files);
       let majoritem_files = await Promise.all(majoritem_promises);
+      sortLoadedMusic(majoritem_files);
       let minoritem_files = await Promise.all(minoritem_promises);
+      sortLoadedMusic(minoritem_files);
       let event_files = await Promise.all(event_promises);
+      sortLoadedMusic(event_files);
 
       // BGM
       let bgm = bgm_files.map((x) => x.file);
@@ -288,7 +306,7 @@ function cosmetic_pack_event(fileToLoad) {
         events: event_ext,
       };
 
-      update_plando_music_options();
+      update_music_select_options();
     });
   };
 
@@ -300,11 +318,12 @@ function get_truncated_song_name(songName) {
 }
 
 function get_custom_song_display_name(songName) {
-  let trimmedName = songName.split("/").slice(2).join("/");
+  let splitName = songName.split("/");
+  let trimmedName = splitName[splitName.length - 1];
   return `Custom Song: ${trimmedName}`;
 }
 
-function update_plando_music_options() {
+function update_music_select_options() {
   customSongDict = {
     "BGM": cosmetic_names.bgm,
     "MajorItem": cosmetic_names.majoritems,
