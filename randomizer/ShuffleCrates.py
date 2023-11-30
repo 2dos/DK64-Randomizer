@@ -57,10 +57,8 @@ def removeMelonCrate(spoiler):
 
 def fillPlandoDict(plando_dict: dict, plando_input):
     """Fill the plando_dict variable, using input from the plandomizer_dict."""
-    for level in plando_dict.keys():
-        for crate in CustomLocations[level]:
-            if crate.name in plando_input.keys():
-                plando_dict[level].append(crate.name)
+    for crate in plando_input:
+        plando_dict[crate["level"]].append(crate["name"])
 
 
 def getPlandoCrateDistribution(plando_dict: dict):
@@ -122,7 +120,7 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
         Levels.HideoutHelm: [],
     }
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"] != -1:
-        fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_melon_crates"].keys())
+        fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_melon_crates"])
 
     for key in total_MelonCrate_list.keys():
         for SingleMelonCrateLocation in CustomLocations[key]:
@@ -161,8 +159,8 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"] != -1:
         for item_placement in spoiler.settings.plandomizer_dict["plando_melon_crates"]:
             for MelonCrate_index, MelonCrate in enumerate(sorted_MelonCrates):
-                if item_placement[MelonCrate["name"]] != -1:
-                    spoiler.settings.plandomizer_dict["locations"][MelonCrate["enum"]] = item_placement[MelonCrate["name"]]
+                if item_placement["name"] == MelonCrate["name"] and item_placement["reward"] != -1:
+                    spoiler.settings.plandomizer_dict["locations"][MelonCrate["enum"]] = item_placement["reward"]
     return human_spoiler.copy()
 
 

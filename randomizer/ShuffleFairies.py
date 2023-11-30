@@ -107,7 +107,7 @@ def ShuffleFairyLocations(spoiler):
             Levels.HideoutHelm: [],
         }
         if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_fairies"] != -1:
-            fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_fairies"].keys())
+            fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_fairies"])
 
         for level in fairy_locations:
             pick_size = 2
@@ -160,8 +160,9 @@ def ShuffleFairyLocations(spoiler):
                         spoiler.LocationList[data.location].name = f"{level_to_name[level]} Fairy ({fairy_locations[level][x].name})"
                         # Resolve location-item combinations for plando
                         if len(plando_dict[level]) > 0:
-                            if plando_dict[level][fairy_locations[level][x].name] != -1:
-                                spoiler.settings.plandomizer_dict["locations"][data.location] = plando_dict[level][fairy_locations[level][x].name]
+                            for fairy in spoiler.settings.plandomizer_dict["plando_fairies"]:
+                                if fairy["name"] == fairy_locations[level][x].name and fairy["reward"] != -1:
+                                    spoiler.settings.plandomizer_dict["locations"][data.location] = fairy["reward"]
 
 
 def ClearFairyLogic(spoiler):
@@ -172,7 +173,5 @@ def ClearFairyLogic(spoiler):
 
 def fillPlandoDict(plando_dict: dict, plando_input):
     """Fill the plando_dict variable, using input from the plandomizer_dict."""
-    for level in plando_dict.keys():
-        for fairy in fairy_locations[level]:
-            if fairy.name in plando_input.keys():
-                plando_dict[level].append(fairy.name)
+    for fairy in plando_input:
+        plando_dict[fairy["level"]].append(fairy["name"])

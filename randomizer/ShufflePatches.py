@@ -54,10 +54,8 @@ def removePatches(spoiler):
 
 def fillPlandoDict(plando_dict: dict, plando_input):
     """Fill the plando_dict variable, using input from the plandomizer_dict."""
-    for level in plando_dict.keys():
-        for patch in CustomLocations[level]:
-            if patch.name in plando_input.keys():
-                plando_dict[level].append(patch.name)
+    for patch in plando_input:
+        plando_dict[patch["level"]].append(patch["name"])
 
 
 def getPlandoDirtDistribution(plando_dict: dict):
@@ -120,7 +118,7 @@ def ShufflePatches(spoiler, human_spoiler):
         Levels.CreepyCastle: [],
     }
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
-        fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_dirt_patches"].keys())
+        fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_dirt_patches"])
 
     for key in total_dirt_patch_list.keys():
         for SingleDirtPatchLocation in CustomLocations[key]:
@@ -163,8 +161,8 @@ def ShufflePatches(spoiler, human_spoiler):
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
         for item_placement in spoiler.settings.plandomizer_dict["plando_dirt_patches"]:
             for patch_index, patch in enumerate(sorted_patches):
-                if item_placement[patch["name"]] != -1:
-                    spoiler.settings.plandomizer_dict["locations"][patch["enum"]] = item_placement[patch["name"]]
+                if item_placement["name"] == patch["name"] and item_placement["reward"] != -1:
+                    spoiler.settings.plandomizer_dict["locations"][patch["enum"]] = item_placement["reward"]
     return human_spoiler.copy()
 
 
