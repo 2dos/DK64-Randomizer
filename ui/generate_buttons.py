@@ -235,8 +235,7 @@ def generate_seed(event):
         # The data is serialized outside of the loop, because validation occurs
         # here and we might stop before attempting to generate a seed.
         plando_enabled = js.document.getElementById("enable_plandomizer").checked
-        song_select_enabled = js.document.getElementById("song_select_enabled").checked
-        form_data = serialize_settings(include_plando=plando_enabled, include_song_select=song_select_enabled)
+        form_data = serialize_settings(include_plando=plando_enabled)
 
         if form_data["enable_plandomizer"]:
             plando_errors = validate_plando_options(form_data)

@@ -7,7 +7,7 @@ from ui.music_select import serialize_music_selections
 from ui.plando_validation import populate_plando_options
 
 
-def serialize_settings(include_plando: bool = False, include_song_select: bool = False) -> dict:
+def serialize_settings(include_plando: bool = False) -> dict:
     """Serialize form settings into an enum-focused JSON object.
 
     Returns:
@@ -38,9 +38,8 @@ def serialize_settings(include_plando: bool = False, include_song_select: bool =
             form_data["plandomizer_data"] = json.dumps(plando_form_data)
 
     # Custom music data is also processed separately.
-    if include_song_select:
-        music_selection_data = serialize_music_selections(form)
-        form_data["music_selections"] = json.dumps(music_selection_data)
+    music_selection_data = serialize_music_selections(form)
+    form_data["music_selections"] = json.dumps(music_selection_data)
 
     def is_number(s) -> bool:
         """Check if a string is a number or not."""

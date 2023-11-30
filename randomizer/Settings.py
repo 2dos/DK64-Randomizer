@@ -21,6 +21,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import *
+from randomizer.Enums.SongType import SongType
 from randomizer.Enums.Types import Types
 from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
@@ -38,6 +39,7 @@ from randomizer.Lists.Location import (
 )
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
+from randomizer.Lists.Songs import song_data
 from randomizer.Patching.Lib import IsItemSelected, SwitchInfo
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
@@ -122,8 +124,7 @@ class Settings:
 
         if self.enable_plandomizer:
             self.ApplyPlandomizerSettings()
-        if self.song_select_enabled:
-            self.ApplyMusicSelections()
+        self.ApplyMusicSelections()
 
         self.resolve_settings()
 
@@ -363,7 +364,14 @@ class Settings:
         self.music_minoritems_randomized = False
         self.music_events_randomized = False
         self.random_music = False
-        self.song_select_enabled = False
+        self.music_selection_dict = {
+            "vanilla": {},
+            "custom": {},
+        }
+        self.bgm_songs_selected = False
+        self.majoritems_songs_selected = False
+        self.minoritems_songs_selected = False
+        self.events_songs_selected = False
 
         #  Unlock Moves - 0-40?
         self.starting_moves_count = 0
@@ -1508,6 +1516,18 @@ class Settings:
     def ApplyMusicSelections(self):
         """Apply user-selected songs."""
         self.music_selection_dict = json.loads(self.music_selections)
+        # Determine which categories have songs selected.
+        for song_enum, song in song_data.items():
+            song_str = str(song_enum.value)
+            if song_str in self.music_selection_dict["vanilla"] or song_str in self.music_selection_dict["custom"]:
+                if song.type == SongType.BGM:
+                    self.bgm_songs_selected = True
+                elif song.type == SongType.MajorItem:
+                    self.majoritems_songs_selected = True
+                elif song.type == SongType.MinorItem:
+                    self.minoritems_songs_selected = True
+                elif song.type == SongType.Event:
+                    self.events_songs_selected = True
 
     def __repr__(self):
         """Return printable version of the object as json.

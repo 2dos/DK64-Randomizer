@@ -58,8 +58,6 @@ def getAllAssignedVanillaSongs(settings: Settings) -> dict:
 
     The keys and values are both of type Songs.
     """
-    if not settings.song_select_enabled:
-        return {}
     return {Songs(int(k)): Songs(v) for k, v in settings.music_selection_dict["vanilla"].items()}
 
 
@@ -68,8 +66,6 @@ def getAllAssignedCustomSongs(settings: Settings) -> dict:
 
     The keys are of type Songs, and the values are strings.
     """
-    if not settings.song_select_enabled:
-        return {}
     return {Songs(int(k)): v for k, v in settings.music_selection_dict["custom"].items()}
 
 
@@ -475,7 +471,7 @@ def randomize_music(settings: Settings):
                 assigned_songs.append([])
                 assigned_locations.append([])
             # Assign all of the user-specified songs.
-            if settings.song_select_enabled:
+            if categoriesHaveAssignedSongs(settings, [SongType.BGM]):
                 for song_location, song in song_data.items():
                     if song.type != SongType.BGM or song.shuffled:
                         continue
@@ -568,7 +564,7 @@ def randomize_music(settings: Settings):
             assigned_items = []
             assigned_item_locations = []
             # Assign all of the user-specified songs.
-            if settings.song_select_enabled:
+            if categoriesHaveAssignedSongs(settings, [type_data.song_type]):
                 for song_location, song in song_data.items():
                     if song.type != type_data.song_type:
                         continue
