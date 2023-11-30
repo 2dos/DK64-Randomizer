@@ -18,8 +18,9 @@ def Reset(barrelLocations: List[Locations]) -> None:
     for key in barrelLocations:
         BarrelMetaData[key].minigame = Minigames.NoGame
 
+
 def PreplacePlandoMinigames(settings: Settings, barrelLocations: List[Locations], helm_minigame_available: bool):
-    """Apply plandomized minigame placement"""
+    """Apply plandomized minigame placement."""
     preplaced_minigame_locations = []
     for loc in barrelLocations:
         minigame_placed = False
@@ -34,6 +35,7 @@ def PreplacePlandoMinigames(settings: Settings, barrelLocations: List[Locations]
             preplaced_minigame_locations.append(loc)
     for preplaced in preplaced_minigame_locations:
         barrelLocations.remove(preplaced)
+
 
 def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigamePool: List[Minigames]) -> None:
     """Shuffle minigames to different barrels."""
@@ -66,6 +68,7 @@ def ShuffleBarrels(settings: Settings, barrelLocations: List[Locations], minigam
         if not success:
             raise Ex.BarrelOutOfMinigames
 
+
 def validate_minigame(location: Locations, minigame: Minigames, helm_minigame_available: bool):
     """Decide whether or not the given minigame is suitable for the given location."""
     valid = False
@@ -75,6 +78,7 @@ def validate_minigame(location: Locations, minigame: Minigames, helm_minigame_av
         if (MinigameRequirements[minigame].helm_enabled or BarrelMetaData[location].map != Maps.HideoutHelm) or helm_minigame_available is False:
             valid = True
     return valid
+
 
 def BarrelShuffle(settings: Settings) -> None:
     """Facilitate shuffling of barrels."""

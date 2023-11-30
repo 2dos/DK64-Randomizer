@@ -120,7 +120,7 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
                 if plando_kasplat_selection != -1:
                     selected_kasplat = plando_kasplat_selection
                 if selected_kasplat not in available_for_kong:
-                    raise Ex.PlandoIncompatibleException(f"Kasplat \"{selected_kasplat}\" not available for {kong} in {level}.")
+                    raise Ex.PlandoIncompatibleException(f'Kasplat "{selected_kasplat}" not available for {kong} in {level}.')
             # Loop through kasplats until we find the relevant one
             for kasplat in kasplats:
                 if kasplat.name == selected_kasplat:

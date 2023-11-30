@@ -51,12 +51,14 @@ def removePatches(spoiler):
             region_data = spoiler.RegionList[region]
             region_data.locations = [x for x in region_data.locations if x.id < Locations.RainbowCoin_Location00 or x.id > Locations.RainbowCoin_Location15]
 
+
 def fillPlandoDict(plando_dict: dict, plando_input):
     """Fill the plando_dict variable, using input from the plandomizer_dict."""
     for level in plando_dict.keys():
         for patch in CustomLocations[level]:
             if patch.name in plando_input:
                 plando_dict[level].append(patch.name)
+
 
 def getPlandoDirtDistribution(plando_dict: dict):
     """Adapt the dirt patch balance to the user's plandomizer input."""
@@ -86,8 +88,9 @@ def getPlandoDirtDistribution(plando_dict: dict):
                     break
     # Give the rest to DK Isles
     if running_total < 16:
-        distribution[0] += (16 - running_total)
+        distribution[0] += 16 - running_total
     return distribution
+
 
 def ShufflePatches(spoiler, human_spoiler):
     """Shuffle Dirt Patch Locations."""
@@ -177,9 +180,9 @@ def select_random_dirt_from_area(area_dirt, amount, level, spoiler, human_spoile
             if len(plando_input[level]) > 1:
                 allow_same_group_dirt = True
             if len(plando_input[level]) > iterations:
-                selected_patch_name = plando_input[level][iterations] 
+                selected_patch_name = plando_input[level][iterations]
                 if len([x for x in area_dirt if x.name == selected_patch_name]) == 0:
-                    raise Exceptions.PlandoIncompatibleException(f"Dirt patch \"{selected_patch_name}\" not found in {level}.")
+                    raise Exceptions.PlandoIncompatibleException(f'Dirt patch "{selected_patch_name}" not found in {level}.')
         for patch in CustomLocations[level]:  # enables the selected patch
             if patch.name == selected_patch_name:
                 patch.setCustomLocation(True)
