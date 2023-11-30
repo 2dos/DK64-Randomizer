@@ -143,7 +143,7 @@ if os.path.exists(krusha_file):
     with open(krusha_file, "r") as fh:
         krusha_kong = int(fh.read())
 
-BARREL_BASE = 0xE3 # 0x75
+BARREL_BASE = 0xE3  # 0x75
 
 with open(ROMName, "rb") as rom:
     rom.seek(main_pointer_table_offset + (TableNames.ActorGeometry * 4))
@@ -263,7 +263,7 @@ with open(ROMName, "rb") as rom:
             if BARREL_BASE == 0x75:
                 base_texture = 0x128A - x
                 fh.write(base_texture.to_bytes(2, "big"))
-            for bi in (range(len(barrel_skins))):
+            for bi in range(len(barrel_skins)):
                 fh.write((6026 + (2 * bi) + x).to_bytes(2, "big"))
         raw_size = fh.tell()
         offset = raw_size & 3
@@ -274,11 +274,11 @@ with open(ROMName, "rb") as rom:
         fh.seek(0x59C)
         if BARREL_BASE == 0xE3:
             fh.seek(0x13C4)
-        fh.write(((BASE_TEXTURE + 1) << 24).to_bytes(4, "big")) # 1289
+        fh.write(((BASE_TEXTURE + 1) << 24).to_bytes(4, "big"))  # 1289
         fh.seek(0x63C)
         if BARREL_BASE == 0xE3:
             fh.seek(0x1484)
-        fh.write(((BASE_TEXTURE + 0) << 24).to_bytes(4, "big")) # 128A
+        fh.write(((BASE_TEXTURE + 0) << 24).to_bytes(4, "big"))  # 128A
         if BARREL_BASE == 0xE3:
             vert_count = int((0xFC8 - 0x28) / 0x10)
             for i in range(vert_count):
@@ -314,13 +314,12 @@ with open(ROMName, "rb") as rom:
                         x += 65536
                     if z < 0:
                         z += 65536
-                    fh.seek(0x28 + (0x10 * i)) 
+                    fh.seek(0x28 + (0x10 * i))
                     fh.write(x.to_bytes(2, "big"))
                     fh.seek(0x28 + (0x10 * i) + 4)
                     fh.write(z.to_bytes(2, "big"))
             fh.seek(0x114C)
             fh.write(getBonusSkinOffset(5).to_bytes(4, "big"))
-
 
     # Fake Item - Model Two
     rom.seek(modeltwo_table + (0x74 << 2))
