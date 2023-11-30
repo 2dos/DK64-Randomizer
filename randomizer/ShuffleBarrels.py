@@ -90,6 +90,7 @@ def BarrelShuffle(settings: Settings) -> None:
                 Minigames.ChunkyShooting,
             ],
             MinigamesListSelected.arenas: [Minigames.RambiArena, Minigames.EnguardeArena],
+            MinigamesListSelected.training_minigames: [Minigames.OrangeBarrel, Minigames.BarrelBarrel, Minigames.VineBarrel, Minigames.DiveBarrel],
         }
         minigamePool = []
         for name, value in minigame_dict.items():

@@ -12,6 +12,33 @@ heap_size = 0x34000 + music_size
 flut_size = 0
 MODEL_DIRECTORY = "assets/models/"
 
+barrel_skins = (
+    "gb",
+    "dk",
+    "diddy",
+    "lanky",
+    "tiny",
+    "chunky",
+    "bp",
+    "nin_coin",
+    "rw_coin",
+    "key",
+    "crown",
+    "medal",
+    "potion",
+    "bean",
+    "pearl",
+    "fairy",
+    "rainbow",
+    "fakegb",
+    "melon",
+)
+
+
+def getBonusSkinOffset(offset: int):
+    """Get texture index after the barrel skins."""
+    return 6026 + (2 * len(barrel_skins)) + offset
+
 
 def intf_to_float(intf):
     """Convert float as int format to float."""

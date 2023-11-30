@@ -262,14 +262,6 @@ void initSeasonalChanges(void) {
     if (Rando.seasonal_changes == SEASON_HALLOWEEN) {
         *(int*)(0x8075E0B8) = 0x807080E0; // Makes isles reference Castle skybox data
 
-        // Make moon the one from MM
-        *(short*)(0x8070637E) = 115; // MM Moon Image
-        *(short*)(0x80706362) = 32; // MM Moon Size
-        *(short*)(0x80706366) = 32; // MM Moon Size
-        *(short*)(0x80706382) = 0; // MM Moon - Non Greyscale
-        *(short*)(0x80706386) = RGBA16; // MM Moon Codec
-        *(short*)(0x8070634A) = 0x4100; // Size
-
         // Chains
         *(short*)(0x8069901A) = 0xE; // Vine param
         *(short*)(0x8069903A) = 0xE; // Vine param
@@ -277,20 +269,27 @@ void initSeasonalChanges(void) {
         *(int*)(0x80698B6C) = 0; // Cancel branch
         *(short*)(0x80698B74) = 0x1000; // Force branch
     } else if (Rando.seasonal_changes == SEASON_CHRISTMAS) {
-        for (int i = 0; i < 6; i++) {
-            *WeatherData[i].texture_pointer = 0x173B;
-            WeatherData[i].width = 0x40;
-            WeatherData[i].height = 0x40;
-            WeatherData[i].codec_info = 0x0301;
-            WeatherData[i].frame_count = 1;
-        }
-        int addr = 0x80759EC4;
-        for (int i = 0; i < 6; i++) {
-            *(int*)(addr + (4 * i)) = 0x8068B5D8;
-        }
-        *(int*)(0x80711A64) = 0x24140010;
-        *(int*)(0x80711A5C) = 0x24140010;
-        *(int*)(0x80711A70) = 0x24140010;
+        // Make santa visit Isles
+        *(short*)(0x8070637E) = 115; // Moon Image
+        *(int*)(0x8075E0B8) = 0x807080E0; // Makes isles reference Castle skybox data
+        *(int*)(0x806682C8) = 0x240E0004; // Set ground sfx to snow
+        *(int*)(0x806682CC) = 0x240C0004; // Set ground sfx to snow
+        *(int*)(0x806682DC) = 0x240E0004; // Set ground sfx to snow
+
+        // for (int i = 0; i < 6; i++) {
+        //     *WeatherData[i].texture_pointer = 0x173B;
+        //     WeatherData[i].width = 0x40;
+        //     WeatherData[i].height = 0x40;
+        //     WeatherData[i].codec_info = 0x0301;
+        //     WeatherData[i].frame_count = 1;
+        // }
+        // int addr = 0x80759EC4;
+        // for (int i = 0; i < 6; i++) {
+        //     *(int*)(addr + (4 * i)) = 0x8068B5D8;
+        // }
+        // *(int*)(0x80711A64) = 0x24140010;
+        // *(int*)(0x80711A5C) = 0x24140010;
+        // *(int*)(0x80711A70) = 0x24140010;
     }
 }
 

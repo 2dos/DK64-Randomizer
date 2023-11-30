@@ -6,7 +6,7 @@ import zlib
 
 from BuildClasses import ROMPointerFile
 from BuildEnums import TableNames
-from BuildLib import finalROM, main_pointer_table_offset, hueShift
+from BuildLib import finalROM, main_pointer_table_offset, hueShift, getBonusSkinOffset
 from PIL import Image, ImageEnhance
 
 color_palettes = [
@@ -223,7 +223,7 @@ def applyMelonMask(shift: int):
         data = {
             7: (0x13C, 0x147),
             14: (0x5A, 0x5D),
-            25: (0x17B2, 0x17B2),
+            25: (getBonusSkinOffset(4), getBonusSkinOffset(4)),
         }
         for table in data:
             fh.seek(main_pointer_table_offset + (table * 0x4))
@@ -241,7 +241,7 @@ def applyMelonMask(shift: int):
                 temp_name = "temp.bin"
                 with open(temp_name, "wb") as fg:
                     fg.write(file_data)
-                if table == 25 and img == 0x17B2:
+                if table == 25 and img == getBonusSkinOffset(4):
                     dims = (32, 32)
                 else:
                     dims = (48, 42)
