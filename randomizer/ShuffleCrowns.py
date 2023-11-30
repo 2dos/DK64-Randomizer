@@ -77,7 +77,6 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
         crown_selection[level] = crown_data
         # In the event that the second crown on the list is IslesBattleArena2, reverse the list
         # because after this, the first crown on the list will get the logic for IslesBattleArena2
-        # For plando, this should be prevented in the plando block above
         if len(crowns) == 2 and CustomLocations[level][crowns[1]].placement_subindex == 0:
             crowns.reverse()
         for crown_index, crown in enumerate(crowns):
