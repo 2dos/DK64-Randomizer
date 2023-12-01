@@ -9,8 +9,6 @@ from randomizer.Lists.Songs import SongLocationList
 from ui.bindings import bind
 from ui.download import download_json_file
 
-CUSTOM_PACK_NAME = "custom"
-
 
 def is_custom_music_loaded() -> bool:
     """Return true if a custom music pack has been loaded."""
@@ -125,9 +123,8 @@ def update_custom_song_names(fileContents: dict) -> dict:
         "custom": {},
     }
     for location, song in fileContents["custom"].items():
-        if song.startswith(CUSTOM_PACK_NAME):
-            pathName = update_custom_path_name(song, currentPackName)
-            musicData["custom"][location] = pathName
+        pathName = update_custom_path_name(song, currentPackName)
+        musicData["custom"][location] = pathName
     return musicData
 
 
