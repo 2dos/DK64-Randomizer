@@ -287,7 +287,7 @@ CustomLocations = {
             map=Maps.JungleJapes, name="Behind the Mountain", x=1586.9215087891, y=790.5, z=2616.7092285156, rot_y=349, max_size=64, logic_region=Regions.JungleJapesMain, group=4, vanilla_crate=True
         ),
         CustomLocation(map=Maps.JungleJapes, name="Near Cannon Platform", x=1282, y=520, z=2262, max_size=56, logic_region=Regions.JungleJapesMain, group=4),
-        CustomLocation(map=Maps.JungleJapes, name="In Troff 'n' Scoff Alcove", x=770, y=538, z=2332, max_size=56, logic_region=Regions.JungleJapesMain, group=4),
+        CustomLocation(map=Maps.JungleJapes, name="In Troff 'n' Scoff Alcove", x=770, y=538, z=2332, max_size=56, logic_region=Regions.JapesTnSAlcove, group=4),
         # CrownLocation(
         #     map=Maps.JungleJapes,
         #     name="Near Underground Entrance",

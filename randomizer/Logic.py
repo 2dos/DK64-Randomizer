@@ -435,6 +435,10 @@ class LogicVarHolder:
         """Determine whether the hard bosses feature is enabled or not."""
         return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.hard_bosses)
 
+    def IsHardFallDamage(self) -> bool:
+        """Determine whether the lowered fall damage height threshold is enabled or not."""
+        return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold)
+
     def hasMoveSwitchsanity(self, switchsanity_setting: Switches, kong_needs_current: bool = True, level: Levels = Levels.JungleJapes, default_slam_level: int = 0) -> bool:
         """Determine whether the kong has the necessary moves based on the switchsanity data."""
         data = self.settings.switchsanity_data[switchsanity_setting]

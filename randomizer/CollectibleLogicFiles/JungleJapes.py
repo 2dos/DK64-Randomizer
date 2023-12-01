@@ -34,7 +34,6 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Tree by Funky's
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Tree by cannon
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # Tree by Diddy's cage
-        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # By Troff n Scoff
         Collectible(Collectibles.balloon, Kongs.donkey, lambda l: l.coconut, None, 1),  # Snide's
         Collectible(Collectibles.banana, Kongs.diddy, lambda l: True, None, 7),  # Around mountain
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 2),  # Treetops, Painting room side
@@ -46,6 +45,9 @@ LogicRegions = {
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 2),  # Cannon to Diddy's cage
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 5),  # By Snide's
         # Collectible(Collectibles.coin, Kongs.any, lambda l: l.shockwave and ((l.handstand and l.lanky) or (l.twirl and l.tiny) or l.CanMoonkick() or ((l.generalclips or l.phasewalk) and (l.istiny or l.isdiddy))), None, 1),  # Rainbow coin
+    ],
+    Regions.JapesTnSAlcove: [
+        Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 1),  # By Troff n Scoff
     ],
     Regions.JapesBaboonBlast: [
         Collectible(Collectibles.bunch, Kongs.donkey, lambda l: True, None, 2),

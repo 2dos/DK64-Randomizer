@@ -74,8 +74,13 @@ LogicRegions = {
         TransitionFront(Regions.JapesLankyCave, lambda l: ((l.hasMoveSwitchsanity(Switches.JapesPainting, False) or l.CanSkew(True) or l.CanSkew(False)) and ((l.handstand and l.islanky) or (l.twirl and l.istiny) or l.CanMoonkick())) or (l.CanMoonkick() and (l.phasewalk or l.CanSkew(True) or l.CanSkew(False))) or ((l.phasewalk or l.generalclips or l.CanSkew(True) or l.CanSkew(False)) and (l.isdiddy or l.istiny)), Transitions.JapesMainToLankyCave),
         TransitionFront(Regions.FunkyJapes, lambda l: True),
         TransitionFront(Regions.Snide, lambda l: True),
-        TransitionFront(Regions.JapesBossLobby, lambda l: not l.settings.tns_location_rando),  # Falling from top is not super intuitive but extremely convenient for T&S door rando
         TransitionFront(Regions.BeyondRambiGate, lambda l: l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.phasewalk or l.generalclips),
+        TransitionFront(Regions.JapesTnSAlcove, lambda l: l.vines or (l.advanced_platforming and not l.IsHardFallDamage())),  # Falling from the top is now advanced platforming but you can't have hard fall damage on for it
+    ]),
+
+    Regions.JapesTnSAlcove: Region("Japes T&S Alcove", "Japes Hillside", Levels.JungleJapes, False, None, [], [], [
+        TransitionFront(Regions.JungleJapesMain, lambda l: True),
+        TransitionFront(Regions.JapesBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 
     Regions.JapesTopOfMountain: Region("Japes Top of Mountain", "Japes Hillside", Levels.JungleJapes, False, None, [

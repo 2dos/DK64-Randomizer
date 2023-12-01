@@ -40,6 +40,7 @@ from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Patching.Lib import IsItemSelected, SwitchInfo
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
+from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
 from version import whl_hash
 
@@ -124,6 +125,9 @@ class Settings:
             self.ApplyPlandomizerSettings()
 
         self.resolve_settings()
+
+        # Generate the settings string - DO THIS LAST because the encryption method alters the form data
+        self.settings_string = encrypt_settings_string_enum(form_data)
 
     def apply_form_data(self, form_data):
         """Convert and apply the provided form data to this class."""

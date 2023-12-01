@@ -910,7 +910,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
             requires_rareware = True
             requires_nintendo = True
 
-    if Types.Coin in spoiler.settings.shuffled_location_types and requires_rareware:
+    if requires_rareware:  # A vanilla Rareware Coin should be considered a major item so medals will not be foolish
         majorItems.append(Items.RarewareCoin)
     if Types.Coin in spoiler.settings.shuffled_location_types and requires_nintendo:
         majorItems.append(Items.NintendoCoin)
@@ -2193,8 +2193,11 @@ def FillWorld(spoiler: Spoiler) -> None:
         try:
             if wipe_progression:
                 # Assume we can progress through the levels so long as we have enough kongs
-                WipeProgressionRequirements(spoiler.settings)
                 spoiler.settings.kongs_for_progression = True
+                WipeBLockerRequirements(spoiler.settings)
+                # If we're in CLO and keys are not in the pool, don't wipe boss requirements
+                if not (spoiler.settings.hard_level_progression and spoiler.settings.shuffle_items and Types.Key not in spoiler.settings.shuffled_location_types):
+                    WipeBossRequirements(spoiler.settings)
             # To aid in finding these locations, treat Rareware Coin and Rareware GB as being ~15-20% more expensive for fill purposes (unless it's already very expensive)
             spoiler.settings.medal_requirement = spoiler.settings.logical_medal_requirement
             spoiler.settings.rareware_gb_fairies = spoiler.settings.logical_fairy_requirement
@@ -2258,21 +2261,21 @@ def GetAccessibleKongLocations(levels: list, ownedKongs: list):
     return kongLocations
 
 
-def WipeProgressionRequirements(settings: Settings) -> None:
+def WipeBLockerRequirements(settings: Settings) -> None:
     """Wipe out progression requirements to assume access through main 7 levels."""
     for i in range(0, 7):
-        # Assume T&S and B.Locker amounts will be attainable for now
+        # Assume B.Locker amounts will be attainable for now
         settings.EntryGBs[i] = 0
+
+
+def WipeBossRequirements(settings: Settings) -> None:
+    """Wipe out progression requirements to beat bosses in the main 7 levels."""
+    for i in range(0, 7):
+        # Assume T&S amounts will be attainable for now
         settings.BossBananas[i] = 0
         # Assume starting kong can beat all the bosses for now
         settings.boss_kongs[i] = settings.starting_kong
         settings.boss_maps[i] = Maps.CastleBoss  # This requires nothing, allowing the fill to proceed as normal
-    # Also for now consider any kong can free any other kong, to avoid false failures in fill
-    if settings.kong_rando:
-        settings.diddy_freeing_kong = Kongs.any
-        settings.lanky_freeing_kong = Kongs.any
-        settings.tiny_freeing_kong = Kongs.any
-        settings.chunky_freeing_kong = Kongs.any
 
 
 def SetNewProgressionRequirements(spoiler: Spoiler) -> None:
@@ -2450,83 +2453,88 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
         accessible = GetAccessibleLocations(spoiler, [], SearchMode.GetReachable)
         runningGBTotal = spoiler.LogicVariables.GoldenBananas
 
+        # -------------------------------------------------------------------------------------------------------------------------------------------
+        # This chunk of code is here if we need to lower T&S values for whatever reason. This was the original attempt for CLO + item rando w/ keys.
+        # This is no longer believed to be necessary, but preserved here in case we need to revert because it mostly worked.
+        # -------------------------------------------------------------------------------------------------------------------------------------------
         # If at any moment we can get keys, let's see if we found any here
-        if isKeyItemRando:
-            # Until we know a new level is accessible...
-            while 1:
-                openLevels = GetAccessibleOpenLevels(spoiler)
-                # If we haven't found all the levels and have progressed through all open levels, we need to lower the CB requirement of one or more bosses for progression
-                if len(openLevels) < 7 and len(openLevels) == len(levelsProgressed):
-                    bossLocations = [location for id, location in spoiler.LocationList.items() if location.type == Types.Key and location.level in levelsProgressed]
-                    shuffle(bossLocations)
-                    priorityBossLocation = None
-                    priorityStrength = -1
-                    # Loop through the boss locations, looking for the most likely progression candidate
-                    for bossLocation in bossLocations:
-                        # If this location has nothing, don't even pretend to consider it
-                        if bossLocation.item is None or bossLocation.item == Items.NoItem:
-                            continue
-                        # If this one is already reachable, skip
-                        availableCBs = sum(spoiler.LogicVariables.ColoredBananas[bossLocation.level])
-                        if availableCBs < settings.BossBananas[bossLocation.level]:  # Note we track against current values so we take into account already-lowered ones
-                            # Absolute top priority for boss rewards is barrels - this can lock other bosses
-                            if bossLocation.item == Items.Barrels:
-                                priorityBossLocation = bossLocation
-                                priorityStrength = 1000
-                            # Next up is Keys - these can directly lock lobbies
-                            itemOnBoss = ItemList[bossLocation.item]
-                            if itemOnBoss.type == Types.Key and priorityStrength < 100:
-                                priorityBossLocation = bossLocation
-                                priorityStrength = 100
-                            # Next up is Swim - if this is shuffled it locks a lobby
-                            if bossLocation.item == Items.Swim and priorityStrength < 99:
-                                priorityBossLocation = bossLocation
-                                priorityStrength = 99
-                            # Next up is Vines - if this is shuffled it sometimes locks a lobby but is also often locking a lot of things
-                            if bossLocation.item == Items.Vines and priorityStrength < 98:
-                                priorityBossLocation = bossLocation
-                                priorityStrength = 98
-                            # Next up is Guns/Instruments - these are more likely to lock Kongs which unlock Keys
-                            if bossLocation.item in ItemPool.Guns(settings) or bossLocation.item in ItemPool.Instruments(settings):
-                                priorityBossLocation = bossLocation
-                                priorityStrength = 50
-                            # Other boss rewards of interest would be moves with no particular priority
-                            elif itemOnBoss.type == Types.Shop and priorityStrength < 10:
-                                priorityBossLocation = bossLocation
-                                priorityStrength = 10
-                            # Very low priority reward moves are Oranges and Shockwave/Camera
-                            elif itemOnBoss.type in (Types.TrainingBarrel, Types.Shockwave) and priorityStrength < 9:
-                                priorityBossLocation = bossLocation
-                                priorityStrength = 9
-                            # Zero priority rewards is basically everything else
-                            elif priorityStrength < 0:
-                                priorityBossLocation = bossLocation
-                                priorityStrength = 0
-                            # The rest won't be locking progression so don't need to be lowered
-                    if priorityBossLocation is None:
-                        # If we've already lowered all the T&S we can, then that's a fill error
-                        raise Ex.FillException("E2: Hard level order shuffler failed to progress through levels.")
-                    randomlyRolledRatio = initialTNS[priorityBossLocation.level] / settings.troff_max
-                    settings.BossBananas[priorityBossLocation.level] = round(availableCBs * randomlyRolledRatio)
-                    accessibleMoves = [
-                        spoiler.LocationList[x].item
-                        for x in accessible
-                        if spoiler.LocationList[x].item != Items.NoItem
-                        and spoiler.LocationList[x].item is not None
-                        and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
-                    ]
-                    if priorityBossLocation.item in accessibleMoves:
-                        accessibleMoves.remove(priorityBossLocation.item)
-                    ownedMoves[priorityBossLocation.level] = accessibleMoves
-                    ownedKongs[priorityBossLocation.level] = spoiler.LogicVariables.GetKongs()
-                    # Now that this boss location is accessible, let's see what's new and then repeat this loop in case we didn't find a new key
-                    spoiler.Reset()
-                    accessible = GetAccessibleLocations(spoiler, [], SearchMode.GetReachable)
-                else:
-                    # To break out of this loop, we either have a level we can progress to or we've just found all the levels
-                    break
+        # if isKeyItemRando:
+        #     # Until we know a new level is accessible...
+        #     while 1:
+        #         openLevels = GetAccessibleOpenLevels(spoiler)
+        #         # If we haven't found all the levels and have progressed through all open levels, we need to lower the CB requirement of one or more bosses for progression
+        #         if len(openLevels) < 7 and len(openLevels) == len(levelsProgressed):
+        #             bossLocations = [location for id, location in spoiler.LocationList.items() if location.type == Types.Key and location.level in levelsProgressed]
+        #             shuffle(bossLocations)
+        #             priorityBossLocation = None
+        #             priorityStrength = -1
+        #             # Loop through the boss locations, looking for the most likely progression candidate
+        #             for bossLocation in bossLocations:
+        #                 # If this location has nothing, don't even pretend to consider it
+        #                 if bossLocation.item is None or bossLocation.item == Items.NoItem:
+        #                     continue
+        #                 # If this one is already reachable, skip
+        #                 availableCBs = sum(spoiler.LogicVariables.ColoredBananas[bossLocation.level])
+        #                 if availableCBs < settings.BossBananas[bossLocation.level]:  # Note we track against current values so we take into account already-lowered ones
+        #                     # Absolute top priority for boss rewards is barrels - this can lock other bosses
+        #                     if bossLocation.item == Items.Barrels:
+        #                         priorityBossLocation = bossLocation
+        #                         priorityStrength = 1000
+        #                     # Next up is Keys - these can directly lock lobbies
+        #                     itemOnBoss = ItemList[bossLocation.item]
+        #                     if itemOnBoss.type == Types.Key and priorityStrength < 100:
+        #                         priorityBossLocation = bossLocation
+        #                         priorityStrength = 100
+        #                     # Next up is Swim - if this is shuffled it locks a lobby
+        #                     if bossLocation.item == Items.Swim and priorityStrength < 99:
+        #                         priorityBossLocation = bossLocation
+        #                         priorityStrength = 99
+        #                     # Next up is Vines - if this is shuffled it sometimes locks a lobby but is also often locking a lot of things
+        #                     if bossLocation.item == Items.Vines and priorityStrength < 98:
+        #                         priorityBossLocation = bossLocation
+        #                         priorityStrength = 98
+        #                     # Next up is Guns/Instruments - these are more likely to lock Kongs which unlock Keys
+        #                     if bossLocation.item in ItemPool.Guns(settings) or bossLocation.item in ItemPool.Instruments(settings):
+        #                         priorityBossLocation = bossLocation
+        #                         priorityStrength = 50
+        #                     # Other boss rewards of interest would be moves with no particular priority
+        #                     elif itemOnBoss.type == Types.Shop and priorityStrength < 10:
+        #                         priorityBossLocation = bossLocation
+        #                         priorityStrength = 10
+        #                     # Very low priority reward moves are Oranges and Shockwave/Camera
+        #                     elif itemOnBoss.type in (Types.TrainingBarrel, Types.Shockwave) and priorityStrength < 9:
+        #                         priorityBossLocation = bossLocation
+        #                         priorityStrength = 9
+        #                     # Zero priority rewards is basically everything else
+        #                     elif priorityStrength < 0:
+        #                         priorityBossLocation = bossLocation
+        #                         priorityStrength = 0
+        #                     # The rest won't be locking progression so don't need to be lowered
+        #             if priorityBossLocation is None:
+        #                 # If we've already lowered all the T&S we can, then that's a fill error
+        #                 raise Ex.FillException("E2: Hard level order shuffler failed to progress through levels.")
+        #             randomlyRolledRatio = initialTNS[priorityBossLocation.level] / settings.troff_max
+        #             settings.BossBananas[priorityBossLocation.level] = round(availableCBs * randomlyRolledRatio)
+        #             accessibleMoves = [
+        #                 spoiler.LocationList[x].item
+        #                 for x in accessible
+        #                 if spoiler.LocationList[x].item != Items.NoItem
+        #                 and spoiler.LocationList[x].item is not None
+        #                 and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
+        #             ]
+        #             if priorityBossLocation.item in accessibleMoves:
+        #                 accessibleMoves.remove(priorityBossLocation.item)
+        #             ownedMoves[priorityBossLocation.level] = accessibleMoves
+        #             ownedKongs[priorityBossLocation.level] = spoiler.LogicVariables.GetKongs()
+        #             # Now that this boss location is accessible, let's see what's new and then repeat this loop in case we didn't find a new key
+        #             spoiler.Reset()
+        #             accessible = GetAccessibleLocations(spoiler, [], SearchMode.GetReachable)
+        #         else:
+        #             # To break out of this loop, we either have a level we can progress to or we've just found all the levels
+        #             break
+
         # If we acquire keys in the traditional way, we go get this level's boss key
-        else:
+        if not isKeyItemRando:
             # Determine if the level we picked was a level progression key
             if not settings.open_lobbies:
                 lobbyIndex = -1
@@ -2594,44 +2602,50 @@ def SetNewProgressionRequirementsUnordered(spoiler: Spoiler) -> None:
         if bossLocation.level not in ownedKongs.keys():
             ownedKongs[bossLocation.level] = [Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky]
             ownedMoves[bossLocation.level] = allMoves
+        # -------------------------------------------------------------------------------------------------------------------------------------------
+        # This chunk of code is here if we need to lower T&S values for whatever reason. This was the original attempt for CLO + item rando w/ keys.
+        # This is no longer believed to be necessary, but preserved here in case we need to revert because it mostly worked.
+        # -------------------------------------------------------------------------------------------------------------------------------------------
         # If boss rewards could be anything, we have to make sure they're accessible independent of all else
-        if isKeyItemRando:
-            bossReward = bossLocation.item
-            # If the boss reward doesn't contain progression, it's fine
-            if bossReward is None or ItemList[bossReward].type not in (Types.TrainingBarrel, Types.Shop, Types.Shockwave, Types.Key):
-                continue
-            # You never have the boss reward when fighting it, so remove it from consideration for boss placement
-            if bossReward in ownedMoves[bossLocation.level]:
-                ownedMoves[bossLocation.level].remove(bossReward)
-            # If it could contain progression, place a dummy item there and see if we can reach it
-            bossLocation.PlaceItem(spoiler, Items.TestItem)
-            spoiler.Reset()
-            accessible = GetAccessibleLocations(spoiler, [], SearchMode.GetReachable)
-            if not spoiler.LogicVariables.found_test_item:
-                # If we can't reach it eventually in this world state, then we need to lower this T&S
-                randomlyRolledRatio = initialTNS[bossLocation.level] / settings.troff_max
-                availableCBs = sum(spoiler.LogicVariables.ColoredBananas[bossLocation.level])
-                settings.BossBananas[bossLocation.level] = round(availableCBs * randomlyRolledRatio)
-                accessibleMoves = [
-                    spoiler.LocationList[x].item
-                    for x in accessible
-                    if spoiler.LocationList[x].item != Items.NoItem
-                    and spoiler.LocationList[x].item is not None
-                    and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
-                ]
-                ownedMoves[bossLocation.level] = accessibleMoves
-                ownedKongs[bossLocation.level] = spoiler.LogicVariables.GetKongs()
-            # Put it back so we don't accidentally an item
-            bossLocation.PlaceItem(spoiler, bossReward)
+        # if isKeyItemRando:
+        #     bossReward = bossLocation.item
+        #     # If the boss reward doesn't contain progression, it's fine
+        #     if bossReward is None or ItemList[bossReward].type not in (Types.TrainingBarrel, Types.Shop, Types.Shockwave, Types.Key):
+        #         continue
+        #     # You never have the boss reward when fighting it, so remove it from consideration for boss placement
+        #     if bossReward in ownedMoves[bossLocation.level]:
+        #         ownedMoves[bossLocation.level].remove(bossReward)
+        #     # If it could contain progression, place a dummy item there and see if we can reach it
+        #     bossLocation.PlaceItem(spoiler, Items.TestItem)
+        #     spoiler.Reset()
+        #     accessible = GetAccessibleLocations(spoiler, [], SearchMode.GetReachable)
+        #     if not spoiler.LogicVariables.found_test_item:
+        #         # If we can't reach it eventually in this world state, then we need to lower this T&S
+        #         randomlyRolledRatio = initialTNS[bossLocation.level] / settings.troff_max
+        #         availableCBs = sum(spoiler.LogicVariables.ColoredBananas[bossLocation.level])
+        #         settings.BossBananas[bossLocation.level] = round(availableCBs * randomlyRolledRatio)
+        #         accessibleMoves = [
+        #             spoiler.LocationList[x].item
+        #             for x in accessible
+        #             if spoiler.LocationList[x].item != Items.NoItem
+        #             and spoiler.LocationList[x].item is not None
+        #             and ItemList[spoiler.LocationList[x].item].type in (Types.TrainingBarrel, Types.Shop, Types.Shockwave)
+        #         ]
+        #         ownedMoves[bossLocation.level] = accessibleMoves
+        #         ownedKongs[bossLocation.level] = spoiler.LogicVariables.GetKongs()
+        #     # Put it back so we don't accidentally an item
+        #     bossLocation.PlaceItem(spoiler, bossReward)
 
     # Because we might not have sorted the B. Lockers when they're randomly generated, Helm might be a surprisingly low number if it's not maximized
     if settings.randomize_blocker_required_amounts and not settings.maximize_helm_blocker and settings.EntryGBs[7] < minimumBLockerGBs:
         # Ensure that Helm is the most expensive B. Locker
         settings.EntryGBs[7] = randint(minimumBLockerGBs, settings.blocker_max)
-    # Place boss locations based on kongs and moves found for each level
-    ShuffleBossesBasedOnOwnedItems(settings, ownedKongs, ownedMoves)
-    settings.owned_kongs_by_level = ownedKongs
-    settings.owned_moves_by_level = ownedMoves
+    # Only if keys are shuffled off of bosses do we need to reshuffle the bosses
+    if not isKeyItemRando:
+        # Place boss locations based on kongs and moves found for each level
+        ShuffleBossesBasedOnOwnedItems(settings, ownedKongs, ownedMoves)
+        settings.owned_kongs_by_level = ownedKongs
+        settings.owned_moves_by_level = ownedMoves
 
     # After setting all the progression, make sure we did it right
     # Technically the coin logic check after this will cover it, but this will help identify issues better
@@ -2864,6 +2878,8 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
 
 def ValidateFixedHints(settings: Settings) -> None:
     """Check for some known incompatibilities with the Fixed hint system ASAP so we don't waste time genning this seed."""
+    if settings.logic_type == LogicType.nologic:
+        raise Ex.SettingsIncompatibleException("No Logic is not compatible with fixed hints.")
     if not settings.shuffle_items:
         raise Ex.SettingsIncompatibleException("Item Randomizer must be enabled with Fixed hints.")
     if settings.win_condition != WinCondition.beat_krool:
