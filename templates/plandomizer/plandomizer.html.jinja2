@@ -1,17 +1,4 @@
 <style>
-    .import-export-container {
-        padding: 16px 0;
-    }
-
-    .plando-settings-button {
-        margin: 0 8px;
-        min-width: 125px;
-    }
-
-    .plando-import-errors {
-        margin: 0 1rem 1rem;
-    }
-
     .plando-pane {
         padding-bottom: 24px;
     }
@@ -22,15 +9,6 @@
 
     .plando-pill {
         flex: 0 0 14%;
-    }
-
-    .location-picker {
-        margin: 0 16px 32px;
-        width: 30%;
-    }
-
-    .location-label {
-        margin-bottom: 4px;
     }
 </style>
 {# TODO LIST #}
@@ -47,19 +25,19 @@
     </label>
     <div class="flex-container flex-center import-export-container">
         <input id="import_plando_settings"
-               class="btn btn-primary plando-settings-button"
+               class="btn btn-primary settings-button"
                type="button"
                value="Import Settings from File"/>
         <input id="export_plando_settings"
-               class="btn btn-primary plando-settings-button"
+               class="btn btn-primary settings-button"
                type="button"
                value="Export Settings to File"/>
         <input id="reset_plando_settings"
-               class="btn btn-primary plando-settings-button"
+               class="btn btn-primary settings-button"
                type="button"
                value="Reset Plando Settings"/>
     </div>
-    <div class="plando-import-errors"
+    <div class="import-errors"
          id="plando_import_errors"
          style="display: none;">
     </div>

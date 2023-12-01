@@ -300,12 +300,12 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
             humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = klap_models[settings.klaptrap_model_index]
         else:
             humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(settings.klaptrap_model_index)}"
-    if settings.music_bgm_randomized:
+    if settings.music_bgm_randomized or settings.bgm_songs_selected:
         humanspoiler["Cosmetics"]["Background Music"] = music_data.get("music_bgm_data")
-    if settings.music_majoritems_randomized:
+    if settings.music_majoritems_randomized or settings.majoritems_songs_selected:
         humanspoiler["Cosmetics"]["Major Item Themes"] = music_data.get("music_majoritem_data")
-    if settings.music_minoritems_randomized:
+    if settings.music_minoritems_randomized or settings.minoritems_songs_selected:
         humanspoiler["Cosmetics"]["Minor Item Themes"] = music_data.get("music_minoritem_data")
-    if settings.music_events_randomized:
+    if settings.music_events_randomized or settings.events_songs_selected:
         humanspoiler["Cosmetics"]["Event Themes"] = music_data.get("music_event_data")
     return humanspoiler
