@@ -40,6 +40,7 @@
     "fps_display": false,
     "free_trade_setting": "none",
     "fungi_time": "day",
+    "galleon_water": "lowered",
     "generate_spoilerlog": true,
     "glitches_selected":[],
     "hard_blockers": false,
