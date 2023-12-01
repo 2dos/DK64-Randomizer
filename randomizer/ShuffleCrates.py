@@ -120,14 +120,6 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
         Levels.CreepyCastle: [],
         Levels.HideoutHelm: [],
     }
-    spoiler.settings.plandomizer_dict["plando_melon_crates"] = [
-        {"level": Levels.DKIsles, "location": "Isles Boulders", "reward": PlandoItems.Bongos},
-        {"level": Levels.DKIsles, "location": "Behind Aztec Building", "reward": PlandoItems.Guitar},
-        {"level": Levels.DKIsles, "location": "Near Caves Lobby Tree (1)", "reward": PlandoItems.Trombone},
-        {"level": Levels.DKIsles, "location": "Near Caves Lobby Tree (2)", "reward": PlandoItems.Orangstand},
-        {"level": Levels.DKIsles, "location": "Fungi Platform", "reward": PlandoItems.ProgressiveSlam},
-        {"level": Levels.DKIsles, "location": "Behind Fungi Building", "reward": PlandoItems.ProgressiveSlam},
-    ]
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"] != -1:
         fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_melon_crates"])
 
@@ -135,7 +127,7 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
         for SingleMelonCrateLocation in CustomLocations[key]:
             if (SingleMelonCrateLocation.vanilla_crate or not SingleMelonCrateLocation.selected) and LocationTypes.MelonCrate not in SingleMelonCrateLocation.banned_types:
                 SingleMelonCrateLocation.setCustomLocation(False)
-                if SingleMelonCrateLocation.name not in spoiler.settings.plandomizer_dict["reserved_custom_locations"][key]:
+                if not spoiler.settings.enable_plandomizer or (SingleMelonCrateLocation.name not in spoiler.settings.plandomizer_dict["reserved_custom_locations"][key]):
                     total_MelonCrate_list[key].append(SingleMelonCrateLocation)
 
     # Make sure levels with multiple Melon Crates plandomized are handled first, before the shuffler runs out of dual levels

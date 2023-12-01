@@ -50,16 +50,6 @@ def GetDoorLocationForKongAndLevel(kong, level):
 def ShuffleDoors(spoiler):
     """Shuffle Wrinkly and T&S Doors based on settings."""
     # Reset Doors
-    spoiler.settings.plandomizer_dict["plando_wrinkly_doors"] = {
-        str(Locations.JapesDonkeyDoor.value): "Jungle Japes: Next to Diddy Cage - right",
-        str(Locations.JapesDiddyDoor.value): "Jungle Japes: Alcove Above Diddy Tunnel - left",
-        str(Locations.JapesLankyDoor.value): "Jungle Japes: Alcove Above Diddy Tunnel - right",
-        str(Locations.JapesTinyDoor.value): "Jungle Japes: Main Area - Next to Tunnel to Tiny Gate",
-        str(Locations.JapesChunkyDoor.value): "Jungle Japes: Underwater by Warp 2",
-    }
-    spoiler.settings.plandomizer_dict["plando_tns_portals"] = {
-        str(Levels.JungleJapes.value): ["Jungle Japes: Across From Minecart Exit", "Jungle Japes: Cranky Area - front-right", "Jungle Japes: Entrance Tunnel - Near Warppad 1 and 2"],
-    }
     for level in door_locations:
         # Also reset the data structures that share info across processes
         shuffled_door_data[level] = []

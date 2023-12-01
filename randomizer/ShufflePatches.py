@@ -120,14 +120,6 @@ def ShufflePatches(spoiler, human_spoiler):
         Levels.CrystalCaves: [],
         Levels.CreepyCastle: [],
     }
-    spoiler.settings.plandomizer_dict["plando_dirt_patches"] = [
-        {"level": Levels.JungleJapes, "location": "Cranky-tunnel Crossing", "reward": PlandoItems.SimianSpring},
-        {"level": Levels.JungleJapes, "location": "Next to level entrance", "reward": PlandoItems.ChimpyCharge},
-        {"level": Levels.JungleJapes, "location": "Next to first tunnel entrance", "reward": PlandoItems.Peanut},
-        {"level": Levels.JungleJapes, "location": "Inside the first tunnel - later half", "reward": PlandoItems.PrimatePunch},
-        {"level": Levels.JungleJapes, "location": "Near the Vine Pit", "reward": PlandoItems.ProgressiveAmmoBelt},
-        {"level": Levels.JungleJapes, "location": "Behind Storm Area Shop (1)", "reward": PlandoItems.ProgressiveAmmoBelt},
-    ]
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
         fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_dirt_patches"])
 
@@ -135,7 +127,7 @@ def ShufflePatches(spoiler, human_spoiler):
         for SingleDirtPatchLocation in CustomLocations[key]:
             if (SingleDirtPatchLocation.vanilla_patch or not SingleDirtPatchLocation.selected) and LocationTypes.DirtPatch not in SingleDirtPatchLocation.banned_types:
                 SingleDirtPatchLocation.setCustomLocation(False)
-                if SingleDirtPatchLocation.name not in spoiler.settings.plandomizer_dict["reserved_custom_locations"][key]:
+                if not spoiler.settings.enable_plandomizer or (SingleDirtPatchLocation.name not in spoiler.settings.plandomizer_dict["reserved_custom_locations"][key]):
                     total_dirt_patch_list[key].append(SingleDirtPatchLocation)
 
     # Make sure plandomized Dirt Patches are handled first

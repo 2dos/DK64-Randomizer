@@ -34,18 +34,6 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
         Levels.CreepyCastle: "Castle",
         Levels.HideoutHelm: "Helm",
     }
-    spoiler.settings.plandomizer_dict["plando_battle_arenas"] = {
-        str(Locations.JapesBattleArena.value): "Minecart Alcove",
-        str(Locations.AztecBattleArena.value): -1,
-        str(Locations.FactoryBattleArena.value): -1,
-        str(Locations.GalleonBattleArena.value): -1,
-        str(Locations.ForestBattleArena.value): -1,
-        str(Locations.CavesBattleArena.value): -1,
-        str(Locations.CastleBattleArena.value): -1,
-        str(Locations.IslesBattleArena2.value): -1,
-        str(Locations.IslesBattleArena1.value): -1,
-        str(Locations.HelmBattleArena.value): -1,
-    }
     # Remove crowns from their original logic region
     for id, region in spoiler.RegionList.items():
         region.locations = [loclogic for loclogic in region.locations if loclogic.id not in crown_locations]
@@ -54,7 +42,8 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
         level_lst = CustomLocations[level]
         index_lst = list(range(len(level_lst)))
         index_lst = [x for x in index_lst if level_lst[x].vanilla_crown or (not level_lst[x].selected and LocationTypes.CrownPad not in level_lst[x].banned_types)]
-        index_lst = [x for x in index_lst if level_lst[x].name not in spoiler.settings.plandomizer_dict["reserved_custom_locations"][level]]
+        if spoiler.settings.enable_plandomizer:
+            index_lst = [x for x in index_lst if level_lst[x].name not in spoiler.settings.plandomizer_dict["reserved_custom_locations"][level]]
         pick_count = 1
         if level == Levels.DKIsles:
             pick_count = 2

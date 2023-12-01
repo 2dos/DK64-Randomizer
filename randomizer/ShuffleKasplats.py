@@ -101,48 +101,7 @@ def ShuffleKasplatsAndLocations(spoiler, LogicVariables):
         spoiler.LocationList[location].inaccessible = True
     for location in constants:
         spoiler.LocationList[location].inaccessible = True
-    spoiler.settings.plandomizer_dict["plando_kasplats"] = {
-        str(Locations.JapesDonkeyKasplatRando.value): "Japes Kasplat: In the river",
-        str(Locations.JapesDiddyKasplatRando.value): -1,
-        str(Locations.JapesLankyKasplatRando.value): -1,
-        str(Locations.JapesTinyKasplatRando.value): -1,
-        str(Locations.JapesChunkyKasplatRando.value): -1,
-        str(Locations.AztecDonkeyKasplatRando.value): -1,
-        str(Locations.AztecDiddyKasplatRando.value): -1,
-        str(Locations.AztecLankyKasplatRando.value): -1,
-        str(Locations.AztecTinyKasplatRando.value): -1,
-        str(Locations.AztecChunkyKasplatRando.value): -1,
-        str(Locations.FactoryDonkeyKasplatRando.value): -1,
-        str(Locations.FactoryDiddyKasplatRando.value): -1,
-        str(Locations.FactoryLankyKasplatRando.value): -1,
-        str(Locations.FactoryTinyKasplatRando.value): -1,
-        str(Locations.FactoryChunkyKasplatRando.value): -1,
-        str(Locations.GalleonDonkeyKasplatRando.value): -1,
-        str(Locations.GalleonDiddyKasplatRando.value): -1,
-        str(Locations.GalleonLankyKasplatRando.value): -1,
-        str(Locations.GalleonTinyKasplatRando.value): -1,
-        str(Locations.GalleonChunkyKasplatRando.value): -1,
-        str(Locations.ForestDonkeyKasplatRando.value): -1,
-        str(Locations.ForestDiddyKasplatRando.value): -1,
-        str(Locations.ForestLankyKasplatRando.value): -1,
-        str(Locations.ForestTinyKasplatRando.value): -1,
-        str(Locations.ForestChunkyKasplatRando.value): -1,
-        str(Locations.CavesDonkeyKasplatRando.value): -1,
-        str(Locations.CavesDiddyKasplatRando.value): -1,
-        str(Locations.CavesLankyKasplatRando.value): -1,
-        str(Locations.CavesTinyKasplatRando.value): -1,
-        str(Locations.CavesChunkyKasplatRando.value): -1,
-        str(Locations.CastleDonkeyKasplatRando.value): -1,
-        str(Locations.CastleDiddyKasplatRando.value): -1,
-        str(Locations.CastleLankyKasplatRando.value): -1,
-        str(Locations.CastleTinyKasplatRando.value): -1,
-        str(Locations.CastleChunkyKasplatRando.value): -1,
-        str(Locations.IslesDonkeyKasplatRando.value): -1,
-        str(Locations.IslesDiddyKasplatRando.value): "Isles Kasplat: Waterfall Pool",
-        str(Locations.IslesLankyKasplatRando.value): -1,
-        str(Locations.IslesTinyKasplatRando.value): -1,
-        str(Locations.IslesChunkyKasplatRando.value): -1,
-    }
+
     # Fill kasplats level by level
     for level in KasplatLocationList:
         kasplats = KasplatLocationList[level]

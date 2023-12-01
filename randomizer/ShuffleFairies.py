@@ -107,14 +107,6 @@ def ShuffleFairyLocations(spoiler):
             Levels.DKIsles: [],
             Levels.HideoutHelm: [],
         }
-        spoiler.settings.plandomizer_dict["plando_fairies"] = [
-            {"level": Levels.DKIsles, "location": "On Banana Fairy Island", "reward": PlandoItems.FranticFactoryKey},
-            {"level": Levels.DKIsles, "location": "Behind Fungi Building", "reward": PlandoItems.Oranges},
-            {"level": Levels.DKIsles, "location": "Lower Krem Isles", "reward": PlandoItems.BaboonBalloon},
-            {"level": Levels.DKIsles, "location": "In Front of Krem Isles", "reward": PlandoItems.Monkeyport},
-            {"level": Levels.JungleJapes, "location": "Near Kong Cage", "reward": PlandoItems.GorillaGone},
-            {"level": Levels.JungleJapes, "location": "Above Underground Entrance", "reward": PlandoItems.OrangstandSprint},
-        ]
         if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_fairies"] != -1:
             fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_fairies"])
 
