@@ -30,6 +30,7 @@ from randomizer.Lists.Plandomizer import (
 from randomizer.LogicFiles.Shops import LogicRegions
 from randomizer.PlandoUtils import GetNameFromPlandoItem, PlandoEnumMap
 from ui.bindings import bind, bindList
+from ui.download import download_json_file
 from ui.rando_options import (
     plando_disable_camera_shockwave,
     plando_disable_keys,
@@ -798,21 +799,8 @@ def validate_plando_file(file_obj: dict) -> None:
 def export_plando_options(evt):
     """Export the current plando settings to a JSON file."""
     form = js.jquery("#form").serializeArray()
-    plandoFileData = json.dumps(populate_plando_options(form, True), indent=4)
-
-    # Create a link to the file and download it automatically.
-    blob = js.Blob.new([plandoFileData], {type: "application/json"})
-    blob.name = "plando_settings.json"
-    url = js.window.URL.createObjectURL(blob)
-    link = js.document.createElement("a")
-    link.href = url
-    link.download = blob.name
-    js.document.body.appendChild(link)
-    link.click()
-
-    # Delete the link.
-    js.document.body.removeChild(link)
-    js.window.URL.revokeObjectURL(url)
+    plandoData = populate_plando_options(form, True)
+    download_json_file(plandoData, "plando_settings.json")
 
 
 @bind("click", "reset_plando_settings")

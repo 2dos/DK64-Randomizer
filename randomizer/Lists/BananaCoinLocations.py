@@ -1264,7 +1264,7 @@ BananaCoinGroupList = {
             map_id=Maps.JungleJapes,
             name="In front of T&S portal near Diddy kasplat",
             konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-            region=Regions.JungleJapesMain,
+            region=Regions.JapesTnSAlcove,
             locations=[
                 [1.0, 740, 538, 2361],
                 [1.0, 756, 538, 2353],

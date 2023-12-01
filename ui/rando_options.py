@@ -776,6 +776,7 @@ def disable_hard_mode_modal(evt):
         pass
 
 
+@bind("click", "nav-music-tab")
 @bind("click", "songs_excluded")
 def disable_excluded_songs_modal(evt):
     """Disable Excluded Song Selector when Excluded Songs is off."""
@@ -1237,6 +1238,62 @@ def hide_override_cosmetics(event):
     """Hide the override cosmetics setting when clicking the Generate from Past Seed button."""
     document.getElementById("override_div").setAttribute("hidden", "hidden")
     document.getElementById("override_cosmetics").checked = True
+
+
+@bind("click", "nav-music-tab")
+@bind("change", "music_bgm_randomized")
+def rename_default_bgm_options(evt):
+    """Rename the default options for BGM music selection."""
+    toggleElem = js.document.getElementById(f"music_bgm_randomized")
+    defaultOptions = js.document.getElementsByClassName(f"BGM-default-option")
+    if toggleElem.checked:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Randomize --"
+    else:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Default --"
+
+
+@bind("click", "nav-music-tab")
+@bind("change", "music_majoritems_randomized")
+def rename_default_majoritems_options(evt):
+    """Rename the default options for major item music selection."""
+    toggleElem = js.document.getElementById(f"music_majoritems_randomized")
+    defaultOptions = js.document.getElementsByClassName(f"MajorItem-default-option")
+    if toggleElem.checked:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Randomize --"
+    else:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Default --"
+
+
+@bind("click", "nav-music-tab")
+@bind("change", "music_minoritems_randomized")
+def rename_default_minoritems_options(evt):
+    """Rename the default options for minor item music selection."""
+    toggleElem = js.document.getElementById(f"music_minoritems_randomized")
+    defaultOptions = js.document.getElementsByClassName(f"MinorItem-default-option")
+    if toggleElem.checked:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Randomize --"
+    else:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Default --"
+
+
+@bind("click", "nav-music-tab")
+@bind("change", "music_events_randomized")
+def rename_default_events_options(evt):
+    """Rename the default options for event music selection."""
+    toggleElem = js.document.getElementById(f"music_events_randomized")
+    defaultOptions = js.document.getElementsByClassName(f"Event-default-option")
+    if toggleElem.checked:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Randomize --"
+    else:
+        for opt in defaultOptions:
+            opt.innerHTML = "-- Default --"
 
 
 @bind("click", "select_keys")

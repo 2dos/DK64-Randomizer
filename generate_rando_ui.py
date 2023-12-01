@@ -44,7 +44,7 @@ async def initialize():
     from randomizer.Lists.Minigame import MinigameSelector
     from randomizer.Lists.Plandomizer import PlandomizerPanels, PlannableItems, PlannableMinigames, PlannableSpawns
     from randomizer.Lists.QoL import QoLSelector
-    from randomizer.Lists.Songs import ExcludedSongsSelector
+    from randomizer.Lists.Songs import ExcludedSongsSelector, MusicSelectFilter, MusicSelectionPanel, PlannableSongs
     from randomizer.Lists.Warps import VanillaBananaportSelector
     from randomizer.Lists.WrinklyHints import PointSpreadSelector
 
@@ -76,6 +76,7 @@ async def initialize():
 
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     # Add custom Jinja2 filter functions.
+    templateEnv.filters["music_select_restrict"] = MusicSelectFilter
     templateEnv.filters["plando_item_restrict"] = PlandoItemFilter
     templateEnv.filters["plando_minigame_restrict"] = PlandoMinigameFilter
     templateEnv.filters["plando_shop_sort"] = PlandoShopSortFilter
@@ -99,6 +100,8 @@ async def initialize():
         plando_spawns=PlannableSpawns,
         points_spread=PointSpreadSelector,
         custom_starting_moves=CustomStartingMoveSelector,
+        select_song_panel=MusicSelectionPanel,
+        select_songs=PlannableSongs,
     )
     js.document.documentElement.innerHTML = ""
     js.document.open()

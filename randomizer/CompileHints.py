@@ -927,7 +927,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             else:
                 message = f"{freed_kong} can be found by {freeing_kong_name} in {level_name}."
             hint_location.related_location = kong_location_id
-            hint_location.hint_type = HintType.KongLocation
+            hint_location.hint_type = HintType.RequiredKongHint
             UpdateHint(hint_location, message)
     # In non-item rando, Kongs should be hinted before they're available and should only be hinted to free Kongs, making them very restrictive
     hinted_kongs = []

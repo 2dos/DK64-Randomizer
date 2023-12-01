@@ -468,6 +468,15 @@ i {
   max-width: 400px;
 }
 
+.location-picker {
+  margin: 0 16px 32px;
+  width: 30%;
+}
+
+.location-label {
+  margin-bottom: 4px;
+}
+
 .center-flex {
   text-align: center;
   margin: 10px 0px;
@@ -687,6 +696,23 @@ td.directional_divider {
 .btn-always-empty:hover {
   color: white;
   background-color: #6c757d
+}
+
+.hidden {
+  display: none;
+}
+
+.import-export-container {
+  padding: 16px 0;
+}
+
+.import-errors {
+  margin: 0 1rem 1rem;
+}
+
+.settings-button {
+  margin: 0 8px;
+  min-width: 125px;
 }
 
 #fairy-container {

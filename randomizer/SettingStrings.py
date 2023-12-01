@@ -141,7 +141,7 @@ settingsExclusionMap = {
 
 def prune_settings(settings_dict: dict):
     """Remove certain settings based on the values of other settings."""
-    settings_to_remove = ["enable_plandomizer", "plandomizer_data"]
+    settings_to_remove = ["enable_plandomizer", "plandomizer_data", "enable_song_select", "music_selections"]
     # Remove settings based on the exclusion map above.
     for keySetting, exclusions in settingsExclusionMap.items():
         if settings_dict[keySetting] in exclusions:

@@ -194,6 +194,7 @@ class Spoiler:
 
         # Settings data
         settings = OrderedDict()
+        settings["Settings String"] = self.settings.settings_string
         settings["Seed"] = self.settings.seed_id
         # settings["algorithm"] = self.settings.algorithm # Don't need this for now, probably
         logic_types = {LogicType.nologic: "No Logic", LogicType.glitch: "Glitched Logic", LogicType.glitchless: "Glitchless Logic"}
