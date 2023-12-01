@@ -150,7 +150,7 @@ LogicRegions = {
     ),
 
     Regions.Tower: Region("Tower", "Castle Rooms", Levels.CreepyCastle, False, None, [
-        LocationLogic(Locations.CastleLankyTower, lambda l: (l.scope or l.homing) and l.balloon and l.grape and l.islanky, MinigameType.BonusBarrel),
+        LocationLogic(Locations.CastleLankyTower, lambda l: (l.scope or (l.settings.hard_shooting and l.homing)) and l.balloon and l.grape and l.islanky, MinigameType.BonusBarrel),
     ], [], [
         TransitionFront(Regions.CreepyCastleMedals, lambda l: True),
         TransitionFront(Regions.CreepyCastleMain, lambda l: True, Transitions.CastleTowerToMain),

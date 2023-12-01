@@ -929,7 +929,7 @@ ColoredBananaGroupList = [
         map_id=Maps.JungleJapes,
         name="T&S above diddy BP (2 custom, 1 Donkey bunch)",
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.JungleJapesMain,
+        region=Regions.JapesTnSAlcove,
         locations=[[5, 1.0, 801, 543, 2356], [5, 1.0, 729, 543, 2295], [5, 1.0, 774.623291015625, 543.0, 2313.9326171875]],
     ),
     ColoredBananaGroup(

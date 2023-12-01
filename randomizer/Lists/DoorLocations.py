@@ -146,7 +146,7 @@ door_locations = {
             placed="tns",
         ),  # T&S Door in Diddy Cave
         DoorData(
-            name="Jungle Japes: Near Painting Room", map=Maps.JungleJapes, logicregion=Regions.JungleJapesMain, location=[722.473, 538.0, 2386.608, 141.0], group=3, placed="tns", door_type="wrinkly"
+            name="Jungle Japes: Near Painting Room", map=Maps.JungleJapes, logicregion=Regions.JapesTnSAlcove, location=[722.473, 538.0, 2386.608, 141.0], group=3, placed="tns", door_type="wrinkly"
         ),  # T&S Door in Near Painting Room. Ironically cannot be a T&S because the indicator is weird
         DoorData(
             name="Jungle Japes: Fairy Cave",
@@ -161,7 +161,7 @@ door_locations = {
         DoorData(
             name="Jungle Japes: Alcove Above Diddy Tunnel - right",
             map=Maps.JungleJapes,
-            logicregion=Regions.JungleJapesMain,
+            logicregion=Regions.JapesTnSAlcove,
             location=[703.0, 538.0, 2293.0, 54.0],
             group=3,
             door_type="wrinkly",
@@ -169,7 +169,7 @@ door_locations = {
         DoorData(
             name="Jungle Japes: Alcove Above Diddy Tunnel - left",
             map=Maps.JungleJapes,
-            logicregion=Regions.JungleJapesMain,
+            logicregion=Regions.JapesTnSAlcove,
             location=[817.0, 538.0, 2372.0, 232.0],
             group=3,
             door_type="wrinkly",
