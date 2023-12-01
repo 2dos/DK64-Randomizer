@@ -434,7 +434,7 @@ class LogicVarHolder:
     def HardBossesEnabled(self) -> bool:
         """Determine whether the hard bosses feature is enabled or not."""
         return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.hard_bosses)
-    
+
     def IsHardFallDamage(self) -> bool:
         """Determine whether the lowered fall damage height threshold is enabled or not."""
         return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold)
