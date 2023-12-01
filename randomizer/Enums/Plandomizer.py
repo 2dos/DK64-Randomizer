@@ -279,23 +279,12 @@ PlandoItemToItemMap = {
     PlandoItems.Pearl: Items.Pearl,
     PlandoItems.RainbowCoin: Items.RainbowCoin,
     PlandoItems.FakeItem: Items.FakeItem,
+    PlandoItems.ProgressiveSlam: Items.ProgressiveSlam,
+    PlandoItems.ProgressiveAmmoBelt: Items.ProgressiveAmmoBelt,
+    PlandoItems.ProgressiveInstrumentUpgrade: Items.ProgressiveInstrumentUpgrade,
 }
 
 PlandoItemToItemListMap = {
-    PlandoItems.ProgressiveSlam: [
-        Items.ProgressiveSlam,
-        Items.ProgressiveSlam2,
-        Items.ProgressiveSlam3,
-    ],
-    PlandoItems.ProgressiveAmmoBelt: [
-        Items.ProgressiveAmmoBelt,
-        Items.ProgressiveAmmoBelt2,
-    ],
-    PlandoItems.ProgressiveInstrumentUpgrade: [
-        Items.ProgressiveInstrumentUpgrade,
-        Items.ProgressiveInstrumentUpgrade2,
-        Items.ProgressiveInstrumentUpgrade3,
-    ],
     PlandoItems.JunkItem: [Items.JunkMelon],  # More junk items someday [Items.JunkCrystal, Items.JunkMelon, Items.JunkAmmo, Items.JunkFilm, Items.JunkOrange],
     PlandoItems.DonkeyBlueprint: [
         Items.JungleJapesDonkeyBlueprint,

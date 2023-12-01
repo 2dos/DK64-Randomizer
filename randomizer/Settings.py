@@ -122,7 +122,7 @@ class Settings:
 
         if self.enable_plandomizer:
             self.ApplyPlandomizerSettings()
-        
+
         # Remove these as plando features get implemented
         self.plandomizer_dict["plando_bonus_barrels"] = -1
         self.plandomizer_dict["plando_dirt_patches"] = -1

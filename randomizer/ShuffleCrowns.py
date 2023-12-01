@@ -34,6 +34,18 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
         Levels.CreepyCastle: "Castle",
         Levels.HideoutHelm: "Helm",
     }
+    spoiler.settings.plandomizer_dict["plando_battle_arenas"] = {
+        str(Locations.JapesBattleArena.value): "Minecart Alcove",
+        str(Locations.AztecBattleArena.value): -1,
+        str(Locations.FactoryBattleArena.value): -1,
+        str(Locations.GalleonBattleArena.value): -1,
+        str(Locations.ForestBattleArena.value): -1,
+        str(Locations.CavesBattleArena.value): -1,
+        str(Locations.CastleBattleArena.value): -1,
+        str(Locations.IslesBattleArena2.value): -1,
+        str(Locations.IslesBattleArena1.value): -1,
+        str(Locations.HelmBattleArena.value): -1,
+    }
     # Remove crowns from their original logic region
     for id, region in spoiler.RegionList.items():
         region.locations = [loclogic for loclogic in region.locations if loclogic.id not in crown_locations]
@@ -52,7 +64,9 @@ def ShuffleCrowns(spoiler, crown_selection, human_crowns):
             for i in range(pick_count):
                 location_to_string = str(crown_locations[global_crown_idx + i].value)
                 if spoiler.settings.plandomizer_dict["plando_battle_arenas"][location_to_string] != -1:
-                    crowns[i] = spoiler.settings.plandomizer_dict["plando_battle_arenas"][location_to_string]
+                    plando_crown_name = spoiler.settings.plandomizer_dict["plando_battle_arenas"][location_to_string]
+                    plando_crown_obj = [x for x in CustomLocations[level] if x.name == plando_crown_name][0]
+                    crowns[i] = CustomLocations[level].index(plando_crown_obj)
         crown_data = {}
         for crown_index in crowns:
             crown_data[crown_index] = 0

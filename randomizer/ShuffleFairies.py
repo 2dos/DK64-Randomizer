@@ -1,6 +1,7 @@
 """File that shuffles fairies locations."""
 
 import random
+from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Lists import Exceptions
 
 import randomizer.LogicFiles.AngryAztec
@@ -106,6 +107,14 @@ def ShuffleFairyLocations(spoiler):
             Levels.DKIsles: [],
             Levels.HideoutHelm: [],
         }
+        spoiler.settings.plandomizer_dict["plando_fairies"] = [
+            {"level": Levels.DKIsles, "location": "On Banana Fairy Island", "reward": PlandoItems.FranticFactoryKey},
+            {"level": Levels.DKIsles, "location": "Behind Fungi Building", "reward": PlandoItems.Oranges},
+            {"level": Levels.DKIsles, "location": "Lower Krem Isles", "reward": PlandoItems.BaboonBalloon},
+            {"level": Levels.DKIsles, "location": "In Front of Krem Isles", "reward": PlandoItems.Monkeyport},
+            {"level": Levels.JungleJapes, "location": "Near Kong Cage", "reward": PlandoItems.GorillaGone},
+            {"level": Levels.JungleJapes, "location": "Above Underground Entrance", "reward": PlandoItems.OrangstandSprint},
+        ]
         if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_fairies"] != -1:
             fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_fairies"])
 
@@ -119,7 +128,7 @@ def ShuffleFairyLocations(spoiler):
                 if plando_dict[level][plando_fairy_selection] != -1:
                     selection_name = plando_dict[level][plando_fairy_selection]
                     selection_index_list = [fairy_locations[level].index(x) for x in fairy_locations[level] if x.name == selection_name]
-                    if len(selection_index_list == 0):
+                    if len(selection_index_list) == 0:
                         raise Exceptions.PlandoIncompatibleException(f'Fairy "{selection_name}" not found in {level}.')
                     else:
                         selection_index = selection_index_list[0]
@@ -161,7 +170,7 @@ def ShuffleFairyLocations(spoiler):
                         # Resolve location-item combinations for plando
                         if len(plando_dict[level]) > 0:
                             for fairy in spoiler.settings.plandomizer_dict["plando_fairies"]:
-                                if fairy["name"] == fairy_locations[level][x].name and fairy["reward"] != -1:
+                                if fairy["location"] == fairy_locations[level][x].name and fairy["reward"] != -1:
                                     spoiler.settings.plandomizer_dict["locations"][data.location] = fairy["reward"]
 
 
@@ -174,4 +183,4 @@ def ClearFairyLogic(spoiler):
 def fillPlandoDict(plando_dict: dict, plando_input):
     """Fill the plando_dict variable, using input from the plandomizer_dict."""
     for fairy in plando_input:
-        plando_dict[fairy["level"]].append(fairy["name"])
+        plando_dict[fairy["level"]].append(fairy["location"])

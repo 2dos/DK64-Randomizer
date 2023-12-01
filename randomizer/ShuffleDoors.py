@@ -50,6 +50,16 @@ def GetDoorLocationForKongAndLevel(kong, level):
 def ShuffleDoors(spoiler):
     """Shuffle Wrinkly and T&S Doors based on settings."""
     # Reset Doors
+    spoiler.settings.plandomizer_dict["plando_wrinkly_doors"] = {
+        str(Locations.JapesDonkeyDoor.value): "Jungle Japes: Next to Diddy Cage - right",
+        str(Locations.JapesDiddyDoor.value): "Jungle Japes: Alcove Above Diddy Tunnel - left",
+        str(Locations.JapesLankyDoor.value): "Jungle Japes: Alcove Above Diddy Tunnel - right",
+        str(Locations.JapesTinyDoor.value): "Jungle Japes: Main Area - Next to Tunnel to Tiny Gate",
+        str(Locations.JapesChunkyDoor.value): "Jungle Japes: Underwater by Warp 2",
+    }
+    spoiler.settings.plandomizer_dict["plando_tns_portals"] = {
+        str(Levels.JungleJapes.value): ["Jungle Japes: Across From Minecart Exit", "Jungle Japes: Cranky Area - front-right", "Jungle Japes: Entrance Tunnel - Near Warppad 1 and 2"],
+    }
     for level in door_locations:
         # Also reset the data structures that share info across processes
         shuffled_door_data[level] = []
@@ -84,20 +94,23 @@ def ShuffleDoors(spoiler):
         random.shuffle(available_doors)
         if spoiler.settings.tns_location_rando:
             plando_portal_indexes = []
-            if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_tns_portals"] != -1:
-                level_to_string = str(level.value)
-                plando_portal_indexes = [x for x in available_portals if door_locations[level][x].name in spoiler.settings.plandomizer_dict["plando_tns_portals"][level_to_string]]
-                if len(plando_portal_indexes) != len([x for x in spoiler.settings.plandomizer_dict["plando_tns_portals"][level_to_string]]):
-                    raise Exceptions.PlandoIncompatibleException(f"Not every selected portal is available in level {level}")
-                for planned_portal in plando_portal_indexes:
-                    available_portals.remove(planned_portal)
             number_of_portals_in_level = random.choice([3, 4, 5])
+            allow_multiple_portals_per_group = False
             # Make sure selected locations will be suitable to be a T&S portal
             available_portals = [door for door in available_doors if door_locations[level][door].door_type != "wrinkly"]
+            if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_tns_portals"] != -1:
+                level_to_string = str(level.value)
+                if level_to_string in spoiler.settings.plandomizer_dict["plando_tns_portals"].keys():
+                    plando_portal_indexes = [x for x in available_portals if door_locations[level][x].name in spoiler.settings.plandomizer_dict["plando_tns_portals"][level_to_string]]
+                    if len(plando_portal_indexes) != len([x for x in spoiler.settings.plandomizer_dict["plando_tns_portals"][level_to_string]]):
+                        raise Exceptions.PlandoIncompatibleException(f"Not every selected portal is available in level {level}")
+                    for planned_portal in plando_portal_indexes:
+                        available_portals.remove(planned_portal)
             for new_portal in range(number_of_portals_in_level):
                 if len(available_portals) > 0:  # Should only fail if we don't have enough door locations
                     if len(plando_portal_indexes) > 0:
                         selected_door_index = plando_portal_indexes.pop()
+                        allow_multiple_portals_per_group = True
                     elif new_portal > 0:
                         selected_door_index = available_portals.pop()
                     else:
@@ -105,8 +118,9 @@ def ShuffleDoors(spoiler):
                         selected_door_index = random.choice([door for door in available_portals if door_locations[level][door].moveless is True])
                         available_portals.remove(selected_door_index)
                     selected_portal = door_locations[level][selected_door_index]
-                    # Only place one T&S portal per group so we don't stack portals too heavily
-                    available_portals = [door for door in available_portals if door_locations[level][door].group != selected_portal.group]
+                    if allow_multiple_portals_per_group:
+                        # Only place one T&S portal per group so we don't stack portals too heavily
+                        available_portals = [door for door in available_portals if door_locations[level][door].group != selected_portal.group]
                     # update available_doors separately as wrinkly doors should not be affected by the T&S grouping
                     available_doors.remove(selected_door_index)
                     selected_portal.assignPortal(spoiler)
@@ -126,7 +140,7 @@ def ShuffleDoors(spoiler):
                         and location_var in spoiler.settings.plandomizer_dict["plando_wrinkly_doors"].keys()
                     ):
                         if spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][location_var] not in ("", -1):
-                            selected_door_index = [x for x in plando_indexes if door_locations[level][x].name == spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][location_var]]
+                            selected_door_index = [x for x in plando_indexes if door_locations[level][x].name == spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][location_var]][0]
                             retry = False
                         else:
                             selected_door_index = available_doors.pop()

@@ -1,5 +1,6 @@
 """Shuffle Melon Crate Locations."""
 import random
+from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Lists import Exceptions
 
 import randomizer.LogicFiles.AngryAztec
@@ -58,7 +59,7 @@ def removeMelonCrate(spoiler):
 def fillPlandoDict(plando_dict: dict, plando_input):
     """Fill the plando_dict variable, using input from the plandomizer_dict."""
     for crate in plando_input:
-        plando_dict[crate["level"]].append(crate["name"])
+        plando_dict[crate["level"]].append(crate["location"])
 
 
 def getPlandoCrateDistribution(plando_dict: dict):
@@ -77,8 +78,8 @@ def getPlandoCrateDistribution(plando_dict: dict):
                     break
     if running_total < 13:
         # Make sure as many levels as possible have 2 melon crates
-        level_priority = [0]
-        level_priority.extend(random.shuffle(list(range(1, 9))))
+        level_priority = list(range(0, 9))
+        random.shuffle(level_priority)
         amount_of_levels = 4
         for level in range(len(distribution)):
             if distribution[level_priority[level]] < 2:
@@ -87,7 +88,7 @@ def getPlandoCrateDistribution(plando_dict: dict):
                 amount_of_levels -= 1
                 if running_total >= 13 or amount_of_levels <= 0:
                     break
-    return []
+    return distribution
 
 
 def ShuffleMelonCrates(spoiler, human_spoiler):
@@ -119,6 +120,14 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
         Levels.CreepyCastle: [],
         Levels.HideoutHelm: [],
     }
+    spoiler.settings.plandomizer_dict["plando_melon_crates"] = [
+        {"level": Levels.DKIsles, "location": "Isles Boulders", "reward": PlandoItems.Bongos},
+        {"level": Levels.DKIsles, "location": "Behind Aztec Building", "reward": PlandoItems.Guitar},
+        {"level": Levels.DKIsles, "location": "Near Caves Lobby Tree (1)", "reward": PlandoItems.Trombone},
+        {"level": Levels.DKIsles, "location": "Near Caves Lobby Tree (2)", "reward": PlandoItems.Orangstand},
+        {"level": Levels.DKIsles, "location": "Fungi Platform", "reward": PlandoItems.ProgressiveSlam},
+        {"level": Levels.DKIsles, "location": "Behind Fungi Building", "reward": PlandoItems.ProgressiveSlam},
+    ]
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"] != -1:
         fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_melon_crates"])
 
@@ -131,9 +140,9 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
 
     # Make sure levels with multiple Melon Crates plandomized are handled first, before the shuffler runs out of dual levels
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"] != -1:
+        distribution = getPlandoCrateDistribution(plando_dict)
         count = 0
         for level in plando_dict:
-            distribution = getPlandoCrateDistribution()
             area_meloncrate = total_MelonCrate_list[level]
             select_random_meloncrate_from_area(area_meloncrate, distribution[count], level, spoiler, human_spoiler, plando_dict)
             del total_MelonCrate_list[level]
@@ -160,7 +169,7 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"] != -1:
         for item_placement in spoiler.settings.plandomizer_dict["plando_melon_crates"]:
             for MelonCrate_index, MelonCrate in enumerate(sorted_MelonCrates):
-                if item_placement["name"] == MelonCrate["name"] and item_placement["reward"] != -1:
+                if item_placement["location"] == MelonCrate["name"] and item_placement["reward"] != -1:
                     spoiler.settings.plandomizer_dict["locations"][MelonCrate["enum"]] = item_placement["reward"]
     return human_spoiler.copy()
 
