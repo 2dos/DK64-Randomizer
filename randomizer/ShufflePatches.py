@@ -56,7 +56,7 @@ def removePatches(spoiler):
 def fillPlandoDict(plando_dict: dict, plando_input):
     """Fill the plando_dict variable, using input from the plandomizer_dict."""
     for patch in plando_input:
-        plando_dict[patch["level"]].append(patch["name"])
+        plando_dict[patch["level"]].append(patch["location"])
 
 
 def getPlandoDirtDistribution(plando_dict: dict):
@@ -76,7 +76,9 @@ def getPlandoDirtDistribution(plando_dict: dict):
     # Make sure the amount of levels with 2+ dirt patches is as close to 6 (including Isles) as possible
     if running_total < 16:
         level_priority = [0]
-        level_priority.extend(random.shuffle(list(range(1, 8))))
+        random_levels = list(range(1, 8))
+        random.shuffle(random_levels)
+        level_priority.extend(random_levels)
         amount_of_levels = 6
         for level in range(len(distribution)):
             if distribution[level_priority[level]] < 2:
@@ -118,6 +120,14 @@ def ShufflePatches(spoiler, human_spoiler):
         Levels.CrystalCaves: [],
         Levels.CreepyCastle: [],
     }
+    spoiler.settings.plandomizer_dict["plando_dirt_patches"] = [
+        {"level": Levels.JungleJapes, "location": "Cranky-tunnel Crossing", "reward": PlandoItems.SimianSpring},
+        {"level": Levels.JungleJapes, "location": "Next to level entrance", "reward": PlandoItems.ChimpyCharge},
+        {"level": Levels.JungleJapes, "location": "Next to first tunnel entrance", "reward": PlandoItems.Peanut},
+        {"level": Levels.JungleJapes, "location": "Inside the first tunnel - later half", "reward": PlandoItems.PrimatePunch},
+        {"level": Levels.JungleJapes, "location": "Near the Vine Pit", "reward": PlandoItems.ProgressiveAmmoBelt},
+        {"level": Levels.JungleJapes, "location": "Behind Storm Area Shop (1)", "reward": PlandoItems.ProgressiveAmmoBelt},
+    ]
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
         fillPlandoDict(plando_dict, spoiler.settings.plandomizer_dict["plando_dirt_patches"])
 
@@ -133,11 +143,10 @@ def ShufflePatches(spoiler, human_spoiler):
         distribution = getPlandoDirtDistribution(plando_dict)
         count = 0
         for level in plando_dict.keys():
-            if len(plando_dict[level]) > 0:
-                area_dirt = total_dirt_patch_list[level]
-                select_random_dirt_from_area(area_dirt, distribution[count], level, spoiler, human_spoiler, plando_dict)
-                del total_dirt_patch_list[level]
-                count += 1
+            area_dirt = total_dirt_patch_list[level]
+            select_random_dirt_from_area(area_dirt, distribution[count], level, spoiler, human_spoiler, plando_dict)
+            del total_dirt_patch_list[level]
+            count += 1
     else:
         select_random_dirt_from_area(total_dirt_patch_list[Levels.DKIsles], 4, Levels.DKIsles, spoiler, human_spoiler, plando_dict)
         del total_dirt_patch_list[Levels.DKIsles]
@@ -163,7 +172,7 @@ def ShufflePatches(spoiler, human_spoiler):
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
         for item_placement in spoiler.settings.plandomizer_dict["plando_dirt_patches"]:
             for patch_index, patch in enumerate(sorted_patches):
-                if item_placement["name"] == patch["name"] and item_placement["reward"] != -1:
+                if item_placement["location"] == patch["name"] and item_placement["reward"] != -1:
                     spoiler.settings.plandomizer_dict["locations"][patch["enum"]] = item_placement["reward"]
     return human_spoiler.copy()
 
