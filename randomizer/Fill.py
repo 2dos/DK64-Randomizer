@@ -2196,7 +2196,7 @@ def FillWorld(spoiler: Spoiler) -> None:
                 spoiler.settings.kongs_for_progression = True
                 WipeBLockerRequirements(spoiler.settings)
                 # If we're in CLO and keys are not in the pool, don't wipe boss requirements
-                if not (spoiler.settings.hard_level_progression and spoiler.settings.shuffle_items and Types.Key not in spoiler.settings.shuffled_location_types):
+                if not (spoiler.settings.hard_level_progression and spoiler.settings.shuffle_items and Types.Key in spoiler.settings.shuffled_location_types):
                     WipeBossRequirements(spoiler.settings)
             # To aid in finding these locations, treat Rareware Coin and Rareware GB as being ~15-20% more expensive for fill purposes (unless it's already very expensive)
             spoiler.settings.medal_requirement = spoiler.settings.logical_medal_requirement
