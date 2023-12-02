@@ -152,8 +152,8 @@ class Settings:
                 if self.plandomizer_dict[key] != -1:
                     for customloc in self.plandomizer_dict[key]:
                         self.plandomizer_dict["reserved_custom_locations"][customloc["level"]].append(customloc["name"])
-
-        self.ApplyMusicSelections()
+        if self.music_selections is not None:
+            self.ApplyMusicSelections()
 
         self.resolve_settings()
 
@@ -400,6 +400,7 @@ class Settings:
             "vanilla": {},
             "custom": {},
         }
+        self.music_selections = None
         self.bgm_songs_selected = False
         self.majoritems_songs_selected = False
         self.minoritems_songs_selected = False
