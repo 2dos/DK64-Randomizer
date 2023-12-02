@@ -101,8 +101,8 @@ class Region:
         self.exits = transitionFronts  # In the context of a region, exits are how you leave the region
         self.restart = restart
 
-        self.dayAccess = False
-        self.nightAccess = False
+        self.dayAccess = [False] * 5
+        self.nightAccess = [False] * 5
 
         # If possible to die in this region, add an exit to where dying will take you
         # deathwarp is also set to none in regions in which a deathwarp would take you to itself
@@ -126,8 +126,8 @@ class Region:
     def ResetAccess(self) -> None:
         """Clear access variables set during search."""
         # Time access
-        self.dayAccess = False
-        self.nightAccess = False
+        self.dayAccess = [False] * 5
+        self.nightAccess = [False] * 5
 
     def GetDefaultDeathwarp(self) -> Regions:
         """Get the default deathwarp depending on the region's level."""

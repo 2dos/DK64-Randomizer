@@ -21,6 +21,7 @@ from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     BananaportRando,
     FillAlgorithm,
+    FungiTimeSetting,
     HelmDoorItem,
     LogicType,
     MinigameBarrels,
@@ -233,8 +234,8 @@ def GetAccessibleLocations(
 
             startRegion = spoiler.RegionList[Regions.GameStart]
             startRegion.id = Regions.GameStart
-            startRegion.dayAccess = Events.Day in spoiler.LogicVariables.Events
-            startRegion.nightAccess = Events.Night in spoiler.LogicVariables.Events
+            startRegion.dayAccess = [Events.Day in spoiler.LogicVariables.Events] * 5
+            startRegion.nightAccess = [Events.Night in spoiler.LogicVariables.Events] * 5
             regionPool = list(kongAccessibleRegions[kong])
 
             # Loop for each region until no more accessible regions found
@@ -243,6 +244,10 @@ def GetAccessibleLocations(
                 region = spoiler.RegionList[regionId]
                 # If this region has a tag barrel, everyone can access this region now
                 if region.tagbarrel:
+                    if region.dayAccess[kong]:
+                        region.dayAccess = [True] * 5
+                    if region.nightAccess[kong]:
+                        region.nightAccess = [True] * 5
                     for i in range(5):
                         kongAccessibleRegions[i].add(regionId)
                 # Check accessibility for each event in this region
@@ -254,10 +259,10 @@ def GetAccessibleLocations(
                     # Check this even if Night's already been added, because you could
                     # lose night access from start to Forest main, then regain it here
                     if event.name == Events.Night and event.logic(spoiler.LogicVariables):
-                        region.nightAccess = True
+                        region.nightAccess[kong] = True
                     # Same with day
                     if event.name == Events.Day and event.logic(spoiler.LogicVariables):
-                        region.dayAccess = True
+                        region.dayAccess[kong] = True
                 # Check accessibility for collectibles
                 if region.id in spoiler.CollectibleRegions.keys():
                     for collectible in spoiler.CollectibleRegions[region.id]:
@@ -342,9 +347,9 @@ def GetAccessibleLocations(
                                 continue
                         # Check time of day
                         timeAccess = True
-                        if exit.time == Time.Night and not region.nightAccess:
+                        if exit.time == Time.Night and not region.nightAccess[kong]:
                             timeAccess = False
-                        elif exit.time == Time.Day and not region.dayAccess:
+                        elif exit.time == Time.Day and not region.dayAccess[kong]:
                             timeAccess = False
                         if timeAccess:
                             kongAccessibleRegions[kong].add(destination)
@@ -357,15 +362,19 @@ def GetAccessibleLocations(
                     # it will be known that it can be accessed during either time of day
                     if exit.logic(spoiler.LogicVariables):
                         # If this region has day access and the exit isn't restricted to night-only, then the destination has day access
-                        if region.dayAccess and exit.time != Time.Night and not spoiler.RegionList[destination].dayAccess:
-                            spoiler.RegionList[destination].dayAccess = True
+                        if region.dayAccess[kong] and exit.time != Time.Night and not spoiler.RegionList[destination].dayAccess[kong]:
+                            spoiler.RegionList[destination].dayAccess[kong] = True
                             # Count as event added so search doesn't get stuck if region is searched,
                             # then later a new time of day access is found so it should be re-visited
                             eventAdded = True
                         # And vice versa
-                        if region.nightAccess and exit.time != Time.Day and not spoiler.RegionList[destination].nightAccess:
-                            spoiler.RegionList[destination].nightAccess = True
+                        if region.nightAccess[kong] and exit.time != Time.Day and not spoiler.RegionList[destination].nightAccess[kong]:
+                            spoiler.RegionList[destination].nightAccess[kong] = True
                             eventAdded = True
+                        # If it's dusk, we don't even have to worry about this at all - it's day and night access always
+                        if settings.fungi_time == FungiTimeSetting.dusk:
+                            spoiler.RegionList[destination].dayAccess[kong] = True
+                            spoiler.RegionList[destination].nightAccess[kong] = True
                 # Deathwarps currently send to the vanilla destination
                 if region.deathwarp is not None and settings.perma_death is False:
                     destination = region.deathwarp.dest
@@ -378,14 +387,14 @@ def GetAccessibleLocations(
                         kongAccessibleRegions[kong].add(destination)
                         # If this region has day access, the deathwarp will occur on the same time of day
                         # Note that no deathwarps are dependent on time of day
-                        if region.dayAccess:
-                            spoiler.RegionList[destination].dayAccess = True
+                        if region.dayAccess[kong]:
+                            spoiler.RegionList[destination].dayAccess[kong] = True
                             # Count as event added so search doesn't get stuck if region is searched,
                             # then later a new time of day access is found so it should be re-visited
                             eventAdded = True
                         # And vice versa
-                        if region.nightAccess:
-                            spoiler.RegionList[destination].nightAccess = True
+                        if region.nightAccess[kong]:
+                            spoiler.RegionList[destination].nightAccess[kong] = True
                             eventAdded = True
     # If we're here to get accessible locations for fill purposes, we need to take a harder look at all the empty shops we didn't buy
     if searchType == SearchMode.GetReachableForFilling:
@@ -961,8 +970,8 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
     # In order for a region to be foolish, it can contain none of these Major Items
     for id, region in spoiler.RegionList.items():
         locations = [loc for loc in region.locations if loc.id in spoiler.LocationList.keys()]
-        # If this region DOES contain a major item, add it the name to the set of non-hintable hint regions
-        if any([loc for loc in locations if spoiler.LocationList[loc.id].item in majorItems]):
+        # If this region's valid locations (exclude starting moves) DO contain a major item, add it the name to the set of non-hintable hint regions
+        if any([loc for loc in locations if spoiler.LocationList[loc.id].type not in (Types.TrainingBarrel, Types.PreGivenMove) and spoiler.LocationList[loc.id].item in majorItems]):
             nonHintableNames.add(region.hint_name)
         # In addition to being empty, medal regions need the corresponding boss location to be empty to be hinted foolish - this lets us say "CBs are foolish" which is more helpful
         elif "Medal Rewards" in region.hint_name:

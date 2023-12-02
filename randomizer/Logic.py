@@ -760,14 +760,14 @@ class LogicVarHolder:
         return self.spoiler.RegionList[region].HasAccess(kong)
 
     def TimeAccess(self, region, time):
-        """Check if a certain region has the given time of day access."""
+        """Check if a certain region has the given time of day access for current kong."""
         if time == Time.Day:
-            return self.spoiler.RegionList[region].dayAccess
+            return self.spoiler.RegionList[region].dayAccess[self.kong]
         elif time == Time.Night:
-            return self.spoiler.RegionList[region].nightAccess
+            return self.spoiler.RegionList[region].nightAccess[self.kong]
         # Not sure when this'd be used
         else:  # if time == Time.Both
-            return self.spoiler.RegionList[region].dayAccess or self.spoiler.RegionList[region].nightAccess
+            return self.spoiler.RegionList[region].dayAccess[self.kong] or self.spoiler.RegionList[region].nightAccess[self.kong]
 
     def BlueprintAccess(self, item):
         """Check if we are the correct kong for this blueprint item."""
