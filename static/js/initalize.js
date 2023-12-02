@@ -199,7 +199,7 @@ function load_music_file_from_db() {
       try {
         $("#music_file_text").attr("placeholder", "Using cached music file");
         $("#music_file_text").val("Using cached music file");
-        cosmetic_pack_event(getMusicFile.result.value);
+        cosmetic_pack_event(getMusicFile.result.value, true);
       } catch (error) {
         console.log("Error loading music file from the database:", error);
       }
@@ -236,7 +236,7 @@ function music_filebox() {
   input.click();
 }
 
-function cosmetic_pack_event(fileToLoad) {
+function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
   var fileReader = new FileReader();
   fileReader.onload = function (fileLoadedEvent) {
     var new_zip = new JSZip();
@@ -306,7 +306,7 @@ function cosmetic_pack_event(fileToLoad) {
         events: event_ext,
       };
 
-      update_music_select_options();
+      update_music_select_options(isInitialLoad);
     });
   };
 
@@ -323,7 +323,7 @@ function get_custom_song_display_name(songName) {
   return `Custom Song: ${trimmedName}`;
 }
 
-function update_music_select_options() {
+async function update_music_select_options(isInitialLoad) {
   customSongDict = {
     "BGM": cosmetic_names.bgm,
     "MajorItem": cosmetic_names.majoritems,
@@ -377,6 +377,17 @@ function update_music_select_options() {
       }
     }
   }
+
+  // If this is the initial load, we want to read from the database and restore
+  // custom song selections.
+  if (isInitialLoad) {
+    let musicDb = await loadDataFromIndexedDB("saved_music");
+    let musicDbContents = JSON.parse(musicDb);
+    for (const [selectName, selectValue] of Object.entries(musicDbContents)) {
+      selectElem = document.getElementById(selectName);
+      selectElem.value = selectValue;
+    }
+  }
 }
 
 jq = $;
@@ -401,6 +412,18 @@ function savesettings() {
   saveDataToIndexedDB("saved_settings", JSON.stringify(json));
 }
 
+// Music settings have to be saved separately, because the value we're trying
+// to load may not exist on the page when load_data() is called.
+function savemusicsettings() {
+  music_json = {};
+  for (element of document.getElementsByTagName("select")) {
+    if (element.id.startsWith("music_select_")) {
+      music_json[element.id] = element.value;
+    }
+  }
+  saveDataToIndexedDB("saved_music", JSON.stringify(music_json));
+}
+
 $("#form input").on("input change", function (e) {
   //This would be called if any of the input elements receive a change inside the form
   savesettings();
@@ -408,6 +431,7 @@ $("#form input").on("input change", function (e) {
 $("#form select").on("change", function (e) {
   //This would be called if any of the select elements receive a change inside the form
   savesettings();
+  savemusicsettings();
 });
 
 async function load_presets() {
@@ -803,7 +827,6 @@ function loadDataFromIndexedDB(key) {
 
       request.onsuccess = function (event) {
         value = event.target.result;
-        console.log(value);
         resolve(value);
       };
     } catch {
