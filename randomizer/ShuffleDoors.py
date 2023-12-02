@@ -6,6 +6,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.Regions import Regions
+from randomizer.Lists import Exceptions
 from randomizer.Lists.DoorLocations import door_locations
 from randomizer.LogicClasses import LocationLogic
 
@@ -74,44 +75,75 @@ def ShuffleDoors(spoiler):
                 available_doors.append(door_index)
             elif spoiler.settings.remove_wrinkly_puzzles and door.default_placed == "wrinkly":
                 available_doors.append(door_index)
+        # Prevent plandomized doors from being used as portals
+        plando_indexes = []
+        if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_wrinkly_doors"] != -1:
+            plando_indexes = [x for x in available_doors if door_locations[level][x].name in spoiler.settings.plandomizer_dict["plando_wrinkly_doors"].values()]
+            for planned_door in plando_indexes:
+                available_doors.remove(planned_door)
         random.shuffle(available_doors)
         if spoiler.settings.tns_location_rando:
+            plando_portal_indexes = []
             number_of_portals_in_level = random.choice([3, 4, 5])
+            allow_multiple_portals_per_group = False
             # Make sure selected locations will be suitable to be a T&S portal
             available_portals = [door for door in available_doors if door_locations[level][door].door_type != "wrinkly"]
+            if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_tns_portals"] != -1:
+                level_to_string = str(level.value)
+                if level_to_string in spoiler.settings.plandomizer_dict["plando_tns_portals"].keys():
+                    plando_portal_indexes = [x for x in available_portals if door_locations[level][x].name in spoiler.settings.plandomizer_dict["plando_tns_portals"][level_to_string]]
+                    if len(plando_portal_indexes) != len([x for x in spoiler.settings.plandomizer_dict["plando_tns_portals"][level_to_string]]):
+                        raise Exceptions.PlandoIncompatibleException(f"Not every selected portal is available in level {level}")
+                    for planned_portal in plando_portal_indexes:
+                        available_portals.remove(planned_portal)
             for new_portal in range(number_of_portals_in_level):
                 if len(available_portals) > 0:  # Should only fail if we don't have enough door locations
-                    if new_portal > 0:
+                    if len(plando_portal_indexes) > 0:
+                        selected_door_index = plando_portal_indexes.pop()
+                        allow_multiple_portals_per_group = True
+                    elif new_portal > 0:
                         selected_door_index = available_portals.pop()
-                        selected_portal = door_locations[level][selected_door_index]
-                        # Only place one T&S portal per group so we don't stack portals too heavily
-                        available_portals = [door for door in available_portals if door_locations[level][door].group != selected_portal.group]
-                        # update available_doors separately as wrinkly doors should not be affected by the T&S grouping
-                        available_doors.remove(selected_door_index)
-                        selected_portal.assignPortal(spoiler)
-                        human_portal_doors[level_list[level]]["T&S #" + str(new_portal + 1)] = selected_portal.name
-                        shuffled_door_data[level].append((selected_door_index, "tns"))
                     else:
                         # On the first iteration, make sure at least 1 TnS portal is accessible without any moves
                         selected_door_index = random.choice([door for door in available_portals if door_locations[level][door].moveless is True])
-                        selected_portal = door_locations[level][selected_door_index]
+                        available_portals.remove(selected_door_index)
+                    selected_portal = door_locations[level][selected_door_index]
+                    if allow_multiple_portals_per_group:
                         # Only place one T&S portal per group so we don't stack portals too heavily
                         available_portals = [door for door in available_portals if door_locations[level][door].group != selected_portal.group]
-                        # update available_doors separately as wrinkly doors should not be affected by the T&S grouping
-                        available_doors.remove(selected_door_index)
-                        selected_portal.assignPortal(spoiler)
-                        human_portal_doors[level_list[level]]["T&S #" + str(new_portal + 1)] = selected_portal.name
-                        shuffled_door_data[level].append((selected_door_index, "tns"))
+                    # update available_doors separately as wrinkly doors should not be affected by the T&S grouping
+                    available_doors.remove(selected_door_index)
+                    selected_portal.assignPortal(spoiler)
+                    human_portal_doors[level_list[level]]["T&S #" + str(new_portal + 1)] = selected_portal.name
+                    shuffled_door_data[level].append((selected_door_index, "tns"))
         if spoiler.settings.wrinkly_location_rando:
             # Place one hint door per kong
             for kong in range(5):  # NOTE: If testing all locations, replace "range(5) with range(len(door_locations[level]))"
                 assignee = Kongs(kong % 5)
                 if len(available_doors) > 0:  # Should only fail if we don't have enough door locations
-                    selected_door_index = available_doors.pop(0)  # Popping from the top of the list makes it possible to append the selected door back into the list, if it's a bad pick
+                    # Give plandomizer an opportunity to get the final say
+                    retry = True
+                    location_var = str(GetDoorLocationForKongAndLevel(kong, level).value)
+                    if (
+                        spoiler.settings.enable_plandomizer
+                        and spoiler.settings.plandomizer_dict["plando_wrinkly_doors"] != -1
+                        and location_var in spoiler.settings.plandomizer_dict["plando_wrinkly_doors"].keys()
+                    ):
+                        if spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][location_var] not in ("", -1):
+                            selected_door_index = [x for x in plando_indexes if door_locations[level][x].name == spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][location_var]][0]
+                            retry = False
+                        else:
+                            selected_door_index = available_doors.pop()
+                    else:
+                        selected_door_index = available_doors.pop(0)  # Popping from the top of the list makes it possible to append the selected door back into the list, if it's a bad pick
                     # Make sure that the kong is eligible to be assigned to the selected door, and that the door location is suitable to be a hint door
                     while (assignee not in door_locations[level][selected_door_index].kongs) or (door_locations[level][selected_door_index].door_type == "tns"):
-                        available_doors.append(selected_door_index)
-                        selected_door_index = available_doors.pop(0)
+                        if retry:
+                            available_doors.append(selected_door_index)
+                            selected_door_index = available_doors.pop(0)
+                        else:
+                            name = spoiler.settings.plandomizer_dict["plando_wrinkly_doors"][location_var]
+                            raise Exceptions.PlandoIncompatibleException(f"Bad door location: {name}.")
                     selected_door = door_locations[level][selected_door_index]
                     selected_door.assignDoor(assignee)  # Clamp to within [0,4], preventing list index errors
                     human_hint_doors[level_list[level]][str(Kongs(kong % 5).name).capitalize()] = selected_door.name
