@@ -963,7 +963,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
             majorItems.append(Items.Bean)
             newFoolishItems = True
 
-    nonHintableNames = {"K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits"}  # These regions never have anything useful so shouldn't be hinted
+    nonHintableNames = {"Game Start", "K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits"}  # These regions never have anything useful so shouldn't be hinted
     if Types.Coin not in spoiler.settings.shuffled_location_types:
         nonHintableNames.add("Jetpac Game")  # If this is vanilla, it's never useful to hint
     bossLocations = [location for id, location in spoiler.LocationList.items() if location.type == Types.Key]
