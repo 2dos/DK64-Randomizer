@@ -1628,9 +1628,9 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomLower,
         locations=[
-            [1, 1.0, 447, 119.75, 918.75],
-            [1, 1.0, 446.875, 168, 918, 75],
             [1, 1.0, 448.25, 207.75, 918.25],
+            [1, 1.0, 446.875, 168, 918, 75],
+            [1, 1.0, 447, 119.75, 918.75],
             [1, 1.0, 448, 86, 905],
             [1, 1.0, 448, 140, 908],
         ],
@@ -1642,9 +1642,9 @@ ColoredBananaGroupList = [
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomLower,
         locations=[
-            [1, 1.0, 746.5, 297.5, 805.25],
-            [1, 1.0, 744.25, 353, 808],
             [1, 1.0, 746.25, 396.75, 805.25],
+            [1, 1.0, 744.25, 353, 808],
+            [1, 1.0, 746.5, 297.5, 805.25],
             [1, 1.0, 740, 230, 805],
             [1, 1.0, 740, 252, 805],
         ],
