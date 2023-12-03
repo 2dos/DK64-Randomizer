@@ -225,12 +225,21 @@ class Spoiler:
         settings["Complex Level Order"] = self.settings.hard_level_progression
         settings["Progressive Switch Strength"] = self.settings.alter_switch_allocation
         settings["Hard Shooting"] = self.settings.hard_shooting
+        settings["Dropsanity"] = self.settings.enemy_drop_rando
+        settings["Switchsanity"] = self.settings.switchsanity
         settings["Free Trade Agreement"] = self.settings.free_trade_setting.name
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
         settings["Randomize Crates"] = self.settings.random_crates
         settings["Randomize CB Locations"] = self.settings.cb_rando
         settings["Randomize Coin Locations"] = self.settings.coin_rando
+        settings["Randomize Shop Locations"] = self.settings.shuffle_shops
+        settings["Randomize Kasplats"] = self.settings.kasplat_rando_setting.name
+        settings["Randomize Banana Fairies"] = self.settings.random_fairies
+        settings["Randomize Battle Arenas"] = self.settings.crown_placement_rando
+        settings["Vanilla Door Shuffle"] = self.settings.vanilla_door_rando
+        settings["Randomize Wrinkly Doors"] = self.settings.wrinkly_location_rando
+        settings["Randomize T&S Portals"] = self.settings.tns_location_rando
         settings["Puzzle Randomization"] = self.settings.puzzle_rando
         settings["Crown Door Open"] = self.settings.crown_door_item == HelmDoorItem.opened
         settings["Coin Door Open"] = self.settings.coin_door_item == HelmDoorItem.opened
@@ -242,8 +251,11 @@ class Spoiler:
         settings["Banana Port Randomization"] = self.settings.bananaport_rando.name
         settings["Activated Warps"] = self.settings.activate_all_bananaports.name
         settings["Smaller Shops"] = self.settings.smaller_shops
-        settings["Shuffle Shop Locations"] = self.settings.shuffle_shops
-        settings["Shuffle Kasplats"] = self.settings.kasplat_rando_setting.name
+        settings["Irondonk"] = self.settings.perma_death
+        settings["Disable Tag Barrels"] = self.settings.disable_tag_barrels
+        settings["Damage Amount"] = self.settings.damage_amount.name
+        settings["Hard Mode Enabled"] = self.settings.hard_mode
+        settings["Krusha Slot"] = self.settings.krusha_ui.name
 
         settings["Key 8 Required"] = self.settings.krool_access
         settings["Key 8 in Helm"] = self.settings.key_8_helm
@@ -260,6 +272,7 @@ class Spoiler:
         settings["High Requirements"] = self.settings.high_req
         settings["Win Condition"] = self.settings.win_condition.name
         settings["Fungi Time of Day"] = self.settings.fungi_time.name
+        settings["Galleon Water Level"] = self.settings.galleon_water.name
         if self.settings.helm_hurry:
             settings["Game Mode"] = "Helm Hurry"
         humanspoiler["Settings"] = settings
@@ -319,6 +332,8 @@ class Spoiler:
             humanspoiler["End Game"]["Coin Door Item Amount"] = self.settings.coin_door_item_count
         if self.settings.shuffle_items:
             humanspoiler["Item Pool"] = list(set([enum.name for enum in self.settings.shuffled_location_types]))
+        if self.settings.hard_mode_selected:
+            humanspoiler["Hard Mode"] = list(set([enum.name for enum in self.settings.hard_mode_selected]))
         humanspoiler["Items"] = {
             "Kongs": {},
             "Shops": {},
