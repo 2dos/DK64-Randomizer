@@ -776,9 +776,9 @@ def validate_plando_file(file_obj: dict) -> None:
         validate_plando_location(location)
         validate_plando_option_value(file_obj["locations"], location, PlandoItems, "location")
     # Inspect all minigames.
-    # for minigame in file_obj["minigames"].keys():
-    #     validate_plando_location(minigame)
-    #     validate_plando_option_value(file_obj["minigames"], minigame, Minigames, "minigame")
+    for minigame in file_obj["minigames"].keys():
+        validate_plando_location(minigame)
+        validate_plando_option_value(file_obj["minigames"], minigame, Minigames, "minigame")
     # Inspect all shop prices.
     # for shop in file_obj["prices"].keys():
     #     validate_plando_location(shop)
@@ -986,15 +986,14 @@ def populate_plando_options(form: dict, for_plando_file: bool = False) -> dict:
             shops_map[location] = item_cost
     plando_form_data["prices"] = shops_map
 
-    # Minigame picking coming in future version
-    # minigames_map = {}
-    # for minigame in minigame_objects:
-    #     # Extract the barrel location name.
-    #     location_name = re.search("^plando_(.+)_minigame$", minigame.name)[1]
-    #     location = get_plando_value(Locations[location_name])
-    #     if minigame.value != "":
-    #         minigames_map[location] = get_plando_value(Minigames[minigame.value])
-    # plando_form_data["minigames"] = minigames_map
+    minigames_map = {}
+    for minigame in minigame_objects:
+        # Extract the barrel location name.
+        location_name = re.search("^plando_(.+)_minigame$", minigame.name)[1]
+        location = get_plando_value(Locations[location_name])
+        if minigame.value != "":
+            minigames_map[location] = get_plando_value(Minigames[minigame.value])
+    plando_form_data["plando_bonus_barrels"] = minigames_map
 
     hints_map = {}
     for hint in hint_objects:
