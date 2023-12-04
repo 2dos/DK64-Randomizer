@@ -1476,7 +1476,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.tiny],
         region=Regions.Mausoleum,
         vanilla=True,
-        logic=lambda l: l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny),
+        logic=lambda l: l.twirl or l.advanced_platforming,
         locations=[[5, 1.0, 985.779541015625, 195.0, 1721.02587890625]],
     ),
     ColoredBananaGroup(
@@ -1954,7 +1954,7 @@ BalloonList = [
         points=[[1951, 140, 246], [2167, 130, 194], [2174, 150, 600], [1968, 145, 577]],
     ),
     Balloon(
-        id=27, map_id=Maps.CastleMausoleum, name="In and out of green goo pit", speed=11, konglist=[Kongs.lanky, Kongs.tiny], region=Regions.Mausoleum, points=[[1002, 220, 1731], [1002, 0, 1731],]
+        id=27, map_id=Maps.CastleMausoleum, name="In and out of green goo pit", speed=11, konglist=[Kongs.lanky, Kongs.tiny], region=Regions.Mausoleum, points=[[1002, 220, 1731], [1002, 0, 1731]]
     ),
     Balloon(
         id=28,
@@ -1963,7 +1963,7 @@ BalloonList = [
         speed=8,
         konglist=[Kongs.tiny],
         region=Regions.Mausoleum,
-        logic=lambda l: l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny),
+        logic=lambda l: l.twirl or l.advanced_platforming,
         points=[[1304, 240, 2150], [967, 230, 2140]],
     ),
     Balloon(

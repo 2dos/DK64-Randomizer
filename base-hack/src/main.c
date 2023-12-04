@@ -107,6 +107,7 @@ void cFuncLoop(void) {
 	callParentMapFilter();
 	spawnCannonWrapper();
 	setCrusher();
+	handleFallDamageImmunity();
 	if (Rando.win_condition == GOAL_POKESNAP) {
 		int picture_bitfield = 0;
 		if (Player) {

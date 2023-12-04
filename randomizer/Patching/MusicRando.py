@@ -286,7 +286,9 @@ def insertUploaded(settings: Settings, uploaded_songs: list, uploaded_song_names
     all_target_songs = [song_enum for song_enum, song in song_data.items() if song.type == target_type]
 
     # Calculate Proportion, add songs if necessary
-    proportion = settings.custom_music_proportion / 100
+    if settings.custom_music_proportion == "":
+        settings.custom_music_proportion = 100
+    proportion = int(settings.custom_music_proportion) / 100
     if proportion < 0:
         proportion = 0
     elif proportion > 1:

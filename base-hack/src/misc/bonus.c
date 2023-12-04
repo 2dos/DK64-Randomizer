@@ -35,6 +35,8 @@ int wonArena(void) {
     return score <= 0;
 }
 
+static short barrel_types[3] = {0x1C, 0x86, 0x6B};
+
 void warpOutOfArenas(void) {
     if (isGamemode(GAMEMODE_DKBONUS, 0)) {
         initiateTransition(MAP_MAINMENU, 0); // Warp back to main menu
@@ -45,9 +47,8 @@ void warpOutOfArenas(void) {
         return;
     }
     if (!isGamemode(GAMEMODE_SNIDEGAMES, 0)) {
-        short a = *(short*)(0x80750FB0);
         int b = 0;
-        int index = getSpawnerIndexOfResolvedBonus(&a, 3, &b);
+        int index = getSpawnerIndexOfResolvedBonus(&barrel_types, 3, &b);
         resolveBonus(b, index, 7, 2.0f);
     }
     ExitFromBonus();
@@ -77,9 +78,8 @@ void warpOutOfTraining(void) {
         return;
     }
     if (!isGamemode(GAMEMODE_SNIDEGAMES, 0)) {
-        short a = *(short*)(0x80750FB0);
         int b = 0;
-        int index = getSpawnerIndexOfResolvedBonus(&a, 3, &b);
+        int index = getSpawnerIndexOfResolvedBonus(&barrel_types, 3, &b);
         resolveBonus(b, index, 7, 2.0f);
     }
     ExitFromBonus();
