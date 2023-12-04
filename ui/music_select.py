@@ -243,6 +243,7 @@ async def import_music_selections(file) -> None:
                 break
 
     js.savesettings()
+    js.savemusicsettings()
 
 
 @bind("click", "export_music_selections")
@@ -262,6 +263,7 @@ def reset_music_selections(evt):
     if js.window.confirm("Are you sure you want to reset all music selections?"):
         reset_music_selections_no_prompt()
         js.savesettings()
+        js.savemusicsettings()
 
 
 def reset_music_selections_no_prompt():
