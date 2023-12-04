@@ -77,7 +77,7 @@ typedef struct varspace {
 	/* 0x0DC */ unsigned short japes_rock_item; // Actor ID of item that spawns from destroying the rock covering Japes Underground
 	/* 0x0DE */ unsigned short vulture_item; // Actor ID of item that the vulture in Tiny Temple has
 	/* 0x0E0 */ fairy_activations fairy_triggers_disabled;
-	/* 0x0E2 */ short helm_hurry_start;
+	/* 0x0E2 */ unsigned short helm_hurry_start;
 	/* 0x0E4 */ short helm_hurry_bonuses[0xE];
 	/* 0x100 */ char fairy_rando_on;
 	/* 0x101 */ char location_visuals; // Bitfield for visual hints of what is inside a location. 0000 0abc. a = Crowns , b = Boss Doors , c = Bonus Barrels

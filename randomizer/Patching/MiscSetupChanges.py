@@ -226,8 +226,9 @@ def randomize_setup(spoiler):
                     ROM_COPY.seek(item_start + 0xC)
                     ROM_COPY.writeMultipleBytes(0x3F000000, 4)  # Scale: 0.5
                 elif item_type in pickup_list and spoiler.settings.randomize_pickups:
-                    ROM_COPY.seek(item_start + 0x28)
-                    ROM_COPY.writeMultipleBytes(random.choice(pickup_list), 2)
+                    if cont_map_id != Maps.OrangeBarrel:
+                        ROM_COPY.seek(item_start + 0x28)
+                        ROM_COPY.writeMultipleBytes(random.choice(pickup_list), 2)
                 elif is_swap:
                     if spoiler.settings.puzzle_rando:
                         offsets.append(item_start)

@@ -85,8 +85,30 @@ void shineLight(actorData* actor, int kongType) {
     }
 }
 
+static unsigned char fall_damage_immunity = 0;
+
+void setFallDamageImmunity(int value) {
+    fall_damage_immunity = value;
+}
+
+void handleFallDamageImmunity(void) {
+    if (ObjectModel2Timer > 0) {
+        if (fall_damage_immunity > 0) {
+            fall_damage_immunity -= 1;
+        }
+    }
+}
+
+void transformBarrelImmunity(void) {
+    setFallDamageImmunity(60);
+    DisplayExplosionSprite();
+}
+
 void fallDamageWrapper(int action, void* actor, int player_index) {
     if (ObjectModel2Timer < 100) {
+        return;
+    }
+    if (fall_damage_immunity > 0) {
         return;
     }
     setAction(action, actor, player_index);
