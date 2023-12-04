@@ -127,7 +127,6 @@ class Settings:
             self.ApplyPlandomizerSettings()
 
             # Remove these as plando features get implemented
-            self.plandomizer_dict["plando_bonus_barrels"] = -1
             self.plandomizer_dict["plando_dirt_patches"] = -1
             self.plandomizer_dict["plando_melon_crates"] = -1
             self.plandomizer_dict["plando_battle_arenas"] = -1

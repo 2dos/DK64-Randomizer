@@ -147,21 +147,20 @@ PlandomizerPanels = {
     #    "name": "Blueprints",
     #    "locations": createPlannableLocationObj()
     # },
-    # Minigames to come soon
-    # "Minigames": {
-    #     "name": "Minigames",
-    #     "levels": {
-    #         "DKIsles": {"name": "D.K. Isles", "locations": []},
-    #         "JungleJapes": {"name": "Jungle Japes", "locations": []},
-    #         "AngryAztec": {"name": "Angry Aztec", "locations": []},
-    #         "FranticFactory": {"name": "Frantic Factory", "locations": []},
-    #         "GloomyGalleon": {"name": "Gloomy Galleon", "locations": []},
-    #         "FungiForest": {"name": "Fungi Forest", "locations": []},
-    #         "CrystalCaves": {"name": "Crystal Caves", "locations": []},
-    #         "CreepyCastle": {"name": "Creepy Castle", "locations": []},
-    #         "HideoutHelm": {"name": "Hideout Helm", "locations": []},
-    #     },
-    # },
+    "Minigames": {
+        "name": "Minigames",
+        "levels": {
+            "DKIsles": {"name": "D.K. Isles", "locations": []},
+            "JungleJapes": {"name": "Jungle Japes", "locations": []},
+            "AngryAztec": {"name": "Angry Aztec", "locations": []},
+            "FranticFactory": {"name": "Frantic Factory", "locations": []},
+            "GloomyGalleon": {"name": "Gloomy Galleon", "locations": []},
+            "FungiForest": {"name": "Fungi Forest", "locations": []},
+            "CrystalCaves": {"name": "Crystal Caves", "locations": []},
+            "CreepyCastle": {"name": "Creepy Castle", "locations": []},
+            "HideoutHelm": {"name": "Hideout Helm", "locations": []},
+        },
+    },
     "Hints": {
         "name": "Hints",
         "levels": {
@@ -230,25 +229,25 @@ for locationEnum, locationObj in LocationList.items():
             MelonCrateLocationList.append(locationEnum.name)
 
         # If this is a minigame location, add it to the Minigames list.
-        # if isMinigameLocation(locationEnum):
-        #     PlandomizerPanels["Minigames"]["levels"][levelName]["locations"].append({"name": locationObj.name, "value": locationEnum.name, "kong": kongString})
-        #     MinigameLocationList.append(locationEnum.name)
+        if isMinigameLocation(locationEnum):
+            PlandomizerPanels["Minigames"]["levels"][levelName]["locations"].append({"name": locationObj.name, "value": locationEnum.name, "kong": kongString})
+            MinigameLocationList.append(locationEnum.name)
 
 # Hideout Helm minigame locations get manually added here, as they're not
 # locations where rewards can be placed, so they don't get naturally added.
-# PlandomizerPanels["Minigames"]["levels"]["HideoutHelm"]["locations"] = [
-#     {"name": "Helm Donkey 1", "value": "HelmDonkey1", "kong": "Donkey"},
-#     {"name": "Helm Donkey 2", "value": "HelmDonkey2", "kong": "Donkey"},
-#     {"name": "Helm Diddy 1", "value": "HelmDiddy1", "kong": "Diddy"},
-#     {"name": "Helm Diddy 2", "value": "HelmDiddy2", "kong": "Diddy"},
-#     {"name": "Helm Lanky 1", "value": "HelmLanky1", "kong": "Lanky"},
-#     {"name": "Helm Lanky 2", "value": "HelmLanky2", "kong": "Lanky"},
-#     {"name": "Helm Tiny 1", "value": "HelmTiny1", "kong": "Tiny"},
-#     {"name": "Helm Tiny 2", "value": "HelmTiny2", "kong": "Tiny"},
-#     {"name": "Helm Chunky 1", "value": "HelmChunky1", "kong": "Chunky"},
-#     {"name": "Helm Chunky 2", "value": "HelmChunky2", "kong": "Chunky"},
-# ]
-# MinigameLocationList += ["HelmDonkey1", "HelmDonkey2", "HelmDiddy1", "HelmDiddy2", "HelmLanky1", "HelmLanky2", "HelmTiny1", "HelmTiny2", "HelmChunky1", "HelmChunky2"]
+PlandomizerPanels["Minigames"]["levels"]["HideoutHelm"]["locations"] = [
+    {"name": "Helm Donkey 1", "value": "HelmDonkey1", "kong": "Donkey"},
+    {"name": "Helm Donkey 2", "value": "HelmDonkey2", "kong": "Donkey"},
+    {"name": "Helm Diddy 1", "value": "HelmDiddy1", "kong": "Diddy"},
+    {"name": "Helm Diddy 2", "value": "HelmDiddy2", "kong": "Diddy"},
+    {"name": "Helm Lanky 1", "value": "HelmLanky1", "kong": "Lanky"},
+    {"name": "Helm Lanky 2", "value": "HelmLanky2", "kong": "Lanky"},
+    {"name": "Helm Tiny 1", "value": "HelmTiny1", "kong": "Tiny"},
+    {"name": "Helm Tiny 2", "value": "HelmTiny2", "kong": "Tiny"},
+    {"name": "Helm Chunky 1", "value": "HelmChunky1", "kong": "Chunky"},
+    {"name": "Helm Chunky 2", "value": "HelmChunky2", "kong": "Chunky"},
+]
+MinigameLocationList += ["HelmDonkey1", "HelmDonkey2", "HelmDiddy1", "HelmDiddy2", "HelmLanky1", "HelmLanky2", "HelmTiny1", "HelmTiny2", "HelmChunky1", "HelmChunky2"]
 
 #########
 # ITEMS #
