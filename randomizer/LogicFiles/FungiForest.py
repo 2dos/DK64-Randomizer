@@ -258,8 +258,7 @@ LogicRegions = {
     ]),
 
     Regions.SpiderRoom: Region("Spider Room", "Forest Mills", Levels.FungiForest, False, Regions.MillChunkyTinyArea, [
-        # FTA Spider boss temporarily disabled for Night rework, will also need: or (l.settings.free_trade_items and l.HasGun(Kongs.any))),
-        LocationLogic(Locations.ForestTinySpiderBoss, lambda l: l.HasGun(Kongs.tiny)),
+        LocationLogic(Locations.ForestTinySpiderBoss, lambda l: l.HasGun(Kongs.tiny) or (l.settings.free_trade_items and l.HasGun(Kongs.any))),
     ], [], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.MillChunkyTinyArea, lambda l: True, Transitions.ForestSpiderToTinyMill),

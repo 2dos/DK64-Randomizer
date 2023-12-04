@@ -1624,13 +1624,13 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=142,
         map_id=Maps.ForestGiantMushroom,
-        name="First ladder up mushroom (2 custom, 3 Chunky)",
+        name="First ladder up mushroom (2 custom, 3 Chunky)",  # Altered 3 vanilla so there's no jankness with other kongs
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomLower,
         locations=[
-            [1, 1.0, 447.1794128417969, 205.9945068359375, 920.1954956054688],
-            [1, 1.0, 448.0461120605469, 166.3643798828125, 908.50830078125],
-            [1, 1.0, 448.2084045410156, 115.89559173583984, 905.3128051757812],
+            [1, 1.0, 448.25, 207.75, 918.25],
+            [1, 1.0, 446.875, 168, 918, 75],
+            [1, 1.0, 447, 119.75, 918.75],
             [1, 1.0, 448, 86, 905],
             [1, 1.0, 448, 140, 908],
         ],
@@ -1638,13 +1638,13 @@ ColoredBananaGroupList = [
     ColoredBananaGroup(
         group=143,
         map_id=Maps.ForestGiantMushroom,
-        name="Second ladder up mushroom (2 custom, 3 Chunky)",
+        name="Second ladder up mushroom (2 custom, 3 Chunky)",  # Altered 3 vanilla so there's no jankness with other kong
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
         region=Regions.MushroomLower,
         locations=[
-            [1, 1.0, 744.364990234375, 394.6114501953125, 805.7998046875],
-            [1, 1.0, 730.1250610351562, 351.1166076660156, 790.63330078125],
-            [1, 1.0, 730.32666015625, 295.0904235839844, 790.4505004882812],
+            [1, 1.0, 746.25, 396.75, 805.25],
+            [1, 1.0, 744.25, 353, 808],
+            [1, 1.0, 746.5, 297.5, 805.25],
             [1, 1.0, 740, 230, 805],
             [1, 1.0, 740, 252, 805],
         ],
