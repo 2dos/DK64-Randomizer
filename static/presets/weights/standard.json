@@ -242,7 +242,7 @@
     "open_levels": 0.75,
     "open_lobbies": 0.6,
     "perma_death": 0,
-    "portal_numbers": 0.5,
+    "portal_numbers": 1,
     "progressive_hint_text": {
         "min": 30,
         "max": 100,
