@@ -369,44 +369,6 @@ class Spoiler:
             "Unknown": {},
         }
 
-        # Playthrough data
-        humanspoiler["Playthrough"] = self.playthrough
-
-        # Woth data
-        humanspoiler["Way of the Hoard"] = self.woth
-        # Paths for Woth items - does not show up on the site, just for debugging
-        humanspoiler["Paths"] = {}
-        wothSlams = 0
-        for loc, path in self.woth_paths.items():
-            destination_item = ItemList[self.LocationList[loc].item]
-            path_dict = {}
-            for path_loc_id in path:
-                path_location = self.LocationList[path_loc_id]
-                path_item = ItemList[path_location.item]
-                path_dict[path_location.name] = path_item.name
-            extra = ""
-            if self.LocationList[loc].item == Items.ProgressiveSlam:
-                wothSlams += 1
-                extra = " " + str(wothSlams)
-            humanspoiler["Paths"][destination_item.name + extra] = path_dict
-        # Paths for K. Rool phases - also do not show up on the site, just for debugging
-        for kong, path in self.krool_paths.items():
-            path_dict = {}
-            for path_loc_id in path:
-                path_location = self.LocationList[path_loc_id]
-                path_item = ItemList[path_location.item]
-                path_dict[path_location.name] = path_item.name
-            phase_name = "K. Rool Donkey Phase"
-            if kong == Kongs.diddy:
-                phase_name = "K. Rool Diddy Phase"
-            elif kong == Kongs.lanky:
-                phase_name = "K. Rool Lanky Phase"
-            elif kong == Kongs.tiny:
-                phase_name = "K. Rool Tiny Phase"
-            elif kong == Kongs.chunky:
-                phase_name = "K. Rool Chunky Phase"
-            humanspoiler["Paths"][phase_name] = path_dict
-
         self.pregiven_items = []
         for location_id, location in self.LocationList.items():
             # No need to spoiler constants or hints
@@ -471,80 +433,6 @@ class Spoiler:
                 humanspoiler["Items"][level][location.name] = item.name
                 humanspoiler[sorted_item_name][self.getItemGroup(location.item)][location.name] = item.name
 
-        if self.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
-            # Just show level order
-            shuffled_exits = OrderedDict()
-            lobby_entrance_order = {
-                Transitions.IslesMainToJapesLobby: Levels.JungleJapes,
-                Transitions.IslesMainToAztecLobby: Levels.AngryAztec,
-                Transitions.IslesMainToFactoryLobby: Levels.FranticFactory,
-                Transitions.IslesMainToGalleonLobby: Levels.GloomyGalleon,
-                Transitions.IslesMainToForestLobby: Levels.FungiForest,
-                Transitions.IslesMainToCavesLobby: Levels.CrystalCaves,
-                Transitions.IslesMainToCastleLobby: Levels.CreepyCastle,
-            }
-            lobby_exit_order = {
-                Transitions.IslesJapesLobbyToMain: Levels.JungleJapes,
-                Transitions.IslesAztecLobbyToMain: Levels.AngryAztec,
-                Transitions.IslesFactoryLobbyToMain: Levels.FranticFactory,
-                Transitions.IslesGalleonLobbyToMain: Levels.GloomyGalleon,
-                Transitions.IslesForestLobbyToMain: Levels.FungiForest,
-                Transitions.IslesCavesLobbyToMain: Levels.CrystalCaves,
-                Transitions.IslesCastleLobbyToMain: Levels.CreepyCastle,
-            }
-            for transition, vanilla_level in lobby_entrance_order.items():
-                shuffled_level = lobby_exit_order[self.shuffled_exit_data[transition].reverse]
-                shuffled_exits[vanilla_level.name] = shuffled_level.name
-            humanspoiler["Shuffled Level Order"] = shuffled_exits
-        elif self.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
-            # Show full shuffled_exits data if more than just levels are shuffled
-            shuffled_exits = OrderedDict()
-            level_starts = {
-                "DK Isles": [
-                    "DK Isles",
-                    "Japes Lobby",
-                    "Aztec Lobby",
-                    "Factory Lobby",
-                    "Galleon Lobby",
-                    "Fungi Lobby",
-                    "Caves Lobby",
-                    "Castle Lobby",
-                    "Snide's Room",
-                    "Training Grounds",
-                    "Banana Fairy Isle",
-                    "DK's Treehouse",
-                ],
-                "Jungle Japes": ["Jungle Japes"],
-                "Angry Aztec": ["Angry Aztec"],
-                "Frantic Factory": ["Frantic Factory"],
-                "Gloomy Galleon": ["Gloomy Galleon"],
-                "Fungi Forest": ["Fungi Forest"],
-                "Crystal Caves": ["Crystal Caves"],
-                "Creepy Castle": ["Creepy Castle"],
-            }
-            level_data = {"Other": {}}
-            for level in level_starts:
-                level_data[level] = {}
-            for exit, dest in self.shuffled_exit_data.items():
-                level_name = "Other"
-                for level in level_starts:
-                    for search_name in level_starts[level]:
-                        if dest.spoilerName.find(search_name) == 0:
-                            level_name = level
-                shuffled_exits[ShufflableExits[exit].name] = dest.spoilerName
-                level_data[level_name][ShufflableExits[exit].name] = dest.spoilerName
-            humanspoiler["Shuffled Exits"] = shuffled_exits
-            humanspoiler["Shuffled Exits (Sorted by destination)"] = level_data
-        if self.settings.alter_switch_allocation:
-            humanspoiler["Level Switch Strength"] = {
-                "Jungle Japes": self.settings.switch_allocation[Levels.JungleJapes],
-                "Angry Aztec": self.settings.switch_allocation[Levels.AngryAztec],
-                "Frantic Factory": self.settings.switch_allocation[Levels.FranticFactory],
-                "Gloomy Galleon": self.settings.switch_allocation[Levels.GloomyGalleon],
-                "Fungi Forest": self.settings.switch_allocation[Levels.FungiForest],
-                "Crystal Caves": self.settings.switch_allocation[Levels.CrystalCaves],
-                "Creepy Castle": self.settings.switch_allocation[Levels.CreepyCastle],
-            }
         if self.settings.enemy_rando:
             placement_dict = {}
             for map_id in self.enemy_rando_data:
@@ -615,37 +503,7 @@ class Spoiler:
             shuffled_warp_levels = [x.name for x in self.settings.warp_level_list_selected]
             humanspoiler["Shuffled Bananaport Levels"] = shuffled_warp_levels
             humanspoiler["Shuffled Bananaports"] = self.human_warp_locations
-        if len(self.microhints) > 0:
-            human_microhints = {}
-            for name, hint in self.microhints.items():
-                filtered_hint = hint.replace("\x04", "")
-                filtered_hint = filtered_hint.replace("\x05", "")
-                filtered_hint = filtered_hint.replace("\x06", "")
-                filtered_hint = filtered_hint.replace("\x07", "")
-                filtered_hint = filtered_hint.replace("\x08", "")
-                filtered_hint = filtered_hint.replace("\x09", "")
-                filtered_hint = filtered_hint.replace("\x0a", "")
-                filtered_hint = filtered_hint.replace("\x0b", "")
-                filtered_hint = filtered_hint.replace("\x0c", "")
-                filtered_hint = filtered_hint.replace("\x0d", "")
-                human_microhints[name] = filtered_hint
-            humanspoiler["Direct Item Hints"] = human_microhints
-        if len(self.hint_list) > 0:
-            human_hint_list = {}
-            # Here it filters out the coloring from the hints to make it actually readable in the spoiler log
-            for name, hint in self.hint_list.items():
-                filtered_hint = hint.replace("\x04", "")
-                filtered_hint = filtered_hint.replace("\x05", "")
-                filtered_hint = filtered_hint.replace("\x06", "")
-                filtered_hint = filtered_hint.replace("\x07", "")
-                filtered_hint = filtered_hint.replace("\x08", "")
-                filtered_hint = filtered_hint.replace("\x09", "")
-                filtered_hint = filtered_hint.replace("\x0a", "")
-                filtered_hint = filtered_hint.replace("\x0b", "")
-                filtered_hint = filtered_hint.replace("\x0c", "")
-                filtered_hint = filtered_hint.replace("\x0d", "")
-                human_hint_list[name] = filtered_hint
-            humanspoiler["Wrinkly Hints"] = human_hint_list
+
         if self.settings.wrinkly_location_rando:
             humanspoiler["Wrinkly Door Locations"] = self.human_hint_doors
         if self.settings.tns_location_rando:
@@ -751,6 +609,151 @@ class Spoiler:
                     if combo in map_name:
                         map_name = map_name.replace(combo, combo.replace(" ", ""))
                 humanspoiler["Coin Locations"][f"{lvl_name.split(' ')[idx]} {NameFromKong(group['kong'])}"].append(f"{map_name.strip()}: {group['name']}")
+
+        # Playthrough data
+        humanspoiler["Playthrough"] = self.playthrough
+
+        # Woth data
+        humanspoiler["Way of the Hoard"] = self.woth
+        # Paths for Woth items - does not show up on the site, just for debugging
+        humanspoiler["Paths"] = {}
+        wothSlams = 0
+        for loc, path in self.woth_paths.items():
+            destination_item = ItemList[self.LocationList[loc].item]
+            path_dict = {}
+            for path_loc_id in path:
+                path_location = self.LocationList[path_loc_id]
+                path_item = ItemList[path_location.item]
+                path_dict[path_location.name] = path_item.name
+            extra = ""
+            if self.LocationList[loc].item == Items.ProgressiveSlam:
+                wothSlams += 1
+                extra = " " + str(wothSlams)
+            humanspoiler["Paths"][destination_item.name + extra] = path_dict
+        # Paths for K. Rool phases - also do not show up on the site, just for debugging
+        for kong, path in self.krool_paths.items():
+            path_dict = {}
+            for path_loc_id in path:
+                path_location = self.LocationList[path_loc_id]
+                path_item = ItemList[path_location.item]
+                path_dict[path_location.name] = path_item.name
+            phase_name = "K. Rool Donkey Phase"
+            if kong == Kongs.diddy:
+                phase_name = "K. Rool Diddy Phase"
+            elif kong == Kongs.lanky:
+                phase_name = "K. Rool Lanky Phase"
+            elif kong == Kongs.tiny:
+                phase_name = "K. Rool Tiny Phase"
+            elif kong == Kongs.chunky:
+                phase_name = "K. Rool Chunky Phase"
+            humanspoiler["Paths"][phase_name] = path_dict
+
+        if self.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
+            # Just show level order
+            shuffled_exits = OrderedDict()
+            lobby_entrance_order = {
+                Transitions.IslesMainToJapesLobby: Levels.JungleJapes,
+                Transitions.IslesMainToAztecLobby: Levels.AngryAztec,
+                Transitions.IslesMainToFactoryLobby: Levels.FranticFactory,
+                Transitions.IslesMainToGalleonLobby: Levels.GloomyGalleon,
+                Transitions.IslesMainToForestLobby: Levels.FungiForest,
+                Transitions.IslesMainToCavesLobby: Levels.CrystalCaves,
+                Transitions.IslesMainToCastleLobby: Levels.CreepyCastle,
+            }
+            lobby_exit_order = {
+                Transitions.IslesJapesLobbyToMain: Levels.JungleJapes,
+                Transitions.IslesAztecLobbyToMain: Levels.AngryAztec,
+                Transitions.IslesFactoryLobbyToMain: Levels.FranticFactory,
+                Transitions.IslesGalleonLobbyToMain: Levels.GloomyGalleon,
+                Transitions.IslesForestLobbyToMain: Levels.FungiForest,
+                Transitions.IslesCavesLobbyToMain: Levels.CrystalCaves,
+                Transitions.IslesCastleLobbyToMain: Levels.CreepyCastle,
+            }
+            for transition, vanilla_level in lobby_entrance_order.items():
+                shuffled_level = lobby_exit_order[self.shuffled_exit_data[transition].reverse]
+                shuffled_exits[vanilla_level.name] = shuffled_level.name
+            humanspoiler["Shuffled Level Order"] = shuffled_exits
+        elif self.settings.shuffle_loading_zones != ShuffleLoadingZones.none:
+            # Show full shuffled_exits data if more than just levels are shuffled
+            shuffled_exits = OrderedDict()
+            level_starts = {
+                "DK Isles": [
+                    "DK Isles",
+                    "Japes Lobby",
+                    "Aztec Lobby",
+                    "Factory Lobby",
+                    "Galleon Lobby",
+                    "Fungi Lobby",
+                    "Caves Lobby",
+                    "Castle Lobby",
+                    "Snide's Room",
+                    "Training Grounds",
+                    "Banana Fairy Isle",
+                    "DK's Treehouse",
+                ],
+                "Jungle Japes": ["Jungle Japes"],
+                "Angry Aztec": ["Angry Aztec"],
+                "Frantic Factory": ["Frantic Factory"],
+                "Gloomy Galleon": ["Gloomy Galleon"],
+                "Fungi Forest": ["Fungi Forest"],
+                "Crystal Caves": ["Crystal Caves"],
+                "Creepy Castle": ["Creepy Castle"],
+            }
+            level_data = {"Other": {}}
+            for level in level_starts:
+                level_data[level] = {}
+            for exit, dest in self.shuffled_exit_data.items():
+                level_name = "Other"
+                for level in level_starts:
+                    for search_name in level_starts[level]:
+                        if dest.spoilerName.find(search_name) == 0:
+                            level_name = level
+                shuffled_exits[ShufflableExits[exit].name] = dest.spoilerName
+                level_data[level_name][ShufflableExits[exit].name] = dest.spoilerName
+            humanspoiler["Shuffled Exits"] = shuffled_exits
+            humanspoiler["Shuffled Exits (Sorted by destination)"] = level_data
+        if self.settings.alter_switch_allocation:
+            humanspoiler["Level Switch Strength"] = {
+                "Jungle Japes": self.settings.switch_allocation[Levels.JungleJapes],
+                "Angry Aztec": self.settings.switch_allocation[Levels.AngryAztec],
+                "Frantic Factory": self.settings.switch_allocation[Levels.FranticFactory],
+                "Gloomy Galleon": self.settings.switch_allocation[Levels.GloomyGalleon],
+                "Fungi Forest": self.settings.switch_allocation[Levels.FungiForest],
+                "Crystal Caves": self.settings.switch_allocation[Levels.CrystalCaves],
+                "Creepy Castle": self.settings.switch_allocation[Levels.CreepyCastle],
+            }
+
+        if len(self.microhints) > 0:
+            human_microhints = {}
+            for name, hint in self.microhints.items():
+                filtered_hint = hint.replace("\x04", "")
+                filtered_hint = filtered_hint.replace("\x05", "")
+                filtered_hint = filtered_hint.replace("\x06", "")
+                filtered_hint = filtered_hint.replace("\x07", "")
+                filtered_hint = filtered_hint.replace("\x08", "")
+                filtered_hint = filtered_hint.replace("\x09", "")
+                filtered_hint = filtered_hint.replace("\x0a", "")
+                filtered_hint = filtered_hint.replace("\x0b", "")
+                filtered_hint = filtered_hint.replace("\x0c", "")
+                filtered_hint = filtered_hint.replace("\x0d", "")
+                human_microhints[name] = filtered_hint
+            humanspoiler["Direct Item Hints"] = human_microhints
+        if len(self.hint_list) > 0:
+            human_hint_list = {}
+            # Here it filters out the coloring from the hints to make it actually readable in the spoiler log
+            for name, hint in self.hint_list.items():
+                filtered_hint = hint.replace("\x04", "")
+                filtered_hint = filtered_hint.replace("\x05", "")
+                filtered_hint = filtered_hint.replace("\x06", "")
+                filtered_hint = filtered_hint.replace("\x07", "")
+                filtered_hint = filtered_hint.replace("\x08", "")
+                filtered_hint = filtered_hint.replace("\x09", "")
+                filtered_hint = filtered_hint.replace("\x0a", "")
+                filtered_hint = filtered_hint.replace("\x0b", "")
+                filtered_hint = filtered_hint.replace("\x0c", "")
+                filtered_hint = filtered_hint.replace("\x0d", "")
+                human_hint_list[name] = filtered_hint
+            humanspoiler["Wrinkly Hints"] = human_hint_list
 
         self.json = json.dumps(humanspoiler, indent=4)
 

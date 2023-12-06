@@ -1466,6 +1466,28 @@ class Settings:
                     [loc for loc in shuffledNonMoveLocations if loc not in banned_kong_locations]
                 )  # No items can be in Kong cages but Kongs can be in all other locations
 
+            # If our Helm fairy locations are unshuffled, ban any item used for helm doors from being on either location.
+            # This is because the two locations are always behind both doors. If you put a door-required crown here, you may as well have deleted it.
+            if self.random_fairies and Types.Fairy in self.shuffled_location_types:
+                # Going in order of the HelmDoorItem enum:
+                # GBs cannot be in Helm
+                # Blueprints cannot be on fairies
+                # Company coins cannot be on fairies
+                # Keys can be on fairies, but this is staggeringly rare
+                if Types.Key in self.shuffled_location_types and (self.crown_door_item == HelmDoorItem.req_key or self.coin_door_item == HelmDoorItem.req_key):
+                    self.valid_locations[Types.Key].remove(Locations.HelmBananaFairy1)
+                    self.valid_locations[Types.Key].remove(Locations.HelmBananaFairy2)
+                # Medals cannot be on fairies
+                # The big winner: Crowns will not be locked behind a crown door requirement
+                if Types.Crown in self.shuffled_location_types and (
+                    self.crown_door_item == HelmDoorItem.vanilla or self.crown_door_item == HelmDoorItem.req_crown or self.coin_door_item == HelmDoorItem.req_crown
+                ):
+                    self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy1)
+                    self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy2)
+                # Fairies are the one exception: these are allowed to be vanilla
+                # Rainbow coins cannot be on fairies
+                # The Bean/Pearls cannot be on fairies (you might be sensing a pattern here)
+
     def GetValidLocationsForItem(self, item_id):
         """Return the valid locations the input item id can be placed in."""
         item_obj = ItemList[item_id]
