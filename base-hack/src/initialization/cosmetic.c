@@ -332,9 +332,9 @@ typedef struct crosshair_colors {
 
 static const crosshair_colors crosshairs[4] = {
     {.regular=0xC80000, .homing=0x00C800, .sniper=0xFFD700},
-    {.regular=0x0072FF, .homing=0x766D5A, .sniper=0xFFFFFF},
-    {.regular=0x318DFF, .homing=0x7F6D59, .sniper=0xFFFFFF},
-    {.regular=0xC72020, .homing=0x13C4D8, .sniper=0xFFFFFF},
+    {.regular=0x0072FF, .homing=0xFFFFFF, .sniper=0xFDE400},
+    {.regular=0x318DFF, .homing=0xFFFFFF, .sniper=0xE3A900},
+    {.regular=0xC72020, .homing=0xFFFFFF, .sniper=0x13C4D8},
 };
 
 void initColorblindChanges(void) {
