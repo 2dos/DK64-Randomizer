@@ -448,12 +448,7 @@ def randomize_music(settings: Settings):
         uncompressed_data_table = js.pointer_addresses[26]["entries"][0]
         ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song.mem_idx))
         song_size = ROM_COPY.readBytes(4)
-        song_rom_data[song.mem_idx] = {
-            "name": song.name,
-            "data": rom_data,
-            "size": song_size,
-            "memory": song.memory
-        }
+        song_rom_data[song.mem_idx] = {"name": song.name, "data": rom_data, "size": song_size, "memory": song.memory}
 
     for song in song_data.values():
         song.Reset()
