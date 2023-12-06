@@ -215,6 +215,7 @@ file_dict = [
         do_not_delete_source=True,
     ),
     File(name="Majoras Mask Moon", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/displays/moon_santa.png", texture_format=TextureFormat.IA8),
+    File(name="Outlined Crosshair", pointer_table_index=TableNames.TexturesHUD, file_index=0x38, source_file="assets/displays/crosshair.png", texture_format=TextureFormat.IA8),
 ]
 
 file_dict = file_dict + buildScripts()
@@ -1410,6 +1411,7 @@ with open(newROMName, "r+b") as fh:
         "warp_right",
         "warp_rim_0",
         "warp_rim_1",
+        "crosshair",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])
