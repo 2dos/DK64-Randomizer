@@ -930,7 +930,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
     spoiler.region_hintable_count = {}
     if Types.Coin not in spoiler.settings.shuffled_location_types:
         nonHintableNames.add("Jetpac Game")  # If this is vanilla, it's never useful to hint
-    bossLocations = [location for id, location in spoiler.LocationList.items() if location.type == Types.Key]  # expand me
+    bossLocations = [location for id, location in spoiler.LocationList.items() if location.type == Types.Key]
     # In order for a region to be foolish, it can contain none of these Major Items
     for id, region in spoiler.RegionList.items():
         locations = [spoiler.LocationList[loc.id] for loc in region.locations if loc.id in spoiler.LocationList.keys()]
