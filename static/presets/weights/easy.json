@@ -63,7 +63,7 @@
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.5,
     "fast_gbs": 1,
-    "fast_warps": 0.9,
+    "fast_warps": 1,
     "fps_display": 0.5,
     "free_trade_setting": {
         "not_blueprints": 0.3,

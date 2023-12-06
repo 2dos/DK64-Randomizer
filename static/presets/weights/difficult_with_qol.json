@@ -1,13 +1,13 @@
 {
-    "name": "Difficult",
-    "description": "The generated settings will be of greater difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will often be higher than their defaults. All settings have a chance to be set.",
+    "name": "Difficult with QoL Shuffle",
+    "description": "The generated settings will be of greater difficulty. Requirements for B. Locker, Troff n' Scoff, fairies, etc. will often be higher than their defaults. Quality of life options may be disabled. All settings have a chance to be set.",
     "activate_all_bananaports": {
         "off": 0.6,
         "all": 0.2,
         "isles": 0.2
     },
     "alter_switch_allocation": 0.8,
-    "auto_keys": 1,
+    "auto_keys": 0.5,
     "bananaport_rando": {
         "off": 0.5,
         "in_level": 0.3,
@@ -55,18 +55,18 @@
         "quad": 0.2,
         "ohko": 0.1
     },
-    "dim_solved_hints": 1,
+    "dim_solved_hints": 0.5,
     "disable_tag_barrels": 0.5,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
     "enable_shop_hints": 0.5,
-    "enable_tag_anywhere": 1,
+    "enable_tag_anywhere": 0.9,
     "enemies_selected": {},
     "enemy_drop_rando": 0.6,
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.7,
     "fast_gbs": 0.7,
-    "fast_warps": 1,
+    "fast_warps": 0.8,
     "fps_display": 0.5,
     "free_trade_setting": {
         "none": 0.2,
@@ -198,7 +198,7 @@
         "junkitem": 0.7,
         "crateitem": 0.7
     },
-    "item_reward_previews": 1,
+    "item_reward_previews": 0.75,
     "kasplat_rando_setting": {
         "off": 0.15,
         "vanilla_locations": 0.55,
@@ -237,33 +237,34 @@
     },
     "minigames_list_selected": {},
     "misc_changes_selected": {
-        "auto_dance_skip": 1,
-        "fast_boot": 1,
+        "auto_dance_skip": 0.8,
+        "fast_boot": 0.75,
         "calm_caves": 0.5,
-        "animal_buddies_grab_items": 1,
+        "animal_buddies_grab_items": 0.8,
         "reduced_lag": 1,
-        "remove_extraneous_cutscenes": 1,
-        "hint_textbox_hold": 1,
+        "remove_extraneous_cutscenes": 0.9,
+        "hint_textbox_hold": 0.9,
         "remove_wrinkly_puzzles": 0.5,
-        "fast_picture_taking": 1,
+        "fast_picture_taking": 0.9,
         "hud_hotkey": 1,
         "ammo_swap": 1,
         "homing_balloons": 0.5,
-        "fast_transform_animation": 1,
-        "troff_n_scoff_audio_indicator": 1,
-        "lowered_aztec_lobby_bonus": 1,
-        "quicker_galleon_star": 1,
+        "fast_transform_animation": 0.8,
+        "troff_n_scoff_audio_indicator": 0.5,
+        "lowered_aztec_lobby_bonus": 0.5,
+        "quicker_galleon_star": 0.8,
         "vanilla_bug_fixes": 1,
-        "save_k_rool_progress": 1,
-        "small_bananas_always_visible": 1,
-        "fast_hints": 1,
-        "brighten_mad_maze_maul_enemies": 1,
-        "raise_fungi_dirt_patch": 1,
+        "save_k_rool_progress": 0.9,
+        "small_bananas_always_visible": 0.6,
+        "fast_hints": 0.9,
+        "brighten_mad_maze_maul_enemies": 0.5,
+        "raise_fungi_dirt_patch": 0.75,
         "global_instrument": 1,
-        "fast_pause_transitions": 1
+        "fast_pause_transitions": 0.9
     },
     "more_cutscene_skips": {
-        "press": 0.5,
+        "off": 0.1,
+        "press": 0.4,
         "auto": 0.5
     },
     "move_rando": {
@@ -275,7 +276,7 @@
     "open_levels": 0.75,
     "open_lobbies": 0.6,
     "perma_death": 0.05,
-    "portal_numbers": 1,
+    "portal_numbers": 0.5,
     "progressive_hint_text": {
         "min": 30,
         "max": 100,
@@ -311,7 +312,7 @@
         "shuffled_decoupled": 0.3,
         "start_with": 0.2
     },
-    "shop_indicator": 1,
+    "shop_indicator": 0.5,
     "shorten_boss": 0.8,
     "shuffle_items": 1,
     "shuffle_shops": 0.7,
@@ -336,7 +337,7 @@
     },
     "vanilla_door_rando": 0.6,
     "warp_level_list_selected": {},
-    "warp_to_isles": 1,
+    "warp_to_isles": 0.9,
     "win_condition": {
         "beat_krool": 0.45,
         "get_key8": 0.25,
@@ -348,8 +349,9 @@
     },
     "wrinkly_available": 0.75,
     "wrinkly_hints": {
+        "off": 0.1,
         "standard": 0.4,
-        "cryptic": 0.3,
+        "cryptic": 0.2,
         "item_hinting": 0.3
     },
     "wrinkly_location_rando": 0.6

@@ -7,7 +7,7 @@
         "isles": 0.2
     },
     "alter_switch_allocation": 0.5,
-    "auto_keys": 0.9,
+    "auto_keys": 1,
     "bananaport_rando": {
         "off": 0.5,
         "in_level": 0.3,
@@ -67,7 +67,7 @@
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.5,
     "fast_gbs": 0.7,
-    "fast_warps": 0.9,
+    "fast_warps": 1,
     "fps_display": 0.5,
     "free_trade_setting": {
         "none": 0.1,
@@ -192,7 +192,7 @@
         "junkitem": 0.5,
         "crateitem": 0.5
     },
-    "item_reward_previews": 0.75,
+    "item_reward_previews": 1,
     "kasplat_rando_setting": {
         "off": 0.15,
         "vanilla_locations": 0.55,
@@ -230,8 +230,7 @@
     "minigames_list_selected": {},
     "misc_changes_selected": {},
     "more_cutscene_skips": {
-        "off": 0.1,
-        "press": 0.4,
+        "press": 0.5,
         "auto": 0.5
     },
     "move_rando": {
@@ -243,7 +242,7 @@
     "open_levels": 0.75,
     "open_lobbies": 0.6,
     "perma_death": 0,
-    "portal_numbers": 0.5,
+    "portal_numbers": 1,
     "progressive_hint_text": {
         "min": 30,
         "max": 100,
@@ -279,7 +278,7 @@
         "shuffled_decoupled": 0.2,
         "start_with": 0.4
     },
-    "shop_indicator": 0.5,
+    "shop_indicator": 1,
     "shorten_boss": 1,
     "shuffle_items": 1,
     "shuffle_shops": 0.5,
@@ -304,7 +303,7 @@
     },
     "vanilla_door_rando": 0.4,
     "warp_level_list_selected": {},
-    "warp_to_isles": 0.9,
+    "warp_to_isles": 1,
     "win_condition": {
         "beat_krool": 0.6,
         "get_key8": 0.25,
@@ -312,8 +311,7 @@
     },
     "wrinkly_available": 0.9,
     "wrinkly_hints": {
-        "off": 0.1,
-        "standard": 0.4,
+        "standard": 0.5,
         "cryptic": 0.2,
         "item_hinting": 0.3
     },
