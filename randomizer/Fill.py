@@ -855,60 +855,23 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
 
 def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]]) -> None:
     """Calculate the items and regions that are foolish (blocking no major items)."""
-    # FOOLISH MOVES - unable to verify the accuracy of foolish moves, so these have to go :(
-    # The problem that needs to be solved: How do you guarantee neither part of a required either/or is foolish?
-    # The cases you have to handle in order to solve this:
-    # - Both are WotH: this should be straightforward, neither is foolish
-    # - Neither is WotH: you have to check that items are individually foolish (the code below) and all individually foolish items are collectively foolish
-    # - ONE is WotH: this is hard, as you don't know what of your WotH items could be part of the either/or with an individually foolish move
-    # The current state of affairs could guarantee that you couldn't get both parts of an either/or as foolish, but I don't think either should be
-    # Until this problem is solved, foolish moves will remain dormant
-
-    # wothItems = [LocationList[loc].item for loc in WothLocations]
-    # # First we need to determine what Major Items are foolish
-    # foolishItems = []
-    # # Determine which of our major items we need to check
-    # majorItems = ItemPool.AllKongMoves()
-    # if spoiler.settings.training_barrels != TrainingBarrels.normal:
-    #     # I don't trust oranges quite yet - you can put an item in Diddy's upper cabin and it might think oranges is foolish still
-    #     majorItems.extend([Items.Vines, Items.Swim, Items.Barrels, Items.Oranges])
-    # if spoiler.settings.shockwave_status != ShockwaveStatus.shuffled_decoupled:
-    #     majorItems.append(Items.CameraAndShockwave)
-    # if spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
-    #     majorItems.append(Items.Camera)
-    #     if spoiler.settings.shuffle_items and Types.RainbowCoin in spoiler.settings.shuffled_location_types:
-    #         majorItems.append(Items.Shockwave)  # Shockwave foolish is virtually useless to hint as foolish unless rainbow coins are in the pool
-    # # We want to know if the bean and pearls are foolish so we can use them in the regional foolish checks later
-    # if Types.Bean in spoiler.settings.shuffled_location_types:
-    #     majorItems.append(Items.Bean)
-    # if Types.Pearl in spoiler.settings.shuffled_location_types:
-    #     majorItems.append(Items.Pearl)
-    # for item in majorItems:
-    #     # If this item is in the WotH, it can't possibly be foolish so we can skip it
-    #     if item in wothItems:
-    #         continue
-    #     # Check the item to see if it locks *any* progression (even non-critical)
-    #     Reset()
-    #     # Because of how much overlap there is between these two, either they're both foolish or neither is
-    #     # if item in (Items.HomingAmmo, Items.SniperSight):
-    #     #     LogicVariables.BanItems([Items.HomingAmmo, Items.SniperSight])
-    #     # else:
-    #     LogicVariables.BanItems([item])  # Ban this item from being picked up
-    #     GetAccessibleLocations(spoiler, [], SearchMode.GetReachable)  # Check what's reachable
-    #     if LogicVariables.HasAllItems():  # If you still have all the items, this one blocks no progression and is foolish
-    #         foolishItems.append(item)
-    # spoiler.foolish_moves = [item for item in foolishItems if item not in (Items.Bean, Items.Pearl)]  # Don't hint Bean and Pearl as foolish
-
     # Use the settings to determine non-progression Major Items
-    # majorItems = [item for item in majorItems if item not in foolishItems]
     majorItems = ItemPool.AllKongMoves()
+    regionCountHintableItems = ItemPool.AllKongMoves()
+    regionCountHintableItems.extend(ItemPool.JunkSharedMoves)
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
         majorItems.extend(ItemPool.TrainingBarrelAbilities())
+        regionCountHintableItems.extend(ItemPool.TrainingBarrelAbilities())
     if spoiler.settings.shockwave_status != ShockwaveStatus.shuffled_decoupled:
         majorItems.append(Items.CameraAndShockwave)
+        if spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+            regionCountHintableItems.append(Items.CameraAndShockwave)
     if spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
         majorItems.append(Items.Shockwave)
         majorItems.append(Items.Camera)
+        if spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+            regionCountHintableItems.append(Items.Shockwave)
+            regionCountHintableItems.append(Items.Camera)
     majorItems.extend(ItemPool.Keys())
     majorItems.extend(ItemPool.Kongs(spoiler.settings))
     requires_rareware = spoiler.settings.coin_door_item == HelmDoorItem.vanilla
@@ -964,22 +927,55 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
             newFoolishItems = True
 
     nonHintableNames = {"Game Start", "K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits"}  # These regions never have anything useful so shouldn't be hinted
+    spoiler.region_hintable_count = {}
     if Types.Coin not in spoiler.settings.shuffled_location_types:
         nonHintableNames.add("Jetpac Game")  # If this is vanilla, it's never useful to hint
     bossLocations = [location for id, location in spoiler.LocationList.items() if location.type == Types.Key]
     # In order for a region to be foolish, it can contain none of these Major Items
     for id, region in spoiler.RegionList.items():
-        locations = [loc for loc in region.locations if loc.id in spoiler.LocationList.keys()]
+        locations = [spoiler.LocationList[loc.id] for loc in region.locations if loc.id in spoiler.LocationList.keys()]
         # If this region's valid locations (exclude starting moves) DO contain a major item, add it the name to the set of non-hintable hint regions
-        if any([loc for loc in locations if spoiler.LocationList[loc.id].type not in (Types.TrainingBarrel, Types.PreGivenMove) and spoiler.LocationList[loc.id].item in majorItems]):
+        if any([loc for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in majorItems]):
             nonHintableNames.add(region.hint_name)
         # In addition to being empty, medal regions need the corresponding boss location to be empty to be hinted foolish - this lets us say "CBs are foolish" which is more helpful
         elif "Medal Rewards" in region.hint_name:
             bossLocation = [location for location in bossLocations if location.level == region.level][0]  # Matches only one
             if bossLocation.item in majorItems:
                 nonHintableNames.add(region.hint_name)
+        # Ban shops from region count hinting. These are significantly worse regions to hint than any others.
+        if "Shops" not in region.hint_name:
+            # Count the number of region count hintable items in the region (again, ignore training moves)
+            regionItemCount = sum(1 for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in regionCountHintableItems)
+            if regionItemCount > 0:
+                # If we need to create a new entry due to this region, do so
+                if region.hint_name not in spoiler.region_hintable_count.keys():
+                    spoiler.region_hintable_count[region.hint_name] = 0
+                # Keep a running tally of found vials in each region
+                spoiler.region_hintable_count[region.hint_name] += regionItemCount
     # The regions that are foolish are all regions not in this list (that have locations in them!)
     spoiler.foolish_region_names = list(set([region.hint_name for id, region in spoiler.RegionList.items() if any(region.locations) and region.hint_name not in nonHintableNames]))
+
+    # Determine non-path items (foolish v2)
+    # Non-path items are items that are not on the path to anything. This is similar but different to a foolish hint, so the phrasing on the hint will be different.
+    wothItems = [spoiler.LocationList[loc].item for loc in WothLocations]
+    # First we need to determine what Major Items are interesting - this is basically just all Kong moves
+    spoiler.pathless_moves = []
+    shuffledPotionItems = set(ItemPool.AllKongMoves())
+    if spoiler.settings.training_barrels != TrainingBarrels.normal:  # If the training barrels aren't shuffled, they don't end up in the WotH so watch out
+        shuffledPotionItems.update(ItemPool.TrainingBarrelAbilities())
+    if spoiler.settings.shockwave_status not in (ShockwaveStatus.start_with, ShockwaveStatus.shuffled_decoupled):
+        shuffledPotionItems.add(Items.CameraAndShockwave)
+    elif spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
+        shuffledPotionItems.add(Items.Shockwave)
+        shuffledPotionItems.add(Items.Camera)
+    for item in shuffledPotionItems:
+        # If this item is in the WotH, it can't possibly be foolish
+        if item in wothItems:
+            continue
+        spoiler.pathless_moves.append(item)
+    # Saying slams aren't on the path to anything is usually utterly useless due to the progressive nature. I'm not even gonna try to pretend to make these work.
+    while Items.ProgressiveSlam in spoiler.pathless_moves:
+        spoiler.pathless_moves.remove(Items.ProgressiveSlam)
 
 
 def RandomFill(spoiler: Spoiler, itemsToPlace: List[Items], inOrder: bool = False) -> int:

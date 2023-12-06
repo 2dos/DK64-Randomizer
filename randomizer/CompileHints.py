@@ -354,16 +354,18 @@ hint_distribution_default = {
     HintType.TroffNScoff: 0,
     HintType.KongLocation: 1,  # must be placed before you find them and placed in a door of a free kong
     # HintType.MedalsRequired: 1,
-    HintType.Entrance: 6,
+    HintType.Entrance: 5,
     HintType.RequiredKongHint: -1,  # Fixed number based on the number of locked kongs
     HintType.RequiredKeyHint: -1,  # Fixed number based on the number of keys to be obtained over the seed
     HintType.RequiredWinConditionHint: 0,  # Fixed number based on what K. Rool phases you must defeat
     HintType.RequiredHelmDoorHint: 0,  # Fixed number based on how many Helm doors have random requirements
-    HintType.WothLocation: 9,
+    HintType.WothLocation: 8,
     HintType.FullShopWithItems: 8,
     # HintType.FoolishMove: 0,  # Used to be 2, added to FoolishRegion when it was removed
-    HintType.FoolishRegion: 8,
+    HintType.FoolishRegion: 4,
+    HintType.ForeseenPathless: 1,
     HintType.Multipath: 0,
+    HintType.RegionItemCount: 1,
     HintType.ItemRegion: 0,
     HintType.Plando: 0,
 }
@@ -388,8 +390,10 @@ race_hint_distribution = {
     HintType.WothLocation: 9,
     HintType.FullShopWithItems: 0,
     # HintType.FoolishMove: 0,
-    HintType.FoolishRegion: 9,
-    HintType.Multipath: 13,
+    HintType.FoolishRegion: 4,
+    HintType.ForeseenPathless: 2,
+    HintType.Multipath: 14,
+    HintType.RegionItemCount: 2,
     HintType.ItemRegion: 0,
     HintType.Plando: 0,
 }
@@ -414,7 +418,9 @@ item_hint_distribution = {
     HintType.FullShopWithItems: 0,
     # HintType.FoolishMove: 0,
     HintType.FoolishRegion: 0,
+    HintType.ForeseenPathless: 0,
     HintType.Multipath: 0,
+    HintType.RegionItemCount: 0,
     HintType.ItemRegion: 35,
     HintType.Plando: 0,
 }
@@ -489,7 +495,13 @@ def compileHints(spoiler: Spoiler) -> bool:
 
     multipath_dict_hints, multipath_dict_goals = GenerateMultipathDict(spoiler, useless_locations)
 
-    locked_hint_types = [HintType.RequiredKongHint, HintType.RequiredKeyHint, HintType.RequiredWinConditionHint, HintType.RequiredHelmDoorHint]  # Some hint types cannot have their value changed
+    locked_hint_types = [
+        HintType.RequiredKongHint,
+        HintType.RequiredKeyHint,
+        HintType.RequiredWinConditionHint,
+        HintType.RequiredHelmDoorHint,
+        HintType.Multipath,
+    ]  # Some hint types cannot have their value changed
     maxed_hint_types = []  # Some hint types cannot have additional hints placed
     minned_hint_types = []  # Some hint types cannot have all their hints removed
     # If we're using the racing hints preset, we use the predetermined distribution with no exceptions
@@ -555,6 +567,8 @@ def compileHints(spoiler: Spoiler) -> bool:
             if spoiler.settings.coin_door_random:
                 hint_distribution[HintType.RequiredHelmDoorHint] += 1
                 hint_distribution[HintType.ItemRegion] -= 1
+        # These filler hint types should never get added if you have enough moves placed in the world.
+        # These would only be relevant if you picked this hint system and also started with a ton of moves which might error anyway. (Why would you ever do this?)
         if spoiler.settings.randomize_blocker_required_amounts and spoiler.settings.blocker_max > 1:
             valid_types.append(HintType.BLocker)
         if (
@@ -627,30 +641,70 @@ def compileHints(spoiler: Spoiler) -> bool:
         # In level order (or vanilla) progression, there are hints that we want to be in the player's path
         # Determine what hint types are valid for these settings
         valid_types = [HintType.Joke]
+        if spoiler.settings.randomize_blocker_required_amounts and spoiler.settings.blocker_max > 1:
+            valid_types.append(HintType.BLocker)
+        if (
+            spoiler.settings.randomize_cb_required_amounts
+            and len(spoiler.settings.krool_keys_required) > 0
+            and spoiler.settings.krool_keys_required != [Events.HelmKeyTurnedIn]
+            and spoiler.settings.troff_max > 0
+        ):
+            valid_types.append(HintType.TroffNScoff)
+        if spoiler.settings.kong_rando:
+            if spoiler.settings.shuffle_items and Types.Kong in spoiler.settings.shuffled_location_types:
+                valid_types.append(HintType.RequiredKongHint)
+                hint_distribution[HintType.RequiredKongHint] = 5 - spoiler.settings.starting_kongs_count
+            else:
+                valid_types.append(HintType.KongLocation)
+        # if spoiler.settings.coin_door_open == "need_both" or spoiler.settings.coin_door_open == "need_rw":
+        #     valid_types.append(HintType.MedalsRequired)
+        if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all:
+            # In entrance rando, we care more about T&S than B. Locker
+            temp = hint_distribution[HintType.BLocker]
+            if spoiler.settings.randomize_blocker_required_amounts and not spoiler.settings.maximize_helm_blocker:
+                hint_distribution[HintType.BLocker] = max(1, hint_distribution[HintType.TroffNScoff])  # Always want a helm hint in there
+            hint_distribution[HintType.TroffNScoff] = temp
+            valid_types.append(HintType.Entrance)
         if (spoiler.settings.krool_phase_count < 5 or spoiler.settings.krool_random) and spoiler.settings.win_condition == WinCondition.beat_krool:
             valid_types.append(HintType.KRoolOrder)
+            maxed_hint_types.append(HintType.KRoolOrder)
             # If the seed doesn't funnel you into helm, guarantee one K. Rool order hint
             if Events.HelmKeyTurnedIn not in spoiler.settings.krool_keys_required or not spoiler.settings.key_8_helm:
                 minned_hint_types.append(HintType.KRoolOrder)
         if spoiler.settings.helm_setting != HelmSetting.skip_all and (spoiler.settings.helm_phase_count < 5 or spoiler.settings.helm_random):
             valid_types.append(HintType.HelmOrder)
-            minned_hint_types.append(HintType.HelmOrder)
+            locked_hint_types.append(HintType.HelmOrder)
         if spoiler.settings.move_rando not in (MoveRando.off, MoveRando.item_shuffle) and Types.Shop not in spoiler.settings.shuffled_location_types:
             valid_types.append(HintType.FullShopWithItems)
             valid_types.append(HintType.MoveLocation)
         if spoiler.settings.shuffle_items and Types.Shop in spoiler.settings.shuffled_location_types:
             # With no logic WOTH isn't built correctly so we can't make any hints with it
             if spoiler.settings.logic_type != LogicType.nologic:
+                # If we're in full item rando with shops in the pool, we need to replace our bad filler with good filler
+                # Get rid of the bad filler
+                if HintType.BLocker in valid_types:
+                    valid_types.remove(HintType.BLocker)
+                if HintType.TroffNScoff in valid_types:
+                    valid_types.remove(HintType.TroffNScoff)
+                # Add the good filler
                 valid_types.append(HintType.FoolishRegion)
                 # If there are more foolish region hints than regions, lower this number and prevent more from being added
                 if len(spoiler.foolish_region_names) < hint_distribution[HintType.FoolishRegion]:
                     hint_distribution[HintType.FoolishRegion] = len(spoiler.foolish_region_names)
                     maxed_hint_types.append(HintType.FoolishRegion)
-                # valid_types.append(HintType.FoolishMove)
-                # If there are more foolish region hints than regions, lower this number and prevent more from being added
-                # if len(spoiler.foolish_moves) < hint_distribution[HintType.FoolishMove]:
-                #     hint_distribution[HintType.FoolishMove] = len(spoiler.foolish_moves)
-                #     maxed_hint_types.append(HintType.FoolishMove)
+
+                valid_types.append(HintType.ForeseenPathless)
+                # If there are more pathless move hints than pathless moves, lower this number and prevent more from being added
+                if len(spoiler.pathless_moves) < hint_distribution[HintType.ForeseenPathless]:
+                    hint_distribution[HintType.ForeseenPathless] = len(spoiler.pathless_moves)
+                    maxed_hint_types.append(HintType.ForeseenPathless)
+
+                valid_types.append(HintType.RegionItemCount)
+                # If there are more region item count hints than regions containing moves (????), lower this number and prevent more from being added
+                if len(spoiler.region_hintable_count.keys()) < hint_distribution[HintType.RegionItemCount]:
+                    hint_distribution[HintType.RegionItemCount] = len(spoiler.region_hintable_count.keys())
+                    maxed_hint_types.append(HintType.RegionItemCount)
+
                 valid_types.append(HintType.WothLocation)
                 # K. Rool seeds could use some help finding the last pesky moves
                 if spoiler.settings.win_condition == WinCondition.beat_krool:
@@ -716,30 +770,6 @@ def compileHints(spoiler: Spoiler) -> bool:
                 hint_distribution[HintType.RequiredHelmDoorHint] += 1
         # if spoiler.settings.random_patches:
         #     valid_types.append(HintType.DirtPatch)
-        if spoiler.settings.randomize_blocker_required_amounts and spoiler.settings.blocker_max > 1:
-            valid_types.append(HintType.BLocker)
-        if (
-            spoiler.settings.randomize_cb_required_amounts
-            and len(spoiler.settings.krool_keys_required) > 0
-            and spoiler.settings.krool_keys_required != [Events.HelmKeyTurnedIn]
-            and spoiler.settings.troff_max > 0
-        ):
-            valid_types.append(HintType.TroffNScoff)
-        if spoiler.settings.kong_rando:
-            if spoiler.settings.shuffle_items and Types.Kong in spoiler.settings.shuffled_location_types:
-                valid_types.append(HintType.RequiredKongHint)
-                hint_distribution[HintType.RequiredKongHint] = 5 - spoiler.settings.starting_kongs_count
-            else:
-                valid_types.append(HintType.KongLocation)
-        # if spoiler.settings.coin_door_open == "need_both" or spoiler.settings.coin_door_open == "need_rw":
-        #     valid_types.append(HintType.MedalsRequired)
-        if spoiler.settings.shuffle_loading_zones == ShuffleLoadingZones.all:
-            # In entrance rando, we care more about T&S than B. Locker
-            temp = hint_distribution[HintType.BLocker]
-            if spoiler.settings.randomize_blocker_required_amounts and not spoiler.settings.maximize_helm_blocker:
-                hint_distribution[HintType.BLocker] = max(1, hint_distribution[HintType.TroffNScoff])  # Always want a helm hint in there
-            hint_distribution[HintType.TroffNScoff] = temp
-            valid_types.append(HintType.Entrance)
 
         # Dynamically calculate the number of key hints that need to be placed per key. Any WotH keys should have paths that we should hint.
         if spoiler.settings.shuffle_items and len(woth_key_ids) > 0:
@@ -767,7 +797,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                         key_hint_dict[key_id] = 4
             hint_distribution[HintType.RequiredKeyHint] = sum(key_hint_dict.values())
         # Convert all path hints into multipath hints, utilizing the prior calculations as a rough estimate of path length/difficulty
-        estimated_path_difficulty = hint_distribution[HintType.RequiredWinConditionHint] + hint_distribution[HintType.RequiredKeyHint]
+        estimated_path_difficulty = (hint_distribution[HintType.RequiredKeyHint] * 1) + (hint_distribution[HintType.RequiredWinConditionHint] * 0.8)
         hint_distribution[HintType.RequiredWinConditionHint] = 0
         hint_distribution[HintType.RequiredKeyHint] = 0
         if HintType.RequiredWinConditionHint in valid_types:
@@ -775,7 +805,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         if HintType.RequiredKeyHint in valid_types:
             valid_types.remove(HintType.RequiredKeyHint)
         # Multipath hints are generally more powerful than your average hint, so we need fewer of them (but not more hints than are possible!)
-        hint_distribution[HintType.Multipath] = min(len(multipath_dict_hints.keys()), round(estimated_path_difficulty * 0.9))
+        hint_distribution[HintType.Multipath] = min(len(multipath_dict_hints.keys()), round(estimated_path_difficulty))
         if hint_distribution[HintType.Multipath] >= len(multipath_dict_hints.keys()):
             maxed_hint_types.append(HintType.Multipath)
         valid_types.append(HintType.Multipath)
@@ -793,6 +823,9 @@ def compileHints(spoiler: Spoiler) -> bool:
             if filler_type == HintType.Joke:
                 # Make it roll joke twice to add an extra joke hint
                 filler_type = random.choice(valid_types)
+                if filler_type == HintType.Joke:
+                    # Just kidding, make it roll joke thrice to add an extra joke hint
+                    filler_type = random.choice(valid_types)
             if filler_type in locked_hint_types or filler_type in maxed_hint_types:
                 continue  # Some hint types cannot be filled with
             hint_distribution[filler_type] += 1
@@ -1502,39 +1535,6 @@ def compileHints(spoiler: Spoiler) -> bool:
             UpdateHint(hint_location, message)
             placed_tns_hints += 1
 
-    # Foolish Move hints state that a move is foolish. Most applicable in item rando.
-    # Foolish moves block no other progression, regardless of if the item itself is required
-    # Currently unused due to the possibility of lying, see CalculateFoolish() for more info
-    # if hint_distribution[HintType.FoolishMove] > 0:
-    #     random.shuffle(spoiler.foolish_moves)
-    #     for i in range(hint_distribution[HintType.FoolishMove]):
-    #         # If you run out of foolish moves (maybe in a near 101% run?)
-    #         # This is often covered by the distribution earlier but is needed due to slams and the homing/sniper merger
-    #         if len(spoiler.foolish_moves) == 0:
-    #             # Replace remaining move hints with WotH location hints, sounds like you'll need them
-    #             hint_distribution[HintType.FoolishMove] -= 1
-    #             hint_distribution[HintType.WothLocation] += 1
-    #             continue
-    #         hinted_move_id = spoiler.foolish_moves.pop()  # Don't hint the same move twice
-    #         # We can only guarantee that Super Duper is foolish due to being progressive. It could be that a slam is required but neither is explicitly required.
-    #         if hinted_move_id == Items.ProgressiveSlam:
-    #             item_name = "Super Duper Simian Slam"
-    #             # Make sure we don't drop 2 Super Duper slam hints
-    #             if Items.ProgressiveSlam in spoiler.foolish_moves:
-    #                 spoiler.foolish_moves.remove(Items.ProgressiveSlam)
-    #         elif hinted_move_id in (Items.HomingAmmo, Items.SniperSight):
-    #             item_name = "Homing Ammo and Sniper Scope"
-    #             if Items.HomingAmmo in spoiler.foolish_moves:
-    #                 spoiler.foolish_moves.remove(Items.HomingAmmo)
-    #             if Items.SniperSight in spoiler.foolish_moves:
-    #                 spoiler.foolish_moves.remove(Items.SniperSight)
-    #         else:
-    #             item_name = ItemList[hinted_move_id].name
-    #         hint_location = getRandomHintLocation()
-    #         message = f"It would be foolish to seek out {item_name}."
-    #         hint_location.hint_type = HintType.FoolishMove
-    #         UpdateHint(hint_location, message)
-
     # WotH Location hints list a location that is Way of the Hoard. Most applicable in item rando.
     if hint_distribution[HintType.WothLocation] > 0:
         hintable_location_ids = []
@@ -1609,9 +1609,9 @@ def compileHints(spoiler: Spoiler) -> bool:
         for i in range(hint_distribution[HintType.FoolishRegion]):
             # If you run out of foolish regions (maybe in an all medals run?) - this *should* be covered by the distribution earlier but this is a good failsafe
             if len(spoiler.foolish_region_names) == 0 or sum(foolish_region_location_score.values()) == 0:  # You can either expend the whole list or run out of eligible regions
-                # Replace remaining move hints with joke hints, because I'm pretty sure this is impossible to occur
+                # Replace remaining move hints with region item count hints, because it sounds like you need em
                 hint_distribution[HintType.FoolishRegion] -= 1
-                hint_distribution[HintType.Joke] += 1
+                hint_distribution[HintType.RegionItemCount] += 1
                 continue
             hinted_region_name = random.choices(list(foolish_region_location_score.keys()), foolish_region_location_score.values())[0]  # Weighted random choice from list of foolish region names
             spoiler.foolish_region_names.remove(hinted_region_name)
@@ -1628,6 +1628,78 @@ def compileHints(spoiler: Spoiler) -> bool:
             else:
                 message = f"It would be \x05foolish\x05 to explore the {level_color}{hinted_region_name}{level_color}."
             hint_location.hint_type = HintType.FoolishRegion
+            UpdateHint(hint_location, message)
+
+    # Pathless hints are the evolution of foolish moves - it hints a move that is not on the path to anything else.
+    # You may use a pathless move as a part of an either/or, but it will not be strictly required for anything.
+    # Slams are banned from being hinted this way cause I do not want to deal with that *at all*
+    # Hints are weighted towards more impactful things: guns, instruments, and good training moves.
+    if hint_distribution[HintType.ForeseenPathless] > 0:
+        pathless_move_score = {}
+        for move in spoiler.pathless_moves:
+            # Some moves are just better than others - these are less likely to not be on paths, and it's really good to know that.
+            if move in [
+                Items.Coconut,  # All the guns
+                Items.Peanut,
+                Items.Grape,
+                Items.Feather,
+                Items.Pineapple,
+                Items.Bongos,  # All the instruments
+                Items.Guitar,
+                Items.Trombone,
+                Items.Saxophone,
+                Items.Triangle,
+                Items.Barrels,  # All the good training moves
+                Items.Vines,
+                Items.Swim,
+                Items.Camera,  # Camera and Shockwave
+                Items.Shockwave,
+                Items.CameraAndShockwave,
+                Items.RocketbarrelBoost,  # A few extra moves that are particularly useful
+                Items.MiniMonkey,
+                Items.PrimatePunch,
+            ]:
+                pathless_move_score[move] = 3  # These moves are three times as likely as any other move to get picked now
+            else:
+                pathless_move_score[move] = 1
+        for i in range(hint_distribution[HintType.ForeseenPathless]):
+            # If somehow you end up with more hints than there are pathless moves...
+            if len(pathless_move_score.keys()) <= 0:
+                # Convert to region item count hints because it sounds like you need em
+                hint_distribution[HintType.ForeseenPathless] -= 1
+                hint_distribution[HintType.RegionItemCount] += 1
+                continue
+            pathless_item = random.choices(list(pathless_move_score.keys()), pathless_move_score.values())[0]
+            del pathless_move_score[pathless_item]
+            hint_location = getRandomHintLocation()
+            message = f"I have foreseen that there are \x0bno paths to the Hoard\x0b which contain \x04{ItemList[pathless_item].name}\x04."
+            hint_location.hint_type = HintType.ForeseenPathless
+            UpdateHint(hint_location, message)
+
+    # Region Item Count hints tell you how many potions are in contained in the entirety of a hint region.
+    # Currently it randomly picks a region that has a non-zero amount of potions in it, but it cannot hint shop regions.
+    if hint_distribution[HintType.RegionItemCount] > 0:
+        hintable_region_names = list(spoiler.region_hintable_count.keys())
+        random.shuffle(hintable_region_names)
+        for i in range(hint_distribution[HintType.RegionItemCount]):
+            # If somehow you end up with more hints than there are regions with moves in them...
+            if len(hintable_region_names) <= 0:
+                # You made some meme of a seed so have some meme hints
+                hint_distribution[HintType.RegionItemCount] -= 1
+                hint_distribution[HintType.Joke] += 1
+                continue
+            region_name_to_hint = hintable_region_names.pop()
+            hint_location = getRandomHintLocation()
+            level_color = "\x05"
+            for region_id in Regions:
+                if spoiler.RegionList[region_id].hint_name == region_name_to_hint:
+                    level_color = level_colors[spoiler.RegionList[region_id].level]
+                    break
+            plural = ""
+            if spoiler.region_hintable_count[region_name_to_hint] > 1:
+                plural = "s"
+            message = f"Scouring the {level_color}{region_name_to_hint}{level_color} will yield you \x0d{spoiler.region_hintable_count[region_name_to_hint]} potion{plural}\x0d."
+            hint_location.hint_type = HintType.RegionItemCount
             UpdateHint(hint_location, message)
 
     # Entrance hints are tricky, there's some requirements we must hit:
