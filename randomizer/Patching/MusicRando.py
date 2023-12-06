@@ -641,13 +641,12 @@ def shuffle_music(settings, music_data, pool_to_shuffle, shuffled_list, song_rom
         new_bytes = ROM_COPY.readBytes(4)
         stored_song_sizes[song["index"]] = new_bytes
 
-    for song in pool_to_shuffle:
+    for song, shuffled_song in zip(pool_to_shuffle, shuffled_list):
         # If we are inserting an assigned vanilla song, we should write the
         # data from the stored ROM data we read earlier. In every other case,
         # we will pull the data from whatever is currently stored in this
         # song's slot in the ROM.
         song_enum = Songs(song["index"])
-        shuffled_song = shuffled_list[pool_to_shuffle.index(song)]
         originalIndex = song["index"]
         shuffledIndex = shuffled_song["index"]
         if song_enum in getAllAssignedVanillaSongs(settings):
