@@ -439,6 +439,9 @@ def randomize_music(settings: Settings):
     # song slots may be overwritten by custom music.
     song_rom_data = {}
     for song in song_data.values():
+        # Skip "Silence".
+        if song.mem_idx == 0:
+            continue
         song_info = js.pointer_addresses[0]["entries"][song.mem_idx]
         ROM_COPY.seek(song_info["pointing_to"])
         rom_data = ROM_COPY.readBytes(song_info["compressed_size"])
@@ -650,11 +653,13 @@ def shuffle_music(settings, music_data, pool_to_shuffle, shuffled_list, song_rom
         # song's slot in the ROM.
         song_enum = Songs(song["index"])
         shuffled_song = shuffled_list[pool_to_shuffle.index(song)]
+        originalIndex = song["index"]
+        shuffledIndex = shuffled_song["index"]
         if song_enum in getAllAssignedVanillaSongs(settings):
             songs = song_rom_data[shuffled_song["index"]]["data"]
             song_name = song_rom_data[shuffled_song["index"]]["name"]
             song_size = song_rom_data[shuffled_song["index"]]["size"]
-            song_memory = song_rom_data[shuffled_song["index"]["memory"]]
+            song_memory = song_rom_data[shuffled_song["index"]]["memory"]
         else:
             songs = stored_song_data[shuffled_song["index"]]
             song_name = song_idx_list[shuffledIndex].output_name
@@ -665,8 +670,6 @@ def shuffle_music(settings, music_data, pool_to_shuffle, shuffled_list, song_rom
         # Update the uncompressed data table to have our new size.
         ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
         ROM_COPY.writeBytes(song_size)
-        originalIndex = song["index"]
-        shuffledIndex = shuffled_song["index"]
         ROM_COPY.seek(0x1FFF000 + 2 * originalIndex)
         ROM_COPY.writeMultipleBytes(song_memory, 2)
         if song_idx_list[originalIndex].type == SongType.BGM:
