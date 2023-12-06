@@ -215,6 +215,7 @@ file_dict = [
         do_not_delete_source=True,
     ),
     File(name="Majoras Mask Moon", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/displays/moon_santa.png", texture_format=TextureFormat.IA8),
+    File(name="Scoff Head", pointer_table_index=TableNames.TexturesHUD, file_index=114, source_file="assets/hash/scoff_head.png", texture_format=TextureFormat.RGBA5551),
     File(name="Outlined Crosshair", pointer_table_index=TableNames.TexturesHUD, file_index=0x38, source_file="assets/displays/crosshair.png", texture_format=TextureFormat.IA8),
 ]
 
@@ -1460,6 +1461,7 @@ with open(newROMName, "r+b") as fh:
         "bonus_Skin",
         "melon_resized",
         "melon_slice",
+        "scoff_head",
     ]
     script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
     shop_files = ["snide.json", "cranky.json", "funky.json", "candy.json"]
