@@ -1441,3 +1441,14 @@ def toggle_settings_table(evt):
     settingsTable.classList.toggle("collapsed")
     settingsArrow = js.document.getElementsByClassName("settings-expand-arrow").item(0)
     settingsArrow.classList.toggle("flipped")
+
+
+@bind("click", "nav-music-tab")
+def add_custom_song_options(evt):
+    """Add custom songs to the menus in the music selection UI.
+    
+    This should only happen if there was a music pack present on load.
+    """
+    if js.delayed_music_load:
+        js.update_music_select_options()
+        js.delayed_music_load = False

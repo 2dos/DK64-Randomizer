@@ -182,6 +182,7 @@ var cosmetic_truncated_names = {
   minoritems: [],
   events: []
 }
+var delayed_music_load = false;
 
 function load_music_file_from_db() {
   console.log("Trying to load file from DB");
@@ -306,7 +307,11 @@ function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
         events: event_ext,
       };
 
-      update_music_select_options(isInitialLoad);
+      if (isInitialLoad) {
+        delayed_music_load = true;
+      } else {
+        update_music_select_options(isInitialLoad);
+      }
     });
   };
 
@@ -323,7 +328,7 @@ function get_custom_song_display_name(songName) {
   return `Custom Song: ${trimmedName}`;
 }
 
-async function update_music_select_options(isInitialLoad) {
+async function update_music_select_options(isInitialLoad = false) {
   customSongDict = {
     "BGM": cosmetic_names.bgm,
     "MajorItem": cosmetic_names.majoritems,
