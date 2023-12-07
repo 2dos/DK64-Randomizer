@@ -1446,7 +1446,7 @@ def toggle_settings_table(evt):
 @bind("click", "nav-music-tab")
 def add_custom_song_options(evt):
     """Add custom songs to the menus in the music selection UI.
-    
+
     This should only happen if there was a music pack present on load.
     """
     if js.delayed_music_load:
