@@ -767,6 +767,8 @@ kong_palettes = {
     0xE8C: [(32, 32), "block"],  # DK Base
     0xE66: [(32, 32), "block"],  # Diddy Cap/Shirt
     0xE69: [(32, 32), "block"],  # Lanky Overalls
+    0xE9A: [(32, 32), "block"],  # Lanky Fur (Front)
+    0xE94: [(32, 32), "block"],  # Lanky Fur
     0xEB9: [(43, 32), "checkered"],  # Chunky Checkered Shirt
     0xE67: [(32, 32), "block"],  # Chunky Shirt Front
     3826: [(32, 32), "block"],  # Rambi
