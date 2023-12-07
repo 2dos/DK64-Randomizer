@@ -329,20 +329,6 @@
         "Rambi": ["Skin"], 
         "Enguarde": ["Skin"]
     }
-
-    $(function() {
-        Object.keys(KONG_ZONES).forEach(kong) {
-            KONG_ZONES[kong].forEach(zone => {
-                $(`.${kong.toLowerCase()}${zone.toLowerCase()}ColorPicker`).
-                //$(`.${kong.toLowerCase()}${zone.toLowerCase()}ColorPicker`).izoColorPicker({
-                //    myColors: '',
-                //     onApply: (color) => {
-                //        $(`#${kong.toLowerCase()}_${zone.toLowerCase()}_custom_color`).trigger("change");
-                //    }
-                //})
-            })
-        }
-    })
     
     $('.nav-tabs').click(function() {
         var settings = (document.cookie).split('saved_settings=')

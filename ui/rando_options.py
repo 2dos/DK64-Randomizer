@@ -551,7 +551,7 @@ def disable_colors(evt):
     KONG_ZONES = {
         "DK": ["Fur", "Tie"], 
         "Diddy": ["Clothes"], 
-        "Lanky": ["Clothes"], 
+        "Lanky": ["Clothes", "Fur"], 
         "Tiny": ["Clothes", "Hair"], 
         "Chunky": ["Main", "Other"], 
         "Rambi": ["Skin"], 
@@ -560,11 +560,14 @@ def disable_colors(evt):
     for kong in KONG_ZONES:
         for zone in KONG_ZONES[kong]:
             color = js.document.getElementById(f"{kong.lower()}_{zone.lower()}_colors")
+            picker = js.document.getElementById(f"{kong.lower()}_{zone.lower()}_custom_color")
             try:
                 if disabled:
                     color.setAttribute("disabled", "disabled")
+                    picker.setAttribute("disabled", "disabled")
                 else:
                     color.removeAttribute("disabled")
+                    picker.removeAttribute("disabled")
             except AttributeError:
                 pass
     
