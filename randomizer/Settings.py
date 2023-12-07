@@ -1468,7 +1468,7 @@ class Settings:
 
             # If our Helm fairy locations are unshuffled, ban any item used for helm doors from being on either location.
             # This is because the two locations are always behind both doors. If you put a door-required crown here, you may as well have deleted it.
-            if self.random_fairies and Types.Fairy in self.shuffled_location_types:
+            if not self.random_fairies and Types.Fairy in self.shuffled_location_types:
                 # Going in order of the HelmDoorItem enum:
                 # GBs cannot be in Helm
                 # Blueprints cannot be on fairies
