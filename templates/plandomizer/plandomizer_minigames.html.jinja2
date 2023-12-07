@@ -12,14 +12,18 @@
                     <label for="plando_{{location["value"]}}_minigame" class="location-label">
                         {{location["name"]}}
                     </label>
-                    <select id="plando_{{location["value"]}}_minigame"
-                            name="plando_{{location["value"]}}_minigame"
-                            class="form-select">
-                        <option value="">-- Randomize --</option>
-                        {% for game in plando_minigames|plando_minigame_restrict(location["kong"]) %}
-                            <option value="{{game["value"]}}">{{game["name"]}}</option>
-                        {% endfor %}
-                    </select>
+                    <div id="plando_{{location["value"]}}_minigame_wrapper"
+                         data-toggle="tooltip"
+                         title>
+                        <select id="plando_{{location["value"]}}_minigame"
+                                name="plando_{{location["value"]}}_minigame"
+                                class="form-select">
+                            <option value="">-- Randomize --</option>
+                            {% for game in plando_minigames|plando_minigame_restrict(location["kong"]) %}
+                                <option value="{{game["value"]}}">{{game["name"]}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
             {% endfor %}
         </div>
