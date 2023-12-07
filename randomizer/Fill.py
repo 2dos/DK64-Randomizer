@@ -1438,7 +1438,9 @@ def FillHelmLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
         # Blueprints are tricky - their valid locations are organized by Kong
         if typ == Types.Blueprint:
             for kong in GetKongs():
-                spoiler.settings.valid_locations[Types.Blueprint][kong] = [loc for loc in spoiler.settings.valid_locations[Types.Blueprint][kong] if spoiler.LocationList[loc].level == Levels.HideoutHelm and loc in empty_helm_locations]
+                spoiler.settings.valid_locations[Types.Blueprint][kong] = [
+                    loc for loc in spoiler.settings.valid_locations[Types.Blueprint][kong] if spoiler.LocationList[loc].level == Levels.HideoutHelm and loc in empty_helm_locations
+                ]
         # Everything else can be in any Helm location they already could have been in depending on their type
         elif typ in spoiler.settings.valid_locations.keys():
             spoiler.settings.valid_locations[typ] = [loc for loc in spoiler.settings.valid_locations[typ] if spoiler.LocationList[loc].level == Levels.HideoutHelm and loc in empty_helm_locations]
