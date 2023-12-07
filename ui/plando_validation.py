@@ -638,7 +638,7 @@ async def import_plando_options(file):
                 shopCostList.append(shopElem)
                 shopElem.value = price
         # Process minigame selections.
-        elif option == "minigames":
+        elif option == "plando_bonus_barrels":
             for location, minigame in value.items():
                 js.document.getElementById(f"plando_{location}_minigame").value = minigame
         # Process hints.
@@ -776,9 +776,9 @@ def validate_plando_file(file_obj: dict) -> None:
         validate_plando_location(location)
         validate_plando_option_value(file_obj["locations"], location, PlandoItems, "location")
     # Inspect all minigames.
-    for minigame in file_obj["minigames"].keys():
+    for minigame in file_obj["plando_bonus_barrels"].keys():
         validate_plando_location(minigame)
-        validate_plando_option_value(file_obj["minigames"], minigame, Minigames, "minigame")
+        validate_plando_option_value(file_obj["plando_bonus_barrels"], minigame, Minigames, "minigame")
     # Inspect all shop prices.
     # for shop in file_obj["prices"].keys():
     #     validate_plando_location(shop)
