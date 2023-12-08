@@ -174,6 +174,8 @@ extern void fairyDuplicateCode(void);
 extern void FakeGBCode(void);
 extern void beaverExtraHitHandle(void);
 extern void CBDing(void);
+extern int* renderDingSprite(int* dl);
+extern void initDingSprite(void);
 extern void handleSpiderTrapCode(void);
 extern void HandleSpiderSilkSpawn(void);
 extern void SpiderBossExtraCode(void);
@@ -182,6 +184,7 @@ extern int fixDilloTNTPads(void* actor);
 extern int canPlayJetpac(void);
 extern void setPrevSaveMap(void);
 extern int filterSong(int* song_write);
+extern int getTotalCBCount(void);
 
 extern move_block* getMoveBlock(void);
 extern void setLocationStatus(location_list location_index);

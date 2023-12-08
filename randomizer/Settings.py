@@ -413,20 +413,35 @@ class Settings:
         self.color_palettes = {}
         self.klaptrap_model = KlaptrapModel.green
         self.klaptrap_model_index = 0x21
-        self.dk_colors = CharacterColors.vanilla
-        self.dk_custom_color = "#000000"
-        self.diddy_colors = CharacterColors.vanilla
-        self.diddy_custom_color = "#000000"
-        self.lanky_colors = CharacterColors.vanilla
-        self.lanky_custom_color = "#000000"
-        self.tiny_colors = CharacterColors.vanilla
-        self.tiny_custom_color = "#000000"
-        self.chunky_colors = CharacterColors.vanilla
-        self.chunky_custom_color = "#000000"
-        self.rambi_colors = CharacterColors.vanilla
-        self.rambi_custom_color = "#000000"
-        self.enguarde_colors = CharacterColors.vanilla
-        self.enguarde_custom_color = "#000000"
+        # DK
+        self.dk_fur_colors = CharacterColors.vanilla
+        self.dk_fur_custom_color = "#000000"
+        self.dk_tie_colors = CharacterColors.vanilla
+        self.dk_tie_custom_color = "#000000"
+        # Diddy
+        self.diddy_clothes_colors = CharacterColors.vanilla
+        self.diddy_clothes_custom_color = "#000000"
+        # Lanky
+        self.lanky_clothes_colors = CharacterColors.vanilla
+        self.lanky_clothes_custom_color = "#000000"
+        self.lanky_fur_colors = CharacterColors.vanilla
+        self.lanky_fur_custom_color = "#000000"
+        # Tiny
+        self.tiny_clothes_colors = CharacterColors.vanilla
+        self.tiny_clothes_custom_color = "#000000"
+        self.tiny_hair_colors = CharacterColors.vanilla
+        self.tiny_hair_custom_color = "#000000"
+        # Chunky
+        self.chunky_main_colors = CharacterColors.vanilla
+        self.chunky_main_custom_color = "#000000"
+        self.chunky_other_colors = CharacterColors.vanilla
+        self.chunky_other_custom_color = "#000000"
+        # Transformations
+        self.rambi_skin_colors = CharacterColors.vanilla
+        self.rambi_skin_custom_color = "#000000"
+        self.enguarde_skin_colors = CharacterColors.vanilla
+        self.enguarde_skin_custom_color = "#000000"
+
         self.disco_chunky = False
         self.dark_mode_textboxes = False
         self.krusha_ui = KrushaUi.no_slot

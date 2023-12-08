@@ -523,6 +523,7 @@ int* displayListModifiers(int* dl) {
 				dl = drawPixelTextContainer(dl, fps_x, fps_y, fpsStr, 0xFF, 0xFF, 0xFF, 0xFF, 1);
 			}
 			dl = drawDPad(dl);
+			dl = renderDingSprite(dl);
 			if (ammo_hud_timer) {
 				int ammo_x = 150;
 				int ammo_default_y = 850;
