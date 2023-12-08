@@ -438,7 +438,6 @@ def apply_cosmetic_colors(settings: Settings):
                         base_obj["zones"].append(zone_data)
                         color_palettes.append(base_obj)
                         color_obj[f"{kong.kong} {palette.name}"] = color
-    print(color_palettes)
     settings.colors = color_obj
     if len(color_palettes) > 0:
         convertColors(color_palettes)
