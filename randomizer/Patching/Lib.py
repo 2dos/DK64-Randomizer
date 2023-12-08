@@ -211,6 +211,7 @@ class SwitchInfo:
 
 
 class PaletteFillType(IntEnum):
+    """Palette Fill Type enum."""
     block = auto()
     patch = auto()
     sparkle = auto()
