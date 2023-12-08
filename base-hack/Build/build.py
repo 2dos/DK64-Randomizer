@@ -950,7 +950,7 @@ text_files = (
     TextChange("Pause Menu", 0, ""),
     TextChange("Main Menu", 0, "menu_text.bin"),
     TextChange("Race Positions", 0, ""),
-    TextChange("Move Names", 0, "move_names.bin"),
+    TextChange("Move Names", 0x1200, "move_names.bin"), # Expanded for the Krusha move names feature
     TextChange("Fairy Queen Rareware Door", 0, "fairy_rw_text.bin"),
     TextChange("Wrinkly", 0x2800, ""),
     TextChange("Snide's Bonus Games", 0, ""),
