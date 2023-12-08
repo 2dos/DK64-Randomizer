@@ -1434,24 +1434,17 @@ def FillHelmLocations(spoiler: Spoiler, placed_types: List[Types], placed_items:
     ]
     # Rig the valid_locations for all relevant items to only be able to place things in Helm
     for typ in [x for x in spoiler.settings.shuffled_location_types if x not in placed_types]:  # Shops would already be placed
-        # Company Coins and Medals cannot be on the fairy locations
-        if typ in [Types.Coin, Types.Medal]:
-            spoiler.settings.valid_locations[typ] = [loc for loc in empty_helm_locations if spoiler.LocationList[loc].type != Types.Fairy]
-        # Crowns cannot be on the medal locations
-        elif typ == Types.Crown:
-            spoiler.settings.valid_locations[typ] = [loc for loc in empty_helm_locations if spoiler.LocationList[loc].type != Types.Medal]
-        # Blueprints are tricky - they have to be in the right Kong's room
-        elif typ == Types.Blueprint:
-            empty_kong_rooms = [loc for loc in empty_helm_locations if spoiler.LocationList[loc].type == Types.Medal]
-            empty_kong_rooms_kongs = [spoiler.LocationList[loc].kong for loc in empty_kong_rooms]
-            for kong in Kongs:
-                if kong in empty_kong_rooms_kongs:
-                    spoiler.settings.valid_locations[Types.Blueprint][kong] = [loc for loc in empty_kong_rooms if spoiler.LocationList[loc].kong == kong]
-                else:
-                    spoiler.settings.valid_locations[Types.Blueprint][kong] = []
-        # Everything else (fairies) can be in any location
-        else:
-            spoiler.settings.valid_locations[typ] = empty_helm_locations
+        # Filter the valid locations down to only Helm locations
+        # Blueprints are tricky - their valid locations are organized by Kong
+        if typ == Types.Blueprint:
+            for kong in GetKongs():
+                spoiler.settings.valid_locations[Types.Blueprint][kong] = [
+                    loc for loc in spoiler.settings.valid_locations[Types.Blueprint][kong] if spoiler.LocationList[loc].level == Levels.HideoutHelm and loc in empty_helm_locations
+                ]
+        # Everything else can be in any Helm location they already could have been in depending on their type
+        elif typ in spoiler.settings.valid_locations.keys():
+            spoiler.settings.valid_locations[typ] = [loc for loc in spoiler.settings.valid_locations[typ] if spoiler.LocationList[loc].level == Levels.HideoutHelm and loc in empty_helm_locations]
+        # Anything that falls out of this else is a type that doesn't have valid locations (ToughBanana, etc.)
     # Now we get the full list of items we could place here
     unplaced_items = ItemPool.GetItemsNeedingToBeAssumed(spoiler.settings, placed_types)
     for item in placed_items:
