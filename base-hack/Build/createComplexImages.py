@@ -41,11 +41,12 @@ def maskImage(im_f, min_y, rgb: list):
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
 
-def stroke(img: Image, stroke_color: tuple = (255, 255, 255), stroke_radius: int=5) -> Image:
+
+def stroke(img: Image, stroke_color: tuple = (255, 255, 255), stroke_radius: int = 5) -> Image:
     """Give an image an outline."""
     rgba = tuple(list(stroke_color) + [255])
     stroke_image = Image.new("RGBA", img.size, rgba)
-    img_alpha = img.getchannel(3).point(lambda x: 255 if x>0 else 0)
+    img_alpha = img.getchannel(3).point(lambda x: 255 if x > 0 else 0)
     stroke_alpha = img_alpha.filter(ImageFilter.MaxFilter(stroke_radius))
     # optionally, smooth the result
     stroke_alpha = stroke_alpha.filter(ImageFilter.SMOOTH)

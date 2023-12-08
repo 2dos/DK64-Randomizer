@@ -548,15 +548,7 @@ def disable_colors(evt):
     disabled = False
     if js.document.getElementById("random_colors").checked:
         disabled = True
-    KONG_ZONES = {
-        "DK": ["Fur", "Tie"], 
-        "Diddy": ["Clothes"], 
-        "Lanky": ["Clothes", "Fur"], 
-        "Tiny": ["Clothes", "Hair"], 
-        "Chunky": ["Main", "Other"], 
-        "Rambi": ["Skin"], 
-        "Enguarde": ["Skin"]
-    }
+    KONG_ZONES = {"DK": ["Fur", "Tie"], "Diddy": ["Clothes"], "Lanky": ["Clothes", "Fur"], "Tiny": ["Clothes", "Hair"], "Chunky": ["Main", "Other"], "Rambi": ["Skin"], "Enguarde": ["Skin"]}
     for kong in KONG_ZONES:
         for zone in KONG_ZONES[kong]:
             color = js.document.getElementById(f"{kong.lower()}_{zone.lower()}_colors")
@@ -570,7 +562,6 @@ def disable_colors(evt):
                     picker.removeAttribute("disabled")
             except AttributeError:
                 pass
-    
 
 
 @bind("click", "enable_tag_anywhere")

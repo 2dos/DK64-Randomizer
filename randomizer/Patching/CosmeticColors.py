@@ -189,6 +189,7 @@ panic_models = [
     0xEB,  # Funky's Gun
 ]
 
+
 class KongPalette:
     """Class to store information regarding a kong palette."""
 
@@ -201,15 +202,17 @@ class KongPalette:
         if alt_name is None:
             self.alt_name = name
 
+
 class KongPaletteSetting:
     """Class to store information regarding the kong palette setting."""
 
-    def __init__(self, kong:str, kong_index: int, palettes: list[KongPalette]):
+    def __init__(self, kong: str, kong_index: int, palettes: list[KongPalette]):
         """Initialize with given parameters."""
         self.kong = kong
         self.kong_index = kong_index
         self.palettes = palettes.copy()
         self.setting_kong = kong
+
 
 def getKongColor(settings: Settings, index: int):
     """Get color index for a kong."""
@@ -224,7 +227,9 @@ def getKongColor(settings: Settings, index: int):
             kong_colors = ["#FFA4A4", "#C72020", "#13C4D8", "#FFFFFF", "#000000"]
     return kong_colors[index]
 
+
 DEFAULT_COLOR = "#000000"
+
 
 def apply_cosmetic_colors(settings: Settings):
     """Apply cosmetic skins to kongs."""
@@ -302,45 +307,65 @@ def apply_cosmetic_colors(settings: Settings):
     color_obj = {}
     colors_dict = {}
     kong_settings = [
-        KongPaletteSetting("dk", 0, [
-            KongPalette("fur", 3724, PaletteFillType.block),
-            KongPalette("tie", 0x177D, PaletteFillType.block),
-            KongPalette("tie", 0xE8D, PaletteFillType.patch),
-        ]),
-        KongPaletteSetting("diddy", 1, [
-            KongPalette("clothes", 3686, PaletteFillType.block),
-        ]),
-        KongPaletteSetting("lanky", 2, [
-            KongPalette("clothes", 3689, PaletteFillType.block),
-            KongPalette("clothes", 3734, PaletteFillType.patch),
-            KongPalette("fur", 0xE9A, PaletteFillType.block),
-            KongPalette("fur", 0xE94, PaletteFillType.block),
-        ]),
-        KongPaletteSetting("tiny", 3, [
-            KongPalette("clothes", 6014, PaletteFillType.block),
-            KongPalette("hair", 0xE68, PaletteFillType.block),
-        ]),
-        KongPaletteSetting("chunky", 4, [
-            KongPalette("main", 3769, PaletteFillType.checkered, "other"),
-            KongPalette("main", 3687, PaletteFillType.block),
-        ]),
-        KongPaletteSetting("rambi", 5, [
-            KongPalette("skin", 3826, PaletteFillType.block),
-        ]),
-        KongPaletteSetting("enguarde", 6, [
-            KongPalette("skin", 3847, PaletteFillType.block),
-        ]),
+        KongPaletteSetting(
+            "dk",
+            0,
+            [
+                KongPalette("fur", 3724, PaletteFillType.block),
+                KongPalette("tie", 0x177D, PaletteFillType.block),
+                KongPalette("tie", 0xE8D, PaletteFillType.patch),
+            ],
+        ),
+        KongPaletteSetting(
+            "diddy",
+            1,
+            [
+                KongPalette("clothes", 3686, PaletteFillType.block),
+            ],
+        ),
+        KongPaletteSetting(
+            "lanky",
+            2,
+            [
+                KongPalette("clothes", 3689, PaletteFillType.block),
+                KongPalette("clothes", 3734, PaletteFillType.patch),
+                KongPalette("fur", 0xE9A, PaletteFillType.block),
+                KongPalette("fur", 0xE94, PaletteFillType.block),
+            ],
+        ),
+        KongPaletteSetting(
+            "tiny",
+            3,
+            [
+                KongPalette("clothes", 6014, PaletteFillType.block),
+                KongPalette("hair", 0xE68, PaletteFillType.block),
+            ],
+        ),
+        KongPaletteSetting(
+            "chunky",
+            4,
+            [
+                KongPalette("main", 3769, PaletteFillType.checkered, "other"),
+                KongPalette("main", 3687, PaletteFillType.block),
+            ],
+        ),
+        KongPaletteSetting(
+            "rambi",
+            5,
+            [
+                KongPalette("skin", 3826, PaletteFillType.block),
+            ],
+        ),
+        KongPaletteSetting(
+            "enguarde",
+            6,
+            [
+                KongPalette("skin", 3847, PaletteFillType.block),
+            ],
+        ),
     ]
 
-    KONG_ZONES = {
-        "DK": ["Fur", "Tie"], 
-        "Diddy": ["Clothes"], 
-        "Lanky": ["Clothes", "Fur"], 
-        "Tiny": ["Clothes", "Hair"], 
-        "Chunky": ["Main", "Other"], 
-        "Rambi": ["Skin"], 
-        "Enguarde": ["Skin"]
-    }
+    KONG_ZONES = {"DK": ["Fur", "Tie"], "Diddy": ["Clothes"], "Lanky": ["Clothes", "Fur"], "Tiny": ["Clothes", "Hair"], "Chunky": ["Main", "Other"], "Rambi": ["Skin"], "Enguarde": ["Skin"]}
 
     if js.document.getElementById("override_cosmetics").checked or True:
         if js.document.getElementById("random_colors").checked:
@@ -387,9 +412,9 @@ def apply_cosmetic_colors(settings: Settings):
             elif palette.fill_type == PaletteFillType.kong:
                 arr = [getKongColor(settings, kong.kong_index)]
             zone_data = {
-                "zone": palette.name, 
-                "image": palette.image, 
-                "fill_type": palette.fill_type, 
+                "zone": palette.name,
+                "image": palette.image,
+                "fill_type": palette.fill_type,
                 "colors": arr,
             }
             for index in range(len(arr)):

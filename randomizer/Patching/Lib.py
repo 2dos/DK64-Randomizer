@@ -209,6 +209,7 @@ class SwitchInfo:
         self.ids = ids
         self.tied_settings = tied_settings
 
+
 class PaletteFillType(IntEnum):
     block = auto()
     patch = auto()
@@ -216,6 +217,7 @@ class PaletteFillType(IntEnum):
     checkered = auto()
     radial = auto()
     kong = auto()
+
 
 def float_to_hex(f: Union[float, int]) -> str:
     """Convert float to hex."""
