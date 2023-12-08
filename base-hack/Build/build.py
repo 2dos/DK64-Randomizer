@@ -215,6 +215,8 @@ file_dict = [
         do_not_delete_source=True,
     ),
     File(name="Majoras Mask Moon", pointer_table_index=TableNames.TexturesHUD, file_index=115, source_file="assets/displays/moon_santa.png", texture_format=TextureFormat.IA8),
+    File(name="Scoff Head", pointer_table_index=TableNames.TexturesHUD, file_index=114, source_file="assets/hash/scoff_head.png", texture_format=TextureFormat.RGBA5551),
+    File(name="Outlined Crosshair", pointer_table_index=TableNames.TexturesHUD, file_index=0x38, source_file="assets/displays/crosshair.png", texture_format=TextureFormat.IA8),
 ]
 
 file_dict = file_dict + buildScripts()
@@ -765,6 +767,8 @@ kong_palettes = {
     0xE8C: [(32, 32), "block"],  # DK Base
     0xE66: [(32, 32), "block"],  # Diddy Cap/Shirt
     0xE69: [(32, 32), "block"],  # Lanky Overalls
+    0xE9A: [(32, 32), "block"],  # Lanky Fur (Front)
+    0xE94: [(32, 32), "block"],  # Lanky Fur
     0xEB9: [(43, 32), "checkered"],  # Chunky Checkered Shirt
     0xE67: [(32, 32), "block"],  # Chunky Shirt Front
     3826: [(32, 32), "block"],  # Rambi
@@ -1410,6 +1414,7 @@ with open(newROMName, "r+b") as fh:
         "warp_right",
         "warp_rim_0",
         "warp_rim_1",
+        "crosshair",
     ]
     for b in barrel_skins:
         displays.extend([f"barrel_{b}_0", f"barrel_{b}_1"])
@@ -1458,6 +1463,7 @@ with open(newROMName, "r+b") as fh:
         "bonus_Skin",
         "melon_resized",
         "melon_slice",
+        "scoff_head",
     ]
     script_files = [x[0] for x in os.walk("assets/instance_scripts/")]
     shop_files = ["snide.json", "cranky.json", "funky.json", "candy.json"]

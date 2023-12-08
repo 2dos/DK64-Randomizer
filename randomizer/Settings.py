@@ -413,20 +413,35 @@ class Settings:
         self.color_palettes = {}
         self.klaptrap_model = KlaptrapModel.green
         self.klaptrap_model_index = 0x21
-        self.dk_colors = CharacterColors.vanilla
-        self.dk_custom_color = "#000000"
-        self.diddy_colors = CharacterColors.vanilla
-        self.diddy_custom_color = "#000000"
-        self.lanky_colors = CharacterColors.vanilla
-        self.lanky_custom_color = "#000000"
-        self.tiny_colors = CharacterColors.vanilla
-        self.tiny_custom_color = "#000000"
-        self.chunky_colors = CharacterColors.vanilla
-        self.chunky_custom_color = "#000000"
-        self.rambi_colors = CharacterColors.vanilla
-        self.rambi_custom_color = "#000000"
-        self.enguarde_colors = CharacterColors.vanilla
-        self.enguarde_custom_color = "#000000"
+        # DK
+        self.dk_fur_colors = CharacterColors.vanilla
+        self.dk_fur_custom_color = "#000000"
+        self.dk_tie_colors = CharacterColors.vanilla
+        self.dk_tie_custom_color = "#000000"
+        # Diddy
+        self.diddy_clothes_colors = CharacterColors.vanilla
+        self.diddy_clothes_custom_color = "#000000"
+        # Lanky
+        self.lanky_clothes_colors = CharacterColors.vanilla
+        self.lanky_clothes_custom_color = "#000000"
+        self.lanky_fur_colors = CharacterColors.vanilla
+        self.lanky_fur_custom_color = "#000000"
+        # Tiny
+        self.tiny_clothes_colors = CharacterColors.vanilla
+        self.tiny_clothes_custom_color = "#000000"
+        self.tiny_hair_colors = CharacterColors.vanilla
+        self.tiny_hair_custom_color = "#000000"
+        # Chunky
+        self.chunky_main_colors = CharacterColors.vanilla
+        self.chunky_main_custom_color = "#000000"
+        self.chunky_other_colors = CharacterColors.vanilla
+        self.chunky_other_custom_color = "#000000"
+        # Transformations
+        self.rambi_skin_colors = CharacterColors.vanilla
+        self.rambi_skin_custom_color = "#000000"
+        self.enguarde_skin_colors = CharacterColors.vanilla
+        self.enguarde_skin_custom_color = "#000000"
+
         self.disco_chunky = False
         self.dark_mode_textboxes = False
         self.krusha_ui = KrushaUi.no_slot
@@ -1465,6 +1480,28 @@ class Settings:
                 self.valid_locations[Types.Kong].extend(
                     [loc for loc in shuffledNonMoveLocations if loc not in banned_kong_locations]
                 )  # No items can be in Kong cages but Kongs can be in all other locations
+
+            # If our Helm fairy locations are unshuffled, ban any item used for helm doors from being on either location.
+            # This is because the two locations are always behind both doors. If you put a door-required crown here, you may as well have deleted it.
+            if not self.random_fairies and Types.Fairy in self.shuffled_location_types:
+                # Going in order of the HelmDoorItem enum:
+                # GBs cannot be in Helm
+                # Blueprints cannot be on fairies
+                # Company coins cannot be on fairies
+                # Keys can be on fairies, but this is staggeringly rare
+                if Types.Key in self.shuffled_location_types and (self.crown_door_item == HelmDoorItem.req_key or self.coin_door_item == HelmDoorItem.req_key):
+                    self.valid_locations[Types.Key].remove(Locations.HelmBananaFairy1)
+                    self.valid_locations[Types.Key].remove(Locations.HelmBananaFairy2)
+                # Medals cannot be on fairies
+                # The big winner: Crowns will not be locked behind a crown door requirement
+                if Types.Crown in self.shuffled_location_types and (
+                    self.crown_door_item == HelmDoorItem.vanilla or self.crown_door_item == HelmDoorItem.req_crown or self.coin_door_item == HelmDoorItem.req_crown
+                ):
+                    self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy1)
+                    self.valid_locations[Types.Crown].remove(Locations.HelmBananaFairy2)
+                # Fairies are the one exception: these are allowed to be vanilla
+                # Rainbow coins cannot be on fairies
+                # The Bean/Pearls cannot be on fairies (you might be sensing a pattern here)
 
     def GetValidLocationsForItem(self, item_id):
         """Return the valid locations the input item id can be placed in."""

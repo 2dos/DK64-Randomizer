@@ -12,7 +12,6 @@ from ui.rando_options import (
     disable_music,
     enable_plandomizer,
     handle_progressive_hint_text,
-    hide_rgb,
     item_rando_list_changed,
     max_doorone_requirement,
     max_doortwo_requirement,
@@ -62,7 +61,6 @@ disable_excluded_songs_modal(None)
 disable_hard_mode_modal(None)
 toggle_item_rando(None)
 disable_boss_rando(None)
-hide_rgb(None)
 toggle_medals_box(None)
 max_randomized_medals(None)
 max_randomized_medal_cb_req(None)

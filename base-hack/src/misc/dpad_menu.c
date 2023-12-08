@@ -146,6 +146,7 @@ void handleDPadFunctionality(void) {
                 int world = getWorld(CurrentMap,0);
                 if ((world < 7) && (CurrentMap != MAP_TROFFNSCOFF)) {
                     displayItemOnHUD(0xA,0,0);
+                    initDingSprite();
                 }
             }
         }

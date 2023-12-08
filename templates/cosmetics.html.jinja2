@@ -197,217 +197,35 @@
                     <label for="random_colors"></label>
                 </label>
             </h2>
+            {% set kong_zones = {"DK": ["Fur", "Tie"], "Diddy": ["Clothes"], "Lanky": ["Clothes", "Fur"], "Tiny": ["Clothes", "Hair"], "Chunky": ["Main", "Other"], "Rambi": ["Skin"], "Enguarde": ["Skin"]} %}
             <div class="flex-container">
-                <div class="item-color-select">
-                    <div class="color-selector">
-                        <p class="select-title">DK</p>
-                        <select name="dk_colors"
-                                id="dk_colors"
-                                class="form-select multi-select"
-                                aria-label="DK"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="dk_custom">
-                            <div class="input-group mb-3 dkColorPicker">
-                                <input type="text"
-                                       class="form-control"
-                                       name="dk_custom_color"
-                                       id="dk_custom_color"
-                                       default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
+                {% for kong in kong_zones %}
+                    <div class="flex-container" style="flex-direction:column">
+                        <div class="item-color-select">
+                            <div class="color-selector">
+                                <p class="select-title">{{ kong }}</p>
+                                {% for zone in kong_zones[kong] %}
+                                    <div id="{{ kong.lower() }}_{{ zone.lower() }}_custom">
+                                        <div class="input-group mb-3 {{ kong.lower() }}{{ zone.lower() }}ColorPicker" style="display:flex">
+                                            <select name="{{ kong.lower() }}_{{ zone.lower() }}_colors" id="{{ kong.lower() }}_{{ zone.lower() }}_colors" class="form-select" aria-label="{{ kong }} {{ zone }}">
+                                                <option selected value="vanilla">{{ zone }}: Vanilla</option>
+                                                <option selected value="randomized">{{ zone }}: Randomized</option>
+                                                <option selected value="custom">{{ zone }}: Custom</option>
+                                            </select>
+                                            <div class="color-input-container">
+                                                <input type="color"
+                                                    name="{{ kong.lower() }}_{{ zone.lower() }}_custom_color"
+                                                    id="{{ kong.lower() }}_{{ zone.lower() }}_custom_color"
+                                                    default="#000000"
+                                                    class="color-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="item-color-select">
-                    <div class="color-selector">
-                        <p class="select-title">Diddy</p>
-                        <select name="diddy_colors"
-                                id="diddy_colors"
-                                class="form-select multi-select"
-                                aria-label="Diddy"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="diddy_custom">
-                            <div class="input-group mb-3 diddyColorPicker">
-                                <input type="text"
-                                       class="form-control"
-                                       name="diddy_custom_color"
-                                       id="diddy_custom_color"
-                                       default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-color-select">
-                    <div class="color-selector">
-                        <p class="select-title">Lanky</p>
-                        <select name="lanky_colors"
-                                id="lanky_colors"
-                                class="form-select multi-select"
-                                aria-label="Lanky"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="lanky_custom">
-                            <div class="input-group mb-3 lankyColorPicker">
-                                <input type="text"
-                                       class="form-control"
-                                       name="lanky_custom_color"
-                                       id="lanky_custom_color"
-                                       default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-color-select">
-                    <div class="color-selector">
-                        <p class="select-title">Tiny</p>
-                        <select name="tiny_colors"
-                                id="tiny_colors"
-                                class="form-select multi-select"
-                                aria-label="Tiny"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="tiny_custom">
-                            <div class="input-group mb-3 tinyColorPicker">
-                                <input type="text"
-                                       class="form-control"
-                                       name="tiny_custom_color"
-                                       id="tiny_custom_color"
-                                       default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-color-select">
-                    <div class="color-selector">
-                        <p class="select-title">Chunky</p>
-                        <select name="chunky_colors"
-                                id="chunky_colors"
-                                class="form-select multi-select"
-                                aria-label="Chunky"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="chunky_custom">
-                            <div class="input-group mb-3 chunkyColorPicker">
-                                <input type="text"
-                                       class="form-control"
-                                       name="chunky_custom_color"
-                                       id="chunky_custom_color"
-                                       default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-color-select">
-                    <div class="color-selector">
-                        <p class="select-title">Rambi</p>
-                        <select name="rambi_colors"
-                                id="rambi_colors"
-                                class="form-select multi-select"
-                                aria-label="Rambi"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="rambi_custom">
-                            <div class="input-group mb-3 rambiColorPicker">
-                                <input type="text"
-                                       class="form-control"
-                                       name="rambi_custom_color"
-                                       id="rambi_custom_color"
-                                       default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item-color-select">
-                    <div class="color-selector">
-                        <p class="select-title">Enguarde</p>
-                        <select name="enguarde_colors"
-                                id="enguarde_colors"
-                                class="form-select multi-select"
-                                aria-label="Enguarde"
-                                multiple>
-                            <option selected value="vanilla">
-                                Vanilla
-                            </option>
-                            <option value="randomized">
-                                Randomized
-                            </option>
-                            <option value="custom">
-                                Custom
-                            </option>
-                        </select>
-                        <div id="enguarde_custom">
-                            <div class="input-group mb-3 enguardeColorPicker">
-                                <input type="text"
-                                       class="form-control"
-                                       name="enguarde_custom_color"
-                                       id="enguarde_custom_color"
-                                       default="#000000">
-                                <button class="btn btn-default rgb-btn" type="button">&nbsp;</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
             <hr />
             <div class="row">
@@ -502,76 +320,29 @@
     </div>
 </div>
 <script>
-    $(function() {
-        $('.dkColorPicker').izoColorPicker({
-            myColors: '',
-            onApply: (color) => {
-                $('#dk_custom_color').trigger("change")
-            }
-        })
-        $('.diddyColorPicker').izoColorPicker({
-            myColors: '',
-            onApply: (color) => {
-                $('#diddy_custom_color').trigger("change")
-            }
-        })
-        $('.lankyColorPicker').izoColorPicker({
-            myColors: '',
-            onApply: (color) => {
-                $('#lanky_custom_color').trigger("change")
-            }
-        })
-        $('.tinyColorPicker').izoColorPicker({
-            myColors: '',
-            onApply: (color) => {
-                $('#tiny_custom_color').trigger("change")
-            }
-        })
-        $('.chunkyColorPicker').izoColorPicker({
-            myColors: '',
-            onApply: (color) => {
-                $('#chunky_custom_color').trigger("change")
-            }
-        })
-        $('.rambiColorPicker').izoColorPicker({
-            myColors: '',
-            onApply: (color) => {
-                $('#rambi_custom_color').trigger("change")
-            }
-        })
-        $('.enguardeColorPicker').izoColorPicker({
-            myColors: '',
-            onApply: (color) => {
-                $('#enguarde_custom_color').trigger("change")
-            }
-        })
-    })
+    KONG_ZONES = {
+        "DK": ["Fur", "Tie"], 
+        "Diddy": ["Clothes"], 
+        "Lanky": ["Clothes", "Fur"], 
+        "Tiny": ["Clothes", "Hair"], 
+        "Chunky": ["Main", "Other"], 
+        "Rambi": ["Skin"], 
+        "Enguarde": ["Skin"]
+    }
     
     $('.nav-tabs').click(function() {
         var settings = (document.cookie).split('saved_settings=')
         if (typeof settings[1] !== 'undefined') {
             var object = JSON.parse(settings[1])
-            if (object.hasOwnProperty('dk_custom_color')) {
-                $('.dkColorPicker').attr('style', 'background-color:' + object.dk_custom_color + ';')
-            }
-            if (object.hasOwnProperty('diddy_custom_color')) {
-                $('.diddyColorPicker').attr('style', 'background-color:' + object.diddy_custom_color + ';')
-            }
-            if (object.hasOwnProperty('lanky_custom_color')) {
-                $('.lankyColorPicker').attr('style', 'background-color:' + object.lanky_custom_color + ';')
-            }
-            if (object.hasOwnProperty('tiny_custom_color')) {
-                $('.tinyColorPicker').attr('style', 'background-color:' + object.tiny_custom_color + ';')
-            }
-            if (object.hasOwnProperty('chunky_custom_color')) {
-                $('.chunkyColorPicker').attr('style', 'background-color:' + object.chunky_custom_color + ';')
-            }
-            if (object.hasOwnProperty('rambi_custom_color')) {
-                $('.rambiColorPicker').attr('style', 'background-color:' + object.rambi_custom_color + ';')
-            }
-            if (object.hasOwnProperty('enguarde_custom_color')) {
-                $('.enguardeColorPicker').attr('style', 'background-color:' + object.enguarde_custom_color + ';')
-            }
+            Object.keys(KONG_ZONES).forEach(kong => {
+                KONG_ZONES[kong].forEach(zone => {
+                    const attribute = `${kong.toLowerCase()}_${zone.toLowerCase()}_custom_color`;
+                    const cls = `.${kong.toLowerCase()}${zone.toLowerCase()}ColorPicker`;
+                    if (object.hasOwnProperty(attribute)) {
+                        $(cls).attr('style', 'background-color:' + object[attribute] + ';')
+                    }
+                })
+            })
         }
     })
     $(function() {

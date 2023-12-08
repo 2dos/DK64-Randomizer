@@ -435,6 +435,21 @@ def randomize_music(settings: Settings):
         ROM_COPY.seek(sav + 0x12E)
         ROM_COPY.write(1)
 
+    # Read in all vanilla song data from the ROM to preserve it, because some
+    # song slots may be overwritten by custom music.
+    song_rom_data = {}
+    for song in song_data.values():
+        # Skip "Silence".
+        if song.mem_idx == 0:
+            continue
+        song_info = js.pointer_addresses[0]["entries"][song.mem_idx]
+        ROM_COPY.seek(song_info["pointing_to"])
+        rom_data = ROM_COPY.readBytes(song_info["compressed_size"])
+        uncompressed_data_table = js.pointer_addresses[26]["entries"][0]
+        ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song.mem_idx))
+        song_size = ROM_COPY.readBytes(4)
+        song_rom_data[song.mem_idx] = {"name": song.name, "data": rom_data, "size": song_size, "memory": song.memory}
+
     for song in song_data.values():
         song.Reset()
         ROM_COPY.seek(TYPE_ARRAY + song.mem_idx)
@@ -512,7 +527,7 @@ def randomize_music(settings: Settings):
                     open_songs = open_locations.copy()
                 location_pool = open_locations + assigned_locations[channel_index] + pre_shuffled_songs[channel_index].copy()
                 song_pool = open_songs + assigned_songs[channel_index] + pre_shuffled_songs[channel_index].copy()
-                shuffle_music(music_data, location_pool, song_pool)
+                shuffle_music(settings, music_data, location_pool, song_pool, song_rom_data)
         # If the user was a poor sap and selected chaos put DK rap for everything
         # Don't assign songs, the user must learn from their mistake
         else:
@@ -599,16 +614,17 @@ def randomize_music(settings: Settings):
                 open_songs = open_locations.copy()
             location_pool = open_locations + assigned_item_locations + shuffled_group_items.copy()
             song_pool = open_songs + assigned_items + shuffled_group_items.copy()
-            shuffle_music(music_data, location_pool, song_pool)
+            shuffle_music(settings, music_data, location_pool, song_pool, song_rom_data)
     return music_data
 
 
-def shuffle_music(music_data, pool_to_shuffle, shuffled_list):
+def shuffle_music(settings, music_data, pool_to_shuffle, shuffled_list, song_rom_data):
     """Shuffle the music pool based on the OG list and the shuffled list.
 
     Args:
         pool_to_shuffle (list): Original pool to shuffle.
         shuffled_list (list): Shuffled order list.
+        song_rom_data (dict): The original song data from the ROM.
     """
     uncompressed_data_table = js.pointer_addresses[26]["entries"][0]
     stored_song_data = {}
@@ -625,25 +641,36 @@ def shuffle_music(music_data, pool_to_shuffle, shuffled_list):
         new_bytes = ROM_COPY.readBytes(4)
         stored_song_sizes[song["index"]] = new_bytes
 
-    for song in pool_to_shuffle:
-        shuffled_song = shuffled_list[pool_to_shuffle.index(song)]
-        songs = stored_song_data[shuffled_song["index"]]
+    for song, shuffled_song in zip(pool_to_shuffle, shuffled_list):
+        # If we are inserting an assigned vanilla song, we should write the
+        # data from the stored ROM data we read earlier. In every other case,
+        # we will pull the data from whatever is currently stored in this
+        # song's slot in the ROM.
+        song_enum = Songs(song["index"])
+        originalIndex = song["index"]
+        shuffledIndex = shuffled_song["index"]
+        if song_enum in getAllAssignedVanillaSongs(settings):
+            songs = song_rom_data[shuffled_song["index"]]["data"]
+            song_name = song_rom_data[shuffled_song["index"]]["name"]
+            song_size = song_rom_data[shuffled_song["index"]]["size"]
+            song_memory = song_rom_data[shuffled_song["index"]]["memory"]
+        else:
+            songs = stored_song_data[shuffled_song["index"]]
+            song_name = song_idx_list[shuffledIndex].output_name
+            song_size = stored_song_sizes[shuffled_song["index"]]
+            song_memory = song_idx_list[shuffledIndex].memory
         ROM_COPY.seek(song["pointing_to"])
         ROM_COPY.writeBytes(songs)
         # Update the uncompressed data table to have our new size.
-        song_size = stored_song_sizes[shuffled_song["index"]]
         ROM_COPY.seek(uncompressed_data_table["pointing_to"] + (4 * song["index"]))
         ROM_COPY.writeBytes(song_size)
-        originalIndex = song["index"]
-        shuffledIndex = shuffled_song["index"]
-        memory = song_idx_list[shuffledIndex].memory
         ROM_COPY.seek(0x1FFF000 + 2 * originalIndex)
-        ROM_COPY.writeMultipleBytes(memory, 2)
+        ROM_COPY.writeMultipleBytes(song_memory, 2)
         if song_idx_list[originalIndex].type == SongType.BGM:
-            music_data["music_bgm_data"][song_idx_list[originalIndex].name] = song_idx_list[shuffledIndex].output_name
+            music_data["music_bgm_data"][song_idx_list[originalIndex].name] = song_name
         elif song_idx_list[originalIndex].type == SongType.MajorItem:
-            music_data["music_majoritem_data"][song_idx_list[originalIndex].name] = song_idx_list[shuffledIndex].output_name
+            music_data["music_majoritem_data"][song_idx_list[originalIndex].name] = song_name
         elif song_idx_list[originalIndex].type == SongType.MinorItem:
-            music_data["music_minoritem_data"][song_idx_list[originalIndex].name] = song_idx_list[shuffledIndex].output_name
+            music_data["music_minoritem_data"][song_idx_list[originalIndex].name] = song_name
         elif song_idx_list[originalIndex].type == SongType.Event:
-            music_data["music_event_data"][song_idx_list[originalIndex].name] = song_idx_list[shuffledIndex].output_name
+            music_data["music_event_data"][song_idx_list[originalIndex].name] = song_name

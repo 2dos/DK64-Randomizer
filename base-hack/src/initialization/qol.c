@@ -471,9 +471,6 @@ void initNonControllableFixes(void) {
     *(int*)(0x806FF988) = asm_code;
     *(int*)(0x806FF9D0) = asm_code;
     *(int*)(0x806FFA18) = asm_code;
-    // Change Sniper Crosshair color
-    *(short*)(0x806FFA92) = 0xFFD7;
-    *(short*)(0x806FFA96) = 0x00FF;
 
     *(int*)(0x806A7564) = 0xC4440080; // Crown default floor will be it's initial Y spawn position. Fixes a crash on N64
     writeFunction(0x806F56E0, &getFlagIndex_Corrected); // BP Acquisition - Correct for character

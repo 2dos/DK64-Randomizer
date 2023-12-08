@@ -3,7 +3,7 @@
 import os
 
 import PIL
-from PIL import Image, ImageDraw, ImageEnhance
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
 from BuildLib import hueShift
 
 pre = "../"
@@ -40,6 +40,19 @@ def maskImage(im_f, min_y, rgb: list):
                     base[channel] = int(mask[channel] * (base[channel] / 255))
                 pix[x, y] = (base[0], base[1], base[2], base[3])
     return im_f
+
+
+def stroke(img: Image, stroke_color: tuple = (255, 255, 255), stroke_radius: int = 5) -> Image:
+    """Give an image an outline."""
+    rgba = tuple(list(stroke_color) + [255])
+    stroke_image = Image.new("RGBA", img.size, rgba)
+    img_alpha = img.getchannel(3).point(lambda x: 255 if x > 0 else 0)
+    stroke_alpha = img_alpha.filter(ImageFilter.MaxFilter(stroke_radius))
+    # optionally, smooth the result
+    stroke_alpha = stroke_alpha.filter(ImageFilter.SMOOTH)
+    stroke_image.putalpha(stroke_alpha)
+    output = Image.alpha_composite(stroke_image, img)
+    return output
 
 
 print("Composing complex images")
@@ -602,6 +615,9 @@ warp_right.save(f"{disp_dir}warp_right.png")
 for x in range(2):
     rim_ims[x].save(f"{disp_dir}warp_rim_{x}.png")
 
+# Gun Crosshair
+crosshair_im = Image.open(f"{hash_dir}gun_crosshair.png")
+stroke(crosshair_im, (0, 0, 0)).save(f"{disp_dir}crosshair.png")
 
 rmve = [
     "01234.png",
@@ -634,6 +650,7 @@ rmve = [
     "warp_rim_1.png",
     "warp_top_0.png",
     "warp_top_1.png",
+    "gun_crosshair.png",
 ]
 for kong in kongs:
     for x in range(2):

@@ -548,16 +548,20 @@ def disable_colors(evt):
     disabled = False
     if js.document.getElementById("random_colors").checked:
         disabled = True
-    for i in ["dk", "diddy", "tiny", "lanky", "chunky", "rambi", "enguarde"]:
-        color = js.document.getElementById(f"{i}_colors")
-        try:
-            if disabled:
-                color.setAttribute("disabled", "disabled")
-            else:
-                color.removeAttribute("disabled")
-        except AttributeError:
-            pass
-    hide_rgb(None)
+    KONG_ZONES = {"DK": ["Fur", "Tie"], "Diddy": ["Clothes"], "Lanky": ["Clothes", "Fur"], "Tiny": ["Clothes", "Hair"], "Chunky": ["Main", "Other"], "Rambi": ["Skin"], "Enguarde": ["Skin"]}
+    for kong in KONG_ZONES:
+        for zone in KONG_ZONES[kong]:
+            color = js.document.getElementById(f"{kong.lower()}_{zone.lower()}_colors")
+            picker = js.document.getElementById(f"{kong.lower()}_{zone.lower()}_custom_color")
+            try:
+                if disabled:
+                    color.setAttribute("disabled", "disabled")
+                    picker.setAttribute("disabled", "disabled")
+                else:
+                    color.removeAttribute("disabled")
+                    picker.removeAttribute("disabled")
+            except AttributeError:
+                pass
 
 
 @bind("click", "enable_tag_anywhere")
@@ -1120,29 +1124,6 @@ def plando_disable_starting_moves(evt):
         move = PlandoItems[dropdown.value]
         if move in selectedPlandoMoves:
             dropdown.value = ""
-
-
-@bind("change", "dk_colors")
-@bind("change", "diddy_colors")
-@bind("change", "lanky_colors")
-@bind("change", "tiny_colors")
-@bind("change", "chunky_colors")
-@bind("change", "rambi_colors")
-@bind("change", "enguarde_colors")
-def hide_rgb(event):
-    """Show RGB Selector if Custom Color is selected."""
-    for i in ["dk", "diddy", "lanky", "tiny", "chunky", "rambi", "enguarde"]:
-        hidden = True
-        color = js.document.getElementById(f"{i}_custom")
-        if js.document.getElementById(f"{i}_colors").value == "custom":
-            hidden = False
-        try:
-            if hidden or js.document.getElementById("random_colors").checked:
-                color.style.display = "none"
-            else:
-                color.style = ""
-        except AttributeError:
-            pass
 
 
 @bind("click", "random_medal_requirement")

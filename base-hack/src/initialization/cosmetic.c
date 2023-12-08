@@ -317,6 +317,26 @@ int determineShockwaveColor(actorData* shockwave) {
     return model;
 }
 
+void writeRGBColor(int value, short* upper_address, short* lower_address) {
+    int upper = value >> 8;
+    int lower = ((value & 0xFF) << 8) | 0xFF;
+    *upper_address = upper;
+    *lower_address = lower;
+}
+
+typedef struct crosshair_colors {
+    /* 0x000 */ int regular;
+    /* 0x004 */ int homing;
+    /* 0x008 */ int sniper;
+} crosshair_colors;
+
+static const crosshair_colors crosshairs[4] = {
+    {.regular=0xC80000, .homing=0x00C800, .sniper=0xFFD700},
+    {.regular=0x0072FF, .homing=0xFFFFFF, .sniper=0xFDE400},
+    {.regular=0x318DFF, .homing=0xFFFFFF, .sniper=0xE3A900},
+    {.regular=0xC72020, .homing=0xFFFFFF, .sniper=0x13C4D8},
+};
+
 void initColorblindChanges(void) {
     if (Rando.colorblind_mode != COLORBLIND_OFF) {
         writeFunction(0x8069E968, &determineShockwaveColor); // Shockwave handler
@@ -324,6 +344,15 @@ void initColorblindChanges(void) {
         *(int*)(0x8069E9B0) = 0; // Prevent write
         *(int*)(0x8069E9B4) = 0; // Prevent write
         *(int*)(0x8069E9BC) = 0; // Prevent write
+    }
+    crosshair_colors* hair = (crosshair_colors*)&crosshairs[(int)Rando.colorblind_mode];
+    if (hair) {
+        // Gun (Sniper) function
+        writeRGBColor(hair->sniper, (short*)0x806FFA92, (short*)0x806FFA96);
+        writeRGBColor(hair->homing, (short*)0x806FFA76, (short*)0x806FFA7A);
+        // Gun (No Sniper) function
+        writeRGBColor(hair->regular, (short*)0x806FF0C6, (short*)0x806FF0CA);
+        writeRGBColor(hair->homing, (short*)0x806FF0AA, (short*)0x806FF0AE);
     }
 }
 
