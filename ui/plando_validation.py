@@ -210,9 +210,9 @@ def hint_text_validation_fn(hintString: str) -> str:
     if len(trimmedHintString) > 123:
         errString = "Hints can be a maximum of 123 characters (excluding color tags)."
         return errString
-    
+
     # Ensure that the color tags are correctly utilized.
-    tagRegex = r'\[\/?(?:orange|red|blue|purple|lightgreen|magenta|cyan|rust|paleblue|green)\]'
+    tagRegex = r"\[\/?(?:orange|red|blue|purple|lightgreen|magenta|cyan|rust|paleblue|green)\]"
     tags = re.finditer(tagRegex, hintString)
     currentTag = None
     for tag in tags:
