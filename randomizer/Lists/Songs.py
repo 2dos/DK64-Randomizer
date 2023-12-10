@@ -608,27 +608,33 @@ for item in ExclSongsItems:
 # This dict determines all of the dropdowns for selecting music, and how they
 # will be grouped together.
 MusicSelectionPanel = {
-    "BGM": {"name": "BGM", "subcategories": {
-        "Isles": {"name": "DK Isles", "type": "BGM", "songs": []},
-        "Japes": {"name": "Jungle Japes", "type": "BGM", "songs": []},
-        "Aztec": {"name": "Angry Aztec", "type": "BGM", "songs": []},
-        "Factory": {"name": "Frantic Factory", "type": "BGM", "songs": []},
-        "Galleon": {"name": "Gloomy Galleon", "type": "BGM", "songs": []},
-        "Forest": {"name": "Fungi Forest", "type": "BGM", "songs": []},
-        "Caves": {"name": "Crystal Caves", "type": "BGM", "songs": []},
-        "Castle": {"name": "Creepy Castle", "type": "BGM", "songs": []},
-        "Helm": {"name": "Hideout Helm", "type": "BGM", "songs": []},
-        "NPC": {"name": "NPCs", "type": "BGM", "songs": []},
-        "Moves": {"name": "Moves and Animals", "type": "BGM", "songs": []},
-        "Battle": {"name": "Battles", "type": "BGM", "songs": []},
-        "Story": {"name": "Menus and Story", "type": "BGM", "songs": []},
-        "Minigame": {"name": "Minigames", "type": "BGM", "songs": []},
-    }},
-    "ItemsEvents": {"name": "Items and Events", "subcategories": {
-        "MajorItem": {"name": "Major Items", "type": "MajorItem", "songs": []},
-        "MinorItem": {"name": "Minor Items", "type": "MinorItem", "songs": []},
-        "Event": {"name": "Events", "type": "Event", "songs": []},
-    }},
+    "BGM": {
+        "name": "BGM",
+        "subcategories": {
+            "Isles": {"name": "DK Isles", "type": "BGM", "songs": []},
+            "Japes": {"name": "Jungle Japes", "type": "BGM", "songs": []},
+            "Aztec": {"name": "Angry Aztec", "type": "BGM", "songs": []},
+            "Factory": {"name": "Frantic Factory", "type": "BGM", "songs": []},
+            "Galleon": {"name": "Gloomy Galleon", "type": "BGM", "songs": []},
+            "Forest": {"name": "Fungi Forest", "type": "BGM", "songs": []},
+            "Caves": {"name": "Crystal Caves", "type": "BGM", "songs": []},
+            "Castle": {"name": "Creepy Castle", "type": "BGM", "songs": []},
+            "Helm": {"name": "Hideout Helm", "type": "BGM", "songs": []},
+            "NPC": {"name": "NPCs", "type": "BGM", "songs": []},
+            "Moves": {"name": "Moves and Animals", "type": "BGM", "songs": []},
+            "Battle": {"name": "Battles", "type": "BGM", "songs": []},
+            "Story": {"name": "Menus and Story", "type": "BGM", "songs": []},
+            "Minigame": {"name": "Minigames", "type": "BGM", "songs": []},
+        },
+    },
+    "ItemsEvents": {
+        "name": "Items and Events",
+        "subcategories": {
+            "MajorItem": {"name": "Major Items", "type": "MajorItem", "songs": []},
+            "MinorItem": {"name": "Minor Items", "type": "MinorItem", "songs": []},
+            "Event": {"name": "Events", "type": "Event", "songs": []},
+        },
+    },
 }
 
 bgmCategoryMap = {

@@ -1422,7 +1422,8 @@ musicToggles = [category.replace(" ", "") for category in MusicSelectionPanel.ke
 
 @bind("click", "settings_table_collapse_toggle")
 @bindList("click", musicToggles, suffix="_collapse_toggle")
-def toggle_settings_table(evt):
+def toggle_collapsible_container(evt):
+    """Show or hide a collapsible container."""
     targetElement = evt.target
     if "collapse_toggle" not in targetElement.id:
         # Get the parent of this element.
