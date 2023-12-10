@@ -340,8 +340,33 @@ select:disabled option:checked {
   border: 1px solid #ced4da;
 }
 
+.hidden-input {
+  width: 0px;
+  height: 0px;
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+}
+
+.color-input-container {
+  width: 35px;
+  height: auto;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  overflow: hidden;
+  border: 1px solid white;
+}
+
+.color-input {
+  padding: 0px;
+  margin: -1px;
+  margin-left: -1px;
+  width: 35px;
+  height: calc(100% + 2px);
+}
+
 .color-selector {
-  min-height:200px;
+  min-height:100px;
 }
 
 .multi-select {
@@ -456,8 +481,8 @@ i {
   text-align: center;
   margin: 0px 20px;
   flex: 1 0 30%;
-  min-width: 125px;
-  max-width: 130px;
+  min-width: 220px;
+  max-width: 220px;
 }
 
 .item-link {

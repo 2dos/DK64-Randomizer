@@ -4,6 +4,7 @@ import math
 
 import js
 from randomizer.Patching.Patcher import ROM
+from randomizer.Patching.Lib import PaletteFillType
 
 
 def convertRGBAToBytearray(rgba_lst):
@@ -19,14 +20,14 @@ def convertColors(color_palettes):
     for palette in color_palettes:
         for zone in palette["zones"]:
             rgba_list = []
-            if zone["fill_type"] == "checkered" or zone["fill_type"] == "radial":
+            if zone["fill_type"] in (PaletteFillType.checkered, PaletteFillType.radial):
                 lim = 2
             else:
                 lim = 1
             for x in range(lim):
                 rgba = [0, 0, 0, 1]
                 for i in range(3):
-                    if zone["fill_type"] == "radial":
+                    if zone["fill_type"] == PaletteFillType.radial:
                         val = int(int(f"0x{zone['colors'][0][(2*i)+1:(2*i)+3]}", 16) * (1 / 8))
                         if x == 1:
                             val = int(val * 2)
@@ -39,11 +40,11 @@ def convertColors(color_palettes):
                     rgba[i] = val
                 rgba_list.append(rgba)
             bytes_array = []
-            if zone["fill_type"] in ("block", "kong"):
+            if zone["fill_type"] in (PaletteFillType.block, PaletteFillType.kong):
                 ext = convertRGBAToBytearray(rgba_list[0])
                 for x in range(32 * 32):
                     bytes_array.extend(ext)
-            elif zone["fill_type"] == "radial":
+            elif zone["fill_type"] == PaletteFillType.radial:
                 cen_x = 15.5
                 cen_y = 15.5
                 max_dist = (cen_x * cen_x) + (cen_y * cen_y)
@@ -66,7 +67,7 @@ def convertColors(color_palettes):
                             prop[i] = val
                         ext = convertRGBAToBytearray(prop)
                         bytes_array.extend(ext)
-            elif zone["fill_type"] == "checkered":
+            elif zone["fill_type"] == PaletteFillType.checkered:
                 for size_mult in range(3):
                     dim_s = int(32 / math.pow(2, size_mult))
                     pol_s = int(dim_s / 8)
@@ -92,7 +93,7 @@ def convertColors(color_palettes):
                 for i in range(3):
                     ext = convertRGBAToBytearray([0, 0, 0, 0])
                     bytes_array.extend(ext)
-            elif zone["fill_type"] == "patch":
+            elif zone["fill_type"] == PaletteFillType.patch:
                 for size_mult in range(3):
                     patch_start_x = int(6 / math.pow(2, size_mult))
                     patch_start_y = int(8 / math.pow(2, size_mult))
@@ -137,7 +138,7 @@ def convertColors(color_palettes):
                 for i in range(3):
                     ext = convertRGBAToBytearray([0, 0, 0, 0])
                     bytes_array.extend(ext)
-            elif zone["fill_type"] == "sparkle":
+            elif zone["fill_type"] == PaletteFillType.sparkle:
                 dim_rgba = []
                 for channel_index, channel in enumerate(rgba_list[0]):
                     if channel_index == 3:

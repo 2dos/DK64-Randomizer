@@ -19,7 +19,15 @@ color_palettes = [
         ],
     },  # 2da1ad
     {"kong": "diddy", "zones": [{"zone": "cap_shirt", "image": 3686, "colors": ["#00ff37"], "fill_type": "block"}]},
-    {"kong": "lanky", "zones": [{"zone": "overalls", "image": 3689, "colors": ["#3e1c73"], "fill_type": "block"}, {"zone": "patch", "image": 3734, "colors": ["#3e1c73"], "fill_type": "patch"}]},
+    {
+        "kong": "lanky",
+        "zones": [
+            {"zone": "overalls", "image": 3689, "colors": ["#3e1c73"], "fill_type": "block"},
+            {"zone": "patch", "image": 3734, "colors": ["#3e1c73"], "fill_type": "patch"},
+            {"zone": "fur", "image": 0xE9A, "colors": ["#34EB49"], "fill_type": "block"},
+            {"zone": "fur", "image": 0xE94, "colors": ["#34EB49"], "fill_type": "block"},
+        ],
+    },
     {
         "kong": "tiny",
         "zones": [

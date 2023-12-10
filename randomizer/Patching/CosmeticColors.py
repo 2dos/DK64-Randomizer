@@ -6,6 +6,7 @@ import random
 import zlib
 from random import randint
 from typing import TYPE_CHECKING, List, Tuple
+from enum import IntEnum, auto
 
 from PIL import Image, ImageDraw, ImageEnhance
 
@@ -13,7 +14,7 @@ import js
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorItem, KlaptrapModel
 from randomizer.Patching.generate_kong_color_images import convertColors
-from randomizer.Patching.Lib import TextureFormat, float_to_hex, getObjectAddress, int_to_list, intf_to_float
+from randomizer.Patching.Lib import TextureFormat, float_to_hex, getObjectAddress, int_to_list, intf_to_float, PaletteFillType
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
 
@@ -189,7 +190,48 @@ panic_models = [
 ]
 
 
-def apply_cosmetic_colors(settings):
+class KongPalette:
+    """Class to store information regarding a kong palette."""
+
+    def __init__(self, name: str, image: int, fill_type: PaletteFillType, alt_name: str = None):
+        """Initialize with given parameters."""
+        self.name = name
+        self.image = image
+        self.fill_type = fill_type
+        self.alt_name = alt_name
+        if alt_name is None:
+            self.alt_name = name
+
+
+class KongPaletteSetting:
+    """Class to store information regarding the kong palette setting."""
+
+    def __init__(self, kong: str, kong_index: int, palettes: list[KongPalette]):
+        """Initialize with given parameters."""
+        self.kong = kong
+        self.kong_index = kong_index
+        self.palettes = palettes.copy()
+        self.setting_kong = kong
+
+
+def getKongColor(settings: Settings, index: int):
+    """Get color index for a kong."""
+    kong_colors = ["#ffd700", "#ff0000", "#1699ff", "#B045ff", "#41ff25"]
+    mode = settings.colorblind_mode
+    if mode != ColorblindMode.off and settings.override_cosmetics:
+        if mode == ColorblindMode.prot:
+            kong_colors = ["#FDE400", "#0072FF", "#766D5A", "#FFFFFF", "#000000"]
+        elif mode == ColorblindMode.deut:
+            kong_colors = ["#E3A900", "#318DFF", "#7F6D59", "#FFFFFF", "#000000"]
+        elif mode == ColorblindMode.trit:
+            kong_colors = ["#FFA4A4", "#C72020", "#13C4D8", "#FFFFFF", "#000000"]
+    return kong_colors[index]
+
+
+DEFAULT_COLOR = "#000000"
+
+
+def apply_cosmetic_colors(settings: Settings):
     """Apply cosmetic skins to kongs."""
     model_index = 0
     sav = settings.rom_data
@@ -265,142 +307,138 @@ def apply_cosmetic_colors(settings):
     color_obj = {}
     colors_dict = {}
     kong_settings = [
-        {"kong": "dk", "palettes": [{"name": "base", "image": 3724, "fill_type": "block"}], "base_setting": "dk_colors", "custom_setting": "dk_custom_color", "kong_index": 0},
-        {"kong": "diddy", "palettes": [{"name": "cap_shirt", "image": 3686, "fill_type": "block"}], "base_setting": "diddy_colors", "custom_setting": "diddy_custom_color", "kong_index": 1},
-        {
-            "kong": "lanky",
-            "palettes": [{"name": "overalls", "image": 3689, "fill_type": "block"}, {"name": "patch", "image": 3734, "fill_type": "patch"}],
-            "base_setting": "lanky_colors",
-            "custom_setting": "lanky_custom_color",
-            "kong_index": 2,
-        },
-        {"kong": "tiny", "palettes": [{"name": "overalls", "image": 6014, "fill_type": "block"}], "base_setting": "tiny_colors", "custom_setting": "tiny_custom_color", "kong_index": 3},
-        {
-            "kong": "chunky",
-            "palettes": [{"name": "shirt_back", "image": 3769, "fill_type": "checkered"}, {"name": "shirt_front", "image": 3687, "fill_type": "block"}],
-            "base_setting": "chunky_colors",
-            "custom_setting": "chunky_custom_color",
-            "kong_index": 4,
-        },
-        {
-            "kong": "disco_chunky",
-            "palettes": [{"name": "shirt", "image": 3777, "fill_type": "sparkle"}, {"name": "gloves", "image": 3778, "fill_type": "sparkle"}],
-            "base_setting": "chunky_colors",
-            "custom_setting": "chunky_custom_color",
-            "kong_index": 4,
-        },
-        {"kong": "rambi", "palettes": [{"name": "base", "image": 3826, "fill_type": "block"}], "base_setting": "rambi_colors", "custom_setting": "rambi_custom_color", "kong_index": 5},
-        {"kong": "enguarde", "palettes": [{"name": "base", "image": 3847, "fill_type": "block"}], "base_setting": "enguarde_colors", "custom_setting": "enguarde_custom_color", "kong_index": 6},
+        KongPaletteSetting(
+            "dk",
+            0,
+            [
+                KongPalette("fur", 3724, PaletteFillType.block),
+                KongPalette("tie", 0x177D, PaletteFillType.block),
+                KongPalette("tie", 0xE8D, PaletteFillType.patch),
+            ],
+        ),
+        KongPaletteSetting(
+            "diddy",
+            1,
+            [
+                KongPalette("clothes", 3686, PaletteFillType.block),
+            ],
+        ),
+        KongPaletteSetting(
+            "lanky",
+            2,
+            [
+                KongPalette("clothes", 3689, PaletteFillType.block),
+                KongPalette("clothes", 3734, PaletteFillType.patch),
+                KongPalette("fur", 0xE9A, PaletteFillType.block),
+                KongPalette("fur", 0xE94, PaletteFillType.block),
+            ],
+        ),
+        KongPaletteSetting(
+            "tiny",
+            3,
+            [
+                KongPalette("clothes", 6014, PaletteFillType.block),
+                KongPalette("hair", 0xE68, PaletteFillType.block),
+            ],
+        ),
+        KongPaletteSetting(
+            "chunky",
+            4,
+            [
+                KongPalette("main", 3769, PaletteFillType.checkered, "other"),
+                KongPalette("main", 3687, PaletteFillType.block),
+            ],
+        ),
+        KongPaletteSetting(
+            "rambi",
+            5,
+            [
+                KongPalette("skin", 3826, PaletteFillType.block),
+            ],
+        ),
+        KongPaletteSetting(
+            "enguarde",
+            6,
+            [
+                KongPalette("skin", 3847, PaletteFillType.block),
+            ],
+        ),
     ]
+
+    KONG_ZONES = {"DK": ["Fur", "Tie"], "Diddy": ["Clothes"], "Lanky": ["Clothes", "Fur"], "Tiny": ["Clothes", "Hair"], "Chunky": ["Main", "Other"], "Rambi": ["Skin"], "Enguarde": ["Skin"]}
 
     if js.document.getElementById("override_cosmetics").checked or True:
         if js.document.getElementById("random_colors").checked:
-            settings.dk_colors = CharacterColors.randomized
-            settings.diddy_colors = CharacterColors.randomized
-            settings.lanky_colors = CharacterColors.randomized
-            settings.tiny_colors = CharacterColors.randomized
-            settings.chunky_colors = CharacterColors.randomized
-            settings.rambi_colors = CharacterColors.randomized
-            settings.enguarde_colors = CharacterColors.randomized
+            for kong in KONG_ZONES:
+                for zone in KONG_ZONES[kong]:
+                    settings.__setattr__(f"{kong.lower()}_{zone.lower()}_colors", CharacterColors.randomized)
         else:
-            settings.dk_colors = CharacterColors[js.document.getElementById("dk_colors").value]
-            settings.dk_custom_color = js.document.getElementById("dk_custom_color").value
-            settings.diddy_colors = CharacterColors[js.document.getElementById("diddy_colors").value]
-            settings.diddy_custom_color = js.document.getElementById("diddy_custom_color").value
-            settings.lanky_colors = CharacterColors[js.document.getElementById("lanky_colors").value]
-            settings.lanky_custom_color = js.document.getElementById("lanky_custom_color").value
-            settings.tiny_colors = CharacterColors[js.document.getElementById("tiny_colors").value]
-            settings.tiny_custom_color = js.document.getElementById("tiny_custom_color").value
-            settings.chunky_colors = CharacterColors[js.document.getElementById("chunky_colors").value]
-            settings.chunky_custom_color = js.document.getElementById("chunky_custom_color").value
-            settings.rambi_colors = CharacterColors[js.document.getElementById("rambi_colors").value]
-            settings.rambi_custom_color = js.document.getElementById("rambi_custom_color").value
-            settings.enguarde_colors = CharacterColors[js.document.getElementById("enguarde_colors").value]
-            settings.enguarde_custom_color = js.document.getElementById("enguarde_custom_color").value
+            for kong in KONG_ZONES:
+                for zone in KONG_ZONES[kong]:
+                    settings.__setattr__(f"{kong.lower()}_{zone.lower()}_colors", CharacterColors[js.document.getElementById(f"{kong.lower()}_{zone.lower()}_colors").value])
+                    settings.__setattr__(f"{kong.lower()}_{zone.lower()}_custom_color", js.document.getElementById(f"{kong.lower()}_{zone.lower()}_custom_color").value)
     else:
         if settings.random_colors:
-            settings.dk_colors = CharacterColors.randomized
-            settings.diddy_colors = CharacterColors.randomized
-            settings.lanky_colors = CharacterColors.randomized
-            settings.tiny_colors = CharacterColors.randomized
-            settings.chunky_colors = CharacterColors.randomized
-            settings.rambi_colors = CharacterColors.randomized
-            settings.enguarde_colors = CharacterColors.randomized
+            for kong in KONG_ZONES:
+                for zone in KONG_ZONES[kong]:
+                    settings.__setattr__(f"{kong.lower()}_{zone.lower()}_colors", CharacterColors.randomized)
 
-    colors_dict = {
-        "dk_colors": settings.dk_colors,
-        "dk_custom_color": settings.dk_custom_color,
-        "diddy_colors": settings.diddy_colors,
-        "diddy_custom_color": settings.diddy_custom_color,
-        "lanky_colors": settings.lanky_colors,
-        "lanky_custom_color": settings.lanky_custom_color,
-        "tiny_colors": settings.tiny_colors,
-        "tiny_custom_color": settings.tiny_custom_color,
-        "chunky_colors": settings.chunky_colors,
-        "chunky_custom_color": settings.chunky_custom_color,
-        "rambi_colors": settings.rambi_colors,
-        "rambi_custom_color": settings.rambi_custom_color,
-        "enguarde_colors": settings.enguarde_colors,
-        "enguarde_custom_color": settings.enguarde_custom_color,
-    }
+    colors_dict = {}
+    for kong in KONG_ZONES:
+        for zone in KONG_ZONES[kong]:
+            colors_dict[f"{kong.lower()}_{zone.lower()}_colors"] = settings.__getattribute__(f"{kong.lower()}_{zone.lower()}_colors")
+            colors_dict[f"{kong.lower()}_{zone.lower()}_custom_color"] = settings.__getattribute__(f"{kong.lower()}_{zone.lower()}_custom_color")
     for kong in kong_settings:
-        process = True
-        if kong["kong_index"] == 4:  # Chunky
-            is_disco = settings.disco_chunky
-            if settings.krusha_kong == Kongs.chunky:
-                is_disco = False
-            if is_disco and kong["kong"] == "chunky":
-                process = False
-            elif not is_disco and kong["kong"] == "disco_chunky":
-                process = False
+        if kong.kong_index == 4:
+            if settings.disco_chunky:
+                kong.palettes = [
+                    KongPalette("main", 3777, PaletteFillType.sparkle),
+                    KongPalette("other", 3778, PaletteFillType.sparkle),
+                ]
         is_krusha = False
         if settings.krusha_kong is not None:
-            if settings.krusha_kong == kong["kong_index"]:
+            if settings.krusha_kong == kong.kong_index:
                 is_krusha = True
-                kong["palettes"] = [{"name": "krusha_skin", "image": 4971, "fill_type": "block"}, {"name": "krusha_indicator", "image": 4966, "fill_type": "kong"}]
-                process = True
-        if process:
-            base_obj = {"kong": kong["kong"], "zones": []}
-            for palette in kong["palettes"]:
-                arr = ["#000000"]
-                if palette["fill_type"] == "checkered":
-                    arr = ["#000000", "#000000"]
-                elif palette["fill_type"] == "kong":
-                    kong_colors = ["#ffd700", "#ff0000", "#1699ff", "#B045ff", "#41ff25"]
-                    mode = settings.colorblind_mode
-                    if mode != ColorblindMode.off and settings.override_cosmetics:
-                        if mode == ColorblindMode.prot:
-                            kong_colors = ["#FDE400", "#0072FF", "#766D5A", "#FFFFFF", "#000000"]
-                        elif mode == ColorblindMode.deut:
-                            kong_colors = ["#E3A900", "#318DFF", "#7F6D59", "#FFFFFF", "#000000"]
-                        elif mode == ColorblindMode.trit:
-                            kong_colors = ["#FFA4A4", "#C72020", "#13C4D8", "#FFFFFF", "#000000"]
-                    arr = [kong_colors[kong["kong_index"]]]
-                base_obj["zones"].append({"zone": palette["name"], "image": palette["image"], "fill_type": palette["fill_type"], "colors": arr})
-            if settings.override_cosmetics and colors_dict[kong["base_setting"]] != CharacterColors.vanilla:
-                if colors_dict[kong["base_setting"]] == CharacterColors.randomized:
-                    color = f"#{format(randint(0, 0xFFFFFF), '06x')}"
-                else:
-                    color = colors_dict[kong["custom_setting"]]
-                    if not color:
-                        color = "#000000"
-                base_obj["zones"][0]["colors"][0] = color
-                if kong["kong_index"] in (2, 4) and not is_krusha:
-                    base_obj["zones"][1]["colors"][0] = color
-                    if kong["kong_index"] == 4:
-                        red = int(f"0x{color[1:3]}", 16)
-                        green = int(f"0x{color[3:5]}", 16)
-                        blue = int(f"0x{color[5:7]}", 16)
-                        opp_color = f"#{format(255-red,'02x')}{format(255-green,'02x')}{format(255-blue,'02x')}"
-                        if settings.disco_chunky:
-                            base_obj["zones"][1]["colors"][0] = opp_color
-                        else:
-                            base_obj["zones"][0]["colors"][1] = opp_color
-                color_palettes.append(base_obj)
-                color_obj[f"{kong['kong']}"] = color
-            elif is_krusha:
-                del base_obj["zones"][0]
-                color_palettes.append(base_obj)
+                base_setting = kong.palettes[0].name
+                kong.palettes = [
+                    KongPalette(base_setting, 4971, PaletteFillType.block),
+                    KongPalette(base_setting, 4966, PaletteFillType.kong),
+                ]
+        base_obj = {"kong": kong.kong, "zones": []}
+        for palette in kong.palettes:
+            arr = [DEFAULT_COLOR]
+            if palette.fill_type == PaletteFillType.checkered:
+                arr = ["#FFFF00", "#00FF00"]
+            elif palette.fill_type == PaletteFillType.kong:
+                arr = [getKongColor(settings, kong.kong_index)]
+            zone_data = {
+                "zone": palette.name,
+                "image": palette.image,
+                "fill_type": palette.fill_type,
+                "colors": arr,
+            }
+            for index in range(len(arr)):
+                base_setting = f"{kong.kong}_{palette.name}_colors"
+                custom_setting = f"{kong.kong}_{palette.name}_custom_color"
+                if index == 1:  # IS THE CHECKERED PATTERN
+                    base_setting = f"{kong.kong}_{palette.alt_name}_colors"
+                    custom_setting = f"{kong.kong}_{palette.alt_name}_custom_color"
+                if settings.override_cosmetics and (colors_dict[base_setting] != CharacterColors.vanilla or (is_krusha and palette.fill_type == PaletteFillType.kong)):
+                    color = None
+                    if colors_dict[base_setting] == CharacterColors.randomized:
+                        color = f"#{format(randint(0, 0xFFFFFF), '06x')}"
+                    elif palette.fill_type != PaletteFillType.kong:
+                        color = colors_dict[custom_setting]
+                        if not color:
+                            color = DEFAULT_COLOR
+                    else:
+                        color = getKongColor(settings, kong.kong_index)
+                    if color is not None:
+                        zone_data["colors"][index] = color
+                        base_obj["zones"].append(zone_data)
+                        color_palettes.append(base_obj)
+                        color_obj[f"{kong.kong} {palette.name}"] = color
+    print(color_palettes)
     settings.colors = color_obj
     if len(color_palettes) > 0:
         convertColors(color_palettes)
@@ -1971,20 +2009,22 @@ def applyHolidayMode(settings):
                 ROM().seek(js.pointer_addresses[25]["entries"][img]["pointing_to"])
                 ROM().writeBytes(px_data)
             # Change DK's Tie and Tiny's Hair
-            tie_hang = [0xFF] * 0xAB8
-            tie_hang_data = gzip.compress(bytearray(tie_hang), compresslevel=9)
-            ROM().seek(js.pointer_addresses[25]["entries"][0xE8D]["pointing_to"])
-            ROM().writeBytes(tie_hang_data)
-            tie_loop = [0xFF] * (32 * 32 * 2)
-            tie_loop_data = gzip.compress(bytearray(tie_loop), compresslevel=9)
-            ROM().seek(js.pointer_addresses[25]["entries"][0x177D]["pointing_to"])
-            ROM().writeBytes(tie_loop_data)
-            tiny_hair = []
-            for x in range(32 * 32):
-                tiny_hair.extend([0xF8, 0x01])
-            tiny_hair_data = gzip.compress(bytearray(tiny_hair), compresslevel=9)
-            ROM().seek(js.pointer_addresses[25]["entries"][0xE68]["pointing_to"])
-            ROM().writeBytes(tiny_hair_data)
+            if settings.dk_tie_colors != CharacterColors.custom:
+                tie_hang = [0xFF] * 0xAB8
+                tie_hang_data = gzip.compress(bytearray(tie_hang), compresslevel=9)
+                ROM().seek(js.pointer_addresses[25]["entries"][0xE8D]["pointing_to"])
+                ROM().writeBytes(tie_hang_data)
+                tie_loop = [0xFF] * (32 * 32 * 2)
+                tie_loop_data = gzip.compress(bytearray(tie_loop), compresslevel=9)
+                ROM().seek(js.pointer_addresses[25]["entries"][0x177D]["pointing_to"])
+                ROM().writeBytes(tie_loop_data)
+            if settings.tiny_hair_colors != CharacterColors.custom:
+                tiny_hair = []
+                for x in range(32 * 32):
+                    tiny_hair.extend([0xF8, 0x01])
+                tiny_hair_data = gzip.compress(bytearray(tiny_hair), compresslevel=9)
+                ROM().seek(js.pointer_addresses[25]["entries"][0xE68]["pointing_to"])
+                ROM().writeBytes(tiny_hair_data)
 
         elif HOLIDAY == "halloween":
             ROM().seek(settings.rom_data + 0xDB)

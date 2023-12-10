@@ -51,6 +51,7 @@ echo Building Symbols File [32mDONE[0m (%runtime%)
 rmdir /s /q .\obj > NUL
 
 call :runscript "Align ROM File Size", "build\correct_file_size.py"
+call :runscript "Assessing Function Sizes", "build/assess_rom.py"
 
 if %test_on% == --test (
 	echo Applying test variables >> rom/build.log

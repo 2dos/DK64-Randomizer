@@ -99,15 +99,72 @@ static const short tnsportal_flags[] = {
 	FLAG_PORTAL_CASTLE,
 };
 
-#define SPRITE_ALPHA_IN 8
-#define SPRITE_ALPHA_OUT 44
+#define SPRITE_ALPHA_OUT 8
+#define SPRITE_ALPHA_IN 44
 #define SPRITE_ALPHA_END 52
+
+static unsigned char ding_sprite_timer = 0;
+
+int hasEnoughCBs(void) {
+	int world = getWorld(CurrentMap, 1);
+	if (world < 7) {
+		int total_cbs = getTotalCBCount();
+		int req_cbs = TroffNScoffReqArray[world];
+		return total_cbs >= req_cbs;
+	}
+	return 0;
+}
+
+int shouldDing(void) {
+	int world = getWorld(CurrentMap, 1);
+	if (world < 7) {
+		int req_cbs = TroffNScoffReqArray[world];
+		if ((previous_total_cbs < req_cbs) && (hasEnoughCBs()) && (previous_world == world) && (CurrentMap != MAP_TROFFNSCOFF)) { // Ban in T&S because of delayed update to turn in array
+			if (!checkFlag(tnsportal_flags[world],FLAGTYPE_PERMANENT)) {
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
+int* renderDingSprite(int* dl) {
+	if (ding_sprite_timer == 0) {
+		return dl;
+	}
+	ding_sprite_timer -= 1;
+	int offset = 0;
+	if (ding_sprite_timer > SPRITE_ALPHA_IN) {
+		offset = ding_sprite_timer - SPRITE_ALPHA_IN;
+	} else if (ding_sprite_timer < SPRITE_ALPHA_OUT) {
+		offset = SPRITE_ALPHA_OUT - ding_sprite_timer;
+	}
+	float alpha = 0xFF;
+	if (!hasEnoughCBs()) {
+		alpha = 0x80;
+	}
+	alpha *= (SPRITE_ALPHA_OUT - offset);
+	alpha /= SPRITE_ALPHA_OUT;
+	int y = 825 + (offset * 5);
+	int alpha_i = alpha;
+	if (alpha_i > 255) {
+		alpha_i = 255;
+	} else if (alpha_i < 0) {
+		return dl;
+	}
+	return drawImage(dl, 114, RGBA16, 48, 42, 900, y, 2.0f, 2.0f, alpha_i);
+}
+
+void initDingSprite(void) {
+	ding_sprite_timer = SPRITE_ALPHA_END;
+}
 
 void playCBDing(void) {
 	/**
 	 * @brief Play Bell Ding sound effect
 	 */
 	playSFX(Bell);
+	initDingSprite();
 }
 
 void CBDing(void) {
@@ -116,21 +173,11 @@ void CBDing(void) {
 	 */
 	if (Rando.quality_of_life.cb_indicator) {
 		int world = getWorld(CurrentMap, 1);
-		int total_cbs = 0;
-		if (world < 7) {
-			total_cbs = CBTurnedInArray[world];
-			for (int kong = 0; kong < 5; kong++) {
-				total_cbs += MovesBase[kong].cb_count[world];
-			}
-			int req_cbs = TroffNScoffReqArray[world];
-			if ((previous_total_cbs < req_cbs) && (total_cbs >= req_cbs) && (previous_world == world) && (CurrentMap != MAP_TROFFNSCOFF)) { // Ban in T&S because of delayed update to turn in array
-				if (!checkFlag(tnsportal_flags[world],FLAGTYPE_PERMANENT)) {
-					playCBDing();
-				}
-			}
+		if (shouldDing()) {
+			playCBDing();
 		}
 		previous_world = world;
-		previous_total_cbs = total_cbs;
+		previous_total_cbs = getTotalCBCount();
 	}
 }
 
@@ -215,13 +262,7 @@ void updateMultibunchCount(void) {
 	 * @brief Get the total amount of colored bananas for a level.
 	 * Used in the multibunch display
 	 */
-	int world = getWorld(CurrentMap,1);
-	int count = 0;
-	if (world < 7) {
-		for (int kong = 0; kong < 5; kong++) {
-			count += MovesBase[kong].cb_count[world] + MovesBase[kong].tns_cb_count[world];
-		}
-	}
+	int count = getTotalCBCount();
 	MultiBunchCount = count;
 	if (HUD) {
 		HUD->item[0xA].visual_item_count = count;

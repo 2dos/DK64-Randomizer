@@ -2339,14 +2339,45 @@ def AssociateHintsWithFlags(spoiler):
             spoiler.tied_hint_flags[hint.name] = hint.related_flag if hint.related_flag is not None else 0xFFFF
 
 
+def ApplyColorToPlandoHint(hint):
+    """Replace plandomizer color tags with the appropriate characters."""
+    new_hint = hint
+    color_replace_dict = {
+        "[orange]": "\x04",
+        "[/orange]": "\x04",
+        "[red]": "\x05",
+        "[/red]": "\x05",
+        "[blue]": "\x06",
+        "[/blue]": "\x06",
+        "[purple]": "\x07",
+        "[/purple]": "\x07",
+        "[lightgreen]": "\x08",
+        "[/lightgreen]": "\x08",
+        "[magenta]": "\x09",
+        "[/magenta]": "\x09",
+        "[cyan]": "\x0a",
+        "[/cyan]": "\x0a",
+        "[rust]": "\x0b",
+        "[/rust]": "\x0b",
+        "[paleblue]": "\x0c",
+        "[/paleblue]": "\x0c",
+        "[green]": "\x0d",
+        "[/green]": "\x0d",
+    }
+    for color_tag, color_character in color_replace_dict.items():
+        new_hint = new_hint.replace(color_tag, color_character)
+    return new_hint
+
+
 def ApplyPlandoHints(spoiler):
     """Apply plandomizer hint messages, returning the number of hints placed."""
     plando_hints_placed = 0
     for loc_id, message in spoiler.settings.plandomizer_dict["hints"].items():
         if message != "":
+            final_message = ApplyColorToPlandoHint(message)
             location = spoiler.LocationList[int(loc_id)]
             hint_location = [hint_loc for hint_loc in hints if hint_loc.level == location.level and hint_loc.kong == location.kong][0]  # Matches exactly one hint
-            UpdateHint(hint_location, message)
+            UpdateHint(hint_location, final_message)
             hint_location.hint_type = HintType.Plando
             plando_hints_placed += 1
     return plando_hints_placed
