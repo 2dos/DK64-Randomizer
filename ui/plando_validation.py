@@ -191,6 +191,64 @@ def shop_has_assigned_item(shopElement) -> bool:
     return shopElement.value and shopElement.value != "NoItem"
 
 
+########################
+# VALIDATION FUNCTIONS #
+########################
+
+
+def hint_text_validation_fn(hintString: str) -> str:
+    """Return an error if the element's hint contains invalid characters."""
+    colors = ["orange", "red", "blue", "purple", "lightgreen", "magenta", "cyan", "rust", "paleblue", "green"]
+    # Test the hint string without color tags.
+    trimmedHintString = hintString
+    for color in colors:
+        trimmedHintString = trimmedHintString.replace(f"[{color}]", "")
+        trimmedHintString = trimmedHintString.replace(f"[/{color}]", "")
+    if re.search("[^A-Za-z0-9 '\,\.\-\?!]", trimmedHintString) is not None:
+        errString = "Only letters, numbers, spaces, the characters ',.-?! and color tags are allowed in hints."
+        return errString
+    if len(trimmedHintString) > 123:
+        errString = "Hints can be a maximum of 123 characters (excluding color tags)."
+        return errString
+
+    # Ensure that the color tags are correctly utilized.
+    tagRegex = r"\[\/?(?:orange|red|blue|purple|lightgreen|magenta|cyan|rust|paleblue|green)\]"
+    tags = re.finditer(tagRegex, hintString)
+    currentTag = None
+    for tag in tags:
+        if currentTag is None:
+            # Is there a closing tag before an opening one?
+            if "/" in tag[0]:
+                errString = f"Closing color tag {tag[0]} has no opening tag."
+                return errString
+            currentTag = tag
+        else:
+            # Is the next tag a closing tag?
+            if "/" not in tag[0]:
+                errString = f"Color tag {tag[0]} overlaps color tag {currentTag[0]}."
+                return errString
+            # Do the two tags match in color?
+            currentTagColor = re.search("^\[\/?(.+)\]$", currentTag[0])[1]
+            newTagColor = re.search("^\[\/?(.+)\]$", tag[0])[1]
+            if currentTagColor != newTagColor:
+                errString = f"Color tag {currentTag[0]} has non-matching closing tag {tag[0]}."
+                return errString
+            # Is there any text at all between the tags?
+            if currentTag.end(0) == tag.start(0):
+                errString = f"There is no text within color tag {currentTag[0]}."
+                return errString
+            # Erase the current tag, as it's been matched.
+            currentTag = None
+
+    # If we still have a tag, they are unmatched.
+    if currentTag:
+        errString = f"Color tag {currentTag[0]} is unmatched."
+        return errString
+
+    # If we've made it to this point, the element is valid.
+    return None
+
+
 ############
 # BINDINGS #
 ############
@@ -325,9 +383,8 @@ def validate_hint_text_binding(evt):
 
 def validate_hint_text(element) -> None:
     """Raise an error if the element's hint contains invalid characters."""
-    hintString = element.value
-    if re.search("[^A-Za-z0-9 \,\.\-\?!]", hintString) is not None:
-        errString = "Only letters, numbers, spaces, and the characters ',.-?! are allowed in hints."
+    errString = hint_text_validation_fn(element.value)
+    if errString is not None:
         mark_option_invalid(element, ValidationError.invalid_hint_text, errString)
     else:
         mark_option_valid(element, ValidationError.invalid_hint_text)
@@ -1143,13 +1200,11 @@ def validate_plando_options(settings_dict: dict) -> list[str]:
     for hintLocation, hint in plando_dict["hints"].items():
         if hint == PlandoItems.Randomize:
             continue
-        hintLocationName = LocationList[int(hintLocation)].name
-        if len(hint) > 123:
-            errString = f'The hint for location "{hintLocationName}" is longer than the limit of 123 characters.'
-            errList.append(errString)
-        if re.search("[^A-Za-z0-9 '\,\.\-\?!]", hint) is not None:
-            errString = f'The hint for location "{hintLocationName}" contains invalid characters. Only letters, numbers, spaces, and the characters \',.-?! are valid.'
-            errList.append(errString)
+        errString = hint_text_validation_fn(hint)
+        if errString is not None:
+            hintLocationName = LocationList[int(hintLocation)].name
+            fullErrString = f'Error in hint for location "{hintLocationName}": {errString}'
+            errList.append(fullErrString)
 
     # Ensure there aren't too many hints for the current settings.
     if js.document.getElementById("wrinkly_hints").value == "fixed_racing":

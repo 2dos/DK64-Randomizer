@@ -1422,3 +1422,10 @@ def toggle_settings_table(evt):
     settingsTable.classList.toggle("collapsed")
     settingsArrow = js.document.getElementsByClassName("settings-expand-arrow").item(0)
     settingsArrow.classList.toggle("flipped")
+
+
+@bind("click", "plando_toggle_color_table")
+def toggle_plando_hint_color_table(evt):
+    """Show or hide the table that shows possible hint colors."""
+    hintColorTable = js.document.getElementById("plando_hint_color_table")
+    hintColorTable.classList.toggle("hidden")
