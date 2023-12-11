@@ -149,29 +149,40 @@
          style="display: none;">
     </div>
     <div>
-        {% for _, category in select_song_panel.items() %}
-            <h3 class="title">{{category["name"]}}</h3>
-            <div class="flex-container flex-center">
-                {% for song in category["songs"] %}
-                    <div class="location-picker">
-                        <label for="music_select_{{song["value"]}}" class="location-label">
-                            {{song["name"]}}
-                        </label>
-                        <div id="music_select_{{song["value"]}}_wrapper"
-                             data-toggle="tooltip"
-                             title>
-                            <select id="music_select_{{song["value"]}}"
-                                    name="music_select_{{song["value"]}}"
-                                    class="form-select {{category["type"]}}-select">
-                                <option value="" class="{{category["type"]}}-default-option">-- Randomize --</option>
-                                {% for select_song in select_songs[category["type"]]|music_select_restrict(song["value"]) %}
-                                    <option value="{{select_song["value"]}}"
-                                            class="original-song">
-                                        {{select_song["name"]}}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </div>
+        {% for categoryName, category in select_song_panel.items() %}
+            <div class="flex-container flex-center expandable-toggle"
+                 id="{{categoryName}}_collapse_toggle">
+                <h3 class="title">{{category["name"]}}</h3>
+                <img src="static/img/expand_arrow.png"
+                     class="expand-arrow {{categoryName}}-expand-arrow">
+            </div>
+            <div class="flex-container flex-center expandable-container collapsed"
+                 id="{{categoryName}}">
+                {% for subCategory in category["subcategories"].values() %}
+                    <h3 class="title">{{subCategory["name"]}}</h3>
+                    <div class="flex-container flex-center">
+                        {% for song in subCategory["songs"] %}
+                            <div class="location-picker">
+                                <label for="music_select_{{song["value"]}}" class="location-label">
+                                    {{song["name"]}}
+                                </label>
+                                <div id="music_select_{{song["value"]}}_wrapper"
+                                    data-toggle="tooltip"
+                                    title>
+                                    <select id="music_select_{{song["value"]}}"
+                                            name="music_select_{{song["value"]}}"
+                                            class="form-select {{subCategory["type"]}}-select">
+                                        <option value="" class="{{subCategory["type"]}}-default-option">-- Randomize --</option>
+                                        {% for select_song in select_songs[subCategory["type"]]|music_select_restrict(song["value"]) %}
+                                            <option value="{{select_song["value"]}}"
+                                                    class="original-song">
+                                                {{select_song["name"]}}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 {% endfor %}
             </div>

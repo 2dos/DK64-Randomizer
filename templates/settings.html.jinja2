@@ -53,11 +53,11 @@
 </div>
 <hr />
 <div style="margin-top: 15px;">
-    <div class="flex-container flex-center settings-toggle" id="settings_table_toggle">
+    <div class="flex-container flex-center expandable-toggle" id="settings_table_collapse_toggle">
         <h2 class="title">SETTINGS</h2>
-        <img src="static/img/expand_arrow.png" class="settings-expand-arrow">
+        <img src="static/img/expand_arrow.png" class="expand-arrow settings-table-expand-arrow">
     </div>
-    <div class="flex-container settings-table-container collapsed" id="settings_table">
+    <div class="flex-container expandable-container collapsed" id="settings_table">
         {% for i in range(0, 3) %}
             {# ApplyRandomizer.py ~Line 386 #}
             <table id="settings_table_{{ i }}"

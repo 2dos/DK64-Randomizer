@@ -768,19 +768,19 @@ td.directional_divider {
   text-align: right;
 }
 
-.settings-toggle {
+.expandable-toggle {
   cursor: pointer;
 }
 
-.settings-expand-arrow {
+.expand-arrow {
   height: 20px;
   margin-left: 4px;
 }
 
-.settings-expand-arrow.flipped {
+.expand-arrow.flipped {
   transform: rotate(180deg);
 }
 
-.settings-table-container.collapsed {
+.expandable-container.collapsed {
   display: none;
 }
