@@ -577,11 +577,11 @@ def patching_response(spoiler):
     randomize_melon_crate(spoiler)
     PlaceFairies(spoiler)
     filterEntranceType()
+    updateKrushaMoveNames(spoiler)
     replaceIngameText(spoiler)
     updateSwitchsanity(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches
     PushItemLocations(spoiler)
-    updateKrushaMoveNames(spoiler)
 
     if spoiler.settings.wrinkly_hints != WrinklyHints.off:
         wipeHints()
