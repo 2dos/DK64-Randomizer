@@ -1,5 +1,6 @@
 """Options for the main rando tab."""
 import random
+import re
 
 import js
 from js import document
@@ -7,6 +8,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Plandomizer import ItemToPlandoItemMap, PlandoItems
 from randomizer.Enums.Settings import SettingsMap
 from randomizer.Lists.Item import StartingMoveOptions
+from randomizer.Lists.Songs import MusicSelectionPanel
 from randomizer.PlandoUtils import MoveSet
 from randomizer.SettingStrings import decrypt_settings_string_enum
 from ui.bindings import bind, bindList
@@ -1415,12 +1417,23 @@ def shuffle_settings(evt):
     toggle_vanilla_door_rando(None)
 
 
-@bind("click", "settings_table_toggle")
-def toggle_settings_table(evt):
+musicToggles = [category.replace(" ", "") for category in MusicSelectionPanel.keys()]
+
+
+@bind("click", "settings_table_collapse_toggle")
+@bindList("click", musicToggles, suffix="_collapse_toggle")
+def toggle_collapsible_container(evt):
+    """Show or hide a collapsible container."""
+    targetElement = evt.target
+    if "collapse_toggle" not in targetElement.id:
+        # Get the parent of this element.
+        targetElement = targetElement.parentElement
+    toggledElement = re.search("^(.+)_collapse_toggle$", targetElement.id)[1]
     """Open or close the settings table on the Seed Info tab."""
-    settingsTable = js.document.getElementById("settings_table")
+    settingsTable = js.document.getElementById(toggledElement)
     settingsTable.classList.toggle("collapsed")
-    settingsArrow = js.document.getElementsByClassName("settings-expand-arrow").item(0)
+    toggledArrow = f'{toggledElement.replace("_", "-")}-expand-arrow'
+    settingsArrow = js.document.getElementsByClassName(toggledArrow).item(0)
     settingsArrow.classList.toggle("flipped")
 
 
