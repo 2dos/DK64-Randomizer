@@ -2048,6 +2048,8 @@ def compileMicrohints(spoiler: Spoiler) -> None:
                         hint_text = f"You would be better off looking for shops in {level_color}{level_list[location.level]}{level_color} for this.".upper()
                     else:
                         hint_text = f"You would be better off looking in {level_color}{level_list[location.level]}{level_color} with {kong_list[location.kong]} for this.".upper()
+                    if spoiler.settings.krusha_kong == location.kong:
+                        hint_text = hint_text.replace(colorless_kong_list[location.kong].upper(), "KRUSHA")
                     spoiler.microhints[item.name] = hint_text
         if len(slam_levels) > 0:
             slam_text_entries = [f"{level_colors[x]}{level_list[x]}{level_colors[x]}" for x in slam_levels]
