@@ -613,7 +613,7 @@ void initHack(int source) {
 				*(short*)(0x80603542) = 0; // Set Factory count to 0
 				*(short*)(0x8060356A) = 0; // Set Factory Car count to 0
 				*(short*)(0x8060351A) = 0; // Set Galleon count to 0
-				*(short*)(0x80603592) = 0; // Set Isles count to 0
+				//*(short*)(0x80603592) = 0; // Set Isles count to 0
 				*(short*)(0x80603506) = 0; // Set Aztec count to 0
 				*(short*)(0x8060352E) = 0; // Set Galleon Seal count to 0
 				*(short*)(0x806035C6) = 0; // Set Fungi count to 0
