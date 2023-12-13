@@ -59,7 +59,7 @@ void failTraining(int play_cutscene, int text_index) {
     // parent->control_state = 0;
     // char* str = getTextPointer(0x1A, text_index, 1);
     // spawnOver
-    playSong(0x57, 0x3F800000);
+    playSong(SONG_FAILURERACES, 0x3F800000);
     setAction(0x43, (void*)0, 0);
     // CurrentActorPointer_0->control_state += 1;
     if (play_cutscene) {

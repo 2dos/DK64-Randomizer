@@ -58,7 +58,7 @@ void MelonCrateGenericCode(behaviour_data* behaviour, int index, int id) {
 			}
 		}
 	} else if (behaviour->current_state == 2) {
-		playSong(47, 0x3F800000);
+		playSong(SONG_MELONSLICEDROP, 0x3F800000);
 		playSFXFromObject(index, 35, 255, 127, 0, 0, 0.3f);
 		melonCrateItemHandler(behaviour, index, 0, 0);
 		int val = unkSoundIndex;

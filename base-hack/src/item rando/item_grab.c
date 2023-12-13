@@ -35,6 +35,40 @@
 #define MEDALITEM_JUNKMELON 20
 #define MEDALITEM_NOTHING 21
 
+typedef struct medal_info {
+    /* 0x000 */ songs song;
+    /* 0x004 */ int sprite;
+    /* 0x008 */ helm_hurry_items helm_hurry_item;
+} medal_info;
+
+static const unsigned char bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
+static const unsigned char instrument_songs[] = {SONG_BONGOS, SONG_GUITAR, SONG_TROMBONE, SONG_SAXOPHONE, SONG_TRIANGLE};
+
+static const medal_info medal_data[] = {
+    {.song = SONG_GBGET, .sprite = 0x3B, .helm_hurry_item = HHITEM_NOTHING}, // GB
+    {.song = SONG_BLUEPRINTGET, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // BP
+    {.song = SONG_GBGET, .sprite = 0x8A, .helm_hurry_item = HHITEM_KEY}, // Key
+    {.song = SONG_BANANAMEDALGET, .sprite = 0x8B, .helm_hurry_item = HHITEM_CROWN}, // Crown
+    {.song = SONG_COMPANYCOINGET, .sprite = -1, .helm_hurry_item = HHITEM_COMPANYCOIN}, // Company Coin
+    {.song = SONG_BANANAMEDALGET, .sprite = 0x3C, .helm_hurry_item = HHITEM_MEDAL}, // Medal
+    {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_MOVE}, // Cranky Move
+    {.song = SONG_GUNGET, .sprite = 0x96, .helm_hurry_item = HHITEM_MOVE}, // Funky Move
+    {.song = SONG_GUNGET, .sprite = 0x93, .helm_hurry_item = HHITEM_MOVE}, // Candy Move
+    {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_MOVE}, // Training Move
+    {.song = SONG_GUNGET, .sprite = 0x3A, .helm_hurry_item = HHITEM_MOVE}, // BFI Move
+    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // Kong
+    {.song = SONG_BEANGET, .sprite = -1, .helm_hurry_item = HHITEM_BEAN}, // Bean
+    {.song = SONG_PEARLGET, .sprite = -1, .helm_hurry_item = HHITEM_PEARL}, // Pearl
+    {.song = SONG_FAIRYTICK, .sprite = 0x89, .helm_hurry_item = HHITEM_FAIRY}, // Fairy
+    {.song = SONG_RAINBOWCOINGET, .sprite = 0xA0, .helm_hurry_item = HHITEM_RAINBOWCOIN}, // Rainbow Coin
+    {.song = SONG_SILENCE, .sprite = 0x92, .helm_hurry_item = HHITEM_FAKEITEM}, // Fake Item
+    {.song = SONG_SILENCE, .sprite = 0x2C, .helm_hurry_item = HHITEM_NOTHING}, // Junk Item (Orange)
+    {.song = SONG_SILENCE, .sprite = 0x48, .helm_hurry_item = HHITEM_NOTHING}, // Junk Item (Ammo)
+    {.song = SONG_CRYSTALCOCONUTGET, .sprite = 0x3A, .helm_hurry_item = HHITEM_NOTHING}, // Junk Item (Crystal)
+    {.song = SONG_MELONSLICEGET, .sprite = 0x46, .helm_hurry_item = HHITEM_NOTHING}, // Junk Item (Melon)
+    {.song = SONG_SILENCE, .sprite = 0x8E, .helm_hurry_item = HHITEM_NOTHING}, // Nothing
+};
+
 void banana_medal_acquisition(int flag) {
     /**
      * @brief Acquire a banana medal, and handle the item acquired from it
@@ -52,27 +86,23 @@ void banana_medal_acquisition(int flag) {
         if (item_type != MEDALITEM_KEY) {
             setFlag(flag, 1, FLAGTYPE_PERMANENT);
         }
-        int song = 0;
         void* sprite = 0;
-        int sprite_index = -1;
         short flut_flag = flag;
-        helm_hurry_items hh_item = HHITEM_NOTHING;
+        int kong = getKong(0);
         updateFlag(FLAGTYPE_PERMANENT, (short*)&flut_flag, (void*)0, -1);
+        songs song = medal_data[item_type].song;
+        int sprite_index = medal_data[item_type].sprite;
+        helm_hurry_items hh_item = medal_data[item_type].helm_hurry_item;
         switch (item_type) {
             case MEDALITEM_GB:
-                giveGB(getKong(0), getWorld(CurrentMap, 1));
-                song = 18; // GB/Key Get
-                sprite_index = 0x3B;
+                giveGB(kong, getWorld(CurrentMap, 1));
                 break;
             case MEDALITEM_BP:
                 {
-                    song = 69; // BP Get
-                    int bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
-                    int character_val = getKong(0);
-                    if (character_val > 4) {
-                        character_val = 0;
+                    if (kong > 4) {
+                        kong = 0;
                     }
-                    sprite_index = bp_sprites[character_val];
+                    sprite_index = bp_sprites[kong];
                 }
                 break;
             case MEDALITEM_KEY:
@@ -95,18 +125,9 @@ void banana_medal_acquisition(int flag) {
                         }
                     }
                     auto_turn_keys();
-                    song = 18; // GB/Key Get
-                    sprite_index = 0x8A;
-                    hh_item = HHITEM_KEY;
                 }
                 break;
-            case MEDALITEM_CROWN:
-                song = 0x97; // Banana Medal Get
-                sprite_index = 0x8B;
-                hh_item = HHITEM_CROWN;
-                break;
             case MEDALITEM_SPECIALCOIN:
-                song = 22; // Company Coin Get
                 if (flut_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
                     // Nintendo Coin
                     sprite_index = 0x8D;
@@ -114,103 +135,48 @@ void banana_medal_acquisition(int flag) {
                     // Rareware Coin
                     sprite_index = 0x8C;
                 }
-                hh_item = HHITEM_COMPANYCOIN;
-                break;
-            case MEDALITEM_MEDAL:
-                song = 0x97; // Banana Medal Get
-                sprite_index = 0x3C;
-                hh_item = HHITEM_MEDAL;
-                break;
-            case MEDALITEM_CRANKY:
-                song = 115; // Gun Get
-                sprite_index = 0x94;
-                hh_item = HHITEM_MOVE;
-                break;
-            case MEDALITEM_FUNKY:
-                song = 115; // Gun Get
-                sprite_index = 0x96;
-                hh_item = HHITEM_MOVE;
-                break;
-            case MEDALITEM_CANDY:
-                song = 115; // Gun Get
-                sprite_index = 0x93;
-                hh_item = HHITEM_MOVE;
-                break;
-            case MEDALITEM_TRAINING:
-                song = 115; // Gun Get
-                sprite_index = 0x94;
-                hh_item = HHITEM_MOVE;
-                break;
-            case MEDALITEM_BFI:
-                song = 115; // Gun Get
-                sprite_index = 0x3A;
-                hh_item = HHITEM_MOVE;
                 break;
             case MEDALITEM_KONG:
                 {
-                    int kong = -1;
+                    int kong_index = -1;
                     for (int i = 0; i < 5; i++) {
                         if (flut_flag == kong_flags[i]) {
-                            kong = i;
+                            kong_index = i;
                         }
                     }
-                    int kong_songs[] = {11, 10, 12, 13, 9};
-                    if ((kong >= 0) && (kong < 5)) {
-                        song = kong_songs[kong];
-                        sprite_index = 0xA9 + kong;
+                    if ((kong_index >= 0) && (kong_index < 5)) {
+                        song = instrument_songs[kong_index];
+                        sprite_index = 0xA9 + kong_index;
                     }
                     refreshItemVisibility();
                 }
                 break;
             case MEDALITEM_BEAN:
-                song = 147; // Bean Get
                 sprite = &bean_sprite;
-                hh_item = HHITEM_BEAN;
                 break;
             case MEDALITEM_PEARL:
-                song = 128; // Pearl Get
                 sprite = &pearl_sprite;
-                hh_item = HHITEM_PEARL;
-                break;
-            case MEDALITEM_FAIRY:
-                song = 46; // Fairy Tick
-                sprite_index = 0x89;
-                hh_item = HHITEM_FAIRY;
                 break;
             case MEDALITEM_RAINBOW:
                 giveRainbowCoin();
-                song = 145; // Rainbow Coin Get
-                sprite_index = 0xA0;
-                hh_item = HHITEM_RAINBOWCOIN;
                 break;
             case MEDALITEM_FAKEITEM:
                 queueIceTrap();
-                sprite_index = 0x92;
-                hh_item = HHITEM_FAKEITEM;
                 break;
             case MEDALITEM_JUNKAMMO:
                 giveAmmo();
-                sprite_index = 0x48;
                 break;
             case MEDALITEM_JUNKCRYSTAL:
                 giveCrystal();
-                song = 35;
-                sprite_index = 0x3A;
                 break;
             case MEDALITEM_JUNKMELON:
                 giveMelon();
-                sprite_index = 0x46;
-                song = 33;
                 break;
             case MEDALITEM_JUNKORANGE:
                 giveOrange();
-                sprite_index = 0x2C;
-                break;
-            case MEDALITEM_NOTHING:
-                sprite_index = 0x8E;
                 break;
         }
-        if (song != 0) {
+        if (song != SONG_SILENCE) {
             playSFX(0xF2);
             playSong(song, 0x3F800000);
         }
@@ -503,13 +469,13 @@ void getItem(int object_type) {
         case 0x24:
         case 0x27:
             // Banana Coin
-            playSong(23, *(int*)(&pickup_volume));
+            playSong(SONG_BANANACOINGET, *(int*)(&pickup_volume));
             break;
         case 0x48:
         case 0x28F:
             // Company Coin
             if (Rando.item_rando) {
-                playSong(22, *(int*)(&pickup_volume));
+                playSong(SONG_COMPANYCOINGET, *(int*)(&pickup_volume));
             }
             hh_item = HHITEM_COMPANYCOIN;
             forceDance();
@@ -523,7 +489,7 @@ void getItem(int object_type) {
             applyDamage(0, 1);
         case 0x57:
             // Melon Slice
-            playSong(0x2F, *(int*)(&pickup_volume));
+            playSong(SONG_MELONSLICEDROP, *(int*)(&pickup_volume));
             forceDance();
             break;
         case 0x59:
@@ -533,7 +499,7 @@ void getItem(int object_type) {
         case 0x1F5:
         case 0x1F6:
             // Potion
-            playSong(115, 0x3F800000);
+            playSong(SONG_GUNGET, 0x3F800000);
             if (!canDanceSkip()) {
                 setAction(0x29, 0, 0);
             }
@@ -542,7 +508,7 @@ void getItem(int object_type) {
         case 0x74:
         case 0x288:
             // GB
-            playSong(0x12, 0x3F800000);
+            playSong(SONG_GBGET, 0x3F800000);
             if (!canDanceSkip()) {
                 setAction(0x29, 0, 0);
             }
@@ -550,11 +516,11 @@ void getItem(int object_type) {
             break;
         case 0x8E:
             // Crystal
-            playSong(35, *(int*)(&pickup_volume));
+            playSong(SONG_CRYSTALCOCONUTGET, *(int*)(&pickup_volume));
             break;
         case 0x90:
             // Medal
-            playSong(0x12, 0x3F800000);
+            playSong(SONG_GBGET, 0x3F800000);
             BananaMedalGet();
             if (!canDanceSkip()) {
                 setAction(0x29, 0, 0);
@@ -567,7 +533,7 @@ void getItem(int object_type) {
             break;
         case 0xB7:
             // Rainbow Coin
-            playSong(0x91, *(int*)(&pickup_volume));
+            playSong(SONG_RAINBOWCOINGET, *(int*)(&pickup_volume));
             hh_item = HHITEM_RAINBOWCOIN;
             setFlag(FLAG_FIRST_COIN_COLLECTION, 1, FLAGTYPE_PERMANENT);
             forceDance();
@@ -578,28 +544,22 @@ void getItem(int object_type) {
         case 0xE0:
         case 0xE1:
             // Blueprint
-            playSong(69, *(int*)(&pickup_volume));
+            playSong(SONG_BLUEPRINTGET, *(int*)(&pickup_volume));
             forceDance();
             hh_item = HHITEM_BLUEPRINT;
             break;
         case 0xEC:
         case 0x1D2:
             // Race Coin
-            playSong(32, *(int*)(&pickup_volume));
+            playSong(SONG_MINECARTCOINGET, *(int*)(&pickup_volume));
             break;
         case 0x13C:
             // Key
-            keyGrabHook(0x12, 0x3F800000);
+            keyGrabHook(SONG_GBGET, 0x3F800000);
             if (!canDanceSkip()) {
-                unsigned char boss_list[] = {0x08, 0xC5, 0x9A, 0x6F, 0x53, 0xC4, 0xC7};
-                int action = 0;
-                for (int i = 0; i < sizeof(boss_list); i++) {
-                    if (CurrentMap == boss_list[i]) {
-                        action = 0x41; // Key Get
-                    }
-                }
-                if (action == 0) {
-                    action = 0x29; // GB Get
+                int action = 0x29; // GB Get
+                if (inBossMap(CurrentMap, 1, 0, 0)) {
+                    action = 0x41; // Key Get
                 }
                 setAction(action, 0, 0);
             }
@@ -608,7 +568,7 @@ void getItem(int object_type) {
             break;
         case 0x18D:
             // Crown
-            playSong(0x12, 0x3F800000);
+            playSong(SONG_GBGET, 0x3F800000);
             if (!canDanceSkip()) {
                 setAction(0x42, 0, 0);
             }
@@ -617,13 +577,13 @@ void getItem(int object_type) {
             break;
         case 0x198:
             // Bean
-            playSong(147, 0x3F800000);
+            playSong(SONG_BEANGET, 0x3F800000);
             hh_item = HHITEM_BEAN;
             forceDance();
             break;
         case 0x1B4:
             // Pearl
-            playSong(128, 0x3F800000);
+            playSong(SONG_PEARLGET, 0x3F800000);
             hh_item = HHITEM_PEARL;
             forceDance();
             break;
@@ -632,23 +592,11 @@ void getItem(int object_type) {
             playSound(0xAE, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
             break;
         case 0x257:
-            song = 11;
         case 0x258:
-            if (song == -1) {
-                song = 10;
-            }
         case 0x259:
-            if (song == -1) {
-                song = 12;
-            }
         case 0x25A:
-            if (song == -1) {
-                song = 13;
-            }
         case 0x25B:
-            if (song == -1) {
-                song = 9;
-            }
+            song = instrument_songs[object_type - 0x257];
             if (song >= 0) {
                 playSong(song, 0x3F800000);
             }
@@ -659,7 +607,7 @@ void getItem(int object_type) {
             // hh_item = HHITEM_KONG; // Ignored as it's handled in a separate case
             break;
         case 0x25C:
-            playSong(46, 0x3F800000);
+            playSong(SONG_FAIRYTICK, 0x3F800000);
             hh_item = HHITEM_FAIRY;
             forceDance();
             break;
@@ -784,9 +732,7 @@ int isCollectable(int type) {
         case 0x98: // Film
             return checkFlagDuplicate(FLAG_ABILITY_CAMERA, FLAGTYPE_PERMANENT);
         case 0x56: // Oranges
-            if (CurrentMap != MAP_TBARREL_ORANGE) {
-                return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
-            }
+            return checkFlagDuplicate(FLAG_TBARREL_ORANGE, FLAGTYPE_PERMANENT);
     }
     return 1;
 }
