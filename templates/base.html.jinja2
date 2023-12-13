@@ -318,7 +318,8 @@
                                            class="btn btn-primary"
                                            style="width: 60%; height: 50px; text-align: center"
                                            type="button"
-                                           value="Generate Seed"/>
+                                           value="Generate Seed"
+                                           disabled = ""/>
                                     </div>
                                 </div>
                             </div>
@@ -499,6 +500,8 @@
                 el.prop('disabled', true);
                 setTimeout(function(){el.prop('disabled', false);}, 2000);
             })
+
+            $("#generate_seed").removeAttr("disabled");
 
             $("#settings_string").on('click', function (event) {
                 var input = $("#settings_string");

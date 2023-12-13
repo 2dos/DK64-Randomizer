@@ -10,7 +10,7 @@ from randomizer.Patching.Patcher import LocalROM
 
 
 def apply_kongrando_cosmetic(spoiler):
-    """Rando write bananaport locations."""
+    """Write kong cage changes for kong rando."""
     if Types.Kong in spoiler.settings.shuffled_location_types:
         kong_locations = [x for x in spoiler.item_assignment if x.location in (Locations.DiddyKong, Locations.LankyKong, Locations.TinyKong, Locations.ChunkyKong)]
         kong_flag_data = {
