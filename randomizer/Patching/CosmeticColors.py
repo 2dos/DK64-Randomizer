@@ -220,11 +220,11 @@ def getKongColor(settings: Settings, index: int):
     mode = settings.colorblind_mode
     if mode != ColorblindMode.off and settings.override_cosmetics:
         if mode == ColorblindMode.prot:
-            kong_colors = ["#FDE400", "#0072FF", "#766D5A", "#FFFFFF", "#000000"]
+            kong_colors = ["#000000", "#0072FF", "#766D5A", "#FFFFFF", "#FDE400"]
         elif mode == ColorblindMode.deut:
-            kong_colors = ["#E3A900", "#318DFF", "#7F6D59", "#FFFFFF", "#000000"]
+            kong_colors = ["#000000", "#318DFF", "#7F6D59", "#FFFFFF", "#E3A900"]
         elif mode == ColorblindMode.trit:
-            kong_colors = ["#FFA4A4", "#C72020", "#13C4D8", "#FFFFFF", "#000000"]
+            kong_colors = ["#000000", "#C72020", "#13C4D8", "#FFFFFF", "#FFA4A4"]
     return kong_colors[index]
 
 
@@ -438,7 +438,6 @@ def apply_cosmetic_colors(settings: Settings):
                         base_obj["zones"].append(zone_data)
                         color_palettes.append(base_obj)
                         color_obj[f"{kong.kong} {palette.name}"] = color
-    print(color_palettes)
     settings.colors = color_obj
     if len(color_palettes) > 0:
         convertColors(color_palettes)

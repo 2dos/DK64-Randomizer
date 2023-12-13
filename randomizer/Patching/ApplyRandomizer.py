@@ -44,7 +44,7 @@ from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
 from randomizer.Patching.Lib import setItemReferenceName, addNewScript
-from randomizer.Patching.MiscSetupChanges import randomize_setup, updateRandomSwitches, updateSwitchsanity
+from randomizer.Patching.MiscSetupChanges import randomize_setup, updateKrushaMoveNames, updateRandomSwitches, updateSwitchsanity
 from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves
 from randomizer.Patching.Patcher import LocalROM
 from randomizer.Patching.PhaseRando import randomize_helm, randomize_krool
@@ -577,6 +577,7 @@ def patching_response(spoiler):
     randomize_melon_crate(spoiler)
     PlaceFairies(spoiler)
     filterEntranceType()
+    updateKrushaMoveNames(spoiler)
     replaceIngameText(spoiler)
     updateSwitchsanity(spoiler)
     updateRandomSwitches(spoiler)  # Has to be after all setup changes that may alter the item type of slam switches

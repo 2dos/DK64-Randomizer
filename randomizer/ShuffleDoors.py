@@ -108,7 +108,7 @@ def ShuffleDoors(spoiler):
                         selected_door_index = random.choice([door for door in available_portals if door_locations[level][door].moveless is True])
                         available_portals.remove(selected_door_index)
                     selected_portal = door_locations[level][selected_door_index]
-                    if allow_multiple_portals_per_group:
+                    if not allow_multiple_portals_per_group:
                         # Only place one T&S portal per group so we don't stack portals too heavily
                         available_portals = [door for door in available_portals if door_locations[level][door].group != selected_portal.group]
                     # update available_doors separately as wrinkly doors should not be affected by the T&S grouping

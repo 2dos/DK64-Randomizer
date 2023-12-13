@@ -1631,9 +1631,9 @@
 | On torches on Tiny's path | 10 |  | 
 | Path to Lanky's side | 20 |  | 
 | On trombone pad | 5 | l.grape and l.sprint, locations=[[5, 1.0, 2100, 94, 560]] | 
-| In green goo gap (Tiny) | 5 | l.twirl or l.advanced_platforming | 
+| In green goo gap (Tiny) | 5 | l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny) | 
 | In and out of green goo pit | Balloon |  | 
-| Above green goo room | Balloon | l.twirl or l.advanced_platforming | 
+| Above green goo room | Balloon | l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny) | 
 | In Lanky's green goo room (Lanky) | Balloon | l.sprint or l.generalclips or l.phasewalk | 
 </details>
 <details>

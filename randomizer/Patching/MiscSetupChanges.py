@@ -539,3 +539,89 @@ def updateSwitchsanity(spoiler):
                             # elif switch_kong == Kongs.donkey:
                             #     ROM_COPY.seek(item_start + 0x1C)
                             #     ROM_COPY.writeMultipleBytes(0, 4)
+
+
+def updateKrushaMoveNames(spoiler):
+    """Replace move names for the kong that Krusha replaces."""
+    if spoiler.settings.krusha_kong is not None:
+        move_data = {
+            Kongs.donkey: [
+                {"textbox_index": 36, "mode": "replace_whole", "target": "LIME BAZOOKA"},
+                {"textbox_index": 6, "mode": "replace_whole", "target": "KANNON BLAST"},
+                {"textbox_index": 8, "mode": "replace_whole", "target": "STRONG KROC"},
+                {"textbox_index": 10, "mode": "replace_whole", "target": "GATOR GRAB"},
+                {"textbox_index": 81, "mode": "replace_whole", "target": "KRUSHA"},
+            ],
+            Kongs.diddy: [
+                {"textbox_index": 37, "mode": "replace_whole", "target": "LIME BAZOOKA"},
+                {"textbox_index": 12, "mode": "replace_whole", "target": "KREMLING KHARGE"},
+                {"textbox_index": 14, "mode": "replace_whole", "target": "ROCKET REPTILE"},
+                {"textbox_index": 16, "mode": "replace_whole", "target": "SALAMANDER SPRING"},
+                {"textbox_index": 82, "mode": "replace_whole", "target": "KRUSHA"},
+            ],
+            Kongs.lanky: [
+                {"textbox_index": 38, "mode": "replace_whole", "target": "LIME BAZOOKA"},
+                {"textbox_index": 18, "mode": "replace_whole", "target": "KREMSTAND"},
+                {"textbox_index": 20, "mode": "replace_whole", "target": "KABOOM BALLOON"},
+                {"textbox_index": 22, "mode": "replace_whole", "target": "KREMSTAND SPRINT"},
+                {"textbox_index": 83, "mode": "replace_whole", "target": "KRUSHA"},
+            ],
+            Kongs.tiny: [
+                {"textbox_index": 39, "mode": "replace_whole", "target": "LIME BAZOOKA"},
+                {"textbox_index": 24, "mode": "replace_whole", "target": "MINI DILE"},
+                {"textbox_index": 26, "mode": "replace_whole", "target": "LIZARD TWIRL"},
+                {"textbox_index": 28, "mode": "replace_whole", "target": "KROCOPORT"},
+                {"textbox_index": 84, "mode": "replace_whole", "target": "KRUSHA"},
+            ],
+            Kongs.chunky: [
+                {"textbox_index": 40, "mode": "replace_whole", "target": "LIME BAZOOKA"},
+                {"textbox_index": 30, "mode": "replace_whole", "target": "HUNKY KRUSHY"},
+                {"textbox_index": 32, "mode": "replace_whole", "target": "KREMLING PUNCH"},
+                {"textbox_index": 34, "mode": "replace_whole", "target": "KHAMELEO GONE"},
+                {"textbox_index": 85, "mode": "replace_whole", "target": "KRUSHA"},
+            ],
+        }
+        spoiler.text_changes[39] = move_data[spoiler.settings.krusha_kong]
+        name_replacements = {
+            Kongs.donkey: [
+                {"old": "Coconut Gun", "new": "LIME BAZOOKA"},
+                {"old": "Baboon Blast", "new": "KANNON BLAST"},
+                {"old": "Strong Kong", "new": "STRONG KROC"},
+                {"old": "Gorilla Grab", "new": "GATOR GRAB"},
+                {"old": "Donkey Kong", "new": "KRUSHA"},
+            ],
+            Kongs.diddy: [
+                {"old": "Peanut Popguns", "new": "LIME BAZOOKA"},
+                {"old": "Chimpy Charge", "new": "KREMLING KHARGE"},
+                {"old": "Rocketbarrel Boost", "new": "ROCKET REPTILE"},
+                {"old": "Simian Spring", "new": "SALAMANDER SPRING"},
+                {"old": "Diddy Kong", "new": "KRUSHA"},
+            ],
+            Kongs.lanky: [
+                {"old": "Grape Shooter", "new": "LIME BAZOOKA"},
+                {"old": "Orangstand", "new": "KREMSTAND"},
+                {"old": "Baboon Balloon", "new": "KABOOM BALLOON"},
+                {"old": "Orangstand Sprint", "new": "KREMSTAND SPRINT"},
+                {"old": "Lanky Kong", "new": "KRUSHA"},
+            ],
+            Kongs.tiny: [
+                {"old": "Feather Bow", "new": "LIME BAZOOKA"},
+                {"old": "Mini Monkey", "new": "MINI DILE"},
+                {"old": "Pony Tail Twirl", "new": "LIZARD TWIRL"},
+                {"old": "Monkeyport", "new": "KROCOPORT"},
+                {"old": "Tiny Kong", "new": "KRUSHA"},
+            ],
+            Kongs.chunky: [
+                {"old": "Pineapple Launcher", "new": "LIME BAZOOKA"},
+                {"old": "Hunky Chunky", "new": "HUNKY KRUSHY"},
+                {"old": "Primate Punch", "new": "KREMLING PUNCH"},
+                {"old": "Gorilla Gone", "new": "KHAMELEO GONE"},
+                {"old": "Chunky Kong", "new": "KRUSHA"},
+            ],
+        }
+        chosen_replacements = name_replacements[spoiler.settings.krusha_kong]
+        for reference in spoiler.location_references:
+            for replacement in chosen_replacements:
+                if reference.item_name == replacement["old"]:
+                    reference.item_name = replacement["new"]
+                    chosen_replacements.remove(replacement)

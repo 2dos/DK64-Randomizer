@@ -1097,7 +1097,7 @@
 | ---- | ------ | ----- |
 | On Goo Hands | 6 | l.CanSlamSwitch(Levels.CreepyCastle, 3) and l.istiny and l.twirl | 
 | Between Mausoleum Vines | 6 | ((l.grape and l.sprint) or l.generalclips or l.phasewalk) and l.islanky and l.trombone and l.vines | 
-| Around Tiny Slam Pad | 2 | (l.twirl or l.advanced_platforming or l.phasewalk) and l.istiny | 
+| Around Tiny Slam Pad | 2 | (l.twirl or (l.advanced_platforming and l.settings.krusha_kong != Kongs.tiny) or l.phasewalk) and l.istiny | 
 | Around Lanky Reward | 3 | ((l.grape and l.sprint) or l.generalclips or l.phasewalk) and ((l.trombone and l.vines) or l.advanced_platforming) and l.islanky | 
 </details>
 <details>

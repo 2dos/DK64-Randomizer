@@ -432,6 +432,8 @@ globally_hinted_location_ids = []
 
 def compileHints(spoiler: Spoiler) -> bool:
     """Create a hint distribution, generate buff hints, and place them in locations."""
+    if spoiler.settings.krusha_kong is not None:
+        replaceKongNameWithKrusha(spoiler)
     ClearHintMessages()
     hint_distribution = hint_distribution_default.copy()
     plando_hints_placed = 0
@@ -1073,6 +1075,10 @@ def compileHints(spoiler: Spoiler) -> bool:
             elif item.type == Types.Kong:  # Kong items are any kong items, but these make more intuitive sense as their respective color
                 item_color = kong_colors[ItemPool.GetKongForItem(location.item)]
             message = f"Looking for {item_color}{item.name}{item_color}?"
+            # If this hint tries to offer help finding Krusha, make sure to get his name right
+            if item.type == Types.Kong:
+                if ItemPool.GetKongForItem(location.item) == spoiler.settings.krusha_kong:
+                    message = message.replace(item.name, "Krusha")
             # Two options for hint text, do a coin flip
             coin_flip = random.choice([1, 2])
             if coin_flip == 1:
@@ -2042,6 +2048,8 @@ def compileMicrohints(spoiler: Spoiler) -> None:
                         hint_text = f"You would be better off looking for shops in {level_color}{level_list[location.level]}{level_color} for this.".upper()
                     else:
                         hint_text = f"You would be better off looking in {level_color}{level_list[location.level]}{level_color} with {kong_list[location.kong]} for this.".upper()
+                    if spoiler.settings.krusha_kong == location.kong:
+                        hint_text = hint_text.replace(colorless_kong_list[location.kong].upper(), "KRUSHA")
                     spoiler.microhints[item.name] = hint_text
         if len(slam_levels) > 0:
             slam_text_entries = [f"{level_colors[x]}{level_list[x]}{level_colors[x]}" for x in slam_levels]
@@ -2381,3 +2389,20 @@ def ApplyPlandoHints(spoiler):
             hint_location.hint_type = HintType.Plando
             plando_hints_placed += 1
     return plando_hints_placed
+
+
+def replaceKongNameWithKrusha(spoiler):
+    """Replace Krusha's kong name."""
+    krusha = spoiler.settings.krusha_kong
+    kong_list[krusha] = f"{kong_colors[krusha]}Krusha{kong_colors[krusha]}"
+    colorless_kong_list[krusha] = "Krusha"
+    kong_cryptic[krusha] = [
+        "The kong that has... scales ?",
+        "The kong that is normally only available in multiplayer",
+        "The kong that is not a monkey",
+        "The Kong that is not in the DK Rap",
+        "The Kong that Rivals Chunky in Strength",
+        "The Kong that replaces another Kong",
+        "The Kong that wears Camo",
+        "The Kong that was K. Rools Bodyguard",
+    ]
