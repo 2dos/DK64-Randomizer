@@ -354,6 +354,11 @@ void initColorblindChanges(void) {
         writeRGBColor(hair->regular, (short*)0x806FF0C6, (short*)0x806FF0CA);
         writeRGBColor(hair->homing, (short*)0x806FF0AA, (short*)0x806FF0AE);
     }
+    if (Rando.outlined_crosshair) {
+        *(short*)(0x806FFAFE) = 113;
+        *(short*)(0x806FF116) = 113;
+        *(short*)(0x806B78DA) = 113;
+    }
 }
 
 void initCosmetic(void) {

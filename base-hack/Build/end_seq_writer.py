@@ -27,14 +27,14 @@ main_devs = [
     CreditItem(CreditsDirection.top, CreditsType.header, ["Randomizer Developers"]),
     CreditItem(CreditsDirection.left, CreditsType.normal, ["2dos", "AlmostSeagull", "Ballaam"]),
     CreditItem(CreditsDirection.right, CreditsType.normal, ["Bismuth", "Cfox", "KillKlli"]),
-    CreditItem(CreditsDirection.left, CreditsType.normal, ["Lrauq", "ShadowShine57", "Znernicus"]),
+    CreditItem(CreditsDirection.left, CreditsType.normal, ["Lrauq", "ShadowShine57", "The Sound Defense", "Znernicus"]),
 ]
 
 assistant_devs = [
     CreditItem(CreditsDirection.top, CreditsType.header, ["Assistant Developers"]),
     CreditItem(CreditsDirection.right, CreditsType.normal, ["Aljex", "GloriousLiar", "JXJacob"]),
     CreditItem(CreditsDirection.left, CreditsType.normal, ["Mittenz", "Naramgamjan", "OnlySpaghettiCode"]),
-    CreditItem(CreditsDirection.right, CreditsType.normal, ["Plessy", "Rain", "The Sound Defense", "UmedMuzl"]),
+    CreditItem(CreditsDirection.right, CreditsType.normal, ["Plessy", "Rain", "UmedMuzl"]),
 ]
 
 # BETA TESTERS

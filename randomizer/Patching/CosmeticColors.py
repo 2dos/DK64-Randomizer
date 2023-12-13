@@ -405,6 +405,7 @@ def apply_cosmetic_colors(settings: Settings):
                     KongPalette(base_setting, 4966, PaletteFillType.kong),
                 ]
         base_obj = {"kong": kong.kong, "zones": []}
+        zone_to_colors = {}
         for palette in kong.palettes:
             arr = [DEFAULT_COLOR]
             if palette.fill_type == PaletteFillType.checkered:
@@ -426,7 +427,11 @@ def apply_cosmetic_colors(settings: Settings):
                 if settings.override_cosmetics and (colors_dict[base_setting] != CharacterColors.vanilla or (is_krusha and palette.fill_type == PaletteFillType.kong)):
                     color = None
                     if colors_dict[base_setting] == CharacterColors.randomized:
-                        color = f"#{format(randint(0, 0xFFFFFF), '06x')}"
+                        if base_setting in zone_to_colors:
+                            color = zone_to_colors[base_setting]
+                        else:
+                            color = f"#{format(randint(0, 0xFFFFFF), '06x')}"
+                            zone_to_colors[base_setting] = color
                     elif palette.fill_type != PaletteFillType.kong:
                         color = colors_dict[custom_setting]
                         if not color:
@@ -438,7 +443,6 @@ def apply_cosmetic_colors(settings: Settings):
                         base_obj["zones"].append(zone_data)
                         color_palettes.append(base_obj)
                         color_obj[f"{kong.kong} {palette.name}"] = color
-    print(color_palettes)
     settings.colors = color_obj
     if len(color_palettes) > 0:
         convertColors(color_palettes)
