@@ -13,6 +13,7 @@ from randomizer.Enums.Switches import Switches
 from randomizer.Enums.Time import Time
 from randomizer.Enums.Maps import Maps
 
+FACTORY_LEDGE_COINS_HEIGHT = 178.5
 CAVES_WATER_HEIGHT = 20
 
 
@@ -3629,9 +3630,9 @@ BananaCoinGroupList = {
             region=Regions.BeyondHatch,
             logic=lambda l: (l.spring and l.isdiddy) or l.phasewalk,
             locations=[
-                [1.0, 1065.8306884765625, 176.5, 482.5064697265625],
-                [1.0, 1099.849853515625, 176.5, 482.2723693847656],
-                [1.0, 1081.9705810546875, 176.5, 481.5174865722656],
+                [1.0, 1065.8306884765625, FACTORY_LEDGE_COINS_HEIGHT, 482.5064697265625],
+                [1.0, 1099.849853515625, FACTORY_LEDGE_COINS_HEIGHT, 482.2723693847656],
+                [1.0, 1081.9705810546875, FACTORY_LEDGE_COINS_HEIGHT, 481.5174865722656],
             ],
             vanilla=True,
         ),
