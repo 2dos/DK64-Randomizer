@@ -61,6 +61,8 @@ void fixMusicRando(void) {
 		}
 		*(short*)(0x806CA97E) = 0x560 | ((songData[0x6B] >> 1) & 3); // Baboon Balloon
 		*(float*)(0x807565D8) = 1.0f; // Funky and Candy volumes
+		*(int*)(0x80604B50) = 0; // Disable galleon outside track isolation
+		*(int*)(0x80604A54) = 0; // Disable galleon outside track isolation
 		complex_free(write_space);
 		complex_free(write_space_0);
 	}
@@ -613,7 +615,7 @@ void initHack(int source) {
 				*(short*)(0x80603542) = 0; // Set Factory count to 0
 				*(short*)(0x8060356A) = 0; // Set Factory Car count to 0
 				*(short*)(0x8060351A) = 0; // Set Galleon count to 0
-				*(short*)(0x80603592) = 0; // Set Isles count to 0
+				//*(short*)(0x80603592) = 0; // Set Isles count to 0
 				*(short*)(0x80603506) = 0; // Set Aztec count to 0
 				*(short*)(0x8060352E) = 0; // Set Galleon Seal count to 0
 				*(short*)(0x806035C6) = 0; // Set Fungi count to 0

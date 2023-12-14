@@ -101,7 +101,7 @@
       "events":false,
       "transform":false,
       "pause":false,
-      "chunk_songs":false
+      "chunk_songs":true
    },
    "hard_mode": {
       "easy_fall":true,

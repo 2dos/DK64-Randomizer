@@ -29,6 +29,7 @@
 #define JAPES_DKCAGESWITCH 0x40
 #define JAPES_MOUNTAINGB 0x52
 #define JAPES_MOUNTAINGBSWITCH 0x6
+#define JAPES_MOUNTAIN_CHARGE_CONTROLLER 0x37
 #define FACTORY_DIDDYPRODGB 0x2C
 #define FACTORY_DIDDYPRODSWITCH 0x31
 #define MILL_WARNINGLIGHTS 0xC
@@ -682,6 +683,14 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->current_state = 20;
 						behaviour_pointer->next_state = 20;
 					}
+				} else if (param2 == JAPES_MOUNTAIN_CHARGE_CONTROLLER) {
+					if (MovesBase[KONG_DIDDY].special_moves & MOVECHECK_CHARGE) {
+						return 1;
+					}
+					if (Rando.quality_of_life.remove_cutscenes) {
+						return 1;
+					}
+					return 0;
 				}
 				break;
 			case MAP_FUNGIANTHILL:

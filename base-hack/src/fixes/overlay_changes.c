@@ -340,6 +340,10 @@ void overlay_changes(void) {
 
 		*(int*)(0x80028EF8) = 0; // Joystick
 
+		if (Rando.default_camera_mode) {
+			InvertedControls = 1;
+		}
+
 		// Options
 		initOptionScreen();
 		// Disable Multiplayer

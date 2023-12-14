@@ -455,6 +455,7 @@ class Settings:
         self.music_volume = 100
         self.true_widescreen = False
         self.troff_brighten = False
+        self.crosshair_outline = False
         self.camera_is_not_inverted = False
         self.sound_type = SoundType.stereo
         self.custom_music_proportion = 100
@@ -1465,7 +1466,7 @@ class Settings:
                 self.valid_locations[Types.JunkItem] = [
                     x
                     for x in fairyBannedLocations
-                    if spoiler.LocationList[x].type not in (Types.Shop, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies)
+                    if spoiler.LocationList[x].type not in (Types.Shop, Types.Shockwave, Types.Crown, Types.PreGivenMove, Types.CrateItem, Types.Enemies)
                     and (spoiler.LocationList[x].type != Types.Key or spoiler.LocationList[x].level == Levels.HideoutHelm)
                 ]
             if Types.Kong in self.shuffled_location_types:

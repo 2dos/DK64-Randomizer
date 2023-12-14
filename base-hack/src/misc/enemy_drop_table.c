@@ -71,7 +71,7 @@ void spawnEnemyDrops(actorData* actor) {
     }
     if ((CurrentMap == MAP_CASTLEKUTOUT) && (Rando.hard_mode.lava_water)) {
         // Make sure KKO enemy always drops a melon slice
-        playSong(0x2F, 0x3F800000);
+        playSong(SONG_MELONSLICEDROP, 0x3F800000);
         spawnActorWithFlag(0x2F, *(int*)(&actor->xPos), *(int*)(&actor->yPos), *(int*)(&actor->zPos), 0xFFF, 1, -1, 0);
         return;
     } else {

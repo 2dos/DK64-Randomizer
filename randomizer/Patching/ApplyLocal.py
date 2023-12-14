@@ -153,6 +153,9 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             ROM().seek(sav + 0x1B7)
             ROM().writeMultipleBytes(write_data[0], 1)
 
+        ROM().seek(sav + 0xC3)
+        ROM().writeMultipleBytes(int(settings.crosshair_outline), 1)
+
         ROM().seek(sav + 0x114)
         ROM().writeMultipleBytes(int(settings.troff_brighten), 1)
 
