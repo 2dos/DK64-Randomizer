@@ -59,8 +59,8 @@ int isBonus(maps map) {
 	} else if (inBattleCrown(map)) {
 		return 0;
 	}
-	int level = levelIndexMapping[map];
-	return (level == 9) || (level == 0xD);
+	level_indexes level = levelIndexMapping[map];
+	return (level == LEVEL_BONUS) || (level == LEVEL_SHARED);
 }
 
 int checkControlState(int target_control_state) {

@@ -203,7 +203,7 @@ void bootSpeedup(void) {
 				int actor_count = *(int*)(actor_setup);
 				char* focused_actor = (char*)(actor_setup + 4);
 				char* focused_model2 = (char*)(modeltwo_setup + 4);
-                int subworld = 7;
+                int subworld = LEVEL_ISLES;
                 if (!isLobby(i)) {
                     subworld = levelIndexMapping[i];
                 }
