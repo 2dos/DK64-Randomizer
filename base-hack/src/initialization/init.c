@@ -177,7 +177,6 @@ void loadHooks(void) {
 	loadSingularHook(0x806EB574, &HomingHUDHandle);
 	loadSingularHook(0x806324C4, &DKCollectableFix);
 	loadSingularHook(0x806AF70C, &GuardDeathHandle);
-	loadSingularHook(0x807132BC, &NinWarpCode);
 	if (Rando.quality_of_life.textbox_hold) {
 		loadSingularHook(0x8070E83C, &TextHandler);
 	}
@@ -498,6 +497,12 @@ void initHack(int source) {
 				writeFunction(0x806EF9D0, &applyDamageMask);
 				writeFunction(0x806F5860, &applyDamageMask); // Watermelon
 			}
+			levelIndexMapping[MAP_TBARREL_DIVE] = LEVEL_BONUS;
+			levelIndexMapping[MAP_TBARREL_VINE] = LEVEL_BONUS;
+			levelIndexMapping[MAP_TBARREL_ORANGE] = LEVEL_BONUS;
+			levelIndexMapping[MAP_TBARREL_BARREL] = LEVEL_BONUS;
+
+
 			// Slow Turn Fix
 			writeFunction(0x806D2FC0, &fixRBSlowTurn);
 			// CB Bunch

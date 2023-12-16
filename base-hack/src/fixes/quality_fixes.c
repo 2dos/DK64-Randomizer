@@ -66,18 +66,6 @@ void qualityOfLife_fixes(void) {
 	}
 }
 
-void checkNinWarp(void) {
-	/**
-	 * @brief Change the warp destination upon booting the game
-	 */
-	if (Rando.quality_of_life.fast_boot) {
-		WarpToDKTV();
-		TransitionType = 0;
-	} else {
-		initiateTransitionFade(MAP_DKRAP,0,2); // DK Rap
-	}
-}
-
 int CanDive_WithCheck(void) {
 	if (ObjectModel2Timer < 5) {
 		return 1;
