@@ -31,8 +31,7 @@ app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 2)
 app.config["EXECUTOR_TYPE"] = os.environ.get("EXECUTOR_TYPE", "process")
 executor = Executor(app)
 CORS(app)
-TIMEOUT = 300
-current_job = []
+TIMEOUT = os.environ.get("TIMEOUT", 400)
 
 patch = open("./static/patches/shrink-dk64.bps", "rb")
 original = open("dk64.z64", "rb")
@@ -69,10 +68,6 @@ def generate(default_rom, generate_settings, queue, post_body):
 def start_gen(gen_key, post_body):
     """Start the generation process."""
     print("starting generation")
-    global current_job
-    if current_job is None:
-        current_job = []
-    current_job.append(gen_key)
     setting_data = post_body
     if not setting_data.get("seed"):
         setting_data["seed"] = random.randint(0, 100000000)
@@ -121,13 +116,11 @@ def start_gen(gen_key, post_body):
         else:
             patch = return_data["patch"]
             spoiler = return_data["spoiler"]
-            current_job.remove(gen_key)
             return patch, spoiler
 
     except Exception as e:
         if os.environ.get("HOSTED_SERVER") is not None:
             write_error(traceback.format_exc(), post_body)
-        current_job.remove(gen_key)
         print(traceback.format_exc())
         error = str(type(e).__name__) + ": " + str(e)
         return error
@@ -162,21 +155,18 @@ def lambda_function():
         gen_key = str(query_string.get("gen_key"))
         if executor.futures._futures.get(gen_key) and not executor.futures.done(gen_key):
             # We're not done generating yet
-            global current_job
-            if str(gen_key) in current_job:
-                response = make_response(json.dumps({"status": executor.futures._state(gen_key)}), 203)
-            else:
-                # Create an ordered dict of the existing future that are not done.
-                ordered_futures = {}
-                for key in executor.futures._futures:
-                    if not executor.futures.done(key):
-                        ordered_futures[key] = executor.futures._futures[key]
-
-                try:
-                    job_index = list(ordered_futures).index(gen_key)
-                except Exception:
-                    job_index = -1
-                response = make_response(json.dumps({"status": executor.futures._state(gen_key), "position": job_index}), 202)
+            # Create an ordered dict of the existing future that are not done.
+            ordered_futures = {}
+            for key in executor.futures._futures:
+                if not executor.futures.done(key) and not executor.futures.running(key):
+                    ordered_futures[key] = executor.futures._futures[key]
+            try:
+                job_index = list(ordered_futures).index(gen_key)
+                if job_index < 0:
+                    job_index = 0
+            except Exception as e:
+                job_index = 0
+            response = make_response(json.dumps({"status": executor.futures._state(gen_key), "position": job_index}), 202)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
             return response
