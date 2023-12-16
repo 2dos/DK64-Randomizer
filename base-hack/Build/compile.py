@@ -10,7 +10,7 @@ import requests
 avoids = []
 strict_aliasing_avoids = [
     "src/main.c",
-    "src/fixes/overlay_changes.c",
+    "src/overlays/changes.c",
     "src/initialization/init.c",
     "src/initialization/item_rando.c",
     "src/initialization/stack_trace.c",
