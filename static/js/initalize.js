@@ -732,12 +732,6 @@ function generate_seed(url, json, git_branch) {
         setTimeout(function () {
           generate_seed(url, json, git_branch);
         }, 5000);
-      } else if (xhr.status == 203) {
-        console.log("seed gen started");
-        postToastMessage("Seed Generation Started", false, 0.5);
-        setTimeout(function () {
-          generate_seed(url, json, git_branch);
-        }, 5000);
       } else if (xhr.status == 208) {
         console.log(data);
         postToastMessage(data, true, 1);
