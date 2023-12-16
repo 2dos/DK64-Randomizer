@@ -420,6 +420,8 @@ extern void ResetExtraData(extra_global_data data_type, int sub_index);
 extern void setKrushaAmmoColor(void);
 
 extern void loadWidescreen(overlays loaded_overlay);
+extern void writeFunctionLoop(void);
+extern void cFuncLoop(void);
 extern void initFilename(void);
 extern void* getPointerFile(int table, int file);
 extern void overlay_mod_menu(void);

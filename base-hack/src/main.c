@@ -17,6 +17,7 @@ char tag_locked = 0;
 
 
 void cFuncLoop(void) {
+	regularFrameLoop();
 	if (!delayed_load) {
 		// loadWidescreen(OVERLAY_BOOT);
 		delayed_load = 1;

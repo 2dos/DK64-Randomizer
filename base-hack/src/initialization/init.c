@@ -19,6 +19,10 @@ typedef struct musicInfo {
 	/* 0x000 */ short data[0xB0];
 } musicInfo;
 
+void writeFunctionLoop(void) {
+	writeFunction(0x805FC164, (int)&cFuncLoop);
+}
+
 void fixMusicRando(void) {
 	/**
 	 * @brief Initialize Music Rando so that the data for each song is correct.
@@ -197,7 +201,7 @@ void initHack(int source) {
 	/**
 	 * @brief Initialize Hack
 	 * 
-	 * @param source 0 = CFuncLoop, 1 = ROM Boot
+	 * @param source 0 = cFuncLoop, 1 = ROM Boot
 	 * 
 	 */
 	if (LoadedHooks == 0) {
