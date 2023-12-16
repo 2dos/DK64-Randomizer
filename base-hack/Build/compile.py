@@ -25,7 +25,6 @@ strict_aliasing_avoids = [
     "src/misc/enemy_drop_table.c",
     "src/misc/krusha.c",
     "src/pause/hints.c",
-    "src/randomizers/every_lz_rando.c",
     "src/randomizers/move_rando.c",
 ]
 strict_aliasing_avoids_backslash = [x.replace("/", "\\") for x in strict_aliasing_avoids]

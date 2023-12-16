@@ -573,7 +573,7 @@ extern purchase_struct CrankyMoves[5][7];
 extern purchase_struct CandyMoves[5][7];
 extern purchase_struct FunkyMoves[5][7];
 
-extern short LobbiesArray[8];
+extern short LobbiesArray[9]; // Should be 8, but dk64lol
 extern short WorldArray[8];
 extern short WorldExitArray[8];
 extern short WorldCutsceneArray[8];

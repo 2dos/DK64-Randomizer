@@ -1699,6 +1699,11 @@ typedef struct RandomSwitchesSetting {
 	/* 0x012 */ RandomSwitchesFungi fungi;
 } RandomSwitchesSetting;
 
+typedef struct LZREntrance {
+	/* 0x000 */ unsigned char map;
+	/* 0x001 */ unsigned char exit;
+} LZREntrance;
+
 typedef struct ROMFlags {
 	unsigned char plando : 1; // 0x80
 	unsigned char spoiler : 1; // 0x40

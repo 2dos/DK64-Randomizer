@@ -228,6 +228,14 @@ void setCrusher(void) {
 	}
 }
 
+void initiateLZRTransition(LZREntrance* entrance, maps vanilla_map) {
+	if (Rando.randomize_more_loading_zones) {
+		initiateTransition_0(entrance->map, entrance->exit, 0, 0);
+	} else {
+		initiateTransition_0(vanilla_map, 0, 0, 0);
+	}
+}
+
 int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2) {
 	/**
 	 * @brief Perform object script instructions. Can be called either through
@@ -243,11 +251,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					int gate_flag = -1;
 					switch (param2) {
 						case SEASICK_SHIP:
-							if (Rando.randomize_more_loading_zones) {
-								initiateTransition_0((Rando.seasick_ship_enter >> 8) & 0xFF, Rando.seasick_ship_enter & 0xFF, 0, 0);
-							} else {
-								initiateTransition_0(MAP_GALLEONSEASICKSHIP, 0, 0, 0);
-							}
+							initiateLZRTransition(&Rando.seasick_ship_enter, MAP_GALLEONSEASICKSHIP);
 							break;
 						case GALLEON_DKSTAR:
 							{
@@ -326,11 +330,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_AZTEC:
 				if (param2 == AZTEC_BEETLE_GRATE) {
-					if (Rando.randomize_more_loading_zones) {
-						initiateTransition_0((Rando.aztec_beetle_enter >> 8) & 0xFF, Rando.aztec_beetle_enter & 0xFF, 0, 0);
-					} else {
-						initiateTransition_0(MAP_AZTECBEETLE, 0, 0, 0);
-					}
+					initiateLZRTransition(&Rando.aztec_beetle_enter, MAP_AZTECBEETLE);
 				} else if (param2 == AZTEC_SNOOPDOOR) {
 					if (index == 0) {
 						// Flag Check
@@ -353,11 +353,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_FUNGI:
 				if (param2 == FUNGI_MINECART_GRATE) {
-					if (Rando.randomize_more_loading_zones) {
-						initiateTransition_0((Rando.fungi_minecart_enter >> 8) & 0xFF, Rando.fungi_minecart_enter & 0xFF, 0, 0);
-					} else {
-						initiateTransition_0(MAP_FUNGIMINECART, 0, 0, 0);
-					}
+					initiateLZRTransition(&Rando.fungi_minecart_enter, MAP_FUNGIMINECART);
 				} else if (param2 == FUNGI_BEANCONTROLLER) {
 					return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
 				} else if ((param2 == FUNGI_SWITCH_DAY) || (param2 == FUNGI_SWITCH_NIGHT)) {
@@ -369,7 +365,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case MAP_CASTLEBALLROOM:
 				if (param2 == BALLROOM_MONKEYPORT) {
 					if (Rando.randomize_more_loading_zones) {
-						createCollisionObjInstance(COLLISION_MAPWARP,(Rando.ballroom_to_museum >> 8 & 0xFF), Rando.ballroom_to_museum & 0xFF);
+						createCollisionObjInstance(COLLISION_MAPWARP, Rando.ballroom_to_museum.map, Rando.ballroom_to_museum.exit);
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,113,2);
 					}
@@ -378,7 +374,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case MAP_CASTLEMUSEUM:
 				if (param2 == MUSEUM_WARP_MONKEYPORT) {
 					if (Rando.randomize_more_loading_zones) {
-						createCollisionObjInstance(COLLISION_MAPWARP,(Rando.museum_to_ballroom >> 8 & 0xFF), Rando.museum_to_ballroom & 0xFF);
+						createCollisionObjInstance(COLLISION_MAPWARP, Rando.museum_to_ballroom.map, Rando.museum_to_ballroom.exit);
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,88,1);
 					}
