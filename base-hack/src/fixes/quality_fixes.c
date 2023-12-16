@@ -44,7 +44,7 @@ void qualityOfLife_fixes(void) {
 					Player->xPos = 317.0f;
 					Player->yPos = 124.0f;
 					Player->zPos = 295.0f;
-					displaySpriteAtXYZ(sprite_table[19], 0x3F800000, Player->xPos, Player->yPos, Player->zPos);
+					displaySpriteAtXYZ(sprite_table[19], 1.0f, Player->xPos, Player->yPos, Player->zPos);
 				}
 			}
 		} else {

@@ -33,7 +33,7 @@ typedef struct crash_handler_info {
     /* 0x124 */ int va;
     /* 0x128 */ char unk_128[0x12C-0x128];
     /* 0x12C */ int fcsr;
-    /* 0x130 */ float float_registers[32];
+    /* 0x130 */ int float_registers[32]; // float type, but will be represented as int on stack trace
 } crash_handler_info;
 
 static char* general_text[] = {

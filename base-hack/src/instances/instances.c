@@ -537,7 +537,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						if (actor != 0) {
 							getModelTwoItemFromActor(actor, &item, &scale);
 							if (item >= 0) {
-								spawnModelTwo(item, *(int*)&x, *(int*)&y, *(int*)&z, scale, 0x4);
+								spawnModelTwo(item, x, y, z, scale, 0x4);
 								int i = 0;
 								while (i < ObjectModel2Count) {
 									ModelTwoData* object = (ModelTwoData*)&ObjectModel2Pointer[i];
@@ -574,7 +574,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							int flag = normal_key_flags[world];
 							getModelTwoItemFromActor(getKeyItem(flag), &item, &scale);
 							if (item >= 0) {
-								spawnModelTwo(item, *(int*)&x, *(int*)&y, *(int*)&z, scale, 0x16);
+								spawnModelTwo(item, x, y, z, scale, 0x16);
 								int i = 0;
 								while (i < ObjectModel2Count) {
 									ModelTwoData* object = (ModelTwoData*)&ObjectModel2Pointer[i];

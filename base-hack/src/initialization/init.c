@@ -619,7 +619,7 @@ void initHack(int source) {
 			}
 			if (Rando.hard_mode.easy_fall) {
 				float fall_threshold = 100.0f;
-				*(short*)(0x806D3682) = *(short*)(&fall_threshold); // Change fall too far threshold
+				*(short*)(0x806D3682) = getFloatUpper(fall_threshold); // Change fall too far threshold
 				writeFunction(0x806D36B4, &fallDamageWrapper);
 				writeFunction(0x8067F540, &transformBarrelImmunity);
 			}

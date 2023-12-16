@@ -9,22 +9,9 @@ import requests
 # Compile C Code
 avoids = []
 strict_aliasing_avoids = [
-    "src/main.c",
-    "src/overlays/changes.c",
-    "src/initialization/init.c",
-    "src/initialization/item_rando.c",
-    "src/initialization/stack_trace.c",
     "src/initialization/text.c",
     "src/initialization/widescreen.c",
-    "src/instances/instances.c",
-    # Should be able to fix the below
-    "src/item rando/actors.c",
-    "src/item rando/enemy_items.c",
-    "src/item rando/item_grab.c",
-    "src/item rando/spawning.c",
-    "src/misc/enemy_drop_table.c",
     "src/misc/krusha.c",
-    "src/pause/hints.c",
 ]
 strict_aliasing_avoids_backslash = [x.replace("/", "\\") for x in strict_aliasing_avoids]
 print(strict_aliasing_avoids_backslash)

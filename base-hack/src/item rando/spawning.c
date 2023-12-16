@@ -10,7 +10,7 @@
  */
 #include "../../include/common.h"
 
-void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
+void spawnBonusReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1) {
     /**
      * @brief Spawn bonus reward
      * 
@@ -29,7 +29,7 @@ void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
         object = bonus_data[index].spawn_actor;
     }
     if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
-        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+        spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
     }
 }
 
@@ -61,10 +61,7 @@ void spawnMinecartReward(int object, int flag) {
     for (int i = 0; i < 95; i++) {
         if (bonus_data[i].flag == flag) {
             if (bonus_data[i].spawn_actor != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
-                int x_f = *(int*)(&Player->xPos);
-                int y_f = *(int*)(&Player->yPos);
-                int z_f = *(int*)(&Player->zPos);
-                spawnActorWithFlag(bonus_data[i].spawn_actor, x_f, y_f, z_f, 0, 0, flag, 0);
+                spawnActorWithFlag(bonus_data[i].spawn_actor, Player->xPos, Player->yPos, Player->zPos, 0, 0, flag, 0);
                 // spawnObjectAtActor(bonus_data[i].spawn_actor, flag); // Causes some interesting side-effects with collision
             }
             return;
@@ -72,7 +69,7 @@ void spawnMinecartReward(int object, int flag) {
     }
 }
 
-void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
+void spawnCrownReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1) {
     /**
      * @brief Spawn Crown Reward
      * 
@@ -90,11 +87,11 @@ void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsc
         object = new_obj;
     }
     if (object != (CUSTOM_ACTORS_START + NEWACTOR_NULL)) {
-        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+        spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
     }
 }
 
-void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
+void spawnBossReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1) {
     /**
      * @brief Spawn boss reward
      * 
@@ -116,9 +113,9 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
         if ((actor_master_types[object] == ACTORMASTER_SPRITE) && ((CurrentMap == MAP_FUNGIDOGADON) || (CurrentMap == MAP_AZTECDOGADON))) {
             // Sprite & Dogadon Fight
             cutscene = 1;
-            x_f = 0x43ED8000;
-            y_f = 0x43570000;
-            z_f = 0x443B8000;
+            x = 475.0f;
+            y = 215.0f;
+            z = 750.0f;
         } else if ((object != 72) && (CurrentMap == MAP_GALLEONPUFFTOSS)) {
             // Pufftoss - Not a key
             cutscene = 100;
@@ -127,13 +124,13 @@ void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutsce
             // AD2/MJ
             cutscene = 1;
         }
-        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+        spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
         // Fix items which have short spawn ranges
         ActorSpawnerPointer->spawn_range = 4000000.0f;
     }
 }
 
-void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1) {
+void spawnDirtPatchReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1) {
     /**
      * @brief Spawn dirt patch reward
      * 
@@ -154,7 +151,7 @@ void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int c
         if (isBounceObject(object)) {
             cutscene = 2;
         }
-        spawnActorWithFlag(object, x_f, y_f, z_f, unk0, cutscene, flag, unk1);
+        spawnActorWithFlag(object, x, y, z, unk0, cutscene, flag, unk1);
     }
 }
 
@@ -216,8 +213,8 @@ void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1,
     float y = collisionPos[1] + 15.0f;
     float z = collisionPos[2];
     for (int i = 0; i < spawn_count; i++) {
-        spawnActorWithFlag(object, *(int*)(&x), *(int*)(&y), *(int*)(&z), 0x400 * i, cutscene, flag, 0);
+        spawnActorWithFlag(object, x, y, z, 0x400 * i, cutscene, flag, 0);
     }
     unkSpriteRenderFunc_1(1);
-    displaySpriteAtXYZ(sprite_table[31], 0x40200000, x, y + 15.0f, z);
+    displaySpriteAtXYZ(sprite_table[31], 2.5f, x, y + 15.0f, z);
 }

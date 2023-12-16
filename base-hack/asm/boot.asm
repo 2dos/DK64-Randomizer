@@ -141,6 +141,14 @@ getObjectArrayAddr:
 	MFLO	a1
 	JR 		ra
 	ADD 	v0, a0, a1
+
+getFloatUpper:
+	; f12 = Float Value
+	mfc1 	$v0, $f12
+	sra 	$v0, $v0, 16
+	JR 		ra
+	andi 	$v0, $v0, 0xFFFF
+
 	
 .align 0x10
 END:

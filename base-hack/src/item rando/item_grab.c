@@ -178,7 +178,7 @@ void banana_medal_acquisition(int flag) {
         }
         if (song != SONG_SILENCE) {
             playSFX(0xF2);
-            playSong(song, 0x3F800000);
+            playSong(song, 1.0f);
         }
         if (sprite == 0) {
             if (sprite_index == -1) {
@@ -191,7 +191,7 @@ void banana_medal_acquisition(int flag) {
             unkSpriteRenderFunc_0();
             loadSpriteFunction(0x8071EFDC);
             
-            displaySpriteAtXYZ(sprite, 0x3F800000, reward_x, reward_y, -10.0f);
+            displaySpriteAtXYZ(sprite, 1.0f, reward_x, reward_y, -10.0f);
         }
         if (hh_item != HHITEM_NOTHING) {
             addHelmTime(hh_item, 1);
@@ -201,7 +201,7 @@ void banana_medal_acquisition(int flag) {
         unkSpriteRenderFunc(200);
         unkSpriteRenderFunc_0();
         loadSpriteFunction(0x8071EFDC);
-        displaySpriteAtXYZ(sprite_table[0x8E], 0x3F800000, reward_x, reward_y, -10.0f);
+        displaySpriteAtXYZ(sprite_table[0x8E], 1.0f, reward_x, reward_y, -10.0f);
     }
 }
 
@@ -210,7 +210,7 @@ static unsigned char key_index = 0;
 static char key_text[] = "KEY 0";
 static unsigned char old_keys = 0;
 
-void keyGrabHook(int song, int vol) {
+void keyGrabHook(int song, float vol) {
     /**
      * @brief Hook for grabbing a key
      */
@@ -469,13 +469,13 @@ void getItem(int object_type) {
         case 0x24:
         case 0x27:
             // Banana Coin
-            playSong(SONG_BANANACOINGET, *(int*)(&pickup_volume));
+            playSong(SONG_BANANACOINGET, pickup_volume);
             break;
         case 0x48:
         case 0x28F:
             // Company Coin
             if (Rando.item_rando) {
-                playSong(SONG_COMPANYCOINGET, *(int*)(&pickup_volume));
+                playSong(SONG_COMPANYCOINGET, pickup_volume);
             }
             hh_item = HHITEM_COMPANYCOIN;
             forceDance();
@@ -489,7 +489,7 @@ void getItem(int object_type) {
             applyDamage(0, 1);
         case 0x57:
             // Melon Slice
-            playSong(SONG_MELONSLICEDROP, *(int*)(&pickup_volume));
+            playSong(SONG_MELONSLICEDROP, pickup_volume);
             forceDance();
             break;
         case 0x59:
@@ -499,7 +499,7 @@ void getItem(int object_type) {
         case 0x1F5:
         case 0x1F6:
             // Potion
-            playSong(SONG_GUNGET, 0x3F800000);
+            playSong(SONG_GUNGET, 1.0f);
             if (!canDanceSkip()) {
                 setAction(0x29, 0, 0);
             }
@@ -508,7 +508,7 @@ void getItem(int object_type) {
         case 0x74:
         case 0x288:
             // GB
-            playSong(SONG_GBGET, 0x3F800000);
+            playSong(SONG_GBGET, 1.0f);
             if (!canDanceSkip()) {
                 setAction(0x29, 0, 0);
             }
@@ -516,11 +516,11 @@ void getItem(int object_type) {
             break;
         case 0x8E:
             // Crystal
-            playSong(SONG_CRYSTALCOCONUTGET, *(int*)(&pickup_volume));
+            playSong(SONG_CRYSTALCOCONUTGET, pickup_volume);
             break;
         case 0x90:
             // Medal
-            playSong(SONG_GBGET, 0x3F800000);
+            playSong(SONG_GBGET, 1.0f);
             BananaMedalGet();
             if (!canDanceSkip()) {
                 setAction(0x29, 0, 0);
@@ -533,7 +533,7 @@ void getItem(int object_type) {
             break;
         case 0xB7:
             // Rainbow Coin
-            playSong(SONG_RAINBOWCOINGET, *(int*)(&pickup_volume));
+            playSong(SONG_RAINBOWCOINGET, pickup_volume);
             hh_item = HHITEM_RAINBOWCOIN;
             setFlag(FLAG_FIRST_COIN_COLLECTION, 1, FLAGTYPE_PERMANENT);
             forceDance();
@@ -544,18 +544,18 @@ void getItem(int object_type) {
         case 0xE0:
         case 0xE1:
             // Blueprint
-            playSong(SONG_BLUEPRINTGET, *(int*)(&pickup_volume));
+            playSong(SONG_BLUEPRINTGET, pickup_volume);
             forceDance();
             hh_item = HHITEM_BLUEPRINT;
             break;
         case 0xEC:
         case 0x1D2:
             // Race Coin
-            playSong(SONG_MINECARTCOINGET, *(int*)(&pickup_volume));
+            playSong(SONG_MINECARTCOINGET, pickup_volume);
             break;
         case 0x13C:
             // Key
-            keyGrabHook(SONG_GBGET, 0x3F800000);
+            keyGrabHook(SONG_GBGET, 1.0f);
             if (!canDanceSkip()) {
                 int action = 0x29; // GB Get
                 if (inBossMap(CurrentMap, 1, 0, 0)) {
@@ -568,7 +568,7 @@ void getItem(int object_type) {
             break;
         case 0x18D:
             // Crown
-            playSong(SONG_GBGET, 0x3F800000);
+            playSong(SONG_GBGET, 1.0f);
             if (!canDanceSkip()) {
                 setAction(0x42, 0, 0);
             }
@@ -577,13 +577,13 @@ void getItem(int object_type) {
             break;
         case 0x198:
             // Bean
-            playSong(SONG_BEANGET, 0x3F800000);
+            playSong(SONG_BEANGET, 1.0f);
             hh_item = HHITEM_BEAN;
             forceDance();
             break;
         case 0x1B4:
             // Pearl
-            playSong(SONG_PEARLGET, 0x3F800000);
+            playSong(SONG_PEARLGET, 1.0f);
             hh_item = HHITEM_PEARL;
             forceDance();
             break;
@@ -598,7 +598,7 @@ void getItem(int object_type) {
         case 0x25B:
             song = instrument_songs[object_type - 0x257];
             if (song >= 0) {
-                playSong(song, 0x3F800000);
+                playSong(song, 1.0f);
             }
             if (!canDanceSkip()) {
                 setAction(0x42, 0, 0);
@@ -607,7 +607,7 @@ void getItem(int object_type) {
             // hh_item = HHITEM_KONG; // Ignored as it's handled in a separate case
             break;
         case 0x25C:
-            playSong(SONG_FAIRYTICK, 0x3F800000);
+            playSong(SONG_FAIRYTICK, 1.0f);
             hh_item = HHITEM_FAIRY;
             forceDance();
             break;

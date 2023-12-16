@@ -134,7 +134,7 @@ void indicateCollectionStatus(void) {
     }
     displaySpriteAtXYZ(
         sprite_table[sprite],
-        0x3F19999A,
+        0.6f,
         CurrentActorPointer_0->xPos + x_offset,
         CurrentActorPointer_0->yPos + y_offset,
         CurrentActorPointer_0->zPos + z_offset);
