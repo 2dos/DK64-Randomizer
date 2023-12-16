@@ -48,12 +48,7 @@ int getMoveKong(int value) {
 }
 
 move_block* getMoveBlock(void) {
-	int size = 0x200;
-	move_block* write_space = dk_malloc(size);
-	int* file_size;
-	*(int*)(&file_size) = size;
-	copyFromROM(0x1FEF000,write_space,&file_size,0,0,0,0);
-	return write_space;
+	return getFile(0x200, 0x1FEF000);
 }
 
 void moveTransplant(void) {
@@ -790,15 +785,14 @@ void getNextMoveText(void) {
 				start_y = (4 * SCREEN_HD_FLOAT) - 160.0f;
 			}
 			float position = start_y - (overlay_count * 100.0f); // Gap of 100.0f
-			int pos_f = *(int*)&position;
 			float move_x = 640.0f;
 			if (Rando.true_widescreen) {
 				move_x = SCREEN_WD_FLOAT * 2;
 			}
-			_guTranslateF(&mtx1, *(int*)(&move_x), pos_f, 0x0);
+			_guTranslateF(&mtx1, move_x, position, 0.0f);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->unk_10);
-			_guTranslateF(&mtx1, 0, 0x42400000, 0);
+			_guTranslateF(&mtx1, 0.0f, 48.0f, 0.0f);
 			_guMtxCatF(&mtx0, &mtx1, &mtx0);
 			_guMtxF2L(&mtx0, &paad->unk_50);
 			paad->timer = 0x82;

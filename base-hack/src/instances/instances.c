@@ -1209,10 +1209,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		// Bananaport generic code
 		if (!WarpData) {
 			int size = 90 * 10; // 90 Warps, 10 bytes per warp
-			WarpData = dk_malloc(size);
-			int* file_size;
-			*(int*)(&file_size) = size;
-			copyFromROM(0x1FF0000,WarpData,&file_size,0,0,0,0);
+			WarpData = getFile(size, 0x1FF0000);
 		}
 		bananaportGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -2) {

@@ -11,17 +11,6 @@
 
 #include "../../include/common.h"
 
-void* getFile(int size, int rom) {
-	/**
-	 * @brief Get file from ROM
-	 */
-	int* file_size;
-	*(int*)(&file_size) = size;
-	void* loc = dk_malloc(size);
-	copyFromROM(rom,loc,&file_size,0,0,0,0);
-	return loc;
-}
-
 void* getPointerFile(int table, int file) {
 	/**
 	 * @brief Get a pointer table file without using getMapData for instances where getMapData will crash the game.

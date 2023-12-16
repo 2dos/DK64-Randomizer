@@ -27,15 +27,10 @@ void fixMusicRando(void) {
 	if (Rando.music_rando_on) {
 		// Type bitfields
 		int size = SONG_COUNT << 1;
-		musicInfo* write_space = dk_malloc(size);
-		int* file_size;
-		*(int*)(&file_size) = size;
-		copyFromROM(0x1FFF000,write_space,&file_size,0,0,0,0);
+		musicInfo* write_space = getFile(size, 0x1FFF000);
 		// Type indexes
 		size = SONG_COUNT;
-		char* write_space_0 = dk_malloc(size);
-		*(int*)(&file_size) = size;
-		copyFromROM(0x1FEE200,write_space_0,&file_size,0,0,0,0);
+		char* write_space_0 = getFile(size, 0x1FEE200);
 		for (int i = 0; i < SONG_COUNT; i++) {
 			// Handle Bitfield
 			int subchannel = (write_space->data[i] & 6) >> 1;
@@ -116,9 +111,7 @@ void writeEndSequence(void) {
 	 * @brief Write our custom end sequence
 	 */
 	int size = 0x84;
-	int* file_size;
-	*(int*)(&file_size) = size;
-	copyFromROM(0x1FFF800,(int*)0x807506D0,&file_size,0,0,0,0);
+	copyFromROM(0x1FFF800,(int*)0x807506D0,&size,0,0,0,0);
 }
 
 float getOscillationDelta(void) {
@@ -241,10 +234,7 @@ void initHack(int source) {
 			if (Rando.fairy_rando_on) {
 				// Fairy Location Table
 				int fairy_size = 20<<2;
-				fairy_location_item* fairy_write = dk_malloc(fairy_size);
-				int* fairy_file_size;
-				*(int*)(&fairy_file_size) = fairy_size;
-				copyFromROM(0x1FFC000,fairy_write,&fairy_file_size,0,0,0,0);
+				fairy_location_item* fairy_write = getFile(fairy_size, 0x1FFC000);
 				for (int i = 0; i < (fairy_size >> 2); i++) {
 					for (int j = 0; j < 0x1F; j++) {
 						if (charspawnerflags[j].tied_flag == fairy_write[i].flag) {

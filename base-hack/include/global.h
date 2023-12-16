@@ -198,6 +198,8 @@ extern void fixRBSlowTurn(void);
 extern void postKRoolSaveCheck(void);
 extern int* displayHeadTexture(int* dl, int texture, float x, float y, float scale);
 
+extern void* getFile(int size, int rom);
+
 extern int CanDive_WithCheck(void);
 
 extern void tagBarrelBackgroundKong(int kong_actor);

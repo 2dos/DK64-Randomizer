@@ -355,10 +355,7 @@ static unsigned char wait_text_lengths[] = {19, 25, 26, 25};
 
 void insertROMMessages(void) {
 	for (int i = 0; i < 4; i++) {
-		unsigned char* message_write = dk_malloc(WAIT_SIZE);
-		int message_size = WAIT_SIZE;
-		int* message_file_size;
-		*(int*)(&message_file_size) = message_size;
+		unsigned char* message_write = getFile(WAIT_SIZE, 0x1FFD000 + (WAIT_SIZE * i));
 		void* ptr = 0;
 		if (i == 0) {
 			ptr = &wait_text_0;
@@ -369,7 +366,6 @@ void insertROMMessages(void) {
 		} else if (i == 3) {
 			ptr = &wait_text_3;
 		}
-		copyFromROM(0x1FFD000 + (WAIT_SIZE * i),message_write,&message_file_size,0,0,0,0);
 		if (message_write[0] != 0) {
 			dk_memcpy(ptr, message_write, WAIT_SIZE);
 			wait_text_lengths[i] = 0;
