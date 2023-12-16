@@ -271,162 +271,168 @@ int give_all_blueprints(int flag, int level, int kong_p) {
 	return given_bp;
 }
 
-void overlay_changes(void) {
-	/**
-	 * @brief All changes upon loading an overlay
-	 */
-	if ((CurrentMap == MAP_CRANKY) || (CurrentMap == MAP_CANDY) || (CurrentMap == MAP_FUNKY)) {
-		PatchCrankyCode(); // Change cranky code to handle an extra variable
-		*(int*)(0x80025E9C) = 0x0C009751; // Change writing of move to "write bitfield move" function call
-		writeJetpacMedalReq(); // Adjust medal requirement for Jetpac
-		// Apply shop hints
-		if (Rando.shop_hints) {
-			writeFunction(0x8002661C, &getMoveHint);
-			writeFunction(0x800265F0, &getMoveHint);
+void overlay_mod_menu(void) {
+	// Shops
+	PatchCrankyCode(); // Change cranky code to handle an extra variable
+	*(int*)(0x80025E9C) = 0x0C009751; // Change writing of move to "write bitfield move" function call
+	writeJetpacMedalReq(); // Adjust medal requirement for Jetpac
+	// Apply shop hints
+	if (Rando.shop_hints) {
+		writeFunction(0x8002661C, &getMoveHint);
+		writeFunction(0x800265F0, &getMoveHint);
+	}
+	// Change move purchase
+	writeFunction(0x80026720, &getNextMovePurchase);
+	writeFunction(0x8002683C, &getNextMovePurchase);
+	crossKongInit();
+	// Write Modified purchase move stuff
+	writeFunction(0x80027324, &purchaseMove);
+	writeFunction(0x8002691C, &purchaseMove);
+	writeFunction(0x800270B8, &showPostMoveText);
+	writeFunction(0x80026508, &canPlayJetpac);
+	*(int*)(0x80026F64) = 0; //  Disable check for whether you have a move before giving donation at shop
+	*(int*)(0x80026F68) = 0; //  Disable check for whether you have a move before giving donation at shop
+	if (CurrentMap == MAP_CRANKY) {
+		*(short*)(0x80026FBA) = 3; // Coconut giving cutscene
+		*(short*)(0x80026E6A) = 0xBD; // Cranky
+		*(short*)(0x80026E8E) = 5; // Coconuts
+		*(short*)(0x80026FB2) = 9999; // Change coconut gift from 6.6 coconuts to 66.6 coconuts
+	}
+
+	// Menu
+	*(short*)(0x8002E266) = 7; // Enguarde Arena Movement Write
+	*(short*)(0x8002F01E) = 7; // Rambi Arena Movement Write
+	for (int i = 0; i < 8; i++) {
+		// Main Menu moves given upon entering a boss/minigame
+		MainMenuMoves[i].moves = moves_values[i];
+	}
+	// Main Menu visual changes
+	writeFunction(0x80030604, &file_progress_screen_code); // New file progress code
+	writeFunction(0x80029FE0, &wipeFileMod); // Wipe File Hook
+	writeFunction(0x80028C88, &enterFileProgress); // Enter File Progress Screen Hook
+	*(int*)(0x80029818) = 0; // Hide A
+	*(int*)(0x80029840) = 0; // Hide B
+	// *(int*)(0x80029874) = 0; // Hide GB
+	int gb_x = 208;
+	int gh_y = 0x9A;
+	if (Rando.true_widescreen) {
+		gb_x = (SCREEN_WD >> 1) + 48; 
+		gh_y -= (DEFAULT_TRACKER_Y_OFFSET - getTrackerYOffset());
+	}
+	*(short*)(0x8002986E) = gb_x; // Move GB to right
+	*(short*)(0x80029872) = gh_y; // Move GB down
+	*(short*)(0x8002985A) = 0; // Change sprite mode for GB
+	*(float*)(0x80033CA8) = 0.4f; // Change GB Scale
+
+	// File Select
+	*(int*)(0x80028CB0) = 0xA0600000; // SB $r0, 0x0 (v0) - Always view file index 0
+	*(int*)(0x80028CC4) = 0; // Prevent file index overwrite
+	*(int*)(0x80028F88) = 0; // File 2 render
+	*(int*)(0x80028F60) = 0; // File 2 Opacity
+	*(int*)(0x80028FCC) = 0; // File 3 render
+	*(int*)(0x80028FA4) = 0; // File 3 Opacity
+	writeFunction(0x80028D04, &changeFileSelectAction); // File select change action
+	writeFunction(0x80028D10, &changeFileSelectAction_0); // File select change action
+	*(int*)(0x80028DB8) = 0x1040000A; // BEQ $v0, $r0, 0xA - Change text signal
+	*(short*)(0x80028CA6) = 5; // Change selecting orange to delete confirm screen
+
+	*(int*)(0x80028EF8) = 0; // Joystick
+
+	if (Rando.default_camera_mode) {
+		InvertedControls = 1;
+	}
+
+	// Options
+	initOptionScreen();
+	// Disable Multiplayer
+	*(int*)(0x800280B0) = 0; // Disable access
+	*(int*)(0x80028A8C) = 0; // Lower Sprite Opacity
+	if (ENABLE_FILENAME) {
+		initFilename();
+	}
+
+	// Force enable cheats
+	*(short*)(0x800280DC) = 0x1000; // Force access to mystery menu
+	*(short*)(0x80028A40) = 0x1000; // Force opaqueness
+	*(short*)(0x8002EA7C) = 0x1000; // Disable Cutscene Menu
+	*(short*)(0x8002EAF8) = 0x1000; // Disable Minigames Menu
+	*(short*)(0x8002EB70) = 0x1000; // Disable Bosses Menu
+	*(int*)(0x8002EBE8) = 0; // Disable Krusha Menu
+	*(short*)(0x8002EC18) = 0x1000; // Enable Cheats Menu
+	*(int*)(0x8002E8D8) = 0x240E0004; // Force cheats menu to start on page 4
+	*(short*)(0x8002E8F4) = 0x1000; // Disable edge cases
+	*(int*)(0x8002E074) = 0xA06F0000; // overflow loop to 1
+	*(int*)(0x8002E0F0) = 0x5C400004; // underflow loop from 1
+	*(short*)(0x8002EA3A) = 0xFFFE; // Disable option 1 load
+	*(int*)(0x8002EA4C) = 0xA0600003; // Force Krusha to 0
+	*(int*)(0x8002EA64) = 0xA64B0008; // Disable option 1 write
+
+	// Snide
+	*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
+	*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
+	if (Rando.item_rando) {		
+		writeFunction(0x80024CF0, &countFlagsDuplicate); // Flag change to FLUT
+		writeFunction(0x80024854, &checkFlagDuplicate); // Flag change to FLUT
+		writeFunction(0x80024880, &checkFlagDuplicate); // Flag change to FLUT
+		writeFunction(0x800248B0, &setFlagDuplicate); // Flag change to FLUT
+		if (Rando.quality_of_life.blueprint_compression) {
+			writeFunction(0x80024840, &give_all_blueprints); // Change initial check
+			*(int*)(0x80024850) = 0xAFA90040; // SW $t1, 0x40 ($sp)
+			*(int*)(0x80024854) = 0; // NOP
+			*(short*)(0x8002485C) = 0x1000; // Force Branch
 		}
-		// Change move purchase
-		writeFunction(0x80026720, &getNextMovePurchase);
-		writeFunction(0x8002683C, &getNextMovePurchase);
-		crossKongInit();
-		// Write Modified purchase move stuff
-		writeFunction(0x80027324, &purchaseMove);
-		writeFunction(0x8002691C, &purchaseMove);
-		writeFunction(0x800270B8, &showPostMoveText);
-		writeFunction(0x80026508, &canPlayJetpac);
-		*(int*)(0x80026F64) = 0; //  Disable check for whether you have a move before giving donation at shop
-		*(int*)(0x80026F68) = 0; //  Disable check for whether you have a move before giving donation at shop
-		if (CurrentMap == MAP_CRANKY) {
-			*(short*)(0x80026FBA) = 3; // Coconut giving cutscene
-			*(short*)(0x80026E6A) = 0xBD; // Cranky
-			*(short*)(0x80026E8E) = 5; // Coconuts
-			*(short*)(0x80026FB2) = 9999; // Change coconut gift from 6.6 coconuts to 66.6 coconuts
-		}
-	} else if (CurrentMap == MAP_MAINMENU) {
-		*(short*)(0x8002E266) = 7; // Enguarde Arena Movement Write
-		*(short*)(0x8002F01E) = 7; // Rambi Arena Movement Write
-		for (int i = 0; i < 8; i++) {
-			// Main Menu moves given upon entering a boss/minigame
-			MainMenuMoves[i].moves = moves_values[i];
-		}
-		// Main Menu visual changes
-		writeFunction(0x80030604, &file_progress_screen_code); // New file progress code
-		writeFunction(0x80029FE0, &wipeFileMod); // Wipe File Hook
-		writeFunction(0x80028C88, &enterFileProgress); // Enter File Progress Screen Hook
-		*(int*)(0x80029818) = 0; // Hide A
-		*(int*)(0x80029840) = 0; // Hide B
-		// *(int*)(0x80029874) = 0; // Hide GB
-		int gb_x = 208;
-		int gh_y = 0x9A;
-		if (Rando.true_widescreen) {
-			gb_x = (SCREEN_WD >> 1) + 48; 
-			gh_y -= (DEFAULT_TRACKER_Y_OFFSET - getTrackerYOffset());
-		}
-		*(short*)(0x8002986E) = gb_x; // Move GB to right
-		*(short*)(0x80029872) = gh_y; // Move GB down
-		*(short*)(0x8002985A) = 0; // Change sprite mode for GB
-		*(float*)(0x80033CA8) = 0.4f; // Change GB Scale
-
-		// File Select
-		*(int*)(0x80028CB0) = 0xA0600000; // SB $r0, 0x0 (v0) - Always view file index 0
-		*(int*)(0x80028CC4) = 0; // Prevent file index overwrite
-		*(int*)(0x80028F88) = 0; // File 2 render
-		*(int*)(0x80028F60) = 0; // File 2 Opacity
-		*(int*)(0x80028FCC) = 0; // File 3 render
-		*(int*)(0x80028FA4) = 0; // File 3 Opacity
-		writeFunction(0x80028D04, &changeFileSelectAction); // File select change action
-		writeFunction(0x80028D10, &changeFileSelectAction_0); // File select change action
-		*(int*)(0x80028DB8) = 0x1040000A; // BEQ $v0, $r0, 0xA - Change text signal
-		*(short*)(0x80028CA6) = 5; // Change selecting orange to delete confirm screen
-
-		*(int*)(0x80028EF8) = 0; // Joystick
-
-		if (Rando.default_camera_mode) {
-			InvertedControls = 1;
-		}
-
-		// Options
-		initOptionScreen();
-		// Disable Multiplayer
-		*(int*)(0x800280B0) = 0; // Disable access
-		*(int*)(0x80028A8C) = 0; // Lower Sprite Opacity
-		if (ENABLE_FILENAME) {
-			initFilename();
-		}
-
-		// Force enable cheats
-		*(short*)(0x800280DC) = 0x1000; // Force access to mystery menu
-		*(short*)(0x80028A40) = 0x1000; // Force opaqueness
-		*(short*)(0x8002EA7C) = 0x1000; // Disable Cutscene Menu
-		*(short*)(0x8002EAF8) = 0x1000; // Disable Minigames Menu
-		*(short*)(0x8002EB70) = 0x1000; // Disable Bosses Menu
-		*(int*)(0x8002EBE8) = 0; // Disable Krusha Menu
-		*(short*)(0x8002EC18) = 0x1000; // Enable Cheats Menu
-		*(int*)(0x8002E8D8) = 0x240E0004; // Force cheats menu to start on page 4
-		*(short*)(0x8002E8F4) = 0x1000; // Disable edge cases
-
-		*(int*)(0x8002E074) = 0xA06F0000; // overflow loop to 1
-		*(int*)(0x8002E0F0) = 0x5C400004; // underflow loop from 1
-		*(short*)(0x8002EA3A) = 0xFFFE; // Disable option 1 load
-		*(int*)(0x8002EA4C) = 0xA0600003; // Force Krusha to 0
-		*(int*)(0x8002EA64) = 0xA64B0008; // Disable option 1 write
-
-	} else if (CurrentMap == MAP_SNIDE) {
-		*(int*)(0x8002402C) = 0x240E000C; // No extra contraption cutscenes
-		*(int*)(0x80024054) = 0x24080001; // 1 GB Turn in
-		if (Rando.item_rando) {		
-			writeFunction(0x80024CF0, &countFlagsDuplicate); // Flag change to FLUT
-			writeFunction(0x80024854, &checkFlagDuplicate); // Flag change to FLUT
-			writeFunction(0x80024880, &checkFlagDuplicate); // Flag change to FLUT
-			writeFunction(0x800248B0, &setFlagDuplicate); // Flag change to FLUT
-			if (Rando.quality_of_life.blueprint_compression) {
-				writeFunction(0x80024840, &give_all_blueprints); // Change initial check
-				*(int*)(0x80024850) = 0xAFA90040; // SW $t1, 0x40 ($sp)
-				*(int*)(0x80024854) = 0; // NOP
-				*(short*)(0x8002485C) = 0x1000; // Force Branch
+	}
+	if (Rando.colorblind_mode != COLORBLIND_OFF) {
+		int colorblind_offset = 5 * (Rando.colorblind_mode - 1);
+		for (int i = 0; i < 16; i++) {
+			int mapping = i / 3;
+			if (mapping == 5) {
+				mapping = 4;
 			}
-		}
-		if (Rando.colorblind_mode != COLORBLIND_OFF) {
-			int colorblind_offset = 5 * (Rando.colorblind_mode - 1);
-			for (int i = 0; i < 16; i++) {
-				int mapping = i / 3;
-				if (mapping == 5) {
-					mapping = 4;
-				}
-				rgb color = colorblind_colors[colorblind_offset + mapping];
-				BlueprintLargeImageColors[i].red = color.red;
-				BlueprintLargeImageColors[i].green = color.green;
-				BlueprintLargeImageColors[i].blue = color.blue;
-			}
-		}
-	} else if (CurrentMap == MAP_HELM) {
-		// Initialize Helm
-		HelmInit(0);
-	} else if (CurrentMap == MAP_HELMLOBBY) {
-		// Prevent Helm Lobby B. Locker requiring Chunky
-		*(short*)(0x80027970) = 0x1000;
-	} else if (CurrentMap == MAP_KROOLCHUNKY) {
-		// Add chunky phase microhint
-		if ((Rando.microhints != MICROHINTS_NONE) && (MovesBase[0].simian_slam < 2)) {
-			*(short*)(0x800359A8) = 14; // Microhint Cutscene
-			*(int*)(0x80028D54) = 0; // Delete flag set
-		}
-		if (DAMAGE_MASKING) {
-			writeFunction(0x80031524, &applyDamageMask);
+			rgb color = colorblind_colors[colorblind_offset + mapping];
+			BlueprintLargeImageColors[i].red = color.red;
+			BlueprintLargeImageColors[i].green = color.green;
+			BlueprintLargeImageColors[i].blue = color.blue;
 		}
 	}
-	if (inTraining(CurrentMap)) {
-		*(int*)(0x80029610) = 0; // Disable set flag
-		writeFunction(0x80029638, &warpOutOfTraining);
-		*(int*)(0x80029644) = 0;
-		*(short*)(0x8002968E) = 1; // Set timer to 1
-		//*(int*)(0x80029314) = 0x2406000A; // Set ticking timer to 10s
+
+	// Menu Overlay - Candy's Shop Glitch
+	*(short*)(0x80027678) = 0x1000;
+	*(short*)(0x8002769C) = 0x1000;
+}
+
+void overlay_mod_critter(void) {
+	// Prevent Helm Lobby B. Locker requiring Chunky
+	*(short*)(0x80027970) = 0x1000;
+
+	// Training
+	*(int*)(0x80029610) = 0; // Disable set flag
+	writeFunction(0x80029638, &warpOutOfTraining);
+	*(int*)(0x80029644) = 0;
+	*(short*)(0x8002968E) = 1; // Set timer to 1
+	//*(int*)(0x80029314) = 0x2406000A; // Set ticking timer to 10s
+
+	writeFunction(0x80028080, &displayBFIMoveText); // BFI Text Display
+	if (Rando.rareware_gb_fairies > 0) {
+		*(int*)(0x80027E70) = 0x2C410000 | Rando.rareware_gb_fairies; // SLTIU $at, $v0, count
+		*(short*)(0x80027E74) = 0x1420; // BNEZ $at, 0x6
 	}
-	if (inBattleCrown(CurrentMap)) {
-		// Change crown spawn
-		if (Rando.item_rando) {
-			writeFunction(0x8002501C, &spawnCrownReward); // Crown Spawn
-		}
+	if (Rando.item_rando) {
+		writeFunction(0x80027E68, &fairyQueenCutsceneInit); // BFI, Init Cutscene Setup
+		writeFunction(0x80028104, &fairyQueenCutsceneCheck); // BFI, Cutscene Play
 	}
+}
+
+void overlay_mod_boss(void) {
+	// Add chunky phase microhint
+	if ((Rando.microhints != MICROHINTS_NONE) && (MovesBase[0].simian_slam < 2)) {
+		*(short*)(0x800359A8) = 14; // Microhint Cutscene
+		*(int*)(0x80028D54) = 0; // Delete flag set
+	}
+	if (DAMAGE_MASKING) {
+		writeFunction(0x80031524, &applyDamageMask);
+	}
+	
 	// Change Dillo Health based on map
 	if (Rando.short_bosses) {
 		if ((CurrentMap == MAP_JAPESDILLO) || (DestMap == MAP_JAPESDILLO)) {
@@ -435,133 +441,144 @@ void overlay_changes(void) {
 			actor_health_damage[185].init_health = 3; // Dillo Health - AD2
 		}
 	}
+
+	// Shoe
+	if (Rando.randomize_toes) {
+		for (int i = 0; i < 5; i++) {
+			ToeSet1[(4 * i) + 2] = Rando.k_rool_toes[i];
+			ToeSet2[(4 * i) + 2] = Rando.k_rool_toes[5 + i];
+		}
+	}
+	if (Rando.quality_of_life.vanilla_fixes) {
+		if (!(MovesBase[KONG_TINY].weapon_bitfield & 1)) {
+			*(int*)(0x8002FFE0) = 0; // Control State patch
+			*(int*)(0x8002FFE8) = 0; // Control State progress patch
+		}
+	}
+
+	writeFunction(0x8002D20C, &SpiderBossExtraCode); // Handle preventing spider boss being re-fightable
+
+	if (Rando.item_rando) {
+		writeFunction(0x80028650, &spawnBossReward); // Key Spawn
+	}
+	PatchKRoolCode();
+	if (Rando.quality_of_life.vanilla_fixes) {
+		*(short*)(0x800359A6) = 3; // Fix cutscene bug
+	}
+
+	// Change phase reset differential to 40.0f units
+	*(short*)(0x80033B26) = 0x4220; // Jumping Around
+	*(short*)(0x800331AA) = 0x4220; // Random Square
+	*(short*)(0x800339EE) = 0x4220; // Stationary
+	if (Rando.hard_mode.bosses) {
+		float targ_speed = 3.0f;
+		*(float*)(0x80036C40) = targ_speed; // Phase 1 Jump speed
+		*(float*)(0x80036C44) = targ_speed; // Phase 2
+		*(float*)(0x80036C48) = targ_speed; // ...
+		*(float*)(0x80036C4C) = targ_speed;
+		*(float*)(0x80036C50) = targ_speed;
+		*(short*)(0x8003343A) = 0x224; // Force fast jumps
+	}
+}
+
+void overlay_mod_bonus(void) {
+	// Change crown spawn
+	if (Rando.item_rando) {
+		writeFunction(0x8002501C, &spawnCrownReward); // Crown Spawn
+	}
+	*(short*)(0x80024266) = 1; // Set Minigame oranges as infinite
+
+	writeFunction(0x8002D6A8, &warpOutOfArenas); // Enable the two arenas to be minigames
+	writeFunction(0x8002D31C, &ArenaTagKongCode); // Tag Rambi/Enguarde Instantly
+	writeFunction(0x8002D6DC, &ArenaEarlyCompletionCheck); // Check completion
+	if (!isGamemode(GAMEMODE_DKBONUS, 0)) {
+		*(int*)(0x8002D628) = 0x016FC022; // sub $t8, $t3, $t7 - Rambi Arena
+		*(int*)(0x8002D658) = 0x03224822; // sub $t1, $t9, $v0 - Enguarde Arena
+	}
+
+	if (Rando.misc_cosmetic_on) {
+		*(short*)(0x8002A55E) = 0x21 + Rando.pppanic_klaptrap_color; // PPPanic Klaptrap Color
+		*(short*)(0x8002C22E) = 0x21 + Rando.sseek_klaptrap_color; // SSeek Klaptrap Color
+	}
+
+	// Krazy Kong Klamour - Adjsut flicker speeds
+	PatchBonusCode();
+	// Adjust Krazy KK Flicker Speeds
+	// Defaults: 48/30. Start: 60. Flicker Thresh: -30. Scaling: 2.7
+	*(unsigned short*)(0x800293E6) = 130; // V Easy
+	*(unsigned short*)(0x800293FA) = 130; // Easy
+	*(unsigned short*)(0x8002940E) = 81; // Medium
+	*(unsigned short*)(0x80029422) = 81; // Hard
+	*(unsigned short*)(0x800295D2) = 162; // Start
+	*(unsigned short*)(0x800297D8) = 0x916B; // LB -> LBU
+	*(short*)(0x800297CE) = -81; // Flicker Threshold
+	if (Rando.disco_chunky) {
+		KrazyKKModels[4] = 0xE; // Change to disco chunky model
+	}
+	if (Rando.krusha_slot != -1) {
+		KrazyKKModels[(int)Rando.krusha_slot] = 0xDB; // Change to krusha model
+	}
+
+	if (Rando.pppanic_fairy_model) {
+		*(short*)(0x8002a656) = Rando.pppanic_fairy_model;
+	}
+	if (Rando.tttrouble_turtle_model) {
+		*(short*)(0x80028776) = Rando.tttrouble_turtle_model;
+	}
+}
+
+void overlay_mod_race(void) {
+	writeCoinRequirements(1);
+
+	if (Rando.fast_gbs) {
+		*(short*)(0x8002D03A) = 0x0001; // Fac Car Race 1 Lap
+		*(short*)(0x8002D096) = 0x0001; // Cas Car Race 1 Lap
+		*(short*)(0x8002D0E2) = 0x0001; // Seal Race 1 Lap
+	}
+}
+
+void overlay_changes(void) {
+	/**
+	 * @brief All changes upon loading an overlay
+	 */
+	overlays loaded_overlay = getOverlayFromMap(CurrentMap);
+	switch (loaded_overlay) {
+		case OVERLAY_MENU:
+			// Also contains shops
+			overlay_mod_menu();
+			break;
+		case OVERLAY_CRITTER:
+			// Known as "Water" in Ghidra repo
+			overlay_mod_critter();
+			break;
+		case OVERLAY_BOSS:
+			overlay_mod_boss();
+			break;
+		case OVERLAY_BONUS:
+			overlay_mod_bonus();
+			break;
+		case OVERLAY_ARCADE:
+			initArcade();
+			break;
+		case OVERLAY_JETPAC:
+			initJetpac();
+			break;
+		case OVERLAY_RACE:
+			overlay_mod_race();
+			break;
+		default:
+			break;
+	}
+	if (CurrentMap == MAP_HELM) {
+		// Initialize Helm
+		HelmInit(0);
+	}
 	if (ObjectModel2Timer < 2) {
 		// Wipe warp data pointer to prevent pointing to free memory
 		WarpData = 0;
 	}
-	if (CurrentMap == MAP_DKARCADE) { // Arcade
-		initArcade();
-	} else if (CurrentMap == MAP_JETPAC) { // Jetpac
-		initJetpac();
-	}
-	writeCoinRequirements(1);
 	fixTBarrelsAndBFI(0);
-	if ((*(int*)(0x807FBB64) << 1) & 0x80000000) {
-		// Menu Overlay - Candy's Shop Glitch
-		*(short*)(0x80027678) = 0x1000;
-		*(short*)(0x8002769C) = 0x1000;
-	} else if (*(int*)(0x807FBB64) & 0x104000) { // Minigames
-		*(short*)(0x80024266) = 1; // Set Minigame oranges as infinite
-	}
-	if (CurrentMap == MAP_FAIRYISLAND) { // BFI
-		writeFunction(0x80028080, &displayBFIMoveText); // BFI Text Display
-		if (Rando.rareware_gb_fairies > 0) {
-			*(int*)(0x80027E70) = 0x2C410000 | Rando.rareware_gb_fairies; // SLTIU $at, $v0, count
-			*(short*)(0x80027E74) = 0x1420; // BNEZ $at, 0x6
-		}
-		if (Rando.item_rando) {
-			writeFunction(0x80027E68, &fairyQueenCutsceneInit); // BFI, Init Cutscene Setup
-			writeFunction(0x80028104, &fairyQueenCutsceneCheck); // BFI, Cutscene Play
-		}
-	}
-	if (CurrentMap == MAP_KROOLSHOE) {
-		// Shoe
-		if (Rando.randomize_toes) {
-			for (int i = 0; i < 5; i++) {
-				ToeSet1[(4 * i) + 2] = Rando.k_rool_toes[i];
-				ToeSet2[(4 * i) + 2] = Rando.k_rool_toes[5 + i];
-			}
-		}
-		if (Rando.quality_of_life.vanilla_fixes) {
-			if (!(MovesBase[KONG_TINY].weapon_bitfield & 1)) {
-				*(int*)(0x8002FFE0) = 0; // Control State patch
-				*(int*)(0x8002FFE8) = 0; // Control State progress patch
-			}
-		}
-	} else if (CurrentMap == MAP_FUNGISPIDER) {
-		writeFunction(0x8002D20C, &SpiderBossExtraCode); // Handle preventing spider boss being re-fightable
-	} else if ((CurrentMap == MAP_RAMBIARENA) || (CurrentMap == MAP_ENGUARDEARENA)) {
-		writeFunction(0x8002D6A8, &warpOutOfArenas); // Enable the two arenas to be minigames
-		writeFunction(0x8002D31C, &ArenaTagKongCode); // Tag Rambi/Enguarde Instantly
-		writeFunction(0x8002D6DC, &ArenaEarlyCompletionCheck); // Check completion
-		if (!isGamemode(GAMEMODE_DKBONUS, 0)) {
-			*(int*)(0x8002D628) = 0x016FC022; // sub $t8, $t3, $t7 - Rambi Arena
-			*(int*)(0x8002D658) = 0x03224822; // sub $t1, $t9, $v0 - Enguarde Arena
-		}
-	}
-	if (inBossMap(CurrentMap, 1, 1, 1)) {
-		if (Rando.item_rando) {
-			writeFunction(0x80028650, &spawnBossReward); // Key Spawn
-		}
-		PatchKRoolCode();
-		if (Rando.quality_of_life.vanilla_fixes) {
-			*(short*)(0x800359A6) = 3; // Fix cutscene bug
-		}
-	}
-	loadWidescreen(getOverlayFromMap(CurrentMap));
-	if (Rando.misc_cosmetic_on) {
-		if ((CurrentMap >= MAP_PPPANIC_VEASY) && (CurrentMap <= MAP_PPPANIC_HARD)) {
-			// PPPanic
-			*(short*)(0x8002A55E) = 0x21 + Rando.pppanic_klaptrap_color; // PPPanic Klaptrap Color
-		}
-		if ((CurrentMap == MAP_SEARCHLIGHT_VEASY) || ((CurrentMap >= MAP_SEARCHLIGHT_EASY) && (CurrentMap <= MAP_SEARCHLIGHT_HARD))) {
-			// SSeek
-			*(short*)(0x8002C22E) = 0x21 + Rando.sseek_klaptrap_color; // SSeek Klaptrap Color
-		}
-	}
-	if ((CurrentMap == MAP_KLAMOUR_EASY) || ((CurrentMap >= MAP_KLAMOUR_NORMAL) && (CurrentMap <= MAP_KLAMOUR_INSANE))) {
-		// Krazy Kong Klamour - Adjsut flicker speeds
-		PatchBonusCode();
-		// Adjust Krazy KK Flicker Speeds
-		// Defaults: 48/30. Start: 60. Flicker Thresh: -30. Scaling: 2.7
-		*(unsigned short*)(0x800293E6) = 130; // V Easy
-		*(unsigned short*)(0x800293FA) = 130; // Easy
-		*(unsigned short*)(0x8002940E) = 81; // Medium
-		*(unsigned short*)(0x80029422) = 81; // Hard
-		*(unsigned short*)(0x800295D2) = 162; // Start
-		*(unsigned short*)(0x800297D8) = 0x916B; // LB -> LBU
-		*(short*)(0x800297CE) = -81; // Flicker Threshold
-		if (Rando.disco_chunky) {
-			KrazyKKModels[4] = 0xE; // Change to disco chunky model
-		}
-		if (Rando.krusha_slot != -1) {
-			KrazyKKModels[(int)Rando.krusha_slot] = 0xDB; // Change to krusha model
-		}
-	}
-	if (CurrentMap == MAP_FACTORYJACK) { // Mad Jack
-		// Change phase reset differential to 40.0f units
-		*(short*)(0x80033B26) = 0x4220; // Jumping Around
-		*(short*)(0x800331AA) = 0x4220; // Random Square
-		*(short*)(0x800339EE) = 0x4220; // Stationary
-		if (Rando.hard_mode.bosses) {
-			float targ_speed = 3.0f;
-			*(float*)(0x80036C40) = targ_speed; // Phase 1 Jump speed
-			*(float*)(0x80036C44) = targ_speed; // Phase 2
-			*(float*)(0x80036C48) = targ_speed; // ...
-			*(float*)(0x80036C4C) = targ_speed;
-			*(float*)(0x80036C50) = targ_speed;
-			*(short*)(0x8003343A) = 0x224; // Force fast jumps
-		}
-	}
-	if (getOverlayFromMap(CurrentMap) == OVERLAY_BONUS) {
-		if (Rando.pppanic_fairy_model) {
-			*(short*)(0x8002a656) = Rando.pppanic_fairy_model;
-		}
-		if (Rando.tttrouble_turtle_model) {
-			*(short*)(0x80028776) = Rando.tttrouble_turtle_model;
-		}
-	}
-	if (Rando.fast_gbs) {
-		if (CurrentMap == MAP_FACTORYCARRACE) { // Factory Car Race
-			*(short*)(0x8002D03A) = 0x0001; // 1 Lap
-		}
-		if(CurrentMap == MAP_CASTLECARRACE) { //Castle Car Race
-			*(short*)(0x8002D096) = 0x0001; // 1 Lap
-		}
-		if(CurrentMap == MAP_GALLEONSEALRACE) { //Seal Race
-			*(short*)(0x8002D0E2) = 0x0001; // 1 Lap
-		}
-	}
+	loadWidescreen(loaded_overlay);
 }
 
 void parseCutsceneData(void) {
