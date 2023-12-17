@@ -22,26 +22,26 @@ jobs:
         run: pip install bump2version
 
       - name: Determine Version Increment
-        id: version-bump
+        id: bump
         run: |
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
           echo "Branch: $BRANCH_NAME, Commit Message: $COMMIT_MESSAGE"
           if [[ "$BRANCH_NAME" == "master" ]]; then
             echo "Bumping major version"
-            VERSION_PART="major"
+            echo "VERSION_PART=major" >> $GITHUB_OUTPUT
           elif [[ "$BRANCH_NAME" == "dev" ]]; then
             if [[ "$COMMIT_MESSAGE" == *"Breaks older cosmetics packs"* ]]; then
               echo "Bumping minor version"
-              VERSION_PART="minor"
+              echo "VERSION_PART=minor" >> $GITHUB_OUTPUT
             else
               echo "Bumping patch version"
-              VERSION_PART="patch"
+              echo "VERSION_PART=patch" >> $GITHUB_OUTPUT
             fi
           fi
 
       - name: Bump Version
-        run: bump2version $VERSION_PART
+        run: bump2version ${{ steps.bump.outputs.VERSION_PART }}
 
       - name: Push Changes
         uses: ad-m/github-push-action@master
