@@ -1,0 +1,50 @@
+---
+name: Bump Version
+on:
+  push:
+    branches: [ master, dev]
+jobs:
+  version-bump:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup python
+        uses: actions/setup-python@v4.1.0
+        with:
+            python-version: 3.10.9
+            architecture: x64
+
+      - name: Install bump2version
+        run: pip install bump2version
+
+      - name: Determine Version Increment
+        id: version-bump
+        run: |
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          echo "Branch: $BRANCH_NAME, Commit Message: $COMMIT_MESSAGE"
+          if [[ "$BRANCH_NAME" == "master" ]]; then
+            echo "Bumping major version"
+            VERSION_PART="major"
+          elif [[ "$BRANCH_NAME" == "dev" ]]; then
+            if [[ "$COMMIT_MESSAGE" == *"Breaks older cosmetics packs"* ]]; then
+              echo "Bumping minor version"
+              VERSION_PART="minor"
+            else
+              echo "Bumping patch version"
+              VERSION_PART="patch"
+            fi
+          fi
+
+      - name: Bump Version
+        run: bump2version $VERSION_PART
+
+      - name: Push Changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
