@@ -46,7 +46,7 @@ async def initialize():
 
     templateEnv = Environment(loader=FunctionLoader(loader_func), enable_async=True)
     template = templateEnv.get_template("frontpage.html.jinja2")
-    rendered = await template.render(version=version)
+    rendered = await template.render(version=version.version)
     js.document.documentElement.innerHTML = ""
     js.document.open()
     js.document.write(rendered)

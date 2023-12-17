@@ -1607,34 +1607,12 @@ class Settings:
         """
         return json.dumps(self.__dict__)
 
-    @staticmethod
-    def __get_hash():
-        """Get the hash value of all of the source code loaded."""
-        return whl_hash
-
-    def compare_hash(self, hash):
-        """Compare our hash with a passed hash value."""
-        if self.__hash != hash:
-            raise Exception("Error: Comparison failed, Hashes do not match.")
-
-    def verify_hash(self):
-        """Verify our hash files match our existing code."""
-        try:
-            if self.__hash == self.__get_hash():
-                return True
-            else:
-                raise Exception("Error: Hashes do not match")
-        except Exception:
-            return False
-
     def __setattr__(self, name, value):
         """Set an attributes value but only after verifying our hash."""
-        self.verify_hash()
         super().__setattr__(name, value)
 
     def __delattr__(self, name):
         """Delete an attribute if its not our settings hash or if the code has been modified."""
-        self.verify_hash()
         if name == "_Settings__hash":
             raise Exception("Error: Attempted deletion of race hash.")
         super().__delattr__(name)
