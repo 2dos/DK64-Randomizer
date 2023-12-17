@@ -5,6 +5,7 @@ import random
 from random import randint
 
 import randomizer.ItemPool as ItemPool
+import randomizer.Lists.Exceptions as Ex
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -134,6 +135,7 @@ class Settings:
             self.plandomizer_dict["plando_kasplats"] = -1
             self.plandomizer_dict["plando_wrinkly_doors"] = -1
             self.plandomizer_dict["plando_tns_portals"] = -1
+            self.plandomizer_dict["plando_starting_exit"] = -1
             # ---------------------------------------------------
             # Prevent custom locations selected for plandomizer from being used by a different randomizer
             self.plandomizer_dict["reserved_custom_locations"] = {
@@ -1560,20 +1562,38 @@ class Settings:
         ]
         selected_region_world = random.choice(region_data)
         valid_starting_regions = []
-        for region in selected_region_world:
-            region_data = selected_region_world[region]
-            transitions = [
-                x.exitShuffleId
-                for x in region_data.exits
-                if x.exitShuffleId is not None and x.exitShuffleId in ShufflableExits and ShufflableExits[x.exitShuffleId].back.reverse is not None and not x.isGlitchTransition
-            ]
+        if self.enable_plandomizer and self.plandomizer_dict["plando_starting_exit"] != -1:
+            # Plandomizer code for random starting location
+            planned_transition = self.plandomizer_dict["plando_starting_exit"]
+            region = ShufflableExits[planned_transition].back.regionId
+            planned_back_transition = ShufflableExits[planned_transition].back
+            region_name = ""
+            for data in region_data:
+                if region in data.keys():
+                    region_name = data[region].name
+            if region_name == "":
+                raise Ex.PlandoIncompatibleException(f"No region found for {planned_transition}")
             if region in RegionMapList:
-                # Has tied map
                 tied_map = GetMapId(region)
-                for transition in transitions:
-                    relevant_transition = ShufflableExits[transition].back.reverse
-                    tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
-                    valid_starting_regions.append({"region": region, "map": tied_map, "exit": tied_exit, "region_name": region_data.name, "exit_name": ShufflableExits[relevant_transition].back.name})
+                tied_exit = GetExitId(planned_back_transition)
+                valid_starting_regions.append({"region": region, "map": tied_map, "exit": tied_exit, "region_name": region_name, "exit_name": ShufflableExits[planned_transition].back.name})
+            else:
+                raise Ex.PlandoIncompatibleException(f"Starting position {planned_transition} has no map")
+        else:
+            for region in selected_region_world:
+                region_data = selected_region_world[region]
+                transitions = [
+                    x.exitShuffleId
+                    for x in region_data.exits
+                    if x.exitShuffleId is not None and x.exitShuffleId in ShufflableExits and ShufflableExits[x.exitShuffleId].back.reverse is not None and not x.isGlitchTransition
+                ]
+                if region in RegionMapList:
+                    # Has tied map
+                    tied_map = GetMapId(region)
+                    for transition in transitions:
+                        relevant_transition = ShufflableExits[transition].back.reverse
+                        tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
+                        valid_starting_regions.append({"region": region, "map": tied_map, "exit": tied_exit, "region_name": region_data.name, "exit_name": ShufflableExits[relevant_transition].back.name})
         self.starting_region = random.choice(valid_starting_regions)
         for x in range(2):
             randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
