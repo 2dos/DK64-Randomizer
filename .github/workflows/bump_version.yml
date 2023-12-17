@@ -12,8 +12,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - uses: fregante/setup-git-user@v2
-
       - name: Setup python
         uses: actions/setup-python@v4.1.0
         with:
@@ -28,6 +26,8 @@ jobs:
         run: |
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          git config --global user.email "bump2version@dk64randomizer.com"
+          git config --global user.name "Bump2Version"
           echo "Branch: $BRANCH_NAME, Commit Message: $COMMIT_MESSAGE"
           if [[ "$BRANCH_NAME" == "master" ]]; then
             echo "Bumping major version"
