@@ -45,8 +45,14 @@ jobs:
       - name: Bump Version
         run: bump2version ${{ steps.bump.outputs.VERSION_PART }}
 
+      - id: create_token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: "715479"
+          private_key: ${{ secrets.BRANCHPROTECTION }}
+
       - name: Push Changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ steps.create_token.outputs.token }}
           branch: ${{ github.ref }}
