@@ -44,7 +44,7 @@ from randomizer.Patching.Lib import IsItemSelected, SwitchInfo
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
-from version import whl_hash
+from version import version as randomizer_version
 
 
 class Settings:
@@ -56,8 +56,8 @@ class Settings:
         Args:
             form_data (dict): Post data from the html form.
         """
-        self.__hash = self.__get_hash()
-        self.public_hash = self.__get_hash()
+        self.__hash = randomizer_version
+        self.public_hash = randomizer_version
         self.algorithm = FillAlgorithm.forward
         self.generate_main()
         self.generate_progression()
