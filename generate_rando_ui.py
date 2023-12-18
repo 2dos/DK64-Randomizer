@@ -13,10 +13,7 @@ async def initialize():
     # await micropip.install("pyodide-importer")
     url = js.window.location.origin
     await micropip.install(
-        [
-            f"{url}/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl",
-            f"{url}/static/js/pyodide/Pillow-10.0.0-cp311-cp311-emscripten_3_1_45_wasm32.whl"
-        ],
+        [f"{url}/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl", f"{url}/static/js/pyodide/Pillow-10.0.0-cp311-cp311-emscripten_3_1_45_wasm32.whl"],
         deps=False,
     )
     if js.location.hostname in ["dev.dk64randomizer.com", "dk64randomizer.com"]:
@@ -53,10 +50,12 @@ async def initialize():
     def ajax_call(file):
         resp = js.getFile(file)
         return resp
+
     milliseconds = int(round(time.time() * 1000))
 
     def loader_func(template_name):
         return ajax_call("templates/" + f"{template_name}?currtime={milliseconds}")
+
     for file in json.loads(ajax_call(f"static/presets/preset_files.json?currtime={milliseconds}")).get("progression"):
         js.progression_presets.append(json.loads(ajax_call("static/presets/" + file)))
     for file in json.loads(ajax_call(f"static/presets/weights/weights_files.json?currtime={milliseconds}")).get("random_settings"):
