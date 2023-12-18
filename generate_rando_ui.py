@@ -6,7 +6,6 @@ import micropip
 from jinja2 import Environment, FunctionLoader
 
 import js
-from js import document
 
 
 async def initialize():
@@ -14,15 +13,7 @@ async def initialize():
     # await micropip.install("pyodide-importer")
     url = js.window.location.origin
     await micropip.install(
-        [
-            f"{url}/static/py_libraries/charset_normalizer-2.1.0-py3-none-any.whl",
-            f"{url}/static/py_libraries/urllib3-1.26.11-py2.py3-none-any.whl",
-            f"{url}/static/py_libraries/certifi-2022.6.15-py3-none-any.whl",
-            f"{url}/static/py_libraries/idna-3.3-py3-none-any.whl",
-            f"{url}/static/py_libraries/requests-2.28.1-py3-none-any.whl",
-            f"{url}/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl",
-            "pillow",
-        ],
+        [f"{url}/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl", f"{url}/static/js/pyodide/Pillow-10.0.0-cp311-cp311-emscripten_3_1_45_wasm32.whl"],
         deps=False,
     )
     if js.location.hostname in ["dev.dk64randomizer.com", "dk64randomizer.com"]:
@@ -60,14 +51,13 @@ async def initialize():
         resp = js.getFile(file)
         return resp
 
+    milliseconds = int(round(time.time() * 1000))
+
     def loader_func(template_name):
-        milliseconds = int(round(time.time() * 1000))
         return ajax_call("templates/" + f"{template_name}?currtime={milliseconds}")
 
-    milliseconds = int(round(time.time() * 1000))
     for file in json.loads(ajax_call(f"static/presets/preset_files.json?currtime={milliseconds}")).get("progression"):
         js.progression_presets.append(json.loads(ajax_call("static/presets/" + file)))
-    milliseconds = int(round(time.time() * 1000))
     for file in json.loads(ajax_call(f"static/presets/weights/weights_files.json?currtime={milliseconds}")).get("random_settings"):
         js.random_settings_presets.append(json.loads(ajax_call("static/presets/weights/" + file)))
 

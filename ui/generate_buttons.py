@@ -3,7 +3,7 @@ import asyncio
 import json
 import random
 
-from pyodide import create_proxy
+from pyodide.ffi import create_proxy
 
 import js
 from randomizer.Enums.Settings import SettingsMap
