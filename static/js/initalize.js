@@ -236,6 +236,27 @@ function music_filebox() {
   input.click();
 }
 
+var imported_music_json = "";
+
+function music_selection_filebox() {
+  let input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".json";
+
+  input.onchange = async (e) => {
+    let file = e.target.files[0];
+    let json_text = await file.text();
+    imported_music_json = json_text;
+    pyodide.runPythonAsync(`
+      import js
+      from ui.music_select import import_music_selections
+      import_music_selections(js.imported_music_json)
+    `);
+  };
+
+  input.click();
+}
+
 function cosmetic_pack_event(fileToLoad, isInitialLoad = false) {
   var fileReader = new FileReader();
   fileReader.onload = function (fileLoadedEvent) {
