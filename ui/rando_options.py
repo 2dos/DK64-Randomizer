@@ -904,6 +904,19 @@ def item_rando_list_changed(evt):
         smaller_shops.checked = False
 
 
+def should_reset_select_on_preset(selectElement):
+    """Return true if the element should be reset when applying a preset."""
+    if js.document.querySelector("#nav-cosmetics").contains(selectElement):
+        return False
+    if selectElement.name.startswith("plando_"):
+        return False
+    if selectElement.name.startswith("music_select_"):
+        return False
+    if selectElement.id == "random-weights":
+        return False
+    return True
+
+
 @bind("click", "apply_preset")
 def preset_select_changed(event):
     """Trigger a change of the form via the JSON templates."""
@@ -916,7 +929,7 @@ def preset_select_changed(event):
         # Pass in setting string
         settings = decrypt_settings_string_enum(presets["settings_string"])
         for select in js.document.getElementsByTagName("select"):
-            if js.document.querySelector("#nav-cosmetics").contains(select) is False and not select.name.startswith("plando_"):
+            if should_reset_select_on_preset(select):
                 select.selectedIndex = -1
         # Uncheck all starting move radio buttons for the import to then set them correctly
         for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:

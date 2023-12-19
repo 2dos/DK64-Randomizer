@@ -198,22 +198,9 @@ def validate_music_file(fileContents: dict) -> None:
         validate_custom_song(song)
 
 
-@bind("click", "import_music_selections")
-def music_filebox(evt):
-    """Open a file upload prompt and begin importing music selections."""
-    input = js.document.createElement("input")
-    input.type = "file"
-    input.accept = ".json"
-
-    input.onchange = lambda e: import_music_selections(e.target.files.item(0))
-
-    input.click()
-
-
-async def import_music_selections(file) -> None:
-    """Import music selections from a JSON file."""
-    fileText = await file.text()
-    fileContents = json.loads(fileText)
+async def import_music_selections(jsonString) -> None:
+    """Import music selections from a JSON string."""
+    fileContents = json.loads(jsonString)
 
     # Inform the user their current settings will be erased.
     if not js.window.confirm("This will replace your current music selections. Continue?"):
