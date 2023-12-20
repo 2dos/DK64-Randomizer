@@ -94,7 +94,7 @@ async def initialize():
         select_songs=PlannableSongs,
     )
     # get the "tab-data" div and replace it with the rendered template
-    js.document.getElementById("tab-data").innerHTML = rendered
+    js.jquery("#tab-data").html(rendered)
 
 
 # Run the script (This will be run as async later on)
