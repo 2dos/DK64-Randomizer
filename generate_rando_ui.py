@@ -93,10 +93,8 @@ async def initialize():
         select_song_panel=MusicSelectionPanel,
         select_songs=PlannableSongs,
     )
-    js.document.documentElement.innerHTML = ""
-    js.document.open()
-    js.document.write(rendered)
-    js.document.close()
+    # get the "tab-data" div and replace it with the rendered template
+    js.document.getElementById("tab-data").innerHTML = rendered
 
 
 # Run the script (This will be run as async later on)
