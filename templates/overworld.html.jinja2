@@ -27,14 +27,16 @@
                     </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                               title="Levels will have key elements of them pre-opened:&#10;- Jungle Japes coconut gates that lead to caves and feather gate to the giant tree area.&#10;- Angry Aztec door that connects the two portions of the level.&#10;- Frantic Factory gate to the right of the entrance.&#10;- Gloomy Galleon gate to the Lighthouse area (Shipyard area open by default).&#10;- Fungi Forest gates to the worm and hollow tree areas.">
+                            title="Various barriers to progression will be removed.">
                             <input class="form-check-input"
-                                   type="checkbox"
-                                   name="open_levels"
-                                   value="True"/>
-                            Open Levels
+                                type="checkbox"
+                                name="remove_barriers_enabled"
+                                id="remove_barriers_enabled"
+                                value="True"/>
+                            Remove Barriers
                         </label>
-                    </div>
+                        {{ list_selector(remove_barriers, "remove_barriers", "REMOVE BARRIERS", "This will open a popup that will let you customize what barriers are removed.&#10;This defaults to All options.", 12) }}
+                        {# Remove end </div> as it's included in the macro for formatting #}
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                title="Simian Slam switches will be adjusted to match the level order so that tougher switches will always be in later levels.&#10;The first four levels will have green switches, the next two will have blue and the final level will have red switches.&#10;In LZR, these are assigned to random levels with no regard for level order.">
@@ -47,22 +49,16 @@
                     </div>
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                               title="Speeds up areas locked behind slow/high requirements:&#10;- Aztec: 5 Door Temple Switches Spawned&#10;- Factory: Prod Room On&#10;- Galleon: K Rool Ship Spawned&#10;- Galleon: Instruments open 5 Door Ship Permanently&#10;- Caves: 5 Door Igloo Pads Spawned">
-                            <input class="form-check-input" type="checkbox" name="high_req" value="True"/>
-                            Remove High Requirements
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
-                               title="Speeds up several of the 'Slower' Checks in the game.">
-                            <input class="form-check-input" type="checkbox" name="fast_gbs" value="True"/>
+                            title="Speeds up several of the 'Slower' Checks in the game.">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="faster_checks_enabled"
+                                id="faster_checks_enabled"
+                                value="True"/>
                             Faster Checks
                         </label>
-                        <a href="https://github.com/2dos/DK64-Randomizer/wiki/Feature-Explanations#faster-checks"
-                           target="_blank">
-                            <img class="icon" src="./static/img/external_link.png">
-                        </a>
-                    </div>
+                        {{ list_selector(faster_checks, "faster_checks", "FASTER CHECKS", "This will open a popup that will let you customize what checks are sped up.&#10;This defaults to All options.", 12) }}
+                        {# Remove end </div> as it's included in the macro for formatting #}
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                title="Donkey Kong 64 with a few twists:&#10;- Hideout Helm timer starts as soon as you load up a file.&#10;- Picking up a blueprint gives you 2 extra minutes on the clock. Each kong freed gives you 5 minutes. Every Golden Banana collected gives you 30 seconds.&#10;- As soon as the time runs out, saving is disabled on your file.&#10;Aim is to get the highest percentage you can before the clock runs out.">
@@ -86,6 +82,7 @@
                             Smaller Shops
                         </label>
                     </div>
+                    <div class="spacer"></div>
                     </div>
                     <div class="flex-container">
                         <div class="item-select">

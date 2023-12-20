@@ -260,7 +260,8 @@
         "brighten_mad_maze_maul_enemies": 0.5,
         "raise_fungi_dirt_patch": 0.75,
         "global_instrument": 1,
-        "fast_pause_transitions": 0.9
+        "fast_pause_transitions": 0.9,
+        "cannon_game_better_control": 0.5
     },
     "more_cutscene_skips": {
         "off": 0.1,

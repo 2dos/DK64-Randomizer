@@ -8,11 +8,13 @@ from randomizer.Enums.Settings import (
     BananaportRando,
     CrownEnemyRando,
     DamageAmount,
+    FasterChecksSelected,
     FungiTimeSetting,
     GalleonWaterSetting,
     HardModeSelected,
     HelmDoorItem,
     MiscChangesSelected,
+    RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
     WrinklyHints,
@@ -27,7 +29,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Lists.EnemyTypes import Enemies, EnemySelector
 from randomizer.Lists.HardMode import HardSelector
-from randomizer.Lists.QoL import QoLSelector
+from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector
 from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
@@ -65,6 +67,20 @@ class BooleanProperties:
         self.offset = offset
         self.target = target
 
+def writeMultiselector(enabled: bool, enabled_selections: list, selector: list[dict], selection_enum, data_length: int, ROM_COPY: LocalROM, write_start: int):
+    """Write multiselector choices to ROM."""
+    if enabled:
+        force = len(enabled_selections) == 0
+        write_data = [0] * data_length
+        for item in selector:
+            if item["shift"] >= 0:
+                if force or selection_enum[item["value"]] in enabled_selections:
+                    offset = int(item["shift"] >> 3)
+                    check = int(item["shift"] % 8)
+                    write_data[offset] |= 0x80 >> check             
+        ROM_COPY.seek(write_start)
+        for byte_data in write_data:
+            ROM_COPY.writeMultipleBytes(byte_data, 1)
 
 def patching_response(spoiler):
     """Apply the patch data to the ROM in the local server to be returned to the client."""
@@ -197,7 +213,6 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.shorten_boss, 0x13B),  # Shorten Boss Fights
         BooleanProperties(spoiler.settings.fast_warps, 0x13A),  # Fast Warps
         BooleanProperties(spoiler.settings.high_req, 0x179),  # Remove High Requirements
-        BooleanProperties(spoiler.settings.fast_gbs, 0x17A),  # Fast GBs
         BooleanProperties(spoiler.settings.auto_keys, 0x15B),  # Auto-Turn Keys
         BooleanProperties(spoiler.settings.tns_location_rando, 0x10E),  # T&S Portal Location Rando
         BooleanProperties(spoiler.settings.cb_rando, 0x10B),  # Remove Rock Bunch
@@ -306,20 +321,10 @@ def patching_response(spoiler):
         ROM_COPY.seek(sav + 0x113)
         ROM_COPY.write(old | 2)
     # Quality of Life
-    if spoiler.settings.quality_of_life:
-        enabled_qol = spoiler.settings.misc_changes_selected.copy()
-        if len(enabled_qol) == 0:
-            for item in QoLSelector:
-                enabled_qol.append(MiscChangesSelected[item["value"]])
-        write_data = [0] * 3
-        for item in QoLSelector:
-            if MiscChangesSelected[item["value"]] in enabled_qol and item["shift"] >= 0:
-                offset = int(item["shift"] >> 3)
-                check = int(item["shift"] % 8)
-                write_data[offset] |= 0x80 >> check
-        ROM_COPY.seek(sav + 0x0B0)
-        for byte_data in write_data:
-            ROM_COPY.writeMultipleBytes(byte_data, 1)
+    writeMultiselector(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, QoLSelector, MiscChangesSelected, 3, ROM_COPY, sav + 0x0B0)
+    writeMultiselector(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarrierSelector, RemovedBarriersSelected, 2, ROM_COPY, sav + 0x1DE)
+    writeMultiselector(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterCheckSelector, FasterChecksSelected, 2, ROM_COPY, sav + 0x1E0)
+
 
     # Hard Mode
     if spoiler.settings.hard_mode:

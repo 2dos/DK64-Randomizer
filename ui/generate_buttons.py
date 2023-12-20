@@ -21,6 +21,8 @@ from ui.rando_options import (
     disable_excluded_songs_modal,
     disable_hard_mode_modal,
     disable_helm_hurry,
+    disable_remove_barriers,
+    disable_faster_checks,
     disable_helm_phases,
     disable_krool_phases,
     disable_move_shuffles,
@@ -147,6 +149,8 @@ def import_settings_string(event):
     disable_hard_mode_modal(None)
     toggle_bananaport_selector(None)
     disable_helm_hurry(None)
+    disable_remove_barriers(None)
+    disable_faster_checks(None)
     toggle_logic_type(None)
     toggle_key_settings(None)
     disable_krool_phases(None)

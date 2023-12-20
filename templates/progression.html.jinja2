@@ -62,45 +62,47 @@
                 {% endfor %}
             </table>
             <div class="flex-container">
-                <div class="group-spacer"></div>
-                <div class="item-group">
-                    <p class="select-title">B Locker Max:</p>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend"
-                             data-toggle="tooltip"
-                             title="Check box to ensure Helm is 'Max Value'.">
-                            <div class="input-group-text">
-                                <input type="checkbox"
-                                       value="True"
-                                       id="maximize_helm_blocker"
-                                       name="maximize_helm_blocker">
+                <div style="width:50%">
+                    <div class="item-group" style="margin-left:auto;margin-right:auto">
+                        <p class="select-title">B Locker Max:</p>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend"
+                                data-toggle="tooltip"
+                                title="Check box to ensure Helm is 'Max Value'.">
+                                <div class="input-group-text">
+                                    <input type="checkbox"
+                                        value="True"
+                                        id="maximize_helm_blocker"
+                                        name="maximize_helm_blocker">
+                                </div>
                             </div>
+                            <input class="form-control"
+                                min="0"
+                                max="200"
+                                name="blocker_text"
+                                id="blocker_text"
+                                type="number"
+                                data-toggle="tooltip"
+                                title="Maximum Randomized value"
+                                default="50"
+                                placeholder="50"/>
                         </div>
-                        <input class="form-control"
-                               min="0"
-                               max="200"
-                               name="blocker_text"
-                               id="blocker_text"
-                               type="number"
-                               data-toggle="tooltip"
-                               title="Maximum Randomized value"
-                               default="50"
-                               placeholder="50"/>
                     </div>
                 </div>
-                <div class="group-spacer"></div>
-                <div class="item-group">
-                    <p class="select-title">Troff N' Scoff Max:</p>
-                    <input class="form-control"
-                           min="0"
-                           max="500"
-                           name="troff_text"
-                           id="troff_text"
-                           type="number"
-                           data-toggle="tooltip"
-                           title="Maximum Randomized value"
-                           default="300"
-                           placeholder="300"/>
+                <div style="width:50%">
+                    <div class="item-group" style="margin-left:auto;margin-right:auto">
+                        <p class="select-title">Troff N' Scoff Max:</p>
+                        <input class="form-control"
+                            min="0"
+                            max="500"
+                            name="troff_text"
+                            id="troff_text"
+                            type="number"
+                            data-toggle="tooltip"
+                            title="Maximum Randomized value"
+                            default="300"
+                            placeholder="300"/>
+                    </div>
                 </div>
             </div>
             <hr>
@@ -276,6 +278,17 @@
                                     id="krool_access"
                                     value="True"/>
                             Key 8 Required
+                        </label>
+                    </div>
+                    <div class="form-check form-switch item-switch center-flex">
+                        <label data-toggle="tooltip"
+                                title="K. Rool will require only keys 3 and 8 to appear, just like in the vanilla game.">
+                            <input class="form-check-input"
+                                    type="checkbox"
+                                    name="k_rool_vanilla_requirement"
+                                    id="k_rool_vanilla_requirement"
+                                    value="True"/>
+                            Vanilla K. Rool Requirement
                         </label>
                     </div>
                 </div>
