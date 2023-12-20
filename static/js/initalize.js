@@ -560,6 +560,19 @@ function write_seed_history(seed_id, seed_data, seed_hash) {
       seed_id: seed_id,
       date: now,
     });
+    // Write it to most_recent_seed_id and most_recent_seed_date on the UI page so we can display it
+    document.getElementById("most_recent_seed_id").innerHTML = "<strong>Most Recent Seed ID:</strong> " + seed_id;
+    document.getElementById("most_recent_seed_date").innerHTML = "<strong>Most Recent Seed Date:</strong> " + now.toLocaleDateString(
+      undefined,
+      {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }
+    );
   } catch {}
 }
 
@@ -603,6 +616,9 @@ function load_old_seeds() {
           option_el.lanky_data = sorted_array[i].value;
           hook.appendChild(option_el);
         }
+        // Write the most recent seed to the UI
+        document.getElementById("most_recent_seed_id").innerHTML = "<strong>Most Recent Seed ID:</strong> " + sorted_array[0].seed_id;
+        document.getElementById("most_recent_seed_date").innerHTML = "<strong>Most Recent Seed Date:</strong> " + sorted_array[0].date.toLocaleDateString( undefined, {  year: "numeric",  month: "short",  day: "2-digit",  hour: "2-digit",  minute: "2-digit",  second: "2-digit",});
       } catch {}
     };
   } catch {}
