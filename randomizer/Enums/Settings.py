@@ -159,12 +159,13 @@ class FasterChecksSelected(IntEnum):
     galleon_seal_race = 6
     galleon_mech_fish = 7
     galleon_mermaid_gb = 8
-    forest_owl_race = 9
-    forest_rabbit_race = 10
-    caves_ice_tomato_minigame = 11
-    castle_minecart = 12
-    castle_car_race = 13
-    jetpac = 14
+    forest_mill_conveyor = 9
+    forest_owl_race = 10
+    forest_rabbit_race = 11
+    caves_ice_tomato_minigame = 12
+    castle_minecart = 13
+    castle_car_race = 14
+    jetpac = 15
 
 class FillAlgorithm(IntEnum):
     """The algorithm used for placing items.

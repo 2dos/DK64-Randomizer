@@ -70,6 +70,7 @@ FasterCheckItems = [
 	MultiselectorItem("Galleon Seal Race", 13, "The race will be shortened to 1 lap, instead of 2."),
 	MultiselectorItem("Galleon Mech Fish", 3, "You will only need to shoot each target once, instead of 3 times."),
 	MultiselectorItem("Galleon Mermaid GB", 5, "The mermaid will only ask for 1 pearl instead of all 5"),
+	MultiselectorItem("Forest Mill Conveyor", -1, "The lever combination will consist of only 3 numbers instead of 5."),
 	MultiselectorItem("Forest Owl Race", 6, "The owl race will only require you to fly through 8 rings instead of 16."),
 	MultiselectorItem("Forest Rabbit Race", 7, "You will only be tasked with beating the 2nd rabbit race. Beating that race will give you both the reward for the 1st and 2nd races."),
 	MultiselectorItem("Caves Ice Tomato Minigame", 8, "The tile flip minigame will only have a 30 second timer, instead of 60."),
