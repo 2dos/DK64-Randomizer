@@ -67,6 +67,7 @@ class BooleanProperties:
         self.offset = offset
         self.target = target
 
+
 def writeMultiselector(enabled: bool, enabled_selections: list, selector: list[dict], selection_enum, data_length: int, ROM_COPY: LocalROM, write_start: int):
     """Write multiselector choices to ROM."""
     if enabled:
@@ -77,10 +78,11 @@ def writeMultiselector(enabled: bool, enabled_selections: list, selector: list[d
                 if force or selection_enum[item["value"]] in enabled_selections:
                     offset = int(item["shift"] >> 3)
                     check = int(item["shift"] % 8)
-                    write_data[offset] |= 0x80 >> check             
+                    write_data[offset] |= 0x80 >> check
         ROM_COPY.seek(write_start)
         for byte_data in write_data:
             ROM_COPY.writeMultipleBytes(byte_data, 1)
+
 
 def patching_response(spoiler):
     """Apply the patch data to the ROM in the local server to be returned to the client."""
@@ -325,7 +327,7 @@ def patching_response(spoiler):
 
     keys = 0xFF
     if spoiler.settings.k_rool_vanilla_requirement:
-        keys = 0x84 # 8765 4321 bitfield, only enable the keys 3 and 8 bits, meaning 0b1000 0100, which is 0x84
+        keys = 0x84  # 8765 4321 bitfield, only enable the keys 3 and 8 bits, meaning 0b1000 0100, which is 0x84
     ROM_COPY.seek(sav + 0x1DD)
     ROM_COPY.write(keys)
 

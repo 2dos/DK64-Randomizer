@@ -1365,6 +1365,7 @@ def disable_helm_hurry(evt):
     except AttributeError:
         pass
 
+
 @bind("click", "remove_barriers_enabled")
 def disable_remove_barriers(evt):
     """Disable Helm Hurry Selector when Helm Hurry is off."""
@@ -1379,6 +1380,7 @@ def disable_remove_barriers(evt):
             selector.removeAttribute("disabled")
     except AttributeError:
         pass
+
 
 @bind("click", "faster_checks_enabled")
 def disable_faster_checks(evt):

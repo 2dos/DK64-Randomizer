@@ -144,6 +144,7 @@ class ExtraCutsceneSkips(IntEnum):
     press = 1
     auto = 2
 
+
 class FasterChecksSelected(IntEnum):
     """Various faster check changes that can be applied.
 
@@ -166,6 +167,7 @@ class FasterChecksSelected(IntEnum):
     castle_minecart = 13
     castle_car_race = 14
     jetpac = 15
+
 
 class FillAlgorithm(IntEnum):
     """The algorithm used for placing items.
@@ -543,6 +545,7 @@ class RandomPrices(IntEnum):
     medium = 3
     high = 4
     extreme = 5
+
 
 class RemovedBarriersSelected(IntEnum):
     """Various barriers that can be removed that can be applied.
@@ -1150,7 +1153,7 @@ SettingsStringListTypeMap = {
     SettingsStringEnum.hard_mode_selected: HardModeSelected,
     SettingsStringEnum.starting_move_list_selected: Items,
     SettingsStringEnum.random_starting_move_list_selected: Items,
-    SettingsStringEnum.remove_barriers_enabled: RemovedBarriersSelected,
+    SettingsStringEnum.remove_barriers_selected: RemovedBarriersSelected,
     SettingsStringEnum.faster_checks_selected: FasterChecksSelected,
 }
 

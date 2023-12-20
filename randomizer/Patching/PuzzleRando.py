@@ -163,9 +163,10 @@ def shortenCastleMinecart(spoiler):
         for y in x:
             ROM_COPY.writeMultipleBytes(y, 1)
 
+
 class PuzzleRandoBound:
     """Class to store information regarding the bounds of a puzzle requirement."""
-    
+
     def __init__(self, lower: int, upper: int):
         """Initialize with given parameters."""
         self.lower = lower
@@ -176,12 +177,12 @@ class PuzzleRandoBound:
         """Generate random requirement between the upper and lower bounds."""
         self.selected = random.randint(self.lower, self.upper)
         return self.selected
-    
+
 
 class PuzzleItem:
     """Class to store information regarding a puzzle requirement."""
 
-    def __init__(self, name: str, offset: int, normal_bound: PuzzleRandoBound, fast_bound: PuzzleRandoBound=None, fast_check_setting:FasterChecksSelected=None):
+    def __init__(self, name: str, offset: int, normal_bound: PuzzleRandoBound, fast_bound: PuzzleRandoBound = None, fast_check_setting: FasterChecksSelected = None):
         """Initialize with given parameters."""
         self.name = name
         self.offset = offset
