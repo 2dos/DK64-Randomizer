@@ -452,9 +452,9 @@
                         // we want to parse the last_generated_time to just how long its been since then the format is "2023-12-20 10:40:42.962004"
                         // We want to tell them X Minutes/Seconds/Days ago
                         var last_generated_time = data.last_generated_time;
-                        var last_generated_time = new Date(last_generated_time);
-                        var now = new Date();
-                        var diff = now - last_generated_time;
+                        var last_generated_time_utc = new Date(last_generated_time + 'Z');
+                        var now_utc = new Date(Date.now());
+                        var diff = now_utc - last_generated_time_utc;
                         var seconds = Math.floor(diff / 1000);
                         var minutes = Math.floor(seconds / 60);
                         var hours = Math.floor(minutes / 60);
@@ -477,8 +477,11 @@
                         else if (minutes > 0) {
                             time_since_generated = minutes + " minutes ago";
                         }
-                        else {
+                        else if (seconds > 0) {
                             time_since_generated = seconds + " seconds ago";
+                        }
+                        else {
+                            time_since_generated = "just now";
                         }
 
                         $("#total_generated_seeds").html("<strong>Total Generated Seeds:</strong> " + data.total_seeds);
