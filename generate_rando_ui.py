@@ -95,7 +95,6 @@ async def initialize():
     )
     # get the "tab-data" div and replace it with the rendered template
     js.document.getElementById("tab-data").innerHTML = rendered
-    
 
 
 # Run the script (This will be run as async later on)
