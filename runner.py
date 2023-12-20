@@ -22,6 +22,7 @@ from randomizer.Settings import Settings
 from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.Spoiler import Spoiler
 from git import Repo
+from datetime import datetime as Datetime
 
 local_repo = Repo(path="./")
 local_branch = local_repo.active_branch.name
@@ -39,6 +40,14 @@ except Exception:
     # If we can't read the file, just set it to 0 in the file.
     with open("current_total.cfg", "w") as f:
         f.write("0")
+last_generated_time = Datetime.now()
+try:
+    with open("last_generated_time.cfg", "r") as f:
+        last_generated_time = Datetime.strptime(f.read(), "%Y-%m-%d %H:%M:%S.%f")
+except Exception:
+    # If we can't read the file, just set it to 0 in the file.
+    with open("last_generated_time.cfg", "w") as f:
+        f.write(str(last_generated_time))
 TIMEOUT = os.environ.get("TIMEOUT", 400)
 
 patch = open("./static/patches/shrink-dk64.bps", "rb")
@@ -237,7 +246,7 @@ def lambda_function():
 @app.route("/current_total", methods=["GET"])
 def get_current_total():
     """Get the current total seeds generated."""
-    response = make_response(json.dumps({"total_seeds": current_total}), 200)
+    response = make_response(json.dumps({"total_seeds": current_total, "last_generated_time": last_generated_time.strftime("%Y-%m-%d %H:%M:%S.%f")}), 200)
     response.mimetype = "application/json"
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
@@ -249,3 +258,7 @@ def update_total():
     current_total += 1
     with open("current_total.cfg", "w") as f:
         f.write(str(current_total))
+    global last_generated_time
+    last_generated_time = Datetime.now()
+    with open("last_generated_time.cfg", "w") as f:
+        f.write(str(last_generated_time))
