@@ -40,7 +40,7 @@ except Exception:
     # If we can't read the file, just set it to 0 in the file.
     with open("current_total.cfg", "w") as f:
         f.write("0")
-last_generated_time = Datetime.now()
+last_generated_time = Datetime.utcnow()
 try:
     with open("last_generated_time.cfg", "r") as f:
         last_generated_time = Datetime.strptime(f.read(), "%Y-%m-%d %H:%M:%S.%f")
@@ -259,6 +259,6 @@ def update_total():
     with open("current_total.cfg", "w") as f:
         f.write(str(current_total))
     global last_generated_time
-    last_generated_time = Datetime.now()
+    last_generated_time = Datetime.utcnow()
     with open("last_generated_time.cfg", "w") as f:
         f.write(str(last_generated_time))

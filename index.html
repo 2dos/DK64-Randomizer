@@ -183,32 +183,154 @@
 </section>
 </div>
 <footer id="footer">
-    <div class="center">
-        <a href="https://github.com/2dos/DK64-Randomizer"
-           target="_blank"
-           style="text-decoration: none">
-            <img src="./static/img/github.png" alt="GitHub" />
-        </a>
-        <a href="https://github.com/2dos/DK64-Randomizer/wiki"
-           target="_blank"
-           style="text-decoration: none">
-            <img src="./static/img/wiki.png" alt="Wiki" />
-        </a>
-        <a href="https://discord.dk64randomizer.com"
-           target="_blank"
-           style="text-decoration: none">
-            <img src="./static/img/discord.png" alt="Discord" />
-        </a>
-    </div>
-    <div class="center" style="font-size: small; color:#e3e3e3;">
-        <a id="live-version">DK64 Randomizer |</a>
-        <a href="https://dev.dk64randomizer.com">Dev Branch</a>
-        <br />
-        Randomizer by 2dos and Ballaam | Web Generator by Killklli
-        <br />
-        In-game characters, images and logos copyright © 1999-2021 Nintendo or Rareware respectively.
-        <br />
-        DK64Randomizer.com does not distribute copyright material.
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
+        <!-- Left Section: Statistics -->
+        <div id="footer-left" style="text-align: center;">
+            <h3>Statistics</h3>
+            <p id="total_generated_seeds"><strong>Total Generated Seeds:</strong> 0</p>
+            <p id="last_seed_generated"><strong>Last Seed Generated:</strong> -1 seconds ago</p>
+        </div>
+        <script>
+            // Update the statistics every 60 seconds by querying the API for the latest data 
+            // if the site is dev.dk64randomizer.com or dk64randomizer.com
+            if (window.location.hostname == "dev.dk64randomizer.com") {
+                current_total_url = "https://dev-generate.dk64rando.com/current_total";
+            }
+            else if (window.location.hostname == "dk64randomizer.com") {
+                current_total_url = "https://generate.dk64rando.com/current_total";
+            }
+            else {
+                current_total_url = "http://localhost:5000/current_total";
+            }
+            function query_stats(){
+                $.ajax({
+                    url: current_total_url,
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        // we want to parse the last_generated_time to just how long its been since then the format is "2023-12-20 10:40:42.962004"
+                        // We want to tell them X Minutes/Seconds/Days ago
+                        var last_generated_time = data.last_generated_time;
+                        var last_generated_time_utc = new Date(last_generated_time + 'Z');
+                        var now_utc = new Date(Date.now());
+                        var diff = now_utc - last_generated_time_utc;
+                        var seconds = Math.floor(diff / 1000);
+                        var minutes = Math.floor(seconds / 60);
+                        var hours = Math.floor(minutes / 60);
+                        var days = Math.floor(hours / 24);
+                        var months = Math.floor(days / 30);
+                        var years = Math.floor(months / 12);
+                        var time_since_generated = "";
+                        if (years > 0) {
+                            time_since_generated = years + " years ago";
+                        }
+                        else if (months > 0) {
+                            time_since_generated = months + " months ago";
+                        }
+                        else if (days > 0) {
+                            time_since_generated = days + " days ago";
+                        }
+                        else if (hours > 0) {
+                            time_since_generated = hours + " hours ago";
+                        }
+                        else if (minutes > 0) {
+                            time_since_generated = minutes + " minutes ago";
+                        }
+                        else if (seconds > 0) {
+                            time_since_generated = seconds + " seconds ago";
+                        }
+                        else {
+                            time_since_generated = "just now";
+                        }
+
+                        $("#total_generated_seeds").html("<strong>Total Generated Seeds:</strong> " + data.total_seeds);
+                        $("#last_seed_generated").html("<strong>Last Seed Generated:</strong> " + time_since_generated);
+                    }
+                })
+            }
+            setInterval(function () {
+                query_stats();
+                
+            }, 60000);
+            // trigger it once on page load
+            query_stats();
+        </script>
+
+        <!-- Middle Section: Existing Data -->
+        <div id="footer-middle" style="text-align: center;">
+            <a href="https://github.com/2dos/DK64-Randomizer" target="_blank" style="text-decoration: none">
+                <img src="./static/img/github.png" alt="GitHub" />
+            </a>
+            <a href="https://github.com/2dos/DK64-Randomizer/wiki" target="_blank" style="text-decoration: none">
+                <img src="./static/img/wiki.png" alt="Wiki" />
+            </a>
+            <a href="https://discord.dk64randomizer.com" target="_blank" style="text-decoration: none">
+                <img src="./static/img/discord.png" alt="Discord" />
+            </a>
+            <div style="font-size: small; color:#e3e3e3;">
+                <a id="live-version">DK64 Randomizer | </a>
+                <a href="https://dev.dk64randomizer.com">Dev Branch</a>
+                <br />
+                Randomizer by 2dos and Ballaam | Web Generator by Killklli
+                <br />
+                In-game characters, images and logos copyright © 1999-2021 Nintendo or Rareware respectively.
+                <br />
+                DK64Randomizer.com does not distribute copyright material.
+            </div>
+        </div>
+
+        <!-- Right Section: User Data -->
+        <div id="footer-right" style="text-align: center;">
+            <h4>Your Most Recent Seed</h4>
+            <p id="most_recent_seed_id"><strong>Most Recent Seed ID:</strong> None</p>
+            <p id="most_recent_seed_date"><strong>Most Recent Seed Date:</strong> None</p>
+        </div>
+        <script>
+            function load_old_seeds() {
+                try {
+                  // If we actually have a file in the DB load it
+                  var seed_db = seeddatabase.result;
+                  var seed_tx = seed_db.transaction("SeedStorage", "readwrite");
+                  var seed_store = seed_tx.objectStore("SeedStorage");
+              
+                  var all_seeds = seed_store.getAll();
+                  all_seeds.onsuccess = function () {
+                    try {
+                      var arrayLength = all_seeds.result.length;
+                      var sorted_array = all_seeds.result;
+                      sorted_array.sort(function (a, b) {
+                        return new Date(b.date) - new Date(a.date);
+                      });
+                      // Write the most recent seed to the UI
+                      document.getElementById("most_recent_seed_id").innerHTML = "<strong>Most Recent Seed ID:</strong> " + sorted_array[0].seed_id;
+                      document.getElementById("most_recent_seed_date").innerHTML = "<strong>Most Recent Seed Date:</strong> " + sorted_array[0].date.toLocaleDateString( undefined, {  year: "numeric",  month: "short",  day: "2-digit",  hour: "2-digit",  minute: "2-digit",  second: "2-digit",});
+                    } catch {}
+                  };
+                } catch {}
+              }
+              var indexedDB =
+                window.indexedDB ||
+                window.mozIndexedDB ||
+                window.webkitIndexedDB ||
+                window.msIndexedDB ||
+                window.shimIndexedDB;
+
+            // Open (or create) the database
+            var seeddatabase = indexedDB.open("SeedStorage", 1);
+            seeddatabase.onupgradeneeded = function () {
+                try {
+                    var seed_db = seeddatabase.result;
+                    seed_db.createObjectStore("SeedStorage", {
+                    keyPath: "id",
+                    });
+                } catch {}
+            };
+
+            seeddatabase.onsuccess = function () {
+                load_old_seeds();
+            };
+
+        </script>
     </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
