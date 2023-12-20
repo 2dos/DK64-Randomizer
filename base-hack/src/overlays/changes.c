@@ -85,7 +85,7 @@ void parseCutsceneData(void) {
 		modifyCutscenePointTime(1, 0x22, 1, 1);
 		modifyCutscenePointTime(1, 0x22, 3, 1);
 	}
-	if ((Rando.fast_gbs) && (CurrentMap == MAP_CASTLEMINECART)) {
+	if ((Rando.faster_checks.castle_cart) && (CurrentMap == MAP_CASTLEMINECART)) {
 		int rx = 8931;
 		int ry = 0;
 		int rz = 7590;

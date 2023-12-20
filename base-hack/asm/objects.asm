@@ -3,6 +3,7 @@
 .importobj "obj/src_lib.o"
 .importobj "obj/src_lib_items.o"
 .importobj "obj/src_main.o"
+.importobj "obj/src_fixes_cannon_game.o"
 .importobj "obj/src_fixes_dk_free_softlock.o"
 .importobj "obj/src_fixes_guardCatch.o"
 .importobj "obj/src_fixes_helm.o"

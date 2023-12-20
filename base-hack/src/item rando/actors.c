@@ -160,7 +160,7 @@ void mermaidCheck(void) {
      * @brief Set the mermaid control state based on the amount of pearls you have
      */
     int requirement = 5;
-    if (Rando.fast_gbs) {
+    if (Rando.faster_checks.mermaid) {
         requirement = 1; // Fast GBs pearl requirement
     }
     int count = 0;

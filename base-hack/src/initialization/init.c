@@ -377,11 +377,17 @@ void initHack(int source) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
 			}
-			if (Rando.fast_gbs) {
+			if (Rando.faster_checks.toy_monster) {
 				*(short*)(0x806BBB22) = 0x0005; // Chunky toy box speedup
+			}
+			if (Rando.faster_checks.owl_race) {
 				*(short*)(0x806C58D6) = 0x0008; //Owl ring amount
 				*(short*)(0x806C5B16) = 0x0008;
+			}
+			if (Rando.faster_checks.rabbit_race) {
 				*(int*)(0x806BEDFC) = 0; //Spawn banana coins on beating rabbit 2 (Beating round 2 branches to banana coin spawning label before continuing)
+			}
+			if (Rando.faster_checks.ice_tomato) {
 				*(short*)(0x806BC582) = 30; // Ice Tomato Timer
 			}
 			int kko_phase_rando = 0;

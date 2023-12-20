@@ -6,56 +6,42 @@
     "script": [
         {
             "conditions": [
-                {"function": 1, "inverted": false, "parameters": [0, 0, 0]}
+                {"function":1,"inverted":false,"parameters":[0,0,0]}
             ],
             "executions": [
-                {"function": 69, "parameters": [1, 0, 255]},
-                {"function": 70, "parameters": [0, 0, 0]},
-                {"function": 71, "parameters": [0, 0, 0]}
+                {"function":69,"parameters":[1,0,255]},
+                {"function":70,"parameters":[0,0,0]},
+                {"function":71,"parameters":[0,0,0]}
             ]
         },
         {
             "conditions": [
-                {"function": 1, "inverted": false, "parameters": [0, 0, 0]},
-                {"function": 45, "inverted": false, "parameters": [444, 0, 0]},
-                {"function": 45, "inverted": false, "parameters": [445, 0, 0]},
-                {"function": 45, "inverted": false, "parameters": [446, 0, 0]}
+                {"function":1,"inverted":false,"parameters":[0,0,0]},
+                {"function":6,"inverted":false,"parameters":[7,0,53]}
             ],
             "executions": [
-                {"function": 1, "parameters": [1, 0, 0]}
+                {"function":69,"parameters":[1,255,255]},
+                {"function":70,"parameters":[1,0,0]},
+                {"function":71,"parameters":[1,0,0]},
+                {"function":117,"parameters":[13,1,0]}
             ]
         },
         {
             "conditions": [
-                {"function": 1, "inverted": false, "parameters": [1, 0, 0]},
-                {"function": 45, "inverted": false, "parameters": [447, 0, 0]},
-                {"function": 45, "inverted": false, "parameters": [448, 0, 0]},
-                {"function": 45, "inverted": false, "parameters": [449, 0, 0]}
+                {"function":1,"inverted":false,"parameters":[0,0,0]},
+                {"function":6,"inverted":false,"parameters":[7,0,53]}
             ],
             "executions": [
-                {"function": 1, "parameters": [2, 0, 0]}
+                {"function":1,"parameters":[1,0,0]}
             ]
         },
         {
             "conditions": [
-                {"function": 1, "inverted": false, "parameters": [2, 0, 0]},
-                {"function": 45, "inverted": false, "parameters": [450, 0, 0]},
-                {"function": 45, "inverted": false, "parameters": [451, 0, 0]}
+                {"function":1,"inverted":false,"parameters":[1,0,0]}
             ],
             "executions": [
-                {"function": 69, "parameters": [1, 255, 255]},
-                {"function": 70, "parameters": [1, 0, 0]},
-                {"function": 71, "parameters": [1, 0, 0]},
-                {"function": 117, "parameters": [13, 1, 0]}
-            ]
-        },
-        {
-            "conditions": [
-                {"function": 1, "inverted": false, "parameters": [2, 0, 0]}
-            ],
-            "executions": [
-                {"function": 38, "parameters": [2, 0, 0]},
-                {"function": 1, "parameters": [3, 0, 0]}
+                {"function":38,"parameters":[2,0,0]},
+                {"function":1,"parameters":[2,0,0]}
             ]
         }
     ]

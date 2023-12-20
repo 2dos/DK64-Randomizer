@@ -1240,6 +1240,7 @@ typedef struct quality_options {
 	unsigned char brighten_mmm_enemies : 1;
 	unsigned char global_instrument : 1; // 21
 	unsigned char fast_pause_transitions : 1;
+	unsigned char cannon_game_speed : 1; // 23
 } quality_options;
 
 typedef struct image_cache_struct {

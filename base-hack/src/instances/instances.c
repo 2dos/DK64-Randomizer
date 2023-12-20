@@ -195,6 +195,7 @@
 #define FACTORY_BBLAST_CONTROLLER 0x1
 
 #define JAPES_RAMBI_DOOR 0x115
+#define K_ROOL_SHIP 0x35
 
 static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
 
@@ -270,9 +271,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						case GALLEON_LANKY_SLAM:
 						case GALLEON_TINY_SLAM:
 							if (index == 0) { 
-								return !Rando.remove_high_requirements;
+								return Rando.removed_barriers.shipwreck_permanent == 0;
 							} else {
-								if (Rando.remove_high_requirements) {
+								if (Rando.removed_barriers.shipwreck_permanent) {
 									behaviour_pointer->next_state = 6;
 								} else {
 									behaviour_pointer->next_state = 5;
@@ -313,14 +314,14 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 								gate_flag = GALLEON_2DSOPEN_TINY;
 							}
 							if (index == 0) {
-								if (Rando.remove_high_requirements) {
+								if (Rando.removed_barriers.shipwreck_permanent) {
 									if (checkFlag(gate_flag, FLAGTYPE_PERMANENT)) {
 										behaviour_pointer->current_state = 10;
 										behaviour_pointer->next_state = 10;
 									}
 								}
 							} else {
-								if (Rando.remove_high_requirements) {
+								if (Rando.removed_barriers.shipwreck_permanent) {
 									setPermFlag(gate_flag);
 								}
 							}
@@ -439,6 +440,16 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->current_state = 21;
 						behaviour_pointer->next_state = 21;
 					}
+				} else if (param2 == K_ROOL_SHIP) {
+					for (int i = 0; i < 8; i++) {
+						if (Rando.krool_requirements & (1 << i)) {
+							if (!checkFlag(FLAG_KEYIN_KEY1 + i, FLAGTYPE_PERMANENT)) {
+								return 0;
+							}
+
+						}
+					}
+					return 1;
 				} else {
 					// TestVariable = (int)behaviour_pointer;
 					// *(int*)(0x807FF700) = id;
@@ -746,13 +757,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index < 28) {
 						return checkContactSublocation(behaviour_pointer,id,Rando.piano_game_order[index - 21] + 1, 0);
 					} else if (index == 28) {
-						if (Rando.fast_gbs) {
+						if (Rando.faster_checks.piano) {
 							behaviour_pointer->next_state = 26;
 						} else {
 							behaviour_pointer->next_state = 17;
 						}
 					} else if (index == 29) {
-						if (Rando.fast_gbs) {
+						if (Rando.faster_checks.piano) {
 							behaviour_pointer->next_state = 50;
 						} else {
 							behaviour_pointer->next_state = 37;
@@ -760,7 +771,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == FACTORY_3124_SWITCH || param2 == FACTORY_4231_SWITCH || param2 == FACTORY_1342_SWITCH) {
 					if (index == 0) {
-						return Rando.fast_gbs;
+						return Rando.faster_checks.diddy_rnd != 0;
 					} else if (index == 1) {
 						// Check if GB is in a state >= 3, this means it was spawned.
 						int index = convertIDToIndex(96);
@@ -775,7 +786,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							}
 						}
 					} else if (index == 2) {
-						if (Rando.fast_gbs) {
+						if (Rando.faster_checks.diddy_rnd) {
 							disableDiddyRDDoors();
 						} else {
 							setScriptRunState(behaviour_pointer, 2, 0);
@@ -938,7 +949,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case MAP_GALLEONMECHFISH:
 				if ((param2 == FISH_SHIELD1) || (param2 == FISH_SHIELD2) || (param2 == FISH_SHIELD3)) {
 					int fish_state = 1;
-					if (Rando.fast_gbs) {
+					if (Rando.faster_checks.mech_fish) {
 						fish_state = 5;
 					}
 					behaviour_pointer->next_state = fish_state;
@@ -946,12 +957,12 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_FACTORYBBLAST:
 				if (param2 == FACTORY_BBLAST_STAR) {
-					if (Rando.fast_gbs) {
+					if (Rando.faster_checks.arcade_first_round) {
 						behaviour_pointer->next_state = 20;
 						behaviour_pointer->current_state = 20;
 					}
 				} else if (param2 == FACTORY_BBLAST_CONTROLLER) {
-					if (Rando.fast_gbs) {
+					if (Rando.faster_checks.arcade_first_round) {
 						if (!checkFlag(FLAG_ARCADE_LEVER,FLAGTYPE_PERMANENT)) {
 							if (checkFlag(FLAG_ARCADE_ROUND1,FLAGTYPE_PERMANENT)) {
 								isObjectLoadedInMap(MAP_FACTORY, 45, 10); // Run just to load the setup properly
@@ -968,7 +979,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			// case TREASURE_CHEST:
 			// 	if (param2 == CHEST_PEARL_0) {
-			// 		if (Rando.fast_gbs) {
+			// 		if (Rando.faster_checks.mermaid) {
 			// 			int pearls_collected = 0;
 			// 			for (int i = 0; i < 5; i++) {
 			// 				pearls_collected += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);

@@ -419,6 +419,8 @@ extern void SaveExtraData(extra_global_data data_type, int sub_index, int value)
 extern void ResetExtraData(extra_global_data data_type, int sub_index);
 extern void setKrushaAmmoColor(void);
 
+extern void handleCannonGameReticle(void);
+
 extern void loadWidescreen(overlays loaded_overlay);
 extern void writeFunctionLoop(void);
 extern void cFuncLoop(void);
