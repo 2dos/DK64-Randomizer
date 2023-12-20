@@ -40,6 +40,7 @@ if (typeof window.RufflePlayer !== "undefined") {
 
 // This is a wrapper script to just load the UI python scripts and call python as needed.
 async function run_python_file(file) {
+  console.log("Loading " + file)
   await pyodide.runPythonAsync(await (await fetch(file)).text());
 }
 let user_agent = navigator.userAgent;
@@ -231,6 +232,27 @@ function music_filebox() {
     }
     // Make sure we load the file into the rompatcher
     cosmetic_pack_event(file);
+  };
+
+  input.click();
+}
+
+var imported_music_json = "";
+
+function music_selection_filebox() {
+  let input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".json";
+
+  input.onchange = async (e) => {
+    let file = e.target.files[0];
+    let json_text = await file.text();
+    imported_music_json = json_text;
+    pyodide.runPythonAsync(`
+      import js
+      from ui.music_select import import_music_selections
+      import_music_selections(js.imported_music_json)
+    `);
   };
 
   input.click();
@@ -831,6 +853,16 @@ function loadDataFromIndexedDB(key) {
 
 function load_data() {
   try {
+    // make sure all sliders are initialized
+    for (element of document.getElementsByTagName("input")) {
+      if (element.hasAttribute("data-slider-value")) {
+        // check if the slider has already been initialized
+        if (!element.hasAttribute("data-slider-initialized")) {
+          element.setAttribute("data-slider-initialized", "true");
+          $("#" + element.name).slider();
+        }
+      }
+    }
     var settingsdb = settingsdatabase.result;
     transaction = settingsdb.transaction("saved_settings", "readonly");
     objectStore = transaction.objectStore("saved_settings");

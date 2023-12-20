@@ -187,8 +187,6 @@ class Spoiler:
 
     def createJson(self) -> None:
         """Convert spoiler to JSON and save it."""
-        # Verify we match our hash
-        self.settings.verify_hash()
         # We want to convert raw spoiler data into the important bits and in human-readable formats.
         humanspoiler = OrderedDict()
 
