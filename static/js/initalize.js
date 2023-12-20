@@ -40,6 +40,7 @@ if (typeof window.RufflePlayer !== "undefined") {
 
 // This is a wrapper script to just load the UI python scripts and call python as needed.
 async function run_python_file(file) {
+  console.log("Loading " + file)
   await pyodide.runPythonAsync(await (await fetch(file)).text());
 }
 let user_agent = navigator.userAgent;
@@ -852,6 +853,16 @@ function loadDataFromIndexedDB(key) {
 
 function load_data() {
   try {
+    // make sure all sliders are initialized
+    for (element of document.getElementsByTagName("input")) {
+      if (element.hasAttribute("data-slider-value")) {
+        // check if the slider has already been initialized
+        if (!element.hasAttribute("data-slider-initialized")) {
+          element.setAttribute("data-slider-initialized", "true");
+          $("#" + element.name).slider();
+        }
+      }
+    }
     var settingsdb = settingsdatabase.result;
     transaction = settingsdb.transaction("saved_settings", "readonly");
     objectStore = transaction.objectStore("saved_settings");
