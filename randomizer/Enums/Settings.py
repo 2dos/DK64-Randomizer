@@ -621,7 +621,7 @@ class SwitchsanityLevel(IntEnum):
     all: All switches are shuffled.
     """
 
-    off = auto()
+    off = 0
     helm_access = auto()
     all = auto()
 
@@ -933,8 +933,6 @@ class SettingsStringEnum(IntEnum):
 # If a setting needs to be removed, add it to this set instead of removing it
 # from the enum above.
 DeprecatedSettings = {
-    # Example
-    # SettingsStringEnum.cb_rando,
     SettingsStringEnum.hard_bosses,
     SettingsStringEnum.hard_enemies,
     SettingsStringEnum.choose_starting_moves,

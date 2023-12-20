@@ -823,7 +823,7 @@ class LogicVarHolder:
                 Events.HelmKeyTurnedIn,
             ]
         return all(not keyRequired not in self.Events for keyRequired in self.settings.krool_keys_required if keyRequired in required_base_keys)
-    
+
     def IsKLumsyFree(self):
         """Check all keys."""
         return all(not keyRequired not in self.Events for keyRequired in self.settings.krool_keys_required)
