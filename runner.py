@@ -31,6 +31,14 @@ app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 2)
 app.config["EXECUTOR_TYPE"] = os.environ.get("EXECUTOR_TYPE", "process")
 executor = Executor(app)
 CORS(app)
+current_total = 0
+try:
+    with open("current_total.cfg", "r") as f:
+        current_total = int(f.read())
+except Exception:
+    # If we can't read the file, just set it to 0 in the file.
+    with open("current_total.cfg", "w") as f:
+        f.write("0")
 TIMEOUT = os.environ.get("TIMEOUT", 400)
 
 patch = open("./static/patches/shrink-dk64.bps", "rb")
@@ -204,7 +212,7 @@ def lambda_function():
                 zip_file.writestr("spoiler_log", str(json.dumps(spoiler_log)))
                 zip_file.writestr("seed_id", str(resp_data[1].settings.seed_id))
             zip_data.seek(0)
-
+            update_total()
             # Convert the zip to a string of base64 data
             zip_conv = codecs.encode(zip_data.getvalue(), "base64").decode()
             # Return it as a text file
@@ -224,3 +232,20 @@ def lambda_function():
         response.mimetype = "application/json"
         response.headers["Content-Type"] = "application/json; charset=utf-8"
         return response
+
+
+@app.route("/current_total", methods=["GET"])
+def get_current_total():
+    """Get the current total seeds generated."""
+    response = make_response(json.dumps({"total_seeds": current_total}), 200)
+    response.mimetype = "application/json"
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
+
+
+def update_total():
+    """Update the total seeds generated."""
+    global current_total
+    current_total += 1
+    with open("current_total.cfg", "w") as f:
+        f.write(str(current_total))
