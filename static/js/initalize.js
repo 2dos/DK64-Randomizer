@@ -800,7 +800,7 @@ async function apply_patch(data, run_async) {
 
     // Create an array to store all the promises
     const promises = [];
-
+    query_stats();
     // Iterate over each file in the zip
     zip.forEach(function (relativePath, zipEntry) {
       if (!zipEntry.dir) {
