@@ -557,15 +557,17 @@ class RemovedBarriersSelected(IntEnum):
     japes_coconut_gates_opened = 1
     japes_shellhive_gate_opened = 2
     aztec_tunnel_door_opened = 3
-    aztec_5_door_temple_switches_spawned = 4
-    factory_production_room_on = 5
-    factory_testing_gate_opened = 6
-    galleon_lighthouse_gate_opened = 7
-    galleon_shipwreck_permanently_open = 8
-    galleon_seasick_ship_spawned = 9
-    forest_green_tunnel_opened = 10
-    forest_yellow_tunnel_opened = 11
-    caves_igloo_pads_spawned = 12
+    aztec_5dtemple_switches_spawned = 4
+    aztec_llama_switches = 5
+    factory_production_room_on = 6
+    factory_testing_gate_opened = 7
+    galleon_lighthouse_gate_opened = 8
+    galleon_shipwreck_gate_opened = 9
+    galleon_shipwreck_permanently_open = 10
+    galleon_seasick_ship_spawned = 11
+    forest_green_tunnel_opened = 12
+    forest_yellow_tunnel_opened = 13
+    caves_igloo_pads_spawned = 14
 
 
 class ShockwaveStatus(IntEnum):
@@ -746,6 +748,8 @@ SettingsMap = {
     "wrinkly_hints": WrinklyHints,
     "spoiler_hints": SpoilerHints,
     "starting_kong": Kongs,
+    "remove_barriers_selected": RemovedBarriersSelected,
+    "faster_checks_selected": FasterChecksSelected,
 }
 
 
