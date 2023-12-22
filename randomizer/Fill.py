@@ -310,6 +310,9 @@ def GetAccessibleLocations(
                             # Spend Two Coins for arcade lever
                             spoiler.LogicVariables.Coins[Kongs.donkey] -= 2
                             spoiler.LogicVariables.SpentCoins[Kongs.donkey] += 2
+                        # Crowns in Helm always logically expect you to have finished Helm first
+                        elif location_obj.type == Types.Crown and location_obj.level == Levels.HideoutHelm and Events.HelmFinished not in spoiler.LogicVariables.Events:
+                            continue
                         newLocations.add(location.id)
                 # Check accessibility for each exit in this region
                 exits = region.exits.copy()
@@ -336,31 +339,32 @@ def GetAccessibleLocations(
                             destination = ShuffleExits.ShufflableExits[shuffledExit.shuffledId].back.regionId
                         elif shuffledExit.toBeShuffled and not exit.assumed:
                             continue
-                    # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
-                    if destination not in kongAccessibleRegions[kong] and exit.logic(spoiler.LogicVariables):
-                        # If water is lava, don't consider underwater locations in Galleon before having 3rd melon
-                        if spoiler.LogicVariables.IsLavaWater() and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
-                            if destination in UnderwaterRegions and spoiler.LogicVariables.Melons < 3:
-                                continue
-                            # Mainly Seal Race exit. Situations where this matters are extremely rare.
-                            if destination in SurfaceWaterRegions and spoiler.LogicVariables.Melons < 2:
-                                continue
-                        # Check time of day
-                        timeAccess = True
-                        if exit.time == Time.Night and not region.nightAccess[kong]:
-                            timeAccess = False
-                        elif exit.time == Time.Day and not region.dayAccess[kong]:
-                            timeAccess = False
-                        if timeAccess:
-                            kongAccessibleRegions[kong].add(destination)
-                            newRegion = spoiler.RegionList[destination]
-                            newRegion.id = destination
-                            regionPool.append(destination)
-                            kongAccessibleRegions[kong].add(destination)
-                    # If it's accessible, update time of day access whether already added or not
-                    # This way if a region has access from 2 different regions, one time-restricted and one not,
-                    # it will be known that it can be accessed during either time of day
+                    # If we can access this transition...
                     if exit.logic(spoiler.LogicVariables):
+                        # If a region is accessible through this exit that has not yet been added, add it to the queue to be visited eventually
+                        if destination not in kongAccessibleRegions[kong]:
+                            # If water is lava, don't consider underwater locations in Galleon before having 3rd melon
+                            if spoiler.LogicVariables.IsLavaWater() and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
+                                if destination in UnderwaterRegions and spoiler.LogicVariables.Melons < 3:
+                                    continue
+                                # Mainly Seal Race exit. Situations where this matters are extremely rare.
+                                if destination in SurfaceWaterRegions and spoiler.LogicVariables.Melons < 2:
+                                    continue
+                            # Check time of day
+                            timeAccess = True
+                            if exit.time == Time.Night and not region.nightAccess[kong]:
+                                timeAccess = False
+                            elif exit.time == Time.Day and not region.dayAccess[kong]:
+                                timeAccess = False
+                            if timeAccess:
+                                kongAccessibleRegions[kong].add(destination)
+                                newRegion = spoiler.RegionList[destination]
+                                newRegion.id = destination
+                                regionPool.append(destination)
+                                kongAccessibleRegions[kong].add(destination)
+                        # Given that it's accessible, update time of day access whether or not we've already visited it
+                        # This way if a region has access from 2 different regions, one time-restricted and one not,
+                        # it will be known that it can be accessed during either time of day
                         # If this region has day access and the exit isn't restricted to night-only, then the destination has day access
                         if region.dayAccess[kong] and exit.time != Time.Night and not spoiler.RegionList[destination].dayAccess[kong]:
                             spoiler.RegionList[destination].dayAccess[kong] = True
@@ -933,7 +937,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
     bossLocations = [location for id, location in spoiler.LocationList.items() if location.type == Types.Key]
     # In order for a region to be foolish, it can contain none of these Major Items
     for id, region in spoiler.RegionList.items():
-        locations = [spoiler.LocationList[loc.id] for loc in region.locations if loc.id in spoiler.LocationList.keys()]
+        locations = [spoiler.LocationList[loc.id] for loc in region.locations if loc.id in spoiler.LocationList.keys() and not loc.isAuxiliaryLocation]
         # If this region's valid locations (exclude starting moves) DO contain a major item, add it the name to the set of non-hintable hint regions
         if any([loc for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in majorItems]):
             nonHintableNames.add(region.hint_name)
