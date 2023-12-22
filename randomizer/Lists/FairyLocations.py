@@ -1137,28 +1137,25 @@ fairy_locations = {
         FairyData(
             name="Key 8 Room (1)",
             map=Maps.HideoutHelm,
-            region=Regions.HideoutHelmAfterBoM,
+            region=Regions.HideoutHelmKeyRoom,
             is_vanilla=True,
             spawn_xyz=[164, 118, 5213],
-            logic=lambda l: l.camera and Events.HelmKeyAccess in l.Events,
             natural_index=0,
         ),
         FairyData(
             name="Key 8 Room (2)",
             map=Maps.HideoutHelm,
-            region=Regions.HideoutHelmAfterBoM,
+            region=Regions.HideoutHelmKeyRoom,
             is_vanilla=True,
             spawn_xyz=[135, 98, 5224],
-            logic=lambda l: l.camera and Events.HelmKeyAccess in l.Events,
             natural_index=1,
         ),
         FairyData(
             name="Pineapple Switch Room",
             map=Maps.HideoutHelm,
-            region=Regions.HideoutHelmAfterBoM,  # Not HideoutHelmStart because you could start in BoM room, requiring you to beat Helm in order to access this
+            region=Regions.HideoutHelmSwitchRoom,
             fence=Fence(1034, 1201, 1088, 1328),
             spawn_y=-150,
-            logic=lambda l: l.camera and (l.handstand and l.lanky),
         ),
         FairyData(
             name="Under Chunky Room Stairs",

@@ -275,6 +275,8 @@ class LogicVarHolder:
 
     def isPriorHelmComplete(self, kong: Kongs):
         """Determine if there is access to the kong's helm room."""
+        if self.settings.helm_setting == HelmSetting.skip_all or Events.HelmFinished in self.Events:
+            return True
         room_seq = (Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy)
         kong_evt = (Events.HelmDonkeyDone, Events.HelmDiddyDone, Events.HelmLankyDone, Events.HelmTinyDone, Events.HelmChunkyDone)
         desired_index = room_seq.index(kong)
@@ -284,7 +286,7 @@ class LogicVarHolder:
             if sequence_slot > 0:
                 prior_kong = room_seq[helm_order[sequence_slot - 1]]
                 return kong_evt[prior_kong] in self.Events
-        return Events.HelmDoorsOpened in self.Events
+        return True
 
     def UpdateCoins(self):
         """Update coin total."""
@@ -618,20 +620,6 @@ class LogicVarHolder:
             return self.DoorItemCheck(HelmDoorItem.req_companycoins, self.settings.coin_door_item_count)
         return self.DoorItemCheck(self.settings.coin_door_item, self.settings.coin_door_item_count)
 
-    def CanAccessHelmStart(self):
-        """Check if you can access the start of helm."""
-        if self.settings.helm_setting != HelmSetting.skip_start:
-            # Either starts at the start, or can warp immediately to start
-            return True
-        room_events = [
-            Events.HelmDonkeyDone,
-            Events.HelmChunkyDone,
-            Events.HelmTinyDone,
-            Events.HelmLankyDone,
-            Events.HelmDiddyDone,
-        ]
-        return sum([1 for x in room_events if x in self.Events]) == len(room_events)
-
     def CanFreeDiddy(self):
         """Check if the cage locking Diddy's vanilla location can be opened."""
         return self.spoiler.LocationList[Locations.DiddyKong].item == Items.NoItem or self.HasGun(self.settings.diddy_freeing_kong)
@@ -830,6 +818,8 @@ class LogicVarHolder:
         hasRequiredMoves = True
         if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not (self.HardBossesEnabled() and self.settings.krusha_kong != Kongs.tiny):
             hasRequiredMoves = self.twirl and self.Slam
+        elif bossFight == Maps.FactoryBoss:
+            hasRequiredMoves = self.Slam
         elif bossFight == Maps.FungiBoss:
             hasRequiredMoves = self.hunkyChunky and self.barrels
         elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:
