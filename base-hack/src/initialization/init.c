@@ -685,6 +685,13 @@ void initHack(int source) {
 				*(short*)(0x806E2D8A) = 0; // Disable ability to throw oranges in orange barrel unless you have oranges
 			}
 
+			if (Rando.model_swaps.ice_tomato_is_regular) {
+				*(short*)(0x8075F602) = 0x51;
+			}
+			if (Rando.model_swaps.regular_tomato_is_ice) {
+				*(short*)(0x8075F4E2) = 0x62;
+			}
+
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0
 			*(unsigned char*)(0x8064AD01) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[2]];
