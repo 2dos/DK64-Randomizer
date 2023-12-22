@@ -132,7 +132,7 @@ LogicRegions = {
         LocationLogic(Locations.AztecMainEnemy_Outside5DT, lambda l: True),
         LocationLogic(Locations.AztecMainEnemy_NearSnoopTunnel, lambda l: True),
     ], [
-        Event(Events.FedTotem, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_5_door_temple_switches_spawned) or (l.jetpack and l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut and l.diddy)),
+        Event(Events.FedTotem, lambda l: l.checkBarrier(RemovedBarriersSelected.aztec_5dtemple_switches_spawned) or (l.jetpack and l.CanSlamSwitch(Levels.AngryAztec, 1) and l.peanut and l.diddy)),
         Event(Events.AztecW2bTagged, lambda l: True),
         Event(Events.AztecW3aTagged, lambda l: True),
         Event(Events.AztecW4aTagged, lambda l: True),
