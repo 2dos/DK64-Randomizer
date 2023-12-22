@@ -441,7 +441,7 @@
                 current_total_url = "https://generate.dk64rando.com/current_total";
             }
             else {
-                current_total_url = "http://localhost:5000/current_total";
+                current_total_url = "http://" + window.location.hostname + ":8000/current_total";
             }
             function query_stats(){
                 $.ajax({
