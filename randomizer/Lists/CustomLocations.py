@@ -2851,22 +2851,7 @@ CustomLocations = {
             y=-136,
             z=2545,
             max_size=80,
-            logic_region=Regions.HideoutHelmAfterBoM,
-            logic=lambda l: (
-                l.lanky
-                and l.handstand
-                and ((l.chunky and l.pineapple and l.vines) or l.phasewalk)
-                and (
-                    l.settings.helm_setting == HelmSetting.skip_all
-                    or (
-                        Events.HelmDonkeyDone in l.Events
-                        and Events.HelmChunkyDone in l.Events
-                        and Events.HelmTinyDone in l.Events
-                        and Events.HelmLankyDone in l.Events
-                        and Events.HelmDiddyDone in l.Events
-                    )
-                )
-            ),
+            logic_region=Regions.HideoutHelmMiniRoom,
             group=1,
             banned_types=[LocationTypes.MelonCrate],  # Temporarily disabled due to a bug causing a key to spawn on the ceiling
         ),
@@ -2877,22 +2862,7 @@ CustomLocations = {
             y=-132,
             z=2243,
             max_size=80,
-            logic_region=Regions.HideoutHelmAfterBoM,
-            logic=lambda l: (
-                l.lanky
-                and l.handstand
-                and ((l.chunky and l.pineapple and l.vines) or l.phasewalk)
-                and (
-                    l.settings.helm_setting == HelmSetting.skip_all
-                    or (
-                        Events.HelmDonkeyDone in l.Events
-                        and Events.HelmChunkyDone in l.Events
-                        and Events.HelmTinyDone in l.Events
-                        and Events.HelmLankyDone in l.Events
-                        and Events.HelmDiddyDone in l.Events
-                    )
-                )
-            ),
+            logic_region=Regions.HideoutHelmMiniRoom,
             group=1,
             banned_types=[LocationTypes.MelonCrate],  # Temporarily disabled due to a bug causing a key to spawn on the ceiling
         ),
@@ -2903,19 +2873,7 @@ CustomLocations = {
             y=-164,
             z=1261,
             max_size=80,
-            logic_region=Regions.HideoutHelmAfterBoM,
-            logic=lambda l: (
-                l.lanky
-                and l.handstand
-                and l.settings.helm_setting == HelmSetting.skip_all
-                or (
-                    Events.HelmDonkeyDone in l.Events
-                    and Events.HelmChunkyDone in l.Events
-                    and Events.HelmTinyDone in l.Events
-                    and Events.HelmLankyDone in l.Events
-                    and Events.HelmDiddyDone in l.Events
-                )
-            ),
+            logic_region=Regions.HideoutHelmSwitchRoom,
             group=1,
             banned_types=[LocationTypes.MelonCrate],  # Temporarily disabled due to a bug causing a key to spawn on the ceiling
         ),
@@ -2926,17 +2884,7 @@ CustomLocations = {
             y=-461,
             z=480,
             max_size=80,
-            logic_region=Regions.HideoutHelmAfterBoM,
-            logic=lambda l: (
-                l.settings.helm_setting == HelmSetting.skip_all
-                or (
-                    Events.HelmDonkeyDone in l.Events
-                    and Events.HelmChunkyDone in l.Events
-                    and Events.HelmTinyDone in l.Events
-                    and Events.HelmLankyDone in l.Events
-                    and Events.HelmDiddyDone in l.Events
-                )
-            ),
+            logic_region=Regions.HideoutHelmStart,
             group=1,
             banned_types=[LocationTypes.MelonCrate],  # Temporarily disabled due to a bug causing a key to spawn on the ceiling
         ),
@@ -2949,20 +2897,7 @@ CustomLocations = {
             max_size=40,
             logic_region=Regions.HideoutHelmMain,
             vanilla_crown=True,
-            logic=lambda l: (
-                l.jetpack
-                and l.isdiddy
-                and (
-                    l.settings.helm_setting == HelmSetting.skip_all
-                    or (
-                        Events.HelmDonkeyDone in l.Events
-                        and Events.HelmChunkyDone in l.Events
-                        and Events.HelmTinyDone in l.Events
-                        and Events.HelmLankyDone in l.Events
-                        and Events.HelmDiddyDone in l.Events
-                    )
-                )
-            ),
+            logic=lambda l: l.jetpack and l.isdiddy,
             group=2,
         ),
         # CrownLocation(
@@ -2972,7 +2907,7 @@ CustomLocations = {
         #     y=-132,
         #     z=3841,
         #     max_size=80,
-        #     logic_region=Regions.HideoutHelmMain,
+        #     logic_region=Regions.HideoutHelmMain,  # FIX ME if uncommented
         #     logic=lambda l: Events.HelmDoorsOpened in l.Events and l.punch and l.bongos and l.isdonkey and (
         #             l.settings.helm_setting == HelmSetting.skip_all
         #             or (
@@ -2993,7 +2928,7 @@ CustomLocations = {
         #     y=-72,
         #     z=2761,
         #     max_size=80,
-        #     logic_region=Regions.HideoutHelmMain,
+        #     logic_region=Regions.HideoutHelmMain,  # FIX ME if uncommented
         #     logic=lambda l: Events.HelmDoorsOpened in l.Events and l.punch and l.triangle and l.ischunky and (
         #             l.settings.helm_setting == HelmSetting.skip_all
         #             or (
@@ -3014,7 +2949,7 @@ CustomLocations = {
         #     y=-32,
         #     z=3281,
         #     max_size=80,
-        #     logic_region=Regions.HideoutHelmMain,
+        #     logic_region=Regions.HideoutHelmMain,  # FIX ME if uncommented
         #     logic=lambda l: Events.HelmDoorsOpened in l.Events and l.punch and l.saxophone and l.istiny and (
         #             l.settings.helm_setting == HelmSetting.skip_all
         #             or (
@@ -3035,7 +2970,7 @@ CustomLocations = {
         #     y=48,
         #     z=3272,
         #     max_size=80,
-        #     logic_region=Regions.HideoutHelmMain,
+        #     logic_region=Regions.HideoutHelmMain,  # FIX ME if uncommented
         #     logic=lambda l: Events.HelmDoorsOpened in l.Events and l.punch and l.trombone and l.islanky and (
         #             l.settings.helm_setting == HelmSetting.skip_all
         #             or (
@@ -3056,7 +2991,7 @@ CustomLocations = {
         #     y=208,
         #     z=2741,
         #     max_size=80,
-        #     logic_region=Regions.HideoutHelmMain,
+        #     logic_region=Regions.HideoutHelmMain,  # FIX ME if uncommented
         #     logic=lambda l: Events.HelmDoorsOpened in l.Events and l.punch and l.jetpack and l.guitar and l.isdiddy and (
         #             l.settings.helm_setting == HelmSetting.skip_all
         #             or (
@@ -3078,16 +3013,6 @@ CustomLocations = {
             z=3266,
             max_size=64,
             logic_region=Regions.HideoutHelmMain,
-            logic=lambda l: (
-                l.settings.helm_setting == HelmSetting.skip_all
-                or (
-                    Events.HelmDonkeyDone in l.Events
-                    and Events.HelmChunkyDone in l.Events
-                    and Events.HelmTinyDone in l.Events
-                    and Events.HelmLankyDone in l.Events
-                    and Events.HelmDiddyDone in l.Events
-                )
-            ),
             group=2,
         ),
         CustomLocation(
@@ -3098,16 +3023,6 @@ CustomLocations = {
             z=3518,
             max_size=64,
             logic_region=Regions.HideoutHelmMain,
-            logic=lambda l: (
-                l.settings.helm_setting == HelmSetting.skip_all
-                or (
-                    Events.HelmDonkeyDone in l.Events
-                    and Events.HelmChunkyDone in l.Events
-                    and Events.HelmTinyDone in l.Events
-                    and Events.HelmLankyDone in l.Events
-                    and Events.HelmDiddyDone in l.Events
-                )
-            ),
             group=2,
         ),
         CustomLocation(
@@ -3118,16 +3033,6 @@ CustomLocations = {
             z=3721,
             max_size=64,
             logic_region=Regions.HideoutHelmMain,
-            logic=lambda l: (
-                l.settings.helm_setting == HelmSetting.skip_all
-                or (
-                    Events.HelmDonkeyDone in l.Events
-                    and Events.HelmChunkyDone in l.Events
-                    and Events.HelmTinyDone in l.Events
-                    and Events.HelmLankyDone in l.Events
-                    and Events.HelmDiddyDone in l.Events
-                )
-            ),
             group=2,
         ),
         CustomLocation(
@@ -3167,8 +3072,7 @@ CustomLocations = {
             y=74,
             z=5341,
             max_size=96,
-            logic_region=Regions.HideoutHelmAfterBoM,
-            logic=lambda l: l.CrownDoorOpened() or l.generalclips,
+            logic_region=Regions.HideoutHelmThroneRoom,
             group=3,
         ),
         CustomLocation(
@@ -3178,8 +3082,7 @@ CustomLocations = {
             y=74,
             z=5036,
             max_size=96,
-            logic_region=Regions.HideoutHelmAfterBoM,
-            logic=lambda l: l.CrownDoorOpened() or l.generalclips,
+            logic_region=Regions.HideoutHelmThroneRoom,
             group=3,
         ),
     ],

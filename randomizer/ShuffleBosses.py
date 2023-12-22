@@ -110,16 +110,19 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         if not settings.kong_rando and not settings.boss_location_rando and 4 not in forestBossOptions:
             raise ItemPlacementException("Items not placed to allow vanilla Dogadon 2.")
         # Then find levels we can place Mad jack (next most restrictive)
-        # Then find levels we can place Mad jack (next most restrictive)
-        factoryBossOptions = [
+        tinyFactoryBossOptions = [
             x for x in bossLevelOptions if Kongs.tiny in ownedKongs[x] and Items.PonyTailTwirl in ownedMoves[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])
         ]
+        donkeyFactoryBossOptions = []
+        chunkyFactoryBossOptions = []
         if HardBossesEnabled(settings):
+            if settings.krusha_kong != Kongs.tiny:
+                tinyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.tiny in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
             if settings.krusha_kong != Kongs.donkey:
-                factoryBossOptions.extend([x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])])
+                donkeyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.donkey in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
             if settings.krusha_kong != Kongs.chunky:
-                factoryBossOptions.extend([x for x in bossLevelOptions if Kongs.chunky in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])])
-            factoryBossOptions = list(set(factoryBossOptions))
+                chunkyFactoryBossOptions = [x for x in bossLevelOptions if Kongs.chunky in ownedKongs[x] and (settings.start_with_slam or Items.ProgressiveSlam in ownedMoves[x])]
+        factoryBossOptions = list(set(tinyFactoryBossOptions + donkeyFactoryBossOptions + chunkyFactoryBossOptions))
         # This sequence of placing Dogadon 2 and Mad Jack will only fail if both Hunky Chunky and Twirl are placed in level 7
         # If we have fewer options for Dogadon 2, place that first
         forestBossKong = None
@@ -133,12 +136,14 @@ def ShuffleBossesBasedOnOwnedItems(settings, ownedKongs: dict, ownedMoves: dict)
         bossTryingToBePlaced = "Mad Jack"
         if HardBossesEnabled(settings):
             factoryBossIndex = random.choice(factoryBossOptions)
-            factoryBossKongOptions = set(ownedKongs[factoryBossIndex]).intersection({Kongs.donkey, Kongs.chunky})
-            if Kongs.tiny in ownedKongs[factoryBossIndex] and Items.PonyTailTwirl in ownedMoves[factoryBossIndex]:
-                factoryBossKongOptions.add(Kongs.tiny)
-            if settings.krusha_kong in factoryBossKongOptions and settings.krusha_kong != Kongs.tiny:
-                factoryBossKongOptions.remove(settings.krusha_kong)
-            factoryBossKong = random.choice(list(factoryBossKongOptions))
+            factoryBossKongOptions = []
+            if factoryBossIndex in tinyFactoryBossOptions:
+                factoryBossKongOptions.append(Kongs.tiny)
+            if factoryBossIndex in donkeyFactoryBossOptions:
+                factoryBossKongOptions.append(Kongs.donkey)
+            if factoryBossIndex in chunkyFactoryBossOptions:
+                factoryBossKongOptions.append(Kongs.chunky)
+            factoryBossKong = random.choice(factoryBossKongOptions)
         else:
             factoryBossIndex = random.choice(factoryBossOptions)
             factoryBossKong = Kongs.tiny

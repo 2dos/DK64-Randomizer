@@ -147,7 +147,7 @@ LogicRegions = {
     ]),
 
     Regions.FactoryBaboonBlast: Region("Factory Baboon Blast", "Storage and Arcade Area", Levels.FranticFactory, False, None, [
-        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: l.checkFastCheck(FasterChecksSelected.factory_arcade_round_1) and l.isdonkey),  # The GB is moved here on fast GBs
+        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: l.checkFastCheck(FasterChecksSelected.factory_arcade_round_1) and l.isdonkey, isAuxiliary=True),  # The GB is moved here on fast GBs
     ], [
         Event(Events.ArcadeLeverSpawned, lambda l: l.isdonkey)
     ], [

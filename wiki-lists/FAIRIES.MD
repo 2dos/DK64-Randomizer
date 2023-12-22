@@ -212,9 +212,9 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Hideout Helm | Key 8 Room (1) | l.camera and Events.HelmKeyAccess in l.Events | 
-| Hideout Helm | Key 8 Room (2) | l.camera and Events.HelmKeyAccess in l.Events | 
-| Hideout Helm | Pineapple Switch Room | l.camera and (l.handstand and l.lanky) | 
+| Hideout Helm | Key 8 Room (1) | l.camera | 
+| Hideout Helm | Key 8 Room (2) | l.camera | 
+| Hideout Helm | Pineapple Switch Room | l.camera | 
 | Hideout Helm | Under Chunky Room Stairs | l.camera | 
 | Hideout Helm | Above the Blast-o-Matic | l.camera and l.jetpack and l.isdiddy | 
 | Hideout Helm | Navigation Room | l.camera | 

@@ -506,17 +506,17 @@
 
 | Map | Name | Logic |
 | --- | ---- | ----- |
-| Hideout Helm | Metal grate by Mini Monkey barrel | ( l.lanky and l.handstand and ((l.chunky and l.pineapple and l.vines) or l.phasewalk) and ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) ) | 
-| Hideout Helm | Mini Monkey room right side | ( l.lanky and l.handstand and ((l.chunky and l.pineapple and l.vines) or l.phasewalk) and ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) ) | 
-| Hideout Helm | Pineapple switch room in ammo alcove | ( l.lanky and l.handstand and l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) | 
-| Hideout Helm | First room left of Tag barrel | ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) | 
-| Hideout Helm | Top of Blast-o-Matic | ( l.jetpack and l.isdiddy and ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) ) | 
-| Hideout Helm | Blast-o-Matic platform left side | ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) | 
-| Hideout Helm | Blast-o-Matic platform right side | ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) | 
-| Hideout Helm | Under K. Rool door | ( l.settings.helm_setting == HelmSetting.skip_all or ( Events.HelmDonkeyDone in l.Events and Events.HelmChunkyDone in l.Events and Events.HelmTinyDone in l.Events and Events.HelmLankyDone in l.Events and Events.HelmDiddyDone in l.Events ) ) | 
+| Hideout Helm | Metal grate by Mini Monkey barrel |  | 
+| Hideout Helm | Mini Monkey room right side |  | 
+| Hideout Helm | Pineapple switch room in ammo alcove |  | 
+| Hideout Helm | First room left of Tag barrel |  | 
+| Hideout Helm | Top of Blast-o-Matic | l.jetpack and l.isdiddy | 
+| Hideout Helm | Blast-o-Matic platform left side |  | 
+| Hideout Helm | Blast-o-Matic platform right side |  | 
+| Hideout Helm | Under K. Rool door |  | 
 | Hideout Helm | Navigation room near terminals |  | 
 | Hideout Helm | Navigation room near left window |  | 
 | Hideout Helm | Navigation room near right window |  | 
-| Hideout Helm | K. Rool room near kong faces | l.CrownDoorOpened() or l.generalclips | 
-| Hideout Helm | K. Rool room in front of chair | l.CrownDoorOpened() or l.generalclips | 
+| Hideout Helm | K. Rool room near kong faces |  | 
+| Hideout Helm | K. Rool room in front of chair |  | 
 </details>

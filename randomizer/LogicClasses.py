@@ -30,7 +30,9 @@ class LocationLogic:
             # Handle enemy logic
             self.logic = lambda l: logic(l) and enemy_location_list[id].canDropItem(l)
         self.bonusBarrel = bonusBarrel  # Uses MinigameType enum
-        self.isAuxiliaryLocation = isAuxiliary  # For when the Location needs to be in a region but not count as in the region (only used for rabbit race glitched as of now)
+        self.isAuxiliaryLocation = (
+            isAuxiliary  # For when the Location needs to be in a region but not count as in the region (used for locations that need to be accessible in different regions depending on settings)
+        )
 
 
 class Event:
