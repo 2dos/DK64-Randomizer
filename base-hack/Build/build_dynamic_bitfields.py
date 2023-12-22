@@ -16,7 +16,7 @@ BITFIELDS = {
         "fungi_green_tunnel",
         "fungi_yellow_tunnel",
         "shipwreck_gate",
-        "llama_switches"
+        "llama_switches",
     ],
     "FasterChecks": [
         "toy_monster",
