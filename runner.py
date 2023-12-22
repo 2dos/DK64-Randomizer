@@ -27,7 +27,10 @@ from datetime import datetime as Datetime
 local_repo = Repo(path="./")
 local_branch = local_repo.active_branch.name
 
-app = Flask(__name__)
+if __name__ == "__main__":
+    app = Flask(__name__, static_url_path="", static_folder="")
+else:
+    app = Flask(__name__)
 app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 2)
 app.config["EXECUTOR_TYPE"] = os.environ.get("EXECUTOR_TYPE", "process")
 executor = Executor(app)
@@ -262,3 +265,7 @@ def update_total():
     last_generated_time = Datetime.utcnow()
     with open("last_generated_time.cfg", "w") as f:
         f.write(str(last_generated_time))
+
+
+if __name__ == "__main__":
+    app.run(debug=True, port=8000)
