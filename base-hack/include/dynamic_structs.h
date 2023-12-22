@@ -9,18 +9,20 @@
 
 
 typedef struct RemovedBarriers {
-	unsigned char five_dt_switches : 1; // 128 (OFFSET 0)
-	unsigned char production_room_on : 1; // 64 
-	unsigned char seasick_ship_spawned : 1; // 32 
-	unsigned char igloo_pads_spawned : 1; // 16 
-	unsigned char shipwreck_permanent : 1; // 8 
-	unsigned char japes_coconut_gates : 1; // 4 
-	unsigned char shellhive_gate : 1; // 2 
-	unsigned char aztec_tunnel_door : 1; // 1 
-	unsigned char factory_testing_gate : 1; // 128 (OFFSET 1)
-	unsigned char lighthouse_gate : 1; // 64 
-	unsigned char fungi_green_tunnel : 1; // 32 
-	unsigned char fungi_yellow_tunnel : 1; // 16 
+	unsigned char five_dt_switches : 1; // 0x80 (OFFSET 0)
+	unsigned char production_room_on : 1; // 0x40 
+	unsigned char seasick_ship_spawned : 1; // 0x20 
+	unsigned char igloo_pads_spawned : 1; // 0x10 
+	unsigned char shipwreck_permanent : 1; // 0x8 
+	unsigned char japes_coconut_gates : 1; // 0x4 
+	unsigned char shellhive_gate : 1; // 0x2 
+	unsigned char aztec_tunnel_door : 1; // 0x1 
+	unsigned char factory_testing_gate : 1; // 0x80 (OFFSET 1)
+	unsigned char lighthouse_gate : 1; // 0x40 
+	unsigned char fungi_green_tunnel : 1; // 0x20 
+	unsigned char fungi_yellow_tunnel : 1; // 0x10 
+	unsigned char shipwreck_gate : 1; // 0x8 
+	unsigned char llama_switches : 1; // 0x4 
 } RemovedBarriers;
 
 typedef enum ENUM_RemovedBarriers {
@@ -36,23 +38,25 @@ typedef enum ENUM_RemovedBarriers {
 	/* 9 */ REMOVEDBARRIERS_ENUM_LIGHTHOUSEGATE,
 	/* 10 */ REMOVEDBARRIERS_ENUM_FUNGIGREENTUNNEL,
 	/* 11 */ REMOVEDBARRIERS_ENUM_FUNGIYELLOWTUNNEL,
+	/* 12 */ REMOVEDBARRIERS_ENUM_SHIPWRECKGATE,
+	/* 13 */ REMOVEDBARRIERS_ENUM_LLAMASWITCHES,
 } ENUM_RemovedBarriers;
 
 typedef struct FasterChecks {
-	unsigned char toy_monster : 1; // 128 (OFFSET 0)
-	unsigned char piano : 1; // 64 
-	unsigned char diddy_rnd : 1; // 32 
-	unsigned char mech_fish : 1; // 16 
-	unsigned char arcade_first_round : 1; // 8 
-	unsigned char mermaid : 1; // 4 
-	unsigned char owl_race : 1; // 2 
-	unsigned char rabbit_race : 1; // 1 
-	unsigned char ice_tomato : 1; // 128 (OFFSET 1)
-	unsigned char castle_cart : 1; // 64 
-	unsigned char jetpac : 1; // 32 
-	unsigned char factory_car : 1; // 16 
-	unsigned char castle_car : 1; // 8 
-	unsigned char seal_race : 1; // 4 
+	unsigned char toy_monster : 1; // 0x80 (OFFSET 0)
+	unsigned char piano : 1; // 0x40 
+	unsigned char diddy_rnd : 1; // 0x20 
+	unsigned char mech_fish : 1; // 0x10 
+	unsigned char arcade_first_round : 1; // 0x8 
+	unsigned char mermaid : 1; // 0x4 
+	unsigned char owl_race : 1; // 0x2 
+	unsigned char rabbit_race : 1; // 0x1 
+	unsigned char ice_tomato : 1; // 0x80 (OFFSET 1)
+	unsigned char castle_cart : 1; // 0x40 
+	unsigned char jetpac : 1; // 0x20 
+	unsigned char factory_car : 1; // 0x10 
+	unsigned char castle_car : 1; // 0x8 
+	unsigned char seal_race : 1; // 0x4 
 } FasterChecks;
 
 typedef enum ENUM_FasterChecks {

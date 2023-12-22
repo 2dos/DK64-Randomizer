@@ -57,7 +57,6 @@ static const short default_ftt_flags[] = {
     FLAG_BUY_GUNS, // Buy Guns
     FLAG_ICEMELT, // Tiny Temple Ice Melted
     FLAG_HATCH, // Hatch opened in Factory
-    FLAG_PEANUTGATE, // Peanut Gate Opened in Galleon
     FLAG_FIRSTJAPESGATE, // First Switch in Japes
     FLAG_FTT_BLOCKER, // B Locker
 };
@@ -79,6 +78,7 @@ static const flag_checker barrier_checks[] = {
     {.flag=FLAG_MODIFIER_PRODROOM, .index=REMOVEDBARRIERS_ENUM_PRODUCTIONROOMON}, // Prod Room On
     {.flag=FLAG_MODIFIER_GALLEONSHIP, .index=REMOVEDBARRIERS_ENUM_SEASICKSHIPSPAWNED}, // Galleon Ship Spawned
     {.flag=FLAG_PROGRESSION_5DIPADS, .index=REMOVEDBARRIERS_ENUM_IGLOOPADSSPAWNED}, // Caves 5DI Pads Spawned
+    {.flag=FLAG_PEANUTGATE, .index=REMOVEDBARRIERS_ENUM_SHIPWRECKGATE}, // Peanut Gate Opened in Galleon
 };
 
 int checkBarrierSetting(ENUM_RemovedBarriers index) {

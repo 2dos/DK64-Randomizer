@@ -42,6 +42,8 @@
 #define CAVES_BIGBOULDERPAD 0x2F
 #define GALLEON_DKSTAR 0xC
 #define AZTEC_LLAMACOCONUT 0xD
+#define AZTEC_LLAMAGRAPE 0xE
+#define AZTEC_LLAMAFEATHER 0xF
 #define FUNGI_MILLGBINTERIOR 0xA
 
 #define GALLEON_BONGO_PAD 0x11
@@ -344,9 +346,16 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						setPermFlag(SNOOPDOOR_OPEN);
 						setNextTransitionType(0);
 					}
-				} else if (param2 == AZTEC_LLAMACOCONUT) {
-					if (!Rando.quality_of_life.remove_cutscenes) {
-						PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
+				} else if ((param2 == AZTEC_LLAMACOCONUT) || (param2 == AZTEC_LLAMAGRAPE) || (param2 == AZTEC_LLAMAFEATHER)) {
+					if ((index == 0) && (param2 == AZTEC_LLAMACOCONUT)) {
+						if (!Rando.quality_of_life.remove_cutscenes) {
+							PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
+						}
+					} else if (index == 1) {
+						if (Rando.removed_barriers.llama_switches) {
+							return 1;
+						}
+						return checkFlag(FLAG_MODIFIER_LLAMAFREE, FLAGTYPE_PERMANENT);
 					}
 				} else if (param2 == AZTEC_CHUNKY_CAGE) {
 					return !Rando.tag_anywhere;

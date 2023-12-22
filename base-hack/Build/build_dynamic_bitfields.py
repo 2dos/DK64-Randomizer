@@ -15,6 +15,8 @@ BITFIELDS = {
         "lighthouse_gate",
         "fungi_green_tunnel",
         "fungi_yellow_tunnel",
+        "shipwreck_gate",
+        "llama_switches"
     ],
     "FasterChecks": [
         "toy_monster",
@@ -55,7 +57,7 @@ with open(H_FILE, "w") as fh:
             modulo = index & 7
             offset = index >> 3
             mask = 0x80 >> modulo
-            txt_struct.append(f"\tunsigned char {data} : 1; // {mask} {f'(OFFSET {offset})' if modulo == 0 else ''}")
+            txt_struct.append(f"\tunsigned char {data} : 1; // {hex(mask)} {f'(OFFSET {offset})' if modulo == 0 else ''}")
             txt_enum.append(f"\t/* {index} */ {key.upper()}_ENUM_{data.upper().replace('_','')},")
         txt_struct.append(f"}} {key};")
         txt_enum.append(f"}} ENUM_{key};")
