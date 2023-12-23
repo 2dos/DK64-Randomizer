@@ -691,6 +691,25 @@ void initHack(int source) {
 			if (Rando.model_swaps.regular_tomato_is_ice) {
 				*(short*)(0x8075F4E2) = 0x62;
 			}
+			if (Rando.model_swaps.rabbit_is_beetle) {
+				*(short*)(0x8075F242) = 0x2E; // Rabbit Race
+				// Animation scale
+				*(short*)(0x806BE942) = 0x285; 
+				*(short*)(0x806BEFC2) = 0x282;
+				*(short*)(0x806BF052) = 0x282;
+				*(short*)(0x806BF066) = 0x282;
+				*(short*)(0x806BF0C2) = 0x281;
+				*(short*)(0x806BF1D2) = 0x281;
+				*(short*)(0x806BEA8A) = 0x281;
+				*(short*)(0x806BEB6A) = 0x282;
+				*(short*)(0x806BF1DE) = 0x282;
+				*(short*)(0x8075F244) = 0x282;
+				*(short*)(0x806BE9B2) = 0x287;
+				*(short*)(0x806BED5E) = 0x288;
+
+				*(short*)(0x8075F3F2) = 0x2E; // Chunky 5DI
+				*(short*)(0x806B23C6) = 0x287;
+			}
 
 			// DK Face Puzzle
 			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0
