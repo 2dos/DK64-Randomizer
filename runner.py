@@ -10,7 +10,7 @@ from io import BytesIO
 from multiprocessing import Process, Queue
 from queue import Empty
 
-from flask import Flask, make_response, request
+from flask import Flask, make_response, request, send_from_directory
 from flask_cors import CORS
 from flask_executor import Executor
 from vidua import bps
@@ -268,4 +268,15 @@ def update_total():
 
 
 if __name__ == "__main__":
+
+    @app.route("/")
+    def index():
+        """Serve the index page."""
+        return send_from_directory(".", "index.html")
+
+    @app.route("/randomizer")
+    def rando():
+        """Serve the randomizer page."""
+        return send_from_directory(".", "randomizer.html")
+
     app.run(debug=True, port=8000)
