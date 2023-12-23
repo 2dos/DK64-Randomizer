@@ -703,6 +703,8 @@ extern char RambiArenaComboTimer;
 extern char RambiArenaComboSize;
 extern char RambiArenaComboChain[16];
 
+extern char* AnimationPointer;
+
 //hack data
 extern int TestVariable;
 extern char LoadedHooks;

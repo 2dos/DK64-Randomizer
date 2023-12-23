@@ -1719,7 +1719,7 @@ typedef struct ROMFlags {
 typedef struct BooleanModelSwaps {
 	unsigned char ice_tomato_is_regular : 1; // 0x80
 	unsigned char regular_tomato_is_ice : 1; // 0x40
-	unsigned char unk2 : 1; // 0x20
+	unsigned char beetle_is_rabbit : 1; // 0x20
 	unsigned char unk3 : 1; // 0x10
 	unsigned char unk4 : 1; // 0x08
 	unsigned char unk5 : 1; // 0x04
