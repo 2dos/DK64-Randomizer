@@ -19,6 +19,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Models import Model
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import *
 from randomizer.Enums.SongType import SongType
@@ -411,8 +412,17 @@ class Settings:
         #  Color
         self.colors = {}
         self.color_palettes = {}
-        self.klaptrap_model = KlaptrapModel.green
-        self.klaptrap_model_index = 0x21
+        # Random Model Swaps
+        self.random_models = RandomModels.off
+        self.bother_klaptrap_model = Model.KlaptrapGreen
+        self.beetle_model = Model.Beetle
+        self.rabbit_model = Model.Rabbit
+        self.panic_fairy_model = Model.BananaFairy
+        self.turtle_model = Model.Turtle
+        self.panic_klaptrap_model = Model.KlaptrapGreen
+        self.seek_klaptrap_model = Model.KlaptrapGreen
+        self.fungi_tomato_model = Model.Tomato
+        self.caves_tomato_model = Model.IceTomato
         # DK
         self.dk_fur_colors = CharacterColors.vanilla
         self.dk_fur_custom_color = "#000000"

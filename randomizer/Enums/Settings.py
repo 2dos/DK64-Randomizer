@@ -360,14 +360,12 @@ class KasplatRandoSetting(IntEnum):
     location_shuffle = 2
 
 
-class KlaptrapModel(IntEnum):
-    """Determines which model is used for Klaptrap in Beaver Bother."""
+class RandomModels(IntEnum):
+    """Determines the random model level."""
 
-    green = auto()
-    purple = auto()
-    red = auto()
-    random_klap = auto()
-    random_model = auto()
+    off = auto()
+    random = auto()
+    extreme = auto()
 
 
 class KrushaUi(IntEnum):
@@ -722,7 +720,6 @@ SettingsMap = {
     "helm_setting": HelmSetting,
     "item_rando_list_selected": ItemRandoListSelected,
     "kasplat_rando_setting": KasplatRandoSetting,
-    "klaptrap_model": KlaptrapModel,
     "krusha_ui": KrushaUi,
     "lanky_colors": CharacterColors,
     "level_randomization": LevelRandomization,
@@ -733,6 +730,7 @@ SettingsMap = {
     "more_cutscene_skips": ExtraCutsceneSkips,
     "move_rando": MoveRando,
     "rambi_colors": CharacterColors,
+    "random_models": RandomModels,
     "random_prices": RandomPrices,
     "shockwave_status": ShockwaveStatus,
     "shuffle_loading_zones": ShuffleLoadingZones,

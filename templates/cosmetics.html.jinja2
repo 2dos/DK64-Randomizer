@@ -19,37 +19,6 @@
             <div class="row">
                 <h2 class="title">MISCELLANEOUS</h2>
                 <div class="flex-container">
-                    <div class="item-multiselect">
-                        <div class="color-selector">
-                            <p class="select-title">Beaver Bother Klaptrap</p>
-                            <select name="klaptrap_model"
-                                    id="klaptrap_model"
-                                    class="form-select multi-select"
-                                    aria-label="Klaptrap"
-                                    multiple
-                                    size="5">
-                                <option selected value="green">
-                                    Green
-                                </option>
-                                <option value="purple">
-                                    Purple
-                                </option>
-                                <option value="red">
-                                    Red
-                                </option>
-                                <option value="random_klap"
-                                        data-toggle="tooltip"
-                                        title="Selects a random Klaptrap color (Green, Purple, or Red).">
-                                    Random Klaptrap Variant
-                                </option>
-                                <option value="random_model"
-                                        data-toggle="tooltip"
-                                        title="Selects a random model from the game from a pre-determined list.">
-                                    Random Model
-                                </option>
-                            </select>
-                        </div>
-                    </div>
                     <div class="item-select">
                         <p class="select-title">D-Pad Display</p>
                         <select name="dpad_display"
@@ -66,6 +35,25 @@
                             </option>
                             <option value="minimal">
                                 Minimalistic
+                            </option>
+                        </select>
+                    </div>
+                    <div class="item-select">
+                        <p class="select-title">Random Models</p>
+                        <select name="random_models"
+                                id="random_models"
+                                class="form-select center-div"
+                                aria-label="Random Models"
+                                data-toggle="tooltip"
+                                title="Changes various models in the game">
+                            <option selected id="off" value="off" title="">
+                                Off
+                            </option>
+                            <option id="random" value="random">
+                                Random
+                            </option>
+                            <option id="extreme" value="extreme">
+                                Extreme
                             </option>
                         </select>
                     </div>
@@ -219,8 +207,8 @@
                                         <div class="input-group mb-3 {{ kong.lower() }}{{ zone.lower() }}ColorPicker" style="display:flex">
                                             <select name="{{ kong.lower() }}_{{ zone.lower() }}_colors" id="{{ kong.lower() }}_{{ zone.lower() }}_colors" class="form-select" aria-label="{{ kong }} {{ zone }}">
                                                 <option selected value="vanilla">{{ zone }}: Vanilla</option>
-                                                <option selected value="randomized">{{ zone }}: Randomized</option>
-                                                <option selected value="custom">{{ zone }}: Custom</option>
+                                                <option value="randomized">{{ zone }}: Randomized</option>
+                                                <option value="custom">{{ zone }}: Custom</option>
                                             </select>
                                             <div class="color-input-container">
                                                 <input type="color"

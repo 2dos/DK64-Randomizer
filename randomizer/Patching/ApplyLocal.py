@@ -9,12 +9,14 @@ import random
 import zipfile
 
 import js
+from randomizer.Enums.Models import Model
+from randomizer.Enums.Settings import RandomModels
 from randomizer.Lists.Songs import ExcludedSongsSelector
 from randomizer.Patching.CosmeticColors import apply_cosmetic_colors, applyHolidayMode, overwrite_object_colors, writeMiscCosmeticChanges
 from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import recalculatePointerJSON
+from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings, ExcludedSongs
@@ -267,42 +269,32 @@ def updateJSONCosmetics(spoiler, settings, music_data, cosmetic_seed):
     """Update spoiler JSON with cosmetic settings."""
     humanspoiler = spoiler
     humanspoiler["Settings"]["Cosmetic Seed"] = cosmetic_seed
-    if settings.colors != {} or settings.klaptrap_model_index:
-        humanspoiler["Cosmetics"]["Colors and Models"] = {}
+
+    random_model_choices = [
+        {"name": "Beaver Bother Klaptrap", "setting": settings.bother_klaptrap_model},
+        {"name": "Beetle", "setting": settings.beetle_model},
+        {"name": "Rabbit", "setting": settings.rabbit_model},
+        {"name": "Peril Path Panic Fairy", "setting": settings.panic_fairy_model},
+        {"name": "Peril Path Panic Klaptrap", "setting": settings.panic_klaptrap_model},
+        {"name": "Turtle", "setting": settings.turtle_model},
+        {"name": "Searchlight Seek Klaptrap", "setting": settings.seek_klaptrap_model},
+        {"name": "Forest Tomato", "setting": settings.fungi_tomato_model},
+        {"name": "Caves Tomato", "setting": settings.caves_tomato_model},
+    ]
+
+    if settings.colors != {} or settings.random_models != RandomModels.off:
+        humanspoiler["Cosmetics"]["Colors"] = {}
+        humanspoiler["Cosmetics"]["Models"] = {}
         for color_item in settings.colors:
             if color_item == "dk":
-                humanspoiler["Cosmetics"]["Colors and Models"]["DK Color"] = settings.colors[color_item]
+                humanspoiler["Cosmetics"]["Colors"]["DK Color"] = settings.colors[color_item]
             else:
-                humanspoiler["Cosmetics"]["Colors and Models"][f"{color_item.capitalize()} Color"] = settings.colors[color_item]
-        klap_models = {
-            0x19: "Beaver",
-            0x1E: "Klobber",
-            0x20: "Kaboom",
-            0x21: "Green Klaptrap",
-            0x22: "Purple Klaptrap",
-            0x23: "Red Klaptrap",
-            0x24: "Klaptrap Teeth",
-            0x26: "Krash",
-            0x27: "Troff",
-            0x30: "N64 Logo",
-            0x34: "Mech Fish",
-            0x42: "Krossbones",
-            0x47: "Rabbit",
-            0x4B: "Minecart Skeleton Head",
-            0x51: "Tomato",
-            0x62: "Ice Tomato",
-            0x69: "Golden Banana",
-            0x70: "Microbuffer",
-            0x72: "Bell",
-            0x96: "Missile (Car Race)",
-            0xB0: "Red Buoy",
-            0xB1: "Green Buoy",
-            0xBD: "Rareware Logo",
-        }
-        if settings.klaptrap_model_index in klap_models:
-            humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = klap_models[settings.klaptrap_model_index]
-        else:
-            humanspoiler["Cosmetics"]["Colors and Models"]["Klaptrap Model"] = f"Unknown Model {hex(settings.klaptrap_model_index)}"
+                humanspoiler["Cosmetics"]["Colors"][f"{color_item.capitalize()} Color"] = settings.colors[color_item]
+        for data in random_model_choices:
+            if isinstance(data["setting"], Model):
+                humanspoiler["Cosmetics"]["Models"][data["name"]] = camelCaseToWords(data["setting"].name)
+            else:
+                humanspoiler["Cosmetics"]["Models"][data["name"]] = f"Unknown Model {hex(int(data['setting']))}"
     if settings.music_bgm_randomized or settings.bgm_songs_selected:
         humanspoiler["Cosmetics"]["Background Music"] = music_data.get("music_bgm_data")
     if settings.music_majoritems_randomized or settings.majoritems_songs_selected:
