@@ -1950,7 +1950,8 @@ def compileHints(spoiler: Spoiler) -> bool:
     UpdateSpoilerHintList(spoiler)
     spoiler.hint_distribution = hint_distribution
 
-    if spoiler.settings.dim_solved_hints:
+    # Dim hints - these are only useful (and doable) if item rando is on
+    if spoiler.settings.dim_solved_hints and spoiler.settings.shuffle_items:
         AssociateHintsWithFlags(spoiler)
 
     # # DEBUG CODE to alert when a hint is empty

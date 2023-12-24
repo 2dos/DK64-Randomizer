@@ -128,6 +128,8 @@ def BarrelShuffle(settings: Settings) -> None:
                 minigamePool.extend([x for x in MinigameRequirements.keys() if x in value])
     else:
         minigamePool = [x for x in MinigameRequirements.keys() if x != Minigames.NoGame]
+    if settings.disable_hard_minigames:
+        minigamePool = [game for game in minigamePool if MinigameRequirements[game].difficulty < 3]
     # Shuffle barrels
     Reset(barrelLocations)
     ShuffleBarrels(settings, barrelLocations.copy(), minigamePool.copy())
