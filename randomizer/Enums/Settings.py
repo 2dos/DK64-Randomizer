@@ -864,6 +864,7 @@ class SettingsStringEnum(IntEnum):
     switchsanity = 160
     fungi_time = 161
     galleon_water = 162
+    disable_hard_minigames = 163
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -874,7 +875,6 @@ DeprecatedSettings = {
     SettingsStringEnum.hard_bosses,
     SettingsStringEnum.hard_enemies,
     SettingsStringEnum.choose_starting_moves,
-    SettingsStringEnum.enable_plandomizer,  # May integrate plando strings later
 }
 
 
@@ -1068,6 +1068,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.switchsanity: SettingsStringDataType.bool,
     SettingsStringEnum.fungi_time: FungiTimeSetting,
     SettingsStringEnum.galleon_water: GalleonWaterSetting,
+    SettingsStringEnum.disable_hard_minigames: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

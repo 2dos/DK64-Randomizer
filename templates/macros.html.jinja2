@@ -52,6 +52,20 @@
                         </div>
                     </div>
                 </div>
+                {% if name == "minigames_list" %}
+                    <div class="form-check form-switch" style="padding-left: 1.5em;">
+                        <label data-toggle="tooltip"
+                            style="font-size:14px;"
+                            title="The hardest variants of minigames are removed.">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="disable_hard_minigames"
+                                id="disable_hard_minigames"
+                                value="True"/>
+                            No Hard Minigames
+                        </label>
+                    </div>
+                {% endif %}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="{{ name }}_select_all">Select All</button>

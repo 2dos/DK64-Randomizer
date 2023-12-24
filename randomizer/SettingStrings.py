@@ -104,7 +104,7 @@ settingsExclusionMap = {
     "shuffle_items": {False: ["item_rando_list_selected"]},
     "starting_moves_count": {0: ["random_starting_move_list_selected"]},
     "enemy_rando": {False: ["enemies_selected"]},
-    "bonus_barrel_rando": {False: ["minigames_list_selected"]},
+    "bonus_barrel_rando": {False: ["minigames_list_selected", "disable_hard_minigames"]},
     "bananaport_rando": {BananaportRando.off: ["warp_level_list_selected"]},
     "logic_type": {LogicType.glitchless: ["glitches_selected"], LogicType.nologic: ["glitches_selected"]},
     "select_keys": {False: ["starting_keys_list_selected"], True: ["krool_key_count"]},
@@ -141,7 +141,7 @@ settingsExclusionMap = {
 
 def prune_settings(settings_dict: dict):
     """Remove certain settings based on the values of other settings."""
-    settings_to_remove = ["enable_plandomizer", "plandomizer_data", "enable_song_select", "music_selections"]
+    settings_to_remove = ["plandomizer_data", "enable_song_select", "music_selections"]
     # Remove settings based on the exclusion map above.
     for keySetting, exclusions in settingsExclusionMap.items():
         if settings_dict[keySetting] in exclusions:
@@ -369,6 +369,7 @@ def decrypt_settings_string_enum(encrypted_string: str) -> Dict[str, Any]:
             val = key_data_type(int_val)
             bit_index += max_value.bit_length()
         # If this setting is not deprecated, add it.
-        if key_enum not in DeprecatedSettings:
+        # The plando setting needs to be encoded in settings strings but not applied when decoding for logging purposes.
+        if key_enum not in DeprecatedSettings and key_enum != SettingsStringEnum.enable_plandomizer:
             settings_dict[key_name] = val
     return settings_dict

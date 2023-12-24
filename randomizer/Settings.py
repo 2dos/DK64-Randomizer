@@ -256,6 +256,7 @@ class Settings:
         self.download_patch_file = None
         self.load_patch_file = None
         self.bonus_barrel_rando = None
+        self.disable_hard_minigames = None
         self.loading_zone_coupled = None
         self.move_rando = MoveRando.off
         self.start_with_slam = False
@@ -896,8 +897,8 @@ class Settings:
             self.helm_phase_count = 5
         if self.helm_phase_count < 5:
             rooms = random.sample(rooms, self.helm_phase_count)
-        # Plandomized Helm room algorithm
-        if self.enable_plandomizer:
+        # Plandomized Helm room algorithm - only applies when we're already shuffling Helm Order!
+        if self.enable_plandomizer and self.helm_phase_order_rando:
             planned_rooms = []
             # Place planned rooms and clear out others
             for i in range(len(rooms)):
