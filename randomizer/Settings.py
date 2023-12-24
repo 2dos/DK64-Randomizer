@@ -898,7 +898,7 @@ class Settings:
         if self.helm_phase_count < 5:
             rooms = random.sample(rooms, self.helm_phase_count)
         # Plandomized Helm room algorithm - only applies when we're already shuffling Helm Order!
-        if self.enable_plandomizer and not self.helm_phase_order_rando:
+        if self.enable_plandomizer and self.helm_phase_order_rando:
             planned_rooms = []
             # Place planned rooms and clear out others
             for i in range(len(rooms)):
