@@ -33,6 +33,7 @@ def serialize_settings(include_plando: bool = False) -> dict:
 
     # Plandomizer data is processed separately and uses a separate setting string, so it needs to be optionally serializable
     if include_plando:
+        form_data["enable_plandomizer"] = True
         plando_form_data = populate_plando_options(form)
         if plando_form_data is not None:
             form_data["plandomizer_data"] = json.dumps(plando_form_data)
