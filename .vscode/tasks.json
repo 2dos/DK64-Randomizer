@@ -76,7 +76,7 @@
     {
       "label": "Run Server",
       "type": "shell",
-      "command": "${command:python.interpreterPath} ./NoCacheHTTPServer.py",
+      "command": "${command:python.interpreterPath} ./runner.py",
       "problemMatcher": []
     }
   ]

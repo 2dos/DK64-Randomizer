@@ -930,6 +930,7 @@ class SettingsStringEnum(IntEnum):
     remove_barriers_selected = 164
     faster_checks_selected = 165
     k_rool_vanilla_requirement = 166
+    disable_hard_minigames = 167
 
 
 # If a setting needs to be removed, add it to this set instead of removing it
@@ -938,7 +939,6 @@ DeprecatedSettings = {
     SettingsStringEnum.hard_bosses,
     SettingsStringEnum.hard_enemies,
     SettingsStringEnum.choose_starting_moves,
-    SettingsStringEnum.enable_plandomizer,  # May integrate plando strings later
     SettingsStringEnum.open_levels,
     SettingsStringEnum.high_req,
 }
@@ -1138,6 +1138,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.remove_barriers_selected: SettingsStringDataType.list,
     SettingsStringEnum.faster_checks_selected: SettingsStringDataType.list,
     SettingsStringEnum.k_rool_vanilla_requirement: SettingsStringDataType.bool,
+    SettingsStringEnum.disable_hard_minigames: SettingsStringDataType.bool,
 }
 
 # ALL LIST SETTINGS NEED AN ENTRY HERE!

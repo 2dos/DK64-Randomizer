@@ -26,6 +26,7 @@
     "crown_placement_rando": false,
     "damage_amount": "default",
     "enable_shop_hints": true,
+    "disable_hard_minigames": false,
     "disable_tag_barrels": false,
     "dpad_display": "on",
     "enable_progressive_hints": false,

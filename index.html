@@ -6,6 +6,7 @@
               content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <meta name="description" content="" />
         <meta name="author" content="" />
+        <title>DK64 Randomizer</title>
         <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
         <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900"
               rel="stylesheet"/>
@@ -200,7 +201,7 @@
                 current_total_url = "https://generate.dk64rando.com/current_total";
             }
             else {
-                current_total_url = "http://localhost:5000/current_total";
+                current_total_url = "http://" + window.location.hostname + ":8000/current_total";
             }
             function query_stats(){
                 $.ajax({
