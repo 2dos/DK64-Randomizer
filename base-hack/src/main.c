@@ -232,6 +232,13 @@ void earlyFrame(void) {
 			}
 			QueueHelmTimer = 0;
 		}
+		if (Rando.pppanic_fairy_model) {
+			int fairy_model = 0x3D;
+			if ((CurrentMap == MAP_ISLES_DKTHEATRE) || (CurrentMap == MAP_TRAININGGROUNDS_ENDSEQUENCE)) {
+				fairy_model = Rando.pppanic_fairy_model;
+			}
+			*(short*)(0x8075575C) = fairy_model;
+		}
 	}
 	if ((CurrentMap == MAP_KROOLCHUNKY) && (CutsceneIndex == 14) && (CutsceneActive == 1)) {
 		PauseText = 1;
