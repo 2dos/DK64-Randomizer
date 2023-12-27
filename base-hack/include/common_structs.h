@@ -1240,6 +1240,7 @@ typedef struct quality_options {
 	unsigned char brighten_mmm_enemies : 1;
 	unsigned char global_instrument : 1; // 21
 	unsigned char fast_pause_transitions : 1;
+	unsigned char cannon_game_speed : 1; // 23
 } quality_options;
 
 typedef struct image_cache_struct {
@@ -1699,6 +1700,11 @@ typedef struct RandomSwitchesSetting {
 	/* 0x012 */ RandomSwitchesFungi fungi;
 } RandomSwitchesSetting;
 
+typedef struct LZREntrance {
+	/* 0x000 */ unsigned char map;
+	/* 0x001 */ unsigned char exit;
+} LZREntrance;
+
 typedef struct ROMFlags {
 	unsigned char plando : 1; // 0x80
 	unsigned char spoiler : 1; // 0x40
@@ -1709,3 +1715,14 @@ typedef struct ROMFlags {
 	unsigned char unk6 : 1; // 0x02
 	unsigned char unk7 : 1; // 0x01
 } ROMFlags;
+
+typedef struct BooleanModelSwaps {
+	unsigned char ice_tomato_is_regular : 1; // 0x80
+	unsigned char regular_tomato_is_ice : 1; // 0x40
+	unsigned char beetle_is_rabbit : 1; // 0x20
+	unsigned char rabbit_is_beetle : 1; // 0x10
+	unsigned char unk4 : 1; // 0x08
+	unsigned char unk5 : 1; // 0x04
+	unsigned char unk6 : 1; // 0x02
+	unsigned char unk7 : 1; // 0x01
+} BooleanModelSwaps;

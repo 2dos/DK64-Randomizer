@@ -343,17 +343,6 @@
                         Random Starting Location
                     </label>
                 </div>
-                <div class="form-check form-switch item-switch">
-                    <label data-toggle="tooltip"
-                            title="Randomizes various pads and switches in the game to other pads or switches, resulting in different requirements to access various areas.">
-                        <input class="form-check-input"
-                                type="checkbox"
-                                name="switchsanity"
-                                value="True"/>
-                        Switchsanity
-                    </label>
-                </div>
-                <div class="spacer"></div>
             </div>
             <div class="flex-container">
                 <div class="item-select">
@@ -454,7 +443,27 @@
                         {{ list_selector(vanilla_warps, "warp_level_list", "LEVEL SELECTOR", "This will open a popup that will let you customize what levels' warps are in the pool. Any level not selected will have its vanilla warp locations.&#10;This defaults to All levels.", 10) }}
                     {# Remove end </div> as it's included in the macro for formatting #}
                 </div>
-            </div> 
+            </div>
+            <div class="item-select">
+                <p class="select-title">Switchsanity</p>
+                <select name="switchsanity"
+                        id="switchsanity"
+                        class="form-select"
+                        aria-label="Randomization type"
+                        data-toggle="tooltip"
+                        title="Randomizes various pads and switches in the game to other pads or switches, resulting in different requirements to access various areas.&#10;- Off: Switchsanity will be disabled.&#10;- Helm Access: Only the Isles Monkeyport pad and the Helm Lobby Gone pad will be altered.&#10;- All: All switches that can be altered will be altered.">
+                    <option value="off" selected>
+                        Off
+                    </option>
+                    <option value="helm_access">
+                        Helm Access Only
+                    </option>
+                    <option value="all">
+                        All
+                    </option>
+                </select>
+            </div>
+            <div class="spacer"></div>
         </div>
         </div>
     </div>

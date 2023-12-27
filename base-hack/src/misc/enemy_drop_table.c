@@ -71,8 +71,8 @@ void spawnEnemyDrops(actorData* actor) {
     }
     if ((CurrentMap == MAP_CASTLEKUTOUT) && (Rando.hard_mode.lava_water)) {
         // Make sure KKO enemy always drops a melon slice
-        playSong(SONG_MELONSLICEDROP, 0x3F800000);
-        spawnActorWithFlag(0x2F, *(int*)(&actor->xPos), *(int*)(&actor->yPos), *(int*)(&actor->zPos), 0xFFF, 1, -1, 0);
+        playSong(SONG_MELONSLICEDROP, 1.0f);
+        spawnActorWithFlag(0x2F, actor->xPos, actor->yPos, actor->zPos, 0xFFF, 1, -1, 0);
         return;
     } else {
         if (entry_index < 0) {
@@ -82,7 +82,7 @@ void spawnEnemyDrops(actorData* actor) {
     int song = drops[entry_index].drop_music;
     if (song > 0) {
         if (!Rando.enemy_item_rando) {
-            playSong(song, 0x3F800000);
+            playSong(song, 1.0f);
         }
     }
     int drop_count = drops[entry_index].drop_count;
@@ -136,7 +136,7 @@ void spawnEnemyDrops(actorData* actor) {
     drop_rotation_divisor /= drop_count;
     for (int i = 0; i < drop_count; i++) {
         int drop_rotation = i * drop_rotation_divisor;
-        spawnActorWithFlag(drop_type, *(int*)(&actor->xPos), *(int*)(&actor->yPos), *(int*)(&actor->zPos), drop_rotation, drop_arg, flag, 0);
+        spawnActorWithFlag(drop_type, actor->xPos, actor->yPos, actor->zPos, drop_rotation, drop_arg, flag, 0);
     }
 }
 

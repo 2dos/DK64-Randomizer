@@ -129,7 +129,6 @@ int* drawHintText(int* dl, char* str, int x, int y, int opacity, int center) {
     mtx_item mtx1;
     _guScaleF(&mtx0, 0x3F19999A, 0x3F19999A, 0x3F800000);
     float position = y;
-    int pos_f = *(int*)&position;
     float hint_x = x;
     if (center) {
         hint_x = 640.0f;
@@ -137,9 +136,9 @@ int* drawHintText(int* dl, char* str, int x, int y, int opacity, int center) {
             hint_x = SCREEN_WD_FLOAT * 2;
         }
     }
-    _guTranslateF(&mtx1, *(int*)(&hint_x), pos_f, 0x0);
+    _guTranslateF(&mtx1, hint_x, position, 0.0f);
     _guMtxCatF(&mtx0, &mtx1, &mtx0);
-    _guTranslateF(&mtx1, 0, 0x42400000, 0);
+    _guTranslateF(&mtx1, 0.0f, 48.0f, 0.0f);
     _guMtxCatF(&mtx0, &mtx1, &mtx0);
     _guMtxF2L(&mtx0, &static_mtx[(int)mtx_counter]);
 
@@ -329,10 +328,7 @@ void getItemSpecificity(char** str, int step, int flag) {
 }
 
 void initHintFlags(void) {
-    unsigned short* hint_clear_write = dk_malloc(GAME_HINT_COUNT << 1);
-    int* hint_flag_file_size;
-    *(int*)(&hint_flag_file_size) = GAME_HINT_COUNT << 1;
-    copyFromROM(0x1FFE000,hint_clear_write,&hint_flag_file_size,0,0,0,0);
+    unsigned short* hint_clear_write = getFile(GAME_HINT_COUNT << 1, 0x1FFE000);
     for (int i = 0; i < GAME_HINT_COUNT; i++) {
         hint_clear_flags[i] = hint_clear_write[i];
     }

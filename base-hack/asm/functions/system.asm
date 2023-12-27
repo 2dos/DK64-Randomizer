@@ -74,3 +74,4 @@
 .definelabel alterMusicVolume, 0x8060A398
 .definelabel adjustSFXType_Internal, 0x80737C20
 .definelabel loadChunks, 0x80650ECC
+.definelabel regularFrameLoop, 0x805FC2B0

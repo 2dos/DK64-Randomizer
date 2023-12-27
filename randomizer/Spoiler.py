@@ -218,7 +218,6 @@ class Spoiler:
         if self.settings.randomize_cb_required_amounts:
             settings["Maximum Troff N Scoff"] = self.settings.troff_text
         settings["Open Lobbies"] = self.settings.open_lobbies
-        settings["Open Levels"] = self.settings.open_levels
         settings["Auto Complete Bonus Barrels"] = self.settings.bonus_barrel_auto_complete
         settings["Complex Level Order"] = self.settings.hard_level_progression
         settings["Progressive Switch Strength"] = self.settings.alter_switch_allocation
@@ -266,8 +265,8 @@ class Spoiler:
         settings["Quality of Life"] = self.settings.quality_of_life
         settings["Tag Anywhere"] = self.settings.enable_tag_anywhere
         settings["Kongless Hint Doors"] = self.settings.wrinkly_available
-        settings["Fast GBs"] = self.settings.fast_gbs
-        settings["High Requirements"] = self.settings.high_req
+        settings["Fast GBs"] = self.settings.faster_checks_enabled
+        settings["Barriers Removed"] = self.settings.remove_barriers_enabled
         settings["Win Condition"] = self.settings.win_condition.name
         settings["Fungi Time of Day"] = self.settings.fungi_time.name
         settings["Galleon Water Level"] = self.settings.galleon_water.name

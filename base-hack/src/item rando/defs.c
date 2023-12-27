@@ -219,7 +219,7 @@ void initItemDictionary(void) {
         }
         NewGBDictionary[i].intended_kong_actor = kong + 2;
         NewGBDictionary[i].flag_index = flag;
-        if ((flag == FLAG_ARCADE_ROUND1) && (Rando.fast_gbs)) {
+        if ((flag == FLAG_ARCADE_ROUND1) && (Rando.faster_checks.arcade_first_round)) {
             NewGBDictionary[i].map = MAP_FACTORYBBLAST;
             NewGBDictionary[i].model2_id = 0;
         }

@@ -8,6 +8,8 @@ from ui.rando_options import (
     disable_excluded_songs_modal,
     disable_hard_mode_modal,
     disable_helm_hurry,
+    disable_remove_barriers,
+    disable_faster_checks,
     disable_move_shuffles,
     disable_music,
     enable_plandomizer,
@@ -73,5 +75,7 @@ updateDoorTwoNumAccess(None)
 item_rando_list_changed(None)
 toggle_key_settings(None)
 disable_helm_hurry(None)
+disable_remove_barriers(None)
+disable_faster_checks(None)
 toggle_vanilla_door_rando(None)
 enable_plandomizer(None)

@@ -1027,6 +1027,8 @@ def preset_select_changed(event):
     disable_excluded_songs_modal(None)
     toggle_bananaport_selector(None)
     disable_helm_hurry(None)
+    disable_remove_barriers(None)
+    disable_faster_checks(None)
     toggle_logic_type(None)
     toggle_key_settings(None)
     max_starting_moves_count(None)
@@ -1364,6 +1366,38 @@ def disable_helm_hurry(evt):
         pass
 
 
+@bind("click", "remove_barriers_enabled")
+def disable_remove_barriers(evt):
+    """Disable Remove Barriers Selector when Remove Barriers is off."""
+    disabled = True
+    selector = js.document.getElementById("remove_barriers_modal")
+    if js.document.getElementById("remove_barriers_enabled").checked:
+        disabled = False
+    try:
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
+        else:
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
+@bind("click", "faster_checks_enabled")
+def disable_faster_checks(evt):
+    """Disable Faster Checks Selector when Faster Checks is off."""
+    disabled = True
+    selector = js.document.getElementById("faster_checks_modal")
+    if js.document.getElementById("faster_checks_enabled").checked:
+        disabled = False
+    try:
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
+        else:
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
 @bind("click", "vanilla_door_rando")
 def toggle_vanilla_door_rando(evt):
     """Force Wrinkly and T&S Rando to be on when Vanilla Door Rando is on."""
@@ -1427,6 +1461,8 @@ def shuffle_settings(evt):
     toggle_bananaport_selector(None)
     toggle_key_settings(None)
     disable_helm_hurry(None)
+    disable_remove_barriers(None)
+    disable_faster_checks(None)
     toggle_vanilla_door_rando(None)
 
 

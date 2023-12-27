@@ -8,11 +8,13 @@ from randomizer.Enums.Settings import (
     BananaportRando,
     CrownEnemyRando,
     DamageAmount,
+    FasterChecksSelected,
     FungiTimeSetting,
     GalleonWaterSetting,
     HardModeSelected,
     HelmDoorItem,
     MiscChangesSelected,
+    RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
     WrinklyHints,
@@ -27,7 +29,7 @@ from randomizer.Enums.Maps import Maps
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Lists.EnemyTypes import Enemies, EnemySelector
 from randomizer.Lists.HardMode import HardSelector
-from randomizer.Lists.QoL import QoLSelector
+from randomizer.Lists.Multiselectors import QoLSelector, RemovedBarrierSelector, FasterCheckSelector
 from randomizer.Patching.BananaPlacer import randomize_cbs
 from randomizer.Patching.BananaPortRando import randomize_bananaport
 from randomizer.Patching.BarrelRando import randomize_barrels
@@ -43,7 +45,7 @@ from randomizer.Patching.FairyPlacer import PlaceFairies
 from randomizer.Patching.ItemRando import place_randomized_items
 from randomizer.Patching.KasplatLocationRando import randomize_kasplat_locations
 from randomizer.Patching.KongRando import apply_kongrando_cosmetic
-from randomizer.Patching.Lib import setItemReferenceName, addNewScript
+from randomizer.Patching.Lib import setItemReferenceName, addNewScript, IsItemSelected
 from randomizer.Patching.MiscSetupChanges import randomize_setup, updateKrushaMoveNames, updateRandomSwitches, updateSwitchsanity
 from randomizer.Patching.MoveLocationRando import place_pregiven_moves, randomize_moves
 from randomizer.Patching.Patcher import LocalROM
@@ -64,6 +66,22 @@ class BooleanProperties:
         self.check = check
         self.offset = offset
         self.target = target
+
+
+def writeMultiselector(enabled: bool, enabled_selections: list, selector: list[dict], selection_enum, data_length: int, ROM_COPY: LocalROM, write_start: int):
+    """Write multiselector choices to ROM."""
+    if enabled:
+        force = len(enabled_selections) == 0
+        write_data = [0] * data_length
+        for item in selector:
+            if item["shift"] >= 0:
+                if force or selection_enum[item["value"]] in enabled_selections:
+                    offset = int(item["shift"] >> 3)
+                    check = int(item["shift"] % 8)
+                    write_data[offset] |= 0x80 >> check
+        ROM_COPY.seek(write_start)
+        for byte_data in write_data:
+            ROM_COPY.writeMultipleBytes(byte_data, 1)
 
 
 def patching_response(spoiler):
@@ -193,11 +211,8 @@ def patching_response(spoiler):
         BooleanProperties(spoiler.settings.perma_death, 0x14D),  # Permadeath
         BooleanProperties(spoiler.settings.perma_death, 0x14E),  # Disable Boss Door Check
         BooleanProperties(spoiler.settings.disable_tag_barrels, 0x14F),  # Disable Tag Spawning
-        BooleanProperties(spoiler.settings.open_levels, 0x137),  # Open Levels
         BooleanProperties(spoiler.settings.shorten_boss, 0x13B),  # Shorten Boss Fights
         BooleanProperties(spoiler.settings.fast_warps, 0x13A),  # Fast Warps
-        BooleanProperties(spoiler.settings.high_req, 0x179),  # Remove High Requirements
-        BooleanProperties(spoiler.settings.fast_gbs, 0x17A),  # Fast GBs
         BooleanProperties(spoiler.settings.auto_keys, 0x15B),  # Auto-Turn Keys
         BooleanProperties(spoiler.settings.tns_location_rando, 0x10E),  # T&S Portal Location Rando
         BooleanProperties(spoiler.settings.cb_rando, 0x10B),  # Remove Rock Bunch
@@ -305,36 +320,16 @@ def patching_response(spoiler):
         old = int.from_bytes(ROM_COPY.readBytes(1), "big")
         ROM_COPY.seek(sav + 0x113)
         ROM_COPY.write(old | 2)
-    # Quality of Life
-    if spoiler.settings.quality_of_life:
-        enabled_qol = spoiler.settings.misc_changes_selected.copy()
-        if len(enabled_qol) == 0:
-            for item in QoLSelector:
-                enabled_qol.append(MiscChangesSelected[item["value"]])
-        write_data = [0] * 3
-        for item in QoLSelector:
-            if MiscChangesSelected[item["value"]] in enabled_qol and item["shift"] >= 0:
-                offset = int(item["shift"] >> 3)
-                check = int(item["shift"] % 8)
-                write_data[offset] |= 0x80 >> check
-        ROM_COPY.seek(sav + 0x0B0)
-        for byte_data in write_data:
-            ROM_COPY.writeMultipleBytes(byte_data, 1)
+    writeMultiselector(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, QoLSelector, MiscChangesSelected, 3, ROM_COPY, sav + 0x0B0)
+    writeMultiselector(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarrierSelector, RemovedBarriersSelected, 2, ROM_COPY, sav + 0x1DE)
+    writeMultiselector(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterCheckSelector, FasterChecksSelected, 2, ROM_COPY, sav + 0x1E0)
+    writeMultiselector(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardSelector, HardModeSelected, 1, ROM_COPY, sav + 0x0C6)
 
-    # Hard Mode
-    if spoiler.settings.hard_mode:
-        enabled_hard = spoiler.settings.hard_mode_selected.copy()
-        if len(enabled_hard) == 0:
-            for item in HardSelector:
-                enabled_hard.append(HardModeSelected[item["value"]])
-        write_data = [0]
-        for item in HardSelector:
-            if HardModeSelected[item["value"]] in enabled_hard and item["shift"] >= 0:
-                offset = int(item["shift"] >> 3)
-                check = int(item["shift"] % 8)
-                write_data[offset] |= 0x80 >> check
-        ROM_COPY.seek(sav + 0x0C6)
-        ROM_COPY.writeMultipleBytes(write_data[0], 1)
+    keys = 0xFF
+    if spoiler.settings.k_rool_vanilla_requirement:
+        keys = 0x84  # 8765 4321 bitfield, only enable the keys 3 and 8 bits, meaning 0b1000 0100, which is 0x84
+    ROM_COPY.seek(sav + 0x1DD)
+    ROM_COPY.write(keys)
 
     # Damage amount
     damage_multipliers = {
@@ -397,7 +392,7 @@ def patching_response(spoiler):
     ROM_COPY.write(int(spoiler.settings.activate_all_bananaports))
 
     # Fast GBs - Change jetpac text
-    if spoiler.settings.fast_gbs:
+    if IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.jetpac):
         cranky_index = 8
         data = {"textbox_index": 2, "mode": "replace", "search": "5000", "target": "2500"}
         if cranky_index in spoiler.text_changes:
@@ -481,7 +476,7 @@ def patching_response(spoiler):
                 mill_text += str(spoiler.settings.mill_levers[x])
         # Change default wrinkly hint
         if spoiler.settings.wrinkly_hints == WrinklyHints.off:
-            if spoiler.settings.fast_gbs or spoiler.settings.puzzle_rando:
+            if IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.forest_mill_conveyor) or spoiler.settings.puzzle_rando:
                 wrinkly_index = 41
                 data = {"textbox_index": 21, "mode": "replace", "search": "21132", "target": mill_text}
                 if wrinkly_index in spoiler.text_changes:

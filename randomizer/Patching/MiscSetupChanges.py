@@ -7,7 +7,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Switches import Switches
-from randomizer.Enums.Settings import DamageAmount, HardModeSelected, MiscChangesSelected
+from randomizer.Enums.Settings import DamageAmount, HardModeSelected, MiscChangesSelected, FasterChecksSelected, RemovedBarriersSelected
 from randomizer.Lists.CustomLocations import CustomLocations
 from randomizer.Enums.Maps import Maps
 from randomizer.Lists.MapsAndExits import LevelMapTable
@@ -144,14 +144,16 @@ def randomize_setup(spoiler):
         for count in range(pickup["weight"]):
             pickup_list.append(pickup["type"])
 
+    arcade_r1_shortened = IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1)
+    lighthouse_on = IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarriersSelected.galleon_seasick_ship_spawned)
     allowed_settings = [
-        spoiler.settings.fast_gbs,
+        arcade_r1_shortened,
         spoiler.settings.randomize_pickups,
         spoiler.settings.random_patches,
         spoiler.settings.puzzle_rando,
         IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.extra_hard_bosses),  # Pufftoss Stars Raised
         IsItemSelected(spoiler.settings.hard_mode, spoiler.settings.hard_mode_selected, HardModeSelected.hard_bosses),  # Pufftoss Stars Shuffled
-        spoiler.settings.high_req,
+        lighthouse_on,
         IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, MiscChangesSelected.raise_fungi_dirt_patch),
     ]
     enabled = False
@@ -220,7 +222,7 @@ def randomize_setup(spoiler):
                 for swap in swap_list:
                     if swap["map"] == cont_map_id and item_type in swap["item_list"]:
                         is_swap = True
-                if item_type == 0x196 and spoiler.settings.fast_gbs and cont_map_id == Maps.FactoryBaboonBlast:
+                if item_type == 0x196 and arcade_r1_shortened and cont_map_id == Maps.FactoryBaboonBlast:
                     ROM_COPY.seek(item_start + 0x28)
                     ROM_COPY.writeMultipleBytes(0x74, 2)
                     ROM_COPY.seek(item_start + 0xC)
@@ -268,7 +270,7 @@ def randomize_setup(spoiler):
                         star_y = random.uniform(star_height_boundaries[0], star_height_boundaries[1])
                         ROM_COPY.seek(item_start + 4)
                         ROM_COPY.writeMultipleBytes(int(float_to_hex(star_y), 16), 4)
-                elif item_type == 0x74 and cont_map_id == Maps.GalleonLighthouse and spoiler.settings.high_req:
+                elif item_type == 0x74 and cont_map_id == Maps.GalleonLighthouse and lighthouse_on:
                     new_gb_coords = [407.107, 720, 501.02]
                     for coord_i, coord in enumerate(new_gb_coords):
                         ROM_COPY.seek(item_start + (coord_i * 4))

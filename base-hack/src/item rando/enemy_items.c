@@ -30,10 +30,7 @@ void populateEnemyMapData(void) {
     }
     // Pull table from ROM
     int table_size = ENEMIES_TOTAL * sizeof(enemy_item_rom_item);
-    enemy_item_rom_item* enemy_write = dk_malloc(table_size);
-    int* table_file_size;
-    *(int*)(&table_file_size) = table_size;
-    copyFromROM(0x1FF9000,enemy_write,&table_file_size,0,0,0,0);
+    enemy_item_rom_item* enemy_write = getFile(table_size, 0x1FF9000);
     for (int i = 0; i < ENEMIES_TOTAL; i++) {
         if (enemy_write[i].map == CurrentMap) {
             int spawn_id = enemy_write[i].char_spawner_id;
@@ -137,7 +134,7 @@ void indicateCollectionStatus(void) {
     }
     displaySpriteAtXYZ(
         sprite_table[sprite],
-        0x3F19999A,
+        0.6f,
         CurrentActorPointer_0->xPos + x_offset,
         CurrentActorPointer_0->yPos + y_offset,
         CurrentActorPointer_0->zPos + z_offset);

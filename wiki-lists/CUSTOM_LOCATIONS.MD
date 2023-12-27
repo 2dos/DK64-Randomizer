@@ -497,7 +497,7 @@
 | Isles Snide Room | Next to Snides |  | 
 | KLumsy | K. Lumsy: Back Right |  | 
 | KLumsy | K. Lumsy: Near Left |  | 
-| KLumsy | Under K. Lumsy | (l.CanAccessKRool() or l.phasewalk) | 
+| KLumsy | Under K. Lumsy | (l.IsKLumsyFree() or l.phasewalk) | 
 </details>
 
 ## Hideout Helm

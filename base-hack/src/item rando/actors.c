@@ -21,7 +21,7 @@ void spriteCode(int sprite_index, float scale) {
     void* paad = CurrentActorPointer_0->paad;
     spriteActorGenericCode(4.5f);
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        assignGIFToActor(paad, sprite_table[sprite_index], *(int*)(&scale));
+        assignGIFToActor(paad, sprite_table[sprite_index], scale);
         if (CurrentActorPointer_0->control_state == 99) {
             CurrentActorPointer_0->control_state = 1;
             CurrentActorPointer_0->sub_state = 2;
@@ -57,7 +57,7 @@ void beanCode(void) {
     void* paad = CurrentActorPointer_0->paad;
     spriteActorGenericCode(12.0f);
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        assignGIFToActor(paad, &bean_sprite, 0x3F800000);
+        assignGIFToActor(paad, &bean_sprite, 1.0f);
         if (CurrentActorPointer_0->control_state == 99) {
             CurrentActorPointer_0->control_state = 1;
             CurrentActorPointer_0->sub_state = 2;
@@ -72,7 +72,7 @@ void pearlCode(void) {
     void* paad = CurrentActorPointer_0->paad;
     spriteActorGenericCode(12.0f);
     if ((CurrentActorPointer_0->obj_props_bitfield & 0x10) == 0) {
-        assignGIFToActor(paad, &pearl_sprite, 0x3F800000);
+        assignGIFToActor(paad, &pearl_sprite, 1.0f);
         if (CurrentActorPointer_0->control_state == 99) {
             CurrentActorPointer_0->control_state = 1;
             CurrentActorPointer_0->sub_state = 2;
@@ -160,7 +160,7 @@ void mermaidCheck(void) {
      * @brief Set the mermaid control state based on the amount of pearls you have
      */
     int requirement = 5;
-    if (Rando.fast_gbs) {
+    if (Rando.faster_checks.mermaid) {
         requirement = 1; // Fast GBs pearl requirement
     }
     int count = 0;

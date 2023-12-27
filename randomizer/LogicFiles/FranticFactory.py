@@ -8,7 +8,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
-from randomizer.Enums.Settings import MinigameBarrels, ShuffleLoadingZones
+from randomizer.Enums.Settings import MinigameBarrels, ShuffleLoadingZones, FasterChecksSelected, RemovedBarriersSelected
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
@@ -35,7 +35,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Transitions.FactoryToIsles),
-        TransitionFront(Regions.Testing, lambda l: l.settings.open_levels or Events.TestingGateOpened in l.Events or l.phasewalk or l.generalclips),
+        TransitionFront(Regions.Testing, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_testing_gate_opened) or Events.TestingGateOpened in l.Events or l.phasewalk or l.generalclips),
         TransitionFront(Regions.BeyondHatch, lambda l: Events.HatchOpened in l.Events or l.phasewalk),
     ]),
 
@@ -118,7 +118,7 @@ LogicRegions = {
     Regions.BeyondHatch: Region("Beyond Hatch", "Storage and Arcade Area", Levels.FranticFactory, True, -1, [
         LocationLogic(Locations.ChunkyKong, lambda l: l.CanFreeChunky()),
         LocationLogic(Locations.NintendoCoin, lambda l: Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey and (l.GetCoins(Kongs.donkey) >= 2)),
-        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: (not l.settings.fast_gbs and (Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey)) or (l.CanOStandTBSNoclip() and l.spawn_snags)),
+        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: (not l.checkFastCheck(FasterChecksSelected.factory_arcade_round_1) and (Events.ArcadeLeverSpawned in l.Events and l.grab and l.isdonkey)) or (l.CanOStandTBSNoclip() and l.spawn_snags)),
         LocationLogic(Locations.FactoryLankyFreeChunky, lambda l: l.CanFreeChunky()),
         LocationLogic(Locations.FactoryTinybyArcade, lambda l: (l.mini and l.tiny) or l.phasewalk),
         LocationLogic(Locations.FactoryChunkyDarkRoom, lambda l: ((l.punch and l.chunky) or l.phasewalk) and ((l.punch and l.CanSlamSwitch(Levels.FranticFactory, 1)) or l.generalclips) and l.ischunky),
@@ -147,7 +147,7 @@ LogicRegions = {
     ]),
 
     Regions.FactoryBaboonBlast: Region("Factory Baboon Blast", "Storage and Arcade Area", Levels.FranticFactory, False, None, [
-        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: l.settings.fast_gbs and l.isdonkey, isAuxiliary=True),  # The GB is moved here on fast GBs
+        LocationLogic(Locations.FactoryDonkeyDKArcade, lambda l: l.checkFastCheck(FasterChecksSelected.factory_arcade_round_1) and l.isdonkey, isAuxiliary=True),  # The GB is moved here on fast GBs
     ], [
         Event(Events.ArcadeLeverSpawned, lambda l: l.isdonkey)
     ], [
@@ -162,7 +162,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryMainEnemy_TunnelToProd0, lambda l: True),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToProd1, lambda l: True),
     ], [
-        Event(Events.MainCoreActivated, lambda l: l.settings.high_req),
+        Event(Events.MainCoreActivated, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_production_room_on)),
         Event(Events.DiddyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.diddy),
         Event(Events.LankyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.lanky),
         Event(Events.TinyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.tiny),

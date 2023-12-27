@@ -11,6 +11,8 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Enums.Items import Items
+from randomizer.Enums.Enemies import Enemies
+from randomizer.Enums.Maps import Maps
 
 if TYPE_CHECKING:
     from randomizer.Enums.Settings import HardModeSelected, MiscChangesSelected
@@ -545,6 +547,102 @@ def IsItemSelected(bool_setting: bool, multiselector_setting: List[Union[MiscCha
     if len(multiselector_setting) == 0:
         return True
     return check in multiselector_setting
+
+
+class SpawnerChange:
+    """Information regarding a spawner change."""
+
+    def __init__(self, map: Maps, spawner_id: int):
+        """Initialize with given variables."""
+        self.map_target = map
+        self.spawner_target = spawner_id
+        self.new_enemy = None
+        self.new_scale = None
+        self.new_speed_0 = None
+        self.new_speed_1 = None
+
+
+def applyCharacterSpawnerChanges(changes: list[SpawnerChange], fence_speed_factor: float = None):
+    """Apply a series of changes to character spawners."""
+    ROM_COPY = ROM()
+    formatted_changes = {}
+    id_changes_in_map = {}
+    for change in changes:
+        if change.map_target not in formatted_changes:
+            formatted_changes[change.map_target] = {}
+            id_changes_in_map[change.map_target] = []
+        formatted_changes[change.map_target][change.spawner_target] = change
+        id_changes_in_map[change.map_target].append(change.spawner_target)
+    for map_id in formatted_changes:
+        file_start = js.pointer_addresses[16]["entries"][map_id]["pointing_to"]
+        ROM_COPY.seek(file_start)
+        fence_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        offset = 2
+        used_fence_ids = []
+        if fence_count > 0:
+            for x in range(fence_count):
+                fence = []
+                fence_start = file_start + offset
+                ROM_COPY.seek(file_start + offset)
+                point_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                offset += (point_count * 6) + 2
+                ROM_COPY.seek(file_start + offset)
+                point0_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+                if fence_speed_factor is not None:
+                    for y in range(point0_count):
+                        ROM_COPY.seek(file_start + offset + 2 + (y * 10) + 8)
+                        old_value = int.from_bytes(ROM_COPY.readBytes(1), "big")
+                        new_value = int(old_value * fence_speed_factor)
+                        ROM_COPY.seek(file_start + offset + 2 + (y * 10) + 8)
+                        ROM_COPY.write(new_value)
+                offset += (point0_count * 10) + 6
+                fence_finish = file_start + offset
+                fence_size = fence_finish - fence_start
+                ROM_COPY.seek(fence_finish - 4)
+                used_fence_ids.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+                ROM_COPY.seek(fence_start)
+                for y in range(int(fence_size / 2)):
+                    fence.append(int.from_bytes(ROM_COPY.readBytes(2), "big"))
+                ROM_COPY.seek(fence_finish)
+        spawner_count_location = file_start + offset
+        ROM_COPY.seek(spawner_count_location)
+        spawner_count = int.from_bytes(ROM_COPY.readBytes(2), "big")
+        offset += 2
+        for x in range(spawner_count):
+            # Parse spawners
+            ROM_COPY.seek(file_start + offset + 0x13)
+            enemy_index = int.from_bytes(ROM_COPY.readBytes(1), "big")
+            init_offset = offset
+            if enemy_index in id_changes_in_map[map_id]:
+                change_data = formatted_changes[map_id][enemy_index]
+                if change_data.new_enemy is not None:
+                    ROM_COPY.seek(file_start + init_offset)
+                    ROM_COPY.write(change_data.new_enemy)
+                if change_data.new_scale is not None:
+                    ROM_COPY.seek(file_start + init_offset + 0xF)
+                    ROM_COPY.write(change_data.new_scale)
+                if change_data.new_speed_0 is not None:
+                    ROM_COPY.seek(file_start + init_offset + 0xC)
+                    ROM_COPY.write(change_data.new_speed_0)
+                if change_data.new_speed_1 is not None:
+                    ROM_COPY.seek(file_start + init_offset + 0xD)
+                    ROM_COPY.write(change_data.new_speed_1)
+            ROM_COPY.seek(file_start + offset + 0x11)
+            extra_count = int.from_bytes(ROM_COPY.readBytes(1), "big")
+            offset += 0x16 + (extra_count * 2)
+
+
+def camelCaseToWords(string: str):
+    """Convert camel case string to separated words."""
+    words = [[string[0]]]
+
+    for c in string[1:]:
+        if words[-1][-1].islower() and c.isupper():
+            words.append(list(c))
+        else:
+            words[-1].append(c)
+
+    return " ".join(["".join(word) for word in words])
 
 
 class TextureFormat(IntEnum):

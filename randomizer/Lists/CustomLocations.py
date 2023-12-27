@@ -2839,7 +2839,7 @@ CustomLocations = {
             rot_y=682,
             max_size=64,
             logic_region=Regions.Prison,
-            logic=lambda l: (l.CanAccessKRool() or l.phasewalk),
+            logic=lambda l: (l.IsKLumsyFree() or l.phasewalk),
             group=5,
         ),
     ],

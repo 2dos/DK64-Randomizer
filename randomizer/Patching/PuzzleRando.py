@@ -4,6 +4,8 @@ import random
 import js
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.Patcher import LocalROM
+from randomizer.Patching.Lib import IsItemSelected
+from randomizer.Enums.Settings import FasterChecksSelected
 
 
 def chooseSFX():
@@ -41,7 +43,7 @@ def shiftCastleMinecartRewardZones():
 
 def shortenCastleMinecart(spoiler):
     """Shorten Castle Minecart to end at the u-turn point."""
-    if not spoiler.settings.fast_gbs:
+    if not IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.castle_minecart):
         return
     shiftCastleMinecartRewardZones()
     new_squawks_coords = (3232, 482, 693)
@@ -162,36 +164,60 @@ def shortenCastleMinecart(spoiler):
             ROM_COPY.writeMultipleBytes(y, 1)
 
 
+class PuzzleRandoBound:
+    """Class to store information regarding the bounds of a puzzle requirement."""
+
+    def __init__(self, lower: int, upper: int):
+        """Initialize with given parameters."""
+        self.lower = lower
+        self.upper = upper
+        self.selected = None
+
+    def generateRequirement(self) -> int:
+        """Generate random requirement between the upper and lower bounds."""
+        self.selected = random.randint(self.lower, self.upper)
+        return self.selected
+
+
+class PuzzleItem:
+    """Class to store information regarding a puzzle requirement."""
+
+    def __init__(self, name: str, offset: int, normal_bound: PuzzleRandoBound, fast_bound: PuzzleRandoBound = None, fast_check_setting: FasterChecksSelected = None):
+        """Initialize with given parameters."""
+        self.name = name
+        self.offset = offset
+        self.normal_bound = normal_bound
+        self.fast_bound = fast_bound
+        self.fast_check_setting = fast_check_setting
+        self.selected_bound = self.normal_bound
+
+    def updateBoundSetting(self, spoiler):
+        """Update the settings regarding bounds depending on selected settings."""
+        self.selected_bound = self.normal_bound
+        if self.fast_check_setting is not None and self.fast_bound is not None:
+            if IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, self.fast_check_setting):
+                self.selected_bound = self.fast_bound
+
+
 def randomize_puzzles(spoiler):
     """Shuffle elements of puzzles. Currently limited to coin challenge requirements but will be extended in future."""
     sav = spoiler.settings.rom_data
     if spoiler.settings.puzzle_rando:
         ROM_COPY = LocalROM()
-        race_requirements = {
-            "factory_race": [5, 15],
-            "castle_race": [5, 15],
-            "seal_race": [5, 12],
-            "castle_cart": [10, 45],
-        }
-        if spoiler.settings.fast_gbs:
-            race_requirements["factory_race"] = [3, 8]
-            race_requirements["castle_race"] = [5, 12]
-            race_requirements["seal_race"] = [5, 10]
-            race_requirements["castle_cart"] = [5, 30]
-
         coin_req_info = [
-            {"offset": 0x13C, "coins": random.randint(10, 50)},  # Caves Beetle
-            {"offset": 0x13D, "coins": random.randint(20, 50)},  # Aztec Beetle
-            {"offset": 0x13E, "coins": random.randint(race_requirements["factory_race"][0], race_requirements["factory_race"][1])},  # Factory Car
-            {"offset": 0x13F, "coins": random.randint(race_requirements["seal_race"][0], race_requirements["seal_race"][1])},  # Seal Race
-            {"offset": 0x140, "coins": random.randint(race_requirements["castle_race"][0], race_requirements["castle_race"][1])},  # Castle Car
-            {"offset": 0x141, "coins": random.randint(40, 70)},  # Japes Cart
-            {"offset": 0x142, "coins": random.randint(25, 55)},  # Fungi Cart
-            {"offset": 0x143, "coins": random.randint(race_requirements["castle_cart"][0], race_requirements["castle_cart"][1])},  # Castle Cart
+            PuzzleItem("Caves Beetle Race", 0x13C, PuzzleRandoBound(10, 50)),
+            PuzzleItem("Aztec Beetle Race", 0x13D, PuzzleRandoBound(20, 50)),
+            PuzzleItem("Factory Car Race", 0x13E, PuzzleRandoBound(5, 15), PuzzleRandoBound(3, 8), FasterChecksSelected.factory_car_race),
+            PuzzleItem("Galleon Seal Race", 0x13F, PuzzleRandoBound(5, 12), PuzzleRandoBound(5, 10), FasterChecksSelected.galleon_seal_race),
+            PuzzleItem("Castle Car Race", 0x140, PuzzleRandoBound(5, 15), PuzzleRandoBound(5, 12), FasterChecksSelected.castle_car_race),
+            PuzzleItem("Japes Minecart", 0x141, PuzzleRandoBound(40, 70)),
+            PuzzleItem("Forest Minecart", 0x142, PuzzleRandoBound(25, 55)),
+            PuzzleItem("Castle Minecart", 0x143, PuzzleRandoBound(10, 45), PuzzleRandoBound(5, 30), FasterChecksSelected.castle_minecart),
         ]
         for coinreq in coin_req_info:
-            ROM_COPY.seek(sav + coinreq["offset"])
-            ROM_COPY.writeMultipleBytes(coinreq["coins"], 1)
+            coinreq.updateBoundSetting(spoiler)
+            ROM_COPY.seek(sav + coinreq.offset)
+            ROM_COPY.writeMultipleBytes(coinreq.selected_bound.generateRequirement(), 1)
         chosen_sounds = []
         for matching_head in range(8):
             ROM_COPY.seek(sav + 0x15C + (2 * matching_head))
