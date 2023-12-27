@@ -1368,7 +1368,7 @@ def disable_helm_hurry(evt):
 
 @bind("click", "remove_barriers_enabled")
 def disable_remove_barriers(evt):
-    """Disable Helm Hurry Selector when Helm Hurry is off."""
+    """Disable Remove Barriers Selector when Remove Barriers is off."""
     disabled = True
     selector = js.document.getElementById("remove_barriers_modal")
     if js.document.getElementById("remove_barriers_enabled").checked:
@@ -1384,7 +1384,7 @@ def disable_remove_barriers(evt):
 
 @bind("click", "faster_checks_enabled")
 def disable_faster_checks(evt):
-    """Disable Helm Hurry Selector when Helm Hurry is off."""
+    """Disable Faster Checks Selector when Faster Checks is off."""
     disabled = True
     selector = js.document.getElementById("faster_checks_modal")
     if js.document.getElementById("faster_checks_enabled").checked:
