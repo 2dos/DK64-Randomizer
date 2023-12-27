@@ -73,6 +73,15 @@ int CanDive_WithCheck(void) {
 	return CanDive();
 }
 
+void playTransformationSong(songs song, float volume) {
+	if (CurrentMap == MAP_FUNGI) {
+		if (song == SONG_SPRINT) {
+			return;
+		}
+	}
+	playSong(song, volume);
+}
+
 static unsigned short previous_total_cbs = 0xFFFF;
 static unsigned char previous_world = 0xFF;
 

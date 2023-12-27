@@ -201,6 +201,7 @@ extern int* displayHeadTexture(int* dl, int texture, float x, float y, float sca
 extern void* getFile(int size, int rom);
 
 extern int CanDive_WithCheck(void);
+extern void playTransformationSong(songs song, float volume);
 
 extern void tagBarrelBackgroundKong(int kong_actor);
 extern void tagAnywhereInit(int is_homing, int model2_id, int obj);
