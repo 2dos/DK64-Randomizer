@@ -548,6 +548,7 @@ def IsItemSelected(bool_setting: bool, multiselector_setting: List[Union[MiscCha
         return True
     return check in multiselector_setting
 
+
 class SpawnerChange:
     """Information regarding a spawner change."""
 
@@ -559,6 +560,7 @@ class SpawnerChange:
         self.new_scale = None
         self.new_speed_0 = None
         self.new_speed_1 = None
+
 
 def applyCharacterSpawnerChanges(changes: list[SpawnerChange], fence_speed_factor: float = None):
     """Apply a series of changes to character spawners."""
@@ -629,17 +631,18 @@ def applyCharacterSpawnerChanges(changes: list[SpawnerChange], fence_speed_facto
             extra_count = int.from_bytes(ROM_COPY.readBytes(1), "big")
             offset += 0x16 + (extra_count * 2)
 
+
 def camelCaseToWords(string: str):
     """Convert camel case string to separated words."""
     words = [[string[0]]]
- 
+
     for c in string[1:]:
         if words[-1][-1].islower() and c.isupper():
             words.append(list(c))
         else:
             words[-1].append(c)
- 
-    return " ".join([''.join(word) for word in words])
+
+    return " ".join(["".join(word) for word in words])
 
 
 class TextureFormat(IntEnum):

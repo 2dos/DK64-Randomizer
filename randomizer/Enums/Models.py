@@ -192,7 +192,7 @@ class Model(IntEnum):
     Potion = 184
     ArmyDilloMissle = 185
     ShockwaveRed = 186
-    IceWall  = 187
+    IceWall = 187
     RarewareLogo = 188
     Stalactite = 189
     RockDebris = 190
