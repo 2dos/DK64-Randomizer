@@ -37,8 +37,7 @@ LogicRegions = {
         Event(Events.GalleonLankySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.lanky and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_permanently_open))),
         Event(Events.GalleonTinySwitch, lambda l: l.CanSlamSwitch(Levels.GloomyGalleon, 1) and l.tiny and (l.swim or l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_permanently_open))),
         Event(Events.LighthouseGateOpened, lambda l: l.hasMoveSwitchsanity(Switches.GalleonLighthouse, False)),
-        # Gate to shipyard always open in rando
-        Event(Events.ShipyardGateOpened, lambda l: True),  # l.hasMoveSwitchsanity(Switches.GalleonShipwreck, False)
+        Event(Events.ShipyardGateOpened, lambda l: l.hasMoveSwitchsanity(Switches.GalleonShipwreck, False)),
         Event(Events.GalleonCannonRoomOpened, lambda l: l.hasMoveSwitchsanity(Switches.GalleonCannonGame, False)),
         Event(Events.GalleonW1aTagged, lambda l: True),
         Event(Events.GalleonW2aTagged, lambda l: True),
@@ -50,7 +49,7 @@ LogicRegions = {
         TransitionFront(Regions.GalleonPastVines, lambda l: l.vines or l.CanMoonkick()),
         TransitionFront(Regions.GalleonBeyondPineappleGate, lambda l: Events.GalleonCannonRoomOpened in l.Events or l.phasewalk or l.CanSkew(False) or (l.CanPhaseswim() and Events.WaterRaised in l.Events)),
         TransitionFront(Regions.LighthouseSurface, lambda l: l.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate_opened) or Events.LighthouseGateOpened in l.Events or l.phasewalk or l.CanSkew(False)),
-        TransitionFront(Regions.Shipyard, lambda l: (Events.ShipyardGateOpened in l.Events or l.phasewalk or l.CanSkew(False) or (l.CanPhaseswim() and Events.WaterRaised in l.Events)) and (not l.IsLavaWater() or l.Melons >= 2)),
+        TransitionFront(Regions.Shipyard, lambda l: (l.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gate_opened) or Events.ShipyardGateOpened in l.Events or l.phasewalk or l.CanSkew(False) or (l.CanPhaseswim() and Events.WaterRaised in l.Events)) and (not l.IsLavaWater() or l.Melons >= 2)),
         TransitionFront(Regions.CrankyGalleon, lambda l: True),
     ]),
 
