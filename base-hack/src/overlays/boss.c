@@ -67,4 +67,10 @@ void overlay_mod_boss(void) {
 		*(float*)(0x80036C50) = targ_speed;
 		*(short*)(0x8003343A) = 0x224; // Force fast jumps
 	}
+
+	if (Rando.music_rando_on) {
+		// Lower Crowd SFX Volume
+		*(short*)(0x80028F3E) = CROWD_VOLUME;
+		*(short*)(0x8002904E) = CROWD_VOLUME;
+	}
 }

@@ -52,4 +52,11 @@ void overlay_mod_bonus(void) {
 	if (Rando.krusha_slot != -1) {
 		KrazyKKModels[(int)Rando.krusha_slot] = 0xDB; // Change to krusha model
 	}
+
+	if (Rando.music_rando_on) {
+		// Lower Crowd SFX Volume
+		*(short*)(0x80025192) = CROWD_VOLUME;
+		*(short*)(0x80025166) = CROWD_VOLUME;
+		*(short*)(0x80025112) = CROWD_VOLUME;
+	}
 }
