@@ -25,6 +25,7 @@ from randomizer.Spoiler import Spoiler
 from git import Repo
 from datetime import datetime as Datetime
 from apscheduler.schedulers.background import BackgroundScheduler
+
 local_repo = Repo(path="./")
 local_branch = local_repo.active_branch.name
 
@@ -203,30 +204,30 @@ def lambda_function():
             # Only retain the Settings section and the Cosmetics section.
             unlock_time = None
             generated_time = time.time()
-            # if os.environ.get("HOSTED_SERVER") is not None:
-            #     # check if we have AWS credentials
-            #     if os.environ.get("AWS_ACCESS_KEY_ID") or os.environ.get("AWS_SECRET_ACCESS_KEY"):
-            #         seed_table = dynamodb.Table("seed_db")
-            #         seed_table.put_item(
-            #             Item={
-            #                 "time": str(time.time()) + str(hash),
-            #                 "seed_id": str(resp_data[1].settings.seed_id),
-            #                 "spoiler_log": str(json.dumps(spoiler_log)),
-            #             }
-            #         )
-            #     else:
-            # Encrypt the time and hash with the encryption key.
-            file_name = encrypt_string(str(hash) + str(resp_data[1].settings.seed_id), Encryption_Key)
-            # Get the current time and add 5 hours to it.
-            unlock_time = time.time() + 18000
-            # Append the current time to the spoiler log as unlock_time.
-            spoiler_log["Unlock_Time"] = unlock_time
-            spoiler_log["Generated_Time"] = generated_time
-            # write the spoiler log to a file in generated_seeds folder. Create the folder if it doesn't exist.
-            os.makedirs("generated_seeds", exist_ok=True)
-            with open("generated_seeds/" + file_name + ".json", "w") as f:
-                f.write(str(json.dumps(spoiler_log)))
-                    
+            if os.environ.get("HOSTED_SERVER") is not None:
+                # check if we have AWS credentials
+                if os.environ.get("AWS_ACCESS_KEY_ID") or os.environ.get("AWS_SECRET_ACCESS_KEY"):
+                    seed_table = dynamodb.Table("seed_db")
+                    seed_table.put_item(
+                        Item={
+                            "time": str(time.time()) + str(hash),
+                            "seed_id": str(resp_data[1].settings.seed_id),
+                            "spoiler_log": str(json.dumps(spoiler_log)),
+                        }
+                    )
+                else:
+                    # Encrypt the time and hash with the encryption key.
+                    file_name = encrypt_string(str(str(hash) + str(resp_data[1].settings.seed_id)), Encryption_Key)
+                    # Get the current time and add 5 hours to it.
+                    unlock_time = time.time() + 18000
+                    # Append the current time to the spoiler log as unlock_time.
+                    spoiler_log["Unlock_Time"] = unlock_time
+                    spoiler_log["Generated_Time"] = generated_time
+                    # write the spoiler log to a file in generated_seeds folder. Create the folder if it doesn't exist.
+                    os.makedirs("generated_seeds", exist_ok=True)
+                    with open("generated_seeds/" + file_name + ".json", "w") as f:
+                        f.write(str(json.dumps(spoiler_log)))
+
             sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Data", "Generated_Time", "Unlock_Time"]
             if resp_data[1].settings.generate_spoilerlog is False:
                 spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
@@ -242,6 +243,8 @@ def lambda_function():
                 zip_file.writestr("spoiler_log", str(json.dumps(spoiler_log)))
                 zip_file.writestr("seed_id", str(resp_data[1].settings.seed_id))
                 zip_file.writestr("generated_time", str(generated_time))
+                if unlock_time is not None:
+                    zip_file.writestr("file_string", str(file_name))
             zip_data.seek(0)
             update_total()
             # Convert the zip to a string of base64 data
@@ -273,39 +276,48 @@ def get_current_total():
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
+
 # Create a route for get_spoiler_log that takes a hash as a parameter.
 @app.route("/get_spoiler_log", methods=["GET"])
 def get_spoiler_log():
     """Get the spoiler log for a seed."""
     # Get the hash from the query string.
     hash = request.args.get("hash")
-    # Get the file name from the hash
-    file_name = encrypt_string(hash, Encryption_Key)
     # Check if the file exists
-    if os.path.isfile("generated_seeds/" + file_name + ".json"):
+    if os.path.isfile("generated_seeds/" + hash + ".json"):
         # Return the spoiler log
-        with open("generated_seeds/" + file_name + ".json", "r") as f:
-            return make_response(f.read(), 200)
+        with open("generated_seeds/" + hash + ".json", "r") as f:
+            current_time = time.time()
+            # if the unlock time is less than the current time, return the spoiler log
+            file_contents = json.load(f)
+            if file_contents.get("Unlock_Time", 0) < current_time:
+                return make_response(file_contents, 200)
+            else:
+                # Return an error
+                return make_response(json.dumps({"error": "error"}), 425)
     else:
         # Return an error
-        return make_response(json.dumps({"error": "error"}), 205) 
+        return make_response(json.dumps({"error": "error"}), 205)
 
 
 def delete_old_files():
-    folder_path = 'generated_seeds'
+    """Delete files that are older than 7 days."""
+    folder_path = "generated_seeds"
     current_time = time.time()
     os.makedirs("generated_seeds", exist_ok=True)
     for filename in os.listdir(folder_path):
-        if filename.endswith('.json'):
+        if filename.endswith(".json"):
             file_path = os.path.join(folder_path, filename)
-            with open(file_path, 'r') as file:
+            with open(file_path, "r") as file:
                 data = json.load(file)
-                unlock_time = data.get('Unlock_Time', 0)
+                unlock_time = data.get("Unlock_Time", 0)
 
                 # Check if it's been seven days since unlock_time
                 if current_time - unlock_time >= 604800:  # 7 days in seconds
                     os.remove(file_path)
                     print(f"Deleted file: {filename}")
+
+
 def update_total():
     """Update the total seeds generated."""
     global current_total
@@ -316,6 +328,7 @@ def update_total():
     last_generated_time = Datetime.utcnow()
     with open("last_generated_time.cfg", "w") as f:
         f.write(str(last_generated_time))
+
 
 # Setup the scheduler
 scheduler = BackgroundScheduler()
