@@ -25,6 +25,8 @@ from ui.GenTracker import generateTracker
 from ui.progress_bar import ProgressBar
 from ui.serialize_settings import serialize_settings
 
+from version import major, minor, patch
+
 
 class BooleanProperties:
     """Class to store data relating to boolean properties."""
@@ -65,6 +67,10 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     settings = Settings(serialize_settings(include_plando=True))
     seed_id = str(extracted_variables["seed_id"].decode("utf-8"))
     spoiler = json.loads(extracted_variables["spoiler_log"])
+    if extracted_variables.get("version") is None:
+        version = "0.0.0"
+    else:
+        version = str(extracted_variables["version"].decode("utf-8"))
     try:
         hash_id = str(extracted_variables["file_string"].decode("utf-8"))
     except Exception:
@@ -93,137 +99,147 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     random.seed(int(unix))
     if from_patch_gen:
         recalculatePointerJSON(ROM())
-    apply_cosmetic_colors(settings)
+    split_version = version.split(".")
+    patch_major = split_version[0]
+    patch_minor = split_version[1]
+    patch_patch = split_version[2]
+    if major != patch_major or minor != patch_minor:
+        js.document.getElementById("patch_version_warning").hidden = False
+        js.document.getElementById(
+            "patch_warning_message"
+        ).innerHTML = f"This patch was generated with version {patch_major}.{patch_minor}.{patch_patch} of the randomizer, but you are using version {major}.{minor}.{patch}. Cosmetic packs have been disabled for this patch."
+    else:
+        js.document.getElementById("patch_version_warning").hidden = True
+        apply_cosmetic_colors(settings)
 
-    if settings.override_cosmetics:
-        overwrite_object_colors(settings)
-        writeMiscCosmeticChanges(settings)
-        applyHolidayMode(settings)
+        if settings.override_cosmetics:
+            overwrite_object_colors(settings)
+            writeMiscCosmeticChanges(settings)
+            applyHolidayMode(settings)
 
-        # D-Pad Display
-        ROM().seek(sav + 0x139)
-        # The DPadDisplays enum is indexed to allow this.
-        ROM().write(int(settings.dpad_display))
+            # D-Pad Display
+            ROM().seek(sav + 0x139)
+            # The DPadDisplays enum is indexed to allow this.
+            ROM().write(int(settings.dpad_display))
 
-        if settings.homebrew_header:
-            # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM
-            ROM().seek(0x3C)
-            CARTRIDGE_ID = "ED"
-            ROM().writeBytes(CARTRIDGE_ID.encode("ascii"))
-            ROM().seek(0x3F)
-            SAVE_TYPE = 2  # 16K EEPROM
-            ROM().writeMultipleBytes(SAVE_TYPE << 4, 1)
+            if settings.homebrew_header:
+                # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM
+                ROM().seek(0x3C)
+                CARTRIDGE_ID = "ED"
+                ROM().writeBytes(CARTRIDGE_ID.encode("ascii"))
+                ROM().seek(0x3F)
+                SAVE_TYPE = 2  # 16K EEPROM
+                ROM().writeMultipleBytes(SAVE_TYPE << 4, 1)
 
-        # Colorblind mode
-        ROM().seek(sav + 0x43)
-        # The ColorblindMode enum is indexed to allow this.
-        ROM().write(int(settings.colorblind_mode))
+            # Colorblind mode
+            ROM().seek(sav + 0x43)
+            # The ColorblindMode enum is indexed to allow this.
+            ROM().write(int(settings.colorblind_mode))
 
-        # Remaining Menu Settings
-        ROM().seek(sav + 0xC7)
-        ROM().write(int(settings.sound_type))  # Sound Type
+            # Remaining Menu Settings
+            ROM().seek(sav + 0xC7)
+            ROM().write(int(settings.sound_type))  # Sound Type
 
-        music_volume = 40
-        sfx_volume = 40
-        if settings.sfx_volume is not None and settings.sfx_volume != "":
-            sfx_volume = int(settings.sfx_volume / 2.5)
-        if settings.music_volume is not None and settings.music_volume != "":
-            music_volume = int(settings.music_volume / 2.5)
-        ROM().seek(sav + 0xC8)
-        ROM().write(sfx_volume)
-        ROM().seek(sav + 0xC9)
-        ROM().write(music_volume)
+            music_volume = 40
+            sfx_volume = 40
+            if settings.sfx_volume is not None and settings.sfx_volume != "":
+                sfx_volume = int(settings.sfx_volume / 2.5)
+            if settings.music_volume is not None and settings.music_volume != "":
+                music_volume = int(settings.music_volume / 2.5)
+            ROM().seek(sav + 0xC8)
+            ROM().write(sfx_volume)
+            ROM().seek(sav + 0xC9)
+            ROM().write(music_volume)
 
-        boolean_props = [
-            BooleanProperties(settings.disco_chunky, 0x12F),  # Disco Chunky
-            BooleanProperties(settings.remove_water_oscillation, 0x10F),  # Remove Water Oscillation
-            BooleanProperties(settings.dark_mode_textboxes, 0x44),  # Dark Mode Text bubble
-            BooleanProperties(settings.camera_is_follow, 0xCB),  # Free/Follow Cam
-            BooleanProperties(settings.camera_is_not_inverted, 0xCC),  # Inverted/Non-Inverted Camera
-        ]
+            boolean_props = [
+                BooleanProperties(settings.disco_chunky, 0x12F),  # Disco Chunky
+                BooleanProperties(settings.remove_water_oscillation, 0x10F),  # Remove Water Oscillation
+                BooleanProperties(settings.dark_mode_textboxes, 0x44),  # Dark Mode Text bubble
+                BooleanProperties(settings.camera_is_follow, 0xCB),  # Free/Follow Cam
+                BooleanProperties(settings.camera_is_not_inverted, 0xCC),  # Inverted/Non-Inverted Camera
+            ]
 
-        for prop in boolean_props:
-            if prop.check:
-                ROM().seek(sav + prop.offset)
-                ROM().write(prop.target)
+            for prop in boolean_props:
+                if prop.check:
+                    ROM().seek(sav + prop.offset)
+                    ROM().write(prop.target)
 
-        # Excluded Songs
-        if settings.songs_excluded:
-            disabled_songs = settings.excluded_songs_selected.copy()
-            write_data = [0]
-            for item in ExcludedSongsSelector:
-                if (ExcludedSongs[item["value"]] in disabled_songs and item["shift"] >= 0) or len(disabled_songs) == 0:
-                    offset = int(item["shift"] >> 3)
-                    check = int(item["shift"] % 8)
-                    write_data[offset] |= 0x80 >> check
-            ROM().seek(sav + 0x1B7)
-            ROM().writeMultipleBytes(write_data[0], 1)
+            # Excluded Songs
+            if settings.songs_excluded:
+                disabled_songs = settings.excluded_songs_selected.copy()
+                write_data = [0]
+                for item in ExcludedSongsSelector:
+                    if (ExcludedSongs[item["value"]] in disabled_songs and item["shift"] >= 0) or len(disabled_songs) == 0:
+                        offset = int(item["shift"] >> 3)
+                        check = int(item["shift"] % 8)
+                        write_data[offset] |= 0x80 >> check
+                ROM().seek(sav + 0x1B7)
+                ROM().writeMultipleBytes(write_data[0], 1)
 
-        ROM().seek(sav + 0xC3)
-        ROM().writeMultipleBytes(int(settings.crosshair_outline), 1)
+            ROM().seek(sav + 0xC3)
+            ROM().writeMultipleBytes(int(settings.crosshair_outline), 1)
 
-        ROM().seek(sav + 0x114)
-        ROM().writeMultipleBytes(int(settings.troff_brighten), 1)
+            ROM().seek(sav + 0x114)
+            ROM().writeMultipleBytes(int(settings.troff_brighten), 1)
 
-        if settings.true_widescreen:
-            ROM().seek(sav + 0x1B4)
-            ROM().write(1)
+            if settings.true_widescreen:
+                ROM().seek(sav + 0x1B4)
+                ROM().write(1)
 
-            GFX_START = 0x101A40
-            SCREEN_WD = 366
-            SCREEN_HD = 208
-            BOOT_OFFSET = 0xFB20 - 0xEF20
+                GFX_START = 0x101A40
+                SCREEN_WD = 366
+                SCREEN_HD = 208
+                BOOT_OFFSET = 0xFB20 - 0xEF20
 
-            ROM().seek(GFX_START + 0x00)
-            ROM().writeMultipleBytes(SCREEN_WD * 2, 2)  # 2D Viewport Width
-            ROM().seek(GFX_START + 0x02)
-            ROM().writeMultipleBytes(SCREEN_HD * 2, 2)  # 2D Viewport Height
-            ROM().seek(GFX_START + 0x08)
-            ROM().writeMultipleBytes(SCREEN_WD * 2, 2)  # 2D Viewport X Position
-            ROM().seek(GFX_START + 0x0A)
-            ROM().writeMultipleBytes(SCREEN_HD * 2, 2)  # 2D Viewport Y Position
-            ROM().seek(GFX_START + 0x9C)
-            ROM().writeMultipleBytes((SCREEN_WD << 14) | (SCREEN_HD << 2), 4)  # Default Scissor for 2D
-            data_offsets = [0xEF20, 0xF7E0]
-            internal_size = 0x50
-            internal_offsets = [0, 2]
-            for tv_offset in data_offsets:
-                for int_offset in internal_offsets:
-                    ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x08)
-                    ROM().writeMultipleBytes(SCREEN_WD, 4)  # VI Width
-                    ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x20)
-                    ROM().writeMultipleBytes(int((SCREEN_WD * 512) / 320), 4)  # VI X Scale
-                    ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x28)
-                    ROM().writeMultipleBytes((SCREEN_WD * 2), 4)  # VI Field 1 Framebuffer Offset
-                    ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x3C)
-                    ROM().writeMultipleBytes((SCREEN_WD * 2), 4)  # VI Field 2 Framebuffer Offset
-                    ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x2C)
-                    ROM().writeMultipleBytes(int((SCREEN_HD * 1024) / 240), 4)  # VI Field 1 Y Scale
-                    ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x40)
-                    ROM().writeMultipleBytes(int((SCREEN_HD * 1024) / 240), 4)  # VI Field 2 Y Scale
-            ROM().seek(BOOT_OFFSET + 0xBC4 + 2)
-            ROM().writeMultipleBytes(SCREEN_WD * 2, 2)  # Row Offset of No Expansion Pak Image
-            ROM().seek(BOOT_OFFSET + 0xBC8 + 2)
-            ROM().writeMultipleBytes(SCREEN_WD * SCREEN_HD * 2, 2)  # Invalidation Size for Framebuffer 1
-            ROM().seek(BOOT_OFFSET + 0xE08)
-            ROM().writeMultipleBytes(0x24180000 | SCREEN_WD, 4)  # Row Pitch for No Expansion Pak Screen Text
-            ROM().seek(BOOT_OFFSET + 0xE0C)
-            ROM().writeMultipleBytes(0x03060019, 4)  # Calculate Row Pixel Number for No Expansion Pak Screen Text
-            ROM().seek(BOOT_OFFSET + 0xE10)
-            ROM().writeMultipleBytes(0x0000C012, 4)  # Get Row Pixel Number for No Expansion Pak Screen Text
-            ROM().seek(BOOT_OFFSET + 0x1020 + 2)
-            ROM().writeMultipleBytes((SCREEN_WD - 8) * 2, 2)  # Text Framebuffer Pitch
+                ROM().seek(GFX_START + 0x00)
+                ROM().writeMultipleBytes(SCREEN_WD * 2, 2)  # 2D Viewport Width
+                ROM().seek(GFX_START + 0x02)
+                ROM().writeMultipleBytes(SCREEN_HD * 2, 2)  # 2D Viewport Height
+                ROM().seek(GFX_START + 0x08)
+                ROM().writeMultipleBytes(SCREEN_WD * 2, 2)  # 2D Viewport X Position
+                ROM().seek(GFX_START + 0x0A)
+                ROM().writeMultipleBytes(SCREEN_HD * 2, 2)  # 2D Viewport Y Position
+                ROM().seek(GFX_START + 0x9C)
+                ROM().writeMultipleBytes((SCREEN_WD << 14) | (SCREEN_HD << 2), 4)  # Default Scissor for 2D
+                data_offsets = [0xEF20, 0xF7E0]
+                internal_size = 0x50
+                internal_offsets = [0, 2]
+                for tv_offset in data_offsets:
+                    for int_offset in internal_offsets:
+                        ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x08)
+                        ROM().writeMultipleBytes(SCREEN_WD, 4)  # VI Width
+                        ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x20)
+                        ROM().writeMultipleBytes(int((SCREEN_WD * 512) / 320), 4)  # VI X Scale
+                        ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x28)
+                        ROM().writeMultipleBytes((SCREEN_WD * 2), 4)  # VI Field 1 Framebuffer Offset
+                        ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x3C)
+                        ROM().writeMultipleBytes((SCREEN_WD * 2), 4)  # VI Field 2 Framebuffer Offset
+                        ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x2C)
+                        ROM().writeMultipleBytes(int((SCREEN_HD * 1024) / 240), 4)  # VI Field 1 Y Scale
+                        ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x40)
+                        ROM().writeMultipleBytes(int((SCREEN_HD * 1024) / 240), 4)  # VI Field 2 Y Scale
+                ROM().seek(BOOT_OFFSET + 0xBC4 + 2)
+                ROM().writeMultipleBytes(SCREEN_WD * 2, 2)  # Row Offset of No Expansion Pak Image
+                ROM().seek(BOOT_OFFSET + 0xBC8 + 2)
+                ROM().writeMultipleBytes(SCREEN_WD * SCREEN_HD * 2, 2)  # Invalidation Size for Framebuffer 1
+                ROM().seek(BOOT_OFFSET + 0xE08)
+                ROM().writeMultipleBytes(0x24180000 | SCREEN_WD, 4)  # Row Pitch for No Expansion Pak Screen Text
+                ROM().seek(BOOT_OFFSET + 0xE0C)
+                ROM().writeMultipleBytes(0x03060019, 4)  # Calculate Row Pixel Number for No Expansion Pak Screen Text
+                ROM().seek(BOOT_OFFSET + 0xE10)
+                ROM().writeMultipleBytes(0x0000C012, 4)  # Get Row Pixel Number for No Expansion Pak Screen Text
+                ROM().seek(BOOT_OFFSET + 0x1020 + 2)
+                ROM().writeMultipleBytes((SCREEN_WD - 8) * 2, 2)  # Text Framebuffer Pitch
+            music_data = randomize_music(settings)
 
-        # Apply Hash
-        order = 0
-        loaded_hash = get_hash_images("browser", "hash")
-        for count in json.loads(extracted_variables["hash"].decode("utf-8")):
-            js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
-            order += 1
+            spoiler = updateJSONCosmetics(spoiler, settings, music_data, int(unix))
 
-        music_data = randomize_music(settings)
-
-        spoiler = updateJSONCosmetics(spoiler, settings, music_data, int(unix))
+    # Apply Hash
+    order = 0
+    loaded_hash = get_hash_images("browser", "hash")
+    for count in json.loads(extracted_variables["hash"].decode("utf-8")):
+        js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
+        order += 1
 
     loaded_settings = spoiler["Settings"]
     tables = {}
