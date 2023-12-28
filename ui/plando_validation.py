@@ -44,6 +44,7 @@ class ValidationError(IntEnum):
     """Specific validation failures associated with an element."""
 
     exceeds_item_limits = auto()
+    exceeds_group_limits = auto()
     shop_has_shared_and_solo_rewards = auto()
     smaller_shops_conflict = auto()
     invalid_hint_text = auto()
