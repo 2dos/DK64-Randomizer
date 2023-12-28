@@ -1,4 +1,5 @@
 """Import functions within the UI folder to have them run on load of the UI."""
+import ui.plando_settings
 from ui.generate_buttons import update_seed_text
 from ui.rando_options import (
     disable_barrel_modal,

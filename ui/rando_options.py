@@ -811,6 +811,7 @@ def toggle_item_rando(evt):
     move_rando = document.getElementById("move_on")
     enemy_drop_rando = document.getElementById("enemy_drop_rando")
     non_item_rando_warning = document.getElementById("non_item_rando_warning")
+    shared_shop_warning = document.getElementById("shared_shop_warning")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -836,12 +837,14 @@ def toggle_item_rando(evt):
             enemy_drop_rando.setAttribute("disabled", "disabled")
             enemy_drop_rando.checked = False
             non_item_rando_warning.removeAttribute("hidden")
+            shared_shop_warning.removeAttribute("hidden")
         else:
             # Enable item rando modal, prevent shockwave/camera coupling, enable dropsanity, and enable smaller shops if it's in the pool
             selector.removeAttribute("disabled")
             enemy_drop_rando.removeAttribute("disabled")
             non_item_rando_warning.setAttribute("hidden", "hidden")
             if shops_in_pool:
+                shared_shop_warning.setAttribute("hidden", "hidden")
                 if shockwave.selected is True:
                     document.getElementById("shockwave_status_shuffled_decoupled").selected = True
                 if move_vanilla.selected is True or move_rando.selected is True:
@@ -869,6 +872,7 @@ def item_rando_list_changed(evt):
     smaller_shops = document.getElementById("smaller_shops")
     move_vanilla = document.getElementById("move_off")
     move_rando = document.getElementById("move_on")
+    shared_shop_warning = document.getElementById("shared_shop_warning")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -883,6 +887,7 @@ def item_rando_list_changed(evt):
     if js.document.getElementById("shuffle_items").checked:
         item_rando_disabled = False
     if shops_in_pool and not item_rando_disabled:
+        shared_shop_warning.setAttribute("hidden", "hidden")
         # Prevent camera/shockwave from being coupled and enable smaller shops if shops are in the pool
         if shockwave.selected is True:
             document.getElementById("shockwave_status_shuffled_decoupled").selected = True
@@ -896,6 +901,7 @@ def item_rando_list_changed(evt):
         js.document.getElementById("shockwave_status").removeAttribute("disabled")
         js.document.getElementById("random_prices").removeAttribute("disabled")
     else:
+        shared_shop_warning.removeAttribute("hidden")
         # Enable coupled camera/shockwave and disable smaller shops if shops are not in the pool
         shockwave.removeAttribute("disabled")
         move_vanilla.removeAttribute("disabled")
