@@ -205,8 +205,7 @@ def lambda_function():
             unlock_time = None
             generated_time = time.time()
             if os.environ.get("HOSTED_SERVER") is not None:
-                # check if we have AWS credentials
-                if os.environ.get("AWS_ACCESS_KEY_ID") or os.environ.get("AWS_SECRET_ACCESS_KEY"):
+                try:
                     seed_table = dynamodb.Table("seed_db")
                     seed_table.put_item(
                         Item={
@@ -215,18 +214,19 @@ def lambda_function():
                             "spoiler_log": str(json.dumps(spoiler_log)),
                         }
                     )
-                else:
-                    # Encrypt the time and hash with the encryption key.
-                    file_name = encrypt_string(str(str(hash) + str(resp_data[1].settings.seed_id)), Encryption_Key)
-                    # Get the current time and add 5 hours to it.
-                    unlock_time = time.time() + 18000
-                    # Append the current time to the spoiler log as unlock_time.
-                    spoiler_log["Unlock_Time"] = unlock_time
-                    spoiler_log["Generated_Time"] = generated_time
-                    # write the spoiler log to a file in generated_seeds folder. Create the folder if it doesn't exist.
-                    os.makedirs("generated_seeds", exist_ok=True)
-                    with open("generated_seeds/" + file_name + ".json", "w") as f:
-                        f.write(str(json.dumps(spoiler_log)))
+                except Exception:
+                    pass
+                # Encrypt the time and hash with the encryption key.
+                file_name = encrypt_string(str(str(hash) + str(resp_data[1].settings.seed_id)), Encryption_Key)
+                # Get the current time and add 5 hours to it.
+                unlock_time = time.time() + 18000
+                # Append the current time to the spoiler log as unlock_time.
+                spoiler_log["Unlock_Time"] = unlock_time
+                spoiler_log["Generated_Time"] = generated_time
+                # write the spoiler log to a file in generated_seeds folder. Create the folder if it doesn't exist.
+                os.makedirs("generated_seeds", exist_ok=True)
+                with open("generated_seeds/" + file_name + ".json", "w") as f:
+                    f.write(str(json.dumps(spoiler_log)))
 
             sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Data", "Generated_Time", "Unlock_Time"]
             if resp_data[1].settings.generate_spoilerlog is False:
