@@ -283,7 +283,7 @@ def get_spoiler_log():
     """Get the spoiler log for a seed."""
     # Get the hash from the query string.
     hash = request.args.get("hash")
-    # check if hash contains special characters not in an approved list. 
+    # check if hash contains special characters not in an approved list.
     if not all(c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_=" for c in hash):
         return make_response(json.dumps({"error": "error"}), 205)
     # Check if the file exists
