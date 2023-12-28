@@ -25,6 +25,7 @@ from randomizer.Spoiler import Spoiler
 from git import Repo
 from datetime import datetime as Datetime
 from apscheduler.schedulers.background import BackgroundScheduler
+from version import version
 
 local_repo = Repo(path="./")
 local_branch = local_repo.active_branch.name
@@ -243,6 +244,7 @@ def lambda_function():
                 zip_file.writestr("spoiler_log", str(json.dumps(spoiler_log)))
                 zip_file.writestr("seed_id", str(resp_data[1].settings.seed_id))
                 zip_file.writestr("generated_time", str(generated_time))
+                zip_file.writestr("version", version)
                 if unlock_time is not None:
                     zip_file.writestr("file_string", str(file_name))
             zip_data.seek(0)

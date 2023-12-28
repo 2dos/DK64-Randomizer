@@ -67,6 +67,10 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     settings = Settings(serialize_settings(include_plando=True))
     seed_id = str(extracted_variables["seed_id"].decode("utf-8"))
     spoiler = json.loads(extracted_variables["spoiler_log"])
+    if extracted_variables.get("version") is None:
+        version = "0.0.0"
+    else:
+        version = str(extracted_variables["version"].decode("utf-8"))
     try:
         hash_id = str(extracted_variables["file_string"].decode("utf-8"))
     except Exception:
@@ -95,7 +99,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     random.seed(int(unix))
     if from_patch_gen:
         recalculatePointerJSON(ROM())
-    split_version = settings.public_hash.split(".")
+    split_version = version.split(".")
     patch_major = split_version[0]
     patch_minor = split_version[1]
     patch_patch = split_version[2]
