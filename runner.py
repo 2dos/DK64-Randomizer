@@ -284,12 +284,14 @@ def get_spoiler_log():
     # Get the hash from the query string.
     hash = request.args.get("hash")
     # check if hash contains special characters not in an approved list.
-    if not all(c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_=" for c in hash):
+    if all(c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_=" for c in hash):
+        file_name = hash
+    else:
         return make_response(json.dumps({"error": "error"}), 205)
     # Check if the file exists
-    if os.path.isfile("generated_seeds/" + hash + ".json"):
+    if os.path.isfile("generated_seeds/" + file_name + ".json"):
         # Return the spoiler log
-        with open("generated_seeds/" + hash + ".json", "r") as f:
+        with open("generated_seeds/" + file_name + ".json", "r") as f:
             current_time = time.time()
             # if the unlock time is less than the current time, return the spoiler log
             file_contents = json.load(f)
