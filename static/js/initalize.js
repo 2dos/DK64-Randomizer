@@ -870,8 +870,18 @@ function loadDataFromIndexedDB(key) {
 function unlock_spoiler_log(hash) {
   console.log("Unlocking spoiler log");
   // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
+  // Get the website location
+  if (window.location.hostname == "dev.dk64randomizer.com") {
+    var url = "https://dev.dk64randomizer.com/get_spoiler_log";
+  }
+  else if (window.location.hostname == "dk64randomizer.com") {
+    var url = "https://dk64randomizer.com/get_spoiler_log";
+  }
+  else {
+    var url = "http://localhost:8000/get_spoiler_log";
+  }
   $.ajax({
-    url: "http://localhost:8000/get_spoiler_log",
+    url: url,
     type: "GET",
     data: {
       hash: hash,
