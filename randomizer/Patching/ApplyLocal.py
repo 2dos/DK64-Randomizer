@@ -68,7 +68,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     try:
         hash_id = str(extracted_variables["file_string"].decode("utf-8"))
     except Exception:
-        pass
+        hash_id = None
     # Make sure we re-load the seed id for patch file creation
     if lanky_from_history:
         js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
@@ -252,7 +252,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     loop.run_until_complete(GenerateSpoiler(spoiler))
     js.document.getElementById("generated_seed_id").innerHTML = seed_id
     # if generate_spoiler_log is False enable the download_unlocked_spoiler_button button
-    if settings.generate_spoilerlog is False:
+    if settings.generate_spoilerlog is False and hash_id is not None:
         try:
             js.document.getElementById("download_unlocked_spoiler_button").onclick = lambda x: js.unlock_spoiler_log(hash_id)
             js.document.getElementById("download_unlocked_spoiler_button").hidden = False

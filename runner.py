@@ -288,10 +288,13 @@ def get_spoiler_log():
         file_name = hash
     else:
         return make_response(json.dumps({"error": "error"}), 205)
+    fullpath = os.path.normpath(os.path.join("generated_seeds/", file_name + ".json"))
+    if not fullpath.startswith("generated_seeds/"):
+        raise Exception("not allowed")
     # Check if the file exists
-    if os.path.isfile("generated_seeds/" + file_name + ".json"):
+    if os.path.isfile(fullpath):
         # Return the spoiler log
-        with open("generated_seeds/" + file_name + ".json", "r") as f:
+        with open(fullpath, "r") as f:
             current_time = time.time()
             # if the unlock time is less than the current time, return the spoiler log
             file_contents = json.load(f)
