@@ -50,11 +50,13 @@ if (window.location.protocol != "https:") {
   }
 }
 
-// if the domain is not the main domain, hide dev site warnings
+// if the domain is not the main domain, hide dev site warnings and features
 if (location.hostname == "dk64randomizer.com") {
   document.getElementById("spoiler_warning_1").style.display = "none";
   document.getElementById("spoiler_warning_2").style.background = "";
   document.getElementById("spoiler_warning_3").style.display = "none";
+  document.getElementById("plandomizer_container").style.display = "none";
+  document.getElementById("widescreen_row").style.display = "none";
 }
 if (location.hostname != "localhost") {
   document.getElementById("plando_string_section").style.display = "none";
@@ -252,6 +254,27 @@ function music_selection_filebox() {
       import js
       from ui.music_select import import_music_selections
       import_music_selections(js.imported_music_json)
+    `);
+  };
+
+  input.click();
+}
+
+var imported_plando_json = "";
+
+function plando_import_filebox() {
+  let input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".json";
+
+  input.onchange = async (e) => {
+    let file = e.target.files[0];
+    let json_text = await file.text();
+    imported_plando_json = json_text;
+    pyodide.runPythonAsync(`
+      import js
+      from ui.plando_settings import import_plando_options
+      import_plando_options(js.imported_plando_json)
     `);
   };
 
