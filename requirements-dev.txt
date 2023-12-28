@@ -23,3 +23,5 @@ pyxdelta
 pillow
 boto3
 GitPython
+cryptography
+apscheduler

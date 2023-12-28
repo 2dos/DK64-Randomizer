@@ -867,6 +867,13 @@ function loadDataFromIndexedDB(key) {
   });
 }
 
+function unlock_spoiler_log(seed_id, hash_id, generated_time) {
+  console.log("Unlocking spoiler log");
+  console.log(seed_id);
+  console.log(hash_id);
+  console.log(generated_time);
+}
+
 function load_data() {
   try {
     // make sure all sliders are initialized
