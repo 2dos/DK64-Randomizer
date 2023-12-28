@@ -15,7 +15,7 @@ def random_string(size):
     return "".join(secrets.choice(letters) for i in range(size))
 
 
-generated_salt = os.environ.get("SALT", random_string(2048).encode())
+generated_salt = os.environ.get("SALT", random_string(2048)).encode()
 
 
 def generate_key_from_string(string_key):
