@@ -7,3 +7,5 @@ pillow
 boto3
 waitress
 GitPython
+cryptography
+apscheduler

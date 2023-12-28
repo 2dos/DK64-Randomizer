@@ -867,6 +867,69 @@ function loadDataFromIndexedDB(key) {
   });
 }
 
+function unlock_spoiler_log(hash) {
+  console.log("Unlocking spoiler log");
+  // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
+  // Get the website location
+  if (window.location.hostname == "dev.dk64randomizer.com") {
+    var url = "https://dev.dk64randomizer.com/get_spoiler_log";
+  }
+  else if (window.location.hostname == "dk64randomizer.com") {
+    var url = "https://dk64randomizer.com/get_spoiler_log";
+  }
+  else {
+    var url = "http://localhost:8000/get_spoiler_log";
+  }
+  $.ajax({
+    url: url,
+    type: "GET",
+    data: {
+      hash: hash,
+    },
+    success: function (data, textStatus, xhr) {
+      if (xhr.status === 200) {
+        console.log("Success");
+        save_text_as_file(JSON.stringify(data, null, 2), document.getElementById('generated_seed_id').innerHTML + '-spoilerlog.json')
+      } else if (xhr.status === 425) {
+        console.log("Not unlocked yet");
+        // set the contents of spoiler_log_download_messages to "The spoiler log is not unlocked yet."
+        document.getElementById("spoiler_log_download_messages").innerHTML =
+          "The spoiler log is not unlocked yet.";
+        // display download_modal
+        $("#download_modal").modal("show");
+        // hide the modal after 5 seconds
+        setTimeout(function () {
+          $("#download_modal").modal("hide");
+        }, 5000);
+      } else {
+        console.log("Spoiler log is no longer available");
+        // set the contents of spoiler_log_download_messages to "The spoiler log is no longer available."
+        document.getElementById("spoiler_log_download_messages").innerHTML =
+          "The spoiler log is no longer available.";
+        // display download_modal
+        $("#download_modal").modal("show");
+        // hide the modal after 5 seconds
+        setTimeout(function () {
+          $("#download_modal").modal("hide");
+        }, 5000);
+
+      }
+    },
+    error: function (xhr, textStatus, errorThrown) {
+      console.log("Error:", errorThrown);
+      // set the contents of spoiler_log_download_messages to "There was an error downloading the spoiler log."
+      document.getElementById("spoiler_log_download_messages").innerHTML =
+        "There was an error downloading the spoiler log.";
+      // display download_modal
+      $("#download_modal").modal("show");
+      // hide the modal after 5 seconds
+      setTimeout(function () {
+        $("#download_modal").modal("hide");
+      }, 5000);
+    }
+  });
+}
+
 function load_data() {
   try {
     // make sure all sliders are initialized

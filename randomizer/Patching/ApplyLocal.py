@@ -65,6 +65,10 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     settings = Settings(serialize_settings(include_plando=True))
     seed_id = str(extracted_variables["seed_id"].decode("utf-8"))
     spoiler = json.loads(extracted_variables["spoiler_log"])
+    try:
+        hash_id = str(extracted_variables["file_string"].decode("utf-8"))
+    except Exception:
+        hash_id = None
     # Make sure we re-load the seed id for patch file creation
     if lanky_from_history:
         js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
@@ -247,6 +251,17 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     js.document.getElementById("spoiler_log_block").style.display = ""
     loop.run_until_complete(GenerateSpoiler(spoiler))
     js.document.getElementById("generated_seed_id").innerHTML = seed_id
+    # if generate_spoiler_log is False enable the download_unlocked_spoiler_button button
+    if settings.generate_spoilerlog is False and hash_id is not None:
+        try:
+            js.document.getElementById("download_unlocked_spoiler_button").onclick = lambda x: js.unlock_spoiler_log(hash_id)
+            js.document.getElementById("download_unlocked_spoiler_button").hidden = False
+        except Exception:
+            js.document.getElementById("download_unlocked_spoiler_button").hidden = True
+            js.document.getElementById("download_unlocked_spoiler_button").onclick = None
+    else:
+        js.document.getElementById("download_unlocked_spoiler_button").hidden = True
+        js.document.getElementById("download_unlocked_spoiler_button").onclick = None
     ROM().fixSecurityValue()
     ROM().save(f"dk64r-rom-{seed_id}.z64")
     loop.run_until_complete(ProgressBar().reset())
