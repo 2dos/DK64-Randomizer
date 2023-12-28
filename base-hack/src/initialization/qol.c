@@ -136,14 +136,14 @@ void initQoL_Fixes(void) {
         writeFunction(0x8067C168, &fixDilloTNTPads); // Modify Function Call
         actor_functions[249] = &squawks_with_spotlight_actor_code;
         writeFunction(0x806E5C04, &fixCrownEntrySKong); // Modify Function Call
-        writeFunction(0x806A8844, &helmTime_restart); // Modify Function Call
-        writeFunction(0x806A89E8, &helmTime_exitBonus); // Modify Function Call
-        writeFunction(0x806A89F8, &helmTime_exitRace); // Modify Function Call
-        writeFunction(0x806A89C4, &helmTime_exitLevel); // Modify Function Call
-        writeFunction(0x806A89B4, &helmTime_exitBoss); // Modify Function Call
-        writeFunction(0x806A8988, &helmTime_exitKRool); // Modify Function Call
         *(float*)(0x807482A4) = 0.1f; // Increase Fungi lighting transition rate
     }
+    writeFunction(0x806A8844, &helmTime_restart); // Modify Function Call
+    writeFunction(0x806A89E8, &helmTime_exitBonus); // Modify Function Call
+    writeFunction(0x806A89F8, &helmTime_exitRace); // Modify Function Call
+    writeFunction(0x806A89C4, &helmTime_exitLevel); // Modify Function Call
+    writeFunction(0x806A89B4, &helmTime_exitBoss); // Modify Function Call
+    writeFunction(0x806A8988, &helmTime_exitKRool); // Modify Function Call
 }
 
 void initQoL_Misc(void) {

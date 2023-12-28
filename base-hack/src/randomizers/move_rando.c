@@ -712,11 +712,11 @@ void getNextMoveText(void) {
 	shop_paad* shop_data = 0;
 	int is_jetpac = CurrentActorPointer_0->actorType == getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY);
 	if (!is_jetpac) {
-		if ((shop_owner == 0) && ((CurrentMap == MAP_CRANKY) || (CurrentMap == MAP_FUNKY) || (CurrentMap == MAP_CANDY))) {
+		if ((shop_owner == 0) && (inShop(CurrentMap, 0))) {
 			shop_owner = getSpawnerTiedActor(1,0);
 			paad->shop_owner = shop_owner;
 		}
-		if ((paad->shop_owner) && ((CurrentMap == MAP_CRANKY) || (CurrentMap == MAP_FUNKY) || (CurrentMap == MAP_CANDY))) {
+		if ((paad->shop_owner) && (inShop(CurrentMap, 0))) {
 			shop_data = shop_owner->paad2;
 		}
 	}

@@ -4,7 +4,7 @@ extern int checkFlag(int flagIndex, flagtypes flagType);
 extern int getFlagIndex(int startFlag, int level, int kong);
 extern void* dk_malloc(int size);
 extern void dk_free(void* mallocPtr);
-extern void playSound(short soundIndex, int unk0, int unk1, int unk2, int unk3, int unk4);
+extern void playSound(short soundIndex, int unk0, float unk1, float unk2, int unk3, int unk4);
 extern void initiateTransition(maps map, int exit);
 extern void initiateTransition_0(maps map, int exit, int unk0, int unk1);
 extern void WarpToParent(void);
@@ -704,6 +704,7 @@ extern char RambiArenaComboSize;
 extern char RambiArenaComboChain[16];
 
 extern char* AnimationPointer;
+extern unsigned short StoredOrangeCount;
 
 //hack data
 extern int TestVariable;

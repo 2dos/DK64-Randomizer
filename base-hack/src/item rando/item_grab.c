@@ -445,7 +445,7 @@ void getItem(int object_type) {
         case 0x1CF:
         case 0x1D0:
             // CB Single
-            playSound(0x2A0, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            playSound(0x2A0, 0x7FFF, 63.0f, 1.0f, 5, 0);
             hh_item = HHITEM_CB;
             break;
         case 0x2B:
@@ -461,7 +461,7 @@ void getItem(int object_type) {
         case 0x11:
         case 0x8F:
             // Homing Ammo Crate
-            playSound(0x157, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            playSound(0x157, 0x7FFF, 63.0f, 1.0f, 5, 0);
             break;
         case 0x1C:
         case 0x1D:
@@ -482,7 +482,7 @@ void getItem(int object_type) {
             break;
         case 0x56:
             // Orange
-            playSound(0x147, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            playSound(0x147, 0x7FFF, 63.0f, 1.0f, 5, 0);
             break;
         case 0x25E:
             // Full Melon
@@ -529,7 +529,7 @@ void getItem(int object_type) {
             break;
         case 0x98:
             // Film
-            playSound(0x263, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            playSound(0x263, 0x7FFF, 63.0f, 1.0f, 5, 0);
             break;
         case 0xB7:
             // Rainbow Coin
@@ -589,7 +589,7 @@ void getItem(int object_type) {
             break;
         case 0x1D1:
             // Coin Powerup
-            playSound(0xAE, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            playSound(0xAE, 0x7FFF, 63.0f, 1.0f, 5, 0);
             break;
         case 0x257:
         case 0x258:

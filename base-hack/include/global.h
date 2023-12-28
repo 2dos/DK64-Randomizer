@@ -137,7 +137,6 @@ extern void displayNumberOnObject(int id, int param2, int imageindex, int param4
 extern void newCounterCode(void);
 extern void wipeCounterImageCache(void);
 extern void writeCoinRequirements(int source);
-extern void colorMenuSky(void);
 extern void getMoveHint(actorData* actor, int text_file, int text_index);
 extern void cutsceneDKCode(void);
 extern void getNextMovePurchase(shop_paad* paad, KongBase* movedata);
@@ -345,6 +344,7 @@ extern void giveAmmo(void);
 extern void giveOrange(void);
 extern void giveMelon(void);
 extern void giveCrystal(void);
+extern int inShortList(int target, short* list, int count);
 
 extern int CrownDoorCheck(void);
 extern int CoinDoorCheck(void);

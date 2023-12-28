@@ -259,3 +259,5 @@
 .definelabel RambiArenaComboTimer, 0x8002D930
 .definelabel RambiArenaComboSize, 0x8002D92C
 .definelabel RambiArenaComboChain, 0x8002DEF0
+
+.definelabel StoredOrangeCount, 0x80029FA4
