@@ -14,7 +14,7 @@
                                     value="True"/>
                             Item Randomizer
                         </label>
-                        <span id="non_item_rando_warning" data-toggle="tooltip" title="With item rando disabled, you cannot start without items you get from the Training Grounds in vanilla.">
+                        <span id="non_item_rando_warning" data-toggle="tooltip" title="With item rando disabled, you cannot start without items you get from the Training Grounds in vanilla!">
                             <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" class="warning-icon" stroke="#ffff00" fill="#ffff00">
                                 <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
                             </svg>
@@ -55,6 +55,7 @@
                     </div>
                 </div>
                 <div class="flex-column-container" style="flex-grow: 1">
+                    
                     <div class="item-select" style="margin-top: 0; max-height: 34px;">
                         <button
                             class="btn btn-primary"
@@ -66,6 +67,11 @@
                             data-toggle="tooltip"
                             title="Choose your starting moves and your pool of moves you can randomly start with.">
                             Customize Starting Moves
+                            <span id="shared_shop_warning" data-toggle="tooltip" title="When all moves are purchased in shops, you are extremely likely to run into fill problems if you do not start with enough shared moves! Seeds that do generate will have fill biases - consider starting with training moves.">
+                                <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 18 18" class="warning-icon" style="overflow: visible; margin-bottom: 7px;" stroke="#ffff00" fill="#ffff00">
+                                    <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
+                                </svg>
+                            </span>
                         </button>
                     </div>
                     <div class="item-select">

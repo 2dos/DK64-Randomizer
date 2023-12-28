@@ -231,17 +231,6 @@
                 <div class="flex-container">
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
-                               title="16:9 version of DK64, based off the standalone hack by gamemasterplc. EMULATOR ONLY: Consoles don't like this.">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="true_widescreen"
-                                   id="true_widescreen"
-                                   value="True"/>
-                            Widescreen (Emulator Only)
-                        </label>
-                    </div>
-                    <div class="form-check form-switch item-switch">
-                        <label data-toggle="tooltip"
                                title="If enabled, the camera will look up when the player holds up on the stick, the opposite of how the vanilla game behaves.">
                             <input class="form-check-input"
                                    type="checkbox"
@@ -262,7 +251,20 @@
                             Follow Cam
                         </label>
                     </div>
-                    <div class="spacer"></div>
+                    <div class="flex-container" id="widescreen_row">
+                        <div class="form-check form-switch item-switch">
+                            <label data-toggle="tooltip"
+                                title="IN DEVELOPMENT: 16:9 version of DK64, based off the standalone hack by gamemasterplc. EMULATOR ONLY: Consoles don't like this.">
+                                <input class="form-check-input"
+                                    type="checkbox"
+                                    name="true_widescreen"
+                                    id="true_widescreen"
+                                    value="True"/>
+                                Widescreen (Emulator Only)
+                            </label>
+                        </div>
+                        <div class="spacer"></div>
+                    </div>
                 </div>
                 {# <div class="flex-container">
                     <div class="item-select">
