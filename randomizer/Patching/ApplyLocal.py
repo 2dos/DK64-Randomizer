@@ -105,7 +105,9 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     patch_patch = split_version[2]
     if major != patch_major or minor != patch_minor:
         js.document.getElementById("patch_version_warning").hidden = False
-        js.document.getElementById("patch_warning_message").innerHTML = f"This patch was generated with version {patch_major}.{patch_minor}.{patch_patch} of the randomizer, but you are using version {major}.{minor}.{patch}. Cosmetic packs have been disabled for this patch."
+        js.document.getElementById(
+            "patch_warning_message"
+        ).innerHTML = f"This patch was generated with version {patch_major}.{patch_minor}.{patch_patch} of the randomizer, but you are using version {major}.{minor}.{patch}. Cosmetic packs have been disabled for this patch."
     else:
         js.document.getElementById("patch_version_warning").hidden = True
         apply_cosmetic_colors(settings)
