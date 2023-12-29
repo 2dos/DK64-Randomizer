@@ -6442,6 +6442,7 @@ BananaCoinGroupList = {
             name="On the corners of the center platform in Diddy Lower Cabin",
             konglist=[Kongs.diddy],
             region=Regions.DiddyLowerCabin,
+            logic=lambda l: l.jetpack or l.advanced_platforming,
             locations=[
                 [1.0, 242, 86, 243],
                 [1.0, 350, 86, 240],
@@ -6716,6 +6717,7 @@ BananaCoinGroupList = {
             name="In Corner Platforms",
             konglist=[Kongs.diddy],
             region=Regions.DiddyLowerCabin,
+            logic=lambda l: l.jetpack or l.advanced_platforming,
             locations=[
                 [1.0, 477.0457458496094, 86.0, 116.64397430419922],
                 [1.0, 486.2208251953125, 86.0, 482.5491027832031],

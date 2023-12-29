@@ -1412,7 +1412,7 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Around room (Diddy) | 5 |  | 
-| On center pillar (Diddy) | 5 |  | 
+| On center pillar (Diddy) | 5 | l.jetpack or l.advanced_platforming | 
 | Around room above platforms | Balloon |  | 
 </details>
 <details>
