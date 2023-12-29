@@ -121,6 +121,7 @@ def isFasterCheckEnabled(spoiler, fast_check: FasterChecksSelected):
     """Determine if a faster check setting is enabled."""
     return IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, fast_check)
 
+
 def isQoLEnabled(spoiler, misc_change: MiscChangesSelected):
     """Determine if a faster check setting is enabled."""
     return IsItemSelected(spoiler.settings.quality_of_life, spoiler.settings.misc_changes_selected, misc_change)
@@ -262,26 +263,26 @@ def patchAssembly(ROM_COPY, spoiler):
 
     # Move Decoupling
     # Strong Kong
-    writeValue(ROM_COPY, 0x8067ECFC, Overlay.Static, 0x30810002, offset_dict, 4) # ANDI $at $a0 2
-    writeValue(ROM_COPY, 0x8067ED00, Overlay.Static, 0x50200003, offset_dict, 4) # BEQL $at $r0 3
+    writeValue(ROM_COPY, 0x8067ECFC, Overlay.Static, 0x30810002, offset_dict, 4)  # ANDI $at $a0 2
+    writeValue(ROM_COPY, 0x8067ED00, Overlay.Static, 0x50200003, offset_dict, 4)  # BEQL $at $r0 3
     # Rocketbarrel
-    writeValue(ROM_COPY, 0x80682024, Overlay.Static, 0x31810002, offset_dict, 4) # ANDI $at $t4 2
-    writeValue(ROM_COPY, 0x80682028, Overlay.Static, 0x50200006, offset_dict, 4) # BEQL $at $r0 0x6
+    writeValue(ROM_COPY, 0x80682024, Overlay.Static, 0x31810002, offset_dict, 4)  # ANDI $at $t4 2
+    writeValue(ROM_COPY, 0x80682028, Overlay.Static, 0x50200006, offset_dict, 4)  # BEQL $at $r0 0x6
     # OSprint
-    writeValue(ROM_COPY, 0x8067ECE0, Overlay.Static, 0x30810004, offset_dict, 4) # ANDI $at $a0 4
-    writeValue(ROM_COPY, 0x8067ECE4, Overlay.Static, 0x10200002, offset_dict, 4) # BEQZ $at, 2
+    writeValue(ROM_COPY, 0x8067ECE0, Overlay.Static, 0x30810004, offset_dict, 4)  # ANDI $at $a0 4
+    writeValue(ROM_COPY, 0x8067ECE4, Overlay.Static, 0x10200002, offset_dict, 4)  # BEQZ $at, 2
     # Mini Monkey
-    writeValue(ROM_COPY, 0x8067EC80, Overlay.Static, 0x30830001, offset_dict, 4) # ANDI $v1 $a0 1
-    writeValue(ROM_COPY, 0x8067EC84, Overlay.Static, 0x18600002, offset_dict, 4) # BLEZ $v1 2
+    writeValue(ROM_COPY, 0x8067EC80, Overlay.Static, 0x30830001, offset_dict, 4)  # ANDI $v1 $a0 1
+    writeValue(ROM_COPY, 0x8067EC84, Overlay.Static, 0x18600002, offset_dict, 4)  # BLEZ $v1 2
     # Hunky Chunky (Not Dogadon)
-    writeValue(ROM_COPY, 0x8067ECA0, Overlay.Static, 0x30810001, offset_dict, 4) # ANDI $at $a0 1
-    writeValue(ROM_COPY, 0x8067ECA4, Overlay.Static, 0x18200002, offset_dict, 4) # BLEZ $at 2
+    writeValue(ROM_COPY, 0x8067ECA0, Overlay.Static, 0x30810001, offset_dict, 4)  # ANDI $at $a0 1
+    writeValue(ROM_COPY, 0x8067ECA4, Overlay.Static, 0x18200002, offset_dict, 4)  # BLEZ $at 2
     # PTT
-    writeValue(ROM_COPY, 0x806E20F0, Overlay.Static, 0x31010002, offset_dict, 4) # ANDI $at $t0 2
-    writeValue(ROM_COPY, 0x806E20F4, Overlay.Static, 0x5020000F, offset_dict, 4) # BEQL $at $r0 0xF
+    writeValue(ROM_COPY, 0x806E20F0, Overlay.Static, 0x31010002, offset_dict, 4)  # ANDI $at $t0 2
+    writeValue(ROM_COPY, 0x806E20F4, Overlay.Static, 0x5020000F, offset_dict, 4)  # BEQL $at $r0 0xF
     # PPunch
-    writeValue(ROM_COPY, 0x806E48F4, Overlay.Static, 0x31810002, offset_dict, 4) # ANDI $at $t4 2
-    writeValue(ROM_COPY, 0x806E48F8, Overlay.Static, 0x50200074, offset_dict, 4) # BEQL $at $r0 0xF
+    writeValue(ROM_COPY, 0x806E48F4, Overlay.Static, 0x31810002, offset_dict, 4)  # ANDI $at $t4 2
+    writeValue(ROM_COPY, 0x806E48F8, Overlay.Static, 0x50200074, offset_dict, 4)  # BEQL $at $r0 0xF
 
     # Disable Sniper Scope Overlay
     writeValue(ROM_COPY, 0x806FF80C, Overlay.Static, 0x00801025, offset_dict, 4)  # OR $v0, $a0, $r0
@@ -293,50 +294,50 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806FF9D0, Overlay.Static, 0x00801025, offset_dict, 4)  # OR $v0, $a0, $r0
     writeValue(ROM_COPY, 0x806FFA18, Overlay.Static, 0x00801025, offset_dict, 4)  # OR $v0, $a0, $r0
 
-    writeValue(ROM_COPY, 0x806A7564, Overlay.Static, 0xC4440080, offset_dict, 4) # Crown default floor will be it's initial Y spawn position. Fixes a crash on N64
+    writeValue(ROM_COPY, 0x806A7564, Overlay.Static, 0xC4440080, offset_dict, 4)  # Crown default floor will be it's initial Y spawn position. Fixes a crash on N64
 
     # Expand Display List
     writeValue(ROM_COPY, 0x805FE56A, Overlay.Static, 8000, offset_dict)
-    writeValue(ROM_COPY, 0x805FE592, Overlay.Static, 0x4100, offset_dict) # SLL 4 (Doubles display list size)
+    writeValue(ROM_COPY, 0x805FE592, Overlay.Static, 0x4100, offset_dict)  # SLL 4 (Doubles display list size)
     # Sniper Scope Check
-    writeValue(ROM_COPY, 0x806D2988, Overlay.Static, 0x93190002, offset_dict, 4) # LBU $t9, 0x2 ($t8)
-    writeValue(ROM_COPY, 0x806D2990, Overlay.Static, 0x33210004, offset_dict, 4) # ANDI $at, $t9, 0x4
-    writeValue(ROM_COPY, 0x806D299C, Overlay.Static, 0x1020, offset_dict) # BEQ $at, $r0
+    writeValue(ROM_COPY, 0x806D2988, Overlay.Static, 0x93190002, offset_dict, 4)  # LBU $t9, 0x2 ($t8)
+    writeValue(ROM_COPY, 0x806D2990, Overlay.Static, 0x33210004, offset_dict, 4)  # ANDI $at, $t9, 0x4
+    writeValue(ROM_COPY, 0x806D299C, Overlay.Static, 0x1020, offset_dict)  # BEQ $at, $r0
     # EEPROM Patch
-    writeValue(ROM_COPY, 0x8060D588, Overlay.Static, 0, offset_dict, 4) # NOP
+    writeValue(ROM_COPY, 0x8060D588, Overlay.Static, 0, offset_dict, 4)  # NOP
     # TEMPORARY FIX FOR SAVE BUG
-    writeValue(ROM_COPY, 0x8060D790, Overlay.Static, 0, offset_dict, 4) # NOP
+    writeValue(ROM_COPY, 0x8060D790, Overlay.Static, 0, offset_dict, 4)  # NOP
     # Cancel Tamper
-    writeValue(ROM_COPY, 0x8060AEFC, Overlay.Static, 0, offset_dict, 4) # NOP
-    writeValue(ROM_COPY, 0x80611788, Overlay.Static, 0, offset_dict, 4) # NOP
+    writeValue(ROM_COPY, 0x8060AEFC, Overlay.Static, 0, offset_dict, 4)  # NOP
+    writeValue(ROM_COPY, 0x80611788, Overlay.Static, 0, offset_dict, 4)  # NOP
     # Fix HUD if DK not free
-    writeValue(ROM_COPY, 0x806FA324, Overlay.Static, 0, offset_dict, 4) # NOP
-    writeValue(ROM_COPY, 0x807505AE, Overlay.Static, 385, offset_dict) # Set Flag to DK Flag
+    writeValue(ROM_COPY, 0x806FA324, Overlay.Static, 0, offset_dict, 4)  # NOP
+    writeValue(ROM_COPY, 0x807505AE, Overlay.Static, 385, offset_dict)  # Set Flag to DK Flag
     # Fix CB Spawning
-    writeValue(ROM_COPY, 0x806A7882, Overlay.Static, 385, offset_dict) # DK Balloon
+    writeValue(ROM_COPY, 0x806A7882, Overlay.Static, 385, offset_dict)  # DK Balloon
     # Fix Boss Doors if DK not free
-    writeValue(ROM_COPY, 0x80649358, Overlay.Static, 0, offset_dict, 4) # NOP
+    writeValue(ROM_COPY, 0x80649358, Overlay.Static, 0, offset_dict, 4)  # NOP
     # Fix Pause Menu
-    writeValue(ROM_COPY, 0x806ABFF8, Overlay.Static, 0, offset_dict, 4) # NOP (Write of first slot to 1)
+    writeValue(ROM_COPY, 0x806ABFF8, Overlay.Static, 0, offset_dict, 4)  # NOP (Write of first slot to 1)
     writeValue(ROM_COPY, 0x806AC002, Overlay.Static, 0x530, offset_dict)
     writeValue(ROM_COPY, 0x806AC006, Overlay.Static, 0x5B0, offset_dict)
-    writeValue(ROM_COPY, 0x8075054D, Overlay.Static, 0xD7, offset_dict, 1) # Change DK Q Mark to #FFD700
+    writeValue(ROM_COPY, 0x8075054D, Overlay.Static, 0xD7, offset_dict, 1)  # Change DK Q Mark to #FFD700
     # Guard Animation Fix
     writeValue(ROM_COPY, 0x806AF8C6, Overlay.Static, 0x2C1, offset_dict)
     # Remove flare effect from guards
     writeValue(ROM_COPY, 0x806AE440, Overlay.Static, 0, offset_dict, 4)
     # Boost Diddy/Tiny's Barrel Speed
-    writeFloat(ROM_COPY, 0x807533A0, Overlay.Static, 240, offset_dict) # Diddy Ground
-    writeFloat(ROM_COPY, 0x807533A8, Overlay.Static, 240, offset_dict) # Tiny Ground
-    writeFloat(ROM_COPY, 0x807533DC, Overlay.Static, 260, offset_dict) # Lanky Air
-    writeFloat(ROM_COPY, 0x807533E0, Overlay.Static, 260, offset_dict) # Tiny Air
+    writeFloat(ROM_COPY, 0x807533A0, Overlay.Static, 240, offset_dict)  # Diddy Ground
+    writeFloat(ROM_COPY, 0x807533A8, Overlay.Static, 240, offset_dict)  # Tiny Ground
+    writeFloat(ROM_COPY, 0x807533DC, Overlay.Static, 260, offset_dict)  # Lanky Air
+    writeFloat(ROM_COPY, 0x807533E0, Overlay.Static, 260, offset_dict)  # Tiny Air
     # Bump Model Two Allowance
-    writeValue(ROM_COPY, 0x80632026, Overlay.Static, 550, offset_dict) # Japes
-    writeValue(ROM_COPY, 0x80632006, Overlay.Static, 550, offset_dict) # Aztec
-    writeValue(ROM_COPY, 0x80631FF6, Overlay.Static, 550, offset_dict) # Factory
-    writeValue(ROM_COPY, 0x80632016, Overlay.Static, 550, offset_dict) # Galleon
-    writeValue(ROM_COPY, 0x80631FE6, Overlay.Static, 550, offset_dict) # Fungi
-    writeValue(ROM_COPY, 0x80632036, Overlay.Static, 550, offset_dict) # Others
+    writeValue(ROM_COPY, 0x80632026, Overlay.Static, 550, offset_dict)  # Japes
+    writeValue(ROM_COPY, 0x80632006, Overlay.Static, 550, offset_dict)  # Aztec
+    writeValue(ROM_COPY, 0x80631FF6, Overlay.Static, 550, offset_dict)  # Factory
+    writeValue(ROM_COPY, 0x80632016, Overlay.Static, 550, offset_dict)  # Galleon
+    writeValue(ROM_COPY, 0x80631FE6, Overlay.Static, 550, offset_dict)  # Fungi
+    writeValue(ROM_COPY, 0x80632036, Overlay.Static, 550, offset_dict)  # Others
 
     if spoiler.settings.no_healing:
         writeValue(ROM_COPY, 0x80683A34, Overlay.Static, 0, offset_dict, 4)  # Cancel Tag Health Refill
@@ -470,20 +471,20 @@ def patchAssembly(ROM_COPY, spoiler):
 
     if isQoLEnabled(spoiler, MiscChangesSelected.fast_picture_taking):
         # Fast Camera Photo
-        writeValue(ROM_COPY, 0x80699454, Overlay.Static, 0x5000, offset_dict) # Fast tick/no mega-slowdown on Biz
-        writeValue(ROM_COPY, 0x806992B6, Overlay.Static, 0x14, offset_dict) # No wait for camera film development
+        writeValue(ROM_COPY, 0x80699454, Overlay.Static, 0x5000, offset_dict)  # Fast tick/no mega-slowdown on Biz
+        writeValue(ROM_COPY, 0x806992B6, Overlay.Static, 0x14, offset_dict)  # No wait for camera film development
         writeValue(ROM_COPY, 0x8069932A, Overlay.Static, 0x14, offset_dict)
     if isQoLEnabled(spoiler, MiscChangesSelected.lowered_aztec_lobby_bonus):
         # Lower Aztec Lobby Bonus
-        writeValue(ROM_COPY, 0x80680D56, Overlay.Static, 0x7C, offset_dict) # 0x89 if this needs to be unreachable without PTT
+        writeValue(ROM_COPY, 0x80680D56, Overlay.Static, 0x7C, offset_dict)  # 0x89 if this needs to be unreachable without PTT
     if isQoLEnabled(spoiler, MiscChangesSelected.small_bananas_always_visible):
-        writeValue(ROM_COPY, 0x806324D4, Overlay.Static, 0x24020001, offset_dict, 4) # ADDIU $v0, $r0, 1. Disable kong flag check
-        writeValue(ROM_COPY, 0x806A78C4, Overlay.Static, 0, offset_dict, 4) # NOP. Disable kong flag check
+        writeValue(ROM_COPY, 0x806324D4, Overlay.Static, 0x24020001, offset_dict, 4)  # ADDIU $v0, $r0, 1. Disable kong flag check
+        writeValue(ROM_COPY, 0x806A78C4, Overlay.Static, 0, offset_dict, 4)  # NOP. Disable kong flag check
     if isQoLEnabled(spoiler, MiscChangesSelected.fast_hints):
         writeValue(ROM_COPY, 0x8069E0F6, Overlay.Static, 1, offset_dict)
         writeValue(ROM_COPY, 0x8069E112, Overlay.Static, 1, offset_dict)
-        writeValue(ROM_COPY, 0x80758BC9, Overlay.Static, 0xAE, offset_dict, 1) # Quadruple Growth Speed (8E -> AE)
-        writeValue(ROM_COPY, 0x80758BD1, Overlay.Static, 0xAE, offset_dict, 1) # Quadruple Shrink Speed (8E -> AE)
+        writeValue(ROM_COPY, 0x80758BC9, Overlay.Static, 0xAE, offset_dict, 1)  # Quadruple Growth Speed (8E -> AE)
+        writeValue(ROM_COPY, 0x80758BD1, Overlay.Static, 0xAE, offset_dict, 1)  # Quadruple Shrink Speed (8E -> AE)
     if isQoLEnabled(spoiler, MiscChangesSelected.fast_boot):
         # Remove DKTV - Game Over
         writeValue(ROM_COPY, 0x8071319E, Overlay.Static, 0x50, offset_dict)
@@ -492,49 +493,49 @@ def patchAssembly(ROM_COPY, spoiler):
         writeValue(ROM_COPY, 0x8071401E, Overlay.Static, 0x50, offset_dict)
         writeValue(ROM_COPY, 0x8071404E, Overlay.Static, 5, offset_dict)
     if isQoLEnabled(spoiler, MiscChangesSelected.fast_transform_animation):
-        writeValue(ROM_COPY, 0x8067EAB2, Overlay.Static, 1, offset_dict) # OSprint
-        writeValue(ROM_COPY, 0x8067EAC6, Overlay.Static, 1, offset_dict) # HC Dogadon 2
-        writeValue(ROM_COPY, 0x8067EACA, Overlay.Static, 1, offset_dict) # Others
-        writeValue(ROM_COPY, 0x8067EA92, Overlay.Static, 1, offset_dict) # Others 2
+        writeValue(ROM_COPY, 0x8067EAB2, Overlay.Static, 1, offset_dict)  # OSprint
+        writeValue(ROM_COPY, 0x8067EAC6, Overlay.Static, 1, offset_dict)  # HC Dogadon 2
+        writeValue(ROM_COPY, 0x8067EACA, Overlay.Static, 1, offset_dict)  # Others
+        writeValue(ROM_COPY, 0x8067EA92, Overlay.Static, 1, offset_dict)  # Others 2
     if isQoLEnabled(spoiler, MiscChangesSelected.animal_buddies_grab_items):
         # Transformations can pick up other's collectables
-        writeValue(ROM_COPY, 0x806F6330, Overlay.Static, 0x96AC036E, offset_dict, 4) # Collection
+        writeValue(ROM_COPY, 0x806F6330, Overlay.Static, 0x96AC036E, offset_dict, 4)  # Collection
         # Collection
-        writeValue(ROM_COPY, 0x806F68A0, Overlay.Static, 0x95B8036E, offset_dict, 4) # DK Collection
-        writeValue(ROM_COPY, 0x806F68DC, Overlay.Static, 0x952C036E, offset_dict, 4) # Diddy Collection
-        writeValue(ROM_COPY, 0x806F6914, Overlay.Static, 0x95F9036E, offset_dict, 4) # Tiny Collection
-        writeValue(ROM_COPY, 0x806F694C, Overlay.Static, 0x95AE036E, offset_dict, 4) # Lanky Collection
-        writeValue(ROM_COPY, 0x806F6984, Overlay.Static, 0x952B036E, offset_dict, 4) # Chunky Collection
+        writeValue(ROM_COPY, 0x806F68A0, Overlay.Static, 0x95B8036E, offset_dict, 4)  # DK Collection
+        writeValue(ROM_COPY, 0x806F68DC, Overlay.Static, 0x952C036E, offset_dict, 4)  # Diddy Collection
+        writeValue(ROM_COPY, 0x806F6914, Overlay.Static, 0x95F9036E, offset_dict, 4)  # Tiny Collection
+        writeValue(ROM_COPY, 0x806F694C, Overlay.Static, 0x95AE036E, offset_dict, 4)  # Lanky Collection
+        writeValue(ROM_COPY, 0x806F6984, Overlay.Static, 0x952B036E, offset_dict, 4)  # Chunky Collection
         # Opacity
-        writeValue(ROM_COPY, 0x80637998, Overlay.Static, 0x95B9036E, offset_dict, 4) # DK Opacity
-        writeValue(ROM_COPY, 0x806379E8, Overlay.Static, 0x95CF036E, offset_dict, 4) # Diddy Opacity
-        writeValue(ROM_COPY, 0x80637A28, Overlay.Static, 0x9589036E, offset_dict, 4) # Tiny Opacity
-        writeValue(ROM_COPY, 0x80637A68, Overlay.Static, 0x954B036E, offset_dict, 4) # Chunky Opacity
-        writeValue(ROM_COPY, 0x80637AA8, Overlay.Static, 0x9708036E, offset_dict, 4) # Lanky Opacity
+        writeValue(ROM_COPY, 0x80637998, Overlay.Static, 0x95B9036E, offset_dict, 4)  # DK Opacity
+        writeValue(ROM_COPY, 0x806379E8, Overlay.Static, 0x95CF036E, offset_dict, 4)  # Diddy Opacity
+        writeValue(ROM_COPY, 0x80637A28, Overlay.Static, 0x9589036E, offset_dict, 4)  # Tiny Opacity
+        writeValue(ROM_COPY, 0x80637A68, Overlay.Static, 0x954B036E, offset_dict, 4)  # Chunky Opacity
+        writeValue(ROM_COPY, 0x80637AA8, Overlay.Static, 0x9708036E, offset_dict, 4)  # Lanky Opacity
         # CB/Coin rendering
-        writeValue(ROM_COPY, 0x806394FC, Overlay.Static, 0x958B036E, offset_dict, 4) # Rendering
-        writeValue(ROM_COPY, 0x80639540, Overlay.Static, 0x9728036E, offset_dict, 4) # Rendering
-        writeValue(ROM_COPY, 0x80639584, Overlay.Static, 0x95AE036E, offset_dict, 4) # Rendering
-        writeValue(ROM_COPY, 0x80639430, Overlay.Static, 0x95CD036E, offset_dict, 4) # Rendering
-        writeValue(ROM_COPY, 0x806393EC, Overlay.Static, 0x9519036E, offset_dict, 4) # Rendering
-        writeValue(ROM_COPY, 0x806395C8, Overlay.Static, 0x952A036E, offset_dict, 4) # Rendering
-        writeValue(ROM_COPY, 0x8063960C, Overlay.Static, 0x95F8036E, offset_dict, 4) # Rendering
-        writeValue(ROM_COPY, 0x80639474, Overlay.Static, 0x9549036E, offset_dict, 4) # Rendering
-        writeValue(ROM_COPY, 0x806393A8, Overlay.Static, 0x956C036E, offset_dict, 4) # Rendering
-        writeValue(ROM_COPY, 0x806394B8, Overlay.Static, 0x970F036E, offset_dict, 4) # Rendering
-        writeValue(ROM_COPY, 0x80639650, Overlay.Static, 0x956C036E, offset_dict, 4) # Rendering
-        writeValue(ROM_COPY, 0x80639710, Overlay.Static, 0x9549036E, offset_dict, 4) # Rendering
-        writeValue(ROM_COPY, 0x80639750, Overlay.Static, 0x970F036E, offset_dict, 4) # Rendering
-        writeValue(ROM_COPY, 0x806396D0, Overlay.Static, 0x95CD036E, offset_dict, 4) # Rendering
-        writeValue(ROM_COPY, 0x80639690, Overlay.Static, 0x9519036E, offset_dict, 4) # Rendering
+        writeValue(ROM_COPY, 0x806394FC, Overlay.Static, 0x958B036E, offset_dict, 4)  # Rendering
+        writeValue(ROM_COPY, 0x80639540, Overlay.Static, 0x9728036E, offset_dict, 4)  # Rendering
+        writeValue(ROM_COPY, 0x80639584, Overlay.Static, 0x95AE036E, offset_dict, 4)  # Rendering
+        writeValue(ROM_COPY, 0x80639430, Overlay.Static, 0x95CD036E, offset_dict, 4)  # Rendering
+        writeValue(ROM_COPY, 0x806393EC, Overlay.Static, 0x9519036E, offset_dict, 4)  # Rendering
+        writeValue(ROM_COPY, 0x806395C8, Overlay.Static, 0x952A036E, offset_dict, 4)  # Rendering
+        writeValue(ROM_COPY, 0x8063960C, Overlay.Static, 0x95F8036E, offset_dict, 4)  # Rendering
+        writeValue(ROM_COPY, 0x80639474, Overlay.Static, 0x9549036E, offset_dict, 4)  # Rendering
+        writeValue(ROM_COPY, 0x806393A8, Overlay.Static, 0x956C036E, offset_dict, 4)  # Rendering
+        writeValue(ROM_COPY, 0x806394B8, Overlay.Static, 0x970F036E, offset_dict, 4)  # Rendering
+        writeValue(ROM_COPY, 0x80639650, Overlay.Static, 0x956C036E, offset_dict, 4)  # Rendering
+        writeValue(ROM_COPY, 0x80639710, Overlay.Static, 0x9549036E, offset_dict, 4)  # Rendering
+        writeValue(ROM_COPY, 0x80639750, Overlay.Static, 0x970F036E, offset_dict, 4)  # Rendering
+        writeValue(ROM_COPY, 0x806396D0, Overlay.Static, 0x95CD036E, offset_dict, 4)  # Rendering
+        writeValue(ROM_COPY, 0x80639690, Overlay.Static, 0x9519036E, offset_dict, 4)  # Rendering
     if isQoLEnabled(spoiler, MiscChangesSelected.reduced_lag):
-        writeValue(ROM_COPY, 0x80748010, Overlay.Static, 0x8064F2F0, offset_dict, 4) # Cancel Sandstorm
+        writeValue(ROM_COPY, 0x80748010, Overlay.Static, 0x8064F2F0, offset_dict, 4)  # Cancel Sandstorm
         # No Rain
-        writeFloat(ROM_COPY, 0x8075E3E0, Overlay.Static, 0, offset_dict) # Set Isles Rain Radius to 0
-        writeValue(ROM_COPY, 0x8068AF90, Overlay.Static, 0, offset_dict, 4) # Disable weather
+        writeFloat(ROM_COPY, 0x8075E3E0, Overlay.Static, 0, offset_dict)  # Set Isles Rain Radius to 0
+        writeValue(ROM_COPY, 0x8068AF90, Overlay.Static, 0, offset_dict, 4)  # Disable weather
     if isQoLEnabled(spoiler, MiscChangesSelected.homing_balloons):
-        writeValue(ROM_COPY, 0x80694F6A, Overlay.Static, 10, offset_dict) # Coconut
-        writeValue(ROM_COPY, 0x80692B82, Overlay.Static, 10, offset_dict) # Peanuts
-        writeValue(ROM_COPY, 0x8069309A, Overlay.Static, 10, offset_dict) # Grape
-        writeValue(ROM_COPY, 0x80695406, Overlay.Static, 10, offset_dict) # Feather
-        writeValue(ROM_COPY, 0x80694706, Overlay.Static, 10, offset_dict) # Pineapple
+        writeValue(ROM_COPY, 0x80694F6A, Overlay.Static, 10, offset_dict)  # Coconut
+        writeValue(ROM_COPY, 0x80692B82, Overlay.Static, 10, offset_dict)  # Peanuts
+        writeValue(ROM_COPY, 0x8069309A, Overlay.Static, 10, offset_dict)  # Grape
+        writeValue(ROM_COPY, 0x80695406, Overlay.Static, 10, offset_dict)  # Feather
+        writeValue(ROM_COPY, 0x80694706, Overlay.Static, 10, offset_dict)  # Pineapple
