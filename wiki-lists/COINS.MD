@@ -965,8 +965,8 @@
 
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| On the corners of the center platform in Diddy Lower Cabin | 4 |  | 
-| In Corner Platforms | 4 |  | 
+| On the corners of the center platform in Diddy Lower Cabin | 4 | l.jetpack or l.advanced_platforming | 
+| In Corner Platforms | 4 | l.jetpack or l.advanced_platforming | 
 </details>
 <details>
 <summary>Caves Diddy Upper Cabin</summary>

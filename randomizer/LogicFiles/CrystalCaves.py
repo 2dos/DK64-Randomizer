@@ -230,9 +230,8 @@ LogicRegions = {
     ]),
 
     Regions.DiddyLowerCabin: Region("Diddy Lower Cabin", "Cabins Area", Levels.CrystalCaves, False, None, [
-        # You're supposed to use the jetpack to get up the platforms,
-        # but you can just backflip onto them
-        LocationLogic(Locations.CavesDiddy5DoorCabinLower, lambda l: l.isdiddy and l.oranges),
+        # You're supposed to use the jetpack to get up the platforms, but you can just backflip onto them
+        LocationLogic(Locations.CavesDiddy5DoorCabinLower, lambda l: l.isdiddy and l.oranges and (l.jetpack or l.advanced_platforming)),
     ], [], [
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
         TransitionFront(Regions.CabinArea, lambda l: True, Transitions.CavesDiddyLowerToCabin),

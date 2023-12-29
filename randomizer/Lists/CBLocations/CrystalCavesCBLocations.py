@@ -1459,6 +1459,7 @@ ColoredBananaGroupList = [
         konglist=[Kongs.diddy],
         region=Regions.DiddyLowerCabin,
         vanilla=True,
+        logic=lambda l: l.jetpack or l.advanced_platforming,
         locations=[[5, 1.0, 300.0310363769531, 101.0, 291.0983581542969]],
     ),
     ColoredBananaGroup(
