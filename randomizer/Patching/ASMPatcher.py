@@ -47,7 +47,7 @@ def writeValue(ROM_COPY, address: int, overlay: Overlay, value: int, offset_dict
     if rom_start is None:
         return
     ROM_COPY.seek(rom_start)
-    passed_value = value
+    passed_value = int(value)
     if value < 0 and signed:
         passed_value += 1 << (8 * size)
     ROM_COPY.writeMultipleBytes(passed_value, size)
@@ -64,7 +64,7 @@ def writeFloat(ROM_COPY, address: int, overlay: Overlay, value: float, offset_di
 
 
 def patchAssemblyCosmetic(ROM_COPY, settings: Settings):
-    """Patch assembly instructions that pertain to cosmetic changes."""
+    """Patch assembly instructions that pertain to cosmetic changes excluding Widescreen."""
     offset_dict = populateOverlayOffsets(ROM_COPY)
 
     if settings.troff_brighten:
@@ -108,6 +108,47 @@ def isFasterCheckEnabled(spoiler, fast_check: FasterChecksSelected):
 
 
 FLAG_ABILITY_CAMERA = 0x2FD
+
+
+def expandSaveFile(ROM_COPY, static_expansion: int, actor_count: int, offset_dict: dict):
+    """Expand Save file."""
+    expansion = static_expansion + actor_count
+    flag_block_size = 0x320 + expansion
+    targ_gb_bits = 7  # Max 127
+    added_bits = (targ_gb_bits - 3) * 8
+    kong_var_size = 0xA1 + added_bits
+    file_info_location = flag_block_size + (5 * kong_var_size)
+    file_default_size = file_info_location + 0x72
+    # Flag Block Size
+    writeValue(ROM_COPY, 0x8060E36A, Overlay.Static, file_default_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060E31E, Overlay.Static, file_default_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060E2C6, Overlay.Static, file_default_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060D54A, Overlay.Static, file_default_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060D4A2, Overlay.Static, file_default_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060D45E, Overlay.Static, file_default_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060D3C6, Overlay.Static, file_default_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060D32E, Overlay.Static, file_default_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060D23E, Overlay.Static, file_default_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060CF62, Overlay.Static, file_default_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060CC52, Overlay.Static, file_default_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060C78A, Overlay.Static, file_default_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060C352, Overlay.Static, file_default_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060BF96, Overlay.Static, file_default_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060BA7A, Overlay.Static, file_default_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060BEC6, Overlay.Static, file_info_location, offset_dict)
+    # Increase GB Storage Size
+    writeValue(ROM_COPY, 0x8060BE12, Overlay.Static, targ_gb_bits, offset_dict)  # Bit Size
+    writeValue(ROM_COPY, 0x8060BE06, Overlay.Static, targ_gb_bits << 3, offset_dict)  # Allocation for all levels
+    writeValue(ROM_COPY, 0x8060BE26, Overlay.Static, 0x40C0, offset_dict)  # SLL 2 -> SLL 3
+    writeValue(ROM_COPY, 0x8060BCC0, Overlay.Static, 0x24090000 | kong_var_size, offset_dict, 4)  # ADDIU $t1, $r0, kong_var_size
+    writeValue(ROM_COPY, 0x8060BCC4, Overlay.Static, 0x01C90019, offset_dict, 4)  # MULTU $t1, $t6
+    writeValue(ROM_COPY, 0x8060BCC8, Overlay.Static, 0x00004812, offset_dict, 4)  # MFLO $t1
+    writeValue(ROM_COPY, 0x8060BCCC, Overlay.Static, 0, offset_dict, 4)  # NOP
+    # Model 2 Start
+    writeValue(ROM_COPY, 0x8060C2F2, Overlay.Static, flag_block_size, offset_dict)
+    writeValue(ROM_COPY, 0x8060BCDE, Overlay.Static, flag_block_size, offset_dict)
+    # Reallocate Balloons + Patches
+    writeValue(ROM_COPY, 0x80688BCE, Overlay.Static, 0x320 + static_expansion, offset_dict)  # Reallocated to just before model 2 block
 
 
 def patchAssembly(ROM_COPY, spoiler):
@@ -160,6 +201,45 @@ def patchAssembly(ROM_COPY, spoiler):
     writeValue(ROM_COPY, 0x806E426C, Overlay.Static, 0, offset_dict, 4)  # Disable ability to pick up objects in barrel barrel unless you have barrels
     writeValue(ROM_COPY, 0x806E7736, Overlay.Static, 0, offset_dict)  # Disable ability to dive in dive barrel unless you have dive
     writeValue(ROM_COPY, 0x806E2D8A, Overlay.Static, 0, offset_dict)  # Disable ability to throw oranges in orange barrel unless you have oranges
+    # Files
+    balloon_patch_count = 150
+    static_expansion = 0x100
+    if spoiler.settings.enemy_drop_rando:
+        static_expansion += 426  # Total Enemies
+    if False:  # TODO: Check Archipelago
+        static_expansion += 400  # Archipelago Flag size
+    expandSaveFile(ROM_COPY, static_expansion, balloon_patch_count, offset_dict)
+    # 1-File Fixes
+    writeValue(ROM_COPY, 0x8060CF34, Overlay.Static, 0x240E0001, offset_dict, 4)  # Slot 1
+    writeValue(ROM_COPY, 0x8060CF38, Overlay.Static, 0x240F0002, offset_dict, 4)  # Slot 2
+    writeValue(ROM_COPY, 0x8060CF3C, Overlay.Static, 0x24180003, offset_dict, 4)  # Slot 3
+    writeValue(ROM_COPY, 0x8060CF40, Overlay.Static, 0x240D0000, offset_dict, 4)  # Slot 0
+    writeValue(ROM_COPY, 0x8060D3AC, Overlay.Static, 0, offset_dict, 4)  # Prevent EEPROM Shuffle
+    writeValue(ROM_COPY, 0x8060DCE8, Overlay.Static, 0, offset_dict, 4)  # Prevent EEPROM Shuffle
+    writeValue(ROM_COPY, 0x8060CD1A, Overlay.Static, 1, offset_dict)  # File Loop Cancel 2
+    writeValue(ROM_COPY, 0x8060CE7E, Overlay.Static, 1, offset_dict)  # File Loop Cancel 3
+    writeValue(ROM_COPY, 0x8060CE5A, Overlay.Static, 1, offset_dict)  # File Loop Cancel 4
+    writeValue(ROM_COPY, 0x8060CF0E, Overlay.Static, 1, offset_dict)  # File Loop Cancel 5
+    writeValue(ROM_COPY, 0x8060CF26, Overlay.Static, 1, offset_dict)  # File Loop Cancel 6
+    writeValue(ROM_COPY, 0x8060D106, Overlay.Static, 1, offset_dict)  # File Loop Cancel 8
+    writeValue(ROM_COPY, 0x8060D43E, Overlay.Static, 1, offset_dict)  # File Loop Cancel 8
+    writeValue(ROM_COPY, 0x8060CD08, Overlay.Static, 0x26670000, offset_dict, 4)  # Save to File - File Index
+    writeValue(ROM_COPY, 0x8060CE48, Overlay.Static, 0x26670000, offset_dict, 4)  # Save to File - File Index
+    writeValue(ROM_COPY, 0x8060CF04, Overlay.Static, 0x26270000, offset_dict, 4)  # Save to File - File Index
+    writeValue(ROM_COPY, 0x8060BFA4, Overlay.Static, 0x252A0000, offset_dict, 4)  # Global Block after 1 file entry
+    writeValue(ROM_COPY, 0x8060E378, Overlay.Static, 0x258D0000, offset_dict, 4)  # Global Block after 1 file entry
+    writeValue(ROM_COPY, 0x8060D33C, Overlay.Static, 0x254B0000, offset_dict, 4)  # Global Block after 1 file entry
+    writeValue(ROM_COPY, 0x8060D470, Overlay.Static, 0x256C0000, offset_dict, 4)  # Global Block after 1 file entry
+    writeValue(ROM_COPY, 0x8060D4B0, Overlay.Static, 0x252A0000, offset_dict, 4)  # Global Block after 1 file entry
+    writeValue(ROM_COPY, 0x8060D558, Overlay.Static, 0x258D0000, offset_dict, 4)  # Global Block after 1 file entry
+    writeValue(ROM_COPY, 0x8060CF74, Overlay.Static, 0x25090000, offset_dict, 4)  # Global Block after 1 file entry
+    writeValue(ROM_COPY, 0x8060D24C, Overlay.Static, 0x25AE0000, offset_dict, 4)  # Global Block after 1 file entry
+    writeValue(ROM_COPY, 0x8060C84C, Overlay.Static, 0xA02067C8, offset_dict, 4)  # Force file 0
+    writeValue(ROM_COPY, 0x8060C654, Overlay.Static, 0x24040000, offset_dict, 4)  # Force file 0 - Save
+    writeValue(ROM_COPY, 0x8060C664, Overlay.Static, 0xAFA00034, offset_dict, 4)  # Force file 0 - Save
+    writeValue(ROM_COPY, 0x8060C6C4, Overlay.Static, 0x24040000, offset_dict, 4)  # Force file 0 - Read
+    writeValue(ROM_COPY, 0x8060C6D4, Overlay.Static, 0xAFA00034, offset_dict, 4)  # Force file 0 - Read
+    writeValue(ROM_COPY, 0x8060D294, Overlay.Static, 0, offset_dict, 4)  # Cartridge EEPROM Wipe cancel
 
     if spoiler.settings.no_healing:
         writeValue(ROM_COPY, 0x80683A34, Overlay.Static, 0, offset_dict, 4)  # Cancel Tag Health Refill

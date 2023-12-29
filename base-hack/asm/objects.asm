@@ -14,7 +14,6 @@
 .importobj "obj/src_fixes_squawks_with_spotlight.o"
 .importobj "obj/src_fixes_tag_anywhere.o"
 .importobj "obj/src_initialization_cosmetic.o"
-.importobj "obj/src_initialization_file.o"
 .importobj "obj/src_initialization_init.o"
 .importobj "obj/src_initialization_item_rando.o"
 .importobj "obj/src_initialization_qol.o"

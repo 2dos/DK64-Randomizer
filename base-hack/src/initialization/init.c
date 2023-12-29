@@ -264,7 +264,6 @@ void initHack(int source) {
 			initActor(NEWACTOR_JETPACITEMOVERLAY, 1, &getNextMoveText, ACTORMASTER_CONTROLLER, 0, 0, 0x10, 324);
 			// Kong Rando
 			initKongRando();
-			initFiles();
 			writeFunction(0x8060CB7C, &fixChimpyCamBug);
             
 			if (Rando.short_bosses) {
@@ -507,7 +506,7 @@ void initHack(int source) {
 			}
 
 			initSwitchsanityChanges();
-			
+
 			SFXVolume = Rando.default_sfx_volume;
 			MusicVolume = Rando.default_music_volume;
 			ScreenRatio = Rando.default_screen_ratio;

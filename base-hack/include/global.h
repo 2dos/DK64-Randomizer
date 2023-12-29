@@ -111,7 +111,6 @@ extern int initHelmHurry(void);
 extern void addHelmTime(helm_hurry_items item, int multiplier);
 extern void saveHelmHurryTime(void);
 extern void finishHelmHurry(void);
-extern int getNewFileSize(void);
 extern void fixChimpyCamBug(void);
 extern void writeDefaultFilename(void);
 extern void wipeFileStats(void);
@@ -373,7 +372,6 @@ extern int getCrateWorld(int index);
 extern int getCrateFlag(int id);
 
 extern void initItemRando(void);
-extern void initFiles(void);
 extern void initQoL(void);
 extern void initCosmetic(void);
 extern void populatePatchItem(int id, int map, int index, int world);
