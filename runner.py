@@ -37,7 +37,7 @@ else:
 app.config["EXECUTOR_MAX_WORKERS"] = os.environ.get("EXECUTOR_MAX_WORKERS", 2)
 app.config["EXECUTOR_TYPE"] = os.environ.get("EXECUTOR_TYPE", "process")
 executor = Executor(app)
-CORS(app, resources={"*": {"origins": ["dk64randomizer.com", "dev.dk64randomizer.com", "localhost:8000"]}})
+CORS(app)
 current_total = 0
 try:
     with open("current_total.cfg", "r") as f:
