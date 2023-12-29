@@ -686,6 +686,9 @@ class Settings:
         if self.switchsanity != SwitchsanityLevel.off:
             if self.enable_plandomizer and self.plandomizer_dict["plando_switchsanity"] != -1:
                 for key in self.plandomizer_dict["plando_switchsanity"].keys():
+                    if self.switchsanity == SwitchsanityLevel.helm_access:
+                        if int(key) not in (Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport):
+                            raise Ex.PlandoIncompatibleException(f"Selected switch is not randomized with the current settings.")
                     planned_data = self.plandomizer_dict["plando_switchsanity"][key]
                     if planned_data["kong"] != -1:
                         self.switchsanity_data[int(key)].kong = planned_data["kong"]
