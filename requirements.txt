@@ -6,6 +6,7 @@ pillow==10.0.1
 boto3==1.28.43
 waitress==2.1.2
 GitPython==3.1.40
-cryptography==41.0.6
+cryptography==41.0.7
 apscheduler==3.10.4
 vidua==0.4.5
+pyopenssl==23.3.0
