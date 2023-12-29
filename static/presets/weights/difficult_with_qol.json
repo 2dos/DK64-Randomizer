@@ -65,7 +65,24 @@
     "enemy_drop_rando": 0.6,
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.7,
-    "fast_gbs": 0.7,
+    "faster_checks_enabled": 1,
+    "faster_checks_selected": {
+        "factory_toy_monster_fight": 0.7,
+        "factory_piano_game": 0.7,
+        "factory_diddy_research_and_development": 0.7,
+        "factory_arcade_round_1": 0.7,
+        "factory_car_race": 0.7,
+        "galleon_seal_race": 0.7,
+        "galleon_mech_fish": 0.7,
+        "galleon_mermaid_gb": 0.7,
+        "forest_mill_conveyor": 0.7,
+        "forest_owl_race": 0.7,
+        "forest_rabbit_race": 0.7,
+        "caves_ice_tomato_minigame": 0.7,
+        "castle_minecart": 0.7,
+        "castle_car_race": 0.7,
+        "jetpac": 0.7
+    },
     "fast_warps": 0.8,
     "fps_display": 0.5,
     "free_trade_setting": {
@@ -180,7 +197,6 @@
         "max": 1800,
         "mean": 1200
     },
-    "high_req": 0.8,
     "item_rando_list_selected": {
         "shop": 0.95,
         "banana": 0.95,
@@ -210,6 +226,7 @@
     "krool_access": 0.7,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
+    "k_rool_vanilla_requirement": 0,
     "krusha_ui": {
         "no_slot": 0.5,
         "random": 0.5
@@ -260,7 +277,8 @@
         "brighten_mad_maze_maul_enemies": 0.5,
         "raise_fungi_dirt_patch": 0.75,
         "global_instrument": 1,
-        "fast_pause_transitions": 0.9
+        "fast_pause_transitions": 0.9,
+        "cannon_game_better_control": 0.5
     },
     "more_cutscene_skips": {
         "off": 0.1,
@@ -273,7 +291,6 @@
     },
     "no_healing": 0.5,
     "no_melons": 0.5,
-    "open_levels": 0.75,
     "open_lobbies": 0.6,
     "perma_death": 0.05,
     "portal_numbers": 0.5,
@@ -305,6 +322,23 @@
         "max": 20,
         "mean": 20
     },
+    "remove_barriers_enabled": 1,
+    "remove_barriers_selected": {
+        "japes_coconut_gates_opened": 0.75,
+        "japes_shellhive_gate_opened": 0.75,
+        "aztec_tunnel_door_opened": 0.75,
+        "aztec_5dtemple_switches_spawned": 0.8,
+        "aztec_llama_switches": 0.75,
+        "factory_production_room_on": 0.8,
+        "factory_testing_gate_opened": 0.75,
+        "galleon_lighthouse_gate_opened": 0.75,
+        "galleon_shipwreck_gate_opened": 0.75,
+        "galleon_shipwreck_permanently_open": 0.8,
+        "galleon_seasick_ship_spawned": 0.8,
+        "forest_green_tunnel_opened": 0.75,
+        "forest_yellow_tunnel_opened": 0.75,
+        "caves_igloo_pads_spawned": 0.8
+    },
     "select_keys": 0,
     "shockwave_status": {
         "vanilla": 0.2,
@@ -328,7 +362,11 @@
         "mean": 3
     },
     "starting_random": 1,
-    "switchsanity": 0.5,
+    "switchsanity": {
+        "off": 0.5,
+        "helm_access": 0.4,
+        "all": 0.1
+    },
     "tns_location_rando": 0.5,
     "troff_text": {
         "min": 150,

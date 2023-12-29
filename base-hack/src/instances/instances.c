@@ -42,6 +42,8 @@
 #define CAVES_BIGBOULDERPAD 0x2F
 #define GALLEON_DKSTAR 0xC
 #define AZTEC_LLAMACOCONUT 0xD
+#define AZTEC_LLAMAGRAPE 0xE
+#define AZTEC_LLAMAFEATHER 0xF
 #define FUNGI_MILLGBINTERIOR 0xA
 
 #define GALLEON_BONGO_PAD 0x11
@@ -195,6 +197,7 @@
 #define FACTORY_BBLAST_CONTROLLER 0x1
 
 #define JAPES_RAMBI_DOOR 0x115
+#define K_ROOL_SHIP 0x35
 
 static const unsigned char kong_press_states[] = {0x29,0x2E,0x26,0x29,0x24};
 
@@ -228,6 +231,14 @@ void setCrusher(void) {
 	}
 }
 
+void initiateLZRTransition(LZREntrance* entrance, maps vanilla_map) {
+	if (Rando.randomize_more_loading_zones) {
+		initiateTransition_0(entrance->map, entrance->exit, 0, 0);
+	} else {
+		initiateTransition_0(vanilla_map, 0, 0, 0);
+	}
+}
+
 int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, int param2) {
 	/**
 	 * @brief Perform object script instructions. Can be called either through
@@ -243,11 +254,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					int gate_flag = -1;
 					switch (param2) {
 						case SEASICK_SHIP:
-							if (Rando.randomize_more_loading_zones) {
-								initiateTransition_0((Rando.seasick_ship_enter >> 8) & 0xFF, Rando.seasick_ship_enter & 0xFF, 0, 0);
-							} else {
-								initiateTransition_0(MAP_GALLEONSEASICKSHIP, 0, 0, 0);
-							}
+							initiateLZRTransition(&Rando.seasick_ship_enter, MAP_GALLEONSEASICKSHIP);
 							break;
 						case GALLEON_DKSTAR:
 							{
@@ -266,9 +273,9 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						case GALLEON_LANKY_SLAM:
 						case GALLEON_TINY_SLAM:
 							if (index == 0) { 
-								return !Rando.remove_high_requirements;
+								return Rando.removed_barriers.shipwreck_permanent == 0;
 							} else {
-								if (Rando.remove_high_requirements) {
+								if (Rando.removed_barriers.shipwreck_permanent) {
 									behaviour_pointer->next_state = 6;
 								} else {
 									behaviour_pointer->next_state = 5;
@@ -309,14 +316,14 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 								gate_flag = GALLEON_2DSOPEN_TINY;
 							}
 							if (index == 0) {
-								if (Rando.remove_high_requirements) {
+								if (Rando.removed_barriers.shipwreck_permanent) {
 									if (checkFlag(gate_flag, FLAGTYPE_PERMANENT)) {
 										behaviour_pointer->current_state = 10;
 										behaviour_pointer->next_state = 10;
 									}
 								}
 							} else {
-								if (Rando.remove_high_requirements) {
+								if (Rando.removed_barriers.shipwreck_permanent) {
 									setPermFlag(gate_flag);
 								}
 							}
@@ -326,11 +333,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_AZTEC:
 				if (param2 == AZTEC_BEETLE_GRATE) {
-					if (Rando.randomize_more_loading_zones) {
-						initiateTransition_0((Rando.aztec_beetle_enter >> 8) & 0xFF, Rando.aztec_beetle_enter & 0xFF, 0, 0);
-					} else {
-						initiateTransition_0(MAP_AZTECBEETLE, 0, 0, 0);
-					}
+					initiateLZRTransition(&Rando.aztec_beetle_enter, MAP_AZTECBEETLE);
 				} else if (param2 == AZTEC_SNOOPDOOR) {
 					if (index == 0) {
 						// Flag Check
@@ -343,9 +346,16 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						setPermFlag(SNOOPDOOR_OPEN);
 						setNextTransitionType(0);
 					}
-				} else if (param2 == AZTEC_LLAMACOCONUT) {
-					if (!Rando.quality_of_life.remove_cutscenes) {
-						PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
+				} else if ((param2 == AZTEC_LLAMACOCONUT) || (param2 == AZTEC_LLAMAGRAPE) || (param2 == AZTEC_LLAMAFEATHER)) {
+					if ((index == 0) && (param2 == AZTEC_LLAMACOCONUT)) {
+						if (!Rando.quality_of_life.remove_cutscenes) {
+							PlayCutsceneFromModelTwoScript(behaviour_pointer,23,1,0);
+						}
+					} else if (index == 1) {
+						if (Rando.removed_barriers.llama_switches) {
+							return 1;
+						}
+						return checkFlag(FLAG_MODIFIER_LLAMAFREE, FLAGTYPE_PERMANENT);
 					}
 				} else if (param2 == AZTEC_CHUNKY_CAGE) {
 					return !Rando.tag_anywhere;
@@ -353,11 +363,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_FUNGI:
 				if (param2 == FUNGI_MINECART_GRATE) {
-					if (Rando.randomize_more_loading_zones) {
-						initiateTransition_0((Rando.fungi_minecart_enter >> 8) & 0xFF, Rando.fungi_minecart_enter & 0xFF, 0, 0);
-					} else {
-						initiateTransition_0(MAP_FUNGIMINECART, 0, 0, 0);
-					}
+					initiateLZRTransition(&Rando.fungi_minecart_enter, MAP_FUNGIMINECART);
 				} else if (param2 == FUNGI_BEANCONTROLLER) {
 					return checkFlagDuplicate(FLAG_COLLECTABLE_BEAN, FLAGTYPE_PERMANENT);
 				} else if ((param2 == FUNGI_SWITCH_DAY) || (param2 == FUNGI_SWITCH_NIGHT)) {
@@ -369,7 +375,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case MAP_CASTLEBALLROOM:
 				if (param2 == BALLROOM_MONKEYPORT) {
 					if (Rando.randomize_more_loading_zones) {
-						createCollisionObjInstance(COLLISION_MAPWARP,(Rando.ballroom_to_museum >> 8 & 0xFF), Rando.ballroom_to_museum & 0xFF);
+						createCollisionObjInstance(COLLISION_MAPWARP, Rando.ballroom_to_museum.map, Rando.ballroom_to_museum.exit);
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,113,2);
 					}
@@ -378,7 +384,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case MAP_CASTLEMUSEUM:
 				if (param2 == MUSEUM_WARP_MONKEYPORT) {
 					if (Rando.randomize_more_loading_zones) {
-						createCollisionObjInstance(COLLISION_MAPWARP,(Rando.museum_to_ballroom >> 8 & 0xFF), Rando.museum_to_ballroom & 0xFF);
+						createCollisionObjInstance(COLLISION_MAPWARP, Rando.museum_to_ballroom.map, Rando.museum_to_ballroom.exit);
 					} else {
 						createCollisionObjInstance(COLLISION_MAPWARP,88,1);
 					}
@@ -443,6 +449,16 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						behaviour_pointer->current_state = 21;
 						behaviour_pointer->next_state = 21;
 					}
+				} else if (param2 == K_ROOL_SHIP) {
+					for (int i = 0; i < 8; i++) {
+						if (Rando.krool_requirements & (1 << i)) {
+							if (!checkFlag(FLAG_KEYIN_KEY1 + i, FLAGTYPE_PERMANENT)) {
+								return 0;
+							}
+
+						}
+					}
+					return 1;
 				} else {
 					// TestVariable = (int)behaviour_pointer;
 					// *(int*)(0x807FF700) = id;
@@ -541,7 +557,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 						if (actor != 0) {
 							getModelTwoItemFromActor(actor, &item, &scale);
 							if (item >= 0) {
-								spawnModelTwo(item, *(int*)&x, *(int*)&y, *(int*)&z, scale, 0x4);
+								spawnModelTwo(item, x, y, z, scale, 0x4);
 								int i = 0;
 								while (i < ObjectModel2Count) {
 									ModelTwoData* object = (ModelTwoData*)&ObjectModel2Pointer[i];
@@ -578,7 +594,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							int flag = normal_key_flags[world];
 							getModelTwoItemFromActor(getKeyItem(flag), &item, &scale);
 							if (item >= 0) {
-								spawnModelTwo(item, *(int*)&x, *(int*)&y, *(int*)&z, scale, 0x16);
+								spawnModelTwo(item, x, y, z, scale, 0x16);
 								int i = 0;
 								while (i < ObjectModel2Count) {
 									ModelTwoData* object = (ModelTwoData*)&ObjectModel2Pointer[i];
@@ -750,13 +766,13 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					} else if (index < 28) {
 						return checkContactSublocation(behaviour_pointer,id,Rando.piano_game_order[index - 21] + 1, 0);
 					} else if (index == 28) {
-						if (Rando.fast_gbs) {
+						if (Rando.faster_checks.piano) {
 							behaviour_pointer->next_state = 26;
 						} else {
 							behaviour_pointer->next_state = 17;
 						}
 					} else if (index == 29) {
-						if (Rando.fast_gbs) {
+						if (Rando.faster_checks.piano) {
 							behaviour_pointer->next_state = 50;
 						} else {
 							behaviour_pointer->next_state = 37;
@@ -764,7 +780,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 					}
 				} else if (param2 == FACTORY_3124_SWITCH || param2 == FACTORY_4231_SWITCH || param2 == FACTORY_1342_SWITCH) {
 					if (index == 0) {
-						return Rando.fast_gbs;
+						return Rando.faster_checks.diddy_rnd != 0;
 					} else if (index == 1) {
 						// Check if GB is in a state >= 3, this means it was spawned.
 						int index = convertIDToIndex(96);
@@ -779,7 +795,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 							}
 						}
 					} else if (index == 2) {
-						if (Rando.fast_gbs) {
+						if (Rando.faster_checks.diddy_rnd) {
 							disableDiddyRDDoors();
 						} else {
 							setScriptRunState(behaviour_pointer, 2, 0);
@@ -942,7 +958,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 			case MAP_GALLEONMECHFISH:
 				if ((param2 == FISH_SHIELD1) || (param2 == FISH_SHIELD2) || (param2 == FISH_SHIELD3)) {
 					int fish_state = 1;
-					if (Rando.fast_gbs) {
+					if (Rando.faster_checks.mech_fish) {
 						fish_state = 5;
 					}
 					behaviour_pointer->next_state = fish_state;
@@ -950,12 +966,12 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			case MAP_FACTORYBBLAST:
 				if (param2 == FACTORY_BBLAST_STAR) {
-					if (Rando.fast_gbs) {
+					if (Rando.faster_checks.arcade_first_round) {
 						behaviour_pointer->next_state = 20;
 						behaviour_pointer->current_state = 20;
 					}
 				} else if (param2 == FACTORY_BBLAST_CONTROLLER) {
-					if (Rando.fast_gbs) {
+					if (Rando.faster_checks.arcade_first_round) {
 						if (!checkFlag(FLAG_ARCADE_LEVER,FLAGTYPE_PERMANENT)) {
 							if (checkFlag(FLAG_ARCADE_ROUND1,FLAGTYPE_PERMANENT)) {
 								isObjectLoadedInMap(MAP_FACTORY, 45, 10); // Run just to load the setup properly
@@ -972,7 +988,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 				break;
 			// case TREASURE_CHEST:
 			// 	if (param2 == CHEST_PEARL_0) {
-			// 		if (Rando.fast_gbs) {
+			// 		if (Rando.faster_checks.mermaid) {
 			// 			int pearls_collected = 0;
 			// 			for (int i = 0; i < 5; i++) {
 			// 				pearls_collected += checkFlagDuplicate(FLAG_PEARL_0_COLLECTED + i, FLAGTYPE_PERMANENT);
@@ -1213,10 +1229,7 @@ int change_object_scripts(behaviour_data* behaviour_pointer, int id, int index, 
 		// Bananaport generic code
 		if (!WarpData) {
 			int size = 90 * 10; // 90 Warps, 10 bytes per warp
-			WarpData = dk_malloc(size);
-			int* file_size;
-			*(int*)(&file_size) = size;
-			copyFromROM(0x1FF0000,WarpData,&file_size,0,0,0,0);
+			WarpData = getFile(size, 0x1FF0000);
 		}
 		bananaportGenericCode(behaviour_pointer, id, param2);
 	} else if (index == -2) {

@@ -20,6 +20,7 @@ from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     BananaportRando,
+    FasterChecksSelected,
     FillAlgorithm,
     FungiTimeSetting,
     HelmDoorItem,
@@ -27,6 +28,7 @@ from randomizer.Enums.Settings import (
     MinigameBarrels,
     MoveRando,
     RandomPrices,
+    RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
     SpoilerHints,
@@ -46,6 +48,7 @@ from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex
 from randomizer.LogicClasses import Sphere, TransitionFront
 from randomizer.Patching import ApplyRandomizer
 from randomizer.Patching.EnemyRando import randomize_enemies_0
+from randomizer.Patching.Lib import IsItemSelected
 from randomizer.Prices import GetMaxForKong
 from randomizer.Settings import Settings
 from randomizer.ShuffleBarrels import BarrelShuffle
@@ -310,6 +313,9 @@ def GetAccessibleLocations(
                             # Spend Two Coins for arcade lever
                             spoiler.LogicVariables.Coins[Kongs.donkey] -= 2
                             spoiler.LogicVariables.SpentCoins[Kongs.donkey] += 2
+                        # Crowns in Helm always logically expect you to have finished Helm first
+                        elif location_obj.type == Types.Crown and location_obj.level == Levels.HideoutHelm and Events.HelmFinished not in spoiler.LogicVariables.Events:
+                            continue
                         newLocations.add(location.id)
                 # Check accessibility for each exit in this region
                 exits = region.exits.copy()
@@ -336,31 +342,32 @@ def GetAccessibleLocations(
                             destination = ShuffleExits.ShufflableExits[shuffledExit.shuffledId].back.regionId
                         elif shuffledExit.toBeShuffled and not exit.assumed:
                             continue
-                    # If a region is accessible through this exit and has not yet been added, add it to the queue to be visited eventually
-                    if destination not in kongAccessibleRegions[kong] and exit.logic(spoiler.LogicVariables):
-                        # If water is lava, don't consider underwater locations in Galleon before having 3rd melon
-                        if spoiler.LogicVariables.IsLavaWater() and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
-                            if destination in UnderwaterRegions and spoiler.LogicVariables.Melons < 3:
-                                continue
-                            # Mainly Seal Race exit. Situations where this matters are extremely rare.
-                            if destination in SurfaceWaterRegions and spoiler.LogicVariables.Melons < 2:
-                                continue
-                        # Check time of day
-                        timeAccess = True
-                        if exit.time == Time.Night and not region.nightAccess[kong]:
-                            timeAccess = False
-                        elif exit.time == Time.Day and not region.dayAccess[kong]:
-                            timeAccess = False
-                        if timeAccess:
-                            kongAccessibleRegions[kong].add(destination)
-                            newRegion = spoiler.RegionList[destination]
-                            newRegion.id = destination
-                            regionPool.append(destination)
-                            kongAccessibleRegions[kong].add(destination)
-                    # If it's accessible, update time of day access whether already added or not
-                    # This way if a region has access from 2 different regions, one time-restricted and one not,
-                    # it will be known that it can be accessed during either time of day
+                    # If we can access this transition...
                     if exit.logic(spoiler.LogicVariables):
+                        # If a region is accessible through this exit that has not yet been added, add it to the queue to be visited eventually
+                        if destination not in kongAccessibleRegions[kong]:
+                            # If water is lava, don't consider underwater locations in Galleon before having 3rd melon
+                            if spoiler.LogicVariables.IsLavaWater() and (settings.shuffle_loading_zones == ShuffleLoadingZones.all or settings.random_starting_region):
+                                if destination in UnderwaterRegions and spoiler.LogicVariables.Melons < 3:
+                                    continue
+                                # Mainly Seal Race exit. Situations where this matters are extremely rare.
+                                if destination in SurfaceWaterRegions and spoiler.LogicVariables.Melons < 2:
+                                    continue
+                            # Check time of day
+                            timeAccess = True
+                            if exit.time == Time.Night and not region.nightAccess[kong]:
+                                timeAccess = False
+                            elif exit.time == Time.Day and not region.dayAccess[kong]:
+                                timeAccess = False
+                            if timeAccess:
+                                kongAccessibleRegions[kong].add(destination)
+                                newRegion = spoiler.RegionList[destination]
+                                newRegion.id = destination
+                                regionPool.append(destination)
+                                kongAccessibleRegions[kong].add(destination)
+                        # Given that it's accessible, update time of day access whether or not we've already visited it
+                        # This way if a region has access from 2 different regions, one time-restricted and one not,
+                        # it will be known that it can be accessed during either time of day
                         # If this region has day access and the exit isn't restricted to night-only, then the destination has day access
                         if region.dayAccess[kong] and exit.time != Time.Night and not spoiler.RegionList[destination].dayAccess[kong]:
                             spoiler.RegionList[destination].dayAccess[kong] = True
@@ -473,9 +480,7 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
     # Set up some thresholds for speeding this method up
     medalThreshold = settings.medal_requirement
     fairyThreshold = settings.rareware_gb_fairies
-    pearlThreshold = 5
-    if settings.fast_gbs:
-        pearlThreshold = 1
+    pearlThreshold = 1 if IsItemSelected(settings.faster_checks_enabled, settings.faster_checks_selected, FasterChecksSelected.galleon_mermaid_gb) else 5
     while 1:
         spoiler.Reset()
         reachable = GetAccessibleLocations(spoiler, [], SearchMode.GetReachableWithControlledPurchases, locationsToPurchase)
@@ -933,7 +938,7 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
     bossLocations = [location for id, location in spoiler.LocationList.items() if location.type == Types.Key]
     # In order for a region to be foolish, it can contain none of these Major Items
     for id, region in spoiler.RegionList.items():
-        locations = [spoiler.LocationList[loc.id] for loc in region.locations if loc.id in spoiler.LocationList.keys()]
+        locations = [spoiler.LocationList[loc.id] for loc in region.locations if loc.id in spoiler.LocationList.keys() and not loc.isAuxiliaryLocation]
         # If this region's valid locations (exclude starting moves) DO contain a major item, add it the name to the set of non-hintable hint regions
         if any([loc for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in majorItems]):
             nonHintableNames.add(region.hint_name)
@@ -1840,7 +1845,11 @@ def GetLogicallyAccessibleKongLocations(spoiler: Spoiler, kongLocations, ownedKo
             spoiler.settings.level_order[level] == Levels.AngryAztec
             and Locations.LankyKong in kongLocations
             # Must be able to bypass Guitar door - the active bananaports condition is in case your only Llama Temple access is through the quicksand cave
-            and (Kongs.diddy in ownedKongs or spoiler.settings.open_levels or (Kongs.donkey in ownedKongs and spoiler.settings.activate_all_bananaports == ActivateAllBananaports.all))
+            and (
+                Kongs.diddy in ownedKongs
+                or IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door_opened)
+                or (Kongs.donkey in ownedKongs and spoiler.settings.activate_all_bananaports == ActivateAllBananaports.all)
+            )
             and (Kongs.donkey in ownedKongs or Kongs.lanky in ownedKongs or Kongs.tiny in ownedKongs)
         ):  # Must be able to open Llama Temple
             logicallyAccessibleKongLocations.append(Locations.LankyKong)

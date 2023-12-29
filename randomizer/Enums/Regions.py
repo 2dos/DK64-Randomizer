@@ -217,7 +217,10 @@ class Regions(IntEnum):
     CastleBaboonBlast = auto()
 
     # Hideout Helm Regions
+    HideoutHelmEntry = auto()
     HideoutHelmStart = auto()
+    HideoutHelmSwitchRoom = auto()
+    HideoutHelmMiniRoom = auto()
     HideoutHelmMain = auto()
     HideoutHelmDonkeyRoom = auto()
     HideoutHelmDiddyRoom = auto()
@@ -225,6 +228,10 @@ class Regions(IntEnum):
     HideoutHelmTinyRoom = auto()
     HideoutHelmChunkyRoom = auto()
     HideoutHelmAfterBoM = auto()
+    HideoutHelmThroneRoom = auto()
+    HideoutHelmKeyRoom = auto()
+    HideoutHelmOOBChunky = auto()
+    HideoutHelmOOBLanky = auto()
 
     # Shop Regions
     FunkyGeneric = auto()

@@ -74,7 +74,7 @@ void swapRequirements(int key_swap) {
 			BLockerDefaultArray[i] = Rando.blocker_normal_count[i];
 			BLockerCheatArray[i].gb_count = Rando.blocker_normal_count[i];
 			if ((key_swap) && (i < 7)) {
-				if (levelIndexMapping[CurrentMap] == 7) {
+				if (levelIndexMapping[CurrentMap] == LEVEL_ISLES) {
 					// In Isles
 					CheckmarkKeyArray[i] = Rando.key_flags[i];
 				} else {

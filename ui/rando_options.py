@@ -811,6 +811,7 @@ def toggle_item_rando(evt):
     move_rando = document.getElementById("move_on")
     enemy_drop_rando = document.getElementById("enemy_drop_rando")
     non_item_rando_warning = document.getElementById("non_item_rando_warning")
+    shared_shop_warning = document.getElementById("shared_shop_warning")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -836,12 +837,14 @@ def toggle_item_rando(evt):
             enemy_drop_rando.setAttribute("disabled", "disabled")
             enemy_drop_rando.checked = False
             non_item_rando_warning.removeAttribute("hidden")
+            shared_shop_warning.removeAttribute("hidden")
         else:
             # Enable item rando modal, prevent shockwave/camera coupling, enable dropsanity, and enable smaller shops if it's in the pool
             selector.removeAttribute("disabled")
             enemy_drop_rando.removeAttribute("disabled")
             non_item_rando_warning.setAttribute("hidden", "hidden")
             if shops_in_pool:
+                shared_shop_warning.setAttribute("hidden", "hidden")
                 if shockwave.selected is True:
                     document.getElementById("shockwave_status_shuffled_decoupled").selected = True
                 if move_vanilla.selected is True or move_rando.selected is True:
@@ -869,6 +872,7 @@ def item_rando_list_changed(evt):
     smaller_shops = document.getElementById("smaller_shops")
     move_vanilla = document.getElementById("move_off")
     move_rando = document.getElementById("move_on")
+    shared_shop_warning = document.getElementById("shared_shop_warning")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -883,6 +887,7 @@ def item_rando_list_changed(evt):
     if js.document.getElementById("shuffle_items").checked:
         item_rando_disabled = False
     if shops_in_pool and not item_rando_disabled:
+        shared_shop_warning.setAttribute("hidden", "hidden")
         # Prevent camera/shockwave from being coupled and enable smaller shops if shops are in the pool
         if shockwave.selected is True:
             document.getElementById("shockwave_status_shuffled_decoupled").selected = True
@@ -896,12 +901,26 @@ def item_rando_list_changed(evt):
         js.document.getElementById("shockwave_status").removeAttribute("disabled")
         js.document.getElementById("random_prices").removeAttribute("disabled")
     else:
+        shared_shop_warning.removeAttribute("hidden")
         # Enable coupled camera/shockwave and disable smaller shops if shops are not in the pool
         shockwave.removeAttribute("disabled")
         move_vanilla.removeAttribute("disabled")
         move_rando.removeAttribute("disabled")
         smaller_shops.setAttribute("disabled", "disabled")
         smaller_shops.checked = False
+
+
+def should_reset_select_on_preset(selectElement):
+    """Return true if the element should be reset when applying a preset."""
+    if js.document.querySelector("#nav-cosmetics").contains(selectElement):
+        return False
+    if selectElement.name.startswith("plando_"):
+        return False
+    if selectElement.name.startswith("music_select_"):
+        return False
+    if selectElement.id == "random-weights":
+        return False
+    return True
 
 
 @bind("click", "apply_preset")
@@ -916,7 +935,7 @@ def preset_select_changed(event):
         # Pass in setting string
         settings = decrypt_settings_string_enum(presets["settings_string"])
         for select in js.document.getElementsByTagName("select"):
-            if js.document.querySelector("#nav-cosmetics").contains(select) is False and not select.name.startswith("plando_"):
+            if should_reset_select_on_preset(select):
                 select.selectedIndex = -1
         # Uncheck all starting move radio buttons for the import to then set them correctly
         for starting_move_button in [element for element in js.document.getElementsByTagName("input") if element.name.startswith("starting_move_box_")]:
@@ -1014,6 +1033,8 @@ def preset_select_changed(event):
     disable_excluded_songs_modal(None)
     toggle_bananaport_selector(None)
     disable_helm_hurry(None)
+    disable_remove_barriers(None)
+    disable_faster_checks(None)
     toggle_logic_type(None)
     toggle_key_settings(None)
     max_starting_moves_count(None)
@@ -1351,6 +1372,38 @@ def disable_helm_hurry(evt):
         pass
 
 
+@bind("click", "remove_barriers_enabled")
+def disable_remove_barriers(evt):
+    """Disable Remove Barriers Selector when Remove Barriers is off."""
+    disabled = True
+    selector = js.document.getElementById("remove_barriers_modal")
+    if js.document.getElementById("remove_barriers_enabled").checked:
+        disabled = False
+    try:
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
+        else:
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
+@bind("click", "faster_checks_enabled")
+def disable_faster_checks(evt):
+    """Disable Faster Checks Selector when Faster Checks is off."""
+    disabled = True
+    selector = js.document.getElementById("faster_checks_modal")
+    if js.document.getElementById("faster_checks_enabled").checked:
+        disabled = False
+    try:
+        if disabled:
+            selector.setAttribute("disabled", "disabled")
+        else:
+            selector.removeAttribute("disabled")
+    except AttributeError:
+        pass
+
+
 @bind("click", "vanilla_door_rando")
 def toggle_vanilla_door_rando(evt):
     """Force Wrinkly and T&S Rando to be on when Vanilla Door Rando is on."""
@@ -1414,6 +1467,8 @@ def shuffle_settings(evt):
     toggle_bananaport_selector(None)
     toggle_key_settings(None)
     disable_helm_hurry(None)
+    disable_remove_barriers(None)
+    disable_faster_checks(None)
     toggle_vanilla_door_rando(None)
 
 

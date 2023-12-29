@@ -42,7 +42,6 @@ extern void HomingDisable(void);
 extern void HomingHUDHandle(void);
 extern void DKCollectableFix(void);
 extern void GuardDeathHandle(void);
-extern void NinWarpCode(void);
 extern void TextHandler(void);
 extern void GuardAutoclear(void);
 extern void ObjectRotate(void);

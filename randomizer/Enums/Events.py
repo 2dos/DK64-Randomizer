@@ -91,12 +91,12 @@ class Events(IntEnum):
 
     # Hideout Helm Events
     HelmDoorsOpened = auto()
+    HelmGatesPunched = auto()
     HelmDonkeyDone = auto()
     HelmChunkyDone = auto()
     HelmTinyDone = auto()
     HelmLankyDone = auto()
     HelmDiddyDone = auto()
-    HelmKeyAccess = auto()
     HelmFinished = auto()
 
     # K Rool Phases

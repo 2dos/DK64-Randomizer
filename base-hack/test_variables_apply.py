@@ -128,6 +128,7 @@ with open("include/variable_space_structs.h", "r") as varspace:
                     "brighten_mmm_enemies",
                     "global_instrument",
                     "fast_pause_transitions",
+                    "cannon_game_speed",
                 ]
                 bitfield_offset = 0xB0
             elif x == "moves_pregiven":

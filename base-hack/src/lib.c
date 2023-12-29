@@ -1115,3 +1115,12 @@ int isBounceObject(int object) {
 	}
 	return 0;
 }
+
+void* getFile(int size, int rom) {
+	/**
+	 * @brief Get file from ROM
+	 */
+	void* loc = dk_malloc(size);
+	copyFromROM(rom,loc,&size,0,0,0,0);
+	return loc;
+}

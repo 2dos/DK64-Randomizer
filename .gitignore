@@ -198,3 +198,6 @@ test.bps
 rom_tester.html
 tools/dumps
 test-result-*.json
+current_total.cfg
+last_generated_time.cfg
+generated_seeds/*

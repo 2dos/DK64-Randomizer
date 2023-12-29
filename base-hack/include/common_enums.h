@@ -900,3 +900,20 @@ typedef enum songs {
 	/* 0x0AD */ SONG_KROOLDEFEAT,
 	/* 0x0AE */ SONG_NINTENDOLOGO,
 } songs;
+
+typedef enum level_indexes {
+	/* 0x000 */ LEVEL_JAPES,
+	/* 0x001 */ LEVEL_AZTEC,
+	/* 0x002 */ LEVEL_FACTORY,
+	/* 0x003 */ LEVEL_GALLEON,
+	/* 0x004 */ LEVEL_FUNGI,
+	/* 0x005 */ LEVEL_CAVES,
+	/* 0x006 */ LEVEL_CASTLE,
+	/* 0x007 */ LEVEL_ISLES,
+	/* 0x008 */ LEVEL_HELM,
+	/* 0x009 */ LEVEL_BONUS,
+	/* 0x00A */ LEVEL_MULTIPLAYER,
+	/* 0x00B */ LEVEL_STORY,
+	/* 0x00C */ LEVEL_TEST,
+	/* 0x00D */ LEVEL_SHARED,
+} level_indexes;

@@ -31,10 +31,12 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     DamageAmount,
+    FasterChecksSelected,
     GlitchesSelected,
     HardModeSelected,
     HelmDoorItem,
     LogicType,
+    RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
     TrainingBarrels,
@@ -275,6 +277,8 @@ class LogicVarHolder:
 
     def isPriorHelmComplete(self, kong: Kongs):
         """Determine if there is access to the kong's helm room."""
+        if self.settings.helm_setting == HelmSetting.skip_all or Events.HelmFinished in self.Events:
+            return True
         room_seq = (Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy)
         kong_evt = (Events.HelmDonkeyDone, Events.HelmDiddyDone, Events.HelmLankyDone, Events.HelmTinyDone, Events.HelmChunkyDone)
         desired_index = room_seq.index(kong)
@@ -284,7 +288,7 @@ class LogicVarHolder:
             if sequence_slot > 0:
                 prior_kong = room_seq[helm_order[sequence_slot - 1]]
                 return kong_evt[prior_kong] in self.Events
-        return Events.HelmDoorsOpened in self.Events
+        return True
 
     def UpdateCoins(self):
         """Update coin total."""
@@ -438,6 +442,14 @@ class LogicVarHolder:
     def IsHardFallDamage(self) -> bool:
         """Determine whether the lowered fall damage height threshold is enabled or not."""
         return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold)
+
+    def checkFastCheck(self, check: FasterChecksSelected):
+        """Determine whether a fast check is selected."""
+        return IsItemSelected(self.settings.faster_checks_enabled, self.settings.faster_checks_selected, check)
+
+    def checkBarrier(self, check: RemovedBarriersSelected):
+        """Determine whether a barrier has been removed by the removed barriers setting."""
+        return IsItemSelected(self.settings.remove_barriers_enabled, self.settings.remove_barriers_selected, check)
 
     def hasMoveSwitchsanity(self, switchsanity_setting: Switches, kong_needs_current: bool = True, level: Levels = Levels.JungleJapes, default_slam_level: int = 0) -> bool:
         """Determine whether the kong has the necessary moves based on the switchsanity data."""
@@ -618,20 +630,6 @@ class LogicVarHolder:
             return self.DoorItemCheck(HelmDoorItem.req_companycoins, self.settings.coin_door_item_count)
         return self.DoorItemCheck(self.settings.coin_door_item, self.settings.coin_door_item_count)
 
-    def CanAccessHelmStart(self):
-        """Check if you can access the start of helm."""
-        if self.settings.helm_setting != HelmSetting.skip_start:
-            # Either starts at the start, or can warp immediately to start
-            return True
-        room_events = [
-            Events.HelmDonkeyDone,
-            Events.HelmChunkyDone,
-            Events.HelmTinyDone,
-            Events.HelmLankyDone,
-            Events.HelmDiddyDone,
-        ]
-        return sum([1 for x in room_events if x in self.Events]) == len(room_events)
-
     def CanFreeDiddy(self):
         """Check if the cage locking Diddy's vanilla location can be opened."""
         return self.spoiler.LocationList[Locations.DiddyKong].item == Items.NoItem or self.HasGun(self.settings.diddy_freeing_kong)
@@ -797,6 +795,25 @@ class LogicVarHolder:
 
     def CanAccessKRool(self):
         """Make sure that each required key has been turned in."""
+        required_base_keys = [
+            Events.JapesKeyTurnedIn,
+            Events.AztecKeyTurnedIn,
+            Events.FactoryKeyTurnedIn,
+            Events.GalleonKeyTurnedIn,
+            Events.ForestKeyTurnedIn,
+            Events.CavesKeyTurnedIn,
+            Events.CastleKeyTurnedIn,
+            Events.HelmKeyTurnedIn,
+        ]
+        if self.settings.k_rool_vanilla_requirement:
+            required_base_keys = [
+                Events.FactoryKeyTurnedIn,
+                Events.HelmKeyTurnedIn,
+            ]
+        return all(not keyRequired not in self.Events for keyRequired in self.settings.krool_keys_required if keyRequired in required_base_keys)
+
+    def IsKLumsyFree(self):
+        """Check all keys."""
         return all(not keyRequired not in self.Events for keyRequired in self.settings.krool_keys_required)
 
     def IsBossReachable(self, level):
@@ -830,6 +847,8 @@ class LogicVarHolder:
         hasRequiredMoves = True
         if bossFight == Maps.FactoryBoss and requiredKong == Kongs.tiny and not (self.HardBossesEnabled() and self.settings.krusha_kong != Kongs.tiny):
             hasRequiredMoves = self.twirl and self.Slam
+        elif bossFight == Maps.FactoryBoss:
+            hasRequiredMoves = self.Slam
         elif bossFight == Maps.FungiBoss:
             hasRequiredMoves = self.hunkyChunky and self.barrels
         elif bossFight == Maps.JapesBoss or bossFight == Maps.AztecBoss or bossFight == Maps.CavesBoss:

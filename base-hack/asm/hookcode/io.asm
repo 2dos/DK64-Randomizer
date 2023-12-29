@@ -1,9 +1,3 @@
-NinWarpCode:
-    jal checkNinWarp
-    nop
-    j 0x807132CC
-    nop
-
 SaveToFileFixes:
     bnez $s0, SaveToFileFixes_Not0
     andi $a1, $s3, 0xFF

@@ -12,9 +12,11 @@ from PIL import Image, ImageDraw, ImageEnhance
 
 import js
 from randomizer.Enums.Kongs import Kongs
-from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorItem, KlaptrapModel
+from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorItem, RandomModels
+from randomizer.Enums.Models import Model
+from randomizer.Enums.Maps import Maps
 from randomizer.Patching.generate_kong_color_images import convertColors
-from randomizer.Patching.Lib import TextureFormat, float_to_hex, getObjectAddress, int_to_list, intf_to_float, PaletteFillType
+from randomizer.Patching.Lib import TextureFormat, float_to_hex, getObjectAddress, int_to_list, intf_to_float, PaletteFillType, SpawnerChange, applyCharacterSpawnerChanges
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
 
@@ -49,144 +51,170 @@ class HelmDoorImages:
 
 
 turtle_models = [
-    1,  # Diddy
-    4,  # DK
-    6,  # Lanky
-    9,  # Tiny
-    0xC,  # Regular Chunky
-    0xE,  # Disco Chunky
-    0x11,  # Cranky
-    0x12,  # Funky
-    0x13,  # Candy
-    0x17,  # Seal
-    0x18,  # Enguarde
-    0x19,  # Beaver
-    0x1D,  # Squawks
-    0x21,  # Klaptrap Green
-    0x22,  # Klaptrap Purple
-    0x23,  # Klaptrap Red
-    0x24,  # Klaptrap Teeth
-    0x29,  # Sir Domino
-    0x2A,  # Mr Dice
-    0x2E,  # Beetle
-    0x30,  # N64 Logo
-    0x34,  # Mech Fish
-    0x35,  # Toy Car
-    0x3D,  # Fairy
-    0x43,  # Starfish
-    0x44,  # Gimpfish
-    0x46,  # Spider
-    0x47,  # Rabbit
-    0x49,  # K Rool
-    0x4B,  # Skeleton Head
-    0x4D,  # Vulture
-    0x4E,  # Racing Vulture
-    0x51,  # Tomato
-    0x53,  # Fly
-    0x59,  # Spotlight Fish
-    0x5A,  # Pufftup
-    0x60,  # Cuckoo Bird
-    0x62,  # Ice Tomato
-    0x64,  # Boombox
-    0x68,  # K Rool (Boxing)
-    0x70,  # Microbuffer
-    0x71,  # K Rool's Desk
-    0x72,  # Bell
-    0x76,  # Bonus Barrel
-    0x77,  # HC Barrel
-    0x78,  # MM Barrel
-    0x7D,  # TNT Barrel
-    0x89,  # RB Barrel
-    0x8A,  # SK Barrel
-    0x8B,  # OSS Barrel
-    0x90,  # BBB Slot
-    0x95,  # Tiny Car
-    0x99,  # Boulder
-    0x9F,  # Boat
-    0xB9,  # Potion
-    0xBA,  # AD Missile
-    0xC1,  # Tag Barrel
-    0xD2,  # Question Mark
-    0xDB,  # Krusha
-    0xE5,  # Banana Peel
-    0xE9,  # Butterfly
-    0xEB,  # Funky's Gun
+    Model.Diddy,  # Diddy
+    Model.DK,  # DK
+    Model.Lanky,  # Lanky
+    Model.Tiny,  # Tiny
+    Model.Chunky,  # Regular Chunky
+    Model.ChunkyDisco,  # Disco Chunky
+    Model.Cranky,  # Cranky
+    Model.Funky,  # Funky
+    Model.Candy,  # Candy
+    Model.Seal,  # Seal
+    Model.Enguarde,  # Enguarde
+    Model.Beaver_24,  # Beaver
+    Model.Squawks_28,  # Squawks
+    Model.KlaptrapGreen,  # Klaptrap Green
+    Model.KlaptrapPurple,  # Klaptrap Purple
+    Model.KlaptrapRed,  # Klaptrap Red
+    Model.KlaptrapTeeth,  # Klaptrap Teeth
+    Model.SirDomino,  # Sir Domino
+    Model.MrDice_41,  # Mr Dice
+    Model.Beetle,  # Beetle
+    Model.NintendoLogo,  # N64 Logo
+    Model.MechanicalFish,  # Mech Fish
+    Model.ToyCar,  # Toy Car
+    Model.BananaFairy,  # Fairy
+    Model.Shuri,  # Starfish
+    Model.Gimpfish,  # Gimpfish
+    Model.Spider,  # Spider
+    Model.Rabbit,  # Rabbit
+    Model.KRoolCutscene,  # K Rool
+    Model.SkeletonHead,  # Skeleton Head
+    Model.Vulture_76,  # Vulture
+    Model.Vulture_77,  # Racing Vulture
+    Model.Tomato,  # Tomato
+    Model.Fly,  # Fly
+    Model.SpotlightFish,  # Spotlight Fish
+    Model.Puftup,  # Pufftup
+    Model.CuckooBird,  # Cuckoo Bird
+    Model.IceTomato,  # Ice Tomato
+    Model.Boombox,  # Boombox
+    Model.KRoolFight,  # K Rool (Boxing)
+    Model.Microphone,  # Microbuffer
+    Model.DeskKRool,  # K Rool's Desk
+    Model.Bell,  # Bell
+    Model.BonusBarrel,  # Bonus Barrel
+    Model.HunkyChunkyBarrel,  # HC Barrel
+    Model.MiniMonkeyBarrel,  # MM Barrel
+    Model.TNTBarrel,  # TNT Barrel
+    Model.Rocketbarrel,  # RB Barrel
+    Model.StrongKongBarrel,  # SK Barrel
+    Model.OrangstandSprintBarrel,  # OSS Barrel
+    Model.BBBSlot_143,  # BBB Slot
+    Model.PlayerCar,  # Tiny Car
+    Model.Boulder,  # Boulder
+    Model.Boat_158,  # Boat
+    Model.Potion,  # Potion
+    Model.ArmyDilloMissle,  # AD Missile
+    Model.TagBarrel,  # Tag Barrel
+    Model.QuestionMark,  # Question Mark
+    Model.Krusha,  # Krusha
+    Model.BananaPeel,  # Banana Peel
+    Model.Butterfly,  # Butterfly
+    Model.FunkyGun,  # Funky's Gun
 ]
 
 panic_models = [
-    1,  # Diddy
-    4,  # DK
-    6,  # Lanky
-    9,  # Tiny
-    0xC,  # Regular Chunky
-    0xE,  # Disco Chunky
-    0x11,  # Cranky
-    0x12,  # Funky
-    0x13,  # Candy
-    0x17,  # Seal
-    0x18,  # Enguarde
-    0x19,  # Beaver
-    0x1D,  # Squawks
-    0x21,  # Klaptrap Green
-    0x22,  # Klaptrap Purple
-    0x23,  # Klaptrap Red
-    0x25,  # Mad Jack
-    0x27,  # Troff
-    0x29,  # Sir Domino
-    0x2A,  # Mr Dice
-    0x2C,  # Robo Kremling
-    0x2D,  # Scoff
-    0x2E,  # Beetle
-    0x30,  # N64 Logo
-    0x34,  # Mech Fish
-    0x35,  # Toy Car
-    0x3A,  # Klump
-    0x3C,  # Dogadon
-    0x3D,  # Fairy
-    0x3F,  # Guard
-    0x43,  # Starfish
-    0x44,  # Gimpfish
-    0x45,  # K Lumsy
-    0x46,  # Spider
-    0x47,  # Rabbit
-    0x48,  # Beanstalk
-    0x49,  # K Rool
-    0x4B,  # Skeleton Head
-    0x4D,  # Vulture
-    0x4E,  # Racing Vulture
-    0x52,  # Ghost
-    0x53,  # Fly
-    0x54,  # Fly Swatter
-    0x56,  # Owl
-    0x57,  # Book
-    0x59,  # Spotlight Fish
-    0x5A,  # Pufftup
-    0x5B,  # Mermaid
-    0x5C,  # Mushroom Man
-    0x5F,  # Worm
-    0x66,  # Escape Ship
-    0x68,  # K Rool (Boxing)
-    0x70,  # Microbuffer
-    0x76,  # Bonus Barrel
-    0x77,  # HC Barrel
-    0x78,  # MM Barrel
-    0x7D,  # TNT Barrel
-    0x89,  # RB Barrel
-    0x8A,  # SK Barrel
-    0x8B,  # OSS Barrel
-    0x95,  # Tiny Car
-    0x99,  # Boulder
-    0x9A,  # Vase
-    0x9B,  # Vase
-    0x9C,  # Vase
-    0x9D,  # Vase
-    0xBA,  # AD Missile
-    0xC1,  # Tag Barrel
-    0xD2,  # Question Mark
-    0xDB,  # Krusha
-    0xE3,  # Light
-    0xE5,  # Banana Peel
-    0xEB,  # Funky's Gun
+    Model.Diddy,  # Diddy
+    Model.DK,  # DK
+    Model.Lanky,  # Lanky
+    Model.Tiny,  # Tiny
+    Model.Chunky,  # Regular Chunky
+    Model.ChunkyDisco,  # Disco Chunky
+    Model.Cranky,  # Cranky
+    Model.Funky,  # Funky
+    Model.Candy,  # Candy
+    Model.Seal,  # Seal
+    Model.Enguarde,  # Enguarde
+    Model.Beaver_24,  # Beaver
+    Model.Squawks_28,  # Squawks
+    Model.KlaptrapGreen,  # Klaptrap Green
+    Model.KlaptrapPurple,  # Klaptrap Purple
+    Model.KlaptrapRed,  # Klaptrap Red
+    Model.MadJack,  # Mad Jack
+    Model.Troff,  # Troff
+    Model.SirDomino,  # Sir Domino
+    Model.MrDice_41,  # Mr Dice
+    Model.RoboKremling,  # Robo Kremling
+    Model.Scoff,  # Scoff
+    Model.Beetle,  # Beetle
+    Model.NintendoLogo,  # N64 Logo
+    Model.MechanicalFish,  # Mech Fish
+    Model.ToyCar,  # Toy Car
+    Model.Klump,  # Klump
+    Model.Dogadon,  # Dogadon
+    Model.BananaFairy,  # Fairy
+    Model.Guard,  # Guard
+    Model.Shuri,  # Starfish
+    Model.Gimpfish,  # Gimpfish
+    Model.KLumsy,  # K Lumsy
+    Model.Spider,  # Spider
+    Model.Rabbit,  # Rabbit
+    Model.Beanstalk,  # Beanstalk
+    Model.KRoolCutscene,  # K Rool
+    Model.SkeletonHead,  # Skeleton Head
+    Model.Vulture_76,  # Vulture
+    Model.Vulture_77,  # Racing Vulture
+    Model.Ghost,  # Ghost
+    Model.Fly,  # Fly
+    Model.FlySwatter_83,  # Fly Swatter
+    Model.Owl,  # Owl
+    Model.Book,  # Book
+    Model.SpotlightFish,  # Spotlight Fish
+    Model.Puftup,  # Pufftup
+    Model.Mermaid,  # Mermaid
+    Model.Mushroom,  # Mushroom Man
+    Model.Worm,  # Worm
+    Model.EscapeShip,  # Escape Ship
+    Model.KRoolFight,  # K Rool (Boxing)
+    Model.Microphone,  # Microbuffer
+    Model.BonusBarrel,  # Bonus Barrel
+    Model.HunkyChunkyBarrel,  # HC Barrel
+    Model.MiniMonkeyBarrel,  # MM Barrel
+    Model.TNTBarrel,  # TNT Barrel
+    Model.Rocketbarrel,  # RB Barrel
+    Model.StrongKongBarrel,  # SK Barrel
+    Model.OrangstandSprintBarrel,  # OSS Barrel
+    Model.PlayerCar,  # Tiny Car
+    Model.Boulder,  # Boulder
+    Model.VaseCircle,  # Vase
+    Model.VaseColon,  # Vase
+    Model.VaseTriangle,  # Vase
+    Model.VasePlus,  # Vase
+    Model.ArmyDilloMissle,  # AD Missile
+    Model.TagBarrel,  # Tag Barrel
+    Model.QuestionMark,  # Question Mark
+    Model.Krusha,  # Krusha
+    Model.Light,  # Light
+    Model.BananaPeel,  # Banana Peel
+    Model.FunkyGun,  # Funky's Gun
+]
+
+bother_models = [
+    Model.Beaver_24,  # Beaver
+    Model.Klobber,  # Klobber
+    Model.Kaboom,  # Kaboom
+    Model.KlaptrapGreen,  # Green Klap
+    Model.KlaptrapPurple,  # Purple Klap
+    Model.KlaptrapRed,  # Red Klap
+    Model.KlaptrapTeeth,  # Klap Teeth
+    Model.Krash,  # Krash
+    Model.Troff,  # Troff
+    Model.NintendoLogo,  # N64 Logo
+    Model.MechanicalFish,  # Mech Fish
+    Model.Krossbones,  # Krossbones
+    Model.Rabbit,  # Rabbit
+    Model.SkeletonHead,  # Minecart Skeleton Head
+    Model.Tomato,  # Tomato
+    Model.IceTomato,  # Ice Tomato
+    Model.GoldenBanana_104,  # Golden Banana
+    Model.Microphone,  # Microbuffer
+    Model.Bell,  # Bell
+    Model.Missile,  # Missile (Car Race)
+    Model.Buoy,  # Red Buoy
+    Model.BuoyGreen,  # Green Buoy
+    Model.RarewareLogo,  # Rareware Logo
 ]
 
 
@@ -229,80 +257,103 @@ def getKongColor(settings: Settings, index: int):
 
 
 DEFAULT_COLOR = "#000000"
+KLAPTRAPS = [Model.KlaptrapGreen, Model.KlaptrapPurple, Model.KlaptrapRed]
+
+
+def getRandomKlaptrapModel() -> Model:
+    """Get random klaptrap model."""
+    return random.choice(KLAPTRAPS)
 
 
 def apply_cosmetic_colors(settings: Settings):
     """Apply cosmetic skins to kongs."""
-    model_index = 0
+    bother_model_index = Model.KlaptrapGreen
+    panic_fairy_model_index = Model.BananaFairy
+    panic_klap_model_index = Model.KlaptrapGreen
+    turtle_model_index = Model.KlaptrapGreen
+    sseek_klap_model_index = Model.KlaptrapGreen
+    fungi_tomato_model_index = Model.Tomato
+    caves_tomato_model_index = Model.IceTomato
+    racer_beetle = Model.Beetle
+    racer_rabbit = Model.Rabbit
+    swap_bitfield = 0
+
+    ROM_COPY = ROM()
     sav = settings.rom_data
-    ROM().seek(settings.rom_data + 0x11C)
-    krusha_byte = int.from_bytes(ROM().readBytes(1), "big")
+
+    ROM_COPY.seek(settings.rom_data + 0x11C)
+    krusha_byte = int.from_bytes(ROM_COPY.readBytes(1), "big")
     if krusha_byte == 255:
         krusha_byte = None
     settings.krusha_kong = krusha_byte
     if settings.override_cosmetics:
-        model_setting = KlaptrapModel[js.document.getElementById("klaptrap_model").value]
+        model_setting = RandomModels[js.document.getElementById("random_models").value]
     else:
-        model_setting = settings.klaptrap_model
-    if model_setting == KlaptrapModel.green:
-        model_index = 0x21
-    elif model_setting == KlaptrapModel.purple:
-        model_index = 0x22
-    elif model_setting == KlaptrapModel.red:
-        model_index = 0x23
-    elif model_setting == KlaptrapModel.random_klap:
-        model_index = random.randint(0x21, 0x23)
-    elif model_setting == KlaptrapModel.random_model:
-        permitted_models = [
-            0x19,  # Beaver
-            0x1E,  # Klobber
-            0x20,  # Kaboom
-            0x21,  # Green Klap
-            0x22,  # Purple Klap
-            0x23,  # Red Klap
-            0x24,  # Klap Teeth
-            0x26,  # Krash
-            0x27,  # Troff
-            0x30,  # N64 Logo
-            0x34,  # Mech Fish
-            0x42,  # Krossbones
-            0x47,  # Rabbit
-            0x4B,  # Minecart Skeleton Head
-            0x51,  # Tomato
-            0x62,  # Ice Tomato
-            0x69,  # Golden Banana
-            0x70,  # Microbuffer
-            0x72,  # Bell
-            0x96,  # Missile (Car Race)
-            0xB0,  # Red Buoy
-            0xB1,  # Green Buoy
-            0xBD,  # Rareware Logo
-        ]
-        model_index = random.choice(permitted_models)
-    settings.klaptrap_model_index = model_index
+        model_setting = settings.random_models
+    if model_setting == RandomModels.random:
+        bother_model_index = getRandomKlaptrapModel()
+    elif model_setting == RandomModels.extreme:
+        bother_model_index = random.choice(bother_models)
+        racer_beetle = random.choice([Model.Beetle, Model.Rabbit])
+        racer_rabbit = random.choice([Model.Beetle, Model.Rabbit])
+        if racer_rabbit == Model.Beetle:
+            spawner_changes = []
+            # Fungi
+            rabbit_race_fungi_change = SpawnerChange(Maps.FungiForest, 2)
+            rabbit_race_fungi_change.new_scale = 50
+            rabbit_race_fungi_change.new_speed_0 = 70
+            rabbit_race_fungi_change.new_speed_1 = 136
+            spawner_changes.append(rabbit_race_fungi_change)
+            # Caves
+            rabbit_caves_change = SpawnerChange(Maps.CavesChunkyIgloo, 1)
+            rabbit_caves_change.new_scale = 40
+            spawner_changes.append(rabbit_caves_change)
+            applyCharacterSpawnerChanges(spawner_changes)
+    if model_setting != RandomModels.off:
+        panic_fairy_model_index = random.choice(panic_models)
+        turtle_model_index = random.choice(turtle_models)
+        panic_klap_model_index = getRandomKlaptrapModel()
+        sseek_klap_model_index = getRandomKlaptrapModel()
+        fungi_tomato_model_index = random.choice([Model.Tomato, Model.IceTomato])
+        caves_tomato_model_index = random.choice([Model.Tomato, Model.IceTomato])
+    settings.bother_klaptrap_model = bother_model_index
+    settings.beetle_model = racer_beetle
+    settings.rabbit_model = racer_rabbit
+    settings.panic_fairy_model = panic_fairy_model_index
+    settings.turtle_model = turtle_model_index
+    settings.panic_klaptrap_model = panic_klap_model_index
+    settings.seek_klaptrap_model = sseek_klap_model_index
+    settings.fungi_tomato_model = fungi_tomato_model_index
+    settings.caves_tomato_model = caves_tomato_model_index
+    # Compute swap bitfield
+    swap_bitfield |= 0x10 if settings.rabbit_model == Model.Beetle else 0
+    swap_bitfield |= 0x20 if settings.beetle_model == Model.Rabbit else 0
+    swap_bitfield |= 0x40 if settings.fungi_tomato_model == Model.IceTomato else 0
+    swap_bitfield |= 0x80 if settings.caves_tomato_model == Model.Tomato else 0
+    # Write Models
+    ROM_COPY.seek(sav + 0x1AF)
+    ROM_COPY.writeMultipleBytes(settings.panic_klaptrap_model - Model.KlaptrapGreen, 1)
+    ROM_COPY.seek(sav + 0x1B0)
+    ROM_COPY.writeMultipleBytes(settings.seek_klaptrap_model - Model.KlaptrapGreen, 1)
+    ROM_COPY.seek(sav + 0x1B6)
+    ROM_COPY.writeMultipleBytes(settings.turtle_model + 1, 1)
+    ROM_COPY.seek(sav + 0x1B5)
+    ROM_COPY.writeMultipleBytes(settings.panic_fairy_model + 1, 1)
+    ROM_COPY.seek(sav + 0x136)
+    ROM_COPY.writeMultipleBytes(settings.bother_klaptrap_model + 1, 1)
+    ROM_COPY.seek(sav + 0x1E2)
+    ROM_COPY.write(swap_bitfield)
     if settings.misc_cosmetics and settings.override_cosmetics:
-        ROM().seek(sav + 0x196)
-        ROM().write(1)
+        ROM_COPY.seek(sav + 0x196)
+        ROM_COPY.write(1)
         # Skybox RGBA
-        ROM().seek(sav + 0x197)
+        ROM_COPY.seek(sav + 0x197)
         for channel in range(24):
-            ROM().writeMultipleBytes(random.randint(0, 255), 1)
-        # Klaptrap Colors
-        ROM().seek(sav + 0x1AF)
-        for klaptrap in range(2):
-            ROM().writeMultipleBytes(random.randint(0, 2), 1)
+            ROM_COPY.writeMultipleBytes(random.randint(0, 255), 1)
         # Wrinkly Color
-        ROM().seek(sav + 0x1B1)
+        ROM_COPY.seek(sav + 0x1B1)
         for channel in range(3):
-            ROM().writeMultipleBytes(random.randint(0, 255), 1)
-        # TTT Model
-        ROM().seek(sav + 0x1B6)
-        ROM().writeMultipleBytes(random.choice(turtle_models), 1)
-        # PPP Model
-        ROM().seek(sav + 0x1B5)
-        ROM().writeMultipleBytes(random.choice(panic_models), 1)
-    ROM().seek(sav + 0x136)
-    ROM().writeMultipleBytes(model_index, 1)
+            ROM_COPY.writeMultipleBytes(random.randint(0, 255), 1)
     color_palettes = []
     color_obj = {}
     colors_dict = {}

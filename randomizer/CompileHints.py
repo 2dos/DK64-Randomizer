@@ -589,21 +589,36 @@ def compileHints(spoiler: Spoiler) -> bool:
             if spoiler.settings.key_8_helm:  # You may know that Key 8 is in Helm and that's pointless to hint
                 item_region_locations_to_hint.remove(Locations.HelmKey)
         # Determine what moves are hintable
-        all_hintable_moves = ItemPool.AllKongMoves() + ItemPool.TrainingBarrelAbilities()
+        all_hintable_moves = ItemPool.AllKongMoves() + ItemPool.TrainingBarrelAbilities() + kongs_to_hint
         if spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             all_hintable_moves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
+        if spoiler.settings.shuffle_items and Types.Bean in spoiler.settings.shuffled_location_types:
+            all_hintable_moves.append(Items.Bean)
         optional_hintable_locations = []
+        slam_locations = []
         # Loop through all locations, finding the location of all of these hintable moves
         for id, location in spoiler.LocationList.items():
+            # Note the location of slams - these will always be at least optionally hintable and sometimes required to be hinted
+            if location.item == Items.ProgressiveSlam:
+                slam_locations.append(id)
+            # Never hint training moves for obvious reasons
+            if location.type in (Types.TrainingBarrel, Types.PreGivenMove):
+                continue
             # If it's a woth item, it must be hinted so put it in the list
-            if id in spoiler.woth_locations and location.type not in (Types.TrainingBarrel, Types.PreGivenMove):
+            if id in spoiler.woth_locations:
                 if location.item in kongs_to_hint:
                     item_region_locations_to_hint.insert(0, id)
                 elif location.item in all_hintable_moves:
                     item_region_locations_to_hint.append(id)
             # To be hintable, it can't be a starting move
-            elif location.item in all_hintable_moves and location.type not in (Types.TrainingBarrel, Types.PreGivenMove):
+            elif location.item in all_hintable_moves:
                 optional_hintable_locations.append(id)
+        # If there's room, always hint a slam if we haven't hinted one already
+        hinted_slam_locations = [loc for loc in slam_locations if loc in item_region_locations_to_hint or spoiler.LocationList[loc].type in (Types.TrainingBarrel, Types.PreGivenMove)]
+        if len(item_region_locations_to_hint) < hint_distribution[HintType.ItemRegion] and len(hinted_slam_locations) < 2:
+            loc_to_hint = random.choice([loc for loc in slam_locations if loc not in hinted_slam_locations])
+            item_region_locations_to_hint.append(loc_to_hint)
+            optional_hintable_locations.remove(loc_to_hint)
         # Fill with other random move locations as best as we can
         random.shuffle(optional_hintable_locations)
         while len(item_region_locations_to_hint) < hint_distribution[HintType.ItemRegion] and len(optional_hintable_locations) > 0:
@@ -773,44 +788,48 @@ def compileHints(spoiler: Spoiler) -> bool:
         # if spoiler.settings.random_patches:
         #     valid_types.append(HintType.DirtPatch)
 
-        # Dynamically calculate the number of key hints that need to be placed per key. Any WotH keys should have paths that we should hint.
-        if spoiler.settings.shuffle_items and len(woth_key_ids) > 0:
-            valid_types.append(HintType.RequiredKeyHint)
-            # Only hint keys that are in the Way of the Hoard
-            for key_id in woth_key_ids:
-                # Keys you are expected to find early only get one direct hint, treat all keys as early keys because there are no paths
-                if key_id in (Items.JungleJapesKey, Items.AngryAztecKey) and level_order_matters and not spoiler.settings.hard_level_progression:
-                    key_hint_dict[key_id] = 1
-                # Late or complex keys get a number of hints based on the length of the path to them
-                else:
-                    path_length = len(spoiler.woth_paths[key_location_ids[key_id]])
-                    # If key 8 is in Helm, your training in several moves is utterly useless to hint
-                    if key_id == Items.HideoutHelmKey and spoiler.settings.key_8_helm:
-                        path_length -= len(useless_locations[Items.HideoutHelmKey])
-                    if path_length <= 0:  # 0
-                        key_hint_dict[key_id] = 0
-                    elif path_length <= 2:  # 1-2
+        # There are no paths in no logic so multipath doesn't function
+        if spoiler.settings.logic_type != LogicType.nologic:
+            # Dynamically calculate the number of key hints that need to be placed per key. Any WotH keys should have paths that we should hint.
+            if spoiler.settings.shuffle_items and len(woth_key_ids) > 0:
+                valid_types.append(HintType.RequiredKeyHint)
+                # Only hint keys that are in the Way of the Hoard
+                for key_id in woth_key_ids:
+                    # Keys you are expected to find early only get one direct hint, treat all keys as early keys because there are no paths
+                    if key_id in (Items.JungleJapesKey, Items.AngryAztecKey) and level_order_matters and not spoiler.settings.hard_level_progression:
                         key_hint_dict[key_id] = 1
-                    elif path_length <= 6:  # 3-6
-                        key_hint_dict[key_id] = 2
-                    elif path_length <= 10:  # 7-10
-                        key_hint_dict[key_id] = 3
-                    else:  # 11+
-                        key_hint_dict[key_id] = 4
-            hint_distribution[HintType.RequiredKeyHint] = sum(key_hint_dict.values())
-        # Convert all path hints into multipath hints, utilizing the prior calculations as a rough estimate of path length/difficulty
-        estimated_path_difficulty = (hint_distribution[HintType.RequiredKeyHint] * 1) + (hint_distribution[HintType.RequiredWinConditionHint] * 0.8)
-        hint_distribution[HintType.RequiredWinConditionHint] = 0
-        hint_distribution[HintType.RequiredKeyHint] = 0
-        if HintType.RequiredWinConditionHint in valid_types:
-            valid_types.remove(HintType.RequiredWinConditionHint)
-        if HintType.RequiredKeyHint in valid_types:
-            valid_types.remove(HintType.RequiredKeyHint)
-        # Multipath hints are generally more powerful than your average hint, so we need fewer of them (but not more hints than are possible!)
-        hint_distribution[HintType.Multipath] = min(len(multipath_dict_hints.keys()), round(estimated_path_difficulty))
-        if hint_distribution[HintType.Multipath] >= len(multipath_dict_hints.keys()):
-            maxed_hint_types.append(HintType.Multipath)
-        valid_types.append(HintType.Multipath)
+                    # Late or complex keys get a number of hints based on the length of the path to them
+                    else:
+                        path_length = len(spoiler.woth_paths[key_location_ids[key_id]])
+                        # If key 8 is in Helm, your training in several moves is utterly useless to hint
+                        if key_id == Items.HideoutHelmKey and spoiler.settings.key_8_helm:
+                            path_length -= len(useless_locations[Items.HideoutHelmKey])
+                        if path_length <= 0:  # 0
+                            key_hint_dict[key_id] = 0
+                        elif path_length <= 2:  # 1-2
+                            key_hint_dict[key_id] = 1
+                        elif path_length <= 5:  # 3-5
+                            key_hint_dict[key_id] = 2
+                        elif path_length <= 9:  # 6-9
+                            key_hint_dict[key_id] = 3
+                        elif path_length <= 13:  # 10-13
+                            key_hint_dict[key_id] = 4
+                        else:  # 14+
+                            key_hint_dict[key_id] = 5
+                hint_distribution[HintType.RequiredKeyHint] = sum(key_hint_dict.values())
+            # Convert all path hints into multipath hints, utilizing the prior calculations as a rough estimate of path length/difficulty
+            estimated_path_difficulty = max(0, (hint_distribution[HintType.RequiredKeyHint] * 1) + (hint_distribution[HintType.RequiredWinConditionHint] * 0.8))
+            hint_distribution[HintType.RequiredWinConditionHint] = 0
+            hint_distribution[HintType.RequiredKeyHint] = 0
+            if HintType.RequiredWinConditionHint in valid_types:
+                valid_types.remove(HintType.RequiredWinConditionHint)
+            if HintType.RequiredKeyHint in valid_types:
+                valid_types.remove(HintType.RequiredKeyHint)
+            # Multipath hints are generally more powerful than your average hint, so we need fewer of them (but not more hints than are possible!)
+            hint_distribution[HintType.Multipath] = min(len(multipath_dict_hints.keys()), round(estimated_path_difficulty))
+            if hint_distribution[HintType.Multipath] >= len(multipath_dict_hints.keys()):
+                maxed_hint_types.append(HintType.Multipath)
+            valid_types.append(HintType.Multipath)
 
         # Make sure we have exactly 35 hints placed
         hint_count = 0
@@ -1944,7 +1963,8 @@ def compileHints(spoiler: Spoiler) -> bool:
     UpdateSpoilerHintList(spoiler)
     spoiler.hint_distribution = hint_distribution
 
-    if spoiler.settings.dim_solved_hints:
+    # Dim hints - these are only useful (and doable) if item rando is on
+    if spoiler.settings.dim_solved_hints and spoiler.settings.shuffle_items:
         AssociateHintsWithFlags(spoiler)
 
     # # DEBUG CODE to alert when a hint is empty

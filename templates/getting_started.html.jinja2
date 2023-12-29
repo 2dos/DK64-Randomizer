@@ -20,7 +20,7 @@
             </h5>
             <div class="flex-container" style="justify-content: center;">
                 <div class="item-select">
-                    <label for="random_weights" class="select-title">Random Setting Presets</label>
+                    <label for="random-weights" class="select-title">Random Setting Presets</label>
                     <select class="form-select" id="random-weights">
                     </select>
                 </div>
@@ -30,19 +30,21 @@
                        type="button"
                        value="Randomize Settings"/>
             </div>
-            <h2 class="title">PLANDOMIZER</h2>
-            <h5 class="select-title">
-                This mode allows users to specify rewards, hints, and other settings. This is an advanced mode and is not recommended for beginners.
-            </h5>
-            <div class="form-check form-switch">
-                <label>
-                    <input class="form-check-input"
-                            type="checkbox"
-                            name="enable_plandomizer"
-                            id="enable_plandomizer"
-                            value="True"/>
-                    Enable Plandomizer
-                </label>
+            <div id="plandomizer_container">
+                <h2 class="title">PLANDOMIZER</h2>
+                <h5 class="select-title">
+                    This mode allows users to specify rewards, hints, and other settings. This is an advanced mode and is not recommended for beginners.
+                </h5>
+                <div class="form-check form-switch">
+                    <label>
+                        <input class="form-check-input"
+                                type="checkbox"
+                                name="enable_plandomizer"
+                                id="enable_plandomizer"
+                                value="True"/>
+                        Enable Plandomizer
+                    </label>
+                </div>
             </div>
             {# <div class="flex-container">
                 <div class="form-check form-switch item-switch center-flex">

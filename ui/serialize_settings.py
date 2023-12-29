@@ -35,6 +35,7 @@ def serialize_settings(include_plando: bool = False) -> dict:
     if include_plando:
         plando_form_data = populate_plando_options(form)
         if plando_form_data is not None:
+            form_data["enable_plandomizer"] = True
             form_data["plandomizer_data"] = json.dumps(plando_form_data)
 
     # Custom music data is also processed separately.

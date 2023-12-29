@@ -40,6 +40,7 @@ if (typeof window.RufflePlayer !== "undefined") {
 
 // This is a wrapper script to just load the UI python scripts and call python as needed.
 async function run_python_file(file) {
+  console.log("Loading " + file)
   await pyodide.runPythonAsync(await (await fetch(file)).text());
 }
 let user_agent = navigator.userAgent;
@@ -49,11 +50,13 @@ if (window.location.protocol != "https:") {
   }
 }
 
-// if the domain is not the main domain, hide dev site warnings
+// if the domain is not the main domain, hide dev site warnings and features
 if (location.hostname == "dk64randomizer.com") {
   document.getElementById("spoiler_warning_1").style.display = "none";
   document.getElementById("spoiler_warning_2").style.background = "";
   document.getElementById("spoiler_warning_3").style.display = "none";
+  document.getElementById("plandomizer_container").style.display = "none";
+  document.getElementById("widescreen_row").style.display = "none";
 }
 if (location.hostname != "localhost") {
   document.getElementById("plando_string_section").style.display = "none";
@@ -231,6 +234,48 @@ function music_filebox() {
     }
     // Make sure we load the file into the rompatcher
     cosmetic_pack_event(file);
+  };
+
+  input.click();
+}
+
+var imported_music_json = "";
+
+function music_selection_filebox() {
+  let input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".json";
+
+  input.onchange = async (e) => {
+    let file = e.target.files[0];
+    let json_text = await file.text();
+    imported_music_json = json_text;
+    pyodide.runPythonAsync(`
+      import js
+      from ui.music_select import import_music_selections
+      import_music_selections(js.imported_music_json)
+    `);
+  };
+
+  input.click();
+}
+
+var imported_plando_json = "";
+
+function plando_import_filebox() {
+  let input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".json";
+
+  input.onchange = async (e) => {
+    let file = e.target.files[0];
+    let json_text = await file.text();
+    imported_plando_json = json_text;
+    pyodide.runPythonAsync(`
+      import js
+      from ui.plando_settings import import_plando_options
+      import_plando_options(js.imported_plando_json)
+    `);
   };
 
   input.click();
@@ -538,6 +583,19 @@ function write_seed_history(seed_id, seed_data, seed_hash) {
       seed_id: seed_id,
       date: now,
     });
+    // Write it to most_recent_seed_id and most_recent_seed_date on the UI page so we can display it
+    document.getElementById("most_recent_seed_id").innerHTML = "<strong>Most Recent Seed ID:</strong> " + seed_id;
+    document.getElementById("most_recent_seed_date").innerHTML = "<strong>Most Recent Seed Date:</strong> " + now.toLocaleDateString(
+      undefined,
+      {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }
+    );
   } catch {}
 }
 
@@ -581,6 +639,9 @@ function load_old_seeds() {
           option_el.lanky_data = sorted_array[i].value;
           hook.appendChild(option_el);
         }
+        // Write the most recent seed to the UI
+        document.getElementById("most_recent_seed_id").innerHTML = "<strong>Most Recent Seed ID:</strong> " + sorted_array[0].seed_id;
+        document.getElementById("most_recent_seed_date").innerHTML = "<strong>Most Recent Seed Date:</strong> " + sorted_array[0].date.toLocaleDateString( undefined, {  year: "numeric",  month: "short",  day: "2-digit",  hour: "2-digit",  minute: "2-digit",  second: "2-digit",});
       } catch {}
     };
   } catch {}
@@ -732,12 +793,6 @@ function generate_seed(url, json, git_branch) {
         setTimeout(function () {
           generate_seed(url, json, git_branch);
         }, 5000);
-      } else if (xhr.status == 203) {
-        console.log("seed gen started");
-        postToastMessage("Seed Generation Started", false, 0.5);
-        setTimeout(function () {
-          generate_seed(url, json, git_branch);
-        }, 5000);
       } else if (xhr.status == 208) {
         console.log(data);
         postToastMessage(data, true, 1);
@@ -768,7 +823,7 @@ async function apply_patch(data, run_async) {
 
     // Create an array to store all the promises
     const promises = [];
-
+    query_stats();
     // Iterate over each file in the zip
     zip.forEach(function (relativePath, zipEntry) {
       if (!zipEntry.dir) {
@@ -835,8 +890,81 @@ function loadDataFromIndexedDB(key) {
   });
 }
 
+function unlock_spoiler_log(hash) {
+  console.log("Unlocking spoiler log");
+  // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
+  // Get the website location
+  if (window.location.hostname == "dev.dk64randomizer.com") {
+    var url = "https://dev.dk64randomizer.com/get_spoiler_log";
+  }
+  else if (window.location.hostname == "dk64randomizer.com") {
+    var url = "https://dk64randomizer.com/get_spoiler_log";
+  }
+  else {
+    var url = "http://localhost:8000/get_spoiler_log";
+  }
+  $.ajax({
+    url: url,
+    type: "GET",
+    data: {
+      hash: hash,
+    },
+    success: function (data, textStatus, xhr) {
+      if (xhr.status === 200) {
+        console.log("Success");
+        save_text_as_file(JSON.stringify(data, null, 2), document.getElementById('generated_seed_id').innerHTML + '-spoilerlog.json')
+      } else if (xhr.status === 425) {
+        console.log("Not unlocked yet");
+        // set the contents of spoiler_log_download_messages to "The spoiler log is not unlocked yet."
+        document.getElementById("spoiler_log_download_messages").innerHTML =
+          "The spoiler log is not unlocked yet.";
+        // display download_modal
+        $("#download_modal").modal("show");
+        // hide the modal after 5 seconds
+        setTimeout(function () {
+          $("#download_modal").modal("hide");
+        }, 5000);
+      } else {
+        console.log("Spoiler log is no longer available");
+        // set the contents of spoiler_log_download_messages to "The spoiler log is no longer available."
+        document.getElementById("spoiler_log_download_messages").innerHTML =
+          "The spoiler log is no longer available.";
+        // display download_modal
+        $("#download_modal").modal("show");
+        // hide the modal after 5 seconds
+        setTimeout(function () {
+          $("#download_modal").modal("hide");
+        }, 5000);
+
+      }
+    },
+    error: function (xhr, textStatus, errorThrown) {
+      console.log("Error:", errorThrown);
+      // set the contents of spoiler_log_download_messages to "There was an error downloading the spoiler log."
+      document.getElementById("spoiler_log_download_messages").innerHTML =
+        "There was an error downloading the spoiler log.";
+      // display download_modal
+      $("#download_modal").modal("show");
+      // hide the modal after 5 seconds
+      setTimeout(function () {
+        $("#download_modal").modal("hide");
+      }, 5000);
+    }
+  });
+}
+
 function load_data() {
   try {
+    // make sure all sliders are initialized
+    for (element of document.getElementsByTagName("input")) {
+      if (element.hasAttribute("data-slider-value")) {
+        // check if the slider has already been initialized
+        if (!element.hasAttribute("data-slider-initialized")) {
+          element.setAttribute("data-slider-initialized", "true");
+          $("#" + element.name).slider();
+        }
+      }
+    }
     var settingsdb = settingsdatabase.result;
     transaction = settingsdb.transaction("saved_settings", "readonly");
     objectStore = transaction.objectStore("saved_settings");

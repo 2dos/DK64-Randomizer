@@ -44,7 +44,7 @@ void qualityOfLife_fixes(void) {
 					Player->xPos = 317.0f;
 					Player->yPos = 124.0f;
 					Player->zPos = 295.0f;
-					displaySpriteAtXYZ(sprite_table[19], 0x3F800000, Player->xPos, Player->yPos, Player->zPos);
+					displaySpriteAtXYZ(sprite_table[19], 1.0f, Player->xPos, Player->yPos, Player->zPos);
 				}
 			}
 		} else {
@@ -66,23 +66,20 @@ void qualityOfLife_fixes(void) {
 	}
 }
 
-void checkNinWarp(void) {
-	/**
-	 * @brief Change the warp destination upon booting the game
-	 */
-	if (Rando.quality_of_life.fast_boot) {
-		WarpToDKTV();
-		TransitionType = 0;
-	} else {
-		initiateTransitionFade(MAP_DKRAP,0,2); // DK Rap
-	}
-}
-
 int CanDive_WithCheck(void) {
 	if (ObjectModel2Timer < 5) {
 		return 1;
 	}
 	return CanDive();
+}
+
+void playTransformationSong(songs song, float volume) {
+	if (CurrentMap == MAP_FUNGI) {
+		if (song == SONG_SPRINT) {
+			return;
+		}
+	}
+	playSong(song, volume);
 }
 
 static unsigned short previous_total_cbs = 0xFFFF;
