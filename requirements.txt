@@ -2,7 +2,7 @@ flask==3.0.0
 flask-cors==4.0.0
 flask-executor==1.0.0vidua
 pyxdelta==0.1.2
-pillow==10.0.0
+pillow==10.0.1
 boto3==1.28.43
 waitress==2.1.2
 GitPython==3.1.40
