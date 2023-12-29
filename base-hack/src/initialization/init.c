@@ -210,10 +210,6 @@ void initHack(int source) {
 			if (Rando.fast_start_beginning) {
 				*(int*)(0x80714540) = 0;
 			}
-			*(int*)(0x80731F78) = 0; // Debug 1 Column
-			*(int*)(0x8060E04C) = 0; // Prevent moves overwrite
-			*(short*)(0x8060DDAA) = 0; // Writes readfile data to moves
-			*(short*)(0x806C9CDE) = 7; // GiveEverything, write to bitfield. Seems to be unused but might as well
 			*(int*)(0x8076BF38) = (int)&music_storage[0]; // Increase music storage
 			WidescreenEnabled = Rando.true_widescreen;
 			grab_lock_timer = -1;
@@ -271,44 +267,13 @@ void initHack(int source) {
 			initFiles();
 			writeFunction(0x8060CB7C, &fixChimpyCamBug);
             
-			if (Rando.no_health_refill) {
-				*(int*)(0x80683A34) = 0; // Cancel Tag Health Refill
-				// *(int*)(0x8060DD10) = 0; // Load File
-				// *(int*)(0x806C8010) = 0; // Load into map with < 1 health
-				// *(int*)(0x806C94E4) = 0; // ?
-				// *(int*)(0x806C9BC0) = 0; // Multiplayer
-				*(int*)(0x806CB340) = 0; // Voiding
-				*(int*)(0x806DEFE4) = 0; // Fairies
-				// *(int*)(0x80708C9C) = 0; // Bonus Barrels (Taking Damge) & Watermelons
-				// *(int*)(0x80708CA4) = 0; // Bonus Barrels (Full Health) & Watermelons
-				*(int*)(0x806A6EA8) = 0; // Bonus Barrels
-			} else {
-				*(int*)(0x806A6EA8) = 0x0C1C2519; // Set Bonus Barrel to refill health
-			}
 			if (Rando.short_bosses) {
 				actor_health_damage[236].init_health = 44; // Dogadon Health: 3 + (62 * (2 / 3))
 				actor_health_damage[185].init_health = 3; // Dillo Health
 				actor_health_damage[251].init_health = 3; // Spider Boss Health
 			}
-			if (Rando.resolve_bonus & 1) {
-				*(short*)(0x806818DE) = 0x4248; // Make Aztec Lobby GB spawn above the trapdoor)
-				*(int*)(0x80681690) = 0; // Make some barrels not play a cutscene
-				*(int*)(0x8068188C) = 0; // Prevent disjoint mechanic for Caves/Fungi BBlast Bonus
-				*(short*)(0x80681898) = 0x1000;
-				*(int*)(0x8068191C) = 0; // Remove Oh Banana
-				*(short*)(0x80680986) = 0xFFFE; // Prevent Factory BBBandit Bonus dropping
-				*(short*)(0x806809C8) = 0x1000; // Prevent Fungi TTTrouble Bonus dropping
-			}
 			if (Rando.resolve_bonus) {
 				writeFunction(0x80681158, &completeBonus); // Modify Function Call
-				*(short*)(0x80681962) = 1; // Make bonus noclip	
-			}
-			if (Rando.tns_portal_rando_on) {
-				// Adjust warp code to make camera be behind player, loading portal
-				*(int*)(0x806C97D0) = 0xA06E0007; // SB $t6, 0x7 ($v1)
-			}
-			if (Rando.remove_rock_bunch) {
-				*(int*)(0x8069C2FC) = 0;
 			}
             initQoL(); // Also includes initializing spawn point and HUD realignment
             initItemRando();
@@ -327,11 +292,9 @@ void initHack(int source) {
 			priceTransplant();
 
 			initStatistics();
-			if (Rando.disable_boss_kong_check) {
-				*(int*)(0x8064EC00) = 0x24020001;
-			}
+			
 			actor_functions[70] = &newCounterCode;
-			*(short*)(0x8074DC84) = 0x53; // Increase PAAD size
+			
 			fixMusicRando();
 			*(int*)(0x80748014) = (int)&spawnWrinklyWrapper; // Change function to include setFlag call	
 			// Style 6 Mtx
@@ -357,10 +320,6 @@ void initHack(int source) {
 			*(int*)(0x80748088) = (int)&CrownDoorCheck; // Update check on Crown Door
 			// New Mermaid Checking Code
 			writeFunction(0x806C3B5C, &mermaidCheck); // Mermaid Check
-			*(short*)(0x806C3B64) = 0x1000; // Force to branch
-			*(short*)(0x806C3BD0) = 0x1000; // Force to branch
-			*(int*)(0x806C3C20) = 0; // NOP - Cancel control state write
-			*(int*)(0x806C3C2C) = 0; // NOP - Cancel control state progress write
 			if (Rando.helm_hurry_mode) {
 				*(int*)(0x80713CCC) = 0; // Prevent Helm Timer Disable
 				*(int*)(0x80713CD8) = 0; // Prevent Shutdown Song Playing
@@ -369,13 +328,6 @@ void initHack(int source) {
 				writeFunction(0x80713DE0, &finishHelmHurry); // Change write
 				*(int*)(0x807125CC) = 0; // Prevent Helm Timer Overwrite
 				*(short*)(0x807095BE) = 0x2D4; // Change Zipper with K. Rool Laugh
-			}
-			if (Rando.increase_tns_boss_lighting) {
-				*(float*)(0x8075B8B0) = 1.0f;
-			}
-			if (Rando.version == 0) {
-				// Disable Graphical Debugger
-				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
 			}
 			if (Rando.faster_checks.toy_monster) {
 				*(short*)(0x806BBB22) = 0x0005; // Chunky toy box speedup

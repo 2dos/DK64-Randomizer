@@ -54,6 +54,7 @@ from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints, PushItemLocations, PushHelpfulHints
+from randomizer.Patching.ASMPatcher import patchAssembly
 
 # from randomizer.Spoiler import Spoiler
 
@@ -547,6 +548,8 @@ def patching_response(spoiler):
         for x in range(7):
             ROM_COPY.seek(sav + 0x104 + x)
             ROM_COPY.write(spoiler.settings.switch_allocation[x])
+
+    patchAssembly(ROM_COPY, spoiler)
 
     randomize_entrances(spoiler)
     randomize_moves(spoiler)

@@ -480,12 +480,26 @@ class ROMPointerFile:
         rom.seek(self.start)
         self.compressed = int.from_bytes(rom.read(2), "big") == 0x1F8B
 
+
 BOOT_OVERLAY_RDRAM = 0x80000450
+
 
 class OverlayInfo:
     """Class to store information about an overlay."""
 
-    def __init__(self, overlay: Overlay, code_rom: int, data_rom: int, data_size_compressed: int, code_write_upper: int, code_write_lower: int, data_write_upper: int, data_write_lower: int, default_code_size: int, default_data_size: int):
+    def __init__(
+        self,
+        overlay: Overlay,
+        code_rom: int,
+        data_rom: int,
+        data_size_compressed: int,
+        code_write_upper: int,
+        code_write_lower: int,
+        data_write_upper: int,
+        data_write_lower: int,
+        default_code_size: int,
+        default_data_size: int,
+    ):
         """Initialize with given data."""
         self.overlay = overlay
         self.code_rom = code_rom
@@ -506,6 +520,7 @@ class OverlayInfo:
         self.code_size = default_code_size
         self.data_size = default_data_size
         self.code_start = None
+        self.data_start = None
         self.data_end = None
 
     def setCode(self, bytestream: bytes, footer: bytes):
@@ -519,6 +534,7 @@ class OverlayInfo:
         self.data = bytestream
         self.data_decompressed = zlib.decompress(bytestream + footer, (15 + 32))
         self.data_size = len(self.data_decompressed)
+
 
 class HintRegion:
     """Class to store information regarding a hint region."""

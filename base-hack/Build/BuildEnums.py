@@ -779,6 +779,7 @@ class Song(IntEnum):
     KRoolDefeat = auto()
     NintendoLogo = auto()
 
+
 class Overlay(IntEnum):
     """Overlay Enum."""
 

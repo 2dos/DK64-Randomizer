@@ -223,6 +223,22 @@ class PaletteFillType(IntEnum):
     kong = auto()
 
 
+class Overlay(IntEnum):
+    """Overlay enum."""
+
+    Boot = 0
+    Static = 1
+    Menu = 2
+    Multiplayer = 3
+    Minecart = 4
+    Race = 5
+    Critter = 6
+    Boss = 7
+    Bonus = 8
+    Arcade = 9
+    Jetpac = 10
+
+
 def float_to_hex(f: Union[float, int]) -> str:
     """Convert float to hex."""
     if f == 0:

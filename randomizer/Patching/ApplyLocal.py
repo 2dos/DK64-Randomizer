@@ -17,6 +17,7 @@ from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords
+from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings, ExcludedSongs
@@ -230,6 +231,8 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 ROM().writeMultipleBytes(0x0000C012, 4)  # Get Row Pixel Number for No Expansion Pak Screen Text
                 ROM().seek(BOOT_OFFSET + 0x1020 + 2)
                 ROM().writeMultipleBytes((SCREEN_WD - 8) * 2, 2)  # Text Framebuffer Pitch
+
+            patchAssemblyCosmetic(ROM(), settings)
             music_data = randomize_music(settings)
 
             spoiler = updateJSONCosmetics(spoiler, settings, music_data, int(unix))
