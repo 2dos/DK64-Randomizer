@@ -137,6 +137,7 @@ class Settings:
             self.plandomizer_dict["plando_tns_portals"] = -1
             self.plandomizer_dict["plando_starting_exit"] = -1
             self.plandomizer_dict["plando_switchsanity"] = -1
+            self.plandomizer_dict["plando_shop_location_rando"] = -1
             # ---------------------------------------------------
             # Prevent custom locations selected for plandomizer from being used by a different randomizer
             self.plandomizer_dict["reserved_custom_locations"] = {
