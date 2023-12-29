@@ -336,8 +336,6 @@ void initHack(int source) {
 				}
 			}
 			KKOPhaseRandoOn = kko_phase_rando;
-			*(short*)(0x806F0376) = Rando.klaptrap_color_bbother;
-			*(short*)(0x806C8B42) = Rando.klaptrap_color_bbother;
 			if (Rando.wrinkly_rando_on) {
 				*(int*)(0x8064F170) = 0; // Prevent edge cases for Aztec Chunky/Fungi Wheel
 				writeFunction(0x8069E154, &getWrinklyLevelIndex); // Modify Function Call

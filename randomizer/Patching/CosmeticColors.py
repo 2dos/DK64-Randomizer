@@ -325,6 +325,7 @@ def apply_cosmetic_colors(settings: Settings):
     settings.seek_klaptrap_model = sseek_klap_model_index
     settings.fungi_tomato_model = fungi_tomato_model_index
     settings.caves_tomato_model = caves_tomato_model_index
+    settings.wrinkly_rgb = [255, 255, 255]
     # Compute swap bitfield
     swap_bitfield |= 0x10 if settings.rabbit_model == Model.Beetle else 0
     swap_bitfield |= 0x20 if settings.beetle_model == Model.Rabbit else 0
@@ -353,7 +354,9 @@ def apply_cosmetic_colors(settings: Settings):
         # Wrinkly Color
         ROM_COPY.seek(sav + 0x1B1)
         for channel in range(3):
-            ROM_COPY.writeMultipleBytes(random.randint(0, 255), 1)
+            value = random.randint(0, 255)
+            settings.wrinkly_rgb[channel] = value
+            ROM_COPY.writeMultipleBytes(value, 1)
     color_palettes = []
     color_obj = {}
     colors_dict = {}

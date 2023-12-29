@@ -4,6 +4,7 @@ from randomizer.Settings import Settings
 from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected
 from randomizer.Patching.ASMPatcher import writeValue, writeFloat, populateOverlayOffsets
 from randomizer.Enums.Settings import MiscChangesSelected
+from randomizer.Patching.Patcher import ROM
 
 SCREEN_WD = 366
 SCREEN_HD = 208
@@ -11,7 +12,7 @@ GFX_START = 0x101A40
 BOOT_OFFSET = 0xFB20 - 0xEF20
 
 
-def patchAssemblyCosmeticWS(ROM_COPY, settings: Settings):
+def patchAssemblyCosmeticWS(ROM_COPY: ROM, settings: Settings):
     """Write Widescreen changes to ROM."""
     if not settings.true_widescreen:
         return
