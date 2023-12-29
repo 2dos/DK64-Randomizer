@@ -329,19 +329,6 @@ void initHack(int source) {
 				*(int*)(0x807125CC) = 0; // Prevent Helm Timer Overwrite
 				*(short*)(0x807095BE) = 0x2D4; // Change Zipper with K. Rool Laugh
 			}
-			if (Rando.faster_checks.toy_monster) {
-				*(short*)(0x806BBB22) = 0x0005; // Chunky toy box speedup
-			}
-			if (Rando.faster_checks.owl_race) {
-				*(short*)(0x806C58D6) = 0x0008; //Owl ring amount
-				*(short*)(0x806C5B16) = 0x0008;
-			}
-			if (Rando.faster_checks.rabbit_race) {
-				*(int*)(0x806BEDFC) = 0; //Spawn banana coins on beating rabbit 2 (Beating round 2 branches to banana coin spawning label before continuing)
-			}
-			if (Rando.faster_checks.ice_tomato) {
-				*(short*)(0x806BC582) = 30; // Ice Tomato Timer
-			}
 			int kko_phase_rando = 0;
 			for (int i = 0; i < 3; i++) {
 				KKOPhaseOrder[i] = Rando.kut_out_phases[i];
@@ -383,57 +370,24 @@ void initHack(int source) {
 			}
 			// Object Instance Scripts
 			*(int*)(0x80748064) = (int)&change_object_scripts;
-			*(int*)(0x806416BC) = 0; // Prevent parent map check in cross-map object change communications
 			// Deathwarp Handle
 			writeFunction(0x8071292C, &WarpHandle); // Check if in Helm, in which case, apply transition
-			// New Guard Code
-			*(short*)(0x806AF75C) = 0x1000;
 			// Gold Beaver Code
       		actor_functions[212] = (void*)0x806AD54C; // Set as Blue Beaver Code
 			writeFunction(0x806AD750, &beaverExtraHitHandle); // Remove buff until we think of something better
 			// Move Text Code
 			actor_functions[324] = &getNextMoveText;
 			actor_functions[320] = &getNextMoveText;
-			// Any Kong Items
-			if (Rando.any_kong_items & 1) {
-				// All excl. Blueprints
-				*(int*)(0x807319C0) = 0x00001025; // OR $v0, $r0, $r0 - Make all reward spots think no kong
-				*(int*)(0x80632E94) = 0x00001025; // OR $v0, $r0, $r0 - Make flag mapping think no kong
-			}
-			if (Rando.any_kong_items & 2) {
-				*(int*)(0x806F56F8) = 0; // Disable Flag Set for blueprints
-				*(int*)(0x806A606C) = 0; // Disable translucency for blueprints
-			}
 			initPauseMenu(); // Changes to enable more items
 			// Spider Projectile
-			*(int*)(0x806CBD78) = 0x18400005; // BLEZ $v0, 0x5 - Decrease in health occurs if trap bubble active
 			if (Rando.hard_mode.enemies) {
 				// writeFunction(0x806ADDC0, &handleSpiderTrapCode);
-				*(short*)(0x806B12DA) = 0x3A9; // Kasplat Shockwave Chance
-				*(short*)(0x806B12FE) = 0x3B3; // Kasplat Shockwave Chance
 				actor_health_damage[259].init_health = 9; // Increase Guard Health
 			}
 			// Fix some silk memes
-			*(int*)(0x806ADA6C) = 0;
 			writeFunction(0x806ADA70, &HandleSpiderSilkSpawn);
-			*(int*)(0x806ADA78) = 0;
-			// Fix spider crashes
-			int fixed_anim = 0x2F5;
-			*(short*)(0x8075F46C) = fixed_anim;
-			*(short*)(0x806ADA26) = fixed_anim; // This might fix spawning if set on non-init
-			*(short*)(0x806ADA2A) = fixed_anim;
-			*(short*)(0x806ADA32) = fixed_anim;
-			*(short*)(0x806ADBC6) = fixed_anim;
-			*(short*)(0x806ADC66) = fixed_anim;
-			*(short*)(0x806ADD3A) = fixed_anim;
 			// Oscillation Effects
 			if (Rando.remove_oscillation_effects) {
-				*(int*)(0x80661B54) = 0; // Remove Ripple Timer 0
-				*(int*)(0x80661B64) = 0; // Remove Ripple Timer 1
-				*(int*)(0x8068BDF4) = 0; // Disable rocking in Seasick Ship
-				*(short*)(0x8068BDFC) = 0x1000; // Disable rocking in Mech Fish
-				// *(int*)(0x806609DC) = 0x44802000; // Change ripple oscillation X to 0 (mtc1 $zero, $f4)
-				// *(int*)(0x806609EC) = 0x44805000; // Change ripple oscillation Z to 0 (mtc1 $zero, $f10)
 				writeFunction(0x80660994, &getOscillationDelta);
 				writeFunction(0x806609BC, &getOscillationDelta);
 			}
@@ -449,70 +403,21 @@ void initHack(int source) {
 				writeFunction(0x806EF9D0, &applyDamageMask);
 				writeFunction(0x806F5860, &applyDamageMask); // Watermelon
 			}
-			levelIndexMapping[MAP_TBARREL_DIVE] = LEVEL_BONUS;
-			levelIndexMapping[MAP_TBARREL_VINE] = LEVEL_BONUS;
-			levelIndexMapping[MAP_TBARREL_ORANGE] = LEVEL_BONUS;
-			levelIndexMapping[MAP_TBARREL_BARREL] = LEVEL_BONUS;
-
-
 			// Slow Turn Fix
 			writeFunction(0x806D2FC0, &fixRBSlowTurn);
-			// CB Bunch
-			*(int*)(0x806A65B8) = 0x240A0006; // Always ensure chunky bunch sprite (Rock Bunch)
-			// Coins
-			*(int*)(0x806A64B0) = 0x240A0004; // Always ensure lanky coin sprite (Rabbit Race 1 Reward)
-
 			// for (int i = 0; i < 10; i++) {
 			// 	*(int*)(0x8060D6A0 + (4 * i)) = 0;
 			// }
 			// *(short*)(0x8060D6C8) = 0x5000;
-			// Decouple Camera from Shockwave
-			*(short*)(0x806E9812) = FLAG_ABILITY_CAMERA; // Usage
-			*(short*)(0x806AB0F6) = FLAG_ABILITY_CAMERA; // Isles Fairies Display
-			*(short*)(0x806AAFB6) = FLAG_ABILITY_CAMERA; // Other Fairies Display
-			*(short*)(0x806AA762) = FLAG_ABILITY_CAMERA; // Film Display
-			*(short*)(0x8060D986) = FLAG_ABILITY_CAMERA; // Film Refill
-			*(short*)(0x806F6F76) = FLAG_ABILITY_CAMERA; // Film Refill
-			*(short*)(0x806F916A) = FLAG_ABILITY_CAMERA; // Film max
 			// LZ Save
 			writeFunction(0x80712EC4, &postKRoolSaveCheck);
 			// Opacity fixes
 			writeFunction(0x806380B0, &handleModelTwoOpacity);
-			if (Rando.medal_cb_req > 0) {
-				// Change CB Req
-				*(short*)(0x806F934E) = Rando.medal_cb_req; // Acquisition
-				*(short*)(0x806F935A) = Rando.medal_cb_req; // Acquisition
-				*(short*)(0x806AA942) = Rando.medal_cb_req; // Pause Menu Tick
-			}
-			// Dusk
-			if (Rando.fungi_time_of_day_setting == TIME_DUSK) {
-				*(int*)(0x806C5614) = 0x50000006;
-				*(int*)(0x806BE8F8) = 0x50000008;
-			}
-			*(short*)(0x8060036A) = 0xFF; // Fix game crash upon exiting a bonus with no parent
-			// Force disable coin cheat
-			*(short*)(0x806F88A8) = 0x1000;
 			// Reduce TA Cooldown
 			if (Rando.tag_anywhere) {
-				// *(int*)(0x806F6D88) = 0; // Makes collectables not produce a flying model which delays collection. Instant change
-				*(int*)(0x806F6D94) = 0; // Prevent delayed collection
-				// Standard Ammo
-				*(short*)(0x806F5B68) = 0x1000;
 				writeFunction(0x806F5BE8, &tagAnywhereAmmo);
-				// Bunch
-				*(short*)(0x806F59A8) = 0x1000;
 				writeFunction(0x806F5A08, &tagAnywhereBunch);
-
-				*(int*)(0x806F6CAC) = 0x9204001A; // LBU $a0, 0x1A ($s0)
-				*(int*)(0x806F6CB0) = 0x86060002; // LH $a2, 0x2 ($s0)
 				writeFunction(0x806F6CB4, &tagAnywhereInit);
-				*(int*)(0x806F53AC) = 0; // Prevent LZ case
-
-				*(short*)(0x806C7088) = 0x1000; // Mech fish dying
-				// writeFunction(0x806C9020, &malloc_wipe);
-				// writeFunction(0x806C9044, &malloc_wipe);
-				// writeFunction(0x806C906C, &malloc_wipe);
-				// initTagAnywhere();
 			}
 			if (ENABLE_ORIGIN_WARP_FIX) {
 				writeFunction(0x8072F1E8, &handleGrabbingLock);
@@ -520,33 +425,6 @@ void initHack(int source) {
 				writeFunction(0x8072F458, &handleActionSet); // Actor grabbables
 				writeFunction(0x8072F46C, &handleActionSet); // Model 2 grabbables
 				writeFunction(0x806CFC64, &handleActionSet); // Ledge Grabbing
-			}
-			*(int*)(0x805FEA14) = 0; // Prevent Enguarde arena setting kong as Enguarde
-			*(int*)(0x805FEA08) = 0; // Prevent Rambi arena setting kong as Rambi
-			if ((Rando.diddy_rnd_codes[0] != 0) || (Rando.diddy_rnd_codes[1] != 0) || (Rando.diddy_rnd_codes[2] != 0)) {
-				// Alter diddy R&D
-				short* diddy_rnd_code_writes[12] = {
-					// Code 0: 4231
-					(short*)0x8064E06A,
-					(short*)0x8064E066,
-					(short*)0x8064E062,
-					(short*)0x8064E05E,
-					// Code 1: 3124
-					(short*)0x8064E046,
-					(short*)0x8064E042,
-					(short*)0x8064E03E,
-					(short*)0x8064E00E,
-					// Code 2: 1342
-					(short*)0x8064E026,
-					(short*)0x8064E022,
-					(short*)0x8064E01E,
-					(short*)0x8064E01A,
-				};
-				for (int i = 0; i < 3; i++) {
-					for (int j = 0; j < 4; j++) {
-						*diddy_rnd_code_writes[(4 * i) + j] = ((Rando.diddy_rnd_codes[i] >> ((3 - j) << 2)) & 0xF) + 1;
-					}
-				}
 			}
 			if (Rando.disabled_music.pause) {
 				*(int*)(0x805FC890) = 0; // Pause theme
@@ -629,62 +507,7 @@ void initHack(int source) {
 			}
 
 			initSwitchsanityChanges();
-
-			if (DISABLE_TRAINING_PRECHECKS) {
-				*(short*)(0x80698386) = 0; // Disable ability to use vines in vine barrel unless you have vines
-				*(int*)(0x806E426C) = 0; // Disable ability to pick up objects in barrel barrel unless you have barrels
-				*(short*)(0x806E7736) = 0; // Disable ability to dive in dive barrel unless you have dive
-				*(short*)(0x806E2D8A) = 0; // Disable ability to throw oranges in orange barrel unless you have oranges
-			}
-
-			if (Rando.model_swaps.ice_tomato_is_regular) {
-				*(short*)(0x8075F602) = 0x51;
-			}
-			if (Rando.model_swaps.regular_tomato_is_ice) {
-				*(short*)(0x8075F4E2) = 0x62;
-			}
-			if (Rando.model_swaps.rabbit_is_beetle) {
-				*(short*)(0x8075F242) = 0x2E; // Rabbit Race
-				// Animation scale
-				*(short*)(0x806BE942) = 0x285; 
-				*(short*)(0x806BEFC2) = 0x282;
-				*(short*)(0x806BF052) = 0x282;
-				*(short*)(0x806BF066) = 0x282;
-				*(short*)(0x806BF0C2) = 0x281;
-				*(short*)(0x806BF1D2) = 0x281;
-				*(short*)(0x806BEA8A) = 0x281;
-				*(short*)(0x806BEB6A) = 0x282;
-				*(short*)(0x806BF1DE) = 0x282;
-				*(short*)(0x8075F244) = 0x282;
-				*(short*)(0x806BE9B2) = 0x287;
-				*(short*)(0x806BED5E) = 0x288;
-
-				*(short*)(0x8075F3F2) = 0x2E; // Chunky 5DI
-				*(short*)(0x806B23C6) = 0x287;
-			}
-
-			// DK Face Puzzle
-			int dk_reg_vals[] = {0x80,0x95,0x83,0x82}; // 0 = r0, 1 = s5, 2 = v1, 3 = v0
-			*(unsigned char*)(0x8064AD01) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[2]];
-			*(unsigned char*)(0x8064AD05) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[5]];
-			*(unsigned char*)(0x8064AD09) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[7]];
-			*(unsigned char*)(0x8064AD11) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[0]];
-			*(unsigned char*)(0x8064AD15) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[1]];
-			*(unsigned char*)(0x8064AD19) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[3]];
-			*(unsigned char*)(0x8064AD1D) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[4]];
-			*(unsigned char*)(0x8064AD21) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[6]];
-			*(unsigned char*)(0x8064AD29) = dk_reg_vals[(int)Rando.dk_face_puzzle_init[8]];
-			// Chunky Face Puzzle
-			int chunky_reg_vals[] = {0x40,0x54,0x48,0x44}; // 0 = r0, 1 = s4, 2 = t0, 3 = a0
-			*(unsigned char*)(0x8064A2D5) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[2]];
-			*(unsigned char*)(0x8064A2DD) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[6]];
-			*(unsigned char*)(0x8064A2ED) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[0]];
-			*(unsigned char*)(0x8064A2F1) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[1]];
-			*(unsigned char*)(0x8064A2F5) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[3]];
-			*(unsigned char*)(0x8064A2F9) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[4]];
-			*(unsigned char*)(0x8064A2FD) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[5]];
-			*(unsigned char*)(0x8064A301) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[7]];
-			*(unsigned char*)(0x8064A305) = chunky_reg_vals[(int)Rando.chunky_face_puzzle_init[8]];
+			
 			SFXVolume = Rando.default_sfx_volume;
 			MusicVolume = Rando.default_music_volume;
 			ScreenRatio = Rando.default_screen_ratio;

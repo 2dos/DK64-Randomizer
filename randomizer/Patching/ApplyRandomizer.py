@@ -549,8 +549,6 @@ def patching_response(spoiler):
             ROM_COPY.seek(sav + 0x104 + x)
             ROM_COPY.write(spoiler.settings.switch_allocation[x])
 
-    patchAssembly(ROM_COPY, spoiler)
-
     randomize_entrances(spoiler)
     randomize_moves(spoiler)
     randomize_prices(spoiler)
@@ -596,6 +594,8 @@ def patching_response(spoiler):
     updateDiddyDoors(spoiler.settings)
     applyHelmDoorCosmetics(spoiler.settings)
     applyKrushaKong(spoiler.settings)
+
+    patchAssembly(ROM_COPY, spoiler)
 
     # Apply Hash
     order = 0
