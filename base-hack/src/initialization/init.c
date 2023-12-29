@@ -19,6 +19,10 @@ typedef struct musicInfo {
 	/* 0x000 */ short data[0xB0];
 } musicInfo;
 
+void writeFunctionLoop(void) {
+	writeFunction(0x805FC164, (int)&cFuncLoop);
+}
+
 void fixMusicRando(void) {
 	/**
 	 * @brief Initialize Music Rando so that the data for each song is correct.
@@ -27,15 +31,10 @@ void fixMusicRando(void) {
 	if (Rando.music_rando_on) {
 		// Type bitfields
 		int size = SONG_COUNT << 1;
-		musicInfo* write_space = dk_malloc(size);
-		int* file_size;
-		*(int*)(&file_size) = size;
-		copyFromROM(0x1FFF000,write_space,&file_size,0,0,0,0);
+		musicInfo* write_space = getFile(size, 0x1FFF000);
 		// Type indexes
 		size = SONG_COUNT;
-		char* write_space_0 = dk_malloc(size);
-		*(int*)(&file_size) = size;
-		copyFromROM(0x1FEE200,write_space_0,&file_size,0,0,0,0);
+		char* write_space_0 = getFile(size, 0x1FEE200);
 		for (int i = 0; i < SONG_COUNT; i++) {
 			// Handle Bitfield
 			int subchannel = (write_space->data[i] & 6) >> 1;
@@ -116,9 +115,7 @@ void writeEndSequence(void) {
 	 * @brief Write our custom end sequence
 	 */
 	int size = 0x84;
-	int* file_size;
-	*(int*)(&file_size) = size;
-	copyFromROM(0x1FFF800,(int*)0x807506D0,&file_size,0,0,0,0);
+	copyFromROM(0x1FFF800,(int*)0x807506D0,&size,0,0,0,0);
 }
 
 float getOscillationDelta(void) {
@@ -204,7 +201,7 @@ void initHack(int source) {
 	/**
 	 * @brief Initialize Hack
 	 * 
-	 * @param source 0 = CFuncLoop, 1 = ROM Boot
+	 * @param source 0 = cFuncLoop, 1 = ROM Boot
 	 * 
 	 */
 	if (LoadedHooks == 0) {
@@ -241,10 +238,7 @@ void initHack(int source) {
 			if (Rando.fairy_rando_on) {
 				// Fairy Location Table
 				int fairy_size = 20<<2;
-				fairy_location_item* fairy_write = dk_malloc(fairy_size);
-				int* fairy_file_size;
-				*(int*)(&fairy_file_size) = fairy_size;
-				copyFromROM(0x1FFC000,fairy_write,&fairy_file_size,0,0,0,0);
+				fairy_location_item* fairy_write = getFile(fairy_size, 0x1FFC000);
 				for (int i = 0; i < (fairy_size >> 2); i++) {
 					for (int j = 0; j < 0x1F; j++) {
 						if (charspawnerflags[j].tied_flag == fairy_write[i].flag) {
@@ -383,11 +377,17 @@ void initHack(int source) {
 				// Disable Graphical Debugger
 				*(int*)(0x8060EEE0) = 0x240E0000; // ADDIU $t6, $r0, 0
 			}
-			if (Rando.fast_gbs) {
+			if (Rando.faster_checks.toy_monster) {
 				*(short*)(0x806BBB22) = 0x0005; // Chunky toy box speedup
+			}
+			if (Rando.faster_checks.owl_race) {
 				*(short*)(0x806C58D6) = 0x0008; //Owl ring amount
 				*(short*)(0x806C5B16) = 0x0008;
+			}
+			if (Rando.faster_checks.rabbit_race) {
 				*(int*)(0x806BEDFC) = 0; //Spawn banana coins on beating rabbit 2 (Beating round 2 branches to banana coin spawning label before continuing)
+			}
+			if (Rando.faster_checks.ice_tomato) {
 				*(short*)(0x806BC582) = 30; // Ice Tomato Timer
 			}
 			int kko_phase_rando = 0;
@@ -629,7 +629,7 @@ void initHack(int source) {
 			}
 			if (Rando.hard_mode.easy_fall) {
 				float fall_threshold = 100.0f;
-				*(short*)(0x806D3682) = *(short*)(&fall_threshold); // Change fall too far threshold
+				*(short*)(0x806D3682) = getFloatUpper(fall_threshold); // Change fall too far threshold
 				writeFunction(0x806D36B4, &fallDamageWrapper);
 				writeFunction(0x8067F540, &transformBarrelImmunity);
 			}
@@ -683,6 +683,32 @@ void initHack(int source) {
 				*(int*)(0x806E426C) = 0; // Disable ability to pick up objects in barrel barrel unless you have barrels
 				*(short*)(0x806E7736) = 0; // Disable ability to dive in dive barrel unless you have dive
 				*(short*)(0x806E2D8A) = 0; // Disable ability to throw oranges in orange barrel unless you have oranges
+			}
+
+			if (Rando.model_swaps.ice_tomato_is_regular) {
+				*(short*)(0x8075F602) = 0x51;
+			}
+			if (Rando.model_swaps.regular_tomato_is_ice) {
+				*(short*)(0x8075F4E2) = 0x62;
+			}
+			if (Rando.model_swaps.rabbit_is_beetle) {
+				*(short*)(0x8075F242) = 0x2E; // Rabbit Race
+				// Animation scale
+				*(short*)(0x806BE942) = 0x285; 
+				*(short*)(0x806BEFC2) = 0x282;
+				*(short*)(0x806BF052) = 0x282;
+				*(short*)(0x806BF066) = 0x282;
+				*(short*)(0x806BF0C2) = 0x281;
+				*(short*)(0x806BF1D2) = 0x281;
+				*(short*)(0x806BEA8A) = 0x281;
+				*(short*)(0x806BEB6A) = 0x282;
+				*(short*)(0x806BF1DE) = 0x282;
+				*(short*)(0x8075F244) = 0x282;
+				*(short*)(0x806BE9B2) = 0x287;
+				*(short*)(0x806BED5E) = 0x288;
+
+				*(short*)(0x8075F3F2) = 0x2E; // Chunky 5DI
+				*(short*)(0x806B23C6) = 0x287;
 			}
 
 			// DK Face Puzzle

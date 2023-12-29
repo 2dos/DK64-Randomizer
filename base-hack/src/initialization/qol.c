@@ -490,9 +490,8 @@ void initNonControllableFixes(void) {
     *(int*)(0x8060D588) = 0; // NOP
     // TEMPORARY FIX FOR SAVE BUG
     *(int*)(0x8060D790) = 0; // NOP
-
-
-
+    // Disable Sprint Music in Fungi Forest
+    writeFunction(0x8067F3DC, &playTransformationSong);
     // Cancel Tamper
     *(int*)(0x8060AEFC) = 0; // NOP
     *(int*)(0x80611788) = 0; // NOP

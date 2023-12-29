@@ -20,6 +20,7 @@ from randomizer.Enums.SearchMode import SearchMode
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     BananaportRando,
+    FasterChecksSelected,
     FillAlgorithm,
     FungiTimeSetting,
     HelmDoorItem,
@@ -27,6 +28,7 @@ from randomizer.Enums.Settings import (
     MinigameBarrels,
     MoveRando,
     RandomPrices,
+    RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
     SpoilerHints,
@@ -46,6 +48,7 @@ from randomizer.Lists.ShufflableExit import GetLevelShuffledToIndex
 from randomizer.LogicClasses import Sphere, TransitionFront
 from randomizer.Patching import ApplyRandomizer
 from randomizer.Patching.EnemyRando import randomize_enemies_0
+from randomizer.Patching.Lib import IsItemSelected
 from randomizer.Prices import GetMaxForKong
 from randomizer.Settings import Settings
 from randomizer.ShuffleBarrels import BarrelShuffle
@@ -477,9 +480,7 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
     # Set up some thresholds for speeding this method up
     medalThreshold = settings.medal_requirement
     fairyThreshold = settings.rareware_gb_fairies
-    pearlThreshold = 5
-    if settings.fast_gbs:
-        pearlThreshold = 1
+    pearlThreshold = 1 if IsItemSelected(settings.faster_checks_enabled, settings.faster_checks_selected, FasterChecksSelected.galleon_mermaid_gb) else 5
     while 1:
         spoiler.Reset()
         reachable = GetAccessibleLocations(spoiler, [], SearchMode.GetReachableWithControlledPurchases, locationsToPurchase)
@@ -1844,7 +1845,11 @@ def GetLogicallyAccessibleKongLocations(spoiler: Spoiler, kongLocations, ownedKo
             spoiler.settings.level_order[level] == Levels.AngryAztec
             and Locations.LankyKong in kongLocations
             # Must be able to bypass Guitar door - the active bananaports condition is in case your only Llama Temple access is through the quicksand cave
-            and (Kongs.diddy in ownedKongs or spoiler.settings.open_levels or (Kongs.donkey in ownedKongs and spoiler.settings.activate_all_bananaports == ActivateAllBananaports.all))
+            and (
+                Kongs.diddy in ownedKongs
+                or IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door_opened)
+                or (Kongs.donkey in ownedKongs and spoiler.settings.activate_all_bananaports == ActivateAllBananaports.all)
+            )
             and (Kongs.donkey in ownedKongs or Kongs.lanky in ownedKongs or Kongs.tiny in ownedKongs)
         ):  # Must be able to open Llama Temple
             logicallyAccessibleKongLocations.append(Locations.LankyKong)

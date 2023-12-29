@@ -31,10 +31,12 @@ from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
     DamageAmount,
+    FasterChecksSelected,
     GlitchesSelected,
     HardModeSelected,
     HelmDoorItem,
     LogicType,
+    RemovedBarriersSelected,
     ShockwaveStatus,
     ShuffleLoadingZones,
     TrainingBarrels,
@@ -441,6 +443,14 @@ class LogicVarHolder:
         """Determine whether the lowered fall damage height threshold is enabled or not."""
         return IsItemSelected(self.settings.hard_mode, self.settings.hard_mode_selected, HardModeSelected.reduced_fall_damage_threshold)
 
+    def checkFastCheck(self, check: FasterChecksSelected):
+        """Determine whether a fast check is selected."""
+        return IsItemSelected(self.settings.faster_checks_enabled, self.settings.faster_checks_selected, check)
+
+    def checkBarrier(self, check: RemovedBarriersSelected):
+        """Determine whether a barrier has been removed by the removed barriers setting."""
+        return IsItemSelected(self.settings.remove_barriers_enabled, self.settings.remove_barriers_selected, check)
+
     def hasMoveSwitchsanity(self, switchsanity_setting: Switches, kong_needs_current: bool = True, level: Levels = Levels.JungleJapes, default_slam_level: int = 0) -> bool:
         """Determine whether the kong has the necessary moves based on the switchsanity data."""
         data = self.settings.switchsanity_data[switchsanity_setting]
@@ -785,6 +795,25 @@ class LogicVarHolder:
 
     def CanAccessKRool(self):
         """Make sure that each required key has been turned in."""
+        required_base_keys = [
+            Events.JapesKeyTurnedIn,
+            Events.AztecKeyTurnedIn,
+            Events.FactoryKeyTurnedIn,
+            Events.GalleonKeyTurnedIn,
+            Events.ForestKeyTurnedIn,
+            Events.CavesKeyTurnedIn,
+            Events.CastleKeyTurnedIn,
+            Events.HelmKeyTurnedIn,
+        ]
+        if self.settings.k_rool_vanilla_requirement:
+            required_base_keys = [
+                Events.FactoryKeyTurnedIn,
+                Events.HelmKeyTurnedIn,
+            ]
+        return all(not keyRequired not in self.Events for keyRequired in self.settings.krool_keys_required if keyRequired in required_base_keys)
+
+    def IsKLumsyFree(self):
+        """Check all keys."""
         return all(not keyRequired not in self.Events for keyRequired in self.settings.krool_keys_required)
 
     def IsBossReachable(self, level):

@@ -19,6 +19,7 @@ from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import GetKongs, Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
+from randomizer.Enums.Models import Model
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Settings import *
 from randomizer.Enums.SongType import SongType
@@ -269,7 +270,7 @@ class Settings:
         self.kasplat_rando_setting = None
         self.puzzle_rando = None
         self.shuffle_shops = None
-        self.switchsanity = None
+        self.switchsanity = SwitchsanityLevel.off
         self.switchsanity_data = {}
         self.extreme_debugging = False  # Use when you want to know VERY specifically where things fail in the fill - unnecessarily slows seed generation!
 
@@ -412,8 +413,17 @@ class Settings:
         #  Color
         self.colors = {}
         self.color_palettes = {}
-        self.klaptrap_model = KlaptrapModel.green
-        self.klaptrap_model_index = 0x21
+        # Random Model Swaps
+        self.random_models = RandomModels.off
+        self.bother_klaptrap_model = Model.KlaptrapGreen
+        self.beetle_model = Model.Beetle
+        self.rabbit_model = Model.Rabbit
+        self.panic_fairy_model = Model.BananaFairy
+        self.turtle_model = Model.Turtle
+        self.panic_klaptrap_model = Model.KlaptrapGreen
+        self.seek_klaptrap_model = Model.KlaptrapGreen
+        self.fungi_tomato_model = Model.Tomato
+        self.caves_tomato_model = Model.IceTomato
         # DK
         self.dk_fur_colors = CharacterColors.vanilla
         self.dk_fur_custom_color = "#000000"
@@ -474,7 +484,6 @@ class Settings:
         self.krool_access = False
         self.helm_phase_order_rando = None
         self.open_lobbies = None
-        self.open_levels = None
         self.randomize_pickups = False
         self.random_medal_requirement = False
         self.medal_requirement = 15
@@ -498,8 +507,6 @@ class Settings:
         self.spoiler_include_level_order = False
         self.fast_warps = False
         self.dpad_display = DPadDisplays.off
-        self.high_req = False
-        self.fast_gbs = False
         self.auto_keys = False
         self.kko_phase_order = [0, 0, 0]
         self.toe_order = [0] * 10
@@ -524,6 +531,10 @@ class Settings:
         self.item_rando_list_selected = []
         self.misc_changes_selected = []
         self.hard_mode_selected = []
+        self.faster_checks_enabled = False
+        self.remove_barriers_enabled = False
+        self.faster_checks_selected = []
+        self.remove_barriers_selected = []
         self.songs_excluded = False
         self.excluded_songs_selected = []
         self.enemies_selected = []
@@ -537,6 +548,7 @@ class Settings:
         self.colorblind_mode = ColorblindMode.off
         self.win_condition = WinCondition.beat_krool
         self.key_8_helm = False
+        self.k_rool_vanilla_requirement = False
         self.random_starting_region = False
         self.starting_region = {}
         self.holiday_setting = False
@@ -666,9 +678,12 @@ class Settings:
             Switches.FungiGreenFeather: SwitchInfo("Forest Green Tunnel Switches (1)", Kongs.tiny, SwitchType.GunSwitch, 0x1D9, Maps.FungiForest, [0x18, 0x19]),
             Switches.FungiGreenPineapple: SwitchInfo("Forest Green Tunnel Switches (2)", Kongs.chunky, SwitchType.GunSwitch, 0x1DA, Maps.FungiForest, [0x1A, 0x1B], [Switches.FungiGreenFeather]),
         }
-        if self.switchsanity:
+        if self.switchsanity != SwitchsanityLevel.off:
             kongs = GetKongs()
             for slot in self.switchsanity_data:
+                if self.switchsanity == SwitchsanityLevel.helm_access:
+                    if slot not in (Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport):
+                        continue
                 if slot == Switches.IslesMonkeyport:
                     # Monkeyport is restricted to things which can help get the kong up high enough
                     self.switchsanity_data[slot].kong = random.choice([Kongs.donkey, Kongs.lanky, Kongs.tiny])
@@ -946,10 +961,11 @@ class Settings:
             self.switch_allocation = allocation.copy()
 
         # Mill Levers
-        if not self.puzzle_rando and self.fast_gbs:
+        mill_shortened = IsItemSelected(self.faster_checks_enabled, self.faster_checks_selected, FasterChecksSelected.forest_mill_conveyor)
+        if not self.puzzle_rando and mill_shortened:
             self.mill_levers = [2, 3, 1, 0, 0]
         elif self.puzzle_rando:
-            mill_lever_cap = 3 if self.fast_gbs else 5
+            mill_lever_cap = 3 if mill_shortened else 5
             self.mill_levers = [0] * 5
             for slot in range(mill_lever_cap):
                 self.mill_levers[slot] = random.randint(1, 3)
@@ -1308,7 +1324,7 @@ class Settings:
 
         # Designate the Rock GB as a location for the starting kong
         spoiler.LocationList[Locations.IslesDonkeyJapesRock].kong = self.starting_kong
-        if self.fast_gbs:
+        if IsItemSelected(self.faster_checks_enabled, self.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1):
             # On Fast GBs, this location refers to the blast course, not the arcade
             spoiler.LocationList[Locations.FactoryDonkeyDKArcade].name = "Factory Donkey Blast Course"
 
@@ -1526,7 +1542,9 @@ class Settings:
             kongCageLocations.remove(kongLocation)
 
         # The following cases do not apply if you could bypass the Guitar door without Diddy
-        bypass_guitar_door = self.open_levels or self.activate_all_bananaports == ActivateAllBananaports.all
+        bypass_guitar_door = (
+            IsItemSelected(self.remove_barriers_enabled, self.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door_opened) or self.activate_all_bananaports == ActivateAllBananaports.all
+        )
         # In case both Diddy and Chunky need to be freed but only Aztec locations are available
         # This would be impossible, as one of them must free the Tiny location and Diddy is needed for the Lanky location
         if (

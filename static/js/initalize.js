@@ -50,11 +50,13 @@ if (window.location.protocol != "https:") {
   }
 }
 
-// if the domain is not the main domain, hide dev site warnings
+// if the domain is not the main domain, hide dev site warnings and features
 if (location.hostname == "dk64randomizer.com") {
   document.getElementById("spoiler_warning_1").style.display = "none";
   document.getElementById("spoiler_warning_2").style.background = "";
   document.getElementById("spoiler_warning_3").style.display = "none";
+  document.getElementById("plandomizer_container").style.display = "none";
+  document.getElementById("widescreen_row").style.display = "none";
 }
 if (location.hostname != "localhost") {
   document.getElementById("plando_string_section").style.display = "none";
@@ -252,6 +254,27 @@ function music_selection_filebox() {
       import js
       from ui.music_select import import_music_selections
       import_music_selections(js.imported_music_json)
+    `);
+  };
+
+  input.click();
+}
+
+var imported_plando_json = "";
+
+function plando_import_filebox() {
+  let input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".json";
+
+  input.onchange = async (e) => {
+    let file = e.target.files[0];
+    let json_text = await file.text();
+    imported_plando_json = json_text;
+    pyodide.runPythonAsync(`
+      import js
+      from ui.plando_settings import import_plando_options
+      import_plando_options(js.imported_plando_json)
     `);
   };
 
@@ -863,6 +886,69 @@ function loadDataFromIndexedDB(key) {
       };
     } catch {
       reject("Read Error");
+    }
+  });
+}
+
+function unlock_spoiler_log(hash) {
+  console.log("Unlocking spoiler log");
+  // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
+  // Get the website location
+  if (window.location.hostname == "dev.dk64randomizer.com") {
+    var url = "https://dev.dk64randomizer.com/get_spoiler_log";
+  }
+  else if (window.location.hostname == "dk64randomizer.com") {
+    var url = "https://dk64randomizer.com/get_spoiler_log";
+  }
+  else {
+    var url = "http://localhost:8000/get_spoiler_log";
+  }
+  $.ajax({
+    url: url,
+    type: "GET",
+    data: {
+      hash: hash,
+    },
+    success: function (data, textStatus, xhr) {
+      if (xhr.status === 200) {
+        console.log("Success");
+        save_text_as_file(JSON.stringify(data, null, 2), document.getElementById('generated_seed_id').innerHTML + '-spoilerlog.json')
+      } else if (xhr.status === 425) {
+        console.log("Not unlocked yet");
+        // set the contents of spoiler_log_download_messages to "The spoiler log is not unlocked yet."
+        document.getElementById("spoiler_log_download_messages").innerHTML =
+          "The spoiler log is not unlocked yet.";
+        // display download_modal
+        $("#download_modal").modal("show");
+        // hide the modal after 5 seconds
+        setTimeout(function () {
+          $("#download_modal").modal("hide");
+        }, 5000);
+      } else {
+        console.log("Spoiler log is no longer available");
+        // set the contents of spoiler_log_download_messages to "The spoiler log is no longer available."
+        document.getElementById("spoiler_log_download_messages").innerHTML =
+          "The spoiler log is no longer available.";
+        // display download_modal
+        $("#download_modal").modal("show");
+        // hide the modal after 5 seconds
+        setTimeout(function () {
+          $("#download_modal").modal("hide");
+        }, 5000);
+
+      }
+    },
+    error: function (xhr, textStatus, errorThrown) {
+      console.log("Error:", errorThrown);
+      // set the contents of spoiler_log_download_messages to "There was an error downloading the spoiler log."
+      document.getElementById("spoiler_log_download_messages").innerHTML =
+        "There was an error downloading the spoiler log.";
+      // display download_modal
+      $("#download_modal").modal("show");
+      // hide the modal after 5 seconds
+      setTimeout(function () {
+        $("#download_modal").modal("hide");
+      }, 5000);
     }
   });
 }

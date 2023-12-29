@@ -1,4 +1,5 @@
 """Import functions within the UI folder to have them run on load of the UI."""
+import ui.plando_settings
 from ui.generate_buttons import update_seed_text
 from ui.rando_options import (
     disable_barrel_modal,
@@ -8,6 +9,8 @@ from ui.rando_options import (
     disable_excluded_songs_modal,
     disable_hard_mode_modal,
     disable_helm_hurry,
+    disable_remove_barriers,
+    disable_faster_checks,
     disable_move_shuffles,
     disable_music,
     enable_plandomizer,
@@ -73,5 +76,7 @@ updateDoorTwoNumAccess(None)
 item_rando_list_changed(None)
 toggle_key_settings(None)
 disable_helm_hurry(None)
+disable_remove_barriers(None)
+disable_faster_checks(None)
 toggle_vanilla_door_rando(None)
 enable_plandomizer(None)

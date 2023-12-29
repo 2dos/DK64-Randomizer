@@ -446,64 +446,43 @@ void initItemRando(void) {
 
     // BP Table
     int bp_size = 0x28;
-    unsigned short* bp_write = dk_malloc(bp_size << 1);
-    int* bp_file_size;
-    *(int*)(&bp_file_size) = bp_size << 1;
-    copyFromROM(0x1FF0E00,bp_write,&bp_file_size,0,0,0,0);
+    unsigned short* bp_write = getFile(bp_size << 1, 0x1FF0E00);
     for (int i = 0; i < bp_size; i++) {
         bp_item_table[i] = bp_write[i];
     }
     // Medal Table
     int medal_size = 0x28;
-    unsigned char* medal_write = dk_malloc(medal_size);
-    int* medal_file_size;
-    *(int*)(&medal_file_size) = medal_size;
-    copyFromROM(0x1FF1080,medal_write,&medal_file_size,0,0,0,0);
+    unsigned char* medal_write = getFile(medal_size, 0x1FF1080);
     for (int i = 0; i < medal_size; i++) {
         medal_item_table[i] = medal_write[i];
     }
     // Crown Table
     int crown_size = 0xA;
-    unsigned short* crown_write = dk_malloc(crown_size << 1);
-    int* crown_file_size;
-    *(int*)(&crown_file_size) = crown_size << 1;
-    copyFromROM(0x1FF10C0,crown_write,&crown_file_size,0,0,0,0);
+    unsigned short* crown_write = getFile(crown_size << 1, 0x1FF10C0);
     for (int i = 0; i < crown_size; i++) {
         crown_item_table[i] = crown_write[i];
     }
     // Key Table
     int key_size = 0x8;
-    unsigned short* key_write = dk_malloc(key_size << 1);
-    int* key_file_size;
-    *(int*)(&key_file_size) = key_size << 1;
-    copyFromROM(0x1FF1000,key_write,&key_file_size,0,0,0,0);
+    unsigned short* key_write = getFile(key_size << 1, 0x1FF1000);
     for (int i = 0; i < key_size; i++) {
         key_item_table[i] = key_write[i];
     }
     // Fairy Table
     int fairy_size = 40;
-    unsigned short* fairy_write = dk_malloc(fairy_size);
-    int* fairy_file_size;
-    *(int*)(&fairy_file_size) = fairy_size;
-    copyFromROM(0x1FF1040,fairy_write,&fairy_file_size,0,0,0,0);
+    unsigned short* fairy_write = getFile(fairy_size, 0x1FF1040);
     for (int i = 0; i < (fairy_size>>1); i++) {
         fairy_item_table[i] = fairy_write[i];
     }
     // Rainbow Coin Table
     int rainbow_size = 0x10;
-    unsigned short* rainbow_write = dk_malloc(rainbow_size << 1);
-    int* rainbow_file_size;
-    *(int*)(&rainbow_file_size) = rainbow_size << 1;
-    copyFromROM(0x1FF10E0,rainbow_write,&rainbow_file_size,0,0,0,0);
+    unsigned short* rainbow_write = getFile(rainbow_size << 1, 0x1FF10E0);
     for (int i = 0; i < rainbow_size; i++) {
         rcoin_item_table[i] = rainbow_write[i];
     }
     // Melon Crate Table
     int crate_size = 0x10;
-    unsigned short* crate_write = dk_malloc(crate_size << 1);
-    int* crate_file_size;
-    *(int*)(&crate_file_size) = crate_size << 1;
-    copyFromROM(0x1FF0E80,crate_write,&crate_file_size,0,0,0,0);
+    unsigned short* crate_write = getFile(crate_size << 1, 0x1FF0E80);
     for (int i = 0; i < crate_size; i++) {
         crate_item_table[i] = crate_write[i];
     }
@@ -513,11 +492,7 @@ void initItemRando(void) {
         bonus_data[54 + i].kong_actor = (i % 5) + 2;
         bonus_data[54 + i].spawn_actor = getBPItem(i);
     }
-    int reward_size = 0x100;
-    reward_rom_struct* reward_write = dk_malloc(medal_size);
-    int* reward_file_size;
-    *(int*)(&reward_file_size) = reward_size;
-    copyFromROM(0x1FF1200,reward_write,&reward_file_size,0,0,0,0);
+    reward_rom_struct* reward_write = getFile(0x100, 0x1FF1200);
     for (int i = 0; i < 0x40; i++) {
         if (reward_write[i].flag > -1) {
             for (int j = 0; j < 95; j++) {

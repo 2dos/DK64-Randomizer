@@ -5,3 +5,4 @@
 .definelabel ActorCollisionArray, 0x8074C604
 .definelabel ActorHealthArray, 0x8074D0C4
 .definelabel ActorInteractionArray, 0x8074D624
+.definelabel AnimationPointer, 0x807F5AF0

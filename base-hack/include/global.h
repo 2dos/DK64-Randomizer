@@ -198,7 +198,10 @@ extern void fixRBSlowTurn(void);
 extern void postKRoolSaveCheck(void);
 extern int* displayHeadTexture(int* dl, int texture, float x, float y, float scale);
 
+extern void* getFile(int size, int rom);
+
 extern int CanDive_WithCheck(void);
+extern void playTransformationSong(songs song, float volume);
 
 extern void tagBarrelBackgroundKong(int kong_actor);
 extern void tagAnywhereInit(int is_homing, int model2_id, int obj);
@@ -259,10 +262,10 @@ extern int updateLevelIGT(void);
 extern int* printLevelIGT(int* dl, int x, int y, float scale, char* str);
 extern void RabbitRaceInfiniteCode(void);
 extern void completeBonus(actorData* actor);
-extern void spawnBonusReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
-extern void spawnCrownReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
-extern void spawnBossReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
-extern void spawnDirtPatchReward(int object, int x_f, int y_f, int z_f, int unk0, int cutscene, int flag, int unk1);
+extern void spawnBonusReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1);
+extern void spawnCrownReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1);
+extern void spawnBossReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1);
+extern void spawnDirtPatchReward(int object, float x, float y, float z, int unk0, int cutscene, int flag, int unk1);
 extern void melonCrateItemHandler(behaviour_data* behaviour_pointer, int index, int p1, int p2);
 extern void spawnRewardAtActor(int object, int flag);
 extern void spawnMinecartReward(int object, int flag);
@@ -289,7 +292,7 @@ extern int getFairyModel(int flag);
 extern int getRainbowCoinItem(int old_flag);
 extern int getCrateItem(int old_flag);
 extern int* controlKeyText(int* dl);
-extern void keyGrabHook(int song, int vol);
+extern void keyGrabHook(int song, float vol);
 extern int itemGrabHook(int collectable_type, int obj_type, int is_homing);
 extern int getKeyFlag(int index);
 extern int getKongFlag(int kong_index);
@@ -417,8 +420,20 @@ extern void SaveExtraData(extra_global_data data_type, int sub_index, int value)
 extern void ResetExtraData(extra_global_data data_type, int sub_index);
 extern void setKrushaAmmoColor(void);
 
+extern void handleCannonGameReticle(void);
+
 extern void loadWidescreen(overlays loaded_overlay);
+extern void writeFunctionLoop(void);
+extern void cFuncLoop(void);
 extern void initFilename(void);
+extern void* getPointerFile(int table, int file);
+extern void overlay_mod_menu(void);
+extern void overlay_mod_critter(void);
+extern void overlay_mod_boss(void);
+extern void overlay_mod_bonus(void);
+extern void initArcade(void);
+extern void initJetpac(void);
+extern void overlay_mod_race(void);
 
 extern void handleGrabbingLock(void* player, int player_index, int allow_vines);
 extern void handleLedgeLock(void);

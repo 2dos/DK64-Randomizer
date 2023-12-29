@@ -31,6 +31,8 @@ START:
 		// Very Early WS Boot Stuff
 		JAL loadWidescreen
 		ADDIU a0, r0, 0
+		JAL writeFunctionLoop
+		NOP
 		LUI v0, 0x8074
 		ADDIU t3, r0, 0xD00 ; New size of bank 0
 		SW t3, 0x52B0 (v0)
@@ -61,12 +63,7 @@ START:
 		ADDIU t3, t3, 1
 		LUI t4, 0x8073
 		SW t3, 0xE76C (t4)
-		//write per frame hook
-		//
-		LUI t3, hi(mainASMFunctionJump)
-		LW t3, lo(mainASMFunctionJump) (t3)
-		LUI t4, 0x8060
-		SW t3, 0xC164 (t4) //store per frame hook
+
 		// Write Init Hook
 		LUI t3, hi(initHook)
 		LW t3, lo(initHook) (t3)
@@ -83,23 +80,6 @@ START:
 		LUI t6, 0x000D
 		//end of boot code
 		/////////////////////////////////////////////////////
-
-mainASMFunction:
-	JAL	0x805FC2B0
-	NOP
-	JAL cFuncLoop
-	NOP
-	NOP
-	J 0x805FC16C
-	NOP
-
-mainASMFunctionJump:
-	J mainASMFunction //instruction copied and used as a hook
-	NOP
-
-mainASMFunctionVanilla:
-	JAL	0x805FC2B0
-	NOP
 
 LobbyReplaceCode1:
 	LUI t7, hi(ReplacementLobbiesArray)
@@ -141,6 +121,14 @@ getObjectArrayAddr:
 	MFLO	a1
 	JR 		ra
 	ADD 	v0, a0, a1
+
+getFloatUpper:
+	; f12 = Float Value
+	mfc1 	$v0, $f12
+	sra 	$v0, $v0, 16
+	JR 		ra
+	andi 	$v0, $v0, 0xFFFF
+
 	
 .align 0x10
 END:

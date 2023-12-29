@@ -62,7 +62,24 @@
     "enemy_drop_rando": 0,
     "enemy_rando": 0.95,
     "enemy_speed_rando": 0.5,
-    "fast_gbs": 1,
+    "faster_checks_enabled": 1,
+    "faster_checks_selected": {
+        "factory_toy_monster_fight": 1,
+        "factory_piano_game": 1,
+        "factory_diddy_research_and_development": 1,
+        "factory_arcade_round_1": 1,
+        "factory_car_race": 1,
+        "galleon_seal_race": 1,
+        "galleon_mech_fish": 1,
+        "galleon_mermaid_gb": 1,
+        "forest_mill_conveyor": 1,
+        "forest_owl_race": 1,
+        "forest_rabbit_race": 1,
+        "caves_ice_tomato_minigame": 1,
+        "castle_minecart": 1,
+        "castle_car_race": 1,
+        "jetpac": 1
+    },
     "fast_warps": 1,
     "fps_display": 0.5,
     "free_trade_setting": {
@@ -168,7 +185,6 @@
         "max": 1800,
         "mean": 1200
     },
-    "high_req": 1,
     "item_rando_list_selected": {
         "shop": 0.95,
         "banana": 0.95,
@@ -193,6 +209,7 @@
     "krool_access": 0.7,
     "krool_phase_order_rando": 0.8,
     "krool_random": 1,
+    "k_rool_vanilla_requirement": 0,
     "krusha_ui": {
         "no_slot": 0.5,
         "random": 0.5
@@ -225,7 +242,6 @@
     },
     "no_healing": 0,
     "no_melons": 0,
-    "open_levels": 0.75,
     "open_lobbies": 0.9,
     "perma_death": 0,
     "portal_numbers": 1,
@@ -256,6 +272,23 @@
         "max": 10,
         "mean": 5
     },
+    "remove_barriers_enabled": 1,
+    "remove_barriers_selected": {
+        "japes_coconut_gates_opened": 0.75,
+        "japes_shellhive_gate_opened": 0.75,
+        "aztec_tunnel_door_opened": 0.75,
+        "aztec_5dtemple_switches_spawned": 1,
+        "aztec_llama_switches": 0.75,
+        "factory_production_room_on": 1,
+        "factory_testing_gate_opened": 0.75,
+        "galleon_lighthouse_gate_opened": 0.75,
+        "galleon_shipwreck_gate_opened": 0.75,
+        "galleon_shipwreck_permanently_open": 1,
+        "galleon_seasick_ship_spawned": 1,
+        "forest_green_tunnel_opened": 0.75,
+        "forest_yellow_tunnel_opened": 0.75,
+        "caves_igloo_pads_spawned": 1
+    },
     "select_keys": 0,
     "shockwave_status": {
         "vanilla": 0.3,
@@ -278,7 +311,9 @@
         "mean": 4
     },
     "starting_random": 1,
-    "switchsanity": 0,
+    "switchsanity": {
+        "off": 1
+    },
     "tns_location_rando": 0,
     "troff_text": {
         "min": 100,

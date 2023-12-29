@@ -726,7 +726,7 @@ void file_progress_screen_code(actorData* actor, int buttons) {
 					openCrownDoor();
 					giveCollectables();
 					activateBananaports();
-					if(Rando.fast_gbs) {
+					if(Rando.faster_checks.rabbit_race) {
 						setPermFlag(FLAG_RABBIT_ROUND1); //Start race at round 2
 					}
 					if (Rando.quality_of_life.caves_kosha_dead) {

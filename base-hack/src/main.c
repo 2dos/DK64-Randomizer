@@ -17,6 +17,7 @@ char tag_locked = 0;
 
 
 void cFuncLoop(void) {
+	regularFrameLoop();
 	if (!delayed_load) {
 		// loadWidescreen(OVERLAY_BOOT);
 		delayed_load = 1;
@@ -32,7 +33,6 @@ void cFuncLoop(void) {
 	replace_zones(0);
 	alter_boss_key_flags();
 	if (ObjectModel2Timer <= 2) {
-		
 		setFlag(0x78, 0, FLAGTYPE_TEMPORARY); // Clear K. Lumsy temp flag
 		setFlag(0x79, 0, FLAGTYPE_TEMPORARY); // Clear BFI Reward Cutscene temp flag
 		if ((!Rando.tns_portal_rando_on) && (Rando.tns_indicator)) {
@@ -57,6 +57,7 @@ void cFuncLoop(void) {
 	} else {
 		setEnemyDBPopulation(0);
 	}
+	handleCannonGameReticle();
 	if (grab_lock_timer >= 0) {
 		grab_lock_timer += 1;
 		if (grab_lock_timer > 10) {
@@ -231,6 +232,13 @@ void earlyFrame(void) {
 			}
 			QueueHelmTimer = 0;
 		}
+		if (Rando.pppanic_fairy_model) {
+			int fairy_model = 0x3D;
+			if ((CurrentMap == MAP_ISLES_DKTHEATRE) || (CurrentMap == MAP_TRAININGGROUNDS_ENDSEQUENCE)) {
+				fairy_model = Rando.pppanic_fairy_model;
+			}
+			*(short*)(0x8075575C) = fairy_model;
+		}
 	}
 	if ((CurrentMap == MAP_KROOLCHUNKY) && (CutsceneIndex == 14) && (CutsceneActive == 1)) {
 		PauseText = 1;
@@ -355,10 +363,7 @@ static unsigned char wait_text_lengths[] = {19, 25, 26, 25};
 
 void insertROMMessages(void) {
 	for (int i = 0; i < 4; i++) {
-		unsigned char* message_write = dk_malloc(WAIT_SIZE);
-		int message_size = WAIT_SIZE;
-		int* message_file_size;
-		*(int*)(&message_file_size) = message_size;
+		unsigned char* message_write = getFile(WAIT_SIZE, 0x1FFD000 + (WAIT_SIZE * i));
 		void* ptr = 0;
 		if (i == 0) {
 			ptr = &wait_text_0;
@@ -369,7 +374,6 @@ void insertROMMessages(void) {
 		} else if (i == 3) {
 			ptr = &wait_text_3;
 		}
-		copyFromROM(0x1FFD000 + (WAIT_SIZE * i),message_write,&message_file_size,0,0,0,0);
 		if (message_write[0] != 0) {
 			dk_memcpy(ptr, message_write, WAIT_SIZE);
 			wait_text_lengths[i] = 0;

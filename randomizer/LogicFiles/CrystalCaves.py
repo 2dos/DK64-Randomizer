@@ -7,6 +7,7 @@ from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Locations import Locations
 from randomizer.Enums.MinigameType import MinigameType
 from randomizer.Enums.Regions import Regions
+from randomizer.Enums.Settings import RemovedBarriersSelected
 from randomizer.Enums.Transitions import Transitions
 from randomizer.LogicClasses import (Event, LocationLogic, Region,
                                      TransitionFront)
@@ -134,11 +135,11 @@ LogicRegions = {
         TransitionFront(Regions.CrystalCavesMedals, lambda l: True),
         TransitionFront(Regions.CrystalCavesMain, lambda l: True),
         TransitionFront(Regions.GiantKosha, lambda l: Events.CavesLargeBoulderButton in l.Events and l.monkeyport and l.istiny),
-        TransitionFront(Regions.DonkeyIgloo, lambda l: ((l.settings.high_req or (l.jetpack and l.diddy)) and (l.bongos and l.isdonkey)) or l.CanPhaseswim() or l.phasewalk, Transitions.CavesIglooToDonkey),
-        TransitionFront(Regions.DiddyIgloo, lambda l: ((l.settings.high_req or (l.jetpack and l.diddy)) and (l.guitar and l.isdiddy)) or l.CanPhaseswim() or l.phasewalk, Transitions.CavesIglooToDiddy),
-        TransitionFront(Regions.LankyIgloo, lambda l: ((l.settings.high_req or (l.jetpack and l.diddy)) and (l.trombone and l.islanky)) or l.CanPhaseswim() or l.phasewalk, Transitions.CavesIglooToLanky),
-        TransitionFront(Regions.TinyIgloo, lambda l: ((l.settings.high_req or (l.jetpack and l.diddy)) and (l.saxophone and l.istiny)) or l.CanPhaseswim() or l.phasewalk, Transitions.CavesIglooToTiny),
-        TransitionFront(Regions.ChunkyIgloo, lambda l: ((l.settings.high_req or (l.jetpack and l.diddy)) and (l.triangle and l.ischunky)) or l.CanPhaseswim() or l.phasewalk, Transitions.CavesIglooToChunky),
+        TransitionFront(Regions.DonkeyIgloo, lambda l: ((l.checkBarrier(RemovedBarriersSelected.caves_igloo_pads_spawned) or (l.jetpack and l.diddy)) and (l.bongos and l.isdonkey)) or l.CanPhaseswim() or l.phasewalk, Transitions.CavesIglooToDonkey),
+        TransitionFront(Regions.DiddyIgloo, lambda l: ((l.checkBarrier(RemovedBarriersSelected.caves_igloo_pads_spawned) or (l.jetpack and l.diddy)) and (l.guitar and l.isdiddy)) or l.CanPhaseswim() or l.phasewalk, Transitions.CavesIglooToDiddy),
+        TransitionFront(Regions.LankyIgloo, lambda l: ((l.checkBarrier(RemovedBarriersSelected.caves_igloo_pads_spawned) or (l.jetpack and l.diddy)) and (l.trombone and l.islanky)) or l.CanPhaseswim() or l.phasewalk, Transitions.CavesIglooToLanky),
+        TransitionFront(Regions.TinyIgloo, lambda l: ((l.checkBarrier(RemovedBarriersSelected.caves_igloo_pads_spawned) or (l.jetpack and l.diddy)) and (l.saxophone and l.istiny)) or l.CanPhaseswim() or l.phasewalk, Transitions.CavesIglooToTiny),
+        TransitionFront(Regions.ChunkyIgloo, lambda l: ((l.checkBarrier(RemovedBarriersSelected.caves_igloo_pads_spawned) or (l.jetpack and l.diddy)) and (l.triangle and l.ischunky)) or l.CanPhaseswim() or l.phasewalk, Transitions.CavesIglooToChunky),
         TransitionFront(Regions.CavesBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
 

@@ -15,6 +15,7 @@
 #include "ultra64.h"
 #include "common_enums.h"
 #include "common_structs.h"
+#include "dynamic_structs.h"
 #include "item_data.h"
 #include "variable_space_structs.h"
 #include "dk64.h"

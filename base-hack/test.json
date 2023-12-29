@@ -50,7 +50,8 @@
       "fast_hints":true,
       "brighten_mmm_enemies":true,
       "global_instrument":true,
-      "fast_pause_transitions":true
+      "fast_pause_transitions":true,
+      "cannon_game_speed":true
    },
    "moves_pregiven":{
       "blast":true,

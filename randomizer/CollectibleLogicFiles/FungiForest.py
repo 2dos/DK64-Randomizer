@@ -7,6 +7,7 @@ from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
 from randomizer.Enums.Regions import Regions
 from randomizer.Enums.Switches import Switches
+from randomizer.Enums.Settings import FasterChecksSelected
 from randomizer.Enums.Time import Time
 from randomizer.LogicClasses import Collectible
 
@@ -103,7 +104,7 @@ LogicRegions = {
 
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.jetpack and l.TimeAccess(Regions.HollowTreeArea, Time.Night), None, 4),  # Alcove in tree
         Collectible(Collectibles.coin, Kongs.lanky, lambda l: True, None, 3),  # Near Lanky BP
-        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (not l.settings.fast_gbs or l.sprint) and l.TimeAccess(Regions.HollowTreeArea, Time.Day) and l.trombone, None, 3, True, True, "vanilla", True),  # Beat first rabbit race
+        Collectible(Collectibles.coin, Kongs.lanky, lambda l: (not l.checkFastCheck(FasterChecksSelected.forest_rabbit_race) or l.sprint) and l.TimeAccess(Regions.HollowTreeArea, Time.Day) and l.trombone, None, 3, True, True, "vanilla", True),  # Beat first rabbit race
     ],
     Regions.Anthill: [
     ],
