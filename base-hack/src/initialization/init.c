@@ -195,6 +195,7 @@ void loadHooks(void) {
 		loadSingularHook(0x806680b4, checkBeforeApplyingQuicksand);
 		*(int*)(0x806680b8) = 0x8E2C0058; // LW $t4, 0x58 ($s1)
 	}
+	loadSingularHook(0x806A7474, &disableHelmKeyBounce);
 }
 
 void initHack(int source) {

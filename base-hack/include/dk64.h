@@ -113,6 +113,7 @@ extern int getPadGravity(void* actor);
 extern void BananaMedalGet(void);
 extern void CrownGet(void);
 extern void updateModel(void* data);
+extern void bounceObjectCode(int convert_to_model_two);
 
 extern void cancelMusic(int song, int unk0);
 extern void removeGorillaGone(void* actor);
