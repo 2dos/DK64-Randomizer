@@ -684,6 +684,30 @@ class Settings:
         }
 
         if self.switchsanity != SwitchsanityLevel.off:
+            kongs = GetKongs()
+            for slot in self.switchsanity_data:
+                if self.switchsanity == SwitchsanityLevel.helm_access:
+                    if slot not in (Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport):
+                        continue
+                if slot == Switches.IslesMonkeyport:
+                    # Monkeyport is restricted to things which can help get the kong up high enough
+                    self.switchsanity_data[slot].kong = random.choice([Kongs.donkey, Kongs.lanky, Kongs.tiny])
+                else:
+                    bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
+                    if self.enable_plandomizer and self.plandomizer_dict["plando_switchsanity"] != -1:
+                        for switch in self.switchsanity_data[slot].tied_settings:
+                            if str(switch.value) in self.plandomizer_dict["plando_switchsanity"].keys():
+                                bad_kongs.append(self.plandomizer_dict["plando_switchsanity"][str(switch.value)]["kong"])
+                    slot_choices_kong = [x for x in kongs if x not in bad_kongs]
+                    self.switchsanity_data[slot].kong = random.choice(slot_choices_kong)
+                    if slot == Switches.IslesHelmLobbyGone:
+                        if self.switchsanity_data[slot].kong == Kongs.chunky:
+                            self.switchsanity_data[slot].switch_type = random.choice([SwitchType.PadMove, SwitchType.InstrumentPad])  # Choose between gone and triangle
+                        elif self.switchsanity_data[slot].kong in (Kongs.donkey, Kongs.diddy):
+                            self.switchsanity_data[slot].switch_type = random.choice([SwitchType.MiscActivator, SwitchType.InstrumentPad])  # Choose between grab and bongos
+                        else:
+                            self.switchsanity_data[slot].switch_type = SwitchType.InstrumentPad
+
             if self.enable_plandomizer and self.plandomizer_dict["plando_switchsanity"] != -1:
                 for key in self.plandomizer_dict["plando_switchsanity"].keys():
                     if self.switchsanity == SwitchsanityLevel.helm_access:
@@ -700,27 +724,7 @@ class Settings:
                         for switch in self.switchsanity_data[slot].tied_settings:
                             if self.switchsanity_data[switch].kong == self.switchsanity_data[slot].kong:
                                 raise Ex.PlandoIncompatibleException(f"Same kong assigned for {self.switchsanity_data[switch].name} and {self.switchsanity_data[slot].name}.")
-            else:
-                kongs = GetKongs()
-                for slot in self.switchsanity_data:
-                    if self.switchsanity == SwitchsanityLevel.helm_access:
-                        if slot not in (Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport):
-                            continue
-                    if slot == Switches.IslesMonkeyport:
-                        # Monkeyport is restricted to things which can help get the kong up high enough
-                        self.switchsanity_data[slot].kong = random.choice([Kongs.donkey, Kongs.lanky, Kongs.tiny])
-                    else:
-                        bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
-                        slot_choices_kong = [x for x in kongs if x not in bad_kongs]
-                        self.switchsanity_data[slot].kong = random.choice(slot_choices_kong)
-                        if slot == Switches.IslesHelmLobbyGone:
-                            if self.switchsanity_data[slot].kong == Kongs.chunky:
-                                self.switchsanity_data[slot].switch_type = random.choice([SwitchType.PadMove, SwitchType.InstrumentPad])  # Choose between gone and triangle
-                            elif self.switchsanity_data[slot].kong in (Kongs.donkey, Kongs.diddy):
-                                self.switchsanity_data[slot].switch_type = random.choice([SwitchType.MiscActivator, SwitchType.InstrumentPad])  # Choose between grab and bongos
-                            else:
-                                self.switchsanity_data[slot].switch_type = SwitchType.InstrumentPad
-
+        
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
         if self.hard_mode and HardModeSelected.water_is_lava in self.hard_mode_selected:
             ItemList[Items.ProgressiveInstrumentUpgrade].playthrough = True
