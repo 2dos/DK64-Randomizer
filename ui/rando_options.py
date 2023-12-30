@@ -169,11 +169,14 @@ def max_starting_moves_count(event):
         move_count.value = max_starting_moves
 
 
+DISABLED_HELM_DOOR_VALUES = ("easy_random", "medium_random", "hard_random", "opened")
+
+
 @bind("change", "crown_door_item")
 def updateDoorOneNumAccess(event):
     """Toggle the textboxes for the first helm door."""
     door_one_selection = js.document.getElementById("crown_door_item")
-    disabled = (door_one_selection.value == "random") or (door_one_selection.value == "opened")
+    disabled = door_one_selection.value in DISABLED_HELM_DOOR_VALUES
     door_one_req = js.document.getElementById("crown_door_item_count")
     if disabled:
         door_one_req.setAttribute("disabled", "disabled")
@@ -231,7 +234,7 @@ def updateDoorOneCountText(evt):
 def updateDoorTwoNumAccess(event):
     """Toggle the textboxes for the second helm door."""
     door_two_selection = js.document.getElementById("coin_door_item")
-    disabled = (door_two_selection.value == "random") or (door_two_selection.value == "opened")
+    disabled = door_two_selection.value in DISABLED_HELM_DOOR_VALUES
     door_two_req = js.document.getElementById("coin_door_item_count")
     if disabled:
         door_two_req.setAttribute("disabled", "disabled")

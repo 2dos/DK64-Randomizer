@@ -261,7 +261,7 @@ class HelmDoorItem(IntEnum):
     vanilla: The originally required item (crowns for door 1, company coins for
         door 2).
     opened: The door is automatically opened.
-    random: The door is opened by a randomly selected item.
+    medium_random: The door is opened by a randomly selected item (Medium difficulty).
     req_gb: Golden Bananas.
     req_bp: Blueprints.
     req_companycoins: The Rareware and Nintendo coins.
@@ -272,11 +272,13 @@ class HelmDoorItem(IntEnum):
     req_rainbowcoin: Rainbow Coins.
     req_bean: The bean.
     req_pearl: Pearls.
+    easy_random: The door is opened by a randomly selected item (Easy difficulty).
+    hard_random: The door is opened by a randomly selected item (Hard difficulty).
     """
 
     vanilla = 0
     opened = 1
-    random = 2
+    medium_random = 2
     req_gb = 3
     req_bp = 4
     req_companycoins = 5
@@ -287,6 +289,8 @@ class HelmDoorItem(IntEnum):
     req_rainbowcoin = 10
     req_bean = 11
     req_pearl = 12
+    easy_random = 13
+    hard_random = 14
 
 
 class HelmSetting(IntEnum):

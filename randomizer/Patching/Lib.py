@@ -6,6 +6,7 @@ from enum import IntEnum, auto
 from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union
 
 import js
+import random
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.SwitchTypes import SwitchType
@@ -210,6 +211,44 @@ class SwitchInfo:
         self.map_id = map_id
         self.ids = ids
         self.tied_settings = tied_settings
+
+
+class HelmDoorRandomInfo:
+    """Store information regarding helm door random boundaries."""
+
+    def __init__(self, min_bound: int, max_bound: int, selection_weight: float):
+        """Initialize with given parameters."""
+        self.min_bound = min_bound
+        self.max_bound = max_bound
+        self.selection_weight = selection_weight
+        self.selected_amount = None
+
+    def chooseAmount(self) -> int:
+        """Choose amount for the helm door."""
+        raw_float = random.triangular(self.min_bound, self.max_bound)
+        self.selected_amount = round(raw_float)
+        return self.selected_amount
+
+
+class HelmDoorInfo:
+    """Store information about helm door requirements."""
+
+    def __init__(self, absolute_max: int, hard: HelmDoorRandomInfo = None, medium: HelmDoorRandomInfo = None, easy: HelmDoorRandomInfo = None):
+        """Initialize with given parameters."""
+        self.absolute_max = absolute_max
+        self.hard = hard
+        self.medium = medium
+        self.easy = easy
+
+    def getDifficultyInfo(self, difficulty: int) -> HelmDoorRandomInfo:
+        """Get the random info pertaining to the difficulty."""
+        if difficulty == 0:
+            return self.easy
+        if difficulty == 1:
+            return self.medium
+        if difficulty == 2:
+            return self.hard
+        return None
 
 
 class PaletteFillType(IntEnum):
