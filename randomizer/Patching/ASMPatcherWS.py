@@ -161,8 +161,8 @@ def patchAssemblyCosmeticWS(ROM_COPY: ROM, settings: Settings):
     writeValue(ROM_COPY, 0x80029D6A, Overlay.Menu, SCREEN_WD - 30, offset_dict)  # X Position of A Button
     writeValue(ROM_COPY, 0x80029EA6, Overlay.Menu, SCREEN_WD / 2, offset_dict)  # X Position of Bouncing Orange
     writeValue(ROM_COPY, 0x80029ED2, Overlay.Menu, SCREEN_WD / 2, offset_dict)  # X Position of Analog Stick
-    writeValue(ROM_COPY, 0x80029D6E, Overlay.Menu, SCREEN_HD - 30, offset_dict)  #  Y Position of A Button
-    writeValue(ROM_COPY, 0x80029D9E, Overlay.Menu, SCREEN_HD - 30, offset_dict)  #  Y Position of A Button
+    writeValue(ROM_COPY, 0x80029D6E, Overlay.Menu, SCREEN_HD - 30, offset_dict)  # Y Position of A Button
+    writeValue(ROM_COPY, 0x80029D9E, Overlay.Menu, SCREEN_HD - 30, offset_dict)  # Y Position of A Button
     writeValue(ROM_COPY, 0x80028EEE, Overlay.Menu, SCREEN_WD / 2, offset_dict)  # X Position of Analog Stick
     writeValue(ROM_COPY, 0x80028EF2, Overlay.Menu, SCREEN_HD / 2, offset_dict)  # Y Position of Analog Stick
     writeValue(ROM_COPY, 0x80029026, Overlay.Menu, SCREEN_WD - 30, offset_dict)  # X Position of A Button
