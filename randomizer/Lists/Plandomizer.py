@@ -364,7 +364,7 @@ PlannableItemLimits = {
 }
 
 # The maximum amount of items from each group that the user is allowed to
-# place.
+# place. This includes the individual items as well as the "random" item.
 PlannableGroupLimits = {
     PlandoItems.RandomKong: 5,
     PlandoItems.RandomMove: 41,
