@@ -16,7 +16,17 @@ from randomizer.Enums.Settings import CharacterColors, ColorblindMode, HelmDoorI
 from randomizer.Enums.Models import Model
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.generate_kong_color_images import convertColors
-from randomizer.Patching.Lib import TextureFormat, float_to_hex, getObjectAddress, int_to_list, intf_to_float, PaletteFillType, SpawnerChange, applyCharacterSpawnerChanges, compatible_background_textures
+from randomizer.Patching.Lib import (
+    TextureFormat,
+    float_to_hex,
+    getObjectAddress,
+    int_to_list,
+    intf_to_float,
+    PaletteFillType,
+    SpawnerChange,
+    applyCharacterSpawnerChanges,
+    compatible_background_textures,
+)
 from randomizer.Patching.Patcher import ROM, LocalROM
 from randomizer.Settings import Settings
 

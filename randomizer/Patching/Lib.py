@@ -198,15 +198,17 @@ icon_db = {
     0xAF: "wrinkly",
 }
 
+
 class MenuTexture:
     """Class to store information regarding a texture compatible with the main menu background."""
 
-    def __init__(self, name: str, is32by32: bool, table: int=25, weight: int=100, is_color: bool=False):
+    def __init__(self, name: str, is32by32: bool, table: int = 25, weight: int = 100, is_color: bool = False):
         self.name = name
         self.is32by32 = is32by32
         self.table = table
         self.weight = weight
         self.is_color = is_color
+
 
 compatible_background_textures = {
     0x47A: MenuTexture("Gold Tower Stack", False),

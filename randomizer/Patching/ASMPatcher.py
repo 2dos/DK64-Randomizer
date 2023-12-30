@@ -119,9 +119,8 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
                 writeValue(ROM_COPY, 0x80707222, Overlay.Static, 0x073F, offset_dict)
             writeValue(ROM_COPY, 0x80707126, Overlay.Static, compatible_background_textures[settings.menu_texture_index].table, offset_dict)
             if compatible_background_textures[settings.menu_texture_index].is_color:
-                writeValue(ROM_COPY, 0x807070A2, Overlay.Static, 0x20FF, offset_dict) # TODO: Get colors working properly
+                writeValue(ROM_COPY, 0x807070A2, Overlay.Static, 0x20FF, offset_dict)  # TODO: Get colors working properly
             writeValue(ROM_COPY, 0x80754CEC, Overlay.Static, settings.menu_texture_index, offset_dict)
-
 
     if settings.crosshair_outline:
         writeValue(ROM_COPY, 0x806FFAFE, Overlay.Static, 113, offset_dict)
