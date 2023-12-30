@@ -128,7 +128,7 @@ def randomize_settings():
     if weightData is None:
         return
 
-    numTypes = set([SettingsStringDataType.int16, SettingsStringDataType.int4, SettingsStringDataType.int8, SettingsStringDataType.var_int])
+    numTypes = set([SettingsStringDataType.int16, SettingsStringDataType.u16, SettingsStringDataType.int4, SettingsStringDataType.int8, SettingsStringDataType.var_int])
     randSettings = dict()
 
     # Start by generating random values and placing them in the dictionary.

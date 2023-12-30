@@ -455,6 +455,8 @@ class Settings:
 
         self.disco_chunky = False
         self.dark_mode_textboxes = False
+        self.menu_texture_index = None
+        self.menu_texture_name = "Default"
         self.wrinkly_rgb = [255, 255, 255]
         self.krusha_ui = KrushaUi.no_slot
         self.krusha_kong = None

@@ -1,6 +1,6 @@
 """Patches assembly instructions from the overlays rather than doing changes live."""
 
-from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected
+from randomizer.Patching.Lib import Overlay, float_to_hex, IsItemSelected, compatible_background_textures
 from randomizer.Settings import Settings
 from randomizer.Enums.Settings import FasterChecksSelected, RemovedBarriersSelected, FreeTradeSetting, HardModeSelected, FungiTimeSetting, MiscChangesSelected
 from randomizer.Enums.Maps import Maps
@@ -110,6 +110,18 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
         writeValue(ROM_COPY, 0x8064F052, Overlay.Static, settings.wrinkly_rgb[0], offset_dict)
         writeValue(ROM_COPY, 0x8064F04A, Overlay.Static, settings.wrinkly_rgb[1], offset_dict)
         writeValue(ROM_COPY, 0x8064F046, Overlay.Static, settings.wrinkly_rgb[2], offset_dict)
+        # Menu Background
+        if settings.menu_texture_index is not None:
+            writeValue(ROM_COPY, 0x8070761A, Overlay.Static, 0, offset_dict)
+            if compatible_background_textures[settings.menu_texture_index].is32by32:
+                writeValue(ROM_COPY, 0x8070762E, Overlay.Static, 0xFFE0, offset_dict)
+                writeValue(ROM_COPY, 0x8070727E, Overlay.Static, 0xC07C, offset_dict)
+                writeValue(ROM_COPY, 0x80707222, Overlay.Static, 0x073F, offset_dict)
+            writeValue(ROM_COPY, 0x80707126, Overlay.Static, compatible_background_textures[settings.menu_texture_index].table, offset_dict)
+            if compatible_background_textures[settings.menu_texture_index].is_color:
+                writeValue(ROM_COPY, 0x807070A2, Overlay.Static, 0x20FF, offset_dict) # TODO: Get colors working properly
+            writeValue(ROM_COPY, 0x80754CEC, Overlay.Static, settings.menu_texture_index, offset_dict)
+
 
     if settings.crosshair_outline:
         writeValue(ROM_COPY, 0x806FFAFE, Overlay.Static, 113, offset_dict)

@@ -198,6 +198,46 @@ icon_db = {
     0xAF: "wrinkly",
 }
 
+class MenuTexture:
+    """Class to store information regarding a texture compatible with the main menu background."""
+
+    def __init__(self, name: str, is32by32: bool, table: int=25, weight: int=100, is_color: bool=False):
+        self.name = name
+        self.is32by32 = is32by32
+        self.table = table
+        self.weight = weight
+        self.is_color = is_color
+
+compatible_background_textures = {
+    0x47A: MenuTexture("Gold Tower Stack", False),
+    0x9DD: MenuTexture("Book", False),
+    0x5C8: MenuTexture("Bricks", False),
+    0x76F: MenuTexture("Bricks", False),
+    0xAAD: MenuTexture("Floodlights", False),
+    0x33D: MenuTexture("Wooden Board", False),
+    0x79C: MenuTexture("Grassy Brick", False),
+    0x992: MenuTexture("Wooden Door", False),
+    0x39B: MenuTexture("C Block", True, 25, 7),
+    0x39C: MenuTexture("G Block", True, 25, 7),
+    0x39D: MenuTexture("9 Block", True, 25, 7),
+    0x39F: MenuTexture("R Block", True, 25, 7),
+    0x3A0: MenuTexture("S Block", True, 25, 7),
+    0x3A1: MenuTexture("1 Block", True, 25, 7),
+    0x3A2: MenuTexture("F Block", True, 25, 7),
+    0x3A3: MenuTexture("8 Block", True, 25, 7),
+    0x3A4: MenuTexture("7 Block", True, 25, 7),
+    0x3A5: MenuTexture("B Block", True, 25, 7),
+    0x3A6: MenuTexture("4 Block", True, 25, 7),
+    0x3A7: MenuTexture("N Block", True, 25, 7),
+    0x3A8: MenuTexture("D Block", True, 25, 7),
+    0x3A9: MenuTexture("Q Block", True, 25, 7),
+    0x7B2: MenuTexture("Up Arrow", True, 25, 50),
+    0x7B3: MenuTexture("Down Arrow", True, 25, 50),
+    0xAC: MenuTexture("TNT", True),
+    0x7CD: MenuTexture("Night Sign", True),
+    0x3DE: MenuTexture("Color", True, 7, 50, True),
+}
+
 
 class SwitchInfo:
     """Store information regarding a switch."""

@@ -962,6 +962,8 @@ class SettingsStringDataType(IntEnum):
     var_int = auto()
     str = auto()
     list = auto()
+    # Can represent up to 65,536 values (0 to 65535)
+    u16 = auto()
 
 
 # ALL SETTINGS NEED AN ENTRY HERE!
@@ -1044,7 +1046,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.helmhurry_list_move: SettingsStringDataType.int16,
     SettingsStringEnum.helmhurry_list_pearl: SettingsStringDataType.int16,
     SettingsStringEnum.helmhurry_list_rainbow_coin: SettingsStringDataType.int16,
-    SettingsStringEnum.helmhurry_list_starting_time: SettingsStringDataType.int16,
+    SettingsStringEnum.helmhurry_list_starting_time: SettingsStringDataType.u16,
     SettingsStringEnum.high_req: SettingsStringDataType.bool,
     SettingsStringEnum.item_rando_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.item_reward_previews: SettingsStringDataType.bool,
