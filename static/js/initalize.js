@@ -902,10 +902,10 @@ function unlock_spoiler_log(hash) {
   // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
   // Get the website location
   if (window.location.hostname == "dev.dk64randomizer.com") {
-    var url = "https://dev.dk64randomizer.com/get_spoiler_log";
+    var url = "https://dev-generate.dk64rando.com/get_spoiler_log";
   }
   else if (window.location.hostname == "dk64randomizer.com") {
-    var url = "https://dk64randomizer.com/get_spoiler_log";
+    var url = "https://generate.dk64rando.com/get_spoiler_log";
   }
   else {
     var url = "http://localhost:8000/get_spoiler_log";
@@ -964,10 +964,10 @@ function get_seed_from_server(hash) {
   // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
   // Get the website location
   if (window.location.hostname == "dev.dk64randomizer.com") {
-    var url = "https://dev.dk64randomizer.com/get_seed";
+    var url = "https://dev-generate.dk64rando.com/get_seed";
   }
   else if (window.location.hostname == "dk64randomizer.com") {
-    var url = "https://dk64randomizer.com/get_seed";
+    var url = "https://generate.dk64rando.com/get_seed";
   }
   else {
     var url = "http://localhost:8000/get_seed";
