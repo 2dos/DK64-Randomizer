@@ -321,6 +321,7 @@ void initHack(int source) {
 			// New Mermaid Checking Code
 			writeFunction(0x806C3B5C, &mermaidCheck); // Mermaid Check
 			if (Rando.helm_hurry_mode) {
+				writeFunction(0x806A8A18, &QuitGame); // Save game on quit
 				*(int*)(0x80713CCC) = 0; // Prevent Helm Timer Disable
 				*(int*)(0x80713CD8) = 0; // Prevent Shutdown Song Playing
 				*(short*)(0x8071256A) = 15; // Init Helm Timer = 15 minutes

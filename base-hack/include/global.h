@@ -378,6 +378,8 @@ extern void populatePatchItem(int id, int map, int index, int world);
 extern void populateCrateItem(int id, int map, int index, int world);
 extern int isObjectTangible_detailed(int id);
 
+extern void QuitGame(void);
+
 extern void insertROMMessages(void);
 extern void handleModelTwoOpacity(short object_type, unsigned char* unk0, short* opacity);
 extern int isTBarrelFlag(int flag);
