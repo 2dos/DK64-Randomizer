@@ -72,7 +72,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     else:
         version = str(extracted_variables["version"].decode("utf-8"))
     try:
-        hash_id = str(extracted_variables["file_string"].decode("utf-8"))
+        hash_id = str(extracted_variables["seed_number"].decode("utf-8"))
     except Exception:
         hash_id = None
     # Make sure we re-load the seed id for patch file creation
@@ -266,7 +266,9 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         js.document.getElementById("tracker_text").value = ""
     js.document.getElementById("spoiler_log_block").style.display = ""
     loop.run_until_complete(GenerateSpoiler(spoiler))
-    js.document.getElementById("generated_seed_id").innerHTML = seed_id
+    js.document.getElementById("generated_seed_id").innerHTML = hash_id
+    # Set the current URL to the seed ID so that it can be shared without reloading the page
+    js.window.history.pushState("generated_seed", hash_id, f"/randomizer?seed_id={hash_id}")
     # if generate_spoiler_log is False enable the download_unlocked_spoiler_button button
     if settings.generate_spoilerlog is False and hash_id is not None:
         try:
