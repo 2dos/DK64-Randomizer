@@ -1,11 +1,11 @@
 """Server code for the randomizer."""
 import codecs
 import json
+import base64
 import os
 import random
 import time
 import traceback
-from file_encryption import random_string, encrypt_string
 import zipfile
 from io import BytesIO
 from multiprocessing import Process, Queue
@@ -55,10 +55,18 @@ except Exception:
     with open("last_generated_time.cfg", "w") as f:
         f.write(str(last_generated_time))
 TIMEOUT = os.environ.get("TIMEOUT", 400)
-Encryption_Key = os.environ.get("ENCRYPTION_KEY", random_string(128))
 patch = open("./static/patches/shrink-dk64.bps", "rb")
 original = open("dk64.z64", "rb")
 og_patched_rom = BytesIO(bps.patch(original, patch).read())
+# load all the settings strings into memory
+presets = []
+with open("static/presets/preset_files.json", "r") as f:
+    for preset in json.load(f)["progression"]:
+        with open("static/presets/" + preset, "r") as preset_file:
+            preset_data = json.load(preset_file)
+            # remove any preset where the description is empty
+            if len(preset_data.get("description")) > 3:
+                presets.append(preset_data)
 
 if os.environ.get("HOSTED_SERVER") is not None:
     import boto3
@@ -217,17 +225,19 @@ def lambda_function():
                     )
                 except Exception:
                     pass
-                # Encrypt the time and hash with the encryption key.
-                file_name = encrypt_string(str(str(hash) + str(resp_data[1].settings.seed_id)), Encryption_Key)
-                # Get the current time and add 5 hours to it.
-                unlock_time = time.time() + 18000
-                # Append the current time to the spoiler log as unlock_time.
-                spoiler_log["Unlock_Time"] = unlock_time
-                spoiler_log["Generated_Time"] = generated_time
-                # write the spoiler log to a file in generated_seeds folder. Create the folder if it doesn't exist.
-                os.makedirs("generated_seeds", exist_ok=True)
-                with open("generated_seeds/" + file_name + ".json", "w") as f:
-                    f.write(str(json.dumps(spoiler_log)))
+            # Encrypt the time and hash with the encryption key.
+            current_seed_number = update_total()
+            file_name = str(current_seed_number)
+            # Get the current time and add 5 hours to it.
+            unlock_time = time.time() + 18000
+            # Append the current time to the spoiler log as unlock_time.
+            spoiler_log["Unlock_Time"] = unlock_time
+            spoiler_log["Generated_Time"] = generated_time
+            spoiler_log["Seed_Number"] = current_seed_number
+            # write the spoiler log to a file in generated_seeds folder. Create the folder if it doesn't exist.
+            os.makedirs("generated_seeds", exist_ok=True)
+            with open("generated_seeds/" + file_name + ".json", "w") as f:
+                f.write(str(json.dumps(spoiler_log)))
 
             sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Data", "Generated_Time", "Unlock_Time"]
             if resp_data[1].settings.generate_spoilerlog is False:
@@ -237,6 +247,7 @@ def lambda_function():
             # Zip all the data into a single file.
             # Create a new zip file
             zip_data = BytesIO()
+
             with zipfile.ZipFile(zip_data, "w") as zip_file:
                 # Write each variable to the zip file
                 zip_file.writestr("patch", patch)
@@ -245,12 +256,14 @@ def lambda_function():
                 zip_file.writestr("seed_id", str(resp_data[1].settings.seed_id))
                 zip_file.writestr("generated_time", str(generated_time))
                 zip_file.writestr("version", version)
-                if unlock_time is not None:
-                    zip_file.writestr("file_string", str(file_name))
+                zip_file.writestr("seed_number", str(current_seed_number))
             zip_data.seek(0)
-            update_total()
             # Convert the zip to a string of base64 data
             zip_conv = codecs.encode(zip_data.getvalue(), "base64").decode()
+            # Store the patch file in generated_seeds folder.
+            os.makedirs("generated_seeds", exist_ok=True)
+            with open("generated_seeds/" + file_name + ".lanky", "w") as f:
+                f.write(zip_conv)
             # Return it as a text file
             response = make_response(zip_conv, 200)
             return response
@@ -310,6 +323,26 @@ def get_spoiler_log():
         return make_response(json.dumps({"error": "error"}), 205)
 
 
+# get the current version of the randomizer
+@app.route("/get_version", methods=["GET"])
+def get_version():
+    """Get the current version of the randomizer."""
+    response = make_response(json.dumps({"version": version}), 200)
+    response.mimetype = "application/json"
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
+
+
+# return the preset files for the randomizer
+@app.route("/get_presets", methods=["GET"])
+def get_presets():
+    """Get the preset files for the randomizer."""
+    response = make_response(json.dumps(presets), 200)
+    response.mimetype = "application/json"
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
+
+
 def delete_old_files():
     """Delete files that are older than 7 days."""
     folder_path = "generated_seeds"
@@ -326,6 +359,42 @@ def delete_old_files():
                 if current_time - unlock_time >= 604800:  # 7 days in seconds
                     os.remove(file_path)
                     print(f"Deleted file: {filename}")
+                    # also delete the lanky file
+                    os.remove(os.path.join(folder_path, filename.replace(".json", ".lanky")))
+
+
+@app.route("/get_seed", methods=["GET"])
+def get_seed():
+    """Get the lanky for a seed."""
+    # Get the hash from the query string.
+    hash = request.args.get("hash")
+    # check if hash contains special characters not in an approved list.
+    if all(c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_=" for c in hash):
+        file_name = hash
+    else:
+        return make_response(json.dumps({"error": "error"}), 205)
+    fullpath = os.path.normpath(os.path.join("generated_seeds/", str(file_name) + ".json"))
+    if not fullpath.startswith("generated_seeds/"):
+        raise Exception("not allowed")
+    # Check if the file exists
+    if os.path.isfile(fullpath):
+        # Return the spoiler log
+        with open(fullpath, "r") as f:
+            # Get the actual lanky file modify the fullpath to be the lanky file, so we're only changing the file ending for security.
+            # Remove the last 5 characters from the fullpath and replace them with .lanky
+            fullpath = fullpath[:-5] + ".lanky"
+            # Check if the file exists
+            if not os.path.isfile(fullpath):
+                # Return an error
+                return make_response(json.dumps({"error": "error"}), 205)
+            with open(fullpath, "r") as lanky_file:
+                # Return the lanky file
+                zip_conv = lanky_file.read()
+                return make_response(zip_conv, 200)
+
+    else:
+        # Return an error
+        return make_response(json.dumps({"error": "error"}), 205)
 
 
 def update_total():
@@ -338,6 +407,7 @@ def update_total():
     last_generated_time = Datetime.utcnow()
     with open("last_generated_time.cfg", "w") as f:
         f.write(str(last_generated_time))
+    return current_total
 
 
 # Setup the scheduler
