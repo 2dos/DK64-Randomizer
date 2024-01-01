@@ -219,14 +219,14 @@ def test_with_settings_string_1():
     # This top one is always the S2 Preset (probably up to date, if it isn't go steal it from the season2.json)
     settings_string = "bKEFiRorPN5ysoQNEB6H1QNCIZEJUtjXPgPxGj12ly+IU5Ym04IAVBkFup6/AkgGTRQkZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENPHtkKR6ioZypTLm0W8DODo9Rbgp+ioiwCJiKAK9a45G7Vf77IoHMWIoBzZ5EkWABMYABMaAA8cAA8eAAsgAAsiAAckAAcmAAcoAAanLlDkudMISQRfQJyQYYSpmNpjUAOLRZFpXLArQ5bDQnFgqMBMGBGJBxTSeRSZEYdAFUAlwEMnAA"
     # This one is for ease of testing, go wild with it
-    settings_string = "bKEFiRorPN5ysoQNEB6OkWMAhuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOB9UDQiGRCVLY1z4D8Ro9dpcviFOWJtOCFAUekB0Vpq+ApBbqevwJIBk0UJokZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENPHtkKR6ioZypTLm0W8DODo9Rbgp+ioiwCJiKAK9a45G7Vf77IoHMWIoCTZ5EkWABMYABMaAA8cAA8eAAsgAAsiAAckAAcmAAcoAAanLlDkuFTphCSCL6BOSDDCVU5mNpjBxaFpXLArQ5bDQnFgqMBMGBGJCmOKaTyKTIjUoAqgEuAhk4AA"
+    settings_string = "bKEFiRorPN5ysoQNEB6OkWMAhuIMtYhBevn8A2ePhhNHO7qV7KzM4ps6ti+FOB9UDQiGRCVLY1z4D8Ro9dpcviFOWJtOCFAUekB0Vpq+ApBbqevwJIBk10JokZBdZLLBQF0AIMBOoCBwN2AYQCO4ECQV4AoUDPIGCwd6A4YEKENPHtkKR6ioZypTLm0W8DODo9Rbgp+ioiwCJiKAK9a45G7Vf77IoHMWIoCzZ5EkWABMYABMaAA8cAA8eAAsgAAsiAAckAAcmAAcoAAanLlDkuFTphCSCL6BOSDDCVU5mNpjBxaFpXLArQ5bDQnFgqMBMGBGJCmOKaTyKTIjUoAqgEuAhk4AA"
 
     settings_dict = decrypt_settings_string_enum(settings_string)
     settings_dict["seed"] = random.randint(0, 100000000)  # Can be fixed if you want to test a specific seed repeatedly
 
     # Plando testing - fill the data with a json string
     # settings_dict["enable_plandomizer"] = True
-    # settings_dict["plandomizer_data"] = '{"plando_starting_kongs_selected": [-1], "plando_kong_rescue_diddy": -1, "plando_kong_rescue_lanky": -1, "plando_kong_rescue_tiny": -1, "plando_kong_rescue_chunky": -1, "plando_level_order_0": -1, "plando_level_order_1": -1, "plando_level_order_2": -1, "plando_level_order_3": -1, "plando_level_order_4": -1, "plando_level_order_5": -1, "plando_level_order_6": -1, "plando_krool_order_0": -1, "plando_krool_order_1": -1, "plando_krool_order_2": -1, "plando_krool_order_3": -1, "plando_krool_order_4": -1, "plando_helm_order_0": -1, "plando_helm_order_1": -1, "plando_helm_order_2": -1, "plando_helm_order_3": -1, "plando_helm_order_4": -1, "locations": {"238": 25}, "prices": {}, "hints": {}}'
+    # settings_dict["plandomizer_data"] = '{"plando_starting_kongs_selected": [-1], "plando_kong_rescue_diddy": -1, "plando_kong_rescue_lanky": -1, "plando_kong_rescue_tiny": -1, "plando_kong_rescue_chunky": -1, "plando_level_order_0": -1, "plando_level_order_1": -1, "plando_level_order_2": -1, "plando_level_order_3": -1, "plando_level_order_4": -1, "plando_level_order_5": -1, "plando_level_order_6": -1, "plando_krool_order_0": -1, "plando_krool_order_1": -1, "plando_krool_order_2": -1, "plando_helm_order_0": 2, "plando_helm_order_1": 1, "plando_helm_order_2": 4, "locations": {"164": 35, "1007": 11}, "prices": {}, "plando_bonus_barrels": {}, "hints": {}}'
 
     settings = Settings(settings_dict)
     # settings.extreme_debugging = True  # Greatly slows seed gen, use with caution

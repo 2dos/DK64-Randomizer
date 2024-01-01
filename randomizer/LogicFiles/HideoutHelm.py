@@ -172,8 +172,6 @@ LogicRegions = {
         TransitionFront(Regions.HideoutHelmTinyRoom, lambda l: True),
         TransitionFront(Regions.HideoutHelmAfterBoM, lambda l: True),
         TransitionFront(Regions.HideoutHelmThroneRoom, lambda l: True),
-        TransitionFront(Regions.HideoutHelmStart, lambda l: True),
-        TransitionFront(Regions.HideoutHelmStart, lambda l: True),
         TransitionFront(Regions.HideoutHelmOOBLanky, lambda l: l.isdiddy or l.istiny),
     ]),
 
