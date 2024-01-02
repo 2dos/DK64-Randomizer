@@ -724,7 +724,7 @@ class Settings:
                         for switch in self.switchsanity_data[slot].tied_settings:
                             if self.switchsanity_data[switch].kong == self.switchsanity_data[slot].kong:
                                 raise Ex.PlandoIncompatibleException(f"Same kong assigned for {self.switchsanity_data[switch].name} and {self.switchsanity_data[slot].name}.")
-        
+
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
         if self.hard_mode and HardModeSelected.water_is_lava in self.hard_mode_selected:
             ItemList[Items.ProgressiveInstrumentUpgrade].playthrough = True
@@ -1636,7 +1636,9 @@ class Settings:
                     for transition in transitions:
                         relevant_transition = ShufflableExits[transition].back.reverse
                         tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
-                        valid_starting_regions.append({"region": region, "map": tied_map, "exit": tied_exit, "region_name": region_data.name, "exit_name": ShufflableExits[relevant_transition].back.name})
+                        valid_starting_regions.append(
+                            {"region": region, "map": tied_map, "exit": tied_exit, "region_name": region_data.name, "exit_name": ShufflableExits[relevant_transition].back.name}
+                        )
         self.starting_region = random.choice(valid_starting_regions)
         for x in range(2):
             randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]
