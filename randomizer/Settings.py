@@ -5,6 +5,7 @@ import random
 from random import randint
 
 import randomizer.ItemPool as ItemPool
+import randomizer.Lists.Exceptions as Ex
 import randomizer.LogicFiles.AngryAztec
 import randomizer.LogicFiles.CreepyCastle
 import randomizer.LogicFiles.CrystalCaves
@@ -135,6 +136,9 @@ class Settings:
             self.plandomizer_dict["plando_kasplats"] = -1
             self.plandomizer_dict["plando_wrinkly_doors"] = -1
             self.plandomizer_dict["plando_tns_portals"] = -1
+            self.plandomizer_dict["plando_starting_exit"] = -1
+            self.plandomizer_dict["plando_switchsanity"] = -1
+            self.plandomizer_dict["plando_shop_location_rando"] = -1
             # ---------------------------------------------------
             # Prevent custom locations selected for plandomizer from being used by a different randomizer
             self.plandomizer_dict["reserved_custom_locations"] = {
@@ -678,6 +682,7 @@ class Settings:
             Switches.FungiGreenFeather: SwitchInfo("Forest Green Tunnel Switches (1)", Kongs.tiny, SwitchType.GunSwitch, 0x1D9, Maps.FungiForest, [0x18, 0x19]),
             Switches.FungiGreenPineapple: SwitchInfo("Forest Green Tunnel Switches (2)", Kongs.chunky, SwitchType.GunSwitch, 0x1DA, Maps.FungiForest, [0x1A, 0x1B], [Switches.FungiGreenFeather]),
         }
+
         if self.switchsanity != SwitchsanityLevel.off:
             kongs = GetKongs()
             for slot in self.switchsanity_data:
@@ -689,6 +694,10 @@ class Settings:
                     self.switchsanity_data[slot].kong = random.choice([Kongs.donkey, Kongs.lanky, Kongs.tiny])
                 else:
                     bad_kongs = [self.switchsanity_data[x].kong for x in self.switchsanity_data[slot].tied_settings]
+                    if self.enable_plandomizer and self.plandomizer_dict["plando_switchsanity"] != -1:
+                        for switch in self.switchsanity_data[slot].tied_settings:
+                            if str(switch.value) in self.plandomizer_dict["plando_switchsanity"].keys():
+                                bad_kongs.append(self.plandomizer_dict["plando_switchsanity"][str(switch.value)]["kong"])
                     slot_choices_kong = [x for x in kongs if x not in bad_kongs]
                     self.switchsanity_data[slot].kong = random.choice(slot_choices_kong)
                     if slot == Switches.IslesHelmLobbyGone:
@@ -698,6 +707,23 @@ class Settings:
                             self.switchsanity_data[slot].switch_type = random.choice([SwitchType.MiscActivator, SwitchType.InstrumentPad])  # Choose between grab and bongos
                         else:
                             self.switchsanity_data[slot].switch_type = SwitchType.InstrumentPad
+
+            if self.enable_plandomizer and self.plandomizer_dict["plando_switchsanity"] != -1:
+                for key in self.plandomizer_dict["plando_switchsanity"].keys():
+                    if self.switchsanity == SwitchsanityLevel.helm_access:
+                        if int(key) not in (Switches.IslesHelmLobbyGone, Switches.IslesMonkeyport):
+                            raise Ex.PlandoIncompatibleException(f"Selected switch is not randomized with the current settings.")
+                    planned_data = self.plandomizer_dict["plando_switchsanity"][key]
+                    if planned_data["kong"] != -1:
+                        self.switchsanity_data[int(key)].kong = planned_data["kong"]
+                    if "switch_type" in planned_data.keys():
+                        self.switchsanity_data[int(key)].switch_type = planned_data["switch_type"]
+                # Doublecheck validity
+                for slot in self.switchsanity_data:
+                    if len(self.switchsanity_data[slot].tied_settings) > 0:
+                        for switch in self.switchsanity_data[slot].tied_settings:
+                            if self.switchsanity_data[switch].kong == self.switchsanity_data[slot].kong:
+                                raise Ex.PlandoIncompatibleException(f"Same kong assigned for {self.switchsanity_data[switch].name} and {self.switchsanity_data[slot].name}.")
 
         # If water is lava, then Instrument Upgrades are considered important for the purposes of getting 3rd Melon
         if self.hard_mode and HardModeSelected.water_is_lava in self.hard_mode_selected:
@@ -1579,20 +1605,40 @@ class Settings:
         ]
         selected_region_world = random.choice(region_data)
         valid_starting_regions = []
-        for region in selected_region_world:
-            region_data = selected_region_world[region]
-            transitions = [
-                x.exitShuffleId
-                for x in region_data.exits
-                if x.exitShuffleId is not None and x.exitShuffleId in ShufflableExits and ShufflableExits[x.exitShuffleId].back.reverse is not None and not x.isGlitchTransition
-            ]
+        if self.enable_plandomizer and self.plandomizer_dict["plando_starting_exit"] != -1:
+            # Plandomizer code for random starting location
+            planned_transition = self.plandomizer_dict["plando_starting_exit"]
+            region = ShufflableExits[planned_transition].back.regionId
+            planned_back_transition = ShufflableExits[planned_transition].back
+            region_name = ""
+            for data in region_data:
+                if region in data.keys():
+                    region_name = data[region].name
+            if region_name == "":
+                raise Ex.PlandoIncompatibleException(f"No region found for {planned_transition}")
             if region in RegionMapList:
-                # Has tied map
                 tied_map = GetMapId(region)
-                for transition in transitions:
-                    relevant_transition = ShufflableExits[transition].back.reverse
-                    tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
-                    valid_starting_regions.append({"region": region, "map": tied_map, "exit": tied_exit, "region_name": region_data.name, "exit_name": ShufflableExits[relevant_transition].back.name})
+                tied_exit = GetExitId(planned_back_transition)
+                valid_starting_regions.append({"region": region, "map": tied_map, "exit": tied_exit, "region_name": region_name, "exit_name": ShufflableExits[planned_transition].back.name})
+            else:
+                raise Ex.PlandoIncompatibleException(f"Starting position {planned_transition} has no map")
+        else:
+            for region in selected_region_world:
+                region_data = selected_region_world[region]
+                transitions = [
+                    x.exitShuffleId
+                    for x in region_data.exits
+                    if x.exitShuffleId is not None and x.exitShuffleId in ShufflableExits and ShufflableExits[x.exitShuffleId].back.reverse is not None and not x.isGlitchTransition
+                ]
+                if region in RegionMapList:
+                    # Has tied map
+                    tied_map = GetMapId(region)
+                    for transition in transitions:
+                        relevant_transition = ShufflableExits[transition].back.reverse
+                        tied_exit = GetExitId(ShufflableExits[relevant_transition].back)
+                        valid_starting_regions.append(
+                            {"region": region, "map": tied_map, "exit": tied_exit, "region_name": region_data.name, "exit_name": ShufflableExits[relevant_transition].back.name}
+                        )
         self.starting_region = random.choice(valid_starting_regions)
         for x in range(2):
             randomizer.LogicFiles.DKIsles.LogicRegions[Regions.GameStart].exits[x + 1].dest = self.starting_region["region"]

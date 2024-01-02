@@ -451,6 +451,12 @@ class LogicVarHolder:
         """Determine whether a barrier has been removed by the removed barriers setting."""
         return IsItemSelected(self.settings.remove_barriers_enabled, self.settings.remove_barriers_selected, check)
 
+    def canOpenLlamaTemple(self):
+        """Determine whether the switches on the Llama Temple can be shot."""
+        if not (self.checkBarrier(RemovedBarriersSelected.aztec_llama_switches) or Events.LlamaFreed in self.Events):
+            return False
+        return self.hasMoveSwitchsanity(Switches.AztecLlamaCoconut) or self.hasMoveSwitchsanity(Switches.AztecLlamaGrape) or self.hasMoveSwitchsanity(Switches.AztecLlamaFeather)
+
     def hasMoveSwitchsanity(self, switchsanity_setting: Switches, kong_needs_current: bool = True, level: Levels = Levels.JungleJapes, default_slam_level: int = 0) -> bool:
         """Determine whether the kong has the necessary moves based on the switchsanity data."""
         data = self.settings.switchsanity_data[switchsanity_setting]

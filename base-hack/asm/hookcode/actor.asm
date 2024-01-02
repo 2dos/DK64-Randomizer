@@ -358,19 +358,19 @@ checkBeforeApplyingQuicksand: ; $t4 contains colliding_actor->actor_type
     beq $at, $t4, correctActor
     nop
 
-applyQuicksand: ; not a flying enemy (or not aztec), apply quicksand just as usual
-    lui $at, 0x8080
-    j 0x80668428
-    sb $s4, 0x94AF ($at)
+    applyQuicksand: ; not a flying enemy (or not aztec), apply quicksand just as usual
+        lui $at, 0x8080
+        j 0x80668428
+        sb $s4, 0x94AF ($at)
 
-correctActor:
-    lui $at, hi(CurrentMap)
-    lw $at, lo(CurrentMap) ($at) ; CurrentMap
-    addiu $t4, $zero, 0x26 ; angry aztec
-    bne $at, $t4, applyQuicksand ; not aztec
-    nop
+    correctActor:
+        lui $at, hi(CurrentMap)
+        lw $at, lo(CurrentMap) ($at) ; CurrentMap
+        addiu $t4, $zero, 0x26 ; angry aztec
+        bne $at, $t4, applyQuicksand ; not aztec
+        nop
 
-noApplyQuicksand:
-    lui $at, 0x8080
-    j 0x80668428
-    nop
+    noApplyQuicksand:
+        lui $at, 0x8080
+        j 0x80668428
+        nop

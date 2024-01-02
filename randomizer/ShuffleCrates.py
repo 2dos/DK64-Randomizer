@@ -161,7 +161,7 @@ def ShuffleMelonCrates(spoiler, human_spoiler):
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_melon_crates"] != -1:
         for item_placement in spoiler.settings.plandomizer_dict["plando_melon_crates"]:
             for MelonCrate_index, MelonCrate in enumerate(sorted_MelonCrates):
-                if item_placement["location"] == MelonCrate["name"] and item_placement["reward"] != -1:
+                if item_placement["location"] == MelonCrate["name"] and item_placement["level"] == MelonCrate["level"] and item_placement["reward"] != -1:
                     spoiler.settings.plandomizer_dict["locations"][MelonCrate["enum"]] = item_placement["reward"]
     return human_spoiler.copy()
 

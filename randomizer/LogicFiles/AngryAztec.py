@@ -147,7 +147,7 @@ LogicRegions = {
         TransitionFront(Regions.TinyTemple, lambda l: (Events.FedTotem in l.Events and l.feather and l.istiny) or l.phasewalk, Transitions.AztecMainToTiny),
         TransitionFront(Regions.ChunkyTemple, lambda l: (Events.FedTotem in l.Events and l.pineapple and l.ischunky) or l.phasewalk or (l.generalclips and l.ischunky and l.hunkyChunky), Transitions.AztecMainToChunky),
         TransitionFront(Regions.AztecTinyRace, lambda l: l.charge and l.jetpack and l.diddy and l.mini and l.saxophone and l.istiny, Transitions.AztecMainToRace),
-        TransitionFront(Regions.LlamaTemple, lambda l: l.hasMoveSwitchsanity(Switches.AztecLlamaCoconut) or l.hasMoveSwitchsanity(Switches.AztecLlamaGrape) or l.hasMoveSwitchsanity(Switches.AztecLlamaFeather) or l.phasewalk or l.generalclips),  # Decision to pre-spawn switches
+        TransitionFront(Regions.LlamaTemple, lambda l: l.canOpenLlamaTemple() or l.phasewalk or l.generalclips),  # Decision to pre-spawn switches
         TransitionFront(Regions.AztecBaboonBlast, lambda l: l.blast and l.isdonkey),  # , Transitions.AztecMainToBBlast),
         TransitionFront(Regions.Snide, lambda l: True),
         TransitionFront(Regions.FunkyAztec, lambda l: True),
@@ -275,7 +275,7 @@ LogicRegions = {
     ]),
 
     Regions.LlamaTempleBack: Region("Llama Temple Back", "Llama Temple", Levels.AngryAztec, False, -1, [
-        LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: (l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.advanced_platforming)) and l.istiny),
+        LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.istiny),
         LocationLogic(Locations.AztecKasplatLlamaTemple, lambda l: not l.settings.kasplat_rando),
     ], [
         Event(Events.LlamaW2bTagged, lambda l: True),

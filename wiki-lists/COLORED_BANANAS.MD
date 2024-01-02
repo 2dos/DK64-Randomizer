@@ -379,7 +379,7 @@
 | Llama Temple Water Corners | 20 | l.CanLlamaSpit() and l.swim | 
 | To lava room (Tiny) | 3 |  | 
 | To lava room (Tiny) | 2 |  | 
-| On Tiny switches in lava room (Tiny) | 10 | l.CanSlamSwitch(Levels.AngryAztec, 1) or l.twirl or (l.advanced_platforming and l.istiny) | 
+| On Tiny switches in lava room (Tiny) | 10 | (l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.advanced_platforming)) and l.istiny | 
 | On vines in Matching game room (Lanky) | 5 | (l.grape or l.phasewalk) and l.vines | 
 | Matching game room right side | Balloon |  | 
 | Above Llama | Balloon |  | 
