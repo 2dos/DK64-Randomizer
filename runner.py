@@ -20,7 +20,7 @@ from randomizer.Enums.Settings import SettingsMap
 from randomizer.Fill import Generate_Spoiler
 from randomizer.Patching.Patcher import load_base_rom
 from randomizer.Settings import Settings
-from randomizer.SettingStrings import encrypt_settings_string_enum
+from randomizer.SettingStrings import encrypt_settings_string_enum, decrypt_settings_string_enum
 from randomizer.Spoiler import Spoiler
 from git import Repo
 from datetime import datetime as Datetime
@@ -395,6 +395,16 @@ def get_seed():
     else:
         # Return an error
         return make_response(json.dumps({"error": "error"}), 205)
+
+
+@app.route("/convert_settings_string", methods=["POST"])
+def convert_settings_string():
+    """Convert a settings string to a post body json."""
+    # Get the settings string from the request body
+    settings_string = request.get_json().get("settings_string")
+    decrypted = decrypt_settings_string_enum(settings_string)
+    # Return the json
+    return make_response(json.dumps(decrypted), 200)
 
 
 def update_total():
