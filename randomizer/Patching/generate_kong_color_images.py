@@ -4,15 +4,76 @@ import math
 
 import js
 from randomizer.Patching.Patcher import ROM
-from randomizer.Patching.Lib import PaletteFillType
+from randomizer.Patching.Lib import PaletteFillType, TextureFormat
 
 
 def convertRGBAToBytearray(rgba_lst):
     """Convert RGBA list with 4 items (r,g,b,a) to a two-byte array in RGBA5551 format."""
-    twobyte = (rgba_lst[0] << 11) | (rgba_lst[1] << 6) | (rgba_lst[2] << 1) | rgba_lst[3]
+    twobyte = (rgba_lst[0] << 11) | (rgba_lst[1] << 6) | (rgba_lst[2] << 1) | (rgba_lst[3] & 1)
     lower = twobyte % 256
     upper = int(twobyte / 256) % 256
     return [upper, lower]
+
+
+def clampRGBA(n):
+    """Restricts value between 0 and 255."""
+    return max(0, min(n, 255))
+
+
+def patchColorTranspose(name, x, y, patch_img, target_color):
+    """Transposes RGBA value from patch file to new palette."""
+    currentPix = patch_img.getpixel((x, y))
+    if name == "tie":
+        redRef = (255, 0, 0, 1)
+        yellowRef = (255, 255, 0, 1)
+        if currentPix == redRef or ((abs(currentPix[0] - redRef[0]) < 20) and (abs(currentPix[1] - redRef[1]) < 20) and (abs(currentPix[2] - redRef[2]) < 20)):
+            # if currentPix is exactly our reference colour or close enough to not be noticable
+            return target_color
+        elif currentPix[0] > currentPix[1] and (abs(currentPix[1] - currentPix[0]) > 200):
+            # if currentPix is red-ish and needs to be changed
+            dr, dg, db = redRef[0] - currentPix[0], redRef[1] - currentPix[1], redRef[2] - currentPix[2]
+            # perform those deltas on target_color and return
+            return (
+                clampRGBA(clampRGBA(clampRGBA(clampRGBA(target_color[0]) << 3) - dr) >> 3),
+                clampRGBA(clampRGBA(clampRGBA(clampRGBA(target_color[1]) << 3) - dg) >> 3),
+                clampRGBA(clampRGBA(clampRGBA(clampRGBA(target_color[2]) << 3) - db) >> 3),
+                1,
+            )
+        elif not (currentPix[0] > currentPix[1] and (abs(currentPix[1] - currentPix[0]) > 200)) and (currentPix[3] == 255):
+            # if currentPix is yellow
+            # get the deltas between the colours
+            dr, dg, db = yellowRef[0] - currentPix[0], yellowRef[1] - currentPix[1], yellowRef[2] - currentPix[2]
+            perc_d = math.floor((dr + dg + db) / 3)
+            # get the inverted colors from target_color
+            ir, ig, ib = (255 - (target_color[0] << 3)), (255 - (target_color[1] << 3)), (255 - (target_color[2] << 3))
+            perc_i = math.floor((ir + ig + ib) / 3)
+            # perform those deltas on the inverted colors and return
+            if perc_d > 128 or perc_i > 128:
+                return (clampRGBA(ir - perc_d) >> 3, clampRGBA(ig - perc_d) >> 3, clampRGBA(ib - perc_d) >> 3, 1)
+            else:
+                return (clampRGBA(ir + perc_d) >> 3, clampRGBA(ig + perc_d) >> 3, clampRGBA(ib + perc_d) >> 3, 1)
+        else:
+            # quickly convert the read pixel from RGBA32 to RGBA5551 so it doesnt write garbage data later
+            return (currentPix[0] >> 3, currentPix[1] >> 3, currentPix[2] >> 3, currentPix[3] & 1)
+    elif name == "clothes":
+        blueRef = (0, 90, 255, 1)
+        if currentPix == blueRef or ((abs(currentPix[0] - blueRef[0]) < 20) and (abs(currentPix[1] - blueRef[1]) < 20) and (abs(currentPix[2] - blueRef[2]) < 20)):
+            # if currentPix is exactly our reference colour or close enough to not be noticable
+            return target_color
+        elif currentPix[2] > currentPix[1] and currentPix[2] > currentPix[0]:
+            # if currentPic is blue-ish and needs to be changed
+            # get the deltas between the colours
+            dr, dg, db = blueRef[0] - currentPix[0], blueRef[1] - currentPix[1], blueRef[2] - currentPix[2]
+            # perform those deltas on destcolour and return
+            return (
+                clampRGBA(clampRGBA(clampRGBA(clampRGBA(target_color[0]) << 3) - dr) >> 3),
+                clampRGBA(clampRGBA(clampRGBA(clampRGBA(target_color[1]) << 3) - dg) >> 3),
+                clampRGBA(clampRGBA(clampRGBA(clampRGBA(target_color[2]) << 3) - db) >> 3),
+                1,
+            )
+        else:
+            # quickly convert the read pixel from RGBA32 to RGBA5551 so it doesnt write garbage data later
+            return (currentPix[0] >> 3, currentPix[1] >> 3, currentPix[2] >> 3, currentPix[3] & 1)
 
 
 def convertColors(color_palettes):
@@ -94,50 +155,68 @@ def convertColors(color_palettes):
                     ext = convertRGBAToBytearray([0, 0, 0, 0])
                     bytes_array.extend(ext)
             elif zone["fill_type"] == PaletteFillType.patch:
-                for size_mult in range(3):
-                    patch_start_x = int(6 / math.pow(2, size_mult))
-                    patch_start_y = int(8 / math.pow(2, size_mult))
-                    # print(f"{patch_start_x} | {patch_start_y}")
-                    patch_size = 3 - size_mult
-                    if patch_size == 3:
-                        patch_size = 5
-                    dim_s = int(32 / math.pow(2, size_mult))
-                    for y in range(dim_s):
-                        for x in range(dim_s):
-                            is_block = True  # Set to false to generate patch
-                            if x < patch_start_x:
-                                is_block = True
-                            elif x >= patch_start_x + (4 * patch_size):
-                                is_block = True
-                            elif y < patch_start_y:
-                                is_block = True
-                            elif y >= patch_start_y + (3 * patch_size):
-                                is_block = True
-                            if is_block:
-                                ext = convertRGBAToBytearray(rgba_list[0])
-                            else:
-                                delta_x = x - patch_start_x
-                                delta_y = y - patch_start_y
-                                color_polarity_x = int(delta_x / patch_size) % 2
-                                color_polarity_y = int(delta_y / patch_size) % 2
-                                color_polarity = (color_polarity_x + color_polarity_y) % 2
-                                patch_rgba = [31, 31, 31, 1]
-                                if color_polarity == 1:
-                                    patch_rgba = [31, 0, 0, 1]
-                                ext = convertRGBAToBytearray(patch_rgba)
+                if zone["image"] == 3725 or zone["image"] == 3734:
+                    # DK's tie or lanky's butt patch, respectively
+                    from randomizer.Patching.CosmeticColors import getFile
+
+                    patch_img = getFile(25, zone["image"], True, 32, 64, TextureFormat.RGBA5551)
+
+                    safe = True
+                    for y in range(64):
+                        for x in range(32):
+                            ext = convertRGBAToBytearray(patchColorTranspose(zone["zone"], x, y, patch_img, rgba_list[0]))
                             bytes_array.extend(ext)
-                for i in range(18):
-                    ext = convertRGBAToBytearray(rgba_list[0])
-                    bytes_array.extend(ext)
-                for i in range(4):
-                    ext = convertRGBAToBytearray([0, 0, 0, 0])
-                    bytes_array.extend(ext)
-                for i in range(3):
-                    ext = convertRGBAToBytearray(rgba_list[0])
-                    bytes_array.extend(ext)
-                for i in range(3):
-                    ext = convertRGBAToBytearray([0, 0, 0, 0])
-                    bytes_array.extend(ext)
+                            if len(bytes_array) == 2744:
+                                # its done copying all the bytes we care about (not the full 32x64); bail
+                                safe = False
+                                break
+                        if not safe:
+                            break
+                else:
+                    for size_mult in range(3):
+                        patch_start_x = int(6 / math.pow(2, size_mult))
+                        patch_start_y = int(8 / math.pow(2, size_mult))
+                        # print(f"{patch_start_x} | {patch_start_y}")
+                        patch_size = 3 - size_mult
+                        if patch_size == 3:
+                            patch_size = 5
+                        dim_s = int(32 / math.pow(2, size_mult))
+                        for y in range(dim_s):
+                            for x in range(dim_s):
+                                is_block = True  # Set to false to generate patch
+                                if x < patch_start_x:
+                                    is_block = True
+                                elif x >= patch_start_x + (4 * patch_size):
+                                    is_block = True
+                                elif y < patch_start_y:
+                                    is_block = True
+                                elif y >= patch_start_y + (3 * patch_size):
+                                    is_block = True
+                                if is_block:
+                                    ext = convertRGBAToBytearray(rgba_list[0])
+                                else:
+                                    delta_x = x - patch_start_x
+                                    delta_y = y - patch_start_y
+                                    color_polarity_x = int(delta_x / patch_size) % 2
+                                    color_polarity_y = int(delta_y / patch_size) % 2
+                                    color_polarity = (color_polarity_x + color_polarity_y) % 2
+                                    patch_rgba = [31, 31, 31, 1]
+                                    if color_polarity == 1:
+                                        patch_rgba = [31, 0, 0, 1]
+                                    ext = convertRGBAToBytearray(patch_rgba)
+                                bytes_array.extend(ext)
+                    for i in range(18):
+                        ext = convertRGBAToBytearray(rgba_list[0])
+                        bytes_array.extend(ext)
+                    for i in range(4):
+                        ext = convertRGBAToBytearray([0, 0, 0, 0])
+                        bytes_array.extend(ext)
+                    for i in range(3):
+                        ext = convertRGBAToBytearray(rgba_list[0])
+                        bytes_array.extend(ext)
+                    for i in range(3):
+                        ext = convertRGBAToBytearray([0, 0, 0, 0])
+                        bytes_array.extend(ext)
             elif zone["fill_type"] == PaletteFillType.sparkle:
                 dim_rgba = []
                 for channel_index, channel in enumerate(rgba_list[0]):
