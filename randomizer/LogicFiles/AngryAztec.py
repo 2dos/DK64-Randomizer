@@ -275,7 +275,7 @@ LogicRegions = {
     ]),
 
     Regions.LlamaTempleBack: Region("Llama Temple Back", "Llama Temple", Levels.AngryAztec, False, -1, [
-        LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: (l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.advanced_platforming)) and l.istiny),
+        LocationLogic(Locations.AztecTinyLlamaTemple, lambda l: l.CanSlamSwitch(Levels.AngryAztec, 1) and l.istiny),
         LocationLogic(Locations.AztecKasplatLlamaTemple, lambda l: not l.settings.kasplat_rando),
     ], [
         Event(Events.LlamaW2bTagged, lambda l: True),
