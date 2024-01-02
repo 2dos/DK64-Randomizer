@@ -282,7 +282,7 @@ def update_seed_text(event):
 
 
 @bind("click", "load_patch_file")
-def update_seed_text(event):
+def update_patch_file(event):
     """Set historical seed text based on the load_patch_file click event.
 
     Args:
@@ -293,3 +293,35 @@ def update_seed_text(event):
         js.document.getElementById("generate_pastgen_seed").value = "Generate Patch File from History"
     else:
         js.document.getElementById("generate_pastgen_seed").value = "Generate Seed from History"
+
+
+async def get_args():
+    """Get the args from the url and then load the seed from the server if it exists."""
+    args = js.window.location.search
+    if args.startswith("?"):
+        args = args[1:]
+    if "&" in args:
+        args = args.split("&")
+    else:
+        args = [args]
+    args_dict = {}
+
+    for arg in args:
+        try:
+            arg_split = arg.split("=")
+            args_dict[arg_split[0]] = arg_split[1]
+        except Exception:
+            pass
+    # If someone provided seed_id in the url, lets pull the seed data from the webserver
+    if "seed_id" in args_dict:
+        # Wait for the page to load
+        if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
+            print("Rom file is not valid")
+            js.document.getElementById("rom").select()
+            if "is-invalid" not in list(js.document.getElementById("rom").classList):
+                js.document.getElementById("rom").classList.add("is-invalid")
+        else:
+            print("Getting the seed from the server")
+            js.apply_conversion()
+            resp = js.get_seed_from_server(args_dict["seed_id"])
+            await patching_response(str(resp), True)

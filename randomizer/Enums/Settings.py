@@ -670,6 +670,7 @@ class WrinklyHints(IntEnum):
     cryptic: Cryptic randomizer hints are provided.
     fixed_racing: Fixed distribution - this one is for the S2 racing preset.
     item_hinting: All Kongs, Keys, and as many moves as possible are hinted, prioritizing WotH moves.
+    item_hinting_advanced: Same as previous, but intentionally more vague.
     """
 
     off = 0
@@ -677,6 +678,7 @@ class WrinklyHints(IntEnum):
     cryptic = 2
     fixed_racing = 3
     item_hinting = 4
+    item_hinting_advanced = 5
 
 
 class SpoilerHints(IntEnum):

@@ -507,11 +507,17 @@ function filebox() {
     } catch {}
     // Make sure we load the file into the rompatcher
     romFile = new MarcFile(file, _parseROM);
+
+    // Wait for 5 seconds before calling try_to_load_from_args
+    setTimeout(try_to_load_from_args, 2000);
   };
 
   input.click();
 }
-
+async function try_to_load_from_args() {
+  await pyodide.runPythonAsync(`from ui.generate_buttons import get_args
+get_args()`);
+}
 // This works on all devices/browsers, and uses IndexedDBShim as a final fallback
 var indexedDB =
   window.indexedDB ||
@@ -670,6 +676,7 @@ function load_file_from_db() {
         $("#rom_2").attr("placeholder", "Using cached ROM");
         $("#rom_3").attr("placeholder", "Using cached ROM");
         $("#rom_3").val("Using cached ROM");
+        setTimeout(try_to_load_from_args, 2000);
       } catch {}
     };
   } catch {}
@@ -895,10 +902,10 @@ function unlock_spoiler_log(hash) {
   // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
   // Get the website location
   if (window.location.hostname == "dev.dk64randomizer.com") {
-    var url = "https://dev.dk64randomizer.com/get_spoiler_log";
+    var url = "https://dev-generate.dk64rando.com/get_spoiler_log";
   }
   else if (window.location.hostname == "dk64randomizer.com") {
-    var url = "https://dk64randomizer.com/get_spoiler_log";
+    var url = "https://generate.dk64rando.com/get_spoiler_log";
   }
   else {
     var url = "http://localhost:8000/get_spoiler_log";
@@ -951,6 +958,72 @@ function unlock_spoiler_log(hash) {
       }, 5000);
     }
   });
+}
+
+function get_seed_from_server(hash) {
+  // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
+  // Get the website location
+  if (window.location.hostname == "dev.dk64randomizer.com") {
+    var url = "https://dev-generate.dk64rando.com/get_seed";
+  }
+  else if (window.location.hostname == "dk64randomizer.com") {
+    var url = "https://generate.dk64rando.com/get_seed";
+  }
+  else {
+    var url = "http://localhost:8000/get_seed";
+  }
+  // Make the ajax call synchronously
+  return_data = $.ajax({
+    url: url,
+    async: false,
+    type: "GET",
+    data: {
+      hash: hash,
+    },
+    success: function (data, textStatus, xhr) {
+      if (xhr.status === 200) {
+        document.getElementById("spoiler_log_download_messages").innerHTML =
+        "Applying seed to ROM.";
+        // display download_modal
+        $("#download_modal").modal("show");
+        // hide the modal after 5 seconds
+        setTimeout(function () {
+          $("#download_modal").modal("hide");
+        }, 5000);
+        console.log("Success");
+        return data;
+      } else {
+        document.getElementById("spoiler_log_download_messages").innerHTML =
+          "Seed is no longer available.";
+        // display download_modal
+        $("#download_modal").modal("show");
+        // hide the modal after 5 seconds
+        setTimeout(function () {
+          $("#download_modal").modal("hide");
+        }, 5000);
+        return_data = "Seed is no longer available.";
+        return return_data;
+      }
+    },
+    error: function (xhr, textStatus, errorThrown) {
+      console.log("Error:", errorThrown);
+      document.getElementById("spoiler_log_download_messages").innerHTML =
+        "There was an error downloading the seed.";
+      // display download_modal
+      $("#download_modal").modal("show");
+      // hide the modal after 5 seconds
+      setTimeout(function () {
+        $("#download_modal").modal("hide");
+      }, 5000);
+      return_data = "There was an error downloading the seed.";
+      return return_data;
+    }
+  });
+  // wait for the ajax call to finish
+  while (return_data.readyState != 4) {
+    sleep(1);
+  }
+  return return_data.responseText;
 }
 
 function load_data() {

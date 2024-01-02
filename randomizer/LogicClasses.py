@@ -150,7 +150,7 @@ class Region:
         elif self.level == Levels.CreepyCastle:
             return Regions.CreepyCastleMain
         elif self.level == Levels.HideoutHelm:
-            return Regions.HideoutHelmStart
+            return Regions.HideoutHelmEntry
         return Regions.GameStart
 
 
