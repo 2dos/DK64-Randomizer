@@ -552,6 +552,7 @@ def updateKrushaMoveNames(spoiler):
                 {"textbox_index": 6, "mode": "replace_whole", "target": "KANNON BLAST"},
                 {"textbox_index": 8, "mode": "replace_whole", "target": "STRONG KROC"},
                 {"textbox_index": 10, "mode": "replace_whole", "target": "GATOR GRAB"},
+                {"textbox_index": 62, "mode": "replace_whole", "target": "KRUSHA BLUEPRINT"},
                 {"textbox_index": 81, "mode": "replace_whole", "target": "KRUSHA"},
             ],
             Kongs.diddy: [
@@ -559,6 +560,7 @@ def updateKrushaMoveNames(spoiler):
                 {"textbox_index": 12, "mode": "replace_whole", "target": "KREMLING KHARGE"},
                 {"textbox_index": 14, "mode": "replace_whole", "target": "ROCKET REPTILE"},
                 {"textbox_index": 16, "mode": "replace_whole", "target": "SALAMANDER SPRING"},
+                {"textbox_index": 63, "mode": "replace_whole", "target": "KRUSHA BLUEPRINT"},
                 {"textbox_index": 82, "mode": "replace_whole", "target": "KRUSHA"},
             ],
             Kongs.lanky: [
@@ -566,6 +568,7 @@ def updateKrushaMoveNames(spoiler):
                 {"textbox_index": 18, "mode": "replace_whole", "target": "KREMSTAND"},
                 {"textbox_index": 20, "mode": "replace_whole", "target": "KABOOM BALLOON"},
                 {"textbox_index": 22, "mode": "replace_whole", "target": "KREMSTAND SPRINT"},
+                {"textbox_index": 64, "mode": "replace_whole", "target": "KRUSHA BLUEPRINT"},
                 {"textbox_index": 83, "mode": "replace_whole", "target": "KRUSHA"},
             ],
             Kongs.tiny: [
@@ -573,6 +576,7 @@ def updateKrushaMoveNames(spoiler):
                 {"textbox_index": 24, "mode": "replace_whole", "target": "MINI DILE"},
                 {"textbox_index": 26, "mode": "replace_whole", "target": "LIZARD TWIRL"},
                 {"textbox_index": 28, "mode": "replace_whole", "target": "KROCOPORT"},
+                {"textbox_index": 65, "mode": "replace_whole", "target": "KRUSHA BLUEPRINT"},
                 {"textbox_index": 84, "mode": "replace_whole", "target": "KRUSHA"},
             ],
             Kongs.chunky: [
@@ -580,6 +584,7 @@ def updateKrushaMoveNames(spoiler):
                 {"textbox_index": 30, "mode": "replace_whole", "target": "HUNKY KRUSHY"},
                 {"textbox_index": 32, "mode": "replace_whole", "target": "KREMLING PUNCH"},
                 {"textbox_index": 34, "mode": "replace_whole", "target": "KHAMELEO GONE"},
+                {"textbox_index": 66, "mode": "replace_whole", "target": "KRUSHA BLUEPRINT"},
                 {"textbox_index": 85, "mode": "replace_whole", "target": "KRUSHA"},
             ],
         }
