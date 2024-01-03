@@ -524,9 +524,9 @@ def get_seed_data():
             os.makedirs("generated_seeds", exist_ok=True)
             with open("generated_seeds/" + file_name + ".lanky", "w") as f:
                 f.write(zip_conv)
+            response = make_response(json.dumps({"status": "complete", "hash": hash, "seed_number": current_seed_number}), 200)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
-            response = make_response(json.dumps({"status": "complete", "hash": hash, "seed_number": current_seed_number}), 200)
             return response
         else:
             response = make_response(json.dumps({"status": "stopped"}), 200)
