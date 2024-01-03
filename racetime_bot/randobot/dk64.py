@@ -39,7 +39,6 @@ class DK64:
             self.status_endpoint = "https://generate.dk64rando.com/status"
         self.presets = self.load_presets()
 
-
     def load_presets(self):
         """Load and return available seed presets."""
         presets = requests.get(self.preset_endpoint).json()

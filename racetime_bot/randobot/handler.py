@@ -76,12 +76,7 @@ class RandoHandler(RaceHandler):
     async def chat_message(self, data):
         """Send a welcome message from the bot."""
         message = data.get("message", {})
-        if (
-            message.get("is_bot")
-            and message.get("bot") == "RandoBot"
-            and message.get("is_pinned")
-            and message.get("message_plain", "").startswith("Welcome to DK64R!")
-        ):
+        if message.get("is_bot") and message.get("bot") == "RandoBot" and message.get("is_pinned") and message.get("message_plain", "").startswith("Welcome to DK64R!"):
             self.state["pinned_msg"] = message.get("id")
         return await super().chat_message(data)
 
@@ -170,10 +165,7 @@ class RandoHandler(RaceHandler):
         reply_to = message.get("user", {}).get("name")
 
         if self.state.get("locked") and not can_monitor(message):
-            await self.send_message(
-                "Sorry %(reply_to)s, seed rolling is locked. Only race "
-                "monitors may roll a seed for this race." % {"reply_to": reply_to or "friend"}
-            )
+            await self.send_message("Sorry %(reply_to)s, seed rolling is locked. Only race " "monitors may roll a seed for this race." % {"reply_to": reply_to or "friend"})
             return
         if self.state.get("seed_id") and not can_moderate(message):
             await self.send_message("Well excuuuuuse me princess, but I already rolled a seed. " "Don't get greedy!")
@@ -194,16 +186,11 @@ class RandoHandler(RaceHandler):
         """Generate a seed and send it to the race room."""
         if preset not in self.dk64.presets:
             res_cmd = "!presets"
-            await self.send_message(
-                "Sorry %(reply_to)s, I don't recognise that preset. Use "
-                "%(res_cmd)s to see what is available." % {"res_cmd": res_cmd, "reply_to": reply_to or "friend"}
-            )
+            await self.send_message("Sorry %(reply_to)s, I don't recognise that preset. Use " "%(res_cmd)s to see what is available." % {"res_cmd": res_cmd, "reply_to": reply_to or "friend"})
             return
         seed_id = self.dk64.roll_seed(preset, race)
 
-        await self.send_message(
-            "%(reply_to)s, your seed is generating. Please wait..." % {"reply_to": reply_to or "Okay"}
-        )
+        await self.send_message("%(reply_to)s, your seed is generating. Please wait..." % {"reply_to": reply_to or "Okay"})
         if self.state.get("pinned_msg"):
             await self.unpin_message(self.state["pinned_msg"])
             del self.state["pinned_msg"]
