@@ -422,22 +422,27 @@ def get_status():
                     job_index = 0
             except Exception as e:
                 job_index = 0
-            response = make_response(json.dumps({"status": executor.futures._state(gen_key), "position": job_index}), 202)
+            response = make_response(json.dumps({"status": executor.futures._state(gen_key), "position": job_index}), 200)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
             return response
         elif executor.futures._futures.get(gen_key):
-            response = make_response(json.dumps({"status": "ready"}), 200)
+            future = executor.futures._futures.get(gen_key)
+            resp_data = future.result()
+            if type(resp_data) is str:
+                response = make_response(json.dumps({"status": "failure", "data": resp_data}), 200)
+            else:
+                response = make_response(json.dumps({"status": "ready"}), 200)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
             return response
         else:
-            response = make_response(json.dumps({"status": "seed not generating"}), 404)
+            response = make_response(json.dumps({"status": "stopped"}), 200)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
             return response
     else:
-        response = make_response(json.dumps({"status": "error"}), 205)
+        response = make_response(json.dumps({"status": "error"}), 200)
         response.mimetype = "application/json"
         response.headers["Content-Type"] = "application/json; charset=utf-8"
         return response
@@ -459,7 +464,9 @@ def get_seed_data():
             future = executor.futures.pop(gen_key)
             resp_data = future.result()
             if type(resp_data) is str:
-                response = make_response(resp_data, 208)
+                response = make_response(json.dumps({"status": "failure", "data": resp_data}), 200)
+                response.mimetype = "application/json"
+                response.headers["Content-Type"] = "application/json; charset=utf-8"
                 return response
             hash = resp_data[1].settings.seed_hash
             spoiler_log = json.loads(resp_data[1].json)
@@ -517,16 +524,17 @@ def get_seed_data():
             os.makedirs("generated_seeds", exist_ok=True)
             with open("generated_seeds/" + file_name + ".lanky", "w") as f:
                 f.write(zip_conv)
-            # Return it as a text file
+            response.mimetype = "application/json"
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
             response = make_response(json.dumps({"status": "complete", "hash": hash, "seed_number": current_seed_number}), 200)
             return response
         else:
-            response = make_response(json.dumps({"status": "seed not generating"}), 404)
+            response = make_response(json.dumps({"status": "stopped"}), 200)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
             return response
     else:
-        response = make_response(json.dumps({"status": "error"}), 205)
+        response = make_response(json.dumps({"status": "error"}), 200)
         response.mimetype = "application/json"
         response.headers["Content-Type"] = "application/json; charset=utf-8"
         return response
