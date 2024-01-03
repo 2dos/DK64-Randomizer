@@ -526,6 +526,8 @@ extern int displayListCount;
 extern char TransitionType;
 extern char DKTVKong;
 extern cutsceneType CutsceneBanks[2];
+extern queued_cutscene_function* QueuedCutsceneFunctions;
+extern int ActorTimer;
 extern int EEPROMType;
 extern unsigned char ReverseMillLeverOrder[5];
 extern unsigned char ReverseCryptLeverOrder[3];
