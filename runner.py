@@ -229,7 +229,7 @@ def lambda_function():
             current_seed_number = update_total()
             file_name = str(current_seed_number)
             # Get the current time and add 5 hours to it.
-            unlock_time = time.time() + 18000
+            unlock_time = time.time() + 36000
             # Append the current time to the spoiler log as unlock_time.
             spoiler_log["Unlock_Time"] = unlock_time
             spoiler_log["Generated_Time"] = generated_time
@@ -395,6 +395,141 @@ def get_seed():
     else:
         # Return an error
         return make_response(json.dumps({"error": "error"}), 205)
+
+
+@app.route("/status", methods=["GET"])
+def get_status():
+    """Lambda function to generate a seed.
+
+    Returns:
+        Response: Flask response object.
+    """
+    # Flask get the query string parameters as a dict.
+    query_string = request.args.to_dict()
+    # See if we have a query for gen_key.
+    if query_string.get("gen_key"):
+        gen_key = str(query_string.get("gen_key"))
+        if executor.futures._futures.get(gen_key) and not executor.futures.done(gen_key):
+            # We're not done generating yet
+            # Create an ordered dict of the existing future that are not done.
+            ordered_futures = {}
+            for key in executor.futures._futures:
+                if not executor.futures.done(key) and not executor.futures.running(key):
+                    ordered_futures[key] = executor.futures._futures[key]
+            try:
+                job_index = list(ordered_futures).index(gen_key)
+                if job_index < 0:
+                    job_index = 0
+            except Exception as e:
+                job_index = 0
+            response = make_response(json.dumps({"status": executor.futures._state(gen_key), "position": job_index}), 202)
+            response.mimetype = "application/json"
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
+            return response
+        elif executor.futures._futures.get(gen_key):
+            response = make_response(json.dumps({"status": "ready"}), 200)
+            response.mimetype = "application/json"
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
+            return response
+        else:
+            response = make_response(json.dumps({"status": "seed not generating"}), 404)
+            response.mimetype = "application/json"
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
+            return response
+    else:
+        response = make_response(json.dumps({"status": "error"}), 205)
+        response.mimetype = "application/json"
+        response.headers["Content-Type"] = "application/json; charset=utf-8"
+        return response
+
+
+@app.route("/get_seed_data", methods=["GET"])
+def get_seed_data():
+    """Lambda function to get a hash of a seed.
+
+    Returns:
+        Response: Flask response object.
+    """
+    # Flask get the query string parameters as a dict.
+    query_string = request.args.to_dict()
+    # See if we have a query for gen_key.
+    if query_string.get("gen_key"):
+        gen_key = str(query_string.get("gen_key"))
+        if executor.futures._futures.get(gen_key):
+            future = executor.futures.pop(gen_key)
+            resp_data = future.result()
+            if type(resp_data) is str:
+                response = make_response(resp_data, 208)
+                return response
+            hash = resp_data[1].settings.seed_hash
+            spoiler_log = json.loads(resp_data[1].json)
+            # Only retain the Settings section and the Cosmetics section.
+            unlock_time = None
+            generated_time = time.time()
+            if os.environ.get("HOSTED_SERVER") is not None:
+                try:
+                    seed_table = dynamodb.Table("seed_db")
+                    seed_table.put_item(
+                        Item={
+                            "time": str(time.time()) + str(hash),
+                            "seed_id": str(resp_data[1].settings.seed_id),
+                            "spoiler_log": str(json.dumps(spoiler_log)),
+                        }
+                    )
+                except Exception:
+                    pass
+            # Encrypt the time and hash with the encryption key.
+            current_seed_number = update_total()
+            file_name = str(current_seed_number)
+            # Get the current time and add 5 hours to it.
+            unlock_time = time.time() + 18000
+            # Append the current time to the spoiler log as unlock_time.
+            spoiler_log["Unlock_Time"] = unlock_time
+            spoiler_log["Generated_Time"] = generated_time
+            spoiler_log["Seed_Number"] = current_seed_number
+            # write the spoiler log to a file in generated_seeds folder. Create the folder if it doesn't exist.
+            os.makedirs("generated_seeds", exist_ok=True)
+            with open("generated_seeds/" + file_name + ".json", "w") as f:
+                f.write(str(json.dumps(spoiler_log)))
+
+            sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Data", "Generated_Time", "Unlock_Time"]
+            if resp_data[1].settings.generate_spoilerlog is False:
+                spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
+
+            patch = resp_data[0]
+            # Zip all the data into a single file.
+            # Create a new zip file
+            zip_data = BytesIO()
+
+            with zipfile.ZipFile(zip_data, "w") as zip_file:
+                # Write each variable to the zip file
+                zip_file.writestr("patch", patch)
+                zip_file.writestr("hash", str(hash))
+                zip_file.writestr("spoiler_log", str(json.dumps(spoiler_log)))
+                zip_file.writestr("seed_id", str(resp_data[1].settings.seed_id))
+                zip_file.writestr("generated_time", str(generated_time))
+                zip_file.writestr("version", version)
+                zip_file.writestr("seed_number", str(current_seed_number))
+            zip_data.seek(0)
+            # Convert the zip to a string of base64 data
+            zip_conv = codecs.encode(zip_data.getvalue(), "base64").decode()
+            # Store the patch file in generated_seeds folder.
+            os.makedirs("generated_seeds", exist_ok=True)
+            with open("generated_seeds/" + file_name + ".lanky", "w") as f:
+                f.write(zip_conv)
+            # Return it as a text file
+            response = make_response(json.dumps({"status": "complete", "hash": hash, "seed_number": current_seed_number}), 200)
+            return response
+        else:
+            response = make_response(json.dumps({"status": "seed not generating"}), 404)
+            response.mimetype = "application/json"
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
+            return response
+    else:
+        response = make_response(json.dumps({"status": "error"}), 205)
+        response.mimetype = "application/json"
+        response.headers["Content-Type"] = "application/json; charset=utf-8"
+        return response
 
 
 @app.route("/convert_settings_string", methods=["POST"])
