@@ -523,7 +523,7 @@ def get_seed_data():
             # Store the patch file in generated_seeds folder.
             os.makedirs("generated_seeds", exist_ok=True)
             with open("generated_seeds/" + file_name + ".lanky", "w") as f:
-                f.write(zip_conv)            
+                f.write(zip_conv)
             response.mimetype = "application/json"
             response.headers["Content-Type"] = "application/json; charset=utf-8"
             response = make_response(json.dumps({"status": "complete", "hash": hash, "seed_number": current_seed_number}), 200)
