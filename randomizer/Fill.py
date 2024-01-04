@@ -729,11 +729,12 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
             loc
             for loc in sphere.locations  # If Keys are constant, we may still want path hints for them.
             if (not spoiler.LocationList[loc].constant or ItemList[spoiler.LocationList[loc].item].type == Types.Key)
-            and ItemList[spoiler.LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.Enemies)
+            and ItemList[spoiler.LocationList[loc].item].type
+            not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.Enemies)
         ]:
             WothLocations.append(loc)
     WothLocations.append(Locations.BananaHoard)  # The Banana Hoard is the endpoint of the Way of the Hoard
-    
+
     # Only need to build paths for item rando
     if spoiler.settings.shuffle_items:
         majorItems = IdentifyMajorItems(spoiler)
@@ -846,7 +847,11 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
 
     # Identify important locations we might want to find the paths to
     # Filter out the items that are never WotH
-    filtered_major_items = [item for item in MajorItems if ItemList[item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.Enemies)]
+    filtered_major_items = [
+        item
+        for item in MajorItems
+        if ItemList[item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.Enemies)
+    ]
     interesting_locations = []
     for id, location in spoiler.LocationList.items():
         if not location.inaccessible and location.item in filtered_major_items:
