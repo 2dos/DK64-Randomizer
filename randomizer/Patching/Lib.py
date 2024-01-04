@@ -203,6 +203,7 @@ class MenuTexture:
     """Class to store information regarding a texture compatible with the main menu background."""
 
     def __init__(self, name: str, is32by32: bool, table: int = 25, weight: int = 100, is_color: bool = False):
+        """Initialize with given parameters."""
         self.name = name
         self.is32by32 = is32by32
         self.table = table

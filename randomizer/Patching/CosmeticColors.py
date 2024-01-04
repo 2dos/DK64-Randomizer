@@ -2005,7 +2005,7 @@ def applyHelmDoorCosmetics(settings: Settings) -> None:
 def applyHolidayMode(settings):
     """Change grass texture to snow."""
     HOLIDAY = "christmas"  # Or "" "halloween"
-    if settings.holiday_setting:
+    if settings.holiday_setting_offseason:
         if HOLIDAY == "christmas":
             # Set season to Christmas
             ROM().seek(settings.rom_data + 0xDB)

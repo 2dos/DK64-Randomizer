@@ -207,6 +207,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "colorblind_mode",
         "search",
         "holiday_setting",
+        "holiday_setting_offseason",
         "homebrew_header",
         "dpad_display",
         "camera_is_follow",

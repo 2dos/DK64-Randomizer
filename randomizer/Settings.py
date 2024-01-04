@@ -559,6 +559,7 @@ class Settings:
         self.random_starting_region = False
         self.starting_region = {}
         self.holiday_setting = False
+        self.holiday_setting_offseason = False
         self.remove_wrinkly_puzzles = False
         self.smaller_shops = False
         self.alter_switch_allocation = False
