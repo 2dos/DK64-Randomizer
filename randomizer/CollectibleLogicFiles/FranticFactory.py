@@ -111,7 +111,8 @@ LogicRegions = {
     ],
     Regions.UpperCore: [
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: True, None, 3),  # On cylinders and Simian Spring pad
-        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.handstand or l.phasewalk, None, 5),  # On pipe to production room GB
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: True, None, 1),  # On pipe to production room GB (bottom bunch)
+        Collectible(Collectibles.bunch, Kongs.lanky, lambda l: l.handstand or l.phasewalk, None, 4),  # On pipe to production room GB
         Collectible(Collectibles.balloon, Kongs.lanky, lambda l: l.grape, None, 1),  # By T&S portal
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: True, None, 4),  # On conveyors to Bonus Barrel
         Collectible(Collectibles.bunch, Kongs.tiny, lambda l: l.twirl, None, 1),  # On platform past Bonus Barrel

@@ -510,7 +510,7 @@ enemy_location_list = {
     Locations.JapesMountainEnemy_Start4: EnemyLoc(Maps.JapesMountain, Enemies.ZingerCharger, 9, [], True),
     Locations.JapesMountainEnemy_NearGateSwitch0: EnemyLoc(Maps.JapesMountain, Enemies.ZingerLime, 13, [], True),
     Locations.JapesMountainEnemy_NearGateSwitch1: EnemyLoc(Maps.JapesMountain, Enemies.ZingerLime, 14, [], True),
-    Locations.JapesMountainEnemy_HiLo: EnemyLoc(Maps.JapesMountain, Enemies.Klump, 15, [], True),
+    Locations.JapesMountainEnemy_HiLo: EnemyLoc(Maps.JapesMountain, Enemies.Klump, 15, [Enemies.Guard], True),
     Locations.JapesMountainEnemy_Conveyor0: EnemyLoc(Maps.JapesMountain, Enemies.Klump, 16, [], True),
     Locations.JapesMountainEnemy_Conveyor1: EnemyLoc(Maps.JapesMountain, Enemies.Klump, 17, [], True),
     # Shellhive

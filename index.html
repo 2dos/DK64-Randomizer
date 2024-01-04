@@ -59,7 +59,7 @@
                     <img src="/base-hack/assets/DKTV/logo.png" width="50%">
                     <p style="font-weight: bold; font-size: 48px;" id="version">Version {{ version }}</p>
                     <a class="btn btn-success btn-xl rounded-pill mt-5"
-                       onClick="render_page('./randomizer.html')">Play Now</a>
+                       onClick="render_page('./randomizer')">Play Now</a>
                     <a class="btn btn-info btn-xl rounded-pill mt-5" href="#overview">More Info</a>
                 </div>
             </div>
@@ -338,14 +338,14 @@
 <script>
     function render_page(page) {
         xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", page, false);
+        xmlhttp.open("GET", page + ".html", false);
         xmlhttp.send();
         var data = xmlhttp.responseText;
         document.documentElement.innerHTML = "";
         document.open();
         document.write(data);
         document.close();
-        history.pushState({}, "page 1", "randomizer.html");
+        history.pushState({}, "page 1", "randomizer");
     }
     if (window.location.protocol != 'https:') {
         if (location.hostname != "localhost" && location.hostname != "127.0.0.1") {

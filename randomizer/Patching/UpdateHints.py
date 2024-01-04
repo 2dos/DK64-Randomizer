@@ -90,11 +90,11 @@ def PushHints(spoiler):
     short_hint_arr = []
     for replacement_hint in spoiler.hint_list.values():
         if replacement_hint == "":
-            replacement_hint = "PLACEHOLDER HINT"
+            replacement_hint = "error: missing hint - report this error to the discord"
         hint_arr.append([replacement_hint.upper()])
     for short_hint in spoiler.short_hint_list.values():
         if short_hint == "":
-            short_hint = "PLACEHOLDER HINT"
+            short_hint = "error: missing hint - report this error to the discord"
         short_hint_arr.append([short_hint.upper()])
     writeWrinklyHints(js.pointer_addresses[12]["entries"][41]["pointing_to"], hint_arr)
     writeWrinklyHints(js.pointer_addresses[12]["entries"][45]["pointing_to"], short_hint_arr)

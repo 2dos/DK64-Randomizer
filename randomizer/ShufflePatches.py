@@ -164,7 +164,7 @@ def ShufflePatches(spoiler, human_spoiler):
     if spoiler.settings.enable_plandomizer and spoiler.settings.plandomizer_dict["plando_dirt_patches"] != -1:
         for item_placement in spoiler.settings.plandomizer_dict["plando_dirt_patches"]:
             for patch_index, patch in enumerate(sorted_patches):
-                if item_placement["location"] == patch["name"] and item_placement["reward"] != -1:
+                if item_placement["location"] == patch["name"] and item_placement["level"] == patch["level"] and item_placement["reward"] != -1:
                     spoiler.settings.plandomizer_dict["locations"][patch["enum"]] = item_placement["reward"]
     return human_spoiler.copy()
 

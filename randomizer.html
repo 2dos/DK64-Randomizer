@@ -37,7 +37,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="./index.html#overview">Overview</a>
+                        <a class="nav-link" href="./">Overview</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
@@ -98,7 +98,7 @@
          alt="DK64 Randomizer"
          class="center_image"
          style="cursor: pointer; margin-top: 70px"
-         onClick="render_page('./index.html')"/>
+         onClick="render_page('./index')"/>
     <div style="width: 80%; min-width: 400px; max-width: 1500px"
          class="center">
         <div class="card bg-dark" style="max-width: 1500px">
@@ -552,14 +552,14 @@
     <script>
         function render_page(page) {
             xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", page, false);
+            xmlhttp.open("GET", page + ".html", false);
             xmlhttp.send();
             var data = xmlhttp.responseText;
             document.documentElement.innerHTML = "";
             document.open();
             document.write(data);
             document.close();
-            history.pushState({}, "page 1", "index.html");
+            history.pushState({}, "page 1", "index");
         }
     </script>
     <script>
