@@ -16,8 +16,8 @@ def convertRGBAToBytearray(rgba_lst):
 
 
 def clampRGBA(n):
-    """Restricts value between 0 and 255."""
-    return max(0, min(n, 255))
+    """Restricts input to integer value between 0 and 255."""
+    return math.floor(max(0, min(n, 255)))
 
 
 def patchColorTranspose(name, x, y, patch_img, target_color):
@@ -26,13 +26,12 @@ def patchColorTranspose(name, x, y, patch_img, target_color):
     if name == "tie":
         redRef = (255, 0, 0, 1)
         yellowRef = (255, 255, 0, 1)
-        if currentPix == redRef or ((abs(currentPix[0] - redRef[0]) < 20) and (abs(currentPix[1] - redRef[1]) < 20) and (abs(currentPix[2] - redRef[2]) < 20)):
+        if (abs(currentPix[0] - redRef[0]) < 20) and (abs(currentPix[1] - redRef[1]) < 20) and (abs(currentPix[2] - redRef[2]) < 20):
             # if currentPix is exactly our reference colour or close enough to not be noticable
             return target_color
         elif currentPix[0] > currentPix[1] and (abs(currentPix[1] - currentPix[0]) > 200):
-            # if currentPix is red-ish and needs to be changed
+            # if currentPix is red-ish (should be changed to target_color-ish)
             dr, dg, db = redRef[0] - currentPix[0], redRef[1] - currentPix[1], redRef[2] - currentPix[2]
-            # perform those deltas on target_color and return
             return (
                 clampRGBA(clampRGBA(clampRGBA(clampRGBA(target_color[0]) << 3) - dr) >> 3),
                 clampRGBA(clampRGBA(clampRGBA(clampRGBA(target_color[1]) << 3) - dg) >> 3),
@@ -40,31 +39,36 @@ def patchColorTranspose(name, x, y, patch_img, target_color):
                 1,
             )
         elif not (currentPix[0] > currentPix[1] and (abs(currentPix[1] - currentPix[0]) > 200)) and (currentPix[3] == 255):
-            # if currentPix is yellow
-            # get the deltas between the colours
-            dr, dg, db = yellowRef[0] - currentPix[0], yellowRef[1] - currentPix[1], yellowRef[2] - currentPix[2]
-            perc_d = math.floor((dr + dg + db) / 3)
-            # get the inverted colors from target_color
-            ir, ig, ib = (255 - (target_color[0] << 3)), (255 - (target_color[1] << 3)), (255 - (target_color[2] << 3))
-            perc_i = math.floor((ir + ig + ib) / 3)
-            # perform those deltas on the inverted colors and return
-            if perc_d > 128 or perc_i > 128:
-                return (clampRGBA(ir - perc_d) >> 3, clampRGBA(ig - perc_d) >> 3, clampRGBA(ib - perc_d) >> 3, 1)
+            # if currentPix is yellow (should be changed to the invert of target_color)
+            if (abs(target_color[0] - redRef[0]) < 20) and (abs(target_color[1] - redRef[1]) < 20) and (abs(target_color[2] - redRef[2]) < 20):
+                # if target is close enough to original red, just return the vanilla yellow values
+                return (currentPix[0] >> 3, currentPix[1] >> 3, currentPix[2] >> 3, currentPix[3] & 1)
             else:
-                return (clampRGBA(ir + perc_d) >> 3, clampRGBA(ig + perc_d) >> 3, clampRGBA(ib + perc_d) >> 3, 1)
+                dr, dg, db = yellowRef[0] - currentPix[0], yellowRef[1] - currentPix[1], yellowRef[2] - currentPix[2]
+                intensity_deltas = math.floor((dr + dg + db) / 3)
+                # grey edge case; set the letter colour to white (otherwise it wont display correctly)
+                if (100 < target_color[0] < 150) and (100 < target_color[1] < 150) and (100 < target_color[2] < 150):
+                    ir, ig, ib = 255, 255, 255
+                else:
+                    ir, ig, ib = (255 - (target_color[0] << 3)), (255 - (target_color[1] << 3)), (255 - (target_color[2] << 3))
+                intensity_inverteds = math.floor((ir + ig + ib) / 3)
+                # colour correction multiplier
+                m = (intensity_inverteds / 128) + 0.5
+                if intensity_deltas > 128 or intensity_inverteds > 128:
+                    return (clampRGBA(ir - m * intensity_deltas) >> 3, clampRGBA(ig - m * intensity_deltas) >> 3, clampRGBA(ib - m * intensity_deltas) >> 3, 1)
+                else:
+                    return (clampRGBA(ir + 1.5 * intensity_deltas) >> 3, clampRGBA(ig + 1.5 * intensity_deltas) >> 3, clampRGBA(ib + 1.5 * intensity_deltas) >> 3, 1)
         else:
             # quickly convert the read pixel from RGBA32 to RGBA5551 so it doesnt write garbage data later
             return (currentPix[0] >> 3, currentPix[1] >> 3, currentPix[2] >> 3, currentPix[3] & 1)
     elif name == "clothes":
         blueRef = (0, 90, 255, 1)
-        if currentPix == blueRef or ((abs(currentPix[0] - blueRef[0]) < 20) and (abs(currentPix[1] - blueRef[1]) < 20) and (abs(currentPix[2] - blueRef[2]) < 20)):
+        if (abs(currentPix[0] - blueRef[0]) < 20) and (abs(currentPix[1] - blueRef[1]) < 20) and (abs(currentPix[2] - blueRef[2]) < 20):
             # if currentPix is exactly our reference colour or close enough to not be noticable
             return target_color
         elif currentPix[2] > currentPix[1] and currentPix[2] > currentPix[0]:
-            # if currentPic is blue-ish and needs to be changed
-            # get the deltas between the colours
+            # if currentPic is blue-ish (should be changed to target_color-ish)
             dr, dg, db = blueRef[0] - currentPix[0], blueRef[1] - currentPix[1], blueRef[2] - currentPix[2]
-            # perform those deltas on destcolour and return
             return (
                 clampRGBA(clampRGBA(clampRGBA(clampRGBA(target_color[0]) << 3) - dr) >> 3),
                 clampRGBA(clampRGBA(clampRGBA(clampRGBA(target_color[1]) << 3) - dg) >> 3),
