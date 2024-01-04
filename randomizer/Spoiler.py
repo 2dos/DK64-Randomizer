@@ -59,6 +59,7 @@ class Spoiler:
         self.woth_locations = {}
         self.woth_paths = {}
         self.krool_paths = {}
+        self.other_paths = {}
         self.shuffled_barrel_data = {}
         self.shuffled_exit_data = {}
         self.shuffled_exit_instructions = []
@@ -613,8 +614,9 @@ class Spoiler:
         # Woth data
         humanspoiler["Way of the Hoard"] = self.woth
         # Paths for Woth items - does not show up on the site, just for debugging
-        humanspoiler["Paths"] = {}
-        wothSlams = 0
+        humanspoiler["WotH Paths"] = {}
+        slamCount = 0
+        pearlCount = 0
         for loc, path in self.woth_paths.items():
             destination_item = ItemList[self.LocationList[loc].item]
             path_dict = {}
@@ -624,9 +626,12 @@ class Spoiler:
                 path_dict[path_location.name] = path_item.name
             extra = ""
             if self.LocationList[loc].item == Items.ProgressiveSlam:
-                wothSlams += 1
-                extra = " " + str(wothSlams)
-            humanspoiler["Paths"][destination_item.name + extra] = path_dict
+                slamCount += 1
+                extra = " " + str(slamCount)
+            if self.LocationList[loc].item == Items.Pearl:
+                pearlCount += 1
+                extra = " " + str(pearlCount)
+            humanspoiler["WotH Paths"][destination_item.name + extra] = path_dict
         # Paths for K. Rool phases - also do not show up on the site, just for debugging
         for kong, path in self.krool_paths.items():
             path_dict = {}
@@ -643,7 +648,23 @@ class Spoiler:
                 phase_name = "K. Rool Tiny Phase"
             elif kong == Kongs.chunky:
                 phase_name = "K. Rool Chunky Phase"
-            humanspoiler["Paths"][phase_name] = path_dict
+            humanspoiler["WotH Paths"][phase_name] = path_dict
+        humanspoiler["Other Paths"] = {}
+        for loc, path in self.other_paths.items():
+            destination_item = ItemList[self.LocationList[loc].item]
+            path_dict = {}
+            for path_loc_id in path:
+                path_location = self.LocationList[path_loc_id]
+                path_item = ItemList[path_location.item]
+                path_dict[path_location.name] = path_item.name
+            extra = ""
+            if self.LocationList[loc].item == Items.ProgressiveSlam:
+                slamCount += 1
+                extra = " " + str(slamCount)
+            if self.LocationList[loc].item == Items.Pearl:
+                pearlCount += 1
+                extra = " " + str(pearlCount)
+            humanspoiler["Other Paths"][destination_item.name + extra] = path_dict
 
         if self.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
             # Just show level order
