@@ -71,7 +71,7 @@ void pressToSkip(void) {
 	}
 	if (isCutsceneSkipped(CurrentMap, CutsceneIndex)) {
 		CancelCutsceneInternals(CutsceneIndex);
-		clearQueuedCutsceneFunctions();a
+		clearQueuedCutsceneFunctions();
 		skip_cutscenes = 1;
 	}
 }
