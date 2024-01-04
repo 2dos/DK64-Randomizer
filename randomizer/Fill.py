@@ -23,6 +23,7 @@ from randomizer.Enums.Settings import (
     FasterChecksSelected,
     FillAlgorithm,
     FungiTimeSetting,
+    HardModeSelected,
     HelmDoorItem,
     LogicType,
     MinigameBarrels,
@@ -364,7 +365,6 @@ def GetAccessibleLocations(
                                 newRegion = spoiler.RegionList[destination]
                                 newRegion.id = destination
                                 regionPool.append(destination)
-                                kongAccessibleRegions[kong].add(destination)
                         # Given that it's accessible, update time of day access whether or not we've already visited it
                         # This way if a region has access from 2 different regions, one time-restricted and one not,
                         # it will be known that it can be accessed during either time of day
@@ -391,7 +391,6 @@ def GetAccessibleLocations(
                         newRegion = spoiler.RegionList[destination]
                         newRegion.id = destination
                         regionPool.append(destination)
-                        kongAccessibleRegions[kong].add(destination)
                         # If this region has day access, the deathwarp will occur on the same time of day
                         # Note that no deathwarps are dependent on time of day
                         if region.dayAccess[kong]:
@@ -660,6 +659,7 @@ def VerifyWorldWithWorstCoinUsage(spoiler: Spoiler) -> bool:
 def ParePlaythrough(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> None:
     """Pare playthrough down to only the essential elements."""
     settings = spoiler.settings
+    AccessibleHintsForLocation = {}
     locationsToAddBack = []
     mostExpensiveBLocker = max([settings.blocker_0, settings.blocker_1, settings.blocker_2, settings.blocker_3, settings.blocker_4, settings.blocker_5, settings.blocker_6, settings.blocker_7])
     # Check every location in the list of spheres.
@@ -689,16 +689,24 @@ def ParePlaythrough(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> Non
             # Check if the game is still beatable
             spoiler.Reset()
             if GetAccessibleLocations(spoiler, [], SearchMode.CheckBeatable):
-                # If the game is still beatable this is an unnecessary location, so remove it.
+                # If the game is still beatable, this is an unnecessary location. We remove it from the playthrough, as it is not strictly required.
                 sphere.locations.remove(locationId)
-                # We delay the item to ensure future locations which may rely on this one
-                # do not give a false positive for beatability.
-                location.SetDelayedItem(item)
-                locationsToAddBack.append(locationId)
+                # In non-item rando, put back the items on a delay
+                if not spoiler.settings.shuffle_items:
+                    # We delay the item to ensure future locations which may rely on this one do not give a false positive for beatability.
+                    # This is legacy behavior I'm not convinced needs to exist. It stays in non-item rando because the performance cost is negligible there.
+                    location.SetDelayedItem(item)
+                    locationsToAddBack.append(locationId)
+                # In item rando, we do additional WotH paring via paths later, so we don't need to worry about getting it perfect here
+                else:
+                    location.PlaceItem(spoiler, item)
             else:
-                # Else it is essential, don't remove it from the playthrough and add the item back.
+                # If the game is not beatable without this item, don't remove it from the playthrough and add the item back. This is now a WotH candidate.
                 location.PlaceItem(spoiler, item)
-
+                # Make note of what hints are accessible without this WotH candidate in case it gets hinted later
+                AccessibleHintsForLocation[locationId] = spoiler.LogicVariables.Hints.copy()
+    # Record that dictionary of hint access for when we compile hints
+    spoiler.accessible_hints_for_location = AccessibleHintsForLocation
     # Check if there are any empty spheres, if so remove them
     for i in range(len(PlaythroughLocations) - 1, -1, -1):
         sphere = PlaythroughLocations[i]
@@ -715,38 +723,38 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
     # The functionality is similar to ParePlaythrough, but we want to see if individual locations are
     # hard required, so items are added back after checking regardless of the outcome.
     WothLocations = []
-    AccessibleHintsForLocation = {}
     for sphere in PlaythroughLocations:
         # Don't want constant locations in woth and we can filter out some types of items as not being essential to the woth
         for loc in [
             loc
             for loc in sphere.locations  # If Keys are constant, we may still want path hints for them.
             if (not spoiler.LocationList[loc].constant or ItemList[spoiler.LocationList[loc].item].type == Types.Key)
-            and ItemList[spoiler.LocationList[loc].item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint, Types.RainbowCoin, Types.CrateItem, Types.Enemies)
+            and ItemList[spoiler.LocationList[loc].item].type
+            not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.Enemies)
         ]:
             WothLocations.append(loc)
     WothLocations.append(Locations.BananaHoard)  # The Banana Hoard is the endpoint of the Way of the Hoard
-    # Check every item location to see if removing it by itself makes the game unbeatable
-    for i in range(len(WothLocations) - 1, -1, -1):
-        locationId = WothLocations[i]
-        location = spoiler.LocationList[locationId]
-        item = location.item
-        location.item = None
-        # Check if game is still beatable
-        spoiler.Reset()
-        if GetAccessibleLocations(spoiler, [], SearchMode.CheckBeatable):
-            # If game is still beatable, this location is not hard required
-            WothLocations.remove(locationId)
-        # If this is a WotH candidate, take note of what hints are available without this location
-        else:
-            AccessibleHintsForLocation[locationId] = spoiler.LogicVariables.Hints.copy()
-        # Either way, add location back
-        location.PlaceItem(spoiler, item)
+
     # Only need to build paths for item rando
     if spoiler.settings.shuffle_items:
-        CalculateWothPaths(spoiler, WothLocations)
-        CalculateFoolish(spoiler, WothLocations)
-    spoiler.accessible_hints_for_location = AccessibleHintsForLocation
+        majorItems = IdentifyMajorItems(spoiler)
+        CalculateWothPaths(spoiler, WothLocations, majorItems)
+        CalculateFoolish(spoiler, WothLocations, majorItems)
+    # Non-item rando needs additional WotH paring due to the delayed item re-placing done when paring the playthrough
+    else:
+        # Check every item location to see if removing it by itself makes the game unbeatable
+        for i in range(len(WothLocations) - 1, -1, -1):
+            locationId = WothLocations[i]
+            location = spoiler.LocationList[locationId]
+            item = location.item
+            location.item = None
+            # Check if game is still beatable
+            spoiler.Reset()
+            if GetAccessibleLocations(spoiler, [], SearchMode.CheckBeatable):
+                # If game is still beatable, this location is not hard required
+                WothLocations.remove(locationId)
+            # Either way, add location back
+            location.PlaceItem(spoiler, item)
     # We kept Keys around to generate paths better, but we don't need them in the spoiler log or being hinted (except for the Helm Key if it's there and also keep the Banana Hoard path)
     WothLocations = [loc for loc in WothLocations if not spoiler.LocationList[loc].constant or loc == Locations.HelmKey or loc == Locations.BananaHoard]
     if spoiler.settings.shuffle_items:
@@ -757,7 +765,66 @@ def PareWoth(spoiler: Spoiler, PlaythroughLocations: List[Sphere]) -> List[Union
     return WothLocations
 
 
-def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, int]]) -> None:
+def IdentifyMajorItems(spoiler: Spoiler) -> List[Locations]:
+    """Identify the Major Items in this seed based on the item placement and the settings."""
+    # Use the settings to determine non-progression Major Items
+    majorItems = ItemPool.AllKongMoves()
+    if spoiler.settings.training_barrels != TrainingBarrels.normal:
+        majorItems.extend(ItemPool.TrainingBarrelAbilities())
+    if spoiler.settings.shockwave_status != ShockwaveStatus.shuffled_decoupled:
+        majorItems.append(Items.CameraAndShockwave)
+    if spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
+        majorItems.append(Items.Shockwave)
+        majorItems.append(Items.Camera)
+    majorItems.extend(ItemPool.Keys())
+    majorItems.extend(ItemPool.Kongs(spoiler.settings))
+    requires_rareware = spoiler.settings.coin_door_item == HelmDoorItem.vanilla
+    requires_nintendo = spoiler.settings.coin_door_item == HelmDoorItem.vanilla
+    requires_crowns = spoiler.settings.crown_door_item in (HelmDoorItem.vanilla, HelmDoorItem.req_crown) or spoiler.settings.coin_door_item == HelmDoorItem.req_crown
+    for x in (spoiler.settings.crown_door_item, spoiler.settings.coin_door_item):
+        if x == HelmDoorItem.req_companycoins:
+            requires_rareware = True
+            requires_nintendo = True
+
+    if requires_rareware:  # A vanilla Rareware Coin should be considered a major item so medals will not be foolish
+        majorItems.append(Items.RarewareCoin)
+    if requires_nintendo:  # A vanilla Rareware Coin should be considered a major item so Grab will not be foolish
+        majorItems.append(Items.NintendoCoin)
+    if spoiler.settings.win_condition == WinCondition.all_blueprints or spoiler.settings.coin_door_item == HelmDoorItem.req_bp or spoiler.settings.crown_door_item == HelmDoorItem.req_bp:
+        majorItems.extend(ItemPool.Blueprints())
+    if spoiler.settings.win_condition == WinCondition.all_medals or spoiler.settings.coin_door_item == HelmDoorItem.req_medal or spoiler.settings.crown_door_item == HelmDoorItem.req_medal:
+        majorItems.append(Items.BananaMedal)
+    if spoiler.settings.win_condition == WinCondition.all_fairies or spoiler.settings.coin_door_item == HelmDoorItem.req_fairy or spoiler.settings.crown_door_item == HelmDoorItem.req_fairy:
+        majorItems.append(Items.BananaFairy)
+    if requires_crowns:
+        majorItems.append(Items.BattleCrown)
+    if spoiler.settings.coin_door_item == HelmDoorItem.req_pearl or spoiler.settings.crown_door_item == HelmDoorItem.req_pearl:
+        majorItems.append(Items.Pearl)
+    if spoiler.settings.coin_door_item == HelmDoorItem.req_bean or spoiler.settings.crown_door_item == HelmDoorItem.req_bean:
+        majorItems.append(Items.Bean)
+    if spoiler.settings.coin_door_item == HelmDoorItem.req_rainbowcoin or spoiler.settings.crown_door_item == HelmDoorItem.req_rainbowcoin:
+        majorItems.append(Items.RainbowCoin)
+    # The contents of some locations can make entire classes of items not foolish
+    # Loop through these locations until no new items are added to the list of major items
+    newFoolishItems = True
+    while newFoolishItems:
+        newFoolishItems = False
+        if spoiler.LocationList[Locations.RarewareCoin].item in majorItems and Items.BananaMedal not in majorItems:
+            majorItems.append(Items.BananaMedal)
+            newFoolishItems = True
+        if spoiler.LocationList[Locations.RarewareBanana].item in majorItems and Items.BananaFairy not in majorItems:
+            majorItems.append(Items.BananaFairy)
+            newFoolishItems = True
+        if spoiler.LocationList[Locations.GalleonTinyPearls].item in majorItems and Items.Pearl not in majorItems:
+            majorItems.append(Items.Pearl)
+            newFoolishItems = True
+        if spoiler.LocationList[Locations.ForestTinyBeanstalk].item in majorItems and Items.Bean not in majorItems:
+            majorItems.append(Items.Bean)
+            newFoolishItems = True
+    return majorItems
+
+
+def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, int]], MajorItems: List[Items]) -> None:
     """Calculate the Paths (dependencies) for each Way of the Hoard item."""
     # Helps get more accurate paths by removing important obstacles to level entry
     # Removes the following:
@@ -778,14 +845,36 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
         spoiler.LogicVariables.assumeUpperIslesAccess = True
         spoiler.settings.open_lobbies = True
 
-    # Prep the dictionary that will contain the path for the key item
+    # Identify important locations we might want to find the paths to
+    # Filter out the items that are never WotH
+    filtered_major_items = [
+        item
+        for item in MajorItems
+        if ItemList[item].type not in (Types.Banana, Types.BlueprintBanana, Types.Crown, Types.Medal, Types.Blueprint, Types.Fairy, Types.RainbowCoin, Types.CrateItem, Types.Enemies)
+    ]
+    interesting_locations = []
+    for id, location in spoiler.LocationList.items():
+        if not location.inaccessible and location.item in filtered_major_items:
+            interesting_locations.append(id)
+    interesting_locations.append(Locations.BananaHoard)
+    if spoiler.settings.start_with_slam:
+        interesting_locations.remove(Locations.IslesFirstMove)
+
+    ordered_interesting_locations = []
+    # Prep the dictionaries that will contain the paths to our interesting locations
     for locationId in WothLocations:
         spoiler.woth_paths[locationId] = [locationId]  # The endpoint is on its own path
+        ordered_interesting_locations.append(locationId)  # Keeping WotH locations in order makes paths MUCH easier to read
+    for locationId in interesting_locations:
+        if locationId not in WothLocations:
+            spoiler.other_paths[locationId] = [locationId]
+            ordered_interesting_locations.append(locationId)
+
     # If K. Rool is the win condition, prepare phase-specific paths as well
     if spoiler.settings.win_condition == WinCondition.beat_krool:
         for phase in spoiler.settings.krool_order:
             spoiler.krool_paths[phase] = []
-    for locationId in WothLocations:
+    for locationId in ordered_interesting_locations:
         # Remove the item from the location
         location = spoiler.LocationList[locationId]
         item_id = location.item
@@ -802,6 +891,9 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
             # If it is no longer accessible, then this location is on the path of that other location
             if other_location not in accessible:
                 spoiler.woth_paths[other_location].append(locationId)
+        for other_location in spoiler.other_paths.keys():
+            if other_location not in accessible:
+                spoiler.other_paths[other_location].append(locationId)
         # If the win condition is K. Rool, also add this location to those paths as applicable
         if spoiler.settings.win_condition == WinCondition.beat_krool:
             if Kongs.donkey in spoiler.settings.krool_order and Events.KRoolDonkey not in spoiler.LogicVariables.Events:
@@ -844,6 +936,7 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
                 if location.item in ItemPool.Keys():
                     continue
                 WothLocations.remove(locationId)
+                spoiler.other_paths[locationId] = spoiler.woth_paths[locationId]
                 del spoiler.woth_paths[locationId]
                 # If we remove anything, we have to check the whole list again
                 anything_removed = True
@@ -858,78 +951,18 @@ def CalculateWothPaths(spoiler: Spoiler, WothLocations: List[Union[Locations, in
     spoiler.settings.open_lobbies = old_open_lobbies_temp  # Undo the open lobbies setting change as needed
 
 
-def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]]) -> None:
+def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]], MajorItems: List[Items]) -> None:
     """Calculate the items and regions that are foolish (blocking no major items)."""
-    # Use the settings to determine non-progression Major Items
-    majorItems = ItemPool.AllKongMoves()
+    # Identify the items that count for potion hinting hints
     regionCountHintableItems = ItemPool.AllKongMoves()
     regionCountHintableItems.extend(ItemPool.JunkSharedMoves)
     if spoiler.settings.training_barrels != TrainingBarrels.normal:
-        majorItems.extend(ItemPool.TrainingBarrelAbilities())
         regionCountHintableItems.extend(ItemPool.TrainingBarrelAbilities())
-    if spoiler.settings.shockwave_status != ShockwaveStatus.shuffled_decoupled:
-        majorItems.append(Items.CameraAndShockwave)
-        if spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
-            regionCountHintableItems.append(Items.CameraAndShockwave)
-    if spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
-        majorItems.append(Items.Shockwave)
-        majorItems.append(Items.Camera)
-        if spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
-            regionCountHintableItems.append(Items.Shockwave)
-            regionCountHintableItems.append(Items.Camera)
-    majorItems.extend(ItemPool.Keys())
-    majorItems.extend(ItemPool.Kongs(spoiler.settings))
-    requires_rareware = spoiler.settings.coin_door_item == HelmDoorItem.vanilla
-    requires_nintendo = spoiler.settings.coin_door_item == HelmDoorItem.vanilla
-    requires_crowns = spoiler.settings.crown_door_item in (HelmDoorItem.vanilla, HelmDoorItem.req_crown) or spoiler.settings.coin_door_item == HelmDoorItem.req_crown
-    for x in (spoiler.settings.crown_door_item, spoiler.settings.coin_door_item):
-        if x == HelmDoorItem.req_companycoins:
-            requires_rareware = True
-            requires_nintendo = True
-
-    if requires_rareware:  # A vanilla Rareware Coin should be considered a major item so medals will not be foolish
-        majorItems.append(Items.RarewareCoin)
-    if Types.Coin in spoiler.settings.shuffled_location_types and requires_nintendo:
-        majorItems.append(Items.NintendoCoin)
-    if Types.Blueprint in spoiler.settings.shuffled_location_types and (
-        spoiler.settings.win_condition == WinCondition.all_blueprints or spoiler.settings.coin_door_item == HelmDoorItem.req_bp or spoiler.settings.crown_door_item == HelmDoorItem.req_bp
-    ):
-        majorItems.extend(ItemPool.Blueprints())
-    if Types.Medal in spoiler.settings.shuffled_location_types and (
-        spoiler.settings.win_condition == WinCondition.all_medals or spoiler.settings.coin_door_item == HelmDoorItem.req_medal or spoiler.settings.crown_door_item == HelmDoorItem.req_medal
-    ):
-        majorItems.append(Items.BananaMedal)
-    if Types.Fairy in spoiler.settings.shuffled_location_types and (
-        spoiler.settings.win_condition == WinCondition.all_fairies or spoiler.settings.coin_door_item == HelmDoorItem.req_fairy or spoiler.settings.crown_door_item == HelmDoorItem.req_fairy
-    ):
-        majorItems.append(Items.BananaFairy)
-    if Types.Crown in spoiler.settings.shuffled_location_types and requires_crowns:
-        majorItems.append(Items.BattleCrown)
-    if Types.Pearl in spoiler.settings.shuffled_location_types and (spoiler.settings.coin_door_item == HelmDoorItem.req_pearl or spoiler.settings.crown_door_item == HelmDoorItem.req_pearl):
-        majorItems.append(Items.Pearl)
-    if Types.Bean in spoiler.settings.shuffled_location_types and (spoiler.settings.coin_door_item == HelmDoorItem.req_bean or spoiler.settings.crown_door_item == HelmDoorItem.req_bean):
-        majorItems.append(Items.Bean)
-    if Types.RainbowCoin in spoiler.settings.shuffled_location_types and (
-        spoiler.settings.coin_door_item == HelmDoorItem.req_rainbowcoin or spoiler.settings.crown_door_item == HelmDoorItem.req_rainbowcoin
-    ):
-        majorItems.append(Items.RainbowCoin)
-    # The contents of some locations can make entire classes of items not foolish
-    # Loop through these locations until no new items are added to the list of major items
-    newFoolishItems = True
-    while newFoolishItems:
-        newFoolishItems = False
-        if Types.Medal in spoiler.settings.shuffled_location_types and spoiler.LocationList[Locations.RarewareCoin].item in majorItems and Items.BananaMedal not in majorItems:
-            majorItems.append(Items.BananaMedal)
-            newFoolishItems = True
-        if Types.Fairy in spoiler.settings.shuffled_location_types and spoiler.LocationList[Locations.RarewareBanana].item in majorItems and Items.BananaFairy not in majorItems:
-            majorItems.append(Items.BananaFairy)
-            newFoolishItems = True
-        if Types.Pearl in spoiler.settings.shuffled_location_types and spoiler.LocationList[Locations.GalleonTinyPearls].item in majorItems and Items.Pearl not in majorItems:
-            majorItems.append(Items.Pearl)
-            newFoolishItems = True
-        if Types.Bean in spoiler.settings.shuffled_location_types and spoiler.LocationList[Locations.ForestTinyBeanstalk].item in majorItems and Items.Bean not in majorItems:
-            majorItems.append(Items.Bean)
-            newFoolishItems = True
+    if spoiler.settings.shockwave_status != ShockwaveStatus.shuffled_decoupled and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+        regionCountHintableItems.append(Items.CameraAndShockwave)
+    if spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled and spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
+        regionCountHintableItems.append(Items.Shockwave)
+        regionCountHintableItems.append(Items.Camera)
 
     nonHintableNames = {"Game Start", "K. Rool Arena", "Snide", "Candy Generic", "Funky Generic", "Credits"}  # These regions never have anything useful so shouldn't be hinted
     spoiler.region_hintable_count = {}
@@ -940,12 +973,12 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
     for id, region in spoiler.RegionList.items():
         locations = [spoiler.LocationList[loc.id] for loc in region.locations if loc.id in spoiler.LocationList.keys() and not loc.isAuxiliaryLocation]
         # If this region's valid locations (exclude starting moves) DO contain a major item, add it the name to the set of non-hintable hint regions
-        if any([loc for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in majorItems]):
+        if any([loc for loc in locations if loc.type not in (Types.TrainingBarrel, Types.PreGivenMove) and loc.item in MajorItems]):
             nonHintableNames.add(region.hint_name)
         # In addition to being empty, medal regions need the corresponding boss location to be empty to be hinted foolish - this lets us say "CBs are foolish" which is more helpful
         elif "Medal Rewards" in region.hint_name:
             bossLocation = [location for location in bossLocations if location.level == region.level][0]  # Matches only one
-            if bossLocation.item in majorItems:
+            if bossLocation.item in MajorItems:
                 nonHintableNames.add(region.hint_name)
         # Ban shops from region count hinting. These are significantly worse regions to hint than any others.
         if "Shops" not in region.hint_name:
@@ -973,14 +1006,36 @@ def CalculateFoolish(spoiler: Spoiler, WothLocations: List[Union[Locations, int]
     elif spoiler.settings.shockwave_status == ShockwaveStatus.shuffled_decoupled:
         shuffledPotionItems.add(Items.Shockwave)
         shuffledPotionItems.add(Items.Camera)
+    # Some items aren't WotH but are frequently a part of either/or scenarios. The paths to these items should also be considered by "pathless" hints.
+    interesting_non_woth_items = [Items.Bean, Items.Pearl, Items.NintendoCoin, Items.RarewareCoin]
+    # If you start with a slam and have 0 WotH slams OR you don't start with a slam and have 0-1 WotH slams
+    if (spoiler.settings.start_with_slam and Items.ProgressiveSlam not in wothItems) or (not spoiler.settings.start_with_slam and wothItems.count(Items.ProgressiveSlam) <= 1):
+        # That means two slams are unhintable and we must account for the paths to the unhinted slams
+        interesting_non_woth_items.append(Items.ProgressiveSlam)
+    # With lava water, 3rd melon is very often required but falls into the same pitfalls as progressive slams
+    if spoiler.settings.hard_mode and HardModeSelected.water_is_lava in spoiler.settings.hard_mode_selected:
+        interesting_non_woth_items.append(Items.ProgressiveInstrumentUpgrade)
+    # Note down all the items on these interesting non-WotH paths
+    items_on_interesting_non_woth_paths = set()
+    for path_location in spoiler.other_paths.keys():
+        # If this path is to an interesting non-WotH item, note down every item on this path
+        if spoiler.LocationList[path_location].item in interesting_non_woth_items:
+            items_on_interesting_non_woth_paths.update(set([spoiler.LocationList[loc].item for loc in spoiler.other_paths[path_location]]))
     for item in shuffledPotionItems:
         # If this item is in the WotH, it can't possibly be foolish
         if item in wothItems:
+            continue
+        # If this item is on an interesting non-WotH path, it is treated as not pathless
+        elif item in items_on_interesting_non_woth_paths:
             continue
         spoiler.pathless_moves.append(item)
     # Saying slams aren't on the path to anything is usually utterly useless due to the progressive nature. I'm not even gonna try to pretend to make these work.
     while Items.ProgressiveSlam in spoiler.pathless_moves:
         spoiler.pathless_moves.remove(Items.ProgressiveSlam)
+    # Similarly, progressive instrument upgrades are also a nightmare for pathless - BEGONE
+    if spoiler.settings.hard_mode and HardModeSelected.water_is_lava in spoiler.settings.hard_mode_selected:
+        while Items.ProgressiveInstrumentUpgrade in spoiler.pathless_moves:
+            spoiler.pathless_moves.remove(Items.ProgressiveInstrumentUpgrade)
 
 
 def RandomFill(spoiler: Spoiler, itemsToPlace: List[Items], inOrder: bool = False) -> int:

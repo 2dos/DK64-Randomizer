@@ -1722,7 +1722,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 Items.MiniMonkey,
                 Items.PrimatePunch,
             ]:
-                pathless_move_score[move] = 3  # These moves are three times as likely as any other move to get picked now
+                pathless_move_score[move] = 4  # These moves are four times as likely as any other move to get picked now
             else:
                 pathless_move_score[move] = 1
         for i in range(hint_distribution[HintType.ForeseenPathless]):
