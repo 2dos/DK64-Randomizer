@@ -199,6 +199,7 @@ void loadHooks(void) {
 	if (MenuDarkness != 0) {
 		loadSingularHook(0x807070A0, &RecolorMenuBackground);
 	}
+	loadSingularHook(0x80600674, &updateLag);
 }
 
 void initHack(int source) {

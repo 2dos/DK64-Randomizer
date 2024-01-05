@@ -55,6 +55,7 @@ extern void staticWaterDamage(void);
 extern void checkBeforeApplyingQuicksand(void);
 extern void disableHelmKeyBounce(void);
 extern void RecolorMenuBackground(void);
+extern void updateLag(void);
 
 extern void CrankyDecouple(void);
 extern void ForceToBuyMoveInOneLevel(void);
