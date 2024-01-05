@@ -24,7 +24,7 @@
     "coin_door_item": {
         "vanilla": 0.2,
         "opened": 0.6,
-        "random": 0.2
+        "easy_random": 0.2
     },
     "coin_door_item_count": {
         "min": 1,
@@ -35,7 +35,7 @@
     "crown_door_item": {
         "vanilla": 0.2,
         "opened": 0.6,
-        "random": 0.2
+        "easy_random": 0.2
     },
     "crown_door_item_count": {
         "min": 1,
