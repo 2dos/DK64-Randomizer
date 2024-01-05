@@ -216,7 +216,7 @@ compatible_background_textures = {
     0x9DD: MenuTexture("Book", False),
     0x5C8: MenuTexture("Bricks", False),
     0x76F: MenuTexture("Bricks", False),
-    0xAAD: MenuTexture("Floodlights", False),
+    0xAAF: MenuTexture("Floodlights", False),
     0x33D: MenuTexture("Wooden Board", False),
     0x79C: MenuTexture("Grassy Brick", False),
     0x992: MenuTexture("Wooden Door", False),
