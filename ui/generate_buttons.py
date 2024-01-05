@@ -267,20 +267,6 @@ def generate_seed(event):
         background(form_data)
 
 
-@bind("click", "download_patch_file")
-def update_seed_text(event):
-    """Set seed text based on the download_patch_file click event.
-
-    Args:
-        event (DOMEvent): Javascript dom click event.
-    """
-    # When we click the download json event just change the button text
-    if js.document.getElementById("download_patch_file").checked:
-        js.document.getElementById("generate_seed").value = "Generate Patch File"
-    else:
-        js.document.getElementById("generate_seed").value = "Generate Seed"
-
-
 @bind("click", "load_patch_file")
 def update_patch_file(event):
     """Set historical seed text based on the load_patch_file click event.
