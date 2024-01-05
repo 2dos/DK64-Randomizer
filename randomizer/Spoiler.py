@@ -335,11 +335,13 @@ class Spoiler:
             HelmDoorItem.req_rainbowcoin: "Rainbow Coins",
         }
         if self.settings.crown_door_item != HelmDoorItem.opened:
-            humanspoiler["End Game"]["Helm"]["Crown Door Item"] = helm_door_names[self.settings.crown_door_item]
+            item = self.settings.crown_door_item if self.settings.crown_door_item != HelmDoorItem.vanilla else HelmDoorItem.req_crown
+            humanspoiler["End Game"]["Helm"]["Crown Door Item"] = helm_door_names[item]
             humanspoiler["End Game"]["Helm"]["Crown Door Item Randomized"] = self.settings.crown_door_random
             humanspoiler["End Game"]["Helm"]["Crown Door Item Amount"] = self.settings.crown_door_item_count
         if self.settings.coin_door_item != HelmDoorItem.opened:
-            humanspoiler["End Game"]["Helm"]["Coin Door Item"] = helm_door_names[self.settings.coin_door_item]
+            item = self.settings.coin_door_item if self.settings.coin_door_item != HelmDoorItem.vanilla else HelmDoorItem.req_companycoins
+            humanspoiler["End Game"]["Helm"]["Coin Door Item"] = helm_door_names[item]
             humanspoiler["End Game"]["Helm"]["Coin Door Item Randomized"] = self.settings.coin_door_random
             humanspoiler["End Game"]["Helm"]["Coin Door Item Amount"] = self.settings.coin_door_item_count
         if self.settings.shuffle_items:

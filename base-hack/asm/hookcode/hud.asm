@@ -272,3 +272,9 @@ FixKrushaAmmoHUDSize:
     FixKrushaAmmoHUDSize_Finish:
         j 0x806f97f0
         nop
+
+RecolorMenuBackground:
+    lui $t7, hi(MenuDarkness)
+    lw $t7, lo(MenuDarkness) ($t7)
+    j 0x807070a8
+    sw $t7, 0x4 ($a1)

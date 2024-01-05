@@ -196,6 +196,9 @@ void loadHooks(void) {
 		*(int*)(0x806680b8) = 0x8E2C0058; // LW $t4, 0x58 ($s1)
 	}
 	loadSingularHook(0x806A7474, &disableHelmKeyBounce);
+	if (MenuDarkness != 0) {
+		loadSingularHook(0x807070A0, &RecolorMenuBackground);
+	}
 }
 
 void initHack(int source) {

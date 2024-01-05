@@ -574,6 +574,7 @@ extern enemy_drop_struct EnemyDropsTable[27];
 extern short scriptLoadedArray[0x46];
 extern short scriptsLoaded;
 extern unsigned char scriptLoadsAttempted;
+extern int MenuDarkness;
 
 extern purchase_struct CrankyMoves[5][7];
 extern purchase_struct CandyMoves[5][7];
