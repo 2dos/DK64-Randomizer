@@ -661,9 +661,9 @@ def reset_plando_options_no_prompt() -> None:
     # Reset general settings.
 
     # These settings are TBD
-    # js.document.getElementById("plando_spawn_location").value = ""
     # js.document.getElementById("plando_101").value = False
 
+    js.document.getElementById("plando_starting_exit").value = ""
     for option in level_options + kong_options:
         option_element = js.document.getElementById(option)
         option_element.value = ""
