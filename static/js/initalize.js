@@ -175,7 +175,7 @@ function sortLoadedMusic(musicList) {
     }
   })
 }
-
+var current_seed_data;
 var cosmetics;
 var cosmetic_names;
 var cosmetic_extensions;
@@ -507,9 +507,6 @@ function filebox() {
     } catch {}
     // Make sure we load the file into the rompatcher
     romFile = new MarcFile(file, _parseROM);
-
-    // Wait for 5 seconds before calling try_to_load_from_args
-    setTimeout(try_to_load_from_args, 2000);
   };
 
   input.click();
@@ -527,10 +524,11 @@ var indexedDB =
   window.shimIndexedDB;
 
 // Open (or create) the database
-var romdatabase = indexedDB.open("ROMStorage", 1);
 var seeddatabase = indexedDB.open("SeedStorage", 1);
 var settingsdatabase = indexedDB.open("SettingsDB", 1);
 var musicdatabase = indexedDB.open("MusicStorage", 1);
+var romdatabase = indexedDB.open("ROMStorage", 1);
+
 musicdatabase.onupgradeneeded = function () {
   try {
     var musicdb = musicdatabase.result;
@@ -676,12 +674,13 @@ function load_file_from_db() {
         $("#rom_2").attr("placeholder", "Using cached ROM");
         $("#rom_3").attr("placeholder", "Using cached ROM");
         $("#rom_3").val("Using cached ROM");
-        setTimeout(try_to_load_from_args, 2000);
-      } catch {}
-    };
-  } catch {}
-}
+        
+        try_to_load_from_args()
 
+      } catch {try_to_load_from_args()}
+    };
+  } catch {try_to_load_from_args()}
+}
 var w;
 var CurrentRomHash;
 
@@ -818,6 +817,42 @@ function generate_seed(url, json, git_branch) {
   });
 }
 
+function apply_download() {
+  if (document.getElementById("rom").value.trim().length === 0 || !document.getElementById("rom").classList.contains("is-valid")) {
+    document.getElementById("rom").select();
+    if (!document.getElementById("rom").classList.contains("is-invalid")) {
+      document.getElementById("rom").classList.add("is-invalid");
+      return
+    }
+  }
+  console.log("Applying Download");
+  return pyodide.runPythonAsync(`
+    import js
+    from randomizer.Patching.ApplyLocal import patching_response
+    patching_response(str(js.event_response_data), from_patch_gen=True)
+  `);
+}
+// if the tab is set to seed info get the generate_seed button and change the text to "Download Seed" we want to check this on every nav tab change
+function check_seed_info_tab() {
+  if (document.getElementById("nav-settings-tab").classList.contains("active")) {
+    document.getElementById("generate_seed").value = "Download Seed";
+    document.getElementById("generate_seed").onclick = null;
+    document.getElementById("generate_seed").onclick = function() {apply_download()};
+  }
+  else {
+    document.getElementById("generate_seed").value = "Generate Seed";
+    // Remove the onclick event
+    document.getElementById("generate_seed").onclick = null;
+    document.getElementById("generate_seed").onclick = function() {document.getElementById("trigger_download_event").click()};
+  }
+}
+// check on any button with the nav-item class is clicked
+document.querySelectorAll(".nav-item").forEach((item) => {
+  item.addEventListener("click", () => {
+    check_seed_info_tab();
+  });
+});
+check_seed_info_tab();
 async function apply_patch(data, run_async) {
   // Base64 decode the response
   event_response_data = data;
@@ -850,7 +885,7 @@ async function apply_patch(data, run_async) {
                 return pyodide.runPythonAsync(`
                 import js
                 from randomizer.Patching.ApplyLocal import patching_response
-                patching_response(str(js.event_response_data))
+                patching_response(str(js.event_response_data), from_patch_gen=True)
               `);
               }
             });
@@ -982,15 +1017,7 @@ function get_seed_from_server(hash) {
     },
     success: function (data, textStatus, xhr) {
       if (xhr.status === 200) {
-        document.getElementById("spoiler_log_download_messages").innerHTML =
-        "Applying seed to ROM.";
-        // display download_modal
-        $("#download_modal").modal("show");
-        // hide the modal after 5 seconds
-        setTimeout(function () {
-          $("#download_modal").modal("hide");
-        }, 5000);
-        console.log("Success");
+
         return data;
       } else {
         document.getElementById("spoiler_log_download_messages").innerHTML =

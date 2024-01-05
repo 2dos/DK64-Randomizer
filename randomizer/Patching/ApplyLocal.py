@@ -78,6 +78,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     except Exception:
         hash_id = None
     # Make sure we re-load the seed id for patch file creation
+    js.event_response_data = data
     if lanky_from_history:
         js.save_text_as_file(data, f"dk64r-patch-{seed_id}.lanky")
         loop.run_until_complete(ProgressBar().reset())
@@ -89,18 +90,19 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         loop.run_until_complete(ProgressBar().reset())
         return
     elif from_patch_gen is True:
+        gif_fairy = get_hash_images("browser", "loading-fairy")
+        gif_dead = get_hash_images("browser", "loading-dead")
+        js.document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0]
+        js.document.getElementById("progress-dead").src = "data:image/jpeg;base64," + gif_dead[0]
         # Apply the base patch
         await js.apply_patch(data)
     else:
         js.write_seed_history(seed_id, str(data), json.dumps(settings.seed_hash))
         js.load_old_seeds()
 
-    sav = settings.rom_data
     datetime = datetime.utcnow()
     unix = time.mktime(datetime.timetuple())
     random.seed(int(unix))
-    if from_patch_gen:
-        recalculatePointerJSON(ROM())
     split_version = version.split(".")
     patch_major = split_version[0]
     patch_minor = split_version[1]
@@ -110,7 +112,10 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         js.document.getElementById(
             "patch_warning_message"
         ).innerHTML = f"This patch was generated with version {patch_major}.{patch_minor}.{patch_patch} of the randomizer, but you are using version {major}.{minor}.{patch}. Cosmetic packs have been disabled for this patch."
-    else:
+    elif from_patch_gen is True:
+        sav = settings.rom_data
+        if from_patch_gen:
+            recalculatePointerJSON(ROM())
         js.document.getElementById("patch_version_warning").hidden = True
         apply_cosmetic_colors(settings)
 
@@ -192,12 +197,18 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
 
             spoiler = updateJSONCosmetics(spoiler, settings, music_data, int(unix))
 
-    # Apply Hash
-    order = 0
-    loaded_hash = get_hash_images("browser", "hash")
-    for count in json.loads(extracted_variables["hash"].decode("utf-8")):
-        js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
-        order += 1
+        # Apply Hash
+        order = 0
+        loaded_hash = get_hash_images("browser", "hash")
+        for count in json.loads(extracted_variables["hash"].decode("utf-8")):
+            js.document.getElementById("hashdiv").innerHTML = ""
+            # clear the innerHTML of the hash element
+            js.document.getElementById("hash" + str(order)).src = "data:image/jpeg;base64," + loaded_hash[count]
+            order += 1
+    # if the hash is not set, just put the text in the spoiler log
+    if js.document.getElementById("hash0").src == "":
+        # insert a text div into the js.document.getElementById("hashdiv") and set the innerHTML to the No ROM loaded message add the div
+        js.document.getElementById("hashdiv").innerHTML = "Shared Link, No Hash Images Loaded."
 
     loaded_settings = spoiler["Settings"]
     tables = {}
@@ -215,8 +226,8 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             description = row.insertCell(1)
             name.innerHTML = setting
             description.innerHTML = FormatSpoiler(value)
-
-    await ProgressBar().update_progress(10, "Seed Generated.")
+    if from_patch_gen is True:
+        await ProgressBar().update_progress(10, "Seed Generated.")
     js.document.getElementById("nav-settings-tab").style.display = ""
     if spoiler.get("Requirements"):
         js.document.getElementById("tracker_text").value = generateTracker(spoiler)
@@ -238,10 +249,12 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
     else:
         js.document.getElementById("download_unlocked_spoiler_button").hidden = True
         js.document.getElementById("download_unlocked_spoiler_button").onclick = None
-    ROM().fixSecurityValue()
-    ROM().save(f"dk64r-rom-{seed_id}.z64")
-    loop.run_until_complete(ProgressBar().reset())
+    if from_patch_gen is True:
+        ROM().fixSecurityValue()
+        ROM().save(f"dk64r-rom-{seed_id}.z64")
+        loop.run_until_complete(ProgressBar().reset())
     js.jq("#nav-settings-tab").tab("show")
+    js.check_seed_info_tab()
 
 
 def FormatSpoiler(value):

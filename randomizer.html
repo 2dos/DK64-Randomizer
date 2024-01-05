@@ -104,7 +104,7 @@
         <div class="card bg-dark" style="max-width: 1500px">
             <form id="form" action="/" method="POST">
                 <!--Create navbar-->
-                <div class="container" id="tab-data">
+                <div class="container" id="visual_indicator">
                   <img style="
                       width: 10%;
                       height: 10%;
@@ -153,6 +153,7 @@
                     }
                   </script>
                 </div>
+                <div class="container" id="tab-data" hidden></div>
                 <hr />
                 <div class="container" id="nav-gen-type-container">
                     <nav style="display: inline-block; float: none; vertical-align: top;">
@@ -319,6 +320,7 @@
                                            type="button"
                                            value="Generate Seed"
                                            disabled = ""/>
+                                        <input id="trigger_download_event" hidden/>
                                     </div>
                                 </div>
                             </div>

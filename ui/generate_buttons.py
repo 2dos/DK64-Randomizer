@@ -220,7 +220,7 @@ async def generate_seed_from_patch(event):
         await patching_response(str(js.loaded_patch), True)
 
 
-@bind("click", "generate_seed")
+@bind("click", "trigger_download_event")
 def generate_seed(event):
     """Generate a seed based off the current settings.
 
@@ -315,13 +315,8 @@ async def get_args():
     # If someone provided seed_id in the url, lets pull the seed data from the webserver
     if "seed_id" in args_dict:
         # Wait for the page to load
-        if len(str(js.document.getElementById("rom").value).strip()) == 0 or "is-valid" not in list(js.document.getElementById("rom").classList):
-            print("Rom file is not valid")
-            js.document.getElementById("rom").select()
-            if "is-invalid" not in list(js.document.getElementById("rom").classList):
-                js.document.getElementById("rom").classList.add("is-invalid")
-        else:
-            print("Getting the seed from the server")
-            js.apply_conversion()
-            resp = js.get_seed_from_server(args_dict["seed_id"])
-            await patching_response(str(resp), True)
+        print("Getting the seed from the server")
+        resp = js.get_seed_from_server(args_dict["seed_id"])
+        await patching_response(str(resp), False)
+    js.document.getElementById("visual_indicator").setAttribute("hidden", "true")
+    js.document.getElementById("tab-data").removeAttribute("hidden")
