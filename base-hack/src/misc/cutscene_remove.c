@@ -22,9 +22,9 @@ void updateSkipCheck(void) {
 }
 
 int isCutsceneSkipped(maps map, int cutscene) {
-	int offset = (CutsceneIndex >> 5) & 1;
-	int shift = CutsceneIndex & 31;
-	if (cs_skip_db[(2 * CurrentMap) + offset] & (1 << shift)) {
+	int offset = (cutscene >> 5) & 1;
+	int shift = cutscene & 31;
+	if (cs_skip_db[(2 * map) + offset] & (1 << shift)) {
 		return 1;
 	}
 	return 0;
