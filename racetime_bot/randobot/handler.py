@@ -57,7 +57,7 @@ class RandoHandler(RaceHandler):
                     ),
                     msg_actions.ActionLink(
                         label="Help",
-                        url="https://github.com/2dos/dk64-randomizer/blob/dev/randobot/COMMANDS.md",
+                        url="https://github.com/2dos/dk64-randomizer/blob/dev/racetime_bot/COMMANDS.md",
                     ),
                 ],
                 pinned=True,
