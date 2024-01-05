@@ -1315,10 +1315,10 @@ ColoredBananaGroupList = [
         region=Regions.LlamaTemple,
         logic=lambda l: l.CanLlamaSpit() and l.swim,
         locations=[
-            [5, 1.0, 2041, 205, 2680],
-            [5, 1.0, 2494, 205, 2684],
-            [5, 1.0, 2405, 205, 2119],
-            [5, 1.0, 2040, 204, 2118],
+            [5, 1.0, 2038, 211, 2689],
+            [5, 1.0, 2410, 211, 2113],
+            [5, 1.0, 2411, 211, 2690],
+            [5, 1.0, 2040, 211, 2131],
         ],
     ),
     ColoredBananaGroup(
@@ -1532,6 +1532,20 @@ ColoredBananaGroupList = [
             [5, 1.0, 188.08251953125, 126.59268188476562, 574.8196411132812],
             [5, 1.0, 481.36376953125, 127.9952392578125, 557.4595947265625],
             [5, 1.0, 497.8692932128906, 128.62557983398438, 833.964111328125],
+        ],
+    ),
+    ColoredBananaGroup(
+        group=104,
+        map_id=Maps.AngryAztec,
+        name="On Tiny Temple Staircase",
+        konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+        region=Regions.AngryAztecOasis,
+        locations=[
+            [1, 1.0, 2940, 153, 826],
+            [1, 1.0, 2963, 157, 808],
+            [1, 1.0, 2978, 175, 796],
+            [1, 1.0, 2995, 195, 784],
+            [1, 1.0, 3018, 215, 763],
         ],
     ),
 ]
