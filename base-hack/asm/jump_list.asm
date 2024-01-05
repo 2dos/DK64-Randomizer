@@ -2,6 +2,7 @@
 .open "rom/dk64.z64", "rom/dk64-randomizer-base-temp.z64", 0 // Open the ROM file
 .include "asm/symbols.asm" // Include dk64.asm to tell armips' linker where to find the game's function(s)
 .include "asm/header.asm"
+.include "asm/overlay_defs.asm"
 .include "asm/boot.asm" //include modified boot code
 .include "asm/hookcode.asm" // Hook code
 .include "asm/objects.asm"

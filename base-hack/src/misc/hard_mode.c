@@ -61,8 +61,8 @@ void alterChunkData(void* data) {
 	}
 }
 
-#define SHINE_DISTANCE 50
-#define SHINE_RADIUS 30
+#define SHINE_DISTANCE 30
+#define SHINE_RADIUS 50
 #define USE_POSITIONAL_SHINE 0
 
 void shineLight(actorData* actor, int kongType) {
@@ -73,15 +73,11 @@ void shineLight(actorData* actor, int kongType) {
     }
     if (USE_POSITIONAL_SHINE) {
         // Caused way too much lag for what it was worth
-        if ((getRNGLower31() & 0x1F) == 0) {
-            // Blinking effect
-            return;
-        }
         float shine_x = determineXRatioMovement(actor->rot_y) * SHINE_DISTANCE;
         float shine_z = determineZRatioMovement(actor->rot_y) * SHINE_DISTANCE;
         shine_x += actor->xPos;
         shine_z += actor->zPos;
-        renderLight(shine_x, actor->yPos + 10, shine_z, shine_x, actor->yPos + 10, shine_z, SHINE_RADIUS, 0, LIGHT_BRIGHTNESS, LIGHT_BRIGHTNESS, LIGHT_BRIGHTNESS);
+        renderLight(shine_x, actor->yPos + 10, shine_z, shine_x, actor->yPos + 20, shine_z, SHINE_RADIUS, 0, LIGHT_BRIGHTNESS, LIGHT_BRIGHTNESS, LIGHT_BRIGHTNESS);
     }
 }
 

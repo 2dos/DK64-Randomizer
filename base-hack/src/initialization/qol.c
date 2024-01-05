@@ -26,22 +26,6 @@ void disableAntiAliasing(void) {
     }
 }
 
-void initQoL_Lag(void) {
-    /**
-     * @brief Initialize any quality of life features which aim to reduce lag native to DK64
-     * Current Elements covered here:
-     * - Turning off the Aztec Sandstorm
-     * - Disabling Rain in DK Isles
-     */
-    writeFunction(0x80004EB4, &disableAntiAliasing); // Disable Anti-Aliasing
-    if (Rando.quality_of_life.reduce_lag) {
-        *(int*)(0x80748010) = 0x8064F2F0; // Cancel Sandstorm
-        // No Rain
-        *(float*)(0x8075E3E0) = 0.0f; // Set Isles Rain Radius to 0
-        *(int*)(0x8068AF90) = 0; // Disable weather
-    }
-}
-
 typedef struct skipped_cutscene {
     /* 0x000 */ unsigned char map;
     /* 0x001 */ unsigned char cutscene;
@@ -136,14 +120,14 @@ void initQoL_Fixes(void) {
         writeFunction(0x8067C168, &fixDilloTNTPads); // Modify Function Call
         actor_functions[249] = &squawks_with_spotlight_actor_code;
         writeFunction(0x806E5C04, &fixCrownEntrySKong); // Modify Function Call
-        writeFunction(0x806A8844, &helmTime_restart); // Modify Function Call
-        writeFunction(0x806A89E8, &helmTime_exitBonus); // Modify Function Call
-        writeFunction(0x806A89F8, &helmTime_exitRace); // Modify Function Call
-        writeFunction(0x806A89C4, &helmTime_exitLevel); // Modify Function Call
-        writeFunction(0x806A89B4, &helmTime_exitBoss); // Modify Function Call
-        writeFunction(0x806A8988, &helmTime_exitKRool); // Modify Function Call
         *(float*)(0x807482A4) = 0.1f; // Increase Fungi lighting transition rate
     }
+    writeFunction(0x806A8844, &helmTime_restart); // Modify Function Call
+    writeFunction(0x806A89E8, &helmTime_exitBonus); // Modify Function Call
+    writeFunction(0x806A89F8, &helmTime_exitRace); // Modify Function Call
+    writeFunction(0x806A89C4, &helmTime_exitLevel); // Modify Function Call
+    writeFunction(0x806A89B4, &helmTime_exitBoss); // Modify Function Call
+    writeFunction(0x806A8988, &helmTime_exitKRool); // Modify Function Call
 }
 
 void initQoL_Misc(void) {
@@ -153,27 +137,7 @@ void initQoL_Misc(void) {
      * - Fairy pictures are sped up (This also fixes some INSANE lag on BizHawk)
      * - Lower the Aztec Lobby Bonus barrel to be easier to reach for less skilled players using less laggy platforms
      */
-    if (Rando.quality_of_life.fast_picture) {
-        // Fast Camera Photo
-        *(short*)(0x80699454) = 0x5000; // Fast tick/no mega-slowdown on Biz
-        int picture_timer = 0x14;
-        *(short*)(0x806992B6) = picture_timer; // No wait for camera film development
-        *(short*)(0x8069932A) = picture_timer;
-    }
-    if (Rando.quality_of_life.aztec_lobby_bonus) {
-        // Lower Aztec Lobby Bonus
-        *(short*)(0x80680D56) = 0x7C; // 0x89 if this needs to be unreachable without PTT
-    }
-    if (Rando.quality_of_life.cbs_visible) {
-        *(int*)(0x806324D4) = 0x24020001; // ADDIU $v0, $r0, 1 // Disable kong flag check
-        *(int*)(0x806A78C4) = 0; // NOP // Disable kong flag check
-    }
     if (Rando.quality_of_life.fast_hints) {
-        int control_cap = 1;
-        *(short*)(0x8069E0F6) = control_cap;
-        *(short*)(0x8069E112) = control_cap;
-        *(unsigned char*)(0x80758BC9) = 0xAE; // Quadruple Growth Speed (8E -> AE)
-        *(unsigned char*)(0x80758BD1) = 0xAE; // Quadruple Shrink Speed (8E -> AE)
         writeFunction(0x806A5C30, &quickWrinklyTextboxes);
     }
 }
@@ -243,70 +207,9 @@ void initQoL_Boot(void) {
      * - Removing DKTV when quitting the game or going via end sequence
      * - Speeding up the bootup setup checks
      */
-    if (Rando.quality_of_life.fast_boot) {
-        // Remove DKTV - Game Over
-        *(short*)(0x8071319E) = 0x50;
-        *(short*)(0x807131AA) = 5;
-        // Remove DKTV - End Seq
-        *(short*)(0x8071401E) = 0x50;
-        *(short*)(0x8071404E) = 5;
-    }
     // Faster Boot
     writeFunction(0x805FEB00, &bootSpeedup); // Modify Function Call
     *(int*)(0x805FEB08) = 0; // Cancel 2nd check
-}
-
-void initQoL_Transform(void) {
-    /**
-     * @brief Initialize any quality of life features which reduce the transformation animation
-     */
-    if (Rando.quality_of_life.fast_transform) {
-        // Fast Barrel Animation
-        *(short*)(0x8067EAB2) = 1; // OSprint
-        *(short*)(0x8067EAC6) = 1; // HC Dogadon 2
-        *(short*)(0x8067EACA) = 1; // Others
-        *(short*)(0x8067EA92) = 1; // Others 2
-    }
-}
-
-void initQoL_AnimalBuddies(void) {
-    /**
-     * @brief Initialize any quality of life features which change the behaviour of the animal buddies
-     * Current Elements covered here:
-     * - Making items collectable regardless of whether you're an animal buddy or not
-     */
-    if (Rando.quality_of_life.rambi_enguarde_pickup) {
-        // Transformations can pick up other's collectables
-        *(int*)(0x806F6330) = 0x96AC036E; // Collection
-        // Collection
-        *(int*)(0x806F68A0) = 0x95B8036E; // DK Collection
-        *(int*)(0x806F68DC) = 0x952C036E; // Diddy Collection
-        *(int*)(0x806F6914) = 0x95F9036E; // Tiny Collection
-        *(int*)(0x806F694C) = 0x95AE036E; // Lanky Collection
-        *(int*)(0x806F6984) = 0x952B036E; // Chunky Collection
-        // Opacity
-        *(int*)(0x80637998) = 0x95B9036E; // DK Opacity
-        *(int*)(0x806379E8) = 0x95CF036E; // Diddy Opacity
-        *(int*)(0x80637A28) = 0x9589036E; // Tiny Opacity
-        *(int*)(0x80637A68) = 0x954B036E; // Chunky Opacity
-        *(int*)(0x80637AA8) = 0x9708036E; // Lanky Opacity
-        // CB/Coin rendering
-        *(int*)(0x806394FC) = 0x958B036E; // Rendering
-        *(int*)(0x80639540) = 0x9728036E; // Rendering
-        *(int*)(0x80639584) = 0x95AE036E; // Rendering
-        *(int*)(0x80639430) = 0x95CD036E; // Rendering
-        *(int*)(0x806393EC) = 0x9519036E; // Rendering
-        *(int*)(0x806395C8) = 0x952A036E; // Rendering
-        *(int*)(0x8063960C) = 0x95F8036E; // Rendering
-        *(int*)(0x80639474) = 0x9549036E; // Rendering
-        *(int*)(0x806393A8) = 0x956C036E; // Rendering
-        *(int*)(0x806394B8) = 0x970F036E; // Rendering
-        *(int*)(0x80639650) = 0x956C036E; // Rendering
-        *(int*)(0x80639710) = 0x9549036E; // Rendering
-        *(int*)(0x80639750) = 0x970F036E; // Rendering
-        *(int*)(0x806396D0) = 0x95CD036E; // Rendering
-        *(int*)(0x80639690) = 0x9519036E; // Rendering
-    }
 }
 
 void initQoL_FastWarp(void) {
@@ -360,20 +263,6 @@ void initSpawn(void) {
         } else {
             PauseSlot3TextPointer = (char*)&exittospawn;
         }
-    }
-}
-
-void initQoL_HomingBalloons(void) {
-    /**
-     * @brief Initialize any quality of life features which make homing ammo home in on balloons
-     */
-    if (Rando.quality_of_life.homing_balloons) {
-        // Make homing ammo target balloons
-        *(short*)(0x80694F6A) = 10; // Coconut
-        *(short*)(0x80692B82) = 10; // Peanuts
-        *(short*)(0x8069309A) = 10; // Grape
-        *(short*)(0x80695406) = 10; // Feather
-        *(short*)(0x80694706) = 10; // Pineapple
     }
 }
 
@@ -436,94 +325,14 @@ void initNonControllableFixes(void) {
     /**
      * @brief Initialize any changes which we do not want to give the user any control over whether it's removed
      */
-    // Move Decoupling
-    // Strong Kong
-    *(int*)(0x8067ECFC) = 0x30810002; // ANDI $at $a0 2
-    *(int*)(0x8067ED00) = 0x50200003; // BEQL $at $r0 3
-    // Rocketbarrel
-    *(int*)(0x80682024) = 0x31810002; // ANDI $at $t4 2
-    *(int*)(0x80682028) = 0x50200006; // BEQL $at $r0 0x6
-    // OSprint
-    *(int*)(0x8067ECE0) = 0x30810004; // ANDI $at $a0 4
-    *(int*)(0x8067ECE4) = 0x10200002; // BEQZ $at, 2
-    // Mini Monkey
-    *(int*)(0x8067EC80) = 0x30830001; // ANDI $v1 $a0 1
-    *(int*)(0x8067EC84) = 0x18600002; // BLEZ $v1 2
-    // Hunky Chunky (Not Dogadon)
-    *(int*)(0x8067ECA0) = 0x30810001; // ANDI $at $a0 1
-    *(int*)(0x8067ECA4) = 0x18200002; // BLEZ $at 2
-    // PTT
-    *(int*)(0x806E20F0) = 0x31010002; // ANDI $at $t0 2
-    *(int*)(0x806E20F4) = 0x5020000F; // BEQL $at $r0 0xF
-    // PPunch
-    *(int*)(0x806E48F4) = 0x31810002; // ANDI $at $t4 2
-    *(int*)(0x806E48F8) = 0x50200074; // BEQL $at $r0 0xF
-
-    // Disable Sniper Scope Overlay
-    // - This isn't covered in the lag section because re-enabling the scope can make Mech Fish harder to beat
-    //  - This is a common problem experienced with the vanilla game
-    int asm_code = 0x00801025; // OR $v0, $a0, $r0
-    *(int*)(0x806FF80C) = asm_code;
-    *(int*)(0x806FF85C) = asm_code;
-    *(int*)(0x806FF8AC) = asm_code;
-    *(int*)(0x806FF8FC) = asm_code;
-    *(int*)(0x806FF940) = asm_code;
-    *(int*)(0x806FF988) = asm_code;
-    *(int*)(0x806FF9D0) = asm_code;
-    *(int*)(0x806FFA18) = asm_code;
-
-    *(int*)(0x806A7564) = 0xC4440080; // Crown default floor will be it's initial Y spawn position. Fixes a crash on N64
     writeFunction(0x806F56E0, &getFlagIndex_Corrected); // BP Acquisition - Correct for character
     writeFunction(0x806F9374, &getFlagIndex_Corrected); // Medal Acquisition - Correct for character
     // Inverted Controls Option
     *(short*)(0x8060D01A) = getHi(&InvertedControls); // Change language store to inverted controls store
     *(short*)(0x8060D01E) = getLo(&InvertedControls); // Change language store to inverted controls store
     *(short*)(0x8060D04C) = 0x1000; // Prevent inverted controls overwrite
-    // Expand Display List
-    *(short*)(0x805FE56A) = 8000;
-    *(short*)(0x805FE592) = 0x4100; // SLL 4 (Doubles display list size)
-    // Sniper Scope Check
-    *(int*)(0x806D2988) = 0x93190002; // LBU $t9, 0x2 ($t8)
-    *(int*)(0x806D2990) = 0x33210004; // ANDI $at, $t9, 0x4
-    *(short*)(0x806D299C) = 0x1020; // BEQ $at, $r0
-    // EEPROM Patch
-    *(int*)(0x8060D588) = 0; // NOP
-    // TEMPORARY FIX FOR SAVE BUG
-    *(int*)(0x8060D790) = 0; // NOP
     // Disable Sprint Music in Fungi Forest
     writeFunction(0x8067F3DC, &playTransformationSong);
-    // Cancel Tamper
-    *(int*)(0x8060AEFC) = 0; // NOP
-    *(int*)(0x80611788) = 0; // NOP
-    // Fix HUD if DK not free
-    *(int*)(0x806FA324) = 0; // NOP
-    *(short*)(0x807505AE) = 385; // Set Flag to DK Flag
-    // Fix CB Spawning
-    *(short*)(0x806A7882) = 385; // DK Balloon
-    // Fix Boss Doors if DK not free
-    *(int*)(0x80649358) = 0; // NOP
-    // Fix Pause Menu
-    *(int*)(0x806ABFF8) = 0; // NOP (Write of first slot to 1)
-    *(short*)(0x806AC002) = 0x530;
-    *(short*)(0x806AC006) = 0x5B0;
-    *(unsigned char*)(0x8075054D) = 0xD7; // Change DK Q Mark to #FFD700
-    // Guard Animation Fix
-    *(short*)(0x806AF8C6) = 0x2C1;
-    // Remove flare effect from guards
-    *(int*)(0x806AE440) = 0;
-    // Boost Diddy/Tiny's Barrel Speed
-    *(float*)(0x807533A0) = 240.0f; // Diddy Ground
-    *(float*)(0x807533A8) = 240.0f; // Tiny Ground
-    *(float*)(0x807533DC) = 260.0f; // Lanky Air
-    *(float*)(0x807533E0) = 260.0f; // Tiny Air
-    // Bump Model Two Allowance
-    int allowance = 550;
-    *(short*)(0x80632026) = allowance; // Japes
-    *(short*)(0x80632006) = allowance; // Aztec
-    *(short*)(0x80631FF6) = allowance; // Factory
-    *(short*)(0x80632016) = allowance; // Galleon
-    *(short*)(0x80631FE6) = allowance; // Fungi
-    *(short*)(0x80632036) = allowance; // Others
     // New Helm Barrel Code
     actor_functions[107] = &HelmBarrelCode;
     // GetOut Timer
@@ -610,15 +419,12 @@ void initQoL(void) {
     /**
      * @brief Initialize all quality of life functionality
      */
-    initQoL_Lag();
+    writeFunction(0x80004EB4, &disableAntiAliasing); // Disable Anti-Aliasing
     initQoL_Cutscenes();
     initQoL_Fixes();
     initQoL_Misc();
     initQoL_Boot();
-    initQoL_Transform();
-    initQoL_AnimalBuddies();
     initSpawn();
-    initQoL_HomingBalloons();
     initQoL_HUD();
     initQoL_FastWarp();
     initQoL_InstrumentFix();

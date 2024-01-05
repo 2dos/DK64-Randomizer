@@ -54,6 +54,7 @@ from randomizer.Patching.PriceRando import randomize_prices
 from randomizer.Patching.PuzzleRando import randomize_puzzles, shortenCastleMinecart
 from randomizer.Patching.ShopRandomizer import ApplyShopRandomizer
 from randomizer.Patching.UpdateHints import PushHints, replaceIngameText, wipeHints, PushItemLocations, PushHelpfulHints
+from randomizer.Patching.ASMPatcher import patchAssembly
 
 # from randomizer.Spoiler import Spoiler
 
@@ -593,6 +594,8 @@ def patching_response(spoiler):
     updateDiddyDoors(spoiler.settings)
     applyHelmDoorCosmetics(spoiler.settings)
     applyKrushaKong(spoiler.settings)
+
+    patchAssembly(ROM_COPY, spoiler)
 
     # Apply Hash
     order = 0

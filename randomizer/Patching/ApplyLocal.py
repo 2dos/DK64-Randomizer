@@ -17,6 +17,8 @@ from randomizer.Patching.Hash import get_hash_images
 from randomizer.Patching.MusicRando import randomize_music
 from randomizer.Patching.Patcher import ROM
 from randomizer.Patching.Lib import recalculatePointerJSON, camelCaseToWords
+from randomizer.Patching.ASMPatcher import patchAssemblyCosmetic
+from randomizer.Patching.ASMPatcherWS import patchAssemblyCosmeticWS
 
 # from randomizer.Spoiler import Spoiler
 from randomizer.Settings import Settings, ExcludedSongs
@@ -117,28 +119,30 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             writeMiscCosmeticChanges(settings)
             applyHolidayMode(settings)
 
+            ROM_COPY = ROM()
+
             # D-Pad Display
-            ROM().seek(sav + 0x139)
+            ROM_COPY.seek(sav + 0x139)
             # The DPadDisplays enum is indexed to allow this.
-            ROM().write(int(settings.dpad_display))
+            ROM_COPY.write(int(settings.dpad_display))
 
             if settings.homebrew_header:
                 # Write ROM Header to assist some Mupen Emulators with recognizing that this has a 16K EEPROM
-                ROM().seek(0x3C)
+                ROM_COPY.seek(0x3C)
                 CARTRIDGE_ID = "ED"
-                ROM().writeBytes(CARTRIDGE_ID.encode("ascii"))
-                ROM().seek(0x3F)
+                ROM_COPY.writeBytes(CARTRIDGE_ID.encode("ascii"))
+                ROM_COPY.seek(0x3F)
                 SAVE_TYPE = 2  # 16K EEPROM
-                ROM().writeMultipleBytes(SAVE_TYPE << 4, 1)
+                ROM_COPY.writeMultipleBytes(SAVE_TYPE << 4, 1)
 
             # Colorblind mode
-            ROM().seek(sav + 0x43)
+            ROM_COPY.seek(sav + 0x43)
             # The ColorblindMode enum is indexed to allow this.
-            ROM().write(int(settings.colorblind_mode))
+            ROM_COPY.write(int(settings.colorblind_mode))
 
             # Remaining Menu Settings
-            ROM().seek(sav + 0xC7)
-            ROM().write(int(settings.sound_type))  # Sound Type
+            ROM_COPY.seek(sav + 0xC7)
+            ROM_COPY.write(int(settings.sound_type))  # Sound Type
 
             music_volume = 40
             sfx_volume = 40
@@ -146,10 +150,10 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                 sfx_volume = int(settings.sfx_volume / 2.5)
             if settings.music_volume is not None and settings.music_volume != "":
                 music_volume = int(settings.music_volume / 2.5)
-            ROM().seek(sav + 0xC8)
-            ROM().write(sfx_volume)
-            ROM().seek(sav + 0xC9)
-            ROM().write(music_volume)
+            ROM_COPY.seek(sav + 0xC8)
+            ROM_COPY.write(sfx_volume)
+            ROM_COPY.seek(sav + 0xC9)
+            ROM_COPY.write(music_volume)
 
             boolean_props = [
                 BooleanProperties(settings.disco_chunky, 0x12F),  # Disco Chunky
@@ -161,8 +165,8 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
 
             for prop in boolean_props:
                 if prop.check:
-                    ROM().seek(sav + prop.offset)
-                    ROM().write(prop.target)
+                    ROM_COPY.seek(sav + prop.offset)
+                    ROM_COPY.write(prop.target)
 
             # Excluded Songs
             if settings.songs_excluded:
@@ -173,63 +177,17 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
                         offset = int(item["shift"] >> 3)
                         check = int(item["shift"] % 8)
                         write_data[offset] |= 0x80 >> check
-                ROM().seek(sav + 0x1B7)
-                ROM().writeMultipleBytes(write_data[0], 1)
+                ROM_COPY.seek(sav + 0x1B7)
+                ROM_COPY.writeMultipleBytes(write_data[0], 1)
 
-            ROM().seek(sav + 0xC3)
-            ROM().writeMultipleBytes(int(settings.crosshair_outline), 1)
+            ROM_COPY.seek(sav + 0xC3)
+            ROM_COPY.writeMultipleBytes(int(settings.crosshair_outline), 1)
 
-            ROM().seek(sav + 0x114)
-            ROM().writeMultipleBytes(int(settings.troff_brighten), 1)
+            ROM_COPY.seek(sav + 0x114)
+            ROM_COPY.writeMultipleBytes(int(settings.troff_brighten), 1)
 
-            if settings.true_widescreen:
-                ROM().seek(sav + 0x1B4)
-                ROM().write(1)
-
-                GFX_START = 0x101A40
-                SCREEN_WD = 366
-                SCREEN_HD = 208
-                BOOT_OFFSET = 0xFB20 - 0xEF20
-
-                ROM().seek(GFX_START + 0x00)
-                ROM().writeMultipleBytes(SCREEN_WD * 2, 2)  # 2D Viewport Width
-                ROM().seek(GFX_START + 0x02)
-                ROM().writeMultipleBytes(SCREEN_HD * 2, 2)  # 2D Viewport Height
-                ROM().seek(GFX_START + 0x08)
-                ROM().writeMultipleBytes(SCREEN_WD * 2, 2)  # 2D Viewport X Position
-                ROM().seek(GFX_START + 0x0A)
-                ROM().writeMultipleBytes(SCREEN_HD * 2, 2)  # 2D Viewport Y Position
-                ROM().seek(GFX_START + 0x9C)
-                ROM().writeMultipleBytes((SCREEN_WD << 14) | (SCREEN_HD << 2), 4)  # Default Scissor for 2D
-                data_offsets = [0xEF20, 0xF7E0]
-                internal_size = 0x50
-                internal_offsets = [0, 2]
-                for tv_offset in data_offsets:
-                    for int_offset in internal_offsets:
-                        ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x08)
-                        ROM().writeMultipleBytes(SCREEN_WD, 4)  # VI Width
-                        ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x20)
-                        ROM().writeMultipleBytes(int((SCREEN_WD * 512) / 320), 4)  # VI X Scale
-                        ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x28)
-                        ROM().writeMultipleBytes((SCREEN_WD * 2), 4)  # VI Field 1 Framebuffer Offset
-                        ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x3C)
-                        ROM().writeMultipleBytes((SCREEN_WD * 2), 4)  # VI Field 2 Framebuffer Offset
-                        ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x2C)
-                        ROM().writeMultipleBytes(int((SCREEN_HD * 1024) / 240), 4)  # VI Field 1 Y Scale
-                        ROM().seek(BOOT_OFFSET + tv_offset + (internal_size * int_offset) + 0x40)
-                        ROM().writeMultipleBytes(int((SCREEN_HD * 1024) / 240), 4)  # VI Field 2 Y Scale
-                ROM().seek(BOOT_OFFSET + 0xBC4 + 2)
-                ROM().writeMultipleBytes(SCREEN_WD * 2, 2)  # Row Offset of No Expansion Pak Image
-                ROM().seek(BOOT_OFFSET + 0xBC8 + 2)
-                ROM().writeMultipleBytes(SCREEN_WD * SCREEN_HD * 2, 2)  # Invalidation Size for Framebuffer 1
-                ROM().seek(BOOT_OFFSET + 0xE08)
-                ROM().writeMultipleBytes(0x24180000 | SCREEN_WD, 4)  # Row Pitch for No Expansion Pak Screen Text
-                ROM().seek(BOOT_OFFSET + 0xE0C)
-                ROM().writeMultipleBytes(0x03060019, 4)  # Calculate Row Pixel Number for No Expansion Pak Screen Text
-                ROM().seek(BOOT_OFFSET + 0xE10)
-                ROM().writeMultipleBytes(0x0000C012, 4)  # Get Row Pixel Number for No Expansion Pak Screen Text
-                ROM().seek(BOOT_OFFSET + 0x1020 + 2)
-                ROM().writeMultipleBytes((SCREEN_WD - 8) * 2, 2)  # Text Framebuffer Pitch
+            patchAssemblyCosmetic(ROM_COPY, settings)
+            patchAssemblyCosmeticWS(ROM_COPY, settings)
             music_data = randomize_music(settings)
 
             spoiler = updateJSONCosmetics(spoiler, settings, music_data, int(unix))

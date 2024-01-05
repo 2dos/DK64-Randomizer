@@ -434,6 +434,15 @@ typedef struct cutscene_item_data {
 	/* 0x008 */ short* length_array;
 } cutscene_item_data;
 
+typedef struct queued_cutscene_function {
+	/* 0x000 */ void* next;
+	/* 0x004 */ void* function;
+	/* 0x008 */ int action_timer; // Has 0x8000 0000 or'd onto it for some? reason. Timer is set based on 8076a068
+	/* 0x00C */ int unk_C;
+	/* 0x010 */ int unk_10;
+	/* 0x014 */ int unk_14;
+} queued_cutscene_function;
+
 typedef struct cutsceneType {
 	/* 0x000 */ char unk_00[0xCC];
 	/* 0x0CC */ short cutscene_count;

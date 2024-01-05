@@ -2,9 +2,10 @@
 
 import subprocess
 from typing import BinaryIO
+import zlib
 
 import encoders
-from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat
+from BuildEnums import ChangeType, CompressionMethods, TableNames, TextureFormat, Overlay
 from BuildLib import float_to_hex, main_pointer_table_offset
 from image_converter import convertToRGBA32
 
@@ -478,6 +479,61 @@ class ROMPointerFile:
         self.size = self.end - self.start
         rom.seek(self.start)
         self.compressed = int.from_bytes(rom.read(2), "big") == 0x1F8B
+
+
+BOOT_OVERLAY_RDRAM = 0x80000450
+
+
+class OverlayInfo:
+    """Class to store information about an overlay."""
+
+    def __init__(
+        self,
+        overlay: Overlay,
+        code_rom: int,
+        data_rom: int,
+        data_size_compressed: int,
+        code_write_upper: int,
+        code_write_lower: int,
+        data_write_upper: int,
+        data_write_lower: int,
+        default_code_size: int,
+        default_data_size: int,
+    ):
+        """Initialize with given data."""
+        self.overlay = overlay
+        self.code_rom = code_rom
+        self.data_rom = data_rom
+        self.code_size_compressed = self.data_rom - self.code_rom
+        self.data_size_compressed = data_size_compressed
+        self.no_gzip_footer_length = self.data_size_compressed - 8
+
+        self.code_write_upper = code_write_upper - BOOT_OVERLAY_RDRAM
+        self.code_write_lower = code_write_lower - BOOT_OVERLAY_RDRAM
+        self.data_write_upper = data_write_upper - BOOT_OVERLAY_RDRAM
+        self.data_write_lower = data_write_lower - BOOT_OVERLAY_RDRAM
+
+        self.code = None
+        self.data = None
+        self.code_decompressed = None
+        self.data_decompressed = None
+        self.code_size = default_code_size
+        self.data_size = default_data_size
+        self.code_start = None
+        self.data_start = None
+        self.data_end = None
+
+    def setCode(self, bytestream: bytes, footer: bytes):
+        """Set code values."""
+        self.code = bytestream
+        self.code_decompressed = zlib.decompress(bytestream + footer, (15 + 32))
+        self.code_size = len(self.code_decompressed)
+
+    def setData(self, bytestream: bytes, footer: bytes):
+        """Set data values."""
+        self.data = bytestream
+        self.data_decompressed = zlib.decompress(bytestream + footer, (15 + 32))
+        self.data_size = len(self.data_decompressed)
 
 
 class HintRegion:

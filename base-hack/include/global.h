@@ -111,7 +111,6 @@ extern int initHelmHurry(void);
 extern void addHelmTime(helm_hurry_items item, int multiplier);
 extern void saveHelmHurryTime(void);
 extern void finishHelmHurry(void);
-extern int getNewFileSize(void);
 extern void fixChimpyCamBug(void);
 extern void writeDefaultFilename(void);
 extern void wipeFileStats(void);
@@ -137,7 +136,6 @@ extern void displayNumberOnObject(int id, int param2, int imageindex, int param4
 extern void newCounterCode(void);
 extern void wipeCounterImageCache(void);
 extern void writeCoinRequirements(int source);
-extern void colorMenuSky(void);
 extern void getMoveHint(actorData* actor, int text_file, int text_index);
 extern void cutsceneDKCode(void);
 extern void getNextMovePurchase(shop_paad* paad, KongBase* movedata);
@@ -345,6 +343,7 @@ extern void giveAmmo(void);
 extern void giveOrange(void);
 extern void giveMelon(void);
 extern void giveCrystal(void);
+extern int inShortList(int target, short* list, int count);
 
 extern int CrownDoorCheck(void);
 extern int CoinDoorCheck(void);
@@ -373,12 +372,13 @@ extern int getCrateWorld(int index);
 extern int getCrateFlag(int id);
 
 extern void initItemRando(void);
-extern void initFiles(void);
 extern void initQoL(void);
 extern void initCosmetic(void);
 extern void populatePatchItem(int id, int map, int index, int world);
 extern void populateCrateItem(int id, int map, int index, int world);
 extern int isObjectTangible_detailed(int id);
+
+extern void QuitGame(void);
 
 extern void insertROMMessages(void);
 extern void handleModelTwoOpacity(short object_type, unsigned char* unk0, short* opacity);

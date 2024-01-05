@@ -7,11 +7,12 @@ from BuildClasses import PointerFile, ROMPointerFile, TableEntry, pointer_tables
 from BuildEnums import TableNames
 from BuildLib import heap_size, main_pointer_table_offset
 from BuildNames import maps
+from recompute_overlays import getOverlayTotalSize
 
 # The address of the next available byte of free space in ROM
 # used when appending files to the end of the ROM
 
-available_writes = [[0x2000000 + heap_size, 0x3FFFFFF]]
+available_writes = [[0x2000000 + heap_size + getOverlayTotalSize(), 0x3FFFFFF]]
 
 # These will be indexed by pointer table index then by SHA1 hash of the data
 pointer_table_files = []

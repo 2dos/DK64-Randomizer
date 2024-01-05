@@ -42,7 +42,7 @@ from randomizer.Lists.Location import (
 from randomizer.Lists.MapsAndExits import GetExitId, GetMapId, RegionMapList
 from randomizer.Lists.ShufflableExit import ShufflableExits
 from randomizer.Lists.Songs import song_data
-from randomizer.Patching.Lib import IsItemSelected, SwitchInfo
+from randomizer.Patching.Lib import IsItemSelected, SwitchInfo, HelmDoorInfo, HelmDoorRandomInfo
 from randomizer.Prices import CompleteVanillaPrices, RandomizePrices, VanillaPrices
 from randomizer.SettingStrings import encrypt_settings_string_enum
 from randomizer.ShuffleBosses import ShuffleBosses, ShuffleBossKongs, ShuffleKKOPhaseOrder, ShuffleKutoutKongs, ShuffleTinyPhaseToes
@@ -459,6 +459,9 @@ class Settings:
 
         self.disco_chunky = False
         self.dark_mode_textboxes = False
+        self.menu_texture_index = None
+        self.menu_texture_name = "Default"
+        self.wrinkly_rgb = [255, 255, 255]
         self.krusha_ui = KrushaUi.no_slot
         self.krusha_kong = None
         self.misc_cosmetics = False
@@ -556,6 +559,7 @@ class Settings:
         self.random_starting_region = False
         self.starting_region = {}
         self.holiday_setting = False
+        self.holiday_setting_offseason = False
         self.remove_wrinkly_puzzles = False
         self.smaller_shops = False
         self.alter_switch_allocation = False
@@ -782,51 +786,93 @@ class Settings:
 
         # Helm Doors
         helmdoor_items = {
-            HelmDoorItem.req_gb: {"max": 201, "random_min": 20, "random_max": 100},
-            HelmDoorItem.req_bp: {"max": 40, "random_min": 7, "random_max": 30},
-            HelmDoorItem.req_companycoins: {"max": 2, "random_min": 1, "random_max": 2},
-            HelmDoorItem.req_key: {"max": 8, "random_min": 4, "random_max": 7},
-            HelmDoorItem.req_medal: {"max": 40, "random_min": 5, "random_max": 20},
-            HelmDoorItem.req_crown: {"max": 10, "random_min": 2, "random_max": 6},
-            HelmDoorItem.req_fairy: {"max": 18, "random_min": 3, "random_max": 10},  # Remove two fairies since you can't get the final two fairies glitchless if on the crown door
-            HelmDoorItem.req_rainbowcoin: {"max": 16, "random_min": 4, "random_max": 10},
-            HelmDoorItem.req_bean: {"max": 1, "random_min": 1, "random_max": 1},
-            HelmDoorItem.req_pearl: {"max": 5, "random_min": 1, "random_max": 3},
+            HelmDoorItem.req_gb: HelmDoorInfo(201),
+            HelmDoorItem.req_bp: HelmDoorInfo(
+                40,
+                HelmDoorRandomInfo(10, 30, 0.18),
+                HelmDoorRandomInfo(7, 25, 0.2),
+                HelmDoorRandomInfo(5, 15, 0.2),
+            ),
+            HelmDoorItem.req_companycoins: HelmDoorInfo(
+                2,
+                HelmDoorRandomInfo(1, 2, 0.05),
+            ),
+            HelmDoorItem.req_key: HelmDoorInfo(8),
+            HelmDoorItem.req_medal: HelmDoorInfo(
+                40,
+                HelmDoorRandomInfo(10, 20, 0.18),
+                HelmDoorRandomInfo(7, 15, 0.2),
+                HelmDoorRandomInfo(5, 10, 0.2),
+            ),
+            HelmDoorItem.req_crown: HelmDoorInfo(
+                10,
+                HelmDoorRandomInfo(3, 6, 0.1),
+                HelmDoorRandomInfo(2, 4, 0.1),
+                HelmDoorRandomInfo(1, 3, 0.06),
+            ),
+            HelmDoorItem.req_fairy: HelmDoorInfo(
+                18,
+                HelmDoorRandomInfo(5, 10, 0.15),
+                HelmDoorRandomInfo(3, 7, 0.14),
+                HelmDoorRandomInfo(1, 5, 0.18),
+            ),  # Remove two fairies since you can't get the final two fairies glitchless if on the crown door
+            HelmDoorItem.req_rainbowcoin: HelmDoorInfo(
+                16,
+                HelmDoorRandomInfo(6, 10, 0.14),
+                HelmDoorRandomInfo(4, 8, 0.15),
+                HelmDoorRandomInfo(3, 5, 0.18),
+            ),
+            HelmDoorItem.req_bean: HelmDoorInfo(
+                1,
+                HelmDoorRandomInfo(1, 1, 0.05),
+                HelmDoorRandomInfo(1, 1, 0.01),
+            ),
+            HelmDoorItem.req_pearl: HelmDoorInfo(
+                5,
+                HelmDoorRandomInfo(3, 4, 0.15),
+                HelmDoorRandomInfo(2, 4, 0.2),
+                HelmDoorRandomInfo(2, 3, 0.18),
+            ),
         }
-        random_door_options = [
-            HelmDoorItem.req_bp,
-            HelmDoorItem.req_companycoins,
-            HelmDoorItem.req_medal,
-            HelmDoorItem.req_crown,
-            HelmDoorItem.req_fairy,
-            HelmDoorItem.req_bean,
-            HelmDoorItem.req_pearl,
-            HelmDoorItem.req_rainbowcoin,
-        ]
-        self.crown_door_random = False
-        self.coin_door_random = False
-        if self.crown_door_item == HelmDoorItem.random and self.coin_door_item == HelmDoorItem.random:
-            self.crown_door_random = True
-            self.coin_door_random = True
-            selected_items = random.sample(random_door_options, 2)
-            self.crown_door_item = selected_items[0]
-            self.coin_door_item = selected_items[1]
-            self.crown_door_item_count = random.randint(helmdoor_items[self.crown_door_item]["random_min"], helmdoor_items[self.crown_door_item]["random_max"])
-            self.coin_door_item_count = random.randint(helmdoor_items[self.coin_door_item]["random_min"], helmdoor_items[self.coin_door_item]["random_max"])
-        elif self.crown_door_item == HelmDoorItem.random:
-            self.crown_door_random = True
-            self.crown_door_item = random.choice(random_door_options)
-            self.crown_door_item_count = random.randint(helmdoor_items[self.crown_door_item]["random_min"], helmdoor_items[self.crown_door_item]["random_max"])
-        elif self.coin_door_item == HelmDoorItem.random:
-            self.coin_door_random = True
-            self.coin_door_item = random.choice(random_door_options)
-            self.coin_door_item_count = random.randint(helmdoor_items[self.coin_door_item]["random_min"], helmdoor_items[self.coin_door_item]["random_max"])
+        random_helm_door_settings = (HelmDoorItem.easy_random, HelmDoorItem.medium_random, HelmDoorItem.hard_random)
+        self.crown_door_random = self.crown_door_item in random_helm_door_settings
+        self.coin_door_random = self.coin_door_item in random_helm_door_settings
+        crown_door_pool = {}
+        coin_door_pool = {}
+        crown_diff = random_helm_door_settings.index(self.crown_door_item) if self.crown_door_item in random_helm_door_settings else None
+        coin_diff = random_helm_door_settings.index(self.coin_door_item) if self.coin_door_item in random_helm_door_settings else None
+        for item in helmdoor_items:
+            data = helmdoor_items[item]
+            crown_door_info = data.getDifficultyInfo(crown_diff)
+            coin_door_info = data.getDifficultyInfo(coin_diff)
+            if crown_door_info is not None:
+                crown_door_pool[item] = crown_door_info.chooseAmount()
+            if coin_door_info is not None:
+                coin_door_pool[item] = coin_door_info.chooseAmount()
+        if self.crown_door_random:
+            potential_items = [x for x in list(crown_door_pool.keys()) if x != self.coin_door_item]
+            potential_item_weights = []
+            for x in potential_items:
+                data = helmdoor_items[x].getDifficultyInfo(crown_diff)
+                weight = 0 if data is None else data.selection_weight
+                potential_item_weights.append(weight)
+            selected_item = random.choices(potential_items, weights=potential_item_weights, k=1)[0]
+            self.crown_door_item = selected_item
+            self.crown_door_item_count = crown_door_pool[selected_item]
+        if self.coin_door_random:
+            potential_items = [x for x in list(crown_door_pool.keys()) if x != self.crown_door_item]
+            potential_item_weights = []
+            for x in potential_items:
+                data = helmdoor_items[x].getDifficultyInfo(coin_diff)
+                weight = 0 if data is None else data.selection_weight
+                potential_item_weights.append(weight)
+            selected_item = random.choices(potential_items, weights=potential_item_weights, k=1)[0]
+            self.coin_door_item = selected_item
+            self.coin_door_item_count = crown_door_pool[selected_item]
         if self.crown_door_item in helmdoor_items.keys():
-            if self.crown_door_item_count > helmdoor_items[self.crown_door_item]["max"]:
-                self.crown_door_item_count = helmdoor_items[self.crown_door_item]["max"]
+            self.crown_door_item_count = min(self.crown_door_item_count, helmdoor_items[self.crown_door_item].absolute_max)
         if self.coin_door_item in helmdoor_items.keys():
-            if self.coin_door_item_count > helmdoor_items[self.coin_door_item]["max"]:
-                self.coin_door_item_count = helmdoor_items[self.coin_door_item]["max"]
+            self.coin_door_item_count = min(self.coin_door_item_count, helmdoor_items[self.coin_door_item].absolute_max)
 
         self.shuffled_location_types = []
         if self.shuffle_items:

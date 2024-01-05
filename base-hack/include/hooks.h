@@ -53,6 +53,8 @@ extern void FixKrushaAmmoHUDColor(void);
 extern void FixKrushaAmmoHUDSize(void);
 extern void staticWaterDamage(void);
 extern void checkBeforeApplyingQuicksand(void);
+extern void disableHelmKeyBounce(void);
+extern void RecolorMenuBackground(void);
 
 extern void CrankyDecouple(void);
 extern void ForceToBuyMoveInOneLevel(void);

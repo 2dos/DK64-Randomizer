@@ -298,6 +298,8 @@ static unsigned char jetpac_hh_bonus[] = {
     HHITEM_NOTHING, // "melon",  # 13 - Melon
 };
 
+static short banned_hh_items[] = {HHITEM_NOTHING, HHITEM_GB};
+
 void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
     /**
      * @brief Check whether a flag is a move, alter the flag block address, and perform any additional functions required.
@@ -420,7 +422,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
             if (vanilla_flag == FLAG_COLLECTABLE_NINTENDOCOIN) {
                 if (Rando.arcade_reward < sizeof(arcade_hh_bonus)) {
                     helm_hurry_items hh_bonus = arcade_hh_bonus[(int)Rando.arcade_reward];
-                    if (hh_bonus != HHITEM_NOTHING) {
+                    if (!inShortList(hh_bonus, &banned_hh_items[0], 2)) {
                         addHelmTime(hh_bonus, 1);
                     }
                 }
@@ -442,7 +444,7 @@ void* checkMove(short* flag, void* fba, int source, int vanilla_flag) {
             } else if (vanilla_flag == FLAG_COLLECTABLE_RAREWARECOIN) {
                 if (Rando.jetpac_reward < sizeof(jetpac_hh_bonus)) {
                     helm_hurry_items hh_bonus = jetpac_hh_bonus[(int)Rando.jetpac_reward];
-                    if (hh_bonus != HHITEM_NOTHING) {
+                    if (!inShortList(hh_bonus, &banned_hh_items[0], 2)) {
                         addHelmTime(hh_bonus, 1);
                     }
                 }

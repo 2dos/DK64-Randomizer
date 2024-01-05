@@ -312,7 +312,7 @@ void changePauseScreen(void) {
         resetTracker();
     }
     if (Rando.quality_of_life.fast_pause_transitions) {
-        playSound(0xE9, 0x7FF, 0x427C0000, 0x3F800000, 0, 0);
+        playSound(0xE9, 0x7FF, 63.0f, 1.0f, 0, 0);
     } else {
         playSFX(0x2C9);
     }

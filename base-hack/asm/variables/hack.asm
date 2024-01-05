@@ -51,3 +51,4 @@
 .definelabel FirstMove_New, 0x807FF6EE
 .definelabel ExtraSaveData, 0x807ED2A8
 .definelabel ItemRando_FLUT, 0x807E2EE0 // Used to be occupied by music channel 0 // Vanilla 0x807E00C0
+.definelabel MenuDarkness, 0x8075EAE4

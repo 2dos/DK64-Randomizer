@@ -138,6 +138,8 @@
 .definelabel TransitionType, 0x8076AEE0
 .definelabel DKTVKong, 0x80755328
 .definelabel CutsceneBanks, 0x807F5B10
+.definelabel QueuedCutsceneFunctions, 0x807452A0
+.definelabel ActorTimer, 0x8076A068
 .definelabel EEPROMType, 0x807EDEAC
 
 .definelabel ExitPointer, 0x807FC900
@@ -259,3 +261,5 @@
 .definelabel RambiArenaComboTimer, 0x8002D930
 .definelabel RambiArenaComboSize, 0x8002D92C
 .definelabel RambiArenaComboChain, 0x8002DEF0
+
+.definelabel StoredOrangeCount, 0x80029FA4

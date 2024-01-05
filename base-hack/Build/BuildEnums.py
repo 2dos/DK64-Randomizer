@@ -778,3 +778,19 @@ class Song(IntEnum):
     FinalCBGet = auto()
     KRoolDefeat = auto()
     NintendoLogo = auto()
+
+
+class Overlay(IntEnum):
+    """Overlay Enum."""
+
+    Boot = 0
+    Static = 1
+    Menu = 2
+    Multiplayer = 3
+    Minecart = 4
+    Race = 5
+    Critter = 6
+    Boss = 7
+    Bonus = 8
+    Arcade = 9
+    Jetpac = 10

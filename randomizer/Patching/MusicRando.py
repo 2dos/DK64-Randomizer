@@ -43,10 +43,9 @@ def doesSongLoop(data: bytes) -> bool:
     return False
 
 
-def isValidSong(data: bytes, extension: str) -> bool:
+def isValidSong(data: bytes) -> bool:
     """Check if song is a valid bin."""
-    if extension == ".candy":
-        return True  # TODO: Check from ZIP
+    print(data[:0x44])
     if len(data) < 0x44:
         return False
     byte_list = [x for xi, x in enumerate(data) if xi < 4]
@@ -159,7 +158,7 @@ class UploadInfo:
                 SongGroup.Collection,
             ]
         self.filter = self.extension == ".candy"
-        self.acceptable = isValidSong(self.song_file, self.extension)
+        self.acceptable = isValidSong(self.song_file)
         self.used = False
 
 
@@ -251,24 +250,25 @@ def requestNewSong(file_data_array: list, location_tags: list, location_length: 
         GLOBAL_SEARCH_INDEX = (start_index + i + 1) % MAX_SEARCH_LENGTH  # Advance 1 just in case we return from this
         if referenced_index in USED_INDEXES and check_unused:
             continue
-        if not item.filter:
-            if item.acceptable:
-                USED_INDEXES.append(referenced_index)
-                return item
-        elif not check_tag:
-            if isSongWithInLengthRange(location_length, item.song_length):
-                USED_INDEXES.append(referenced_index)
-                return item
-            # Not similar enough, push to dictionary
-            pushSongToUnplaced(item, referenced_index)
-        else:
-            loc_set = set(location_tags)
-            song_set = set(item.location_tags)
-            if loc_set & song_set:  # Has a tag in common
-                USED_INDEXES.append(referenced_index)
-                return item
-            # No matches, push to dictionary
-            pushSongToUnplaced(item, referenced_index)
+        if item.acceptable:
+            if not item.filter:
+                if item.acceptable:
+                    USED_INDEXES.append(referenced_index)
+                    return item
+            elif not check_tag:
+                if isSongWithInLengthRange(location_length, item.song_length):
+                    USED_INDEXES.append(referenced_index)
+                    return item
+                # Not similar enough, push to dictionary
+                pushSongToUnplaced(item, referenced_index)
+            else:
+                loc_set = set(location_tags)
+                song_set = set(item.location_tags)
+                if loc_set & song_set:  # Has a tag in common
+                    USED_INDEXES.append(referenced_index)
+                    return item
+                # No matches, push to dictionary
+                pushSongToUnplaced(item, referenced_index)
     return None
 
 

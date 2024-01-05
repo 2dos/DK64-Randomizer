@@ -6,6 +6,7 @@ from enum import IntEnum, auto
 from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union
 
 import js
+import random
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.SwitchTypes import SwitchType
@@ -198,6 +199,49 @@ icon_db = {
 }
 
 
+class MenuTexture:
+    """Class to store information regarding a texture compatible with the main menu background."""
+
+    def __init__(self, name: str, is32by32: bool, table: int = 25, weight: int = 100, is_color: bool = False):
+        """Initialize with given parameters."""
+        self.name = name
+        self.is32by32 = is32by32
+        self.table = table
+        self.weight = weight
+        self.is_color = is_color
+
+
+compatible_background_textures = {
+    0x47A: MenuTexture("Gold Tower Stack", False),
+    0x9DD: MenuTexture("Book", False),
+    0x5C8: MenuTexture("Bricks", False),
+    0x76F: MenuTexture("Bricks", False),
+    0xAAD: MenuTexture("Floodlights", False),
+    0x33D: MenuTexture("Wooden Board", False),
+    0x79C: MenuTexture("Grassy Brick", False),
+    0x992: MenuTexture("Wooden Door", False),
+    0x39B: MenuTexture("C Block", True, 25, 7),
+    0x39C: MenuTexture("G Block", True, 25, 7),
+    0x39D: MenuTexture("9 Block", True, 25, 7),
+    0x39F: MenuTexture("R Block", True, 25, 7),
+    0x3A0: MenuTexture("S Block", True, 25, 7),
+    0x3A1: MenuTexture("1 Block", True, 25, 7),
+    0x3A2: MenuTexture("F Block", True, 25, 7),
+    0x3A3: MenuTexture("8 Block", True, 25, 7),
+    0x3A4: MenuTexture("7 Block", True, 25, 7),
+    0x3A5: MenuTexture("B Block", True, 25, 7),
+    0x3A6: MenuTexture("4 Block", True, 25, 7),
+    0x3A7: MenuTexture("N Block", True, 25, 7),
+    0x3A8: MenuTexture("D Block", True, 25, 7),
+    0x3A9: MenuTexture("Q Block", True, 25, 7),
+    0x7B2: MenuTexture("Up Arrow", True, 25, 50),
+    0x7B3: MenuTexture("Down Arrow", True, 25, 50),
+    0xAC: MenuTexture("TNT", True),
+    0x7CD: MenuTexture("Night Sign", True),
+    0x3DE: MenuTexture("Color", True, 7, 50, True),
+}
+
+
 class SwitchInfo:
     """Store information regarding a switch."""
 
@@ -212,6 +256,44 @@ class SwitchInfo:
         self.tied_settings = tied_settings
 
 
+class HelmDoorRandomInfo:
+    """Store information regarding helm door random boundaries."""
+
+    def __init__(self, min_bound: int, max_bound: int, selection_weight: float):
+        """Initialize with given parameters."""
+        self.min_bound = min_bound
+        self.max_bound = max_bound
+        self.selection_weight = selection_weight
+        self.selected_amount = None
+
+    def chooseAmount(self) -> int:
+        """Choose amount for the helm door."""
+        raw_float = random.triangular(self.min_bound, self.max_bound)
+        self.selected_amount = round(raw_float)
+        return self.selected_amount
+
+
+class HelmDoorInfo:
+    """Store information about helm door requirements."""
+
+    def __init__(self, absolute_max: int, hard: HelmDoorRandomInfo = None, medium: HelmDoorRandomInfo = None, easy: HelmDoorRandomInfo = None):
+        """Initialize with given parameters."""
+        self.absolute_max = absolute_max
+        self.hard = hard
+        self.medium = medium
+        self.easy = easy
+
+    def getDifficultyInfo(self, difficulty: int) -> HelmDoorRandomInfo:
+        """Get the random info pertaining to the difficulty."""
+        if difficulty == 0:
+            return self.easy
+        if difficulty == 1:
+            return self.medium
+        if difficulty == 2:
+            return self.hard
+        return None
+
+
 class PaletteFillType(IntEnum):
     """Palette Fill Type enum."""
 
@@ -221,6 +303,22 @@ class PaletteFillType(IntEnum):
     checkered = auto()
     radial = auto()
     kong = auto()
+
+
+class Overlay(IntEnum):
+    """Overlay enum."""
+
+    Boot = 0
+    Static = 1
+    Menu = 2
+    Multiplayer = 3
+    Minecart = 4
+    Race = 5
+    Critter = 6
+    Boss = 7
+    Bonus = 8
+    Arcade = 9
+    Jetpac = 10
 
 
 def float_to_hex(f: Union[float, int]) -> str:

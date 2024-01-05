@@ -10,6 +10,13 @@
  */
 #include "../../include/common.h"
 
+static short tbarrel_flags[] = {
+	FLAG_TBARREL_BARREL,
+	FLAG_TBARREL_DIVE,
+	FLAG_TBARREL_ORANGE,
+	FLAG_TBARREL_VINE,
+};
+
 int isTBarrelFlag(int flag) {
 	/**
 	 * @brief Is a flag a training move flag
@@ -18,14 +25,7 @@ int isTBarrelFlag(int flag) {
 	 * 
 	 * @return is training flag (bool)
 	 */
-	if (flag == FLAG_TBARREL_BARREL) {
-		return 1;
-	} else if (flag == FLAG_TBARREL_DIVE) {
-		return 1;
-	} else if (flag == FLAG_TBARREL_ORANGE) {
-		return 1;
-	}
-	return flag == FLAG_TBARREL_VINE;
+	return inShortList(flag, &tbarrel_flags[0], 4);
 }
 
 int isFairyFlag(int flag) {

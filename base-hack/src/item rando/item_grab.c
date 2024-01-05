@@ -35,38 +35,44 @@
 #define MEDALITEM_JUNKMELON 20
 #define MEDALITEM_NOTHING 21
 
-typedef struct medal_info {
+typedef struct item_info {
     /* 0x000 */ songs song;
     /* 0x004 */ int sprite;
     /* 0x008 */ helm_hurry_items helm_hurry_item;
-} medal_info;
+    /* 0x00C */ short fairy_model;
+    /* 0x00E */ char pad_e;
+    /* 0x00E */ char pad_f;
+} item_info;
 
 static const unsigned char bp_sprites[] = {0x5C,0x5A,0x4A,0x5D,0x5B};
 static const unsigned char instrument_songs[] = {SONG_BONGOS, SONG_GUITAR, SONG_TROMBONE, SONG_SAXOPHONE, SONG_TRIANGLE};
 
-static const medal_info medal_data[] = {
-    {.song = SONG_GBGET, .sprite = 0x3B, .helm_hurry_item = HHITEM_NOTHING}, // GB
-    {.song = SONG_BLUEPRINTGET, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // BP
-    {.song = SONG_GBGET, .sprite = 0x8A, .helm_hurry_item = HHITEM_KEY}, // Key
-    {.song = SONG_BANANAMEDALGET, .sprite = 0x8B, .helm_hurry_item = HHITEM_CROWN}, // Crown
-    {.song = SONG_COMPANYCOINGET, .sprite = -1, .helm_hurry_item = HHITEM_COMPANYCOIN}, // Company Coin
-    {.song = SONG_BANANAMEDALGET, .sprite = 0x3C, .helm_hurry_item = HHITEM_MEDAL}, // Medal
-    {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_MOVE}, // Cranky Move
-    {.song = SONG_GUNGET, .sprite = 0x96, .helm_hurry_item = HHITEM_MOVE}, // Funky Move
-    {.song = SONG_GUNGET, .sprite = 0x93, .helm_hurry_item = HHITEM_MOVE}, // Candy Move
-    {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_MOVE}, // Training Move
-    {.song = SONG_GUNGET, .sprite = 0x3A, .helm_hurry_item = HHITEM_MOVE}, // BFI Move
-    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING}, // Kong
-    {.song = SONG_BEANGET, .sprite = -1, .helm_hurry_item = HHITEM_BEAN}, // Bean
-    {.song = SONG_PEARLGET, .sprite = -1, .helm_hurry_item = HHITEM_PEARL}, // Pearl
-    {.song = SONG_FAIRYTICK, .sprite = 0x89, .helm_hurry_item = HHITEM_FAIRY}, // Fairy
-    {.song = SONG_RAINBOWCOINGET, .sprite = 0xA0, .helm_hurry_item = HHITEM_RAINBOWCOIN}, // Rainbow Coin
-    {.song = SONG_SILENCE, .sprite = 0x92, .helm_hurry_item = HHITEM_FAKEITEM}, // Fake Item
-    {.song = SONG_SILENCE, .sprite = 0x2C, .helm_hurry_item = HHITEM_NOTHING}, // Junk Item (Orange)
-    {.song = SONG_SILENCE, .sprite = 0x48, .helm_hurry_item = HHITEM_NOTHING}, // Junk Item (Ammo)
-    {.song = SONG_CRYSTALCOCONUTGET, .sprite = 0x3A, .helm_hurry_item = HHITEM_NOTHING}, // Junk Item (Crystal)
-    {.song = SONG_MELONSLICEGET, .sprite = 0x46, .helm_hurry_item = HHITEM_NOTHING}, // Junk Item (Melon)
-    {.song = SONG_SILENCE, .sprite = 0x8E, .helm_hurry_item = HHITEM_NOTHING}, // Nothing
+#define MODEL_GENERIC_POTION 0x2001
+#define MODEL_GENERIC_KONG 0x2002
+
+static const item_info item_detection_data[] = {
+    {.song = SONG_GBGET, .sprite = 0x3B, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = 0x69}, // GB - Handled by a separate function
+    {.song = SONG_BLUEPRINTGET, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // BP
+    {.song = SONG_GBGET, .sprite = 0x8A, .helm_hurry_item = HHITEM_KEY, .fairy_model = 0xF5}, // Key
+    {.song = SONG_BANANAMEDALGET, .sprite = 0x8B, .helm_hurry_item = HHITEM_CROWN, .fairy_model = 0xF4}, // Crown
+    {.song = SONG_COMPANYCOINGET, .sprite = -1, .helm_hurry_item = HHITEM_COMPANYCOIN, .fairy_model = -1}, // Company Coin
+    {.song = SONG_BANANAMEDALGET, .sprite = 0x3C, .helm_hurry_item = HHITEM_MEDAL, .fairy_model = -1}, // Medal
+    {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_MOVE, .fairy_model = MODEL_GENERIC_POTION}, // Cranky Move
+    {.song = SONG_GUNGET, .sprite = 0x96, .helm_hurry_item = HHITEM_MOVE, .fairy_model = MODEL_GENERIC_POTION}, // Funky Move
+    {.song = SONG_GUNGET, .sprite = 0x93, .helm_hurry_item = HHITEM_MOVE, .fairy_model = MODEL_GENERIC_POTION}, // Candy Move
+    {.song = SONG_GUNGET, .sprite = 0x94, .helm_hurry_item = HHITEM_MOVE, .fairy_model = MODEL_GENERIC_POTION}, // Training Move
+    {.song = SONG_GUNGET, .sprite = 0x3A, .helm_hurry_item = HHITEM_MOVE, .fairy_model = MODEL_GENERIC_POTION}, // BFI Move
+    {.song = SONG_SILENCE, .sprite = -1, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = MODEL_GENERIC_KONG}, // Kong
+    {.song = SONG_BEANGET, .sprite = -1, .helm_hurry_item = HHITEM_BEAN, .fairy_model = -1}, // Bean
+    {.song = SONG_PEARLGET, .sprite = -1, .helm_hurry_item = HHITEM_PEARL, .fairy_model = -1}, // Pearl
+    {.song = SONG_FAIRYTICK, .sprite = 0x89, .helm_hurry_item = HHITEM_FAIRY, .fairy_model = 0x3D}, // Fairy
+    {.song = SONG_RAINBOWCOINGET, .sprite = 0xA0, .helm_hurry_item = HHITEM_RAINBOWCOIN, .fairy_model = -1}, // Rainbow Coin
+    {.song = SONG_SILENCE, .sprite = 0x92, .helm_hurry_item = HHITEM_FAKEITEM, .fairy_model = 0xFD}, // Fake Item
+    {.song = SONG_SILENCE, .sprite = 0x2C, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Orange)
+    {.song = SONG_SILENCE, .sprite = 0x48, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Ammo)
+    {.song = SONG_CRYSTALCOCONUTGET, .sprite = 0x3A, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Crystal)
+    {.song = SONG_MELONSLICEGET, .sprite = 0x46, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Junk Item (Melon)
+    {.song = SONG_SILENCE, .sprite = 0x8E, .helm_hurry_item = HHITEM_NOTHING, .fairy_model = -1}, // Nothing
 };
 
 void banana_medal_acquisition(int flag) {
@@ -90,9 +96,9 @@ void banana_medal_acquisition(int flag) {
         short flut_flag = flag;
         int kong = getKong(0);
         updateFlag(FLAGTYPE_PERMANENT, (short*)&flut_flag, (void*)0, -1);
-        songs song = medal_data[item_type].song;
-        int sprite_index = medal_data[item_type].sprite;
-        helm_hurry_items hh_item = medal_data[item_type].helm_hurry_item;
+        songs song = item_detection_data[item_type].song;
+        int sprite_index = item_detection_data[item_type].sprite;
+        helm_hurry_items hh_item = item_detection_data[item_type].helm_hurry_item;
         switch (item_type) {
             case MEDALITEM_GB:
                 giveGB(kong, getWorld(CurrentMap, 1));
@@ -318,6 +324,8 @@ int* controlKeyText(int* dl) {
     return dl;
 }
 
+static short kong_models[] = {4, 1, 6, 9, 0xC};
+
 void giveFairyItem(int flag, int state, flagtypes type) {
     /**
      * @brief Handle acquisition of the item tied to a fairy
@@ -327,6 +335,26 @@ void giveFairyItem(int flag, int state, flagtypes type) {
      * @param type Flag Type
      */
     int model = getFairyModel(flag);
+    int model_key = model;
+    if ((model_key >= 0xF6) && (model_key <= 0xFB)) {
+        model_key = MODEL_GENERIC_POTION;
+    } else if (inShortList(model_key, &kong_models[0], 5)) {
+        model_key = MODEL_GENERIC_KONG;
+    }
+    if (model_key > -1) {
+        int i = 0;
+        int cap = sizeof(item_detection_data) / sizeof(item_info);
+        while (i < cap) {
+            if (item_detection_data[i].fairy_model == model_key) {
+                helm_hurry_items hh_item = item_detection_data[i].helm_hurry_item;
+                if (hh_item != HHITEM_NOTHING) {
+                    addHelmTime(hh_item, 1);
+                }
+                break;
+            }
+            i++;
+        }
+    }
     int key_bitfield = 0;
     if (model == 0x69) {
         // GB
@@ -445,7 +473,7 @@ void getItem(int object_type) {
         case 0x1CF:
         case 0x1D0:
             // CB Single
-            playSound(0x2A0, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            playSound(0x2A0, 0x7FFF, 63.0f, 1.0f, 5, 0);
             hh_item = HHITEM_CB;
             break;
         case 0x2B:
@@ -461,7 +489,7 @@ void getItem(int object_type) {
         case 0x11:
         case 0x8F:
             // Homing Ammo Crate
-            playSound(0x157, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            playSound(0x157, 0x7FFF, 63.0f, 1.0f, 5, 0);
             break;
         case 0x1C:
         case 0x1D:
@@ -482,7 +510,7 @@ void getItem(int object_type) {
             break;
         case 0x56:
             // Orange
-            playSound(0x147, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            playSound(0x147, 0x7FFF, 63.0f, 1.0f, 5, 0);
             break;
         case 0x25E:
             // Full Melon
@@ -529,7 +557,7 @@ void getItem(int object_type) {
             break;
         case 0x98:
             // Film
-            playSound(0x263, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            playSound(0x263, 0x7FFF, 63.0f, 1.0f, 5, 0);
             break;
         case 0xB7:
             // Rainbow Coin
@@ -589,7 +617,7 @@ void getItem(int object_type) {
             break;
         case 0x1D1:
             // Coin Powerup
-            playSound(0xAE, 0x7FFF, 0x427C0000, 0x3F800000, 5, 0);
+            playSound(0xAE, 0x7FFF, 63.0f, 1.0f, 5, 0);
             break;
         case 0x257:
         case 0x258:

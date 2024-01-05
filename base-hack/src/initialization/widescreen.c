@@ -28,15 +28,6 @@ static double pos_center = SCREEN_WD_FLOAT / 2;
     - are you sure quit
 */
 
-void ws_fillzipperwhite(void* write_ptr, void* framebuffer) {
-    int px_clear = SCREEN_WD * SCREEN_HD;
-    int write = (int)write_ptr;
-    for (int i = 0; i < px_clear; i++) {
-        *(short*)(write) = ZIPPER_COLOR_VALUE;
-        write += 2;
-    }
-}
-
 #define NINTENDO_LOGO_WIDTH 256
 
 void ws_2d(void) {
@@ -51,15 +42,6 @@ void ws_2d(void) {
 void ws_fileentry(int map, int exit) {
     setNextTransitionType(2);
     initiateTransition(map, exit);
-}
-
-void ws_transitioncancel(void) {
-    *(int*)(0x80628508) = 0;
-    *(int*)(0x80683A2C) = 0;
-    *(int*)(0x806A84F8) = 0;
-    *(int*)(0x806AD090) = 0;
-    *(int*)(0x806DB540) = 0;
-    *(int*)(0x806DB92C) = 0;
 }
 
 void ws_ninPos(void) {
@@ -81,72 +63,16 @@ void ws_boot(void) {
 }
 
 void ws_hud(void) {
-    *(short*)(0x806F8536) = SCREEN_WD - 30; // X Position of HUD (CBs)
-    float y_offset = 0x24;
-    y_offset *= (SCREEN_HD_FLOAT / 240);
-    *(short*)(0x806F858E) = 0x24 + y_offset; // Y Position of HUD (GB Character)
-    *(short*)(0x806F85CA) = (SCREEN_WD / 2)+34; // X Position of HUD (Blueprints)
-    *(short*)(0x806F85CE) = SCREEN_HD - 30; // Y Position of HUD (Blueprints)
-    *(short*)(0x806F8606) = SCREEN_WD - 30; // X Position of HUD (Medal - Multibunch)
-    if (!Rando.quality_of_life.hud_bp_multibunch) {
-        *(short*)(0x806F860A) = SCREEN_HD - 30; // Y Position of HUD (Medal - Multibunch)
-    }
-    *(short*)(0x806F8642) = (SCREEN_WD / 2)-38; // X Position of HUD (GB Bottom)
-    *(short*)(0x806F8646) = SCREEN_HD - 30; // Y Position of HUD (GB Bottom)
-    *(short*)(0x806F868E) = SCREEN_WD - 30; // X Position of HUD (Crystals)
-    *(short*)(0x806F86C6) = SCREEN_WD - 30; // X Position of HUD (Standard Ammo)
-    *(short*)(0x806F873A) = SCREEN_WD - 30; // X Position of HUD (Homing Ammo)
-    *(short*)(0x806F87A6) = SCREEN_WD - 30; // X Position of HUD (Oranges)
-    *(short*)(0x806F8812) = SCREEN_WD - 30; // X Position of HUD (Film)
-    *(short*)(0x806F8816) = SCREEN_HD - 30; // Y Position of HUD (Film)
-    *(short*)(0x806F8852) = SCREEN_WD - 30; // X Position of HUD (Race Coin)
-    *(short*)(0x806F88CA) = SCREEN_WD - 30; // X Position of HUD (Banana Coins)
-    *(short*)(0x806F893A) = SCREEN_WD - 30; // X Position of HUD (Instrument)
     float medal_x = SCREEN_WD_FLOAT / 2;
     *(short*)(0x80687CAA) = *(short*)(&medal_x); // Medal Reward
     float medal_y = SCREEN_HD_FLOAT / 2;
     *(short*)(0x80687CAE) = *(short*)(&medal_y); // Medal Reward
-    // Converted Stuff
-    *(short*)(0x806FF0F2) = SCREEN_WD / 2; // X Position of Cannon Cursor
-    *(short*)(0x806FF0F6) = SCREEN_HD / 2; // Y Position of Cannon Cursor
-    *(short*)(0x806FF3AA) = (SCREEN_WD / 2) - 80; // X Position of Upper-Left of Capture Marker
-    *(short*)(0x806FF3AE) = (SCREEN_HD / 2) - 80; // Y Position of Upper-Left of Capture Marker
-    *(short*)(0x806FF3EE) = (SCREEN_WD / 2) + 80; //X Position of Upper-Right of Capture Marker
-    *(short*)(0x806FF3F2) = (SCREEN_HD / 2) - 80; // Y Position of Upper-Right of Capture Marker
-    *(short*)(0x806FF436) = (SCREEN_WD / 2) + 80; //X Position of Lower-Right of Capture Marker
-    *(short*)(0x806FF43A) = (SCREEN_HD / 2) + 80; // Y Position of Lower-Right of Capture Marker
-    *(short*)(0x806FF47E) = (SCREEN_WD / 2) - 80; //X Position of Lower-Left of Capture Marker
-    *(short*)(0x806FF482) = (SCREEN_HD / 2) + 80; // Y Position of Lower-Left of Capture Marker
-
-    *(short*)(0x806FF4CE) = SCREEN_WD / 2; // X Position of Capture Center
-    *(short*)(0x806FF4D2) = SCREEN_HD / 2; // Y Position of Capture Center
-    *(short*)(0x806FF566) = SCREEN_WD - 40; // X Position of Sad Face
-    *(short*)(0x806FF5D2) = SCREEN_WD - 40; // X Position of Happy Face
-    *(short*)(0x806FF692) = SCREEN_WD / 2; // X Position of Picture X Sign
-    *(short*)(0x806FF696) = SCREEN_HD / 2; // Y Position of Picture X Sign
-    *(short*)(0x806FF70A) = SCREEN_WD / 2; // X Position of Picture Check Sign
-    *(short*)(0x806FF70E) = SCREEN_HD / 2; // Y Position of Picture Check Sign
-    *(short*)(0x806FFAD6) = SCREEN_WD / 2; // X Position of Scope Cursor
-    *(short*)(0x806FFADA) = SCREEN_HD / 2; // Y Position of Scope Cursor
 
     float circle_scale = SCREEN_WD_FLOAT / 63.0f;
     *(short*)(0x806FFBA6) = *(short*)(&circle_scale); // Fix Camera Transition
     *(short*)(0x806FFBBA) = SCREEN_WD / 2; // X Position of Circle Transition
     *(short*)(0x806FFBBE) = SCREEN_HD / 2; // Y Position of Circle Transition
     *(short*)(0x806FEFBA) = *(short*)(&circle_scale); // Fix cannon game reticle
-    *(short*)(0x806FEFD2) = SCREEN_WD / 2; // X Position of cannon game reticle
-    *(short*)(0x806FEFD6) = SCREEN_HD / 2; // Y Position of cannon game reticle
-    *(short*)(0x80708906) = SCREEN_WD << 1; //X Position of Melons in UI
-
-    *(short*)(0x8068D98E) = SCREEN_WD - 40; // X Position of Camera Icon
-    *(short*)(0x8068D98A) = SCREEN_HD - 30; // Y Position of Camera Icon
-
-    *(short*)(0x806ACB4E) = (SCREEN_WD * 2) - 280; // X Position of Try Again Text
-    *(short*)(0x806ACB5A) = (SCREEN_HD * 2) - 220; // Y Position of Try Again Text
-    *(short*)(0x806ACB9E) = (SCREEN_WD * 2) - 120; // X Position of Yes Text
-    *(short*)(0x806ACBA6) = (SCREEN_HD * 2) - 80; // Y Position of Yes Text
-    *(short*)(0x806ACBE2) = (SCREEN_WD * 2) - 120; // X Position of No Text
-    *(short*)(0x806ACBEA) = (SCREEN_HD * 2) + 60; // Y Position of No Text
 }
 
 void ws_crashdebugger(void) {
@@ -171,9 +97,6 @@ void ws_timer(int* x_write) {
 void ws_transitions(void) {
     if (WS_REMOVE_ZIPPER) {
         writeFunction(0x8071456C, &ws_fileentry);
-    }
-    if (WS_REMOVE_TRANSITIONS) {
-        ws_transitioncancel();
     }
     *(short*)(0x80629292) = SCREEN_WD - 10; //X Position of Transition from Right
     *(short*)(0x806292A2) = SCREEN_WD / 2; //X Position of Double Transition
@@ -230,7 +153,6 @@ void ws_transitions(void) {
     int zipper_aspect_ratio_int = *(int*)(&zipper_aspect_ratio);
     *(short*)(0x8070ADC6) = (zipper_aspect_ratio_int >> 16) & 0xFFFF;
     *(short*)(0x8070ADCA) = zipper_aspect_ratio_int & 0xFFFF;
-    // writeFunction(0x8070AFD0, ws_fillzipperwhite);
 
     int zipper_scissor = 0;
     int framebuffer_upperleft = (SCREEN_WD / 8) - 2;
@@ -252,44 +174,12 @@ void ws_transitions(void) {
 }
 
 void ws_pause(void) {
-    *(short*)(0x80629626) = SCREEN_WD; // Pause Menu Texture Width
-    *(short*)(0x8062960A) = SCREEN_HD; // Pause Menu Texture Height
-    *(short*)(0x806296F6) = SCREEN_WD; // Pause Menu Texture Width 2
-    *(short*)(0x806296D6) = SCREEN_HD; // Pause Menu Texture Height 2
-    *(short*)(0x806297E6) = SCREEN_WD; // Pause Menu Texture Width 3
-    *(short*)(0x806297C2) = SCREEN_HD; // Pause Menu Texture Height 3
-    *(short*)(0x806298BA) = SCREEN_WD; // Pause Menu Texture Width 4
-    *(short*)(0x80629872) = SCREEN_HD; // Pause Menu Texture Height 4
-    *(short*)(0x8062999E) = SCREEN_WD; // Pause Menu Texture Width 5
-    *(short*)(0x8062997E) = SCREEN_HD; // Pause Menu Texture Height 5
-    *(short*)(0x80629A5A) = SCREEN_WD; // Pause Menu Texture Width 6
-    *(short*)(0x80629A12) = SCREEN_HD; // Pause Menu Texture Height 6
-    *(short*)(0x80629B4A) = SCREEN_WD; // Pause Menu Texture Width 7
-    *(short*)(0x80629B26) = SCREEN_HD; // Pause Menu Texture Height 7
-    *(short*)(0x80629BAA) = SCREEN_WD; // Pause Menu Texture Width 8
-    *(short*)(0x80629B82) = SCREEN_HD; // Pause Menu Texture Height 8
-    *(short*)(0x80629C6A) = SCREEN_WD; // Pause Menu Texture Width 9
-    *(short*)(0x80629C22) = SCREEN_HD; // Pause Menu Texture Height 9
-    *(short*)(0x80629D06) = SCREEN_WD; // Pause Menu Texture Width 10
-    *(short*)(0x80629CC2) = SCREEN_HD; // Pause Menu Texture Height 10
-    *(short*)(0x80629E46) = SCREEN_WD; // Pause Menu Texture Width 10
-    *(short*)(0x80629DEA) = SCREEN_HD; // Pause Menu Texture Height 10
-    *(short*)(0x80629F6E) = SCREEN_WD; // Pause Menu Texture Width 11
-    *(short*)(0x80629F12) = SCREEN_HD; // Pause Menu Texture Height 11
-    *(short*)(0x8062A07E) = SCREEN_WD; // Pause Menu Texture Width 12
-    *(short*)(0x8062A03E) = SCREEN_HD; // Pause Menu Texture Height 12
-
     float out_of_y = (4 * SCREEN_HD_FLOAT) - 180.0f;
     *(short*)(0x806A9C92) = *(short*)(&out_of_y);
     *(short*)(0x806A9CD2) = *(short*)(&out_of_y);
     *(short*)(0x806A9E66) = *(short*)(&out_of_y);
     *(short*)(0x806A9E9E) = *(short*)(&out_of_y);
     *(short*)(0x806A9FBA) = (SCREEN_HD << 2) - 132;
-
-    *(short*)(0x806ACF76) = SCREEN_WD << 1; // X Position of Multiplayer Pause Menu Return
-    *(short*)(0x806ACF82) = (SCREEN_HD << 1) - 40; // Y Position of Multiplayer Pause Menu Return
-    *(short*)(0x806ACFDE) = SCREEN_WD << 1; // X Position of Multiplayer Pause Menu Quit Game
-    *(short*)(0x806ACFE2) = (SCREEN_HD << 1) + 40; // Y Position of Multiplayer Pause Menu Quit Game
 }
 
 void left_to_yconvert(void) {
@@ -318,23 +208,6 @@ void ws_text(void) {
     *(short*)(0x8069FF52) = *(short*)(&temp); // Y Position of Round Number
 }
 
-void ws_scissor(void) {
-    *(int*)(0x805FB9F8) = 0x24190000 | (SCREEN_WD - 1); // Scissor Width for Jetpac and DK Arcade
-    *(int*)(0x805FBA0C) = 0x24090000 | (SCREEN_HD - 1); // Scissor Height for Jetpac and Arcade
-    *(int*)(0x805FBB04) = 0x24090000 | (SCREEN_WD - 11); //Scissor Right Edge for Game
-    *(int*)(0x805FBB18) = 0x240B0000 | (SCREEN_HD - 11); //Scissor Bottom Edge for Game
-    *(int*)(0x805FBBF4) = 0x24180000 | SCREEN_WD; //Screen Width for Framebuffer
-    *(int*)(0x805FBC0C) = 0x240F0000 | SCREEN_HD; //Screen Height for Framebuffer
-    *(int*)(0x805FBC24) = 0x24040000; //Remove Black Bars
-
-    int noise_scissor = ((SCREEN_WD - 11) << 14) | ((SCREEN_HD - 11) << 2);
-    *(short*)(0x8070368A) = (noise_scissor >> 16) & 0xFFFF; //Upper Part of Noise Scissor
-    *(short*)(0x8070369A) = noise_scissor & 0xFFFF; //Lower Part of Noise Scissor
-    int noise_scissor_gfx = 0xF6000000 | ((SCREEN_WD - 11) << 14);
-    *(short*)(0x807036AE) = (noise_scissor_gfx >> 16) & 0xFFFF; //Upper Part of Noise Rectangle
-    *(short*)(0x807036B2) = noise_scissor_gfx & 0xFFFF; //Lower Part of Noise Rectangle
-}
-
 void ws_static(void) {
     ws_hud();
     ws_crashdebugger();
@@ -350,7 +223,6 @@ void ws_static(void) {
     ws_pause();
     left_to_yconvert();
     ws_text();
-    ws_scissor();
     ws_2d();
 
     *(int*)(0x806AC3E4) = 0x3C010000 | getHi(&pos_center_4x); //Load High Half of pos_center_4x
@@ -427,48 +299,6 @@ void ws_static(void) {
     *(short*)(0x806AB42E) = (SCREEN_WD/2); //X Position of Totals Screen X Position
     *(short*)(0x806AB4BE) = (SCREEN_WD-45); //X Position of R Button
 
-    /*
-        - kong-face-wheel: sprite control 10 // needs adjustment (shrink radius?)
-        - medal: control 3
-        - medal tick: control 0xE
-    */
-    // Screen 0
-    *(short*)(0x806AA546) = (SCREEN_HD >> 1) - 30; // Y Position (Oranges)
-    *(short*)(0x806AA512) = (SCREEN_HD >> 1) - 30; // Y Position (Oranges Counter)
-    *(short*)(0x806AA5B6) = (SCREEN_HD >> 1) + 5; // Y Position (Ammo)
-    *(short*)(0x806AA562) = (SCREEN_HD >> 1) + 5; // Y Position (Ammo Counter)
-    *(short*)(0x806AA66E) = (SCREEN_HD >> 1) + 0x28; // Y Position (Crystals)
-    *(short*)(0x806AA63A) = (SCREEN_HD >> 1) + 0x28; // Y Position (Crystals Counter)
-    *(short*)(0x806AA6E2) = (SCREEN_HD >> 1) - 30; // Y Position (Coins)
-    *(short*)(0x806AA6AE) = (SCREEN_HD >> 1) - 30; // Y Position (Coins Counter)
-    *(short*)(0x806AA756) = (SCREEN_HD >> 1) + 5; // Y Position (Instrument)
-    *(short*)(0x806AA6FE) = (SCREEN_HD >> 1) + 5; // Y Position (Instrument Counter)
-    *(short*)(0x806AA7CE) = (SCREEN_HD >> 1) + 0x28; // Y Position (Film)
-    *(short*)(0x806AA79A) = (SCREEN_HD >> 1) + 0x28; // Y Position (Film Counter)
-    *(short*)(0x806AA836) = SCREEN_HD - 32; // Y Position (GB)
-    *(short*)(0x806AA7EE) = SCREEN_HD - 32; // Y Position (GB Counter)
-    // Screen 1
-    *(short*)(0x806AA996) = (SCREEN_HD >> 1) + 5; // Y Position (Medal)
-    *(short*)(0x806AA9E6) = (SCREEN_HD >> 1) + 5; // Y Position (Medal Tick)
-    *(short*)(0x806AAAD2) = SCREEN_HD - 0x25; // Y Position (GB)
-    *(short*)(0x806AAB72) = (SCREEN_HD >> 1) + 5; // Y Position (BP)
-    *(short*)(0x806AABD2) = (SCREEN_HD >> 1) + 5; // Y Position (BP Tick)
-    *(short*)(0x806AAC22) = SCREEN_HD >> 1; // Y Position (Stick)
-    // Screen 2
-    *(short*)(0x806AB0A2) = (SCREEN_HD >> 1) - 35; // Y Position (Crown 1)
-    *(short*)(0x806AB0EA) = (SCREEN_HD >> 1) + 25; // Y Position (Crown 2)
-    *(short*)(0x806AB13E) = (SCREEN_HD >> 1) - 30; // Y Position (Fairy 1)
-    *(short*)(0x806AB17A) = (SCREEN_HD >> 1) + 30; // Y Position (Fairy 2)
-    *(short*)(0x806AB1B6) = (SCREEN_HD >> 1) - 30; // Y Position (Fairy 3)
-    *(short*)(0x806AB1F2) = (SCREEN_HD >> 1) + 30; // Y Position (Fairy 4)
-    *(short*)(0x806AAFAA) = SCREEN_HD >> 1; // Y Position (Crown)
-    *(short*)(0x806AAFFE) = SCREEN_HD >> 1; // Y Position (Fairy 1)
-    *(short*)(0x806AB03A) = SCREEN_HD >> 1; // Y Position (Fairy 2)
-    *(short*)(0x806AB22E) = SCREEN_HD - 0x25; // Y Position (GB)
-    // Generic
-    *(short*)(0x806AB48E) = SCREEN_HD - 0x28; // Y Position (Z)
-    *(short*)(0x806AB4C2) = SCREEN_HD - 0x28; // Y Position (R)
-
     float wheel_center_y = SCREEN_HD_FLOAT * 2;
     *(short*)(0x806A9ADE) = *(short*)(&wheel_center_y);
 
@@ -477,12 +307,6 @@ void ws_static(void) {
     *(short*)(0x806AB916) = *(short*)(&d_x); //Max X Position of UI Slide Out
     *(short*)(0x806ABB12) = SCREEN_WD * 2; //X Position of Level Name
     *(short*)(0x806ABB42) = SCREEN_WD * 2; //X Position of Level Icon
-
-    // Change fairy picture viewport target
-    *(short*)(0x806C5DB6) = (SCREEN_WD >> 1) - 22; // X Minimum
-    *(short*)(0x806C5DC6) = (SCREEN_WD >> 1) + 22; // X Maximum
-    *(short*)(0x806C5DD6) = (SCREEN_HD >> 1) - 22; // Y Minimum
-    *(short*)(0x806C5DDE) = (SCREEN_HD >> 1) + 22; // Y Maximum
 }
 
 void ws_staticdata(void) {
@@ -494,24 +318,6 @@ void ws_staticdata(void) {
     *(int*)(0x80747B30) = SCREEN_WD; //Blurring size X
     *(int*)(0x80747B34) = SCREEN_HD; //Blurring size Y
 
-    // Sand Effect
-    *(short*)(0x80750240) = SCREEN_WD; //Sand Effect Vertex 2 X
-    *(short*)(0x80750248) = ((SCREEN_WD*2016)/320); //Sand Effect Vertex 2 X Texcoord
-    *(short*)(0x80750250) = SCREEN_WD; //Sand Effect Vertex 3 X
-    *(short*)(0x80750252) = SCREEN_HD; //Sand Effect Vertex 3 Y
-    *(short*)(0x80750258) = ((SCREEN_WD*2016)/320); //Sand Effect Vertex 3 X Texcoord
-    *(short*)(0x8075025A) = ((SCREEN_HD*2016)/240); //Sand Effect Vertex 3 Y Texcoord
-    *(short*)(0x80750262) = SCREEN_HD; //Sand Effect Vertex 4 Y
-    *(short*)(0x8075026A) = ((SCREEN_HD*2016)/240); //Sand Effect Vertex 3 4 Texcoord
-    
-    *(short*)(0x80750848) = (SCREEN_WD-1); //Right Edge of Blackness in Border 1
-    *(short*)(0x80750856) = (SCREEN_HD-1); //Bottom Edge of Blackness in Border 2
-    *(short*)(0x8075085C) = (SCREEN_WD-11); //Left Edge of Blackness in Border 3
-    *(short*)(0x80750860) = (SCREEN_WD-1); //Right Edge of Blackness in Border 3
-    *(short*)(0x80750862) = (SCREEN_HD-1); //Bottom Edge of Blackness in Border 3
-    *(short*)(0x8075086A) = (SCREEN_HD-11); //Top Edge of Blackness in Border 4
-    *(short*)(0x8075086C) = (SCREEN_WD-11); //Right Edge of Blackness in Border 4
-    *(short*)(0x8075086E) = (SCREEN_HD-1); //Bottom Edge of Blackness in Border 4
     /*
     Not needed for Rando (Multiplayer)
     *(short*)(0x80750878) = (SCREEN_WD-1); //Right Edge of Blackness in Border 5
@@ -541,10 +347,6 @@ void ws_staticdata(void) {
     *(short*)(0x80750938) = ((SCREEN_WD/2)+1); //Right Edge of Blackness in Border 22
     */
 
-    *(short*)(0x80750950) = (SCREEN_WD-11); //Right Edge of Viewport Setup 1
-    *(short*)(0x80750952) = (SCREEN_HD-11); //Bottom Edge of Viewport Setup 1
-    *(short*)(0x8075095C) = (SCREEN_WD-11); //Right Edge of Viewport Setup 2
-    *(short*)(0x8075095E) = (SCREEN_HD-11); //Bottom Edge of Viewport Setup 1
     /*
     Not needed for Rando (multiplayer)
     *(short*)(0x80750968) = (SCREEN_WD-13); //Right Edge of Viewport Setup 3
@@ -592,25 +394,7 @@ void ws_staticdata(void) {
     *(short*)(0x80754C2A) = ((SCREEN_WD*128)/320); //Position of Vertex 3 of Transition
     *(short*)(0x80754C38) = -((SCREEN_WD*128)/320); //Position of Vertex 4 of Transition
     *(short*)(0x80754C3A) = ((SCREEN_WD*128)/320); //Position of Vertex 4 of Transition
-    *(float*)(0x8075E4D8) = SCREEN_WD - 5.0f; //Max X Position of Banana in Storm
-    *(short*)(0x80754C58) = SCREEN_WD; //X Position of Vertex 2 of UI Layer 1
-    *(short*)(0x80754C68) = SCREEN_WD; //X Position of Vertex 3 of UI Layer 1
-    *(short*)(0x80754C6A) = SCREEN_HD; //Y Position of Vertex 3 of UI Layer 1
-    *(short*)(0x80754C7A) = SCREEN_HD; //Y Position of Vertex 4 of UI Layer 1
-    *(short*)(0x80754C98) = SCREEN_WD; //X Position of Vertex 2 of UI Layer 2
-    *(short*)(0x80754CA8) = SCREEN_WD; //X Position of Vertex 3 of UI Layer 2
-    *(short*)(0x80754CAA) = SCREEN_HD; //Y Position of Vertex 3 of UI Layer 2
-    *(short*)(0x80754CBA) = SCREEN_HD; //Y Position of Vertex 4 of UI Layer 2
-    *(float*)(0x80758140) = SCREEN_WD - 1.0f; // X Size of Pause Menu Background Texture 1
-    *(float*)(0x80758144) = SCREEN_WD - 1.0f; // X Size of Pause Menu Background Texture 1
-    *(float*)(0x80758148) = SCREEN_WD - 1.0f; // X Size of Pause Menu Background Texture 1
-    *(float*)(0x8075814C) = SCREEN_WD - 1.0f; // X Size of Pause Menu Background Texture 1
-    
-}
-
-void ws_minigame(void) {
-    *(short*)(0x80027396) = SCREEN_WD - 40; // X Position of Melons
-    *(short*)(0x8002D1B2) = SCREEN_WD << 1; // X Position of HIT and Combo Text
+    *(float*)(0x8075E4D8) = SCREEN_WD - 5.0f; //Max X Position of Banana in Storm    
 }
 
 int* ws_textDraw(int* dl, int style, int x, int y, char* str) {
@@ -654,33 +438,14 @@ void ws_jetpac(void) {
 }
 
 void ws_menu(void) {
-    // Snide Menu
-    *(short*)(0x80024632) = (SCREEN_WD*2); //X Position of Blueprint Names
-    *(short*)(0x800246AA) = ((SCREEN_WD*2)-290); //X Position of Blueprints Text
-    *(short*)(0x800246F2) = ((SCREEN_WD*2)-290); //X Position of Exit Text
-    *(short*)(0x80024742) = ((SCREEN_WD*2)-290); //X Position of Bonus Text
-    *(short*)(0x80024FF2) = ((SCREEN_WD/2)-120); //X Position of Left Edge of Chart Blackness
-    *(short*)(0x80024FF6) = ((SCREEN_WD/2)-90); //X Position of Right Edge of Chart Blackness
-    *(short*)(0x80025CA2) = ((SCREEN_WD*2)-140); //X Position of Yes Text for DK Arcade
-    *(short*)(0x80025CEA) = ((SCREEN_WD*2)-140); //X Position of No Text for DK Arcade
     float x = SCREEN_WD_FLOAT / 2;
     *(short*)(0x80028726) = getUpper(*(int*)(&x)); //X Position of Mode Name Text
     // Fix option text position
     *(int*)(0x8002FA28) = 0x3C010000 | getHi(&pos_center);
     *(int*)(0x8002FA2C) = 0xD42A0000 | getLo(&pos_center);
-    // BARREL SCREEN
-    *(short*)(0x800288C6) = SCREEN_WD / 2; // X Position of Analog Stick
-    *(short*)(0x800288CA) = SCREEN_HD - 30; // Y Position of Analog Stick
-    *(short*)(0x80028B1E) = SCREEN_WD - 30; // X Position of A Button
-    *(short*)(0x80028B22) = SCREEN_HD - 30; // Y Position of A Button
     // FILE SELECT
     x = SCREEN_WD_FLOAT / 2;
     *(short*)(0x80028DA2) = getUpper(*(int*)(&x)); //X Position of File Names
-    *(short*)(0x80028EEE) = SCREEN_WD / 2; // X Position of Analog Stick
-    *(short*)(0x80028EF2) = SCREEN_HD / 2; // Y Position of Analog Stick
-    *(short*)(0x80029026) = SCREEN_WD - 30; // X Position of A Button
-    *(short*)(0x8002902A) = SCREEN_HD - 30; // Y Position of A Button
-    *(short*)(0x8002905A) = SCREEN_HD - 30; // Y Position of B Button
     // FILE PROGRESS
     x = SCREEN_WD_FLOAT / 2;
     *(short*)(0x800296D2) = *(short*)(&x); // X Position of Game 1 Text
@@ -694,11 +459,6 @@ void ws_menu(void) {
     // SELECT DELETE FILE
     x = SCREEN_WD_FLOAT / 2;
     *(short*)(0x80029C02) = getUpper(*(int*)(&x)); //X Position of Erase Text
-    *(short*)(0x80029D6A) = SCREEN_WD - 30; //X Position of A Button
-    *(short*)(0x80029EA6) = SCREEN_WD / 2; //X Position of Bouncing Orange
-    *(short*)(0x80029ED2) = SCREEN_WD / 2; //X Position of Analog Stick
-    *(short*)(0x80029D6E) = SCREEN_HD - 30; // Y Position of A Button
-    *(short*)(0x80029D9E) = SCREEN_HD - 30; // Y Position of A Button
     // Multiplayer Type
     x = SCREEN_WD_FLOAT / 2;
     *(short*)(0x8002A646) = getUpper(*(int*)(&x)); //X Position of Center of Battle Select Screen
@@ -716,14 +476,6 @@ void ws_menu(void) {
     y = SCREEN_HD_FLOAT / 2;
     *(short*)(0x8002A29A) = *(short*)(&y); // Y Position of No/Yes Text
 
-    *(short*)(0x8002A312) = SCREEN_WD << 2; // X Offset of Yes Text
-    *(short*)(0x8002A3AE) = SCREEN_WD - 30; // X Position of A Button
-    *(short*)(0x8002A3B2) = SCREEN_HD - 30; // Y Position of A Button
-    *(short*)(0x8002A3E2) = SCREEN_HD - 30; // Y Position of A Button
-    *(short*)(0x8002A416) = SCREEN_WD / 2; // X Position of Orange
-    *(short*)(0x8002A41A) = (SCREEN_HD / 2) + 8; // Y Position of Orange
-    *(short*)(0x8002A442) = SCREEN_WD / 2; // X Position of Analog Stick
-    *(short*)(0x8002A446) = SCREEN_HD - 30; // Y Position of Analog Stick
     // Multiplayer Join
     x = (SCREEN_WD_FLOAT/2)+50;
     *(short*)(0x8002B756) = *(short*)(&x); //X Position of P2 Question Mark
@@ -741,21 +493,6 @@ void ws_menu(void) {
     *(short*)(0x8002BED6) = SCREEN_WD * 2; //X Position of Screen Type Text
     x = SCREEN_WD_FLOAT / 2;
     *(short*)(0x8002BF16) = *(short*)(&x);
-    *(short*)(0x8002C26E) = SCREEN_WD - 30; //X Position of A Button
-    *(short*)(0x8002C2CE) = SCREEN_WD / 2; //X Position of Analog Stick
-    *(short*)(0x8002C2FE) = SCREEN_WD / 2; //X Position of C-Up
-    *(short*)(0x8002C326) = SCREEN_WD / 2; //X Position of Start
-    *(short*)(0x8002C3EA) = SCREEN_WD - 30; //X Position of A Button
-    *(short*)(0x8002C43A) = SCREEN_WD / 2; //X Position of Analog Stick
-    *(short*)(0x8002C472) = SCREEN_WD / 2; //X Position of C-Down
-    *(short*)(0x8002C4A2) = SCREEN_WD / 2; //X Position of C-Up
-    *(short*)(0x8002C4CA) = SCREEN_WD - 30; //X Position of A Button
-    *(short*)(0x8002C51A) = SCREEN_WD / 2; //X Position of C-Down
-    *(short*)(0x8002C54A) = SCREEN_WD / 2; //X Position of C-Down
-    // Multiplayer Scores
-    *(short*)(0x8002C736) = (SCREEN_WD * 2) - 570; //X Position of Player Win/Lose Status
-    *(short*)(0x8002C8DE) = SCREEN_WD * 2; //X Position of Score Text
-    *(short*)(0x8002CADA) = SCREEN_WD - 30; //X Position of A Button
     // Sound
     *(short*)(0x8002D5B2) = SCREEN_WD * 2; //X Position of Sound
     x = SCREEN_WD_FLOAT / 2;
@@ -808,7 +545,6 @@ void ws_menu(void) {
     *(short*)(0x80030F3E) = *(short*)(&temp); //Max X Position of Yes Orange
     temp = (SCREEN_WD_FLOAT*2)-320;
     *(short*)(0x80030F8A) = *(short*)(&temp); //Min X Position of No Orange
-
     temp = SCREEN_WD_FLOAT * 2;
     *(short*)(0x8003177A) = *(short*)(&temp); // X Position of Menu Options in Circle
     temp = SCREEN_WD_FLOAT / 2;
@@ -821,44 +557,6 @@ void ws_menu(void) {
     *(short*)(0x800313A6) = *(short*)(&temp); // Y Position of File Icons
     temp = 60.0f * (SCREEN_HD_FLOAT / 240.0f);
     *(short*)(0x800312D2) = *(short*)(&temp); // Turning Radius of File Icons
-
-
-    *(short*)(0x800330E0) = ((SCREEN_WD*2)-520); //X Position of Vertex 1 of Chart Border
-    *(short*)(0x800330F0) = ((SCREEN_WD*2)+520); //X Position of Vertex 2 of Chart Border
-    *(short*)(0x80033100) = ((SCREEN_WD*2)+480); //X Position of Vertex 3 of Chart Border
-    *(short*)(0x80033110) = ((SCREEN_WD*2)-480); //X Position of Vertex 4 of Chart Border
-    *(short*)(0x80033120) = ((SCREEN_WD*2)-520); //X Position of Vertex 5 of Chart Border
-    *(short*)(0x80033130) = ((SCREEN_WD*2)+520); //X Position of Vertex 6 of Chart Border
-    *(short*)(0x80033140) = ((SCREEN_WD*2)+480); //X Position of Vertex 7 of Chart Border
-    *(short*)(0x80033150) = ((SCREEN_WD*2)-480); //X Position of Vertex 8 of Chart Border
-    *(short*)(0x80033160) = ((SCREEN_WD*2)+520); //X Position of Vertex 9 of Chart Border
-    *(short*)(0x80033170) = ((SCREEN_WD*2)+520); //X Position of Vertex 10 of Chart Border
-    *(short*)(0x80033180) = ((SCREEN_WD*2)+480); //X Position of Vertex 11 of Chart Border
-    *(short*)(0x80033190) = ((SCREEN_WD*2)+480); //X Position of Vertex 12 of Chart Border
-    *(short*)(0x800331A0) = ((SCREEN_WD*2)-520); //X Position of Vertex 13 of Chart Border
-    *(short*)(0x800331B0) = ((SCREEN_WD*2)-520); //X Position of Vertex 14 of Chart Border
-    *(short*)(0x800331C0) = ((SCREEN_WD*2)-480); //X Position of Vertex 15 of Chart Border
-    *(short*)(0x800331D0) = ((SCREEN_WD*2)-480); //X Position of Vertex 16 of Chart Border
-    *(short*)(0x800331E0) = ((SCREEN_WD*2)-320); //X Position of Vertex 17 of Chart Border
-    *(short*)(0x800331F0) = ((SCREEN_WD*2)+320); //X Position of Vertex 18 of Chart Border
-    *(short*)(0x80033200) = ((SCREEN_WD*2)+320); //X Position of Vertex 19 of Chart Border
-    *(short*)(0x80033210) = ((SCREEN_WD*2)-320); //X Position of Vertex 20 of Chart Border
-    *(float*)(0x80033894) = (SCREEN_WD_FLOAT/2); //X Position of Player 1 in Player Setup
-    *(float*)(0x8003389C) = ((SCREEN_WD_FLOAT/2)+50); //X Position of Player 2 in Player Setup
-    *(float*)(0x800338A4) = (SCREEN_WD_FLOAT/2); //X Position of Player 3 in Player Setup
-    *(float*)(0x800338AC) = ((SCREEN_WD_FLOAT/2)-50); //X Position of Player 4 in Player Setup
-
-    // Handle Menu Barrel Positions
-    float upper_barrels = -75.0f + (65.0f * (SCREEN_HD_FLOAT / 240.0f));
-    float lower_barrels = -75.0f + (135.0f * (SCREEN_HD_FLOAT / 240.0f));
-    *(float*)(0x80033790) = upper_barrels;
-    *(float*)(0x8003379C) = upper_barrels;
-    *(float*)(0x800337A0) = lower_barrels;
-    *(float*)(0x800337AC) = lower_barrels;
-    *(float*)(0x800337B0) = lower_barrels;
-    *(float*)(0x800337BC) = lower_barrels;
-    *(float*)(0x800337C0) = upper_barrels;
-    *(float*)(0x800337CC) = upper_barrels;
 }
 
 void loadWidescreen(overlays loaded_overlay) {
@@ -871,8 +569,6 @@ void loadWidescreen(overlays loaded_overlay) {
             ws_arcade();
         } else if (loaded_overlay == OVERLAY_JETPAC) {
             ws_jetpac();
-        } else if (loaded_overlay == OVERLAY_BONUS) {
-            ws_minigame();
         } else if (loaded_overlay == OVERLAY_MENU) {
             ws_menu();
         }
