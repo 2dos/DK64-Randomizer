@@ -45,7 +45,6 @@ def doesSongLoop(data: bytes) -> bool:
 
 def isValidSong(data: bytes) -> bool:
     """Check if song is a valid bin."""
-    print(data[:0x44])
     if len(data) < 0x44:
         return False
     byte_list = [x for xi, x in enumerate(data) if xi < 4]
