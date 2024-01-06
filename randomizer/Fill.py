@@ -2932,6 +2932,16 @@ def ShuffleMisc(spoiler: Spoiler) -> None:
         ItemReference(Items.Lanky, "Lanky Kong", "Llama Lanky Cage"),
         ItemReference(Items.Tiny, "Tiny Kong", "Aztec Tiny Cage"),
         ItemReference(Items.Chunky, "Chunky Kong", "Factory Chunky Cage"),
+        # Early Keys
+        ItemReference(Items.JungleJapesKey, "Key 1", "Starting Key"),
+        ItemReference(Items.AngryAztecKey, "Key 2", "Starting Key"),
+        ItemReference(Items.FranticFactoryKey, "Key 3", "Starting Key"),
+        ItemReference(Items.GloomyGalleonKey, "Key 4", "Starting Key"),
+        # Late Keys
+        ItemReference(Items.FungiForestKey, "Key 5", "Starting Key"),
+        ItemReference(Items.CrystalCavesKey, "Key 6", "Starting Key"),
+        ItemReference(Items.CreepyCastleKey, "Key 7", "Starting Key"),
+        ItemReference(Items.HideoutHelmKey, "Key 8", "Starting Key"),
     ]
     # Item Rando
     spoiler.human_item_assignment = {}
