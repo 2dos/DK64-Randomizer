@@ -285,6 +285,7 @@
 | Trees between Llama Temple and 5DT (Lanky) | 15 |  | 
 | Around the outside of Llama Temple | 15 |  | 
 | Vase room (Chunky) | 20 | l.pineapple or l.phasewalk | 
+| On Tiny Temple Staircase | 5 |  | 
 | Chunky vase room back wall | Balloon | l.pineapple | 
 | Chunky vase room right wall | Balloon | l.pineapple | 
 | DK BP room over/under bridge | Balloon | l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) | 

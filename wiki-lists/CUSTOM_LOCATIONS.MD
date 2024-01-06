@@ -486,7 +486,6 @@
 | Training Grounds | Training Grounds: Rear Cave |  | 
 | Training Grounds | Training Grounds: Banana Hoard | l.vines or l.CanMoonkick() or l.phasewalk | 
 | Training Grounds | Training Grounds: Under Water | l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny)) and l.swim and l.scope | 
-| Training Grounds | Training Grounds: Under Water in Corner | l.HasGun(Kongs.any) and ((l.istiny and l.settings.krusha_kong == Kongs.tiny) or (not l.istiny)) and l.swim and l.scope | 
 | Training Grounds | Training Grounds: Near Pool |  | 
 | Treehouse | Back of the treehouse |  | 
 | Banana Fairy Room | Fairy Island: Right of Queen |  | 
