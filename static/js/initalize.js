@@ -834,13 +834,20 @@ function apply_download() {
 }
 // if the tab is set to seed info get the generate_seed button and change the text to "Download Seed" we want to check this on every nav tab change
 function check_seed_info_tab() {
+  
   if (document.getElementById("nav-settings-tab").classList.contains("active")) {
     document.getElementById("generate_seed").value = "Download Seed";
     document.getElementById("generate_seed").onclick = null;
     document.getElementById("generate_seed").onclick = function() {apply_download()};
   }
   else {
-    document.getElementById("generate_seed").value = "Generate Seed";
+    // if document.getElementById("download_patch_file").checked set it to Generate Patch File
+    if (document.getElementById("download_patch_file").checked) {
+      document.getElementById("generate_seed").value = "Generate Patch File";
+    }
+    else{
+      document.getElementById("generate_seed").value = "Generate Seed";
+    }
     // Remove the onclick event
     document.getElementById("generate_seed").onclick = null;
     document.getElementById("generate_seed").onclick = function() {document.getElementById("trigger_download_event").click()};
