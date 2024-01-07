@@ -120,7 +120,7 @@ def patchAssemblyCosmetic(ROM_COPY: ROM, settings: Settings):
             writeValue(ROM_COPY, 0x80707126, Overlay.Static, compatible_background_textures[settings.menu_texture_index].table, offset_dict)
             menu_background_rgba = 0x505050FF
             if compatible_background_textures[settings.menu_texture_index].is_color:
-                menu_background_rgba = 0xFFFF20FF  # TODO: Get colors working properly
+                menu_background_rgba = 0x000020FF  # TODO: Get colors working properly
             writeValue(ROM_COPY, 0x8075EAE4, Overlay.Static, menu_background_rgba, offset_dict, 4)
             writeValue(ROM_COPY, 0x80754CEC, Overlay.Static, settings.menu_texture_index, offset_dict)
 
