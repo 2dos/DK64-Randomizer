@@ -454,6 +454,14 @@ function savesettings() {
       json[element.name] = values;
     }
   }
+  var starting_move_box_buttons = $(":input[name^='starting_move_box_']:checked");
+  for (element of starting_move_box_buttons) {
+    if (element.id.includes("start")) {
+      json[element.name] = "start";
+    } else if (element.id.includes("random")) {
+      json[element.name] = "random";
+    }
+  }
   saveDataToIndexedDB("saved_settings", JSON.stringify(json));
 }
 
@@ -1090,6 +1098,13 @@ function load_data() {
                 element.checked = true;
               } else if (json[key] == "False") {
                 element.checked = false;
+              } else if (key.includes("starting_move_box")) {
+                var starting_move_buttons = document.getElementsByName(key)
+                for (element of starting_move_buttons) {
+                  if (element.id.includes(json[key])) {
+                    element.checked = true;
+                  }
+                }
               }
               try {
                 element.value = json[key];
@@ -1109,6 +1124,9 @@ function load_data() {
         } else {
           load_presets();
         }
+        // Once all the options and toggles are set, trigger various UI events to set up enable/disable states correctly
+        var apply_preset_element = document.getElementById("apply_preset");
+        apply_preset_element.dispatchEvent(new Event('custom-update-ui-event'));
       } catch {
         load_presets();
       }
