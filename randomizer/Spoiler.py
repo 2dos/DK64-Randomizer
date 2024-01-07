@@ -224,7 +224,7 @@ class Spoiler:
         settings["Progressive Switch Strength"] = self.settings.alter_switch_allocation
         settings["Hard Shooting"] = self.settings.hard_shooting
         settings["Dropsanity"] = self.settings.enemy_drop_rando
-        settings["Switchsanity"] = self.settings.switchsanity
+        settings["Switchsanity"] = self.settings.switchsanity.name
         settings["Free Trade Agreement"] = self.settings.free_trade_setting.name
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
