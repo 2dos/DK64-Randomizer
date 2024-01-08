@@ -860,7 +860,7 @@ class Settings:
             self.crown_door_item = selected_item
             self.crown_door_item_count = crown_door_pool[selected_item]
         if self.coin_door_random:
-            potential_items = [x for x in list(crown_door_pool.keys()) if x != self.crown_door_item]
+            potential_items = [x for x in list(coin_door_pool.keys()) if x != self.crown_door_item]
             potential_item_weights = []
             for x in potential_items:
                 data = helmdoor_items[x].getDifficultyInfo(coin_diff)
@@ -868,7 +868,7 @@ class Settings:
                 potential_item_weights.append(weight)
             selected_item = random.choices(potential_items, weights=potential_item_weights, k=1)[0]
             self.coin_door_item = selected_item
-            self.coin_door_item_count = crown_door_pool[selected_item]
+            self.coin_door_item_count = coin_door_pool[selected_item]
         if self.crown_door_item in helmdoor_items.keys():
             self.crown_door_item_count = min(self.crown_door_item_count, helmdoor_items[self.crown_door_item].absolute_max)
         if self.coin_door_item in helmdoor_items.keys():
