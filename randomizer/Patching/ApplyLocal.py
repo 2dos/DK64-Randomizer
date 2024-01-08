@@ -219,7 +219,7 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         js.document.getElementById(f"settings_table_{i}").innerHTML = ""
         tables[i] = js.document.getElementById(f"settings_table_{i}")
     for setting, value in loaded_settings.items():
-        hidden_settings = ["Seed", "algorithm"]
+        hidden_settings = ["Seed", "algorithm", "Unlock Time"]
         if setting not in hidden_settings:
             if tables[t].rows.length > math.ceil((len(loaded_settings.items()) - len(hidden_settings)) / len(tables)):
                 t += 1
