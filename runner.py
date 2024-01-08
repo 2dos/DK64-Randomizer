@@ -1,7 +1,6 @@
 """Server code for the randomizer."""
 import codecs
 import json
-import base64
 import os
 import random
 import time
@@ -145,9 +144,19 @@ def start_gen(gen_key, post_body):
         if type(return_data) is str:
             return return_data
         else:
+            # Assuming post_body.get("delayed_spoilerlog_release") is an int, and its the number of hours to delay the spoiler log release convert that to time.time() + hours as seconds.
+            if post_body.get("delayed_spoilerlog_release", 0) == 0:
+                # Lets set it to 5 years from now if we don't have a delayed spoiler log release, it'll be deleted after 4 weeks anyway.
+                unlock_time = time.time() + 157784760
+            else:
+                unlock_time = time.time() + (post_body.get("delayed_spoilerlog_release", 0) * 3600)
+            if setting_data.get("generate_spoilerlog", True):
+                unlock_time = 0
+
+            # Append the current time to the spoiler log as unlock_time.
             patch = return_data["patch"]
             spoiler = return_data["spoiler"]
-            return patch, spoiler
+            return patch, spoiler, unlock_time, time.time()
 
     except Exception as e:
         if os.environ.get("HOSTED_SERVER") is not None:
@@ -210,9 +219,11 @@ def lambda_function():
                 return response
             hash = resp_data[1].settings.seed_hash
             spoiler_log = json.loads(resp_data[1].json)
+            unlock_time = resp_data[2]
+            spoiler_log["Unlock Time"] = unlock_time
+            generated_time = resp_data[3]
+            spoiler_log["Generated Time"] = generated_time
             # Only retain the Settings section and the Cosmetics section.
-            unlock_time = None
-            generated_time = time.time()
             if os.environ.get("HOSTED_SERVER") is not None:
                 try:
                     seed_table = dynamodb.Table("seed_db")
@@ -225,23 +236,18 @@ def lambda_function():
                     )
                 except Exception:
                     pass
-            # Encrypt the time and hash with the encryption key.
             current_seed_number = update_total()
             file_name = str(current_seed_number)
-            # Get the current time and add 5 hours to it.
-            unlock_time = time.time() + 36000
-            # Append the current time to the spoiler log as unlock_time.
-            spoiler_log["Unlock_Time"] = unlock_time
-            spoiler_log["Generated_Time"] = generated_time
-            spoiler_log["Seed_Number"] = current_seed_number
             # write the spoiler log to a file in generated_seeds folder. Create the folder if it doesn't exist.
             os.makedirs("generated_seeds", exist_ok=True)
             with open("generated_seeds/" + file_name + ".json", "w") as f:
                 f.write(str(json.dumps(spoiler_log)))
 
-            sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Data", "Generated_Time", "Unlock_Time"]
+            sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Data", "Generated Time"]
             if resp_data[1].settings.generate_spoilerlog is False:
                 spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
+            else:
+                del spoiler_log["Unlock Time"]
 
             patch = resp_data[0]
             # Zip all the data into a single file.
@@ -313,7 +319,7 @@ def get_spoiler_log():
             current_time = time.time()
             # if the unlock time is less than the current time, return the spoiler log
             file_contents = json.load(f)
-            if file_contents.get("Unlock_Time", 0) < current_time:
+            if file_contents.get("Unlock Time", 0) < current_time:
                 return make_response(file_contents, 200)
             else:
                 # Return an error
@@ -344,7 +350,7 @@ def get_presets():
 
 
 def delete_old_files():
-    """Delete files that are older than 7 days."""
+    """Delete files that are older than 4 weeks."""
     folder_path = "generated_seeds"
     current_time = time.time()
     os.makedirs("generated_seeds", exist_ok=True)
@@ -353,10 +359,10 @@ def delete_old_files():
             file_path = os.path.join(folder_path, filename)
             with open(file_path, "r") as file:
                 data = json.load(file)
-                unlock_time = data.get("Unlock_Time", 0)
+                generated_time = data.get("Generated Time", 0)
 
-                # Check if it's been seven days since unlock_time
-                if current_time - unlock_time >= 604800:  # 7 days in seconds
+                # Check if it's been 4 weeks since unlock_time
+                if current_time - generated_time >= 2419200:  # 4 weeks in seconds
                     os.remove(file_path)
                     print(f"Deleted file: {filename}")
                     # also delete the lanky file
@@ -471,8 +477,6 @@ def get_seed_data():
             hash = resp_data[1].settings.seed_hash
             spoiler_log = json.loads(resp_data[1].json)
             # Only retain the Settings section and the Cosmetics section.
-            unlock_time = None
-            generated_time = time.time()
             if os.environ.get("HOSTED_SERVER") is not None:
                 try:
                     seed_table = dynamodb.Table("seed_db")
@@ -488,20 +492,20 @@ def get_seed_data():
             # Encrypt the time and hash with the encryption key.
             current_seed_number = update_total()
             file_name = str(current_seed_number)
-            # Get the current time and add 5 hours to it.
-            unlock_time = time.time() + 18000
-            # Append the current time to the spoiler log as unlock_time.
-            spoiler_log["Unlock_Time"] = unlock_time
-            spoiler_log["Generated_Time"] = generated_time
-            spoiler_log["Seed_Number"] = current_seed_number
+            unlock_time = resp_data[2]
+            generated_time = resp_data[3]
+            spoiler_log["Unlock Time"] = unlock_time
+            spoiler_log["Generated Time"] = generated_time
             # write the spoiler log to a file in generated_seeds folder. Create the folder if it doesn't exist.
             os.makedirs("generated_seeds", exist_ok=True)
             with open("generated_seeds/" + file_name + ".json", "w") as f:
                 f.write(str(json.dumps(spoiler_log)))
 
-            sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Data", "Generated_Time", "Unlock_Time"]
+            sections_to_retain = ["Settings", "Cosmetics", "Spoiler Hints", "Spoiler Hints Data", "Generated Time"]
             if resp_data[1].settings.generate_spoilerlog is False:
                 spoiler_log = {k: v for k, v in spoiler_log.items() if k in sections_to_retain}
+            else:
+                del spoiler_log["Unlock Time"]
 
             patch = resp_data[0]
             # Zip all the data into a single file.
