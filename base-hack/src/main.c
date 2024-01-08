@@ -92,9 +92,6 @@ void cFuncLoop(void) {
 			}
 		}
 	}
-	if (CurrentMap == MAP_MAINMENU) {
-		colorMenuSky();
-	}
 	if (isGamemode(GAMEMODE_ADVENTURE, 1)) {
 		if ((CurrentMap == MAP_HELM_INTROSTORY) || (CurrentMap == MAP_ISLES_INTROSTORYROCK) || ((CurrentMap == MAP_ISLES_DKTHEATRE) && (CutsceneIndex < 8))) { // Intro Story Map
 			if ((CutsceneActive) && (TransitionSpeed == 0.0f)) { // Playing a cutscene that's part of intro story
@@ -207,7 +204,7 @@ void earlyFrame(void) {
 		PauseText = 0;
 		if (isLobby(CurrentMap)) {
 			PauseText = 1;
-		} else if ((CurrentMap == MAP_FUNKY) || (CurrentMap == MAP_CRANKY) || (CurrentMap == MAP_CANDY)) {
+		} else if (inShop(CurrentMap, 0)) {
 			PauseText = 1;
 		}
 		if (CurrentMap == MAP_HELM) {

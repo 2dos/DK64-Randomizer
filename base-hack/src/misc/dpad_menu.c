@@ -24,6 +24,17 @@
 #define DPADVISIBLE_ALL 1
 #define DPADVISIBLE_MINIMAL 2
 
+static short race_maps[] = {
+    MAP_JAPESMINECART,
+    MAP_FUNGIMINECART,
+    MAP_CASTLEMINECART,
+    MAP_AZTECBEETLE,
+    MAP_CAVESBEETLERACE,
+    MAP_FACTORYCARRACE,
+    MAP_CASTLECARRACE,
+    MAP_GALLEONSEALRACE
+};
+
 int canUseDPad(void) {
     /**
      * @brief Determines whether the player will be able to use the DPad Menu.
@@ -46,19 +57,10 @@ int canUseDPad(void) {
     if (TBVoidByte & 2) {
         return 0; // Pausing/Paused
     }
-    if ((CurrentMap == MAP_FUNKY) || (CurrentMap == MAP_CRANKY) || (CurrentMap == MAP_CANDY)) {
+    if (inShop(CurrentMap, 0)) {
         return 0; // In Shop
     }
-    if (
-        (CurrentMap == MAP_JAPESMINECART) || // Japes Minecart
-        (CurrentMap == MAP_FUNGIMINECART) || // Fungi Minecart
-        (CurrentMap == MAP_CASTLEMINECART) || // Castle Minecart
-        (CurrentMap == MAP_AZTECBEETLE) || // Aztec Beetle
-        (CurrentMap == MAP_CAVESBEETLERACE) || // Caves Beetle
-        (CurrentMap == MAP_FACTORYCARRACE) || // Factory Car Race
-        (CurrentMap == MAP_CASTLECARRACE) || // Castle Car Race
-        (CurrentMap == MAP_GALLEONSEALRACE) // Seal Race
-    ) {
+    if (inShortList(CurrentMap, &race_maps[0], 8)) {
         return 0; // In Race
     }
     if (inMinigame(CurrentMap)) {

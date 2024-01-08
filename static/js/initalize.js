@@ -50,11 +50,13 @@ if (window.location.protocol != "https:") {
   }
 }
 
-// if the domain is not the main domain, hide dev site warnings
+// if the domain is not the main domain, hide dev site warnings and features
 if (location.hostname == "dk64randomizer.com") {
   document.getElementById("spoiler_warning_1").style.display = "none";
   document.getElementById("spoiler_warning_2").style.background = "";
   document.getElementById("spoiler_warning_3").style.display = "none";
+  document.getElementById("plandomizer_container").style.display = "none";
+  document.getElementById("widescreen_row").style.display = "none";
 }
 if (location.hostname != "localhost") {
   document.getElementById("plando_string_section").style.display = "none";
@@ -173,7 +175,7 @@ function sortLoadedMusic(musicList) {
     }
   })
 }
-
+var current_seed_data;
 var cosmetics;
 var cosmetic_names;
 var cosmetic_extensions;
@@ -252,6 +254,27 @@ function music_selection_filebox() {
       import js
       from ui.music_select import import_music_selections
       import_music_selections(js.imported_music_json)
+    `);
+  };
+
+  input.click();
+}
+
+var imported_plando_json = "";
+
+function plando_import_filebox() {
+  let input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".json";
+
+  input.onchange = async (e) => {
+    let file = e.target.files[0];
+    let json_text = await file.text();
+    imported_plando_json = json_text;
+    pyodide.runPythonAsync(`
+      import js
+      from ui.plando_settings import import_plando_options
+      import_plando_options(js.imported_plando_json)
     `);
   };
 
@@ -431,6 +454,14 @@ function savesettings() {
       json[element.name] = values;
     }
   }
+  var starting_move_box_buttons = $(":input[name^='starting_move_box_']:checked");
+  for (element of starting_move_box_buttons) {
+    if (element.id.includes("start")) {
+      json[element.name] = "start";
+    } else if (element.id.includes("random")) {
+      json[element.name] = "random";
+    }
+  }
   saveDataToIndexedDB("saved_settings", JSON.stringify(json));
 }
 
@@ -488,7 +519,10 @@ function filebox() {
 
   input.click();
 }
-
+async function try_to_load_from_args() {
+  await pyodide.runPythonAsync(`from ui.generate_buttons import get_args
+get_args()`);
+}
 // This works on all devices/browsers, and uses IndexedDBShim as a final fallback
 var indexedDB =
   window.indexedDB ||
@@ -498,10 +532,11 @@ var indexedDB =
   window.shimIndexedDB;
 
 // Open (or create) the database
-var romdatabase = indexedDB.open("ROMStorage", 1);
 var seeddatabase = indexedDB.open("SeedStorage", 1);
 var settingsdatabase = indexedDB.open("SettingsDB", 1);
 var musicdatabase = indexedDB.open("MusicStorage", 1);
+var romdatabase = indexedDB.open("ROMStorage", 1);
+
 musicdatabase.onupgradeneeded = function () {
   try {
     var musicdb = musicdatabase.result;
@@ -647,11 +682,13 @@ function load_file_from_db() {
         $("#rom_2").attr("placeholder", "Using cached ROM");
         $("#rom_3").attr("placeholder", "Using cached ROM");
         $("#rom_3").val("Using cached ROM");
-      } catch {}
-    };
-  } catch {}
-}
+        
+        try_to_load_from_args()
 
+      } catch {try_to_load_from_args()}
+    };
+  } catch {try_to_load_from_args()}
+}
 var w;
 var CurrentRomHash;
 
@@ -788,6 +825,49 @@ function generate_seed(url, json, git_branch) {
   });
 }
 
+function apply_download() {
+  if (document.getElementById("rom").value.trim().length === 0 || !document.getElementById("rom").classList.contains("is-valid")) {
+    document.getElementById("rom").select();
+    if (!document.getElementById("rom").classList.contains("is-invalid")) {
+      document.getElementById("rom").classList.add("is-invalid");
+      return
+    }
+  }
+  console.log("Applying Download");
+  return pyodide.runPythonAsync(`
+    import js
+    from randomizer.Patching.ApplyLocal import patching_response
+    patching_response(str(js.event_response_data), from_patch_gen=True)
+  `);
+}
+// if the tab is set to seed info get the generate_seed button and change the text to "Download Seed" we want to check this on every nav tab change
+function check_seed_info_tab() {
+  
+  if (document.getElementById("nav-settings-tab").classList.contains("active")) {
+    document.getElementById("generate_seed").value = "Download Seed";
+    document.getElementById("generate_seed").onclick = null;
+    document.getElementById("generate_seed").onclick = function() {apply_download()};
+  }
+  else {
+    // if document.getElementById("download_patch_file").checked set it to Generate Patch File
+    if (document.getElementById("download_patch_file").checked) {
+      document.getElementById("generate_seed").value = "Generate Patch File";
+    }
+    else{
+      document.getElementById("generate_seed").value = "Generate Seed";
+    }
+    // Remove the onclick event
+    document.getElementById("generate_seed").onclick = null;
+    document.getElementById("generate_seed").onclick = function() {document.getElementById("trigger_download_event").click()};
+  }
+}
+// check on any button with the nav-item class is clicked
+document.querySelectorAll(".nav-item").forEach((item) => {
+  item.addEventListener("click", () => {
+    check_seed_info_tab();
+  });
+});
+check_seed_info_tab();
 async function apply_patch(data, run_async) {
   // Base64 decode the response
   event_response_data = data;
@@ -820,7 +900,7 @@ async function apply_patch(data, run_async) {
                 return pyodide.runPythonAsync(`
                 import js
                 from randomizer.Patching.ApplyLocal import patching_response
-                patching_response(str(js.event_response_data))
+                patching_response(str(js.event_response_data), from_patch_gen=True)
               `);
               }
             });
@@ -867,6 +947,127 @@ function loadDataFromIndexedDB(key) {
   });
 }
 
+function unlock_spoiler_log(hash) {
+  console.log("Unlocking spoiler log");
+  // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
+  // Get the website location
+  if (window.location.hostname == "dev.dk64randomizer.com") {
+    var url = "https://dev-generate.dk64rando.com/get_spoiler_log";
+  }
+  else if (window.location.hostname == "dk64randomizer.com") {
+    var url = "https://generate.dk64rando.com/get_spoiler_log";
+  }
+  else {
+    var url = "http://localhost:8000/get_spoiler_log";
+  }
+  $.ajax({
+    url: url,
+    type: "GET",
+    data: {
+      hash: hash,
+    },
+    success: function (data, textStatus, xhr) {
+      if (xhr.status === 200) {
+        console.log("Success");
+        save_text_as_file(JSON.stringify(data, null, 2), document.getElementById('generated_seed_id').innerHTML + '-spoilerlog.json')
+      } else if (xhr.status === 425) {
+        console.log("Not unlocked yet");
+        // set the contents of spoiler_log_download_messages to "The spoiler log is not unlocked yet."
+        document.getElementById("spoiler_log_download_messages").innerHTML =
+          "The spoiler log is not unlocked yet.";
+        // display download_modal
+        $("#download_modal").modal("show");
+        // hide the modal after 5 seconds
+        setTimeout(function () {
+          $("#download_modal").modal("hide");
+        }, 5000);
+      } else {
+        console.log("Spoiler log is no longer available");
+        // set the contents of spoiler_log_download_messages to "The spoiler log is no longer available."
+        document.getElementById("spoiler_log_download_messages").innerHTML =
+          "The spoiler log is no longer available.";
+        // display download_modal
+        $("#download_modal").modal("show");
+        // hide the modal after 5 seconds
+        setTimeout(function () {
+          $("#download_modal").modal("hide");
+        }, 5000);
+
+      }
+    },
+    error: function (xhr, textStatus, errorThrown) {
+      console.log("Error:", errorThrown);
+      // set the contents of spoiler_log_download_messages to "There was an error downloading the spoiler log."
+      document.getElementById("spoiler_log_download_messages").innerHTML =
+        "There was an error downloading the spoiler log.";
+      // display download_modal
+      $("#download_modal").modal("show");
+      // hide the modal after 5 seconds
+      setTimeout(function () {
+        $("#download_modal").modal("hide");
+      }, 5000);
+    }
+  });
+}
+
+function get_seed_from_server(hash) {
+  // GET to localhost:8000/get_spoiler_log with the args hash with search_query as the value
+  // Get the website location
+  if (window.location.hostname == "dev.dk64randomizer.com") {
+    var url = "https://dev-generate.dk64rando.com/get_seed";
+  }
+  else if (window.location.hostname == "dk64randomizer.com") {
+    var url = "https://generate.dk64rando.com/get_seed";
+  }
+  else {
+    var url = "http://localhost:8000/get_seed";
+  }
+  // Make the ajax call synchronously
+  return_data = $.ajax({
+    url: url,
+    async: false,
+    type: "GET",
+    data: {
+      hash: hash,
+    },
+    success: function (data, textStatus, xhr) {
+      if (xhr.status === 200) {
+
+        return data;
+      } else {
+        document.getElementById("spoiler_log_download_messages").innerHTML =
+          "Seed is no longer available.";
+        // display download_modal
+        $("#download_modal").modal("show");
+        // hide the modal after 5 seconds
+        setTimeout(function () {
+          $("#download_modal").modal("hide");
+        }, 5000);
+        return_data = "Seed is no longer available.";
+        return return_data;
+      }
+    },
+    error: function (xhr, textStatus, errorThrown) {
+      console.log("Error:", errorThrown);
+      document.getElementById("spoiler_log_download_messages").innerHTML =
+        "There was an error downloading the seed.";
+      // display download_modal
+      $("#download_modal").modal("show");
+      // hide the modal after 5 seconds
+      setTimeout(function () {
+        $("#download_modal").modal("hide");
+      }, 5000);
+      return_data = "There was an error downloading the seed.";
+      return return_data;
+    }
+  });
+  // wait for the ajax call to finish
+  while (return_data.readyState != 4) {
+    sleep(1);
+  }
+  return return_data.responseText;
+}
+
 function load_data() {
   try {
     // make sure all sliders are initialized
@@ -897,6 +1098,13 @@ function load_data() {
                 element.checked = true;
               } else if (json[key] == "False") {
                 element.checked = false;
+              } else if (key.includes("starting_move_box")) {
+                var starting_move_buttons = document.getElementsByName(key)
+                for (element of starting_move_buttons) {
+                  if (element.id.includes(json[key])) {
+                    element.checked = true;
+                  }
+                }
               }
               try {
                 element.value = json[key];
@@ -916,6 +1124,9 @@ function load_data() {
         } else {
           load_presets();
         }
+        // Once all the options and toggles are set, trigger various UI events to set up enable/disable states correctly
+        var apply_preset_element = document.getElementById("apply_preset");
+        apply_preset_element.dispatchEvent(new Event('custom-update-ui-event'));
       } catch {
         load_presets();
       }

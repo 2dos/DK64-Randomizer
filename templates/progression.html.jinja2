@@ -121,7 +121,7 @@
                         </label>
                     </p>
                     <input min="0"
-                            max="40"
+                            max="41"
                             name="medal_requirement"
                             id="medal_requirement"
                             style="width: 15%"
@@ -258,7 +258,7 @@
                     {{ list_selector(keys, "starting_keys_list", "STARTING KEYS SELECTOR", "This will open a popup that will let you customize what Keys you start with.&#10;This defaults to starting with no keys if none are selected.", 8) }}
                 </div>
                 <div class="flex-container">
-                    <div class="form-check form-switch item-switch center-flex">
+                    <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                 title="If Key 8 were to be shuffled, force Key 8 to be in its vanilla location in Helm.">
                             <input class="form-check-input"
@@ -269,7 +269,7 @@
                             Lock Key 8 in Helm
                         </label>
                     </div>
-                    <div class="form-check form-switch item-switch center-flex">
+                    <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                 title="Required to get Key 8 from Helm to access K Rool or leave it up to chance.">
                             <input class="form-check-input"
@@ -280,7 +280,7 @@
                             Key 8 Required
                         </label>
                     </div>
-                    <div class="form-check form-switch item-switch center-flex">
+                    <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
                                 title="K. Rool will require only keys 3 and 8 to appear, just like in the vanilla game.">
                             <input class="form-check-input"
@@ -291,6 +291,7 @@
                             Vanilla K. Rool Requirement
                         </label>
                     </div>
+                    <div class="spacer"></div>
                 </div>
                 <hr>
                 <h5 class="select-title">Number of Starting Kongs
@@ -363,8 +364,14 @@
                             <option id="opened" value="opened">
                                 Opened
                             </option>
-                            <option id="random" value="random">
-                                Random
+                            <option id="easy_random" value="easy_random">
+                                Random (Easy)
+                            </option>
+                            <option id="medium_random" value="medium_random">
+                                Random (Medium)
+                            </option>
+                            <option id="hard_random" value="hard_random">
+                                Random (Hard)
                             </option>
                             <option id="req_gb" value="req_gb">
                                 Golden Bananas
@@ -425,8 +432,14 @@
                             <option id="opened" value="opened">
                                 Opened
                             </option>
-                            <option id="random" value="random">
-                                Random
+                            <option id="easy_random" value="easy_random">
+                                Random (Easy)
+                            </option>
+                            <option id="medium_random" value="medium_random">
+                                Random (Medium)
+                            </option>
+                            <option id="hard_random" value="hard_random">
+                                Random (Hard)
                             </option>
                             <option id="req_gb" value="req_gb">
                                 Golden Bananas

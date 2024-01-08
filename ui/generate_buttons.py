@@ -220,7 +220,7 @@ async def generate_seed_from_patch(event):
         await patching_response(str(js.loaded_patch), True)
 
 
-@bind("click", "generate_seed")
+@bind("click", "trigger_download_event")
 def generate_seed(event):
     """Generate a seed based off the current settings.
 
@@ -267,22 +267,8 @@ def generate_seed(event):
         background(form_data)
 
 
-@bind("click", "download_patch_file")
-def update_seed_text(event):
-    """Set seed text based on the download_patch_file click event.
-
-    Args:
-        event (DOMEvent): Javascript dom click event.
-    """
-    # When we click the download json event just change the button text
-    if js.document.getElementById("download_patch_file").checked:
-        js.document.getElementById("generate_seed").value = "Generate Patch File"
-    else:
-        js.document.getElementById("generate_seed").value = "Generate Seed"
-
-
 @bind("click", "load_patch_file")
-def update_seed_text(event):
+def update_patch_file(event):
     """Set historical seed text based on the load_patch_file click event.
 
     Args:
@@ -293,3 +279,30 @@ def update_seed_text(event):
         js.document.getElementById("generate_pastgen_seed").value = "Generate Patch File from History"
     else:
         js.document.getElementById("generate_pastgen_seed").value = "Generate Seed from History"
+
+
+async def get_args():
+    """Get the args from the url and then load the seed from the server if it exists."""
+    args = js.window.location.search
+    if args.startswith("?"):
+        args = args[1:]
+    if "&" in args:
+        args = args.split("&")
+    else:
+        args = [args]
+    args_dict = {}
+
+    for arg in args:
+        try:
+            arg_split = arg.split("=")
+            args_dict[arg_split[0]] = arg_split[1]
+        except Exception:
+            pass
+    # If someone provided seed_id in the url, lets pull the seed data from the webserver
+    if "seed_id" in args_dict:
+        # Wait for the page to load
+        print("Getting the seed from the server")
+        resp = js.get_seed_from_server(args_dict["seed_id"])
+        await patching_response(str(resp), False)
+    js.document.getElementById("visual_indicator").setAttribute("hidden", "true")
+    js.document.getElementById("tab-data").removeAttribute("hidden")

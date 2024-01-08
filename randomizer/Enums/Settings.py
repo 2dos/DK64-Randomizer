@@ -261,7 +261,7 @@ class HelmDoorItem(IntEnum):
     vanilla: The originally required item (crowns for door 1, company coins for
         door 2).
     opened: The door is automatically opened.
-    random: The door is opened by a randomly selected item.
+    medium_random: The door is opened by a randomly selected item (Medium difficulty).
     req_gb: Golden Bananas.
     req_bp: Blueprints.
     req_companycoins: The Rareware and Nintendo coins.
@@ -272,11 +272,13 @@ class HelmDoorItem(IntEnum):
     req_rainbowcoin: Rainbow Coins.
     req_bean: The bean.
     req_pearl: Pearls.
+    easy_random: The door is opened by a randomly selected item (Easy difficulty).
+    hard_random: The door is opened by a randomly selected item (Hard difficulty).
     """
 
     vanilla = 0
     opened = 1
-    random = 2
+    medium_random = 2
     req_gb = 3
     req_bp = 4
     req_companycoins = 5
@@ -287,6 +289,8 @@ class HelmDoorItem(IntEnum):
     req_rainbowcoin = 10
     req_bean = 11
     req_pearl = 12
+    easy_random = 13
+    hard_random = 14
 
 
 class HelmSetting(IntEnum):
@@ -670,6 +674,7 @@ class WrinklyHints(IntEnum):
     cryptic: Cryptic randomizer hints are provided.
     fixed_racing: Fixed distribution - this one is for the S2 racing preset.
     item_hinting: All Kongs, Keys, and as many moves as possible are hinted, prioritizing WotH moves.
+    item_hinting_advanced: Same as previous, but intentionally more vague.
     """
 
     off = 0
@@ -677,6 +682,7 @@ class WrinklyHints(IntEnum):
     cryptic = 2
     fixed_racing = 3
     item_hinting = 4
+    item_hinting_advanced = 5
 
 
 class SpoilerHints(IntEnum):
@@ -958,6 +964,8 @@ class SettingsStringDataType(IntEnum):
     var_int = auto()
     str = auto()
     list = auto()
+    # Can represent up to 65,536 values (0 to 65535)
+    u16 = auto()
 
 
 # ALL SETTINGS NEED AN ENTRY HERE!
@@ -1040,7 +1048,7 @@ SettingsStringTypeMap = {
     SettingsStringEnum.helmhurry_list_move: SettingsStringDataType.int16,
     SettingsStringEnum.helmhurry_list_pearl: SettingsStringDataType.int16,
     SettingsStringEnum.helmhurry_list_rainbow_coin: SettingsStringDataType.int16,
-    SettingsStringEnum.helmhurry_list_starting_time: SettingsStringDataType.int16,
+    SettingsStringEnum.helmhurry_list_starting_time: SettingsStringDataType.u16,
     SettingsStringEnum.high_req: SettingsStringDataType.bool,
     SettingsStringEnum.item_rando_list_selected: SettingsStringDataType.list,
     SettingsStringEnum.item_reward_previews: SettingsStringDataType.bool,

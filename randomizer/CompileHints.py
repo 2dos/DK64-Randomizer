@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import random
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Tuple, Union
+from randomizer.Enums.MoveTypes import MoveTypes
 
 import randomizer.ItemPool as ItemPool
 from randomizer.Enums.Events import Events
@@ -197,20 +198,22 @@ hint_list = [
         base=True,
     ),
     Hint(hint="Bothered? I was bothered once. They put me in a barrel, a bonus barrel. A bonus barrel with beavers, and beavers make me bothered.", important=False, base=True),
-    Hint(hint="Looking for useful information? Try looking in another hint door.", important=False, base=True),
+    Hint(hint="Looking for useful information? Try looking at another hint.", important=False, base=True),
     Hint(hint="Can I interest you in some casino chips? They're tastefully decorated with Hunky Chunky.", important=False, base=True),
     Hint(hint="Have faith, beanlievers. Your time will come.", important=False, base=True),
-    Hint(
-        hint="The barrel at the top of the mushroom might have something? It's most likely nothing. You can probably just leave it there. Right? This may have happened before.",
-        important=False,
-        base=True,
-    ),
     Hint(hint="I have horrible news. Your seed just got \x0510 percent worse.\x05", important=False, base=True),
     Hint(hint="Great news! Your seed just got \x0810 percent better!\x08", important=False, base=True),
     Hint(hint="This is not a joke hint.", important=False, base=True),
     Hint(hint="I'll get back to you after this colossal dump of blueprints.", important=False, base=True),
     Hint(hint="Something in the \x0dHalt! The remainder of this hint has been confiscated by the top Kop on the force.\x0d", important=False, base=True),
     Hint(hint="When I finish Pizza Tower, this hint will update.", important=False, base=True),
+    Hint(
+        hint="Will we see a sub hour seasonal seed? Not a chance. The movement is too optimized at this point. I expect at most 10-20 more seconds can be saved, maybe a minute with TAS.",
+        important=False,
+        base=True,
+    ),
+    Hint(hint="The dk64randomizer.com wiki has lots of helpful information about hints.", important=False, base=True),
+    Hint(hint="If you're watching on YouTube, be sure to like, comment, subscribe, and smash that bell.", important=False, base=True),
 ]
 
 kong_list = ["\x04Donkey\x04", "\x05Diddy\x05", "\x06Lanky\x06", "\x07Tiny\x07", "\x08Chunky\x08", "\x04Any kong\x04"]
@@ -542,7 +545,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     most_unhinted_key_score = score
             key_hint_dict[key_most_needing_hint] += 1  # Bless this key with an additional hint
     # If we're doing the item-hinting system, use that distribution
-    elif spoiler.settings.wrinkly_hints == WrinklyHints.item_hinting:
+    elif spoiler.settings.wrinkly_hints in (WrinklyHints.item_hinting, WrinklyHints.item_hinting_advanced):
         hint_distribution = item_hint_distribution.copy()
         hint_distribution[HintType.ItemRegion] = HINT_CAP
         if spoiler.settings.enable_plandomizer:
@@ -589,23 +592,36 @@ def compileHints(spoiler: Spoiler) -> bool:
             if spoiler.settings.key_8_helm:  # You may know that Key 8 is in Helm and that's pointless to hint
                 item_region_locations_to_hint.remove(Locations.HelmKey)
         # Determine what moves are hintable
-        all_hintable_moves = ItemPool.AllKongMoves() + ItemPool.TrainingBarrelAbilities()
+        all_hintable_moves = ItemPool.AllKongMoves() + ItemPool.TrainingBarrelAbilities() + kongs_to_hint
         if spoiler.settings.shockwave_status != ShockwaveStatus.start_with:
             all_hintable_moves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
         if spoiler.settings.shuffle_items and Types.Bean in spoiler.settings.shuffled_location_types:
             all_hintable_moves.append(Items.Bean)
         optional_hintable_locations = []
+        slam_locations = []
         # Loop through all locations, finding the location of all of these hintable moves
         for id, location in spoiler.LocationList.items():
+            # Note the location of slams - these will always be at least optionally hintable and sometimes required to be hinted
+            if location.item == Items.ProgressiveSlam:
+                slam_locations.append(id)
+            # Never hint training moves for obvious reasons
+            if location.type in (Types.TrainingBarrel, Types.PreGivenMove):
+                continue
             # If it's a woth item, it must be hinted so put it in the list
-            if id in spoiler.woth_locations and location.type not in (Types.TrainingBarrel, Types.PreGivenMove):
+            if id in spoiler.woth_locations:
                 if location.item in kongs_to_hint:
                     item_region_locations_to_hint.insert(0, id)
                 elif location.item in all_hintable_moves:
                     item_region_locations_to_hint.append(id)
             # To be hintable, it can't be a starting move
-            elif location.item in all_hintable_moves and location.type not in (Types.TrainingBarrel, Types.PreGivenMove):
+            elif location.item in all_hintable_moves:
                 optional_hintable_locations.append(id)
+        # If there's room, always hint a slam if we haven't hinted one already
+        hinted_slam_locations = [loc for loc in slam_locations if loc in item_region_locations_to_hint or spoiler.LocationList[loc].type in (Types.TrainingBarrel, Types.PreGivenMove)]
+        if len(item_region_locations_to_hint) < hint_distribution[HintType.ItemRegion] and len(hinted_slam_locations) < 2:
+            loc_to_hint = random.choice([loc for loc in slam_locations if loc not in hinted_slam_locations])
+            item_region_locations_to_hint.append(loc_to_hint)
+            optional_hintable_locations.remove(loc_to_hint)
         # Fill with other random move locations as best as we can
         random.shuffle(optional_hintable_locations)
         while len(item_region_locations_to_hint) < hint_distribution[HintType.ItemRegion] and len(optional_hintable_locations) > 0:
@@ -940,6 +956,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                     hint_location = getRandomHintLocation(levels=[Levels.JungleJapes, Levels.AngryAztec, Levels.FranticFactory, Levels.GloomyGalleon])
                 else:
                     hint_location = getRandomHintLocation()
+            globally_hinted_location_ids.append(kong_location_id)
             freeing_kong_name = kong_list[kong_location.kong]
             if spoiler.settings.wrinkly_hints == WrinklyHints.cryptic:
                 if kong_location.level == Levels.Shops:  # Exactly Jetpac
@@ -1080,12 +1097,47 @@ def compileHints(spoiler: Spoiler) -> bool:
                 item_color = kong_colors[Kongs.donkey]
             elif item.type == Types.Kong:  # Kong items are any kong items, but these make more intuitive sense as their respective color
                 item_color = kong_colors[ItemPool.GetKongForItem(location.item)]
-            message = f"Looking for {item_color}{item.name}{item_color}?"
+            item_name = item.name
+            # In advanced item hinting hints, hint a category of the item, not the exact item.
+            if spoiler.settings.wrinkly_hints == WrinklyHints.item_hinting_advanced:
+                if item.type == Types.Kong:
+                    item_name = "kongs"
+                    item_color = kong_colors[Kongs.donkey]  # Genericize the color to be even more vague
+                elif item.type == Types.Key:
+                    item_name = "keys"
+                elif item.type == Types.Shockwave:
+                    item_name = "fairy moves"
+                    item_color = "\x06"
+                elif item.type == Types.TrainingBarrel:
+                    item_name = "training moves"
+                elif item.type == Types.Shop:
+                    if item.kong == Kongs.any:
+                        item_name = "shared kong moves"
+                    else:
+                        # 50/50 chance for kong moves to either...
+                        coin_flip = random.choice([1, 2])
+                        if coin_flip == 1:
+                            # Hint the kong the move belongs to
+                            item_name = colorless_kong_list[item.kong] + " moves"
+                        else:
+                            # Hint the type of move it is
+                            item_color = kong_colors[Kongs.donkey]  # Genericize the color to be even more vague
+                            if item.movetype == MoveTypes.Guns:
+                                item_name = "guns"
+                            elif item.movetype == MoveTypes.Instruments:
+                                item_name = "instruments"
+                            elif location.item in (Items.GorillaGrab, Items.ChimpyCharge, Items.Orangstand, Items.PonyTailTwirl, Items.PrimatePunch):
+                                item_name = "active kong moves"
+                            elif location.item in (Items.StrongKong, Items.RocketbarrelBoost, Items.OrangstandSprint, Items.MiniMonkey, Items.HunkyChunky):
+                                item_name = "kong barrel moves"
+                            elif location.item in (Items.BaboonBlast, Items.SimianSpring, Items.BaboonBalloon, Items.Monkeyport, Items.GorillaGone):
+                                item_name = "kong pad moves"
+            message = f"Looking for {item_color}{item_name}{item_color}?"
             # If this hint tries to offer help finding Krusha, make sure to get his name right
-            if item.type == Types.Kong:
+            if item.type == Types.Kong and spoiler.settings.wrinkly_hints != WrinklyHints.item_hinting_advanced:
                 if ItemPool.GetKongForItem(location.item) == spoiler.settings.krusha_kong:
                     message = message.replace(item.name, "Krusha")
-            # Two options for hint text, do a coin flip
+            # Two options for hinting the location, do a coin flip
             coin_flip = random.choice([1, 2])
             if coin_flip == 1:
                 # Option A: hint the region the item is in
@@ -1671,7 +1723,7 @@ def compileHints(spoiler: Spoiler) -> bool:
                 Items.MiniMonkey,
                 Items.PrimatePunch,
             ]:
-                pathless_move_score[move] = 3  # These moves are three times as likely as any other move to get picked now
+                pathless_move_score[move] = 4  # These moves are four times as likely as any other move to get picked now
             else:
                 pathless_move_score[move] = 1
         for i in range(hint_distribution[HintType.ForeseenPathless]):
@@ -2411,5 +2463,5 @@ def replaceKongNameWithKrusha(spoiler):
         "The Kong that Rivals Chunky in Strength",
         "The Kong that replaces another Kong",
         "The Kong that wears Camo",
-        "The Kong that was K. Rools Bodyguard",
+        "The Kong that was K. Rool's Bodyguard",
     ]

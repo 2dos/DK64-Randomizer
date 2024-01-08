@@ -358,19 +358,36 @@ checkBeforeApplyingQuicksand: ; $t4 contains colliding_actor->actor_type
     beq $at, $t4, correctActor
     nop
 
-applyQuicksand: ; not a flying enemy (or not aztec), apply quicksand just as usual
-    lui $at, 0x8080
-    j 0x80668428
-    sb $s4, 0x94AF ($at)
+    applyQuicksand: ; not a flying enemy (or not aztec), apply quicksand just as usual
+        lui $at, 0x8080
+        j 0x80668428
+        sb $s4, 0x94AF ($at)
 
-correctActor:
-    lui $at, hi(CurrentMap)
-    lw $at, lo(CurrentMap) ($at) ; CurrentMap
-    addiu $t4, $zero, 0x26 ; angry aztec
-    bne $at, $t4, applyQuicksand ; not aztec
+    correctActor:
+        lui $at, hi(CurrentMap)
+        lw $at, lo(CurrentMap) ($at) ; CurrentMap
+        addiu $t4, $zero, 0x26 ; angry aztec
+        bne $at, $t4, applyQuicksand ; not aztec
+        nop
+
+    noApplyQuicksand:
+        lui $at, 0x8080
+        j 0x80668428
+        nop
+
+disableHelmKeyBounce:
+    jal 0x806A6DB4
+    or $a0, $zero, $zero
+    lui $a1, hi(CurrentMap)
+    lw $a1, lo(CurrentMap) ($a1)
+    addiu $a2, $zero, 0x6F
+    beq $a1, $a2, applyWaterFloat
     nop
 
-noApplyQuicksand:
-    lui $at, 0x8080
-    j 0x80668428
-    nop
+    skipWaterFloat:
+        j 0x806A74D8
+        addiu $t2, $zero, 0x78
+
+    applyWaterFloat:
+        j 0x806A747C
+        nop

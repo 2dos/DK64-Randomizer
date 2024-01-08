@@ -362,29 +362,30 @@ purchase_classification getPurchaseClassification(int purchase_type, int flag) {
 	return PCLASS_NOTHING;
 }
 
+static helm_hurry_items hh_item_list[] = {
+	HHITEM_NOTHING, // PCLASS_NOTHING,
+	HHITEM_MOVE, // PCLASS_MOVE,
+	HHITEM_MOVE, // PCLASS_INSTRUMENT,
+	HHITEM_MOVE, // PCLASS_GUN,
+	HHITEM_MOVE, // PCLASS_CAMERA,
+	HHITEM_MOVE, // PCLASS_SHOCKWAVE,
+	HHITEM_MOVE, // PCLASS_CAMSHOCK,
+	HHITEM_NOTHING, // PCLASS_GB, - Handled separately
+	HHITEM_BLUEPRINT, // PCLASS_BLUEPRINT,
+	HHITEM_COMPANYCOIN, // PCLASS_COMPANYCOIN,
+	HHITEM_MEDAL, // PCLASS_MEDAL,
+	HHITEM_RAINBOWCOIN, // PCLASS_RAINBOWCOIN,
+	HHITEM_KEY, // PCLASS_KEY,
+	HHITEM_CROWN, // PCLASS_CROWN,
+	HHITEM_BEAN, // PCLASS_BEAN,
+	HHITEM_PEARL, // PCLASS_PEARL,
+	HHITEM_KONG, // PCLASS_KONG,
+	HHITEM_FAIRY, // PCLASS_FAIRY,
+	HHITEM_FAKEITEM, // PCLASS_FAKEITEM,
+};
+
 void addHelmHurryPurchaseTime(int purchase_type, int flag) {
 	purchase_classification pclass = getPurchaseClassification(purchase_type, flag);
-	helm_hurry_items hh_item_list[] = {
-		HHITEM_NOTHING, // PCLASS_NOTHING,
-		HHITEM_MOVE, // PCLASS_MOVE,
-		HHITEM_MOVE, // PCLASS_INSTRUMENT,
-		HHITEM_MOVE, // PCLASS_GUN,
-		HHITEM_MOVE, // PCLASS_CAMERA,
-		HHITEM_MOVE, // PCLASS_SHOCKWAVE,
-		HHITEM_MOVE, // PCLASS_CAMSHOCK,
-		HHITEM_NOTHING, // PCLASS_GB, - Handled separately
-		HHITEM_BLUEPRINT, // PCLASS_BLUEPRINT,
-		HHITEM_COMPANYCOIN, // PCLASS_COMPANYCOIN,
-		HHITEM_MEDAL, // PCLASS_MEDAL,
-		HHITEM_RAINBOWCOIN, // PCLASS_RAINBOWCOIN,
-		HHITEM_KEY, // PCLASS_KEY,
-		HHITEM_CROWN, // PCLASS_CROWN,
-		HHITEM_BEAN, // PCLASS_BEAN,
-		HHITEM_PEARL, // PCLASS_PEARL,
-		HHITEM_KONG, // PCLASS_KONG,
-		HHITEM_FAIRY, // PCLASS_FAIRY,
-		HHITEM_FAKEITEM, // PCLASS_FAKEITEM,
-	};
 	helm_hurry_items hh_item = hh_item_list[(int)pclass];
 	if (hh_item != HHITEM_NOTHING) {
 		addHelmTime(hh_item, 1);
@@ -712,11 +713,11 @@ void getNextMoveText(void) {
 	shop_paad* shop_data = 0;
 	int is_jetpac = CurrentActorPointer_0->actorType == getCustomActorIndex(NEWACTOR_JETPACITEMOVERLAY);
 	if (!is_jetpac) {
-		if ((shop_owner == 0) && ((CurrentMap == MAP_CRANKY) || (CurrentMap == MAP_FUNKY) || (CurrentMap == MAP_CANDY))) {
+		if ((shop_owner == 0) && (inShop(CurrentMap, 0))) {
 			shop_owner = getSpawnerTiedActor(1,0);
 			paad->shop_owner = shop_owner;
 		}
-		if ((paad->shop_owner) && ((CurrentMap == MAP_CRANKY) || (CurrentMap == MAP_FUNKY) || (CurrentMap == MAP_CANDY))) {
+		if ((paad->shop_owner) && (inShop(CurrentMap, 0))) {
 			shop_data = shop_owner->paad2;
 		}
 	}

@@ -321,18 +321,6 @@ int alterBonusVisuals(int index) {
                     adjustColorPalette(CurrentActorPointer_0, i, skin, 0.0f);
                     unkPaletteFunc(CurrentActorPointer_0, i, 0);
                 }
-                // if (!CurrentActorPointer_0->model_file) {
-                //     CurrentActorPointer_0->model_file = getActorModel(CurrentActorPointer_0, 0x76, 0);
-                // }
-                // for (int i = 0; i < 2; i++) {
-                //     void* texture = loadBonusTexture((skin * 2) + i); // Load texture
-                //     int copy_size = 16 * 64 * 2;
-                //     void* location = dk_malloc(copy_size);
-                //     dk_memcpy(location, texture, copy_size);
-                //     blink(CurrentActorPointer_0, i, 0xFFFF);
-                //     applyImageToActor(CurrentActorPointer_0, i, 0);
-                //     writeImageSlotToActor(CurrentActorPointer_0, i, 0, location);
-                // }
             }
         }
     }

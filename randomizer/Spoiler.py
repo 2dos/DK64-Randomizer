@@ -59,6 +59,7 @@ class Spoiler:
         self.woth_locations = {}
         self.woth_paths = {}
         self.krool_paths = {}
+        self.other_paths = {}
         self.shuffled_barrel_data = {}
         self.shuffled_exit_data = {}
         self.shuffled_exit_instructions = []
@@ -223,7 +224,7 @@ class Spoiler:
         settings["Progressive Switch Strength"] = self.settings.alter_switch_allocation
         settings["Hard Shooting"] = self.settings.hard_shooting
         settings["Dropsanity"] = self.settings.enemy_drop_rando
-        settings["Switchsanity"] = self.settings.switchsanity
+        settings["Switchsanity"] = self.settings.switchsanity.name
         settings["Free Trade Agreement"] = self.settings.free_trade_setting.name
         settings["Randomize Pickups"] = self.settings.randomize_pickups
         settings["Randomize Patches"] = self.settings.random_patches
@@ -307,26 +308,43 @@ class Spoiler:
         humanspoiler["Kongs"]["Llama Temple Puzzle Solver"] = ItemList[ItemFromKong(self.settings.lanky_freeing_kong)].name
         humanspoiler["Kongs"]["Factory Kong Puzzle Solver"] = ItemList[ItemFromKong(self.settings.chunky_freeing_kong)].name
         humanspoiler["Requirements"]["Miscellaneous"]["Jetpac Medal Requirement"] = self.settings.medal_requirement
-        humanspoiler["End Game"] = {}
-        humanspoiler["End Game"]["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
+        humanspoiler["End Game"] = {
+            "Helm": {},
+            "K. Rool": {},
+        }
+        humanspoiler["End Game"]["K. Rool"]["Keys Required for K Rool"] = self.GetKroolKeysRequired(self.settings.krool_keys_required)
         krool_order = []
         for phase in self.settings.krool_order:
             krool_order.append(ItemList[ItemFromKong(phase)].name.capitalize())
-        humanspoiler["End Game"]["K Rool Phases"] = krool_order
+        humanspoiler["End Game"]["K. Rool"]["K Rool Phases"] = krool_order
 
         helm_default_order = [Kongs.donkey, Kongs.chunky, Kongs.tiny, Kongs.lanky, Kongs.diddy]
         helm_new_order = []
         for room in self.settings.helm_order:
             helm_new_order.append(helm_default_order[room].name.capitalize())
-        humanspoiler["End Game"]["Helm Rooms"] = helm_new_order
+        humanspoiler["End Game"]["Helm"]["Helm Rooms"] = helm_new_order
+        helm_door_names = {
+            HelmDoorItem.req_bean: "Bean",
+            HelmDoorItem.req_bp: "Blueprints",
+            HelmDoorItem.req_companycoins: "Company Coins",
+            HelmDoorItem.req_crown: "Crowns",
+            HelmDoorItem.req_fairy: "Fairies",
+            HelmDoorItem.req_gb: "Golden Bananas",
+            HelmDoorItem.req_key: "Keys",
+            HelmDoorItem.req_medal: "Medals",
+            HelmDoorItem.req_pearl: "Pearls",
+            HelmDoorItem.req_rainbowcoin: "Rainbow Coins",
+        }
         if self.settings.crown_door_item != HelmDoorItem.opened:
-            humanspoiler["End Game"]["Crown Door Item"] = self.settings.crown_door_item.name
-            humanspoiler["End Game"]["Crown Door Item Randomized"] = self.settings.crown_door_random
-            humanspoiler["End Game"]["Crown Door Item Amount"] = self.settings.crown_door_item_count
+            item = self.settings.crown_door_item if self.settings.crown_door_item != HelmDoorItem.vanilla else HelmDoorItem.req_crown
+            humanspoiler["End Game"]["Helm"]["Crown Door Item"] = helm_door_names[item]
+            humanspoiler["End Game"]["Helm"]["Crown Door Item Randomized"] = self.settings.crown_door_random
+            humanspoiler["End Game"]["Helm"]["Crown Door Item Amount"] = self.settings.crown_door_item_count
         if self.settings.coin_door_item != HelmDoorItem.opened:
-            humanspoiler["End Game"]["Coin Door Item"] = self.settings.coin_door_item.name
-            humanspoiler["End Game"]["Coin Door Item Randomized"] = self.settings.coin_door_random
-            humanspoiler["End Game"]["Coin Door Item Amount"] = self.settings.coin_door_item_count
+            item = self.settings.coin_door_item if self.settings.coin_door_item != HelmDoorItem.vanilla else HelmDoorItem.req_companycoins
+            humanspoiler["End Game"]["Helm"]["Coin Door Item"] = helm_door_names[item]
+            humanspoiler["End Game"]["Helm"]["Coin Door Item Randomized"] = self.settings.coin_door_random
+            humanspoiler["End Game"]["Helm"]["Coin Door Item Amount"] = self.settings.coin_door_item_count
         if self.settings.shuffle_items:
             humanspoiler["Item Pool"] = list(set([enum.name for enum in self.settings.shuffled_location_types]))
         if self.settings.hard_mode_selected:
@@ -613,8 +631,9 @@ class Spoiler:
         # Woth data
         humanspoiler["Way of the Hoard"] = self.woth
         # Paths for Woth items - does not show up on the site, just for debugging
-        humanspoiler["Paths"] = {}
-        wothSlams = 0
+        humanspoiler["WotH Paths"] = {}
+        slamCount = 0
+        pearlCount = 0
         for loc, path in self.woth_paths.items():
             destination_item = ItemList[self.LocationList[loc].item]
             path_dict = {}
@@ -624,9 +643,12 @@ class Spoiler:
                 path_dict[path_location.name] = path_item.name
             extra = ""
             if self.LocationList[loc].item == Items.ProgressiveSlam:
-                wothSlams += 1
-                extra = " " + str(wothSlams)
-            humanspoiler["Paths"][destination_item.name + extra] = path_dict
+                slamCount += 1
+                extra = " " + str(slamCount)
+            if self.LocationList[loc].item == Items.Pearl:
+                pearlCount += 1
+                extra = " " + str(pearlCount)
+            humanspoiler["WotH Paths"][destination_item.name + extra] = path_dict
         # Paths for K. Rool phases - also do not show up on the site, just for debugging
         for kong, path in self.krool_paths.items():
             path_dict = {}
@@ -643,7 +665,23 @@ class Spoiler:
                 phase_name = "K. Rool Tiny Phase"
             elif kong == Kongs.chunky:
                 phase_name = "K. Rool Chunky Phase"
-            humanspoiler["Paths"][phase_name] = path_dict
+            humanspoiler["WotH Paths"][phase_name] = path_dict
+        humanspoiler["Other Paths"] = {}
+        for loc, path in self.other_paths.items():
+            destination_item = ItemList[self.LocationList[loc].item]
+            path_dict = {}
+            for path_loc_id in path:
+                path_location = self.LocationList[path_loc_id]
+                path_item = ItemList[path_location.item]
+                path_dict[path_location.name] = path_item.name
+            extra = ""
+            if self.LocationList[loc].item == Items.ProgressiveSlam:
+                slamCount += 1
+                extra = " " + str(slamCount)
+            if self.LocationList[loc].item == Items.Pearl:
+                pearlCount += 1
+                extra = " " + str(pearlCount)
+            humanspoiler["Other Paths"][destination_item.name + extra] = path_dict
 
         if self.settings.shuffle_loading_zones == ShuffleLoadingZones.levels:
             # Just show level order

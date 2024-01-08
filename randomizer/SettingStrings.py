@@ -207,6 +207,7 @@ def encrypt_settings_string_enum(dict_data: dict):
         "colorblind_mode",
         "search",
         "holiday_setting",
+        "holiday_setting_offseason",
         "homebrew_header",
         "dpad_display",
         "camera_is_follow",
@@ -242,7 +243,7 @@ def encrypt_settings_string_enum(dict_data: dict):
             bitstring += int_to_bin_string(value, 4)
         elif key_data_type == SettingsStringDataType.int8:
             bitstring += int_to_bin_string(value, 8)
-        elif key_data_type == SettingsStringDataType.int16:
+        elif key_data_type in (SettingsStringDataType.int16, SettingsStringDataType.u16):
             bitstring += int_to_bin_string(value, 16)
         elif key_data_type == SettingsStringDataType.var_int:
             bitstring += encode_var_int(key_enum, value)
@@ -258,7 +259,7 @@ def encrypt_settings_string_enum(dict_data: dict):
                     bitstring += int_to_bin_string(item, 4)
                 elif key_list_data_type == SettingsStringDataType.int8:
                     bitstring += int_to_bin_string(item, 8)
-                elif key_list_data_type == SettingsStringDataType.int16:
+                elif key_list_data_type in (SettingsStringDataType.int16, SettingsStringDataType.u16):
                     bitstring += int_to_bin_string(item, 16)
                 elif key_list_data_type == SettingsStringDataType.var_int:
                     bitstring += encode_var_int(key_enum, item)
@@ -326,8 +327,10 @@ def decrypt_settings_string_enum(encrypted_string: str) -> Dict[str, Any]:
         elif key_data_type == SettingsStringDataType.int8:
             val = bin_string_to_int(bitstring[bit_index : bit_index + 8], 8)
             bit_index += 8
-        elif key_data_type == SettingsStringDataType.int16:
+        elif key_data_type in (SettingsStringDataType.int16, SettingsStringDataType.u16):
             val = bin_string_to_int(bitstring[bit_index : bit_index + 16], 16)
+            if key_data_type == SettingsStringDataType.u16 and val < 0:
+                val += 65536
             bit_index += 16
         elif key_data_type == SettingsStringDataType.var_int:
             bit_len, _ = get_var_int_encode_details(key_enum)
@@ -349,8 +352,10 @@ def decrypt_settings_string_enum(encrypted_string: str) -> Dict[str, Any]:
                 elif key_list_data_type == SettingsStringDataType.int8:
                     list_val = bin_string_to_int(bitstring[bit_index : bit_index + 8], 8)
                     bit_index += 8
-                elif key_list_data_type == SettingsStringDataType.int16:
+                elif key_list_data_type in (SettingsStringDataType.int16, SettingsStringDataType.u16):
                     list_val = bin_string_to_int(bitstring[bit_index : bit_index + 16], 16)
+                    if key_data_type == SettingsStringDataType.u16 and val < 0:
+                        val += 65536
                     bit_index += 16
                 elif key_data_type == SettingsStringDataType.var_int:
                     bit_len, _ = get_var_int_encode_details(key_enum)

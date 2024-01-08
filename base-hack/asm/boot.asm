@@ -73,11 +73,11 @@ START:
 
 		LUI t3, 0
 		LUI t4, 1
-		LUI t5, 1
-		LUI t9, 0xD
-		LUI t8, 0xD
+		LUI t5, static_code_upper
+		LUI t9, static_data_upper
+		LUI t8, multi_code_upper
 		J 0x80000784
-		LUI t6, 0x000D
+		LUI t6, multi_data_upper
 		//end of boot code
 		/////////////////////////////////////////////////////
 

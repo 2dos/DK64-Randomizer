@@ -112,3 +112,4 @@
 .definelabel headphonesCode, 0x806A7BDC
 .definelabel updatePosition, 0x80671C0C
 .definelabel getActorModel, 0x80612E90
+.definelabel bounceObjectCode, 0x806A6DB4

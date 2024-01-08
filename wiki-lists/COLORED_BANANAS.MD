@@ -285,6 +285,7 @@
 | Trees between Llama Temple and 5DT (Lanky) | 15 |  | 
 | Around the outside of Llama Temple | 15 |  | 
 | Vase room (Chunky) | 20 | l.pineapple or l.phasewalk | 
+| On Tiny Temple Staircase | 5 |  | 
 | Chunky vase room back wall | Balloon | l.pineapple | 
 | Chunky vase room right wall | Balloon | l.pineapple | 
 | DK BP room over/under bridge | Balloon | l.hasMoveSwitchsanity(Switches.AztecBlueprintDoor, False) | 
@@ -379,7 +380,7 @@
 | Llama Temple Water Corners | 20 | l.CanLlamaSpit() and l.swim | 
 | To lava room (Tiny) | 3 |  | 
 | To lava room (Tiny) | 2 |  | 
-| On Tiny switches in lava room (Tiny) | 10 | l.CanSlamSwitch(Levels.AngryAztec, 1) or l.twirl or (l.advanced_platforming and l.istiny) | 
+| On Tiny switches in lava room (Tiny) | 10 | (l.CanSlamSwitch(Levels.AngryAztec, 1) or (l.twirl and l.advanced_platforming)) and l.istiny | 
 | On vines in Matching game room (Lanky) | 5 | (l.grape or l.phasewalk) and l.vines | 
 | Matching game room right side | Balloon |  | 
 | Above Llama | Balloon |  | 
@@ -1412,7 +1413,7 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | Around room (Diddy) | 5 |  | 
-| On center pillar (Diddy) | 5 |  | 
+| On center pillar (Diddy) | 5 | l.jetpack or l.advanced_platforming | 
 | Around room above platforms | Balloon |  | 
 </details>
 <details>

@@ -9,9 +9,9 @@
     <meta Http-Equiv="Cache-directive: no-cache" />
     <link href="./static/img/dk.png" rel="icon" />
     <title>DK64 Randomizer</title>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js" integrity="sha512-f0VlzJbcEB6KiW8ZVtL+5HWPDyW1+nJEjguZ5IVnSQkvZbwBt2RfCBY0CBO1PsMAqxxrG4Di6TfsCPP3ZRwKpA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="static/js/md5.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css"
           rel="stylesheet"/>
@@ -37,7 +37,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="./index.html#overview">Overview</a>
+                        <a class="nav-link" href="./">Overview</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
@@ -82,17 +82,29 @@
             </div>
         </div>
     </div>
+    <div class="modal fade"
+         data-bs-backdrop="static"
+         data-bs-keyboard="false"
+         id="download_modal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content bg-dark" style="transform:translateY(0%)">
+                <div class="modal-body center bg-dark" style="width: 100%;" id="spoiler_log_download_messages">
+                    <h2>Attempting to get Spoiler Log</h2>
+                </div>
+            </div>
+        </div>
+    </div>
     <img src="./static/img/logo.png"
          alt="DK64 Randomizer"
          class="center_image"
          style="cursor: pointer; margin-top: 70px"
-         onClick="render_page('./index.html')"/>
+         onClick="render_page('./index')"/>
     <div style="width: 80%; min-width: 400px; max-width: 1500px"
          class="center">
         <div class="card bg-dark" style="max-width: 1500px">
             <form id="form" action="/" method="POST">
                 <!--Create navbar-->
-                <div class="container" id="tab-data">
+                <div class="container" id="visual_indicator">
                   <img style="
                       width: 10%;
                       height: 10%;
@@ -141,6 +153,7 @@
                     }
                   </script>
                 </div>
+                <div class="container" id="tab-data" hidden></div>
                 <hr />
                 <div class="container" id="nav-gen-type-container">
                     <nav style="display: inline-block; float: none; vertical-align: top;">
@@ -307,6 +320,7 @@
                                            type="button"
                                            value="Generate Seed"
                                            disabled = ""/>
+                                        <input id="trigger_download_event" hidden/>
                                     </div>
                                 </div>
                             </div>
@@ -540,14 +554,14 @@
     <script>
         function render_page(page) {
             xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", page, false);
+            xmlhttp.open("GET", page + ".html", false);
             xmlhttp.send();
             var data = xmlhttp.responseText;
             document.documentElement.innerHTML = "";
             document.open();
             document.write(data);
             document.close();
-            history.pushState({}, "page 1", "index.html");
+            history.pushState({}, "page 1", "index");
         }
     </script>
     <script>

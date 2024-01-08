@@ -158,7 +158,7 @@ def max_starting_moves_count(event):
     move_count = js.document.getElementById("starting_moves_count")
     moves = js.document.getElementById("move_rando")
     item_rando = js.document.getElementById("shuffle_items")
-    max_starting_moves = 40
+    max_starting_moves = 41
     if not item_rando.checked and moves.value != "off":
         max_starting_moves = 4
     if not move_count.value:
@@ -169,11 +169,14 @@ def max_starting_moves_count(event):
         move_count.value = max_starting_moves
 
 
+DISABLED_HELM_DOOR_VALUES = ("easy_random", "medium_random", "hard_random", "opened")
+
+
 @bind("change", "crown_door_item")
 def updateDoorOneNumAccess(event):
     """Toggle the textboxes for the first helm door."""
     door_one_selection = js.document.getElementById("crown_door_item")
-    disabled = (door_one_selection.value == "random") or (door_one_selection.value == "opened")
+    disabled = door_one_selection.value in DISABLED_HELM_DOOR_VALUES
     door_one_req = js.document.getElementById("crown_door_item_count")
     if disabled:
         door_one_req.setAttribute("disabled", "disabled")
@@ -231,7 +234,7 @@ def updateDoorOneCountText(evt):
 def updateDoorTwoNumAccess(event):
     """Toggle the textboxes for the second helm door."""
     door_two_selection = js.document.getElementById("coin_door_item")
-    disabled = (door_two_selection.value == "random") or (door_two_selection.value == "opened")
+    disabled = door_two_selection.value in DISABLED_HELM_DOOR_VALUES
     door_two_req = js.document.getElementById("coin_door_item_count")
     if disabled:
         door_two_req.setAttribute("disabled", "disabled")
@@ -811,6 +814,7 @@ def toggle_item_rando(evt):
     move_rando = document.getElementById("move_on")
     enemy_drop_rando = document.getElementById("enemy_drop_rando")
     non_item_rando_warning = document.getElementById("non_item_rando_warning")
+    shared_shop_warning = document.getElementById("shared_shop_warning")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -836,12 +840,14 @@ def toggle_item_rando(evt):
             enemy_drop_rando.setAttribute("disabled", "disabled")
             enemy_drop_rando.checked = False
             non_item_rando_warning.removeAttribute("hidden")
+            shared_shop_warning.removeAttribute("hidden")
         else:
             # Enable item rando modal, prevent shockwave/camera coupling, enable dropsanity, and enable smaller shops if it's in the pool
             selector.removeAttribute("disabled")
             enemy_drop_rando.removeAttribute("disabled")
             non_item_rando_warning.setAttribute("hidden", "hidden")
             if shops_in_pool:
+                shared_shop_warning.setAttribute("hidden", "hidden")
                 if shockwave.selected is True:
                     document.getElementById("shockwave_status_shuffled_decoupled").selected = True
                 if move_vanilla.selected is True or move_rando.selected is True:
@@ -869,6 +875,7 @@ def item_rando_list_changed(evt):
     smaller_shops = document.getElementById("smaller_shops")
     move_vanilla = document.getElementById("move_off")
     move_rando = document.getElementById("move_on")
+    shared_shop_warning = document.getElementById("shared_shop_warning")
     shops_in_pool = False
     nothing_selected = True
     for option in item_rando_pool:
@@ -884,6 +891,7 @@ def item_rando_list_changed(evt):
         item_rando_disabled = False
     if shops_in_pool and not item_rando_disabled:
         # Prevent camera/shockwave from being coupled and enable smaller shops if shops are in the pool
+        shared_shop_warning.setAttribute("hidden", "hidden")
         if shockwave.selected is True:
             document.getElementById("shockwave_status_shuffled_decoupled").selected = True
         if move_vanilla.selected is True or move_rando.selected is True:
@@ -897,6 +905,7 @@ def item_rando_list_changed(evt):
         js.document.getElementById("random_prices").removeAttribute("disabled")
     else:
         # Enable coupled camera/shockwave and disable smaller shops if shops are not in the pool
+        shared_shop_warning.removeAttribute("hidden")
         shockwave.removeAttribute("disabled")
         move_vanilla.removeAttribute("disabled")
         move_rando.removeAttribute("disabled")
@@ -1007,6 +1016,13 @@ def preset_select_changed(event):
                     js.jq(f"#{key}").removeAttr("disabled")
             except Exception as e:
                 pass
+    update_ui_states(None)
+    js.savesettings()
+
+
+@bind("custom-update-ui-event", "apply_preset")
+def update_ui_states(event):
+    """Trigger any function that would update the status of a UI element based on the current settings configuration."""
     toggle_counts_boxes(None)
     toggle_b_locker_boxes(None)
     update_boss_required(None)
@@ -1032,7 +1048,6 @@ def preset_select_changed(event):
     toggle_logic_type(None)
     toggle_key_settings(None)
     max_starting_moves_count(None)
-    js.savesettings()
 
 
 @bind("click", "enable_plandomizer")

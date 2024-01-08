@@ -230,17 +230,21 @@ def randomize_puzzles(spoiler):
             ROM_COPY.seek(sav + 0x16C + piano_item)
             key = random.randint(0, 5)
             ROM_COPY.writeMultipleBytes(key, 1)
+        spoiler.dk_face_puzzle = [None] * 9
+        spoiler.chunky_face_puzzle = [None] * 9
         for face_puzzle_square in range(9):
             ROM_COPY.seek(sav + 0x17E + face_puzzle_square)  # DK Face Puzzle
+            value = random.randint(0, 3)
             if face_puzzle_square == 8:
-                ROM_COPY.writeMultipleBytes(random.choice([0, 1, 3]), 1)  # Lanky for this square glitches out the puzzle. Nice going Loser kong
-            else:
-                ROM_COPY.writeMultipleBytes(random.randint(0, 3), 1)
+                value = random.choice([0, 1, 3])  # Lanky for this square glitches out the puzzle. Nice going Loser kong
+            spoiler.dk_face_puzzle[face_puzzle_square] = value
+            ROM_COPY.writeMultipleBytes(value, 1)
             ROM_COPY.seek(sav + 0x187 + face_puzzle_square)  # Chunky Face Puzzle
+            value = random.randint(0, 3)
             if face_puzzle_square == 2:
-                ROM_COPY.writeMultipleBytes(random.choice([0, 1, 3]), 1)  # Lanky for this square glitches out the puzzle. Nice going Loser kong again
-            else:
-                ROM_COPY.writeMultipleBytes(random.randint(0, 3), 1)
+                value = random.choice([0, 1, 3])  # Lanky for this square glitches out the puzzle. Nice going Loser kong again
+            ROM_COPY.writeMultipleBytes(value, 1)
+            spoiler.chunky_face_puzzle[face_puzzle_square] = value
         # Arcade Level Order Rando
         arcade_levels = ["25m", "50m", "75m", "100m"]
         arcade_level_data = {
