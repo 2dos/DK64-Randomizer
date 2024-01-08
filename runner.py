@@ -152,7 +152,7 @@ def start_gen(gen_key, post_body):
                 unlock_time = time.time() + (post_body.get("delayed_spoilerlog_release", 0) * 3600)
             if setting_data.get("generate_spoilerlog", True):
                 unlock_time = 0
-            
+
             # Append the current time to the spoiler log as unlock_time.
             patch = return_data["patch"]
             spoiler = return_data["spoiler"]
