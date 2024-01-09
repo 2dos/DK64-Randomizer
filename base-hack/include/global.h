@@ -358,6 +358,7 @@ extern void warpOutOfArenas(void);
 extern void warpOutOfTraining(void);
 extern void ArenaTagKongCode(void);
 extern void ArenaEarlyCompletionCheck(void);
+extern int* displayNoGeoChunk(int* dl, int chunk_index, int shift);
 
 extern int fairyQueenCutsceneInit(int start, int count, flagtypes type);
 extern void fairyQueenCutsceneCheck(void);

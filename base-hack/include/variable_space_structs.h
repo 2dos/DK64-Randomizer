@@ -64,7 +64,7 @@ typedef struct varspace {
 	/* 0x0C3 */ char outlined_crosshair;
 	/* 0x0C4 */ ROMFlags rom_flags;
 	/* 0x0C5 */ char enemy_item_rando; // Determines whether to use standard enemy item drop table or a custom table
-	/* 0x0C6 */ SeedOfDeathSettings hard_mode; // Colloquially known as "Seed of Death"
+	/* 0x0C6 */ HardModeSettings hard_mode; // Colloquially known as "Seed of Death"
 	/* 0x0C7 */ unsigned char default_sound_type; // 0 = Stereo, 1 = Surround, 2 = Mono
 	/* 0x0C8 */ unsigned char default_sfx_volume; // 0 - 40
 	/* 0x0C9 */ unsigned char default_music_volume; // 0 - 40
