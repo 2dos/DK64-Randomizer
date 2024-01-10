@@ -40,7 +40,7 @@ class BooleanProperties:
         self.target = target
 
 
-async def patching_response(data, from_patch_gen=False, lanky_from_history=False):
+async def patching_response(data, from_patch_gen=False, lanky_from_history=False, gen_history=False):
     """Apply the patch data to the ROM in the BROWSER not the server."""
     import time
     from datetime import datetime
@@ -98,9 +98,9 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
         js.document.getElementById("progress-dead").src = "data:image/jpeg;base64," + gif_dead[0]
         # Apply the base patch
         await js.apply_patch(data)
-    else:
-        js.write_seed_history(seed_id, str(data), json.dumps(settings.seed_hash))
-        js.load_old_seeds()
+        if gen_history is False:
+            js.write_seed_history(seed_id, str(data), json.dumps(settings.seed_hash))
+            js.load_old_seeds()
 
     datetime = datetime.utcnow()
     unix = time.mktime(datetime.timetuple())

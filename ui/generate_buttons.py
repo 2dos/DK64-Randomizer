@@ -200,7 +200,7 @@ async def generate_previous_seed(event):
         loop.run_until_complete(ProgressBar().update_progress(0, "Loading Previous seed and applying data."))
         js.apply_conversion()
         lanky_from_history = js.document.getElementById("load_patch_file").checked
-        await patching_response(str(js.get_previous_seed_data()), True, lanky_from_history)
+        await patching_response(str(js.get_previous_seed_data()), True, lanky_from_history, True)
 
 
 @bind("click", "generate_lanky_seed")
