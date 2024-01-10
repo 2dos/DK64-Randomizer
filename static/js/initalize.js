@@ -608,7 +608,7 @@ function write_seed_history(seed_id, seed_data, seed_hash) {
         second: "2-digit",
       }
     );
-  } catch {}
+  } catch (error) {console.log(error)}
 }
 
 function load_old_seeds() {
