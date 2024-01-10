@@ -33,9 +33,9 @@ def patchColorTranspose(name, x, y, patch_img, target_color):
             # if currentPix is red-ish (should be changed to target_color-ish)
             dr, dg, db = redRef[0] - currentPix[0], redRef[1] - currentPix[1], redRef[2] - currentPix[2]
             return (
-                clampRGBA(clampRGBA(clampRGBA(clampRGBA(target_color[0]) << 3) - dr) >> 3),
-                clampRGBA(clampRGBA(clampRGBA(clampRGBA(target_color[1]) << 3) - dg) >> 3),
-                clampRGBA(clampRGBA(clampRGBA(clampRGBA(target_color[2]) << 3) - db) >> 3),
+                clampRGBA(clampRGBA(target_color[0] << 3) - dr) >> 3,
+                clampRGBA(clampRGBA(target_color[1] << 3) - dg) >> 3,
+                clampRGBA(clampRGBA(target_color[2] << 3) - db) >> 3,
                 1,
             )
         elif not (currentPix[0] > currentPix[1] and (abs(currentPix[1] - currentPix[0]) > 200)) and (currentPix[3] == 255):
@@ -44,20 +44,20 @@ def patchColorTranspose(name, x, y, patch_img, target_color):
                 # if target is close enough to original red, just return the vanilla yellow values
                 return (currentPix[0] >> 3, currentPix[1] >> 3, currentPix[2] >> 3, currentPix[3] & 1)
             else:
-                dr, dg, db = yellowRef[0] - currentPix[0], yellowRef[1] - currentPix[1], yellowRef[2] - currentPix[2]
-                intensity_deltas = math.floor((dr + dg + db) / 3)
-                # grey edge case; set the letter colour to white (otherwise it wont display correctly)
-                if (100 < target_color[0] < 150) and (100 < target_color[1] < 150) and (100 < target_color[2] < 150):
+                # get the intensity of the green channel (since red and blue channels are almost always 255 and 0 respectively) to effectively get a metric for how "not yellow" the pixel is
+                unyellowness = ((yellowRef[1] - currentPix[1]) / 255) - 0.1
+                # grey edge case; set the letter colour to white
+                if (100 < (target_color[0] << 3) < 150) and (100 < (target_color[1] << 3) < 150) and (100 < (target_color[2] << 3) < 150):
                     ir, ig, ib = 255, 255, 255
                 else:
                     ir, ig, ib = (255 - (target_color[0] << 3)), (255 - (target_color[1] << 3)), (255 - (target_color[2] << 3))
-                intensity_inverteds = math.floor((ir + ig + ib) / 3)
-                # colour correction multiplier
-                m = (intensity_inverteds / 128) + 0.5
-                if intensity_deltas > 128 or intensity_inverteds > 128:
-                    return (clampRGBA(ir - m * intensity_deltas) >> 3, clampRGBA(ig - m * intensity_deltas) >> 3, clampRGBA(ib - m * intensity_deltas) >> 3, 1)
-                else:
-                    return (clampRGBA(ir + 1.5 * intensity_deltas) >> 3, clampRGBA(ig + 1.5 * intensity_deltas) >> 3, clampRGBA(ib + 1.5 * intensity_deltas) >> 3, 1)
+
+                return (
+                    clampRGBA(unyellowness * (target_color[0] << 3) + (1 - unyellowness) * ir) >> 3,
+                    clampRGBA(unyellowness * (target_color[1] << 3) + (1 - unyellowness) * ig) >> 3,
+                    clampRGBA(unyellowness * (target_color[2] << 3) + (1 - unyellowness) * ib) >> 3,
+                    1,
+                )
         else:
             # quickly convert the read pixel from RGBA32 to RGBA5551 so it doesnt write garbage data later
             return (currentPix[0] >> 3, currentPix[1] >> 3, currentPix[2] >> 3, currentPix[3] & 1)
