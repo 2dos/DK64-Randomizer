@@ -109,7 +109,7 @@ LogicRegions = {
         Collectible(Collectibles.bunch, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and (l.charge or l.advanced_platforming), None, 1),  # In minecart
         Collectible(Collectibles.balloon, Kongs.diddy, lambda l: (l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk) and l.peanut, None, 1),  # In conveyor room
 
-        Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 1),  # On bridge to switch
+        Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.peanut or l.advanced_platforming, None, 1),  # On bridge to switch
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: True, None, 1),  # On coal pile
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.charge or l.phasewalk, None, 1),  # Next to conveyor control
         Collectible(Collectibles.coin, Kongs.diddy, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) or l.phasewalk, None, 1),  # Under conveyors

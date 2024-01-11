@@ -212,7 +212,7 @@ LogicRegions = {
     ], [
         # You're supposed to get to the switch by shooting a peanut switch,
         # but can just jump without too much trouble.
-        Event(Events.JapesDiddySwitch2, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy),
+        Event(Events.JapesDiddySwitch2, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.peanut or l.advanced_platforming) and l.isdiddy),
     ], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True, Transitions.JapesMineToMain),
