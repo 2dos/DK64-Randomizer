@@ -515,7 +515,12 @@ def apply_cosmetic_colors(settings: Settings):
                         color_obj[f"{kong.kong} {palette.name}"] = color
     settings.colors = color_obj
     if len(color_palettes) > 0:
-        convertColors(color_palettes)
+        # this is just to prune the duplicates that appear. someone should probably fix the root of the dupe issue tbh
+        new_color_palettes = []
+        for pal in color_palettes:
+            if pal not in new_color_palettes:
+                new_color_palettes.append(pal)
+        convertColors(new_color_palettes)
 
 
 color_bases = []
