@@ -608,7 +608,7 @@ function write_seed_history(seed_id, seed_data, seed_hash) {
         second: "2-digit",
       }
     );
-  } catch {}
+  } catch (error) {console.log(error)}
 }
 
 function load_old_seeds() {
@@ -861,6 +861,18 @@ function check_seed_info_tab() {
     document.getElementById("generate_seed").onclick = function() {document.getElementById("trigger_download_event").click()};
   }
 }
+function toggleDelayedSpoilerLogInput() {
+  var generateSpoilerLogCheckbox = document.getElementById('delayed_spoilerlog_container');
+  if (!document.getElementById('generate_spoilerlog').checked) {
+      generateSpoilerLogCheckbox.removeAttribute('hidden');
+  }
+  else {
+      generateSpoilerLogCheckbox.setAttribute('hidden', '');
+  }
+}
+
+// Call the function on page load to set the initial state
+toggleDelayedSpoilerLogInput();
 // check on any button with the nav-item class is clicked
 document.querySelectorAll(".nav-item").forEach((item) => {
   item.addEventListener("click", () => {
