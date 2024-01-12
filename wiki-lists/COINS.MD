@@ -266,7 +266,7 @@
 | On coal pile in second room | 1 |  | 
 | Behind a barrel near the HI-LO Machine | 1 | (l.charge and l.isdiddy) or l.phasewalk | 
 | Under the Conveyors | 1 | (l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy) or l.phasewalk | 
-| On the bridge | 1 |  | 
+| On the bridge | 1 | l.peanut or l.advanced_platforming | 
 | On a coal stack | 1 |  | 
 </details>
 <details>
