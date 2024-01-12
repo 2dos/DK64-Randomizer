@@ -713,7 +713,7 @@ def disable_move_shuffles(evt):
             training_barrels.setAttribute("disabled", "disabled")
             shockwave_status.value = "vanilla"
             shockwave_status.setAttribute("disabled", "disabled")
-            starting_moves_count.value = 40
+            starting_moves_count.value = 41
             starting_moves_count.setAttribute("disabled", "disabled")
             start_with_slam.checked = True
             start_with_slam.setAttribute("disabled", "disabled")
@@ -723,7 +723,7 @@ def disable_move_shuffles(evt):
             training_barrels.setAttribute("disabled", "disabled")
             shockwave_status.value = "vanilla"
             shockwave_status.setAttribute("disabled", "disabled")
-            starting_moves_count.value = 40
+            starting_moves_count.value = 41
             starting_moves_count.setAttribute("disabled", "disabled")
             start_with_slam.checked = True
             start_with_slam.setAttribute("disabled", "disabled")
@@ -1048,6 +1048,18 @@ def update_ui_states(event):
     toggle_logic_type(None)
     toggle_key_settings(None)
     max_starting_moves_count(None)
+    updateDoorOneNumAccess(None)
+    updateDoorOneCountText(None)
+    updateDoorTwoNumAccess(None)
+    updateDoorTwoCountText(None)
+    disable_tag_spawn(None)
+    disable_krool_phases(None)
+    disable_helm_phases(None)
+    enable_plandomizer(None)
+    disable_switchsanity_with_plandomizer(None)
+    toggle_medals_box(None)
+    toggle_extreme_prices_option(None)
+    toggle_vanilla_door_rando(None)
 
 
 @bind("click", "enable_plandomizer")
@@ -1453,32 +1465,7 @@ def shuffle_settings(evt):
     randomize_settings()
 
     # Run additional functions to ensure there are no conflicts.
-    updateDoorOneNumAccess(None)
-    updateDoorOneCountText(None)
-    updateDoorTwoNumAccess(None)
-    updateDoorTwoCountText(None)
-    toggle_b_locker_boxes(None)
-    toggle_counts_boxes(None)
-    update_boss_required(None)
-    disable_tag_spawn(None)
-    disable_krool_phases(None)
-    disable_helm_phases(None)
-    disable_move_shuffles(None)
-    disable_barrel_modal(None)
-    disable_enemy_modal(None)
-    disable_hard_mode_modal(None)
-    item_rando_list_changed(None)
-    enable_plandomizer(None)
-    disable_switchsanity_with_plandomizer(None)
-    toggle_medals_box(None)
-    toggle_extreme_prices_option(None)
-    toggle_logic_type(None)
-    toggle_bananaport_selector(None)
-    toggle_key_settings(None)
-    disable_helm_hurry(None)
-    disable_remove_barriers(None)
-    disable_faster_checks(None)
-    toggle_vanilla_door_rando(None)
+    update_ui_states()
 
 
 musicToggles = [category.replace(" ", "") for category in MusicSelectionPanel.keys()]

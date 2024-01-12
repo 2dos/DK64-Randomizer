@@ -2177,7 +2177,7 @@ def FillKongsAndMoves(spoiler: Spoiler, placedTypes: List[Types], placedItems: L
         if spoiler.settings.shockwave_status in (ShockwaveStatus.shuffled, ShockwaveStatus.shuffled_decoupled):
             possibleStartingMoves.extend(ItemPool.ShockwaveTypeItems(spoiler.settings))
         # Any placed items placed before this method can't be random starting items
-        for item in placedItems:
+        for item in placedMoves:
             if item in possibleStartingMoves:
                 possibleStartingMoves.remove(item)
         shuffle(possibleStartingMoves)

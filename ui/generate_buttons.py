@@ -14,40 +14,7 @@ from randomizer.Worker import background
 from ui.bindings import bind
 from ui.plando_validation import validate_plando_options
 from ui.progress_bar import ProgressBar
-from ui.rando_options import (
-    disable_barrel_modal,
-    disable_colors,
-    disable_enemy_modal,
-    disable_excluded_songs_modal,
-    disable_hard_mode_modal,
-    disable_helm_hurry,
-    disable_remove_barriers,
-    disable_faster_checks,
-    disable_helm_phases,
-    disable_krool_phases,
-    disable_move_shuffles,
-    disable_music,
-    enable_plandomizer,
-    handle_progressive_hint_text,
-    item_rando_list_changed,
-    max_music,
-    max_music_proportion,
-    max_randomized_blocker,
-    max_randomized_troff,
-    max_sfx,
-    max_starting_moves_count,
-    toggle_b_locker_boxes,
-    toggle_bananaport_selector,
-    toggle_counts_boxes,
-    toggle_item_rando,
-    toggle_key_settings,
-    toggle_logic_type,
-    update_boss_required,
-    updateDoorOneCountText,
-    updateDoorOneNumAccess,
-    updateDoorTwoCountText,
-    updateDoorTwoNumAccess,
-)
+from ui.rando_options import update_ui_states
 from ui.serialize_settings import serialize_settings
 
 
@@ -127,36 +94,8 @@ def import_settings_string(event):
         except Exception as e:
             print(e)
             pass
-    toggle_counts_boxes(None)
-    toggle_b_locker_boxes(None)
-    update_boss_required(None)
-    disable_colors(None)
-    disable_music(None)
-    disable_move_shuffles(None)
-    max_randomized_blocker(None)
-    handle_progressive_hint_text(None)
-    max_randomized_troff(None)
-    max_music(None)
-    max_music_proportion(None)
-    max_sfx(None)
-    disable_barrel_modal(None)
-    updateDoorOneCountText(None)
-    updateDoorTwoCountText(None)
-    item_rando_list_changed(None)
-    toggle_item_rando(None)
-    disable_enemy_modal(None)
-    disable_excluded_songs_modal(None)
-    disable_hard_mode_modal(None)
-    toggle_bananaport_selector(None)
-    disable_helm_hurry(None)
-    disable_remove_barriers(None)
-    disable_faster_checks(None)
-    toggle_logic_type(None)
-    toggle_key_settings(None)
-    disable_krool_phases(None)
-    disable_helm_phases(None)
-    max_starting_moves_count(None)
-    enable_plandomizer(None)
+    update_ui_states(None)
+    js.savesettings()
 
 
 @bind("change", "patchfileloader")
