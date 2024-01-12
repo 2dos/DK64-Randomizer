@@ -122,7 +122,7 @@ LogicRegions = {
     ]),
 
     Regions.JapesBeyondFeatherGate: Region("Japes Beyond Feather Gate", "Hive Tunnel Area", Levels.JungleJapes, True, None, [
-        LocationLogic(Locations.JapesTinyStump, lambda l: (((l.mini and l.istiny) or l.phasewalk or l.CanSkew(True) or l.CanSkew(False)) and (l.istiny or l.settings.free_trade_items))),
+        LocationLogic(Locations.JapesTinyStump, lambda l: (((l.mini and l.istiny) or l.phasewalk or l.CanSkew(True) or l.CanSkew(False)) and l.istiny)),
         LocationLogic(Locations.JapesChunkyGiantBonusBarrel, lambda l: l.hunkyChunky and l.ischunky, MinigameType.BonusBarrel),
         LocationLogic(Locations.JapesMainEnemy_Hive0, lambda l: True),
         LocationLogic(Locations.JapesMainEnemy_Hive1, lambda l: True),
@@ -212,7 +212,7 @@ LogicRegions = {
     ], [
         # You're supposed to get to the switch by shooting a peanut switch,
         # but can just jump without too much trouble.
-        Event(Events.JapesDiddySwitch2, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and l.isdiddy),
+        Event(Events.JapesDiddySwitch2, lambda l: l.CanSlamSwitch(Levels.JungleJapes, 1) and (l.peanut or l.advanced_platforming) and l.isdiddy),
     ], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesMain, lambda l: True, Transitions.JapesMineToMain),

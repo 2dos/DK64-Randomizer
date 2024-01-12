@@ -1659,6 +1659,7 @@ BananaCoinGroupList = {
             name="On the bridge",
             konglist=[Kongs.diddy],
             region=Regions.Mine,
+            logic=lambda l: l.peanut or l.advanced_platforming,
             locations=[
                 [1.0, 498.7564392089844, 146.62681579589844, 198.3944091796875],
             ],

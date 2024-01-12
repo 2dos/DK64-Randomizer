@@ -155,7 +155,7 @@
 
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
-| Bunch on Diddy's switch | 5 |  | 
+| Bunch on Diddy's switch | 5 | l.peanut or l.advanced_platforming | 
 | Singles on path to switch | 5 |  | 
 | Big upside down minecart | 5 |  | 
 | 2 bunches on big barrel (with ammo) | 10 |  | 
