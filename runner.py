@@ -584,4 +584,4 @@ if __name__ == "__main__":
         """Serve the randomizer page."""
         return send_from_directory(".", "randomizer.html")
 
-    app.run(debug=True, port=8000)
+    app.run(debug=True, port=8000, threaded=True)
