@@ -2058,10 +2058,14 @@ def PlaceKongsInKongLocations(spoiler: Spoiler, kongItems, kongLocations):
     if spoiler.settings.chunky_freeing_kong == Kongs.any:
         spoiler.settings.chunky_freeing_kong = choice(GetKongs())
     # Update the locations' assigned kong with the set freeing kong list
+    spoiler.LocationList[Locations.DiddyKong].kong = spoiler.settings.diddy_freeing_kong
     spoiler.LocationList[Locations.JapesDonkeyFrontofCage].kong = spoiler.settings.diddy_freeing_kong
     spoiler.LocationList[Locations.JapesDonkeyFreeDiddy].kong = spoiler.settings.diddy_freeing_kong
+    spoiler.LocationList[Locations.LankyKong].kong = spoiler.settings.lanky_freeing_kong
     spoiler.LocationList[Locations.AztecDonkeyFreeLanky].kong = spoiler.settings.lanky_freeing_kong
+    spoiler.LocationList[Locations.TinyKong].kong = spoiler.settings.tiny_freeing_kong
     spoiler.LocationList[Locations.AztecDiddyFreeTiny].kong = spoiler.settings.tiny_freeing_kong
+    spoiler.LocationList[Locations.ChunkyKong].kong = spoiler.settings.chunky_freeing_kong
     spoiler.LocationList[Locations.FactoryLankyFreeChunky].kong = spoiler.settings.chunky_freeing_kong
     spoiler.settings.update_valid_locations(spoiler)
 
