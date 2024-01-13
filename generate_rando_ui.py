@@ -50,7 +50,6 @@ async def initialize():
         resp = js.getFile(file)
         return resp
 
-
     def loader_func(template_name):
         return ajax_call("templates/" + f"{template_name}")
 
