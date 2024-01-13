@@ -219,7 +219,7 @@ static const map_bitfield is_dark_world_mc = {
     .dk_isles_snides_room = 0,
     .crystal_caves_army_dillo = 1,
     .angry_aztec_dogadon = 1, // Reason: Framebuffer
-    .training_grounds_end_sequence = 0,
+    .training_grounds_end_sequence = 1, // Reason: Framebuffer
     .creepy_castle_king_kut_out = 1,
     .crystal_caves_shack_diddy_upper_part = 0,
     .k_rool_barrel_diddys_rocketbarrel_game = 1,
@@ -312,7 +312,7 @@ void alterChunkData(void* data) {
 }
 
 #define SHINE_DISTANCE 30
-#define SHINE_RADIUS 70
+#define SHINE_RADIUS 40
 #define USE_POSITIONAL_SHINE 1
 
 void shineLight(actorData* actor, int kongType) {
@@ -322,7 +322,6 @@ void shineLight(actorData* actor, int kongType) {
         return;
     }
     if (USE_POSITIONAL_SHINE) {
-        // Caused way too much lag for what it was worth
         float shine_x = determineXRatioMovement(actor->rot_y) * SHINE_DISTANCE;
         float shine_z = determineZRatioMovement(actor->rot_y) * SHINE_DISTANCE;
         shine_x += actor->xPos;
