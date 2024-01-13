@@ -751,7 +751,7 @@ class Settings:
 
         # Move Location Rando
         if self.move_rando == MoveRando.start_with:
-            self.starting_moves_count = 40
+            self.starting_moves_count = 41
             self.training_barrels = TrainingBarrels.normal
             self.shockwave_status = ShockwaveStatus.start_with
 
@@ -1323,7 +1323,7 @@ class Settings:
         spoiler.LocationList[Locations.IslesBarrelsTrainingBarrel].type = Types.TrainingBarrel
         spoiler.LocationList[Locations.IslesOrangesTrainingBarrel].default = Items.Oranges
         spoiler.LocationList[Locations.IslesOrangesTrainingBarrel].type = Types.TrainingBarrel
-        location_cap = 36
+        location_cap = 37  # Increment this for every new potential starting move added
         if self.shockwave_status in (ShockwaveStatus.vanilla, ShockwaveStatus.start_with):
             location_cap -= 2
         if self.shockwave_status == ShockwaveStatus.shuffled:
