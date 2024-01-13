@@ -12,7 +12,9 @@ async def initialize():
     # await micropip.install("pyodide-importer")
     url = js.window.location.origin
     await micropip.install(
-        [f"{url}/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl", f"{url}/static/js/pyodide/Pillow-10.0.0-cp311-cp311-emscripten_3_1_45_wasm32.whl"],
+        [
+            f"{url}/static/py_libraries/pyodide_importer-0.0.2-py2.py3-none-any.whl",
+        ],
         deps=False,
     )
     if js.location.hostname in ["dev.dk64randomizer.com", "dk64randomizer.com"]:
@@ -94,6 +96,12 @@ async def initialize():
     )
     # get the "tab-data" div and replace it with the rendered template
     js.jquery("#tab-data").html(rendered)
+    await micropip.install(
+        [
+            f"{url}/static/js/pyodide/Pillow-10.0.0-cp311-cp311-emscripten_3_1_45_wasm32.whl",
+        ],
+        deps=False,
+    )
 
 
 # Run the script (This will be run as async later on)
