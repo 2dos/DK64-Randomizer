@@ -60,12 +60,10 @@ og_patched_rom = BytesIO(bps.patch(original, patch).read())
 # load all the settings strings into memory
 presets = []
 with open("static/presets/preset_files.json", "r") as f:
-    for preset in json.load(f)["progression"]:
-        with open("static/presets/" + preset, "r") as preset_file:
-            preset_data = json.load(preset_file)
-            # remove any preset where the description is empty
-            if len(preset_data.get("description")) > 3:
-                presets.append(preset_data)
+    for preset in json.load(f):
+        # remove any preset where the description is empty
+        if len(preset.get("description")) > 3:
+            presets.append(preset)
 
 if os.environ.get("HOSTED_SERVER") is not None:
     import boto3

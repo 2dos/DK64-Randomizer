@@ -1,6 +1,5 @@
 """Generate UI elements via jinja2 to display on page load."""
 import json
-import time
 
 import micropip
 from jinja2 import Environment, FunctionLoader
@@ -51,15 +50,13 @@ async def initialize():
         resp = js.getFile(file)
         return resp
 
-    milliseconds = int(round(time.time() * 1000))
-
     def loader_func(template_name):
-        return ajax_call("templates/" + f"{template_name}?currtime={milliseconds}")
+        return ajax_call("templates/" + f"{template_name}")
 
-    for file in json.loads(ajax_call(f"static/presets/preset_files.json?currtime={milliseconds}")).get("progression"):
-        js.progression_presets.append(json.loads(ajax_call("static/presets/" + file)))
-    for file in json.loads(ajax_call(f"static/presets/weights/weights_files.json?currtime={milliseconds}")).get("random_settings"):
-        js.random_settings_presets.append(json.loads(ajax_call("static/presets/weights/" + file)))
+    for file in json.loads(ajax_call(f"static/presets/preset_files.json")):
+        js.progression_presets.append(file)
+    for file in json.loads(ajax_call(f"static/presets/weights/weights_files.json")):
+        js.random_settings_presets.append(file)
 
     # Load our pointer info from the JSON database
     js.pointer_addresses = json.loads(js.getFile("./static/patches/pointer_addresses.json"))

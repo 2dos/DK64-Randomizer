@@ -1465,7 +1465,7 @@ def shuffle_settings(evt):
     randomize_settings()
 
     # Run additional functions to ensure there are no conflicts.
-    update_ui_states()
+    update_ui_states(evt)
 
 
 musicToggles = [category.replace(" ", "") for category in MusicSelectionPanel.keys()]

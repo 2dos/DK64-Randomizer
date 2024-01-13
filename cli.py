@@ -81,9 +81,8 @@ def main():
                 sys.exit(2)
         elif args.preset is not None:
             presets = json.load(open("static/presets/preset_files.json"))
-            default = json.load(open("static/presets/default.json"))
             found = False
-            for file in presets.get("progression"):
+            for file in presets:
                 with open("static/presets/" + file, "r") as preset_file:
                     data = json.load(preset_file)
                     if args.preset == data.get("name"):
