@@ -7,8 +7,6 @@ from pyodide.ffi import create_proxy
 
 import js
 from randomizer.Enums.Settings import SettingsMap
-from randomizer.Patching.ApplyLocal import patching_response
-from randomizer.Patching.Hash import get_hash_images
 from randomizer.SettingStrings import decrypt_settings_string_enum, encrypt_settings_string_enum
 from randomizer.Worker import background
 from ui.bindings import bind
@@ -139,6 +137,8 @@ async def generate_previous_seed(event):
         loop.run_until_complete(ProgressBar().update_progress(0, "Loading Previous seed and applying data."))
         js.apply_conversion()
         lanky_from_history = js.document.getElementById("load_patch_file").checked
+        from randomizer.Patching.ApplyLocal import patching_response
+
         await patching_response(str(js.get_previous_seed_data()), True, lanky_from_history, True)
 
 
@@ -156,6 +156,8 @@ async def generate_seed_from_patch(event):
             js.document.getElementById("patchfileloader").classList.add("is-invalid")
     else:
         js.apply_conversion()
+        from randomizer.Patching.ApplyLocal import patching_response
+
         await patching_response(str(js.loaded_patch), True)
 
 
@@ -193,6 +195,8 @@ def generate_seed(event):
                 return
 
         # Start the progressbar
+        from randomizer.Patching.Hash import get_hash_images
+
         gif_fairy = get_hash_images("browser", "loading-fairy")
         gif_dead = get_hash_images("browser", "loading-dead")
         js.document.getElementById("progress-fairy").src = "data:image/jpeg;base64," + gif_fairy[0]
@@ -242,6 +246,8 @@ async def get_args():
         # Wait for the page to load
         print("Getting the seed from the server")
         resp = js.get_seed_from_server(args_dict["seed_id"])
+        from randomizer.Patching.ApplyLocal import patching_response
+
         await patching_response(str(resp), False)
     js.document.getElementById("visual_indicator").setAttribute("hidden", "true")
     js.document.getElementById("tab-data").removeAttribute("hidden")
