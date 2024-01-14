@@ -403,6 +403,7 @@ extern int initFile_checkTraining(int type_check, int kong_check, int value_chec
 
 extern item_collision* writeItemScale(int id);
 extern item_collision* writeItemActorScale(void);
+extern int getItemRequiredKong(maps map, int id);
 
 extern void fixHelmTimerCorrection(void);
 extern void helmTime_restart(void);

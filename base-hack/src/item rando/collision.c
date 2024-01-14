@@ -125,6 +125,15 @@ item_collision* writeItemActorScale(void) {
     return data;
 }
 
+int getItemRequiredKong(maps map, int id) {
+    if (map == MAP_JAPES) {
+        if (id == 0x68) {
+            return KONG_TINY + 2;
+        }
+    }
+    return 0;
+}
+
 int isObjectTangible_detailed(int id) {
     /**
      * @brief Override function for object tangibility
@@ -135,11 +144,6 @@ int isObjectTangible_detailed(int id) {
      */
     if ((CurrentMap == MAP_FUNGIMILLFRONT) && (id == 0xA)) {
         return 0;
-    }
-    if ((CurrentMap == MAP_JAPES) && (id == 0x68)) {
-        if (Character != KONG_TINY) {
-            return 0;
-        }
     }
     return isObjectTangible(id);
 }

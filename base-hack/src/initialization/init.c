@@ -511,6 +511,9 @@ void initHack(int source) {
 				// Rain
 				*(short*)(0x8068B6AE) = 0;
 			}
+			if (Rando.any_kong_items & 1) {
+				writeFunction(0x80632E94, &getItemRequiredKong);
+			}
 			if ((Rando.hard_mode.no_geo) || (Rando.hard_mode.memory_challenge)) {
 				writeFunction(0x80656538, &displayNoGeoChunk);
 				writeFunction(0x806562C0, &displayNoGeoChunk);
