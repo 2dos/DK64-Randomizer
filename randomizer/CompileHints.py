@@ -506,6 +506,7 @@ def compileHints(spoiler: Spoiler) -> bool:
         HintType.RequiredWinConditionHint,
         HintType.RequiredHelmDoorHint,
         HintType.Multipath,
+        HintType.ItemRegion,
     ]  # Some hint types cannot have their value changed
     maxed_hint_types = []  # Some hint types cannot have additional hints placed
     minned_hint_types = []  # Some hint types cannot have all their hints removed
@@ -626,13 +627,6 @@ def compileHints(spoiler: Spoiler) -> bool:
         random.shuffle(optional_hintable_locations)
         while len(item_region_locations_to_hint) < hint_distribution[HintType.ItemRegion] and len(optional_hintable_locations) > 0:
             item_region_locations_to_hint.append(optional_hintable_locations.pop())
-        # Make sure we have exactly 35 hints planned
-        hint_count = 0
-        for type in hint_distribution:
-            if type in valid_types or type == HintType.Plando:
-                hint_count += hint_distribution[type]
-            else:
-                hint_distribution[type] = 0
         # If there's so many WotH things we can't hint them all, some WotH things will go unhinted. Unlucky.
         if len(item_region_locations_to_hint) > hint_distribution[HintType.ItemRegion]:
             too_many_count = len(item_region_locations_to_hint) - hint_distribution[HintType.ItemRegion]
@@ -646,6 +640,16 @@ def compileHints(spoiler: Spoiler) -> bool:
             random.shuffle(less_important_location_ids)
             for i in range(too_many_count):
                 item_region_locations_to_hint.remove(less_important_location_ids[i])
+        # If you start with a ton of moves, there may be only a handful of things to hint
+        if len(item_region_locations_to_hint) < hint_distribution[HintType.ItemRegion]:
+            hint_distribution[HintType.ItemRegion] = len(item_region_locations_to_hint)
+        # Make sure we still have exactly 35 hints planned
+        hint_count = 0
+        for type in hint_distribution:
+            if type in valid_types or type == HintType.Plando:
+                hint_count += hint_distribution[type]
+            else:
+                hint_distribution[type] = 0
         # We'll never be over the cap here, but in some cases we may be under the cap - fill extra hints if we need them
         while hint_count < HINT_CAP:
             filler_type = random.choice(valid_types)
@@ -1976,9 +1980,12 @@ def compileHints(spoiler: Spoiler) -> bool:
     # Finally, place our joke hints
     for i in range(hint_distribution[HintType.Joke]):
         hint_location = getRandomHintLocation()
-        joke_hint_list = hint_list.copy()
-        random.shuffle(joke_hint_list)
-        message = joke_hint_list.pop().hint
+        if i > 4:
+            message = "What do you think I am, a comedian? Try again in another seed."
+        else:
+            joke_hint_list = hint_list.copy()
+            random.shuffle(joke_hint_list)
+            message = joke_hint_list.pop().hint
         # Way of the Bean joke hint - yes, this IS worth it
         if message == "[[WOTB]]":
             bean_location_id = None

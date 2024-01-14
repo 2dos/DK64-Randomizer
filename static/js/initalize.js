@@ -608,7 +608,7 @@ function write_seed_history(seed_id, seed_data, seed_hash) {
         second: "2-digit",
       }
     );
-  } catch {}
+  } catch (error) {console.log(error)}
 }
 
 function load_old_seeds() {
@@ -621,6 +621,8 @@ function load_old_seeds() {
     var all_seeds = seed_store.getAll();
     all_seeds.onsuccess = function () {
       try {
+        const hook = document.getElementById("pastgenlist");
+        hook.innerHTML = "";
         var arrayLength = all_seeds.result.length;
         var sorted_array = all_seeds.result;
         sorted_array.sort(function (a, b) {

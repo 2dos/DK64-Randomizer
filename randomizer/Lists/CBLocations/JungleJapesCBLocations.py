@@ -566,6 +566,7 @@ ColoredBananaGroupList = [
         name="Bunch on Diddy's switch",
         konglist=[Kongs.diddy],
         region=Regions.Mine,
+        logic=lambda l: l.peanut or l.advanced_platforming,
         locations=[[5, 1.0, 485, 144, 122]],
     ),
     ColoredBananaGroup(
