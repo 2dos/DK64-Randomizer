@@ -171,6 +171,7 @@ extern void getScreenPosition(float x, float y, float z, float* x_store, float* 
 extern int* textDraw(int* dl, int style, int x, int y, char* str);
 extern void* getPtr14Texture(int texture);
 extern void renderImage_Internal(void* dl, void* texture, int unk0, int width, int height, int unk1, int unk1_copy, int unk2, int unk2_copy, float width_f, float height_f, float x_center, float y_center, int unk3);
+extern int* displayChunk(int* dl, int chunk_index, int shift);
 
 extern void cancelPausedCutscene(void);
 extern void pauseCutscene(void);

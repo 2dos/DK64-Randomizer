@@ -358,6 +358,7 @@ extern void warpOutOfArenas(void);
 extern void warpOutOfTraining(void);
 extern void ArenaTagKongCode(void);
 extern void ArenaEarlyCompletionCheck(void);
+extern int* displayNoGeoChunk(int* dl, int chunk_index, int shift);
 
 extern int fairyQueenCutsceneInit(int start, int count, flagtypes type);
 extern void fairyQueenCutsceneCheck(void);
@@ -402,6 +403,7 @@ extern int initFile_checkTraining(int type_check, int kong_check, int value_chec
 
 extern item_collision* writeItemScale(int id);
 extern item_collision* writeItemActorScale(void);
+extern int getItemRequiredKong(maps map, int id);
 
 extern void fixHelmTimerCorrection(void);
 extern void helmTime_restart(void);
