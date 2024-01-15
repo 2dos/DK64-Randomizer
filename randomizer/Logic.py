@@ -30,6 +30,7 @@ from randomizer.Enums.Switches import Switches
 from randomizer.Enums.SwitchTypes import SwitchType
 from randomizer.Enums.Settings import (
     ActivateAllBananaports,
+    BananaportRando,
     DamageAmount,
     FasterChecksSelected,
     GlitchesSelected,
@@ -456,6 +457,14 @@ class LogicVarHolder:
         if not (self.checkBarrier(RemovedBarriersSelected.aztec_llama_switches) or Events.LlamaFreed in self.Events):
             return False
         return self.hasMoveSwitchsanity(Switches.AztecLlamaCoconut) or self.hasMoveSwitchsanity(Switches.AztecLlamaGrape) or self.hasMoveSwitchsanity(Switches.AztecLlamaFeather)
+
+    def canTravelToMechFish(self):
+        """Determine whether or not there is a fast enough path to the Mech Fish is open."""
+        if self.settings.shuffle_loading_zones != ShuffleLoadingZones.all or self.settings.bananaport_rando == BananaportRando.off:
+            return self.swim
+        lighthouse_gate = self.checkBarrier(RemovedBarriersSelected.galleon_lighthouse_gate_opened) or self.hasMoveSwitchsanity(Switches.GalleonLighthouse, False)
+        shipyard_gate = self.checkBarrier(RemovedBarriersSelected.galleon_shipwreck_gate_opened) or self.hasMoveSwitchsanity(Switches.GalleonShipwreck, False)
+        return self.swim and lighthouse_gate and shipyard_gate
 
     def hasMoveSwitchsanity(self, switchsanity_setting: Switches, kong_needs_current: bool = True, level: Levels = Levels.JungleJapes, default_slam_level: int = 0) -> bool:
         """Determine whether the kong has the necessary moves based on the switchsanity data."""
