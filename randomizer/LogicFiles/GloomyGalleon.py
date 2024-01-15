@@ -91,7 +91,7 @@ LogicRegions = {
     Regions.LighthousePlatform: Region("Lighthouse Platform", "Lighthouse Area", Levels.GloomyGalleon, False, None, [
         LocationLogic(Locations.GalleonDiddyShipSwitch, lambda l: Events.ActivatedLighthouse in l.Events and l.jetpack and l.Slam and l.isdiddy),
     ], [
-        Event(Events.MechafishSummoned, lambda l: l.jetpack and l.guitar and l.swim and l.isdiddy),
+        Event(Events.MechafishSummoned, lambda l: l.jetpack and l.guitar and l.canTravelToMechFish() and l.isdiddy),
         Event(Events.GalleonW1bTagged, lambda l: True),
         Event(Events.GalleonW5aTagged, lambda l: True),
     ], [
