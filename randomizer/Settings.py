@@ -1328,6 +1328,8 @@ class Settings:
             location_cap -= 2
         if self.shockwave_status == ShockwaveStatus.shuffled:
             location_cap -= 1
+        if self.start_with_slam:
+            location_cap -= 1
         locations_to_add = self.starting_moves_count
         # If the training barrels are shuffled in, we may have to remove the training barrel locations if we don't have enough starting moves to place
         if self.training_barrels == TrainingBarrels.shuffled:
