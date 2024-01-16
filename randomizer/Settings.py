@@ -660,14 +660,7 @@ class Settings:
                 self.starting_move_list_selected.remove(Items.Swim)
         else:
             self.training_barrels = TrainingBarrels.shuffled
-        # Limit the amount of starting moves to the amount of moves in this game.
-        max_starting_moves_count = 39 - len(copy_of_starting_move_list_selected)
-        if self.shockwave_status == ShockwaveStatus.shuffled:
-            max_starting_moves_count = max_starting_moves_count + 1
-        elif self.shockwave_status != ShockwaveStatus.start_with:
-            max_starting_moves_count = max_starting_moves_count + 2
-        sub_total_desired_starting_moves = self.starting_moves_count + len(self.starting_move_list_selected)
-        self.starting_moves_count = min(sub_total_desired_starting_moves, max_starting_moves_count)
+        self.starting_moves_count = self.starting_moves_count + len(self.starting_move_list_selected)
 
         # Switchsanity handling
         self.switchsanity_data = {
