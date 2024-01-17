@@ -19,7 +19,7 @@
                                 <path d="M14.876,2.672a3.309,3.309,0,0,0-5.752,0L.414,18.19a3.178,3.178,0,0,0,.029,3.189A3.264,3.264,0,0,0,3.29,23H20.71a3.264,3.264,0,0,0,2.847-1.621,3.178,3.178,0,0,0,.029-3.189ZM12,19a1,1,0,1,1,1-1A1,1,0,0,1,12,19Zm1-5a1,1,0,0,1-2,0V8a1,1,0,0,1,2,0Z"/>
                             </svg>
                         </span>
-                        {{ list_selector(itemRando, "item_rando_list", "ITEM RANDO SELECTOR", "This will open a popup that will let you customize what items are shuffled in the pool.&#10;This defaults to All options.", 15) }}
+                        {{ list_selector(itemRando, "item_rando_list", "ITEM RANDO SELECTOR", "This will open a popup that will let you customize what items are shuffled in the pool.&#10;This defaults to All options.", 15, True) }}
                     {# Remove end </div> as it's included in the macro for formatting #}
                     <div class="form-check form-switch item-switch" style="max-height: 24px;">
                         <label data-toggle="tooltip" title="Sparkling enemies can drop major items. Highly chaotic, adding lots of checks all over the world.">
@@ -227,7 +227,7 @@
                                 value="True"/>
                         Shuffle Enemies
                     </label>
-                    {{ list_selector(enemies, "enemies", "ENEMIES", "This will open a popup that will let you customize what enemies appear in the game.&#10;This defaults to All options.", 16) }}
+                    {{ list_selector(enemies, "enemies", "ENEMIES", "This will open a popup that will let you customize what enemies appear in the game.&#10;This defaults to All options.", 16, True) }}
                 {# Remove end </div> as it's included in the macro for formatting #}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"
@@ -239,7 +239,7 @@
                                value="True"/>
                         Shuffle Bonus Barrels
                     </label>
-                    {{ list_selector(minigames, "minigames_list", "MINIGAME SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.", 18) }}
+                    {{ list_selector(minigames, "minigames_list", "MINIGAME SELECTOR", "This will open a popup that will let you customize what Bonus Games are in the pool.&#10;This defaults to All minigames.", 18, True) }}
                 {# Remove end </div> as it's included in the macro for formatting #}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip" title="Enemy speeds are randomized.">
@@ -446,7 +446,7 @@
                         </option>
                     </select>
                     <div style="padding: 5px;">
-                        {{ list_selector(vanilla_warps, "warp_level_list", "LEVEL SELECTOR", "This will open a popup that will let you customize what levels' warps are in the pool. Any level not selected will have its vanilla warp locations.&#10;This defaults to All levels.", 10) }}
+                        {{ list_selector(vanilla_warps, "warp_level_list", "LEVEL SELECTOR", "This will open a popup that will let you customize what levels' warps are in the pool. Any level not selected will have its vanilla warp locations.&#10;This defaults to All levels.", 10, True) }}
                     {# Remove end </div> as it's included in the macro for formatting #}
                 </div>
             </div>

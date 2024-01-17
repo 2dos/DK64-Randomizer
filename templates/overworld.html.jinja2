@@ -35,7 +35,7 @@
                                 value="True"/>
                             Remove Barriers
                         </label>
-                        {{ list_selector(remove_barriers, "remove_barriers", "REMOVE BARRIERS", "This will open a popup that will let you customize what barriers are removed.&#10;This defaults to All options.", 12) }}
+                        {{ list_selector(remove_barriers, "remove_barriers", "REMOVE BARRIERS", "This will open a popup that will let you customize what barriers are removed.&#10;This defaults to All options.", 12, True) }}
                         {# Remove end </div> as it's included in the macro for formatting #}
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
@@ -57,7 +57,7 @@
                                 value="True"/>
                             Faster Checks
                         </label>
-                        {{ list_selector(faster_checks, "faster_checks", "FASTER CHECKS", "This will open a popup that will let you customize what checks are sped up.&#10;This defaults to All options.", 12) }}
+                        {{ list_selector(faster_checks, "faster_checks", "FASTER CHECKS", "This will open a popup that will let you customize what checks are sped up.&#10;This defaults to All options.", 12, True) }}
                         {# Remove end </div> as it's included in the macro for formatting #}
                     <div class="form-check form-switch item-switch">
                         <label data-toggle="tooltip"
@@ -105,7 +105,7 @@
                                 </option>
                             </select>
                             <div style="padding: 5px;">
-                                {{ list_selector(glitches, "glitches", "GLITCHES", "This will open a popup that will let you customize what tricks are considered by logic with glitch logic.&#10;This defaults to All options.", 16) }}
+                                {{ list_selector(glitches, "glitches", "GLITCHES", "This will open a popup that will let you customize what tricks are considered by logic with glitch logic.&#10;This defaults to All options.", 16, True) }}
                                 {# Remove end </div> as it's included in the macro for formatting #}
                             </div>
                         </div>
@@ -281,7 +281,7 @@
                                value="True"/>
                         Hard Mode
                     </label>
-                    {{ list_selector(hard_mode, "hard_mode", "HARD MODE", "This will open a popup that will let you customize what hard mode Options are active.&#10;This defaults to All options.", 5) }}
+                    {{ list_selector(hard_mode, "hard_mode", "HARD MODE", "This will open a popup that will let you customize what hard mode Options are active.", 5) }}
                     {# Remove end </div> as it's included in the macro for formatting #}
                 <div class="form-check form-switch item-switch">
                     <label data-toggle="tooltip"

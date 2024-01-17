@@ -1,4 +1,4 @@
-{% macro list_selector(list, name, title, tooltip, size) %}
+{% macro list_selector(list, name, title, tooltip, size, includeDisclaimer=False) %}
     <!-- Icon triggers modal -->
     <input class="customize"
            type="button"
@@ -27,7 +27,7 @@
             <div class="modal-body">
                 <div class="item-multiselect" style="margin-left: 105px;">
                     <div class="color-selector">
-                        <div class="input-group mb-3">
+                        <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text search">
                                     <input type="text"
@@ -52,6 +52,12 @@
                         </div>
                     </div>
                 </div>
+                {% if includeDisclaimer %}
+                    <div class="fst-italic">
+                        <div>If nothing is selected, all options are treated as selected.</div>
+                        <div>Disable the setting slider to disable all options.</div>
+                    </div>
+                {% endif %}
                 {% if name == "minigames_list" %}
                     <div class="form-check form-switch" style="padding-left: 1.5em;">
                         <label data-toggle="tooltip"

@@ -60,6 +60,7 @@ class Spoiler:
         self.woth_paths = {}
         self.krool_paths = {}
         self.other_paths = {}
+        self.shuffled_door_data = {}
         self.shuffled_barrel_data = {}
         self.shuffled_exit_data = {}
         self.shuffled_exit_instructions = []
