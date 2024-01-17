@@ -122,6 +122,9 @@ def BarrelShuffle(settings: Settings) -> None:
             MinigamesListSelected.arenas: [Minigames.RambiArena, Minigames.EnguardeArena],
             MinigamesListSelected.training_minigames: [Minigames.OrangeBarrel, Minigames.BarrelBarrel, Minigames.VineBarrel, Minigames.DiveBarrel],
         }
+        # If Stealthy Snoop is not selected, don't include the Stash Snatch variant with Kops
+        if MinigamesListSelected.stealthy_snoop not in settings.minigames_list_selected:
+            minigame_dict[MinigamesListSelected.stash_snatch].remove(Minigames.StashSnatchHard)
         minigamePool = []
         for name, value in minigame_dict.items():
             if name in settings.minigames_list_selected:
