@@ -82,7 +82,6 @@
       "jetpac": 1
     },
     "fast_warps": 1,
-    "fps_display": 0.5,
     "free_trade_setting": {
       "not_blueprints": 0.3,
       "major_collectibles": 0.7
@@ -234,10 +233,6 @@
     },
     "minigames_list_selected": {},
     "misc_changes_selected": {},
-    "more_cutscene_skips": {
-      "press": 0.4,
-      "auto": 0.6
-    },
     "move_rando": {
       "cross_purchase": 1
     },
@@ -394,7 +389,7 @@
       "double": 0.35,
       "quad": 0.15
     },
-    "dim_solved_hints": 1,
+    "dim_solved_hints": 0.5,
     "disable_tag_barrels": 0.5,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
@@ -423,7 +418,6 @@
       "jetpac": 0.7
     },
     "fast_warps": 1,
-    "fps_display": 0.5,
     "free_trade_setting": {
       "none": 0.1,
       "not_blueprints": 0.3,
@@ -584,10 +578,6 @@
     },
     "minigames_list_selected": {},
     "misc_changes_selected": {},
-    "more_cutscene_skips": {
-      "press": 0.5,
-      "auto": 0.5
-    },
     "move_rando": {
       "on": 0.3,
       "cross_purchase": 0.7
@@ -753,7 +743,7 @@
       "quad": 0.2,
       "ohko": 0.1
     },
-    "dim_solved_hints": 1,
+    "dim_solved_hints": 0,
     "disable_tag_barrels": 0.5,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
@@ -782,7 +772,6 @@
       "jetpac": 0.7
     },
     "fast_warps": 1,
-    "fps_display": 0.5,
     "free_trade_setting": {
       "none": 0.2,
       "not_blueprints": 0.3,
@@ -978,10 +967,6 @@
       "fast_pause_transitions": 1,
       "cannon_game_better_control": 1
     },
-    "more_cutscene_skips": {
-      "press": 0.5,
-      "auto": 0.5
-    },
     "move_rando": {
       "on": 0.3,
       "cross_purchase": 0.7
@@ -989,7 +974,7 @@
     "no_healing": 0.5,
     "no_melons": 0.5,
     "open_lobbies": 0.6,
-    "perma_death": 0.05,
+    "perma_death": 0,
     "portal_numbers": 1,
     "progressive_hint_text": {
       "min": 30,
@@ -1151,7 +1136,7 @@
       "quad": 0.2,
       "ohko": 0.1
     },
-    "dim_solved_hints": 0.5,
+    "dim_solved_hints": 0,
     "disable_tag_barrels": 0.5,
     "enable_plandomizer": 0,
     "enable_progressive_hints": 0.5,
@@ -1180,7 +1165,6 @@
       "jetpac": 0.7
     },
     "fast_warps": 0.8,
-    "fps_display": 0.5,
     "free_trade_setting": {
       "none": 0.2,
       "not_blueprints": 0.3,
@@ -1376,11 +1360,6 @@
       "fast_pause_transitions": 0.9,
       "cannon_game_better_control": 0.5
     },
-    "more_cutscene_skips": {
-      "off": 0.1,
-      "press": 0.4,
-      "auto": 0.5
-    },
     "move_rando": {
       "on": 0.3,
       "cross_purchase": 0.7
@@ -1388,7 +1367,7 @@
     "no_healing": 0.5,
     "no_melons": 0.5,
     "open_lobbies": 0.6,
-    "perma_death": 0.05,
+    "perma_death": 0,
     "portal_numbers": 0.5,
     "progressive_hint_text": {
       "min": 30,
