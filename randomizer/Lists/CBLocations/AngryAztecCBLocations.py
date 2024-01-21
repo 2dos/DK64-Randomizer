@@ -1632,7 +1632,7 @@ BalloonList = [
         name="Near Hunky Chunky barrel",
         speed=8,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecMain,
+        region=Regions.AngryAztecConnectorTunnel,
         points=[[3168, 185, 1580], [3216, 185, 1460], [3323, 185, 1468], [3380, 185, 1579], [3323, 185, 1468], [3216, 185, 1460]],
     ),
     Balloon(
@@ -1641,7 +1641,7 @@ BalloonList = [
         name="Cranky snake path left side",
         speed=4,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecMain,
+        region=Regions.AngryAztecConnectorTunnel,
         points=[[3353, 180, 2186], [3363, 180, 2342], [3275, 180, 2434]],
     ),
     Balloon(
@@ -1650,7 +1650,7 @@ BalloonList = [
         name="Around giant boulder",
         speed=6,
         konglist=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
-        region=Regions.AngryAztecMain,
+        region=Regions.AngryAztecConnectorTunnel,
         points=[[3577, 180, 2483], [3501, 180, 2414], [3602, 180, 2311], [3501, 180, 2414]],
     ),
     Balloon(

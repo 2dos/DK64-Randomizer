@@ -202,6 +202,12 @@ void loadHooks(void) {
 	loadSingularHook(0x80600674, &updateLag);
 }
 
+void skipDKTV(void) {
+	setNextTransitionType(1);
+	initiateTransition(MAP_MAINMENU, 0);
+	Mode = GAMEMODE_MAINMENU;
+}
+
 void initHack(int source) {
 	/**
 	 * @brief Initialize Hack
@@ -511,6 +517,9 @@ void initHack(int source) {
 				// Rain
 				*(short*)(0x8068B6AE) = 0;
 			}
+			if (!Rando.quality_of_life.fast_boot) {
+				writeFunction(0x80713258, &skipDKTV);
+			}
 			if (Rando.any_kong_items & 1) {
 				writeFunction(0x80632E94, &getItemRequiredKong);
 			}
@@ -561,7 +570,7 @@ void quickInit(void) {
 		initiateTransitionFade(MAP_NFRTITLESCREEN, 0, 5);
 		CutsceneWillPlay = 0;
 		Gamemode = GAMEMODE_MAINMENU;
-		Mode = 5;
+		Mode = GAMEMODE_MAINMENU;
 		StorySkip = 1;
 		*(char*)(0x80745D20) = 7;
 	}
