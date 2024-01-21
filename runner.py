@@ -143,11 +143,16 @@ def start_gen(gen_key, post_body):
             return return_data
         else:
             # Assuming post_body.get("delayed_spoilerlog_release") is an int, and its the number of hours to delay the spoiler log release convert that to time.time() + hours as seconds.
-            if int(post_body.get("delayed_spoilerlog_release", 0)) == 0:
+            try:
+                spoiler_log_release = int(post_body.get("delayed_spoilerlog_release", 0))
+            except ValueError:
+                spoiler_log_release = 0
+
+            if spoiler_log_release == 0:
                 # Lets set it to 5 years from now if we don't have a delayed spoiler log release, it'll be deleted after 4 weeks anyway.
                 unlock_time = time.time() + 157784760
             else:
-                unlock_time = time.time() + (int(post_body.get("delayed_spoilerlog_release", 0)) * 3600)
+                unlock_time = time.time() + (spoiler_log_release * 3600)
             if setting_data.get("generate_spoilerlog", True):
                 unlock_time = 0
 
