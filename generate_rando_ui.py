@@ -55,7 +55,14 @@ async def initialize():
     def loader_func(template_name):
         return ajax_call("templates/" + f"{template_name}")
 
-    for file in json.loads(ajax_call(f"static/presets/preset_files.json")):
+    if js.location.hostname == "dev.dk64randomizer.com":
+        presets_url = "https://dev-generate.dk64rando.com/get_presets?return_blank=true"
+    elif js.location.hostname == "dk64randomizer.com":
+        presets_url = "https://generate.dk64rando.com/get_presets?return_blank=true"
+    else:
+        presets_url = js.location.origin + "/get_presets?return_blank=true"
+
+    for file in json.loads(ajax_call(presets_url)):
         js.progression_presets.append(file)
     for file in json.loads(ajax_call(f"static/presets/weights/weights_files.json")):
         js.random_settings_presets.append(file)

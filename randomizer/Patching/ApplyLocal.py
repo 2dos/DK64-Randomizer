@@ -7,7 +7,9 @@ import json
 import math
 import random
 import zipfile
-
+import time
+from datetime import datetime as Datetime
+from datetime import UTC
 import js
 from randomizer.Enums.Models import Model
 from randomizer.Enums.Settings import RandomModels
@@ -42,9 +44,6 @@ class BooleanProperties:
 
 async def patching_response(data, from_patch_gen=False, lanky_from_history=False, gen_history=False):
     """Apply the patch data to the ROM in the BROWSER not the server."""
-    import time
-    from datetime import datetime
-
     # Unzip the data_passed
     loop = asyncio.get_event_loop()
     # Base64 decode the data
@@ -102,8 +101,8 @@ async def patching_response(data, from_patch_gen=False, lanky_from_history=False
             js.write_seed_history(seed_id, str(data), json.dumps(settings.seed_hash))
             js.load_old_seeds()
 
-    datetime = datetime.utcnow()
-    unix = time.mktime(datetime.timetuple())
+    curr_time = Datetime.now(UTC)
+    unix = time.mktime(curr_time.timetuple())
     random.seed(int(unix))
     split_version = version.split(".")
     patch_major = split_version[0]
