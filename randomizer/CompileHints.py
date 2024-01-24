@@ -366,7 +366,7 @@ hint_distribution_default = {
     HintType.FullShopWithItems: 8,
     # HintType.FoolishMove: 0,  # Used to be 2, added to FoolishRegion when it was removed
     HintType.FoolishRegion: 4,
-    HintType.ForeseenPathless: 1,
+    HintType.ForeseenPathless: 0,
     HintType.Multipath: 0,
     HintType.RegionItemCount: 1,
     HintType.ItemRegion: 0,
@@ -393,10 +393,10 @@ race_hint_distribution = {
     HintType.WothLocation: 9,
     HintType.FullShopWithItems: 0,
     # HintType.FoolishMove: 0,
-    HintType.FoolishRegion: 4,
-    HintType.ForeseenPathless: 2,
+    HintType.FoolishRegion: 5,
+    HintType.ForeseenPathless: 0,
     HintType.Multipath: 14,
-    HintType.RegionItemCount: 2,
+    HintType.RegionItemCount: 3,
     HintType.ItemRegion: 0,
     HintType.Plando: 0,
 }
@@ -717,11 +717,11 @@ def compileHints(spoiler: Spoiler) -> bool:
                     hint_distribution[HintType.FoolishRegion] = len(spoiler.foolish_region_names)
                     maxed_hint_types.append(HintType.FoolishRegion)
 
-                valid_types.append(HintType.ForeseenPathless)
-                # If there are more pathless move hints than pathless moves, lower this number and prevent more from being added
-                if len(spoiler.pathless_moves) < hint_distribution[HintType.ForeseenPathless]:
-                    hint_distribution[HintType.ForeseenPathless] = len(spoiler.pathless_moves)
-                    maxed_hint_types.append(HintType.ForeseenPathless)
+                # valid_types.append(HintType.ForeseenPathless)
+                # # If there are more pathless move hints than pathless moves, lower this number and prevent more from being added
+                # if len(spoiler.pathless_moves) < hint_distribution[HintType.ForeseenPathless]:
+                #     hint_distribution[HintType.ForeseenPathless] = len(spoiler.pathless_moves)
+                #     maxed_hint_types.append(HintType.ForeseenPathless)
 
                 valid_types.append(HintType.RegionItemCount)
                 # If there are more region item count hints than regions containing moves (????), lower this number and prevent more from being added
@@ -1698,6 +1698,7 @@ def compileHints(spoiler: Spoiler) -> bool:
             hint_location.hint_type = HintType.FoolishRegion
             UpdateHint(hint_location, message)
 
+    # TEMPORARILY SHELVED - may revisit in the future with either more processing power or a more clever approach
     # Pathless hints are the evolution of foolish moves - it hints a move that is not on the path to anything else.
     # You may use a pathless move as a part of an either/or, but it will not be strictly required for anything.
     # Slams are banned from being hinted this way cause I do not want to deal with that *at all*
