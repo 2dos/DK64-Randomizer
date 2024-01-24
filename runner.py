@@ -23,6 +23,7 @@ from randomizer.SettingStrings import encrypt_settings_string_enum, decrypt_sett
 from randomizer.Spoiler import Spoiler
 from git import Repo
 from datetime import datetime as Datetime
+from datetime import UTC
 from apscheduler.schedulers.background import BackgroundScheduler
 from version import version
 
@@ -45,7 +46,7 @@ except Exception:
     # If we can't read the file, just set it to 0 in the file.
     with open("current_total.cfg", "w") as f:
         f.write("0")
-last_generated_time = Datetime.utcnow()
+last_generated_time = Datetime.now(UTC)
 try:
     with open("last_generated_time.cfg", "r") as f:
         last_generated_time = Datetime.strptime(f.read(), "%Y-%m-%d %H:%M:%S.%f")
@@ -60,10 +61,24 @@ og_patched_rom = BytesIO(bps.patch(original, patch).read())
 # load all the settings strings into memory
 presets = []
 with open("static/presets/preset_files.json", "r") as f:
-    for preset in json.load(f):
-        # remove any preset where the description is empty
-        if len(preset.get("description")) > 3:
-            presets.append(preset)
+    presets = json.load(f)
+# Check if we have a file named local_presets.json and load it
+if os.path.isfile("local_presets.json"):
+    with open("local_presets.json", "r") as f:
+        local_presets = json.load(f)
+        for local_preset in local_presets:
+            # Look for a preset with the same name
+            found_preset = False
+            for i, global_preset in enumerate(presets):
+                if global_preset.get("name") == local_preset.get("name"):
+                    # Update the global preset with the local preset
+                    presets[i] = local_preset
+                    found_preset = True
+                    break
+            # If not found, append the local preset
+            if not found_preset:
+                presets.append(local_preset)
+
 
 if os.environ.get("HOSTED_SERVER") is not None:
     import boto3
@@ -346,7 +361,28 @@ def get_version():
 @app.route("/get_presets", methods=["GET"])
 def get_presets():
     """Get the preset files for the randomizer."""
-    response = make_response(json.dumps(presets), 200)
+    # If the parameter return_blank is not set to true, check if any of the descriptions lengths are less than 3, if so don't include that preset.
+    return_blank = request.args.get("return_blank")
+    presets_to_return = []
+    if return_blank is None:
+        for preset in presets:
+            if preset.get("settings_string") is None:
+                continue
+            else:
+                presets_to_return.append(preset)
+    else:
+        # Return all presets that have a settings_string, the first entry does not have one but we want to return it anyway.
+        preset_added = False
+        for preset in presets:
+            if preset.get("settings_string") is None and not preset_added:
+                presets_to_return.append(preset)
+                preset_added = True
+            elif preset.get("settings_string") is None:
+                continue
+            else:
+                presets_to_return.append(preset)
+
+    response = make_response(json.dumps(presets_to_return), 200)
     response.mimetype = "application/json"
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
@@ -560,11 +596,30 @@ def convert_settings_string():
 def update_total():
     """Update the total seeds generated."""
     global current_total
-    current_total += 1
-    with open("current_total.cfg", "w") as f:
-        f.write(str(current_total))
+    max_retries = 5  # Maximum number of retries
+    retry_delay = random.uniform(0, 3)
+    for _ in range(max_retries):
+        try:
+            # Try to read and update the current total
+            with open("current_total.cfg", "r+") as f:
+                try:
+                    current_total = int(f.read())
+                except ValueError:
+                    # If the file is empty or has invalid content
+                    current_total = 0
+
+                current_total += 1
+                f.seek(0)  # Move the file pointer to the beginning
+                f.write(str(current_total))
+                f.truncate()  # Truncate the file to the current length
+                break
+        except IOError:
+            # If a read/write error occurs, wait for a random delay and retry
+            time.sleep(retry_delay)
+
+    # Update last_generated_time
     global last_generated_time
-    last_generated_time = Datetime.utcnow()
+    last_generated_time = Datetime.now(UTC)
     with open("last_generated_time.cfg", "w") as f:
         f.write(str(last_generated_time))
     return current_total

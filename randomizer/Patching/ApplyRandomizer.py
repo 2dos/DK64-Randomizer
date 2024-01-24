@@ -1,6 +1,8 @@
 """Apply Patch data to the ROM."""
 import json
 import os
+from datetime import datetime as Datetime
+from datetime import UTC
 import time
 from tempfile import mktemp
 
@@ -91,9 +93,8 @@ def patching_response(spoiler):
     spoiler.settings.set_seed()
 
     # Write date to ROM for debugging purposes
-    from datetime import datetime
 
-    dt = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+    dt = Datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S")
     temp_json = json.loads(spoiler.json)
     temp_json["Settings"]["Generation Timestamp"] = dt
     spoiler.json = json.dumps(temp_json, indent=4)
