@@ -44,7 +44,6 @@ class BooleanProperties:
 
 async def patching_response(data, from_patch_gen=False, lanky_from_history=False, gen_history=False):
     """Apply the patch data to the ROM in the BROWSER not the server."""
-
     # Unzip the data_passed
     loop = asyncio.get_event_loop()
     # Base64 decode the data
