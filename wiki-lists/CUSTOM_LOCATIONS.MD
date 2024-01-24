@@ -194,7 +194,7 @@
 | Gloomy Galleon | In Enguarde Alcove | Events.LighthouseEnguarde in l.Events | 
 | Gloomy Galleon | In Front of Mermaid Palace | Events.LighthouseEnguarde in l.Events | 
 | Gloomy Galleon | On Rocketbarrel platform |  | 
-| Gloomy Galleon | Blueprint Alcove |  | 
+| Gloomy Galleon | Blueprint Alcove | Events.WaterLowered in l.Events, banned_types=[LocationTypes.MelonCrate]) | 
 | Gloomy Galleon | Behind Snide's |  | 
 | Gloomy Galleon | Shipyard: On top of Tiny Submarine | Events.ShipyardEnguarde in l.Events | 
 | Gloomy Galleon | In the Shipwreck with Replenishables | Events.ShipyardEnguarde in l.Events | 

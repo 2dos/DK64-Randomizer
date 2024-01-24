@@ -731,7 +731,7 @@
 | In front of Candy's | Balloon |  | 
 | High in gold tower room | Balloon |  | 
 | Around cactus (Diddy) | Balloon |  | 
-| By Diddy BP (Tiny) | Balloon |  | 
+| By Diddy BP (Tiny) | Balloon | Events.WaterLowered in l.Events | 
 | Above battle crown pad 1 (Lanky) | Balloon | (l.punch and l.chunky) or l.phasewalk | 
 | Above battle crown pad 2 (Lanky) | Balloon | ((l.punch and l.chunky) or l.phasewalk) | 
 | Around cactus (Chunky) | Balloon |  | 
