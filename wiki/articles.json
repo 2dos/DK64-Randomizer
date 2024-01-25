@@ -1,0 +1,50 @@
+[
+    {
+        "name": "Season 2 Preset",
+        "link": "Season2Preset"
+    },
+    {
+        "name": "Wiki Editing",
+        "link": "WikiEditing"
+    },
+    {
+        "name": "Creating Cosmetic Packs",
+        "link": "CreatingCosmeticPacks"
+    },
+    {
+        "name": "All About Hints",
+        "link": "AllAboutHints"
+    },
+    {
+        "name": "General Strategies",
+        "link": "GeneralStrategies"
+    },
+    {
+        "name": "Lesser Known Game Knowledge",
+        "link": "LesserKnownGameKnowledge"
+    },
+    {
+        "name": "Logic Tips And Tricks",
+        "link": "LogicTipsAndTricks"
+    },
+    {
+        "name": "Advanced Homebrew Header",
+        "link": "AdvancedHomebrewHeader"
+    },
+    {
+        "name": "Bad Browser Extensions",
+        "link": "BadBrowserExtensions"
+    },
+    {
+        "name": "Consoles And Emulators",
+        "link": "ConsolesAndEmulators"
+    },
+    {
+        "name": "Trackers",
+        "link": "Trackers"
+    },
+    {
+        "name": "Using The Website",
+        "link": "UsingTheWebsite"
+    }
+]
