@@ -1119,7 +1119,7 @@ KasplatLocationList = {
             scale=1.3,
         ),
         KasplatLocation(
-            name="Caves Kasplat: Tied to the Bananaport Pillar",
+            name="Caves Kasplat: Tied to the Bananaport Spire",
             map_id=Maps.CrystalCaves,
             kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
             coords=[1169, 25, 1912],
