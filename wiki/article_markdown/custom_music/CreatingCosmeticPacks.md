@@ -52,18 +52,13 @@ It's recommended that you visit [the discord](https://discord.dk64randomizer.com
 9. The SF2 file you just saved should now be the relevant soundfont you can work from. Feel free to uninstall Viena64 as you will no longer need it.
 
 ## Common Problems
-<details>
-<summary>Important changes between vanilla DK64 and Randomizer</summary>
 
-- From 2.0 onwards, DK64 Randomizer can support files as big as 32768 bytes instead of 16512 for main BGM tracks. 
-- Compressed file sizes aren't a concern with regard to DK64 Randomizer.
-</details>
+**Important changes between vanilla DK64 and Randomizer**
+> From 2.0 onwards, DK64 Randomizer can support files as big as 32768 bytes instead of 16512 for main BGM tracks. 
+> Compressed file sizes aren't a concern with regard to DK64 Randomizer.
 
-<details>
-<summary>An instrument is looping out of sync of other instruments when playing back my song in-game</summary>
-
-- Before importing your MIDI into `N64 Midi Tool`, check **BOTH** `No Repeaters` and `Extend Short Tracks`
-</details>
+**An instrument is looping out of sync of other instruments when playing back my song in-game**
+> Before importing your MIDI into `N64 Midi Tool`, check **BOTH** `No Repeaters` and `Extend Short Tracks`
 
 # Custom Music Categorization
 Music in DK64 is classed into 5 categories: BGM (Background Music), Major Items, Minor Items, Events, Other.

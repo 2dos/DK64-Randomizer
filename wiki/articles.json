@@ -1,15 +1,27 @@
 [
     {
-        "name": "Season 2 Preset",
-        "link": "Season2Preset"
-    },
-    {
         "name": "Wiki Editing",
         "link": "WikiEditing"
     },
     {
         "name": "Creating Cosmetic Packs",
         "link": "CreatingCosmeticPacks"
+    },
+    {
+        "name": "Recommended Music Editors",
+        "link": "RecommendedMusicEditors"
+    },
+    {
+        "name": "Custom Locations",
+        "link": "CustomLocations"
+    },
+    {
+        "name": "Vanilla CB Locations",
+        "link": "VanillaCB_Locations"
+    },
+    {
+        "name": "Vanilla Item Locations",
+        "link": "VanillaItemLocations"
     },
     {
         "name": "All About Hints",
@@ -26,6 +38,30 @@
     {
         "name": "Logic Tips And Tricks",
         "link": "LogicTipsAndTricks"
+    },
+    {
+        "name": "Async Racing",
+        "link": "AsyncRacing"
+    },
+    {
+        "name": "Glitchless Ruleset",
+        "link": "GlitchlessRuleset"
+    },
+    {
+        "name": "NSAK Racing Rules",
+        "link": "NSAK_RacingRules"
+    },
+    {
+        "name": "Season 2 Distributions",
+        "link": "Season2Distributions"
+    },
+    {
+        "name": "Season 2 Preset",
+        "link": "Season2Preset"
+    },
+    {
+        "name": "Sharing A Seed",
+        "link": "SharingA_Seed"
     },
     {
         "name": "Advanced Homebrew Header",

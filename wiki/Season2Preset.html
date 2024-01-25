@@ -231,7 +231,7 @@
                         <hr id="content_hr" />
                         <div id="markdown_navigation" class="content-navigation-menu"></div>
                     </div>
-                    <div id="markdown_content" ref="./article_markdown/Season2Preset.md"></div>
+                    <div id="markdown_content" ref="./article_markdown/racing/Season2Preset.md"></div>
                 </div>
                 <div class="col-sm-2 p-3"></div>
             </div>
@@ -372,7 +372,7 @@
                     return; // No articles
                 }
                 let matches = [];
-                if (input_value.length >= 2) {
+                if (input_value.length >= 1) {
                     articles.forEach(article => {
                         const score = getSearchScore(input_value, article.name);
                         if (score > 0) {
@@ -385,6 +385,7 @@
                     })
                     matches = matches.sort((a, b) => a.score > b.score ? 1 : ((b.score > a.score) ? -1 : 0));
                 }
+                matches = matches.filter((item, index) => index < 5); // Clamp to 5 search results at most
                 const sugg_hook = document.getElementById("search_suggestions");
                 sugg_hook.innerHTML = matches.map(item => `
                     <div class="search-item user-select-none p-2" onclick="handleSuggestionClick('${item.link}')">
@@ -493,7 +494,7 @@
                         if (splitter > -1) {
                             const summation = text.substring(0, splitter)
                             text = text.substring(splitter)
-                            document.getElementById("content-summary").innerText = summation;
+                            document.getElementById("content-summary").innerHTML = converter.makeHtml(summation);
                             has_summary = true;
                         }
                     }
