@@ -1116,7 +1116,7 @@ KasplatLocationList = {
             zmin=1920,
             zmax=2170,
             region=Regions.CrystalCavesMain,
-            scale = 1.3,
+            scale=1.3,
         ),
         KasplatLocation(
             name="Caves Kasplat: Tied to the Bananaport Pillar",
