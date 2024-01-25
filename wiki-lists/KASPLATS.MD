@@ -149,6 +149,7 @@
 | Crystal Caves | Caves Kasplat: By the Far Warp 2 |  | 
 | Crystal Caves | Caves Kasplat: On 5-Door Igloo |  | 
 | Crystal Caves | Caves Kasplat: Water by Blast Pad |  | 
+| Crystal Caves | Caves Kasplat: Tied to the Bananaport Spire |  | 
 | Crystal Caves | Caves Kasplat: Between Funky and Castle |  | 
 | Caves Lanky Race | Caves Kasplat: In the Beetle Race |  | 
 | Crystal Caves | Caves Kasplat: With the Giant Kosha |  | 
