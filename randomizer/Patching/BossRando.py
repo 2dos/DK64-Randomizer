@@ -1,4 +1,5 @@
 """Apply Boss Locations."""
+
 from randomizer.Patching.Patcher import LocalROM
 
 

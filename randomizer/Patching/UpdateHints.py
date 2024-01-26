@@ -1,4 +1,5 @@
 """Update wrinkly hints compressed file."""
+
 import random
 
 import js

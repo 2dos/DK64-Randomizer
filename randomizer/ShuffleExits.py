@@ -1,4 +1,5 @@
 """File that shuffles loading zone exits."""
+
 import random
 
 import js

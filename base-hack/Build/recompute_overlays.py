@@ -1,4 +1,5 @@
 """Update all the overlays in the ROM."""
+
 from typing import BinaryIO
 from BuildClasses import OverlayInfo
 from BuildEnums import Overlay

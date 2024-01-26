@@ -1,4 +1,5 @@
 """Time enum."""
+
 from enum import IntEnum, auto
 
 

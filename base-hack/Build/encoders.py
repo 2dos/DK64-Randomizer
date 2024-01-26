@@ -1,4 +1,5 @@
 """Encoders for updating file data."""
+
 import json
 import math
 import struct

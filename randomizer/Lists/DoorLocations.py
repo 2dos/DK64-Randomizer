@@ -1,4 +1,5 @@
 """Stores the data for each potential T&S and Wrinkly door location."""
+
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels

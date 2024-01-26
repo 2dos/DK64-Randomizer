@@ -1,4 +1,5 @@
 """Dump pointer tables of the vanilla rom."""
+
 from BuildLib import ROMName
 from recompute_pointer_table import dumpPointerTableDetails, parsePointerTables
 

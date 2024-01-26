@@ -1,4 +1,5 @@
 """Options for the main rando tab."""
+
 import random
 import re
 

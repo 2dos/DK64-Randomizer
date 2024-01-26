@@ -1,4 +1,5 @@
 """File to modify Chunky Wrinkly door to a yellow one to place inside the DK Wrinkly slot."""
+
 import os
 import shutil
 import zlib

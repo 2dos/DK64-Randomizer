@@ -1,4 +1,5 @@
 """Model enum."""
+
 from enum import IntEnum
 
 

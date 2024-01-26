@@ -1,4 +1,5 @@
 """Library functions for the build procedure."""
+
 import struct
 from PIL import Image
 

@@ -1,4 +1,5 @@
 """Apply misc setup changes."""
+
 import math
 import random
 

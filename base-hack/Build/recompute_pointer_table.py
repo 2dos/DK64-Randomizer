@@ -1,4 +1,5 @@
 """Recompute all the pointers within the rom."""
+
 import hashlib
 import json
 from typing import BinaryIO

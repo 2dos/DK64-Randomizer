@@ -1,4 +1,5 @@
 """Shuffle Wrinkly and T&S Doors based on settings."""
+
 import random
 import math
 

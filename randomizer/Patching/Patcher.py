@@ -1,4 +1,5 @@
 """Patcher class and Functions for modifying ROM files."""
+
 from __future__ import annotations
 
 import copy

@@ -1,4 +1,5 @@
 """Add all relevant wiki HTML pages."""
+
 import os
 import json
 from enum import IntEnum, auto

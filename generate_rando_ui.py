@@ -1,4 +1,5 @@
 """Generate UI elements via jinja2 to display on page load."""
+
 import json
 
 import micropip

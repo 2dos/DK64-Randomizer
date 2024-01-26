@@ -1,4 +1,5 @@
 """Decorator function for UI elements to bind events to buttons."""
+
 from functools import wraps
 
 from pyodide.ffi import create_proxy

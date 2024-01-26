@@ -1,4 +1,5 @@
 """Enum for Song Types."""
+
 from enum import IntEnum, auto
 
 

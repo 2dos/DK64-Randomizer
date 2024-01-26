@@ -1,4 +1,5 @@
 """Randomize Music passed from Misc options."""
+
 import gzip
 import random
 

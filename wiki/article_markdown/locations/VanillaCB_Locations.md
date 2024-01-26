@@ -1,4 +1,4 @@
-This article covers the requirements to obtain various CB requirements. This assumes [Season 2 Settings](./Season2Preset.html)
+This article covers the requirements to obtain various CB requirements. This assumes [Season 2 Settings](./Season2Preset)
 
 # Note about Slams
 Note: Slam requirements vary based on seed and level order. For lack of confusing the situation, any requirements which might require slam upgrades will just be listed as "Slam".

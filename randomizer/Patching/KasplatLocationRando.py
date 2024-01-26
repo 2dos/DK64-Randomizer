@@ -1,4 +1,5 @@
 """Apply Kasplat Locations."""
+
 import js
 from randomizer.Enums.Enemies import Enemies
 from randomizer.Lists.KasplatLocations import KasplatLocationList

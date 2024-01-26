@@ -1,4 +1,5 @@
 """Convert PNG to RGBA32 binary."""
+
 from PIL import Image
 
 

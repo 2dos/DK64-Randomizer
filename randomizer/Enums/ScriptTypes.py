@@ -1,4 +1,5 @@
 """Object Instance Script type enum."""
+
 from enum import IntEnum, auto
 
 

@@ -1,4 +1,5 @@
 """Main worker class for the bot."""
+
 from racetime_bot import Bot
 
 from handler import RandoHandler

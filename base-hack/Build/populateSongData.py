@@ -1,4 +1,5 @@
 """Patches vanilla song data to ROM."""
+
 from typing import BinaryIO
 
 song_data = [

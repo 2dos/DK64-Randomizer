@@ -1,4 +1,5 @@
 """Setup script for racetime_bot."""
+
 from setuptools import find_packages, setup
 
 
