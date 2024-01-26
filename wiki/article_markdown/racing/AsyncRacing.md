@@ -5,7 +5,7 @@ For those wishing to compete in async races we would request that those who wish
 1) No looking at the spoiler log before doing your async run
 2) No looking at other people's async run to gain knowledge before doing yours if you wish to submit
 3) If you are streaming your async run, please put it (along with the async number) in your title so future competitors can be aware should they need to avoid it
-4) Glitchless ruleset applies. Click "View Rules" [here](./GlitchlessRuleset.html) for information on this ruleset.
+4) Glitchless ruleset applies. Click "View Rules" [here](./GlitchlessRuleset) for information on this ruleset.
 5) If you wish to discuss an async seed in the discord , please put anything about the seed inside a discord spoiler tag (||MESSAGE||) with the async number outside a spoiler tag. This way, those who are yet to run the seed won't be accidentally spoiled.
 
 # Links

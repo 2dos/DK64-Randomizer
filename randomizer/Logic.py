@@ -1,4 +1,5 @@
 """Contains the class which holds logic variables, and the master copy of regions."""
+
 from math import ceil
 
 import randomizer.CollectibleLogicFiles.AngryAztec

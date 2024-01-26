@@ -1,4 +1,5 @@
 """Server code for the randomizer."""
+
 import codecs
 import json
 import os

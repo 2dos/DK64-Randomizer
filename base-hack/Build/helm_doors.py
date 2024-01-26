@@ -1,4 +1,5 @@
 """Generate models for the two Helm doors."""
+
 import zlib
 
 from BuildClasses import ROMPointerFile

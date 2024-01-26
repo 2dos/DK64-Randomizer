@@ -1,4 +1,5 @@
 """Minigames enum."""
+
 from enum import IntEnum, auto
 
 

@@ -1,4 +1,5 @@
 """Dump information from various custom location files into a json format in tools/dump."""
+
 import inspect
 import json
 import os

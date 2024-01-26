@@ -1,4 +1,5 @@
 """Module used to distribute items randomly."""
+
 from __future__ import annotations
 
 from random import choice, randint, shuffle, uniform

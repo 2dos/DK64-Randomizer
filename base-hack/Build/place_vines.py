@@ -1,4 +1,5 @@
 """Generate vine series with better behavior."""
+
 import math
 
 vine_series = [

@@ -1,4 +1,5 @@
 """Write the Krusha to apply the model changes."""
+
 import json
 
 with open("test.json", "r") as fh:

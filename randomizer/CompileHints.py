@@ -1,4 +1,5 @@
 """Compile a list of hints based on the settings."""
+
 from __future__ import annotations
 
 import json
@@ -2121,9 +2122,9 @@ def compileMicrohints(spoiler: Spoiler) -> None:
         if len(slam_levels) > 0:
             slam_text_entries = [f"{level_colors[x]}{level_list[x]}{level_colors[x]}" for x in slam_levels]
             slam_text = " or ".join(slam_text_entries)
-            spoiler.microhints[
-                ItemList[Items.ProgressiveSlam].name
-            ] = f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptillian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
+            spoiler.microhints[ItemList[Items.ProgressiveSlam].name] = (
+                f"Ladies and Gentlemen! It appears that one fighter has come unequipped to properly handle this reptillian beast. Perhaps they should have looked in {slam_text} for the elusive slam.".upper()
+            )
 
 
 def compileSpoilerHints(spoiler):

@@ -1,4 +1,5 @@
 """Test file used for checking all kongs have 100 colored bananas per level."""
+
 import randomizer.CollectibleLogicFiles.AngryAztec as AngryAztec
 import randomizer.CollectibleLogicFiles.CreepyCastle as CreepyCastle
 import randomizer.CollectibleLogicFiles.CrystalCaves as CrystalCaves

@@ -1,4 +1,5 @@
 """List of enemies with in-game index."""
+
 from __future__ import annotations
 
 import random

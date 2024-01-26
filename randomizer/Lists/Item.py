@@ -1,4 +1,5 @@
 """Stores the item class and a list of each item with its attributes."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, List, Optional, Union

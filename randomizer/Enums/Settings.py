@@ -1,4 +1,5 @@
 """File containing enums to represent all settings."""
+
 from __future__ import annotations
 
 from enum import IntEnum, auto

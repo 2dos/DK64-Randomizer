@@ -1,4 +1,5 @@
 """Randomize Move Locations."""
+
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Settings import MicrohintsEnabled, MoveRando

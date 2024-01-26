@@ -1,4 +1,5 @@
 """Handle heap size."""
+
 from datetime import datetime
 from BuildLib import flut_size, heap_size, music_size
 

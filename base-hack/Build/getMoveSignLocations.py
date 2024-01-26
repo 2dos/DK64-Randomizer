@@ -1,4 +1,5 @@
 """Get move sign data."""
+
 from BuildLib import float_to_hex
 
 sign_data = [

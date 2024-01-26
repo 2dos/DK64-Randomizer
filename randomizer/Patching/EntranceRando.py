@@ -1,4 +1,5 @@
 """Randomize Entrances passed from Misc options."""
+
 import js
 from randomizer.Enums.Settings import ShuffleLoadingZones
 from randomizer.Enums.Transitions import Transitions

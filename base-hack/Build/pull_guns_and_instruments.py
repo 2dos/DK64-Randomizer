@@ -1,4 +1,5 @@
 """Pull instruments and guns from kong models."""
+
 import zlib
 from BuildLib import ROMName, MODEL_DIRECTORY
 from BuildEnums import TableNames

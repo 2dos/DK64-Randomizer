@@ -1,4 +1,5 @@
 """Get vanilla move data."""
+
 from typing import BinaryIO
 
 special_move_prices = [3, 5, 7]

@@ -1,4 +1,5 @@
 """Functions used to support music selection."""
+
 import itertools
 import js
 import json

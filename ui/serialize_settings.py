@@ -1,4 +1,5 @@
 """Function to obtain all settings and convert them to a dictionary."""
+
 import json
 import js
 from randomizer.Enums.Items import Items

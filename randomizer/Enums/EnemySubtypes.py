@@ -1,4 +1,5 @@
 """Enemy Subtypes enum."""
+
 from enum import IntEnum, auto
 
 

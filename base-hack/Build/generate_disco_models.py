@@ -1,4 +1,5 @@
 """Write new Disco Chunky models."""
+
 import os
 import zlib
 

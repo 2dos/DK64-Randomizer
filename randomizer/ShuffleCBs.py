@@ -1,4 +1,5 @@
 """Select CB Location selection."""
+
 import random
 
 import js

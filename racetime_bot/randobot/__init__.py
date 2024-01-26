@@ -1,4 +1,5 @@
 """Loader function for the RandoBot package."""
+
 import argparse
 import logging
 import sys

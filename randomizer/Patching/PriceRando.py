@@ -1,4 +1,5 @@
 """Randomize Price Locations."""
+
 from randomizer.Enums.Items import Items
 from randomizer.Enums.Settings import RandomPrices
 from randomizer.Patching.Patcher import LocalROM

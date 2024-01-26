@@ -1,4 +1,5 @@
 """Add instance scripts for portal indicators."""
+
 import json
 
 

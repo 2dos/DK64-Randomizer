@@ -1,4 +1,5 @@
 """Dump the pointer tables of our modified rom."""
+
 from BuildLib import finalROM
 from recompute_pointer_table import dumpPointerTableDetails, dumpPointerTableDetailsLegacy, parsePointerTables
 

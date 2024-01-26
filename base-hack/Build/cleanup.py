@@ -1,4 +1,5 @@
 """Clean up the repo to remove any files it doesn't need."""
+
 import os
 
 from BuildLib import finalROM, heap_size

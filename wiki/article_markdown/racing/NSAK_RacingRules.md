@@ -14,13 +14,13 @@
     - Banana Coins
     - Colored bananas
 - The following items have been added to the item randomizer pool (Click for list of locations of that item):
-    - [Melon Crates](./VanillaItemLocations.html#meloncrates)
-    - [Fairies](./VanillaItemLocations.html#fairies)
+    - [Melon Crates](./VanillaItemLocations#meloncrates)
+    - [Fairies](./VanillaItemLocations#fairies)
 - End Game Requirements:
     - 15 banana medals (Helm Door)
     - 4 battle crowns (Helm Door)
     - 70 Golden Bananas (Helm B. Locker)
-- [Switchsanity](./SwitchsanitySwitches.html)
+- [Switchsanity](./SwitchsanitySwitches)
 
 ## General List
 - Item Randomizer enabled. The following items are shuffled amongst each other:
@@ -75,4 +75,4 @@
 - Miscellaneous changes: Reward dances turned off, fast game boot-up, no falling rocks in Caves, Rambi and Enguarde can grab items, various spots have less lag at the cost of visual effects, various cutscenes are removed, hint textboxes do not close automatically, wrinkly puzzles are removed, faster fairy camera pictures, the D-up button now displays total bananas and blueprint count, the D-down button now cycles between homing and regular ammo, homing ammo homes in on balloons, transformation barrels do not have a transform animation, audio queue when you have enough bananas for Troff n Scoff in a level, lower Aztec lobby bonus barrel, star in Galleon only requires 1 passthrough instead of 3 to activate, various vanilla bugs have been patched, K Rool fight progress is saved if you die or need to leave, small bananas are always visible even if you don't have a kong unlocked, wrinkly hints display faster, enemies in the Mad Maze Maul game are brighter so they are easier to see, the vanilla hidden Fungi dirt patch was raised to see it above the grass.
 - Additional gameplay changes: Shorter boss fights, tag anywhere enabled, shop hints enabled (Cranky/Funky/Candy will hint at the type of item you are going to get before purchase and if you don't have enough coins), shops display which kong purchases what item, all kongs can check all hint doors without unlocking the specific kong, "warp to isles" added as a menu option, faster bananaport warps, auto key turn ins, start Helm in the blast-o-matic room, Troff n Scoff banana requirement is listed on Troff n Scoff portals, item rewards are hinted on long checks such as bosses, races, crowns and bonus barrels.
 - Hints: Monkeyport location is hinted when standing on the Isles Monkeyport pad after having enough GBs to enter level 7, Gorilla Gone location is hinted when standing on the Helm lobby Gorilla Gone pad, instrument locations are hinted when standing on the Helm blast-o-matic instrument pads
-- NSAK Racing abides by the [Glitchless Ruleset](./GlitchlessRuleset.html)
+- NSAK Racing abides by the [Glitchless Ruleset](./GlitchlessRuleset)

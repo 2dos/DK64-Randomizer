@@ -1,4 +1,5 @@
 """Convert files to their minified types."""
+
 import glob
 import os
 import subprocess

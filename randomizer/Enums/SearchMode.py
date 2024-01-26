@@ -1,4 +1,5 @@
 """Search mode enum."""
+
 from enum import IntEnum, auto
 
 
