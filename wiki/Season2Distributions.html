@@ -1,0 +1,114 @@
+<!-- DON'T EDIT THIS FILE. EDIT template.html INSTEAD -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title></title>
+        <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
+        <link href="../static/img/dk.png" rel="icon" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900"
+              rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i"
+              rel="stylesheet"/>
+        <link href="../static/styles/styles.css" rel="stylesheet" />
+        <link href="../static/styles/gui.css" rel="stylesheet" type="text/css" />
+        <link href="../static/styles/wiki.css" rel="stylesheet" type="text/css" />
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    </head>
+    <body id="page-top">
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+            <div class="container px-5">
+                <a class="navbar-brand" href="#page-top">DK64 Randomizer</a>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarResponsive"
+                        aria-controls="navbarResponsive"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#overview">Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="https://github.com/2dos/DK64-Randomizer/wiki/Consoles-and-Emulators">Setup</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="https://github.com/2dos/DK64-Randomizer/wiki"
+                               target="_blank">Wiki</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="https://discord.dk64randomizer.com"
+                               target="_blank">Discord</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <img src="../static/img/logo.png"
+            alt="DK64 Randomizer"
+            class="center_image"
+            style="cursor: pointer; margin-top: 70px"/>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-9 pr-6">
+                    <div class="row justify-content-end">
+                        <div class="col-sm-3">
+                            <div class="card bg-dark px-2 pt-2 position-relative">
+                                <input class="form-control mr-sm-2" id="article-search" type="input" placeholder="Search" aria-label="Search">
+                                <div class="position-absolute" id="search_suggestions"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3 p-0">
+                    <div class="px-3 mb-3">
+                        <div class="card bg-dark fs-6 p-3 user-select-none sidebar-link" onclick="goTo('home.html')">
+                            Home
+                        </div>
+                    </div>
+                    <div style="position:sticky; top:80px" class="px-3">
+                        <div class="card bg-dark fs-6">
+                            <div class="p-3 collapsable-header collapsed user-select-none" onclick="toggleSidebarCollapse(this)">
+                                <i id="icon" class="fa fa-lg fa-caret-down collapsable-header-caret"></i>
+                                &nbsp;Content
+                            </div>
+                            <div id="markdown_navigation_sidebar" class="content-navigation-menu px-3 py-2 user-select-none" hidden></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pr-6 col-sm-9">
+                    <div class="card bg-dark p-3">
+                        <h1 id="page-title">Season 2 Distributions</h1>
+                        <div id="last-modified"></div>
+                        <hr />
+                        <div id="content-summary"></div>
+                        <div class="content-pane p-3 user-select-none">
+                            <strong>Contents</strong> [<a href="#" onclick="hideContent(this)">Hide</a>]
+                            <hr id="content_hr" />
+                            <div id="markdown_navigation" class="content-navigation-menu"></div>
+                        </div>
+                        <div id="markdown_content" ref="./article_markdown/racing/Season2Distributions.md"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="../static/js/wiki-code.js"></script>
+    </body>
+</html>
