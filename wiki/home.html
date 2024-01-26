@@ -89,14 +89,12 @@
             </div>
         </div>
         <script type="text/javascript">
-
             async function fetchArticles() {
                 const articles = await fetch("./articles.json", {cache: "no-store"}).then(x => x.json());
                 const sorted_articles = articles.sort((a, b) => a.name > b.name ? 1 : ((b.name > a.name) ? -1 : 0));
                 const article_hook = document.getElementById("article-list");
                 article_hook.innerHTML = sorted_articles.map(article => `<li><a href="./${article.link}.html">${article.name}</a></li>`).join("");
             }
-
             fetchArticles();
         </script>
     </body>
