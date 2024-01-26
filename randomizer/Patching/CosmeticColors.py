@@ -472,8 +472,8 @@ def apply_cosmetic_colors(settings: Settings):
                 is_krusha = True
                 base_setting = kong.palettes[0].name
                 kong.palettes = [
-                    KongPalette(base_setting, 4971, PaletteFillType.block),
-                    KongPalette(base_setting, 4966, PaletteFillType.kong),
+                    KongPalette(base_setting, 4971, PaletteFillType.block),  # krusha_skin
+                    KongPalette(base_setting, 4966, PaletteFillType.kong),  # krusha_indicator
                 ]
         base_obj = {"kong": kong.kong, "zones": []}
         zone_to_colors = {}
@@ -495,18 +495,21 @@ def apply_cosmetic_colors(settings: Settings):
                 if index == 1:  # IS THE CHECKERED PATTERN
                     base_setting = f"{kong.kong}_{palette.alt_name}_colors"
                     custom_setting = f"{kong.kong}_{palette.alt_name}_custom_color"
-                if settings.override_cosmetics and (colors_dict[base_setting] != CharacterColors.vanilla or (is_krusha and palette.fill_type == PaletteFillType.kong)):
+                if (settings.override_cosmetics and colors_dict[base_setting] != CharacterColors.vanilla) or (is_krusha and palette.fill_type == PaletteFillType.kong):
                     color = None
-                    if colors_dict[base_setting] == CharacterColors.randomized:
+                    # if this palette color is randomized, and isn't krusha's kong indicator:
+                    if colors_dict[base_setting] == CharacterColors.randomized and palette.fill_type != PaletteFillType.kong:
                         if base_setting in zone_to_colors:
                             color = zone_to_colors[base_setting]
                         else:
                             color = f"#{format(randint(0, 0xFFFFFF), '06x')}"
                             zone_to_colors[base_setting] = color
+                    # if this palette color is not randomized (but might be a custom color) and isn't krusha's kong indicator:
                     elif palette.fill_type != PaletteFillType.kong:
                         color = colors_dict[custom_setting]
                         if not color:
                             color = DEFAULT_COLOR
+                    # if this is krusha's kong indicator:
                     else:
                         color = getKongColor(settings, kong.kong_index)
                     if color is not None:
