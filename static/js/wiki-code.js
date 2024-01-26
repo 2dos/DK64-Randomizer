@@ -295,7 +295,10 @@ async function alterMarkdown(element) {
     // Warp to ID if specified
     hash = window.location.hash;
     if (hash.length > 0) {
-        document.querySelector(hash).scrollIntoView();
+        const hash_hook = document.querySelector(hash);
+        if (hash_hook) {
+            hash_hook.scrollIntoView();
+        }
     }
 }
 alterMarkdown(document.getElementById("markdown_content"));

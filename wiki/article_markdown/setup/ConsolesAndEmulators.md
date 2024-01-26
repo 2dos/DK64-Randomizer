@@ -104,4 +104,4 @@ Anything listed under **Do Not Use** or anything else that isn't listed on this 
 > This is most likely a symptom of `Project64.rdb` being incorrectly set up. I would advise re-performing those steps, ensuring that you are overwriting the existing `Project64.rdb` file located in the config folder, and that your file is named **EXACTLY** `Project64.rdb`
 
 **I'm getting an emulator setup error on the main menu**
-> This is a symptom of an incorrectly set up emulator, generally `Project64.rdb` not being created correctly. See ["Getting a fatal error or some form of other error upon booting ROM"](https://github.com/2dos/DK64-Randomizer/wiki/Consoles-and-Emulators#getting-a-fatal-error-or-some-form-of-other-error-upon-booting-rom)
+> This is a symptom of an incorrectly set up emulator, generally `Project64.rdb` not being created correctly. See "Getting a fatal error or some form of other error upon booting ROM" above.

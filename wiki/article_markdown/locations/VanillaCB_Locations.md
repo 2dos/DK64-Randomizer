@@ -1,4 +1,4 @@
-This article covers the requirements to obtain various CB requirements. This assumes [Season 2 Settings](https://github.com/2dos/DK64-Randomizer/wiki/Season-2-Preset-Settings-and-Rules)
+This article covers the requirements to obtain various CB requirements. This assumes [Season 2 Settings](./Season2Preset.html)
 
 # Note about Slams
 Note: Slam requirements vary based on seed and level order. For lack of confusing the situation, any requirements which might require slam upgrades will just be listed as "Slam".

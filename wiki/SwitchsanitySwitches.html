@@ -1,3 +1,4 @@
+<!-- DON'T EDIT THIS FILE. EDIT template.html INSTEAD -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -6,7 +7,8 @@
               content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Donkey Kong 64 Randomizer Wiki</title>
+        <title></title>
+        <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
         <link href="../static/img/dk.png" rel="icon" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900"
@@ -60,8 +62,8 @@
             style="cursor: pointer; margin-top: 70px"/>
         <div class="container">
             <div class="row">
-                <div class="col-sm-1"></div>
-                <div class="col-sm-10">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-9 pr-6">
                     <div class="row justify-content-end">
                         <div class="col-sm-3">
                             <div class="card bg-dark px-2 pt-2 position-relative">
@@ -71,33 +73,42 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-1"></div>
             </div>
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-sm-1 p-0"></div>
-                <div class="col-sm-10">
-                    <div class="card bg-dark p-3">
-                        <h1 id="page-title">Welcome to the DK64 Randomizer Wiki</h1>
-                        <hr />
-                        <p>This is currently under development, please check the articles here in the meanwhile whilst the dev team cooks</p>
-                        <ul id="article-list"></ul>
+                <div class="col-sm-3 p-0">
+                    <div class="px-3 mb-3">
+                        <div class="card bg-dark fs-6 p-3 user-select-none sidebar-link" onclick="goTo('home.html')">
+                            Home
+                        </div>
+                    </div>
+                    <div style="position:sticky; top:80px" class="px-3">
+                        <div class="card bg-dark fs-6">
+                            <div class="p-3 collapsable-header collapsed user-select-none" onclick="toggleSidebarCollapse(this)">
+                                <i id="icon" class="fa fa-lg fa-caret-down collapsable-header-caret"></i>
+                                &nbsp;Content
+                            </div>
+                            <div id="markdown_navigation_sidebar" class="content-navigation-menu px-3 py-2 user-select-none" hidden></div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-1 p-0"></div>
+                <div class="pr-6 col-sm-9">
+                    <div class="card bg-dark p-3">
+                        <h1 id="page-title">Switchsanity Switches</h1>
+                        <div id="last-modified"></div>
+                        <hr />
+                        <div id="content-summary"></div>
+                        <div class="content-pane p-3 user-select-none">
+                            <strong>Contents</strong> [<a href="#" onclick="hideContent(this)">Hide</a>]
+                            <hr id="content_hr" />
+                            <div id="markdown_navigation" class="content-navigation-menu"></div>
+                        </div>
+                        <div id="markdown_content" ref="./article_markdown/locations/SwitchsanitySwitches.md"></div>
+                    </div>
+                </div>
             </div>
         </div>
-        <script type="text/javascript">
-
-            async function fetchArticles() {
-                const articles = await fetch("./articles.json", {cache: "no-store"}).then(x => x.json());
-                const sorted_articles = articles.sort((a, b) => a.name > b.name ? 1 : ((b.name > a.name) ? -1 : 0));
-                const article_hook = document.getElementById("article-list");
-                article_hook.innerHTML = sorted_articles.map(article => `<li><a href="./${article.link}.html">${article.name}</a></li>`).join("");
-            }
-
-            fetchArticles();
-        </script>
+        <script type="text/javascript" src="../static/js/wiki-code.js"></script>
     </body>
 </html>

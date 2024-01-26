@@ -26,6 +26,9 @@ To achieve a balance between the simplicity of creating markdown files, the abil
 ## Content Navigation Menu
 A table of contents will be automatically generated based on the headers of your markdown file (Anything preceded by a certain amount of `#` characters). Your markdown file cannot skip any levels of headers. For example, you cannot have a markdown file which has `# `, `## ` and `#### `, but not `### `. This also means that if you have headers, you **MUST** have at least one header preceded by `# `.
 
+## Pre-navigation summary
+Any text which precedes the first `# text` header, if there is one present in the markdown file will appear above the navigation menu. Use this space to give a quick summary of what the article is about.
+
 ## Embedded YouTube Videos
 To include an embedded YouTube link, you will need to add the following piece of code to your markdown file:
 ```
