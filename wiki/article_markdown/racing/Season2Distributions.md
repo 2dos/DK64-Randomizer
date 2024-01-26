@@ -1,4 +1,4 @@
-2721 seeds have been generated with the S2 preset to bring you the distributions of what items are listed as [Way of the Hoard](./AllAboutHints.html#wayofthehoardhints) in a seed.
+2721 seeds have been generated with the S2 preset to bring you the distributions of what items are listed as [Way of the Hoard](./AllAboutHints#wayofthehoardhints) in a seed.
 
 # Disclaimer
 All seeds were generated on 2.1 for speed purposes. Whilst S2 on 2.1 is the same series of settings as S2 on 2.0, there might be slight differences.

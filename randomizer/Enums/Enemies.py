@@ -1,4 +1,5 @@
 """Enemies enum."""
+
 from enum import IntEnum
 
 

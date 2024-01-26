@@ -1,4 +1,5 @@
 """Contains classes used in the logic system."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple, Union

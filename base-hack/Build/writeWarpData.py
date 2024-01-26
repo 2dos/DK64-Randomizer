@@ -1,4 +1,5 @@
 """Store vanilla warp data and write to ROM."""
+
 import json
 from typing import BinaryIO
 

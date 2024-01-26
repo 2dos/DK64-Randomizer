@@ -1,4 +1,5 @@
 """Function to randomize settings and store them in a dictionary."""
+
 import math
 import random
 

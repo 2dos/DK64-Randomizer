@@ -1,4 +1,5 @@
 """Shuffles the locations of shops."""
+
 import random
 import randomizer.Lists.Exceptions as Ex
 

@@ -1,4 +1,5 @@
 """Build the ROM."""
+
 import gzip
 import json
 import os

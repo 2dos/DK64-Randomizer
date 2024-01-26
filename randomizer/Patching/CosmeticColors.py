@@ -1,4 +1,5 @@
 """Apply cosmetic skins to kongs."""
+
 from __future__ import annotations
 
 import gzip

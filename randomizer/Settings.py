@@ -1,4 +1,5 @@
 """Settings class and functions."""
+
 import json
 import math
 import random

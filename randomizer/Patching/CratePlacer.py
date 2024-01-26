@@ -1,4 +1,5 @@
 """Melon crate Randomizer Code."""
+
 import js
 from randomizer.Enums.ScriptTypes import ScriptTypes
 from randomizer.Lists.CustomLocations import CustomLocations

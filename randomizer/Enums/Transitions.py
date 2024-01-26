@@ -1,4 +1,5 @@
 """TransitionFront enum."""
+
 from enum import IntEnum, auto
 
 

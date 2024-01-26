@@ -1,4 +1,5 @@
 """Apply Patch data to the ROM."""
+
 import json
 import os
 from datetime import datetime as Datetime

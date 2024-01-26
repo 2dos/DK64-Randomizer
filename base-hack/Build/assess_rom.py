@@ -1,4 +1,5 @@
 """Assesses ROM for optimization purposes."""
+
 from BuildLib import heap_size
 
 CODE_END = 0x805FAE00

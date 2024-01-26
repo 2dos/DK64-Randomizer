@@ -1,4 +1,5 @@
 """Apply K Rool Phase order."""
+
 import js
 from randomizer.Enums.Maps import Maps
 from randomizer.Patching.EntranceRando import intToArr

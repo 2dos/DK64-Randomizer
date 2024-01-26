@@ -1,4 +1,5 @@
 """Apply CB Rando changes."""
+
 import js
 import randomizer.Lists.CBLocations.AngryAztecCBLocations
 import randomizer.Lists.CBLocations.CreepyCastleCBLocations

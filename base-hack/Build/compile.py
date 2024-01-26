@@ -1,4 +1,5 @@
 """Compile the C Code."""
+
 import os
 import shutil
 import subprocess

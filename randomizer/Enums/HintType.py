@@ -1,4 +1,5 @@
 """Hint Type enum."""
+
 from enum import IntEnum, auto
 
 

@@ -1,4 +1,5 @@
 """Region enum."""
+
 from enum import IntEnum, auto
 
 

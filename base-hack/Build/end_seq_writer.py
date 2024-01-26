@@ -1,4 +1,5 @@
 """Write new end sequence text credits."""
+
 import os
 from BuildEnums import CreditsDirection, CreditsType
 

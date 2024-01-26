@@ -1,4 +1,5 @@
 """Code to collect and validate the selected plando options."""
+
 from enum import IntEnum, auto
 import json
 import re

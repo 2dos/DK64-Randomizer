@@ -1,4 +1,5 @@
 """Decode text file into arrays of text items."""
+
 import os
 import zlib
 

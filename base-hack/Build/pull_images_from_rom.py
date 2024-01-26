@@ -1,4 +1,5 @@
 """Pull hash images from ROM."""
+
 import os
 import zlib
 

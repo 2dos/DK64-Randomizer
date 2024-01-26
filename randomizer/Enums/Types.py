@@ -1,4 +1,5 @@
 """Location/item type enum."""
+
 from enum import IntEnum, auto
 
 from randomizer.Enums.Items import Items

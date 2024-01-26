@@ -1,4 +1,5 @@
 """Static code patching."""
+
 from heap import getHeapData
 
 jump_data_start = 0x1FFF000

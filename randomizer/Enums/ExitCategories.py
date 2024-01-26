@@ -1,4 +1,5 @@
 """Exit Categories enum."""
+
 from enum import IntEnum, auto
 
 
