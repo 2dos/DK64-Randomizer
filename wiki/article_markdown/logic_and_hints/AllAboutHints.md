@@ -148,7 +148,7 @@ The distribution is as follows:
 These numbers were taken from the rough average of the "Standard" system's outputs for S2 settings while also culling worse hint categories.  
 A notable absence is a K. Rool order hint. You are expected to piece this together from K. Rool path hints as well as the wall in Helm.
 
-## When to use this "Fixed" setting
+## When to use this Fixed setting
 This option does not have anything specific enabling or disabling it, but you are ***VERY*** likely to encounter errors if the settings deviate significantly from the S2 preset.  
 Breaking deviations can include (but are not limited to):
 - Changing the win condition
