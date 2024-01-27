@@ -35,7 +35,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.FranticFactoryMedals, lambda l: True),
         TransitionFront(Regions.FranticFactoryLobby, lambda l: True, Transitions.FactoryToIsles),
-        TransitionFront(Regions.Testing, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_testing_gate_opened) or Events.TestingGateOpened in l.Events or l.phasewalk or l.generalclips),
+        TransitionFront(Regions.Testing, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_testing_gate) or Events.TestingGateOpened in l.Events or l.phasewalk or l.generalclips),
         TransitionFront(Regions.BeyondHatch, lambda l: Events.HatchOpened in l.Events or l.phasewalk),
     ]),
 
@@ -162,7 +162,7 @@ LogicRegions = {
         LocationLogic(Locations.FactoryMainEnemy_TunnelToProd0, lambda l: True),
         LocationLogic(Locations.FactoryMainEnemy_TunnelToProd1, lambda l: True),
     ], [
-        Event(Events.MainCoreActivated, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_production_room_on)),
+        Event(Events.MainCoreActivated, lambda l: l.checkBarrier(RemovedBarriersSelected.factory_production_room)),
         Event(Events.DiddyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.diddy),
         Event(Events.LankyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.lanky),
         Event(Events.TinyCoreSwitch, lambda l: l.CanSlamSwitch(Levels.FranticFactory, 1) and l.tiny),

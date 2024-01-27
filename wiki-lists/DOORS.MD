@@ -118,9 +118,9 @@
 | Map | Name | Door types acceptable in location | Logic |
 | --- | ---- | --------------------------------- | ----- |
 | Frantic Factory Lobby | Frantic Factory: Lobby - Low Left | Wrinkly |  | 
-| Frantic Factory Lobby | Frantic Factory: Lobby - Top Left | Wrinkly | (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)) | 
-| Frantic Factory Lobby | Frantic Factory: Lobby - Top Center | Wrinkly | (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)) | 
-| Frantic Factory Lobby | Frantic Factory: Lobby - Top Right | Wrinkly | (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)) | 
+| Frantic Factory Lobby | Frantic Factory: Lobby - Top Left | Wrinkly | (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy)) | 
+| Frantic Factory Lobby | Frantic Factory: Lobby - Top Center | Wrinkly | (l.grab and l.donkey) or l.CanMoonkick() or l.advanced_platforming | 
+| Frantic Factory Lobby | Frantic Factory: Lobby - Top Right | Wrinkly | (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy)) | 
 | Frantic Factory Lobby | Frantic Factory: Lobby - Low Right | Wrinkly |  | 
 | Frantic Factory | Frantic Factory: Arcade Room | Both |  | 
 | Frantic Factory | Frantic Factory: Production Room | Both |  | 

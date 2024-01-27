@@ -155,7 +155,7 @@ class FasterChecksSelected(IntEnum):
 
     factory_toy_monster_fight = 1
     factory_piano_game = 2
-    factory_diddy_research_and_development = 3
+    factory_diddy_rnd = 3
     factory_arcade_round_1 = 4
     factory_car_race = 5
     galleon_seal_race = 6
@@ -557,20 +557,20 @@ class RemovedBarriersSelected(IntEnum):
     details on each can be found in that file.
     """
 
-    japes_coconut_gates_opened = 1
-    japes_shellhive_gate_opened = 2
-    aztec_tunnel_door_opened = 3
-    aztec_5dtemple_switches_spawned = 4
+    japes_coconut_gates = 1
+    japes_shellhive_gate = 2
+    aztec_tunnel_door = 3
+    aztec_5dtemple_switches = 4
     aztec_llama_switches = 5
-    factory_production_room_on = 6
-    factory_testing_gate_opened = 7
-    galleon_lighthouse_gate_opened = 8
-    galleon_shipwreck_gate_opened = 9
-    galleon_shipwreck_permanently_open = 10
-    galleon_seasick_ship_spawned = 11
-    forest_green_tunnel_opened = 12
-    forest_yellow_tunnel_opened = 13
-    caves_igloo_pads_spawned = 14
+    factory_production_room = 6
+    factory_testing_gate = 7
+    galleon_lighthouse_gate = 8
+    galleon_shipyard_area_gate = 9
+    galleon_shipwreck_gates = 10
+    galleon_seasick_ship = 11
+    forest_green_tunnel = 12
+    forest_yellow_tunnel = 13
+    caves_igloo_pads = 14
 
 
 class ShockwaveStatus(IntEnum):

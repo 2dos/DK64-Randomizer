@@ -146,7 +146,7 @@ def randomize_setup(spoiler):
             pickup_list.append(pickup["type"])
 
     arcade_r1_shortened = IsItemSelected(spoiler.settings.faster_checks_enabled, spoiler.settings.faster_checks_selected, FasterChecksSelected.factory_arcade_round_1)
-    lighthouse_on = IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarriersSelected.galleon_seasick_ship_spawned)
+    lighthouse_on = IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarriersSelected.galleon_seasick_ship)
     allowed_settings = [
         arcade_r1_shortened,
         spoiler.settings.randomize_pickups,
