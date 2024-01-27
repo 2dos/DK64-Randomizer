@@ -9,7 +9,7 @@ class InGameItem:
 
     def __init__(self, *, name="", actor=0, model_two=0, scale=0.25, base=None, force_dance=True, boss_enabled=True, bounce=False, will_dance=True, is_null=False, is_custom=False):
         """Initialize with given parameters."""
-        if base is not None:
+        if base is not None and False:
             self.name = base.name
             self.actor = base.actor
             self.model_two = base.model_two

@@ -133,11 +133,11 @@ void initActorDefs(void) {
     index = addActorDef(index, NEWACTOR_POTIONCHUNKY, 0xF2, 0x80689F80, 0x80689FEC, 0, 1); // Chunky Potion
     index = addActorDef(index, NEWACTOR_POTIONANY, 0xF3, 0x80689F80, 0x80689FEC, 0, 1); // Any Potion
     // Kongs
-    index = addActorDef(index, NEWACTOR_KONGDK, 0x4, 0x80689F80, 0x80689FEC, 0, 1); // DK
-    index = addActorDef(index, NEWACTOR_KONGDIDDY, 0x1, 0x80689F80, 0x80689FEC, 0, 1); // Diddy
-    index = addActorDef(index, NEWACTOR_KONGLANKY, 0x6, 0x80689F80, 0x80689FEC, 0, 1); // Lanky
-    index = addActorDef(index, NEWACTOR_KONGTINY, 0x9, 0x80689F80, 0x80689FEC, 0, 1); // Tiny
-    index = addActorDef(index, NEWACTOR_KONGCHUNKY, 0xC, 0x80689F80, 0x80689FEC, 0, 1); // Chunky
+    index = addActorDef(index, NEWACTOR_KONGDK, 0xFE, 0x80689F80, 0x80689FEC, 0, 1); // DK
+    index = addActorDef(index, NEWACTOR_KONGDIDDY, 0xFF, 0x80689F80, 0x80689FEC, 0, 1); // Diddy
+    index = addActorDef(index, NEWACTOR_KONGLANKY, 0x100, 0x80689F80, 0x80689FEC, 0, 1); // Lanky
+    index = addActorDef(index, NEWACTOR_KONGTINY, 0x101, 0x80689F80, 0x80689FEC, 0, 1); // Tiny
+    index = addActorDef(index, NEWACTOR_KONGCHUNKY, 0x102, 0x80689F80, 0x80689FEC, 0, 1); // Chunky
     // Misc
     index = addActorDef(index, NEWACTOR_BEAN, 0, 0x80689F80, 0x8068A10C, 0, 1); // Bean
     index = addActorDef(index, NEWACTOR_PEARL, 0, 0x80689F80, 0x8068A10C, 0, 1); // Pearl

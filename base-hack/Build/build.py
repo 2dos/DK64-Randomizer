@@ -825,6 +825,11 @@ shrinkModel(True, "potion_tiny_om1.bin", 0, 0.08, "shrink_potion_tiny.bin", Fals
 shrinkModel(True, "potion_chunky_om1.bin", 0, 0.08, "shrink_potion_chunky.bin", False)  # Potion (Chunky)
 shrinkModel(True, "potion_any_om1.bin", 0, 0.08, "shrink_potion_any.bin", False)  # Potion (Any)
 shrinkModel(False, "", 0x3C, 5, "shrink_fairy.bin", True)  # Fairy
+shrinkModel(True, "dk_base.bin", 0, 1 / 0.15, "shrink_dk.bin", True)  # DK
+shrinkModel(True, "diddy_base.bin", 0, 1 / 0.15, "shrink_diddy.bin", True)  # Diddy
+shrinkModel(True, "lanky_base.bin", 0, 1 / 0.15, "shrink_lanky.bin", True)  # Lanky
+shrinkModel(True, "tiny_base.bin", 0, 1 / 0.15, "shrink_tiny.bin", True)  # Tiny
+shrinkModel(False, "", 0xB, 1 / 0.15, "shrink_chunky.bin", True)  # Chunky
 
 model_changes = [
     ModelChange(0, "diddy_base.bin"),
@@ -852,6 +857,11 @@ model_changes = [
     ModelChange(0xFA, "shrink_potion_any.bin", True),
     ModelChange(0xFB, "shrink_fairy.bin"),
     ModelChange(0xFC, "fake_item_actor.bin"),
+    ModelChange(0xFD, "shrink_dk.bin"),
+    ModelChange(0xFE, "shrink_diddy.bin"),
+    ModelChange(0xFF, "shrink_lanky.bin"),
+    ModelChange(0x100, "shrink_tiny.bin"),
+    ModelChange(0x101, "shrink_chunky.bin"),
     ModelChange(0xA3, "counter.bin"),
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
