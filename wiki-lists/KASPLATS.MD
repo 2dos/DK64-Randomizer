@@ -193,7 +193,7 @@
 | Map | Name | Logic |
 | --- | ---- | ----- |
 | Isles | Isles Kasplat: Beaver Beach |  | 
-| Frantic Factory Lobby | Isles Kasplat: Factory Lobby above Portal | (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)) | 
+| Frantic Factory Lobby | Isles Kasplat: Factory Lobby above Portal | (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy)) | 
 | Hideout Helm Lobby | Isles Kasplat: Helm Lobby | (l.scope and l.coconut) or (l.twirl and l.tiny and l.advanced_platforming) | 
 | Creepy Castle Lobby | Isles Kasplat: Castle Lobby | (l.coconut and l.donkey) or l.phasewalk | 
 | Crystal Caves Lobby | Isles Kasplat: Caves Lobby Punch | (l.punch and l.chunky) or l.phasewalk or l.ledgeclip | 

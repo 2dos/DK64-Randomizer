@@ -2590,7 +2590,7 @@ CustomLocations = {
             rot_y=2048,
             max_size=64,
             logic_region=Regions.FranticFactoryLobby,
-            logic=lambda l: ((l.grab and l.isdonkey) or l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))),
+            logic=lambda l: ((l.grab and l.isdonkey) or l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or l.istiny))),
             group=10,
         ),
         CustomLocation(
@@ -2601,7 +2601,7 @@ CustomLocations = {
             z=367,
             max_size=64,
             logic_region=Regions.FranticFactoryLobby,
-            logic=lambda l: ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))),
+            logic=lambda l: ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny))),
             group=10,
         ),
         CustomLocation(map=Maps.GloomyGalleonLobby, name="Galleon Lobby: Right of Portal", x=429, y=139.6, z=942, max_size=64, logic_region=Regions.GloomyGalleonLobby, group=11),

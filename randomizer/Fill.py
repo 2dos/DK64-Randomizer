@@ -1903,7 +1903,7 @@ def GetLogicallyAccessibleKongLocations(spoiler: Spoiler, kongLocations, ownedKo
             # Must be able to bypass Guitar door - the active bananaports condition is in case your only Llama Temple access is through the quicksand cave
             and (
                 Kongs.diddy in ownedKongs
-                or IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door_opened)
+                or IsItemSelected(spoiler.settings.remove_barriers_enabled, spoiler.settings.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door)
                 or (Kongs.donkey in ownedKongs and spoiler.settings.activate_all_bananaports == ActivateAllBananaports.all)
             )
             and (Kongs.donkey in ownedKongs or Kongs.lanky in ownedKongs or Kongs.tiny in ownedKongs)

@@ -479,7 +479,7 @@ def GenerateLevelOrderForMultipleStartingKongs(settings: Settings):
                     if lankyAccessible:
                         guitarDoorAccess = (
                             Kongs.diddy in settings.starting_kong_list
-                            or IsItemSelected(settings.remove_barriers_enabled, settings.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door_opened)
+                            or IsItemSelected(settings.remove_barriers_enabled, settings.remove_barriers_selected, RemovedBarriersSelected.aztec_tunnel_door)
                             or (Kongs.donkey in settings.starting_kong_list and settings.activate_all_bananaports == ActivateAllBananaports.all)
                         )
                         if not guitarDoorAccess or (

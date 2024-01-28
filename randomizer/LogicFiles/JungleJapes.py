@@ -41,8 +41,8 @@ LogicRegions = {
         TransitionFront(Regions.JungleJapesLobby, lambda l: True, Transitions.JapesToIsles),
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
         TransitionFront(Regions.JapesBeyondPeanutGate, lambda l: l.hasMoveSwitchsanity(Switches.JapesDiddyCave, False) or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
-        TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates_opened) or Events.JapesFreeKongOpenGates in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
-        TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates_opened) or Events.JapesFreeKongOpenGates in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
+        TransitionFront(Regions.JapesBeyondCoconutGate1, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates) or Events.JapesFreeKongOpenGates in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
+        TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates) or Events.JapesFreeKongOpenGates in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
         TransitionFront(Regions.JapesCatacomb, lambda l: (l.Slam and l.chunky and l.barrels) or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False), Transitions.JapesMainToCatacomb),
         TransitionFront(Regions.JapesBaboonBlast, lambda l: (l.vines or l.CanMoonkick()) and l.blast and l.isdonkey),  # , Transitions.JapesMainToBBlast)
     ]),
@@ -69,7 +69,7 @@ LogicRegions = {
     ], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesStart, lambda l: True),
-        TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates_opened) or Events.JapesFreeKongOpenGates in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
+        TransitionFront(Regions.JapesBeyondCoconutGate2, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_coconut_gates) or Events.JapesFreeKongOpenGates in l.Events or l.phasewalk or l.CanPhaseswim() or l.CanSkew(True) or l.CanSkew(False) or l.generalclips),
         TransitionFront(Regions.Mine, lambda l: l.peanut and l.isdiddy, Transitions.JapesMainToMine),
         TransitionFront(Regions.JapesTopOfMountain, lambda l: (l.peanut and l.isdiddy) or l.CanMoonkick()),
         TransitionFront(Regions.JapesLankyCave, lambda l: ((l.hasMoveSwitchsanity(Switches.JapesPainting, False) or l.CanSkew(True) or l.CanSkew(False)) and ((l.handstand and l.islanky) or (l.twirl and l.istiny) or l.CanMoonkick())) or (l.CanMoonkick() and (l.phasewalk or l.CanSkew(True) or l.CanSkew(False))) or ((l.phasewalk or l.generalclips or l.CanSkew(True) or l.CanSkew(False)) and (l.isdiddy or l.istiny)), Transitions.JapesMainToLankyCave),
@@ -118,7 +118,7 @@ LogicRegions = {
     ], [], [
         TransitionFront(Regions.JungleJapesMedals, lambda l: True),
         TransitionFront(Regions.JungleJapesStart, lambda l: True),
-        TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_shellhive_gate_opened) or l.hasMoveSwitchsanity(Switches.JapesFeather, False) or l.phasewalk or l.CanSkew(True) or l.CanSkew(False)),
+        TransitionFront(Regions.JapesBeyondFeatherGate, lambda l: l.checkBarrier(RemovedBarriersSelected.japes_shellhive_gate) or l.hasMoveSwitchsanity(Switches.JapesFeather, False) or l.phasewalk or l.CanSkew(True) or l.CanSkew(False)),
     ]),
 
     Regions.JapesBeyondFeatherGate: Region("Japes Beyond Feather Gate", "Hive Tunnel Area", Levels.JungleJapes, True, None, [

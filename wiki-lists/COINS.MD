@@ -98,8 +98,8 @@
 | Name | Amount | Logic |
 | ---- | ------ | ----- |
 | In tag barrel corner | 3 |  | 
-| On top level in corner | 3 | ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))) | 
-| On top level at the end | 3 | ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))) | 
+| On top level in corner | 3 | ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny))) | 
+| On top level at the end | 3 | ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny))) | 
 </details>
 <details>
 <summary>Gloomy Galleon Lobby</summary>

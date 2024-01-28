@@ -32,7 +32,7 @@ LogicRegions = {
         Event(Events.ForestEntered, lambda l: True),
         Event(Events.Night, lambda l: l.HasGun(Kongs.any) or l.settings.fungi_time_internal in (FungiTimeSetting.night, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
         Event(Events.Day, lambda l: l.HasGun(Kongs.any) or l.settings.fungi_time_internal in (FungiTimeSetting.day, FungiTimeSetting.dusk, FungiTimeSetting.progressive)),
-        Event(Events.WormGatesOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel_opened) or (l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) and l.hasMoveSwitchsanity(Switches.FungiGreenPineapple, False))),
+        Event(Events.WormGatesOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel) or (l.hasMoveSwitchsanity(Switches.FungiGreenFeather, False) and l.hasMoveSwitchsanity(Switches.FungiGreenPineapple, False))),
         Event(Events.ForestW1aTagged, lambda l: True),
         Event(Events.ForestW2aTagged, lambda l: True),
         Event(Events.ForestW3aTagged, lambda l: True),
@@ -74,7 +74,7 @@ LogicRegions = {
         TransitionFront(Regions.MushroomLower, lambda l: True, Transitions.ForestMainToLowerMushroom),
         TransitionFront(Regions.MushroomLowerExterior, lambda l: (l.jetpack and l.isdiddy) or (l.advanced_platforming and l.twirl and l.istiny)),
         TransitionFront(Regions.MushroomUpperExterior, lambda l: l.jetpack and l.isdiddy),
-        TransitionFront(Regions.HollowTreeArea, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel_opened) or Events.HollowTreeGateOpened in l.Events or l.CanPhaseswim() or l.phasewalk or l.CanOStandTBSNoclip() or l.CanSkew(True)),
+        TransitionFront(Regions.HollowTreeArea, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel) or Events.HollowTreeGateOpened in l.Events or l.CanPhaseswim() or l.phasewalk or l.CanOStandTBSNoclip() or l.CanSkew(True)),
         TransitionFront(Regions.Anthill, lambda l: l.CanSkew(True), Transitions.ForestTreeToAnthill, isGlitchTransition=True),
         TransitionFront(Regions.CrankyForest, lambda l: True),
     ]),
@@ -200,7 +200,7 @@ LogicRegions = {
         Event(Events.ForestW4bTagged, lambda l: True),
     ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
-        TransitionFront(Regions.GiantMushroomArea, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel_opened) or Events.HollowTreeGateOpened in l.Events or l.phasewalk),
+        TransitionFront(Regions.GiantMushroomArea, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_yellow_tunnel) or Events.HollowTreeGateOpened in l.Events or l.phasewalk),
         TransitionFront(Regions.Anthill, lambda l: l.mini and l.saxophone and l.istiny, Transitions.ForestTreeToAnthill),
         TransitionFront(Regions.ForestBossLobby, lambda l: not l.settings.tns_location_rando),
     ]),
@@ -331,7 +331,7 @@ LogicRegions = {
         LocationLogic(Locations.ForestMainEnemy_NearBeanstalk1, lambda l: True),
     ], [
         Event(Events.ForestW2aTagged, lambda l: True),
-        Event(Events.WormGatesOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel_opened)),
+        Event(Events.WormGatesOpened, lambda l: l.checkBarrier(RemovedBarriersSelected.forest_green_tunnel)),
     ], [
         TransitionFront(Regions.FungiForestMedals, lambda l: True),
         TransitionFront(Regions.FungiForestStart, lambda l: Events.WormGatesOpened in l.Events),

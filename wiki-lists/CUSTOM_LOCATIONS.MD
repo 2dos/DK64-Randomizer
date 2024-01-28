@@ -463,8 +463,8 @@
 | Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (1) | l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk | 
 | Angry Aztec Lobby | Aztec Lobby: Behind Feather Door (2) | l.hasMoveSwitchsanity(Switches.IslesAztecLobbyFeather, False) or l.phasewalk | 
 | Frantic Factory Lobby | Factory Lobby: Near Lever |  | 
-| Frantic Factory Lobby | Factory Lobby: High Platform | ((l.grab and l.isdonkey) or l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))) | 
-| Frantic Factory Lobby | Factory Lobby: Above Portal | ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny or l.ischunky))) | 
+| Frantic Factory Lobby | Factory Lobby: High Platform | ((l.grab and l.isdonkey) or l.CanMoonkick() or (l.advanced_platforming and (l.isdiddy or l.istiny))) | 
+| Frantic Factory Lobby | Factory Lobby: Above Portal | ((l.grab and l.donkey) or (l.advanced_platforming and (l.isdiddy or l.istiny))) | 
 | Gloomy Galleon Lobby | Galleon Lobby: Right of Portal |  | 
 | Gloomy Galleon Lobby | Galleon Lobby: Left of Portal |  | 
 | Gloomy Galleon Lobby | Galleon Lobby: Behind Mini Monkey Gate | ((l.mini and l.CanSlamSwitch(Levels.GloomyGalleon, 2) and l.istiny and l.chunky and l.swim) or l.CanPhaseswim()) and (not l.IsLavaWater() or l.Melons >= 3) | 
