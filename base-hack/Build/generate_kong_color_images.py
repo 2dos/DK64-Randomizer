@@ -1,4 +1,5 @@
 """Convert RGB colors into a kong color palette."""
+
 import gzip
 import math
 import os

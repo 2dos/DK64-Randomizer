@@ -1,4 +1,5 @@
 """Check for unused symbols."""
+
 import os
 
 src_folder = "/src"

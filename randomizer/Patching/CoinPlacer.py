@@ -1,4 +1,5 @@
 """Apply Coin Rando changes."""
+
 import js
 from randomizer.Patching.Lib import float_to_hex
 from randomizer.Patching.Patcher import LocalROM

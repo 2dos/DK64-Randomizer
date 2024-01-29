@@ -1,4 +1,5 @@
 """Enums for the build process."""
+
 from enum import IntEnum, auto
 
 

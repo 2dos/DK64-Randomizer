@@ -11,7 +11,7 @@ from randomizer.Enums.Switches import Switches
 class KasplatLocation:
     """Class which stores name and logic for a kasplat location."""
 
-    def __init__(self, *, name="No Location", map_id=0, kong_lst=[], coords=[0, 0, 0], xmin=0, xmax=0, zmin=0, zmax=0, region, additional_logic=None, vanilla=False):
+    def __init__(self, *, name="No Location", map_id=0, kong_lst=[], coords=[0, 0, 0], xmin=0, xmax=0, zmin=0, zmax=0, region, additional_logic=None, vanilla=False, scale=1):
         """Initialize with given parameters."""
         self.name = name
         self.map = map_id
@@ -20,6 +20,7 @@ class KasplatLocation:
         self.bounds = [xmin, xmax, zmin, zmax]
         self.selected = False
         self.vanilla = vanilla
+        self.scale = scale
         self.region_id = region
         if additional_logic is None:
             self.additional_logic = lambda l: True
@@ -1115,6 +1116,18 @@ KasplatLocationList = {
             zmin=1920,
             zmax=2170,
             region=Regions.CrystalCavesMain,
+            scale=1.3,
+        ),
+        KasplatLocation(
+            name="Caves Kasplat: Tied to the Bananaport Spire",
+            map_id=Maps.CrystalCaves,
+            kong_lst=[Kongs.donkey, Kongs.diddy, Kongs.lanky, Kongs.tiny, Kongs.chunky],
+            coords=[1169, 25, 1912],
+            xmin=1168,
+            xmax=1170,
+            zmin=1911,
+            zmax=1913,
+            region=Regions.CrystalCavesMain,
         ),
         KasplatLocation(
             name="Caves Kasplat: Between Funky and Castle",
@@ -1393,7 +1406,7 @@ KasplatLocationList = {
             zmin=330,
             zmax=430,
             region=Regions.FranticFactoryLobby,
-            additional_logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)),
+            additional_logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy)),
         ),
         KasplatLocation(
             name="Isles Kasplat: Helm Lobby",

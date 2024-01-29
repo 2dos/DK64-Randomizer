@@ -1,4 +1,5 @@
 """Convert Dirt Patch CSV into a python list."""
+
 import csv
 import re
 

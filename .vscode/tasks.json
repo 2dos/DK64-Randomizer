@@ -46,6 +46,12 @@
       "problemMatcher": []
     },
     {
+      "label": "Update Wiki",
+      "type": "shell",
+      "command": "${command:python.interpreterPath} ./update_wiki.py",
+      "problemMatcher": []
+    },
+    {
       "label": "Lint Repo",
       "dependsOn": [
         "Format Repo",
@@ -53,7 +59,8 @@
         "Validate Docstrings",
         //"Validate Jinja2",
         "Validate C",
-        "Update Custom Location Lists"
+        "Update Custom Location Lists",
+        "Update Wiki"
       ],
       "problemMatcher": []
     },

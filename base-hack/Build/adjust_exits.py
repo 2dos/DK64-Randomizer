@@ -1,4 +1,5 @@
 """Adjust exits to prevent logical problems with LZR."""
+
 import os
 import zlib
 from typing import BinaryIO

@@ -1,4 +1,5 @@
 """Maps enum."""
+
 from enum import IntEnum
 
 

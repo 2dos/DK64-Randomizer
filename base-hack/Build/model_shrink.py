@@ -1,4 +1,5 @@
 """Shrink Models and create a duplicate."""
+
 import zlib
 
 from BuildClasses import ROMPointerFile

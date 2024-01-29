@@ -1,4 +1,5 @@
 """Randomizes Bananaports."""
+
 import random
 
 from randomizer.Enums.Maps import Maps

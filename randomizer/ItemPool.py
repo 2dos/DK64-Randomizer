@@ -1,4 +1,5 @@
 """Contains functions related to setting up the pool of shuffled items."""
+
 import itertools
 import random
 

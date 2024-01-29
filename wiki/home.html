@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Donkey Kong 64 Randomizer Wiki</title>
+        <link href="../static/img/dk.png" rel="icon" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900"
+              rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i"
+              rel="stylesheet"/>
+        <link href="../static/styles/styles.css" rel="stylesheet" />
+        <link href="../static/styles/gui.css" rel="stylesheet" type="text/css" />
+        <link href="../static/styles/wiki.css" rel="stylesheet" type="text/css" />
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    </head>
+    <body id="page-top">
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+            <div class="container px-5">
+                <a class="navbar-brand" href="#page-top">DK64 Randomizer</a>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarResponsive"
+                        aria-controls="navbarResponsive"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#overview">Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="https://github.com/2dos/DK64-Randomizer/wiki/Consoles-and-Emulators">Setup</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="https://github.com/2dos/DK64-Randomizer/wiki"
+                               target="_blank">Wiki</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="https://discord.dk64randomizer.com"
+                               target="_blank">Discord</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <img src="../static/img/logo.png"
+            alt="DK64 Randomizer"
+            class="center_image"
+            style="cursor: pointer; margin-top: 70px"/>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-10">
+                    <div class="row justify-content-end">
+                        <div class="col-sm-3">
+                            <div class="card bg-dark px-2 pt-2 position-relative">
+                                <input class="form-control mr-sm-2" id="article-search" type="input" placeholder="Search" aria-label="Search">
+                                <div class="position-absolute" id="search_suggestions"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1"></div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-1 p-0"></div>
+                <div class="col-sm-10">
+                    <div class="card bg-dark p-3">
+                        <h1 id="page-title">Welcome to the DK64 Randomizer Wiki</h1>
+                        <hr />
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <p>Welcome to the DK64 Randomizer Wiki. A comprehensive wiki on tricks, tips and guide to playing the best
+                                        monkey game randomizer on the Nintendo 64. This wiki is run by the developers, and is <a href="./WikiEditing.html">easily editable using
+                                        markdown</a>.</p>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div>
+                                        <table class="table table-dark table-hover">
+                                            <thead>
+                                                <tr><td class="bg-black user-select-none">Setup</td></tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr><td class="user-select-none">Consoles & Emulators</td></tr>
+                                                <tr><td class="user-select-none">Using the Website</td></tr>
+                                                <tr><td class="user-select-none">Trackers</td></tr>
+                                                <tr><td class="user-select-none">Advanced Homebrew Header</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <p>This is currently under development, please check the articles here in the meanwhile whilst the dev team cooks</p>
+                        <ul id="article-list"></ul>
+                    </div>
+                </div>
+                <div class="col-sm-1 p-0"></div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            async function fetchArticles() {
+                const articles = await fetch("./articles.json", {cache: "no-store"}).then(x => x.json());
+                const sorted_articles = articles.sort((a, b) => a.name > b.name ? 1 : ((b.name > a.name) ? -1 : 0));
+                const article_hook = document.getElementById("article-list");
+                article_hook.innerHTML = sorted_articles.map(article => `<li><a href="./${article.link}.html">${article.name}</a></li>`).join("");
+            }
+            fetchArticles();
+        </script>
+    </body>
+</html>

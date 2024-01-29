@@ -1,4 +1,5 @@
 """File containing main UI button events that travel between tabs."""
+
 import asyncio
 import json
 import random

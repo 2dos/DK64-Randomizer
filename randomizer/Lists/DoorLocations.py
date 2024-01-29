@@ -1,4 +1,5 @@
 """Stores the data for each potential T&S and Wrinkly door location."""
+
 from randomizer.Enums.Events import Events
 from randomizer.Enums.Kongs import Kongs
 from randomizer.Enums.Levels import Levels
@@ -855,7 +856,7 @@ door_locations = {
             location=[660.685, 133.5, 660.774, 182.0],
             group=1,
             moveless=False,
-            logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)),
+            logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy)),
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.diddy,
@@ -867,7 +868,7 @@ door_locations = {
             location=[468.047, 85.833, 662.907, 180.0],
             group=1,
             moveless=False,
-            logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)),
+            logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or l.advanced_platforming,
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.lanky,
@@ -879,7 +880,7 @@ door_locations = {
             location=[275.533, 133.5, 661.908, 180.0],
             group=1,
             moveless=False,
-            logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy or l.ischunky)),
+            logic=lambda l: (l.grab and l.donkey) or l.CanMoonkick() or (l.advanced_platforming and (l.istiny or l.isdiddy)),
             placed="wrinkly",
             door_type="wrinkly",
             default_kong=Kongs.tiny,

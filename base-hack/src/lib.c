@@ -1112,12 +1112,7 @@ void* replaceWaterTexture_spooky(int table, int file, int unk0, int unk1) {
 }
 
 int isBounceObject(int object) {
-	for (int i = 0; i < (int)(sizeof(bounce_objects)/2); i++) {
-		if (object == bounce_objects[i]) {
-			return 1;
-		}
-	}
-	return 0;
+	return inShortList(object, (short*)&bounce_objects[0], sizeof(bounce_objects) >> 1);
 }
 
 void* getFile(int size, int rom) {

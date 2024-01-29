@@ -1,4 +1,5 @@
 """Apply item rando changes."""
+
 from enum import IntEnum, auto
 
 import js

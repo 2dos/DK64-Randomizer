@@ -1,4 +1,5 @@
 """Shuffle Dirt Patch Locations."""
+
 import random
 from randomizer.Enums.Plandomizer import PlandoItems
 from randomizer.Lists import Exceptions

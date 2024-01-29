@@ -1,4 +1,5 @@
 """CLI script for running seed generation."""
+
 import argparse
 import codecs
 import json

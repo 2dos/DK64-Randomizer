@@ -1,4 +1,5 @@
 """Hint location data for Wrinkly hints."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, List, Union

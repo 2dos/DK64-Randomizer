@@ -1,4 +1,5 @@
 """Module used to handle setting and randomizing bonus barrels."""
+
 from __future__ import annotations
 
 import random

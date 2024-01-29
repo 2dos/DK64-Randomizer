@@ -1,4 +1,5 @@
 """Copies a base shop script to all shops."""
+
 import json
 
 ref_script = "assets/instance_scripts/base_shop_script/shop.json"

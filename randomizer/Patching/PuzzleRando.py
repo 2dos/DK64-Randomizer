@@ -1,4 +1,5 @@
 """Randomize puzzles."""
+
 import random
 
 import js

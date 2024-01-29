@@ -344,7 +344,7 @@ with open(ROMName, "rb") as rom:
     with open("fake_item.bin", "wb") as fh:
         fh.write(data)
     # Fake Item - Actor
-    rom.seek(actor_table + (0x68 << 2))
+    rom.seek(actor_table + (0x87 << 2))
     model_start = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     model_end = main_pointer_table_offset + int.from_bytes(rom.read(4), "big")
     model_size = model_end - model_start
