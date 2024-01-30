@@ -2,6 +2,9 @@
 a {
     text-decoration: underline solid 1px !important;
 }
+nav a {
+    text-decoration: none !important;   
+}
 
 
 /* Wiki Stylings */
