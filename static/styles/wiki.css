@@ -2,7 +2,7 @@
 a {
     text-decoration: underline solid 1px !important;
 }
-nav a {
+nav a, a.list_number {
     text-decoration: none !important;   
 }
 
