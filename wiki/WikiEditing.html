@@ -119,6 +119,35 @@
         </div>
         <script type="text/javascript" src="../static/js/wiki-code.js"></script>
         <script type="text/javascript">
+            function copyCode(element) {
+                let parent = element.parentElement.parentElement.parentElement;
+                if (!parent) {
+                    return;
+                }
+                parent = parent.getElementsByTagName("pre")[0];
+                if (!parent) {
+                    return;
+                }
+                const code_blocks = parent.getElementsByTagName("code");
+                if (code_blocks.length == 0) {
+                    return;
+                }
+                const copyText = code_blocks[0].innerText;
+                copyContent(copyText);
+                if (!parent.classList.contains("pulse")) {
+                    if (!element.classList.contains("pulse_display")) {
+                        parent.classList.add("pulse");
+                        element.classList.add("pulse_display");
+                        setTimeout(() => {
+                            parent.classList.remove("pulse");
+                        }, 300);
+                        setTimeout(() => {
+                            element.classList.remove("pulse_display");
+                        }, 1000);
+                    }
+                }
+            }
+
             function toggleSidebarCollapse(element) {
                 const open_id = element.getAttribute("open");
                 const nav_hook = document.getElementById(open_id);
@@ -131,33 +160,6 @@
                     element.classList.add("collapsed");
                 }
             }
-
-            function copyCode(element) {
-                const parent = element.parentElement.parentElement.parentElement;
-                if (!parent) {
-                    return;
-                }
-                const code_blocks = parent.getElementsByTagName("code");
-                if (code_blocks.length == 0) {
-                    return;
-                }
-                const copyText = code_blocks[0].innerText;
-                copyContent(copyText);
-                if (!parent.classList.contains("pulse")) {
-                    if (!parent.classList.contains("pulse_display")) {
-                        parent.classList.add("pulse");
-                        parent.classList.add("pulse_display");
-                        setTimeout(() => {
-                            parent.classList.remove("pulse");
-                        }, 300);
-                        setTimeout(() => {
-                            parent.classList.remove("pulse_display");
-                        }, 1000);
-                    }
-                }
-            }
-
-            
 
             async function alterMarkdown(element) {
                 const converter = new showdown.Converter({tables: true, headerLevelStart: 2, strikethrough: true});

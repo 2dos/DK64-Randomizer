@@ -208,31 +208,6 @@ const copyContent = async (text) => {
     }
 }
 
-function copyCode(element) {
-    const parent = element.parentElement.parentElement.parentElement;
-    if (!parent) {
-        return;
-    }
-    const code_blocks = parent.getElementsByTagName("code");
-    if (code_blocks.length == 0) {
-        return;
-    }
-    const copyText = code_blocks[0].innerText;
-    copyContent(copyText);
-    if (!parent.classList.contains("pulse")) {
-        if (!parent.classList.contains("pulse_display")) {
-            parent.classList.add("pulse");
-            parent.classList.add("pulse_display");
-            setTimeout(() => {
-                parent.classList.remove("pulse");
-            }, 300);
-            setTimeout(() => {
-                parent.classList.remove("pulse_display");
-            }, 1000);
-        }
-    }
-}
-
 async function filterMarkdown(element, converter) {
     let last_modified = null;
     let text = await fetch(element.getAttribute("ref"), {cache: "no-store"}).then(x => {
@@ -281,7 +256,8 @@ async function filterMarkdown(element, converter) {
 const markdown_filters = {
     "</h2>": "</h2><hr />",
     "<table>": "<table class=\"table table-dark table-hover\">",
-    "<pre>": "<pre><div><div class=\"code-copy\"><a title=\"Copy Code\" onClick=\"copyCode(this)\"><i class=\"fa-regular fa-lg fa-copy\"></i></a></div></div>"
+    "<pre>": "<div class=\"code-copy-container\"><pre>",
+    "</pre>": "</pre><div><div class=\"code-copy p-1 m-1\"><a title=\"Copy Code\" onClick=\"copyCode(this)\"><i class=\"fa-regular fa-lg fa-copy\"></i></a></div></div></div>"
 }
 
 function filterHTML(element, output_html) {

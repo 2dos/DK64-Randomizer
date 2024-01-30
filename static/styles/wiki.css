@@ -60,13 +60,18 @@ pre.pulse {
     background-color: rgba(33, 37, 41);
     border: 1px solid white;
 }
-pre.pulse_display a::before {
+.pulse_display::before {
     content: "Copied! ";
 }
 
-.code-copy {
+.code-copy-container {
+    position: relative;
     width: fit-content;
-    margin-left: auto;
+}
+.code-copy {
+    position:absolute;
+    top: 0;
+    right: 0;
 }
 .code-copy:hover {
     color: #666;
