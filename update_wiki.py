@@ -52,7 +52,7 @@ NAME_HEADS = ["Custom Locations", "Random Settings"]
 
 
 def convertName(name: str):
-    """Converts name for title purposes."""
+    """Convert name for title purposes."""
     name = getNameFromCamelSnakeCase(name)
     for head in NAME_HEADS:
         if name[: len(head)] == head and len(name) > len(head):
