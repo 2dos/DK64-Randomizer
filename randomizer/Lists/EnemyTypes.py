@@ -470,6 +470,14 @@ EnemyMetaData = {
 }
 
 enemies_nokill_gun = [enemy for enemy in EnemyMetaData if ((not EnemyMetaData[enemy].interaction.kill_gun) and (not EnemyMetaData[enemy].interaction.kill_melee)) or enemy == Enemies.Guard]
+enemies_shockwave_immune = [
+    Enemies.Bat,
+    Enemies.KlaptrapPurple,
+    Enemies.KlaptrapRed,
+    Enemies.ZingerCharger,
+    Enemies.ZingerLime,
+    Enemies.ZingerRobo,
+]
 
 enemy_location_list = {
     # Japes
@@ -678,8 +686,8 @@ enemy_location_list = {
     Locations.GalleonMainEnemy_PeanutTunnel: EnemyLoc(Maps.GloomyGalleon, Enemies.Kosha, 26, [], True),
     Locations.GalleonMainEnemy_CoconutTunnel: EnemyLoc(Maps.GloomyGalleon, Enemies.Kremling, 27, [], True),
     # Lighthouse
-    Locations.GalleonLighthouseEnemy_Enemy0: EnemyLoc(Maps.GalleonLighthouse, Enemies.Klump, 1, [], True),
-    Locations.GalleonLighthouseEnemy_Enemy1: EnemyLoc(Maps.GalleonLighthouse, Enemies.Klump, 2, [], True),
+    Locations.GalleonLighthouseEnemy_Enemy0: EnemyLoc(Maps.GalleonLighthouse, Enemies.Klump, 1, enemies_shockwave_immune + [Enemies.Guard], True),
+    Locations.GalleonLighthouseEnemy_Enemy1: EnemyLoc(Maps.GalleonLighthouse, Enemies.Klump, 2, enemies_shockwave_immune + [Enemies.Guard], True),
     # 5DS Diddy, Lanky, Chunky
     Locations.Galleon5DSDLCEnemy_Diddy: EnemyLoc(Maps.Galleon5DShipDiddyLankyChunky, Enemies.Pufftup, 4, [], True),
     Locations.Galleon5DSDLCEnemy_Chunky: EnemyLoc(Maps.Galleon5DShipDiddyLankyChunky, Enemies.Pufftup, 5, [], True),

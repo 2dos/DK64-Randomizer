@@ -690,6 +690,7 @@ void tagAnywhere(void) {
                         }
                         tagKong(next_character + 2);
 						clearTagSlide(Player);
+                        Player->hSpeed = 140.0f; // Patch Jacob Rolling
                         if (old_control_state == 0x4F) {
                             // Fix the underwater tag memes
                             Player->yVelocity = 0.0f;

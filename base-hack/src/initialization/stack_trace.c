@@ -22,7 +22,7 @@
     lo, hi
 */
 
-static char version_string[] = "DK64R 2.1\n";
+static char version_string[] = "DK64R 3.0\n";
 
 typedef struct crash_handler_info {
     /* 0x000 */ char unk_000[0x28];
