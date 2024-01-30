@@ -47,20 +47,24 @@ def getNameFromCamelSnakeCase(text: str):
             last_state = CamelCaseState.null
     return output_string
 
+
 NAME_HEADS = ["Custom Locations", "Random Settings"]
+
 
 def convertName(name: str):
     """Converts name for title purposes."""
     name = getNameFromCamelSnakeCase(name)
     for head in NAME_HEADS:
-        if name[:len(head)] == head and len(name) > len(head):
+        if name[: len(head)] == head and len(name) > len(head):
             name = f"{head}: {name[len(head):]}"
     return name
+
 
 def createArticleJSON(file_heads: list):
     """Create JSON file containing all articles."""
     with open("./wiki/articles.json", "w") as fh:
         fh.write(json.dumps([{"name": convertName(x), "link": x} for x in file_heads], indent=4))
+
 
 def createHTML(markdown_file_name: str, markdown_path: str, template_text: str):
     """Create the relevant HTML file for a markdown entry."""
@@ -73,6 +77,7 @@ def createHTML(markdown_file_name: str, markdown_path: str, template_text: str):
     with open(f"./wiki/{html_file_name}", "w") as fh:
         fh.write("<!-- DON'T EDIT THIS FILE. EDIT template.html INSTEAD -->\n")
         fh.write(html_text)
+
 
 def updateWikiProcedure():
     """Update procedure."""
@@ -90,5 +95,6 @@ def updateWikiProcedure():
             createHTML(item.split("/")[-1], item, template_text)
         createArticleJSON([item.split("/")[-1].split(".")[0] for item in items])
     print("Wiki Updated")
+
 
 updateWikiProcedure()

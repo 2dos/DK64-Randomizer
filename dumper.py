@@ -130,6 +130,7 @@ def getMapNameFromIndex(index: int):
 DISPLAY_TOTALS = False
 LIST_DIRECTORY = "./wiki/article_markdown/custom_locations"
 
+
 def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.ColoredBananas):
     """Dump data to a JSON file."""
     directory = "./tools/dumps"
@@ -218,7 +219,7 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                         elif dumper == Dumpers.Fairies:
                             fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | `{y.get('logic', '')}` | \n")
                         elif dumper == Dumpers.CustomLocations:
-                            banned_types = y.get('banned_types', [])
+                            banned_types = y.get("banned_types", [])
                             fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {', '.join([x.name for x in banned_types])} | `{y.get('logic', '')}` | \n")
                         elif dumper == Dumpers.Kasplats:
                             fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | `{y.get('additional_logic', '')}` | \n")
