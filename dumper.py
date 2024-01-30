@@ -37,6 +37,7 @@ class Dumpers(IntEnum):
     Doors = auto()
     Fairies = auto()
     Kasplats = auto()
+    RandomSettings = auto()
 
 
 def dump_to_dict(class_instance, deleted=[], enum_value=[], enum_name=[], logic_var=None, x_func=None, y_func=None, z_func=None) -> dict:
@@ -422,7 +423,119 @@ def dump_coin(format: str):
             dump_to_file(f"coins_{level.name}", dumps[level], format, Dumpers.Coins)
 
 
-all_args = ["cb", "coin", "custom_location", "door", "fairy", "kasplat"]
+def checkIfMatchingList(list1: list, list2: list) -> bool:
+    """Check if two lists match in size and items."""
+    if len(list1) != len(list2):
+        return False
+    for item in list1:
+        if item not in list2:
+            return False
+    return True
+
+
+def getDisplayName(internal_name: str):
+    """Get the displayed name on the site for an internal name."""
+    directory = "./templates"
+    templates = [x for x in os.listdir(directory) if ".html.jinja2" in x and x not in ["spoiler.html.jinja2", "settings.html.jinja2"]]
+    old_text = " ".join([x.capitalize() for x in internal_name.split("_")])
+    for template in templates:
+        with open(f"{directory}/{template}", "r") as jinja:
+            original_text = jinja.read()
+            text = original_text
+            loc = text.find(internal_name)
+            if loc < 0:
+                continue
+            # Get start of element containing name/id
+            text = text[:loc]
+            angle_open_loc = text.rfind("<")
+            if angle_open_loc < 0:
+                continue
+            text = original_text[angle_open_loc:]
+            angle_close_loc = text.find(">")
+            if angle_close_loc < 0:
+                continue
+            # Found Element
+            text = text[:angle_close_loc]
+            disp_name_text = 'display_name="'
+            start_of_disp_name = text.find(disp_name_text)
+            if start_of_disp_name < 0:
+                continue
+            text = text[start_of_disp_name + len(disp_name_text) :]
+            end_of_disp_name = text.find('"')
+            if end_of_disp_name < 0:
+                continue
+            text = text[:end_of_disp_name].strip()
+            if len(text) > 0:
+                return text
+    return old_text
+
+
+def dump_random_settings(format: str):
+    """Dump all random settings information."""
+    if format != "md":
+        print("Not dumping to markdown format, cannot dump random settings.")
+        return
+    data = None
+    with open("./static/presets/weights/weights_files.json") as fh:
+        data = json.loads(fh.read())
+    if data is None:
+        print("Random Setting Data could not be established")
+        return
+    for file in data:
+        with open(f"./wiki-lists/RS_{file['name'].replace(' ','').upper()}.MD", "w") as fh:
+            fh.write(f"# \"{file['name']}\" Random Settings Walkthrough\n")
+            fh.write(f"{file['description']}\n")
+            excluded_settings = ["name", "description"]
+            included_settings = [x for x in list(file.keys()) if x not in excluded_settings]
+            always_on = []
+            always_off = []
+            others = {}
+            for setting in included_settings:
+                setting_name = getDisplayName(setting)
+                setting_desc = file[setting]
+                if setting_desc == 0:
+                    # Always false (Bool Type)
+                    always_off.append(setting_name)
+                    continue
+                elif setting_desc == 1:
+                    # Always True (Bool Type)
+                    always_on.append(setting_name)
+                    continue
+                elif isinstance(setting_desc, float):
+                    # Bool type
+                    others[setting_name] = f"{int(100 * setting_desc)}%"
+                    continue
+                elif isinstance(setting_desc, dict):
+                    sub_dict_keys = list(setting_desc.keys())
+                    if len(sub_dict_keys) == 0:
+                        # Empty Dictionary
+                        continue
+                    elif checkIfMatchingList(["min", "max", "mean"], sub_dict_keys):
+                        # Bell Curve Distribution
+                        others[setting_name] = f"Between {setting_desc['min']} and {setting_desc['max']}, usually close to {setting_desc['mean']}"
+                        continue
+                    else:
+                        # Multiple Options
+                        others[setting_name] = "".join([f"\n\t- {' '.join([x.capitalize() for x in k.split('_')])}: {int(setting_desc[k] * 100)}%" for k in sub_dict_keys])
+                        continue
+            # Sort lists for tidyness
+            # always_off.sort()
+            # always_on.sort()
+            if len(always_on) > 0:
+                fh.write("\n## Always On\n")
+                fh.write("\n".join([f"- {x}" for x in always_on]))
+                fh.write("\n")
+            if len(always_off) > 0:
+                fh.write("\n## Always Off\n")
+                fh.write("\n".join([f"- {x}" for x in always_off]))
+                fh.write("\n")
+            if len(others) > 0:
+                fh.write("\n## Other Settings\n")
+                fh.write("\n".join([f"- {x}: {others[x]}" for x in list(others.keys())]))
+                fh.write("\n")
+
+
+all_args = ["cb", "coin", "custom_location", "door", "fairy", "kasplat", "random_settings"]
 valid_args = all_args + ["all"]
 args = sys.argv[2:]
 if "all" in args:

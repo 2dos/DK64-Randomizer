@@ -83,9 +83,18 @@
                             Home
                         </div>
                     </div>
+                    <div class="px-3 mb-3">
+                        <div class="card bg-dark fs-6">
+                            <div class="p-3 collapsable-header collapsed user-select-none" open="suggested_articles_content" onclick="toggleSidebarCollapse(this)">
+                                <i id="icon" class="fa fa-lg fa-caret-down collapsable-header-caret"></i>
+                                &nbsp;Suggested
+                            </div>
+                            <div id="suggested_articles_content" class="sugg-articles content-navigation-menu px-3 py-2 user-select-none" hidden></div>
+                        </div>
+                    </div>
                     <div style="position:sticky; top:80px" class="px-3">
                         <div class="card bg-dark fs-6">
-                            <div class="p-3 collapsable-header collapsed user-select-none" onclick="toggleSidebarCollapse(this)">
+                            <div class="p-3 collapsable-header collapsed user-select-none" open="markdown_navigation_sidebar" onclick="toggleSidebarCollapse(this)">
                                 <i id="icon" class="fa fa-lg fa-caret-down collapsable-header-caret"></i>
                                 &nbsp;Content
                             </div>
@@ -211,70 +220,6 @@
                 }
             }
 
-            let articles = [];
-
-            function getSearchScore(find_text, in_text) {
-                return in_text.toLowerCase().split(find_text.toLowerCase()).length - 1;
-            }
-
-            function highlightInstancesOfText(find_text, in_text) {
-                const text_split = in_text.toLowerCase().split(find_text.toLowerCase());
-                let global_position = 0;
-                let total_text = "";
-                text_split.forEach((segment, index) => {
-                    if (index > 0) {
-                        total_text += `<strong>${in_text.substring(global_position, global_position + find_text.length)}</strong>`;
-                        global_position += find_text.length;
-                    }
-                    total_text += in_text.substring(global_position, global_position + segment.length);
-                    global_position += segment.length;
-                })
-                return total_text;
-            }
-
-            function goTo(url, new_tab=false) {
-                window.location.href = url;
-            }
-
-            function handleSuggestionClick(url) {
-                document.getElementById("search_suggestions").innerHTML = "";
-                document.getElementById("article-search").value = "";
-                goTo(url);
-            }
-
-            document.getElementById("article-search").addEventListener("keyup", (e) => {
-                const input_value = e.target.value;
-                if (articles.length == 0) {
-                    return; // No articles
-                }
-                let matches = [];
-                if (input_value.length >= 1) {
-                    articles.forEach(article => {
-                        const score = getSearchScore(input_value, article.name);
-                        if (score > 0) {
-                            matches.push({
-                                "score": score,
-                                "text": highlightInstancesOfText(input_value, article.name),
-                                "link": `./${article.link}.html`,
-                            })
-                        }
-                    })
-                    matches = matches.sort((a, b) => a.score > b.score ? 1 : ((b.score > a.score) ? -1 : 0));
-                }
-                matches = matches.filter((item, index) => index < 5); // Clamp to 5 search results at most
-                const sugg_hook = document.getElementById("search_suggestions");
-                sugg_hook.innerHTML = matches.map(item => `
-                    <div class="search-item user-select-none p-2" onclick="handleSuggestionClick('${item.link}')">
-                        ${item.text}
-                    </div>
-                `).join("");
-                const top_offset = e.target.clientTop + e.target.clientHeight;
-                const left_offset = e.target.clientLeft;
-                sugg_hook.style.top = `calc(${top_offset}px + 0.5rem)`;
-                sugg_hook.style.right = `calc(${left_offset}px + 0.5rem)`;
-                sugg_hook.style["min-width"] = `${e.target.clientWidth}px`;
-            })
-
             function dateDiffInDays(a, b) {
                 const _MS_PER_DAY = 1000 * 60 * 60 * 24;
                 // Discard the time and time-zone information.
@@ -294,7 +239,8 @@
             }
 
             function toggleSidebarCollapse(element) {
-                const nav_hook = document.getElementById("markdown_navigation_sidebar");
+                const open_id = element.getAttribute("open");
+                const nav_hook = document.getElementById(open_id);
                 const hidden = nav_hook.getAttribute("hidden") != null;
                 if (hidden) {
                     nav_hook.removeAttribute("hidden");
@@ -343,7 +289,6 @@
                     last_modified = x.headers.get("Last-Modified");
                     return x.text()
                 });
-                articles = await fetch("./articles.json", {cache: "no-store"}).then(x => x.json());
                 // Last Modified Date
                 const last_modified_hook = document.getElementById("last-modified");
                 if (last_modified == null) {
@@ -430,5 +375,6 @@
                 }
             }
         </script>
+        <script type="text/javascript" src="../static/js/wiki-code.js"></script>
     </body>
 </html>

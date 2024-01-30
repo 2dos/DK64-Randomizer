@@ -13,6 +13,7 @@
                                     type="checkbox"
                                     name="randomize_blocker_required_amounts"
                                     id="randomize_blocker_required_amounts"
+                                    display_name="Random B. Locker Amounts"
                                     value="True"/>
                             <label for="randomize_blocker_required_amounts"></label>
                         </label>
@@ -24,6 +25,7 @@
                                     type="checkbox"
                                     name="randomize_cb_required_amounts"
                                     id="randomize_cb_required_amounts"
+                                    display_name="Randomize CB Required Amounts"
                                     value="True"/>
                             <label for="randomize_cb_required_amounts"></label>
                         </label>
@@ -73,7 +75,8 @@
                                     <input type="checkbox"
                                         value="True"
                                         id="maximize_helm_blocker"
-                                        name="maximize_helm_blocker">
+                                        name="maximize_helm_blocker"
+                                        display_name="Maximize Helm B. Locker">
                                 </div>
                             </div>
                             <input class="form-control"
@@ -81,6 +84,7 @@
                                 max="200"
                                 name="blocker_text"
                                 id="blocker_text"
+                                display_name="B. Locker Max"
                                 type="number"
                                 data-toggle="tooltip"
                                 title="Maximum Randomized value"
@@ -97,6 +101,7 @@
                             max="500"
                             name="troff_text"
                             id="troff_text"
+                            display_name="Troff n' Scoff Max"
                             type="number"
                             data-toggle="tooltip"
                             title="Maximum Randomized value"
@@ -116,6 +121,7 @@
                                 type="checkbox"
                                 name="random_medal_requirement"
                                 id="random_medal_requirement"
+                                display_name="Randomize Medals for Rareware Coin"
                                 value="True"/>
                         <label for="random_medal_requirement"></label>
                         </label>
@@ -124,6 +130,7 @@
                             max="41"
                             name="medal_requirement"
                             id="medal_requirement"
+                            display_name="Medals for Rareware Coin"
                             style="width: 15%"
                             class="form-control center-div"
                             type="number"
@@ -138,6 +145,7 @@
                             max="100"
                             name="medal_cb_req"
                             id="medal_cb_req"
+                            display_name="Randomize Medal CB Requirement"
                             style="width: 15%"
                             class="form-control center-div"
                             type="number"
@@ -154,6 +162,7 @@
                             max="20"
                             name="rareware_gb_fairies"
                             id="rareware_gb_fairies"
+                            display_name="Fairies for Rareware GB"
                             style="width: 15%"
                             class="form-control center-div"
                             type="number"
@@ -172,6 +181,7 @@
                     <input class="dice_checkbox"
                             type="checkbox"
                             name="krool_random"
+                            display_name="Random K. Rool Phase Count"
                             onchange="toggle_clicks()"
                             id="krool_random"
                             value="True"/>
@@ -181,6 +191,7 @@
                 <input type="text"
                         name="krool_phase_count"
                         id="krool_phase_count"
+                        display_name="K. Rool Phase Count"
                         data-provide="slider"
                         data-slider-ticks="[1, 2, 3, 4, 5]"
                         data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
@@ -199,6 +210,7 @@
                             name="helm_random"
                             onchange="toggle_clicks()"
                             id="helm_random"
+                            display_name="Random Helm Length"
                             value="True"/>
                     <label for="helm_random"></label>
                 </label></h5>
@@ -206,6 +218,7 @@
                 <input type="text"
                         name="helm_phase_count"
                         id="helm_phase_count"
+                        display_name="Helm Length"
                         data-provide="slider"
                         data-slider-ticks="[1, 2, 3, 4, 5]"
                         data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
@@ -223,6 +236,7 @@
                             type="checkbox"
                             name="keys_random"
                             id="keys_random"
+                            display_name="Randomize Keys Required to Beat K. Rool"
                             onchange="toggle_clicks()"
                             value="True"/>
                     <label for="keys_random"></label>
@@ -235,6 +249,7 @@
                 <input type="text"
                         name="krool_key_count"
                         id="krool_key_count"
+                        display_name="Keys required to Beat K. Rool"
                         data-provide="slider"
                         data-slider-ticks="[0, 1, 2, 3, 4, 5, 6, 7, 8]"
                         data-slider-ticks-labels='["0", "1", "2", "3", "4", "5", "6", "7", "8"]'
@@ -251,6 +266,7 @@
                                 type="checkbox"
                                 name="select_keys"
                                 id="select_keys"
+                                display_name="Select Starting Keys"
                                 onchange="toggle_clicks()"
                                 value="True"/>
                         Select Starting Keys
@@ -265,6 +281,7 @@
                                     type="checkbox"
                                     name="key_8_helm"
                                     id="key_8_helm"
+                                    display_name="Lock Key 8 in Helm"
                                     value="True"/>
                             Lock Key 8 in Helm
                         </label>
@@ -276,6 +293,7 @@
                                     type="checkbox"
                                     name="krool_access"
                                     id="krool_access"
+                                    display_name="Key 8 Required"
                                     value="True"/>
                             Key 8 Required
                         </label>
@@ -287,6 +305,7 @@
                                     type="checkbox"
                                     name="k_rool_vanilla_requirement"
                                     id="k_rool_vanilla_requirement"
+                                    display_name="Vanilla K. Rool Requirement"
                                     value="True"/>
                             Vanilla K. Rool Requirement
                         </label>
@@ -301,6 +320,7 @@
                                 type="checkbox"
                                 name="starting_random"
                                 id="starting_random"
+                                display_name="Randomize number of starting Kongs"
                                 onchange="toggle_clicks()"
                                 value="True"/>
                         <label for="starting_random"></label>
@@ -309,6 +329,7 @@
                 <input type="text"
                     name="starting_kongs_count"
                     id="starting_kongs_count"
+                    display_name="Starting Kongs count"
                     data-provide="slider"
                     data-slider-ticks="[1, 2, 3, 4, 5]"
                     data-slider-ticks-labels='["1", "2", "3", "4", "5"]'
@@ -322,6 +343,7 @@
                         <p class="select-title">Select Starting Kong</p>
                         <select name="starting_kong"
                                 id="starting_kong"
+                                display_name="Selected Starting Kongs"
                                 class="form-select center-div"
                                 aria-label="Door 1 Requirements"
                                 data-toggle="tooltip"
@@ -354,6 +376,7 @@
                         <p class="select-title">Door 1 Requirements</p>
                         <select name="crown_door_item"
                                 id="crown_door_item"
+                                display_name="Helm Door 1 Requirement Item"
                                 class="form-select center-div"
                                 aria-label="Door 1 Requirements"
                                 data-toggle="tooltip"
@@ -408,6 +431,7 @@
                                 max="201"
                                 name="crown_door_item_count"
                                 id="crown_door_item_count"
+                                display_name="Helm Door 1 Requirement Count"
                                 style="width: 15%"
                                 class="form-control center-div"
                                 type="number"
@@ -422,6 +446,7 @@
                         <p class="select-title">Door 2 Requirements</p>
                         <select name="coin_door_item"
                                 id="coin_door_item"
+                                display_name="Helm Door 2 Requirement Item"
                                 class="form-select center-div"
                                 aria-label="Door 2 Requirements"
                                 data-toggle="tooltip"
@@ -476,6 +501,7 @@
                                 max="201"
                                 name="coin_door_item_count"
                                 id="coin_door_item_count"
+                                display_name="Helm Door 2 Requirement Count"
                                 style="width: 15%"
                                 class="form-control center-div"
                                 type="number"

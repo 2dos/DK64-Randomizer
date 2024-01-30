@@ -1,3 +1,16 @@
+/* Revert link stylings */
+a {
+    text-decoration: underline solid 1px !important;
+}
+a:hover {
+    color: #035e30 !important;
+}
+nav a, a.list_number {
+    text-decoration: none !important;   
+}
+
+
+/* Wiki Stylings */
 .content-navigation-menu ul {
     list-style-type: none;
 }
@@ -126,6 +139,12 @@ pre.pulse_display a::before {
 
 #markdown_navigation_sidebar.truncate_sidebar_scroll>ul>ul {
     display: none;
+}
+
+/* Suggested Articles */
+.sugg-article-container {
+    border: 1px solid grey;
+    border-radius: 5px;
 }
 
 /* SCROLLBAR */
