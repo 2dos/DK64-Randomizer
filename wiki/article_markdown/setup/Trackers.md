@@ -41,3 +41,9 @@ Excel based tracker to keep track of enemy captures
 [Made by Mizuiro Fox](https://docs.google.com/spreadsheets/d/14jxaHbj4fIvNZPtOnT-L6Iyx7FCIXQwnadlmgUFtdU0/edit?usp=sharing)
 
 Excel based tracker to keep track of every Loading Zone Entrances
+
+# Kevin Trackers
+
+Trackers used for the KEVIN Preset
+
+**Track-o-Matic**: [Made by OnlySpaghettiCode](https://github.com/Brian0255/Track-O-Matic/releases/tag/1.3.8)

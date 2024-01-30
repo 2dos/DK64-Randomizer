@@ -52,6 +52,7 @@ pre {
     transition: 0.5s ease-in-out;
     max-width: fill-available;
     max-width: -webkit-fill-available;
+    padding-right: 30px;
 }
 pre code {
     text-wrap: wrap;
@@ -144,6 +145,28 @@ pre.pulse {
 
 #markdown_navigation_sidebar.truncate_sidebar_scroll>ul>ul {
     display: none;
+}
+
+/* Image Buttons */
+.img-btn-container {
+    background-color: rgba(23, 27, 31);
+    border: 1px solid grey;
+    border-radius: 5px;
+    transition: 0.5s linear;
+    width: 150px;
+    text-align: center;
+}
+
+.img-btn-container:hover {
+    background-color: rgba(33, 37, 41);
+}
+
+.img-btn-container img {
+    width: 64px;
+}
+
+.img-btn-container .img-btn-text {
+    margin-top: 10px;
 }
 
 /* Suggested Articles */

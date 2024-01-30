@@ -1,31 +1,13 @@
 The following links are links to a list of locations which certain item groups can be placed if you have location randomizers on.
 
-# Stable Branch
 
-- [Banana Fairy Locations](https://github.com/2dos/DK64-Randomizer/blob/master/wiki-lists/FAIRIES.MD)
+# Current Branch
 
-- [Battle Crown Pad Locations](https://github.com/2dos/DK64-Randomizer/blob/master/wiki-lists/CROWNS.MD)
-
-- [Colored Banana Locations](https://github.com/2dos/DK64-Randomizer/blob/master/wiki-lists/COLORED_BANANAS.MD)
-
-- [Coin Locations](https://github.com/2dos/DK64-Randomizer/blob/master/wiki-lists/COINS.MD)
-
-- [Dirt Patch Locations](https://github.com/2dos/DK64-Randomizer/blob/master/wiki-lists/PATCHES.MD)
-
-- [Kasplat Locations](https://github.com/2dos/DK64-Randomizer/blob/master/wiki-lists/KASPLATS.MD)
-
-- [Wrinkly & Troff 'n' Scoff Locations](https://github.com/2dos/DK64-Randomizer/blob/master/wiki-lists/DOORS.MD)
-
-# Dev Branch
-
-- [Banana Fairy Locations](https://github.com/2dos/DK64-Randomizer/blob/dev/wiki-lists/FAIRIES.MD)
-
-- [Battle Crown Pad, Dirt Patch, Melon Crate Locations](https://github.com/2dos/DK64-Randomizer/blob/dev/wiki-lists/CUSTOM_LOCATIONS.MD)
-
-- [Colored Banana Locations](https://github.com/2dos/DK64-Randomizer/blob/dev/wiki-lists/COLORED_BANANAS.MD)
-
-- [Coin Locations](https://github.com/2dos/DK64-Randomizer/blob/dev/wiki-lists/COINS.MD)
-
-- [Kasplat Locations](https://github.com/2dos/DK64-Randomizer/blob/dev/wiki-lists/KASPLATS.MD)
-
-- [Wrinkly & Troff 'n' Scoff Locations](https://github.com/2dos/DK64-Randomizer/blob/dev/wiki-lists/DOORS.MD)
+<flex>
+<imgbtn img="https://i.imgur.com/DM9053u.png" href="./CustomLocationsFairies.html" text="Fairies"></imgbtn>
+<imgbtn img="https://i.imgur.com/OlKdU8i.png" href="./CustomLocationsMiscellaneous.html" text="Miscellaneous"></imgbtn>
+<imgbtn img="https://i.imgur.com/cY9ZOSB.png" href="./CustomLocationsColoredBananas.html" text="Colored Bananas"></imgbtn>
+<imgbtn img="https://i.imgur.com/bPmUBR7.png" href="./CustomLocationsCoins.html" text="Banana Coins"></imgbtn>
+<imgbtn img="https://i.imgur.com/W06LHRM.png" href="./CustomLocationsKasplats.html" text="Kasplats"></imgbtn>
+<imgbtn img="https://i.imgur.com/lGVDRZW.png" href="./CustomLocationsDoors.html" text="Wrinkly/T&S"></imgbtn>
+</flex>

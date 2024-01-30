@@ -59,8 +59,8 @@
         "Validate Docstrings",
         //"Validate Jinja2",
         "Validate C",
-        "Update Custom Location Lists",
-        "Update Wiki"
+        "Update Custom Location Lists", // Also updates wiki
+        //"Update Wiki"
       ],
       "problemMatcher": []
     },

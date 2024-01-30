@@ -2,7 +2,8 @@ let articles = [];
 let sugg_articles = [];
 
 function getSearchScore(find_text, in_text) {
-    return in_text.toLowerCase().split(find_text.toLowerCase()).length - 1;
+    const instances = in_text.toLowerCase().split(find_text.toLowerCase()).length - 1;
+    return (instances * find_text.length) / in_text.length;
 }
 
 function highlightInstancesOfText(find_text, in_text) {
@@ -47,7 +48,7 @@ document.getElementById("article-search").addEventListener("keyup", (e) => {
                 })
             }
         })
-        matches = matches.sort((a, b) => a.score > b.score ? 1 : ((b.score > a.score) ? -1 : 0));
+        matches = matches.sort((a, b) => a.score < b.score ? 1 : ((b.score < a.score) ? -1 : 0));
     }
     matches = matches.filter((item, index) => index < 5); // Clamp to 5 search results at most
     const sugg_hook = document.getElementById("search_suggestions");
@@ -186,7 +187,7 @@ function populateNavigation(markdown) {
     html_data[0] += `<li><a href=\"#page-top\" class='list_header'>(top)</a></li>`
     document.getElementById("markdown_navigation_sidebar").innerHTML = html_data.join("")
     if (html_data.length > 20) { // Mitigates overflow issues since scrolling + sticky doesn't work so well together
-        document.getElementById("markdown_navigation_sidebar").classList.add("truncate_sidebar_scroll");
+        document.getElementById("markdo<wn_navigation_sidebar").classList.add("truncate_sidebar_scroll");
     }
 }
 
@@ -255,7 +256,7 @@ async function filterMarkdown(element, converter) {
 
 const markdown_filters = {
     "</h2>": "</h2><hr />",
-    "<table>": "<table class=\"table table-dark table-hover\">",
+    "<table>": "<table class=\"table table-dark table-hover\" style=\"max-width:100%\">",
     "<pre>": "<div class=\"code-copy-container\"><pre>",
     "</pre>": "</pre><div><div class=\"code-copy p-1 m-1\"><a title=\"Copy Code\" onClick=\"copyCode(this)\"><i class=\"fa-regular fa-lg fa-copy\"></i></a></div></div></div>"
 }
@@ -277,11 +278,28 @@ function filterHTML(element, output_html) {
     }
 
 
-    // Parse custom elements - YouTube Videos (<ytvideo yt-id="12345678-0"></ytvideo>)
+    // Parse custom elements
+    // YouTube Videos (<ytvideo yt-id="12345678-0"></ytvideo>)
     const yt_videos = content_hook.getElementsByTagName("ytvideo");
+    while (yt_videos.length > 0) {
+        const yt_id = yt_videos[0].getAttribute("yt-id");
+        yt_videos[0].outerHTML = `<iframe width="420" height="315" src="https://www.youtube.com/embed/${yt_id}"></iframe>`
+    }
     for (let y = 0; y < yt_videos.length; y++) {
-        const yt_id = yt_videos[y].getAttribute("yt-id");
-        yt_videos[y].outerHTML = `<iframe width="420" height="315" src="https://www.youtube.com/embed/${yt_id}"></iframe>`
+    }
+    // Image Buttons (<imgbtn img="link" href="link" text="text"></imgbtn>)
+    const img_buttons = content_hook.getElementsByTagName("imgbtn");
+    while (img_buttons.length > 0) {
+        const btn_img = img_buttons[0].getAttribute("img");
+        const btn_href = img_buttons[0].getAttribute("href");
+        const btn_text = img_buttons[0].getAttribute("text");
+        img_buttons[0].outerHTML = `<div class="img-btn-container p-3 m-2 user-select-none" onclick="goTo('${btn_href}')"><img src=${btn_img} /><div class="img-btn-text">${btn_text}</div></div>`
+    }
+    // Flex <flex></flex>
+    const flex_items = content_hook.getElementsByTagName("flex");
+    while (flex_items.length > 0) {
+        const contents = flex_items[0].innerHTML;
+        flex_items[0].outerHTML = `<div style="display:flex">${contents}</div>`
     }
 
     // Warp to ID if specified
