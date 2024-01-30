@@ -1,0 +1,40 @@
+[
+    {
+        "head": "Setting up DK64 Randomizer",
+        "articles": [
+            "ConsolesAndEmulators",
+            "AdvancedHomebrewHeader",
+            "Trackers",
+            "BadBrowserExtensions"
+        ]
+    },
+    {
+        "head": "Logic, Hints and Game Info",
+        "articles": [
+            "LogicTipsAndTricks",
+            "AllAboutHints",
+            "LesserKnownGameKnowledge",
+            "GeneralStrategies",
+            "VanillaItemLocations",
+            "CustomLocations",
+            "Season2Distributions"
+        ]
+    },
+    {
+        "head": "Racing and Sharing Seeds",
+        "articles": [
+            "Season2Preset",
+            "NSAK_RacingRules",
+            "GlitchlessRuleset",
+            "AsyncRacing",
+            "SharingA_Seed"
+        ]
+    },
+    {
+        "head": "Custom Music",
+        "articles": [
+            "CreatingCosmeticPacks",
+            "RecommendedMusicEditors"
+        ]
+    }
+]
