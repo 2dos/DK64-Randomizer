@@ -187,7 +187,7 @@ function populateNavigation(markdown) {
     html_data[0] += `<li><a href=\"#page-top\" class='list_header'>(top)</a></li>`
     document.getElementById("markdown_navigation_sidebar").innerHTML = html_data.join("")
     if (html_data.length > 20) { // Mitigates overflow issues since scrolling + sticky doesn't work so well together
-        document.getElementById("markdo<wn_navigation_sidebar").classList.add("truncate_sidebar_scroll");
+        document.getElementById("markdown_navigation_sidebar").classList.add("truncate_sidebar_scroll");
     }
 }
 
@@ -294,6 +294,12 @@ function filterHTML(element, output_html) {
         const btn_href = img_buttons[0].getAttribute("href");
         const btn_text = img_buttons[0].getAttribute("text");
         img_buttons[0].outerHTML = `<div class="img-btn-container p-3 m-2 user-select-none" onclick="goTo('${btn_href}')"><img src=${btn_img} /><div class="img-btn-text">${btn_text}</div></div>`
+    }
+    // Font-Awesome icons <fa-icon>cls</fa-icon>
+    const fa_icons = content_hook.getElementsByTagName("fa-icon");
+    while (fa_icons.length > 0) {
+        const classes = fa_icons[0].innerHTML;
+        fa_icons[0].outerHTML = `<i class="${classes} ms-3"></i>`
     }
     // Flex <flex></flex>
     const flex_items = content_hook.getElementsByTagName("flex");

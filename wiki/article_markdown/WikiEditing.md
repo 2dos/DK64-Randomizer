@@ -55,3 +55,13 @@ To include a flex container, insert the following piece of code to your markdown
 <flex>Contents</flex>
 ```
 This will convert the flex elements to flex boxes
+
+## Font Awesome Icons
+To include a font-awesome icon (v6.4.2), insert the following piece of code to your markdown file:
+```
+<fa-icon>fa-solid fa-code</fa-icon>
+```
+
+This will be converted to the following:
+
+<fa-icon>fa-solid fa-code</fa-icon>
