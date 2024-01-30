@@ -169,6 +169,15 @@ pre.pulse {
     margin-top: 10px;
 }
 
+@media only screen and (max-width: 1000px) {
+    .hide-if-thin {
+        display: none;
+    }
+    .max-if-thin {
+        width: 100%;
+    }
+}
+
 /* Suggested Articles */
 .sugg-article-container {
     border: 1px solid grey;
