@@ -82,9 +82,18 @@
                             Home
                         </div>
                     </div>
+                    <div class="px-3 mb-3">
+                        <div class="card bg-dark fs-6">
+                            <div class="p-3 collapsable-header collapsed user-select-none" open="suggested_articles_content" onclick="toggleSidebarCollapse(this)">
+                                <i id="icon" class="fa fa-lg fa-caret-down collapsable-header-caret"></i>
+                                &nbsp;Suggested
+                            </div>
+                            <div id="suggested_articles_content" class="sugg-articles content-navigation-menu px-3 py-2 user-select-none" hidden></div>
+                        </div>
+                    </div>
                     <div style="position:sticky; top:80px" class="px-3">
                         <div class="card bg-dark fs-6">
-                            <div class="p-3 collapsable-header collapsed user-select-none" onclick="toggleSidebarCollapse(this)">
+                            <div class="p-3 collapsable-header collapsed user-select-none" open="markdown_navigation_sidebar" onclick="toggleSidebarCollapse(this)">
                                 <i id="icon" class="fa fa-lg fa-caret-down collapsable-header-caret"></i>
                                 &nbsp;Content
                             </div>
@@ -229,7 +238,8 @@
             }
 
             function toggleSidebarCollapse(element) {
-                const nav_hook = document.getElementById("markdown_navigation_sidebar");
+                const open_id = element.getAttribute("open");
+                const nav_hook = document.getElementById(open_id);
                 const hidden = nav_hook.getAttribute("hidden") != null;
                 if (hidden) {
                     nav_hook.removeAttribute("hidden");
