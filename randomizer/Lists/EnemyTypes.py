@@ -731,7 +731,7 @@ enemy_location_list = {
     Locations.ForestMainEnemy_NearFacePuzzle: EnemyLoc(Maps.FungiForest, Enemies.ZingerLime, 51, [], True),
     Locations.ForestMainEnemy_NearCrown: EnemyLoc(Maps.FungiForest, Enemies.ZingerLime, 52, [], True),
     Locations.ForestMainEnemy_NearHighWarp5: EnemyLoc(Maps.FungiForest, Enemies.ZingerLime, 53, [], True),
-    Locations.ForestMainEnemy_TopOfMushroom: EnemyLoc(Maps.FungiForest, Enemies.Klump, 54, [], True),
+    Locations.ForestMainEnemy_TopOfMushroom: EnemyLoc(Maps.FungiForest, Enemies.Klump, 54, enemies_shockwave_immune + [Enemies.Guard], True),
     Locations.ForestMainEnemy_NearAppleDropoff: EnemyLoc(Maps.FungiForest, Enemies.ZingerLime, 48, [], True),
     Locations.ForestMainEnemy_NearDKPortal: EnemyLoc(Maps.FungiForest, Enemies.ZingerLime, 49, [], True),
     Locations.ForestMainEnemy_NearWellTag: EnemyLoc(Maps.FungiForest, Enemies.ZingerLime, 50, [], True),
@@ -788,7 +788,7 @@ enemy_location_list = {
     Locations.CavesMainEnemy_NearFunky: EnemyLoc(Maps.CrystalCaves, Enemies.ZingerCharger, 19, [], True),
     Locations.CavesMainEnemy_NearSnide: EnemyLoc(Maps.CrystalCaves, Enemies.Kosha, 27, [], True),
     Locations.CavesMainEnemy_NearBonusRoom: EnemyLoc(Maps.CrystalCaves, Enemies.Kosha, 28, [], True),
-    Locations.CavesMainEnemy_1DCHeadphones: EnemyLoc(Maps.CrystalCaves, Enemies.Kosha, 29, [], True),
+    Locations.CavesMainEnemy_1DCHeadphones: EnemyLoc(Maps.CrystalCaves, Enemies.Kosha, 29, enemies_shockwave_immune + [Enemies.Guard], True),
     Locations.CavesMainEnemy_GiantKosha: EnemyLoc(Maps.CrystalCaves, Enemies.Kosha, 31, [], True),
     # DK 5DI
     Locations.Caves5DIDKEnemy_Right: EnemyLoc(Maps.CavesDonkeyIgloo, Enemies.Kosha, 1, [], True),
