@@ -2,6 +2,9 @@
 a {
     text-decoration: underline solid 1px !important;
 }
+a:hover {
+    color: #035e30 !important;
+}
 nav a, a.list_number {
     text-decoration: none !important;   
 }
