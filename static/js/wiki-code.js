@@ -77,8 +77,18 @@ async function fetchArticles() {
         sugg_article_html.push(`<li>${item.head}</li>`)
         sugg_article_html.push("<ul class=\"list-inline\">")
         item.articles.forEach(article => {
-            const name = articles.find(k => k.link == article) ? articles.find(k => k.link == article).name : article;
-            sugg_article_html.push(`<li class="ms-3"><a href="./${article}.html">${name}</a></li>`)
+            const art_data = articles.find(k => k.link == article);
+            const name = art_data ? art_data.name : article;
+            let link = null;
+            if (art_data) {
+                link = `./${article}.html`
+                if (Object.keys(art_data).includes("github")) {
+                    link = `./${art_data.github}.html`
+                }
+            }
+            if (link != null) {
+                sugg_article_html.push(`<li class="ms-3"><a href="${link}">${name}</a></li>`)
+            }
         })
         sugg_article_html.push("</ul>")
     })

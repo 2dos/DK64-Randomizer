@@ -44,8 +44,9 @@
         "link": "RandomSettingsStandard"
     },
     {
-        "name": "Creating Cosmetic Packs",
-        "link": "CreatingCosmeticPacks"
+        "name": "Creating Cosmetic Data packs",
+        "link": "CreatingCosmeticPacks",
+        "github": "Creating-Cosmetics-Data-packs"
     },
     {
         "name": "Recommended Music Editors",
