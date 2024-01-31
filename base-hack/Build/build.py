@@ -830,6 +830,7 @@ shrinkModel(True, "diddy_base.bin", 0, 1 / 0.15, "shrink_diddy.bin", True)  # Di
 shrinkModel(True, "lanky_base.bin", 0, 1 / 0.15, "shrink_lanky.bin", True)  # Lanky
 shrinkModel(True, "tiny_base.bin", 0, 1 / 0.15, "shrink_tiny.bin", True)  # Tiny
 shrinkModel(False, "", 0xB, 1 / 0.15, "shrink_chunky.bin", True)  # Chunky
+shrinkModel(True, "fake_item_actor.bin", 0, 0.15, "shrink_ice_trap.bin", False),
 
 model_changes = [
     ModelChange(0, "diddy_base.bin"),
@@ -862,6 +863,7 @@ model_changes = [
     ModelChange(0xFF, "shrink_lanky.bin"),
     ModelChange(0x100, "shrink_tiny.bin"),
     ModelChange(0x101, "shrink_chunky.bin"),
+    ModelChange(0x102, "shrink_ice_trap.bin"),
     ModelChange(0xA3, "counter.bin"),
     # ModelChange(0xC0, "guitar_om1.bin"),
 ]
