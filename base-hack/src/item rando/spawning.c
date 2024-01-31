@@ -170,7 +170,7 @@ void spawnCharSpawnerActor(int actor, SpawnerInfo* spawner) {
             | Golden Banana  | 0x69                       | True   | See Left      |
             | Boss Key       | 0xA5                       | True   | 0xF5          |
             | Crown          | 0xAF                       | True   | 0xF4          |
-            | Fake Item      | ----                       | ----   | 0xFD          |
+            | Fake Item      | ----                       | True   | 0x103         |
             | Potions        | 0xEE-0xF3                  | True   | 0xF6-0xFB     |
             | Kong Items     | 4, 1, 6, 9, 0xC, 0xE, 0xDB | True   | See Left      |
             +----------------+----------------------------+--------+---------------+
