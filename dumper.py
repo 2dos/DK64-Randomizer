@@ -4,6 +4,7 @@ import inspect
 import json
 import os
 import sys
+import subprocess
 from copy import deepcopy
 from enum import IntEnum, auto
 
@@ -127,18 +128,19 @@ def getMapNameFromIndex(index: int):
 
 
 DISPLAY_TOTALS = False
+LIST_DIRECTORY = "./wiki/article_markdown/custom_locations"
 
 
 def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.ColoredBananas):
     """Dump data to a JSON file."""
     directory = "./tools/dumps"
     if format == "md":
-        directory = "./wiki-lists"
+        directory = LIST_DIRECTORY
     if not os.path.exists(directory):
         os.mkdir(directory)
     output_file = f"{directory}/{name}.{format}"
     if format == "md":
-        output_file = f"{directory}/{name.upper()}.{format.upper()}"
+        output_file = f"{directory}/CustomLocations{name.title().replace('_','')}.{format.upper()}"
     with open(output_file, "w") as fh:
         if format == "json":
             if DISPLAY_TOTALS:
@@ -172,13 +174,12 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                         csv_data.append("")
                 fh.write(", ".join([filterCSVCell(x) for x in csv_data]) + "\n")
         elif format == "md":
-            fh.write(f"# {' '.join(name.split('_')).title()} \n")
             if isinstance(data, dict):
                 for x in data:
                     if "Levels." in str(x) or isinstance(x, int):
-                        fh.write(f"\n## {getLevelName(x)}\n")
+                        fh.write(f"\n# {getLevelName(x)}\n")
                     else:
-                        fh.write(f"\n## {x}\n")
+                        fh.write(f"\n# {x}\n")
                     headers = {
                         Dumpers.ColoredBananas: "Colored Banana Locations",
                         Dumpers.Coins: "Coin Locations",
@@ -190,10 +191,13 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                     dumper_header = "Click me"
                     if dumper in headers:
                         dumper_header = headers[dumper]
-                    fh.write(f"<details>\n<summary>{dumper_header}</summary>\n\n")
-                    if dumper in (Dumpers.CustomLocations, Dumpers.Fairies, Dumpers.Kasplats):
+                    # fh.write(f"<details>\n<summary>{dumper_header}</summary>\n\n")
+                    if dumper in (Dumpers.Fairies, Dumpers.Kasplats):
                         fh.write("| Map | Name | Logic |\n")
                         fh.write("| --- | ---- | ----- |\n")
+                    elif dumper == Dumpers.CustomLocations:
+                        fh.write("| Map | Name | Banned Types | Logic |\n")
+                        fh.write("| --- | ---- | ------------ | ----- |\n")
                     elif dumper == Dumpers.Doors:
                         fh.write("| Map | Name | Door types acceptable in location | Logic |\n")
                         fh.write("| --- | ---- | --------------------------------- | ----- |\n")
@@ -203,31 +207,35 @@ def dump_to_file(name="temp", data={}, format="json", dumper: Dumpers = Dumpers.
                             if dumper == Dumpers.Coins:
                                 if y["map"] not in groupings:
                                     groupings[y["map"]] = []
-                                groupings[y["map"]].append(f"| {y['name']} | {len(y['locations'])} | {y.get('logic', '')} | \n")
+                                groupings[y["map"]].append(f"| {y['name']} | {len(y['locations'])} | `{y.get('logic', '')}` | \n")
                             elif y["class"] == "cb":
                                 if y["map"] not in groupings:
                                     groupings[y["map"]] = []
-                                groupings[y["map"]].append(f"| {y['name']} | {sum([a[0] for a in y['locations']])} | {y.get('logic', '')} | \n")
+                                groupings[y["map"]].append(f"| {y['name']} | {sum([a[0] for a in y['locations']])} | `{y.get('logic', '')}` | \n")
                             elif y["class"] == "balloon":
                                 if y["map"] not in groupings:
                                     groupings[y["map"]] = []
-                                groupings[y["map"]].append(f"| {y['name']} | Balloon | {y.get('logic', '')} | \n")
-                        elif dumper in (Dumpers.CustomLocations, Dumpers.Fairies):
-                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y.get('logic', '')} | \n")
+                                groupings[y["map"]].append(f"| {y['name']} | Balloon | `{y.get('logic', '')}` | \n")
+                        elif dumper == Dumpers.Fairies:
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | `{y.get('logic', '')}` | \n")
+                        elif dumper == Dumpers.CustomLocations:
+                            banned_types = y.get("banned_types", [])
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {', '.join([x.name for x in banned_types])} | `{y.get('logic', '')}` | \n")
                         elif dumper == Dumpers.Kasplats:
-                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y.get('additional_logic', '')} | \n")
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | `{y.get('additional_logic', '')}` | \n")
                         elif dumper == Dumpers.Doors:
-                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y['door_type'].title()} | {y.get('logic', '')} | \n")
+                            fh.write(f"| {getMapNameFromIndex(y['map'])} | {y['name']} | {y['door_type'].title()} | `{y.get('logic', '')}` | \n")
                     for group in groupings:
                         if dumper in (Dumpers.ColoredBananas, Dumpers.Coins):
-                            fh.write("<details>\n")
-                            fh.write(f"<summary>{getMapNameFromIndex(group)}</summary>\n\n")
+                            # fh.write("<details>\n")
+                            # fh.write(f"<summary>{getMapNameFromIndex(group)}</summary>\n\n")
+                            fh.write(f"## {getMapNameFromIndex(group)}\n")
                             fh.write("| Name | Amount | Logic |\n")
                             fh.write("| ---- | ------ | ----- |\n")
                             for item in groupings[group]:
                                 fh.write(item)
-                            fh.write("</details>\n")
-                    fh.write("</details>\n")
+                            # fh.write("</details>\n")
+                    # fh.write("</details>\n")
 
 
 def dump_cb(format: str):
@@ -312,7 +320,7 @@ def dump_custom_location(format: str):
         else:
             dump_to_file(f"custom_locations_{level.name}", custom_location_data, format, Dumpers.CustomLocations)
     if format == "md":
-        dump_to_file("custom_locations", dumps, format, Dumpers.CustomLocations)
+        dump_to_file("miscellaneous", dumps, format, Dumpers.CustomLocations)
 
 
 def getDoorX(item: dict):
@@ -482,8 +490,7 @@ def dump_random_settings(format: str):
         print("Random Setting Data could not be established")
         return
     for file in data:
-        with open(f"./wiki-lists/RS_{file['name'].replace(' ','').upper()}.MD", "w") as fh:
-            fh.write(f"# \"{file['name']}\" Random Settings Walkthrough\n")
+        with open(f"{LIST_DIRECTORY}/RandomSettings{file['name'].title().replace(' ','')}.MD", "w") as fh:
             fh.write(f"{file['description']}\n")
             excluded_settings = ["name", "description"]
             included_settings = [x for x in list(file.keys()) if x not in excluded_settings]
@@ -522,15 +529,15 @@ def dump_random_settings(format: str):
             # always_off.sort()
             # always_on.sort()
             if len(always_on) > 0:
-                fh.write("\n## Always On\n")
+                fh.write("\n# Always On\n")
                 fh.write("\n".join([f"- {x}" for x in always_on]))
                 fh.write("\n")
             if len(always_off) > 0:
-                fh.write("\n## Always Off\n")
+                fh.write("\n# Always Off\n")
                 fh.write("\n".join([f"- {x}" for x in always_off]))
                 fh.write("\n")
             if len(others) > 0:
-                fh.write("\n## Other Settings\n")
+                fh.write("\n# Other Settings\n")
                 fh.write("\n".join([f"- {x}: {others[x]}" for x in list(others.keys())]))
                 fh.write("\n")
 
@@ -552,3 +559,4 @@ for arg in args:
     arg_f = globals()[f"dump_{arg}"]
     arg_f(sys.argv[1])
     print("Dumping complete")
+subprocess.call(["python", "./update_wiki.py"])

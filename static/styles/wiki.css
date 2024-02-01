@@ -52,6 +52,7 @@ pre {
     transition: 0.5s ease-in-out;
     max-width: fill-available;
     max-width: -webkit-fill-available;
+    padding-right: 30px;
 }
 pre code {
     text-wrap: wrap;
@@ -60,13 +61,18 @@ pre.pulse {
     background-color: rgba(33, 37, 41);
     border: 1px solid white;
 }
-pre.pulse_display a::before {
+.pulse_display::before {
     content: "Copied! ";
 }
 
-.code-copy {
+.code-copy-container {
+    position: relative;
     width: fit-content;
-    margin-left: auto;
+}
+.code-copy {
+    position:absolute;
+    top: 0;
+    right: 0;
 }
 .code-copy:hover {
     color: #666;
@@ -139,6 +145,37 @@ pre.pulse_display a::before {
 
 #markdown_navigation_sidebar.truncate_sidebar_scroll>ul>ul {
     display: none;
+}
+
+/* Image Buttons */
+.img-btn-container {
+    background-color: rgba(23, 27, 31);
+    border: 1px solid grey;
+    border-radius: 5px;
+    transition: 0.5s linear;
+    width: 150px;
+    text-align: center;
+}
+
+.img-btn-container:hover {
+    background-color: rgba(33, 37, 41);
+}
+
+.img-btn-container img {
+    width: 64px;
+}
+
+.img-btn-container .img-btn-text {
+    margin-top: 10px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .hide-if-thin {
+        display: none;
+    }
+    .max-if-thin {
+        width: 100%;
+    }
 }
 
 /* Suggested Articles */

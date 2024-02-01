@@ -38,3 +38,30 @@ To include an embedded YouTube link, you will need to add the following piece of
 This will be converted to the following:
 
 <ytvideo yt-id="RFZzMbI-mSo"></ytvideo>
+
+## Button Images
+To include a clickable button which has a header image, you will need to add the following piece of code to your markdown file:
+```
+<imgbtn img="../static/img/logo.png" href="./WikiEditing.html#buttonimages" text="Insert Text"></imgbtn>
+```
+
+This will be converted to the following:
+
+<imgbtn img="../static/img/logo.png" href="./WikiEditing.html#buttonimages" text="Insert Text"></imgbtn>
+
+## Flex
+To include a flex container, insert the following piece of code to your markdown file:
+```
+<flex>Contents</flex>
+```
+This will convert the flex elements to flex boxes
+
+## Font Awesome Icons
+To include a font-awesome icon (v6.4.2), insert the following piece of code to your markdown file:
+```
+<fa-icon>fa-solid fa-code</fa-icon>
+```
+
+This will be converted to the following:
+
+<fa-icon>fa-solid fa-code</fa-icon>
