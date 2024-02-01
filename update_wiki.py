@@ -49,8 +49,7 @@ def getNameFromCamelSnakeCase(text: str):
 
 
 ARTICLE_JSON = "./wiki/articles.json"
-
-
+GH_ARTICLE_JSON = "./wiki/github_articles.json"
 NAME_HEADS = ["Custom Locations", "Random Settings"]
 
 
@@ -59,24 +58,23 @@ def convertName(name: str):
     name = getNameFromCamelSnakeCase(name)
     for head in NAME_HEADS:
         if name[: len(head)] == head and len(name) > len(head):
-            name = f"{head}: {name[len(head):]}"
+            name = f"{head}:{name[len(head):]}"
     return name
 
 
-def createArticleJSON(file_heads: list):
+def createArticleJSON(data: list):
     """Create JSON file containing all articles."""
     with open(ARTICLE_JSON, "w") as fh:
-        fh.write(json.dumps([{"name": convertName(x), "link": x} for x in file_heads], indent=4))
+        fh.write(json.dumps(data, indent=4))
 
 
 def createHTML(markdown_data: dict, template_text: str):
     """Create the relevant HTML file for a markdown entry."""
     pretty_name = markdown_data["name"]
     file = markdown_data.get("path", None)
-    html_file_name = None
+    html_file_name = markdown_data.get("link", None)
     if file is not None:
         file = markdown_data["path"].replace("./", "./article_markdown/")
-        html_file_name = markdown_data["link"]
     if "github" in markdown_data:
         file = f"https://raw.githubusercontent.com/wiki/2dos/DK64-Randomizer/{markdown_data['github']}.md"
         html_file_name = markdown_data["github"]
@@ -92,24 +90,34 @@ def createHTML(markdown_data: dict, template_text: str):
 def updateWikiProcedure():
     """Update procedure."""
     items = []
-    with open(ARTICLE_JSON, "r") as fh:
+    articles = []
+    with open(GH_ARTICLE_JSON, "r") as fh:
         items = json.loads(fh.read())
+        articles = items.copy()
     # Generate Paths
     ARTICLE_DIRECTORY = "./wiki/article_markdown"
     for path, subdirs, files in os.walk(ARTICLE_DIRECTORY):
         for name in files:
-            if ".md" in name:
+            if ".md" in name.lower():
                 pth = os.path.join(path, name).replace(ARTICLE_DIRECTORY, ".").replace("\\", "/")
+                pretty_name = name.split("/")[-1].split(".")[0]
+                itm_data = {
+                    "name": convertName(pretty_name),
+                    "link": pretty_name
+                }
+                articles.append(itm_data)
+                items.append(itm_data.copy())
                 for item in items:
                     if "link" in item:
-                        if item["link"] in pth:
+                        if f"{item['link'].lower()}.md" in pth.lower():
                             item["path"] = pth
     template_text = None
     with open("./wiki/template.html", "r") as fh:
         template_text = fh.read()
     if template_text is not None:
-        # createArticleJSON([item.split("/")[-1].split(".")[0] for item in items])
+        createArticleJSON(articles)
         for item in items:
+            # print(item)
             createHTML(item, template_text)
     print("Wiki Updated")
 

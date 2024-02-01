@@ -82,9 +82,6 @@ async function fetchArticles() {
             let link = null;
             if (art_data) {
                 link = `./${article}.html`
-                if (Object.keys(art_data).includes("github")) {
-                    link = `./${art_data.github}.html`
-                }
             }
             if (link != null) {
                 sugg_article_html.push(`<li class="ms-3"><a href="${link}">${name}</a></li>`)
@@ -219,12 +216,71 @@ const copyContent = async (text) => {
     }
 }
 
+FIX_FLEX = true;
+FIX_HEADERS = false;
+
+function fixHeaders(text) {
+    // Fix flex containers
+    if (FIX_FLEX) {
+        if (text.includes("<flex>")) {
+            const segments = text.split("<flex>");
+            let new_segments = [];
+            segments.forEach(segment => {
+                if (segment.includes("</flex>")) {
+                    const subsegments = segment.split("</flex>");
+                    const new_subseg = subsegments.map((item, index) => {
+                        if (index < (subsegments.length - 1)) {
+                            return item.replaceAll("\n","");
+                        }
+                        return item;
+                    })
+                    new_segments.push(new_subseg.join("</flex>"))
+                } else {
+                    new_segments.push(segment)
+                }
+            })
+            text = new_segments.join("<flex>");
+        }
+    }
+    // Fix Headers
+    if (FIX_HEADERS) {
+        let split_text = text.split("\n");
+        let header_lines = []
+        split_text.forEach((line, line_index) => {
+            const trimmed = line.trim()
+            let header_data = null;
+            markdown_headers.forEach((head, header_index) => {
+                if (trimmed.substring(0, head.length) == head) {
+                    same_as_last = false
+                    if (header_lines.length > 0) {
+                        if (header_index == header_lines[header_lines.length - 1].power) {
+                            same_as_last = true;
+                        }
+                    }
+                    header_data = {
+                        "index": line_index,
+                        "line": trimmed,
+                        "power": header_index,
+                        "same_as_last": same_as_last
+                    }
+                }
+            })
+            if (header_data != null) {
+                header_lines.push(header_data)
+            }
+        })
+        console.log(header_lines)
+    }
+    return text;
+}
+
 async function filterMarkdown(element, converter) {
     let last_modified = null;
     let text = await fetch(element.getAttribute("ref"), {cache: "no-store"}).then(x => {
         last_modified = x.headers.get("Last-Modified");
         return x.text()
     });
+    text = fixHeaders(text);
     // Last Modified Date
     const last_modified_hook = document.getElementById("last-modified");
     if (last_modified == null) {
@@ -308,7 +364,7 @@ function filterHTML(element, output_html) {
     // Font-Awesome icons <fa-icon>cls</fa-icon>
     const fa_icons = content_hook.getElementsByTagName("fa-icon");
     while (fa_icons.length > 0) {
-        const classes = fa_icons[0].innerHTML;
+        const classes = fa_icons[0].getAttribute("class");
         fa_icons[0].outerHTML = `<i class="${classes} ms-3"></i>`
     }
     // Flex <flex></flex>
