@@ -80,7 +80,7 @@ def createHTML(markdown_data: dict, template_text: str):
         html_file_name = markdown_data["github"]
     if html_file_name is not None:
         html_text = template_text.replace("<title></title>", f"<title>{pretty_name}</title>")
-        html_text = html_text.replace("<meta content=\"\" property=\"og:title\" />", f"<meta content=\"{pretty_name}\" property=\"og:title\" />")
+        html_text = html_text.replace('<meta content="" property="og:title" />', f'<meta content="{pretty_name}" property="og:title" />')
         html_text = html_text.replace('<h1 id="page-title"></h1>', f'<h1 id="page-title">{pretty_name}</h1>')
         html_text = html_text.replace('<div id="markdown_content"></div>', f'<div id="markdown_content" ref="{file}"></div>')
         with open(f"./wiki/{html_file_name}.html", "w") as fh:
