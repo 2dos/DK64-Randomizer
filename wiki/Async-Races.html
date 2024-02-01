@@ -173,7 +173,7 @@
             }
 
             async function alterMarkdown(element) {
-                const converter = new showdown.Converter({tables: true, headerLevelStart: 2, strikethrough: true});
+                const converter = new showdown.Converter({tables: true, headerLevelStart: 2, strikethrough: true, rawHeaderId: true});
                 text = await filterMarkdown(element, converter);
                 let output_html = converter.makeHtml(text);
                 await filterHTML(element, output_html);

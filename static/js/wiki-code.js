@@ -88,7 +88,7 @@ async function fetchArticles() {
             const name = art_data ? art_data.name : article;
             let link = null;
             if (art_data) {
-                link = getLink(article);
+                link = getLink(art_data);
             }
             if (link != null) {
                 sugg_article_html.push(`<li class="ms-3"><a href="${link}">${name}</a></li>`)
@@ -104,14 +104,25 @@ async function fetchArticles() {
 
 fetchArticles();
 
-const invalid_id_characters = [" ", ",", "(", ")", "."]
+const invalid_id_characters = [" ", ",", "(", ")", ".", "\"", "'"]
 let used_ids = {};
 
 class MarkdownNavItem {
     constructor(text, indent_level) {
         this.text = text;
         // Construct id
-        let id = text.toLowerCase().split("").filter(item => !invalid_id_characters.includes(item)).join("");
+        let split_id = text.toLowerCase().split("")
+        let new_split_id = []
+        split_id.forEach((char, char_index) => {
+            let new_char = char;
+            if (invalid_id_characters.includes(char)) {
+                if (char_index < (split_id.length - 1)) {
+                    new_char = "-";
+                }
+            }
+            new_split_id.push(new_char);
+        })
+        let id = new_split_id.join("");
         if (Object.keys(used_ids).includes(id)) {
             used_ids[id] += 1;
             id = `${id}-${used_ids[id]}`
