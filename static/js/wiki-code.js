@@ -366,7 +366,7 @@ function filterHTML(element, output_html) {
     const yt_videos = content_hook.getElementsByTagName("ytvideo");
     while (yt_videos.length > 0) {
         const yt_id = yt_videos[0].getAttribute("yt-id");
-        yt_videos[0].outerHTML = `<iframe width="420" height="315" src="https://www.youtube.com/embed/${yt_id}"></iframe>`
+        yt_videos[0].outerHTML = `<div style="text-align:center"><iframe width="420" height="315" src="https://www.youtube.com/embed/${yt_id}"></iframe></div>`
     }
     for (let y = 0; y < yt_videos.length; y++) {
     }

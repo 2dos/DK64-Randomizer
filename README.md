@@ -11,7 +11,7 @@
     Python/C based builder and patching system for randomizing DK64 entirely within your browser.
     Randomizer by 2dos, Ballaam and Killklli
     <br />
-    <a href="https://github.com/2dos/DK64-Randomizer/wiki"><strong>Explore the docs »</strong></a>
+    <a href="https://dk64randomizer.com/wiki/"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://dk64randomizer.com/">Live Site</a>
