@@ -31,6 +31,13 @@ function handleSuggestionClick(url) {
     goTo(url);
 }
 
+function getLink(item) {
+    if (Object.keys(item).includes("github")) {
+        return `./${item.github}.html`
+    }
+    return `./${item.link}.html`
+}
+
 document.getElementById("article-search").addEventListener("keyup", (e) => {
     const input_value = e.target.value;
     if (articles.length == 0) {
@@ -44,7 +51,7 @@ document.getElementById("article-search").addEventListener("keyup", (e) => {
                 matches.push({
                     "score": score,
                     "text": highlightInstancesOfText(input_value, article.name),
-                    "link": `./${article.link}.html`,
+                    "link": getLink(article),
                 })
             }
         })
@@ -81,7 +88,7 @@ async function fetchArticles() {
             const name = art_data ? art_data.name : article;
             let link = null;
             if (art_data) {
-                link = `./${article}.html`
+                link = getLink(article);
             }
             if (link != null) {
                 sugg_article_html.push(`<li class="ms-3"><a href="${link}">${name}</a></li>`)
@@ -342,7 +349,6 @@ function filterHTML(element, output_html) {
             code_elements[c].classList.add("inline-code");
         }
     }
-
 
     // Parse custom elements
     // YouTube Videos (<ytvideo yt-id="12345678-0"></ytvideo>)

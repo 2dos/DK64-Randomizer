@@ -80,7 +80,8 @@ def createHTML(markdown_data: dict, template_text: str):
         html_file_name = markdown_data["github"]
     if html_file_name is not None:
         html_text = template_text.replace("<title></title>", f"<title>{pretty_name}</title>")
-        html_text = template_text.replace('<h1 id="page-title"></h1>', f'<h1 id="page-title">{pretty_name}</h1>')
+        html_text = html_text.replace("<meta content=\"\" property=\"og:title\" />", f"<meta content=\"{pretty_name}\" property=\"og:title\" />")
+        html_text = html_text.replace('<h1 id="page-title"></h1>', f'<h1 id="page-title">{pretty_name}</h1>')
         html_text = html_text.replace('<div id="markdown_content"></div>', f'<div id="markdown_content" ref="{file}"></div>')
         with open(f"./wiki/{html_file_name}.html", "w") as fh:
             fh.write("<!-- DON'T EDIT THIS FILE. EDIT template.html INSTEAD -->\n")
@@ -101,10 +102,7 @@ def updateWikiProcedure():
             if ".md" in name.lower():
                 pth = os.path.join(path, name).replace(ARTICLE_DIRECTORY, ".").replace("\\", "/")
                 pretty_name = name.split("/")[-1].split(".")[0]
-                itm_data = {
-                    "name": convertName(pretty_name),
-                    "link": pretty_name
-                }
+                itm_data = {"name": convertName(pretty_name), "link": pretty_name}
                 articles.append(itm_data)
                 items.append(itm_data.copy())
                 for item in items:
