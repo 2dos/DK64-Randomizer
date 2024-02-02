@@ -4,11 +4,18 @@
         <meta charset="utf-8" />
         <meta name="viewport"
               content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-        <meta name="description" content="" />
-        <meta name="author" content="" />
+        <!-- General -->
+        <meta name="description" content="Welcome to the DK64 Randomizer Wiki. A comprehensive wiki on tricks, tips and guide to playing the best
+            monkey game randomizer on the Nintendo 64." />
+        <meta name="keywords" content="Donkey Kong 64, DK64, Randomizers, N64, Nintendo 64, Wiki, DK64R" />
+        <meta name="author" content="DK64R Team" />
+        <!-- Discord -->
+        <meta content="Homepage" property="og:title" />
+        <meta content="Welcome to the DK64 Randomizer Wiki. A comprehensive wiki on tricks, tips and guides to playing the best monkey game randomizer on the Nintendo 64." property="og:description" />
+        <meta content="Donkey Kong 64 Randomizer Wiki" property="og:site_name" />
+        <meta content="https://raw.githubusercontent.com/2dos/DK64-Randomizer/master/static/img/logo.png" property="og:image" />
         <title>Donkey Kong 64 Randomizer Wiki</title>
         <link href="../static/img/dk.png" rel="icon" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900"
               rel="stylesheet"/>
         <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i"
@@ -38,11 +45,11 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link"
-                               href="https://github.com/2dos/DK64-Randomizer/wiki/Consoles-and-Emulators">Setup</a>
+                               href="./Consoles-and-Emulators.html">Setup</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link"
-                               href="https://github.com/2dos/DK64-Randomizer/wiki"
+                               href="./home.html"
                                target="_blank">Wiki</a>
                         </li>
                         <li class="nav-item">
@@ -60,8 +67,8 @@
             style="cursor: pointer; margin-top: 70px"/>
         <div class="container">
             <div class="row">
-                <div class="col-sm-1"></div>
-                <div class="col-sm-10">
+                <div class="col-sm-1 hide-if-thin"></div>
+                <div class="col-sm-10 max-if-thin">
                     <div class="row justify-content-end">
                         <div class="col-sm-3">
                             <div class="card bg-dark px-2 pt-2 position-relative">
@@ -71,27 +78,27 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-1"></div>
+                <div class="col-sm-1 hide-if-thin"></div>
             </div>
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-sm-1 p-0"></div>
-                <div class="col-sm-10">
+                <div class="col-sm-1 p-0 hide-if-thin"></div>
+                <div class="col-sm-10 max-if-thin">
                     <div class="card bg-dark p-3">
                         <h1 id="page-title">Welcome to the DK64 Randomizer Wiki</h1>
                         <hr />
                         <div class="container">
                             <div class="row">
-                                <div class="col-sm-9">
+                                <div class="col-sm-9 max-if-thin">
                                     <p>Welcome to the DK64 Randomizer Wiki. A comprehensive wiki on tricks, tips and guide to playing the best
                                         monkey game randomizer on the Nintendo 64. This wiki is run by the developers, and is <a href="./WikiEditing.html">easily editable using
                                         markdown</a>.</p>
 
-                                    <p>This is currently under development, please check the articles here in the meanwhile whilst the dev team cooks</p>
+                                    <p>List of articles:</p>
                                     <ul id="article-list"></ul>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-3 max-if-thin">
                                     <div class="sugg-article-container p-2">
                                         <h5>New? Start Here</h5>
                                         <hr class="mt-0" />
@@ -102,7 +109,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-1 p-0"></div>
+                <div class="col-sm-1 p-0 hide-if-thin"></div>
             </div>
         </div>
         <script type="text/javascript">
@@ -110,10 +117,11 @@
                 const articles = await fetch("./articles.json", {cache: "no-store"}).then(x => x.json());
                 const sorted_articles = articles.sort((a, b) => a.name > b.name ? 1 : ((b.name > a.name) ? -1 : 0));
                 const article_hook = document.getElementById("article-list");
-                article_hook.innerHTML = sorted_articles.map(article => `<li><a href="./${article.link}.html">${article.name}</a></li>`).join("");
+                article_hook.innerHTML = sorted_articles.map(article => `<li><a href="${getLink(article)}">${article.name}</a></li>`).join("");
             }
             fetchArticles();
         </script>
         <script type="text/javascript" src="../static/js/wiki-code.js"></script>
+        <script type="text/javascript" src="../static/js/font-awesome.js"></script>
     </body>
 </html>

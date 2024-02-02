@@ -220,7 +220,7 @@ LogicRegions = {
     ]),
 
     Regions.JapesMinecarts: Region("Japes Minecarts", "Japes Caves and Mines", Levels.JungleJapes, False, None, [
-        LocationLogic(Locations.JapesDiddyMinecarts, lambda l: l.isdiddy or l.settings.free_trade_items),
+        LocationLogic(Locations.JapesDiddyMinecarts, lambda l: l.isdiddy),
     ], [], [
         TransitionFront(Regions.JungleJapesMain, lambda l: True),
     ], Transitions.JapesMineToCarts

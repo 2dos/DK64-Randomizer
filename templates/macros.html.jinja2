@@ -151,15 +151,29 @@
                         {% for item in list %}
                             <div class="item-select" style="margin:0;flex:0;min-width:150px;">
                                 <p class="select-title">{{ item.name }}</p>
-                                <input min="-32768"
-                                       max="32767"
-                                       name="{{ name }}_{{ item.value }}"
-                                       id="{{ name }}_{{ item.value }}"
-                                       style="width:15%"
-                                       class="form-control center-div"
-                                       type="number"
-                                       value="{{ item.default }}"
-                                       default_val="{{ item.default }}">
+                                {% if item.name == "Starting Time" %}
+                                    <input 
+                                    min="0"
+                                    max="65535"
+                                    name="{{ name }}_{{ item.value }}"
+                                    id="{{ name }}_{{ item.value }}"
+                                    style="width:15%"
+                                    class="form-control center-div"
+                                    type="number"
+                                    value="{{ item.default }}"
+                                    default_val="{{ item.default }}">
+                                {% else %}
+                                    <input 
+                                    min="-32768"
+                                    max="32767"
+                                    name="{{ name }}_{{ item.value }}"
+                                    id="{{ name }}_{{ item.value }}"
+                                    style="width:15%"
+                                    class="form-control center-div"
+                                    type="number"
+                                    value="{{ item.default }}"
+                                    default_val="{{ item.default }}">
+                                {% endif %}
                             </div>
                         {% endfor %}
                     </div>

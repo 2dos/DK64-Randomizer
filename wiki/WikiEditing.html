@@ -5,12 +5,19 @@
         <meta charset="utf-8" />
         <meta name="viewport"
               content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-        <meta name="description" content="" />
-        <meta name="author" content="" />
+        <!-- General -->
+        <meta name="description" content="Welcome to the DK64 Randomizer Wiki. A comprehensive wiki on tricks, tips and guide to playing the best
+            monkey game randomizer on the Nintendo 64." />
+        <meta name="keywords" content="Donkey Kong 64, DK64, Randomizers, N64, Nintendo 64, Wiki, DK64R" />
+        <meta name="author" content="DK64R Team" />
+        <!-- Discord -->
+        <meta content="Wiki Editing" property="og:title" />
+        <meta content="Welcome to the DK64 Randomizer Wiki. A comprehensive wiki on tricks, tips and guides to playing the best monkey game randomizer on the Nintendo 64." property="og:description" />
+        <meta content="Donkey Kong 64 Randomizer Wiki" property="og:site_name" />
+        <meta content="https://raw.githubusercontent.com/2dos/DK64-Randomizer/master/static/img/logo.png" property="og:image" />
         <script type="text/javascript" src="../static/js/showdown.min.js"></script>
-        <title></title>
+        <title>Wiki Editing</title>
         <link href="../static/img/dk.png" rel="icon" />
-        <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
         <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900"
               rel="stylesheet"/>
         <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i"
@@ -40,11 +47,11 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link"
-                               href="https://github.com/2dos/DK64-Randomizer/wiki/Consoles-and-Emulators">Setup</a>
+                               href="./Consoles-and-Emulators.html">Setup</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link"
-                               href="https://github.com/2dos/DK64-Randomizer/wiki"
+                               href="./home.html"
                                target="_blank">Wiki</a>
                         </li>
                         <li class="nav-item">
@@ -62,8 +69,8 @@
             style="cursor: pointer; margin-top: 70px"/>
         <div class="container">
             <div class="row">
-                <div class="col-sm-3"></div>
-                <div class="col-sm-9 pr-6">
+                <div class="col-sm-3 hide-if-thin"></div>
+                <div class="col-sm-9 pr-6 max-if-thin">
                     <div class="row justify-content-end">
                         <div class="col-sm-3">
                             <div class="card bg-dark px-2 pt-2 position-relative">
@@ -77,10 +84,12 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-sm-3 p-0">
+                <div class="col-sm-3 p-0 hide-if-thin">
                     <div class="px-3 mb-3">
-                        <div class="card bg-dark fs-6 p-3 user-select-none sidebar-link" onclick="goTo('home.html')">
-                            Home
+                        <div class="card bg-dark">
+                            <div class="sidebar-link fs-6 p-3 user-select-none" onclick="goTo('home.html')">
+                                Home
+                            </div>
                         </div>
                     </div>
                     <div class="px-3 mb-3">
@@ -102,7 +111,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="pr-6 col-sm-9">
+                <div class="pr-6 col-sm-9 max-if-thin">
                     <div class="card bg-dark p-3">
                         <h1 id="page-title">Wiki Editing</h1>
                         <div id="last-modified"></div>
@@ -118,123 +127,34 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript" src="../static/js/wiki-code.js"></script>
         <script type="text/javascript">
-            const invalid_id_characters = [" ", ",", "(", ")", "."]
-            let used_ids = {};
-
-            class MarkdownNavItem {
-                constructor(text, indent_level) {
-                    this.text = text;
-                    // Construct id
-                    let id = text.toLowerCase().split("").filter(item => !invalid_id_characters.includes(item)).join("");
-                    if (Object.keys(used_ids).includes(id)) {
-                        used_ids[id] += 1;
-                        id = `${id}-${used_ids[id]}`
-                    } else {
-                        used_ids[id] = 0;
-                    }
-                    this.id = id;
-                    this.indent_level = indent_level;
+            function copyCode(element) {
+                let parent = element.parentElement.parentElement.parentElement;
+                if (!parent) {
+                    return;
                 }
-            }
-
-            const markdown_headers = [1, 2, 3, 4, 5].map(item => `${"#".repeat(item)} `);
-
-            function getListItemFromEntry(entry) {
-                return `<li>
-                    <a href=\"#${entry.id}\" class='list_number'>${entry.numeric}</a>
-                    <a href=\"#${entry.id}\" class='list_header'> ${entry.text}</a>
-                </li>`
-            }
-
-            function populateNavigation(markdown) {
-                let entries = [];
-                lines = markdown.split("\n")
-                lines.forEach(line => {
-                    let indent_level = null;
-                    markdown_headers.forEach((header, index) => {
-                        if (line.substring(0, header.length) == header) {
-                            indent_level = index;
-                        }
-                    })
-                    if (indent_level != null) {
-                        let start = line.substring(markdown_headers[indent_level].length);
-                        start = start.split("").filter(item => item != "\r").join("");
-                        entries.push(new MarkdownNavItem(start, indent_level))
-                    }
-                })
-                let nav_entries = [];
-                let html_data = [];
-                let indentation_levels = Array(markdown_headers.length).fill(-1);
-                entries.forEach(entry => {
-                    indentation_levels[entry.indent_level] += 1;
-                    if (indentation_levels[entry.indent_level] == 0) {
-                        html_data.push(`<ul${entry.indent_level == 0 ? ' style=\"padding-left:0px\"' : ''}>`)
-                    }
-                    for (let i = entry.indent_level + 1; i < markdown_headers.length; i++) {
-                        if (indentation_levels[i] != -1) {
-                            html_data.push("</ul>")
-                        }
-                        indentation_levels[i] = -1;
-                    }
-                    let numeric = "";
-                    let has_hit_limit = false;
-                    indentation_levels.forEach(indent => {
-                        if (!has_hit_limit) {
-                            if (indent < 0) {
-                                has_hit_limit = true;
-                            } else {
-                                numeric += `${indent + 1}.`
-                            }
-                        }
-                    })
-                    entry.numeric = numeric.substring(0, numeric.length - 1);
-                    if (entry.indent_level == 0) {
-                        html_data.push(getListItemFromEntry(entry))
-                        nav_entries.push({
-                            "head": entry,
-                            "sub": [],
-                        })
-                    } else {
-                        data = nav_entries;
-                        for (let i = 0; i < entry.indent_level; i++) {
-                            data = data[indentation_levels[i]].sub;
-                        }
-                        html_data.push(getListItemFromEntry(entry))
-                        data.push({
-                            "head": entry,
-                            "sub": [],
-                        })
-                    }
-                })
-                indentation_levels.forEach(indent => {
-                    if (indent != -1) {
-                        html_data.push("</ul>")
-                    }
-                })
-                document.getElementById("markdown_navigation").innerHTML = html_data.join("")
-                html_data[0] += `<li><a href=\"#page-top\" class='list_header'>(top)</a></li>`
-                document.getElementById("markdown_navigation_sidebar").innerHTML = html_data.join("")
-                if (html_data.length > 20) { // Mitigates overflow issues since scrolling + sticky doesn't work so well together
-                    document.getElementById("markdown_navigation_sidebar").classList.add("truncate_sidebar_scroll");
+                parent = parent.getElementsByTagName("pre")[0];
+                if (!parent) {
+                    return;
                 }
-            }
-
-            function dateDiffInDays(a, b) {
-                const _MS_PER_DAY = 1000 * 60 * 60 * 24;
-                // Discard the time and time-zone information.
-                const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
-                const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
-
-                return Math.floor((utc2 - utc1) / _MS_PER_DAY);
-            }
-
-            const copyContent = async (text) => {
-                try {
-                    await navigator.clipboard.writeText(text);
-                    console.log('Content copied to clipboard');
-                } catch (err) {
-                    console.error('Failed to copy: ', err);
+                const code_blocks = parent.getElementsByTagName("code");
+                if (code_blocks.length == 0) {
+                    return;
+                }
+                const copyText = code_blocks[0].innerText;
+                copyContent(copyText);
+                if (!parent.classList.contains("pulse")) {
+                    if (!element.classList.contains("pulse_display")) {
+                        parent.classList.add("pulse");
+                        element.classList.add("pulse_display");
+                        setTimeout(() => {
+                            parent.classList.remove("pulse");
+                        }, 300);
+                        setTimeout(() => {
+                            element.classList.remove("pulse_display");
+                        }, 1000);
+                    }
                 }
             }
 
@@ -251,112 +171,11 @@
                 }
             }
 
-            function copyCode(element) {
-                const parent = element.parentElement.parentElement.parentElement;
-                if (!parent) {
-                    return;
-                }
-                const code_blocks = parent.getElementsByTagName("code");
-                if (code_blocks.length == 0) {
-                    return;
-                }
-                const copyText = code_blocks[0].innerText;
-                copyContent(copyText);
-                if (!parent.classList.contains("pulse")) {
-                    if (!parent.classList.contains("pulse_display")) {
-                        parent.classList.add("pulse");
-                        parent.classList.add("pulse_display");
-                        setTimeout(() => {
-                            parent.classList.remove("pulse");
-                        }, 300);
-                        setTimeout(() => {
-                            parent.classList.remove("pulse_display");
-                        }, 1000);
-                    }
-                }
-            }
-
-            const markdown_filters = {
-                "</h2>": "</h2><hr />",
-                "<table>": "<table class=\"table table-dark table-hover\">",
-                "<pre>": "<pre><div><div class=\"code-copy\"><a title=\"Copy Code\" onClick=\"copyCode(this)\"><i class=\"fa-regular fa-lg fa-copy\"></i></a></div></div>"
-            }
-
             async function alterMarkdown(element) {
-                const converter = new showdown.Converter({tables: true, headerLevelStart: 2, strikethrough: true});
-                let last_modified = null;
-                let text = await fetch(element.getAttribute("ref"), {cache: "no-store"}).then(x => {
-                    last_modified = x.headers.get("Last-Modified");
-                    return x.text()
-                });
-                // Last Modified Date
-                const last_modified_hook = document.getElementById("last-modified");
-                if (last_modified == null) {
-                    last_modified_hook.remove();
-                } else {
-                    const modified_date = new Date(last_modified);
-                    const current_date = new Date();
-                    const diff = dateDiffInDays(modified_date, current_date);
-                    let diff_text = "Unknown"
-                    if (diff == 0) {
-                        diff_text = "Today"
-                    } else {
-                        diff_text = `${diff} day${diff == 1 ? '' : 's'} ago`
-                    }
-                    last_modified_hook.innerText = `Last Modified: ${diff_text}`;
-                }
-                // Handle summative starting text
-                const primary_header_finder = "\n# "
-                let has_summary = false;
-                if (text.substring(0, 2) != "# ") { // Ensure that this doesn't happen if the first line is a header
-                    if (text.includes("\n# ")) {
-                        // Includes primary header
-                        let splitter = text.indexOf(primary_header_finder)
-                        if (splitter > -1) {
-                            const summation = text.substring(0, splitter)
-                            text = text.substring(splitter)
-                            document.getElementById("content-summary").innerHTML = converter.makeHtml(summation);
-                            has_summary = true;
-                        }
-                    }
-                }
-                if (!has_summary) {
-                    document.getElementById("content-summary").remove();
-                }
-                // Populate HTML
-                populateNavigation(text);
+                const converter = new showdown.Converter({tables: true, headerLevelStart: 2, strikethrough: true, rawHeaderId: true});
+                text = await filterMarkdown(element, converter);
                 let output_html = converter.makeHtml(text);
-                Object.keys(markdown_filters).forEach(k => {
-                    output_html = output_html.replaceAll(k, markdown_filters[k]);
-                })
-                element.innerHTML = output_html;
-                element.removeAttribute("ref");
-                // Content Filtration
-                const content_hook = document.getElementById("markdown_content");
-                // Add classes to code blocks where their parent element isn't a pre-tag
-                const code_elements = content_hook.getElementsByTagName("code");
-                for (let c = 0; c < code_elements.length; c++) {
-                    if (code_elements[c].parentElement.tagName.toLowerCase() != "pre") {
-                        code_elements[c].classList.add("inline-code");
-                    }
-                }
-
-
-                // Parse custom elements - YouTube Videos (<ytvideo yt-id="12345678-0"></ytvideo>)
-                const yt_videos = content_hook.getElementsByTagName("ytvideo");
-                for (let y = 0; y < yt_videos.length; y++) {
-                    const yt_id = yt_videos[y].getAttribute("yt-id");
-                    yt_videos[y].outerHTML = `<iframe width="420" height="315" src="https://www.youtube.com/embed/${yt_id}"></iframe>`
-                }
-
-                // Warp to ID if specified
-                hash = window.location.hash;
-                if (hash.length > 0) {
-                    const hash_hook = document.querySelector(hash);
-                    if (hash_hook) {
-                        hash_hook.scrollIntoView();
-                    }
-                }
+                await filterHTML(element, output_html);
             }
             alterMarkdown(document.getElementById("markdown_content"));
 
@@ -375,6 +194,6 @@
                 }
             }
         </script>
-        <script type="text/javascript" src="../static/js/wiki-code.js"></script>
+        <script type="text/javascript" src="../static/js/font-awesome.js"></script>
     </body>
 </html>
