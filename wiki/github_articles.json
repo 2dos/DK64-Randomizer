@@ -113,5 +113,10 @@
         "name": "Using The Website",
         "link": "UsingTheWebsite",
         "github": "Using-the-Program-and-Patching-Information"
+    },
+    {
+        "name": "Random Helm Door Changes",
+        "link": "RandomHelmDoorChanges",
+        "github": "Random-Helm-Door-Changes"
     }
 ]
