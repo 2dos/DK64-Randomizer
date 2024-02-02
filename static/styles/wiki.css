@@ -68,6 +68,8 @@ pre.pulse {
 .code-copy-container {
     position: relative;
     width: fit-content;
+    max-width: fill-available;
+    max-width: -webkit-fill-available;
 }
 .code-copy {
     position:absolute;
